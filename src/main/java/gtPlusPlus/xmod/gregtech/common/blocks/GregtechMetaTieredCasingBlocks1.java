@@ -12,17 +12,15 @@ import net.minecraft.util.StatCollector;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.common.blocks.MaterialCasings;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class GregtechMetaTieredCasingBlocks1 extends GregtechMetaCasingBlocksAbstract {
 
     @Override
-    public void getSubBlocks(Item aItem, CreativeTabs par2CreativeTabs, List aList) {
+    public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {
         for (int i = 0; i < 10; i++) {
-            aList.add(new ItemStack(aItem, 1, i));
+            list.add(new ItemStack(item, 1, i));
         }
     }
 
@@ -33,27 +31,18 @@ public class GregtechMetaTieredCasingBlocks1 extends GregtechMetaCasingBlocksAbs
         }
 
         @Override
-        public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List aList, boolean aF3_H) {
-            int aMeta = aStack.getItemDamage();
+        public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean aF3_H) {
+            int aMeta = stack.getItemDamage();
             if (aMeta < 10) {
-                aList.add(StatCollector.translateToLocalFormatted("GT5U.tooltip.electric.tier.s", GTValues.VN[aMeta]));
+                tooltip
+                    .add(StatCollector.translateToLocalFormatted("GT5U.tooltip.electric.tier.s", GTValues.VN[aMeta]));
             }
-            super.addInformation(aStack, aPlayer, aList, aF3_H);
+            super.addInformation(stack, player, tooltip, aF3_H);
         }
     }
 
     public GregtechMetaTieredCasingBlocks1() {
         super(TieredCasingItemBlock.class, "gtplusplus.blocktieredcasings.1", MaterialCasings.INSTANCE);
-        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".0.name", "Integral Encasement I");
-        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".1.name", "Integral Encasement II");
-        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".2.name", "Integral Encasement III");
-        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".3.name", "Integral Encasement IV");
-        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".4.name", "Integral Encasement V");
-        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".5.name", "Integral Framework I");
-        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".6.name", "Integral Framework II");
-        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".7.name", "Integral Framework III");
-        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".8.name", "Integral Framework IV");
-        GTLanguageManager.addStringLocalization(this.getUnlocalizedName() + ".9.name", "Integral Framework V");
 
         GregtechItemList.GTPP_Casing_ULV.set(new ItemStack(this, 1, 0));
         GregtechItemList.GTPP_Casing_LV.set(new ItemStack(this, 1, 1));
@@ -70,8 +59,8 @@ public class GregtechMetaTieredCasingBlocks1 extends GregtechMetaCasingBlocksAbs
     @Override
     public IIcon getIcon(int ordinalSide, int aMeta) {
         if (aMeta < 10) {
-            return TexturesGtBlock.TIERED_MACHINE_HULLS[aMeta].getIcon();
+            return Textures.BlockIcons.INTEGRAL_FRAMEWORK[aMeta].getIcon();
         }
-        return Textures.BlockIcons.RENDERING_ERROR.getIcon();
+        return Textures.GlobalIcons.RENDERING_ERROR.getIcon();
     }
 }

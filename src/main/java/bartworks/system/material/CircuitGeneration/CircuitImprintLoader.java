@@ -28,8 +28,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
-import com.google.common.collect.ArrayListMultimap;
-
 import bartworks.system.material.WerkstoffLoader;
 import bartworks.util.BWUtil;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -38,281 +36,9 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 
 public class CircuitImprintLoader {
-
-    // Todo: fix recipeTagMap to add the items back to the creative tab.
-    public static final ArrayListMultimap<NBTTagCompound, GTRecipe> recipeTagMap = ArrayListMultimap.create();
-
-    public static void registerItemstacks() {
-        ItemList.CircuitImprint_NANDChipArray.set(
-            BWMetaItems.getCircuitParts()
-                .getStackWithNBT(getTagFromStack(ItemList.NandChip.get(1)), 0, 1));
-        ItemList.SlicedCircuit_NANDChipArray.set(
-            BWMetaItems.getCircuitParts()
-                .getStackWithNBT(getTagFromStack(ItemList.NandChip.get(1)), 1, 1));
-
-        ItemList.CircuitImprint_Microprocessor.set(
-            BWMetaItems.getCircuitParts()
-                .getStackWithNBT(getTagFromStack(ItemList.Circuit_Microprocessor.get(1)), 0, 1));
-        ItemList.SlicedCircuit_Microprocessor.set(
-            BWMetaItems.getCircuitParts()
-                .getStackWithNBT(getTagFromStack(ItemList.Circuit_Microprocessor.get(1)), 1, 1));
-
-        ItemList.CircuitImprint_ElectronicCircuit.set(
-            BWMetaItems.getCircuitParts()
-                .getStackWithNBT(getTagFromStack(GTModHandler.getIC2Item("electronicCircuit", 1)), 0, 1));
-        ItemList.SlicedCircuit_ElectronicCircuit.set(
-            BWMetaItems.getCircuitParts()
-                .getStackWithNBT(getTagFromStack(GTModHandler.getIC2Item("electronicCircuit", 1)), 1, 1));
-        ItemList.CircuitImprint_GoodElectronicCircuit.set(
-            BWMetaItems.getCircuitParts()
-                .getStackWithNBT(getTagFromStack(ItemList.Circuit_Good.get(1)), 0, 1));
-        ItemList.SlicedCircuit_GoodElectronicCircuit.set(
-            BWMetaItems.getCircuitParts()
-                .getStackWithNBT(getTagFromStack(ItemList.Circuit_Good.get(1)), 1, 1));
-
-        ItemList.CircuitImprint_IntegratedLogicCircuit.set(
-            BWMetaItems.getCircuitParts()
-                .getStackWithNBT(getTagFromStack(ItemList.Circuit_Basic.get(1L)), 0, 1));
-        ItemList.SlicedCircuit_IntegratedLogicCircuit.set(
-            BWMetaItems.getCircuitParts()
-                .getStackWithNBT(getTagFromStack(ItemList.Circuit_Basic.get(1L)), 1, 1));
-        ItemList.CircuitImprint_GoodIntegratedCircuit.set(
-            BWMetaItems.getCircuitParts()
-                .getStackWithNBT(getTagFromStack(ItemList.Circuit_Integrated_Good.get(1)), 0, 1));
-        ItemList.SlicedCircuit_GoodIntegratedCircuit.set(
-            BWMetaItems.getCircuitParts()
-                .getStackWithNBT(getTagFromStack(ItemList.Circuit_Integrated_Good.get(1)), 1, 1));
-        ItemList.CircuitImprint_AdvancedCircuit.set(
-            BWMetaItems.getCircuitParts()
-                .getStackWithNBT(getTagFromStack(GTModHandler.getIC2Item("advancedCircuit", 1)), 0, 1));
-        ItemList.SlicedCircuit_AdvancedCircuit.set(
-            BWMetaItems.getCircuitParts()
-                .getStackWithNBT(getTagFromStack(GTModHandler.getIC2Item("advancedCircuit", 1)), 1, 1));
-
-        ItemList.CircuitImprint_IntegratedProcessor.set(
-            BWMetaItems.getCircuitParts()
-                .getStackWithNBT(getTagFromStack(ItemList.Circuit_Processor.get(1)), 0, 1));
-        ItemList.SlicedCircuit_IntegratedProcessor.set(
-            BWMetaItems.getCircuitParts()
-                .getStackWithNBT(getTagFromStack(ItemList.Circuit_Processor.get(1)), 1, 1));
-        ItemList.CircuitImprint_ProcessorAssembly.set(
-            BWMetaItems.getCircuitParts()
-                .getStackWithNBT(getTagFromStack(ItemList.Circuit_Advanced.get(1)), 0, 1));
-        ItemList.SlicedCircuit_ProcessorAssembly.set(
-            BWMetaItems.getCircuitParts()
-                .getStackWithNBT(getTagFromStack(ItemList.Circuit_Advanced.get(1)), 1, 1));
-        ItemList.CircuitImprint_Workstation.set(
-            BWMetaItems.getCircuitParts()
-                .getStackWithNBT(getTagFromStack(ItemList.Circuit_Data.get(1)), 0, 1));
-        ItemList.SlicedCircuit_Workstation.set(
-            BWMetaItems.getCircuitParts()
-                .getStackWithNBT(getTagFromStack(ItemList.Circuit_Data.get(1)), 1, 1));
-        ItemList.CircuitImprint_Mainframe.set(
-            BWMetaItems.getCircuitParts()
-                .getStackWithNBT(getTagFromStack(ItemList.Circuit_Elite.get(1)), 0, 1));
-        ItemList.SlicedCircuit_Mainframe.set(
-            BWMetaItems.getCircuitParts()
-                .getStackWithNBT(getTagFromStack(ItemList.Circuit_Elite.get(1)), 1, 1));
-
-        ItemList.CircuitImprint_NanoProcessor.set(
-            BWMetaItems.getCircuitParts()
-                .getStackWithNBT(getTagFromStack(ItemList.Circuit_Nanoprocessor.get(1)), 0, 1));
-        ItemList.SlicedCircuit_NanoProcessor.set(
-            BWMetaItems.getCircuitParts()
-                .getStackWithNBT(getTagFromStack(ItemList.Circuit_Nanoprocessor.get(1)), 1, 1));
-        ItemList.CircuitImprint_NanoAssembly.set(
-            BWMetaItems.getCircuitParts()
-                .getStackWithNBT(getTagFromStack(ItemList.Circuit_Nanocomputer.get(1)), 0, 1));
-        ItemList.SlicedCircuit_NanoAssembly.set(
-            BWMetaItems.getCircuitParts()
-                .getStackWithNBT(getTagFromStack(ItemList.Circuit_Nanocomputer.get(1)), 1, 1));
-        ItemList.CircuitImprint_NanoSupercomputer.set(
-            BWMetaItems.getCircuitParts()
-                .getStackWithNBT(getTagFromStack(ItemList.Circuit_Elitenanocomputer.get(1)), 0, 1));
-        ItemList.SlicedCircuit_NanoSupercomputer.set(
-            BWMetaItems.getCircuitParts()
-                .getStackWithNBT(getTagFromStack(ItemList.Circuit_Elitenanocomputer.get(1)), 1, 1));
-        ItemList.CircuitImprint_NanoMainframe.set(
-            BWMetaItems.getCircuitParts()
-                .getStackWithNBT(getTagFromStack(ItemList.Circuit_Master.get(1)), 0, 1));
-        ItemList.SlicedCircuit_NanoMainframe.set(
-            BWMetaItems.getCircuitParts()
-                .getStackWithNBT(getTagFromStack(ItemList.Circuit_Master.get(1)), 1, 1));
-
-        ItemList.CircuitImprint_QuantumProcessor.set(
-            BWMetaItems.getCircuitParts()
-                .getStackWithNBT(getTagFromStack(ItemList.Circuit_Quantumprocessor.get(1)), 0, 1));
-        ItemList.SlicedCircuit_QuantumProcessor.set(
-            BWMetaItems.getCircuitParts()
-                .getStackWithNBT(getTagFromStack(ItemList.Circuit_Quantumprocessor.get(1)), 1, 1));
-        ItemList.CircuitImprint_QuantumAssembly.set(
-            BWMetaItems.getCircuitParts()
-                .getStackWithNBT(getTagFromStack(ItemList.Circuit_Quantumcomputer.get(1)), 0, 1));
-        ItemList.SlicedCircuit_QuantumAssembly.set(
-            BWMetaItems.getCircuitParts()
-                .getStackWithNBT(getTagFromStack(ItemList.Circuit_Quantumcomputer.get(1)), 1, 1));
-        ItemList.CircuitImprint_QuantumSupercomputer.set(
-            BWMetaItems.getCircuitParts()
-                .getStackWithNBT(getTagFromStack(ItemList.Circuit_Masterquantumcomputer.get(1)), 0, 1));
-        ItemList.SlicedCircuit_QuantumSupercomputer.set(
-            BWMetaItems.getCircuitParts()
-                .getStackWithNBT(getTagFromStack(ItemList.Circuit_Masterquantumcomputer.get(1)), 1, 1));
-        ItemList.CircuitImprint_QuantumMainframe.set(
-            BWMetaItems.getCircuitParts()
-                .getStackWithNBT(getTagFromStack(ItemList.Circuit_Quantummainframe.get(1)), 0, 1));
-        ItemList.SlicedCircuit_QuantumMainframe.set(
-            BWMetaItems.getCircuitParts()
-                .getStackWithNBT(getTagFromStack(ItemList.Circuit_Quantummainframe.get(1)), 1, 1));
-
-        ItemList.CircuitImprint_CrystalProcessor.set(
-            BWMetaItems.getCircuitParts()
-                .getStackWithNBT(getTagFromStack(ItemList.Circuit_Crystalprocessor.get(1)), 0, 1));
-        ItemList.SlicedCircuit_CrystalProcessor.set(
-            BWMetaItems.getCircuitParts()
-                .getStackWithNBT(getTagFromStack(ItemList.Circuit_Crystalprocessor.get(1)), 1, 1));
-        ItemList.CircuitImprint_CrystalAssembly.set(
-            BWMetaItems.getCircuitParts()
-                .getStackWithNBT(getTagFromStack(ItemList.Circuit_Crystalcomputer.get(1)), 0, 1));
-        ItemList.SlicedCircuit_CrystalAssembly.set(
-            BWMetaItems.getCircuitParts()
-                .getStackWithNBT(getTagFromStack(ItemList.Circuit_Crystalcomputer.get(1)), 1, 1));
-        ItemList.CircuitImprint_CrystalSupercomputer.set(
-            BWMetaItems.getCircuitParts()
-                .getStackWithNBT(getTagFromStack(ItemList.Circuit_Ultimatecrystalcomputer.get(1)), 0, 1));
-        ItemList.SlicedCircuit_CrystalSupercomputer.set(
-            BWMetaItems.getCircuitParts()
-                .getStackWithNBT(getTagFromStack(ItemList.Circuit_Ultimatecrystalcomputer.get(1)), 1, 1));
-        ItemList.CircuitImprint_CrystalMainframe.set(
-            BWMetaItems.getCircuitParts()
-                .getStackWithNBT(getTagFromStack(ItemList.Circuit_Crystalmainframe.get(1)), 0, 1));
-        ItemList.SlicedCircuit_CrystalMainframe.set(
-            BWMetaItems.getCircuitParts()
-                .getStackWithNBT(getTagFromStack(ItemList.Circuit_Crystalmainframe.get(1)), 1, 1));
-
-        ItemList.CircuitImprint_WetwareProcessor.set(
-            BWMetaItems.getCircuitParts()
-                .getStackWithNBT(getTagFromStack(ItemList.Circuit_Neuroprocessor.get(1)), 0, 1));
-        ItemList.SlicedCircuit_WetwareProcessor.set(
-            BWMetaItems.getCircuitParts()
-                .getStackWithNBT(getTagFromStack(ItemList.Circuit_Neuroprocessor.get(1)), 1, 1));
-        ItemList.CircuitImprint_WetwareAssembly.set(
-            BWMetaItems.getCircuitParts()
-                .getStackWithNBT(getTagFromStack(ItemList.Circuit_Wetwarecomputer.get(1)), 0, 1));
-        ItemList.SlicedCircuit_WetwareAssembly.set(
-            BWMetaItems.getCircuitParts()
-                .getStackWithNBT(getTagFromStack(ItemList.Circuit_Wetwarecomputer.get(1)), 1, 1));
-        ItemList.CircuitImprint_WetwareSupercomputer.set(
-            BWMetaItems.getCircuitParts()
-                .getStackWithNBT(getTagFromStack(ItemList.Circuit_Wetwaresupercomputer.get(1)), 0, 1));
-        ItemList.SlicedCircuit_WetwareSupercomputer.set(
-            BWMetaItems.getCircuitParts()
-                .getStackWithNBT(getTagFromStack(ItemList.Circuit_Wetwaresupercomputer.get(1)), 1, 1));
-
-        ItemList.CircuitImprint_BiowareProcessor.set(
-            BWMetaItems.getCircuitParts()
-                .getStackWithNBT(getTagFromStack(ItemList.Circuit_Bioprocessor.get(1)), 0, 1));
-        ItemList.SlicedCircuit_BiowareProcessor.set(
-            BWMetaItems.getCircuitParts()
-                .getStackWithNBT(getTagFromStack(ItemList.Circuit_Bioprocessor.get(1)), 1, 1));
-        ItemList.CircuitImprint_BiowareAssembly.set(
-            BWMetaItems.getCircuitParts()
-                .getStackWithNBT(getTagFromStack(ItemList.Circuit_Biowarecomputer.get(1)), 0, 1));
-        ItemList.SlicedCircuit_BiowareAssembly.set(
-            BWMetaItems.getCircuitParts()
-                .getStackWithNBT(getTagFromStack(ItemList.Circuit_Biowarecomputer.get(1)), 1, 1));
-
-        ItemList.CircuitImprint_OpticalProcessor.set(
-            BWMetaItems.getCircuitParts()
-                .getStackWithNBT(getTagFromStack(ItemList.Circuit_OpticalProcessor.get(1)), 0, 1));
-        ItemList.SlicedCircuit_OpticalProcessor.set(
-            BWMetaItems.getCircuitParts()
-                .getStackWithNBT(getTagFromStack(ItemList.Circuit_OpticalProcessor.get(1)), 1, 1));
-
-        if (Forestry.isModLoaded()) {
-            ItemList.CircuitImprint_BasicCircuitBoard.set(
-                BWMetaItems.getCircuitParts()
-                    .getStackWithNBT(getTagFromStack(GTModHandler.getModItem(Forestry.ID, "chipsets", 1, 0)), 0, 1));
-            ItemList.SlicedCircuit_BasicCircuitBoard.set(
-                BWMetaItems.getCircuitParts()
-                    .getStackWithNBT(getTagFromStack(GTModHandler.getModItem(Forestry.ID, "chipsets", 1, 0)), 1, 1));
-            ItemList.CircuitImprint_EnhancedCircuitBoard.set(
-                BWMetaItems.getCircuitParts()
-                    .getStackWithNBT(getTagFromStack(GTModHandler.getModItem(Forestry.ID, "chipsets", 1, 1)), 0, 1));
-            ItemList.SlicedCircuit_EnhancedCircuitBoard.set(
-                BWMetaItems.getCircuitParts()
-                    .getStackWithNBT(getTagFromStack(GTModHandler.getModItem(Forestry.ID, "chipsets", 1, 1)), 1, 1));
-            ItemList.CircuitImprint_RefinedCircuitBoard.set(
-                BWMetaItems.getCircuitParts()
-                    .getStackWithNBT(getTagFromStack(GTModHandler.getModItem(Forestry.ID, "chipsets", 1, 2)), 0, 1));
-            ItemList.SlicedCircuit_RefinedCircuitBoard.set(
-                BWMetaItems.getCircuitParts()
-                    .getStackWithNBT(getTagFromStack(GTModHandler.getModItem(Forestry.ID, "chipsets", 1, 2)), 1, 1));
-            ItemList.CircuitImprint_IntricateCircuitBoard.set(
-                BWMetaItems.getCircuitParts()
-                    .getStackWithNBT(getTagFromStack(GTModHandler.getModItem(Forestry.ID, "chipsets", 1, 3)), 0, 1));
-            ItemList.SlicedCircuit_IntricateCircuitBoard.set(
-                BWMetaItems.getCircuitParts()
-                    .getStackWithNBT(getTagFromStack(GTModHandler.getModItem(Forestry.ID, "chipsets", 1, 3)), 1, 1));
-        }
-
-        if (Railcraft.isModLoaded()) {
-            ItemList.CircuitImprint_ControllerCircuit.set(
-                BWMetaItems.getCircuitParts()
-                    .getStackWithNBT(
-                        getTagFromStack(GTModHandler.getModItem(Railcraft.ID, "part.circuit", 1, 0)),
-                        0,
-                        1));
-            ItemList.SlicedCircuit_ControllerCircuit.set(
-                BWMetaItems.getCircuitParts()
-                    .getStackWithNBT(
-                        getTagFromStack(GTModHandler.getModItem(Railcraft.ID, "part.circuit", 1, 0)),
-                        1,
-                        1));
-            ItemList.CircuitImprint_ReceiverCircuit.set(
-                BWMetaItems.getCircuitParts()
-                    .getStackWithNBT(
-                        getTagFromStack(GTModHandler.getModItem(Railcraft.ID, "part.circuit", 1, 1)),
-                        0,
-                        1));
-            ItemList.SlicedCircuit_ReceiverCircuit.set(
-                BWMetaItems.getCircuitParts()
-                    .getStackWithNBT(
-                        getTagFromStack(GTModHandler.getModItem(Railcraft.ID, "part.circuit", 1, 1)),
-                        1,
-                        1));
-            ItemList.CircuitImprint_SignalCircuit.set(
-                BWMetaItems.getCircuitParts()
-                    .getStackWithNBT(
-                        getTagFromStack(GTModHandler.getModItem(Railcraft.ID, "part.circuit", 1, 2)),
-                        0,
-                        1));
-            ItemList.SlicedCircuit_SignalCircuit.set(
-                BWMetaItems.getCircuitParts()
-                    .getStackWithNBT(
-                        getTagFromStack(GTModHandler.getModItem(Railcraft.ID, "part.circuit", 1, 2)),
-                        1,
-                        1));
-        }
-
-        if (NewHorizonsCoreMod.isModLoaded()) {
-            ItemList.CircuitImprint_HighEnergyFlowCircuit.set(
-                BWMetaItems.getCircuitParts()
-                    .getStackWithNBT(
-                        getTagFromStack(getModItem(NewHorizonsCoreMod.ID, "HighEnergyFlowCircuit", 64, 0)),
-                        0,
-                        1));
-            ItemList.SlicedCircuit_HighEnergyFlowCircuit.set(
-                BWMetaItems.getCircuitParts()
-                    .getStackWithNBT(
-                        getTagFromStack(getModItem(NewHorizonsCoreMod.ID, "HighEnergyFlowCircuit", 64, 0)),
-                        1,
-                        1));
-        }
-    }
 
     public static void makeCuttingRecipes() {
         GTValues.RA.stdBuilder()
@@ -335,7 +61,7 @@ public class CircuitImprintLoader {
             .itemInputs(GTModHandler.getIC2Item("electronicCircuit", 1), ItemList.Shape_Slicer_Flat.get(0))
             .itemOutputs(ItemList.SlicedCircuit_ElectronicCircuit.get(1))
             .duration(15 * SECONDS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .requiresCleanRoom()
             .addTo(cutterRecipes);
 
@@ -351,7 +77,7 @@ public class CircuitImprintLoader {
             .itemInputs(ItemList.Circuit_Basic.get(1), ItemList.Shape_Slicer_Flat.get(0))
             .itemOutputs(ItemList.SlicedCircuit_IntegratedLogicCircuit.get(1))
             .duration(15 * SECONDS)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .requiresCleanRoom()
             .addTo(cutterRecipes);
 
@@ -375,7 +101,7 @@ public class CircuitImprintLoader {
             .itemInputs(ItemList.Circuit_Processor.get(1), ItemList.Shape_Slicer_Flat.get(0))
             .itemOutputs(ItemList.SlicedCircuit_IntegratedProcessor.get(1))
             .duration(15 * SECONDS)
-            .eut(60)
+            .eut(TierEU.RECIPE_MV / 2)
             .requiresCleanRoom()
             .addTo(cutterRecipes);
 
@@ -736,7 +462,7 @@ public class CircuitImprintLoader {
             slicedCircuits.add(ItemList.SlicedCircuit_HighEnergyFlowCircuit.get(1));
         }
 
-        ItemStack imprintSupportingBoard = BWMetaItems.getCircuitParts()
+        ItemStack imprintSupportingBoard = CircuitPartsItem.getCircuitParts()
             .getStack(3);
         ItemStack exquisitePrasiolite = WerkstoffLoader.Prasiolite.get(OrePrefixes.gemExquisite, 1);
         long bitmask = GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.KEEPNBT
@@ -751,12 +477,14 @@ public class CircuitImprintLoader {
         }
     }
 
+    @Deprecated
     public static NBTTagCompound getTagFromStack(ItemStack stack) {
         if (GTUtility.isStackValid(stack)) return BWUtil.setStackSize(stack.copy(), 1)
             .writeToNBT(new NBTTagCompound());
         return new NBTTagCompound();
     }
 
+    @Deprecated
     public static ItemStack getStackFromTag(NBTTagCompound tagCompound) {
         return ItemStack.loadItemStackFromNBT(tagCompound);
     }

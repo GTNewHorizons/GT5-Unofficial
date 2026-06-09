@@ -18,6 +18,7 @@ import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -47,6 +48,10 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.ErrorType;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.items.IDMetaTool01;
 import gregtech.common.items.MetaGeneratedTool01;
@@ -216,7 +221,7 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
      *************/
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        structureBuild_EM(STRUCTURE_PIECE_MAIN, 10, 18, 3, stackSize, hintsOnly);
+        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 10, 18, 3);
     }
 
     @Override
@@ -231,11 +236,16 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
     }
 
     @Override
-    public boolean checkMachine_EM(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        return structureCheck_EM(STRUCTURE_PIECE_MAIN, 10, 18, 3) && mInputBusses.size() > 0
-            && mInputHatches.size() > 0
-            && eInputData.size() > 0
-            && (mDynamoHatches.size() > 0 || eDynamoMulti.size() > 0);
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 10, 18, 3, errors)) return;
+        checkHasInputBus(errors);
+        checkHasInputHatch(errors);
+        if (eInputData.isEmpty()) {
+            errors.add(StructureErrorRegistry.MISSING_DATA_HATCH);
+        }
+        if (mDynamoHatches.isEmpty() && eDynamoMulti.isEmpty()) {
+            errors.add(StructureErrors.hatchCount(ErrorType.TOO_FEW, Dynamo, 0, 1));
+        }
     }
 
     @Override
@@ -425,7 +435,7 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.ig.dyson.type"));
-        if (TooltipUtil.dysonLoreText != null) tt.addInfo(ITALIC + TooltipUtil.dysonLoreText);
+        if (TooltipUtil.dysonLoreText != null) tt.addInfo(ITALIC + addFormattedString(TooltipUtil.dysonLoreText));
 
         tt.addInfo(translateToLocal("gt.blockmachines.multimachine.ig.dyson.desc1"))
             .addInfo(
@@ -449,6 +459,7 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
             .addInfo(translateToLocal("gt.blockmachines.multimachine.ig.dyson.desc7"))
             .addTecTechHatchInfo()
             .beginStructureBlock(16, 20, 16, false)
+            .addController("Front bottom center of the Dyson Swarm Energy Receiver Base")
             .addDynamoHatch(translateToLocal("ig.dyson.structure.dynamo"), 1)
             .addInputBus("1 - 11", 2)
             .addInputHatch("1 - 11", 2)
@@ -549,6 +560,11 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
 
     @Override
     public boolean getDefaultHasMaintenanceChecks() {
+        return false;
+    }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
         return false;
     }
 }

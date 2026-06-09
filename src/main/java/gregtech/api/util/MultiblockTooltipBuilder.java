@@ -1,12 +1,16 @@
 package gregtech.api.util;
 
 import static gregtech.api.util.tooltip.TooltipHelper.percentageFormat;
+import static net.minecraft.util.StatCollector.translateToLocal;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -14,6 +18,7 @@ import java.util.stream.Stream;
 import javax.annotation.Nullable;
 
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 
 import com.google.common.collect.Multimaps;
@@ -21,8 +26,10 @@ import com.google.common.collect.SetMultimap;
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 
 import gregtech.GTMod;
+import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.GTValues;
 import gregtech.api.structure.IStructureChannels;
+import gregtech.api.util.tooltip.MarkdownTooltipLoader;
 import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.api.util.tooltip.TooltipTier;
 
@@ -97,10 +104,13 @@ public class MultiblockTooltipBuilder {
     private static final String[] TT_dots = IntStream.range(0, 16)
         .mapToObj(i -> StatCollector.translateToLocal("structurelib.blockhint." + i + ".name"))
         .toArray(String[]::new);
+    private static final String TT_StructureAuthor = StatCollector.translateToLocal("GT5U.MBTT.StructureBy");
 
     private List<String> iLines;
     private List<String> sLines;
     private List<String> hLines;
+    private List<String> authors;
+    private List<String> structureAuthors;
     private SetMultimap<Integer, String> hBlocks;
 
     private String[] iArray;
@@ -111,6 +121,8 @@ public class MultiblockTooltipBuilder {
         iLines = new LinkedList<>();
         sLines = new LinkedList<>();
         hLines = new LinkedList<>();
+        authors = new LinkedList<>();
+        structureAuthors = new LinkedList<>();
         hBlocks = Multimaps.newSetMultimap(new HashMap<>(), HashSet::new);
         hBlocks.put(StructureLibAPI.HINT_BLOCK_META_AIR, TT_air);
     }
@@ -136,6 +148,31 @@ public class MultiblockTooltipBuilder {
      */
     public MultiblockTooltipBuilder addInfo(String info) {
         iLines.add(info);
+        return this;
+    }
+
+    /**
+     * Add a deprecation line to the tooltip
+     * The line is prefixed with a dark red {@code "DEPRECATED - "} label
+     * followed by the provided additional information.
+     *
+     * @param info additional explanation shown after the {@code DEPRECATED} label
+     * @return Instance this method was called on.
+     */
+    public MultiblockTooltipBuilder addDeprecatedLine(String info) {
+        iLines.add(translateToLocalFormatted("GT5U.MBTT.Deprecated", info));
+        return this;
+    }
+
+    /**
+     * Add a line that states this multi will be deprecated in next major version.
+     * Specifically for use with structure deprecation.
+     *
+     * @return Instance this method was called on.
+     */
+    public MultiblockTooltipBuilder addStructureDeprecatedLine() {
+        this.addDeprecatedLine(translateToLocal("GT5U.MBTT.Deprecated.Removal"));
+        iLines.add(translateToLocal("GT5U.MBTT.Deprecated.NEI"));
         return this;
     }
 
@@ -300,6 +337,16 @@ public class MultiblockTooltipBuilder {
         return this;
     }
 
+    public MultiblockTooltipBuilder addMarkdown(ResourceLocation loc) {
+        iLines.addAll(MarkdownTooltipLoader.STANDARD.loadStandardPath(loc, Collections.emptyMap()));
+        return this;
+    }
+
+    public MultiblockTooltipBuilder addMarkdown(ResourceLocation loc, Map<String, Object> vars) {
+        iLines.addAll(MarkdownTooltipLoader.STANDARD.loadStandardPath(loc, vars));
+        return this;
+    }
+
     /**
      * Add a separator line
      *
@@ -318,16 +365,23 @@ public class MultiblockTooltipBuilder {
         return addSeparator(color, 41);
     }
 
+    /// Tooltip separators are spaces
+    public static final int TT_SEPARATOR_SPACES = 0;
+    /// Tooltip separators are dashed lines
+    public static final int TT_SEPARATOR_DASHES = 1;
+    /// Tooltip separators are continuous lines
+    public static final int TT_SEPARATOR_SOLID_LINE = 2;
+
     /**
      * Add a colored separator line with specified length
      *
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addSeparator(EnumChatFormatting color, int length) {
-        switch (GTMod.proxy.separatorStyle) {
-            case 0 -> iLines.add(" ");
-            case 1 -> iLines.add(color + StringUtils.getRepetitionOf('-', length));
-            default -> iLines
+        switch (GTMod.proxy.getSeparatorStyle()) {
+            case Empty -> iLines.add(" ");
+            case Dashes -> iLines.add(color + StringUtils.getRepetitionOf('-', length));
+            case ContinuousLine -> iLines
                 .add(color.toString() + EnumChatFormatting.STRIKETHROUGH + StringUtils.getRepetitionOf('-', length));
         }
         return this;
@@ -841,7 +895,7 @@ public class MultiblockTooltipBuilder {
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addMaxTierSkips(int n) {
-        iLines.add(StatCollector.translateToLocalFormatted("GT5U.MBTT.Structure.MaxTierSkips", n));
+        iLines.add(translateToLocalFormatted("GT5U.MBTT.Structure.MaxTierSkips", n));
         return this;
     }
 
@@ -1015,10 +1069,10 @@ public class MultiblockTooltipBuilder {
                         + StringUtils.getRepetitionOf('-', length));
             }
         } else {
-            switch (GTMod.proxy.separatorStyle) {
-                case 0 -> sLines.add(TAB + " ");
-                case 1 -> sLines.add(TAB + color + StringUtils.getRepetitionOf('-', length));
-                default -> sLines
+            switch (GTMod.proxy.getSeparatorStyle()) {
+                case Empty -> sLines.add(TAB + " ");
+                case Dashes -> sLines.add(TAB + color + StringUtils.getRepetitionOf('-', length));
+                case ContinuousLine -> sLines
                     .add(TAB + color + EnumChatFormatting.STRIKETHROUGH + StringUtils.getRepetitionOf('-', length));
             }
         }
@@ -1039,7 +1093,7 @@ public class MultiblockTooltipBuilder {
      */
     @Deprecated
     public MultiblockTooltipBuilder addSubChannelUsage(String channel, String purpose) {
-        sLines.add(TAB + StatCollector.translateToLocalFormatted("GT5U.MBTT.subchannel", channel, purpose));
+        sLines.add(TAB + translateToLocalFormatted("GT5U.MBTT.subchannel", channel, purpose));
         return this;
     }
 
@@ -1052,7 +1106,7 @@ public class MultiblockTooltipBuilder {
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addSubChannelUsage(IStructureChannels channel, String purpose) {
-        sLines.add(TAB + StatCollector.translateToLocalFormatted("GT5U.MBTT.subchannel", channel.get(), purpose));
+        sLines.add(TAB + translateToLocalFormatted("GT5U.MBTT.subchannel", channel.get(), purpose));
         return this;
     }
 
@@ -1064,9 +1118,7 @@ public class MultiblockTooltipBuilder {
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addSubChannelUsage(IStructureChannels channel) {
-        sLines.add(
-            TAB + StatCollector
-                .translateToLocalFormatted("GT5U.MBTT.subchannel", channel.get(), channel.getDefaultTooltip()));
+        sLines.add(TAB + translateToLocalFormatted("GT5U.MBTT.subchannel", channel.get(), channel.getDefaultTooltip()));
         return this;
     }
 
@@ -1106,6 +1158,29 @@ public class MultiblockTooltipBuilder {
     }
 
     /**
+     * Adds the given list of authors to the contributor list's author list, to be displayed at the end of the tooltip
+     *
+     * @param authors list of authors to add to tooltip
+     * @return Instance this method was called on.
+     */
+    public MultiblockTooltipBuilder addAuthors(String... authors) {
+        Collections.addAll(this.authors, authors);
+        return this;
+    }
+
+    /**
+     * Adds the given list of structure authors to the contributor list's structure author list,
+     * to be displayed at the end of the tooltip
+     *
+     * @param structureAuthors list of structure authors to add to tooltip
+     * @return Instance this method was called on.
+     */
+    public MultiblockTooltipBuilder addStructureAuthors(String... structureAuthors) {
+        Collections.addAll(this.structureAuthors, structureAuthors);
+        return this;
+    }
+
+    /**
      * Call at the very end.<br>
      * Adds a line jump.<br>
      * Adds information on how to display the structure guidelines.<br>
@@ -1131,9 +1206,25 @@ public class MultiblockTooltipBuilder {
      * @param separatorLength Length of the separator line
      * @param authors         Formatted names of the creators of this multiblock machine - if any
      */
-
     public MultiblockTooltipBuilder toolTipFinisher(EnumChatFormatting separatorColor, int separatorLength,
         @Nullable String... authors) {
+        this.addAuthors(authors);
+        return toolTipFinisher(separatorColor, separatorLength);
+    }
+
+    /**
+     * Call at the very end.<br>
+     * Adds a line jump with configurable color and length.<br>
+     * Adds information on how to display the structure guidelines.<br>
+     * Adds credit for creators of this multi, if any.<br>
+     * <p>
+     * Ends the building process.
+     *
+     * @param separatorColor  Color of the separator line
+     * @param separatorLength Length of the separator line
+     */
+
+    public MultiblockTooltipBuilder toolTipFinisher(EnumChatFormatting separatorColor, int separatorLength) {
 
         switch (GTMod.proxy.tooltipFinisherStyle) {
             case 0 -> {}
@@ -1152,29 +1243,14 @@ public class MultiblockTooltipBuilder {
                 + EnumChatFormatting.GRAY
                 + " "
                 + TT_todisplay);
-        if (authors != null && authors.length > 0) {
-            final String authorTag = "Author: ";
-            final StringBuilder sb = new StringBuilder();
-            sb.append(TT_addedBy);
-            sb.append(COLON);
-            for (int i = 0; i < authors.length; i++) {
-                String author = authors[i];
-                if (author.startsWith(authorTag)) {
-                    // to support all the values in GTValues
-                    // that already have Author at the start
-                    sb.append(author.substring(authorTag.length()));
-                } else {
-                    sb.append(author);
-                }
-                if (i != authors.length - 1) {
-                    sb.append(EnumChatFormatting.RESET);
-                    sb.append(EnumChatFormatting.GRAY);
-                    sb.append(" & ");
-                    sb.append(EnumChatFormatting.GREEN);
-                }
-            }
-            iLines.add(sb.toString());
+
+        if (!authors.isEmpty()) {
+            iLines.add(TT_addedBy + COLON + GTAuthors.formatAuthors(authors));
         }
+        if (!structureAuthors.isEmpty()) {
+            iLines.add(TT_StructureAuthor + COLON + GTAuthors.formatAuthors(structureAuthors));
+        }
+
         hLines.add(TT_structurehint);
         this.addStructureInfoSeparator(EnumChatFormatting.GRAY, 30, true);
         sLines.add(
@@ -1201,6 +1277,8 @@ public class MultiblockTooltipBuilder {
         iLines = null;
         sLines = null;
         hLines = null;
+        authors = null;
+        structureAuthors = null;
         hBlocks = null;
         return this;
     }
@@ -1216,4 +1294,5 @@ public class MultiblockTooltipBuilder {
     public String[] getStructureHint() {
         return hArray;
     }
+
 }

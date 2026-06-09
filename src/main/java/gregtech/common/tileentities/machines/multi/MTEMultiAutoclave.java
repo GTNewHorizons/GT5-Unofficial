@@ -4,7 +4,7 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.GTValues.AuthorVolence;
+import static gregtech.api.enums.GTAuthors.AuthorVolence;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
@@ -28,7 +28,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -62,6 +61,7 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.tooltip.TooltipTier;
@@ -204,17 +204,17 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Autoclave")
+        tt.addMachineType("Autoclave, IAC")
             .addDynamicParallelInfo(12, TooltipTier.ITEM_PIPE_CASING)
             .addDynamicSpeedBonusInfo(0.25f, TooltipTier.COIL)
             .addDynamicEuEffInfo(0.0833f, TooltipTier.PIPE_CASING)
             .beginStructureBlock(7, 7, 9, true)
-            .addController("Front Center")
-            .addCasingInfoMin("Pressure Containment Casings", 128, false)
+            .addController("Front bottom center")
+            .addCasingInfoMin("Pressure Containment Casing", 128, false)
             .addCasingInfoExactly("Any Tiered Glass", 42, false)
-            .addCasingInfoExactly("Item Pipe Casings", 7, true)
-            .addCasingInfoExactly("Pipe Casings", 14, true)
-            .addCasingInfoExactly("Heating Coils", 7, true)
+            .addCasingInfoExactly("Item Pipe Casing", 7, true)
+            .addCasingInfoExactly("Pipe Casing", 14, true)
+            .addCasingInfoExactly("Heating Coil", 7, true)
             .addCasingInfoExactly("PTFE Frame", 42, false)
             .addInputBus("Any Pressure Containment Casing", 1)
             .addOutputBus("Any Pressure Containment Casing", 1)
@@ -237,14 +237,18 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         fluidPipeTier = -1;
         itemPipeTier = -1;
         mCasingAmount = 0;
         mEnergyHatches.clear();
         setCoilLevel(HeatingCoilLevel.None);
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, 3, 6, 0)) return false;
-        return mCasingAmount >= 128;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 3, 6, 0, errors)) return;
+        checkCasingMin(errors, mCasingAmount, 128);
+        checkHasEnergyHatch(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasAnyInput(errors);
+        checkHasAnyOutput(errors);
     }
 
     @Override
@@ -394,25 +398,5 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
     @Override
     public boolean supportsInputSeparation() {
         return true;
-    }
-
-    @Override
-    public boolean supportsSingleRecipeLocking() {
-        return true;
-    }
-
-    @Override
-    public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ, ItemStack aTool) {
-        if (aPlayer.isSneaking()) {
-            batchMode = !batchMode;
-            if (batchMode) {
-                GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOn");
-            } else {
-                GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOff");
-            }
-            return true;
-        }
-        return false;
     }
 }

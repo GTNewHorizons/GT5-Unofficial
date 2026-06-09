@@ -1,7 +1,7 @@
 package tectech.thing.metaTileEntity.hatch;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
-import static net.minecraft.util.StatCollector.translateToLocal;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.List;
 
@@ -12,33 +12,26 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.gtnewhorizons.modularui.api.math.Alignment;
-import com.gtnewhorizons.modularui.api.math.Color;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
-import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 import gregtech.api.enums.ItemList;
-import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.modularui.IAddGregtechLogo;
-import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.common.WirelessComputationPacket;
+import gregtech.common.gui.modularui.hatch.MTEHatchWirelessComputationInputGui;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
-import tectech.thing.gui.TecTechUITextures;
+import tectech.mechanics.dataTransport.QuantumDataPacket;
 
-public class MTEHatchWirelessComputationInput extends MTEHatchDataInput
-    implements IAddGregtechLogo, IAddUIWidgets, IDataCopyable {
+public class MTEHatchWirelessComputationInput extends MTEHatchDataInput implements IDataCopyable {
 
     public long requiredComputation = 10000;
     public static final String COPIED_DATA_IDENTIFIER = "cloudComputationInput";
@@ -49,6 +42,14 @@ public class MTEHatchWirelessComputationInput extends MTEHatchDataInput
 
     public MTEHatchWirelessComputationInput(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
+    }
+
+    public long getRequiredComputation() {
+        return requiredComputation;
+    }
+
+    public void setRequiredComputation(long requiredComputation) {
+        this.requiredComputation = requiredComputation;
     }
 
     @Override
@@ -78,26 +79,19 @@ public class MTEHatchWirelessComputationInput extends MTEHatchDataInput
     public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPreTick(aBaseMetaTileEntity, aTick);
         if (aBaseMetaTileEntity.isServerSide() && q == null) {
-            q = WirelessComputationPacket.downloadData(
+            long received = WirelessComputationPacket.downloadData(
                 aBaseMetaTileEntity.getOwnerUuid(),
                 requiredComputation,
                 MinecraftServer.getServer()
                     .getTickCounter());
+            if (received > 0) {
+                q = new QuantumDataPacket(received);
+                updateComputationHistory(received);
+            } else {
+                updateComputationHistory(0);
+            }
         }
 
-    }
-
-    @Override
-    public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
-        super.onFirstTick(aBaseMetaTileEntity);
-    }
-
-    @Override
-    public void addGregTechLogo(ModularWindow.Builder builder) {
-        builder.widget(
-            new DrawableWidget().setDrawable(TecTechUITextures.PICTURE_TECTECH_LOGO)
-                .setSize(18, 18)
-                .setPos(151, 63));
     }
 
     @Override
@@ -172,29 +166,11 @@ public class MTEHatchWirelessComputationInput extends MTEHatchDataInput
         IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currenttip, accessor, config);
         currenttip.add(
-            translateToLocal("GT5U.machines.computation_hatch.computation") + ": "
-                + EnumChatFormatting.YELLOW
-                + formatNumber(
+            translateToLocalFormatted(
+                "GT5U.machines.computation_hatch.computation.amount",
+                formatNumber(
                     accessor.getNBTData()
-                        .getLong("requiredComputation")));
-    }
-
-    @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        builder.widget(
-            TextWidget.localised("tt.wirelessInputData.config.text")
-                .setPos(20, 12)
-                .setSize(140, 14))
-            .widget(
-                new TextFieldWidget().setSetterInt(val -> requiredComputation = val)
-                    .setGetterLong(() -> requiredComputation)
-                    .setNumbers(1, Integer.MAX_VALUE)
-                    .setOnScrollNumbers(1, 4, 64)
-                    .setTextAlignment(Alignment.Center)
-                    .setTextColor(Color.WHITE.normal)
-                    .setSize(70, 18)
-                    .setPos(54, 36)
-                    .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD));
+                        .getLong("requiredComputation"))));
     }
 
     private static String[] tooltips;
@@ -205,5 +181,15 @@ public class MTEHatchWirelessComputationInput extends MTEHatchDataInput
             tooltips = new String[] { "Wireless Computation Data Input for Multiblocks" };
         }
         return tooltips;
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return true;
+    }
+
+    @Override
+    public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTEHatchWirelessComputationInputGui(this).build(guiData, syncManager, uiSettings);
     }
 }

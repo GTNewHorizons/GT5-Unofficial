@@ -212,12 +212,6 @@ public abstract class EntityToxinball extends EntityFireball {
     }
 
     /**
-     * Called when this EntityFireball hits a block or entity.
-     */
-    @Override
-    protected abstract void onImpact(MovingObjectPosition p_70227_1_);
-
-    /**
      * (abstract) Protected helper method to write subclass entity data to NBT.
      */
     @Override

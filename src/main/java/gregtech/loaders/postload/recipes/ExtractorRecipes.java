@@ -13,12 +13,20 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.util.GTOreDictUnificator;
 
 public class ExtractorRecipes implements Runnable {
 
     @Override
     public void run() {
+        GTValues.RA.stdBuilder()
+            .itemInputs(new OreDictItemStack("logRubber", 1))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.RubberRaw, 1L))
+            .duration(15 * SECONDS)
+            .eut(2)
+            .addTo(extractorRecipes);
+
         addExtractionRecipe(new ItemStack(Blocks.bookshelf, 1, WILDCARD), new ItemStack(Items.book, 3, 0));
         addExtractionRecipe(
             new ItemStack(Items.slime_ball, 1),

@@ -46,6 +46,7 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTTooltipDataCache;
 import gregtech.api.util.GTUtility;
 import gregtech.common.capability.CleanroomReference;
+import gregtech.common.gui.modularui.util.MTEItemStackHandler;
 import gregtech.mixin.interfaces.accessors.EntityPlayerMPAccessor;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -72,7 +73,7 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
     public final ItemStackHandler inventoryHandler;
 
     protected GUIColorOverride colorOverride;
-    protected GTTooltipDataCache mTooltipCache = new GTTooltipDataCache();
+    public final GTTooltipDataCache mTooltipCache = new GTTooltipDataCache();
 
     private static final String[] FACING_DIRECTION_NAMES = new String[] { "GT5U.waila.facing.down",
         "GT5U.waila.facing.up", "GT5U.waila.facing.north", "GT5U.waila.facing.south", "GT5U.waila.facing.west",
@@ -110,17 +111,13 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
      * @param aID the machine ID
      */
     public MetaTileEntity(int aID, String aBasicName, String aRegionalName, int aInvSlotCount) {
-        super(aID, aBasicName, aRegionalName, aInvSlotCount);
+        super(aID, aBasicName, aInvSlotCount);
         setBaseMetaTileEntity(GregTechAPI.constructBaseMetaTileEntity());
         getBaseMetaTileEntity().setMetaTileID((short) aID);
 
-        inventoryHandler = new ItemStackHandler(mInventory) {
+        GTLanguageManager.addStringLocalization("gt.blockmachines." + mName + ".name", aRegionalName);
 
-            @Override
-            protected void onContentsChanged(int slot) {
-                MetaTileEntity.this.onContentsChanged(slot);
-            }
-        };
+        inventoryHandler = new MTEItemStackHandler(mInventory, this);
     }
 
     /**
@@ -128,13 +125,7 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
      */
     public MetaTileEntity(String aName, int aInvSlotCount) {
         super(aName, aInvSlotCount);
-        inventoryHandler = new ItemStackHandler(mInventory) {
-
-            @Override
-            protected void onContentsChanged(int slot) {
-                MetaTileEntity.this.onContentsChanged(slot);
-            }
-        };
+        inventoryHandler = new MTEItemStackHandler(mInventory, this);
         colorOverride = GUIColorOverride.get(getGUITextureSet().getMainBackground().location);
     }
 
@@ -188,8 +179,8 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
     }
 
     @Override
-    public String getLocalName() {
-        return GTLanguageManager.getTranslation("gt.blockmachines." + mName + ".name");
+    public String getLocalNameKey() {
+        return "gt.blockmachines." + mName + ".name";
     }
 
     @Override
@@ -199,12 +190,18 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
     @Override
     public boolean onWrenchRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer entityPlayer,
         float aX, float aY, float aZ, ItemStack aTool) {
+        final IGregTechTileEntity meta = getBaseMetaTileEntity();
+        if (!meta.isValidFacing(wrenchingSide)) return false;
+        meta.setFrontFacing(wrenchingSide);
 
-        if (getBaseMetaTileEntity().isValidFacing(wrenchingSide)) {
-            getBaseMetaTileEntity().setFrontFacing(wrenchingSide);
-            return true;
+        for (final ForgeDirection s : ForgeDirection.VALID_DIRECTIONS) {
+            final IGregTechTileEntity iGregTechTileEntity = meta.getIGregTechTileEntityAtSide(s);
+            if (iGregTechTileEntity != null) {
+                if (iGregTechTileEntity.getMetaTileEntity() instanceof MTEPipeLaser pipe) pipe.updateNetwork(true);
+                if (iGregTechTileEntity.getMetaTileEntity() instanceof MTEPipeData pipe) pipe.updateNetwork(true);
+            }
         }
-        return false;
+        return true;
     }
 
     @Override
@@ -241,19 +238,7 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
 
     @Override
     public void onExplosion() {
-        GTLog.exp.println(
-            "Machine at " + this.getBaseMetaTileEntity()
-                .getXCoord()
-                + " | "
-                + this.getBaseMetaTileEntity()
-                    .getYCoord()
-                + " | "
-                + this.getBaseMetaTileEntity()
-                    .getZCoord()
-                + " DIMID: "
-                + this.getBaseMetaTileEntity()
-                    .getWorld().provider.dimensionId
-                + " exploded.");
+        GTLog.writeExplosionLog(this, "Machine exploded");
     }
 
     /**
@@ -557,7 +542,7 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
      * Called when a slot is changed. Note: {@link #setInventorySlotContents} is not called when the player interacts
      * with a {@link gregtech.api.interfaces.modularui.IAddInventorySlots} slot.
      */
-    protected void onContentsChanged(int slot) {
+    public void onContentsChanged(int slot) {
 
     }
 
@@ -788,14 +773,14 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
         Dyes dye = Dyes.dyeWhite;
         if (this.colorOverride.sLoaded()) {
             if (this.colorOverride.sGuiTintingEnabled() && getBaseMetaTileEntity() != null) {
-                dye = Dyes.getOrDefault(getBaseMetaTileEntity().getColorization(), Dyes.MACHINE_METAL);
+                dye = Dyes.getOrDefault(getBaseMetaTileEntity().getColorization(), Dyes.GUI_METAL);
                 return this.colorOverride.getGuiTintOrDefault(dye.mName, dye.toInt());
             }
         } else if (GregTechAPI.sColoredGUI) {
             if (GregTechAPI.sMachineMetalGUI) {
-                dye = Dyes.MACHINE_METAL;
+                dye = Dyes.GUI_METAL;
             } else if (getBaseMetaTileEntity() != null) {
-                dye = Dyes.getOrDefault(getBaseMetaTileEntity().getColorization(), Dyes.MACHINE_METAL);
+                dye = Dyes.getOrDefault(getBaseMetaTileEntity().getColorization(), Dyes.GUI_METAL);
             }
         }
         return dye.toInt();
@@ -815,4 +800,25 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
     protected Supplier<Integer> COLOR_TEXT_WHITE = () -> getTextColorOrDefault("text_white", 0xfafaff);
     protected Supplier<Integer> COLOR_TEXT_GRAY = () -> getTextColorOrDefault("text_gray", 0x404040);
     protected Supplier<Integer> COLOR_TEXT_RED = () -> getTextColorOrDefault("text_red", 0xff0000);
+
+    // For MUI2 guis (which are usually built in a different class).
+    public int getTitleColor() {
+        return COLOR_TITLE.get();
+    }
+
+    public int getColorTitleWhite() {
+        return COLOR_TITLE_WHITE.get();
+    }
+
+    public int getColorTextWhite() {
+        return COLOR_TEXT_WHITE.get();
+    }
+
+    public int getColorTextGray() {
+        return COLOR_TEXT_GRAY.get();
+    }
+
+    public int getColorTextRed() {
+        return COLOR_TEXT_RED.get();
+    }
 }

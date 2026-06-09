@@ -50,6 +50,7 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor {
     public static final byte SOUND_EVENT_LET_OFF_EXCESS_STEAM = 1;
     public int mTemperature = 20;
     public int mProcessingEnergy = 0;
+    public int fuelMaxEnergy = 0;
     public int mLossTimer = 0;
     public FluidStack mSteam = null;
     protected final FluidStackTank steamTank = new FluidStackTank(
@@ -190,6 +191,7 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor {
         aNBT.setInteger("mLossTimer", this.mLossTimer);
         aNBT.setInteger("mTemperature", this.mTemperature);
         aNBT.setInteger("mProcessingEnergy", this.mProcessingEnergy);
+        aNBT.setInteger("fuelMaxEnergy", this.fuelMaxEnergy);
         aNBT.setInteger("mExcessWater", this.mExcessWater);
         if (mSteam != null) {
             aNBT.setTag("mSteam", this.mSteam.writeToNBT(new NBTTagCompound()));
@@ -202,6 +204,8 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor {
         this.mLossTimer = aNBT.getInteger("mLossTimer");
         this.mTemperature = aNBT.getInteger("mTemperature");
         this.mProcessingEnergy = aNBT.getInteger("mProcessingEnergy");
+        this.fuelMaxEnergy = aNBT.getInteger("fuelMaxEnergy") > 0 ? aNBT.getInteger("fuelMaxEnergy")
+            : this.mProcessingEnergy;
         this.mExcessWater = aNBT.getInteger("mExcessWater");
         this.mSteam = FluidStack.loadFluidStackFromNBT(aNBT.getCompoundTag("mSteam"));
     }
@@ -313,6 +317,9 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor {
             this.mProcessingEnergy -= getEnergyConsumption();
             this.mTemperature += getHeatUpAmount();
         }
+        if (this.mProcessingEnergy <= 0) {
+            this.fuelMaxEnergy = 0;
+        }
         aBaseMetaTileEntity.setActive(this.mProcessingEnergy > 0);
     }
 
@@ -338,7 +345,7 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor {
                 this.mHadNoWater = true;
             } else {
                 if (this.mHadNoWater) {
-                    GTLog.exp.println("Boiler " + this.mName + " had no Water!");
+                    GTLog.writeExplosionLog(this, "Boiler had no water");
                     onDangerousWaterLack(aBaseMetaTileEntity, aTick);
                     return true;
                 }
@@ -419,7 +426,7 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor {
             new ParticleEventBuilder().setIdentifier(ParticleFX.CLOUD)
                 .setWorld(getBaseMetaTileEntity().getWorld())
                 .setMotion(0D, 0D, 0D)
-                .<ParticleEventBuilder>times(
+                .times(
                     8,
                     x -> x.setPosition(aX - 0.5D + XSTR_INSTANCE.nextFloat(), aY, aZ - 0.5D + XSTR_INSTANCE.nextFloat())
                         .run());
@@ -453,12 +460,12 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor {
         return 1;
     }
 
-    protected abstract void updateFuel(IGregTechTileEntity aBaseMetaTileEntity, long aTick);
-
-    @Override
-    protected boolean useMui2() {
-        return true;
+    protected void addProcessingEnergy(int amount) {
+        this.mProcessingEnergy += amount;
+        this.fuelMaxEnergy = Math.max(this.fuelMaxEnergy, this.mProcessingEnergy);
     }
+
+    protected abstract void updateFuel(IGregTechTileEntity aBaseMetaTileEntity, long aTick);
 
     @Override
     protected abstract GTGuiTheme getGuiTheme();

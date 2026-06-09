@@ -52,10 +52,12 @@ public class CoverEUMeter extends Cover implements Invertable {
         return this;
     }
 
+    @Override
     public boolean isInverted() {
         return this.inverted;
     }
 
+    @Override
     public CoverEUMeter setInverted(boolean inverted) {
         this.inverted = inverted;
         return this;

@@ -9,7 +9,6 @@ import static net.minecraftforge.common.util.Constants.NBT.TAG_COMPOUND;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.IntStream;
@@ -55,6 +54,7 @@ import gregtech.api.interfaces.tileentity.IGregtechWailaProvider;
 import gregtech.api.net.GTPacketRequestCoverData;
 import gregtech.api.net.GTPacketSendCoverData;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTUtility;
 import gregtech.common.covers.Cover;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -68,9 +68,6 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         .mapToObj(i -> "mCoverData" + i)
         .toArray(String[]::new);
     private static final String NBT_COVER_SIDE = "s";
-    private static final String[] COVER_DIRECTION_NAMES = new String[] { "GT5U.interface.coverTabs.down",
-        "GT5U.interface.coverTabs.up", "GT5U.interface.coverTabs.north", "GT5U.interface.coverTabs.south",
-        "GT5U.interface.coverTabs.west", "GT5U.interface.coverTabs.east" };
 
     // New Cover Information
     protected final Cover[] covers = new Cover[] { CoverRegistry.NO_COVER, CoverRegistry.NO_COVER,
@@ -78,8 +75,8 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
     private byte validCoversMask;
 
     protected final byte[] mSidedRedstone = new byte[] { 0, 0, 0, 0, 0, 0 };
-    protected boolean mRedstone = false;
     protected byte mStrongRedstone = 0;
+    protected byte oldStrongRedstone = 0;
 
     protected short mID = 0;
     public long mTickTimer = 0;
@@ -94,7 +91,6 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
 
         if (!isDrop) {
             aNBT.setByteArray("mRedstoneSided", mSidedRedstone);
-            aNBT.setBoolean("mRedstone", mRedstone);
         }
     }
 
@@ -114,7 +110,6 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
     }
 
     protected void readCoverNBT(NBTTagCompound aNBT) {
-        mRedstone = aNBT.getBoolean("mRedstone");
         mStrongRedstone = aNBT.getByte("mStrongRedstone");
 
         if (aNBT.hasKey("mRedstoneSided")) {
@@ -150,6 +145,8 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
     protected boolean doCoverThings() {
         byte validCoversMask = this.validCoversMask;
         if (validCoversMask == 0) return true;
+
+        sendCoverDataIfNeeded();
 
         for (int i = Integer.numberOfTrailingZeros(validCoversMask); i < 6; i++) {
             if (((validCoversMask >>> i) & 1) == 0) continue;
@@ -202,6 +199,10 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         }
     }
 
+    public abstract void issueTileUpdate();
+
+    public abstract void scheduleTexturePacket();
+
     @Override
     public void issueCoverUpdate(ForgeDirection side) {
         final Cover cover = getCoverAtSide(side);
@@ -250,6 +251,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
     private void synchronizeCover(@NotNull Cover cover, ForgeDirection side) {
         applyCover(cover, side);
         issueCoverUpdate(side);
+        issueTileUpdate();
         issueBlockUpdate();
     }
 
@@ -257,6 +259,12 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
     public ItemStack getCoverItemAtSide(ForgeDirection side) {
         return getCoverAtSide(side).asItemStack();
     }
+
+    protected byte getValidCoversMask() {
+        return validCoversMask;
+    }
+
+    abstract public void enableTicking();
 
     /**
      * @param cover the cover to apply. Not guaranteed to have a side.
@@ -267,7 +275,10 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
             covers[side.ordinal()] = cover;
 
             validCoversMask &= (byte) ~side.flag;
-            if (cover.isValid()) validCoversMask |= side.flag;
+            if (cover.isValid()) {
+                enableTicking();
+                validCoversMask |= side.flag;
+            }
         }
     }
 
@@ -328,15 +339,13 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         mSidedRedstone[5] = (byte) ((packedRedstoneValue & 32) == 32 ? 15 : 0);
     }
 
-    public byte getSidedRedstoneMask() {
+    public final byte getSidedRedstoneMask() {
         byte redstone = 0;
-
         for (int i = 0; i < 6; i++) {
             if (mSidedRedstone[i] > 0) {
                 redstone |= (byte) (0b1 << i);
             }
         }
-
         return redstone;
     }
 
@@ -349,6 +358,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         if (mSidedRedstone[ordinalSide] != cappedStrength || (mStrongRedstone & (1 << ordinalSide)) > 0) {
             mSidedRedstone[ordinalSide] = cappedStrength;
             issueBlockUpdate();
+            scheduleTexturePacket();
         }
     }
 
@@ -380,8 +390,11 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
 
     @Override
     public boolean getRedstone() {
-        return Arrays.stream(ForgeDirection.VALID_DIRECTIONS)
-            .anyMatch(this::getRedstone);
+        for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+            if (getRedstone(dir)) return true;
+        }
+
+        return false;
     }
 
     @Override
@@ -391,10 +404,15 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
 
     @Override
     public byte getStrongestRedstone() {
-        return Arrays.stream(ForgeDirection.VALID_DIRECTIONS)
-            .map(this::getInternalInputRedstoneSignal)
-            .max(Comparator.comparing(Byte::valueOf))
-            .orElse((byte) 0);
+        byte strongest = 0;
+
+        for (ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+            byte signal = getInternalInputRedstoneSignal(dir);
+
+            if (signal > strongest) strongest = signal;
+        }
+
+        return strongest;
     }
 
     @Override
@@ -403,11 +421,6 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         return side != ForgeDirection.UNKNOWN && (mStrongRedstone & (1 << ordinalSide)) != 0
             ? (byte) (mSidedRedstone[ordinalSide] & 15)
             : 0;
-    }
-
-    @Override
-    public void setGenericRedstoneOutput(boolean aOnOff) {
-        mRedstone = aOnOff;
     }
 
     @Override
@@ -638,7 +651,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         final ImmutableList.Builder<String> builder = ImmutableList.builder();
         builder.add(
             (coverHasGUI ? EnumChatFormatting.UNDERLINE : EnumChatFormatting.DARK_GRAY)
-                + StatCollector.translateToLocal(COVER_DIRECTION_NAMES[side.ordinal()])
+                + StatCollector.translateToLocal(GTUtility.getUnlocalizedSideName(side))
                 + (coverHasGUI ? EnumChatFormatting.RESET + ": " : ": " + EnumChatFormatting.RESET)
                 + tooltip.get(0));
         builder.addAll(cover.getAdditionalTooltip());

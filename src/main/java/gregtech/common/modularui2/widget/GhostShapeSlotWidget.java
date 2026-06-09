@@ -5,7 +5,6 @@ import java.util.Arrays;
 import org.jetbrains.annotations.NotNull;
 
 import com.cleanroommc.modularui.api.IPanelHandler;
-import com.cleanroommc.modularui.api.ITheme;
 import com.cleanroommc.modularui.api.UpOrDown;
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
@@ -46,8 +45,8 @@ public class GhostShapeSlotWidget extends PhantomItemSlot {
     }
 
     @Override
-    public IDrawable getCurrentBackground(ITheme theme, WidgetThemeEntry<?> widgetTheme) {
-        IDrawable background = super.getCurrentBackground(theme, widgetTheme);
+    public IDrawable getCurrentBackground(WidgetThemeEntry<?> widgetTheme) {
+        IDrawable background = super.getCurrentBackground(widgetTheme);
         return new DrawableStack(background, GTGuiTextures.OVERLAY_SLOT_EXTRUDER_SHAPE);
     }
 
@@ -67,17 +66,16 @@ public class GhostShapeSlotWidget extends PhantomItemSlot {
     @Override
     public boolean onMouseScroll(UpOrDown scrollDirection, int amount) {
         if (isSelectorPanelOpen()) return true;
-        if (getSyncHandler() != null) {
-            MouseData mouseData = MouseData.create(scrollDirection.modifier);
-            getSyncHandler().syncToServer(PhantomItemSlotSH.SYNC_SCROLL, mouseData::writeToPacket);
-        }
+        MouseData mouseData = MouseData.create(scrollDirection.modifier);
+        getSyncHandler().syncToServer(PhantomItemSlotSH.SYNC_SCROLL, mouseData::writeToPacket);
         return true;
     }
 
     @Override
     public PhantomItemSlot slot(ModularSlot slot) {
         shapeSyncHandler = new GhostShapeSyncHandler(slot, hatch);
-        setSyncHandler(shapeSyncHandler);
+        setSyncOrValue(shapeSyncHandler);
+        shapeSyncHandler.registerIndexSync(syncManager, "ghostShapeIndex");
         return this;
     }
 
@@ -103,7 +101,7 @@ public class GhostShapeSlotWidget extends PhantomItemSlot {
 
     private IPanelHandler buildSelectorPanel() {
 
-        return syncManager.panel("shapeSlotPanel", (mainPanel, player) -> {
+        return syncManager.syncedPanel("shapeSlotPanel", true, (mainPanel, player) -> {
             ModularPanel panel = GTGuis.createPopUpPanel(GUI_ID);
             return new SelectItemGuiBuilder(panel, Arrays.asList(MTEHatchExtrusion.extruderShapes))
                 .setHeaderItem(hatch.getStackForm(1))
@@ -112,13 +110,13 @@ public class GhostShapeSlotWidget extends PhantomItemSlot {
                 .setOnSelectedClientAction((selected, mouseData) -> {
                     shapeSyncHandler.setSelectedIndex(selected);
                     if (mouseData.shift) {
-                        panel.animateClose();
+                        panel.closeIfOpen();
                     }
                 })
-                .setAllowDeselected(false)
                 .setCurrentItemSlotOverlay(GTGuiTextures.OVERLAY_SLOT_EXTRUDER_SHAPE)
+                .setAllowDeselected(true)
                 .build();
-        }, true);
+        });
     }
 
     @NotNull

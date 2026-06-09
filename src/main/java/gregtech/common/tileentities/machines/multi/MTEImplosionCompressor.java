@@ -1,7 +1,7 @@
 package gregtech.common.tileentities.machines.multi;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.Maintenance;
@@ -11,34 +11,37 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_IMPLOSION_COM
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_IMPLOSION_COMPRESSOR_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_IMPLOSION_COMPRESSOR_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_IMPLOSION_COMPRESSOR_GLOW;
+import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
 import java.util.List;
 
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.google.common.collect.ImmutableList;
-import com.gtnewhorizon.structurelib.structure.IStructureElement;
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
+import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.GTMod;
-import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.SoundResource;
-import gregtech.api.enums.Textures;
-import gregtech.api.enums.Textures.BlockIcons;
-import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.metatileentity.implementations.MTECubicMultiBlockBase;
+import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTUtility;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.MultiblockTooltipBuilder;
 
-public class MTEImplosionCompressor extends MTECubicMultiBlockBase<MTEImplosionCompressor> {
+public class MTEImplosionCompressor extends MTEExtendedPowerMultiBlockBase<MTEImplosionCompressor>
+    implements ISurvivalConstructable {
+
+    private static IStructureDefinition<MTEImplosionCompressor> STRUCTURE_DEFINITION = null;
+    private int mCasing;
 
     public MTEImplosionCompressor(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -54,6 +57,49 @@ public class MTEImplosionCompressor extends MTECubicMultiBlockBase<MTEImplosionC
     }
 
     @Override
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
+        mCasing = 0;
+        if (!checkPiece(mName, 1, 1, 0, errors)) return;
+        checkCasingMin(errors, mCasing, 16);
+        checkHasMaintenanceHatch(errors);
+        checkHasMufflerHatch(errors);
+        checkHasInputBus(errors);
+        checkHasOutputBus(errors);
+        checkHasEnergyHatch(errors);
+    }
+
+    @Override
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
+        if (mMachine) return -1;
+        return survivalBuildPiece(mName, stackSize, 1, 1, 0, elementBudget, env, false, true);
+    }
+
+    @Override
+    public void construct(ItemStack stackSize, boolean hintsOnly) {
+        buildPiece(mName, stackSize, hintsOnly, 1, 1, 0);
+    }
+
+    @Override
+    public IStructureDefinition<MTEImplosionCompressor> getStructureDefinition() {
+        if (STRUCTURE_DEFINITION == null) {
+            STRUCTURE_DEFINITION = StructureDefinition.<MTEImplosionCompressor>builder()
+                .addShape(
+                    mName,
+                    transpose(
+                        new String[][] { { "CCC", "CCC", "CCC" }, { "C~C", "C-C", "CCC" }, { "CCC", "CCC", "CCC" }, }))
+                .addElement(
+                    'C',
+                    buildHatchAdder(MTEImplosionCompressor.class)
+                        .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler)
+                        .casingIndex(Casings.SolidSteelMachineCasing.textureId)
+                        .hint(1)
+                        .buildAndChain(onElementPass(x -> ++x.mCasing, Casings.SolidSteelMachineCasing.asElement())))
+                .build();
+        }
+        return STRUCTURE_DEFINITION;
+    }
+
+    @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Implosion Compressor")
@@ -63,11 +109,11 @@ public class MTEImplosionCompressor extends MTECubicMultiBlockBase<MTEImplosionC
             .addController("Front center")
             .addCasingInfoRange("Solid Steel Machine Casing", 16, 24, false)
             .addStructureInfo("Casings can be replaced with Explosion Hazard Signs")
-            .addEnergyHatch("Any casing", 1)
-            .addMaintenanceHatch("Any casing", 1)
-            .addMufflerHatch("Any casing", 1)
-            .addInputBus("Any casing", 1)
-            .addOutputBus("Any casing", 1)
+            .addEnergyHatch("Any Casing", 1)
+            .addMaintenanceHatch("Any Casing", 1)
+            .addMufflerHatch("Any Casing", 1)
+            .addInputBus("Any Casing", 1)
+            .addOutputBus("Any Casing", 1)
             .toolTipFinisher();
         return tt;
     }
@@ -82,16 +128,17 @@ public class MTEImplosionCompressor extends MTECubicMultiBlockBase<MTEImplosionC
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
         if (side == aFacing) {
-            if (aActive) return new ITexture[] { BlockIcons.casingTexturePages[0][16], TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_IMPLOSION_COMPRESSOR_ACTIVE)
-                .extFacing()
-                .build(),
+            if (aActive) return new ITexture[] { Casings.SolidSteelMachineCasing.getCasingTexture(),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_IMPLOSION_COMPRESSOR_ACTIVE)
+                    .extFacing()
+                    .build(),
                 TextureFactory.builder()
                     .addIcon(OVERLAY_FRONT_IMPLOSION_COMPRESSOR_ACTIVE_GLOW)
                     .extFacing()
                     .glow()
                     .build() };
-            return new ITexture[] { BlockIcons.casingTexturePages[0][16], TextureFactory.builder()
+            return new ITexture[] { Casings.SolidSteelMachineCasing.getCasingTexture(), TextureFactory.builder()
                 .addIcon(OVERLAY_FRONT_IMPLOSION_COMPRESSOR)
                 .extFacing()
                 .build(),
@@ -101,7 +148,7 @@ public class MTEImplosionCompressor extends MTECubicMultiBlockBase<MTEImplosionC
                     .glow()
                     .build() };
         }
-        return new ITexture[] { Textures.BlockIcons.casingTexturePages[0][16] };
+        return new ITexture[] { Casings.SolidSteelMachineCasing.getCasingTexture() };
     }
 
     @Override
@@ -125,26 +172,6 @@ public class MTEImplosionCompressor extends MTECubicMultiBlockBase<MTEImplosionC
     }
 
     @Override
-    protected IStructureElement<MTECubicMultiBlockBase<?>> getCasingElement() {
-        return ofChain(ofBlock(GregTechAPI.sBlockCasings2, 0), ofBlock(GregTechAPI.sBlockCasings3, 4));
-    }
-
-    @Override
-    protected List<IHatchElement<? super MTECubicMultiBlockBase<?>>> getAllowedHatches() {
-        return ImmutableList.of(InputBus, OutputBus, Maintenance, Energy, Muffler);
-    }
-
-    @Override
-    protected int getHatchTextureIndex() {
-        return 16;
-    }
-
-    @Override
-    protected int getRequiredCasingCount() {
-        return 16;
-    }
-
-    @Override
     public int getPollutionPerSecond(ItemStack aStack) {
         return GTMod.proxy.mPollutionImplosionCompressorPerSecond;
     }
@@ -157,20 +184,5 @@ public class MTEImplosionCompressor extends MTECubicMultiBlockBase<MTEImplosionC
     @Override
     public boolean supportsBatchMode() {
         return true;
-    }
-
-    @Override
-    public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ, ItemStack aTool) {
-        if (aPlayer.isSneaking()) {
-            batchMode = !batchMode;
-            if (batchMode) {
-                GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOn");
-            } else {
-                GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOff");
-            }
-            return true;
-        }
-        return false;
     }
 }

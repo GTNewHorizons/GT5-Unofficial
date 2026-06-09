@@ -364,7 +364,7 @@ public class ComponentAssemblyLineLoader {
                 get(plate, EnderEye, 48),
                 get(wrapCircuit, EV, 12))
             .fluidInputs(
-                TungstenSteel.getMolten(1 * STACKS + 32 * INGOTS))
+                Titanium.getMolten(1 * STACKS + 32 * INGOTS))
             .duration(24 * MINUTES)
             .eut(RECIPE_LV)
             .metadata(COAL_CASING_TIER, COAL_MV)
@@ -2060,7 +2060,7 @@ public class ComponentAssemblyLineLoader {
                 get(frameGt, MHDCSM, 48),
                 get(NuclearStar, 3072),
                 get(Emitter_UXV, 192),
-                get(wrapCircuit, UXV, 24),
+                get(wrapCircuit, MAX, 12),
                 get(wrapCircuit, UHV, 66),
                 get(nanite, Gold, 36))
             .circuit(FIELD_GENERATOR_CIRCUIT)

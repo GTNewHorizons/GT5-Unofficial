@@ -38,13 +38,11 @@ import bartworks.API.SideReference;
 import bartworks.client.textures.PrefixTextureLinker;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.hazards.HazardProtection;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedItem;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
 import ic2.core.IC2Potion;
 
@@ -59,22 +57,15 @@ public class BWMetaGeneratedItems extends MetaGeneratedItem implements IRadMater
     };
 
     protected final OrePrefixes orePrefixes;
-    protected final String itemTypeLocalizedName;
 
     public BWMetaGeneratedItems(OrePrefixes orePrefixes, Object unused) {
         super("bwMetaGeneratedGTEnhancement" + orePrefixes.getName(), (short) 32766, (short) 0);
         this.orePrefixes = orePrefixes;
-        this.itemTypeLocalizedName = GTLanguageManager.addStringLocalization(
-            "bw.itemtype." + orePrefixes,
-            orePrefixes.getMaterialPrefix() + "%material" + orePrefixes.getMaterialPostfix());
     }
 
     public BWMetaGeneratedItems(OrePrefixes orePrefixes) {
         super("bwMetaGenerated" + orePrefixes.getName(), (short) 32766, (short) 0);
         this.orePrefixes = orePrefixes;
-        this.itemTypeLocalizedName = GTLanguageManager.addStringLocalization(
-            "bw.itemtype." + orePrefixes,
-            orePrefixes.getMaterialPrefix() + "%material" + orePrefixes.getMaterialPostfix());
         this.setCreativeTab(BWMetaGeneratedItems.metaTab);
         for (Werkstoff w : Werkstoff.werkstoffHashSet) {
             ItemStack tStack = new ItemStack(this, 1, w.getmID());
@@ -133,10 +124,7 @@ public class BWMetaGeneratedItems extends MetaGeneratedItem implements IRadMater
 
         Werkstoff werkstoff = Werkstoff.werkstoffHashMap.get((short) this.getDamage(aStack));
         if (werkstoff != null) {
-            String tooltip = werkstoff.getLocalizedToolTip();
-            if (!tooltip.isEmpty()) {
-                aList.add(tooltip);
-            }
+            werkstoff.addTooltips(aList);
         }
     }
 
@@ -145,7 +133,7 @@ public class BWMetaGeneratedItems extends MetaGeneratedItem implements IRadMater
         int aMetaData = aStack.getItemDamage();
         Werkstoff werkstoff = Werkstoff.werkstoffHashMap.get((short) aMetaData);
         if (werkstoff == null) werkstoff = Werkstoff.default_null_Werkstoff;
-        return this.itemTypeLocalizedName.replace("%material", werkstoff.getLocalizedName());
+        return this.orePrefixes.getLocalizedNameForItem(werkstoff.getBridgeMaterial());
     }
 
     @Override
@@ -246,12 +234,8 @@ public class BWMetaGeneratedItems extends MetaGeneratedItem implements IRadMater
 
     @Override
     public int getCapacity(ItemStack aStack) {
-        return this.orePrefixes == OrePrefixes.capsule || this.orePrefixes == OrePrefixes.cell
-            || this.orePrefixes == OrePrefixes.cellPlasma
-                ? 1_000
-                : this.orePrefixes == OrePrefixes.cellMolten || this.orePrefixes == OrePrefixes.capsuleMolten
-                    ? 1 * INGOTS
-                    : 0;
+        return this.orePrefixes == OrePrefixes.cell || this.orePrefixes == OrePrefixes.cellPlasma ? 1_000
+            : this.orePrefixes == OrePrefixes.cellMolten ? 1 * INGOTS : 0;
     }
 
     @Override
@@ -260,9 +244,6 @@ public class BWMetaGeneratedItems extends MetaGeneratedItem implements IRadMater
             || this.orePrefixes == OrePrefixes.cellMolten) {
             return Materials.Empty.getCells(1);
         }
-
-        if (this.orePrefixes == OrePrefixes.capsule) return ItemList.FR_WaxCapsule.get(1);
-        if (this.orePrefixes == OrePrefixes.capsuleMolten) return ItemList.FR_RefractoryCapsule.get(1);
         return null;
     }
 }

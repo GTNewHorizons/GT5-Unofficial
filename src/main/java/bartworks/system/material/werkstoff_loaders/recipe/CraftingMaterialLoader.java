@@ -36,7 +36,8 @@ import bartworks.system.material.Werkstoff;
 import bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
+import gregtech.api.enums.TierEU;
+import gregtech.api.objects.SubstituteFluidStack;
 import gregtech.api.util.GTModHandler;
 
 public class CraftingMaterialLoader implements IWerkstoffRunnable {
@@ -185,27 +186,10 @@ public class CraftingMaterialLoader implements IWerkstoffRunnable {
                 GTModHandler.RecipeBits.BITS_STD,
                 new Object[] { "PhP", "SRf", "PdP", 'P', werkstoff.get(plate), 'R', werkstoff.get(ring), 'S',
                     werkstoff.get(screw) });
-
             GTValues.RA.stdBuilder()
                 .itemInputs(werkstoff.get(plate, 4), werkstoff.get(ring))
                 .itemOutputs(werkstoff.get(rotor))
-                .fluidInputs(Materials.Tin.getMolten(2 * NUGGETS))
-                .duration(12 * SECONDS)
-                .eut(24)
-                .addTo(assemblerRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(werkstoff.get(plate, 4), werkstoff.get(ring))
-                .itemOutputs(werkstoff.get(rotor))
-                .fluidInputs(Materials.Lead.getMolten(3 * NUGGETS))
-                .duration(12 * SECONDS)
-                .eut(24)
-                .addTo(assemblerRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(werkstoff.get(plate, 4), werkstoff.get(ring))
-                .itemOutputs(werkstoff.get(rotor))
-                .fluidInputs(Materials.SolderingAlloy.getMolten(1 * NUGGETS))
+                .fluidInputs(SubstituteFluidStack.soldering(1 * NUGGETS))
                 .duration(12 * SECONDS)
                 .eut(24)
                 .addTo(assemblerRecipes);
@@ -214,7 +198,7 @@ public class CraftingMaterialLoader implements IWerkstoffRunnable {
                 .itemInputs(werkstoff.get(ingot, 5), ItemList.Shape_Extruder_Rotor.get(0L))
                 .itemOutputs(werkstoff.get(rotor))
                 .duration(10 * SECONDS)
-                .eut(60)
+                .eut(TierEU.RECIPE_MV / 2)
                 .addTo(extruderRecipes);
         }
     }

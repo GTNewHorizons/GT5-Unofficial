@@ -70,12 +70,8 @@ public interface IGregTechTileEntity extends ITexturedTileEntity, ICoverable, IF
     void issueTextureUpdate();
 
     /**
-     * Causes the Machine to send its initial Data, like Covers and its ID.
-     */
-    void issueClientUpdate();
-
-    /**
      * Causes the machine to send a tile entity description packet to the client. Only has an effect on the server.
+     * Also sends initial data and covers.
      *
      * @see IMetaTileEntity#getDescriptionData()
      * @see IMetaTileEntity#onDescriptionPacket(NBTTagCompound)
@@ -170,6 +166,10 @@ public interface IGregTechTileEntity extends ITexturedTileEntity, ICoverable, IF
     default void setShutdownStatus(boolean newStatus) {}
 
     default void setShutDownReason(@Nonnull ShutDownReason reason) {}
+
+    void enableTicking();
+
+    void tryDisableTicking();
 
     /**
      * gets the time statistics used for CPU timing

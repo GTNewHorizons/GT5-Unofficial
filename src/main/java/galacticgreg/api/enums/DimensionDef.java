@@ -9,9 +9,12 @@ import net.minecraft.world.gen.ChunkProviderGenerate;
 import net.minecraft.world.gen.ChunkProviderHell;
 
 import cpw.mods.fml.common.Optional;
+import galacticgreg.GalacticGreg;
 import galacticgreg.api.Enums.DimensionType;
 import galacticgreg.api.ModDimensionDef;
 import gregtech.api.enums.Mods;
+import gregtech.common.config.Worldgen;
+import gregtech.common.worldgen.ChaosIslandLocator;
 import gregtech.common.worldgen.HEEIslandScanner;
 import micdoodle8.mods.galacticraft.api.prefab.world.gen.WorldProviderSpace;
 import toxiceverglades.chunk.ChunkProviderModded;
@@ -31,7 +34,7 @@ public enum DimensionDef {
         DimNames.THE_END,
         ChunkProviderEnd.class,
         DimensionType.Planet)
-        .setGeneratesAsteroids()
+        .setGeneratesAsteroids(Worldgen.endAsteroids.generateEndAsteroids)
         .disableOreVeinHeightChecks()),
     EndAsteroids(new ModDimensionDef(
         DimNames.ENDASTEROID,
@@ -46,7 +49,7 @@ public enum DimensionDef {
         ChunkProviderModded.class,
         DimensionType.Planet)
         .setOreVeinChance(66)
-        .disableEoHRecipe()),
+        ),
 
 
     Moon(new ModDimensionDef(
@@ -66,12 +69,12 @@ public enum DimensionDef {
         DimNames.ROSS128B,
         "bwcrossmod.galacticraft.planets.ross128b.ChunkProviderRoss128b",
         DimensionType.Planet)
-        .disableEoHRecipe()),
+        ),
     Ross128ba(new ModDimensionDef(
         DimNames.ROSS128BA,
         "bwcrossmod.galacticraft.planets.ross128ba.ChunkProviderRoss128ba",
         DimensionType.Planet)
-        .disableEoHRecipe()),
+        ),
     Pluto(new ModDimensionDef(
         DimNames.PLUTO,
         "galaxyspace.SolarSystem.planets.pluto.dimension.ChunkProviderPluto",
@@ -261,6 +264,13 @@ public enum DimensionDef {
 
             if (Mods.HardcoreEnderExpansion.isModLoaded()) {
                 if (HEEIslandScanner.isWithinRangeOfIsland(chunkX, chunkZ)) {
+                    return def;
+                }
+            }
+
+            if (Mods.DraconicEvolution.isModLoaded()) {
+                int radius = GalacticGreg.GalacticConfig.ChaosIslandExclusionRadius;
+                if (ChaosIslandLocator.isWithinRange(chunkX, chunkZ, radius)) {
                     return def;
                 }
             }

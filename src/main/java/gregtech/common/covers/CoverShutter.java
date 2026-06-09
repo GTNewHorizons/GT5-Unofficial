@@ -48,20 +48,22 @@ public class CoverShutter extends CoverLegacyData {
             this.coverData = 3;
         }
         switch (this.coverData) {
-            case 0 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("082", "Open if work enabled"));
-            case 1 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("083", "Open if work disabled"));
-            case 2 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("084", "Only Output allowed"));
-            case 3 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("085", "Only Input allowed"));
+            case 0 -> GTUtility.sendChatTrans(aPlayer, "GT5U.chat.cover.shutter.open.if.enabled");
+            case 1 -> GTUtility.sendChatTrans(aPlayer, "GT5U.chat.cover.shutter.open.if.disabled");
+            case 2 -> GTUtility.sendChatTrans(aPlayer, "GT5U.chat.cover.shutter.output.allowed");
+            case 3 -> GTUtility.sendChatTrans(aPlayer, "GT5U.chat.cover.shutter.input.allowed");
         }
         if (coveredTile.get() instanceof BaseMetaPipeEntity bmpe) {
             bmpe.reloadLocks();
         }
     }
 
+    @Override
     public boolean letsRedstoneGoIn() {
         return shouldAllow(3);
     }
 
+    @Override
     public boolean letsRedstoneGoOut() {
         return shouldAllow(2);
     }
@@ -81,14 +83,17 @@ public class CoverShutter extends CoverLegacyData {
         return shouldAllow(3);
     }
 
+    @Override
     public boolean letsFluidOut(Fluid fluid) {
         return shouldAllow(2);
     }
 
+    @Override
     public boolean letsItemsIn(int slot) {
         return shouldAllow(3);
     }
 
+    @Override
     public boolean letsItemsOut(int slot) {
         return shouldAllow(2);
     }

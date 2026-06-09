@@ -13,7 +13,6 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -45,6 +44,7 @@ import gregtech.api.interfaces.IDebugableBlock;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IColoredTileEntity;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IDebugableTileEntity;
@@ -55,13 +55,13 @@ import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.BaseTileEntity;
 import gregtech.api.metatileentity.CoverableTileEntity;
-import gregtech.api.util.GTBaseCrop;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
 import gregtech.common.covers.Cover;
+import gregtech.common.render.GTCopiedBlockTextureRender;
 import gregtech.common.render.GTRendererBlock;
 import gregtech.common.tileentities.storage.MTEQuantumChest;
-import gtPlusPlus.xmod.gregtech.common.tileentities.redstone.MTERedstoneBase;
+import gtPlusPlus.xmod.gregtech.common.tileentities.redstone.MTERedstoneLamp;
 
 @Optional.Interface(iface = "com.cricketcraft.chisel.api.IFacade", modid = Mods.ModIDs.CHISEL_API)
 public class BlockMachines extends GTGenericBlock implements IDebugableBlock, ITileEntityProvider, IFacade {
@@ -191,7 +191,7 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
         };
         final TileEntity machineEntity = aWorld.getTileEntity(aX, aY, aZ);
         if (machineEntity instanceof BaseMetaTileEntity bmte) {
-            return bmte.hasCoverAtSide(forgeSide) || bmte.getMetaTileEntity() instanceof MTERedstoneBase;
+            return bmte.hasCoverAtSide(forgeSide) || bmte.getMetaTileEntity() instanceof MTERedstoneLamp;
         }
         if (machineEntity instanceof BaseMetaPipeEntity bmpe) {
             return bmpe.hasCoverAtSide(forgeSide);
@@ -257,7 +257,15 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
 
     @SideOnly(Side.CLIENT)
     @Override
-    public IIcon getIcon(IBlockAccess aIBlockAccess, int aX, int aY, int aZ, int ordinalSide) {
+    public IIcon getIcon(IBlockAccess blockAccess, int x, int y, int z, int ordinalSide) {
+        final TileEntity tTileEntity = blockAccess.getTileEntity(x, y, z);
+        if (tTileEntity instanceof BaseMetaTileEntity tile) {
+            if (tile.getMetaTileEntity() instanceof ICasingTextureProvider textureProvider) {
+                if (textureProvider.getCasingTexture() instanceof GTCopiedBlockTextureRender tex) {
+                    return tex.getIcon(ordinalSide, null);
+                }
+            }
+        }
         return Textures.BlockIcons.MACHINE_LV_SIDE.getIcon();
     }
 
@@ -357,14 +365,6 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
         } catch (Exception e) {
             e.printStackTrace(GTLog.err);
         }
-        GTLog.out.println("GTMod: Registering Crop specific Textures");
-        try {
-            for (GTBaseCrop tCrop : GTBaseCrop.sCropList) {
-                tCrop.registerSprites(aIconRegister);
-            }
-        } catch (Exception e) {
-            e.printStackTrace(GTLog.err);
-        }
         GTLog.out.println("GTMod: Starting Block Icon Load Phase");
         GT_FML_LOGGER.info("GTMod: Starting Block Icon Load Phase");
         try {
@@ -451,12 +451,7 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
     public void onBlockExploded(World aWorld, int aX, int aY, int aZ, Explosion aExplosion) {
         final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if (tTileEntity instanceof BaseMetaTileEntity baseTE) {
-            GTLog.exp.printf(
-                "Explosion at : %d | %d | %d DIMID: %s due to near explosion!%n",
-                aX,
-                aY,
-                aZ,
-                aWorld.provider.dimensionId);
+            GTLog.writeExplosionLog(baseTE, this.getUnlocalizedName(), "exploded due to near explosion");
             baseTE.doEnergyExplosion();
         }
         super.onBlockExploded(aWorld, aX, aY, aZ, aExplosion);
@@ -523,6 +518,20 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
 
     @Override
     public boolean removedByPlayer(World aWorld, EntityPlayer aPlayer, int aX, int aY, int aZ, boolean aWillHarvest) {
+        if (aPlayer != null && aPlayer.isSneaking()) {
+            final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
+            if (tTileEntity instanceof CoverableTileEntity coverableTE) {
+                for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
+                    if (coverableTE.hasCoverAtSide(side)) {
+                        coverableTE.dropCover(side, side);
+                    }
+                }
+            }
+
+            if (tTileEntity instanceof BaseMetaTileEntity baseTE) {
+                baseTE.setColorization((byte) -1);
+            }
+        }
         // This delays deletion of the block until after getDrops
         return aWillHarvest || super.removedByPlayer(aWorld, aPlayer, aX, aY, aZ, false);
     }
@@ -577,12 +586,7 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
             final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
             if (tTileEntity != null && (chance < 1.0F)) {
                 if (tTileEntity instanceof BaseMetaTileEntity bmte && (GregTechAPI.sMachineNonWrenchExplosions)) {
-                    GTLog.exp.printf(
-                        "Explosion at : %d | %d | %d DIMID: %s NonWrench picking/Rain!%n",
-                        aX,
-                        aY,
-                        aZ,
-                        aWorld.provider.dimensionId);
+                    GTLog.writeExplosionLog(bmte, this.getUnlocalizedName(), "exploded due to NonWrench picking/Rain!");
                     bmte.doEnergyExplosion();
                 }
             } else {
@@ -682,14 +686,6 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
     }
 
     @Override
-    public void onBlockPlacedBy(World aWorld, int aX, int aY, int aZ, EntityLivingBase aPlayer, ItemStack aStack) {
-        final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        if (!(tTileEntity instanceof IGregTechTileEntity iGregTechTileEntity)) return;
-        iGregTechTileEntity.setFrontFacing(
-            BaseTileEntity.getSideForPlayerPlacing(aPlayer, ForgeDirection.UP, iGregTechTileEntity.getValidFacings()));
-    }
-
-    @Override
     public ArrayList<String> getDebugInfo(EntityPlayer aPlayer, int aX, int aY, int aZ, int aLogLevel) {
         final TileEntity tTileEntity = aPlayer.worldObj.getTileEntity(aX, aY, aZ);
         if (tTileEntity instanceof IDebugableTileEntity) {
@@ -721,8 +717,6 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
                     .getFacadeBlock();
                 if (facadeBlock != null) return facadeBlock;
             } else {
-                // we do not allow more than one type of facade per block, so no need to check every side
-                // see comment in gregtech.common.covers.GT_Cover_FacadeBase.isCoverPlaceable
                 for (final ForgeDirection tSide : ForgeDirection.VALID_DIRECTIONS) {
                     final Block facadeBlock = tile.getCoverAtSide(tSide)
                         .getFacadeBlock();
@@ -744,16 +738,6 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
                 final Cover cover = tile.getCoverAtSide(dir);
                 final Block facadeBlock = cover.getFacadeBlock();
                 if (facadeBlock != null) return cover.getFacadeMeta();
-            } else {
-                // we do not allow more than one type of facade per block, so no need to check every side
-                // see comment in gregtech.common.covers.GT_Cover_FacadeBase.isCoverPlaceable
-                for (final ForgeDirection d : ForgeDirection.VALID_DIRECTIONS) {
-                    final Cover cover = tile.getCoverAtSide(d);
-                    final Block facadeBlock = cover.getFacadeBlock();
-                    if (facadeBlock != null) {
-                        return cover.getFacadeMeta();
-                    }
-                }
             }
         }
         return 0;

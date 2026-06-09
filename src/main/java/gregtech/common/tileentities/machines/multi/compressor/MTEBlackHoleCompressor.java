@@ -3,7 +3,7 @@ package gregtech.common.tileentities.machines.multi.compressor;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.GTValues.Ollie;
+import static gregtech.api.enums.GTAuthors.Ollie;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.ExoticEnergy;
 import static gregtech.api.enums.HatchElement.InputBus;
@@ -15,6 +15,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_MULTI_BLACKHOLE_ACT
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_MULTI_BLACKHOLE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_MULTI_BLACKHOLE_UNSTABLE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_MULTI_BLACKHOLE_UNSTABLE_GLOW;
+import static gregtech.api.util.GTRecipeConstants.COMPRESSION_TIER;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTUtility.filterValidMTEs;
@@ -72,6 +73,8 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
@@ -79,7 +82,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.common.blocks.BlockCasings10;
 import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
-import gregtech.common.tileentities.render.TileEntityBlackhole;
+import gregtech.common.tileentities.render.RenderingTileEntityBlackhole;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import tectech.thing.metaTileEntity.multi.base.SoundLoopAnyBlock;
@@ -149,6 +152,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                 .buildAndChain(ofBlock(GregTechAPI.sBlockCasings10, 11)))
         .build();
 
+    private boolean isNotBlackHoleRecipe;
     private int catalyzingCounter = 0;
     private float blackHoleStability = 100;
     private final ArrayList<MTEHatchInput> spacetimeHatches = new ArrayList<>();
@@ -219,6 +223,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
             return mteClasses;
         }
 
+        @Override
         public IGTHatchAdder<? super MTEBlackHoleCompressor> adder() {
             return adder;
         }
@@ -244,12 +249,12 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
         ItemStack aTool) {
         shouldRender = !shouldRender;
         if (!shouldRender) {
-            GTUtility.sendChatToPlayer(aPlayer, "Rendering off");
+            GTUtility.sendChatTrans(aPlayer, "GT5U.chat.rendering.off");
             rendererTileEntity = null;
             destroyRenderBlock();
         } else {
             if (blackHoleStatus != 1) createRenderBlock();
-            GTUtility.sendChatToPlayer(aPlayer, "Rendering on");
+            GTUtility.sendChatTrans(aPlayer, "GT5U.chat.rendering.on");
         }
 
     }
@@ -404,6 +409,15 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                     + " parallels when stability is BELOW "
                     + EnumChatFormatting.RED
                     + "50/20")
+            .addInfo(
+                "Below " + EnumChatFormatting.RED
+                    + "20"
+                    + EnumChatFormatting.GRAY
+                    + " stability, parallels are "
+                    + EnumChatFormatting.RED
+                    + "uncapped"
+                    + EnumChatFormatting.GRAY
+                    + " for recipes that do not require a black hole.")
             .addTecTechHatchInfo()
             .addInfo(
                 EnumChatFormatting.RED
@@ -442,19 +456,23 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         mCasingAmount = 0;
         mEnergyHatches.clear();
         mExoticEnergyHatches.clear();
         spacetimeHatches.clear();
 
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, 17, 27, 10)) return false;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 17, 27, 10, errors)) return;
+        checkCasingMin(errors, mCasingAmount, 950);
+        checkHasAnyEnergy(errors);
         // Allow only 1 energy hatch if laser/multiamp
         if (!mExoticEnergyHatches.isEmpty()) {
-            if (!mEnergyHatches.isEmpty()) return false;
-            if (mExoticEnergyHatches.size() > 1) return false;
+            if (!mEnergyHatches.isEmpty() || mExoticEnergyHatches.size() > 1) {
+                errors.add(StructureErrorRegistry.ONE_ENERGY_HATCH_ON_MULTI_OR_LASER);
+            }
         }
-        return mCasingAmount >= 950;
+        checkHasAnyInput(errors);
+        checkHasOutputBus(errors);
     }
 
     @Override
@@ -554,15 +572,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                     blackHoleStatus = 2;
                     createRenderBlock();
                 } else if (ItemList.Black_Hole_Closer.isStackEqual(removed) && blackHoleStatus != 1) {
-                    blackHoleStatus = 1;
-                    blackHoleStability = 100;
-                    catalyzingCostModifier = 1;
-                    catalyzingCounter = 0;
-                    if (rendererTileEntity != null) rendererTileEntity.startScaleChange(false);
-                    collapseTimer = 40;
-                    for (MTEBlackHoleUtility hatch : utilityHatches) {
-                        hatch.updateRedstoneOutput(false);
-                    }
+                    closeBlackHole();
                 } else if (ItemList.Black_Hole_Stabilizer.isStackEqual(removed) && blackHoleStatus == 1) {
                     blackHoleStatus = 4;
                     createRenderBlock();
@@ -587,6 +597,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
             @NotNull
             @Override
             protected Stream<GTRecipe> findRecipeMatches(@Nullable RecipeMap<?> map) {
+                isNotBlackHoleRecipe = false;
                 int mode = getModeFromCircuit(inputItems);
 
                 if (mode == -1) {
@@ -620,8 +631,15 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
             @NotNull
             @Override
             protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
+                isNotBlackHoleRecipe = false;
                 if (blackHoleStatus == 1) return CheckRecipeResultRegistry.NO_BLACK_HOLE;
-                return super.validateRecipe(recipe);
+                CheckRecipeResult result = super.validateRecipe(recipe);
+                if (result != CheckRecipeResultRegistry.SUCCESSFUL) return result;
+                int comp_tier = recipe.getMetadataOrDefault(COMPRESSION_TIER, 0);
+                isNotBlackHoleRecipe = comp_tier < 2;
+                // Forces a recalculation of the parallels right after the attribute is set
+                maxParallel = maxParallelSupplier.get();
+                return result;
             }
         }.noRecipeCaching()
             .setMaxParallelSupplier(this::getTrueParallel)
@@ -689,7 +707,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
         boolean didDrain = false;
 
         // Only do loss reductions if the black hole is stable - unstable black hole can't be frozen
-        if (blackHoleStability >= 0) {
+        if (blackHoleStability > 0) {
 
             // Search all hatches for catalyst fluid
             // If found enough, drain it and reduce stability loss to 0
@@ -710,7 +728,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                     break;
                 }
             }
-        } else blackHoleStatus = 3;
+        }
 
         if (shouldRender) {
             if (rendererTileEntity != null || createRenderBlock()) {
@@ -721,29 +739,36 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
 
         blackHoleStability -= stabilityDecrease;
 
+        if (blackHoleStability <= 0) blackHoleStatus = 3;
+
         // Close black hole and reset if it has been unstable for 15 minutes or more
-        if (blackHoleStability <= -900) {
-            blackHoleStatus = 1;
-            blackHoleStability = 100;
-            catalyzingCostModifier = 1;
-            rendererTileEntity = null;
-            destroyRenderBlock();
+        if (blackHoleStability <= -900) closeBlackHole();
+    }
 
-            // Update all the utility hatches
-            for (MTEBlackHoleUtility hatch : utilityHatches) {
-                hatch.updateRedstoneOutput(false);
-            }
+    private void closeBlackHole() {
+        blackHoleStatus = 1;
+        blackHoleStability = 100;
+        catalyzingCostModifier = 1;
+        catalyzingCounter = 0;
+        if (rendererTileEntity != null) rendererTileEntity.startScaleChange(false);
+        collapseTimer = 40;
+        for (MTEBlackHoleUtility hatch : utilityHatches) {
+            hatch.updateRedstoneOutput(false);
         }
-
     }
 
     @Override
     public int getMaxParallelRecipes() {
         int parallels = (8 * GTUtility.getTierExtended(this.getMaxInputEu()));
-        if (blackHoleStatus == 4) parallels *= 4;
-        else if (blackHoleStability < 50) {
+        if (blackHoleStatus == 4) {
+            if (isNotBlackHoleRecipe) return Integer.MAX_VALUE;
+            parallels *= 4;
+        } else if (blackHoleStability < 50) {
             parallels *= 2;
-            if (blackHoleStability < 20) parallels *= 2;
+            if (blackHoleStability < 20) {
+                if (isNotBlackHoleRecipe) return Integer.MAX_VALUE;
+                parallels *= 2;
+            }
         }
         return parallels;
     }
@@ -768,11 +793,6 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
     }
 
     @Override
-    public boolean supportsSingleRecipeLocking() {
-        return true;
-    }
-
-    @Override
     protected IAlignmentLimits getInitialAlignmentLimits() {
         return (d, r, f) -> d != ForgeDirection.UP && d != ForgeDirection.DOWN;
     }
@@ -789,7 +809,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
     }
 
     private boolean shouldRender = true;
-    private TileEntityBlackhole rendererTileEntity = null;
+    private RenderingTileEntityBlackhole rendererTileEntity = null;
 
     // Returns true if render was actually created
     private boolean createRenderBlock() {
@@ -804,7 +824,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
             .setBlock(base.getXCoord() + x, base.getYCoord() + y, base.getZCoord() + z, Blocks.air);
         base.getWorld()
             .setBlock(base.getXCoord() + x, base.getYCoord() + y, base.getZCoord() + z, GregTechAPI.sBlackholeRender);
-        rendererTileEntity = (TileEntityBlackhole) base.getWorld()
+        rendererTileEntity = (RenderingTileEntityBlackhole) base.getWorld()
             .getTileEntity(base.getXCoord() + x, base.getYCoord() + y, base.getZCoord() + z);
 
         rendererTileEntity.startScaleChange(true);

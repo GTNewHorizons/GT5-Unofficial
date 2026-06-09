@@ -3,7 +3,7 @@ package gregtech.common.tileentities.machines.multi;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.GTValues.AuthorBlueWeabo;
+import static gregtech.api.enums.GTAuthors.AuthorBlueWeabo;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.ExoticEnergy;
 import static gregtech.api.enums.HatchElement.InputBus;
@@ -60,6 +60,9 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
@@ -70,7 +73,7 @@ import gregtech.common.blocks.BlockCasings13;
 import gregtech.common.blocks.BlockCasings8;
 import gregtech.common.gui.modularui.multiblock.MTENanoForgeGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
-import gregtech.common.tileentities.render.TileEntityNanoForgeRenderer;
+import gregtech.common.tileentities.render.RenderingTileEntityNanoForge;
 
 public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
     implements ISurvivalConstructable, INEIPreviewModifier {
@@ -345,7 +348,7 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
                 .buildAndChain(onElementPass(MTENanoForge::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings13, 6))))
         .addElement('R', ofBlock(GregTechAPI.sBlockGlass1, 5))
         .addElement('W', ofBlock(GregTechAPI.nanoForgeRender, 0))
-        .addElement('X', ofBlock(GregTechAPI.sBlockCasings8, 5))
+        .addElement('X', ofBlock(GregTechAPI.sBlockCasings8, 7))
         .addElement('Y', ofBlock(GregTechAPI.sBlockCasings8, 10))
         .addElement('Z', ofBlock(Blocks.air, 0))
         .build();
@@ -488,7 +491,7 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
                     }
 
                     if (renderActive) {
-                        TileEntityNanoForgeRenderer tile = getRenderer();
+                        RenderingTileEntityNanoForge tile = getRenderer();
                         ItemData data = GTOreDictUnificator.getAssociation(outputNanite);
                         if (data != null) {
                             Materials mat = data.mMaterial.mMaterial;
@@ -559,7 +562,7 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
             // Updates every 10 sec
             if (mUpdate <= -150) mUpdate = 50;
             if (renderActive && !renderDisabled) {
-                TileEntityNanoForgeRenderer tile = getRenderer();
+                RenderingTileEntityNanoForge tile = getRenderer();
                 if (tile != null) {
                     // Manually calculating deltaT for server - annoying minecraft
                     long systemTime = System.currentTimeMillis();
@@ -601,7 +604,7 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         mSpecialTier = 0;
 
         if (renderDisabled && renderActive) {
@@ -609,56 +612,70 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
             renderActive = false;
         }
 
-        if (checkPiece(STRUCTURE_PIECE_MAIN, 4, 37, 1) && aStack != null) {
+        if (aStack == null) {
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.missing_nanite"));
+            return;
+        }
+
+        if (aStack.isItemEqual(Materials.Eternity.getNanite(1))) {
+            // tier 4
+            casingAmount = 0;
+            if (!checkPiece(STRUCTURE_PIECE_TIER4_BASE, 20, 33, 0, errors)) return;
+            checkCasingMin(errors, casingAmount, 2784);
+            if (renderActive) {
+                if (checkPiece(STRUCTURE_PIECE_TIER4_AIR_RENDER, 20, 50, 0, errors)) {
+                    mSpecialTier = 4;
+                } else {
+                    renderActive = false;
+                    buildRenderStruct();
+                }
+            } else if (checkPiece(STRUCTURE_PIECE_TIER4_RENDER, 20, 50, 0, errors)) {
+                mSpecialTier = 4;
+            }
+            fixAllIssues();
+        } else {
+            if (!checkPiece(STRUCTURE_PIECE_MAIN, 4, 37, 1, errors)) return;
+
             if (aStack.isItemEqual(Materials.Carbon.getNanite(1))) {
                 mSpecialTier = 1;
             }
 
-            if (aStack.isItemEqual(Materials.Neutronium.getNanite(1)) && checkPiece(STRUCTURE_PIECE_TIER2, -7, 14, 4)) {
+            if (aStack.isItemEqual(Materials.Neutronium.getNanite(1))
+                && checkPiece(STRUCTURE_PIECE_TIER2, -7, 14, 4, errors)) {
                 mSpecialTier = 2;
             }
 
             if (aStack.isItemEqual(Materials.TranscendentMetal.getNanite(1))
-                && checkPiece(STRUCTURE_PIECE_TIER2, -7, 14, 4)
-                && checkPiece(STRUCTURE_PIECE_TIER3, 14, 26, 4)) {
+                && checkPiece(STRUCTURE_PIECE_TIER2, -7, 14, 4, errors)
+                && checkPiece(STRUCTURE_PIECE_TIER3, 14, 26, 4, errors)) {
                 mSpecialTier = 3;
             }
-        } else if (aStack != null && aStack.isItemEqual(Materials.Eternity.getNanite(1))) {
-            casingAmount = 0;
-            if (checkPiece(STRUCTURE_PIECE_TIER4_BASE, 20, 33, 0) && casingAmount >= 2784) {
-                if (renderActive) {
-                    if (checkPiece(STRUCTURE_PIECE_TIER4_AIR_RENDER, 20, 50, 0)) {
-                        mSpecialTier = 4;
-                    } else {
-                        renderActive = false;
-                        buildRenderStruct();
-                    }
-                } else if (checkPiece(STRUCTURE_PIECE_TIER4_RENDER, 20, 50, 0)) {
-                    mSpecialTier = 4;
-                }
-                fixAllIssues();
-            }
-        }
 
-        if (mMaintenanceHatches.size() != 1 && mSpecialTier != 4) {
-            return false;
+            if (!errors.isEmpty()) return;
         }
+        if (mSpecialTier == 0) {
+            errors.add(StructureErrorRegistry.UNKNOWN_TIER);
+            return;
+        }
+        checkHasMaintenanceHatch(errors);
+        checkExoticAndNormalEnergyHatches(errors);
+        checkHasAnyInput(errors);
+        checkHasOutputBus(errors);
 
-        if (!checkExoticAndNormalEnergyHatches()) {
-            return false;
-        }
+        if (!errors.isEmpty()) return;
 
         if (!renderActive && mSpecialTier >= 4 && !renderDisabled) {
             destroyRenderStruct();
             renderActive = true;
         }
-
-        return mSpecialTier > 0;
     }
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         int built = 0;
+        // Max 1000 blocks per placement
+        int tier4Budget = elementBudget >= 1000 ? elementBudget : Math.min(1000, elementBudget * 5);
+
         if (stackSize.stackSize <= 3) {
             built += survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 4, 37, 1, elementBudget, env, false, true);
             if (built >= 0) return built;
@@ -693,7 +710,7 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
                 20,
                 33,
                 0,
-                elementBudget,
+                tier4Budget,
                 env,
                 false,
                 true);
@@ -703,7 +720,7 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
                 20,
                 50,
                 0,
-                elementBudget,
+                tier4Budget,
                 env,
                 false,
                 true);
@@ -762,6 +779,7 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
             .addTecTechHatchInfo()
             .addUnlimitedTierSkips()
             .beginStructureBlock(30, 38, 13, false)
+            .addController("Front bottom center")
             .addStructureInfo("Total blocks needed for the structure at tier " + getTieredText("1", "2", "3"))
             .addStructureInfo(getTieredText("522", "670", "898") + "Radiant Naquadah Alloy Casing")
             .addStructureInfo(getTieredText("170", "170", "254") + "Stellar Alloy Frame Box")
@@ -849,21 +867,6 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
     }
 
     @Override
-    public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ, ItemStack aTool) {
-        if (aPlayer.isSneaking()) {
-            batchMode = !batchMode;
-            if (batchMode) {
-                GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOn");
-            } else {
-                GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOff");
-            }
-            return true;
-        }
-        return false;
-    }
-
-    @Override
     public void onBlockDestroyed() {
         super.onBlockDestroyed();
         if (renderActive) {
@@ -886,13 +889,13 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
         return true;
     }
 
-    private TileEntityNanoForgeRenderer getRenderer() {
+    private RenderingTileEntityNanoForge getRenderer() {
         ChunkCoordinates renderPos = getRenderPos();
         TileEntity tile = this.getBaseMetaTileEntity()
             .getWorld()
             .getTileEntity(renderPos.posX, renderPos.posY, renderPos.posZ);
 
-        if (tile instanceof TileEntityNanoForgeRenderer nanoForgeTile) {
+        if (tile instanceof RenderingTileEntityNanoForge nanoForgeTile) {
             return nanoForgeTile;
         }
         return null;

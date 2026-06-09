@@ -76,7 +76,7 @@ public class GeneratedItemRenderer implements IItemRenderer {
             tIcon = aItem.mIconList[(aMetaData - aItem.mOffset)][0];
         }
 
-        if (tIcon == null) tIcon = Textures.ItemIcons.RENDERING_ERROR.getIcon();
+        if (tIcon == null) tIcon = Textures.GlobalIcons.RENDERING_ERROR.getIcon();
 
         ItemList largeFluidCell = getLargeFluidCell(aStack);
         if (largeFluidCell != null) {
@@ -116,7 +116,7 @@ public class GeneratedItemRenderer implements IItemRenderer {
             case Large_Fluid_Cell_Osmium -> ExtraIcons.osmiumLargeCellInner;
             case Large_Fluid_Cell_Chrome -> ExtraIcons.chromiumLargeCellInner;
             case Large_Fluid_Cell_Neutronium -> ExtraIcons.neutroniumLargeCellInner;
-            default -> Textures.ItemIcons.RENDERING_ERROR.getIcon();
+            default -> Textures.GlobalIcons.RENDERING_ERROR.getIcon();
         };
 
         // Empty inner side
@@ -129,7 +129,7 @@ public class GeneratedItemRenderer implements IItemRenderer {
             IIcon fluidIcon = fluidStack.getFluid()
                 .getIcon(fluidStack);
             if (fluidIcon == null) {
-                fluidIcon = Textures.ItemIcons.RENDERING_ERROR.getIcon();
+                fluidIcon = Textures.GlobalIcons.RENDERING_ERROR.getIcon();
             }
             int fluidColor = fluidStack.getFluid()
                 .getColor(fluidStack);

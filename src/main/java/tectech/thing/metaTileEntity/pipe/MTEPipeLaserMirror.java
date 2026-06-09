@@ -14,6 +14,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IColoredTileEntity;
@@ -28,7 +29,7 @@ import tectech.util.CommonValues;
 
 public class MTEPipeLaserMirror extends MTEPipeLaser {
 
-    private static Textures.BlockIcons.CustomIcon EMpipe;
+    private static IIconContainer EMpipe;
     private final ForgeDirection[] connectedSides = { null, null };
     private ForgeDirection chainedFrontFacing = null;
 
@@ -50,7 +51,7 @@ public class MTEPipeLaserMirror extends MTEPipeLaser {
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
-        EMpipe = new Textures.BlockIcons.CustomIcon("iconsets/EM_LASERMIRROR");
+        EMpipe = Textures.BlockIcons.custom("iconsets/EM_LASERMIRROR");
         super.registerIcons(aBlockIconRegister);
     }
 

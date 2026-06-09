@@ -2,7 +2,7 @@ package gregtech.common.tileentities.machines.multi;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static gregtech.api.enums.GTValues.AuthorColen;
+import static gregtech.api.enums.GTAuthors.AuthorColen;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
@@ -21,6 +21,7 @@ import static gregtech.common.tileentities.machines.multi.MTEPlasmaForge.DIM_TRA
 import static kekztech.util.Util.toStandardForm;
 
 import java.math.BigInteger;
+import java.util.List;
 import java.util.UUID;
 
 import javax.annotation.Nonnull;
@@ -50,6 +51,7 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -111,7 +113,7 @@ public class MTETranscendentPlasmaMixer extends MTEEnhancedMultiBlockBase<MTETra
             .addInfo("All inputs will scale, except time...")
             .addInfo("All EU is deducted from wireless EU networks only")
             .beginStructureBlock(5, 7, 5, false)
-            .addController("Front Center")
+            .addController("Front center")
             .addCasingInfoExactly("Dimensionally Transcendent Casing", 48, false)
             .addCasingInfoExactly("Dimensional Bridge", 16, false)
             .addCasingInfoRangeColored(
@@ -253,16 +255,14 @@ public class MTETranscendentPlasmaMixer extends MTEEnhancedMultiBlockBase<MTETra
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         // Check the main structure
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFFSET, VERTICAL_OFFSET, DEPTH_OFFSET)) {
-            return false;
-        }
-
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFFSET, VERTICAL_OFFSET, DEPTH_OFFSET, errors)) return;
         // Maintenance hatch not required but left for compatibility.
         // Don't allow more than 1, no free casing spam!
-        return (mMaintenanceHatches.size() <= 1);
+        checkHatchMax(errors, Maintenance, 1);
+        checkHasInputHatch(errors);
+        checkHasOutputHatch(errors);
     }
 
     @Override

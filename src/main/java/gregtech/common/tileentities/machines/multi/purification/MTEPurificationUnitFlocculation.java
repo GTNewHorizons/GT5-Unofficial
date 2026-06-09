@@ -6,7 +6,6 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAnyMeta;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
-import static gregtech.api.enums.GTValues.AuthorNotAPenguin;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.OutputBus;
@@ -45,20 +44,20 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTStructureUtility;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 
 public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTEPurificationUnitFlocculation>
-    implements ISurvivalConstructable {
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
-    private static final String STRUCTURE_PIECE_MAIN_SURVIVAL = "main_survival";
 
     private static final int STRUCTURE_X_OFFSET = 4;
     private static final int STRUCTURE_Y_OFFSET = 3;
@@ -97,6 +96,8 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
      */
     private long inputFluidConsumed = 0;
 
+    private boolean needsWaterFill = false;
+
     private static final String[][] structure = new String[][]
     // spotless:off
         {
@@ -119,14 +120,6 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
     private static final IStructureDefinition<MTEPurificationUnitFlocculation> STRUCTURE_DEFINITION = StructureDefinition
         .<MTEPurificationUnitFlocculation>builder()
         .addShape(STRUCTURE_PIECE_MAIN, structure)
-        .addShape(
-            STRUCTURE_PIECE_MAIN_SURVIVAL,
-            Arrays.stream(structure)
-                .map(
-                    sa -> Arrays.stream(sa)
-                        .map(s -> s.replaceAll("W", " "))
-                        .toArray(String[]::new))
-                .toArray(String[][]::new))
         // Filter machine casing
         .addElement('A', ofBlock(GregTechAPI.sBlockCasings3, 11))
         .addElement(
@@ -171,28 +164,31 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
         if (side == aFacing) {
-            if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(MAIN_CASING_INDEX),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE)
-                    .extFacing()
-                    .build(),
+            if (aActive) return new ITexture[] { getCasingTexture(), TextureFactory.builder()
+                .addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE)
+                .extFacing()
+                .build(),
                 TextureFactory.builder()
                     .addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE_GLOW)
                     .extFacing()
                     .glow()
                     .build() };
-            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(MAIN_CASING_INDEX),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR)
-                    .extFacing()
-                    .build(),
+            return new ITexture[] { getCasingTexture(), TextureFactory.builder()
+                .addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR)
+                .extFacing()
+                .build(),
                 TextureFactory.builder()
                     .addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_GLOW)
                     .extFacing()
                     .glow()
                     .build() };
         }
-        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(MAIN_CASING_INDEX) };
+        return new ITexture[] { getCasingTexture() };
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Textures.BlockIcons.getCasingTextureForId(MAIN_CASING_INDEX);
     }
 
     @Override
@@ -208,22 +204,17 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
-        int built = survivalBuildPiece(
-            STRUCTURE_PIECE_MAIN_SURVIVAL,
+        if (mMachine) return -1;
+        return survivalBuildPiece(
+            STRUCTURE_PIECE_MAIN,
             stackSize,
             STRUCTURE_X_OFFSET,
             STRUCTURE_Y_OFFSET,
             STRUCTURE_Z_OFFSET,
             elementBudget,
             env,
+            false,
             true);
-        if (built == -1) {
-            GTUtility.sendChatToPlayer(
-                env.getActor(),
-                EnumChatFormatting.GREEN + "Auto placing done ! Now go place the water yourself !");
-            return 0;
-        }
-        return built;
     }
 
     @Override
@@ -237,23 +228,49 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
         return (d, r, f) -> d.offsetY == 0 && r.isNotRotated() && !f.isVerticallyFliped();
     }
 
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    @Override
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
+        needsWaterFill = false;
         casingCount = 0;
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, STRUCTURE_X_OFFSET, STRUCTURE_Y_OFFSET, STRUCTURE_Z_OFFSET)) return false;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, STRUCTURE_X_OFFSET, STRUCTURE_Y_OFFSET, STRUCTURE_Z_OFFSET, errors)) {
+            needsWaterFill = GTStructureUtility.hasWaterAtStructurePosition(
+                aBaseMetaTileEntity,
+                getExtendedFacing(),
+                structure,
+                STRUCTURE_X_OFFSET,
+                STRUCTURE_Y_OFFSET,
+                STRUCTURE_Z_OFFSET,
+                'W');
+            return;
+        }
 
+        checkHasInputHatch(errors);
         // At most three input hatches allowed
-        if (mInputHatches.size() > 3) {
-            return false;
-        }
+        checkHatchMax(errors, InputHatch, 3);
 
+        checkHasOutputHatch(errors);
         // At most three output hatches allowed
-        if (mOutputHatches.size() > 3) {
-            return false;
+        checkHatchMax(errors, OutputHatch, 3);
+        checkCasingMin(errors, casingCount, MIN_CASING);
+        if (!errors.isEmpty()) return;
+        needsWaterFill = true;
+    }
+
+    @Override
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        super.onPostTick(aBaseMetaTileEntity, aTick);
+        if (aBaseMetaTileEntity.isServerSide() && needsWaterFill && aTick % 20 == 0) {
+            if (GTStructureUtility.fillStructureWithWater(
+                aBaseMetaTileEntity,
+                getExtendedFacing(),
+                structure,
+                STRUCTURE_X_OFFSET,
+                STRUCTURE_Y_OFFSET,
+                STRUCTURE_Z_OFFSET,
+                'W')) {
+                needsWaterFill = false;
+            }
         }
-
-        if (casingCount < MIN_CASING) return false;
-
-        return super.checkMachine(aBaseMetaTileEntity, aStack);
     }
 
     @Override
@@ -271,18 +288,18 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
             .addSeparator()
             .addInfo(
                 "Supply with " + EnumChatFormatting.WHITE
-                    + INPUT_CHEMICAL.mLocalizedName
+                    + addFormattedString(INPUT_CHEMICAL.getLocalizedName())
                     + EnumChatFormatting.GRAY
                     + " to operate")
             .addInfo(
                 "Outputs " + EnumChatFormatting.WHITE
-                    + OUTPUT_WASTE.mLocalizedName
+                    + addFormattedString(OUTPUT_WASTE.getLocalizedName())
                     + EnumChatFormatting.GRAY
                     + " that can be recycled")
             .addSeparator()
             .addInfo(
                 "During operation, will consume ALL " + EnumChatFormatting.WHITE
-                    + INPUT_CHEMICAL.mLocalizedName
+                    + addFormattedString(INPUT_CHEMICAL.getLocalizedName())
                     + EnumChatFormatting.GRAY
                     + " in the input hatch")
             .addInfo(
@@ -292,13 +309,13 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
                     + EnumChatFormatting.GRAY
                     + "of "
                     + EnumChatFormatting.WHITE
-                    + INPUT_CHEMICAL.mLocalizedName
+                    + addFormattedString(INPUT_CHEMICAL.getLocalizedName())
                     + EnumChatFormatting.GRAY
                     + " consumed")
             .addInfo(
                 "gain an additive " + EnumChatFormatting.RED
                     + SUCCESS_PER_LEVEL
-                    + "%"
+                    + "%%"
                     + EnumChatFormatting.GRAY
                     + " increase to success. If total fluid supplied is not")
             .addInfo(
@@ -367,7 +384,7 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
             .addOutputHatch(
                 EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "-" + EnumChatFormatting.GOLD + "3",
                 1)
-            .toolTipFinisher(AuthorNotAPenguin);
+            .toolTipFinisher();
         return tt;
     }
 
@@ -458,7 +475,7 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
         infoData.add(
             StatCollector.translateToLocalFormatted(
                 "GT5U.infodata.purification_unit_flocculation.consumed",
-                INPUT_CHEMICAL.mLocalizedName,
+                INPUT_CHEMICAL.getLocalizedName(),
                 "" + EnumChatFormatting.RED + inputFluidConsumed));
         return infoData.toArray(new String[] {});
     }

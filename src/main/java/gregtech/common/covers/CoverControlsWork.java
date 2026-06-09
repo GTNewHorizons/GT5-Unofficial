@@ -35,11 +35,14 @@ public class CoverControlsWork extends CoverLegacyData {
     }
 
     private enum State {
+
         ENABLE_WITH_SIGNAL,
         DISABLE_WITH_SIGNAL,
         DISABLED,
         ENABLE_WITH_SIGNAL_SAFE,
         DISABLE_WITH_SIGNAL_SAFE;
+
+        static final State[] VALUES = values();
     }
 
     private boolean handledShutdown = false;
@@ -93,7 +96,7 @@ public class CoverControlsWork extends CoverLegacyData {
     public void doCoverThings(byte aInputRedstone, long aTimer) {
         ICoverable coverable = coveredTile.get();
         if (coverable instanceof IMachineProgress machine) {
-            State state = this.coverData < State.values().length ? State.values()[this.coverData] : State.DISABLED;
+            State state = this.coverData < State.VALUES.length ? State.VALUES[this.coverData] : State.DISABLED;
             switch (state) {
                 case ENABLE_WITH_SIGNAL, DISABLE_WITH_SIGNAL -> {
                     if ((aInputRedstone > 0) == (state == State.ENABLE_WITH_SIGNAL)) {

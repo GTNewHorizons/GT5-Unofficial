@@ -4,6 +4,7 @@ import gregtech.api.enums.Dyes;
 import gregtech.api.enums.SteamVariant;
 import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.modularui2.GTGuiTheme;
@@ -11,6 +12,7 @@ import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.render.TextureFactory;
 import gregtech.common.config.MachineStats;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEBoilerSolarSteel extends MTEBoilerSolar {
 
     public MTEBoilerSolarSteel(int aID, String aName, String aNameRegional) {

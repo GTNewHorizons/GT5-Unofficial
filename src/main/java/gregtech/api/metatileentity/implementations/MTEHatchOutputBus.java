@@ -17,34 +17,32 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.Nullable;
 
-import com.gtnewhorizons.modularui.api.ModularUITextures;
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.gtnewhorizons.modularui.api.forge.ItemHandlerHelper;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
 import gregtech.GTMod;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OutputBusType;
-import gregtech.api.gui.widgets.PhantomItemButton;
 import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.IOutputBus;
 import gregtech.api.interfaces.IOutputBusTransaction;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IItemLockable;
-import gregtech.api.interfaces.modularui.IAddGregtechLogo;
-import gregtech.api.interfaces.modularui.IAddUIWidgets;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTDataUtils;
 import gregtech.api.util.GTItemTransfer;
+import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.extensions.ArrayExt;
+import gregtech.common.gui.modularui.hatch.MTEHatchOutputBusGui;
 
-public class MTEHatchOutputBus extends MTEHatch
-    implements IAddUIWidgets, IItemLockable, IDataCopyable, IAddGregtechLogo, IOutputBus {
+@IMetaTileEntity.SkipGenerateDescription
+public class MTEHatchOutputBus extends MTEHatch implements IItemLockable, IDataCopyable, IOutputBus {
 
     private static final String DATA_STICK_DATA_TYPE = "outputBusFilter";
     private static final String LOCKED_ITEM_NBT_KEY = "lockedItem";
@@ -56,17 +54,7 @@ public class MTEHatchOutputBus extends MTEHatch
     }
 
     public MTEHatchOutputBus(int id, String name, String nameRegional, int tier, int slots) {
-        super(
-            id,
-            name,
-            nameRegional,
-            tier,
-            slots,
-            ArrayExt.of(
-                "Item Output for Multiblocks",
-                "Capacity: " + getSlots(tier) + " stack" + (getSlots(tier) >= 2 ? "s" : ""),
-                "Left click with data stick to save filter config",
-                "Right click with data stick to load filter config"));
+        super(id, name, nameRegional, tier, slots, (String) null);
     }
 
     public MTEHatchOutputBus(int aID, String aName, String aNameRegional, int aTier, String[] aDescription) {
@@ -280,41 +268,6 @@ public class MTEHatchOutputBus extends MTEHatch
     }
 
     @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        final int BUTTON_SIZE = 18;
-        int slotCount = getSizeInventory();
-        final int itemColumns = Math.max(1, mTier + 1);
-        final int itemRows = Math.max(1, mTier + 1);
-        final int centerX = (getGUIWidth() - (itemColumns * BUTTON_SIZE)) / 2;
-        final int centerY = 14 - (mTier - 1);
-
-        switch (slotCount) {
-            case 1 -> getBaseMetaTileEntity().add1by1Slot(builder);
-            case 4 -> getBaseMetaTileEntity().add2by2Slots(builder);
-            case 9 -> getBaseMetaTileEntity().add3by3Slots(builder);
-            case 16 -> getBaseMetaTileEntity().add4by4Slots(builder);
-            default -> {
-                for (int row = 0; row < itemRows; row++) {
-                    for (int col = 0; col < itemColumns; col++) {
-                        int slotIndex = row * itemColumns + col;
-                        if (slotIndex < slotCount) {
-                            builder.widget(
-                                new SlotWidget(inventoryHandler, slotIndex).setBackground(ModularUITextures.ITEM_SLOT)
-                                    .setPos(centerX + col * 18, centerY + row * 18));
-                        }
-                    }
-                }
-            }
-        }
-
-        if (acceptsItemLock()) {
-            builder.widget(
-                new PhantomItemButton(this).setPos(6, 60 + getOffsetY())
-                    .setBackground(PhantomItemButton.FILTER_BACKGROUND));
-        }
-    }
-
-    @Override
     public void setLockedItem(@Nullable ItemStack itemStack) {
         if (itemStack == null) {
             clearLock();
@@ -342,14 +295,6 @@ public class MTEHatchOutputBus extends MTEHatch
     @Override
     public boolean acceptsItemLock() {
         return true;
-    }
-
-    @Override
-    public void addGregTechLogo(ModularWindow.Builder builder) {
-        builder.widget(
-            new DrawableWidget().setDrawable(getGUITextureSet().getGregTechLogo())
-                .setSize(18, 18)
-                .setPos(152 + getOffsetX(), 60 + getOffsetY()));
     }
 
     @Override
@@ -390,6 +335,7 @@ public class MTEHatchOutputBus extends MTEHatch
      * @param slot  The slot, or -1 for a general 'lowest slot' query.
      * @param stack The stack, or null for a general 'any standard stack' query (getMaxStackSize() == 64).
      */
+    @Override
     public int getStackSizeLimit(int slot, @Nullable ItemStack stack) {
         return Math.min(getInventoryStackLimit(), stack == null ? 64 : stack.getMaxStackSize());
     }
@@ -489,5 +435,22 @@ public class MTEHatchOutputBus extends MTEHatch
 
             active = false;
         }
+    }
+
+    @Override
+    public String[] getDescription() {
+        return GTSplit.splitLocalizedFormatted(
+            getSlots(mTier) >= 2 ? "gt.blockmachines.output_bus.desc" : "gt.blockmachines.output_bus.singular.desc",
+            getSlots(mTier));
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return true;
+    }
+
+    @Override
+    public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTEHatchOutputBusGui(this).build(guiData, syncManager, uiSettings);
     }
 }

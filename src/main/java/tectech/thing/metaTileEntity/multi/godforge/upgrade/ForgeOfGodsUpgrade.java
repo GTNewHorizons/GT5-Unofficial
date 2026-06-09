@@ -244,7 +244,7 @@ public enum ForgeOfGodsUpgrade {
         EE.build(b -> b
             .prereqs(TBF)
             .cost(10)
-            .background(BLUE, COMPOSITION)
+            .background(BLUE, CONVERSION)
             .treePos(216, 758));
 
         END.build(b -> b

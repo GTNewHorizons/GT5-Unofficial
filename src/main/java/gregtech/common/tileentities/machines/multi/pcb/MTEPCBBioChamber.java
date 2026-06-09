@@ -1,12 +1,14 @@
 package gregtech.common.tileentities.machines.multi.pcb;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static gregtech.api.enums.GTValues.AuthorBlueWeabo;
-import static gregtech.api.enums.GTValues.Authorguid118;
+import static gregtech.api.enums.GTAuthors.AuthorBlueWeabo;
+import static gregtech.api.enums.GTAuthors.Authorguid118;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_PURIFICATION_PLANT_GLOW;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
+
+import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
@@ -25,8 +27,10 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.misc.GTStructureChannels;
 
 public class MTEPCBBioChamber extends MTEPCBUpgradeBase<MTEPCBBioChamber>
     implements ISurvivalConstructable, INEIPreviewModifier {
@@ -76,7 +80,7 @@ public class MTEPCBBioChamber extends MTEPCBUpgradeBase<MTEPCBBioChamber>
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         int built = survivalBuildPiece(STRUCTURE_PIECE_BIO_CHAMBER, stackSize, 2, 6, 0, elementBudget, env, true);
         if (built == -1) {
-            GTUtility.sendChatToPlayer(env.getActor(), EnumChatFormatting.GREEN + "Auto placing done!");
+            GTUtility.sendChatTrans(env.getActor(), "GT5U.chat.auto_place.done");
             return 0;
         }
         return built;
@@ -102,7 +106,8 @@ public class MTEPCBBioChamber extends MTEPCBUpgradeBase<MTEPCBBioChamber>
             .addInfo(EnumChatFormatting.GRAY + "Left click the PCB Factory controller with a data stick,")
             .addInfo(EnumChatFormatting.GRAY + "then right click this controller to link.")
             .addInfo(EnumChatFormatting.GRAY + "Can connect to many PCB Factories!")
-            .addController("Front Center")
+            .beginStructureBlock(5, 7, 12, false)
+            .addController("Front bottom center")
             .addCasingInfoExactlyColored(
                 "Clean Stainless Steel Machine Casing",
                 EnumChatFormatting.GRAY,
@@ -122,6 +127,7 @@ public class MTEPCBBioChamber extends MTEPCBUpgradeBase<MTEPCBBioChamber>
                 EnumChatFormatting.GOLD,
                 false)
             .addStructureInfo(EnumChatFormatting.GRAY + "Does not require maintenance or power.")
+            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher(AuthorBlueWeabo, Authorguid118);
         return tt;
     }
@@ -166,9 +172,9 @@ public class MTEPCBBioChamber extends MTEPCBUpgradeBase<MTEPCBBioChamber>
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         // Check self
-        return checkPiece(STRUCTURE_PIECE_BIO_CHAMBER, 2, 6, 0);
+        checkPiece(STRUCTURE_PIECE_BIO_CHAMBER, 2, 6, 0, errors);
     }
 
 }

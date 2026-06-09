@@ -56,6 +56,7 @@ import java.util.Objects;
 
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -72,6 +73,7 @@ import bartworks.util.BioCulture;
 import bartworks.util.BioDNA;
 import bartworks.util.BioData;
 import bartworks.util.BioPlasmid;
+import goodgenerator.items.GGMaterial;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -79,7 +81,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
-import gregtech.api.util.GTUtility;
 import gregtech.common.items.behaviors.BehaviourDataOrb;
 import gtPlusPlus.core.fluids.GTPPFluids;
 
@@ -235,8 +236,9 @@ public class AdditionalRecipes {
                         .itemInputs(
                             BioItemList.getPetriDish(null),
                             fluidStack.equals(Materials.Water.getFluid(1_000)) ? Materials.Water.getCells(1)
-                                : GTUtility.getContainersFromFluid(GTModHandler.getDistilledWater(1_000))
-                                    .get(0))
+                                : FluidContainerRegistry.fillFluidContainer(
+                                    GTModHandler.getDistilledWater(1_000),
+                                    ItemList.Cell_Empty.get(1)))
                         .itemOutputs(BioItemList.getPetriDish(bioCulture), Materials.Empty.getCells(1))
                         .outputChances(bioCulture.getChance(), 100_00)
                         .fluidInputs(new FluidStack(bioCulture.getFluid(), 1_000))
@@ -248,20 +250,22 @@ public class AdditionalRecipes {
         }
 
         List<Pair<Materials, Integer>> liquidFuels = Arrays.asList(
-            ImmutablePair.of(Materials.PhosphoricAcid, 36),
-            ImmutablePair.of(Materials.DilutedHydrochloricAcid, 14),
-            ImmutablePair.of(Materials.HypochlorousAcid, 30),
-            ImmutablePair.of(Materials.HydrofluoricAcid, 40),
-            ImmutablePair.of(Materials.HydrochloricAcid, 28),
-            ImmutablePair.of(Materials.NitricAcid, 24),
+            ImmutablePair.of(Materials.PhosphoricAcid, 66),
+            ImmutablePair.of(Materials.DilutedHydrochloricAcid, 26),
+            ImmutablePair.of(Materials.HypochlorousAcid, 56),
+            ImmutablePair.of(Materials.HydrofluoricAcid, 60),
+            ImmutablePair.of(Materials.HydrochloricAcid, 52),
+            ImmutablePair.of(Materials.NitricAcid, 72),
             ImmutablePair.of(Materials.Mercury, 32),
-            ImmutablePair.of(Materials.DilutedSulfuricAcid, 9),
-            ImmutablePair.of(Materials.SulfuricAcid, 18),
-            ImmutablePair.of(Materials.AceticAcid, 11),
+            ImmutablePair.of(Materials.DilutedSulfuricAcid, 14),
+            ImmutablePair.of(Materials.SulfuricAcid, 28),
+            ImmutablePair.of(Materials.AceticAcid, 21),
             ImmutablePair.of(WerkstoffLoader.FormicAcid.getBridgeMaterial(), 40),
             ImmutablePair.of(WerkstoffLoader.HexafluorosilicicAcid.getBridgeMaterial(), 350),
             ImmutablePair.of(Materials.PhthalicAcid, 270),
-            ImmutablePair.of(Materials.NaphthenicAcid, 250));
+            ImmutablePair.of(Materials.NaphthenicAcid, 250),
+            ImmutablePair.of(Materials.ChlorosulfonicAcid, 2304),
+            ImmutablePair.of(GGMaterial.fluoroantimonicAcid.getBridgeMaterial(), 5760));
         for (Pair<Materials, Integer> fuel : liquidFuels) {
             GTValues.RA.stdBuilder()
                 .itemInputs(
@@ -271,35 +275,20 @@ public class AdditionalRecipes {
                 .metadata(FUEL_VALUE, fuel.getRight())
                 .addTo(BartWorksRecipeMaps.acidGenFuels);
         }
-        GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.cellMolten, Materials.Redstone, 1))
-            .itemOutputs(Materials.Empty.getCells(1))
-            .metadata(FUEL_VALUE, 10)
-            .addTo(BartWorksRecipeMaps.acidGenFuels);
-        // should probably also find a way to auto-fill these with an array but i am too lazy to do that rn
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                FluidContainerRegistry.fillFluidContainer(
-                    new FluidStack(GTPPFluids.IndustrialStrengthHydrofluoricAcid, 1000),
-                    ItemList.Cell_Empty.get(1L)))
-            .itemOutputs(Materials.Empty.getCells(1))
-            .metadata(FUEL_VALUE, 320)
-            .addTo(BartWorksRecipeMaps.acidGenFuels);
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                FluidContainerRegistry.fillFluidContainer(
-                    new FluidStack(GTPPFluids.IndustrialStrengthHydrogenChloride, 1000),
-                    ItemList.Cell_Empty.get(1L)))
-            .itemOutputs(Materials.Empty.getCells(1))
-            .metadata(FUEL_VALUE, 224)
-            .addTo(BartWorksRecipeMaps.acidGenFuels);
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                FluidContainerRegistry
-                    .fillFluidContainer(new FluidStack(GTPPFluids.PropionicAcid, 1000), ItemList.Cell_Empty.get(1L)))
-            .itemOutputs(Materials.Empty.getCells(1))
-            .metadata(FUEL_VALUE, 150)
-            .addTo(BartWorksRecipeMaps.acidGenFuels);
+        List<Pair<Fluid, Integer>> liquidOtherFuels = Arrays.asList(
+            ImmutablePair.of(GTPPFluids.IndustrialStrengthHydrofluoricAcid, 320),
+            ImmutablePair.of(GTPPFluids.IndustrialStrengthHydrogenChloride, 224),
+            ImmutablePair.of(GTPPFluids.PropionicAcid, 150),
+            ImmutablePair.of(Materials.Redstone.mStandardMoltenFluid, 40));
+        for (Pair<Fluid, Integer> otherFuel : liquidOtherFuels) {
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    FluidContainerRegistry
+                        .fillFluidContainer(new FluidStack(otherFuel.getLeft(), 1000), ItemList.Cell_Empty.get(1L)))
+                .itemOutputs(Materials.Empty.getCells(1))
+                .metadata(FUEL_VALUE, otherFuel.getRight())
+                .addTo(BartWorksRecipeMaps.acidGenFuels);
+        }
     }
 
     public static void run() {
@@ -352,15 +341,6 @@ public class AdditionalRecipes {
             .itemOutputs(Materials.Thorium.getDust(1), Materials.Magnesia.getDust(4))
             .duration(50 * SECONDS)
             .eut(TierEU.RECIPE_LV)
-            .addTo(UniversalChemical);
-
-        GTValues.RA.stdBuilder()
-            .itemInputs(WerkstoffLoader.Thorianit.get(crushed), ItemList.Crop_Drop_Thorium.get(9))
-            .itemOutputs(WerkstoffLoader.Thorianit.get(crushedPurified, 4))
-            .fluidInputs(Materials.Water.getFluid(1_000))
-            .fluidOutputs(Materials.Thorium.getMolten(1 * INGOTS))
-            .duration(4 * SECONDS + 16 * TICKS)
-            .eut(24)
             .addTo(UniversalChemical);
 
         // Prasiolite

@@ -48,7 +48,7 @@ import com.gtnewhorizon.structurelib.structure.StructureUtility;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.enums.GTValues;
+import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TAE;
@@ -67,6 +67,7 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.ISBRWorldContext;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
@@ -92,7 +93,7 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
     private static final Fluid mNeptunium = MaterialsElements.getInstance().NEPTUNIUM.getPlasma();
     private static final Fluid mFermium = MaterialsElements.getInstance().FERMIUM.getPlasma();
     private static final String MAIN_PIECE = "main";
-    private final ArrayList<MTEHatchBulkCatalystHousing> catalystHounsings = new ArrayList<>();
+    private final ArrayList<MTEHatchBulkCatalystHousing> catalystHousings = new ArrayList<>();
     // spotless:off
     // y-axis offset by +0.5 to counter the coordinate adjustment when rendering
     private static final double[][] FORCE_FIELD_BASE_COORDINATES = {
@@ -209,12 +210,12 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
             .addTecTechHatchInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(15, 21, 15, true)
-            .addController("Bottom Center")
+            .addController("Front bottom center")
             .addCasingInfoMin("Bulk Production Frame", 80, false)
             .addCasingInfoMin("Quantum Force Conductor", 177, false)
             .addCasingInfoMin("Force Field Glass", 224, false)
-            .addCasingInfoMin("Pulse Manipulators", 236, true)
-            .addCasingInfoMin("Shielding Cores", 142, true)
+            .addCasingInfoMin("Pulse Manipulator", 236, true)
+            .addCasingInfoMin("Shielding Core", 142, true)
             .addInputBus(EnumChatFormatting.BLUE + "Bottom" + EnumChatFormatting.GRAY + " Layer", 4)
             .addInputHatch(EnumChatFormatting.BLUE + "Bottom" + EnumChatFormatting.GRAY + " Layer", 4)
             .addOutputHatch(EnumChatFormatting.AQUA + "Top" + EnumChatFormatting.GRAY + " Layer", 5)
@@ -223,7 +224,7 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
             .addStructureInfo(EnumChatFormatting.WHITE + "Bulk Catalyst Housing: " + EnumChatFormatting.BLUE + "Bottom" + EnumChatFormatting.GRAY + " Layer")
             .addSubChannelUsage(GTStructureChannels.QFT_SHIELDING)
             .addSubChannelUsage(GTStructureChannels.QFT_MANIPULATOR)
-            .toolTipFinisher(GTValues.AuthorBlueWeabo, EnumChatFormatting.GREEN + "Steelux");
+            .toolTipFinisher(GTAuthors.AuthorBlueWeabo, EnumChatFormatting.GREEN + "Steelux");
         return tt;
         //spotless:on
     }
@@ -234,22 +235,18 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         this.mCasing = 0;
         this.mCraftingTier = 0;
         this.mFocusingTier = 0;
-        catalystHounsings.clear();
-        if (!checkPiece(MAIN_PIECE, 7, 20, 4)) {
-            return false;
-        }
-
+        catalystHousings.clear();
+        if (!checkPiece(MAIN_PIECE, 7, 20, 4, errors)) return;
         // Maintenance hatch not required but left for compatibility.
         // Don't allow more than 1, no free casing spam!
-        if (mMaintenanceHatches.size() > 1) {
-            return false;
-        }
-
-        return checkExoticAndNormalEnergyHatches();
+        checkHatchMax(errors, Maintenance, 1);
+        checkHasAnyEnergy(errors);
+        checkHasAnyInput(errors);
+        checkHasAnyOutput(errors);
     }
 
     @Override
@@ -378,11 +375,11 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
                 ItemStack requiredCatalyst = recipe.getMetadata(GTRecipeConstants.QFT_CATALYST);
                 assert requiredCatalyst != null;
                 int catalystMeta = requiredCatalyst.getItemDamage();
-                if (catalystHounsings.isEmpty()) {
+                if (catalystHousings.isEmpty()) {
                     return SimpleCheckRecipeResult.ofFailure("no_catalyst");
                 }
                 boolean catalystsFound = false;
-                for (MTEHatchBulkCatalystHousing catalystHousing : catalystHounsings) {
+                for (MTEHatchBulkCatalystHousing catalystHousing : catalystHousings) {
                     ItemStack storedCatalysts = catalystHousing.getItemStack();
                     int storedCatalystMeta = catalystHousing.getStoredCatalystMeta();
                     if (storedCatalysts == null || storedCatalystMeta != catalystMeta) {
@@ -651,7 +648,7 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
         IMetaTileEntity metaTileEntity = tileEntity.getMetaTileEntity();
         if (metaTileEntity instanceof MTEHatchBulkCatalystHousing catalystHousing) {
             catalystHousing.updateTexture(baseCasingIndex);
-            this.catalystHounsings.add(catalystHousing);
+            this.catalystHousings.add(catalystHousing);
             return true;
         }
         return false;
@@ -664,7 +661,7 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
 
             @Override
             public long count(MTEQuantumForceTransformer gtMetaTileEntityQFT) {
-                return gtMetaTileEntityQFT.catalystHounsings.size();
+                return gtMetaTileEntityQFT.catalystHousings.size();
             }
         };
 
@@ -683,6 +680,7 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
             return mteClasses;
         }
 
+        @Override
         public IGTHatchAdder<? super MTEQuantumForceTransformer> adder() {
             return adder;
         }
@@ -786,7 +784,7 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
     @Override
     public boolean renderInWorld(ISBRWorldContext ctx) {
         Tessellator tes = Tessellator.instance;
-        IIcon forceField = TexturesGtBlock.ForceField.getIcon();
+        IIcon forceField = Textures.BlockIcons.ForceField.getIcon();
         if (getBaseMetaTileEntity().isActive()) {
             double minU = forceField.getMinU();
             double maxU = forceField.getMaxU();
@@ -832,21 +830,6 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
     @Override
     protected SoundResource getActivitySoundLoop() {
         return SoundResource.GT_MACHINES_QUANTUM_FORCE_TRANSFORMER_LOOP;
-    }
-
-    @Override
-    public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ, ItemStack aTool) {
-        if (aPlayer.isSneaking()) {
-            batchMode = !batchMode;
-            if (batchMode) {
-                GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOn");
-            } else {
-                GTUtility.sendChatTrans(aPlayer, "misc.BatchModeTextOff");
-            }
-            return true;
-        }
-        return false;
     }
 
     private String catalystText(String text) {

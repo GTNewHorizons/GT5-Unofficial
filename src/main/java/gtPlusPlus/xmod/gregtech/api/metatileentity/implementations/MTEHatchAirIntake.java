@@ -10,11 +10,15 @@ import galacticgreg.api.enums.DimensionDef;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.IBiodomeCompatible;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.common.tileentities.machines.multi.MTEBiodome;
 import gtPlusPlus.core.lib.GTPPCore;
+import gtPlusPlus.core.util.Utils;
+import toxiceverglades.dimension.DimensionEverglades;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchAirIntake extends MTEHatchFluidGenerator implements IBiodomeCompatible {
 
     MTEBiodome connectedBiodome;
@@ -35,12 +39,10 @@ public class MTEHatchAirIntake extends MTEHatchFluidGenerator implements IBiodom
 
     @Override
     public String[] getCustomTooltip() {
-        String[] aTooltip = new String[4];
-        aTooltip[0] = "§cDO NOT OBSTRUCT THE INPUT!";
-        aTooltip[1] = "Draws in Air from the surrounding environment";
-        aTooltip[2] = "Creates " + getAmountOfFluidToGenerate() + "L of Air every " + getMaxTickTime() + " ticks";
-        aTooltip[3] = "§7Added by: §2Alkalus §7- §c[GT++]";
-        return aTooltip;
+        return Utils.splitLocalizedFormattedWithAlkalus(
+            "gt.blockmachines.input_hatch_generator.airintake.desc",
+            getAmountOfFluidToGenerate(),
+            getMaxTickTime());
     }
 
     @Override
@@ -104,7 +106,6 @@ public class MTEHatchAirIntake extends MTEHatchFluidGenerator implements IBiodom
         float xSpd;
         float zSpd;
         if (aDir.offsetY == -1) {
-            // Logger.INFO("Y = -1");
             final float temp = MTEHatchAirIntake.floatGen.nextFloat() * 2.0f * GTPPCore.PI;
             xSpd = (float) Math.sin(temp) * 0.1f;
             zSpd = (float) Math.cos(temp) * 0.1f;

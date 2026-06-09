@@ -20,7 +20,7 @@ import gtPlusPlus.core.util.math.MathUtils;
 
 public class ItemBufferCore extends BaseItemWithDamageValue {
 
-    public int coreTier = 0;
+    private final int coreTier;
 
     public ItemBufferCore(final String unlocalizedName, final int i) {
         super(unlocalizedName + i);
@@ -42,17 +42,13 @@ public class ItemBufferCore extends BaseItemWithDamageValue {
         return true;
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
-    public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
+    public void addInformation(final ItemStack stack, final EntityPlayer player, final List<String> list,
+        final boolean adv) {
         list.add(
             EnumChatFormatting.GRAY + StatCollector.translateToLocalFormatted(
                 "gtpp.tooltip.buffer_core.key_crafting_component",
                 GTValues.VN[this.coreTier - 1]));
-    }
-
-    public final int getCoreTier() {
-        return this.coreTier;
     }
 
     @Override

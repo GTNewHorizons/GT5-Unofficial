@@ -33,6 +33,27 @@ public class GTRenderingWorld implements IBlockAccess {
     private static final Map<ChunkCoordIntPair, Set<ChunkPosition>> index = new ConcurrentHashMap<>();
     private IBlockAccess mWorld = Minecraft.getMinecraft().theWorld;
 
+    /**
+     * Per-face meta override used by CTM textures during rendering to ensure each facade side
+     * reports its own meta to the CTM icon lookup, regardless of what is stored in {@link #infos}.
+     * ThreadLocal to support Angelica's multi-threaded rendering. Set/cleared around each icon query.
+     * Layout: [x, y, z, meta]; x == Integer.MIN_VALUE means no override is active.
+     */
+    private static final ThreadLocal<int[]> META_OVERRIDE = ThreadLocal
+        .withInitial(() -> new int[] { Integer.MIN_VALUE, 0, 0, 0 });
+
+    public static void setMetaOverride(int x, int y, int z, int meta) {
+        int[] o = META_OVERRIDE.get();
+        o[0] = x;
+        o[1] = y;
+        o[2] = z;
+        o[3] = meta;
+    }
+
+    public static void clearMetaOverride() {
+        META_OVERRIDE.get()[0] = Integer.MIN_VALUE;
+    }
+
     static {
         new ForgeEventHandler();
     }
@@ -62,40 +83,44 @@ public class GTRenderingWorld implements IBlockAccess {
     }
 
     @Override
-    public Block getBlock(int p_147439_1_, int p_147439_2_, int p_147439_3_) {
-        BlockInfo blockInfo = infos.get(new ChunkPosition(p_147439_1_, p_147439_2_, p_147439_3_));
-        return blockInfo != null ? blockInfo.block : mWorld.getBlock(p_147439_1_, p_147439_2_, p_147439_3_);
+    public Block getBlock(int x, int y, int z) {
+        BlockInfo blockInfo = infos.get(new ChunkPosition(x, y, z));
+        return blockInfo != null ? blockInfo.block : mWorld.getBlock(x, y, z);
     }
 
     @Override
-    public TileEntity getTileEntity(int p_147438_1_, int p_147438_2_, int p_147438_3_) {
-        return mWorld.getTileEntity(p_147438_1_, p_147438_2_, p_147438_3_);
+    public TileEntity getTileEntity(int x, int y, int z) {
+        return mWorld.getTileEntity(x, y, z);
     }
 
     @Override
-    public int getLightBrightnessForSkyBlocks(int p_72802_1_, int p_72802_2_, int p_72802_3_, int p_72802_4_) {
-        return mWorld.getLightBrightnessForSkyBlocks(p_72802_1_, p_72802_2_, p_72802_3_, p_72802_4_);
+    public int getLightBrightnessForSkyBlocks(int x, int y, int z, int minLight) {
+        return mWorld.getLightBrightnessForSkyBlocks(x, y, z, minLight);
     }
 
     @Override
-    public int getBlockMetadata(int p_72805_1_, int p_72805_2_, int p_72805_3_) {
-        BlockInfo blockInfo = infos.get(new ChunkPosition(p_72805_1_, p_72805_2_, p_72805_3_));
-        return blockInfo != null ? blockInfo.meta : mWorld.getBlockMetadata(p_72805_1_, p_72805_2_, p_72805_3_);
+    public int getBlockMetadata(int x, int y, int z) {
+        final int[] o = META_OVERRIDE.get();
+        if (x == o[0] && y == o[1] && z == o[2]) {
+            return o[3];
+        }
+        BlockInfo blockInfo = infos.get(new ChunkPosition(x, y, z));
+        return blockInfo != null ? blockInfo.meta : mWorld.getBlockMetadata(x, y, z);
     }
 
     @Override
-    public int isBlockProvidingPowerTo(int p_72879_1_, int p_72879_2_, int p_72879_3_, int p_72879_4_) {
-        return mWorld.isBlockProvidingPowerTo(p_72879_1_, p_72879_2_, p_72879_3_, p_72879_4_);
+    public int isBlockProvidingPowerTo(int x, int y, int z, int side) {
+        return mWorld.isBlockProvidingPowerTo(x, y, z, side);
     }
 
     @Override
-    public boolean isAirBlock(int p_147437_1_, int p_147437_2_, int p_147437_3_) {
-        return getBlock(p_147437_1_, p_147437_2_, p_147437_3_).isAir(mWorld, p_147437_1_, p_147437_2_, p_147437_3_);
+    public boolean isAirBlock(int x, int y, int z) {
+        return getBlock(x, y, z).isAir(mWorld, x, y, z);
     }
 
     @Override
-    public BiomeGenBase getBiomeGenForCoords(int p_72807_1_, int p_72807_2_) {
-        return mWorld.getBiomeGenForCoords(p_72807_1_, p_72807_2_);
+    public BiomeGenBase getBiomeGenForCoords(int x, int z) {
+        return mWorld.getBiomeGenForCoords(x, z);
     }
 
     @Override

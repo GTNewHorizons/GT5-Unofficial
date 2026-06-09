@@ -13,6 +13,7 @@ import org.lwjgl.opengl.GL11;
 import codechicken.lib.render.TextureUtils;
 import gregtech.api.interfaces.IGT_ItemWithMaterialRenderer;
 import gregtech.api.util.GTUtility;
+import gregtech.common.config.Client;
 
 public class GlitchEffectRenderer extends GeneratedMaterialRenderer {
 
@@ -70,6 +71,12 @@ public class GlitchEffectRenderer extends GeneratedMaterialRenderer {
     @Override
     protected void renderRegularItem(ItemRenderType type, ItemStack item, IIcon icon, boolean shouldModulateColor,
         int pass, Object... data) {
+
+        if (!Client.render.renderGlitchFancy) {
+            super.renderRegularItem(type, item, icon, shouldModulateColor);
+            return;
+        }
+
         short metaData = (short) item.getItemDamage();
         if (!(item.getItem() instanceof IGT_ItemWithMaterialRenderer itemRenderer)) return;
 

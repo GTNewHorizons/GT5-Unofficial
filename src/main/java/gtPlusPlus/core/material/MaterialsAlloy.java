@@ -17,6 +17,7 @@ public final class MaterialsAlloy {
     public static final Material STAINLESS_STEEL = MaterialUtils.generateMaterialFromGtENUM(Materials.StainlessSteel);
     public static final Material OSMIRIDIUM = MaterialUtils.generateMaterialFromGtENUM(Materials.Osmiridium);
     public static final Material POLYETHYLENE = MaterialUtils.generateMaterialFromGtENUM(Materials.Polyethylene);
+    public static final Material TUNGSTEN_CARBIDE = MaterialUtils.generateMaterialFromGtENUM(Materials.TungstenCarbide);
     public static final Material POLYTETRAFLUOROETHYLENE = MaterialUtils
         .generateMaterialFromGtENUM(Materials.Polytetrafluoroethylene);
     public static final Material ENERGYCRYSTAL = new Material(
@@ -402,20 +403,6 @@ public final class MaterialsAlloy {
         new MaterialStack(MaterialsElements.getInstance().ALUMINIUM, 12),
         new MaterialStack(MaterialsElements.getInstance().CHROMIUM, 20),
         new MaterialStack(MaterialsElements.getInstance().YTTRIUM, 4));
-
-    public static final Material TUNGSTEN_CARBIDE = new Material(
-        "Tungsten Carbide", // Material Name
-        MaterialState.SOLID, // State
-        new short[] { 44, 44, 44, 0 }, // Material Colour
-        3422, // Melting Point in C
-        -1,
-        -1,
-        -1,
-        true, // Uses Blast furnace?
-        false, // Generate cells
-        // Material Stacks with Percentage of required elements.
-        new MaterialStack(MaterialsElements.getInstance().CARBON, 50),
-        new MaterialStack(MaterialsElements.getInstance().TUNGSTEN, 50));
 
     public static final Material TUNGSTEN_TITANIUM_CARBIDE = new Material(
         "Tungsten Titanium Carbide", // Material Name

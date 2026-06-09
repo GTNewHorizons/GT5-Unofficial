@@ -12,6 +12,7 @@ import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
+import static gregtech.api.structure.error.StructureErrorRegistry.UNKNOWN_TIER;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
@@ -64,6 +65,7 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.recipe.metadata.CentrifugeRecipeKey;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
@@ -104,12 +106,13 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
     private static final String STRUCTURE_TIER_2 = "t2";
     private static final String STRUCTURE_TIER_3 = "t3";
     private static final String STRUCTURE_TIER_4 = "t4";
-    private static final IIconContainer TEXTURE_CONTROLLER = new Textures.BlockIcons.CustomIcon("iconsets/TFFT");
-    private static final IIconContainer TEXTURE_CONTROLLER_ACTIVE = new Textures.BlockIcons.CustomIcon(
-        "iconsets/TFFT_ACTIVE");
-    private static final IIconContainer TEXTURE_CONTROLLER_ACTIVE_GLOW = new Textures.BlockIcons.CustomIcon(
-        "iconsets/TFFT_ACTIVE_GLOW");
+    private static final IIconContainer TEXTURE_CONTROLLER = Textures.BlockIcons.custom("iconsets/TFFT");
+    private static final IIconContainer TEXTURE_CONTROLLER_ACTIVE = Textures.BlockIcons.custom("iconsets/TFFT_ACTIVE");
+    private static final IIconContainer TEXTURE_CONTROLLER_ACTIVE_GLOW = Textures.BlockIcons
+        .customOptional("iconsets/TFFT_ACTIVE_GLOW");
     public ArrayList<MTEHatchTurbine> turbineRotorHatchList = new ArrayList<>();
+
+    private int ticker = 1; // just increments and drains (amountToDrain) of the given
 
     private boolean staticAnimations = false;
     // spotless:off
@@ -211,7 +214,7 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
         .addElement('B', ofBlock(GregTechAPI.sBlockCasings9, 0)) // PBI Pipe Casing
         .addElement('C', ofBlock(GregTechAPI.sBlockGlass1, 6)) // Central Grate Casing
         .addElement('D', chainAllGlasses())
-        .addElement('E', Casings.IsamillGearBoxCasing.asElement()) // Isamill central casing
+        .addElement('E', Casings.IsaMillGearboxCasing.asElement()) // Isamill central casing
         .addElement('F', Casings.TurbineShaft.asElement()) // Turbine Central Casing
         .addElement('G', ofBlock(supercriticalFluidTurbineCasing, 0)) // Turbine External Casing
         .addElement('H', CentrifugeHatchElement.ROTOR_ASSEMBLY.newAny(1538, 2)) // turbine hatches
@@ -398,6 +401,7 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
 
             .addInfo("Overclocks limited to " + EnumChatFormatting.WHITE + "Hatch Tier + 1")
             .addTecTechHatchInfo()
+            .addUnlimitedTierSkips()
             .addSeparator()
             .addInfo(
                 "Gains " + EnumChatFormatting.WHITE
@@ -456,12 +460,12 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
             .addSeparator()
             .addInfo(EnumChatFormatting.ITALIC + "" + EnumChatFormatting.DARK_RED + "Maahes guides the way...")
             .beginStructureBlock(17, 17, 17, false)
-            .addController("Front Center")
+            .addController("Front center")
             .addCasingInfoExactly("Any Tiered Glass", 81, true)
             .addCasingInfoMin("Vibration-Safe Casing", 550, false)
             .addCasingInfoExactly("Chamber Grate", 144, false)
-            .addCasingInfoExactly("Central Frame Blocks", 9, true)
-            .addCasingInfoExactly("Central Rotor Blocks", 56, true)
+            .addCasingInfoExactly("Central Frame Block", 9, true)
+            .addCasingInfoExactly("Central Rotor Block", 56, true)
             .addCasingInfoExactly("IsaMill Gearbox Casing", 54, false)
             .addCasingInfoExactly("PBI Pipe Casing", 160, false)
             .addCasingInfoExactly("Turbine Shaft", 24, false)
@@ -561,21 +565,23 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         tier = 0;
         if (lastCheckedTierIndex != 0) Collections.swap(tierCheckOrderList, 0, lastCheckedTierIndex);
         for (int i = 0; i < tierCheckOrderList.size(); i++) {
             StructureData piece = tierCheckOrderList.get(i);
             resetParameters();
-            if (checkPiece(piece.structurePiece, horizontalOffset, verticalOffset, depthOffset)) {
+            errors.clear();
+            if (checkPiece(piece.structurePiece, horizontalOffset, verticalOffset, depthOffset, errors)) {
                 tier = piece.machineTier;
                 lastCheckedTierIndex = i;
                 rotateTurbines();
-                return casingAmount >= 550;
+                checkCasingMin(errors, casingAmount, 550);
+                checkHasMaintenanceHatch(errors);
+                return;
             }
         }
-
-        return false;
+        errors.add(UNKNOWN_TIER);
     }
 
     private void resetParameters() {
@@ -733,8 +739,6 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
         return parallels > 0 ? parallels : 1; // if its 1, something messed up lol, just a failsafe in case i mess up
     }
 
-    private int ticker = 1; // just increments and drains (amountToDrain) of the given
-
     @Override
     public boolean onRunningTick(ItemStack aStack) {
         if (!super.onRunningTick(aStack)) {
@@ -794,11 +798,13 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
         return "Unset";
     }
 
+    @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
         staticAnimations = !staticAnimations;
-        GTUtility
-            .sendChatToPlayer(aPlayer, "Using " + (staticAnimations ? "Static" : "Animated") + " Turbine Texture.");
+        GTUtility.sendChatTrans(
+            aPlayer,
+            staticAnimations ? "GT5U.chat.spinmatron.texture.static" : "GT5U.chat.spinmatron.texture.animated");
         for (MTEHatchTurbine h : validMTEList(this.turbineRotorHatchList)) {
             h.mUsingAnimation = staticAnimations;
         }
@@ -868,6 +874,7 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
             return mteClasses;
         }
 
+        @Override
         public IGTHatchAdder<? super MTESpinmatron> adder() {
             return adder;
         }

@@ -1,6 +1,5 @@
 package gtnhintergalactic.tile.multi.elevator;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.withChannel;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static net.minecraft.util.EnumChatFormatting.GREEN;
 import static net.minecraft.util.EnumChatFormatting.ITALIC;
@@ -9,6 +8,8 @@ import static net.minecraft.util.EnumChatFormatting.RED;
 import static net.minecraft.util.EnumChatFormatting.RESET;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import net.minecraft.block.Block;
@@ -23,6 +24,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableMap;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
@@ -46,27 +48,35 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import cpw.mods.fml.common.Optional;
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.GTValues;
+import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.INEIPreviewModifier;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.MTEHatch;
+import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.HatchElementBuilder;
+import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.misc.spaceprojects.SpaceProjectManager;
 import gtnhintergalactic.client.TooltipUtil;
 import gtnhintergalactic.config.IGConfig;
 import gtnhintergalactic.gui.IG_UITextures;
 import gtnhintergalactic.tile.TileEntitySpaceElevatorCable;
 import gtnhintergalactic.tile.multi.elevatormodules.TileEntityModuleBase;
+import gtnhintergalactic.tile.multi.elevatormodules.TileEntityModuleMiner;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiCelestialSelection;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
@@ -89,6 +99,29 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
 
     /** Motor tier of the Space Elevator */
     protected int motorTier = 0;
+
+    public List<MTEHatchInput> getElevatorInputHatches() {
+        return mInputHatches;
+    }
+
+    public long getAvailableDataForModules() {
+        if (mProjectModuleHatches == null || mProjectModuleHatches.isEmpty()) {
+            return getAvailableData_EM();
+        }
+
+        // filtering by isActive so computation is spread only among working modules
+        long minerModuleAmount = mProjectModuleHatches.stream()
+            .filter(
+                module -> module instanceof TileEntityModuleMiner && module.getBaseMetaTileEntity() != null
+                    && module.getBaseMetaTileEntity()
+                        .isActive()
+                    && module.isDataInputListEmpty())
+            .count();
+        if (minerModuleAmount == 0) {
+            return getAvailableData_EM();
+        }
+        return getAvailableData_EM() / minerModuleAmount;
+    }
 
     /** Flag if the extension for more modules is enabled */
     private boolean isExtensionEnabled = false;
@@ -137,25 +170,25 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
                 {"                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                E E                ", "               DE ED               ", "               DE ED               ", "                                   ", "                                   ", "      AAAAAAAAAAAAAAAAAAAAAAA      " },
                 {"                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                E E                ", "               DE ED               ", "               DE ED               ", "               DE ED               ", "                                   ", "                                   ", "                                   ", "     AAAAAAAAAAAAAAAAAAAAAAAAA     " },
                 {"                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                E E                ", "              HDE EDH              ", "               DE ED               ", "               DE ED               ", "               DE ED               ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "    AAAAAAAAAAAAAAAAAAAAAAAAAAA    " },
-                {"                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                E E                ", "               DE ED               ", "               DE ED               ", "               DE ED               ", "            HH DE ED HH            ", "                                   ", "                                   ", "                                   ", "                                   ", "               X X X               ", "               X X X               ", "               X X X               ", "               X X X               ", "   AAAAAAAAAAAAX X XAAAAAAAAAAAA   " },
-                {"                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                E E                ", "               DE ED               ", "               DE ED               ", "               DE ED               ", "               DE ED               ", "                                   ", "         E               E         ", "         EHH           HHE         ", "         E               E         ", "         E               E         ", "         E               E         ", "         E               E         ", "         E     X X X     E         ", "         E     I I I     E         ", "         E     X X X     E         ", "   FF    E     X X X     E    FF   ", "   AAAAAAAAAAAAX X XAAAAAAAAAAAA   " },
+                {"                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                E E                ", "               DE ED               ", "               DE ED               ", "               DE ED               ", "            HH DE ED HH            ", "                                   ", "                                   ", "                                   ", "                                   ", "               M M M               ", "               M M M               ", "               M M M               ", "               M M M               ", "   AAAAAAAAAAAAM M MAAAAAAAAAAAA   " },
+                {"                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                E E                ", "               DE ED               ", "               DE ED               ", "               DE ED               ", "               DE ED               ", "                                   ", "         E               E         ", "         EHH           HHE         ", "         E               E         ", "         E               E         ", "         E               E         ", "         E               E         ", "         E     M M M     E         ", "         E     I I I     E         ", "         E     M M M     E         ", "   FF    E     M M M     E    FF   ", "   AAAAAAAAAAAAM M MAAAAAAAAAAAA   " },
                 {"                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                E E                ", "               DE ED               ", "               DE ED               ", "               DE ED               ", "               DE ED               ", "               DE ED               ", "          E             E          ", "          E             E          ", "          E             E          ", "          E             E          ", "          E             E          ", "         HE             EH         ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "   D                           D   ", "  FFF          F F F          FFF  ", "  AAAAAAAAAAAAA     AAAAAAAAAAAAA  " },
                 {"                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                E E                ", "               DE ED               ", "               DE ED               ", "               DE ED               ", "               DE ED               ", "               DE ED               ", "               DE ED               ", "               DE ED               ", "               DE ED               ", "               DE ED               ", "                                   ", "                                   ", "           E           E           ", "           E           E           ", "           E           E           ", "           E           E           ", "           E           E           ", "                                   ", "                                   ", "         H               H         ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "   D                           D   ", "  FFF          F F F          FFF  ", "  AAAAAAAAAAAAA     AAAAAAAAAAAAA  " },
                 {"                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                E E                ", "               DE ED               ", "               DE ED               ", "               DE ED               ", "               DE ED               ", "               DE ED               ", "               DE ED               ", "               DE ED               ", "               DE ED               ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "             HH     HH             ", "            E         E            ", "            E         E            ", "            E         E            ", "            E         E            ", "            E         E            ", "            E         E            ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "        H                 H        ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "  D                             D  ", " FFF          FFFFFFF          FFF ", " AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA " },
                 {"                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                FFF                ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "             E       E             ", "             E       E             ", "             E       E             ", "             E       E             ", "             E       E             ", "             E       E             ", "             E       E             ", "            HE       EH            ", "             E       E             ", "             E       E             ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "        H                 H        ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "  D                             D  ", " FFF         FFFFFFFFF         FFF ", " AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA " },
                 {"                FFF                ", "                 E                 ", "                 E                 ", "                 E                 ", "                 E                 ", "                 E                 ", "               F   F               ", "              E     E              ", "              E     E              ", "              E     E              ", "              E     E              ", "              E     E              ", "              E     E              ", "              E     E              ", "              E     E              ", "              E     E              ", "                                   ", "                                   ", "                FFF                ", "                                   ", "                                   ", "            H         H            ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                FFF                ", "                                   ", "                                   ", "                                   ", "                                   ", "       H                   H       ", "                                   ", "                                   ", "                                   ", "                                   ", "                XXX                ", "                X~X                ", "  D             XXX             D  ", " FFF        FFFFFFFFFFF        FFF ", " AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA " },
-                {"               F D F               ", "                 D                 ", "                 D                 ", "                 D                 ", "                 D                 ", "                 D                 ", "              F  D  F              ", "                 D                 ", "            D    D    D            ", "            D    D    D            ", "            D    D    D            ", "            D    D    D            ", "            D    D    D            ", "            D    D    D            ", "            D    D    D            ", "           DD    D    DD           ", "           D     D     D           ", "           D     D     D           ", "           D   F D F   D           ", "           D     C     D           ", "           D     C     D           ", "           D     C     D           ", "           D     C     D           ", "          DD     C     DD          ", "          D      C      D          ", "          D      C      D          ", "          D      C      D          ", "         DD      C      DD         ", "         D     FDCDF     D         ", "         D      DCD      D         ", "        DD      DCD      DD        ", "        D       DCD       D        ", "        D       DCD       D        ", "       DD      DDCDD      DD       ", "       D       D C D       D       ", "       D       D C D       D       ", "      DD       D C D       DD      ", "      D        D C D        D      ", "     DD XX     XDCDX     XX DD     ", "    DD  XI     XDCDX     IX  DD    ", " DDDD   XX     XDCDX     XX   DDDD ", "FFFD    XXFFFFFDDDDDFFFFFXX    DFFF", "AAAAAAAAXX  AAAXXXXXAAA  XXAAAAAAAA" },
+                {"               F D F               ", "                 D                 ", "                 D                 ", "                 D                 ", "                 D                 ", "                 D                 ", "              F  D  F              ", "                 D                 ", "            D    D    D            ", "            D    D    D            ", "            D    D    D            ", "            D    D    D            ", "            D    D    D            ", "            D    D    D            ", "            D    D    D            ", "           DD    D    DD           ", "           D     D     D           ", "           D     D     D           ", "           D   F D F   D           ", "           D     C     D           ", "           D     C     D           ", "           D     C     D           ", "           D     C     D           ", "          DD     C     DD          ", "          D      C      D          ", "          D      C      D          ", "          D      C      D          ", "         DD      C      DD         ", "         D     FDCDF     D         ", "         D      DCD      D         ", "        DD      DCD      DD        ", "        D       DCD       D        ", "        D       DCD       D        ", "       DD      DDCDD      DD       ", "       D       D C D       D       ", "       D       D C D       D       ", "      DD       D C D       DD      ", "      D        D C D        D      ", "     DD MM     XDCDX     MM DD     ", "    DD  MI     XDCDX     IM  DD    ", " DDDD   MM     XDCDX     MM   DDDD ", "FFFD    MMFFFFFDDDDDFFFFFMM    DFFF", "AAAAAAAAMM  AAAXXXXXAAA  MMAAAAAAAA" },
                 {"              F     F              ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "             F       F             ", "            E         E            ", "            E         E            ", "            E         E            ", "            E         E            ", "            E         E            ", "            E         E            ", "            E         E            ", "           EE         EE           ", "           EE         EE           ", "           E           E           ", "           E           E           ", "           E  F     F  E           ", "           E           E           ", "           E           E           ", "           E           E           ", "          EE           EE          ", "          EE           EE          ", "          E             E          ", "          E             E          ", "         EE             EE         ", "         EE             EE         ", "         E    FD   DF    E         ", "        EE     D   D     EE        ", "        EE     D   D     EE        ", "        E      D   D      E        ", "       EE      D   D      EE       ", "       EE      D   D      EE       ", "       E                   E       ", "      EE                   EE      ", "      EE                   EE      ", "     EE                     EE     ", "    EEE       XD   DX       EEE    ", "   EEE        XD   DX        EEE   ", "  EE          XD   DX          EE  ", "FFF         FFFDDDDDFFF         FFF", "AAAAAAAA    AAAXXXXXAAA    AAAAAAAA" },
-                {"              FD   DF              ", "              ED   DE              ", "              ED   DE              ", "              ED   DE              ", "              ED   DE              ", "              ED   DE              ", "             F D   D F             ", "               D   D               ", "               D   D               ", "               D   D               ", "               D   D               ", "               D   D               ", "               D   D               ", "               D   D               ", "               D   D               ", "               D   D               ", "               D   D               ", "               D B D               ", "              FD - DF              ", "               C - C               ", "               C - C               ", "               C - C               ", "               C - C               ", "               C - C               ", "               C - C               ", "               C - C               ", "               C - C               ", "               C - C               ", "              FC - CF              ", "               C - C               ", "               C - C               ", "               C - C               ", "               C - C               ", "               C - C               ", "               C - C               ", "               C - C               ", "               C - C               ", "               C - C               ", "        XX    XC - CX    XX        ", "        XI    XC - CX    IX        ", "        XX    XC - CX    XX        ", "        XXFFFFFDDDDDFFFFFXX        ", "AAAAAAAAXX  AAAXXXXXAAA  XXAAAAAAAA" },
+                {"              FD   DF              ", "              ED   DE              ", "              ED   DE              ", "              ED   DE              ", "              ED   DE              ", "              ED   DE              ", "             F D   D F             ", "               D   D               ", "               D   D               ", "               D   D               ", "               D   D               ", "               D   D               ", "               D   D               ", "               D   D               ", "               D   D               ", "               D   D               ", "               D   D               ", "               D B D               ", "              FD - DF              ", "               C - C               ", "               C - C               ", "               C - C               ", "               C - C               ", "               C - C               ", "               C - C               ", "               C - C               ", "               C - C               ", "               C - C               ", "              FC - CF              ", "               C - C               ", "               C - C               ", "               C - C               ", "               C - C               ", "               C - C               ", "               C - C               ", "               C - C               ", "               C - C               ", "               C - C               ", "        MM    XC - CX    MM        ", "        MI    XC - CX    IM        ", "        MM    XC - CX    MM        ", "        MMFFFFFDDDDDFFFFFMM        ", "AAAAAAAAMM  AAAXXXXXAAA  MMAAAAAAAA" },
                 {"              F     F              ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "             F       F             ", "            E         E            ", "            E         E            ", "            E         E            ", "            E         E            ", "            E         E            ", "            E         E            ", "            E         E            ", "           EE         EE           ", "           EE         EE           ", "           E           E           ", "           E           E           ", "           E  F     F  E           ", "           E           E           ", "           E           E           ", "           E           E           ", "          EE           EE          ", "          EE           EE          ", "          E             E          ", "          E             E          ", "         EE             EE         ", "         EE             EE         ", "         E    FD   DF    E         ", "        EE     D   D     EE        ", "        EE     D   D     EE        ", "        E      D   D      E        ", "       EE      D   D      EE       ", "       EE      D   D      EE       ", "       E                   E       ", "      EE                   EE      ", "      EE                   EE      ", "     EE                     EE     ", "    EEE       XD   DX       EEE    ", "   EEE        XD   DX        EEE   ", "  EE          XD   DX          EE  ", "FFF         FFFDDDDDFFF         FFF", "AAAAAAAA    AAAXXXXXAAA    AAAAAAAA" },
-                {"               F D F               ", "                 D                 ", "                 D                 ", "                 D                 ", "                 D                 ", "                 D                 ", "              F  D  F              ", "                 D                 ", "            D    D    D            ", "            D    D    D            ", "            D    D    D            ", "            D    D    D            ", "            D    D    D            ", "            D    D    D            ", "            D    D    D            ", "           DD    D    DD           ", "           D     D     D           ", "           D     D     D           ", "           D   F D F   D           ", "           D     C     D           ", "           D     C     D           ", "           D     C     D           ", "           D     C     D           ", "          DD     C     DD          ", "          D      C      D          ", "          D      C      D          ", "          D      C      D          ", "         DD      C      DD         ", "         D     FDCDF     D         ", "         D      DCD      D         ", "        DD      DCD      DD        ", "        D       DCD       D        ", "        D       DCD       D        ", "       DD      DDCDD      DD       ", "       D       D C D       D       ", "       D       D C D       D       ", "      DD       D C D       DD      ", "      D        D C D        D      ", "     DD XX     XDCDX     XX DD     ", "    DD  XI     XDCDX     IX  DD    ", " DDDD   XX     XDCDX     XX   DDDD ", "FFFD    XXFFFFFDDDDDFFFFFXX    DFFF", "AAAAAAAAXX  AAAXXXXXAAA  XXAAAAAAAA" },
+                {"               F D F               ", "                 D                 ", "                 D                 ", "                 D                 ", "                 D                 ", "                 D                 ", "              F  D  F              ", "                 D                 ", "            D    D    D            ", "            D    D    D            ", "            D    D    D            ", "            D    D    D            ", "            D    D    D            ", "            D    D    D            ", "            D    D    D            ", "           DD    D    DD           ", "           D     D     D           ", "           D     D     D           ", "           D   F D F   D           ", "           D     C     D           ", "           D     C     D           ", "           D     C     D           ", "           D     C     D           ", "          DD     C     DD          ", "          D      C      D          ", "          D      C      D          ", "          D      C      D          ", "         DD      C      DD         ", "         D     FDCDF     D         ", "         D      DCD      D         ", "        DD      DCD      DD        ", "        D       DCD       D        ", "        D       DCD       D        ", "       DD      DDCDD      DD       ", "       D       D C D       D       ", "       D       D C D       D       ", "      DD       D C D       DD      ", "      D        D C D        D      ", "     DD MM     XDCDX     MM DD     ", "    DD  MI     XDCDX     IM  DD    ", " DDDD   MM     XDCDX     MM   DDDD ", "FFFD    MMFFFFFDDDDDFFFFFMM    DFFF", "AAAAAAAAMM  AAAXXXXXAAA  MMAAAAAAAA" },
                 {"                FFF                ", "                 E                 ", "                 E                 ", "                 E                 ", "                 E                 ", "                 E                 ", "               F   F               ", "              E     E              ", "              E     E              ", "              E     E              ", "              E     E              ", "              E     E              ", "              E     E              ", "              E     E              ", "              E     E              ", "              E     E              ", "                                   ", "                                   ", "                FFF                ", "                                   ", "                                   ", "            H         H            ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                FFF                ", "                                   ", "                                   ", "                                   ", "                                   ", "       H                   H       ", "                                   ", "                                   ", "                                   ", "                                   ", "                XXX                ", "                XXX                ", "  D             XXX             D  ", " FFF        FFFFFFFFFFF        FFF ", " AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA " },
                 {"                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                FFF                ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "             E       E             ", "             E       E             ", "             E       E             ", "             E       E             ", "             E       E             ", "             E       E             ", "             E       E             ", "            HE       EH            ", "             E       E             ", "             E       E             ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "        H                 H        ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "  D                             D  ", " FFF         FFFFFFFFF         FFF ", " AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA " },
                 {"                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                E E                ", "               DE ED               ", "               DE ED               ", "               DE ED               ", "               DE ED               ", "               DE ED               ", "               DE ED               ", "               DE ED               ", "               DE ED               ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "             HH     HH             ", "            E         E            ", "            E         E            ", "            E         E            ", "            E         E            ", "            E         E            ", "            E         E            ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "        H                 H        ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "  D                             D  ", " FFF          FFFFFFF          FFF ", " AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA " },
                 {"                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                E E                ", "               DE ED               ", "               DE ED               ", "               DE ED               ", "               DE ED               ", "               DE ED               ", "               DE ED               ", "               DE ED               ", "               DE ED               ", "               DE ED               ", "                                   ", "                                   ", "           E           E           ", "           E           E           ", "           E           E           ", "           E           E           ", "           E           E           ", "                                   ", "                                   ", "         H               H         ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "   D                           D   ", "  FFF          F F F          FFF  ", "  AAAAAAAAAAAAA     AAAAAAAAAAAAA  " },
                 {"                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                E E                ", "               DE ED               ", "               DE ED               ", "               DE ED               ", "               DE ED               ", "               DE ED               ", "          E             E          ", "          E             E          ", "          E             E          ", "          E             E          ", "          E             E          ", "         HE             EH         ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "   D                           D   ", "  FFF          F F F          FFF  ", "  AAAAAAAAAAAAA     AAAAAAAAAAAAA  " },
-                {"                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                E E                ", "               DE ED               ", "               DE ED               ", "               DE ED               ", "               DE ED               ", "                                   ", "         E               E         ", "         EHH           HHE         ", "         E               E         ", "         E               E         ", "         E               E         ", "         E               E         ", "         E     X X X     E         ", "         E     I I I     E         ", "         E     X X X     E         ", "   FF    E     X X X     E    FF   ", "   AAAAAAAAAAAAX X XAAAAAAAAAAAA   " },
-                {"                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                E E                ", "               DE ED               ", "               DE ED               ", "               DE ED               ", "            HH DE ED HH            ", "                                   ", "                                   ", "                                   ", "                                   ", "               X X X               ", "               X X X               ", "               X X X               ", "               X X X               ", "   AAAAAAAAAAAAX X XAAAAAAAAAAAA   " },
+                {"                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                E E                ", "               DE ED               ", "               DE ED               ", "               DE ED               ", "               DE ED               ", "                                   ", "         E               E         ", "         EHH           HHE         ", "         E               E         ", "         E               E         ", "         E               E         ", "         E               E         ", "         E     M M M     E         ", "         E     I I I     E         ", "         E     M M M     E         ", "   FF    E     M M M     E    FF   ", "   AAAAAAAAAAAAM M MAAAAAAAAAAAA   " },
+                {"                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                E E                ", "               DE ED               ", "               DE ED               ", "               DE ED               ", "            HH DE ED HH            ", "                                   ", "                                   ", "                                   ", "                                   ", "               M M M               ", "               M M M               ", "               M M M               ", "               M M M               ", "   AAAAAAAAAAAAM M MAAAAAAAAAAAA   " },
                 {"                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                E E                ", "              HDE EDH              ", "               DE ED               ", "               DE ED               ", "               DE ED               ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "    AAAAAAAAAAAAAAAAAAAAAAAAAAA    " },
                 {"                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                E E                ", "               DE ED               ", "               DE ED               ", "               DE ED               ", "                                   ", "                                   ", "                                   ", "     AAAAAAAAAAAAAAAAAAAAAAAAA     " },
                 {"                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                                   ", "                E E                ", "               DE ED               ", "               DE ED               ", "                                   ", "                                   ", "      AAAAAAAAAAAAAAAAAAAAAAA      " },
@@ -167,8 +200,8 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
             })
             .addShape(STRUCTURE_PIECE_EXTENDED, new String[][]{
                 {"                                               ", "                                               ", "                                               ", "                    FFFFFFF                    ", "                    AAAAAAA                    "},
-                {"                     X X X                     ", "                     X X X                     ", "                     X X X                     ", "                   FFX X XFF                   ", "                 AAAAX X XAAAA                 "},
-                {"                     X X X                     ", "                     I I I                     ", "                     X X X                     ", "                   FFX X XFF                   ", "              AAAAAAAX X XAAAAAAA              "},
+                {"                     M M M                     ", "                     M M M                     ", "                     M M M                     ", "                   FFM M MFF                   ", "                 AAAAM M MAAAA                 "},
+                {"                     M M M                     ", "                     I I I                     ", "                     M M M                     ", "                   FFM M MFF                   ", "              AAAAAAAM M MAAAAAAA              "},
                 {"                                               ", "                                               ", "                                               ", "                   FFF F FFF                   ", "            AAAAAAAAAA   AAAAAAAAAA            "},
                 {"                                               ", "                                               ", "                                               ", "                  FFFF F FFFF                  ", "          AAAA   AAAAA   AAAAA   AAAA          "},
                 {"                                               ", "                                               ", "                                               ", "                  FFFF F FFFF                  ", "        AAAA     AAAAA   AAAAA     AAAA        "},
@@ -187,11 +220,11 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
                 {"                                               ", "                                               ", "                                               ", "    FFF                                 FFF    ", " AAAAAA                                 AAAAAA "},
                 {"                                               ", "                                               ", "                                               ", " FFFFFF                                 FFFFFF ", " AAAAAA                                 AAAAAA "},
                 {"                                               ", "                                               ", "                                               ", "FFFFFFF                                 FFFFFFF", "AAAAAAA                                 AAAAAAA"},
-                {" XX                                         XX ", " XI                                         IX ", " XX                                         XX ", "FXXFFFF                                 FFFFXXF", "AXXAAAA                                 AAAAXXA"},
+                {" MM                                         MM ", " MI                                         IM ", " MM                                         MM ", "FMMFFFF                                 FFFFMMF", "AMMAAAA                                 AAAAMMA"},
                 {"                                               ", "                                               ", "                                               ", "F     F                                 F     F", "A     A                                 A     A"},
-                {" XX                                         XX ", " XI                                         IX ", " XX                                         XX ", "FXXFFFF                                 FFFFXXF", "AXX   A                                 A   XXA"},
+                {" MM                                         MM ", " MI                                         IM ", " MM                                         MM ", "FMMFFFF                                 FFFFMMF", "AMM   A                                 A   MMA"},
                 {"                                               ", "                                               ", "                                               ", "F     F                                 F     F", "A     A                                 A     A"},
-                {" XX                                         XX ", " XI                                         IX ", " XX                                         XX ", "FXXFFFF                                 FFFFXXF", "AXXAAAA                                 AAAAXXA"},
+                {" MM                                         MM ", " MI                                         IM ", " MM                                         MM ", "FMMFFFF                                 FFFFMMF", "AMMAAAA                                 AAAAMMA"},
                 {"                                               ", "                                               ", "                                               ", "FFFFFFF                                 FFFFFFF", "AAAAAAA                                 AAAAAAA"},
                 {"                                               ", "                                               ", "                                               ", " FFFFFF                                 FFFFFF ", " AAAAAA                                 AAAAAA "},
                 {"                                               ", "                                               ", "                                               ", "    FFF                                 FFF    ", " AAAAAA                                 AAAAAA "},
@@ -210,8 +243,8 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
                 {"                                               ", "                                               ", "                                               ", "                  FFFF F FFFF                  ", "        AAAA     AAAAA   AAAAA     AAAA        "},
                 {"                                               ", "                                               ", "                                               ", "                  FFFF F FFFF                  ", "          AAAA   AAAAA   AAAAA   AAAA          "},
                 {"                                               ", "                                               ", "                                               ", "                   FFF F FFF                   ", "            AAAAAAAAAA   AAAAAAAAAA            "},
-                {"                     X X X                     ", "                     I I I                     ", "                     X X X                     ", "                   FFX X XFF                   ", "              AAAAAAAX X XAAAAAAA              "},
-                {"                     X X X                     ", "                     X X X                     ", "                     X X X                     ", "                   FFX X XFF                   ", "                 AAAAX X XAAAA                 "},
+                {"                     M M M                     ", "                     I I I                     ", "                     M M M                     ", "                   FFM M MFF                   ", "              AAAAAAAM M MAAAAAAA              "},
+                {"                     M M M                     ", "                     M M M                     ", "                     M M M                     ", "                   FFM M MFF                   ", "                 AAAAM M MAAAA                 "},
                 {"                                               ", "                                               ", "                                               ", "                    FFFFFFF                    ", "                    AAAAAAA                    "}
             })
             .addElement(
@@ -220,18 +253,23 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
             .addElement(
                 'X',
                 classicHatches(CASING_INDEX_BASE, 1, GregTechAPI.sBlockCasingsSE, 0))
+            .addElement(
+                'M',
+                HatchElementBuilder.<TileEntitySpaceElevator>builder()
+                    .atLeast(ImmutableMap.of(ElevatorHatchElement.IgnoredHatch, 0))
+                    .casingIndex(CASING_INDEX_BASE)
+                    .hint(3)
+                    .buildAndChain(GregTechAPI.sBlockCasingsSE, 0))
             .addElement('H', GTStructureUtility.ofFrame(Materials.Neutronium)) // Neutronium frame boxes
             .addElement('F', StructureUtility.ofBlock(GregTechAPI.sBlockCasingsSE, 2)) // Internal Structure
             .addElement(
                 'C',
-                withChannel(
-                    "motor",
-                    StructureUtility.ofBlocksTiered(
-                        ElevatorUtil.motorTierConverter(),
-                        ElevatorUtil.getMotorTiers(),
-                        0,
-                        TileEntitySpaceElevator::setMotorTier,
-                        TileEntitySpaceElevator::getMotorTier))) // Motors
+                GTStructureChannels.SE_MOTOR.use(StructureUtility.ofBlocksTiered(
+                    ElevatorUtil.motorTierConverter(),
+                    ElevatorUtil.getMotorTiers(),
+                    0,
+                    TileEntitySpaceElevator::setMotorTier,
+                    TileEntitySpaceElevator::getMotorTier))) // Motors
             .addElement('A', StructureUtility.ofBlock(GregTechAPI.sBlockCasingsDyson, 9)) // Concrete
             .addElement('D', StructureUtility.ofBlock(GregTechAPI.sBlockCasingsSE, 0)) // Base Casing
             .addElement(
@@ -243,6 +281,49 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
                     .buildAndChain(GregTechAPI.sBlockCasingsSE, 0)) // Base Casing or project module
             .build();
     // spotless:on
+
+    public enum ElevatorHatchElement implements IHatchElement<TileEntitySpaceElevator> {
+
+        // Hatches are allowed in the module base slots, but the elevator ignores these for its base operation,
+        // so we need a custom adder to not add them to our hatch lists
+        IgnoredHatch(TileEntitySpaceElevator::ignoreAndAcceptHatch, MTEHatch.class) {
+
+            @Override
+            public long count(TileEntitySpaceElevator tileEntity) {
+                return 0;
+            }
+        };
+
+        private final List<Class<? extends IMetaTileEntity>> mteClasses;
+        private final IGTHatchAdder<TileEntitySpaceElevator> adder;
+
+        @SafeVarargs
+        ElevatorHatchElement(IGTHatchAdder<TileEntitySpaceElevator> adder,
+            Class<? extends IMetaTileEntity>... mteClasses) {
+            this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
+            this.adder = adder;
+        }
+
+        @Override
+        public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
+            return mteClasses;
+        }
+
+        @Override
+        public IGTHatchAdder<? super TileEntitySpaceElevator> adder() {
+            return adder;
+        }
+    }
+
+    public boolean ignoreAndAcceptHatch(IGregTechTileEntity mte, int aBaseCasingIndex) {
+        if (mte == null) return false;
+        IMetaTileEntity aMetaTileEntity = mte.getMetaTileEntity();
+        if (aMetaTileEntity instanceof MTEHatch hatch) {
+            hatch.updateTexture(aBaseCasingIndex);
+            return true;
+        }
+        return false;
+    }
 
     // endregion
 
@@ -323,6 +404,13 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
     }
 
     /**
+     * @return True if the elevator has data input hatches, else false
+     */
+    public boolean hasDataHatches() {
+        return !eInputData.isEmpty();
+    }
+
+    /**
      * Get the chunk X coordinate in which the controller resides
      *
      * @return Chunk X coordinate
@@ -377,21 +465,21 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
      */
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        structureBuild_EM(
+        buildPiece(
             STRUCTURE_PIECE_MAIN,
+            stackSize,
+            hintsOnly,
             STRUCTURE_PIECE_MAIN_HOR_OFFSET,
             STRUCTURE_PIECE_MAIN_VERT_OFFSET,
-            STRUCTURE_PIECE_MAIN_DEPTH_OFFSET,
-            stackSize,
-            hintsOnly);
+            STRUCTURE_PIECE_MAIN_DEPTH_OFFSET);
         if (isExtensionEnabled) {
-            structureBuild_EM(
+            buildPiece(
                 STRUCTURE_PIECE_EXTENDED,
+                stackSize,
+                hintsOnly,
                 STRUCTURE_PIECE_EXTENDED_HOR_OFFSET,
                 STRUCTURE_PIECE_EXTENDED_VERT_OFFSET,
-                STRUCTURE_PIECE_EXTENDED_DEPTH_OFFSET,
-                stackSize,
-                hintsOnly);
+                STRUCTURE_PIECE_EXTENDED_DEPTH_OFFSET);
         }
     }
 
@@ -431,41 +519,42 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
      * @return True if valid, else false
      */
     @Override
-    public boolean checkMachine_EM(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        boolean isMachineValid = true;
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         mProjectModuleHatches.clear();
         elevatorCable = null;
         motorTier = 0;
         // Check structure
-        if (!structureCheck_EM(
+        if (!checkPiece(
             STRUCTURE_PIECE_MAIN,
             STRUCTURE_PIECE_MAIN_HOR_OFFSET,
             STRUCTURE_PIECE_MAIN_VERT_OFFSET,
-            STRUCTURE_PIECE_MAIN_DEPTH_OFFSET)) {
+            STRUCTURE_PIECE_MAIN_DEPTH_OFFSET,
+            errors)) {
             if (elevatorCable != null) {
                 elevatorCable.setShouldRender(false);
             }
-            return false;
+            return;
         }
         if (motorTier > 2 && isExtensionEnabled) {
-            if (!structureCheck_EM(
+            if (!checkPiece(
                 STRUCTURE_PIECE_EXTENDED,
                 STRUCTURE_PIECE_EXTENDED_HOR_OFFSET,
                 STRUCTURE_PIECE_EXTENDED_VERT_OFFSET,
-                STRUCTURE_PIECE_EXTENDED_DEPTH_OFFSET)) {
+                STRUCTURE_PIECE_EXTENDED_DEPTH_OFFSET,
+                errors)) {
                 if (elevatorCable != null) {
                     elevatorCable.setShouldRender(false);
                 }
-                return false;
+                return;
             }
         }
         // Check if the allowed module amount is exceeded. Motor tier 5 unlocks all module slots
-        isMachineValid = ElevatorUtil.getModuleSlotsUnlocked(motorTier) >= mProjectModuleHatches.size();
-        if (elevatorCable != null) {
-            elevatorCable.setShouldRender(isMachineValid);
-            return isMachineValid;
+        if (ElevatorUtil.getModuleSlotsUnlocked(motorTier) < mProjectModuleHatches.size()) {
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.spelv_module_exceed"));
         }
-        return isMachineValid;
+        if (elevatorCable != null) {
+            elevatorCable.setShouldRender(errors.isEmpty());
+        }
     }
 
     /**
@@ -580,7 +669,7 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
                         long tEnergy = getEUVar() / mProjectModuleHatches.size() * MODULE_CHARGE_INTERVAL;
                         for (TileEntityModuleBase projectModule : mProjectModuleHatches) {
                             if (projectModule.getNeededMotorTier() <= motorTier) {
-                                projectModule.connect();
+                                projectModule.connect(this);
                                 long tAvailableEnergy = getEUVar();
                                 if (tAvailableEnergy > 0) {
                                     setEUVar(
@@ -645,7 +734,7 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(GTUtility.translate("gt.blockmachines.multimachine.ig.elevator.name"));
-        if (TooltipUtil.elevatorLoreText != null) tt.addInfo(ITALIC + TooltipUtil.elevatorLoreText);
+        if (TooltipUtil.elevatorLoreText != null) tt.addInfo(ITALIC + addFormattedString(TooltipUtil.elevatorLoreText));
         tt.addInfo(GTUtility.translate("gt.blockmachines.multimachine.ig.elevator.desc2"))
             .addInfo(GTUtility.translate("gt.blockmachines.multimachine.ig.elevator.desc3"))
             .addInfo(GTUtility.translate("gt.blockmachines.multimachine.ig.elevator.desc4"))
@@ -655,6 +744,7 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
             .addInfo(GTUtility.translate("gt.blockmachines.multimachine.ig.elevator.desc8"))
             .addTecTechHatchInfo()
             .beginStructureBlock(35, 43, 35, false)
+            .addController("Front center of the middle structure piece")
             .addOtherStructurePart(
                 GTUtility.translate("ig.elevator.structure.ProjectModule"),
                 GTUtility.translate("ig.elevator.structure.AnyBaseCasingWithHintNumber2"),
@@ -667,7 +757,12 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
             .addCasingInfoExactly(GTUtility.translate("ig.elevator.structure.FrameNeutronium"), 56, false)
             .addCasingInfoExactly(GTUtility.translate("ig.elevator.structure.Motor"), 88, true)
             .addEnergyHatch(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWithHintNumber1"), 1)
-            .toolTipFinisher(GTValues.Authorminecraft7771);
+            .addOtherStructurePart(
+                GTUtility.translate("ig.elevator.structure.DataInputHatch"),
+                GTUtility.translate("ig.elevator.structure.AnyBaseCasingWithHintNumber1"),
+                1)
+            .addSubChannelUsage(GTStructureChannels.SE_MOTOR)
+            .toolTipFinisher(GTAuthors.Authorminecraft7771);
         return tt;
     }
 
@@ -904,6 +999,11 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
     }
 
     // endregion
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
+    }
 
     @Override
     public boolean getDefaultHasMaintenanceChecks() {

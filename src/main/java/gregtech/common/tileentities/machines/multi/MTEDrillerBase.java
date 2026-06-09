@@ -15,7 +15,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ORE_DRILL_ACT
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ORE_DRILL_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ORE_DRILL_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.getCasingTextureForId;
-import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
@@ -23,10 +22,7 @@ import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 
 import net.minecraft.block.Block;
@@ -35,7 +31,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -48,22 +43,9 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-import com.gtnewhorizons.modularui.api.drawable.IDrawable;
-import com.gtnewhorizons.modularui.api.math.Alignment;
-import com.gtnewhorizons.modularui.api.math.Pos2d;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
-import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
-import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
-import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.gui.modularui.GTUITextures;
-import gregtech.api.gui.widgets.LockedWhileActiveButton;
 import gregtech.api.interfaces.IChunkLoader;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
@@ -78,18 +60,23 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import gregtech.common.gui.modularui.multiblock.MTEDrillerBaseGui;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 
 public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrillerBase>
     implements IChunkLoader, ISurvivalConstructable {
 
-    private static final ItemStack miningPipe = GTModHandler.getIC2Item("miningPipe", 0);
-    private static final ItemStack miningPipeTip = GTModHandler.getIC2Item("miningPipeTip", 0);
-    private static final Block miningPipeBlock = GTUtility.getBlockFromStack(miningPipe);
-    private static final Block miningPipeTipBlock = GTUtility.getBlockFromStack(miningPipeTip);
+    private static final ItemStack MINING_PIPE = GTModHandler.getIC2Item("miningPipe", 0);
+    private static final ItemStack MINING_PIPE_TIP = GTModHandler.getIC2Item("miningPipeTip", 0);
+    private static final Block MINING_PIPE_BLOCK = GTUtility.getBlockFromStack(MINING_PIPE);
+    private static final Block MINING_PIPE_TIP_BLOCK = GTUtility.getBlockFromStack(MINING_PIPE_TIP);
     protected static final String STRUCTURE_PIECE_MAIN = "main";
     protected static final ClassValue<IStructureDefinition<MTEDrillerBase>> STRUCTURE_DEFINITION = new ClassValue<>() {
 
@@ -128,43 +115,21 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
         }
     };
 
-    private Block casingBlock;
-    private int casingMeta;
-    private int frameMeta;
     protected int casingTextureIndex;
     protected boolean isPickingPipes;
-
-    private ForgeDirection back;
-
     private int xDrill, yDrill, zDrill, xPipe, zPipe, yHead;
-
-    protected int getXDrill() {
-        return xDrill;
-    }
-
-    protected int getZDrill() {
-        return zDrill;
-    }
-
-    protected int getYHead() {
-        return yHead;
-    }
-
-    protected int workState;
-    protected static final int STATE_DOWNWARD = 0, STATE_AT_BOTTOM = 1, STATE_UPWARD = 2, STATE_ABORT = 3;
-
+    protected WorkState workState = WorkState.DOWNWARD;
     protected boolean mChunkLoadingEnabled = true;
     protected ChunkCoordIntPair mCurrentChunk = null;
     protected boolean mWorkChunkNeedsReload = true;
 
     /** Stores default result messages for success/failures of each work state. */
-    private final Map<ResultRegistryKey, CheckRecipeResult> resultRegistry = new HashMap<>();
+    private final Int2ObjectOpenHashMap<CheckRecipeResult> resultRegistry = new Int2ObjectOpenHashMap<>();
 
     /** Allows inheritors to supply custom runtime failure messages. */
     private CheckRecipeResult runtimeFailure = null;
     private CheckRecipeResult lastRuntimeFailure = null;
 
-    /** Allows inheritors to supply custom shutdown failure messages. */
     private @NotNull String shutdownReason = "";
 
     /** Allows inheritors to suppress wiping the last error if the machine is forcibly turned off. */
@@ -180,31 +145,50 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
         initFields();
     }
 
-    protected void addOperatingMessages() {
-        // Inheritors can overwrite these to add custom operating messages.
-        addResultMessage(STATE_DOWNWARD, true, "deploying_pipe");
-        addResultMessage(STATE_DOWNWARD, false, "extracting_pipe");
-        addResultMessage(STATE_AT_BOTTOM, true, "drilling");
-        addResultMessage(STATE_AT_BOTTOM, false, "no_mining_pipe");
-        addResultMessage(STATE_UPWARD, true, "retracting_pipe");
-        addResultMessage(STATE_UPWARD, false, "drill_generic_finished");
-        addResultMessage(STATE_ABORT, true, "retracting_pipe");
-        addResultMessage(STATE_ABORT, false, "drill_retract_pipes_finished");
+    private void initFields() {
+        casingTextureIndex = getCasingTextureIndex();
+        workState = WorkState.DOWNWARD;
+        addOperatingMessages();
     }
 
-    private void initFields() {
-        casingBlock = getCasingBlockItem().getBlock();
-        casingMeta = getCasingBlockItem().get(0)
-            .getItemDamage();
-        int frameId = 4096 + getFrameMaterial().mMetaItemSubID;
-        frameMeta = GregTechAPI.METATILEENTITIES[frameId] != null
-            ? GregTechAPI.METATILEENTITIES[frameId].getTileEntityBaseType()
-            : WILDCARD;
-        casingTextureIndex = getCasingTextureIndex();
-        workState = STATE_DOWNWARD;
+    protected int getXDrill() {
+        return xDrill;
+    }
 
-        addOperatingMessages();
+    protected int getZDrill() {
+        return zDrill;
+    }
 
+    public int getYHead() {
+        return yHead;
+    }
+
+    public WorkState getWorkState() {
+        return workState;
+    }
+
+    public boolean isChunkLoadingEnabled() {
+        return mChunkLoadingEnabled;
+    }
+
+    public void setChunkLoadingEnabled(boolean enabled) {
+        mChunkLoadingEnabled = enabled;
+    }
+
+    public final void setWorkState(WorkState state) {
+        this.workState = state;
+    }
+
+    protected void addOperatingMessages() {
+        // Inheritors can overwrite these to add custom operating messages.
+        addResultMessage(WorkState.DOWNWARD, true, "deploying_pipe");
+        addResultMessage(WorkState.DOWNWARD, false, "extracting_pipe");
+        addResultMessage(WorkState.AT_BOTTOM, true, "drilling");
+        addResultMessage(WorkState.AT_BOTTOM, false, "no_mining_pipe");
+        addResultMessage(WorkState.UPWARD, true, "retracting_pipe");
+        addResultMessage(WorkState.UPWARD, false, "drill_generic_finished");
+        addResultMessage(WorkState.ABORT, true, "retracting_pipe");
+        addResultMessage(WorkState.ABORT, false, "drill_retract_pipes_finished");
     }
 
     @Override
@@ -236,7 +220,7 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        aNBT.setInteger("workState", workState);
+        aNBT.setInteger("workState", workState.ordinal());
         aNBT.setBoolean("chunkLoadingEnabled", mChunkLoadingEnabled);
         aNBT.setBoolean("isChunkloading", mCurrentChunk != null);
         if (mCurrentChunk != null) {
@@ -248,9 +232,9 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        workState = aNBT.getInteger("workState");
+        this.setWorkState(WorkState.fromOrdinal(aNBT.getInteger("workState")));
         if (aNBT.hasKey("isPickingPipes"))
-            workState = aNBT.getBoolean("isPickingPipes") ? STATE_UPWARD : STATE_DOWNWARD;
+            workState = aNBT.getBoolean("isPickingPipes") ? WorkState.UPWARD : WorkState.DOWNWARD;
         if (aNBT.hasKey("chunkLoadingEnabled")) mChunkLoadingEnabled = aNBT.getBoolean("chunkLoadingEnabled");
         if (aNBT.getBoolean("isChunkloading")) {
             mCurrentChunk = new ChunkCoordIntPair(
@@ -264,10 +248,10 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
         EntityPlayer entityPlayer, float aX, float aY, float aZ, ItemStack aTool) {
         if (side == getBaseMetaTileEntity().getFrontFacing()) {
             mChunkLoadingEnabled = !mChunkLoadingEnabled;
-            GTUtility.sendChatToPlayer(
+            GTUtility.sendChatTrans(
                 entityPlayer,
-                mChunkLoadingEnabled ? GTUtility.trans("502", "Mining chunk loading enabled")
-                    : GTUtility.trans("503", "Mining chunk loading disabled"));
+                mChunkLoadingEnabled ? "GT5U.chat.driller_base.chunk_loading.enable"
+                    : "GT5U.chat.driller_base.chunk_loading.disabled");
             return true;
         }
         return super.onSolderingToolRightClick(side, wrenchingSide, entityPlayer, aX, aY, aZ, aTool);
@@ -294,9 +278,9 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
     protected boolean tryPickPipe() {
         if (yHead == yDrill) return isPickingPipes = false;
         if (tryOutputPipe()) {
-            if (checkBlockAndMeta(xPipe, yHead + 1, zPipe, miningPipeBlock, WILDCARD))
+            if (checkBlockAndMeta(xPipe, yHead + 1, zPipe, MINING_PIPE_BLOCK, WILDCARD))
                 getBaseMetaTileEntity().getWorld()
-                    .setBlock(xPipe, yHead + 1, zPipe, miningPipeTipBlock);
+                    .setBlock(xPipe, yHead + 1, zPipe, MINING_PIPE_TIP_BLOCK);
             getBaseMetaTileEntity().getWorld()
                 .setBlockToAir(xPipe, yHead, zPipe);
             return isPickingPipes = true;
@@ -304,56 +288,72 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
         return isPickingPipes = false;
     }
 
-    /**
-     * @return 0 for succeeded, 1 for invalid block, 2 for not having mining pipes, 3 for event canceled.
-     */
-    protected int tryLowerPipeState() {
+    protected boolean requiresMiningPipes() {
+        return true;
+    }
+
+    protected enum PipeActionResult {
+        SUCCESS,
+        INVALID_BLOCK,
+        NO_PIPE,
+        CANCELED
+    }
+
+    protected PipeActionResult tryLowerPipeState() {
         return tryLowerPipeState(false);
     }
 
-    /**
-     * @return 0 for succeeded, 1 for invalid block, 2 for not having mining pipes, 3 for event canceled.
-     */
-    protected int tryLowerPipeState(boolean isSimulating) {
-        if (!isHasMiningPipes()) return 2;
-        switch (canLowerPipe()) {
-            case 1 -> {
-                return 1;
-            }
-            case 2 -> {
-                return 3;
+    protected PipeActionResult tryLowerPipeState(boolean isSimulating) {
+        if (!hasMiningPipes()) {
+            return PipeActionResult.NO_PIPE;
+        }
+        boolean canEraseBlock = false;
+        final IGregTechTileEntity aBaseTile = getBaseMetaTileEntity();
+        if (yHead > 0 && GTUtility.getBlockHardnessAt(aBaseTile.getWorld(), xPipe, yHead - 1, zPipe) >= 0) {
+            if (GTUtility.eraseBlockByFakePlayer(getFakePlayer(aBaseTile), xPipe, yHead - 1, zPipe, true)) {
+                canEraseBlock = true;
+            } else {
+                return PipeActionResult.CANCELED;
             }
         }
+        if (!canEraseBlock) {
+            return PipeActionResult.INVALID_BLOCK;
+        }
 
-        Block b = getBaseMetaTileEntity().getBlock(xPipe, yHead - 1, zPipe);
-        if (b != miningPipeTipBlock && !GTUtility.setBlockByFakePlayer(
+        final Block b = getBaseMetaTileEntity().getBlock(xPipe, yHead - 1, zPipe);
+        if (b != MINING_PIPE_TIP_BLOCK && !GTUtility.setBlockByFakePlayer(
             getFakePlayer(getBaseMetaTileEntity()),
             xPipe,
             yHead - 1,
             zPipe,
-            miningPipeTipBlock,
+            MINING_PIPE_TIP_BLOCK,
             0,
-            isSimulating)) return 3;
-        if (!isSimulating) {
-            if (yHead != yDrill) getBaseMetaTileEntity().getWorld()
-                .setBlock(xPipe, yHead, zPipe, miningPipeBlock);
-            if (b != miningPipeBlock && b != miningPipeTipBlock) getBaseMetaTileEntity().decrStackSize(1, 1);
+            isSimulating)) {
+            return PipeActionResult.CANCELED;
         }
-
-        return 0;
+        if (!isSimulating) {
+            if (yHead != yDrill) {
+                getBaseMetaTileEntity().getWorld()
+                    .setBlock(xPipe, yHead, zPipe, MINING_PIPE_BLOCK);
+            }
+            if (b != MINING_PIPE_BLOCK && b != MINING_PIPE_TIP_BLOCK) {
+                getBaseMetaTileEntity().decrStackSize(1, 1);
+            }
+        }
+        return PipeActionResult.SUCCESS;
     }
 
     private void putMiningPipesFromInputsInController() {
-        int maxPipes = miningPipe.getMaxStackSize();
-        if (isHasMiningPipes(maxPipes)) return;
+        int maxPipes = MINING_PIPE.getMaxStackSize();
+        if (hasMiningPipes(maxPipes)) return;
 
         ItemStack pipes = getStackInSlot(1);
-        if (pipes != null && !pipes.isItemEqual(miningPipe)) return;
+        if (pipes != null && !pipes.isItemEqual(MINING_PIPE)) return;
         for (ItemStack storedItem : getStoredInputs()) {
-            if (!storedItem.isItemEqual(miningPipe)) continue;
+            if (!storedItem.isItemEqual(MINING_PIPE)) continue;
 
             if (pipes == null) {
-                setInventorySlotContents(1, GTUtility.copyOrNull(miningPipe));
+                setInventorySlotContents(1, GTUtility.copyOrNull(MINING_PIPE));
                 pipes = getStackInSlot(1);
             }
 
@@ -369,33 +369,22 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
     }
 
     private boolean tryOutputPipe() {
-        if (!getBaseMetaTileEntity().addStackToSlot(1, GTUtility.copyAmount(1, miningPipe)))
-            mOutputItems = new ItemStack[] { GTUtility.copyAmount(1, miningPipe) };
+        if (!getBaseMetaTileEntity().addStackToSlot(1, GTUtility.copyAmount(1, MINING_PIPE)))
+            mOutputItems = new ItemStack[] { GTUtility.copyAmount(1, MINING_PIPE) };
         return true;
-    }
-
-    /**
-     * @return 0 for available, 1 for invalid block, 2 for event canceled.
-     */
-    protected int canLowerPipe() {
-        IGregTechTileEntity aBaseTile = getBaseMetaTileEntity();
-        if (yHead > 0 && GTUtility.getBlockHardnessAt(aBaseTile.getWorld(), xPipe, yHead - 1, zPipe) >= 0) {
-            return GTUtility.eraseBlockByFakePlayer(getFakePlayer(aBaseTile), xPipe, yHead - 1, zPipe, true) ? 0 : 2;
-        }
-        return 1;
     }
 
     protected boolean reachingVoidOrBedrock() {
         return yHead <= 0 || checkBlockAndMeta(xPipe, yHead - 1, zPipe, Blocks.bedrock, WILDCARD);
     }
 
-    private boolean isHasMiningPipes() {
-        return isHasMiningPipes(1);
+    private boolean hasMiningPipes() {
+        return hasMiningPipes(1);
     }
 
-    private boolean isHasMiningPipes(int minCount) {
-        ItemStack pipe = getStackInSlot(1);
-        return pipe != null && pipe.stackSize > minCount - 1 && pipe.isItemEqual(miningPipe);
+    private boolean hasMiningPipes(int minCount) {
+        ItemStack stack = getStackInSlot(1);
+        return stack != null && stack.stackSize > minCount - 1 && stack.isItemEqual(MINING_PIPE);
     }
 
     private boolean isEnergyEnough() {
@@ -409,18 +398,23 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
 
     protected boolean workingDownward(ItemStack aStack, int xDrill, int yDrill, int zDrill, int xPipe, int zPipe,
         int yHead, int oldYHead) {
+        if (!requiresMiningPipes()) {
+            workState = WorkState.AT_BOTTOM;
+            return true;
+        }
+
         switch (tryLowerPipeState()) {
-            case 2 -> {
+            case NO_PIPE -> {
                 mMaxProgresstime = 0;
                 setRuntimeFailureReason(CheckRecipeResultRegistry.MISSING_MINING_PIPE);
                 return false;
             }
-            case 3 -> {
-                workState = STATE_UPWARD;
+            case CANCELED -> {
+                workState = WorkState.UPWARD;
                 return true;
             }
-            case 1 -> {
-                workState = STATE_AT_BOTTOM;
+            case INVALID_BLOCK -> {
+                workState = WorkState.AT_BOTTOM;
                 return true;
             }
             default -> {
@@ -431,20 +425,26 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
 
     protected boolean workingAtBottom(ItemStack aStack, int xDrill, int yDrill, int zDrill, int xPipe, int zPipe,
         int yHead, int oldYHead) {
-        if (tryLowerPipeState(true) == 0) {
-            workState = STATE_DOWNWARD;
+        if (tryLowerPipeState(true) == PipeActionResult.SUCCESS) {
+            workState = WorkState.DOWNWARD;
             return true;
         }
-        workState = STATE_UPWARD;
+        workState = WorkState.UPWARD;
         return true;
     }
 
     protected boolean workingUpward(ItemStack aStack, int xDrill, int yDrill, int zDrill, int xPipe, int zPipe,
         int yHead, int oldYHead) {
+        if (!requiresMiningPipes()) {
+            workState = WorkState.DOWNWARD;
+            stopMachine(ShutDownReasonRegistry.NONE);
+            return false;
+        }
+
         if (tryPickPipe()) {
             return true;
         } else {
-            workState = STATE_DOWNWARD;
+            workState = WorkState.DOWNWARD;
             stopMachine(ShutDownReasonRegistry.NONE);
             return false;
         }
@@ -453,9 +453,9 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
     /** Called once when the abort button is clicked. Use to perform any needed cleanup (e.g. unloading chunks.) */
     protected void onAbort() {}
 
-    protected void abortDrilling() {
-        if (workState != STATE_ABORT) {
-            workState = STATE_ABORT;
+    public void abortDrilling() {
+        if (workState != WorkState.ABORT) {
+            workState = WorkState.ABORT;
             onAbort();
             setShutdownReason("");
 
@@ -469,10 +469,16 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
     // exclusively on the workingUpward phase. It also allows for more distinct status messages.
     protected boolean workingToAbortOperation(@NotNull ItemStack aStack, int xDrill, int yDrill, int zDrill, int xPipe,
         int zPipe, int yHead, int oldYHead) {
+        if (!requiresMiningPipes()) {
+            workState = WorkState.DOWNWARD;
+            stopMachine(ShutDownReasonRegistry.NONE);
+            return false;
+        }
+
         if (tryPickPipe()) {
             return true;
         } else {
-            workState = STATE_DOWNWARD;
+            workState = WorkState.DOWNWARD;
             stopMachine(ShutDownReasonRegistry.NONE);
             return false;
         }
@@ -507,11 +513,13 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
             stopMachine(ShutDownReasonRegistry.NONE);
             return SimpleCheckRecipeResult.ofFailure("not_enough_energy");
         }
-        putMiningPipesFromInputsInController();
+        if (requiresMiningPipes()) {
+            putMiningPipesFromInputsInController();
+        }
 
         final boolean wasSuccessful;
         switch (workState) {
-            case STATE_DOWNWARD -> wasSuccessful = workingDownward(
+            case DOWNWARD -> wasSuccessful = workingDownward(
                 controllerStack,
                 xDrill,
                 yDrill,
@@ -520,7 +528,7 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
                 zPipe,
                 yHead,
                 oldYHead);
-            case STATE_AT_BOTTOM -> wasSuccessful = workingAtBottom(
+            case AT_BOTTOM -> wasSuccessful = workingAtBottom(
                 controllerStack,
                 xDrill,
                 yDrill,
@@ -529,7 +537,7 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
                 zPipe,
                 yHead,
                 oldYHead);
-            case STATE_UPWARD -> wasSuccessful = workingUpward(
+            case UPWARD -> wasSuccessful = workingUpward(
                 controllerStack,
                 xDrill,
                 yDrill,
@@ -538,7 +546,7 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
                 zPipe,
                 yHead,
                 oldYHead);
-            case STATE_ABORT -> wasSuccessful = workingToAbortOperation(
+            case ABORT -> wasSuccessful = workingToAbortOperation(
                 controllerStack,
                 xDrill,
                 yDrill,
@@ -555,9 +563,8 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
                 lastRuntimeFailure = null;
             }
 
-            return resultRegistry.getOrDefault(
-                new ResultRegistryKey(workState, wasSuccessful),
-                SimpleCheckRecipeResult.ofFailure("no_mining_pipe"));
+            return resultRegistry
+                .getOrDefault(pack(workState, wasSuccessful), SimpleCheckRecipeResult.ofFailure("no_mining_pipe"));
         } else {
             final CheckRecipeResult result;
             result = lastRuntimeFailure = runtimeFailure;
@@ -601,8 +608,12 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
      *
      * @param newReason The reason for the machine shutdown
      */
-    protected void setShutdownReason(@NotNull String newReason) {
+    public void setShutdownReason(@NotNull String newReason) {
         shutdownReason = newReason;
+    }
+
+    public @NotNull String getShutdownReason() {
+        return shutdownReason;
     }
 
     @Override
@@ -617,35 +628,41 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
     }
 
     @Override
-    public final IStructureDefinition<MTEDrillerBase> getStructureDefinition() {
+    public IStructureDefinition<MTEDrillerBase> getStructureDefinition() {
         return STRUCTURE_DEFINITION.get(getClass());
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         updateCoordinates();
-        return checkPiece(STRUCTURE_PIECE_MAIN, 1, 6, 0) && checkHatches()
-            && GTUtility.getTier(getMaxInputVoltage()) >= getMinTier()
-            && mMaintenanceHatches.size() == 1;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 1, 6, 0, errors)) return;
+        checkHatches(errors);
+        if (!mEnergyHatches.isEmpty()) {
+            int cTier = GTUtility.getTier(getMaxInputVoltage());
+            int machineTier = getMinTier();
+            if (cTier < machineTier) {
+                errors.add(StructureErrors.energyHatchTierTooLow(machineTier));
+            }
+        }
     }
 
-    private void updateCoordinates() {
+    protected void updateCoordinates() {
         xDrill = getBaseMetaTileEntity().getXCoord();
         yDrill = getBaseMetaTileEntity().getYCoord();
         zDrill = getBaseMetaTileEntity().getZCoord();
-        back = getBaseMetaTileEntity().getBackFacing();
+        ForgeDirection back = getBaseMetaTileEntity().getBackFacing();
         xPipe = xDrill + back.offsetX;
         zPipe = zDrill + back.offsetZ;
     }
 
     private boolean checkPipesAndSetYHead() {
         yHead = yDrill - 1;
-        while (checkBlockAndMeta(xPipe, yHead, zPipe, miningPipeBlock, WILDCARD)) yHead--; // skip pipes
+        while (checkBlockAndMeta(xPipe, yHead, zPipe, MINING_PIPE_BLOCK, WILDCARD)) yHead--; // skip pipes
         // is pipe tip OR is controller layer
-        if (checkBlockAndMeta(xPipe, yHead, zPipe, miningPipeTipBlock, WILDCARD) || ++yHead == yDrill) return true;
+        if (checkBlockAndMeta(xPipe, yHead, zPipe, MINING_PIPE_TIP_BLOCK, WILDCARD) || ++yHead == yDrill) return true;
         // pipe column is broken - try fix
         getBaseMetaTileEntity().getWorld()
-            .setBlock(xPipe, yHead, zPipe, miningPipeTipBlock);
+            .setBlock(xPipe, yHead, zPipe, MINING_PIPE_TIP_BLOCK);
         return true;
     }
 
@@ -671,7 +688,7 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
 
     protected abstract int getMinTier();
 
-    protected abstract boolean checkHatches();
+    protected abstract void checkHatches(List<StructureError> errors);
 
     protected abstract void setElectricityStats();
 
@@ -757,98 +774,8 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
     }
 
     @Override
-    protected boolean useMui2() {
-        return false;
-    }
-
-    @Override
-    protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
-        super.drawTexts(screenElements, inventorySlot);
-        screenElements.widget(
-            TextWidget.dynamicString(() -> shutdownReason)
-                .setSynced(false)
-                .setTextAlignment(Alignment.CenterLeft)
-                .setEnabled(widget -> !(getBaseMetaTileEntity().isActive() || shutdownReason.isEmpty())))
-            .widget(new FakeSyncWidget.StringSyncer(() -> shutdownReason, newString -> shutdownReason = newString));
-    }
-
-    @Override
-    public boolean showRecipeTextInGUI() {
-        return false;
-    }
-
-    /**
-     * Adds additional buttons to the main button row. You do not need to set the position.
-     *
-     * @param builder      Only use to attach SyncWidgets.
-     * @param buildContext Context for things like the player.
-     */
-    protected List<ButtonWidget> getAdditionalButtons(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        return ImmutableList.of();
-    }
-
-    @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        super.addUIWidgets(builder, buildContext);
-        final int BUTTON_Y_LEVEL = 91;
-
-        builder.widget(
-            new LockedWhileActiveButton(this.getBaseMetaTileEntity(), builder)
-                .setOnClick((clickData, widget) -> mChunkLoadingEnabled = !mChunkLoadingEnabled)
-                .setPlayClickSound(true)
-                .setBackground(() -> {
-                    if (mChunkLoadingEnabled) {
-                        return new IDrawable[] { GTUITextures.BUTTON_STANDARD_PRESSED,
-                            GTUITextures.OVERLAY_BUTTON_CHUNK_LOADING };
-                    }
-                    return new IDrawable[] { GTUITextures.BUTTON_STANDARD,
-                        GTUITextures.OVERLAY_BUTTON_CHUNK_LOADING_OFF };
-                })
-                .attachSyncer(
-                    new FakeSyncWidget.BooleanSyncer(
-                        () -> mChunkLoadingEnabled,
-                        newBoolean -> mChunkLoadingEnabled = newBoolean),
-                    builder,
-                    (widget, val) -> widget.notifyTooltipChange())
-                .dynamicTooltip(
-                    () -> ImmutableList.of(
-                        StatCollector.translateToLocal(
-                            mChunkLoadingEnabled ? "GT5U.gui.button.chunk_loading_on"
-                                : "GT5U.gui.button.chunk_loading_off")))
-                .setTooltipShowUpDelay(TOOLTIP_DELAY)
-                .setPos(new Pos2d(80, BUTTON_Y_LEVEL))
-                .setSize(16, 16))
-            .widget(
-                new ButtonWidget().setOnClick((clickData, widget) -> abortDrilling())
-                    .setPlayClickSound(true)
-                    .setBackground(() -> {
-                        if (workState == STATE_ABORT) {
-                            return new IDrawable[] { GTUITextures.BUTTON_STANDARD_PRESSED,
-                                GTUITextures.OVERLAY_BUTTON_RETRACT_PIPE, GTUITextures.OVERLAY_BUTTON_LOCKED };
-                        }
-                        return new IDrawable[] { GTUITextures.BUTTON_STANDARD,
-                            GTUITextures.OVERLAY_BUTTON_RETRACT_PIPE };
-                    })
-                    .attachSyncer(
-                        new FakeSyncWidget.IntegerSyncer(() -> workState, (newInt) -> workState = newInt),
-                        builder,
-                        (widget, integer) -> widget.notifyTooltipChange())
-                    .dynamicTooltip(
-                        () -> ImmutableList.of(
-                            StatCollector.translateToLocalFormatted(
-                                workState == STATE_ABORT ? "GT5U.gui.button.drill_retract_pipes_active"
-                                    : "GT5U.gui.button.drill_retract_pipes")))
-                    .setTooltipShowUpDelay(TOOLTIP_DELAY)
-                    .setPos(new Pos2d(174, 112))
-                    .setSize(16, 16));
-
-        int left = 98;
-        for (ButtonWidget button : getAdditionalButtons(builder, buildContext)) {
-            button.setPos(new Pos2d(left, BUTTON_Y_LEVEL))
-                .setSize(16, 16);
-            builder.widget(button);
-            left += 18;
-        }
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
+        return new MTEDrillerBaseGui<>(this);
     }
 
     protected List<IHatchElement<? super MTEDrillerBase>> getAllowedHatches() {
@@ -883,56 +810,51 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
         }
     }
 
+    public enum WorkState {
+
+        DOWNWARD,
+        AT_BOTTOM,
+        UPWARD,
+        ABORT;
+
+        private static final WorkState[] VALUES = values();
+
+        public static WorkState fromOrdinal(int ordinal) {
+            if (0 <= ordinal && ordinal < VALUES.length) {
+                return VALUES[ordinal];
+            }
+            return DOWNWARD;
+        }
+    }
+
     /**
      * Sets or overrides the {@link CheckRecipeResult} for a given work state
      *
-     * @param state  A work state like {@link #STATE_DOWNWARD}.
+     * @param state  A work state.
      * @param result A previously registered recipe result.
      */
-    protected void addResultMessage(final int state, @NotNull final CheckRecipeResult result) {
-        resultRegistry.put(new ResultRegistryKey(state, result.wasSuccessful()), result);
+    protected void addResultMessage(final WorkState state, @NotNull final CheckRecipeResult result) {
+        resultRegistry.put(pack(state, result.wasSuccessful()), result);
     }
 
     /**
      * Sets or overrides the {@link CheckRecipeResult} for a given work state and operation success type.
      *
-     * @param state         A work state like {@link #STATE_DOWNWARD}.
+     * @param state         A work state.
      * @param wasSuccessful Whether the operation was successful.
      * @param resultKey     An I18N key for the message.
      */
-    protected void addResultMessage(final int state, final boolean wasSuccessful, @NotNull final String resultKey) {
+    protected void addResultMessage(final WorkState state, final boolean wasSuccessful,
+        @NotNull final String resultKey) {
         addResultMessage(
             state,
             wasSuccessful ? SimpleCheckRecipeResult.ofSuccess(resultKey)
                 : SimpleCheckRecipeResult.ofFailure(resultKey));
     }
 
-    @SuppressWarnings("ClassCanBeRecord")
-    private final static class ResultRegistryKey {
-
-        private final int state;
-        private final boolean successful;
-
-        public ResultRegistryKey(final int state, final boolean successful) {
-            this.state = state;
-            this.successful = successful;
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-            if (this == obj) {
-                return true;
-            }
-            if (!(obj instanceof ResultRegistryKey other)) {
-                return false;
-            }
-
-            return (state == other.state && successful == other.successful);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(state, successful);
-        }
+    private static int pack(WorkState state, boolean successful) {
+        final int stateBits = state.ordinal();
+        final int successBit = successful ? 0b1 : 0b0;
+        return (stateBits << 1) | successBit;
     }
 }

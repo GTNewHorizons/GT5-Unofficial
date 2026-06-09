@@ -17,6 +17,7 @@ import net.minecraftforge.event.world.BlockEvent;
 
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
@@ -85,13 +86,7 @@ public class ToolChainsawLV extends ToolSaw {
                 aDrops.clear();
             }
             aPlayer.worldObj.setBlock(aX, aY, aZ, Blocks.air, 0, 0);
-        } else if (((aBlock.getMaterial() == Material.ice) || (aBlock.getMaterial() == Material.packedIce))
-            && (aDrops.isEmpty())) {
-                aDrops.add(new ItemStack(aBlock, 1, aMetaData));
-                aPlayer.worldObj.setBlockToAir(aX, aY, aZ);
-                aEvent.dropChance = 1.0F;
-                return 1;
-            }
+        }
         if ((GregTechAPI.sTimber) && (!aPlayer.isSneaking())
             && (OrePrefixes.log.contains(new ItemStack(aBlock, 1, aMetaData)))) {
             int tY = aY + 1;
@@ -126,6 +121,11 @@ public class ToolChainsawLV extends ToolSaw {
         return (aBlock.getMaterial() == Material.leaves) || (aBlock.getMaterial() == Material.vine)
             || (aBlock.getMaterial() == Material.plants)
             || (aBlock.getMaterial() == Material.gourd) ? aDefault / 4.0F : aDefault;
+    }
+
+    @Override
+    public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
+        return aIsToolHead ? MetaGeneratedTool.getPrimaryMaterial(aStack).mRGBa : Materials.Steel.mRGBa;
     }
 
     @Override

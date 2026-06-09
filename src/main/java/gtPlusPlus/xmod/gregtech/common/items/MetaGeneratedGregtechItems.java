@@ -330,7 +330,7 @@ public class MetaGeneratedGregtechItems extends GTMetaItemX32 {
         GTValues.RA.stdBuilder()
             .itemInputs(GregtechItemList.Pellet_RTG_PU238.get(1))
             .duration(0)
-            .eut(64)
+            .eut(TierEU.RECIPE_MV / 2)
             .metadata(RTG_DURATION_IN_DAYS, MathUtils.roundToClosestInt(87.7f))
             .addTo(rtgFuels);
 
@@ -351,14 +351,14 @@ public class MetaGeneratedGregtechItems extends GTMetaItemX32 {
         GTValues.RA.stdBuilder()
             .itemInputs(GregtechItemList.Pellet_RTG_AM241.get(1))
             .duration(0)
-            .eut(16)
+            .eut(TierEU.RECIPE_LV / 2)
             .metadata(RTG_DURATION_IN_DAYS, 216)
             .addTo(rtgFuels);
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTModHandler.getIC2Item("RTGPellets", 1))
             .duration(0)
-            .eut(8)
+            .eut(TierEU.RECIPE_ULV)
             .metadata(RTG_DURATION_IN_DAYS, MathUtils.roundToClosestInt(2.6f))
             .addTo(rtgFuels);
     }

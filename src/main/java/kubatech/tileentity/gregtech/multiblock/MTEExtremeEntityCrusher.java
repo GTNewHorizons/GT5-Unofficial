@@ -36,30 +36,17 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_GLOW;
-import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
-import static kubatech.api.gui.KubaTechUITextures.OVERLAY_BUTTON_EEC_RITUAL_MODE_OFF;
-import static kubatech.api.gui.KubaTechUITextures.OVERLAY_BUTTON_EEC_RITUAL_MODE_ON;
-import static kubatech.api.gui.KubaTechUITextures.OVERLAY_BUTTON_EEC_SPAWN_INFERNALS_OFF;
-import static kubatech.api.gui.KubaTechUITextures.OVERLAY_BUTTON_EEC_SPAWN_INFERNALS_ON;
-import static kubatech.api.gui.KubaTechUITextures.OVERLAY_BUTTON_EEC_VOID_DAMAGED_AND_ENCHANTED_OFF;
-import static kubatech.api.gui.KubaTechUITextures.OVERLAY_BUTTON_EEC_VOID_DAMAGED_AND_ENCHANTED_ON;
-import static kubatech.api.gui.KubaTechUITextures.OVERLAY_BUTTON_EEC_WEAPON_CYCLING_OFF;
-import static kubatech.api.gui.KubaTechUITextures.OVERLAY_BUTTON_EEC_WEAPON_CYCLING_ON;
-import static kubatech.api.gui.KubaTechUITextures.OVERLAY_BUTTON_EEC_WEAPON_PRESERVATION_OFF;
-import static kubatech.api.gui.KubaTechUITextures.OVERLAY_BUTTON_EEC_WEAPON_PRESERVATION_ON;
-import static kubatech.api.gui.KubaTechUITextures.SLOT_EEC_SPAWNER;
-import static kubatech.api.gui.KubaTechUITextures.SLOT_EEC_SWORD;
 
+import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
-import java.util.function.Supplier;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -91,24 +78,12 @@ import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import com.google.common.collect.ImmutableList;
-import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-import com.gtnewhorizons.modularui.api.drawable.IDrawable;
-import com.gtnewhorizons.modularui.api.drawable.Text;
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
-import com.gtnewhorizons.modularui.api.math.Alignment;
-import com.gtnewhorizons.modularui.api.math.Color;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.widget.CycleButtonWidget;
-import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
-import com.gtnewhorizons.modularui.common.widget.DynamicPositionedRow;
-import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.kuba6000.mobsinfo.api.utils.FastRandom;
 import com.mojang.authlib.GameProfile;
 
@@ -126,13 +101,12 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.GTValues;
+import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoltageIndex;
-import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -142,14 +116,18 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.misc.GTStructureChannels;
 import kubatech.api.implementations.KubaTechGTMultiBlockBase;
 import kubatech.api.tileentity.CustomTileEntityPacketHandler;
 import kubatech.api.utils.ModUtils;
 import kubatech.client.effect.EntityRenderer;
 import kubatech.config.Config;
+import kubatech.gui.modularui2.MTEExtremeEntityCrusherGui;
 import kubatech.loaders.MobHandlerLoader;
 import kubatech.network.CustomTileEntityPacket;
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -163,7 +141,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
     public static final int MAX_LOOTING_LEVEL = 4;
     public static final double DIAMOND_SPIKES_DAMAGE = 9d;
     public final Random rand = new FastRandom();
-    private final WeaponCache weaponCache;
+    public final WeaponCache weaponCache;
     private EECEventHandler eventHandler;
 
     @SuppressWarnings("unused")
@@ -189,6 +167,11 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
         if (getBaseMetaTileEntity().isClientSide() && entityRenderer != null) {
             entityRenderer.setDead();
         }
+    }
+
+    @Override
+    public boolean isRotationChangeAllowed() {
+        return true;
     }
 
     @Override
@@ -235,21 +218,77 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
 
     private TileEntity masterStoneRitual = null;
     private TileEntity tileAltar = null;
-    private boolean isInRitualMode = false;
+    protected boolean isInRitualMode = false;
     private int mCasing = 0;
     private int glassTier = -1;
     private boolean mAnimationEnabled = true;
-    private boolean mIsProducingInfernalDrops = true;
-    private boolean voidAllDamagedAndEnchantedItems = false;
-    private boolean mPreserveWeapon;
-    private boolean mCycleWeapons;
+    protected boolean mIsProducingInfernalDrops = true;
+    protected boolean voidAllDamagedAndEnchantedItems = false;
+    protected boolean mPreserveWeapon;
+    protected boolean mCycleWeapons;
 
-    private boolean mIsRitualValid;
-    private boolean mIsPreventingGUIWeaponUse;
+    protected boolean mIsRitualValid;
+    protected boolean mIsPreventingGUIWeaponUse;
 
     private EntityRenderer entityRenderer = null;
     private boolean renderEntity = false;
     public EECFakePlayer EECPlayer = null;
+
+    public boolean isInRitualMode() {
+        return isInRitualMode;
+    }
+
+    public void setInRitualMode(boolean val) {
+        isInRitualMode = val;
+    }
+
+    public boolean isProducingInfernalDrops() {
+        return mIsProducingInfernalDrops;
+    }
+
+    public void setProducingInfernalDrops(boolean val) {
+        mIsProducingInfernalDrops = val;
+    }
+
+    public boolean isVoidAllDamagedAndEnchantedItems() {
+        return voidAllDamagedAndEnchantedItems;
+    }
+
+    public void setVoidAllDamagedAndEnchantedItems(boolean val) {
+        voidAllDamagedAndEnchantedItems = val;
+    }
+
+    public boolean isPreserveWeapon() {
+        return mPreserveWeapon;
+    }
+
+    public void setPreserveWeapon(boolean val) {
+        mPreserveWeapon = val;
+    }
+
+    public boolean isCycleWeapons() {
+        return mCycleWeapons;
+    }
+
+    public void setCycleWeapons(boolean val) {
+        mCycleWeapons = val;
+    }
+
+    public boolean isRitualValid() {
+        return mIsRitualValid;
+    }
+
+    public void setRitualValid(boolean val) {
+        mIsRitualValid = val;
+    }
+
+    public boolean isPreventingGUIWeaponUse() {
+        return mIsPreventingGUIWeaponUse;
+    }
+
+    public void setPreventingGUIWeaponUse(boolean val) {
+        mIsPreventingGUIWeaponUse = val;
+    }
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
@@ -293,11 +332,6 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
     @Override
     public IStructureDefinition<MTEExtremeEntityCrusher> getStructureDefinition() {
         return STRUCTURE_DEFINITION;
-    }
-
-    @Override
-    protected IAlignmentLimits getInitialAlignmentLimits() {
-        return (d, r, f) -> d.offsetY == 0 && r.isNotRotated();
     }
 
     @Override
@@ -349,17 +383,18 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
                     + " 16x Time, Output, Weapon Damage")
             .addGlassEnergyLimitInfo(VoltageIndex.UV)
             .beginStructureBlock(5, 7, 5, true)
-            .addController("Front Bottom Center")
+            .addController("Front bottom center")
             .addCasingInfoMin("Solid Steel Machine Casing", 35, false)
             .addCasingInfoExactly("Any Tiered Glass", 60, false)
             .addCasingInfoExactly("Steel Frame Box", 20, false)
             .addCasingInfoExactly("Diamond Spike", 9, false)
-            .addOutputBus("Any bottom casing", 1)
-            .addOutputHatch("Any bottom casing", 1)
-            .addEnergyHatch("Any bottom casing", 1)
-            .addMaintenanceHatch("Any bottom casing", 1)
+            .addInputBus("Any bottom Casing (optional, for weapon with Looting)", 1)
+            .addOutputBus("Any bottom Casing", 1)
+            .addOutputHatch("Any bottom Casing", 1)
+            .addEnergyHatch("Any bottom Casing", 1)
+            .addMaintenanceHatch("Any bottom Casing", 1)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
-            .toolTipFinisher(GTValues.AuthorKuba);
+            .toolTipFinisher(GTAuthors.AuthorKuba);
         return tt;
     }
 
@@ -410,14 +445,14 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
         if (entityRenderer == null) {
             ChunkCoordinates coords = this.getBaseMetaTileEntity()
                 .getCoords();
+            ExtendedFacing facing = this.getExtendedFacing();
             int[] abc = new int[] { 0, -2, 2 };
             int[] xyz = new int[] { 0, 0, 0 };
-            this.getExtendedFacing()
-                .getWorldOffset(abc, xyz);
+            facing.getWorldOffset(abc, xyz);
             xyz[0] += coords.posX;
             xyz[1] += coords.posY;
             xyz[2] += coords.posZ;
-            entityRenderer = new EntityRenderer(aBaseMetaTileEntity.getWorld(), xyz[0], xyz[1], xyz[2], time);
+            entityRenderer = new EntityRenderer(facing, aBaseMetaTileEntity.getWorld(), xyz[0], xyz[1], xyz[2], time);
         } else {
             entityRenderer.setDead();
             entityRenderer = new EntityRenderer(entityRenderer, time);
@@ -444,7 +479,12 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
             MobHandlerLoader.MobEECRecipe r = MobHandlerLoader.recipeMap.get(mobType);
             if (r != null) {
                 if (entityRenderer == null) setupEntityRenderer(getBaseMetaTileEntity(), 40);
-                entityRenderer.setEntity(r.entityCopy);
+                try {
+                    entityRenderer.setEntity(r.recipe.createEntityCopy());
+                } catch (NoSuchMethodException | InvocationTargetException | InstantiationException
+                    | IllegalAccessException e) {
+                    throw new RuntimeException(e);
+                }
             } else entityRenderer.setEntity(null);
         } else {
             renderEntity = false;
@@ -492,16 +532,6 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
             GTUtility.sendChatToPlayer(aPlayer, "Animations are " + (mAnimationEnabled ? "enabled" : "disabled"));
             return true;
         } else return super.onSolderingToolRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ, aTool);
-    }
-
-    @Override
-    public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ, ItemStack aTool) {
-        this.batchMode = !this.batchMode;
-        GTUtility.sendChatTrans(
-            aPlayer,
-            this.batchMode ? "GT5U.chat.machine.batch_mode.enable" : "GT5U.chat.machine.batch_mode.disable");
-        return true;
     }
 
     // We place the event handler in an inner
@@ -829,7 +859,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
         }
     }
 
-    private static boolean isUsableWeapon(final ItemStack aWeapon) {
+    public static boolean isUsableWeapon(final ItemStack aWeapon) {
         return Enchantment.looting.canApply(aWeapon);
     }
 
@@ -863,7 +893,11 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
             tMTE.getZCoord() + .5);
     }
 
-    private boolean checkRitualConnection() {
+    public void updateWeaponCache() {
+        weaponCache.setStackInSlot(0, mInventory[0]);
+    }
+
+    public boolean checkRitualConnection() {
         mIsRitualValid = isInRitualMode && connectToRitual();
         return mIsRitualValid;
     }
@@ -907,48 +941,54 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
                 .equals(WellOfSufferingRitualName);
     }
 
-    @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        glassTier = -1;
-        mCasing = 0;
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 6, 0)) return false;
-        if (mCasing < 35 || mEnergyHatches.isEmpty()) return false;
-        if (glassTier < VoltageIndex.UV)
-            for (MTEHatchEnergy hatch : mEnergyHatches) if (hatch.mTier > glassTier) return false;
-        checkRitualConnection();
-        return true;
+    private void rotateSpikes() {
+        ChunkCoordinates coords = this.getBaseMetaTileEntity()
+            .getCoords();
+        World world = this.getBaseMetaTileEntity()
+            .getWorld();
+        ExtendedFacing facing = this.getExtendedFacing();
+        int meta = facing.getRelativeUpInWorld()
+            .ordinal();
+        int[] abc = new int[] { 0, -1, 0 };
+        int[] xyz = new int[] { 0, 0, 0 };
+        for (int x = -1; x < 2; x++) {
+            abc[0] = x;
+            for (int z = 1; z < 4; z++) {
+                abc[2] = z;
+                facing.getWorldOffset(abc, xyz);
+                xyz[0] += coords.posX;
+                xyz[1] += coords.posY;
+                xyz[2] += coords.posZ;
+                world.setBlockMetadataWithNotify(xyz[0], xyz[1], xyz[2], meta, 3);
+            }
+        }
     }
 
     @Override
-    protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
-        // Ritual mode
-        screenElements.widget(
-            new TextWidget()
-                .setTextSupplier(
-                    () -> mIsRitualValid
-                        ? new Text(StatCollector.translateToLocal("kubatech.gui.text.eec.ritual_mode_connected"))
-                            .color(Color.WHITE.normal)
-                        : new Text(StatCollector.translateToLocal("kubatech.gui.text.eec.ritual_mode_error"))
-                            .color(Color.RED.dark(3)))
-                .setTextAlignment(Alignment.CenterLeft)
-                .setEnabled(widget -> isInRitualMode));
-        screenElements
-            .widget(new FakeSyncWidget.BooleanSyncer(() -> this.isInRitualMode, val -> this.isInRitualMode = val));
-        screenElements
-            .widget(new FakeSyncWidget.BooleanSyncer(() -> this.mIsRitualValid, val -> this.mIsRitualValid = val));
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
+        glassTier = -1;
+        mCasing = 0;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 6, 0, errors)) return;
+        checkCasingMin(errors, mCasing, 35);
+        checkHasMaintenanceHatch(errors);
+        checkHasEnergyHatch(errors);
+        if (glassTier < VoltageIndex.UV) {
+            for (MTEHatchEnergy hatch : mEnergyHatches) {
+                if (hatch.mTier > glassTier) {
+                    errors.add(StructureErrors.glassTierNotEnough(hatch.mTier));
+                    break;
+                }
+            }
+        }
+        checkHasAnyOutput(errors);
+        if (!errors.isEmpty()) return;
+        checkRitualConnection();
+        this.rotateSpikes();
+    }
 
-        // Weapon Preservation
-        screenElements.widget(
-            new TextWidget(new Text(StatCollector.translateToLocal("kubatech.gui.text.eec.preserve_weapon_warning")))
-                .setTextAlignment(Alignment.CenterLeft)
-                .setDefaultColor(EnumChatFormatting.YELLOW)
-                .setEnabled(widget -> mIsPreventingGUIWeaponUse && !isInRitualMode && mMaxProgresstime > 0));
-        screenElements.widget(
-            new FakeSyncWidget.BooleanSyncer(
-                () -> this.mIsPreventingGUIWeaponUse,
-                val -> this.mIsPreventingGUIWeaponUse = val));
-
-        super.drawTexts(screenElements, inventorySlot);
+    @Override
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
+        return new MTEExtremeEntityCrusherGui(this);
     }
 
     @Override
@@ -1002,137 +1042,6 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
             info.add(StatCollector.translateToLocalFormatted("kubatech.infodata.eec.total_damage", tAttackDamage));
         }
         return info.toArray(new String[0]);
-    }
-
-    @Override
-    protected void addConfigurationWidgets(DynamicPositionedRow configurationElements, UIBuildContext buildContext) {
-        configurationElements.setSynced(true);
-
-        // Preserve weapon button
-        CycleButtonWidget tWidgetPreserveWeapon = createEECSimpleWidget(
-            OVERLAY_BUTTON_EEC_WEAPON_PRESERVATION_ON,
-            OVERLAY_BUTTON_EEC_WEAPON_PRESERVATION_OFF);
-
-        configurationElements.widget(tWidgetPreserveWeapon.setToggle(() -> mPreserveWeapon, v -> {
-            mPreserveWeapon = v;
-            tWidgetPreserveWeapon.notifyTooltipChange();
-        })
-            .dynamicTooltip(
-                () -> ImmutableList.of(
-                    StatCollector.translateToLocal(
-                        "kubatech.gui.text.eec.preserve_weapon" + (mPreserveWeapon ? "_on" : "_off")))));
-
-        // Cycle weapons button
-        CycleButtonWidget tWidgetCycleWeapons = createEECSimpleWidget(
-            OVERLAY_BUTTON_EEC_WEAPON_CYCLING_ON,
-            OVERLAY_BUTTON_EEC_WEAPON_CYCLING_OFF);
-        configurationElements.widget(tWidgetCycleWeapons.setToggle(() -> mCycleWeapons, v -> {
-            mCycleWeapons = v;
-            tWidgetCycleWeapons.notifyTooltipChange();
-        })
-            .dynamicTooltip(
-                () -> ImmutableList.of(
-                    StatCollector
-                        .translateToLocal("kubatech.gui.text.eec.cycle_weapons" + (mCycleWeapons ? "_on" : "_off"))))
-            .addTooltip(
-                new Text(StatCollector.translateToLocal("kubatech.gui.text.eec.cycle_weapons.info"))
-                    .color(Color.GRAY.normal)));
-
-        // Void damaged and enchanted button
-        CycleButtonWidget tWidgetVoidDamagedAndEnchanted = createEECMachineStatusWidget(
-            OVERLAY_BUTTON_EEC_VOID_DAMAGED_AND_ENCHANTED_ON,
-            OVERLAY_BUTTON_EEC_VOID_DAMAGED_AND_ENCHANTED_OFF);
-        configurationElements
-            .widget(tWidgetVoidDamagedAndEnchanted.setToggle(() -> voidAllDamagedAndEnchantedItems, v -> {
-                if (mMaxProgresstime > 0) return;
-                voidAllDamagedAndEnchantedItems = v;
-                tWidgetVoidDamagedAndEnchanted.notifyTooltipChange();
-            })
-                .dynamicTooltip(
-                    createNoChangeWhenRunningTooltip(
-                        "kubatech.gui.text.eec.void_all_damaged",
-                        () -> voidAllDamagedAndEnchantedItems))
-                .addTooltip(
-                    new Text(StatCollector.translateToLocal("kubatech.gui.text.eec.void_all_damaged.warning"))
-                        .color(Color.GRAY.normal)));
-
-        // Allow infernals button
-        CycleButtonWidget tWidgetAllowInfernals = createEECMachineStatusWidget(
-            OVERLAY_BUTTON_EEC_SPAWN_INFERNALS_ON,
-            OVERLAY_BUTTON_EEC_SPAWN_INFERNALS_OFF);
-        configurationElements.widget(tWidgetAllowInfernals.setToggle(() -> mIsProducingInfernalDrops, v -> {
-            if (mMaxProgresstime > 0) return;
-            mIsProducingInfernalDrops = v;
-            tWidgetAllowInfernals.notifyTooltipChange();
-        })
-            .dynamicTooltip(
-                createNoChangeWhenRunningTooltip(
-                    "kubatech.gui.text.eec.infernal_drop",
-                    () -> mIsProducingInfernalDrops))
-            .addTooltip(
-                new Text(StatCollector.translateToLocal("kubatech.gui.text.eec.infernal_drop_always"))
-                    .color(Color.GRAY.normal)));
-
-        // Ritual mode button
-        CycleButtonWidget tWidgetRitualMode = createEECMachineStatusWidget(
-            OVERLAY_BUTTON_EEC_RITUAL_MODE_ON,
-            OVERLAY_BUTTON_EEC_RITUAL_MODE_OFF);
-        configurationElements.widget(tWidgetRitualMode.setToggle(() -> isInRitualMode, v -> {
-            if (mMaxProgresstime > 0) return;
-            isInRitualMode = v;
-            checkRitualConnection();
-            tWidgetRitualMode.notifyTooltipChange();
-        })
-            .dynamicTooltip(
-                createNoChangeWhenRunningTooltip("kubatech.gui.text.eec.ritual_mode", () -> isInRitualMode)));
-    }
-
-    private static CycleButtonWidget createEECSimpleWidget(IDrawable aOnTex, IDrawable aOffTex) {
-        CycleButtonWidget tButton = new CycleButtonWidget();
-        tButton.setTextureGetter(val -> val == 0 ? aOffTex : aOnTex)
-            .setVariableBackgroundGetter(toggleButtonBackgroundGetter)
-            .setSize(16, 16)
-            .setTooltipShowUpDelay(TOOLTIP_DELAY);
-        return tButton;
-    }
-
-    private EECMachineStatusWidget createEECMachineStatusWidget(IDrawable aOnTex, IDrawable aOffTex) {
-        EECMachineStatusWidget tButton = new EECMachineStatusWidget(this, aOnTex, aOffTex);
-        tButton.setSize(16, 16)
-            .setTooltipShowUpDelay(TOOLTIP_DELAY);
-        return tButton;
-    }
-
-    private Supplier<List<String>> createNoChangeWhenRunningTooltip(String aTooltipLocPrefix,
-        Supplier<Boolean> aStatusGetter) {
-        return () -> {
-            String tTooltipTitle = StatCollector
-                .translateToLocal(aTooltipLocPrefix + (aStatusGetter.get() ? "_on" : "_off"));
-
-            if (this.mMaxProgresstime <= 0) return ImmutableList.of(tTooltipTitle);
-
-            return ImmutableList.of(
-                tTooltipTitle,
-                EnumChatFormatting.DARK_RED
-                    + StatCollector.translateToLocal("GT5U.gui.button.forbidden_while_running"));
-        };
-    }
-
-    @Override
-    public void createInventorySlots() {
-        final SlotWidget spawnerSlot = new SlotWidget(inventoryHandler, 1);
-        spawnerSlot.setBackground(
-            GTUITextures.SLOT_DARK_GRAY,
-            SLOT_EEC_SPAWNER.withFixedSize(16, 16)
-                .withOffset(1, 1));
-        spawnerSlot.setFilter(stack -> stack.getItem() == poweredSpawnerItem);
-        slotWidgets.add(spawnerSlot);
-        final SlotWidget weaponSlot = new SlotWidget(weaponCache, 0);
-        weaponSlot.setBackground(
-            GTUITextures.SLOT_DARK_GRAY,
-            SLOT_EEC_SWORD.withFixedSize(16, 16)
-                .withOffset(1, 1));
-        slotWidgets.add(weaponSlot);
     }
 
     @SideOnly(Side.CLIENT)
@@ -1205,46 +1114,9 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
         return true;
     }
 
-    private static final class EECMachineStatusWidget extends CycleButtonWidget {
-
-        private final MTEExtremeEntityCrusher mEEC;
-
-        private final IDrawable[] mEnabledBG;
-        private final IDrawable[] mDisabledBG;
-
-        private boolean mWorkingStatus;
-
-        private EECMachineStatusWidget(MTEExtremeEntityCrusher aEEC, IDrawable aEnabledTexture,
-            IDrawable aDisabledTexture) {
-            mEEC = aEEC;
-
-            mEnabledBG = new IDrawable[] { GTUITextures.BUTTON_STANDARD_PRESSED, aEnabledTexture };
-            mDisabledBG = new IDrawable[] { GTUITextures.BUTTON_STANDARD, aDisabledTexture };
-
-            backgroundGetter = val -> val == 0 ? mDisabledBG : mEnabledBG;
-
-            mWorkingStatus = mEEC.mMaxProgresstime > 0;
-            textureGetter = val -> mWorkingStatus ? GTUITextures.OVERLAY_BUTTON_FORBIDDEN : IDrawable.EMPTY;
-        }
-
-        @Override
-        @SideOnly(Side.CLIENT)
-        public void onScreenUpdate() {
-            super.onScreenUpdate();
-            boolean tWorkingStatus = mEEC.mMaxProgresstime > 0;
-            if (mWorkingStatus == tWorkingStatus) return;
-            mWorkingStatus = tWorkingStatus;
-
-            notifyTooltipChange();
-            setState(getter.get(), false, false);
-            markForUpdate();
-        }
-
-        @Override
-        public ClickResult onClick(int buttonId, boolean doubleClick) {
-            if (mWorkingStatus) return ClickResult.ACKNOWLEDGED;
-            return super.onClick(buttonId, doubleClick);
-        }
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
     }
 
     private static class EECFakePlayer extends FakePlayer {

@@ -10,14 +10,12 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.MTEMassFabricator;
 
 public class GregtechIndustrialMassFabricator {
 
     public static void run() {
-        Logger.INFO("Gregtech5u Content | Registering Industrial Matter Fabricator Multiblock.");
         generateRecipes();
         run1();
     }
@@ -58,7 +56,7 @@ public class GregtechIndustrialMassFabricator {
             .circuit(1)
             .fluidOutputs(Materials.UUMatter.getFluid(1 * NUGGETS))
             .duration(2 * MINUTES + 40 * SECONDS)
-            .eut(4096)
+            .eut(TierEU.RECIPE_IV / 2)
             .addTo(multiblockMassFabricatorRecipes);
 
         // Basic UUM
@@ -67,7 +65,7 @@ public class GregtechIndustrialMassFabricator {
             .fluidInputs(Materials.UUAmplifier.getFluid(1 * NUGGETS))
             .fluidOutputs(Materials.UUMatter.getFluid(1 * NUGGETS))
             .duration(40 * SECONDS)
-            .eut(4096)
+            .eut(TierEU.RECIPE_IV / 2)
             .addTo(multiblockMassFabricatorRecipes);
 
         // Advanced UUM
@@ -75,7 +73,7 @@ public class GregtechIndustrialMassFabricator {
             .circuit(3)
             .fluidOutputs(Materials.UUMatter.getFluid(256))
             .duration(2 * MINUTES + 40 * SECONDS)
-            .eut(65536)
+            .eut(TierEU.RECIPE_ZPM / 2)
             .addTo(multiblockMassFabricatorRecipes);
 
         // Advanced UUM
@@ -84,11 +82,7 @@ public class GregtechIndustrialMassFabricator {
             .fluidInputs(Materials.UUAmplifier.getFluid(256))
             .fluidOutputs(Materials.UUMatter.getFluid(256))
             .duration(40 * SECONDS)
-            .eut(65536)
+            .eut(TierEU.RECIPE_ZPM / 2)
             .addTo(multiblockMassFabricatorRecipes);
-
-        Logger.INFO(
-            "Generated " + multiblockMassFabricatorRecipes.getAllRecipes()
-                .size() + " Matter Fabricator recipes.");
     }
 }

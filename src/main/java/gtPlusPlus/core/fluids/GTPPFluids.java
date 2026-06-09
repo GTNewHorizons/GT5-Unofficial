@@ -5,7 +5,6 @@ import static gregtech.api.enums.Mods.TinkerConstruct;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import net.minecraft.block.Block;
@@ -19,7 +18,6 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import ic2.core.init.InternalName;
@@ -28,9 +26,6 @@ import ic2.core.item.resources.ItemCell;
 public class GTPPFluids {
 
     // Agricultural Chem
-    public static Fluid PoopJuice;
-    public static Fluid ManureSlurry;
-    public static Fluid FertileManureSlurry;
     public static Fluid RedMud;
     public static Fluid PropionicAcid;
     public static Fluid FermentationBase;
@@ -110,9 +105,6 @@ public class GTPPFluids {
     public static Fluid IndustrialStrengthHydrogenChloride;
     public static Fluid SulfuricLithiumMix;
     public static Fluid LithiumHydroxide;
-    public static Fluid BasicFertilizer;
-    public static Fluid UN18Fertilizer;
-    public static Fluid UN32Fertilizer;
     public static Fluid RaisinJuice;
     public static Fluid MobEssence;
 
@@ -120,36 +112,6 @@ public class GTPPFluids {
     private static final List<FluidStack> bloodFluids = new ArrayList<>();
 
     public static void init() {
-        PoopJuice = FluidUtils.generateFluidNonMolten(
-            "raw.waste",
-            "Raw Animal Waste",
-            32 + 175,
-            new short[] { 100, 70, 30, 100 },
-            null,
-            null,
-            0,
-            true);
-
-        ManureSlurry = FluidUtils.generateFluidNonMolten(
-            "manure.slurry",
-            "Manure Slurry",
-            39 + 175,
-            new short[] { 75, 45, 15, 100 },
-            null,
-            null,
-            0,
-            true);
-
-        FertileManureSlurry = FluidUtils.generateFluidNonMolten(
-            "fertile.manure.slurry",
-            "Fertile Manure Slurry",
-            45 + 175,
-            new short[] { 65, 50, 15, 100 },
-            null,
-            null,
-            0,
-            true);
-
         RedMud = FluidUtils.generateFluidNoPrefix(
             "mud.red.slurry",
             "Red Mud Slurry",
@@ -590,33 +552,6 @@ public class GTPPFluids {
             false);
         generateIC2FluidCell(20, "LithiumHydroxide");
 
-        BasicFertilizer = FluidUtils.generateFluidNonMolten(
-            "Fertiliser",
-            "Fertiliser",
-            32,
-            new short[] { 45, 170, 45, 100 },
-            ItemList.IC2_Fertilizer.get(1),
-            null,
-            true);
-
-        UN32Fertilizer = FluidUtils.generateFluidNonMolten(
-            "UN32Fertiliser",
-            "UN-32 Fertiliser",
-            24,
-            new short[] { 55, 190, 55, 100 },
-            null,
-            null,
-            true);
-
-        UN18Fertilizer = FluidUtils.generateFluidNonMolten(
-            "UN18Fertiliser",
-            "UN-18 Fertiliser",
-            22,
-            new short[] { 60, 155, 60, 100 },
-            null,
-            null,
-            true);
-
         RaisinJuice = FluidUtils.generateFluidNonMolten(
             "RaisinJuice",
             "Raisin Juice",
@@ -658,7 +593,6 @@ public class GTPPFluids {
         if (BiomesOPlenty.isModLoaded()) {
             FluidStack blood = FluidRegistry.getFluidStack("hell_blood", 100);
             if (blood != null) {
-                Logger.INFO("Found Biome's o Plenty, enabled Blood support.");
                 bloodFluids.add(blood);
             }
         }
@@ -666,21 +600,16 @@ public class GTPPFluids {
         if (TinkerConstruct.isModLoaded()) {
             FluidStack blood = FluidRegistry.getFluidStack("blood", 100);
             if (blood != null) {
-                Logger.INFO("Found Tinker's Construct, enabled Blood support.");
                 bloodFluids.add(blood);
             }
         }
 
         // Handle Blood Internally, Create if required.
         if (bloodFluids.isEmpty()) {
-            Logger.INFO("Did not find any existing Blood fluids, Generating our own");
             Fluid blood = FluidUtils
                 .generateFluidNoPrefix("blood", "Blood", 32 + 175, new short[] { 175, 25, 25, 100 }, true);
             bloodFluids.add(new FluidStack(blood, 100));
         }
     }
 
-    public static List<FluidStack> getBloodFluids() {
-        return Collections.unmodifiableList(bloodFluids);
-    }
 }

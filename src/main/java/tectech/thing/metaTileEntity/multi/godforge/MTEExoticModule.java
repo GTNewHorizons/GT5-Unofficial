@@ -15,6 +15,7 @@ import static tectech.loader.recipe.Godforge.exoticModulePlasmaItemMap;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -115,12 +116,15 @@ public class MTEExoticModule extends MTEBaseModule {
                     }
 
                     if (numberOfFluids != 0) {
-                        for (FluidStack fluidStack : randomizedFluidInput) {
-                            dumpFluid(
-                                mOutputHatches,
-                                new FluidStack(fluidStack.getFluid(), fluidStack.amount / 1000),
-                                false);
-                        }
+                        addFluidOutputs(
+                            Arrays.stream(randomizedFluidInput)
+                                .map(fluid -> {
+                                    FluidStack copy = fluid.copy();
+                                    copy.amount = copy.amount / 1000;
+                                    return copy;
+                                })
+                                .toArray(FluidStack[]::new),
+                            mOutputHatches);
                     }
 
                     if (numberOfItems != 0) {
@@ -204,7 +208,9 @@ public class MTEExoticModule extends MTEBaseModule {
         }
 
         return new GTRecipe(
-            false,
+            null,
+            null,
+            null,
             null,
             null,
             null,
@@ -228,7 +234,9 @@ public class MTEExoticModule extends MTEBaseModule {
             Materials.Space.getMolten(spaceAmount * 1000L) };
 
         return new GTRecipe(
-            false,
+            null,
+            null,
+            null,
             null,
             null,
             null,
@@ -428,7 +436,9 @@ public class MTEExoticModule extends MTEBaseModule {
 
             setPlasmaRecipe(
                 new GTRecipe(
-                    false,
+                    null,
+                    null,
+                    null,
                     null,
                     null,
                     null,
@@ -501,6 +511,7 @@ public class MTEExoticModule extends MTEBaseModule {
             .addInfo("requires a fully upgraded Godforge")
             .addInfo("This module is specialized towards acquisition of unique materials")
             .beginStructureBlock(7, 7, 13, false)
+            .addController("Front center")
             .addStructureInfo(
                 EnumChatFormatting.GOLD + "20"
                     + EnumChatFormatting.GRAY

@@ -167,8 +167,8 @@ public class DetravMetaGeneratedTool01 extends MetaGeneratedTool {
         setCreativeTab(DetravScannerMod.TAB_DETRAV);
     }
 
-    @SuppressWarnings("unchecked")
-    public void addAdditionalToolTips(List aList, ItemStack aStack, EntityPlayer aPlayer) {
+    @Override
+    public void addAdditionalToolTips(List<String> aList, ItemStack aStack, EntityPlayer aPlayer) {
         long tMaxDamage = getToolMaxDamage(aStack);
         Materials tMaterial = getPrimaryMaterial(aStack);
         IToolStats tStats = getToolStats(aStack);
@@ -287,8 +287,7 @@ public class DetravMetaGeneratedTool01 extends MetaGeneratedTool {
         return false;
     }
 
-    @SuppressWarnings("unchecked")
-    public void getDetravSubItems(Item item, CreativeTabs detravCreativeTab, List list) {
+    public void getDetravSubItems(Item item, CreativeTabs detravCreativeTab, List<ItemStack> list) {
 
         ItemStack dStack;
         if (NewHorizonsCoreMod.isModLoaded()) {

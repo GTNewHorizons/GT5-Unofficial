@@ -4,7 +4,6 @@ import static gregtech.api.enums.Mods.GTPlusPlus;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
@@ -15,7 +14,6 @@ import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -27,7 +25,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.util.StringUtils;
 import gtPlusPlus.api.interfaces.ITileTooltip;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.objects.minecraft.CubicObject;
 import gtPlusPlus.api.objects.minecraft.SafeTexture;
 import gtPlusPlus.core.util.Utils;
@@ -106,7 +103,6 @@ public abstract class BasicTileBlockWithTooltip extends BlockContainer implement
         this.setCreativeTab(initCreativeTab());
         // Register the block last.
         GameRegistry.registerBlock(this, getItemBlockClass(), getUnlocalBlockName());
-        Logger.INFO("Registered " + getTileEntityName() + ".");
         if (Utils.isClient()) {
             // Handle Textures
             handleTextures();
@@ -138,7 +134,7 @@ public abstract class BasicTileBlockWithTooltip extends BlockContainer implement
 
     @Override
     @SideOnly(Side.CLIENT)
-    public final IIcon getIcon(final int ordinalSide, final int aMeta) {
+    public IIcon getIcon(final int ordinalSide, final int aMeta) {
         return mSidedTextureArray.get(aMeta)
             .get(ForgeDirection.getOrientation(ordinalSide))
             .getIcon();
@@ -151,9 +147,6 @@ public abstract class BasicTileBlockWithTooltip extends BlockContainer implement
 
     @SideOnly(Side.CLIENT)
     private void handleTextures() {
-
-        Logger.INFO("[TeTexture] Building Texture Maps for " + getTileEntityName() + ".");
-
         // Init on the Client side only, to prevent Field initializers existing in the Server side bytecode.
         mSidedTextureArray = new ArrayList<>();
         // Holds the data for the six sides, each side holds an array of data for each respective meta.
@@ -173,14 +166,11 @@ public abstract class BasicTileBlockWithTooltip extends BlockContainer implement
         if (getCustomTextureDirectoryObject() != null) {
             // Get custom provided texture data.
             CubicObject<String>[] aDataMap = getCustomTextureDirectoryObject();
-            Logger.INFO("[TeTexture] Found custom texture data, using this instead. Size: " + aDataMap.length);
             // Map each meta string data to the main map.
             for (int i = 0; i < aDataMap.length; i++) {
                 sidedTexturePathArray.add(aDataMap[i]);
-                Logger.INFO("Mapped value for meta " + i + ".");
             }
         } else {
-            Logger.INFO("[TeTexture] Processing " + (1 + getMetaCount()) + " sets.");
             // Iterate once for each meta
             for (int i = 0; i < (1 + getMetaCount()); i++) {
 
@@ -217,14 +207,8 @@ public abstract class BasicTileBlockWithTooltip extends BlockContainer implement
                     aStringLeft,
                     aStringRight);
                 sidedTexturePathArray.add(aMetaBlob);
-                Logger.INFO("[TeTexture] Added Texture Path data to map for meta " + i);
             }
         }
-        Logger.INFO("[TeTexture] Map size for pathing: " + sidedTexturePathArray.size());
-
-        // Iteration Index
-        int aIndex = 0;
-
         // Iterate each CubicObject, holding the six texture paths for each meta.
         for (CubicObject<String> aMetaBlob : sidedTexturePathArray) {
             // Make a Safe Texture for each side
@@ -234,23 +218,16 @@ public abstract class BasicTileBlockWithTooltip extends BlockContainer implement
             SafeTexture aFont = SafeTexture.register(aMetaBlob.SOUTH);
             SafeTexture aWest = SafeTexture.register(aMetaBlob.WEST);
             SafeTexture aEast = SafeTexture.register(aMetaBlob.EAST);
-            // Store them in an Array
-            SafeTexture[] aInjectBlob = new SafeTexture[] { aBottom, aTop, aBack, aFont, aWest, aEast };
             // Convenience Blob
-            CubicObject<SafeTexture> aMetaBlob2 = new CubicObject<>(aInjectBlob);
+            CubicObject<SafeTexture> aMetaBlob2 = new CubicObject<>(aBottom, aTop, aBack, aFont, aWest, aEast);
             // Store this Blob into
             mSidedTextureArray.add(aMetaBlob2);
-            Logger.INFO("[TeTexture] Added SafeTexture data to map for meta " + (aIndex++));
         }
-        Logger.INFO("[TeTexture] Map size for registration: " + mSidedTextureArray.size());
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public final void registerBlockIcons(final IIconRegister aRegisterer) {}
-
-    @Override
-    public abstract TileEntity createNewTileEntity(final World world, final int p_149915_2_);
 
     /**
      * Called when {@link #breakBlock}() is called, but before {@link InventoryUtils#dropInventoryItems} and the super
@@ -290,11 +267,6 @@ public abstract class BasicTileBlockWithTooltip extends BlockContainer implement
     @Override
     public int getDamageValue(World aWorld, int aX, int aY, int aZ) {
         return aWorld.getBlockMetadata(aX, aY, aZ);
-    }
-
-    @Override
-    public Item getItemDropped(int meta, Random rand, int p_149650_3_) {
-        return Item.getItemFromBlock(this);
     }
 
     @Override

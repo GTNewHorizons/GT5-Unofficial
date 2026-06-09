@@ -1,6 +1,5 @@
 package gregtech.loaders.postload;
 
-import gregtech.api.enums.Materials;
 import gregtech.loaders.postload.chains.BauxiteRefineChain;
 import gregtech.loaders.postload.chains.NaniteChain;
 import gregtech.loaders.postload.chains.PCBFactoryRecipes;
@@ -10,6 +9,8 @@ import gregtech.loaders.postload.recipes.ArcFurnaceRecipes;
 import gregtech.loaders.postload.recipes.AssemblerRecipes;
 import gregtech.loaders.postload.recipes.AssemblyLineRecipes;
 import gregtech.loaders.postload.recipes.AutoclaveRecipes;
+import gregtech.loaders.postload.recipes.BECMetaMaterialRecipes;
+import gregtech.loaders.postload.recipes.BECRecipes;
 import gregtech.loaders.postload.recipes.BenderRecipes;
 import gregtech.loaders.postload.recipes.BlastFurnaceRecipes;
 import gregtech.loaders.postload.recipes.BreweryRecipes;
@@ -20,7 +21,6 @@ import gregtech.loaders.postload.recipes.ChemicalRecipes;
 import gregtech.loaders.postload.recipes.CircuitAssemblerRecipes;
 import gregtech.loaders.postload.recipes.CokeOvenRecipes;
 import gregtech.loaders.postload.recipes.CompressorRecipes;
-import gregtech.loaders.postload.recipes.CropProcessingRecipes;
 import gregtech.loaders.postload.recipes.CuttingRecipes;
 import gregtech.loaders.postload.recipes.DistilleryRecipes;
 import gregtech.loaders.postload.recipes.ElectrolyzerRecipes;
@@ -56,13 +56,12 @@ import gregtech.loaders.postload.recipes.ThermalCentrifugeRecipes;
 import gregtech.loaders.postload.recipes.TranscendentPlasmaMixerRecipes;
 import gregtech.loaders.postload.recipes.VacuumFreezerRecipes;
 import gregtech.loaders.postload.recipes.WiremillRecipes;
+import gregtech.loaders.postload.recipes.beamcrafter.BeamCrafterRecipes;
+import gregtech.loaders.postload.recipes.beamcrafter.LargeHadronColliderRecipes;
 
 public class MachineRecipeLoader implements Runnable {
 
     public static final String aTextTCGTPage = "gt.research.page.1.";
-
-    public static final Materials[] solderingMats = new Materials[] { Materials.Lead, Materials.SolderingAlloy,
-        Materials.Tin };
 
     @Override
     public void run() {
@@ -71,6 +70,7 @@ public class MachineRecipeLoader implements Runnable {
         new AssemblerRecipes().run();
         new AssemblyLineRecipes().run();
         new AutoclaveRecipes().run();
+        new BeamCrafterRecipes().run();
         new BenderRecipes().run();
         new BlastFurnaceRecipes().run();
         new BreweryRecipes().run();
@@ -81,7 +81,6 @@ public class MachineRecipeLoader implements Runnable {
         new CircuitAssemblerRecipes().run();
         new CokeOvenRecipes().run();
         new CompressorRecipes().run();
-        new CropProcessingRecipes().run();
         new CuttingRecipes().run();
         new DistilleryRecipes().run();
         new ElectrolyzerRecipes().run();
@@ -98,6 +97,7 @@ public class MachineRecipeLoader implements Runnable {
         new FuelRecipes().run();
         new FusionReactorRecipes().run();
         new ImplosionCompressorRecipes().run();
+        new LargeHadronColliderRecipes().run();
         new LaserEngraverRecipes().run();
         new LatheRecipes().run();
         new MatterAmplifierRecipes().run();
@@ -117,6 +117,8 @@ public class MachineRecipeLoader implements Runnable {
         new VacuumFreezerRecipes().run();
         new WiremillRecipes().run();
         new TranscendentPlasmaMixerRecipes().run();
+        new BECMetaMaterialRecipes().run();
+        new BECRecipes().run();
 
         BauxiteRefineChain.run();
         NaniteChain.run();

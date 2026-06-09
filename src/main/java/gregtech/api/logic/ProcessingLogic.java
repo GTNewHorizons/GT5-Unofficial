@@ -1,10 +1,9 @@
 package gregtech.api.logic;
 
-import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
+import java.util.WeakHashMap;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -43,6 +42,8 @@ public class ProcessingLogic {
     protected ItemStack specialSlotItem;
     protected int maxParallel = 1;
     protected Supplier<Integer> maxParallelSupplier;
+    protected Supplier<Double> euModSupplier;
+    protected Supplier<Double> speedBoostSupplier;
     protected int batchSize = 1;
     protected Supplier<RecipeMap<?>> recipeMapSupplier;
     protected double euModifier = 1.0;
@@ -76,12 +77,11 @@ public class ProcessingLogic {
     /**
      * The cache keyed by the {@link IDualInputInventoryWithPattern}, storing the possible recipes of the inv.
      * <p>
-     * The entries can be removed by {@link #removeInventoryRecipeCache(IDualInputInventoryWithPattern)}, and it
-     * requires the hatches to actively call it when the inventory is changed (like the pattern is changed).
+     * The entries can be removed by {@link #removeInventoryRecipeCache(IDualInputInventoryWithPattern)}.
      * <p>
      * It will also be fully cleared when the {@link #getCurrentRecipeMap()} is not same to the last.
      */
-    protected Map<IDualInputInventoryWithPattern, Set<GTRecipe>> dualInvWithPatternToRecipeCache = new HashMap<>();
+    protected WeakHashMap<IDualInputInventoryWithPattern, Set<GTRecipe>> dualInvWithPatternToRecipeCache = new WeakHashMap<>();
 
     public ProcessingLogic() {}
 
@@ -143,6 +143,9 @@ public class ProcessingLogic {
      *         cached successfully. {@code false} if there is no recipe found.
      */
     public boolean tryCachePossibleRecipesFromPattern(IDualInputInventoryWithPattern inv) {
+        // call getCurrentRecipeMap here to clear dualInv recipe cache if recipe map changes
+        RecipeMap<?> recipeMap = getCurrentRecipeMap();
+
         if (!inv.shouldBeCached()) {
             return true;
         }
@@ -155,10 +158,9 @@ public class ProcessingLogic {
 
         // get recipes from the pattern
         GTDualInputPattern inputs = inv.getPatternInputs();
-        setInputItems(inputs.inputItems);
+        setInputItems(prepareCatalyst(inputs.inputItems));
         setInputFluids(inputs.inputFluid);
-        Set<GTRecipe> recipes = findRecipeMatches(getCurrentRecipeMap())
-            .collect(Collectors.toCollection(LinkedHashSet::new));
+        Set<GTRecipe> recipes = findRecipeMatches(recipeMap).collect(Collectors.toCollection(LinkedHashSet::new));
 
         // reset the status
         setInputItems();
@@ -215,8 +217,18 @@ public class ProcessingLogic {
         return this;
     }
 
+    public ProcessingLogic setEuModifierSupplier(Supplier<Double> supplier) {
+        this.euModSupplier = supplier;
+        return this;
+    }
+
     public ProcessingLogic setSpeedBonus(double speedModifier) {
         this.speedBoost = speedModifier;
+        return this;
+    }
+
+    public ProcessingLogic setSpeedBonusSupplier(Supplier<Double> supplier) {
+        this.speedBoostSupplier = supplier;
         return this;
     }
 
@@ -377,13 +389,21 @@ public class ProcessingLogic {
             maxParallel = maxParallelSupplier.get();
         }
 
+        if (euModSupplier != null) {
+            euModifier = euModSupplier.get();
+        }
+
+        if (speedBoostSupplier != null) {
+            speedBoost = speedBoostSupplier.get();
+        }
+
         if (inputItems == null) {
             inputItems = GTValues.emptyItemStackArray;
         }
         if (inputFluids == null) {
             inputFluids = GTValues.emptyFluidStackArray;
         }
-
+        inputItems = prepareCatalyst(inputItems);
         if (activeDualInv != null) {
             Set<GTRecipe> matchedRecipes = dualInvWithPatternToRecipeCache.get(activeDualInv);
             for (GTRecipe matchedRecipe : matchedRecipes) {
@@ -392,8 +412,12 @@ public class ProcessingLogic {
                     return foundResult.checkRecipeResult;
                 }
             }
+
+            // recipe cache does not match, this might be caused by changes of return value of
+            // prepareCatalyst(ItemStack[]) or changes of Encoded Patterns in the CRIB
+            // so clear the cache and proceed, the new cache will be generated in the next recipe check
+            dualInvWithPatternToRecipeCache.remove(activeDualInv);
             activeDualInv = null;
-            return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
         if (isRecipeLocked && recipeLockableMachine != null && recipeLockableMachine.getSingleRecipeCheck() != null) {
@@ -573,6 +597,14 @@ public class ProcessingLogic {
     @Nonnull
     protected CheckRecipeResult onRecipeStart(@Nonnull GTRecipe recipe) {
         return CheckRecipeResultRegistry.SUCCESSFUL;
+    }
+
+    /**
+     * Add some catalyst items into input items array, like Milling Ball or Chemical Plant Catalyst.
+     * Do not modify, return a new array if something is changed.
+     */
+    protected ItemStack[] prepareCatalyst(ItemStack[] inputs) {
+        return inputs;
     }
 
     // endregion

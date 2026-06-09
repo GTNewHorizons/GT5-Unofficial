@@ -11,9 +11,7 @@ import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widgets.TextWidget;
-import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Flow;
-import com.cleanroommc.modularui.widgets.layout.Row;
 
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.gui.modularui.multiblock.godforge.ForgeOfGodsGuiUtil;
@@ -38,7 +36,7 @@ public class SpecialThanksPanel {
         panel.child(
             GTGuiTextures.PICTURE_GODFORGE_THANKS.asWidget()
                 .size(BACKGROUND_SIZE)
-                .align(Alignment.CENTER));
+                .center());
 
         // Title
         panel.child(
@@ -46,11 +44,14 @@ public class SpecialThanksPanel {
                 .style(EnumChatFormatting.GOLD)
                 .asWidget()
                 .marginTop(7)
-                .align(Alignment.TopCenter));
+                .topRel(0)
+                .horizontalCenter());
 
         // Credits sections
-        Flow creditsList = new Column().size(SIZE - LIST_OFFSET)
+        Flow creditsList = Flow.column()
             .coverChildren()
+            .childPadding(5)
+            .crossAxisAlignment(Alignment.CrossAxis.START)
             .leftRelOffset(0, 7)
             .marginTop(LIST_OFFSET);
 
@@ -98,23 +99,23 @@ public class SpecialThanksPanel {
                 .asWidget()
                 .size(100, 60)
                 .marginRight(10)
-                .align(Alignment.BottomRight));
+                .bottomRel(0)
+                .rightRel(0));
 
         return panel;
     }
 
     private static Flow createCreditsSection(String titleKey, Widget<?>... entries) {
-        return new Column().coverChildren()
-            .marginBottom(5)
-            .alignX(0)
+        return Flow.column()
+            .coverChildren()
+            .crossAxisAlignment(Alignment.CrossAxis.START)
             .child(
                 IKey.lang(titleKey)
                     .style(EnumChatFormatting.GOLD, EnumChatFormatting.UNDERLINE)
                     .alignment(Alignment.CenterLeft)
                     .scale(0.8f)
                     .asWidget()
-                    .marginBottom(2)
-                    .alignX(0))
+                    .marginBottom(2))
             .children(Arrays.asList(entries));
     }
 
@@ -129,13 +130,12 @@ public class SpecialThanksPanel {
         if (customColor != -1) {
             key.color(customColor);
         }
-        return key.asWidget()
-            .alignX(0);
+        return key.asWidget();
     }
 
     private static Flow createDelenoName() {
-        Flow flow = new Row().coverChildren()
-            .alignX(0);
+        Flow flow = Flow.row()
+            .coverChildren();
 
         String name = translateToLocal("gt.blockmachines.multimachine.FOG.deleno");
         int[] colors = new int[] { 0xFFFFFF, 0xF6FFF5, 0xECFFEC, 0xE3FFE2, 0xD9FFD9, 0xD0FFCF };

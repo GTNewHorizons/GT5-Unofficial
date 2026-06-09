@@ -14,32 +14,38 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.ChunkPosition;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.IFluidBlock;
 
-import com.gtnewhorizons.modularui.api.drawable.FallbackableUITexture;
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicMachine;
+import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.recipe.BasicUIProperties;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.tooltip.TooltipHelper;
+import gregtech.common.gui.modularui.singleblock.base.MTEBasicMachineBaseGui;
 import gregtech.common.misc.DrillingLogicDelegate;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEPump extends MTEBasicMachine {
 
     private static final ItemStack MINING_PIPE = GTModHandler.getIC2Item("miningPipe", 0);
@@ -69,6 +75,16 @@ public class MTEPump extends MTEBasicMachine {
 
     private boolean mDisallowRetract = true;
 
+    @Override
+    public String[] getDescription() {
+        return GTUtility.translateMultiline(
+            "gt.blockmachines.basicmachine.pump.tooltip",
+            TooltipHelper.euText(getEuUsagePerTier(mTier)),
+            NumberFormatUtil.formatNumber(Math.max(1, 160 >> mTier) / 20d),
+            NumberFormatUtil.formatNumber(getMaxDistanceForTier(mTier) * 2 + 1),
+            NumberFormatUtil.formatNumber(getMaxDistanceForTier(mTier) * 2 + 1));
+    }
+
     public MTEPump(int aID, String aName, String aNameRegional, int aTier) {
         super(
             aID,
@@ -76,64 +92,55 @@ public class MTEPump extends MTEBasicMachine {
             aNameRegional,
             aTier,
             1,
-            new String[] { "The best way to empty Oceans!",
-                getEuUsagePerTier(aTier) + " EU/operation, "
-                    + GTUtility.safeInt(160 / 20 / (long) GTUtility.powInt(2, aTier))
-                    + " sec per bucket, no stuttering",
-                "Maximum pumping area: " + (getMaxDistanceForTier(aTier) * 2 + 1)
-                    + "x"
-                    + (getMaxDistanceForTier(aTier) * 2 + 1),
-                "Use Screwdriver to regulate pumping area", "Use Soft Mallet to disable and retract the pipe",
-                "Disable the bottom pump to retract the pipe!",
-                "Use Soldering Iron to auto retract the pipe when hitting a rock", },
+            new String[0],
             2,
             2,
             TextureFactory.of(
-                TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/pump/OVERLAY_SIDE_ACTIVE")),
+                TextureFactory.of(Textures.BlockIcons.customOptional("basicmachines/pump/OVERLAY_SIDE_ACTIVE")),
                 TextureFactory.builder()
-                    .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/pump/OVERLAY_SIDE_ACTIVE_GLOW"))
+                    .addIcon(Textures.BlockIcons.customOptional("basicmachines/pump/OVERLAY_SIDE_ACTIVE_GLOW"))
                     .glow()
                     .build()),
             TextureFactory.of(
-                TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/pump/OVERLAY_SIDE")),
+                TextureFactory.of(Textures.BlockIcons.customOptional("basicmachines/pump/OVERLAY_SIDE")),
                 TextureFactory.builder()
-                    .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/pump/OVERLAY_SIDE_GLOW"))
+                    .addIcon(Textures.BlockIcons.customOptional("basicmachines/pump/OVERLAY_SIDE_GLOW"))
                     .glow()
                     .build()),
             TextureFactory.of(
-                TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/pump/OVERLAY_FRONT_ACTIVE")),
+                TextureFactory.of(Textures.BlockIcons.customOptional("basicmachines/pump/OVERLAY_FRONT_ACTIVE")),
                 TextureFactory.builder()
-                    .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/pump/OVERLAY_FRONT_ACTIVE_GLOW"))
+                    .addIcon(Textures.BlockIcons.customOptional("basicmachines/pump/OVERLAY_FRONT_ACTIVE_GLOW"))
                     .glow()
                     .build()),
             TextureFactory.of(
-                TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/pump/OVERLAY_FRONT")),
+                TextureFactory.of(Textures.BlockIcons.customOptional("basicmachines/pump/OVERLAY_FRONT")),
                 TextureFactory.builder()
-                    .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/pump/OVERLAY_FRONT_GLOW"))
+                    .addIcon(Textures.BlockIcons.customOptional("basicmachines/pump/OVERLAY_FRONT_GLOW"))
                     .glow()
                     .build()),
             TextureFactory.of(
-                TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/pump/OVERLAY_TOP_ACTIVE")),
+                TextureFactory.of(Textures.BlockIcons.customOptional("basicmachines/pump/OVERLAY_TOP_ACTIVE")),
                 TextureFactory.builder()
-                    .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/pump/OVERLAY_TOP_ACTIVE_GLOW"))
+                    .addIcon(Textures.BlockIcons.customOptional("basicmachines/pump/OVERLAY_TOP_ACTIVE_GLOW"))
                     .glow()
                     .build()),
             TextureFactory.of(
-                TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/pump/OVERLAY_TOP")),
+                TextureFactory.of(Textures.BlockIcons.customOptional("basicmachines/pump/OVERLAY_TOP")),
                 TextureFactory.builder()
-                    .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/pump/OVERLAY_TOP_GLOW"))
+                    .addIcon(Textures.BlockIcons.customOptional("basicmachines/pump/OVERLAY_TOP_GLOW"))
                     .glow()
                     .build()),
             TextureFactory.of(
-                TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/pump/OVERLAY_BOTTOM_ACTIVE")),
+                TextureFactory.of(Textures.BlockIcons.customOptional("basicmachines/pump/OVERLAY_BOTTOM_ACTIVE")),
                 TextureFactory.builder()
-                    .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/pump/OVERLAY_BOTTOM_ACTIVE_GLOW"))
+                    .addIcon(Textures.BlockIcons.customOptional("basicmachines/pump/OVERLAY_BOTTOM_ACTIVE_GLOW"))
                     .glow()
                     .build()),
             TextureFactory.of(
-                TextureFactory.of(new Textures.BlockIcons.CustomIcon("basicmachines/pump/OVERLAY_BOTTOM")),
+                TextureFactory.of(Textures.BlockIcons.customOptional("basicmachines/pump/OVERLAY_BOTTOM")),
                 TextureFactory.builder()
-                    .addIcon(new Textures.BlockIcons.CustomIcon("basicmachines/pump/OVERLAY_BOTTOM_GLOW"))
+                    .addIcon(Textures.BlockIcons.customOptional("basicmachines/pump/OVERLAY_BOTTOM_GLOW"))
                     .glow()
                     .build()));
 
@@ -150,24 +157,21 @@ public class MTEPump extends MTEBasicMachine {
         return new MTEPump(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
     }
 
-    private static final FallbackableUITexture progressBarTexture = GTUITextures
-        .fallbackableProgressbar("pump", GTUITextures.PROGRESSBAR_CANNER);
-
     @Override
     protected BasicUIProperties getUIProperties() {
         return BasicUIProperties.builder()
             .maxItemInputs(2)
             .maxItemOutputs(2)
-            .slotOverlays((index, isFluid, isOutput, isSpecial) -> {
+            .slotOverlaysMUI2((index, isFluid, isOutput, isSpecial) -> {
                 if (!isFluid && !isOutput && !isSpecial) {
-                    return GTUITextures.OVERLAY_SLOT_MINING_PIPE;
+                    return GTGuiTextures.OVERLAY_SLOT_MINING_PIPE;
                 } else {
                     return null;
                 }
             })
             .maxFluidInputs(0)
             .maxFluidOutputs(1)
-            .progressBarTexture(progressBarTexture)
+            .progressBarTextureMUI2(GTGuiTextures.PROGRESSBAR_CANNER)
             .build();
     }
 
@@ -283,12 +287,7 @@ public class MTEPump extends MTEBasicMachine {
             }
             if (radiusConfig > max) radiusConfig = 0;
         }
-        GTUtility.sendChatToPlayer(
-            aPlayer,
-            StatCollector.translateToLocal("GT5U.machines.workareaset") + " "
-                + (radiusConfig * 2 + 1)
-                + "x"
-                + (radiusConfig * 2 + 1)); // TODO Add translation support
+        GTUtility.sendChatTrans(aPlayer, "GT5U.machines.workareaset.s", (radiusConfig * 2 + 1), (radiusConfig * 2 + 1));
 
         clearQueue(false);
     }
@@ -806,14 +805,13 @@ public class MTEPump extends MTEBasicMachine {
         int aLogLevel, ArrayList<String> aList) {
         aList.addAll(
             Arrays.asList(
-                EnumChatFormatting.BLUE + StatCollector.translateToLocal("GT5U.machines.pump")
-                    + EnumChatFormatting.RESET,
-                StatCollector.translateToLocal("GT5U.machines.workarea") + ": "
+                EnumChatFormatting.BLUE + GTUtility.translate("GT5U.machines.pump") + EnumChatFormatting.RESET,
+                GTUtility.translate("GT5U.machines.workarea") + ": "
                     + EnumChatFormatting.GREEN
                     + (radiusConfig * 2 + 1)
                     + EnumChatFormatting.RESET
                     + " "
-                    + StatCollector.translateToLocal("GT5U.machines.blocks"),
+                    + GTUtility.translate("GT5U.machines.blocks"),
                 "Primary pumping fluid:   "
                     + (this.mPrimaryPumpedBlock != null ? this.mPrimaryPumpedBlock.getLocalizedName() : "None"),
                 "Secondary pumping fluid: "
@@ -838,13 +836,13 @@ public class MTEPump extends MTEBasicMachine {
     @Override
     public String[] getInfoData() {
         return new String[] {
-            EnumChatFormatting.BLUE + StatCollector.translateToLocal("GT5U.machines.pump") + EnumChatFormatting.RESET,
-            StatCollector.translateToLocal("GT5U.machines.workarea") + ": "
+            EnumChatFormatting.BLUE + GTUtility.translate("GT5U.machines.pump") + EnumChatFormatting.RESET,
+            GTUtility.translate("GT5U.machines.workarea") + ": "
                 + EnumChatFormatting.GREEN
                 + (radiusConfig * 2 + 1)
                 + EnumChatFormatting.RESET
                 + " "
-                + StatCollector.translateToLocal("GT5U.machines.blocks") };
+                + GTUtility.translate("GT5U.machines.blocks") };
     }
 
     @SideOnly(Side.CLIENT)
@@ -853,4 +851,14 @@ public class MTEPump extends MTEBasicMachine {
         return SoundResource.GTCEU_LOOP_PUMP;
     }
 
+    @Override
+    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTEBasicMachineBaseGui<>(this, this.getUIProperties()).useGregTechLogo(true)
+            .build(data, syncManager, uiSettings);
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return true;
+    }
 }

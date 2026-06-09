@@ -11,7 +11,7 @@ import net.minecraft.tileentity.TileEntity;
 
 import org.lwjgl.opengl.GL11;
 
-import gregtech.common.tileentities.render.TileEntityWormhole;
+import gregtech.common.tileentities.render.RenderingTileEntityWormhole;
 
 public class WormholeRenderer extends TileEntitySpecialRenderer {
 
@@ -54,7 +54,7 @@ public class WormholeRenderer extends TileEntitySpecialRenderer {
     @Override
     public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float timeSinceLastTick) {
 
-        if (tile instanceof TileEntityWormhole wTile) {
+        if (tile instanceof RenderingTileEntityWormhole wTile) {
             GL11.glPushMatrix();
             GL11.glTranslated(x + 0.5, y + 0.5, z + 0.5);
             GL11.glScaled(wTile.targetRadius, wTile.targetRadius, wTile.targetRadius);

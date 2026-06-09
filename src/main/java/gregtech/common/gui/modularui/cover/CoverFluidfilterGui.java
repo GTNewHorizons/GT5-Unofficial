@@ -19,6 +19,7 @@ import com.cleanroommc.modularui.widgets.slot.FluidSlot;
 
 import gregtech.api.modularui2.CoverGuiData;
 import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.common.covers.CoverFluidfilter;
 import gregtech.common.covers.modes.BlockMode;
 import gregtech.common.covers.modes.FilterDirectionMode;
@@ -39,20 +40,20 @@ public class CoverFluidfilterGui extends CoverBaseGui<CoverFluidfilter> {
 
     @Override
     public void addUIWidgets(PanelSyncManager syncManager, Flow column, CoverGuiData data) {
-        EnumSyncValue<FilterDirectionMode> ioModeSyncValue = new EnumSyncValue<>(
+        EnumSyncValue<FilterDirectionMode, ?> ioModeSyncValue = new EnumSyncValue<>(
             FilterDirectionMode.class,
             cover::getFilterDirection,
-            cover::setFilterDirection);
+            cover::setFilterDirection).allowC2S();
         syncManager.syncValue("io_mode", ioModeSyncValue);
-        EnumSyncValue<FilterType> filterTypeSyncValue = new EnumSyncValue<>(
+        EnumSyncValue<FilterType, ?> filterTypeSyncValue = new EnumSyncValue<>(
             FilterType.class,
             cover::getFilterType,
-            cover::setFilterType);
+            cover::setFilterType).allowC2S();
         syncManager.syncValue("filter_type", filterTypeSyncValue);
-        EnumSyncValue<BlockMode> blockModeSyncValue = new EnumSyncValue<>(
+        EnumSyncValue<BlockMode, ?> blockModeSyncValue = new EnumSyncValue<>(
             BlockMode.class,
             cover::getBlockMode,
-            cover::setBlockMode);
+            cover::setBlockMode).allowC2S();
         syncManager.syncValue("block_mode", blockModeSyncValue);
 
         IFluidTank filterTank = new FluidStackTank(() -> {
@@ -126,7 +127,8 @@ public class CoverFluidfilterGui extends CoverBaseGui<CoverFluidfilter> {
                         }
                         return StatCollector.translateToLocal("gt.interact.desc.FluidFilter.Empty");
                     })
-                        .asWidget()));
+                        .asWidget()
+                        .widgetTheme(GTWidgetThemes.DISPLAY_TEXT_GRAY)));
     }
 
 }

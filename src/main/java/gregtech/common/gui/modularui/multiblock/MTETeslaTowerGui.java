@@ -29,6 +29,7 @@ import com.cleanroommc.modularui.drawable.Rectangle;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.RichTooltip;
 import com.cleanroommc.modularui.utils.Color;
+import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
 import com.cleanroommc.modularui.value.sync.GenericListSyncHandler;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.LongSyncValue;
@@ -84,6 +85,7 @@ public class MTETeslaTowerGui extends TTMultiblockBaseGui<MTETeslaTower> {
                     () -> " " + voltageSyncer.getValue()
                         .toString())
                     .asWidget()
+                    .widgetTheme(GTWidgetThemes.DISPLAY_TEXT_WHITE)
                     // Minecraft &a equivalent
                     .color(0x55FF55));
     }
@@ -94,7 +96,8 @@ public class MTETeslaTowerGui extends TTMultiblockBaseGui<MTETeslaTower> {
         syncManager.syncValue("current", currentSyncer);
         syncManager.syncValue("maxCurrent", maxCurrentSyncer);
         return new ProgressWidget()
-            .progress(() -> (double) currentSyncer.getValue() / Math.max(1, maxCurrentSyncer.getValue()))
+            .value(
+                new DoubleSyncValue(() -> (double) currentSyncer.getValue() / Math.max(1, maxCurrentSyncer.getValue())))
             .texture(GTGuiTextures.PICTURE_TRANSPARENT, GTGuiTextures.PROGRESSBAR_TESLA_TOWER_CURRENT, 100)
             .widthRel(0.75f)
             .height(9)
@@ -131,7 +134,8 @@ public class MTETeslaTowerGui extends TTMultiblockBaseGui<MTETeslaTower> {
     }
 
     private IWidget createChartButton(PanelSyncManager syncManager, ModularPanel parent) {
-        IPanelHandler chartPanel = syncManager.panel("chart", (a, b) -> openChartPanel(syncManager, parent), true);
+        IPanelHandler chartPanel = syncManager
+            .syncedPanel("chart", true, (a, b) -> openChartPanel(syncManager, parent));
         return new ButtonWidget<>().onMousePressed(d -> {
             if (!chartPanel.isPanelOpen()) {
                 chartPanel.openPanel();
@@ -159,7 +163,7 @@ public class MTETeslaTowerGui extends TTMultiblockBaseGui<MTETeslaTower> {
             .padding(4)
             .child(
                 Flow.column()
-                    .sizeRel(1)
+                    .full()
                     .child(createChartWidget())
                     .child(createChartEditColumn()));
     }
@@ -185,12 +189,12 @@ public class MTETeslaTowerGui extends TTMultiblockBaseGui<MTETeslaTower> {
                     .chartUnit("A")
                     .formatter(new DecimalFormat("0.0#"))
                     .marginBottom(2)
-                    .sizeRel(1));
+                    .full());
     }
 
     private IWidget createChartEditColumn() {
         return Flow.column()
-            .widthRel(1)
+            .fullWidth()
             .coverChildrenHeight()
             .child(createTickRateRow())
             .child(createDataLimitRow());
@@ -198,7 +202,7 @@ public class MTETeslaTowerGui extends TTMultiblockBaseGui<MTETeslaTower> {
 
     private IWidget createTickRateRow() {
         return Flow.row()
-            .widthRel(1)
+            .fullWidth()
             .coverChildrenHeight()
             .child(
                 IKey.str("Update chart every")
@@ -207,7 +211,8 @@ public class MTETeslaTowerGui extends TTMultiblockBaseGui<MTETeslaTower> {
             .child(
                 new TextFieldWidget()
                     .value(
-                        new IntSyncValue(multiblock::getTicksBetweenDataPoints, multiblock::setTicksBetweenDataPoints))
+                        new IntSyncValue(multiblock::getTicksBetweenDataPoints, multiblock::setTicksBetweenDataPoints)
+                            .allowC2S())
                     .size(25, 12)
                     .marginRight(4))
             .child(
@@ -217,14 +222,15 @@ public class MTETeslaTowerGui extends TTMultiblockBaseGui<MTETeslaTower> {
 
     private IWidget createDataLimitRow() {
         return Flow.row()
-            .widthRel(1)
+            .fullWidth()
             .coverChildrenHeight()
             .child(
                 IKey.str("Show last")
                     .asWidget()
                     .marginRight(4))
             .child(
-                new TextFieldWidget().value(new IntSyncValue(multiblock::getHistorySize, multiblock::setHistorySize))
+                new TextFieldWidget()
+                    .value(new IntSyncValue(multiblock::getHistorySize, multiblock::setHistorySize).allowC2S())
                     .size(25, 12)
                     .marginRight(4))
             .child(
@@ -234,7 +240,7 @@ public class MTETeslaTowerGui extends TTMultiblockBaseGui<MTETeslaTower> {
 
     private IWidget createHeatMapButton(PanelSyncManager syncManager, ModularPanel parent) {
         IPanelHandler heatMapPanel = syncManager
-            .panel("heatMap", (a, b) -> openHeatMapPanel(syncManager, parent), true);
+            .syncedPanel("heatMap", true, (a, b) -> openHeatMapPanel(syncManager, parent));
         return new ButtonWidget<>().onMousePressed(d -> {
             if (!heatMapPanel.isPanelOpen()) {
                 heatMapPanel.openPanel();
@@ -265,17 +271,8 @@ public class MTETeslaTowerGui extends TTMultiblockBaseGui<MTETeslaTower> {
     }
 
     private IWidget createNodeGrid(PanelSyncManager syncManager, int borderRadius) {
-        List<List<Widget<?>>> matrix = new ArrayList<>();
-
-        for (int i = 0; i < gridChunkSize; i++) {
-            matrix.add(new ArrayList<>());
-            for (int j = 0; j < gridChunkSize; j++) {
-                matrix.get(i)
-                    .add(createMapSlot(syncManager, i, j).size(gridSquareSize));
-            }
-        }
-
-        return new Grid().matrix(matrix)
+        return new Grid()
+            .gridOfWidthHeight(gridChunkSize, gridChunkSize, (x, y, $index) -> createMapSlot(syncManager, x, y))
             .size(gridSquareSize * gridChunkSize)
             .marginTop(borderRadius)
             .marginLeft(borderRadius);
@@ -315,7 +312,7 @@ public class MTETeslaTowerGui extends TTMultiblockBaseGui<MTETeslaTower> {
         boolean isGridCenter = gridX == gridChunkRadius && gridY == gridChunkRadius;
 
         if (ampsAtChunk == null) {
-            return isGridCenter ? new Rectangle().setColor(Color.BLACK.main)
+            return isGridCenter ? new Rectangle().color(Color.BLACK.main)
                 .asIcon()
                 .size(gridSquareSize) : IDrawable.EMPTY;
         }
@@ -337,7 +334,7 @@ public class MTETeslaTowerGui extends TTMultiblockBaseGui<MTETeslaTower> {
             color = Color.RED.main;
         }
 
-        return new Rectangle().setColor(color)
+        return new Rectangle().color(color)
             .asIcon()
             .size(gridSquareSize);
     }

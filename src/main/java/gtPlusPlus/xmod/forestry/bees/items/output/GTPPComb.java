@@ -48,7 +48,7 @@ public class GTPPComb extends Item {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubItems(Item item, CreativeTabs tabs, List list) {
+    public void getSubItems(Item item, CreativeTabs tabs, List<ItemStack> list) {
         for (GTPPCombType type : GTPPCombType.values()) {
             if (type.mShowInList) {
                 list.add(this.getStackForType(type));
@@ -96,11 +96,10 @@ public class GTPPComb extends Item {
     @Override
     public String getItemStackDisplayName(ItemStack stack) {
         return GTPPCombType.get(stack.getItemDamage())
-            .getName();
+            .getLocalizedName();
     }
 
     public static void initCombsRecipes() {
-
         addChemicalRecipe(
             GTPPCombType.DRAGONBLOOD,
             new ItemStack[] { GTModHandler.getModItem(Forestry.ID, "refractoryWax", 1L, 0),
@@ -126,6 +125,5 @@ public class GTPPComb extends Item {
             .eut(aEU)
             .metadata(CHEMPLANT_CASING_TIER, aTier)
             .addTo(chemicalPlantRecipes);
-
     }
 }

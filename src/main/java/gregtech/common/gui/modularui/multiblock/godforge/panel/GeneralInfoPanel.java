@@ -81,7 +81,7 @@ public class GeneralInfoPanel {
             textList.child(moduleToC);
             textList.child(upgradeToC);
             textList.child(milestoneToC);
-            textList.childIf(inversionSyncer.getBoolValue(), inversionToC);
+            textList.childIf(inversionSyncer.getBoolValue(), () -> inversionToC);
 
             textList.child(fuelHeader);
             textList.child(fuelText);
@@ -91,11 +91,12 @@ public class GeneralInfoPanel {
             textList.child(upgradeText);
             textList.child(milestoneHeader);
             textList.child(milestoneText);
-            textList.childIf(inversionSyncer.getBoolValue(), inversionHeader);
-            textList.childIf(inversionSyncer.getBoolValue(), inversionText);
+            textList.childIf(inversionSyncer.getBoolValue(), () -> inversionHeader);
+            textList.childIf(inversionSyncer.getBoolValue(), () -> inversionText);
 
             return textList;
-        });
+        })
+            .allowC2S();
 
         inversionSyncer.setChangeListener(() -> handler.notifyUpdate($ -> {}));
 
@@ -114,7 +115,7 @@ public class GeneralInfoPanel {
         return IKey.lang(langKey)
             .style(EnumChatFormatting.DARK_PURPLE, EnumChatFormatting.BOLD, EnumChatFormatting.UNDERLINE)
             .asWidget()
-            .alignX(Alignment.CENTER)
+            .horizontalCenter()
             .marginBottom(8);
     }
 
@@ -177,7 +178,7 @@ public class GeneralInfoPanel {
     private static TextWidget<?> createHeaderInversion() {
         return IKey.str(getInversionHeaderText())
             .asWidget()
-            .alignX(Alignment.CENTER)
+            .horizontalCenter()
             .marginBottom(8);
     }
 

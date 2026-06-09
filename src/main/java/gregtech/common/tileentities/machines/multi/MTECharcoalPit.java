@@ -7,6 +7,7 @@ import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.annotation.Nonnull;
 
@@ -25,7 +26,6 @@ import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.ParticleFX;
-import gregtech.api.interfaces.ISecondaryDescribable;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -33,11 +33,12 @@ import gregtech.api.metatileentity.implementations.MTETooltipMultiBlockBase;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.WorldSpawnedEventBuilder;
 import gregtech.common.pollution.Pollution;
 
-public class MTECharcoalPit extends MTETooltipMultiBlockBase implements ISecondaryDescribable {
+public class MTECharcoalPit extends MTETooltipMultiBlockBase {
 
     private boolean running = false;
 
@@ -208,9 +209,7 @@ public class MTECharcoalPit extends MTETooltipMultiBlockBase implements ISeconda
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        return true;
-    }
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {}
 
     @Override
     public int getPollutionPerSecond(ItemStack aStack) {
@@ -222,6 +221,7 @@ public class MTECharcoalPit extends MTETooltipMultiBlockBase implements ISeconda
         return new MTECharcoalPit(mName);
     }
 
+    @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Charcoal Pile Igniter, CPI")
@@ -229,8 +229,8 @@ public class MTECharcoalPit extends MTETooltipMultiBlockBase implements ISeconda
             .addInfo("Automatically starts when formed")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginVariableStructureBlock(3, 13, 3, 7, 3, 13, false)
+            .addController("Top layer, directly touching a wood log")
             .addStructureInfo("Can be up to 13x7x13 in size, including the dirt; shape doesn't matter")
-            .addOtherStructurePart("Controller", "Top layer, directly touching a wood log")
             .addOtherStructurePart("Dirt/Grass", "Top and middle layers, covering wood logs")
             .addOtherStructurePart("Bricks", "Bottom layer, under all wood logs")
             .addOtherStructurePart("Wood Logs", "Up to 5 layers, inside the previously mentioned blocks")
@@ -280,6 +280,11 @@ public class MTECharcoalPit extends MTETooltipMultiBlockBase implements ISeconda
 
     @Override
     public boolean getDefaultHasMaintenanceChecks() {
+        return false;
+    }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
         return false;
     }
 }

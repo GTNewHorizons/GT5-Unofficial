@@ -193,9 +193,11 @@ public class DustLoader implements IWerkstoffRunnable {
                         .getKey();
                     if (werkstoffStats.isElektrolysis()) {
                         GTRecipe tRecipe = new GTRecipe(
-                            true,
                             new ItemStack[] { input, cells > 0 ? Materials.Empty.getCells(cells) : null },
                             stOutputs.toArray(new ItemStack[0]),
+                            null,
+                            null,
+                            null,
                             null,
                             null,
                             new FluidStack[] { null },
@@ -218,9 +220,11 @@ public class DustLoader implements IWerkstoffRunnable {
                     if (werkstoffStats.isCentrifuge()) {
                         RecipeMaps.centrifugeRecipes.add(
                             new GTRecipe(
-                                true,
                                 new ItemStack[] { input, cells > 0 ? Materials.Empty.getCells(cells) : null },
                                 stOutputs.toArray(new ItemStack[0]),
+                                null,
+                                null,
+                                null,
                                 null,
                                 null,
                                 new FluidStack[] { null },
@@ -270,9 +274,11 @@ public class DustLoader implements IWerkstoffRunnable {
                         if (circuit != null) stOutputs.add(circuit);
                         RecipeMaps.mixerRecipes.add(
                             new GTRecipe(
-                                true,
                                 stOutputs.toArray(new ItemStack[0]),
                                 new ItemStack[] { input },
+                                null,
+                                null,
+                                null,
                                 null,
                                 null,
                                 new FluidStack[] { !flOutputs.isEmpty() ? flOutputs.get(0) : null },
@@ -300,15 +306,19 @@ public class DustLoader implements IWerkstoffRunnable {
 
             GTModHandler.addCraftingRecipe(
                 werkstoff.get(dust),
+                GTModHandler.RecipeBits.BUFFERED,
                 new Object[] { "TTT", "TTT", "TTT", 'T', werkstoff.get(dustTiny) });
             GTModHandler.addCraftingRecipe(
                 werkstoff.get(dust),
+                GTModHandler.RecipeBits.BUFFERED,
                 new Object[] { "TT ", "TT ", 'T', WerkstoffLoader.getCorrespondingItemStack(dustSmall, werkstoff) });
             GTModHandler.addCraftingRecipe(
                 WerkstoffLoader.getCorrespondingItemStack(dustSmall, werkstoff, 4),
+                GTModHandler.RecipeBits.BUFFERED,
                 new Object[] { " T ", 'T', werkstoff.get(dust) });
             GTModHandler.addCraftingRecipe(
                 WerkstoffLoader.getCorrespondingItemStack(dustTiny, werkstoff, 9),
+                GTModHandler.RecipeBits.BUFFERED,
                 new Object[] { "T  ", 'T', werkstoff.get(dust) });
 
             GTValues.RA.stdBuilder()

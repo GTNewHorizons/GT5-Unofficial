@@ -11,7 +11,9 @@ import net.minecraft.util.MathHelper;
 import com.cleanroommc.modularui.utils.item.ItemStackHandler;
 import com.google.common.math.LongMath;
 
+import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.multiblock.godforge.data.Formatters;
+import tectech.loader.ConfigHandler;
 import tectech.thing.metaTileEntity.multi.godforge.color.ForgeOfGodsStarColor;
 import tectech.thing.metaTileEntity.multi.godforge.color.StarColorStorage;
 import tectech.thing.metaTileEntity.multi.godforge.upgrade.ForgeOfGodsUpgrade;
@@ -39,6 +41,13 @@ public class ForgeOfGodsData {
     public static final double POWER_LOG_CONSTANT = Math.log(9);
     public static final double RECIPE_LOG_CONSTANT = Math.log(4);
     public static final double FUEL_LOG_CONSTANT = Math.log(3);
+    // These were calculated externally by taking the consumption formulae and solving for the max fuel factor
+    // that's still within max int fuel consumption (doing this here would be a bit annoying since they contain
+    // an ln(x) + x situation)
+    public static final int MAX_RESIDUE_FACTOR = 70;
+    public static final int MAX_RESIDUE_FACTOR_DISCOUNTED = 72;
+    public static final int MAX_STELLAR_PLASMA_FACTOR = 181;
+    public static final int MAX_STELLAR_PLASMA_FACTOR_DISCOUNTED = 184;
 
     private int fuelConsumptionFactor = DEFAULT_FUEL_CONSUMPTION_FACTOR;
     private int selectedFuelType;
@@ -122,6 +131,12 @@ public class ForgeOfGodsData {
 
     public void setGravitonShardsAvailable(int gravitonShardsAvailable) {
         this.gravitonShardsAvailable = gravitonShardsAvailable;
+    }
+
+    public void setGravitonShardsAvailableDebug(int gravitonShardsAvailable) {
+        // need to check server side if we have permission
+        if (GTUtility.isClient() || GTUtility.isServer() && ConfigHandler.debug.DEBUG_MODE)
+            this.gravitonShardsAvailable = gravitonShardsAvailable;
     }
 
     public int getGravitonShardsSpent() {

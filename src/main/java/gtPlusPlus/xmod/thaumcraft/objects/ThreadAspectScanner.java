@@ -15,7 +15,6 @@ import net.minecraft.item.ItemStack;
 import org.apache.commons.lang3.tuple.Pair;
 
 import gregtech.api.util.StringUtils;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.data.FileUtils;
 import gtPlusPlus.xmod.thaumcraft.commands.CommandDumpAspects;
 
@@ -64,7 +63,6 @@ public class ThreadAspectScanner extends Thread {
     public void run() {
         if (mDoWeScan) {
             Iterator iterator;
-            Logger.INFO("Finding Blocks and Items to scan for Aspect data.");
             long mBlocksCounter = 0;
             long mItemsCounter = 0;
 
@@ -79,7 +77,6 @@ public class ThreadAspectScanner extends Thread {
                     mBlocksCounter++;
                 }
             }
-            Logger.INFO("Completed Block Scan. Counted " + mBlocksCounter);
 
             // Second Find items, Skipping things that exist.
             iterator = Item.itemRegistry.getKeys()
@@ -89,15 +86,13 @@ public class ThreadAspectScanner extends Thread {
                 Item item = (Item) Item.itemRegistry.getObject(s);
                 if (item != null) {
                     if (item.getHasSubtypes()) {
-                        List q1 = new ArrayList();
+                        List<ItemStack> q1 = new ArrayList<>();
                         item.getSubItems(item, item.getCreativeTab(), q1);
-                        if (q1 != null && !q1.isEmpty()) {
+                        if (!q1.isEmpty()) {
                             for (int e = 0; e < q1.size(); e++) {
                                 ItemStack check = new ItemStack(item, 1, e);
-                                if (check != null) {
-                                    tryCacheObject(check);
-                                    mItemsCounter++;
-                                }
+                                tryCacheObject(check);
+                                mItemsCounter++;
                             }
                         } else {
                             tryCacheObject(new ItemStack(item));
@@ -109,13 +104,10 @@ public class ThreadAspectScanner extends Thread {
                     }
                 }
             }
-            Logger.INFO("Completed Item Scan. Counted " + mItemsCounter);
 
             Set<String> y = mAllGameContent.keySet();
-            Logger.INFO("Beginning iteration of " + y.size() + " itemstacks for aspect information.");
 
             for (String key : y) {
-                // Logger.INFO("Looking for key: "+key);
                 if (mAllGameContent.containsKey(key)) {
                     ArrayList<ItemStack> group = mAllGameContent.get(key);
                     if (group == null || group.size() == 0) {
@@ -147,15 +139,11 @@ public class ThreadAspectScanner extends Thread {
                                 if (mAspectCacheFile != null && mList.size() >= 3) {
                                     FileUtils.appendListToFile(mAspectCacheFile, mList);
                                 }
-                            } catch (Exception t) {
-                                Logger.INFO("Error while iterating one item. " + t);
-                            }
+                            } catch (Exception ignored) {}
                         }
                     }
                 }
             }
-            Logger.INFO(
-                "Completed Aspect Iteration. AspectInfo.txt is now available to process in the GTplusplus configuration folder.");
             CommandDumpAspects.mLastScanTime = System.currentTimeMillis();
         }
     }

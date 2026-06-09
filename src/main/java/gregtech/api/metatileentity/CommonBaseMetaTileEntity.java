@@ -3,6 +3,9 @@ package gregtech.api.metatileentity;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.GTMod.GT_FML_LOGGER;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.IllegalFormatException;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
@@ -17,6 +20,8 @@ import com.cleanroommc.modularui.utils.item.IItemHandlerModifiable;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 
+import appeng.api.interfaces.IInterfaceNameProvider;
+import appeng.api.util.WorldCoord;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
@@ -30,15 +35,23 @@ import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.modularui.IBindPlayerInventoryUI;
 import gregtech.api.interfaces.modularui.IGetTitleColor;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.objects.blockupdate.BlockUpdateHandler;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
+import gregtech.common.config.Gregtech;
 
-public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity implements IGregTechTileEntity {
+public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
+    implements IGregTechTileEntity, IInterfaceNameProvider {
 
-    protected boolean mNeedsBlockUpdate = true, mNeedsUpdate = true, mNeedsTileUpdate = false, mSendClientData = false,
-        mInventoryChanged = false;
+    protected boolean mNeedsBlockUpdate = true, mNeedsUpdate = true, mNeedsTileUpdate = false,
+        mInventoryChanged = false, mTickDisabled = false;
 
-    protected NBTTagCompound pendingDescriptionPacket;
+    private boolean mIgnoreNextUnload = false;
+
+    protected int oldX = 0, oldY = 0, oldZ = 0;
+    protected byte oldStrongRedstone = 0, oldRedstoneData = 63, oldUpdateData = 0;
+
+    private byte mColor = 0;
 
     // Profiling
     private final int[] mTimeStatistics = new int[GregTechAPI.TICKS_FOR_LAG_AVERAGING];
@@ -55,27 +68,70 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity imple
                 .setBaseMetaTileEntity(this);
             mTickTimer = 0;
             mID = aID;
-            // If we have a pending description packet that was received before the MTE was created, load it
-            if (pendingDescriptionPacket != null) {
-                getMetaTileEntity().onDescriptionPacket(pendingDescriptionPacket);
-                pendingDescriptionPacket = null;
-            }
             return true;
         }
         return false;
     }
 
-    protected abstract void updateEntityProfiled();
+    public boolean isTickDisabled() {
+        return mTickDisabled;
+    }
+
+    // Re-enable ticking after disable.
+    @Override
+    public void enableTicking() {
+        if (!mTickDisabled) return;
+        getWorld().func_147448_a(Collections.singleton(this));
+        mTickDisabled = false;
+    }
+
+    // Effectively triggers unloading of the current tile entity, this does not invalidate the tile entity.
+    // After unloading, the tile entity will be in the same state as a non-tickable tile entity.
+    // This method may fail silently due to various reason, and calling enableTicking in the same tick will
+    // cause the disable tick call to be effectively ignored, as adding tile entity take precedence over unloading.
+    @Override
+    public void tryDisableTicking() {
+        if (mTickDisabled) return;
+        if (getValidCoversMask() != 0) return;
+        if (mIgnoreNextUnload) return;
+        getWorld().func_147457_a(this);
+        mIgnoreNextUnload = true;
+        hasTimeStatisticsStarted = false;
+        Arrays.fill(mTimeStatistics, 0);
+        mTickDisabled = true;
+    }
+
+    // This method is called both when the ticking is disabled for this block and the block is unloaded.
+    @Override
+    public final void onChunkUnload() {
+        if (mIgnoreNextUnload) {
+            mIgnoreNextUnload = false;
+            return;
+        }
+        onUnload();
+    }
+
+    public void onUnload() {
+        super.onChunkUnload();
+    }
+
+    protected final void writeCommonNBT(NBTTagCompound nbt) {
+        nbt.setByte("mColor", mColor);
+    }
+
+    protected final void readCommonNBT(NBTTagCompound nbt) {
+        mColor = nbt.getByte("mColor");
+    }
 
     @Override
     public final void updateEntity() {
         super.updateEntity();
 
-        long tTime;
+        final long timeStart;
         if (hasTimeStatisticsStarted) {
-            tTime = System.nanoTime();
+            timeStart = System.nanoTime();
         } else {
-            tTime = 0;
+            timeStart = 0;
         }
 
         try {
@@ -103,28 +159,120 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity imple
             }
         }
 
-        if (isServerSide() && hasTimeStatisticsStarted && hasValidMetaTileEntity()) {
-            tTime = System.nanoTime() - tTime;
+        if (hasTimeStatisticsStarted && isServerSide() && hasValidMetaTileEntity()) {
+            final long duration = System.nanoTime() - timeStart;
             mTimeStatisticsIndex = (mTimeStatisticsIndex + 1) % mTimeStatistics.length;
-            mTimeStatistics[mTimeStatisticsIndex] = (int) tTime;
-            if (tTime > 0 && tTime > (GregTechAPI.MILLISECOND_THRESHOLD_UNTIL_LAG_WARNING * 1_000_000L)
+            mTimeStatistics[mTimeStatisticsIndex] = (int) duration;
+            if (duration > 0 && duration > (GregTechAPI.MILLISECOND_THRESHOLD_UNTIL_LAG_WARNING * 1_000_000L)
                 && mTickTimer > 1000
                 && getMetaTileEntity().doTickProfilingMessageDuringThisTick()
                 && mLagWarningCount++ < 10)
                 GT_FML_LOGGER.warn(
-                    "WARNING: Possible Lag Source at [" + xCoord
-                        + ", "
-                        + yCoord
-                        + ", "
-                        + zCoord
-                        + "] in Dimension "
-                        + worldObj.provider.dimensionId
-                        + " with "
-                        + tTime
-                        + " ns caused by an instance of "
-                        + getMetaTileEntity().getClass());
+                    "WARNING: Possible Lag Source at [{}, {}, {}] in Dimension {} with {} ns caused by an instance of {}",
+                    xCoord,
+                    yCoord,
+                    zCoord,
+                    worldObj.provider.dimensionId,
+                    duration,
+                    getMetaTileEntity().getClass());
         }
 
+    }
+
+    protected abstract void updateEntityProfiled();
+
+    /**
+     * Handles setting data on the first tick
+     */
+    protected final void handleFirstTick(boolean isServerSide) {
+        oldX = xCoord;
+        oldY = yCoord;
+        oldZ = zCoord;
+        if (isServerSide) {
+            checkDropCover();
+        } else {
+            requestCoverDataIfNeeded();
+        }
+        worldObj.markTileEntityChunkModified(xCoord, yCoord, zCoord, this);
+        getMetaTileEntity().onFirstTick(this);
+    }
+
+    /**
+     * Colorless is 0 for this function. Prefer {@link #getColorization()} for usual cases
+     *
+     * @return color from 0 to 16, 0 means colorless.
+     */
+    protected final byte getColorRaw() {
+        return mColor;
+    }
+
+    /**
+     * Colorless is 0 for this function. Prefer {@link #setColorization(byte)} for usual cases
+     */
+    protected final void setColorRaw(byte color) {
+        if (mColor == color) return;
+        mColor = color;
+        if (isClientSide()) {
+            getMetaTileEntity().onColorChangeClient(mColor);
+            issueTextureUpdate();
+        } else {
+            getMetaTileEntity().onColorChangeServer(mColor);
+            sendBlockEvent(GregTechTileClientEvents.CHANGE_COLOR, mColor);
+        }
+    }
+
+    /**
+     * Handles marking the tile entity's block for an update on the client side
+     */
+    protected final void handleBlockUpdateClient() {
+        if (!mNeedsUpdate) {
+            return;
+        }
+        if (GTMod.proxy.mUseBlockUpdateHandler) {
+            BlockUpdateHandler.Instance.enqueueBlockUpdate(worldObj, new WorldCoord(this));
+        } else {
+            worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+        }
+        getMetaTileEntity().onTextureUpdate();
+        mNeedsUpdate = false;
+    }
+
+    /**
+     * Handles the tile entity's position changing
+     */
+    protected final void handlePositionChange() {
+        if (xCoord == oldX && yCoord == oldY && zCoord == oldZ) {
+            return;
+        }
+        oldX = xCoord;
+        oldY = yCoord;
+        oldZ = zCoord;
+        issueTileUpdate();
+        clearTileEntityBuffer();
+    }
+
+    /**
+     * Handles the update data changing
+     */
+    protected final void handleUpdateDataChangeServer() {
+        byte updateData = getMetaTileEntity().getUpdateData();
+        if (updateData == oldUpdateData) {
+            return;
+        }
+        oldUpdateData = updateData;
+        sendBlockEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, oldUpdateData);
+    }
+
+    /**
+     * Handles sided Redstone changing
+     */
+    protected final void handleSidedRedstoneChangeServer() {
+        byte redstone = getSidedRedstoneMask();
+        if (redstone == oldRedstoneData) {
+            return;
+        }
+        oldRedstoneData = redstone;
+        sendBlockEvent(GregTechTileClientEvents.CHANGE_REDSTONE_OUTPUT, oldRedstoneData);
     }
 
     protected abstract void onTickFail();
@@ -140,6 +288,9 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity imple
                         final NBTTagCompound tTag = new NBTTagCompound();
                         tTag.setInteger("IntSlot", i);
                         tStack.writeToNBT(tTag);
+                        if (tStack.stackSize > Byte.MAX_VALUE) {
+                            tTag.setInteger("Count", tStack.stackSize);
+                        }
                         tItemList.appendTag(tTag);
                     }
                 }
@@ -148,13 +299,11 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity imple
                 try {
                     getMetaTileEntity().saveNBTData(aNBT);
                 } catch (Exception e) {
-                    GT_FML_LOGGER.error("Encountered CRITICAL ERROR while saving MetaTileEntity.");
-                    GTMod.logStackTrace(e);
+                    GT_FML_LOGGER.error("Encountered CRITICAL ERROR while saving MetaTileEntity.", e);
                 }
             }
         } catch (Exception e) {
-            GT_FML_LOGGER.error("Encountered CRITICAL ERROR while saving MetaTileEntity.");
-            GTMod.logStackTrace(e);
+            GT_FML_LOGGER.error("Encountered CRITICAL ERROR while saving MetaTileEntity.", e);
         }
     }
 
@@ -209,7 +358,9 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity imple
     }
 
     protected void addProfilingInformation(List<String> tList) {
-        if (hasTimeStatisticsStarted) {
+        if (mTickDisabled) {
+            tList.add("Tick Disabled");
+        } else if (hasTimeStatisticsStarted) {
             double tAverageTime = 0;
             double tWorstTime = 0;
             int amountOfZero = 0;
@@ -264,34 +415,54 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity imple
         return false;
     }
 
+    /**
+     * Run on the server when the block is marked for a full resync, e.g. when loading a chunk.
+     */
+    abstract byte[] getInitialDataForClient();
+
+    /**
+     * Runs on the client to receive full resync data from the server.
+     */
+    abstract void receiveInitialDataOnClient(byte[] data);
+
     @Override
     public Packet getDescriptionPacket() {
-        issueClientUpdate();
+        byte[] base = getInitialDataForClient();
+        NBTTagCompound nbt = new NBTTagCompound();
+        nbt.setByteArray("base", base);
+        S35PacketUpdateTileEntity pkt = new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 0, nbt);
 
         IMetaTileEntity imte = getMetaTileEntity();
 
-        if (imte == null) return null;
+        if (imte == null) return pkt;
 
         NBTTagCompound data = imte.getDescriptionData();
 
-        if (data == null) return null;
+        if (data == null) return pkt;
 
-        return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, blockMetadata, data);
+        // Yeah we delay a bit of modification after packet construction
+        // it's fine... it's clear this won't cause problems
+        nbt.setTag("mte", data);
+
+        return pkt;
     }
 
     @Override
     public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
-        IMetaTileEntity imte = getMetaTileEntity();
 
-        if (imte == null) {
-            // If we don't have a meta tile yet, it's likely because it hasn't been created on the client yet
-            // Let's just store a reference to the data and process it once the meta tile has been created
-            // If this tile entity is about to be destroyed then we won't be causing a memory leak here so this is safe
-            pendingDescriptionPacket = pkt.func_148857_g();
-            return;
-        }
+        NBTTagCompound nbt = pkt.func_148857_g();
+        // Receive and create the mte if it doesn't exist
+        receiveInitialDataOnClient(nbt.getByteArray("base"));
 
-        imte.onDescriptionPacket(pkt.func_148857_g());
+        IMetaTileEntity mte = getMetaTileEntity();
+
+        // The mte sent from server is invalid
+        if (mte == null) return;
+
+        if (!nbt.hasKey("mte")) return;
+        NBTTagCompound data = nbt.getCompoundTag("mte");
+
+        mte.onDescriptionPacket(data);
     }
 
     @Override
@@ -300,18 +471,26 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity imple
     }
 
     @Override
-    public void issueClientUpdate() {
-        mSendClientData = true;
-    }
-
-    @Override
     public void issueBlockUpdate() {
         mNeedsBlockUpdate = true;
+        if (mTickDisabled) {
+            doBlockUpdateServer();
+        }
+    }
+
+    public final void doBlockUpdateServer() {
+        updateNeighbours(mStrongRedstone, oldStrongRedstone);
+        oldStrongRedstone = mStrongRedstone;
+        mNeedsBlockUpdate = false;
     }
 
     @Override
     public void issueTileUpdate() {
         mNeedsTileUpdate = true;
+        if (mTickDisabled) {
+            worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+            mNeedsTileUpdate = false;
+        }
     }
 
     @Override
@@ -321,7 +500,7 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity imple
     }
 
     @Override
-    public boolean canAccessData() {
+    public final boolean canAccessData() {
         return !isDead && hasValidMetaTileEntity();
     }
 
@@ -341,12 +520,6 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity imple
     @Override
     public boolean allowCoverOnSide(ForgeDirection side, ItemStack coverItem) {
         return hasValidMetaTileEntity() && getMetaTileEntity().allowCoverOnSide(side, coverItem);
-    }
-
-    @Override
-    public void issueCoverUpdate(ForgeDirection side) {
-        super.issueCoverUpdate(side);
-        issueClientUpdate();
     }
 
     /*
@@ -386,6 +559,19 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity imple
             return (IConfigurationCircuitSupport) getMetaTileEntity();
         }
         return null;
+    }
+
+    @Override
+    public String getInterfaceNameSuffix() {
+        final IConfigurationCircuitSupport ccs = getConfigurationCircuitSupport();
+        if (ccs == null || !ccs.allowSelectCircuit()) return null;
+        ItemStack stack = getStackInSlot(ccs.getCircuitSlot());
+        if (stack == null || stack.getItemDamage() <= 0) return null;
+        try {
+            return String.format(Gregtech.machines.ghostCircuitSuffixFormat, stack.getItemDamage());
+        } catch (IllegalFormatException e) {
+            return "";
+        }
     }
 
     @Override

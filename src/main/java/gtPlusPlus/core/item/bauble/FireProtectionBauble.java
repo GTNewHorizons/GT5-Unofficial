@@ -2,14 +2,10 @@ package gtPlusPlus.core.item.bauble;
 
 import static gregtech.api.enums.Mods.GTPlusPlus;
 
-import java.util.List;
-
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.world.World;
 
 import baubles.api.BaubleType;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -33,12 +29,6 @@ public class FireProtectionBauble extends BaseBauble {
     }
 
     @Override
-    public void onUpdate(final ItemStack itemStack, final World worldObj, final Entity player, final int p_77663_4_,
-        final boolean p_77663_5_) {
-        super.onUpdate(itemStack, worldObj, player, p_77663_4_, p_77663_5_);
-    }
-
-    @Override
     public String getItemStackDisplayName(final ItemStack p_77653_1_) {
         return (EnumChatFormatting.DARK_RED + super.getItemStackDisplayName(p_77653_1_) + EnumChatFormatting.GRAY);
     }
@@ -46,11 +36,6 @@ public class FireProtectionBauble extends BaseBauble {
     @Override
     public boolean showDurabilityBar(final ItemStack stack) {
         return false;
-    }
-
-    @Override
-    public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
-        super.addInformation(stack, aPlayer, list, bool);
     }
 
     @Override

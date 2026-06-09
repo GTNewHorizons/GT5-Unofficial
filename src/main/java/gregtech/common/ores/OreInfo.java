@@ -82,6 +82,7 @@ public class OreInfo<TMat extends IOreMaterial> implements AutoCloseable {
         return this;
     }
 
+    @Override
     public OreInfo<TMat> clone() {
         OreInfo<TMat> dup = getNewInfo();
         dup.cachedAdapter = this.cachedAdapter;

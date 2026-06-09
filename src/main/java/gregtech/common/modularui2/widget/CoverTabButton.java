@@ -21,29 +21,23 @@ import com.cleanroommc.modularui.widgets.ButtonWidget;
 
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.modularui2.GTWidgetThemes;
+import gregtech.api.util.GTUtility;
 import gregtech.common.covers.Cover;
 
 public class CoverTabButton extends ButtonWidget<CoverTabButton> {
 
-    private static final String[] COVER_DIRECTION_NAMES = new String[] { "GT5U.interface.coverTabs.down",
-        "GT5U.interface.coverTabs.up", "GT5U.interface.coverTabs.north", "GT5U.interface.coverTabs.south",
-        "GT5U.interface.coverTabs.west", "GT5U.interface.coverTabs.east" };
-
     private final ICoverable coverable;
     private final ForgeDirection side;
+    private IPanelHandler panel;
 
-    public CoverTabButton(ICoverable coverable, ForgeDirection side, IPanelHandler panel) {
+    public CoverTabButton(ICoverable coverable, ForgeDirection side) {
         this.coverable = coverable;
         this.side = side;
         this.setEnabledIf($ -> coverable.hasCoverAtSide(side))
             .onMousePressed(mouseButton -> {
                 if (coverable.getCoverAtSide(side)
                     .hasCoverGUI()) {
-                    if (panel.isPanelOpen()) {
-                        panel.closePanel();
-                    } else {
-                        panel.openPanel();
-                    }
+                    togglePanel();
                 }
                 return true;
             })
@@ -54,7 +48,20 @@ public class CoverTabButton extends ButtonWidget<CoverTabButton> {
                         .marginTop(1)))
             .tooltipBuilder(this::buildTooltip)
             .tooltipAutoUpdate(true)
-            .size(18, 20);
+            .size(20, 20);
+    }
+
+    public void setPanel(IPanelHandler panel) {
+        this.panel = panel;
+    }
+
+    private void togglePanel() {
+        if (panel == null) return;
+        if (panel.isPanelOpen()) {
+            panel.closePanel();
+        } else {
+            panel.openPanel();
+        }
     }
 
     private void buildTooltip(RichTooltip builder) {
@@ -67,7 +74,7 @@ public class CoverTabButton extends ButtonWidget<CoverTabButton> {
         builder
             .add(
                 (coverHasGui ? EnumChatFormatting.UNDERLINE : EnumChatFormatting.DARK_GRAY)
-                    + StatCollector.translateToLocal(COVER_DIRECTION_NAMES[side.ordinal()])
+                    + StatCollector.translateToLocal(GTUtility.getUnlocalizedSideName(side))
                     + (coverHasGui ? EnumChatFormatting.RESET + ": " : ": " + EnumChatFormatting.RESET)
                     + tooltips.get(0))
             .newLine()

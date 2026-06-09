@@ -26,10 +26,12 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.gui.modularui.multiblock.godforge.MTEPlasmaModuleGui;
+import tectech.loader.ConfigHandler;
 import tectech.recipe.TecTechRecipeMaps;
 
 public class MTEPlasmaModule extends MTEBaseModule {
@@ -112,8 +114,20 @@ public class MTEPlasmaModule extends MTEBaseModule {
         return inputMaxParallel;
     }
 
-    public void setInputMaxParallel(int val) {
-        inputMaxParallel = val;
+    public void setInputMaxParallelDebug(int val) {
+        // need to check server side if we have permission
+        if (GTUtility.isClient() || GTUtility.isServer() && ConfigHandler.debug.DEBUG_MODE) inputMaxParallel = val;
+    }
+
+    public void setPlasmaTierDebug(int tier) {
+        // need to check server side if we have permission
+        if (GTUtility.isClient() || GTUtility.isServer() && ConfigHandler.debug.DEBUG_MODE) setPlasmaTier(tier);
+    }
+
+    public void setMultiStepPlasmaDebug(boolean isCapable) {
+        // need to check server side if we have permission
+        if (GTUtility.isClient() || GTUtility.isServer() && ConfigHandler.debug.DEBUG_MODE)
+            setMultiStepPlasma(isCapable);
     }
 
     @Override
@@ -174,6 +188,7 @@ public class MTEPlasmaModule extends MTEBaseModule {
             .addInfo("right away, some of them require certain upgrades to be unlocked")
             .addInfo("This module is specialized towards energy and overclock efficiency")
             .beginStructureBlock(7, 7, 13, false)
+            .addController("Front center")
             .addStructureInfo(
                 EnumChatFormatting.GOLD + "20"
                     + EnumChatFormatting.GRAY

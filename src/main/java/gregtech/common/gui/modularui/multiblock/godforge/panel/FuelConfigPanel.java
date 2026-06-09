@@ -12,12 +12,11 @@ import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.EnumSyncValue;
 import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.FluidDisplayWidget;
-import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Flow;
-import com.cleanroommc.modularui.widgets.layout.Row;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
 import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.common.gui.modularui.multiblock.godforge.ForgeOfGodsGuiUtil;
 import gregtech.common.gui.modularui.multiblock.godforge.data.Formatters;
 import gregtech.common.gui.modularui.multiblock.godforge.data.Fuels;
@@ -32,7 +31,7 @@ import tectech.thing.metaTileEntity.multi.godforge.util.GodforgeMath;
 public class FuelConfigPanel {
 
     private static final int SIZE_W = 78;
-    private static final int SIZE_H = 130;
+    private static final int SIZE_H = 138;
 
     public static ModularPanel openPanel(SyncHypervisor hypervisor) {
         ModularPanel panel = hypervisor.getModularPanel(Panels.FUEL_CONFIG);
@@ -45,7 +44,8 @@ public class FuelConfigPanel {
             .topRel(0)
             .leftRelOffset(1, -3);
 
-        Flow column = new Column().size(SIZE_W, SIZE_H);
+        Flow column = Flow.column()
+            .size(SIZE_W, SIZE_H);
 
         // Header
         column.child(
@@ -53,17 +53,16 @@ public class FuelConfigPanel {
                 .alignment(Alignment.CENTER)
                 .asWidget()
                 .width(SIZE_W - 4)
-                .alignX(0.5f)
                 .marginTop(5));
 
         // Textbox
         column.child(
-            new TextFieldWidget().setFormatAsInteger(true)
-                .setNumbers(raw -> MathHelper.clamp_int(raw, 1, GodforgeMath.calculateMaxFuelFactor(data)))
+            new TextFieldWidget().formatAsInteger(true)
+                .numbersInt(raw -> MathHelper.clamp_int(raw, 1, GodforgeMath.calculateMaxFuelFactor(data)))
                 .setTextAlignment(Alignment.CENTER)
                 .value(SyncValues.FUEL_FACTOR.create(hypervisor))
                 .setTooltipOverride(true)
-                .setScrollValues(1, 4, 64)
+                .scrollValues(1, 64, 4, 16)
                 .size(70, 18)
                 .marginLeft(4)
                 .marginTop(3));
@@ -89,13 +88,12 @@ public class FuelConfigPanel {
                 .alignment(Alignment.CENTER)
                 .asWidget()
                 .width(SIZE_W - 4)
-                .alignX(0.5f)
                 .marginTop(5));
 
         // Fuel selector
-        EnumSyncValue<Fuels> selectionSyncer = SyncValues.SELECTED_FUEL.lookupFrom(Panels.FUEL_CONFIG, hypervisor);
-        Flow fuelRow = new Row().coverChildren()
-            .alignX(0.5f)
+        EnumSyncValue<Fuels, ?> selectionSyncer = SyncValues.SELECTED_FUEL.lookupFrom(Panels.FUEL_CONFIG, hypervisor);
+        Flow fuelRow = Flow.row()
+            .coverChildren()
             .marginTop(5)
             .childPadding(7)
             .child(createFuelSelection(hypervisor, selectionSyncer, Fuels.RESIDUE))
@@ -109,7 +107,6 @@ public class FuelConfigPanel {
                 .alignment(Alignment.CENTER)
                 .asWidget()
                 .width(SIZE_W - 4)
-                .alignX(0.5f)
                 .marginTop(5));
         column.child(IKey.dynamic(() -> {
             Formatters formatter = data.getFormatter();
@@ -117,8 +114,8 @@ public class FuelConfigPanel {
         })
             .alignment(Alignment.CENTER)
             .asWidget()
+            .widgetTheme(GTWidgetThemes.DISPLAY_TEXT_GRAY)
             .width(SIZE_W - 4)
-            .alignX(0.5f)
             .marginTop(3));
 
         return panel.child(column);
@@ -129,24 +126,22 @@ public class FuelConfigPanel {
         SyncValues.FUEL_CONSUMPTION.registerFor(Panels.FUEL_CONFIG, hypervisor);
     }
 
-    private static ParentWidget<?> createFuelSelection(SyncHypervisor hypervisor, EnumSyncValue<Fuels> syncer,
+    private static ParentWidget<?> createFuelSelection(SyncHypervisor hypervisor, EnumSyncValue<Fuels, ?> syncer,
         Fuels option) {
         return new ParentWidget<>().coverChildrenWidth()
             .size(18)
             .child(
                 new FluidDisplayWidget().background(IDrawable.EMPTY)
-                    .fluid(option.getFluid())
+                    .value(option.getFluid())
                     .displayAmount(false)
-                    .align(Alignment.CENTER)
-                    .size(16))
+                    .topRel(0)
+                    .leftRel(0)
+                    .size(18))
             .child(
                 new SelectButton().value(LinkedBoolValue.of(syncer, option))
-                    .background(IDrawable.EMPTY)
-                    .overlay(IDrawable.EMPTY)
+                    .disableThemeBackground(true)
+                    .disableHoverThemeBackground(true)
                     .selectedBackground(GTGuiTextures.SLOT_OUTLINE_GREEN)
-                    .disableHoverBackground()
-                    .disableHoverOverlay()
-                    .size(18)
                     .clickSound(ForgeOfGodsGuiUtil.getButtonSound())
                     .tooltip(t -> {
                         if (hypervisor.isClient()) {

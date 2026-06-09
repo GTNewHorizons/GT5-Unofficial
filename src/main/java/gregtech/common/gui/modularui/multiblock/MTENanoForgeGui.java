@@ -34,7 +34,7 @@ public class MTENanoForgeGui extends MTEMultiBlockBaseGui<MTENanoForge> {
 
     protected IWidget createInfoButton(PanelSyncManager syncManager) {
         IPanelHandler infoPanel = syncManager
-            .panel("nanoForgeInfoPanel", (p_syncManager, syncHandler) -> openInfoPanel(), true);
+            .syncedPanel("nanoForgeInfoPanel", true, (p_syncManager, syncHandler) -> openInfoPanel());
         return new ButtonWidget<>().size(16)
             .marginBottom(2)
             .overlay(GTGuiTextures.INFORMATION_BUBBLE)
@@ -93,7 +93,7 @@ public class MTENanoForgeGui extends MTEMultiBlockBaseGui<MTENanoForge> {
                     + EnumChatFormatting.BOLD
                     + GTUtility.translate("GT5U.machines.nano_forge.t4_info_header"))
             .asWidget()
-            .alignX(Alignment.CENTER)
+            .horizontalCenter()
             .marginBottom(8);
     }
 

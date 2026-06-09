@@ -21,9 +21,7 @@ import com.cleanroommc.modularui.value.StringValue;
 import com.cleanroommc.modularui.widgets.PageButton;
 import com.cleanroommc.modularui.widgets.PagedWidget;
 import com.cleanroommc.modularui.widgets.SliderWidget;
-import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Flow;
-import com.cleanroommc.modularui.widgets.layout.Row;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
 import gregtech.api.modularui2.GTGuiTextures;
@@ -38,7 +36,8 @@ public class CustomStarColorSelector {
     private static final int HSV_PAGE_INDEX = CustomStarColorPanel.HSV_PAGE_INDEX;
 
     protected static Flow createStarColorRGBPage(ColorData colorData) {
-        return new Column().coverChildren()
+        return Flow.column()
+            .coverChildren()
             .child(createStarColorRGBRow(StarColors.RGB.RED, colorData))
             .child(createStarColorRGBRow(StarColors.RGB.GREEN, colorData))
             .child(createStarColorRGBRow(StarColors.RGB.BLUE, colorData))
@@ -46,7 +45,8 @@ public class CustomStarColorSelector {
     }
 
     private static Flow createStarColorRGBRow(StarColors.RGB color, ColorData colorData) {
-        Flow row = new Row().size(SIZE - 16, 16)
+        Flow row = Flow.row()
+            .size(SIZE - 16, 16)
             .marginBottom(3);
 
         // Title
@@ -77,10 +77,10 @@ public class CustomStarColorSelector {
                             end = Color.withBlue(colorHex, 0xFF);
                         }
                     }
-                    return new Rectangle().setHorizontalGradient(start, end);
+                    return new Rectangle().horizontalGradient(start, end);
                 }))
                 .bounds(0, 255)
-                .sliderTexture(new Rectangle().setColor(Color.WHITE.main))
+                .sliderTexture(new Rectangle().color(Color.WHITE.main))
                 .sliderSize(2, 8)
                 // spotless:off
                 .value(new DoubleValue.Dynamic(
@@ -111,8 +111,8 @@ public class CustomStarColorSelector {
 
         // Text field
         row.child(
-            new TextFieldWidget().setFormatAsInteger(true)
-                .setNumbers(0, 255)
+            new TextFieldWidget().formatAsInteger(true)
+                .numbersInt(0, 255)
                 // spotless:off
                 .value(new IntValue.Dynamic(
                     () ->
@@ -140,7 +140,8 @@ public class CustomStarColorSelector {
     }
 
     protected static Flow createStarColorHSVPage(ColorData colorData) {
-        return new Column().coverChildren()
+        return Flow.column()
+            .coverChildren()
             .child(createStarColorHSVRow(StarColors.HSV.HUE, colorData))
             .child(createStarColorHSVRow(StarColors.HSV.SATURATION, colorData))
             .child(createStarColorHSVRow(StarColors.HSV.VALUE, colorData))
@@ -150,7 +151,8 @@ public class CustomStarColorSelector {
     private static Flow createStarColorHSVRow(StarColors.HSV color, ColorData colorData) {
         int maxValue = color == StarColors.HSV.HUE ? 360 : 1;
 
-        Flow row = new Row().size(SIZE - 16, 16)
+        Flow row = Flow.row()
+            .size(SIZE - 16, 16)
             .marginBottom(3);
 
         // Title
@@ -167,12 +169,12 @@ public class CustomStarColorSelector {
             case SATURATION -> new DynamicDrawable(() -> {
                 int start = Color.withHSVSaturation(colorData.getColor(), 0.0f);
                 int end = Color.withHSVSaturation(colorData.getColor(), 1.0f);
-                return new Rectangle().setHorizontalGradient(start, end);
+                return new Rectangle().horizontalGradient(start, end);
             });
             case VALUE -> new DynamicDrawable(() -> {
                 int start = Color.withValue(colorData.getColor(), 0.0f);
                 int end = Color.withValue(colorData.getColor(), 1.0f);
-                return new Rectangle().setHorizontalGradient(start, end);
+                return new Rectangle().horizontalGradient(start, end);
             });
         };
 
@@ -180,7 +182,7 @@ public class CustomStarColorSelector {
             new SliderWidget().size(118, 8)
                 .background(background)
                 .bounds(0, maxValue)
-                .sliderTexture(new Rectangle().setColor(Color.WHITE.main))
+                .sliderTexture(new Rectangle().color(Color.WHITE.main))
                 .sliderSize(2, 8)
                 // spotless:off
                 .value(new DoubleValue.Dynamic(
@@ -211,7 +213,7 @@ public class CustomStarColorSelector {
 
         // Text field
         row.child(
-            new TextFieldWidget().setNumbersDouble(raw -> MathHelper.clamp_double(raw, 0, maxValue))
+            new TextFieldWidget().numbersDouble(raw -> MathHelper.clamp_double(raw, 0, maxValue))
                 // spotless:off
                 .value(new FloatValue.Dynamic(
                     () ->
@@ -240,7 +242,8 @@ public class CustomStarColorSelector {
 
     private static Flow createStarColorGammaRow(ColorData colorData) {
         StarColors.Extra gamma = StarColors.Extra.GAMMA;
-        Flow row = new Row().size(SIZE - 16, 16);
+        Flow row = Flow.row()
+            .size(SIZE - 16, 16);
 
         // Title
         row.child(
@@ -253,9 +256,9 @@ public class CustomStarColorSelector {
         // Slider
         row.child(
             new SliderWidget().size(118, 8)
-                .background(new Rectangle().setColor(Color.GREY.main))
+                .background(new Rectangle().color(Color.GREY.main))
                 .bounds(0, 100)
-                .sliderTexture(new Rectangle().setColor(Color.WHITE.main))
+                .sliderTexture(new Rectangle().color(Color.WHITE.main))
                 .sliderSize(2, 8)
                 .value(new DoubleValue.Dynamic(colorData::getGamma, val -> colorData.setGamma((float) val)))
                 .tooltipDynamic(t -> t.addLine(StarColors.Extra.GAMMA.getTooltip(colorData.getGamma())))
@@ -264,7 +267,7 @@ public class CustomStarColorSelector {
 
         // Text field
         row.child(
-            new TextFieldWidget().setNumbersDouble(raw -> MathHelper.clamp_double(raw, 0, 100))
+            new TextFieldWidget().numbersDouble(raw -> MathHelper.clamp_double(raw, 0, 100))
                 .value(new FloatValue.Dynamic(colorData::getGamma, colorData::setGamma))
                 .size(32, 16)
                 .marginLeft(2)
@@ -277,14 +280,16 @@ public class CustomStarColorSelector {
     }
 
     protected static Flow createColorPreviewRow(PagedWidget.Controller pageController, ColorData colorData) {
-        Flow row = new Row().size(SIZE - 16, 15)
-            .marginBottom(4);
+        Flow row = Flow.row()
+            .size(SIZE - 16, 15)
+            .marginBottom(4)
+            .childPadding(24);
 
         // RGB/HSV switchers
-        Flow rgbhsvRow = new Row().coverChildrenWidth()
+        Flow rgbhsvRow = Flow.row()
+            .coverChildrenWidth()
             .childPadding(2)
-            .height(15)
-            .alignX(0);
+            .height(15);
 
         rgbhsvRow.child(
             new PageButton(RGB_PAGE_INDEX, pageController).size(24, 15)
@@ -321,9 +326,9 @@ public class CustomStarColorSelector {
         row.child(rgbhsvRow);
 
         // Hex code text field header
-        Flow colorRow = new Row().coverChildrenWidth()
-            .height(15)
-            .alignX(1);
+        Flow colorRow = Flow.row()
+            .coverChildrenWidth()
+            .height(15);
 
         colorRow.child(
             IKey.lang("fog.cosmetics.color.hex")
@@ -352,7 +357,7 @@ public class CustomStarColorSelector {
 
         // Color preview
         colorRow.child(
-            new DynamicDrawable(() -> new Rectangle().setColor(colorData.getColor())).asWidget()
+            new DynamicDrawable(() -> new Rectangle().color(colorData.getColor())).asWidget()
                 .size(32, 15));
 
         row.child(colorRow);

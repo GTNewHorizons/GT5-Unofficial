@@ -1,6 +1,9 @@
 package gregtech.common.covers;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.IChatComponent;
 import net.minecraftforge.fluids.Fluid;
 
 import gregtech.api.covers.CoverContext;
@@ -18,12 +21,24 @@ public class CoverDecorative extends CoverLegacyData {
     @Override
     public void onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
         this.coverData = ((this.coverData + 1) & 15);
-        GTUtility.sendChatToPlayer(
-            aPlayer,
-            ((this.coverData & 1) != 0 ? GTUtility.trans("128.1", "Redstone ") : "")
-                + ((this.coverData & 2) != 0 ? GTUtility.trans("129.1", "Energy ") : "")
-                + ((this.coverData & 4) != 0 ? GTUtility.trans("130.1", "Fluids ") : "")
-                + ((this.coverData & 8) != 0 ? GTUtility.trans("131.1", "Items ") : ""));
+        IChatComponent message = new ChatComponentText("");
+        if ((this.coverData & 1) != 0) {
+            message.appendSibling(new ChatComponentTranslation("GT5U.chat.cover.decorative.redstone"))
+                .appendText(" ");
+        }
+        if ((this.coverData & 2) != 0) {
+            message.appendSibling(new ChatComponentTranslation("GT5U.chat.cover.decorative.energy"))
+                .appendText(" ");
+        }
+        if ((this.coverData & 4) != 0) {
+            message.appendSibling(new ChatComponentTranslation("GT5U.chat.cover.decorative.fluids"))
+                .appendText(" ");
+        }
+        if ((this.coverData & 8) != 0) {
+            message.appendSibling(new ChatComponentTranslation("GT5U.chat.cover.decorative.items"))
+                .appendText(" ");
+        }
+        GTUtility.sendChatComp(aPlayer, message);
     }
 
     @Override

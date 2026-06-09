@@ -12,9 +12,10 @@ import static gtPlusPlus.api.recipe.GTPPRecipeMaps.flotationCellRecipes;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.vacuumFurnaceRecipes;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 
 import biomesoplenty.api.content.BOPCBlocks;
 import biomesoplenty.api.content.BOPCItems;
@@ -418,11 +419,7 @@ public class RecipeLoaderMilling {
 
             ItemStack forestryLeaves = GTModHandler.getModItem(Forestry.ID, "leaves", 1);
             if (forestryLeaves != null) {
-                NBTTagCompound tag = forestryLeaves.getTagCompound();
-                if (tag == null) {
-                    forestryLeaves.setTagCompound(tag = new NBTTagCompound());
-                }
-                tag.setString("species", "forestry.treePine"); // Set to Pine
+                ItemStackNBT.setString(forestryLeaves, "species", "forestry.treePine"); // Set to Pine
                 addPineLeafRecipe(forestryLeaves);
             }
         }

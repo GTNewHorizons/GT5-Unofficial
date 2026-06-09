@@ -38,7 +38,7 @@ public class ResultInsufficientPower implements CheckRecipeResult {
     public @NotNull String getDisplayString() {
         return Objects.requireNonNull(
             StatCollector.translateToLocalFormatted(
-                "GT5U.gui.text.insufficient_power",
+                "GT5U.gui.text.recipe_result.insufficient_power",
                 formatNumber(required),
                 GTUtility.getColoredTierNameFromVoltage(required)));
     }

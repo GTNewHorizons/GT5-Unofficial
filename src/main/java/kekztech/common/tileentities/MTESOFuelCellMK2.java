@@ -18,6 +18,7 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import javax.annotation.Nonnull;
 
@@ -42,6 +43,9 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
+import gregtech.api.structure.error.TranslatableText;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -103,7 +107,7 @@ public class MTESOFuelCellMK2 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK2
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Gas Turbine")
+        tt.addMachineType("Gas Turbine, SOFC")
             .addInfo("Oxidizes gas fuels to generate electricity without polluting the environment")
             .addInfo(
                 "Consumes up to " + formatNumber(EU_PER_TICK * 20)
@@ -118,10 +122,10 @@ public class MTESOFuelCellMK2 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK2
             .addOtherStructurePart("GDC Ceramic Electrolyte Unit", "3x, Center 1x1x3")
             .addOtherStructurePart("Reinforced Glass", "6x, touching the electrolyte units on the horizontal sides")
             .addDynamoHatch("Back center", 2)
-            .addMaintenanceHatch("Any casing", 1)
-            .addInputHatch("Fuel, any casing", 1)
-            .addInputHatch("Oxygen, any casing", 1)
-            .addOutputHatch("Superheated Steam, any casing", 1)
+            .addMaintenanceHatch("Any Casing", 1)
+            .addInputHatch("Fuel, any Casing", 1)
+            .addInputHatch("Oxygen, any Casing", 1)
+            .addOutputHatch("Superheated Steam, any Casing", 1)
             .toolTipFinisher();
         return tt;
     }
@@ -181,7 +185,7 @@ public class MTESOFuelCellMK2 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK2
                         super.mMaxProgresstime = 20;
                         super.mEfficiencyIncrease = 200;
                         if (super.mEfficiency == getMaxEfficiency(null)) {
-                            super.addOutput(FluidRegistry.getFluidStack("ic2superheatedsteam", STEAM_PER_SEC));
+                            super.addOutputPartial(FluidRegistry.getFluidStack("ic2superheatedsteam", STEAM_PER_SEC));
                         }
                         return CheckRecipeResultRegistry.GENERATING;
                     }
@@ -195,12 +199,18 @@ public class MTESOFuelCellMK2 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK2
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity thisController, ItemStack guiSlotItem) {
+    public void checkMachine(IGregTechTileEntity thisController, ItemStack guiSlotItem, List<StructureError> errors) {
         this.mCasing = 0;
-
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, 1, 1, 0)) return false;
-
-        return (this.mCasing >= 12 && this.mMaintenanceHatches.size() == 1 && this.mInputHatches.size() >= 2);
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 1, 1, 0, errors)) return;
+        checkCasingMin(errors, this.mCasing, 12);
+        checkHasMaintenanceHatch(errors);
+        if (mInputHatches.size() < 2) {
+            errors.add(
+                StructureErrors.of(
+                    "GT5U.gui.text.structure_error.sofc_missing_input_hatches",
+                    TranslatableText.literal(mInputHatches.size())));
+        }
+        checkHasOutputHatch(errors);
     }
 
     @Override
@@ -211,6 +221,11 @@ public class MTESOFuelCellMK2 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK2
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 1, 1, 0, elementBudget, env, false, true);
+    }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
     }
 
     @Override

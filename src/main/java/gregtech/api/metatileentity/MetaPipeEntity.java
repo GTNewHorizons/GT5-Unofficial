@@ -19,8 +19,10 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -39,6 +41,7 @@ import gregtech.api.interfaces.metatileentity.IConnectable;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IColoredTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.interfaces.tileentity.ILocalizedMetaPipeEntity;
 import gregtech.api.render.ISBRInventoryContext;
 import gregtech.api.render.ISBRWorldContext;
 import gregtech.api.util.WorldSpawnedEventBuilder;
@@ -83,12 +86,12 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
      *
      * @param aID the machine ID
      */
-    public MetaPipeEntity(int aID, String aBasicName, String aRegionalName, int aInvSlotCount) {
-        this(aID, aBasicName, aRegionalName, aInvSlotCount, true);
+    public MetaPipeEntity(int aID, String aBasicName, int aInvSlotCount) {
+        this(aID, aBasicName, aInvSlotCount, true);
     }
 
-    public MetaPipeEntity(int aID, String aBasicName, String aRegionalName, int aInvSlotCount, boolean aAddInfo) {
-        super(aID, aBasicName, aRegionalName, aInvSlotCount);
+    public MetaPipeEntity(int aID, String aBasicName, int aInvSlotCount, boolean aAddInfo) {
+        super(aID, aBasicName, aInvSlotCount);
         setBaseMetaTileEntity(new BaseMetaPipeEntity());
         getBaseMetaTileEntity().setMetaTileID((short) aID);
 
@@ -110,6 +113,31 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
      */
     public MetaPipeEntity(String aName, int aInvSlotCount) {
         super(aName, aInvSlotCount);
+    }
+
+    @Override
+    public String getLocalNameKey() {
+        return "gt.blockmachines." + mName + ".name";
+    }
+
+    @Override
+    public String getLocalName() {
+        if (this instanceof ILocalizedMetaPipeEntity localizedPipe) {
+            return localizedPipe.getLocalizedName();
+        }
+        return StatCollector.translateToLocal("gt.blockmachines." + mName + ".name");
+    }
+
+    @Override
+    public String getInventoryName() {
+        // Pipes don't register a translation key for their name, and cloned instances
+        // may lack fields needed for dynamic name construction (e.g. mPrefixKey).
+        // Use the prototype from the registry which is always fully initialized.
+        IMetaTileEntity prototype = GregTechAPI.METATILEENTITIES[getBaseMetaTileEntity().getMetaTileID()];
+        if (prototype != null) {
+            return prototype.getLocalName();
+        }
+        return "";
     }
 
     @Override
@@ -505,8 +533,24 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
     }
 
     @Override
+    public void receiveClientEvent(byte eventID, byte value) {
+        super.receiveClientEvent(eventID, value);
+        if (eventID == GregTechTileClientEvents.CHANGE_COMMON_DATA) {
+            mConnections = value;
+        }
+    }
+
+    @Override
     public ItemStack getStackForm(long aAmount) {
         return new ItemStack(GregTechAPI.sBlockMachines, (int) aAmount, getBaseMetaTileEntity().getMetaTileID());
+    }
+
+    @Override
+    public void initDefaultModes(NBTTagCompound nbt) {
+        super.initDefaultModes(nbt);
+        if (getBaseMetaTileEntity() instanceof BaseMetaPipeEntity pipe) {
+            pipe.updateConnections();
+        }
     }
 
     public boolean isCoverOnSide(BaseMetaPipeEntity aPipe, EntityLivingBase aEntity) {
@@ -656,7 +700,7 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
 
         final ForgeDirection oppositeSide = side.getOpposite();
         final IGregTechTileEntity baseMetaTile = getBaseMetaTileEntity();
-        if (baseMetaTile == null || !baseMetaTile.isServerSide()) return 0;
+        if (baseMetaTile == null) return 0;
 
         final Cover cover = baseMetaTile.getCoverAtSide(side);
 
@@ -710,6 +754,9 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
 
     private void connectAtSide(ForgeDirection side) {
         mConnections |= side.flag;
+        if (getBaseMetaTileEntity() instanceof BaseMetaPipeEntity pipe && pipe.isClientSide()) {
+            pipe.mConnections = mConnections;
+        }
     }
 
     @Override
@@ -857,9 +904,9 @@ public abstract class MetaPipeEntity extends CommonMetaTileEntity implements ICo
         Dyes dye = Dyes.dyeWhite;
         if (GregTechAPI.sColoredGUI) {
             if (GregTechAPI.sMachineMetalGUI) {
-                dye = Dyes.MACHINE_METAL;
+                dye = Dyes.GUI_METAL;
             } else if (getBaseMetaTileEntity() != null) {
-                dye = Dyes.getOrDefault(getBaseMetaTileEntity().getColorization(), Dyes.MACHINE_METAL);
+                dye = Dyes.getOrDefault(getBaseMetaTileEntity().getColorization(), Dyes.GUI_METAL);
             }
         }
         return dye.toInt();

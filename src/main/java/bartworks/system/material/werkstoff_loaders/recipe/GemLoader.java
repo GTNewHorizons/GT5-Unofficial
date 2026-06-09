@@ -80,61 +80,61 @@ public class GemLoader implements IWerkstoffRunnable {
                         werkstoff.get(dust))
                     .outputChances(200, 1000, 2500, 2000, 4000, 5000)
                     .duration(40 * SECONDS)
-                    .eut(16)
+                    .eut(TierEU.RECIPE_LV / 2)
                     .addTo(sifterRecipes);
 
             }
 
             GTModHandler.addCraftingRecipe(
                 werkstoff.get(gemFlawless, 2),
-                0,
+                GTModHandler.RecipeBits.BUFFERED,
                 new Object[] { "h  ", "W  ", 'W', werkstoff.get(gemExquisite) });
             GTModHandler.addCraftingRecipe(
                 werkstoff.get(gem, 2),
-                0,
+                GTModHandler.RecipeBits.BUFFERED,
                 new Object[] { "h  ", "W  ", 'W', werkstoff.get(gemFlawless) });
             GTModHandler.addCraftingRecipe(
                 werkstoff.get(gemFlawed, 2),
-                0,
+                GTModHandler.RecipeBits.BUFFERED,
                 new Object[] { "h  ", "W  ", 'W', werkstoff.get(gem) });
             GTModHandler.addCraftingRecipe(
                 werkstoff.get(gemChipped, 2),
-                0,
+                GTModHandler.RecipeBits.BUFFERED,
                 new Object[] { "h  ", "W  ", 'W', werkstoff.get(gemFlawed) });
 
             GTValues.RA.stdBuilder()
                 .itemInputs(werkstoff.get(gemExquisite))
                 .itemOutputs(werkstoff.get(gemFlawless, 2))
                 .duration(3 * SECONDS + 4 * TICKS)
-                .eut(16)
+                .eut(TierEU.RECIPE_LV / 2)
                 .addTo(hammerRecipes);
 
             GTValues.RA.stdBuilder()
                 .itemInputs(werkstoff.get(gemFlawless))
                 .itemOutputs(werkstoff.get(gem, 2))
                 .duration(3 * SECONDS + 4 * TICKS)
-                .eut(16)
+                .eut(TierEU.RECIPE_LV / 2)
                 .addTo(hammerRecipes);
 
             GTValues.RA.stdBuilder()
                 .itemInputs(werkstoff.get(gem))
                 .itemOutputs(werkstoff.get(gemFlawed, 2))
                 .duration(3 * SECONDS + 4 * TICKS)
-                .eut(16)
+                .eut(TierEU.RECIPE_LV / 2)
                 .addTo(hammerRecipes);
 
             GTValues.RA.stdBuilder()
                 .itemInputs(werkstoff.get(gemFlawed))
                 .itemOutputs(werkstoff.get(gemChipped, 2))
                 .duration(3 * SECONDS + 4 * TICKS)
-                .eut(16)
+                .eut(TierEU.RECIPE_LV / 2)
                 .addTo(hammerRecipes);
 
             GTValues.RA.stdBuilder()
                 .itemInputs(werkstoff.get(gemChipped))
                 .itemOutputs(werkstoff.get(dustTiny))
                 .duration(3 * SECONDS + 4 * TICKS)
-                .eut(16)
+                .eut(TierEU.RECIPE_LV / 2)
                 .addTo(hammerRecipes);
 
             if (!werkstoff.contains(WerkstoffLoader.NO_BLAST)) {
@@ -199,7 +199,7 @@ public class GemLoader implements IWerkstoffRunnable {
 
             final ITexture texture = TextureFactory.of(
                 Textures.BlockIcons.MACHINE_CASINGS[2][0],
-                TextureFactory.of(Textures.BlockIcons.OVERLAY_LENS, werkstoff.getRGBA(), false));
+                TextureFactory.of(Textures.BlockIcons.OVERLAY_LENS, werkstoff.getRGBA()));
             CoverRegistry.registerDecorativeCover(werkstoff.get(lens), texture);
 
             for (ItemStack is : OreDictionary

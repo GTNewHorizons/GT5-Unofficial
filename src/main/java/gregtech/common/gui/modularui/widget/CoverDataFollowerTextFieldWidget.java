@@ -63,6 +63,7 @@ public class CoverDataFollowerTextFieldWidget<T extends Cover> extends TextField
     /**
      * @deprecated Use {@link CoverDataFollowerNumericWidget}
      */
+    @Override
     @Deprecated
     public CoverDataFollowerTextFieldWidget<T> setOnScrollNumbers(int baseStep, int ctrlStep, int shiftStep) {
         setOnScrollNumbers((val, direction) -> {
@@ -117,6 +118,7 @@ public class CoverDataFollowerTextFieldWidget<T extends Cover> extends TextField
     /**
      * @deprecated Use {@link CoverDataFollowerNumericWidget}
      */
+    @Override
     @Deprecated
     public CoverDataFollowerTextFieldWidget<T> setOnScrollNumbersLong(long baseStep, long ctrlStep, long shiftStep) {
         setOnScrollNumbersLong((val, direction) -> {

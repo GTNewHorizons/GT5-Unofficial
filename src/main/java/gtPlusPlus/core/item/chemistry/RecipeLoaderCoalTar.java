@@ -10,6 +10,7 @@ import static gregtech.api.util.GTRecipeConstants.FUEL_TYPE;
 import static gregtech.api.util.GTRecipeConstants.FUEL_VALUE;
 import static gregtech.api.util.GTRecipeConstants.UniversalChemical;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
+import static gtPlusPlus.api.recipe.GTPPRecipeMaps.cokeOvenRecipes;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.semiFluidFuels;
 
 import net.minecraftforge.fluids.FluidRegistry;
@@ -111,31 +112,28 @@ public class RecipeLoaderCoalTar {
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.gem, Materials.Charcoal, 32))
             .circuit(8)
-            .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("dustSmallDirt", 2))
             .fluidOutputs(new FluidStack(GTPPFluids.CoalTar, 800))
             .duration(18 * SECONDS)
             .eut(TierEU.RECIPE_MV)
-            .addTo(pyrolyseRecipes);
+            .addTo(pyrolyseRecipes, cokeOvenRecipes);
 
         // Cactus Charcoal
         GTValues.RA.stdBuilder()
             .itemInputs(GregtechItemList.CactusCharcoal.get(32))
             .circuit(8)
-            .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("dustSmallDirt", 2))
             .fluidOutputs(new FluidStack(GTPPFluids.CoalTar, 800))
             .duration(18 * SECONDS)
             .eut(TierEU.RECIPE_MV)
-            .addTo(pyrolyseRecipes);
+            .addTo(pyrolyseRecipes, cokeOvenRecipes);
 
         // Sugar Charcoal
         GTValues.RA.stdBuilder()
             .itemInputs(GregtechItemList.SugarCharcoal.get(32))
             .circuit(8)
-            .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("dustSmallDirt", 2))
             .fluidOutputs(new FluidStack(GTPPFluids.CoalTar, 800))
             .duration(18 * SECONDS)
             .eut(TierEU.RECIPE_MV)
-            .addTo(pyrolyseRecipes);
+            .addTo(pyrolyseRecipes, cokeOvenRecipes);
 
         // Cactus coke
         GTValues.RA.stdBuilder()
@@ -145,7 +143,7 @@ public class RecipeLoaderCoalTar {
             .fluidOutputs(new FluidStack(GTPPFluids.CoalTar, 1_600))
             .duration(18 * SECONDS)
             .eut(TierEU.RECIPE_MV)
-            .addTo(pyrolyseRecipes);
+            .addTo(pyrolyseRecipes, cokeOvenRecipes);
 
         // Sugar coke
         GTValues.RA.stdBuilder()
@@ -155,7 +153,7 @@ public class RecipeLoaderCoalTar {
             .fluidOutputs(new FluidStack(GTPPFluids.CoalTar, 1_600))
             .duration(18 * SECONDS)
             .eut(TierEU.RECIPE_MV)
-            .addTo(pyrolyseRecipes);
+            .addTo(pyrolyseRecipes, cokeOvenRecipes);
 
         // Lignite
         GTValues.RA.stdBuilder()
@@ -164,8 +162,8 @@ public class RecipeLoaderCoalTar {
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dustSmall, Materials.AshDark, 2))
             .fluidOutputs(new FluidStack(GTPPFluids.CoalTar, 800))
             .duration(54 * SECONDS)
-            .eut(60)
-            .addTo(pyrolyseRecipes);
+            .eut(TierEU.RECIPE_MV / 2)
+            .addTo(pyrolyseRecipes, cokeOvenRecipes);
 
         // Coal
         GTValues.RA.stdBuilder()
@@ -175,7 +173,7 @@ public class RecipeLoaderCoalTar {
             .fluidOutputs(new FluidStack(GTPPFluids.CoalTar, 2_200))
             .duration(36 * SECONDS)
             .eut(TierEU.RECIPE_MV)
-            .addTo(pyrolyseRecipes);
+            .addTo(pyrolyseRecipes, cokeOvenRecipes);
 
         // Coke
         GTValues.RA.stdBuilder()
@@ -184,8 +182,8 @@ public class RecipeLoaderCoalTar {
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dustSmall, Materials.Ash, 3))
             .fluidOutputs(new FluidStack(GTPPFluids.CoalTar, 3_400))
             .duration(18 * SECONDS)
-            .eut(240)
-            .addTo(pyrolyseRecipes);
+            .eut(TierEU.RECIPE_HV / 2)
+            .addTo(pyrolyseRecipes, cokeOvenRecipes);
     }
 
     private static void recipeCoalTarToCoalTarOil() {
@@ -197,7 +195,7 @@ public class RecipeLoaderCoalTar {
             .fluidInputs(new FluidStack(GTPPFluids.CoalTar, 1_000))
             .fluidOutputs(new FluidStack(GTPPFluids.CoalTarOil, 600))
             .duration(30 * SECONDS)
-            .eut(64)
+            .eut(TierEU.RECIPE_MV / 2)
             .addTo(distilleryRecipes);
 
         GTValues.RA.stdBuilder()
@@ -205,7 +203,7 @@ public class RecipeLoaderCoalTar {
             .fluidInputs(new FluidStack(GTPPFluids.CoalTar, 1_000))
             .fluidOutputs(Materials.Naphtha.getFluid(150))
             .duration(30 * SECONDS)
-            .eut(64)
+            .eut(TierEU.RECIPE_MV / 2)
             .addTo(distilleryRecipes);
 
         GTValues.RA.stdBuilder()
@@ -213,7 +211,7 @@ public class RecipeLoaderCoalTar {
             .fluidInputs(new FluidStack(GTPPFluids.CoalTar, 1_000))
             .fluidOutputs(new FluidStack(GTPPFluids.Ethylbenzene, 200))
             .duration(30 * SECONDS)
-            .eut(64)
+            .eut(TierEU.RECIPE_MV / 2)
             .addTo(distilleryRecipes);
 
         GTValues.RA.stdBuilder()
@@ -221,7 +219,7 @@ public class RecipeLoaderCoalTar {
             .fluidInputs(new FluidStack(GTPPFluids.CoalTar, 1_000))
             .fluidOutputs(new FluidStack(GTPPFluids.Anthracene, 50))
             .duration(30 * SECONDS)
-            .eut(64)
+            .eut(TierEU.RECIPE_MV / 2)
             .addTo(distilleryRecipes);
 
         GTValues.RA.stdBuilder()
@@ -229,7 +227,7 @@ public class RecipeLoaderCoalTar {
             .fluidInputs(new FluidStack(GTPPFluids.CoalTar, 1_000))
             .fluidOutputs(new FluidStack(GTPPFluids.Kerosene, 600))
             .duration(30 * SECONDS)
-            .eut(64)
+            .eut(TierEU.RECIPE_MV / 2)
             .addTo(distilleryRecipes);
 
         // Distillation Tower
@@ -242,7 +240,7 @@ public class RecipeLoaderCoalTar {
                 new FluidStack(GTPPFluids.Anthracene, 50),
                 new FluidStack(GTPPFluids.Kerosene, 600))
             .duration(15 * SECONDS)
-            .eut(256)
+            .eut(TierEU.RECIPE_HV / 2)
             .addTo(distillationTowerRecipes);
     }
 
@@ -272,7 +270,7 @@ public class RecipeLoaderCoalTar {
             .itemInputs(Materials.Lithium.getDust(5))
             .fluidInputs(new FluidStack(GTPPFluids.Naphthalene, 2_000))
             .fluidOutputs(Materials.PhthalicAcid.getFluid(2_500))
-            .eut(30)
+            .eut(TierEU.RECIPE_LV)
             .duration(16 * SECONDS)
             .addTo(UniversalChemical);
     }

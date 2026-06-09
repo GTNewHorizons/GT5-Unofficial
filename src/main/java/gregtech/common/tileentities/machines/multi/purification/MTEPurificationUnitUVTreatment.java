@@ -4,9 +4,10 @@ import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.fo
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
-import static gregtech.api.enums.GTValues.AuthorNotAPenguin;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.OutputHatch;
+import static gregtech.api.enums.ItemList.Hatch_LensHousing;
+import static gregtech.api.enums.ItemList.Hatch_LensIndicator;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE_GLOW;
@@ -41,18 +42,21 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 
 public class MTEPurificationUnitUVTreatment extends MTEPurificationUnitBase<MTEPurificationUnitUVTreatment>
-    implements ISurvivalConstructable {
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     private static final int CASING_INDEX_MAIN = getTextureIndex(GregTechAPI.sBlockCasings9, 12);
 
@@ -117,7 +121,6 @@ public class MTEPurificationUnitUVTreatment extends MTEPurificationUnitBase<MTEP
                 t -> GTStructureUtility.<MTEPurificationUnitUVTreatment>buildHatchAdder()
                     .atLeast(SpecialHatchElement.LensHousing)
                     .hint(2)
-                    .cacheHint(() -> "Lens Housing")
                     .casingIndex(CASING_INDEX_MAIN)
                     .build()))
         // Lens indicator hatch
@@ -128,7 +131,6 @@ public class MTEPurificationUnitUVTreatment extends MTEPurificationUnitBase<MTEP
                     t -> GTStructureUtility.<MTEPurificationUnitUVTreatment>buildHatchAdder()
                         .atLeast(SpecialHatchElement.LensIndicator)
                         .hint(3)
-                        .cacheHint(() -> "Lens Indicator")
                         .casingIndex(CASING_INDEX_MAIN)
                         .build()),
                 ofBlock(GregTechAPI.sBlockCasings9, 12)))
@@ -140,7 +142,6 @@ public class MTEPurificationUnitUVTreatment extends MTEPurificationUnitBase<MTEP
                     t -> GTStructureUtility.<MTEPurificationUnitUVTreatment>buildHatchAdder()
                         .atLeastList(Arrays.asList(InputHatch, OutputHatch))
                         .hint(1)
-                        .cacheHint(() -> "Input Hatch, Output Hatch")
                         .casingIndex(CASING_INDEX_MAIN)
                         .build()),
                 // Naquadria-reinforced Water Plant Casing
@@ -164,28 +165,31 @@ public class MTEPurificationUnitUVTreatment extends MTEPurificationUnitBase<MTEP
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
         int colorIndex, boolean active, boolean redstoneLevel) {
         if (side == facing) {
-            if (active) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_MAIN),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE)
-                    .extFacing()
-                    .build(),
+            if (active) return new ITexture[] { getCasingTexture(), TextureFactory.builder()
+                .addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE)
+                .extFacing()
+                .build(),
                 TextureFactory.builder()
                     .addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE_GLOW)
                     .extFacing()
                     .glow()
                     .build() };
-            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_MAIN),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR)
-                    .extFacing()
-                    .build(),
+            return new ITexture[] { getCasingTexture(), TextureFactory.builder()
+                .addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR)
+                .extFacing()
+                .build(),
                 TextureFactory.builder()
                     .addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_GLOW)
                     .extFacing()
                     .glow()
                     .build() };
         }
-        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_MAIN) };
+        return new ITexture[] { getCasingTexture() };
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_MAIN);
     }
 
     @Override
@@ -269,7 +273,7 @@ public class MTEPurificationUnitUVTreatment extends MTEPurificationUnitBase<MTEP
                     + EnumChatFormatting.ITALIC
                     + "atoms themselves and pass through the walls of the tank, ensuring the water is perfectly electrically polar.")
             .beginStructureBlock(13, 9, 9, true)
-            .addController("Front center")
+            .addController("Front bottom center")
             .addCasingInfoRangeColored(
                 "Naquadria-Reinforced Water Plant Casing",
                 EnumChatFormatting.GRAY,
@@ -307,7 +311,7 @@ public class MTEPurificationUnitUVTreatment extends MTEPurificationUnitBase<MTEP
                 StatCollector.translateToLocal("GT5U.tooltip.structure.lens_indicator"),
                 EnumChatFormatting.GOLD + "1",
                 3)
-            .toolTipFinisher(AuthorNotAPenguin);
+            .toolTipFinisher();
         return tt;
     }
 
@@ -447,11 +451,19 @@ public class MTEPurificationUnitUVTreatment extends MTEPurificationUnitBase<MTEP
         timeUntilNextSwap = aNBT.getInteger("timeUntilNextSwap");
     }
 
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, STRUCTURE_X_OFFSET, STRUCTURE_Y_OFFSET, STRUCTURE_Z_OFFSET)) return false;
+    @Override
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, STRUCTURE_X_OFFSET, STRUCTURE_Y_OFFSET, STRUCTURE_Z_OFFSET, errors))
+            return;
+        checkHasInputHatch(errors);
+        checkHasOutputHatch(errors);
         // Do not form without lens bus
-        if (lensInputBus == null) return false;
-        return super.checkMachine(aBaseMetaTileEntity, aStack);
+        if (lensInputBus == null) {
+            errors.add(StructureErrors.missingHatch(Hatch_LensHousing.get(1)));
+        }
+        if (lensIndicator == null) {
+            errors.add(StructureErrors.missingHatch(Hatch_LensIndicator.get(1)));
+        }
     }
 
     public boolean addLensHousingToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
@@ -486,6 +498,11 @@ public class MTEPurificationUnitUVTreatment extends MTEPurificationUnitBase<MTEP
                 if (gtMetaTileEntityPurificationUnitUVTreatment.lensInputBus == null) return 0;
                 else return 1;
             }
+
+            @Override
+            public String getDisplayName() {
+                return StatCollector.translateToLocal("GT5U.MBTT.LensHousing");
+            }
         },
 
         LensIndicator(MTEPurificationUnitUVTreatment::addLensIndicatorToMachineList, MTEHatchLensIndicator.class) {
@@ -494,6 +511,11 @@ public class MTEPurificationUnitUVTreatment extends MTEPurificationUnitBase<MTEP
             public long count(MTEPurificationUnitUVTreatment gtMetaTileEntityPurificationUnitUVTreatment) {
                 if (gtMetaTileEntityPurificationUnitUVTreatment.lensIndicator == null) return 0;
                 else return 1;
+            }
+
+            @Override
+            public String getDisplayName() {
+                return StatCollector.translateToLocal("GT5U.MBTT.LensIndicator");
             }
         };
 
@@ -512,6 +534,7 @@ public class MTEPurificationUnitUVTreatment extends MTEPurificationUnitBase<MTEP
             return mteClasses;
         }
 
+        @Override
         public IGTHatchAdder<? super MTEPurificationUnitUVTreatment> adder() {
             return adder;
         }

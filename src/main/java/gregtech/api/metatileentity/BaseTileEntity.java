@@ -74,8 +74,6 @@ import ic2.api.energy.event.EnergyTileUnloadEvent;
 public abstract class BaseTileEntity extends TileEntity implements IHasWorldObjectAndCoords, IIC2Enet, IGTEnet,
     ITileWithModularUI, IAddGregtechLogo, IGetGUITextureSet, IAddInventorySlots {
 
-    protected boolean mInventoryChanged = false;
-
     /**
      * Buffers adjacent TileEntities for faster access
      * <p/>
@@ -141,7 +139,7 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
     }
 
     @Override
-    public ChunkCoordinates getCoords() {
+    public final ChunkCoordinates getCoords() {
         mReturnedCoordinates.posX = xCoord;
         mReturnedCoordinates.posY = yCoord;
         mReturnedCoordinates.posZ = zCoord;
@@ -182,12 +180,12 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
     }
 
     @Override
-    public boolean isInvalidTileEntity() {
+    public final boolean isInvalidTileEntity() {
         return isInvalid();
     }
 
     @Override
-    public int getRandomNumber(int aRange) {
+    public final int getRandomNumber(int aRange) {
         return ThreadLocalRandom.current()
             .nextInt(aRange);
     }
@@ -472,7 +470,7 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
     }
 
     @Override
-    public boolean isDead() {
+    public final boolean isDead() {
         return isDead || isInvalidTileEntity();
     }
 
@@ -503,7 +501,7 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
         isDead = false;
     }
 
-    public final void onAdjacentBlockChange(int ignoredAX, int ignoredAY, int ignoredAZ) {
+    public void onAdjacentBlockChange(int x, int y, int z) {
         clearNullMarkersFromTileEntityBuffer();
     }
 
@@ -604,7 +602,7 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
     }
 
     protected void joinEnet() {
-        if (joinedIc2Enet || !shouldJoinIc2Enet()) return;
+        if (isClientSide() || joinedIc2Enet || !shouldJoinIc2Enet()) return;
 
         if (ic2EnergySink == null) createIc2Sink();
 
@@ -639,10 +637,12 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
         FLUID_TRANSFER_TOOLTIP = "GT5U.machines.fluid_transfer.tooltip",
         ITEM_TRANSFER_TOOLTIP = "GT5U.machines.item_transfer.tooltip", POWER_SOURCE_KEY = "GT5U.machines.powersource.",
         BUTTON_FORBIDDEN_TOOLTIP = "GT5U.gui.button.forbidden",
+        BUTTON_FEATURE_ENABLED_TOOLTIP = "GT5U.gui.button.feature_enabled",
+        BUTTON_FEATURE_DISABLED_TOOLTIP = "GT5U.gui.button.feature_disabled",
         NEI_TRANSFER_STEAM_TOOLTIP = "GT5U.machines.nei_transfer.steam.tooltip",
         NEI_TRANSFER_VOLTAGE_TOOLTIP = "GT5U.machines.nei_transfer.voltage.tooltip";
 
-    public static final int TOOLTIP_DELAY = 5;
+    public static final int TOOLTIP_DELAY = 0;
 
     /**
      * Override this to add {@link com.gtnewhorizons.modularui.api.widget.Widget}s for your UI.
@@ -909,7 +909,10 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
             player -> new ItemSelectBaseGui(
                 StatCollector.translateToLocal("GT5U.machines.select_circuit"),
                 getStackForm(0),
-                this::onCircuitSelected,
+                (ItemStack selected) -> {
+                    this.onCircuitSelected(selected);
+                    GTValues.NW.sendToServer(new GTPacketSetConfigurationCircuit(this, selected));
+                },
                 circuits,
                 GTUtility.findMatchingStackInList(circuits, inv.getStackInSlot(ccs.getCircuitSlot())))
                     .setAnotherWindow(true, dialogOpened)
@@ -924,7 +927,6 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
 
         if (!(this instanceof IInventory inv)) return;
 
-        GTValues.NW.sendToServer(new GTPacketSetConfigurationCircuit(this, selected));
         // we will not do any validation on client side
         // it doesn't get to actually decide what inventory contains anyway
         inv.setInventorySlotContents(ccs.getCircuitSlot(), selected);

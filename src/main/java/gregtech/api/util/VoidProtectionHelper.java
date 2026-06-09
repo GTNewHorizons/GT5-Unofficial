@@ -1,19 +1,13 @@
 package gregtech.api.util;
 
 import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.PriorityQueue;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.GTValues;
-import gregtech.api.interfaces.fluid.IFluidStore;
 import gregtech.api.interfaces.tileentity.IVoidable;
-import gregtech.common.tileentities.machines.MTEHatchOutputME;
 import it.unimi.dsi.fastutil.ints.Int2IntFunction;
 
 /**
@@ -60,9 +54,10 @@ public class VoidProtectionHelper {
     /**
      * Multiplier that is applied on the output chances
      */
-    private double chanceMultiplier = 1;
+    private double outputChanceMultiplier = 1;
 
-    private Int2IntFunction chanceGetter = i -> 10000;
+    private Int2IntFunction outputChanceGetter = i -> 10000;
+    private Int2IntFunction fluidOutputChanceGetter = i -> 10000;
 
     public VoidProtectionHelper() {}
 
@@ -101,13 +96,18 @@ public class VoidProtectionHelper {
         return this;
     }
 
-    public VoidProtectionHelper setChanceMultiplier(double chanceMultiplier) {
-        this.chanceMultiplier = chanceMultiplier;
+    public VoidProtectionHelper setOutputChanceMultiplier(double chanceMultiplier) {
+        this.outputChanceMultiplier = chanceMultiplier;
         return this;
     }
 
-    public VoidProtectionHelper setChanceGetter(Int2IntFunction getter) {
-        this.chanceGetter = getter;
+    public VoidProtectionHelper setOutputChanceGetter(Int2IntFunction getter) {
+        this.outputChanceGetter = getter;
+        return this;
+    }
+
+    public VoidProtectionHelper setFluidOutputChanceGetter(Int2IntFunction getter) {
+        this.fluidOutputChanceGetter = getter;
         return this;
     }
 
@@ -184,7 +184,7 @@ public class VoidProtectionHelper {
                     // We can't know how many items per parallel will be eventually ejected, so we just check the
                     // worst-case scenario
                     int stackSize = (int) (stack.stackSize
-                        * Math.ceil(chanceMultiplier * chanceGetter.apply(i) / 10000d));
+                        * Math.ceil(outputChanceMultiplier * outputChanceGetter.apply(i) / 10000d));
 
                     maxItemOutputs.add(GTUtility.copyAmount(stackSize, stack));
                 }
@@ -216,114 +216,26 @@ public class VoidProtectionHelper {
      * Calculates the max parallel for fluids if void protection is turned on
      */
     private int calculateMaxFluidParallels() {
-        List<? extends IFluidStore> hatches = machine.getFluidOutputSlots(fluidOutputs);
-        if (hatches.size() < fluidOutputs.length) {
-            return 0;
+        List<FluidStack> maxFluidOutputs = new ArrayList<>(fluidOutputs.length);
+
+        for (int i = 0, fluidOutputsLength = fluidOutputs.length; i < fluidOutputsLength; i++) {
+            FluidStack stack = fluidOutputs[i];
+
+            if (stack == null || stack.amount == 0) continue;
+
+            // Find the max possible output for this stack (note the .ceil)
+            // We can't know how many fluids per parallel will be eventually ejected, so we just check the
+            // worst-case scenario
+            int stackSize = (int) (stack.amount
+                * Math.ceil(outputChanceMultiplier * fluidOutputChanceGetter.apply(i) / 10000d));
+
+            maxFluidOutputs.add(GTUtility.copyAmount(stackSize, stack));
         }
 
-        // A map to hold the items we will be 'inputting' into the output hatches. These fluidstacks are actually
-        // the recipe outputs.
-        Map<FluidStack, Integer> tFluidOutputMap = new HashMap<>();
+        // Pass the VP helper's protectExcessFluid flag to the ejection helper instead of using the machine's
+        // flag
+        FluidEjectionHelper ejectionHelper = new FluidEjectionHelper(machine.getOutputHatches(), protectExcessFluid);
 
-        // Map that keeps track of the number of parallel crafts we can accommodate for each fluid output.
-        // In the pair, we keep track of number of full crafts plus mb of fluid in a partial craft, to avoid
-        // issues with floating point math not being completely accurate when summing.
-        Map<FluidStack, FluidParallelData> tParallels = new HashMap<>();
-
-        // Iterate over the outputs, calculating require stack spacing they will require.
-        for (FluidStack aY : fluidOutputs) {
-            if (aY == null || aY.amount <= 0) {
-                continue;
-            }
-            tFluidOutputMap.merge(aY, aY.amount, Integer::sum);
-            tParallels.put(aY, new FluidParallelData(0, 0));
-        }
-
-        if (tFluidOutputMap.isEmpty()) {
-            // nothing to output, bail early
-            return maxParallel;
-        }
-
-        for (IFluidStore tHatch : hatches) {
-            int tSpaceLeft;
-            if (tHatch instanceof MTEHatchOutputME tMEHatch) {
-                tSpaceLeft = tMEHatch.canAcceptFluid() ? Integer.MAX_VALUE : 0;
-            } else if (tHatch instanceof OutputHatchWrapper w && w.unwrap() instanceof MTEHatchOutputME tMEHatch) {
-                tSpaceLeft = tMEHatch.canAcceptFluid() ? Integer.MAX_VALUE : 0;
-            } else {
-                tSpaceLeft = tHatch.getCapacity() - tHatch.getFluidAmount();
-            }
-
-            // check if hatch filled
-            if (tSpaceLeft <= 0) continue;
-
-            // check if hatch is empty and unrestricted
-            if (tHatch.isEmptyAndAcceptsAnyFluid()) continue;
-
-            for (Map.Entry<FluidStack, FluidParallelData> entry : tParallels.entrySet()) {
-                FluidStack tFluidOutput = entry.getKey();
-                if (!tHatch.canStoreFluid(tFluidOutput)) continue;
-                // this fluid is not prevented by restrictions on output hatch
-                FluidParallelData tParallel = entry.getValue();
-                Integer tCraftSize = tFluidOutputMap.get(tFluidOutput);
-                tParallel.batch += (tParallel.partial + tSpaceLeft) / tCraftSize;
-                tParallel.partial = (tParallel.partial + tSpaceLeft) % tCraftSize;
-            }
-        }
-        // now that all partial/restricted hatches have been counted, create a priority queue for our outputs
-        // the lowest priority fluid is the number of complete parallel crafts we can support
-        PriorityQueue<ParallelStackInfo<FluidStack>> aParallelQueue = new PriorityQueue<>(
-            Comparator.comparing(i -> i.batch));
-        for (Map.Entry<FluidStack, FluidParallelData> entry : tParallels.entrySet()) {
-            aParallelQueue
-                .add(new ParallelStackInfo<>(entry.getValue().batch, entry.getValue().partial, entry.getKey()));
-        }
-        // add extra parallels for open slots as well
-        for (IFluidStore tHatch : hatches) {
-            // partially filled or restricted hatch. done in the last pass
-            if (!tHatch.isEmptyAndAcceptsAnyFluid()) continue;
-
-            ParallelStackInfo<FluidStack> tParallel = aParallelQueue.poll();
-            assert tParallel != null; // will always be true, specifying assert here to avoid IDE/compiler warnings
-            Integer tCraftSize = tFluidOutputMap.get(tParallel.stack);
-
-            int tSpaceLeft;
-            if (tHatch instanceof MTEHatchOutputME tMEHatch) {
-                tSpaceLeft = tMEHatch.canAcceptFluid() ? Integer.MAX_VALUE : 0;
-            } else if (tHatch instanceof OutputHatchWrapper w && w.unwrap() instanceof MTEHatchOutputME tMEHatch) {
-                tSpaceLeft = tMEHatch.canAcceptFluid() ? Integer.MAX_VALUE : 0;
-            } else {
-                tSpaceLeft = tHatch.getCapacity();
-            }
-
-            tParallel.batch += (tParallel.partial + tSpaceLeft) / tCraftSize;
-            tParallel.partial = (tParallel.partial + tSpaceLeft) % tCraftSize;
-            aParallelQueue.add(tParallel);
-        }
-        return aParallelQueue.element().batch;
-    }
-
-    private static class FluidParallelData {
-
-        private int batch;
-        private long partial;
-
-        private FluidParallelData(int batch, long partial) {
-            this.batch = batch;
-            this.partial = partial;
-        }
-    }
-
-    private static class ParallelStackInfo<T> {
-
-        private int batch;
-        private long partial;
-        private final T stack;
-
-        private ParallelStackInfo(int batch, long partial, T stack) {
-            this.batch = batch;
-            this.partial = partial;
-            this.stack = stack;
-        }
+        return ejectionHelper.ejectFluids(maxFluidOutputs, maxParallel);
     }
 }

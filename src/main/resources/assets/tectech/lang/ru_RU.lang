@@ -374,7 +374,6 @@ gt.blockmachines.hatch.energytunnel6.tier.13.name=UXV 262,144A/t Приёмни�
 gt.blockmachines.hatch.energytunnel7.tier.13.name=UXV 1,048,576A/t Приёмник лазера
 gt.blockmachines.hatch.energytunnel.tier.14.name=Легендарный приёмник лазера
 gt.blockmachines.hatch.energytunnel.desc.0=Терминал подачи энергии для мультиблоков
-gt.blockmachines.hatch.energytunnel.desc.1=Пропускная способность
 
 gt.blockmachines.hatch.dynamomulti04.tier.05.name=IV 4A Энерговывод
 gt.blockmachines.hatch.dynamomulti16.tier.05.name=IV 16A Энерговывод
@@ -450,7 +449,6 @@ gt.blockmachines.hatch.dynamotunnel6.tier.13.name=UXV 262,144A/t Источни�
 gt.blockmachines.hatch.dynamotunnel7.tier.13.name=UXV 1,048,576A/t Источник лазера
 gt.blockmachines.hatch.dynamotunnel.tier.14.name=Легендарный источник лазера
 gt.blockmachines.hatch.dynamotunnel.desc.0=Терминал вывода энергии из мультиблоков
-gt.blockmachines.hatch.dynamotunnel.desc.1=Пропускная способность
 gt.blockmachines.hatch.screwdrivertooltip=Используйте отвёртку для регулировки ампеража
 
 gt.blockmachines.emin.tier.08.name=UV Элементный входной шлюз
@@ -753,8 +751,8 @@ gt.blockmachines.multimachine.em.research.desc.3=Не потребляет пр�
 gt.blockmachines.multimachine.em.research.desc.4=Используйте отвёртку для смены режима
 gt.blockmachines.multimachine.em.research.desc.5=Вычисления, необходимые в режиме сканера, выполняются по формуле:
 gt.blockmachines.multimachine.em.research.desc.6=Продолжительность рецепта в секундах * (2 ^ (тир вольтажа рецепта - 1))
-gt.blockmachines.multimachine.em.research.mode.Assembly_line=Режим: Исследовательская станция
-gt.blockmachines.multimachine.em.research.mode.Scanner=Режим: Сканер
+gt.blockmachines.multimachine.em.research.mode.0=Исследовательская станция
+gt.blockmachines.multimachine.em.research.mode.1=Сканер
 gt.blockmachines.multimachine.em.research.computation=Вычисление: %,d / %,d
 
 gt.blockmachines.multimachine.em.collider.name=Материальный коллайдер
@@ -1128,7 +1126,7 @@ gt.blockmachines.multimachine.FOG.upgrades=Улучшения
 gt.blockmachines.multimachine.FOG.milestones=Milestones
 gt.blockmachines.multimachine.FOG.fuelinfotext=Once the structure of the Forge is built and the multiblock is formed, just simply turning it on is not sufficient to make it functional. The Forge must be supplied with a certain amount of Star Fuel (the item) to actually boot up. The amount of Star Fuel needed depends on the current fuel consumption factor, which can be set in the fuel configuration menu. By default the maximum is 5, but it can be increased later on with upgrades. Star Fuel scaling is as follows: factor*25*1.2^factor. Star Fuel can be supplied via an input bus, it gets consumed periodically and stored internally. Once there is enough Star Fuel stored in the multi, it turns on for real (allowing modules to connect) and converts the consumed Star Fuel into stored Stellar Fuel. From this point onwards, the Forge must be fueled via one of the liquid fuels (type can be selected in the fuel config menu). If there isn't enough of the selected fuel present in the input hatch, the stored fuel amount will decrease and if it reaches 0, the Forge enters the previous 'off' state where modules disconnect and it has to be supplied with Star Fuel again. The amount of internally stored Stellar Fuel (liquid) can be increased by turning on battery charging, this will cause the fuel usage to double, but half of it will be stored in the internal battery.
 gt.blockmachines.multimachine.FOG.moduleinfotext=There are 4 types of modules that can be used in the Forge, the Helioflare Power Forge, Helioflux Melting Core, Heliothermal Plasma Fabricator and Heliofusion Exoticizer. These modules are separate multiblocks that have to be built into the Godforge structure at their designated spots. Once built, these modules have to connect to the Godforge, which happens automatically if all requirements for the respective module are met. Alternatively, there is a button to refresh their status without waiting for the timer. Each of these modules has its specialized functionality & requirements and is affected differently by certain upgrades. The first unlocked module is the §BHelioflare Power Forge§6, which simply put is a blast furnace even more powerful than the mega version. Additionally, this module has a furnace mode, turning it into a hyper powerful multi smelter. This module is unlocked by default and has 1024 base parallel. The second unlock is the §BHelioflux Melting Core§6, which also processes blast furnace recipes, but with a twist, the outputs are ejected in their molten form instead of hot/regular ingots. If an output does not have a molten form, it will output its regular form. This module has to be unlocked by an upgrade to function and has 512 base parallel. The third module is the §BHeliothermal Plasma Fabricator§6, which possesses a unique recipemap featuring direct material to plasma conversion recipes. These recipes are grouped by two properties, fusion tier and steps required, limiting which recipes can be processed before their respective upgrades are unlocked. Unlike regular fusion, these recipes produce the plasma of the input material. This module has 384 base parallel. The fourth and last module is the §BHeliofusion Exoticizer§6, a module capable of producing quark gluon plasma and later on magmatter. This module has unique automation challenges for both materials, so it is recommended to have two of these, as they have to be locked to either one of the materials. The common rule for both modes' automation challenges is as follows: the module outputs materials at the start of a recipe cycle and waits for the correct inputs to arrive before starting the actual processing of the output material. If producing quark-gluon plasma, the module outputs up to 7 different fluids/dusts with amounts between 1-64 and 1-7 respectively, and their corresponding plasmas and amounts have to be returned in order for the recipe to process. For each L of fluid, a bucket of plasma and for each dust 9 ingots worth of plasma must be returned for the recipe to work. If magmatter mode is active, the automation challenge changes. Now the module outputs 1-50L of tachyon rich temporal fluid, 51-100L of spatially enlarged fluid and one dust of a high tier material. The challenge is to return both the tachyon rich and spatially enlarged fluids, plus as much plasma of the dust's material (in ingots) as the difference between the amounts of spatially enlarged and tachyon rich fluid. Once all of these have been returned in the correct amounts, the recipe will start to process and output magmatter. This module has 64 base parallel.
-gt.blockmachines.multimachine.FOG.upgradeinfotext=Upgrades are the heart and soul of the Godforge, they unlock most of its functionality and processing power. The upgrade tree can be accessed via its button on the main gui and each upgrade node can be clicked for more information on its effects and unlock requirements. In general, each upgrade can only be unlocked if the prior one is unlocked and there are enough available graviton shards. One exception to this is the first upgrade, as that one has no prior upgrade. Some upgrades can also have extra material costs, which are denoted next to the unlock button if applicable. If an upgrade has more than 1 connected prior upgrade, then there are two options, either the upgrade requires ALL connected prior upgrades or AT LEAST ONE (indicated by the connection's color, red means ALL, blue means AT LEAST ONE). Upgrades can be refunded by simply pressing the unlock button again, but this only works if ALL connected later upgrades are not active/unlocked. The block of upgrades following the unlock of the Heliufusion Exoticizer module are special, as they are what is considered §Bthe Split§6. As the name suggests, only one path out of the three may be chosen at first, and the others will be locked. Each path has specialized buffs that are primarily targeted towards a specific module, and thus affect other module types with reduced effect (unless stated otherwise). The amount of unlockable paths depends on the amount of rings the Godforge has, which in turn are limited by later upgrades.
+gt.blockmachines.multimachine.FOG.upgradeinfotext=Upgrades are the heart and soul of the Godforge, they unlock most of its functionality and processing power. The upgrade tree can be accessed via its button on the main gui and each upgrade node can be clicked for more information on its effects and unlock requirements. In general, each upgrade can only be unlocked if the prior one is unlocked and there are enough available graviton shards. One exception to this is the first upgrade, as that one has no prior upgrade. Some upgrades can also have extra material costs, which are denoted next to the unlock button if applicable. If an upgrade has more than 1 connected prior upgrade, then there are two options, either the upgrade requires ALL connected prior upgrades or AT LEAST ONE (indicated by the connection's color, red means ALL, blue means AT LEAST ONE). Upgrades can be refunded by simply pressing the unlock button again, but this only works if ALL connected later upgrades are not active/unlocked. The block of upgrades following the unlock of the Heliofusion Exoticizer module are special, as they are what is considered §Bthe Split§6. As the name suggests, only one path out of the three may be chosen at first, and the others will be locked. Each path has specialized buffs that are primarily targeted towards a specific module, and thus affect other module types with reduced effect (unless stated otherwise). The amount of unlockable paths depends on the amount of rings the Godforge has, which in turn are limited by later upgrades.
 gt.blockmachines.multimachine.FOG.milestoneinfotext=Milestones are essential for upgrading the Godforge, as they are the source of graviton shards, the main currency needed for unlocking upgrades. In essence, milestones are just what their name suggests, thresholds that when reached, grant graviton shards. There are four types of milestones, Charge, Conversion, Catalyst and Composition, each referring to a stat of the Godforge. Each milestone has 7 tiers, each being harder to reach than the last, but also granting more graviton shards. The first tier grants 1 graviton shard, the second 2, the third 3 etc. The §BCharge§6 milestone scales off total power consumption of all modules combined, the first tier being unlocked at 1e15 EU consumed, and each subsequent milestone scaling by 9x. The §BConversion§6 milestone scales off total recipes processed across all modules (excluding the Helioflare Power Forge's furnace mode) and its first tier is unlocked at 10M processed recipes. Following tiers scale by 4x. The §BCatalyst§6 milestone is based on the Forge's fuel consumption, counted in Stellar Fuel units (the number entered in the fuel config menu). Reaching the first tier requires 10,000 fuel units to be consumed, and each tier above scales by 3x. Last but not least, the §BComposition§6 milestone works a bit differently, as it scales off the Forge's structure. Milestone levels are granted for each unique type of module present in the structure (Heliofusion Exoticizer modules on quark-gluon and magmatter mode count as unique) and for each additional ring built. Your research suggests that something strange might happen if all milestones reach their final tier... Make sure to check back!
 gt.blockmachines.multimachine.FOG.contributors=Авторы
 gt.blockmachines.multimachine.FOG.lead=Руководитель проекта
@@ -1306,42 +1304,38 @@ gt.blockmachines.debug.tt.genny.desc.0=Энергия из ниоткуда
 gt.blockmachines.debug.tt.genny.desc.1=Безграничный производитель/потребитель
 gt.blockmachines.debug.tt.genny.desc.2=Просто потому что я хочу...
 gt.blockmachines.debug.tt.genny.desc.3=С помощью отвертки переключите его в режим лазера
-gt.blockmachines.debug.tt.writer.name=Отладочный сканер структуры
-gt.blockmachines.debug.tt.writer.desc.0=Сканирует блоки вокруг
-gt.blockmachines.debug.tt.writer.desc.1=Печатает код не-ТЕ структуры мультиблоков
-gt.blockmachines.debug.tt.writer.desc.2=Оси ABC выровнены относительно лицевой части
 gt.blockmachines.debug.tt.certain.desc.0=Чувствуя себя уверенным, наверняка
 gt.blockmachines.debug.tt.certain.desc.1=Кот Шрёдингера сбежал из коробки
 
-GT5U.gui.text.computing=§aComputing
-GT5U.gui.text.providing_data=§aProviding Data
-GT5U.gui.text.routing=§aRouting
-GT5U.gui.text.researching=§aИсследование
-GT5U.gui.text.wrongRequirements=§7Incorrect scanning item
-GT5U.gui.text.scanning=§aScanning
-GT5U.gui.text.charging=§aЗарядка
-GT5U.gui.text.microwaving=§aMicrowaving
-GT5U.gui.text.no_routing=§7Can't route
-GT5U.gui.text.invalid_timer=§7Неверный таймер
-GT5U.gui.text.no_research_item=§7Нет предмета для исследования
-GT5U.gui.text.no_chargeable_item=§7Нет заряжаемого предмета
-GT5U.gui.text.no_computing=§7Не могу вычислить
-GT5U.gui.text.no_data=§7Невозможно вывести данные
-GT5U.gui.text.no_planet_block=§7Отсутствует планетарный блок
-GT5U.gui.text.no_helium=§7Недостаточно гелия
-GT5U.gui.text.no_hydrogen=§7Недостаточно водорода
-GT5U.gui.text.no_stellar_plasma=§7Недостаточно звёздной плазмы
-GT5U.gui.text.invalid_hysteresis=§7Неверные настройки гистерезиса
-GT5U.gui.text.invalid_transfer_radius=§7Неверные настройки радиуса передачи
-GT5U.gui.text.invalid_voltage_setting=§7Неверная настройка вольтажа
-GT5U.gui.text.invalid_current_setting=§7Неверная текущая настройка
-GT5U.gui.text.invalid_primary_winding=§7Primary winding tier is too low!
-GT5U.gui.text.invalid_time_setting=§7Неверная настройка времени
-GT5U.gui.text.invalid_overdrive_setting=§7Неверная настройка перегрузки
-GT5U.gui.text.insufficient_power_no_val=§7Недостаточно энергии
-GT5U.gui.text.missing_upgrades=§7Отсутствует улучшения
-GT5U.gui.text.waiting_for_inputs=§7Waiting for inputs
-GT5U.gui.text.computation_loss=§4Выключен из-за потери вычислительных данных.
+GT5U.gui.text.recipe_result.computing=§aComputing
+GT5U.gui.text.recipe_result.providing_data=§aProviding Data
+GT5U.gui.text.recipe_result.routing=§aRouting
+GT5U.gui.text.recipe_result.researching=§aИсследование
+GT5U.gui.text.recipe_result.wrongRequirements=§7Incorrect scanning item
+GT5U.gui.text.recipe_result.scanning=§aScanning
+GT5U.gui.text.recipe_result.charging=§aЗарядка
+GT5U.gui.text.recipe_result.microwaving=§aMicrowaving
+GT5U.gui.text.recipe_result.no_routing=§7Can't route
+GT5U.gui.text.recipe_result.invalid_timer=§7Неверный таймер
+GT5U.gui.text.recipe_result.no_research_item=§7Нет предмета для исследования
+GT5U.gui.text.recipe_result.no_chargeable_item=§7Нет заряжаемого предмета
+GT5U.gui.text.recipe_result.no_computing=§7Не могу вычислить
+GT5U.gui.text.recipe_result.no_data=§7Невозможно вывести данные
+GT5U.gui.text.recipe_result.no_planet_block=§7Отсутствует планетарный блок
+GT5U.gui.text.recipe_result.no_helium=§7Недостаточно гелия
+GT5U.gui.text.recipe_result.no_hydrogen=§7Недостаточно водорода
+GT5U.gui.text.recipe_result.no_stellar_plasma=§7Недостаточно звёздной плазмы
+GT5U.gui.text.recipe_result.invalid_hysteresis=§7Неверные настройки гистерезиса
+GT5U.gui.text.recipe_result.invalid_transfer_radius=§7Неверные настройки радиуса передачи
+GT5U.gui.text.recipe_result.invalid_voltage_setting=§7Неверная настройка вольтажа
+GT5U.gui.text.recipe_result.invalid_current_setting=§7Неверная текущая настройка
+GT5U.gui.text.recipe_result.invalid_primary_winding=§7Primary winding tier is too low!
+GT5U.gui.text.recipe_result.invalid_time_setting=§7Неверная настройка времени
+GT5U.gui.text.recipe_result.invalid_overdrive_setting=§7Неверная настройка перегрузки
+GT5U.gui.text.recipe_result.insufficient_power_no_val=§7Недостаточно энергии
+GT5U.gui.text.recipe_result.missing_upgrades=§7Отсутствует улучшения
+GT5U.gui.text.recipe_result.waiting_for_inputs=§7Waiting for inputs
+GT5U.gui.text.shutdown_reason.computation_loss=§4Выключен из-за потери вычислительных данных.
 GT5U.gui.text.researching_item=§fИсследование: §b%s
 GT5U.gui.text.research_progress=§fВычислительной мощности: %d/%d (%s%%)
 
@@ -1423,9 +1417,9 @@ tt.keyword.Computation=Вычисление
 tt.keyword.Problems=Проблемы
 tt.keyword.Efficiency=Эффективность
 #Button that allows to pass power to other machines
-tt.keyword.PowerPass=Передача энергии
+tt.keyword.PowerPass=Передача энергии: §9%s
 #Button that vents EM
-tt.keyword.SafeVoid=Избавление от излишек
+tt.keyword.SafeVoid=Избавление от излишек: §9%s
 tt.keyword.Parametrizer=Параметрайзер
 tt.keyword.Value=Значение
 tt.keyword.Input=Вход
@@ -1445,7 +1439,7 @@ tt.keyphrase.Energy_Hatches=Энерговводы
 tt.keyphrase.Probably_uses=Сейчас используется
 tt.keyphrase.Probably_makes=Сейчас генерирует
 tt.keyphrase.Tier_Rating=Тир вольтажа
-tt.keyphrase.Amp_Rating=Кол-во ампер
+tt.keyphrase.Amp_Rating=Кол-во ампер §a%s A
 tt.keyphrase.Computation_Available=Доступно вычислений
 tt.keyphrase.Computation_Remaining=Вычислений осталось
 tt.keyphrase.AL_Recipe_Providing=Providing §6%s§7 Assembly Line Recipes

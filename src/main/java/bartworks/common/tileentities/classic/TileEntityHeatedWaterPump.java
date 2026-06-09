@@ -16,7 +16,6 @@ package bartworks.common.tileentities.classic;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Optional;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -29,6 +28,7 @@ import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidEvent;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -111,16 +111,20 @@ public class TileEntityHeatedWaterPump extends TileEntity implements ITileDropsC
             assert fuelstack.getItem() != null;
             ItemStack containerItem = fuelstack.getItem()
                 .getContainerItem(fuelstack);
-            if (this.fuelstack.stackSize <= 0) {
-                this.fuelstack = containerItem;
-            } else {
-                // drop the container to the world if there's more fuels left in the slot
-                GTUtility.dropItemsOrClusters(
-                    worldObj,
-                    0.5F + xCoord,
-                    1.5F + yCoord,
-                    0.5F + zCoord,
-                    Collections.singletonList(containerItem));
+
+            if (fuelstack.stackSize <= 0) {
+                // clear the fuelstack if the fuels are all consumed
+                fuelstack = null;
+            }
+
+            if (containerItem != null) {
+                if (fuelstack == null) {
+                    // replace with the container item
+                    fuelstack = containerItem;
+                } else {
+                    // drop the container to the world if there's more fuels left in the slot
+                    GTUtility.dropItemToBlockPos(worldObj, xCoord, yCoord + 1, zCoord, containerItem);
+                }
             }
         }
     }
@@ -202,7 +206,7 @@ public class TileEntityHeatedWaterPump extends TileEntity implements ITileDropsC
     @Override
     public boolean canExtractItem(int index, ItemStack item, int side) {
         // allow extracting leftover items of fuels like buckets
-        return GTUtility.isEmptyFluidContainer(item);
+        return FluidContainerRegistry.isEmptyContainer(item);
     }
 
     @Override
@@ -237,7 +241,7 @@ public class TileEntityHeatedWaterPump extends TileEntity implements ITileDropsC
 
     @Override
     public String getInventoryName() {
-        return null;
+        return "tile.BWHeatedWaterPump.name";
     }
 
     @Override

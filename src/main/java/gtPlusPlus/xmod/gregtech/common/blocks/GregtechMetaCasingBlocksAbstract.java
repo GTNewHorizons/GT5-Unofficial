@@ -12,7 +12,6 @@ import net.minecraft.item.ItemStack;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.common.blocks.BlockCasingsAbstract;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 
@@ -24,8 +23,6 @@ public abstract class GregtechMetaCasingBlocksAbstract extends BlockCasingsAbstr
         this.setStepSound(soundTypeMetal);
         this.setCreativeTab(AddToCreativeTab.tabMachines);
         GregTechAPI.registerMachineBlock(this, -1);
-        GTLanguageManager
-            .addStringLocalization(this.getUnlocalizedName() + "." + 32767 + ".name", "Any Sub Block of this");
     }
 
     @Override
@@ -44,9 +41,9 @@ public abstract class GregtechMetaCasingBlocksAbstract extends BlockCasingsAbstr
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubBlocks(final Item aItem, final CreativeTabs par2CreativeTabs, final List aList) {
+    public void getSubBlocks(final Item item, final CreativeTabs tab, final List<ItemStack> list) {
         for (int i = 0; i < 16; i++) {
-            aList.add(new ItemStack(aItem, 1, i));
+            list.add(new ItemStack(item, 1, i));
         }
     }
 }

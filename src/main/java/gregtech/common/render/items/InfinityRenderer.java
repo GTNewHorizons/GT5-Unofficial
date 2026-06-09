@@ -13,6 +13,7 @@ import codechicken.lib.render.TextureUtils;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IGT_ItemWithMaterialRenderer;
 import gregtech.api.util.GTUtility;
+import gregtech.common.config.Client;
 
 // TODO: Render effects outside inventory.
 
@@ -22,6 +23,11 @@ public class InfinityRenderer extends GeneratedMaterialRenderer {
 
     @Override
     public void renderItem(ItemRenderType type, ItemStack aStack, Object... data) {
+        if (!Client.render.renderInfinityFancy) {
+            super.renderItem(type, aStack, data);
+            return;
+        }
+
         short aMetaData = (short) aStack.getItemDamage();
         if (!(aStack.getItem() instanceof IGT_ItemWithMaterialRenderer aItem)) return;
 
