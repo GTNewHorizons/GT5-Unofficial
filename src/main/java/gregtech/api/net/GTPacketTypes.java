@@ -10,6 +10,8 @@ import bartworks.common.net.PacketServerJoined;
 import gregtech.api.net.cape.GTPacketBroadcastCapes;
 import gregtech.api.net.cape.GTPacketListCapes;
 import gregtech.api.net.cape.GTPacketSetCape;
+import gregtech.common.networkanalyzer.net.GTPacketNetworkAnalyzer;
+import gregtech.common.networkanalyzer.net.GTPacketNetworkAnalyzerMode;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 
 /**
@@ -51,6 +53,8 @@ public enum GTPacketTypes {
     LIST_CAPES(41, new GTPacketListCapes()),
     SET_CAPE(42, new GTPacketSetCape()),
     TOOLBOX_EVENT(43, new GTPacketToolboxEvent()),
+    NETWORK_ANALYZER(44, new GTPacketNetworkAnalyzer()),
+    NETWORK_ANALYZER_MODE(45, new GTPacketNetworkAnalyzerMode()),
 
     // merge conflict prevention comment, keep a trailing comma above
     ;

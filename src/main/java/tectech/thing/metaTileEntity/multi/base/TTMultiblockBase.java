@@ -1479,6 +1479,11 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         return new ArrayList<>(eEnergyMulti);
     }
 
+    @Override
+    public List<MTEHatch> getExoticDynamoHatches() {
+        return new ArrayList<>(eDynamoMulti);
+    }
+
     // empty body to prevent any explosion
     @Override
     public final void explodeMultiblock() {}
