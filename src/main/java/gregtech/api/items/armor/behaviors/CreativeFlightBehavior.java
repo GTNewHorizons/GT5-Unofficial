@@ -1,9 +1,6 @@
 package gregtech.api.items.armor.behaviors;
 
-import static gregtech.loaders.ExtraIcons.creativeFlightAugment;
-
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.IIcon;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -18,11 +15,6 @@ public class CreativeFlightBehavior implements IArmorBehavior {
     @Override
     public BehaviorName getName() {
         return BehaviorName.CreativeFlight;
-    }
-
-    @Override
-    public IIcon getModularArmorTexture() {
-        return creativeFlightAugment;
     }
 
     @Override

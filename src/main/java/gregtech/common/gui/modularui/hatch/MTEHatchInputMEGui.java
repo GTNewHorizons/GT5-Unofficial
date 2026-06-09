@@ -331,7 +331,7 @@ public class MTEHatchInputMEGui extends MTEHatchBaseGui<MTEHatchInputME> {
             }
         })
             .asWidget()
-            .widgetTheme(GTWidgetThemes.DISPLAY_TEXT);
+            .widgetTheme(GTWidgetThemes.DISPLAY_TEXT_WHITE);
 
         return super.createBottomLeftCornerFlow(panel, syncManager).child(status);
     }

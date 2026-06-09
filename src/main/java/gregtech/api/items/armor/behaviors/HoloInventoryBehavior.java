@@ -1,12 +1,9 @@
 package gregtech.api.items.armor.behaviors;
 
 import static gregtech.api.items.armor.ArmorKeybinds.HOLO_INVENTORY_KEYBIND;
-import static gregtech.loaders.ExtraIcons.holoInventoryAugment;
 
 import java.util.Collections;
 import java.util.Set;
-
-import net.minecraft.util.IIcon;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -24,11 +21,6 @@ public class HoloInventoryBehavior implements IArmorBehavior {
     @Override
     public BehaviorName getName() {
         return BehaviorName.HoloInventory;
-    }
-
-    @Override
-    public IIcon getModularArmorTexture() {
-        return holoInventoryAugment;
     }
 
     @Override

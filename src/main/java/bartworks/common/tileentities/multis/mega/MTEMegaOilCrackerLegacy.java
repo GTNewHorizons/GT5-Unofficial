@@ -68,12 +68,13 @@ import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
 import gregtech.common.tileentities.machines.MTEHatchInputME;
 
-public class MTEMegaOilCracker extends MegaMultiBlockBase<MTEMegaOilCracker> implements ISurvivalConstructable {
+public class MTEMegaOilCrackerLegacy extends MegaMultiBlockBase<MTEMegaOilCrackerLegacy>
+    implements ISurvivalConstructable {
 
     private static final int CASING_INDEX = 49;
     private static final String STRUCTURE_PIECE_MAIN = "main";
-    private static final IStructureDefinition<MTEMegaOilCracker> STRUCTURE_DEFINITION = StructureDefinition
-        .<MTEMegaOilCracker>builder()
+    private static final IStructureDefinition<MTEMegaOilCrackerLegacy> STRUCTURE_DEFINITION = StructureDefinition
+        .<MTEMegaOilCrackerLegacy>builder()
         .addShape(
             STRUCTURE_PIECE_MAIN,
             transpose(
@@ -95,33 +96,33 @@ public class MTEMegaOilCracker extends MegaMultiBlockBase<MTEMegaOilCracker> imp
         .addElement(
             'c',
             GTStructureChannels.HEATING_COIL
-                .use(activeCoils(ofCoil(MTEMegaOilCracker::setCoilLevel, MTEMegaOilCracker::getCoilLevel))))
+                .use(activeCoils(ofCoil(MTEMegaOilCrackerLegacy::setCoilLevel, MTEMegaOilCrackerLegacy::getCoilLevel))))
 
         .addElement('p', ofBlock(GregTechAPI.sBlockCasings4, 1))
         .addElement(
             'l',
-            buildHatchAdder(MTEMegaOilCracker.class)
-                .atLeast(InputHatch.withAdder(MTEMegaOilCracker::addLeftHatchToMachineList))
+            buildHatchAdder(MTEMegaOilCrackerLegacy.class)
+                .atLeast(InputHatch.withAdder(MTEMegaOilCrackerLegacy::addLeftHatchToMachineList))
                 .hint(2)
                 .casingIndex(CASING_INDEX)
                 .buildAndChain(GregTechAPI.sBlockCasings4, 1))
         .addElement(
             'r',
-            buildHatchAdder(MTEMegaOilCracker.class)
-                .atLeast(OutputHatch.withAdder(MTEMegaOilCracker::addRightHatchToMachineList))
+            buildHatchAdder(MTEMegaOilCrackerLegacy.class)
+                .atLeast(OutputHatch.withAdder(MTEMegaOilCrackerLegacy::addRightHatchToMachineList))
                 .hint(3)
                 .casingIndex(CASING_INDEX)
                 .buildAndChain(GregTechAPI.sBlockCasings4, 1))
         .addElement(
             'm',
-            buildHatchAdder(MTEMegaOilCracker.class).atLeast(Energy.or(ExoticEnergy), Maintenance, InputBus)
+            buildHatchAdder(MTEMegaOilCrackerLegacy.class).atLeast(Energy.or(ExoticEnergy), Maintenance, InputBus)
                 .casingIndex(CASING_INDEX)
                 .hint(1)
                 .buildAndChain(GregTechAPI.sBlockCasings4, 1))
         .addElement(
             'M',
-            buildHatchAdder(MTEMegaOilCracker.class)
-                .atLeast(InputHatch.withAdder(MTEMegaOilCracker::addMiddleInputToMachineList))
+            buildHatchAdder(MTEMegaOilCrackerLegacy.class)
+                .atLeast(InputHatch.withAdder(MTEMegaOilCrackerLegacy::addMiddleInputToMachineList))
                 .hint(4)
                 .casingIndex(CASING_INDEX)
                 .buildAndChain(GregTechAPI.sBlockCasings4, 1))
@@ -133,11 +134,11 @@ public class MTEMegaOilCracker extends MegaMultiBlockBase<MTEMegaOilCracker> imp
     protected int mInputOnSide = -1;
     protected int mOutputOnSide = -1;
 
-    public MTEMegaOilCracker(int aID, String aName, String aNameRegional) {
+    public MTEMegaOilCrackerLegacy(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
-    public MTEMegaOilCracker(String aName) {
+    public MTEMegaOilCrackerLegacy(String aName) {
         super(aName);
     }
 
@@ -145,6 +146,7 @@ public class MTEMegaOilCracker extends MegaMultiBlockBase<MTEMegaOilCracker> imp
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Cracker, MOC")
+            .addStructureDeprecatedLine()
             .addInfo(
                 TooltipHelper.coloredText(
                     TooltipHelper.italicText("\"Thermally cracks heavy hydrocarbons into lighter fractions\""),
@@ -188,7 +190,7 @@ public class MTEMegaOilCracker extends MegaMultiBlockBase<MTEMegaOilCracker> imp
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTEMegaOilCracker(this.mName);
+        return new MTEMegaOilCrackerLegacy(this.mName);
     }
 
     @Override
@@ -234,7 +236,7 @@ public class MTEMegaOilCracker extends MegaMultiBlockBase<MTEMegaOilCracker> imp
     }
 
     public double getEuModifier() {
-        return 1.0F - Math.min(0.1F * (MTEMegaOilCracker.this.heatLevel.getTier() + 1), 0.5F);
+        return 1.0F - Math.min(0.1F * (MTEMegaOilCrackerLegacy.this.heatLevel.getTier() + 1), 0.5F);
     }
 
     public HeatingCoilLevel getCoilLevel() {
@@ -431,7 +433,7 @@ public class MTEMegaOilCracker extends MegaMultiBlockBase<MTEMegaOilCracker> imp
     }
 
     @Override
-    public IStructureDefinition<MTEMegaOilCracker> getStructureDefinition() {
+    public IStructureDefinition<MTEMegaOilCrackerLegacy> getStructureDefinition() {
         return STRUCTURE_DEFINITION;
     }
 
