@@ -503,7 +503,7 @@ public class RecipeMapBackend {
         Iterator<GTRecipe> iterator = recipeLookup.iterator(ingredients);
         return StreamSupport.stream(
             Spliterators
-                .spliteratorUnknownSize(iterator, Spliterator.ORDERED | Spliterator.NONNULL | Spliterator.IMMUTABLE),
+                .spliteratorUnknownSize(iterator, Spliterator.NONNULL | Spliterator.IMMUTABLE),
             false);
     }
 
