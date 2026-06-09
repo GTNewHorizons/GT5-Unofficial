@@ -1,15 +1,12 @@
 package gtPlusPlus.core.block.base;
 
 import static gregtech.api.enums.Mods.GTPlusPlus;
-import static gregtech.api.enums.Mods.GregTech;
-import static gtPlusPlus.core.material.MaterialsElements.STANDALONE.*;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
@@ -24,7 +21,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.StringUtils;
-import gtPlusPlus.core.client.TextureBlockMaterial;
 import gtPlusPlus.core.item.base.itemblock.ItemBlockGtBlock;
 import gtPlusPlus.core.material.Material;
 
@@ -45,15 +41,7 @@ public class BlockBaseModular extends BasicBlock {
         return BLOCK_CACHE.get(aMaterial.getUnlocalizedName() + "." + aType.name());
     }
 
-    private static boolean isCustomBlockOnly(Material material) {
-        return material.equals(ASTRAL_TITANIUM) || material.equals(CELESTIAL_TUNGSTEN)
-            || material.equals(CHRONOMATIC_GLASS);
-    }
-
     private static int getMaterialColour(Material material) {
-        if (isCustomBlockOnly(material)) {
-            return 0xFFFFFF;
-        }
         return material.getTextureSet().is_custom ? 0xFFFFFF : material.getRgbAsHex();
     }
 
@@ -183,16 +171,6 @@ public class BlockBaseModular extends BasicBlock {
         String metType = this.material.getTextureSet() != null ? this.material.getTextureSet().mSetName : "METALLIC";
         int tier = this.material.vTier;
         String aType = (this.blockType == BlockTypes.FRAME) ? "frameGt" : (tier <= 4 ? "block1" : "block5");
-
-        if (isCustomBlockOnly(this.material)) {
-            metType = "CUSTOM/" + this.material.getUnlocalizedName();
-        }
-
-        String iconName = GregTech.ID + ":materialicons/" + metType + "/" + aType;
-
-        if (isCustomBlockOnly(this.material) && iIcon instanceof TextureMap) {
-            ((TextureMap) iIcon).setTextureEntry(iconName, new TextureBlockMaterial(iconName, this.material));
-        }
 
         this.blockIcon = Textures.BlockIcons.textureSetWithRegister(metType, "/" + aType, iIcon)
             .getIcon();
