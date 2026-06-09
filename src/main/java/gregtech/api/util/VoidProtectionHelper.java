@@ -227,7 +227,7 @@ public class VoidProtectionHelper {
             // We can't know how many fluids per parallel will be eventually ejected, so we just check the
             // worst-case scenario
             int stackSize = (int) (stack.amount
-                * Math.ceil(outputChanceMultiplier * outputChanceGetter.apply(i) / 10000d));
+                * Math.ceil(outputChanceMultiplier * fluidOutputChanceGetter.apply(i) / 10000d));
 
             maxFluidOutputs.add(GTUtility.copyAmount(stackSize, stack));
         }
