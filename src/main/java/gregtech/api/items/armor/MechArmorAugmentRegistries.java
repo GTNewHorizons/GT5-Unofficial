@@ -576,6 +576,18 @@ public class MechArmorAugmentRegistries {
             .setTexture(() -> holoInventoryAugment)
             .setCategory(AugmentCategory.Utility)
             .setRarity(EnumRarity.uncommon)
+        ),
+        TravelersBoots(ItemList.Augment_Travelers, new AugmentBuilder()
+            .setId("Travelers")
+            .setItemId("augmenttravelers")
+            .fitsInto(ArmorType.Boots)
+            .providesBehaviors(new JumpBoostBehavior(0.6F),
+                new SpeedBoostBehavior(0.15F),
+                StepAssistBehavior.INSTANCE,
+                new VisDiscountBehavior(4))
+            .setCategory(AugmentCategory.Movement)
+            .setMinimumCore(0)
+            .setRarity(EnumRarity.common)
         );
         // spotless:on
 
