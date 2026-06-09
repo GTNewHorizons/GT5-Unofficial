@@ -17,6 +17,8 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.objects.SubstituteFluidStack;
+import gregtech.api.recipe.OreRecipeRegistrationGuard;
+import gregtech.api.recipe.OreRecipeRegistrationInputs;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -40,6 +42,14 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
         if (aMaterial == Materials.Ichorium || aMaterial == Materials.NetherQuartz) {
             return;
         }
+        if (!OreRecipeRegistrationGuard.tryProcess(aPrefix, aMaterial, aOreDictName, "ProcessingBlock")) {
+            return;
+        }
+
+        ItemStack blockInput = OreRecipeRegistrationInputs.recipeInputStack(aPrefix, aMaterial, aStack);
+        if (blockInput == null) {
+            return;
+        }
 
         if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV
             && GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L) != null) {
@@ -48,7 +58,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
                 || aMaterial == Materials.Dreamwood) {
 
                 GTValues.RA.stdBuilder()
-                    .itemInputs(GTUtility.copyAmount(1, aStack))
+                    .itemInputs(blockInput)
                     .circuit(3)
                     .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 9L))
                     .fluidInputs(waterSubstitutions)
@@ -57,7 +67,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
                     .addTo(cutterRecipes);
 
                 GTValues.RA.stdBuilder()
-                    .itemInputs(GTUtility.copyAmount(1, aStack))
+                    .itemInputs(blockInput)
                     .circuit(3)
                     .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 9L))
                     .fluidInputs(
@@ -70,7 +80,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
                     .addTo(cutterRecipes);
 
                 GTValues.RA.stdBuilder()
-                    .itemInputs(GTUtility.copyAmount(1, aStack))
+                    .itemInputs(blockInput)
                     .circuit(3)
                     .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 9L))
                     .fluidInputs(
@@ -87,7 +97,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
             else if (aMaterial != Materials.Clay && aMaterial != Materials.Basalt && aMaterial != Materials.Obsidian) {
 
                 GTValues.RA.stdBuilder()
-                    .itemInputs(GTUtility.copyAmount(1, aStack))
+                    .itemInputs(blockInput)
                     .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 9L))
                     .fluidInputs(waterSubstitutions)
                     .duration(2 * ((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS)
@@ -95,7 +105,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
                     .addTo(cutterRecipes);
 
                 GTValues.RA.stdBuilder()
-                    .itemInputs(GTUtility.copyAmount(1, aStack))
+                    .itemInputs(blockInput)
                     .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 9L))
                     .fluidInputs(
                         Materials.Lubricant.getFluid(
@@ -107,7 +117,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
                     .addTo(cutterRecipes);
 
                 GTValues.RA.stdBuilder()
-                    .itemInputs(GTUtility.copyAmount(1, aStack))
+                    .itemInputs(blockInput)
                     .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 9L))
                     .fluidInputs(
                         Materials.DimensionallyShiftedSuperfluid.getFluid(
@@ -124,7 +134,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
         ItemStack gem = GTOreDictUnificator.get(OrePrefixes.gem, aMaterial, 1L);
         ItemStack dust = GTOreDictUnificator.get(OrePrefixes.dust, aMaterial, 1L);
 
-        GTModHandler.removeRecipeDelayed(GTUtility.copyAmount(1, aStack));
+        GTModHandler.removeRecipeDelayed(GTUtility.copyAmount(1, blockInput));
 
         if (ingot != null) {
             GTModHandler.removeRecipeDelayed(ingot, ingot, ingot, ingot, ingot, ingot, ingot, ingot, ingot);
@@ -158,7 +168,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
 
         if (gem != null) {
             GTValues.RA.stdBuilder()
-                .itemInputs(aStack)
+                .itemInputs(blockInput)
                 .itemOutputs(gem)
                 .duration(5 * SECONDS)
                 .eut(24)

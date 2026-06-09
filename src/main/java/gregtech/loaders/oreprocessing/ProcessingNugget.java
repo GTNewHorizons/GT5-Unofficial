@@ -15,6 +15,8 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TierEU;
+import gregtech.api.recipe.OreRecipeRegistrationGuard;
+import gregtech.api.recipe.OreRecipeRegistrationInputs;
 import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -30,6 +32,9 @@ public class ProcessingNugget implements gregtech.api.interfaces.IOreRecipeRegis
     @Override
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
         ItemStack aStack) {
+        if (!OreRecipeRegistrationGuard.tryProcess(aPrefix, aMaterial, aOreDictName, "ProcessingNugget")) {
+            return;
+        }
         // Blacklist materials which are handled by Werkstoff loader
         if (aMaterial == Materials.Calcium || aMaterial == Materials.Magnesia) return;
 
@@ -67,9 +72,22 @@ public class ProcessingNugget implements gregtech.api.interfaces.IOreRecipeRegis
             }
         }
 
-        GTRecipeRegistrator.registerReverseFluidSmelting(aStack, aMaterial, aPrefix.getMaterialAmount(), null, true);
-        GTRecipeRegistrator
-            .registerReverseMacerating(aStack, aMaterial, aPrefix.getMaterialAmount(), null, null, null, false, true);
+        ItemStack canonicalStack = OreRecipeRegistrationInputs.recipeInputStack(aPrefix, aMaterial, aStack);
+        if (OreRecipeRegistrationGuard.tryRegisterReverseRecipe("fluidSmelting", aMaterial, aPrefix)) {
+            GTRecipeRegistrator
+                .registerReverseFluidSmelting(canonicalStack, aMaterial, aPrefix.getMaterialAmount(), null, true);
+        }
+        if (OreRecipeRegistrationGuard.tryRegisterReverseRecipe("macerator", aMaterial, aPrefix)) {
+            GTRecipeRegistrator.registerReverseMacerating(
+                canonicalStack,
+                aMaterial,
+                aPrefix.getMaterialAmount(),
+                null,
+                null,
+                null,
+                false,
+                true);
+        }
         if (!aMaterial.contains(SubTag.NO_SMELTING)
             && GTOreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L) != null) {
             GTValues.RA.stdBuilder()

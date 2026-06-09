@@ -11,6 +11,8 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TierEU;
+import gregtech.api.recipe.OreRecipeRegistrationGuard;
+import gregtech.api.recipe.OreRecipeRegistrationInputs;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 
@@ -28,16 +30,21 @@ public class ProcessingPure implements gregtech.api.interfaces.IOreRecipeRegistr
         if (aMaterial.contains(SubTag.NO_ORE_PROCESSING)) {
             return;
         }
+        if (!OreRecipeRegistrationGuard.tryProcess(aPrefix, aMaterial, aOreDictName, "ProcessingPure")) {
+            return;
+        }
+
+        ItemStack canonicalStack = OreRecipeRegistrationInputs.recipeInputStack(aPrefix, aMaterial, aStack);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.copyAmount(1, aStack))
+            .itemInputs(GTUtility.copyAmount(1, canonicalStack))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dustPure, aMaterial.mMacerateInto, 1L))
             .duration(10)
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(hammerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.copyAmount(1, aStack))
+            .itemInputs(GTUtility.copyAmount(1, canonicalStack))
             .itemOutputs(
                 GTOreDictUnificator.get(
                     OrePrefixes.dustPure,

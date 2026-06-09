@@ -6,6 +6,7 @@ import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
+import gregtech.api.recipe.OreRecipeRegistrationGuard;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
 
@@ -18,6 +19,9 @@ public class ProcessingCompressed implements IOreRecipeRegistrator {
     @Override
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
         ItemStack aStack) {
+        if (!OreRecipeRegistrationGuard.tryProcess(aPrefix, aMaterial, aOreDictName, "ProcessingCompressed")) {
+            return;
+        }
         GTModHandler.removeRecipeByOutputDelayed(aStack);
         CoverRegistry
             .registerDecorativeCover(aStack, TextureFactory.of(aMaterial.mIconSet.mTextures[72], aMaterial.mRGBa));
