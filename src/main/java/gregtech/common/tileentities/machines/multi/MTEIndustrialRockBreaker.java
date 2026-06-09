@@ -104,7 +104,7 @@ public class MTEIndustrialRockBreaker extends MTEExtendedPowerMultiBlockBase<MTE
         tt.addMachineType("Rock Breaker")
             .addBulkMachineInfo(8, 3f, 0.75f)
             .addInfo("Use Integrated Circuit to determine recipe")
-            .addInfo("1 = Cobble, 2 = Stone, 3 = Obsidian, 4 = Basalt, 5 = Deepslate, 6 = Netherrack")
+            .addInfo("1 = Cobble, 2 = Stone, 3 = Obsidian, 4 = Basalt, 5 = Deepslate, 6 = Netherrack, 7 = Endstone")
             .addInfo("Needs Soul Sand and Blue Ice in input bus for basalt")
             .addInfo("Needs Soul Sand and Magma in input bus for deepslate")
             .addPollutionAmount(getPollutionPerSecond(null))

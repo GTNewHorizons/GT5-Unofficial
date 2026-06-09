@@ -109,6 +109,8 @@ public class MTEModificationTable extends MetaTileEntity {
         int colorIndex, boolean active, boolean redstoneLevel) {
         if (side == ForgeDirection.UP)
             return new ITexture[] { TextureFactory.of(Textures.BlockIcons.MODIFICATIONTABLE_TOP) };
+        if (side == ForgeDirection.DOWN)
+            return new ITexture[] { TextureFactory.of(Textures.BlockIcons.MODIFICATIONTABLE_BOTTOM) };
         return new ITexture[] { TextureFactory.of(Textures.BlockIcons.MODIFICATIONTABLE_SIDE) };
     }
 
