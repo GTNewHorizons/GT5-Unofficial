@@ -461,7 +461,7 @@ public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLocka
             if (!active) throw new IllegalStateException("Cannot add to a transaction after committing it");
             int amount = Math.min(availableSpace, stack.amount);
             if (amount <= 0) return false;
-            if (!canStoreFluid(stack)) return false;
+            if (fluid != null && !fluid.isFluidEqual(stack) || !canStoreFluid(stack)) return false;
             if (fluid == null) {
                 fluid = stack.copy();
                 fluid.amount = amount;
