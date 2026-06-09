@@ -17,11 +17,8 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.CondensateType;
 import gregtech.api.enums.Materials;
-import gregtech.api.interfaces.IOreMaterial;
 import gregtech.client.handler.CondensateAnimationTickHandler;
 import gregtech.common.items.ItemFluidDisplay;
-import gtPlusPlus.core.item.base.BaseItemComponent;
-import gtPlusPlus.core.material.Material;
 
 @SideOnly(Side.CLIENT)
 public class FluidDisplayStackRenderer implements IItemRenderer {
@@ -47,7 +44,6 @@ public class FluidDisplayStackRenderer implements IItemRenderer {
         GL11.glEnable(GL11.GL_ALPHA_TEST);
 
         Fluid fluid = FluidRegistry.getFluid(item.getItemDamage());
-        IOreMaterial baseMaterial = ItemFluidDisplay.getMaterial(fluid);
         Materials associatedFluidMaterial = Materials.get(item.stackTagCompound.getString("mFluidMaterialName"));
         if (associatedFluidMaterial.renderer == null
             || !associatedFluidMaterial.renderer.renderFluidDisplayItem(type, item, data)) {
@@ -55,9 +51,7 @@ public class FluidDisplayStackRenderer implements IItemRenderer {
                 .getIconFromDamage(item.getItemDamage());
             int tint;
             CondensateType condensate = CondensateType.getCondensateType(fluid);
-            if (baseMaterial instanceof Material gtppMaterial && gtppMaterial.getRGBA()[3] > 1) {
-                tint = BaseItemComponent.getMaterialCustomColor(gtppMaterial);
-            } else if (condensate != null) {
+            if (condensate != null) {
                 tint = CondensateType.getRenderColor(fluid);
             } else {
                 tint = fluid != null ? fluid.getColor() : 0xFFFFFF;
