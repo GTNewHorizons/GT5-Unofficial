@@ -24,7 +24,9 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -45,6 +47,7 @@ import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.fluid.IFluidStore;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
@@ -54,6 +57,7 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrors;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
@@ -61,7 +65,7 @@ import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.outputme.MTEHatchOutputME;
 
 public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTEMegaDistillationTower>
-    implements ISurvivalConstructable {
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     private static final int MACHINEMODE_TOWER = 0;
     private static final int MACHINEMODE_DISTILLERY = 1;
@@ -161,13 +165,13 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
                 '2',
                 buildHatchAdder(MTEMegaDistillationTower.class).atLeast(OutputBus)
                     .casingIndex(Casings.SteelPipeCasing.textureId)
-                    .hint(3)
+                    .hint(2)
                     .buildAndChain(Casings.SteelPipeCasing.asElement()))
             .addElement(
                 '3',
                 buildHatchAdder(MTEMegaDistillationTower.class).atLeast(InputHatch)
                     .casingIndex(Casings.BronzePipeCasing.textureId)
-                    .hint(2)
+                    .hint(3)
                     .buildAndChain(Casings.BronzePipeCasing.asElement()))
             // middle slice hatches
             .addElement(
@@ -454,6 +458,14 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
     }
 
     @Override
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
+        setMachineMode(nextMachineMode());
+        GTUtility
+            .sendChatTrans(aPlayer, "GT5U.MULTI_MACHINE_CHANGE", new ChatComponentTranslation(getMachineModeKey()));
+    }
+
+    @Override
     public int nextMachineMode() {
         if (this.machineMode == MACHINEMODE_DISTILLERY) return MACHINEMODE_TOWER;
         return MACHINEMODE_DISTILLERY;
@@ -548,7 +560,7 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
     }
 
     @Override
-    protected SoundResource getProcessStartSound() {
+    protected SoundResource getActivitySoundLoop() {
         return SoundResource.GT_MACHINES_DISTILLERY_LOOP;
     }
 
@@ -556,7 +568,7 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Distillery, DT, MDT")
-            .addInfo("Stats dictated by tower mode, change mode in GUI")
+            .addInfo("Stats dictated by tower mode, change mode in GUI or with a screwdriver")
             .addInfo("Has up to 5 middle slices and 1 top slice, the amount of middle slices is the 'Tower Height'")
             .addInfo("Each middle slice adds 2 output hatches, the top slice adds one output hatch")
             .addSeparator()
@@ -613,31 +625,30 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
         int aColorIndex, boolean aActive, boolean aRedstone) {
         if (side == facing) {
-            if (aActive) return new ITexture[] {
-                Textures.BlockIcons.getCasingTextureForId(Casings.NaquadahReinforcedDistillationCasing.getTextureId()),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_MEGA_DISTILLATION_TOWER_ACTIVE)
-                    .extFacing()
-                    .build(),
+            if (aActive) return new ITexture[] { getCasingTexture(), TextureFactory.builder()
+                .addIcon(OVERLAY_FRONT_MEGA_DISTILLATION_TOWER_ACTIVE)
+                .extFacing()
+                .build(),
                 TextureFactory.builder()
                     .addIcon(OVERLAY_FRONT_MEGA_DISTILLATION_TOWER_ACTIVE_GLOW)
                     .extFacing()
                     .glow()
                     .build() };
-            return new ITexture[] {
-                Textures.BlockIcons.getCasingTextureForId(Casings.NaquadahReinforcedDistillationCasing.getTextureId()),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_MEGA_DISTILLATION_TOWER)
-                    .extFacing()
-                    .build(),
+            return new ITexture[] { getCasingTexture(), TextureFactory.builder()
+                .addIcon(OVERLAY_FRONT_MEGA_DISTILLATION_TOWER)
+                .extFacing()
+                .build(),
                 TextureFactory.builder()
                     .addIcon(OVERLAY_FRONT_MEGA_DISTILLATION_TOWER_GLOW)
                     .extFacing()
                     .glow()
                     .build() };
         }
-        return new ITexture[] {
-            Textures.BlockIcons.getCasingTextureForId(Casings.NaquadahReinforcedDistillationCasing.getTextureId()) };
+        return new ITexture[] { getCasingTexture() };
     }
 
+    @Override
+    public ITexture getCasingTexture() {
+        return Textures.BlockIcons.getCasingTextureForId(Casings.NaquadahReinforcedDistillationCasing.getTextureId());
+    }
 }
