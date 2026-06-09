@@ -457,28 +457,36 @@ public class GTClient extends GTProxy {
     }
 
     @SubscribeEvent
-    public void onPlayerTickEventClient(TickEvent.PlayerTickEvent aEvent) {
-        if ((aEvent.side.isClient()) && (aEvent.phase == TickEvent.Phase.END) && (!aEvent.player.isDead)) {
+    public void onPlayerTickEventClient(TickEvent.PlayerTickEvent event) {
+        if ((event.side.isClient()) && (event.phase == TickEvent.Phase.END) && (!event.player.isDead)) {
             if (mFirstTick) {
-                mFirstTick = false;
-                GTValues.NW.sendToServer(new GTPacketClientPreference(mPreference));
-                GTValues.NW.sendToServer(new GTPacketSetCape(Client.preference.selectedCape));
-
-                if (!Minecraft.getMinecraft()
-                    .isSingleplayer()) {
-                    GTModHandler.removeAllIC2Recipes();
-                }
+                onPlayerFirstTick();
             }
-            for (Iterator<Map.Entry<GTPlayedSound, Integer>> iterator = GTUtility.sPlayedSoundMap.entrySet()
-                .iterator(); iterator.hasNext();) {
-                Map.Entry<GTPlayedSound, Integer> tEntry = iterator.next();
-                if (tEntry.getValue() < 0) {
-                    iterator.remove();
-                } else {
-                    tEntry.setValue(tEntry.getValue() - 1);
-                }
-            }
+            tickPlayedSounds();
             if (!GregTechAPI.mServerStarted) GregTechAPI.mServerStarted = true;
+        }
+    }
+
+    private void onPlayerFirstTick() {
+        mFirstTick = false;
+        GTValues.NW.sendToServer(new GTPacketClientPreference(mPreference));
+        GTValues.NW.sendToServer(new GTPacketSetCape(Client.preference.selectedCape));
+
+        if (!Minecraft.getMinecraft()
+            .isSingleplayer()) {
+            GTModHandler.removeAllIC2Recipes();
+        }
+    }
+
+    private static void tickPlayedSounds() {
+        for (Iterator<Map.Entry<GTPlayedSound, Integer>> iterator = GTUtility.sPlayedSoundMap.entrySet()
+            .iterator(); iterator.hasNext();) {
+            Map.Entry<GTPlayedSound, Integer> tEntry = iterator.next();
+            if (tEntry.getValue() < 0) {
+                iterator.remove();
+            } else {
+                tEntry.setValue(tEntry.getValue() - 1);
+            }
         }
     }
 
