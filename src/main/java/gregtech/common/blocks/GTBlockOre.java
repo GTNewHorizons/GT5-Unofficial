@@ -390,6 +390,14 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures, IB
     }
 
     @Override
+    public void onBlockClicked(World world, int x, int y, int z, EntityPlayer player) {
+        super.onBlockClicked(world, x, y, z, player);
+
+        MinecraftForge.EVENT_BUS
+            .post(new OreInteractEvent(world, x, y, z, this, world.getBlockMetadata(x, y, z), player));
+    }
+
+    @Override
     public void onBlockHarvested(World world, int x, int y, int z, int meta, EntityPlayer player) {
         super.onBlockHarvested(world, x, y, z, meta, player);
 

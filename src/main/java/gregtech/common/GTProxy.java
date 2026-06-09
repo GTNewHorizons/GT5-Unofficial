@@ -40,7 +40,6 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
@@ -62,13 +61,11 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.MathHelper;
 import net.minecraft.world.gen.feature.WorldGenMinable;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.EnderTeleportEvent;
-import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.player.ArrowLooseEvent;
 import net.minecraftforge.event.entity.player.ArrowNockEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -130,7 +127,6 @@ import gregtech.api.enums.TCAspects.TC_AspectStack;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.ToolDictNames;
 import gregtech.api.fluid.GTFluidFactory;
-import gregtech.api.interfaces.IBlockOnWalkOver;
 import gregtech.api.interfaces.IProjectileItem;
 import gregtech.api.interfaces.IToolStats;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -1463,13 +1459,15 @@ public class GTProxy implements IFuelHandler {
             .getCurrentEquippedItem();
         if (item == null) return;
 
-        if (!(item.getItem() instanceof MetaGeneratedTool tool)) return;
+        if (item.getItem() instanceof MetaGeneratedTool tool) {
+            IToolStats stats = tool.getToolStats(item);
+            if (stats == null) return;
 
-        IToolStats stats = tool.getToolStats(item);
-        if (stats == null) return;
-
-        TileEntity tile = event.world.getTileEntity(event.x, event.y, event.z);
-        stats.onBreakBlock(player, event.x, event.y, event.z, event.block, event.blockMetadata, tile, event);
+            TileEntity tile = event.world.getTileEntity(event.x, event.y, event.z);
+            stats.onBreakBlock(player, event.x, event.y, event.z, event.block, event.blockMetadata, tile, event);
+        } else if (item.getItem() instanceof final ItemGTToolbox toolbox) {
+            toolbox.onBlockBreakingEvent(event);
+        }
     }
 
     @SubscribeEvent
@@ -1968,20 +1966,6 @@ public class GTProxy implements IFuelHandler {
         } catch (Exception e) {
             GT_FML_LOGGER
                 .error("Could not register ore (oredict name=" + aEvent.Name + ", item stack=" + aEvent.Ore + ")", e);
-        }
-    }
-
-    @SubscribeEvent
-    public void applyBlockWalkOverEffects(LivingUpdateEvent event) {
-        final EntityLivingBase entity = event.entityLiving;
-        // the server should handle the movement of all entities except the players
-        if (!entity.worldObj.isRemote && entity.onGround && !(entity instanceof EntityPlayerMP)) {
-            int tX = MathHelper.floor_double(entity.posX),
-                tY = MathHelper.floor_double(entity.boundingBox.minY - 0.001F),
-                tZ = MathHelper.floor_double(entity.posZ);
-            Block tBlock = entity.worldObj.getBlock(tX, tY, tZ);
-            if (tBlock instanceof IBlockOnWalkOver)
-                ((IBlockOnWalkOver) tBlock).onWalkOver(entity, entity.worldObj, tX, tY, tZ);
         }
     }
 

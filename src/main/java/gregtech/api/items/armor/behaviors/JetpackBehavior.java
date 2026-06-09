@@ -1,12 +1,9 @@
 package gregtech.api.items.armor.behaviors;
 
-import static gregtech.loaders.ExtraIcons.jetpackAugment;
-
 import java.util.Collections;
 import java.util.Set;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.IIcon;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -28,11 +25,6 @@ public class JetpackBehavior implements IArmorBehavior {
     @Override
     public BehaviorName getName() {
         return BehaviorName.Jetpack;
-    }
-
-    @Override
-    public IIcon getModularArmorTexture() {
-        return jetpackAugment;
     }
 
     @Override

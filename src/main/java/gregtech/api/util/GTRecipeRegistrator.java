@@ -380,13 +380,15 @@ public class GTRecipeRegistrator {
             }
         }
         if (!outputs.isEmpty()) {
-            GTRecipeBuilder recipeBuilder = GTValues.RA.stdBuilder();
-            recipeBuilder.itemInputs(aStack)
-                .itemOutputs(outputs.toArray(new ItemStack[0]))
-                .duration(((int) Math.max(32L, (tAmount / M) * 2L)) * TICKS)
-                .eut(TierEU.RECIPE_LV)
-                .metadata(RECYCLE, isRecycle)
-                .addTo(universalArcFurnace);
+            if (!isNoOpReverseArcSmelting(aStack, outputs)) {
+                GTRecipeBuilder recipeBuilder = GTValues.RA.stdBuilder();
+                recipeBuilder.itemInputs(aStack)
+                    .itemOutputs(outputs.toArray(new ItemStack[0]))
+                    .duration(((int) Math.max(16L, tAmount / M)) * TICKS)
+                    .eut(TierEU.RECIPE_LV)
+                    .metadata(RECYCLE, isRecycle)
+                    .addTo(universalArcFurnace);
+            }
 
             int gasAmount = (int) Math.max(16L, tAmount / M);
             for (Materials gas : getArcSmeltingGases(outputs)) {
@@ -395,6 +397,7 @@ public class GTRecipeRegistrator {
                 if (gasOutputs == null || gasStack == null) continue;
                 GTRecipeBuilder gasRecipeBuilder = GTValues.RA.stdBuilder()
                     .itemInputs(aStack)
+                    .circuit(11)
                     .itemOutputs(gasOutputs)
                     .fluidInputs(gasStack)
                     .duration(gasAmount * TICKS)
@@ -404,6 +407,11 @@ public class GTRecipeRegistrator {
             }
         }
 
+    }
+
+    private static boolean isNoOpReverseArcSmelting(ItemStack input, List<ItemStack> outputs) {
+        return outputs.size() == 1 && GTOreDictUnificator.isInputStackEqual(input, outputs.get(0))
+            && input.stackSize == outputs.get(0).stackSize;
     }
 
     private static Set<Materials> getArcSmeltingGases(List<ItemStack> outputs) {
