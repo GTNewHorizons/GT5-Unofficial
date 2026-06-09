@@ -4,7 +4,6 @@ import static gregtech.GTMod.GT_FML_LOGGER;
 import static gregtech.api.enums.GTValues.B;
 import static gregtech.api.enums.GTValues.D1;
 import static gregtech.api.enums.GTValues.DW;
-import static gregtech.api.enums.GTValues.E;
 import static gregtech.api.enums.GTValues.M;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.GTValues.VN;
@@ -82,6 +81,7 @@ import ic2.api.recipe.RecipeInputItemStack;
 import ic2.api.recipe.RecipeOutput;
 import ic2.api.recipe.Recipes;
 import ic2.core.item.ItemToolbox;
+import it.unimi.dsi.fastutil.chars.Char2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenCustomHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectOpenCustomHashSet;
 
@@ -965,30 +965,26 @@ public class GTModHandler {
         if (recipe == null || recipe.length == 0) return false;
 
         for (byte i = 0; i < recipe.length; i++) {
-            if (recipe[i] instanceof IItemContainer) recipe[i] = ((IItemContainer) recipe[i]).get(1);
-            else if (recipe[i] instanceof Enum) recipe[i] = ((Enum<?>) recipe[i]).name();
+            if (recipe[i] instanceof IItemContainer container) recipe[i] = container.get(1);
+            else if (recipe[i] instanceof Enum<?>enumItem) recipe[i] = enumItem.name();
             else if (!(recipe[i] == null || recipe[i] instanceof ItemStack
                 || recipe[i] instanceof ItemData
                 || recipe[i] instanceof String
-                || recipe[i] instanceof Character)) recipe[i] = recipe[i].toString();
+                || recipe[i] instanceof Character)) {
+                    recipe[i] = recipe[i].toString();
+                }
         }
 
-        StringBuilder shape = new StringBuilder(E);
+        final ArrayList<Object> recipeAsList = new ArrayList<>(Arrays.asList(recipe));
+        final StringBuilder shape = new StringBuilder();
         int idx = 0;
-        if (recipe[idx] instanceof Boolean) {
-            throw new IllegalArgumentException();
-        }
 
-        ArrayList<Object> recipeAsList = new ArrayList<>(Arrays.asList(recipe));
+        while (recipe[idx] instanceof String recipeLine) {
+            if (recipeLine.length() > 3) throw new IllegalArgumentException();
+            shape.append(recipeLine);
+            idx++;
 
-        while (recipe[idx] instanceof String) {
-            StringBuilder s = new StringBuilder((String) recipe[idx++]);
-            shape.append(s);
-            while (s.length() < 3) s.append(" ");
-            if (s.length() > 3) throw new IllegalArgumentException();
-
-            for (char c : s.toString()
-                .toCharArray()) {
+            for (char c : recipeLine.toCharArray()) {
                 switch (c) {
                     case 'b' -> {
                         recipeAsList.add(c);
@@ -1052,11 +1048,8 @@ public class GTModHandler {
 
         recipe = recipeAsList.toArray();
 
-        if (recipe[idx] instanceof Boolean) {
-            idx++;
-        }
-        HashMap<Character, ItemStack> itemStackMap = new HashMap<>();
-        HashMap<Character, ItemData> itemDataMap = new HashMap<>();
+        Char2ObjectOpenHashMap<ItemStack> itemStackMap = new Char2ObjectOpenHashMap<>();
+        Char2ObjectOpenHashMap<ItemData> itemDataMap = new Char2ObjectOpenHashMap<>();
         itemStackMap.put(' ', null);
 
         boolean canRemoveRecipe = true;
@@ -1072,36 +1065,38 @@ public class GTModHandler {
                 }
                 return false;
             }
-            Character chr = (Character) recipe[idx];
-            Object in = recipe[idx + 1];
-            if (in instanceof ItemStack is) {
-                itemStackMap.put(chr, GTUtility.copyOrNull(is));
-                itemDataMap.put(chr, GTOreDictUnificator.getItemData(is));
-            } else if (in instanceof ItemData) {
-                switch (in.toString()) {
+
+            final char chr = (char) recipe[idx];
+            final Object ingredient = recipe[idx + 1];
+
+            if (ingredient instanceof ItemStack itemStack) {
+                itemStackMap.put(chr, GTUtility.copyOrNull(itemStack));
+                itemDataMap.put(chr, GTOreDictUnificator.getItemData(itemStack));
+            } else if (ingredient instanceof ItemData itemData) {
+                switch (itemData.toString()) {
                     case "plankWood" -> itemDataMap.put(chr, new ItemData(Materials.Wood, M));
                     case "stoneNetherrack" -> itemDataMap.put(chr, new ItemData(Materials.Netherrack, M));
                     case "stoneObsidian" -> itemDataMap.put(chr, new ItemData(Materials.Obsidian, M));
                     case "stoneEndstone" -> itemDataMap.put(chr, new ItemData(Materials.Endstone, M));
-                    default -> itemDataMap.put(chr, (ItemData) in);
+                    default -> itemDataMap.put(chr, itemData);
                 }
-                ItemStack stack = GTOreDictUnificator.getFirstOre(in, 1);
+                ItemStack stack = GTOreDictUnificator.getFirstOre(itemData, 1);
                 if (stack == null) canRemoveRecipe = false;
                 else itemStackMap.put(chr, stack);
-            } else if (in instanceof String) {
-                if (in.equals(OreDictNames.craftingChest.toString()))
+            } else if (ingredient instanceof String) {
+                if (ingredient.equals(OreDictNames.craftingChest.toString()))
                     itemDataMap.put(chr, new ItemData(Materials.Wood, M * 8));
-                else if (in.equals(OreDictNames.craftingBook.toString()))
+                else if (ingredient.equals(OreDictNames.craftingBook.toString()))
                     itemDataMap.put(chr, new ItemData(Materials.Paper, M * 3));
-                else if (in.equals(OreDictNames.craftingPiston.toString()))
+                else if (ingredient.equals(OreDictNames.craftingPiston.toString()))
                     itemDataMap.put(chr, new ItemData(Materials.Stone, M * 4, Materials.Wood, M * 3));
-                else if (in.equals(OreDictNames.craftingFurnace.toString()))
+                else if (ingredient.equals(OreDictNames.craftingFurnace.toString()))
                     itemDataMap.put(chr, new ItemData(Materials.Stone, M * 8));
-                else if (in.equals(OreDictNames.craftingIndustrialDiamond.toString()))
+                else if (ingredient.equals(OreDictNames.craftingIndustrialDiamond.toString()))
                     itemDataMap.put(chr, new ItemData(Materials.Diamond, M));
-                else if (in.equals(OreDictNames.craftingAnvil.toString()))
+                else if (ingredient.equals(OreDictNames.craftingAnvil.toString()))
                     itemDataMap.put(chr, new ItemData(Materials.Iron, M * 10));
-                ItemStack stack = GTOreDictUnificator.getFirstOre(in, 1);
+                ItemStack stack = GTOreDictUnificator.getFirstOre(ingredient, 1);
                 if (stack == null) canRemoveRecipe = false;
                 else itemStackMap.put(chr, stack);
             } else {
@@ -1111,24 +1106,27 @@ public class GTModHandler {
 
         if (reversible && result != null) {
             ItemData[] data = new ItemData[9];
-            int x = -1;
+            int i = 0;
             for (char chr : shape.toString()
-                .toCharArray()) data[++x] = itemDataMap.get(chr);
+                .toCharArray()) data[i++] = itemDataMap.get(chr);
             if (GTUtility.arrayContainsNonNull(data)) GTOreDictUnificator.addItemData(result, new ItemData(data));
         }
 
         if (checkForCollisions && canRemoveRecipe) {
             ItemStack[] normalizedRecipe = new ItemStack[9];
-            int x = -1;
+            int i = 0;
             for (char chr : shape.toString()
                 .toCharArray()) {
-                normalizedRecipe[++x] = itemStackMap.get(chr);
-                if (normalizedRecipe[x] != null && Items.feather.getDamage(normalizedRecipe[x]) == WILDCARD)
-                    Items.feather.setDamage(normalizedRecipe[x], 0);
+                normalizedRecipe[i++] = itemStackMap.get(chr);
+                if (normalizedRecipe[i] != null && Items.feather.getDamage(normalizedRecipe[i]) == WILDCARD) {
+                    Items.feather.setDamage(normalizedRecipe[i], 0);
+                }
             }
-            if (onlyAddIfRecipeForOutputAlreadyExists || !buffered)
+            if (onlyAddIfRecipeForOutputAlreadyExists || !buffered) {
                 removedExistingRecipe = removeRecipe(normalizedRecipe) != null;
-            else removeRecipeDelayed(normalizedRecipe);
+            } else {
+                removeRecipeDelayed(normalizedRecipe);
+            }
         }
 
         if (result == null || result.stackSize <= 0) return false;
@@ -1136,12 +1134,15 @@ public class GTModHandler {
         if (removeDuplicatesByOutput || removeDuplicatesByOutputAndNBT
             || removeShapedDuplicatesByOutput
             || removeNativeRecipeDuplicates) {
-            if (onlyAddIfRecipeForOutputAlreadyExists || !buffered) removedExistingRecipe = removeRecipeByOutput(
-                result,
-                !removeDuplicatesByOutputAndNBT,
-                removeShapedDuplicatesByOutput,
-                removeNativeRecipeDuplicates) || removedExistingRecipe;
-            else removeRecipeByOutputDelayed(result);
+            if (onlyAddIfRecipeForOutputAlreadyExists || !buffered) {
+                removedExistingRecipe = removeRecipeByOutput(
+                    result,
+                    !removeDuplicatesByOutputAndNBT,
+                    removeShapedDuplicatesByOutput,
+                    removeNativeRecipeDuplicates) || removedExistingRecipe;
+            } else {
+                removeRecipeByOutputDelayed(result);
+            }
         }
 
         if (Items.feather.getDamage(result) == WILDCARD || Items.feather.getDamage(result) < 0)
@@ -1150,22 +1151,15 @@ public class GTModHandler {
         GTUtility.updateItemStack(result);
 
         if (removedExistingRecipe || !onlyAddIfRecipeForOutputAlreadyExists) {
-            if (sBufferCraftingRecipes && buffered) sBufferRecipeList.add(
-                new GTShapedRecipe(
-                    GTUtility.copyOrNull(result),
-                    removable,
-                    keepNBT,
-                    enchantmentsAdded,
-                    enchantmentLevelsAdded,
-                    recipe).setMirrored(mirrored));
-            else GameRegistry.addRecipe(
-                new GTShapedRecipe(
-                    GTUtility.copyOrNull(result),
-                    removable,
-                    keepNBT,
-                    enchantmentsAdded,
-                    enchantmentLevelsAdded,
-                    recipe).setMirrored(mirrored));
+            if (sBufferCraftingRecipes && buffered) {
+                sBufferRecipeList.add(
+                    new GTShapedRecipe(result, removable, keepNBT, enchantmentsAdded, enchantmentLevelsAdded, recipe)
+                        .setMirrored(mirrored));
+            } else {
+                GameRegistry.addRecipe(
+                    new GTShapedRecipe(result, removable, keepNBT, enchantmentsAdded, enchantmentLevelsAdded, recipe)
+                        .setMirrored(mirrored));
+            }
         }
         return true;
     }
