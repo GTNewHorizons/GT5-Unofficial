@@ -104,6 +104,8 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
     private int randomFactor;
     private int randomGoal;
     private boolean isApproachingFromHigher;
+    private static final int RANDOM_MIN = 700;
+    private static final int RANDOM_MAX = 1300;
 
     private int maxFluidUse = 200;
 
@@ -173,7 +175,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
     private void randomWalk() {
         if (getDistanceFromGoal() <= 0) {
             do {
-                randomGoal = getBaseMetaTileEntity().getRandomNumber(1001) + 500;
+                randomGoal = getBaseMetaTileEntity().getRandomNumber(RANDOM_MAX - RANDOM_MIN + 1) + RANDOM_MIN;
             } while (Math.abs(randomFactor - randomGoal) <= 50);
             isApproachingFromHigher = randomFactor > randomGoal;
         }
@@ -324,7 +326,11 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
             .addSeparator()
             .addInfo(StatCollector.translateToLocal("gt.multiblock.NeutralizationEngine.toxic_residue.1"))
             .addInfo(StatCollector.translateToLocal("gt.multiblock.NeutralizationEngine.toxic_residue.2"))
-            .addInfo(StatCollector.translateToLocal("gt.multiblock.NeutralizationEngine.toxic_residue.3"))
+            .addInfo(
+                StatCollector.translateToLocalFormatted(
+                    "gt.multiblock.NeutralizationEngine.toxic_residue.3",
+                    (float) RANDOM_MIN / 1000,
+                    (float) RANDOM_MAX / 1000))
             .addInfo(StatCollector.translateToLocal("gt.multiblock.NeutralizationEngine.toxic_residue.4"))
             .addInfo(StatCollector.translateToLocal("gt.multiblock.NeutralizationEngine.toxic_residue.5"))
             .addInfo(StatCollector.translateToLocal("gt.multiblock.NeutralizationEngine.toxic_residue.6"))
