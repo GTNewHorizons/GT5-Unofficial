@@ -477,7 +477,7 @@ public class RecipeMapBackend {
                     .filter(recipe -> recipe.mCanBeBuffered),
                 GTStreamUtil.ofSupplier(() -> cacheMap[(hash(items, fluids)) % CACHE_MAP_SIZE])
                     .filter(Objects::nonNull),
-                lookupCandidateStream(items, fluids))
+                trieLookupCandidateStream(items, fluids))
                 .flatMap(Function.identity())
                 .distinct()
                 .filter(recipe -> filterFindRecipe(recipe, items, fluids, specialSlot, dontCheckStackSizes))
@@ -492,7 +492,7 @@ public class RecipeMapBackend {
         return RecipeLookupValidator.shouldValidateLookup();
     }
 
-    protected Stream<GTRecipe> lookupCandidateStream(@Nullable ItemStack @NotNull [] items,
+    protected Stream<GTRecipe> trieLookupCandidateStream(@Nullable ItemStack @NotNull [] items,
         @Nullable FluidStack @NotNull [] fluids) {
         List<GTRecipeLookupIngredient> ingredients = new ArrayList<>();
         Consumer<GTRecipeLookupIngredient> adder = ingredient -> addLookupIngredient(ingredients, ingredient);

@@ -1109,7 +1109,7 @@ class RecipeMapBackendLookupTest {
         }
 
         @Override
-        protected Stream<GTRecipe> lookupCandidateStream(@Nullable ItemStack @NotNull [] items,
+        protected Stream<GTRecipe> trieLookupCandidateStream(@Nullable ItemStack @NotNull [] items,
             @Nullable FluidStack @NotNull [] fluids) {
             List<GTRecipeLookupIngredient> ingredients = new ArrayList<>();
             Consumer<GTRecipeLookupIngredient> adder = ingredients::add;
@@ -1171,7 +1171,7 @@ class RecipeMapBackendLookupTest {
         }
 
         @Override
-        protected Stream<GTRecipe> lookupCandidateStream(@Nullable ItemStack @NotNull [] items,
+        protected Stream<GTRecipe> trieLookupCandidateStream(@Nullable ItemStack @NotNull [] items,
             @Nullable FluidStack @NotNull [] fluids) {
             return Stream.of(candidates);
         }
@@ -1200,7 +1200,7 @@ class RecipeMapBackendLookupTest {
         }
 
         @Override
-        protected Stream<GTRecipe> lookupCandidateStream(@Nullable ItemStack @NotNull [] items,
+        protected Stream<GTRecipe> trieLookupCandidateStream(@Nullable ItemStack @NotNull [] items,
             @Nullable FluidStack @NotNull [] fluids) {
             if (items.length > 0 && items[0] != null && items[0].getItemDamage() == OreDictionary.WILDCARD_VALUE) {
                 return Stream.of(wildcardRecipe);
@@ -1231,7 +1231,7 @@ class RecipeMapBackendLookupTest {
         }
 
         @Override
-        protected Stream<GTRecipe> lookupCandidateStream(@Nullable ItemStack @NotNull [] items,
+        protected Stream<GTRecipe> trieLookupCandidateStream(@Nullable ItemStack @NotNull [] items,
             @Nullable FluidStack @NotNull [] fluids) {
             lookupCandidateStreamCalls++;
             return Stream.of(candidates);
@@ -1262,7 +1262,7 @@ class RecipeMapBackendLookupTest {
         }
 
         @Override
-        protected Stream<GTRecipe> lookupCandidateStream(@Nullable ItemStack @NotNull [] items,
+        protected Stream<GTRecipe> trieLookupCandidateStream(@Nullable ItemStack @NotNull [] items,
             @Nullable FluidStack @NotNull [] fluids) {
             return Stream.empty();
         }
@@ -1278,7 +1278,7 @@ class RecipeMapBackendLookupTest {
         }
 
         @Override
-        protected Stream<GTRecipe> lookupCandidateStream(@Nullable ItemStack @NotNull [] items,
+        protected Stream<GTRecipe> trieLookupCandidateStream(@Nullable ItemStack @NotNull [] items,
             @Nullable FluidStack @NotNull [] fluids) {
             return Stream.of(recipe);
         }
@@ -1291,7 +1291,7 @@ class RecipeMapBackendLookupTest {
         }
 
         @Override
-        protected Stream<GTRecipe> lookupCandidateStream(@Nullable ItemStack @NotNull [] items,
+        protected Stream<GTRecipe> trieLookupCandidateStream(@Nullable ItemStack @NotNull [] items,
             @Nullable FluidStack @NotNull [] fluids) {
             return Stream.empty();
         }
@@ -1318,7 +1318,7 @@ class RecipeMapBackendLookupTest {
         }
 
         @Override
-        protected Stream<GTRecipe> lookupCandidateStream(@Nullable ItemStack @NotNull [] items,
+        protected Stream<GTRecipe> trieLookupCandidateStream(@Nullable ItemStack @NotNull [] items,
             @Nullable FluidStack @NotNull [] fluids) {
             return Stream.concat(
                 Stream.of(recipe),
@@ -1347,7 +1347,7 @@ class RecipeMapBackendLookupTest {
         }
 
         @Override
-        protected Stream<GTRecipe> lookupCandidateStream(@Nullable ItemStack @NotNull [] items,
+        protected Stream<GTRecipe> trieLookupCandidateStream(@Nullable ItemStack @NotNull [] items,
             @Nullable FluidStack @NotNull [] fluids) {
             return Stream.of(recipe);
         }
