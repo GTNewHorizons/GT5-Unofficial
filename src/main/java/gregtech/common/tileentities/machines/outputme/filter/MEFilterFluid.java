@@ -5,6 +5,8 @@ import java.util.HashSet;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import appeng.api.storage.data.IAEFluidStack;
@@ -35,7 +37,15 @@ public class MEFilterFluid extends MEFilterBase<IAEFluidStack, GTUtility.FluidId
         if (lockedFluidsTag instanceof NBTTagList lockedFluidsList) {
             for (int i = 0; i < lockedFluidsList.tagCount(); i++) {
                 NBTTagCompound fluidTag = lockedFluidsList.getCompoundTagAt(i);
-                lockedElements.add(GTUtility.FluidId.create(GTUtility.loadFluid(fluidTag)));
+                if (fluidTag.hasKey("fluid")) {
+                    String name = fluidTag.getString("fluid");
+                    Fluid fluid = FluidRegistry.getFluid(name);
+                    if (fluid != null) {
+                        lockedElements.add(GTUtility.FluidId.create(fluid));
+                        continue;
+                    }
+                }
+                lockedElements.add(GTUtility.FluidId.create(fluidTag));
             }
         }
     }
@@ -45,9 +55,7 @@ public class MEFilterFluid extends MEFilterBase<IAEFluidStack, GTUtility.FluidId
         NBTTagList lockedFluidsTag = new NBTTagList();
 
         for (GTUtility.FluidId fluid : lockedElements) {
-            NBTTagCompound fluidTag = new NBTTagCompound();
-            fluid.getFluidStack()
-                .writeToNBT(fluidTag);
+            NBTTagCompound fluidTag = fluid.writeToNBT();
             lockedFluidsTag.appendTag(fluidTag);
         }
 
