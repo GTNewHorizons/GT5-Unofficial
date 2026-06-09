@@ -27,7 +27,6 @@ import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTAnimatedColor;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.StringUtils;
 import gregtech.common.config.Client;
@@ -214,19 +213,6 @@ public class BaseItemComponent extends Item {
         return true;
     }
 
-    public static int getMaterialCustomColor(Material material) {
-        switch (material.getRGBA()[3]) {
-            case 2:
-                // Mild glow pulse, synced to the shared client-tick animation clock.
-                return GTAnimatedColor.getGlowColor(material.getRGBA());
-            case 3:
-                // Rainbow hue cycle, synced to the shared client-tick animation clock.
-                return GTAnimatedColor.getRainbowColor();
-            default:
-                return Utils.rgbtoHexValue(255, 255, 255);
-        }
-    }
-
     @Override
     public int getColorFromItemStack(final ItemStack stack, final int renderPass) {
 
@@ -251,7 +237,8 @@ public class BaseItemComponent extends Item {
             if (this.componentMaterial.getRGBA()[3] <= 1) {
                 return this.componentColour;
             } else {
-                return getMaterialCustomColor(this.componentMaterial);
+                // Animated materials ship baked animated textures; render them untinted.
+                return Utils.rgbtoHexValue(255, 255, 255);
             }
 
         } catch (Exception ignored) {}

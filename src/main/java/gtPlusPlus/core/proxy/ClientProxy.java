@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.RenderFireball;
+import net.minecraft.client.resources.IReloadableResourceManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
@@ -35,8 +36,8 @@ import gtPlusPlus.core.entity.monster.EntitySickBlaze;
 import gtPlusPlus.core.entity.monster.EntityStaballoyConstruct;
 import gtPlusPlus.core.entity.projectile.EntityLightningAttack;
 import gtPlusPlus.core.entity.projectile.EntityToxinballSmall;
+import gtPlusPlus.core.handler.events.AnimatedBlockTextureHandler;
 import gtPlusPlus.core.handler.events.MolecularTransformerTooltipNotice;
-import gtPlusPlus.core.handler.events.TextureBlockMaterialTickHandler;
 import gtPlusPlus.core.tileentities.general.TileEntityDecayablesChest;
 import gtPlusPlus.xmod.gregtech.common.render.FlaskRenderer;
 import gtPlusPlus.xmod.gregtech.common.render.MachineBlockRenderer;
@@ -49,9 +50,12 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerBlockHandler(new MachineBlockRenderer());
         new FlaskRenderer();
         MinecraftForge.EVENT_BUS.register(PowerGogglesHudHandler.getInstance());
+        AnimatedBlockTextureHandler animatedBlockTextureHandler = new AnimatedBlockTextureHandler();
         FMLCommonHandler.instance()
             .bus()
-            .register(new TextureBlockMaterialTickHandler());
+            .register(animatedBlockTextureHandler);
+        ((IReloadableResourceManager) Minecraft.getMinecraft()
+            .getResourceManager()).registerReloadListener(animatedBlockTextureHandler);
         PowerGogglesKeybindHandler.init();
         if (Mods.AdvancedSolarPanel.isModLoaded()) {
             MinecraftForge.EVENT_BUS.register(new MolecularTransformerTooltipNotice());
