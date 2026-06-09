@@ -5,6 +5,7 @@ import static gregtech.api.enums.Mods.GTNHIntergalactic;
 import static gregtech.api.enums.Mods.GTNHLanthanides;
 import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.GregTech;
+import static gregtech.api.enums.Mods.KubaTech;
 import static tectech.Reference.MODID;
 
 import java.util.stream.Collectors;
@@ -2371,6 +2372,62 @@ public final class GTGuiTextures {
         .build();
 
     // endregion machine modes
+
+    // region kubatech
+    public static final UITexture OVERLAY_EEC_WEAPON_PRESERVATION_ON = UITexture.builder()
+        .canApplyTheme()
+        .location(KubaTech.ID, "gui/overlay_button/machine_mode_eec_weapon_preservation_on")
+        .build();
+    public static final UITexture OVERLAY_EEC_WEAPON_PRESERVATION_OFF = UITexture.builder()
+        .canApplyTheme()
+        .location(KubaTech.ID, "gui/overlay_button/machine_mode_eec_weapon_preservation_off")
+        .build();
+    public static final UITexture OVERLAY_EEC_WEAPON_CYCLING_ON = UITexture.builder()
+        .canApplyTheme()
+        .location(KubaTech.ID, "gui/overlay_button/machine_mode_eec_weapon_cycling_on")
+        .build();
+    public static final UITexture OVERLAY_EEC_WEAPON_CYCLING_OFF = UITexture.builder()
+        .canApplyTheme()
+        .location(KubaTech.ID, "gui/overlay_button/machine_mode_eec_weapon_cycling_off")
+        .build();
+    public static final UITexture OVERLAY_EEC_VOID_DAMAGED_OFF = UITexture.builder()
+        .canApplyTheme()
+        .location(KubaTech.ID, "gui/overlay_button/machine_mode_eec_void_damaged_and_enchanted_off")
+        .build();
+    public static final UITexture OVERLAY_EEC_SPAWN_INFERNALS_ON = UITexture.builder()
+        .canApplyTheme()
+        .location(KubaTech.ID, "gui/overlay_button/machine_mode_eec_spawn_infernals_on")
+        .build();
+    public static final UITexture OVERLAY_EEC_SPAWN_INFERNALS_OFF = UITexture.builder()
+        .canApplyTheme()
+        .location(KubaTech.ID, "gui/overlay_button/machine_mode_eec_spawn_infernals_off")
+        .build();
+    public static final UITexture OVERLAY_EEC_RITUAL_MODE_ON = UITexture.builder()
+        .canApplyTheme()
+        .location(KubaTech.ID, "gui/overlay_button/machine_mode_eec_ritual_mode_on")
+        .build();
+    public static final UITexture OVERLAY_EEC_RITUAL_MODE_OFF = UITexture.builder()
+        .canApplyTheme()
+        .location(KubaTech.ID, "gui/overlay_button/machine_mode_eec_ritual_mode_off")
+        .build();
+    public static final UITexture SLOT_EEC_SPAWNER = UITexture.builder()
+        .canApplyTheme()
+        .location(KubaTech.ID, "gui/slot/gray_spawner")
+        .build();
+    public static final UITexture SLOT_EEC_SWORD = UITexture.builder()
+        .canApplyTheme()
+        .location(KubaTech.ID, "gui/slot/gray_sword")
+        .build();
+    public static final UITexture OVERLAY_EIG_INVENTORY = UITexture.builder()
+        .canApplyTheme()
+        .location(KubaTech.ID, "gui/overlay_button/greenhouse_inventory")
+        .build();
+    public static final UITexture OVERLAY_EIG_INVENTORY_FULL_WARNING = UITexture.builder()
+        .canApplyTheme()
+        .location(KubaTech.ID, "gui/icons/inventory_full_warning")
+        .build();
+    // endregion kubatech
+
     /**
      * Creates texture of full image. Theme of GUI does not affect how the texture is drawn.
      *
