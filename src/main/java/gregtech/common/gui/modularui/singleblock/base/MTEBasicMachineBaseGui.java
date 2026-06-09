@@ -249,12 +249,10 @@ public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> extends MTETiered
         }
         return new ItemSlot().marginRight(9)
             .slot(
-                new ModularSlot(machine.inventoryHandler, machine.getSpecialSlotIndex())
-                    .changeListener(
-                        (newItem, onlyAmountChanged, client, init) -> {
-                            if (!client && !init) baseMetaTileEntity.markInventoryBeenModified();
-                        })
-                    .singletonSlotGroup(1000))
+                new ModularSlot(machine.inventoryHandler, machine.getSpecialSlotIndex()).changeListener(
+                    (newItem, onlyAmountChanged, client, init) -> {
+                        if (!client && !init) baseMetaTileEntity.markInventoryBeenModified();
+                    }))
             .backgroundOverlay(
                 properties.useSpecialSlot ? slotOverlayFunction.apply(0, false, false, true) : IDrawable.NONE)
             .tooltip(

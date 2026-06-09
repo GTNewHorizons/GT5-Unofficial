@@ -12,7 +12,7 @@ public class JumpBoostBehavior implements IArmorBehavior {
 
     private final float boost;
 
-    protected JumpBoostBehavior(float boost) {
+    public JumpBoostBehavior(float boost) {
         this.boost = boost;
     }
 

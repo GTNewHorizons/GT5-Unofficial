@@ -9,6 +9,7 @@ import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.enums.TickTime.TICK;
 import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeConstants.ADDITIVE_AMOUNT;
+import static gregtech.api.util.GTRecipeConstants.COMPRESSION_TIER;
 import static gregtech.api.util.GTRecipeConstants.FUEL_VALUE;
 import static gregtech.api.util.GTRecipeConstants.GLASS;
 import static gregtech.api.util.GTRecipeConstants.NANO_FORGE_TIER;
@@ -90,7 +91,6 @@ import gregtech.api.recipe.maps.ReplicatorBackend;
 import gregtech.api.recipe.maps.SpaceProjectFrontend;
 import gregtech.api.recipe.maps.TranscendentPlasmaMixerFrontend;
 import gregtech.api.recipe.maps.UnpackagerBackend;
-import gregtech.api.recipe.metadata.CompressionTierKey;
 import gregtech.api.recipe.metadata.NanochipAssemblyMatrixTierKey;
 import gregtech.api.recipe.metadata.PCBFactoryTierKey;
 import gregtech.api.recipe.metadata.PurificationPlantBaseChanceKey;
@@ -190,8 +190,7 @@ public final class RecipeMaps {
         .progressBarSteam(GTUITextures.PROGRESSBAR_COMPRESS_STEAM)
         .progressBarTextureSteamMUI2(GTGuiTextures.PROGRESSBAR_COMPRESS_STEAM)
         .neiRecipeComparator(
-            Comparator
-                .<GTRecipe, Integer>comparing(recipe -> recipe.getMetadataOrDefault(CompressionTierKey.INSTANCE, 0))
+            Comparator.<GTRecipe, Integer>comparing(recipe -> recipe.getMetadataOrDefault(COMPRESSION_TIER, 0))
                 .thenComparing(GTRecipe::compareTo))
         // Avoid steam machine being used as handler icon
         .neiHandlerInfo(builder -> builder.setDisplayStack(ItemList.Machine_LV_Compressor.get(1)))
@@ -209,8 +208,7 @@ public final class RecipeMaps {
         .progressBarMUI2(GTGuiTextures.PROGRESSBAR_COMPRESS)
         .neiHandlerInfo(builder -> builder.setDisplayStack(getModItem(Avaritia.ID, "Singularity", 1L, 0)))
         .neiRecipeComparator(
-            Comparator
-                .<GTRecipe, Integer>comparing(recipe -> recipe.getMetadataOrDefault(CompressionTierKey.INSTANCE, 0))
+            Comparator.<GTRecipe, Integer>comparing(recipe -> recipe.getMetadataOrDefault(COMPRESSION_TIER, 0))
                 .thenComparing(GTRecipe::compareTo))
         .build();
     public static final RecipeMap<RecipeMapBackend> extractorRecipes = RecipeMapBuilder.of("gt.recipe.extractor")

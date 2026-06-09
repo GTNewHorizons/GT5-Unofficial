@@ -1657,6 +1657,9 @@ public class WerkstoffLoader {
         if (orePrefixes == OrePrefixes.sheetmetal) {
             return new ItemStack(GregTechAPI.sBlockSheetmetalBW, amount, werkstoff.getmID());
         }
+        if (orePrefixes == OrePrefixes.frameGt) {
+            return new ItemStack(GregTechAPI.sBlockFramesBW, amount, werkstoff.getmID());
+        }
 
         if (WerkstoffLoader.items.get(orePrefixes) == null) {
             return null;
