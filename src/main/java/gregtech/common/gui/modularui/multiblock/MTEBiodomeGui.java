@@ -191,7 +191,7 @@ public class MTEBiodomeGui extends MTEMultiBlockBaseGui<MTEBiodome> {
                         new FluidDisplayWidget().background(IDrawable.EMPTY)
                             .displayAmount(false)
                             .widgetTheme(GTWidgetThemes.BACKGROUND_TERMINAL)
-                            .fluid(fluidStack)
+                            .value(fluidStack)
                             .size(DISPLAY_ROW_HEIGHT - 1)
                             .marginRight(2))
                     .child(

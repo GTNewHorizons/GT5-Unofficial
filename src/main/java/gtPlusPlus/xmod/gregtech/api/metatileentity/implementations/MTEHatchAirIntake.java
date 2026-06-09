@@ -16,7 +16,6 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.common.tileentities.machines.multi.MTEBiodome;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.Utils;
-import toxiceverglades.dimension.DimensionEverglades;
 
 @IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchAirIntake extends MTEHatchFluidGenerator implements IBiodomeCompatible {
