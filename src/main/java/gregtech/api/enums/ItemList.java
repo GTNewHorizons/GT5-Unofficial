@@ -2768,6 +2768,9 @@ public enum ItemList implements IItemContainer {
     UHTResistantMesh,
     TaHfNanoparticles,
     NtNanoparticles,
+    DroneCase,
+    Femtocontroller,
+    FuelPellet,
 
     PrecisionFieldSyncCasing,
     MagneticAnchorCasing,
