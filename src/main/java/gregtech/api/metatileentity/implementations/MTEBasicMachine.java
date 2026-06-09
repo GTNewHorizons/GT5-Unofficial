@@ -117,7 +117,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank
     public final ItemStack[] mOutputItems;
     public final int mInputSlotCount;
     public int mAmperage;
-    public boolean mAllowInputFromOutputSide = false, mFluidTransfer = false, mItemTransfer = false,
+    public boolean mAllowInputFromOutputSide = true, mFluidTransfer = false, mItemTransfer = false,
         mStuttering = false, mCharge = false, mDecharge = false;
     private int errorDisplayID;
     public boolean mDisableFilter = true;
