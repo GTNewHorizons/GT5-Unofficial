@@ -522,7 +522,7 @@ public final class RecipeLookupValidator {
 
     private ValidationLookupResult lookupMatches(RecipeMapBackend backend, ItemStack[] items, FluidStack[] fluids,
         @Nullable ItemStack specialSlot) {
-        Iterator<GTRecipe> candidates = backend.trieLookupCandidateStream(items, fluids)
+        Iterator<GTRecipe> candidates = backend.lookupCandidateStream(items, fluids)
             .iterator();
         Predicate<GTRecipe> distinct = RecipeMapBackend.distinctByIdentity();
         List<GTRecipe> matches = new ArrayList<>();
