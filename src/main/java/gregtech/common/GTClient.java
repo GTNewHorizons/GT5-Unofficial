@@ -17,18 +17,19 @@ import java.util.TreeSet;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityClientPlayerMP;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.resources.IReloadableResourceManager;
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.client.resources.IResourceManagerReloadListener;
 import net.minecraft.client.settings.KeyBinding;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.MovementInput;
+import net.minecraft.util.MovementInputFromOptions;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraftforge.client.ClientCommandHandler;
@@ -36,7 +37,6 @@ import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.client.event.sound.SoundSetupEvent;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.world.ChunkEvent;
 import net.minecraftforge.event.world.WorldEvent;
@@ -60,6 +60,8 @@ import cpw.mods.fml.common.gameevent.PlayerEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.ClientTickEvent;
 import cpw.mods.fml.common.network.FMLNetworkEvent;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
@@ -73,8 +75,8 @@ import gregtech.api.gui.modularui.FallbackableSteamTexture;
 import gregtech.api.hazards.Hazard;
 import gregtech.api.hazards.HazardProtection;
 import gregtech.api.hazards.HazardProtectionTooltip;
-import gregtech.api.interfaces.IBlockOnWalkOver;
 import gregtech.api.interfaces.IToolStats;
+import gregtech.api.interfaces.IUpdatePlayerMovement;
 import gregtech.api.items.CircuitComponentFakeItem;
 import gregtech.api.items.MetaGeneratedItem;
 import gregtech.api.items.MetaGeneratedTool;
@@ -171,6 +173,9 @@ public class GTClient extends GTProxy {
     private boolean mFirstTick = false;
     private int mReloadCount;
     private float renderTickTime;
+
+    @SideOnly(Side.CLIENT)
+    private static MovementInput manualInputCheck;
 
     public GTClient() {
         mAnimationTick = 0L;
@@ -412,20 +417,21 @@ public class GTClient extends GTProxy {
         Textures.BlockIcons.cleanup();
     }
 
-    @Override
-    @SubscribeEvent
-    public void applyBlockWalkOverEffects(LivingEvent.LivingUpdateEvent event) {
-        final EntityLivingBase entity = event.entityLiving;
-        // the player should handle its own movement, rest is handled by the server
-        if (entity instanceof EntityClientPlayerMP && entity.onGround) {
-            int tX = MathHelper.floor_double(entity.posX),
-                tY = MathHelper.floor_double(entity.boundingBox.minY - 0.001F),
-                tZ = MathHelper.floor_double(entity.posZ);
-            Block tBlock = entity.worldObj.getBlock(tX, tY, tZ);
-            if (tBlock instanceof IBlockOnWalkOver)
-                ((IBlockOnWalkOver) tBlock).onWalkOver(entity, entity.worldObj, tX, tY, tZ);
-        } else {
-            super.applyBlockWalkOverEffects(event);
+    @SideOnly(Side.CLIENT)
+    private static void speedupPlayer(TickEvent.PlayerTickEvent event) {
+        EntityPlayerSP player = (EntityPlayerSP) event.player;
+        Block below = player.worldObj.getBlock(
+            MathHelper.floor_double(player.posX),
+            MathHelper.floor_double(player.posY) - 2,
+            MathHelper.floor_double(player.posZ));
+        if (manualInputCheck == null) {
+            manualInputCheck = new MovementInputFromOptions(Minecraft.getMinecraft().gameSettings);
+        }
+        if (below instanceof IUpdatePlayerMovement walkedOverBlock) {
+            manualInputCheck.updatePlayerMoveState();
+            if (manualInputCheck.moveForward != 0 || manualInputCheck.moveStrafe != 0) {
+                walkedOverBlock.updatePlayerMovement(player);
+            }
         }
     }
 
@@ -457,8 +463,13 @@ public class GTClient extends GTProxy {
     }
 
     @SubscribeEvent
+    @SideOnly(Side.CLIENT)
     public void onPlayerTickEventClient(TickEvent.PlayerTickEvent event) {
-        if ((event.side.isClient()) && (event.phase == TickEvent.Phase.END) && (!event.player.isDead)) {
+        if (!event.side.isClient()) return;
+        if (event.phase == TickEvent.Phase.START && event.player.onGround && event.player instanceof EntityPlayerSP) {
+            speedupPlayer(event);
+        }
+        if ((event.phase == TickEvent.Phase.END) && (!event.player.isDead)) {
             if (mFirstTick) {
                 onPlayerFirstTick();
             }
