@@ -142,7 +142,7 @@ public class MTELargeTurbineSteam extends MTELargeTurbineBase {
 
         tEU = totalFlow;
         int waterToOutput = condenseSteam(totalFlow);
-        addOutput(GTModHandler.getDistilledWater(waterToOutput));
+        addOutputPartial(GTModHandler.getDistilledWater(waterToOutput));
 
         if (totalFlow == GTUtility.safeInt((long) realOptFlow)) {
             tEU = GTUtility.safeInt(
