@@ -7,7 +7,19 @@ import static gregtech.api.util.GTRecipeBuilder.handleInvalidRecipeLowItems;
 import static gregtech.api.util.GTRecipeBuilder.handleRecipeCollision;
 import static gregtech.api.util.GTUtility.areStacksEqualOrNull;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.IdentityHashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import java.util.Spliterator;
+import java.util.Spliterators;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -40,7 +52,11 @@ import gregtech.api.recipe.lookup.GTOreDictLookupIngredient;
 import gregtech.api.recipe.lookup.GTRecipeLookup;
 import gregtech.api.recipe.lookup.GTRecipeLookupBuilder;
 import gregtech.api.recipe.lookup.GTRecipeLookupIngredient;
-import gregtech.api.util.*;
+import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTRecipeBuilder;
+import gregtech.api.util.GTStreamUtil;
+import gregtech.api.util.MethodsReturnNonnullByDefault;
 
 /**
  * Responsible for recipe addition / search for recipemap.
