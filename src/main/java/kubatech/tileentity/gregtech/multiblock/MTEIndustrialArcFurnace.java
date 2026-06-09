@@ -1046,11 +1046,6 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
     }
 
     @Override
-    protected boolean useMui2() {
-        return true;
-    }
-
-    @Override
     protected @NotNull String[] getCreditsText() {
         return new String[] {
             translateToLocalFormatted("kubatech.gui.tooltip.contributors.added", GTAuthors.AuthorKuba),

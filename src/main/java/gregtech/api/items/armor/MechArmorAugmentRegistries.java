@@ -391,7 +391,7 @@ public class MechArmorAugmentRegistries {
             .setId("NightVision")
             .setItemId("augmentnightvision")
             .fitsInto(ArmorType.Helmet)
-            .setTexture(() -> nightVisionAugment)
+            .setTexture(ArmorType.Helmet, () -> nightVisionAugment)
             .providesBehaviors(NightVisionBehavior.INSTANCE)
             .setCategory(AugmentCategory.Utility)
             .setRarity(EnumRarity.common)
@@ -400,7 +400,7 @@ public class MechArmorAugmentRegistries {
             .setId("CreativeFlight")
             .setItemId("augmentcreativeflight")
             .fitsInto(ArmorType.Chestplate)
-            .setTexture(() -> creativeFlightAugment)
+            .setTexture(ArmorType.Chestplate, () -> creativeFlightAugment)
             .providesBehaviors(CreativeFlightBehavior.INSTANCE)
             .incompatibleBehaviors(BehaviorName.Jetpack)
             .setCategory(AugmentCategory.Movement)
@@ -411,7 +411,7 @@ public class MechArmorAugmentRegistries {
             .setId("Jetpack")
             .setItemId("augmentjetpack")
             .fitsInto(ArmorType.Chestplate)
-            .setTexture(() -> jetpackAugment)
+            .setTexture(ArmorType.Chestplate, () -> jetpackAugment)
             .providesBehaviors(JetpackBehavior.INSTANCE, JetpackHoverBehavior.INSTANCE)
             .incompatibleBehaviors(BehaviorName.CreativeFlight)
             .setCategory(AugmentCategory.Movement)
@@ -449,7 +449,7 @@ public class MechArmorAugmentRegistries {
             .setId("GogglesOfRevealing")
             .setItemId("augmentgogglesofrevealing")
             .fitsInto(ArmorType.Helmet)
-            .setTexture(() -> revealingAugment)
+            .setTexture(ArmorType.Helmet, () -> revealingAugment)
             .providesBehaviors(GogglesOfRevealingBehavior.INSTANCE, new VisDiscountBehavior(7))
             .setCategory(AugmentCategory.Utility)
             .setRarity(EnumRarity.uncommon)
@@ -535,7 +535,7 @@ public class MechArmorAugmentRegistries {
             .setId("ForceField")
             .setItemId("augmentforcefield")
             .fitsInto(ArmorType.Chestplate)
-            .setTexture(() ->forceFieldAugment)
+            .setTexture(ArmorType.Chestplate,() ->forceFieldAugment)
             .providesBehaviors(ForceFieldBehavior.INSTANCE)
             .setMinimumCore(2)
             .setCategory(AugmentCategory.Protection)
@@ -555,7 +555,7 @@ public class MechArmorAugmentRegistries {
             .setId("WaterBreathing")
             .setItemId("augmentwaterbreathing")
             .fitsInto(ArmorType.Helmet)
-            .setTexture(() -> rebreatherAugment)
+            .setTexture(ArmorType.Helmet, () -> rebreatherAugment)
             .providesBehaviors(WaterBreathingBehavior.INSTANCE)
             .setCategory(AugmentCategory.Protection)
             .setRarity(EnumRarity.uncommon)
@@ -573,9 +573,21 @@ public class MechArmorAugmentRegistries {
             .setId("HoloInventory")
             .setItemId("augmentholoinventory")
             .providesBehaviors(HoloInventoryBehavior.INSTANCE)
-            .setTexture(() -> holoInventoryAugment)
+            .setTexture(ArmorType.Helmet,() -> holoInventoryAugment)
             .setCategory(AugmentCategory.Utility)
             .setRarity(EnumRarity.uncommon)
+        ),
+        TravelersBoots(ItemList.Augment_Travelers, new AugmentBuilder()
+            .setId("Travelers")
+            .setItemId("augmenttravelers")
+            .fitsInto(ArmorType.Boots)
+            .providesBehaviors(new JumpBoostBehavior(0.6F),
+                new SpeedBoostBehavior(0.15F),
+                StepAssistBehavior.INSTANCE,
+                new VisDiscountBehavior(4))
+            .setCategory(AugmentCategory.Movement)
+            .setMinimumCore(0)
+            .setRarity(EnumRarity.common)
         );
         // spotless:on
 
@@ -641,8 +653,8 @@ public class MechArmorAugmentRegistries {
             return this.builder.getIncompatibleBehaviors();
         }
 
-        public IIcon getTexture() {
-            return this.builder.getTexture();
+        public IIcon getTexture(ArmorType armorType) {
+            return this.builder.getTexture(armorType);
         }
 
         public AugmentCategory getCategory() {
