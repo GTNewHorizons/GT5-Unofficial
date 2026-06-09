@@ -5,6 +5,7 @@ import net.minecraft.item.ItemStack;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
+import gregtech.api.recipe.OreRecipeRegistrationGuard;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipeRegistrator;
 import gregtech.api.util.GTUtility;
@@ -18,6 +19,9 @@ public class ProcessingFineWire implements gregtech.api.interfaces.IOreRecipeReg
     @Override
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
         ItemStack aStack) {
+        if (!OreRecipeRegistrationGuard.tryProcessStack(aPrefix, aMaterial, aStack, "ProcessingFineWire")) {
+            return;
+        }
         if (!aMaterial.contains(gregtech.api.enums.SubTag.NO_SMASHING)) {
             GTRecipeRegistrator.registerWiremillRecipes(aMaterial, 100, 4);
         }

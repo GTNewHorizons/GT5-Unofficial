@@ -11,6 +11,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TierEU;
+import gregtech.api.recipe.OreRecipeRegistrationGuard;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -24,6 +25,9 @@ public class ProcessingScrew implements gregtech.api.interfaces.IOreRecipeRegist
     @Override
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
         ItemStack aStack) {
+        if (!OreRecipeRegistrationGuard.tryProcessStack(aPrefix, aMaterial, aStack, "ProcessingScrew")) {
+            return;
+        }
         if (!aMaterial.contains(SubTag.NO_WORKING)) {
             if (GTOreDictUnificator.get(OrePrefixes.bolt, aMaterial, 1L) != null) {
                 GTValues.RA.stdBuilder()
