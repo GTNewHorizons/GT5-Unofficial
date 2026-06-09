@@ -13,6 +13,13 @@
 
 package bartworks.common.tileentities.tiered;
 
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import gregtech.api.modularui2.GTGuiTheme;
+import gregtech.api.modularui2.GTGuiThemes;
+import gregtech.common.gui.modularui.singleblock.MTEBioLabGui;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
@@ -395,5 +402,20 @@ public class MTEBioLab extends MTEBasicMachine {
     public String[] getDescription() {
         return new String[] { StatCollector.translateToLocal("tooltip.tile.biolab.0.name"),
             BWTooltipReference.ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS.get() };
+    }
+
+    @Override
+    protected GTGuiTheme getGuiTheme() {
+        return GTGuiThemes.BARTWORKS;
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return true;
+    }
+
+    @Override
+    public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTEBioLabGui(this, getUIProperties()).build(guiData, syncManager, uiSettings);
     }
 }

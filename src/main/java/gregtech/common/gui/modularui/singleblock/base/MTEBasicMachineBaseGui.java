@@ -223,7 +223,7 @@ public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> extends MTETiered
     }
 
     @Override
-    protected Widget<? extends Widget<?>> createSpecialSlot() {
+    protected ItemSlot createSpecialSlot() {
         String[] tooltipKeys = new String[2];
         if (properties.useSpecialSlot) {
             tooltipKeys[0] = "GT5U.machines.special_slot.tooltip";

@@ -58,7 +58,7 @@ public class MTETieredMachineBlockBaseGui<T extends MTETieredMachineBlock> {
         this.baseMetaTileEntity = machine.getBaseMetaTileEntity();
     }
 
-    private final int borderRadius = 4;
+    protected final int borderRadius = 4;
 
     public ModularPanel build(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
         registerSyncValues(syncManager);
@@ -109,7 +109,7 @@ public class MTETieredMachineBlockBaseGui<T extends MTETieredMachineBlock> {
         return false;
     }
 
-    private ParentWidget<?> createContentHolder(ModularPanel panel, PanelSyncManager syncManager) {
+    protected final ParentWidget<?> createContentHolder(ModularPanel panel, PanelSyncManager syncManager) {
         ParentWidget<?> holder = supportsBottomRowOverlap() ? new ParentWidget<>()
             : Flow.column()
                 .childPadding(2);
