@@ -951,7 +951,7 @@ public class GTModHandler {
     }
 
     /**
-     * Internal realization of the Crafting Recipe adding Process.
+     * Internal implementation of the Crafting Recipe adding Process.
      */
     private static boolean addCraftingRecipe(ItemStack result, Enchantment[] enchantmentsAdded,
         int[] enchantmentLevelsAdded, boolean mirrored, boolean buffered, boolean keepNBT, boolean removable,
@@ -963,11 +963,6 @@ public class GTModHandler {
         if (onlyAddIfResultIsNotNull && result == null) return false;
         if (result != null && Items.feather.getDamage(result) == WILDCARD) Items.feather.setDamage(result, 0);
         if (recipe == null || recipe.length == 0) return false;
-
-        // The renamed variable clarifies what's happening
-        // noinspection UnnecessaryLocalVariable
-        boolean doWeCareIfThereWasARecipe = onlyAddIfRecipeForOutputAlreadyExists;
-        boolean removedExistingRecipe = false;
 
         for (byte i = 0; i < recipe.length; i++) {
             if (recipe[i] instanceof IItemContainer) recipe[i] = ((IItemContainer) recipe[i]).get(1);
@@ -1065,6 +1060,7 @@ public class GTModHandler {
         itemStackMap.put(' ', null);
 
         boolean canRemoveRecipe = true;
+        boolean removedExistingRecipe = false;
 
         for (; idx < recipe.length; idx += 2) {
             if (recipe[idx] == null || recipe[idx + 1] == null) {
@@ -1092,7 +1088,6 @@ public class GTModHandler {
                 ItemStack stack = GTOreDictUnificator.getFirstOre(in, 1);
                 if (stack == null) canRemoveRecipe = false;
                 else itemStackMap.put(chr, stack);
-                in = recipe[idx + 1] = in.toString();
             } else if (in instanceof String) {
                 if (in.equals(OreDictNames.craftingChest.toString()))
                     itemDataMap.put(chr, new ItemData(Materials.Wood, M * 8));
@@ -1131,7 +1126,8 @@ public class GTModHandler {
                 if (normalizedRecipe[x] != null && Items.feather.getDamage(normalizedRecipe[x]) == WILDCARD)
                     Items.feather.setDamage(normalizedRecipe[x], 0);
             }
-            if (doWeCareIfThereWasARecipe || !buffered) removedExistingRecipe = removeRecipe(normalizedRecipe) != null;
+            if (onlyAddIfRecipeForOutputAlreadyExists || !buffered)
+                removedExistingRecipe = removeRecipe(normalizedRecipe) != null;
             else removeRecipeDelayed(normalizedRecipe);
         }
 
@@ -1140,30 +1136,12 @@ public class GTModHandler {
         if (removeDuplicatesByOutput || removeDuplicatesByOutputAndNBT
             || removeShapedDuplicatesByOutput
             || removeNativeRecipeDuplicates) {
-            if (doWeCareIfThereWasARecipe || !buffered) removedExistingRecipe = removeRecipeByOutput(
+            if (onlyAddIfRecipeForOutputAlreadyExists || !buffered) removedExistingRecipe = removeRecipeByOutput(
                 result,
                 !removeDuplicatesByOutputAndNBT,
                 removeShapedDuplicatesByOutput,
                 removeNativeRecipeDuplicates) || removedExistingRecipe;
             else removeRecipeByOutputDelayed(result);
-        }
-
-        if (onlyAddIfRecipeForOutputAlreadyExists && !doWeCareIfThereWasARecipe && !removedExistingRecipe) {
-            ArrayList<IRecipe> tList = (ArrayList<IRecipe>) CraftingManager.getInstance()
-                .getRecipeList();
-            int tList_sS = tList.size();
-            for (int i = 0; i < tList_sS && !removedExistingRecipe; i++) {
-                IRecipe tRecipe = tList.get(i);
-                if (sSpecialRecipeClasses.contains(
-                    tRecipe.getClass()
-                        .getName()))
-                    continue;
-                if (GTUtility.areStacksEqual(GTOreDictUnificator.get(tRecipe.getRecipeOutput()), result, true)) {
-                    tList.remove(i--);
-                    tList_sS = tList.size();
-                    removedExistingRecipe = true;
-                }
-            }
         }
 
         if (Items.feather.getDamage(result) == WILDCARD || Items.feather.getDamage(result) < 0)
