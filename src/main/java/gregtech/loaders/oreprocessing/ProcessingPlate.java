@@ -40,6 +40,7 @@ import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.ToolDictNames;
 import gregtech.api.objects.SubstituteFluidStack;
+import gregtech.api.recipe.OreRecipeRegistrationGuard;
 import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
@@ -74,6 +75,10 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
     @Override
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
         ItemStack aStack) {
+
+        if (!OreRecipeRegistrationGuard.tryProcess(aPrefix, aMaterial, aOreDictName, "ProcessingPlate")) {
+            return;
+        }
 
         final boolean aNoSmashing = aMaterial.contains(SubTag.NO_SMASHING);
         final boolean aNoWorking = aMaterial.contains(SubTag.NO_WORKING);
