@@ -1,10 +1,19 @@
 package gregtech.api.items.armor;
 
+import static gregtech.loaders.ExtraIcons.creativeFlightAugment;
+import static gregtech.loaders.ExtraIcons.forceFieldAugment;
+import static gregtech.loaders.ExtraIcons.holoInventoryAugment;
+import static gregtech.loaders.ExtraIcons.jetpackAugment;
+import static gregtech.loaders.ExtraIcons.nightVisionAugment;
+import static gregtech.loaders.ExtraIcons.rebreatherAugment;
+import static gregtech.loaders.ExtraIcons.revealingAugment;
+
 import java.util.Collection;
 import java.util.HashMap;
 
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -86,7 +95,7 @@ public class MechArmorAugmentRegistries {
             .setId("Light")
             .setItemId("armorframelight")
             .setSlotCounts(1, 2, 0, 0)
-            .setColor(Materials.Iron.mRGBa)
+            .setColor(new short[] {103, 90, 104, 0})
             .setRarity(EnumRarity.common)
             .setProtection(8)
         ),
@@ -94,7 +103,7 @@ public class MechArmorAugmentRegistries {
             .setId("Medium")
             .setItemId("armorframemedium")
             .setSlotCounts(1, 0, 2, 0)
-            .setColor(Materials.Bronze.mRGBa)
+            .setColor(new short[] {146, 153, 171, 0})
             .setRarity(EnumRarity.common)
             .setProtection(11)
         ),
@@ -102,7 +111,7 @@ public class MechArmorAugmentRegistries {
             .setId("Heavy")
             .setItemId("armorframeheavy")
             .setSlotCounts(2, 0, 1, 0)
-            .setColor(Materials.Steel.mRGBa)
+            .setColor(new short[] {74, 78, 87, 0})
             .setRarity(EnumRarity.common)
             .setProtection(15)
         ),
@@ -111,7 +120,7 @@ public class MechArmorAugmentRegistries {
             .setId("Nimble")
             .setItemId("armorframenimble")
             .setSlotCounts(1, 3, 1, 0)
-            .setColor(Materials.VibrantAlloy.mRGBa)
+            .setColor(new short[] {182, 35, 40, 0})
             .setRarity(EnumRarity.uncommon)
             .setProtection(10)
         ),
@@ -119,7 +128,7 @@ public class MechArmorAugmentRegistries {
             .setId("Adaptive")
             .setItemId("armorframeadaptive")
             .setSlotCounts(2, 1, 1, 1)
-            .setColor(Materials.Titanium.mRGBa)
+            .setColor(new short[] {93, 115, 35, 0})
             .setRarity(EnumRarity.uncommon)
             .setProtection(13)
         ),
@@ -127,7 +136,7 @@ public class MechArmorAugmentRegistries {
             .setId("Tough")
             .setItemId("armorframetough")
             .setSlotCounts(3, 0, 2, 0)
-            .setColor(Materials.TungstenSteel.mRGBa)
+            .setColor(new short[] {44, 33, 35, 0})
             .setRarity(EnumRarity.uncommon)
             .setProtection(17)
         ),
@@ -136,7 +145,7 @@ public class MechArmorAugmentRegistries {
             .setId("Lightning")
             .setItemId("armorframelightning")
             .setSlotCounts(1, 4, 1, 1)
-            .setColor(Materials.Electrum.mRGBa)
+            .setColor(new short[] {121, 84, 206, 0})
             .setRarity(EnumRarity.rare)
             .setProtection(15)
         ),
@@ -144,7 +153,7 @@ public class MechArmorAugmentRegistries {
             .setId("Morphic")
             .setItemId("armorframemorphic")
             .setSlotCounts(2, 1, 2, 2)
-            .setColor(Materials.RedstoneAlloy.mRGBa)
+            .setColor(new short[] {156, 212, 227, 0})
             .setRarity(EnumRarity.rare)
             .setProtection(17)
         ),
@@ -152,7 +161,7 @@ public class MechArmorAugmentRegistries {
             .setId("Bulwark")
             .setItemId("armorframebulwark")
             .setSlotCounts(4, 1, 1, 1)
-            .setColor(Materials.RedSteel.mRGBa)
+            .setColor(new short[] {113, 88, 78, 0})
             .setRarity(EnumRarity.rare)
             .setProtection(20)
         ),
@@ -382,6 +391,7 @@ public class MechArmorAugmentRegistries {
             .setId("NightVision")
             .setItemId("augmentnightvision")
             .fitsInto(ArmorType.Helmet)
+            .setTexture(() -> nightVisionAugment)
             .providesBehaviors(NightVisionBehavior.INSTANCE)
             .setCategory(AugmentCategory.Utility)
             .setRarity(EnumRarity.common)
@@ -390,6 +400,7 @@ public class MechArmorAugmentRegistries {
             .setId("CreativeFlight")
             .setItemId("augmentcreativeflight")
             .fitsInto(ArmorType.Chestplate)
+            .setTexture(() -> creativeFlightAugment)
             .providesBehaviors(CreativeFlightBehavior.INSTANCE)
             .incompatibleBehaviors(BehaviorName.Jetpack)
             .setCategory(AugmentCategory.Movement)
@@ -400,6 +411,7 @@ public class MechArmorAugmentRegistries {
             .setId("Jetpack")
             .setItemId("augmentjetpack")
             .fitsInto(ArmorType.Chestplate)
+            .setTexture(() -> jetpackAugment)
             .providesBehaviors(JetpackBehavior.INSTANCE, JetpackHoverBehavior.INSTANCE)
             .incompatibleBehaviors(BehaviorName.CreativeFlight)
             .setCategory(AugmentCategory.Movement)
@@ -437,6 +449,7 @@ public class MechArmorAugmentRegistries {
             .setId("GogglesOfRevealing")
             .setItemId("augmentgogglesofrevealing")
             .fitsInto(ArmorType.Helmet)
+            .setTexture(() -> revealingAugment)
             .providesBehaviors(GogglesOfRevealingBehavior.INSTANCE, new VisDiscountBehavior(7))
             .setCategory(AugmentCategory.Utility)
             .setRarity(EnumRarity.uncommon)
@@ -522,6 +535,7 @@ public class MechArmorAugmentRegistries {
             .setId("ForceField")
             .setItemId("augmentforcefield")
             .fitsInto(ArmorType.Chestplate)
+            .setTexture(() ->forceFieldAugment)
             .providesBehaviors(ForceFieldBehavior.INSTANCE)
             .setMinimumCore(2)
             .setCategory(AugmentCategory.Protection)
@@ -541,6 +555,7 @@ public class MechArmorAugmentRegistries {
             .setId("WaterBreathing")
             .setItemId("augmentwaterbreathing")
             .fitsInto(ArmorType.Helmet)
+            .setTexture(() -> rebreatherAugment)
             .providesBehaviors(WaterBreathingBehavior.INSTANCE)
             .setCategory(AugmentCategory.Protection)
             .setRarity(EnumRarity.uncommon)
@@ -558,8 +573,21 @@ public class MechArmorAugmentRegistries {
             .setId("HoloInventory")
             .setItemId("augmentholoinventory")
             .providesBehaviors(HoloInventoryBehavior.INSTANCE)
+            .setTexture(() -> holoInventoryAugment)
             .setCategory(AugmentCategory.Utility)
             .setRarity(EnumRarity.uncommon)
+        ),
+        TravelersBoots(ItemList.Augment_Travelers, new AugmentBuilder()
+            .setId("Travelers")
+            .setItemId("augmenttravelers")
+            .fitsInto(ArmorType.Boots)
+            .providesBehaviors(new JumpBoostBehavior(0.6F),
+                new SpeedBoostBehavior(0.15F),
+                StepAssistBehavior.INSTANCE,
+                new VisDiscountBehavior(4))
+            .setCategory(AugmentCategory.Movement)
+            .setMinimumCore(0)
+            .setRarity(EnumRarity.common)
         );
         // spotless:on
 
@@ -623,6 +651,10 @@ public class MechArmorAugmentRegistries {
         @Override
         public Collection<BehaviorName> getIncompatibleBehaviors() {
             return this.builder.getIncompatibleBehaviors();
+        }
+
+        public IIcon getTexture() {
+            return this.builder.getTexture();
         }
 
         public AugmentCategory getCategory() {
