@@ -70,8 +70,13 @@ import gregtech.api.modularui2.GTGuiTheme;
 import gregtech.api.modularui2.GTGuis;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.XSTR;
+import gregtech.api.recipe.RecipeDuplicateValidator;
 import gregtech.api.recipe.RecipeLookupValidator;
 import gregtech.api.recipe.RecipeMapBackend;
+import gregtech.api.recipe.RecipeSnapshotDiff;
+import gregtech.api.recipe.RecipeSnapshotExporter;
+import gregtech.api.recipe.RecipeValidationGate;
+import gregtech.api.recipe.RecipeValidationRunner;
 import gregtech.api.registries.LHECoolantRegistry;
 import gregtech.api.registries.RemovedMetaRegistry;
 import gregtech.api.util.AssemblyLineServer;
@@ -752,15 +757,20 @@ public class GTMod {
     @Mod.EventHandler
     public void onServerStarted(FMLServerStartedEvent event) {
         proxy.onServerStarted(event);
-        if (RecipeMapBackend.shouldValidateLookup()) {
-            GT_FML_LOGGER.info("GTRecipeLookupValidator: enabled; waiting for first server tick after server start.");
+        if (RecipeSnapshotExporter.shouldExportSnapshot() || RecipeMapBackend.shouldValidateLookup()
+            || RecipeDuplicateValidator.shouldValidateDuplicates()) {
+            GT_FML_LOGGER.info(
+                "GT recipe validation: snapshot={} lookup={} duplicates={}; waiting for first server tick after server start.",
+                RecipeSnapshotExporter.shouldExportSnapshot(),
+                RecipeMapBackend.shouldValidateLookup(),
+                RecipeDuplicateValidator.shouldValidateDuplicates());
             FMLCommonHandler.instance()
                 .bus()
-                .register(new RecipeLookupValidationServerTickHandler());
+                .register(new RecipeValidationServerTickHandler());
         }
     }
 
-    public static final class RecipeLookupValidationServerTickHandler {
+    public static final class RecipeValidationServerTickHandler {
 
         @SubscribeEvent
         public void onServerTick(TickEvent.ServerTickEvent event) {
@@ -770,10 +780,58 @@ public class GTMod {
             FMLCommonHandler.instance()
                 .bus()
                 .unregister(this);
-            GT_FML_LOGGER.info("GTRecipeLookupValidator: first server tick reached; starting validation.");
-            RecipeLookupValidator.validateLookup();
-            GT_FML_LOGGER.info("GTRecipeLookupValidator: validation completed without mismatches.");
-            throw new IllegalStateException("GT recipe lookup validation found 0 issue(s); run completed.");
+
+            StringBuilder completedSteps = new StringBuilder();
+            if (RecipeSnapshotExporter.shouldExportSnapshot()) {
+                GT_FML_LOGGER.info("GT recipe snapshot: exporting on first server tick.");
+                RecipeSnapshotExporter.exportSnapshot();
+                if (completedSteps.length() > 0) {
+                    completedSteps.append("; ");
+                }
+                completedSteps.append("snapshot export completed to ")
+                    .append(System.getProperty(RecipeSnapshotExporter.EXPORT_PROPERTY));
+                if (RecipeSnapshotDiff.shouldValidateRetention()) {
+                    GT_FML_LOGGER.info(
+                        "GT recipe snapshot retention: comparing candidate export against baseline {}.",
+                        RecipeSnapshotDiff.baselinePath()
+                            .toAbsolutePath());
+                    RecipeSnapshotDiff.validateRetention(
+                        RecipeSnapshotDiff.baselinePath(),
+                        java.nio.file.Paths.get(
+                            System.getProperty(RecipeSnapshotExporter.EXPORT_PROPERTY)
+                                .trim()));
+                    if (completedSteps.length() > 0) {
+                        completedSteps.append("; ");
+                    }
+                    completedSteps.append("snapshot retention passed with 0 lost unique recipe key(s)");
+                }
+            }
+            boolean validateLookup = RecipeMapBackend.shouldValidateLookup();
+            boolean validateDuplicates = RecipeDuplicateValidator.shouldValidateDuplicates();
+            if (validateLookup || validateDuplicates) {
+                GT_FML_LOGGER.info(
+                    "GT recipe validation: first server tick reached; starting lookup={} duplicates={}.",
+                    validateLookup,
+                    validateDuplicates);
+                RecipeValidationRunner.run(
+                    validateLookup,
+                    validateDuplicates,
+                    RecipeLookupValidator::validateLookup,
+                    RecipeDuplicateValidator::validateDuplicates);
+                if (validateLookup) {
+                    if (completedSteps.length() > 0) {
+                        completedSteps.append("; ");
+                    }
+                    completedSteps.append("lookup validation passed with 0 issue(s)");
+                }
+                if (validateDuplicates) {
+                    if (completedSteps.length() > 0) {
+                        completedSteps.append("; ");
+                    }
+                    completedSteps.append("duplicate validation passed with 0 issue(s)");
+                }
+            }
+            throw RecipeValidationGate.intentionalShutdown(completedSteps.toString());
         }
     }
 
