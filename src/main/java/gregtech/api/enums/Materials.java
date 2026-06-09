@@ -283,7 +283,6 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     public static Materials Meteorite;
     public static Materials Migmatite;
     public static Materials Mimichite;
-    public static Materials Moonstone;
     public static Materials NaquadahAlloy;
     public static Materials NaquadahEnriched;
     public static Materials Naquadria;
