@@ -132,7 +132,6 @@ public class GlassTier {
                     .registerAsIndicator(new ItemStack(glass.getLeft(), 1, glass.getRight()), ctr);
                 ctr++;
             }
-            glassList.add(mainGlass.get(mainGlass.size() - 1));
         }
         return glassList;
     }
