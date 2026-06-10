@@ -1524,7 +1524,6 @@ GT5U.multiblock.scanner.Progress=Прогресс: §a%s §rs / §e%s §rs
 GT5U.multiblock.scanner.efficiency=Эффективность: §e%s§r%%
 GT5U.multiblock.scanner.problems=Проблемы: §c%s
 GT5U.multiblock.scanner.mei=Макс. входящая энергия: §e%s §rEU/t (*2A) Тир: §e%s
-GT5U.multiblock.scanner.recipesDone=Рецептов выполнено: §a%s
 GT5U.multiblock.scanner.owned_by=Владелец: §6%s
 GT5U.multiblock.scanner.meta_tile_entity=Мета-ID: §6%s
 GT5U.multiblock.scanner.valid=§aдействителен
@@ -1534,7 +1533,7 @@ GT5U.multiblock.scanner.totalRunMinutes=Общее время работы: §6%
 GT5U.multiblock.scanner.totalRunSeconds=Общее время работы: §6%s§r сек
 GT5U.multiblock.scanner.totalRunTicks=Общее время работы: §6%s§r тиков
 GT5U.multiblock.startup=Запуск...
-GT5U.multiblock.recipesDone=Рецептов выполнено
+GT5U.multiblock.recipesDone=Рецептов выполнено: §a%s
 GT5U.multiblock.scanner.usage=Сейчас используется: §c%s §rEU/t
 
 # NEI recipe handlers
