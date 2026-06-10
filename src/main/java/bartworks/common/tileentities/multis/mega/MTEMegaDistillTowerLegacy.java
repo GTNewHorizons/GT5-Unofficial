@@ -431,12 +431,14 @@ public class MTEMegaDistillTowerLegacy extends MegaMultiBlockBase<MTEMegaDistill
     }
 
     @Override
-    protected void addFluidOutputs(FluidStack[] outputFluids) {
+    protected boolean addFluidOutputs(FluidStack[] outputFluids) {
+        boolean succeed = true;
         for (int i = 0; i < outputFluids.length && i < this.mOutputHatchesByLayer.size(); i++) {
-            FluidStack tStack = outputFluids[i].copy();
-            if (!dumpFluid(this.mOutputHatchesByLayer.get(i), tStack, true))
-                dumpFluid(this.mOutputHatchesByLayer.get(i), tStack, false);
+            FluidStack stack = outputFluids[i].copy();
+            addOutputPartial(stack, mOutputHatchesByLayer.get(i));
+            if (stack.amount > 0) succeed = false;
         }
+        return succeed;
     }
 
     @Override
