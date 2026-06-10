@@ -353,8 +353,6 @@ public class MTEBiodome extends MTEExtendedPowerMultiBlockBase<MTEBiodome> imple
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        return checkPiece(STRUCTURE_PIECE_MAIN, WIDTH_OFFSET, HEIGHT_OFFSET, DEPTH_OFFSET);
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         connectedTEs.clear();
         if (!checkPiece(STRUCTURE_PIECE_MAIN, WIDTH_OFFSET, HEIGHT_OFFSET, DEPTH_OFFSET, errors)) return;
@@ -375,17 +373,71 @@ public class MTEBiodome extends MTEExtendedPowerMultiBlockBase<MTEBiodome> imple
 
     @Override
     public void onPostTick(IGregTechTileEntity bmte, long aTick) {
-        if (bmte.isClientSide() || aTick % 20 != 0 || calibrated) return;
-
-        for (MTEHatchInputBus bus : validMTEList(mInputBusses)) {
-            for (int i = 0; i < inputItems.length; i++) {
-                if (inputItems[i] == null) continue;
-                if (removed != null) inputItems[i].stackSize -= removed.stackSize;
-                if (inputItems[i].stackSize == 0) inputItems[i] = null;
-            }
-        }
-
         super.onPostTick(bmte, aTick);
+        if (bmte.isClientSide()) return;
+
+        switch (state) {
+            case CALIBRATING:
+                if (aTick % 20 == 0 && inputItems != null && inputFluids != null) {
+                    for (MTEHatchInputBus bus : validMTEList(mInputBusses)) {
+                        for (int i = 0; i < inputItems.length; i++) {
+                            if (inputItems[i] == null) continue;
+                            ItemStack removed = bus.removeResource(inputItems[i], inputItems[i].stackSize);
+                            if (removed != null) inputItems[i].stackSize -= removed.stackSize;
+                            if (inputItems[i].stackSize <= 0) inputItems[i] = null;
+                        }
+                    }
+
+                    for (int i = 0; i < inputFluids.length; i++) {
+                        if (inputFluids[i] == null) continue;
+                        if (depleteInput(inputFluids[i])) {
+                            inputFluids[i] = null;
+                        }
+                    }
+
+                    boolean allItemsDone = true;
+                    for (ItemStack item : inputItems) {
+                        if (item != null) {
+                            allItemsDone = false;
+                            break;
+                        }
+                    }
+                    boolean allFluidsDone = true;
+                    for (FluidStack fluid : inputFluids) {
+                        if (fluid != null) {
+                            allFluidsDone = false;
+                            break;
+                        }
+                    }
+
+                    if (allItemsDone && allFluidsDone) {
+                        activateWithCalibration();
+                    }
+                }
+                break;
+            case ACTIVE:
+                if (aTick % 100 == 0 && mStartUpCheck < 0 && mUpdate <= 0) {
+                    mUpdate = 1;
+                }
+                if (mStartUpCheck < 0 && !(mMachine && mMaxProgresstime > 0)) {
+                    state = BiodomeState.SHUTTING_DOWN;
+                    inactiveGraceTicks = INACTIVE_GRACE_TICKS;
+                }
+                break;
+            case SHUTTING_DOWN:
+                if (mMachine && mMaxProgresstime > 0) {
+                    state = BiodomeState.ACTIVE;
+                    inactiveGraceTicks = -1;
+                } else if (inactiveGraceTicks > 0) {
+                    inactiveGraceTicks--;
+                } else {
+                    clearTileDims();
+                    state = BiodomeState.WARMUP;
+                    warmupTicks = 0;
+                    inactiveGraceTicks = -1;
+                }
+                break;
+            case WARMUP:
                 if (mMaxProgresstime > 0) {
                     warmupTicks++;
                     if (warmupTicks >= WARMUP_DURATION) {
