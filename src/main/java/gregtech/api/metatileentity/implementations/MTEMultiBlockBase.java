@@ -772,14 +772,10 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                                     pdr.addRecord(((long) mMaxProgresstime) * mEUt, mOutputItems, mOutputFluids);
                             }
                         }
-                        if (mOutputItems != null) {
-                            addItemOutputs(mOutputItems);
-                            mOutputItems = null;
-                        }
-                        if (mOutputFluids != null) {
-                            addFluidOutputs(mOutputFluids);
-                            mOutputFluids = null;
-                        }
+                        boolean isOutputAllItems = mOutputItems == null || addItemOutputs(mOutputItems);
+                        boolean isOutputAllFluids = mOutputFluids == null || addFluidOutputs(mOutputFluids);
+                        mOutputItems = null;
+                        mOutputFluids = null;
                         outputAfterRecipe();
                         mEfficiency = Math.max(
                             0,
@@ -797,7 +793,11 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                         }
                         mEfficiencyIncrease = 0;
                         mLastWorkingTick = mTotalRunTime;
-                        if (aBaseMetaTileEntity.isAllowedToWork()) {
+                        if (!isOutputAllItems) {
+                            stopMachine(ShutDownReasonRegistry.ITEM_OUTPUT_FAILED);
+                        } else if (!isOutputAllFluids) {
+                            stopMachine(ShutDownReasonRegistry.FLUID_OUTPUT_FAILED);
+                        } else if (aBaseMetaTileEntity.isAllowedToWork()) {
                             checkRecipe();
                         }
                     }
