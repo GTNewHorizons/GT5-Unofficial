@@ -1432,6 +1432,7 @@ public class GGMaterial implements Runnable {
             .addMolten()
             .addMetalItems()
             .addCraftingMetalWorkingItems()
+            .addDoubleAndDensePlates()
             .addMetaSolidifierRecipes()
             .addMetalCraftingSolidifierRecipes()
             .addMixerRecipes((short) 6),
