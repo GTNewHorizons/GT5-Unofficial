@@ -290,7 +290,7 @@ public class GTPPRecipeMaps {
         .build();
     public static final RecipeMap<RecipeMapBackend> multiblockRockBreakerRecipes = RecipeMapBuilder
         .of("gtpp.recipe.multiblockrockbreaker")
-        .maxIO(3, 1, 2, 0)
+        .maxIO(3, 3, 2, 0)
         .progressBar(GTUITextures.PROGRESSBAR_MACERATE)
         .neiFluidInputsGetter(gtRecipe -> new FluidStack[] { Materials.Water.getFluid(0), Materials.Lava.getFluid(0) })
         .build();

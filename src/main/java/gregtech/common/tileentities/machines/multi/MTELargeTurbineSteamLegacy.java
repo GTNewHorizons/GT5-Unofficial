@@ -152,7 +152,7 @@ public class MTELargeTurbineSteamLegacy extends MTELargeTurbineLegacy {
         if (totalFlow <= 0) return 0;
         tEU = totalFlow;
         int waterToOutput = condenseSteam(totalFlow);
-        addOutput(GTModHandler.getDistilledWater(waterToOutput));
+        addOutputPartial(GTModHandler.getDistilledWater(waterToOutput));
         if (totalFlow == (GTUtility.safeInt((long) realOptFlow))) {
             tEU = GTUtility.safeInt(
                 (long) (tEU * (looseFit ? turbine.getLooseSteamEfficiency() : turbine.getSteamEfficiency()) * 0.5f));
