@@ -43,13 +43,20 @@ import gregtech.common.config.Gregtech;
 public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
     implements IGregTechTileEntity, IInterfaceNameProvider {
 
-    protected boolean mNeedsBlockUpdate = true, mNeedsUpdate = true, mNeedsTileUpdate = false,
+    // mNeedsUpdate: Client only, mark the block for rerender
+    // mNeedsTileUpdate: Server only, mark the block for sync using `S35PacketUpdateTileEntity`
+    // mInventoryChanged: whether the inventory had changed in the previous tick,
+    // does not record direct modification to mInventory
+    // mTickDisabled: whether this block is currently or pending to be unregistered from loaded tile entity list.
+    protected boolean mNeedsUpdate = true, mNeedsTileUpdate = false,
         mInventoryChanged = false, mTickDisabled = false;
 
     private boolean mIgnoreNextUnload = false;
 
     protected int oldX = 0, oldY = 0, oldZ = 0;
-    protected byte oldStrongRedstone = 0, oldRedstoneData = 63, oldUpdateData = 0;
+    // oldRedstoneData: bitmask of redstone output for all 6 sides, apparently used for client rendering
+    // oldUpdateData: One byte of data that is supplied by MTE and synced with client
+    protected byte oldRedstoneData = 63, oldUpdateData = 0;
 
     private byte mColor = 0;
 
@@ -73,7 +80,8 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
         return false;
     }
 
-    public boolean isTickDisabled() {
+    @Override
+    public final boolean isTickDisabled() {
         return mTickDisabled;
     }
 
@@ -468,20 +476,6 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
     @Override
     public void issueTextureUpdate() {
         mNeedsUpdate = true;
-    }
-
-    @Override
-    public void issueBlockUpdate() {
-        mNeedsBlockUpdate = true;
-        if (mTickDisabled) {
-            doBlockUpdateServer();
-        }
-    }
-
-    public final void doBlockUpdateServer() {
-        updateNeighbours(mStrongRedstone, oldStrongRedstone);
-        oldStrongRedstone = mStrongRedstone;
-        mNeedsBlockUpdate = false;
     }
 
     @Override
