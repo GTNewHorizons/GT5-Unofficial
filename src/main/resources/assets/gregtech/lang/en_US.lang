@@ -2472,6 +2472,9 @@ GT5U.gui.text.recipe_result.laser_insufficient=§7Laser source is too weak to ru
 GT5U.gui.text.recipe_result.sawblade_missing=§7Needs a sawblade in the controller slot
 GT5U.gui.text.recipe_result.sawblade_tier_not_high_enough=§7Sawblade tier is not high enough for the installed energy hatches
 GT5U.gui.text.recipe_result.cleanroom_running=§aCleanroom running
+GT5U.gui.text.recipe_result.biodome_running=§aBiodome active
+GT5U.gui.text.recipe_result.biodome_warmup=§eWarming up...
+GT5U.gui.text.recipe_result.calibrating=§eCalibrating...
 GT5U.gui.text.no_machine=§7No valid processing machine
 GT5U.gui.text.machine_mismatch=§7Machine doesn't match to locked recipe
 GT5U.gui.text.high_gravity=§7Recipe needs low gravity
@@ -6276,6 +6279,7 @@ GT5U.gui.text.foundry.pairings.realizedpotential.tooltip3=Allows the §bHypercoo
 # Void Miner GUI
 GT5U.gui.text.vm.title=§nOre Voiding Selection
 GT5U.gui.text.vm.searchhint=Search by name
+GT5U.gui.text.biodome_active=Biodome: %s
 GT5U.gui.button.vm.whitelist=Whitelist - Unselected ores will be §4voided
 GT5U.gui.button.vm.blacklist=Blacklist - Selected ores will be §4voided
 GT5U.gui.button.vm.select=Select all ores

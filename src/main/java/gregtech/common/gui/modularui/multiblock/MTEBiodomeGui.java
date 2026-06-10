@@ -23,9 +23,9 @@ import com.cleanroommc.modularui.drawable.FluidDrawable;
 import com.cleanroommc.modularui.drawable.ItemDrawable;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
-import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.DynamicSyncHandler;
 import com.cleanroommc.modularui.value.sync.GenericListSyncHandler;
+import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.InteractionSyncHandler;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.StringSyncValue;
@@ -79,9 +79,54 @@ public class MTEBiodomeGui extends MTEMultiBlockBaseGui<MTEBiodome> {
         ListWidget<IWidget, ?> list = super.createTerminalTextWidget(syncManager, parent);
 
         StringSyncValue dimensionSync = syncManager.findSyncHandler("dimension", StringSyncValue.class);
-        list.child(
-            IKey.dynamic(() -> "Calibrating: " + dimensionSync.getValue())
-                .asWidget());
+        IntSyncValue calibrationSync = syncManager.findSyncHandler("calibrationPercent", IntSyncValue.class);
+        IntSyncValue stateSync = syncManager.findSyncHandler("state", IntSyncValue.class);
+        IntSyncValue warmupTicksSync = syncManager.findSyncHandler("warmupTicks", IntSyncValue.class);
+
+        list.child(IKey.dynamic(() -> {
+            String dim = dimensionSync.getValue();
+            int calPct = calibrationSync.getValue();
+            MTEBiodome.BiodomeState st = MTEBiodome.BiodomeState.fromOrdinal(stateSync.getValue());
+            if (dim == null || dim.isEmpty()) {
+                return EnumChatFormatting.GRAY + "No dimension selected";
+            }
+            EnumChatFormatting color = switch (st) {
+                case ACTIVE -> EnumChatFormatting.GREEN;
+                case CALIBRATING, WARMUP, SHUTTING_DOWN -> EnumChatFormatting.YELLOW;
+                default -> calPct <= 0 ? EnumChatFormatting.RED : EnumChatFormatting.GRAY;
+            };
+            return color + "Dimension: " + EnumChatFormatting.WHITE + dim;
+        })
+            .asWidget());
+
+        list.child(IKey.dynamic(() -> {
+            int calPct = calibrationSync.getValue();
+            String dim = dimensionSync.getValue();
+            if (calPct <= 0 || dim == null || dim.isEmpty()) return "";
+            String calDisplay = String.format("%.1f%%", calPct / 100.0);
+            EnumChatFormatting color = calPct >= MTEBiodome.MAX_CALIBRATION ? EnumChatFormatting.GREEN
+                : EnumChatFormatting.YELLOW;
+            return EnumChatFormatting.GRAY + "Calibration: " + color + calDisplay;
+        })
+            .asWidget()
+            .setEnabledIf(
+                w -> calibrationSync.getValue() > 0 && dimensionSync.getValue() != null
+                    && !dimensionSync.getValue()
+                        .isEmpty()));
+
+        list.child(IKey.dynamic(() -> {
+            MTEBiodome.BiodomeState st = MTEBiodome.BiodomeState.fromOrdinal(stateSync.getValue());
+            if (st != MTEBiodome.BiodomeState.WARMUP) return "";
+            int wt = warmupTicksSync.getValue();
+            if (wt <= 0) return "";
+            int warmupPct = wt * 100 / MTEBiodome.WARMUP_DURATION;
+            return EnumChatFormatting.GRAY + "Warmup: " + EnumChatFormatting.YELLOW + warmupPct + "%";
+        })
+            .asWidget()
+            .setEnabledIf(w -> {
+                MTEBiodome.BiodomeState st = MTEBiodome.BiodomeState.fromOrdinal(stateSync.getValue());
+                return st == MTEBiodome.BiodomeState.WARMUP && warmupTicksSync.getValue() > 0;
+            }));
 
         GenericListSyncHandler<ItemStack> itemInputSyncer = (GenericListSyncHandler<ItemStack>) syncManager
             .findSyncHandler("itemInputs");
@@ -99,8 +144,13 @@ public class MTEBiodomeGui extends MTEMultiBlockBaseGui<MTEBiodome> {
                 .child(createFluidRecipeInfo(packet, syncManager));
         });
 
-        itemInputSyncer.setChangeListener(() -> notifyRecipeHandler(recipeHandler, itemInputSyncer, fluidInputSyncer));
-        fluidInputSyncer.setChangeListener(() -> notifyRecipeHandler(recipeHandler, itemInputSyncer, fluidInputSyncer));
+        Runnable serverNotifier = () -> {
+            if (!syncManager.isClient()) {
+                notifyRecipeHandler(recipeHandler, itemInputSyncer, fluidInputSyncer);
+            }
+        };
+        itemInputSyncer.setChangeListener(serverNotifier);
+        fluidInputSyncer.setChangeListener(serverNotifier);
 
         return list.child(
             new DynamicSyncedWidget<>().widthRel(0.85f)
@@ -208,8 +258,14 @@ public class MTEBiodomeGui extends MTEMultiBlockBaseGui<MTEBiodome> {
 
     @Override
     protected void registerSyncValues(PanelSyncManager syncManager) {
-        syncManager.syncValue("isCalibrated", new BooleanSyncValue(multiblock::isCalibrated));
-        syncManager.syncValue("dimension", new StringSyncValue(multiblock::getDimensionOverride));
+        syncManager.syncValue("calibrationPercent", new IntSyncValue(multiblock::getCalibrationPercent));
+        syncManager.syncValue(
+            "state",
+            new IntSyncValue(
+                () -> multiblock.getState()
+                    .ordinal()));
+        syncManager.syncValue("warmupTicks", new IntSyncValue(multiblock::getWarmupTicks));
+        syncManager.syncValue("dimension", new StringSyncValue(multiblock::getDimension));
 
         syncManager.syncValue(
             "itemInputs",

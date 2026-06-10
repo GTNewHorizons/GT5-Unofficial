@@ -70,6 +70,7 @@ public class BiodomeCalibrationLoader {
                 Materials.Air.getGas(256000),
                 Materials.Silicon.getMolten(256000))
             .itemOutputs(new ItemStack(ModBlocks.getBlock("ED"), 1))
+            .metadata(BIODOME_DIMENSION_STRING, "The End")
             .duration(1)
             .eut(1)
             .fake()
@@ -89,6 +90,7 @@ public class BiodomeCalibrationLoader {
                 Materials.Air.getGas(256000),
                 Materials.Silicon.getMolten(256000))
             .itemOutputs(new ItemStack(ModBlocks.getBlock("EA"), 1))
+            .metadata(BIODOME_DIMENSION_STRING, "EndAsteroid")
             .duration(1)
             .eut(1)
             .fake()
@@ -108,6 +110,7 @@ public class BiodomeCalibrationLoader {
                 Materials.Air.getGas(256000),
                 Materials.Silicon.getMolten(256000))
             .itemOutputs(new ItemStack(ModBlocks.getBlock("TF"), 1))
+            .metadata(BIODOME_DIMENSION_STRING, "Twilight Forest")
             .duration(1)
             .eut(1)
             .fake()
@@ -127,6 +130,7 @@ public class BiodomeCalibrationLoader {
                 Materials.Air.getGas(256000),
                 Materials.Silicon.getMolten(256000))
             .itemOutputs(new ItemStack(ModBlocks.getBlock("Eg"), 1))
+            .metadata(BIODOME_DIMENSION_STRING, "dimensionDarkWorld")
             .duration(1)
             .eut(1)
             .fake()
@@ -148,6 +152,7 @@ public class BiodomeCalibrationLoader {
                 Materials.Air.getGas(256000),
                 Materials.Silicon.getMolten(256000))
             .itemOutputs(new ItemStack(ModBlocks.getBlock("Mo"), 1))
+            .metadata(BIODOME_DIMENSION_STRING, "moon")
             .duration(1)
             .eut(1)
             .fake()
@@ -169,6 +174,7 @@ public class BiodomeCalibrationLoader {
                 Materials.Air.getGas(256000),
                 Materials.Silicon.getMolten(256000))
             .itemOutputs(new ItemStack(ModBlocks.getBlock("Ma"), 1))
+            .metadata(BIODOME_DIMENSION_STRING, "mars")
             .duration(1)
             .eut(1)
             .fake()
@@ -188,6 +194,7 @@ public class BiodomeCalibrationLoader {
                 Materials.Air.getGas(256000),
                 Materials.Silicon.getMolten(256000))
             .itemOutputs(new ItemStack(ModBlocks.getBlock("De"), 1))
+            .metadata(BIODOME_DIMENSION_STRING, "deimos")
             .duration(1)
             .eut(1)
             .fake()
@@ -207,6 +214,7 @@ public class BiodomeCalibrationLoader {
                 Materials.Air.getGas(256000),
                 Materials.Silicon.getMolten(256000))
             .itemOutputs(new ItemStack(ModBlocks.getBlock("Ph"), 1))
+            .metadata(BIODOME_DIMENSION_STRING, "phobos")
             .duration(1)
             .eut(1)
             .fake()
@@ -228,6 +236,7 @@ public class BiodomeCalibrationLoader {
                 Materials.Air.getGas(256000),
                 Materials.Silicon.getMolten(256000))
             .itemOutputs(new ItemStack(ModBlocks.getBlock("As"), 1))
+            .metadata(BIODOME_DIMENSION_STRING, "asteroids")
             .duration(1)
             .eut(1)
             .fake()
@@ -247,6 +256,7 @@ public class BiodomeCalibrationLoader {
                 Materials.Air.getGas(256000),
                 Materials.Silicon.getMolten(256000))
             .itemOutputs(new ItemStack(ModBlocks.getBlock("Ca"), 1))
+            .metadata(BIODOME_DIMENSION_STRING, "callisto")
             .duration(1)
             .eut(1)
             .fake()
@@ -266,6 +276,7 @@ public class BiodomeCalibrationLoader {
                 Materials.Air.getGas(256000),
                 Materials.Silicon.getMolten(256000))
             .itemOutputs(new ItemStack(ModBlocks.getBlock("Ce"), 1))
+            .metadata(BIODOME_DIMENSION_STRING, "ceres")
             .duration(1)
             .eut(1)
             .fake()
@@ -285,6 +296,7 @@ public class BiodomeCalibrationLoader {
                 Materials.Air.getGas(256000),
                 Materials.Silicon.getMolten(256000))
             .itemOutputs(new ItemStack(ModBlocks.getBlock("Eu"), 1))
+            .metadata(BIODOME_DIMENSION_STRING, "europa")
             .duration(1)
             .eut(1)
             .fake()
@@ -304,6 +316,7 @@ public class BiodomeCalibrationLoader {
                 Materials.Air.getGas(256000),
                 Materials.Silicon.getMolten(256000))
             .itemOutputs(new ItemStack(ModBlocks.getBlock("Ga"), 1))
+            .metadata(BIODOME_DIMENSION_STRING, "ganymed")
             .duration(1)
             .eut(1)
             .fake()
@@ -323,6 +336,7 @@ public class BiodomeCalibrationLoader {
                 Materials.Air.getGas(256000),
                 Materials.Silicon.getMolten(256000))
             .itemOutputs(new ItemStack(ModBlocks.getBlock("Rb"), 1))
+            .metadata(BIODOME_DIMENSION_STRING, "ross128b")
             .duration(1)
             .eut(1)
             .fake()
@@ -344,6 +358,7 @@ public class BiodomeCalibrationLoader {
                 Materials.Air.getGas(256000),
                 Materials.Silicon.getMolten(256000))
             .itemOutputs(new ItemStack(ModBlocks.getBlock("Ve"), 1))
+            .metadata(BIODOME_DIMENSION_STRING, "venus")
             .duration(1)
             .eut(1)
             .fake()
@@ -363,6 +378,7 @@ public class BiodomeCalibrationLoader {
                 Materials.Air.getGas(256000),
                 Materials.Silicon.getMolten(256000))
             .itemOutputs(new ItemStack(ModBlocks.getBlock("Me"), 1))
+            .metadata(BIODOME_DIMENSION_STRING, "mercury")
             .duration(1)
             .eut(1)
             .fake()
@@ -382,6 +398,7 @@ public class BiodomeCalibrationLoader {
                 Materials.Air.getGas(256000),
                 Materials.Silicon.getMolten(256000))
             .itemOutputs(new ItemStack(ModBlocks.getBlock("Io"), 1))
+            .metadata(BIODOME_DIMENSION_STRING, "iojupiter")
             .duration(1)
             .eut(1)
             .fake()
@@ -403,6 +420,7 @@ public class BiodomeCalibrationLoader {
                 Materials.Air.getGas(256000),
                 Materials.Silicon.getMolten(256000))
             .itemOutputs(new ItemStack(ModBlocks.getBlock("En"), 1))
+            .metadata(BIODOME_DIMENSION_STRING, "enceladus")
             .duration(1)
             .eut(1)
             .fake()
@@ -422,6 +440,7 @@ public class BiodomeCalibrationLoader {
                 Materials.Air.getGas(256000),
                 Materials.Silicon.getMolten(256000))
             .itemOutputs(new ItemStack(ModBlocks.getBlock("Mi"), 1))
+            .metadata(BIODOME_DIMENSION_STRING, "miranda")
             .duration(1)
             .eut(1)
             .fake()
@@ -441,6 +460,7 @@ public class BiodomeCalibrationLoader {
                 Materials.Air.getGas(256000),
                 Materials.Silicon.getMolten(256000))
             .itemOutputs(new ItemStack(ModBlocks.getBlock("Ob"), 1))
+            .metadata(BIODOME_DIMENSION_STRING, "oberon")
             .duration(1)
             .eut(1)
             .fake()
@@ -460,6 +480,7 @@ public class BiodomeCalibrationLoader {
                 Materials.Air.getGas(256000),
                 Materials.Silicon.getMolten(256000))
             .itemOutputs(new ItemStack(ModBlocks.getBlock("Ti"), 1))
+            .metadata(BIODOME_DIMENSION_STRING, "titan")
             .duration(1)
             .eut(1)
             .fake()
@@ -479,6 +500,7 @@ public class BiodomeCalibrationLoader {
                 Materials.Air.getGas(256000),
                 Materials.Silicon.getMolten(256000))
             .itemOutputs(new ItemStack(ModBlocks.getBlock("Ra"), 1))
+            .metadata(BIODOME_DIMENSION_STRING, "ross128ba")
             .duration(1)
             .eut(1)
             .fake()
@@ -500,6 +522,7 @@ public class BiodomeCalibrationLoader {
                 Materials.Air.getGas(256000),
                 Materials.Silicon.getMolten(256000))
             .itemOutputs(new ItemStack(ModBlocks.getBlock("Pr"), 1))
+            .metadata(BIODOME_DIMENSION_STRING, "proteus")
             .duration(1)
             .eut(1)
             .fake()
@@ -519,6 +542,7 @@ public class BiodomeCalibrationLoader {
                 Materials.Air.getGas(256000),
                 Materials.Silicon.getMolten(256000))
             .itemOutputs(new ItemStack(ModBlocks.getBlock("Tr"), 1))
+            .metadata(BIODOME_DIMENSION_STRING, "triton")
             .duration(1)
             .eut(1)
             .fake()
@@ -540,6 +564,7 @@ public class BiodomeCalibrationLoader {
                 Materials.Air.getGas(256000),
                 Materials.Silicon.getMolten(256000))
             .itemOutputs(new ItemStack(ModBlocks.getBlock("Pl"), 1))
+            .metadata(BIODOME_DIMENSION_STRING, "pluto")
             .duration(1)
             .eut(1)
             .fake()
@@ -559,6 +584,7 @@ public class BiodomeCalibrationLoader {
                 Materials.Air.getGas(256000),
                 Materials.Silicon.getMolten(256000))
             .itemOutputs(new ItemStack(ModBlocks.getBlock("MM"), 1))
+            .metadata(BIODOME_DIMENSION_STRING, "makemake")
             .duration(1)
             .eut(1)
             .fake()
@@ -578,6 +604,7 @@ public class BiodomeCalibrationLoader {
                 Materials.Air.getGas(256000),
                 Materials.Silicon.getMolten(256000))
             .itemOutputs(new ItemStack(ModBlocks.getBlock("Ha"), 1))
+            .metadata(BIODOME_DIMENSION_STRING, "haumea")
             .duration(1)
             .eut(1)
             .fake()
@@ -597,6 +624,7 @@ public class BiodomeCalibrationLoader {
                 Materials.Air.getGas(256000),
                 Materials.Silicon.getMolten(256000))
             .itemOutputs(new ItemStack(ModBlocks.getBlock("KB"), 1))
+            .metadata(BIODOME_DIMENSION_STRING, "kuiperbelt")
             .duration(1)
             .eut(1)
             .fake()
@@ -618,6 +646,7 @@ public class BiodomeCalibrationLoader {
                 Materials.Air.getGas(256000),
                 Materials.Silicon.getMolten(256000))
             .itemOutputs(new ItemStack(ModBlocks.getBlock("BC"), 1))
+            .metadata(BIODOME_DIMENSION_STRING, "barnarda2")
             .duration(1)
             .eut(1)
             .fake()
@@ -637,6 +666,7 @@ public class BiodomeCalibrationLoader {
                 Materials.Air.getGas(256000),
                 Materials.Silicon.getMolten(256000))
             .itemOutputs(new ItemStack(ModBlocks.getBlock("BE"), 1))
+            .metadata(BIODOME_DIMENSION_STRING, "barnarda4")
             .duration(1)
             .eut(1)
             .fake()
@@ -656,6 +686,7 @@ public class BiodomeCalibrationLoader {
                 Materials.Air.getGas(256000),
                 Materials.Silicon.getMolten(256000))
             .itemOutputs(new ItemStack(ModBlocks.getBlock("BF"), 1))
+            .metadata(BIODOME_DIMENSION_STRING, "barnarda5")
             .duration(1)
             .eut(1)
             .fake()
@@ -675,6 +706,7 @@ public class BiodomeCalibrationLoader {
                 Materials.Air.getGas(256000),
                 Materials.Silicon.getMolten(256000))
             .itemOutputs(new ItemStack(ModBlocks.getBlock("CB"), 1))
+            .metadata(BIODOME_DIMENSION_STRING, "centauribb")
             .duration(1)
             .eut(1)
             .fake()
@@ -694,6 +726,7 @@ public class BiodomeCalibrationLoader {
                 Materials.Air.getGas(256000),
                 Materials.Silicon.getMolten(256000))
             .itemOutputs(new ItemStack(ModBlocks.getBlock("TE"), 1))
+            .metadata(BIODOME_DIMENSION_STRING, "tcetie")
             .duration(1)
             .eut(1)
             .fake()
@@ -713,6 +746,7 @@ public class BiodomeCalibrationLoader {
                 Materials.Air.getGas(256000),
                 Materials.Silicon.getMolten(256000))
             .itemOutputs(new ItemStack(ModBlocks.getBlock("VB"), 1))
+            .metadata(BIODOME_DIMENSION_STRING, "vega1")
             .duration(1)
             .eut(1)
             .fake()
@@ -734,6 +768,7 @@ public class BiodomeCalibrationLoader {
                 Materials.Air.getGas(256000),
                 Materials.Silicon.getMolten(256000))
             .itemOutputs(new ItemStack(ModBlocks.getBlock("An"), 1))
+            .metadata(BIODOME_DIMENSION_STRING, "anubis")
             .duration(1)
             .eut(1)
             .fake()
@@ -753,6 +788,7 @@ public class BiodomeCalibrationLoader {
                 Materials.Air.getGas(256000),
                 Materials.Silicon.getMolten(256000))
             .itemOutputs(new ItemStack(ModBlocks.getBlock("Ho"), 1))
+            .metadata(BIODOME_DIMENSION_STRING, "horus")
             .duration(1)
             .eut(1)
             .fake()
@@ -772,6 +808,7 @@ public class BiodomeCalibrationLoader {
                 Materials.Air.getGas(256000),
                 Materials.Silicon.getMolten(256000))
             .itemOutputs(new ItemStack(ModBlocks.getBlock("Mh"), 1))
+            .metadata(BIODOME_DIMENSION_STRING, "maahes")
             .duration(1)
             .eut(1)
             .fake()
@@ -791,6 +828,7 @@ public class BiodomeCalibrationLoader {
                 Materials.Air.getGas(256000),
                 Materials.Silicon.getMolten(256000))
             .itemOutputs(new ItemStack(ModBlocks.getBlock("Np"), 1))
+            .metadata(BIODOME_DIMENSION_STRING, "neper")
             .duration(1)
             .eut(1)
             .fake()
@@ -810,6 +848,7 @@ public class BiodomeCalibrationLoader {
                 Materials.Air.getGas(256000),
                 Materials.Silicon.getMolten(256000))
             .itemOutputs(new ItemStack(ModBlocks.getBlock("Se"), 1))
+            .metadata(BIODOME_DIMENSION_STRING, "seth")
             .duration(1)
             .eut(1)
             .fake()
@@ -829,6 +868,7 @@ public class BiodomeCalibrationLoader {
                 Materials.Air.getGas(256000),
                 Materials.Silicon.getMolten(256000))
             .itemOutputs(new ItemStack(ModBlocks.getBlock("MB"), 1))
+            .metadata(BIODOME_DIMENSION_STRING, "asteroidbeltmehen")
             .duration(1)
             .eut(1)
             .fake()
@@ -850,6 +890,7 @@ public class BiodomeCalibrationLoader {
                 Materials.Air.getGas(256000),
                 Materials.Silicon.getMolten(256000))
             .itemOutputs(new ItemStack(ModBlocks.getBlock("DD"), 1))
+            .metadata(BIODOME_DIMENSION_STRING, "Underdark")
             .duration(1)
             .eut(1)
             .fake()

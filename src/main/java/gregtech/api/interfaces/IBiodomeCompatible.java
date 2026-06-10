@@ -1,18 +1,17 @@
 package gregtech.api.interfaces;
 
-import gregtech.common.tileentities.machines.multi.MTEBiodome;
+import org.jetbrains.annotations.Nullable;
 
 public interface IBiodomeCompatible {
 
     /**
-     * Biodomes will call this method on IBiodomeCompatible tile entities with a reference to itself whenever
-     * its state is updated. The general pattern for IBiodomeCompatible implementations is to store the reference
-     * to the biodome whenever this method is called. When running, the tile entity should first ensure the reference
-     * is non-null, then query it for {@link MTEBiodome#getDimensionOverride()} to check the biodome's active
-     * dimension.
-     * <p>
-     * The biodome is guaranteed to call this method with a null reference whenever the biodome is removed or
-     * shut down. Tile entities should use their regular dimension behavior when the stored reference is null.
+     * Called by the Biodome whenever its dimension state changes (calibration completes, structure breaks, etc.).
+     * Implementors should store the override string and use it in place of the machine's physical dimension
+     * when processing.
+     *
+     * @param dimensionName the biodome's active dimension name, or {@code null} when the biodome is
+     *                      removed or shut down. A null value means the machine should fall back to its
+     *                      regular (physical) dimension behavior.
      */
-    void updateBiodome(MTEBiodome biodome);
+    void updateBiodome(@Nullable String dimensionName);
 }

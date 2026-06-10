@@ -47,6 +47,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
+import java.util.function.Supplier;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -66,8 +67,10 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldProviderHell;
 import net.minecraft.world.WorldServer;
+import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.FakePlayer;
@@ -100,6 +103,7 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
+import galacticgreg.api.enums.DimensionDef;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.Materials;
@@ -107,6 +111,7 @@ import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoltageIndex;
+import gregtech.api.interfaces.IBiodomeCompatible;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -134,7 +139,7 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtremeEntityCrusher>
-    implements CustomTileEntityPacketHandler, ISurvivalConstructable {
+    implements CustomTileEntityPacketHandler, ISurvivalConstructable, IBiodomeCompatible {
 
     // Powered spawner with octadic capacitor spawns ~22/min ~= 0.366/sec ~= 2.72s/spawn ~= 54.54t/spawn
     public static final int MOB_SPAWN_INTERVAL = 55;
@@ -233,6 +238,70 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
     private EntityRenderer entityRenderer = null;
     private boolean renderEntity = false;
     public EECFakePlayer EECPlayer = null;
+
+    @Nullable
+    private String biodomeDimensionName;
+
+    @Override
+    public void updateBiodome(@Nullable String dimensionName) {
+        this.biodomeDimensionName = dimensionName;
+    }
+
+    @NotNull
+    public String getBiodomeDimensionName() {
+        return biodomeDimensionName != null ? biodomeDimensionName : "";
+    }
+
+    private boolean isBiodomeDimension(String dimName) {
+        return dimName.equals(getBiodomeDimensionName());
+    }
+
+    private <R> R withBiodomeDimension(Supplier<R> action) {
+        String override = getBiodomeDimensionName();
+        if (override.isEmpty()) return action.get();
+
+        Integer biodomeDimId = resolveDimensionId(override);
+        if (biodomeDimId == null) return action.get();
+
+        int originalDimId = getBaseMetaTileEntity().getWorld().provider.dimensionId;
+        getBaseMetaTileEntity().getWorld().provider.dimensionId = biodomeDimId;
+        try {
+            return action.get();
+        } finally {
+            getBaseMetaTileEntity().getWorld().provider.dimensionId = originalDimId;
+        }
+    }
+
+    @Nullable
+    private static Integer resolveDimensionId(String dimensionName) {
+        Integer dimId = findDimensionIdInLoadedWorlds(dimensionName);
+        if (dimId != null) return dimId;
+        return findDimensionIdInUnloadedWorlds(dimensionName);
+    }
+
+    @Nullable
+    private static Integer findDimensionIdInLoadedWorlds(String dimensionName) {
+        for (WorldServer ws : DimensionManager.getWorlds()) {
+            if (dimensionName.equals(DimensionDef.getDimensionName(ws))) {
+                return ws.provider.dimensionId;
+            }
+        }
+        return null;
+    }
+
+    @Nullable
+    private static Integer findDimensionIdInUnloadedWorlds(String dimensionName) {
+        for (int dimId : DimensionManager.getStaticDimensionIDs()) {
+            if (DimensionManager.getWorld(dimId) != null) continue;
+            try {
+                WorldProvider provider = DimensionManager.createProviderFor(dimId);
+                if (dimensionName.equals(provider.getDimensionName())) {
+                    return dimId;
+                }
+            } catch (Exception ignored) {}
+        }
+        return null;
+    }
 
     public boolean isInRitualMode() {
         return isInRitualMode;
@@ -653,7 +722,9 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
             .getString("mobType");
         if (mobType.isEmpty()) return SimpleCheckRecipeResult.ofFailure("EEC_invalidspawner");
 
-        if (mobType.equals("Skeleton") && getBaseMetaTileEntity().getWorld().provider instanceof WorldProviderHell
+        if (mobType.equals("Skeleton")
+            && (getBaseMetaTileEntity().getWorld().provider instanceof WorldProviderHell
+                || isBiodomeDimension("Nether"))
             && rand.nextInt(5) > 0) mobType = "witherSkeleton";
 
         MobHandlerLoader.MobEECRecipe recipe = MobHandlerLoader.recipeMap.get(mobType);
@@ -666,8 +737,9 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
         if (checkRitualConnection()) {
             if (getMaxInputEu() < recipe.mEUt / 4) return CheckRecipeResultRegistry.insufficientPower(recipe.mEUt / 4);
             this.mOutputFluids = new FluidStack[] { FluidRegistry.getFluidStack("xpjuice", 5000) };
-            this.mOutputItems = recipe
-                .generateOutputs(rand, this, 3, 0, mIsProducingInfernalDrops, voidAllDamagedAndEnchantedItems);
+            this.mOutputItems = withBiodomeDimension(
+                () -> recipe
+                    .generateOutputs(rand, this, 3, 0, mIsProducingInfernalDrops, voidAllDamagedAndEnchantedItems));
             this.lEUt /= 4L;
             this.mMaxProgresstime = 400;
         } else {
@@ -704,13 +776,16 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
             if (EECPlayer == null) EECPlayer = new EECFakePlayer(this);
 
             EECPlayer.currentWeapon = tWeaponToUse;
-            this.mOutputItems = recipe.generateOutputs(
-                rand,
-                this,
-                tAttackDamage,
-                Math.min(tLootingLevel, MAX_LOOTING_LEVEL),
-                mIsProducingInfernalDrops,
-                voidAllDamagedAndEnchantedItems);
+            final double finalAttackDamage = tAttackDamage;
+            final int finalLootingLevel = tLootingLevel;
+            this.mOutputItems = withBiodomeDimension(
+                () -> recipe.generateOutputs(
+                    rand,
+                    this,
+                    finalAttackDamage,
+                    Math.min(finalLootingLevel, MAX_LOOTING_LEVEL),
+                    mIsProducingInfernalDrops,
+                    voidAllDamagedAndEnchantedItems));
             EECPlayer.currentWeapon = null;
 
             if (batchMode) {
@@ -724,6 +799,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
 
             this.calculatePerfectOverclock(this.lEUt, this.mMaxProgresstime);
         }
+
         if (this.lEUt > 0) this.lEUt = -this.lEUt;
         this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
         this.mEfficiencyIncrease = 10000;

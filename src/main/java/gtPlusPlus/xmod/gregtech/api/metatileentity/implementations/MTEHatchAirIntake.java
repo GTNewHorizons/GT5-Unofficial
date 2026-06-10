@@ -4,6 +4,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 
+import org.jetbrains.annotations.Nullable;
+
 import com.gtnewhorizons.modularui.common.widget.FluidSlotWidget;
 
 import galacticgreg.api.enums.DimensionDef;
@@ -13,14 +15,13 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.common.tileentities.machines.multi.MTEBiodome;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.Utils;
 
 @IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchAirIntake extends MTEHatchFluidGenerator implements IBiodomeCompatible {
 
-    MTEBiodome connectedBiodome;
+    private String biodomeDimensionName;
 
     public MTEHatchAirIntake(final int aID, final String aName, final String aNameRegional, final int aTier) {
         super(aID, aName, aNameRegional, aTier);
@@ -46,15 +47,15 @@ public class MTEHatchAirIntake extends MTEHatchFluidGenerator implements IBiodom
 
     @Override
     public Fluid getFluidToGenerate() {
-        String id;
-        if (connectedBiodome != null) {
-            id = connectedBiodome.getDimensionOverride();
-        } else {
+        String id = biodomeDimensionName;
+        if (id == null || id.isEmpty()) {
             id = getBaseMetaTileEntity().getWorld().provider.getDimensionName();
         }
 
         if (id.equals(DimensionDef.Nether.name())) {
             return Materials.NetherAir.mFluid;
+        } else if (id.equals(DimensionDef.Everglades.name())) {
+            return Materials.ToxicAir.mGas;
         } else {
             return Materials.Air.getGas(1)
                 .getFluid();
@@ -150,7 +151,7 @@ public class MTEHatchAirIntake extends MTEHatchFluidGenerator implements IBiodom
     }
 
     @Override
-    public void updateBiodome(MTEBiodome biodome) {
-        connectedBiodome = biodome;
+    public void updateBiodome(@Nullable String dimensionName) {
+        this.biodomeDimensionName = dimensionName;
     }
 }
