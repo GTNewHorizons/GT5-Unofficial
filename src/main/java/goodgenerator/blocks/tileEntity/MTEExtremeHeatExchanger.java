@@ -51,6 +51,7 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
 import gregtech.common.tileentities.machines.MTEHatchInputME;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
@@ -271,6 +272,7 @@ public class MTEExtremeHeatExchanger extends TTMultiblockBase implements ISurviv
                 "SH Steam/SC Steam, any top layer Casing",
                 2)
             .addMaintenanceHatch("Any Casing", 1, 2, 5)
+            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         return tt;
     }
@@ -343,7 +345,7 @@ public class MTEExtremeHeatExchanger extends TTMultiblockBase implements ISurviv
                 } else {
                     steamToOutput = waterAmount * 160;
                 }
-                addOutput(new FluidStack(tReadySteam, steamToOutput));
+                addOutputPartial(new FluidStack(tReadySteam, steamToOutput));
             } else {
                 GTLog.writeExplosionLog(this, "had no more distilled water!");
                 mHotFluidHatch.getBaseMetaTileEntity()
