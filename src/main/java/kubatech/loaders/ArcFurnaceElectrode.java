@@ -200,9 +200,9 @@ public enum ArcFurnaceElectrode {
         tooltip.add(
             StatCollector.translateToLocalFormatted(
                 "item.arc_furnace_electrode.tip.oc",
-                getModifierFormatted(this.OCPowerFactor, false, 2d, 4d, 6d, "", "") + EnumChatFormatting.GRAY
+                getModifierFormatted(this.OCSpeedFactor, false, 1d, 2d, 4d, "", "") + EnumChatFormatting.GRAY
                     + "/"
-                    + getModifierFormatted(this.OCSpeedFactor, false, 1d, 2d, 4d, "", ""),
+                    + getModifierFormatted(this.OCPowerFactor, false, 2d, 4d, 6d, "", ""),
                 ""));
         tooltip.add(
             StatCollector.translateToLocalFormatted(
