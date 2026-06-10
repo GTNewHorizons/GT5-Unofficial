@@ -403,7 +403,6 @@ public class MTEHeatExchanger extends MTEEnhancedMultiBlockBase<MTEHeatExchanger
                 + EnumChatFormatting.GREEN
                 + formatNumber(superheated_threshold)
                 + EnumChatFormatting.RESET,
-            GTUtility.translate("GT5U.multiblock.recipesDone", recipesDone),
             GTUtility.translate("GT5U.multiblock.recipesDone", formatNumber(recipesDone)) };
     }
 
