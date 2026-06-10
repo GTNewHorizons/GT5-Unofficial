@@ -351,7 +351,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
             .addInfo(
                 "It will speed up the process and apply the looting level from the weapon (maximum " + MAX_LOOTING_LEVEL
                     + " levels)")
-            .addInfo("Enable Weapon Preservation to prevent the weapon from breaking on it's last hit")
+            .addInfo("Enable Weapon Preservation to prevent the weapon from breaking on its last hit")
             .addInfo(
                 "Enable Weapon Cycling to pull a weapon from input when the current one breaks or is moved to an output")
             .addInfo(EnumChatFormatting.RED + "Enchanting the spikes inside the structure does nothing!")

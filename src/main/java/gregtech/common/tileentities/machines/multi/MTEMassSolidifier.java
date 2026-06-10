@@ -171,7 +171,7 @@ public class MTEMassSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMassSol
         tt.addMachineType("Fluid Solidifier")
             .addVoltageParallelInfo(10)
             .addInfo("Speeds up to a maximum of " + TooltipHelper.speedText(3f))
-            .addInfo("Decays at double the rate that it speeds up at")
+            .addInfo("Decays at double the rate that it speeds up")
             .addStaticEuEffInfo(0.8f)
             .addGlassEnergyLimitInfo(VoltageIndex.UEV)
             .addInfo(

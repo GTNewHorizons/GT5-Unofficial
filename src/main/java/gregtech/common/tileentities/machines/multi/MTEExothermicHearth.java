@@ -224,7 +224,7 @@ public class MTEExothermicHearth extends MTEExtendedPowerMultiBlockBase<MTEExoth
                     + "30 minutes"
                     + EnumChatFormatting.GRAY
                     + " of constant running to reach maximum multiplier")
-            .addInfo("While not running, the machine will rapidly cooldown")
+            .addInfo("While not running, the machine will rapidly cool down")
             .addInfo(
                 "Optionally supply " + EnumChatFormatting.RED
                     + formatFluid(PYROTHEUM_DRAIN_BASE)

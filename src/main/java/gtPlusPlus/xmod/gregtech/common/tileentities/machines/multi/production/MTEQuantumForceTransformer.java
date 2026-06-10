@@ -205,7 +205,7 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
             .addInfo("Consumes 4 * " + focusText("Focus Tier") + " * sqrt(" + TooltipHelper.parallelText("parallels") + ") L " + EnumChatFormatting.DARK_GREEN + "Fermium Plasma" + EnumChatFormatting.GRAY + " to " + EnumChatFormatting.DARK_GREEN + "boost all outputs")
             .addSeparator()
             .addInfo("Use a screwdriver to enable "+EnumChatFormatting.BLUE+"Fluid mode")
-            .addInfo("Fluid mode turns all possible outputs into their fluid variant, if avaliable")
+            .addInfo("Fluid mode turns all possible outputs into their fluid variant, if available")
             .addUnlimitedTierSkips()
             .addTecTechHatchInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
