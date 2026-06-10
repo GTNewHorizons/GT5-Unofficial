@@ -190,7 +190,7 @@ public class MTEMegaBlastFurnaceLegacy extends MegaMultiBlockBase<MTEMegaBlastFu
             .addSeparator()
             .addTecTechHatchInfo()
             .addMinGlassForLaser(VoltageIndex.UV)
-            .addGlassEnergyLimitInfo(VoltageIndex.UMV)
+            .addGlassEnergyLimitInfo()
             .addUnlimitedTierSkips()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(15, 20, 15, true)
@@ -356,18 +356,16 @@ public class MTEMegaBlastFurnaceLegacy extends MegaMultiBlockBase<MTEMegaBlastFu
                 }
             }
         }
-        if (this.glassTier < VoltageIndex.UMV) {
-            for (MTEHatch mEnergyHatch : this.mExoticEnergyHatches) {
-                if (this.glassTier < mEnergyHatch.mTier) {
-                    errors.add(StructureErrorRegistry.ENERGY_TIER_EXCEED_GLASS);
-                    break;
-                }
+        for (MTEHatch mEnergyHatch : this.mExoticEnergyHatches) {
+            if (this.glassTier < mEnergyHatch.mTier) {
+                errors.add(StructureErrorRegistry.ENERGY_TIER_EXCEED_GLASS);
+                break;
             }
-            for (MTEHatchEnergy mEnergyHatch : this.mEnergyHatches) {
-                if (this.glassTier < mEnergyHatch.mTier) {
-                    errors.add(StructureErrorRegistry.ENERGY_TIER_EXCEED_GLASS);
-                    break;
-                }
+        }
+        for (MTEHatchEnergy mEnergyHatch : this.mEnergyHatches) {
+            if (this.glassTier < mEnergyHatch.mTier) {
+                errors.add(StructureErrorRegistry.ENERGY_TIER_EXCEED_GLASS);
+                break;
             }
         }
         if (errors.isEmpty()) {

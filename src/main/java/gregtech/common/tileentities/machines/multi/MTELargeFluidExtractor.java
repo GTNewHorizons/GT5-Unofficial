@@ -15,7 +15,6 @@ import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofCoil;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTStructureUtility.ofSolenoidCoil;
-import static gregtech.api.util.GTUtility.min;
 import static net.minecraft.util.EnumChatFormatting.RESET;
 import static net.minecraft.util.EnumChatFormatting.YELLOW;
 
@@ -40,7 +39,6 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -189,9 +187,8 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
                 continue;
             }
 
-            if (glassTier < VoltageIndex.UXV && energyHatch.getTierForStructure() > glassTier) {
-                errors
-                    .add(StructureErrors.glassTierNotEnough(min(VoltageIndex.UXV, energyHatch.getTierForStructure())));
+            if (energyHatch.getTierForStructure() > glassTier) {
+                errors.add(StructureErrors.glassTierNotEnough(energyHatch.getTierForStructure()));
                 return;
             }
         }

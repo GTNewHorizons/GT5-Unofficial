@@ -38,7 +38,6 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
-import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
@@ -191,7 +190,7 @@ public class MTEAlgaePond extends MTEExtendedPowerMultiBlockBase<MTEAlgaePond>
 
         if (!mEnergyHatches.isEmpty()) {
             int inputTier = (int) getInputVoltageTier();
-            if (glassTier < VoltageIndex.UXV && glassTier < inputTier) {
+            if (glassTier < inputTier) {
                 errors.add(StructureErrors.glassTierNotEnough(inputTier));
                 return;
             }

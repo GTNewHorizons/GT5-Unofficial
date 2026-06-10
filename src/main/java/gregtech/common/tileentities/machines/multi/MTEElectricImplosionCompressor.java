@@ -40,7 +40,6 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
-import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -234,7 +233,7 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
 
         List<MTEHatch> energyHatches = getExoticAndNormalEnergyHatchList();
         for (MTEHatch hatch : energyHatches) {
-            if (glassTier < VoltageIndex.UXV && hatch.mTier > glassTier) {
+            if (hatch.mTier > glassTier) {
                 errors.add(StructureErrorRegistry.ENERGY_TIER_EXCEED_GLASS);
                 break;
             }

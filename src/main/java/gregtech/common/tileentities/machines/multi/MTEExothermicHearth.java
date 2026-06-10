@@ -536,18 +536,16 @@ public class MTEExothermicHearth extends MTEExtendedPowerMultiBlockBase<MTEExoth
                 }
             }
         }
-        if (this.glassTier < VoltageIndex.UXV) {
-            for (MTEHatch mEnergyHatch : this.mExoticEnergyHatches) {
-                if (this.glassTier < mEnergyHatch.mTier) {
-                    errors.add(StructureErrorRegistry.ENERGY_TIER_EXCEED_GLASS);
-                    break;
-                }
+        for (MTEHatch mEnergyHatch : this.mExoticEnergyHatches) {
+            if (this.glassTier < mEnergyHatch.mTier) {
+                errors.add(StructureErrorRegistry.ENERGY_TIER_EXCEED_GLASS);
+                break;
             }
-            for (MTEHatchEnergy mEnergyHatch : this.mEnergyHatches) {
-                if (this.glassTier < mEnergyHatch.mTier) {
-                    errors.add(StructureErrorRegistry.ENERGY_TIER_EXCEED_GLASS);
-                    break;
-                }
+        }
+        for (MTEHatchEnergy mEnergyHatch : this.mEnergyHatches) {
+            if (this.glassTier < mEnergyHatch.mTier) {
+                errors.add(StructureErrorRegistry.ENERGY_TIER_EXCEED_GLASS);
+                break;
             }
         }
         if (errors.isEmpty()) {

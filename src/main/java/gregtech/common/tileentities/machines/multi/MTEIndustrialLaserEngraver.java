@@ -7,7 +7,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ENGRAVER_ACTI
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ENGRAVER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ENGRAVER_GLOW;
 import static gregtech.api.util.GTStructureUtility.*;
-import static gregtech.api.util.GTUtility.min;
 
 import java.util.HashMap;
 import java.util.List;
@@ -310,9 +309,8 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
         checkHasAnyOutput(errors);
         checkHasAnyInput(errors);
 
-        int requiredGlassTier = min(VoltageIndex.UXV, laserSource.mTier);
-        if (glassTier < requiredGlassTier) {
-            errors.add(StructureErrors.glassTierNotEnough(requiredGlassTier));
+        if (glassTier < laserSource.mTier) {
+            errors.add(StructureErrors.glassTierNotEnough(laserSource.mTier));
         }
         if (!errors.isEmpty()) return;
         findLaserRenderer(base.getWorld(), base.getXCoord(), base.getYCoord(), base.getZCoord());

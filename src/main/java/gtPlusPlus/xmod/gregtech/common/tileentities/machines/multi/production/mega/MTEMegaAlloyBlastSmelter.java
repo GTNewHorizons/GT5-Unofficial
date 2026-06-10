@@ -174,7 +174,7 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
             @NotNull
             @Override
             protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
-                if (glassTier < VoltageIndex.UXV && glassTier < GTUtility.getTier(recipe.mEUt)) {
+                if (glassTier < GTUtility.getTier(recipe.mEUt)) {
                     return CheckRecipeResultRegistry.insufficientMachineTier(GTUtility.getTier(recipe.mEUt));
                 }
                 return CheckRecipeResultRegistry.SUCCESSFUL;
@@ -220,12 +220,10 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
         checkHasAnyEnergy(errors);
         checkHasOutputHatch(errors);
         checkHasAnyInput(errors);
-        if (this.glassTier < VoltageIndex.UXV) {
-            for (MTEHatch hatchEnergy : getExoticAndNormalEnergyHatchList()) {
-                if (this.glassTier < hatchEnergy.mTier) {
-                    errors.add(StructureErrorRegistry.ENERGY_TIER_EXCEED_GLASS);
-                    break;
-                }
+        for (MTEHatch hatchEnergy : getExoticAndNormalEnergyHatchList()) {
+            if (this.glassTier < hatchEnergy.mTier) {
+                errors.add(StructureErrorRegistry.ENERGY_TIER_EXCEED_GLASS);
+                break;
             }
         }
         // Disallow lasers if the glass is below UV tier
