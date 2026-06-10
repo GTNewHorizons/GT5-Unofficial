@@ -4360,6 +4360,9 @@ public class GTUtility {
     }
 
     public static boolean isFlowingWater(Block block, World world, int x, int y, int z) {
+        if (isCOFHWater(block)) {
+            return world.getBlockMetadata(x, y, z) > 0;
+        }
         return block == Blocks.flowing_water || (isWater(block) && world.getBlockMetadata(x, y, z) > 0);
     }
 
