@@ -806,8 +806,8 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
         }
         if (aLogLevel > 0) {
             tList.add(
-                GTUtility.translate(
-                    mActive ? "GT5U.scanner.debug.machine_active" : "GT5U.scanner.debug.machine_inactive"));
+                GTUtility
+                    .translate(mActive ? "GT5U.scanner.debug.machine_active" : "GT5U.scanner.debug.machine_inactive"));
             if (!mHasEnoughEnergy) tList.add(GTUtility.translate("GT5U.scanner.debug.needs_power"));
         }
         if (joinedIc2Enet) tList.add(GTUtility.translate("GT5U.scanner.debug.ic2_enet"));
