@@ -30,8 +30,6 @@ public class ClientMetaManager implements DataManager.PacketDataManager, DataMan
         for (IClientMetaTracker tracker : ClientMetaTrackerRegistry.getAllTrackers()) {
             World theWorld = chunk.worldObj;
             LongSet blockList = tracker.getTrackedBlocksByChunk(chunk);
-
-            if (blockList == null) continue;
             buffer.putInt(blockList.size());
             for (long packedBlockPos : blockList) {
                 buffer.putLong(packedBlockPos);
@@ -41,6 +39,8 @@ public class ClientMetaManager implements DataManager.PacketDataManager, DataMan
                 Block current = theWorld.getBlock(x, y, z);
                 if (current instanceof IBlockWithClientMeta clientMetaBlock) {
                     buffer.putShort((short) clientMetaBlock.getClientMeta(theWorld, x, y, z));
+                } else {
+                    buffer.putShort((short) theWorld.getBlockMetadata(x, y, z));
                 }
             }
         }
@@ -48,20 +48,21 @@ public class ClientMetaManager implements DataManager.PacketDataManager, DataMan
 
     @Override
     public void readFromBuffer(Chunk chunk, int subChunkMask, boolean forceUpdate, ByteBuffer buffer) {
-        World theWorld = chunk.worldObj;
-
-        if (buffer.remaining() < 4) return;
-        int count = buffer.getInt();
-        for (int i = 0; i < count; i++) {
-            if (buffer.remaining() < 10) return; // 1 long + 1 short
-            long packedBlockPos = buffer.getLong();
-            int x = CoordinatePacker.unpackX(packedBlockPos);
-            int y = CoordinatePacker.unpackY(packedBlockPos);
-            int z = CoordinatePacker.unpackZ(packedBlockPos);
-            short meta = buffer.getShort();
-            Block current = theWorld.getBlock(x, y, z);
-            if (current instanceof IBlockWithClientMeta) {
-                theWorld.setBlockMetadataWithNotify(x, y, z, meta, 2);
+        // Loop for exactly the same time as the server does
+        for (IClientMetaTracker _ : ClientMetaTrackerRegistry.getAllTrackers()) {
+            World theWorld = chunk.worldObj;
+            int count = buffer.getInt();
+            for (int i = 0; i < count; i++) {
+                if (buffer.remaining() < 10) return; // 1 long + 1 short
+                long packedBlockPos = buffer.getLong();
+                int x = CoordinatePacker.unpackX(packedBlockPos);
+                int y = CoordinatePacker.unpackY(packedBlockPos);
+                int z = CoordinatePacker.unpackZ(packedBlockPos);
+                short meta = buffer.getShort();
+                Block current = theWorld.getBlock(x, y, z);
+                if (current instanceof IBlockWithClientMeta) {
+                    theWorld.setBlockMetadataWithNotify(x, y, z, meta, 2);
+                }
             }
         }
     }
