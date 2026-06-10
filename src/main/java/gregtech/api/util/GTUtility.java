@@ -1334,6 +1334,19 @@ public class GTUtility {
         return histogram;
     }
 
+    public static Object2LongOpenHashMap<FluidId> getFluidStackHistogram(Iterable<FluidStack> stacks) {
+        Object2LongOpenHashMap<FluidId> histogram = new Object2LongOpenHashMap<>();
+
+        if (stacks == null) return histogram;
+
+        for (FluidStack stack : stacks) {
+            if (stack == null || stack.getFluid() == null) continue;
+            histogram.addTo(FluidId.create(stack), stack.amount);
+        }
+
+        return histogram;
+    }
+
     public static Iterable<NBTTagCompound> getCompoundTagList(NBTTagCompound tag, String name) {
         return tag.getTagList(name, NBT.TAG_COMPOUND).tagList;
     }
@@ -4092,6 +4105,16 @@ public class GTUtility {
             NBTTagCompound nbt = nbt();
             return new FluidStack(fluid(), amount, nbt != null ? (NBTTagCompound) nbt.copy() : null);
         }
+
+        public boolean matches(FluidStack stack) {
+            if (fluid() != stack.getFluid()) return false;
+
+            return Objects.equals(nbt(), stack.tag);
+        }
+
+        public boolean matches(Fluid fluid) {
+            return fluid() == fluid;
+        }
     }
 
     public static int getPlasmaFuelValueInEUPerLiterFromMaterial(Materials material) {
@@ -4368,5 +4391,18 @@ public class GTUtility {
 
     public static boolean isSourceWater(Block block, World world, int x, int y, int z) {
         return isWater(block) && !isFlowingWater(block, world, x, y, z);
+    }
+
+    public static FluidStack[] splitFluidStack(FluidStack fluid, long amount) {
+        int size = (int) ((amount + Integer.MAX_VALUE - 1) / Integer.MAX_VALUE);
+        FluidStack[] result = new FluidStack[size];
+        for (int i = 0; i < size; i++) {
+            int a = (int) Math.min(amount, Integer.MAX_VALUE);
+            FluidStack tmp = fluid.copy();
+            tmp.amount = a;
+            result[i] = tmp;
+            amount -= a;
+        }
+        return result;
     }
 }
