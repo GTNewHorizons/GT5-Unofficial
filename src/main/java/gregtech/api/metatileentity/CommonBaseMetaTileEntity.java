@@ -359,7 +359,7 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
 
     protected void addProfilingInformation(List<String> tList) {
         if (mTickDisabled) {
-            tList.add("Tick Disabled");
+            tList.add(GTUtility.translate("GT5U.scanner.debug.tick_disabled"));
         } else if (hasTimeStatisticsStarted) {
             double tAverageTime = 0;
             double tWorstTime = 0;
@@ -379,23 +379,22 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
             int samples = mTimeStatistics.length - amountOfZero;
             if (samples > 0) {
                 tList.add(
-                    "Average CPU load of ~" + formatNumber(tAverageTime / samples)
-                        + "ns over "
-                        + formatNumber(samples)
-                        + " ticks with worst time of "
-                        + formatNumber(tWorstTime)
-                        + "ns.");
+                    GTUtility.translate(
+                        "GT5U.scanner.debug.tick_stats",
+                        formatNumber(tAverageTime / samples),
+                        formatNumber(samples),
+                        formatNumber(tWorstTime)));
             }
         } else {
             startTimeStatistics();
-            tList.add("Just started tick time statistics.");
+            tList.add(GTUtility.translate("GT5U.scanner.debug.tick_stats_started"));
         }
         if (mLagWarningCount > 0) {
             tList.add(
-                "Caused " + (mLagWarningCount >= 10 ? "more than 10" : mLagWarningCount)
-                    + " Lag Spike Warnings (anything taking longer than "
-                    + GregTechAPI.MILLISECOND_THRESHOLD_UNTIL_LAG_WARNING
-                    + "ms) on the Server.");
+                GTUtility.translate(
+                    "GT5U.scanner.debug.lag_warnings",
+                    mLagWarningCount >= 10 ? "more than 10" : mLagWarningCount,
+                    GregTechAPI.MILLISECOND_THRESHOLD_UNTIL_LAG_WARNING));
         }
     }
 
