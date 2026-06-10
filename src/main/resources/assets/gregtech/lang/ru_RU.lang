@@ -3327,6 +3327,7 @@ GT5U.scanner.debug.tick_disabled=Тик отключён
 GT5U.scanner.debug.tick_stats_started=Тик-статистика только что запущена.
 GT5U.scanner.debug.tick_stats=Средняя нагрузка ~§6%s§rнс за §6%s§r тиков, худший результат: §6%s§rнс.
 GT5U.scanner.debug.lag_warnings=Вызвано %s предупреждений о лаг-спайке (дольше %s мс) на сервере.
+GT5U.scanner.debug.lag_warnings_many=Вызвано более 10 предупреждений о лаг-спайке (дольше %s мс) на сервере.
 GT5U.scanner.debug.accessible=Доступно для вас
 GT5U.scanner.debug.not_accessible=§cНедоступно§r для вас
 GT5U.scanner.debug.sound_requests=Зафиксировано §6%s§r звуковых запросов за §6%s§r тиков.

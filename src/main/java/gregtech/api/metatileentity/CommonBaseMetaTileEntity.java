@@ -392,8 +392,10 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
         if (mLagWarningCount > 0) {
             tList.add(
                 GTUtility.translate(
-                    "GT5U.scanner.debug.lag_warnings",
-                    mLagWarningCount >= 10 ? "more than 10" : mLagWarningCount,
+                    mLagWarningCount >= 10 ? "GT5U.scanner.debug.lag_warnings_many"
+                        : "GT5U.scanner.debug.lag_warnings",
+                    mLagWarningCount >= 10 ? GregTechAPI.MILLISECOND_THRESHOLD_UNTIL_LAG_WARNING
+                        : mLagWarningCount,
                     GregTechAPI.MILLISECOND_THRESHOLD_UNTIL_LAG_WARNING));
         }
     }

@@ -7202,6 +7202,7 @@ GT5U.scanner.debug.tick_disabled=Tick Disabled
 GT5U.scanner.debug.tick_stats_started=Just started tick time statistics.
 GT5U.scanner.debug.tick_stats=Average CPU load of ~§6%s§rns over §6%s§r ticks with worst time of §6%s§rns.
 GT5U.scanner.debug.lag_warnings=Caused %s Lag Spike Warnings (anything taking longer than %sms) on the Server.
+GT5U.scanner.debug.lag_warnings_many=Caused more than 10 Lag Spike Warnings (anything taking longer than %sms) on the Server.
 GT5U.scanner.debug.accessible=Is accessible for you
 GT5U.scanner.debug.not_accessible=Is §cnot§r accessible for you
 GT5U.scanner.debug.sound_requests=Recorded §6%s§r sound requests in §6%s§r ticks.
