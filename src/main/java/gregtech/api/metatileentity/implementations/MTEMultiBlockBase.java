@@ -793,9 +793,9 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                         }
                         mEfficiencyIncrease = 0;
                         mLastWorkingTick = mTotalRunTime;
-                        if (!isOutputAllItems) {
+                        if (!isOutputAllItems && protectsExcessItem()) {
                             stopMachine(ShutDownReasonRegistry.ITEM_OUTPUT_FAILED);
-                        } else if (!isOutputAllFluids) {
+                        } else if (!isOutputAllFluids && protectsExcessFluid()) {
                             stopMachine(ShutDownReasonRegistry.FLUID_OUTPUT_FAILED);
                         } else if (aBaseMetaTileEntity.isAllowedToWork()) {
                             checkRecipe();
