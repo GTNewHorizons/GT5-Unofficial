@@ -1549,8 +1549,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
                         } else if (GTModHandler.useSolderingIron(tCurrentItem, aPlayer)) {
                             GTUtility.sendChatTrans(
                                 aPlayer,
-                                toggleStrongRedstone(wrenchingSide)
-                                    ? "GT5U.chat.machine.redstone_output_set.strong"
+                                toggleStrongRedstone(wrenchingSide) ? "GT5U.chat.machine.redstone_output_set.strong"
                                     : "GT5U.chat.machine.redstone_output_set.weak",
                                 new ChatComponentTranslation(GTUtility.getUnlocalizedSideName(wrenchingSide)));
                             sendSoundToPlayers(SoundResource.IC2_TOOLS_BATTERY_USE, 3.0F, -1);
