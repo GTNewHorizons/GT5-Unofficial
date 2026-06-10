@@ -400,7 +400,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         if (side == ForgeDirection.UNKNOWN) return;
 
         final int ordinalSide = side.ordinal();
-        if (mSidedRedstone[ordinalSide] != cappedStrength || (mStrongRedstone & (1 << ordinalSide)) > 0) {
+        if (mSidedRedstone[ordinalSide] != cappedStrength) {
             mSidedRedstone[ordinalSide] = cappedStrength;
             issueBlockUpdate();
             scheduleTexturePacket();
