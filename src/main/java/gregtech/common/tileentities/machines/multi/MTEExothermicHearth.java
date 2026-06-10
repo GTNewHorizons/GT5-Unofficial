@@ -60,7 +60,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatch;
-import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -536,13 +535,7 @@ public class MTEExothermicHearth extends MTEExtendedPowerMultiBlockBase<MTEExoth
                 }
             }
         }
-        for (MTEHatch mEnergyHatch : this.mExoticEnergyHatches) {
-            if (this.glassTier < mEnergyHatch.mTier) {
-                errors.add(StructureErrorRegistry.ENERGY_TIER_EXCEED_GLASS);
-                break;
-            }
-        }
-        for (MTEHatchEnergy mEnergyHatch : this.mEnergyHatches) {
+        for (MTEHatch mEnergyHatch : this.getExoticAndNormalEnergyHatchList()) {
             if (this.glassTier < mEnergyHatch.mTier) {
                 errors.add(StructureErrorRegistry.ENERGY_TIER_EXCEED_GLASS);
                 break;

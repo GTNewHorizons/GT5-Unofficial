@@ -412,7 +412,6 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
             .addInfo("Glass shell has to be Tier - 3 of the highest capacitor tier")
             .addTecTechHatchInfo()
             .addMinGlassForLaser(VoltageIndex.UV)
-            .addGlassEnergyLimitInfo()
             .addInfo("Add more or better capacitors to increase capacity")
             .addSeparator()
             .addInfo("Wireless mode can be enabled by right clicking with a screwdriver")
