@@ -30,7 +30,12 @@ public class ClientMetaManager implements DataManager.PacketDataManager, DataMan
         for (IClientMetaTracker tracker : ClientMetaTrackerRegistry.getAllTrackers()) {
             World theWorld = chunk.worldObj;
             LongSet blockList = tracker.getTrackedBlocksByChunk(chunk);
-            buffer.putInt(blockList.size());
+            if (blockList == null) {
+                buffer.putInt(0);
+                continue;
+            } else {
+                buffer.putInt(blockList.size());
+            }
             for (long packedBlockPos : blockList) {
                 buffer.putLong(packedBlockPos);
                 int x = CoordinatePacker.unpackX(packedBlockPos);
@@ -53,7 +58,6 @@ public class ClientMetaManager implements DataManager.PacketDataManager, DataMan
             World theWorld = chunk.worldObj;
             int count = buffer.getInt();
             for (int i = 0; i < count; i++) {
-                if (buffer.remaining() < 10) return; // 1 long + 1 short
                 long packedBlockPos = buffer.getLong();
                 int x = CoordinatePacker.unpackX(packedBlockPos);
                 int y = CoordinatePacker.unpackY(packedBlockPos);
