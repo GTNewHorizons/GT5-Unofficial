@@ -23,10 +23,13 @@ import static gregtech.api.GregTechAPI.sBlockCasingsWindmill;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_STEAM_MACERATOR;
 
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import javax.annotation.Nonnull;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -38,6 +41,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import com.gtnewhorizon.structurelib.StructureLibAPI;
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
@@ -56,9 +60,13 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.interfaces.tileentity.IOverclockDescriptionProvider;
+import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
 import gregtech.api.modularui2.GTGuiTheme;
 import gregtech.api.modularui2.GTGuiThemes;
+import gregtech.api.objects.overclockdescriber.OverclockDescriber;
+import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
@@ -68,18 +76,21 @@ import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
+import gregtech.nei.RecipeDisplayInfo;
 
-public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill> implements ISurvivalConstructable {
+public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
+    implements ISurvivalConstructable, IOverclockDescriptionProvider {
 
     /*
-     * TODO: add custom recipes system
-     * TODO: NEI handler
+     * TODO: add custom recipes system (maybe)
+     * TODO: improve overclock describer
      * TODO: possible wind rework
      * TODO: textures
      * TODO: add block names to lang
-     * TODO: add custom item output bus (and possibly input)
+     * TODO: add custom item output bus (maybe) (and possibly input)
      * TODO: world gen (???)
      * TODO: clean up class
      */
@@ -116,12 +127,18 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill> implemen
     private static final int MILLSTONE_META = 4;
     private static final int MIXER_META = 5;
 
+    private static final int RECIPE_DURATION_MULTI = 4;
+
+    private final OverclockDescriber overclockDescriber;
+
     public MTEWindmill(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
+        this.overclockDescriber = createOverclockDescriber();
     }
 
     private MTEWindmill(String aName) {
         super(aName);
+        this.overclockDescriber = createOverclockDescriber();
     }
 
     private static final IStructureElement<MTEWindmill> DISPENSER_OR_CLAY = new IStructureElement<>() {
@@ -158,46 +175,6 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill> implemen
             AutoPlaceEnvironment env) {
             return BlocksToPlace
                 .create(new ItemStack(Blocks.dispenser, 1, 0), new ItemStack(Blocks.hardened_clay, 1, 0));
-        }
-    };
-
-    private static final IStructureElement<MTEWindmill> HOUSING = new IStructureElement<>() {
-
-        @Override
-        public boolean check(MTEWindmill windmill, World world, int x, int y, int z) {
-            if (world.getBlock(x, y, z) == sBlockCasingsWindmill) {
-                int meta = world.getBlockMetadata(x, y, z);
-
-                if (meta == MILLSTONE_META) {
-                    windmill.mode = modes.grinder;
-                    return true;
-                }
-                if (meta == MIXER_META) {
-                    windmill.mode = modes.mixer;
-                    return true;
-                }
-
-            }
-            return false;
-        }
-
-        @Override
-        public boolean spawnHint(MTEWindmill windmill, World world, int x, int y, int z, ItemStack trigger) {
-            StructureLibAPI.hintParticle(world, x, y, z, sBlockCasingsWindmill, MILLSTONE_META);
-            return true;
-        }
-
-        @Override
-        public boolean placeBlock(MTEWindmill windmill, World world, int x, int y, int z, ItemStack trigger) {
-            return world.setBlock(x, y, z, sBlockCasingsWindmill, MILLSTONE_META, 3);
-        }
-
-        @Override
-        public BlocksToPlace getBlocksToPlace(MTEWindmill t, World world, int x, int y, int z, ItemStack trigger,
-            AutoPlaceEnvironment env) {
-            return BlocksToPlace.create(
-                new ItemStack((Block) ofBlock(sBlockCasingsWindmill, MILLSTONE_META), 1, 0),
-                new ItemStack((Block) ofBlock(sBlockCasingsWindmill, MIXER_META), 1, 0));
         }
     };
 
@@ -285,7 +262,11 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill> implemen
             }
         })
         .addElement('a', ofBlock(sBlockCasingsWindmill, 0))
-        .addElement('h', HOUSING)
+        .addElement(
+            'h',
+            ofChain(
+                onElementPass(t -> t.mode = modes.grinder, ofBlock(sBlockCasingsWindmill, MILLSTONE_META)),
+                onElementPass(t -> t.mode = modes.mixer, ofBlock(sBlockCasingsWindmill, MIXER_META))))
         // TODO: maybe look at refactoring this
         .addElement(
             's',
@@ -351,7 +332,6 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill> implemen
 
     @Override
     public boolean onRunningTick(ItemStack aStack) {
-        if (this.mMaxProgresstime > 0) this.mProgresstime++;
         if (!this.rotorBlock.rotorSlot.isEmpty()) this.setRotorDamage(this.rotorBlock, this.rotorBlock.getGrindPower());
         return this.rotorBlock.getGrindPower() > 0;
     }
@@ -367,64 +347,76 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill> implemen
         return true;
     }
 
-    // TODO: redo this function/clean up
     @Override
-    public @NotNull CheckRecipeResult checkProcessing() {
-        ItemStack[] itemStack = getInputs();
-        if (itemStack[0].getItem() == null) return CheckRecipeResultRegistry.NO_RECIPE;
-
-        if (getWindLevel(this.rotorBlock) == windLevel.NON_EXISTENT) {
-            return CheckRecipeResultRegistry.WIND_LOW;
-        } else if (getWindLevel(this.rotorBlock) == windLevel.TOO_STRONG) {
-            return CheckRecipeResultRegistry.WIND_HIGH;
-        }
-
-        if (this.mOutputItems == null) this.mOutputItems = new ItemStack[2];
-
-        GTRecipe tRecipe = switch (this.mode) {
-            case grinder -> RecipeMaps.maceratorRecipes.findRecipeQuery()
-                .caching(false)
-                .items(itemStack)
-                .voltage(V[1])
-                .find();
-            case mixer -> RecipeMaps.mixerRecipes.findRecipeQuery()
-                .caching(false)
-                .items(itemStack)
-                .voltage(V[1])
-                .find();
+    protected @NotNull CheckRecipeResult doCheckRecipe() {
+        if (this.rotorBlock.rotorSlot.isEmpty()) return CheckRecipeResultRegistry.NO_TURBINE_FOUND;
+        processingLogic.setInputItems(getInputs());
+        return switch (getWindLevel(this.rotorBlock)) {
+            case NON_EXISTENT -> CheckRecipeResultRegistry.WIND_LOW;
+            case TOO_STRONG -> CheckRecipeResultRegistry.WIND_HIGH;
+            default -> processingLogic.process();
         };
-        if (tRecipe == null) {
-            return CheckRecipeResultRegistry.NO_RECIPE;
-        }
+    }
 
-        int parallels = getParallels(this.rotorBlock);
-        if (tRecipe.getOutput(0) != null) {
-            // Decrease input stack by appropriate amount (Not always 1)
-            for (int i = 0; i < parallels; i++) {
-                if (!tRecipe.isRecipeInputEqual(true, null, itemStack)) {
-                    parallels = i;
-                    break;
-                }
-            }
-            this.updateSlots();
-            this.mOutputItems[0] = tRecipe.getOutput(0);
-            int amount = this.mOutputItems[0].stackSize * parallels;
+    @Override
+    protected ProcessingLogic createProcessingLogic() {
+        return new ProcessingLogic() {
 
-            // Split ItemStack --by gtpp
-            List<ItemStack> splitStacks = new ArrayList<>();
-            while (amount > this.mOutputItems[0].getMaxStackSize()) {
-                ItemStack tmp = this.mOutputItems[0].copy();
-                tmp.stackSize = this.mOutputItems[0].getMaxStackSize();
-                amount -= this.mOutputItems[0].getMaxStackSize();
-                splitStacks.add(tmp);
+            @Override
+            @Nonnull
+            protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
+                return OverclockCalculator.ofNoOverclock(recipe)
+                    .setDurationModifier(RECIPE_DURATION_MULTI);
             }
-            ItemStack tmp = this.mOutputItems[0].copy();
-            tmp.stackSize = amount;
-            splitStacks.add(tmp);
-            this.mOutputItems = splitStacks.toArray(new ItemStack[0]);
-        }
-        this.mMaxProgresstime = tRecipe.mDuration * 2 * MAX_PARALLELS;
-        return CheckRecipeResultRegistry.SUCCESSFUL;
+        }.noRecipeCaching()
+            .setMaxParallelSupplier(this::getParallels);
+    }
+
+    @Override
+    protected void setProcessingLogicPower(ProcessingLogic logic) {
+        logic.setAvailableVoltage(V[1]);
+        logic.setAvailableAmperage(MAX_PARALLELS);
+        logic.setAmperageOC(false);
+        logic.setMaxTierSkips(0);
+    }
+
+    public RecipeMap<?> getRecipeMap() {
+        return switch (this.mode) {
+            case mixer -> RecipeMaps.mixerRecipes;
+            case grinder -> RecipeMaps.maceratorRecipes;
+        };
+    }
+
+    @Nonnull
+    @Override
+    public Collection<RecipeMap<?>> getAvailableRecipeMaps() {
+        return Arrays.asList(RecipeMaps.mixerRecipes, RecipeMaps.maceratorRecipes);
+    }
+
+    @Override
+    public @Nullable OverclockDescriber getOverclockDescriber() {
+        return overclockDescriber;
+    }
+
+    private static OverclockDescriber createOverclockDescriber() {
+        return new OverclockDescriber((byte) 1) {
+
+            @Override
+            public String getTierString() {
+                return StatCollector.translateToLocal("GT5U.nei.display.windmill");
+            }
+
+            @Override
+            public OverclockCalculator createCalculator(OverclockCalculator template, GTRecipe recipe) {
+                return OverclockCalculator.ofNoOverclock(recipe)
+                    .setDurationModifier(RECIPE_DURATION_MULTI);
+            }
+
+            @Override
+            public void drawEnergyInfo(RecipeDisplayInfo recipeInfo) {
+                return;
+            }
+        };
     }
 
     // probably don't need, can probably just replace call with mInventory
@@ -550,7 +542,6 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill> implemen
                 .translateToLocalFormatted("BW.infoData.wind_mill.grind_power", this.rotorBlock.getGrindPower()) };
     }
 
-    // TODO: new textures for controller maybe
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
         int aColorIndex, boolean aActive, boolean aRedstone) {
@@ -587,8 +578,8 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill> implemen
             true);
     }
 
-    private int getParallels(TileEntityRotorBlock rotorBlock) {
-        windLevel wind = getWindLevel(rotorBlock);
+    private int getParallels() {
+        windLevel wind = getWindLevel(this.rotorBlock);
         if (invalidWindLevel()) return 0;
         return (int) Math.pow(2, wind.ordinal());
     }
