@@ -48,8 +48,7 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
     // mInventoryChanged: whether the inventory had changed in the previous tick,
     // does not record direct modification to mInventory
     // mTickDisabled: whether this block is currently or pending to be unregistered from loaded tile entity list.
-    protected boolean mNeedsUpdate = true, mNeedsTileUpdate = false,
-        mInventoryChanged = false, mTickDisabled = false;
+    protected boolean mNeedsUpdate = true, mNeedsTileUpdate = false, mInventoryChanged = false, mTickDisabled = false;
 
     private boolean mIgnoreNextUnload = false;
 

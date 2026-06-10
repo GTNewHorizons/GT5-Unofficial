@@ -371,6 +371,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
 
     /**
      * Toggles the specified side for strong redstone
+     * 
      * @return whether the side is emitting strong redstone
      */
     public final boolean toggleStrongRedstone(ForgeDirection side) {
@@ -409,7 +410,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
 
     @Override
     public void setStrongOutputRedstoneSignal(ForgeDirection side, byte strength) {
-        setStrongRedstone((byte)(mStrongRedstone | side.flag));
+        setStrongRedstone((byte) (mStrongRedstone | side.flag));
         setOutputRedstoneSignal(side, strength);
     }
 
