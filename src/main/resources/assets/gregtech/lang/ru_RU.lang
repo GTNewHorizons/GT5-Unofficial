@@ -1534,7 +1534,7 @@ GT5U.multiblock.scanner.totalRunMinutes=Общее время работы: §6%
 GT5U.multiblock.scanner.totalRunSeconds=Общее время работы: §6%s§r сек
 GT5U.multiblock.scanner.totalRunTicks=Общее время работы: §6%s§r тиков
 GT5U.multiblock.startup=Запуск...
-GT5U.multiblock.recipesDone=Рецептов выполнено
+GT5U.multiblock.scanner.recipesDone=Рецептов выполнено: §a%s
 GT5U.multiblock.scanner.usage=Сейчас используется: §c%s §rEU/t
 
 # NEI recipe handlers
