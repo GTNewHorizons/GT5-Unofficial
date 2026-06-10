@@ -220,12 +220,6 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
         checkHasAnyEnergy(errors);
         checkHasOutputHatch(errors);
         checkHasAnyInput(errors);
-        for (MTEHatch hatchEnergy : getExoticAndNormalEnergyHatchList()) {
-            if (this.glassTier < hatchEnergy.mTier) {
-                errors.add(StructureErrorRegistry.ENERGY_TIER_EXCEED_GLASS);
-                break;
-            }
-        }
         // Disallow lasers if the glass is below UV tier
         if (glassTier < VoltageIndex.UV) {
             for (MTEHatch hatchEnergy : getExoticEnergyHatches()) {
@@ -292,7 +286,6 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
             .addSeparator()
             .addTecTechHatchInfo()
             .addMinGlassForLaser(VoltageIndex.UV)
-            .addGlassEnergyLimitInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(11, 20, 11, false)
             .addController("Front center")
