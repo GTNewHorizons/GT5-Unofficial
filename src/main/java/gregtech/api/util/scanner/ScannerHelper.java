@@ -193,8 +193,7 @@ public class ScannerHelper {
         String dashes = "-".repeat(15);
         // Set AQUA style explicitly on the translation sibling so it inherits the title color.
         // Without this, the §r reset in the root text would leave the sibling unstyled (white).
-        IChatComponent titleText = transComp(name)
-            .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.AQUA));
+        IChatComponent titleText = transComp(name).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.AQUA));
         return new ChatComponentText(
             EnumChatFormatting.AQUA.toString() + EnumChatFormatting.STRIKETHROUGH
                 + dashes
