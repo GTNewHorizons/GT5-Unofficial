@@ -205,10 +205,13 @@ public class VoidProtectionHelper {
             }
         }
 
-        if (protectExcessFluid && fluidOutputs.length > 0 && !machine.canDumpFluidToME()) {
-            maxParallel = Math.min(calculateMaxFluidParallels(), maxParallel);
-            if (maxParallel <= 0) {
-                isFluidFull = true;
+        if (protectExcessFluid && fluidOutputs.length > 0) {
+            List<GTUtility.FluidId> outputIds = GTDataUtils.mapToList(fluidOutputs, GTUtility.FluidId::create);
+            if (!machine.canDumpFluidToME(outputIds)) {
+                maxParallel = Math.min(calculateMaxFluidParallels(), maxParallel);
+                if (maxParallel <= 0) {
+                    isFluidFull = true;
+                }
             }
         }
     }

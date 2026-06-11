@@ -418,14 +418,6 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>, F extends MEFi
         return getCacheCapacity() - getCachedAmount();
     }
 
-    public boolean canAcceptAllForOutput() {
-        return true;
-    }
-
-    public boolean canAcceptAllForRecipe() {
-        return !shouldCheck() && hasAvailableSpace();
-    }
-
     public long getCachedAmount() {
         return cache.getTotal();
     }

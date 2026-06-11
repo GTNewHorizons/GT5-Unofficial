@@ -341,12 +341,12 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus
         return false;
     }
 
-    public boolean canAcceptAllForRecipe() {
-        return provider.canAcceptAllForRecipe();
+    public boolean shouldCheck() {
+        return provider.shouldCheck();
     }
 
-    public boolean canAcceptAllForOutput() {
-        return provider.canAcceptAllForOutput();
+    public boolean hasAvailableSpace() {
+        return provider.hasAvailableSpace();
     }
 
     @Override

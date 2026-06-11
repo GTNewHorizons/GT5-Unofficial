@@ -154,18 +154,12 @@ public class MTEHatchOutputME extends MTEHatchOutput
         return 0;
     }
 
-    /**
-     * Check if the internal cache can still fit more fluids in it for a recipe check
-     */
-    public boolean canAcceptAllForRecipe() {
-        return provider.canAcceptAllForRecipe();
+    public boolean shouldCheck() {
+        return provider.shouldCheck();
     }
 
-    /**
-     * Check if there is space for fluids or if we can overfill.
-     */
-    public boolean canAcceptAllForOutput() {
-        return provider.canAcceptAllForOutput();
+    public boolean hasAvailableSpace() {
+        return provider.hasAvailableSpace();
     }
 
     @Override

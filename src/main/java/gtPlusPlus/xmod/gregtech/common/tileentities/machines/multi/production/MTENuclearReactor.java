@@ -244,7 +244,7 @@ public class MTENuclearReactor extends GTPPMultiBlockBase<MTENuclearReactor> imp
         mCasing = 0;
         if (!checkPiece(mName, 3, 3, 0, errors)) return;
         checkCasingMin(errors, mCasing, 27);
-        if (mOutputHatches.size() < 4 && !canDumpFluidToME()) {
+        if (mOutputHatches.size() < 4 && !hasDumpableMEOutputHatch()) {
             errors
                 .add(StructureErrors.hatchCount(ErrorType.TOO_FEW, HatchElement.OutputHatch, mOutputHatches.size(), 4));
         }

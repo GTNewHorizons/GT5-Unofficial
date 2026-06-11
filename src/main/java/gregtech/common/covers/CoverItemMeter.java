@@ -108,9 +108,8 @@ public class CoverItemMeter extends Cover {
             used = dc.getProgresstime();
         } else if (mte instanceof MTEHatchOutputBusME meoutputbus) {
             // todo for cache mode
-            if (meoutputbus.canAcceptAllForOutput()) {
+            if (meoutputbus.hasAvailableSpace()) {
                 max = 64;
-                used = 0;
             }
         } else {
             final int[] slots = slot >= 0 ? new int[] { slot } : tileEntity.getAccessibleSlotsFromSide(ordinalSide);
