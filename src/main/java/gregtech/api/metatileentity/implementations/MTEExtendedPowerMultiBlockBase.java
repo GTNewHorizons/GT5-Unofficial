@@ -16,6 +16,7 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.util.ExoticEnergyInputHelper;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import gregtech.common.items.MetaGeneratedTool01;
 
 /**
  * Multiblock base class that allows machine to use power over int.
@@ -56,6 +57,37 @@ public abstract class MTEExtendedPowerMultiBlockBase<T extends MTEEnhancedMultiB
             if (!drainEnergyInput(getActualEnergyUsage())) {
                 stopMachine(ShutDownReasonRegistry.POWER_LOSS);
                 return false;
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public boolean doRandomMaintenanceDamage() {
+        if (!isCorrectMachinePart(getControllerSlot())) {
+            stopMachine(ShutDownReasonRegistry.NO_MACHINE_PART);
+            return false;
+        }
+        if (shouldCheckMaintenance() && getRepairStatus() == 0) {
+            stopMachine(ShutDownReasonRegistry.NO_REPAIR);
+            return false;
+        }
+        if (mRuntime++ > 1000) {
+            mRuntime = 0;
+            if (shouldCheckMaintenance() && getBaseMetaTileEntity().getRandomNumber(6000) == 0) {
+                causeMaintenanceIssue();
+            }
+            if (mInventory[1] != null && getBaseMetaTileEntity().getRandomNumber(2) == 0
+                && !mInventory[1].getUnlocalizedName()
+                    .startsWith("gt.blockmachines.basicmachine.")) {
+                if (mInventory[1].getItem() instanceof MetaGeneratedTool01 metaGeneratedTool) {
+                    metaGeneratedTool.doDamage(
+                        mInventory[1],
+                        (long) getDamageToComponent(getControllerSlot()) * (long) Math.min(
+                            Math.abs(lEUt) / this.damageFactorLow,
+                            Math.pow(Math.abs(lEUt), this.damageFactorHigh)));
+                    if (mInventory[1].stackSize == 0) mInventory[1] = null;
+                }
             }
         }
         return true;
