@@ -18,7 +18,7 @@ public class AugmentBuilder extends ArmorPartBuilder<AugmentBuilder> {
     }
 
     private AugmentCategory category = AugmentCategory.Protection;
-    private int minimumCore = 0;
+    private int minimumCoreTier = 0;
     /// The maximum number of times this augment can be installed.
     private int maxStack = 1;
     private EnumRarity rarity;
@@ -33,21 +33,16 @@ public class AugmentBuilder extends ArmorPartBuilder<AugmentBuilder> {
         return this;
     }
 
-    public AugmentBuilder setMinimumCore(int minimumCore) {
+    public AugmentBuilder setMinimumCoreTier(int minimumCoreTier) {
         onMutated();
-        this.minimumCore = minimumCore;
+        this.minimumCoreTier = minimumCoreTier;
+        rarity = EnumRarity.values()[Math.min(minimumCoreTier - 1, 3)];
         return this;
     }
 
     public AugmentBuilder setMaxStack(int maxStack) {
         onMutated();
         this.maxStack = maxStack;
-        return this;
-    }
-
-    public AugmentBuilder setRarity(EnumRarity rarity) {
-        onMutated();
-        this.rarity = rarity;
         return this;
     }
 
@@ -71,8 +66,8 @@ public class AugmentBuilder extends ArmorPartBuilder<AugmentBuilder> {
         return category;
     }
 
-    public int getMinimumCore() {
-        return minimumCore;
+    public int getMinimumCoreTier() {
+        return minimumCoreTier;
     }
 
     public int getMaxStack() {

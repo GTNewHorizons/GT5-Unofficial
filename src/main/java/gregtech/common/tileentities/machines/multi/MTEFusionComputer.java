@@ -485,10 +485,7 @@ public abstract class MTEFusionComputer extends MTEEnhancedMultiBlockBase<MTEFus
                 + formatNumber(plasmaOut)
                 + EnumChatFormatting.RESET
                 + "L/t",
-            StatCollector.translateToLocal("GT5U.multiblock.recipesDone") + ": "
-                + EnumChatFormatting.GREEN
-                + recipesDone
-                + EnumChatFormatting.RESET };
+            GTUtility.translate("GT5U.multiblock.recipesDone", recipesDone) };
     }
 
     @Override

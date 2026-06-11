@@ -996,7 +996,7 @@ fog.upgrade.text.10=Adds a x2 multiplier to maximum parallel.
 fog.upgrade.text.11=Unlocks the Heliofusion Exoticizer module and quark gluon plasma creation. At this point this module is not affected by any other multipliers or bonuses from other upgrades.
 fog.upgrade.text.12=Improves the fuel consumption -> heat conversion formula. Improved formula: Power Forge Heat = log_1.12(Stellar Fuel Units/sec) * 1000 + 12601, Melting Core Heat = log1.18(Stellar Fuel Units/sec) * 1000 + 12601
 fog.upgrade.text.13=Improves the formula of SA to: Multiplier = 1 + (Stellar Fuel Units/sec) / 5
-fog.upgrade.text.14=Improves the OC formula from 4/2 OCs to 4/2.3 OCs.
+fog.upgrade.text.14=Improves the OC formula from 2/4 OCs to 2.3/4 OCs.
 fog.upgrade.text.15=Allows the Heliothermal Plasma Fabricator to process multi step plasmas. Tier restriction still applies.
 fog.upgrade.text.16=Allows the Helioflare Power Forge to receive the full benefits of the Helioflux Melting Core upgrade path.
 fog.upgrade.text.17=Increases the cap of EBF heat bonuses to 30,000K.

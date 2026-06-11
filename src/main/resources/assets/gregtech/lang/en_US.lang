@@ -3739,7 +3739,7 @@ GT5U.multiblock.coilLevel=Heating Coil Level
 GT5U.multiblock.preciseassemblercasing=Voltage limited by casing tier: %s
 GT5U.multiblock.runningMode=§eRunning Mode:
 GT5U.multiblock.startup=Starting up...
-GT5U.multiblock.recipesDone=Recipes Finished
+GT5U.multiblock.recipesDone=Recipes Finished: §a%s
 
 
 GT5U.multiblock.scanner.pollution=Pollution reduced to: §a%s§r%%
@@ -3752,7 +3752,6 @@ GT5U.large_boiler.scanner.fuel_combination=Fuel Combination: §e%d§r/§e%d§r f
 GT5U.multiblock.scanner.problems=Problems: §c%s
 GT5U.multiblock.scanner.mei=Max Energy Input: §e%s §rEU/t (*2A) Tier: §e%s
 GT5U.multiblock.scanner.usage=Currently uses: §c%s §rEU/t
-GT5U.multiblock.scanner.recipesDone=Recipes Finished: §a%s
 GT5U.multiblock.scanner.totalRunHours=Total runtime: §6%s§r hours
 GT5U.multiblock.scanner.totalRunMinutes=Total runtime: §6%s§r minutes
 GT5U.multiblock.scanner.totalRunSeconds=Total runtime: §6%s§r seconds
