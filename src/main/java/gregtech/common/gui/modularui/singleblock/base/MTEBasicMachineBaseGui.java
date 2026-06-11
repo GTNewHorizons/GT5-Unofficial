@@ -87,11 +87,7 @@ public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> extends MTETiered
             .childPadding((2 * SLOT_SIZE - properties.progressBarWidthMUI2) / 2)
             .mainAxisAlignment(Alignment.MainAxis.CENTER)
             .child(createItemInputSlots(panel, syncManager))
-            .child(
-                Flow.column()
-                    .coverChildren()
-                    .child(createProgressBar(panel, syncManager))
-                    .child(createErrorIcon(panel, syncManager)))
+            .child(createProgressBar(panel, syncManager))
             .child(createItemOutputSlots(panel, syncManager));
     }
 
@@ -223,7 +219,14 @@ public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> extends MTETiered
 
     @Override
     protected ParentWidget<?> createBottomSection(ModularPanel panel, PanelSyncManager syncManager) {
-        return super.createBottomSection(panel, syncManager).child(createChargerSlot().horizontalCenter());
+        return super.createBottomSection(panel, syncManager).child(
+            Flow.column()
+                .coverChildren()
+                .decoration()
+                .bottomRel(0)
+                .horizontalCenter()
+                .child(createErrorIcon(panel, syncManager))
+                .child(createChargerSlot()));
     }
 
     @Override
@@ -268,7 +271,6 @@ public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> extends MTETiered
 
         return new DynamicDrawable(
             () -> stutteringSyncer.getBoolValue() ? GTGuiTextures.OVERLAY_POWER_LOSS : IDrawable.EMPTY).asWidget()
-                .decoration()
                 .size(18)
                 .tooltipAutoUpdate(true)
                 .tooltipShowUpTimer(TOOLTIP_DELAY)
