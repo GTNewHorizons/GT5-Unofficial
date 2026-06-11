@@ -2462,7 +2462,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         }
 
         if (recipesDone > 0) {
-            info.add(GTUtility.translate("GT5U.multiblock.scanner.recipesDone", formatNumber(recipesDone)));
+            info.add(GTUtility.translate("GT5U.multiblock.recipesDone", formatNumber(recipesDone)));
         }
 
         info.add(GTUtility.translate(timeKey, timeValue));
