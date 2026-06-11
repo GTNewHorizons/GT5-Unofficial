@@ -114,7 +114,7 @@ public class FoundryData {
             speedAdditive += (0.75F * numHelio);
             euEffAdditive -= (0.1F * numHelio);
             if (numHelio >= 3) {
-                ocFactorAdditive += 0.1F;
+                ocFactorAdditive += 0.08F;
                 parallelScaleAdditive += (6 * numHelio);
             }
             if (numHelio == 4) {
