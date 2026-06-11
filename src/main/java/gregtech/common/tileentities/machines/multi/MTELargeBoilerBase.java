@@ -318,7 +318,7 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
         }
 
         if (fluidBurnTime == 0) {
-            for (GTRecipe tRecipe : RecipeMaps.dieselFuels.getAllRecipes()) {
+            for (GTRecipe tRecipe : RecipeMaps.denseLiquidFuels.getAllRecipes()) {
                 FluidStack tFluid = GTUtility.getFluidForFilledItem(tRecipe.getRepresentativeInput(0), true);
                 if (tFluid != null && tRecipe.mSpecialValue > 1 && isFuelValid(tFluid)) {
                     tFluid.amount = 1000;
@@ -328,7 +328,7 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
                     }
                 }
             }
-            for (GTRecipe tRecipe : RecipeMaps.denseLiquidFuels.getAllRecipes()) {
+            for (GTRecipe tRecipe : RecipeMaps.dieselFuels.getAllRecipes()) {
                 FluidStack tFluid = GTUtility.getFluidForFilledItem(tRecipe.getRepresentativeInput(0), true);
                 if (tFluid != null && isFuelValid(tFluid)) {
                     tFluid.amount = 1000;
