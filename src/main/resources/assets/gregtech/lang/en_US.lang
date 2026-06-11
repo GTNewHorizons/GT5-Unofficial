@@ -6190,7 +6190,7 @@ gt.blockmachines.multimachine.foundry.chassis3.flavor=Ascend Reality
 gt.blockmachines.multimachine.foundry.universalcollapser.flavor=Fractured Universe
 gt.blockmachines.multimachine.foundry.universalcollapser.tooltip1=- Multiplies Speed by %s2x
 gt.blockmachines.multimachine.foundry.universalcollapser.tooltip2=- Multiplies EU Consumption by §c4x
-gt.blockmachines.multimachine.foundry.universalcollapser.tooltip3=- Reduces Hatch Space by §620
+gt.blockmachines.multimachine.foundry.universalcollapser.tooltip3=- Reduces Hatch Space by §615
 gt.blockmachines.multimachine.foundry.universalcollapser.tooltip4=- Multiplies Speed by an additional %s2x§7 and EU Consumption by an additional §c2x§7 when
 gt.blockmachines.multimachine.foundry.universalcollapser.tooltip5=   paired with the §bHypercooler§7 module
 
