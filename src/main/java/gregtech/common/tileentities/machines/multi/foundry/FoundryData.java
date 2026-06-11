@@ -32,7 +32,7 @@ public class FoundryData {
 
     public boolean UIVRecipesEnabled = false;
     public boolean hypercoolerPresent = false;
-    public boolean tdsPresent = false;
+    public boolean universalCollapserPresent = false;
     public boolean effOCPresent = false;
     public boolean allowEternity = false;
 
@@ -55,7 +55,7 @@ public class FoundryData {
 
         hypercoolerPresent = false;
         UIVRecipesEnabled = false;
-        tdsPresent = false;
+        universalCollapserPresent = false;
         effOCPresent = false;
         allowEternity = false;
         extraOverclocks = 0;
@@ -156,7 +156,7 @@ public class FoundryData {
         }
         if (moduleToAdd == FoundryModule.UNIVERSAL_COLLAPSER) {
             checkSolidifierModules();
-            if (tdsPresent) return;
+            if (universalCollapserPresent) return;
         }
         if (moduleToAdd == FoundryModule.EFFICIENT_OC) {
             checkSolidifierModules();

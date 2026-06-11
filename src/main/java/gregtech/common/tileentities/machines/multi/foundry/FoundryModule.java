@@ -39,8 +39,8 @@ public enum FoundryModule {
         new Color(20, 48, 86),
         EnumChatFormatting.DARK_PURPLE,
         13, foundryData -> {
-            if(foundryData.tdsPresent) return;
-            foundryData.tdsPresent = true;
+            if(foundryData.universalCollapserPresent) return;
+            foundryData.universalCollapserPresent = true;
             foundryData.euEffMultiplier*=4;
             foundryData.speedMultiplier *= 2;
         }
