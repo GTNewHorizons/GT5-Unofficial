@@ -214,14 +214,6 @@ public class MTETieredMachineBlockBaseGui<T extends MTETieredMachineBlock> {
         return true;
     }
 
-    // by default, adds an empty widget, things can override this to add anything in the bottom right corner
-    // typically, this is used for the 'special slot' on singleblocks
-    protected Widget<? extends Widget<?>> createSpecialSlot() {
-        return IDrawable.EMPTY.asWidget()
-            .size(SLOT_SIZE)
-            .marginTop(4);
-    }
-
     protected boolean supportsPowerSwitch() {
         return true;
     }
@@ -230,7 +222,7 @@ public class MTETieredMachineBlockBaseGui<T extends MTETieredMachineBlock> {
         return true;
     }
 
-    protected Widget<? extends Widget<?>> makeLogoWidget() {
+    protected Widget<?> makeLogoWidget() {
         return new IDrawable.DrawableWidget(IDrawable.EMPTY).size(SLOT_SIZE)
             .widgetTheme(GTWidgetThemes.PICTURE_LOGO);
     }
@@ -240,7 +232,7 @@ public class MTETieredMachineBlockBaseGui<T extends MTETieredMachineBlock> {
         return machine instanceof IConfigurationCircuitSupport cc && cc.allowSelectCircuit();
     }
 
-    protected Widget<? extends Widget<?>> createCircuitSlot(PanelSyncManager syncManager) {
+    protected Widget<?> createCircuitSlot(PanelSyncManager syncManager) {
         return CommonWidgets.createCircuitSlot(syncManager, machine)
             .tooltipShowUpTimer(TOOLTIP_DELAY);
     }
