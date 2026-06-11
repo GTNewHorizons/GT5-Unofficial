@@ -295,7 +295,7 @@ public class MTEHatchInputBusMEGui extends MTEHatchBaseGui<MTEHatchInputBusME> {
             .coverChildren()
             .verticalCenter()
             .rightRel(0)
-            .child(makeLogoWidget());
+            .child(createLogo());
     }
 
     @Override

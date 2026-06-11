@@ -8,6 +8,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
+import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
@@ -22,8 +23,7 @@ import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.modularui2.GTGuiTheme;
-import gregtech.api.modularui2.GTGuiThemes;
+import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTDataUtils;
 import gregtech.api.util.GTUtility;
@@ -101,15 +101,15 @@ public class MTEHatchNaniteDetector extends MTEHatchConfigurableBase {
         return new Gui().build(data, syncManager, uiSettings);
     }
 
-    @Override
-    protected GTGuiTheme getGuiTheme() {
-        return GTGuiThemes.TECTECH_STANDARD;
-    }
-
     private class Gui extends MTEHatchBaseGui<MTEHatchNaniteDetector> {
 
         public Gui() {
             super(MTEHatchNaniteDetector.this);
+        }
+
+        @Override
+        protected UITexture getLogoTexture() {
+            return GTGuiTextures.TT_PICTURE_TECTECH_LOGO;
         }
 
         @Override

@@ -8,6 +8,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 import org.jetbrains.annotations.Nullable;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
+import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
@@ -22,8 +23,7 @@ import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.modularui2.GTGuiTheme;
-import gregtech.api.modularui2.GTGuiThemes;
+import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.render.TextureFactory;
 import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
 import gregtech.common.gui.modularui.widget.settings.SettingsPanel;
@@ -116,11 +116,6 @@ public class MTEHatchCondensateDetector extends MTEHatchConfigurableBase {
         return new Gui().build(data, syncManager, uiSettings);
     }
 
-    @Override
-    protected GTGuiTheme getGuiTheme() {
-        return GTGuiThemes.TECTECH_STANDARD;
-    }
-
     private class Gui extends MTEHatchBaseGui<MTEHatchCondensateDetector> {
 
         public Gui() {
@@ -135,6 +130,11 @@ public class MTEHatchCondensateDetector extends MTEHatchConfigurableBase {
         @Override
         protected int getBasePanelHeight() {
             return super.getBasePanelHeight() + SLOT_SIZE / 2;
+        }
+
+        @Override
+        protected UITexture getLogoTexture() {
+            return GTGuiTextures.TT_PICTURE_TECTECH_LOGO;
         }
 
         @Override

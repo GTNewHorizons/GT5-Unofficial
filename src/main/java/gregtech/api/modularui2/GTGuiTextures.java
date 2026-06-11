@@ -1735,7 +1735,6 @@ public final class GTGuiTextures {
 
     public static final UITexture PICTURE_GT_LOGO_STANDARD = UITexture.builder()
         .location(GregTech.ID, "gui/picture/gt_logo_standard")
-        .canApplyTheme()
         .fullImage()
         .name(GTTextureIds.PICTURE_GT_LOGO_STANDARD)
         .build();

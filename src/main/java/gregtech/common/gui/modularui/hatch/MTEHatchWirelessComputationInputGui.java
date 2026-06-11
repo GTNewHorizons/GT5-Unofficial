@@ -2,6 +2,7 @@ package gregtech.common.gui.modularui.hatch;
 
 import static net.minecraft.util.StatCollector.translateToLocal;
 
+import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.LongSyncValue;
@@ -11,6 +12,7 @@ import com.cleanroommc.modularui.widgets.TextWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
+import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
 import tectech.thing.metaTileEntity.hatch.MTEHatchWirelessComputationInput;
 
@@ -47,5 +49,10 @@ public class MTEHatchWirelessComputationInputGui extends MTEHatchBaseGui<MTEHatc
                 .formatAsInteger(true));
 
         return super.createContentSection(panel, syncManager).child(mainColumn);
+    }
+
+    @Override
+    protected IDrawable.DrawableWidget createLogo() {
+        return new IDrawable.DrawableWidget(GTGuiTextures.TT_PICTURE_TECTECH_LOGO);
     }
 }
