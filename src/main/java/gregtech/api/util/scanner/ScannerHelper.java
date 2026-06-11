@@ -684,21 +684,23 @@ public class ScannerHelper {
     private static int addIC2InfoComp(List<IChatComponent> list, TileEntity tileEntity) {
         int euAmount = 0;
         try {
-            List<IChatComponent> tempList = new ArrayList<>();
-            if (tileEntity instanceof IEnergyConductor conductor) {
-                euAmount += 200;
-                tempList.add(transComp("ic2_info_1", conductor.getConductionLoss()));
-            }
-
-            if (tileEntity instanceof IEnergyStorage storage) {
-                euAmount += 200;
-                tempList.add(
-                    transComp("ic2_info_2", formatNumber(storage.getStored()), formatNumber(storage.getCapacity())));
-            }
-
-            if (!tempList.isEmpty()) {
+            boolean hasConductor = tileEntity instanceof IEnergyConductor;
+            boolean hasStorage = tileEntity instanceof IEnergyStorage;
+            if (hasConductor || hasStorage) {
                 list.add(addTitleComp("title_ic2_info"));
-                list.addAll(tempList);
+                if (hasConductor) {
+                    list.add(transComp("ic2_info_1", ((IEnergyConductor) tileEntity).getConductionLoss()));
+                    euAmount += 200;
+                }
+                if (hasStorage) {
+                    IEnergyStorage storage = (IEnergyStorage) tileEntity;
+                    list.add(
+                        transComp(
+                            "ic2_info_2",
+                            formatNumber(storage.getStored()),
+                            formatNumber(storage.getCapacity())));
+                    euAmount += 200;
+                }
             }
         } catch (Exception e) {
             list.add(new ChatComponentText(EnumChatFormatting.RED + trans("error_ic2_info")));
