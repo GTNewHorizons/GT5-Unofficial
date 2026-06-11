@@ -6195,8 +6195,8 @@ gt.blockmachines.multimachine.foundry.universalcollapser.tooltip4=- Multiplies S
 gt.blockmachines.multimachine.foundry.universalcollapser.tooltip5=   paired with the §bHypercooler§7 module
 
 gt.blockmachines.multimachine.foundry.efficientoc.flavor=Optimized Overclocks
-gt.blockmachines.multimachine.foundry.efficientoc.tooltip1=- Increases Overclock Factor by §d0.35
-gt.blockmachines.multimachine.foundry.efficientoc.tooltip2=- This means that each overclock provides an additional %s35%%§7 speed
+gt.blockmachines.multimachine.foundry.efficientoc.tooltip1=- Increases Overclock Factor by §d0.4
+gt.blockmachines.multimachine.foundry.efficientoc.tooltip2=- This means that each overclock provides an additional %s40%%§7 speed
 gt.blockmachines.multimachine.foundry.efficientoc.tooltip3=- Increases Overclock Factor by an additional §d0.1§7 when
 gt.blockmachines.multimachine.foundry.efficientoc.tooltip4=   paired with the §aProto-Volt Stabilizer§7 module
 
