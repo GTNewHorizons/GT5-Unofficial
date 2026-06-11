@@ -142,10 +142,10 @@ public class ItemEuMeterGT extends Item {
                 return true;
             } else if (tTileEntity instanceof BaseMetaPipeEntity) {
                 if (((BaseMetaPipeEntity) tTileEntity).getMetaTileEntity() instanceof MTECable) {
-                    List<String> list = new ArrayList<>();
-                    ScannerHelper.scan(list, aPlayer, aWorld, 1, aX, aY, aZ, side, hitX, hitY, hitZ);
-                    for (String str : list) {
-                        GTUtility.sendChatToPlayer(aPlayer, str);
+                    List<net.minecraft.util.IChatComponent> list = new ArrayList<>();
+                    ScannerHelper.scanComponents(list, aPlayer, aWorld, 1, aX, aY, aZ, side, hitX, hitY, hitZ);
+                    for (net.minecraft.util.IChatComponent comp : list) {
+                        aPlayer.addChatComponentMessage(comp);
                     }
                 }
                 return true;
