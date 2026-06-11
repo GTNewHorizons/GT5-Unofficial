@@ -17,6 +17,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
 import net.minecraft.world.World;
@@ -190,12 +191,15 @@ public class ScannerHelper {
     // region Text
     private static IChatComponent addTitleComp(String name) {
         String dashes = "-".repeat(15);
+        // Set AQUA style explicitly on the translation sibling so it inherits the title color.
+        // Without this, the §r reset in the root text would leave the sibling unstyled (white).
+        IChatComponent titleText = transComp(name)
+            .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.AQUA));
         return new ChatComponentText(
             EnumChatFormatting.AQUA.toString() + EnumChatFormatting.STRIKETHROUGH
                 + dashes
                 + EnumChatFormatting.RESET
-                + EnumChatFormatting.AQUA
-                + " ").appendSibling(transComp(name))
+                + " ").appendSibling(titleText)
                     .appendSibling(
                         new ChatComponentText(
                             " " + EnumChatFormatting.AQUA + EnumChatFormatting.STRIKETHROUGH + dashes));
