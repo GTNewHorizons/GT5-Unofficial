@@ -323,7 +323,7 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
                 if (tFluid != null && tRecipe.mSpecialValue > 1 && isFuelValid(tFluid)) {
                     tFluid.amount = 1000;
                     if (depleteInput(tFluid)) {
-                        setupBoilerRecipe(tRecipe.mSpecialValue, getEfficiencyIncrease(), true);
+                        setupBoilerRecipe(tRecipe.mSpecialValue * 2, getEfficiencyIncrease(), true);
                         return CheckRecipeResultRegistry.SUCCESSFUL;
                     }
                 }
@@ -333,7 +333,7 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
                 if (tFluid != null && isFuelValid(tFluid)) {
                     tFluid.amount = 1000;
                     if (depleteInput(tFluid)) {
-                        setupBoilerRecipe(tRecipe.mSpecialValue * 2, getEfficiencyIncrease(), true);
+                        setupBoilerRecipe(tRecipe.mSpecialValue, getEfficiencyIncrease(), true);
                         return CheckRecipeResultRegistry.SUCCESSFUL;
                     }
                 }
