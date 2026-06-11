@@ -14,8 +14,8 @@ public class LargeBoilerFuelFrontend extends RecipeMapFrontend {
 
     public LargeBoilerFuelFrontend(BasicUIPropertiesBuilder uiPropertiesBuilder,
         NEIRecipePropertiesBuilder neiPropertiesBuilder) {
-        uiPropertiesBuilder.maxFluidInputs(1);
-        uiPropertiesBuilder.maxItemOutputs(0);
+        uiPropertiesBuilder.maxFluidInputs(1)
+            .maxItemOutputs(0);
         super(uiPropertiesBuilder, neiPropertiesBuilder);
     }
 
