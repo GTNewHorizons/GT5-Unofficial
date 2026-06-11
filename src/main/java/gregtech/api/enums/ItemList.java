@@ -2855,6 +2855,7 @@ public enum ItemList implements IItemContainer {
     Augment_WaterBreathing,
     Augment_MilkInfusion,
     Augment_HoloInventory,
+    Augment_Travelers,
 
     CompressedOutputBusLuV,
     CompressedOutputBusZPM,
@@ -2933,6 +2934,7 @@ public enum ItemList implements IItemContainer {
     IndustrialMixer,
     MegaChemicalReactor,
     InfiniteFluidDrillingRig,
+    MegaOilCracker,
 
     BasicCircuitBoard,
     EnhancedCircuitBoard,

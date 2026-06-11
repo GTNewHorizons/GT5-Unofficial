@@ -1,12 +1,9 @@
 package gregtech.api.items.armor.behaviors;
 
 import static gregtech.api.items.armor.ArmorKeybinds.FORCE_FIELD_KEYBIND;
-import static gregtech.loaders.ExtraIcons.forceFieldAugment;
 
 import java.util.Collections;
 import java.util.Set;
-
-import net.minecraft.util.IIcon;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -21,11 +18,6 @@ public class ForceFieldBehavior implements IArmorBehavior {
     @Override
     public BehaviorName getName() {
         return BehaviorName.ForceField;
-    }
-
-    @Override
-    public IIcon getModularArmorTexture() {
-        return forceFieldAugment;
     }
 
     @Override
