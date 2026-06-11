@@ -122,9 +122,9 @@ public class MTELargerTurbineHPSteamLegacy extends MTELargerTurbineBaseLegacy {
         if (totalFlow <= 0) return 0;
         tEU = totalFlow; // SH Steam has 1 EU per litre so the flow equals base EU produced
         if (isUsingDenseSteam) {
-            addOutput(Materials.DenseSteam.getGas((long) steamFlowForNextSteam));
+            addOutputPartial(Materials.DenseSteam.getGas((long) steamFlowForNextSteam));
         } else {
-            addOutput(Materials.Steam.getGas(totalFlow));
+            addOutputPartial(Materials.Steam.getGas(totalFlow));
         }
         if (totalFlow != realOptFlow) {
             float efficiency = 1.0f - Math.abs((totalFlow - (float) realOptFlow) / (float) realOptFlow);

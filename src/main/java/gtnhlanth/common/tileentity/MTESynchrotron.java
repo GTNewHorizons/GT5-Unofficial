@@ -881,10 +881,7 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
                 + EnumChatFormatting.RESET
                 + " %",
             /* 6 Pollution not included */
-            /* 7 */ StatCollector.translateToLocal("GT5U.multiblock.recipesDone") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(recipesDone)
-                + EnumChatFormatting.RESET,
+            /* 7 */ GTUtility.translate("GT5U.multiblock.recipesDone", formatNumber(recipesDone)),
             // Beamline-specific
             EnumChatFormatting.BOLD + StatCollector.translateToLocal("beamline.info") + ": " + EnumChatFormatting.RESET,
             StatCollector.translateToLocal("beamline.focus") + ": " // Machine Focus:

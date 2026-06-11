@@ -66,7 +66,7 @@ public class MTESupercriticalFluidTurbineLegacy extends MTELargeTurbineBaseLegac
         }
         if (totalFlow <= 0) return 0;
         tEU = totalFlow;
-        addOutput(FluidRegistry.getFluidStack("ic2superheatedsteam", totalFlow));
+        addOutputPartial(FluidRegistry.getFluidStack("ic2superheatedsteam", totalFlow));
         if (totalFlow == realOptFlow) {
             tEU = GTUtility
                 .safeInt((long) (tEU * (looseFit ? turbine.getLooseSteamEfficiency() : turbine.getSteamEfficiency())));

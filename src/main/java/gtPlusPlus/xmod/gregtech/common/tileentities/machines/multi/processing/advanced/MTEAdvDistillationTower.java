@@ -339,31 +339,35 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
     @Override
     public boolean addOutput(FluidStack aLiquid) {
         if (aLiquid == null) return false;
-        FluidStack copiedFluidStack = aLiquid.copy();
+        FluidStack stack = aLiquid.copy();
         for (List<MTEHatchOutput> hatches : mOutputHatchesByLayer) {
-            if (dumpFluid(hatches, copiedFluidStack, true)) return true;
-        }
-        for (List<MTEHatchOutput> hatches : mOutputHatchesByLayer) {
-            if (dumpFluid(hatches, copiedFluidStack, false)) return true;
+            addOutputPartial(stack, hatches);
+            if (stack.amount == 0) return true;
         }
         return false;
     }
 
     @Override
-    protected void addFluidOutputs(FluidStack[] outputFluids) {
+    protected boolean addFluidOutputs(FluidStack[] outputFluids) {
+        boolean succeed = true;
         if (machineMode == MACHINEMODE_TOWER) {
             // dt mode
             for (int i = 0; i < outputFluids.length && i < mOutputHatchesByLayer.size(); i++) {
                 FluidStack tStack = outputFluids[i].copy();
-                if (!dumpFluid(mOutputHatchesByLayer.get(i), tStack, true))
-                    dumpFluid(mOutputHatchesByLayer.get(i), tStack, false);
+                addOutputPartial(tStack, mOutputHatchesByLayer.get(i));
+                if (tStack.amount > 0) {
+                    succeed = false;
+                }
             }
         } else {
             // distillery mode
             for (FluidStack outputFluidStack : outputFluids) {
-                addOutput(outputFluidStack);
+                if (!addOutput(outputFluidStack)) {
+                    succeed = false;
+                }
             }
         }
+        return succeed;
     }
 
     @Override

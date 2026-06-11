@@ -1474,7 +1474,6 @@ public final class GTGuiTextures {
     public static final UITexture OVERLAY_BUTTON_BLOCK_OUTPUT = fullImageGT("overlay_button/block_output");
     public static final UITexture OVERLAY_BUTTON_CHECKMARK = fullImageGT("overlay_button/checkmark");
     public static final UITexture OVERLAY_BUTTON_CROSS = fullImageGT("overlay_button/cross");
-    public static final UITexture OVERLAY_BUTTON_CYCLIC = fullImageGT("overlay_button/cyclic");
     public static final UITexture OVERLAY_BUTTON_EXPORT = fullImageGT("overlay_button/export");
     public static final UITexture OVERLAY_BUTTON_HOURGLASS = fullImageGT("overlay_button/hourglass");
     public static final UITexture OVERLAY_BUTTON_IMPORT = fullImageGT("overlay_button/import");
@@ -1755,6 +1754,17 @@ public final class GTGuiTextures {
         .fullImage()
         .canApplyTheme()
         .nonOpaque()
+        .build();
+
+    public static final UITexture OVERLAY_BUTTON_CYCLIC = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_button/cyclic")
+        .fullImage()
+        .canApplyTheme()
+        .build();
+    public static final UITexture OVERLAY_BUTTON_SHUFFLE = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_button/shuffle")
+        .fullImage()
+        .canApplyTheme()
         .build();
     // endregion button overlay
 
