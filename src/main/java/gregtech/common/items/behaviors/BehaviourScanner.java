@@ -35,33 +35,41 @@ public class BehaviourScanner extends BehaviourNone {
     /** Arg subtype: translation key - client will create {@link ChatComponentTranslation} for it */
     private static final byte ARG_KEY = 1;
 
+    private static final String NBT_TYPE = "ty";
+    private static final String NBT_TEXT = "s";
+    private static final String NBT_KEY = "k";
+    private static final String NBT_ARGS = "a";
+    private static final String NBT_ARG_TYPE = "at";
+    private static final String NBT_ARG_VAL = "av";
+    private static final String NBT_SIBLINGS = "sibs";
+
     /** Serializes an {@link IChatComponent} to NBT recursively, without JSON. */
     private static NBTTagCompound componentToNBT(IChatComponent comp) {
         NBTTagCompound tag = new NBTTagCompound();
         if (comp instanceof ChatComponentTranslation trans) {
-            tag.setByte("ty", TY_TRANSLATION);
-            tag.setString("k", trans.getKey());
+            tag.setByte(NBT_TYPE, TY_TRANSLATION);
+            tag.setString(NBT_KEY, trans.getKey());
             Object[] args = trans.getFormatArgs();
             if (args != null && args.length > 0) {
                 NBTTagList argList = new NBTTagList();
                 for (Object arg : args) {
                     NBTTagCompound argTag = new NBTTagCompound();
                     if (arg instanceof ChatComponentTranslation argTrans) {
-                        argTag.setByte("at", ARG_KEY);
-                        argTag.setString("av", argTrans.getKey());
+                        argTag.setByte(NBT_ARG_TYPE, ARG_KEY);
+                        argTag.setString(NBT_ARG_VAL, argTrans.getKey());
                     } else {
-                        argTag.setByte("at", ARG_STRING);
-                        argTag.setString("av", arg.toString());
+                        argTag.setByte(NBT_ARG_TYPE, ARG_STRING);
+                        argTag.setString(NBT_ARG_VAL, arg.toString());
                     }
                     argList.appendTag(argTag);
                 }
-                tag.setTag("a", argList);
+                tag.setTag(NBT_ARGS, argList);
             }
         } else {
             // Plain text component: store raw text (may contain inline §-codes) and siblings recursively.
             // getUnformattedTextForChat() is declared on IChatComponent, safe to call server-side.
-            tag.setByte("ty", TY_TEXT);
-            tag.setString("s", comp.getUnformattedTextForChat());
+            tag.setByte(NBT_TYPE, TY_TEXT);
+            tag.setString(NBT_TEXT, comp.getUnformattedTextForChat());
         }
         List<IChatComponent> siblings = comp.getSiblings();
         if (siblings != null && !siblings.isEmpty()) {
@@ -69,7 +77,7 @@ public class BehaviourScanner extends BehaviourNone {
             for (IChatComponent sib : siblings) {
                 sibList.appendTag(componentToNBT(sib));
             }
-            tag.setTag("sibs", sibList);
+            tag.setTag(NBT_SIBLINGS, sibList);
         }
         return tag;
     }
@@ -77,25 +85,25 @@ public class BehaviourScanner extends BehaviourNone {
     /** Deserializes a component from NBT, restoring siblings recursively. */
     private static IChatComponent componentFromNBT(NBTTagCompound tag) {
         IChatComponent comp;
-        if (tag.getByte("ty") == TY_TRANSLATION) {
-            String key = tag.getString("k");
-            if (tag.hasKey("a")) {
-                NBTTagList argList = tag.getTagList("a", 10);
+        if (tag.getByte(NBT_TYPE) == TY_TRANSLATION) {
+            String key = tag.getString(NBT_KEY);
+            if (tag.hasKey(NBT_ARGS)) {
+                NBTTagList argList = tag.getTagList(NBT_ARGS, 10);
                 Object[] args = new Object[argList.tagCount()];
                 for (int i = 0; i < argList.tagCount(); i++) {
                     NBTTagCompound argTag = argList.getCompoundTagAt(i);
-                    String val = argTag.getString("av");
-                    args[i] = argTag.getByte("at") == ARG_KEY ? new ChatComponentTranslation(val) : val;
+                    String val = argTag.getString(NBT_ARG_VAL);
+                    args[i] = argTag.getByte(NBT_ARG_TYPE) == ARG_KEY ? new ChatComponentTranslation(val) : val;
                 }
                 comp = new ChatComponentTranslation(key, args);
             } else {
                 comp = new ChatComponentTranslation(key);
             }
         } else {
-            comp = new ChatComponentText(tag.getString("s"));
+            comp = new ChatComponentText(tag.getString(NBT_TEXT));
         }
-        if (tag.hasKey("sibs")) {
-            NBTTagList sibList = tag.getTagList("sibs", 10);
+        if (tag.hasKey(NBT_SIBLINGS)) {
+            NBTTagList sibList = tag.getTagList(NBT_SIBLINGS, 10);
             for (int i = 0; i < sibList.tagCount(); i++) {
                 comp.appendSibling(componentFromNBT(sibList.getCompoundTagAt(i)));
             }
