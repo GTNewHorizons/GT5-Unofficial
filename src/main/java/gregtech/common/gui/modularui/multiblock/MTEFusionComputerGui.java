@@ -67,7 +67,7 @@ public class MTEFusionComputerGui extends MTEMultiBlockBaseGui<MTEFusionComputer
         progress.tooltipDynamic(tooltip -> {
             tooltip.add(
                 StatCollector.translateToLocalFormatted(
-                    "Stored EU: %s (%s%%)",
+                    "GT5U.fusion.stored_eu",
                     formatEnergy(storedEUSyncer.getLongValue()),
                     formatNumber(getEnergyRatio() * 100)));
             tooltip.markDirty();

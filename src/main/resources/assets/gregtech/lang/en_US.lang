@@ -1834,6 +1834,7 @@ GT5U.DTPF.catalystinfotooltip=Tier of additional catalyst to use for recipes wit
 
 GT5U.fusion.req=EU Required
 GT5U.fusion.plasma=Plasma Output
+GT5U.fusion.stored_eu=Stored EU: %s (%s%%)
 
 GT5U.tpm.parallelwindow=Open Parallel Configuration Window
 
