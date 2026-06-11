@@ -146,48 +146,48 @@ public class MTELargeBoilerGui extends MTEMultiBlockBaseGui<MTELargeBoilerBase> 
         String fluidName = EnumChatFormatting.AQUA + fluidStack.getLocalizedName() + EnumChatFormatting.RESET;
         DoubleSyncValue currentSteamProductionSync = syncManager
             .findSyncHandler("currentSteamProduction", DoubleSyncValue.class);
-        // spotless:off
         return new TextWidget<>(
             IKey.dynamic(
                 () -> getFluidTextLine(
                     fluidName,
-                    currentSteamProductionSync.getValue().longValue())))
-            .height(DISPLAY_ROW_HEIGHT)
-            .scale(0.75f)
-            .tooltipBuilder(
-                t -> t.addLine(
-                EnumChatFormatting.AQUA + fluidName
-                    + "\n"
-                    + GTUtility.appendRate(false,
-                    currentSteamProductionSync.getValue().longValue(),
-                    false,
-                    1)))
-            .tooltipAutoUpdate(true);
-        //spotless:on
+                    currentSteamProductionSync.getValue()
+                        .longValue()))).height(DISPLAY_ROW_HEIGHT)
+                            .scale(0.75f)
+                            .tooltipBuilder(
+                                t -> t.addLine(
+                                    EnumChatFormatting.AQUA + fluidName
+                                        + "\n"
+                                        + GTUtility.appendRate(
+                                            false,
+                                            currentSteamProductionSync.getValue()
+                                                .longValue(),
+                                            false,
+                                            1)))
+                            .tooltipAutoUpdate(true);
     }
 
     private TextWidget<?> createHoverableTextForWater(FluidStack fluidStack, PanelSyncManager syncManager) {
         String fluidName = EnumChatFormatting.AQUA + fluidStack.getLocalizedName() + EnumChatFormatting.RESET;
         DoubleSyncValue currentWaterProductionSync = syncManager
             .findSyncHandler("currentWaterConsumption", DoubleSyncValue.class);
-        // spotless:off
         return new TextWidget<>(
             IKey.dynamic(
                 () -> getFluidTextLine(
                     fluidName,
-                    currentWaterProductionSync.getValue().longValue())))
-            .height(DISPLAY_ROW_HEIGHT)
-            .scale(0.75f)
-            .tooltipBuilder(
-                t -> t.addLine(
-                    EnumChatFormatting.AQUA + fluidName
-                        + "\n"
-                        + GTUtility.appendRate(false,
-                        currentWaterProductionSync.getValue().longValue(),
-                        false,
-                        1)))
-            .tooltipAutoUpdate(true);
-        //spotless:on
+                    currentWaterProductionSync.getValue()
+                        .longValue()))).height(DISPLAY_ROW_HEIGHT)
+                            .scale(0.75f)
+                            .tooltipBuilder(
+                                t -> t.addLine(
+                                    EnumChatFormatting.AQUA + fluidName
+                                        + "\n"
+                                        + GTUtility.appendRate(
+                                            false,
+                                            currentWaterProductionSync.getValue()
+                                                .longValue(),
+                                            false,
+                                            1)))
+                            .tooltipAutoUpdate(true);
     }
 
     private @NotNull String getFluidTextLine(String fluidName, long amount) {
