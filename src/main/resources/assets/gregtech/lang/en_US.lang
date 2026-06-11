@@ -6265,7 +6265,7 @@ GT5U.gui.text.foundry.pairings.superstablecore.tooltip3=Increases Base Speed by 
 GT5U.gui.text.foundry.pairings.superstablecore.tooltip4=Subtracts %s10%%§r from Initial EU Cost per module
 GT5U.gui.text.foundry.pairings.superstablecore.tooltip5=When §f3 or more§r §dHeliocast Reinforcement§r modules are present:
 GT5U.gui.text.foundry.pairings.superstablecore.tooltip6=Adds %s6§r parallels per %sVoltage§r Tier per module
-GT5U.gui.text.foundry.pairings.superstablecore.tooltip7=Increases Overclock Factor by §d0.1
+GT5U.gui.text.foundry.pairings.superstablecore.tooltip7=Increases Overclock Factor by §d0.08
 GT5U.gui.text.foundry.pairings.superstablecore.tooltip8=§fWhen §f4§r §dHeliocast Reinforcement§r modules are present:
 GT5U.gui.text.foundry.pairings.superstablecore.tooltip9=Grants 2 maximum §doverclocks
 
