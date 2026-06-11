@@ -1695,18 +1695,20 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         ejectionHelper.commit();
     }
 
-    protected boolean addFluidOutputs(FluidStack[] outputFluids) {
+    protected boolean addFluidOutputs(@NotNull FluidStack[] outputFluids) {
         return addFluidOutputs(outputFluids, getOutputHatches(), protectsExcessFluid());
     }
 
-    protected boolean addFluidOutputs(FluidStack[] outputFluids, List<? extends IOutputHatch> hatches) {
+    protected boolean addFluidOutputs(@NotNull FluidStack[] outputFluids, List<? extends IOutputHatch> hatches) {
         return addFluidOutputs(outputFluids, hatches, protectsExcessFluid());
     }
 
-    protected boolean addFluidOutputs(FluidStack[] outputFluids, List<? extends IOutputHatch> hatches,
+    protected boolean addFluidOutputs(@NotNull FluidStack[] outputFluids, List<? extends IOutputHatch> hatches,
         boolean protectFluids) {
+        List<FluidStack> outputs = Arrays.asList(outputFluids);
+        if (outputs.isEmpty()) return true;
         FluidEjectionHelper ejectionHelper = new FluidEjectionHelper(hatches, protectFluids);
-        int ejected = ejectionHelper.ejectFluids(Arrays.asList(outputFluids), 1);
+        int ejected = ejectionHelper.ejectFluids(outputs, 1);
         ejectionHelper.commit();
 
         return ejected == 1;
@@ -1789,9 +1791,11 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
      * @param outputItems The items to eject. Not modified.
      * @return True when all items were ejected, false otherwise.
      */
-    public boolean addItemOutputs(ItemStack[] outputItems) {
+    public boolean addItemOutputs(@NotNull ItemStack[] outputItems) {
+        List<ItemStack> outputs = Arrays.asList(outputItems);
+        if (outputs.isEmpty()) return true;
         ItemEjectionHelper ejectionHelper = new ItemEjectionHelper(this);
-        int ejected = ejectionHelper.ejectItems(Arrays.asList(outputItems), 1);
+        int ejected = ejectionHelper.ejectItems(outputs, 1);
         ejectionHelper.commit();
 
         return ejected == 1;
