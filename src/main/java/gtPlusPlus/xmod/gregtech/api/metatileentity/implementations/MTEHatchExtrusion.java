@@ -147,11 +147,6 @@ public class MTEHatchExtrusion extends MTEHatchInputBus {
     }
 
     @Override
-    public int getInventoryStackLimit() {
-        return 1;
-    }
-
-    @Override
     public int getCircuitSlot() {
         return circuitSlot;
     }
