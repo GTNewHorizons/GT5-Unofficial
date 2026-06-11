@@ -64,7 +64,7 @@ public enum FoundryModule {
         EnumChatFormatting.DARK_AQUA,
         12, foundryData -> {
             foundryData.effOCPresent = true;
-            foundryData.ocFactorAdditive += 0.35f;
+            foundryData.ocFactorAdditive += 0.4f;
     }
     ),
     STREAMLINED_CASTERS(
