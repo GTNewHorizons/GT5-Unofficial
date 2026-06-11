@@ -86,8 +86,8 @@ public class FoundryData {
     private void calculatePairings(FoundryModule[] modules) {
         if (ArrayUtils.contains(modules, FoundryModule.STREAMLINED_CASTERS)
             && ArrayUtils.contains(modules, FoundryModule.EXTRA_CASTING_BASINS)) {
-            speedAdditive += 0.75F;
-            parallelScaleAdditive += 6;
+            speedAdditive += 0.8F;
+            parallelScaleAdditive += 8;
             isProductionPairPresent = true;
         }
 
