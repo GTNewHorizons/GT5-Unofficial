@@ -66,11 +66,15 @@ public class BehaviourScanner extends BehaviourNone {
                 tag.setTag(NBT_ARGS, argList);
             }
         } else {
-            // Plain text component: store raw text (may contain inline §-codes) and siblings recursively.
-            // getUnformattedTextForChat() is declared on IChatComponent, safe to call server-side.
+            // Use the JSON serializer for all non-translation types so custom IChatComponent implementations
+            // (e.g. gtnhlib AbstractChatComponentCustom) are preserved. The serializer handles custom types
+            // via gtnhlib's MixinIChatComponentSerializer. Siblings are included in the JSON output.
             tag.setByte(NBT_TYPE, TY_TEXT);
-            tag.setString(NBT_TEXT, comp.getUnformattedTextForChat());
+            tag.setString(NBT_TEXT, IChatComponent.Serializer.func_150696_a(comp));
+            return tag;
         }
+        // Siblings are only serialized separately for ChatComponentTranslation; for others, the JSON above
+        // captures the full tree.
         List<IChatComponent> siblings = comp.getSiblings();
         if (siblings != null && !siblings.isEmpty()) {
             NBTTagList sibList = new NBTTagList();
@@ -100,7 +104,8 @@ public class BehaviourScanner extends BehaviourNone {
                 comp = new ChatComponentTranslation(key);
             }
         } else {
-            comp = new ChatComponentText(tag.getString(NBT_TEXT));
+            // Deserialize via JSON serializer to restore custom IChatComponent types (including siblings).
+            return IChatComponent.Serializer.func_150699_a(tag.getString(NBT_TEXT));
         }
         if (tag.hasKey(NBT_SIBLINGS)) {
             NBTTagList sibList = tag.getTagList(NBT_SIBLINGS, 10);
