@@ -25,11 +25,6 @@ public final class OreRecipeRegistrationGuard {
 
     private OreRecipeRegistrationGuard() {}
 
-    /** @deprecated use {@link OreRecipeDedupeFlags#isMasterEnabled()} */
-    public static boolean isDisabled() {
-        return !OreRecipeDedupeFlags.isMasterEnabled();
-    }
-
     public static void begin() {
         OreRecipeDedupeFlags.logConfigurationOnce();
         seenOreDictKeys = new HashSet<>();
