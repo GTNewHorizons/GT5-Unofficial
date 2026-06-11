@@ -80,7 +80,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                 if (!aMaterial.mBlastFurnaceRequired) {
                     GTRecipeRegistrator
                         .registerReverseFluidSmelting(aStack, aMaterial, aPrefix.getMaterialAmount(), null, false);
-                    if (aMaterial.mSmeltInto.mArcSmeltInto != aMaterial) {
+                    if (GTRecipeRegistrator.hasReverseArcSmeltingRecipe(aMaterial)) {
                         GTRecipeRegistrator.registerReverseArcSmelting(
                             GTUtility.copyAmount(1, aStack),
                             aMaterial,
@@ -548,7 +548,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                 if (!aMaterial.mBlastFurnaceRequired) {
                     GTRecipeRegistrator
                         .registerReverseFluidSmelting(aStack, aMaterial, aPrefix.getMaterialAmount(), null, true);
-                    if (aMaterial.mSmeltInto.mArcSmeltInto != aMaterial) {
+                    if (GTRecipeRegistrator.hasReverseArcSmeltingRecipe(aMaterial)) {
                         GTRecipeRegistrator.registerReverseArcSmelting(
                             GTUtility.copyAmount(1, aStack),
                             aMaterial,
@@ -569,7 +569,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                 if (!aMaterial.mBlastFurnaceRequired) {
                     GTRecipeRegistrator
                         .registerReverseFluidSmelting(aStack, aMaterial, aPrefix.getMaterialAmount(), null, true);
-                    if (aMaterial.mSmeltInto.mArcSmeltInto != aMaterial) {
+                    if (GTRecipeRegistrator.hasReverseArcSmeltingRecipe(aMaterial)) {
                         GTRecipeRegistrator.registerReverseArcSmelting(
                             GTUtility.copyAmount(1, aStack),
                             aMaterial,

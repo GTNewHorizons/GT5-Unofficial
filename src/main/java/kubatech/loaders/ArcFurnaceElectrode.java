@@ -190,7 +190,7 @@ public enum ArcFurnaceElectrode {
         tooltip.add(
             StatCollector.translateToLocalFormatted(
                 "item.arc_furnace_electrode.tip.speed",
-                getModifierFormatted(this.speedModifier)));
+                getModifierFormatted((int) (this.speedModifier * 100), false, 50d, 100d, 200d, "", "%")));
         tooltip.add(
             StatCollector.translateToLocalFormatted(
                 "item.arc_furnace_electrode.tip.parallel_limit",
@@ -200,9 +200,9 @@ public enum ArcFurnaceElectrode {
         tooltip.add(
             StatCollector.translateToLocalFormatted(
                 "item.arc_furnace_electrode.tip.oc",
-                getModifierFormatted(this.OCSpeedFactor, false, 1d, 2d, 4d, "", "") + EnumChatFormatting.GRAY
+                getModifierFormatted(this.OCPowerFactor, false, 2d, 4d, 6d, "", "") + EnumChatFormatting.GRAY
                     + "/"
-                    + getModifierFormatted(this.OCPowerFactor, true, 0.25d, 0.5d, 1d, "", ""),
+                    + getModifierFormatted(this.OCSpeedFactor, false, 1d, 2d, 4d, "", ""),
                 ""));
         tooltip.add(
             StatCollector.translateToLocalFormatted(
@@ -211,7 +211,7 @@ public enum ArcFurnaceElectrode {
         tooltip.add(
             StatCollector.translateToLocalFormatted(
                 "item.arc_furnace_electrode.tip.startup_surge",
-                getModifierFormatted(this.startupSurge * 100, true, 0.0025d, 0.01d, 0.1d, "", "%")));
+                getModifierFormatted(this.startupSurge + 1d, true, 0.25d, 0.5d, 1d, "x", "")));
         if (specialEffect != null) {
             tooltip.addAll(
                 Minecraft.getMinecraft().fontRenderer.listFormattedStringToWidth(
@@ -240,10 +240,6 @@ public enum ArcFurnaceElectrode {
             color = EnumChatFormatting.AQUA; // "great" stat
         }
         return color.toString() + value;
-    }
-
-    private static String getModifierFormatted(double value) {
-        return getModifierFormatted(value, false, 0.5d, 1.0d, 2.0d, "x", "");
     }
 
     private static String getModifierFormatted(double value, boolean undesireable, double lo_threshold,

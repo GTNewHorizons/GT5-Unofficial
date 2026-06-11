@@ -368,6 +368,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
                 "Any Grate Machine Casing NOT on the first slice",
                 2)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .addSubChannelUsage(GTStructureChannels.STRUCTURE_LENGTH)
             .toolTipFinisher(EnumChatFormatting.GRAY, 67);
         return tt;
     }
@@ -387,7 +388,6 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
             slice.reset();
         }
         mMaxProgresstime = 0;
-        getBaseMetaTileEntity().issueClientUpdate();
     }
 
     @Override
@@ -611,10 +611,6 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
         for (int i = slices.length - 1; i >= 0; i--) {
             slices[i].tick();
         }
-
-        if (oStuck != stuck)
-            // send the status as it has changed
-            getBaseMetaTileEntity().issueClientUpdate();
 
         if (getBaseMetaTileEntity().isAllowedToWork() && slices[0].progress < 0) {
             startRecipeProcessing();

@@ -95,6 +95,7 @@ import gregtech.api.enums.VoidingMode;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.gui.widgets.CheckboxWidget;
 import gregtech.api.interfaces.IOutputBus;
+import gregtech.api.interfaces.IOutputHatch;
 import gregtech.api.interfaces.fluid.IFluidStore;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
@@ -113,6 +114,7 @@ import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.ExoticEnergyInputHelper;
+import gregtech.api.util.FluidEjectionHelper;
 import gregtech.api.util.GTClientPreference;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTRecipe;
@@ -179,10 +181,11 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     public boolean mStructureChanged = false;
     private int errorDisplayID;
     public int mPollution = 0, mProgresstime = 0, mMaxProgresstime = 0, mEUt = 0, mEfficiencyIncrease = 0,
-        mStartUpCheck = 100, mRuntime = 0, mEfficiency = 0, lastParallel = 0;
+        mStartUpCheck = 100, mRuntime = 0, mEfficiency = 0, lastParallel = 0, efficiencyDecrease = 1000;
     public long recipesDone = 0;
     public volatile boolean mUpdated = false;
     public int mUpdate = 0;
+    private boolean oldMufflerState = false;
     public ItemStack[] mOutputItems = null;
     public FluidStack[] mOutputFluids = null;
     public String mNEI;
@@ -621,7 +624,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                     | (mMachine ? 0 : 64));
 
             aBaseMetaTileEntity.setActive(mMaxProgresstime > 0);
-            setMufflers(aBaseMetaTileEntity.isActive() && mPollution > 0);
+            setMufflersIfChanged(aBaseMetaTileEntity.isActive() && mPollution > 0);
 
             boolean isActive = mMaxProgresstime > 0;
 
@@ -769,14 +772,10 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                                     pdr.addRecord(((long) mMaxProgresstime) * mEUt, mOutputItems, mOutputFluids);
                             }
                         }
-                        if (mOutputItems != null) {
-                            addItemOutputs(mOutputItems);
-                            mOutputItems = null;
-                        }
-                        if (mOutputFluids != null) {
-                            addFluidOutputs(mOutputFluids);
-                            mOutputFluids = null;
-                        }
+                        boolean isOutputAllItems = mOutputItems == null || addItemOutputs(mOutputItems);
+                        boolean isOutputAllFluids = mOutputFluids == null || addFluidOutputs(mOutputFluids);
+                        mOutputItems = null;
+                        mOutputFluids = null;
                         outputAfterRecipe();
                         mEfficiency = Math.max(
                             0,
@@ -794,7 +793,11 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                         }
                         mEfficiencyIncrease = 0;
                         mLastWorkingTick = mTotalRunTime;
-                        if (aBaseMetaTileEntity.isAllowedToWork()) {
+                        if (!isOutputAllItems && protectsExcessItem()) {
+                            stopMachine(ShutDownReasonRegistry.ITEM_OUTPUT_FAILED);
+                        } else if (!isOutputAllFluids && protectsExcessFluid()) {
+                            stopMachine(ShutDownReasonRegistry.FLUID_OUTPUT_FAILED);
+                        } else if (aBaseMetaTileEntity.isAllowedToWork()) {
                             checkRecipe();
                         }
                     }
@@ -811,7 +814,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                     }
                 }
             }
-            if (mMaxProgresstime <= 0) mEfficiency = Math.max(0, mEfficiency - 1000);
+            if (mMaxProgresstime <= 0) mEfficiency = Math.max(0, mEfficiency - efficiencyDecrease);
         }
     }
 
@@ -1640,44 +1643,73 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         return false;
     }
 
-    protected static boolean dumpFluid(List<MTEHatchOutput> aOutputHatches, FluidStack copiedFluidStack,
-        boolean restrictiveHatchesOnly) {
-        for (MTEHatchOutput tHatch : validMTEList(aOutputHatches)) {
-            if (restrictiveHatchesOnly && tHatch.mMode == 0) {
-                continue;
-            }
-            if (!tHatch.canStoreFluid(copiedFluidStack)) continue;
-
-            if (tHatch instanceof MTEHatchOutputME tMEHatch) {
-                if (!tMEHatch.canFillFluid()) continue;
-            }
-
-            int tAmount = tHatch.fill(copiedFluidStack, false);
-            if (tAmount >= copiedFluidStack.amount) {
-                boolean filled = tHatch.fill(copiedFluidStack, true) >= copiedFluidStack.amount;
-                tHatch.onEmptyingContainerWhenEmpty();
-                return filled;
-            } else if (tAmount > 0) {
-                copiedFluidStack.amount = copiedFluidStack.amount - tHatch.fill(copiedFluidStack, true);
-                tHatch.onEmptyingContainerWhenEmpty();
-            }
-        }
-        return false;
-    }
-
     public boolean addOutput(FluidStack aLiquid) {
         if (aLiquid == null) return false;
         FluidStack copiedFluidStack = aLiquid.copy();
-        if (!dumpFluid(mOutputHatches, copiedFluidStack, true)) {
-            dumpFluid(mOutputHatches, copiedFluidStack, false);
-        }
+        addOutputPartial(copiedFluidStack);
         return false;
     }
 
-    protected void addFluidOutputs(FluidStack[] outputFluids) {
-        for (FluidStack outputFluidStack : outputFluids) {
-            addOutput(outputFluidStack);
+    /**
+     * Ejects a stack. Fluids are only ejected when the whole stack can be ejected into output hatches.
+     *
+     * @param stack The stack to eject. Ejected fluids are subtracted from this stack.
+     * @return True when the whole stack was ejected, false otherwise.
+     */
+    public boolean addOutputAtomic(FluidStack stack) {
+        if (!GTUtility.isStackValid(stack)) return false;
+
+        int initial = stack.amount;
+
+        FluidEjectionHelper ejectionHelper = new FluidEjectionHelper(this);
+        ejectionHelper.ejectStack(stack);
+
+        if (stack.amount == 0) {
+            ejectionHelper.commit();
+            return true;
+        } else {
+            // Restore the original stack size because we didn't end up doing anything.
+            stack.amount = initial;
+            return false;
         }
+    }
+
+    /**
+     * Ejects a stack as well as it can. Fluids are ejected regardless of whether the whole stack can fit.
+     *
+     * @param stack The stack to eject. Ejected fluids are subtracted from this stack.
+     */
+    public void addOutputPartial(FluidStack stack) {
+        addOutputPartial(stack, getOutputHatches(), protectsExcessFluid());
+    }
+
+    public void addOutputPartial(FluidStack stack, List<? extends IOutputHatch> hatches) {
+        addOutputPartial(stack, hatches, protectsExcessFluid());
+    }
+
+    public void addOutputPartial(FluidStack stack, List<? extends IOutputHatch> hatches, boolean protectFluids) {
+        if (!GTUtility.isStackValid(stack)) return;
+
+        FluidEjectionHelper ejectionHelper = new FluidEjectionHelper(hatches, protectFluids);
+        ejectionHelper.ejectStack(stack);
+        ejectionHelper.commit();
+    }
+
+    protected boolean addFluidOutputs(FluidStack[] outputFluids) {
+        return addFluidOutputs(outputFluids, getOutputHatches(), protectsExcessFluid());
+    }
+
+    protected boolean addFluidOutputs(FluidStack[] outputFluids, List<? extends IOutputHatch> hatches) {
+        return addFluidOutputs(outputFluids, hatches, protectsExcessFluid());
+    }
+
+    protected boolean addFluidOutputs(FluidStack[] outputFluids, List<? extends IOutputHatch> hatches,
+        boolean protectFluids) {
+        FluidEjectionHelper ejectionHelper = new FluidEjectionHelper(hatches, protectFluids);
+        int ejected = ejectionHelper.ejectFluids(Arrays.asList(outputFluids), 1);
+        ejectionHelper.commit();
+
+        return ejected == 1;
     }
 
     public boolean depleteInput(FluidStack aLiquid) {
@@ -2691,12 +2723,19 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
     @SuppressWarnings("ForLoopReplaceableByForEach")
     protected void setMufflers(boolean state) {
+        oldMufflerState = state;
         final int size = mMufflerHatches.size();
         for (int i = 0; i < size; i++) {
             final MTEHatchMuffler muffler = mMufflerHatches.get(i);
             final IGregTechTileEntity tile = muffler.getBaseMetaTileEntity();
             if (tile == null || tile.isDead()) continue;
             tile.setActive(state);
+        }
+    }
+
+    protected void setMufflersIfChanged(boolean newState) {
+        if (newState != oldMufflerState) {
+            setMufflers(newState);
         }
     }
 
@@ -2929,6 +2968,19 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             MTEHatchOutputBus outputBus = mOutputBusses.get(i);
 
             if (outputBus.isValid()) output.add(outputBus);
+        }
+
+        return output;
+    }
+
+    @Override
+    public List<IOutputHatch> getOutputHatches() {
+        List<IOutputHatch> output = new ArrayList<>(mOutputHatches.size());
+
+        for (int i = 0, mOutputHatchesSize = mOutputHatches.size(); i < mOutputHatchesSize; i++) {
+            MTEHatchOutput outputHatch = mOutputHatches.get(i);
+
+            if (outputHatch.isValid()) output.add(outputHatch);
         }
 
         return output;

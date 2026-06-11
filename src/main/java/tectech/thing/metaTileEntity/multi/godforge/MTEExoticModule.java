@@ -15,6 +15,7 @@ import static tectech.loader.recipe.Godforge.exoticModulePlasmaItemMap;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -115,12 +116,15 @@ public class MTEExoticModule extends MTEBaseModule {
                     }
 
                     if (numberOfFluids != 0) {
-                        for (FluidStack fluidStack : randomizedFluidInput) {
-                            dumpFluid(
-                                mOutputHatches,
-                                new FluidStack(fluidStack.getFluid(), fluidStack.amount / 1000),
-                                false);
-                        }
+                        addFluidOutputs(
+                            Arrays.stream(randomizedFluidInput)
+                                .map(fluid -> {
+                                    FluidStack copy = fluid.copy();
+                                    copy.amount = copy.amount / 1000;
+                                    return copy;
+                                })
+                                .toArray(FluidStack[]::new),
+                            mOutputHatches);
                     }
 
                     if (numberOfItems != 0) {

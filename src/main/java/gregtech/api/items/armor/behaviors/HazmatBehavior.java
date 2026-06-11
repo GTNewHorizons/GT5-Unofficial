@@ -12,17 +12,8 @@ public class HazmatBehavior implements IArmorBehavior {
     protected HazmatBehavior() {/**/}
 
     @Override
-    public boolean protectsAgainst(@NotNull ArmorContext context, Hazard hazard) {
-        // Protect against non-space and non-temperature hazards
-        return switch (hazard) {
-            case BIOLOGICAL -> true;
-            case FROST -> false;
-            case HEAT -> false;
-            case RADIOLOGICAL -> true;
-            case ELECTRICAL -> true;
-            case GAS -> true;
-            case SPACE -> false;
-        };
+    public boolean protectsAgainstFully(@NotNull ArmorContext context, Hazard hazard) {
+        return hazard != Hazard.SPACE;
     }
 
     @Override

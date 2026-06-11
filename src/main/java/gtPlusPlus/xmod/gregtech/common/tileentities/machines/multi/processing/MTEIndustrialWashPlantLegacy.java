@@ -145,7 +145,7 @@ public class MTEIndustrialWashPlantLegacy extends GTPPMultiBlockBase<MTEIndustri
                         .casingIndex(getCasingTextureIndex())
                         .hint(1)
                         .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(getCasingBlock(), getCasingMeta()))))
-                .addElement('w', ofChain(isAir(), ofAnyWater(true)))
+                .addElement('w', ofChain(ofAnyWater(true), isAir()))
                 .build();
         }
         return STRUCTURE_DEFINITION;
