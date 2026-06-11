@@ -272,12 +272,7 @@ public class MTETieredMachineBlockBaseGui<T extends MTETieredMachineBlock> {
     }
 
     protected ItemSlot createChargerSlot() {
-        return new ItemSlot()
-            .slot(
-                new ModularSlot(machine.inventoryHandler, machine.rechargerSlotStartIndex()).changeListener(
-                    (newItem, onlyAmountChanged, client, init) -> {
-                        if (!client && !init) baseMetaTileEntity.markInventoryBeenModified();
-                    }))
+        return new ItemSlot().slot(new ModularSlot(machine.inventoryHandler, machine.rechargerSlotStartIndex()))
             .backgroundOverlay(GTGuiTextures.OVERLAY_SLOT_CHARGER)
             .tooltip(this::createTooltipForChargerSlot)
             .tooltipShowUpTimer(TOOLTIP_DELAY);

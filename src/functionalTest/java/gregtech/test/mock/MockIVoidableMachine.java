@@ -7,6 +7,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.VoidingMode;
 import gregtech.api.interfaces.IOutputBus;
+import gregtech.api.interfaces.IOutputHatch;
 import gregtech.api.interfaces.fluid.IFluidStore;
 import gregtech.api.interfaces.tileentity.IVoidable;
 import gregtech.api.util.GTUtility;
@@ -32,6 +33,11 @@ public class MockIVoidableMachine implements IVoidable {
 
     @Override
     public List<IOutputBus> getOutputBusses() {
+        return Collections.emptyList();
+    }
+
+    @Override
+    public List<IOutputHatch> getOutputHatches() {
         return Collections.emptyList();
     }
 

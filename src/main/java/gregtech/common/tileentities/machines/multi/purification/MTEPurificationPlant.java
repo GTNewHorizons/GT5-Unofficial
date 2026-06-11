@@ -493,11 +493,7 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
     @Override
     public String[] getInfoData() {
         var ret = new ArrayList<String>();
-        ret.add(
-            translateToLocal("GT5U.multiblock.recipesDone") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(recipesDone)
-                + EnumChatFormatting.RESET);
+        ret.add(GTUtility.translate("GT5U.multiblock.recipesDone", formatNumber(recipesDone)));
         // Show linked purification units and their status
         ret.add(translateToLocal("GT5U.infodata.purification_plant.linked_units"));
         for (LinkedPurificationUnit unit : this.linkedUnits) {
