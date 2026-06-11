@@ -7,8 +7,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
 import net.minecraft.util.StatCollector;
@@ -27,92 +25,17 @@ public class BehaviourScanner extends BehaviourNone {
 
     public static final IItemBehaviour<MetaBaseItem> INSTANCE = new BehaviourScanner();
 
-    private static final byte TY_TEXT = 0;
-    private static final byte TY_TRANSLATION = 1;
-    /** Arg subtype: plain string value */
-    private static final byte ARG_STRING = 0;
-    /** Arg subtype: translation key - client will create {@link ChatComponentTranslation} for it */
-    private static final byte ARG_KEY = 1;
-
-    private static final String NBT_TYPE = "ty";
-    private static final String NBT_TEXT = "s";
-    private static final String NBT_KEY = "k";
-    private static final String NBT_ARGS = "a";
-    private static final String NBT_ARG_TYPE = "at";
-    private static final String NBT_ARG_VAL = "av";
-    private static final String NBT_SIBLINGS = "sibs";
-
-    /** Serializes an {@link IChatComponent} to NBT recursively, without JSON. */
+    /** Serializes an {@link IChatComponent} to NBT via the built-in JSON serializer. */
     private static NBTTagCompound componentToNBT(IChatComponent comp) {
         NBTTagCompound tag = new NBTTagCompound();
-        if (comp instanceof ChatComponentTranslation trans) {
-            tag.setByte(NBT_TYPE, TY_TRANSLATION);
-            tag.setString(NBT_KEY, trans.getKey());
-            Object[] args = trans.getFormatArgs();
-            if (args != null && args.length > 0) {
-                NBTTagList argList = new NBTTagList();
-                for (Object arg : args) {
-                    NBTTagCompound argTag = new NBTTagCompound();
-                    if (arg instanceof ChatComponentTranslation argTrans) {
-                        argTag.setByte(NBT_ARG_TYPE, ARG_KEY);
-                        argTag.setString(NBT_ARG_VAL, argTrans.getKey());
-                    } else {
-                        argTag.setByte(NBT_ARG_TYPE, ARG_STRING);
-                        argTag.setString(NBT_ARG_VAL, arg.toString());
-                    }
-                    argList.appendTag(argTag);
-                }
-                tag.setTag(NBT_ARGS, argList);
-            }
-        } else {
-            // Use the JSON serializer for all non-translation types so custom IChatComponent implementations
-            // (e.g. gtnhlib AbstractChatComponentCustom) are preserved. The serializer handles custom types
-            // via gtnhlib's MixinIChatComponentSerializer. Siblings are included in the JSON output.
-            tag.setByte(NBT_TYPE, TY_TEXT);
-            tag.setString(NBT_TEXT, IChatComponent.Serializer.func_150696_a(comp));
-            return tag;
-        }
-        // Siblings are only serialized separately for ChatComponentTranslation; for others, the JSON above
-        // captures the full tree.
-        List<IChatComponent> siblings = comp.getSiblings();
-        if (siblings != null && !siblings.isEmpty()) {
-            NBTTagList sibList = new NBTTagList();
-            for (IChatComponent sib : siblings) {
-                sibList.appendTag(componentToNBT(sib));
-            }
-            tag.setTag(NBT_SIBLINGS, sibList);
-        }
+        tag.setString("s", IChatComponent.Serializer.func_150696_a(comp));
         return tag;
     }
 
-    /** Deserializes a component from NBT, restoring siblings recursively. */
+    /** Deserializes a component from NBT, returns null if the tag is missing or malformed. */
     private static IChatComponent componentFromNBT(NBTTagCompound tag) {
-        IChatComponent comp;
-        if (tag.getByte(NBT_TYPE) == TY_TRANSLATION) {
-            String key = tag.getString(NBT_KEY);
-            if (tag.hasKey(NBT_ARGS)) {
-                NBTTagList argList = tag.getTagList(NBT_ARGS, 10);
-                Object[] args = new Object[argList.tagCount()];
-                for (int i = 0; i < argList.tagCount(); i++) {
-                    NBTTagCompound argTag = argList.getCompoundTagAt(i);
-                    String val = argTag.getString(NBT_ARG_VAL);
-                    args[i] = argTag.getByte(NBT_ARG_TYPE) == ARG_KEY ? new ChatComponentTranslation(val) : val;
-                }
-                comp = new ChatComponentTranslation(key, args);
-            } else {
-                comp = new ChatComponentTranslation(key);
-            }
-        } else {
-            // Deserialize via JSON serializer to restore custom IChatComponent types (including siblings).
-            return IChatComponent.Serializer.func_150699_a(tag.getString(NBT_TEXT));
-        }
-        if (tag.hasKey(NBT_SIBLINGS)) {
-            NBTTagList sibList = tag.getTagList(NBT_SIBLINGS, 10);
-            for (int i = 0; i < sibList.tagCount(); i++) {
-                comp.appendSibling(componentFromNBT(sibList.getCompoundTagAt(i)));
-            }
-        }
-        return comp;
+        if (!tag.hasKey("s")) return null;
+        return IChatComponent.Serializer.func_150699_a(tag.getString("s"));
     }
 
     @Override
@@ -146,11 +69,13 @@ public class BehaviourScanner extends BehaviourNone {
             aList.add(EnumChatFormatting.BLUE + StatCollector.translateToLocal("gt.behaviour.scanning.result"));
             final NBTTagCompound nbt = aStack.getTagCompound();
             for (int i = 0; i < lines; i++) {
-                if (nbt != null && nbt.hasKey("scanLine" + i)) {
-                    IChatComponent comp = componentFromNBT(nbt.getCompoundTag("scanLine" + i));
+                IChatComponent comp = nbt != null && nbt.hasKey("scanLine" + i)
+                    ? componentFromNBT(nbt.getCompoundTag("scanLine" + i))
+                    : null;
+                if (comp != null) {
                     aList.add(EnumChatFormatting.RESET + comp.getFormattedText());
                 } else {
-                    // fallback for items scanned before this change
+                    // fallback for items scanned before this change (or malformed NBT)
                     aList.add(EnumChatFormatting.RESET + ItemStackNBT.getString(aStack, "dataLines" + i));
                 }
             }
