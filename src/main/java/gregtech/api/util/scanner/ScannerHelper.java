@@ -233,7 +233,7 @@ public class ScannerHelper {
                 list.add(transComp("base_info_4"));
             }
         } catch (Exception e) {
-            list.add(new ChatComponentText(EnumChatFormatting.RED + trans("error_base_info")));
+            list.add(transComp("error_base_info").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
             if (D1) e.printStackTrace(GTLog.err);
         }
     }
@@ -256,7 +256,8 @@ public class ScannerHelper {
                 }
             }
         } catch (Exception e) {
-            list.add(new ChatComponentText(EnumChatFormatting.RED + trans("error_fluid_handler_info")));
+            list.add(
+                transComp("error_fluid_handler_info").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
             if (D1) e.printStackTrace(GTLog.err);
         }
         return euAmount;
@@ -278,7 +279,7 @@ public class ScannerHelper {
                 euAmount += 500;
             }
         } catch (Exception e) {
-            list.add(new ChatComponentText(EnumChatFormatting.RED + trans("error_reactor_info")));
+            list.add(transComp("error_reactor_info").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
             if (D1) e.printStackTrace(GTLog.err);
         }
         return euAmount;
@@ -297,7 +298,7 @@ public class ScannerHelper {
                 }
             }
         } catch (Exception e) {
-            list.add(new ChatComponentText(EnumChatFormatting.RED + trans("error_debug_info")));
+            list.add(transComp("error_debug_info").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
             if (D1) e.printStackTrace(GTLog.err);
         }
         return euAmount;
@@ -313,7 +314,7 @@ public class ScannerHelper {
                 for (String s : data) list.add(new ChatComponentText(s));
             }
         } catch (Exception e) {
-            list.add(new ChatComponentText(EnumChatFormatting.RED + trans("error_machine_info")));
+            list.add(transComp("error_machine_info").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
             if (D1) e.printStackTrace(GTLog.err);
         }
     }
@@ -329,7 +330,7 @@ public class ScannerHelper {
                 for (String s : resultList) list.add(new ChatComponentText(s));
             }
         } catch (Exception e) {
-            list.add(new ChatComponentText(EnumChatFormatting.RED + trans("error_custom_info")));
+            list.add(transComp("error_custom_info").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
             if (D1) e.printStackTrace(GTLog.err);
         }
     }
@@ -346,7 +347,7 @@ public class ScannerHelper {
                 }
             }
         } catch (Exception e) {
-            list.add(new ChatComponentText(EnumChatFormatting.RED + trans("error_side_info")));
+            list.add(transComp("error_side_info").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
             if (D1) e.printStackTrace(GTLog.err);
         }
         return euAmount;
@@ -365,7 +366,7 @@ public class ScannerHelper {
                 euAmount += 100;
             }
         } catch (Exception e) {
-            list.add(new ChatComponentText(EnumChatFormatting.RED + trans("error_wrench_info")));
+            list.add(transComp("error_wrench_info").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
             if (D1) e.printStackTrace(GTLog.err);
         }
         return euAmount;
@@ -393,7 +394,7 @@ public class ScannerHelper {
                 }
             }
         } catch (Exception e) {
-            list.add(new ChatComponentText(EnumChatFormatting.RED + trans("error_ic2_info")));
+            list.add(transComp("error_ic2_info").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
             if (D1) e.printStackTrace(GTLog.err);
         }
         return euAmount;
@@ -412,7 +413,7 @@ public class ScannerHelper {
                 }
             }
         } catch (Exception e) {
-            list.add(new ChatComponentText(EnumChatFormatting.RED + trans("error_cover_info")));
+            list.add(transComp("error_cover_info").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
             if (D1) e.printStackTrace(GTLog.err);
         }
         return euAmount;
@@ -438,7 +439,7 @@ public class ScannerHelper {
                 list.add(transComp("energy_info_3", storedEU, euCapacity));
             }
         } catch (Exception e) {
-            list.add(new ChatComponentText(EnumChatFormatting.RED + trans("error_energy_info")));
+            list.add(transComp("error_energy_info").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
             if (D1) e.printStackTrace(GTLog.err);
         }
     }
@@ -458,7 +459,7 @@ public class ScannerHelper {
                 }
             }
         } catch (Exception e) {
-            list.add(new ChatComponentText(EnumChatFormatting.RED + trans("error_leaves_info")));
+            list.add(transComp("error_leaves_info").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
             if (D1) e.printStackTrace(GTLog.err);
         }
         return euAmount;
