@@ -307,7 +307,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
         mCasing = 0;
         glassTier = -1;
         isCheckingDirtWater = false;
-        if (debug) glassTier = 8;
+        if (debug) glassTier = 13;
 
         if (isOldStructure && !checkPiece(STRUCTURE_PIECE_MAIN_OLD, 2, 5, 0, errors)) return;
         if (!isOldStructure && !checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_H, OFFSET_V, OFFSET_D, errors)) {
@@ -322,12 +322,10 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
             return;
         }
 
-        if (this.glassTier < 8) {
-            for (MTEHatchEnergy hatchEnergy : this.mEnergyHatches) {
-                if (this.glassTier < hatchEnergy.mTier) {
-                    errors.add(StructureErrors.glassTierNotEnough(hatchEnergy.mTier));
-                    break;
-                }
+        for (MTEHatchEnergy hatchEnergy : this.mEnergyHatches) {
+            if (this.glassTier < hatchEnergy.mTier) {
+                errors.add(StructureErrors.glassTierNotEnough(hatchEnergy.mTier));
+                break;
             }
         }
 

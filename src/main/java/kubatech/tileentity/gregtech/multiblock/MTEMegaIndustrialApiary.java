@@ -334,6 +334,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
             .addInfo("The ideal home for your bees")
             .addInfo("Use screwdriver to change primary mode (INPUT/OUTPUT/OPERATING)")
             .addInfo("Use screwdriver + shift to change operation mode (NORMAL/SWARMER)")
+            .addGlassEnergyLimitInfo()
             .addSeparator()
             .addInfo(EnumChatFormatting.GOLD + "Input Mode:")
             .addInfo("- Does not take power")
@@ -655,12 +656,10 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
         glassTier = -1;
         mCasing = 0;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 7, 8, 0, errors)) return;
-        if (this.glassTier < VoltageIndex.UEV) {
-            for (MTEHatchEnergy hatchEnergy : this.mEnergyHatches) {
-                if (this.glassTier < hatchEnergy.mTier) {
-                    errors.add(StructureErrors.glassTierNotEnough(hatchEnergy.mTier));
-                    break;
-                }
+        for (MTEHatchEnergy hatchEnergy : this.mEnergyHatches) {
+            if (this.glassTier < hatchEnergy.mTier) {
+                errors.add(StructureErrors.glassTierNotEnough(hatchEnergy.mTier));
+                break;
             }
         }
         checkHasMaintenanceHatch(errors);

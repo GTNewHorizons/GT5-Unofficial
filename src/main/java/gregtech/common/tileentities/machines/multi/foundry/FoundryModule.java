@@ -39,8 +39,8 @@ public enum FoundryModule {
         new Color(20, 48, 86),
         EnumChatFormatting.DARK_PURPLE,
         13, foundryData -> {
-            if(foundryData.tdsPresent) return;
-            foundryData.tdsPresent = true;
+            if(foundryData.universalCollapserPresent) return;
+            foundryData.universalCollapserPresent = true;
             foundryData.euEffMultiplier*=4;
             foundryData.speedMultiplier *= 2;
         }
@@ -64,7 +64,7 @@ public enum FoundryModule {
         EnumChatFormatting.DARK_AQUA,
         12, foundryData -> {
             foundryData.effOCPresent = true;
-            foundryData.ocFactorAdditive += 0.35f;
+            foundryData.ocFactorAdditive += 0.4f;
     }
     ),
     STREAMLINED_CASTERS(
