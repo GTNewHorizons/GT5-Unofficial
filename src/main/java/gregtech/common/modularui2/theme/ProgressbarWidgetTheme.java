@@ -35,17 +35,16 @@ public class ProgressbarWidgetTheme extends WidgetTheme {
                 this.fullTexture = texture.getSubArea(0, 0.5f, 1, 1);
                 return;
             }
-        } else if (json.has("emptyTexture") && json.has("fullTexture") || json.has("inherit")) {
-            IDrawable deserializedEmptyTexture = JsonHelper
-                .deserializeWithFallback(json, inherits(json, "emptyTexture") ? null : fallback, IDrawable.class, parent.getEmptyTexture(), "emptyTexture");
-            IDrawable deserializedFullTexture = JsonHelper
-                .deserializeWithFallback(json, inherits(json, "fullTexture") ? null : fallback, IDrawable.class, parent.getFullTexture(), "fullTexture");
-            if (deserializedEmptyTexture instanceof UITexture emptyUITexture
-                && deserializedFullTexture instanceof UITexture fullUITexture) {
-                this.emptyTexture = emptyUITexture;
-                this.fullTexture = fullUITexture;
-                return;
-            }
+        }
+        IDrawable deserializedEmptyTexture = JsonHelper
+            .deserializeWithFallback(json, inherits(json, "emptyTexture") ? null : fallback, IDrawable.class, parent.getEmptyTexture(), "emptyTexture");
+        IDrawable deserializedFullTexture = JsonHelper
+            .deserializeWithFallback(json, inherits(json, "fullTexture") ? null : fallback, IDrawable.class, parent.getFullTexture(), "fullTexture");
+        if (deserializedEmptyTexture instanceof UITexture emptyUITexture
+            && deserializedFullTexture instanceof UITexture fullUITexture) {
+            this.emptyTexture = emptyUITexture;
+            this.fullTexture = fullUITexture;
+            return;
         }
         this.emptyTexture = null;
         this.fullTexture = null;
