@@ -3029,7 +3029,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             for (MTEHatchOutputBusME busME : filteredBusses) {
                 // If the bus is unfiltered or is filtered to this item, we can eject the stack fully
                 // We don't care about bus ordering here because we're just checking if it's possible
-                if (!busME.isFilteredToItem(output)) {
+                if (busME.isFilteredToItem(output)) {
                     handled = true;
                     break;
                 }
