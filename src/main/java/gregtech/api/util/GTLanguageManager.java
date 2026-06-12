@@ -185,7 +185,7 @@ public class GTLanguageManager {
         return tTrimmedKey;
     }
 
-@SuppressWarnings("unused")
+    @SuppressWarnings("unused")
     public static String getTranslateableItemStackName(ItemStack aStack) {
         if (GTUtility.isStackInvalid(aStack)) return "null";
         final String tName = ItemStackNBT.getDisplayName(aStack);
