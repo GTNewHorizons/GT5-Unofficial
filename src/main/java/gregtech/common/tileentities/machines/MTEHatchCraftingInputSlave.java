@@ -29,6 +29,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
@@ -128,17 +129,13 @@ public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDua
         var ret = new ArrayList<String>();
         if (getMaster() != null) {
             ret.add(
-                StatCollector.translateToLocalFormatted(
-                    "GT5U.infodata.hatch.crafting_input_slave.linked_to",
-                    masterX,
-                    masterY,
-                    masterZ));
+                IGregTechDeviceInformation
+                    .encode("GT5U.infodata.hatch.crafting_input_slave.linked_to", masterX, masterY, masterZ));
             ret.addAll(Arrays.asList(getMaster().getInfoData()));
-        } else ret.add(StatCollector.translateToLocal("GT5U.infodata.hatch.crafting_input_slave.not_linked_to"));
+        } else ret.add("GT5U.infodata.hatch.crafting_input_slave.not_linked_to");
         ret.add(
-            StatCollector.translateToLocalFormatted(
-                "GT5U.infodata.hatch.crafting_input_slave.reverseRecipes",
-                reverseRecipes ? "on" : "off"));
+            IGregTechDeviceInformation
+                .encode("GT5U.infodata.hatch.crafting_input_slave.reverseRecipes", reverseRecipes ? "on" : "off"));
         return ret.toArray(new String[0]);
     }
 
