@@ -7,7 +7,6 @@ import static gregtech.api.recipe.RecipeMaps.quantumComputerFakeRecipes;
 import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeConstants.QUANTUM_COMPUTER_DATA;
 import static net.minecraft.util.StatCollector.translateToLocal;
-import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,6 +32,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
@@ -253,13 +253,9 @@ public class MTEHatchRack extends MTEHatch {
     @Override
     public String[] getInfoData() {
         return new String[] {
-            translateToLocalFormatted("tt.keyphrase.Base_computation", clientLocale) + ": "
-                + EnumChatFormatting.AQUA
-                + getComputationPower(overClock, overVolt, false),
-            translateToLocalFormatted("tt.keyphrase.Heat_Accumulated", clientLocale) + ": "
-                + EnumChatFormatting.RED
-                + heat
-                + EnumChatFormatting.RESET };
+            IGregTechDeviceInformation
+                .encode("tt.infodata.rack.base_computation", getComputationPower(overClock, overVolt, false)),
+            IGregTechDeviceInformation.encode("tt.infodata.rack.heat_accumulated", heat) };
     }
 
     public static void run() { // 20k heat cap max!
