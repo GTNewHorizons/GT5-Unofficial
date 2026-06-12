@@ -36,10 +36,18 @@ public class ProgressbarWidgetTheme extends WidgetTheme {
                 return;
             }
         }
-        IDrawable deserializedEmptyTexture = JsonHelper
-            .deserializeWithFallback(json, inherits(json, "emptyTexture") ? null : fallback, IDrawable.class, parent.getEmptyTexture(), "emptyTexture");
-        IDrawable deserializedFullTexture = JsonHelper
-            .deserializeWithFallback(json, inherits(json, "fullTexture") ? null : fallback, IDrawable.class, parent.getFullTexture(), "fullTexture");
+        IDrawable deserializedEmptyTexture = JsonHelper.deserializeWithFallback(
+            json,
+            inherits(json, "emptyTexture") ? null : fallback,
+            IDrawable.class,
+            parent.getEmptyTexture(),
+            "emptyTexture");
+        IDrawable deserializedFullTexture = JsonHelper.deserializeWithFallback(
+            json,
+            inherits(json, "fullTexture") ? null : fallback,
+            IDrawable.class,
+            parent.getFullTexture(),
+            "fullTexture");
         if (deserializedEmptyTexture instanceof UITexture emptyUITexture
             && deserializedFullTexture instanceof UITexture fullUITexture) {
             this.emptyTexture = emptyUITexture;
