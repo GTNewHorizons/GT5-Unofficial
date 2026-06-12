@@ -28,26 +28,17 @@ public class ProgressbarWidgetTheme extends WidgetTheme {
         super(parent, json, fallback);
         this.imageSize = JsonHelper.getInt(json, parent.getImageSize(), "imageSize");
         if (json.has("wholeTexture")) {
-            IDrawable wholeTexture = JsonHelper
-                .deserializeWithFallback(json, fallback, IDrawable.class, IDrawable.EMPTY, "wholeTexture");
+            IDrawable wholeTexture = JsonHelper.deserialize(json, IDrawable.class, IDrawable.EMPTY, "wholeTexture");
             if (wholeTexture instanceof UITexture texture) {
                 this.emptyTexture = texture.getSubArea(0, 0, 1, 0.5f);
                 this.fullTexture = texture.getSubArea(0, 0.5f, 1, 1);
                 return;
             }
         }
-        IDrawable deserializedEmptyTexture = JsonHelper.deserializeWithFallback(
-            json,
-            inherits(json, "emptyTexture") ? null : fallback,
-            IDrawable.class,
-            parent.getEmptyTexture(),
-            "emptyTexture");
-        IDrawable deserializedFullTexture = JsonHelper.deserializeWithFallback(
-            json,
-            inherits(json, "fullTexture") ? null : fallback,
-            IDrawable.class,
-            parent.getFullTexture(),
-            "fullTexture");
+        IDrawable deserializedEmptyTexture = JsonHelper
+            .deserialize(json, IDrawable.class, parent.getEmptyTexture(), "emptyTexture");
+        IDrawable deserializedFullTexture = JsonHelper
+            .deserialize(json, IDrawable.class, parent.getFullTexture(), "fullTexture");
         if (deserializedEmptyTexture instanceof UITexture emptyUITexture
             && deserializedFullTexture instanceof UITexture fullUITexture) {
             this.emptyTexture = emptyUITexture;
