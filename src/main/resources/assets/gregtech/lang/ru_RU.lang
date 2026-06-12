@@ -129,28 +129,28 @@ gt.oreprefix.tiny_pile_of_material_pulp=Крошечная кучка пульп
 gt.oreprefix.triple_material_plate=3x Пластина %s{adj_m_nom/adj_f_nom/lowercase}
 gt.oreprefix.triple_material_sheet=3x Лист %s{adj_m_nom/lowercase}
 
-#Special Componets
+#Special Components
 gt.oreprefix.cardboard=Картон
-gt.oreprefix.carton=Картонная упаковка
-gt.oreprefix.chad=Высечка
-gt.oreprefix.cooked_mince_meat=Жареный фарш
-gt.oreprefix.crushed_ice=Дроблёный лёд
+gt.oreprefix.carton=Картон
+gt.oreprefix.chad=Пульпа
+gt.oreprefix.cooked_mince_meat=Приготовленный мясной фарш
+gt.oreprefix.crushed_ice=Молотый лёд
 gt.oreprefix.flour=Мука
-gt.oreprefix.mince_meat=Фарш
+gt.oreprefix.mince_meat=Мясной фарш
 gt.oreprefix.paperboard=Картон
 gt.oreprefix.small_pile_of_mince_meat=Маленькая кучка фарша
 gt.oreprefix.small_pile_of_bone_meal=Маленькая кучка костной муки
-gt.oreprefix.small_pile_of_chad=Маленькая кучка высечки
-gt.oreprefix.small_pile_of_cooked_mince_meat=Маленькая кучка жареного фарша
-gt.oreprefix.small_pile_of_crushed_ice=Маленькая кучка дроблёного льда
+gt.oreprefix.small_pile_of_chad=Маленькая кучка пульпы
+gt.oreprefix.small_pile_of_cooked_mince_meat=Маленькая кучка приготовленного мясного фарша
+gt.oreprefix.small_pile_of_crushed_ice=Маленькая кучка молотого льда
 gt.oreprefix.small_pile_of_flour=Маленькая кучка муки
-gt.oreprefix.thick_cardboard=Толстый картон
+gt.oreprefix.thick_cardboard=Плотный картон
 gt.oreprefix.tiny_pile_of_bone_meal=Крошечная кучка костной муки
-gt.oreprefix.tiny_pile_of_chad=Крошечная кучка высечки
-gt.oreprefix.tiny_pile_of_cooked_mince_meat=Крошечная кучка жареного фарша
-gt.oreprefix.tiny_pile_of_crushed_ice=Крошечная кучка дроблёного льда
+gt.oreprefix.tiny_pile_of_chad=Крошечная кучка пульпы
+gt.oreprefix.tiny_pile_of_cooked_mince_meat=Крошечная кучка приготовленного мясного фарша
+gt.oreprefix.tiny_pile_of_crushed_ice=Крошечная кучка молотого льда
 gt.oreprefix.tiny_pile_of_flour=Крошечная кучка муки
-gt.oreprefix.tiny_pile_of_mince_meat=Крошечная кучка фарша
+gt.oreprefix.tiny_pile_of_mince_meat=Крошечная кучка мясного фарша
 
 #BlockMachines
 gt.oreprefix.1x_material_cable=1x Кабель из %s{adj_m_nom/lowercase}
