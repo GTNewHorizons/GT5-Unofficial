@@ -1,19 +1,20 @@
 package gregtech.common.gui.modularui.singleblock;
 
-import bartworks.common.tileentities.tiered.MTEBioLab;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
+
+import bartworks.common.tileentities.tiered.MTEBioLab;
 import gregtech.api.recipe.BasicUIProperties;
 import gregtech.common.gui.modularui.singleblock.base.MTEBasicMachineBaseGui;
 
 public class MTEBioLabGui extends MTEBasicMachineBaseGui<MTEBioLab> {
+
     public MTEBioLabGui(MTEBioLab machine, BasicUIProperties properties) {
         super(machine, properties);
     }
@@ -35,8 +36,7 @@ public class MTEBioLabGui extends MTEBasicMachineBaseGui<MTEBioLab> {
 
     @Override
     protected Widget<? extends Widget<?>> makeLogoWidget() {
-        return super.makeLogoWidget()
-            .size(47, 21);
+        return super.makeLogoWidget().size(47, 21);
     }
 
     @Override
@@ -61,8 +61,10 @@ public class MTEBioLabGui extends MTEBasicMachineBaseGui<MTEBioLab> {
             .topRel(0)
             .rightRel(0)
             .child(makeLogoWidget())
-            .child(Flow.column().coverChildren()
-                .child(createMufflerButton())
-                .child(createPowerSwitchButton()));
+            .child(
+                Flow.column()
+                    .coverChildren()
+                    .child(createMufflerButton())
+                    .child(createPowerSwitchButton()));
     }
 }
