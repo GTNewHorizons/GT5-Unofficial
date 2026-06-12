@@ -2,7 +2,6 @@ package gregtech.common.gui.modularui.hatch;
 
 import net.minecraft.entity.player.EntityPlayer;
 
-import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.drawable.DynamicDrawable;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
@@ -72,11 +71,6 @@ public class MTEHatchObjectHolderGui extends MTEHatchBaseGui<MTEHatchObjectHolde
     @Override
     protected boolean supportsBottomRowOverlap() {
         return true;
-    }
-
-    @Override
-    protected IDrawable.DrawableWidget createLogo() {
-        return new IDrawable.DrawableWidget(GTGuiTextures.TT_PICTURE_TECTECH_LOGO).size(18);
     }
 
     @Override

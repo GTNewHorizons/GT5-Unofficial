@@ -5,6 +5,8 @@ import java.util.function.Supplier;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.util.IIcon;
 
+import gregtech.api.items.armor.MechArmorAugmentRegistries.ArmorType;
+
 public class AugmentBuilder extends ArmorPartBuilder<AugmentBuilder> {
 
     public enum AugmentCategory {
@@ -16,11 +18,14 @@ public class AugmentBuilder extends ArmorPartBuilder<AugmentBuilder> {
     }
 
     private AugmentCategory category = AugmentCategory.Protection;
-    private int minimumCore = 0;
+    private int minimumCoreTier = 0;
     /// The maximum number of times this augment can be installed.
     private int maxStack = 1;
     private EnumRarity rarity;
     private Supplier<IIcon> textureSupplier = () -> null;
+
+    @SuppressWarnings("unchecked")
+    private final Supplier<IIcon>[] textureSuppliers = new Supplier[4];
 
     public AugmentBuilder setCategory(AugmentCategory category) {
         onMutated();
@@ -28,9 +33,10 @@ public class AugmentBuilder extends ArmorPartBuilder<AugmentBuilder> {
         return this;
     }
 
-    public AugmentBuilder setMinimumCore(int minimumCore) {
+    public AugmentBuilder setMinimumCoreTier(int minimumCoreTier) {
         onMutated();
-        this.minimumCore = minimumCore;
+        this.minimumCoreTier = minimumCoreTier;
+        rarity = EnumRarity.values()[Math.min(minimumCoreTier - 1, 3)];
         return this;
     }
 
@@ -40,28 +46,28 @@ public class AugmentBuilder extends ArmorPartBuilder<AugmentBuilder> {
         return this;
     }
 
-    public AugmentBuilder setRarity(EnumRarity rarity) {
+    public AugmentBuilder setTexture(ArmorType type, Supplier<IIcon> specificSupplier) {
         onMutated();
-        this.rarity = rarity;
+        this.textureSuppliers[type.ordinal()] = specificSupplier;
         return this;
     }
 
-    public AugmentBuilder setTexture(Supplier<IIcon> textureSupplier) {
-        onMutated();
-        this.textureSupplier = textureSupplier;
-        return this;
-    }
+    public IIcon getTexture(ArmorType armorType) {
+        Supplier<IIcon> supplier = this.textureSuppliers[armorType.ordinal()];
 
-    public IIcon getTexture() {
-        return textureSupplier.get();
+        if (supplier != null) {
+            return supplier.get();
+        }
+
+        return null;
     }
 
     public AugmentCategory getCategory() {
         return category;
     }
 
-    public int getMinimumCore() {
-        return minimumCore;
+    public int getMinimumCoreTier() {
+        return minimumCoreTier;
     }
 
     public int getMaxStack() {
