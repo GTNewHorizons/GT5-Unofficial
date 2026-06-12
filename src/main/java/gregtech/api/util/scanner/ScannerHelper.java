@@ -489,7 +489,11 @@ public class ScannerHelper {
         if (player.capabilities.isCreativeMode) {
             final FluidStack fluid = undergroundOilReadInformation(currentChunk);
             if (fluid != null) {
-                list.add(transComp("chunk_info_3", fluid.getLocalizedName(), goldComp(formatNumber(fluid.amount))));
+                list.add(
+                    transComp(
+                        "chunk_info_3",
+                        new ChatComponentTranslation(fluid.getUnlocalizedName()),
+                        goldComp(formatNumber(fluid.amount))));
             } else {
                 list.add(transComp("chunk_info_4"));
             }
