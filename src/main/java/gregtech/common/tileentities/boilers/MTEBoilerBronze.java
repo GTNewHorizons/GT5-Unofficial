@@ -255,6 +255,6 @@ public class MTEBoilerBronze extends MTEBoiler {
 
     @Override
     protected GTGuiTheme getGuiTheme() {
-        return GTGuiThemes.BRONZE;
+        return GTGuiThemes.STEAM.apply(getSteamVariant());
     }
 }

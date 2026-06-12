@@ -1,15 +1,21 @@
 package gregtech.api.modularui2;
 
 import java.awt.Color;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 
 import gregtech.api.enums.Dyes;
+import gregtech.api.enums.SteamVariant;
 
 /**
  * Holds all the {@link GTGuiTheme}s registered.
  */
 public final class GTGuiThemes {
 
-    public static void init() {}
+    public static void init() {
+        // initialize all valid steam variant themes
+        for (SteamVariant variant : SteamVariant.variants) GTGuiThemes.STEAM.apply(variant);
+    }
 
     public static final GTGuiTheme STANDARD = GTGuiTheme.builder("gregtech:standard")
         .panel(GTTextureIds.BACKGROUND_STANDARD)
@@ -61,6 +67,7 @@ public final class GTGuiThemes {
             GTTextureIds.BUTTON_COVER_TAB_DISABLED_STANDARD)
         .themedTexture(GTWidgetThemes.PICTURE_CANISTER.getFullName(), GTTextureIds.OVERLAY_SLOT_CANISTER_DARK)
         .themedTexture(GTWidgetThemes.PICTURE_LOGO.getFullName(), GTTextureIds.PICTURE_GT_LOGO_STANDARD)
+        .themedTexture(GTWidgetThemes.PICTURE_ERROR.getFullName(), GTTextureIds.PICTURE_ERROR)
         .build();
     public static final GTGuiTheme STANDARD_BLACK = GTGuiTheme.builder("gregtech:standard_black")
         .parent(STANDARD)
@@ -133,136 +140,92 @@ public final class GTGuiThemes {
         .customTextColor(GTWidgetThemes.TEXT_TITLE.getFullName(), 0x222222)
         .textField(Dyes.dyeWhite.toInt())
         .build();
-    public static final GTGuiTheme BRONZE = GTGuiTheme.builder("gregtech:bronze")
-        .parent(STANDARD)
-        .panel(GTTextureIds.BACKGROUND_BRONZE)
-        .itemSlot(GTTextureIds.SLOT_ITEM_BRONZE)
-        .fluidSlot(GTTextureIds.SLOT_FLUID_BRONZE)
-        .color(Dyes.dyeWhite.toInt())
-        .button(GTTextureIds.BUTTON_BRONZE)
-        .simpleToggleButton(GTTextureIds.BUTTON_BRONZE, GTTextureIds.BUTTON_BRONZE_PRESSED, Dyes.dyeWhite.toInt())
-        .themedTexture(GTWidgetThemes.BACKGROUND_POPUP.getFullName(), GTTextureIds.BACKGROUND_POPUP_BRONZE)
-        .themedTexture(GTWidgetThemes.BACKGROUND_TITLE.getFullName(), GTTextureIds.BACKGROUND_TITLE_BRONZE)
-        .themedOverlayItemSlot(
-            GTWidgetThemes.OVERLAY_ITEM_SLOT_COAL.getFullName(),
-            GTTextureIds.OVERLAY_SLOT_COAL_BRONZE)
-        .themedOverlayItemSlot(
-            GTWidgetThemes.OVERLAY_ITEM_SLOT_DUST.getFullName(),
-            GTTextureIds.OVERLAY_SLOT_DUST_BRONZE)
-        .themedOverlayItemSlot(GTWidgetThemes.OVERLAY_ITEM_SLOT_IN.getFullName(), GTTextureIds.OVERLAY_SLOT_IN_BRONZE)
-        .themedOverlayItemSlot(
-            GTWidgetThemes.OVERLAY_ITEM_SLOT_INGOT.getFullName(),
-            GTTextureIds.OVERLAY_SLOT_INGOT_BRONZE)
-        .themedOverlayItemSlot(
-            GTWidgetThemes.OVERLAY_ITEM_SLOT_FURNACE.getFullName(),
-            GTTextureIds.OVERLAY_SLOT_FURNACE_BRONZE)
-        .themedOverlayItemSlot(GTWidgetThemes.OVERLAY_ITEM_SLOT_OUT.getFullName(), GTTextureIds.OVERLAY_SLOT_OUT_BRONZE)
-        .themedOverlayItemSlot(
-            GTWidgetThemes.OVERLAY_ITEM_SLOT_BLOCK.getFullName(),
-            GTTextureIds.OVERLAY_SLOT_BLOCK_BRONZE)
-        .themedOverlayFluidSlot(GTWidgetThemes.OVERLAY_FLUID_SLOT_IN.getFullName(), GTTextureIds.OVERLAY_SLOT_IN_BRONZE)
-        .progressbar(
-            GTWidgetThemes.PROGRESSBAR_BOILER_HEAT.getFullName(),
-            GTTextureIds.SLOT_FLUID_BRONZE,
-            GTTextureIds.PROGRESSBAR_BOILER_HEAT,
-            54)
-        .progressbar(GTWidgetThemes.PROGRESSBAR_FUEL.getFullName(), GTTextureIds.PROGRESSBAR_FUEL_BRONZE, 14)
-        .themedButton(
-            GTWidgetThemes.BUTTON_COVER_TAB_ENABLED.getFullName(),
-            GTTextureIds.BUTTON_COVER_TAB_NORMAL_BRONZE,
-            GTTextureIds.BUTTON_COVER_TAB_HIGHLIGHT_BRONZE)
-        .themedButton(
-            GTWidgetThemes.BUTTON_COVER_TAB_DISABLED.getFullName(),
-            GTTextureIds.BUTTON_COVER_TAB_DISABLED_BRONZE)
-        .themedTexture(GTWidgetThemes.PICTURE_CANISTER.getFullName(), GTTextureIds.OVERLAY_SLOT_CANISTER_BRONZE)
-        .themedTexture(GTWidgetThemes.PICTURE_LOGO.getFullName(), GTTextureIds.PICTURE_GT_LOGO_BRONZE)
+
+    private static final BiFunction<SteamVariant, GTGuiTheme.Builder, GTGuiTheme.Builder> STEAM_MODIFIER = (variant,
+        builder) -> {
+        if (variant == SteamVariant.BRONZE || variant == SteamVariant.STEEL) builder
+            .themedOverlayItemSlot(
+                GTWidgetThemes.OVERLAY_ITEM_SLOT_COAL.getFullName(),
+                String.format(GTTextureIds.OVERLAY_SLOT_COAL_STEAM, variant))
+            .themedOverlayItemSlot(
+                GTWidgetThemes.OVERLAY_ITEM_SLOT_IN.getFullName(),
+                String.format(GTTextureIds.OVERLAY_SLOT_IN_STEAM, variant))
+            .themedOverlayItemSlot(
+                GTWidgetThemes.OVERLAY_ITEM_SLOT_OUT.getFullName(),
+                String.format(GTTextureIds.OVERLAY_SLOT_OUT_STEAM, variant))
+            .progressbar(
+                GTWidgetThemes.PROGRESSBAR_FUEL.getFullName(),
+                String.format(GTTextureIds.PROGRESSBAR_FUEL_STEAM, variant),
+                14)
+            .themedTexture(
+                GTWidgetThemes.PICTURE_CANISTER.getFullName(),
+                String.format(GTTextureIds.OVERLAY_SLOT_CANISTER_STEAM, variant));
+
+        if (variant == SteamVariant.STEEL || variant == SteamVariant.PRIMITIVE)
+            builder.customTextColor(GTWidgetThemes.TEXT_TITLE.getFullName(), 0xfafaff);
+
+        if (variant == SteamVariant.STEEL) builder.textColor(0x404040)
+            .themedTexture(GTWidgetThemes.STEAM_GAUGE.getFullName(), GTTextureIds.PICTURE_STEAM_GAUGE_STEEL)
+            .themedColor(GTWidgetThemes.STEAM_GAUGE_NEEDLE.getFullName(), 0x3d3847);
+
+        if (variant == SteamVariant.PRIMITIVE) builder.textColor(0xfafaff);
+
+        return builder;
+    };
+
+    public static final Function<SteamVariant, GTGuiTheme> STEAM = variant -> STEAM_MODIFIER
+        .apply(
+            variant,
+            GTGuiTheme.builder(String.format("gregtech:%s", variant))
+                .parent(STANDARD)
+                .panel(String.format(GTTextureIds.BACKGROUND_STEAM, variant))
+                .itemSlot(String.format(GTTextureIds.SLOT_ITEM_STEAM, variant))
+                .fluidSlot(String.format(GTTextureIds.SLOT_FLUID_STEAM, variant))
+                .color(Dyes.dyeWhite.toInt())
+                .button(String.format(GTTextureIds.BUTTON_STEAM, variant))
+                .simpleToggleButton(
+                    String.format(GTTextureIds.BUTTON_STEAM, variant),
+                    String.format(GTTextureIds.BUTTON_STEAM_PRESSED, variant),
+                    Dyes.dyeWhite.toInt())
+                .themedTexture(
+                    GTWidgetThemes.BACKGROUND_POPUP.getFullName(),
+                    String.format(GTTextureIds.BACKGROUND_POPUP_STEAM, variant))
+                .themedTexture(
+                    GTWidgetThemes.BACKGROUND_TITLE.getFullName(),
+                    String.format(GTTextureIds.BACKGROUND_TITLE_STEAM, variant))
+                .themedOverlayItemSlot(
+                    GTWidgetThemes.OVERLAY_ITEM_SLOT_DUST.getFullName(),
+                    String.format(GTTextureIds.OVERLAY_SLOT_DUST_STEAM, variant))
+                .themedOverlayItemSlot(
+                    GTWidgetThemes.OVERLAY_ITEM_SLOT_INGOT.getFullName(),
+                    String.format(GTTextureIds.OVERLAY_SLOT_INGOT_STEAM, variant))
+                .themedOverlayItemSlot(
+                    GTWidgetThemes.OVERLAY_ITEM_SLOT_FURNACE.getFullName(),
+                    String.format(GTTextureIds.OVERLAY_SLOT_FURNACE_STEAM, variant))
+                .themedOverlayItemSlot(
+                    GTWidgetThemes.OVERLAY_ITEM_SLOT_BLOCK.getFullName(),
+                    String.format(GTTextureIds.OVERLAY_SLOT_BLOCK_STEAM, variant))
+                .themedOverlayFluidSlot(
+                    GTWidgetThemes.OVERLAY_FLUID_SLOT_IN.getFullName(),
+                    String.format(GTTextureIds.OVERLAY_SLOT_IN_STEAM, variant))
+                .progressbar(
+                    GTWidgetThemes.PROGRESSBAR_BOILER_HEAT.getFullName(),
+                    String.format(GTTextureIds.SLOT_FLUID_STEAM, variant),
+                    GTTextureIds.PROGRESSBAR_BOILER_HEAT,
+                    54)
+                .themedButton(
+                    GTWidgetThemes.BUTTON_COVER_TAB_ENABLED.getFullName(),
+                    String.format(GTTextureIds.BUTTON_COVER_TAB_NORMAL_STEAM, variant),
+                    String.format(GTTextureIds.BUTTON_COVER_TAB_HIGHLIGHT_STEAM, variant))
+                .themedButton(
+                    GTWidgetThemes.BUTTON_COVER_TAB_DISABLED.getFullName(),
+                    String.format(GTTextureIds.BUTTON_COVER_TAB_DISABLED_STEAM, variant))
+                .themedTexture(
+                    GTWidgetThemes.PICTURE_LOGO.getFullName(),
+                    String.format(GTTextureIds.PICTURE_GT_LOGO_STEAM, variant))
+                .themedTexture(GTWidgetThemes.PICTURE_ERROR.getFullName(), GTTextureIds.PICTURE_ERROR_STEAM))
         .build();
-    public static final GTGuiTheme STEEL = GTGuiTheme.builder("gregtech:steel")
-        .parent(STANDARD)
-        .panel(GTTextureIds.BACKGROUND_STEEL)
-        .itemSlot(GTTextureIds.SLOT_ITEM_STEEL)
-        .fluidSlot(GTTextureIds.SLOT_FLUID_STEEL)
-        .color(Dyes.dyeWhite.toInt())
-        .textColor(0x404040)
-        .customTextColor(GTWidgetThemes.TEXT_TITLE.getFullName(), 0xfafaff)
-        .button(GTTextureIds.BUTTON_STEEL)
-        .simpleToggleButton(GTTextureIds.BUTTON_STEEL, GTTextureIds.BUTTON_STEEL_PRESSED, Dyes.dyeWhite.toInt())
-        .themedTexture(GTWidgetThemes.BACKGROUND_POPUP.getFullName(), GTTextureIds.BACKGROUND_POPUP_STEEL)
-        .themedTexture(GTWidgetThemes.BACKGROUND_TITLE.getFullName(), GTTextureIds.BACKGROUND_TITLE_STEEL)
-        .themedOverlayItemSlot(
-            GTWidgetThemes.OVERLAY_ITEM_SLOT_COAL.getFullName(),
-            GTTextureIds.OVERLAY_SLOT_COAL_STEEL)
-        .themedOverlayItemSlot(
-            GTWidgetThemes.OVERLAY_ITEM_SLOT_DUST.getFullName(),
-            GTTextureIds.OVERLAY_SLOT_DUST_STEEL)
-        .themedOverlayItemSlot(GTWidgetThemes.OVERLAY_ITEM_SLOT_IN.getFullName(), GTTextureIds.OVERLAY_SLOT_IN_STEEL)
-        .themedOverlayItemSlot(
-            GTWidgetThemes.OVERLAY_ITEM_SLOT_INGOT.getFullName(),
-            GTTextureIds.OVERLAY_SLOT_INGOT_STEEL)
-        .themedOverlayItemSlot(
-            GTWidgetThemes.OVERLAY_ITEM_SLOT_FURNACE.getFullName(),
-            GTTextureIds.OVERLAY_SLOT_FURNACE_STEEL)
-        .themedOverlayItemSlot(GTWidgetThemes.OVERLAY_ITEM_SLOT_OUT.getFullName(), GTTextureIds.OVERLAY_SLOT_OUT_STEEL)
-        .themedOverlayItemSlot(
-            GTWidgetThemes.OVERLAY_ITEM_SLOT_BLOCK.getFullName(),
-            GTTextureIds.OVERLAY_SLOT_BLOCK_STEEL)
-        .themedOverlayFluidSlot(GTWidgetThemes.OVERLAY_FLUID_SLOT_IN.getFullName(), GTTextureIds.OVERLAY_SLOT_IN_STEEL)
-        .progressbar(
-            GTWidgetThemes.PROGRESSBAR_BOILER_HEAT.getFullName(),
-            GTTextureIds.SLOT_FLUID_STEEL,
-            GTTextureIds.PROGRESSBAR_BOILER_HEAT,
-            54)
-        .progressbar(GTWidgetThemes.PROGRESSBAR_FUEL.getFullName(), GTTextureIds.PROGRESSBAR_FUEL_STEEL, 14)
-        .themedButton(
-            GTWidgetThemes.BUTTON_COVER_TAB_ENABLED.getFullName(),
-            GTTextureIds.BUTTON_COVER_TAB_NORMAL_STEEL,
-            GTTextureIds.BUTTON_COVER_TAB_HIGHLIGHT_STEEL)
-        .themedButton(
-            GTWidgetThemes.BUTTON_COVER_TAB_DISABLED.getFullName(),
-            GTTextureIds.BUTTON_COVER_TAB_DISABLED_STEEL)
-        .themedTexture(GTWidgetThemes.PICTURE_CANISTER.getFullName(), GTTextureIds.OVERLAY_SLOT_CANISTER_STEEL)
-        .themedTexture(GTWidgetThemes.PICTURE_LOGO.getFullName(), GTTextureIds.PICTURE_GT_LOGO_STEEL)
-        .themedTexture(GTWidgetThemes.STEAM_GAUGE.getFullName(), GTTextureIds.PICTURE_STEAM_GAUGE_STEEL)
-        .themedColor(GTWidgetThemes.STEAM_GAUGE_NEEDLE.getFullName(), 0x3d3847)
-        .build();
-    public static final GTGuiTheme PRIMITIVE = GTGuiTheme.builder("gregtech:primitive")
-        .parent(STANDARD)
-        .panel(GTTextureIds.BACKGROUND_PRIMITIVE)
-        .itemSlot(GTTextureIds.SLOT_ITEM_PRIMITIVE)
-        .fluidSlot(GTTextureIds.SLOT_FLUID_PRIMITIVE)
-        .color(Dyes.dyeWhite.toInt())
-        .textColor(0xfafaff)
-        .customTextColor(GTWidgetThemes.TEXT_TITLE.getFullName(), 0xfafaff)
-        .button(GTTextureIds.BUTTON_PRIMITIVE)
-        .simpleToggleButton(GTTextureIds.BUTTON_PRIMITIVE, GTTextureIds.BUTTON_PRIMITIVE_PRESSED, Dyes.dyeWhite.toInt())
-        .themedTexture(GTWidgetThemes.BACKGROUND_POPUP.getFullName(), GTTextureIds.BACKGROUND_POPUP_PRIMITIVE)
-        .themedTexture(GTWidgetThemes.BACKGROUND_TITLE.getFullName(), GTTextureIds.BACKGROUND_TITLE_PRIMITIVE)
-        .themedOverlayItemSlot(
-            GTWidgetThemes.OVERLAY_ITEM_SLOT_DUST.getFullName(),
-            GTTextureIds.OVERLAY_SLOT_DUST_PRIMITIVE)
-        .themedOverlayItemSlot(
-            GTWidgetThemes.OVERLAY_ITEM_SLOT_INGOT.getFullName(),
-            GTTextureIds.OVERLAY_SLOT_INGOT_PRIMITIVE)
-        .themedOverlayItemSlot(
-            GTWidgetThemes.OVERLAY_ITEM_SLOT_FURNACE.getFullName(),
-            GTTextureIds.OVERLAY_SLOT_FURNACE_PRIMITIVE)
-        .themedOverlayItemSlot(
-            GTWidgetThemes.OVERLAY_ITEM_SLOT_BLOCK.getFullName(),
-            GTTextureIds.OVERLAY_SLOT_BLOCK_PRIMITIVE)
-        .progressbar(
-            GTWidgetThemes.PROGRESSBAR_BOILER_HEAT.getFullName(),
-            GTTextureIds.SLOT_FLUID_PRIMITIVE,
-            GTTextureIds.PROGRESSBAR_BOILER_HEAT,
-            54)
-        .themedButton(
-            GTWidgetThemes.BUTTON_COVER_TAB_ENABLED.getFullName(),
-            GTTextureIds.BUTTON_COVER_TAB_NORMAL_PRIMITIVE,
-            GTTextureIds.BUTTON_COVER_TAB_HIGHLIGHT_PRIMITIVE)
-        .themedButton(
-            GTWidgetThemes.BUTTON_COVER_TAB_DISABLED.getFullName(),
-            GTTextureIds.BUTTON_COVER_TAB_DISABLED_PRIMITIVE)
-        .themedTexture(GTWidgetThemes.PICTURE_LOGO.getFullName(), GTTextureIds.PICTURE_GT_LOGO_PRIMITIVE)
-        .build();
+
     public static final GTGuiTheme TECTECH_STANDARD = GTGuiTheme.builder("tectech:standard")
         .parent(STANDARD)
         .themedTexture(GTWidgetThemes.PICTURE_LOGO.getFullName(), GTTextureIds.PICTURE_TECTECH_LOGO)
@@ -285,43 +248,9 @@ public final class GTGuiThemes {
         .themedTexture(GTWidgetThemes.PICTURE_LOGO.getFullName(), GTTextureIds.PICTURE_LOGO_EXOFOUNDRY)
         .build();
 
-    public static final GTGuiTheme COKE_OVEN = GTGuiTheme.builder("gregtech:primitive")
-        .parent(STANDARD)
+    public static final GTGuiTheme COKE_OVEN = GTGuiTheme.builder("gregtech:coke_oven")
+        .parent(STEAM.apply(SteamVariant.PRIMITIVE))
         .panel(GTTextureIds.BACKGROUND_COKE_OVEN)
-        .itemSlot(GTTextureIds.SLOT_ITEM_PRIMITIVE)
-        .fluidSlot(GTTextureIds.SLOT_FLUID_PRIMITIVE)
-        .color(Dyes.dyeWhite.toInt())
-        .textColor(0xfafaff)
-        .customTextColor(GTWidgetThemes.TEXT_TITLE.getFullName(), 0xfafaff)
-        .button(GTTextureIds.BUTTON_PRIMITIVE)
-        .simpleToggleButton(GTTextureIds.BUTTON_PRIMITIVE, GTTextureIds.BUTTON_PRIMITIVE_PRESSED, Dyes.dyeWhite.toInt())
-        .themedTexture(GTWidgetThemes.BACKGROUND_POPUP.getFullName(), GTTextureIds.BACKGROUND_POPUP_PRIMITIVE)
-        .themedTexture(GTWidgetThemes.BACKGROUND_TITLE.getFullName(), GTTextureIds.BACKGROUND_TITLE_PRIMITIVE)
-        .themedOverlayItemSlot(
-            GTWidgetThemes.OVERLAY_ITEM_SLOT_DUST.getFullName(),
-            GTTextureIds.OVERLAY_SLOT_DUST_PRIMITIVE)
-        .themedOverlayItemSlot(
-            GTWidgetThemes.OVERLAY_ITEM_SLOT_INGOT.getFullName(),
-            GTTextureIds.OVERLAY_SLOT_INGOT_PRIMITIVE)
-        .themedOverlayItemSlot(
-            GTWidgetThemes.OVERLAY_ITEM_SLOT_FURNACE.getFullName(),
-            GTTextureIds.OVERLAY_SLOT_FURNACE_PRIMITIVE)
-        .themedOverlayItemSlot(
-            GTWidgetThemes.OVERLAY_ITEM_SLOT_BLOCK.getFullName(),
-            GTTextureIds.OVERLAY_SLOT_BLOCK_PRIMITIVE)
-        .progressbar(
-            GTWidgetThemes.PROGRESSBAR_BOILER_HEAT.getFullName(),
-            GTTextureIds.SLOT_FLUID_PRIMITIVE,
-            GTTextureIds.PROGRESSBAR_BOILER_HEAT,
-            54)
-        .themedButton(
-            GTWidgetThemes.BUTTON_COVER_TAB_ENABLED.getFullName(),
-            GTTextureIds.BUTTON_COVER_TAB_NORMAL_PRIMITIVE,
-            GTTextureIds.BUTTON_COVER_TAB_HIGHLIGHT_PRIMITIVE)
-        .themedButton(
-            GTWidgetThemes.BUTTON_COVER_TAB_DISABLED.getFullName(),
-            GTTextureIds.BUTTON_COVER_TAB_DISABLED_PRIMITIVE)
-        .themedTexture(GTWidgetThemes.PICTURE_LOGO.getFullName(), GTTextureIds.PICTURE_GT_LOGO_PRIMITIVE)
         .build();
     public static final GTGuiTheme INTERGALACTIC_STANDARD = GTGuiTheme.builder("inntergalactic:standard")
         .parent(TECTECH_STANDARD)
