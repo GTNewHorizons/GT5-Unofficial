@@ -131,6 +131,7 @@ import gregtech.common.tileentities.render.RenderingTileEntityDrone;
 import gregtech.common.tileentities.render.RenderingTileEntityLaser;
 import gregtech.common.tileentities.render.RenderingTileEntityNanoForge;
 import gregtech.common.tileentities.render.RenderingTileEntityWormhole;
+import gregtech.crossmod.journeymap.GregtechSettingsIntegration;
 import gregtech.crossmod.navigator.PowerfailLayerManager;
 import gregtech.loaders.ExtraIcons;
 import gregtech.loaders.misc.GTBees;
@@ -190,12 +191,20 @@ public class GTClient extends GTProxy {
 
         if (Mods.Navigator.isModLoaded()) {
             registerMapLayers();
+            if (Mods.JourneyMap.isModLoaded()) {
+                registerJourneyMapSettings();
+            }
         }
     }
 
     @Optional.Method(modid = Mods.ModIDs.NAVIGATOR)
     private void registerMapLayers() {
         NavigatorApi.registerLayerManager(PowerfailLayerManager.INSTANCE);
+    }
+
+    @Optional.Method(modid = Mods.ModIDs.JOURNEY_MAP)
+    private void registerJourneyMapSettings() {
+        GregtechSettingsIntegration.register();
     }
 
     @Override

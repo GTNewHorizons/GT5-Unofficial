@@ -260,10 +260,26 @@ public class Client {
         @Config.RangeFloat(min = 0.1f, max = 10f)
         public float powerfailIconSize;
 
+        @Config.Comment("Scales the powerfail icons rendered on JourneyMap and Navigator overlays.")
+        @Config.DefaultFloat(1.0f)
+        @Config.Name("Map Powerfail Icon Scale")
+        @Config.RangeFloat(min = 0.1f, max = 10f)
+        public float mapPowerfailIconScale;
+
+        @Config.Comment("Scales the powerfail labels rendered on JourneyMap and Navigator overlays.")
+        @Config.DefaultFloat(1.0f)
+        @Config.Name("Map Powerfail Label Scale")
+        @Config.RangeFloat(min = 0.1f, max = 10f)
+        public float mapPowerfailLabelScale;
+
         @Config.Comment("When >0, powerfail notifications will stop rendering after this many seconds.")
         @Config.DefaultInt(0)
         @Config.Name("Powerfail Notification Timeout")
         public int powerfailNotificationTimeout;
+
+        public float clampMapPowerfailScale(double value) {
+            return (float) Math.max(0.1D, Math.min(10.0D, value));
+        }
 
         @Config.Comment("Enables or disables Trans Metal rendering, also impacts motors, pistons etc with same rendering. Accessibility option.")
         @Config.DefaultBoolean(true)

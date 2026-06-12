@@ -19,6 +19,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.net.GTPacketClearPowerfail;
 import gregtech.api.util.GTDataUtils;
 import gregtech.api.util.GTTextBuilder;
+import gregtech.common.config.Client;
 import gregtech.common.data.GTPowerfailTracker;
 
 public class PowerfailRenderStep extends UniversalInteractableStep<PowerfailLocationWrapper> {
@@ -28,17 +29,19 @@ public class PowerfailRenderStep extends UniversalInteractableStep<PowerfailLoca
 
     public PowerfailRenderStep(PowerfailLocationWrapper location) {
         super(location);
-        setFontScale(1.2f);
         setMinScale(1);
     }
 
     @Override
     public void preRender(double topX, double topY, float drawScale, double zoom) {
-        double iconSize = isXaero ? 10 * zoom : 32 * drawScale;
+        double iconScale = Client.render.mapPowerfailIconScale;
+        double labelScale = Client.render.mapPowerfailLabelScale;
+        double iconSize = (isXaero ? 10 * zoom : 32 * drawScale) * iconScale;
 
         double blockWidth = Math.pow(2, zoom);
         double padding = -(iconSize - blockWidth) / 2;
 
+        setFontScale(1.2D * labelScale);
         setSize(iconSize);
         setOffset(padding);
     }

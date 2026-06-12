@@ -1279,3 +1279,10 @@ tc.aspect.help.custom2=扭曲的思想
 tc.aspect.help.custom3=新事物的起始
 tc.aspect.help.custom4=宇宙
 tc.aspect.help.custom5=荣耀
+
+gregtech.settings.page=Gregtech
+gregtech.settings.page.tooltip=Gregtech 在 JourneyMap 覆盖层中的设置
+gregtech.settings.powerfail_map_icon_scale=断电图标缩放
+gregtech.settings.powerfail_map_icon_scale.tooltip=调整 Gregtech 断电图标在 JourneyMap 覆盖层中的显示大小
+gregtech.settings.powerfail_map_label_scale=断电文字缩放
+gregtech.settings.powerfail_map_label_scale.tooltip=调整 Gregtech 断电文字在 JourneyMap 覆盖层中的显示大小

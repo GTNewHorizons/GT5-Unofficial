@@ -8797,3 +8797,10 @@ GT5U.chat.bec-storage-controller-pos=Outer wall of center pillar, second layer f
 # Test Factory Machines
 gt.blockmachines.pipe.test.name=Test Factory Pipe
 gt.blockmachines.hatch.test.name=Test Factory Hatch
+
+gregtech.settings.page=Gregtech
+gregtech.settings.page.tooltip=Gregtech settings for JourneyMap overlays
+gregtech.settings.powerfail_map_icon_scale=Powerfail Icon Scale
+gregtech.settings.powerfail_map_icon_scale.tooltip=Scales Gregtech powerfail icons shown on JourneyMap overlays
+gregtech.settings.powerfail_map_label_scale=Powerfail Label Scale
+gregtech.settings.powerfail_map_label_scale.tooltip=Scales Gregtech powerfail labels shown on JourneyMap overlays

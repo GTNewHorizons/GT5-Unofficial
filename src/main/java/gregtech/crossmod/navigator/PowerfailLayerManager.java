@@ -56,32 +56,29 @@ public class PowerfailLayerManager extends InteractableLayerManager {
         super.onUpdatePost(chunkMinX, chunkMaxX, chunkMinZ, chunkMaxZ);
 
         WorldClient world = Minecraft.getMinecraft().theWorld;
+        Long2ObjectOpenHashMap<GTPowerfailTracker.Powerfail> dimensionPowerfails = GTMod
+            .clientProxy().powerfailRenderer.powerfails.get(world.provider.dimensionId);
+        ObjectCollection<GTPowerfailTracker.Powerfail> powerfails = dimensionPowerfails == null ? null
+            : dimensionPowerfails.values();
 
-        ObjectCollection<GTPowerfailTracker.Powerfail> pfs = GTMod.clientProxy().powerfailRenderer.powerfails
-            .getOrDefault(world.provider.dimensionId, new Long2ObjectOpenHashMap<>())
-            .values();
+        if (powerfails != null) {
+            for (GTPowerfailTracker.Powerfail powerfail : powerfails) {
+                long coord = powerfail.getCoord();
+                PowerfailLocationWrapper wrapper = wrappers.get(coord);
 
-        for (GTPowerfailTracker.Powerfail p : pfs) {
-            long coord = p.getCoord();
+                if (wrapper == null) {
+                    wrapper = new PowerfailLocationWrapper(powerfail);
+                    wrappers.put(coord, wrapper);
+                }
 
-            PowerfailLocationWrapper w = wrappers.get(coord);
-
-            if (w == null) {
-                w = new PowerfailLocationWrapper(p);
-                wrappers.put(coord, w);
+                updateElement(wrapper);
+                getVisibleLocations().add(wrapper);
             }
-
-            updateElement(w);
-            getVisibleLocations().add(w);
         }
 
-        // Copy the set because java is stupid and doesn't like to allow generic upcasting.
-        // We also use a linked collection to prevent what looks like z fighting in the HUD minimap.
-        // It isn't actually z fighting, hashed collections just have pseudorandom/arbitrary iteration order.
-        Set<ILocationProvider> locs = new LinkedHashSet<>(getVisibleLocations());
-
+        Set<ILocationProvider> visibleLocations = new LinkedHashSet<>(getVisibleLocations());
         layerRenderer.values()
-            .forEach(layer -> layer.refreshVisibleElements(locs));
+            .forEach(layer -> layer.refreshVisibleElements(visibleLocations));
     }
 
     @Override
@@ -92,18 +89,17 @@ public class PowerfailLayerManager extends InteractableLayerManager {
             for (PowerfailLocationWrapper wrapper : wrappers.values()) {
                 wrapper.highlighted = true;
             }
-        } else {
-            String[] tokens = searchString.toLowerCase()
-                .split("\\s+");
+            return;
+        }
 
-            for (PowerfailLocationWrapper wrapper : wrappers.values()) {
-                wrapper.highlighted = true;
-
-                for (String token : tokens) {
-                    if (!wrapper.mteName.contains(token)) {
-                        wrapper.highlighted = false;
-                        break;
-                    }
+        String[] tokens = searchString.toLowerCase()
+            .split("\\s+");
+        for (PowerfailLocationWrapper wrapper : wrappers.values()) {
+            wrapper.highlighted = true;
+            for (String token : tokens) {
+                if (!wrapper.mteName.contains(token)) {
+                    wrapper.highlighted = false;
+                    break;
                 }
             }
         }
