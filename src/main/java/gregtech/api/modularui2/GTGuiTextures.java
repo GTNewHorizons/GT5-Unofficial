@@ -193,8 +193,11 @@ public final class GTGuiTextures {
     public static final UITexture OVERLAY_NEEDS_WRENCH = UITexture.fullImage(GregTech.ID, "gui/icons/needsWrench");
 
     public static final UITexture OVERLAY_TOO_DAMAGED = UITexture.fullImage(GregTech.ID, "gui/icons/needsWrench");
-    public static final UITexture OVERLAY_POWER_LOSS = UITexture
-        .fullImage(GregTech.ID, "gui/picture/stalled_electricity");
+    public static final UITexture OVERLAY_POWER_LOSS = UITexture.builder()
+        .location(GregTech.ID, "gui/picture/stalled_electricity")
+        .canApplyTheme()
+        .fullImage()
+        .build();
     public static final UITexture OVERLAY_STRUCTURE_INCOMPLETE = UITexture
         .fullImage(GregTech.ID, "gui/icons/structureIncomplete");
     public static final UITexture OVERLAY_MANUAL_SHUTDOWN = UITexture
@@ -1735,6 +1738,7 @@ public final class GTGuiTextures {
 
     public static final UITexture PICTURE_GT_LOGO_STANDARD = UITexture.builder()
         .location(GregTech.ID, "gui/picture/gt_logo_standard")
+        .canApplyTheme()
         .fullImage()
         .name(GTTextureIds.PICTURE_GT_LOGO_STANDARD)
         .build();
