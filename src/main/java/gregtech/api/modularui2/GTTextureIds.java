@@ -33,8 +33,6 @@ public final class GTTextureIds {
 
     public static final String OVERLAY_SLOT_CANISTER_DARK = "gregtech:overlay_slot_canister_dark";
     public static final String OVERLAY_SLOT_CANISTER_STEAM = "gregtech:overlay_slot_canister_%s";
-    public static final String OVERLAY_SLOT_CANISTER_BRONZE = "gregtech:overlay_slot_canister_bronze";
-    public static final String OVERLAY_SLOT_CANISTER_STEEL = "gregtech:overlay_slot_canister_steel";
 
     public static final String OVERLAY_SLOT_COAL_STANDARD = "gregtech:overlay_slot_coal_standard";
     public static final String OVERLAY_SLOT_COAL_STEAM = "gregtech:overlay_slot_coal_%s";
@@ -95,4 +93,7 @@ public final class GTTextureIds {
     public static final String PICTURE_INTERGALACTIC_LOGO = "intergalactic:picture_intergalactic_logo";
 
     public static final String PICTURE_STEAM_GAUGE_STEEL = "gregtech:steam_dial_steel";
+
+    public static final String PICTURE_ERROR = "gregtech:picture_error";
+    public static final String PICTURE_ERROR_STEAM = "gregtech:picture_error_steam";
 }

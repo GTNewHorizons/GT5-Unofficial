@@ -54,7 +54,7 @@ import gregtech.common.gui.modularui.singleblock.MTEBasicMachineBronzeGui;
 public abstract class MTEBasicMachineBronze extends MTEBasicMachine {
 
     private static final String TT_machineType = "GT5U.MBTT.MachineType";
-    public boolean mNeedsSteamVenting = false;
+    protected boolean mNeedsSteamVenting = false;
 
     public MTEBasicMachineBronze(int aID, String aName, String aNameRegional, String aDescription, int aInputSlotCount,
         int aOutputSlotCount, boolean aHighPressure) {
@@ -64,6 +64,10 @@ public abstract class MTEBasicMachineBronze extends MTEBasicMachine {
     public MTEBasicMachineBronze(String aName, String[] aDescription, ITexture[][][] aTextures, int aInputSlotCount,
         int aOutputSlotCount, boolean aHighPressure) {
         super(aName, aHighPressure ? 2 : 1, 0, aDescription, aTextures, aInputSlotCount, aOutputSlotCount);
+    }
+
+    public boolean needsSteamVenting() {
+        return mNeedsSteamVenting;
     }
 
     protected boolean isBricked() {

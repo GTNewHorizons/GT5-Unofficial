@@ -197,6 +197,13 @@ public final class GTGuiTextures {
         .location(GregTech.ID, "gui/picture/stalled_electricity")
         .canApplyTheme()
         .fullImage()
+        .name(GTTextureIds.PICTURE_ERROR)
+        .build();
+    public static final UITexture OVERLAY_POWER_LOSS_STEAM = UITexture.builder()
+        .location(GregTech.ID, "gui/picture/stalled_steam")
+        .canApplyTheme()
+        .fullImage()
+        .name(GTTextureIds.PICTURE_ERROR_STEAM)
         .build();
     public static final UITexture OVERLAY_STRUCTURE_INCOMPLETE = UITexture
         .fullImage(GregTech.ID, "gui/icons/structureIncomplete");

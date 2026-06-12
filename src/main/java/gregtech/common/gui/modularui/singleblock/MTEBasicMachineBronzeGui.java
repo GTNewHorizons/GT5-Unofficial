@@ -6,6 +6,7 @@ import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.LongSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
@@ -34,7 +35,7 @@ public class MTEBasicMachineBronzeGui extends MTEBasicMachineBaseGui<MTEBasicMac
             tooltipKeys[0] = "GT5U.machines.unused_slot.tooltip";
             tooltipKeys[1] = "GT5U.machines.unused_slot.tooltip.1";
         }
-        return new ItemSlot().marginRight(9)
+        return new ItemSlot()
             .slot(
                 new ModularSlot(machine.inventoryHandler, machine.rechargerSlotStartIndex()).changeListener(
                     (_, _, client, init) -> { if (!client && !init) baseMetaTileEntity.markInventoryBeenModified(); })
@@ -57,5 +58,21 @@ public class MTEBasicMachineBronzeGui extends MTEBasicMachineBaseGui<MTEBasicMac
         return super.build(guiData, syncManager, uiSettings).child(
             new SteamGaugeWidget(steamStoredSyncer, maxSteamSyncer).rightRel(1)
                 .top(8));
+    }
+
+    @Override
+    protected void initErrors(PanelSyncManager syncManager) {
+        // this has a different tooltip than the normal powerfail error
+        BooleanSyncValue powerfailSyncer = new BooleanSyncValue(machine::isStuttering);
+        syncManager.syncValue("powerfail", powerfailSyncer);
+        errorMap.put(
+            powerfailSyncer,
+            machine.mTooltipCache.getData(
+                "GT5U.machines.stalled_stuttering.tooltip",
+                GTUtility.translate("GT5U.machines.powersource.steam")));
+
+        BooleanSyncValue ventingSyncer = new BooleanSyncValue(machine::needsSteamVenting);
+        syncManager.syncValue("venting", ventingSyncer);
+        errorMap.put(ventingSyncer, machine.mTooltipCache.getData("GT5U.machines.stalled_vent.tooltip"));
     }
 }

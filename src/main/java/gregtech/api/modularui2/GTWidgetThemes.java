@@ -137,6 +137,7 @@ public final class GTWidgetThemes {
 
     public static WidgetThemeKey<WidgetTheme> PICTURE_CANISTER = registerThemedTexture("pictureCanister");
     public static WidgetThemeKey<WidgetTheme> PICTURE_LOGO = registerThemedTexture("pictureLogo");
+    public static WidgetThemeKey<WidgetTheme> PICTURE_ERROR = registerThemedTexture("pictureError");
 
     public static WidgetThemeKey<WidgetTheme> TESLA_TOWER_CHART = themeApi
         .widgetThemeKeyBuilder("teslaTowerChart", WidgetTheme.class)
