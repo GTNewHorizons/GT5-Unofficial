@@ -643,13 +643,13 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         casingAmount = 0;
         foundryData.tier = -1;
         coolantHatches.clear();
-        // limit hatch space to about 25 hatches without modules. T.D.S removes 20 for balance, and casters adds 36 by
+        // limit hatch space to about 25 hatches without modules. U.C removes 15 for balance, and casters adds 36 by
         // proxy.
         if (checkPiece(STRUCTURE_PIECE_MAIN, horizontalOffset, verticalOffset, depthOffset, errors)) {
             getBaseMetaTileEntity().issueTileUpdate(); // update for the tier variable
             foundryData.checkSolidifierModules(); // recalculate module flags with current tier
             checkModules(errors);
-            int requiredCasings = MIN_CASINGS + (foundryData.tdsPresent ? 20 : 0);
+            int requiredCasings = MIN_CASINGS + (foundryData.universalCollapserPresent ? 15 : 0);
             checkCasingMin(errors, casingAmount, requiredCasings);
             checkHasInputHatch(errors);
             checkHasOutputBus(errors);

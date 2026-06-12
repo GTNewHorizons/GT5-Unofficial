@@ -143,6 +143,8 @@ public class MTEIndustrialWireMill extends MTEExtendedPowerMultiBlockBase<MTEInd
             .beginStructureBlock(7, 3, 3, false)
             .addController("Front bottom center")
             .addCasingInfoMin("Wire Factory Casing", 14, false)
+            .addCasingInfoExactly("Any Tiered Glass", 15, false)
+            .addCasingInfoExactly("Item Pipe", 3, true)
             .addInputBus("Any Casing", 1)
             .addOutputBus("Any Casing", 1)
             .addEnergyHatch("Any Casing", 1)
