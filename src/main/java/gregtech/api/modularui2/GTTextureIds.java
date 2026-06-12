@@ -120,6 +120,7 @@ public final class GTTextureIds {
     public static final String BUTTON_FOUNDRY_PRESSED = "gregtech:button_foundry_pressed";
     public static final String BUTTON_NANOCHIP = "gregtech:button_nanochip";
     public static final String BUTTON_NANOCHIP_PRESSED = "gregtech:button_nanochip_pressed";
+    public static final String BUTTON_GORGE = "gregtech:button_gorge";
 
     public static final String BUTTON_COVER_TAB_NORMAL_STANDARD = "gregtech:button_cover_tab_normal_standard";
     public static final String BUTTON_COVER_TAB_HIGHLIGHT_STANDARD = "gregtech:button_cover_tab_highlight_standard";

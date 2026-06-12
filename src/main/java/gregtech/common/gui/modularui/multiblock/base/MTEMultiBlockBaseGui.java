@@ -14,6 +14,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.BooleanSupplier;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
@@ -29,7 +31,6 @@ import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
-import com.cleanroommc.modularui.drawable.DrawableStack;
 import com.cleanroommc.modularui.drawable.DynamicDrawable;
 import com.cleanroommc.modularui.drawable.HoverableIcon;
 import com.cleanroommc.modularui.drawable.UITexture;
@@ -42,6 +43,7 @@ import com.cleanroommc.modularui.utils.Alignment.MainAxis;
 import com.cleanroommc.modularui.utils.Color;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.DynamicSyncHandler;
+import com.cleanroommc.modularui.value.sync.EnumSyncValue;
 import com.cleanroommc.modularui.value.sync.GenericListSyncHandler;
 import com.cleanroommc.modularui.value.sync.GenericSyncValue;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
@@ -749,36 +751,33 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
         return true;
     }
 
-    protected IWidget createVoidExcessButton(PanelSyncManager syncManager) {
-        IntSyncValue voidExcessSyncer = (IntSyncValue) syncManager.getSyncHandlerFromMapKey("voidExcess:0");
-        return new ButtonWidget<>().size(18, 18)
+    protected ButtonWidget<?> createVoidExcessButton(PanelSyncManager syncManager) {
+        @SuppressWarnings("unchecked")
+        EnumSyncValue<VoidingMode, ?> voidExcessSyncer = syncManager.findSyncHandler("voidExcess", EnumSyncValue.class);
+
+        ButtonWidget<?> button = new ButtonWidget<>()
             .onMousePressed(mouseButton -> this.voidExcessOnMousePressed(mouseButton, voidExcessSyncer))
-            .overlay(multiblock.supportsVoidProtection() ? getVoidExcessOverlay() : getForcedVoidExcessOverlay())
+            .overlay(new DynamicDrawable(() -> multiblock.getVoidingMode().buttonOverlay))
+            .tooltipShowUpTimer(TOOLTIP_DELAY)
             .tooltipBuilder(this::createVoidExcessTooltip);
+
+        if (!multiblock.supportsVoidProtection()) button.widgetTheme(GTWidgetThemes.BUTTON_DISABLED);
+
+        return button;
     }
 
-    private boolean voidExcessOnMousePressed(int mouseButton, IntSyncValue voidExcessSyncer) {
+    private boolean voidExcessOnMousePressed(int mouseButton, EnumSyncValue<VoidingMode, ?> voidExcessSyncer) {
         if (!multiblock.supportsVoidProtection()) return false;
         Set<VoidingMode> allowed = multiblock.getAllowedVoidingModes();
-        int voidingMode = 0;
+        VoidingMode voidingMode = VoidingMode.VOID_NONE;
         switch (mouseButton) {
             case 0 -> voidingMode = multiblock.getVoidingMode()
-                .nextInCollection(allowed)
-                .ordinal();
+                .nextInCollection(allowed);
             case 1 -> voidingMode = multiblock.getVoidingMode()
-                .previousInCollection(allowed)
-                .ordinal();
+                .previousInCollection(allowed);
         }
         voidExcessSyncer.setValue(voidingMode);
         return true;
-    }
-
-    private IDrawable getForcedVoidExcessOverlay() {
-        return new DrawableStack(multiblock.getVoidingMode().buttonOverlay, GTGuiTextures.OVERLAY_BUTTON_FORBIDDEN);
-    }
-
-    private IDrawable getVoidExcessOverlay() {
-        return new DynamicDrawable(() -> multiblock.getVoidingMode().buttonOverlay);
     }
 
     private void createVoidExcessTooltip(RichTooltip t) {
@@ -793,45 +792,34 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
         }
     }
 
-    protected IWidget createInputSeparationButton(PanelSyncManager syncManager) {
-        BooleanSyncValue inputSeparationSyncer = (BooleanSyncValue) syncManager
-            .getSyncHandlerFromMapKey("inputSeparation:0");
-        return new ToggleButton() {
+    protected ToggleButton createDisableableToggleButton(BooleanSyncValue syncValue, BooleanSupplier condition,
+        IDrawable offOverlay, IDrawable onOverlay, Consumer<RichTooltip> tooltipBuilder) {
+        ToggleButton button = new ToggleButton() {
 
             @NotNull
             @Override
             public Result onMousePressed(int mouseButton) {
-                if (!multiblock.supportsInputSeparation()) return Result.IGNORE;
+                if (!condition.getAsBoolean()) return Result.IGNORE;
                 return super.onMousePressed(mouseButton);
             }
-        }.size(18, 18)
-            .value(getInputSeparationSyncValue(inputSeparationSyncer))
-            .overlay(
-                multiblock.supportsInputSeparation() ? getInputSeparationOverlay(inputSeparationSyncer)
-                    : getForcedInputSeparationOverlay())
-            .tooltipBuilder(this::createInputSeparationTooltip);
+        }.value(syncValue)
+            .overlay(false, offOverlay)
+            .overlay(true, onOverlay)
+            .tooltipBuilder(tooltipBuilder)
+            .tooltipShowUpTimer(TOOLTIP_DELAY);
+
+        if (!condition.getAsBoolean()) button.widgetTheme(GTWidgetThemes.TOGGLE_BUTTON_DISABLED);
+
+        return button;
     }
 
-    private BooleanSyncValue getInputSeparationSyncValue(BooleanSyncValue inputSeparationSyncer) {
-        return new BooleanSyncValue(
-            () -> inputSeparationSyncer.getValue() || !multiblock.supportsInputSeparation(),
-            bool -> {
-                if (multiblock.supportsInputSeparation()) {
-                    inputSeparationSyncer.setValue(bool);
-                }
-            }).allowC2S();
-    }
-
-    private IDrawable getForcedInputSeparationOverlay() {
-        UITexture texture = multiblock.isBatchModeEnabled() ? GTGuiTextures.OVERLAY_BUTTON_INPUT_SEPARATION_ON_DISABLED
-            : GTGuiTextures.OVERLAY_BUTTON_INPUT_SEPARATION_OFF_DISABLED;
-        return new DrawableStack(texture, GTGuiTextures.OVERLAY_BUTTON_FORBIDDEN);
-    }
-
-    private IDrawable getInputSeparationOverlay(BooleanSyncValue inputSeparationSyncer) {
-        return new DynamicDrawable(
-            () -> inputSeparationSyncer.getValue() ? GTGuiTextures.OVERLAY_BUTTON_INPUT_SEPARATION_ON
-                : GTGuiTextures.OVERLAY_BUTTON_INPUT_SEPARATION_OFF);
+    protected ToggleButton createInputSeparationButton(PanelSyncManager syncManager) {
+        return createDisableableToggleButton(
+            syncManager.findSyncHandler("inputSeparation", BooleanSyncValue.class),
+            multiblock::supportsInputSeparation,
+            GTGuiTextures.OVERLAY_BUTTON_INPUT_SEPARATION_OFF,
+            GTGuiTextures.OVERLAY_BUTTON_INPUT_SEPARATION_ON,
+            this::createInputSeparationTooltip);
     }
 
     private void createInputSeparationTooltip(RichTooltip t) {
@@ -889,9 +877,8 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
     }
 
     protected IWidget createModeSwitchButton(PanelSyncManager syncManager) {
-        IntSyncValue machineModeSyncer = (IntSyncValue) syncManager.getSyncHandlerFromMapKey("machineMode:0");
-        return new CycleButtonWidget().size(18, 18)
-            .syncHandler("machineMode")
+        IntSyncValue machineModeSyncer = syncManager.findSyncHandler("machineMode", IntSyncValue.class);
+        return new CycleButtonWidget().value(machineModeSyncer)
             .length(machineModeIcons.size())
             .overlay(new DynamicDrawable(() -> getMachineModeIcon(machineModeSyncer.getValue())))
             .tooltipBuilder(this::createModeSwitchTooltip);
@@ -907,42 +894,13 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             .addLine(IKey.dynamic(() -> GTUtility.getColoredSecondaryTooltip(multiblock.getMachineModeName())));
     }
 
-    protected IWidget createBatchModeButton(PanelSyncManager syncManager) {
-        BooleanSyncValue batchModeSyncer = (BooleanSyncValue) syncManager.getSyncHandlerFromMapKey("batchMode:0");
-
-        return new ToggleButton() {
-
-            @NotNull
-            @Override
-            public Result onMousePressed(int mouseButton) {
-                if (!multiblock.supportsBatchMode()) return Result.IGNORE;
-                return super.onMousePressed(mouseButton);
-            }
-        }.size(18, 18)
-            .value(getBatchModeSyncValue(batchModeSyncer))
-            .overlay(
-                multiblock.supportsBatchMode() ? getBatchModeOverlay(batchModeSyncer) : getForcedBatchModeOverlay())
-            .tooltipBuilder(this::createBatchModeTooltip);
-    }
-
-    private BooleanSyncValue getBatchModeSyncValue(BooleanSyncValue batchModeSyncer) {
-        return new BooleanSyncValue(() -> batchModeSyncer.getValue() || !multiblock.supportsBatchMode(), bool -> {
-            if (multiblock.supportsBatchMode()) {
-                batchModeSyncer.setValue(bool);
-            }
-        }).allowC2S();
-    }
-
-    private IDrawable getBatchModeOverlay(BooleanSyncValue batchModeSyncer) {
-        return new DynamicDrawable(
-            () -> batchModeSyncer.getValue() ? GTGuiTextures.OVERLAY_BUTTON_BATCH_MODE_ON
-                : GTGuiTextures.OVERLAY_BUTTON_BATCH_MODE_OFF);
-    }
-
-    private IDrawable getForcedBatchModeOverlay() {
-        UITexture texture = multiblock.isBatchModeEnabled() ? GTGuiTextures.OVERLAY_BUTTON_BATCH_MODE_ON_DISABLED
-            : GTGuiTextures.OVERLAY_BUTTON_BATCH_MODE_OFF_DISABLED;
-        return new DrawableStack(texture, GTGuiTextures.OVERLAY_BUTTON_FORBIDDEN);
+    protected ToggleButton createBatchModeButton(PanelSyncManager syncManager) {
+        return createDisableableToggleButton(
+            syncManager.findSyncHandler("batchMode", BooleanSyncValue.class),
+            multiblock::supportsBatchMode,
+            GTGuiTextures.OVERLAY_BUTTON_BATCH_MODE_OFF,
+            GTGuiTextures.OVERLAY_BUTTON_BATCH_MODE_ON,
+            this::createBatchModeTooltip);
     }
 
     private void createBatchModeTooltip(RichTooltip t) {
@@ -953,44 +911,13 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             StatCollector.translateToLocal("GT5U.gui.button.batch_mode"));
     }
 
-    protected IWidget createLockToSingleRecipeButton(PanelSyncManager syncManager) {
-        BooleanSyncValue recipeLockSyncer = (BooleanSyncValue) syncManager.getSyncHandlerFromMapKey("recipeLock:0");
-        return new ToggleButton() {
-
-            @NotNull
-            @Override
-            public Result onMousePressed(int mouseButton) {
-                if (!multiblock.supportsSingleRecipeLocking()) return Result.IGNORE;
-                return super.onMousePressed(mouseButton);
-            }
-        }.size(18, 18)
-            .value(getRecipeLockSyncValue(recipeLockSyncer))
-            .overlay(
-                multiblock.supportsSingleRecipeLocking() ? getRecipeLockOverlay(recipeLockSyncer)
-                    : getForcedRecipeLockOverlay())
-            .tooltipBuilder(this::createRecipeLockTooltip);
-    }
-
-    private BooleanSyncValue getRecipeLockSyncValue(BooleanSyncValue recipeLockSyncer) {
-        return new BooleanSyncValue(
-            () -> recipeLockSyncer.getValue() || !multiblock.supportsSingleRecipeLocking(),
-            bool -> {
-                if (multiblock.supportsSingleRecipeLocking()) {
-                    recipeLockSyncer.setValue(bool);
-                }
-            }).allowC2S();
-    }
-
-    private IDrawable getForcedRecipeLockOverlay() {
-        UITexture texture = multiblock.mLockedToSingleRecipe ? GTGuiTextures.OVERLAY_BUTTON_RECIPE_LOCKED_DISABLED
-            : GTGuiTextures.OVERLAY_BUTTON_RECIPE_UNLOCKED_DISABLED;
-        return new DrawableStack(texture, GTGuiTextures.OVERLAY_BUTTON_FORBIDDEN);
-    }
-
-    private IDrawable getRecipeLockOverlay(BooleanSyncValue recipeLockSyncer) {
-        return new DynamicDrawable(
-            () -> recipeLockSyncer.getValue() ? GTGuiTextures.OVERLAY_BUTTON_RECIPE_LOCKED
-                : GTGuiTextures.OVERLAY_BUTTON_RECIPE_UNLOCKED);
+    protected ToggleButton createLockToSingleRecipeButton(PanelSyncManager syncManager) {
+        return createDisableableToggleButton(
+            syncManager.findSyncHandler("recipeLock", BooleanSyncValue.class),
+            multiblock::supportsSingleRecipeLocking,
+            GTGuiTextures.OVERLAY_BUTTON_RECIPE_UNLOCKED,
+            GTGuiTextures.OVERLAY_BUTTON_RECIPE_LOCKED,
+            this::createRecipeLockTooltip);
     }
 
     private void createRecipeLockTooltip(RichTooltip t) {
@@ -1001,13 +928,10 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             StatCollector.translateToLocal("GT5U.gui.button.lock_recipe"));
     }
 
-    protected IWidget createPowerPanelButton(PanelSyncManager syncManager, ModularPanel parent) {
-        IPanelHandler powerPanel = syncManager.syncedPanel(
-            "powerPanel",
-            true,
-            (p_syncManager, syncHandler) -> openPowerControlPanel(p_syncManager, parent));
-        return new ButtonWidget<>().size(18, 18)
-            .marginLeft(4)
+    protected ButtonWidget<?> createPowerPanelButton(PanelSyncManager syncManager, ModularPanel parent) {
+        IPanelHandler powerPanel = syncManager
+            .syncedPanel("powerPanel", true, (panelSyncManager, _) -> openPowerControlPanel(panelSyncManager, parent));
+        return new ButtonWidget<>().marginLeft(4)
             .overlay(UITexture.fullImage(GregTech.ID, "gui/overlay_button/power_panel"))
             .onMousePressed(d -> {
                 if (!powerPanel.isPanelOpen()) {
@@ -1067,8 +991,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
                 new TextWidget<>(IKey.lang("GT5U.gui.text.powerfail_events")).height(18)
                     .marginRight(2))
             .child(
-                new ToggleButton().size(18, 18)
-                    .value(powerfailSyncer)
+                new ToggleButton().value(powerfailSyncer)
                     .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
                     .overlay(false, GTGuiTextures.OVERLAY_BUTTON_CROSS));
     }
@@ -1101,22 +1024,20 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
                     maxParallelSyncer,
                     alwaysMaxParallelSyncer,
                     powerPanelMaxParallelSyncer))
-            .child(
-                new ButtonWidget<>().size(18, 18)
-                    .overlay(new DynamicDrawable(() -> {
-                        if (alwaysMaxParallelSyncer.getValue()) {
-                            return GTGuiTextures.OVERLAY_BUTTON_CHECKMARK;
-                        } else {
-                            return GTGuiTextures.OVERLAY_BUTTON_CROSS;
-                        }
-                    }))
-                    .onMousePressed(d -> {
-                        alwaysMaxParallelSyncer.setValue(!alwaysMaxParallelSyncer.getValue());
-                        powerPanelMaxParallelSyncer.setValue(maxParallelSyncer.getValue());
-                        return true;
-                    })
-                    .tooltipBuilder(t -> t.addLine(IKey.lang("GT5U.gui.button.max_parallel")))
-                    .tooltipShowUpTimer(TOOLTIP_DELAY));
+            .child(new ButtonWidget<>().overlay(new DynamicDrawable(() -> {
+                if (alwaysMaxParallelSyncer.getValue()) {
+                    return GTGuiTextures.OVERLAY_BUTTON_CHECKMARK;
+                } else {
+                    return GTGuiTextures.OVERLAY_BUTTON_CROSS;
+                }
+            }))
+                .onMousePressed(d -> {
+                    alwaysMaxParallelSyncer.setValue(!alwaysMaxParallelSyncer.getValue());
+                    powerPanelMaxParallelSyncer.setValue(maxParallelSyncer.getValue());
+                    return true;
+                })
+                .tooltipBuilder(t -> t.addLine(IKey.lang("GT5U.gui.button.max_parallel")))
+                .tooltipShowUpTimer(TOOLTIP_DELAY));
     }
 
     protected IWidget makeParallelConfiguratorTextFieldWidget(IntSyncValue maxParallelSyncer,
@@ -1251,8 +1172,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
     }
 
     protected IWidget createStructureUpdateButton(PanelSyncManager syncManager) {
-        return new ToggleButton().size(18, 18)
-            .syncHandler("structureUpdateButton")
+        return new ToggleButton().syncHandler("structureUpdateButton")
             .overlay(GTGuiTextures.OVERLAY_BUTTON_STRUCTURE_UPDATE)
             .tooltipBuilder(t -> { t.addLine(IKey.lang("GT5U.gui.button.structure_update")); });
     }
@@ -1412,12 +1332,10 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             multiblock::setInputSeparation).allowC2S();
         syncManager.syncValue("inputSeparation", inputSeparationSyncer);
 
-        IntSyncValue voidExcessSyncer = new IntSyncValue(
-            () -> multiblock.getVoidingMode()
-                .ordinal(),
-            val -> {
-                if (multiblock.supportsVoidProtection()) multiblock.setVoidingMode(VoidingMode.fromOrdinal(val));
-            }).allowC2S();
+        EnumSyncValue<VoidingMode, ?> voidExcessSyncer = new EnumSyncValue<>(
+            VoidingMode.class,
+            multiblock::getVoidingMode,
+            multiblock::setVoidingMode).allowC2S();
         syncManager.syncValue("voidExcess", voidExcessSyncer);
 
         IntSyncValue maintSyncer = new IntSyncValue(() -> {

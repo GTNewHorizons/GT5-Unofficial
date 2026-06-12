@@ -268,6 +268,11 @@ public final class GTGuiThemes {
         .themedTexture(GTWidgetThemes.PICTURE_LOGO.getFullName(), GTTextureIds.PICTURE_TECTECH_LOGO)
         .themedTexture(GTWidgetThemes.BACKGROUND_TERMINAL.getFullName(), GTTextureIds.BACKGROUND_TERMINAL_TECTECH)
         .build();
+    public static final GTGuiTheme GORGE = GTGuiTheme.builder("gorge")
+        .parent(TECTECH_STANDARD)
+        .button(GTTextureIds.BUTTON_GORGE)
+        .simpleToggleButton(GTTextureIds.BUTTON_GORGE, GTTextureIds.BUTTON_GORGE, Dyes.MACHINE_METAL.toInt())
+        .build();
     public static final GTGuiTheme EXOFOUNDRY = GTGuiTheme.builder("exofoundry")
         .parent(STANDARD)
         .panel(GTTextureIds.BACKGROUND_FOUNDRY)
