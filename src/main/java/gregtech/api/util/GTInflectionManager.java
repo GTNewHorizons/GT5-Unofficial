@@ -48,9 +48,6 @@ public final class GTInflectionManager {
     private GTInflectionManager() {}
 
     public static void loadInflectionJson(String userLang) {
-        if (IS_SERVER) {
-            return;
-        }
         Minecraft minecraft = Minecraft.getMinecraft();
         final ResourceLocation json = new ResourceLocation(Mods.GregTech.ID, "inflection/" + userLang + ".json");
         try (BufferedReader reader = new BufferedReader(
@@ -128,7 +125,7 @@ public final class GTInflectionManager {
      */
     public static String formatInflection(String inputKey, String... formatterKey) {
         final String input = StatCollector.translateToLocal(inputKey);
-        if (IS_SERVER || !input.contains("s{")) {
+        if (!input.contains("s{")) {
             try {
                 return String.format(
                     unescape(input),
@@ -175,7 +172,7 @@ public final class GTInflectionManager {
 
     private static String getInflection(String formatterKey, String key) {
         String word = StatCollector.translateToLocal(formatterKey);
-        if (key == null || key.isEmpty()) {
+        if (IS_SERVER || key == null || key.isEmpty()) {
             return word;
         }
         String specialCaseKey = formatterKey;
