@@ -89,6 +89,7 @@ kubatech.gui.text.eig.disabled=Disabled
 kubatech.gui.text.eig.enabled=Enabled
 kubatech.gui.text.eig.ic2_mode=IC2 mode
 kubatech.gui.text.eig.no_humidity_mode=No Humidity mode
+kubatech.gui.text.eig.inventory_full_warning=Seed inventory is full!
 kubatech.gui.text.mia.primary_mode=Primary mode
 kubatech.gui.text.mia.normal=Normal
 kubatech.gui.text.mia.swarmer=Swarmer
@@ -102,10 +103,13 @@ kubatech.gui.tooltip.contributors.structure=Structure designed by %s
 
 kubatech.gui.tooltip.dynamic_inventory.identical_slots=There are %d identical slots
 kubatech.gui.tooltip.dynamic_inventory.empty_slot=Empty slot
+kubatech.gui.tooltip.dynamic_inventory.eig.seed_count=Seeds: %d
 kubatech.gui.tooltip.dynamic_inventory.eig.remaining_seed_types=Remaining seed types: %d
 kubatech.gui.tooltip.dynamic_inventory.eig.remaining_seed_capacity=Remaining seed capacity: %d
 
-kubatech.gui.text.electrode_detector=Durability threshold
+kubatech.gui.text.electrode_detector=§8Threshold
+kubatech.gui.text.electrode_detector.durability=§8Durability value
+kubatech.gui.text.electrode_detector.percentage=§8Durability percentage
 
 #Chat Messages
 kubatech.chat.forbidden_while_running=Cannot change mode while running!
@@ -180,6 +184,12 @@ kubatech.infodata.htgr.water_per_tick=Water per tick: §6%sL
 kubatech.infodata.htgr.fuel_supply=Fill level %s out of %s
 kubatech.infodata.htgr.fuel_properties=Properties: %s, %s, %s
 
+kubatech.MBTT.CoolantInputHatch=Input Hatch (Coolant)
+kubatech.MBTT.HeliumInputHatch=Input Hatch (Helium)
+kubatech.MBTT.WaterInputHatch=Input Hatch (Water)
+kubatech.MBTT.CoolantOutputHatch=Output Hatch (Coolant)
+kubatech.MBTT.SteamOutputHatch=Output Hatch (Steam)
+
 #Waila
 kubatech.waila.eec.mob_type=Mob Type: %s
 kubatech.waila.eec.no_mob=None
@@ -214,7 +224,7 @@ item.arc_furnace_electrode.GraphiteElectrode.name=Graphite Electrode
 item.arc_furnace_electrode.TantalumElectrode.name=Tantalum Electrode
 item.arc_furnace_electrode.MolybdenumElectrode.name=Molybdenum Electrode
 item.arc_furnace_electrode.TungstenElectrode.name=Tungsten Electrode
-item.arc_furnace_electrode.TungstenSteelElectrode.name=Tungsten Steel Electrode
+item.arc_furnace_electrode.TungstenSteelElectrode.name=Tungstensteel Electrode
 item.arc_furnace_electrode.GrapheneElectrode.name=Graphene Electrode
 item.arc_furnace_electrode.YBCOElectrode.name=YBCO Electrode
 item.arc_furnace_electrode.NetheriteElectrode.name=Netherite Electrode
@@ -227,11 +237,11 @@ item.arc_furnace_electrode.UniversiumNaniteElectrode.name=Universium Nanite Elec
 
 item.arc_furnace_electrode.tip.durability=Durability: %s/%s
 item.arc_furnace_electrode.tip.speed=Speed: %s
-item.arc_furnace_electrode.tip.parallel_limit=Parallel: %s
+item.arc_furnace_electrode.tip.parallel_limit=Parallels: %s
 item.arc_furnace_electrode.tip.parallel_limit_none=None
 item.arc_furnace_electrode.tip.oc=OC: %s%s
-item.arc_furnace_electrode.tip.amperage_per_parallel=Amp/Parallel: %s
-item.arc_furnace_electrode.tip.startup_surge=Startup Surge: %s
+item.arc_furnace_electrode.tip.amperage_per_parallel=Amps/Parallel: %s
+item.arc_furnace_electrode.tip.startup_surge=Surge Power: %s
 
 item.arc_furnace_electrode.tip.special_effect.GraphiteElectrode=§6§lBread and Butter§r§6: No startup surge penalty
 item.arc_furnace_electrode.tip.special_effect.GrapheneElectrode=§6§lBread and Butter§r§6: No startup surge penalty

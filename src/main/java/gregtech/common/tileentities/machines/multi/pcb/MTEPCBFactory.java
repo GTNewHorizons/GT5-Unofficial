@@ -743,10 +743,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                 + (mCoolingTower == null ? ""
                     : " Cooling Tower Tier " + EnumChatFormatting.GOLD + (mCoolingTower.isTier1 ? "1" : "2"))
                 + (mBioChamber == null && mCoolingTower == null ? EnumChatFormatting.RED + "None" : ""),
-            /* 8 */ translateToLocal("GT5U.multiblock.recipesDone") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(recipesDone)
-                + EnumChatFormatting.RESET };
+            /* 8 */ GTUtility.translate("GT5U.multiblock.recipesDone", formatNumber(recipesDone)) };
     }
 
     @Override
@@ -816,7 +813,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                     + EnumChatFormatting.GOLD
                     + "1"
                     + EnumChatFormatting.GRAY
-                    + " Center of the Liquid Cooling/Thermosink")
+                    + " Bottom Center of the Cooling Tower")
             .addStructureInfo(
                 EnumChatFormatting.BLUE + "Base Multi (Tier "
                     + EnumChatFormatting.DARK_PURPLE
@@ -853,13 +850,13 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                     + " Radiation Proof Photolithographic Framework Casing")
             .addStructureInfo(
                 EnumChatFormatting.GOLD + "76" + EnumChatFormatting.GRAY + " Radiant Naquadah Alloy Casing")
-            .addStructureInfo(EnumChatFormatting.BLUE + "Biochamber Upgrade")
+            .addStructureInfo(EnumChatFormatting.BLUE + "Bio Chamber:")
             .addStructureInfo(
                 EnumChatFormatting.GOLD + "68" + EnumChatFormatting.GRAY + " Clean Stainless Steel Machine Casing")
             .addStructureInfo(EnumChatFormatting.GOLD + "40" + EnumChatFormatting.GRAY + " Damascus Steel Frame Box")
             .addStructureInfo(EnumChatFormatting.GOLD + "72" + EnumChatFormatting.GRAY + " Any Tiered Glass")
             .addStructureInfo(
-                EnumChatFormatting.BLUE + "Liquid Cooling Tower (Tier "
+                EnumChatFormatting.BLUE + "Cooling Tower (Tier "
                     + EnumChatFormatting.DARK_PURPLE
                     + 1
                     + EnumChatFormatting.BLUE
@@ -875,7 +872,7 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                     + EnumChatFormatting.GRAY
                     + " Reinforced Photolithographic Framework Casing")
             .addStructureInfo(
-                EnumChatFormatting.BLUE + "Thermosink Radiator(Tier "
+                EnumChatFormatting.BLUE + "Cooling Tower (Tier "
                     + EnumChatFormatting.DARK_PURPLE
                     + 2
                     + EnumChatFormatting.BLUE

@@ -109,7 +109,7 @@ gtpp.nei.chemplant.tier.2=Steel
 gtpp.nei.chemplant.tier.3=Aluminium
 gtpp.nei.chemplant.tier.4=Stainless Steel
 gtpp.nei.chemplant.tier.5=Titanium
-gtpp.nei.chemplant.tier.6=Tungsten Steel
+gtpp.nei.chemplant.tier.6=Tungstensteel
 gtpp.nei.chemplant.tier.7=Laurenium
 gtpp.nei.chemplant.tier.8=Botmium
 gtpp.nei.rtg.days=Fuel Value: %s Minecraft Days
@@ -4074,7 +4074,7 @@ gtpp.chat.wireless_charger.leave=You have left charging range. [%s m - %s]
 
 gtpp.book.modular_baubles.name=How to: Modular Baubles
 gtpp.book.modular_baubles.page00=Concept: This idea came from wanting flexibility.\nFirst step, Build a Modularity table to begin customization of your Bauble.\n After this has been constructed, you can now combine the upgrades listed within this book to improve the baubles level/100.
-gtpp.book.modular_baubles.page01=Defence:\nCan be upgraded by combining metal plates with the bauble.\n | +1 | Aluminium\n | +2 | Stainless Steel\n | +3 | Tungsten\n | +4 | Tungsten Steel\n | +5 | Naquadah
+gtpp.book.modular_baubles.page01=Defence:\nCan be upgraded by combining metal plates with the bauble.\n | +1 | Aluminium\n | +2 | Stainless Steel\n | +3 | Tungsten\n | +4 | Tungstensteel\n | +5 | Naquadah
 gtpp.book.nuclear_chemistry_ffpp.name=Nuclear Chemistry [FFPP]
 gtpp.book.nuclear_chemistry_ffpp.page00=Fission Fuel Processing Plant\nSize: 3x9x3 [LxHxW]\nController: Center, Bottom\n4x Input Hatch\n2x Output Hatch\n1x Output Bus\n1x ZPM+ Muffler\n1x Maintenance Hatch\n1x Energy Hatch
 gtpp.book.nuclear_chemistry_ffpp.page01=[1] 7x Hastelloy-X or I/O\n[2] 5x Incoloy-DS Fluid Containment\n[3] 4x Reactor Shield Casing\n[4] 17x Hastelloy-N Sealant Case\nMultiblock Construction\nConvention is [LxHxW]\n

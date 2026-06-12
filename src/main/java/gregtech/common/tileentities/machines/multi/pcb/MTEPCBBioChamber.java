@@ -30,6 +30,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.misc.GTStructureChannels;
 
 public class MTEPCBBioChamber extends MTEPCBUpgradeBase<MTEPCBBioChamber>
     implements ISurvivalConstructable, INEIPreviewModifier {
@@ -126,6 +127,7 @@ public class MTEPCBBioChamber extends MTEPCBUpgradeBase<MTEPCBBioChamber>
                 EnumChatFormatting.GOLD,
                 false)
             .addStructureInfo(EnumChatFormatting.GRAY + "Does not require maintenance or power.")
+            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher(AuthorBlueWeabo, Authorguid118);
         return tt;
     }
