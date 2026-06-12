@@ -229,7 +229,7 @@ public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> extends MTETiered
                 .child(createChargerSlot()));
     }
 
-    @Override
+    // typically, this is used for the 'special slot' on singleblocks
     protected ItemSlot createSpecialSlot() {
         String[] tooltipKeys = new String[2];
         if (properties.useSpecialSlot) {

@@ -11,7 +11,6 @@ import org.jetbrains.annotations.NotNull;
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.api.widget.Interactable;
-import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.RichTooltip;
@@ -31,6 +30,7 @@ import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.api.modularui2.common.CommonButtons;
 import gregtech.api.modularui2.common.CommonWidgets;
 import gregtech.api.util.GTTooltipDataCache;
@@ -194,16 +194,12 @@ public class MTETieredMachineBlockBaseGui<T extends MTETieredMachineBlock> {
             .coverChildren()
             .verticalCenter()
             .rightRel(0)
-            .childIf(this.doesAddGregTechLogo(), this::createLogo)
+            .childIf(this.doesAddGregTechLogo(), this::makeLogoWidget)
             .childIf(this.doesAddCircuitSlot(), () -> this.createCircuitSlot(syncManager));
     }
 
     protected boolean doesAddGregTechLogo() {
         return true;
-    }
-
-    protected UITexture getLogoTexture() {
-        return GTGuiTextures.OVERLAY_GREGTECH_LOGO;
     }
 
     protected IWidget createInventoryRow(ModularPanel panel, PanelSyncManager syncManager) {
@@ -218,14 +214,6 @@ public class MTETieredMachineBlockBaseGui<T extends MTETieredMachineBlock> {
         return true;
     }
 
-    // by default, adds an empty widget, things can override this to add anything in the bottom right corner
-    // typically, this is used for the 'special slot' on singleblocks
-    protected Widget<? extends Widget<?>> createSpecialSlot() {
-        return IDrawable.EMPTY.asWidget()
-            .size(SLOT_SIZE)
-            .marginTop(4);
-    }
-
     protected boolean supportsPowerSwitch() {
         return true;
     }
@@ -234,8 +222,9 @@ public class MTETieredMachineBlockBaseGui<T extends MTETieredMachineBlock> {
         return true;
     }
 
-    protected IDrawable.DrawableWidget createLogo() {
-        return new IDrawable.DrawableWidget(getLogoTexture()).size(SLOT_SIZE);
+    protected Widget<?> makeLogoWidget() {
+        return new IDrawable.DrawableWidget(IDrawable.EMPTY).size(SLOT_SIZE)
+            .widgetTheme(GTWidgetThemes.PICTURE_LOGO);
     }
 
     // will add if the machine is an instance of IConfigurationCircuitSupport
@@ -243,7 +232,7 @@ public class MTETieredMachineBlockBaseGui<T extends MTETieredMachineBlock> {
         return machine instanceof IConfigurationCircuitSupport cc && cc.allowSelectCircuit();
     }
 
-    protected Widget<? extends Widget<?>> createCircuitSlot(PanelSyncManager syncManager) {
+    protected Widget<?> createCircuitSlot(PanelSyncManager syncManager) {
         return CommonWidgets.createCircuitSlot(syncManager, machine)
             .tooltipShowUpTimer(TOOLTIP_DELAY);
     }
