@@ -3,8 +3,6 @@ package gregtech.common.gui.modularui.singleblock.base;
 import static gregtech.api.metatileentity.BaseTileEntity.BUTTON_FORBIDDEN_TOOLTIP;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 
-import java.lang.ref.Reference;
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -17,6 +15,7 @@ import org.jetbrains.annotations.NotNull;
 import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.widget.IWidget;
+import com.cleanroommc.modularui.drawable.DynamicDrawable;
 import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
@@ -126,13 +125,13 @@ public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> extends MTETiered
 
     private Widget<?> createAutoOutputButton(boolean isEnabled, PanelSyncManager syncManager, String syncKey,
         UITexture overlay, String tooltipKey, String disabledTooltipKey) {
-        ToggleButton button = null;
-        Reference<ToggleButton> buttonRef = new WeakReference<>(button);
+        // needed to make the IPanelBuilder lambda and ToggleButton override work
+        ToggleButton[] button = new ToggleButton[1];
 
         IPanelHandler autoOutputPanel = syncManager
-            .syncedPanel("sideSelection_" + syncKey, true, (_, _) -> openSideSelector(buttonRef, syncKey));
+            .syncedPanel("sideSelection_" + syncKey, true, (_, _) -> openSideSelector(button, syncKey));
 
-        button = new ToggleButton() {
+        button[0] = new ToggleButton() {
 
             @Override
             public @NotNull Result onMousePressed(int mouseButton) {
@@ -147,8 +146,8 @@ public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> extends MTETiered
             .tooltipShowUpTimer(TOOLTIP_DELAY)
             .overlay(overlay);
 
-        if (isEnabled) button.addTooltipLine(GTUtility.translate(tooltipKey));
-        if (!isEnabled) button.tooltip(
+        if (isEnabled) button[0].addTooltipLine(GTUtility.translate(tooltipKey));
+        if (!isEnabled) button[0].tooltip(
             t -> t.addLine(GTUtility.translate(BUTTON_FORBIDDEN_TOOLTIP))
                 .addLine(
                     GTUtility.getColoredSecondaryTooltip(
@@ -156,10 +155,10 @@ public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> extends MTETiered
                             .translate("GT5U.gui.button.forbidden.reason", GTUtility.translate(disabledTooltipKey)))))
             .widgetTheme(GTWidgetThemes.TOGGLE_BUTTON_DISABLED);
 
-        return button;
+        return button[0];
     }
 
-    private ModularPanel openSideSelector(Reference<? extends IWidget> parentRef, String syncKey) {
+    private ModularPanel openSideSelector(ToggleButton[] parent, String syncKey) {
 
         ModularPanel panel = new ModularPanel("sideSelector_" + syncKey) {
 
@@ -167,7 +166,7 @@ public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> extends MTETiered
             public boolean isDraggable() {
                 return false;
             }
-        }.relative(parentRef.get())
+        }.relative(parent[0])
             .background(IDrawable.EMPTY)
             .coverChildren();
         List<IWidget> buttons = new ArrayList<>();
