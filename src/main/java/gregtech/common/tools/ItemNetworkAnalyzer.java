@@ -100,11 +100,13 @@ public class ItemNetworkAnalyzer extends ItemTool {
                             String.valueOf(coord.x),
                             String.valueOf(coord.y),
                             String.valueOf(coord.z))));
+
+                return true;
             }
 
         }
 
-        return true;
+        return false;
     }
 
     @Override
