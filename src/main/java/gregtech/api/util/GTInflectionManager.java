@@ -88,7 +88,7 @@ public final class GTInflectionManager {
         } catch (IOException e) {
             GT_FML_LOGGER.warn("Failed to load inflection file: {}", json, e);
         } catch (JsonParseException e) {
-            GT_FML_LOGGER.warn("Successfully found the file: {}, but an error occurred.", json, e);
+            GT_FML_LOGGER.warn("Successfully found the inflection file: {}, but an error occurred.", json, e);
         }
     }
 
