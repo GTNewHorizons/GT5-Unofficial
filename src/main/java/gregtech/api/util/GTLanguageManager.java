@@ -6,6 +6,7 @@ import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 import java.io.File;
 import java.lang.reflect.Field;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -74,6 +75,7 @@ public class GTLanguageManager {
     private static final Map<String, String> stringTranslateLanguageList;
     private static final Map<String, String> stringTranslateLanguageListFallBack;
     public static String LanguageCode = "en_US";
+    public static Locale LOCALE;
 
     static {
         try {
