@@ -404,12 +404,7 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>, F extends MEFi
     }
 
     long lastOutputTick = 0;
-    long lastInputTick = 0;
     long tickCounter = 0;
-
-    public final long getLastInputTick() {
-        return lastInputTick;
-    }
 
     public final long getTickCounter() {
         return tickCounter;
@@ -423,13 +418,12 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>, F extends MEFi
         return getCacheCapacity() - getCachedAmount();
     }
 
-    public boolean canAcceptAnyInput() {
-        if (shouldCheck()) return false;
-        return lastInputTick == tickCounter || hasAvailableSpace();
-    }
-
     public long getCachedAmount() {
         return cache.getTotal();
+    }
+
+    public long getCachedAmount(T key) {
+        return cache.get(key);
     }
 
     /**
@@ -492,26 +486,6 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>, F extends MEFi
         this.checkMode = cacheMode;
     }
 
-    public boolean canStore(@NotNull I stack) {
-        if (shouldCheck()) {
-            T input = filter.fromNative(stack);
-            input.setStackSize(input.getStackSize() + cache.get(input));
-            final T returns = cell.injectItems(input, Actionable.SIMULATE, env.getActionSource());
-            return returns == null || returns.getStackSize() == 0;
-        }
-        return hasAvailableSpace() && filter.isAllowed(stack);
-    }
-
-    public boolean canStore(@NotNull I stack, long size) {
-        if (shouldCheck()) {
-            T input = filter.fromNative(stack);
-            input.setStackSize(size);
-            final T returns = cell.injectItems(input, Actionable.SIMULATE, env.getActionSource());
-            return returns == null || returns.getStackSize() == 0;
-        }
-        return hasAvailableSpace() && filter.isAllowed(stack);
-    }
-
     public void addToCache(@NotNull I stack) {
         addToCache(filter.fromNative(stack));
     }
@@ -522,23 +496,20 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>, F extends MEFi
         }
     }
 
-    public void storeToCache(@NotNull T stack) {
-        addToCache(stack);
-        lastInputTick = tickCounter;
-    }
-
-    public void storeToCache(@NotNull I stack) {
-        storeToCache(filter.fromNative(stack));
-    }
-
-    public boolean storePartial(@NotNull I stack, boolean simulate) {
-        if (lastInputTick != tickCounter && !canStore(stack)) {
-            return false;
+    public boolean storePartial(@NotNull T input, boolean simulate) {
+        if (simulate && shouldCheck()) {
+            input.setStackSize(input.getStackSize() + cache.get(input));
+            final T rejected = cell.injectItems(input, Actionable.SIMULATE, env.getActionSource());
+            input.setStackSize(Math.min(input.getStackSize(), rejected == null ? 0 : rejected.getStackSize()));
+            return input.getStackSize() == 0;
         }
+        if (simulate && !hasAvailableSpace()) return false;
+        if (!filter.isAllowed(input)) return false;
         if (!simulate) {
-            storeToCache(stack);
+            addToCache(input);
             env.dispatchMarkDirty();
         }
+        input.setStackSize(0);
         return true;
     }
 
