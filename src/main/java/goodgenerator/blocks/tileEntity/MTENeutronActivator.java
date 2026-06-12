@@ -447,10 +447,7 @@ public class MTENeutronActivator extends TTMultiblockBase implements ISurvivalCo
                 + formatNumber(getCurrentNeutronKineticEnergy())
                 + EnumChatFormatting.RESET
                 + "eV",
-            StatCollector.translateToLocal("GT5U.multiblock.recipesDone") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(recipesDone)
-                + EnumChatFormatting.RESET };
+            GTUtility.translate("GT5U.multiblock.recipesDone", formatNumber(recipesDone)) };
     }
 
     @Override

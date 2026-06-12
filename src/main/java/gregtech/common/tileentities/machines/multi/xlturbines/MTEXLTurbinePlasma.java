@@ -364,7 +364,7 @@ public class MTEXLTurbinePlasma extends MTEXLTurbineBase {
                     output = FluidRegistry.getFluidStack("molten." + outputName, totalFlow);
                 }
                 if (output != null) {
-                    addOutput(output);
+                    addOutputPartial(output);
                 }
             }
             if (totalFlow <= 0) return 0;
