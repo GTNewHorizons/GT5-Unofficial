@@ -15,7 +15,7 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -37,10 +37,8 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.structure.error.MissingHatch;
 import gregtech.api.structure.error.StructureError;
-import gregtech.api.structure.error.TooFewCasings;
-import gregtech.api.structure.error.TooManyHatch;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.pollution.PollutionConfig;
@@ -166,25 +164,20 @@ public class MTEIndustrialVacuumFreezerLegacy extends GTPPMultiBlockBase<MTEIndu
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        return checkPiece(mName, 1, 1, 0);
-    }
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
+        if (!checkPiece(mName, 1, 1, 0, errors)) return;
 
-    @Override
-    public void validateStructure(Collection<StructureError> errors) {
-        super.validateStructure(errors);
-
-        if (mCasing < 10) {
-            errors.add(new TooFewCasings(mCasing, 10));
-        }
+        checkCasingMin(errors, mCasing, 10);
 
         if (mCryotheumHatches.isEmpty()) {
-            errors.add(new MissingHatch(GregtechItemList.Hatch_Input_Cryotheum.get(1)));
+            errors.add(StructureErrors.missingHatch(GregtechItemList.Hatch_Input_Cryotheum.get(1)));
         }
 
         if (mCryotheumHatches.size() > 1) {
-            errors.add(new TooManyHatch(GregtechItemList.Hatch_Input_Cryotheum.get(1), 1));
+            errors.add(StructureErrors.tooManyHatches(GregtechItemList.Hatch_Input_Cryotheum.get(1), 1));
         }
+
+        checkHatch(errors);
     }
 
     private boolean addCryotheumHatch(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
@@ -192,9 +185,9 @@ public class MTEIndustrialVacuumFreezerLegacy extends GTPPMultiBlockBase<MTEIndu
             return false;
         } else {
             IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-            if (aMetaTileEntity instanceof MTEHatchCustomFluidBase && aMetaTileEntity.getBaseMetaTileEntity()
+            if (aMetaTileEntity instanceof MTEHatchCustomFluidBase hatch && aMetaTileEntity.getBaseMetaTileEntity()
                 .getMetaTileID() == MetaTileEntityIDs.Hatch_Input_Cryotheum.ID) {
-                return addToMachineListInternal(mCryotheumHatches, aTileEntity, aBaseCasingIndex);
+                return addToMachineListInternal(mCryotheumHatches, hatch, aBaseCasingIndex);
             }
         }
         return false;

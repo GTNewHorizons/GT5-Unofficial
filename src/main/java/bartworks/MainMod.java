@@ -19,13 +19,13 @@ import static gregtech.api.enums.Mods.BartWorks;
 import java.io.IOException;
 
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import bartworks.API.BioObjectAdder;
-import bartworks.API.BioVatLogicAdder;
 import bartworks.API.enums.CircuitImprint;
 import bartworks.client.creativetabs.BartWorksTab;
 import bartworks.client.creativetabs.BioTab;
@@ -119,8 +119,13 @@ public final class MainMod {
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
-        GameRegistry.registerBlock(ItemRegistry.bw_glasses[0], BWItemBlocks.class, "BW_GlasBlocks");
-        GameRegistry.registerBlock(ItemRegistry.bw_glasses[1], BWItemBlocks.class, "BW_GlasBlocks2");
+        GameRegistry.registerBlock(ItemRegistry.bw_glasses[0], BWItemBlocks.class, "BW_TieredGlass");
+        GameRegistry.registerBlock(ItemRegistry.bw_glasses[1], BWItemBlocks.class, "BW_ExtraGlass");
+
+        GameRegistry.registerBlock(ItemRegistry.bw_deprecatedglass, BWItemBlocks.class, "BW_GlasBlocks");
+        GameRegistry.registerBlock(ItemRegistry.bw_deprecatedglass2, BWItemBlocks.class, "BW_GlasBlocks2");
+        codechicken.nei.api.API.hideItem(new ItemStack(ItemRegistry.bw_deprecatedglass));
+        codechicken.nei.api.API.hideItem(new ItemStack(ItemRegistry.bw_deprecatedglass2));
 
         if (DEBUG) {
             try {
@@ -210,7 +215,6 @@ public final class MainMod {
 
     public static void runOnPlayerJoined(boolean classicMode, boolean disableExtraGasRecipes) {
         OreDictHandler.adaptCacheForWorld();
-        BioVatLogicAdder.RadioHatch.runBasicItemIntegration();
 
         // Accept recipe map changes into Buffers
         RecipeMap.ALL_RECIPE_MAPS.values()

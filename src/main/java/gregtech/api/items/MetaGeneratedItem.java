@@ -11,7 +11,7 @@ import java.util.Arrays;
 import java.util.BitSet;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Supplier;
+import java.util.function.Function;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -85,8 +85,8 @@ public abstract class MetaGeneratedItem extends MetaBaseItem implements IGT_Item
     public final ConcurrentHashMap<Short, Long[]> mElectricStats = new ConcurrentHashMap<>();
     public final ConcurrentHashMap<Short, Long[]> mFluidContainerStats = new ConcurrentHashMap<>();
     public final ConcurrentHashMap<Short, Short> mBurnValues = new ConcurrentHashMap<>();
-    public final ConcurrentHashMap<Short, Supplier<String>> mNameLocalizationSuppliers = new ConcurrentHashMap<>();
-    public final ConcurrentHashMap<Short, Supplier<String>> mTooltipLocalizationSuppliers = new ConcurrentHashMap<>();
+    public final ConcurrentHashMap<Short, Function<ItemStack, String>> mNameLocalizationFunctions = new ConcurrentHashMap<>();
+    public final ConcurrentHashMap<Short, Function<ItemStack, String>> mTooltipLocalizationFuncitons = new ConcurrentHashMap<>();
 
     /**
      * Creates the Item using these Parameters.
@@ -112,20 +112,20 @@ public abstract class MetaGeneratedItem extends MetaBaseItem implements IGT_Item
      * This adds a Custom Item to the ending Range.
      *
      * @param aID             The Id of the assigned Item [0 - mItemAmount] (The MetaData gets auto-shifted by +mOffset)
-     * @param nameSupplier    The Localized Name Supplier of the created Item
-     * @param tooltipSupplier The Localized ToolTip Supplier of the created Item, you can also insert null for having no
+     * @param nameFunction    The Localized Name Function of the created Item
+     * @param tooltipFunction The Localized ToolTip Function of the created Item, you can also insert null for having no
      *                        ToolTip
      * @param aRandomData     The OreDict Names you want to give the Item. Also used for TC Aspects and some other
      *                        things.
      * @return An ItemStack containing the newly created Item.
      */
-    public final ItemStack addItem(int aID, Supplier<String> nameSupplier, Supplier<String> tooltipSupplier,
-        Object... aRandomData) {
+    public final ItemStack addItem(int aID, Function<ItemStack, String> nameFunction,
+        Function<ItemStack, String> tooltipFunction, Object... aRandomData) {
         if (aID >= 0 && aID < mItemAmount) {
             short meta = (short) (mOffset + aID);
             ItemStack rStack = new ItemStack(this, 1, meta);
-            mNameLocalizationSuppliers.put(meta, nameSupplier);
-            mTooltipLocalizationSuppliers.put(meta, tooltipSupplier);
+            mNameLocalizationFunctions.put(meta, nameFunction);
+            mTooltipLocalizationFuncitons.put(meta, tooltipFunction);
             if (mEnabledItems.get(aID)) {
                 throw new IllegalArgumentException(
                     String.format("ID %s is already reserved for %s!", aID, rStack.getDisplayName()));
@@ -219,8 +219,8 @@ public abstract class MetaGeneratedItem extends MetaBaseItem implements IGT_Item
         Object... aRandomData) {
         return addItem(
             aID,
-            () -> StatCollector.translateToLocal(aNameKey),
-            () -> StatCollector.translateToLocal(aToolTipKey),
+            $ -> StatCollector.translateToLocal(aNameKey),
+            $ -> StatCollector.translateToLocal(aToolTipKey),
             aRandomData);
     }
 
@@ -228,8 +228,8 @@ public abstract class MetaGeneratedItem extends MetaBaseItem implements IGT_Item
         String aToolTipKey, Object[] aToolTipArgs, Object... aRandomData) {
         return addItem(
             aID,
-            () -> GTUtility.translate(aNameKey, aNameArgs),
-            () -> GTUtility.translate(aToolTipKey, aToolTipArgs),
+            $ -> GTUtility.translate(aNameKey, aNameArgs),
+            $ -> GTUtility.translate(aToolTipKey, aToolTipArgs),
             aRandomData);
     }
 
@@ -307,15 +307,15 @@ public abstract class MetaGeneratedItem extends MetaBaseItem implements IGT_Item
     }
 
     @Override
-    protected Supplier<String> getToolTipLocalizationSupplier(ItemStack aStack) {
-        return mTooltipLocalizationSuppliers.get((short) getDamage(aStack));
+    protected Function<ItemStack, String> getToolTipLocalizationFunction(ItemStack aStack) {
+        return mTooltipLocalizationFuncitons.get((short) getDamage(aStack));
     }
 
     @Override
     public String getItemStackDisplayName(ItemStack aStack) {
-        Supplier<String> stringSupplier = mNameLocalizationSuppliers.get((short) getDamage(aStack));
-        if (stringSupplier != null) {
-            return stringSupplier.get();
+        Function<ItemStack, String> stringFunction = mNameLocalizationFunctions.get((short) getDamage(aStack));
+        if (stringFunction != null) {
+            return stringFunction.apply(aStack);
         }
         return super.getItemStackDisplayName(aStack);
     }

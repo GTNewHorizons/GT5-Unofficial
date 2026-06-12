@@ -1,63 +1,97 @@
 package gregtech.common.gui.modularui.hatch;
 
-import java.util.Arrays;
-
-import com.cleanroommc.modularui.api.widget.IWidget;
+import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.screen.ModularPanel;
-import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
-import com.cleanroommc.modularui.widgets.ListWidget;
-import com.cleanroommc.modularui.widgets.SlotGroupWidget;
+import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
-import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
+import com.cleanroommc.modularui.widgets.slot.PhantomItemSlot;
 
+import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.api.modularui2.GTGuis;
+import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
+import gregtech.common.modularui2.widget.builder.ItemSlotGridBuilder;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchChiselBus;
 
 public class MTEHatchChiselBusGui extends MTEHatchBaseGui<MTEHatchChiselBus> {
+
+    private static final int INPUT_COLS = 8;
 
     public MTEHatchChiselBusGui(MTEHatchChiselBus hatch) {
         super(hatch);
     }
 
+    private int getInputRows() {
+        return MTEHatchChiselBus.getSlots(machine.mTier) / INPUT_COLS;
+    }
+
+    private int getGhostGridSize() {
+        int ghostCount = MTEHatchChiselBus.getGhostTargetCount(machine.mTier);
+        return (int) Math.ceil(Math.sqrt(ghostCount));
+    }
+
+    @Override
+    protected int getBasePanelHeight() {
+        int inputRows = getInputRows();
+        return super.getBasePanelHeight() + Math.max(0, SLOT_SIZE * (inputRows - 4) + SLOT_SIZE);
+    }
+
     @Override
     protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
-        int totalSlots = hatch.inventoryHandler.getSlots();
-        int normalSlots = totalSlots - 1;
+        Flow mainRow = Flow.row()
+            .coverChildren()
+            .horizontalCenter();
 
-        // Register slot groups
-        syncManager.registerSlotGroup("inputs", normalSlots);
+        // input slots
+        mainRow.child(
+            new ItemSlotGridBuilder(machine.inventoryHandler, syncManager).size(INPUT_COLS, getInputRows())
+                .build());
 
-        Flow content = Flow.row()
-            .coverChildrenHeight()
-            .paddingLeft(3)
-            .width(168 - 20)
-            .verticalCenter()
-            .leftRel(0)
-            .mainAxisAlignment(Alignment.MainAxis.CENTER);
+        return super.createContentSection(panel, syncManager).child(mainRow);
+    }
 
-        // has to be list widget so it can scroll
+    @Override
+    protected Flow createBottomLeftCornerFlow(ModularPanel panel, PanelSyncManager syncManager) {
+        IPanelHandler templatePanel = syncManager
+            .syncedPanel("template_panel", true, (_, _) -> createTemplatePanel(panel, syncManager));
 
-        ListWidget<IWidget, ?> inputList = new ListWidget<>().size(18 * 4, 18 * 4);
-        int rows = (int) Math.ceil(normalSlots / 4.0);
-        String[] matrix = new String[rows];
-        Arrays.fill(matrix, "xxxx");
+        int gridSize = getGhostGridSize();
+        return super.createBottomLeftCornerFlow(panel, syncManager).collapseDisabledChild()
+            .childIf(
+                gridSize == 1,
+                () -> new PhantomItemSlot().slot(new ModularSlot(machine.ghostTargets, 0))
+                    .addTooltipLine(GTUtility.translate("GT5U.hatch.chisel.configure.singleton")))
+            .childIf(gridSize > 1, () -> createTemplatePanelButton(templatePanel));
+    }
 
-        // Target slot
-        content.child(new ItemSlot().slot(new ModularSlot(hatch.inventoryHandler, normalSlots).singletonSlotGroup()));
-        inputList.child(
-            SlotGroupWidget.builder()
-                .matrix(matrix)
-                .key(
-                    'x',
-                    index -> new ItemSlot().slot(new ModularSlot(hatch.inventoryHandler, index).slotGroup("inputs")))
-                .build())
-            .marginLeft(3);
+    private ButtonWidget<?> createTemplatePanelButton(IPanelHandler templatePanel) {
+        return new ButtonWidget<>().onMousePressed(_ -> {
+            if (!templatePanel.isPanelOpen()) templatePanel.openPanel();
+            else templatePanel.closePanel();
+            return true;
+        })
+            .overlay(GTGuiTextures.OVERLAY_BUTTON_SCREWDRIVER)
+            .addTooltipLine(GTUtility.translate("GT5U.hatch.chisel.configure.grid"));
+    }
 
-        content.child(inputList);
+    private ModularPanel createTemplatePanel(ModularPanel panel, PanelSyncManager syncManager) {
+        ModularPanel templatePanel = GTGuis.createPopUpPanel("template_panel")
+            .coverChildren()
+            .rightRel(1)
+            .padding(4)
+            .relative(panel);
 
-        return super.createContentSection(panel, syncManager).child(content);
+        // target phantom slots
+        templatePanel.child(
+            new ItemSlotGridBuilder(machine.ghostTargets, syncManager).size(getGhostGridSize())
+                .hasSlotGroup(false)
+                .itemSlotSupplier(PhantomItemSlot::new)
+                .build()
+                .marginTop(12));
+
+        return templatePanel;
     }
 }

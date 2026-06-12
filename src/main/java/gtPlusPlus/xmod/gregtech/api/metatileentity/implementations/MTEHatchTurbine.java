@@ -17,9 +17,6 @@ import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
@@ -188,12 +185,8 @@ public class MTEHatchTurbine extends MTEHatch {
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (this.mHasController) {
             if (aTick % 20 == 0) {
-                boolean oActive = getBaseMetaTileEntity().isActive();
                 boolean active = isControllerActive();
                 getBaseMetaTileEntity().setActive(active);
-                if (active != oActive) {
-                    getBaseMetaTileEntity().issueClientUpdate();
-                }
             }
         } else if (this.mControllerLocation != null) {
             // Weird Invalid State
@@ -423,15 +416,6 @@ public class MTEHatchTurbine extends MTEHatch {
             }
         }
         return false;
-    }
-
-    @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        SlotWidget slot = new SlotWidget(inventoryHandler, 0).setFilter(MTELargerTurbineBaseLegacy::isValidTurbine);
-        if (getBaseMetaTileEntity().isServerSide()) slot.setChangeListener(this::sendUpdate);
-        builder.widget(
-            slot.setAccess(false, true)
-                .setPos(79, 34));
     }
 
     @Override

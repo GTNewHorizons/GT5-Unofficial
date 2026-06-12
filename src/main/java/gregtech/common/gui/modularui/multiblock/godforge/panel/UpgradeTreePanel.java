@@ -155,7 +155,7 @@ public class UpgradeTreePanel {
                             .isCostPaid(upgrade)) {
                             SyncActions.COMPLETE_UPGRADE.callFrom(Panels.UPGRADE_TREE, hypervisor, upgrade);
                         } else {
-                            EnumSyncValue<ForgeOfGodsUpgrade> syncer = SyncValues.UPGRADE_CLICKED
+                            EnumSyncValue<ForgeOfGodsUpgrade, ?> syncer = SyncValues.UPGRADE_CLICKED
                                 .lookupFrom(Panels.UPGRADE_TREE, hypervisor);
                             syncer.setValue(upgrade);
                             if (!manualInsertionPanel.isPanelOpen()) {
@@ -168,7 +168,7 @@ public class UpgradeTreePanel {
                                 .closeIfOpen();
                         }
                     } else {
-                        EnumSyncValue<ForgeOfGodsUpgrade> syncer = SyncValues.UPGRADE_CLICKED
+                        EnumSyncValue<ForgeOfGodsUpgrade, ?> syncer = SyncValues.UPGRADE_CLICKED
                             .lookupFrom(Panels.UPGRADE_TREE, hypervisor);
                         syncer.setValue(upgrade);
                         if (!individualPanel.isPanelOpen()) {
@@ -292,8 +292,8 @@ public class UpgradeTreePanel {
 
         // Graviton shard amount
         col.child(
-            new TextFieldWidget().setFormatAsInteger(true)
-                .setNumbers(0, 112)
+            new TextFieldWidget().formatAsInteger(true)
+                .numbersInt(0, 112)
                 .setTextAlignment(Alignment.CENTER)
                 .value(SyncValues.AVAILABLE_GRAVITON_SHARDS.create(hypervisor))
                 .setScrollValues(1, 4, 64)

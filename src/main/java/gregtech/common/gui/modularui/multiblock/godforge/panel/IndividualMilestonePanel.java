@@ -47,7 +47,7 @@ public class IndividualMilestonePanel {
             .child(ForgeOfGodsGuiUtil.panelCloseButton());
 
         // registered on the Milestone panel, look up from there
-        EnumSyncValue<Milestones> milestoneSyncer = SyncValues.MILESTONE_CLICKED
+        EnumSyncValue<Milestones, ?> milestoneSyncer = SyncValues.MILESTONE_CLICKED
             .lookupFrom(Panels.MILESTONE, hypervisor);
 
         // Background symbol
@@ -56,7 +56,7 @@ public class IndividualMilestonePanel {
         }
 
         // Formatting mode button
-        EnumSyncValue<Formatters> formatSyncer = SyncValues.FORMATTER.lookupFrom(Panels.MAIN, hypervisor);
+        EnumSyncValue<Formatters, ?> formatSyncer = SyncValues.FORMATTER.lookupFrom(Panels.MAIN, hypervisor);
         panel.child(
             new ButtonWidget<>().background(GTGuiTextures.TT_OVERLAY_CYCLIC_BLUE)
                 .disableHoverBackground()
@@ -87,7 +87,7 @@ public class IndividualMilestonePanel {
             .style(EnumChatFormatting.GOLD)
             .alignment(Alignment.CENTER)
             .asWidget()
-            .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
+            .widgetTheme(GTWidgetThemes.DISPLAY_TEXT_WHITE)
             .marginBottom(6));
 
         // Info texts
@@ -140,7 +140,7 @@ public class IndividualMilestonePanel {
         SyncValues.MILESTONE_COMPOSITION_LEVEL.registerFor(Panels.INDIVIDUAL_MILESTONE, hypervisor);
     }
 
-    private static Widget<?> getBackgroundImage(Milestones milestone, EnumSyncValue<Milestones> syncer) {
+    private static Widget<?> getBackgroundImage(Milestones milestone, EnumSyncValue<Milestones, ?> syncer) {
         // Cannot simply be DynamicDrawable as the widget width/height also needs to change
         return milestone.getSymbolBackground()
             .asWidget()
@@ -154,7 +154,7 @@ public class IndividualMilestonePanel {
             .alignment(Alignment.CENTER)
             .scale(0.7f)
             .asWidget()
-            .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
+            .widgetTheme(GTWidgetThemes.DISPLAY_TEXT_WHITE)
             .width(140);
     }
 

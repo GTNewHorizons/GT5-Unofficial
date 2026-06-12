@@ -106,7 +106,6 @@ import bartworks.system.material.werkstoff_loaders.registration.BridgeMaterialsL
 import bartworks.system.material.werkstoff_loaders.registration.CasingRegistrator;
 import bartworks.system.oredict.OreDictHandler;
 import bartworks.util.BWColorUtil;
-import bartworks.util.EnumUtils;
 import bartworks.util.log.DebugLog;
 import bwcrossmod.cls.CLSCompat;
 import cpw.mods.fml.common.ProgressManager;
@@ -143,9 +142,6 @@ public class WerkstoffLoader {
     public static final SubTag NO_BLAST = SubTag.getNewSubTag("NoBlast");
 
     public static void setUp() {
-        // add tiberium
-        EnumUtils.createNewElement("Tr", 123L, 203L, 0L, -1L, null, "Tiberium", false);
-
         Werkstoff.GenerationFeatures.initPrefixLogic();
         BWGTMaterialReference.init();
     }
@@ -1335,8 +1331,8 @@ public class WerkstoffLoader {
         new short[] { 0x22, 0xEE, 0x22 },
         "Tiberium",
         "Tr",
-        new Werkstoff.Stats().setProtons(123)
-            .setMass(326)
+        new Werkstoff.Stats().setProtons(Element.Tr.mProtons)
+            .setMass(Element.Tr.getMass())
             .setBlastFurnace(true)
             .setMeltingPoint(1800)
             .setRadioactive(true)
@@ -1660,6 +1656,9 @@ public class WerkstoffLoader {
         }
         if (orePrefixes == OrePrefixes.sheetmetal) {
             return new ItemStack(GregTechAPI.sBlockSheetmetalBW, amount, werkstoff.getmID());
+        }
+        if (orePrefixes == OrePrefixes.frameGt) {
+            return new ItemStack(GregTechAPI.sBlockFramesBW, amount, werkstoff.getmID());
         }
 
         if (WerkstoffLoader.items.get(orePrefixes) == null) {

@@ -32,8 +32,7 @@ public class MTEHatchUncertaintyGui extends MTEHatchBaseGui<MTEHatchUncertainty>
     @Override
     protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
         Flow mainRow = Flow.row()
-            .coverChildren()
-            .paddingLeft(3);
+            .coverChildren();
 
         mainRow.child(createButtonColumn(syncManager, 0));
         mainRow.child(createButtonColumn(syncManager, 1));
@@ -67,7 +66,7 @@ public class MTEHatchUncertaintyGui extends MTEHatchBaseGui<MTEHatchUncertainty>
 
         // tt logo
         screen.child(
-            createLogo().bottomRel(0)
+            makeLogoWidget().bottomRel(0)
                 .rightRel(0));
 
         return screen;
@@ -165,26 +164,24 @@ public class MTEHatchUncertaintyGui extends MTEHatchBaseGui<MTEHatchUncertainty>
         for (int i = 0; i < 4; i++) {
             int index = offset + i * 4;
 
-            buttonColumn.child(
-                new ButtonWidget<>().size(18)
-                    .onMousePressed($ -> {
-                        byte selection = selectionSyncer.getByteValue();
+            buttonColumn.child(new ButtonWidget<>().onMousePressed($ -> {
+                byte selection = selectionSyncer.getByteValue();
 
-                        if (selection == -1) {
-                            selectionSyncer.setIntValue(index);
-                        } else {
-                            short indexValue = matrixSyncer[index].getShortValue();
-                            short selectionValue = matrixSyncer[selection].getShortValue();
+                if (selection == -1) {
+                    selectionSyncer.setIntValue(index);
+                } else {
+                    short indexValue = matrixSyncer[index].getShortValue();
+                    short selectionValue = matrixSyncer[selection].getShortValue();
 
-                            matrixSyncer[selection].setShortValue(indexValue);
-                            matrixSyncer[index].setShortValue(selectionValue);
+                    matrixSyncer[selection].setShortValue(indexValue);
+                    matrixSyncer[index].setShortValue(selectionValue);
 
-                            selectionSyncer.setIntValue(-1);
-                        }
-                        return true;
-                    })
-                    .clickSound(ForgeOfGodsGuiUtil.getButtonSound())
-                    .backgroundOverlay(GTGuiTextures.TT_OVERLAY_BUTTON_UNCERTAINTY[index]));
+                    selectionSyncer.setIntValue(-1);
+                }
+                return true;
+            })
+                .clickSound(ForgeOfGodsGuiUtil.getButtonSound())
+                .backgroundOverlay(GTGuiTextures.TT_OVERLAY_BUTTON_UNCERTAINTY[index]));
 
         }
 
@@ -200,20 +197,16 @@ public class MTEHatchUncertaintyGui extends MTEHatchBaseGui<MTEHatchUncertainty>
                 i -> syncManager.syncValue(
                     "matrix",
                     i,
-                    new ShortSyncValue(() -> hatch.getMatrixElement(i), val -> hatch.setMatrixElement(val, i))));
+                    new ShortSyncValue(() -> machine.getMatrixElement(i), val -> machine.setMatrixElement(val, i))
+                        .allowC2S()));
 
-        syncManager.syncValue("selection", new ByteSyncValue(hatch::getSelection, hatch::setSelection));
-        syncManager.syncValue("mode", new ByteSyncValue(hatch::getMode, hatch::setMode));
-        syncManager.syncValue("status", new ByteSyncValue(hatch::getStatus, hatch::setStatus));
+        syncManager.syncValue("selection", new ByteSyncValue(machine::getSelection, machine::setSelection).allowC2S());
+        syncManager.syncValue("mode", new ByteSyncValue(machine::getMode, machine::setMode));
+        syncManager.syncValue("status", new ByteSyncValue(machine::getStatus, machine::setStatus));
     }
 
     @Override
-    protected boolean supportsRightCornerFlow() {
+    protected boolean doesAddGregTechLogo() {
         return false;
-    }
-
-    @Override
-    protected IDrawable.DrawableWidget createLogo() {
-        return new IDrawable.DrawableWidget(GTGuiTextures.TT_PICTURE_TECTECH_LOGO_DARK).size(18);
     }
 }

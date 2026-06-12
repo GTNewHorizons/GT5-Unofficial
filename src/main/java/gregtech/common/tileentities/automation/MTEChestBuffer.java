@@ -7,11 +7,7 @@ import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 
-import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -99,29 +95,6 @@ public class MTEChestBuffer extends MTEBuffer {
     protected static int getTickRate(int tier) {
         if (tier > 9) return 1;
         return tickRate[tier];
-    }
-
-    protected static int getMaxStacks(int tier) {
-        // Included higher tiers on the off chance they actually work without blowing things up lmao
-        return tier > 9 ? MAX : Math.min(maxStacks[tier], MAX);
-    }
-
-    @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        super.addUIWidgets(builder, buildContext);
-        addSortStacksButton(builder);
-        addEmitRedstoneIfFullButton(builder);
-        addInvertRedstoneButton(builder);
-        addStockingModeButton(builder);
-        builder.widget(
-            new DrawableWidget().setDrawable(GTUITextures.PICTURE_ARROW_22_RED.apply(69, true))
-                .setPos(98, 60)
-                .setSize(51, 22));
-        addMainUI(builder);
-    }
-
-    protected void addMainUI(ModularWindow.Builder builder) {
-        addInventorySlots(builder);
     }
 
     @Override

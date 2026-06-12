@@ -141,6 +141,8 @@ import com.mojang.authlib.GameProfile;
 import buildcraft.api.transport.IPipeTile;
 import codechicken.translocator.TileItemTranslocator;
 import cofh.api.transport.IItemDuct;
+import cofh.asmhooks.block.BlockTickingWater;
+import cofh.asmhooks.block.BlockWater;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.ModAPIManager;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -189,6 +191,8 @@ import ic2.api.recipe.RecipeInputItemStack;
 import ic2.api.recipe.RecipeInputOreDict;
 import ic2.api.recipe.RecipeOutput;
 import ic2.core.IC2Potion;
+import ic2.core.init.BlocksItems;
+import ic2.core.init.InternalName;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2LongOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenCustomHashMap;
@@ -210,7 +214,6 @@ public class GTUtility {
      * The capacity is calculated as {@code Integer.highestOneBit(1.5 * size)}, so 1024 actually means 2048
      */
     private static final Map<Fluid, List<ItemStack>> fluidToContainersMap = new IdentityHashMap<>(1024);
-
     private static final Map<Integer, Boolean> sOreTable = new HashMap<>();
     public static boolean TE_CHECK = false, BC_CHECK = false, CHECK_ALL = true, RF_CHECK = false;
     public static Map<GTPlayedSound, Integer> sPlayedSoundMap = new /* Concurrent */ HashMap<>();
@@ -219,6 +222,7 @@ public class GTUtility {
     // UUID.fromString("00000000-0000-0000-0000-000000000000");
     private static final Splitter NEWLINE_SPLITTER = Splitter.on("\\n")
         .omitEmptyStrings();
+    private static Block DISTILLED_WATER_BLOCK;
 
     public static int safeInt(long number, int margin) {
         return number > Integer.MAX_VALUE - margin ? Integer.MAX_VALUE - margin : (int) number;
@@ -231,6 +235,21 @@ public class GTUtility {
 
     public static int longToInt(long number) {
         return (int) Math.min(Integer.MAX_VALUE, number);
+    }
+
+    /// Performs a fast X / Y * Z operation, without causing long overflows in the intermediate operations.
+    /// If the result is too large for a long, overflows will still occur.
+    /// Note that this method does not truncate like standard integer math - it tries to get as close to the exact
+    /// mathematical answer as it can. `7 / 3 * 3` equals 7, not 6.
+    public static long fastDivMul(long value, long div, long mult) {
+        if (div == mult) {
+            return mult == 0 ? 0 : value;
+        }
+
+        long integral = value / div * mult;
+        long decimal = value % div * mult / div;
+
+        return integral + decimal;
     }
 
     public static Field getField(Object aObject, String aField) {
@@ -465,6 +484,16 @@ public class GTUtility {
     }
 
     /**
+     * Applies secondary formatting to tooltip text
+     *
+     * @param tooltip the tooltip text
+     * @return formatted tooltip string
+     */
+    public static String getColoredSecondaryTooltip(String tooltip) {
+        return EnumChatFormatting.GRAY + tooltip + EnumChatFormatting.RESET;
+    }
+
+    /**
      * @return e.g. {@code " (LV)"}
      */
     @Nonnull
@@ -611,10 +640,10 @@ public class GTUtility {
                         .append(code);
                 } else if (code == 's') {
                     // Push, save the current format and don't emit to the output buffer
-                    stack.push(currentFormat);
+                    stack.push(currentFormat.isEmpty() ? "§r" : currentFormat);
                 } else if (code == 't') {
                     // Pop, restore the top format and don't emit to the output buffer
-                    currentFormat = stack.isEmpty() ? "" : stack.pop();
+                    currentFormat = stack.isEmpty() ? "§r" : stack.pop();
                     out.append(currentFormat);
                 }
 
@@ -624,6 +653,14 @@ public class GTUtility {
         }
 
         return out.toString();
+    }
+
+    public static void addSeparatorIfNeeded(List<String> tooltip) {
+        if (!tooltip.isEmpty() && !tooltip.get(tooltip.size() - 1)
+            .trim()
+            .isEmpty()) {
+            tooltip.add("");
+        }
     }
 
     public static String wrapStack(String message) {
@@ -710,6 +747,9 @@ public class GTUtility {
         return compactInventory(inv.subList(start, end), (slot, stack) -> stack.getMaxStackSize());
     }
 
+    private static final ThreadLocal<Map<ItemStack, ObjectArrayList<ObjectIntPair<ItemStack>>>> slotsSupplier = ThreadLocal
+        .withInitial(() -> new Object2ObjectOpenCustomHashMap<>(GTItemStack.ITEMSTACK_HASH_STRATEGY_NBT_SENSITIVE));
+
     /**
      * Compacts an inventory like this:
      * Empty_0, Iron_48, Iron_64, Empty_0, Gold_32, Iron_32, Gold_16
@@ -720,8 +760,8 @@ public class GTUtility {
         int len = inv.size();
 
         // Filter each ItemStack into their own lists (grouped by Item, meta, and NBT).
-        Map<ItemStack, ObjectArrayList<ObjectIntPair<ItemStack>>> slots = new Object2ObjectOpenCustomHashMap<>(
-            GTItemStack.ITEMSTACK_HASH_STRATEGY_NBT_SENSITIVE);
+        Map<ItemStack, ObjectArrayList<ObjectIntPair<ItemStack>>> slots = slotsSupplier.get();
+        slots.clear();
 
         for (int i = 0; i < len; i++) {
             ItemStack stack = inv.get(i);
@@ -800,6 +840,8 @@ public class GTUtility {
 
             insert++;
         }
+
+        slots.clear();
 
         return didSomething.booleanValue();
     }
@@ -1292,6 +1334,19 @@ public class GTUtility {
         return histogram;
     }
 
+    public static Object2LongOpenHashMap<FluidId> getFluidStackHistogram(Iterable<FluidStack> stacks) {
+        Object2LongOpenHashMap<FluidId> histogram = new Object2LongOpenHashMap<>();
+
+        if (stacks == null) return histogram;
+
+        for (FluidStack stack : stacks) {
+            if (stack == null || stack.getFluid() == null) continue;
+            histogram.addTo(FluidId.create(stack), stack.amount);
+        }
+
+        return histogram;
+    }
+
     public static Iterable<NBTTagCompound> getCompoundTagList(NBTTagCompound tag, String name) {
         return tag.getTagList(name, NBT.TAG_COMPOUND).tagList;
     }
@@ -1674,6 +1729,10 @@ public class GTUtility {
         return (aStack != null) && aStack.getItem() != null && aStack.stackSize >= 0;
     }
 
+    public static boolean isStackValid(FluidStack aStack) {
+        return (aStack != null) && aStack.getFluid() != null && aStack.amount >= 0;
+    }
+
     @Deprecated
     public static boolean isStackInvalid(Object aStack) {
         return !(aStack instanceof ItemStack stack) || isStackInvalid(stack);
@@ -2035,6 +2094,12 @@ public class GTUtility {
 
     @Contract("null -> null")
     public static ItemStack copyOrNull(ItemStack stack) {
+        if (isStackValid(stack)) return stack.copy();
+        return null;
+    }
+
+    @Contract("null -> null")
+    public static FluidStack copyOrNull(FluidStack stack) {
         if (isStackValid(stack)) return stack.copy();
         return null;
     }
@@ -3397,27 +3462,36 @@ public class GTUtility {
         return k > (double) l ? l + 1 : l;
     }
 
+    /// Ceiling division.
+    /// Rounds to positive infinity for positive signs, and rounds to zero for negative signs.
+    /// Sign = signum(lhs) * signum(rhs), so 7 / -2 = -3.5 = -3
     public static int ceilDiv(int lhs, int rhs) {
-        return (lhs + rhs - 1) / rhs;
-    }
-
-    /** Handles negatives properly, but it's slower than {@link #ceilDiv(int, int)}. */
-    public static int ceilDiv2(int lhs, int rhs) {
-        int sign = Integer.signum(lhs) * Integer.signum(rhs);
-
-        if (lhs == 0) return 0;
         if (rhs == 0) throw new ArithmeticException("/ by zero");
 
-        lhs = Math.abs(lhs);
-        rhs = Math.abs(rhs);
-
-        int unsigned = 1 + ((lhs - 1) / rhs);
-
-        return unsigned * sign;
+        return lhs / rhs + ((lhs ^ rhs) > 0 && lhs % rhs != 0 ? 1 : 0);
     }
 
+    /// Ceiling division.
+    /// Rounds to positive infinity for positive signs, and rounds to zero for negative signs.
+    /// Sign = signum(lhs) * signum(rhs), so 7 / -2 = -3.5 = -3
     public static long ceilDiv(long lhs, long rhs) {
-        return (lhs + rhs - 1) / rhs;
+        if (rhs == 0) throw new ArithmeticException("/ by zero");
+
+        return lhs / rhs + ((lhs ^ rhs) > 0 && lhs % rhs != 0 ? 1 : 0);
+    }
+
+    /// Ceiling division. Negative signs round to negative infinity. Same as [#ceilDiv(int, int)] otherwise.
+    public static int ceilDiv2(int lhs, int rhs) {
+        if (rhs == 0) throw new ArithmeticException("/ by zero");
+
+        return lhs / rhs + (lhs % rhs != 0 ? ((lhs ^ rhs) > 0 ? 1 : -1) : 0);
+    }
+
+    /// Ceiling division. Negative signs round to negative infinity. Same as [#ceilDiv(long, long)] otherwise.
+    public static long ceilDiv2(long lhs, long rhs) {
+        if (rhs == 0) throw new ArithmeticException("/ by zero");
+
+        return lhs / rhs + (lhs % rhs != 0 ? ((lhs ^ rhs) > 0 ? 1 : -1) : 0);
     }
 
     /** @deprecated Use {@link Integer#signum(int)} instead.} */
@@ -3442,6 +3516,15 @@ public class GTUtility {
 
     public static int mod(int value, int divisor) {
         return ((value % divisor) + divisor) % divisor;
+    }
+
+    public static NBTTagCompound getOrCreateNbtCompound(ItemStack stack) {
+        NBTTagCompound compound = stack.getTagCompound();
+        if (compound == null) {
+            compound = new NBTTagCompound();
+            stack.setTagCompound(compound);
+        }
+        return compound;
     }
 
     /**
@@ -4022,6 +4105,16 @@ public class GTUtility {
             NBTTagCompound nbt = nbt();
             return new FluidStack(fluid(), amount, nbt != null ? (NBTTagCompound) nbt.copy() : null);
         }
+
+        public boolean matches(FluidStack stack) {
+            if (fluid() != stack.getFluid()) return false;
+
+            return Objects.equals(nbt(), stack.tag);
+        }
+
+        public boolean matches(Fluid fluid) {
+            return fluid() == fluid;
+        }
     }
 
     public static int getPlasmaFuelValueInEUPerLiterFromMaterial(Materials material) {
@@ -4261,5 +4354,55 @@ public class GTUtility {
         // Convert to degrees for consistency
         axisAngle.angle = (float) Math.toDegrees(axisAngle.angle);
         return axisAngle;
+    }
+
+    public static boolean canReplaceBlockWithWater(World world, int x, int y, int z) {
+        Block block = world.getBlock(x, y, z);
+        boolean isFlowing = isFlowingWater(block, world, x, y, z);
+        boolean isAir = block == Blocks.air;
+        return (isFlowing || isAir);
+    }
+
+    public static boolean isCOFHWater(Block block) {
+        return Mods.COFHCore.isModLoaded() && (block instanceof BlockWater || block instanceof BlockTickingWater);
+    }
+
+    private static boolean isDistilledWater(Block block) {
+        if (DISTILLED_WATER_BLOCK == null) {
+            Block b = BlocksItems.getFluidBlock(InternalName.fluidDistilledWater);
+            if (b != null) {
+                DISTILLED_WATER_BLOCK = b;
+            }
+        }
+        return DISTILLED_WATER_BLOCK != null
+            && Block.getIdFromBlock(block) == Block.getIdFromBlock(DISTILLED_WATER_BLOCK);
+    }
+
+    public static boolean isWater(Block block) {
+        return block == Blocks.flowing_water || block == Blocks.water || isDistilledWater(block) || isCOFHWater(block);
+    }
+
+    public static boolean isFlowingWater(Block block, World world, int x, int y, int z) {
+        if (isCOFHWater(block)) {
+            return world.getBlockMetadata(x, y, z) > 0;
+        }
+        return block == Blocks.flowing_water || (isWater(block) && world.getBlockMetadata(x, y, z) > 0);
+    }
+
+    public static boolean isSourceWater(Block block, World world, int x, int y, int z) {
+        return isWater(block) && !isFlowingWater(block, world, x, y, z);
+    }
+
+    public static FluidStack[] splitFluidStack(FluidStack fluid, long amount) {
+        int size = (int) ((amount + Integer.MAX_VALUE - 1) / Integer.MAX_VALUE);
+        FluidStack[] result = new FluidStack[size];
+        for (int i = 0; i < size; i++) {
+            int a = (int) Math.min(amount, Integer.MAX_VALUE);
+            FluidStack tmp = fluid.copy();
+            tmp.amount = a;
+            result[i] = tmp;
+            amount -= a;
+        }
+        return result;
     }
 }

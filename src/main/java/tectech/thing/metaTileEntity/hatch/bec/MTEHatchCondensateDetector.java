@@ -8,7 +8,6 @@ import net.minecraftforge.fluids.FluidRegistry;
 import org.jetbrains.annotations.Nullable;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
-import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
@@ -23,7 +22,8 @@ import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.api.modularui2.GTGuiTheme;
+import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.render.TextureFactory;
 import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
 import gregtech.common.gui.modularui.widget.settings.SettingsPanel;
@@ -116,6 +116,11 @@ public class MTEHatchCondensateDetector extends MTEHatchConfigurableBase {
         return new Gui().build(data, syncManager, uiSettings);
     }
 
+    @Override
+    protected GTGuiTheme getGuiTheme() {
+        return GTGuiThemes.TECTECH_STANDARD;
+    }
+
     private class Gui extends MTEHatchBaseGui<MTEHatchCondensateDetector> {
 
         public Gui() {
@@ -123,8 +128,13 @@ public class MTEHatchCondensateDetector extends MTEHatchConfigurableBase {
         }
 
         @Override
-        protected UITexture getLogoTexture() {
-            return GTGuiTextures.TT_PICTURE_TECTECH_LOGO;
+        protected boolean supportsBottomRowOverlap() {
+            return true;
+        }
+
+        @Override
+        protected int getBasePanelHeight() {
+            return super.getBasePanelHeight() + SLOT_SIZE / 2;
         }
 
         @Override
@@ -148,7 +158,7 @@ public class MTEHatchCondensateDetector extends MTEHatchConfigurableBase {
                         () -> requestedAmount,
                         l -> requestedAmount = (long) l,
                         (panel1, syncManager1, widget) -> {
-                            widget.setNumbersLong(() -> 1L, () -> Long.MAX_VALUE);
+                            widget.numbersLong(() -> 1L, () -> Long.MAX_VALUE);
                         })
                     .addReadout(
                         IKey.lang("GT5U.gui.text.bec-current"),
@@ -156,7 +166,7 @@ public class MTEHatchCondensateDetector extends MTEHatchConfigurableBase {
                         amount -> IKey.str(NumberFormatUtil.formatFluid(amount)))
                     .build(panel, syncManager)
                     .widthRel(1)
-                    .height(getContentRowHeight()));
+                    .height(getContentHolderHeight()));
             // spotless:on
         }
     }

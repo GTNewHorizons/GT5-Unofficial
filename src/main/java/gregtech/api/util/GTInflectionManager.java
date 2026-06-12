@@ -48,9 +48,6 @@ public final class GTInflectionManager {
     private GTInflectionManager() {}
 
     public static void loadInflectionJson(String userLang) {
-        if (IS_SERVER) {
-            return;
-        }
         Minecraft minecraft = Minecraft.getMinecraft();
         final ResourceLocation json = new ResourceLocation(Mods.GregTech.ID, "inflection/" + userLang + ".json");
         try (BufferedReader reader = new BufferedReader(
@@ -91,7 +88,7 @@ public final class GTInflectionManager {
         } catch (IOException e) {
             GT_FML_LOGGER.warn("Failed to load inflection file: {}", json, e);
         } catch (JsonParseException e) {
-            GT_FML_LOGGER.warn("Successfully found the file: {}, but an error occurred.", json, e);
+            GT_FML_LOGGER.warn("Successfully found the inflection file: {}, but an error occurred.", json, e);
         }
     }
 
@@ -113,7 +110,7 @@ public final class GTInflectionManager {
      * {@code part1/part2/part3} will execute the {@code part1} rule, {@code part2} rule, and {@code part3} rule in
      * sequence.<br>
      * See ({@code assets/gregtech/inflection/en_US.example.json} for an example JSON format.<br>
-     * See also: {@link <a href="https://gist.github.com/iouter/efcfb45dbc337e5c45f1c177df3cbaa0">document in gist</a>}
+     * See also: {@link <a href="https://wiki.gtnewhorizons.com/wiki/Inflection_Manager">document in wiki</a>}
      * <p>
      * On the client side, words are replaced according to the inflection rules; on the server side, inflection markers
      * are automatically removed (no inflection applied).<br>
@@ -128,7 +125,7 @@ public final class GTInflectionManager {
      */
     public static String formatInflection(String inputKey, String... formatterKey) {
         final String input = StatCollector.translateToLocal(inputKey);
-        if (!input.contains("s{") || IS_SERVER) {
+        if (!input.contains("s{")) {
             try {
                 return String.format(
                     unescape(input),
@@ -175,7 +172,7 @@ public final class GTInflectionManager {
 
     private static String getInflection(String formatterKey, String key) {
         String word = StatCollector.translateToLocal(formatterKey);
-        if (key == null || key.isEmpty()) {
+        if (IS_SERVER || key == null || key.isEmpty()) {
             return word;
         }
         String specialCaseKey = formatterKey;
@@ -186,21 +183,12 @@ public final class GTInflectionManager {
                 continue;
             }
             switch (targetRule) {
-                case "lowercase" -> {
-                    word = word.toLowerCase(LOCALE);
-                    continue;
-                }
-                case "uppercase" -> {
-                    word = word.toUpperCase(LOCALE);
-                    continue;
-                }
-                case "capitalize_first" -> {
-                    word = word.substring(0, 1)
-                        .toUpperCase(LOCALE)
-                        + word.substring(1)
-                            .toLowerCase(LOCALE);
-                    continue;
-                }
+                case "lowercase" -> word = word.toLowerCase(LOCALE);
+                case "uppercase" -> word = word.toUpperCase(LOCALE);
+                case "capitalize_first" -> word = word.substring(0, 1)
+                    .toUpperCase(LOCALE)
+                    + word.substring(1)
+                        .toLowerCase(LOCALE);
                 case "capitalize_words" -> {
                     Matcher matcher = CAPITALIZE_WORDS_PATTERN.matcher(word);
                     StringBuffer sb = new StringBuffer(word.length());
@@ -214,19 +202,20 @@ public final class GTInflectionManager {
                     }
                     matcher.appendTail(sb);
                     word = sb.toString();
-                    continue;
                 }
-            }
-            List<Rule> rules = INFLECTION_MAP.get(targetRule);
-            if (rules == null || rules.isEmpty()) {
-                continue;
-            }
-            for (Rule rule : rules) {
-                Matcher m = rule.pattern()
-                    .matcher(word);
-                if (m.matches()) {
-                    word = m.replaceFirst(rule.replacement());
-                    break;
+                default -> {
+                    List<Rule> rules = INFLECTION_MAP.get(targetRule);
+                    if (rules == null || rules.isEmpty()) {
+                        continue;
+                    }
+                    for (Rule rule : rules) {
+                        Matcher m = rule.pattern()
+                            .matcher(word);
+                        if (m.matches()) {
+                            word = m.replaceFirst(rule.replacement());
+                            break;
+                        }
+                    }
                 }
             }
         }

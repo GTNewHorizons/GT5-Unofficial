@@ -34,6 +34,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.TurbineStatCalculator;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import gregtech.common.misc.GTStructureChannels;
 import gtPlusPlus.core.util.math.MathUtils;
 
 public class MTEXLTurbinePlasma extends MTEXLTurbineBase {
@@ -194,11 +195,12 @@ public class MTEXLTurbinePlasma extends MTEXLTurbineBase {
             .addCasingInfoExactly("Tungstensteel Frame Box", 32, false)
             .addCasingInfoExactly("Turbine Shaft", 16, false)
             .addCasingInfoExactly("Steel Gear Box Casing", 7, false)
-            .addInputBus("Any Turbine Casing (Min 1)", 1)
+            .addInputBus("Any Turbine Casing", 1)
             .addInputHatch("Any Turbine Casing (Min 1)", 1)
             .addOutputHatch("Any Turbine Casing (Min 1)", 1)
             .addDynamoHatch("Any Turbine Casing (Min 1)", 1)
             .addMaintenanceHatch("Any Turbine Casing (Min 1)", 1)
+            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .addStructureAuthors(EnumChatFormatting.GOLD + "VorTex")
             .toolTipFinisher();
         return tt;
@@ -362,7 +364,7 @@ public class MTEXLTurbinePlasma extends MTEXLTurbineBase {
                     output = FluidRegistry.getFluidStack("molten." + outputName, totalFlow);
                 }
                 if (output != null) {
-                    addOutput(output);
+                    addOutputPartial(output);
                 }
             }
             if (totalFlow <= 0) return 0;

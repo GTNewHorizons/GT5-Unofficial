@@ -50,8 +50,11 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
+import gregtech.api.enums.OutputHatchType;
 import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.IMEConnectable;
+import gregtech.api.interfaces.IOutputHatch;
+import gregtech.api.interfaces.IOutputHatchTransaction;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -61,6 +64,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.hatch.MTEHatchOutputMEGui;
 import gregtech.common.tileentities.machines.outputme.base.MTEHatchOutputMEBase;
 import gregtech.common.tileentities.machines.outputme.filter.MEFilterFluid;
+import gregtech.common.tileentities.machines.outputme.util.AECacheCounter;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -483,12 +487,94 @@ public class MTEHatchOutputME extends MTEHatchOutput
     }
 
     @Override
-    protected boolean useMui2() {
-        return true;
-    }
-
-    @Override
     public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
         return new MTEHatchOutputMEGui(this).build(guiData, syncManager, uiSettings);
     }
+
+    @Override
+    public boolean isFiltered() {
+        return provider.isFiltered();
+    }
+
+    @Override
+    public boolean isFilteredToFluid(GTUtility.FluidId id) {
+        return provider.getFilter()
+            .isFilteredToFluid(id);
+    }
+
+    @Override
+    public OutputHatchType getHatchType() {
+        if (provider.getCacheMode())
+            return provider.isFiltered() ? OutputHatchType.MECacheFiltered : OutputHatchType.MECacheUnfiltered;
+        else return provider.isFiltered() ? OutputHatchType.MEFiltered : OutputHatchType.MEUnfiltered;
+    }
+
+    @Override
+    public IOutputHatchTransaction createTransaction() {
+        return new MEOutputHatchTransaction();
+    }
+
+    class MEOutputHatchTransaction implements IOutputHatchTransaction {
+
+        private final AECacheCounter<GTUtility.FluidId> cache = new AECacheCounter<>();
+        private final long tick, availableSpace;
+        private boolean active = true;
+
+        public MEOutputHatchTransaction() {
+            long initialStored = provider.getCachedAmount();
+            long capacity = provider.getCacheCapacity();
+            tick = initialStored >= capacity ? provider.getLastInputTick() : provider.getTickCounter();
+            availableSpace = capacity - initialStored;
+        }
+
+        @Override
+        public IOutputHatch getHatch() {
+            return MTEHatchOutputME.this;
+        }
+
+        @Override
+        public boolean hasAvailableSpace() {
+            return cache.getTotal() < availableSpace || provider.getTickCounter() == tick;
+        }
+
+        public boolean canStore(GTUtility.FluidId id, FluidStack stack) {
+            if (provider.shouldCheck()) {
+                return provider.canStore(stack, stack.amount + cache.get(id));
+            }
+            return hasAvailableSpace() && provider.getFilter()
+                .isFilteredToFluid(id);
+        }
+
+        @Override
+        public boolean storePartial(GTUtility.FluidId id, @NotNull FluidStack stack) {
+            if (!active) throw new IllegalStateException("Cannot add to a transaction after committing it");
+
+            if (!canStore(id, stack)) return false;
+
+            cache.insert(id, stack.amount);
+            stack.amount = 0;
+
+            return true;
+        }
+
+        @Override
+        public void completeFluid(GTUtility.FluidId id) {
+            // Do nothing
+        }
+
+        @Override
+        public void commit() {
+            cache.iterateAll(
+                (id, amount) -> {
+                    provider.storeToCache(
+                        provider.getFilter()
+                            .fromNative(id.getFluidStack())
+                            .setStackSize(amount));
+                });
+
+            MTEHatchOutputME.this.markDirty();
+            active = false;
+        }
+    }
+
 }

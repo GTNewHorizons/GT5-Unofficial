@@ -6,7 +6,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import org.jetbrains.annotations.Nullable;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
-import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.RichTooltip;
@@ -19,7 +18,8 @@ import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.api.modularui2.GTGuiTheme;
+import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
@@ -110,15 +110,15 @@ public class MTEHatchIONodeController extends MTEHatchConfigurableBase {
         return new Gui().build(data, syncManager, uiSettings);
     }
 
+    @Override
+    protected GTGuiTheme getGuiTheme() {
+        return GTGuiThemes.TECTECH_STANDARD;
+    }
+
     private class Gui extends MTEHatchBaseGui<MTEHatchIONodeController> {
 
         public Gui() {
             super(MTEHatchIONodeController.this);
-        }
-
-        @Override
-        protected UITexture getLogoTexture() {
-            return GTGuiTextures.TT_PICTURE_TECTECH_LOGO;
         }
 
         @Override
@@ -137,7 +137,7 @@ public class MTEHatchIONodeController extends MTEHatchConfigurableBase {
                         })
                     .build(panel, syncManager)
                     .widthRel(1)
-                    .height(getContentRowHeight()));
+                    .coverChildrenHeight());
             // spotless:on
         }
     }

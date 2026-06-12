@@ -22,7 +22,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -59,6 +58,7 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
@@ -112,7 +112,7 @@ public abstract class MTELargeFusionComputer extends TTMultiblockBase
                                 gregtech.api.enums.HatchElement.OutputHatch)
                             .casingIndex(x.textureIndex())
                             .hint(1)
-                            .buildAndChain(x.getGlassBlock(), x.getGlassMeta())))
+                            .buildAndChain(ofBlock(x.getGlassBlock(), x.getGlassMeta()))))
                 .addElement(
                     'E',
                     lazy(
@@ -124,7 +124,7 @@ public abstract class MTELargeFusionComputer extends TTMultiblockBase
                             .casingIndex(x.textureIndex())
                             .hatchItemFilterAnd(x2 -> filterByMTETier(x2.energyHatchTier(), Integer.MAX_VALUE))
                             .hint(2)
-                            .buildAndChain(x.getCasingBlock(), x.getCasingMeta())))
+                            .buildAndChain(ofBlock(x.getCasingBlock(), x.getCasingMeta()))))
                 .addElement('F', lazy(x -> ofFrame(x.getFrameBox())))
                 .addElement(
                     'D',
@@ -133,7 +133,7 @@ public abstract class MTELargeFusionComputer extends TTMultiblockBase
                             .hatchId(9401)
                             .casingIndex(x.textureIndex())
                             .hint(3)
-                            .buildAndChain(x.getCasingBlock(), x.getCasingMeta())))
+                            .buildAndChain(ofBlock(x.getCasingBlock(), x.getCasingMeta()))))
                 .build();
         }
     };
@@ -224,11 +224,12 @@ public abstract class MTELargeFusionComputer extends TTMultiblockBase
     }
 
     @Override
-    public boolean checkMachine_EM(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         this.eEnergyMulti.clear();
-        return structureCheck_EM(MAIN_NAME, 23, 3, 40) && mInputHatches.size() + mDualInputHatches.size() != 0
-            && !mOutputHatches.isEmpty()
-            && (mEnergyHatches.size() + eEnergyMulti.size()) != 0;
+        if (!checkPiece(MAIN_NAME, 23, 3, 40, errors)) return;
+        checkHasInputHatch(errors);
+        checkHasOutputHatch(errors);
+        checkHasAnyEnergy(errors);
     }
 
     @Override
@@ -246,7 +247,7 @@ public abstract class MTELargeFusionComputer extends TTMultiblockBase
 
     @Override
     public void construct(ItemStack itemStack, boolean b) {
-        structureBuild_EM(MAIN_NAME, 23, 3, 40, itemStack, b);
+        buildPiece(MAIN_NAME, itemStack, b, 23, 3, 40);
     }
 
     @Override
@@ -261,7 +262,7 @@ public abstract class MTELargeFusionComputer extends TTMultiblockBase
         if (aBaseMetaTileEntity.isServerSide()) {
             mTotalRunTime++;
             if (mEfficiency < 0) mEfficiency = 0;
-            if (mRunningOnLoad && checkMachine(aBaseMetaTileEntity, mInventory[1])) {
+            if (mRunningOnLoad && checkStructure(true, aBaseMetaTileEntity)) {
                 checkRecipe();
             }
             if (mUpdated) {
@@ -300,8 +301,7 @@ public abstract class MTELargeFusionComputer extends TTMultiblockBase
                             .decreaseStoredEnergyUnits(-lEUt, true);
                         if (mMaxProgresstime > 0 && ++mProgresstime >= mMaxProgresstime) {
                             if (mOutputItems != null) addItemOutputs(mOutputItems);
-                            if (mOutputFluids != null)
-                                for (FluidStack tStack : mOutputFluids) if (tStack != null) addOutput(tStack);
+                            if (mOutputFluids != null) addFluidOutputs(mOutputFluids);
                             mEfficiency = Math
                                 .max(0, Math.min(mEfficiency + mEfficiencyIncrease, getMaxEfficiency(mInventory[1])));
                             mOutputItems = null;
@@ -553,10 +553,7 @@ public abstract class MTELargeFusionComputer extends TTMultiblockBase
                 + formatNumber(plasmaOut)
                 + EnumChatFormatting.RESET
                 + "L/t",
-            StatCollector.translateToLocal("GT5U.multiblock.recipesDone") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(recipesDone)
-                + EnumChatFormatting.RESET };
+            GTUtility.translate("GT5U.multiblock.recipesDone", formatNumber(recipesDone)) };
     }
 
     protected long energyStorageCache;

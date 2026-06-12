@@ -12,6 +12,8 @@ import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTStructureUtility.ofSheetMetal;
 
+import java.util.List;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.FluidStack;
@@ -25,8 +27,11 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.misc.GTStructureChannels;
 
 public class MTEOilDrillInfinite extends MTEOilDrillBase {
 
@@ -120,23 +125,24 @@ public class MTEOilDrillInfinite extends MTEOilDrillBase {
             .addMaintenanceHatch("Any Mining Neutronium Casing", 1)
             .addInputBus("Programmed Circuits, optional, any Mining Neutronium Casing", 1)
             .addOutputHatch("Any Mining Neutronium Casing", 1)
+            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .addStructureAuthors(EnumChatFormatting.GOLD + "Pix3lated")
             .toolTipFinisher();
         return tt;
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         updateCoordinates();
         casingAmount = 0;
-        return checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z) && checkHatches()
-            && GTUtility.getTier(getMaxInputVoltage()) >= getMinTier()
-            && casingAmount >= 90;
-    }
-
-    @Override
-    protected boolean checkHatches() {
-        return !mOutputHatches.isEmpty() && mEnergyHatches.size() == 1;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z, errors)) return;
+        checkHatches(errors);
+        if (!mEnergyHatches.isEmpty()) {
+            if (GTUtility.getTier(getMaxInputVoltage()) < getMinTier()) {
+                errors.add(StructureErrors.energyHatchTierTooLow(getMinTier()));
+            }
+        }
+        checkCasingMin(errors, casingAmount, 90);
     }
 
     @Override

@@ -87,10 +87,10 @@ public class ItemGenericChemBase extends Item {
     }
 
     @Override
-    public void getSubItems(Item aItem, CreativeTabs p_150895_2_, List aList) {
+    public void getSubItems(Item item, CreativeTabs tab, List<ItemStack> list) {
         for (int i = 0; i < aMetaSize; i++) {
             if (i >= 29 && i <= 32) continue; // prevent unused catalysts from generating
-            aList.add(new ItemStack(aItem, 1, i));
+            list.add(new ItemStack(item, 1, i));
         }
     }
 
@@ -161,28 +161,27 @@ public class ItemGenericChemBase extends Item {
         }
     }
 
-    @SuppressWarnings("unchecked")
     @Override
-    public void addInformation(ItemStack aStack, EntityPlayer player, List list, boolean bool) {
+    public void addInformation(ItemStack stack, EntityPlayer player, List<String> list, boolean adv) {
         boolean aHasSpecialTooltips = false;
         int aMaxDamage = 0;
         int aDamageSegment = 0;
         int aDam = 0;
         EnumChatFormatting durability = EnumChatFormatting.GRAY;
-        if (MTEIsaMill.isMillingBall(aStack)) {
+        if (MTEIsaMill.isMillingBall(stack)) {
             list.add(EnumChatFormatting.GRAY + StatCollector.translateToLocal("GTPP.tooltip.milling_ball.tumble"));
-            aMaxDamage = getMillingBallMaxDamage(aStack);
+            aMaxDamage = getMillingBallMaxDamage(stack);
             aDamageSegment = aMaxDamage / 5;
-            aDam = aMaxDamage - getMillingBallDamage(aStack);
+            aDam = aMaxDamage - getMillingBallDamage(stack);
             aHasSpecialTooltips = true;
         }
-        if (MTEChemicalPlant.isCatalyst(aStack)) {
+        if (MTEChemicalPlant.isCatalyst(stack)) {
             list.add(
                 EnumChatFormatting.GRAY
                     + StatCollector.translateToLocal("GTPP.tooltip.catalyst.active_reaction_agent"));
-            aMaxDamage = getCatalystMaxDamage(aStack);
+            aMaxDamage = getCatalystMaxDamage(stack);
             aDamageSegment = aMaxDamage / 5;
-            aDam = aMaxDamage - getCatalystDamage(aStack);
+            aDam = aMaxDamage - getCatalystDamage(stack);
             aHasSpecialTooltips = true;
         }
         if (aHasSpecialTooltips) {
@@ -197,7 +196,7 @@ public class ItemGenericChemBase extends Item {
             }
             list.add(durability + "" + (aDam) + EnumChatFormatting.GRAY + " / " + aMaxDamage);
         }
-        super.addInformation(aStack, player, list, bool);
+        super.addInformation(stack, player, list, adv);
     }
 
     @Override

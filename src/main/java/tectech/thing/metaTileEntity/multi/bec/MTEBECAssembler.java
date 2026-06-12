@@ -1,10 +1,12 @@
 package tectech.thing.metaTileEntity.multi.bec;
 
-import static gregtech.api.casing.Casings.AdvancedFusionCoilII;
-import static gregtech.api.casing.Casings.CyclotronCoil;
+import static gregtech.api.casing.Casings.CondensateGuidanceCoil;
+import static gregtech.api.casing.Casings.CondensateTransformativeCoil;
+import static gregtech.api.casing.Casings.ConflictInducementCasing;
 import static gregtech.api.casing.Casings.ElectromagneticWaveguide;
 import static gregtech.api.casing.Casings.ElectromagneticallyIsolatedCasing;
 import static gregtech.api.casing.Casings.FineStructureConstantManipulator;
+import static gregtech.api.casing.Casings.PeaceEnforcementCasing;
 import static gregtech.api.casing.Casings.SuperconductivePlasmaEnergyConduit;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.ExoticEnergy;
@@ -79,6 +81,7 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> imple
 
     private final List<MTEHatchNanite> naniteHatches = new ArrayList<>();
 
+    private boolean nanitesDirty = false;
     private NaniteTier currentNaniteTier;
     private int availableNanites;
 
@@ -106,20 +109,29 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> imple
         structure.addCasing('B', ElectromagneticallyIsolatedCasing)
             .withHatches(1, 16, Arrays.asList(Energy, ExoticEnergy, NaniteHatchElement.INSTANCE));
         structure.addCasing('C', FineStructureConstantManipulator);
-        structure.addCasing('D', ElectromagneticWaveguide);
-        structure.addCasing('E', CyclotronCoil);
-        structure.addCasing('F', AdvancedFusionCoilII);
-        structure.addCasing('G', ElectromagneticallyIsolatedCasing)
+        structure.addCasing('D', ConflictInducementCasing);
+        structure.addCasing('E', PeaceEnforcementCasing);
+        structure.addCasing('F', CondensateTransformativeCoil);
+        structure.addCasing('G', CondensateGuidanceCoil);
+        structure.addCasing('H', ElectromagneticWaveguide);
+        structure.addCasing('1', FineStructureConstantManipulator)
             .withHatches(2, 2, Arrays.asList(BECHatches.Hatch));
 
         return structure.buildStructure(definition);
     }
 
     @Override
-    protected void clearHatches_EM() {
-        super.clearHatches_EM();
+    public void clearHatches() {
+        super.clearHatches();
 
-        naniteHatches.clear();
+        this.naniteHatches.clear();
+    }
+
+    @Override
+    protected void onStructureCheckFinished(IGregTechTileEntity igte) {
+        super.onStructureCheckFinished(igte);
+
+        this.nanitesDirty = true;
     }
 
     @Override
@@ -181,32 +193,31 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> imple
         super.onPostTick(igte, aTick);
 
         if (GTUtility.isServer()) {
-            boolean nanitesChanged = false;
-
             for (MTEHatchNanite hatch : naniteHatches) {
                 if (hatch.hasChanged()) {
-                    nanitesChanged = true;
+                    this.nanitesDirty = true;
                     hatch.unmarkChanged();
                 }
             }
 
-            if (nanitesChanged) {
-                currentNaniteTier = null;
-                availableNanites = 0;
+            if (this.nanitesDirty) {
+                this.nanitesDirty = false;
+                this.currentNaniteTier = null;
+                this.availableNanites = 0;
 
-                for (MTEHatchNanite hatch : naniteHatches) {
+                for (MTEHatchNanite hatch : this.naniteHatches) {
                     NaniteTier tier = NaniteTier.fromStack(hatch.getItemStack());
 
                     if (tier == null) continue;
 
-                    if (currentNaniteTier == null || tier.ordinal() < currentNaniteTier.ordinal()) {
-                        currentNaniteTier = tier;
+                    if (this.currentNaniteTier == null || tier.ordinal() < this.currentNaniteTier.ordinal()) {
+                        this.currentNaniteTier = tier;
                     }
 
-                    availableNanites += hatch.getItemCount();
+                    this.availableNanites += hatch.getItemCount();
                 }
 
-                Iterator<MTEBECIONode> iter = ioNodes.iterator();
+                Iterator<MTEBECIONode> iter = this.ioNodes.iterator();
 
                 while (iter.hasNext()) {
                     MTEBECIONode node = iter.next();
@@ -224,7 +235,7 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> imple
 
                     // Intentionally share the same nanite count between every io node even though it doesn't make
                     // physical sense, so that proper automation is incentivized even more.
-                    node.setNaniteShare(currentNaniteTier, availableNanites);
+                    node.setNaniteShare(this.currentNaniteTier, this.availableNanites);
                 }
 
                 igte.setActive(!ioNodes.isEmpty());
@@ -287,6 +298,17 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> imple
         ioNodes.remove(node);
         node.setNaniteShare(null, 0);
         BECFactoryGrid.INSTANCE.updateElement(this);
+    }
+
+    @Override
+    public void onRemoval() {
+        super.onRemoval();
+
+        for (var node : new ArrayList<>(ioNodes)) {
+            node.disconnect();
+        }
+
+        ioNodes.clear();
     }
 
     @Override
@@ -408,7 +430,7 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> imple
 
         @Override
         protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {
-            GenericSyncValue<CondensateList> condensate = GenericSyncValue.builder(CondensateList.class)
+            GenericSyncValue<CondensateList, ?> condensate = GenericSyncValue.builder(CondensateList.class)
                 .getter(
                     () -> network == null ? new CondensateList() : network.getStoredCondensate(MTEBECAssembler.this))
                 .adapter(new CondensateListAdapter())

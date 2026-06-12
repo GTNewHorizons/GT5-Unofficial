@@ -27,8 +27,8 @@ public class GregtechMetaSpecialMultiCasings extends GregtechMetaCasingBlocksAbs
         }
 
         @Override
-        public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List aList, boolean aF3_H) {
-            super.addInformation(aStack, aPlayer, aList, aF3_H);
+        public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean aF3_H) {
+            super.addInformation(stack, player, tooltip, aF3_H);
         }
     }
 

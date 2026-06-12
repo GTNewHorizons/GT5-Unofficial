@@ -462,4 +462,8 @@ public class GTLanguageManager {
             LANGMAP.put(key, english);
         }
     }
+
+    public static boolean hasGTLocalizationKey(final String key) {
+        return LANGMAP.containsKey(key);
+    }
 }

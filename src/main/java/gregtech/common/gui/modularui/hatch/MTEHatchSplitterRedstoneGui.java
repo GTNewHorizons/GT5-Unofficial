@@ -4,7 +4,6 @@ import net.minecraft.util.EnumChatFormatting;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.drawable.GuiTextures;
-import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
@@ -14,7 +13,6 @@ import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
-import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchSplitterRedstone;
@@ -29,6 +27,7 @@ public class MTEHatchSplitterRedstoneGui extends MTEHatchBaseGui<MTEHatchSplitte
     protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
         IntSyncValue redstone = syncManager.findSyncHandler("redstone", IntSyncValue.class);
         IntSyncValue channel = syncManager.findSyncHandler("channel", IntSyncValue.class);
+
         return super.createContentSection(panel, syncManager).child(
             Flow.column()
                 .coverChildren()
@@ -44,21 +43,21 @@ public class MTEHatchSplitterRedstoneGui extends MTEHatchBaseGui<MTEHatchSplitte
                             new ButtonWidget<>().size(14)
                                 .overlay(GuiTextures.REMOVE)
                                 .onMousePressed((a) -> {
-                                    channel.setValue((channel.getValue() - 1) % hatch.MAX_CHANNEL);
+                                    channel.setValue((channel.getValue() - 1) % machine.MAX_CHANNEL);
                                     return true;
                                 }))
                         .child(
-                            new TextFieldWidget().setFormatAsInteger(true)
-                                .setDefaultNumber(0)
+                            new TextFieldWidget().formatAsInteger(true)
+                                .defaultNumber(0)
                                 .height(14)
                                 .setTextAlignment(Alignment.CENTER)
-                                .setNumbers(0, hatch.MAX_CHANNEL)
+                                .numbersInt(0, machine.MAX_CHANNEL)
                                 .syncHandler("channel"))
                         .child(
                             new ButtonWidget<>().size(14)
                                 .overlay(GuiTextures.ADD)
                                 .onMousePressed((a) -> {
-                                    channel.setValue((channel.getValue() + 1) % hatch.MAX_CHANNEL);
+                                    channel.setValue((channel.getValue() + 1) % machine.MAX_CHANNEL);
                                     return true;
                                 })))
                 .child(
@@ -68,21 +67,20 @@ public class MTEHatchSplitterRedstoneGui extends MTEHatchBaseGui<MTEHatchSplitte
                     IKey.dynamic(() -> EnumChatFormatting.RED + redstone.getStringValue())
                         .alignment(Alignment.CENTER)
                         .asWidget()
-                        .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
+                        .widgetTheme(GTWidgetThemes.DISPLAY_TEXT_WHITE)
                         .paddingTop(3)));
     }
 
     @Override
-    protected UITexture getLogoTexture() {
-        return GTGuiTextures.PICTURE_NANOCHIP_LOGO;
+    public void registerSyncValues(PanelSyncManager syncManager) {
+        super.registerSyncValues(syncManager);
+
+        syncManager.syncValue("redstone", new IntSyncValue(machine::getRedstoneInput));
+        syncManager.syncValue("channel", new IntSyncValue(machine::getChannel, machine::setChannel).allowC2S());
     }
 
     @Override
-    public void registerSyncValues(PanelSyncManager syncManager) {
-        IntSyncValue redstone = new IntSyncValue(hatch::getRedstoneInput);
-        IntSyncValue channel = new IntSyncValue(hatch::getChannel, hatch::setChannel);
-        syncManager.syncValue("redstone", redstone);
-        syncManager.syncValue("channel", channel);
-        super.registerSyncValues(syncManager);
+    protected boolean supportsBottomRowOverlap() {
+        return true;
     }
 }

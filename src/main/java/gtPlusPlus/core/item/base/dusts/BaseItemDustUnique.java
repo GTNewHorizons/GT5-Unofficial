@@ -112,9 +112,9 @@ public class BaseItemDustUnique extends Item {
         return GregTech.ID + ":" + "materialicons/SHINY/dust";
     }
 
-    @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
-    public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
+    public void addInformation(final ItemStack stack, final EntityPlayer player, final List<String> list,
+        final boolean adv) {
         if (Client.tooltip.showFormula) {
             if (!this.chemicalNotation.isEmpty() && !chemicalNotation.equals("NullFormula")) {
                 list.add(this.chemicalNotation);
@@ -125,7 +125,7 @@ public class BaseItemDustUnique extends Item {
                 list.add(StatCollector.translateToLocalFormatted("GTPP.core.GT_Tooltip_Radioactive", this.sRadiation));
             }
         }
-        super.addInformation(stack, aPlayer, list, bool);
+        super.addInformation(stack, player, list, adv);
     }
 
     public final String getMaterialName() {

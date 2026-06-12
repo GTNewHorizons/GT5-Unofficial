@@ -5,12 +5,10 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
-import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.MultiAmpEnergy;
 import static gregtech.api.enums.HatchElement.OutputBus;
-import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
@@ -65,6 +63,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.logic.ProcessingLogic;
@@ -75,6 +74,7 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
@@ -82,13 +82,15 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.VoidProtectionHelper;
 import gregtech.common.items.IDMetaTool01;
 import gregtech.common.items.MetaGeneratedTool01;
+import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.pollution.PollutionConfig;
 import gregtech.common.tileentities.machines.MTEHatchInputBusME;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.loaders.recipe.RecipeLoaderTreeFarm;
 
-public class MTETreeFarm extends MTEExtendedPowerMultiBlockBase<MTETreeFarm> implements ISurvivalConstructable {
+public class MTETreeFarm extends MTEExtendedPowerMultiBlockBase<MTETreeFarm>
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     private static final int TICKS_PER_OPERATION = 100;
     private static final int TOOL_DAMAGE_PER_OPERATION = 1;
@@ -145,7 +147,7 @@ public class MTETreeFarm extends MTEExtendedPowerMultiBlockBase<MTETreeFarm> imp
             .addController("Front bottom center")
             .addCasingInfoMin("Sterile Farm Casing", 45, false)
             .addCasingInfoExactly("Steel Frame Box", 60, false)
-            .addCasingInfoExactly("Any tiered glass", 57, false)
+            .addCasingInfoExactly("Any Tiered Glass", 57, false)
             .addCasingInfoExactly("Dirt/Grass", 25, false)
             .addStructureInfo("Oak Wood and Leaves can be placed manually. If not, they will be placed automatically.")
             .addInputBus("Any Sterile Farm Casing", 1)
@@ -155,6 +157,7 @@ public class MTETreeFarm extends MTEExtendedPowerMultiBlockBase<MTETreeFarm> imp
             .addEnergyHatch("Any Sterile Farm Casing", 1)
             .addMaintenanceHatch("Any Sterile Farm Casing", 1)
             .addMufflerHatch("Any Sterile Farm Casing", 1)
+            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .addStructureAuthors(EnumChatFormatting.GOLD + "EvgenWarGold")
             .toolTipFinisher();
         return tt;
@@ -164,7 +167,7 @@ public class MTETreeFarm extends MTEExtendedPowerMultiBlockBase<MTETreeFarm> imp
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
         if (side == aFacing) {
-            if (aActive) return new ITexture[] { Casings.SterileFarmCasing.getCasingTexture(), TextureFactory.builder()
+            if (aActive) return new ITexture[] { getCasingTexture(), TextureFactory.builder()
                 .addIcon(TexturesGtBlock.oMCATreeFarmActive)
                 .extFacing()
                 .build(),
@@ -173,7 +176,7 @@ public class MTETreeFarm extends MTEExtendedPowerMultiBlockBase<MTETreeFarm> imp
                     .extFacing()
                     .glow()
                     .build() };
-            return new ITexture[] { Casings.SterileFarmCasing.getCasingTexture(), TextureFactory.builder()
+            return new ITexture[] { getCasingTexture(), TextureFactory.builder()
                 .addIcon(TexturesGtBlock.oMCATreeFarm)
                 .extFacing()
                 .extFacing()
@@ -184,17 +187,24 @@ public class MTETreeFarm extends MTEExtendedPowerMultiBlockBase<MTETreeFarm> imp
                     .glow()
                     .build() };
         }
-        return new ITexture[] { Casings.SterileFarmCasing.getCasingTexture() };
+        return new ITexture[] { getCasingTexture() };
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        casingAmount = 0;
-        return checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z) && casingAmount >= 8 && checkHatch();
+    public ITexture getCasingTexture() {
+        return Casings.SterileFarmCasing.getCasingTexture();
     }
 
-    public boolean checkHatch() {
-        return !mMufflerHatches.isEmpty() && !mEnergyHatches.isEmpty();
+    @Override
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
+        casingAmount = 0;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z, errors)) return;
+        checkCasingMin(errors, casingAmount, 8);
+        checkHasMufflerHatch(errors);
+        checkHasEnergyHatch(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasOutputBus(errors);
+        checkHasInputBus(errors);
     }
 
     @Override
@@ -304,14 +314,7 @@ public class MTETreeFarm extends MTEExtendedPowerMultiBlockBase<MTETreeFarm> imp
                 .addElement(
                     'C',
                     buildHatchAdder(MTETreeFarm.class)
-                        .atLeast(
-                            InputHatch,
-                            OutputHatch,
-                            InputBus,
-                            OutputBus,
-                            Maintenance,
-                            Energy.or(MultiAmpEnergy),
-                            Muffler)
+                        .atLeast(InputBus, OutputBus, Maintenance, Energy.or(MultiAmpEnergy), Muffler)
                         .casingIndex(Casings.SterileFarmCasing.textureId)
                         .hint(1)
                         .buildAndChain(onElementPass(x -> ++x.casingAmount, Casings.SterileFarmCasing.asElement())))
@@ -798,10 +801,10 @@ public class MTETreeFarm extends MTEExtendedPowerMultiBlockBase<MTETreeFarm> imp
         ItemStack fruit) {
         String key = "Forestry:sapling:" + speciesUID;
         EnumMap<Mode, ItemStack> map = new EnumMap<>(Mode.class);
-        map.put(Mode.LOG, log);
-        map.put(Mode.SAPLING, sapling);
-        map.put(Mode.LEAVES, leaves);
-        map.put(Mode.FRUIT, fruit);
+        if (log != null) map.put(Mode.LOG, log);
+        if (sapling != null) map.put(Mode.SAPLING, sapling);
+        if (leaves != null) map.put(Mode.LEAVES, leaves);
+        if (fruit != null) map.put(Mode.FRUIT, fruit);
         treeProductsMap.put(key, map);
 
         // In the NEI recipe we want to display outputs adjusted for the default genetics of this tree type.
@@ -904,7 +907,8 @@ public class MTETreeFarm extends MTEExtendedPowerMultiBlockBase<MTETreeFarm> imp
                 TICKS_PER_OPERATION,
                 0,
                 recipeCount, // special value, also sorts recipes correctly in order of addition.
-                inputStacks));
+                inputStacks,
+                null));
 
         return GTPPRecipeMaps.treeGrowthSimulatorFakeRecipes.getAllRecipes()
             .size() > recipeCount;

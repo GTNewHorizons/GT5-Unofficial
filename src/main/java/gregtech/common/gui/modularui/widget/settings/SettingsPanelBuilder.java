@@ -79,9 +79,9 @@ public class SettingsPanelBuilder {
     public SettingsPanelBuilder addIntEditor(IKey label, IntSupplier getter, IntConsumer setter,
         WidgetConfigurator<TextFieldWidget> configure) {
         addTextField(label, (panel, syncManager, textField) -> {
-            textField.value(new IntSyncValue(getter, setter));
-            textField.setFormatAsInteger(true);
-            textField.setNumbers();
+            textField.value(new IntSyncValue(getter, setter).allowC2S());
+            textField.formatAsInteger(true);
+            textField.numbersInt();
             if (configure != null) configure.configure(panel, syncManager, textField);
         });
 
@@ -97,9 +97,9 @@ public class SettingsPanelBuilder {
     public SettingsPanelBuilder addLongEditor(IKey label, LongSupplier getter, LongConsumer setter,
         WidgetConfigurator<TextFieldWidget> configure) {
         addTextField(label, (panel, syncManager, textField) -> {
-            textField.value(new LongSyncValue(getter, setter));
-            textField.setFormatAsInteger(true);
-            textField.setNumbers();
+            textField.value(new LongSyncValue(getter, setter).allowC2S());
+            textField.formatAsInteger(true);
+            textField.numbersInt();
             if (configure != null) configure.configure(panel, syncManager, textField);
         });
 
@@ -121,8 +121,8 @@ public class SettingsPanelBuilder {
                 public String getStringValue() {
                     return NumberFormatUtil.formatNumber(this.getValue());
                 }
-            });
-            textField.setNumbers();
+            }.allowC2S());
+            textField.numbersInt();
             if (configure != null) configure.configure(panel, syncManager, textField);
         });
 
@@ -138,7 +138,7 @@ public class SettingsPanelBuilder {
     public SettingsPanelBuilder addStringEditor(IKey label, Supplier<String> getter, Consumer<String> setter,
         WidgetConfigurator<TextFieldWidget> configure) {
         addTextField(label, (panel, syncManager, textField) -> {
-            textField.value(new StringSyncValue(getter, setter));
+            textField.value(new StringSyncValue(getter, setter).allowC2S());
             if (configure != null) configure.configure(panel, syncManager, textField);
         });
 

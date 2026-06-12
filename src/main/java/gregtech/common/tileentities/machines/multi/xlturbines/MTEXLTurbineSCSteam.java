@@ -14,6 +14,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.TurbineStatCalculator;
+import gregtech.common.misc.GTStructureChannels;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.math.MathUtils;
 
@@ -73,11 +74,12 @@ public class MTEXLTurbineSCSteam extends MTEXLTurbineBase {
             .addCasingInfoExactly("Naquadah Frame Box", 34, false)
             .addCasingInfoExactly("MV Solenoid Superconductor Coil", 20, false)
             .addCasingInfoExactly("Turbine Shaft", 16, false)
-            .addInputBus("Any Turbine Casing (Min 1)", 1)
+            .addInputBus("Any Turbine Casing", 1)
             .addInputHatch("Any Turbine Casing (Min 1)", 1)
             .addOutputHatch("Any Turbine Casing (Min 1)", 1)
             .addDynamoHatch("Any Turbine Casing (Min 1)", 1)
             .addMaintenanceHatch("Any Turbine Casing (Min 1)", 1)
+            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .addStructureAuthors(EnumChatFormatting.GOLD + "VorTex")
             .toolTipFinisher();
         return tt;
@@ -137,9 +139,9 @@ public class MTEXLTurbineSCSteam extends MTEXLTurbineBase {
         if (totalFlow <= 0) return 0;
         tEU = totalFlow;
         if (isUsingDenseSteam) {
-            addOutput(Materials.DenseSuperheatedSteam.getGas((long) steamFlowForNextSteam));
+            addOutputPartial(Materials.DenseSuperheatedSteam.getGas((long) steamFlowForNextSteam));
         } else {
-            addOutput(FluidRegistry.getFluidStack("ic2superheatedsteam", totalFlow));
+            addOutputPartial(FluidRegistry.getFluidStack("ic2superheatedsteam", totalFlow));
         }
         if (totalFlow != realOptFlow) {
             float efficiency = 1.0f - Math.abs((totalFlow - (float) realOptFlow) / (float) realOptFlow);

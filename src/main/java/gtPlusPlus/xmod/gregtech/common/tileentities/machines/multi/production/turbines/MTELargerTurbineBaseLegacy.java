@@ -10,9 +10,11 @@ import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTUtility.validMTEList;
+import static gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList.Hatch_Turbine_Rotor;
 import static gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase.GTPPHatchElement.TTDynamo;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -31,6 +33,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.MetaTileEntityIDs;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -41,6 +44,9 @@ import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.ErrorType;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.TurbineStatCalculator;
@@ -86,7 +92,7 @@ public abstract class MTELargerTurbineBaseLegacy extends GTPPMultiBlockBase<MTEL
                     lazy(
                         t -> buildHatchAdder(MTELargerTurbineBaseLegacy.class)
                             .adder(MTELargerTurbineBaseLegacy::addTurbineHatch)
-                            .hatchClass(MTEHatchTurbine.class)
+                            .hatchId(MetaTileEntityIDs.Hatch_Turbine_Rotor.ID)
                             .casingIndex(t.getCasingTextureIndex())
                             .hint(1)
                             .build()))
@@ -160,17 +166,17 @@ public abstract class MTELargerTurbineBaseLegacy extends GTPPMultiBlockBase<MTEL
             .addCasingInfoMin("Turbine Shaft", 30, false)
             .addOtherStructurePart(
                 StatCollector.translateToLocal("GTPP.tooltip.structure.rotor_assembly"),
-                "Hint Block Number 1",
+                "Hint block number 1",
                 1)
-            .addInputBus("Hint Block Number 4 (Min 1)", 4)
-            .addInputHatch("Hint Block Number 4 (Min 1)", 4);
+            .addInputBus("Hint block number 4 (Min 1)", 4)
+            .addInputHatch("Hint block number 4 (Min 1)", 4);
         if (requiresOutputHatch()) {
-            tt.addOutputHatch("Hint Block Number 4 (Min 1)", 4);
+            tt.addOutputHatch("Hint block number 4 (Min 1)", 4);
         }
-        tt.addDynamoHatch("Hint Block Number 4 (Min 1)", 4)
-            .addMaintenanceHatch("Hint Block Number 4 (Min 1)", 4);
+        tt.addDynamoHatch("Hint block number 4 (Min 1)", 4)
+            .addMaintenanceHatch("Hint block number 4 (Min 1)", 4);
         if (requiresMufflers()) {
-            tt.addMufflerHatch("Hint Block Number 7 (x4)", 7);
+            tt.addMufflerHatch("Hint block number 7 (x4)", 7);
         }
         tt.toolTipFinisher();
         return tt;
@@ -203,18 +209,26 @@ public abstract class MTELargerTurbineBaseLegacy extends GTPPMultiBlockBase<MTEL
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         // we do not check for casing count here. the bare minimal is 372 but we only require 360
-        boolean aStructure = checkPiece(STRUCTURE_PIECE_MAIN, 3, 3, 0);
-        if (mTurbineRotorHatches.size() != 12 || mMaintenanceHatches.size() != 1
-            || (mDynamoHatches.isEmpty() && mTecTechDynamoHatches.isEmpty())
-            || (requiresMufflers() && mMufflerHatches.size() != 4)
-            || mInputBusses.isEmpty()
-            || mInputHatches.isEmpty()
-            || (requiresOutputHatch() && mOutputHatches.isEmpty())) {
-            return false;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 3, 3, 0, errors)) return;
+        if (mTurbineRotorHatches.size() != 12) {
+            errors.add(
+                StructureErrors
+                    .hatchCount(ErrorType.NOT_MATCH, Hatch_Turbine_Rotor.get(1), mTurbineRotorHatches.size(), 12));
         }
-        return aStructure;
+        checkOneMaintenanceHatch(errors);
+        if (mDynamoHatches.isEmpty() && mTecTechDynamoHatches.isEmpty()) {
+            errors.add(StructureErrors.hatchCount(ErrorType.TOO_FEW, Dynamo, 0, 1));
+        }
+        if (requiresMufflers()) {
+            checkHatchExact(errors, Muffler, 4);
+        }
+        checkHasInputBus(errors);
+        checkHasInputHatch(errors);
+        if (requiresOutputHatch()) {
+            checkHasOutputHatch(errors);
+        }
     }
 
     @Override

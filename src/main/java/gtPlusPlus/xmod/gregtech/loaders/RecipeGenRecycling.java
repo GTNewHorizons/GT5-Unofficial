@@ -154,7 +154,7 @@ public class RecipeGenRecycling implements Runnable {
                         .itemInputs(GTUtility.copyAmount(1, tempStack))
                         .itemOutputs(arcOutput)
                         .duration((int) Math.max(16L, tAmount / M))
-                        .eut((int) Math.max(30L, Math.min(120L, tAmount / 64L)))
+                        .eut((int) Math.max(30L, Math.min(120L, tAmount / 192L)))
                         .metadata(RECYCLE, true)
                         .addTo(UniversalArcFurnace);
                 }

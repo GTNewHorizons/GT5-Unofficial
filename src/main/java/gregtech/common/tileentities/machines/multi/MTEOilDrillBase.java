@@ -12,7 +12,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_DRILL_ACT
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_DRILL_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_DRILL_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.getCasingTextureForId;
-import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.common.UndergroundOil.undergroundOil;
 import static gregtech.common.UndergroundOil.undergroundOilReadInformation;
 
@@ -22,7 +21,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 
 import javax.annotation.Nonnegative;
@@ -46,21 +44,10 @@ import org.jetbrains.annotations.Nullable;
 import com.github.bsideup.jabel.Desugar;
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizons.modularui.api.NumberFormatMUI;
-import com.gtnewhorizons.modularui.api.drawable.IDrawable;
-import com.gtnewhorizons.modularui.api.math.Alignment;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
-import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
-import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.SoundResource;
-import gregtech.api.gui.modularui.GTUITextures;
-import gregtech.api.gui.widgets.LockedWhileActiveButton;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetricsExporter;
@@ -68,11 +55,14 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GTChunkManager;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.ValidationResult;
 import gregtech.api.util.ValidationType;
+import gregtech.common.gui.modularui.multiblock.MTEOilDrillBaseGui;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.misc.WorkAreaChunk;
 import gregtech.common.misc.workarea.IWorkAreaProvider;
 import gregtech.common.misc.workarea.WorkAreaProviderRegistry;
@@ -114,14 +104,6 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
 
     public MTEOilDrillBase(String aName) {
         super(aName);
-    }
-
-    /********************************************************
-     * Parent overrides
-     *******************************************************/
-    @Override
-    protected boolean checkHatches() {
-        return !mMaintenanceHatches.isEmpty() && !mOutputHatches.isEmpty() && mEnergyHatches.size() == 1;
     }
 
     @Override
@@ -193,6 +175,13 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
     }
 
     @Override
+    protected void checkHatches(List<StructureError> errors) {
+        checkHasOutputHatch(errors);
+        checkHasMaintenanceHatch(errors);
+        checkOneEnergyHatch(errors);
+    }
+
+    @Override
     public NBTTagCompound getDescriptionData() {
         NBTTagCompound data = new NBTTagCompound();
 
@@ -244,52 +233,8 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
     }
 
     @Override
-    protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
-        super.drawTexts(screenElements, inventorySlot);
-        IGregTechTileEntity base = getBaseMetaTileEntity();
-        if (base == null) {
-            return;
-        }
-
-        screenElements
-            .widget(
-                new TextWidget()
-                    .setStringSupplier(
-                        () -> EnumChatFormatting.GRAY
-                            + StatCollector.translateToLocalFormatted("GT5U.gui.text.pump_fluid_type", clientFluidType))
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setEnabled(widget -> base.isActive() && workState == WorkState.AT_BOTTOM))
-            .widget(
-                new TextWidget()
-                    .setStringSupplier(
-                        () -> EnumChatFormatting.GRAY
-                            + StatCollector.translateToLocalFormatted(
-                                "GT5U.gui.text.pump_rate.1",
-                                EnumChatFormatting.AQUA + numberFormat.format(clientFlowPerTick))
-                            + EnumChatFormatting.GRAY
-                            + StatCollector.translateToLocal("GT5U.gui.text.pump_rate.2"))
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setEnabled(widget -> base.isActive() && workState == WorkState.AT_BOTTOM))
-            .widget(
-                new TextWidget()
-                    .setStringSupplier(
-                        () -> EnumChatFormatting.GRAY
-                            + StatCollector.translateToLocalFormatted(
-                                "GT5U.gui.text.pump_recovery.1",
-                                EnumChatFormatting.AQUA + numberFormat.format(clientFlowPerOperation))
-                            + EnumChatFormatting.GRAY
-                            + StatCollector.translateToLocal("GT5U.gui.text.pump_recovery.2"))
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setEnabled(widget -> base.isActive() && workState == WorkState.AT_BOTTOM))
-            .widget(new FakeSyncWidget.IntegerSyncer(() -> workState.ordinal(), this::setWorkState))
-            .widget(new FakeSyncWidget.StringSyncer(this::getFluidName, newString -> clientFluidType = newString))
-            .widget(new FakeSyncWidget.IntegerSyncer(this::getFlowRatePerTick, newInt -> clientFlowPerTick = newInt))
-            .widget(new FakeSyncWidget.IntegerSyncer(() -> mOilFlow, newInt -> clientFlowPerOperation = newInt));
-    }
-
-    @Override
-    protected List<ButtonWidget> getAdditionalButtons(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        return ImmutableList.of(createChunkRangeButton(builder), createWorkAreaToggleButton(builder));
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
+        return new MTEOilDrillBaseGui(this);
     }
 
     @Override
@@ -362,11 +307,11 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
             .addController("Front bottom center")
             .addOtherStructurePart(casings, "form the 3x1x3 Base")
             .addOtherStructurePart(casings, "1x3x1 pillar above the center of the base")
-            .addOtherStructurePart(getFrameMaterial().mName + " Frame Boxes", "Each pillar's side and 1x3x1 on top")
-            .addEnergyHatch("1x " + VN[getMinTier()] + "+, Any base casing", 1)
-            .addMaintenanceHatch("Any base casing", 1)
-            .addInputBus("Mining Pipes or Circuits, optional, any base casing", 1)
-            .addOutputHatch("Any base casing", 1)
+            .addOtherStructurePart(getFrameMaterial().mName + " Frame Box", "Each pillar's side and 1x3x1 on top")
+            .addEnergyHatch("1x " + VN[getMinTier()] + "+, any base Casing", 1)
+            .addMaintenanceHatch("Any base Casing", 1)
+            .addInputBus("Mining Pipes or Circuits, optional, any base Casing", 1)
+            .addOutputHatch("Any base Casing", 1)
             .toolTipFinisher();
         return tt;
     }
@@ -598,10 +543,46 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
     }
 
     /********************************************************
-     * Private getters
+     * Getters and setters
      *******************************************************/
-    private int getFlowRatePerTick() {
+    public int getFlowRatePerTick() {
         return this.mMaxProgresstime > 0 ? (mOilFlow / this.mMaxProgresstime) : 0;
+    }
+
+    public int getOilFlow() {
+        return mOilFlow;
+    }
+
+    public int getChunkRangeConfig() {
+        return chunkRangeConfig;
+    }
+
+    public void setChunkRangeConfig(int val) {
+        if (chunkRangeConfig != val) {
+            chunkRangeConfig = val;
+            invalidateWorkAreaCache();
+        }
+    }
+
+    public boolean isShowWorkArea() {
+        return showWorkArea;
+    }
+
+    public void setShowWorkArea(boolean val) {
+        showWorkArea = val;
+        updateWorkAreaRendererRegistration();
+    }
+
+    public void setClientFluidType(@NotNull String val) {
+        clientFluidType = val;
+    }
+
+    public void setClientFlowPerTick(int val) {
+        clientFlowPerTick = val;
+    }
+
+    public void setClientFlowPerOperation(int val) {
+        clientFlowPerOperation = val;
     }
 
     private @Nullable WorkAreaBounds getWorkAreaBounds() {
@@ -651,7 +632,7 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
         return chunks;
     }
 
-    private @NotNull String getFluidName() {
+    public @NotNull String getFluidName() {
         if (mOil != null) {
             return mOil.getLocalizedName(new FluidStack(mOil, 0));
         }
@@ -767,9 +748,9 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
     }
 
     /********************************************************
-     * Private helpers
+     * Helpers
      *******************************************************/
-    private void adjustChunkRange(boolean increase) {
+    public void adjustChunkRange(boolean increase) {
         int oldChunkRange = chunkRangeConfig;
 
         if (increase) {
@@ -800,13 +781,13 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
         }
     }
 
-    private void toggleWorkArea() {
+    public void toggleWorkArea() {
         showWorkArea = !showWorkArea;
         updateWorkAreaRendererRegistration();
         syncWorkAreaData();
     }
 
-    private void syncWorkAreaData() {
+    public void syncWorkAreaData() {
         IGregTechTileEntity base = getBaseMetaTileEntity();
         if (base == null) {
             return;
@@ -820,7 +801,7 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
         }
     }
 
-    private void invalidateWorkAreaCache() {
+    public void invalidateWorkAreaCache() {
         cachedBounds = null;
         cachedBoundsXDrill = Integer.MIN_VALUE;
         cachedBoundsZDrill = Integer.MIN_VALUE;
@@ -830,71 +811,7 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
         cachedWorkAreaChunks = Collections.emptyList();
     }
 
-    private void updateWorkAreaRendererRegistration() {
+    public void updateWorkAreaRendererRegistration() {
         WorkAreaProviderRegistry.setActive(this, showWorkArea);
-    }
-
-    private void setShowWorkAreaFromSync(boolean value) {
-        showWorkArea = value;
-        updateWorkAreaRendererRegistration();
-    }
-
-    /********************************************************
-     * UI Buttons
-     *******************************************************/
-    private ButtonWidget createChunkRangeButton(ModularWindow.Builder builder) {
-        IGregTechTileEntity base = Objects.requireNonNull(
-            getBaseMetaTileEntity(),
-            "Oil drill base meta tile entity is null while creating range button");
-
-        return (ButtonWidget) new LockedWhileActiveButton(base, builder)
-            .setOnClick((clickData, widget) -> adjustChunkRange(clickData.mouseButton == 0))
-            .setPlayClickSound(true)
-            .setBackground(GTUITextures.BUTTON_STANDARD, GTUITextures.OVERLAY_BUTTON_WORK_AREA)
-            .attachSyncer(
-                new FakeSyncWidget.IntegerSyncer(() -> chunkRangeConfig, this::setChunkRangeConfigFromSync),
-                builder,
-                (widget, val) -> widget.notifyTooltipChange())
-            .dynamicTooltip(
-                () -> ImmutableList.of(
-                    StatCollector.translateToLocalFormatted(
-                        "GT5U.gui.button.oil_drill_radius_1",
-                        formatNumber((long) chunkRangeConfig << 4)),
-                    StatCollector.translateToLocal("GT5U.gui.button.oil_drill_radius_2")))
-            .setTooltipShowUpDelay(TOOLTIP_DELAY)
-            .setSize(16, 16);
-    }
-
-    private ButtonWidget createWorkAreaToggleButton(ModularWindow.Builder builder) {
-        return (ButtonWidget) new ButtonWidget().setOnClick((clickData, widget) -> toggleWorkArea())
-            .setPlayClickSound(true)
-            .setBackground(() -> {
-                if (showWorkArea) {
-                    return new IDrawable[] { GTUITextures.BUTTON_STANDARD_PRESSED,
-                        GTUITextures.OVERLAY_BUTTON_SHOW_WORK_AREA };
-                }
-
-                return new IDrawable[] { GTUITextures.BUTTON_STANDARD, GTUITextures.OVERLAY_BUTTON_SHOW_WORK_AREA };
-            })
-            .attachSyncer(
-                new FakeSyncWidget.BooleanSyncer(() -> showWorkArea, this::setShowWorkAreaFromSync),
-                builder,
-                (widget, val) -> widget.notifyTooltipChange())
-            .dynamicTooltip(
-                () -> ImmutableList.of(
-                    StatCollector.translateToLocal(
-                        showWorkArea ? "GT5U.gui.button.work_area_preview_on"
-                            : "GT5U.gui.button.work_area_preview_off")))
-            .setTooltipShowUpDelay(TOOLTIP_DELAY)
-            .setSize(16, 16);
-    }
-
-    private void setChunkRangeConfigFromSync(int value) {
-        if (chunkRangeConfig == value) {
-            return;
-        }
-
-        chunkRangeConfig = value;
-        invalidateWorkAreaCache();
     }
 }

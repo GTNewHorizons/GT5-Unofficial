@@ -855,6 +855,7 @@ public class MultiblockTooltipBuilder {
      * @param t Tier of glass that unlocks all energy hatches
      * @return Instance this method was called on.
      */
+    @Deprecated
     public MultiblockTooltipBuilder addGlassEnergyLimitInfo(int t) {
         iLines.add(
             StatCollector.translateToLocal("GT5U.MBTT.Structure.GlassEnergyLimit") + ", "
@@ -1244,24 +1245,12 @@ public class MultiblockTooltipBuilder {
                 + " "
                 + TT_todisplay);
 
-        final StringBuilder sb = new StringBuilder();
         if (!authors.isEmpty()) {
-            sb.append(TT_addedBy);
-            sb.append(COLON);
-            sb.append(GTAuthors.formatAuthors(authors));
-
-            if (!structureAuthors.isEmpty()) {
-                sb.append(EnumChatFormatting.RESET);
-                sb.append(EnumChatFormatting.GRAY);
-                sb.append("; ");
-            }
+            iLines.add(TT_addedBy + COLON + GTAuthors.formatAuthors(authors));
         }
         if (!structureAuthors.isEmpty()) {
-            sb.append(TT_StructureAuthor);
-            sb.append(COLON);
-            sb.append(GTAuthors.formatAuthors(structureAuthors));
+            iLines.add(TT_StructureAuthor + COLON + GTAuthors.formatAuthors(structureAuthors));
         }
-        if (sb.length() > 0) iLines.add(sb.toString());
 
         hLines.add(TT_structurehint);
         this.addStructureInfoSeparator(EnumChatFormatting.GRAY, 30, true);

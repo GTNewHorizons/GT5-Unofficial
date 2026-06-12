@@ -19,7 +19,7 @@ public final class GTGuiThemes {
         .textColor(0x404040)
         .textField(Dyes.dyeWhite.toInt())
         .customTextColor(GTWidgetThemes.TEXT_TITLE.getFullName(), 0x404040)
-        .customTextColor(GTWidgetThemes.DISPLAY_TEXT.getFullName(), 0xFAFAFA)
+        .customTextColor(GTWidgetThemes.DISPLAY_TEXT_WHITE.getFullName(), 0xFAFAFA)
         .button(GTTextureIds.BUTTON_STANDARD)
         .simpleToggleButton(GTTextureIds.BUTTON_STANDARD, GTTextureIds.BUTTON_STANDARD_PRESSED, Dyes.GUI_METAL.toInt())
         .themedTexture(GTWidgetThemes.BACKGROUND_POPUP.getFullName(), GTTextureIds.BACKGROUND_POPUP_STANDARD)
@@ -183,7 +183,7 @@ public final class GTGuiThemes {
         .itemSlot(GTTextureIds.SLOT_ITEM_STEEL)
         .fluidSlot(GTTextureIds.SLOT_FLUID_STEEL)
         .color(Dyes.dyeWhite.toInt())
-        .textColor(0xfafaff)
+        .textColor(0x404040)
         .customTextColor(GTWidgetThemes.TEXT_TITLE.getFullName(), 0xfafaff)
         .button(GTTextureIds.BUTTON_STEEL)
         .simpleToggleButton(GTTextureIds.BUTTON_STEEL, GTTextureIds.BUTTON_STEEL_PRESSED, Dyes.dyeWhite.toInt())
@@ -222,6 +222,7 @@ public final class GTGuiThemes {
             GTTextureIds.BUTTON_COVER_TAB_DISABLED_STEEL)
         .themedTexture(GTWidgetThemes.PICTURE_CANISTER.getFullName(), GTTextureIds.OVERLAY_SLOT_CANISTER_STEEL)
         .themedTexture(GTWidgetThemes.PICTURE_LOGO.getFullName(), GTTextureIds.PICTURE_GT_LOGO_STEEL)
+        .themedTexture(GTWidgetThemes.STEAM_GAUGE.getFullName(), GTTextureIds.PICTURE_STEAM_GAUGE_STEEL)
         .themedColor(GTWidgetThemes.STEAM_GAUGE_NEEDLE.getFullName(), 0x3d3847)
         .build();
     public static final GTGuiTheme PRIMITIVE = GTGuiTheme.builder("gregtech:primitive")
@@ -264,7 +265,7 @@ public final class GTGuiThemes {
         .build();
     public static final GTGuiTheme TECTECH_STANDARD = GTGuiTheme.builder("tectech:standard")
         .parent(STANDARD)
-        .themedTexture(GTWidgetThemes.PICTURE_LOGO.getFullName(), GTTextureIds.PICTURE_TECTECH_LOGO_DARK)
+        .themedTexture(GTWidgetThemes.PICTURE_LOGO.getFullName(), GTTextureIds.PICTURE_TECTECH_LOGO)
         .themedTexture(GTWidgetThemes.BACKGROUND_TERMINAL.getFullName(), GTTextureIds.BACKGROUND_TERMINAL_TECTECH)
         .build();
     public static final GTGuiTheme EXOFOUNDRY = GTGuiTheme.builder("exofoundry")

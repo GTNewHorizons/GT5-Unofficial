@@ -307,6 +307,16 @@ public class RecipesMachinesCustom {
             new Object[] { "PhP", "PFP", "PwP", 'P', OrePrefixes.plate.get(Materials.Bronze), 'F',
                 OrePrefixes.frameGt.get(Materials.Bronze) });
 
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Bronze, 6),
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Bronze, 1))
+            .circuit(2)
+            .itemOutputs(GregtechItemList.Casing_Machine_Custom_1.get(2))
+            .duration(2 * SECONDS + 10 * TICKS)
+            .eut(TierEU.RECIPE_LV / 2)
+            .addTo(assemblerRecipes);
+
         // Sturdy Aluminium Machine Casing
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Casing_Machine_Custom_2.get(2),
@@ -1028,7 +1038,7 @@ public class RecipesMachinesCustom {
     private static void thermalBoiler() {
         // Thermal Boiler
         GTModHandler.addCraftingRecipe(
-            GregtechItemList.GT4_Thermal_Boiler.get(1),
+            ItemList.ThermalBoiler.get(1),
             GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "LCL", "GIG", "LCL", 'L', getModItem(RemoteIO.ID, "tile.machine", 1, 1), 'C',
                 ItemList.Machine_HV_Centrifuge, 'G', OrePrefixes.gearGt.get(Materials.TungstenSteel), 'I',

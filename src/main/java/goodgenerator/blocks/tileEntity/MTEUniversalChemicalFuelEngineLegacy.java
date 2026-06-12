@@ -42,6 +42,7 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.maps.FuelBackend;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -131,18 +132,18 @@ public class MTEUniversalChemicalFuelEngineLegacy extends TTMultiblockBase imple
     }
 
     @Override
-    public boolean checkMachine_EM(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        return structureCheck_EM(mName, 2, 2, 0);
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
+        checkPiece(mName, 2, 2, 0, errors);
     }
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        structureBuild_EM(mName, 2, 2, 0, stackSize, hintsOnly);
+        buildPiece(mName, stackSize, hintsOnly, 2, 2, 0);
     }
 
     @Override
     public String[] getStructureDescription(ItemStack itemStack) {
-        return DescTextLocalization.addText("UniversalChemicalFuelEngine.hint", 11);
+        return DescTextLocalization.addText("UniversalChemicalFuelEngineLegacy.hint", 11);
     }
 
     @Override
@@ -186,10 +187,10 @@ public class MTEUniversalChemicalFuelEngineLegacy extends TTMultiblockBase imple
             .addCasingInfoExactly("Engine Intake Casing", 14, false)
             .addCasingInfoExactly("Titanium Plated Cylinder", 14, false)
             .addCasingInfoExactly("Titanium Pipe Casing", 14, false)
-            .addMaintenanceHatch("Hint Block Number 1")
-            .addMufflerHatch("Hint Block Number 2 (fill all slots with mufflers)")
-            .addInputHatch("Hint Block Number 3 (fill all slots with input hatches)")
-            .addDynamoHatch("Hint Block Number 4")
+            .addMaintenanceHatch("Hint block number 1")
+            .addMufflerHatch("Hint block number 2 (fill all slots with mufflers)")
+            .addInputHatch("Hint block number 3 (fill all slots with input hatches)")
+            .addDynamoHatch("Hint block number 4")
             .toolTipFinisher();
         return tt;
     }
