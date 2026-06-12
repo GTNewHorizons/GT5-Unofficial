@@ -5,7 +5,6 @@ import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.fo
 
 import net.minecraft.util.StatCollector;
 
-import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.value.DoubleValue;
 import com.cleanroommc.modularui.value.sync.LongSyncValue;
@@ -59,7 +58,7 @@ public class MTEFusionComputerGui extends MTEMultiBlockBaseGui<MTEFusionComputer
         return (double) storedEUSyncer.getLongValue() / euCapacitySyncer.getLongValue();
     }
 
-    private IWidget createProgressWidget() {
+    private ProgressWidget createProgressWidget() {
         ProgressWidget progress = new ProgressWidget().texture(GTGuiTextures.PROGRESSBAR_STORED_EU, 147)
             .height(5)
             .value(new DoubleValue.Dynamic(this::getEnergyRatio, null))
