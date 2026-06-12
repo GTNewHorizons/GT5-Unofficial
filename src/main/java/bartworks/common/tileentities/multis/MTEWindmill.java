@@ -23,8 +23,6 @@ import static gregtech.api.GregTechAPI.sBlockCasingsWindmill;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_STEAM_MACERATOR;
 
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -78,6 +76,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.shutdown.ShutDownReason;
+import gregtech.common.gui.modularui.multiblock.MTEWindmillGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.nei.RecipeDisplayInfo;
 
@@ -85,12 +84,10 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
     implements ISurvivalConstructable, IOverclockDescriptionProvider {
 
     /*
-     * TODO: add custom recipes system (maybe)
      * TODO: improve overclock describer
      * TODO: possible wind rework
      * TODO: textures
      * TODO: add block names to lang
-     * TODO: add custom item output bus (maybe) (and possibly input)
      * TODO: world gen (???)
      * TODO: clean up class
      */
@@ -101,12 +98,6 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
     private int mDoor = 0;
     private int mHardenedClay = 0;
     private int mShaftBlocks = 0;
-    private modes mode;
-
-    private enum modes {
-        grinder,
-        mixer
-    }
 
     private enum windLevel {
         NON_EXISTENT,
@@ -123,10 +114,7 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
     private static final int VERTICAL_OFFSET = 9;
     private static final int HORIZONTAL_OFFSET = 3;
     private static final int DEPTH_OFFSET = 0;
-
     private static final int MILLSTONE_META = 4;
-    private static final int MIXER_META = 5;
-
     private static final int RECIPE_DURATION_MULTI = 4;
 
     private final OverclockDescriber overclockDescriber;
@@ -262,11 +250,7 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
             }
         })
         .addElement('a', ofBlock(sBlockCasingsWindmill, 0))
-        .addElement(
-            'h',
-            ofChain(
-                onElementPass(t -> t.mode = modes.grinder, ofBlock(sBlockCasingsWindmill, MILLSTONE_META)),
-                onElementPass(t -> t.mode = modes.mixer, ofBlock(sBlockCasingsWindmill, MIXER_META))))
+        .addElement('h', ofBlock(sBlockCasingsWindmill, MILLSTONE_META))
         // TODO: maybe look at refactoring this
         .addElement(
             's',
@@ -381,16 +365,7 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
     }
 
     public RecipeMap<?> getRecipeMap() {
-        return switch (this.mode) {
-            case mixer -> RecipeMaps.mixerRecipes;
-            case grinder -> RecipeMaps.maceratorRecipes;
-        };
-    }
-
-    @Nonnull
-    @Override
-    public Collection<RecipeMap<?>> getAvailableRecipeMaps() {
-        return Arrays.asList(RecipeMaps.mixerRecipes, RecipeMaps.maceratorRecipes);
+        return RecipeMaps.maceratorRecipes;
     }
 
     @Override
@@ -420,11 +395,8 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
     }
 
     // probably don't need, can probably just replace call with mInventory
-    private ItemStack[] getInputs() {
-        return switch (this.mode) {
-            case grinder -> new ItemStack[] { getControllerSlot() };
-            case mixer -> mInventory;
-        };
+    private ItemStack getInputs() {
+        return getControllerSlot();
     }
 
     @Override
@@ -490,7 +462,6 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
         this.mHardenedClay = 0;
 
         if (this.checkPiece(STRUCTURE_PIECE_LEGACY, 3, 11, 0, null)) {
-            this.mode = modes.grinder;
             checkCasingMin(errors, this.mHardenedClay, 40);
             if (this.tileEntityDispensers.isEmpty()) {
                 errors.add(StructureErrors.of("GT5U.gui.text.structure_error.missing_dispenser"));
@@ -609,7 +580,7 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
 
     @Override
     protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
-        return new MTEMultiBlockBaseGui<>(this);
+        return new MTEWindmillGui(this);
     }
 
     @Override

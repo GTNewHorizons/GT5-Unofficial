@@ -534,8 +534,6 @@ public enum Casings implements ICasing {
         (() -> GregTechAPI.sBlockCasingsWindmill, 3, gt(16, 8, 3)),
     WindMillMillstoneHousing
         (() -> GregTechAPI.sBlockCasingsWindmill, 4, gt(16, 8, 4)),
-    WindMillMixerHousing
-        (() -> GregTechAPI.sBlockCasingsWindmill, 5, gt(16, 8, 5)),
 
     // Block Reinforced
     TungstenSteelReinforcedBlock
