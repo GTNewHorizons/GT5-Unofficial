@@ -1036,11 +1036,6 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
     }
 
     @Override
-    protected boolean useMui2() {
-        return true;
-    }
-
-    @Override
     public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
         return new MTEHatchInputMEGui(this, slots).build(guiData, syncManager, uiSettings);
     }

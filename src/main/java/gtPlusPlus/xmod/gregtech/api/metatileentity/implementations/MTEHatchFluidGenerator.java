@@ -209,4 +209,10 @@ public abstract class MTEHatchFluidGenerator extends MTEHatchInput {
         mMaxProgresstime = aNBT.getInteger("mMaxProgresstime");
         super.loadNBTData(aNBT);
     }
+
+    @Override
+    public boolean isFluidInputAllowed(FluidStack aFluid) {
+        return aFluid.getFluid()
+            .equals(getFluidToGenerate());
+    }
 }
