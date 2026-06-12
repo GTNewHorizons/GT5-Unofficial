@@ -103,7 +103,7 @@ public interface IGregTechDeviceInformation {
         } catch (Exception e) {
             LOG.warn("IGregTechDeviceInformation.decode: failed to format key '{}': {}", parts[0], e.getMessage());
             StringBuilder sb = new StringBuilder(translated);
-            for (int i = 1; i < parts.length; i++) sb.append(parts[i]);
+            for (int i = 1; i < parts.length; i++) sb.append(" ").append(parts[i]);
             return sb.toString();
         }
     }

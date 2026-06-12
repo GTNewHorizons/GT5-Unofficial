@@ -185,18 +185,7 @@ public class GTLanguageManager {
         return tTrimmedKey;
     }
 
-    public static String getTranslation(String aKey, String aSeperator) {
-        if (aKey == null) return E;
-        String rTranslation = E;
-        StringBuilder rTranslationSB = new StringBuilder(rTranslation);
-        for (String tString : aKey.split(aSeperator)) {
-            rTranslationSB.append(getTranslation(tString));
-        }
-        rTranslation = String.valueOf(rTranslationSB);
-        return rTranslation;
-    }
-
-    @SuppressWarnings("unused")
+@SuppressWarnings("unused")
     public static String getTranslateableItemStackName(ItemStack aStack) {
         if (GTUtility.isStackInvalid(aStack)) return "null";
         final String tName = ItemStackNBT.getDisplayName(aStack);
