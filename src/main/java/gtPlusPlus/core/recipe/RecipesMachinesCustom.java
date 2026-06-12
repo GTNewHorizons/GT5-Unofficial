@@ -307,6 +307,16 @@ public class RecipesMachinesCustom {
             new Object[] { "PhP", "PFP", "PwP", 'P', OrePrefixes.plate.get(Materials.Bronze), 'F',
                 OrePrefixes.frameGt.get(Materials.Bronze) });
 
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Bronze, 6),
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Bronze, 1))
+            .circuit(2)
+            .itemOutputs(GregtechItemList.Casing_Machine_Custom_1.get(2))
+            .duration(2 * SECONDS + 10 * TICKS)
+            .eut(TierEU.RECIPE_LV / 2)
+            .addTo(assemblerRecipes);
+
         // Sturdy Aluminium Machine Casing
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Casing_Machine_Custom_2.get(2),

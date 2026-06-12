@@ -301,7 +301,7 @@ public class MTETieredMachineBlockBaseGui<T extends MTETieredMachineBlock> {
                     .toArray()));
     }
 
-    private static @NotNull Consumer<RichTooltip> addToRichTooltip(Supplier<GTTooltipDataCache.TooltipData> data) {
+    protected static @NotNull Consumer<RichTooltip> addToRichTooltip(Supplier<GTTooltipDataCache.TooltipData> data) {
         return t -> t.addStringLines(Interactable.hasShiftDown() ? data.get().shiftText : data.get().text)
             .titleMargin(2);
     }

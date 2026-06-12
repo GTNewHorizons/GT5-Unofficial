@@ -21,6 +21,7 @@ import com.cleanroommc.modularui.value.sync.FluidSlotSyncHandler;
 import com.cleanroommc.modularui.value.sync.InteractionSyncHandler;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
+import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.ProgressWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
@@ -218,7 +219,14 @@ public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> extends MTETiered
 
     @Override
     protected ParentWidget<?> createBottomSection(ModularPanel panel, PanelSyncManager syncManager) {
-        return super.createBottomSection(panel, syncManager).child(createChargerSlot().horizontalCenter());
+        return super.createBottomSection(panel, syncManager).child(
+            Flow.column()
+                .coverChildren()
+                .decoration()
+                .bottomRel(0)
+                .horizontalCenter()
+                .child(createErrorIcon(panel, syncManager))
+                .child(createChargerSlot()));
     }
 
     // typically, this is used for the 'special slot' on singleblocks
@@ -255,6 +263,23 @@ public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> extends MTETiered
         final byte machineTier = machine.mTier;
         String tierName = GTUtility.getColoredTierNameFromTier(machineTier);
         return GTUtility.translate("GT5U.machines.nei_transfer.voltage.tooltip", tierName);
+    }
+
+    protected Widget<?> createErrorIcon(ModularPanel panel, PanelSyncManager syncManager) {
+        BooleanSyncValue stutteringSyncer = new BooleanSyncValue(machine::isStuttering);
+        syncManager.syncValue("stuttering", stutteringSyncer);
+
+        return new DynamicDrawable(
+            () -> stutteringSyncer.getBoolValue() ? GTGuiTextures.OVERLAY_POWER_LOSS : IDrawable.EMPTY).asWidget()
+                .size(18)
+                .tooltipAutoUpdate(true)
+                .tooltipShowUpTimer(TOOLTIP_DELAY)
+                .tooltipBuilder(t -> {
+                    if (stutteringSyncer.getBoolValue()) addToRichTooltip(
+                        () -> machine.mTooltipCache.getData(
+                            "GT5U.machines.stalled_stuttering.tooltip",
+                            GTUtility.translate("GT5U.machines.powersource.power"))).accept(t);
+                });
     }
 
     protected ParentWidget<?> createItemInputSlots(ModularPanel panel, PanelSyncManager syncManager) {
