@@ -161,7 +161,7 @@ public class MTEXLTurbineSteam extends MTEXLTurbineBase {
         if (totalFlow <= 0) return 0;
         tEU = (long) (totalFlow * 0.5f);
         int waterToOutput = isUsingDenseSteam ? useWater(steamFlowForWater / 160.1f) : useWater(totalFlow / 160.0f);
-        addOutput(GTModHandler.getDistilledWater(waterToOutput));
+        addOutputPartial(GTModHandler.getDistilledWater(waterToOutput));
         if (totalFlow != realOptFlow) {
             float efficiency = 1.0f - Math.abs((totalFlow - (float) realOptFlow) / (float) realOptFlow);
             tEU *= efficiency;

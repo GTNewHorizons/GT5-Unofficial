@@ -386,10 +386,7 @@ public class MTEMegaAlloyBlastSmelter extends MTEExtendedPowerMultiBlockBase<MTE
             StatCollector.translateToLocalFormatted(
                 "gtpp.infodata.abs.mega.energy_discount",
                 "" + EnumChatFormatting.BLUE + lessEnergy + "%" + EnumChatFormatting.RESET),
-            StatCollector.translateToLocalFormatted("GT5U.multiblock.recipesDone") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(recipesDone)
-                + EnumChatFormatting.RESET,
+            GTUtility.translate("GT5U.multiblock.recipesDone", formatNumber(recipesDone)),
             EnumChatFormatting.STRIKETHROUGH + "-----------------------------------------" };
     }
 
