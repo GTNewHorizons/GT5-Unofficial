@@ -17,6 +17,7 @@ import static mcp.mobius.waila.api.SpecialChars.RESET;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.time.Duration;
 import java.util.ArrayList;
@@ -25,6 +26,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
@@ -38,6 +40,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
@@ -358,9 +361,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         if (mOutputFluids != null) {
             aNBT.setInteger("mOutputFluidsLength", mOutputFluids.length);
             for (int i = 0; i < mOutputFluids.length; i++) if (mOutputFluids[i] != null) {
-                NBTTagCompound tNBT = new NBTTagCompound();
-                mOutputFluids[i].writeToNBT(tNBT);
-                aNBT.setTag("mOutputFluids" + i, tNBT);
+                aNBT.setTag("mOutputFluids" + i, GTUtility.saveFluid(mOutputFluids[i]));
             }
         }
         if (processingLogic != null) {
@@ -442,6 +443,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             mOutputFluids = new FluidStack[aOutputFluidsLength];
             for (int i = 0; i < mOutputFluids.length; i++)
                 mOutputFluids[i] = GTUtility.loadFluid(aNBT, "mOutputFluids" + i);
+            mOutputFluids = compactLongFluidOutputs(mOutputFluids);
         }
         if (processingLogic != null) {
             lastParallel = aNBT.getInteger("lastParallel");
@@ -1156,11 +1158,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             processingLogic.setInputFluids(getStoredFluidsForColor(Optional.of(color)));
             if (isInputSeparationEnabled()) {
                 if (mInputBusses.isEmpty()) {
-                    List<ItemStack> inputItems = new ArrayList<>();
-                    if (canUseControllerSlotForRecipe() && getControllerSlot() != null) {
-                        inputItems.add(getControllerSlot());
-                    }
-                    processingLogic.setInputItems(inputItems);
                     CheckRecipeResult foundResult = processingLogic.process();
                     if (foundResult.wasSuccessful()) return foundResult;
                     // Recipe failed in interesting way, so remember that and continue searching
@@ -1643,73 +1640,120 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         return false;
     }
 
-    public boolean addOutput(FluidStack aLiquid) {
-        if (aLiquid == null) return false;
-        FluidStack copiedFluidStack = aLiquid.copy();
-        addOutputPartial(copiedFluidStack);
+    protected static boolean dumpFluid(List<MTEHatchOutput> aOutputHatches, FluidStack copiedFluidStack,
+        boolean restrictiveHatchesOnly) {
+        for (MTEHatchOutput tHatch : validMTEList(aOutputHatches)) {
+            if (restrictiveHatchesOnly && tHatch.mMode == 0) {
+                continue;
+            }
+            if (!tHatch.canStoreFluid(copiedFluidStack)) continue;
+
+            if (tHatch instanceof MTEHatchOutputME tMEHatch) {
+                if (!tMEHatch.canFillFluid()) continue;
+            }
+
+            int tAmount = tHatch.fill(copiedFluidStack, false);
+            if (tAmount >= copiedFluidStack.amount) {
+                boolean filled = tHatch.fill(copiedFluidStack, true) >= copiedFluidStack.amount;
+                tHatch.onEmptyingContainerWhenEmpty();
+                return filled;
+            } else if (tAmount > 0) {
+                copiedFluidStack.amount = copiedFluidStack.amount - tHatch.fill(copiedFluidStack, true);
+                tHatch.onEmptyingContainerWhenEmpty();
+            }
+        }
         return false;
     }
 
-    /**
-     * Ejects a stack. Fluids are only ejected when the whole stack can be ejected into output hatches.
-     *
-     * @param stack The stack to eject. Ejected fluids are subtracted from this stack.
-     * @return True when the whole stack was ejected, false otherwise.
-     */
-    public boolean addOutputAtomic(FluidStack stack) {
-        if (!GTUtility.isStackValid(stack)) return false;
+    public boolean addOutput(FluidStack aLiquid) {
+        return dumpFluidLong(mOutputHatches, aLiquid);
+    }
 
-        int initial = stack.amount;
+    protected static boolean dumpFluidLong(List<MTEHatchOutput> aOutputHatches, FluidStack aLiquid) {
+        return dumpFluidLong(Collections.singletonList(aOutputHatches), aLiquid);
+    }
 
-        FluidEjectionHelper ejectionHelper = new FluidEjectionHelper(this);
-        ejectionHelper.ejectStack(stack);
+    protected static boolean dumpFluidLong(Iterable<? extends List<MTEHatchOutput>> aOutputHatchesByLayer,
+        FluidStack aLiquid) {
+        if (aLiquid == null) return false;
+        long amountRemaining = GTUtility.getFluidAmountLong(aLiquid);
+        while (amountRemaining > 0) {
+            int amountToOutput = GTUtility.longToInt(Math.min(amountRemaining, Integer.MAX_VALUE));
+            FluidStack copiedFluidStack = new FluidStack(aLiquid, amountToOutput);
+            boolean dumpedAll = dumpFluid(aOutputHatchesByLayer, copiedFluidStack, true);
+            if (!dumpedAll) {
+                dumpedAll = dumpFluid(aOutputHatchesByLayer, copiedFluidStack, false);
+            }
 
-        if (stack.amount == 0) {
-            ejectionHelper.commit();
-            return true;
-        } else {
-            // Restore the original stack size because we didn't end up doing anything.
-            stack.amount = initial;
-            return false;
+            if (dumpedAll) {
+                amountRemaining -= amountToOutput;
+            } else {
+                amountRemaining -= amountToOutput - copiedFluidStack.amount;
+                break;
+            }
         }
+        return amountRemaining <= 0;
     }
 
-    /**
-     * Ejects a stack as well as it can. Fluids are ejected regardless of whether the whole stack can fit.
-     *
-     * @param stack The stack to eject. Ejected fluids are subtracted from this stack.
-     */
-    public void addOutputPartial(FluidStack stack) {
-        addOutputPartial(stack, getOutputHatches(), protectsExcessFluid());
-    }
-
-    public void addOutputPartial(FluidStack stack, List<? extends IOutputHatch> hatches) {
-        addOutputPartial(stack, hatches, protectsExcessFluid());
-    }
-
-    public void addOutputPartial(FluidStack stack, List<? extends IOutputHatch> hatches, boolean protectFluids) {
-        if (!GTUtility.isStackValid(stack)) return;
-
-        FluidEjectionHelper ejectionHelper = new FluidEjectionHelper(hatches, protectFluids);
-        ejectionHelper.ejectStack(stack);
-        ejectionHelper.commit();
+    private static boolean dumpFluid(Iterable<? extends List<MTEHatchOutput>> aOutputHatchesByLayer,
+        FluidStack copiedFluidStack, boolean restrictiveHatchesOnly) {
+        for (List<MTEHatchOutput> outputHatches : aOutputHatchesByLayer) {
+            if (dumpFluid(outputHatches, copiedFluidStack, restrictiveHatchesOnly)) return true;
+        }
+        return false;
     }
 
     protected boolean addFluidOutputs(FluidStack[] outputFluids) {
-        return addFluidOutputs(outputFluids, getOutputHatches(), protectsExcessFluid());
+        for (FluidStack outputFluidStack : outputFluids) {
+            addOutput(outputFluidStack);
+        }
+        return true;
     }
 
-    protected boolean addFluidOutputs(FluidStack[] outputFluids, List<? extends IOutputHatch> hatches) {
-        return addFluidOutputs(outputFluids, hatches, protectsExcessFluid());
+    private static FluidStack[] compactLongFluidOutputs(FluidStack[] outputFluids) {
+        if (outputFluids == null || outputFluids.length < 2) return outputFluids;
+
+        ArrayList<FluidStack> compacted = new ArrayList<>(outputFluids.length);
+        for (FluidStack outputFluid : outputFluids) {
+            if (outputFluid == null) continue;
+
+            FluidStack previous = compacted.isEmpty() ? null : compacted.get(compacted.size() - 1);
+            if (previous != null && previous.isFluidEqual(outputFluid)
+                && Objects.equals(previous.tag, outputFluid.tag)
+                && GTUtility.getFluidAmountLong(previous) >= Integer.MAX_VALUE) {
+                long previousAmount = GTUtility.getFluidAmountLong(previous);
+                long outputAmount = GTUtility.getFluidAmountLong(outputFluid);
+                compacted.set(
+                    compacted.size() - 1,
+                    GTUtility.copyAmount(
+                        outputAmount >= Long.MAX_VALUE - previousAmount ? Long.MAX_VALUE
+                            : previousAmount + outputAmount,
+                        previous));
+            } else {
+                compacted.add(outputFluid);
+            }
+        }
+        return compacted.toArray(new FluidStack[0]);
     }
 
-    protected boolean addFluidOutputs(FluidStack[] outputFluids, List<? extends IOutputHatch> hatches,
-        boolean protectFluids) {
-        FluidEjectionHelper ejectionHelper = new FluidEjectionHelper(hatches, protectFluids);
-        int ejected = ejectionHelper.ejectFluids(Arrays.asList(outputFluids), 1);
-        ejectionHelper.commit();
+    private static FluidStack copyFluidStackLong(FluidStack fluidStack) {
+        return fluidStack == null ? null : GTUtility.copyAmount(GTUtility.getFluidAmountLong(fluidStack), fluidStack);
+    }
 
-        return ejected == 1;
+    private static void writeFluidStackLong(PacketBuffer packet, FluidStack fluidStack) {
+        try {
+            packet.writeNBTTagCompoundToBuffer(GTUtility.saveFluid(fluidStack));
+        } catch (IOException e) {
+            throw new IllegalStateException("Failed to write fluid stack", e);
+        }
+    }
+
+    private static FluidStack readFluidStackLong(PacketBuffer packet) {
+        try {
+            return GTUtility.loadFluid(packet.readNBTTagCompoundFromBuffer());
+        } catch (IOException e) {
+            throw new IllegalStateException("Failed to read fluid stack", e);
+        }
     }
 
     public boolean depleteInput(FluidStack aLiquid) {
@@ -1718,6 +1762,10 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
     public boolean depleteInput(FluidStack aLiquid, boolean simulate) {
         if (aLiquid == null) return false;
+        long longFluidCost = GTUtility.getFluidAmountLong(aLiquid);
+        if (longFluidCost > Integer.MAX_VALUE) {
+            return depleteInputLong(aLiquid, longFluidCost, simulate);
+        }
         int fluidCost = aLiquid.amount;
         for (MTEHatchInput tHatch : validMTEList(mInputHatches)) {
             setHatchRecipeMap(tHatch);
@@ -1743,6 +1791,44 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                 if (fluidCost == 0) return true;
             }
         }
+        return false;
+    }
+
+    private boolean depleteInputLong(FluidStack aLiquid, long fluidCost, boolean simulate) {
+        long amountAvailable = 0;
+        for (FluidStack fluidStack : getStoredFluids()) {
+            if (aLiquid.isFluidEqual(fluidStack)) {
+                long fluidAmount = GTUtility.getFluidAmountLong(fluidStack);
+                if (fluidAmount >= fluidCost - amountAvailable) {
+                    amountAvailable = fluidCost;
+                    break;
+                }
+                amountAvailable += fluidAmount;
+                if (amountAvailable >= fluidCost) break;
+            }
+        }
+
+        if (amountAvailable < fluidCost) return false;
+        if (simulate) return true;
+
+        long amountRemaining = fluidCost;
+        for (MTEHatchInput tHatch : validMTEList(mInputHatches)) {
+            setHatchRecipeMap(tHatch);
+            while (amountRemaining > 0) {
+                int amountToDrain = GTUtility.longToInt(Math.min(amountRemaining, Integer.MAX_VALUE));
+                FluidStack request = GTUtility.copyAmount(amountToDrain, aLiquid);
+                FluidStack drained = tHatch.drain(ForgeDirection.UNKNOWN, request, amountToDrain, true);
+                long drainedAmount = GTUtility.getFluidAmountLong(drained);
+
+                if (drainedAmount <= 0) break;
+
+                amountRemaining -= drainedAmount;
+                if (drainedAmount < amountToDrain) break;
+            }
+
+            if (amountRemaining <= 0) return true;
+        }
+
         return false;
     }
 
@@ -1779,6 +1865,26 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         if (GTUtility.isStackInvalid(stack)) return;
 
         ItemEjectionHelper ejectionHelper = new ItemEjectionHelper(this);
+        ejectionHelper.ejectStack(stack);
+        ejectionHelper.commit();
+    }
+
+    /**
+     * Ejects a stack. Fluids are only ejected when the whole stack can be ejected into output hatches.
+     *
+     * @param stack The stack to eject. Ejected fluids are subtracted from this stack.
+     */
+    public void addOutputPartial(FluidStack stack) {
+        addOutputPartial(stack, mOutputHatches, protectsExcessFluid());
+    }
+
+    public void addOutputPartial(FluidStack stack, List<? extends IOutputHatch> hatches) {
+        addOutputPartial(stack, hatches, protectsExcessFluid());
+    }
+
+    public void addOutputPartial(FluidStack stack, List<? extends IOutputHatch> hatches, boolean protectFluids) {
+        if (!GTUtility.isStackValid(stack)) return;
+        FluidEjectionHelper ejectionHelper = new FluidEjectionHelper(hatches, protectFluids);
         ejectionHelper.ejectStack(stack);
         ejectionHelper.commit();
     }
@@ -1888,6 +1994,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
      */
     public boolean drain(MTEHatch hatch, FluidStack fluid, boolean doDrain) {
         if (fluid == null || hatch == null) return false;
+        long fluidAmount = GTUtility.getFluidAmountLong(fluid);
         if (supportsCraftingMEBuffer() && hatch instanceof IDualInputHatch tHatch && tHatch.supportsFluids()) {
             Optional<IDualInputInventory> inventory = tHatch.getFirstNonEmptyInventory();
             if (inventory.isPresent()) {
@@ -1895,8 +2002,10 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                     inventory.get()
                         .getFluidInputs())) {
                     if (fluid.isFluidEqual(storedFluid)) {
-                        if (doDrain) storedFluid.amount = Math.max(storedFluid.amount - fluid.amount, 0);
-                        return storedFluid.amount >= fluid.amount;
+                        long storedAmount = GTUtility.getFluidAmountLong(storedFluid);
+                        if (storedAmount < fluidAmount) return false;
+                        if (doDrain) GTUtility.decreaseFluidAmountLong(storedFluid, fluidAmount);
+                        return true;
                     }
                 }
             }
@@ -1905,16 +2014,47 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         if (hatch instanceof MTEHatchInput tHatch && tHatch.isValid()) {
             if (tHatch instanceof MTEHatchInputME meHatch) {
                 meHatch.startRecipeProcessing();
-                FluidStack tFluid = meHatch.drain(ForgeDirection.UNKNOWN, fluid, doDrain);
+                boolean drained = drainInputHatch(tHatch, fluid, fluidAmount, doDrain);
                 meHatch.endRecipeProcessing(this);
-                return tFluid != null && tFluid.amount >= fluid.amount;
+                return drained;
             } else {
-                FluidStack tFluid = tHatch.drain(ForgeDirection.UNKNOWN, fluid, doDrain);
-                return tFluid != null && tFluid.amount >= fluid.amount;
+                return drainInputHatch(tHatch, fluid, fluidAmount, doDrain);
             }
         }
 
         return false;
+    }
+
+    private boolean drainInputHatch(MTEHatchInput hatch, FluidStack fluid, long fluidAmount, boolean doDrain) {
+        if (getAvailableFluidInHatch(hatch, fluid) < fluidAmount) return false;
+        if (!doDrain) return true;
+
+        long amountRemaining = fluidAmount;
+        while (amountRemaining > 0) {
+            int amountToDrain = GTUtility.longToInt(Math.min(amountRemaining, Integer.MAX_VALUE));
+            FluidStack request = GTUtility.copyAmount(amountToDrain, fluid);
+            FluidStack drained = hatch.drain(ForgeDirection.UNKNOWN, request, amountToDrain, true);
+            long drainedAmount = GTUtility.getFluidAmountLong(drained);
+            if (drainedAmount <= 0) return false;
+            amountRemaining -= drainedAmount;
+        }
+        return true;
+    }
+
+    private long getAvailableFluidInHatch(MTEHatchInput hatch, FluidStack fluid) {
+        long amountAvailable = 0;
+        if (hatch instanceof MTEHatchInputME meHatch) {
+            for (FluidStack storedFluid : meHatch.getStoredFluids()) {
+                if (storedFluid != null && fluid.isFluidEqual(storedFluid)) {
+                    amountAvailable += GTUtility.getFluidAmountLong(storedFluid);
+                    if (amountAvailable < 0) return Long.MAX_VALUE;
+                }
+            }
+            return amountAvailable;
+        }
+
+        FluidStack storedFluid = hatch.getFillableStack();
+        return storedFluid != null && fluid.isFluidEqual(storedFluid) ? GTUtility.getFluidAmountLong(storedFluid) : 0;
     }
 
     public ArrayList<ItemStack> getStoredInputs() {
@@ -2602,7 +2742,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                             + EnumChatFormatting.RESET
                             + " x "
                             + EnumChatFormatting.GOLD
-                            + formatNumber(tag.getInteger("outputFluidCount" + i))
+                            + formatNumber(tag.getLong("outputFluidCount" + i))
                             + "L");
                 }
                 if (totalOutputs > 3) {
@@ -2683,7 +2823,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                     "outputFluidIcon" + index,
                     TTRenderStack.create(GTUtility.getFluidDisplayStack(stack, false), true));
                 tag.setString("outputFluidName" + index, stack.getLocalizedName());
-                tag.setInteger("outputFluidCount" + index, stack.amount);
+                tag.setLong("outputFluidCount" + index, GTUtility.getFluidAmountLong(stack));
                 index++;
             }
             if (index != 0) tag.setInteger("outputFluidLength", index);
@@ -3486,8 +3626,10 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             final Map<FluidStack, Long> nameToAmount = new HashMap<>();
 
             for (FluidStack fluid : mOutputFluids) {
-                if (fluid == null || fluid.amount <= 0) continue;
-                nameToAmount.merge(fluid, (long) fluid.amount, Long::sum);
+                if (fluid == null) continue;
+                long fluidAmount = GTUtility.getFluidAmountLong(fluid);
+                if (fluidAmount <= 0) continue;
+                nameToAmount.merge(GTUtility.copyAmount(1, fluid), fluidAmount, Long::sum);
             }
 
             final List<Map.Entry<FluidStack, Long>> sortedMap = nameToAmount.entrySet()
@@ -3799,23 +3941,14 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             screenElements.widget(
                 new FakeSyncWidget.ListSyncer<>(
                     () -> mOutputFluids != null ? Arrays.stream(mOutputFluids)
-                        .map(fluidStack -> {
-                            if (fluidStack == null) return null;
-                            return new FluidStack(fluidStack, fluidStack.amount) {
-
-                                @Override
-                                public boolean isFluidEqual(FluidStack other) {
-                                    return super.isFluidEqual(other) && amount == other.amount;
-                                }
-                            };
-                        })
+                        .map(MTEMultiBlockBase::copyFluidStackLong)
                         .collect(Collectors.toList()) : Collections.emptyList(),
                     val -> {
                         mOutputFluids = val.toArray(new FluidStack[0]);
                         recipeOutputItemsWidget.notifyChangeNoSync();
                     },
-                    NetworkUtils::writeFluidStack,
-                    NetworkUtils::readFluidStack))
+                    MTEMultiBlockBase::writeFluidStackLong,
+                    MTEMultiBlockBase::readFluidStackLong))
                 .widget(
                     new FakeSyncWidget.ListSyncer<>(
                         () -> mOutputItems != null ? Arrays.asList(mOutputItems) : Collections.emptyList(),

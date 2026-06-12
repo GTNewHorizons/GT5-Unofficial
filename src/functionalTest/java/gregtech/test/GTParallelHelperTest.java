@@ -59,9 +59,8 @@ public class GTParallelHelperTest {
         helper.build();
         FluidStack[] fluidStacks = helper.getFluidOutputs();
 
-        assertEquals(2, fluidStacks.length);
-        assertEquals(Integer.MAX_VALUE, fluidStacks[0].amount);
-        assertEquals(4_000_000L * 1000 - Integer.MAX_VALUE, fluidStacks[1].amount);
+        assertEquals(1, fluidStacks.length);
+        assertEquals(4_000_000L * 1000, GTUtility.getFluidAmountLong(fluidStacks[0]));
     }
 
     @Test

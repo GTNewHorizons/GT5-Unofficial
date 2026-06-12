@@ -584,7 +584,7 @@ public class ParallelHelper {
             final long chancedFluidMultiplier = calculateIntegralChancedOutputMultiplier(
                 (int) (recipe.getFluidOutputChance(i) * chanceMultiplier),
                 currentParallel);
-            long fluids = (long) origin.amount * chancedFluidMultiplier;
+            long fluids = GTUtility.getFluidAmountLong(origin) * chancedFluidMultiplier;
             addFluidsLong(fluidOutputsList, origin, fluids);
         }
         fluidOutputs = fluidOutputsList.toArray(new FluidStack[0]);
@@ -642,11 +642,7 @@ public class ParallelHelper {
 
     public static void addFluidsLong(ArrayList<FluidStack> fluidList, FluidStack origin, long amount) {
         if (amount > 0) {
-            while (amount > Integer.MAX_VALUE) {
-                fluidList.add(GTUtility.copyAmount(Integer.MAX_VALUE, origin));
-                amount -= Integer.MAX_VALUE;
-            }
-            fluidList.add(GTUtility.copyAmount((int) amount, origin));
+            fluidList.add(GTUtility.copyAmount(amount, origin));
         }
     }
 

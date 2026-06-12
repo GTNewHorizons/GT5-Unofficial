@@ -53,6 +53,7 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTStructureUtility;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.SimpleShutDownReason;
@@ -490,12 +491,12 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
 
             // Now do fluid, this is simpler since we only need to bother with one slot
             FluidStack stack = acidInputHatch.getDrainableStack();
-            int numMultiples = 0;
+            long numMultiples = 0;
             if (stack != null && stack.isFluidEqual(ACIDIC_MATERIAL.getFluid(1))) {
-                int acidAvailable = stack.amount;
+                long acidAvailable = GTUtility.getFluidAmountLong(stack);
                 // We only care about multiples of 10, but we still drain all.
                 numMultiples = Math.floorDiv(acidAvailable, 10);
-                acidInputHatch.drain(acidAvailable, true);
+                drain(acidInputHatch, GTUtility.copyAmount(acidAvailable, stack), true);
             } else {
                 // Little easier egg: Fluoroantimonic acid has a pH value of -31, it's an acid so strong it will
                 // instantly shatter the glass in the structure.

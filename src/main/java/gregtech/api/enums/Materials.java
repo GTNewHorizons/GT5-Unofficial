@@ -2029,27 +2029,27 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
 
     public FluidStack getSolid(long aAmount) {
         if (mSolid == null) return null;
-        return new FluidStack(mSolid, (int) aAmount);
+        return GTUtility.copyAmount(aAmount, new FluidStack(mSolid, 1));
     }
 
     public FluidStack getFluid(long aAmount) {
         if (mFluid == null) return null;
-        return new FluidStack(mFluid, (int) aAmount);
+        return GTUtility.copyAmount(aAmount, new FluidStack(mFluid, 1));
     }
 
     public FluidStack getGas(long aAmount) {
         if (mGas == null) return null;
-        return new FluidStack(mGas, (int) aAmount);
+        return GTUtility.copyAmount(aAmount, new FluidStack(mGas, 1));
     }
 
     public FluidStack getPlasma(long aAmount) {
         if (mPlasma == null) return null;
-        return new FluidStack(mPlasma, (int) aAmount);
+        return GTUtility.copyAmount(aAmount, new FluidStack(mPlasma, 1));
     }
 
     public FluidStack getMolten(long aAmount) {
         if (mStandardMoltenFluid == null) return null;
-        return new FluidStack(mStandardMoltenFluid, (int) aAmount);
+        return GTUtility.copyAmount(aAmount, new FluidStack(mStandardMoltenFluid, 1));
     }
 
     @Override

@@ -29,6 +29,7 @@ import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.FluidSlotSyncHandler;
 import com.cleanroommc.modularui.value.sync.GenericListSyncHandler;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
+import com.cleanroommc.modularui.value.sync.LongSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
@@ -193,7 +194,7 @@ public class MTEHatchInputMEGui extends MTEHatchBaseGui<MTEHatchInputME> {
     private ModularPanel createStackSizeConfigurationPanel(ModularPanel parent) {
         BooleanSyncValue isRecipeCheckSyncer = new BooleanSyncValue(machine::doFastRecipeCheck, machine::setRecipeCheck)
             .allowC2S();
-        IntSyncValue minAutoPullAmountSyncer = new IntSyncValue(
+        LongSyncValue minAutoPullAmountSyncer = new LongSyncValue(
             machine::getMinAutoPullAmount,
             machine::setMinAutoPullAmount).allowC2S();
         IntSyncValue autoPullRefreshTimeSyncer = new IntSyncValue(
@@ -421,7 +422,7 @@ public class MTEHatchInputMEGui extends MTEHatchBaseGui<MTEHatchInputME> {
 
             if (slot == null) return 0;
 
-            return slot.extractedAmount;
+            return (int) Math.min(slot.extractedAmount, Integer.MAX_VALUE);
         }
 
         @Override

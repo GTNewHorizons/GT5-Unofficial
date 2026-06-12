@@ -51,6 +51,7 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTStructureUtility;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 
@@ -420,7 +421,7 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
                 // If this FluidStack is the input chemical, consume it all
                 if (fluid.getFluid()
                     .equals(INPUT_CHEMICAL.mFluid)) {
-                    this.inputFluidConsumed += fluid.amount;
+                    this.inputFluidConsumed += GTUtility.getFluidAmountLong(fluid);
                     if (!this.depleteInput(fluid)) {
                         stopMachine(ShutDownReasonRegistry.outOfFluid(fluid));
                     }
@@ -430,7 +431,7 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
     }
 
     private int calculateBoostLevels() {
-        return (int) Math.floor((float) this.inputFluidConsumed / (float) INPUT_CHEMICAL_PER_LEVEL);
+        return GTUtility.longToInt(Math.floorDiv(this.inputFluidConsumed, INPUT_CHEMICAL_PER_LEVEL));
     }
 
     @Override

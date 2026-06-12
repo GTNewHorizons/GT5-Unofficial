@@ -56,6 +56,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTStructureUtility;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 
@@ -511,7 +512,7 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
     private boolean wasFluidInsertedExact(FluidStack toFind) {
         FluidStack candidate = insertedStuffThisCycle.get(toFind.getFluid());
         // Fluid was inserted if found and the amount matches
-        return candidate != null && candidate.amount == toFind.amount;
+        return candidate != null && GTUtility.getFluidAmountLong(candidate) == GTUtility.getFluidAmountLong(toFind);
     }
 
     private ControlBitStatus isBit0Satisfied() {
@@ -661,7 +662,8 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
                         insertedStuffThisCycle.merge(
                             fluid.getFluid(),
                             drainedFluid,
-                            (a, b) -> new FluidStack(a.getFluid(), a.amount + b.amount));
+                            (a, b) -> GTUtility
+                                .copyAmount(GTUtility.getFluidAmountLong(a) + GTUtility.getFluidAmountLong(b), a));
                     }
                 }
             }
@@ -673,10 +675,10 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
         super.addRecipeOutputs();
         if (outputMultiplier > 1.01f && mOutputFluids != null) {
             FluidStack waterOutput = mOutputFluids[0];
-            FluidStack bonusOutput = new FluidStack(
-                waterOutput.getFluid(),
-                (int) (waterOutput.amount * (outputMultiplier - 1.0d)));
-            this.addOutputPartial(bonusOutput);
+            FluidStack bonusOutput = GTUtility.copyAmount(
+                Math.round(GTUtility.getFluidAmountLong(waterOutput) * (outputMultiplier - 1.0d)),
+                waterOutput);
+            this.addOutput(bonusOutput);
         }
     }
 
@@ -736,7 +738,7 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
         outputMultiplier = aNBT.getFloat("outputMultiplier");
         NBTTagCompound fluidMap = aNBT.getCompoundTag("insertedFluidMap");
         for (String key : fluidMap.func_150296_c()) {
-            FluidStack fluid = FluidStack.loadFluidStackFromNBT(fluidMap.getCompoundTag(key));
+            FluidStack fluid = GTUtility.loadFluid(fluidMap.getCompoundTag(key));
             // Ignore if fluid failed to load, for example if the fluid ID was changed between versions
             if (fluid == null) {
                 continue;
@@ -752,12 +754,10 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
         aNBT.setFloat("outputMultiplier", outputMultiplier);
         NBTTagCompound fluidMap = new NBTTagCompound();
         for (FluidStack stack : insertedStuffThisCycle.values()) {
-            NBTTagCompound compound = new NBTTagCompound();
-            stack.writeToNBT(compound);
             fluidMap.setTag(
                 stack.getFluid()
                     .getName(),
-                compound);
+                GTUtility.saveFluid(stack));
         }
         aNBT.setTag("insertedFluidMap", fluidMap);
     }
@@ -788,7 +788,7 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
             info.add(
                 StatCollector.translateToLocalFormatted(
                     "GT5U.infodata.purification_unit_degasser.fluid_inserted",
-                    "" + EnumChatFormatting.YELLOW + stack.amount,
+                    "" + EnumChatFormatting.YELLOW + GTUtility.getFluidAmountLong(stack),
                     stack.getLocalizedName()));
         }
         info.add(

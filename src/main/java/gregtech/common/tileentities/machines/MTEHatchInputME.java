@@ -104,7 +104,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
 
     public final boolean autoPullAvailable;
     protected boolean autoPullFluidList = false;
-    protected int minAutoPullAmount = 1;
+    protected long minAutoPullAmount = 1;
     private int autoPullRefreshTime = 100;
     protected boolean processingRecipe = false;
     private boolean justHadNewFluids = false;
@@ -236,21 +236,24 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
 
             Slot oldSlot = slots[index];
             FluidStack oldStack = null;
+            long oldAmount = 0;
             if (oldSlot != null && oldSlot.extracted != null) oldStack = oldSlot.extracted.copy();
+            if (oldSlot != null) oldAmount = oldSlot.stockedAmount;
 
             setSlotConfig(index, GTUtility.copyAmount(1, curr.getFluidStack()));
 
             Slot newSlot = slots[index];
             FluidStack newStack = null;
             if (newSlot != null) {
-                newSlot.extracted = newStack = curr.getFluidStack();
-                newSlot.extractedAmount = newSlot.extracted.amount;
+                newSlot.extracted = newStack = GTUtility.copyAmount(curr.getStackSize(), curr.getFluidStack());
+                newSlot.extractedAmount = GTUtility.getFluidAmountLong(newSlot.extracted);
+                newSlot.stockedAmount = curr.getStackSize();
             }
             boolean sametype = GTUtility.areFluidsEqual(oldStack, newStack);
             if (newStack != null) {
                 // lower amount/disappearance is not considered 'new fluids'
                 if (sametype) {
-                    if (newStack.amount > oldStack.amount) {
+                    if (newSlot.stockedAmount > oldAmount) {
                         justHadNewFluids = true; // same type, higher amount
                     }
                 } else {
@@ -329,7 +332,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
                 if (slot == null) continue;
 
                 IAEFluidStack request = AEFluidStack.create(slot.config);
-                request.setStackSize(Integer.MAX_VALUE);
+                request.setStackSize(Long.MAX_VALUE);
 
                 IAEFluidStack result = sg.extractItems(request, Actionable.SIMULATE, getRequestSource());
 
@@ -379,12 +382,12 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
             Slot slot = getMatchingSlot(fluid, true);
             if (slot == null) return null;
 
-            int toDrain = Math.min(slot.extracted.amount, amount);
+            int toDrain = GTUtility.longToInt(Math.min(GTUtility.getFluidAmountLong(slot.extracted), amount));
 
             FluidStack drained = GTUtility.copyAmount(toDrain, slot.extracted);
 
             if (doDrain) {
-                slot.extracted.amount -= toDrain;
+                GTUtility.decreaseFluidAmountLong(slot.extracted, toDrain);
             }
 
             return drained;
@@ -450,13 +453,13 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
 
             if (slot == null || slot.extracted == null || slot.extractedAmount == 0) continue;
 
-            int toExtract = slot.extractedAmount - slot.extracted.amount;
+            long toExtract = slot.extractedAmount - GTUtility.getFluidAmountLong(slot.extracted);
 
             if (toExtract <= 0) continue;
 
             // Reset the extracted amount to prevent double endRecipeProcessing calls from extracting twice, but keep
             // the extracted stack intact so that it looks nice.
-            slot.extractedAmount = slot.extracted.amount;
+            slot.extractedAmount = GTUtility.getFluidAmountLong(slot.extracted);
 
             IAEFluidStack request = AEFluidStack.create(slot.extracted);
             request.setStackSize(toExtract);
@@ -467,6 +470,8 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
                 controller.stopMachine(ShutDownReasonRegistry.CRITICAL_NONE);
                 checkRecipeResult = SimpleCheckRecipeResult
                     .ofFailurePersistOnShutdown("stocking_hatch_fail_extraction");
+            } else {
+                slot.stockedAmount = Math.max(0, slot.stockedAmount - toExtract);
             }
         }
 
@@ -566,11 +571,11 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
         return getProxy().isActive();
     }
 
-    public int getMinAutoPullAmount() {
+    public long getMinAutoPullAmount() {
         return minAutoPullAmount;
     }
 
-    public void setMinAutoPullAmount(int minAutoPullAmount) {
+    public void setMinAutoPullAmount(long minAutoPullAmount) {
         this.minAutoPullAmount = minAutoPullAmount;
     }
 
@@ -643,12 +648,13 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
             .getFluidInventory();
 
         IAEFluidStack request = AEFluidStack.create(slot.config);
-        request.setStackSize(Integer.MAX_VALUE);
+        request.setStackSize(Long.MAX_VALUE);
 
         IAEFluidStack result = sg.extractItems(request, Actionable.SIMULATE, getRequestSource());
 
-        slot.extracted = result != null ? result.getFluidStack() : null;
-        slot.extractedAmount = slot.extracted == null ? 0 : slot.extracted.amount;
+        slot.extracted = result != null ? GTUtility.copyAmount(result.getStackSize(), result.getFluidStack()) : null;
+        slot.extractedAmount = slot.extracted == null ? 0 : GTUtility.getFluidAmountLong(slot.extracted);
+        slot.stockedAmount = result == null ? 0 : result.getStackSize();
 
     }
 
@@ -757,7 +763,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
 
         aNBT.setInteger("version", 1);
         aNBT.setBoolean("autoPull", autoPullFluidList);
-        aNBT.setInteger("minAmount", minAutoPullAmount);
+        aNBT.setLong("minAmount", minAutoPullAmount);
         aNBT.setBoolean("additionalConnection", additionalConnection);
         aNBT.setBoolean("expediteRecipeCheck", expediteRecipeCheck);
         aNBT.setInteger("refreshTime", autoPullRefreshTime);
@@ -782,7 +788,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        minAutoPullAmount = aNBT.getInteger("minAmount");
+        minAutoPullAmount = aNBT.getLong("minAmount");
         autoPullFluidList = aNBT.getBoolean("autoPull");
         additionalConnection = aNBT.getBoolean("additionalConnection");
         expediteRecipeCheck = aNBT.getBoolean("expediteRecipeCheck");
@@ -809,6 +815,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
                             int informationAmount = nbtTagCompound.getInteger("informationAmount");
                             slot.extracted = GTUtility.copyAmount(informationAmount, fluidStack);
                             slot.extractedAmount = informationAmount;
+                            slot.stockedAmount = informationAmount;
                         }
                     }
                 }
@@ -850,7 +857,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
 
         if (autoPullAvailable) {
             setAutoPullFluidList(nbt.getBoolean("autoPull"));
-            minAutoPullAmount = nbt.getInteger("minAmount");
+            minAutoPullAmount = nbt.getLong("minAmount");
             autoPullRefreshTime = nbt.getInteger("refreshTime");
             expediteRecipeCheck = nbt.getBoolean("expediteRecipeCheck");
         }
@@ -881,7 +888,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
         NBTTagCompound tag = new NBTTagCompound();
         tag.setString("type", COPIED_DATA_IDENTIFIER);
         tag.setBoolean("autoPull", autoPullFluidList);
-        tag.setInteger("minAmount", minAutoPullAmount);
+        tag.setLong("minAmount", minAutoPullAmount);
         tag.setBoolean("additionalConnection", additionalConnection);
         tag.setInteger("refreshTime", autoPullRefreshTime);
         tag.setBoolean("expediteRecipeCheck", expediteRecipeCheck);
@@ -893,7 +900,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
             for (Slot slot : slots) {
                 if (slot == null) continue;
 
-                stockingFluids.appendTag(slot.config.writeToNBT(new NBTTagCompound()));
+                stockingFluids.appendTag(GTUtility.saveFluid(slot.config));
             }
 
             tag.setTag("fluidsToStock", stockingFluids);
@@ -938,7 +945,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
 
         NBTTagCompound tag = accessor.getNBTData();
         boolean autopull = tag.getBoolean("autoPull");
-        int minSize = tag.getInteger("minAmount");
+        long minSize = tag.getLong("minAmount");
         currenttip.add(
             StatCollector.translateToLocal("GT5U.waila.stocking_bus.auto_pull." + (autopull ? "enabled" : "disabled")));
         if (autopull) {
@@ -957,7 +964,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
         }
 
         tag.setBoolean("autoPull", autoPullFluidList);
-        tag.setInteger("minAmount", minAutoPullAmount);
+        tag.setLong("minAmount", minAutoPullAmount);
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
     }
 
@@ -974,7 +981,9 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
         public final FluidStack config;
 
         /** The amount of stuff initially in the ME system when the recipe check started. */
-        public int extractedAmount;
+        public long extractedAmount;
+        /** The total amount AE reports for display; may exceed {@link FluidStack#amount}'s int limit. */
+        public long stockedAmount;
         /**
          * The extracted stack (almost certainly equal to config). This is shared as a reference to the multiblock,
          * which decrements the stored amount as it gets consumed. After the recipe check has finished, the amount in
@@ -990,6 +999,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
         public void resetExtracted() {
             extracted = null;
             extractedAmount = 0;
+            stockedAmount = 0;
         }
 
         public FluidStack getOriginalExtracted() {
@@ -1000,7 +1010,8 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
         public final boolean equals(Object o) {
             if (!(o instanceof Slot slot)) return false;
 
-            return extractedAmount == slot.extractedAmount && Objects.equals(config, slot.config)
+            return extractedAmount == slot.extractedAmount && stockedAmount == slot.stockedAmount
+                && Objects.equals(config, slot.config)
                 && Objects.equals(extracted, slot.extracted);
         }
 
@@ -1009,26 +1020,30 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
 
             copy.extracted = this.extracted;
             copy.extractedAmount = this.extractedAmount;
+            copy.stockedAmount = this.stockedAmount;
 
             return copy;
         }
 
         public void writeToNBT(NBTTagCompound tag) {
-            tag.setTag("config", config.writeToNBT(new NBTTagCompound()));
+            tag.setTag("config", GTUtility.saveFluid(config));
             if (extracted != null) {
-                tag.setTag("extracted", extracted.writeToNBT(new NBTTagCompound()));
-                tag.setInteger("extractedAmount", extractedAmount);
+                tag.setTag("extracted", GTUtility.saveFluid(extracted));
+                tag.setLong("extractedAmount", extractedAmount);
+                tag.setLong("stockedAmount", stockedAmount);
             }
         }
 
         public static Slot readFromNBT(NBTTagCompound tag) {
-            Slot slot = new Slot(FluidStack.loadFluidStackFromNBT(tag.getCompoundTag("config")));
+            Slot slot = new Slot(GTUtility.loadFluid(tag.getCompoundTag("config")));
 
             if (slot.config == null) return null;
 
             if (tag.hasKey("extracted")) {
-                slot.extracted = FluidStack.loadFluidStackFromNBT(tag.getCompoundTag("extracted"));
-                slot.extractedAmount = tag.getInteger("extractedAmount");
+                slot.extracted = GTUtility.loadFluid(tag.getCompoundTag("extracted"));
+                slot.extractedAmount = tag.getLong("extractedAmount");
+                slot.stockedAmount = tag.hasKey("stockedAmount") ? tag.getLong("stockedAmount") : slot.extractedAmount;
+                if (slot.extracted != null) slot.extracted = GTUtility.copyAmount(slot.extractedAmount, slot.extracted);
             }
 
             return slot;

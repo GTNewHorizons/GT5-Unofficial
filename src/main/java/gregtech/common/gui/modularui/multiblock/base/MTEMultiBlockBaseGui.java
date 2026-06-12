@@ -6,6 +6,7 @@ import static gregtech.api.metatileentity.BaseTileEntity.BUTTON_FEATURE_ENABLED_
 import static gregtech.api.metatileentity.BaseTileEntity.BUTTON_FORBIDDEN_TOOLTIP;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 
+import java.io.IOException;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -13,6 +14,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -456,9 +458,36 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             List<FluidStack> fluids = fluidOutputSyncer.getValue();
             packet.writeInt(fluids.size());
             for (FluidStack fluid : fluids) {
-                NetworkUtils.writeFluidStack(packet, fluid);
+                writeFluidStackLong(packet, fluid);
             }
         });
+    }
+
+    private static FluidStack copyFluidStackLong(FluidStack fluidStack) {
+        return fluidStack == null ? null : GTUtility.copyAmount(GTUtility.getFluidAmountLong(fluidStack), fluidStack);
+    }
+
+    private static boolean areFluidStacksLongEqual(FluidStack a, FluidStack b) {
+        if (a == b) return true;
+        if (a == null || b == null) return false;
+        return a.isFluidEqual(b) && Objects.equals(a.tag, b.tag)
+            && GTUtility.getFluidAmountLong(a) == GTUtility.getFluidAmountLong(b);
+    }
+
+    private static void writeFluidStackLong(PacketBuffer packet, FluidStack fluidStack) {
+        try {
+            packet.writeNBTTagCompoundToBuffer(GTUtility.saveFluid(fluidStack));
+        } catch (IOException e) {
+            throw new IllegalStateException("Failed to write fluid stack", e);
+        }
+    }
+
+    private static FluidStack readFluidStackLong(PacketBuffer packet) {
+        try {
+            return GTUtility.loadFluid(packet.readNBTTagCompoundFromBuffer());
+        } catch (IOException e) {
+            throw new IllegalStateException("Failed to read fluid stack", e);
+        }
     }
 
     private static final int DISPLAY_ROW_HEIGHT = 15;
@@ -528,15 +557,15 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
         // create merged map of fluidstack to total amount in recipe
         final Map<FluidStack, Long> fluidDisplayMap = new HashMap<>(size);
         for (int i = 0; i < size; i++) {
-            FluidStack fluidStack = NetworkUtils.readFluidStack(packet);
+            FluidStack fluidStack = readFluidStackLong(packet);
             // Some multiblocks set outputs to null
             if (fluidStack == null) {
                 continue;
             }
-            long amount = (long) fluidStack.amount;
+            long amount = GTUtility.getFluidAmountLong(fluidStack);
             // map.merge requires the objects to be the same. fluidstacks with different stacksizes will be different.
             // set the amount to 1 to ensure fluid stacks of the same fluid get merged together
-            fluidStack.amount = 1;
+            fluidStack = GTUtility.copyAmount(1, fluidStack);
             fluidDisplayMap.merge(fluidStack, amount, Long::sum);
         }
 
@@ -1335,21 +1364,12 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             "fluidOutput",
             new GenericListSyncHandler<FluidStack>(
                 () -> multiblock.mOutputFluids != null ? Arrays.stream(multiblock.mOutputFluids)
-                    .map(fluidStack -> {
-                        if (fluidStack == null) return null;
-                        return new FluidStack(fluidStack, fluidStack.amount) {
-
-                            @Override
-                            public boolean isFluidEqual(FluidStack other) {
-                                return super.isFluidEqual(other) && amount == other.amount;
-                            }
-                        };
-                    })
+                    .map(MTEMultiBlockBaseGui::copyFluidStackLong)
                     .collect(Collectors.toList()) : Collections.emptyList(),
                 val -> multiblock.mOutputFluids = val.toArray(new FluidStack[0]),
-                NetworkUtils::readFluidStack,
-                NetworkUtils::writeFluidStack,
-                (a, b) -> a.isFluidEqual(b) && a.amount == b.amount,
+                MTEMultiBlockBaseGui::readFluidStackLong,
+                MTEMultiBlockBaseGui::writeFluidStackLong,
+                MTEMultiBlockBaseGui::areFluidStacksLongEqual,
                 null));
 
         syncManager.syncValue(

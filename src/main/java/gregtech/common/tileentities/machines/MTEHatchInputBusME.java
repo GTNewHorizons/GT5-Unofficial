@@ -94,7 +94,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
     protected boolean processingRecipe = false;
     public final boolean autoPullAvailable;
     protected boolean autoPullItemList = false;
-    protected int minAutoPullStackSize = 1;
+    protected long minAutoPullStackSize = 1;
     protected int autoPullRefreshTime = 100;
     protected boolean additionalConnection = false;
     protected boolean justHadNewItems = false;
@@ -299,7 +299,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
 
         aNBT.setInteger("version", 1);
         aNBT.setBoolean("autoStock", autoPullItemList);
-        aNBT.setInteger("minAutoPullStackSize", minAutoPullStackSize);
+        aNBT.setLong("minAutoPullStackSize", minAutoPullStackSize);
         aNBT.setBoolean("additionalConnection", additionalConnection);
         aNBT.setBoolean("expediteRecipeCheck", expediteRecipeCheck);
         aNBT.setInteger("refreshTime", autoPullRefreshTime);
@@ -321,11 +321,11 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
         }
     }
 
-    public int getMinAutoPullStackSize() {
+    public long getMinAutoPullStackSize() {
         return minAutoPullStackSize;
     }
 
-    public void setMinAutoPullStackSize(int minAutoPullStackSize) {
+    public void setMinAutoPullStackSize(long minAutoPullStackSize) {
         this.minAutoPullStackSize = minAutoPullStackSize;
     }
 
@@ -381,7 +381,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
         super.loadNBTData(aNBT);
 
         autoPullItemList = aNBT.getBoolean("autoStock");
-        minAutoPullStackSize = aNBT.getInteger("minAutoPullStackSize");
+        minAutoPullStackSize = aNBT.getLong("minAutoPullStackSize");
         additionalConnection = aNBT.getBoolean("additionalConnection");
         expediteRecipeCheck = aNBT.getBoolean("expediteRecipeCheck");
         if (aNBT.hasKey("refreshTime")) {
@@ -532,7 +532,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
 
         if (autoPullAvailable) {
             setAutoPullItemList(nbt.getBoolean("autoPull"));
-            minAutoPullStackSize = nbt.getInteger("minStackSize");
+            minAutoPullStackSize = nbt.getLong("minStackSize");
             // Data sticks created before refreshTime was implemented should not cause stocking buses to spam divide by
             // zero errors
             if (nbt.hasKey("refreshTime")) {
@@ -567,7 +567,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
         NBTTagCompound tag = new NBTTagCompound();
         tag.setString("type", COPIED_DATA_IDENTIFIER);
         tag.setBoolean("autoPull", autoPullItemList);
-        tag.setInteger("minStackSize", minAutoPullStackSize);
+        tag.setLong("minStackSize", minAutoPullStackSize);
         tag.setInteger("refreshTime", autoPullRefreshTime);
         tag.setBoolean("expediteRecipeCheck", expediteRecipeCheck);
         tag.setBoolean("additionalConnection", additionalConnection);
@@ -887,7 +887,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
 
         NBTTagCompound tag = accessor.getNBTData();
         boolean autopull = tag.getBoolean("autoPull");
-        int minSize = tag.getInteger("minStackSize");
+        long minSize = tag.getLong("minStackSize");
         currenttip.add(
             StatCollector.translateToLocal("GT5U.waila.stocking_bus.auto_pull." + (autopull ? "enabled" : "disabled")));
         if (autopull) {
@@ -907,7 +907,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
         }
 
         tag.setBoolean("autoPull", autoPullItemList);
-        tag.setInteger("minStackSize", minAutoPullStackSize);
+        tag.setLong("minStackSize", minAutoPullStackSize);
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
     }
 

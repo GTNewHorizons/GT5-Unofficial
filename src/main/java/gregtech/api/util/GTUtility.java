@@ -161,6 +161,7 @@ import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.ToolDictNames;
+import gregtech.api.fluid.GTLongFluidStack;
 import gregtech.api.hazards.HazardProtection;
 import gregtech.api.interfaces.IBlockContainer;
 import gregtech.api.interfaces.IHasIndexedTexture;
@@ -1218,7 +1219,7 @@ public class GTUtility {
         }
         ItemStack rStack = ItemList.Display_Fluid.getWithDamage(1, tmp);
         NBTTagCompound tNBT = new NBTTagCompound();
-        tNBT.setLong("mFluidDisplayAmount", aUseStackSize ? aFluid.amount : 0);
+        tNBT.setLong("mFluidDisplayAmount", aUseStackSize ? getFluidAmountLong(aFluid) : 0);
         tNBT.setLong(
             "mFluidDisplayHeat",
             aFluid.getFluid()
@@ -1241,10 +1242,10 @@ public class GTUtility {
         Fluid tFluid = FluidRegistry.getFluid(
             ItemList.Display_Fluid.getItem()
                 .getDamage(aDisplayStack));
-        return new FluidStack(
-            tFluid,
-            (int) aDisplayStack.getTagCompound()
-                .getLong("mFluidDisplayAmount"));
+        return copyAmount(
+            aDisplayStack.getTagCompound()
+                .getLong("mFluidDisplayAmount"),
+            new FluidStack(tFluid, 1));
     }
 
     public static FluidStack getFluidForFilledItem(ItemStack stack, boolean checkIFluidContainerItems) {
@@ -2106,9 +2107,44 @@ public class GTUtility {
 
     public static FluidStack copyAmount(int aAmount, FluidStack aStack) {
         if (aStack == null) return null;
+        if (aStack instanceof GTLongFluidStack) {
+            return copyAmount((long) aAmount, aStack);
+        }
         FluidStack rStack = aStack.copy();
         rStack.amount = aAmount;
         return rStack;
+    }
+
+    public static FluidStack copyAmount(long aAmount, FluidStack aStack) {
+        if (aStack == null) return null;
+        if (aAmount > Integer.MAX_VALUE || aStack instanceof GTLongFluidStack) {
+            return new GTLongFluidStack(aStack, aAmount);
+        }
+        FluidStack rStack = aStack.copy();
+        rStack.amount = (int) Math.max(0, aAmount);
+        return rStack;
+    }
+
+    public static long getFluidAmountLong(@Nullable FluidStack stack) {
+        if (stack == null) return 0;
+        if (stack instanceof GTLongFluidStack longFluidStack) {
+            return longFluidStack.getRealAmount();
+        }
+        return Math.max(0, stack.amount);
+    }
+
+    public static void setFluidAmountLong(@Nullable FluidStack stack, long amount) {
+        if (stack == null) return;
+        if (stack instanceof GTLongFluidStack longFluidStack) {
+            longFluidStack.setRealAmount(amount);
+        } else {
+            stack.amount = longToInt(Math.max(0, amount));
+        }
+    }
+
+    public static void decreaseFluidAmountLong(@Nullable FluidStack stack, long amount) {
+        if (stack == null || amount <= 0) return;
+        setFluidAmountLong(stack, getFluidAmountLong(stack) - amount);
     }
 
     /**
@@ -2268,7 +2304,19 @@ public class GTUtility {
      */
     public static FluidStack loadFluid(NBTTagCompound aNBT) {
         if (aNBT == null) return null;
-        return FluidStack.loadFluidStackFromNBT(aNBT);
+        FluidStack fluid = FluidStack.loadFluidStackFromNBT(aNBT);
+        if (fluid != null && aNBT.hasKey("LAmount", NBT.TAG_LONG)) {
+            fluid = copyAmount(aNBT.getLong("LAmount"), fluid);
+        }
+        return fluid;
+    }
+
+    public static NBTTagCompound saveFluid(FluidStack stack) {
+        if (stack == null) return new NBTTagCompound();
+        NBTTagCompound tag = stack.writeToNBT(new NBTTagCompound());
+        long amount = getFluidAmountLong(stack);
+        if (amount > Integer.MAX_VALUE) tag.setLong("LAmount", amount);
+        return tag;
     }
 
     public static <E> E selectItemInList(int aIndex, E aReplacement, List<E> aList) {
@@ -3695,7 +3743,7 @@ public class GTUtility {
             aStack.getFluid()
                 .getName());
 
-        if (aUseStackSize) base = base * 31 + aStack.amount;
+        if (aUseStackSize) base = base * 31 + Long.hashCode(getFluidAmountLong(aStack));
         if (aUseNBT) base = base * 31 + Objects.hashCode(aStack.tag);
         return base;
     }

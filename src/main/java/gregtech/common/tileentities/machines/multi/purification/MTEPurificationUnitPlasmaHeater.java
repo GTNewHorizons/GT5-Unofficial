@@ -53,6 +53,7 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTStructureUtility;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 
 public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTEPurificationUnitPlasmaHeater>
@@ -417,9 +418,9 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
         FluidStack hatchStack = inputHatch.getDrainableStack();
         if (hatchStack == null) return 0;
         if (hatchStack.isFluidEqual(fluid)) {
-            long amountToDrain = Math.min(maxAmount, hatchStack.amount);
+            long amountToDrain = Math.min(maxAmount, GTUtility.getFluidAmountLong(hatchStack));
             if (amountToDrain > 0) {
-                inputHatch.drain((int) amountToDrain, true);
+                if (!drain(inputHatch, GTUtility.copyAmount(amountToDrain, fluid), true)) return 0;
             }
             return amountToDrain;
         } else {
@@ -435,8 +436,8 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
         if (this.ruinedCycle && currentRecipe != null) {
             FluidStack insertedWater = currentRecipe.mFluidInputs[0];
             // Multiply by 60 since that's the water:steam ratio in GTNH
-            long steamAmount = insertedWater.amount * 60L;
-            addOutputPartial(Materials.Steam.getGas(steamAmount));
+            long steamAmount = GTUtility.getFluidAmountLong(insertedWater) * 60L;
+            addOutput(Materials.Steam.getGas(steamAmount));
         }
     }
 

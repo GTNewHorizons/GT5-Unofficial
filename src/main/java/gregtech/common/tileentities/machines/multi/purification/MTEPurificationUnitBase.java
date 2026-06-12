@@ -41,6 +41,8 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.metadata.PurificationPlantBaseChanceKey;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
+import gregtech.api.util.ParallelHelper;
 import gregtech.common.blocks.BlockCasingsAbstract;
 import gregtech.common.gui.modularui.multiblock.MTEPurificationUnitBaseGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
@@ -225,12 +227,18 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
             long amountAvailable = 0;
             for (FluidStack fluid : this.storedFluids) {
                 if (fluid.isFluidEqual(waterInput)) {
-                    amountAvailable += fluid.amount;
+                    long fluidAmount = GTUtility.getFluidAmountLong(fluid);
+                    if (fluidAmount >= Long.MAX_VALUE - amountAvailable) {
+                        amountAvailable = Long.MAX_VALUE;
+                    } else {
+                        amountAvailable += fluidAmount;
+                    }
                 }
             }
 
             // Determine effective parallel
-            effectiveParallel = (int) Math.min(maxParallel, Math.floorDiv(amountAvailable, waterInput.amount));
+            effectiveParallel = GTUtility.longToInt(
+                Math.min(maxParallel, Math.floorDiv(amountAvailable, GTUtility.getFluidAmountLong(waterInput))));
             // This should not happen, throw an error
             if (effectiveParallel == 0) return CheckRecipeResultRegistry.INTERNAL_ERROR;
         }
@@ -290,8 +298,9 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
     public FluidStack getWaterBoostAmount(GTRecipe recipe) {
         // Recipes should always be constructed so that output water is always the first fluid output
         FluidStack outputWater = recipe.mFluidOutputs[0];
-        int amount = Math.round(outputWater.amount * WATER_BOOST_NEEDED_FLUID * this.effectiveParallel);
-        return new FluidStack(outputWater.getFluid(), amount);
+        long amount = Math
+            .round(GTUtility.getFluidAmountLong(outputWater) * WATER_BOOST_NEEDED_FLUID * this.effectiveParallel);
+        return GTUtility.copyAmount(amount, outputWater);
     }
 
     /**
@@ -315,7 +324,7 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
             FluidStack input = this.currentRecipe.mFluidInputs[i];
             FluidStack copyWithParallel = input.copy();
             if (i == 0) {
-                copyWithParallel.amount = input.amount * effectiveParallel;
+                copyWithParallel = GTUtility.copyAmount(GTUtility.getFluidAmountLong(input) * effectiveParallel, input);
             }
             this.depleteInput(copyWithParallel);
         }
@@ -352,12 +361,11 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
 
         // Make sure to scale purified water output with parallel amount.
         // Make sure to make a full copy of the array, so we don't go modifying recipes
-        FluidStack[] fluidOutputs = new FluidStack[this.currentRecipe.mFluidOutputs.length];
+        ArrayList<FluidStack> fluidOutputs = new ArrayList<>();
         for (int i = 0; i < this.currentRecipe.mFluidOutputs.length; ++i) {
-            fluidOutputs[i] = this.currentRecipe.mFluidOutputs[i].copy();
-            // Clamp the fluid output to max int to avoid overflow at extreme parallels
-            fluidOutputs[i].amount = (int) Math
-                .min((long) effectiveParallel * fluidOutputs[i].amount, Integer.MAX_VALUE);
+            FluidStack output = this.currentRecipe.mFluidOutputs[i].copy();
+            ParallelHelper
+                .addFluidsLong(fluidOutputs, output, GTUtility.getFluidAmountLong(output) * effectiveParallel);
         }
 
         ItemStack[] recipeOutputs = this.currentRecipe.mOutputs;
@@ -381,7 +389,7 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
             }
         }
 
-        this.mOutputFluids = fluidOutputs;
+        this.mOutputFluids = fluidOutputs.toArray(new FluidStack[0]);
         this.mOutputItems = itemOutputs;
         // Set this value, so it can be displayed in Waila. Note that the logic for the units is
         // specifically overridden so setting this value does not actually drain power.
@@ -450,7 +458,7 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
             roll = random.nextInt(0, 2);
             if (roll == 1) {
                 // Rolled good, stop the loop and output water below current tier
-                int amount = mOutputFluids[0].amount;
+                long amount = GTUtility.getFluidAmountLong(mOutputFluids[0]);
                 // For tier 1, this is distilled water, so we cannot use the helper function!
                 if (waterTier == 1) {
                     return GTModHandler.getDistilledWater(amount);

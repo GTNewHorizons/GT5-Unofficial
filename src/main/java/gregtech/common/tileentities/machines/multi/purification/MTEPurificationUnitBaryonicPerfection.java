@@ -478,8 +478,7 @@ public class MTEPurificationUnitBaryonicPerfection
                     // recipe processing
                     boolean drained = false;
                     for (MTEHatchInput hatch : this.mInputHatches) {
-                        FluidStack drainedStack = hatch.drain(ForgeDirection.UNKNOWN, inputCost, true);
-                        if (drainedStack != null && drainedStack.amount == inputCost.amount) {
+                        if (drain(hatch, inputCost, true)) {
                             drained = true;
                             break;
                         }

@@ -64,10 +64,10 @@ public class SingleRecipeCheck {
     @Nonnull
     private final ImmutableMap<ItemId, Integer> itemCost;
     @Nonnull
-    private final ImmutableMap<Fluid, Integer> fluidCost;
+    private final ImmutableMap<Fluid, Long> fluidCost;
 
     private final int totalItemCost;
-    private final int totalFluidCost;
+    private final long totalFluidCost;
 
     /**
      * Private constructor.
@@ -78,7 +78,7 @@ public class SingleRecipeCheck {
      * @param fluidCost an immutable map of fluid costs (required fluid amounts)
      */
     private SingleRecipeCheck(@Nonnull GTRecipe recipe, @Nonnull RecipeMap<?> recipeMap,
-        @Nonnull ImmutableMap<ItemId, Integer> itemCost, @Nonnull ImmutableMap<Fluid, Integer> fluidCost) {
+        @Nonnull ImmutableMap<ItemId, Integer> itemCost, @Nonnull ImmutableMap<Fluid, Long> fluidCost) {
         this.recipe = recipe;
         this.recipeMap = recipeMap;
         this.itemCost = itemCost;
@@ -90,7 +90,7 @@ public class SingleRecipeCheck {
             .sum();
         this.totalFluidCost = fluidCost.values()
             .stream()
-            .mapToInt(Integer::intValue)
+            .mapToLong(Long::longValue)
             .sum();
     }
 
@@ -150,16 +150,16 @@ public class SingleRecipeCheck {
 
         if (totalFluidCost > 0) {
             // Create a map for fluids to their stored amounts.
-            Map<Fluid, Integer> fluidMap = new HashMap<>();
+            Map<Fluid, Long> fluidMap = new HashMap<>();
             for (FluidStack fluidStack : fluidInputs) {
                 if (fluidStack == null) continue;
-                fluidMap.merge(fluidStack.getFluid(), fluidStack.amount, Integer::sum);
+                fluidMap.merge(fluidStack.getFluid(), GTUtility.getFluidAmountLong(fluidStack), Long::sum);
             }
 
             // For each fluid cost, update the maximum parallel executions possible.
-            for (Map.Entry<Fluid, Integer> costEntry : fluidCost.entrySet()) {
-                currentParallel = Math
-                    .min(currentParallel, fluidMap.getOrDefault(costEntry.getKey(), 0) / costEntry.getValue());
+            for (Map.Entry<Fluid, Long> costEntry : fluidCost.entrySet()) {
+                currentParallel = (int) Math
+                    .min(currentParallel, fluidMap.getOrDefault(costEntry.getKey(), 0L) / costEntry.getValue());
                 if (currentParallel <= 0) {
                     return 0;
                 }
@@ -191,17 +191,17 @@ public class SingleRecipeCheck {
             }
 
             if (totalFluidCost > 0) {
-                int remainingFluidCost = totalFluidCost * finalParallel;
-                Map<Fluid, Integer> runningFluidCost = fluidCost.entrySet()
+                long remainingFluidCost = totalFluidCost * finalParallel;
+                Map<Fluid, Long> runningFluidCost = fluidCost.entrySet()
                     .stream()
                     .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue() * finalParallel));
 
                 for (FluidStack fluidStack : fluidInputs) {
                     if (fluidStack == null) continue;
                     Fluid key = fluidStack.getFluid();
-                    int runningCost = runningFluidCost.getOrDefault(key, 0);
-                    int paid = Math.min(fluidStack.amount, runningCost);
-                    fluidStack.amount -= paid;
+                    long runningCost = runningFluidCost.getOrDefault(key, 0L);
+                    long paid = Math.min(GTUtility.getFluidAmountLong(fluidStack), runningCost);
+                    GTUtility.decreaseFluidAmountLong(fluidStack, paid);
                     runningFluidCost.put(key, runningCost - paid);
 
                     remainingFluidCost -= paid;
@@ -253,16 +253,12 @@ public class SingleRecipeCheck {
         if (recipe.mFluidInputs != null) {
             tag.setTag(
                 "fInputs",
-                writeList(
-                    recipe.mFluidInputs,
-                    s -> s == null ? new NBTTagCompound() : s.writeToNBT(new NBTTagCompound())));
+                writeList(recipe.mFluidInputs, s -> s == null ? new NBTTagCompound() : GTUtility.saveFluid(s)));
         }
         if (recipe.mFluidOutputs != null) {
             tag.setTag(
                 "fOutputs",
-                writeList(
-                    recipe.mFluidOutputs,
-                    s -> s == null ? new NBTTagCompound() : s.writeToNBT(new NBTTagCompound())));
+                writeList(recipe.mFluidOutputs, s -> s == null ? new NBTTagCompound() : GTUtility.saveFluid(s)));
         }
         tag.setInteger("eut", recipe.mEUt);
         tag.setInteger("duration", recipe.mDuration);
@@ -282,7 +278,7 @@ public class SingleRecipeCheck {
                 "id",
                 e.getKey()
                     .getName());
-            ret.setInteger("count", e.getValue());
+            ret.setLong("count", e.getValue());
             return ret;
         }));
         return tag;
@@ -356,11 +352,11 @@ public class SingleRecipeCheck {
      * @param tag the NBTTagCompound containing the fluid cost data
      * @return an immutable map of Fluid to Integer representing the fluid costs
      */
-    private static ImmutableMap<Fluid, Integer> loadFluidCost(NBTTagCompound tag) {
+    private static ImmutableMap<Fluid, Long> loadFluidCost(NBTTagCompound tag) {
         return GTUtility.streamCompounds(tag.getTagList("fluidCost", Constants.NBT.TAG_COMPOUND))
             .collect(
                 GTUtility
-                    .toImmutableMapSerial(t -> FluidRegistry.getFluid(t.getString("id")), t -> t.getInteger("count")));
+                    .toImmutableMapSerial(t -> FluidRegistry.getFluid(t.getString("id")), t -> t.getLong("count")));
     }
 
     /**
@@ -391,10 +387,10 @@ public class SingleRecipeCheck {
             .map(GTUtility::loadItem)
             .toArray(ItemStack[]::new);
         FluidStack[] fInputs = GTUtility.streamCompounds(tag.getTagList("fInputs", Constants.NBT.TAG_COMPOUND))
-            .map(FluidStack::loadFluidStackFromNBT)
+            .map(GTUtility::loadFluid)
             .toArray(FluidStack[]::new);
         FluidStack[] fOutputs = GTUtility.streamCompounds(tag.getTagList("fOutputs", Constants.NBT.TAG_COMPOUND))
-            .map(FluidStack::loadFluidStackFromNBT)
+            .map(GTUtility::loadFluid)
             .toArray(FluidStack[]::new);
         int eut = tag.getInteger("eut");
         GTRecipe found = recipeMap.findRecipeQuery()
@@ -411,9 +407,9 @@ public class SingleRecipeCheck {
         int[] fluidOutputChances = ArrayExt
             .fixChancesArray(tag.hasKey("fluidOutputChances") ? tag.getIntArray("fluidOutputChances") : null, -1);
         if (found == null || !GTUtility.equals(inputs, found.mInputs)
-            || !Arrays.equals(fInputs, found.mFluidInputs)
+            || !fluidStackArraysEqual(fInputs, found.mFluidInputs)
             || !GTUtility.equals(outputs, found.mOutputs)
-            || !Arrays.equals(fOutputs, found.mFluidOutputs)
+            || !fluidStackArraysEqual(fOutputs, found.mFluidOutputs)
             || !Arrays.equals(inputChances, found.mInputChances)
             || !Arrays.equals(outputChances, found.mOutputChances)
             || !Arrays.equals(fluidInputChances, found.mFluidInputChances)
@@ -422,6 +418,22 @@ public class SingleRecipeCheck {
             || found.mEUt != eut
             || found.mSpecialValue != tag.getInteger("specialValue")) return null;
         return found;
+    }
+
+    private static boolean fluidStackArraysEqual(FluidStack[] first, FluidStack[] second) {
+        if (first == second) return true;
+        if (first == null || second == null || first.length != second.length) return false;
+
+        for (int i = 0; i < first.length; i++) {
+            FluidStack a = first[i];
+            FluidStack b = second[i];
+            if (a == b) continue;
+            if (a == null || b == null) return false;
+            if (!a.isFluidEqual(b)) return false;
+            if (GTUtility.getFluidAmountLong(a) != GTUtility.getFluidAmountLong(b)) return false;
+        }
+
+        return true;
     }
 
     /**
@@ -445,11 +457,11 @@ public class SingleRecipeCheck {
      * @param fluids an array of FluidStacks representing the fluids
      * @return an immutable map of Fluid to Integer representing the cost per fluid
      */
-    private static ImmutableMap<Fluid, Integer> buildFluidMap(FluidStack[] fluids) {
-        Map<Fluid, Integer> fluidMap = new HashMap<>();
+    private static ImmutableMap<Fluid, Long> buildFluidMap(FluidStack[] fluids) {
+        Map<Fluid, Long> fluidMap = new HashMap<>();
         for (FluidStack fluidStack : fluids) {
             if (fluidStack == null) continue;
-            fluidMap.merge(fluidStack.getFluid(), fluidStack.amount, Integer::sum);
+            fluidMap.merge(fluidStack.getFluid(), GTUtility.getFluidAmountLong(fluidStack), Long::sum);
         }
         return ImmutableMap.copyOf(fluidMap);
     }
@@ -493,7 +505,7 @@ public class SingleRecipeCheck {
                         sb.append(fluid.getLocalizedName());
                         if (showStackAmounts) {
                             sb.append(" (")
-                                .append(fluid.amount)
+                                .append(GTUtility.getFluidAmountLong(fluid))
                                 .append("L)");
                         }
                         sb.append("\n");
@@ -528,7 +540,7 @@ public class SingleRecipeCheck {
                         sb.append(fluid.getLocalizedName());
                         if (showStackAmounts) {
                             sb.append(" (")
-                                .append(fluid.amount)
+                                .append(GTUtility.getFluidAmountLong(fluid))
                                 .append("L)");
                         }
                         sb.append("\n");
@@ -571,7 +583,7 @@ public class SingleRecipeCheck {
                             .filter(Objects::nonNull)
                             .map(
                                 fluid -> fluid.getLocalizedName()
-                                    + (showStackAmounts ? " (" + fluid.amount + "L)" : ""))
+                                    + (showStackAmounts ? " (" + GTUtility.getFluidAmountLong(fluid) + "L)" : ""))
                             .collect(Collectors.joining(", ")));
                 }
                 if (inputSb.length() > 0) {
@@ -599,7 +611,7 @@ public class SingleRecipeCheck {
                             .filter(Objects::nonNull)
                             .map(
                                 fluid -> fluid.getLocalizedName()
-                                    + (showStackAmounts ? " (" + fluid.amount + "L)" : ""))
+                                    + (showStackAmounts ? " (" + GTUtility.getFluidAmountLong(fluid) + "L)" : ""))
                             .collect(Collectors.joining(", ")));
                 }
                 if (outputSb.length() > 0) {
@@ -622,9 +634,9 @@ public class SingleRecipeCheck {
 
         // Used to compute the amount of inputs consumed by comparing the before and after states.
         private Map<ItemId, Integer> beforeItems;
-        private Map<Fluid, Integer> beforeFluids;
+        private Map<Fluid, Long> beforeFluids;
         private Map<ItemId, Integer> afterItems;
-        private Map<Fluid, Integer> afterFluids;
+        private Map<Fluid, Long> afterFluids;
 
         private GTRecipe recipe;
 
@@ -695,10 +707,10 @@ public class SingleRecipeCheck {
          *
          * @return an immutable map of Fluid to Integer representing the cost per fluid
          */
-        private ImmutableMap<Fluid, Integer> buildFluidCost() {
-            ImmutableMap.Builder<Fluid, Integer> fluidCostBuilder = ImmutableMap.builder();
-            for (Map.Entry<Fluid, Integer> entry : beforeFluids.entrySet()) {
-                int cost = entry.getValue() - afterFluids.getOrDefault(entry.getKey(), 0);
+        private ImmutableMap<Fluid, Long> buildFluidCost() {
+            ImmutableMap.Builder<Fluid, Long> fluidCostBuilder = ImmutableMap.builder();
+            for (Map.Entry<Fluid, Long> entry : beforeFluids.entrySet()) {
+                long cost = entry.getValue() - afterFluids.getOrDefault(entry.getKey(), 0L);
                 if (cost > 0) {
                     fluidCostBuilder.put(entry.getKey(), cost);
                 }

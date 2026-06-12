@@ -238,8 +238,9 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
 
         for (FluidStack fluid : inputFluid) {
             if (fluid == null) continue;
-            if (fluid.equals(GTModHandler.getDistilledWater(1L))) waterAmount += fluid.amount;
-            else if (fluid.equals(Materials.Lubricant.getFluid(1L))) lubricantAmount += fluid.amount;
+            if (fluid.equals(GTModHandler.getDistilledWater(1L))) waterAmount += GTUtility.getFluidAmountLong(fluid);
+            else if (fluid.equals(Materials.Lubricant.getFluid(1L)))
+                lubricantAmount += GTUtility.getFluidAmountLong(fluid);
         }
 
         final long parallelFromFluids = Math.min(lubricantAmount / 2, waterAmount / 200);
@@ -267,16 +268,17 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
 
         long totalWaterToDrain = (long) effectiveParallel * 200L;
         while (totalWaterToDrain > 0) {
-            int tryDrain = (int) Math.min(totalWaterToDrain, Integer.MAX_VALUE);
+            int tryDrain = GTUtility.longToInt(Math.min(totalWaterToDrain, Integer.MAX_VALUE));
             if (!depleteInput(GTModHandler.getDistilledWater(tryDrain))) {
-                int maxHatch = 0;
+                long maxHatch = 0;
                 for (FluidStack sf : getStoredFluids()) {
-                    if (sf != null && sf.isFluidEqual(GTModHandler.getDistilledWater(1L)) && sf.amount > maxHatch) {
-                        maxHatch = sf.amount;
+                    if (sf != null && sf.isFluidEqual(GTModHandler.getDistilledWater(1L))) {
+                        long sfAmount = GTUtility.getFluidAmountLong(sf);
+                        if (sfAmount > maxHatch) maxHatch = sfAmount;
                     }
                 }
                 if (maxHatch <= 0) break;
-                tryDrain = (int) Math.min(totalWaterToDrain, maxHatch);
+                tryDrain = GTUtility.longToInt(Math.min(totalWaterToDrain, maxHatch));
                 if (!depleteInput(GTModHandler.getDistilledWater(tryDrain))) break;
             }
             totalWaterToDrain -= tryDrain;
@@ -284,16 +286,17 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
 
         long totalLubricantToDrain = (long) effectiveParallel * 2L;
         while (totalLubricantToDrain > 0) {
-            int tryDrain = (int) Math.min(totalLubricantToDrain, Integer.MAX_VALUE);
+            int tryDrain = GTUtility.longToInt(Math.min(totalLubricantToDrain, Integer.MAX_VALUE));
             if (!depleteInput(Materials.Lubricant.getFluid(tryDrain))) {
-                int maxHatch = 0;
+                long maxHatch = 0;
                 for (FluidStack sf : getStoredFluids()) {
-                    if (sf != null && sf.isFluidEqual(Materials.Lubricant.getFluid(1L)) && sf.amount > maxHatch) {
-                        maxHatch = sf.amount;
+                    if (sf != null && sf.isFluidEqual(Materials.Lubricant.getFluid(1L))) {
+                        long sfAmount = GTUtility.getFluidAmountLong(sf);
+                        if (sfAmount > maxHatch) maxHatch = sfAmount;
                     }
                 }
                 if (maxHatch <= 0) break;
-                tryDrain = (int) Math.min(totalLubricantToDrain, maxHatch);
+                tryDrain = GTUtility.longToInt(Math.min(totalLubricantToDrain, maxHatch));
                 if (!depleteInput(Materials.Lubricant.getFluid(tryDrain))) break;
             }
             totalLubricantToDrain -= tryDrain;
@@ -511,16 +514,17 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
 
                 long totalChemToDrain = (long) canProcess * requiredFluid.amount;
                 while (totalChemToDrain > 0) {
-                    int tryDrain = (int) Math.min(totalChemToDrain, Integer.MAX_VALUE);
+                    int tryDrain = GTUtility.longToInt(Math.min(totalChemToDrain, Integer.MAX_VALUE));
                     if (!depleteInput(new FluidStack(requiredFluid.getFluid(), tryDrain))) {
-                        int maxHatch = 0;
+                        long maxHatch = 0;
                         for (FluidStack sf : getStoredFluids()) {
-                            if (sf != null && sf.isFluidEqual(requiredFluid) && sf.amount > maxHatch) {
-                                maxHatch = sf.amount;
+                            if (sf != null && sf.isFluidEqual(requiredFluid)) {
+                                long sfAmount = GTUtility.getFluidAmountLong(sf);
+                                if (sfAmount > maxHatch) maxHatch = sfAmount;
                             }
                         }
                         if (maxHatch <= 0) break;
-                        tryDrain = (int) Math.min(totalChemToDrain, maxHatch);
+                        tryDrain = GTUtility.longToInt(Math.min(totalChemToDrain, maxHatch));
                         if (!depleteInput(new FluidStack(requiredFluid.getFluid(), tryDrain))) break;
                     }
                     totalChemToDrain -= tryDrain;
@@ -548,7 +552,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
         if (aFluid == null) return 0L;
         long total = 0L;
         for (FluidStack fluid : getStoredFluids()) {
-            if (aFluid.isFluidEqual(fluid)) total += fluid.amount;
+            if (aFluid.isFluidEqual(fluid)) total += GTUtility.getFluidAmountLong(fluid);
         }
         return total;
     }

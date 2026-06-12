@@ -1,19 +1,29 @@
 package gregtech.api.util;
 
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.PriorityQueue;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.GTValues;
+import gregtech.api.interfaces.fluid.IFluidStore;
 import gregtech.api.interfaces.tileentity.IVoidable;
+import gregtech.common.tileentities.machines.outputme.MTEHatchOutputME;
 import it.unimi.dsi.fastutil.ints.Int2IntFunction;
+import it.unimi.dsi.fastutil.objects.Object2LongMap;
+import it.unimi.dsi.fastutil.objects.Object2LongOpenHashMap;
 
 /**
  * Helper class to calculate how many parallels of items / fluids can fit in the output buses / hatches.
  */
 public class VoidProtectionHelper {
+
+    private static final long PSEUDO_INFINITE_FLUID_SPACE = Long.MAX_VALUE / 1024;
 
     /**
      * Machine used for calculation
@@ -216,26 +226,114 @@ public class VoidProtectionHelper {
      * Calculates the max parallel for fluids if void protection is turned on
      */
     private int calculateMaxFluidParallels() {
-        List<FluidStack> maxFluidOutputs = new ArrayList<>(fluidOutputs.length);
-
-        for (int i = 0, fluidOutputsLength = fluidOutputs.length; i < fluidOutputsLength; i++) {
-            FluidStack stack = fluidOutputs[i];
-
-            if (stack == null || stack.amount == 0) continue;
-
-            // Find the max possible output for this stack (note the .ceil)
-            // We can't know how many fluids per parallel will be eventually ejected, so we just check the
-            // worst-case scenario
-            int stackSize = (int) (stack.amount
-                * Math.ceil(outputChanceMultiplier * fluidOutputChanceGetter.apply(i) / 10000d));
-
-            maxFluidOutputs.add(GTUtility.copyAmount(stackSize, stack));
+        List<? extends IFluidStore> hatches = machine.getFluidOutputSlots(fluidOutputs);
+        int size = hatches.size();
+        if (size < fluidOutputs.length) {
+            boolean hasMe = false;
+            for (IFluidStore hatch : hatches) {
+                if (hatch instanceof MTEHatchOutputME) {
+                    hasMe = true;
+                    break;
+                }
+            }
+            if (!hasMe) return 0;
         }
 
-        // Pass the VP helper's protectExcessFluid flag to the ejection helper instead of using the machine's
-        // flag
-        FluidEjectionHelper ejectionHelper = new FluidEjectionHelper(machine.getOutputHatches(), protectExcessFluid);
+        Object2LongMap<FluidStack> tFluidOutputMap = new Object2LongOpenHashMap<>();
 
-        return ejectionHelper.ejectFluids(maxFluidOutputs, maxParallel);
+        // Tracks full crafts + partial mb per fluid output to avoid floating point inaccuracies.
+        Map<FluidStack, FluidParallelData> tParallels = new HashMap<>();
+
+        for (int i = 0; i < fluidOutputs.length; i++) {
+            FluidStack aY = fluidOutputs[i];
+            long fluidAmount = GTUtility.getFluidAmountLong(aY);
+            if (aY == null || fluidAmount <= 0) {
+                continue;
+            }
+
+            long estimatedAmount = (long) (fluidAmount * Math.ceil(fluidOutputChanceGetter.apply(i) / 10000d));
+
+            tFluidOutputMap.mergeLong(aY, estimatedAmount, Long::sum);
+            tParallels.put(aY, new FluidParallelData(0, 0));
+        }
+
+        if (tFluidOutputMap.isEmpty()) {
+            return maxParallel;
+        }
+
+        for (IFluidStore tHatch : hatches) {
+            long tSpaceLeft;
+            if (tHatch instanceof MTEHatchOutputME tMEHatch) {
+                tSpaceLeft = tMEHatch.canAcceptFluid() ? PSEUDO_INFINITE_FLUID_SPACE : 0;
+            } else if (tHatch instanceof OutputHatchWrapper w && w.unwrap() instanceof MTEHatchOutputME tMEHatch) {
+                tSpaceLeft = tMEHatch.canAcceptFluid() ? PSEUDO_INFINITE_FLUID_SPACE : 0;
+            } else {
+                tSpaceLeft = tHatch.getCapacity() - tHatch.getFluidAmount();
+            }
+
+            if (tSpaceLeft <= 0) continue;
+
+            if (tHatch.isEmptyAndAcceptsAnyFluid()) continue;
+
+            for (Map.Entry<FluidStack, FluidParallelData> entry : tParallels.entrySet()) {
+                FluidStack tFluidOutput = entry.getKey();
+                if (!tHatch.canStoreFluid(tFluidOutput)) continue;
+                FluidParallelData tParallel = entry.getValue();
+                long tCraftSize = tFluidOutputMap.getLong(tFluidOutput);
+                tParallel.batch += (tParallel.partial + tSpaceLeft) / tCraftSize;
+                tParallel.partial = (tParallel.partial + tSpaceLeft) % tCraftSize;
+            }
+        }
+        PriorityQueue<ParallelStackInfo<FluidStack>> aParallelQueue = new PriorityQueue<>(
+            Comparator.comparing(i -> i.batch));
+        for (Map.Entry<FluidStack, FluidParallelData> entry : tParallels.entrySet()) {
+            aParallelQueue
+                .add(new ParallelStackInfo<>(entry.getValue().batch, entry.getValue().partial, entry.getKey()));
+        }
+        for (IFluidStore tHatch : hatches) {
+            if (!tHatch.isEmptyAndAcceptsAnyFluid()) continue;
+
+            ParallelStackInfo<FluidStack> tParallel = aParallelQueue.poll();
+            assert tParallel != null;
+            long tCraftSize = tFluidOutputMap.getLong(tParallel.stack);
+
+            long tSpaceLeft;
+            if (tHatch instanceof MTEHatchOutputME tMEHatch) {
+                tSpaceLeft = tMEHatch.canAcceptFluid() ? PSEUDO_INFINITE_FLUID_SPACE : 0;
+            } else if (tHatch instanceof OutputHatchWrapper w && w.unwrap() instanceof MTEHatchOutputME tMEHatch) {
+                tSpaceLeft = tMEHatch.canAcceptFluid() ? PSEUDO_INFINITE_FLUID_SPACE : 0;
+            } else {
+                tSpaceLeft = tHatch.getCapacity();
+            }
+
+            tParallel.batch += (tParallel.partial + tSpaceLeft) / tCraftSize;
+            tParallel.partial = (tParallel.partial + tSpaceLeft) % tCraftSize;
+            aParallelQueue.add(tParallel);
+        }
+        return GTUtility.longToInt(aParallelQueue.element().batch);
+    }
+
+    private static class FluidParallelData {
+
+        private long batch;
+        private long partial;
+
+        private FluidParallelData(long batch, long partial) {
+            this.batch = batch;
+            this.partial = partial;
+        }
+    }
+
+    private static class ParallelStackInfo<T> {
+
+        private long batch;
+        private long partial;
+        private final T stack;
+
+        private ParallelStackInfo(long batch, long partial, T stack) {
+            this.batch = batch;
+            this.partial = partial;
+            this.stack = stack;
+        }
     }
 }

@@ -15,7 +15,6 @@ import static tectech.loader.recipe.Godforge.exoticModulePlasmaItemMap;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,6 +47,7 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTStreamUtil;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
@@ -116,15 +116,11 @@ public class MTEExoticModule extends MTEBaseModule {
                     }
 
                     if (numberOfFluids != 0) {
-                        addFluidOutputs(
-                            Arrays.stream(randomizedFluidInput)
-                                .map(fluid -> {
-                                    FluidStack copy = fluid.copy();
-                                    copy.amount = copy.amount / 1000;
-                                    return copy;
-                                })
-                                .toArray(FluidStack[]::new),
-                            mOutputHatches);
+                        for (FluidStack fluidStack : randomizedFluidInput) {
+                            dumpFluidLong(
+                                mOutputHatches,
+                                GTUtility.copyAmount(GTUtility.getFluidAmountLong(fluidStack) / 1000, fluidStack));
+                        }
                     }
 
                     if (numberOfItems != 0) {
@@ -136,8 +132,7 @@ public class MTEExoticModule extends MTEBaseModule {
                 }
 
                 for (FluidStack stack : recipe.mFluidInputs) {
-                    if (!ArrayUtils.contains(inputFluids, stack)
-                        || inputFluids[ArrayUtils.indexOf(inputFluids, stack)].amount != stack.amount) {
+                    if (!containsFluidStackLong(inputFluids, stack)) {
                         return SimpleCheckRecipeResult.ofFailure("waiting_for_inputs");
                     }
                 }
@@ -343,10 +338,10 @@ public class MTEExoticModule extends MTEBaseModule {
             String dict = OreDictionary.getOreName(OreDictionary.getOreIDs(itemStack)[0]);
             // substring 4 because dust is 4 characters long and there is no other possible oreDict
             String strippedOreDict = dict.substring(4);
-            plasmas.add(
-                FluidRegistry.getFluidStack(
-                    "plasma." + strippedOreDict.toLowerCase(),
-                    (int) (INGOTS * multiplier * itemStack.stackSize)));
+            FluidStack plasma = FluidRegistry.getFluidStack("plasma." + strippedOreDict.toLowerCase(), 1);
+            if (plasma != null) {
+                plasmas.add(GTUtility.copyAmount(INGOTS * multiplier * itemStack.stackSize, plasma));
+            }
         }
 
         return plasmas.toArray(new FluidStack[0]);
@@ -358,13 +353,24 @@ public class MTEExoticModule extends MTEBaseModule {
         for (FluidStack fluidStack : fluids) {
             String[] fluidName = fluidStack.getUnlocalizedName()
                 .split("\\.");
-            plasmas.add(
-                FluidRegistry.getFluidStack(
-                    "plasma." + fluidName[fluidName.length - 1],
-                    (int) (multiplier * fluidStack.amount)));
+            FluidStack plasma = FluidRegistry.getFluidStack("plasma." + fluidName[fluidName.length - 1], 1);
+            if (plasma != null) {
+                plasmas.add(GTUtility.copyAmount(multiplier * GTUtility.getFluidAmountLong(fluidStack), plasma));
+            }
         }
 
         return plasmas.toArray(new FluidStack[0]);
+    }
+
+    private static boolean containsFluidStackLong(FluidStack[] inputFluids, FluidStack expected) {
+        if (expected == null) return true;
+        for (FluidStack inputFluid : inputFluids) {
+            if (inputFluid != null && inputFluid.isFluidEqual(expected)
+                && GTUtility.getFluidAmountLong(inputFluid) == GTUtility.getFluidAmountLong(expected)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
@@ -388,10 +394,10 @@ public class MTEExoticModule extends MTEBaseModule {
             int index = 0;
             for (FluidStack stack : plasmaRecipe.mFluidInputs) {
                 // Save fluid amount to NBT
-                fluidStackListNBTTag.setLong(index + "fluidAmount", stack.amount);
+                fluidStackListNBTTag.setLong(index + "fluidAmount", GTUtility.getFluidAmountLong(stack));
 
                 // Save FluidStack to NBT
-                NBT.setTag(index + "fluidStack", stack.writeToNBT(new NBTTagCompound()));
+                NBT.setTag(index + "fluidStack", GTUtility.saveFluid(stack));
 
                 index++;
             }
@@ -419,12 +425,12 @@ public class MTEExoticModule extends MTEBaseModule {
             FluidStack[] stacks = new FluidStack[(int) numberOfPlasmas];
             for (int i = 0; i < numberOfPlasmas; i++) {
                 // Load fluid amount from NBT
-                int amount = tempFluidTag.getInteger(i + "fluidAmount");
+                long amount = tempFluidTag.getLong(i + "fluidAmount");
 
                 // Load FluidStack from NBT
-                FluidStack stack = FluidStack.loadFluidStackFromNBT(NBT.getCompoundTag(i + "fluidStack"));
+                FluidStack stack = GTUtility.loadFluid(NBT.getCompoundTag(i + "fluidStack"));
 
-                stacks[i] = new FluidStack(stack, amount);
+                stacks[i] = GTUtility.copyAmount(amount, stack);
             }
 
             FluidStack outputFluid;

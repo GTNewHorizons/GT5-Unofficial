@@ -21,6 +21,7 @@ import com.cleanroommc.modularui.utils.item.IItemHandlerModifiable;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.GenericListSyncHandler;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
+import com.cleanroommc.modularui.value.sync.LongSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
@@ -212,7 +213,7 @@ public class MTEHatchInputBusMEGui extends MTEHatchBaseGui<MTEHatchInputBusME> {
     private ModularPanel createStackSizeConfigurationPanel(ModularPanel parent) {
         BooleanSyncValue isRecipeCheckSyncer = new BooleanSyncValue(machine::doFastRecipeCheck, machine::setRecipeCheck)
             .allowC2S();
-        IntSyncValue minAutoPullStackSizeSyncer = new IntSyncValue(
+        LongSyncValue minAutoPullStackSizeSyncer = new LongSyncValue(
             machine::getMinAutoPullStackSize,
             machine::setMinAutoPullStackSize).allowC2S();
         IntSyncValue autoPullRefreshTimeSyncer = new IntSyncValue(
