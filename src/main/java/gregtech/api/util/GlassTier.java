@@ -97,9 +97,12 @@ public class GlassTier {
      * @return Integer glass tier or null
      */
     @Nullable
-    public static Integer getGlassBlockTier(Block block, int meta) {
-        return glassToTierAndIndex.getOrDefault(Pair.of(block, meta), defaultGlassTier)
-            .getLeft();
+    public static int getGlassBlockTier(Block block, int meta) {
+        Pair<Integer, Integer> p = glassToTierAndIndex.get(Pair.of(block, meta));
+        if (p == null || p.getLeft() == null) {
+            return 0; // prevents a -1
+        }
+        return p.getLeft();
     }
 
     public static int getGlassChannelValue(Block block, int meta) {
