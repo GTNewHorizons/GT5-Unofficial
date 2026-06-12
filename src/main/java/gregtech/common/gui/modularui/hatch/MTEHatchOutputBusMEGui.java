@@ -1,6 +1,5 @@
 package gregtech.common.gui.modularui.hatch;
 
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import com.cleanroommc.modularui.drawable.GuiTextures;
@@ -14,12 +13,9 @@ import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
-import com.glodblock.github.common.item.ItemFluidVoidStorageCell;
 
 import appeng.api.storage.data.IAEItemStack;
 import appeng.core.localization.GuiText;
-import appeng.items.storage.ItemBasicStorageCell;
-import appeng.items.storage.ItemVoidStorageCell;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
 import gregtech.common.tileentities.machines.outputme.MTEHatchOutputBusME;
@@ -44,10 +40,7 @@ public class MTEHatchOutputBusMEGui extends MTEHatchBaseGui<MTEHatchOutputBusME>
             .verticalCenter();
 
         // drive slot
-        mainRow.child(
-            new ItemSlot().slot(
-                new ModularSlot(machine.inventoryHandler, 0).singletonSlotGroup()
-                    .filter(this::isItemCell)));
+        mainRow.child(new ItemSlot().slot(new ModularSlot(machine.inventoryHandler, 0).singletonSlotGroup()));
 
         // check mode toggle
         mainRow.child(
@@ -73,12 +66,6 @@ public class MTEHatchOutputBusMEGui extends MTEHatchBaseGui<MTEHatchOutputBusME>
                 .marginLeft(5));
 
         return super.createContentSection(panel, syncManager).child(mainRow);
-    }
-
-    private boolean isItemCell(ItemStack itemStack) {
-        Item item = itemStack.getItem();
-        return item instanceof ItemBasicStorageCell
-            || item instanceof ItemVoidStorageCell && !(item instanceof ItemFluidVoidStorageCell);
     }
 
     @Override
