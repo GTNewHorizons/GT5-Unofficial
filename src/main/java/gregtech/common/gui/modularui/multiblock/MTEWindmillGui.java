@@ -1,5 +1,7 @@
 package gregtech.common.gui.modularui.multiblock;
 
+import java.util.ArrayList;
+
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
@@ -12,15 +14,14 @@ import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
 import bartworks.common.tileentities.multis.MTEWindmill;
 import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.api.structure.error.StructureError;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.modularui2.factory.GTBaseGuiBuilder;
 import gregtech.common.modularui2.widget.GTProgressWidget;
 
 public class MTEWindmillGui extends MTEMultiBlockBaseGui<MTEWindmill> {
 
-    // TODO: add back check structure button
-    // TODO: show structure problems on gui
-    // TODO: different gui depending on machine mode
+    private static final int MACHINE_ROW_HEIGHT = 76;
 
     public MTEWindmillGui(MTEWindmill windmill) {
         super(windmill);
@@ -40,18 +41,29 @@ public class MTEWindmillGui extends MTEMultiBlockBaseGui<MTEWindmill> {
                 new ModularSlot(multiblock.inventoryHandler, multiblock.getControllerSlotIndex()).singletonSlotGroup())
             .backgroundOverlay(GTGuiTextures.OVERLAY_SLOT_CRUSHED_ORE);
 
+        ArrayList<StructureError> errors = new ArrayList<>();
+        multiblock.checkMachine(multiblock.getBaseMetaTileEntity(), null, errors);
+
         return new GTBaseGuiBuilder(multiblock, guiData, syncManager, uiSettings).moveGregtechLogoPos(8, 63)
             .build()
-            .child(
-                Flow.column()
-                    .child(createMachineRow(progressGrinder, inputSlot)));
+            .childIf(!errors.isEmpty(), () -> createMachineRowIncomplete(syncManager, inputSlot))
+            .childIf(errors.isEmpty(), () -> createMachineRow(progressGrinder, inputSlot));
     }
 
     protected Flow createMachineRow(ProgressWidget progressGrinder, ItemSlot inputSlot) {
         return Flow.row()
             .horizontalCenter()
-            .size(72, 76)
+            .size(72, MACHINE_ROW_HEIGHT)
             .child(progressGrinder.center())
             .child(inputSlot.center());
+    }
+
+    protected Flow createMachineRowIncomplete(PanelSyncManager syncManager, ItemSlot inputSlot) {
+        return Flow.row()
+            .fullWidth()
+            .height(MACHINE_ROW_HEIGHT)
+            .padding(4, 4, 6, 0)
+            .child(createStructureErrorWidget(syncManager))
+            .child(inputSlot.pos(150, 63));
     }
 }
