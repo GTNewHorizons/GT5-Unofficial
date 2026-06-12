@@ -19,7 +19,10 @@ import goodgenerator.items.GGMaterial;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -153,5 +156,26 @@ public class PlasmaForgeRecipes implements Runnable {
                 .metadata(COIL_HEAT, 12600)
                 .addTo(plasmaForgeRecipes);
         }
+
+        // Chipped Amalgatite
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                // this is very gross
+                GTUtility.copyAmount(0, GTOreDictUnificator.get(OrePrefixes.nanite, Materials.MagMatter, 1)),
+                GTOreDictUnificator.get(OrePrefixes.round, Materials.Eternity, 64),
+                GTOreDictUnificator.get(OrePrefixes.round, Materials.MagMatter, 64),
+                GTOreDictUnificator.get(OrePrefixes.round, Materials.Hexanite, 64),
+                GTOreDictUnificator.get(OrePrefixes.gemExquisite, Materials.Ruby, 64),
+                GTOreDictUnificator.get(OrePrefixes.gemExquisite, Materials.Jasper, 64),
+                GTOreDictUnificator.get(OrePrefixes.gemExquisite, Materials.Sapphire, 64),
+                GTOreDictUnificator.get(OrePrefixes.gemExquisite, Materials.Opal, 64))
+            .fluidInputs(Materials.StargateCrystalSlurry.getFluid(5_000), Materials.ExcitedDTSC.getFluid(72_000))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gemChipped, Materials.Amalgatite, 64))
+            .fluidOutputs(Materials.DTR.getFluid(144_000))
+            .duration(420 * SECONDS)
+            .eut((int) TierEU.RECIPE_MAX)
+            .metadata(COIL_HEAT, 13500)
+            .addTo(plasmaForgeRecipes);
+
     }
 }
