@@ -66,6 +66,11 @@ public class ScannerHelper {
     private static IChatComponent transComp(String name, Object... params) {
         return new ChatComponentTranslation("GT5U.scanner." + name, params);
     }
+
+    private static IChatComponent goldComp(Object val) {
+        return new ChatComponentText(String.valueOf(val))
+            .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GOLD));
+    }
     // endregion
 
     // region init
@@ -209,28 +214,31 @@ public class ScannerHelper {
     private static void addBaseInfoComp(EntityPlayer player, World world, int x, int y, int z,
         List<IChatComponent> list, TileEntity tileEntity, Block block) {
         list.add(addTitleComp("title_base_info"));
-        list.add(transComp("base_info_1", formatNumber(x), formatNumber(y), formatNumber(z)));
+        list.add(
+            transComp("base_info_1", goldComp(formatNumber(x)), goldComp(formatNumber(y)), goldComp(formatNumber(z))));
         try {
-            IChatComponent nameComp = (tileEntity instanceof IInventory inv)
+            IChatComponent nameComp = ((tileEntity instanceof IInventory inv)
                 ? new ChatComponentTranslation(inv.getInventoryName())
-                : new ChatComponentTranslation(block.getUnlocalizedName() + ".name");
+                : new ChatComponentTranslation(block.getUnlocalizedName() + ".name"))
+                    .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GOLD));
             int meta = world.getBlockMetadata(x, y, z);
             float hardness = block.getBlockHardness(world, x, y, z);
             float explosionResist = block
                 .getExplosionResistance(player, world, x, y, z, player.posX, player.posY, player.posZ);
 
-            list.add(transComp("base_info_2", nameComp, meta));
+            list.add(transComp("base_info_2", nameComp, goldComp(meta)));
             if (tileEntity instanceof IGregTechTileEntity gtTE && gtTE.getMetaTileEntity() != null) {
                 list.add(
                     transComp(
                         "base_info_meta_id",
-                        gtTE.getMetaTileEntity()
-                            .getMetaName()));
+                        goldComp(
+                            gtTE.getMetaTileEntity()
+                                .getMetaName())));
             }
-            list.add(transComp("base_info_3", hardness, explosionResist));
+            list.add(transComp("base_info_3", goldComp(hardness), goldComp(explosionResist)));
 
             if (block.isBeaconBase(world, x, y, z, x, y + 1, z)) {
-                list.add(transComp("base_info_4"));
+                list.add(transComp("base_info_4").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GOLD)));
             }
         } catch (Exception e) {
             list.add(transComp("error_base_info").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
@@ -250,7 +258,7 @@ public class ScannerHelper {
                         String maxAmount = formatNumber(tanks[i].capacity);
                         String name = getFluidName(tanks[i].fluid, true);
 
-                        list.add(transComp("fluid_handler_info_1", i, currAmount, maxAmount, name));
+                        list.add(transComp("fluid_handler_info_1", i, goldComp(currAmount), goldComp(maxAmount), name));
                         euAmount += 500;
                     }
                 }
@@ -275,7 +283,7 @@ public class ScannerHelper {
                 String maxHeat = formatNumber(reactor.getMaxHeat());
                 float heatModifier = reactor.getHeatEffectModifier();
 
-                list.add(transComp("reactor_info_1", currHeat, maxHeat, heatModifier));
+                list.add(transComp("reactor_info_1", goldComp(currHeat), goldComp(maxHeat), goldComp(heatModifier)));
                 euAmount += 500;
             }
         } catch (Exception e) {
@@ -342,7 +350,7 @@ public class ScannerHelper {
                 final IAlignment alignment = alignmentProvider.getAlignment();
                 if (alignment != null) {
                     list.add(addTitleComp("title_side_info"));
-                    list.add(transComp("side_info_1", alignment.getExtendedFacing()));
+                    list.add(transComp("side_info_1", goldComp(alignment.getExtendedFacing())));
                     euAmount += 100;
                 }
             }
@@ -361,8 +369,11 @@ public class ScannerHelper {
                 float chance = wrenchable.getWrenchDropRate() * 100;
 
                 list.add(addTitleComp("title_wrench_info"));
-                list.add(transComp("wrench_info_1", face, chance));
-                list.add(wrenchable.wrenchCanRemove(player) ? transComp("wrench_info_2") : transComp("wrench_info_3"));
+                list.add(transComp("wrench_info_1", goldComp(face), goldComp(chance)));
+                list.add(
+                    wrenchable.wrenchCanRemove(player)
+                        ? transComp("wrench_info_2").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GOLD))
+                        : transComp("wrench_info_3").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
                 euAmount += 100;
             }
         } catch (Exception e) {
@@ -380,7 +391,7 @@ public class ScannerHelper {
             if (hasConductor || hasStorage) {
                 list.add(addTitleComp("title_ic2_info"));
                 if (hasConductor) {
-                    list.add(transComp("ic2_info_1", ((IEnergyConductor) tileEntity).getConductionLoss()));
+                    list.add(transComp("ic2_info_1", goldComp(((IEnergyConductor) tileEntity).getConductionLoss())));
                     euAmount += 200;
                 }
                 if (hasStorage) {
@@ -388,8 +399,8 @@ public class ScannerHelper {
                     list.add(
                         transComp(
                             "ic2_info_2",
-                            formatNumber(storage.getStored()),
-                            formatNumber(storage.getCapacity())));
+                            goldComp(formatNumber(storage.getStored())),
+                            goldComp(formatNumber(storage.getCapacity()))));
                     euAmount += 200;
                 }
             }
@@ -434,9 +445,9 @@ public class ScannerHelper {
                 String storedEU = formatNumber(energyContainer.getStoredEU());
                 String euCapacity = formatNumber(energyContainer.getEUCapacity());
 
-                list.add(transComp("energy_info_1", inputVoltage, inputTier, inputAmperage));
-                list.add(transComp("energy_info_2", outputVoltage, outputTier, outputAmperage));
-                list.add(transComp("energy_info_3", storedEU, euCapacity));
+                list.add(transComp("energy_info_1", goldComp(inputVoltage), inputTier, goldComp(inputAmperage)));
+                list.add(transComp("energy_info_2", goldComp(outputVoltage), outputTier, goldComp(outputAmperage)));
+                list.add(transComp("energy_info_3", goldComp(storedEU), goldComp(euCapacity)));
             }
         } catch (Exception e) {
             list.add(transComp("error_energy_info").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
@@ -468,15 +479,17 @@ public class ScannerHelper {
     private static void addChunkInfoComp(List<IChatComponent> list, Chunk currentChunk, EntityPlayer player) {
         list.add(addTitleComp("title_chunk_info"));
         if (Pollution.hasPollution(currentChunk)) {
-            list.add(transComp("chunk_info_1", formatNumber(Pollution.getPollution(currentChunk))));
+            list.add(
+                transComp("chunk_info_1", goldComp(formatNumber(Pollution.getPollution(currentChunk))))
+                    .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
         } else {
-            list.add(transComp("chunk_info_2"));
+            list.add(transComp("chunk_info_2").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GREEN)));
         }
 
         if (player.capabilities.isCreativeMode) {
             final FluidStack fluid = undergroundOilReadInformation(currentChunk);
             if (fluid != null) {
-                list.add(transComp("chunk_info_3", fluid.getLocalizedName(), formatNumber(fluid.amount)));
+                list.add(transComp("chunk_info_3", fluid.getLocalizedName(), goldComp(formatNumber(fluid.amount))));
             } else {
                 list.add(transComp("chunk_info_4"));
             }
