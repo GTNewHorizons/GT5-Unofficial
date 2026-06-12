@@ -9,6 +9,8 @@ import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.utils.item.ItemStackHandler;
 import com.cleanroommc.modularui.utils.item.LimitingItemStackHandler;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 
 import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.Textures;
@@ -25,13 +27,19 @@ public class MTEHatchInputBusDebug extends MTEHatchInputBus {
 
     private static final int SLOT_COUNT = 16;
     public final ItemStackHandler phantomHolder = new LimitingItemStackHandler(SLOT_COUNT, 1);
+    public boolean finiteMode;
+    public int stackSizeParseAs;
 
     public MTEHatchInputBusDebug(int id, String name, String nameRegional, int tier) {
         super(id, name, nameRegional, tier, 1);
+        finiteMode = false;
+        stackSizeParseAs = 64;
     }
 
     public MTEHatchInputBusDebug(String aName, byte aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 1, aDescription, aTextures);
+        finiteMode = false;
+        stackSizeParseAs = 64;
     }
 
     @Override
@@ -40,6 +48,8 @@ public class MTEHatchInputBusDebug extends MTEHatchInputBus {
         if (phantomHolder != null) {
             aNBT.setTag("phantomInventory", phantomHolder.serializeNBT());
         }
+        aNBT.setBoolean("finiteMode", finiteMode);
+        aNBT.setInteger("stackSizeParseAs", stackSizeParseAs);
     }
 
     @Override
@@ -48,6 +58,8 @@ public class MTEHatchInputBusDebug extends MTEHatchInputBus {
         if (phantomHolder != null) {
             phantomHolder.deserializeNBT(aNBT.getCompoundTag("phantomInventory"));
         }
+        finiteMode = aNBT.getBoolean("finiteMode");
+        stackSizeParseAs = aNBT.getInteger("stackSizeParseAs");
     }
 
     @Override
@@ -111,6 +123,11 @@ public class MTEHatchInputBusDebug extends MTEHatchInputBus {
     }
 
     @Override
+    public ItemStack decrStackSize(int index, int amount) {
+        return super.decrStackSize(index, 0);
+    }
+
+    @Override
     public ItemStack getStackInSlot(int slotIndex) {
         if (slotIndex < 0 || slotIndex >= getSizeInventory()) return null;
         if (slotIndex == getCircuitSlot() + SLOT_COUNT) return mInventory[getCircuitSlot()];
@@ -119,9 +136,14 @@ public class MTEHatchInputBusDebug extends MTEHatchInputBus {
         if (stack == null) return null;
 
         ItemStack returnStack = stack.copy();
-        returnStack.stackSize = Integer.MAX_VALUE;
+        returnStack.stackSize = finiteMode ? stackSizeParseAs : Integer.MAX_VALUE;
 
         return returnStack;
+    }
+
+    @Override
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        super.addUIWidgets(builder, buildContext);
     }
 
     @Override
