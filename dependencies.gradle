@@ -131,6 +131,8 @@ dependencies {
     testImplementation('org.junit.jupiter:junit-jupiter')
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     testImplementation("org.mockito:mockito-core:5.+")
+    testImplementation("it.unimi.dsi:fastutil:8.5.18")
+    testImplementation("org.joml:joml:1.10.8")
     testImplementation("com.github.GTNewHorizons:Chisel:2.17.26-GTNH:dev") { transitive = false }
 
     runtimeOnlyNonPublishable("com.github.GTNewHorizons:DuraDisplay:1.4.2:dev")
