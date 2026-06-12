@@ -139,6 +139,8 @@ public class MissingMappingsHandler {
         .ignore("kekztech:kekztech_tfftstoragefieldblock3_block")
         .ignore("kekztech:kekztech_tfftstoragefieldblock4_block")
         .ignore("kekztech:kekztech_tfftstoragefieldblock5_block")
+        .ignore("bartworks:BW_FakeGlasBlock")
+        .ignore("bartworks:BW_FakeGlasBlocks2")
 
         .ignore("miscutils:itemPlateMeatRaw")
         .ignore("miscutils:blockBlockMeatRaw")
