@@ -128,7 +128,7 @@ public final class GTInflectionManager {
      */
     public static String formatInflection(String inputKey, String... formatterKey) {
         final String input = StatCollector.translateToLocal(inputKey);
-        if (!input.contains("s{") || IS_SERVER) {
+        if (IS_SERVER || !input.contains("s{")) {
             try {
                 return String.format(
                     unescape(input),
@@ -186,21 +186,12 @@ public final class GTInflectionManager {
                 continue;
             }
             switch (targetRule) {
-                case "lowercase" -> {
-                    word = word.toLowerCase(LOCALE);
-                    continue;
-                }
-                case "uppercase" -> {
-                    word = word.toUpperCase(LOCALE);
-                    continue;
-                }
-                case "capitalize_first" -> {
-                    word = word.substring(0, 1)
-                        .toUpperCase(LOCALE)
-                        + word.substring(1)
-                            .toLowerCase(LOCALE);
-                    continue;
-                }
+                case "lowercase" -> word = word.toLowerCase(LOCALE);
+                case "uppercase" -> word = word.toUpperCase(LOCALE);
+                case "capitalize_first" -> word = word.substring(0, 1)
+                    .toUpperCase(LOCALE)
+                    + word.substring(1)
+                        .toLowerCase(LOCALE);
                 case "capitalize_words" -> {
                     Matcher matcher = CAPITALIZE_WORDS_PATTERN.matcher(word);
                     StringBuffer sb = new StringBuffer(word.length());
@@ -214,19 +205,20 @@ public final class GTInflectionManager {
                     }
                     matcher.appendTail(sb);
                     word = sb.toString();
-                    continue;
                 }
-            }
-            List<Rule> rules = INFLECTION_MAP.get(targetRule);
-            if (rules == null || rules.isEmpty()) {
-                continue;
-            }
-            for (Rule rule : rules) {
-                Matcher m = rule.pattern()
-                    .matcher(word);
-                if (m.matches()) {
-                    word = m.replaceFirst(rule.replacement());
-                    break;
+                default -> {
+                    List<Rule> rules = INFLECTION_MAP.get(targetRule);
+                    if (rules == null || rules.isEmpty()) {
+                        continue;
+                    }
+                    for (Rule rule : rules) {
+                        Matcher m = rule.pattern()
+                            .matcher(word);
+                        if (m.matches()) {
+                            word = m.replaceFirst(rule.replacement());
+                            break;
+                        }
+                    }
                 }
             }
         }
