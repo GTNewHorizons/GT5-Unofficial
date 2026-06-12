@@ -139,7 +139,7 @@ public class MTEBetterJukeboxGui extends MTEBasicMachineBaseGui<MTEBetterJukebox
         return new ParentWidget<>().fullWidth()
             .coverChildrenHeight()
             .child(createBottomLeftCornerFlow(panel, syncManager))
-            .child(createLogo().rightRel(0));
+            .child(makeLogoWidget().rightRel(0));
     }
 
     @Override
