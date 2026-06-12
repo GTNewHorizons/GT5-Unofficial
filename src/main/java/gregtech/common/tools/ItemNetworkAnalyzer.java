@@ -112,7 +112,7 @@ public class ItemNetworkAnalyzer extends ItemTool {
     @Override
     public ItemStack onItemRightClick(ItemStack stack, World worldIn, EntityPlayer p) {
 
-        if (!worldIn.isRemote && p.isSneaking() && stack.getItem() instanceof ItemNetworkAnalyzer) {
+        if (worldIn.isRemote && p.isSneaking() && stack.getItem() instanceof ItemNetworkAnalyzer) {
             final AnalyzerModes newMode = nextInMode(
                 Arrays.asList(AnalyzerModes.values()),
                 ItemNetworkAnalyzer.getMode(stack));
