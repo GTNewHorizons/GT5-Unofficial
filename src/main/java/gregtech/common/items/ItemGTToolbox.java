@@ -44,7 +44,6 @@ import appeng.api.implementations.items.IAEWrench;
 import buildcraft.api.tools.IToolWrench;
 import cpw.mods.fml.common.Optional.Interface;
 import cpw.mods.fml.common.Optional.InterfaceList;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.api.tool.ITool;
@@ -607,7 +606,6 @@ public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInv
         });
     }
 
-    @SubscribeEvent
     public void onBlockBreakingEvent(BlockEvent.BreakEvent event) {
         getToolboxIfEquipped(event.getPlayer()).flatMap(ToolboxUtil::getSelectedTool).ifPresent(tool -> {
             if (tool.getItem() instanceof final MetaGeneratedTool toolItem) {
@@ -620,7 +618,6 @@ public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInv
         });
     }
 
-    @SubscribeEvent
     public void onBlockHarvestingEvent(BlockEvent.HarvestDropsEvent aEvent) {
         getToolboxIfEquipped(aEvent.harvester).flatMap(ToolboxUtil::getSelectedTool)
             .ifPresent(tool -> {

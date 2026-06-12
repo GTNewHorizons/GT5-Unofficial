@@ -278,23 +278,27 @@ public class MTESpargeTower extends GTPPMultiBlockBase<MTESpargeTower> implement
         if (!mTopLayerFound) {
             errors.add(StructureErrors.of("GT5U.gui.text.structure_error.missing_top"));
         }
+        if (mOutputHatchesByLayer.isEmpty() || mOutputHatchesByLayer.get(0)
+            .isEmpty()) {
+            errors.add(StructureErrors.missingOutputHatchDT(List.of(2)));
+        }
         checkHasMaintenanceHatch(errors);
         checkHasEnergyHatch(errors);
         checkHasInputHatch(errors);
-        checkHasOutputHatch(errors);
     }
 
     @Override
-    protected void addFluidOutputs(FluidStack[] outputFluids) {
+    protected boolean addFluidOutputs(FluidStack[] outputFluids) {
+        boolean succeed = true;
         for (int i = 0; i < outputFluids.length && i < mOutputHatchesByLayer.size(); i++) {
-            FluidStack tStack = outputFluids[i] != null ? outputFluids[i].copy() : null;
-            if (tStack == null) {
+            FluidStack stack = outputFluids[i] != null ? outputFluids[i].copy() : null;
+            if (stack == null) {
                 continue;
             }
-            if (!dumpFluid(mOutputHatchesByLayer.get(i), tStack, true)) {
-                dumpFluid(mOutputHatchesByLayer.get(i), tStack, false);
-            }
+            addOutputPartial(stack, mOutputHatchesByLayer.get(i));
+            if (stack.amount > 0) succeed = false;
         }
+        return succeed;
     }
 
     @Override
