@@ -263,22 +263,10 @@ public class MTEBeamMirror extends MTEBeamMultiBase<MTEBeamMirror> implements IS
                 beamOutput.getBaseMetaTileEntity()
                     .setFrontFacing(getDirection());
             } else if (this.mTier == 1) {
-                // only flip orientation I could achieve during tests
-                boolean isFlipped = getFlip().isHorizontallyFlipped();
-                switch (getRotation()) {
-                    case NORMAL -> beamOutput.getBaseMetaTileEntity()
-                        .setFrontFacing(ForgeDirection.UP);
-                    case UPSIDE_DOWN -> beamOutput.getBaseMetaTileEntity()
-                        .setFrontFacing(ForgeDirection.DOWN);
-                    case CLOCKWISE -> beamOutput.getBaseMetaTileEntity()
-                        .setFrontFacing(
-                            getDirection().getRotation(isFlipped ? ForgeDirection.UP : ForgeDirection.DOWN));
-                    case COUNTER_CLOCKWISE -> beamOutput.getBaseMetaTileEntity()
-                        .setFrontFacing(
-                            getDirection().getRotation(isFlipped ? ForgeDirection.DOWN : ForgeDirection.UP));
-                    default -> beamOutput.getBaseMetaTileEntity()
-                        .setFrontFacing(getDirection().getRotation(ForgeDirection.UP));
-                }
+                beamOutput.getBaseMetaTileEntity()
+                    .setFrontFacing(
+                        this.getExtendedFacing()
+                            .getRelativeUpInWorld());
             }
         }
     }

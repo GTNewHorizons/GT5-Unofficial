@@ -112,7 +112,7 @@ public final class GTMusicSystem {
             }
         }
 
-        public void setEmitter(int index, Vector4i position, float volume) {
+        public void setEmitter(int index, Vector4i position, double volume) {
             int arrIndex = index * EMITTER_STRIDE;
             if (arrIndex < 0 || arrIndex >= emitterParameters.length) {
                 throw new IndexOutOfBoundsException(
@@ -137,7 +137,7 @@ public final class GTMusicSystem {
                 modified = true;
                 emitterParameters[arrIndex + EMITTER_DIMENSION] = position.w;
             }
-            final int intVolume = (int) (volume * 100.0f);
+            final int intVolume = (int) (volume * 100);
             if (emitterParameters[arrIndex + EMITTER_VOLUME_X_100] != intVolume) {
                 modified = true;
                 emitterParameters[arrIndex + EMITTER_VOLUME_X_100] = intVolume;

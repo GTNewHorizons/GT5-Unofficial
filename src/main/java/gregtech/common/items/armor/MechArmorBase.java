@@ -7,6 +7,7 @@ import static gregtech.api.util.GTUtility.getOrCreateNbtCompound;
 
 import java.util.List;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -14,6 +15,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
@@ -32,6 +34,7 @@ import org.lwjgl.input.Keyboard;
 import com.gtnewhorizon.gtnhlib.keybind.IKeyPressedListener;
 import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
 
+import baubles.api.BaublesApi;
 import cpw.mods.fml.common.Optional.Interface;
 import cpw.mods.fml.common.Optional.InterfaceList;
 import cpw.mods.fml.relauncher.Side;
@@ -374,13 +377,25 @@ public class MechArmorBase extends ItemArmor
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public boolean shouldRender(ItemStack stack) {
         NBTTagCompound tag = stack.getTagCompound();
-        if (tag == null) return false;
-        NBTTagList active = tag.getTagList("active", NBT.TAG_STRING);
-        String name = BehaviorName.HoloInventory.name();
-        for (int i = 0; i < active.tagCount(); i++) {
-            if (name.equals(active.getStringTagAt(i))) return true;
+        if (tag != null) {
+            NBTTagList active = tag.getTagList("active", NBT.TAG_STRING);
+            String name = BehaviorName.HoloInventory.name();
+            for (int i = 0; i < active.tagCount(); i++) {
+                if (name.equals(active.getStringTagAt(i))) return true;
+            }
+        }
+        // No augment - fall through to baubles so original holo glasses still work
+        EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+        if (player == null) return false;
+        IInventory baubles = BaublesApi.getBaubles(player);
+        for (int i = 0; i < baubles.getSizeInventory(); i++) {
+            ItemStack bauble = baubles.getStackInSlot(i);
+            if (bauble != null && bauble.getItem() instanceof net.dries007.holoInventory.api.IHoloGlasses holoGlasses) {
+                return holoGlasses.shouldRender(bauble);
+            }
         }
         return false;
     }

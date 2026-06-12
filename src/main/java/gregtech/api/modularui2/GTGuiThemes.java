@@ -265,7 +265,7 @@ public final class GTGuiThemes {
         .build();
     public static final GTGuiTheme TECTECH_STANDARD = GTGuiTheme.builder("tectech:standard")
         .parent(STANDARD)
-        .themedTexture(GTWidgetThemes.PICTURE_LOGO.getFullName(), GTTextureIds.PICTURE_TECTECH_LOGO_DARK)
+        .themedTexture(GTWidgetThemes.PICTURE_LOGO.getFullName(), GTTextureIds.PICTURE_TECTECH_LOGO)
         .themedTexture(GTWidgetThemes.BACKGROUND_TERMINAL.getFullName(), GTTextureIds.BACKGROUND_TERMINAL_TECTECH)
         .build();
     public static final GTGuiTheme GORGE = GTGuiTheme.builder("gorge")

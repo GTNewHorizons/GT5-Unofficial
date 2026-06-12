@@ -117,8 +117,8 @@ public abstract class MTEBasicMachine extends MTEBasicTank
     public final ItemStack[] mOutputItems;
     public final int mInputSlotCount;
     public int mAmperage;
-    public boolean mAllowInputFromOutputSide = false, mFluidTransfer = false, mItemTransfer = false,
-        mStuttering = false, mCharge = false, mDecharge = false;
+    public boolean mAllowInputFromOutputSide = true, mFluidTransfer = false, mItemTransfer = false, mStuttering = false,
+        mCharge = false, mDecharge = false;
     private int errorDisplayID;
     public boolean mDisableFilter = true;
     public boolean mDisableMultiStack = true;
@@ -213,6 +213,10 @@ public abstract class MTEBasicMachine extends MTEBasicTank
         // The current logic is that the block is set to UNKNOWN before loading of NBT or rotation, and the
         // very first rotation will cause mMainFacing and mFacing to be swapped and initialized.
         mMainFacing = UNKNOWN;
+    }
+
+    public boolean isStuttering() {
+        return mStuttering;
     }
 
     /**
