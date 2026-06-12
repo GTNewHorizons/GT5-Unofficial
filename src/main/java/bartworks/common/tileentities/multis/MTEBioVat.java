@@ -82,6 +82,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
@@ -768,18 +769,19 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> implements I
 
     @Override
     public void getExtraInfoData(List<String> info) {
+        // See https://github.com/GTNewHorizons/GT-New-Horizons-Modpack/issues/11923
+        // here we must check the machine is well-formed as otherwise getExpectedMultiplier might error out!
         info.add(
-            StatCollector.translateToLocalFormatted(
-                "BW.infoData.BioVat.expectedProduction.s",
+            IGregTechDeviceInformation.encode(
+                "BW.infoData.BioVat.expectedProduction.fmt",
                 (this.mMachine
                     ? (this.mMaxProgresstime <= 0 ? this.getExpectedMultiplier(null, false) : this.mExpectedMultiplier)
                         * 100
                     : -1)));
 
         info.add(
-            StatCollector.translateToLocalFormatted(
-                "BW.infoData.BioVat.production.s",
-                (this.mMaxProgresstime <= 0 ? 0 : this.mTimes) * 100));
+            IGregTechDeviceInformation
+                .encode("BW.infoData.BioVat.production.fmt", (this.mMaxProgresstime <= 0 ? 0 : this.mTimes) * 100));
     }
 
     @Override
