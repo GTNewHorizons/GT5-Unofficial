@@ -32,6 +32,7 @@ import gtPlusPlus.core.item.base.ore.BaseItemMilledOre;
 import gtPlusPlus.core.item.base.plates.BaseItemPlate;
 import gtPlusPlus.core.item.base.plates.BaseItemPlateDouble;
 import gtPlusPlus.core.item.bauble.BatteryPackBaseBauble;
+import gtPlusPlus.core.item.bauble.BatteryPackTeslaBauble;
 import gtPlusPlus.core.item.bauble.FireProtectionBauble;
 import gtPlusPlus.core.item.chemistry.IonParticles;
 import gtPlusPlus.core.item.chemistry.StandardBaseParticles;
@@ -332,6 +333,16 @@ public final class ModItems {
         GregtechItemList.ChargePack_UV.set(registerChargePack(8));
         GregtechItemList.ChargePack_UHV.set(registerChargePack(9));
 
+        GregtechItemList.TeslaChargePack_LV.set(registerTeslaChargePack(1));
+        GregtechItemList.TeslaChargePack_MV.set(registerTeslaChargePack(2));
+        GregtechItemList.TeslaChargePack_HV.set(registerTeslaChargePack(3));
+        GregtechItemList.TeslaChargePack_EV.set(registerTeslaChargePack(4));
+        GregtechItemList.TeslaChargePack_IV.set(registerTeslaChargePack(5));
+        GregtechItemList.TeslaChargePack_LuV.set(registerTeslaChargePack(6));
+        GregtechItemList.TeslaChargePack_ZPM.set(registerTeslaChargePack(7));
+        GregtechItemList.TeslaChargePack_UV.set(registerTeslaChargePack(8));
+        GregtechItemList.TeslaChargePack_UHV.set(registerTeslaChargePack(9));
+
         // Buffer Cores!
         GregtechItemList.Energy_Core_ULV.set(new ItemBufferCore("itemBufferCore", 1));
         GregtechItemList.Energy_Core_LV.set(new ItemBufferCore("itemBufferCore", 2));
@@ -353,6 +364,12 @@ public final class ModItems {
 
     private static Item registerChargePack(int tier) {
         Item item = new BatteryPackBaseBauble(tier);
+        registerTieredTooltip(new ItemStack(item, 1, GTRecipeBuilder.WILDCARD), GTTooltipHandler.Tier.values()[tier]);
+        return item;
+    }
+
+    private static Item registerTeslaChargePack(int tier) {
+        Item item = new BatteryPackTeslaBauble(tier);
         registerTieredTooltip(new ItemStack(item, 1, GTRecipeBuilder.WILDCARD), GTTooltipHandler.Tier.values()[tier]);
         return item;
     }

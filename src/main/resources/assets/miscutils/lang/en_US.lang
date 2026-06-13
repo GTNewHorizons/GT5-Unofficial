@@ -3045,7 +3045,6 @@ item.GTPP.BattPack.08.name.name=Charge Pack [UV]
 item.GTPP.BattPack.09.name=Charge Pack [UHV]
 item.GTPP.BattPack.09.name.name=Charge Pack [UHV]
 
-
 # Added 13/3/19
 item.gtpp.debug.scanner.name=GT++ Debug Scanner
 item.itemDustTinyDemicheleiteBr.name=Tiny Pile of Demicheleite (Br)
@@ -4250,3 +4249,22 @@ gtplusplus.blocktieredcasings.1.6.name=Integral Framework II
 gtplusplus.blocktieredcasings.1.7.name=Integral Framework III
 gtplusplus.blocktieredcasings.1.8.name=Integral Framework IV
 gtplusplus.blocktieredcasings.1.9.name=Integral Framework V
+
+item.GTPP.BattPackTesla.01.name=Tesla Charge Pack [LV]
+item.GTPP.BattPackTesla.01.name.name=Tesla Charge Pack [LV]
+item.GTPP.BattPackTesla.02.name=Tesla Charge Pack [MV]
+item.GTPP.BattPackTesla.02.name.name=Tesla Charge Pack [MV]
+item.GTPP.BattPackTesla.03.name=Tesla Charge Pack [HV]
+item.GTPP.BattPackTesla.03.name.name=Tesla Charge Pack [HV]
+item.GTPP.BattPackTesla.04.name=Tesla Charge Pack [EV]
+item.GTPP.BattPackTesla.04.name.name=Tesla Charge Pack [EV]
+item.GTPP.BattPackTesla.05.name=Tesla Charge Pack [IV]
+item.GTPP.BattPackTesla.05.name.name=Tesla Charge Pack [IV]
+item.GTPP.BattPackTesla.06.name=Tesla Charge Pack [LuV]
+item.GTPP.BattPackTesla.06.name.name=Tesla Charge Pack [LuV]
+item.GTPP.BattPackTesla.07.name=Tesla Charge Pack [ZPM]
+item.GTPP.BattPackTesla.07.name.name=Tesla Charge Pack [ZPM]
+item.GTPP.BattPackTesla.08.name=Tesla Charge Pack [UV]
+item.GTPP.BattPackTesla.08.name.name=Tesla Charge Pack [UV]
+item.GTPP.BattPackTesla.09.name=Tesla Charge Pack [UHV]
+item.GTPP.BattPackTesla.09.name.name=Tesla Charge Pack [UHV]
