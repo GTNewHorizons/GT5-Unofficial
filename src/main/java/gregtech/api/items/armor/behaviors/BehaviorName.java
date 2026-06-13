@@ -33,7 +33,8 @@ public enum BehaviorName {
     VisDiscount(EnumRarity.uncommon),
     SpaceSuit(EnumRarity.rare),
     MilkInfusion(EnumRarity.uncommon),
-    HoloInventory(EnumRarity.uncommon)
+    HoloInventory(EnumRarity.uncommon),
+    Terrasteel(EnumRarity.uncommon)
     //
     ;
 

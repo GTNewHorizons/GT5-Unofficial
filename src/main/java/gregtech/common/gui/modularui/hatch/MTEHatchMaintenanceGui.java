@@ -53,7 +53,6 @@ public class MTEHatchMaintenanceGui extends MTEHatchBaseGui<MTEHatchMaintenance>
         parent.childIf(
             mAuto,
             () -> new ItemSlotGridBuilder(machine.inventoryHandler, syncManager).size(2)
-                .filter(machine::IsAutoMaintenanceInput)
                 .build()
                 .center());
 

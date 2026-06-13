@@ -32,7 +32,6 @@ public class MTEHatchPatternProviderGui extends MTEHatchBaseGui<MTEHatchPatternP
         return super.createContentSection(panel, syncManager).child(
             new ItemSlotGridBuilder(machine.inventoryHandler, syncManager).size(ROW_SIZE, numRows())
                 .slotGroupKey(PATTERN_INV_NAME)
-                .filter(machine::isValidPattern)
                 .itemSlotSupplier(PatternSlot::new)
                 .build()
                 .horizontalCenter());
