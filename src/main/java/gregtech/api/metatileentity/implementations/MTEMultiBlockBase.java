@@ -772,10 +772,14 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                                     pdr.addRecord(((long) mMaxProgresstime) * mEUt, mOutputItems, mOutputFluids);
                             }
                         }
-                        boolean isOutputAllItems = mOutputItems == null || addItemOutputs(mOutputItems);
-                        boolean isOutputAllFluids = mOutputFluids == null || addFluidOutputs(mOutputFluids);
-                        mOutputItems = null;
-                        mOutputFluids = null;
+                        if (mOutputItems != null) {
+                            addItemOutputs(mOutputItems);
+                            mOutputItems = null;
+                        }
+                        if (mOutputFluids != null) {
+                            addFluidOutputs(mOutputFluids);
+                            mOutputFluids = null;
+                        }
                         outputAfterRecipe();
                         mEfficiency = Math.max(
                             0,
@@ -793,11 +797,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                         }
                         mEfficiencyIncrease = 0;
                         mLastWorkingTick = mTotalRunTime;
-                        if (!isOutputAllItems && protectsExcessItem()) {
-                            stopMachine(ShutDownReasonRegistry.ITEM_OUTPUT_FAILED);
-                        } else if (!isOutputAllFluids && protectsExcessFluid()) {
-                            stopMachine(ShutDownReasonRegistry.FLUID_OUTPUT_FAILED);
-                        } else if (aBaseMetaTileEntity.isAllowedToWork()) {
+                        if (aBaseMetaTileEntity.isAllowedToWork()) {
                             checkRecipe();
                         }
                     }
@@ -1416,6 +1416,10 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         return maxEff - (getIdealStatus() - getRepairStatus()) * maxEff / 10;
     }
 
+    public long getEUtForDamageCalc() {
+        return mEUt;
+    }
+
     public boolean doRandomMaintenanceDamage() {
         if (!isCorrectMachinePart(getControllerSlot())) {
             stopMachine(ShutDownReasonRegistry.NO_MACHINE_PART);
@@ -1437,8 +1441,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                     metaGeneratedTool.doDamage(
                         mInventory[1],
                         (long) getDamageToComponent(getControllerSlot()) * (long) Math.min(
-                            Math.abs(mEUt) / this.damageFactorLow,
-                            Math.pow(Math.abs(mEUt), this.damageFactorHigh)));
+                            Math.abs(getEUtForDamageCalc()) / this.damageFactorLow,
+                            Math.pow(Math.abs(getEUtForDamageCalc()), this.damageFactorHigh)));
                     if (mInventory[1].stackSize == 0) mInventory[1] = null;
                 }
             }
@@ -2463,7 +2467,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         }
 
         if (recipesDone > 0) {
-            info.add(GTUtility.translate("GT5U.multiblock.scanner.recipesDone", formatNumber(recipesDone)));
+            info.add(GTUtility.translate("GT5U.multiblock.recipesDone", formatNumber(recipesDone)));
         }
 
         info.add(GTUtility.translate(timeKey, timeValue));
