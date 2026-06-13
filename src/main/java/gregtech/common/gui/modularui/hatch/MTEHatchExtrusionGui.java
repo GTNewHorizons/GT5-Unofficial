@@ -67,8 +67,7 @@ public class MTEHatchExtrusionGui extends MTEHatchBaseGui<MTEHatchExtrusion> {
             public int getItemStackLimit(@NotNull ItemStack stack) {
                 return 1;
             }
-        }.singletonSlotGroup()
-            .filter(this::isShape));
+        }.singletonSlotGroup());
 
         BooleanSyncValue stackSync = new BooleanSyncValue(() -> !machine.disableSort, v -> machine.disableSort = !v)
             .allowC2S();
