@@ -26,6 +26,9 @@ import gregtech.common.gui.modularui.singleblock.MTERegulatorGui;
 
 public class MTERegulator extends MTEBuffer {
 
+    public static final int FILTER_SLOT_INDEX = 9;
+    private static final int NUM_FILTER_SLOTS = 9;
+
     private final int[] mTargetSlots = { 0, 0, 0, 0, 0, 0, 0, 0, 0 };
     private boolean charge = false, decharge = false;
 
@@ -197,6 +200,6 @@ public class MTERegulator extends MTEBuffer {
 
     @Override
     public boolean isItemValidForPhantomSlot(int index, ItemStack itemStack) {
-        return 9 <= index && index <= 17;
+        return FILTER_SLOT_INDEX <= index && index < FILTER_SLOT_INDEX + NUM_FILTER_SLOTS;
     }
 }
