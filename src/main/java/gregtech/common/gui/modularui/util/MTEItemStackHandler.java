@@ -29,7 +29,7 @@ public class MTEItemStackHandler extends ItemStackHandler {
 
     @Override
     public boolean isItemValid(int slot, ItemStack stack) {
-        return mte.isItemValidForSlot(slot, stack);
+        return mte.isItemValidForSlot(slot, stack) || mte.isItemValidForPhantomSlot(slot, stack);
     }
 
     @Override
