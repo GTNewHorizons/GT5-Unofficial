@@ -222,4 +222,14 @@ public class MTEAutoChisel extends MTEBasicMachine {
     public int getSlotLimit(int slot) {
         return slot == getSpecialSlotIndex() ? 1 : super.getSlotLimit(slot);
     }
+
+    @Override
+    public boolean isValidSlot(int aIndex) {
+        return aIndex != getSpecialSlotIndex() && super.isValidSlot(aIndex);
+    }
+
+    @Override
+    public boolean isItemValidForPhantomSlot(int index, ItemStack itemStack) {
+        return index == getSpecialSlotIndex();
+    }
 }
