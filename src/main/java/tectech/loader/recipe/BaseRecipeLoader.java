@@ -9,6 +9,7 @@ import java.lang.invoke.MethodType;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.Materials;
+import gregtech.loaders.postload.BiodomeCalibrationLoader;
 import gregtech.loaders.postload.FoundryFakeModuleCostLoader;
 import tectech.TecTech;
 
@@ -69,5 +70,6 @@ public class BaseRecipeLoader {
         }
         Godforge.addFakeUpgradeCostRecipes();
         FoundryFakeModuleCostLoader.load();
+        BiodomeCalibrationLoader.load();
     }
 }

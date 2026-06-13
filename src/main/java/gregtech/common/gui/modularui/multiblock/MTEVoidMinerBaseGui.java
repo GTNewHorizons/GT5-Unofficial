@@ -41,9 +41,30 @@ import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 public class MTEVoidMinerBaseGui extends MTEMultiBlockBaseGui<MTEVoidMinerBase> {
 
     String search = "";
+    private StringSyncValue biodomeDimSyncer;
 
     public MTEVoidMinerBaseGui(MTEVoidMinerBase base) {
         super(base);
+    }
+
+    @Override
+    protected void registerSyncValues(PanelSyncManager syncManager) {
+        super.registerSyncValues(syncManager);
+        biodomeDimSyncer = new StringSyncValue(multiblock::getBiodomeDimensionName);
+        syncManager.syncValue("biodomeDimension", biodomeDimSyncer);
+    }
+
+    @Override
+    protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {
+        return super.createTerminalTextWidget(syncManager, parent).child(
+            IKey.dynamic(
+                () -> String.format(translateToLocal("GT5U.gui.text.biodome_active"), biodomeDimSyncer.getValue()))
+                .asWidget()
+                .textAlign(Alignment.CenterLeft)
+                .fullWidth()
+                .setEnabledIf(
+                    w -> !biodomeDimSyncer.getValue()
+                        .isEmpty()));
     }
 
     @Override
@@ -102,13 +123,16 @@ public class MTEVoidMinerBaseGui extends MTEMultiBlockBaseGui<MTEVoidMinerBase> 
             Flow.row()
                 .children(ores.length, index -> {
                     ItemStack stack = ores[index].getItemStack();
-                    return new ToggleButton()
-                        .value(new BoolValue.Dynamic(() -> multiblock.selected.getStackInSlot(index) != null, bool -> {
-                            if (bool) {
-                                multiblock.selected.insertItem(index, stack, false);
-                            } else multiblock.selected.extractItem(index, 1, false);
-                            syncer.setValue(multiblock.selected);
-                        }))
+                    return new ToggleButton().value(new BoolValue.Dynamic(() -> {
+                        if (index >= multiblock.selected.getSlots()) return false;
+                        return multiblock.selected.getStackInSlot(index) != null;
+                    }, bool -> {
+                        if (index >= multiblock.selected.getSlots()) return;
+                        if (bool) {
+                            multiblock.selected.insertItem(index, stack, false);
+                        } else multiblock.selected.extractItem(index, 1, false);
+                        syncer.setValue(multiblock.selected);
+                    }))
                         .overlay(
                             new ItemDrawable(stack).asIcon()
                                 .size(16))
@@ -143,7 +167,7 @@ public class MTEVoidMinerBaseGui extends MTEMultiBlockBaseGui<MTEVoidMinerBase> 
                         GTGuiTextures.OVERLAY_BUTTON_BLACKLIST.asIcon()
                             .size(16)))
             .child(new ButtonWidget<>().onMousePressed(button -> {
-                for (int i = 0; i < ores.length; i++) {
+                for (int i = 0; i < ores.length && i < multiblock.selected.getSlots(); i++) {
                     multiblock.selected.setStackInSlot(i, ores[i].getItemStack());
                 }
                 syncer.setValue(multiblock.selected);
