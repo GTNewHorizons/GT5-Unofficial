@@ -12,7 +12,9 @@ import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fluids.FluidStack;
 
+import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -20,6 +22,8 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTUtility;
+import gtPlusPlus.core.material.MaterialsElements;
 
 @SuppressWarnings({ "PointlessArithmeticExpression" })
 public class AutoclaveRecipes implements Runnable {
@@ -293,6 +297,21 @@ public class AutoclaveRecipes implements Runnable {
             .fluidInputs(Materials.PhononCrystalSolution.getFluid(250))
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_UXV)
+            .addTo(autoclaveRecipes);
+
+        // Exquisite Amalgatite
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTUtility.copyAmount(0, GTOreDictUnificator.get(OrePrefixes.nanite, Materials.MagMatter, 1)),
+                GTOreDictUnificator.get(OrePrefixes.gemFlawless, Materials.Amalgatite, 3),
+                WerkstoffLoader.Olenit.get(OrePrefixes.gemChipped, 64),
+                WerkstoffLoader.Salt.get(OrePrefixes.gemChipped, 64),
+                GTOreDictUnificator.get(OrePrefixes.gemChipped, Materials.Diamond, 64),
+                WerkstoffLoader.VanadioOxyDravit.get(OrePrefixes.gemChipped, 64))
+            .fluidInputs(new FluidStack(MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getPlasma(), 1_000_000))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gemExquisite, Materials.Amalgatite, 1))
+            .duration(100 * SECONDS)
+            .eut(TierEU.RECIPE_MAX)
             .addTo(autoclaveRecipes);
 
     }
