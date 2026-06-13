@@ -669,9 +669,7 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
     }
 
     protected void checkHasAnyInput(List<StructureError> errors) {
-        if (mInputBusses.isEmpty() && mInputHatches.isEmpty()
-            && mDualInputHatches.isEmpty()
-            && mSmartInputHatches.isEmpty()) {
+        if (mInputBusses.isEmpty() && mInputHatches.isEmpty() && mDualInputHatches.isEmpty()) {
             errors.add(StructureErrors.of("GT5U.gui.text.structure_error.missing_any_input"));
         }
     }

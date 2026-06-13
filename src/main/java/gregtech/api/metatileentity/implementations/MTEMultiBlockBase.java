@@ -140,6 +140,7 @@ import gregtech.common.pollution.Pollution;
 import gregtech.common.tileentities.machines.IDualInputHatch;
 import gregtech.common.tileentities.machines.IDualInputInventory;
 import gregtech.common.tileentities.machines.IDualInputInventoryWithPattern;
+import gregtech.common.tileentities.machines.IHatchWatcher;
 import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
 import gregtech.common.tileentities.machines.ISmartInputHatch;
 import gregtech.common.tileentities.machines.MTEHatchCraftingInputME;
@@ -172,7 +173,7 @@ import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoTunnel;
 import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyMulti;
 
 public abstract class MTEMultiBlockBase extends MetaTileEntity
-    implements IControllerWithOptionalFeatures, IAddGregtechLogo, IAddUIWidgets, IBindPlayerInventoryUI {
+    implements IControllerWithOptionalFeatures, IAddGregtechLogo, IAddUIWidgets, IBindPlayerInventoryUI, IHatchWatcher {
 
     public static boolean disableMaintenance;
     public boolean hasMaintenanceChecks = getDefaultHasMaintenanceChecks();
@@ -207,6 +208,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     protected boolean usesTurbine = false;
     protected boolean canBeMuffled = true;
     protected boolean debugEnergyPresent = false;
+    private boolean recipeCheckImmediately = false;
 
     protected static final String INPUT_SEPARATION_NBT_KEY = "inputSeparation";
     protected static final String VOID_EXCESS_NBT_KEY = "voidExcess";
@@ -219,7 +221,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     public ArrayList<MTEHatchInputBus> mInputBusses = new ArrayList<>();
     public ArrayList<MTEHatchOutputBus> mOutputBusses = new ArrayList<>();
     public ArrayList<IDualInputHatch> mDualInputHatches = new ArrayList<>();
-    public ArrayList<ISmartInputHatch> mSmartInputHatches = new ArrayList<>();
+    private final ArrayList<ISmartInputHatch> mSmartInputHatches = new ArrayList<>();
     public ArrayList<MTEHatchDynamo> mDynamoHatches = new ArrayList<>();
     public ArrayList<MTEHatchMuffler> mMufflerHatches = new ArrayList<>();
     public ArrayList<MTEHatchEnergy> mEnergyHatches = new ArrayList<>();
@@ -526,6 +528,9 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         mMufflerHatches.clear();
         mMaintenanceHatches.clear();
         mDualInputHatches.clear();
+        for (var hatch : mSmartInputHatches) {
+            hatch.removeWatcher(this);
+        }
         mSmartInputHatches.clear();
         mCryotheumHatches.clear();
         mBeamlineInputHatches.clear();
@@ -702,19 +707,16 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         return this.checkRecipeResult.wasSuccessful();
     }
 
+    public void scheduleRecipeCheckImmediate() {
+        recipeCheckImmediately = true;
+    }
+
     private boolean shouldCheckRecipeThisTick(long aTick) {
-        // do a recipe check if any crafting input hatch just got pushed in items
-        boolean shouldCheck = false;
-        // check all of them (i.e. do not return early) to reset the state of all of them.
-        for (IDualInputHatch craftingInputMe : mDualInputHatches) {
-            shouldCheck |= craftingInputMe.justUpdated();
+        // do a recipe check if any smart hatch just got pushed in items
+        if (recipeCheckImmediately) {
+            recipeCheckImmediately = false;
+            return true;
         }
-        if (shouldCheck) return true;
-        // Do the same for Smart Input Hatches
-        for (ISmartInputHatch smartInputHatch : mSmartInputHatches) {
-            shouldCheck |= smartInputHatch.justUpdated();
-        }
-        if (shouldCheck) return true;
 
         // Perform more frequent recipe change after the machine just shuts down.
         long timeElapsed = mTotalRunTime - mLastWorkingTick;
@@ -2088,6 +2090,13 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         }
     }
 
+    public void addIfSmartInput(IMetaTileEntity mte) {
+        if (mte instanceof ISmartInputHatch hatch) {
+            mSmartInputHatches.add(hatch);
+            hatch.addWatcher(this);
+        }
+    }
+
     public boolean addToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
         if (aTileEntity == null) return false;
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
@@ -2096,16 +2105,11 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             hatch.updateTexture(aBaseCasingIndex);
             hatch.updateCraftingIcon(this.getMachineCraftingIcon());
         }
+        addIfSmartInput(aMetaTileEntity);
         if (aMetaTileEntity instanceof IDualInputHatch hatch) {
             hatch.updateTexture(aBaseCasingIndex);
             hatch.updateCraftingIcon(this.getMachineCraftingIcon());
             return mDualInputHatches.add(hatch);
-        }
-        if (aMetaTileEntity instanceof ISmartInputHatch hatch) {
-            // Only add them to be iterated if enabled for performance reasons
-            if (hatch.doFastRecipeCheck()) {
-                mSmartInputHatches.add(hatch);
-            }
         }
         if (aMetaTileEntity instanceof MTEHatchInput hatch) {
             setHatchRecipeMap(hatch);
@@ -2303,15 +2307,13 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         if (aTileEntity == null) return false;
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
+        if (aMetaTileEntity instanceof MTEHatchSteamBusInput) return false;
+        addIfSmartInput(aMetaTileEntity);
         if (aMetaTileEntity instanceof IDualInputHatch hatch) {
             if (!supportsCraftingMEBuffer()) return false;
             hatch.updateTexture(aBaseCasingIndex);
             hatch.updateCraftingIcon(this.getMachineCraftingIcon());
             return mDualInputHatches.add(hatch);
-        }
-        if (aMetaTileEntity instanceof MTEHatchSteamBusInput) return false;
-        if (aMetaTileEntity instanceof ISmartInputHatch hatch) {
-            mSmartInputHatches.add(hatch);
         }
         if (aMetaTileEntity instanceof MTEHatchInputBus hatch) {
             hatch.updateTexture(aBaseCasingIndex);
@@ -2339,9 +2341,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         if (aTileEntity == null) return false;
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
-        if (aMetaTileEntity instanceof ISmartInputHatch hatch) {
-            mSmartInputHatches.add(hatch);
-        }
+        addIfSmartInput(aMetaTileEntity);
         if (aMetaTileEntity instanceof MTEHatchInput hatch) {
             hatch.updateTexture(aBaseCasingIndex);
             hatch.updateCraftingIcon(this.getMachineCraftingIcon());
@@ -2757,23 +2757,21 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     @Override
     public void onRemoval() {
         super.onRemoval();
-        // Deactivate mufflers
-        setMufflers(false);
-
-        deactivateCoilLease();
+        // Deactivate mufflers and cleanup
+        clearHatches();
 
         IGregTechTileEntity igte = getBaseMetaTileEntity();
 
         if (igte != null && igte.getLastShutDownReason() == ShutDownReasonRegistry.POWER_LOSS) {
             GTMod.proxy.powerfailTracker.removePowerfailEvents(igte);
         }
+
     }
 
     @Override
     public void onUnload() {
         super.onUnload();
-
-        deactivateCoilLease();
+        clearHatches();
     }
 
     protected void deactivateCoilLease() {
