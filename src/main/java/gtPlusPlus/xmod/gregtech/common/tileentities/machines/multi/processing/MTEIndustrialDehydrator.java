@@ -120,7 +120,7 @@ public class MTEIndustrialDehydrator extends GTPPMultiBlockBase<MTEIndustrialDeh
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 5, 3, true)
             .addController("Front bottom center")
-            .addCasingInfoMin(mCasingName, 5, false)
+            .addCasingInfoMin(mCasingName, 4, false)
             .addInputBus("Any Casing", 1)
             .addOutputBus("Any Casing", 1)
             .addInputHatch("Any Casing", 1)
@@ -175,7 +175,7 @@ public class MTEIndustrialDehydrator extends GTPPMultiBlockBase<MTEIndustrialDeh
         mCasing = 0;
         setCoilLevel(HeatingCoilLevel.None);
         if (!checkPiece(mName, 1, 4, 0, errors)) return;
-        checkCasingMin(errors, mCasing, 5);
+        checkCasingMin(errors, mCasing, 4);
         if (getCoilLevel() == HeatingCoilLevel.None) {
             errors.add(StructureErrorRegistry.COIL_LEVEL_NOT_ENOUGH);
         }

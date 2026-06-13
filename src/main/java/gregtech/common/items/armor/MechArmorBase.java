@@ -68,11 +68,12 @@ import thaumcraft.api.nodes.IRevealer;
         @Interface(iface = "thaumcraft.api.IVisDiscountGear", modid = ModIDs.THAUMCRAFT),
         @Interface(iface = "thaumcraft.api.IGoggles", modid = ModIDs.THAUMCRAFT),
         @Interface(iface = "thaumcraft.api.nodes.IRevealer", modid = ModIDs.THAUMCRAFT),
-        @Interface(iface = "net.dries007.holoInventory.api.IHoloGlasses", modid = ModIDs.HOLO_INVENTORY), })
+        @Interface(iface = "net.dries007.holoInventory.api.IHoloGlasses", modid = ModIDs.HOLO_INVENTORY),
+        @Interface(iface = "vazkii.botania.api.mana.IManaDiscountArmor", modid = ModIDs.BOTANIA) })
 
-public class MechArmorBase extends ItemArmor
-    implements IKeyPressedListener, ISpecialArmor, ISpecialElectricItem, IGoggles, IRevealer, IVisDiscountGear,
-    IArmorApiarist, IHazardProtector, ICustomDamageItem, net.dries007.holoInventory.api.IHoloGlasses {
+public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISpecialArmor, ISpecialElectricItem,
+    IGoggles, IRevealer, IVisDiscountGear, IArmorApiarist, IHazardProtector, ICustomDamageItem,
+    net.dries007.holoInventory.api.IHoloGlasses, vazkii.botania.api.mana.IManaDiscountArmor {
 
     protected IIcon coreIcon;
     protected IIcon frameIcon;
@@ -538,5 +539,13 @@ public class MechArmorBase extends ItemArmor
     public boolean applyCustomDamage(ItemStack itemStack, int i, EntityLivingBase entityLivingBase) {
         // do nothing
         return false;
+    }
+
+    // Botania Compat
+    @Override
+    public float getDiscount(ItemStack stack, int slot, EntityPlayer player) {
+        ArmorContext context = load(player.getEntityWorld(), player, stack);
+
+        return context.getArmorState().manaDiscount;
     }
 }

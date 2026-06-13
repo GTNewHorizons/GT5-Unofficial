@@ -319,7 +319,7 @@ public class ScannerHelper {
                 if (data == null || data.length == 0) return;
 
                 list.add(addTitleComp("title_machine_info"));
-                for (String s : data) list.add(new ChatComponentText(s));
+                for (String s : data) list.add(IGregTechDeviceInformation.toComponent(s));
             }
         } catch (Exception e) {
             list.add(transComp("error_machine_info").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
