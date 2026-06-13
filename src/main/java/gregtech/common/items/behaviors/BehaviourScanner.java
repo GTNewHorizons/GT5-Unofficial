@@ -17,7 +17,6 @@ import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.IItemBehaviour;
-import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.items.MetaBaseItem;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.scanner.ScannerHelper;
