@@ -231,13 +231,6 @@ public class MTEIndustrialApiaryGui extends MTEBasicMachineBaseGui<MTEIndustrial
                             GTGuiTextures.OVERLAY_BUTTON_AUTOOUTPUT_FLUID,
                             BaseTileEntity.FLUID_TRANSFER_TOOLTIP))
                     .child(
-                        new ButtonWidget<>()
-                            .syncHandler(new InteractionSyncHandler().setOnMousePressed(_ -> machine.cancelProcess()))
-                            .overlay(GTGuiTextures.OVERLAY_BUTTON_CROSS)
-                            .addTooltipStringLines(
-                                machine.mTooltipCache.getData("GT5U.machines.industrialapiary.cancel.tooltip").text))
-                    .tooltipShowUpTimer(TOOLTIP_DELAY)
-                    .child(
                         new ToggleButton()
                             .value(new BooleanSyncValue(machine::isAutoQueen, machine::setAutoQueen).allowC2S())
                             .backgroundOverlay(GTGuiTextures.OVERLAY_SLOT_BEE_QUEEN)
@@ -245,7 +238,14 @@ public class MTEIndustrialApiaryGui extends MTEBasicMachineBaseGui<MTEIndustrial
                             .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
                             .addTooltipStringLines(
                                 machine.mTooltipCache.getData("GT5U.machines.industrialapiary.autoqueen.tooltip").text)
-                            .tooltipShowUpTimer(TOOLTIP_DELAY)))
+                            .tooltipShowUpTimer(TOOLTIP_DELAY))
+                    .child(
+                        new ButtonWidget<>()
+                            .syncHandler(new InteractionSyncHandler().setOnMousePressed(_ -> machine.cancelProcess()))
+                            .overlay(GTGuiTextures.OVERLAY_BUTTON_CROSS)
+                            .addTooltipStringLines(
+                                machine.mTooltipCache.getData("GT5U.machines.industrialapiary.cancel.tooltip").text))
+                    .tooltipShowUpTimer(TOOLTIP_DELAY))
             .child(
                 createAutoOutputButton(
                     syncManager,
