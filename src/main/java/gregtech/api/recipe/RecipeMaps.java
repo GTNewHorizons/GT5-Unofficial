@@ -1413,11 +1413,15 @@ public final class RecipeMaps {
         .of("gt.recipe.dieselgeneratorfuel", FuelBackend::new)
         .maxIO(1, 1, 0, 0)
         .builderTransformer(b -> {
-            b.copy()
-                .build()
-                .ifPresent(
-                    r -> RecipeMaps.largeBoilerFakeFuels.getBackend()
-                        .addDieselRecipe(r));
+            if (RecipeMaps.largeBoilerFakeFuels.findRecipeQuery()
+                .items(b.getItemInputBasic(0))
+                .find() == null) {
+                b.copy()
+                    .build()
+                    .ifPresent(
+                        r -> RecipeMaps.largeBoilerFakeFuels.getBackend()
+                            .addDieselRecipe(r));
+            }
             if (b.getMetadataOrDefault(FUEL_VALUE, 0) >= 1500) {
                 b.copy()
                     .addTo(RecipeMaps.extremeDieselFuels);

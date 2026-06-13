@@ -148,6 +148,11 @@ public class LargeBoilerFuelBackend extends RecipeMapBackend {
         double tungstensteelBurnTime = getBurntimeRatio(baseBurnTime, 1) * 0.15 + floatErrorCorrection;
         tungstensteelBurnTime -= tungstensteelBurnTime % 0.05;
 
+        FluidStack foundFluid = GTUtility.getFluidForFilledItem(recipe.getRepresentativeInput(0), true);
+        if (foundFluid != null) {
+            recipe.setFluidInputs(foundFluid);
+            recipe.mInputs = new ItemStack[0];
+        }
         recipe.setNeiDesc(
             StatCollector.translateToLocal("GT5U.nei.large_boiler.burn_time"),
             StatCollector
