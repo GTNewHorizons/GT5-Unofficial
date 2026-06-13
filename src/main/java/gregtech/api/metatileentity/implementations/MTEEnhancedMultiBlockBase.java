@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.annotation.Nonnegative;
 
+import gregtech.common.tileentities.machines.MTEHatchCraftingInputSlave;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -628,8 +629,9 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
     // Most of the time it's what you want. If you don't want such inputs,
     // you can omit InputBus in your structure or roll your own checks
     protected final void checkHasInputHatch(List<StructureError> errors) {
+        // Due to update delay, slave is sometimes not recognized. We always allow slave to substitute as input hatch
         long count = mInputHatches.size() + mDualInputHatches.stream()
-            .filter(IDualInputHatch::supportsFluids)
+            .filter(hatch -> hatch.supportsFluids() || hatch instanceof MTEHatchCraftingInputSlave)
             .count();
         if (count == 0) {
             errors.add(StructureErrors.hatchCount(ErrorType.TOO_FEW, HatchElement.InputHatch, 0, 1));
