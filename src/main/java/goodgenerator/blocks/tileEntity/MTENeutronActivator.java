@@ -45,6 +45,7 @@ import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEHatch;
@@ -435,19 +436,14 @@ public class MTENeutronActivator extends TTMultiblockBase implements ISurvivalCo
         }
         if (!anyWorking) currentNKEInput = -72000;
         return new String[] {
-            StatCollector.translateToLocalFormatted(
+            IGregTechDeviceInformation.encode(
                 "gg.scanner.info.neutron_activator.progress",
-                EnumChatFormatting.GREEN + Integer.toString(this.mProgresstime / 20) + EnumChatFormatting.RESET,
-                EnumChatFormatting.YELLOW + Integer.toString(this.mMaxProgresstime / 20) + EnumChatFormatting.RESET),
-            StatCollector.translateToLocalFormatted(
-                "gg.scanner.info.neutron_activator.input",
-                EnumChatFormatting.GREEN + formatNumber(currentNKEInput) + EnumChatFormatting.RESET),
-            StatCollector.translateToLocal("scanner.info.NA") + " "
-                + EnumChatFormatting.LIGHT_PURPLE
-                + formatNumber(getCurrentNeutronKineticEnergy())
-                + EnumChatFormatting.RESET
-                + "eV",
-            GTUtility.translate("GT5U.multiblock.recipesDone", formatNumber(recipesDone)) };
+                Integer.toString(this.mProgresstime / 20),
+                Integer.toString(this.mMaxProgresstime / 20)),
+            IGregTechDeviceInformation.encode("gg.scanner.info.neutron_activator.input", formatNumber(currentNKEInput)),
+            IGregTechDeviceInformation
+                .encode("gg.infodata.neutron_activator.nke", formatNumber(getCurrentNeutronKineticEnergy())),
+            IGregTechDeviceInformation.encode("GT5U.multiblock.recipesDone.fmt", formatNumber(recipesDone)) };
     }
 
     @Override

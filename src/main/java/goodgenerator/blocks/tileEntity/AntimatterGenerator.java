@@ -37,6 +37,7 @@ import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatch;
@@ -399,19 +400,13 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase<Antimatt
 
     @Override
     public void getExtraInfoData(List<String> info) {
+        info.add(IGregTechDeviceInformation.encode("gui.AntimatterGenerator.0.s", formatNumber(this.euLastCycle)));
         info.add(
-            StatCollector.translateToLocalFormatted("gui.AntimatterGenerator.0.s", formatNumber(this.euLastCycle)));
-
+            IGregTechDeviceInformation
+                .encode("gui.AntimatterGenerator.1.s", formatNumber(Math.ceil(this.annihilationEfficiency * 100))));
         info.add(
-            StatCollector.translateToLocalFormatted(
-                "gui.AntimatterGenerator.1.s",
-                formatNumber(Math.ceil(this.annihilationEfficiency * 100))));
-
-        info.add(
-            StatCollector.translateToLocalFormatted(
-                "gui.AntimatterGenerator.2.s",
-                formatNumber(Math.ceil(this.avgEffCache * 100))));
-
+            IGregTechDeviceInformation
+                .encode("gui.AntimatterGenerator.2.s", formatNumber(Math.ceil(this.avgEffCache * 100))));
     }
 
     public long getEnergyProduced() {
