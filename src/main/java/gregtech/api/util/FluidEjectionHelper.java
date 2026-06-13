@@ -81,9 +81,9 @@ public class FluidEjectionHelper {
             if (e.getLongValue() <= 0) continue;
 
             GTUtility.FluidId id = e.getKey();
-            int amount = GTUtility.longToInt(e.getLongValue());
+            long amount = e.getLongValue();
 
-            FluidParallelData parallelData = new FluidParallelData(id, amount * (long) startingParallels, amount);
+            FluidParallelData parallelData = new FluidParallelData(id, amount * startingParallels, amount);
 
             outputParallels.add(parallelData);
 
@@ -179,10 +179,10 @@ public class FluidEjectionHelper {
 
         public final GTUtility.FluidId id;
         public long initialAmount, remainingAmount;
-        public int perParallel;
+        public long perParallel;
         public PeekingIterator<IOutputHatchTransaction> outputs;
 
-        private FluidParallelData(GTUtility.FluidId id, long amount, int perParallel) {
+        private FluidParallelData(GTUtility.FluidId id, long amount, long perParallel) {
             this.id = id;
             this.remainingAmount = amount;
             this.perParallel = perParallel;
