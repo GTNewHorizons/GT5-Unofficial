@@ -16588,6 +16588,7 @@ public class MaterialsInit {
             .addSubTag(SubTag.NO_RECIPES)
             .addSubTag(SubTag.NO_RECYCLING_RECIPES)
             .addOrePrefix(OrePrefixes.itemCasing)
+            .addOrePrefix(OrePrefixes.plateSuperdense)
             .removeOrePrefix(OrePrefixes.dust)
             .removeOrePrefix(OrePrefixes.dustSmall)
             .removeOrePrefix(OrePrefixes.dustTiny)
