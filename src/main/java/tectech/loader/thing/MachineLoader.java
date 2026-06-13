@@ -27,6 +27,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.CloudComputationServerHatch;
 import static gregtech.api.enums.MetaTileEntityIDs.ComputerRack;
 import static gregtech.api.enums.MetaTileEntityIDs.DataBank;
 import static gregtech.api.enums.MetaTileEntityIDs.DataBankMasterConnector;
+import static gregtech.api.enums.MetaTileEntityIDs.DebugDataAccessHatch;
 import static gregtech.api.enums.MetaTileEntityIDs.DebugDataHatch;
 import static gregtech.api.enums.MetaTileEntityIDs.DebugPollutionGenerator;
 import static gregtech.api.enums.MetaTileEntityIDs.DebugPowerGenerator;
@@ -558,6 +559,7 @@ import static tectech.thing.CustomItemList.eM_energyWirelessTunnel9_UXV;
 import static tectech.thing.CustomItemList.hatch_CreativeData;
 import static tectech.thing.CustomItemList.hatch_CreativeMaintenance;
 import static tectech.thing.CustomItemList.hatch_CreativeUncertainty;
+import static tectech.thing.CustomItemList.hatch_DebugDataAccess;
 import static tectech.thing.CustomItemList.holder_Hatch;
 import static tectech.thing.CustomItemList.rack_Hatch;
 
@@ -578,6 +580,7 @@ import tectech.thing.metaTileEntity.hatch.MTEHatchDataInput;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDataItemsInput;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDataItemsOutput;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDataOutput;
+import tectech.thing.metaTileEntity.hatch.MTEHatchDebugDataAccess;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoMulti;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoTunnel;
 import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyMulti;
@@ -2273,6 +2276,9 @@ public class MachineLoader implements Runnable {
         UnusedStuff.set(new ItemStack(Blocks.air));
         hatch_CreativeUncertainty.set(
             new MTEHatchCreativeUncertainty(UncertaintyResolution.ID, "debug.tt.certain", "Uncertainty Resolution", 11)
+                .getStackForm(1));
+        hatch_DebugDataAccess.set(
+            new MTEHatchDebugDataAccess(DebugDataAccessHatch.ID, "debug.tt.dataaccess", "Debug Data Access Hatch", 14)
                 .getStackForm(1));
 
         // ===================================================================================================
