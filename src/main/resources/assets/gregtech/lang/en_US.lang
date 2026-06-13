@@ -3595,7 +3595,7 @@ GT5U.armor.part.tooltip.WaterBreathing=Restores the user's air if they run out u
 GT5U.armor.part.tooltip.MilkInfusion=Removes bad potion effects
 GT5U.armor.part.tooltip.HoloInventory=Opens a holographic view of nearby inventories
 GT5U.armor.part.tooltip.Travelers=Grants the user a more powerful version of Boots of the Traveler
-GT5U.armor.part.tooltip.Terrasteel=Grants the Will of the Ancients
+GT5U.armor.part.tooltip.Terrasteel=Grants the Will of the Ancients. Effects include:\n - 20% Mana Discount\n - Passive Mana generation for Mana Tablets\n - Passive health regeneration when not fully fed
 
 GT5U.armor.behavior.NightVision=Night Vision
 GT5U.armor.behavior.GogglesOfRevealing=Thaumic Sight
