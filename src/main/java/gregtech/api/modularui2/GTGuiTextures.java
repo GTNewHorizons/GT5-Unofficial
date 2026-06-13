@@ -1060,6 +1060,16 @@ public final class GTGuiTextures {
     public static final UITexture PROGRESSBAR_ARROW_BRONZE = fullImageColorableGT("progressbar/arrow_bronze");
     public static final UITexture PROGRESSBAR_ARROW_STEEL = fullImageColorableGT("progressbar/arrow_steel");
     public static final UITexture PROGRESSBAR_ARROW_BBF = fullImageColorableGT("progressbar/arrow_bbf");
+    public static final UITexture PROGRESSBAR_WINDMILL_GRINDSTONE = UITexture.builder()
+        .location(GregTech.ID, "gui/progressbar/windmill_grindstone")
+        .fullImage()
+        .name(GTTextureIds.PROGRESSBAR_WINDMILL_GRINDSTONE)
+        .build();
+    public static final UITexture PROGRESSBAR_WINDMILL_MIXER = UITexture.builder()
+        .location(GregTech.ID, "gui/progressbar/windmillmixer")
+        .fullImage()
+        .name(GTTextureIds.PROGRESSBAR_WINDMILL_MIXER)
+        .build();
     public static final UITexture PROGRESSBAR_BOILER_HEAT = UITexture.builder()
         .location(GregTech.ID, "gui/progressbar/boiler_heat")
         .fullImage()

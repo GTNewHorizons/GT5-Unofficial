@@ -2809,6 +2809,12 @@ public enum ItemList implements IItemContainer {
     CokeOvenCasing,
     CokeOvenHatch,
 
+    WindmillBaseCasing,
+    WindmillShaftCasing,
+    WindmillBaseCasingDirty,
+    WindmillShaftCasingDirty,
+    WindmillMillstoneHousing,
+
     Mechanical_Helmet,
     Mechanical_Chestplate,
     Mechanical_Leggings,
