@@ -56,6 +56,7 @@ import gregtech.common.config.Other;
 import gregtech.common.items.MetaGeneratedItem01;
 import gregtech.common.tileentities.machines.basic.MTEMassfabricator;
 import gregtech.common.tileentities.machines.basic.MTERockBreaker;
+import gregtech.loaders.postload.recipes.FakeCuttingRecipes;
 import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeOutput;
 
@@ -135,6 +136,8 @@ public class GTPostLoad {
 
     public static void addFakeRecipes() {
         GTLog.out.println("GTMod: Adding Fake Recipes for NEI");
+
+        new FakeCuttingRecipes().run();
 
         if (Forestry.isModLoaded()) {
             GTForestryCompat.populateFakeNeiRecipes();
