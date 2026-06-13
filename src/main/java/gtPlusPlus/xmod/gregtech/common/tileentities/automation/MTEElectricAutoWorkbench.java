@@ -741,4 +741,9 @@ public class MTEElectricAutoWorkbench extends MTEBasicTank {
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
         return new MTEElectricAutoWorkbenchGui(this).buildUI(data, syncManager, uiSettings);
     }
+
+    @Override
+    public boolean isItemValidForPhantomSlot(int index, ItemStack itemStack) {
+        return 19 <= index && index <= 27;
+    }
 }

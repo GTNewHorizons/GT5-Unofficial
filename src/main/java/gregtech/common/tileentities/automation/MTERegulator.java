@@ -194,4 +194,9 @@ public class MTERegulator extends MTEBuffer {
     public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
         return new MTERegulatorGui(this).build(guiData, syncManager, uiSettings);
     }
+
+    @Override
+    public boolean isItemValidForPhantomSlot(int index, ItemStack itemStack) {
+        return 9 <= index && index <= 17;
+    }
 }
