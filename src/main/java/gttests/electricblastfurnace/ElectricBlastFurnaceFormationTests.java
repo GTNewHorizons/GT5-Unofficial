@@ -72,7 +72,7 @@ public class ElectricBlastFurnaceFormationTests {
     }
 
     @GameTest(template = "valid", timeoutTicks = 60, batch = "gt5.ebf")
-    public static void missingOutputsNeverForms(GameTestHelper helper) {
+    public static void missingOutputBusNeverForms(GameTestHelper helper) {
         replaceWithHeatProofCasing(helper, OUTPUT_BUS);
         assertNeverForms(helper, "EBF formed without an output bus or output hatch");
     }
@@ -500,6 +500,7 @@ public class ElectricBlastFurnaceFormationTests {
     private static Multiblock formedEbfAfterMutation(GameTestHelper helper) {
         Multiblock ebf = ebf(helper);
         helper.assertTrue(ebf.forceStructureCheck(), "EBF did not form after structure mutation");
+        ebf.assertFormed();
         return ebf;
     }
 
