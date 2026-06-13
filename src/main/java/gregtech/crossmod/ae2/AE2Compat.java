@@ -21,6 +21,8 @@ import gregtech.common.covers.CoverFacadeAE;
 import gregtech.common.tileentities.machines.MTEHatchCraftingInputME;
 import gregtech.common.tileentities.machines.multi.MTELargeMolecularAssembler;
 
+import gregtech.api.util.GTModHandler;
+
 public final class AE2Compat {
 
     public static void onPreInit() {
@@ -35,6 +37,54 @@ public final class AE2Compat {
         registerCover();
         registerExternalStorage();
         registerBlockingModeIgnoreItems();
+        registerCraftingRecipes();
+    }
+
+    private static void registerCraftingRecipes() {
+        ItemStack fluixCable = getModItem("appliedenergistics2", "item.ItemMultiPart", 1, 36);
+        if (fluixCable == null) return;
+
+        ItemStack sprayCan = ItemList.Spray_Color_Infinite.get(1, WILDCARD);
+
+        // Slot 0 (Top Left) -> Red (34)
+        GTModHandler.addCraftingRecipe(getModItem("appliedenergistics2", "item.ItemMultiPart", 1, 34),
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE,
+            new Object[] { "S  ", " C ", "   ", 'S', sprayCan, 'C', fluixCable });
+
+        // Slot 1 (Top) -> Green (33)
+        GTModHandler.addCraftingRecipe(getModItem("appliedenergistics2", "item.ItemMultiPart", 1, 33),
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE,
+            new Object[] { " S ", " C ", "   ", 'S', sprayCan, 'C', fluixCable });
+
+        // Slot 2 (Top Right) -> Blue (31)
+        GTModHandler.addCraftingRecipe(getModItem("appliedenergistics2", "item.ItemMultiPart", 1, 31),
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE,
+            new Object[] { "  S", " C ", "   ", 'S', sprayCan, 'C', fluixCable });
+
+        // Slot 3 (Left) -> Yellow (24)
+        GTModHandler.addCraftingRecipe(getModItem("appliedenergistics2", "item.ItemMultiPart", 1, 24),
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE,
+            new Object[] { "   ", "SC ", "   ", 'S', sprayCan, 'C', fluixCable });
+
+        // Slot 5 (Right) -> Orange (21)
+        GTModHandler.addCraftingRecipe(getModItem("appliedenergistics2", "item.ItemMultiPart", 1, 21),
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE,
+            new Object[] { "   ", " CS", "   ", 'S', sprayCan, 'C', fluixCable });
+
+        // Slot 6 (Bottom Left) -> Purple (30)
+        GTModHandler.addCraftingRecipe(getModItem("appliedenergistics2", "item.ItemMultiPart", 1, 30),
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE,
+            new Object[] { "   ", " C ", "S  ", 'S', sprayCan, 'C', fluixCable });
+
+        // Slot 7 (Bottom) -> White (20)
+        GTModHandler.addCraftingRecipe(getModItem("appliedenergistics2", "item.ItemMultiPart", 1, 20),
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE,
+            new Object[] { "   ", " C ", " S ", 'S', sprayCan, 'C', fluixCable });
+
+        // Slot 8 (Bottom Right) -> Black (35)
+        GTModHandler.addCraftingRecipe(getModItem("appliedenergistics2", "item.ItemMultiPart", 1, 35),
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE,
+            new Object[] { "   ", " C ", "  S", 'S', sprayCan, 'C', fluixCable });
     }
 
     private static void registerCover() {
