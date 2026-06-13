@@ -4,6 +4,8 @@ import static gregtech.api.metatileentity.BaseTileEntity.BATTERY_SLOT_TOOLTIP;
 import static gregtech.api.metatileentity.BaseTileEntity.BATTERY_SLOT_TOOLTIP_ALT;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 
+import net.minecraft.item.ItemStack;
+
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
@@ -135,5 +137,10 @@ public abstract class MTETieredMachineBlock extends MetaTileEntity {
     @Override
     public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
         return new MTETieredMachineBlockBaseGui<>(this).build(guiData, syncManager, uiSettings);
+    }
+
+    @Override
+    public boolean isItemValidForSlot(int index, ItemStack itemStack) {
+        return true;
     }
 }
