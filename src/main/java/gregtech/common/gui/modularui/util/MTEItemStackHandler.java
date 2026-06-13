@@ -5,6 +5,7 @@ import net.minecraft.item.ItemStack;
 import com.cleanroommc.modularui.utils.item.ItemStackHandler;
 
 import gregtech.api.metatileentity.MetaTileEntity;
+import org.jetbrains.annotations.Nullable;
 
 public class MTEItemStackHandler extends ItemStackHandler {
 
@@ -25,4 +26,8 @@ public class MTEItemStackHandler extends ItemStackHandler {
         return mte.getSlotLimit(slot);
     }
 
+    @Override
+    protected int getStackLimit(int slot, @Nullable ItemStack stack) {
+        return Math.min(mte.getStackSizeLimit(slot, stack), super.getStackLimit(slot, stack));
+    }
 }
