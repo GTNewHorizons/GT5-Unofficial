@@ -1,6 +1,5 @@
 package gregtech.common.tileentities.machines.multi;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofTileAdder;
@@ -30,14 +29,17 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.gtnewhorizon.structurelib.structure.IStructureElement;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
@@ -61,12 +63,11 @@ import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.common.blocks.BlockCasings10;
-import gregtech.common.blocks.BlockCasings12;
+import gregtech.common.blocks.BlockCasings14;
 import gregtech.common.gui.modularui.multiblock.MTEBiodomeGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
-import gtPlusPlus.core.block.ModBlocks;
-import tectech.thing.casing.TTCasingsContainer;
+import it.unimi.dsi.fastutil.longs.LongArrayList;
+import it.unimi.dsi.fastutil.longs.LongList;
 
 public class MTEBiodome extends MTEExtendedPowerMultiBlockBase<MTEBiodome> implements ISurvivalConstructable {
 
@@ -106,24 +107,26 @@ public class MTEBiodome extends MTEExtendedPowerMultiBlockBase<MTEBiodome> imple
                     {"             AAAAAAAAAAAAA             ","           AACCBBBBBCCCCCCAA           ","         AACCCCCCCCCCCCCCCCCAA         ","        ACCCCCCCCCCCCCCCCCCCCCA        ","      AACCCCCCCCCCCCCCCCCCCCCCCAA      ","     AACCCCCCCCCCCCCCCCCCCCCCCCCAA     ","    AACCCCCCCCCCCCCCCCCCCCCCCCCCCAA    ","    ACCCCCCCCCCCCCCCCCCCCCCCCCCCCCA    ","   ACCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCA   ","  ACCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCA  ","  ACCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCA  "," ACCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCA "," ACCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCA ","ACCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCA","ACCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCA","ACCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCBA","ACCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCBA","ACCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCBA","ACCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCBA","ABCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCA","ABCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCA","ABCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCA","ABCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCA","ABCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCA","ACCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCA","ACCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCA"," ACCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCA "," ACCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCA ","  ACCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCA  ","  ACCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCA  ","   ACCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCA   ","    ACCCCCCCCCCCCCCCCCCCCCCCCCCCCCA    ","    AACCCCCCCCCCCCCCCCCCCCCCCCCCCAA    ","     AACCCCCCCCCCCCCCCCCCCCCCCCCAA     ","      AACCCCCCCCCCCCCCCCCCCCCCCAA      ","        ACCCCCCCCCCCCCCCCCCCCCA        ","         AACCCCCCCCCCCCCCCCCAA         ","           AACCCCCCBBBBBCCAA           ","             AAAAAAAAAAAAA             "}
                 }))
         //spotless:on
-        .addElement('A', ofBlock(GregTechAPI.sBlockCasings10, 3))
-        .addElement('B', ofBlock(GregTechAPI.sBlockCasings2, 6))
+        .addElement('A', ofBlock(GregTechAPI.sBlockCasings14, 6))
+        .addElement('B', ofBlock(GregTechAPI.sBlockCasings14, 6))
         .addElement(
             'C',
             buildHatchAdder(MTEBiodome.class).atLeast(Dynamo)
-                .casingIndex(((BlockCasings12) GregTechAPI.sBlockCasings12).getTextureIndex(8))
+                .casingIndex(((BlockCasings14) GregTechAPI.sBlockCasings14).getTextureIndex(11))
                 .hint(2)
-                .buildAndChain(onElementPass(x -> {}, ofBlock(GregTechAPI.sBlockCasings12, 8))))
-        .addElement('D', lazy(() -> ofBlock(TTCasingsContainer.sBlockCasingsTT, 7)))
-        .addElement('E', lazy(() -> ofBlock(ModBlocks.blockCasings2Misc, 12)))
-        .addElement('F', ofBlock(GregTechAPI.sBlockGlass1, 7))
+                .buildAndChain(
+                    recordFloorPosition(
+                        ofChain(ofBlock(GregTechAPI.sBlockCasings14, 11), ofBlock(GregTechAPI.sBlockCasings14, 12)))))
+        .addElement('D', ofBlock(GregTechAPI.sBlockCasings14, 6))
+        .addElement('E', ofBlock(GregTechAPI.sBlockCasings14, 6))
+        .addElement('F', ofBlock(GregTechAPI.sBlockGlass1, 10))
         .addElement(
             'H',
             ofChain(
                 buildHatchAdder(MTEBiodome.class).atLeast(Energy, InputHatch, InputBus)
-                    .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(3))
+                    .casingIndex(((BlockCasings14) GregTechAPI.sBlockCasings14).getTextureIndex(6))
                     .hint(1)
-                    .buildAndChain(onElementPass(x -> {}, ofBlock(GregTechAPI.sBlockCasings10, 3)))))
+                    .buildAndChain(onElementPass(x -> {}, ofBlock(GregTechAPI.sBlockCasings14, 6)))))
         .addElement(
             'x',
             ofChain(onElementPass(t -> {}, ofBlock(Blocks.air, 0)), ofTileAdder(MTEBiodome::addMTE, Blocks.air, 0)))
@@ -149,6 +152,7 @@ public class MTEBiodome extends MTEExtendedPowerMultiBlockBase<MTEBiodome> imple
     }
 
     private final Set<IBiodomeCompatible> connectedTEs = new HashSet<>();
+    private final LongList floorPositions = new LongArrayList();
 
     private BiodomeState state = BiodomeState.IDLE;
     private int calibrationPercent = 0;
@@ -205,6 +209,7 @@ public class MTEBiodome extends MTEExtendedPowerMultiBlockBase<MTEBiodome> imple
         inputItems = null;
         inputFluids = null;
         state = BiodomeState.ACTIVE;
+        swapFloorMeta(true);
         String name = getDimensionName();
         if (!name.isEmpty()) {
             notifyConnectedTEs(name);
@@ -230,9 +235,50 @@ public class MTEBiodome extends MTEExtendedPowerMultiBlockBase<MTEBiodome> imple
 
     @Override
     public void onBlockDestroyed() {
+        swapFloorMeta(false);
         clearTileDims();
         state = BiodomeState.IDLE;
         inactiveGraceTicks = -1;
+    }
+
+    private void swapFloorMeta(boolean active) {
+        World world = getBaseMetaTileEntity().getWorld();
+        if (world == null) return;
+        int fromMeta = active ? 11 : 12;
+        int toMeta = active ? 12 : 11;
+        for (int i = 0; i < floorPositions.size(); i++) {
+            long pos = floorPositions.getLong(i);
+            int x = CoordinatePacker.unpackX(pos);
+            int y = CoordinatePacker.unpackY(pos);
+            int z = CoordinatePacker.unpackZ(pos);
+            if (world.getBlock(x, y, z) == GregTechAPI.sBlockCasings14 && world.getBlockMetadata(x, y, z) == fromMeta) {
+                world.setBlockMetadataWithNotify(x, y, z, toMeta, 2);
+            }
+        }
+    }
+
+    private static IStructureElement<MTEBiodome> recordFloorPosition(IStructureElement<MTEBiodome> inner) {
+        return new IStructureElement<>() {
+
+            @Override
+            public boolean check(MTEBiodome t, World world, int x, int y, int z) {
+                if (inner.check(t, world, x, y, z)) {
+                    t.floorPositions.add(CoordinatePacker.pack(x, y, z));
+                    return true;
+                }
+                return false;
+            }
+
+            @Override
+            public boolean spawnHint(MTEBiodome t, World world, int x, int y, int z, ItemStack trigger) {
+                return inner.spawnHint(t, world, x, y, z, trigger);
+            }
+
+            @Override
+            public boolean placeBlock(MTEBiodome t, World world, int x, int y, int z, ItemStack trigger) {
+                return inner.placeBlock(t, world, x, y, z, trigger);
+            }
+        };
     }
 
     public String getDimensionName() {
@@ -269,7 +315,7 @@ public class MTEBiodome extends MTEExtendedPowerMultiBlockBase<MTEBiodome> imple
             if (aActive) {
                 rTexture = new ITexture[] {
                     Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 15)),
+                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings14, 6)),
                     TextureFactory.builder()
                         .addIcon(OVERLAY_FRONT_MULTI_BREWERY_ACTIVE)
                         .extFacing()
@@ -282,7 +328,7 @@ public class MTEBiodome extends MTEExtendedPowerMultiBlockBase<MTEBiodome> imple
             } else {
                 rTexture = new ITexture[] {
                     Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 15)),
+                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings14, 6)),
                     TextureFactory.builder()
                         .addIcon(OVERLAY_FRONT_MULTI_BREWERY)
                         .extFacing()
@@ -295,7 +341,7 @@ public class MTEBiodome extends MTEExtendedPowerMultiBlockBase<MTEBiodome> imple
             }
         } else {
             rTexture = new ITexture[] { Textures.BlockIcons
-                .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 15)) };
+                .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings14, 6)) };
         }
         return rTexture;
     }
@@ -355,6 +401,7 @@ public class MTEBiodome extends MTEExtendedPowerMultiBlockBase<MTEBiodome> imple
     @Override
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         connectedTEs.clear();
+        floorPositions.clear();
         if (!checkPiece(STRUCTURE_PIECE_MAIN, WIDTH_OFFSET, HEIGHT_OFFSET, DEPTH_OFFSET, errors)) return;
         checkHasEnergyHatch(errors);
         checkHasInputBus(errors);
@@ -431,6 +478,7 @@ public class MTEBiodome extends MTEExtendedPowerMultiBlockBase<MTEBiodome> imple
                 } else if (inactiveGraceTicks > 0) {
                     inactiveGraceTicks--;
                 } else {
+                    swapFloorMeta(false);
                     clearTileDims();
                     state = BiodomeState.WARMUP;
                     warmupTicks = 0;

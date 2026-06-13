@@ -8345,6 +8345,9 @@ gt.blockcasings13.15.name=Naquadah Reactor Casing
 gt.blockcasings14.3.name=Hearth Casing
 gt.blockcasings14.4.name=Fridge Casing
 gt.blockcasings14.5.name=Naquadah Reinforced Distillation Casing
+gt.blockcasings14.6.name=Biodome Casing
+gt.blockcasings14.11.name=Holographic Floor
+gt.blockcasings14.12.name=Holographic Floor
 
 
 gt.blockcasingsNH.0.name=Air Filter Turbine Casing
@@ -8405,6 +8408,7 @@ gt.blockglass1.6.name=Chamber Grate
 gt.blockglass1.7.name=Exo-Foundry Containment Glass
 gt.blockglass1.8.name=Nanochip Complex Glass
 gt.blockglass1.9.name=Electromagnetic Waveguide
+gt.blockglass1.10.name=Biodome Glass
 gt.blocktintedglass.0.name=Tinted Industrial Glass (White)
 gt.blocktintedglass.1.name=Tinted Industrial Glass (Light Gray)
 gt.blocktintedglass.2.name=Tinted Industrial Glass (Gray)
