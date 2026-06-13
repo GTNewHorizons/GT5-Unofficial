@@ -2,10 +2,11 @@ package gregtech.common.gui.modularui.util;
 
 import net.minecraft.item.ItemStack;
 
+import org.jetbrains.annotations.Nullable;
+
 import com.cleanroommc.modularui.utils.item.ItemStackHandler;
 
 import gregtech.api.metatileentity.MetaTileEntity;
-import org.jetbrains.annotations.Nullable;
 
 public class MTEItemStackHandler extends ItemStackHandler {
 
