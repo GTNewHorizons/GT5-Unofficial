@@ -48,6 +48,8 @@ import gregtech.nei.dumper.MaterialDumper;
 import gregtech.nei.dumper.MetaItemDumper;
 import gregtech.nei.dumper.MetaTileEntityDumper;
 import gregtech.nei.dumper.RecipeLockingSupportDumper;
+import gregtech.nei.dumper.TurbineFuelDumper;
+import gregtech.nei.dumper.TurbineRotorDumper;
 import gregtech.nei.dumper.VoidProtectionSupportDumper;
 import gregtech.nei.searchprovider.ChemicalFormulaFilter;
 
@@ -143,6 +145,8 @@ public class NEIGTConfig implements IConfigureNEI {
         API.addOption(new InputSeparationSupportDumper());
         API.addOption(new BatchModeSupportDumper());
         API.addOption(new RecipeLockingSupportDumper());
+        API.addOption(new TurbineFuelDumper());
+        API.addOption(new TurbineRotorDumper());
     }
 
     private void registerFilters() {
