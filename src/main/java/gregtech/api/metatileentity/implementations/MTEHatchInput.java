@@ -157,6 +157,21 @@ public class MTEHatchInput extends MTEHatch {
         return true;
     }
 
+    @Override
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
+        super.onPostTick(aBaseMetaTileEntity, aTimer);
+        if (aBaseMetaTileEntity.isServerSide()) {
+            detectInventoryChange();
+        }
+    }
+
+    @Override
+    protected long getContentAmount() {
+        long amount = super.getContentAmount();
+        if (mFluid != null) amount += mFluid.amount;
+        return amount;
+    }
+
     public void updateSlots() {
         if (mInventory[getInputSlot()] != null && mInventory[getInputSlot()].stackSize <= 0)
             mInventory[getInputSlot()] = null;

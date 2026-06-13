@@ -715,6 +715,15 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             shouldCheck |= smartInputHatch.justUpdated();
         }
         if (shouldCheck) return true;
+        // And for regular input busses/hatches, so freshly inserted ingredients trigger an immediate check
+        // instead of waiting for the periodic poll below.
+        for (MTEHatchInputBus inputBus : validMTEList(mInputBusses)) {
+            shouldCheck |= inputBus.justUpdated();
+        }
+        for (MTEHatchInput inputHatch : validMTEList(mInputHatches)) {
+            shouldCheck |= inputHatch.justUpdated();
+        }
+        if (shouldCheck) return true;
 
         // Perform more frequent recipe change after the machine just shuts down.
         long timeElapsed = mTotalRunTime - mLastWorkingTick;

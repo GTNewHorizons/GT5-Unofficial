@@ -83,6 +83,17 @@ public class MTEHatchMultiInput extends MTEHatchInput {
         return mStoredFluid;
     }
 
+    @Override
+    protected long getContentAmount() {
+        long amount = super.getContentAmount();
+        if (mStoredFluid != null) {
+            for (FluidStack fluid : mStoredFluid) {
+                if (fluid != null) amount += fluid.amount;
+            }
+        }
+        return amount;
+    }
+
     public FluidStackTank[] getFluidTanks() {
         return fluidTanks;
     }

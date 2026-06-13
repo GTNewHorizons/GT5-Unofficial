@@ -144,10 +144,30 @@ public class MTEHatchInputBus extends MTEHatch implements IConfigurationCircuitS
         }
     }
 
+    /** Configuration circuit setting seen last tick; -1 means no circuit. Detects ghost-circuit changes. */
+    private int lastCircuitConfig = Integer.MIN_VALUE;
+
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
         if (aBaseMetaTileEntity.isServerSide()) {
+            detectInventoryChange();
+            detectCircuitChange();
             updateSlots();
+        }
+    }
+
+    /**
+     * Latches a recipe-check signal when the configuration circuit changes. A ghost circuit is stored with stack size 0
+     * and only its damage encodes the setting, so {@link #detectInventoryChange()} cannot see it. Any change (in either
+     * direction) can select a different recipe, so this is not gated on an increase.
+     */
+    private void detectCircuitChange() {
+        int slot = getCircuitSlot();
+        ItemStack circuit = (slot >= 0 && slot < mInventory.length) ? mInventory[slot] : null;
+        int config = circuit == null ? -1 : circuit.getItemDamage();
+        if (config != lastCircuitConfig) {
+            lastCircuitConfig = config;
+            markJustUpdated();
         }
     }
 

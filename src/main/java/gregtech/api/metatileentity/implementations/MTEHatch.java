@@ -39,6 +39,19 @@ public abstract class MTEHatch extends MTEBasicTank implements ICasingTexturePro
 
     private ItemStack ae2CraftingIcon;
 
+    /**
+     * Latched flag indicating new ingredients arrived since the controller last polled it. Lets a multiblock run a
+     * recipe check the moment new ingredients arrive instead of waiting for its periodic poll. Consumed (and reset) by
+     * {@link #justUpdated()}.
+     */
+    private boolean justUpdated = false;
+
+    /**
+     * Total contents seen on the previous tick, used by {@link #detectInventoryChange()} to distinguish ingredients
+     * being inserted (which may enable a new recipe) from ingredients being consumed (which never can).
+     */
+    private long lastContentAmount = 0;
+
     public MTEHatch(int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount, String aDescription,
         ITexture... aTextures) {
         super(aID, aName, aNameRegional, aTier, aInvSlotCount, aDescription, aTextures);
@@ -55,6 +68,54 @@ public abstract class MTEHatch extends MTEBasicTank implements ICasingTexturePro
 
     public static int getSlots(int aTier) {
         return (aTier + 1) * (aTier + 1);
+    }
+
+    /**
+     * Latches a signal if this hatch gained contents since last tick. Input hatches and busses should call this from
+     * {@code onPostTick}. Only a net <em>increase</em> latches: consuming ingredients lowers the tracked amount without
+     * triggering, so the controller never runs an expensive recipe check on consumption alone. The signal is latched
+     * (rather than read live) so it survives the arbitrary tile-entity tick ordering between this hatch and its
+     * controlling multiblock.
+     */
+    protected void detectInventoryChange() {
+        long amount = getContentAmount();
+        if (amount > lastContentAmount) {
+            justUpdated = true;
+        }
+        lastContentAmount = amount;
+    }
+
+    /**
+     * @return a monotonic measure of this hatch's stored contents (summed item stack sizes plus stored fluid). Only its
+     *         direction of change matters, not its absolute value. Subclasses holding fluids or non-standard storage
+     *         should override to include those amounts.
+     */
+    protected long getContentAmount() {
+        long amount = 0;
+        if (mInventory != null) {
+            for (ItemStack stack : mInventory) {
+                if (stack != null) amount += stack.stackSize;
+            }
+        }
+        return amount;
+    }
+
+    /**
+     * Forces the next controller poll to run a recipe check. Use for changes that aren't a monotonic increase in stored
+     * contents (e.g. a configuration circuit being changed), which {@link #detectInventoryChange()} cannot see.
+     */
+    protected void markJustUpdated() {
+        justUpdated = true;
+    }
+
+    /**
+     * @return {@code true} if new items and/or fluids were inserted since the last call, which triggers an immediate
+     *         recipe check on the controlling multiblock. Resets the flag.
+     */
+    public boolean justUpdated() {
+        boolean ret = justUpdated;
+        justUpdated = false;
+        return ret;
     }
 
     private int getOffsetTier() {
