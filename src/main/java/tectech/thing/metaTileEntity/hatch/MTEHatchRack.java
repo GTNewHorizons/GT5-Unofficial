@@ -374,4 +374,9 @@ public class MTEHatchRack extends MTEHatch {
     protected GTGuiTheme getGuiTheme() {
         return GTGuiThemes.TECTECH_STANDARD;
     }
+
+    @Override
+    public boolean isItemValidForSlot(int index, ItemStack itemStack) {
+        return isValidItem(itemStack) && super.isItemValidForSlot(index, itemStack);
+    }
 }
