@@ -579,10 +579,11 @@ public class MechArmorAugmentRegistries {
             .setCategory(AugmentCategory.Movement)
         ),
         TerrasteelAugment(ItemList.Augment_Terrasteel, new AugmentBuilder()
-        .setId("Terrasteel")
-        .setItemId("augmentterrasteel")
-        .providesBehaviors(TerrasteelBehavior.INSTANCE)
-        .setCategory(AugmentCategory.Utility)
+            .setId("Terrasteel")
+            .setItemId("augmentterrasteel")
+            .providesBehaviors(TerrasteelBehavior.INSTANCE)
+            .setMinimumCoreTier(1)
+            .setCategory(AugmentCategory.Utility)
         );
         // spotless:on
 
