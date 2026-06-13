@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.annotation.Nonnegative;
 
-import gregtech.common.tileentities.machines.MTEHatchCraftingInputSlave;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -47,7 +46,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.client.GTSoundLoop;
 import gregtech.client.volumetric.ISoundPosition;
-import gregtech.common.tileentities.machines.IDualInputHatch;
+import gregtech.common.tileentities.machines.MTEHatchCraftingInputSlave;
 
 /**
  * Enhanced multiblock base class, featuring following improvement over {@link MTEMultiBlockBase}
