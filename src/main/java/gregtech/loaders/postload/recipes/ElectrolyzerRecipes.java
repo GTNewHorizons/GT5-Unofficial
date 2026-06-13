@@ -349,5 +349,22 @@ public class ElectrolyzerRecipes implements Runnable {
             .eut(TierEU.RECIPE_MV)
             .addTo(electrolyzerRecipes);
 
+        addDimethylbenzeneElectrolyzerRecipes(
+            Materials.Dimethylbenzene,
+            Materials.IIIDimethylbenzene,
+            Materials.IVDimethylbenzene);
+
+    }
+
+    private static void addDimethylbenzeneElectrolyzerRecipes(Materials... dimethylbenzenes) {
+        for (Materials dimethylbenzene : dimethylbenzenes) {
+            GTValues.RA.stdBuilder()
+                .itemOutputs(Materials.Carbon.getDust(8))
+                .fluidInputs(dimethylbenzene.getFluid(1_000))
+                .fluidOutputs(Materials.Hydrogen.getGas(10_000))
+                .duration(6 * MINUTES + 57 * SECONDS + 12 * TICKS)
+                .eut(60)
+                .addTo(electrolyzerRecipes);
+        }
     }
 }
