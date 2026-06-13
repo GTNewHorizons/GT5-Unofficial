@@ -91,7 +91,7 @@ public class MTEIndustrialApiaryGui extends MTEBasicMachineBaseGui<MTEIndustrial
                 .child(
                     new ItemSlotGridBuilder(machine.inventoryHandler, syncManager).size(2)
                         .itemSlotSupplier(
-                            () -> new ItemSlot()
+                            () -> new ItemSlot().backgroundOverlay(GTGuiTextures.OVERLAY_SLOT_APIARY_UPGRADE)
                                 .addTooltipLine(
                                     GTUtility.translate("GT5U.machines.industrialapiary.upgradeslot.tooltip"))
                                 .tooltipShowUpTimer(TOOLTIP_DELAY))
@@ -235,8 +235,6 @@ public class MTEIndustrialApiaryGui extends MTEBasicMachineBaseGui<MTEIndustrial
                         new ToggleButton()
                             .value(new BooleanSyncValue(machine::isAutoQueen, machine::setAutoQueen).allowC2S())
                             .backgroundOverlay(GTGuiTextures.OVERLAY_SLOT_BEE_QUEEN)
-                            .overlay(false, GTGuiTextures.OVERLAY_BUTTON_CROSS)
-                            .overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
                             .addTooltipStringLines(
                                 machine.mTooltipCache.getData("GT5U.machines.industrialapiary.autoqueen.tooltip").text)
                             .tooltipShowUpTimer(TOOLTIP_DELAY))

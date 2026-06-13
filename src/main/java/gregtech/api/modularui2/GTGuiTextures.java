@@ -1063,6 +1063,11 @@ public final class GTGuiTextures {
         .canApplyTheme()
         .fullImage()
         .build();
+    public static final UITexture OVERLAY_SLOT_APIARY_UPGRADE = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_slot/slot_upgrade")
+        .canApplyTheme()
+        .fullImage()
+        .build();
     // endregion slot overlay
 
     // region progressbar
