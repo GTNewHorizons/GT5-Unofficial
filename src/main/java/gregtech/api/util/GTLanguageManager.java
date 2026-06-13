@@ -6,6 +6,7 @@ import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 import java.io.File;
 import java.lang.reflect.Field;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -74,6 +75,7 @@ public class GTLanguageManager {
     private static final Map<String, String> stringTranslateLanguageList;
     private static final Map<String, String> stringTranslateLanguageListFallBack;
     public static String LanguageCode = "en_US";
+    public static Locale LOCALE;
 
     static {
         try {
@@ -181,17 +183,6 @@ public class GTLanguageManager {
             return StatCollector.translateToLocal(anotherKeyToTry);
         }
         return tTrimmedKey;
-    }
-
-    public static String getTranslation(String aKey, String aSeperator) {
-        if (aKey == null) return E;
-        String rTranslation = E;
-        StringBuilder rTranslationSB = new StringBuilder(rTranslation);
-        for (String tString : aKey.split(aSeperator)) {
-            rTranslationSB.append(getTranslation(tString));
-        }
-        rTranslation = String.valueOf(rTranslationSB);
-        return rTranslation;
     }
 
     @SuppressWarnings("unused")
@@ -459,5 +450,9 @@ public class GTLanguageManager {
             languageMap.put(key, english);
             LANGMAP.put(key, english);
         }
+    }
+
+    public static boolean hasGTLocalizationKey(final String key) {
+        return LANGMAP.containsKey(key);
     }
 }

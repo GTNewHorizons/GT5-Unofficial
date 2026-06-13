@@ -45,11 +45,13 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
 import gregtech.common.tileentities.machines.MTEHatchInputME;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
@@ -198,16 +200,20 @@ public class MTEExtremeHeatExchanger extends TTMultiblockBase implements ISurviv
     }
 
     @Override
-    protected void clearHatches_EM() {
-        super.clearHatches_EM();
+    public void clearHatches() {
+        super.clearHatches();
         mCooledFluidHatch = null;
         mHotFluidHatch = null;
     }
 
     @Override
-    public boolean checkMachine_EM(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         this.casingAmount = 0;
-        return structureCheck_EM(mName, 2, 5, 0) && mMaintenanceHatches.size() == 1 && casingAmount >= 25;
+        if (!checkPiece(mName, 2, 5, 0, errors)) return;
+        checkCasingMin(errors, casingAmount, 25);
+        checkHasMaintenanceHatch(errors);
+        checkHasInputHatch(errors);
+        checkHasOutputHatch(errors);
     }
 
     @Override
@@ -245,27 +251,28 @@ public class MTEExtremeHeatExchanger extends TTMultiblockBase implements ISurviv
             .addInfo(GTUtility.translate("gt.multiblock.ExtremeHeatExchanger.throttle1"))
             .addInfo(GTUtility.translate("gt.multiblock.ExtremeHeatExchanger.throttle2"))
             .addController("Front bottom center")
-            .addCasingInfoRange("Robust Tungstensteel Machine Casings", 25, 120, false)
+            .addCasingInfoRange("Robust Tungstensteel Machine Casing", 25, 120, false)
             .addCasingInfoExactly("Tiered Glass (EV+)", 72, false)
             .addCasingInfoExactly("Pressure Resistant Wall", 48, false)
             .addCasingInfoExactly("Tungstensteel Pipe Casing", 60, false)
             .addOtherStructurePart(
                 StatCollector.translateToLocal("gg.structure.tooltip.input_hatch"),
-                "Hot fluid, front center casing",
+                "Hot fluid, front center Casing",
                 3)
             .addOtherStructurePart(
                 StatCollector.translateToLocal("gg.structure.tooltip.input_hatch"),
-                "Distilled water, any bottom layer casing",
+                "Distilled water, any bottom layer Casing",
                 1)
             .addOtherStructurePart(
                 StatCollector.translateToLocal("gg.structure.tooltip.output_hatch"),
-                "Cold fluid, back center casing",
+                "Cold fluid, back center Casing",
                 4)
             .addOtherStructurePart(
                 StatCollector.translateToLocal("gg.structure.tooltip.output_hatch"),
-                "SH Steam/SC Steam, any top layer casing",
+                "SH Steam/SC Steam, any top layer Casing",
                 2)
-            .addMaintenanceHatch("Any casing", 1, 2, 5)
+            .addMaintenanceHatch("Any Casing", 1, 2, 5)
+            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         return tt;
     }
@@ -338,7 +345,7 @@ public class MTEExtremeHeatExchanger extends TTMultiblockBase implements ISurviv
                 } else {
                     steamToOutput = waterAmount * 160;
                 }
-                addOutput(new FluidStack(tReadySteam, steamToOutput));
+                addOutputPartial(new FluidStack(tReadySteam, steamToOutput));
             } else {
                 GTLog.writeExplosionLog(this, "had no more distilled water!");
                 mHotFluidHatch.getBaseMetaTileEntity()
@@ -359,7 +366,7 @@ public class MTEExtremeHeatExchanger extends TTMultiblockBase implements ISurviv
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        structureBuild_EM(mName, 2, 5, 0, stackSize, hintsOnly);
+        buildPiece(mName, stackSize, hintsOnly, 2, 5, 0);
     }
 
     @Override
@@ -406,10 +413,7 @@ public class MTEExtremeHeatExchanger extends TTMultiblockBase implements ISurviv
                 + formatNumber(tThreshold)
                 + EnumChatFormatting.RESET
                 + " L/s",
-            StatCollector.translateToLocal("GT5U.multiblock.recipesDone") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(recipesDone)
-                + EnumChatFormatting.RESET };
+            GTUtility.translate("GT5U.multiblock.recipesDone", formatNumber(recipesDone)) };
     }
 
     @Override

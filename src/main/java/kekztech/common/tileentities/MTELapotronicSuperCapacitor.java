@@ -64,12 +64,15 @@ import gregtech.api.metatileentity.implementations.MTEHatchMaintenance;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.LongData;
 import gregtech.api.util.LongRunningAverage;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.common.gui.modularui.multiblock.MTELapotronicSuperCapacitorgui;
+import gregtech.common.gui.modularui.multiblock.MTELapotronicSuperCapacitorGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.misc.WirelessNetworkManager;
@@ -313,7 +316,11 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
     }
 
     private void processInputHatch(MTEHatch aHatch, int aBaseCasingIndex) {
-        mMaxEUIn += aHatch.maxEUInput() * aHatch.maxAmperesIn();
+        long maxAmpereIn = aHatch.maxAmperesIn();
+        if (aHatch instanceof MTEHatchEnergyMulti multiAmpEnergy) {
+            maxAmpereIn = multiAmpEnergy.maxAmperes + (multiAmpEnergy.maxAmperes >> 2);
+        }
+        mMaxEUIn += aHatch.maxEUInput() * maxAmpereIn;
         aHatch.updateTexture(aBaseCasingIndex);
     }
 
@@ -332,36 +339,30 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                 droneDownLink.registerMachineController(this);
             }
             return MTELapotronicSuperCapacitor.this.mMaintenanceHatches.add(hatch);
-        } else if (aMetaTileEntity instanceof MTEHatchEnergy) {
+        } else if (aMetaTileEntity instanceof MTEHatchEnergy tHatch) {
             // Add GT hatches
-            final MTEHatchEnergy tHatch = ((MTEHatchEnergy) aMetaTileEntity);
             processInputHatch(tHatch, aBaseCasingIndex);
             return mEnergyHatches.add(tHatch);
-        } else if (aMetaTileEntity instanceof MTEHatchEnergyTunnel) {
+        } else if (aMetaTileEntity instanceof MTEHatchEnergyTunnel tHatch) {
             // Add TT Laser hatches
-            final MTEHatchEnergyTunnel tHatch = ((MTEHatchEnergyTunnel) aMetaTileEntity);
             processInputHatch(tHatch, aBaseCasingIndex);
             return mEnergyTunnelsTT.add(tHatch);
-        } else if (aMetaTileEntity instanceof MTEHatchEnergyMulti) {
+        } else if (aMetaTileEntity instanceof MTEHatchEnergyMulti tHatch) {
             // Add TT hatches
-            final MTEHatchEnergyMulti tHatch = (MTEHatchEnergyMulti) aMetaTileEntity;
             processInputHatch(tHatch, aBaseCasingIndex);
             return mEnergyHatchesTT.add(tHatch);
-        } else if (aMetaTileEntity instanceof MTEHatchDynamo) {
-            // Add GT hatches
-            final MTEHatchDynamo tDynamo = (MTEHatchDynamo) aMetaTileEntity;
-            processOutputHatch(tDynamo, aBaseCasingIndex);
-            return mDynamoHatches.add(tDynamo);
-        } else if (aMetaTileEntity instanceof MTEHatchDynamoTunnel) {
+        } else if (aMetaTileEntity instanceof MTEHatchDynamoTunnel tDynamo) {
             // Add TT Laser hatches
-            final MTEHatchDynamoTunnel tDynamo = (MTEHatchDynamoTunnel) aMetaTileEntity;
             processOutputHatch(tDynamo, aBaseCasingIndex);
             return mDynamoTunnelsTT.add(tDynamo);
-        } else if (aMetaTileEntity instanceof MTEHatchDynamoMulti) {
+        } else if (aMetaTileEntity instanceof MTEHatchDynamoMulti tDynamo) {
             // Add TT hatches
-            final MTEHatchDynamoMulti tDynamo = (MTEHatchDynamoMulti) aMetaTileEntity;
             processOutputHatch(tDynamo, aBaseCasingIndex);
             return mDynamoHatchesTT.add(tDynamo);
+        } else if (aMetaTileEntity instanceof MTEHatchDynamo tDynamo) {
+            // Add GT hatches
+            processOutputHatch(tDynamo, aBaseCasingIndex);
+            return mDynamoHatches.add(tDynamo);
         }
         return false;
     }
@@ -475,11 +476,11 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
             .addStructureInfo(
                 "You can also use the Empty Capacitor to save materials if you use it for less than half the blocks")
             .addCasingInfoRange("Any Tiered Glass", 41, 777, true)
-            .addEnergyHatch("Any casing")
-            .addDynamoHatch("Any casing")
+            .addEnergyHatch("Any Casing")
+            .addDynamoHatch("Any Casing")
             .addOtherStructurePart(
                 "Laser Target/Source Hatches",
-                "Any casing, must be using " + GTValues.TIER_COLORS[8]
+                "Any Casing, must be using " + GTValues.TIER_COLORS[8]
                     + GTValues.VN[8]
                     + EnumChatFormatting.GRAY
                     + "-tier glass")
@@ -489,7 +490,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                 GTStructureChannels.LSC_CAPACITOR,
                 "Capacitor Tier if specified. Otherwise pick any acceptable capacitor.")
             .addSubChannelUsage(GTStructureChannels.STRUCTURE_HEIGHT)
-            .addMaintenanceHatch("Any casing")
+            .addMaintenanceHatch("Any Casing")
             .toolTipFinisher();
         return tt;
     }
@@ -533,7 +534,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity thisController, ItemStack guiSlotItem) {
+    public void checkMachine(IGregTechTileEntity thisController, ItemStack guiSlotItem, List<StructureError> errors) {
         // Reset capacitor counts
         Arrays.fill(capacitors, 0);
         // Clear TT hatches
@@ -548,18 +549,21 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
         glassTier = GLASS_TIER_UNSET;
         casingAmount = 0;
 
-        if (!checkPiece(STRUCTURE_PIECE_BASE, 2, 1, 0)) return false;
+        if (!checkPiece(STRUCTURE_PIECE_BASE, 2, 1, 0, errors)) return;
 
-        if (casingAmount < 17) return false;
+        checkCasingMin(errors, casingAmount, 17);
 
         topState = TopState.NotTop; // need at least one layer of capacitor to form, obviously
         int layer = 2;
         while (true) {
-            if (!checkPiece(STRUCTURE_PIECE_LAYER, 2, layer, 0)) return false;
+            if (!checkPiece(STRUCTURE_PIECE_LAYER, 2, layer, 0, errors)) return;
             layer++;
             if (topState == TopState.Top) break; // top found, break out
             topState = TopState.MayBeTop;
-            if (layer > 50) return false; // too many layers
+            if (layer > 50) {
+                errors.add(StructureErrorRegistry.TOO_TALL);
+                return;
+            }
         }
 
         // Make sure glass tier is T-2 of the highest tier capacitor in the structure
@@ -568,14 +572,21 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
         for (int highestGlassTier = capacitors.length - 1; highestGlassTier >= 0; highestGlassTier--) {
             int highestCapacitor = Capacitor.getIndexFromGlassTier(highestGlassTier);
             if (capacitors[highestCapacitor] > 0) {
-                if (Capacitor.VALUES[highestCapacitor].getMinimalGlassTier() > glassTier) return false;
+                int tier = Capacitor.VALUES[highestCapacitor].getMinimalGlassTier();
+                if (tier > glassTier) {
+                    errors.add(StructureErrors.glassTierNotEnough(tier));
+                    return;
+                }
                 break;
             }
         }
 
         // Glass has to be at least UV-tier to allow TT Laser hatches
         if (glassTier < 8) {
-            if (!mEnergyTunnelsTT.isEmpty() || !mDynamoTunnelsTT.isEmpty()) return false;
+            if (!mEnergyTunnelsTT.isEmpty() || !mDynamoTunnelsTT.isEmpty()) {
+                errors.add(StructureErrors.glassTierNotEnough(8));
+                return;
+            }
         }
 
         // Check if enough (more than 50%) non-empty caps
@@ -586,7 +597,10 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
             + capacitors[6]
             + getUEVCapacitorCount()
             + getUIVCapacitorCount()
-            + getUMVCapacitorCount()) return false;
+            + getUMVCapacitorCount()) {
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.lsc_cap"));
+            return;
+        }
 
         // Calculate total capacity
         capacity = BigInteger.ZERO;
@@ -598,7 +612,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
         }
         // Calculate how much energy to void each tick
         passiveDischargeAmount = recalculateLossWithMaintenance(getRepairStatus());
-        return mMaintenanceHatches.size() == 1;
+        checkOneMaintenanceHatch(errors);
     }
 
     @Override
@@ -747,6 +761,9 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
     }
 
     public int rebalance() {
+        if (!canUseWireless()) {
+            return 1;
+        }
 
         balanced = true;
 
@@ -1101,7 +1118,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
         return true;
     }
 
-    protected boolean canUseWireless() {
+    public boolean canUseWireless() {
         return wirelessCapableCapacitors() != 0;
     }
 
@@ -1139,7 +1156,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
 
     @Override
     protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
-        return new MTELapotronicSuperCapacitorgui(this);
+        return new MTELapotronicSuperCapacitorGui(this);
     }
 
     @Override

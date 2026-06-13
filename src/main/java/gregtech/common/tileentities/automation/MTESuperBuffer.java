@@ -3,14 +3,16 @@ package gregtech.common.tileentities.automation;
 import static gregtech.api.enums.Textures.BlockIcons.AUTOMATION_SUPERBUFFER;
 import static gregtech.api.enums.Textures.BlockIcons.AUTOMATION_SUPERBUFFER_GLOW;
 
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
-import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.render.TextureFactory;
+import gregtech.common.gui.modularui.singleblock.MTESuperBufferGui;
 
 public class MTESuperBuffer extends MTEChestBuffer {
 
@@ -50,10 +52,7 @@ public class MTESuperBuffer extends MTEChestBuffer {
     }
 
     @Override
-    protected void addMainUI(ModularWindow.Builder builder) {
-        builder.widget(
-            new DrawableWidget().setDrawable(GTUITextures.PICTURE_SUPER_BUFFER)
-                .setPos(61, 4)
-                .setSize(54, 54));
+    public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTESuperBufferGui(this).build(guiData, syncManager, uiSettings);
     }
 }

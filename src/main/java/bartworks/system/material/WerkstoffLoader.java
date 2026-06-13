@@ -106,7 +106,6 @@ import bartworks.system.material.werkstoff_loaders.registration.BridgeMaterialsL
 import bartworks.system.material.werkstoff_loaders.registration.CasingRegistrator;
 import bartworks.system.oredict.OreDictHandler;
 import bartworks.util.BWColorUtil;
-import bartworks.util.EnumUtils;
 import bartworks.util.log.DebugLog;
 import bwcrossmod.cls.CLSCompat;
 import cpw.mods.fml.common.ProgressManager;
@@ -143,9 +142,6 @@ public class WerkstoffLoader {
     public static final SubTag NO_BLAST = SubTag.getNewSubTag("NoBlast");
 
     public static void setUp() {
-        // add tiberium
-        EnumUtils.createNewElement("Tr", 123L, 203L, 0L, -1L, null, "Tiberium", false);
-
         Werkstoff.GenerationFeatures.initPrefixLogic();
         BWGTMaterialReference.init();
     }
@@ -1309,7 +1305,7 @@ public class WerkstoffLoader {
             .onlyDust(),
         87,
         TextureSet.SET_QUARTZ);
-    public static final Werkstoff LuVTierMaterial = new Werkstoff(
+    public static final Werkstoff RhodiumPlatedPalladium = new Werkstoff(
         Materials.Chrome.getRGBA(),
         "Rhodium-Plated Palladium",
         new Werkstoff.Stats().setCentrifuge(true)
@@ -1335,8 +1331,8 @@ public class WerkstoffLoader {
         new short[] { 0x22, 0xEE, 0x22 },
         "Tiberium",
         "Tr",
-        new Werkstoff.Stats().setProtons(123)
-            .setMass(326)
+        new Werkstoff.Stats().setProtons(Element.Tr.mProtons)
+            .setMass(Element.Tr.getMass())
             .setBlastFurnace(true)
             .setMeltingPoint(1800)
             .setRadioactive(true)
@@ -1661,6 +1657,9 @@ public class WerkstoffLoader {
         if (orePrefixes == OrePrefixes.sheetmetal) {
             return new ItemStack(GregTechAPI.sBlockSheetmetalBW, amount, werkstoff.getmID());
         }
+        if (orePrefixes == OrePrefixes.frameGt) {
+            return new ItemStack(GregTechAPI.sBlockFramesBW, amount, werkstoff.getmID());
+        }
 
         if (WerkstoffLoader.items.get(orePrefixes) == null) {
             return null;
@@ -1793,7 +1792,7 @@ public class WerkstoffLoader {
 
         WerkstoffLoader.Calcium.add(WerkstoffLoader.ANAEROBE_SMELTING);
 
-        WerkstoffLoader.LuVTierMaterial.add(WerkstoffLoader.NOBLE_GAS_SMELTING);
+        WerkstoffLoader.RhodiumPlatedPalladium.add(WerkstoffLoader.NOBLE_GAS_SMELTING);
         WerkstoffLoader.Ruridit.add(WerkstoffLoader.NOBLE_GAS_SMELTING);
         WerkstoffLoader.AdemicSteel.add(WerkstoffLoader.NOBLE_GAS_SMELTING);
 
@@ -1844,7 +1843,7 @@ public class WerkstoffLoader {
     private static void addBridgeSubTags() {
         // add specific GT materials subtags to various werkstoff bridgematerials
 
-        SubTag.METAL.addTo(LuVTierMaterial.getBridgeMaterial());
+        SubTag.METAL.addTo(RhodiumPlatedPalladium.getBridgeMaterial());
     }
 
     public static long toGenerateGlobal;

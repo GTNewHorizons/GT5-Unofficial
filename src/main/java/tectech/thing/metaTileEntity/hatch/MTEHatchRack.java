@@ -36,6 +36,8 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
+import gregtech.api.modularui2.GTGuiTheme;
+import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.recipe.QuantumComputerRecipeData;
@@ -133,6 +135,15 @@ public class MTEHatchRack extends MTEHatch {
         return Math.max(0, heat);
     }
 
+    public void setHeat(int heat) {
+        this.heat = heat;
+    }
+
+    public boolean isValidItem(ItemStack itemStack) {
+        return MTEHatchRack.validRackItems.stream()
+            .anyMatch(itemStack::isItemEqual);
+    }
+
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
@@ -148,7 +159,7 @@ public class MTEHatchRack extends MTEHatch {
         if (aBaseMetaTileEntity.isActive() || heat > 2000) {
             return false;
         }
-        return side == aBaseMetaTileEntity.getFrontFacing();
+        return side == aBaseMetaTileEntity.getFrontFacing() && isValidItem(aStack);
     }
 
     @Override
@@ -164,11 +175,6 @@ public class MTEHatchRack extends MTEHatch {
         if (aPlayer instanceof EntityPlayerMPAccessor) {
             clientLocale = ((EntityPlayerMPAccessor) aPlayer).gt5u$getTranslator();
         }
-        // if(aBaseMetaTileEntity.isActive())
-        // aPlayer.addChatComponentMessage(new ChatComponentText("It is still active..."));
-        // else if(heat>0)
-        // aPlayer.addChatComponentMessage(new ChatComponentText("It is still warm..."));
-        // else
         openGui(aPlayer);
         return true;
     }
@@ -288,6 +294,7 @@ public class MTEHatchRack extends MTEHatch {
 
             new RackComponent(getModItem(NewHorizonsCoreMod.ID, "PikoCircuit", 1), 260, 12, -1f, 9500, true); // UMV
             new RackComponent(getModItem(NewHorizonsCoreMod.ID, "QuantumCircuit", 1), 320, 10, -1f, 10000, true); // UXV
+            new RackComponent(getModItem(NewHorizonsCoreMod.ID, "PlanckCircuit", 1), 360, 8, -1f, 10000, true); // MAX
         }
 
         if (OpenComputers.isModLoaded()) {
@@ -361,5 +368,15 @@ public class MTEHatchRack extends MTEHatch {
     @Override
     public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
         return new MTEHatchRackGui(this).build(guiData, syncManager, uiSettings);
+    }
+
+    @Override
+    protected GTGuiTheme getGuiTheme() {
+        return GTGuiThemes.TECTECH_STANDARD;
+    }
+
+    @Override
+    public boolean isItemValidForSlot(int index, ItemStack itemStack) {
+        return isValidItem(itemStack) && super.isItemValidForSlot(index, itemStack);
     }
 }

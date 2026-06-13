@@ -13,7 +13,6 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -45,6 +44,7 @@ import gregtech.api.interfaces.IDebugableBlock;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IColoredTileEntity;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IDebugableTileEntity;
@@ -58,6 +58,7 @@ import gregtech.api.metatileentity.CoverableTileEntity;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
 import gregtech.common.covers.Cover;
+import gregtech.common.render.GTCopiedBlockTextureRender;
 import gregtech.common.render.GTRendererBlock;
 import gregtech.common.tileentities.storage.MTEQuantumChest;
 import gtPlusPlus.xmod.gregtech.common.tileentities.redstone.MTERedstoneLamp;
@@ -256,7 +257,15 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
 
     @SideOnly(Side.CLIENT)
     @Override
-    public IIcon getIcon(IBlockAccess aIBlockAccess, int aX, int aY, int aZ, int ordinalSide) {
+    public IIcon getIcon(IBlockAccess blockAccess, int x, int y, int z, int ordinalSide) {
+        final TileEntity tTileEntity = blockAccess.getTileEntity(x, y, z);
+        if (tTileEntity instanceof BaseMetaTileEntity tile) {
+            if (tile.getMetaTileEntity() instanceof ICasingTextureProvider textureProvider) {
+                if (textureProvider.getCasingTexture() instanceof GTCopiedBlockTextureRender tex) {
+                    return tex.getIcon(ordinalSide, null);
+                }
+            }
+        }
         return Textures.BlockIcons.MACHINE_LV_SIDE.getIcon();
     }
 
@@ -509,6 +518,20 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
 
     @Override
     public boolean removedByPlayer(World aWorld, EntityPlayer aPlayer, int aX, int aY, int aZ, boolean aWillHarvest) {
+        if (aPlayer != null && aPlayer.isSneaking()) {
+            final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
+            if (tTileEntity instanceof CoverableTileEntity coverableTE) {
+                for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
+                    if (coverableTE.hasCoverAtSide(side)) {
+                        coverableTE.dropCover(side, side);
+                    }
+                }
+            }
+
+            if (tTileEntity instanceof BaseMetaTileEntity baseTE) {
+                baseTE.setColorization((byte) -1);
+            }
+        }
         // This delays deletion of the block until after getDrops
         return aWillHarvest || super.removedByPlayer(aWorld, aPlayer, aX, aY, aZ, false);
     }
@@ -660,14 +683,6 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
                 outputSubBlocks.add(new ItemStack(item, 1, i));
             }
         }
-    }
-
-    @Override
-    public void onBlockPlacedBy(World aWorld, int aX, int aY, int aZ, EntityLivingBase aPlayer, ItemStack aStack) {
-        final TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        if (!(tTileEntity instanceof IGregTechTileEntity iGregTechTileEntity)) return;
-        iGregTechTileEntity.setFrontFacing(
-            BaseTileEntity.getSideForPlayerPlacing(aPlayer, ForgeDirection.UP, iGregTechTileEntity.getValidFacings()));
     }
 
     @Override

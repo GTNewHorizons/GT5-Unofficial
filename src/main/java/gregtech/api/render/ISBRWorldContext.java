@@ -11,7 +11,6 @@ import org.jetbrains.annotations.Nullable;
 
 public interface ISBRWorldContext extends ISBRContext {
 
-    @NotNull
     IBlockAccess getBlockAccess();
 
     @Nullable

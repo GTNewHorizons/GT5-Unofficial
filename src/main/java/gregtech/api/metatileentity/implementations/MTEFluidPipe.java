@@ -508,7 +508,7 @@ public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEn
             for (int i = 0; i < mPipeAmount; i++) {
                 if (this.mFluids[i] != null) {
                     newPipe.mFluids[i] = this.mFluids[i].copy();
-                    newPipe.mFluids[i].amount = Math.min(this.mFluids[i].amount, newPipe.mCapacity);
+                    newPipe.mFluids[i].amount = Math.min(this.mFluids[i].amount, newPipe.getCapacity());
                 }
             }
         }
@@ -564,7 +564,7 @@ public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEn
         aBaseMetaTileEntity.markDirty();
         aBaseMetaTileEntity.issueTextureUpdate();
         aBaseMetaTileEntity.issueBlockUpdate();
-        aBaseMetaTileEntity.issueClientUpdate();
+        aBaseMetaTileEntity.issueTileUpdate();
 
         // Handle inventory operations unless in creative mode
         if (!aPlayer.capabilities.isCreativeMode) {

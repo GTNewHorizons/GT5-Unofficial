@@ -24,6 +24,8 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
+import gregtech.api.modularui2.GTGuiTheme;
+import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.render.TextureFactory;
 import gregtech.common.gui.modularui.hatch.MTEHatchUncertaintyGui;
 import gregtech.mixin.interfaces.accessors.EntityPlayerMPAccessor;
@@ -57,8 +59,9 @@ public class MTEHatchUncertainty extends MTEHatch {
         return matrix[index];
     }
 
-    public void setMatrixElemet(short matrixElement, int index) {
+    public void setMatrixElement(short matrixElement, int index) {
         matrix[index] = matrixElement;
+        compute();
     }
 
     public byte getSelection() {
@@ -351,5 +354,10 @@ public class MTEHatchUncertainty extends MTEHatch {
     @Override
     public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
         return new MTEHatchUncertaintyGui(this).build(guiData, syncManager, uiSettings);
+    }
+
+    @Override
+    protected GTGuiTheme getGuiTheme() {
+        return GTGuiThemes.TECTECH_STANDARD;
     }
 }

@@ -48,6 +48,7 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.maps.FuelBackend;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -155,24 +156,27 @@ public class MTEUniversalChemicalFuelEngine extends TTMultiblockBase implements 
     }
 
     @Override
-    public boolean checkMachine_EM(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         casingAmount = 0;
-        return structureCheck_EM(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z) && checkHatch()
-            && casingAmount >= 100;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z, errors)) return;
+        checkHatch(errors);
+        checkCasingMin(errors, casingAmount, 100);
     }
 
-    public boolean checkHatch() {
-        return !mMufflerHatches.isEmpty() && !mInputHatches.isEmpty();
+    public void checkHatch(List<StructureError> errors) {
+        checkHasMufflerHatch(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasInputHatch(errors);
     }
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        structureBuild_EM(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z, stackSize, hintsOnly);
+        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, OFFSET_X, OFFSET_Y, OFFSET_Z);
     }
 
     @Override
     public String[] getStructureDescription(ItemStack itemStack) {
-        return DescTextLocalization.addText("UniversalChemicalFuelEngine.hint", 11);
+        return DescTextLocalization.addText("UniversalChemicalFuelEngine.hint", 8);
     }
 
     @Override
@@ -216,10 +220,10 @@ public class MTEUniversalChemicalFuelEngine extends TTMultiblockBase implements 
             .addCasingInfoExactly("Titanium Firebox Casing", 10, false)
             .addCasingInfoExactly("Chemically Inert Machine Casing", 39, false)
             .addCasingInfoExactly("PTFE Frame Box", 72, false)
-            .addMaintenanceHatch("Any Stable Titanium Machine Casing")
-            .addMufflerHatch("Any Stable Titanium Machine Casing")
-            .addInputHatch("Any Stable Titanium Machine Casing")
-            .addDynamoHatch("Back center of the machine")
+            .addMaintenanceHatch("Any Stable Titanium Machine Casing", 1)
+            .addMufflerHatch("Any Stable Titanium Machine Casing", 1)
+            .addInputHatch("Any Stable Titanium Machine Casing", 1)
+            .addDynamoHatch("Back center of the machine", 2)
             .addStructureAuthors(EnumChatFormatting.GOLD + "TimTems")
             .toolTipFinisher();
         return tt;

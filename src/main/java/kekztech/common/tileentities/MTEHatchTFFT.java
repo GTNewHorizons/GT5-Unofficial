@@ -174,8 +174,7 @@ public class MTEHatchTFFT extends MTEHatch implements IMEMonitor<IAEFluidStack> 
     }
 
     @Override
-
-    public IItemList<IAEFluidStack> getAvailableItems(IItemList out, int iteration) {
+    public IItemList<IAEFluidStack> getAvailableItems(IItemList<IAEFluidStack> out, int iteration) {
         if (controller != null) {
             for (int i = 0; i < MTETankTFFT.MAX_DISTINCT_FLUIDS; i++) {
                 if (!controller.STORE[i].isEmpty()) {

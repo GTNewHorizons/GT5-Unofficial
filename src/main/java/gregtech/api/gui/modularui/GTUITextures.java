@@ -266,6 +266,7 @@ public class GTUITextures {
     public static final UITexture OVERLAY_BUTTON_CHUNK_LOADING = UITexture.fullImage(GregTech.ID, "gui/overlay_button/chunkloading");
     public static final UITexture OVERLAY_BUTTON_CHUNK_LOADING_OFF = UITexture.fullImage(GregTech.ID, "gui/overlay_button/chunkloading_off");
     public static final UITexture OVERLAY_BUTTON_WORK_AREA = UITexture.fullImage(GregTech.ID, "gui/overlay_button/work_area");
+    public static final UITexture OVERLAY_BUTTON_SHOW_WORK_AREA = UITexture.fullImage(GregTech.ID, "gui/overlay_button/show_work_area");
     public static final UITexture OVERLAY_BUTTON_REPLACE_COBBLE_ON = UITexture.fullImage(GregTech.ID, "gui/overlay_button/replace_cobble_on");
     public static final UITexture OVERLAY_BUTTON_REPLACE_COBBLE_OFF = UITexture.fullImage(GregTech.ID, "gui/overlay_button/replace_cobble_off");
     public static final UITexture OVERLAY_BUTTON_RETRACT_PIPE = UITexture.fullImage(GregTech.ID, "gui/overlay_button/retract_pipes");

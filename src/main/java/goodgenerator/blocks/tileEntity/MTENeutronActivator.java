@@ -52,6 +52,9 @@ import gregtech.api.objects.XSTR;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
@@ -207,13 +210,13 @@ public class MTENeutronActivator extends TTMultiblockBase implements ISurvivalCo
             .addCasingInfoMin("Steel Frame Box", 16, false)
             .addCasingInfoMin("Speeding Pipe Casing", 4, false)
             .addCasingInfoMin("Any Tiered Glass", 32, false)
-            .addInputHatch("Hint Block Number 1")
-            .addInputBus("Hint Block Number 1")
-            .addOutputHatch("Hint Block Number 2")
-            .addOutputBus("Hint Block Number 2")
-            .addMaintenanceHatch("Hint Block Number 2")
-            .addOtherStructurePart("Neutron Accelerator", "Hint Block Number 2")
-            .addOtherStructurePart("Neutron Sensor", "Hint Block Number 2")
+            .addInputHatch("Hint block number 1")
+            .addInputBus("Hint block number 1")
+            .addOutputHatch("Hint block number 2")
+            .addOutputBus("Hint block number 2")
+            .addMaintenanceHatch("Hint block number 2")
+            .addOtherStructurePart("Neutron Accelerator", "Hint block number 2")
+            .addOtherStructurePart("Neutron Sensor", "Hint block number 2")
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         return tt;
@@ -262,30 +265,41 @@ public class MTENeutronActivator extends TTMultiblockBase implements ISurvivalCo
     }
 
     @Override
-    protected void clearHatches_EM() {
-        super.clearHatches_EM();
+    public void clearHatches() {
+        super.clearHatches();
         this.mNeutronAccelerator.clear();
         this.mNeutronSensor.clear();
     }
 
     @Override
-    public boolean checkMachine_EM(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         this.casingAmount = 0;
-        if (!structureCheck_EM(NA_BOTTOM, 2, 0, 0)) return false;
+        if (!checkPiece(NA_BOTTOM, 2, 0, 0, errors)) return;
 
         if (!mMachine) {
             height = 0;
-            while (structureCheck_EM(NA_MID, 2, height + 1, 0)) {
+            while (checkPiece(NA_MID, 2, height + 1, 0, errors)) {
                 height++;
             }
+            errors.clear();
         } else {
             for (int i = 0; i < height; i++) {
-                if (!structureCheck_EM(NA_MID, 2, i + 1, 0)) return false;
+                if (!checkPiece(NA_MID, 2, i + 1, 0, errors)) return;
             }
         }
 
-        if (height < 4) return false;
-        return structureCheck_EM(NA_TOP, 2, height + 1, 0) && casingAmount >= 7;
+        if (height < 4) {
+            errors.add(StructureErrorRegistry.TOO_SHORT_HEIGHT);
+            return;
+        }
+        if (!checkPiece(NA_TOP, 2, height + 1, 0, errors)) return;
+        checkCasingMin(errors, casingAmount, 7);
+        checkHasAnyInput(errors);
+        checkHasAnyOutput(errors);
+        checkHasMaintenanceHatch(errors);
+        if (mNeutronAccelerator.isEmpty()) {
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.missing_neutron_accelerator"));
+        }
     }
 
     public final boolean addAcceleratorAndSensor(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
@@ -393,11 +407,11 @@ public class MTENeutronActivator extends TTMultiblockBase implements ISurvivalCo
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        structureBuild_EM(NA_BOTTOM, 2, 0, 0, stackSize, hintsOnly);
+        buildPiece(NA_BOTTOM, stackSize, hintsOnly, 2, 0, 0);
         int heights = stackSize.stackSize + 3;
-        structureBuild_EM(NA_TOP, 2, heights + 1, 0, stackSize, hintsOnly);
+        buildPiece(NA_TOP, stackSize, hintsOnly, 2, heights + 1, 0);
         while (heights > 0) {
-            structureBuild_EM(NA_MID, 2, heights, 0, stackSize, hintsOnly);
+            buildPiece(NA_MID, stackSize, hintsOnly, 2, heights, 0);
             heights--;
         }
     }
@@ -433,10 +447,7 @@ public class MTENeutronActivator extends TTMultiblockBase implements ISurvivalCo
                 + formatNumber(getCurrentNeutronKineticEnergy())
                 + EnumChatFormatting.RESET
                 + "eV",
-            StatCollector.translateToLocal("GT5U.multiblock.recipesDone") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(recipesDone)
-                + EnumChatFormatting.RESET };
+            GTUtility.translate("GT5U.multiblock.recipesDone", formatNumber(recipesDone)) };
     }
 
     @Override

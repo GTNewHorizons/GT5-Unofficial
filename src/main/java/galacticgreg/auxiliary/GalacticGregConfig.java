@@ -29,6 +29,8 @@ public class GalacticGregConfig extends ConfigManager {
     public String LootChestItemOverride;
     public boolean QuietMode;
 
+    public int ChaosIslandExclusionRadius;
+
     public ImmutableBlockMeta CustomLootChest;
 
     @Override
@@ -46,6 +48,8 @@ public class GalacticGregConfig extends ConfigManager {
 
         LootChestItemOverride = "";
         QuietMode = false;
+
+        ChaosIslandExclusionRadius = 200;
     }
 
     @Override
@@ -96,6 +100,13 @@ public class GalacticGregConfig extends ConfigManager {
             "Extras",
             LootChestItemOverride,
             "Define the chest you wish to use as LootChest. use the <ModID>:<Name>:<meta> format or leave empty for the default Minecraft Chest");
+        ChaosIslandExclusionRadius = _mainConfig.getInt(
+            "ChaosIslandExclusionRadius",
+            "Extras",
+            ChaosIslandExclusionRadius,
+            0,
+            500,
+            "Radius in blocks around a Draconic Evolution chaos island within which GalaxySpace asteroids will not generate. Set to 0 to disable.");
 
         GalacticGreg.Logger.setDebugOutput(PrintDebugMessagesToFMLLog);
         GalacticGreg.Logger.setTraceOutput(PrintTraceMessagesToFMLLog);

@@ -1,14 +1,7 @@
 package gregtech.common.gui.modularui.hatch;
 
-import static net.minecraft.util.StatCollector.translateToLocal;
-import static net.minecraft.util.StatCollector.translateToLocalFormatted;
-
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 
-import org.jetbrains.annotations.NotNull;
-
-import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.drawable.DynamicDrawable;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
@@ -18,6 +11,7 @@ import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
 import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
 import tectech.thing.metaTileEntity.hatch.MTEHatchObjectHolder;
 
@@ -42,14 +36,12 @@ public class MTEHatchObjectHolderGui extends MTEHatchBaseGui<MTEHatchObjectHolde
                         .size(16)
                         .topRel(0)
                         .rightRel(0)
-                        .marginTop(4)
-                        .marginRight(4)
                         .tooltipAutoUpdate(true)
                         .tooltipDynamic(
-                            t -> t.add(
-                                translateToLocalFormatted(
+                            t -> t.addLine(
+                                GTUtility.translate(
                                     "tt.gui.text.hatch.status",
-                                    translateToLocal(
+                                    GTUtility.translate(
                                         isActiveSyncer.getBoolValue() ? "tt.gui.text.hatch.status.active"
                                             : "tt.gui.text.hatch.status.inactive")))));
 
@@ -64,12 +56,7 @@ public class MTEHatchObjectHolderGui extends MTEHatchBaseGui<MTEHatchObjectHolde
                 .center());
 
         // input slot
-        parent.child(new ItemSlot().slot(new ModularSlot(hatch.inventoryHandler, 0) {
-
-            @Override
-            public int getItemStackLimit(@NotNull ItemStack stack) {
-                return 1;
-            }
+        parent.child(new ItemSlot().slot(new ModularSlot(machine.inventoryHandler, 0) {
 
             @Override
             public boolean canTakeStack(EntityPlayer playerIn) {
@@ -82,8 +69,8 @@ public class MTEHatchObjectHolderGui extends MTEHatchBaseGui<MTEHatchObjectHolde
     }
 
     @Override
-    protected IDrawable.DrawableWidget createLogo() {
-        return new IDrawable.DrawableWidget(GTGuiTextures.TT_PICTURE_TECTECH_LOGO).size(18);
+    protected boolean supportsBottomRowOverlap() {
+        return true;
     }
 
     @Override

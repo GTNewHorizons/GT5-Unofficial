@@ -108,6 +108,11 @@ public abstract class GTTool implements IToolStats {
     }
 
     @Override
+    public boolean isSaw() {
+        return false;
+    }
+
+    @Override
     public boolean isWrench() {
         return false;
     }

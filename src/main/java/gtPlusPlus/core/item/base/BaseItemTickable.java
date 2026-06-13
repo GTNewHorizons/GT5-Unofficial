@@ -184,10 +184,8 @@ public class BaseItemTickable extends CoreItem {
         return currentDamage / getMaxTicks();
     }
 
-    @SuppressWarnings("unchecked")
     @Override
-    public void addInformation(ItemStack stack, EntityPlayer player, @SuppressWarnings("rawtypes") List list,
-        boolean bool) {
+    public void addInformation(ItemStack stack, EntityPlayer player, List<String> list, boolean adv) {
         if (Client.tooltip.showFormula) {
             if (this.descriptionString.length > 0) {
                 list.add(EnumChatFormatting.GRAY + this.descriptionString[0]);

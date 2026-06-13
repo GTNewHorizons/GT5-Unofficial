@@ -334,7 +334,7 @@ public class MTESplitterModule extends MTENanochipAssemblyModuleBase<MTESplitter
     }
 
     @Override
-    protected @NotNull MTEMultiBlockBaseGui<MTESplitterModule> getGui() {
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
         return new MTESplitterModuleGui(this);
     }
 

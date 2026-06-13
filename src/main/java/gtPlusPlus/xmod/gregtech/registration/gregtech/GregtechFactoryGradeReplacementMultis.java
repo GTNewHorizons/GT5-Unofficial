@@ -8,7 +8,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.Machine_Adv_DistillationTower
 import static gregtech.api.enums.MetaTileEntityIDs.Machine_Adv_ImplosionCompressor;
 
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.MTEIndustrialVacuumFreezer;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.MTEIndustrialVacuumFreezerLegacy;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.advanced.MTEAdvDistillationTower;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.advanced.MTEAdvEBF;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.advanced.MTEAdvFusionMk4;
@@ -30,7 +30,7 @@ public class GregtechFactoryGradeReplacementMultis {
                 "multimachine.adv.implosioncompressor",
                 "Density^2").getStackForm(1L));
         GregtechItemList.Industrial_Cryogenic_Freezer.set(
-            new MTEIndustrialVacuumFreezer(
+            new MTEIndustrialVacuumFreezerLegacy(
                 Industrial_Cryogenic_Freezer.ID,
                 "multimachine.adv.industrialfreezer",
                 "Cryogenic Freezer").getStackForm(1L));

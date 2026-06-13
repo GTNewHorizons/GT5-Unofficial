@@ -15,7 +15,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ORE_DRILL_ACT
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ORE_DRILL_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ORE_DRILL_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.getCasingTextureForId;
-import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
@@ -32,7 +31,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -45,21 +43,9 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-import com.gtnewhorizons.modularui.api.drawable.IDrawable;
-import com.gtnewhorizons.modularui.api.math.Alignment;
-import com.gtnewhorizons.modularui.api.math.Pos2d;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
-import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
-import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.gui.modularui.GTUITextures;
-import gregtech.api.gui.widgets.LockedWhileActiveButton;
 import gregtech.api.interfaces.IChunkLoader;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
@@ -74,10 +60,14 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import gregtech.common.gui.modularui.multiblock.MTEDrillerBaseGui;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 
 public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrillerBase>
@@ -140,7 +130,6 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
     private CheckRecipeResult runtimeFailure = null;
     private CheckRecipeResult lastRuntimeFailure = null;
 
-    /** Allows inheritors to supply custom shutdown failure messages. */
     private @NotNull String shutdownReason = "";
 
     /** Allows inheritors to suppress wiping the last error if the machine is forcibly turned off. */
@@ -170,12 +159,24 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
         return zDrill;
     }
 
-    protected int getYHead() {
+    public int getYHead() {
         return yHead;
     }
 
-    protected final void setWorkState(int ordinal) {
-        this.workState = WorkState.fromOrdinal(ordinal);
+    public WorkState getWorkState() {
+        return workState;
+    }
+
+    public boolean isChunkLoadingEnabled() {
+        return mChunkLoadingEnabled;
+    }
+
+    public void setChunkLoadingEnabled(boolean enabled) {
+        mChunkLoadingEnabled = enabled;
+    }
+
+    public final void setWorkState(WorkState state) {
+        this.workState = state;
     }
 
     protected void addOperatingMessages() {
@@ -231,7 +232,7 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        this.setWorkState(aNBT.getInteger("workState"));
+        this.setWorkState(WorkState.fromOrdinal(aNBT.getInteger("workState")));
         if (aNBT.hasKey("isPickingPipes"))
             workState = aNBT.getBoolean("isPickingPipes") ? WorkState.UPWARD : WorkState.DOWNWARD;
         if (aNBT.hasKey("chunkLoadingEnabled")) mChunkLoadingEnabled = aNBT.getBoolean("chunkLoadingEnabled");
@@ -285,6 +286,10 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
             return isPickingPipes = true;
         }
         return isPickingPipes = false;
+    }
+
+    protected boolean requiresMiningPipes() {
+        return true;
     }
 
     protected enum PipeActionResult {
@@ -393,6 +398,11 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
 
     protected boolean workingDownward(ItemStack aStack, int xDrill, int yDrill, int zDrill, int xPipe, int zPipe,
         int yHead, int oldYHead) {
+        if (!requiresMiningPipes()) {
+            workState = WorkState.AT_BOTTOM;
+            return true;
+        }
+
         switch (tryLowerPipeState()) {
             case NO_PIPE -> {
                 mMaxProgresstime = 0;
@@ -425,6 +435,12 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
 
     protected boolean workingUpward(ItemStack aStack, int xDrill, int yDrill, int zDrill, int xPipe, int zPipe,
         int yHead, int oldYHead) {
+        if (!requiresMiningPipes()) {
+            workState = WorkState.DOWNWARD;
+            stopMachine(ShutDownReasonRegistry.NONE);
+            return false;
+        }
+
         if (tryPickPipe()) {
             return true;
         } else {
@@ -437,7 +453,7 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
     /** Called once when the abort button is clicked. Use to perform any needed cleanup (e.g. unloading chunks.) */
     protected void onAbort() {}
 
-    protected void abortDrilling() {
+    public void abortDrilling() {
         if (workState != WorkState.ABORT) {
             workState = WorkState.ABORT;
             onAbort();
@@ -453,6 +469,12 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
     // exclusively on the workingUpward phase. It also allows for more distinct status messages.
     protected boolean workingToAbortOperation(@NotNull ItemStack aStack, int xDrill, int yDrill, int zDrill, int xPipe,
         int zPipe, int yHead, int oldYHead) {
+        if (!requiresMiningPipes()) {
+            workState = WorkState.DOWNWARD;
+            stopMachine(ShutDownReasonRegistry.NONE);
+            return false;
+        }
+
         if (tryPickPipe()) {
             return true;
         } else {
@@ -491,7 +513,9 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
             stopMachine(ShutDownReasonRegistry.NONE);
             return SimpleCheckRecipeResult.ofFailure("not_enough_energy");
         }
-        putMiningPipesFromInputsInController();
+        if (requiresMiningPipes()) {
+            putMiningPipesFromInputsInController();
+        }
 
         final boolean wasSuccessful;
         switch (workState) {
@@ -584,8 +608,12 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
      *
      * @param newReason The reason for the machine shutdown
      */
-    protected void setShutdownReason(@NotNull String newReason) {
+    public void setShutdownReason(@NotNull String newReason) {
         shutdownReason = newReason;
+    }
+
+    public @NotNull String getShutdownReason() {
+        return shutdownReason;
     }
 
     @Override
@@ -600,19 +628,25 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
     }
 
     @Override
-    public final IStructureDefinition<MTEDrillerBase> getStructureDefinition() {
+    public IStructureDefinition<MTEDrillerBase> getStructureDefinition() {
         return STRUCTURE_DEFINITION.get(getClass());
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         updateCoordinates();
-        return checkPiece(STRUCTURE_PIECE_MAIN, 1, 6, 0) && checkHatches()
-            && GTUtility.getTier(getMaxInputVoltage()) >= getMinTier()
-            && mMaintenanceHatches.size() == 1;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 1, 6, 0, errors)) return;
+        checkHatches(errors);
+        if (!mEnergyHatches.isEmpty()) {
+            int cTier = GTUtility.getTier(getMaxInputVoltage());
+            int machineTier = getMinTier();
+            if (cTier < machineTier) {
+                errors.add(StructureErrors.energyHatchTierTooLow(machineTier));
+            }
+        }
     }
 
-    private void updateCoordinates() {
+    protected void updateCoordinates() {
         xDrill = getBaseMetaTileEntity().getXCoord();
         yDrill = getBaseMetaTileEntity().getYCoord();
         zDrill = getBaseMetaTileEntity().getZCoord();
@@ -654,7 +688,7 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
 
     protected abstract int getMinTier();
 
-    protected abstract boolean checkHatches();
+    protected abstract void checkHatches(List<StructureError> errors);
 
     protected abstract void setElectricityStats();
 
@@ -740,103 +774,8 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
     }
 
     @Override
-    protected boolean useMui2() {
-        return false;
-    }
-
-    @Override
-    protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
-        super.drawTexts(screenElements, inventorySlot);
-        screenElements.widget(
-            TextWidget.dynamicString(() -> shutdownReason)
-                .setSynced(false)
-                .setTextAlignment(Alignment.CenterLeft)
-                .setEnabled(widget -> !(getBaseMetaTileEntity().isActive() || shutdownReason.isEmpty())))
-            .widget(new FakeSyncWidget.StringSyncer(() -> shutdownReason, newString -> shutdownReason = newString));
-    }
-
-    @Override
-    public boolean showRecipeTextInGUI() {
-        return false;
-    }
-
-    @Override
-    public boolean supportsSingleRecipeLocking() {
-        return false;
-    }
-
-    /**
-     * Adds additional buttons to the main button row. You do not need to set the position.
-     *
-     * @param builder      Only use to attach SyncWidgets.
-     * @param buildContext Context for things like the player.
-     */
-    protected List<ButtonWidget> getAdditionalButtons(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        return ImmutableList.of();
-    }
-
-    @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        super.addUIWidgets(builder, buildContext);
-        final int BUTTON_Y_LEVEL = 91;
-
-        builder.widget(
-            new LockedWhileActiveButton(this.getBaseMetaTileEntity(), builder)
-                .setOnClick((clickData, widget) -> mChunkLoadingEnabled = !mChunkLoadingEnabled)
-                .setPlayClickSound(true)
-                .setBackground(() -> {
-                    if (mChunkLoadingEnabled) {
-                        return new IDrawable[] { GTUITextures.BUTTON_STANDARD_PRESSED,
-                            GTUITextures.OVERLAY_BUTTON_CHUNK_LOADING };
-                    }
-                    return new IDrawable[] { GTUITextures.BUTTON_STANDARD,
-                        GTUITextures.OVERLAY_BUTTON_CHUNK_LOADING_OFF };
-                })
-                .attachSyncer(
-                    new FakeSyncWidget.BooleanSyncer(
-                        () -> mChunkLoadingEnabled,
-                        newBoolean -> mChunkLoadingEnabled = newBoolean),
-                    builder,
-                    (widget, val) -> widget.notifyTooltipChange())
-                .dynamicTooltip(
-                    () -> ImmutableList.of(
-                        StatCollector.translateToLocal(
-                            mChunkLoadingEnabled ? "GT5U.gui.button.chunk_loading_on"
-                                : "GT5U.gui.button.chunk_loading_off")))
-                .setTooltipShowUpDelay(TOOLTIP_DELAY)
-                .setPos(new Pos2d(80, BUTTON_Y_LEVEL))
-                .setSize(16, 16))
-            .widget(
-                new ButtonWidget().setOnClick((clickData, widget) -> abortDrilling())
-                    .setPlayClickSound(true)
-                    .setBackground(() -> {
-                        if (workState == WorkState.ABORT) {
-                            return new IDrawable[] { GTUITextures.BUTTON_STANDARD_PRESSED,
-                                GTUITextures.OVERLAY_BUTTON_RETRACT_PIPE, GTUITextures.OVERLAY_BUTTON_LOCKED };
-                        }
-                        return new IDrawable[] { GTUITextures.BUTTON_STANDARD,
-                            GTUITextures.OVERLAY_BUTTON_RETRACT_PIPE };
-                    })
-                    .attachSyncer(
-                        new FakeSyncWidget.IntegerSyncer(() -> workState.ordinal(), this::setWorkState),
-                        builder,
-                        (widget, integer) -> widget.notifyTooltipChange())
-                    .dynamicTooltip(
-                        () -> ImmutableList.of(
-                            StatCollector.translateToLocalFormatted(
-                                workState == WorkState.ABORT ? "GT5U.gui.button.drill_retract_pipes_active"
-                                    : "GT5U.gui.button.drill_retract_pipes")))
-                    .setTooltipShowUpDelay(TOOLTIP_DELAY)
-                    .setPos(new Pos2d(174, 112))
-                    .setSize(16, 16));
-
-        int left = 98;
-        for (ButtonWidget button : getAdditionalButtons(builder, buildContext)) {
-            button.setPos(new Pos2d(left, BUTTON_Y_LEVEL))
-                .setSize(16, 16);
-            builder.widget(button);
-            left += 18;
-        }
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
+        return new MTEDrillerBaseGui<>(this);
     }
 
     protected List<IHatchElement<? super MTEDrillerBase>> getAllowedHatches() {
@@ -871,7 +810,7 @@ public abstract class MTEDrillerBase extends MTEEnhancedMultiBlockBase<MTEDrille
         }
     }
 
-    protected enum WorkState {
+    public enum WorkState {
 
         DOWNWARD,
         AT_BOTTOM,

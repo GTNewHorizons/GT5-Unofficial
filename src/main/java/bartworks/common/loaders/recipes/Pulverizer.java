@@ -35,7 +35,7 @@ public class Pulverizer implements Runnable {
             .itemInputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 3))
             .itemOutputs(
                 Materials.BorosilicateGlass.getDust(9),
-                WerkstoffLoader.LuVTierMaterial.get(OrePrefixes.dust, 8))
+                WerkstoffLoader.RhodiumPlatedPalladium.get(OrePrefixes.dust, 8))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(maceratorRecipes);
@@ -55,42 +55,34 @@ public class Pulverizer implements Runnable {
             .addTo(maceratorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 13))
+            .itemInputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 6))
             .itemOutputs(Materials.BorosilicateGlass.getDust(9), Materials.Neutronium.getDust(8))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_UHV)
             .addTo(maceratorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 14))
-            .itemOutputs(Materials.BorosilicateGlass.getDust(9), Materials.CosmicNeutronium.getDust(8))
+            .itemInputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 7))
+            .itemOutputs(Materials.BorosilicateGlass.getDust(9), Materials.Infinity.getDust(8))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_UEV)
             .addTo(maceratorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 15))
-            .itemOutputs(Materials.BorosilicateGlass.getDust(9), Materials.Infinity.getDust(8))
+            .itemInputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 8))
+            .itemOutputs(Materials.BorosilicateGlass.getDust(9), Materials.TranscendentMetal.getDust(8))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_UIV)
             .addTo(maceratorRecipes);
 
+        // Hexanite glass cannot be macerated
+
         GTValues.RA.stdBuilder()
-            .itemInputs(new ItemStack(ItemRegistry.bw_glasses[1], 1, 0))
-            .itemOutputs(Materials.BorosilicateGlass.getDust(9), Materials.TranscendentMetal.getDust(8))
+            .itemInputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 10))
+            .itemOutputs(Materials.BorosilicateGlass.getDust(9), Materials.Universium.getDust(8))
             .duration(40 * SECONDS)
-            .eut(TierEU.RECIPE_UMV)
+            .eut(TierEU.RECIPE_UXV)
             .addTo(maceratorRecipes);
 
-        for (int i = 6; i < 11; i++) {
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, i))
-                .itemOutputs(Materials.BorosilicateGlass.getDust(9))
-                .duration(20 * SECONDS)
-                .eut(TierEU.RECIPE_LV)
-                .addTo(maceratorRecipes);
-
-        }
     }
 }

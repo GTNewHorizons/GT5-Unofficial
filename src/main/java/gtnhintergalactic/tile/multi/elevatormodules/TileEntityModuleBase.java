@@ -1,8 +1,12 @@
 package gtnhintergalactic.tile.multi.elevatormodules;
 
+import java.util.List;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
@@ -20,6 +24,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.modularui2.GTGuiTheme;
 import gregtech.api.modularui2.GTGuiThemes;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
@@ -27,7 +32,6 @@ import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.gui.modularui.multiblock.base.TileEntityModuleBaseGui;
 import gtnhintergalactic.gui.IG_UITextures;
 import gtnhintergalactic.tile.multi.elevator.TileEntitySpaceElevator;
-import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import tectech.thing.metaTileEntity.multi.base.INameFunction;
 import tectech.thing.metaTileEntity.multi.base.IStatusFunction;
 import tectech.thing.metaTileEntity.multi.base.LedStatus;
@@ -59,7 +63,7 @@ public abstract class TileEntityModuleBase extends TTMultiblockBase {
     Parameters.Group.ParameterOut energyDisplay;
 
     /** Name of the stored energy display */
-    private static final INameFunction<TileEntityModuleBase> ENERGY_DISPLAY_NAME = (base, p) -> GCCoreUtil
+    private static final INameFunction<TileEntityModuleBase> ENERGY_DISPLAY_NAME = (base, p) -> GTUtility
         .translate("gt.blockmachines.multimachine.project.ig.cfgo.0"); // Stored Energy
     /** Status of the stored energy display */
     private static final IStatusFunction<TileEntityModuleBase> ENERGY_STATUS = (base, p) -> LedStatus
@@ -267,6 +271,13 @@ public abstract class TileEntityModuleBase extends TTMultiblockBase {
     }
 
     /**
+     * @return True if the module is connected to a Space Elevator, else false
+     */
+    public boolean isConnected() {
+        return isConnected;
+    }
+
+    /**
      * Charge the energy buffer of the controller
      *
      * @param aBaseMetaTileEntity This
@@ -321,7 +332,12 @@ public abstract class TileEntityModuleBase extends TTMultiblockBase {
      */
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        structureBuild_EM(STRUCTURE_PIECE_MAIN, 0, 1, 0, stackSize, hintsOnly);
+        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 0, 1, 0);
+    }
+
+    @Override
+    protected boolean cyclicUpdate_EM() {
+        return !mMachine ? mUpdate <= -20 : super.cyclicUpdate_EM();
     }
 
     @Override
@@ -337,9 +353,9 @@ public abstract class TileEntityModuleBase extends TTMultiblockBase {
      * @return True if valid, else false
      */
     @Override
-    public boolean checkMachine_EM(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         fixAllIssues();
-        return structureCheck_EM(STRUCTURE_PIECE_MAIN, 0, 1, 0);
+        checkPiece(STRUCTURE_PIECE_MAIN, 0, 1, 0, errors);
     }
 
     /**
@@ -358,13 +374,8 @@ public abstract class TileEntityModuleBase extends TTMultiblockBase {
     }
 
     @Override
-    protected MTEMultiBlockBaseGui<?> getGui() {
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
         return new TileEntityModuleBaseGui<>(this);
-    }
-
-    @Override
-    protected boolean useMui2() {
-        return true;
     }
 
     /**
