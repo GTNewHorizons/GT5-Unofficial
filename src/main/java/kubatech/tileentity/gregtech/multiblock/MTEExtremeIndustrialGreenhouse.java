@@ -85,6 +85,7 @@ import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.GregTechTileClientEvents;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
@@ -1061,13 +1062,14 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
     public String[] getInfoData() {
         List<String> info = new ArrayList<>(
             Arrays.asList(
-                this.setupPhase == 0 ? GTUtility.infoData("kubatech.infodata.running_mode.fmt", this.mode.getName())
+                this.setupPhase == 0
+                    ? IGregTechDeviceInformation.encode("kubatech.infodata.running_mode.fmt", this.mode.getName())
                     : (this.setupPhase == 1 ? "kubatech.infodata.eig.running_mode.setup_mode.input"
                         : "kubatech.infodata.eig.running_mode.setup_mode.output"),
-                GTUtility.infoData("kubatech.infodata.eig.uses.water", waterUsage),
-                GTUtility.infoData("kubatech.infodata.eig.uses.weedex", weedEXUsage),
-                GTUtility.infoData("kubatech.infodata.eig.max_slots", this.maxSeedTypes),
-                GTUtility.infoData(
+                IGregTechDeviceInformation.encode("kubatech.infodata.eig.uses.water", waterUsage),
+                IGregTechDeviceInformation.encode("kubatech.infodata.eig.uses.weedex", weedEXUsage),
+                IGregTechDeviceInformation.encode("kubatech.infodata.eig.max_slots", this.maxSeedTypes),
+                IGregTechDeviceInformation.encode(
                     "kubatech.infodata.eig.used_slots",
                     ((this.buckets.size() > maxSeedTypes) ? EnumChatFormatting.RED : EnumChatFormatting.GREEN)
                         + Integer.toString(this.buckets.size())
