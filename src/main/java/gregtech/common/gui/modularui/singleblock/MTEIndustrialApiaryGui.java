@@ -62,6 +62,7 @@ public class MTEIndustrialApiaryGui extends MTEBasicMachineBaseGui<MTEIndustrial
     protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
         Flow mainRow = Flow.row()
             .coverChildren()
+            .crossAxisAlignment(Alignment.CrossAxis.START)
             .childPadding(SLOT_SIZE / 2)
             .marginLeft(SLOT_SIZE * 3 / 2);
 
