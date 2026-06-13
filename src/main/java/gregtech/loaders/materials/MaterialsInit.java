@@ -16621,7 +16621,8 @@ public class MaterialsInit {
             .setAutoGenerateBlastFurnaceRecipes(false)
             .addSubTag(SubTag.METAL)
             .addSubTag(SubTag.MULTI_PLATE)
-            .constructMaterial();
+            .constructMaterial()
+            .setProcessingMaterialTierEU(TierEU.RECIPE_ZPM);
     }
 
     private static Materials loadChuritsu() {
@@ -16645,6 +16646,7 @@ public class MaterialsInit {
             .setAutoGenerateBlastFurnaceRecipes(false)
             .addSubTag(SubTag.METAL)
             .addSubTag(SubTag.MULTI_PLATE)
-            .constructMaterial();
+            .constructMaterial()
+            .setProcessingMaterialTierEU(TierEU.RECIPE_ZPM);
     }
 }

@@ -11,6 +11,7 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
 import bartworks.system.material.Werkstoff;
+import bartworks.util.BWUtil;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -149,7 +150,7 @@ public class MaterialFix {
                             tMaterial.getStats()
                                 .getMass() * 2,
                             1L) * TICKS)
-                    .eut(TierEU.RECIPE_MV / 2)
+                    .eut(BWUtil.calculateRecipeEU(tMaterial, (int) (TierEU.RECIPE_MV / 2)))
                     .addTo(benderRecipes);
                 GTModHandler.addCraftingRecipe(
                     tMaterial.get(OrePrefixes.plateDouble, 1),
@@ -166,7 +167,7 @@ public class MaterialFix {
                             tMaterial.getStats()
                                 .getMass() * 3,
                             1L) * TICKS)
-                    .eut(TierEU.RECIPE_MV / 2)
+                    .eut(BWUtil.calculateRecipeEU(tMaterial, (int) (TierEU.RECIPE_MV / 2)))
                     .addTo(benderRecipes);
                 GTValues.RA.stdBuilder()
                     .itemInputs(tMaterial.get(OrePrefixes.ingot, 3))
@@ -177,7 +178,7 @@ public class MaterialFix {
                             tMaterial.getStats()
                                 .getMass() * 3,
                             1L) * TICKS)
-                    .eut(TierEU.RECIPE_MV / 2)
+                    .eut(BWUtil.calculateRecipeEU(tMaterial, (int) (TierEU.RECIPE_MV / 2)))
                     .addTo(benderRecipes);
                 GTModHandler.addCraftingRecipe(
                     tMaterial.get(OrePrefixes.plateTriple, 1),
@@ -195,7 +196,7 @@ public class MaterialFix {
                             tMaterial.getStats()
                                 .getMass() * 9,
                             1L) * TICKS)
-                    .eut(TierEU.RECIPE_MV / 2)
+                    .eut(BWUtil.calculateRecipeEU(tMaterial, (int) (TierEU.RECIPE_MV / 2)))
                     .addTo(benderRecipes);
                 GTValues.RA.stdBuilder()
                     .itemInputs(tMaterial.get(OrePrefixes.ingot, 9))
@@ -206,7 +207,7 @@ public class MaterialFix {
                             tMaterial.getStats()
                                 .getMass() * 9,
                             1L) * TICKS)
-                    .eut(TierEU.RECIPE_MV / 2)
+                    .eut(BWUtil.calculateRecipeEU(tMaterial, (int) (TierEU.RECIPE_MV / 2)))
                     .addTo(benderRecipes);
 
                 if (tMaterial.hasItemType(OrePrefixes.plateTriple)) {
@@ -219,7 +220,7 @@ public class MaterialFix {
                                 tMaterial.getStats()
                                     .getMass() * 3,
                                 1L) * TICKS)
-                        .eut(TierEU.RECIPE_MV / 2)
+                        .eut(BWUtil.calculateRecipeEU(tMaterial, (int) (TierEU.RECIPE_MV / 2)))
                         .addTo(benderRecipes);
                 }
             }
