@@ -74,37 +74,20 @@ public class ClientMetaManager implements DataManager.PacketDataManager, DataMan
     @Override
     public void writeBlockToPacket(Chunk chunk, int x, int y, int z, S23PacketBlockChange packet) {
         World theWorld = chunk.worldObj;
-        IClientMetaTracker tracker = ClientMetaTrackerRegistry.get(packet.field_148883_d);
-        if (tracker != null) {
-            Long2IntOpenHashMap map = tracker.getTrackedBlocks(theWorld);
-            if (map != null
-                && map.containsKey(CoordinatePacker.pack((chunk.xPosition << 4) + x, y, (chunk.zPosition << 4) + z))) {
-                if (packet.field_148883_d instanceof IBlockWithClientMeta clientMetaBlock) {
-                    packet.field_148884_e = clientMetaBlock
-                        .getClientMeta(theWorld, (chunk.xPosition << 4) + x, y, (chunk.zPosition << 4) + z);
-                }
-            }
+        if (packet.field_148883_d instanceof IBlockWithClientMeta clientMetaBlock) {
+            packet.field_148884_e = clientMetaBlock
+                .getClientMeta(theWorld, (chunk.xPosition << 4) + x, y, (chunk.zPosition << 4) + z);
         }
     }
 
     @Override
-    public void readBlockFromPacket(Chunk chunk, int x, int y, int z, S23PacketBlockChange packet) {
-        World theWorld = chunk.worldObj;
-        Block current = theWorld.getBlock(x, y, z);
-        if (current instanceof IBlockWithClientMeta) {
-            theWorld.setBlockMetadataWithNotify(x, y, z, packet.func_148881_g(), 2);
-        }
-    }
+    public void readBlockFromPacket(Chunk chunk, int x, int y, int z, S23PacketBlockChange packet) {}
 
     @Override
-    public void writeBlockPacketToBuffer(S23PacketBlockChange packet, PacketBuffer buffer) throws IOException {
-
-    }
+    public void writeBlockPacketToBuffer(S23PacketBlockChange packet, PacketBuffer buffer) throws IOException {}
 
     @Override
-    public void readBlockPacketFromBuffer(S23PacketBlockChange packet, PacketBuffer buffer) throws IOException {
-
-    }
+    public void readBlockPacketFromBuffer(S23PacketBlockChange packet, PacketBuffer buffer) throws IOException {}
 
     @Override
     public String domain() {
