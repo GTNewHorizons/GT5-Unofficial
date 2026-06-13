@@ -347,4 +347,9 @@ public class MTEHatchMufflerAdvanced extends MTEHatchMuffler {
     protected boolean useMui2() {
         return true;
     }
+
+    @Override
+    public boolean isItemValidForSlot(int index, ItemStack itemStack) {
+        return isAirFilter(itemStack) && super.isItemValidForSlot(index, itemStack);
+    }
 }
