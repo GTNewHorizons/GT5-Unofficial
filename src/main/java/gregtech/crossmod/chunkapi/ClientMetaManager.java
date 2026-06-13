@@ -15,7 +15,6 @@ import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
 import gregtech.api.interfaces.IBlockWithClientMeta;
 import gregtech.api.net.ClientMetaTrackerRegistry;
 import gregtech.api.net.IClientMetaTracker;
-import it.unimi.dsi.fastutil.longs.Long2IntOpenHashMap;
 import it.unimi.dsi.fastutil.longs.LongSet;
 
 public class ClientMetaManager implements DataManager.PacketDataManager, DataManager.BlockPacketDataManager {
