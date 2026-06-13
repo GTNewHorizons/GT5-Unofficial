@@ -62,6 +62,11 @@ public abstract class MTEExtendedPowerMultiBlockBase<T extends MTEEnhancedMultiB
     }
 
     @Override
+    public long getEUtForDamageCalc() {
+        return lEUt;
+    }
+
+    @Override
     public void stopMachine(@NotNull ShutDownReason reason) {
         this.lEUt = 0;
         super.stopMachine(reason);
