@@ -2856,6 +2856,7 @@ public enum ItemList implements IItemContainer {
     Augment_MilkInfusion,
     Augment_HoloInventory,
     Augment_Travelers,
+    Augment_Terrasteel,
 
     CompressedOutputBusLuV,
     CompressedOutputBusZPM,
