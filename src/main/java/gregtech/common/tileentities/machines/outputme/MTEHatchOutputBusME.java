@@ -9,6 +9,7 @@ import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
@@ -17,10 +18,13 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.glodblock.github.common.item.ItemFluidVoidStorageCell;
 
 import appeng.api.AEApi;
 import appeng.api.implementations.IPowerChannelState;
@@ -38,6 +42,8 @@ import appeng.api.storage.data.IAEItemStack;
 import appeng.api.util.AECableType;
 import appeng.api.util.DimensionalCoord;
 import appeng.helpers.IPriorityHost;
+import appeng.items.storage.ItemBasicStorageCell;
+import appeng.items.storage.ItemVoidStorageCell;
 import appeng.me.GridAccessException;
 import appeng.me.helpers.AENetworkProxy;
 import appeng.me.helpers.IGridProxyable;
@@ -558,5 +564,16 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus
     @Override
     public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
         return new MTEHatchOutputBusMEGui(this).build(guiData, syncManager, uiSettings);
+    }
+
+    @Override
+    public boolean isItemValidForSlot(int index, ItemStack itemStack) {
+        return itemStack != null && isItemCell(itemStack) && super.isItemValidForSlot(index, itemStack);
+    }
+
+    private boolean isItemCell(@NotNull ItemStack itemStack) {
+        Item item = itemStack.getItem();
+        return item instanceof ItemBasicStorageCell
+            || item instanceof ItemVoidStorageCell && !(item instanceof ItemFluidVoidStorageCell);
     }
 }
