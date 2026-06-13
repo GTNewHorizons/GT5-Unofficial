@@ -27,6 +27,11 @@ public class MTEItemStackHandler extends ItemStackHandler {
     }
 
     @Override
+    public boolean isItemValid(int slot, ItemStack stack) {
+        return mte.isItemValidForSlot(slot, stack);
+    }
+
+    @Override
     protected int getStackLimit(int slot, @Nullable ItemStack stack) {
         return Math.min(mte.getStackSizeLimit(slot, stack), super.getStackLimit(slot, stack));
     }
