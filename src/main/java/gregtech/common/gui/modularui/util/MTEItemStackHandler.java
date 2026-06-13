@@ -34,6 +34,6 @@ public class MTEItemStackHandler extends ItemStackHandler {
 
     @Override
     protected int getStackLimit(int slot, @Nullable ItemStack stack) {
-        return Math.min(mte.getStackSizeLimit(slot, stack), super.getStackLimit(slot, stack));
+        return mte.getStackSizeLimit(slot, stack);
     }
 }
