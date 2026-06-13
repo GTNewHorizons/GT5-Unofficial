@@ -16,6 +16,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TierEU;
 import gregtech.api.objects.SubstituteFluidStack;
+import gregtech.api.recipe.OreRecipeRegistrationGuard;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -29,6 +30,9 @@ public class ProcessingStick implements gregtech.api.interfaces.IOreRecipeRegist
     @Override
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
         ItemStack aStack) {
+        if (!OreRecipeRegistrationGuard.tryProcess(aPrefix, aMaterial, aOreDictName, "ProcessingStick")) {
+            return;
+        }
         // Blacklist materials which are handled by Werkstoff loader
         if (aMaterial == Materials.Salt || aMaterial == Materials.RockSalt
             || aMaterial == Materials.Spodumene

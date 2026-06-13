@@ -15,6 +15,8 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TierEU;
+import gregtech.api.recipe.OreRecipeRegistrationGuard;
+import gregtech.api.recipe.OreRecipeRegistrationInputs;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -37,16 +39,21 @@ public class ProcessingDirty implements gregtech.api.interfaces.IOreRecipeRegist
         if (aMaterial.contains(SubTag.NO_ORE_PROCESSING)) {
             return;
         }
+        if (!OreRecipeRegistrationGuard.tryProcess(aPrefix, aMaterial, aOreDictName, "ProcessingDirty")) {
+            return;
+        }
+
+        ItemStack canonicalStack = OreRecipeRegistrationInputs.recipeInputStack(aPrefix, aMaterial, aStack);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.copyAmount(1, aStack))
+            .itemInputs(GTUtility.copyAmount(1, canonicalStack))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dustImpure, aMaterial.mMacerateInto, 1L))
             .duration(10)
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(hammerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.copyAmount(1, aStack))
+            .itemInputs(GTUtility.copyAmount(1, canonicalStack))
             .itemOutputs(
                 GTOreDictUnificator.get(
                     OrePrefixes.dustImpure,
@@ -63,7 +70,7 @@ public class ProcessingDirty implements gregtech.api.interfaces.IOreRecipeRegist
             .addTo(maceratorRecipes);
 
         RA.stdBuilder()
-            .itemInputs(GTUtility.copyAmount(1, aStack))
+            .itemInputs(GTUtility.copyAmount(1, canonicalStack))
             .itemOutputs(
                 GTOreDictUnificator.get(
                     aPrefix == OrePrefixes.crushed ? OrePrefixes.crushedPurified : OrePrefixes.dustPure,
@@ -81,7 +88,7 @@ public class ProcessingDirty implements gregtech.api.interfaces.IOreRecipeRegist
             .addTo(oreWasherRecipes);
 
         RA.stdBuilder()
-            .itemInputs(GTUtility.copyAmount(1, aStack))
+            .itemInputs(GTUtility.copyAmount(1, canonicalStack))
             .itemOutputs(
                 GTOreDictUnificator.get(
                     aPrefix == OrePrefixes.crushed ? OrePrefixes.crushedPurified : OrePrefixes.dustPure,
@@ -101,7 +108,7 @@ public class ProcessingDirty implements gregtech.api.interfaces.IOreRecipeRegist
         OrePrefixes prefix = aPrefix == OrePrefixes.crushed ? OrePrefixes.crushedCentrifuged : OrePrefixes.dust;
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.copyAmount(1, aStack))
+            .itemInputs(GTUtility.copyAmount(1, canonicalStack))
             .itemOutputs(
                 GTOreDictUnificator.get(prefix, aMaterial, 1L),
                 GTOreDictUnificator.get(
@@ -117,21 +124,22 @@ public class ProcessingDirty implements gregtech.api.interfaces.IOreRecipeRegist
         didPersulfate = false;
         didMercury = false;
 
-        addChemicalBathRecipes(aMaterial, aMaterial, aStack, aPrefix);
+        addChemicalBathRecipes(aMaterial, aMaterial, canonicalStack, aPrefix);
 
         for (Materials tMaterial : aMaterial.mOreByProducts) {
-            addChemicalBathRecipes(aMaterial, tMaterial, aStack, aPrefix);
+            addChemicalBathRecipes(aMaterial, tMaterial, canonicalStack, aPrefix);
         }
 
     }
 
-    private void addChemicalBathRecipes(Materials material, Materials byproduct, ItemStack stack, OrePrefixes prefix) {
+    private void addChemicalBathRecipes(Materials material, Materials byproduct, ItemStack canonicalStack,
+        OrePrefixes prefix) {
         OrePrefixes chemicalBathPrefix = prefix == OrePrefixes.crushed ? OrePrefixes.crushedPurified
             : OrePrefixes.dustPure;
 
         if (byproduct.contains(SubTag.WASHING_MERCURY) && !didMercury) {
             GTValues.RA.stdBuilder()
-                .itemInputs(GTUtility.copyAmount(1, stack))
+                .itemInputs(GTUtility.copyAmount(1, canonicalStack))
                 .itemOutputs(
                     GTOreDictUnificator.get(chemicalBathPrefix, material, 1L),
                     GTOreDictUnificator.get(OrePrefixes.dust, byproduct.mMacerateInto, 1L),
@@ -146,7 +154,7 @@ public class ProcessingDirty implements gregtech.api.interfaces.IOreRecipeRegist
         }
         if (byproduct.contains(SubTag.WASHING_MERCURY_99_PERCENT) && !didMercury) {
             GTValues.RA.stdBuilder()
-                .itemInputs(GTUtility.copyAmount(1, stack))
+                .itemInputs(GTUtility.copyAmount(1, canonicalStack))
                 .itemOutputs(
                     GTOreDictUnificator.get(chemicalBathPrefix, material, 1L),
                     GTOreDictUnificator.get(OrePrefixes.dust, byproduct.mMacerateInto, 1L),
@@ -161,7 +169,7 @@ public class ProcessingDirty implements gregtech.api.interfaces.IOreRecipeRegist
         }
         if (byproduct.contains(SubTag.WASHING_SODIUMPERSULFATE) && !didPersulfate) {
             GTValues.RA.stdBuilder()
-                .itemInputs(GTUtility.copyAmount(1, stack))
+                .itemInputs(GTUtility.copyAmount(1, canonicalStack))
                 .itemOutputs(
                     GTOreDictUnificator.get(chemicalBathPrefix, material, 1L),
                     GTOreDictUnificator.get(OrePrefixes.dust, byproduct.mMacerateInto, 1L),

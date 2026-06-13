@@ -138,6 +138,7 @@ import gregtech.api.net.GTPacketMusicSystemData;
 import gregtech.api.objects.GTChunkManager;
 import gregtech.api.objects.GTUODimensionList;
 import gregtech.api.objects.ItemData;
+import gregtech.api.recipe.OreRecipeRegistrationGuard;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.threads.RunnableCableUpdate;
 import gregtech.api.threads.RunnableMachineUpdate;
@@ -2424,15 +2425,20 @@ public class GTProxy implements IFuelHandler {
     @SuppressWarnings("deprecation")
     public void activateOreDictHandler() {
         this.mOreDictActivated = true;
-        ProgressManager.ProgressBar progressBar;
-        if (BetterLoadingScreen.isModLoaded()) {
-            progressBar = ProgressManager.push("Register materials", oreDictEvents.size());
-            GTCLSCompat.stepMaterialsCLS(oreDictEvents, progressBar);
-        } else {
-            if (isClientSide()) {
+        OreRecipeRegistrationGuard.begin();
+        try {
+            ProgressManager.ProgressBar progressBar;
+            if (BetterLoadingScreen.isModLoaded()) {
                 progressBar = ProgressManager.push("Register materials", oreDictEvents.size());
-            } else progressBar = null;
-            this.stepMaterialsVanilla(progressBar);
+                GTCLSCompat.stepMaterialsCLS(oreDictEvents, progressBar);
+            } else {
+                if (isClientSide()) {
+                    progressBar = ProgressManager.push("Register materials", oreDictEvents.size());
+                } else progressBar = null;
+                this.stepMaterialsVanilla(progressBar);
+            }
+        } finally {
+            OreRecipeRegistrationGuard.end();
         }
     }
 

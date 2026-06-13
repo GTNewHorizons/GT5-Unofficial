@@ -1,5 +1,9 @@
 package gregtech.common;
 
+import java.util.Objects;
+
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 import gregtech.api.enums.Materials;
@@ -36,5 +40,44 @@ public class OreDictEventContainer {
             ore.mEvent.Name,
             ore.mModID,
             GTUtility.copyAmount(1, ore.mEvent.Ore));
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) {
+            return true;
+        }
+        if (!(object instanceof OreDictEventContainer other)) {
+            return false;
+        }
+        return mPrefix == other.mPrefix && Objects.equals(mMaterial, other.mMaterial)
+            && Objects.equals(mEvent.Name, other.mEvent.Name)
+            && stackIdentityEquals(mEvent.Ore, other.mEvent.Ore);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(mPrefix, mMaterial, mEvent.Name, stackIdentityHash(mEvent.Ore));
+    }
+
+    private static boolean stackIdentityEquals(ItemStack left, ItemStack right) {
+        if (left == right) {
+            return true;
+        }
+        if (left == null || right == null) {
+            return false;
+        }
+        return stackIdentityHash(left) == stackIdentityHash(right);
+    }
+
+    private static int stackIdentityHash(ItemStack stack) {
+        if (stack == null) {
+            return 0;
+        }
+        Item item = stack.getItem();
+        if (item == null) {
+            return 0;
+        }
+        return Objects.hash(Item.itemRegistry.getNameForObject(item), stack.getItemDamage());
     }
 }

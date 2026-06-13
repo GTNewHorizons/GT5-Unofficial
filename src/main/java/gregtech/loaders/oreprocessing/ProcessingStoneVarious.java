@@ -3,6 +3,7 @@ package gregtech.loaders.oreprocessing;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.recipe.OreRecipeRegistrationGuard;
 
 public class ProcessingStoneVarious implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
@@ -20,6 +21,9 @@ public class ProcessingStoneVarious implements gregtech.api.interfaces.IOreRecip
     @Override
     public void registerOre(OrePrefixes aPrefix, gregtech.api.enums.Materials aMaterial, String aOreDictName,
         String aModName, ItemStack aStack) {
+        if (!OreRecipeRegistrationGuard.tryProcess(aPrefix, aMaterial, aOreDictName, "ProcessingStoneVarious")) {
+            return;
+        }
         // no recipes currently.
     }
 }

@@ -10,6 +10,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.recipe.OreRecipeRegistrationGuard;
 import gregtech.api.util.GTUtility;
 
 public class ProcessingSlab implements gregtech.api.interfaces.IOreRecipeRegistrator {
@@ -21,6 +22,9 @@ public class ProcessingSlab implements gregtech.api.interfaces.IOreRecipeRegistr
     @Override
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
         ItemStack aStack) {
+        if (!OreRecipeRegistrationGuard.tryProcess(aPrefix, aMaterial, aOreDictName, "ProcessingSlab")) {
+            return;
+        }
         if (aOreDictName.startsWith("slabWood")) {
             if (Railcraft.isModLoaded()) {
                 GTValues.RA.stdBuilder()

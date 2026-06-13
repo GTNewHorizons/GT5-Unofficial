@@ -4,6 +4,7 @@ import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.recipe.OreRecipeRegistrationGuard;
 
 public class ProcessingAll implements gregtech.api.interfaces.IOreRecipeRegistrator { // TODO ACTUALLY COMPARE ALL THE
                                                                                       // PROCESSING CLASSES
@@ -15,6 +16,9 @@ public class ProcessingAll implements gregtech.api.interfaces.IOreRecipeRegistra
     @Override
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
         ItemStack aStack) {
+        if (!OreRecipeRegistrationGuard.tryProcess(aPrefix, aMaterial, aOreDictName, "ProcessingAll")) {
+            return;
+        }
         if (((aStack.getItem() instanceof net.minecraft.item.ItemBlock))
             && (aPrefix.getDefaultStackSize() < aStack.getItem()
                 .getItemStackLimit(aStack)))

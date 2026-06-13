@@ -27,6 +27,7 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.recipe.Sievert;
 
 public final class RecipeLookupValidator {
 
@@ -98,11 +99,36 @@ public final class RecipeLookupValidator {
         if (propertyValue != null) {
             return Boolean.parseBoolean(propertyValue);
         }
-        return shouldValidateLookup();
+        return shouldValidateLookup() || RecipeDuplicateValidator.shouldValidateDuplicates();
     }
 
     private static String recipeMapName(@Nullable RecipeMap<?> recipeMap) {
         return recipeMap == null ? "<unbound>" : recipeMap.unlocalizedName;
+    }
+
+    /**
+     * Stable recipe fingerprint for snapshot diffing. Ignores identity, callsite, owners, and registration order.
+     */
+    public static String describeRecipeCanonical(GTRecipe recipe) {
+        return "category=" + describeRecipeCategory(recipe)
+            + ", metadata="
+            + describeRecipeMetadata(recipe)
+            + ", inputs="
+            + describeItemStacks(recipe.mInputs)
+            + ", fluidInputs="
+            + describeFluidStacks(recipe.mFluidInputs)
+            + ", outputs="
+            + describeItemStacks(recipe.mOutputs)
+            + ", fluidOutputs="
+            + describeFluidStacks(recipe.mFluidOutputs)
+            + ", duration="
+            + recipe.mDuration
+            + ", eut="
+            + recipe.mEUt
+            + ", specialValue="
+            + recipe.mSpecialValue
+            + ", special="
+            + describeObject(recipe.mSpecialItems);
     }
 
     public static String describeRecipeForValidation(GTRecipe recipe) {
@@ -131,7 +157,7 @@ public final class RecipeLookupValidator {
             + describeRecipeStackTrace(recipe);
     }
 
-    private static String describeRecipeListForValidation(List<GTRecipe> recipes) {
+    static String describeRecipeListForValidation(List<GTRecipe> recipes) {
         return recipes.stream()
             .map(RecipeLookupValidator::describeRecipeForValidation)
             .collect(Collectors.joining("\n    ", "[\n    ", "\n]"));
@@ -152,6 +178,10 @@ public final class RecipeLookupValidator {
         return recipe.owners.stream()
             .map(RecipeLookupValidator::describeModContainer)
             .collect(Collectors.joining(", ", "[", "]"));
+    }
+
+    static String registrationCallsite(GTRecipe recipe) {
+        return describeRecipeCallsite(recipe);
     }
 
     private static String describeRecipeCallsite(GTRecipe recipe) {
@@ -246,7 +276,16 @@ public final class RecipeLookupValidator {
         }
         StringBuilder builder = new StringBuilder();
         Item item = stack.getItem();
-        Object registryName = item == null ? null : Item.itemRegistry.getNameForObject(item);
+        if (item == null) {
+            builder.append("<null item> x")
+                .append(stack.stackSize);
+            if (stack.hasTagCompound()) {
+                builder.append(" tag=")
+                    .append(stack.getTagCompound());
+            }
+            return builder.toString();
+        }
+        Object registryName = Item.itemRegistry.getNameForObject(item);
         builder.append(registryName == null ? "<unregistered>" : registryName)
             .append(':')
             .append(stack.getItemDamage())
@@ -301,6 +340,10 @@ public final class RecipeLookupValidator {
     private static String describeObject(@Nullable Object object) {
         if (object instanceof ItemStack) {
             return describeItemStack((ItemStack) object);
+        }
+        if (object instanceof Sievert) {
+            Sievert sievert = (Sievert) object;
+            return "Sievert(sievert=" + sievert.sievert + ", isExact=" + sievert.isExact + ")";
         }
         return String.valueOf(object);
     }
@@ -880,12 +923,18 @@ public final class RecipeLookupValidator {
 
     static final class RecipeLookupValidationTarget {
 
-        private final String mapName;
-        private final RecipeMapBackend backend;
+        final String mapName;
+        final RecipeMapBackend backend;
+        final boolean customLookup;
 
-        private RecipeLookupValidationTarget(String mapName, RecipeMapBackend backend) {
+        RecipeLookupValidationTarget(String mapName, RecipeMapBackend backend) {
+            this(mapName, backend, false);
+        }
+
+        RecipeLookupValidationTarget(String mapName, RecipeMapBackend backend, boolean customLookup) {
             this.mapName = mapName;
             this.backend = backend;
+            this.customLookup = customLookup;
         }
     }
 }

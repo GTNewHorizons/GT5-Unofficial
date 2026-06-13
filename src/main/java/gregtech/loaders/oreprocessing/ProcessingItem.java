@@ -5,6 +5,7 @@ import net.minecraft.item.ItemStack;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.objects.ItemData;
+import gregtech.api.recipe.OreRecipeRegistrationGuard;
 import gregtech.api.util.GTOreDictUnificator;
 
 public class ProcessingItem implements gregtech.api.interfaces.IOreRecipeRegistrator {
@@ -16,6 +17,9 @@ public class ProcessingItem implements gregtech.api.interfaces.IOreRecipeRegistr
     @Override
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
         ItemStack aStack) {
+        if (!OreRecipeRegistrationGuard.tryProcess(aPrefix, aMaterial, aOreDictName, "ProcessingItem")) {
+            return;
+        }
         if (GTOreDictUnificator.getItemData(aStack) == null && !aOreDictName.equals("itemCertusQuartz")
             && !aOreDictName.equals("itemNetherQuartz")) {
             switch (aOreDictName) {

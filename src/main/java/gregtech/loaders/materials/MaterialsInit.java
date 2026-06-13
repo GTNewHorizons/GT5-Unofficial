@@ -2710,7 +2710,6 @@ public class MaterialsInit {
         Materials.Meteorite = loadMeteorite();
         Materials.Migmatite = loadMigmatite();
         Materials.Mimichite = loadMimichite();
-        Materials.Moonstone = loadMoonstone();
         Materials.NaquadahAlloy = loadNaquadahAlloy();
         Materials.NaquadahEnriched = loadNaquadahEnriched();
         Materials.Naquadria = loadNaquadria();
@@ -3920,18 +3919,6 @@ public class MaterialsInit {
             .addSubTag(SubTag.CRYSTAL)
             .addSubTag(SubTag.NO_SMASHING)
             .addSubTag(SubTag.NO_SMELTING)
-            .constructMaterial();
-    }
-
-    private static Materials loadMoonstone() {
-        return new MaterialBuilder().setName("Moonstone")
-            .setDefaultLocalName("Moonstone")
-            .setColor(Dyes.dyeWhite)
-            .setMiningLevel(1)
-            .addDustItems()
-            .addOreItems()
-            .addAspect(TCAspects.VITREUS, 1)
-            .addAspect(TCAspects.ALIENIS, 1)
             .constructMaterial();
     }
 

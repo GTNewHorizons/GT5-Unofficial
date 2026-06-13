@@ -10,6 +10,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
+import gregtech.api.recipe.OreRecipeRegistrationGuard;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTUtility;
 
@@ -23,6 +24,9 @@ public class ProcessingIceOre implements IOreRecipeRegistrator {
     @Override
     public void registerOre(OrePrefixes prefix, Materials material, String oredictName, String modName,
         ItemStack stack) {
+        if (!OreRecipeRegistrationGuard.tryProcess(prefix, material, oredictName, "ProcessingIceOre")) {
+            return;
+        }
         if (!material.contains(SubTag.ICE_ORE)) return;
 
         GTValues.RA.stdBuilder()

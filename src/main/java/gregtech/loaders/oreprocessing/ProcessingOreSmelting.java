@@ -16,6 +16,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TierEU;
+import gregtech.api.recipe.OreRecipeRegistrationGuard;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -33,6 +34,9 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
     @Override
     public void registerOre(OrePrefixes prefix, Materials material, String oreDictName, String modName,
         ItemStack stack) {
+        if (!OreRecipeRegistrationGuard.tryProcess(prefix, material, oreDictName, "ProcessingOreSmelting")) {
+            return;
+        }
         if (material.contains(SubTag.NO_ORE_PROCESSING)) return;
 
         GTModHandler.removeFurnaceSmelting(stack);
