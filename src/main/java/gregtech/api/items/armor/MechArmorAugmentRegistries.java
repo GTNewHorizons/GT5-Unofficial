@@ -48,6 +48,7 @@ import gregtech.api.items.armor.behaviors.SpaceSuitBehavior;
 import gregtech.api.items.armor.behaviors.SpeedBoostBehavior;
 import gregtech.api.items.armor.behaviors.StepAssistBehavior;
 import gregtech.api.items.armor.behaviors.SwimSpeedBehavior;
+import gregtech.api.items.armor.behaviors.TerrasteelBehavior;
 import gregtech.api.items.armor.behaviors.VisDiscountBehavior;
 import gregtech.api.items.armor.behaviors.WaterBreathingBehavior;
 
@@ -576,6 +577,12 @@ public class MechArmorAugmentRegistries {
                 new VisDiscountBehavior(4))
             .setMinimumCoreTier(1)
             .setCategory(AugmentCategory.Movement)
+        ),
+        TerrasteelAugment(ItemList.Augment_Terrasteel, new AugmentBuilder()
+        .setId("Terrasteel")
+        .setItemId("augmentterrasteel")
+        .providesBehaviors(TerrasteelBehavior.INSTANCE)
+        .setCategory(AugmentCategory.Utility)
         );
         // spotless:on
 

@@ -55,6 +55,7 @@ public class ArmorState {
     public double charge;
 
     public int visDiscount;
+    public float manaDiscount = 0.0F;
     public float speedBoost, jumpBoost;
 
     public void addArmorInformation(ArmorContext context, List<String> tooltip) {
