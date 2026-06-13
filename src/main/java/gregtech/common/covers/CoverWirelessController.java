@@ -1,22 +1,16 @@
 package gregtech.common.covers;
 
-import java.lang.ref.WeakReference;
-
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ChatComponentTranslation;
 
 import org.jetbrains.annotations.NotNull;
 
 import com.google.common.io.ByteArrayDataInput;
-import com.gtnewhorizon.gtnhlib.chat.customcomponents.ChatComponentNumber;
 
 import gregtech.api.covers.CoverContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
-import gregtech.api.util.GTUtility;
 import gregtech.common.covers.conditions.RedstoneCondition;
 import gregtech.common.covers.redstone.CoverAdvancedRedstoneReceiverBase;
 import gregtech.common.covers.redstone.CoverAdvancedWirelessRedstoneBase;
@@ -24,7 +18,7 @@ import gregtech.common.gui.modularui.cover.CoverWirelessControllerGui;
 import gregtech.common.gui.modularui.cover.base.CoverBaseGui;
 import io.netty.buffer.ByteBuf;
 
-public class CoverWirelessController extends CoverAdvancedWirelessRedstoneBase {
+public class CoverWirelessController extends CoverAdvancedRedstoneReceiverBase {
 
     private enum State {
         ENABLE_WITH_SIGNAL,
@@ -36,11 +30,10 @@ public class CoverWirelessController extends CoverAdvancedWirelessRedstoneBase {
 
     private State state = State.DISABLED;
     private boolean handledShutdown = false;
-    protected WeakReference<EntityPlayer> lastPlayer = null;
-    private boolean mPlayerNotified = false;
 
     public CoverWirelessController(CoverContext context, ITexture coverTexture) {
         super(context, coverTexture);
+        this.setMode(GateMode.SINGLE_SOURCE);
     }
 
     @Override
@@ -72,8 +65,7 @@ public class CoverWirelessController extends CoverAdvancedWirelessRedstoneBase {
     @Override
     public void doCoverThings(byte aInputRedstone, long aTimer) {
         ICoverable coverable = coveredTile.get();
-        byte signal = CoverAdvancedWirelessRedstoneBase
-            .getSignalAt(uuid, frequency, CoverAdvancedRedstoneReceiverBase.GateMode.SINGLE_SOURCE);
+        byte signal = CoverAdvancedWirelessRedstoneBase.getSignalAt(uuid, frequency, getGateMode());
 
         if (coverable instanceof IMachineProgress machine) {
             switch (state) {
@@ -93,20 +85,6 @@ public class CoverWirelessController extends CoverAdvancedWirelessRedstoneBase {
                 case ENABLE_WITH_SIGNAL_SAFE, DISABLE_WITH_SIGNAL_SAFE -> {
                     if (machine.wasShutdown() && machine.getLastShutDownReason()
                         .wasCritical() && !handledShutdown) {
-                        if (!mPlayerNotified) {
-                            EntityPlayer player = lastPlayer == null ? null : lastPlayer.get();
-                            if (player != null) {
-                                lastPlayer = null;
-                                mPlayerNotified = true;
-                                GTUtility.sendChatTrans(
-                                    player,
-                                    "GT5U.chat.cover.wireless_controller.shutdown_at",
-                                    new ChatComponentTranslation(coverable.getInventoryName()),
-                                    new ChatComponentNumber(coverable.getXCoord()),
-                                    new ChatComponentNumber(coverable.getYCoord()),
-                                    new ChatComponentNumber(coverable.getZCoord()));
-                            }
-                        }
                         handledShutdown = true;
                         state = State.DISABLED;
                     } else {
