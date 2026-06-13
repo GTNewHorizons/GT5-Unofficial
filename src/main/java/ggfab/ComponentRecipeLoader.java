@@ -50,5 +50,18 @@ class ComponentRecipeLoader implements Runnable {
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);
 
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Hatch_Input_Multi_2x2_LuV.get(1L),
+                ItemList.Emitter_LuV.get(1L),
+                ItemList.Sensor_LuV.get(1L),
+                GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Enderium, 1L))
+            .circuit(12)
+            .itemOutputs(GGItemList.LinkedInputHatch.get(1L))
+            .fluidInputs(Materials.Polybenzimidazole.getMolten(1 * INGOTS))
+            .duration(30 * SECONDS)
+            .eut(TierEU.RECIPE_LuV)
+            .addTo(assemblerRecipes);
+
     }
 }
