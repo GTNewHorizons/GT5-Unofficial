@@ -578,7 +578,7 @@ public class RecipeLoaderNuclear {
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Ilmenite, 1))
             .itemOutputs(
                 Materials.Iron.getDust(1),
-                Materials.WroughtIron.getDust(1),
+                Materials.CastIron.getDust(1),
                 WerkstoffLoader.Zirconium.get(OrePrefixes.dust, 1),
                 WerkstoffLoader.Zirconium.get(OrePrefixes.dust, 1),
                 MaterialsElements.getInstance().HAFNIUM.getDust(1),

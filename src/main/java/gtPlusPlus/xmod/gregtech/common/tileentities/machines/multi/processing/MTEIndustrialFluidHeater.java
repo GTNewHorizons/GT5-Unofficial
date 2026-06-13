@@ -12,6 +12,8 @@ import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
+import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 
@@ -27,6 +29,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.pollution.PollutionConfig;
@@ -66,7 +69,7 @@ public class MTEIndustrialFluidHeater extends GTPPMultiBlockBase<MTEIndustrialFl
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 6, 5, true)
             .addController("Front center, 2nd layer")
-            .addCasingInfoMin("Top/Bottom layer: Multi-use Casings", 34, false)
+            .addCasingInfoMin("Top/Bottom layer: Multi-use Casing", 34, false)
             .addCasingInfoMin("Middle layers: Thermal Containment Casing", 47, false)
             .addInputBus("Bottom Layer (optional)", 1)
             .addInputHatch("Bottom Layer", 1)
@@ -124,10 +127,14 @@ public class MTEIndustrialFluidHeater extends GTPPMultiBlockBase<MTEIndustrialFl
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         mCasing1 = 0;
-        boolean didBuild = checkPiece(mName, 2, 4, 0);
-        return didBuild && mCasing1 >= 34 && checkHatch();
+        if (!checkPiece(mName, 2, 4, 0, errors)) return;
+        checkCasingMin(errors, mCasing1, 34);
+        checkHatch(errors);
+        checkHasAnyInput(errors);
+        checkHasAnyOutput(errors);
+        checkHasEnergyHatch(errors);
     }
 
     @Override

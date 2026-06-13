@@ -68,6 +68,8 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.ResultMissingItem;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -323,27 +325,26 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         Arrays.fill(mSendHatches, null);
         Arrays.fill(mReceiveHatches, null);
         glassTier = -1;
-
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, 3, 3, 0)) return false;
-
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 3, 3, 0, errors)) return;
         mStructureBadGlassTier = false;
-
         for (MTEHatch energyHatch : mExoticEnergyHatches) {
             if (energyHatch.getBaseMetaTileEntity() == null) {
                 continue;
             }
-
             if (energyHatch.getTierForStructure() > glassTier) {
                 mStructureBadGlassTier = true;
                 break;
             }
         }
-
-        return !mStructureBadGlassTier;
+        if (mStructureBadGlassTier) {
+            errors.add(StructureErrorRegistry.ENERGY_TIER_EXCEED_GLASS);
+        }
+        checkHasMaintenanceHatch(errors);
+        checkHasInputBus(errors);
     }
 
     @Override
@@ -985,10 +986,10 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
             .addCasingInfoExactly("Fusion Coil Block", 3 * 4 + 5 * 2, false)
             .addCasingInfoRange("High Power Casing", 8 * 6 + 1, 8 * 6 + 1 + 4, false)
             .addCasingInfoExactly("Any Tiered Glass", 9 * 4, true)
-            .addMaintenanceHatch("§61§r (Hint Block Number 1)")
-            .addInputBus("§61§r (Hint Block Number 1)")
-            .addDynamoHatch("§60§r - §64§r (Laser Only, Hint Block Number 2)")
-            .addEnergyHatch("§60§r - §64§r (Laser Only, Hint Block Number 2)")
+            .addMaintenanceHatch("§61§r (Hint block number 1)")
+            .addInputBus("§61§r (Hint block number 1)")
+            .addDynamoHatch("§60§r - §64§r (Laser Only, Hint block number 2)")
+            .addEnergyHatch("§60§r - §64§r (Laser Only, Hint block number 2)")
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher(GTAuthors.AuthorPineapple + EnumChatFormatting.GRAY + ", Rendering by: " + EnumChatFormatting.WHITE + "BucketBrigade");
         // spotless:on
@@ -1091,7 +1092,7 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
                 data.add(StatCollector.translateToLocalFormatted(
                     "GT5U.infodata.wormhole_generator.transferred",
                     getLocalizedHatchName(i),
-                    inputHatch.Amperes,
+                    inputHatch.getAmperes(),
                     VN[inputHatch.mTier],
                     avgSend,
                     avgSend / 20 / V[inputHatch.mTier],

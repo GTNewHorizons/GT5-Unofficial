@@ -11,7 +11,6 @@ import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
-import java.util.Collection;
 import java.util.List;
 
 import net.minecraft.block.Block;
@@ -37,7 +36,6 @@ import cofh.asmhooks.block.BlockTickingWater;
 import cofh.asmhooks.block.BlockWater;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
-import gregtech.api.enums.StructureError;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
@@ -47,6 +45,7 @@ import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -109,7 +108,7 @@ public class MTEIndustrialFishingPondLegacy extends GTPPMultiBlockBase<MTEIndust
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(9, 3, 9, true)
             .addController("Front center")
-            .addCasingInfoMin("Aquatic Casings", 64, false)
+            .addCasingInfoMin("Aquatic Casing", 64, false)
             .addInputBus("Any Casing", 1)
             .addOutputBus("Any Casing", 1)
             .addInputHatch("Any Casing", 1)
@@ -163,30 +162,11 @@ public class MTEIndustrialFishingPondLegacy extends GTPPMultiBlockBase<MTEIndust
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         mCasing = 0;
-        return checkPiece(mName, 4, 1, 0);
-    }
-
-    @Override
-    protected void validateStructure(Collection<StructureError> errors, NBTTagCompound context) {
-        super.validateStructure(errors, context);
-
-        if (mCasing < 64) {
-            errors.add(StructureError.TOO_FEW_CASINGS);
-            context.setInteger("casings", mCasing);
-        }
-    }
-
-    @Override
-    protected void localizeStructureErrors(Collection<StructureError> errors, NBTTagCompound context,
-        List<String> lines) {
-        super.localizeStructureErrors(errors, context, lines);
-
-        if (errors.contains(StructureError.TOO_FEW_CASINGS)) {
-            lines.add(
-                StatCollector.translateToLocalFormatted("GT5U.gui.missing_casings", 64, context.getInteger("casings")));
-        }
+        if (!checkPiece(mName, 4, 1, 0, errors)) return;
+        checkHatch(errors);
+        checkCasingMin(errors, mCasing, 64);
     }
 
     @Override

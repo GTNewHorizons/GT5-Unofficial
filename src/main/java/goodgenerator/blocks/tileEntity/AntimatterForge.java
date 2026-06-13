@@ -38,6 +38,7 @@ import goodgenerator.items.GGMaterial;
 import goodgenerator.loader.Loaders;
 import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.MetaTileEntityIDs;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -51,6 +52,8 @@ import gregtech.api.objects.overclockdescriber.OverclockDescriber;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.ExoticEnergyInputHelper;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.HatchElementBuilder;
@@ -131,7 +134,9 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                     'E',
                     lazy(
                         x -> buildHatchAdder(AntimatterForge.class).adder(AntimatterForge::addAntimatterHatch)
-                            .hatchClass(AntimatterOutputHatch.class)
+                            .hatchId(MetaTileEntityIDs.AntimatterHatch.ID)
+                            .exclusive()
+                            .continueIfSuccess()
                             .casingIndex(x.textureIndex(1))
                             .hint(3)
                             .build()))
@@ -139,7 +144,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                     'H',
                     lazy(
                         x -> HatchElementBuilder.<AntimatterForge>builder()
-                            .anyOf(HatchElement.Energy.or(HatchElement.ExoticEnergy))
+                            .anyOf(HatchElement.ExoticEnergy)
                             .adder(AntimatterForge::addEnergyInjector)
                             .casingIndex(x.textureIndex(2))
                             .hint(2)
@@ -316,11 +321,11 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
             .addCasingInfoMin("Magnetic Flux Casing", 2274, false)
             .addCasingInfoMin("Gravity Stabilization Casing", 623, false)
             .addCasingInfoMin("Protomatter Activation Coil", 126, false)
-            .addInputHatch("1-6, Hint Block Number 1", 1)
-            .addEnergyHatch("1-9, Hint Block Number 2", 2)
+            .addInputHatch("1-6, Hint block number 1", 1)
+            .addEnergyHatch("1-9, Hint block number 2", 2)
             .addOtherStructurePart(
                 StatCollector.translateToLocal("gg.structure.tooltip.antimatter_hatch"),
-                "16, Hint Block Number 3",
+                "16, Hint block number 3",
                 3)
             .toolTipFinisher();
         return tt;
@@ -371,8 +376,13 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        return checkPiece(MAIN_NAME, 26, 26, 4);
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
+        if (!checkPiece(MAIN_NAME, 26, 26, 4, errors)) return;
+        checkHasInputHatch(errors);
+        if (amOutputHatches.isEmpty()) {
+            errors.add(StructureErrors.missingHatch(Loaders.AMHatch));
+        }
+        checkHatchMin(errors, HatchElement.ExoticEnergy, 1);
     }
 
     @Override
@@ -537,11 +547,13 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         // Drain upgrade fluids
         for (int i = 0; i < upgradeFluids.length; i++) {
             FluidStack upgradeFluid = upgradeFluids[i];
-            if (upgradeFluid != null) {
-                for (FluidStack inputFluid : inputFluids.toArray(new FluidStack[0])) {
-                    if (inputFluid.isFluidEqual(upgradeFluid)) {
-                        inputFluid.amount -= fluidConsumptions[i];
-                    }
+            if (upgradeFluid == null) {
+                continue;
+            }
+            for (FluidStack inputFluid : inputFluids.toArray(new FluidStack[0])) {
+                if (inputFluid.isFluidEqual(upgradeFluid) && inputFluid.amount >= fluidConsumptions[i]) {
+                    inputFluid.amount -= fluidConsumptions[i];
+                    break;
                 }
             }
         }
@@ -710,65 +722,18 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
     }
 
     @Override
-    public String[] getInfoData() {
-        IGregTechTileEntity baseMetaTileEntity = getBaseMetaTileEntity();
+    public void getExtraInfoData(List<String> info) {
+        info.add(
+            StatCollector.translateToLocalFormatted("gui.AntimatterForge.0.s", formatNumber(getAntimatterAmount())));
 
-        long storedEnergy = 0;
-        long maxEnergy = 0;
+        info.add(
+            StatCollector.translateToLocalFormatted("gui.AntimatterForge.1.s", formatNumber(getPassiveConsumption())));
 
-        for (MTEHatch tHatch : mExoticEnergyHatches) {
-            storedEnergy += tHatch.getBaseMetaTileEntity()
-                .getStoredEU();
-            maxEnergy += tHatch.getBaseMetaTileEntity()
-                .getEUCapacity();
-        }
+        info.add(
+            StatCollector.translateToLocalFormatted("gui.AntimatterForge.2.s", formatNumber(getActiveConsumption())));
 
-        return new String[] {
-            EnumChatFormatting.BLUE + StatCollector.translateToLocal("gg.scanner.info.antimatter_forge")
-                + " "
-                + EnumChatFormatting.GRAY,
-            StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(mProgresstime)
-                + EnumChatFormatting.RESET
-                + "t / "
-                + EnumChatFormatting.YELLOW
-                + formatNumber(mMaxProgresstime)
-                + EnumChatFormatting.RESET
-                + "t",
-            StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(storedEnergy)
-                + EnumChatFormatting.RESET
-                + " EU / "
-                + EnumChatFormatting.YELLOW
-                + formatNumber(maxEnergy)
-                + EnumChatFormatting.RESET
-                + " EU",
-            StatCollector.translateToLocal("gui.AntimatterForge.0") + ": "
-                + EnumChatFormatting.BLUE
-                + formatNumber(getAntimatterAmount())
-                + EnumChatFormatting.RESET
-                + " L",
-            StatCollector.translateToLocal("gui.AntimatterForge.1") + ": "
-                + EnumChatFormatting.RED
-                + formatNumber(getPassiveConsumption())
-                + EnumChatFormatting.RESET
-                + " EU/t",
-            StatCollector.translateToLocal("gui.AntimatterForge.2") + ": "
-                + EnumChatFormatting.LIGHT_PURPLE
-                + formatNumber(getActiveConsumption())
-                + EnumChatFormatting.RESET
-                + " EU/t",
-            StatCollector.translateToLocal("gui.AntimatterForge.3") + ": "
-                + EnumChatFormatting.AQUA
-                + formatNumber(getAntimatterChange())
-                + EnumChatFormatting.RESET
-                + " L",
-            StatCollector.translateToLocal("GT5U.multiblock.recipesDone") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(recipesDone)
-                + EnumChatFormatting.RESET };
+        info.add(
+            StatCollector.translateToLocalFormatted("gui.AntimatterForge.3.s", formatNumber(getAntimatterChange())));
     }
 
     public long getAntimatterAmount() {

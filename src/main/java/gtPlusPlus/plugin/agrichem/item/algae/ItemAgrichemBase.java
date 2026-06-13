@@ -135,9 +135,8 @@ public class ItemAgrichemBase extends Item {
         }
     }
 
-    @SuppressWarnings("unchecked")
     @Override
-    public void addInformation(ItemStack aStack, EntityPlayer player, List list, boolean bool) {
+    public void addInformation(ItemStack aStack, EntityPlayer player, List<String> list, boolean adv) {
         boolean aHasSpecialTooltips = false;
         int aMaxDamage = 0;
         int aDamageSegment = 0;
@@ -164,7 +163,7 @@ public class ItemAgrichemBase extends Item {
             }
             list.add(durability + "" + (aDam) + EnumChatFormatting.GRAY + " / " + aMaxDamage);
         }
-        super.addInformation(aStack, player, list, bool);
+        super.addInformation(aStack, player, list, adv);
     }
 
     @Override

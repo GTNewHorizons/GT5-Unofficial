@@ -15,6 +15,7 @@ import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -45,6 +46,7 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.recipe.maps.FuelBackend;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -116,9 +118,9 @@ public class MTELargeCombustionEngine extends MTEExtendedPowerMultiBlockBase<MTE
 
         String lubricantRate = TooltipHelper.fluidText(1000);
         String oxygenRate = TooltipHelper.fluidRateText(40);
-        String defaultOutput = TooltipHelper.euText(2048);
+        String defaultOutput = TooltipHelper.euRateText(2048);
         String defaultEfficiency = TooltipHelper.effText(1.0f);
-        String boostedOutput = TooltipHelper.euText(6144);
+        String boostedOutput = TooltipHelper.euRateText(6144);
         String boostedEfficiency = TooltipHelper.effText(1.5f);
         String waitPower = TooltipHelper.effText(3.0f);
 
@@ -138,8 +140,8 @@ public class MTELargeCombustionEngine extends MTEExtendedPowerMultiBlockBase<MTE
             .addCasingInfoExactly("PTFE Frame Box", 21, false)
             .addCasingInfoExactly("Chemically Inert Machine Casing", 19, false)
             .addDynamoHatch(GTUtility.translate("gt.mbtt.structure.back_center"), 3)
-            .addMaintenanceHatch("Any Stable Titanium Machine Casing", 1)
-            .addMufflerHatch("Any Stable Titanium Machine Casing", 1)
+            .addMaintenanceHatch("Any Stable Titanium Machine Casing NOT touching a gearbox", 1)
+            .addMufflerHatch("Any Stable Titanium Machine Casing NOT touching a gearbox", 1)
             .addInputHatch(GTUtility.translate("gt.multiblock.DieselEngine.diesel_fuel"), 2)
             .addInputHatch(GTUtility.translate("gt.multiblock.DieselEngine.lubricant"), 2)
             .addInputHatch(GTUtility.translate("gt.multiblock.DieselEngine.oxygen_optional"), 2)
@@ -281,23 +283,27 @@ public class MTELargeCombustionEngine extends MTEExtendedPowerMultiBlockBase<MTE
                     return SimpleCheckRecipeResult.ofFailure("no_lubricant");
 
                 fuelRemaining = tFluid.amount; // Record available fuel
-                this.mEUt = mEfficiency < 2000 ? 0 : getNominalOutput(); // Output 0 if startup is less than 20%
+                this.lEUt = mEfficiency < 2000 ? 0 : getNominalOutput(); // Output 0 if startup is less than 20%
                 this.mProgresstime = 1;
                 this.mMaxProgresstime = 1;
                 this.mEfficiencyIncrease = getEfficiencyIncrease();
                 return CheckRecipeResultRegistry.GENERATING;
             }
         }
-        this.mEUt = 0;
+        this.lEUt = 0;
         this.mEfficiency = 0;
         return CheckRecipeResultRegistry.NO_FUEL_FOUND;
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         casingAmount = 0;
-        return checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z) && !mMufflerHatches.isEmpty()
-            && casingAmount >= 10;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z, errors)) return;
+        checkCasingMin(errors, casingAmount, 10);
+        checkHasMufflerHatch(errors);
+        checkHasInputHatch(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHatchMin(errors, Dynamo, 1);
     }
 
     @Override
@@ -370,7 +376,7 @@ public class MTELargeCombustionEngine extends MTEExtendedPowerMultiBlockBase<MTE
                     + EnumChatFormatting.RESET,
             StatCollector.translateToLocal("GT5U.engine.output") + ": "
                 + EnumChatFormatting.RED
-                + formatNumber(((long) mEUt * mEfficiency / 10000))
+                + formatNumber((lEUt * mEfficiency / 10000))
                 + EnumChatFormatting.RESET
                 + " EU/t",
             StatCollector.translateToLocal("GT5U.engine.consumption") + ": "
@@ -398,10 +404,7 @@ public class MTELargeCombustionEngine extends MTEExtendedPowerMultiBlockBase<MTE
                 + getAveragePollutionPercentage()
                 + EnumChatFormatting.RESET
                 + " %",
-            StatCollector.translateToLocal("GT5U.multiblock.recipesDone") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(recipesDone)
-                + EnumChatFormatting.RESET };
+            GTUtility.translate("GT5U.multiblock.recipesDone", formatNumber(recipesDone)) };
     }
 
     @Override

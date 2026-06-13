@@ -64,7 +64,7 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures, IB
         if (stoneTypes.length > 8) throw new IllegalArgumentException("stoneTypes.length must be <= 8");
 
         for (int i = 0; i < stoneTypes.length; i++) {
-            if (!stoneTypes[i].isEnabled()) {
+            if (stoneTypes[i] != null && !stoneTypes[i].isEnabled()) {
                 stoneTypes[i] = null;
             }
         }
@@ -387,6 +387,14 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures, IB
             .post(new OreInteractEvent(world, x, y, z, this, world.getBlockMetadata(x, y, z), player));
 
         return false;
+    }
+
+    @Override
+    public void onBlockClicked(World world, int x, int y, int z, EntityPlayer player) {
+        super.onBlockClicked(world, x, y, z, player);
+
+        MinecraftForge.EVENT_BUS
+            .post(new OreInteractEvent(world, x, y, z, this, world.getBlockMetadata(x, y, z), player));
     }
 
     @Override

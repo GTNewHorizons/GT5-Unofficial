@@ -15,6 +15,8 @@ import gregtech.api.render.ISBRWorldContext;
 
 public class GTCopiedBlockTextureRender extends GTTextureBase implements IBlockContainer {
 
+    private static final double COMPACT_CTM_LAYER_OFFSET = 0.001D;
+
     private final Block mBlock;
     private final byte mSide;
     private final int mMeta;
@@ -27,7 +29,7 @@ public class GTCopiedBlockTextureRender extends GTTextureBase implements IBlockC
         mMeta = aMeta;
     }
 
-    private IIcon getIcon(int ordinalSide, ISBRContext ctx) {
+    public IIcon getIcon(int ordinalSide, ISBRContext ctx) {
         final IIcon icon;
         if (mSide == 6) icon = mBlock.getIcon(ordinalSide, mMeta);
         else icon = mBlock.getIcon(mSide, mMeta);
@@ -35,13 +37,14 @@ public class GTCopiedBlockTextureRender extends GTTextureBase implements IBlockC
         else return ctx instanceof ISBRWorldContext ctxW
             ? CTMUtils
                 .getBlockIcon(icon, mBlock, ctxW.getBlockAccess(), ctxW.getX(), ctxW.getY(), ctxW.getZ(), ordinalSide)
-            : CTMUtils.getBlockIcon(icon, mBlock, ordinalSide);
+            : icon;
     }
 
     @Override
     public void renderXPos(ISBRContext ctx) {
         if (!ctx.canRenderInPass(mBlock::canRenderInPass)) return;
         final IIcon aIcon = getIcon(ForgeDirection.EAST.ordinal(), ctx);
+        boolean usesCompactCtm = usesCompactCtm(ctx);
         final RenderBlocks renderBlocks = ctx.getRenderBlocks();
         renderBlocks.field_152631_f = true;
         startDrawingQuads(renderBlocks, 1.0f, 0.0f, 0.0f);
@@ -49,6 +52,7 @@ public class GTCopiedBlockTextureRender extends GTTextureBase implements IBlockC
             .setupColor(ForgeDirection.EAST, 0xffffff);
         renderBlocks.renderFaceXPos(ctx.getBlock(), ctx.getX(), ctx.getY(), ctx.getZ(), aIcon);
         draw(renderBlocks);
+        if (usesCompactCtm) renderBlocks.renderMaxX += COMPACT_CTM_LAYER_OFFSET;
         renderBlocks.field_152631_f = false;
     }
 
@@ -58,10 +62,12 @@ public class GTCopiedBlockTextureRender extends GTTextureBase implements IBlockC
         final RenderBlocks renderBlocks = ctx.getRenderBlocks();
         startDrawingQuads(renderBlocks, -1.0f, 0.0f, 0.0f);
         final IIcon aIcon = getIcon(ForgeDirection.WEST.ordinal(), ctx);
+        boolean usesCompactCtm = usesCompactCtm(ctx);
         ctx.reset()
             .setupColor(ForgeDirection.WEST, 0xffffff);
         renderBlocks.renderFaceXNeg(ctx.getBlock(), ctx.getX(), ctx.getY(), ctx.getZ(), aIcon);
         draw(renderBlocks);
+        if (usesCompactCtm) renderBlocks.renderMinX -= COMPACT_CTM_LAYER_OFFSET;
     }
 
     @Override
@@ -70,10 +76,12 @@ public class GTCopiedBlockTextureRender extends GTTextureBase implements IBlockC
         final RenderBlocks renderBlocks = ctx.getRenderBlocks();
         startDrawingQuads(renderBlocks, 0.0f, 1.0f, 0.0f);
         final IIcon aIcon = getIcon(ForgeDirection.UP.ordinal(), ctx);
+        boolean usesCompactCtm = usesCompactCtm(ctx);
         ctx.reset()
             .setupColor(ForgeDirection.UP, 0xffffff);
         renderBlocks.renderFaceYPos(ctx.getBlock(), ctx.getX(), ctx.getY(), ctx.getZ(), aIcon);
         draw(renderBlocks);
+        if (usesCompactCtm) renderBlocks.renderMaxY += COMPACT_CTM_LAYER_OFFSET;
     }
 
     @Override
@@ -82,10 +90,12 @@ public class GTCopiedBlockTextureRender extends GTTextureBase implements IBlockC
         final RenderBlocks renderBlocks = ctx.getRenderBlocks();
         startDrawingQuads(renderBlocks, 0.0f, -1.0f, 0.0f);
         final IIcon aIcon = getIcon(ForgeDirection.DOWN.ordinal(), ctx);
+        boolean usesCompactCtm = usesCompactCtm(ctx);
         ctx.reset()
             .setupColor(ForgeDirection.DOWN, 0xffffff);
         renderBlocks.renderFaceYNeg(ctx.getBlock(), ctx.getX(), ctx.getY(), ctx.getZ(), aIcon);
         draw(renderBlocks);
+        if (usesCompactCtm) renderBlocks.renderMinY -= COMPACT_CTM_LAYER_OFFSET;
     }
 
     @Override
@@ -94,10 +104,12 @@ public class GTCopiedBlockTextureRender extends GTTextureBase implements IBlockC
         final RenderBlocks renderBlocks = ctx.getRenderBlocks();
         startDrawingQuads(renderBlocks, 0.0f, 0.0f, 1.0f);
         final IIcon aIcon = getIcon(ForgeDirection.SOUTH.ordinal(), ctx);
+        boolean usesCompactCtm = usesCompactCtm(ctx);
         ctx.reset()
             .setupColor(ForgeDirection.SOUTH, 0xffffff);
         renderBlocks.renderFaceZPos(ctx.getBlock(), ctx.getX(), ctx.getY(), ctx.getZ(), aIcon);
         draw(renderBlocks);
+        if (usesCompactCtm) renderBlocks.renderMaxZ += COMPACT_CTM_LAYER_OFFSET;
     }
 
     @Override
@@ -106,12 +118,19 @@ public class GTCopiedBlockTextureRender extends GTTextureBase implements IBlockC
         final RenderBlocks renderBlocks = ctx.getRenderBlocks();
         startDrawingQuads(renderBlocks, 0.0f, 0.0f, -1.0f);
         final IIcon aIcon = getIcon(ForgeDirection.NORTH.ordinal(), ctx);
+        boolean usesCompactCtm = usesCompactCtm(ctx);
         renderBlocks.field_152631_f = true;
         ctx.reset()
             .setupColor(ForgeDirection.NORTH, 0xffffff);
         renderBlocks.renderFaceZNeg(ctx.getBlock(), ctx.getX(), ctx.getY(), ctx.getZ(), aIcon);
         draw(renderBlocks);
         renderBlocks.field_152631_f = false;
+        if (usesCompactCtm) renderBlocks.renderMinZ -= COMPACT_CTM_LAYER_OFFSET;
+    }
+
+    private static boolean usesCompactCtm(ISBRContext ctx) {
+        if (!Angelica.isModLoaded()) return false;
+        return ctx instanceof ISBRWorldContext && CTMUtils.getCurrentCompact() != null;
     }
 
     @Override

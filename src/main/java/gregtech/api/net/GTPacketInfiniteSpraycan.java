@@ -12,11 +12,24 @@ import net.minecraft.world.IBlockAccess;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import com.cleanroommc.modularui.api.IGuiHolder;
+import com.cleanroommc.modularui.factory.GuiManager;
+import com.cleanroommc.modularui.factory.ItemStackGuiData;
+import com.cleanroommc.modularui.factory.ItemStackGuiFactory;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.ModularScreen;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.google.common.io.ByteArrayDataInput;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.items.MetaBaseItem;
+import gregtech.api.modularui2.GTGuiThemes;
+import gregtech.api.modularui2.GTModularScreen;
 import gregtech.api.util.GTUtility;
+import gregtech.common.gui.modularui.item.SprayColorInfiniteGui;
 import gregtech.common.items.behaviors.BehaviourSprayColorInfinite;
 import gregtech.crossmod.backhand.Backhand;
 import io.netty.buffer.ByteBuf;
@@ -99,7 +112,7 @@ public class GTPacketInfiniteSpraycan extends GTPacket {
         }
 
         // Prefer offhand for setting color
-        if (action == Action.SET_COLOR) {
+        if (action == Action.SET_COLOR || action == Action.OPEN_GUI) {
             // noinspection ReplaceNullCheck
             if (offhandItemStack != null) {
                 return Optional.of(offhandItemStack);
@@ -178,6 +191,34 @@ public class GTPacketInfiniteSpraycan extends GTPacket {
                 } else {
                     playSound(player, SoundResource.GT_SPRAYCAN_UNLOCK);
                 }
+                return true;
+            }
+        },
+
+        OPEN_GUI {
+
+            private final ItemStackGuiFactory factory = new ItemStackGuiFactory(
+                "gregtech:spray_can_select",
+                new IGuiHolder<>() {
+
+                    @Override
+                    public ModularPanel buildUI(ItemStackGuiData data, PanelSyncManager syncManager,
+                        UISettings settings) {
+                        return new SprayColorInfiniteGui(data.getItemStack()).build();
+                    }
+
+                    @SideOnly(Side.CLIENT)
+                    @Override
+                    public ModularScreen createScreen(ItemStackGuiData data, ModularPanel mainPanel) {
+                        return new GTModularScreen(mainPanel, GTGuiThemes.STANDARD);
+                    }
+                });
+
+            @Override
+            boolean execute(BehaviourSprayColorInfinite behavior, ItemStack itemStack, EntityPlayerMP player,
+                int newColor) {
+                GuiManager.open(factory, new ItemStackGuiData(player, itemStack), player);
+
                 return true;
             }
         };

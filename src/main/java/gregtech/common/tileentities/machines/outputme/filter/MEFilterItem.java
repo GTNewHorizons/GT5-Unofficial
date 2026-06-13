@@ -15,7 +15,7 @@ import gregtech.api.util.GTUtility;
 public class MEFilterItem extends MEFilterBase<IAEItemStack, GTUtility.ItemId, ItemStack> {
 
     public MEFilterItem() {
-        super(new HashSet<GTUtility.ItemId>());
+        super(new HashSet<>());
     }
 
     @Override

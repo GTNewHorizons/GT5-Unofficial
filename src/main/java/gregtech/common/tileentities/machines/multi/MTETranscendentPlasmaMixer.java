@@ -21,6 +21,7 @@ import static gregtech.common.tileentities.machines.multi.MTEPlasmaForge.DIM_TRA
 import static kekztech.util.Util.toStandardForm;
 
 import java.math.BigInteger;
+import java.util.List;
 import java.util.UUID;
 
 import javax.annotation.Nonnull;
@@ -50,8 +51,10 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeConstants;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.common.gui.modularui.multiblock.MTETranscendentPlasmaMixerGui;
@@ -253,16 +256,14 @@ public class MTETranscendentPlasmaMixer extends MTEEnhancedMultiBlockBase<MTETra
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         // Check the main structure
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFFSET, VERTICAL_OFFSET, DEPTH_OFFSET)) {
-            return false;
-        }
-
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFFSET, VERTICAL_OFFSET, DEPTH_OFFSET, errors)) return;
         // Maintenance hatch not required but left for compatibility.
         // Don't allow more than 1, no free casing spam!
-        return (mMaintenanceHatches.size() <= 1);
+        checkHatchMax(errors, Maintenance, 1);
+        checkHasInputHatch(errors);
+        checkHasOutputHatch(errors);
     }
 
     @Override
@@ -316,10 +317,7 @@ public class MTETranscendentPlasmaMixer extends MTEEnhancedMultiBlockBase<MTETra
                     : toStandardForm(finalConsumption.divide(BigInteger.valueOf(-mMaxProgresstime))))
                 + EnumChatFormatting.RESET
                 + " EU/t",
-            StatCollector.translateToLocal("GT5U.multiblock.recipesDone") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(recipesDone)
-                + EnumChatFormatting.RESET };
+            GTUtility.translate("GT5U.multiblock.recipesDone", formatNumber(recipesDone)) };
     }
 
     @Override

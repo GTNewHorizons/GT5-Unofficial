@@ -18,9 +18,9 @@ import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 public class GregtechMetaTieredCasingBlocks1 extends GregtechMetaCasingBlocksAbstract {
 
     @Override
-    public void getSubBlocks(Item aItem, CreativeTabs par2CreativeTabs, List aList) {
+    public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {
         for (int i = 0; i < 10; i++) {
-            aList.add(new ItemStack(aItem, 1, i));
+            list.add(new ItemStack(item, 1, i));
         }
     }
 
@@ -31,12 +31,13 @@ public class GregtechMetaTieredCasingBlocks1 extends GregtechMetaCasingBlocksAbs
         }
 
         @Override
-        public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List aList, boolean aF3_H) {
-            int aMeta = aStack.getItemDamage();
+        public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean aF3_H) {
+            int aMeta = stack.getItemDamage();
             if (aMeta < 10) {
-                aList.add(StatCollector.translateToLocalFormatted("GT5U.tooltip.electric.tier.s", GTValues.VN[aMeta]));
+                tooltip
+                    .add(StatCollector.translateToLocalFormatted("GT5U.tooltip.electric.tier.s", GTValues.VN[aMeta]));
             }
-            super.addInformation(aStack, aPlayer, aList, aF3_H);
+            super.addInformation(stack, player, tooltip, aF3_H);
         }
     }
 

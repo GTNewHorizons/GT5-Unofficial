@@ -32,6 +32,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
+import gregtech.api.modularui2.ProxiedMteGui;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
@@ -81,8 +82,12 @@ public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDua
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
         super.onPostTick(aBaseMetaTileEntity, aTimer);
-        if (aTimer % 100 == 0 && masterSet && getMaster() == null) {
-            trySetMasterFromCoord(masterX, masterY, masterZ);
+        if (aBaseMetaTileEntity.isServerSide() && aTimer % 100 == 0) {
+            if (getMaster() != null || !masterSet) {
+                aBaseMetaTileEntity.tryDisableTicking();
+            } else if (trySetMasterFromCoord(masterX, masterY, masterZ) != null) {
+                aBaseMetaTileEntity.tryDisableTicking();
+            }
         }
     }
 
@@ -141,6 +146,7 @@ public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDua
         if (master == null) return null;
         if (master.getBaseMetaTileEntity() == null) { // master disappeared
             master = null;
+            getBaseMetaTileEntity().enableTicking();
         }
         return master;
     }
@@ -231,7 +237,7 @@ public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDua
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        if (!(aPlayer instanceof EntityPlayerMP)) {
+        if (!(aPlayer instanceof EntityPlayerMP player)) {
             return false;
         }
         if (tryLinkDataStick(aPlayer)) {
@@ -239,7 +245,10 @@ public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDua
         }
         var master = getMaster();
         if (master != null) {
-            return master.onRightclick(master.getBaseMetaTileEntity(), aPlayer);
+            if (aBaseMetaTileEntity.isServerSide()) {
+                ProxiedMteGui.open(master, player);
+            }
+            return true;
         }
         return false;
     }

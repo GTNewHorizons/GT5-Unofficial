@@ -68,13 +68,17 @@ public class CrushedLoader implements IWerkstoffRunnable {
             GTModHandler.addSmeltingRecipe(werkstoff.get(dust), werkstoff.get(ingot));
         }
 
-        GTModHandler
-            .addCraftingRecipe(werkstoff.get(dustImpure), new Object[] { "h  ", "W  ", 'W', werkstoff.get(crushed) });
+        GTModHandler.addCraftingRecipe(
+            werkstoff.get(dustImpure),
+            GTModHandler.RecipeBits.BUFFERED,
+            new Object[] { "h  ", "W  ", 'W', werkstoff.get(crushed) });
         GTModHandler.addCraftingRecipe(
             werkstoff.get(dustPure),
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "h  ", "W  ", 'W', werkstoff.get(crushedPurified) });
         GTModHandler.addCraftingRecipe(
             werkstoff.get(dust),
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "h  ", "W  ", 'W', werkstoff.get(crushedCentrifuged) });
 
         GTValues.RA.stdBuilder()
@@ -239,7 +243,7 @@ public class CrushedLoader implements IWerkstoffRunnable {
                 .outputChances(10000, 7000, 4000)
                 .fluidInputs(Materials.Mercury.getFluid(1_000))
                 .duration(40 * SECONDS)
-                .eut(8)
+                .eut(TierEU.RECIPE_ULV)
                 .addTo(chemicalBathRecipes);
 
         }
@@ -254,7 +258,7 @@ public class CrushedLoader implements IWerkstoffRunnable {
                 .outputChances(10000, 7000, 4000)
                 .fluidInputs(Materials.SodiumPersulfate.getFluid(100L))
                 .duration(40 * SECONDS)
-                .eut(8)
+                .eut(TierEU.RECIPE_ULV)
                 .addTo(chemicalBathRecipes);
 
         }

@@ -18,6 +18,7 @@ import static gregtech.api.util.GTStructureUtility.ofAnyWater;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 import javax.annotation.Nonnull;
 
@@ -48,7 +49,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
-import gregtech.api.enums.TAE;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -60,6 +60,7 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -115,7 +116,7 @@ public class MTEIndustrialWashPlantLegacy extends GTPPMultiBlockBase<MTEIndustri
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 3, 7, true)
             .addController("Front center")
-            .addCasingInfoMin("Wash Plant Casings", 40, false)
+            .addCasingInfoMin("Wash Plant Casing", 40, false)
             .addInputBus("Any Casing", 1)
             .addOutputBus("Any Casing", 1)
             .addInputHatch("Any Casing", 1)
@@ -144,7 +145,7 @@ public class MTEIndustrialWashPlantLegacy extends GTPPMultiBlockBase<MTEIndustri
                         .casingIndex(getCasingTextureIndex())
                         .hint(1)
                         .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(getCasingBlock(), getCasingMeta()))))
-                .addElement('w', ofChain(isAir(), ofAnyWater(true)))
+                .addElement('w', ofChain(ofAnyWater(true), isAir()))
                 .build();
         }
         return STRUCTURE_DEFINITION;
@@ -162,9 +163,11 @@ public class MTEIndustrialWashPlantLegacy extends GTPPMultiBlockBase<MTEIndustri
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         mCasing = 0;
-        return checkPiece(mName, 2, 1, 0) && mCasing >= 40 && checkHatch();
+        if (!checkPiece(mName, 2, 1, 0, errors)) return;
+        checkCasingMin(errors, mCasing, 40);
+        checkHatch(errors);
     }
 
     @Override
@@ -263,7 +266,7 @@ public class MTEIndustrialWashPlantLegacy extends GTPPMultiBlockBase<MTEIndustri
     }
 
     public byte getCasingTextureIndex() {
-        return (byte) TAE.GTPP_INDEX(11);
+        return 114;
     }
 
     public boolean checkForWater() {
@@ -422,8 +425,8 @@ public class MTEIndustrialWashPlantLegacy extends GTPPMultiBlockBase<MTEIndustri
     }
 
     @Override
-    protected @NotNull MTEMultiBlockBaseGui getGui() {
-        return new MTEMultiBlockBaseGui(this).withMachineModeIcons(
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
+        return new MTEMultiBlockBaseGui<>(this).withMachineModeIcons(
             GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_WASHPLANT,
             GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_SIMPLEWASHER,
             GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_CHEMBATH);

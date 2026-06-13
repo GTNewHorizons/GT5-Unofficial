@@ -8,6 +8,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.IChatComponent;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -24,22 +25,34 @@ public class BehaviourScanner extends BehaviourNone {
 
     public static final IItemBehaviour<MetaBaseItem> INSTANCE = new BehaviourScanner();
 
+    /** Serializes an {@link IChatComponent} to NBT via the built-in JSON serializer. */
+    private static NBTTagCompound componentToNBT(IChatComponent comp) {
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setString("s", IChatComponent.Serializer.func_150696_a(comp));
+        return tag;
+    }
+
+    /** Deserializes a component from NBT, returns null if the tag is missing or malformed. */
+    private static IChatComponent componentFromNBT(NBTTagCompound tag) {
+        if (!tag.hasKey("s")) return null;
+        return IChatComponent.Serializer.func_150699_a(tag.getString("s"));
+    }
+
     @Override
     public boolean onItemUseFirst(MetaBaseItem aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX,
         int aY, int aZ, ForgeDirection side, float hitX, float hitY, float hitZ) {
         final NBTTagCompound tNBT = aStack.getTagCompound();
         if (((aPlayer instanceof EntityPlayerMP)) && (aItem.canUse(aStack, 20000.0D))) {
-            final List<String> list = new ArrayList<>();
+            final List<IChatComponent> list = new ArrayList<>();
             if (aItem.use(
                 aStack,
-                ScannerHelper.scan(list, aPlayer, aWorld, 1, aX, aY, aZ, side, hitX, hitY, hitZ),
+                ScannerHelper.scanComponents(list, aPlayer, aWorld, 1, aX, aY, aZ, side, hitX, hitY, hitZ),
                 aPlayer)) {
-                final int tList_sS = list.size();
-                tNBT.setInteger("dataLinesCount", tList_sS);
-                for (int i = 0; i < tList_sS; i++) {
-                    tNBT.setString("dataLines" + i, list.get(i));
-                    // FIXME: localize scanner data
-                    GTUtility.sendChatToPlayer(aPlayer, list.get(i));
+                final int count = list.size();
+                tNBT.setInteger("dataLinesCount", count);
+                for (int i = 0; i < count; i++) {
+                    tNBT.setTag("scanLine" + i, componentToNBT(list.get(i)));
+                    aPlayer.addChatComponentMessage(list.get(i));
                 }
             }
             return true;
@@ -54,8 +67,17 @@ public class BehaviourScanner extends BehaviourNone {
         final int lines = ItemStackNBT.getInteger(aStack, "dataLinesCount");
         if (0 < lines) {
             aList.add(EnumChatFormatting.BLUE + StatCollector.translateToLocal("gt.behaviour.scanning.result"));
+            final NBTTagCompound nbt = aStack.getTagCompound();
             for (int i = 0; i < lines; i++) {
-                aList.add(EnumChatFormatting.RESET + ItemStackNBT.getString(aStack, "dataLines" + i));
+                IChatComponent comp = nbt != null && nbt.hasKey("scanLine" + i)
+                    ? componentFromNBT(nbt.getCompoundTag("scanLine" + i))
+                    : null;
+                if (comp != null) {
+                    aList.add(EnumChatFormatting.RESET + comp.getFormattedText());
+                } else {
+                    // fallback for items scanned before this change (or malformed NBT)
+                    aList.add(EnumChatFormatting.RESET + ItemStackNBT.getString(aStack, "dataLines" + i));
+                }
             }
         } else {
             aList.add(StatCollector.translateToLocal("gt.behaviour.scanning"));

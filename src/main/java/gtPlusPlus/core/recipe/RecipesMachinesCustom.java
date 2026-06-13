@@ -102,13 +102,13 @@ public class RecipesMachinesCustom {
         // XL Turbo Steam Turbine
         GTValues.RA.stdBuilder()
             .itemInputs(
-                ItemList.LargeSteamTurbine.get(1),
+                ItemList.SteamTurbine.get(1),
                 MaterialsAlloy.INCOLOY_DS.getPlate(8),
                 MaterialsAlloy.INCOLOY_DS.getScrew(16),
                 MaterialsAlloy.INCOLOY_DS.getGear(4),
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.EV, 8))
             .circuit(18)
-            .itemOutputs(GregtechItemList.Large_Steam_Turbine.get(1))
+            .itemOutputs(ItemList.SteamTurbineXL.get(1))
             .fluidInputs(Materials.Titanium.getMolten(8 * INGOTS))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_EV)
@@ -130,13 +130,13 @@ public class RecipesMachinesCustom {
         // XL Turbo Gas Turbine
         GTValues.RA.stdBuilder()
             .itemInputs(
-                ItemList.LargeGasTurbine.get(1),
+                ItemList.GasTurbine.get(1),
                 MaterialsAlloy.ZERON_100.getPlate(8),
                 MaterialsAlloy.ZERON_100.getScrew(16),
                 MaterialsAlloy.ZERON_100.getGear(4),
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.LuV, 8))
             .circuit(18)
-            .itemOutputs(GregtechItemList.Large_Gas_Turbine.get(1))
+            .itemOutputs(ItemList.GasTurbineXL.get(1))
             .fluidInputs(Materials.Chrome.getMolten(8 * INGOTS))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
@@ -158,13 +158,13 @@ public class RecipesMachinesCustom {
         // XL Turbo HP Steam Turbine
         GTValues.RA.stdBuilder()
             .itemInputs(
-                ItemList.LargeHPSteamTurbine.get(1),
+                ItemList.HPSteamTurbine.get(1),
                 MaterialsAlloy.INCONEL_625.getPlate(8),
                 MaterialsAlloy.INCONEL_625.getScrew(16),
                 MaterialsAlloy.INCONEL_625.getGear(4),
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.IV, 8))
             .circuit(18)
-            .itemOutputs(GregtechItemList.Large_HPSteam_Turbine.get(1))
+            .itemOutputs(ItemList.HPSteamTurbineXL.get(1))
             .fluidInputs(Materials.TungstenSteel.getMolten(8 * INGOTS))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_IV)
@@ -186,13 +186,13 @@ public class RecipesMachinesCustom {
         // XL Turbo Plasma Turbine
         GTValues.RA.stdBuilder()
             .itemInputs(
-                ItemList.LargePlasmaTurbine.get(1),
+                ItemList.PlasmaTurbine.get(1),
                 MaterialsAlloy.PIKYONIUM.getPlate(8),
                 MaterialsAlloy.PIKYONIUM.getScrew(16),
                 MaterialsAlloy.PIKYONIUM.getGear(4),
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.ZPM, 8))
             .circuit(18)
-            .itemOutputs(GregtechItemList.Large_Plasma_Turbine.get(1))
+            .itemOutputs(ItemList.PlasmaTurbineXL.get(1))
             .fluidInputs(Materials.Iridium.getMolten(8 * INGOTS))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
@@ -214,13 +214,13 @@ public class RecipesMachinesCustom {
         // XL Turbo SC Steam Turbine
         GTValues.RA.stdBuilder()
             .itemInputs(
-                ItemRefer.SC_Fluid_Turbine.get(1),
+                ItemList.SCSteamTurbine.get(1),
                 GGMaterial.dalisenite.get(OrePrefixes.plate, 8),
                 GGMaterial.dalisenite.get(OrePrefixes.screw, 16),
                 GGMaterial.dalisenite.get(OrePrefixes.gearGt, 4),
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.ZPM, 8))
             .circuit(18)
-            .itemOutputs(GregtechItemList.Large_SCSteam_Turbine.get(1))
+            .itemOutputs(ItemList.SCSteamTurbineXL.get(1))
             .fluidInputs(GGMaterial.hikarium.getMolten(8 * INGOTS))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
@@ -307,6 +307,16 @@ public class RecipesMachinesCustom {
             new Object[] { "PhP", "PFP", "PwP", 'P', OrePrefixes.plate.get(Materials.Bronze), 'F',
                 OrePrefixes.frameGt.get(Materials.Bronze) });
 
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Bronze, 6),
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Bronze, 1))
+            .circuit(2)
+            .itemOutputs(GregtechItemList.Casing_Machine_Custom_1.get(2))
+            .duration(2 * SECONDS + 10 * TICKS)
+            .eut(TierEU.RECIPE_LV / 2)
+            .addTo(assemblerRecipes);
+
         // Sturdy Aluminium Machine Casing
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Casing_Machine_Custom_2.get(2),
@@ -365,7 +375,7 @@ public class RecipesMachinesCustom {
                 GTOreDictUnificator.get(OrePrefixes.bolt, Materials.Steel, 16),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 32))
             .circuit(21)
-            .itemOutputs(GregtechItemList.AlgaeFarm_Controller.get(1))
+            .itemOutputs(ItemList.AlgaeFarm.get(1))
             .fluidInputs(MaterialsAlloy.POTIN.getFluidStack(8 * INGOTS))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_MV)
@@ -376,12 +386,14 @@ public class RecipesMachinesCustom {
         // Alloy Blast Smelter
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Industrial_AlloyBlastSmelter.get(1),
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PCP", "WMW", "PCP", 'P', MaterialsAlloy.ZIRCONIUM_CARBIDE.getPlate(1), 'C', "circuitElite",
                 'W', OrePrefixes.cableGt04.get(Materials.Tungsten), 'M', ItemList.Machine_IV_AlloySmelter });
 
         // Blast Smelter Casing Block
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Casing_BlastSmelter.get(1),
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PhP", "PFP", "PwP", 'P', MaterialsAlloy.ZIRCONIUM_CARBIDE.getPlate(1), 'F',
                 MaterialsAlloy.ZIRCONIUM_CARBIDE.getFrameBox(1) });
 
@@ -396,6 +408,7 @@ public class RecipesMachinesCustom {
         // Blast Smelter Heat Containment Coil
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Casing_Coil_BlastSmelter.get(1),
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PPP", "FCF", "PPP", 'P', MaterialsAlloy.STABALLOY.getPlate(1), 'F',
                 MaterialsAlloy.STABALLOY.getFrameBox(1), 'C', ItemList.Casing_Gearbox_Titanium });
 
@@ -446,7 +459,8 @@ public class RecipesMachinesCustom {
     private static void treeGrowthSimulator() {
         // Tree Growth Simulator
         GTModHandler.addCraftingRecipe(
-            GregtechItemList.Industrial_TreeFarm.get(1),
+            ItemList.TreeGrowSimulator.get(1),
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "FRF", "PHP", "FXF", 'F', ItemList.Field_Generator_IV, 'R',
                 MaterialsAlloy.INCOLOY_MA956.getRotor(1), 'P', MaterialsAlloy.NITINOL_60.getPlate(1), 'H',
                 GregtechItemList.GTPP_Casing_IV.get(1), 'X',
@@ -472,6 +486,7 @@ public class RecipesMachinesCustom {
         // Thorium Reactor [LFTR]
         GTModHandler.addCraftingRecipe(
             GregtechItemList.ThoriumReactor.get(1),
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "ABA", "CDC", "EFE", 'A', GregtechItemList.LFTRControlCircuit, 'B',
                 OrePrefixes.cableGt12.get(Materials.Naquadah), 'C', MaterialsAlloy.HASTELLOY_N.getPlateDouble(1), 'D',
                 GregtechItemList.Gregtech_Computer_Cube, 'E', MaterialsElements.getInstance().THORIUM232.getPlate(1),
@@ -480,6 +495,7 @@ public class RecipesMachinesCustom {
         // Reactor Shield Casing
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Casing_Reactor_II.get(1),
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PdP", "GFG", "PhP", 'P', MaterialsAlloy.HASTELLOY_C276.getPlateDouble(1), 'G',
                 MaterialsAlloy.TALONITE.getGear(1), 'F', ItemList.Field_Generator_LV });
 
@@ -496,6 +512,7 @@ public class RecipesMachinesCustom {
         // Hastelloy-N Reactor Casing
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Casing_Reactor_I.get(1),
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PIP", "IFI", "PIP", 'P', MaterialsAlloy.HASTELLOY_N.getPlateDouble(1), 'I',
                 getModItem(Mods.IndustrialCraft2.ID, "reactorPlatingHeat", 1), 'F',
                 MaterialsAlloy.HASTELLOY_C276.getFrameBox(1) });
@@ -513,6 +530,7 @@ public class RecipesMachinesCustom {
         // Reactor Fuel Processing Plant
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Industrial_FuelRefinery.get(1),
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "CiC", "PXP", "GHG", 'C', "circuitElite", 'P',
                 OrePrefixes.plateDense.get(Materials.TungstenSteel), 'X', GregtechItemList.Gregtech_Computer_Cube, 'G',
                 MaterialsAlloy.STELLITE.getGear(1), 'H', ItemList.Hull_IV });
@@ -520,6 +538,7 @@ public class RecipesMachinesCustom {
         // Incoloy-DS Fluid Containment Block
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Casing_Refinery_Internal.get(1),
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PHP", "GTG", "PHP", 'P', MaterialsAlloy.INCOLOY_DS.getPlate(1), 'H',
                 MaterialsAlloy.STABALLOY.getComponentByPrefix(OrePrefixes.pipeHuge, 1), 'G',
                 MaterialsAlloy.INCOLOY_DS.getGear(1), 'T', ItemList.Super_Tank_IV });
@@ -527,6 +546,7 @@ public class RecipesMachinesCustom {
         // Hastelloy-N Sealant Block
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Casing_Refinery_External.get(1),
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "ABA", "BFB", "ABA", 'A', MaterialsAlloy.INCOLOY_MA956.getPlate(1), 'B',
                 MaterialsAlloy.HASTELLOY_N.getPlate(1), 'F', MaterialsAlloy.HASTELLOY_C276.getFrameBox(1) });
 
@@ -543,6 +563,7 @@ public class RecipesMachinesCustom {
         // Hastelloy-X Structural Block
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Casing_Refinery_Structural.get(1),
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "RGP", "hFw", "PHR", 'R', MaterialsAlloy.INCONEL_792.getRing(1), 'G',
                 MaterialsAlloy.HASTELLOY_X.getGear(1), 'P', OrePrefixes.plate.get(Materials.Steel), 'F',
                 MaterialsAlloy.HASTELLOY_C276.getFrameBox(1), 'H', ItemList.Casing_EV });
@@ -550,6 +571,7 @@ public class RecipesMachinesCustom {
         // Cold Trap I
         GTModHandler.addCraftingRecipe(
             GregtechItemList.ColdTrap_IV.get(1),
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PDP", "PCP", "RFR", 'P', MaterialsAlloy.INCONEL_625.getPlate(1), 'D',
                 MaterialsAlloy.HASTELLOY_X.getPlateDouble(1), 'C', ItemList.Casing_IV, 'R', ItemList.Robot_Arm_IV, 'F',
                 ItemList.Casing_FrostProof });
@@ -557,6 +579,7 @@ public class RecipesMachinesCustom {
         // Cold Trap II
         GTModHandler.addCraftingRecipe(
             GregtechItemList.ColdTrap_ZPM.get(1),
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PDP", "PCP", "RFR", 'P', MaterialsAlloy.PIKYONIUM.getPlate(1), 'D',
                 MaterialsAlloy.HS188A.getPlateDouble(1), 'C', GregtechItemList.ColdTrap_IV, 'R', ItemList.Robot_Arm_ZPM,
                 'F', ItemList.Casing_FrostProof });
@@ -564,6 +587,7 @@ public class RecipesMachinesCustom {
         // Reactor Processing Unit I
         GTModHandler.addCraftingRecipe(
             GregtechItemList.ReactorProcessingUnit_IV.get(1),
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "FRP", "DCD", "PDF", 'F', ItemList.Field_Generator_HV, 'R', ItemList.Robot_Arm_IV, 'P',
                 MaterialsAlloy.INCONEL_625.getPlate(1), 'D', MaterialsAlloy.HASTELLOY_N.getPlateDouble(1), 'C',
                 ItemList.Machine_IV_ChemicalReactor });
@@ -571,6 +595,7 @@ public class RecipesMachinesCustom {
         // Reactor Processing Unit II
         GTModHandler.addCraftingRecipe(
             GregtechItemList.ReactorProcessingUnit_ZPM.get(1),
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "FRP", "DCD", "PDF", 'F', ItemList.Field_Generator_IV, 'R', ItemList.Robot_Arm_ZPM, 'P',
                 MaterialsAlloy.PIKYONIUM.getPlate(1), 'D', MaterialsAlloy.HS188A.getPlateDouble(1), 'C',
                 GregtechItemList.ReactorProcessingUnit_IV });
@@ -578,6 +603,7 @@ public class RecipesMachinesCustom {
         // Nuclear Salt Processing Plant
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Nuclear_Salt_Processing_Plant.get(1),
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "ABA", "CDC", "AEA", 'A', OrePrefixes.plate.get(Materials.Osmiridium), 'B',
                 GregtechItemList.ReactorProcessingUnit_IV, 'C', WerkstoffLoader.Ruridit.get(OrePrefixes.plate), 'D',
                 "circuitUltimate", 'E', GregtechItemList.ColdTrap_IV });
@@ -620,12 +646,14 @@ public class RecipesMachinesCustom {
         // Sub-Station External Casing
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Casing_Power_SubStation.get(1),
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "SPS", "PFP", "SPS", 'S', OrePrefixes.screw.get(Materials.Titanium), 'P',
                 MaterialsAlloy.INCOLOY_020.getPlate(1), 'F', MaterialsAlloy.INCOLOY_MA956.getFrameBox(1) });
 
         // Power Station Control Node
         GTModHandler.addCraftingRecipe(
             GregtechItemList.PowerSubStation.get(1),
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "ABA", "CDC", "EAE", 'A', MaterialsAlloy.INCOLOY_MA956.getPlate(1), 'B',
                 GregtechItemList.LFTRControlCircuit, 'C', GregtechItemList.Casing_Power_SubStation, 'D',
                 GregtechItemList.Casing_Vanadium_Redox, 'E', MaterialsAlloy.INCOLOY_020.getPlate(1) });
@@ -713,6 +741,7 @@ public class RecipesMachinesCustom {
         // Aquatic Casing
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Casing_FishPond.get(1),
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PhP", "EFE", "PwP", 'P', MaterialsAlloy.AQUATIC_STEEL.getPlate(1), 'E',
                 MaterialsAlloy.EGLIN_STEEL.getPlate(1), 'F', MaterialsAlloy.EGLIN_STEEL.getFrameBox(1) });
 
@@ -730,6 +759,7 @@ public class RecipesMachinesCustom {
         // Zhuhai - Fishing Port
         GTModHandler.addCraftingRecipe(
             ItemList.FishingPort.get(1),
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PCP", "WFW", "PCP", 'P', MaterialsAlloy.AQUATIC_STEEL.getPlate(1), 'C', "circuitElite", 'W',
                 OrePrefixes.wireFine.get(Materials.Electrum), 'F', GregtechItemList.FishTrap });
     }
@@ -1008,7 +1038,8 @@ public class RecipesMachinesCustom {
     private static void thermalBoiler() {
         // Thermal Boiler
         GTModHandler.addCraftingRecipe(
-            GregtechItemList.GT4_Thermal_Boiler.get(1),
+            ItemList.ThermalBoiler.get(1),
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "LCL", "GIG", "LCL", 'L', getModItem(RemoteIO.ID, "tile.machine", 1, 1), 'C',
                 ItemList.Machine_HV_Centrifuge, 'G', OrePrefixes.gearGt.get(Materials.TungstenSteel), 'I',
                 "circuitElite" });
@@ -1016,6 +1047,7 @@ public class RecipesMachinesCustom {
         // Thermal Containment Casing
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Casing_ThermalContainment.get(2),
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PSP", "CHC", "PPP", 'P', MaterialsAlloy.MARAGING350.getPlate(1), 'S',
                 OrePrefixes.plate.get(Materials.StainlessSteel), 'C', "circuitAdvanced", 'H', ItemList.Casing_HV });
 

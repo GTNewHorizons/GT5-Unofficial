@@ -6,6 +6,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_METRICS_TRANSMITTER
 import static gregtech.api.enums.Textures.BlockIcons.SOLARPANEL_UEV;
 import static gregtech.api.enums.Textures.BlockIcons.SOLARPANEL_UHV;
 import static gregtech.api.enums.Textures.BlockIcons.SOLARPANEL_UIV;
+import static gregtech.api.enums.Textures.ItemIcons.MASK_VOLTAGE_COIL;
 import static gregtech.client.GTTooltipHandler.Tier.EV;
 import static gregtech.client.GTTooltipHandler.Tier.HV;
 import static gregtech.client.GTTooltipHandler.Tier.IV;
@@ -25,8 +26,13 @@ import static gregtech.client.GTTooltipHandler.registerTieredTooltip;
 import static gregtech.common.items.IDMetaItem03.Activated_Carbon_Filter_Mesh;
 import static gregtech.common.items.IDMetaItem03.Alumina_Support_Ring;
 import static gregtech.common.items.IDMetaItem03.Alumina_Support_Ring_Raw;
+import static gregtech.common.items.IDMetaItem03.Armor_Chip_T1;
+import static gregtech.common.items.IDMetaItem03.Armor_Chip_T2;
+import static gregtech.common.items.IDMetaItem03.Armor_Chip_T3;
 import static gregtech.common.items.IDMetaItem03.Beryllium_Shielding_Plate;
 import static gregtech.common.items.IDMetaItem03.Brittle_Netherite_Scrap;
+import static gregtech.common.items.IDMetaItem03.Circuit_AdvancedIntegrated;
+import static gregtech.common.items.IDMetaItem03.Circuit_BasicElectronic;
 import static gregtech.common.items.IDMetaItem03.Circuit_Biomainframe;
 import static gregtech.common.items.IDMetaItem03.Circuit_Bioprocessor;
 import static gregtech.common.items.IDMetaItem03.Circuit_Biowarecomputer;
@@ -34,21 +40,26 @@ import static gregtech.common.items.IDMetaItem03.Circuit_Biowaresupercomputer;
 import static gregtech.common.items.IDMetaItem03.Circuit_Board_Bio;
 import static gregtech.common.items.IDMetaItem03.Circuit_Board_Bio_Ultra;
 import static gregtech.common.items.IDMetaItem03.Circuit_Board_Coated_Basic;
+import static gregtech.common.items.IDMetaItem03.Circuit_Board_Cosmic;
 import static gregtech.common.items.IDMetaItem03.Circuit_Board_Epoxy_Advanced;
+import static gregtech.common.items.IDMetaItem03.Circuit_Board_Exotic;
 import static gregtech.common.items.IDMetaItem03.Circuit_Board_Fiberglass_Advanced;
 import static gregtech.common.items.IDMetaItem03.Circuit_Board_Multifiberglass_Elite;
 import static gregtech.common.items.IDMetaItem03.Circuit_Board_Optical;
 import static gregtech.common.items.IDMetaItem03.Circuit_Board_Phenolic_Good;
 import static gregtech.common.items.IDMetaItem03.Circuit_Board_Plastic;
 import static gregtech.common.items.IDMetaItem03.Circuit_Board_Plastic_Advanced;
+import static gregtech.common.items.IDMetaItem03.Circuit_Board_Transcendent;
 import static gregtech.common.items.IDMetaItem03.Circuit_Board_Wetware;
 import static gregtech.common.items.IDMetaItem03.Circuit_Board_Wetware_Extreme;
+import static gregtech.common.items.IDMetaItem03.Circuit_Chip_APIC;
 import static gregtech.common.items.IDMetaItem03.Circuit_Chip_BioCPU;
 import static gregtech.common.items.IDMetaItem03.Circuit_Chip_Biocell;
 import static gregtech.common.items.IDMetaItem03.Circuit_Chip_CPU;
 import static gregtech.common.items.IDMetaItem03.Circuit_Chip_CrystalCPU;
 import static gregtech.common.items.IDMetaItem03.Circuit_Chip_CrystalSoC;
 import static gregtech.common.items.IDMetaItem03.Circuit_Chip_CrystalSoC2;
+import static gregtech.common.items.IDMetaItem03.Circuit_Chip_FPIC;
 import static gregtech.common.items.IDMetaItem03.Circuit_Chip_HPIC;
 import static gregtech.common.items.IDMetaItem03.Circuit_Chip_ILC;
 import static gregtech.common.items.IDMetaItem03.Circuit_Chip_LPIC;
@@ -60,6 +71,7 @@ import static gregtech.common.items.IDMetaItem03.Circuit_Chip_NeuroCPU;
 import static gregtech.common.items.IDMetaItem03.Circuit_Chip_Optical;
 import static gregtech.common.items.IDMetaItem03.Circuit_Chip_PIC;
 import static gregtech.common.items.IDMetaItem03.Circuit_Chip_PPIC;
+import static gregtech.common.items.IDMetaItem03.Circuit_Chip_PlPIC;
 import static gregtech.common.items.IDMetaItem03.Circuit_Chip_QPIC;
 import static gregtech.common.items.IDMetaItem03.Circuit_Chip_QuantumCPU;
 import static gregtech.common.items.IDMetaItem03.Circuit_Chip_Ram;
@@ -69,6 +81,8 @@ import static gregtech.common.items.IDMetaItem03.Circuit_Chip_SoC2;
 import static gregtech.common.items.IDMetaItem03.Circuit_Chip_Stemcell;
 import static gregtech.common.items.IDMetaItem03.Circuit_Chip_UHPIC;
 import static gregtech.common.items.IDMetaItem03.Circuit_Chip_ULPIC;
+import static gregtech.common.items.IDMetaItem03.Circuit_Chip_YPIC;
+import static gregtech.common.items.IDMetaItem03.Circuit_Chip_ZPIC;
 import static gregtech.common.items.IDMetaItem03.Circuit_CosmicAssembly;
 import static gregtech.common.items.IDMetaItem03.Circuit_CosmicComputer;
 import static gregtech.common.items.IDMetaItem03.Circuit_CosmicMainframe;
@@ -131,13 +145,16 @@ import static gregtech.common.items.IDMetaItem03.Circuit_Silicon_Wafer4;
 import static gregtech.common.items.IDMetaItem03.Circuit_Silicon_Wafer5;
 import static gregtech.common.items.IDMetaItem03.Circuit_Silicon_Wafer6;
 import static gregtech.common.items.IDMetaItem03.Circuit_Silicon_Wafer7;
+import static gregtech.common.items.IDMetaItem03.Circuit_Silicon_Wafer8;
 import static gregtech.common.items.IDMetaItem03.Circuit_TranscendentAssembly;
 import static gregtech.common.items.IDMetaItem03.Circuit_TranscendentComputer;
 import static gregtech.common.items.IDMetaItem03.Circuit_TranscendentMainframe;
 import static gregtech.common.items.IDMetaItem03.Circuit_TranscendentProcessor;
 import static gregtech.common.items.IDMetaItem03.Circuit_Ultimatecrystalcomputer;
+import static gregtech.common.items.IDMetaItem03.Circuit_Wafer_APIC;
 import static gregtech.common.items.IDMetaItem03.Circuit_Wafer_Bioware;
 import static gregtech.common.items.IDMetaItem03.Circuit_Wafer_CPU;
+import static gregtech.common.items.IDMetaItem03.Circuit_Wafer_FPIC;
 import static gregtech.common.items.IDMetaItem03.Circuit_Wafer_HPIC;
 import static gregtech.common.items.IDMetaItem03.Circuit_Wafer_ILC;
 import static gregtech.common.items.IDMetaItem03.Circuit_Wafer_LPIC;
@@ -147,6 +164,7 @@ import static gregtech.common.items.IDMetaItem03.Circuit_Wafer_NPIC;
 import static gregtech.common.items.IDMetaItem03.Circuit_Wafer_NanoCPU;
 import static gregtech.common.items.IDMetaItem03.Circuit_Wafer_PIC;
 import static gregtech.common.items.IDMetaItem03.Circuit_Wafer_PPIC;
+import static gregtech.common.items.IDMetaItem03.Circuit_Wafer_PlPIC;
 import static gregtech.common.items.IDMetaItem03.Circuit_Wafer_QPIC;
 import static gregtech.common.items.IDMetaItem03.Circuit_Wafer_QuantumCPU;
 import static gregtech.common.items.IDMetaItem03.Circuit_Wafer_Ram;
@@ -155,6 +173,8 @@ import static gregtech.common.items.IDMetaItem03.Circuit_Wafer_SoC;
 import static gregtech.common.items.IDMetaItem03.Circuit_Wafer_SoC2;
 import static gregtech.common.items.IDMetaItem03.Circuit_Wafer_UHPIC;
 import static gregtech.common.items.IDMetaItem03.Circuit_Wafer_ULPIC;
+import static gregtech.common.items.IDMetaItem03.Circuit_Wafer_YPIC;
+import static gregtech.common.items.IDMetaItem03.Circuit_Wafer_ZPIC;
 import static gregtech.common.items.IDMetaItem03.Circuit_Wetwarecomputer;
 import static gregtech.common.items.IDMetaItem03.Circuit_Wetwaremainframe;
 import static gregtech.common.items.IDMetaItem03.Circuit_Wetwaresupercomputer;
@@ -165,6 +185,7 @@ import static gregtech.common.items.IDMetaItem03.Cover_SolarPanel_UIV;
 import static gregtech.common.items.IDMetaItem03.EV_Coil;
 import static gregtech.common.items.IDMetaItem03.GalliumArsenideCrystal;
 import static gregtech.common.items.IDMetaItem03.GalliumArsenideCrystalSmallPart;
+import static gregtech.common.items.IDMetaItem03.Gravitational_Lens;
 import static gregtech.common.items.IDMetaItem03.HV_Coil;
 import static gregtech.common.items.IDMetaItem03.Harmonic_Compound;
 import static gregtech.common.items.IDMetaItem03.Heavy_Hellish_Mud;
@@ -209,6 +230,34 @@ import static gregtech.common.items.IDMetaItem03.LuV_Coil;
 import static gregtech.common.items.IDMetaItem03.MAX_Coil;
 import static gregtech.common.items.IDMetaItem03.MV_Coil;
 import static gregtech.common.items.IDMetaItem03.Manafly;
+import static gregtech.common.items.IDMetaItem03.MetaMaterial_ElectrograviticValve1;
+import static gregtech.common.items.IDMetaItem03.MetaMaterial_ElectrograviticValve2;
+import static gregtech.common.items.IDMetaItem03.MetaMaterial_ElectrograviticValve3;
+import static gregtech.common.items.IDMetaItem03.MetaMaterial_EnergyConduit1;
+import static gregtech.common.items.IDMetaItem03.MetaMaterial_EnergyConduit2;
+import static gregtech.common.items.IDMetaItem03.MetaMaterial_EnergyConduit3;
+import static gregtech.common.items.IDMetaItem03.MetaMaterial_FieldManipulator1;
+import static gregtech.common.items.IDMetaItem03.MetaMaterial_FieldManipulator2;
+import static gregtech.common.items.IDMetaItem03.MetaMaterial_FieldManipulator3;
+import static gregtech.common.items.IDMetaItem03.MetaMaterial_FieldManipulator4;
+import static gregtech.common.items.IDMetaItem03.MetaMaterial_ResonanceChamber1;
+import static gregtech.common.items.IDMetaItem03.MetaMaterial_ResonanceChamber2;
+import static gregtech.common.items.IDMetaItem03.MetaMaterial_ResonanceChamber3;
+import static gregtech.common.items.IDMetaItem03.MetaMaterial_ResonanceChamber4;
+import static gregtech.common.items.IDMetaItem03.MetaMaterial_SensorArray1;
+import static gregtech.common.items.IDMetaItem03.MetaMaterial_SensorArray2;
+import static gregtech.common.items.IDMetaItem03.MetaMaterial_SensorArray3;
+import static gregtech.common.items.IDMetaItem03.MetaMaterial_SensorArray4;
+import static gregtech.common.items.IDMetaItem03.MetaMaterial_Shielding1;
+import static gregtech.common.items.IDMetaItem03.MetaMaterial_Shielding2;
+import static gregtech.common.items.IDMetaItem03.MetaMaterial_Shielding3;
+import static gregtech.common.items.IDMetaItem03.MetaMaterial_WaveFocus1;
+import static gregtech.common.items.IDMetaItem03.MetaMaterial_WaveFocus2;
+import static gregtech.common.items.IDMetaItem03.MetaMaterial_WaveFocus3;
+import static gregtech.common.items.IDMetaItem03.MetaMaterial_WaveFocus4;
+import static gregtech.common.items.IDMetaItem03.MetaMaterial_Waveguide1;
+import static gregtech.common.items.IDMetaItem03.MetaMaterial_Waveguide2;
+import static gregtech.common.items.IDMetaItem03.MetaMaterial_Waveguide3;
 import static gregtech.common.items.IDMetaItem03.NandChip;
 import static gregtech.common.items.IDMetaItem03.Naquarite_Universal_Insulator_Foil;
 import static gregtech.common.items.IDMetaItem03.Netherite_Nanoparticles;
@@ -218,8 +267,10 @@ import static gregtech.common.items.IDMetaItem03.Optical_Cpu_Containment_Housing
 import static gregtech.common.items.IDMetaItem03.Optically_Compatible_Memory;
 import static gregtech.common.items.IDMetaItem03.Optically_Perfected_CPU;
 import static gregtech.common.items.IDMetaItem03.Phononic_Seed_Crystal;
+import static gregtech.common.items.IDMetaItem03.Planck_Manifold;
 import static gregtech.common.items.IDMetaItem03.Prismarine_Precipitate;
 import static gregtech.common.items.IDMetaItem03.Prismatic_Crystal;
+import static gregtech.common.items.IDMetaItem03.PseudoStar;
 import static gregtech.common.items.IDMetaItem03.Quark_Catalyst_Housing;
 import static gregtech.common.items.IDMetaItem03.Quark_Creation_Catalyst_Bottom;
 import static gregtech.common.items.IDMetaItem03.Quark_Creation_Catalyst_Charm;
@@ -250,7 +301,11 @@ import static gregtech.common.items.IDMetaItem03.UXV_Coil;
 import static gregtech.common.items.IDMetaItem03.WovenKevlar;
 import static gregtech.common.items.IDMetaItem03.ZPM_Coil;
 
+import java.util.List;
+
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 
 import cpw.mods.fml.common.Optional;
 import gregtech.api.covers.CoverPlacer;
@@ -260,6 +315,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
+import gregtech.api.enums.NaniteTier;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TCAspects;
@@ -267,12 +323,15 @@ import gregtech.api.items.MetaGeneratedItemX32;
 import gregtech.api.objects.ItemData;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTUtility;
 import gregtech.common.covers.CoverMetricsTransmitter;
 import gregtech.common.covers.CoverSolarPanel;
 import gregtech.common.powergoggles.ItemPowerGoggles;
+import gregtech.common.render.items.CosmicNeutroniumMetaItemRenderer;
 import gregtech.common.render.items.GlitchEffectMetaItemRenderer;
 import gregtech.common.render.items.InfinityMetaItemRenderer;
 import gregtech.common.render.items.RainbowOverlayMetaItemRenderer;
+import gregtech.common.render.items.UniversiumMetaItemRenderer;
 import mods.railcraft.common.items.firestone.IItemFirestoneBurning;
 
 @Optional.Interface(
@@ -541,6 +600,13 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                 RAW,
                 "waferPhotonicallyEnhanced",
                 "wafer"));
+        ItemList.Circuit_Silicon_Wafer8.set(
+            addItemWithLocalizationKeys(
+                Circuit_Silicon_Wafer8.ID,
+                "gt.item.circuit.wafer.infinite.name",
+                RAW,
+                "waferInfinite",
+                "wafer"));
 
         ItemList.Circuit_Wafer_ILC.set(
             addItemWithLocalizationKeys(
@@ -554,8 +620,7 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                 Circuit_Chip_ILC.ID,
                 "gt.item.circuit.chip.ilc.name",
                 "gt.item.circuit.chip.ilc.tooltip",
-                "chipILC",
-                "chip"));
+                "chipILC"));
 
         ItemList.Circuit_Wafer_Ram.set(
             addItemWithLocalizationKeys(
@@ -569,8 +634,7 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                 Circuit_Chip_Ram.ID,
                 "gt.item.circuit.chip.ram.name",
                 "gt.item.circuit.chip.ram.tooltip",
-                "chipRAM",
-                "chip"));
+                "chipRAM"));
 
         ItemList.Circuit_Wafer_NAND.set(
             addItemWithLocalizationKeys(
@@ -584,8 +648,7 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                 Circuit_Chip_NAND.ID,
                 "gt.item.circuit.chip.nand.name",
                 "gt.item.circuit.chip.nand.tooltip",
-                "chipNAND",
-                "chip"));
+                "chipNAND"));
 
         ItemList.Circuit_Wafer_NOR.set(
             addItemWithLocalizationKeys(
@@ -599,8 +662,7 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                 Circuit_Chip_NOR.ID,
                 "gt.item.circuit.chip.nor.name",
                 "gt.item.circuit.chip.nor.tooltip",
-                "chipNOR",
-                "chip"));
+                "chipNOR"));
 
         ItemList.Circuit_Wafer_CPU.set(
             addItemWithLocalizationKeys(
@@ -614,8 +676,7 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                 Circuit_Chip_CPU.ID,
                 "gt.item.circuit.chip.cpu.name",
                 "gt.item.circuit.chip.cpu.tooltip",
-                "chipCPU",
-                "chip"));
+                "chipCPU"));
 
         ItemList.Circuit_Wafer_SoC.set(
             addItemWithLocalizationKeys(
@@ -629,8 +690,7 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                 Circuit_Chip_SoC.ID,
                 "gt.item.circuit.chip.soc.name",
                 "gt.item.circuit.chip.soc.tooltip",
-                "chipSoC",
-                "chip"));
+                "chipSoC"));
 
         ItemList.Circuit_Wafer_SoC2.set(
             addItemWithLocalizationKeys(
@@ -644,8 +704,7 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                 Circuit_Chip_SoC2.ID,
                 "gt.item.circuit.chip.asoc.name",
                 "gt.item.circuit.chip.asoc.tooltip",
-                "chipASoC",
-                "chip"));
+                "chipASoC"));
 
         ItemList.Circuit_Wafer_PIC.set(
             addItemWithLocalizationKeys(
@@ -659,8 +718,7 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                 Circuit_Chip_PIC.ID,
                 "gt.item.circuit.chip.pic.name",
                 "gt.item.circuit.chip.pic.tooltip",
-                "chipPIC",
-                "chip"));
+                "chipPIC"));
 
         ItemList.Circuit_Wafer_HPIC.set(
             addItemWithLocalizationKeys(
@@ -674,8 +732,7 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                 Circuit_Chip_HPIC.ID,
                 "gt.item.circuit.chip.hpic.name",
                 "gt.item.circuit.chip.hpic.tooltip",
-                "chipHPIC",
-                "chip"));
+                "chipHPIC"));
 
         ItemList.Circuit_Wafer_NanoCPU.set(
             addItemWithLocalizationKeys(
@@ -689,8 +746,7 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                 Circuit_Chip_NanoCPU.ID,
                 "gt.item.circuit.chip.nanocpu.name",
                 "gt.item.circuit.chip.nanocpu.tooltip",
-                "chipNanoCPU",
-                "chip"));
+                "chipNanoCPU"));
 
         ItemList.Circuit_Wafer_QuantumCPU.set(
             addItemWithLocalizationKeys(
@@ -704,8 +760,7 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                 Circuit_Chip_QuantumCPU.ID,
                 "gt.item.circuit.chip.quantumcpu.name",
                 "gt.item.circuit.chip.quantumcpu.tooltip",
-                "chipQuantumCPU",
-                "chip"));
+                "chipQuantumCPU"));
 
         ItemList.Circuit_Wafer_UHPIC.set(
             addItemWithLocalizationKeys(
@@ -719,8 +774,7 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                 Circuit_Chip_UHPIC.ID,
                 "gt.item.circuit.chip.uhpic.name",
                 "gt.item.circuit.chip.uhpic.tooltip",
-                "chipUHPIC",
-                "chip"));
+                "chipUHPIC"));
 
         ItemList.Circuit_Wafer_Simple_SoC.set(
             addItemWithLocalizationKeys(
@@ -734,8 +788,7 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                 Circuit_Chip_Simple_SoC.ID,
                 "gt.item.circuit.chip.simple_soc.name",
                 "gt.item.circuit.chip.simple_soc.tooltip",
-                "chipSimpleSoC",
-                "chip"));
+                "chipSimpleSoC"));
 
         ItemList.Circuit_Wafer_ULPIC.set(
             addItemWithLocalizationKeys(
@@ -749,8 +802,7 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                 Circuit_Chip_ULPIC.ID,
                 "gt.item.circuit.chip.ulpic.name",
                 "gt.item.circuit.chip.ulpic.tooltip",
-                "chipULPIC",
-                "chip"));
+                "chipULPIC"));
 
         ItemList.Circuit_Wafer_LPIC.set(
             addItemWithLocalizationKeys(
@@ -764,8 +816,7 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                 Circuit_Chip_LPIC.ID,
                 "gt.item.circuit.chip.lpic.name",
                 "gt.item.circuit.chip.lpic.tooltip",
-                "chipLPIC",
-                "chip"));
+                "chipLPIC"));
 
         ItemList.Circuit_Wafer_NPIC.set(
             addItemWithLocalizationKeys(
@@ -779,8 +830,7 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                 Circuit_Chip_NPIC.ID,
                 "gt.item.circuit.chip.npic.name",
                 "gt.item.circuit.chip.npic.tooltip",
-                "chipNPIC",
-                "chip"));
+                "chipNPIC"));
 
         ItemList.Circuit_Wafer_PPIC.set(
             addItemWithLocalizationKeys(
@@ -794,8 +844,7 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                 Circuit_Chip_PPIC.ID,
                 "gt.item.circuit.chip.ppic.name",
                 "gt.item.circuit.chip.ppic.tooltip",
-                "chipPPIC",
-                "chip"));
+                "chipPPIC"));
 
         ItemList.Circuit_Wafer_QPIC.set(
             addItemWithLocalizationKeys(
@@ -809,8 +858,7 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                 Circuit_Chip_QPIC.ID,
                 "gt.item.circuit.chip.qpic.name",
                 "gt.item.circuit.chip.qpic.tooltip",
-                "chipQPIC",
-                "chip"));
+                "chipQPIC"));
 
         ItemList.Circuit_Wafer_Bioware.set(
             addItemWithLocalizationKeys(
@@ -827,8 +875,7 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                 Circuit_Parts_Chip_Bioware.ID,
                 "gt.item.circuit.chip.bioware.name",
                 "gt.item.circuit.chip.bioware.tooltip",
-                "chipBioware",
-                "chip"));
+                "chipBioware"));
 
         ItemList.Circuit_Chip_CrystalSoC2.set(
             // chip
@@ -1146,6 +1193,26 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                 "gt.item.circuit_board.optical.name",
                 "gt.item.circuit_board.optical.tooltip",
                 o));
+        ItemList.Circuit_Board_Exotic.set(
+            addItemWithLocalizationKeys(
+                Circuit_Board_Exotic.ID,
+                "gt.item.circuit_board.exotic.name",
+                "gt.item.circuit_board.exotic.tooltip",
+                o));
+        ItemList.Circuit_Board_Cosmic.set(
+            addItemWithLocalizationKeys(
+                Circuit_Board_Cosmic.ID,
+                "gt.item.circuit_board.cosmic.name",
+                "gt.item.circuit_board.cosmic.tooltip",
+                o));
+        ItemList.Circuit_Board_Transcendent
+            .set(
+                addItemWithLocalizationKeys(
+                    Circuit_Board_Transcendent.ID,
+                    "gt.item.circuit_board.transcendent.name",
+                    "gt.item.circuit_board.transcendent.tooltip",
+                    o))
+            .setRender(new InfinityMetaItemRenderer());
 
         // Optical circuits
         ItemList.Circuit_OpticalProcessor.set(
@@ -1322,9 +1389,11 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.UMV_Coil
             .set(addItemWithLocalizationKeys(UMV_Coil.ID, "gt.item.coil.umv.name", "gt.item.coil.umv.tooltip", o));
         ItemList.UXV_Coil
-            .set(addItemWithLocalizationKeys(UXV_Coil.ID, "gt.item.coil.uxv.name", "gt.item.coil.uxv.tooltip", o));
+            .set(addItemWithLocalizationKeys(UXV_Coil.ID, "gt.item.coil.uxv.name", "gt.item.coil.uxv.tooltip", o))
+            .setRender(new UniversiumMetaItemRenderer(MASK_VOLTAGE_COIL));
         ItemList.MAX_Coil
-            .set(addItemWithLocalizationKeys(MAX_Coil.ID, "gt.item.coil.max.name", "gt.item.coil.max.tooltip", o));
+            .set(addItemWithLocalizationKeys(MAX_Coil.ID, "gt.item.coil.max.name", "gt.item.coil.max.tooltip", o))
+            .setRender(new InfinityMetaItemRenderer());
 
         ItemList.GalliumArsenideCrystal.set(
             addItemWithLocalizationKeys(
@@ -1556,6 +1625,15 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                     SubTag.NO_UNIFICATION))
             .setRender(new InfinityMetaItemRenderer());
 
+        ItemList.PseudoStar
+            .set(
+                addItemWithLocalizationKeys(
+                    PseudoStar.ID,
+                    "gt.item.pseudo_star.name",
+                    "gt.item.pseudo_star.tooltip",
+                    SubTag.NO_UNIFICATION))
+            .setRender(new CosmicNeutroniumMetaItemRenderer());
+
         ItemList.Cover_Metrics_Transmitter.set(
             addItemWithLocalizationKeys(
                 Cover_Metrics_Transmitter.ID,
@@ -1752,6 +1830,21 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                 new TCAspects.TC_AspectStack(TCAspects.AQUA, 10L),
                 new TCAspects.TC_AspectStack(TCAspects.HERBA, 10L)));
 
+        ItemList.Armor_Chip_T1.set(
+            addItemWithLocalizationKeys(
+                Armor_Chip_T1.ID,
+                "gt.item.armor_chip_t1.name",
+                "gt.item.armor_chip_t1.tooltip"));
+        ItemList.Armor_Chip_T2.set(
+            addItemWithLocalizationKeys(
+                Armor_Chip_T2.ID,
+                "gt.item.armor_chip_t2.name",
+                "gt.item.armor_chip_t2.tooltip"));
+        ItemList.Armor_Chip_T3.set(
+            addItemWithLocalizationKeys(
+                Armor_Chip_T3.ID,
+                "gt.item.armor_chip_t3.name",
+                "gt.item.armor_chip_t3.tooltip"));
         ItemList.StableBaryonContainmentUnit.set(
             addItemWithLocalizationKeys(
                 StableBaryonContainmentUnit.ID,
@@ -1779,6 +1872,102 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                 "gt.item.stable_empty_containment_unit.name",
                 "gt.item.stable_empty_containment_unit.tooltip"));
 
+        // IC2 Circuit Replacements
+        ItemList.Circuit_BasicElectronic.set(
+            addItemWithLocalizationKeys(
+                Circuit_BasicElectronic.ID,
+                "gt.item.circuit.basic_electronic.name",
+                "gt.item.circuit.basic_electronic.tooltip",
+                OrePrefixes.circuit.get(Materials.LV),
+                SubTag.NO_UNIFICATION));
+        ItemList.Circuit_Integrated_Advanced.set(
+            addItemWithLocalizationKeys(
+                Circuit_AdvancedIntegrated.ID,
+                "gt.item.circuit.advanced_integrated.name",
+                "gt.item.circuit.advanced_integrated.tooltip",
+                OrePrefixes.circuit.get(Materials.HV),
+                SubTag.NO_UNIFICATION));
+
+        ItemList.Circuit_Wafer_FPIC.set(
+            addItemWithLocalizationKeys(
+                Circuit_Wafer_FPIC.ID,
+                "gt.item.circuit.wafer.fpic.name",
+                RAW,
+                "waferFPIC",
+                "wafer"));
+        ItemList.Circuit_Chip_FPIC.set(
+            addItemWithLocalizationKeys(
+                Circuit_Chip_FPIC.ID,
+                "gt.item.circuit.chip.fpic.name",
+                "gt.item.circuit.chip.fpic.tooltip",
+                "chipFPIC"));
+        ItemList.Circuit_Wafer_APIC.set(
+            addItemWithLocalizationKeys(
+                Circuit_Wafer_APIC.ID,
+                "gt.item.circuit.wafer.apic.name",
+                RAW,
+                "waferAPIC",
+                "wafer"));
+        ItemList.Circuit_Chip_APIC.set(
+            addItemWithLocalizationKeys(
+                Circuit_Chip_APIC.ID,
+                "gt.item.circuit.chip.apic.name",
+                "gt.item.circuit.chip.apic.tooltip",
+                "chipAPIC"));
+        ItemList.Circuit_Wafer_ZPIC.set(
+            addItemWithLocalizationKeys(
+                Circuit_Wafer_ZPIC.ID,
+                "gt.item.circuit.wafer.zpic.name",
+                RAW,
+                "waferZPIC",
+                "wafer"));
+        ItemList.Circuit_Chip_ZPIC.set(
+            addItemWithLocalizationKeys(
+                Circuit_Chip_ZPIC.ID,
+                "gt.item.circuit.chip.zpic.name",
+                "gt.item.circuit.chip.zpic.tooltip",
+                "chipZPIC"));
+        ItemList.Circuit_Wafer_YPIC.set(
+            addItemWithLocalizationKeys(
+                Circuit_Wafer_YPIC.ID,
+                "gt.item.circuit.wafer.ypic.name",
+                RAW,
+                "waferYPIC",
+                "wafer"));
+        ItemList.Circuit_Chip_YPIC.set(
+            addItemWithLocalizationKeys(
+                Circuit_Chip_YPIC.ID,
+                "gt.item.circuit.chip.ypic.name",
+                "gt.item.circuit.chip.ypic.tooltip",
+                "chipYPIC"));
+        ItemList.Circuit_Wafer_PlPIC.set(
+            addItemWithLocalizationKeys(
+                Circuit_Wafer_PlPIC.ID,
+                "gt.item.circuit.wafer.plpic.name",
+                RAW,
+                "waferPlPIC",
+                "wafer"));
+        ItemList.Circuit_Chip_PlPIC.set(
+            addItemWithLocalizationKeys(
+                Circuit_Chip_PlPIC.ID,
+                "gt.item.circuit.chip.plpic.name",
+                "gt.item.circuit.chip.plpic.tooltip",
+                "chipPlPIC"));
+        ItemList.Gravitational_Lens.set(
+            addItemWithLocalizationKeys(
+                Gravitational_Lens.ID,
+                "gt.item.gravitational_lens.name",
+                "gt.item.gravitational_lens.tooltip"));
+        ItemList.Planck_Manifold
+            .set(
+                addItemWithLocalizationKeys(
+                    Planck_Manifold.ID,
+                    "gt.item.planck_manifold.name",
+                    "gt.item.planck_manifold.tooltip"))
+            .setRender(new CosmicNeutroniumMetaItemRenderer());
+
+        registerMetaMaterials();
+
         registerAllTieredTooltips();
         registerAllAnimatedTooltips();
         initOrePrefixes();
@@ -1786,9 +1975,108 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
         registerCovers();
     }
 
+    private void registerMetaMaterials() {
+        // Adjective prefixes, differ depending on if the metamat uses 3 or 4 tiers
+        String[] adj3 = { "primitive", "pristine", "perfected" };
+        String[] adj4 = { "rough", "reinforced", "refined", "resplendent" };
+
+        registerMetaMaterialTiered(
+            "shielding",
+            adj3,
+            ItemList.MetaMaterial_Shielding1,
+            MetaMaterial_Shielding1.ID,
+            ItemList.MetaMaterial_Shielding2,
+            MetaMaterial_Shielding2.ID,
+            ItemList.MetaMaterial_Shielding3,
+            MetaMaterial_Shielding3.ID);
+        registerMetaMaterialTiered(
+            "waveguide",
+            adj3,
+            ItemList.MetaMaterial_Waveguide1,
+            MetaMaterial_Waveguide1.ID,
+            ItemList.MetaMaterial_Waveguide2,
+            MetaMaterial_Waveguide2.ID,
+            ItemList.MetaMaterial_Waveguide3,
+            MetaMaterial_Waveguide3.ID);
+        registerMetaMaterialTiered(
+            "energy_conduit",
+            adj3,
+            ItemList.MetaMaterial_EnergyConduit1,
+            MetaMaterial_EnergyConduit1.ID,
+            ItemList.MetaMaterial_EnergyConduit2,
+            MetaMaterial_EnergyConduit2.ID,
+            ItemList.MetaMaterial_EnergyConduit3,
+            MetaMaterial_EnergyConduit3.ID);
+        registerMetaMaterialTiered(
+            "electrogravitic_valve",
+            adj3,
+            ItemList.MetaMaterial_ElectrograviticValve1,
+            MetaMaterial_ElectrograviticValve1.ID,
+            ItemList.MetaMaterial_ElectrograviticValve2,
+            MetaMaterial_ElectrograviticValve2.ID,
+            ItemList.MetaMaterial_ElectrograviticValve3,
+            MetaMaterial_ElectrograviticValve3.ID);
+        registerMetaMaterialTiered(
+            "wave_focus",
+            adj4,
+            ItemList.MetaMaterial_WaveFocus1,
+            MetaMaterial_WaveFocus1.ID,
+            ItemList.MetaMaterial_WaveFocus2,
+            MetaMaterial_WaveFocus2.ID,
+            ItemList.MetaMaterial_WaveFocus3,
+            MetaMaterial_WaveFocus3.ID,
+            ItemList.MetaMaterial_WaveFocus4,
+            MetaMaterial_WaveFocus4.ID);
+        registerMetaMaterialTiered(
+            "resonance_chamber",
+            adj4,
+            ItemList.MetaMaterial_ResonanceChamber1,
+            MetaMaterial_ResonanceChamber1.ID,
+            ItemList.MetaMaterial_ResonanceChamber2,
+            MetaMaterial_ResonanceChamber2.ID,
+            ItemList.MetaMaterial_ResonanceChamber3,
+            MetaMaterial_ResonanceChamber3.ID,
+            ItemList.MetaMaterial_ResonanceChamber4,
+            MetaMaterial_ResonanceChamber4.ID);
+        registerMetaMaterialTiered(
+            "sensor_array",
+            adj4,
+            ItemList.MetaMaterial_SensorArray1,
+            MetaMaterial_SensorArray1.ID,
+            ItemList.MetaMaterial_SensorArray2,
+            MetaMaterial_SensorArray2.ID,
+            ItemList.MetaMaterial_SensorArray3,
+            MetaMaterial_SensorArray3.ID,
+            ItemList.MetaMaterial_SensorArray4,
+            MetaMaterial_SensorArray4.ID);
+        registerMetaMaterialTiered(
+            "field_manipulator",
+            adj4,
+            ItemList.MetaMaterial_FieldManipulator1,
+            MetaMaterial_FieldManipulator1.ID,
+            ItemList.MetaMaterial_FieldManipulator2,
+            MetaMaterial_FieldManipulator2.ID,
+            ItemList.MetaMaterial_FieldManipulator3,
+            MetaMaterial_FieldManipulator3.ID,
+            ItemList.MetaMaterial_FieldManipulator4,
+            MetaMaterial_FieldManipulator4.ID);
+    }
+
+    private void registerMetaMaterialTiered(String baseKey, String[] adjectives, Object... entries) {
+        for (int i = 0; i < entries.length; i += 2) {
+            ItemList slot = (ItemList) entries[i];
+            int id = (Integer) entries[i + 1];
+            int tier = i / 2;
+            String nameKey = "gt.item.meta_material." + baseKey + "." + adjectives[tier] + ".name";
+            slot.set(addItem(id, $ -> StatCollector.translateToLocal(nameKey), $ -> ""));
+        }
+    }
+
     private void registerAllTieredTooltips() {
+        registerTieredTooltip(ItemList.Circuit_BasicElectronic.get(1), LV);
         registerTieredTooltip(ItemList.NandChip.get(1), ULV);
         registerTieredTooltip(ItemList.Circuit_Integrated_Good.get(1), MV);
+        registerTieredTooltip(ItemList.Circuit_Integrated_Advanced.get(1), HV);
         registerTieredTooltip(ItemList.Circuit_Microprocessor.get(1), LV);
         registerTieredTooltip(ItemList.Circuit_Processor.get(1), MV);
         registerTieredTooltip(ItemList.Circuit_Nanoprocessor.get(1), HV);
@@ -1948,5 +2236,20 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
             return false;
         }
         return data.mMaterial.mMaterial == Materials.Firestone && data.mPrefix == OrePrefixes.rawOre;
+    }
+
+    @Override
+    protected void addAdditionalToolTips(List<String> aList, ItemStack aStack, EntityPlayer aPlayer) {
+        super.addAdditionalToolTips(aList, aStack, aPlayer);
+
+        ItemData data = GTOreDictUnificator.getItemData(aStack);
+
+        if (data != null && data.mPrefix == OrePrefixes.nanite) {
+            NaniteTier tier = NaniteTier.fromStack(aStack);
+
+            if (tier != null) {
+                aList.add(GTUtility.translate("gt.tooltip.nanite-tier", tier.tier));
+            }
+        }
     }
 }
