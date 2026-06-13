@@ -210,6 +210,29 @@ public class ElectricBlastFurnaceFormationTests {
         helper.succeed();
     }
 
+    @GameTest(template = "valid", timeoutTicks = 160, batch = "gt5.ebf")
+    public static void evEnergyHatchDoesNotGrantHigherVoltageHeatBonus(GameTestHelper helper) {
+        Multiblock ebf = formedEbf(helper);
+        ItemStack input = stack(Blocks.bookshelf);
+        ItemStack output = stack(Blocks.planks);
+
+        addItemRecipe(helper, ebf, input, output, EV_CUPRONICKEL_HEAT + 1, 20, TierEU.RECIPE_MV);
+        ebf.inputBus(0)
+            .insert(input);
+        ebf.energyHatch(0)
+            .supply(TierEU.EV, 1, 100);
+
+        helper.gtnh()
+            .fastForwardTicks(100);
+
+        ebf.inputBus(0)
+            .assertContains(input);
+        ebf.outputs()
+            .assertNotContains(output);
+        ebf.assertNoExplosion();
+        helper.succeed();
+    }
+
     @GameTest(template = "valid", timeoutTicks = 200, batch = "gt5.ebf")
     public static void formedWithOnlyInputBusRunsItemRecipe(GameTestHelper helper) {
         replaceWithHeatProofCasing(helper, INPUT_HATCH);
