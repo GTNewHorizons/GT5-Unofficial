@@ -8765,7 +8765,6 @@ GT5U.gui.text.bec-generator-input-hatch-pos=Any %s in the first slice
 GT5U.gui.text.bec-generator-bec-hatch-pos=The center Casing in the last slice
 
 # BEC Settings
-GT5U.gui.text.bec-parameters=Parameters
 GT5U.gui.text.bec-filter=Filter
 GT5U.gui.text.bec-operation=Operation
 GT5U.gui.text.bec-threshold=Threshold

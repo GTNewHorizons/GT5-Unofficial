@@ -616,7 +616,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         if (this instanceof IParametrized parametrized) {
             NBTTagCompound parameterTag = new NBTTagCompound();
 
-            for (Parameter<?> parameter : parametrized.getParameters()) parameter.saveNBT(parameterTag);
+            for (Parameter<?, ?> parameter : parametrized.getParameters()) parameter.saveNBT(parameterTag);
 
             aNBT.setTag("parameters", parameterTag);
         }
@@ -707,7 +707,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
 
             NBTTagCompound parameterTag = aNBT.getCompoundTag("parameters");
 
-            for (Parameter<?> parameter : parametrized.getParameters()) parameter.loadNBT(parameterTag);
+            for (Parameter<?, ?> parameter : parametrized.getParameters()) parameter.loadNBT(parameterTag);
         }
     }
 
