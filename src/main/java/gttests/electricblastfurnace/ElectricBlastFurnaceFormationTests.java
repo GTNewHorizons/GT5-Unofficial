@@ -6,11 +6,9 @@ import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
-import com.gtnewhorizons.horizonqa.api.GameTestAssertException;
 import com.gtnewhorizons.horizonqa.api.GameTestHelper;
 import com.gtnewhorizons.horizonqa.api.TestPos;
 import com.gtnewhorizons.horizonqa.api.annotation.GameTest;
@@ -21,7 +19,6 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.util.GTRecipeBuilder;
 
@@ -96,9 +93,8 @@ public class ElectricBlastFurnaceFormationTests {
         Multiblock ebf = formedEbf(helper);
 
         helper.destroyBlock(ONE_COIL.x(), ONE_COIL.y(), ONE_COIL.z());
-        forceStructureRescan(helper);
 
-        helper.assertFalse(ebf.isFormed(), "EBF stayed formed after a coil was destroyed");
+        ebf.assertNotFormed("EBF stayed formed after a coil was destroyed");
         helper.succeed();
     }
 
@@ -163,7 +159,8 @@ public class ElectricBlastFurnaceFormationTests {
 
         ebf.inputBus(0)
             .assertContains(input);
-        assertOutputMissing(helper, ebf, output, "EBF produced output for a recipe above its heat capacity");
+        ebf.outputs()
+            .assertNotContains(output);
         ebf.assertNoExplosion();
         helper.succeed();
     }
@@ -185,7 +182,8 @@ public class ElectricBlastFurnaceFormationTests {
 
         ebf.inputBus(0)
             .assertContains(input);
-        assertOutputMissing(helper, ebf, output, "EBF produced output one heat above its heat capacity");
+        ebf.outputs()
+            .assertNotContains(output);
         ebf.assertNoExplosion();
         helper.succeed();
     }
@@ -317,7 +315,8 @@ public class ElectricBlastFurnaceFormationTests {
             .assertContains(itemInput);
         ebf.inputHatch(0)
             .assertContains(partialFluidInput);
-        assertOutputMissing(helper, ebf, output, "EBF consumed items or produced output without enough fluid");
+        ebf.outputs()
+            .assertNotContains(output);
         ebf.assertNoExplosion();
         helper.succeed();
     }
@@ -335,7 +334,8 @@ public class ElectricBlastFurnaceFormationTests {
         helper.gtnh()
             .fastForwardTicks(100);
 
-        assertOutputMissing(helper, ebf, output, "EBF produced output without EU");
+        ebf.outputs()
+            .assertNotContains(output);
         ebf.assertNoExplosion();
         helper.succeed();
     }
@@ -349,7 +349,7 @@ public class ElectricBlastFurnaceFormationTests {
         addItemRecipe(helper, ebf, input, output, LOW_HEAT, 20, TierEU.RECIPE_MV);
         ebf.inputBus(0)
             .insert(input);
-        fillOutputBus(helper);
+        fillOutputBus(ebf);
         ebf.energyHatch(0)
             .supply(TierEU.EV, 1, 100);
 
@@ -358,7 +358,8 @@ public class ElectricBlastFurnaceFormationTests {
 
         ebf.inputBus(0)
             .assertContains(input);
-        assertOutputMissing(helper, ebf, output, "EBF produced output into a full output bus");
+        ebf.outputs()
+            .assertNotContains(output);
         ebf.assertNoExplosion();
         helper.succeed();
     }
@@ -372,7 +373,7 @@ public class ElectricBlastFurnaceFormationTests {
         addItemRecipe(helper, ebf, input, output, LOW_HEAT, 20, TierEU.RECIPE_MV);
         ebf.inputBus(0)
             .insert(input);
-        fillOutputBusExceptOneSlot(helper);
+        fillOutputBusExceptOneSlot(ebf);
         ebf.energyHatch(0)
             .supply(TierEU.EV, 1, 100);
 
@@ -424,7 +425,8 @@ public class ElectricBlastFurnaceFormationTests {
 
         ebf.inputBus(0)
             .assertContains(input);
-        assertOutputMissing(helper, ebf, output, "EBF produced output while maintenance issues were present");
+        ebf.outputs()
+            .assertNotContains(output);
 
         ebf.fixMaintenance();
         ebf.energyHatch(0)
@@ -449,7 +451,7 @@ public class ElectricBlastFurnaceFormationTests {
         ebf.inputBus(0)
             .insert(input);
         helper.destroyBlock(ONE_COIL.x(), ONE_COIL.y(), ONE_COIL.z());
-        forceStructureRescan(helper);
+        ebf.assertNotFormed("EBF stayed formed after a coil was destroyed");
         helper.gtnh()
             .supplyEU(ENERGY_HATCH, TierEU.EV, 1, 100);
 
@@ -457,7 +459,8 @@ public class ElectricBlastFurnaceFormationTests {
             .fastForwardTicks(100);
 
         assertBusContainsAmount(helper, INPUT_BUS, input, 1, "EBF consumed input after the structure was broken");
-        assertOutputMissing(helper, ebf, output, "EBF produced output after the structure was broken");
+        ebf.outputs()
+            .assertNotContains(output);
         ebf.assertNoExplosion();
         helper.succeed();
     }
@@ -496,8 +499,7 @@ public class ElectricBlastFurnaceFormationTests {
 
     private static Multiblock formedEbfAfterMutation(GameTestHelper helper) {
         Multiblock ebf = ebf(helper);
-        forceStructureRescan(helper);
-        helper.assertTrue(ebf.isFormed(), "EBF did not form after structure mutation");
+        helper.assertTrue(ebf.forceStructureCheck(), "EBF did not form after structure mutation");
         return ebf;
     }
 
@@ -518,10 +520,7 @@ public class ElectricBlastFurnaceFormationTests {
 
     private static void assertNeverForms(GameTestHelper helper, String message) {
         Multiblock ebf = ebf(helper);
-        forceStructureRescan(helper);
-        helper.assertFalse(ebf.isFormed(), message);
-        helper.onEachTick(() -> helper.assertFalse(ebf.isFormed(), message));
-        helper.succeedAtTimeout();
+        ebf.assertNeverForms(message);
     }
 
     private static void replaceWithHeatProofCasing(GameTestHelper helper, TestPos pos) {
@@ -554,19 +553,10 @@ public class ElectricBlastFurnaceFormationTests {
             .metadata(COIL_HEAT, heat);
     }
 
-    private static void assertOutputMissing(GameTestHelper helper, Multiblock ebf, ItemStack output, String message) {
-        try {
-            ebf.outputBus(0)
-                .assertContains(output);
-        } catch (GameTestAssertException | IndexOutOfBoundsException expected) {
-            return;
-        }
-        helper.fail(message);
-    }
-
     private static void assertBusContainsAmount(GameTestHelper helper, TestPos pos, ItemStack expected, int amount,
         String message) {
-        IMetaTileEntity bus = metaTileEntity(helper, pos, "bus");
+        IMetaTileEntity bus = helper.gtnh()
+            .metaTileEntity(pos);
         int found = 0;
         for (int slot = 0; slot < bus.getSizeInventory(); slot++) {
             ItemStack inSlot = bus.getStackInSlot(slot);
@@ -577,26 +567,20 @@ public class ElectricBlastFurnaceFormationTests {
         helper.assertTrue(found >= amount, message + " (found " + found + ")");
     }
 
-    private static void fillOutputBus(GameTestHelper helper) {
-        IMetaTileEntity outputBus = metaTileEntity(helper, OUTPUT_BUS, "output bus");
-        for (int slot = 0; slot < outputBus.getSizeInventory(); slot++) {
-            outputBus.setInventorySlotContents(slot, fullStack(Blocks.stone));
-        }
+    private static void fillOutputBus(Multiblock ebf) {
+        ebf.outputBus(0)
+            .fillAllSlots(fullStack(Blocks.stone));
     }
 
-    private static void fillOutputBusExceptOneSlot(GameTestHelper helper) {
-        IMetaTileEntity outputBus = metaTileEntity(helper, OUTPUT_BUS, "output bus");
-        for (int slot = 0; slot < outputBus.getSizeInventory() - 1; slot++) {
-            outputBus.setInventorySlotContents(slot, fullStack(Blocks.stone));
-        }
+    private static void fillOutputBusExceptOneSlot(Multiblock ebf) {
+        ebf.outputBus(0)
+            .fillAllSlots(fullStack(Blocks.stone))
+            .setSlot(0, null);
     }
 
     private static void breakMaintenanceIssues(GameTestHelper helper) {
-        IMetaTileEntity metaTileEntity = metaTileEntity(helper, CONTROLLER, "EBF controller");
-        if (!(metaTileEntity instanceof MTEMultiBlockBase multiBlock)) {
-            helper.fail("EBF controller is not a multiblock controller");
-            return;
-        }
+        MTEMultiBlockBase multiBlock = helper.gtnh()
+            .multiBlockController(CONTROLLER);
 
         multiBlock.mWrench = false;
         multiBlock.mScrewdriver = false;
@@ -604,34 +588,6 @@ public class ElectricBlastFurnaceFormationTests {
         multiBlock.mHardHammer = false;
         multiBlock.mSolderingTool = false;
         multiBlock.mCrowbar = false;
-    }
-
-    private static void forceStructureRescan(GameTestHelper helper) {
-        IMetaTileEntity metaTileEntity = metaTileEntity(helper, CONTROLLER, "EBF controller");
-        if (!(metaTileEntity instanceof MTEMultiBlockBase multiBlock)) {
-            helper.fail("EBF controller is not a multiblock controller");
-            return;
-        }
-
-        // assertFormed() intentionally skips rescans once mMachine is true.
-        multiBlock.checkStructure(true, multiBlock.getBaseMetaTileEntity());
-    }
-
-    private static IMetaTileEntity metaTileEntity(GameTestHelper helper, TestPos pos, String label) {
-        TestPos absolutePos = helper.absolute(pos.x(), pos.y(), pos.z());
-        TileEntity tileEntity = helper.getWorld()
-            .getTileEntity(absolutePos.x(), absolutePos.y(), absolutePos.z());
-
-        if (!(tileEntity instanceof IGregTechTileEntity gregTechTileEntity)) {
-            helper.fail("Expected a GregTech tile entity for " + label);
-            return null;
-        }
-
-        IMetaTileEntity metaTileEntity = gregTechTileEntity.getMetaTileEntity();
-        if (metaTileEntity == null) {
-            helper.fail("Missing meta tile entity for " + label);
-        }
-        return metaTileEntity;
     }
 
     private static FluidStack fluid(String fluidName, int amount) {
