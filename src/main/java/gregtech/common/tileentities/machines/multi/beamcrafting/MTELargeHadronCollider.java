@@ -44,6 +44,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.enums.TickTime;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
@@ -470,12 +471,8 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
         BeamLinePacket dataPacket = new BeamLinePacket(cachedOutputParticle);
 
         return new String[] {
-            StatCollector.translateToLocalFormatted("tt.keyword.Content") + ": "
-                + EnumChatFormatting.AQUA
-                + dataPacket.getContentString(),
-            StatCollector.translateToLocalFormatted("tt.keyword.PacketHistory") + ": "
-                + EnumChatFormatting.RED
-                + dataPacket.getTraceSize(), };
+            IGregTechDeviceInformation.encode("tt.keyword.Content.fmt", dataPacket.getContentString()),
+            IGregTechDeviceInformation.encode("tt.keyword.PacketHistory.fmt", dataPacket.getTraceSize()), };
     }
 
     public double getCachedBeamEnergy() {

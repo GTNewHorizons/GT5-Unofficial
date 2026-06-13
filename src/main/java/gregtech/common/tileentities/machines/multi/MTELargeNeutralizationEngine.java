@@ -31,7 +31,6 @@ import javax.annotation.Nullable;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -53,6 +52,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.GregTechTileClientEvents;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
@@ -104,8 +104,6 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
     private int randomFactor;
     private int randomGoal;
     private boolean isApproachingFromHigher;
-    private static final int RANDOM_MIN = 700;
-    private static final int RANDOM_MAX = 1300;
 
     private int maxFluidUse = 200;
 
@@ -175,7 +173,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
     private void randomWalk() {
         if (getDistanceFromGoal() <= 0) {
             do {
-                randomGoal = getBaseMetaTileEntity().getRandomNumber(RANDOM_MAX - RANDOM_MIN + 1) + RANDOM_MIN;
+                randomGoal = getBaseMetaTileEntity().getRandomNumber(1001) + 500;
             } while (Math.abs(randomFactor - randomGoal) <= 50);
             isApproachingFromHigher = randomFactor > randomGoal;
         }
@@ -326,11 +324,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
             .addSeparator()
             .addInfo(StatCollector.translateToLocal("gt.multiblock.NeutralizationEngine.toxic_residue.1"))
             .addInfo(StatCollector.translateToLocal("gt.multiblock.NeutralizationEngine.toxic_residue.2"))
-            .addInfo(
-                StatCollector.translateToLocalFormatted(
-                    "gt.multiblock.NeutralizationEngine.toxic_residue.3",
-                    (float) RANDOM_MIN / 1000,
-                    (float) RANDOM_MAX / 1000))
+            .addInfo(StatCollector.translateToLocal("gt.multiblock.NeutralizationEngine.toxic_residue.3"))
             .addInfo(StatCollector.translateToLocal("gt.multiblock.NeutralizationEngine.toxic_residue.4"))
             .addInfo(StatCollector.translateToLocal("gt.multiblock.NeutralizationEngine.toxic_residue.5"))
             .addInfo(StatCollector.translateToLocal("gt.multiblock.NeutralizationEngine.toxic_residue.6"))
@@ -661,44 +655,17 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
                 .getEUCapacity();
         }
 
-        return new String[] {
-            EnumChatFormatting.BLUE + StatCollector.translateToLocal("GT5U.infodata.large_neutralization_engine")
-                + EnumChatFormatting.RESET,
-            StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(storedEnergy)
-                + EnumChatFormatting.RESET
-                + " EU / "
-                + EnumChatFormatting.YELLOW
-                + formatNumber(maxEnergy)
-                + EnumChatFormatting.RESET
-                + " EU",
-            getIdealStatus() == getRepairStatus()
-                ? EnumChatFormatting.GREEN + StatCollector.translateToLocal("GT5U.turbine.maintenance.false")
-                    + EnumChatFormatting.RESET
-                : EnumChatFormatting.RED + StatCollector.translateToLocal("GT5U.turbine.maintenance.true")
-                    + EnumChatFormatting.RESET,
-            StatCollector.translateToLocal("GT5U.engine.output") + ": "
-                + EnumChatFormatting.RED
-                + formatNumber(((long) mEUt * mEfficiency / 10000))
-                + EnumChatFormatting.RESET
-                + " EU/t",
-            StatCollector.translateToLocal("GT5U.engine.consumption") + ": "
-                + EnumChatFormatting.YELLOW
-                + formatNumber(fuelConsumption)
-                + EnumChatFormatting.RESET
-                + " L/t",
-            StatCollector.translateToLocal("GT5U.engine.value") + ": "
-                + EnumChatFormatting.YELLOW
-                + formatNumber(fuelValue)
-                + EnumChatFormatting.RESET
-                + " EU/L",
-            StatCollector.translateToLocal("GT5U.engine.efficiency") + ": "
-                + EnumChatFormatting.YELLOW
-                + (mEfficiency / 100F)
-                + EnumChatFormatting.YELLOW
-                + " %",
-            GTUtility.translate("GT5U.multiblock.recipesDone", formatNumber(recipesDone)) };
+        return new String[] { "GT5U.infodata.engine.large_neutralization_title",
+            IGregTechDeviceInformation
+                .encode("GT5U.multiblock.energy.fmt", formatNumber(storedEnergy), formatNumber(maxEnergy)),
+            getIdealStatus() == getRepairStatus() ? "GT5U.infodata.engine.maintenance.ok"
+                : "GT5U.infodata.engine.maintenance.needed",
+            IGregTechDeviceInformation
+                .encode("GT5U.infodata.engine.output", formatNumber((long) mEUt * mEfficiency / 10000)),
+            IGregTechDeviceInformation.encode("GT5U.infodata.engine.consumption", formatNumber(fuelConsumption)),
+            IGregTechDeviceInformation.encode("GT5U.infodata.engine.value", formatNumber(fuelValue)),
+            IGregTechDeviceInformation.encode("GT5U.infodata.engine.efficiency", mEfficiency / 100F),
+            IGregTechDeviceInformation.encode("GT5U.multiblock.recipesDone.fmt", formatNumber(recipesDone)) };
     }
 
     @Override

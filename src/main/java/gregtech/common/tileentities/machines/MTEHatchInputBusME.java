@@ -66,6 +66,7 @@ import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.IMEConnectable;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
@@ -447,11 +448,9 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
 
     @Override
     public String[] getInfoData() {
-        return new String[] {
-            getProxy().isActive() ? StatCollector.translateToLocal("GT5U.infodata.hatch.crafting_input_me.bus.online")
-                : StatCollector.translateToLocalFormatted(
-                    "GT5U.infodata.hatch.crafting_input_me.bus.offline",
-                    getAEDiagnostics()) };
+        return new String[] { getProxy().isActive() ? "GT5U.infodata.hatch.crafting_input_me.bus.online"
+            : IGregTechDeviceInformation
+                .encode("GT5U.infodata.hatch.crafting_input_me.bus.offline", getAEDiagnostics()) };
     }
 
     @Override
