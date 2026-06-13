@@ -489,9 +489,7 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor {
     }
 
     public com.cleanroommc.modularui.widget.Widget<?> createFuelSlot() {
-        return new ItemSlot().slot(
-            new ModularSlot(inventoryHandler, 2).slotGroup("item_inv")
-                .filter(this::isItemValidFuel))
+        return new ItemSlot().slot(new ModularSlot(inventoryHandler, 2).slotGroup("item_inv"))
             .widgetTheme(GTWidgetThemes.OVERLAY_ITEM_SLOT_COAL);
     }
 
@@ -528,5 +526,11 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor {
     @Override
     public int getTitleColor() {
         return getSteamVariant() == SteamVariant.BRONZE ? COLOR_TITLE.get() : COLOR_TITLE_WHITE.get();
+    }
+
+    @Override
+    public boolean isItemValidForSlot(int index, ItemStack itemStack) {
+        return (index == 0 && isValidFluidInputSlotItem(itemStack) || index == 2 && isItemValidFuel(itemStack))
+            && super.isItemValidForSlot(index, itemStack);
     }
 }
