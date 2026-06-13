@@ -173,14 +173,20 @@ public class RecipeMapBackend {
      * Adds the supplied recipe to the meaningful item/fluid lists.
      */
     protected GTRecipe addToItemMap(GTRecipe recipe) {
-        for (FluidStack fluid : recipe.mFluidInputs) {
-            meaningfulFluids.add(
-                fluid.getFluid()
-                    .getName());
+        if (recipe.mFluidInputs != null) {
+            for (FluidStack fluid : recipe.mFluidInputs) {
+                if (fluid == null) continue;
+                meaningfulFluids.add(
+                    fluid.getFluid()
+                        .getName());
+            }
         }
 
-        for (ItemStack item : recipe.mInputs) {
-            meaningfulItems.add(new GTItemStack(item));
+        if (recipe.mInputs != null) {
+            for (ItemStack item : recipe.mInputs) {
+                if (item == null) continue;
+                meaningfulItems.add(new GTItemStack(item));
+            }
         }
 
         if (recipe instanceof GTRecipe.GTRecipe_WithAlt recipeWithAlt) {
@@ -189,6 +195,7 @@ public class RecipeMapBackend {
                 for (ItemStack[] itemStacks : recipeWithAlt.mOreDictAlt) {
                     if (itemStacks == null) continue;
                     for (ItemStack item : itemStacks) {
+                        if (item == null) continue;
                         meaningfulItems.add(new GTItemStack(item));
                     }
                 }
@@ -198,6 +205,7 @@ public class RecipeMapBackend {
                 for (FluidStack[] fluidStacks : recipeWithAlt.mAltFluidInputs) {
                     if (fluidStacks == null) continue;
                     for (FluidStack fluid : fluidStacks) {
+                        if (fluid == null) continue;
                         meaningfulFluids.add(
                             fluid.getFluid()
                                 .getName());
@@ -242,6 +250,7 @@ public class RecipeMapBackend {
         StringBuilder errorInfo = new StringBuilder();
         boolean hasAnEntry = false;
         for (FluidStack fluid : recipe.mFluidInputs) {
+            if (fluid == null) continue;
             String s = fluid.getLocalizedName();
             if (s == null) {
                 continue;
@@ -255,6 +264,7 @@ public class RecipeMapBackend {
             hasAnEntry = true;
         }
         for (ItemStack item : recipe.mInputs) {
+            if (item == null) continue;
             String itemName = item.getDisplayName();
             if (hasAnEntry) {
                 errorInfo.append("+")
