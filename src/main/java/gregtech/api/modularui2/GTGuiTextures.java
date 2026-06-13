@@ -1052,6 +1052,17 @@ public final class GTGuiTextures {
     public static final UITexture OVERLAY_TOOLBOX_BATTERY = UITexture.builder()
         .location(GregTech.ID, "gui/overlay_slot/toolbox_slot_battery")
         .build();
+
+    public static final UITexture OVERLAY_SLOT_BEE_DRONE = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_slot/bee_drone")
+        .canApplyTheme()
+        .fullImage()
+        .build();
+    public static final UITexture OVERLAY_SLOT_BEE_QUEEN = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_slot/bee_queen")
+        .canApplyTheme()
+        .fullImage()
+        .build();
     // endregion slot overlay
 
     // region progressbar
