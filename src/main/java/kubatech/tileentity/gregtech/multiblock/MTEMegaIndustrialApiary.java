@@ -660,7 +660,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
         mCasing = 0;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 7, 8, 0, errors)) return;
         for (MTEHatchEnergy hatchEnergy : this.mEnergyHatches) {
-            if (this.glassTier < hatchEnergy.mTier) {
+            if (this.glassTier < hatchEnergy.getTierForStructure()) {
                 errors.add(StructureErrors.glassTierNotEnough(hatchEnergy.mTier));
                 break;
             }
