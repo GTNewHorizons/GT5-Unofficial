@@ -1,12 +1,14 @@
 package gregtech.loaders.postload.recipes;
 
-import gregtech.api.util.GTUtility;
-import net.minecraftforge.fluids.FluidStack;
-
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import net.minecraftforge.fluids.FluidStack;
+
+import gregtech.api.util.GTUtility;
+
 public class FakeCuttingSpecialInfo {
+
     private final Map<FluidStack, Integer> fluidsToDurations = new LinkedHashMap<>();
 
     public void add(FluidStack fluid, int duration) {
@@ -14,7 +16,8 @@ public class FakeCuttingSpecialInfo {
     }
 
     public Integer getDurationForFluid(FluidStack fluid) {
-        return fluidsToDurations.entrySet().stream()
+        return fluidsToDurations.entrySet()
+            .stream()
             .filter(e -> GTUtility.areFluidsEqual(e.getKey(), fluid))
             .map(Map.Entry::getValue)
             .findFirst()

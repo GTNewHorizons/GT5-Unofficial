@@ -1,6 +1,16 @@
 package gregtech.api.recipe.maps;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static gregtech.api.util.GTRecipeBuilder.SECONDS;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
+
+import java.util.List;
+
 import javax.annotation.ParametersAreNonnullByDefault;
+
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.recipe.BasicUIPropertiesBuilder;
 import gregtech.api.recipe.NEIRecipePropertiesBuilder;
@@ -11,15 +21,6 @@ import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.loaders.postload.recipes.FakeCuttingSpecialInfo;
 import gregtech.nei.GTNEIDefaultHandler;
 import gregtech.nei.RecipeDisplayInfo;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraftforge.fluids.FluidStack;
-
-import java.util.List;
-
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
-import static gregtech.api.util.GTRecipeBuilder.SECONDS;
-import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
@@ -35,7 +36,7 @@ public class FakeCuttingFrontend extends RecipeMapFrontend {
 
     @Override
     public List<String> handleNEIItemTooltip(ItemStack stack, List<String> currentTip,
-                                             GTNEIDefaultHandler.CachedDefaultRecipe neiCachedRecipe) {
+        GTNEIDefaultHandler.CachedDefaultRecipe neiCachedRecipe) {
         super.handleNEIItemTooltip(stack, currentTip, neiCachedRecipe);
 
         FluidStack fluid = GTUtility.getFluidFromContainerOrFluidDisplay(stack);
@@ -46,8 +47,8 @@ public class FakeCuttingFrontend extends RecipeMapFrontend {
         float displayTime = (float) specialInfo.getDurationForFluid(fluid) / SECONDS;
 
         currentTip.add(
-            EnumChatFormatting.AQUA + translateToLocalFormatted("GT5U.nei.display.duration.seconds",
-                formatNumber(displayTime)));
+            EnumChatFormatting.AQUA
+                + translateToLocalFormatted("GT5U.nei.display.duration.seconds", formatNumber(displayTime)));
         return currentTip;
     }
 }
