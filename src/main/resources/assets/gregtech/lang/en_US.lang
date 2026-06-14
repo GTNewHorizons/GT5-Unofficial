@@ -8810,3 +8810,11 @@ gt.blockmachines.basicgenerator.diesel.tier.01.name=Basic Combustion Generator
 gt.blockmachines.basicgenerator.diesel.tier.02.name=Advanced Combustion Generator
 gt.blockmachines.basicgenerator.diesel.tier.03.name=Turbo Combustion Generator
 gt.blockmachines.basicgenerator.diesel.tooltip=Requires liquid Fuel\nCauses %d Pollution per second
+
+# Basic Generators - Gas Turbine
+gt.blockmachines.basicgenerator.gasturbine.tier.01.name=Basic Gas Turbine
+gt.blockmachines.basicgenerator.gasturbine.tier.02.name=Advanced Gas Turbine
+gt.blockmachines.basicgenerator.gasturbine.tier.03.name=Turbo Gas Turbine
+gt.blockmachines.basicgenerator.gasturbine.tier.04.name=Turbo Gas Turbine II
+gt.blockmachines.basicgenerator.gasturbine.tier.05.name=Turbo Gas Turbine III
+gt.blockmachines.basicgenerator.gasturbine.tooltip=Requires flammable Gasses\nCauses %d Pollution per second
