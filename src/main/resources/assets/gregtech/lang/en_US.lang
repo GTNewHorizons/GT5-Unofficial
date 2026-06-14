@@ -8836,3 +8836,11 @@ gt.blockmachines.basicgenerator.naquadah.tier.07.name=Naquadah Reactor Mark IV
 gt.blockmachines.basicgenerator.naquadah.tier.07.tooltip=Requires Naquadria Bolts
 gt.blockmachines.basicgenerator.naquadah.tier.08.name=Naquadah Reactor Mark V
 gt.blockmachines.basicgenerator.naquadah.tier.08.tooltip=Requires Naquadria Rods
+
+# Basic Generators - Plasma Generator
+gt.blockmachines.basicgenerator.plasmagenerator.tier.05.name=Plasma Generator Mark I
+gt.blockmachines.basicgenerator.plasmagenerator.tier.06.name=Plasma Generator Mark II
+gt.blockmachines.basicgenerator.plasmagenerator.tier.07.name=Plasma Generator Mark III
+gt.blockmachines.basicgenerator.plasmagenerator.tier.08.name=Plasma Generator Mark IV
+gt.blockmachines.basicgenerator.plasmagenerator.tier.09.name=Ultimate Pocket Sun
+gt.blockmachines.basicgenerator.plasmagenerator.tooltip=Plasma into energy

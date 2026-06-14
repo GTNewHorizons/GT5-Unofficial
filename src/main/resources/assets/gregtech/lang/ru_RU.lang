@@ -8843,3 +8843,11 @@ gt.blockmachines.basicgenerator.naquadah.tier.07.name=Наквадаховый �
 gt.blockmachines.basicgenerator.naquadah.tier.07.tooltip=Требует болты из наквадрии
 gt.blockmachines.basicgenerator.naquadah.tier.08.name=Наквадаховый реактор MK V
 gt.blockmachines.basicgenerator.naquadah.tier.08.tooltip=Требует стержни из наквадрии
+
+# Basic Generators - Plasma Generator
+gt.blockmachines.basicgenerator.plasmagenerator.tier.05.name=Плазма генератор MK I
+gt.blockmachines.basicgenerator.plasmagenerator.tier.06.name=Плазма генератор MK II
+gt.blockmachines.basicgenerator.plasmagenerator.tier.07.name=Плазма генератор MK III
+gt.blockmachines.basicgenerator.plasmagenerator.tier.08.name=Плазма генератор MK IV
+gt.blockmachines.basicgenerator.plasmagenerator.tier.09.name=Совершенный плазма генератор
+gt.blockmachines.basicgenerator.plasmagenerator.tooltip=Плазма в энергию
