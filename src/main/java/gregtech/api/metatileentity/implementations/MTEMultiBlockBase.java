@@ -3402,23 +3402,16 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     protected final NumberFormatMUI numberFormat = new NumberFormatMUI();
 
     public String generateCurrentRecipeInfoString() {
-        StringBuffer ret = new StringBuffer(translateToLocal("GT5U.gui.text.progress"));
-        ret.append(" ");
-
         numberFormat.setMinimumFractionDigits(2);
         numberFormat.setMaximumFractionDigits(2);
-        numberFormat.format((double) mProgresstime / 20, ret);
-        ret.append("s / ");
-        numberFormat.format((double) mMaxProgresstime / 20, ret);
-        ret.append("s (");
+        String current = numberFormat.format((double) mProgresstime / 20);
+        String max = numberFormat.format((double) mMaxProgresstime / 20);
         numberFormat.setMinimumFractionDigits(1);
         numberFormat.setMaximumFractionDigits(1);
-        numberFormat.format((double) mProgresstime / mMaxProgresstime * 100, ret);
-        ret.append("%)");
+        String percent = numberFormat.format((double) mProgresstime / mMaxProgresstime * 100);
         numberFormat.setMinimumFractionDigits(0);
         numberFormat.setMaximumFractionDigits(2);
-
-        return ret.toString();
+        return translateToLocalFormatted("GT5U.gui.text.progress_recipe", current, max, percent);
     }
 
     protected Widget generateCurrentRecipeInfoWidget() {
@@ -3443,14 +3436,15 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                 Long itemCount = entry.getValue();
                 String itemName = entry.getKey()
                     .getDisplayName();
-                String itemAmountString = EnumChatFormatting.WHITE + " x "
-                    + EnumChatFormatting.GOLD
-                    + formatShortenedLong(itemCount)
-                    + EnumChatFormatting.WHITE
-                    + appendRate(false, itemCount, true);
-                String lineText = EnumChatFormatting.AQUA + truncateText(itemName, 40 - itemAmountString.length())
-                    + itemAmountString;
-                String lineTooltip = EnumChatFormatting.AQUA + itemName + "\n" + appendRate(false, itemCount, false);
+                String shortenedCount = formatShortenedLong(itemCount);
+                String rateShort = appendRate(false, itemCount, true);
+                int amountLen = (translateToLocalFormatted("GT5U.gui.text.item_amount_display", "", shortenedCount)
+                    + rateShort).length();
+                String truncatedItemName = truncateText(itemName, 40 - amountLen);
+                String lineTooltip = translateToLocalFormatted(
+                    "GT5U.gui.text.item_amount_display",
+                    itemName,
+                    shortenedCount) + "\n" + appendRate(false, itemCount, false);
 
                 processingDetails.widget(
                     new MultiChildWidget().addChild(
@@ -3460,7 +3454,13 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                                     .setSize(8, 8)
                                     .setPos(0, 0))
                         .addChild(
-                            new TextWidget(lineText).setTextAlignment(Alignment.CenterLeft)
+                            TextWidget
+                                .dynamicString(
+                                    () -> translateToLocalFormatted(
+                                        "GT5U.gui.text.item_amount_display",
+                                        truncatedItemName,
+                                        shortenedCount) + rateShort)
+                                .setTextAlignment(Alignment.CenterLeft)
                                 .addTooltip(lineTooltip)
                                 .setPos(10, 1)));
             }
@@ -3484,15 +3484,15 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                 Long itemCount = entry.getValue();
                 String itemName = entry.getKey()
                     .getLocalizedName();
-                String itemAmountString = EnumChatFormatting.WHITE + " x "
-                    + EnumChatFormatting.GOLD
-                    + formatShortenedLong(itemCount)
-                    + "L"
-                    + EnumChatFormatting.WHITE
-                    + appendRate(false, itemCount, true);
-                String lineText = EnumChatFormatting.AQUA + truncateText(itemName, 40 - itemAmountString.length())
-                    + itemAmountString;
-                String lineTooltip = EnumChatFormatting.AQUA + itemName + "\n" + appendRate(true, itemCount, false);
+                String shortenedCount = formatShortenedLong(itemCount);
+                String rateShort = appendRate(false, itemCount, true);
+                int amountLen = (translateToLocalFormatted("GT5U.gui.text.fluid_amount_display", "", shortenedCount)
+                    + rateShort).length();
+                String truncatedFluidName = truncateText(itemName, 40 - amountLen);
+                String lineTooltip = translateToLocalFormatted(
+                    "GT5U.gui.text.fluid_amount_display",
+                    itemName,
+                    shortenedCount) + "\n" + appendRate(true, itemCount, false);
 
                 processingDetails.widget(
                     new MultiChildWidget().addChild(
@@ -3503,7 +3503,13 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                             .setSize(8, 8)
                             .setPos(0, 0))
                         .addChild(
-                            new TextWidget(lineText).setTextAlignment(Alignment.CenterLeft)
+                            TextWidget
+                                .dynamicString(
+                                    () -> translateToLocalFormatted(
+                                        "GT5U.gui.text.fluid_amount_display",
+                                        truncatedFluidName,
+                                        shortenedCount) + rateShort)
+                                .setTextAlignment(Alignment.CenterLeft)
                                 .addTooltip(lineTooltip)
                                 .setPos(10, 1)));
 
@@ -3535,13 +3541,16 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             }
         };
 
+        final Function<Double, String> largeSuffix = (value) -> value > 1_000_000
+            ? translateToLocalFormatted("GT5U.gui.text.rate_large_suffix", formatShortenedLong(value.longValue()))
+            : "";
+
         if (isFormatShortened) {
-            ret.append(" (");
-            ret.append(EnumChatFormatting.GRAY);
-            ret.append(perSecond > 1 ? formatShortenedLong((long) perSecond) : df.format(perSecond));
-            ret.append("/s");
-            ret.append(EnumChatFormatting.WHITE);
-            ret.append(")");
+            ret.append(" ");
+            ret.append(
+                translateToLocalFormatted(
+                    "GT5U.gui.text.rate_short",
+                    perSecond > 1 ? formatShortenedLong((long) perSecond) : df.format(perSecond)));
         } else {
             ret.append(EnumChatFormatting.RESET);
             ret.append(
@@ -3554,86 +3563,46 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                 perSecondText + EnumChatFormatting.GOLD
                     + formatNumber(roundNumber.apply(perSecond))
                     + (isLiquid ? "L" : "")
-                    + (perSecond > 1_000_000
-                        ? EnumChatFormatting.WHITE + " ["
-                            + EnumChatFormatting.GRAY
-                            + formatShortenedLong((long) perSecond)
-                            + EnumChatFormatting.WHITE
-                            + "]"
-                        : "")
+                    + largeSuffix.apply(perSecond)
                     + EnumChatFormatting.RESET);
             ret.append("\n");
             ret.append(
                 perMinuteText + EnumChatFormatting.GOLD
                     + formatNumber(roundNumber.apply(perMinute))
                     + (isLiquid ? "L" : "")
-                    + (perMinute > 1_000_000
-                        ? EnumChatFormatting.WHITE + " ["
-                            + EnumChatFormatting.GRAY
-                            + formatShortenedLong((long) perMinute)
-                            + EnumChatFormatting.WHITE
-                            + "]"
-                        : "")
+                    + largeSuffix.apply(perMinute)
                     + EnumChatFormatting.RESET);
             ret.append("\n");
             ret.append(
                 perHourText + EnumChatFormatting.GOLD
                     + formatNumber(roundNumber.apply(perHour))
                     + (isLiquid ? "L" : "")
-                    + (perHour > 1_000_000
-                        ? EnumChatFormatting.WHITE + " ["
-                            + EnumChatFormatting.GRAY
-                            + formatShortenedLong((long) perHour)
-                            + EnumChatFormatting.WHITE
-                            + "]"
-                        : "")
+                    + largeSuffix.apply(perHour)
                     + EnumChatFormatting.RESET);
             ret.append("\n");
             ret.append(
                 perDayText + EnumChatFormatting.GOLD
                     + formatNumber(roundNumber.apply(perDay))
                     + (isLiquid ? "L" : "")
-                    + (perDay > 1_000_000
-                        ? EnumChatFormatting.WHITE + " ["
-                            + EnumChatFormatting.GRAY
-                            + formatShortenedLong((long) perDay)
-                            + EnumChatFormatting.WHITE
-                            + "]"
-                        : "")
+                    + largeSuffix.apply(perDay)
                     + EnumChatFormatting.RESET);
         }
         return ret.toString();
     }
 
     protected String generateCurrentProgress() {
-        StringBuffer ret = new StringBuffer(translateToLocal("GT5U.gui.text.progress"));
-        ret.append(" ");
-
         numberFormat.setMinimumFractionDigits(1);
         numberFormat.setMaximumFractionDigits(1);
         numberFormat.setMinimumIntegerDigits(2);
-        numberFormat.format((double) mProgresstime / mMaxProgresstime * 100, ret);
+        String percent = numberFormat.format((double) mProgresstime / mMaxProgresstime * 100);
         numberFormat.setMinimumIntegerDigits(1);
-        ret.append("% ");
-        ret.append(EnumChatFormatting.GRAY);
-        ret.append("(");
-        ret.append(EnumChatFormatting.WHITE);
         numberFormat.setMinimumFractionDigits((mMaxProgresstime / 20) > 1_000 ? 0 : 2);
         numberFormat.setMaximumFractionDigits((mMaxProgresstime / 20) > 1_000 ? 0 : 2);
-        numberFormat.format((double) mProgresstime / 20, ret);
-        ret.append("s");
-        ret.append(EnumChatFormatting.GRAY);
-        ret.append("/");
-        ret.append(EnumChatFormatting.WHITE);
-        numberFormat.format((double) mMaxProgresstime / 20, ret);
-        ret.append("s");
-        ret.append(EnumChatFormatting.GRAY);
-        ret.append(")");
-        ret.append(EnumChatFormatting.RESET);
-        ret.append("\n");
+        String current = numberFormat.format((double) mProgresstime / 20);
+        String max = numberFormat.format((double) mMaxProgresstime / 20);
         numberFormat.setMinimumFractionDigits(0);
         numberFormat.setMaximumFractionDigits(2);
-        return ret.toString();
+        return translateToLocalFormatted("GT5U.gui.text.progress_detail", percent, current, max) + "\n";
     }
 
     protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
