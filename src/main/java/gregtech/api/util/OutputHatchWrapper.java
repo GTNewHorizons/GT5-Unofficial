@@ -1,5 +1,7 @@
 package gregtech.api.util;
 
+import java.util.function.Predicate;
+
 import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
@@ -15,9 +17,9 @@ import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 public class OutputHatchWrapper implements IOutputHatch {
 
     private final MTEHatchOutput outputHatch;
-    private final FluidStack filter;
+    private final Predicate<GTUtility.FluidId> filter;
 
-    public OutputHatchWrapper(@NotNull MTEHatchOutput outputHatch, @NotNull FluidStack filter) {
+    public OutputHatchWrapper(@NotNull MTEHatchOutput outputHatch, @NotNull Predicate<GTUtility.FluidId> filter) {
         this.outputHatch = outputHatch;
         this.filter = filter;
     }
@@ -33,7 +35,7 @@ public class OutputHatchWrapper implements IOutputHatch {
 
     @Override
     public boolean isFilteredToFluid(GTUtility.FluidId id) {
-        return id.matches(filter);
+        return filter.test(id);
     }
 
     @Override
@@ -43,7 +45,7 @@ public class OutputHatchWrapper implements IOutputHatch {
 
     @Override
     public boolean storePartial(FluidStack stack, boolean simulate) {
-        if (!GTUtility.areFluidsEqual(stack, filter)) return false;
+        if (!isFilteredToFluid(GTUtility.FluidId.create(stack))) return false;
         return outputHatch.storePartial(stack, simulate);
     }
 

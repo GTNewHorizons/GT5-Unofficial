@@ -2990,7 +2990,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             for (MTEHatchOutput hatch : hatchesByLayer.get(i)) {
                 if (!hatch.isValid()) continue;
                 if (fluidOutputForLayer != null) {
-                    ret.add(new OutputHatchWrapper(hatch, fluidOutputForLayer));
+                    ret.add(new OutputHatchWrapper(hatch, f -> f.matches(fluidOutputForLayer)));
                 } else {
                     ret.add(hatch);
                 }
