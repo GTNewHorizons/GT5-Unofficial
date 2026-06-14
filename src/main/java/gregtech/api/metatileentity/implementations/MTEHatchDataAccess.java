@@ -18,13 +18,14 @@ import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
+import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.AssemblyLineUtils;
 import gregtech.api.util.GTRecipe.RecipeAssemblyLine;
-import gregtech.common.gui.modularui.hatch.MTEHatchDataAccessGUI;
+import gregtech.common.gui.modularui.hatch.MTEHatchDataAccessGui;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -138,7 +139,7 @@ public class MTEHatchDataAccess extends MTEHatch {
 
     @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
-        return new MTEHatchDataAccessGUI(this).build(data, syncManager, uiSettings);
+        return new MTEHatchDataAccessGui(this).build(data, syncManager, uiSettings);
     }
 
     @Override
@@ -183,5 +184,11 @@ public class MTEHatchDataAccess extends MTEHatch {
         lines.add(0, translate("tt.keyphrase.AL_Recipe_Header"));
 
         return lines.toArray(new String[lines.size()]);
+    }
+
+    @Override
+    public boolean isItemValidForSlot(int index, ItemStack itemStack) {
+        return ItemList.Tool_DataStick.isStackEqual(itemStack, false, true)
+            && super.isItemValidForSlot(index, itemStack);
     }
 }

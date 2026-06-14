@@ -551,4 +551,9 @@ public class MTEHatchMaintenance extends MTEHatch implements IAlignment {
     public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
         return new MTEHatchMaintenanceGui(this, mAuto).build(guiData, syncManager, uiSettings);
     }
+
+    @Override
+    public boolean isItemValidForSlot(int index, ItemStack itemStack) {
+        return IsAutoMaintenanceInput(itemStack) && super.isItemValidForSlot(index, itemStack);
+    }
 }

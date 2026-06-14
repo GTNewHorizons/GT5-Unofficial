@@ -11,6 +11,7 @@ import java.util.Set;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
@@ -26,6 +27,8 @@ import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.glodblock.github.common.item.FCBaseItemCell;
+import com.glodblock.github.common.item.ItemFluidVoidStorageCell;
 
 import appeng.api.AEApi;
 import appeng.api.config.Actionable;
@@ -591,5 +594,15 @@ public class MTEHatchOutputME extends MTEHatchOutput
             MTEHatchOutputME.this.markDirty();
             active = false;
         }
+    }
+
+    @Override
+    public boolean isItemValidForSlot(int index, ItemStack itemStack) {
+        return itemStack != null && isFluidCell(itemStack) && super.isItemValidForSlot(index, itemStack);
+    }
+
+    private boolean isFluidCell(@NotNull ItemStack itemStack) {
+        Item item = itemStack.getItem();
+        return item instanceof FCBaseItemCell || item instanceof ItemFluidVoidStorageCell;
     }
 }
