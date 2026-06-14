@@ -8851,3 +8851,9 @@ gt.blockmachines.basicgenerator.plasmagenerator.tier.07.name=Плазма ген
 gt.blockmachines.basicgenerator.plasmagenerator.tier.08.name=Плазма генератор MK IV
 gt.blockmachines.basicgenerator.plasmagenerator.tier.09.name=Совершенный плазма генератор
 gt.blockmachines.basicgenerator.plasmagenerator.tooltip=Плазма в энергию
+
+# Basic Generators - Magic Energy Converter
+gt.blockmachines.basicgenerator.magicenergyconverter.tier.01.name=Преобразователь магической энергии для новичков
+gt.blockmachines.basicgenerator.magicenergyconverter.tier.02.name=Преобразователь магической энергии для адептов
+gt.blockmachines.basicgenerator.magicenergyconverter.tier.03.name=Преобразователь магической энергии для мастеров
+gt.blockmachines.basicgenerator.magicenergyconverter.tooltip=Клади сюда свои странные вещи

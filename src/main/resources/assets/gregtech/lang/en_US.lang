@@ -8844,3 +8844,9 @@ gt.blockmachines.basicgenerator.plasmagenerator.tier.07.name=Plasma Generator Ma
 gt.blockmachines.basicgenerator.plasmagenerator.tier.08.name=Plasma Generator Mark IV
 gt.blockmachines.basicgenerator.plasmagenerator.tier.09.name=Ultimate Pocket Sun
 gt.blockmachines.basicgenerator.plasmagenerator.tooltip=Plasma into energy
+
+# Basic Generators - Magic Energy Converter
+gt.blockmachines.basicgenerator.magicenergyconverter.tier.01.name=Novice Magic Energy Converter
+gt.blockmachines.basicgenerator.magicenergyconverter.tier.02.name=Adept Magic Energy Converter
+gt.blockmachines.basicgenerator.magicenergyconverter.tier.03.name=Master Magic Energy Converter
+gt.blockmachines.basicgenerator.magicenergyconverter.tooltip=Put your strange stuff in here
