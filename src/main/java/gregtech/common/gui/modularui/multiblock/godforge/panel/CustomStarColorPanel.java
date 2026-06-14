@@ -23,7 +23,6 @@ import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.utils.Color;
 import com.cleanroommc.modularui.value.IntValue;
 import com.cleanroommc.modularui.value.StringValue;
-import com.cleanroommc.modularui.value.sync.GenericSyncValue;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.StringSyncValue;
 import com.cleanroommc.modularui.widget.ParentWidget;
@@ -37,6 +36,7 @@ import gregtech.common.gui.modularui.multiblock.godforge.ForgeOfGodsGuiUtil;
 import gregtech.common.gui.modularui.multiblock.godforge.data.ColorData;
 import gregtech.common.gui.modularui.multiblock.godforge.data.StarColors;
 import gregtech.common.gui.modularui.multiblock.godforge.sync.Panels;
+import gregtech.common.gui.modularui.multiblock.godforge.sync.StatColorSyncValue;
 import gregtech.common.gui.modularui.multiblock.godforge.sync.SyncActions;
 import gregtech.common.gui.modularui.multiblock.godforge.sync.SyncHypervisor;
 import gregtech.common.gui.modularui.multiblock.godforge.sync.SyncValues;
@@ -111,8 +111,8 @@ public class CustomStarColorPanel {
 
         // Rate text field
         colorListRow.child(
-            new TextFieldWidget().setFormatAsInteger(true)
-                .setNumbers(1, 100)
+            new TextFieldWidget().formatAsInteger(true)
+                .numbersInt(1, 100)
                 .setTextAlignment(Alignment.CENTER)
                 .value(new IntValue.Dynamic(() -> {
                     ForgeOfGodsStarColor starColor = getClickedStarColor(hypervisor);
@@ -145,7 +145,7 @@ public class CustomStarColorPanel {
     }
 
     private static ForgeOfGodsStarColor getClickedStarColor(SyncHypervisor hypervisor) {
-        GenericSyncValue<ForgeOfGodsStarColor> starColorClickedSyncer = SyncValues.STAR_COLOR_CLICKED
+        StatColorSyncValue starColorClickedSyncer = SyncValues.STAR_COLOR_CLICKED
             .lookupFrom(Panels.STAR_COSMETICS, hypervisor);
         return starColorClickedSyncer.getValue();
     }

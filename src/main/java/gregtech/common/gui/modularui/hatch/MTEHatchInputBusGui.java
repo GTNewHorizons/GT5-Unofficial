@@ -1,7 +1,5 @@
 package gregtech.common.gui.modularui.hatch;
 
-import net.minecraft.item.ItemStack;
-
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
@@ -28,12 +26,11 @@ public class MTEHatchInputBusGui extends MTEHatchBaseGui<MTEHatchInputBus> {
 
     @Override
     protected Flow createBottomLeftCornerFlow(ModularPanel panel, PanelSyncManager syncManager) {
-        BooleanSyncValue stackSync = new BooleanSyncValue(
-            () -> !machine.disableSort,
-            val -> machine.disableSort = !val);
+        BooleanSyncValue stackSync = new BooleanSyncValue(() -> !machine.disableSort, val -> machine.disableSort = !val)
+            .allowC2S();
         BooleanSyncValue insertionSync = new BooleanSyncValue(
             () -> !machine.disableLimited,
-            val -> machine.disableLimited = !val);
+            val -> machine.disableLimited = !val).allowC2S();
         return super.createBottomLeftCornerFlow(panel, syncManager)
             .child(
                 CommonButtons.createToggleButton(
@@ -66,13 +63,8 @@ public class MTEHatchInputBusGui extends MTEHatchBaseGui<MTEHatchInputBus> {
     protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
         return super.createContentSection(panel, syncManager).child(
             new ItemSlotGridBuilder(machine.inventoryHandler, syncManager).size(getDimension())
-                .filter(this::isValidStack)
                 .build()
                 .center());
-    }
-
-    protected boolean isValidStack(ItemStack itemStack) {
-        return true;
     }
 
     @Override

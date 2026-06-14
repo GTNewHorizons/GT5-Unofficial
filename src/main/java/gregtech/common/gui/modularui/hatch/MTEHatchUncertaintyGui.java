@@ -66,7 +66,7 @@ public class MTEHatchUncertaintyGui extends MTEHatchBaseGui<MTEHatchUncertainty>
 
         // tt logo
         screen.child(
-            createLogo().bottomRel(0)
+            makeLogoWidget().bottomRel(0)
                 .rightRel(0));
 
         return screen;
@@ -197,9 +197,10 @@ public class MTEHatchUncertaintyGui extends MTEHatchBaseGui<MTEHatchUncertainty>
                 i -> syncManager.syncValue(
                     "matrix",
                     i,
-                    new ShortSyncValue(() -> machine.getMatrixElement(i), val -> machine.setMatrixElement(val, i))));
+                    new ShortSyncValue(() -> machine.getMatrixElement(i), val -> machine.setMatrixElement(val, i))
+                        .allowC2S()));
 
-        syncManager.syncValue("selection", new ByteSyncValue(machine::getSelection, machine::setSelection));
+        syncManager.syncValue("selection", new ByteSyncValue(machine::getSelection, machine::setSelection).allowC2S());
         syncManager.syncValue("mode", new ByteSyncValue(machine::getMode, machine::setMode));
         syncManager.syncValue("status", new ByteSyncValue(machine::getStatus, machine::setStatus));
     }
@@ -207,10 +208,5 @@ public class MTEHatchUncertaintyGui extends MTEHatchBaseGui<MTEHatchUncertainty>
     @Override
     protected boolean doesAddGregTechLogo() {
         return false;
-    }
-
-    @Override
-    protected IDrawable.DrawableWidget createLogo() {
-        return new IDrawable.DrawableWidget(GTGuiTextures.TT_PICTURE_TECTECH_LOGO_DARK).size(18);
     }
 }

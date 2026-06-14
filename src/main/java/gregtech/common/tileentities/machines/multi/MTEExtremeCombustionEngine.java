@@ -144,8 +144,8 @@ public class MTEExtremeCombustionEngine extends MTEExtendedPowerMultiBlockBase<M
             .addCasingInfoExactly("Tungstensteel Firebox Casing", 12, false)
             .addCasingInfoExactly("Chemically Inert Machine Casing", 30, false)
             .addDynamoHatch("Back center", 3)
-            .addMaintenanceHatch("Any Robust Tungstensteel Machine Casing", 1)
-            .addMufflerHatch("Any Robust Tungstensteel Machine Casing", 1)
+            .addMaintenanceHatch("Any Robust Tungstensteel Machine Casing NOT touching a gearbox", 1)
+            .addMufflerHatch("Any Robust Tungstensteel Machine Casing NOT touching a gearbox", 1)
             .addInputHatch("High Rating Fuel, next to a Gear Box", 2)
             .addInputHatch("Lubricant, next to a Gear Box", 2)
             .addInputHatch("Liquid Oxygen, optional, next to a Gear Box", 2)
@@ -290,10 +290,7 @@ public class MTEExtremeCombustionEngine extends MTEExtendedPowerMultiBlockBase<M
                 + getAveragePollutionPercentage()
                 + EnumChatFormatting.RESET
                 + " %",
-            StatCollector.translateToLocal("GT5U.multiblock.recipesDone") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(recipesDone)
-                + EnumChatFormatting.RESET };
+            GTUtility.translate("GT5U.multiblock.recipesDone", formatNumber(recipesDone)) };
     }
 
     @Override

@@ -27,10 +27,10 @@ public class MTETeleporterGui extends MTETieredMachineBlockBaseGui<MTETeleporter
 
     @Override
     protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
-        IntSyncValue xSyncer = new IntSyncValue(machine::getTargetX, machine::setTargetX);
-        IntSyncValue ySyncer = new IntSyncValue(machine::getTargetY, machine::setTargetY);
-        IntSyncValue zSyncer = new IntSyncValue(machine::getTargetZ, machine::setTargetZ);
-        IntSyncValue dimSyncer = new IntSyncValue(machine::getTargetD, machine::setTargetD);
+        IntSyncValue xSyncer = new IntSyncValue(machine::getTargetX, machine::setTargetX).allowC2S();
+        IntSyncValue ySyncer = new IntSyncValue(machine::getTargetY, machine::setTargetY).allowC2S();
+        IntSyncValue zSyncer = new IntSyncValue(machine::getTargetZ, machine::setTargetZ).allowC2S();
+        IntSyncValue dimSyncer = new IntSyncValue(machine::getTargetD, machine::setTargetD).allowC2S();
 
         Flow mainColumn = Flow.column()
             .coverChildren()
@@ -61,8 +61,8 @@ public class MTETeleporterGui extends MTETieredMachineBlockBaseGui<MTETeleporter
         // input field
         row.child(
             new TextFieldWidget().value(value)
-                .setFormatAsInteger(true)
-                .setNumbers()
+                .formatAsInteger(true)
+                .numbersInt()
                 .setMaxLength(11)
                 .size(80, 12));
 

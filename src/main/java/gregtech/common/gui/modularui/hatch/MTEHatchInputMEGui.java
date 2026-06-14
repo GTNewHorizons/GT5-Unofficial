@@ -68,7 +68,7 @@ public class MTEHatchInputMEGui extends MTEHatchBaseGui<MTEHatchInputME> {
     protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
         BooleanSyncValue isAutoPullSyncer = new BooleanSyncValue(
             machine::isAutoPullFluidList,
-            machine::setAutoPullFluidList);
+            machine::setAutoPullFluidList).allowC2S();
 
         Flow mainRow = Flow.row()
             .coverChildren()
@@ -191,15 +191,14 @@ public class MTEHatchInputMEGui extends MTEHatchBaseGui<MTEHatchInputME> {
     }
 
     private ModularPanel createStackSizeConfigurationPanel(ModularPanel parent) {
-        BooleanSyncValue isRecipeCheckSyncer = new BooleanSyncValue(
-            machine::doFastRecipeCheck,
-            machine::setRecipeCheck);
+        BooleanSyncValue isRecipeCheckSyncer = new BooleanSyncValue(machine::doFastRecipeCheck, machine::setRecipeCheck)
+            .allowC2S();
         IntSyncValue minAutoPullAmountSyncer = new IntSyncValue(
             machine::getMinAutoPullAmount,
-            machine::setMinAutoPullAmount);
+            machine::setMinAutoPullAmount).allowC2S();
         IntSyncValue autoPullRefreshTimeSyncer = new IntSyncValue(
             machine::getAutoPullRefreshTime,
-            machine::setAutoPullRefreshTime);
+            machine::setAutoPullRefreshTime).allowC2S();
 
         Flow mainColumn = Flow.col()
             .coverChildren()
@@ -214,8 +213,8 @@ public class MTEHatchInputMEGui extends MTEHatchBaseGui<MTEHatchInputME> {
         // stack size text field
         mainColumn.child(
             new TextFieldWidget().value(minAutoPullAmountSyncer)
-                .setNumbers(1, Integer.MAX_VALUE)
-                .setFormatAsInteger(true)
+                .numbersInt(1, Integer.MAX_VALUE)
+                .formatAsInteger(true)
                 .setMaxLength(10)
                 .setTextAlignment(Alignment.CENTER)
                 .width(72));
@@ -230,8 +229,8 @@ public class MTEHatchInputMEGui extends MTEHatchBaseGui<MTEHatchInputME> {
         // refresh time text field
         mainColumn.child(
             new TextFieldWidget().value(autoPullRefreshTimeSyncer)
-                .setNumbers(1, Integer.MAX_VALUE)
-                .setFormatAsInteger(true)
+                .numbersInt(1, Integer.MAX_VALUE)
+                .formatAsInteger(true)
                 .setMaxLength(10)
                 .setTextAlignment(Alignment.CENTER)
                 .width(72));
@@ -332,7 +331,7 @@ public class MTEHatchInputMEGui extends MTEHatchBaseGui<MTEHatchInputME> {
             }
         })
             .asWidget()
-            .widgetTheme(GTWidgetThemes.DISPLAY_TEXT);
+            .widgetTheme(GTWidgetThemes.DISPLAY_TEXT_WHITE);
 
         return super.createBottomLeftCornerFlow(panel, syncManager).child(status);
     }

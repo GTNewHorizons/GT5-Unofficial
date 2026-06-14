@@ -46,7 +46,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.client.GTSoundLoop;
 import gregtech.client.volumetric.ISoundPosition;
-import gregtech.common.tileentities.machines.IDualInputHatch;
+import gregtech.common.tileentities.machines.MTEHatchCraftingInputSlave;
 
 /**
  * Enhanced multiblock base class, featuring following improvement over {@link MTEMultiBlockBase}
@@ -628,8 +628,9 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
     // Most of the time it's what you want. If you don't want such inputs,
     // you can omit InputBus in your structure or roll your own checks
     protected final void checkHasInputHatch(List<StructureError> errors) {
+        // Due to update delay, slave is sometimes not recognized. We always allow slave to substitute as input hatch
         long count = mInputHatches.size() + mDualInputHatches.stream()
-            .filter(IDualInputHatch::supportsFluids)
+            .filter(hatch -> hatch.supportsFluids() || hatch instanceof MTEHatchCraftingInputSlave)
             .count();
         if (count == 0) {
             errors.add(StructureErrors.hatchCount(ErrorType.TOO_FEW, HatchElement.InputHatch, 0, 1));

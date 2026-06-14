@@ -123,7 +123,10 @@ public class TextureSet {
         SET_HOT_EXOHALKONITE = new TextureSet("hotexohalkonite", true),
         SET_EXOHALKONITE = new TextureSet("exohalkonite", true),
         SET_SG_CRYSTAL_SLURRY = new TextureSet("sgcrystalfluid", true), SET_RHUGNOR = new TextureSet("rhugnor", true),
-        SET_HYPOGEN = new TextureSet("hypogen", false), SET_FLUXED = new TextureSet("fluxed", true);
+        SET_HYPOGEN = new TextureSet("hypogen", false), SET_FLUXED = new TextureSet("fluxed", true),
+        SET_CHROMATIC_GLASS = new TextureSet("chromaticglass", true),
+        SET_ASTRAL_TITANIUM = new TextureSet("astraltitanium", true),
+        SET_CELESTIAL_TUNGSTEN = new TextureSet("celestialtungsten", true);
 
     /**
      * For the Indices of OrePrefixes you need to look into the OrePrefix Enum.

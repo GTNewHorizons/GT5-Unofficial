@@ -103,8 +103,8 @@ public class MTEHatchEnergyDebugGui extends MTEHatchBaseGui<MTEHatchEnergyDebug>
 
     @Override
     protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
-        IntSyncValue voltageTierSyncer = new IntSyncValue(machine::getVoltageTier, machine::setVoltageTier);
-        IntSyncValue amperageSyncer = new IntSyncValue(machine::getAmperage, machine::setAmperage);
+        IntSyncValue voltageTierSyncer = new IntSyncValue(machine::getVoltageTier, machine::setVoltageTier).allowC2S();
+        IntSyncValue amperageSyncer = new IntSyncValue(machine::getAmperage, machine::setAmperage).allowC2S();
 
         Flow numberInputColumn = Flow.column()
             .coverChildren()
@@ -125,9 +125,9 @@ public class MTEHatchEnergyDebugGui extends MTEHatchBaseGui<MTEHatchEnergyDebug>
         voltageTextRow.child(
             createNumberTextField().width(25)
                 .setMaxLength(2)
-                .setNumbers(0, 15)
+                .numbersInt(0, 15)
                 .value(voltageTierSyncer)
-                .setDefaultNumber(0));
+                .defaultNumber(0));
 
         // add the changing tier description widget
         voltageTextRow.child(IKey.dynamic(() -> {
@@ -159,9 +159,9 @@ public class MTEHatchEnergyDebugGui extends MTEHatchBaseGui<MTEHatchEnergyDebug>
         amperageTextRow.child(
             createNumberTextField().width(70)
                 .setMaxLength((int) Math.ceil(Math.log10(MAX_AMPERAGE)))
-                .setNumbers(1, MAX_AMPERAGE)
+                .numbersInt(1, MAX_AMPERAGE)
                 .value(amperageSyncer)
-                .setDefaultNumber(2));
+                .defaultNumber(2));
 
         // text widget for Amperage, is static. width is larger for nice spacing
         amperageTextRow.child(new TextWidget<>(IKey.lang("GT5U.gui.text.amperage")));
@@ -182,7 +182,8 @@ public class MTEHatchEnergyDebugGui extends MTEHatchBaseGui<MTEHatchEnergyDebug>
 
     @Override
     protected Flow createBottomLeftCornerFlow(ModularPanel panel, PanelSyncManager syncManager) {
-        IntSyncValue intervalSyncer = new IntSyncValue(machine::getRefillInterval, machine::setRefillInterval);
+        IntSyncValue intervalSyncer = new IntSyncValue(machine::getRefillInterval, machine::setRefillInterval)
+            .allowC2S();
 
         // row to allow setting of 'refill interval'
         Flow intervalRow = Flow.row()
@@ -190,8 +191,8 @@ public class MTEHatchEnergyDebugGui extends MTEHatchBaseGui<MTEHatchEnergyDebug>
 
         intervalRow.child(
             createNumberTextField().width(40)
-                .setDefaultNumber(600)
-                .setNumbers(MIN_TICKS_PER_REFILL, MAX_TICKS_PER_REFILL)
+                .defaultNumber(600)
+                .numbersInt(MIN_TICKS_PER_REFILL, MAX_TICKS_PER_REFILL)
                 .value(intervalSyncer));
 
         intervalRow.child(

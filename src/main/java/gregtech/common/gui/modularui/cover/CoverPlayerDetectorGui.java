@@ -28,10 +28,10 @@ public class CoverPlayerDetectorGui extends CoverBaseGui<CoverPlayerDetector> {
 
     @Override
     public void addUIWidgets(PanelSyncManager syncManager, Flow column, CoverGuiData data) {
-        EnumSyncValue<PlayerDetectionMode> modeSyncValue = new EnumSyncValue<>(
+        EnumSyncValue<PlayerDetectionMode, ?> modeSyncValue = new EnumSyncValue<>(
             PlayerDetectionMode.class,
             cover::getPlayerDetectionMode,
-            cover::setPlayerDetectionMode);
+            cover::setPlayerDetectionMode).allowC2S();
         syncManager.syncValue("mode", modeSyncValue);
 
         column.child(

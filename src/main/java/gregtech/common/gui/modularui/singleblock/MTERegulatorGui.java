@@ -1,5 +1,7 @@
 package gregtech.common.gui.modularui.singleblock;
 
+import static gregtech.common.tileentities.automation.MTERegulator.FILTER_SLOT_INDEX;
+
 import java.util.stream.IntStream;
 
 import org.jetbrains.annotations.NotNull;
@@ -81,7 +83,7 @@ public class MTERegulatorGui extends MTEBufferBaseGui<MTERegulator> {
         // filter inventory grid
         mainRow.child(
             new ItemSlotGridBuilder(machine.inventoryHandler, syncManager).size(3)
-                .indexOffset(9)
+                .indexOffset(FILTER_SLOT_INDEX)
                 .hasSlotGroup(false)
                 .itemSlotSupplier(
                     () -> new PhantomItemSlot().disableThemeBackground(true)
@@ -128,7 +130,8 @@ public class MTERegulatorGui extends MTEBufferBaseGui<MTERegulator> {
                 i -> syncManager.syncValue(
                     "targetSlot",
                     i,
-                    new IntSyncValue(() -> machine.getTargetSlot(i), val -> machine.setTargetSlots(val, i))));
+                    new IntSyncValue(() -> machine.getTargetSlot(i), val -> machine.setTargetSlots(val, i))
+                        .allowC2S()));
     }
 
     @Override

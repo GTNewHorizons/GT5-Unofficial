@@ -174,14 +174,14 @@ public class MTEThoriumHighTempReactor extends MTEEnhancedMultiBlockBase<MTEThor
             .addInfo("One Operation takes 9 hours")
             .beginStructureBlock(11, 12, 11, true)
             .addController("Front bottom center")
-            .addCasingInfoMin("Radiation Proof Casings", 500, false)
+            .addCasingInfoMin("Radiation Proof Casing", 500, false)
             .addStructureInfo("Corners and the 2 touching blocks are air (cylindric)")
-            .addInputBus("Any top layer casing", 2)
-            .addInputHatch("Any top layer casing", 2)
-            .addOutputBus("Any bottom layer casing", 1)
-            .addOutputHatch("Any bottom layer casing", 1)
-            .addEnergyHatch("Any bottom layer casing", 1)
-            .addMaintenanceHatch("Any bottom layer casing", 1)
+            .addInputBus("Any top layer Casing", 2)
+            .addInputHatch("Any top layer Casing", 2)
+            .addOutputBus("Any bottom layer Casing", 1)
+            .addOutputHatch("Any bottom layer Casing", 1)
+            .addEnergyHatch("Any bottom layer Casing", 1)
+            .addMaintenanceHatch("Any bottom layer Casing", 1)
             .toolTipFinisher();
         return tt;
     }
@@ -310,7 +310,7 @@ public class MTEThoriumHighTempReactor extends MTEEnhancedMultiBlockBase<MTEThor
     public boolean onRunningTick(ItemStack aStack) {
 
         if (this.emptyingMode) {
-            this.addOutput(Materials.Helium.getGas(this.HeliumSupply));
+            this.addOutputPartial(Materials.Helium.getGas(this.HeliumSupply));
             this.addOutputPartial(
                 new ItemStack(THTRMaterials.aTHTR_Materials, this.fuelSupply, THTRMaterials.MATERIAL_FUEL_INDEX));
             this.HeliumSupply = 0;
@@ -334,7 +334,7 @@ public class MTEThoriumHighTempReactor extends MTEEnhancedMultiBlockBase<MTEThor
             }
         }
 
-        if (drainedamount > 0) this.addOutput(FluidRegistry.getFluidStack("ic2hotcoolant", drainedamount));
+        if (drainedamount > 0) this.addOutputPartial(FluidRegistry.getFluidStack("ic2hotcoolant", drainedamount));
 
         this.updateSlots();
 

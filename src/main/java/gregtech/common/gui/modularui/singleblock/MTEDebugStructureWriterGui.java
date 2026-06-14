@@ -44,7 +44,8 @@ public class MTEDebugStructureWriterGui extends MTETieredMachineBlockBaseGui<MTE
     protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
         ShortSyncValue[] numberSyncers = IntStream.range(0, 6)
             .mapToObj(
-                index -> new ShortSyncValue(() -> machine.getNumber(index), number -> machine.setNumber(index, number)))
+                index -> new ShortSyncValue(() -> machine.getNumber(index), number -> machine.setNumber(index, number))
+                    .allowC2S())
             .toArray(ShortSyncValue[]::new);
 
         Flow mainRow = Flow.row()
@@ -90,8 +91,8 @@ public class MTEDebugStructureWriterGui extends MTETieredMachineBlockBaseGui<MTE
                     .size(isOriginColumn ? 45 : 40, 14)
                     .marginRight(2)
                     .setMaxLength(isOriginColumn ? 6 : 5)
-                    .setFormatAsInteger(true)
-                    .setNumbers(isOriginColumn ? MIN_ORIGIN : MIN_SIZE, isOriginColumn ? MAX_ORIGIN : MAX_SIZE));
+                    .formatAsInteger(true)
+                    .numbersInt(isOriginColumn ? MIN_ORIGIN : MIN_SIZE, isOriginColumn ? MAX_ORIGIN : MAX_SIZE));
 
             // text widget for this coordinate
             coordinateRow.child(
@@ -221,10 +222,11 @@ public class MTEDebugStructureWriterGui extends MTETieredMachineBlockBaseGui<MTE
 
     @Override
     protected Flow createBottomLeftCornerFlow(ModularPanel panel, PanelSyncManager syncManager) {
-        BooleanSyncValue transposeSyncer = new BooleanSyncValue(machine::getTranspose, machine::setTranspose);
+        BooleanSyncValue transposeSyncer = new BooleanSyncValue(machine::getTranspose, machine::setTranspose)
+            .allowC2S();
         BooleanSyncValue showHighlightBoxSyncer = new BooleanSyncValue(
             machine::getShowHighlightBox,
-            machine::setShowHighlightBox);
+            machine::setShowHighlightBox).allowC2S();
 
         Flow row = super.createBottomLeftCornerFlow(panel, syncManager);
 

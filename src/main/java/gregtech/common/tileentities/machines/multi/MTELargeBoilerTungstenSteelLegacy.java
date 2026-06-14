@@ -33,7 +33,7 @@ public class MTELargeBoilerTungstenSteelLegacy extends MTELargeBoiler {
 
     @Override
     public String getCasingBlockType() {
-        return "Machine Casings";
+        return "Machine Casing";
     }
 
     @Override

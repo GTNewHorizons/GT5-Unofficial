@@ -20,6 +20,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
 import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
@@ -148,7 +149,9 @@ public class ItemLabParts extends SimpleSubItemClass {
             return StatCollector.translateToLocalFormatted(
                 "bw.bioname.latin.format",
                 StatCollector.translateToLocal(key),
-                StatCollector.translateToLocal(keyLatin));
+                EnumChatFormatting.ITALIC + StatCollector.translateToLocal(keyLatin)
+                    + EnumChatFormatting.RESET
+                    + EnumChatFormatting.GRAY);
         }
         return StatCollector.translateToLocal(key);
     }

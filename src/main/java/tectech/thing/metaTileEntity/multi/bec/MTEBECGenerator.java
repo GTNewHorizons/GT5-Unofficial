@@ -93,7 +93,7 @@ public class MTEBECGenerator extends MTEBECMultiblockBase<MTEBECGenerator> {
             .addMarkdown(new ResourceLocation("gregtech", "bec-generator"));
 
         tt.beginStructureBlock();
-        tt.addController("Front Center");
+        tt.addController("Front center");
         tt.addHatchNameOverride(BECHatches.Hatch, CustomItemList.Hatch_BEC_Connector.get(1));
         tt.addHatchLocationOverride(
             Arrays.asList(InputBus, InputHatch, Energy, ExoticEnergy),
@@ -134,12 +134,17 @@ public class MTEBECGenerator extends MTEBECMultiblockBase<MTEBECGenerator> {
     // #endregion
 
     @Override
-    protected void addFluidOutputs(FluidStack[] outputFluids) {
+    protected boolean addFluidOutputs(FluidStack[] outputFluids) {
         if (network != null) {
+            boolean succeed = true;
             for (FluidStack output : outputFluids) {
-                network.injectCondensate(this, AEFluidStack.create(output));
+                AEFluidStack stack = AEFluidStack.create(output);
+                network.injectCondensate(this, stack);
+                if (stack.getStackSize() > 0) succeed = false;
             }
+            return succeed;
         }
+        return false;
     }
 
     @Override

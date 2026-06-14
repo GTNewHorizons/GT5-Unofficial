@@ -95,7 +95,7 @@ public class TTMultiblockBaseGui<T extends TTMultiblockBase> extends MTEMultiBlo
                     baseMetaTileEntity.disableWorking();
                 }
             }
-        });
+        }).allowC2S();
     }
 
     private IDrawable createPowerPassOverlay() {
@@ -240,11 +240,11 @@ public class TTMultiblockBaseGui<T extends TTMultiblockBase> extends MTEMultiBlo
     private IWidget createInputWidget(ModularPanel panel, PanelSyncManager syncManager, Parameter<?> parameter) {
         if (parameter instanceof IntegerParameter integerParameter) {
             return new TextFieldWidget().value((IStringValue<?>) integerParameter.createSyncHandler())
-                .setNumbers(integerParameter::getMin, integerParameter::getMax);
+                .numbersInt(integerParameter::getMin, integerParameter::getMax);
         }
         if (parameter instanceof DoubleParameter doubleParameter) {
             return new TextFieldWidget().value((IStringValue<?>) doubleParameter.createSyncHandler())
-                .setNumbersDouble(doubleParameter::validateValue);
+                .numbersDouble(doubleParameter::validateValue);
         }
         if (parameter instanceof BooleanParameter booleanParameter) {
             return new ToggleButton().value((IBoolValue<?>) booleanParameter.createSyncHandler())

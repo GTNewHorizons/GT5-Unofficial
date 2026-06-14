@@ -68,38 +68,43 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
 
         syncManager.syncValue(
             "Module1",
-            new IntSyncValue(() -> multiblock.getModuleSynced(0), ordinal -> multiblock.setModule(0, ordinal)));
+            new IntSyncValue(() -> multiblock.getModuleSynced(0), ordinal -> multiblock.setModule(0, ordinal))
+                .allowC2S());
         syncManager.syncValue(
             "Module2",
-            new IntSyncValue(() -> multiblock.getModuleSynced(1), ordinal -> multiblock.setModule(1, ordinal)));
+            new IntSyncValue(() -> multiblock.getModuleSynced(1), ordinal -> multiblock.setModule(1, ordinal))
+                .allowC2S());
         syncManager.syncValue(
             "Module3",
-            new IntSyncValue(() -> multiblock.getModuleSynced(2), ordinal -> multiblock.setModule(2, ordinal)));
+            new IntSyncValue(() -> multiblock.getModuleSynced(2), ordinal -> multiblock.setModule(2, ordinal))
+                .allowC2S());
         syncManager.syncValue(
             "Module4",
-            new IntSyncValue(() -> multiblock.getModuleSynced(3), ordinal -> multiblock.setModule(3, ordinal)));
+            new IntSyncValue(() -> multiblock.getModuleSynced(3), ordinal -> multiblock.setModule(3, ordinal))
+                .allowC2S());
         syncManager.syncValue(
             "Tier",
             new IntSyncValue(() -> multiblock.foundryData.tier, val -> multiblock.foundryData.tier = val));
 
-        BooleanSyncValue usingPreviewSync = new BooleanSyncValue(() -> usingPreview, val -> usingPreview = val);
+        BooleanSyncValue usingPreviewSync = new BooleanSyncValue(() -> usingPreview, val -> usingPreview = val)
+            .allowC2S();
         syncManager.syncValue("UsingPreview", usingPreviewSync);
         syncManager.syncValue("Module1Calc", new IntSyncValue(() -> calculatorData.modules[0].ordinal(), val -> {
             calculatorData.setModule(0, val);
             usingPreviewSync.setBoolValue(calculatorData.shouldUsePreview(multiblock.foundryData));
-        }));
+        }).allowC2S());
         syncManager.syncValue("Module2Calc", new IntSyncValue(() -> calculatorData.modules[1].ordinal(), val -> {
             calculatorData.setModule(1, val);
             usingPreviewSync.setBoolValue(calculatorData.shouldUsePreview(multiblock.foundryData));
-        }));
+        }).allowC2S());
         syncManager.syncValue("Module3Calc", new IntSyncValue(() -> calculatorData.modules[2].ordinal(), val -> {
             calculatorData.setModule(2, val);
             usingPreviewSync.setBoolValue(calculatorData.shouldUsePreview(multiblock.foundryData));
-        }));
+        }).allowC2S());
         syncManager.syncValue("Module4Calc", new IntSyncValue(() -> calculatorData.modules[3].ordinal(), val -> {
             calculatorData.setModule(3, val);
             usingPreviewSync.setBoolValue(calculatorData.shouldUsePreview(multiblock.foundryData));
-        }));
+        }).allowC2S());
     }
 
     @Override
@@ -334,7 +339,7 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                                         return "Speed: " + TooltipHelper.SPEED_COLOR + data.getSpeedStr();
                                     })
                                         .asWidget()
-                                        .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
+                                        .widgetTheme(GTWidgetThemes.DISPLAY_TEXT_WHITE)
                                         .size(120, 20)
                                         .marginBottom(2))
                                     .child(IKey.dynamic(() -> {
@@ -344,7 +349,7 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                                             + data.getParallelsString();
                                     })
                                         .asWidget()
-                                        .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
+                                        .widgetTheme(GTWidgetThemes.DISPLAY_TEXT_WHITE)
                                         .size(120, 20)
                                         .marginBottom(2))
                                     .child(IKey.dynamic(() -> {
@@ -353,7 +358,7 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                                         return "EU Consumption: " + TooltipHelper.EFF_COLOR + data.getEuEFFString();
                                     })
                                         .asWidget()
-                                        .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
+                                        .widgetTheme(GTWidgetThemes.DISPLAY_TEXT_WHITE)
                                         .size(120, 20)
                                         .marginBottom(2))
                                     .child(IKey.dynamic(() -> {
@@ -363,7 +368,7 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                                             + data.getOCFactorString();
                                     })
                                         .asWidget()
-                                        .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
+                                        .widgetTheme(GTWidgetThemes.DISPLAY_TEXT_WHITE)
                                         .size(120, 20)
                                         .marginBottom(2)))
                             .child(createPairHoldingColumn(calculatorData, true)))
@@ -385,7 +390,7 @@ public class MTEExoFoundryGui extends MTEMultiBlockBaseGui<MTEExoFoundry> {
                     })
                         .scale(0.9f)
                         .asWidget()
-                        .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
+                        .widgetTheme(GTWidgetThemes.DISPLAY_TEXT_WHITE)
                         .size(120, 20)));
     }
 

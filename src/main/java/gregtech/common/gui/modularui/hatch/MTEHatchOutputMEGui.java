@@ -1,7 +1,5 @@
 package gregtech.common.gui.modularui.hatch;
 
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.cleanroommc.modularui.drawable.GuiTextures;
@@ -15,8 +13,6 @@ import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
-import com.glodblock.github.common.item.FCBaseItemCell;
-import com.glodblock.github.common.item.ItemFluidVoidStorageCell;
 
 import appeng.api.storage.data.IAEFluidStack;
 import appeng.core.localization.GuiText;
@@ -35,19 +31,16 @@ public class MTEHatchOutputMEGui extends MTEHatchBaseGui<MTEHatchOutputME> {
     @Override
     protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
         MTEHatchOutputMEBase<IAEFluidStack, MEFilterFluid, FluidStack> provider = machine.getProvider();
-        IntSyncValue prioritySyncer = new IntSyncValue(provider::getPriority, provider::setPriority);
-        BooleanSyncValue isCaching = new BooleanSyncValue(provider::getCacheMode, provider::setCacheMode);
-        BooleanSyncValue isChecking = new BooleanSyncValue(provider::getCheckMode, provider::setCheckMode);
+        IntSyncValue prioritySyncer = new IntSyncValue(provider::getPriority, provider::setPriority).allowC2S();
+        BooleanSyncValue isCaching = new BooleanSyncValue(provider::getCacheMode, provider::setCacheMode).allowC2S();
+        BooleanSyncValue isChecking = new BooleanSyncValue(provider::getCheckMode, provider::setCheckMode).allowC2S();
 
         Flow mainRow = Flow.row()
             .coverChildren()
             .verticalCenter();
 
         // cell slot
-        mainRow.child(
-            new ItemSlot().slot(
-                new ModularSlot(machine.inventoryHandler, 0).singletonSlotGroup()
-                    .filter(this::isFluidCell)));
+        mainRow.child(new ItemSlot().slot(new ModularSlot(machine.inventoryHandler, 0).singletonSlotGroup()));
 
         // check mode toggle
         mainRow.child(
@@ -64,20 +57,15 @@ public class MTEHatchOutputMEGui extends MTEHatchBaseGui<MTEHatchOutputME> {
         // priority input text field
         mainRow.child(
             new TextFieldWidget().size(75, 14)
-                .setFormatAsInteger(true)
+                .formatAsInteger(true)
                 .value(prioritySyncer)
-                .setNumbers(1, Integer.MAX_VALUE)
+                .numbersInt(1, Integer.MAX_VALUE)
                 .setMaxLength(10)
                 .tooltip(t -> t.addLine(GuiText.Priority.getLocal()))
                 .setEnabledIf(t -> isCaching.getBoolValue())
                 .marginLeft(5));
 
         return super.createContentSection(panel, syncManager).child(mainRow);
-    }
-
-    private boolean isFluidCell(ItemStack itemStack) {
-        Item item = itemStack.getItem();
-        return item instanceof FCBaseItemCell || item instanceof ItemFluidVoidStorageCell;
     }
 
     @Override

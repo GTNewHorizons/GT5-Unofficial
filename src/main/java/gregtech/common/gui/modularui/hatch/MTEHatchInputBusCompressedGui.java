@@ -43,12 +43,11 @@ public class MTEHatchInputBusCompressedGui extends MTEHatchBaseGui<MTEHatchInput
 
     @Override
     protected Flow createBottomLeftCornerFlow(ModularPanel panel, PanelSyncManager syncManager) {
-        BooleanSyncValue stackSync = new BooleanSyncValue(
-            () -> !machine.disableSort,
-            val -> machine.disableSort = !val);
+        BooleanSyncValue stackSync = new BooleanSyncValue(() -> !machine.disableSort, val -> machine.disableSort = !val)
+            .allowC2S();
         BooleanSyncValue insertionSync = new BooleanSyncValue(
             () -> !machine.disableLimited,
-            val -> machine.disableLimited = !val);
+            val -> machine.disableLimited = !val).allowC2S();
 
         return super.createBottomLeftCornerFlow(panel, syncManager)
             .child(
@@ -84,9 +83,8 @@ public class MTEHatchInputBusCompressedGui extends MTEHatchBaseGui<MTEHatchInput
     }
 
     private ModularPanel createSettingsPanel(PanelSyncManager syncManager, ModularPanel parent) {
-        LongSyncValue capacitySyncer = new LongSyncValue(
-            machine::getStackLimitOverride,
-            machine::setStackLimitOverride);
+        LongSyncValue capacitySyncer = new LongSyncValue(machine::getStackLimitOverride, machine::setStackLimitOverride)
+            .allowC2S();
 
         // spotless:off
         return new ModularPanel("busSettings")
@@ -106,9 +104,9 @@ public class MTEHatchInputBusCompressedGui extends MTEHatchBaseGui<MTEHatchInput
                         .asWidget()
                         .marginRight(4))
                     .child(new TextFieldWidget()
-                        .setNumbersLong(() -> 1L, () -> machine.stackCapacity)
+                        .numbersLong(() -> 1L, () -> machine.stackCapacity)
                         .value(capacitySyncer)
-                        .setScrollValues(1d, 4d, 64d))));
+                        .scrollValues(1d, 64d, 4d, 16d))));
         // spotless:on
     }
 

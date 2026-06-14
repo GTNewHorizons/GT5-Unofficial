@@ -1,5 +1,7 @@
 package gregtech.api.metatileentity;
 
+import static gregtech.api.interfaces.tileentity.IColoredTileEntity.UNCOLOURED;
+
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -179,8 +181,8 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
     }
 
     @Override
-    public String getLocalName() {
-        return StatCollector.translateToLocal("gt.blockmachines." + mName + ".name");
+    public String getLocalNameKey() {
+        return "gt.blockmachines." + mName + ".name";
     }
 
     @Override
@@ -792,7 +794,9 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
     }
 
     final public byte getColor() {
-        return getBaseMetaTileEntity().getColorization();
+        IGregTechTileEntity baseMetaTileEntity = getBaseMetaTileEntity();
+        if (baseMetaTileEntity == null) return UNCOLOURED;
+        return baseMetaTileEntity.getColorization();
     }
 
     protected Supplier<Integer> COLOR_TITLE = () -> getTextColorOrDefault("title", 0x404040);
@@ -820,5 +824,9 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
 
     public int getColorTextRed() {
         return COLOR_TEXT_RED.get();
+    }
+
+    public boolean isItemValidForPhantomSlot(int index, ItemStack itemStack) {
+        return false;
     }
 }

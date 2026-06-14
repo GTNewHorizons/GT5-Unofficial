@@ -93,7 +93,7 @@ public class MTELargeTurbineSCSteam extends MTELargeTurbineBase {
         if (totalFlow <= 0) return 0;
 
         tEU = totalFlow;
-        addOutput(FluidRegistry.getFluidStack("ic2superheatedsteam", totalFlow));
+        addOutputPartial(FluidRegistry.getFluidStack("ic2superheatedsteam", totalFlow));
 
         float turbineEfficiency = looseFit ? turbine.getLooseSteamEfficiency() : turbine.getSteamEfficiency();
 

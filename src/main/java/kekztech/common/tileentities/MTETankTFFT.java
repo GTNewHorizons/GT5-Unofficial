@@ -232,7 +232,7 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
         translateToLocal("tile.kekztech_tfftstoragefield_block.hint.4"), // Glass
     };
 
-    // height channel for height
+    // length channel for length
     // field channel for field
     private static final IStructureDefinition<MTETankTFFT> STRUCTURE_DEFINITION = IStructureDefinition
         .<MTETankTFFT>builder()
@@ -346,7 +346,7 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
             .addInfo("High-Tech fluid tank that can hold up to 25 different fluids!")
             .addInfo("Has 1/25th of the total capacity as capacity for each fluid")
             .addInfo("Right clicking the controller with a screwdriver will turn on excess voiding")
-            .addInfo("Fluid storage amount and running cost depends on the storage field blocks used")
+            .addInfo("Fluid storage amount and running cost depends on the Storage Field Block used")
             .addSeparator()
             .addInfo("Note on hatch locking:")
             .addInfo("Use an Integrated Circuit in the GUI slot to limit which fluid is output")
@@ -354,28 +354,28 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
             .beginVariableStructureBlock(5, 5, 5, 15, 5, 5, false)
             .addController("Front center")
             .addCasingInfoMin("T.F.F.T Casing", MIN_CASING_AMOUNT, false)
-            .addCasingInfoRange("Storage Field Blocks", 7, 117, true)
+            .addCasingInfoRange("Storage Field Block", 7, 117, true)
             .addStructureInfo("Energy hatch is not required when running cost is 0")
             .addCasingInfoRange("Any Tiered Glass (EV+)", 48, 208, false)
-            .addMaintenanceHatch("Any top or bottom casing")
-            .addEnergyHatch("Any top or bottom casing")
-            .addInputHatch("Instead of any casing or glass, has to touch storage field block")
-            .addOutputHatch("Instead of any casing or glass, has to touch storage field block")
+            .addMaintenanceHatch("Any top or bottom Casing")
+            .addEnergyHatch("Any top or bottom Casing")
+            .addInputHatch("Instead of any casing or glass, has to touch Storage Field Block")
+            .addOutputHatch("Instead of any casing or glass, has to touch Storage Field Block")
             .addStructureInfo("You can have a bunch of hatches")
             .addOtherStructurePart(
-                "Multi I/O Hatches",
-                "Instead of any casing or glass, has to touch storage field block")
+                "1x Multi I/O Hatch",
+                "Instead of any casing or glass, has to touch Storage Field Block")
             .addStructureInfo("Use MIOH with conduits or fluid storage buses to see all fluids at once.")
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .addSubChannelUsage(GTStructureChannels.TFFT_FIELD)
-            .addSubChannelUsage(GTStructureChannels.STRUCTURE_HEIGHT)
+            .addSubChannelUsage(GTStructureChannels.STRUCTURE_LENGTH)
             .toolTipFinisher();
         return tt;
     }
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        int layer = GTStructureChannels.STRUCTURE_HEIGHT
+        int layer = GTStructureChannels.STRUCTURE_LENGTH
             .getValueClamped(stackSize, DEFAULT_LAYER_AMOUNT, MAX_LAYER_AMOUNT);
         buildPiece(STRUCTURE_PIECE_TOP, stackSize, hintsOnly, 2, 2, 0);
         for (int i = 1; i <= layer; i++) {
@@ -389,7 +389,7 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
         if (mMachine) return -1;
         int build = survivalBuildPiece(STRUCTURE_PIECE_TOP, stackSize, 2, 2, 0, elementBudget, env, false, true);
         if (build >= 0) return build;
-        int layer = GTStructureChannels.STRUCTURE_HEIGHT
+        int layer = GTStructureChannels.STRUCTURE_LENGTH
             .getValueClamped(stackSize, DEFAULT_LAYER_AMOUNT, MAX_LAYER_AMOUNT);
         for (int i = 1; i <= layer; i++) {
             build = survivalBuildPiece(STRUCTURE_PIECE_MID, stackSize, 2, 2, -i, elementBudget, env, false, true);
@@ -428,7 +428,7 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
             return;
         }
         if (layer - 1 < DEFAULT_LAYER_AMOUNT) {
-            errors.add(StructureErrorRegistry.TOO_SHORT_HEIGHT);
+            errors.add(StructureErrorRegistry.TOO_SHORT_LENGTH);
             return;
         }
         if (!checkPiece(STRUCTURE_PIECE_BOTTOM, 2, 2, -layer, errors)) return;

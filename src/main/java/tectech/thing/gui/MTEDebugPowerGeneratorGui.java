@@ -137,10 +137,12 @@ public class MTEDebugPowerGeneratorGui extends MTETieredMachineBlockBaseGui<MTED
 
     @Override
     protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
-        ByteSyncValue voltageTierSyncer = new ByteSyncValue(machine::getVoltageTier, machine::setVoltageTier);
-        IntSyncValue voltageSyncer = new IntSyncValue(machine::getVoltage, machine::setVoltage);
-        IntSyncValue amperageSyncer = new IntSyncValue(machine::getAmperage, machine::setAmperage);
-        BooleanSyncValue isUsingTiersSyncer = new BooleanSyncValue(machine::isUsingTiers, machine::setUsingTiers);
+        ByteSyncValue voltageTierSyncer = new ByteSyncValue(machine::getVoltageTier, machine::setVoltageTier)
+            .allowC2S();
+        IntSyncValue voltageSyncer = new IntSyncValue(machine::getVoltage, machine::setVoltage).allowC2S();
+        IntSyncValue amperageSyncer = new IntSyncValue(machine::getAmperage, machine::setAmperage).allowC2S();
+        BooleanSyncValue isUsingTiersSyncer = new BooleanSyncValue(machine::isUsingTiers, machine::setUsingTiers)
+            .allowC2S();
         syncManager.syncValue("isUsingTiers", isUsingTiersSyncer);
 
         Flow numberInputColumn = Flow.column()
@@ -162,9 +164,9 @@ public class MTEDebugPowerGeneratorGui extends MTETieredMachineBlockBaseGui<MTED
         voltageTextRow.child(
             createNumberTextField().width(20)
                 .setMaxLength(2)
-                .setNumbers(0, MAX_TIER)
+                .numbersInt(0, MAX_TIER)
                 .value(voltageTierSyncer)
-                .setDefaultNumber(0)
+                .defaultNumber(0)
                 .setEnabledIf(t -> isUsingTiersSyncer.getBoolValue()));
 
         // add the changing tier description widget
@@ -180,9 +182,9 @@ public class MTEDebugPowerGeneratorGui extends MTETieredMachineBlockBaseGui<MTED
         voltageTextRow.child(
             createNumberTextField().width(75)
                 .setMaxLength((int) Math.ceil(Math.log10(MAX_VOLTAGE)))
-                .setNumbers(1, MAX_VOLTAGE)
+                .numbersInt(1, MAX_VOLTAGE)
                 .value(voltageSyncer)
-                .setDefaultNumber(1)
+                .defaultNumber(1)
                 .tooltip(t -> t.addLine(IKey.dynamic(() -> {
                     byte tier = getTier(voltageSyncer.getIntValue());
                     return GTValues.TIER_COLORS[tier] + GTValues.VN[tier] + EnumChatFormatting.RESET;
@@ -222,9 +224,9 @@ public class MTEDebugPowerGeneratorGui extends MTETieredMachineBlockBaseGui<MTED
         amperageTextRow.child(
             createNumberTextField().width(65)
                 .setMaxLength((int) Math.ceil(Math.log10(MAX_AMPERAGE)))
-                .setNumbers(1, MAX_AMPERAGE)
+                .numbersInt(1, MAX_AMPERAGE)
                 .value(amperageSyncer)
-                .setDefaultNumber(2));
+                .defaultNumber(2));
 
         // text widget for amperage, is static
         amperageTextRow.child(
@@ -246,8 +248,9 @@ public class MTEDebugPowerGeneratorGui extends MTETieredMachineBlockBaseGui<MTED
 
     @Override
     protected Flow createBottomLeftCornerFlow(ModularPanel panel, PanelSyncManager syncManager) {
-        BooleanSyncValue isProducingSyncer = new BooleanSyncValue(machine::isProducing, (machine::setProducing));
-        BooleanSyncValue isLaserSyncer = new BooleanSyncValue(machine::isLASER, machine::setLASER);
+        BooleanSyncValue isProducingSyncer = new BooleanSyncValue(machine::isProducing, (machine::setProducing))
+            .allowC2S();
+        BooleanSyncValue isLaserSyncer = new BooleanSyncValue(machine::isLASER, machine::setLASER).allowC2S();
         syncManager.syncValue("isProducing", isProducingSyncer);
 
         Flow row = super.createBottomLeftCornerFlow(panel, syncManager);

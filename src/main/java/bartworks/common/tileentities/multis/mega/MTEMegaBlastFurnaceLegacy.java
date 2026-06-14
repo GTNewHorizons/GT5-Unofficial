@@ -56,7 +56,6 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEHatch;
-import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -190,21 +189,21 @@ public class MTEMegaBlastFurnaceLegacy extends MegaMultiBlockBase<MTEMegaBlastFu
             .addSeparator()
             .addTecTechHatchInfo()
             .addMinGlassForLaser(VoltageIndex.UV)
-            .addGlassEnergyLimitInfo(VoltageIndex.UMV)
+            .addGlassEnergyLimitInfo()
             .addUnlimitedTierSkips()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(15, 20, 15, true)
             .addController("Front center, 3rd layer")
             .addCasingInfoRange("Heat Proof Machine Casing", 0, 447, false)
-            .addCasingInfoExactly("Heating Coils", 864, true)
+            .addCasingInfoExactly("Heating Coil", 864, true)
             .addCasingInfoExactly("Any Tiered Glass", 1007, true)
             .addStructureInfo("The glass tier limits the Energy Input tier")
-            .addEnergyHatch("Any bottom layer casing")
-            .addMaintenanceHatch("Any bottom layer casing")
+            .addEnergyHatch("Any bottom layer Casing")
+            .addMaintenanceHatch("Any bottom layer Casing")
             .addMufflerHatch("Top middle")
-            .addInputBus("Any bottom layer casing")
-            .addInputHatch("Any bottom layer casing")
-            .addOutputBus("Any bottom layer casing")
+            .addInputBus("Any bottom layer Casing")
+            .addInputHatch("Any bottom layer Casing")
+            .addOutputBus("Any bottom layer Casing")
             .addOutputHatch("Any Heat Proof Machine Casing")
             .addStructureHint("This Mega Multiblock is too big to have its structure hologram displayed fully.")
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
@@ -276,12 +275,8 @@ public class MTEMegaBlastFurnaceLegacy extends MegaMultiBlockBase<MTEMegaBlastFu
     }
 
     @Override
-    protected String[] getExtendedInfoData() {
-        return new String[] { StatCollector.translateToLocal("GT5U.EBF.heat") + ": "
-            + EnumChatFormatting.GREEN
-            + formatNumber(this.mHeatingCapacity)
-            + EnumChatFormatting.RESET
-            + " K" };
+    public void getExtraInfoData(List<String> info) {
+        info.add(StatCollector.translateToLocalFormatted("GT5U.EBF.heat.s", formatNumber(this.mHeatingCapacity)));
     }
 
     @Override
@@ -360,18 +355,10 @@ public class MTEMegaBlastFurnaceLegacy extends MegaMultiBlockBase<MTEMegaBlastFu
                 }
             }
         }
-        if (this.glassTier < VoltageIndex.UMV) {
-            for (MTEHatch mEnergyHatch : this.mExoticEnergyHatches) {
-                if (this.glassTier < mEnergyHatch.mTier) {
-                    errors.add(StructureErrorRegistry.ENERGY_TIER_EXCEED_GLASS);
-                    break;
-                }
-            }
-            for (MTEHatchEnergy mEnergyHatch : this.mEnergyHatches) {
-                if (this.glassTier < mEnergyHatch.mTier) {
-                    errors.add(StructureErrorRegistry.ENERGY_TIER_EXCEED_GLASS);
-                    break;
-                }
+        for (MTEHatch mEnergyHatch : this.getExoticAndNormalEnergyHatchList()) {
+            if (this.glassTier < mEnergyHatch.getTierForStructure()) {
+                errors.add(StructureErrorRegistry.ENERGY_TIER_EXCEED_GLASS);
+                break;
             }
         }
         if (errors.isEmpty()) {

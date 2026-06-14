@@ -28,13 +28,15 @@ public class MTEToxicResidueSensorGui extends MTEHatchBaseGui<MTEToxicResidueSen
     protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
         Flow col = Flow.column()
             .child(createThresholdTypeButtonRow())
-            .child(CommonWidgets.createInvertButtonRow(new BooleanSyncValue(machine::isInverted, machine::setInverted)))
+            .child(
+                CommonWidgets
+                    .createInvertButtonRow(new BooleanSyncValue(machine::isInverted, machine::setInverted).allowC2S()))
             .child(
                 IKey.lang("GT5U.gui.text.toxic_residue_sensor")
                     .asWidget())
             .child(
-                new TextFieldWidget().value(new IntSyncValue(machine::getThreshold, machine::setThreshold))
-                    .setNumbers(
+                new TextFieldWidget().value(new IntSyncValue(machine::getThreshold, machine::setThreshold).allowC2S())
+                    .numbersInt(
                         0,
                         machine.getThresholdType()
                             .getMaxCapacity())
@@ -47,10 +49,10 @@ public class MTEToxicResidueSensorGui extends MTEHatchBaseGui<MTEToxicResidueSen
     }
 
     public Flow createThresholdTypeButtonRow() {
-        EnumSyncValue<MTEToxicResidueSensor.ThresholdType> thresholdTypeSyncer = new EnumSyncValue<>(
+        EnumSyncValue<MTEToxicResidueSensor.ThresholdType, ?> thresholdTypeSyncer = new EnumSyncValue<>(
             MTEToxicResidueSensor.ThresholdType.class,
             machine::getThresholdType,
-            machine::setThresholdType);
+            machine::setThresholdType).allowC2S();
 
         return Flow.row()
             .child(

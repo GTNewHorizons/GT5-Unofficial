@@ -105,11 +105,11 @@ public class MTEIndustrialCokeOven extends MTEExtendedPowerMultiBlockBase<MTEInd
             .addInfo(
                 TooltipHelper.parallelText(PARALLELS_T1) + " base and +"
                     + TooltipHelper.parallelText(SLICE_PARALLELS_T1)
-                    + " Parallels per extra slice with Heat Resistant Casings")
+                    + " Parallels per extra slice with Heat Resistant Casing")
             .addInfo(
                 TooltipHelper.parallelText(PARALLELS_T2) + " base and +"
                     + TooltipHelper.parallelText(SLICE_PARALLELS_T2)
-                    + " Parallels per extra slice with Heat Proof Casings")
+                    + " Parallels per extra slice with Heat Proof Casing")
             .addInfo(
                 EnumChatFormatting.AQUA + "-2% "
                     + EnumChatFormatting.GRAY
@@ -127,13 +127,13 @@ public class MTEIndustrialCokeOven extends MTEExtendedPowerMultiBlockBase<MTEInd
             .addStructureInfo(EnumChatFormatting.BLUE + "Base Structure:")
             .addCasingInfoMin("Structural Coke Oven Casing", 35, false)
             .addCasingInfoExactly("Heat Resistant/Proof Coke Oven Casing", 8, true)
-            .addCasingInfoExactly("Heating Coils", 8, true)
+            .addCasingInfoExactly("Heating Coil", 8, true)
             .addCasingInfoExactly("Steel Pipe Casing", 7, false)
             .addCasingInfoExactly("Steel Frame Box", 10, false)
             .addStructureInfo(EnumChatFormatting.BLUE + "Each additional slice:")
             .addCasingInfoExactly("Structural Coke Oven Casing", 19, false)
             .addCasingInfoExactly("Heat Resistant/Proof Coke Oven Casing", 5, true)
-            .addCasingInfoExactly("Heating Coils", 8, true)
+            .addCasingInfoExactly("Heating Coil", 8, true)
             .addCasingInfoExactly("Steel Pipe Casing", 3, false)
             .addCasingInfoExactly("Steel Frame Box", 10, false)
             .addInputBus("Any Structural Coke Oven Casing of the base structure", 1)
@@ -145,6 +145,7 @@ public class MTEIndustrialCokeOven extends MTEExtendedPowerMultiBlockBase<MTEInd
             .addMufflerHatch("Any Structural Coke Oven Casing of the base structure", 1)
             .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
             .addSubChannelUsage(GTStructureChannels.COKE_OVEN_CASING)
+            .addSubChannelUsage(GTStructureChannels.STRUCTURE_LENGTH)
             .addStructureAuthors(EnumChatFormatting.GOLD + "Nicouuuuu")
             .toolTipFinisher();
         return tt;
@@ -163,11 +164,11 @@ public class MTEIndustrialCokeOven extends MTEExtendedPowerMultiBlockBase<MTEInd
                     { "      ", "   C  ", "   C  ", "   C  ", "   C  ", "   C  ", "   DDD" } })
             .addShape(
                 STRUCTURE_PIECE_NEXT,
-                new String[][] { { "    ", " C  ", " C  ", " C  ", " C  ", " C  ", " FFF" },
-                    { "    ", " E  ", " BF ", " BF ", " BF ", " BF ", " FFF" },
-                    { "AA  ", " A  ", "  F ", "  E ", "  E ", "  E ", " FFF" },
-                    { "    ", " E  ", " BF ", " BF ", " BF ", " BF ", " FFF" },
-                    { "    ", " C  ", " C  ", " C  ", " C  ", " C  ", " FFF" } })
+                new String[][] { { "    ", " C  ", " C  ", " C  ", " C  ", " C  ", "  FF" },
+                    { "    ", " E  ", " BF ", " BF ", " BF ", " BF ", "  FF" },
+                    { "AA  ", " A  ", "  F ", "  E ", "  E ", "  E ", "  FF" },
+                    { "    ", " E  ", " BF ", " BF ", " BF ", " BF ", "  FF" },
+                    { "    ", " C  ", " C  ", " C  ", " C  ", " C  ", "  FF" } })
             .addElement(
                 'D',
                 buildHatchAdder(MTEIndustrialCokeOven.class)

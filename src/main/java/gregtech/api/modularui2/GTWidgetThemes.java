@@ -42,10 +42,16 @@ public final class GTWidgetThemes {
         .defaultTheme(new WidgetTheme(0, 0, null, Color.WHITE.main, 0x404040, false, 0))
         .defaultHoverTheme(null)
         .register();
+
     // Use for plain/unlocalized display strings and dynamic values (numbers, status text, mode text)
-    public static WidgetThemeKey<WidgetTheme> DISPLAY_TEXT = themeApi
-        .widgetThemeKeyBuilder("displayText", WidgetTheme.class)
+    public static WidgetThemeKey<WidgetTheme> DISPLAY_TEXT_WHITE = themeApi
+        .widgetThemeKeyBuilder("displayTextWhite", WidgetTheme.class)
         .defaultTheme(new WidgetTheme(0, 0, null, Color.WHITE.main, 0xFAFAFA, false, 0))
+        .defaultHoverTheme(null)
+        .register();
+    public static WidgetThemeKey<WidgetTheme> DISPLAY_TEXT_GRAY = themeApi
+        .widgetThemeKeyBuilder("displayTextGray", WidgetTheme.class)
+        .defaultTheme(new WidgetTheme(0, 0, null, Color.GREY.main, 0x404040, false, 0))
         .defaultHoverTheme(null)
         .register();
 
@@ -82,14 +88,14 @@ public final class GTWidgetThemes {
 
     public static WidgetThemeKey<SlotTheme> OVERLAY_FLUID_SLOT_IN = registerThemedFluidSlot("overlayFluidSlotIn");
 
-    public static WidgetThemeKey<WidgetTheme> PROGRESSBAR_BOILER_HEAT = themeApi
-        .widgetThemeKeyBuilder("progressbarBoilerHeat", WidgetTheme.class)
+    public static WidgetThemeKey<ProgressbarWidgetTheme> PROGRESSBAR_BOILER_HEAT = themeApi
+        .widgetThemeKeyBuilder("progressbarBoilerHeat", ProgressbarWidgetTheme.class)
         .defaultTheme(
             new ProgressbarWidgetTheme(GTGuiTextures.SLOT_ITEM_STANDARD, GTGuiTextures.PROGRESSBAR_BOILER_HEAT, 54))
         .defaultHoverTheme(null)
         .register();
-    public static WidgetThemeKey<WidgetTheme> PROGRESSBAR_FUEL = themeApi
-        .widgetThemeKeyBuilder("progressbarFuel", WidgetTheme.class)
+    public static WidgetThemeKey<ProgressbarWidgetTheme> PROGRESSBAR_FUEL = themeApi
+        .widgetThemeKeyBuilder("progressbarFuel", ProgressbarWidgetTheme.class)
         .defaultTheme(new ProgressbarWidgetTheme(GTGuiTextures.PROGRESSBAR_FUEL_STANDARD, 14))
         .defaultHoverTheme(null)
         .register();

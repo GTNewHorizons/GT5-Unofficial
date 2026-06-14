@@ -30,8 +30,9 @@ public class MTEDebugPollutorGui extends MTETieredMachineBlockBaseGui<MTEDebugPo
 
     @Override
     protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
-        IntSyncValue pollutionSyncer = new IntSyncValue(machine::getPollution, machine::setPollution);
-        BooleanSyncValue isPollutingSyncer = new BooleanSyncValue(machine::isPolluting, machine::setPolluting);
+        IntSyncValue pollutionSyncer = new IntSyncValue(machine::getPollution, machine::setPollution).allowC2S();
+        BooleanSyncValue isPollutingSyncer = new BooleanSyncValue(machine::isPolluting, machine::setPolluting)
+            .allowC2S();
         syncManager.syncValue("isPolluting", isPollutingSyncer); // needed for the label to function
 
         Flow mainColumn = Flow.column()
@@ -49,9 +50,9 @@ public class MTEDebugPollutorGui extends MTETieredMachineBlockBaseGui<MTEDebugPo
                 .size(80, 14)
                 .setMaxLength(10)
                 .value(pollutionSyncer)
-                .setFormatAsInteger(true)
-                .setNumbers(0, Integer.MAX_VALUE)
-                .setDefaultNumber(0));
+                .formatAsInteger(true)
+                .numbersInt(0, Integer.MAX_VALUE)
+                .defaultNumber(0));
 
         // text widget for pollution
         pollutionRow.child(

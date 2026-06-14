@@ -82,7 +82,7 @@ public class MTEFilterGui extends MTEFilterBaseGui<MTEFilter> {
             new Pair<>(
                 true,
                 () -> CommonButtons.createToggleButtonDynamicTooltip(
-                    new BooleanSyncValue(machine::isIgnoreNbt, machine::setIgnoreNbt),
+                    new BooleanSyncValue(machine::isIgnoreNbt, machine::setIgnoreNbt).allowC2S(),
                     GTGuiTextures.OVERLAY_BUTTON_NBT,
                     configureTooltip("GT5U.machines.ignore_nbt.tooltip"))));
 

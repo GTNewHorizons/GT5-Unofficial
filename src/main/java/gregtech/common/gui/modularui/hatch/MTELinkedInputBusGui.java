@@ -28,8 +28,8 @@ public class MTELinkedInputBusGui extends MTEHatchBaseGui<MTELinkedInputBus> {
 
     @Override
     protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
-        StringSyncValue channelSyncer = new StringSyncValue(machine::getChannel, machine::setChannel);
-        BooleanSyncValue isPrivateSyncer = new BooleanSyncValue(machine::isPrivate, machine::setPrivate);
+        StringSyncValue channelSyncer = new StringSyncValue(machine::getChannel, machine::setChannel).allowC2S();
+        BooleanSyncValue isPrivateSyncer = new BooleanSyncValue(machine::isPrivate, machine::setPrivate).allowC2S();
 
         Flow mainColumn = Flow.column()
             .coverChildren()
@@ -68,7 +68,7 @@ public class MTELinkedInputBusGui extends MTEHatchBaseGui<MTELinkedInputBus> {
         mainColumn.child(
             new ItemSlotGridBuilder(machine.getHandler(), syncManager).size(SLOT_PER_ROW, SLOT_ROW)
                 .filter(
-                    $ -> !channelSyncer.getStringValue()
+                    _ -> !channelSyncer.getStringValue()
                         .isEmpty())
                 .build());
 

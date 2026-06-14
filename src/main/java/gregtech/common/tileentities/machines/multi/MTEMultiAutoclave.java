@@ -204,17 +204,17 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Autoclave")
+        tt.addMachineType("Autoclave, IAC")
             .addDynamicParallelInfo(12, TooltipTier.ITEM_PIPE_CASING)
             .addDynamicSpeedBonusInfo(0.25f, TooltipTier.COIL)
             .addDynamicEuEffInfo(0.0833f, TooltipTier.PIPE_CASING)
             .beginStructureBlock(7, 7, 9, true)
             .addController("Front bottom center")
-            .addCasingInfoMin("Pressure Containment Casings", 128, false)
+            .addCasingInfoMin("Pressure Containment Casing", 128, false)
             .addCasingInfoExactly("Any Tiered Glass", 42, false)
-            .addCasingInfoExactly("Item Pipe Casings", 7, true)
-            .addCasingInfoExactly("Pipe Casings", 14, true)
-            .addCasingInfoExactly("Heating Coils", 7, true)
+            .addCasingInfoExactly("Item Pipe Casing", 7, true)
+            .addCasingInfoExactly("Pipe Casing", 14, true)
+            .addCasingInfoExactly("Heating Coil", 7, true)
             .addCasingInfoExactly("PTFE Frame", 42, false)
             .addInputBus("Any Pressure Containment Casing", 1)
             .addOutputBus("Any Pressure Containment Casing", 1)

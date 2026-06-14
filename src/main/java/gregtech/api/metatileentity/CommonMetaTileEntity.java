@@ -404,7 +404,7 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
     @Override
     public String getInventoryName() {
         if (GregTechAPI.METATILEENTITIES[getBaseMetaTileEntity().getMetaTileID()] != null) {
-            return GregTechAPI.METATILEENTITIES[getBaseMetaTileEntity().getMetaTileID()].getMetaName();
+            return GregTechAPI.METATILEENTITIES[getBaseMetaTileEntity().getMetaTileID()].getLocalNameKey();
         }
         return "";
     }
@@ -412,10 +412,6 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
     @Override
     public int getInventoryStackLimit() {
         return 64;
-    }
-
-    public int getSlotLimit(int slot) {
-        return getInventoryStackLimit();
     }
 
     @Override
@@ -676,7 +672,7 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
         return new GTModularScreen(mainPanel, getColoredTheme());
     }
 
-    private GTGuiTheme getColoredTheme() {
+    public final GTGuiTheme getColoredTheme() {
         GTGuiTheme baseTheme = getGuiTheme();
         if (baseTheme != GTGuiThemes.STANDARD) return baseTheme;
         byte color = this.getBaseMetaTileEntity()

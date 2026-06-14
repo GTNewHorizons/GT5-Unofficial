@@ -25,7 +25,7 @@ public class MTEDroneCentreGui extends MTEMultiBlockBaseGui<MTEDroneCentre> {
     @Override
     protected void registerSyncValues(PanelSyncManager syncManager) {
         super.registerSyncValues(syncManager);
-        syncManager.syncValue("setkey", new StringSyncValue(multiblock::getKey, multiblock::setKey));
+        syncManager.syncValue("setkey", new StringSyncValue(multiblock::getKey, multiblock::setKey).allowC2S());
         DroneCentreGuiUtil.syncDroneValues(syncManager, multiblock);
     }
 

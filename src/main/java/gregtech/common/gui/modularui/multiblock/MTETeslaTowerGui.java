@@ -85,7 +85,7 @@ public class MTETeslaTowerGui extends TTMultiblockBaseGui<MTETeslaTower> {
                     () -> " " + voltageSyncer.getValue()
                         .toString())
                     .asWidget()
-                    .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
+                    .widgetTheme(GTWidgetThemes.DISPLAY_TEXT_WHITE)
                     // Minecraft &a equivalent
                     .color(0x55FF55));
     }
@@ -211,7 +211,8 @@ public class MTETeslaTowerGui extends TTMultiblockBaseGui<MTETeslaTower> {
             .child(
                 new TextFieldWidget()
                     .value(
-                        new IntSyncValue(multiblock::getTicksBetweenDataPoints, multiblock::setTicksBetweenDataPoints))
+                        new IntSyncValue(multiblock::getTicksBetweenDataPoints, multiblock::setTicksBetweenDataPoints)
+                            .allowC2S())
                     .size(25, 12)
                     .marginRight(4))
             .child(
@@ -228,7 +229,8 @@ public class MTETeslaTowerGui extends TTMultiblockBaseGui<MTETeslaTower> {
                     .asWidget()
                     .marginRight(4))
             .child(
-                new TextFieldWidget().value(new IntSyncValue(multiblock::getHistorySize, multiblock::setHistorySize))
+                new TextFieldWidget()
+                    .value(new IntSyncValue(multiblock::getHistorySize, multiblock::setHistorySize).allowC2S())
                     .size(25, 12)
                     .marginRight(4))
             .child(
