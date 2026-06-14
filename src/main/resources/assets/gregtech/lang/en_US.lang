@@ -8860,3 +8860,15 @@ gt.blockmachines.basicgenerator.magicenergyabsorber.tooltip=§nFeasts on §d§nm
 gt.blockmachines.basicgenerator.magicenergyabsorber.tooltip.dragon_egg.shared=A §7 §dDragon Egg§7 atop
 gt.blockmachines.basicgenerator.magicenergyabsorber.tooltip.dragon_egg.exclusive=An §e§nEXCLUSIVE§r§7 §dDragon Egg§7 atop
 gt.blockmachines.basicgenerator.magicenergyabsorber.tooltip.thaumcraft=- %sCV/t from an §dEnergised Node§7\n- %sEU per §dEssentia§7 Aspect-Value from containers in range
+
+# Basic Generators - Solar Panel
+gt.blockmachines.basicgenerator.solarpanel.00.name=1-volt Solar Panel
+gt.blockmachines.basicgenerator.solarpanel.01.name=Basic Solar Panel
+gt.blockmachines.basicgenerator.solarpanel.02.name=Advanced Solar Panel
+gt.blockmachines.basicgenerator.solarpanel.03.name=Advanced Solar Panel II
+gt.blockmachines.basicgenerator.solarpanel.04.name=Advanced Solar Panel III
+gt.blockmachines.basicgenerator.solarpanel.05.name=Advanced Solar Panel IV
+gt.blockmachines.basicgenerator.solarpanel.06.name=Elite Solar Panel
+gt.blockmachines.basicgenerator.solarpanel.07.name=Elite Solar Panel II
+gt.blockmachines.basicgenerator.solarpanel.08.name=Ultimate Solar Panel
+gt.blockmachines.basicgenerator.solarpanel.tooltip=Generates EU From Solar Power\nDoes not generate power when raining\nCleans itself automatically\nDoes not explode in rain!
