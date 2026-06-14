@@ -566,7 +566,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
     }
 
     private IWidget createRecipeInfoTextWidget(PanelSyncManager syncManager) {
-        return IKey.dynamic(() -> ((StringSyncValue) syncManager.getSyncHandlerFromMapKey("recipeInfo:0")).getValue())
+        return IKey.dynamic(multiblock::generateCurrentRecipeInfoString)
             .asWidget()
             .marginBottom(2)
             .fullWidth()
@@ -1369,9 +1369,6 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             (a, b) -> a.isItemEqual(b) && a.stackSize == b.stackSize,
             null);
         syncManager.syncValue("itemOutput", itemOutputSyncer);
-
-        StringSyncValue recipeInfoSyncer = new StringSyncValue(multiblock::generateCurrentRecipeInfoString);
-        syncManager.syncValue("recipeInfo", recipeInfoSyncer);
 
         // Widget Specific
         BooleanSyncValue powerSwitchSyncer = new BooleanSyncValue(multiblock::isAllowedToWork, bool -> {

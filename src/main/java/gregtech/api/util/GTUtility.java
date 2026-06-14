@@ -222,7 +222,7 @@ public class GTUtility {
     // UUID.fromString("00000000-0000-0000-0000-000000000000");
     private static final Splitter NEWLINE_SPLITTER = Splitter.on("\\n")
         .omitEmptyStrings();
-    private static final Block DISTILLED_WATER_BLOCK = BlocksItems.getFluidBlock(InternalName.fluidDistilledWater);
+    private static Block DISTILLED_WATER_BLOCK;
 
     public static int safeInt(long number, int margin) {
         return number > Integer.MAX_VALUE - margin ? Integer.MAX_VALUE - margin : (int) number;
@@ -1329,6 +1329,19 @@ public class GTUtility {
         for (ItemStack stack : stacks) {
             if (stack == null || stack.getItem() == null) continue;
             histogram.addTo(ItemId.create(stack), stack.stackSize);
+        }
+
+        return histogram;
+    }
+
+    public static Object2LongOpenHashMap<FluidId> getFluidStackHistogram(Iterable<FluidStack> stacks) {
+        Object2LongOpenHashMap<FluidId> histogram = new Object2LongOpenHashMap<>();
+
+        if (stacks == null) return histogram;
+
+        for (FluidStack stack : stacks) {
+            if (stack == null || stack.getFluid() == null) continue;
+            histogram.addTo(FluidId.create(stack), stack.amount);
         }
 
         return histogram;
@@ -4092,6 +4105,16 @@ public class GTUtility {
             NBTTagCompound nbt = nbt();
             return new FluidStack(fluid(), amount, nbt != null ? (NBTTagCompound) nbt.copy() : null);
         }
+
+        public boolean matches(FluidStack stack) {
+            if (fluid() != stack.getFluid()) return false;
+
+            return Objects.equals(nbt(), stack.tag);
+        }
+
+        public boolean matches(Fluid fluid) {
+            return fluid() == fluid;
+        }
     }
 
     public static int getPlasmaFuelValueInEUPerLiterFromMaterial(Materials material) {
@@ -4344,17 +4367,42 @@ public class GTUtility {
         return Mods.COFHCore.isModLoaded() && (block instanceof BlockWater || block instanceof BlockTickingWater);
     }
 
+    private static boolean isDistilledWater(Block block) {
+        if (DISTILLED_WATER_BLOCK == null) {
+            Block b = BlocksItems.getFluidBlock(InternalName.fluidDistilledWater);
+            if (b != null) {
+                DISTILLED_WATER_BLOCK = b;
+            }
+        }
+        return DISTILLED_WATER_BLOCK != null
+            && Block.getIdFromBlock(block) == Block.getIdFromBlock(DISTILLED_WATER_BLOCK);
+    }
+
     public static boolean isWater(Block block) {
-        return block == Blocks.flowing_water || block == Blocks.water
-            || block == DISTILLED_WATER_BLOCK
-            || isCOFHWater(block);
+        return block == Blocks.flowing_water || block == Blocks.water || isDistilledWater(block) || isCOFHWater(block);
     }
 
     public static boolean isFlowingWater(Block block, World world, int x, int y, int z) {
+        if (isCOFHWater(block)) {
+            return world.getBlockMetadata(x, y, z) > 0;
+        }
         return block == Blocks.flowing_water || (isWater(block) && world.getBlockMetadata(x, y, z) > 0);
     }
 
     public static boolean isSourceWater(Block block, World world, int x, int y, int z) {
         return isWater(block) && !isFlowingWater(block, world, x, y, z);
+    }
+
+    public static FluidStack[] splitFluidStack(FluidStack fluid, long amount) {
+        int size = (int) ((amount + Integer.MAX_VALUE - 1) / Integer.MAX_VALUE);
+        FluidStack[] result = new FluidStack[size];
+        for (int i = 0; i < size; i++) {
+            int a = (int) Math.min(amount, Integer.MAX_VALUE);
+            FluidStack tmp = fluid.copy();
+            tmp.amount = a;
+            result[i] = tmp;
+            amount -= a;
+        }
+        return result;
     }
 }
