@@ -8872,3 +8872,9 @@ gt.blockmachines.basicgenerator.solarpanel.06.name=Elite Solar Panel
 gt.blockmachines.basicgenerator.solarpanel.07.name=Elite Solar Panel II
 gt.blockmachines.basicgenerator.solarpanel.08.name=Ultimate Solar Panel
 gt.blockmachines.basicgenerator.solarpanel.tooltip=Generates EU From Solar Power\nDoes not generate power when raining\nCleans itself automatically\nDoes not explode in rain!
+
+# Basic Generators - Lightning Rod
+gt.blockmachines.basicgenerator.lightningrod.03.name=Lightning Rod
+gt.blockmachines.basicgenerator.lightningrod.04.name=Lightning Rod II
+gt.blockmachines.basicgenerator.lightningrod.05.name=Lightning Rod III
+gt.blockmachines.basicgenerator.lightningrod.tooltip=Generates EU From Lightning Bolts

@@ -8879,3 +8879,9 @@ gt.blockmachines.basicgenerator.solarpanel.06.name=Элитная солнечн
 gt.blockmachines.basicgenerator.solarpanel.07.name=Элитная солнечная панель II
 gt.blockmachines.basicgenerator.solarpanel.08.name=Совершенная солнечная панель
 gt.blockmachines.basicgenerator.solarpanel.tooltip=Генерирует EU от солнечной энергии\nНе вырабатывает энергию во время дождя\nСамоочищается автоматически\nНе взрывается под дождём!
+
+# Basic Generators - Lightning Rod
+gt.blockmachines.basicgenerator.lightningrod.03.name=Молниеотвод
+gt.blockmachines.basicgenerator.lightningrod.04.name=Молниеотвод II
+gt.blockmachines.basicgenerator.lightningrod.05.name=Молниеотвод III
+gt.blockmachines.basicgenerator.lightningrod.tooltip=Генерирует EU от ударов молнии
