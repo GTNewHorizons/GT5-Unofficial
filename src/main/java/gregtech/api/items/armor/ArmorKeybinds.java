@@ -28,6 +28,8 @@ public class ArmorKeybinds {
         .createConfigurable("key.gt.force_field", "Gregtech Armor", Keyboard.KEY_K);
     public static final SyncedKeybind HOLO_INVENTORY_KEYBIND = SyncedKeybind
         .createConfigurable("key.gt.toggle_holo_inventory", "Gregtech Armor", Keyboard.KEY_H);
+    public static final SyncedKeybind OPEN_RADIAL_MENU = SyncedKeybind
+        .createConfigurable("key.gt.open_radial_menu", "Gregtech Armor", Keyboard.KEY_O);
 
     public static final SyncedKeybind VANILLA_JUMP = SyncedKeybind
         .createFromMC(() -> () -> Minecraft.getMinecraft().gameSettings.keyBindJump);

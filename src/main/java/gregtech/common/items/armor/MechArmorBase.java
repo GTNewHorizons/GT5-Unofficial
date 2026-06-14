@@ -46,6 +46,8 @@ import gregtech.api.hazards.Hazard;
 import gregtech.api.hazards.IHazardProtector;
 import gregtech.api.items.armor.ArmorContext;
 import gregtech.api.items.armor.ArmorContext.ArmorContextImpl;
+import gregtech.api.items.armor.ArmorKeybinds;
+import gregtech.api.items.armor.ArmorRadialSettings;
 import gregtech.api.items.armor.ArmorState;
 import gregtech.api.items.armor.MechArmorAugmentRegistries.ArmorType;
 import gregtech.api.items.armor.MechArmorAugmentRegistries.Cores;
@@ -148,6 +150,8 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISp
 
         for (IArmorBehavior behavior : context.getArmorState().behaviors.values()) {
             if (player instanceof EntityPlayerMP playerMP) {
+                ArmorKeybinds.OPEN_RADIAL_MENU.removePlayerListener(playerMP, this);
+
                 for (SyncedKeybind keyBind : behavior.getListenedKeys(context)) {
                     keyBind.removePlayerListener(playerMP, this);
                 }
@@ -161,6 +165,8 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISp
         ArmorContext context = load(world, player, stack);
 
         if (player instanceof EntityPlayerMP playerMP) {
+            ArmorKeybinds.OPEN_RADIAL_MENU.registerPlayerListener(playerMP, this);
+
             for (IArmorBehavior behavior : context.getArmorState().behaviors.values()) {
                 for (SyncedKeybind keyBind : behavior.getListenedKeys(context)) {
                     keyBind.registerPlayerListener(playerMP, this);
@@ -206,6 +212,13 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISp
         if (stack.getItem() != this) return;
 
         ArmorContext context = load(player.getEntityWorld(), player, stack);
+
+        if (keyPressed == gregtech.api.items.armor.ArmorKeybinds.OPEN_RADIAL_MENU) {
+            if (isDown) {
+                ArmorRadialSettings.INSTANCE.open(player);
+            }
+            return;
+        }
 
         boolean didSomething = false;
 
