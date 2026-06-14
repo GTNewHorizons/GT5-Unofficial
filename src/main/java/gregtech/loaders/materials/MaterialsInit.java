@@ -64,6 +64,8 @@ public class MaterialsInit {
         loadAluminiumOres();
         loadUEVPlusMaterials();
         loadGTNHMaterials();
+        loadLabGrownGems();
+        loadChimeraGems();
     }
 
     private static void loadElements() {
@@ -16647,5 +16649,37 @@ public class MaterialsInit {
             .addSubTag(SubTag.METAL)
             .addSubTag(SubTag.MULTI_PLATE)
             .constructMaterial();
+    }
+
+    private static void loadLabGrownGems() {
+
+    }
+
+    private static void loadChimeraGems() {
+        Materials.Amalgatite = loadAmalgatite();
+    }
+
+    private static Materials loadAmalgatite() {
+        return new MaterialBuilder().setName("Amalgatite")
+            .setDefaultLocalName("Amalgatite")
+            .setChemicalFormula(EnumChatFormatting.OBFUSCATED + "?????????")
+            .setFlavorText("It could have been great!")
+            .setIconSet(TextureSet.SET_SG_CRYSTAL_SLURRY)
+            .setColor(Dyes.dyeWhite)
+            .setARGB(0xffffffff)
+            .addSubTag(SubTag.CRYSTAL)
+            .addSubTag(SubTag.CRYSTALLISABLE)
+            .addSubTag(SubTag.NO_SMASHING)
+            .addSubTag(SubTag.NO_SMELTING)
+            .addSubTag(SubTag.NO_RECYCLING_RECIPES)
+            .addSubTag(SubTag.NO_RECIPES)
+            .addSubTag(SubTag.TRANSPARENT)
+            .addOrePrefix(OrePrefixes.gemChipped)
+            .addOrePrefix(OrePrefixes.gemFlawed)
+            .addOrePrefix(OrePrefixes.gem)
+            .addOrePrefix(OrePrefixes.gemFlawless)
+            .addOrePrefix(OrePrefixes.gemExquisite)
+            .constructMaterial()
+            .setProcessingMaterialTierEU(TierEU.RECIPE_MAX);
     }
 }
