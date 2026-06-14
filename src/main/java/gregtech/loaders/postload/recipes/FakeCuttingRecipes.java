@@ -60,11 +60,18 @@ public class FakeCuttingRecipes implements Runnable {
                         .toPlainString())
                 .collect(Collectors.joining("/"));
 
+            FakeCuttingSpecialInfo specialInfo = new FakeCuttingSpecialInfo();
+
+            for (int i = 0; i < fluids.size(); i++) {
+                specialInfo.add(fluids.get(i), durations.get(i));
+            }
+
             GTRecipeBuilder builder = GTValues.RA.stdBuilder()
                 .itemInputs(template.mInputs)
                 .itemOutputs(template.mOutputs)
                 .eut(template.mEUt)
                 .duration(template.mDuration)
+                .special(specialInfo)
                 .setNEIDesc(StatCollector.translateToLocalFormatted("GT5U.nei.display.duration.seconds", durationInfo))
                 .fake();
 
