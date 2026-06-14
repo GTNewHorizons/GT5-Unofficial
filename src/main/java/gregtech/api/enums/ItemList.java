@@ -2837,8 +2837,6 @@ public enum ItemList implements IItemContainer {
 
     WindmillBaseCasing,
     WindmillShaftCasing,
-    WindmillBaseCasingDirty,
-    WindmillShaftCasingDirty,
     WindmillMillstoneHousing,
 
     Mechanical_Helmet,

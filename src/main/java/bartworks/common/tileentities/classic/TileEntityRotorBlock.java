@@ -13,8 +13,11 @@
 
 package bartworks.common.tileentities.classic;
 
+import static bartworks.common.loaders.ItemRegistry.REINFORCED_ROTOR;
+
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 
 import bartworks.client.gui.GuiContainerRotorBlock;
 import cpw.mods.fml.relauncher.Side;
@@ -31,6 +34,14 @@ public class TileEntityRotorBlock extends TileEntityWindKineticGenerator {
     @Override
     public int getKuOutput() {
         return 0;
+    }
+
+    @Override
+    protected void updateEntityServer() {
+        super.updateEntityServer();
+        // band-aid fix for reinforced rotor to have infinite durability
+        ItemStack rotor = this.rotorSlot.get();
+        if (rotor != null && rotor.getItem() == REINFORCED_ROTOR) rotor.setItemDamage(0);
     }
 
     @Override

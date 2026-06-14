@@ -10,12 +10,10 @@ import gregtech.api.enums.Textures;
 public class BlockCasingsWindmill extends BlockCasingsAbstract {
 
     public BlockCasingsWindmill() {
-        super(ItemCasings.class, "gt.blockcasingswindmill", MaterialCasings.INSTANCE, 5);
+        super(ItemCasings.class, "gt.blockcasingswindmill", MaterialCasings.INSTANCE, 3);
         register(0, ItemList.WindmillBaseCasing);
         register(1, ItemList.WindmillShaftCasing);
-        register(2, ItemList.WindmillBaseCasingDirty);
-        register(3, ItemList.WindmillShaftCasingDirty);
-        register(4, ItemList.WindmillMillstoneHousing);
+        register(2, ItemList.WindmillMillstoneHousing);
     }
 
     @Override
@@ -34,8 +32,6 @@ public class BlockCasingsWindmill extends BlockCasingsAbstract {
         return switch (aMeta) {
             case 0 -> Textures.BlockIcons.WINDMILL_BASE_CASING.getIcon();
             case 1 -> Textures.BlockIcons.WINDMILL_SHAFT_CASING.getIcon();
-            case 2 -> Textures.BlockIcons.WINDMILL_BASE_CASING_DIRTY.getIcon();
-            case 3 -> Textures.BlockIcons.WINDMILL_SHAFT_CASING_DIRTY.getIcon();
             default -> Textures.BlockIcons.WINDMILL_MILLSTONE_HOUSING.getIcon();
         };
     }

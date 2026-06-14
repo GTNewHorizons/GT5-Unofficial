@@ -1,11 +1,10 @@
 package gregtech.common.gui.modularui.multiblock;
 
-import java.util.ArrayList;
-
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
+import com.cleanroommc.modularui.value.sync.GenericListSyncHandler;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.ProgressWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
@@ -41,13 +40,30 @@ public class MTEWindmillGui extends MTEMultiBlockBaseGui<MTEWindmill> {
                 new ModularSlot(multiblock.inventoryHandler, multiblock.getControllerSlotIndex()).singletonSlotGroup())
             .backgroundOverlay(GTGuiTextures.OVERLAY_SLOT_CRUSHED_ORE);
 
-        ArrayList<StructureError> errors = new ArrayList<>();
-        multiblock.checkMachine(multiblock.getBaseMetaTileEntity(), null, errors);
+        final ItemSlot inputSlotIncomplete = new ItemSlot()
+            .slot(
+                new ModularSlot(multiblock.inventoryHandler, multiblock.getControllerSlotIndex()).singletonSlotGroup())
+            .backgroundOverlay(GTGuiTextures.OVERLAY_SLOT_CRUSHED_ORE);
+
+        GenericListSyncHandler<StructureError> error = syncManager
+            .findSyncHandler("structureErrors", GenericListSyncHandler.class);
 
         return new GTBaseGuiBuilder(multiblock, guiData, syncManager, uiSettings).moveGregtechLogoPos(8, 63)
             .build()
-            .childIf(!errors.isEmpty(), () -> createMachineRowIncomplete(syncManager, inputSlot))
-            .childIf(errors.isEmpty(), () -> createMachineRow(progressGrinder, inputSlot));
+            .child(
+                createMachineRowIncomplete(syncManager, inputSlotIncomplete).setEnabledIf(
+                    _ -> !error.getValue()
+                        .isEmpty())
+                    .horizontalCenter())
+            .child(
+                createMachineRow(progressGrinder, inputSlot).setEnabledIf(
+                    _ -> error.getValue()
+                        .isEmpty())
+                    .horizontalCenter())
+            .child(
+                createStructureUpdateButton(syncManager).resizer()
+                    .pos(30, 63)
+                    .getWidget());
     }
 
     protected Flow createMachineRow(ProgressWidget progressGrinder, ItemSlot inputSlot) {
@@ -59,11 +75,11 @@ public class MTEWindmillGui extends MTEMultiBlockBaseGui<MTEWindmill> {
     }
 
     protected Flow createMachineRowIncomplete(PanelSyncManager syncManager, ItemSlot inputSlot) {
-        return Flow.row()
+        return Flow.col()
             .fullWidth()
             .height(MACHINE_ROW_HEIGHT)
-            .padding(4, 4, 6, 0)
-            .child(createStructureErrorWidget(syncManager))
-            .child(inputSlot.pos(150, 63));
+            .padding(6, 6, 10, 0)
+            .child((createStructureErrorWidget(syncManager)))
+            .child(inputSlot.pos(151, 63));
     }
 }
