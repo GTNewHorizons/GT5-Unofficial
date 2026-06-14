@@ -32,7 +32,11 @@ public class BlockCasingsWindmill extends BlockCasingsAbstract {
         return switch (aMeta) {
             case 0 -> Textures.BlockIcons.WINDMILL_BASE_CASING.getIcon();
             case 1 -> Textures.BlockIcons.WINDMILL_SHAFT_CASING.getIcon();
-            default -> Textures.BlockIcons.WINDMILL_MILLSTONE_HOUSING.getIcon();
+            default -> {
+                if (ordinalSide == 0) yield Textures.BlockIcons.WINDMILL_BASE_CASING.getIcon();
+                if (ordinalSide == 1) yield Textures.BlockIcons.WINDMILL_BASE_CASING.getIcon();
+                yield Textures.BlockIcons.WINDMILL_MILLSTONE_HOUSING.getIcon();
+            }
         };
     }
 }

@@ -62,7 +62,11 @@ public class MTEWindmillGui extends MTEMultiBlockBaseGui<MTEWindmill> {
                     .horizontalCenter())
             .child(
                 createStructureUpdateButton(syncManager).resizer()
-                    .pos(30, 63)
+                    .pos(151, 63)
+                    .getWidget())
+            .child(
+                createPowerSwitchButton().resizer()
+                    .pos(131, 63)
                     .getWidget());
     }
 
@@ -80,6 +84,6 @@ public class MTEWindmillGui extends MTEMultiBlockBaseGui<MTEWindmill> {
             .height(MACHINE_ROW_HEIGHT)
             .padding(6, 6, 10, 0)
             .child((createStructureErrorWidget(syncManager)))
-            .child(inputSlot.pos(151, 63));
+            .child(inputSlot.pos(30, 63));
     }
 }

@@ -20,8 +20,9 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofTileAdd
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.GregTechAPI.sBlockCasingsWindmill;
+import static gregtech.api.enums.GTAuthors.AuthorMilkFox;
 import static gregtech.api.enums.GTValues.V;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_STEAM_MACERATOR;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_STEAM_MACERATOR;
 
 import java.util.HashSet;
 import java.util.List;
@@ -34,6 +35,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityDispenser;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -83,14 +85,6 @@ import gregtech.nei.RecipeDisplayInfo;
 public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
     implements ISurvivalConstructable, IOverclockDescriptionProvider {
 
-    /*
-     * TODO: improve overclock describer
-     * TODO: textures
-     * TODO: add block names to lang
-     * TODO: WAILA update
-     * TODO: clean up class
-     */
-
     private static final int MAX_PARALLELS = 16;
 
     private TileEntityRotorBlock rotorBlock;
@@ -114,7 +108,7 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
     private static final int HORIZONTAL_OFFSET = 3;
     private static final int DEPTH_OFFSET = 0;
     private static final int MILLSTONE_META = 2;
-    private static final int RECIPE_DURATION_MULTI = 4;
+    private static final int RECIPE_DURATION_MULTI = 8;
 
     private final OverclockDescriber overclockDescriber;
 
@@ -170,6 +164,7 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
     private static final IStructureDefinition<MTEWindmill> STRUCTURE_DEFINITION = StructureDefinition
         .<MTEWindmill>builder()
         // spotless:off
+        // TODO: remove legacy structure by 2.10/2.11
         .addShape(STRUCTURE_PIECE_LEGACY, transpose(new String[][] {
             { "       ", "       ", "       ", "   p   ", "       ", "       ", "       " },
             { "       ", "       ", "  ppp  ", "  p p  ", "  ppp  ", "       ", "       " },
@@ -284,31 +279,57 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
         return (d, r, f) -> d.offsetY == 0 && r.isNotRotated() && f.isNotFlipped();
     }
 
-    // TODO: remake/stylize tooltip
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Macerator")
-            .addInfo("A primitive Grinder powered by Kinetic energy")
-            .addInfo("Speed and output will be affected by wind speed, recipe and rotor")
-            .addInfo("Rotor can be put in the Primitive Kinetic Shaftbox")
-            .addInfo("Macerates up to 16 items at a time")
-            .addInfo("Amount of parallels based on wind speed")
+        tt.addMachineType("Windmill, Macerator")
+            .addInfo("A primitive Grinder powered by " + EnumChatFormatting.AQUA + "Kinetic Energy")
+            .addInfo("Macerates up to" + EnumChatFormatting.RED + " 16 " + EnumChatFormatting.GRAY + "items at a time")
+            .addInfo("Amount of parallels based on " + EnumChatFormatting.AQUA + "Wind Speed")
             .addInfo("Processing time is the same regardless of parallels")
-            .addInfo("Wind speed can be determined using the Simple Wind Meter")
-            .addInfo("========================================================")
-            .addInfo("2 parallels: Low")
-            .addInfo("4 parallels: Common")
-            .addInfo("8 parallels: Rather strong")
-            .addInfo("16 parallels: Very Strong")
-            .addInfo("========================================================")
+            .addInfo(
+                EnumChatFormatting.AQUA + "Wind Speed "
+                    + EnumChatFormatting.GRAY
+                    + "can be determined using the "
+                    + EnumChatFormatting.YELLOW
+                    + "Simple Wind Meter")
+            .addInfo("Rotor can be put in the " + EnumChatFormatting.BLUE + "Primitive Kinetic Shaftbox")
+            .addSeparator()
+            .addInfo(
+                EnumChatFormatting.RED + "2"
+                    + EnumChatFormatting.GRAY
+                    + " parallels: "
+                    + EnumChatFormatting.WHITE
+                    + "Low")
+            .addInfo(
+                EnumChatFormatting.RED + "4"
+                    + EnumChatFormatting.GRAY
+                    + " parallels: "
+                    + EnumChatFormatting.DARK_GREEN
+                    + "Common")
+            .addInfo(
+                EnumChatFormatting.RED + "8"
+                    + EnumChatFormatting.GRAY
+                    + " parallels: "
+                    + EnumChatFormatting.GOLD
+                    + "Rather strong")
+            .addInfo(
+                EnumChatFormatting.RED + "16"
+                    + EnumChatFormatting.GRAY
+                    + " parallels: "
+                    + EnumChatFormatting.DARK_RED
+                    + "Very Strong")
             .beginStructureBlock(7, 12, 7, false)
             .addController("Front bottom center")
-            .addCasingInfoMin("Hardened Clay Block", 40, false)
+            .addCasingInfoExactly("Windmill Base Casing", 36, false)
+            .addCasingInfoMin("Windmill Shaft Casing", 40, false)
+            .addCasingInfoExactly("Wooden Planks (any)", 56, false)
+            .addCasingInfoExactly("Primitive Kinetic Shaftbox", 1, false)
+            .addCasingInfoExactly("Windmill Grindstone Housing", 1, false)
             .addOtherStructurePart("Dispenser", "Any Hardened Clay Block")
             .addOtherStructurePart("0-1 Wooden door", "Any Hardened Clay Block")
             .addStructureHint("tile.BWRotorBlock.0.name", 1)
-            .toolTipFinisher();
+            .toolTipFinisher(AuthorMilkFox);
         return tt;
     }
 
@@ -316,6 +337,14 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
     public boolean onRunningTick(ItemStack aStack) {
         if (!this.rotorBlock.rotorSlot.isEmpty()) this.setRotorDamage(this.rotorBlock, this.rotorBlock.getGrindPower());
         return this.rotorBlock.getGrindPower() > 0;
+    }
+
+    @Override
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        if (this.rotorBlock != null && this.rotorBlock.rotorSlot.isEmpty()) {
+            checkStructure(true, aBaseMetaTileEntity);
+        }
+        super.onPostTick(aBaseMetaTileEntity, aTick);
     }
 
     @Override
@@ -447,6 +476,9 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
             if (this.mDoor > 2) {
                 errors.add(StructureErrors.of("GT5U.gui.text.structure_error.too_many_doors"));
             }
+            if (this.rotorBlock != null && this.rotorBlock.rotorSlot.isEmpty()) {
+                errors.add(StructureErrors.of("GT5U.gui.text.structure_error.missing_rotor"));
+            }
             return;
         }
 
@@ -461,6 +493,9 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
             }
             if (this.mDoor > 2) {
                 errors.add(StructureErrors.of("GT5U.gui.text.structure_error.too_many_doors"));
+            }
+            if (this.rotorBlock != null && this.rotorBlock.rotorSlot.isEmpty()) {
+                errors.add(StructureErrors.of("GT5U.gui.text.structure_error.missing_rotor"));
             }
         }
     }
@@ -498,11 +533,10 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
         if (facing == side) {
             return new ITexture[] { TextureFactory.of(Textures.BlockIcons.WINDMILL_BASE_CASING),
                 TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_STEAM_MACERATOR) // placeholder
+                    .addIcon(OVERLAY_TOP_STEAM_MACERATOR)
                     .extFacing()
                     .build() };
         } else {
-            // texture is a placeholder for now
             return new ITexture[] { TextureFactory.of(Textures.BlockIcons.WINDMILL_BASE_CASING) };
         }
     }
