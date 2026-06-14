@@ -13,6 +13,7 @@
 
 package bartworks.common.items;
 
+import static bartworks.common.loaders.ItemRegistry.REINFORCED_ROTOR;
 import static ic2.api.item.IKineticRotor.GearboxType.WATER;
 import static ic2.api.item.IKineticRotor.GearboxType.WIND;
 
@@ -29,6 +30,7 @@ import net.minecraft.util.StatCollector;
 import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 
 import bartworks.MainMod;
+import bartworks.common.loaders.ItemRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ic2.api.item.IKineticRotor;
@@ -79,15 +81,17 @@ public class ItemStonageRotors extends Item implements IKineticRotor {
         } else if (Minecraft.getMinecraft().currentScreen instanceof GuiWindKineticGenerator) {
             type = WIND;
         }
-        info.add(StatCollector.translateToLocal("tooltip.rotor.0.name") + " " + this.DiaMinMax[0]);
-        info.add(
-            StatCollector.translateToLocal("tooltip.rotor.1.name") + " "
-                + (this.getMaxDamageEx() - this.getDamageOfStack(itemStack)) / 100
-                + "/"
-                + this.getMaxDamageEx() / 100);
-        info.add(StatCollector.translateToLocal("tooltip.rotor.2.name") + " " + this.eff);
-        info.add(StatCollector.translateToLocal("tooltip.rotor.3.name") + " " + this.speed);
-        info.add(StatCollector.translateToLocal("tooltip.rotor.4.name") + " " + this.mRotor);
+        if (itemStack.getItem() == REINFORCED_ROTOR) {
+            info.add(
+                StatCollector.translateToLocal("tooltip.rotor.1.name") + " "
+                    + StatCollector.translateToLocal("tooltip.rotor.5.name"));
+        } else {
+            info.add(
+                StatCollector.translateToLocal("tooltip.rotor.1.name") + " "
+                    + (this.getMaxDamageEx() - this.getDamageOfStack(itemStack)) / 100
+                    + "/"
+                    + this.getMaxDamageEx() / 100);
+        }
         if (type != null) {
             info.add(StatCollector.translateToLocal("ic2.itemrotor.fitsin." + this.isAcceptedType(itemStack, type)));
         }
@@ -152,6 +156,7 @@ public class ItemStonageRotors extends Item implements IKineticRotor {
     }
 
     public void damageItemStack(ItemStack stack, int Dmg) {
+        if (stack.getItem() == ItemRegistry.REINFORCED_ROTOR) return;
         this.setDamageForStack(stack, this.getDamageOfStack(stack) + Dmg);
     }
 }

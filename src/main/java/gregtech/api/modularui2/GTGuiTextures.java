@@ -1021,11 +1021,6 @@ public final class GTGuiTextures {
         .fullImage()
         .name(GTTextureIds.PROGRESSBAR_WINDMILL_GRINDSTONE)
         .build();
-    public static final UITexture PROGRESSBAR_WINDMILL_MIXER = UITexture.builder()
-        .location(GregTech.ID, "gui/progressbar/windmillmixer")
-        .fullImage()
-        .name(GTTextureIds.PROGRESSBAR_WINDMILL_MIXER)
-        .build();
     public static final UITexture PROGRESSBAR_BOILER_HEAT = UITexture.builder()
         .location(GregTech.ID, "gui/progressbar/boiler_heat")
         .fullImage()

@@ -85,10 +85,9 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
 
     /*
      * TODO: improve overclock describer
-     * TODO: possible wind rework
      * TODO: textures
      * TODO: add block names to lang
-     * TODO: world gen (???)
+     * TODO: WAILA update
      * TODO: clean up class
      */
 
@@ -114,10 +113,12 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
     private static final int VERTICAL_OFFSET = 9;
     private static final int HORIZONTAL_OFFSET = 3;
     private static final int DEPTH_OFFSET = 0;
-    private static final int MILLSTONE_META = 4;
+    private static final int MILLSTONE_META = 2;
     private static final int RECIPE_DURATION_MULTI = 4;
 
     private final OverclockDescriber overclockDescriber;
+
+    private final Set<TileEntityDispenser> tileEntityDispensers = new HashSet<>();
 
     public MTEWindmill(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -251,7 +252,6 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
         })
         .addElement('a', ofBlock(sBlockCasingsWindmill, 0))
         .addElement('h', ofBlock(sBlockCasingsWindmill, MILLSTONE_META))
-        // TODO: maybe look at refactoring this
         .addElement(
             's',
             ofChain(
@@ -312,8 +312,6 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
         return tt;
     }
 
-    private final Set<TileEntityDispenser> tileEntityDispensers = new HashSet<>();
-
     @Override
     public boolean onRunningTick(ItemStack aStack) {
         if (!this.rotorBlock.rotorSlot.isEmpty()) this.setRotorDamage(this.rotorBlock, this.rotorBlock.getGrindPower());
@@ -321,20 +319,9 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
     }
 
     @Override
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
-        return true;
-    }
-
-    @Override
-    public boolean doRandomMaintenanceDamage() {
-        return true;
-    }
-
-    @Override
     protected @NotNull CheckRecipeResult doCheckRecipe() {
         if (this.rotorBlock.rotorSlot.isEmpty()) return CheckRecipeResultRegistry.NO_TURBINE_FOUND;
-        processingLogic.setInputItems(getInputs());
+        processingLogic.setInputItems(getControllerSlot());
         return switch (getWindLevel(this.rotorBlock)) {
             case NON_EXISTENT -> CheckRecipeResultRegistry.WIND_LOW;
             case TOO_STRONG -> CheckRecipeResultRegistry.WIND_HIGH;
@@ -377,26 +364,22 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
         return new OverclockDescriber((byte) 1) {
 
             @Override
-            public String getTierString() {
+            public @NotNull String getTierString() {
                 return StatCollector.translateToLocal("GT5U.nei.display.windmill");
             }
 
             @Override
-            public OverclockCalculator createCalculator(OverclockCalculator template, GTRecipe recipe) {
+            public @NotNull OverclockCalculator createCalculator(@NotNull OverclockCalculator template,
+                @NotNull GTRecipe recipe) {
                 return OverclockCalculator.ofNoOverclock(recipe)
                     .setDurationModifier(RECIPE_DURATION_MULTI);
             }
 
             @Override
-            public void drawEnergyInfo(RecipeDisplayInfo recipeInfo) {
+            public void drawEnergyInfo(@NotNull RecipeDisplayInfo recipeInfo) {
                 return;
             }
         };
-    }
-
-    // probably don't need, can probably just replace call with mInventory
-    private ItemStack getInputs() {
-        return getControllerSlot();
     }
 
     @Override
@@ -419,11 +402,6 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
             return true;
         }
         return false;
-    }
-
-    private float currentWind(TileEntityRotorBlock rotorBlock) {
-        if (rotorBlock == null) return 0;
-        return rotorBlock.getWindStrength();
     }
 
     @Override
@@ -555,6 +533,11 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
         return (int) Math.pow(2, wind.ordinal());
     }
 
+    private float currentWind(TileEntityRotorBlock rotorBlock) {
+        if (rotorBlock == null) return 0;
+        return rotorBlock.getWindStrength();
+    }
+
     private windLevel getWindLevel(TileEntityRotorBlock rotorBlock) {
         float windSpeed = currentWind(rotorBlock);
         return windSpeed < 1f ? windLevel.NON_EXISTENT
@@ -586,6 +569,17 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
     @Override
     protected GTGuiTheme getGuiTheme() {
         return GTGuiThemes.PRIMITIVE;
+    }
+
+    @Override
+    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
+        ItemStack aStack) {
+        return true;
+    }
+
+    @Override
+    public boolean doRandomMaintenanceDamage() {
+        return true;
     }
 
     @Override
