@@ -825,4 +825,8 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
     public int getColorTextRed() {
         return COLOR_TEXT_RED.get();
     }
+
+    public boolean isItemValidForPhantomSlot(int index, ItemStack itemStack) {
+        return false;
+    }
 }
