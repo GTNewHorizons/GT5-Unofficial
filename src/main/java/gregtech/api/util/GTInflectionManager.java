@@ -22,6 +22,9 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.github.bsideup.jabel.Desugar;
 import com.google.common.base.Splitter;
 import com.google.gson.Gson;
@@ -32,6 +35,7 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import gregtech.api.enums.Mods;
 
 public final class GTInflectionManager {
+
     public static final Logger LOGGER = LogManager.getLogger("GT Inflection Manager");
     private static final Type MAP_TYPE = new TypeToken<Map<String, LinkedHashMap<String, String>>>() {}.getType();
     private static final Pattern PLACEHOLDER_PATTERN = Pattern.compile("(?<!%)%(?:(\\d+)\\$)?s(?:\\{([^}]+)})?");
