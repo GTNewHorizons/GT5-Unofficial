@@ -1332,6 +1332,14 @@ public final class RecipeMaps {
                 .ifPresent(ret::add);
             return ret;
         })
+        .neiRecipeComparator(
+            Comparator
+                .<GTRecipe, Integer>comparing(
+                    recipe -> recipe.mFluidInputs != null && recipe.mFluidInputs.length > 0
+                        && recipe.mFluidInputs[0].getFluid() == Materials.DimensionallyShiftedSuperfluid.mFluid
+                            ? Integer.MAX_VALUE
+                            : 0)
+                .thenComparing(GTRecipe::compareTo))
         .build();
     public static final RecipeMap<RecipeMapBackend> extruderRecipes = RecipeMapBuilder.of("gt.recipe.extruder")
         .maxIO(2, 1, 0, 0)
