@@ -1349,11 +1349,15 @@ public final class RecipeMaps {
             Collection<GTRecipe> ret = new ArrayList<>();
             b.copy()
                 .fluidInputs(
-                    new SubstituteFluidStack(
-                        Materials.Water.getFluid(clamp(aDuration * aEUt / 320, 4, 1000)),
-                        GTModHandler.getDistilledWater(clamp(aDuration * aEUt / 426, 3, 750))))
+                        Materials.Water.getFluid(clamp(aDuration * aEUt / 320, 4, 1000)))
                 .duration(aDuration * 2)
-                .buildWithAlt()
+                .build()
+                .ifPresent(ret::add);
+            b.copy()
+                .fluidInputs(
+                        GTModHandler.getDistilledWater(clamp(aDuration * aEUt / 426, 3, 750)))
+                .duration(aDuration * 2)
+                .build()
                 .ifPresent(ret::add);
             b.copy()
                 .fluidInputs(Materials.Lubricant.getFluid(clamp(aDuration * aEUt / 1280, 1, 250)))

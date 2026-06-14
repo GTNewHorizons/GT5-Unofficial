@@ -31,12 +31,6 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
         ItemStack aStack) {
 
-        SubstituteFluidStack waterSubstitutions = new SubstituteFluidStack(
-            Materials.Water.getFluid(
-                Math.max(4, Math.min(1000, ((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS * 30 / 320))),
-            GTModHandler.getDistilledWater(
-                Math.max(3, Math.min(750, ((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS * 30 / 426))));
-
         if (aMaterial == Materials.Ichorium || aMaterial == Materials.NetherQuartz) {
             return;
         }
@@ -51,7 +45,18 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
                     .itemInputs(GTUtility.copyAmount(1, aStack))
                     .circuit(3)
                     .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 9L))
-                    .fluidInputs(waterSubstitutions)
+                    .fluidInputs(Materials.Water.getFluid(
+                        Math.max(4, Math.min(1000, ((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS * 30 / 320))))
+                    .duration(2 * ((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS)
+                    .eut(TierEU.RECIPE_LV)
+                    .addTo(cutterRecipes);
+
+                GTValues.RA.stdBuilder()
+                    .itemInputs(GTUtility.copyAmount(1, aStack))
+                    .circuit(3)
+                    .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 9L))
+                    .fluidInputs(GTModHandler.getDistilledWater(
+                        Math.max(3, Math.min(750, ((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS * 30 / 426))))
                     .duration(2 * ((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS)
                     .eut(TierEU.RECIPE_LV)
                     .addTo(cutterRecipes);
@@ -89,7 +94,17 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(1, aStack))
                     .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 9L))
-                    .fluidInputs(waterSubstitutions)
+                    .fluidInputs(Materials.Water.getFluid(
+                        Math.max(4, Math.min(1000, ((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS * 30 / 320))))
+                    .duration(2 * ((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS)
+                    .eut(TierEU.RECIPE_LV)
+                    .addTo(cutterRecipes);
+
+                GTValues.RA.stdBuilder()
+                    .itemInputs(GTUtility.copyAmount(1, aStack))
+                    .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 9L))
+                    .fluidInputs(GTModHandler.getDistilledWater(
+                        Math.max(3, Math.min(750, ((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS * 30 / 426))))
                     .duration(2 * ((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS)
                     .eut(TierEU.RECIPE_LV)
                     .addTo(cutterRecipes);
