@@ -166,13 +166,6 @@ public class MTEHatchInput extends MTEHatch implements ISmartInputHatch {
         }
     }
 
-    @Override
-    protected long getContentAmount() {
-        long amount = super.getContentAmount();
-        if (mFluid != null) amount += mFluid.amount;
-        return amount;
-    }
-
     public void updateSlots() {
         if (mInventory[getInputSlot()] != null && mInventory[getInputSlot()].stackSize <= 0)
             mInventory[getInputSlot()] = null;
