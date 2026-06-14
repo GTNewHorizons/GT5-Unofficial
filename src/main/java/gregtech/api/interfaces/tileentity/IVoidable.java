@@ -8,7 +8,6 @@ import net.minecraftforge.fluids.FluidStack;
 import gregtech.api.enums.VoidingMode;
 import gregtech.api.interfaces.IOutputBus;
 import gregtech.api.interfaces.IOutputHatch;
-import gregtech.api.interfaces.fluid.IFluidStore;
 import gregtech.api.util.GTUtility;
 
 /**
@@ -55,7 +54,9 @@ public interface IVoidable {
      * @param toOutput List of fluids this machine is going to output.
      * @return List of slots available for fluid outputs.
      */
-    List<? extends IFluidStore> getFluidOutputSlots(FluidStack[] toOutput);
+    default List<IOutputHatch> getOutputHatches(FluidStack[] toOutput) {
+        return getOutputHatches();
+    }
 
     /**
      * @return How many slots of items this machine can output per recipe. Item outputs whose slot number exceeding this

@@ -95,7 +95,6 @@ import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.gui.widgets.CheckboxWidget;
 import gregtech.api.interfaces.IOutputBus;
 import gregtech.api.interfaces.IOutputHatch;
-import gregtech.api.interfaces.fluid.IFluidStore;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
@@ -1683,7 +1682,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
      * @param stack The stack to eject. Ejected fluids are subtracted from this stack.
      */
     public void addOutputPartial(FluidStack stack) {
-        addOutputPartial(stack, getOutputHatches(), protectsExcessFluid());
+        addOutputPartial(stack, getOutputHatches(new FluidStack[] { stack }), protectsExcessFluid());
     }
 
     public void addOutputPartial(FluidStack stack, List<? extends IOutputHatch> hatches) {
@@ -1699,7 +1698,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     }
 
     protected boolean addFluidOutputs(FluidStack[] outputFluids) {
-        return addFluidOutputs(outputFluids, getOutputHatches(), protectsExcessFluid());
+        return addFluidOutputs(outputFluids, getOutputHatches(outputFluids), protectsExcessFluid());
     }
 
     protected boolean addFluidOutputs(FluidStack[] outputFluids, List<? extends IOutputHatch> hatches) {
@@ -2965,43 +2964,24 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
     @Override
     public List<IOutputBus> getOutputBusses() {
-        List<IOutputBus> output = new ArrayList<>(mOutputBusses.size());
-
-        for (int i = 0, mOutputBussesSize = mOutputBusses.size(); i < mOutputBussesSize; i++) {
-            MTEHatchOutputBus outputBus = mOutputBusses.get(i);
-
-            if (outputBus.isValid()) output.add(outputBus);
-        }
-
-        return output;
+        List<IOutputBus> totalBusses = new ArrayList<>(filterValidMTEs(mOutputBusses));
+        totalBusses.removeIf(bus -> bus instanceof MTEHatchVoidBus voidBus && !voidBus.isLocked());
+        return totalBusses;
     }
 
     @Override
     public List<IOutputHatch> getOutputHatches() {
-        List<IOutputHatch> output = new ArrayList<>(mOutputHatches.size());
-
-        for (int i = 0, mOutputHatchesSize = mOutputHatches.size(); i < mOutputHatchesSize; i++) {
-            MTEHatchOutput outputHatch = mOutputHatches.get(i);
-
-            if (outputHatch.isValid()) output.add(outputHatch);
-        }
-
-        return output;
-    }
-
-    @Override
-    public List<? extends IFluidStore> getFluidOutputSlots(FluidStack[] toOutput) {
-        ArrayList<MTEHatchOutput> totalHatches = new ArrayList<>(filterValidMTEs(mOutputHatches));
-        totalHatches.removeIf(hatch -> hatch instanceof MTEHatchVoid && !hatch.isFluidLocked());
+        ArrayList<IOutputHatch> totalHatches = new ArrayList<>(filterValidMTEs(mOutputHatches));
+        totalHatches.removeIf(hatch -> hatch instanceof MTEHatchVoid voidHatch && !voidHatch.isFluidLocked());
         return totalHatches;
     }
 
     /**
      * Util method for DT-like structure to collect list of output hatches.
      */
-    protected <T extends MTEHatchOutput> List<? extends IFluidStore> getFluidOutputSlotsByLayer(FluidStack[] toOutput,
+    protected <T extends MTEHatchOutput> List<IOutputHatch> getOutputHatchesByLayers(FluidStack[] toOutput,
         List<List<T>> hatchesByLayer) {
-        List<IFluidStore> ret = new ArrayList<>();
+        List<IOutputHatch> ret = new ArrayList<>();
         for (int i = 0; i < toOutput.length; i++) {
             if (i >= hatchesByLayer.size()) {
                 break;
@@ -3010,7 +2990,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             for (MTEHatchOutput hatch : hatchesByLayer.get(i)) {
                 if (!hatch.isValid()) continue;
                 if (fluidOutputForLayer != null) {
-                    ret.add(new OutputHatchWrapper(hatch, f -> GTUtility.areFluidsEqual(f, fluidOutputForLayer)));
+                    ret.add(new OutputHatchWrapper(hatch, f -> f.matches(fluidOutputForLayer)));
                 } else {
                     ret.add(hatch);
                 }
