@@ -8824,3 +8824,15 @@ gt.blockmachines.basicgenerator.steamturbine.tier.01.name=Basic Steam Turbine
 gt.blockmachines.basicgenerator.steamturbine.tier.02.name=Advanced Steam Turbine
 gt.blockmachines.basicgenerator.steamturbine.tier.03.name=Turbo Steam Turbine
 gt.blockmachines.basicgenerator.steamturbine.tooltip=Converts Steam into EU\nBase rate: 2L of Steam -> 1 EU\nFuel Efficiency: %s%%\nConsumes up to %sL of Steam per second
+
+# Basic Generators - Naquadah Reactor
+gt.blockmachines.basicgenerator.naquadah.tier.04.name=Naquadah Reactor Mark I
+gt.blockmachines.basicgenerator.naquadah.tier.04.tooltip=Requires Enriched Naquadah Bolts
+gt.blockmachines.basicgenerator.naquadah.tier.05.name=Naquadah Reactor Mark II
+gt.blockmachines.basicgenerator.naquadah.tier.05.tooltip=Requires Enriched Naquadah Rods
+gt.blockmachines.basicgenerator.naquadah.tier.06.name=Naquadah Reactor Mark III
+gt.blockmachines.basicgenerator.naquadah.tier.06.tooltip=Requires Enriched Naquadah Long Rods
+gt.blockmachines.basicgenerator.naquadah.tier.07.name=Naquadah Reactor Mark IV
+gt.blockmachines.basicgenerator.naquadah.tier.07.tooltip=Requires Naquadria Bolts
+gt.blockmachines.basicgenerator.naquadah.tier.08.name=Naquadah Reactor Mark V
+gt.blockmachines.basicgenerator.naquadah.tier.08.tooltip=Requires Naquadria Rods
