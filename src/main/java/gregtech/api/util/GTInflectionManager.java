@@ -1,6 +1,5 @@
 package gregtech.api.util;
 
-import static gregtech.GTMod.GT_FML_LOGGER;
 import static gregtech.api.util.GTLanguageManager.LOCALE;
 
 import java.io.BufferedReader;
@@ -33,7 +32,7 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import gregtech.api.enums.Mods;
 
 public final class GTInflectionManager {
-
+    public static final Logger LOGGER = LogManager.getLogger("GT Inflection Manager");
     private static final Type MAP_TYPE = new TypeToken<Map<String, LinkedHashMap<String, String>>>() {}.getType();
     private static final Pattern PLACEHOLDER_PATTERN = Pattern.compile("(?<!%)%(?:(\\d+)\\$)?s(?:\\{([^}]+)})?");
     private static final Gson GSON = new Gson();
@@ -58,7 +57,7 @@ public final class GTInflectionManager {
             Map<String, LinkedHashMap<String, String>> fileData = GSON.fromJson(reader, MAP_TYPE);
 
             if (fileData == null || fileData.isEmpty()) {
-                GT_FML_LOGGER.warn("Inflection file is empty or does not conform to the format");
+                LOGGER.warn("Inflection file is empty or does not conform to the format");
                 return;
             }
 
@@ -76,19 +75,19 @@ public final class GTInflectionManager {
                         if (!pattern.endsWith("$")) pattern = pattern + "$";
                         compiledRules.add(new Rule(Pattern.compile(pattern), rule.getValue()));
                     } catch (Exception e) {
-                        GT_FML_LOGGER.warn("Invalid regex pattern '{}' for type '{}'", rule.getKey(), typeKey, e);
+                        LOGGER.warn("Invalid regex pattern '{}' for type '{}'", rule.getKey(), typeKey, e);
                     }
                 }
                 inflectionTempMap.put(typeKey, compiledRules);
             }
             INFLECTION_MAP = inflectionTempMap;
-            GT_FML_LOGGER.info("Loaded inflection rules for language: {}", userLang);
+            LOGGER.info("Loaded inflection rules for language: {}", userLang);
         } catch (FileNotFoundException ignored) {
 
         } catch (IOException e) {
-            GT_FML_LOGGER.warn("Failed to load inflection file: {}", json, e);
+            LOGGER.warn("Failed to load inflection file: {}", json, e);
         } catch (JsonParseException e) {
-            GT_FML_LOGGER.warn("Successfully found the inflection file: {}, but an error occurred.", json, e);
+            LOGGER.warn("Successfully found the inflection file: {}, but an error occurred.", json, e);
         }
     }
 
