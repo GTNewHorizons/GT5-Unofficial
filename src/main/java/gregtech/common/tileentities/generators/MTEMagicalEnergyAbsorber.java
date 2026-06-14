@@ -14,14 +14,9 @@ import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASING_MAGIC_FRONT_
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASING_MAGIC_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAYS_ENERGY_OUT;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
-import static net.minecraft.util.EnumChatFormatting.GRAY;
-import static net.minecraft.util.EnumChatFormatting.GREEN;
-import static net.minecraft.util.EnumChatFormatting.LIGHT_PURPLE;
-import static net.minecraft.util.EnumChatFormatting.RESET;
-import static net.minecraft.util.EnumChatFormatting.UNDERLINE;
-import static net.minecraft.util.EnumChatFormatting.YELLOW;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -54,6 +49,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.ParticleFX;
 import gregtech.api.enums.TCAspects;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicGenerator;
@@ -75,6 +71,7 @@ interface MagicalEnergyBBListener {
     void onMagicalEnergyBBUpdate();
 }
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEMagicalEnergyAbsorber extends MTEBasicGenerator implements MagicalEnergyBBListener {
 
     private static final ConcurrentHashMap<UUID, MTEMagicalEnergyAbsorber> sSubscribedCrystals = new ConcurrentHashMap<>(
@@ -96,7 +93,7 @@ public class MTEMagicalEnergyAbsorber extends MTEBasicGenerator implements Magic
     private boolean mUsingEssentia = true;
 
     public MTEMagicalEnergyAbsorber(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, "Feasts on magic close to it:");
+        super(aID, aName, aNameRegional, aTier, (String) null);
         onConfigLoad();
     }
 
@@ -194,57 +191,27 @@ public class MTEMagicalEnergyAbsorber extends MTEBasicGenerator implements Magic
 
     @Override
     public String[] getDescription() {
-        List<String> description = new ArrayList<>();
-        description
-            .add(UNDERLINE + "Feasts on " + LIGHT_PURPLE + UNDERLINE + "magic" + GRAY + UNDERLINE + " close to it:");
-        description.add(
-            "- " + (sAllowMultipleEggs ? "A " : "An " + YELLOW + UNDERLINE + "EXCLUSIVE" + RESET)
-                + GRAY
-                + " "
-                + LIGHT_PURPLE
-                + "Dragon Egg"
-                + GRAY
-                + " atop");
-        if (sEnergyPerEndercrystal > 0) {
-            description.add(
-                "- " + addFormattedString(String.valueOf(sEnergyPerEndercrystal))
-                    + "EU per "
-                    + LIGHT_PURPLE
-                    + "Ender Crystal"
-                    + GRAY
-                    + " in range");
-        }
+        final String KEY = "gt.blockmachines.basicgenerator.magicenergyabsorber.tooltip";
+        String dragonEgg = GTUtility
+            .translate(sAllowMultipleEggs ? KEY + ".dragon_egg.shared" : KEY + ".dragon_egg.exclusive");
+        List<String> description = new ArrayList<>(
+            Arrays.asList(
+                GTUtility.translateMultiline(
+                    KEY,
+                    dragonEgg,
+                    sEnergyPerEndercrystal,
+                    mMagicalEnergyBB.getDefaultRange(),
+                    mMagicalEnergyBB.getMaxRange(),
+                    10000 * getEfficiency() / 100,
+                    getEfficiency())));
         if (Thaumcraft.isModLoaded()) {
-            description.add(
-                "- " + addFormattedString(
-                    String.valueOf(mMaxVisPerDrain)) + "CV/t from an " + LIGHT_PURPLE + "Energised Node" + GRAY);
-            description.add(
-                "- " + addFormattedString(String.valueOf(sEnergyPerEssentia * getEfficiency() / 100))
-                    + "EU per "
-                    + LIGHT_PURPLE
-                    + "Essentia"
-                    + GRAY
-                    + " Aspect-Value from containers in range");
+            description.addAll(
+                Arrays.asList(
+                    GTUtility.translateMultiline(
+                        KEY + ".thaumcraft",
+                        mMaxVisPerDrain,
+                        sEnergyPerEssentia * getEfficiency() / 100)));
         }
-        description.add(" ");
-        description.add(UNDERLINE + "Lookup range (Use Screwdriver to change):");
-        description.add("Default: " + GREEN + addFormattedString(String.valueOf(mMagicalEnergyBB.getDefaultRange())));
-        description.add("Max: " + GREEN + addFormattedString(String.valueOf(mMagicalEnergyBB.getMaxRange())));
-        description.add(" ");
-        description
-            .add(UNDERLINE + "Fuels on " + LIGHT_PURPLE + UNDERLINE + "enchantments" + GRAY + UNDERLINE + " input:");
-        description.add(
-            "- Item: " + addFormattedString(String.valueOf(10000 * getEfficiency() / 100))
-                + "EU per "
-                + LIGHT_PURPLE
-                + "enchant"
-                + GRAY
-                + " weight × level / max");
-        description.add(
-            "- Book: " + addFormattedString(
-                "10000") + "EU per " + LIGHT_PURPLE + "enchant" + GRAY + " weight × level / max");
-        description.add(" ");
-        description.add("Efficiency: " + GREEN + addFormattedString(String.valueOf(getEfficiency())) + "%%");
         return description.toArray(new String[0]);
     }
 

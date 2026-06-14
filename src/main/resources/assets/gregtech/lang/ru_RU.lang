@@ -8857,3 +8857,13 @@ gt.blockmachines.basicgenerator.magicenergyconverter.tier.01.name=Преобра
 gt.blockmachines.basicgenerator.magicenergyconverter.tier.02.name=Преобразователь магической энергии для адептов
 gt.blockmachines.basicgenerator.magicenergyconverter.tier.03.name=Преобразователь магической энергии для мастеров
 gt.blockmachines.basicgenerator.magicenergyconverter.tooltip=Клади сюда свои странные вещи
+
+# Basic Generators - Magic Energy Absorber
+gt.blockmachines.basicgenerator.magicenergyabsorber.tier.01.name=Поглотитель магической энергии для новичков
+gt.blockmachines.basicgenerator.magicenergyabsorber.tier.02.name=Поглотитель магической энергии для адептов
+gt.blockmachines.basicgenerator.magicenergyabsorber.tier.03.name=Поглотитель магической энергии для мастеров
+gt.blockmachines.basicgenerator.magicenergyabsorber.tier.04.name=Поглотитель магической энергии для гроссмейстеров
+gt.blockmachines.basicgenerator.magicenergyabsorber.tooltip=§nПоглощает §d§nмагию§7§n вблизи себя:\n- %s\n- %sEU за каждый §dКристалл Края§7 в радиусе действия\n§r \n§nРадиус поиска (используйте Отвёртку для изменения):\nПо-умолч.: §a%s\nМакс.: §a%s\n§r \n§nРаботает на §d§nзачарованиях§7§n на входе:\n- Предмет: %sEU за вес §dзачара§7 × уровень / макс\n- Книга: 10000EU за вес §dзачара§7 × уровень / макс\n§r \nЭффективность: §a%s%%
+gt.blockmachines.basicgenerator.magicenergyabsorber.tooltip.dragon_egg.shared=§7§dЯйцо Дракона§7 сверху
+gt.blockmachines.basicgenerator.magicenergyabsorber.tooltip.dragon_egg.exclusive=§e§nИСКЛЮЧИТЕЛЬНОЕ§r§7 §dЯйцо Дракона§7 сверху
+gt.blockmachines.basicgenerator.magicenergyabsorber.tooltip.thaumcraft=- %sCV/t из §dВозбуждённого узла§7\n- %sEU за §dEssentia§7 Aspect-Value из контейнеров в радиусе действия

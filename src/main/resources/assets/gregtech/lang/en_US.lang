@@ -8850,3 +8850,13 @@ gt.blockmachines.basicgenerator.magicenergyconverter.tier.01.name=Novice Magic E
 gt.blockmachines.basicgenerator.magicenergyconverter.tier.02.name=Adept Magic Energy Converter
 gt.blockmachines.basicgenerator.magicenergyconverter.tier.03.name=Master Magic Energy Converter
 gt.blockmachines.basicgenerator.magicenergyconverter.tooltip=Put your strange stuff in here
+
+# Basic Generators - Magic Energy Absorber
+gt.blockmachines.basicgenerator.magicenergyabsorber.tier.01.name=Novice Magic Energy Absorber
+gt.blockmachines.basicgenerator.magicenergyabsorber.tier.02.name=Adept Magic Energy Absorber
+gt.blockmachines.basicgenerator.magicenergyabsorber.tier.03.name=Master Magic Energy Absorber
+gt.blockmachines.basicgenerator.magicenergyabsorber.tier.04.name=Grandmaster Magic Energy Absorber
+gt.blockmachines.basicgenerator.magicenergyabsorber.tooltip=§nFeasts on §d§nmagic§7§n close to it:\n- %s\n- %sEU per §dEnder Crystal§7 in range\n§r \n§nLookup range (Use Screwdriver to change):\nDefault: §a%s\nMax: §a%s\n§r \n§nFuels on §d§nenchantments§7§n input:\n- Item: %sEU per §denchant§7 weight × level / max\n- Book: 10000EU per §denchant§7 weight × level / max\n§r \nEfficiency: §a%s%%
+gt.blockmachines.basicgenerator.magicenergyabsorber.tooltip.dragon_egg.shared=A §7 §dDragon Egg§7 atop
+gt.blockmachines.basicgenerator.magicenergyabsorber.tooltip.dragon_egg.exclusive=An §e§nEXCLUSIVE§r§7 §dDragon Egg§7 atop
+gt.blockmachines.basicgenerator.magicenergyabsorber.tooltip.thaumcraft=- %sCV/t from an §dEnergised Node§7\n- %sEU per §dEssentia§7 Aspect-Value from containers in range
