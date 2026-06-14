@@ -44,7 +44,6 @@ public class FakeCuttingRecipes implements Runnable {
         }
 
         for (List<GTRecipe> group : groups.values()) {
-            if (group.isEmpty()) continue;
 
             GTRecipe template = group.get(0);
             List<Integer> durations = new ArrayList<>();
