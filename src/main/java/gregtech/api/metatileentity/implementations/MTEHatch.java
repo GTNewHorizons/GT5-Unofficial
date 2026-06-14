@@ -2,6 +2,7 @@ package gregtech.api.metatileentity.implementations;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -21,6 +22,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.tooltip.TooltipHelper;
+import gregtech.common.tileentities.machines.IHatchWatcher;
 
 /**
  * Handles texture changes internally. No special calls are necessary other than updateTexture in add***ToMachineList.
@@ -38,6 +40,18 @@ public abstract class MTEHatch extends MTEBasicTank {
 
     private ItemStack ae2CraftingIcon;
 
+    /**
+     * Controllers watching this hatch for new ingredients (see {@link ISmartInputHatch}). When new contents arrive we
+     * notify them so they can run an immediate recipe check instead of waiting for their periodic poll.
+     */
+    private final List<IHatchWatcher> watchers = new ArrayList<>();
+
+    /**
+     * Total contents seen on the previous tick, used by {@link #detectInventoryChange()} to distinguish ingredients
+     * being inserted (which may enable a new recipe) from ingredients being consumed (which never can).
+     */
+    private long lastContentAmount = 0;
+
     public MTEHatch(int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount, String aDescription,
         ITexture... aTextures) {
         super(aID, aName, aNameRegional, aTier, aInvSlotCount, aDescription, aTextures);
@@ -54,6 +68,57 @@ public abstract class MTEHatch extends MTEBasicTank {
 
     public static int getSlots(int aTier) {
         return (aTier + 1) * (aTier + 1);
+    }
+
+    /**
+     * Registers a controller to be notified when this hatch gains new ingredients. Input hatches/busses implement
+     * {@link ISmartInputHatch} so the controller registers itself here during structure assembly; the inherited
+     * implementation satisfies that interface.
+     */
+    public void addWatcher(IHatchWatcher watcher) {
+        watchers.add(watcher);
+    }
+
+    public void removeWatcher(IHatchWatcher watcher) {
+        watchers.remove(watcher);
+    }
+
+    /** Asks every registered controller to run a recipe check on its next tick. */
+    protected void notifyWatchers() {
+        for (int i = 0; i < watchers.size(); i++) {
+            watchers.get(i)
+                .scheduleRecipeCheckImmediate();
+        }
+    }
+
+    /**
+     * Notifies watchers when this hatch's stored contents have grown since last tick. Only a net <em>increase</em>
+     * fires: consuming ingredients lowers the tracked amount without notifying, so the controller never runs an
+     * expensive recipe check on consumption alone. We compare the actual contents rather than relying on
+     * {@code hasInventoryBeenModified()}, because automation/pipe/cover inserts don't reliably set that flag. Input
+     * hatches/busses should call this from {@code onPostTick}.
+     */
+    protected void detectInventoryChange() {
+        long amount = getContentAmount();
+        if (amount > lastContentAmount) {
+            notifyWatchers();
+        }
+        lastContentAmount = amount;
+    }
+
+    /**
+     * @return a monotonic measure of this hatch's stored contents (summed item stack sizes plus stored fluid). Only its
+     *         direction of change matters, not its absolute value. Subclasses holding fluids or non-standard storage
+     *         should override to include those amounts.
+     */
+    protected long getContentAmount() {
+        long amount = 0;
+        if (mInventory != null) {
+            for (ItemStack stack : mInventory) {
+                if (stack != null) amount += stack.stackSize;
+            }
+        }
+        return amount;
     }
 
     private int getOffsetTier() {
