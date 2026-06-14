@@ -1,5 +1,8 @@
 package gregtech.common.gui.modularui.singleblock;
 
+import static gtPlusPlus.xmod.gregtech.common.tileentities.automation.MTEElectricAutoWorkbench.OUTPUT_SLOT_OFFSET;
+import static gtPlusPlus.xmod.gregtech.common.tileentities.automation.MTEElectricAutoWorkbench.PHANTOM_SLOT_OFFSET;
+
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
@@ -45,7 +48,9 @@ public class MTEElectricAutoWorkbenchGui {
                 .key(
                     'S',
                     index -> new ItemSlot()
-                        .slot(new ModularSlot(machine.inventoryHandler, index + 9).accessibility(false, true))
+                        .slot(
+                            new ModularSlot(machine.inventoryHandler, index + OUTPUT_SLOT_OFFSET)
+                                .accessibility(false, true))
                         .backgroundOverlay(GTGuiTextures.SLOT_ITEM_DARK))
                 .build());
 
@@ -74,7 +79,8 @@ public class MTEElectricAutoWorkbenchGui {
                 .matrix("SSS", "SSS", "SSS")
                 .key(
                     'S',
-                    index -> new PhantomItemSlot().slot(new ModularSlot(machine.inventoryHandler, index + 19))
+                    index -> new PhantomItemSlot()
+                        .slot(new ModularSlot(machine.inventoryHandler, index + PHANTOM_SLOT_OFFSET))
                         .disableThemeBackground(true)
                         .disableHoverThemeBackground(true))
                 .build());

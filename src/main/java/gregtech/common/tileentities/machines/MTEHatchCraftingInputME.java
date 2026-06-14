@@ -1424,4 +1424,10 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
             StatCollector.translateToLocal("gt.blockmachines.input_bus_crafting_me.not_support_fluid.desc")
                 + GTSplit.LB);
     }
+
+    @Override
+    public boolean isItemValidForSlot(int index, ItemStack itemStack) {
+        return itemStack != null && itemStack.getItem() instanceof ICraftingPatternItem
+            && super.isItemValidForSlot(index, itemStack);
+    }
 }
