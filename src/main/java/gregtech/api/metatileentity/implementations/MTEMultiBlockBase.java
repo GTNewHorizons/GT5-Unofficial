@@ -3067,16 +3067,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         return true;
     }
 
-    protected boolean hasDumpableMEOutputHatch() {
-        List<MTEHatchOutputME> hatches = GTUtility.getMTEsOfType(mOutputHatches, MTEHatchOutputME.class);
-        for (MTEHatchOutputME hatch : hatches) {
-            if (!hatch.isFiltered() && !hatch.shouldCheck() && hatch.hasAvailableSpace()) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     /**
      * Do not use this method as a supplier to ProcessingLogic, use getTrueParallel()
      *
