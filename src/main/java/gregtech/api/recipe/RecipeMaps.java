@@ -489,7 +489,7 @@ public final class RecipeMaps {
         .build();
 
     public static final RecipeMap<RecipeMapBackend> autoclaveRecipes = RecipeMapBuilder.of("gt.recipe.autoclave")
-        .maxIO(2, 4, 1, 1)
+        .maxIO(6, 4, 1, 1)
         .minInputs(1, 1)
         .slotOverlays((index, isFluid, isOutput, isSpecial) -> {
             if (isFluid) {

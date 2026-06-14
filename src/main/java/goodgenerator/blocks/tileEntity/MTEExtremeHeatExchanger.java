@@ -345,7 +345,7 @@ public class MTEExtremeHeatExchanger extends TTMultiblockBase implements ISurviv
                 } else {
                     steamToOutput = waterAmount * 160;
                 }
-                addOutput(new FluidStack(tReadySteam, steamToOutput));
+                addOutputPartial(new FluidStack(tReadySteam, steamToOutput));
             } else {
                 GTLog.writeExplosionLog(this, "had no more distilled water!");
                 mHotFluidHatch.getBaseMetaTileEntity()
@@ -413,10 +413,7 @@ public class MTEExtremeHeatExchanger extends TTMultiblockBase implements ISurviv
                 + formatNumber(tThreshold)
                 + EnumChatFormatting.RESET
                 + " L/s",
-            StatCollector.translateToLocal("GT5U.multiblock.recipesDone") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(recipesDone)
-                + EnumChatFormatting.RESET };
+            GTUtility.translate("GT5U.multiblock.recipesDone", formatNumber(recipesDone)) };
     }
 
     @Override

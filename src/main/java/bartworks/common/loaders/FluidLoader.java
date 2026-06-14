@@ -26,7 +26,6 @@ import net.minecraft.util.IIcon;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
-import bartworks.client.renderer.RendererGlassBlock;
 import bartworks.client.renderer.RendererSwitchingColorFluid;
 import bartworks.common.blocks.BlockBioFluid;
 import bartworks.common.tileentities.classic.TileEntityDimIDBridge;
@@ -116,7 +115,6 @@ public class FluidLoader {
         if (event.getSide()
             .isClient()) {
             RendererSwitchingColorFluid.register();
-            RenderingRegistry.registerBlockHandler(new RendererGlassBlock());
         }
     }
 
