@@ -8811,3 +8811,9 @@ GT5U.gui.text.shutdown_reason.item_output_failed=§4Не удалось выве
 
 # Basic Generators - Shared
 gt.blockmachines.basicgenerator.fuel_efficiency=Эффективность топлива: %s%%
+
+# Basic Generators - Combustion
+gt.blockmachines.basicgenerator.diesel.tier.01.name=Базовый генератор внутреннего сгорания
+gt.blockmachines.basicgenerator.diesel.tier.02.name=Продвинутый генератор внутреннего сгорания
+gt.blockmachines.basicgenerator.diesel.tier.03.name=Турбо генератор внутреннего сгорания
+gt.blockmachines.basicgenerator.diesel.tooltip=Требует жидкое топливо\nПроизводит %d загрязнения в секунду

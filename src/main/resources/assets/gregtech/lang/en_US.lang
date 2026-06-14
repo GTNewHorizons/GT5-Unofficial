@@ -8804,3 +8804,9 @@ gt.blockmachines.hatch.test.name=Test Factory Hatch
 
 # Basic Generators - Shared
 gt.blockmachines.basicgenerator.fuel_efficiency=Fuel Efficiency: %s%%
+
+# Basic Generators - Combustion
+gt.blockmachines.basicgenerator.diesel.tier.01.name=Basic Combustion Generator
+gt.blockmachines.basicgenerator.diesel.tier.02.name=Advanced Combustion Generator
+gt.blockmachines.basicgenerator.diesel.tier.03.name=Turbo Combustion Generator
+gt.blockmachines.basicgenerator.diesel.tooltip=Requires liquid Fuel\nCauses %d Pollution per second
