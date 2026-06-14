@@ -2,6 +2,10 @@ package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTValues.V;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_GLOW;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTUtility.validMTEList;
 import static mcp.mobius.waila.api.SpecialChars.GREEN;
@@ -13,6 +17,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
@@ -62,7 +68,7 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public abstract class MTESteamMultiBlockBase<T extends MTESteamMultiBlockBase<T>>
-    extends MTEExtendedPowerMultiBlockBase<T> implements IOverclockDescriptionProvider {
+    extends MTEExtendedPowerMultiBlockBase<T> implements IOverclockDescriptionProvider, ICasingTextureProvider {
 
     private final OverclockDescriber overclockDescriber;
 
@@ -140,29 +146,21 @@ public abstract class MTESteamMultiBlockBase<T extends MTESteamMultiBlockBase<T>
      */
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
-        int colorIndex, boolean aActive, boolean redstoneLevel) {
-        Casings casing = getCurrentCasing();
-        if (side != aFacing) {
-            return new ITexture[] { casing.getCasingTexture() };
-        }
-        IIconContainer overlayIcon = aActive ? getActiveOverlay() : getInactiveOverlay();
-        IIconContainer glowIcon = aActive ? getActiveGlowOverlay() : getInactiveGlowOverlay();
+                                 int colorIndex, boolean aActive, boolean redstoneLevel) {
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            getInactiveOverlay(),
+            getInactiveGlowOverlay(),
+            getActiveOverlay(),
+            getActiveGlowOverlay());
+    }
 
-        if (glowIcon != null) {
-            return new ITexture[] { casing.getCasingTexture(), TextureFactory.builder()
-                .addIcon(overlayIcon)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(glowIcon)
-                    .extFacing()
-                    .glow()
-                    .build() };
-        }
-        return new ITexture[] { casing.getCasingTexture(), TextureFactory.builder()
-            .addIcon(overlayIcon)
-            .extFacing()
-            .build() };
+    @Override
+    public ITexture getCasingTexture() {
+        return getCurrentCasing().getCasingTexture();
     }
 
     /**

@@ -8,11 +8,13 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.client.iconContainers.blocks.GTBlockIconContainer;
@@ -505,9 +507,10 @@ public class Textures {
             MACHINE_CASING_CHEMICALLY_INERT = create("MACHINE_CASING_CHEMICALLY_INERT"),
 
             MACHINE_CASING_DENSEBRICKS = create("MACHINE_CASING_DENSEBRICKS"),
+            MACHINE_CASING_BRICKEDBLASTFURNACE_INACTIVE = create("MACHINE_CASING_BRICKEDBLASTFURNACE_INACTIVE"),
+            MACHINE_CASING_BRICKEDBLASTFURNACE_INACTIVE_GLOW = createOptional("MACHINE_CASING_BRICKEDBLASTFURNACE_INACTIVE_GLOW"),
             MACHINE_CASING_BRICKEDBLASTFURNACE_ACTIVE = create("MACHINE_CASING_BRICKEDBLASTFURNACE_ACTIVE"),
             MACHINE_CASING_BRICKEDBLASTFURNACE_ACTIVE_GLOW = createOptional("MACHINE_CASING_BRICKEDBLASTFURNACE_ACTIVE_GLOW"),
-            MACHINE_CASING_BRICKEDBLASTFURNACE_INACTIVE = create("MACHINE_CASING_BRICKEDBLASTFURNACE_INACTIVE"),
 
             MODIFICATIONTABLE_TOP = create("MODIFICATIONTABLE_TOP"),
             MODIFICATIONTABLE_SIDE = create("MODIFICATIONTABLE_SIDE"),
@@ -2685,6 +2688,36 @@ public class Textures {
 
         private static @NotNull IIconContainer createOptional(@NotNull String name) {
             return GTOptionalBlockIconContainer.create(name);
+        }
+
+        public static ITexture[] createTextureWithCasing(ICasingTextureProvider mte, ForgeDirection side,
+            ForgeDirection aFacing, boolean aActive, IIconContainer tex, IIconContainer texGlow,
+            IIconContainer texActive, IIconContainer texActiveGlow) {
+            return new ITexture[] { TextureFactory.builder()
+                .addIcon(BlockIcons.VOID)
+                .extFacing()
+                .build() };
+//            if (side == aFacing) {
+//                if (aActive) return new ITexture[] { mte.getCasingTexture(), TextureFactory.builder()
+//                    .addIcon(texActive)
+//                    .extFacing()
+//                    .build(),
+//                    TextureFactory.builder()
+//                        .addIcon(texActiveGlow)
+//                        .extFacing()
+//                        .glow()
+//                        .build() };
+//                return new ITexture[] { mte.getCasingTexture(), TextureFactory.builder()
+//                    .addIcon(tex)
+//                    .extFacing()
+//                    .build(),
+//                    TextureFactory.builder()
+//                        .addIcon(texGlow)
+//                        .extFacing()
+//                        .glow()
+//                        .build() };
+//            }
+//            return new ITexture[] { mte.getCasingTexture() };
         }
 
         public static void cleanup() {
