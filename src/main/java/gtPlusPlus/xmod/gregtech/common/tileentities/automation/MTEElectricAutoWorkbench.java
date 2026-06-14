@@ -751,6 +751,15 @@ public class MTEElectricAutoWorkbench extends MTEBasicTank {
 
     @Override
     public boolean isItemValidForPhantomSlot(int index, ItemStack itemStack) {
+        return isPhantomSlot(index);
+    }
+
+    @Override
+    public int getSlotLimit(int slot) {
+        return isPhantomSlot(slot) ? 1 : super.getSlotLimit(slot);
+    }
+
+    private boolean isPhantomSlot(int index) {
         return PHANTOM_SLOT_OFFSET <= index && index < PHANTOM_SLOT_OFFSET + PHANTOM_SLOT_COUNT;
     }
 }
