@@ -318,22 +318,14 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
         }
 
         if (fluidBurnTime == 0) {
-            for (GTRecipe tRecipe : RecipeMaps.denseLiquidFuels.getAllRecipes()) {
-                FluidStack tFluid = GTUtility.getFluidForFilledItem(tRecipe.getRepresentativeInput(0), true);
-                if (tFluid != null && tRecipe.mSpecialValue > 1 && isFuelValid(tFluid)) {
-                    tFluid.amount = 1000;
-                    if (depleteInput(tFluid)) {
-                        setupBoilerRecipe(tRecipe.mSpecialValue * 2, getEfficiencyIncrease(), true);
-                        return CheckRecipeResultRegistry.SUCCESSFUL;
-                    }
-                }
-            }
-            for (GTRecipe tRecipe : RecipeMaps.dieselFuels.getAllRecipes()) {
-                FluidStack tFluid = GTUtility.getFluidForFilledItem(tRecipe.getRepresentativeInput(0), true);
-                if (tFluid != null && isFuelValid(tFluid)) {
-                    tFluid.amount = 1000;
-                    if (depleteInput(tFluid)) {
-                        setupBoilerRecipe(tRecipe.mSpecialValue, getEfficiencyIncrease(), true);
+            for (FluidStack fluidInput : this.getStoredFluids()) {
+                GTRecipe foundRecipe = RecipeMaps.largeBoilerFakeFuels.findRecipeQuery()
+                    .fluids(fluidInput)
+                    .find();
+                if (foundRecipe != null && isFuelValid(fluidInput)) {
+                    fluidInput.amount = 1000;
+                    if (depleteInput(fluidInput)) {
+                        setupBoilerRecipe(foundRecipe.mDuration, getEfficiencyIncrease(), true);
                         return CheckRecipeResultRegistry.SUCCESSFUL;
                     }
                 }
@@ -381,7 +373,7 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
     }
 
     private void setupBoilerRecipe(int rawBurnTime, int changePerTick, boolean isFluid) {
-        rawBurnTime = runtimeBoost((int) LargeBoilerFuelBackend.getBurntimeRatio(rawBurnTime, 20));
+        rawBurnTime = runtimeBoost(rawBurnTime);
         int safeBurnTime = Math.max(1, rawBurnTime);
         this.mMaxProgresstime = 1;
         if (isFluid) {

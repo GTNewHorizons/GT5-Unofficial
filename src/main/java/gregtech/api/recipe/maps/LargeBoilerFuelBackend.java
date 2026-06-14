@@ -16,6 +16,7 @@ import net.minecraftforge.fluids.FluidStack;
 import gregtech.api.enums.GTValues;
 import gregtech.api.recipe.RecipeMapBackend;
 import gregtech.api.recipe.RecipeMapBackendPropertiesBuilder;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
@@ -63,10 +64,14 @@ public class LargeBoilerFuelBackend extends RecipeMapBackend {
     }
 
     public GTRecipe addDenseLiquidRecipe(GTRecipe recipe) {
-        return addRecipe(recipe, ((double) recipe.mSpecialValue) / 10, true, false);
+        return addRecipe(
+            recipe,
+            ((double) recipe.mSpecialValue) / 10,
+            true,
+            (recipe.mSpecialValue > HIGH_TIER_FLUID_THRESHOLD));
     }
 
-    public GTRecipe addDieselRecipe(GTRecipe recipe) {
+    public GTRecipe addDieselGasRecipe(GTRecipe recipe) {
         return addRecipe(
             recipe,
             ((double) recipe.mSpecialValue) / 20,
@@ -78,6 +83,11 @@ public class LargeBoilerFuelBackend extends RecipeMapBackend {
         for (ItemStack itemStack : itemStacks) {
             addSolidRecipe(itemStack);
         }
+    }
+
+    @Override
+    public boolean containsInput(ItemStack itemInput) {
+        return RecipeMaps.largeBoilerFakeFuels.containsInput(GTUtility.getFluidForFilledItem(itemInput, true));
     }
 
     @Nullable
@@ -152,6 +162,7 @@ public class LargeBoilerFuelBackend extends RecipeMapBackend {
         if (foundFluid != null) {
             recipe.setFluidInputs(foundFluid);
             recipe.mInputs = new ItemStack[0];
+            recipe.mDuration = (int) (getBurntimeRatio(baseBurnTime, 1) * 20);
         }
         recipe.setNeiDesc(
             StatCollector.translateToLocal("GT5U.nei.large_boiler.burn_time"),
