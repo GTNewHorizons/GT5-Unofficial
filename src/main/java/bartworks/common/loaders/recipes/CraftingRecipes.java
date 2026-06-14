@@ -1,5 +1,7 @@
 package bartworks.common.loaders.recipes;
 
+import static gregtech.api.GregTechAPI.sBlockCasings11;
+import static gregtech.api.GregTechAPI.sBlockCasingsWindmill;
 import static gregtech.api.enums.MetaTileEntityIDs.BioLab_EV;
 import static gregtech.api.enums.MetaTileEntityIDs.BioLab_HV;
 import static gregtech.api.enums.MetaTileEntityIDs.BioLab_IV;
@@ -246,9 +248,9 @@ public class CraftingRecipes implements Runnable {
             new MTEWindmill(Windmill.ID, "bw.windmill", StatCollector.translateToLocal("tile.bw.windmill.name"))
                 .getStackForm(1L),
             RecipeLoader.BITSD | GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { "BHB", "WGW", "BWB", 'B', new ItemStack(Blocks.brick_block), 'W',
+            new Object[] { "BHB", "WGW", "BWB", 'B', new ItemStack(sBlockCasingsWindmill, 1, 0), 'W',
                 GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.Iron, 1L), 'H', new ItemStack(Blocks.hopper), 'G',
-                new ItemStack(ItemRegistry.CRAFTING_PARTS, 1, 2), });
+                new ItemStack(sBlockCasings11, 1, 0), });
 
         GTModHandler.addCraftingRecipe(
             new ItemStack(ItemRegistry.CRAFTING_PARTS, 1, 2),
@@ -309,16 +311,18 @@ public class CraftingRecipes implements Runnable {
             GTModHandler.addCraftingRecipe(
                 new ItemStack(ItemRegistry.CRAFTING_PARTS, 1, 7),
                 GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.BUFFERED,
-                new Object[] { "SLS", "LPL", "SLS", 'S',
-                    GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Steel, 1L), 'L',
+                new Object[] { "SFS", "LPL", "SLS", 'S',
+                    GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Steel, 1L), 'F',
+                    GTOreDictUnificator.get(OrePrefixes.foil, Materials.Steel, 1L), 'L',
                     getModItem(Backpack.ID, "tannedLeather", 1), 'P',
                     new ItemStack(ItemRegistry.CRAFTING_PARTS, 1, 6) });
         } else {
             GTModHandler.addCraftingRecipe(
                 new ItemStack(ItemRegistry.CRAFTING_PARTS, 1, 7),
                 GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.BUFFERED,
-                new Object[] { "SLS", "LPL", "SLS", 'S',
-                    GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Steel, 1L), 'L',
+                new Object[] { "SFS", "LPL", "SLS", 'S',
+                    GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Steel, 1L), 'F',
+                    GTOreDictUnificator.get(OrePrefixes.foil, Materials.Steel, 1L), 'L',
                     new ItemStack(Items.leather, 1), 'P', new ItemStack(ItemRegistry.CRAFTING_PARTS, 1, 6) });
         }
 
