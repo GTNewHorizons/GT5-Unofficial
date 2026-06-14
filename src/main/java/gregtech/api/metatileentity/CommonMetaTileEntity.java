@@ -414,10 +414,6 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
         return 64;
     }
 
-    public int getSlotLimit(int slot) {
-        return getInventoryStackLimit();
-    }
-
     @Override
     public boolean isItemValidForSlot(int index, ItemStack itemStack) {
         return getBaseMetaTileEntity().isValidSlot(index);
