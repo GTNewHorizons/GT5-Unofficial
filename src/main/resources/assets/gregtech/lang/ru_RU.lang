@@ -8808,3 +8808,6 @@ GT5U.scanner.debug.needs_power=§cВНИМАНИЕ: Устройству не х
 GT5U.scanner.debug.ic2_enet=Подключён к IC2 ENet
 GT5U.gui.text.shutdown_reason.fluid_output_failed=§4Не удалось вывести все жидкости.
 GT5U.gui.text.shutdown_reason.item_output_failed=§4Не удалось вывести все предметы.
+
+# Basic Generators - Shared
+gt.blockmachines.basicgenerator.fuel_efficiency=Эффективность топлива: %s%%

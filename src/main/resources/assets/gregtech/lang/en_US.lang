@@ -8801,3 +8801,6 @@ GT5U.chat.bec-storage-controller-pos=Outer wall of center pillar, second layer f
 # Test Factory Machines
 gt.blockmachines.pipe.test.name=Test Factory Pipe
 gt.blockmachines.hatch.test.name=Test Factory Hatch
+
+# Basic Generators - Shared
+gt.blockmachines.basicgenerator.fuel_efficiency=Fuel Efficiency: %s%%
