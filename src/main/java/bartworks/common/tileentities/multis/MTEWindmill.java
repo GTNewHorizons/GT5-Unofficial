@@ -319,7 +319,7 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
                     + " parallels: "
                     + EnumChatFormatting.DARK_RED
                     + "Very Strong")
-            .beginStructureBlock(7, 12, 7, false)
+            .beginStructureBlock(7, 10, 7, false)
             .addController("Front bottom center")
             .addCasingInfoExactly("Windmill Base Casing", 36, false)
             .addCasingInfoMin("Windmill Shaft Casing", 40, false)
@@ -385,6 +385,11 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
     }
 
     @Override
+    public int getItemOutputLimit() {
+        return 1;
+    }
+
+    @Override
     public @Nullable OverclockDescriber getOverclockDescriber() {
         return overclockDescriber;
     }
@@ -439,22 +444,22 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
             if (GTUtility.isStackInvalid(stack)) continue;
 
             for (TileEntityDispenser tHatch : this.tileEntityDispensers) {
-                if (stack.stackSize == 0) break;
+                if (stack.stackSize <= 0) break;
 
                 for (int i = 0; i < tHatch.getSizeInventory(); i++) {
-                    if (stack.stackSize == 0) break;
+                    if (stack.stackSize <= 0) break;
 
                     if (tHatch.getStackInSlot(i) == null) {
+                        // automatically truncates to 64
                         tHatch.setInventorySlotContents(i, stack.copy());
-                        stack.stackSize = 0;
-                        break;
-                    }
-                    if (GTUtility.areStacksEqual(tHatch.getStackInSlot(i), stack)
+                        stack.stackSize -= Math.min(stack.getMaxStackSize(), stack.stackSize);
+                    } else if (GTUtility.areStacksEqual(tHatch.getStackInSlot(i), stack)
                         && (tHatch.getStackInSlot(i).stackSize < stack.getMaxStackSize())) {
-                        int tmp = tHatch.getStackInSlot(i).stackSize + stack.stackSize;
-                        stack.stackSize = Math.max(tmp - stack.getMaxStackSize(), 0);
-                        tHatch.getStackInSlot(i).stackSize = Math.min(tmp, stack.getMaxStackSize());
-                    }
+                            ItemStack otherStack = tHatch.getStackInSlot(i);
+                            int put = Math.min(otherStack.getMaxStackSize() - otherStack.stackSize, stack.stackSize);
+                            otherStack.stackSize += put;
+                            stack.stackSize -= put;
+                        }
                 }
             }
         }

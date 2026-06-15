@@ -62,11 +62,11 @@ public class MTEWindmillGui extends MTEMultiBlockBaseGui<MTEWindmill> {
                     .horizontalCenter())
             .child(
                 createStructureUpdateButton(syncManager).resizer()
-                    .pos(151, 63)
+                    .pos(131, 63)
                     .getWidget())
             .child(
                 createPowerSwitchButton().resizer()
-                    .pos(131, 63)
+                    .pos(151, 63)
                     .getWidget());
     }
 
