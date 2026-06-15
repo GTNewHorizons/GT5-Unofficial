@@ -7,7 +7,6 @@ import static gregtech.api.enums.Mods.ExtraUtilities;
 import static gregtech.api.enums.Mods.GraviSuite;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.enums.Mods.SuperSolarPanels;
-import static gregtech.api.enums.Mods.TinkersGregworks;
 import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
@@ -17,9 +16,6 @@ import static kekztech.common.Blocks.lscLapotronicEnergyUnit;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
-import com.rwtema.extrautils.ExtraUtils;
-
-import fox.spiteful.avaritia.compat.ticon.Tonkers;
 import goodgenerator.items.GGMaterial;
 import goodgenerator.util.ItemRefer;
 import gregtech.api.casing.Casings;
@@ -34,11 +30,8 @@ import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import kekztech.common.TileEntities;
-import tconstruct.tools.TinkerTools;
 import tectech.recipe.TecTechRecipeMaps;
 import tectech.thing.CustomItemList;
-import vexatos.tgregworks.reference.PartTypes;
-import vexatos.tgregworks.util.TGregUtils;
 
 /// Recipes made in the BEC Condensate Assembler.
 public class BECRecipes implements Runnable {
@@ -56,9 +49,7 @@ public class BECRecipes implements Runnable {
     @Override
     public void run() {
         addBECCasingRecipes();
-        if (TinkersGregworks.isModLoaded() && Avaritia.isModLoaded()
-            && ExtraUtilities.isModLoaded()
-            && AE2FluidCraft.isModLoaded()) {
+        if (Avaritia.isModLoaded() && ExtraUtilities.isModLoaded() && AE2FluidCraft.isModLoaded()) {
             addEyeOfHarmonyRecipes();
         }
     }
@@ -189,10 +180,6 @@ public class BECRecipes implements Runnable {
     }
 
     private void addEyeOfHarmonyCasings() {
-        ItemStack largeShirabonPlate = TGregUtils.newItemStack(Materials.get("Shirabon"), PartTypes.LargePlate, 1);
-        ItemStack largeInfinityPlate = new ItemStack(TinkerTools.largePlate, 1, Tonkers.infinityMetalId);
-        ItemStack largeBedrockiumPlate = new ItemStack(TinkerTools.largePlate, 1, ExtraUtils.tcon_bedrock_material_id);
-        ItemStack largeCosmicNeutroniumPlate = new ItemStack(TinkerTools.largePlate, 1, Tonkers.neutroniumId);
 
         // Reinforced Temporal Structure Casing
         addBec(
@@ -200,14 +187,17 @@ public class BECRecipes implements Runnable {
             new ItemStack[] { CustomItemList.Godforge_SingularityShieldingCasing.get(32),
                 GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.ProtoHalkonite, 32),
                 GTOreDictUnificator.get(OrePrefixes.block, Materials.Hexanite, 8),
-                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Neutronium, 48), largeBedrockiumPlate,
-                largeCosmicNeutroniumPlate, largeShirabonPlate, largeInfinityPlate,
+                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Neutronium, 48),
+                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Bedrockium, 1),
+                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.CosmicNeutronium, 1),
+                GGMaterial.shirabon.get(OrePrefixes.plateSuperdense, 1),
+                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Infinity, 1),
                 ItemList.Machine_UV_SolarPanel.get(1), ItemList.AcceleratorUV.get(4),
                 getModItem(GraviSuite.ID, "itemSimpleItem", 64, 3), ItemList.EnergisedTesseract.get(1) },
             nanites(4, 1, 1, 2, 1, 1, 4, 1, 1, 1, 1, 2),
-            new FluidStack[] { CondensateType.NEUTRONIUM.getEntangled(512 * INGOTS),
-                CondensateType.COSMICNEUTRONIUM.getEntangled(512 * INGOTS),
-                CondensateType.BEDROCKIUM.getEntangled(256 * INGOTS), CondensateType.Time.getEntangled(10 * INGOTS) },
+            new FluidStack[] { CondensateType.Neutronium.getEntangled(512 * INGOTS),
+                CondensateType.CosmicNeutronium.getEntangled(512 * INGOTS),
+                CondensateType.Bedrockium.getEntangled(256 * INGOTS), CondensateType.Time.getEntangled(10 * INGOTS) },
             3600 * SECONDS,
             TierEU.RECIPE_UMV);
 
@@ -217,14 +207,17 @@ public class BECRecipes implements Runnable {
             new ItemStack[] { CustomItemList.Godforge_SingularityShieldingCasing.get(32),
                 GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.ProtoHalkonite, 32),
                 GTOreDictUnificator.get(OrePrefixes.block, Materials.Hexanite, 8),
-                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Neutronium, 48), largeBedrockiumPlate,
-                largeCosmicNeutroniumPlate, largeShirabonPlate, largeInfinityPlate,
+                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Neutronium, 48),
+                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Bedrockium, 1),
+                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.CosmicNeutronium, 1),
+                GGMaterial.shirabon.get(OrePrefixes.plateSuperdense, 1),
+                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Infinity, 1),
                 ItemList.Machine_UV_SolarPanel.get(1), ItemList.Quantum_Chest_IV.get(1),
                 getModItem(GraviSuite.ID, "itemSimpleItem", 64, 3), ItemList.EnergisedTesseract.get(1) },
             nanites(4, 1, 1, 2, 1, 1, 4, 1, 1, 1, 1, 2),
-            new FluidStack[] { CondensateType.NEUTRONIUM.getEntangled(512 * INGOTS),
-                CondensateType.COSMICNEUTRONIUM.getEntangled(512 * INGOTS),
-                CondensateType.BEDROCKIUM.getEntangled(256 * INGOTS), CondensateType.Space.getEntangled(10 * INGOTS) },
+            new FluidStack[] { CondensateType.Neutronium.getEntangled(512 * INGOTS),
+                CondensateType.CosmicNeutronium.getEntangled(512 * INGOTS),
+                CondensateType.Bedrockium.getEntangled(256 * INGOTS), CondensateType.Space.getEntangled(10 * INGOTS) },
             3600 * SECONDS,
             TierEU.RECIPE_UMV);
 
@@ -246,9 +239,9 @@ public class BECRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.screw, Materials.CallistoIce, 6),
                 GTOreDictUnificator.get(OrePrefixes.screw, Materials.Ledox, 6) },
             nanites(4, 1, 2, 1, 1, 3, 4, 3, 1, 1, 1, 1, 1, 1, 1, 1),
-            new FluidStack[] { CondensateType.NEUTRONIUM.getEntangled(1024 * INGOTS),
-                CondensateType.COSMICNEUTRONIUM.getEntangled(1024 * INGOTS),
-                CondensateType.BEDROCKIUM.getEntangled(256 * INGOTS),
+            new FluidStack[] { CondensateType.Neutronium.getEntangled(1024 * INGOTS),
+                CondensateType.CosmicNeutronium.getEntangled(1024 * INGOTS),
+                CondensateType.Bedrockium.getEntangled(256 * INGOTS),
                 CondensateType.SpaceTime.getEntangled(128 * INGOTS) },
             3600 * SECONDS,
             TierEU.RECIPE_UMV);
