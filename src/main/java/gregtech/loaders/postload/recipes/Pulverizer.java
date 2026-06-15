@@ -137,6 +137,14 @@ public class Pulverizer implements Runnable {
             .addTo(maceratorRecipes);
 
         GTValues.RA.stdBuilder()
+            .itemInputs(new OreDictItemStack("cropChilipepper", 1))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Chili, 1))
+            .duration(20 * SECONDS)
+            .eut(TierEU.RECIPE_ULV)
+            .eut(2)
+            .addTo(maceratorRecipes);
+
+        GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Casing_Coil_Cupronickel.get(1))
             .itemOutputs(
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Cupronickel, 8),
