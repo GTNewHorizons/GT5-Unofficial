@@ -328,7 +328,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
         }
 
         for (MTEHatchEnergy hatchEnergy : this.mEnergyHatches) {
-            if (this.glassTier < hatchEnergy.mTier) {
+            if (this.glassTier < hatchEnergy.getTierForStructure()) {
                 errors.add(StructureErrors.glassTierNotEnough(hatchEnergy.mTier));
                 break;
             }
