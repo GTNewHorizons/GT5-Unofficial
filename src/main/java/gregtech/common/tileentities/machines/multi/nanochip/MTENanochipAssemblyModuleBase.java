@@ -740,6 +740,9 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
         return Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_WHITE);
     }
 
+    /**
+     * This includes the normal overlay icon even when the module is active
+     */
     protected ITexture[] createNanochipModuleTextures(ForgeDirection side, ForgeDirection aFacing, boolean aActive,
         IIconContainer overlay, IIconContainer overlayGlow, IIconContainer overlayActive,
         IIconContainer overlayActiveGlow) {

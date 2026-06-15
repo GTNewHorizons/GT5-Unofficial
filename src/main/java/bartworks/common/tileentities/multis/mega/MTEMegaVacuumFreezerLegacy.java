@@ -50,6 +50,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
+import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
@@ -58,7 +59,6 @@ import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.util.GTRecipe;
@@ -450,35 +450,17 @@ public class MTEMegaVacuumFreezerLegacy extends MegaMultiBlockBase<MTEMegaVacuum
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-        int aColorIndex, boolean aActive, boolean aRedstone) {
-        ITexture[] rTexture;
-        if (side == facing) {
-            if (aActive) {
-                rTexture = new ITexture[] { casingTexturePages[0][17], TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_VACUUM_FREEZER_ACTIVE)
-                    .extFacing()
-                    .build(),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_VACUUM_FREEZER_ACTIVE_GLOW)
-                        .extFacing()
-                        .glow()
-                        .build() };
-            } else {
-                rTexture = new ITexture[] { casingTexturePages[0][17], TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_VACUUM_FREEZER)
-                    .extFacing()
-                    .build(),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_VACUUM_FREEZER_GLOW)
-                        .extFacing()
-                        .glow()
-                        .build() };
-            }
-        } else {
-            rTexture = new ITexture[] { casingTexturePages[0][17] };
-        }
-        return rTexture;
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            OVERLAY_FRONT_VACUUM_FREEZER,
+            OVERLAY_FRONT_VACUUM_FREEZER_GLOW,
+            OVERLAY_FRONT_VACUUM_FREEZER_ACTIVE,
+            OVERLAY_FRONT_VACUUM_FREEZER_ACTIVE_GLOW);
     }
 
     @Override
