@@ -46,7 +46,8 @@ public class MTEHatchOutputMEGui extends MTEHatchBaseGui<MTEHatchOutputME> {
         mainRow.child(
             new ToggleButton().value(isChecking)
                 .overlay(GuiTextures.SEARCH)
-                .addTooltipLine(GTUtility.translate("GT5U.hatch.outputme.toggle_checking")));
+                .addTooltipLine(GTUtility.translate("GT5U.hatch.outputme.toggle_checking"))
+                .setEnabledIf(t -> isCaching.getBoolValue()));
 
         // caching mode toggle
         mainRow.child(
