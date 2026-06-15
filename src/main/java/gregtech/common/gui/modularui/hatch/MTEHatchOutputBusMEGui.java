@@ -59,7 +59,7 @@ public class MTEHatchOutputBusMEGui extends MTEHatchBaseGui<MTEHatchOutputBusME>
                 .tooltip(t -> t.addLine(GuiText.Priority.getLocal()))
                 .setEnabledIf(t -> isCaching.getBoolValue())
                 .marginLeft(5));
-        
+
         // check mode toggle
         mainRow.child(
             new ToggleButton().value(isChecking)

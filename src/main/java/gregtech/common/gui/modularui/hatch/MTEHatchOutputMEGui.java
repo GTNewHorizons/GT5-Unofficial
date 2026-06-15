@@ -66,7 +66,7 @@ public class MTEHatchOutputMEGui extends MTEHatchBaseGui<MTEHatchOutputME> {
                 .overlay(GuiTextures.SEARCH)
                 .addTooltipLine(GTUtility.translate("GT5U.hatch.outputme.toggle_checking"))
                 .setEnabledIf(t -> isCaching.getBoolValue()));
-        
+
         return super.createContentSection(panel, syncManager).child(mainRow);
     }
 
