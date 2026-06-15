@@ -496,6 +496,14 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>, F extends MEFi
         }
     }
 
+    /**
+     * Attempt to store as many stacks as possible into the storage of this output.
+     *
+     * @param input    The stack to insert. Will be modified by this method (will contain whatever stacks could not be
+     *                 inserted; stackSize will be 0 when everything was inserted).
+     * @param simulate When true this output will not be modified.
+     * @return True if the stack was fully inserted into the output, false otherwise.
+     */
     public boolean storePartial(@NotNull T input, boolean simulate) {
         if (simulate && shouldCheck()) {
             input.setStackSize(input.getStackSize() + cache.get(input));
