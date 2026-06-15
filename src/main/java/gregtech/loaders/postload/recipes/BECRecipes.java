@@ -21,7 +21,9 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.core.material.MaterialsElements;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import tectech.recipe.TecTechRecipeMaps;
+import tectech.thing.CustomItemList;
 
 /// Recipes made in the BEC Condensate Assembler.
 public class BECRecipes implements Runnable {
@@ -33,6 +35,24 @@ public class BECRecipes implements Runnable {
     @Override
     public void run() {
         addBECCasingRecipes();
+
+        // Transdimensional Alignment Matrix (Convergence)
+        addBec(
+            ItemList.Transdimensional_Alignment_Matrix.get(1),
+            new ItemStack[] { CustomItemList.EOH_Infinite_Energy_Casing.get(1),
+                GregtechItemList.SpaceTimeContinuumRipper.get(4), ItemList.Robot_Arm_UMV.get(64),
+                ItemList.Sensor_UMV.get(16), ItemList.Field_Generator_UMV.get(4), ItemList.ZPM5.get(1),
+                ItemList.EnergisedTesseract.get(32),
+                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.TranscendentMetal, 16),
+                GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Flerovium, 64),
+                GGMaterial.metastableOganesson.get(OrePrefixes.plateDense, 32),
+                ItemList.MetaMaterial_SensorArray1.get(32), ItemList.MetaMaterial_FieldManipulator1.get(32) },
+            nanites(1, 2, 4, 4, 4, 3, 2, 4, 1, 1, 2, 3),
+            new FluidStack[] { CondensateType.SpaceTime.getEntangled(192 * INGOTS),
+                CondensateType.DimensionallyShiftedSuperfluid.getEntangled(10_000),
+                CondensateType.Space.getEntangled(32 * INGOTS) },
+            600 * SECONDS,
+            TierEU.RECIPE_UMV);
 
         // UMV Component Assembly Line Casing (UMV CoAL)
         addBec(
