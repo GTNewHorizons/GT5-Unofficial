@@ -113,9 +113,8 @@ public class FuelConfigPanel {
             return formatter.format(data.getFuelConsumption()) + " L/5s";
         })
             .alignment(Alignment.CENTER)
-            .color(0x404040)
             .asWidget()
-            .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
+            .widgetTheme(GTWidgetThemes.DISPLAY_TEXT_GRAY)
             .width(SIZE_W - 4)
             .marginTop(3));
 

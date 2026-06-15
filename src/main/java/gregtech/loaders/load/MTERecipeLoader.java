@@ -1912,6 +1912,15 @@ public class MTERecipeLoader implements Runnable {
             ItemList.LargeCombustionEngine.get(1),
             new Object[] { ItemList.Machine_Multi_DieselEngine });
 
+        // Mega Distillation Tower Conversion Recipe
+        // Assembler to avoid accidental softlocks
+        GTValues.RA.stdBuilder()
+            .itemInputs((ItemRegistry.megaMachines[2]))
+            .itemOutputs(ItemList.MegaDistillationTower.get(1))
+            .duration(TICKS)
+            .eut(TierEU.RECIPE_LuV)
+            .addTo(assemblerRecipes);
+
         // Mega Vacuum Freezer -> Endothermic Fridge Conversion Recipe
         // Assembler to avoid accidental softlocks (due to tiering change)
         GTValues.RA.stdBuilder()
@@ -1928,6 +1937,15 @@ public class MTERecipeLoader implements Runnable {
             .itemOutputs(ItemList.ExothermicHearth.get(1))
             .duration(TICKS)
             .eut(TierEU.RECIPE_ZPM)
+            .addTo(assemblerRecipes);
+
+        // Mega Oil Cracker Conversion Recipe
+        // Assembler to avoid accidental softlocks (due to tiering change)
+        GTValues.RA.stdBuilder()
+            .itemInputs((ItemRegistry.megaMachines[4]))
+            .itemOutputs(ItemList.MegaOilCracker.get(1))
+            .duration(TICKS)
+            .eut(TierEU.RECIPE_LuV)
             .addTo(assemblerRecipes);
 
         // Industrial Arc Furnace Conversion Recipe

@@ -8,6 +8,8 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 
+import com.gtnewhorizons.postea.api.BlockReplacementManager;
+import com.gtnewhorizons.postea.api.IDExtenderCompat;
 import com.gtnewhorizons.postea.api.ItemStackReplacementManager;
 import com.gtnewhorizons.postea.api.TileEntityReplacementManager;
 import com.gtnewhorizons.postea.utility.BlockInfo;
@@ -17,6 +19,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.common.blocks.BlockFrameBox;
 import vexatos.tgregworks.reference.Mods;
 
 public class PosteaTransformers implements Runnable {
@@ -32,6 +35,7 @@ public class PosteaTransformers implements Runnable {
         registerProgrammedCircuitTransformers();
         registerPotassiumHydroxideTransformer();
         registerPTMEGTransformers();
+        registerBorosilicateGlassTransformers();
     }
 
     private static NBTTagCompound passthrough(NBTTagCompound tag) {
@@ -60,7 +64,10 @@ public class PosteaTransformers implements Runnable {
             // This works because between the old and new frame systems, the TileEntity used for covered frames
             // is still the same
             if (tag.hasKey(GTValues.NBT.COVERS)) {
-                return new BlockInfo(GregTechAPI.sBlockFrames, indexInMaterialList, PosteaTransformers::passthrough);
+                return new BlockInfo(
+                    GregTechAPI.sBlockFrames,
+                    indexInMaterialList | BlockFrameBox.MTE_BIT,
+                    PosteaTransformers::passthrough);
             }
 
             // If this frame has no covers, simply return a block and delete the TileEntity
@@ -147,5 +154,119 @@ public class PosteaTransformers implements Runnable {
             }
         }
         return false;
+    }
+
+    private static int tieredGlassBlockId = -1;
+    private static int extraGlassBlockId = -1;
+    private static int tieredGlassItemId = -1;
+    private static int extraGlassItemId = -1;
+
+    private static void registerBorosilicateGlassTransformers() {
+        ItemStackReplacementManager.registerIDResolver("bartworks:BW_TieredGlass", i -> tieredGlassItemId = i);
+        ItemStackReplacementManager.registerIDResolver("bartworks:BW_ExtraGlass", i -> extraGlassItemId = i);
+        BlockReplacementManager.registerIDResolver("bartworks:BW_TieredGlass", i -> tieredGlassBlockId = i);
+        BlockReplacementManager.registerIDResolver("bartworks:BW_ExtraGlass", i -> extraGlassBlockId = i);
+
+        // Block replacements
+        BlockReplacementManager.addTransformationHandler("bartworks:BW_GlasBlocks", info -> {
+            // Normal through osmium glass metadata unchanged
+            if (info.metadata >= 0 && info.metadata <= 5) {
+                info.blockID = tieredGlassBlockId;
+            }
+
+            // Old colored glass transformed into non-colored glass
+            if (info.metadata >= 6 && info.metadata <= 11) {
+                info.blockID = tieredGlassBlockId;
+                info.metadata = 0;
+            }
+
+            // Thorium-Yttrium Glass moved to its new place
+            if (info.metadata == 12) {
+                info.blockID = extraGlassBlockId;
+                info.metadata = 0;
+            }
+
+            // Old neutronium glass moved to new neutronium glass
+            if (info.metadata == 13) {
+                info.blockID = tieredGlassBlockId;
+                info.metadata = 6;
+            }
+
+            // Old cosmic glass turned into new infinity glass
+            if (info.metadata == 14) {
+                info.blockID = tieredGlassBlockId;
+                info.metadata = 7;
+            }
+
+            // Old infinity glass turned into new transcendent glass
+            if (info.metadata == 15) {
+                info.blockID = tieredGlassBlockId;
+                info.metadata = 8;
+            }
+
+            return true;
+        });
+
+        BlockReplacementManager.addTransformationHandler("bartworks:BW_GlasBlocks2", info -> {
+            // Turn old transcendent glass into new hexanite glass
+            if (info.metadata == 0) {
+                info.blockID = tieredGlassBlockId;
+                info.metadata = 9;
+                return true;
+            }
+            return false;
+        });
+
+        // Item replacements
+        ItemStackReplacementManager.addTransformationHandler("bartworks:BW_GlasBlocks", (name, nbt) -> {
+            int metadata = nbt.getShort("Damage");
+
+            // Normal through osmium glass metadata unchanged
+            if (metadata >= 0 && metadata <= 5) {
+                IDExtenderCompat.setItemStackID(nbt, tieredGlassItemId);
+            }
+
+            // Old colored glass transformed into non-colored glass
+            if (metadata >= 6 && metadata <= 11) {
+                IDExtenderCompat.setItemStackID(nbt, tieredGlassItemId);
+                nbt.setShort("Damage", (short) 0);
+            }
+
+            // Thorium-Yttrium Glass moved to its new place
+            if (metadata == 12) {
+                IDExtenderCompat.setItemStackID(nbt, extraGlassItemId);
+                nbt.setShort("Damage", (short) 0);
+            }
+
+            // Old neutronium glass moved to new neutronium glass
+            if (metadata == 13) {
+                IDExtenderCompat.setItemStackID(nbt, tieredGlassItemId);
+                nbt.setShort("Damage", (short) 6);
+            }
+
+            // Old cosmic glass turned into new infinity glass
+            if (metadata == 14) {
+                IDExtenderCompat.setItemStackID(nbt, tieredGlassItemId);
+                nbt.setShort("Damage", (short) 7);
+            }
+
+            // Old infinity glass turned into new transcendent glass
+            if (metadata == 15) {
+                IDExtenderCompat.setItemStackID(nbt, tieredGlassItemId);
+                nbt.setShort("Damage", (short) 8);
+            }
+
+            return true;
+        });
+
+        ItemStackReplacementManager.addTransformationHandler("bartworks:BW_GlasBlocks2", (name, nbt) -> {
+            // Turn old transcendent glass into new hexanite glass
+            if (nbt.getShort("Damage") == 0) {
+                IDExtenderCompat.setItemStackID(nbt, tieredGlassItemId);
+                nbt.setShort("Damage", (short) 9);
+                return true;
+            }
+            return false;
+        });
     }
 }

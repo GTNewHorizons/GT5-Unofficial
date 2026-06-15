@@ -18,6 +18,7 @@ import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
@@ -27,7 +28,7 @@ import gregtech.common.tileentities.machines.IHatchWatcher;
 /**
  * Handles texture changes internally. No special calls are necessary other than updateTexture in add***ToMachineList.
  */
-public abstract class MTEHatch extends MTEBasicTank {
+public abstract class MTEHatch extends MTEBasicTank implements ICasingTextureProvider {
 
     public enum ConnectionType {
         CABLE,
@@ -126,11 +127,9 @@ public abstract class MTEHatch extends MTEBasicTank {
         int colorIndex, boolean aActive, boolean redstoneLevel) {
 
         try {
-            ITexture background;
+            ITexture background = getCasingTexture();
 
-            if (texturePage > 0 || textureIndex > 0) {
-                background = Textures.BlockIcons.casingTexturePages[texturePage][textureIndex];
-            } else {
+            if (background == null) {
                 background = Textures.BlockIcons.MACHINE_CASINGS[mTier][colorIndex + 1];
             }
 
@@ -146,6 +145,14 @@ public abstract class MTEHatch extends MTEBasicTank {
         } catch (NullPointerException npe) {
             return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[0][0] };
         }
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        if (texturePage > 0 || textureIndex > 0) {
+            return Textures.BlockIcons.casingTexturePages[texturePage][textureIndex];
+        }
+        return null;
     }
 
     @Override

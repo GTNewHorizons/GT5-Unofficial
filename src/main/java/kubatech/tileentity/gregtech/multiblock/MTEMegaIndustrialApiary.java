@@ -103,6 +103,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTUtility.ItemId;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
+import gregtech.common.misc.GTStructureChannels;
 import kubatech.api.implementations.KubaTechGTMultiBlockBase;
 import kubatech.client.effect.MegaApiaryBeesRenderer;
 import kubatech.gui.modularui2.MTEMegaIndustrialApiaryGui;
@@ -332,6 +333,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
             .addInfo("The ideal home for your bees")
             .addInfo("Use screwdriver to change primary mode (INPUT/OUTPUT/OPERATING)")
             .addInfo("Use screwdriver + shift to change operation mode (NORMAL/SWARMER)")
+            .addGlassEnergyLimitInfo()
             .addSeparator()
             .addInfo(EnumChatFormatting.GOLD + "Input Mode:")
             .addInfo("- Does not take power")
@@ -375,6 +377,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
             .addOutputBus("Any Casing", 1)
             .addEnergyHatch(GTValues.VN[VoltageIndex.LuV] + "+, any Casing", 1)
             .addMaintenanceHatch("Any Casing", 1)
+            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher(GTAuthors.AuthorKuba, "Runakai");
         return tt;
     }
@@ -656,12 +659,10 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
         glassTier = -1;
         mCasing = 0;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 7, 8, 0, errors)) return;
-        if (this.glassTier < VoltageIndex.UEV) {
-            for (MTEHatchEnergy hatchEnergy : this.mEnergyHatches) {
-                if (this.glassTier < hatchEnergy.mTier) {
-                    errors.add(StructureErrors.glassTierNotEnough(hatchEnergy.mTier));
-                    break;
-                }
+        for (MTEHatchEnergy hatchEnergy : this.mEnergyHatches) {
+            if (this.glassTier < hatchEnergy.getTierForStructure()) {
+                errors.add(StructureErrors.glassTierNotEnough(hatchEnergy.mTier));
+                break;
             }
         }
         checkHasMaintenanceHatch(errors);
@@ -725,11 +726,6 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
                     .build() };
         }
         return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX) };
-    }
-
-    @Override
-    protected boolean useMui2() {
-        return true;
     }
 
     @Override

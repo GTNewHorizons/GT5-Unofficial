@@ -1,18 +1,19 @@
 package gregtech.common.gui.modularui.hatch;
 
-import java.util.Arrays;
-
+import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
-import com.cleanroommc.modularui.widgets.SlotGroupWidget;
+import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
-import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.slot.PhantomItemSlot;
 
-import gregtech.api.util.StringUtils;
+import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.api.modularui2.GTGuis;
+import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
+import gregtech.common.modularui2.widget.builder.ItemSlotGridBuilder;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchChiselBus;
 
 public class MTEHatchChiselBusGui extends MTEHatchBaseGui<MTEHatchChiselBus> {
@@ -27,15 +28,9 @@ public class MTEHatchChiselBusGui extends MTEHatchBaseGui<MTEHatchChiselBus> {
         return MTEHatchChiselBus.getSlots(machine.mTier) / INPUT_COLS;
     }
 
-    private int getGhostCols() {
+    private int getGhostGridSize() {
         int ghostCount = MTEHatchChiselBus.getGhostTargetCount(machine.mTier);
         return (int) Math.ceil(Math.sqrt(ghostCount));
-    }
-
-    private int getGhostRows() {
-        int ghostCount = MTEHatchChiselBus.getGhostTargetCount(machine.mTier);
-        int cols = getGhostCols();
-        return (int) Math.ceil((double) ghostCount / cols);
     }
 
     @Override
@@ -45,54 +40,58 @@ public class MTEHatchChiselBusGui extends MTEHatchBaseGui<MTEHatchChiselBus> {
     }
 
     @Override
-    protected int getBasePanelWidth() {
-        int ghostCols = getGhostCols();
-        int totalCols = ghostCols + INPUT_COLS;
-        return super.getBasePanelWidth() + Math.max(0, SLOT_SIZE * (totalCols - 9) + 3);
-    }
-
-    @Override
     protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
-        int inputRows = getInputRows();
-        int ghostCols = getGhostCols();
-        int ghostRows = getGhostRows();
+        Flow mainRow = Flow.row()
+            .coverChildren()
+            .horizontalCenter();
 
-        syncManager.registerSlotGroup("inputs", INPUT_COLS);
+        // input slots
+        mainRow.child(
+            new ItemSlotGridBuilder(machine.inventoryHandler, syncManager).size(INPUT_COLS, getInputRows())
+                .build());
 
-        // Ghost target phantom slots
-        String[] ghostMatrix = new String[ghostRows];
-        Arrays.fill(ghostMatrix, StringUtils.getRepetitionOf('t', ghostCols));
-
-        var ghostWidget = SlotGroupWidget.builder()
-            .matrix(ghostMatrix)
-            .key(
-                't',
-                index -> new PhantomItemSlot()
-                    .slot(new ModularSlot(machine.ghostTargets, index).accessibility(true, false)))
-            .build();
-
-        // Input slots grid
-        String[] inputMatrix = new String[inputRows];
-        Arrays.fill(inputMatrix, StringUtils.getRepetitionOf('x', INPUT_COLS));
-
-        var inputWidget = SlotGroupWidget.builder()
-            .matrix(inputMatrix)
-            .key(
-                'x',
-                index -> new ItemSlot().slot(new ModularSlot(machine.inventoryHandler, index).slotGroup("inputs")))
-            .build();
-
-        return super.createContentSection(panel, syncManager).child(
-            Flow.row()
-                .coverChildrenHeight()
-                .topRel(0)
-                .horizontalCenter()
-                .child(ghostWidget)
-                .child(inputWidget.marginLeft(3)));
+        return super.createContentSection(panel, syncManager).child(mainRow);
     }
 
     @Override
-    protected boolean supportsBottomRowOverlap() {
-        return true;
+    protected Flow createBottomLeftCornerFlow(ModularPanel panel, PanelSyncManager syncManager) {
+        IPanelHandler templatePanel = syncManager
+            .syncedPanel("template_panel", true, (_, _) -> createTemplatePanel(panel, syncManager));
+
+        int gridSize = getGhostGridSize();
+        return super.createBottomLeftCornerFlow(panel, syncManager).collapseDisabledChild()
+            .childIf(
+                gridSize == 1,
+                () -> new PhantomItemSlot().slot(new ModularSlot(machine.ghostTargets, 0))
+                    .addTooltipLine(GTUtility.translate("GT5U.hatch.chisel.configure.singleton")))
+            .childIf(gridSize > 1, () -> createTemplatePanelButton(templatePanel));
+    }
+
+    private ButtonWidget<?> createTemplatePanelButton(IPanelHandler templatePanel) {
+        return new ButtonWidget<>().onMousePressed(_ -> {
+            if (!templatePanel.isPanelOpen()) templatePanel.openPanel();
+            else templatePanel.closePanel();
+            return true;
+        })
+            .overlay(GTGuiTextures.OVERLAY_BUTTON_SCREWDRIVER)
+            .addTooltipLine(GTUtility.translate("GT5U.hatch.chisel.configure.grid"));
+    }
+
+    private ModularPanel createTemplatePanel(ModularPanel panel, PanelSyncManager syncManager) {
+        ModularPanel templatePanel = GTGuis.createPopUpPanel("template_panel")
+            .coverChildren()
+            .rightRel(1)
+            .padding(4)
+            .relative(panel);
+
+        // target phantom slots
+        templatePanel.child(
+            new ItemSlotGridBuilder(machine.ghostTargets, syncManager).size(getGhostGridSize())
+                .hasSlotGroup(false)
+                .itemSlotSupplier(PhantomItemSlot::new)
+                .build()
+                .marginTop(12));
+
+        return templatePanel;
     }
 }

@@ -87,7 +87,7 @@ public class MTEHatchChiselBus extends MTEHatchInputBus {
         return Utils.splitLocalizedFormattedWithAuthor(
             "gt.blockmachines.input_bus_chisel.desc",
             GTAuthors.AuthorQuetz4l,
+            getGhostTargetCount(this.mTier),
             getSlots(this.mTier));
     }
-
 }

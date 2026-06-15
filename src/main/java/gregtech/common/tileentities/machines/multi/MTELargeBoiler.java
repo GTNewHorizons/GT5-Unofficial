@@ -236,9 +236,8 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
     boolean isFuelValid() {
         if (!isSuperheated()) return true;
         for (ItemStack input : getStoredInputs()) {
-            if (!LargeBoilerFuelBackend.isAllowedSolidFuel(input)
-                && !Circuit_Integrated.isStackEqual(input, true, true)) {
-                // if any item is not in ALLOWED_SOLID_FUELS, operation cannot be allowed because it might still be
+            if (!LargeBoilerFuelBackend.isAllowedFuel(input) && !Circuit_Integrated.isStackEqual(input, true, true)) {
+                // if any item is not in ALLOWED_FUELS, operation cannot be allowed because it might still be
                 // consumed
                 this.mMaxProgresstime = 0;
                 this.mEUt = 0;
@@ -401,7 +400,7 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
                         || depleteInput(GTModHandler.getDistilledWater(amount / superToNormalSteam))) {
                         // Outputs Superheated Steam instead of Steam, at one third of the amount (equivalent in power
                         // output to the normal Steam amount).
-                        addOutput(
+                        addOutputPartial(
                             FluidRegistry.getFluidStack("ic2superheatedsteam", tGeneratedEU / superToNormalSteam));
                     } else {
                         GTLog.writeExplosionLog(this, "Boiler had no water");
@@ -410,7 +409,7 @@ public abstract class MTELargeBoiler extends MTEEnhancedMultiBlockBase<MTELargeB
                 } else {
                     if (depleteInput(Materials.Water.getFluid(amount))
                         || depleteInput(GTModHandler.getDistilledWater(amount))) {
-                        addOutput(Materials.Steam.getGas(tGeneratedEU));
+                        addOutputPartial(Materials.Steam.getGas(tGeneratedEU));
                     } else {
                         GTLog.writeExplosionLog(this, "Boiler had no water");
                         explodeMultiblock();

@@ -6148,5 +6148,20 @@ public class ChemicalRecipes implements Runnable {
             .duration(3 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_EV)
             .addTo(multiblockChemicalReactorRecipes);
+
+        // Flawless Amalgatite
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTUtility.copyAmount(0, GTOreDictUnificator.get(OrePrefixes.nanite, Materials.MagMatter, 1)),
+                GTOreDictUnificator.get(OrePrefixes.gem, Materials.Amalgatite, 3),
+                WerkstoffLoader.Bismutite.get(OrePrefixes.gemFlawed, 64),
+                GTOreDictUnificator.get(OrePrefixes.gemFlawed, Materials.GarnetYellow, 64),
+                GTOreDictUnificator.get(OrePrefixes.gemFlawed, Materials.GreenSapphire, 64),
+                GTOreDictUnificator.get(OrePrefixes.gemFlawed, Materials.Olivine, 64))
+            .fluidInputs(Materials.PrismaticAcid.getFluid(1_000_000), Materials.DTR.getFluid(1_000_000))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gemFlawless, Materials.Amalgatite, 1))
+            .duration(120 * SECONDS)
+            .eut(TierEU.RECIPE_MAX)
+            .addTo(multiblockChemicalReactorRecipes);
     }
 }
