@@ -39,7 +39,7 @@ public class RecipeGenMetalRecipe extends RecipeGenBase {
                 .itemInputs(material.getIngot(9))
                 .itemOutputs(material.getBlock(1))
                 .duration(15 * SECONDS)
-                .eut(2)
+                .eut(material.vVoltageMultiplier)
                 .addTo(compressorRecipes);
         }
 
