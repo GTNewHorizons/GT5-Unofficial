@@ -14,9 +14,11 @@ import java.util.Optional;
 import java.util.Set;
 
 import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
+import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
@@ -303,8 +305,7 @@ public class ProcessingOre implements IOreRecipeRegistrator {
         return recipeMap.addRecipe(recipe, false, false, false) != null;
     }
 
-    private static String generatedRecipeBodyKey(GTRecipe recipe) {
-        // Raw ore inputs differ across source blocks, but recipe lookup collapses equivalent ore registrations.
+    static String generatedRecipeBodyKey(GTRecipe recipe) {
         return "duration=" + recipe.mDuration
             + "|eut="
             + recipe.mEUt
@@ -312,6 +313,10 @@ public class ProcessingOre implements IOreRecipeRegistrator {
             + recipe.mSpecialValue
             + "|nbt="
             + recipe.isNBTSensitive
+            + "|inputs="
+            + itemStacksKey(recipe.mInputs)
+            + "|fluidInputs="
+            + fluidStacksKey(recipe.mFluidInputs)
             + "|outputs="
             + itemStacksKey(recipe.mOutputs)
             + "|fluidOutputs="
@@ -341,13 +346,23 @@ public class ProcessingOre implements IOreRecipeRegistrator {
         if (stack == null || stack.getItem() == null) {
             return "null";
         }
-        return stack.getItem()
-            .getUnlocalizedName(stack) + ':'
-            + stack.getItemDamage()
-            + 'x'
-            + stack.stackSize
-            + ':'
-            + stack.stackTagCompound;
+        return itemIdentity(
+            stack.getItem()) + ':' + stack.getItemDamage() + 'x' + stack.stackSize + ':' + stack.stackTagCompound;
+    }
+
+    private static String itemIdentity(Item item) {
+        GameRegistry.UniqueIdentifier identifier;
+        try {
+            identifier = GameRegistry.findUniqueIdentifierFor(item);
+        } catch (Throwable ignored) {
+            identifier = null;
+        }
+        if (identifier != null) {
+            return identifier.modId + ':' + identifier.name;
+        }
+        return item.getClass()
+            .getName() + '@'
+            + System.identityHashCode(item);
     }
 
     private static String fluidStacksKey(FluidStack[] stacks) {
