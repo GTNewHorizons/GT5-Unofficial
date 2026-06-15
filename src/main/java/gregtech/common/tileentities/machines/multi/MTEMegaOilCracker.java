@@ -304,7 +304,7 @@ public class MTEMegaOilCracker extends MTEExtendedPowerMultiBlockBase<MTEMegaOil
             }
         }
         for (MTEHatch mEnergyHatch : this.getExoticAndNormalEnergyHatchList()) {
-            if (this.glassTier < mEnergyHatch.mTier) {
+            if (this.glassTier < mEnergyHatch.getTierForStructure()) {
                 errors.add(StructureErrorRegistry.ENERGY_TIER_EXCEED_GLASS);
                 break;
             }
