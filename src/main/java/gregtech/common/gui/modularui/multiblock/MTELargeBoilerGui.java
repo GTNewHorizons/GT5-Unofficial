@@ -92,101 +92,78 @@ public class MTELargeBoilerGui extends MTEMultiBlockBaseGui<MTELargeBoilerBase> 
         IntSyncValue fluidBurnTimeSync = syncManager.findSyncHandler("fluidBurnTime", IntSyncValue.class);
         IntSyncValue maxFluidBurnTimeSync = syncManager.findSyncHandler("maxFluidBurnTime", IntSyncValue.class);
         IntSyncValue burnDecreaseSync = syncManager.findSyncHandler("burnDecrease", IntSyncValue.class);
-
-        return new TextWidget<>(
-            IKey.dynamic(
-                () -> translateToLocalFormatted(
-                    "GT5U.machines.large_boiler.gui.fluid_burn",
-                    String.format("%.2f", fluidBurnTimeSync.getIntValue() / burnDecreaseSync.getIntValue() / 20D))))
-                        .height(DISPLAY_ROW_HEIGHT)
-                        .scale(0.75f)
-                        .tooltipBuilder(t -> {
-                            if (showOutputRates()) {
-                                t.addLine(
-                                    EnumChatFormatting.AQUA
-                                        + translateToLocal("GT5U.machines.large_boiler.gui.consumption_fluid")
-                                        + "\n"
-                                        + GTUtility.appendRate(
-                                            true,
-                                            1000L,
-                                            false,
-                                            (maxFluidBurnTimeSync.getIntValue() / burnDecreaseSync.getIntValue())));
-                            }
-                        });
+        // spotless:off
+        return new TextWidget<>(IKey.dynamic(
+                    () -> translateToLocalFormatted("GT5U.machines.large_boiler.gui.fluid_burn",
+                    String.format("%.2f", fluidBurnTimeSync.getIntValue() / burnDecreaseSync.getIntValue() / 20D),
+                    String.format("%.2f", maxFluidBurnTimeSync.getIntValue() / burnDecreaseSync.getIntValue() / 20D))))
+                .height(DISPLAY_ROW_HEIGHT)
+                .scale(0.75f)
+                .tooltipBuilder(t -> t.addLine(
+                        EnumChatFormatting.AQUA
+                        + translateToLocal("GT5U.machines.large_boiler.gui.consumption_fluid")
+                        + "\n"
+                        + GTUtility.appendRate(true,1000L,false,
+                            (maxFluidBurnTimeSync.getIntValue() / burnDecreaseSync.getIntValue()))));
+        // spotless:on
     }
 
     private IWidget createSolidTimerTextWidget(PanelSyncManager syncManager) {
         IntSyncValue solidBurnTimeSync = syncManager.findSyncHandler("solidBurnTime", IntSyncValue.class);
         IntSyncValue maxSolidBurnTimeSync = syncManager.findSyncHandler("maxSolidBurnTime", IntSyncValue.class);
         IntSyncValue burnDecreaseSync = syncManager.findSyncHandler("burnDecrease", IntSyncValue.class);
-        return new TextWidget<>(
-            IKey.dynamic(
-                () -> translateToLocalFormatted(
-                    "GT5U.machines.large_boiler.gui.solid_burn",
-                    String.format("%.2f", solidBurnTimeSync.getIntValue() / burnDecreaseSync.getIntValue() / 20D))))
-                        .height(DISPLAY_ROW_HEIGHT)
-                        .scale(0.75f)
-                        .tooltipBuilder(t -> {
-                            if (showOutputRates()) {
-                                t.addLine(
-                                    EnumChatFormatting.AQUA
-                                        + translateToLocal("GT5U.machines.large_boiler.gui.consumption_solid")
-                                        + "\n"
-                                        + GTUtility.appendRate(
-                                            false,
-                                            1L,
-                                            false,
-                                            (maxSolidBurnTimeSync.getIntValue() / burnDecreaseSync.getIntValue())));
-                            }
-                        });
+        // spotless:off
+        return new TextWidget<>(IKey.dynamic(
+                    () -> translateToLocalFormatted("GT5U.machines.large_boiler.gui.solid_burn",
+                    String.format("%.2f", solidBurnTimeSync.getIntValue() / burnDecreaseSync.getIntValue() / 20D),
+                    String.format("%.2f", maxSolidBurnTimeSync.getIntValue() / burnDecreaseSync.getIntValue() / 20D))))
+                .height(DISPLAY_ROW_HEIGHT)
+                .scale(0.75f)
+                .tooltipBuilder(t -> t.addLine(
+                        EnumChatFormatting.AQUA
+                        + translateToLocal("GT5U.machines.large_boiler.gui.consumption_solid")
+                        + "\n"
+                        + GTUtility.appendRate(false,1L,false,
+                            (maxSolidBurnTimeSync.getIntValue() / burnDecreaseSync.getIntValue()))));
+        // spotless:on
     }
 
     private TextWidget<?> createHoverableTextForSteam(FluidStack fluidStack, PanelSyncManager syncManager) {
         String fluidName = fluidStack.getLocalizedName();
         DoubleSyncValue currentSteamProductionSync = syncManager
             .findSyncHandler("currentSteamProduction", DoubleSyncValue.class);
-        return new TextWidget<>(
-            IKey.dynamic(
-                () -> getFluidTextLine(
-                    fluidName,
-                    currentSteamProductionSync.getValue()
-                        .longValue()))).height(DISPLAY_ROW_HEIGHT)
-                            .scale(0.75f)
-                            .tooltipBuilder(
-                                t -> t.addLine(
-                                    EnumChatFormatting.AQUA + fluidName
-                                        + "\n"
-                                        + GTUtility.appendRate(
-                                            false,
-                                            currentSteamProductionSync.getValue()
-                                                .longValue(),
-                                            false,
-                                            1)))
-                            .tooltipAutoUpdate(true);
+        // spotless:off
+        return new TextWidget<>(IKey.dynamic(
+                () -> getFluidTextLine(fluidName,currentSteamProductionSync.getValue().longValue())))
+            .height(DISPLAY_ROW_HEIGHT)
+            .scale(0.75f)
+            .tooltipBuilder(t -> t.addLine(
+                        EnumChatFormatting.AQUA
+                        + fluidName
+                        + "\n"
+                        + GTUtility.appendRate(false,currentSteamProductionSync.getValue().longValue(),
+                            false,1)))
+            .tooltipAutoUpdate(true);
+        // spotless:on
     }
 
     private TextWidget<?> createHoverableTextForWater(FluidStack fluidStack, PanelSyncManager syncManager) {
-        String fluidName = EnumChatFormatting.AQUA + fluidStack.getLocalizedName() + EnumChatFormatting.RESET;
+        String fluidName = fluidStack.getLocalizedName();
         DoubleSyncValue currentWaterProductionSync = syncManager
             .findSyncHandler("currentWaterConsumption", DoubleSyncValue.class);
+        // spotless:off
         return new TextWidget<>(
-            IKey.dynamic(
-                () -> getFluidTextLine(
-                    fluidName,
-                    currentWaterProductionSync.getValue()
-                        .longValue()))).height(DISPLAY_ROW_HEIGHT)
-                            .scale(0.75f)
-                            .tooltipBuilder(
-                                t -> t.addLine(
-                                    EnumChatFormatting.AQUA + fluidName
-                                        + "\n"
-                                        + GTUtility.appendRate(
-                                            false,
-                                            currentWaterProductionSync.getValue()
-                                                .longValue(),
-                                            false,
-                                            1)))
-                            .tooltipAutoUpdate(true);
+            IKey.dynamic(() -> getFluidTextLine(fluidName,currentWaterProductionSync.getValue().longValue())))
+                .height(DISPLAY_ROW_HEIGHT)
+                .scale(0.75f)
+                .tooltipBuilder(t -> t.addLine(
+                            EnumChatFormatting.AQUA
+                            + fluidName
+                            + "\n"
+                            + GTUtility.appendRate(false,currentWaterProductionSync.getValue().longValue(),
+                                false,1)))
+                .tooltipAutoUpdate(true);
+        // spotless:on
     }
 
     private @NotNull String getFluidTextLine(String fluidName, long amount) {
