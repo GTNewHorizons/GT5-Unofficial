@@ -5,9 +5,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_HATCH;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_HATCH_ACTIVE;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -206,7 +204,6 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus
         private boolean active = true;
         private boolean isRecipeCheck = false;
         private IMEInventoryHandler<IAEItemStack> cell = null;
-        private Set<GTUtility.ItemId> initializedItems = null;
 
         public MEOutputBusTransaction() {
             availableSpace = provider.getAvailableSpace();
@@ -215,11 +212,11 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus
         public void setRecipeCheck(boolean isRecipeCheck) {
             this.isRecipeCheck = isRecipeCheck;
             if (isRecipeCheck && provider.shouldCheck()) {
+                provider.flushCachedStack();
                 cell = AEApi.instance()
                     .registries()
                     .cell()
                     .getCellInventory(getCellStack().copy(), getISaveProvider(), getChannel());
-                initializedItems = new HashSet<>();
             }
         }
 
@@ -238,12 +235,6 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus
             if (!active) throw new IllegalStateException("Cannot add to a transaction after committing it");
 
             if (isRecipeCheck && provider.shouldCheck()) {
-                if (!initializedItems.contains(id)) {
-                    IAEItemStack input = AEItemStack.create(stack);
-                    input.setStackSize(provider.getCachedAmount(input));
-                    cell.injectItems(input, Actionable.MODULATE, getActionSource());
-                    initializedItems.add(id);
-                }
                 IAEItemStack input = AEItemStack.create(stack);
                 IAEItemStack rejected = cell.injectItems(input, Actionable.MODULATE, getActionSource());
                 int inserted = (int) (stack.stackSize - (rejected == null ? 0 : rejected.getStackSize()));

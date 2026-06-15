@@ -447,7 +447,7 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>, F extends MEFi
         if (baseCapacity != DEFAULT_CAPACITY) aNBT.setLong("baseCapacity", baseCapacity);
     }
 
-    protected void flushCachedStack() {
+    public void flushCachedStack() {
         var proxy = getProxy();
         if (!proxy.isActive() || cache.isEmpty()) return;
         try {

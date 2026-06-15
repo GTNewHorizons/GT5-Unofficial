@@ -5,9 +5,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_FLUID_HATCH;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_FLUID_HATCH_ACTIVE;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -522,7 +520,6 @@ public class MTEHatchOutputME extends MTEHatchOutput
         private boolean active = true;
         private boolean isRecipeCheck = false;
         private IMEInventoryHandler<IAEFluidStack> cell = null;
-        private Set<GTUtility.FluidId> initializedFluids = null;
 
         public MEOutputHatchTransaction() {
             availableSpace = provider.getAvailableSpace();
@@ -531,11 +528,11 @@ public class MTEHatchOutputME extends MTEHatchOutput
         public void setRecipeCheck(boolean isRecipeCheck) {
             this.isRecipeCheck = isRecipeCheck;
             if (isRecipeCheck && provider.shouldCheck()) {
+                provider.flushCachedStack();
                 cell = AEApi.instance()
                     .registries()
                     .cell()
                     .getCellInventory(getCellStack().copy(), getISaveProvider(), getChannel());
-                initializedFluids = new HashSet<>();
             }
         }
 
@@ -554,12 +551,6 @@ public class MTEHatchOutputME extends MTEHatchOutput
             if (!active) throw new IllegalStateException("Cannot add to a transaction after committing it");
 
             if (isRecipeCheck && provider.shouldCheck()) {
-                if (!initializedFluids.contains(id)) {
-                    IAEFluidStack input = AEFluidStack.create(stack);
-                    input.setStackSize(provider.getCachedAmount(input));
-                    cell.injectItems(input, Actionable.MODULATE, getActionSource());
-                    initializedFluids.add(id);
-                }
                 IAEFluidStack input = AEFluidStack.create(stack);
                 IAEFluidStack rejected = cell.injectItems(input, Actionable.MODULATE, getActionSource());
                 int inserted = (int) (stack.amount - (rejected == null ? 0 : rejected.getStackSize()));
