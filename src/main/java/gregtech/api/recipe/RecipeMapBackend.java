@@ -29,6 +29,7 @@ import java.util.stream.StreamSupport;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import gregtech.api.util.GTUtility;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -546,7 +547,7 @@ public class RecipeMapBackend {
             if (profile != null) {
                 profile.recordCacheMapProbe();
             }
-            return cacheMap[(hash(items, fluids)) % CACHE_MAP_SIZE];
+            return cacheMap[GTUtility.mod(hash(items, fluids), CACHE_MAP_SIZE)];
         })
             .filter(Objects::nonNull);
         if (profile != null) {
@@ -668,7 +669,7 @@ public class RecipeMapBackend {
 
     protected void cache(@Nullable ItemStack @NotNull [] items, @Nullable FluidStack @NotNull [] fluids,
         @NotNull GTRecipe recipe) {
-        cacheMap[hash(items, fluids) % CACHE_MAP_SIZE] = recipe;
+        cacheMap[GTUtility.mod(hash(items, fluids), CACHE_MAP_SIZE)] = recipe;
     }
 
     @SuppressWarnings("ForLoopReplaceableByForEach")
