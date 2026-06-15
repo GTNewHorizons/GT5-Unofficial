@@ -1,7 +1,5 @@
 package gregtech.common.gui.modularui.hatch;
 
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.cleanroommc.modularui.drawable.GuiTextures;
@@ -15,8 +13,6 @@ import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
-import com.glodblock.github.common.item.FCBaseItemCell;
-import com.glodblock.github.common.item.ItemFluidVoidStorageCell;
 
 import appeng.api.storage.data.IAEFluidStack;
 import appeng.core.localization.GuiText;
@@ -41,19 +37,11 @@ public class MTEHatchOutputMEGui extends MTEHatchBaseGui<MTEHatchOutputME> {
 
         Flow mainRow = Flow.row()
             .coverChildren()
-            .verticalCenter();
+            .verticalCenter()
+            .collapseDisabledChild();
 
         // cell slot
-        mainRow.child(
-            new ItemSlot().slot(
-                new ModularSlot(machine.inventoryHandler, 0).singletonSlotGroup()
-                    .filter(this::isFluidCell)));
-
-        // check mode toggle
-        mainRow.child(
-            new ToggleButton().value(isChecking)
-                .overlay(GuiTextures.SEARCH)
-                .addTooltipLine(GTUtility.translate("GT5U.hatch.outputme.toggle_checking")));
+        mainRow.child(new ItemSlot().slot(new ModularSlot(machine.inventoryHandler, 0).singletonSlotGroup()));
 
         // caching mode toggle
         mainRow.child(
@@ -72,12 +60,14 @@ public class MTEHatchOutputMEGui extends MTEHatchBaseGui<MTEHatchOutputME> {
                 .setEnabledIf(t -> isCaching.getBoolValue())
                 .marginLeft(5));
 
-        return super.createContentSection(panel, syncManager).child(mainRow);
-    }
+        // check mode toggle
+        mainRow.child(
+            new ToggleButton().value(isChecking)
+                .overlay(GuiTextures.SEARCH)
+                .addTooltipLine(GTUtility.translate("GT5U.hatch.outputme.toggle_checking"))
+                .setEnabledIf(t -> isCaching.getBoolValue()));
 
-    private boolean isFluidCell(ItemStack itemStack) {
-        Item item = itemStack.getItem();
-        return item instanceof FCBaseItemCell || item instanceof ItemFluidVoidStorageCell;
+        return super.createContentSection(panel, syncManager).child(mainRow);
     }
 
     @Override

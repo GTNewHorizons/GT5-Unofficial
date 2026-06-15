@@ -811,10 +811,7 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
                 + EnumChatFormatting.YELLOW
                 + formatNumber(getComputationRequired()),
             translateToLocalFormatted("tt.infodata.multi.connection_health", connectionStatus),
-            translateToLocalFormatted("GT5U.multiblock.recipesDone") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(recipesDone)
-                + EnumChatFormatting.RESET };
+            GTUtility.translate("GT5U.multiblock.recipesDone", formatNumber(recipesDone)) };
     }
     // endregion scanner output
 

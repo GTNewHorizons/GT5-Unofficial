@@ -39,9 +39,7 @@ public class MTEBoilerGui {
         IWidget waterSlots = Flow.column()
             .coverChildren()
             .child(
-                new ItemSlot().slot(
-                    new ModularSlot(base.inventoryHandler, 0).slotGroup("item_inv")
-                        .filter(item -> base.isValidFluidInputSlotItem(item)))
+                new ItemSlot().slot(new ModularSlot(base.inventoryHandler, 0).slotGroup("item_inv"))
                     .widgetTheme(GTWidgetThemes.OVERLAY_ITEM_SLOT_IN))
             .child(
                 new Widget<>().widgetTheme(GTWidgetThemes.PICTURE_CANISTER)
