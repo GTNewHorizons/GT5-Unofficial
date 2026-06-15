@@ -42,6 +42,7 @@ import bartworks.common.configs.Configuration;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHatchElement;
+import gregtech.api.interfaces.IOutputHatch;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.fluid.IFluidStore;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -442,8 +443,8 @@ public class MTEMegaDistillTowerLegacy extends MegaMultiBlockBase<MTEMegaDistill
     }
 
     @Override
-    public List<? extends IFluidStore> getFluidOutputSlots(FluidStack[] toOutput) {
-        return this.getFluidOutputSlotsByLayer(toOutput, this.mOutputHatchesByLayer);
+    public List<IOutputHatch> getOutputHatches(FluidStack[] toOutput) {
+        return this.getOutputHatchesByLayers(toOutput, this.mOutputHatchesByLayer);
     }
 
     @Override
