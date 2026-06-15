@@ -692,26 +692,6 @@ public class ResearchStationAssemblyLine implements Runnable {
                 ItemList.Casing_Dim_Trans.get(1),
                 20 * 20,
                 (int) TierEU.RECIPE_UIV);
-
-            // Transdimensional Alignment Matrix
-            TTRecipeAdder.addResearchableAssemblylineRecipe(
-                ItemList.MicroTransmitter_UV.get(1),
-                32_000_000,
-                8192,
-                (int) TierEU.RECIPE_UMV,
-                64,
-                new Object[] { CustomItemList.EOH_Infinite_Energy_Casing.get(1),
-                    GregtechItemList.SpaceTimeContinuumRipper.get(4), ItemList.Robot_Arm_UMV.get(64),
-                    ItemList.Sensor_UMV.get(16), ItemList.Field_Generator_UMV.get(4), ItemList.ZPM5.get(1),
-                    ItemList.EnergisedTesseract.get(32),
-                    GTOreDictUnificator.get(OrePrefixes.nanite, Materials.TranscendentMetal, 16),
-                    GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Flerovium, 64),
-                    GGMaterial.metastableOganesson.get(OrePrefixes.plateDense, 32) },
-                new FluidStack[] { MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(16 * STACKS),
-                    Materials.Lead.getPlasma(1 * STACKS), Materials.Space.getMolten(1 * STACKS) },
-                ItemList.Transdimensional_Alignment_Matrix.get(1),
-                50 * SECONDS,
-                (int) TierEU.RECIPE_UMV);
         }
 
         // Deep Dark Portal
