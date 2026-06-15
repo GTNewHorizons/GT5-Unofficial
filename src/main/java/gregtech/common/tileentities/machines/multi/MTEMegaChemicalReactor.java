@@ -215,16 +215,12 @@ public class MTEMegaChemicalReactor extends MTEExtendedPowerMultiBlockBase<MTEMe
                     errors.add(StructureErrors.glassTierNotEnough(VoltageIndex.UV));
                     return;
                 }
-                if (this.glassTier < hatch.mTier) {
-                    errors.add(StructureErrorRegistry.ENERGY_TIER_EXCEED_GLASS);
-                    return;
-                }
             }
-            for (MTEHatch energyHatch : this.getExoticAndNormalEnergyHatchList()) {
-                if (this.glassTier < energyHatch.mTier) {
-                    errors.add(StructureErrorRegistry.ENERGY_TIER_EXCEED_GLASS);
-                    return;
-                }
+        }
+        for (MTEHatch energyHatch : this.getExoticAndNormalEnergyHatchList()) {
+            if (this.glassTier < energyHatch.getTierForStructure()) {
+                errors.add(StructureErrorRegistry.ENERGY_TIER_EXCEED_GLASS);
+                return;
             }
         }
     }

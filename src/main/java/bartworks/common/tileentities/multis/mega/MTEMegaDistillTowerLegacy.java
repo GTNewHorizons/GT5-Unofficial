@@ -42,8 +42,8 @@ import bartworks.common.configs.Configuration;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHatchElement;
+import gregtech.api.interfaces.IOutputHatch;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.fluid.IFluidStore;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -54,9 +54,9 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.structure.error.StructureErrors;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
-import gregtech.common.tileentities.machines.outputme.MTEHatchOutputME;
 
 public class MTEMegaDistillTowerLegacy extends MegaMultiBlockBase<MTEMegaDistillTowerLegacy>
     implements ISurvivalConstructable, ICasingTextureProvider {
@@ -397,29 +397,8 @@ public class MTEMegaDistillTowerLegacy extends MegaMultiBlockBase<MTEMegaDistill
     }
 
     @Override
-    public boolean canDumpFluidToME() {
-
-        // All fluids can be dumped to ME only if each layer contains a ME Output Hatch.
-        for (List<MTEHatchOutput> tLayerOutputHatches : this.mOutputHatchesByLayer) {
-
-            boolean foundMEHatch = false;
-
-            for (IFluidStore tHatch : tLayerOutputHatches) {
-                if (tHatch instanceof MTEHatchOutputME tMEHatch) {
-                    if (tMEHatch.canAcceptFluid()) {
-                        foundMEHatch = true;
-                        break;
-                    }
-                }
-            }
-
-            // Exit if we didn't find a valid hatch on this layer.
-            if (!foundMEHatch) {
-                return false;
-            }
-        }
-
-        return true;
+    public boolean canDumpFluidToME(List<GTUtility.FluidId> outputs) {
+        return canDumpFluidToMEByLayer(outputs, mOutputHatchesByLayer);
     }
 
     @Override
@@ -434,8 +413,8 @@ public class MTEMegaDistillTowerLegacy extends MegaMultiBlockBase<MTEMegaDistill
     }
 
     @Override
-    public List<? extends IFluidStore> getFluidOutputSlots(FluidStack[] toOutput) {
-        return this.getFluidOutputSlotsByLayer(toOutput, this.mOutputHatchesByLayer);
+    public List<IOutputHatch> getOutputHatches(FluidStack[] toOutput) {
+        return this.getOutputHatchesByLayers(toOutput, this.mOutputHatchesByLayer);
     }
 
     @Override

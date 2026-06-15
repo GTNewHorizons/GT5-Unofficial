@@ -32,13 +32,20 @@ public class FluidEjectionHelper {
     }
 
     public FluidEjectionHelper(List<? extends IOutputHatch> hatches, boolean protectFluids) {
+        this(hatches, protectFluids, false);
+    }
+
+    public FluidEjectionHelper(List<? extends IOutputHatch> hatches, boolean protectFluids, boolean isRecipeCheck) {
         fluidProtectionEnabled = protectFluids;
 
         for (int i = 0, hatchesSize = hatches.size(); i < hatchesSize; i++) {
             IOutputHatch hatch = hatches.get(i);
-
+            IOutputHatchTransaction transaction = hatch.createTransaction();
+            if (transaction instanceof IOutputHatchTransaction.IRecipeCheckAware tran) {
+                tran.setRecipeCheck(isRecipeCheck);
+            }
             transactionsByType.computeIfAbsent(hatch.getHatchType(), x -> new ArrayList<>())
-                .add(hatch.createTransaction());
+                .add(transaction);
         }
     }
 
@@ -81,9 +88,9 @@ public class FluidEjectionHelper {
             if (e.getLongValue() <= 0) continue;
 
             GTUtility.FluidId id = e.getKey();
-            int amount = GTUtility.longToInt(e.getLongValue());
+            long amount = e.getLongValue();
 
-            FluidParallelData parallelData = new FluidParallelData(id, amount * (long) startingParallels, amount);
+            FluidParallelData parallelData = new FluidParallelData(id, amount * startingParallels, amount);
 
             outputParallels.add(parallelData);
 
@@ -179,10 +186,10 @@ public class FluidEjectionHelper {
 
         public final GTUtility.FluidId id;
         public long initialAmount, remainingAmount;
-        public int perParallel;
+        public long perParallel;
         public PeekingIterator<IOutputHatchTransaction> outputs;
 
-        private FluidParallelData(GTUtility.FluidId id, long amount, int perParallel) {
+        private FluidParallelData(GTUtility.FluidId id, long amount, long perParallel) {
             this.id = id;
             this.remainingAmount = amount;
             this.perParallel = perParallel;

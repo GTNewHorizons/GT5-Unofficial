@@ -289,6 +289,7 @@ public abstract class GTPPMultiBlockBase<T extends MTEExtendedPowerMultiBlockBas
             hatch.updateTexture(aBaseCasingIndex);
             hatch.updateCraftingIcon(this.getMachineCraftingIcon());
         }
+        addIfSmartInput(aMetaTileEntity);
 
         if (aMetaTileEntity instanceof MTEHatchInputBattery inputBattery) {
             return addToMachineListInternal(mChargeHatches, inputBattery, aBaseCasingIndex);
