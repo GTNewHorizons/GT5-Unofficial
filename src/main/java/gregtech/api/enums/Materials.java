@@ -1123,6 +1123,13 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     public static Materials Hexanite;
     // endregion
 
+    // region Lab Grown Gems (cgc)
+    // endregion
+
+    // region Chimera Gems (cgc)
+    public static Materials Amalgatite;
+    // endregion
+
     public static final List<IMaterialHandler> mMaterialHandlers = new ArrayList<>();
     public static final Map<Fluid, Materials> FLUID_MAP = new LinkedHashMap<>();
     /** @deprecated This is for keeping compatibility with addons mods (Such as TinkersGregworks etc.) */
@@ -1624,6 +1631,7 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
         Materials.ExoHalkonite.renderer = new InfinityRenderer();
         Materials.HotExoHalkonite.renderer = new InfinityRenderer();
         Materials.PrismaticNaquadah.renderer = new RainbowOverlayRenderer(Materials.PrismaticNaquadah.getRGBA());
+        Materials.Amalgatite.renderer = new InfinityRenderer();
     }
 
     private static void fillGeneratedMaterialsMap() {

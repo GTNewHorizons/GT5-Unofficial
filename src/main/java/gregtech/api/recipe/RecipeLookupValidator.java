@@ -358,7 +358,6 @@ public final class RecipeLookupValidator {
             List<GTRecipe> recipes = new ArrayList<>(backend.allRecipes());
             logMapProgress("map-start", target, recipes.size(), processedMaps + 1);
             try {
-                backend.ensureLookupCurrent();
                 for (GTRecipe recipe : recipes) {
                     if (shouldValidateRecipe(backend, recipe)) {
                         validateRecipe(target, recipes, recipe);

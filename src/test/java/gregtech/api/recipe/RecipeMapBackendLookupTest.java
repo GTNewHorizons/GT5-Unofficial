@@ -1076,10 +1076,8 @@ class RecipeMapBackendLookupTest {
             FluidStack stack = allocate(FLUID_STACK_CONSTRUCTOR);
             Field fluidField = FluidStack.class.getDeclaredField("fluid");
             Field fluidDelegateField = FluidStack.class.getDeclaredField("fluidDelegate");
-            Field amountField = FluidStack.class.getDeclaredField("amount");
             fluidField.setAccessible(true);
             fluidDelegateField.setAccessible(true);
-            amountField.setAccessible(true);
             fluidField.set(stack, fluid);
             fluidDelegateField.set(stack, new RegistryDelegate<Fluid>() {
 
@@ -1098,7 +1096,7 @@ class RecipeMapBackendLookupTest {
                     return Fluid.class;
                 }
             });
-            amountField.setInt(stack, amount);
+            stack.amount = amount;
             return stack;
         } catch (ReflectiveOperationException e) {
             throw new AssertionError(e);
@@ -1147,7 +1145,7 @@ class RecipeMapBackendLookupTest {
         }
 
         @Override
-        protected boolean filterFindRecipe(@NotNull GTRecipe recipe, @Nullable ItemStack @NotNull [] items,
+        protected boolean filterFindRecipe(GTRecipe recipe, @Nullable ItemStack @NotNull [] items,
             @Nullable FluidStack @NotNull [] fluids, @Nullable ItemStack specialSlot, boolean dontCheckStackSizes) {
             return true;
         }
@@ -1168,7 +1166,7 @@ class RecipeMapBackendLookupTest {
         }
 
         @Override
-        protected boolean filterFindRecipe(@NotNull GTRecipe recipe, @Nullable ItemStack @NotNull [] items,
+        protected boolean filterFindRecipe(GTRecipe recipe, @Nullable ItemStack @NotNull [] items,
             @Nullable FluidStack @NotNull [] fluids, @Nullable ItemStack specialSlot, boolean dontCheckStackSizes) {
             return true;
         }
@@ -1197,7 +1195,7 @@ class RecipeMapBackendLookupTest {
         }
 
         @Override
-        protected boolean filterFindRecipe(@NotNull GTRecipe recipe, @Nullable ItemStack @NotNull [] items,
+        protected boolean filterFindRecipe(GTRecipe recipe, @Nullable ItemStack @NotNull [] items,
             @Nullable FluidStack @NotNull [] fluids, @Nullable ItemStack specialSlot, boolean dontCheckStackSizes) {
             return true;
         }
@@ -1228,7 +1226,7 @@ class RecipeMapBackendLookupTest {
         }
 
         @Override
-        protected boolean filterFindRecipe(@NotNull GTRecipe recipe, @Nullable ItemStack @NotNull [] items,
+        protected boolean filterFindRecipe(GTRecipe recipe, @Nullable ItemStack @NotNull [] items,
             @Nullable FluidStack @NotNull [] fluids, @Nullable ItemStack specialSlot, boolean dontCheckStackSizes) {
             return true;
         }
@@ -1315,7 +1313,7 @@ class RecipeMapBackendLookupTest {
         }
 
         @Override
-        protected boolean filterFindRecipe(@NotNull GTRecipe recipe, @Nullable ItemStack @NotNull [] items,
+        protected boolean filterFindRecipe(GTRecipe recipe, @Nullable ItemStack @NotNull [] items,
             @Nullable FluidStack @NotNull [] fluids, @Nullable ItemStack specialSlot, boolean dontCheckStackSizes) {
             return true;
         }
@@ -1344,7 +1342,7 @@ class RecipeMapBackendLookupTest {
         }
 
         @Override
-        protected boolean filterFindRecipe(@NotNull GTRecipe recipe, @Nullable ItemStack @NotNull [] items,
+        protected boolean filterFindRecipe(GTRecipe recipe, @Nullable ItemStack @NotNull [] items,
             @Nullable FluidStack @NotNull [] fluids, @Nullable ItemStack specialSlot, boolean dontCheckStackSizes) {
             return false;
         }
