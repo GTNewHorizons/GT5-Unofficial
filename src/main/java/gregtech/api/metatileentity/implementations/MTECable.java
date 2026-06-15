@@ -286,14 +286,12 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable, IL
         long oldVoltage = this.mVoltage;
         long oldAmperage = this.mAmperage;
 
-        // If the existing cable has the same specs as what we're holding, skip.
-        if (this.getClass() == handCable.getClass() && this.mMaterial == handCable.mMaterial
-            && this.mVoltage == handCable.mVoltage
-            && this.mAmperage == handCable.mAmperage) {
+        short oldMetaID = (short) aBaseMetaTileEntity.getMetaTileID();
+
+        // If the cable is the same as old one, skip
+        if (oldMetaID == newMetaID) {
             return;
         }
-
-        short oldMetaID = (short) aBaseMetaTileEntity.getMetaTileID();
 
         // Construct the new cable
         MTECable newCable = new MTECable(
