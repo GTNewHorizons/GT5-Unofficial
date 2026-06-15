@@ -1,5 +1,7 @@
 package gregtech.loaders.postload.recipes;
 
+import static goodgenerator.util.ItemRefer.Compassline_Casing_UMV;
+import static goodgenerator.util.ItemRefer.Compassline_Casing_UXV;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeConstants.NANITE_TIERS;
@@ -31,6 +33,49 @@ public class BECRecipes implements Runnable {
     @Override
     public void run() {
         addBECCasingRecipes();
+
+        // UMV Component Assembly Line Casing (UMV CoAL)
+        addBec(
+            Compassline_Casing_UMV.get(1),
+            new ItemStack[] { GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.SpaceTime, 1),
+                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.SpaceTime, 1),
+                ItemList.Robot_Arm_UMV.get(8), ItemList.Electric_Piston_UMV.get(10),
+                ItemList.Electric_Motor_UMV.get(16),
+                GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.SpaceTime, 4),
+                GTOreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.SpaceTime, 16),
+                GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials.Quantium, 8),
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UMV, 8),
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UIV, 16),
+                ItemList.MetaMaterial_Shielding1.get(64), ItemList.MetaMaterial_EnergyConduit1.get(64) },
+            nanites(1, 1, 3, 3, 3, 2, 2, 1, 4, 4, 2, 2),
+            new FluidStack[] { CondensateType.TranscendentMetal.getEntangled(32 * INGOTS),
+                CondensateType.Hypogen.getEntangled(24 * INGOTS), CondensateType.SpaceTime.getEntangled(12 * INGOTS),
+                CondensateType.DimensionallyShiftedSuperfluid.getEntangled(10_000) },
+            600 * SECONDS,
+            TierEU.RECIPE_UMV);
+
+        // UXV Component Assembly Line Casing (UXV CoAL)
+        addBec(
+            Compassline_Casing_UXV.get(1),
+            new ItemStack[] { GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.MHDCSM, 1),
+                GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.MHDCSM, 3),
+                GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.MagMatter, 3), ItemList.Robot_Arm_UXV.get(8),
+                ItemList.Electric_Piston_UXV.get(10), ItemList.Electric_Motor_UXV.get(16),
+                GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.MHDCSM, 2),
+                GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.MagMatter, 2),
+                GTOreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.MHDCSM, 8),
+                GTOreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.MagMatter, 8),
+                GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.SpaceTime, 8),
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UXV, 8),
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UMV, 16),
+                ItemList.MetaMaterial_Shielding3.get(64), ItemList.MetaMaterial_EnergyConduit3.get(64),
+                ItemList.MetaMaterial_Waveguide3.get(64) },
+            nanites(1, 3, 3, 7, 6, 6, 5, 5, 4, 4, 2, 5, 5, 6, 8, 9),
+            new FluidStack[] { CondensateType.BoundlessCosmicSolder.getEntangled(32 * INGOTS),
+                CondensateType.MHDCSM.getEntangled(8 * INGOTS), CondensateType.Eternity.getEntangled(13 * INGOTS),
+                CondensateType.DimensionallyShiftedSuperfluid.getEntangled(11_000) },
+            600 * SECONDS,
+            TierEU.RECIPE_UMV);
     }
 
     private void addBECCasingRecipes() {
