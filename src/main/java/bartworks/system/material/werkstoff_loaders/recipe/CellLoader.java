@@ -161,7 +161,9 @@ public class CellLoader implements IWerkstoffRunnable {
 
                 int cellEmpty = cells - 1;
 
-                stOutputs.add(Materials.Empty.getCells(-cellEmpty));
+                if (cellEmpty < 0) {
+                    stOutputs.add(Materials.Empty.getCells(-cellEmpty));
+                }
                 if (werkstoff.getStats()
                     .isElektrolysis())
                     GTValues.RA.stdBuilder()
