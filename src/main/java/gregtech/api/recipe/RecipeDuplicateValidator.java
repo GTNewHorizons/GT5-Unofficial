@@ -90,7 +90,6 @@ public final class RecipeDuplicateValidator {
         for (RecipeLookupValidationTarget target : targets) {
             RecipeMapBackend backend = target.backend;
             List<GTRecipe> recipes = new ArrayList<>(backend.allRecipes());
-            backend.ensureLookupCurrent();
             for (GTRecipe recipe : recipes) {
                 if (!shouldValidateRecipe(recipe)) {
                     continue;
