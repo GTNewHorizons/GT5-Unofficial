@@ -4,7 +4,6 @@ import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -143,7 +142,7 @@ public class MTELargeBoilerGui extends MTEMultiBlockBaseGui<MTELargeBoilerBase> 
     }
 
     private TextWidget<?> createHoverableTextForSteam(FluidStack fluidStack, PanelSyncManager syncManager) {
-        String fluidName = EnumChatFormatting.AQUA + fluidStack.getLocalizedName() + EnumChatFormatting.RESET;
+        String fluidName = fluidStack.getLocalizedName();
         DoubleSyncValue currentSteamProductionSync = syncManager
             .findSyncHandler("currentSteamProduction", DoubleSyncValue.class);
         return new TextWidget<>(
@@ -191,32 +190,14 @@ public class MTELargeBoilerGui extends MTEMultiBlockBaseGui<MTELargeBoilerBase> 
     }
 
     private @NotNull String getFluidTextLine(String fluidName, long amount) {
-        String amountString = EnumChatFormatting.WHITE + " x "
-            + EnumChatFormatting.GOLD
-            + GTUtility.formatShortenedLong(amount)
-            + "L"
-            + EnumChatFormatting.WHITE
-            + (GTUtility.appendRate(false, amount, true, 1));
-        String truncatedFluidName = GTUtility.truncateText(fluidName, DISPLAY_ROW_CHAR_LIMIT - amountString.length());
-        String localizedLine = translateToLocal("gt.interact.desc.mb.FluidTextLine");
-        if (!localizedLine.equals("gt.interact.desc.mb.FluidTextLine")) {
-            String amountShort = GTUtility.formatShortenedLong(amount);
-            String rateText = EnumChatFormatting
-                .getTextWithoutFormattingCodes(GTUtility.appendRate(false, amount, true, 1));
-            String trimmedRate = rateText.trim();
-            String rateInner = trimmedRate;
-            if (trimmedRate.length() >= 2 && trimmedRate.startsWith("(") && trimmedRate.endsWith(")")) {
-                rateInner = trimmedRate.substring(1, trimmedRate.length() - 1);
-            }
-            return StatCollector.translateToLocalFormatted(
-                "gt.interact.desc.mb.FluidTextLine",
-                truncatedFluidName,
-                amountShort,
-                "(",
-                rateInner,
-                ")");
-        }
-        return EnumChatFormatting.AQUA + truncatedFluidName + amountString;
+        String shortenedCount = GTUtility.formatShortenedLong(amount);
+        String rateShort = GTUtility.appendRate(false, amount, true, 1);
+        int amountLen = (translateToLocalFormatted("GT5U.gui.text.fluid_amount_display", "", shortenedCount)
+            + rateShort).length();
+        return translateToLocalFormatted(
+            "GT5U.gui.text.fluid_amount_display",
+            GTUtility.truncateText(fluidName, DISPLAY_ROW_CHAR_LIMIT - amountLen),
+            shortenedCount) + rateShort;
     }
 
     private FluidDisplayWidget createFluidDrawable(FluidStack fluidStack) {

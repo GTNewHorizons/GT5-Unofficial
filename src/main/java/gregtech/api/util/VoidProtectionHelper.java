@@ -234,7 +234,9 @@ public class VoidProtectionHelper {
 
         // Pass the VP helper's protectExcessFluid flag to the ejection helper instead of using the machine's
         // flag
-        FluidEjectionHelper ejectionHelper = new FluidEjectionHelper(machine.getOutputHatches(), protectExcessFluid);
+        FluidEjectionHelper ejectionHelper = new FluidEjectionHelper(
+            machine.getOutputHatches(fluidOutputs),
+            protectExcessFluid);
 
         return ejectionHelper.ejectFluids(maxFluidOutputs, maxParallel);
     }
