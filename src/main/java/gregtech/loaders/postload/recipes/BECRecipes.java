@@ -155,26 +155,31 @@ public class BECRecipes implements Runnable {
         addTimeDilation();
         addSpacetimeCompression();
         addStabilisation();
+
+        // Astral Array Fabricator
         addBec(
             CustomItemList.astralArrayFabricator.get(1),
-            new ItemStack[] { GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.WhiteDwarfMatter, 8),
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.BlackDwarfMatter, 8),
-                ItemList.EnergisedTesseract.get(32),
-                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Eternity, 16),
+            new ItemStack[] {
                 CustomItemList.SpacetimeCompressionFieldGeneratorTier8.get(64),
                 CustomItemList.SpacetimeCompressionFieldGeneratorTier8.get(64),
                 CustomItemList.SpacetimeCompressionFieldGeneratorTier8.get(10),
+                CustomItemList.StabilisationFieldGeneratorTier8.get(48),
                 CustomItemList.TimeAccelerationFieldGeneratorTier8.get(64),
                 CustomItemList.TimeAccelerationFieldGeneratorTier8.get(64),
                 CustomItemList.TimeAccelerationFieldGeneratorTier8.get(40),
-                CustomItemList.StabilisationFieldGeneratorTier8.get(48),
-                CustomItemList.EOH_Infinite_Energy_Casing.get(32),
+                ItemList.Field_Generator_UMV.get(8),
                 CustomItemList.EOH_Reinforced_Temporal_Casing.get(64),
-                CustomItemList.EOH_Reinforced_Spatial_Casing.get(64), ItemList.Field_Generator_UMV.get(16) },
+                CustomItemList.EOH_Reinforced_Spatial_Casing.get(64),
+                CustomItemList.EOH_Infinite_Energy_Casing.get(32),
+                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Eternity, 16),
+                ItemList.Transdimensional_Alignment_Matrix.get(1),
+                ItemList.MetaMaterial_Shielding3.get(16),
+                ItemList.MetaMaterial_ElectrograviticValve3.get(16),
+                ItemList.MetaMaterial_FieldManipulator4.get(32)},
             nanites(1, 1, 3, 9, 6, 6, 6, 6, 6, 6, 7, 4, 4, 4, 10),
             new FluidStack[] { CondensateType.ChromaticGlass.getEntangled(65_536 * INGOTS),
-                CondensateType.Space.getEntangled(16_384 * 64), CondensateType.Time.getEntangled(16_384 * 64),
-                CondensateType.Eternity.getEntangled(8_192 * 64) },
+                CondensateType.Space.getEntangled(8_192 * 64), CondensateType.Time.getEntangled(8_192 * 64),
+                CondensateType.Eternity.getEntangled(4_096 * 64) },
             7200 * SECONDS,
             TierEU.RECIPE_UXV);
     }
