@@ -56,6 +56,7 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTStreamUtil;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 
 /**
@@ -546,7 +547,7 @@ public class RecipeMapBackend {
             if (profile != null) {
                 profile.recordCacheMapProbe();
             }
-            return cacheMap[(hash(items, fluids)) % CACHE_MAP_SIZE];
+            return cacheMap[GTUtility.mod(hash(items, fluids), CACHE_MAP_SIZE)];
         })
             .filter(Objects::nonNull);
         if (profile != null) {
@@ -668,7 +669,7 @@ public class RecipeMapBackend {
 
     protected void cache(@Nullable ItemStack @NotNull [] items, @Nullable FluidStack @NotNull [] fluids,
         @NotNull GTRecipe recipe) {
-        cacheMap[hash(items, fluids) % CACHE_MAP_SIZE] = recipe;
+        cacheMap[GTUtility.mod(hash(items, fluids), CACHE_MAP_SIZE)] = recipe;
     }
 
     @SuppressWarnings("ForLoopReplaceableByForEach")
