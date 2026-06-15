@@ -3000,43 +3000,70 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
     @Override
     public boolean canDumpItemToME(List<GTUtility.ItemId> outputs) {
-        List<MTEHatchOutputBusME> meBusses = GTUtility.getMTEsOfType(mOutputBusses, MTEHatchOutputBusME.class);
-
+        List<MTEHatchOutputBusME> busses = GTUtility.getMTEsOfType(mOutputBusses, MTEHatchOutputBusME.class);
+        List<MTEHatchOutputBusME> filteredBusses = new ArrayList<>();
+        for (MTEHatchOutputBusME bus : busses) {
+            if (!bus.hasAvailableSpace() || bus.shouldCheck()) continue;
+            if (!bus.isFiltered()) return true;
+            filteredBusses.add(bus);
+        }
         for (GTUtility.ItemId output : outputs) {
             boolean handled = false;
-
-            for (MTEHatchOutputBusME busME : meBusses) {
-                // If the bus has reached its max capacity, it can't accept anything
-                if (!busME.canAcceptAnyItem()) continue;
-
+            for (MTEHatchOutputBusME busME : filteredBusses) {
                 // If the bus is unfiltered or is filtered to this item, we can eject the stack fully
                 // We don't care about bus ordering here because we're just checking if it's possible
-                if (!busME.isFiltered() || busME.isFilteredToItem(output)) {
+                if (busME.isFilteredToItem(output)) {
                     handled = true;
                     break;
                 }
             }
-
             if (!handled) return false;
         }
-
         return true;
     }
 
     @Override
-    public boolean canDumpFluidToME() {
-        for (IOutputHatch tHatch : getOutputHatches()) {
-            if (tHatch instanceof MTEHatchOutputME) {
-                if (((MTEHatchOutputME) tHatch).isFluidLocked()) {
-                    return false;
-                }
-
-                if (((MTEHatchOutputME) tHatch).canAcceptFluid()) {
-                    return true;
+    public boolean canDumpFluidToME(List<GTUtility.FluidId> outputs) {
+        List<MTEHatchOutputME> hatches = GTUtility.getMTEsOfType(mOutputHatches, MTEHatchOutputME.class);
+        List<MTEHatchOutputME> filteredHatches = new ArrayList<>();
+        for (MTEHatchOutputME bus : hatches) {
+            if (!bus.hasAvailableSpace() || bus.shouldCheck()) continue;
+            if (!bus.isFiltered()) return true;
+            filteredHatches.add(bus);
+        }
+        for (GTUtility.FluidId output : outputs) {
+            boolean handled = false;
+            for (MTEHatchOutputME busME : filteredHatches) {
+                if (busME.isFilteredToFluid(output)) {
+                    handled = true;
+                    break;
                 }
             }
+            if (!handled) return false;
         }
-        return false;
+        return true;
+    }
+
+    protected boolean canDumpFluidToMEByLayer(List<GTUtility.FluidId> outputs,
+        List<List<MTEHatchOutput>> hatchesByLayer) {
+        for (int i = 0; i < hatchesByLayer.size(); i++) {
+            List<MTEHatchOutputME> hatches = GTUtility.getMTEsOfType(hatchesByLayer.get(i), MTEHatchOutputME.class);
+            GTUtility.FluidId output = outputs.get(i);
+            boolean handled = false;
+
+            for (MTEHatchOutputME hatch : hatches) {
+                if (!hatch.hasAvailableSpace() || hatch.shouldCheck()) continue;
+                if (!hatch.isFiltered() || hatch.isFilteredToFluid(output)) {
+                    handled = true;
+                    break;
+                }
+            }
+            if (!handled) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**
