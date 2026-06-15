@@ -1263,19 +1263,29 @@ public class Textures {
             OVERLAY_FRONT_STEAM_MACERATOR_ACTIVE = createOptional("OVERLAY_FRONT_STEAM_MACERATOR_ACTIVE"),
             OVERLAY_FRONT_STEAM_MACERATOR_ACTIVE_GLOW = createOptional("OVERLAY_FRONT_STEAM_MACERATOR_ACTIVE_GLOW"),
             OVERLAY_FRONT_STEAM_WASHER = createOptional("OVERLAY_FRONT_STEAM_WASHER"),
+                OVERLAY_FRONT_STEAM_WASHER_GLOW = createOptional("OVERLAY_FRONT_STEAM_WASHERR_GLOW"),
             OVERLAY_FRONT_STEAM_WASHER_ACTIVE = createOptional("OVERLAY_FRONT_STEAM_WASHER_ACTIVE"),
+                OVERLAY_FRONT_STEAM_WASHER_ACTIVE_GLOW = createOptional("OVERLAY_FRONT_STEAM_WASHER_ACTIVER_GLOW"),
             OVERLAY_FRONT_WATER_PUMP = createOptional("OVERLAY_FRONT_WATER_PUMP"),
+                OVERLAY_FRONT_WATER_PUMP_GLOW = createOptional("OVERLAY_FRONT_WATER_PUMP_GLOW"),
             OVERLAY_FRONT_WATER_PUMP_ACTIVE = createOptional("OVERLAY_FRONT_WATER_PUMP_ACTIVE"),
+                OVERLAY_FRONT_WATER_PUMP_ACTIVE_GLOW = createOptional("OVERLAY_FRONT_WATER_PUMP_ACTIVE_GLOW"),
             OVERLAY_FRONT_STEAM_CENTRIFUGE = createOptional("OVERLAY_FRONT_STEAM_CENTRIFUGE"),
+                OVERLAY_FRONT_STEAM_CENTRIFUGE_GLOW = createOptional("OVERLAY_FRONT_STEAM_CENTRIFUGE_GLOW"),
             OVERLAY_FRONT_STEAM_CENTRIFUGE_ACTIVE = createOptional("OVERLAY_FRONT_STEAM_CENTRIFUGE_ACTIVE"),
+                OVERLAY_FRONT_STEAM_CENTRIFUGE_ACTIVE_GLOW = createOptional("OVERLAY_FRONT_STEAM_CENTRIFUGE_ACTIVE_GLOW"),
             OVERLAY_FRONT_STEAM_FORGE_HAMMER = createOptional("OVERLAY_FRONT_STEAM_FORGE_HAMMER"),
+                OVERLAY_FRONT_STEAM_FORGE_HAMMER_GLOW = createOptional("OVERLAY_FRONT_STEAM_FORGE_HAMMER_GLOW"),
             OVERLAY_FRONT_STEAM_FORGE_HAMMER_ACTIVE = createOptional("OVERLAY_FRONT_STEAM_FORGE_HAMMER_ACTIVE"),
+                OVERLAY_FRONT_STEAM_FORGE_HAMMER_ACTIVE_GLOW = createOptional("OVERLAY_FRONT_STEAM_FORGE_HAMMER_ACTIVE_GLOW"),
             OVERLAY_FRONT_STEAM_COMPRESSOR = createOptional("OVERLAY_FRONT_STEAM_COMPRESSOR"),
             OVERLAY_FRONT_STEAM_COMPRESSOR_GLOW = createOptional("OVERLAY_FRONT_STEAM_COMPRESSOR_GLOW"),
             OVERLAY_FRONT_STEAM_EXTRACTOR = createOptional("OVERLAY_FRONT_STEAM_EXTRACTOR"),
             OVERLAY_FRONT_STEAM_EXTRACTOR_GLOW = createOptional("OVERLAY_FRONT_STEAM_EXTRACTOR_GLOW"),
             OVERLAY_FRONT_STEAM_ALLOY_SMELTER_MULTI = createOptional("OVERLAY_FRONT_STEAM_ALLOY_SMELTER_MULTI"),
+            OVERLAY_FRONT_STEAM_ALLOY_SMELTER_MULTI_GLOW = createOptional("OVERLAY_FRONT_STEAM_ALLOY_SMELTER_MULTI_GLOW"),
             OVERLAY_FRONT_STEAM_ALLOY_SMELTER_MULTI_ACTIVE = createOptional("OVERLAY_FRONT_STEAM_ALLOY_SMELTER_MULTI_ACTIVE"),
+            OVERLAY_FRONT_STEAM_ALLOY_SMELTER_MULTI_ACTIVE_GLOW = createOptional("OVERLAY_FRONT_STEAM_ALLOY_SMELTER_MULTI_ACTIVE_GLOW"),
             OVERLAY_FRONT_STEAM_FURNACE_MULTI = createOptional("OVERLAY_FRONT_STEAM_FURNACE_MULTI"),
             OVERLAY_FRONT_STEAM_FURNACE_MULTI_ACTIVE = createOptional("OVERLAY_FRONT_STEAM_FURNACE_MULTI_ACTIVE"),
             OVERLAY_FRONT_STEAM_FURNACE_MULTI_GLOW = createOptional("OVERLAY_FRONT_STEAM_FURNACE_MULTI_GLOW"),
@@ -2084,7 +2094,9 @@ public class Textures {
             OVERLAY_FRONT_EXOFOUNDRY_ACTIVE_GLOW = createOptional("OVERLAY_FRONT_EXOFOUNDRY_ACTIVE_GLOW"),
             COKE_OVEN_CASING = create("COKE_OVEN_CASING"),
             COKE_OVEN_OVERLAY_INACTIVE = createOptional("COKE_OVEN_OVERLAY_INACTIVE"),
+            COKE_OVEN_OVERLAY_INACTIVE_GLOW = createOptional("COKE_OVEN_OVERLAY_INACTIVE_GLOW"),
             COKE_OVEN_OVERLAY_ACTIVE = createOptional("COKE_OVEN_OVERLAY_ACTIVE"),
+            COKE_OVEN_OVERLAY_ACTIVE_GLOW = createOptional("COKE_OVEN_OVERLAY_ACTIVE_GLOW"),
 
             OVERLAY_FRONT_MASS_SOLIDIFIER = createOptional("OVERLAY_FRONT_MASS_SOLIDIFIER"),
             OVERLAY_FRONT_MASS_SOLIDIFIER_ACTIVE = createOptional("OVERLAY_FRONT_MASS_SOLIDIFIER_ACTIVE"),
@@ -2693,31 +2705,27 @@ public class Textures {
         public static ITexture[] createTextureWithCasing(ICasingTextureProvider mte, ForgeDirection side,
             ForgeDirection aFacing, boolean aActive, IIconContainer tex, IIconContainer texGlow,
             IIconContainer texActive, IIconContainer texActiveGlow) {
-            return new ITexture[] { TextureFactory.builder()
-                .addIcon(BlockIcons.VOID)
-                .extFacing()
-                .build() };
-//            if (side == aFacing) {
-//                if (aActive) return new ITexture[] { mte.getCasingTexture(), TextureFactory.builder()
-//                    .addIcon(texActive)
-//                    .extFacing()
-//                    .build(),
-//                    TextureFactory.builder()
-//                        .addIcon(texActiveGlow)
-//                        .extFacing()
-//                        .glow()
-//                        .build() };
-//                return new ITexture[] { mte.getCasingTexture(), TextureFactory.builder()
-//                    .addIcon(tex)
-//                    .extFacing()
-//                    .build(),
-//                    TextureFactory.builder()
-//                        .addIcon(texGlow)
-//                        .extFacing()
-//                        .glow()
-//                        .build() };
-//            }
-//            return new ITexture[] { mte.getCasingTexture() };
+            if (side == aFacing) {
+                if (aActive) return new ITexture[] { mte.getCasingTexture(), TextureFactory.builder()
+                    .addIcon(texActive)
+                    .extFacing()
+                    .build(),
+                    TextureFactory.builder()
+                        .addIcon(texActiveGlow)
+                        .extFacing()
+                        .glow()
+                        .build() };
+                return new ITexture[] { mte.getCasingTexture(), TextureFactory.builder()
+                    .addIcon(tex)
+                    .extFacing()
+                    .build(),
+                    TextureFactory.builder()
+                        .addIcon(texGlow)
+                        .extFacing()
+                        .glow()
+                        .build() };
+            }
+            return new ITexture[] { mte.getCasingTexture() };
         }
 
         public static void cleanup() {

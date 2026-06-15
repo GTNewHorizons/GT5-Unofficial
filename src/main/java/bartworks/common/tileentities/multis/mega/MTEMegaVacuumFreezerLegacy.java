@@ -52,6 +52,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
@@ -68,7 +69,7 @@ import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.blocks.BlockCasingsAbstract;
 
 public class MTEMegaVacuumFreezerLegacy extends MegaMultiBlockBase<MTEMegaVacuumFreezerLegacy>
-    implements ISurvivalConstructable {
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     public MTEMegaVacuumFreezerLegacy(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -478,6 +479,11 @@ public class MTEMegaVacuumFreezerLegacy extends MegaMultiBlockBase<MTEMegaVacuum
             rTexture = new ITexture[] { casingTexturePages[0][17] };
         }
         return rTexture;
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return casingTexturePages[0][17];
     }
 
     @Override

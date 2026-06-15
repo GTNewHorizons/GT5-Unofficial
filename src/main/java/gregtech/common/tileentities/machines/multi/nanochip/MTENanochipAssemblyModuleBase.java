@@ -3,10 +3,6 @@ package gregtech.common.tileentities.machines.multi.nanochip;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.OutputHatch;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_GLOW;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.CASING_INDEX_WHITE;
 import static net.minecraft.util.StatCollector.translateToLocal;
@@ -38,6 +34,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHatchElement;
+import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
@@ -50,6 +47,7 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.maps.NACRecipeMapBackend;
+import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeConstants;
@@ -738,22 +736,38 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
-        int colorIndex, boolean aActive, boolean redstoneLevel) {
-        return Textures.BlockIcons.createTextureWithCasing(
-            this,
-            side,
-            aFacing,
-            aActive,
-            OVERLAY_FRONT_DISTILLATION_TOWER,
-            OVERLAY_FRONT_DISTILLATION_TOWER_GLOW,
-            OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE,
-            OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW);
-    }
-
-    @Override
     public ITexture getCasingTexture() {
         return Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_WHITE);
+    }
+
+    protected ITexture[] createNanochipModuleTextures(ForgeDirection side, ForgeDirection aFacing, boolean aActive,
+        IIconContainer overlay, IIconContainer overlayGlow, IIconContainer overlayActive,
+        IIconContainer overlayActiveGlow) {
+        if (side == aFacing) {
+            if (aActive) return new ITexture[] { getCasingTexture(), TextureFactory.builder()
+                .addIcon(overlay)
+                .extFacing()
+                .build(),
+                TextureFactory.builder()
+                    .addIcon(overlayActive)
+                    .extFacing()
+                    .build(),
+                TextureFactory.builder()
+                    .addIcon(overlayActiveGlow)
+                    .extFacing()
+                    .glow()
+                    .build() };
+            return new ITexture[] { getCasingTexture(), TextureFactory.builder()
+                .addIcon(overlay)
+                .extFacing()
+                .build(),
+                TextureFactory.builder()
+                    .addIcon(overlayGlow)
+                    .extFacing()
+                    .glow()
+                    .build() };
+        }
+        return new ITexture[] { getCasingTexture() };
     }
 
     @Override
