@@ -179,17 +179,9 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>, F extends MEFi
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
         if (aPlayer.isSneaking()) {
-            checkMode = !checkMode;
-            GTUtility.sendChatTrans(aPlayer, "GT5U.hatch.outputme.checkMode." + this.checkMode);
-            if (checkMode) {
-                GTUtility.sendChatTrans(aPlayer, "GT5U.hatch.outputme.checkMode.desc");
-            }
+            setCheckMode(!checkMode);
         } else {
-            cacheMode = !cacheMode;
-            GTUtility.sendChatTrans(aPlayer, "GT5U.hatch.outputme.cacheMode." + this.cacheMode);
-            if (cacheMode) {
-                GTUtility.sendChatTrans(aPlayer, "GT5U.hatch.outputme.cacheMode.desc");
-            }
+            setCacheMode(!cacheMode);
             updateState();
             cellToCacheTransfer();
             this.updateCellArray();
@@ -484,6 +476,13 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>, F extends MEFi
 
     public void setCheckMode(boolean cacheMode) {
         this.checkMode = cacheMode;
+        EntityPlayer p = env.getLastClickedPlayer();
+        if (p != null && GTUtility.isServer()) {
+            GTUtility.sendChatTrans(p, "GT5U.hatch.outputme.checkMode." + this.checkMode);
+            if (checkMode) {
+                GTUtility.sendChatTrans(p, "GT5U.hatch.outputme.checkMode.desc");
+            }
+        }
     }
 
     public void addToCache(@NotNull I stack) {
@@ -536,6 +535,13 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>, F extends MEFi
     public void setCacheMode(boolean cacheMode) {
         this.cacheMode = cacheMode;
         updateState();
+        EntityPlayer p = env.getLastClickedPlayer();
+        if (p != null && GTUtility.isServer()) {
+            GTUtility.sendChatTrans(p, "GT5U.hatch.outputme.cacheMode." + this.cacheMode);
+            if (cacheMode) {
+                GTUtility.sendChatTrans(p, "GT5U.hatch.outputme.cacheMode.desc");
+            }
+        }
     }
 
     public void saveNBTData(NBTTagCompound aNBT) {
