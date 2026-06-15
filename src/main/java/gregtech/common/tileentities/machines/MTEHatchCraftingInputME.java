@@ -458,6 +458,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
     private BaseActionSource requestSource = null;
     private @Nullable AENetworkProxy gridProxy = null;
     private final List<MTEHatchCraftingInputSlave> proxyHatches = new ArrayList<>();
+    private final List<IHatchWatcher> watchers = new ArrayList<>();
 
     // holds all internal inventories
     @SuppressWarnings("unchecked") // Java doesn't allow to create an array of a generic type.
@@ -517,6 +518,15 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
             }
             if (aTimer % 20 == 0) {
                 getBaseMetaTileEntity().setActive(isActive());
+            }
+            if (justHadNewItems) {
+                for (IHatchWatcher watcher : watchers) {
+                    watcher.scheduleRecipeCheckImmediate();
+                }
+                for (MTEHatchCraftingInputSlave slave : proxyHatches) {
+                    slave.onParentInvChange();
+                }
+                justHadNewItems = false;
             }
         }
     }
@@ -1241,10 +1251,13 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
     }
 
     @Override
-    public boolean justUpdated() {
-        boolean ret = justHadNewItems;
-        justHadNewItems = false;
-        return ret;
+    public void addWatcher(IHatchWatcher watcher) {
+        watchers.add(watcher);
+    }
+
+    @Override
+    public void removeWatcher(IHatchWatcher watcher) {
+        watchers.remove(watcher);
     }
 
     @Override
