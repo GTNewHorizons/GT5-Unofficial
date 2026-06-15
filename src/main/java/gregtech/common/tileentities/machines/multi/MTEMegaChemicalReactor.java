@@ -226,7 +226,7 @@ public class MTEMegaChemicalReactor extends MTEExtendedPowerMultiBlockBase<MTEMe
             }
         }
         for (MTEHatch energyHatch : this.getExoticAndNormalEnergyHatchList()) {
-            if (this.glassTier < energyHatch.mTier) {
+            if (this.glassTier < energyHatch.getTierForStructure()) {
                 errors.add(StructureErrorRegistry.ENERGY_TIER_EXCEED_GLASS);
                 return;
             }
