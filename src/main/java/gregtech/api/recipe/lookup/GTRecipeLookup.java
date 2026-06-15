@@ -120,7 +120,6 @@ public final class GTRecipeLookup {
         private final Deque<SearchFrame> stack = new ArrayDeque<>();
         private Iterator<GTRecipe> leafIterator = Collections.emptyIterator();
         private @Nullable GTRecipe nextRecipe;
-        private boolean hasCachedNext;
 
         private RecipeIterator(GTRecipeLookupBranch rootBranch, List<GTRecipeLookupIngredient> ingredients) {
             this.ingredients = new ArrayList<>(new LinkedHashSet<>(ingredients));
@@ -129,21 +128,22 @@ public final class GTRecipeLookup {
 
         @Override
         public boolean hasNext() {
-            if (!hasCachedNext) {
+            if (nextRecipe == null) {
                 nextRecipe = findNext();
-                hasCachedNext = true;
             }
             return nextRecipe != null;
         }
 
         @Override
-        public @Nullable GTRecipe next() {
-            if (!hasNext()) {
+        public GTRecipe next() {
+            if (nextRecipe == null) {
+                nextRecipe = findNext();
+            }
+            if (nextRecipe == null) {
                 throw new NoSuchElementException();
             }
             GTRecipe result = nextRecipe;
             nextRecipe = null;
-            hasCachedNext = false;
             return result;
         }
 
