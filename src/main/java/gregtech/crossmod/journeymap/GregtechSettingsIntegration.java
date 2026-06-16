@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import gregtech.common.config.Client;
-import journeymap.client.api.settings.DoubleSettingBinding;
+import journeymap.client.api.settings.DoubleBinding;
 import journeymap.client.api.settings.ExternalSettingEntry;
 import journeymap.client.api.settings.SettingsPageDefinition;
 import journeymap.client.api.settings.SettingsPageRegistry;
@@ -76,8 +76,8 @@ public class GregtechSettingsIntegration {
         return entries;
     }
 
-    private static DoubleSettingBinding createScaleBinding(ScaleAccessor accessor) {
-        return new DoubleSettingBinding() {
+    private static DoubleBinding createScaleBinding(ScaleAccessor accessor) {
+        return new DoubleBinding() {
 
             @Override
             public double get() {
