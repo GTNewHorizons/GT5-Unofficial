@@ -248,8 +248,8 @@ public class DustLoader implements IWerkstoffRunnable {
                         .hasChemicalRecipes()) {
                         if (cells > 0) stOutputs.add(Materials.Empty.getCells(cells));
                         GTValues.RA.stdBuilder()
-                            .itemInputs(input)
-                            .itemOutputs(stOutputs.toArray(new ItemStack[0]))
+                            .itemInputs(stOutputs.toArray(new ItemStack[0]))
+                            .itemOutputs(input)
                             .fluidInputs(flOutputs.toArray(new FluidStack[0]))
                             .duration(
                                 (int) Math.max(
@@ -276,8 +276,8 @@ public class DustLoader implements IWerkstoffRunnable {
                         ItemStack circuit = circuitID == -1 ? null : GTUtility.getIntegratedCircuit(circuitID);
                         if (circuit != null) stOutputs.add(circuit);
                         GTValues.RA.stdBuilder()
-                            .itemInputs(input)
-                            .itemOutputs(stOutputs.toArray(new ItemStack[0]))
+                            .itemInputs(stOutputs.toArray(new ItemStack[0]))
+                            .itemOutputs(input)
                             .fluidInputs(
                                 flOutputs.isEmpty() ? new FluidStack[0] : new FluidStack[] { flOutputs.get(0) })
                             .duration(
