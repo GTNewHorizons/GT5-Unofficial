@@ -324,8 +324,7 @@ public final class RecipeSnapshotDiff {
                         sawFormatVersion = true;
                         if (formatVersion != RecipeSnapshotExporter.FORMAT_VERSION) {
                             throw new IllegalStateException(
-                                "Recipe snapshot "
-                                    + path.toAbsolutePath()
+                                "Recipe snapshot " + path.toAbsolutePath()
                                     + " uses unsupported formatVersion="
                                     + formatVersion
                                     + "; expected "
@@ -345,9 +344,7 @@ public final class RecipeSnapshotDiff {
         }
         if (!sawFormatVersion || !sawMaps) {
             throw new IllegalStateException(
-                "Recipe snapshot "
-                    + path.toAbsolutePath()
-                    + " is missing current formatVersion/maps fields");
+                "Recipe snapshot " + path.toAbsolutePath() + " is missing current formatVersion/maps fields");
         }
         return index;
     }
