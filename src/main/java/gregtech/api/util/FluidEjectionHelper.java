@@ -32,13 +32,20 @@ public class FluidEjectionHelper {
     }
 
     public FluidEjectionHelper(List<? extends IOutputHatch> hatches, boolean protectFluids) {
+        this(hatches, protectFluids, false);
+    }
+
+    public FluidEjectionHelper(List<? extends IOutputHatch> hatches, boolean protectFluids, boolean isRecipeCheck) {
         fluidProtectionEnabled = protectFluids;
 
         for (int i = 0, hatchesSize = hatches.size(); i < hatchesSize; i++) {
             IOutputHatch hatch = hatches.get(i);
-
+            IOutputHatchTransaction transaction = hatch.createTransaction();
+            if (transaction instanceof IOutputHatchTransaction.IRecipeCheckAware tran) {
+                tran.setRecipeCheck(isRecipeCheck);
+            }
             transactionsByType.computeIfAbsent(hatch.getHatchType(), x -> new ArrayList<>())
-                .add(hatch.createTransaction());
+                .add(transaction);
         }
     }
 

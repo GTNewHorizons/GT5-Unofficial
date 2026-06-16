@@ -46,7 +46,6 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IOutputHatch;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.fluid.IFluidStore;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -63,7 +62,6 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.misc.GTStructureChannels;
-import gregtech.common.tileentities.machines.outputme.MTEHatchOutputME;
 
 public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTEMegaDistillationTower>
     implements ISurvivalConstructable, ICasingTextureProvider {
@@ -419,29 +417,8 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
     }
 
     @Override
-    public boolean canDumpFluidToME() {
-
-        // All fluids can be dumped to ME only if each layer contains a ME Output Hatch.
-        for (List<MTEHatchOutput> tLayerOutputHatches : this.outputHatchesPerLayer) {
-
-            boolean foundMEHatch = false;
-
-            for (IFluidStore tHatch : tLayerOutputHatches) {
-                if (tHatch instanceof MTEHatchOutputME tMEHatch) {
-                    if (tMEHatch.canAcceptFluid()) {
-                        foundMEHatch = true;
-                        break;
-                    }
-                }
-            }
-
-            // Exit if we didn't find a valid hatch on this layer.
-            if (!foundMEHatch) {
-                return false;
-            }
-        }
-
-        return true;
+    public boolean canDumpFluidToME(List<GTUtility.FluidId> outputs) {
+        return canDumpFluidToMEByLayer(outputs, outputHatchesPerLayer);
     }
 
     @Override

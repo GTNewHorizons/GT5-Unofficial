@@ -83,8 +83,10 @@ public interface IVoidable {
     boolean canDumpItemToME(List<GTUtility.ItemId> outputs);
 
     /**
-     * @return If this machine has ability to dump fluid outputs to ME network. This doesn't need to check if it can
-     *         actually dump to ME, as this might be called every tick and cause lag.
+     * Checks if this machine contains ME output hatches that can accept the given items, in which case we can just
+     * assume that we will never void outputs.
+     *
+     * @param outputs The outputs that will be ejected when the recipe finishes.
      */
-    boolean canDumpFluidToME();
+    boolean canDumpFluidToME(List<GTUtility.FluidId> outputs);
 }
