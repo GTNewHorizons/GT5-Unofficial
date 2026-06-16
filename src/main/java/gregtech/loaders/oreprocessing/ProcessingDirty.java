@@ -39,7 +39,7 @@ public class ProcessingDirty implements gregtech.api.interfaces.IOreRecipeRegist
         if (aMaterial.contains(SubTag.NO_ORE_PROCESSING)) {
             return;
         }
-        if (!OreRecipeRegistrationGuard.tryProcess(aPrefix, aMaterial, aOreDictName, "ProcessingDirty")) {
+        if (!OreRecipeRegistrationGuard.tryProcessStack(aPrefix, aMaterial, aStack, "ProcessingDirty")) {
             return;
         }
 

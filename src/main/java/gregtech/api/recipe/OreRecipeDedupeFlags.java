@@ -6,11 +6,11 @@ import org.apache.logging.log4j.Logger;
 /**
  * Feature flags for ore recipe registration optimizations. Toggle independently for bisection debugging.
  * <ul>
- * <li>{@code -Dgt.recipe.ore.dedupe.enabled=false} — master off (guards disabled; canonical inputs stay on unless
- * overridden)</li>
+ * <li>{@code -Dgt.recipe.ore.dedupe.enabled=false} – master off (guards disabled)</li>
  * <li>{@code -Dgt.recipe.ore.dedupe.guard.process=false} — allow duplicate ore-dict handler runs</li>
  * <li>{@code -Dgt.recipe.ore.dedupe.guard.reverse=false} — allow duplicate reverse recycling recipes</li>
- * <li>{@code -Dgt.recipe.ore.dedupe.canonical.inputs=false} — use variant {@code aStack} in recipe inputs</li>
+ * <li>{@code -Dgt.recipe.ore.dedupe.canonical.inputs=true} – use canonical ore-dict stacks in recipe inputs for
+ * debugging only</li>
  * </ul>
  * Legacy {@link OreRecipeRegistrationGuard#DISABLE_PROPERTY} is equivalent to {@code enabled=false}.
  */
@@ -46,7 +46,7 @@ public final class OreRecipeDedupeFlags {
     }
 
     public static boolean canonicalInputsEnabled() {
-        return readFlag(CANONICAL_INPUTS_PROPERTY, true);
+        return readFlag(CANONICAL_INPUTS_PROPERTY, false);
     }
 
     public static void logConfigurationOnce() {

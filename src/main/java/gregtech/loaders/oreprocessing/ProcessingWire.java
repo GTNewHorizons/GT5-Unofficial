@@ -51,7 +51,7 @@ public class ProcessingWire implements gregtech.api.interfaces.IOreRecipeRegistr
     @Override
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
         ItemStack aStack) {
-        if (!OreRecipeRegistrationGuard.tryProcess(aPrefix, aMaterial, aOreDictName, "ProcessingWire")) {
+        if (!OreRecipeRegistrationGuard.tryProcessStack(aPrefix, aMaterial, aStack, "ProcessingWire")) {
             return;
         }
 

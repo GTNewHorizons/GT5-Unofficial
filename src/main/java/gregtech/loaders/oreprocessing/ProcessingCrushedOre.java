@@ -32,7 +32,7 @@ public class ProcessingCrushedOre implements gregtech.api.interfaces.IOreRecipeR
         if (aMaterial.contains(SubTag.NO_ORE_PROCESSING)) {
             return;
         }
-        if (!OreRecipeRegistrationGuard.tryProcess(aPrefix, aMaterial, aOreDictName, "ProcessingCrushedOre")) {
+        if (!OreRecipeRegistrationGuard.tryProcessStack(aPrefix, aMaterial, aStack, "ProcessingCrushedOre")) {
             return;
         }
 

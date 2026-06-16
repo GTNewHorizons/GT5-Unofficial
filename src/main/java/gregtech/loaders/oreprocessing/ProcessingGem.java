@@ -54,7 +54,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
         if (aMaterial == Materials.Salt || aMaterial == Materials.RockSalt
             || aMaterial == Materials.Spodumene
             || aMaterial == Materials.NetherQuartz) return;
-        if (!OreRecipeRegistrationGuard.tryProcess(aPrefix, aMaterial, aOreDictName, "ProcessingGem")) {
+        if (!OreRecipeRegistrationGuard.tryProcessStack(aPrefix, aMaterial, aStack, "ProcessingGem")) {
             return;
         }
 

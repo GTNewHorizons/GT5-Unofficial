@@ -8,23 +8,23 @@ import org.junit.jupiter.api.Test;
 class OreRecipeDedupeFlagsTest {
 
     @Test
-    void masterDisabledTurnsOffGuardsButLeavesCanonicalInputsOnByDefault() {
+    void masterDisabledTurnsOffGuardsAndLeavesConcreteInputsByDefault() {
         restoreAll(() -> {
             System.setProperty(OreRecipeDedupeFlags.ENABLED_PROPERTY, "false");
             assertFalse(OreRecipeDedupeFlags.isMasterEnabled());
             assertFalse(OreRecipeDedupeFlags.guardProcessEnabled());
             assertFalse(OreRecipeDedupeFlags.guardReverseEnabled());
-            assertTrue(OreRecipeDedupeFlags.canonicalInputsEnabled());
+            assertFalse(OreRecipeDedupeFlags.canonicalInputsEnabled());
         });
     }
 
     @Test
-    void canonicalInputsCanBeDisabledIndependentlyOfMaster() {
+    void canonicalInputsCanBeEnabledIndependentlyOfMaster() {
         restoreAll(() -> {
             System.clearProperty(OreRecipeDedupeFlags.ENABLED_PROPERTY);
-            System.setProperty(OreRecipeDedupeFlags.CANONICAL_INPUTS_PROPERTY, "false");
+            System.setProperty(OreRecipeDedupeFlags.CANONICAL_INPUTS_PROPERTY, "true");
             assertTrue(OreRecipeDedupeFlags.isMasterEnabled());
-            assertFalse(OreRecipeDedupeFlags.canonicalInputsEnabled());
+            assertTrue(OreRecipeDedupeFlags.canonicalInputsEnabled());
         });
     }
 

@@ -40,7 +40,7 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
         ItemStack aStack) {
         // Blacklist materials which are handled by Werkstoff loader
         if (aMaterial == Materials.Calcium || aMaterial == Materials.Magnesia) return;
-        if (!OreRecipeRegistrationGuard.tryProcess(aPrefix, aMaterial, aOreDictName, "ProcessingIngot")) {
+        if (!OreRecipeRegistrationGuard.tryProcessStack(aPrefix, aMaterial, aStack, "ProcessingIngot")) {
             return;
         }
 
@@ -80,7 +80,8 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
                 }
                 // Reverse recipes
                 {
-                    if (OreRecipeRegistrationGuard.tryRegisterReverseRecipe("fluidSmelting", aMaterial, aPrefix)) {
+                    if (OreRecipeRegistrationGuard
+                        .tryRegisterReverseRecipe("fluidSmelting", aMaterial, aPrefix, canonicalStack)) {
                         GTRecipeRegistrator.registerReverseFluidSmelting(
                             canonicalStack,
                             aMaterial,
@@ -88,7 +89,8 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
                             null,
                             false);
                     }
-                    if (OreRecipeRegistrationGuard.tryRegisterReverseRecipe("macerator", aMaterial, aPrefix)) {
+                    if (OreRecipeRegistrationGuard
+                        .tryRegisterReverseRecipe("macerator", aMaterial, aPrefix, canonicalStack)) {
                         GTRecipeRegistrator.registerReverseMacerating(
                             canonicalStack,
                             aMaterial,
@@ -100,7 +102,8 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
                             false);
                     }
                     if (GTRecipeRegistrator.hasReverseArcSmeltingRecipe(aMaterial)
-                        && OreRecipeRegistrationGuard.tryRegisterReverseRecipe("arcSmelting", aMaterial, aPrefix)) {
+                        && OreRecipeRegistrationGuard
+                            .tryRegisterReverseRecipe("arcSmelting", aMaterial, aPrefix, canonicalStack)) {
                         GTRecipeRegistrator.registerReverseArcSmelting(
                             GTUtility.copyAmount(1, canonicalStack),
                             aMaterial,

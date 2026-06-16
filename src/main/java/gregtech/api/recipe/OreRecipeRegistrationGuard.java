@@ -81,11 +81,13 @@ public final class OreRecipeRegistrationGuard {
         String key = prefix.getName() + "|mat:"
             + materialName
             + "|stack:"
-            + itemIdentity(stack.getItem())
-            + ':'
-            + stack.getItemDamage()
-            + '|'
-            + registratorId;
+             + itemIdentity(stack.getItem())
+             + ':'
+             + stack.getItemDamage()
+             + "|tag:"
+             + stackTag(stack)
+             + '|'
+             + registratorId;
         return seenOreDictKeys.add(key);
     }
 
@@ -111,18 +113,37 @@ public final class OreRecipeRegistrationGuard {
     }
 
     /**
-     * Dedupes reverse recycling recipes registered once per material per input prefix (e.g. ingot vs nugget).
+     * Dedupes reverse recycling recipes registered once per concrete source stack.
      */
-    public static boolean tryRegisterReverseRecipe(String recipeKind, Materials material, OrePrefixes prefix) {
+    public static boolean tryRegisterReverseRecipe(String recipeKind, Materials material, OrePrefixes prefix,
+        ItemStack stack) {
         if (!OreRecipeDedupeFlags.guardReverseEnabled()) {
             return true;
         }
         if (recipeKind == null || recipeKind.isEmpty()
             || material == null
             || material.mName == null
-            || prefix == null) {
+            || prefix == null
+            || stack == null
+            || stack.getItem() == null) {
             return true;
         }
-        return seenReverseRecipeKeys.add("reverse|" + recipeKind + "|" + prefix.getName() + "|" + material.mName);
+        return seenReverseRecipeKeys.add(
+            "reverse|" + recipeKind
+                + '|'
+                + prefix.getName()
+                + "|mat:"
+                + material.mName
+                + "|stack:"
+                + itemIdentity(stack.getItem())
+                + ':'
+                + stack.getItemDamage()
+                + "|tag:"
+                + stackTag(stack));
+    }
+
+    private static String stackTag(ItemStack stack) {
+        return stack.getTagCompound() == null ? "" : stack.getTagCompound()
+            .toString();
     }
 }

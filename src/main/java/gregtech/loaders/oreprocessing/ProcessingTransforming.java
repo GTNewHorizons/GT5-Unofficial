@@ -31,7 +31,7 @@ public class ProcessingTransforming implements IOreRecipeRegistrator {
         if (aPrefix == OrePrefixes.plank) {
             aPrefix = OrePrefixes.plate;
         }
-        if (!OreRecipeRegistrationGuard.tryProcess(aPrefix, aMaterial, aOreDictName, "ProcessingTransforming")) {
+        if (!OreRecipeRegistrationGuard.tryProcessStack(aPrefix, aMaterial, aStack, "ProcessingTransforming")) {
             return;
         }
 

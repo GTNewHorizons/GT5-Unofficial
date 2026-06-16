@@ -89,7 +89,8 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                         .addTo(cannerRecipes);
                 }
                 if (!aMaterial.mBlastFurnaceRequired) {
-                    if (OreRecipeRegistrationGuard.tryRegisterReverseRecipe("fluidSmelting", aMaterial, aPrefix)) {
+                    if (OreRecipeRegistrationGuard
+                        .tryRegisterReverseRecipe("fluidSmelting", aMaterial, aPrefix, canonicalStack)) {
                         GTRecipeRegistrator.registerReverseFluidSmelting(
                             canonicalStack,
                             aMaterial,
@@ -98,7 +99,8 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                             false);
                     }
                     if (GTRecipeRegistrator.hasReverseArcSmeltingRecipe(aMaterial)
-                        && OreRecipeRegistrationGuard.tryRegisterReverseRecipe("arcSmelting", aMaterial, aPrefix)) {
+                        && OreRecipeRegistrationGuard
+                            .tryRegisterReverseRecipe("arcSmelting", aMaterial, aPrefix, canonicalStack)) {
                         GTRecipeRegistrator.registerReverseArcSmelting(
                             GTUtility.copyAmount(1, canonicalStack),
                             aMaterial,
@@ -564,7 +566,8 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                     .eut(4)
                     .addTo(packagerRecipes);
                 if (!aMaterial.mBlastFurnaceRequired) {
-                    if (OreRecipeRegistrationGuard.tryRegisterReverseRecipe("fluidSmelting", aMaterial, aPrefix)) {
+                    if (OreRecipeRegistrationGuard
+                        .tryRegisterReverseRecipe("fluidSmelting", aMaterial, aPrefix, canonicalStack)) {
                         GTRecipeRegistrator.registerReverseFluidSmelting(
                             canonicalStack,
                             aMaterial,
@@ -573,7 +576,8 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                             true);
                     }
                     if (GTRecipeRegistrator.hasReverseArcSmeltingRecipe(aMaterial)
-                        && OreRecipeRegistrationGuard.tryRegisterReverseRecipe("arcSmelting", aMaterial, aPrefix)) {
+                        && OreRecipeRegistrationGuard
+                            .tryRegisterReverseRecipe("arcSmelting", aMaterial, aPrefix, canonicalStack)) {
                         GTRecipeRegistrator.registerReverseArcSmelting(
                             GTUtility.copyAmount(1, canonicalStack),
                             aMaterial,
@@ -592,7 +596,8 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                     .eut(4)
                     .addTo(packagerRecipes);
                 if (!aMaterial.mBlastFurnaceRequired) {
-                    if (OreRecipeRegistrationGuard.tryRegisterReverseRecipe("fluidSmelting", aMaterial, aPrefix)) {
+                    if (OreRecipeRegistrationGuard
+                        .tryRegisterReverseRecipe("fluidSmelting", aMaterial, aPrefix, canonicalStack)) {
                         GTRecipeRegistrator.registerReverseFluidSmelting(
                             canonicalStack,
                             aMaterial,
@@ -601,7 +606,8 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                             true);
                     }
                     if (GTRecipeRegistrator.hasReverseArcSmeltingRecipe(aMaterial)
-                        && OreRecipeRegistrationGuard.tryRegisterReverseRecipe("arcSmelting", aMaterial, aPrefix)) {
+                        && OreRecipeRegistrationGuard
+                            .tryRegisterReverseRecipe("arcSmelting", aMaterial, aPrefix, canonicalStack)) {
                         GTRecipeRegistrator.registerReverseArcSmelting(
                             GTUtility.copyAmount(1, canonicalStack),
                             aMaterial,

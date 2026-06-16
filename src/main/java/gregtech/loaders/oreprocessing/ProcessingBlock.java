@@ -42,7 +42,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
         if (aMaterial == Materials.Ichorium || aMaterial == Materials.NetherQuartz) {
             return;
         }
-        if (!OreRecipeRegistrationGuard.tryProcess(aPrefix, aMaterial, aOreDictName, "ProcessingBlock")) {
+        if (!OreRecipeRegistrationGuard.tryProcessStack(aPrefix, aMaterial, aStack, "ProcessingBlock")) {
             return;
         }
 

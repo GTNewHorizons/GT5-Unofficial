@@ -30,7 +30,7 @@ public class ProcessingPure implements gregtech.api.interfaces.IOreRecipeRegistr
         if (aMaterial.contains(SubTag.NO_ORE_PROCESSING)) {
             return;
         }
-        if (!OreRecipeRegistrationGuard.tryProcess(aPrefix, aMaterial, aOreDictName, "ProcessingPure")) {
+        if (!OreRecipeRegistrationGuard.tryProcessStack(aPrefix, aMaterial, aStack, "ProcessingPure")) {
             return;
         }
 

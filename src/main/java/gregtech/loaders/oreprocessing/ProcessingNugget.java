@@ -73,11 +73,12 @@ public class ProcessingNugget implements gregtech.api.interfaces.IOreRecipeRegis
         }
 
         ItemStack canonicalStack = OreRecipeRegistrationInputs.recipeInputStack(aPrefix, aMaterial, aStack);
-        if (OreRecipeRegistrationGuard.tryRegisterReverseRecipe("fluidSmelting", aMaterial, aPrefix)) {
+        if (OreRecipeRegistrationGuard
+            .tryRegisterReverseRecipe("fluidSmelting", aMaterial, aPrefix, canonicalStack)) {
             GTRecipeRegistrator
                 .registerReverseFluidSmelting(canonicalStack, aMaterial, aPrefix.getMaterialAmount(), null, true);
         }
-        if (OreRecipeRegistrationGuard.tryRegisterReverseRecipe("macerator", aMaterial, aPrefix)) {
+        if (OreRecipeRegistrationGuard.tryRegisterReverseRecipe("macerator", aMaterial, aPrefix, canonicalStack)) {
             GTRecipeRegistrator.registerReverseMacerating(
                 canonicalStack,
                 aMaterial,
