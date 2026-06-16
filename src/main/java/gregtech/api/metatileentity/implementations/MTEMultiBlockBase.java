@@ -3044,7 +3044,11 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
     protected boolean canDumpFluidToMEByLayer(List<GTUtility.FluidId> outputs,
         List<List<MTEHatchOutput>> hatchesByLayer) {
-        for (int i = 0; i < hatchesByLayer.size(); i++) {
+        for (int i = 0; i < outputs.size(); i++) {
+            if (i >= hatchesByLayer.size()) {
+                // Less layer than recipe size
+                return false;
+            }
             List<MTEHatchOutputME> hatches = GTUtility.getMTEsOfType(hatchesByLayer.get(i), MTEHatchOutputME.class);
             GTUtility.FluidId output = outputs.get(i);
             boolean handled = false;
