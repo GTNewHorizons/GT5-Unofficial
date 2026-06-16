@@ -97,7 +97,8 @@ class OreRecipeRegistrationGuardTest {
         assertFalse(
             OreRecipeRegistrationGuard.tryProcessStack(OrePrefixes.dust, Materials.Stone, firstSeed, "ProcessingCrop"));
         assertTrue(
-            OreRecipeRegistrationGuard.tryProcessStack(OrePrefixes.dust, Materials.Stone, secondSeed, "ProcessingCrop"));
+            OreRecipeRegistrationGuard
+                .tryProcessStack(OrePrefixes.dust, Materials.Stone, secondSeed, "ProcessingCrop"));
     }
 
     @Test
@@ -145,8 +146,10 @@ class OreRecipeRegistrationGuardTest {
         Item item = new Item().setUnlocalizedName("test.reverse.outside.batch");
         ItemStack stack = new ItemStack(item, 1, 0);
 
-        assertTrue(OreRecipeRegistrationGuard.tryRegisterReverseRecipe("macerator", Materials.Stone, OrePrefixes.dust, stack));
-        assertTrue(OreRecipeRegistrationGuard.tryRegisterReverseRecipe("macerator", Materials.Stone, OrePrefixes.dust, stack));
+        assertTrue(
+            OreRecipeRegistrationGuard.tryRegisterReverseRecipe("macerator", Materials.Stone, OrePrefixes.dust, stack));
+        assertTrue(
+            OreRecipeRegistrationGuard.tryRegisterReverseRecipe("macerator", Materials.Stone, OrePrefixes.dust, stack));
     }
 
     @Test
@@ -155,12 +158,15 @@ class OreRecipeRegistrationGuardTest {
         ItemStack stack = new ItemStack(item, 1, 0);
 
         OreRecipeRegistrationGuard.begin();
-        assertTrue(OreRecipeRegistrationGuard.tryRegisterReverseRecipe("macerator", Materials.Stone, OrePrefixes.dust, stack));
-        assertFalse(OreRecipeRegistrationGuard.tryRegisterReverseRecipe("macerator", Materials.Stone, OrePrefixes.dust, stack));
+        assertTrue(
+            OreRecipeRegistrationGuard.tryRegisterReverseRecipe("macerator", Materials.Stone, OrePrefixes.dust, stack));
+        assertFalse(
+            OreRecipeRegistrationGuard.tryRegisterReverseRecipe("macerator", Materials.Stone, OrePrefixes.dust, stack));
         OreRecipeRegistrationGuard.end();
 
         OreRecipeRegistrationGuard.begin();
-        assertTrue(OreRecipeRegistrationGuard.tryRegisterReverseRecipe("macerator", Materials.Stone, OrePrefixes.dust, stack));
+        assertTrue(
+            OreRecipeRegistrationGuard.tryRegisterReverseRecipe("macerator", Materials.Stone, OrePrefixes.dust, stack));
     }
 
     @Test

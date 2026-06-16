@@ -186,11 +186,11 @@ public class GregtechSimpleWasher {
     }
 
     private static String stackKey(ItemStack stack) {
-        return stack.getItem()
-            + ":"
+        return stack.getItem() + ":"
             + stack.getItemDamage()
             + ":"
-            + (stack.getTagCompound() == null ? "" : stack.getTagCompound()
-                .toString());
+            + (stack.getTagCompound() == null ? ""
+                : stack.getTagCompound()
+                    .toString());
     }
 }

@@ -9,10 +9,10 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
-import gregtech.api.recipe.RecipeMetadataKey;
-import gregtech.api.recipe.metadata.IRecipeMetadataStorage;
 import com.gtnewhorizon.gtnhlib.hash.Fnv1a32;
 
+import gregtech.api.recipe.RecipeMetadataKey;
+import gregtech.api.recipe.metadata.IRecipeMetadataStorage;
 import gregtech.api.util.GTRecipe;
 import it.unimi.dsi.fastutil.Hash;
 
@@ -60,8 +60,10 @@ public class RecipeHashStrat {
         .comparing((ItemStack itemStack) -> Item.getIdFromItem(itemStack.getItem()))
         .thenComparing(ItemStack::getItemDamage)
         .thenComparing(itemStack -> itemStack.stackSize)
-        .thenComparing(itemStack -> itemStack.getTagCompound() == null ? "" : itemStack.getTagCompound()
-            .toString());
+        .thenComparing(
+            itemStack -> itemStack.getTagCompound() == null ? ""
+                : itemStack.getTagCompound()
+                    .toString());
 
     private static final Comparator<FluidStack> fluidStackComparator = Comparator.comparing(FluidStack::getFluidID)
         .thenComparing(fluidStack -> fluidStack.amount);

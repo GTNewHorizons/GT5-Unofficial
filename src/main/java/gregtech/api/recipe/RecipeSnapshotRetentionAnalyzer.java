@@ -183,7 +183,8 @@ public final class RecipeSnapshotRetentionAnalyzer {
         return mapName + "|" + gameplayFingerprint;
     }
 
-    public static String expectedOutputVariantKey(String mapName, String gameplayFingerprint, String candidateCanonical) {
+    public static String expectedOutputVariantKey(String mapName, String gameplayFingerprint,
+        String candidateCanonical) {
         return mapName + "|" + gameplayFingerprint + "|" + normalizeForMatch(candidateCanonical);
     }
 
