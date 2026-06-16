@@ -1,7 +1,5 @@
 package gregtech.api.items.armor.behaviors;
 
-import static gregtech.api.items.armor.ArmorKeybinds.OMNI_MOVEMENT_KEYBIND;
-
 import java.util.Collections;
 import java.util.Set;
 
@@ -9,6 +7,7 @@ import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
 
+import gregtech.api.items.armor.ArmorActionManager;
 import gregtech.api.items.armor.ArmorContext;
 
 public class OmniMovementBehavior implements IArmorBehavior {
@@ -29,6 +28,8 @@ public class OmniMovementBehavior implements IArmorBehavior {
 
     @Override
     public Set<SyncedKeybind> getListenedKeys(@NotNull ArmorContext context) {
-        return Collections.singleton(OMNI_MOVEMENT_KEYBIND);
+        return Collections.singleton(
+            ArmorActionManager.getAction("omni_movement")
+                .getKeybind());
     }
 }

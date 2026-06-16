@@ -3,12 +3,13 @@ package gregtech.api.items.armor;
 import static gregtech.api.enums.Mods.GregTech;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
 
@@ -34,6 +35,7 @@ import com.cleanroommc.modularui.widgets.TextWidget;
 import com.cleanroommc.modularui.widgets.ToggleButton;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 
+import gregtech.api.items.armor.behaviors.BehaviorName;
 import gregtech.common.gui.modularui.widget.radialmenu.RadialMenuBuilder;
 import gregtech.common.gui.modularui.widget.radialmenu.RadialMenuTheme;
 
@@ -44,7 +46,7 @@ public class ArmorRadialSettings extends AbstractUIFactory<GuiData> {
     public void open(EntityPlayer player) {
         if (player.getEntityWorld().isRemote) {
             GuiManager.openFromClient(this, new GuiData(player));
-        } else if (player instanceof net.minecraft.entity.player.EntityPlayerMP playerMP) {
+        } else if (player instanceof EntityPlayerMP playerMP) {
             GuiManager.open(this, new GuiData(player), playerMP);
         }
     }
@@ -55,7 +57,7 @@ public class ArmorRadialSettings extends AbstractUIFactory<GuiData> {
 
     @Override
     public @NotNull IGuiHolder<GuiData> getGuiHolder(final GuiData data) {
-        return ArmorRadialSettings.SelectGuiHolder.INSTANCE;
+        return SelectGuiHolder.INSTANCE;
     }
 
     @Override
@@ -78,7 +80,7 @@ public class ArmorRadialSettings extends AbstractUIFactory<GuiData> {
             return new ModularScreen(GregTech.ID, mainPanel);
         }
 
-        static final ArmorRadialSettings.SelectGuiHolder INSTANCE = new ArmorRadialSettings.SelectGuiHolder();
+        static final SelectGuiHolder INSTANCE = new SelectGuiHolder();
 
         private SelectGuiHolder() {}
 
@@ -180,11 +182,36 @@ public class ArmorRadialSettings extends AbstractUIFactory<GuiData> {
             EntityPlayer player = data.getPlayer();
             NBTTagCompound nbt = getSettingsNBT(player);
 
-            List<String> actionNames = Arrays
-                .asList("Nightvision", "Jetpack", "Milk Infusions", "Step Assist", "Speed", "Jump Boost");
+            Set<BehaviorName> activeBehaviorNames = new HashSet<>();
+            for (int i = 0; i < 4; i++) {
+                ItemStack armorPiece = player.getCurrentArmor(i);
+                if (armorPiece != null) {
+                    activeBehaviorNames.addAll(ArmorState.load(armorPiece).behaviors.keySet());
+                }
+            }
 
-            String defaultOrder = String.join(",", actionNames) + ",";
-            String defaultActive = String.join(",", actionNames) + ",";
+            StringSyncValue actionTriggerSync = (StringSyncValue) new StringSyncValue(() -> "", (clickedActionName) -> {
+                if (clickedActionName != null && !clickedActionName.isEmpty()) {
+                    ArmorAction action = ArmorActionManager.getAction(clickedActionName);
+                    if (action != null && action.getBehaviorName() != null) {
+                        // The Action Itself
+                    }
+                }
+            }).allowC2S();
+
+            syncManager.syncValue("actionTrigger", actionTriggerSync);
+
+            List<ArmorAction> activeActions = new ArrayList<>();
+
+            List<String> validActionIds = new ArrayList<>();
+            for (ArmorAction action : ArmorActionManager.getAllActions()) {
+                if (action.getBehaviorName() == null || activeBehaviorNames.contains(action.getBehaviorName())) {
+                    validActionIds.add(action.getId());
+                }
+            }
+
+            String defaultOrder = String.join(",", validActionIds) + ",";
+            String defaultActive = String.join(",", validActionIds) + ",";
 
             StringSyncValue syncedOrder = (StringSyncValue) new StringSyncValue(
                 () -> nbt.hasKey("RadialOrder") ? nbt.getString("RadialOrder") : defaultOrder,
@@ -200,11 +227,11 @@ public class ArmorRadialSettings extends AbstractUIFactory<GuiData> {
             List<String> currentOrder = new ArrayList<>();
             for (String s : syncedOrder.getStringValue()
                 .split(",")) {
-                if (!s.isEmpty() && actionNames.contains(s)) {
+                if (!s.isEmpty() && validActionIds.contains(s)) {
                     currentOrder.add(s);
                 }
             }
-            for (String action : actionNames) {
+            for (String action : validActionIds) {
                 if (!currentOrder.contains(action)) {
                     currentOrder.add(action);
                 }
@@ -231,14 +258,18 @@ public class ArmorRadialSettings extends AbstractUIFactory<GuiData> {
                 RadialMenuBuilder builder = new RadialMenuBuilder("armor_radial", syncManager).theme(
                     new RadialMenuTheme(new float[] { 0f, 0f, 0f, 0.4f }, new float[] { 0.25f, 0.25f, 0.25f, 1f }));
 
-                for (String actionName : currentOrder) {
-                    if (activeSet.contains(actionName)) {
+                for (String actionId : currentOrder) {
+                    ArmorAction action = ArmorActionManager.getAction(actionId);
+                    if (action == null) continue;
+
+                    if (!action.getToggle() || activeSet.contains(actionId)) {
                         builder.option()
-                            .label(IKey.str(actionName))
-                            .onClicked(() -> {})
+                            .label(IKey.str(action.getDisplayName()))
+                            .onClicked(() -> { actionTriggerSync.setStringValue(action.getId()); })
                             .done();
                     }
                 }
+
                 radialContainer.child(
                     builder.build()
                         .relativeToScreen()
@@ -253,8 +284,8 @@ public class ArmorRadialSettings extends AbstractUIFactory<GuiData> {
             ModularPanel panel = ModularPanel.defaultPanel("Armor Settings Panel");
 
             IPanelHandler popupPanel = syncManager.syncedPanel(
-                "popup_settings_ding",
-                true,
+                "popup_settings",
+                false,
                 (panelSyncManager,
                     _) -> buildPopup(syncedActive, activeSet, syncedOrder, currentOrder, rebuildRadialMenu));
 

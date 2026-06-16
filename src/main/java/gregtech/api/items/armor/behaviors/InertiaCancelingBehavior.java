@@ -1,7 +1,5 @@
 package gregtech.api.items.armor.behaviors;
 
-import static gregtech.api.items.armor.ArmorKeybinds.INERTIA_CANCELING_KEYBIND;
-
 import java.util.Collections;
 import java.util.Set;
 
@@ -11,6 +9,7 @@ import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
 
+import gregtech.api.items.armor.ArmorActionManager;
 import gregtech.api.items.armor.ArmorContext;
 
 public class InertiaCancelingBehavior implements IArmorBehavior {
@@ -31,7 +30,9 @@ public class InertiaCancelingBehavior implements IArmorBehavior {
 
     @Override
     public Set<SyncedKeybind> getListenedKeys(@NotNull ArmorContext context) {
-        return Collections.singleton(INERTIA_CANCELING_KEYBIND);
+        return Collections.singleton(
+            ArmorActionManager.getAction("inertia_canceling")
+                .getKeybind());
     }
 
     @Override

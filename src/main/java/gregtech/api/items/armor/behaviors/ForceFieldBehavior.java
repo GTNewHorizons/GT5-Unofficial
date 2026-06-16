@@ -1,6 +1,6 @@
 package gregtech.api.items.armor.behaviors;
 
-import static gregtech.api.items.armor.ArmorKeybinds.FORCE_FIELD_KEYBIND;
+import static gregtech.loaders.ExtraIcons.forceFieldAugment;
 
 import java.util.Collections;
 import java.util.Set;
@@ -9,6 +9,7 @@ import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
 
+import gregtech.api.items.armor.ArmorActionManager;
 import gregtech.api.items.armor.ArmorContext;
 
 public class ForceFieldBehavior implements IArmorBehavior {
@@ -29,6 +30,8 @@ public class ForceFieldBehavior implements IArmorBehavior {
 
     @Override
     public Set<SyncedKeybind> getListenedKeys(@NotNull ArmorContext context) {
-        return Collections.singleton(FORCE_FIELD_KEYBIND);
+        return Collections.singleton(
+            ArmorActionManager.getAction("force_field")
+                .getKeybind());
     }
 }
