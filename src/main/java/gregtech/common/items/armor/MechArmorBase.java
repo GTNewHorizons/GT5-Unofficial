@@ -547,4 +547,15 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISp
 
         return context.getArmorState().manaDiscount;
     }
+
+    @Override
+    public int getItemEnchantability() {
+        return 0;
+    }
+
+    @Override
+    public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
+        return false;
+    }
+
 }

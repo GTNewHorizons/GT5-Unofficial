@@ -37,16 +37,11 @@ public class MTEHatchOutputBusMEGui extends MTEHatchBaseGui<MTEHatchOutputBusME>
 
         Flow mainRow = Flow.row()
             .coverChildren()
-            .verticalCenter();
+            .verticalCenter()
+            .collapseDisabledChild();
 
         // drive slot
         mainRow.child(new ItemSlot().slot(new ModularSlot(machine.inventoryHandler, 0).singletonSlotGroup()));
-
-        // check mode toggle
-        mainRow.child(
-            new ToggleButton().value(isChecking)
-                .overlay(GuiTextures.SEARCH)
-                .addTooltipLine(GTUtility.translate("GT5U.hatch.outputme.toggle_checking")));
 
         // caching mode toggle
         mainRow.child(
@@ -64,6 +59,13 @@ public class MTEHatchOutputBusMEGui extends MTEHatchBaseGui<MTEHatchOutputBusME>
                 .tooltip(t -> t.addLine(GuiText.Priority.getLocal()))
                 .setEnabledIf(t -> isCaching.getBoolValue())
                 .marginLeft(5));
+
+        // check mode toggle
+        mainRow.child(
+            new ToggleButton().value(isChecking)
+                .overlay(GuiTextures.SEARCH)
+                .addTooltipLine(GTUtility.translate("GT5U.hatch.outputme.toggle_checking"))
+                .setEnabledIf(t -> isCaching.getBoolValue()));
 
         return super.createContentSection(panel, syncManager).child(mainRow);
     }

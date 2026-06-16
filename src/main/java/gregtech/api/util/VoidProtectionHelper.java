@@ -193,7 +193,8 @@ public class VoidProtectionHelper {
                 // flag
                 ItemEjectionHelper ejectionHelper = new ItemEjectionHelper(
                     machine.getOutputBusses(),
-                    protectExcessItem);
+                    protectExcessItem,
+                    true);
 
                 maxParallel = ejectionHelper.ejectItems(maxItemOutputs, maxParallel);
 
@@ -204,10 +205,13 @@ public class VoidProtectionHelper {
             }
         }
 
-        if (protectExcessFluid && fluidOutputs.length > 0 && !machine.canDumpFluidToME()) {
-            maxParallel = Math.min(calculateMaxFluidParallels(), maxParallel);
-            if (maxParallel <= 0) {
-                isFluidFull = true;
+        if (protectExcessFluid && fluidOutputs.length > 0) {
+            List<GTUtility.FluidId> outputIds = GTDataUtils.mapToList(fluidOutputs, GTUtility.FluidId::create);
+            if (!machine.canDumpFluidToME(outputIds)) {
+                maxParallel = Math.min(calculateMaxFluidParallels(), maxParallel);
+                if (maxParallel <= 0) {
+                    isFluidFull = true;
+                }
             }
         }
     }
@@ -236,7 +240,8 @@ public class VoidProtectionHelper {
         // flag
         FluidEjectionHelper ejectionHelper = new FluidEjectionHelper(
             machine.getOutputHatches(fluidOutputs),
-            protectExcessFluid);
+            protectExcessFluid,
+            true);
 
         return ejectionHelper.ejectFluids(maxFluidOutputs, maxParallel);
     }
