@@ -189,14 +189,14 @@ public class DustLoader implements IWerkstoffRunnable {
                             }
                         }
                     }
-                    ItemStack input = werkstoff.get(dust);
-                    input.stackSize = werkstoff.getContents()
+                    ItemStack werkstoffDust = werkstoff.get(dust);
+                    werkstoffDust.stackSize = werkstoff.getContents()
                         .getKey();
                     if (werkstoffStats.isElektrolysis()) {
                         GTValues.RA.stdBuilder()
                             .itemInputs(
-                                cells > 0 ? new ItemStack[] { input, Materials.Empty.getCells(cells) }
-                                    : new ItemStack[] { input })
+                                cells > 0 ? new ItemStack[] { werkstoffDust, Materials.Empty.getCells(cells) }
+                                    : new ItemStack[] { werkstoffDust })
                             .itemOutputs(stOutputs.toArray(new ItemStack[0]))
                             .fluidOutputs(
                                 flOutputs.isEmpty() ? new FluidStack[0] : new FluidStack[] { flOutputs.get(0) })
@@ -221,8 +221,8 @@ public class DustLoader implements IWerkstoffRunnable {
                     if (werkstoffStats.isCentrifuge()) {
                         GTValues.RA.stdBuilder()
                             .itemInputs(
-                                cells > 0 ? new ItemStack[] { input, Materials.Empty.getCells(cells) }
-                                    : new ItemStack[] { input })
+                                cells > 0 ? new ItemStack[] { werkstoffDust, Materials.Empty.getCells(cells) }
+                                    : new ItemStack[] { werkstoffDust })
                             .itemOutputs(stOutputs.toArray(new ItemStack[0]))
                             .fluidOutputs(
                                 flOutputs.isEmpty() ? new FluidStack[0] : new FluidStack[] { flOutputs.get(0) })
@@ -249,7 +249,7 @@ public class DustLoader implements IWerkstoffRunnable {
                         if (cells > 0) stOutputs.add(Materials.Empty.getCells(cells));
                         GTValues.RA.stdBuilder()
                             .itemInputs(stOutputs.toArray(new ItemStack[0]))
-                            .itemOutputs(input)
+                            .itemOutputs(werkstoffDust)
                             .fluidInputs(flOutputs.toArray(new FluidStack[0]))
                             .duration(
                                 (int) Math.max(
@@ -277,7 +277,7 @@ public class DustLoader implements IWerkstoffRunnable {
                         if (circuit != null) stOutputs.add(circuit);
                         GTValues.RA.stdBuilder()
                             .itemInputs(stOutputs.toArray(new ItemStack[0]))
-                            .itemOutputs(input)
+                            .itemOutputs(werkstoffDust)
                             .fluidInputs(
                                 flOutputs.isEmpty() ? new FluidStack[0] : new FluidStack[] { flOutputs.get(0) })
                             .duration(
