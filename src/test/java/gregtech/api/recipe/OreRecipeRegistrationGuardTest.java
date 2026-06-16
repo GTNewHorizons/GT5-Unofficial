@@ -69,6 +69,22 @@ class OreRecipeRegistrationGuardTest {
     }
 
     @Test
+    void stackAwareProcessingKeepsDistinctItemIdentitiesWithSameUnlocalizedName() {
+        OreRecipeRegistrationGuard.begin();
+        Item firstItem = new Item().setUnlocalizedName("test.zinc.ore");
+        Item secondItem = new Item().setUnlocalizedName("test.zinc.ore");
+        ItemStack firstStack = new ItemStack(firstItem, 1, 0);
+        ItemStack secondStack = new ItemStack(secondItem, 1, 0);
+
+        assertTrue(
+            OreRecipeRegistrationGuard.tryProcessStack(OrePrefixes.ore, Materials.Zinc, firstStack, "ProcessingOre"));
+        assertTrue(
+            OreRecipeRegistrationGuard.tryProcessStack(OrePrefixes.ore, Materials.Zinc, secondStack, "ProcessingOre"));
+        assertFalse(
+            OreRecipeRegistrationGuard.tryProcessStack(OrePrefixes.ore, Materials.Zinc, firstStack, "ProcessingOre"));
+    }
+
+    @Test
     void dedupesReverseRecipesPerMaterialAndPrefix() {
         assertTrue(
             OreRecipeRegistrationGuard.tryRegisterReverseRecipe("macerator", Materials.Copper, OrePrefixes.ingot));
