@@ -121,10 +121,9 @@ public class WorldgenStone extends GTWorldgen {
         IStoneType stoneType = StoneType.findStoneType(mBlock, mBlockMeta);
 
         boolean result = !stones.isEmpty();
-        // Now process each oreseed vs this requested chunk
-        for (; !stones.isEmpty(); stones.removeFirst()) {
-            int seedChunkX = stones.getFirst().mX;
-            int seedChunkZ = stones.getFirst().mZ;
+        for (ValidSeeds stone : stones) {
+            int seedChunkX = stone.mX;
+            int seedChunkZ = stone.mZ;
             int x = seedChunkX * 16;
             int z = seedChunkZ * 16;
 
