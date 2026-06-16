@@ -34,6 +34,7 @@ import gregtech.GTMod;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.ParticleFX;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicGenerator;
@@ -43,21 +44,13 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.WorldSpawnedEventBuilder.ParticleEventBuilder;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEDieselGenerator extends MTEBasicGenerator {
 
     private final int efficiency;
 
     public MTEDieselGenerator(int aID, String aName, String aNameRegional, int aTier, int efficiency) {
-        super(
-            aID,
-            aName,
-            aNameRegional,
-            aTier,
-            new String[] { "Requires liquid Fuel",
-                "Causes "
-                    + (int) (GTMod.proxy.mPollutionBaseDieselGeneratorPerSecond
-                        * GTMod.proxy.mPollutionDieselGeneratorReleasedByTier[aTier])
-                    + " Pollution per second" });
+        super(aID, aName, aNameRegional, aTier, (String) null);
         this.efficiency = efficiency;
     }
 
@@ -85,6 +78,13 @@ public class MTEDieselGenerator extends MTEBasicGenerator {
     @Override
     public int getEfficiency() {
         return this.efficiency;
+    }
+
+    @Override
+    protected String[] getTooltipLines() {
+        int pollution = (int) (GTMod.proxy.mPollutionBaseDieselGeneratorPerSecond
+            * GTMod.proxy.mPollutionDieselGeneratorReleasedByTier[mTier]);
+        return GTUtility.translateMultiline("gt.blockmachines.basicgenerator.diesel.tooltip", pollution);
     }
 
     @Override
