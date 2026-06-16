@@ -40,13 +40,20 @@ public class ItemEjectionHelper {
     }
 
     public ItemEjectionHelper(List<IOutputBus> busses, boolean protectItems) {
+        this(busses, protectItems, false);
+    }
+
+    public ItemEjectionHelper(List<IOutputBus> busses, boolean protectItems, boolean isRecipeCheck) {
         itemProtectionEnabled = protectItems;
 
         for (int i = 0, bussesSize = busses.size(); i < bussesSize; i++) {
             IOutputBus bus = busses.get(i);
-
+            IOutputBusTransaction transaction = bus.createTransaction();
+            if (transaction instanceof IOutputBusTransaction.IRecipeCheckAware tran) {
+                tran.setRecipeCheck(isRecipeCheck);
+            }
             transactionsByType.computeIfAbsent(bus.getBusType(), x -> new ArrayList<>())
-                .add(bus.createTransaction());
+                .add(transaction);
         }
     }
 

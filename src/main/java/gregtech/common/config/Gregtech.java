@@ -230,11 +230,6 @@ public class Gregtech {
         @Config.RequiresMcRestart
         public boolean survivalIntoAdventure;
 
-        @Config.Comment("If true, hungers the players based on his amount of stuff in the inventory every 6s, regardless of player movement.")
-        @Config.DefaultBoolean(false)
-        @Config.RequiresMcRestart
-        public boolean hungerEffect;
-
         @Config.Comment("If true, enables the item oredification of the items in the inventory.")
         @Config.DefaultBoolean(true)
         @Config.RequiresMcRestart

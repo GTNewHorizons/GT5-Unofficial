@@ -553,10 +553,7 @@ public abstract class MTELargeFusionComputer extends TTMultiblockBase
                 + formatNumber(plasmaOut)
                 + EnumChatFormatting.RESET
                 + "L/t",
-            StatCollector.translateToLocal("GT5U.multiblock.recipesDone") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(recipesDone)
-                + EnumChatFormatting.RESET };
+            GTUtility.translate("GT5U.multiblock.recipesDone", formatNumber(recipesDone)) };
     }
 
     protected long energyStorageCache;

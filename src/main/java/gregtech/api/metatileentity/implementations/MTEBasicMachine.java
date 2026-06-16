@@ -217,6 +217,10 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
         mMainFacing = UNKNOWN;
     }
 
+    public boolean isStuttering() {
+        return mStuttering;
+    }
+
     /**
      * To be called by the constructor to initialize this instance's overclock behavior
      */
