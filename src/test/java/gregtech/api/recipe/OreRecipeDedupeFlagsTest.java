@@ -19,12 +19,22 @@ class OreRecipeDedupeFlagsTest {
     }
 
     @Test
-    void canonicalInputsCanBeEnabledIndependentlyOfMaster() {
+    void canonicalInputsCanBeEnabledWhenMasterEnabled() {
         restoreAll(() -> {
             System.clearProperty(OreRecipeDedupeFlags.ENABLED_PROPERTY);
             System.setProperty(OreRecipeDedupeFlags.CANONICAL_INPUTS_PROPERTY, "true");
             assertTrue(OreRecipeDedupeFlags.isMasterEnabled());
             assertTrue(OreRecipeDedupeFlags.canonicalInputsEnabled());
+        });
+    }
+
+    @Test
+    void masterDisabledOverridesCanonicalInputsFlag() {
+        restoreAll(() -> {
+            System.setProperty(OreRecipeDedupeFlags.ENABLED_PROPERTY, "false");
+            System.setProperty(OreRecipeDedupeFlags.CANONICAL_INPUTS_PROPERTY, "true");
+            assertFalse(OreRecipeDedupeFlags.isMasterEnabled());
+            assertFalse(OreRecipeDedupeFlags.canonicalInputsEnabled());
         });
     }
 

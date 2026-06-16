@@ -67,7 +67,7 @@ public class OreDictEventContainer {
         if (left == null || right == null) {
             return false;
         }
-        return stackIdentityHash(left) == stackIdentityHash(right);
+        return left.getItem() == right.getItem() && left.getItemDamage() == right.getItemDamage();
     }
 
     private static int stackIdentityHash(ItemStack stack) {
@@ -78,6 +78,6 @@ public class OreDictEventContainer {
         if (item == null) {
             return 0;
         }
-        return Objects.hash(Item.itemRegistry.getNameForObject(item), stack.getItemDamage());
+        return Item.getIdFromItem(item) * 1_000_001 + stack.getItemDamage();
     }
 }

@@ -28,6 +28,7 @@ public final class OreRecipeRegistrationGuard {
     public static void begin() {
         OreRecipeDedupeFlags.logConfigurationOnce();
         seenOreDictKeys = new HashSet<>();
+        seenReverseRecipeKeys.clear();
     }
 
     public static void end() {
@@ -42,7 +43,7 @@ public final class OreRecipeRegistrationGuard {
      * @return {@code true} when this registrator should run for {@code (prefix, material, oreDictName)}
      */
     public static boolean tryProcess(OrePrefixes prefix, Materials material, String oreDictName, String registratorId) {
-        if (!OreRecipeDedupeFlags.guardProcessEnabled() || seenOreDictKeys == null) {
+        if (seenOreDictKeys == null || !OreRecipeDedupeFlags.guardProcessEnabled()) {
             return true;
         }
         if (prefix == null || oreDictName == null
@@ -99,6 +100,7 @@ public final class OreRecipeRegistrationGuard {
             identifier = null;
         }
         if (identifier == null) {
+            // Registered Minecraft items are singletons. This fallback is only for unregistered test/runtime items.
             return item.getClass()
                 .getName() + '@'
                 + System.identityHashCode(item);
@@ -117,7 +119,7 @@ public final class OreRecipeRegistrationGuard {
      */
     public static boolean tryRegisterReverseRecipe(String recipeKind, Materials material, OrePrefixes prefix,
         ItemStack stack) {
-        if (!OreRecipeDedupeFlags.guardReverseEnabled()) {
+        if (seenOreDictKeys == null || !OreRecipeDedupeFlags.guardReverseEnabled()) {
             return true;
         }
         if (recipeKind == null || recipeKind.isEmpty()

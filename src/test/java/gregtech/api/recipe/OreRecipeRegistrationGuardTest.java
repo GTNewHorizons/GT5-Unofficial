@@ -102,6 +102,7 @@ class OreRecipeRegistrationGuardTest {
 
     @Test
     void dedupesReverseRecipesPerConcreteStack() {
+        OreRecipeRegistrationGuard.begin();
         Item firstItem = new Item().setUnlocalizedName("test.reverse.silicon");
         Item secondItem = new Item().setUnlocalizedName("test.reverse.silicon");
         ItemStack firstStack = new ItemStack(firstItem, 1, 0);
@@ -123,6 +124,7 @@ class OreRecipeRegistrationGuardTest {
 
     @Test
     void reverseRecipeDedupingKeepsDistinctNbtVariants() {
+        OreRecipeRegistrationGuard.begin();
         Item item = new Item().setUnlocalizedName("test.reverse.crop.seed");
         ItemStack firstSeed = taggedStack(item, "stoneLily");
         ItemStack secondSeed = taggedStack(item, "endStoneLily");
@@ -136,6 +138,29 @@ class OreRecipeRegistrationGuardTest {
         assertTrue(
             OreRecipeRegistrationGuard
                 .tryRegisterReverseRecipe("macerator", Materials.Stone, OrePrefixes.dust, secondSeed));
+    }
+
+    @Test
+    void reverseRecipeGuardIsInactiveOutsideOreProcessingBatch() {
+        Item item = new Item().setUnlocalizedName("test.reverse.outside.batch");
+        ItemStack stack = new ItemStack(item, 1, 0);
+
+        assertTrue(OreRecipeRegistrationGuard.tryRegisterReverseRecipe("macerator", Materials.Stone, OrePrefixes.dust, stack));
+        assertTrue(OreRecipeRegistrationGuard.tryRegisterReverseRecipe("macerator", Materials.Stone, OrePrefixes.dust, stack));
+    }
+
+    @Test
+    void beginClearsReverseRecipeGuardState() {
+        Item item = new Item().setUnlocalizedName("test.reverse.new.batch");
+        ItemStack stack = new ItemStack(item, 1, 0);
+
+        OreRecipeRegistrationGuard.begin();
+        assertTrue(OreRecipeRegistrationGuard.tryRegisterReverseRecipe("macerator", Materials.Stone, OrePrefixes.dust, stack));
+        assertFalse(OreRecipeRegistrationGuard.tryRegisterReverseRecipe("macerator", Materials.Stone, OrePrefixes.dust, stack));
+        OreRecipeRegistrationGuard.end();
+
+        OreRecipeRegistrationGuard.begin();
+        assertTrue(OreRecipeRegistrationGuard.tryRegisterReverseRecipe("macerator", Materials.Stone, OrePrefixes.dust, stack));
     }
 
     @Test

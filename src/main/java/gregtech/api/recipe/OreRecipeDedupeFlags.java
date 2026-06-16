@@ -46,7 +46,7 @@ public final class OreRecipeDedupeFlags {
     }
 
     public static boolean canonicalInputsEnabled() {
-        return readFlag(CANONICAL_INPUTS_PROPERTY, false);
+        return isMasterEnabled() && readFlag(CANONICAL_INPUTS_PROPERTY, false);
     }
 
     public static void logConfigurationOnce() {
