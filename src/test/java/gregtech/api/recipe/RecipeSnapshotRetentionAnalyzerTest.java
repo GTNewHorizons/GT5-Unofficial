@@ -58,6 +58,41 @@ class RecipeSnapshotRetentionAnalyzerTest {
     }
 
     @Test
+    void expectedOutputVariantProfileRemovesOnlyExactVariant() {
+        String sharedInputs = "inputs=[oreBlock], fluidInputs=";
+        String baselineCanonical = "category=" + MAP
+            + ", metadata=[], "
+            + sharedInputs
+            + "[], outputs=[dustA, byproductX], fluidOutputs=[], duration=1, eut=1, specialValue=0, special=null";
+        String expectedCandidateCanonical = "category=" + MAP
+            + ", metadata=[], "
+            + sharedInputs
+            + "[], outputs=[dustA, byproductY], fluidOutputs=[], duration=1, eut=1, specialValue=0, special=null";
+        String unexpectedCandidateCanonical = "category=" + MAP
+            + ", metadata=[], inputs=[oreOther], fluidInputs=[], outputs=[dustA], fluidOutputs=[], duration=1, eut=1, specialValue=0, special=null";
+        Path baseline = writeTempSnapshot("baseline-expected-output-variant.json", baselineCanonical);
+        Path candidate = writeTempSnapshot(
+            "candidate-expected-output-variant.json",
+            expectedCandidateCanonical,
+            unexpectedCandidateCanonical);
+        RecipeSnapshotDiff.DiffResult diff = RecipeSnapshotDiff.compare(baseline, candidate);
+        RecipeSnapshotRetentionAnalyzer.ExpectedLossProfile expectedLosses = new RecipeSnapshotRetentionAnalyzer.ExpectedLossProfile();
+        expectedLosses.expectedOutputVariantKeys.add(
+            RecipeSnapshotRetentionAnalyzer.expectedOutputVariantKey(
+                MAP,
+                RecipeSnapshotDiff.gameplayFingerprint(baselineCanonical),
+                expectedCandidateCanonical));
+
+        AnalysisResult analysis = RecipeSnapshotRetentionAnalyzer
+            .analyze(baseline, candidate, diff, null, expectedLosses);
+
+        assertEquals(0, analysis.outputVariant);
+        assertEquals(1, analysis.expectedOutputVariant);
+        assertEquals(0, analysis.unverifiedLoss);
+        RecipeSnapshotRetentionAnalyzer.validateNoGameplayRegression(analysis, baseline, candidate);
+    }
+
+    @Test
     void expectedLossProfileRemovesOnlyExactUnverifiedLoss() {
         String expectedCanonical = "category=" + MAP
             + ", metadata=[], inputs=[expected], fluidInputs=[], outputs=[dust], fluidOutputs=[], duration=1, eut=1, specialValue=0, special=null";

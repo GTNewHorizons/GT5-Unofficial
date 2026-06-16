@@ -109,6 +109,13 @@ public final class RecipeSnapshotRetentionAnalyzer {
                             entry.classification = "baseline_noise";
                             result.baselineNoise++;
                             result.baselineNoiseByMap.merge(lost.mapName, 1, Integer::sum);
+                        } else if (isExpectedOutputVariant(expectedLossProfile, lost, inputMatch)) {
+                            entry.classification = "expected_output_variant";
+                            result.expectedOutputVariant++;
+                            result.expectedOutputVariantsByMap.merge(lost.mapName, 1, Integer::sum);
+                            if (result.expectedOutputVariants.size() < REPORTED_UNVERIFIED_LIMIT) {
+                                result.expectedOutputVariants.add(entry);
+                            }
                         } else {
                             entry.classification = "output_variant";
                             result.outputVariant++;
@@ -149,8 +156,18 @@ public final class RecipeSnapshotRetentionAnalyzer {
         return profile != null && profile.expectedKeys.contains(expectedKey(lost.mapName, lost.gameplayFingerprint));
     }
 
+    private static boolean isExpectedOutputVariant(@Nullable ExpectedLossProfile profile, LostEntry lost,
+        String candidateCanonical) {
+        return profile != null && profile.expectedOutputVariantKeys
+            .contains(expectedOutputVariantKey(lost.mapName, lost.gameplayFingerprint, candidateCanonical));
+    }
+
     public static String expectedKey(String mapName, String gameplayFingerprint) {
         return mapName + "|" + gameplayFingerprint;
+    }
+
+    public static String expectedOutputVariantKey(String mapName, String gameplayFingerprint, String candidateCanonical) {
+        return mapName + "|" + gameplayFingerprint + "|" + normalizeForMatch(candidateCanonical);
     }
 
     public static void validateNoUnverifiedLoss(AnalysisResult result) {
@@ -272,8 +289,11 @@ public final class RecipeSnapshotRetentionAnalyzer {
         report.lostUniqueKeys = result.lostUniqueKeys;
         report.outputVariant = result.outputVariant;
         report.deduplicationConfirmed = result.deduplicationConfirmed;
+        report.expectedOutputVariant = result.expectedOutputVariant;
         report.outputVariantsByMap.putAll(result.outputVariantsByMap);
+        report.expectedOutputVariantsByMap.putAll(result.expectedOutputVariantsByMap);
         report.outputVariants.addAll(result.outputVariants);
+        report.expectedOutputVariants.addAll(result.expectedOutputVariants);
         try {
             if (outputVariantsPath.getParent() != null) {
                 Files.createDirectories(outputVariantsPath.getParent());
@@ -298,6 +318,7 @@ public final class RecipeSnapshotRetentionAnalyzer {
         report.unverifiedLoss = result.unverifiedLoss;
         report.outputVariant = result.outputVariant;
         report.deduplicationConfirmed = result.deduplicationConfirmed;
+        report.expectedOutputVariant = result.expectedOutputVariant;
         report.expectedLoss = result.expectedLoss;
         report.lostUniqueKeys = result.lostUniqueKeys;
         report.equivalentFullBody = result.equivalentFullBody;
@@ -307,6 +328,8 @@ public final class RecipeSnapshotRetentionAnalyzer {
         report.expectedLosses.addAll(result.expectedLosses);
         report.expectedLossesByMap.putAll(result.expectedLossesByMap);
         report.outputVariantsByMap.putAll(result.outputVariantsByMap);
+        report.expectedOutputVariantsByMap.putAll(result.expectedOutputVariantsByMap);
+        report.expectedOutputVariants.addAll(result.expectedOutputVariants);
         try {
             if (trueLossesPath.getParent() != null) {
                 Files.createDirectories(trueLossesPath.getParent());
@@ -494,6 +517,7 @@ public final class RecipeSnapshotRetentionAnalyzer {
         public int equivalentFullBody;
         public int equivalentOutputCore;
         public int outputVariant;
+        public int expectedOutputVariant;
         public int baselineNoise;
         public int unverifiedLoss;
         public int expectedLoss;
@@ -502,17 +526,21 @@ public final class RecipeSnapshotRetentionAnalyzer {
         public final List<ClassifiedLoss> unverifiedLosses = new ArrayList<>();
         public final List<ClassifiedLoss> expectedLosses = new ArrayList<>();
         public final List<ClassifiedLoss> outputVariants = new ArrayList<>();
+        public final List<ClassifiedLoss> expectedOutputVariants = new ArrayList<>();
         public final Map<String, Integer> lostByMap = new TreeMap<>();
         public final Map<String, Integer> unverifiedLossesByMap = new TreeMap<>();
         public final Map<String, Integer> expectedLossesByMap = new TreeMap<>();
         public final Map<String, Integer> outputVariantsByMap = new TreeMap<>();
+        public final Map<String, Integer> expectedOutputVariantsByMap = new TreeMap<>();
         public final Map<String, Integer> baselineNoiseByMap = new TreeMap<>();
     }
 
     public static final class ExpectedLossProfile {
 
         public final Set<String> expectedKeys = new HashSet<>();
+        public final Set<String> expectedOutputVariantKeys = new HashSet<>();
         public final List<ClassifiedLoss> expectedLosses = new ArrayList<>();
+        public final List<ClassifiedLoss> expectedOutputVariants = new ArrayList<>();
     }
 
     static final class OutputVariantReport {
@@ -520,8 +548,11 @@ public final class RecipeSnapshotRetentionAnalyzer {
         int lostUniqueKeys;
         int outputVariant;
         int deduplicationConfirmed;
+        int expectedOutputVariant;
         final Map<String, Integer> outputVariantsByMap = new TreeMap<>();
+        final Map<String, Integer> expectedOutputVariantsByMap = new TreeMap<>();
         final List<ClassifiedLoss> outputVariants = new ArrayList<>();
+        final List<ClassifiedLoss> expectedOutputVariants = new ArrayList<>();
     }
 
     static final class TrueLossReport {
@@ -533,11 +564,14 @@ public final class RecipeSnapshotRetentionAnalyzer {
         int deduplicationConfirmed;
         int unverifiedLoss;
         int expectedLoss;
+        int expectedOutputVariant;
         final Map<String, Integer> unverifiedLossesByMap = new TreeMap<>();
         final Map<String, Integer> expectedLossesByMap = new TreeMap<>();
         final Map<String, Integer> outputVariantsByMap = new TreeMap<>();
+        final Map<String, Integer> expectedOutputVariantsByMap = new TreeMap<>();
         final List<ClassifiedLoss> unverifiedLosses = new ArrayList<>();
         final List<ClassifiedLoss> expectedLosses = new ArrayList<>();
+        final List<ClassifiedLoss> expectedOutputVariants = new ArrayList<>();
     }
 
     public static final class ClassifiedLoss {
