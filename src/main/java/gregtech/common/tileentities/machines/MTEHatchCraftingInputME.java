@@ -724,7 +724,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
         }
         if (manualSlots.length() > 0) {
             try {
-                suffix.append(String.format(Gregtech.machines.cibManualSlotsSuffixFormat, manualSlots));
+                suffix.append(String.format(Gregtech.machines.itemSlotsSuffixFormat, manualSlots));
             } catch (IllegalFormatException ignored) {}
         }
 
