@@ -62,8 +62,8 @@ public class DustLoader implements IWerkstoffRunnable {
     @SuppressWarnings("unchecked")
     public void run(Werkstoff werkstoff) {
         if (werkstoff.hasItemType(dust)) {
-            List<FluidStack> flOutputs = new ArrayList<>();
-            List<ItemStack> stOutputs = new ArrayList<>();
+            List<FluidStack> fluidComponents = new ArrayList<>();
+            List<ItemStack> itemComponents = new ArrayList<>();
             HashMap<ISubTagContainer, Pair<Integer, Integer>> tracker = new HashMap<>();
 
             Werkstoff.Stats werkstoffStats = werkstoff.getStats();
@@ -92,17 +92,17 @@ public class DustLoader implements IWerkstoffRunnable {
                                 if (tmpFl == null || tmpFl.getFluid() == null) {
                                     tmpFl = materialKey.getFluid(1000L * value);
                                 }
-                                flOutputs.add(tmpFl);
-                                if (flOutputs.size() > 1) {
+                                fluidComponents.add(tmpFl);
+                                if (fluidComponents.size() > 1) {
                                     if (!tracker.containsKey(key)) {
-                                        stOutputs.add(materialKey.getCells(value));
-                                        tracker.put(key, Pair.of(value, stOutputs.size() - 1));
+                                        itemComponents.add(materialKey.getCells(value));
+                                        tracker.put(key, Pair.of(value, itemComponents.size() - 1));
                                     } else {
-                                        stOutputs.add(
+                                        itemComponents.add(
                                             materialKey.getCells(
                                                 tracker.get(key)
                                                     .getKey() + value));
-                                        stOutputs.remove(
+                                        itemComponents.remove(
                                             tracker.get(key)
                                                 .getValue() + 1);
                                     }
@@ -117,17 +117,17 @@ public class DustLoader implements IWerkstoffRunnable {
                                     if (tmpFl == null || tmpFl.getFluid() == null) {
                                         tmpFl = materialKey.getSolid(1000L * value);
                                     }
-                                    flOutputs.add(tmpFl);
-                                    if (flOutputs.size() > 1) {
+                                    fluidComponents.add(tmpFl);
+                                    if (fluidComponents.size() > 1) {
                                         if (!tracker.containsKey(key)) {
-                                            stOutputs.add(materialKey.getCells(value));
-                                            tracker.put(key, Pair.of(value, stOutputs.size() - 1));
+                                            itemComponents.add(materialKey.getCells(value));
+                                            tracker.put(key, Pair.of(value, itemComponents.size() - 1));
                                         } else {
-                                            stOutputs.add(
+                                            itemComponents.add(
                                                 materialKey.getCells(
                                                     tracker.get(key)
                                                         .getKey() + value));
-                                            stOutputs.remove(
+                                            itemComponents.remove(
                                                 tracker.get(key)
                                                     .getValue() + 1);
                                         }
@@ -135,14 +135,14 @@ public class DustLoader implements IWerkstoffRunnable {
                                     }
                                 }
                                 if (!tracker.containsKey(key)) {
-                                    stOutputs.add(materialKey.getDust(value));
-                                    tracker.put(key, Pair.of(value, stOutputs.size() - 1));
+                                    itemComponents.add(materialKey.getDust(value));
+                                    tracker.put(key, Pair.of(value, itemComponents.size() - 1));
                                 } else {
-                                    stOutputs.add(
+                                    itemComponents.add(
                                         materialKey.getDust(
                                             tracker.get(key)
                                                 .getKey() + value));
-                                    stOutputs.remove(
+                                    itemComponents.remove(
                                         tracker.get(key)
                                             .getValue() + 1);
                                 }
@@ -154,18 +154,18 @@ public class DustLoader implements IWerkstoffRunnable {
                                 if (tmpFl == null || tmpFl.getFluid() == null) {
                                     tmpFl = werkstoffKey.getFluidOrGas(1000 * value);
                                 }
-                                flOutputs.add(tmpFl);
-                                if (flOutputs.size() > 1) {
+                                fluidComponents.add(tmpFl);
+                                if (fluidComponents.size() > 1) {
                                     if (!tracker.containsKey(key)) {
-                                        stOutputs.add(werkstoffKey.get(cell, value));
-                                        tracker.put(key, Pair.of(value, stOutputs.size() - 1));
+                                        itemComponents.add(werkstoffKey.get(cell, value));
+                                        tracker.put(key, Pair.of(value, itemComponents.size() - 1));
                                     } else {
-                                        stOutputs.add(
+                                        itemComponents.add(
                                             werkstoffKey.get(
                                                 cell,
                                                 tracker.get(key)
                                                     .getKey() + value));
-                                        stOutputs.remove(
+                                        itemComponents.remove(
                                             tracker.get(key)
                                                 .getValue() + 1);
                                     }
@@ -174,15 +174,15 @@ public class DustLoader implements IWerkstoffRunnable {
                             } else {
                                 if (!werkstoffKey.hasItemType(dust)) continue;
                                 if (!tracker.containsKey(key)) {
-                                    stOutputs.add(werkstoffKey.get(dust, value));
-                                    tracker.put(key, Pair.of(value, stOutputs.size() - 1));
+                                    itemComponents.add(werkstoffKey.get(dust, value));
+                                    tracker.put(key, Pair.of(value, itemComponents.size() - 1));
                                 } else {
-                                    stOutputs.add(
+                                    itemComponents.add(
                                         werkstoffKey.get(
                                             dust,
                                             tracker.get(key)
                                                 .getKey() + value));
-                                    stOutputs.remove(
+                                    itemComponents.remove(
                                         tracker.get(key)
                                             .getValue() + 1);
                                 }
@@ -197,9 +197,10 @@ public class DustLoader implements IWerkstoffRunnable {
                             .itemInputs(
                                 cells > 0 ? new ItemStack[] { werkstoffDust, Materials.Empty.getCells(cells) }
                                     : new ItemStack[] { werkstoffDust })
-                            .itemOutputs(stOutputs.toArray(new ItemStack[0]))
+                            .itemOutputs(itemComponents.toArray(new ItemStack[0]))
                             .fluidOutputs(
-                                flOutputs.isEmpty() ? new FluidStack[0] : new FluidStack[] { flOutputs.get(0) })
+                                fluidComponents.isEmpty() ? new FluidStack[0]
+                                    : new FluidStack[] { fluidComponents.get(0) })
                             .duration(
                                 (int) Math.max(
                                     1L,
@@ -223,9 +224,10 @@ public class DustLoader implements IWerkstoffRunnable {
                             .itemInputs(
                                 cells > 0 ? new ItemStack[] { werkstoffDust, Materials.Empty.getCells(cells) }
                                     : new ItemStack[] { werkstoffDust })
-                            .itemOutputs(stOutputs.toArray(new ItemStack[0]))
+                            .itemOutputs(itemComponents.toArray(new ItemStack[0]))
                             .fluidOutputs(
-                                flOutputs.isEmpty() ? new FluidStack[0] : new FluidStack[] { flOutputs.get(0) })
+                                fluidComponents.isEmpty() ? new FluidStack[0]
+                                    : new FluidStack[] { fluidComponents.get(0) })
                             .duration(
                                 (int) Math.max(
                                     1L,
@@ -246,11 +248,11 @@ public class DustLoader implements IWerkstoffRunnable {
                     }
                     if (werkstoff.getGenerationFeatures()
                         .hasChemicalRecipes()) {
-                        if (cells > 0) stOutputs.add(Materials.Empty.getCells(cells));
+                        if (cells > 0) itemComponents.add(Materials.Empty.getCells(cells));
                         GTValues.RA.stdBuilder()
-                            .itemInputs(stOutputs.toArray(new ItemStack[0]))
+                            .itemInputs(itemComponents.toArray(new ItemStack[0]))
                             .itemOutputs(werkstoffDust)
-                            .fluidInputs(flOutputs.toArray(new FluidStack[0]))
+                            .fluidInputs(fluidComponents.toArray(new FluidStack[0]))
                             .duration(
                                 (int) Math.max(
                                     1L,
@@ -271,15 +273,16 @@ public class DustLoader implements IWerkstoffRunnable {
                     }
                     if (werkstoff.getGenerationFeatures()
                         .hasMixerRecipes()) {
-                        if (cells > 0) stOutputs.add(Materials.Empty.getCells(cells));
+                        if (cells > 0) itemComponents.add(Materials.Empty.getCells(cells));
                         short circuitID = werkstoff.getMixCircuit();
                         ItemStack circuit = circuitID == -1 ? null : GTUtility.getIntegratedCircuit(circuitID);
-                        if (circuit != null) stOutputs.add(circuit);
+                        if (circuit != null) itemComponents.add(circuit);
                         GTValues.RA.stdBuilder()
-                            .itemInputs(stOutputs.toArray(new ItemStack[0]))
+                            .itemInputs(itemComponents.toArray(new ItemStack[0]))
                             .itemOutputs(werkstoffDust)
                             .fluidInputs(
-                                flOutputs.isEmpty() ? new FluidStack[0] : new FluidStack[] { flOutputs.get(0) })
+                                fluidComponents.isEmpty() ? new FluidStack[0]
+                                    : new FluidStack[] { fluidComponents.get(0) })
                             .duration(
                                 (int) Math.max(
                                     1L,
