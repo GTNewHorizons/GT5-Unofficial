@@ -51,7 +51,7 @@ public class ArmorAction {
         return behaviorName;
     }
 
-    public boolean getToggle() {
+    public boolean isToggle() {
         return isToggle;
     }
 }

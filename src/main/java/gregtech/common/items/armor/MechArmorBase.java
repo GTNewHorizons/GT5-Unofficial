@@ -47,13 +47,14 @@ import gregtech.api.hazards.IHazardProtector;
 import gregtech.api.items.armor.ArmorActionManager;
 import gregtech.api.items.armor.ArmorContext;
 import gregtech.api.items.armor.ArmorContext.ArmorContextImpl;
-import gregtech.api.items.armor.ArmorRadialSettings;
 import gregtech.api.items.armor.ArmorState;
 import gregtech.api.items.armor.MechArmorAugmentRegistries.ArmorType;
 import gregtech.api.items.armor.MechArmorAugmentRegistries.Cores;
 import gregtech.api.items.armor.MechArmorAugmentRegistries.Frames;
 import gregtech.api.items.armor.behaviors.BehaviorName;
 import gregtech.api.items.armor.behaviors.IArmorBehavior;
+import gregtech.api.items.armor.ui.ArmorRadialMenu;
+import gregtech.api.util.GTDataUtils;
 import gregtech.api.util.GTUtility;
 import gregtech.common.misc.NoTooltipElectricItemManager;
 import ic2.api.item.ICustomDamageItem;
@@ -217,7 +218,7 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISp
 
         if (keyPressed == ArmorActionManager.getKeybind("open_radial_menu")) {
             if (isDown) {
-                ArmorRadialSettings.INSTANCE.open(player);
+                ArmorRadialMenu.INSTANCE.open(player);
             }
             return;
         }
