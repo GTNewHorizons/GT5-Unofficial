@@ -44,7 +44,7 @@ public class MockIVoidableMachine implements IVoidable {
     }
 
     @Override
-    public boolean canDumpFluidToME() {
+    public boolean canDumpFluidToME(List<GTUtility.FluidId> outputs) {
         return false;
     }
 
