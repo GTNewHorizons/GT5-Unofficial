@@ -2,6 +2,7 @@ package gregtech.api.recipe;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -55,6 +56,30 @@ class RecipeSnapshotRetentionAnalyzerTest {
         assertThrows(
             IllegalStateException.class,
             () -> RecipeSnapshotRetentionAnalyzer.validateNoGameplayRegression(analysis, baseline, candidate));
+    }
+
+    @Test
+    void sameOutputCoreWithDifferentInputIsInputVariant() {
+        String baselineCanonical = "category=" + MAP
+            + ", metadata=[], inputs=[moda:zincGravel], fluidInputs=[], "
+            + OUTPUT;
+        String candidateCanonical = "category=" + MAP
+            + ", metadata=[], inputs=[modb:zincGravel], fluidInputs=[], "
+            + OUTPUT;
+        Path baseline = writeTempSnapshot("baseline-different-input.json", baselineCanonical);
+        Path candidate = writeTempSnapshot("candidate-different-input.json", candidateCanonical);
+
+        AnalysisResult analysis = analyzePaths(baseline, candidate);
+        assertEquals(1, analysis.lostUniqueKeys);
+        assertEquals(0, analysis.equivalentOutputCore);
+        assertEquals(1, analysis.inputVariant);
+        assertEquals(0, analysis.outputVariant);
+        assertEquals(0, analysis.unverifiedLoss);
+        IllegalStateException thrown = assertThrows(
+            IllegalStateException.class,
+            () -> RecipeSnapshotRetentionAnalyzer.validateNoGameplayRegression(analysis, baseline, candidate));
+        assertTrue(thrown.getMessage()
+            .contains("input variant"));
     }
 
     @Test
@@ -150,7 +175,7 @@ class RecipeSnapshotRetentionAnalyzerTest {
     }
 
     @Test
-    void equivalentOutputCoreIsNotUnverifiedLoss() {
+    void equivalentOutputCoreWithDifferentInputIsInputVariant() {
         String baselineCanonical = "category=" + MAP + ", metadata=[], inputs=[oreA], fluidInputs=[], " + OUTPUT;
         String candidateCanonical = "category=" + MAP
             + ", metadata=[], inputs=[oreB], fluidInputs=[water x100], "
@@ -161,9 +186,10 @@ class RecipeSnapshotRetentionAnalyzerTest {
         AnalysisResult analysis = analyzePaths(baseline, candidate);
         assertEquals(1, analysis.lostUniqueKeys);
         assertEquals(0, analysis.equivalentFullBody);
-        assertEquals(1, analysis.equivalentOutputCore);
+        assertEquals(0, analysis.equivalentOutputCore);
+        assertEquals(1, analysis.inputVariant);
         assertEquals(0, analysis.unverifiedLoss);
-        RecipeSnapshotRetentionAnalyzer.validateNoUnverifiedLoss(analysis);
+        assertThrows(IllegalStateException.class, () -> RecipeSnapshotRetentionAnalyzer.validateNoUnverifiedLoss(analysis));
     }
 
     @Test
@@ -216,10 +242,11 @@ class RecipeSnapshotRetentionAnalyzerTest {
         Path candidatePath = Paths.get(candidateProperty);
         AnalysisResult analysis = analyzePaths(baselinePath, candidatePath);
         System.out.printf(
-            "retention gate analysis: lost=%d fullBody=%d outputCore=%d outputVariant=%d baselineNoise=%d unverified=%d%n",
+            "retention gate analysis: lost=%d fullBody=%d outputCore=%d inputVariant=%d outputVariant=%d baselineNoise=%d unverified=%d%n",
             analysis.lostUniqueKeys,
             analysis.equivalentFullBody,
             analysis.equivalentOutputCore,
+            analysis.inputVariant,
             analysis.outputVariant,
             analysis.baselineNoise,
             analysis.unverifiedLoss);

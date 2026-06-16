@@ -94,13 +94,30 @@ public final class RecipeSnapshotRetentionAnalyzer {
                 entry.candidateCanonical = bodyMatch;
                 result.equivalentFullBody++;
             } else {
-                String coreMatch = candidateIndex.coreMatch(lost.mapName, core);
-                if (coreMatch != null) {
-                    entry.classification = "equivalent_output_core";
-                    entry.candidateCanonical = coreMatch;
-                    result.equivalentOutputCore++;
+                String inputs = extractRecipeInputs(normalizedCanonical);
+                List<String> coreMatches = candidateIndex.coreMatches(lost.mapName, core);
+                if (!coreMatches.isEmpty()) {
+                    String sameInputCoreMatch = null;
+                    for (String coreMatch : coreMatches) {
+                        if (inputs.equals(extractRecipeInputs(normalizeForMatch(coreMatch)))) {
+                            sameInputCoreMatch = coreMatch;
+                            break;
+                        }
+                    }
+                    if (sameInputCoreMatch != null) {
+                        entry.classification = "equivalent_output_core";
+                        entry.candidateCanonical = sameInputCoreMatch;
+                        result.equivalentOutputCore++;
+                    } else {
+                        entry.classification = "input_variant";
+                        entry.candidateCanonical = coreMatches.get(0);
+                        result.inputVariant++;
+                        result.inputVariantsByMap.merge(lost.mapName, 1, Integer::sum);
+                        if (result.inputVariants.size() < REPORTED_UNVERIFIED_LIMIT) {
+                            result.inputVariants.add(entry);
+                        }
+                    }
                 } else {
-                    String inputs = extractRecipeInputs(normalizedCanonical);
                     String inputMatch = candidateIndex.inputMatch(lost.mapName, inputs);
                     if (inputMatch != null) {
                         entry.candidateCanonical = inputMatch;
@@ -176,9 +193,9 @@ public final class RecipeSnapshotRetentionAnalyzer {
 
     public static void validateNoGameplayRegression(AnalysisResult result, @Nullable Path baselinePath,
         @Nullable Path candidatePath) {
-        if (result.unverifiedLoss <= 0 && result.outputVariant <= 0) {
+        if (result.unverifiedLoss <= 0 && result.outputVariant <= 0 && result.inputVariant <= 0) {
             LOGGER.info(
-                "GT recipe snapshot retention gate: passed with 0 unverified loss(es), 0 output variant(s), and {} confirmed deduplication(s) out of {} diff lost key(s).",
+                "GT recipe snapshot retention gate: passed with 0 unverified loss(es), 0 output variant(s), 0 input variant(s), and {} confirmed deduplication(s) out of {} diff lost key(s).",
                 result.deduplicationConfirmed,
                 result.lostUniqueKeys);
             return;
@@ -198,6 +215,15 @@ public final class RecipeSnapshotRetentionAnalyzer {
             message.append(result.outputVariant)
                 .append(" output variant(s) (same inputs, different outputs/byproducts)");
         }
+        if (result.inputVariant > 0) {
+            if (message.length() > 0) {
+                message.append(" and ");
+            } else {
+                message.append("GT recipe snapshot retention gate found ");
+            }
+            message.append(result.inputVariant)
+                .append(" input variant(s) (same output/core, different inputs)");
+        }
         message.append(" out of ")
             .append(result.lostUniqueKeys)
             .append(" diff lost key(s)");
@@ -213,6 +239,8 @@ public final class RecipeSnapshotRetentionAnalyzer {
             .append(result.equivalentOutputCore)
             .append(", outputVariant=")
             .append(result.outputVariant)
+            .append(", inputVariant=")
+            .append(result.inputVariant)
             .append(", deduplicationConfirmed=")
             .append(result.deduplicationConfirmed)
             .append('.');
@@ -235,6 +263,29 @@ public final class RecipeSnapshotRetentionAnalyzer {
                 message.append("\n... and ")
                     .append(result.outputVariant - result.outputVariants.size())
                     .append(" more output variant(s).");
+            }
+        }
+        if (!result.inputVariants.isEmpty()) {
+            message.append("\nFirst ")
+                .append(result.inputVariants.size())
+                .append(" input variant(s):");
+            for (int i = 0; i < result.inputVariants.size(); i++) {
+                ClassifiedLoss entry = result.inputVariants.get(i);
+                message.append('\n')
+                    .append(i + 1)
+                    .append(") map=")
+                    .append(entry.mapName)
+                    .append("\n  baseline inputs: ")
+                    .append(extractRecipeInputs(entry.baselineCanonical))
+                    .append("\n  candidate inputs: ")
+                    .append(extractRecipeInputs(entry.candidateCanonical))
+                    .append("\n  shared core: ")
+                    .append(extractGameplayCore(entry.baselineCanonical));
+            }
+            if (result.inputVariant > result.inputVariants.size()) {
+                message.append("\n... and ")
+                    .append(result.inputVariant - result.inputVariants.size())
+                    .append(" more input variant(s).");
             }
         }
         if (!result.unverifiedLosses.isEmpty()) {
@@ -288,11 +339,14 @@ public final class RecipeSnapshotRetentionAnalyzer {
         OutputVariantReport report = new OutputVariantReport();
         report.lostUniqueKeys = result.lostUniqueKeys;
         report.outputVariant = result.outputVariant;
+        report.inputVariant = result.inputVariant;
         report.deduplicationConfirmed = result.deduplicationConfirmed;
         report.expectedOutputVariant = result.expectedOutputVariant;
         report.outputVariantsByMap.putAll(result.outputVariantsByMap);
+        report.inputVariantsByMap.putAll(result.inputVariantsByMap);
         report.expectedOutputVariantsByMap.putAll(result.expectedOutputVariantsByMap);
         report.outputVariants.addAll(result.outputVariants);
+        report.inputVariants.addAll(result.inputVariants);
         report.expectedOutputVariants.addAll(result.expectedOutputVariants);
         try {
             if (outputVariantsPath.getParent() != null) {
@@ -317,6 +371,7 @@ public final class RecipeSnapshotRetentionAnalyzer {
         TrueLossReport report = new TrueLossReport();
         report.unverifiedLoss = result.unverifiedLoss;
         report.outputVariant = result.outputVariant;
+        report.inputVariant = result.inputVariant;
         report.deduplicationConfirmed = result.deduplicationConfirmed;
         report.expectedOutputVariant = result.expectedOutputVariant;
         report.expectedLoss = result.expectedLoss;
@@ -328,6 +383,8 @@ public final class RecipeSnapshotRetentionAnalyzer {
         report.expectedLosses.addAll(result.expectedLosses);
         report.expectedLossesByMap.putAll(result.expectedLossesByMap);
         report.outputVariantsByMap.putAll(result.outputVariantsByMap);
+        report.inputVariants.addAll(result.inputVariants);
+        report.inputVariantsByMap.putAll(result.inputVariantsByMap);
         report.expectedOutputVariantsByMap.putAll(result.expectedOutputVariantsByMap);
         report.expectedOutputVariants.addAll(result.expectedOutputVariants);
         try {
@@ -405,7 +462,7 @@ public final class RecipeSnapshotRetentionAnalyzer {
     private static final class CandidateMatchIndex {
 
         private final Map<String, Map<String, String>> bodiesByMap = new TreeMap<>();
-        private final Map<String, Map<String, String>> coresByMap = new TreeMap<>();
+        private final Map<String, Map<String, List<String>>> coresByMap = new TreeMap<>();
         private final Map<String, Map<String, String>> inputsByMap = new TreeMap<>();
 
         @Nullable
@@ -417,13 +474,13 @@ public final class RecipeSnapshotRetentionAnalyzer {
             return bodies.get(body);
         }
 
-        @Nullable
-        String coreMatch(String mapName, String core) {
-            Map<String, String> cores = coresByMap.get(mapName);
+        List<String> coreMatches(String mapName, String core) {
+            Map<String, List<String>> cores = coresByMap.get(mapName);
             if (cores == null) {
-                return null;
+                return new ArrayList<>();
             }
-            return cores.get(core);
+            List<String> matches = cores.get(core);
+            return matches == null ? new ArrayList<>() : matches;
         }
 
         @Nullable
@@ -458,7 +515,7 @@ public final class RecipeSnapshotRetentionAnalyzer {
             while (reader.hasNext()) {
                 String mapName = reader.nextName();
                 Map<String, String> bodies = new LinkedHashMap<>();
-                Map<String, String> cores = new LinkedHashMap<>();
+                Map<String, List<String>> cores = new LinkedHashMap<>();
                 Map<String, String> inputs = new LinkedHashMap<>();
                 reader.beginObject();
                 while (reader.hasNext()) {
@@ -476,7 +533,7 @@ public final class RecipeSnapshotRetentionAnalyzer {
             reader.endObject();
         }
 
-        private static void readKeys(JsonReader reader, Map<String, String> bodies, Map<String, String> cores,
+        private static void readKeys(JsonReader reader, Map<String, String> bodies, Map<String, List<String>> cores,
             Map<String, String> inputs) throws IOException {
             reader.beginObject();
             while (reader.hasNext()) {
@@ -499,7 +556,8 @@ public final class RecipeSnapshotRetentionAnalyzer {
                 String core = extractGameplayCore(normalizedCanonical);
                 String recipeInputs = extractRecipeInputs(normalizedCanonical);
                 bodies.putIfAbsent(body, canonical);
-                cores.putIfAbsent(core, canonical);
+                cores.computeIfAbsent(core, ignored -> new ArrayList<>())
+                    .add(canonical);
                 inputs.putIfAbsent(recipeInputs, canonical);
             }
             reader.endObject();
@@ -517,6 +575,7 @@ public final class RecipeSnapshotRetentionAnalyzer {
         public int equivalentFullBody;
         public int equivalentOutputCore;
         public int outputVariant;
+        public int inputVariant;
         public int expectedOutputVariant;
         public int baselineNoise;
         public int unverifiedLoss;
@@ -526,11 +585,13 @@ public final class RecipeSnapshotRetentionAnalyzer {
         public final List<ClassifiedLoss> unverifiedLosses = new ArrayList<>();
         public final List<ClassifiedLoss> expectedLosses = new ArrayList<>();
         public final List<ClassifiedLoss> outputVariants = new ArrayList<>();
+        public final List<ClassifiedLoss> inputVariants = new ArrayList<>();
         public final List<ClassifiedLoss> expectedOutputVariants = new ArrayList<>();
         public final Map<String, Integer> lostByMap = new TreeMap<>();
         public final Map<String, Integer> unverifiedLossesByMap = new TreeMap<>();
         public final Map<String, Integer> expectedLossesByMap = new TreeMap<>();
         public final Map<String, Integer> outputVariantsByMap = new TreeMap<>();
+        public final Map<String, Integer> inputVariantsByMap = new TreeMap<>();
         public final Map<String, Integer> expectedOutputVariantsByMap = new TreeMap<>();
         public final Map<String, Integer> baselineNoiseByMap = new TreeMap<>();
     }
@@ -547,11 +608,14 @@ public final class RecipeSnapshotRetentionAnalyzer {
 
         int lostUniqueKeys;
         int outputVariant;
+        int inputVariant;
         int deduplicationConfirmed;
         int expectedOutputVariant;
         final Map<String, Integer> outputVariantsByMap = new TreeMap<>();
+        final Map<String, Integer> inputVariantsByMap = new TreeMap<>();
         final Map<String, Integer> expectedOutputVariantsByMap = new TreeMap<>();
         final List<ClassifiedLoss> outputVariants = new ArrayList<>();
+        final List<ClassifiedLoss> inputVariants = new ArrayList<>();
         final List<ClassifiedLoss> expectedOutputVariants = new ArrayList<>();
     }
 
@@ -561,6 +625,7 @@ public final class RecipeSnapshotRetentionAnalyzer {
         int equivalentFullBody;
         int equivalentOutputCore;
         int outputVariant;
+        int inputVariant;
         int deduplicationConfirmed;
         int unverifiedLoss;
         int expectedLoss;
@@ -568,8 +633,10 @@ public final class RecipeSnapshotRetentionAnalyzer {
         final Map<String, Integer> unverifiedLossesByMap = new TreeMap<>();
         final Map<String, Integer> expectedLossesByMap = new TreeMap<>();
         final Map<String, Integer> outputVariantsByMap = new TreeMap<>();
+        final Map<String, Integer> inputVariantsByMap = new TreeMap<>();
         final Map<String, Integer> expectedOutputVariantsByMap = new TreeMap<>();
         final List<ClassifiedLoss> unverifiedLosses = new ArrayList<>();
+        final List<ClassifiedLoss> inputVariants = new ArrayList<>();
         final List<ClassifiedLoss> expectedLosses = new ArrayList<>();
         final List<ClassifiedLoss> expectedOutputVariants = new ArrayList<>();
     }
