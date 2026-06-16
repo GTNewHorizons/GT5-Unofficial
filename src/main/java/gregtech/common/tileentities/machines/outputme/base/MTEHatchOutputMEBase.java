@@ -372,8 +372,10 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>> {
         CellConfig cfg = (CellConfig) cellWorkbenchItem.getConfigAEInventory(upgradeItemStack);
 
         String modeKey = isWhiteList() ? WHITELIST.getKey() : BLACKLIST.getKey();
-        IChatComponent msg = new ChatComponentTranslation(env.getEnableKey())
-            .appendSibling(new ChatComponentTranslation(modeKey).appendText(": "));
+        IChatComponent msg = new ChatComponentTranslation(
+            "GT5U.hatch.outputme.filter.format",
+            new ChatComponentTranslation(env.getEnableKey()),
+            new ChatComponentTranslation(modeKey));
         if (handler.getPartitionList() instanceof OreFilteredList) {
             ICellInventory<T> ci = handler.getCellInv();
             if (ci != null) {
