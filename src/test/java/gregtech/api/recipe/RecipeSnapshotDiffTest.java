@@ -174,8 +174,8 @@ class RecipeSnapshotDiffTest {
             RecipeSnapshotDiff.writeRetentionReport(
                 java.nio.file.Paths.get(reportProperty),
                 result,
-                RecipeSnapshotDiff.peekFormatVersion(baselinePath),
-                RecipeSnapshotDiff.peekFormatVersion(candidatePath));
+                RecipeSnapshotExporter.FORMAT_VERSION,
+                RecipeSnapshotExporter.FORMAT_VERSION);
         }
         if (shouldEnforceRetention()) {
             if (expectedLosses != null || noiseProfile != null || shouldEnforceTrueLoss()) {

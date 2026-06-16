@@ -18,8 +18,6 @@ import gregtech.api.enums.OrePrefixes;
  */
 public final class OreRecipeRegistrationGuard {
 
-    public static final String DISABLE_PROPERTY = "gt.recipe.ore.guard.disable";
-
     private static Set<String> seenOreDictKeys;
     private static final Set<String> seenReverseRecipeKeys = new HashSet<>();
 

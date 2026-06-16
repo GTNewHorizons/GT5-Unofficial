@@ -44,8 +44,6 @@ public final class RecipeSnapshotDiff {
 
     private static final Logger LOGGER = LogManager.getLogger("GregTech GTNH");
     private static final Gson GSON = new GsonBuilder().create();
-    private static final Pattern LEGACY_SIEVERT_METADATA = Pattern
-        .compile(",?\\s*SIEVERT=gregtech\\.api\\.util\\.recipe\\.Sievert@[0-9a-f]+");
     private static final Pattern METADATA_OBJECT_IDENTITY = Pattern.compile(",?\\s*[\\w_]+=[\\w.$]+@[0-9a-f]+");
     private static final Pattern SPECIAL_OBJECT_IDENTITY = Pattern.compile("special=[\\w.$]+@[0-9a-f]+");
 
@@ -77,13 +75,9 @@ public final class RecipeSnapshotDiff {
 
     public static DiffResult compare(Path baselinePath, Path candidatePath) {
         ensureDistinctSnapshotPaths(baselinePath, candidatePath);
-        int baselineVersion = peekFormatVersion(baselinePath);
-        int candidateVersion = peekFormatVersion(candidatePath);
         Map<String, Map<String, MultisetEntry>> baselineIndex = loadMultisetIndexFromKeys(baselinePath);
         Map<String, Map<String, MultisetEntry>> candidateIndex = loadMultisetIndexFromKeys(candidatePath);
-        DiffResult result = compareGameplayMultisetFromIndex(baselineIndex, candidateIndex);
-        result.comparisonMode = baselineVersion >= 2 && candidateVersion >= 2 ? "gameplay-multiset" : "legacy-keys";
-        return result;
+        return compareGameplayMultisetFromIndex(baselineIndex, candidateIndex);
     }
 
     /** Every lost gameplay fingerprint from a streamed snapshot compare (no report cap). */
@@ -93,10 +87,9 @@ public final class RecipeSnapshotDiff {
     }
 
     public static DiffResult compare(RecipeSnapshot baseline, RecipeSnapshot candidate) {
-        if (usesMultisetComparison(baseline) && usesMultisetComparison(candidate)) {
-            return compareGameplayMultiset(baseline, candidate);
-        }
-        return compareLegacyKeys(baseline, candidate);
+        requireCurrentFormat(baseline, "baseline");
+        requireCurrentFormat(candidate, "candidate");
+        return compareGameplayMultiset(baseline, candidate);
     }
 
     public static String gameplayFingerprint(String canonical) {
@@ -136,8 +129,15 @@ public final class RecipeSnapshotDiff {
         }
     }
 
-    private static boolean usesMultisetComparison(RecipeSnapshot snapshot) {
-        return snapshot.formatVersion >= 2;
+    private static void requireCurrentFormat(RecipeSnapshot snapshot, String role) {
+        if (snapshot.formatVersion != RecipeSnapshotExporter.FORMAT_VERSION) {
+            throw new IllegalStateException(
+                "Recipe snapshot " + role
+                    + " uses unsupported formatVersion="
+                    + snapshot.formatVersion
+                    + "; expected "
+                    + RecipeSnapshotExporter.FORMAT_VERSION);
+        }
     }
 
     private static DiffResult compareGameplayMultiset(RecipeSnapshot baseline, RecipeSnapshot candidate) {
@@ -255,67 +255,6 @@ public final class RecipeSnapshotDiff {
         return all;
     }
 
-    private static DiffResult compareLegacyKeys(RecipeSnapshot baseline, RecipeSnapshot candidate) {
-        Map<String, Map<String, KeyEntry>> baselineIndex = indexByNormalizedCanonical(baseline);
-        Map<String, Map<String, KeyEntry>> candidateIndex = indexByNormalizedCanonical(candidate);
-
-        DiffResult result = new DiffResult();
-        result.comparisonMode = "legacy-keys";
-        result.baselineUniqueKeys = countKeys(baselineIndex);
-        result.candidateUniqueKeys = countKeys(candidateIndex);
-
-        for (Map.Entry<String, Map<String, KeyEntry>> mapEntry : baselineIndex.entrySet()) {
-            String mapName = mapEntry.getKey();
-            Map<String, KeyEntry> baselineKeys = mapEntry.getValue();
-            Map<String, KeyEntry> candidateKeys = candidateIndex.getOrDefault(mapName, Collections.emptyMap());
-
-            for (Map.Entry<String, KeyEntry> keyEntry : baselineKeys.entrySet()) {
-                String normalizedKey = keyEntry.getKey();
-                KeyEntry baselineEntry = keyEntry.getValue();
-                KeyEntry candidateEntry = candidateKeys.get(normalizedKey);
-                if (candidateEntry == null) {
-                    result.lostRecipes++;
-                    result.lostInstances += baselineEntry.count;
-                    result.lostRecipesByMap.merge(mapName, 1, Integer::sum);
-                    if (result.lostEntries.size() < REPORTED_LOSS_LIMIT) {
-                        result.lostEntries.add(
-                            new LostEntry(
-                                mapName,
-                                normalizedKey,
-                                baselineEntry.canonical,
-                                baselineEntry.count,
-                                0,
-                                Collections.emptyList()));
-                    }
-                    continue;
-                }
-
-                result.retainedUniqueKeys++;
-                result.retainedInstances += Math.min(baselineEntry.count, candidateEntry.count);
-                if (candidateEntry.count < baselineEntry.count) {
-                    result.dedupedInstances += baselineEntry.count - candidateEntry.count;
-                    result.dedupedUniqueKeys++;
-                } else if (candidateEntry.count > baselineEntry.count) {
-                    result.gainedInstances += candidateEntry.count - baselineEntry.count;
-                }
-            }
-        }
-
-        for (Map.Entry<String, Map<String, KeyEntry>> mapEntry : candidateIndex.entrySet()) {
-            String mapName = mapEntry.getKey();
-            Map<String, KeyEntry> candidateKeys = mapEntry.getValue();
-            Map<String, KeyEntry> baselineKeys = baselineIndex.getOrDefault(mapName, Collections.emptyMap());
-            for (Map.Entry<String, KeyEntry> keyEntry : candidateKeys.entrySet()) {
-                if (!baselineKeys.containsKey(keyEntry.getKey())) {
-                    result.gainedUniqueKeys++;
-                    result.gainedInstances += keyEntry.getValue().count;
-                }
-            }
-        }
-
-        return result;
-    }
-
     public static void validateRetention(Path baselinePath, Path candidatePath) {
         ensureDistinctSnapshotPaths(baselinePath, candidatePath);
         DiffResult result = compare(baselinePath, candidatePath);
@@ -355,12 +294,12 @@ public final class RecipeSnapshotDiff {
 
     public static void validateRetention(RecipeSnapshot baseline, RecipeSnapshot candidate) {
         DiffResult result = compare(baseline, candidate);
-        maybeWriteReport(result, baseline.formatVersion, candidate.formatVersion);
+        maybeWriteReport(result, RecipeSnapshotExporter.FORMAT_VERSION, RecipeSnapshotExporter.FORMAT_VERSION);
         validateRetention(result, null, null);
     }
 
     private static void maybeWriteReport(DiffResult result, Path baselinePath, Path candidatePath) {
-        maybeWriteReport(result, peekFormatVersion(baselinePath), peekFormatVersion(candidatePath));
+        maybeWriteReport(result, RecipeSnapshotExporter.FORMAT_VERSION, RecipeSnapshotExporter.FORMAT_VERSION);
     }
 
     private static void maybeWriteReport(DiffResult result, int baselineFormatVersion, int candidateFormatVersion) {
@@ -372,37 +311,43 @@ public final class RecipeSnapshotDiff {
         writeRetentionReport(Paths.get(reportProperty.trim()), result, baselineFormatVersion, candidateFormatVersion);
     }
 
-    static int peekFormatVersion(Path path) {
-        try (JsonReader reader = new JsonReader(Files.newBufferedReader(path, StandardCharsets.UTF_8))) {
-            reader.beginObject();
-            int version = 1;
-            while (reader.hasNext()) {
-                if ("formatVersion".equals(reader.nextName())) {
-                    version = reader.nextInt();
-                    break;
-                }
-                reader.skipValue();
-            }
-            return version;
-        } catch (IOException e) {
-            throw new IllegalStateException("Failed to read recipe snapshot format from " + path.toAbsolutePath(), e);
-        }
-    }
-
     private static Map<String, Map<String, MultisetEntry>> loadMultisetIndexFromKeys(Path path) {
         Map<String, Map<String, MultisetEntry>> index = new TreeMap<>();
+        boolean sawFormatVersion = false;
+        boolean sawMaps = false;
         try (JsonReader reader = new JsonReader(Files.newBufferedReader(path, StandardCharsets.UTF_8))) {
             reader.beginObject();
             while (reader.hasNext()) {
-                if ("maps".equals(reader.nextName())) {
-                    readMapKeysIntoIndex(reader, index);
-                } else {
-                    reader.skipValue();
+                switch (reader.nextName()) {
+                    case "formatVersion" -> {
+                        int formatVersion = reader.nextInt();
+                        sawFormatVersion = true;
+                        if (formatVersion != RecipeSnapshotExporter.FORMAT_VERSION) {
+                            throw new IllegalStateException(
+                                "Recipe snapshot "
+                                    + path.toAbsolutePath()
+                                    + " uses unsupported formatVersion="
+                                    + formatVersion
+                                    + "; expected "
+                                    + RecipeSnapshotExporter.FORMAT_VERSION);
+                        }
+                    }
+                    case "maps" -> {
+                        sawMaps = true;
+                        readMapKeysIntoIndex(reader, index);
+                    }
+                    default -> reader.skipValue();
                 }
             }
             reader.endObject();
         } catch (IOException e) {
             throw new IllegalStateException("Failed to stream recipe snapshot keys from " + path.toAbsolutePath(), e);
+        }
+        if (!sawFormatVersion || !sawMaps) {
+            throw new IllegalStateException(
+                "Recipe snapshot "
+                    + path.toAbsolutePath()
+                    + " is missing current formatVersion/maps fields");
         }
         return index;
     }
@@ -475,9 +420,7 @@ public final class RecipeSnapshotDiff {
         if (canonical == null) {
             return "";
         }
-        String normalized = LEGACY_SIEVERT_METADATA.matcher(canonical)
-            .replaceAll("");
-        normalized = METADATA_OBJECT_IDENTITY.matcher(normalized)
+        String normalized = METADATA_OBJECT_IDENTITY.matcher(canonical)
             .replaceAll("");
         normalized = SPECIAL_OBJECT_IDENTITY.matcher(normalized)
             .replaceAll("special=null");
@@ -554,37 +497,6 @@ public final class RecipeSnapshotDiff {
     private static int countMultisetKeys(Map<String, Map<String, MultisetEntry>> index) {
         int count = 0;
         for (Map<String, MultisetEntry> keys : index.values()) {
-            count += keys.size();
-        }
-        return count;
-    }
-
-    private static Map<String, Map<String, KeyEntry>> indexByNormalizedCanonical(RecipeSnapshot snapshot) {
-        Map<String, Map<String, KeyEntry>> index = new TreeMap<>();
-        for (Map.Entry<String, MapSnapshot> mapEntry : snapshot.maps.entrySet()) {
-            Map<String, KeyEntry> keys = new LinkedHashMap<>();
-            if (mapEntry.getValue().keys != null) {
-                for (KeyEntry entry : mapEntry.getValue().keys.values()) {
-                    String normalizedKey = normalizeCanonicalForDiff(entry.canonical);
-                    KeyEntry existing = keys.get(normalizedKey);
-                    if (existing == null) {
-                        KeyEntry copy = new KeyEntry();
-                        copy.canonical = entry.canonical;
-                        copy.count = entry.count;
-                        keys.put(normalizedKey, copy);
-                    } else {
-                        existing.count += entry.count;
-                    }
-                }
-            }
-            index.put(mapEntry.getKey(), keys);
-        }
-        return index;
-    }
-
-    private static int countKeys(Map<String, Map<String, KeyEntry>> index) {
-        int count = 0;
-        for (Map<String, KeyEntry> keys : index.values()) {
             count += keys.size();
         }
         return count;
@@ -676,7 +588,7 @@ public final class RecipeSnapshotDiff {
 
     public static final class DiffResult {
 
-        public String comparisonMode = "legacy-keys";
+        public String comparisonMode = "gameplay-multiset";
         public int baselineUniqueKeys;
         public int candidateUniqueKeys;
         public int retainedUniqueKeys;

@@ -39,15 +39,6 @@ class OreRecipeDedupeFlagsTest {
     }
 
     @Test
-    void legacyGuardDisableIsEquivalentToMasterOff() {
-        restoreAll(() -> {
-            System.setProperty(OreRecipeRegistrationGuard.DISABLE_PROPERTY, "true");
-            assertFalse(OreRecipeDedupeFlags.isMasterEnabled());
-            assertFalse(OreRecipeDedupeFlags.guardProcessEnabled());
-        });
-    }
-
-    @Test
     void subFlagsCanBeDisabledIndependently() {
         restoreAll(() -> {
             System.clearProperty(OreRecipeDedupeFlags.ENABLED_PROPERTY);
@@ -66,20 +57,17 @@ class OreRecipeDedupeFlagsTest {
         String guardProcess = System.getProperty(OreRecipeDedupeFlags.GUARD_PROCESS_PROPERTY);
         String guardReverse = System.getProperty(OreRecipeDedupeFlags.GUARD_REVERSE_PROPERTY);
         String canonical = System.getProperty(OreRecipeDedupeFlags.CANONICAL_INPUTS_PROPERTY);
-        String legacy = System.getProperty(OreRecipeRegistrationGuard.DISABLE_PROPERTY);
         try {
             System.clearProperty(OreRecipeDedupeFlags.ENABLED_PROPERTY);
             System.clearProperty(OreRecipeDedupeFlags.GUARD_PROCESS_PROPERTY);
             System.clearProperty(OreRecipeDedupeFlags.GUARD_REVERSE_PROPERTY);
             System.clearProperty(OreRecipeDedupeFlags.CANONICAL_INPUTS_PROPERTY);
-            System.clearProperty(OreRecipeRegistrationGuard.DISABLE_PROPERTY);
             test.run();
         } finally {
             restore(OreRecipeDedupeFlags.ENABLED_PROPERTY, enabled);
             restore(OreRecipeDedupeFlags.GUARD_PROCESS_PROPERTY, guardProcess);
             restore(OreRecipeDedupeFlags.GUARD_REVERSE_PROPERTY, guardReverse);
             restore(OreRecipeDedupeFlags.CANONICAL_INPUTS_PROPERTY, canonical);
-            restore(OreRecipeRegistrationGuard.DISABLE_PROPERTY, legacy);
         }
     }
 

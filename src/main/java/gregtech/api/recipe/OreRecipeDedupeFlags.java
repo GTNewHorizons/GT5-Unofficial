@@ -12,7 +12,6 @@ import org.apache.logging.log4j.Logger;
  * <li>{@code -Dgt.recipe.ore.dedupe.canonical.inputs=true} – use canonical ore-dict stacks in recipe inputs for
  * debugging only</li>
  * </ul>
- * Legacy {@link OreRecipeRegistrationGuard#DISABLE_PROPERTY} is equivalent to {@code enabled=false}.
  */
 public final class OreRecipeDedupeFlags {
 
@@ -27,9 +26,6 @@ public final class OreRecipeDedupeFlags {
     private OreRecipeDedupeFlags() {}
 
     public static boolean isMasterEnabled() {
-        if (Boolean.getBoolean(OreRecipeRegistrationGuard.DISABLE_PROPERTY)) {
-            return false;
-        }
         String master = System.getProperty(ENABLED_PROPERTY);
         if (master == null) {
             return true;
