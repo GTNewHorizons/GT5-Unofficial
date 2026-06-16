@@ -2,6 +2,7 @@ package gregtech.api.util;
 
 import java.util.function.Predicate;
 
+import appeng.api.AEApi;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
@@ -54,7 +55,7 @@ public class OutputHatchWrapper implements IOutputHatch {
         return new FilteredTransactionWrapper();
     }
 
-    public class FilteredTransactionWrapper implements IOutputHatchTransaction {
+    public class FilteredTransactionWrapper implements IOutputHatchTransaction, IOutputHatchTransaction.IRecipeCheckAware {
 
         private final OutputHatchWrapper hatch = OutputHatchWrapper.this;
         private final IOutputHatchTransaction transaction = OutputHatchWrapper.this.outputHatch.createTransaction();
@@ -62,6 +63,13 @@ public class OutputHatchWrapper implements IOutputHatch {
         @Override
         public IOutputHatch getHatch() {
             return hatch;
+        }
+
+        @Override
+        public void setRecipeCheck(boolean isRecipeCheck) {
+            if (transaction instanceof IOutputHatchTransaction.IRecipeCheckAware rt) {
+                rt.setRecipeCheck(isRecipeCheck);
+            }
         }
 
         @Override
