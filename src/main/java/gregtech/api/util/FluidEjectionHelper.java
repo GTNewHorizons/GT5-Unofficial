@@ -103,7 +103,8 @@ public class FluidEjectionHelper {
 
                 if (ofType == null) continue;
 
-                GTDataUtils.addAllFiltered(ofType, transactions, t -> !t.isFiltered() || t.isFilteredToFluid(parallelData.id));
+                GTDataUtils
+                    .addAllFiltered(ofType, transactions, t -> !t.isFiltered() || t.isFilteredToFluid(parallelData.id));
             }
 
             parallelData.outputs = Iterators.peekingIterator(transactions.iterator());
