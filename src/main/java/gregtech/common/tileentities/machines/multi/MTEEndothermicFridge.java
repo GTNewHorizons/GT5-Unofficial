@@ -23,7 +23,6 @@ import static gregtech.api.util.GTStructureUtility.ofSheetMetal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.List;
-import java.util.Optional;
 
 import javax.annotation.Nullable;
 
@@ -61,7 +60,6 @@ import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
-import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -388,11 +386,10 @@ public class MTEEndothermicFridge extends MTEExtendedPowerMultiBlockBase<MTEEndo
     }
 
     public BoosterFluid findBoosterFluid() {
-        for (MTEHatchInput hatch : this.mInputHatches) {
-            Optional<BoosterFluid> fluid = BOOSTER_FLUIDS.stream()
-                .filter(candidate -> drain(hatch, candidate.getStack(), false))
-                .findFirst();
-            if (fluid.isPresent()) return fluid.get();
+        for (BoosterFluid candidate : BOOSTER_FLUIDS) {
+            if (depleteInput(candidate.getStack(), true)) {
+                return candidate;
+            }
         }
         return null;
     }
