@@ -122,19 +122,13 @@ public class RecipeGenMultisUsingFluidInsteadOfCells {
             Collections.addAll(aOutputFluidsMap, recipe.mFluidOutputs);
 
             // Make some new Arrays
-            ItemStack[] aNewItemInputs = aInputItemsMap.toArray(new ItemStack[0]);
-            ItemStack[] aNewItemOutputs = aOutputItemsMap.toArray(new ItemStack[0]);
+            ItemStack[] aNewItemInputs = copyStacks(aInputItemsMap.toArray(new ItemStack[0]));
+            ItemStack[] aNewItemOutputs = copyStacks(aOutputItemsMap.toArray(new ItemStack[0]));
             FluidStack[] aNewFluidInputs = aInputFluidsMap.toArray(new FluidStack[0]);
             FluidStack[] aNewFluidOutputs = aOutputFluidsMap.toArray(new FluidStack[0]);
 
             if (!(ItemUtils.checkForInvalidItems(aNewItemInputs) && ItemUtils.checkForInvalidItems(aNewItemOutputs))) {
                 continue; // Skip this recipe entirely if we find an item we don't like
-            }
-
-            for (ItemStack inputStack : aNewItemInputs) {
-                if (inputStack != null) {
-                    inputStack.stackSize = 1;
-                }
             }
 
             GTRecipe aNewRecipe = recipe.copyShallow();
@@ -160,5 +154,13 @@ public class RecipeGenMultisUsingFluidInsteadOfCells {
         for (GTRecipe recipe : deDuplicationOutputArray) {
             aOutputs.add(recipe);
         }
+    }
+
+    static ItemStack[] copyStacks(ItemStack[] stacks) {
+        ItemStack[] copied = new ItemStack[stacks.length];
+        for (int i = 0; i < stacks.length; i++) {
+            copied[i] = stacks[i] == null ? null : stacks[i].copy();
+        }
+        return copied;
     }
 }

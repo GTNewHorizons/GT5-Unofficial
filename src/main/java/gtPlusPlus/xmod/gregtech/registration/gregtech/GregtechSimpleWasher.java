@@ -171,8 +171,8 @@ public class GregtechSimpleWasher {
 
     private static void addSimpleWashRecipe(ItemStack aInput, ItemStack aOutput) {
         if (aInput != null && aOutput != null) {
-            String inputKey = aInput.getItem() + ":" + aInput.getItemDamage();
-            if (!sRegisteredWashInputs.add(inputKey)) {
+            String recipeKey = stackKey(aInput) + "->" + stackKey(aOutput);
+            if (!sRegisteredWashInputs.add(recipeKey)) {
                 return;
             }
             GTValues.RA.stdBuilder()
@@ -183,5 +183,14 @@ public class GregtechSimpleWasher {
                 .eut(TierEU.RECIPE_ULV)
                 .addTo(simpleWasherRecipes);
         }
+    }
+
+    private static String stackKey(ItemStack stack) {
+        return stack.getItem()
+            + ":"
+            + stack.getItemDamage()
+            + ":"
+            + (stack.getTagCompound() == null ? "" : stack.getTagCompound()
+                .toString());
     }
 }
