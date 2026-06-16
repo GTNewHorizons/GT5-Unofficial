@@ -179,12 +179,8 @@ class RecipeSnapshotDiffTest {
         }
         if (shouldEnforceRetention()) {
             if (expectedLosses != null || noiseProfile != null || shouldEnforceTrueLoss()) {
-                analysis = RecipeSnapshotRetentionAnalyzer.analyze(
-                    baselinePath,
-                    candidatePath,
-                    result,
-                    noiseProfile,
-                    expectedLosses);
+                analysis = RecipeSnapshotRetentionAnalyzer
+                    .analyze(baselinePath, candidatePath, result, noiseProfile, expectedLosses);
                 RecipeSnapshotRetentionAnalyzer.validateNoGameplayRegression(analysis, baselinePath, candidatePath);
             } else {
                 RecipeSnapshotDiff.validateRetention(baselinePath, candidatePath);
@@ -192,12 +188,8 @@ class RecipeSnapshotDiffTest {
         }
         if (analysisProperty != null) {
             if (analysis == null) {
-                analysis = RecipeSnapshotRetentionAnalyzer.analyze(
-                    baselinePath,
-                    candidatePath,
-                    result,
-                    noiseProfile,
-                    expectedLosses);
+                analysis = RecipeSnapshotRetentionAnalyzer
+                    .analyze(baselinePath, candidatePath, result, noiseProfile, expectedLosses);
             }
             RecipeSnapshotRetentionAnalyzer.writeAnalysis(java.nio.file.Paths.get(analysisProperty), analysis);
             System.out.printf(
@@ -214,28 +206,17 @@ class RecipeSnapshotDiffTest {
             System.getProperty(RecipeSnapshotRetentionAnalyzer.TRUE_LOSSES_PROPERTY));
         if (trueLossesProperty != null) {
             if (analysis == null) {
-                analysis = RecipeSnapshotRetentionAnalyzer.analyze(
-                    baselinePath,
-                    candidatePath,
-                    result,
-                    noiseProfile,
-                    expectedLosses);
+                analysis = RecipeSnapshotRetentionAnalyzer
+                    .analyze(baselinePath, candidatePath, result, noiseProfile, expectedLosses);
             }
             RecipeSnapshotRetentionAnalyzer.writeTrueLosses(java.nio.file.Paths.get(trueLossesProperty), analysis);
         }
         if (shouldEnforceTrueLoss()) {
             if (analysis == null) {
-                analysis = RecipeSnapshotRetentionAnalyzer.analyze(
-                    baselinePath,
-                    candidatePath,
-                    result,
-                    noiseProfile,
-                    expectedLosses);
+                analysis = RecipeSnapshotRetentionAnalyzer
+                    .analyze(baselinePath, candidatePath, result, noiseProfile, expectedLosses);
             }
-            RecipeSnapshotRetentionAnalyzer.validateNoGameplayRegression(
-                analysis,
-                baselinePath,
-                candidatePath);
+            RecipeSnapshotRetentionAnalyzer.validateNoGameplayRegression(analysis, baselinePath, candidatePath);
         }
     }
 

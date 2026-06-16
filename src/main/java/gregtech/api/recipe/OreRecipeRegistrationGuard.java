@@ -82,13 +82,13 @@ public final class OreRecipeRegistrationGuard {
         String key = prefix.getName() + "|mat:"
             + materialName
             + "|stack:"
-             + itemIdentity(stack.getItem())
-             + ':'
-             + stack.getItemDamage()
-             + "|tag:"
-             + stackTag(stack)
-             + '|'
-             + registratorId;
+            + itemIdentity(stack.getItem())
+            + ':'
+            + stack.getItemDamage()
+            + "|tag:"
+            + stackTag(stack)
+            + '|'
+            + registratorId;
         return seenOreDictKeys.add(key);
     }
 
@@ -145,7 +145,8 @@ public final class OreRecipeRegistrationGuard {
     }
 
     private static String stackTag(ItemStack stack) {
-        return stack.getTagCompound() == null ? "" : stack.getTagCompound()
-            .toString();
+        return stack.getTagCompound() == null ? ""
+            : stack.getTagCompound()
+                .toString();
     }
 }

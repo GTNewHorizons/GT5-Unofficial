@@ -78,8 +78,9 @@ class RecipeSnapshotRetentionAnalyzerTest {
         IllegalStateException thrown = assertThrows(
             IllegalStateException.class,
             () -> RecipeSnapshotRetentionAnalyzer.validateNoGameplayRegression(analysis, baseline, candidate));
-        assertTrue(thrown.getMessage()
-            .contains("input variant"));
+        assertTrue(
+            thrown.getMessage()
+                .contains("input variant"));
     }
 
     @Test
@@ -189,7 +190,9 @@ class RecipeSnapshotRetentionAnalyzerTest {
         assertEquals(0, analysis.equivalentOutputCore);
         assertEquals(1, analysis.inputVariant);
         assertEquals(0, analysis.unverifiedLoss);
-        assertThrows(IllegalStateException.class, () -> RecipeSnapshotRetentionAnalyzer.validateNoUnverifiedLoss(analysis));
+        assertThrows(
+            IllegalStateException.class,
+            () -> RecipeSnapshotRetentionAnalyzer.validateNoUnverifiedLoss(analysis));
     }
 
     @Test

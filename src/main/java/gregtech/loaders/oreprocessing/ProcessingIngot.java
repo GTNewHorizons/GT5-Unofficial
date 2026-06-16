@@ -101,9 +101,8 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
                             false,
                             false);
                     }
-                    if (GTRecipeRegistrator.hasReverseArcSmeltingRecipe(aMaterial)
-                        && OreRecipeRegistrationGuard
-                            .tryRegisterReverseRecipe("arcSmelting", aMaterial, aPrefix, canonicalStack)) {
+                    if (GTRecipeRegistrator.hasReverseArcSmeltingRecipe(aMaterial) && OreRecipeRegistrationGuard
+                        .tryRegisterReverseRecipe("arcSmelting", aMaterial, aPrefix, canonicalStack)) {
                         GTRecipeRegistrator.registerReverseArcSmelting(
                             GTUtility.copyAmount(1, canonicalStack),
                             aMaterial,
