@@ -1918,6 +1918,7 @@ gt.recipe.compressor=Компрессор
 gt.recipe.compressor.description=Сожми до чёрной дыры C77
 gt.recipe.cuttingsaw=Режущий станок
 gt.recipe.cuttingsaw.description=Режет вдоль и поперёк!
+gt.recipe.fakecuttingsaw=Режущий станок
 gt.recipe.distillery=Дистилятор
 gt.recipe.distillery.description=Извлечение наиболее важных частей жидкостей
 gt.recipe.furnace=Печь
@@ -8815,3 +8816,80 @@ GT5U.scanner.debug.needs_power=§cВНИМАНИЕ: Устройству не х
 GT5U.scanner.debug.ic2_enet=Подключён к IC2 ENet
 GT5U.gui.text.shutdown_reason.fluid_output_failed=§4Не удалось вывести все жидкости.
 GT5U.gui.text.shutdown_reason.item_output_failed=§4Не удалось вывести все предметы.
+
+# Basic Generators - Shared
+gt.blockmachines.basicgenerator.fuel_efficiency=Эффективность топлива: %s%%
+
+# Basic Generators - Combustion
+gt.blockmachines.basicgenerator.diesel.tier.01.name=Базовый генератор внутреннего сгорания
+gt.blockmachines.basicgenerator.diesel.tier.02.name=Продвинутый генератор внутреннего сгорания
+gt.blockmachines.basicgenerator.diesel.tier.03.name=Турбо генератор внутреннего сгорания
+gt.blockmachines.basicgenerator.diesel.tooltip=Требует жидкое топливо\nПроизводит %d загрязнения в секунду
+
+# Basic Generators - Gas Turbine
+gt.blockmachines.basicgenerator.gasturbine.tier.01.name=Базовая газовая турбина
+gt.blockmachines.basicgenerator.gasturbine.tier.02.name=Продвинутая газовая турбина
+gt.blockmachines.basicgenerator.gasturbine.tier.03.name=Турбогазовая турбина
+gt.blockmachines.basicgenerator.gasturbine.tier.04.name=Турбогазовая турбина II
+gt.blockmachines.basicgenerator.gasturbine.tier.05.name=Турбогазовая турбина III
+gt.blockmachines.basicgenerator.gasturbine.tooltip=Требуются легковоспламеняющиеся газы\nПроизводит %d загрязнения в секунду
+
+# Basic Generators - Steam Turbine
+gt.blockmachines.basicgenerator.steamturbine.tier.01.name=Базовая паровая турбина
+gt.blockmachines.basicgenerator.steamturbine.tier.02.name=Продвинутая паровая турбина
+gt.blockmachines.basicgenerator.steamturbine.tier.03.name=Турбопаровая турбина
+gt.blockmachines.basicgenerator.steamturbine.tooltip=Преобразует пар в EU\nБазовая ставка: 2Л Пара -> 1 EU\nЭффективность топлива: %s%%\nПотребляет до %sЛ пара в секунду
+
+# Basic Generators - Naquadah Reactor
+gt.blockmachines.basicgenerator.naquadah.tier.04.name=Наквадаховый реактор MK I
+gt.blockmachines.basicgenerator.naquadah.tier.04.tooltip=Требует болты из обогащённого наквадаха
+gt.blockmachines.basicgenerator.naquadah.tier.05.name=Наквадаховый реактор MK II
+gt.blockmachines.basicgenerator.naquadah.tier.05.tooltip=Требует стержни из обогащённого наквадаха
+gt.blockmachines.basicgenerator.naquadah.tier.06.name=Наквадаховый реактор MK III
+gt.blockmachines.basicgenerator.naquadah.tier.06.tooltip=Требует длинные стержни из обогащённого наквадаха
+gt.blockmachines.basicgenerator.naquadah.tier.07.name=Наквадаховый реактор MK IV
+gt.blockmachines.basicgenerator.naquadah.tier.07.tooltip=Требует болты из наквадрии
+gt.blockmachines.basicgenerator.naquadah.tier.08.name=Наквадаховый реактор MK V
+gt.blockmachines.basicgenerator.naquadah.tier.08.tooltip=Требует стержни из наквадрии
+
+# Basic Generators - Plasma Generator
+gt.blockmachines.basicgenerator.plasmagenerator.tier.05.name=Плазма генератор MK I
+gt.blockmachines.basicgenerator.plasmagenerator.tier.06.name=Плазма генератор MK II
+gt.blockmachines.basicgenerator.plasmagenerator.tier.07.name=Плазма генератор MK III
+gt.blockmachines.basicgenerator.plasmagenerator.tier.08.name=Плазма генератор MK IV
+gt.blockmachines.basicgenerator.plasmagenerator.tier.09.name=Совершенный плазма генератор
+gt.blockmachines.basicgenerator.plasmagenerator.tooltip=Плазма в энергию
+
+# Basic Generators - Magic Energy Converter
+gt.blockmachines.basicgenerator.magicenergyconverter.tier.01.name=Преобразователь магической энергии для новичков
+gt.blockmachines.basicgenerator.magicenergyconverter.tier.02.name=Преобразователь магической энергии для адептов
+gt.blockmachines.basicgenerator.magicenergyconverter.tier.03.name=Преобразователь магической энергии для мастеров
+gt.blockmachines.basicgenerator.magicenergyconverter.tooltip=Клади сюда свои странные вещи
+
+# Basic Generators - Magic Energy Absorber
+gt.blockmachines.basicgenerator.magicenergyabsorber.tier.01.name=Поглотитель магической энергии для новичков
+gt.blockmachines.basicgenerator.magicenergyabsorber.tier.02.name=Поглотитель магической энергии для адептов
+gt.blockmachines.basicgenerator.magicenergyabsorber.tier.03.name=Поглотитель магической энергии для мастеров
+gt.blockmachines.basicgenerator.magicenergyabsorber.tier.04.name=Поглотитель магической энергии для гроссмейстеров
+gt.blockmachines.basicgenerator.magicenergyabsorber.tooltip=§nПоглощает §d§nмагию§7§n вблизи себя:\n- %s\n- %sEU за каждый §dКристалл Края§7 в радиусе действия\n§r \n§nРадиус поиска (используйте Отвёртку для изменения):\nПо-умолч.: §a%s\nМакс.: §a%s\n§r \n§nРаботает на §d§nзачарованиях§7§n на входе:\n- Предмет: %sEU за вес §dзачара§7 × уровень / макс\n- Книга: 10000EU за вес §dзачара§7 × уровень / макс\n§r \nЭффективность: §a%s%%
+gt.blockmachines.basicgenerator.magicenergyabsorber.tooltip.dragon_egg.shared=§7§dЯйцо Дракона§7 сверху
+gt.blockmachines.basicgenerator.magicenergyabsorber.tooltip.dragon_egg.exclusive=§e§nИСКЛЮЧИТЕЛЬНОЕ§r§7 §dЯйцо Дракона§7 сверху
+gt.blockmachines.basicgenerator.magicenergyabsorber.tooltip.thaumcraft=- %sCV/t из §dВозбуждённого узла§7\n- %sEU за §dEssentia§7 Aspect-Value из контейнеров в радиусе действия
+
+# Basic Generators - Solar Panel
+gt.blockmachines.basicgenerator.solarpanel.00.name=1-вольтная солнечная панель
+gt.blockmachines.basicgenerator.solarpanel.01.name=Базовая солнечная панель
+gt.blockmachines.basicgenerator.solarpanel.02.name=Улучшенная солнечная панель
+gt.blockmachines.basicgenerator.solarpanel.03.name=Улучшенная солнечная панель II
+gt.blockmachines.basicgenerator.solarpanel.04.name=Улучшенная солнечная панель III
+gt.blockmachines.basicgenerator.solarpanel.05.name=Улучшенная солнечная панель IV
+gt.blockmachines.basicgenerator.solarpanel.06.name=Элитная солнечная панель
+gt.blockmachines.basicgenerator.solarpanel.07.name=Элитная солнечная панель II
+gt.blockmachines.basicgenerator.solarpanel.08.name=Совершенная солнечная панель
+gt.blockmachines.basicgenerator.solarpanel.tooltip=Генерирует EU от солнечной энергии\nНе вырабатывает энергию во время дождя\nСамоочищается автоматически\nНе взрывается под дождём!
+
+# Basic Generators - Lightning Rod
+gt.blockmachines.basicgenerator.lightningrod.03.name=Молниеотвод
+gt.blockmachines.basicgenerator.lightningrod.04.name=Молниеотвод II
+gt.blockmachines.basicgenerator.lightningrod.05.name=Молниеотвод III
+gt.blockmachines.basicgenerator.lightningrod.tooltip=Генерирует EU от ударов молнии

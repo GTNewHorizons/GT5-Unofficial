@@ -1,7 +1,6 @@
 package gregtech.common.items.armor;
 
 import static gregtech.api.enums.Mods.GregTech;
-import static gregtech.api.items.armor.ArmorHelper.SLOT_CHEST;
 import static gregtech.api.items.armor.ArmorHelper.SLOT_LEGS;
 import static gregtech.api.util.GTUtility.getOrCreateNbtCompound;
 
@@ -52,7 +51,6 @@ import gregtech.api.items.armor.MechArmorAugmentRegistries.Cores;
 import gregtech.api.items.armor.MechArmorAugmentRegistries.Frames;
 import gregtech.api.items.armor.behaviors.BehaviorName;
 import gregtech.api.items.armor.behaviors.IArmorBehavior;
-import gregtech.api.util.GTDataUtils;
 import gregtech.api.util.GTUtility;
 import gregtech.common.misc.NoTooltipElectricItemManager;
 import ic2.api.item.ICustomDamageItem;
@@ -284,7 +282,7 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISp
 
         ArmorState state = ArmorState.load(itemStack);
 
-        model.jettank1.showModel = (armorSlot == SLOT_CHEST && state.hasBehavior(BehaviorName.Jetpack));
+        model.jettank1.showModel = (armorSlot == 1 && state.hasBehavior(BehaviorName.Jetpack));
 
         model.core1.showModel = false;
         model.core2.showModel = false;
@@ -427,18 +425,18 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISp
     // Forestry apiarist compat
     @Override
     public boolean protectEntity(EntityLivingBase entity, ItemStack armor, String cause, boolean doProtect) {
-        ItemStack leggings = GTDataUtils.getIndexSafe(entity.getLastActiveItems(), SLOT_LEGS);
-
-        if (leggings == null) return false;
-
-        ArmorContext context = load(entity, leggings);
-
+        ArmorContext context = load(entity, armor);
         return context.hasBehavior(BehaviorName.Apiarist);
     }
 
     @Override
     public boolean protectPlayer(EntityPlayer player, ItemStack armor, String cause, boolean doProtect) {
         return protectEntity(player, armor, cause, doProtect);
+    }
+
+    @Override
+    public int getProtectionCount(EntityLivingBase entity, ItemStack armor, String cause) {
+        return 4;
     }
 
     // Hazards
@@ -548,4 +546,15 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISp
 
         return context.getArmorState().manaDiscount;
     }
+
+    @Override
+    public int getItemEnchantability() {
+        return 0;
+    }
+
+    @Override
+    public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
+        return false;
+    }
+
 }
