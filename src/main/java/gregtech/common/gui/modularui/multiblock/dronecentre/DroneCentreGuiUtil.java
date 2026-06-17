@@ -70,14 +70,19 @@ public class DroneCentreGuiUtil {
                         }
                         DroneCentreGuiUtil.teleportPlayerToMachine(conn, player);
                         player.closeScreen();
-                    } else if (NetworkUtils.isClient() && var.mouseButton == 0) {
-                        ChunkCoordinates machineCoord = conn.getMachineCoord();
-                        DimensionalCoord blockPos = new DimensionalCoord(
-                            machineCoord.posX,
-                            machineCoord.posY,
-                            machineCoord.posZ,
-                            player.dimension);
-                        BlockPosHighlighter.highlightBlocks(player, Collections.singletonList(blockPos), null, null);
+                    } else if (var.mouseButton == 0) {
+                        if (NetworkUtils.isClient()) {
+                            ChunkCoordinates machineCoord = conn.getMachineCoord();
+                            DimensionalCoord blockPos = new DimensionalCoord(
+                                machineCoord.posX,
+                                machineCoord.posY,
+                                machineCoord.posZ,
+                                player.dimension);
+                            BlockPosHighlighter
+                                .highlightBlocks(player, Collections.singletonList(blockPos), null, null);
+                        } else {
+                            player.closeScreen();
+                        }
                     }
                 })))
             .size(16)
