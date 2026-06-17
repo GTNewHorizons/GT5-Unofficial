@@ -1919,6 +1919,7 @@ gt.recipe.compressor=Compressor
 gt.recipe.compressor.description=Compress-O-Matic C77
 gt.recipe.cuttingsaw=Cutting Machine
 gt.recipe.cuttingsaw.description=Slice'N Dice
+gt.recipe.fakecuttingsaw=Cutting Machine
 gt.recipe.distillery=Distillery
 gt.recipe.distillery.description=Extracting the most relevant Parts of Fluids
 gt.recipe.furnace=Furnace
