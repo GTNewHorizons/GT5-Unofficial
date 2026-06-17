@@ -50,9 +50,11 @@ import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.structure.error.TranslatableText;
 import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import gregtech.common.tileentities.machines.outputme.MTEHatchOutputME;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.material.MaterialsElements;
@@ -244,7 +246,9 @@ public class MTENuclearReactor extends GTPPMultiBlockBase<MTENuclearReactor> imp
         mCasing = 0;
         if (!checkPiece(mName, 3, 3, 0, errors)) return;
         checkCasingMin(errors, mCasing, 27);
-        if (mOutputHatches.size() < 4 && !canDumpFluidToME()) {
+        boolean hasNoMEOutputHatch = GTUtility.getMTEsOfType(mOutputHatches, MTEHatchOutputME.class)
+            .isEmpty();
+        if (mOutputHatches.size() < 4 && hasNoMEOutputHatch) {
             errors
                 .add(StructureErrors.hatchCount(ErrorType.TOO_FEW, HatchElement.OutputHatch, mOutputHatches.size(), 4));
         }

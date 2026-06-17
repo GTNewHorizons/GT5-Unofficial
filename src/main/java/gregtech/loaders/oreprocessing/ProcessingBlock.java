@@ -63,7 +63,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
                                 3,
                                 Math.min(750, ((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS * 30 / 426))))
                     .duration(2 * ((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS)
-                    .eut(TierEU.RECIPE_LV)
+                    .eut(calculateRecipeEU(aMaterial, 16))
                     .addTo(cutterRecipes);
 
                 GTValues.RA.stdBuilder()
@@ -76,7 +76,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
                                 1,
                                 Math.min(250, ((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS * 30 / 1280))))
                     .duration(((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS)
-                    .eut(TierEU.RECIPE_LV)
+                    .eut(calculateRecipeEU(aMaterial, 16))
                     .addTo(cutterRecipes);
 
                 GTValues.RA.stdBuilder()
@@ -89,7 +89,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
                                 1,
                                 Math.min(10, ((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS * 30 / 4000))))
                     .duration(((int) Math.max(aMaterial.getMass() * 10L / 2.5, 1L)) * TICKS)
-                    .eut(TierEU.RECIPE_LV)
+                    .eut(calculateRecipeEU(aMaterial, 16))
                     .addTo(cutterRecipes);
 
             }
@@ -117,7 +117,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
                                 3,
                                 Math.min(750, ((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS * 30 / 426))))
                     .duration(2 * ((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS)
-                    .eut(TierEU.RECIPE_LV)
+                    .eut(calculateRecipeEU(aMaterial, 16))
                     .addTo(cutterRecipes);
 
                 GTValues.RA.stdBuilder()
@@ -129,7 +129,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
                                 1,
                                 Math.min(250, ((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS * 30 / 1280))))
                     .duration(((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS)
-                    .eut(TierEU.RECIPE_LV)
+                    .eut(calculateRecipeEU(aMaterial, 16))
                     .addTo(cutterRecipes);
 
                 GTValues.RA.stdBuilder()
@@ -141,7 +141,7 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
                                 1,
                                 Math.min(10, ((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS * 30 / 4000))))
                     .duration(((int) Math.max(aMaterial.getMass() * 10L / 2.5, 1L)) * TICKS)
-                    .eut(TierEU.RECIPE_LV)
+                    .eut(calculateRecipeEU(aMaterial, 16))
                     .addTo(cutterRecipes);
             }
         }
