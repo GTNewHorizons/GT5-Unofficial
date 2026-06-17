@@ -28,15 +28,16 @@ import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.InteractionSyncHandler;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.EmptyWidget;
+import com.cleanroommc.modularui.widget.scroll.VerticalScrollData;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.DynamicSyncedWidget;
 import com.cleanroommc.modularui.widgets.FluidDisplayWidget;
 import com.cleanroommc.modularui.widgets.ItemDisplayWidget;
-import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.PageButton;
 import com.cleanroommc.modularui.widgets.PagedWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
+import com.cleanroommc.modularui.widgets.layout.Grid;
 import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 
 import gregtech.api.modularui2.GTGuiTextures;
@@ -74,7 +75,7 @@ public class ProductionPanel extends ModularPanel {
         statsSyncHandler = syncManager.findSyncHandler("productionStats", ProductionStatsSyncHandler.class);
         syncManager.findSyncHandler("selectTime", IntSyncValue.class)
             .setChangeListener(statsSyncHandler::notifyUpdate);
-        statsSyncHandler.setChangeListener(() -> productionHandler.notifyUpdate(packet -> {}));
+        statsSyncHandler.setChangeListener(() -> productionHandler.notifyUpdate(_ -> {}));
 
         int heightCoff = syncManager.isClient() ? Minecraft.getMinecraft().currentScreen.height - 40 : 0;
 
@@ -84,6 +85,7 @@ public class ProductionPanel extends ModularPanel {
             .child(
                 Flow.column()
                     .margin(10)
+                    .full()
                     .child(
                         Flow.row()
                             .widthRel(0.95f)
@@ -219,7 +221,7 @@ public class ProductionPanel extends ModularPanel {
         productionPage.addPage(
             Flow.column()
                 .childPadding(2)
-                .expanded()
+                .full()
                 .child(
                     IKey.lang("GT5U.gui.text.drone_connectionCount", droneConnectionList.size())
                         .asWidget())
@@ -315,13 +317,11 @@ public class ProductionPanel extends ModularPanel {
             else result.stackSize += machine.stackSize;
         });
 
-        List<Flow> cells = new ArrayList<>();
+        List<IWidget> cells = new ArrayList<>();
         machineStack.forEach((key, itemStack) -> {
             Flow cell = Flow.row()
-                .childPadding(4)
-                .leftRel(0)
-                .verticalCenter()
                 .coverChildren()
+                .childPadding(4)
                 .paddingRight(2)
                 .child(
                     new ItemDisplayWidget().item(itemStack)
@@ -335,9 +335,12 @@ public class ProductionPanel extends ModularPanel {
             return IKey.lang("GT5U.gui.text.drone_no_data")
                 .asWidget();
         }
-        ListWidget<IWidget, ?> listWidget = new ListWidget<>().widthRel(1);
-        cells.forEach(listWidget::child);
-        return listWidget.expanded();
+        Grid grid = new Grid().widthRel(1f)
+            .scrollable(new VerticalScrollData(true))
+            .alignment(Alignment.CenterLeft)
+            .minElementMargin(4, 2)
+            .gridOf(getOptimalColumns(), cells);
+        return grid.expanded();
     }
 
     private IWidget createItemGrid(Map<ItemStack, Long> itemList) {
@@ -372,10 +375,8 @@ public class ProductionPanel extends ModularPanel {
                 T item = entry.getKey();
                 Long stackSize = entry.getValue();
                 return (IWidget) Flow.row()
-                    .childPadding(childPadding)
-                    .verticalCenter()
-                    .leftRel(0)
                     .coverChildren()
+                    .childPadding(childPadding)
                     .paddingRight(2)
                     .child(displayWidgetFactory.apply(item))
                     .child(
@@ -384,8 +385,17 @@ public class ProductionPanel extends ModularPanel {
             })
             .collect(Collectors.toList());
 
-        ListWidget<IWidget, ?> listWidget = new ListWidget<>().sizeRel(1);
-        cells.forEach(listWidget::child);
-        return listWidget;
+        Grid grid = new Grid().widthRel(1f)
+            .scrollable(new VerticalScrollData(true))
+            .alignment(Alignment.CenterLeft)
+            .minElementMargin(4, 2)
+            .gridOf(getOptimalColumns(), cells);
+        return grid.expanded();
+    }
+
+    private int getOptimalColumns() {
+        int panelWidth = getArea().w();
+        int availableWidth = (int) ((panelWidth - 20) * 0.95f) - 14;
+        return Math.max(1, availableWidth / 44);
     }
 }
