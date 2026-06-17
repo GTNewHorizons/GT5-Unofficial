@@ -35,8 +35,10 @@ import com.cleanroommc.modularui.widgets.ToggleButton;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
+import gregtech.GTMod;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import gregtech.common.data.drone.CameraViewportClientManager;
 import gregtech.common.gui.modularui.multiblock.dronecentre.DroneCentreGuiUtil;
 import gregtech.common.gui.modularui.multiblock.dronecentre.sync.DroneConnectionListSyncHandler;
 import gregtech.common.gui.modularui.multiblock.dronecentre.widget.DroneListWidget;
@@ -52,13 +54,17 @@ public class DroneConnectionListPanel extends ModularPanel {
     private final DynamicSyncHandler droneListHandler;
     private final DynamicSyncHandler groupHandler;
     IPanelHandler productionPanel;
+    IPanelHandler cameraObservePanel;
+    private final IPanelHandler machineListPanel;
     private int lastScroll;
 
-    public DroneConnectionListPanel(PanelSyncManager syncManager, MTEDroneCentre centre,
-        IPanelHandler productionPanel) {
+    public DroneConnectionListPanel(PanelSyncManager syncManager, MTEDroneCentre centre, IPanelHandler productionPanel,
+        IPanelHandler cameraObservePanel, IPanelHandler machineListPanel) {
         super("machineListPanel");
         this.centre = centre;
         this.productionPanel = productionPanel;
+        this.cameraObservePanel = cameraObservePanel;
+        this.machineListPanel = machineListPanel;
         DynamicSyncedWidget<?> dynamicWidget = new DynamicSyncedWidget<>().widthRel(0.95f)
             .expanded();
         droneListHandler = new DynamicSyncHandler() {
@@ -68,7 +74,7 @@ public class DroneConnectionListPanel extends ModularPanel {
             public void notifyUpdate(IPacketWriter packetWriter) {
                 if (dynamicWidget.hasChildren()) {
                     IWidget child = dynamicWidget.getChildren()
-                        .get(0);
+                        .getFirst();
                     if (child instanceof DroneListWidget<?, ?>list && list.getScrollData()
                         .getScrollSize() != 0) {
                         lastScroll = list.getScrollY();
@@ -283,6 +289,7 @@ public class DroneConnectionListPanel extends ModularPanel {
                             .tooltipBuilder(
                                 var -> DroneCentreGuiUtil.getTooltipFromItemSafely(var, connection.getMachineItem())))
                         .child(DroneCentreGuiUtil.createHighLightButton(connection, dynamicSyncManager))
+                        .child(createObserveButton(connection, dynamicSyncManager))
                         .child(createTextButton(connection, droneConnectionListSyncHandler, dynamicSyncManager))
                         .child(
                             createPowerControlButton(connection, droneConnectionListSyncHandler, dynamicSyncManager));
@@ -409,6 +416,29 @@ public class DroneConnectionListPanel extends ModularPanel {
                     .ifPresent(c -> c.setCustomName(var))).allowC2S());
         return new TextFieldWidget().expanded()
             .value(nameSyncValue);
+    }
+
+    private IWidget createObserveButton(DroneConnection conn, PanelSyncManager dynamicSyncManager) {
+        boolean sameDim = conn.getMachineWorld() == dynamicSyncManager.getPlayer().dimension;
+        ButtonWidget<?> button = new ButtonWidget<>().size(16)
+            .overlay(GTGuiTextures.OVERLAY_BUTTON_HIGHLIGHT_BLOCK);
+
+        if (!sameDim) {
+            button.tooltipBuilder(t -> t.addLine(IKey.lang("GT5U.gui.button.drone_observe.diff_dim")));
+        } else {
+            button.tooltipBuilder(t -> t.addLine(IKey.lang("GT5U.gui.button.drone_observe")))
+                .onMousePressed(mouseButton -> {
+                    if (mouseButton == 0) {
+                        ((CameraViewportClientManager) GTMod.proxy.cameraViewportManager).startObserving(conn);
+                        cameraObservePanel.openPanel();
+                        if (machineListPanel != null) {
+                            machineListPanel.closePanel();
+                        }
+                    }
+                    return true;
+                });
+        }
+        return button;
     }
 
     private boolean matchesSearchFilter(DroneConnection conn) {
