@@ -14,6 +14,8 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 
+import com.cleanroommc.modularui.network.NetworkUtils;
+
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.util.GTUtil;
@@ -30,6 +32,7 @@ public class DroneConnection {
     private final ChunkCoordinates centreCoord;
     private final int centreWorld;
     private final int machineWorld;
+    private final int machineFacing;
 
     private String customName;
     private boolean machineStatus;
@@ -53,6 +56,9 @@ public class DroneConnection {
             .getWorld().provider.dimensionId;
         this.machineWorld = machine.getBaseMetaTileEntity()
             .getWorld().provider.dimensionId;
+        this.machineFacing = machine.getBaseMetaTileEntity()
+            .getFrontFacing()
+            .ordinal();
         this.uuid = UUID.nameUUIDFromBytes((machineCoord.toString() + machineWorld).getBytes());
         this.unlocalizedName = machine.mName;
         this.customName = Optional.ofNullable(tempNameList.remove(uuid.toString()))
@@ -70,6 +76,7 @@ public class DroneConnection {
         NBTTagCompound centreTag = aNBT.getCompoundTag("centre");
         this.centreWorld = aNBT.getInteger("centreWorld");
         this.machineWorld = aNBT.getInteger("machineWorld");
+        this.machineFacing = aNBT.getInteger("machineFacing");
         machineItem = ItemStack.loadItemStackFromNBT(aNBT.getCompoundTag("item"));
         machineCoord = new ChunkCoordinates(
             machineTag.getInteger("x"),
@@ -86,8 +93,13 @@ public class DroneConnection {
         this.shutdownReason = aNBT.getString("shutdownReason");
         this.isSelected = aNBT.getBoolean("isSelected");
         this.group = aNBT.getInteger("group");
-        this.cachedCentre = getLoadedGTBaseMachineAt(centreCoord, DimensionManager.getWorld(centreWorld), false);
-        this.cachedMachine = getLoadedGTBaseMachineAt(machineCoord, DimensionManager.getWorld(machineWorld), false);
+        if (!NetworkUtils.isClient()) {
+            this.cachedCentre = getLoadedGTBaseMachineAt(centreCoord, DimensionManager.getWorld(centreWorld), false);
+            this.cachedMachine = getLoadedGTBaseMachineAt(machineCoord, DimensionManager.getWorld(machineWorld), false);
+        } else {
+            this.cachedCentre = null;
+            this.cachedMachine = null;
+        }
     }
 
     public MTEMultiBlockBase getLinkedMachine() {
@@ -141,6 +153,7 @@ public class DroneConnection {
         aNBT.setTag("item", machineItem.writeToNBT(new NBTTagCompound()));
         aNBT.setInteger("centreWorld", centreWorld);
         aNBT.setInteger("machineWorld", machineWorld);
+        aNBT.setInteger("machineFacing", machineFacing);
         aNBT.setString("name", getCustomName());
         aNBT.setString("unlocalizedName", unlocalizedName);
         aNBT.setString("uuid", this.uuid.toString());
@@ -218,5 +231,9 @@ public class DroneConnection {
 
     public int getMachineWorld() {
         return machineWorld;
+    }
+
+    public int getMachineFacing() {
+        return machineFacing;
     }
 }
