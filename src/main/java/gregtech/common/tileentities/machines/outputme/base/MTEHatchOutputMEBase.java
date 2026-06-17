@@ -441,7 +441,7 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>, F extends MEFi
 
     public void flushCachedStack() {
         var proxy = getProxy();
-        if (!proxy.isActive() || cache.isEmpty()) return;
+        if (cache.isEmpty() || !proxy.isActive()) return;
         try {
             final IEnergySource energy = proxy.getEnergy();
             IMEInventory<T> sg = (cacheMode && cell != null) ? cell : env.getNetworkInvtory();
