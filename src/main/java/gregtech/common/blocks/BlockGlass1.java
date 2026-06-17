@@ -37,6 +37,7 @@ public class BlockGlass1 extends BlockCasingsAbstract {
         register(7, ItemList.Glass_ExoFoundry);
         register(8, ItemList.ComplexNanochipGlass);
         register(9, ItemList.ElectromagneticWaveguide);
+        register(10, ItemList.ReinforcedGlass);
     }
 
     @Override

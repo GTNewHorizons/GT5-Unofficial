@@ -172,6 +172,7 @@ public class GlassTier {
             if (Botania.isModLoaded()) {
                 addCustomGlass(Botania.ID, "manaGlass", 0, 4, 8);
             }
+            addCustomGlass(GregTechAPI.sBlockGlass1, 10, 4, 9);
 
             // --- IV ---
             addCustomGlass(ItemRegistry.bw_realglas, 2, 5, 0);
