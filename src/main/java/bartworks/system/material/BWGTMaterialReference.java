@@ -22,16 +22,41 @@ public class BWGTMaterialReference {
         .addPrefix(OrePrefixes.blockCasing)
         .addPrefix(OrePrefixes.blockCasingAdvanced);
 
+    public static Werkstoff Carbon = new Werkstoff(
+        Materials.Carbon,
+        ADD_CASINGS_ONLY,
+        Werkstoff.Types.ELEMENT,
+        31_766 + 10);
     public static Werkstoff Silver = new Werkstoff(
         Materials.Silver,
         ADD_CASINGS_ONLY,
         Werkstoff.Types.ELEMENT,
         31_766 + 54);
+    public static Werkstoff Iridium = new Werkstoff(
+        Materials.Iridium,
+        ADD_CASINGS_ONLY,
+        Werkstoff.Types.ELEMENT,
+        31_766 + 84);
     public static Werkstoff Naquadah = new Werkstoff(
         Materials.Naquadah,
         ADD_CASINGS_ONLY,
         Werkstoff.Types.ELEMENT,
         31_766 + 324);
+    public static Werkstoff NaquadahAlloy = new Werkstoff(
+        Materials.NaquadahAlloy,
+        ADD_CASINGS_ONLY,
+        Werkstoff.Types.COMPOUND,
+        31_766 + 325);
+    public static Werkstoff Osmiridium = new Werkstoff(
+        Materials.Osmiridium,
+        ADD_CASINGS_ONLY,
+        Werkstoff.Types.MIXTURE,
+        31_766 + 317);
+    public static Werkstoff BlackSteel = new Werkstoff(
+        Materials.BlackSteel,
+        ADD_CASINGS_ONLY,
+        Werkstoff.Types.MIXTURE,
+        31_766 + 334);
     public static Werkstoff Wood = new Werkstoff(
         Materials.Wood,
         ADD_CASINGS_ONLY,
