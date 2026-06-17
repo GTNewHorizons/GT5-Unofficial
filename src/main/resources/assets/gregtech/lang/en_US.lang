@@ -1919,6 +1919,7 @@ gt.recipe.compressor=Compressor
 gt.recipe.compressor.description=Compress-O-Matic C77
 gt.recipe.cuttingsaw=Cutting Machine
 gt.recipe.cuttingsaw.description=Slice'N Dice
+gt.recipe.fakecuttingsaw=Cutting Machine
 gt.recipe.distillery=Distillery
 gt.recipe.distillery.description=Extracting the most relevant Parts of Fluids
 gt.recipe.furnace=Furnace
@@ -3721,6 +3722,7 @@ GT5U.hatch.chisel.configure.grid=Configure Templates
 GT5U.bus.filterTooltip.empty=§aDrag item from NEI to set output filter
 GT5U.bus.filterTooltip.full=§aClick to clear output filter
 
+GT5U.multiblock.heat=§cHeat: §f%sK
 GT5U.multiblock.pollution=Pollution reduced to
 GT5U.multiblock.energy=Stored Energy
 GT5U.multiblock.Progress=Progress

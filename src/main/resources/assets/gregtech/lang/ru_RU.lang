@@ -1918,6 +1918,7 @@ gt.recipe.compressor=Компрессор
 gt.recipe.compressor.description=Сожми до чёрной дыры C77
 gt.recipe.cuttingsaw=Режущий станок
 gt.recipe.cuttingsaw.description=Режет вдоль и поперёк!
+gt.recipe.fakecuttingsaw=Режущий станок
 gt.recipe.distillery=Дистилятор
 gt.recipe.distillery.description=Извлечение наиболее важных частей жидкостей
 gt.recipe.furnace=Печь
