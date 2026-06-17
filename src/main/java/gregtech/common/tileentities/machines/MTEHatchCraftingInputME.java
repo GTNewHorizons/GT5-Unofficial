@@ -112,7 +112,6 @@ import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IMEConnectable;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
@@ -127,9 +126,8 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 @IMetaTileEntity.SkipGenerateDescription
-public class MTEHatchCraftingInputME extends MTEHatchInputBus
-    implements IAddGregtechLogo, IPowerChannelState, ICraftingProvider, IGridProxyable, IDualInputHatchWithPattern,
-    ICustomNameObject, IInterfaceViewable, IMEConnectable {
+public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerChannelState, ICraftingProvider,
+    IGridProxyable, IDualInputHatchWithPattern, ICustomNameObject, IInterfaceViewable, IMEConnectable {
 
     // Each pattern slot in the crafting input hatch has its own internal inventory
     public static class PatternSlot<P extends IMetaTileEntity & IDualInputHatch>
@@ -1440,7 +1438,11 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus
 
     @Override
     public boolean isItemValidForSlot(int index, ItemStack itemStack) {
-        return itemStack != null && itemStack.getItem() instanceof ICraftingPatternItem
-            && super.isItemValidForSlot(index, itemStack);
+        if (index < SLOT_CIRCUIT) {
+            // if its a pattern slot, only accept patterns
+            return itemStack != null && itemStack.getItem() instanceof ICraftingPatternItem
+                && super.isItemValidForSlot(index, itemStack);
+        }
+        return super.isItemValidForSlot(index, itemStack);
     }
 }
