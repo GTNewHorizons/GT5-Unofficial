@@ -60,7 +60,6 @@ import appeng.me.helpers.AENetworkProxy;
 import appeng.me.helpers.IGridProxyable;
 import appeng.util.Platform;
 import appeng.util.item.AEItemStack;
-import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.IDataCopyable;
@@ -99,7 +98,6 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
     protected int autoPullRefreshTime = 100;
     protected boolean additionalConnection = false;
     protected boolean justHadNewItems = false;
-    protected boolean expediteRecipeCheck = false;
     private final List<IHatchWatcher> watchers = new ArrayList<>();
     /**
      * The cached activity for this bus. Only valid while processing a recipe. This avoids several expensive operations.
@@ -139,7 +137,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
         if (aBaseMetaTileEntity.isServerSide()) {
             if (aTimer % autoPullRefreshTime == 0 && autoPullItemList) {
                 refreshItemList();
-                if (justHadNewItems && expediteRecipeCheck) {
+                if (justHadNewItems) {
                     for (var multi : watchers) {
                         multi.scheduleRecipeCheckImmediate();
                     }
@@ -174,9 +172,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
     public void onEnableWorking() {
         super.onEnableWorking();
 
-        if (expediteRecipeCheck) {
-            justHadNewItems = true;
-        }
+        justHadNewItems = true;
     }
 
     @Override
@@ -309,7 +305,6 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
         aNBT.setBoolean("autoStock", autoPullItemList);
         aNBT.setInteger("minAutoPullStackSize", minAutoPullStackSize);
         aNBT.setBoolean("additionalConnection", additionalConnection);
-        aNBT.setBoolean("expediteRecipeCheck", expediteRecipeCheck);
         aNBT.setInteger("refreshTime", autoPullRefreshTime);
         getProxy().writeToNBT(aNBT);
 
@@ -368,21 +363,6 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
         }
     }
 
-    public boolean doFastRecipeCheck() {
-        return expediteRecipeCheck;
-    }
-
-    public void setRecipeCheck(boolean value) {
-        expediteRecipeCheck = value;
-
-        IGregTechTileEntity igte = getBaseMetaTileEntity();
-
-        // Changing this field requires a structure check/update, so let's do that automatically
-        if (igte.isServerSide()) {
-            GregTechAPI.causeMachineUpdate(igte.getWorld(), igte.getXCoord(), igte.getYCoord(), igte.getZCoord());
-        }
-    }
-
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
@@ -390,7 +370,6 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
         autoPullItemList = aNBT.getBoolean("autoStock");
         minAutoPullStackSize = aNBT.getInteger("minAutoPullStackSize");
         additionalConnection = aNBT.getBoolean("additionalConnection");
-        expediteRecipeCheck = aNBT.getBoolean("expediteRecipeCheck");
         if (aNBT.hasKey("refreshTime")) {
             autoPullRefreshTime = aNBT.getInteger("refreshTime");
         }
@@ -545,7 +524,6 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
             if (nbt.hasKey("refreshTime")) {
                 autoPullRefreshTime = nbt.getInteger("refreshTime");
             }
-            setRecipeCheck(nbt.getBoolean("expediteRecipeCheck"));
         }
 
         additionalConnection = nbt.getBoolean("additionalConnection");
@@ -576,7 +554,6 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
         tag.setBoolean("autoPull", autoPullItemList);
         tag.setInteger("minStackSize", minAutoPullStackSize);
         tag.setInteger("refreshTime", autoPullRefreshTime);
-        tag.setBoolean("expediteRecipeCheck", expediteRecipeCheck);
         tag.setBoolean("additionalConnection", additionalConnection);
         tag.setByte("color", this.getColor());
         tag.setTag("circuit", GTUtility.saveItem(getStackInSlot(getCircuitSlot())));
@@ -732,7 +709,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
                     justHadNewItems = true; // different type
                 }
             }
-            if (expediteRecipeCheck && !((oldStack == null && newStack == null) || sametype)) {
+            if (!((oldStack == null && newStack == null) || sametype)) {
                 configChanged = true;
             }
             index++;
@@ -1118,7 +1095,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
     private void configureWatchers() {
         if (this.watcher != null) {
             this.watcher.clear();
-            if (expediteRecipeCheck) for (Slot slot : slots) {
+            for (Slot slot : slots) {
                 if (slot != null && slot.config != null) {
                     watcher.add(AEItemStack.create(slot.config));
                 }
@@ -1135,6 +1112,13 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
     @Override
     public void onStackChange(IItemList o, IAEStack fullStack, IAEStack diffStack, BaseActionSource src,
         StorageChannel chan) {
-        if (expediteRecipeCheck && diffStack.getStackSize() > 0) justHadNewItems = true;
+        if (diffStack.getStackSize() > 0) {
+            justHadNewItems = true;
+            // Push directly: a configured (non-auto-pull) bus may have its GT ticking disabled, so the onPostTick
+            // consume above would never run. The AE watcher callback still fires regardless.
+            for (var multi : watchers) {
+                multi.scheduleRecipeCheckImmediate();
+            }
+        }
     }
 }

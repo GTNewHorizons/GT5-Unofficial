@@ -202,6 +202,11 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
     // Only checks the base structure piece
     @Override
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
+        for (ArrayList<MTEHatchVacuumConveyorInput> conveyorList : this.vacuumConveyorInputs.allHatches()) {
+            for (MTEHatchVacuumConveyorInput conveyor : conveyorList) {
+                conveyor.removeWatcher(this);
+            }
+        }
         this.vacuumConveyorInputs.clear();
         this.vacuumConveyorOutputs.clear();
         fixAllIssues();
@@ -272,6 +277,9 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
         if (aMetaTileEntity instanceof MTEHatchVacuumConveyorInput hatch) {
             hatch.updateTexture(aBaseCasingIndex);
             hatch.setMainController(this.getBaseMulti());
+            // Components arrive as fake items in the hatch's own storage (not mInventory), so register for the
+            // hatch's push instead of relying on the inventory-dirty flag.
+            hatch.addWatcher(this);
             return vacuumConveyorInputs.addHatch(hatch);
         }
         if (aMetaTileEntity instanceof MTEHatchVacuumConveyorOutput hatch) {
@@ -650,6 +658,11 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
         BigInteger euToFull = euBufferSize.subtract(currentEU);
         BigInteger increasedEU = euToFull.min(maximumIncrease);
         currentEU = currentEU.add(increasedEU);
+        // Modules buffer power in currentEU rather than energy hatches, so the controller's stored-energy poll can't
+        // see it. Push a recipe check while idle so a recipe blocked on NAC_WAITING_FOR_POWER restarts as power fills.
+        if (increasedEU.signum() > 0 && mMaxProgresstime <= 0) {
+            scheduleRecipeCheckImmediate();
+        }
         return increasedEU;
     }
 

@@ -346,10 +346,19 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus
         return provider.hasAvailableSpace();
     }
 
+    /** Tracks AE network output space so we can push a recipe check when a full network frees up. */
+    private boolean hadOutputSpace = true;
+
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         provider.onPostTick(aBaseMetaTileEntity, aTick);
         super.onPostTick(aBaseMetaTileEntity, aTick);
+        if (aBaseMetaTileEntity.isServerSide()) {
+            // When the ME network drains and our cache can flush again, a recipe blocked on output-full can run.
+            boolean spaceNow = provider.hasAvailableSpace();
+            if (spaceNow && !hadOutputSpace) notifyWatchers();
+            hadOutputSpace = spaceNow;
+        }
     }
 
     @Override

@@ -208,6 +208,12 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     protected boolean canBeMuffled = true;
     protected boolean debugEnergyPresent = false;
     private boolean recipeCheckImmediately = false;
+    /** Set when the last recipe check failed for lack of power; arms the stored-energy poll in runMachine(). */
+    private boolean waitingForPower = false;
+    /** Stored energy seen when {@link #waitingForPower} was armed, used to detect power recovery. */
+    private long lastSeenInputEnergy = 0;
+    /** Repair status seen last tick, used to push a recipe check when maintenance is fixed. */
+    private int lastRepairStatus = -1;
 
     protected static final String INPUT_SEPARATION_NBT_KEY = "inputSeparation";
     protected static final String VOID_EXCESS_NBT_KEY = "voidExcess";
@@ -246,8 +252,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     protected GTSoundLoop activitySoundLoop;
 
     protected long mLastWorkingTick = 0, mTotalRunTime = 0;
-    private static final int CHECK_INTERVAL = 100; // How often should we check for a new recipe on an idle machine?
-    private final int randomTickOffset = (int) (Math.random() * CHECK_INTERVAL + 1);
 
     /**
      * A list of structure errors. Private so that multis have to use the parameters (to make it easier to
@@ -519,6 +523,13 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     public void clearHatches() {
         mInputHatches.clear();
         mInputBusses.clear();
+        // Output hatches push a recipe check when drained (output-full unblock); drop our watcher before clearing.
+        for (var hatch : mOutputHatches) {
+            hatch.removeWatcher(this);
+        }
+        for (var hatch : mOutputBusses) {
+            hatch.removeWatcher(this);
+        }
         mOutputHatches.clear();
         mOutputBusses.clear();
         mDynamoHatches.clear();
@@ -532,6 +543,9 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         }
         mSmartInputHatches.clear();
         mCryotheumHatches.clear();
+        for (var hatch : mBeamlineInputHatches) {
+            hatch.removeWatcher(this);
+        }
         mBeamlineInputHatches.clear();
         mBeamlineOutputHatches.clear();
         mFocusInputBuses.clear();
@@ -550,10 +564,36 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             checkMachine(aBaseMetaTileEntity, mInventory[1], structureErrors);
             mMachine = structureErrors.isEmpty();
 
+            registerHatchWatchers();
             onStructureCheckFinished(aBaseMetaTileEntity);
+
+            // The structure may have just completed, or gained coils/energy/output capacity that unblocks a recipe.
+            if (mMachine) scheduleRecipeCheckImmediate();
         }
         mStructureChanged = false;
         return mMachine;
+    }
+
+    /**
+     * Registers this controller as a watcher on the output and adjustable-energy hatches so they can push a recipe
+     * check when they drain (output-full unblock) or are reconfigured (e.g. a laser hatch amperage increase). Input
+     * hatches register themselves via {@link #addIfSmartInput}. Called after the hatch lists are rebuilt; safe to call
+     * repeatedly because {@link MTEHatch#addWatcher} is idempotent.
+     */
+    private void registerHatchWatchers() {
+        for (MTEHatchOutput hatch : mOutputHatches) {
+            hatch.addWatcher(this);
+        }
+        for (MTEHatchOutputBus hatch : mOutputBusses) {
+            hatch.addWatcher(this);
+        }
+        for (MTEHatch hatch : mExoticEnergyHatches) {
+            hatch.addWatcher(this);
+        }
+        // Beamline inputs arrive as a BeamLinePacket outside mInventory, so register for their push.
+        for (MTEHatchInputBeamline hatch : mBeamlineInputHatches) {
+            hatch.addWatcher(this);
+        }
     }
 
     /**
@@ -681,6 +721,13 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                 if (tDidRepair) tHatch.onMaintenancePerformed(this);
             }
         }
+        // A repaired maintenance issue raises the repair status, which can restart a machine that was stopped for
+        // maintenance, so push a recipe check whenever it rises.
+        int repairStatus = getRepairStatus();
+        if (repairStatus > lastRepairStatus) {
+            scheduleRecipeCheckImmediate();
+        }
+        lastRepairStatus = repairStatus;
     }
 
     /**
@@ -703,7 +750,12 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         this.checkRecipeResult = result;
         endRecipeProcessing();
         // Don't use `result` here because `endRecipeProcessing()` might mutate `this.checkRecipeResult`
-        return this.checkRecipeResult.wasSuccessful();
+        boolean success = this.checkRecipeResult.wasSuccessful();
+        // If we failed specifically for lack of power, arm the energy poll (see shouldRecheckForPower) with the
+        // current stored energy as the baseline so we re-check the moment it rises.
+        waitingForPower = !success && this.checkRecipeResult.isInsufficientPower();
+        if (waitingForPower) lastSeenInputEnergy = getStoredEnergyInHatches();
+        return success;
     }
 
     public void scheduleRecipeCheckImmediate() {
@@ -711,27 +763,42 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     }
 
     private boolean shouldCheckRecipeThisTick(long aTick) {
-        // do a recipe check if any smart hatch just got pushed in items
+        // Recipe checks are purely event-driven: input/output hatches, energy hatches and config changes push via
+        // scheduleRecipeCheckImmediate() instead of being polled on a periodic timer. The one state change with no
+        // event to push from - stored power recovering - is handled by shouldRecheckForPower() in runMachine().
         if (recipeCheckImmediately) {
             recipeCheckImmediately = false;
             return true;
         }
+        return false;
+    }
 
-        // Perform more frequent recipe change after the machine just shuts down.
-        long timeElapsed = mTotalRunTime - mLastWorkingTick;
-
-        if (timeElapsed >= CHECK_INTERVAL) return (mTotalRunTime + randomTickOffset) % CHECK_INTERVAL == 0;
-        // Batch mode should be a lot less aggressive at recipe checking
-        if (!isBatchModeEnabled()) {
-            return timeElapsed == 5 || timeElapsed == 12
-                || timeElapsed == 20
-                || timeElapsed == 30
-                || timeElapsed == 40
-                || timeElapsed == 55
-                || timeElapsed == 70
-                || timeElapsed == 85;
+    /**
+     * Power accumulation has no event to push a recipe check from (energy trickles in every tick), so when an idle
+     * controller is blocked specifically on insufficient power we poll its stored energy and re-check the moment it
+     * increases. Gated on {@link #waitingForPower} so this only runs for actually power-starved machines.
+     */
+    private boolean shouldRecheckForPower() {
+        if (!waitingForPower) return false;
+        long current = getStoredEnergyInHatches();
+        if (current > lastSeenInputEnergy) {
+            lastSeenInputEnergy = current;
+            return true;
         }
         return false;
+    }
+
+    private long getStoredEnergyInHatches() {
+        long energy = 0;
+        for (MTEHatchEnergy hatch : validMTEList(mEnergyHatches)) {
+            energy += hatch.getBaseMetaTileEntity()
+                .getStoredEU();
+        }
+        for (MTEHatch hatch : validMTEList(mExoticEnergyHatches)) {
+            energy += hatch.getBaseMetaTileEntity()
+                .getStoredEU();
+        }
+        return energy;
     }
 
     @Override
@@ -809,7 +876,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             if (aBaseMetaTileEntity.isAllowedToWork()) {
 
                 if (shouldCheckRecipeThisTick(aTick) || aBaseMetaTileEntity.hasWorkJustBeenEnabled()
-                    || aBaseMetaTileEntity.hasInventoryBeenModified()) {
+                    || aBaseMetaTileEntity.hasInventoryBeenModified()
+                    || shouldRecheckForPower()) {
                     if (checkRecipe()) {
                         markDirty();
                     }
@@ -2958,6 +3026,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     @Override
     public void setVoidingMode(VoidingMode mode) {
         this.voidingMode = mode;
+        // Void protection affects whether outputs fit, so a change can unblock an output-full recipe.
+        scheduleRecipeCheckImmediate();
     }
 
     @Override
@@ -3112,6 +3182,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     @Override
     public void setInputSeparation(boolean enabled) {
         this.inputSeparation = enabled;
+        scheduleRecipeCheckImmediate();
     }
 
     @Override
@@ -3152,6 +3223,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         // The machine is likely using a different recipemap now
         // Clear the cached recipe
         setSingleRecipeCheck(null);
+        scheduleRecipeCheckImmediate();
     }
 
     @Override
@@ -3195,6 +3267,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     @Override
     public void setBatchMode(boolean enabled) {
         this.batchMode = enabled;
+        scheduleRecipeCheckImmediate();
     }
 
     @Override
@@ -3218,6 +3291,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         if (!enabled) {
             setSingleRecipeCheck(null);
         }
+        scheduleRecipeCheckImmediate();
     }
 
     @Override

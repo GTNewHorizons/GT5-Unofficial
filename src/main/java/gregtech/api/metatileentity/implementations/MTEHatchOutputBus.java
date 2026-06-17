@@ -234,6 +234,10 @@ public class MTEHatchOutputBus extends MTEHatch implements IItemLockable, IDataC
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
+        // A drained output bus frees up space, which can unblock a recipe that failed with ITEM_OUTPUT_FULL.
+        if (aBaseMetaTileEntity.isServerSide()) {
+            detectInventoryChange();
+        }
         if (aBaseMetaTileEntity.isServerSide() && aBaseMetaTileEntity.isAllowedToWork()
             && (aTick & 0x7) == 0
             && pushOutputInventory()) {

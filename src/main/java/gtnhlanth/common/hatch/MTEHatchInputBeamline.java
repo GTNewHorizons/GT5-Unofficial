@@ -11,6 +11,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
+import gtnhlanth.common.beamline.BeamInformation;
 import gtnhlanth.common.beamline.BeamLinePacket;
 import gtnhlanth.common.beamline.IConnectsToBeamline;
 
@@ -86,6 +87,7 @@ public class MTEHatchInputBeamline extends MTEHatchBeamlineConnector {
     }
 
     public void setContents(BeamLinePacket in) {
+        BeamInformation old = this.dataPacket == null ? null : this.dataPacket.getContent();
         if (in == null) {
             this.dataPacket = null;
         } else {
@@ -97,6 +99,18 @@ public class MTEHatchInputBeamline extends MTEHatchBeamlineConnector {
                 this.dataPacket = null;
             }
         }
+        // The upstream connector re-pushes the beam every tick, so only notify when the beam actually changes -
+        // otherwise an idle target chamber would re-check every tick. The beam lives outside mInventory, so this is
+        // the only signal the controller gets.
+        BeamInformation now = this.dataPacket == null ? null : this.dataPacket.getContent();
+        if (!beamsEqual(old, now)) {
+            notifyWatchers();
+        }
+    }
+
+    private static boolean beamsEqual(BeamInformation a, BeamInformation b) {
+        if (a == null || b == null) return a == b;
+        return a.isEqual(b);
     }
 
     @Override

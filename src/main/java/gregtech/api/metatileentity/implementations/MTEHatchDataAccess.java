@@ -118,6 +118,8 @@ public class MTEHatchDataAccess extends MTEHatch {
         super.onContentsChanged(slot);
 
         cachedRecipes = null;
+        // Adding/removing a data stick changes which assembly-line recipes are available, so push a recipe check.
+        notifyWatchers();
     }
 
     public List<RecipeAssemblyLine> getAssemblyLineRecipes() {

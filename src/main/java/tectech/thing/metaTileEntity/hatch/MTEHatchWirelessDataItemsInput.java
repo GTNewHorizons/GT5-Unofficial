@@ -110,7 +110,11 @@ public class MTEHatchWirelessDataItemsInput extends MTEHatchDataAccess {
             if (aTick % WirelessDataStore.IO_TICK_RATE == WirelessDataStore.DOWNLOAD_TICK_OFFSET) {
                 WirelessDataStore wirelessDataStore = WirelessDataStore
                     .getWirelessDataSticks(getBaseMetaTileEntity().getOwnerUuid());
+                int oldCount = recipes == null ? 0 : recipes.size();
                 this.recipes = wirelessDataStore.downloadData(aTick);
+                int newCount = recipes == null ? 0 : recipes.size();
+                // Only notify when the available recipe set changes, to avoid re-checking every download cycle.
+                if (newCount != oldCount) notifyWatchers();
             }
         }
     }

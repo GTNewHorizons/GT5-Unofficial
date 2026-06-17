@@ -115,6 +115,7 @@ public class MTEHatchDataItemsInput extends MTEHatchDataAccess implements IConne
     }
 
     public void setContents(ALRecipeDataPacket iIn) {
+        int oldCount = recipes == null ? 0 : recipes.size();
         if (iIn == null) {
             recipes = null;
         } else {
@@ -125,6 +126,10 @@ public class MTEHatchDataItemsInput extends MTEHatchDataAccess implements IConne
                 recipes = null;
             }
         }
+        // The data bank re-pushes every tick, so only notify when the available recipe set changes, otherwise an idle
+        // assembly line would re-check every tick.
+        int newCount = recipes == null ? 0 : recipes.size();
+        if (newCount != oldCount) notifyWatchers();
     }
 
     @Override

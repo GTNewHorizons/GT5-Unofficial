@@ -66,12 +66,15 @@ public abstract class MTEHatch extends MTEBasicTank implements ICasingTexturePro
     }
 
     /**
-     * Registers a controller to be notified when this hatch gains new ingredients. Input hatches/busses implement
-     * {@link ISmartInputHatch} so the controller registers itself here during structure assembly; the inherited
-     * implementation satisfies that interface.
+     * Registers a controller to be notified when this hatch's contents/config change. Input hatches/busses implement
+     * {@link ISmartInputHatch} so the controller registers itself here during structure assembly; output and energy
+     * hatches are registered directly by the controller. Idempotent so re-registration on a structure re-check (or a
+     * hatch list that isn't cleared between checks) cannot leak duplicate watchers.
      */
     public void addWatcher(IHatchWatcher watcher) {
-        watchers.add(watcher);
+        if (!watchers.contains(watcher)) {
+            watchers.add(watcher);
+        }
     }
 
     public void removeWatcher(IHatchWatcher watcher) {

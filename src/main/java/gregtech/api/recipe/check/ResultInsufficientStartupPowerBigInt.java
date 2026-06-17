@@ -30,6 +30,11 @@ public class ResultInsufficientStartupPowerBigInt implements CheckRecipeResult {
         return false;
     }
 
+    @Override
+    public boolean isInsufficientPower() {
+        return true;
+    }
+
     @NotNull
     @Override
     public String getDisplayString() {
