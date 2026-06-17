@@ -1,7 +1,5 @@
 package gregtech.api.items.armor.behaviors;
 
-import static gregtech.loaders.ExtraIcons.holoInventoryAugment;
-
 import java.util.Collections;
 import java.util.Set;
 

@@ -1,7 +1,5 @@
 package gregtech.api.items.armor.behaviors;
 
-import static gregtech.loaders.ExtraIcons.forceFieldAugment;
-
 import java.util.Collections;
 import java.util.Set;
 

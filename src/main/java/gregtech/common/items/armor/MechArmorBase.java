@@ -54,7 +54,6 @@ import gregtech.api.items.armor.MechArmorAugmentRegistries.Frames;
 import gregtech.api.items.armor.behaviors.BehaviorName;
 import gregtech.api.items.armor.behaviors.IArmorBehavior;
 import gregtech.api.items.armor.ui.ArmorRadialMenu;
-import gregtech.api.util.GTDataUtils;
 import gregtech.api.util.GTUtility;
 import gregtech.common.misc.NoTooltipElectricItemManager;
 import ic2.api.item.ICustomDamageItem;
