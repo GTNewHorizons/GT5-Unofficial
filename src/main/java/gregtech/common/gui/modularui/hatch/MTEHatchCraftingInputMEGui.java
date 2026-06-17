@@ -15,7 +15,6 @@ import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.layout.Grid;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
-import appeng.api.implementations.ICraftingPatternItem;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
@@ -53,14 +52,12 @@ public class MTEHatchCraftingInputMEGui extends MTEHatchBaseGui<MTEHatchCrafting
             .gridOfWidthHeight(
                 PATTERN_SLOT_PER_ROW,
                 PATTERN_SLOT_ROW,
-                ($x, $y, index) -> new PatternSlot().slot(
-                    new ModularSlot(machine.inventoryHandler, index)
-                        .filter(itemStack -> itemStack.getItem() instanceof ICraftingPatternItem)
-                        .changeListener((itemStack, onlyAmount, client, init) -> {
-                            if (!client) {
-                                machine.onPatternChange(index, itemStack);
-                            }
-                        })
+                ($x, $y, index) -> new PatternSlot()
+                    .slot(new ModularSlot(machine.inventoryHandler, index).changeListener((itemStack, _, client, _) -> {
+                        if (!client) {
+                            machine.onPatternChange(index, itemStack);
+                        }
+                    })
                         .slotGroup(PATTERN_INV_NAME)));
     }
 
