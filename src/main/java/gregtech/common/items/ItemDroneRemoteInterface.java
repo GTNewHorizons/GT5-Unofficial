@@ -34,7 +34,7 @@ import gregtech.common.tileentities.machines.multi.drone.MTEDroneCentre;
 
 public class ItemDroneRemoteInterface extends GTGenericItem implements IGuiHolder<ItemStackGuiData> {
 
-    ItemStackGuiFactory factory = new ItemStackGuiFactory("mui2:itemstack", this);
+    public final ItemStackGuiFactory factory = new ItemStackGuiFactory("mui2:itemstack", this);
 
     public ItemDroneRemoteInterface(String aUnlocalized, String aEnglish, String aEnglishTooltip) {
         super(aUnlocalized, aEnglish, aEnglishTooltip);
@@ -125,7 +125,7 @@ public class ItemDroneRemoteInterface extends GTGenericItem implements IGuiHolde
                 }
             }
         }
-        return new DroneRemoteInterfaceGUI(guiSyncManager, centre).build();
+        return new DroneRemoteInterfaceGUI(guiSyncManager, centre, guiData.getPlayer()).build();
     }
 
     @SideOnly(Side.CLIENT)
