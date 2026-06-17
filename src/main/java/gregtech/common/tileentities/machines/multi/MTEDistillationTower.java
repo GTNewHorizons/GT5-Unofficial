@@ -49,9 +49,9 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.structure.error.StructureErrors;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
-import gregtech.common.tileentities.machines.outputme.MTEHatchOutputME;
 
 public class MTEDistillationTower extends MTEEnhancedMultiBlockBase<MTEDistillationTower>
     implements ISurvivalConstructable {
@@ -294,12 +294,8 @@ public class MTEDistillationTower extends MTEEnhancedMultiBlockBase<MTEDistillat
     }
 
     @Override
-    public boolean canDumpFluidToME() {
-        // All fluids can be dumped to ME only if each layer contains a ME Output Hatch.
-        return this.mOutputHatchesByLayer.stream()
-            .allMatch(
-                tLayerOutputHatches -> tLayerOutputHatches.stream()
-                    .anyMatch(tHatch -> (tHatch instanceof MTEHatchOutputME tMEHatch) && (tMEHatch.canAcceptFluid())));
+    public boolean canDumpFluidToME(List<GTUtility.FluidId> outputs) {
+        return canDumpFluidToMEByLayer(outputs, mOutputHatchesByLayer);
     }
 
     @Override
