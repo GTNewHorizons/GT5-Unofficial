@@ -9,8 +9,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
-import java.lang.invoke.MethodHandles;
-import java.lang.invoke.VarHandle;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.nio.file.Files;
@@ -19,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Spliterators;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
@@ -56,7 +55,6 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
-import sun.misc.Unsafe;
 import sun.reflect.ReflectionFactory;
 
 @ParametersAreNonnullByDefault
@@ -67,7 +65,7 @@ class RecipeMapBackendLookupTest {
     private static final Constructor<GTRecipe.GTRecipe_WithAlt> GT_RECIPE_WITH_ALT_CONSTRUCTOR = constructorFor(
         GTRecipe.GTRecipe_WithAlt.class);
     private static final Constructor<RecipeCategory> RECIPE_CATEGORY_CONSTRUCTOR = constructorFor(RecipeCategory.class);
-    private static final Unsafe UNSAFE = unsafe();
+    private static final Constructor<FluidStack> FLUID_STACK_CONSTRUCTOR = constructorFor(FluidStack.class);
 
     @Test
     void trieCandidatesKeepLookupOrderOnRuntimePath() {
@@ -729,7 +727,7 @@ class RecipeMapBackendLookupTest {
 
     @Test
     void lookupVerifierReportsRecipesRejectedByMinInputGate() {
-        Fluid water = new Fluid("lookup.validation.min_input_gate.water");
+        Fluid water = fluid("lookup.validation.min_input_gate.water");
         RecipeCategory category = allocate(RECIPE_CATEGORY_CONSTRUCTOR);
         GTRecipe recipe = recipe(
             new ItemStack[] { null },
@@ -755,7 +753,7 @@ class RecipeMapBackendLookupTest {
 
     @Test
     void lookupVerifierCategorizesMissingOreDictInputs() {
-        Fluid water = new Fluid("lookup.validation.missing_oredict.water");
+        Fluid water = fluid("lookup.validation.missing_oredict.water");
         RecipeCategory category = allocate(RECIPE_CATEGORY_CONSTRUCTOR);
         GTRecipe.GTRecipe_WithAlt recipe = recipeWithAlt(
             new ItemStack[] { null },
@@ -832,7 +830,7 @@ class RecipeMapBackendLookupTest {
         RecipeCategory category = allocate(RECIPE_CATEGORY_CONSTRUCTOR);
         Item material = item("lookup.validation.nullable.material");
         Item saw = item("lookup.validation.nullable.saw");
-        Fluid water = new Fluid("lookup.validation.nullable.water");
+        Fluid water = fluid("lookup.validation.nullable.water");
         GTRecipe nullableSlotRecipe = recipe(
             new ItemStack[] { null, new ItemStack(saw, 0, 0) },
             new FluidStack[] { fluidStack(water, 4) },
@@ -1034,6 +1032,10 @@ class RecipeMapBackendLookupTest {
         return new Item().setUnlocalizedName(name);
     }
 
+    private static Fluid fluid(String name) {
+        return new Fluid(name);
+    }
+
     private static final class ThrowingUnlocalizedNameItem extends Item {
 
         @Override
@@ -1042,27 +1044,20 @@ class RecipeMapBackendLookupTest {
         }
     }
 
-    private static Unsafe unsafe() {
-        try {
-            Field field = Unsafe.class.getDeclaredField("theUnsafe");
-            field.setAccessible(true);
-            return (Unsafe) field.get(null);
-        } catch (ReflectiveOperationException e) {
-            throw new AssertionError(e);
+    private static void ensureMinecraftStackComparisonItem() {
+        putRegistryObject("feather", new Item().setUnlocalizedName("feather"));
+        putRegistryObject("minecraft:feather", new Item().setUnlocalizedName("feather"));
+        if (Items.feather == null) {
+            throw new AssertionError("Items.feather was not initialized from the test item registry");
         }
     }
 
-    private static void ensureMinecraftStackComparisonItem() {
-        if (Items.feather != null) {
-            return;
-        }
+    @SuppressWarnings("unchecked")
+    private static void putRegistryObject(String key, Item item) {
         try {
-            Field field = Items.class.getDeclaredField("feather");
-
-            VarHandle handle = MethodHandles.privateLookupIn(Items.class, MethodHandles.lookup())
-                .unreflectVarHandle(field);
-
-            handle.set(new Item());
+            Field registryObjects = net.minecraft.util.RegistrySimple.class.getDeclaredField("registryObjects");
+            registryObjects.setAccessible(true);
+            ((Map<Object, Object>) registryObjects.get(Item.itemRegistry)).put(key, item);
         } catch (ReflectiveOperationException e) {
             throw new AssertionError(e);
         }
@@ -1078,12 +1073,14 @@ class RecipeMapBackendLookupTest {
 
     private static FluidStack fluidStack(Fluid fluid, int amount) {
         try {
-            FluidStack stack = (FluidStack) UNSAFE.allocateInstance(FluidStack.class);
+            FluidStack stack = allocate(FLUID_STACK_CONSTRUCTOR);
             Field fluidField = FluidStack.class.getDeclaredField("fluid");
             Field fluidDelegateField = FluidStack.class.getDeclaredField("fluidDelegate");
+            Field amountField = FluidStack.class.getDeclaredField("amount");
             fluidField.setAccessible(true);
-            fluidField.set(stack, fluid);
             fluidDelegateField.setAccessible(true);
+            amountField.setAccessible(true);
+            fluidField.set(stack, fluid);
             fluidDelegateField.set(stack, new RegistryDelegate<Fluid>() {
 
                 @Override
@@ -1101,7 +1098,7 @@ class RecipeMapBackendLookupTest {
                     return Fluid.class;
                 }
             });
-            stack.amount = amount;
+            amountField.setInt(stack, amount);
             return stack;
         } catch (ReflectiveOperationException e) {
             throw new AssertionError(e);
