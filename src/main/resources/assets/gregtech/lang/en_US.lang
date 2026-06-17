@@ -3721,6 +3721,7 @@ GT5U.hatch.chisel.configure.grid=Configure Templates
 GT5U.bus.filterTooltip.empty=§aDrag item from NEI to set output filter
 GT5U.bus.filterTooltip.full=§aClick to clear output filter
 
+GT5U.multiblock.heat=§cHeat: §f%sK
 GT5U.multiblock.pollution=Pollution reduced to
 GT5U.multiblock.energy=Stored Energy
 GT5U.multiblock.Progress=Progress
