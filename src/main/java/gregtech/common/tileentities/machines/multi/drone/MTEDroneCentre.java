@@ -44,6 +44,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.ItemList;
@@ -128,7 +129,7 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
         if (side == aFacing) {
-            if (getBaseMetaTileEntity().isActive()) {
+            if (getBaseMetaTileEntity() != null && getBaseMetaTileEntity().isActive()) {
                 return new ITexture[] { Casings.SolidSteelMachineCasing.getCasingTexture(), TextureFactory.builder()
                     .addIcon(ACTIVE)
                     .extFacing()
@@ -420,16 +421,11 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
 
     private void spawnDroneItem() {
         ItemStack insideDrone = new ItemStack(switch (droneLevel) {
-            case 1:
-                yield ItemList.TierdDrone0.getItem();
-            case 2:
-                yield ItemList.TierdDrone1.getItem();
-            case 3:
-                yield ItemList.TierdDrone2.getItem();
-            case 4:
-                yield ItemList.TierdDrone3.getItem();
-            default:
-                yield null;
+            case 1 -> ItemList.TierdDrone0.getItem();
+            case 2 -> ItemList.TierdDrone1.getItem();
+            case 3 -> ItemList.TierdDrone2.getItem();
+            case 4 -> ItemList.TierdDrone3.getItem();
+            default -> null;
         }, 1);
         final EntityItem tItemEntity = new EntityItem(
             getBaseMetaTileEntity().getWorld(),
@@ -539,8 +535,14 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
     public void turnOnAll() {
         for (DroneConnection droneConnection : connectionList) {
             if (droneConnection.isValid() && (activeGroup == 0 || droneConnection.getGroup() == activeGroup)) {
-                droneConnection.getLinkedMachine()
-                    .enableWorking();
+                MTEMultiBlockBase linkedMachine = droneConnection.getLinkedMachine();
+                if (linkedMachine != null) {
+                    linkedMachine.enableWorking();
+                    IGregTechTileEntity igte = linkedMachine.getBaseMetaTileEntity();
+                    if (igte != null && igte.getLastShutDownReason() == ShutDownReasonRegistry.POWER_LOSS) {
+                        GTMod.proxy.powerfailTracker.removePowerfailEvents(igte);
+                    }
+                }
             }
         }
     }
