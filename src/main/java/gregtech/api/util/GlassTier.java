@@ -5,7 +5,6 @@ import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.Mods.BloodArsenal;
 import static gregtech.api.enums.Mods.Botania;
 import static gregtech.api.enums.Mods.EnderIO;
-import static gregtech.api.enums.Mods.IndustrialCraft2;
 import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.util.GTUtility.getColoredTierNameFromTier;
 
@@ -165,14 +164,13 @@ public class GlassTier {
             for (int i = 0; i < 4; i++) {
                 addCustomGlass(GregTechAPI.sBlockTintedGlass, i, 4, i + 2);
             }
-            addCustomGlass(IndustrialCraft2.ID, "blockAlloyGlass", 0, 4, 6);
+            addCustomGlass(GregTechAPI.sBlockGlass1, 10, 4, 6); // TODO replace ic2 glass (postea)
             if (BloodArsenal.isModLoaded()) {
                 addCustomGlass(BloodArsenal.ID, "blood_stained_glass", 0, 4, 7);
             }
             if (Botania.isModLoaded()) {
                 addCustomGlass(Botania.ID, "manaGlass", 0, 4, 8);
             }
-            addCustomGlass(GregTechAPI.sBlockGlass1, 10, 4, 9);
 
             // --- IV ---
             addCustomGlass(ItemRegistry.bw_realglas, 2, 5, 0);
