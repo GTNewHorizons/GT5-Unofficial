@@ -182,6 +182,16 @@ public class MTESteamWasher extends MTESteamMultiBlockBase<MTESteamWasher> imple
     }
 
     @Override
+    protected IIconContainer getInactiveGlowOverlay() {
+        return Textures.BlockIcons.OVERLAY_FRONT_STEAM_WASHER_GLOW;
+    }
+
+    @Override
+    protected IIconContainer getActiveGlowOverlay() {
+        return Textures.BlockIcons.OVERLAY_FRONT_STEAM_WASHER_ACTIVE_GLOW;
+    }
+
+    @Override
     public IStructureDefinition<MTESteamWasher> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
 
