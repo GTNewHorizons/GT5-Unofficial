@@ -337,7 +337,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
                 EnumChatFormatting.AQUA + "Power usage = (active slices) × (overclocked EU/t)"
                     + EnumChatFormatting.GRAY)
             .addInfo("Overclocking assumes all recipe slices are active")
-            .addInfo(EnumChatFormatting.BOLD + "Will not overclock beyond 1 tick")
+            .addInfo(EnumChatFormatting.BOLD + "Slices will not overclock beyond 1 tick")
             .addSeparator(EnumChatFormatting.GOLD)
             .addInfo("Constructed identically to the Assembly Line")
             .addTecTechHatchInfo()
