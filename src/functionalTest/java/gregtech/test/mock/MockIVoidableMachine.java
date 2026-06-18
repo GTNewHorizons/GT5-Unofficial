@@ -3,12 +3,9 @@ package gregtech.test.mock;
 import java.util.Collections;
 import java.util.List;
 
-import net.minecraftforge.fluids.FluidStack;
-
 import gregtech.api.enums.VoidingMode;
 import gregtech.api.interfaces.IOutputBus;
 import gregtech.api.interfaces.IOutputHatch;
-import gregtech.api.interfaces.fluid.IFluidStore;
 import gregtech.api.interfaces.tileentity.IVoidable;
 import gregtech.api.util.GTUtility;
 
@@ -42,17 +39,12 @@ public class MockIVoidableMachine implements IVoidable {
     }
 
     @Override
-    public List<? extends IFluidStore> getFluidOutputSlots(FluidStack[] toOutput) {
-        return null;
-    }
-
-    @Override
     public boolean canDumpItemToME(List<GTUtility.ItemId> outputs) {
         return false;
     }
 
     @Override
-    public boolean canDumpFluidToME() {
+    public boolean canDumpFluidToME(List<GTUtility.FluidId> outputs) {
         return false;
     }
 

@@ -50,7 +50,6 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEHatch;
-import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchMultiInput;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
@@ -277,16 +276,12 @@ public class MTEMegaOilCrackerLegacy extends MegaMultiBlockBase<MTEMegaOilCracke
                     errors.add(StructureErrors.glassTierNotEnough(VoltageIndex.UV));
                     return;
                 }
-                if (this.glassTier < hatch.mTier) {
-                    errors.add(StructureErrorRegistry.ENERGY_TIER_EXCEED_GLASS);
-                    break;
-                }
             }
-            for (MTEHatchEnergy mEnergyHatch : this.mEnergyHatches) {
-                if (this.glassTier < mEnergyHatch.mTier) {
-                    errors.add(StructureErrorRegistry.ENERGY_TIER_EXCEED_GLASS);
-                    break;
-                }
+        }
+        for (MTEHatch mEnergyHatch : this.getExoticAndNormalEnergyHatchList()) {
+            if (this.glassTier < mEnergyHatch.getTierForStructure()) {
+                errors.add(StructureErrorRegistry.ENERGY_TIER_EXCEED_GLASS);
+                break;
             }
         }
     }

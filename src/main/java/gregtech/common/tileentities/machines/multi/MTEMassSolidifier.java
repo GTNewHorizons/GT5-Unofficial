@@ -39,7 +39,6 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Textures;
-import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -173,7 +172,7 @@ public class MTEMassSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMassSol
             .addInfo("Speeds up to a maximum of " + TooltipHelper.speedText(3f))
             .addInfo("Decays at double the rate that it speeds up at")
             .addStaticEuEffInfo(0.8f)
-            .addGlassEnergyLimitInfo(VoltageIndex.UEV)
+            .addGlassEnergyLimitInfo()
             .addInfo(
                 "Can use " + EnumChatFormatting.YELLOW
                     + "Solidifier Hatches"
@@ -264,7 +263,7 @@ public class MTEMassSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMassSol
         glassTier = -1;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFFSET, VERTICAL_OFFSET, DEPTH_OFFSET, errors)) return;
         for (MTEHatchEnergy mEnergyHatch : this.mEnergyHatches) {
-            if (glassTier < VoltageIndex.UEV && mEnergyHatch.mTier > glassTier) {
+            if (mEnergyHatch.mTier > glassTier) {
                 errors.add(StructureErrorRegistry.ENERGY_TIER_EXCEED_GLASS);
                 break;
             }

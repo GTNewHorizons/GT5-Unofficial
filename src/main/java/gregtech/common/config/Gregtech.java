@@ -230,11 +230,6 @@ public class Gregtech {
         @Config.RequiresMcRestart
         public boolean survivalIntoAdventure;
 
-        @Config.Comment("If true, hungers the players based on his amount of stuff in the inventory every 6s, regardless of player movement.")
-        @Config.DefaultBoolean(false)
-        @Config.RequiresMcRestart
-        public boolean hungerEffect;
-
         @Config.Comment("If true, enables the item oredification of the items in the inventory.")
         @Config.DefaultBoolean(true)
         @Config.RequiresMcRestart
@@ -571,11 +566,11 @@ public class Gregtech {
         @Config.RequiresMcRestart
         public String ghostCircuitSuffixFormat = " [%s]";
 
-        @Config.Comment("Format template for the manual slots suffix in Crafting Input Bus/Buffer display name. Use %s as placeholder for comma-separated item names.")
+        @Config.Comment("Format template for the item slots suffix in AE2 terminal display names. Use %s as placeholder for comma-separated item names. Applies to Crafting Input Bus/Buffer manual slots and non-consumed recipe inputs (e.g. molds).")
         @Config.DefaultString(" {%s}")
-        @Config.Name("CIB Manual Slots Suffix Format")
+        @Config.Name("Item Slots Suffix Format")
         @Config.RequiresMcRestart
-        public String cibManualSlotsSuffixFormat = " {%s}";
+        public String itemSlotsSuffixFormat = " {%s}";
     }
 
     @Config.LangKey("GT5U.gui.config.gregtech.ore_drop_behavior")
