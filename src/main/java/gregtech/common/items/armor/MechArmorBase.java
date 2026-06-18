@@ -405,14 +405,14 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISp
     public boolean showIngamePopups(ItemStack armor, EntityLivingBase entity) {
         ArmorContext context = load(entity, armor);
 
-        return context.hasBehavior(BehaviorName.GogglesOfRevealing);
+        return context.isBehaviorActive(BehaviorName.GogglesOfRevealing);
     }
 
     @Override
     public boolean showNodes(ItemStack armor, EntityLivingBase entity) {
         ArmorContext context = load(entity, armor);
 
-        return context.hasBehavior(BehaviorName.GogglesOfRevealing);
+        return context.isBehaviorActive(BehaviorName.GogglesOfRevealing);
     }
 
     @Override
