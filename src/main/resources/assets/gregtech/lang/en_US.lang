@@ -7243,6 +7243,7 @@ GT5U.scanner.debug.ic2_enet=Joined IC2 ENet
 GT5U.tooltip.drone_remote_disconnected=Shift-right-click an active Drone Centre to connect
 GT5U.tooltip.drone_remote_connected=Connected to centre: %s, %s, %s, on dim%s
 GT5U.tooltip.drone_remote_not_found=Drone Centre at x: %s, y: %s, z: %s in dim%s was not found!
+GT5U.tooltip.drone_remote_not_loaded=Chunk containing Drone Centre at x: %s, y: %s, z: %s in dim%s is not loaded!
 
 # info data
 GT5U.infodata.no_network=No Network

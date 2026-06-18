@@ -56,12 +56,18 @@ public class ItemDroneRemoteInterface extends GTGenericItem implements IGuiHolde
                 World targetWorld = MinecraftServer.getServer()
                     .worldServerForDimension(dim);
                 if (targetWorld != null) {
-                    TileEntity te = targetWorld.getTileEntity(x, y, z);
-                    if (te instanceof IGregTechTileEntity
-                        && ((IGregTechTileEntity) te).getMetaTileEntity() instanceof MTEDroneCentre)
-                        GuiManager.open(factory, new ItemStackGuiData(player, stack), (EntityPlayerMP) player);
-                    else player.addChatMessage(
-                        new ChatComponentTranslation("GT5U.tooltip.drone_remote_not_found", x, y, z, dim));
+                    if (targetWorld.getChunkProvider()
+                        .chunkExists(x >> 4, z >> 4)) {
+                        TileEntity te = targetWorld.getTileEntity(x, y, z);
+                        if (te instanceof IGregTechTileEntity
+                            && ((IGregTechTileEntity) te).getMetaTileEntity() instanceof MTEDroneCentre)
+                            GuiManager.open(factory, new ItemStackGuiData(player, stack), (EntityPlayerMP) player);
+                        else player.addChatMessage(
+                            new ChatComponentTranslation("GT5U.tooltip.drone_remote_not_found", x, y, z, dim));
+                    } else {
+                        player.addChatMessage(
+                            new ChatComponentTranslation("GT5U.tooltip.drone_remote_not_loaded", x, y, z, dim));
+                    }
                 }
             } else player.addChatMessage(new ChatComponentTranslation("GT5U.tooltip.drone_remote_disconnected"));
         }
