@@ -253,7 +253,7 @@ public class MTELargeChemicalReactor extends MTEEnhancedMultiBlockBase<MTELargeC
         @Override
         public PlaceResult survivalPlaceBlock(MTELargeChemicalReactor t, World world, int x, int y, int z,
             ItemStack trigger, AutoPlaceEnvironment env) {
-            if (t.mCoilAmount > 0) return PlaceResult.SKIP;
+            if (t.mCoilAmount > 0) return PlaceResult.REJECT;
             if (check(t, world, x, y, z)) return PlaceResult.SKIP;
             if (!StructureLibAPI.isBlockTriviallyReplaceable(world, x, y, z, env.getActor())) return PlaceResult.REJECT;
             ItemStack result = env.getSource()
