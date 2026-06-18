@@ -282,6 +282,7 @@ public class ArmorState {
                 GTMod.GT_FML_LOGGER.error("Could not load active behavior: {}", str.func_150285_a_(), e);
             }
         }
+        state.activeBehaviors.removeIf(name -> !state.behaviors.containsKey(name));
 
         for (IArmorBehavior behavior : state.behaviors.values()) {
             behavior.configureArmorState(context, tag);
