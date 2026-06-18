@@ -9,6 +9,7 @@ import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
@@ -17,12 +18,16 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.glodblock.github.common.item.ItemFluidVoidStorageCell;
 
 import appeng.api.AEApi;
+import appeng.api.config.Actionable;
 import appeng.api.implementations.IPowerChannelState;
 import appeng.api.networking.IGridNode;
 import appeng.api.networking.events.MENetworkChannelsChanged;
@@ -38,6 +43,8 @@ import appeng.api.storage.data.IAEItemStack;
 import appeng.api.util.AECableType;
 import appeng.api.util.DimensionalCoord;
 import appeng.helpers.IPriorityHost;
+import appeng.items.storage.ItemBasicStorageCell;
+import appeng.items.storage.ItemVoidStorageCell;
 import appeng.me.GridAccessException;
 import appeng.me.helpers.AENetworkProxy;
 import appeng.me.helpers.IGridProxyable;
@@ -122,7 +129,10 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus
 
     @Override
     public boolean storePartial(ItemStack stack, boolean simulate) {
-        return provider.storePartial(stack, simulate);
+        IAEItemStack input = AEItemStack.create(stack);
+        provider.storePartial(input, simulate);
+        stack.stackSize = (int) input.getStackSize();
+        return stack.stackSize == 0;
     }
 
     @Override
@@ -187,17 +197,27 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus
             .getItemInventory();
     }
 
-    class MEOutputBusTransaction implements IOutputBusTransaction {
+    class MEOutputBusTransaction implements IOutputBusTransaction, IOutputBusTransaction.IRecipeCheckAware {
 
         private final AECacheCounter<GTUtility.ItemId> cache = new AECacheCounter<>();
-        private final long tick, availableSpace;
+        private final long availableSpace;
         private boolean active = true;
+        private boolean isRecipeCheck = false;
+        private IMEInventoryHandler<IAEItemStack> cell = null;
 
         public MEOutputBusTransaction() {
-            long initialStored = provider.getCachedAmount();
-            long capacity = provider.getCacheCapacity();
-            tick = initialStored >= capacity ? provider.getLastInputTick() : provider.getTickCounter();
-            availableSpace = capacity - initialStored;
+            availableSpace = provider.getAvailableSpace();
+        }
+
+        public void setRecipeCheck(boolean isRecipeCheck) {
+            this.isRecipeCheck = isRecipeCheck;
+            if (isRecipeCheck && provider.shouldCheck()) {
+                provider.flushCachedStack();
+                cell = AEApi.instance()
+                    .registries()
+                    .cell()
+                    .getCellInventory(getCellStack().copy(), getISaveProvider(), getChannel());
+            }
         }
 
         @Override
@@ -207,22 +227,25 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus
 
         @Override
         public boolean hasAvailableSpace() {
-            return cache.getTotal() < availableSpace || provider.getTickCounter() == tick;
-        }
-
-        public boolean canStore(GTUtility.ItemId id, ItemStack stack) {
-            if (provider.shouldCheck()) {
-                return provider.canStore(stack, stack.stackSize + cache.get(id));
-            }
-            return hasAvailableSpace() && provider.getFilter()
-                .isFilteredToItem(id);
+            return !isRecipeCheck || cache.getTotal() < availableSpace;
         }
 
         @Override
         public boolean storePartial(GTUtility.ItemId id, ItemStack stack) {
             if (!active) throw new IllegalStateException("Cannot add to a transaction after committing it");
 
-            if (!canStore(id, stack)) return false;
+            if (isRecipeCheck && provider.shouldCheck()) {
+                IAEItemStack input = AEItemStack.create(stack);
+                IAEItemStack rejected = cell.injectItems(input, Actionable.MODULATE, getActionSource());
+                int inserted = (int) (stack.stackSize - (rejected == null ? 0 : rejected.getStackSize()));
+                cache.insert(id, inserted);
+                stack.stackSize -= inserted;
+                return stack.stackSize == 0;
+            }
+            if (!hasAvailableSpace() || !provider.getFilter()
+                .isFilteredToItem(id)) {
+                return false;
+            }
 
             cache.insert(id, stack.stackSize);
             stack.stackSize = 0;
@@ -239,7 +262,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus
         public void commit() {
             cache.iterateAll(
                 (id, amount) -> {
-                    provider.storeToCache(
+                    provider.addToCache(
                         provider.getFilter()
                             .fromNative(id.getItemStack())
                             .setStackSize(amount));
@@ -315,8 +338,12 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus
         return false;
     }
 
-    public boolean canAcceptAnyItem() {
-        return provider.canAcceptAnyInput();
+    public boolean shouldCheck() {
+        return provider.shouldCheck();
+    }
+
+    public boolean hasAvailableSpace() {
+        return provider.hasAvailableSpace();
     }
 
     @Override
@@ -558,5 +585,16 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus
     @Override
     public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
         return new MTEHatchOutputBusMEGui(this).build(guiData, syncManager, uiSettings);
+    }
+
+    @Override
+    public boolean isItemValidForSlot(int index, ItemStack itemStack) {
+        return itemStack != null && isItemCell(itemStack) && super.isItemValidForSlot(index, itemStack);
+    }
+
+    private boolean isItemCell(@NotNull ItemStack itemStack) {
+        Item item = itemStack.getItem();
+        return item instanceof ItemBasicStorageCell
+            || item instanceof ItemVoidStorageCell && !(item instanceof ItemFluidVoidStorageCell);
     }
 }

@@ -24,6 +24,7 @@ import gregtech.api.interfaces.IRecipeMap;
 import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.RecipeMetadataKey;
+import gregtech.api.recipe.metadata.CompressionTierKey;
 import gregtech.api.recipe.metadata.SimpleRecipeMetadataKey;
 import gregtech.api.util.recipe.QuantumComputerRecipeData;
 import gregtech.api.util.recipe.Scanning;
@@ -190,8 +191,7 @@ public class GTRecipeConstants {
     /**
      * Tier of advanced compression (HIP/black hole)
      */
-    public static final RecipeMetadataKey<Integer> COMPRESSION_TIER = SimpleRecipeMetadataKey
-        .create(Integer.class, "compression");
+    public static final RecipeMetadataKey<Integer> COMPRESSION_TIER = CompressionTierKey.INSTANCE;
 
     /**
      * Dissolution Tank Ratio.

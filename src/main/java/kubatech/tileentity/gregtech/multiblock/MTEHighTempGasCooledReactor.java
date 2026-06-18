@@ -52,11 +52,6 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-import com.gtnewhorizons.modularui.api.drawable.Text;
-import com.gtnewhorizons.modularui.api.math.Alignment;
-import com.gtnewhorizons.modularui.api.widget.Widget;
-import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
-import com.gtnewhorizons.modularui.common.widget.DynamicTextWidget;
 
 import bartworks.common.items.SimpleSubItemClass;
 import bartworks.system.material.WerkstoffLoader;
@@ -92,10 +87,11 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.blocks.BlockCasings10;
 import gregtech.common.blocks.BlockCasings13;
 import gregtech.common.blocks.BlockCasings2;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
 import gregtech.common.tileentities.machines.MTEHatchInputME;
-import gregtech.common.tileentities.machines.outputme.MTEHatchOutputME;
 import kubatech.api.implementations.KubaTechGTMultiBlockBase;
+import kubatech.gui.modularui2.MTEHighTempGasCooledReactorGui;
 import kubatech.loaders.HTGRLoader;
 import kubatech.loaders.item.htgritem.HTGRItem;
 
@@ -496,10 +492,6 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
         if (hatch == null || !hatch.isValid()) return false;
         if (!hatch.canStoreFluid(fluidStack)) return false;
 
-        if (hatch instanceof MTEHatchOutputME tMEHatch) {
-            if (!tMEHatch.canFillFluid()) return false;
-        }
-
         int tAmount = hatch.fill(fluidStack, false);
         if (tAmount >= fluidStack.amount) {
             return hatch.fill(fluidStack, true) >= fluidStack.amount;
@@ -804,7 +796,7 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
         return new MTEHighTempGasCooledReactor(this.mName);
     }
 
-    private String getReactorInfoText() {
+    public String getReactorInfoText() {
         StringBuilder sb = new StringBuilder();
         sb.append(EnumChatFormatting.WHITE)
             .append(StatCollector.translateToLocal("kubatech.infodata.htgr.stored_fuel"))
@@ -881,14 +873,8 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
     }
 
     @Override
-    protected Widget generateCurrentRecipeInfoWidget() {
-        DynamicPositionedColumn w = (DynamicPositionedColumn) super.generateCurrentRecipeInfoWidget();
-
-        w.widget(new DynamicTextWidget(() -> {
-            String sb = getReactorInfoText();
-            return new Text(sb);
-        }).setTextAlignment(Alignment.CenterLeft));
-        return w;
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
+        return new MTEHighTempGasCooledReactorGui(this);
     }
 
     @Override
@@ -947,7 +933,8 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
 
     private enum HTGRHatches implements IHatchElement<MTEHighTempGasCooledReactor> {
 
-        CoolantInputHatch(MTEHighTempGasCooledReactor::addCoolantInputToMachineList, MTEHatchInput.class) {
+        CoolantInputHatch("kubatech.MBTT.CoolantInputHatch", MTEHighTempGasCooledReactor::addCoolantInputToMachineList,
+            MTEHatchInput.class) {
 
             @Override
             public long count(MTEHighTempGasCooledReactor t) {
@@ -955,7 +942,8 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
                 return 1;
             }
         },
-        HeliumInputHatch(MTEHighTempGasCooledReactor::addHeliumInputToMachineList, MTEHatchInput.class) {
+        HeliumInputHatch("kubatech.MBTT.HeliumInputHatch", MTEHighTempGasCooledReactor::addHeliumInputToMachineList,
+            MTEHatchInput.class) {
 
             @Override
             public long count(MTEHighTempGasCooledReactor t) {
@@ -963,7 +951,8 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
                 return 1;
             }
         },
-        WaterInputHatch(MTEHighTempGasCooledReactor::addWaterInputToMachineList, MTEHatchInput.class) {
+        WaterInputHatch("kubatech.MBTT.WaterInputHatch", MTEHighTempGasCooledReactor::addWaterInputToMachineList,
+            MTEHatchInput.class) {
 
             @Override
             public long count(MTEHighTempGasCooledReactor t) {
@@ -971,7 +960,8 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
                 return 1;
             }
         },
-        CoolantOutputHatch(MTEHighTempGasCooledReactor::addCoolantOutputToMachineList, MTEHatchOutput.class) {
+        CoolantOutputHatch("kubatech.MBTT.CoolantOutputHatch",
+            MTEHighTempGasCooledReactor::addCoolantOutputToMachineList, MTEHatchOutput.class) {
 
             @Override
             public long count(MTEHighTempGasCooledReactor t) {
@@ -979,7 +969,8 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
                 return 1;
             }
         },
-        SteamOutputHatch(MTEHighTempGasCooledReactor::addSteamOutputToMachineList, MTEHatchOutput.class) {
+        SteamOutputHatch("kubatech.MBTT.SteamOutputHatch", MTEHighTempGasCooledReactor::addSteamOutputToMachineList,
+            MTEHatchOutput.class) {
 
             @Override
             public long count(MTEHighTempGasCooledReactor t) {
@@ -988,11 +979,14 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
             }
         },;
 
+        private final String displayName;
         private final List<Class<? extends IMetaTileEntity>> mteClasses;
         private final IGTHatchAdder<MTEHighTempGasCooledReactor> adder;
 
         @SafeVarargs
-        HTGRHatches(IGTHatchAdder<MTEHighTempGasCooledReactor> adder, Class<? extends IMetaTileEntity>... mteClasses) {
+        HTGRHatches(String displayName, IGTHatchAdder<MTEHighTempGasCooledReactor> adder,
+            Class<? extends IMetaTileEntity>... mteClasses) {
+            this.displayName = displayName;
             this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
             this.adder = adder;
         }
@@ -1005,6 +999,16 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
         @Override
         public IGTHatchAdder<? super MTEHighTempGasCooledReactor> adder() {
             return adder;
+        }
+
+        @Override
+        public String getDisplayName() {
+            return GTUtility.translate(displayName);
+        }
+
+        @Override
+        public String getDescriptionLangKey() {
+            return displayName;
         }
 
     }

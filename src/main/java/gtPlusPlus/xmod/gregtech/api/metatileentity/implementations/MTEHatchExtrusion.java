@@ -18,7 +18,6 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.hatch.MTEHatchExtrusionGui;
-import gregtech.common.items.ItemIntegratedCircuit;
 
 public class MTEHatchExtrusion extends MTEHatchInputBus {
 
@@ -87,9 +86,6 @@ public class MTEHatchExtrusion extends MTEHatchInputBus {
     @Override
     public boolean isItemValidForSlot(int aIndex, ItemStack aStack) {
         if (aIndex == shapeSlot) return findMatchingShape(aStack) != null;
-        if (aIndex == circuitSlot) return GTUtility.isStackValid(aStack) && aStack.stackSize == 1
-            && (aStack.getItem() instanceof ItemIntegratedCircuit
-                || GTUtility.areStacksEqual(aStack, ItemList.Circuit_Integrated.get(1), true));
         return super.isItemValidForSlot(aIndex, aStack);
     }
 
@@ -144,11 +140,6 @@ public class MTEHatchExtrusion extends MTEHatchInputBus {
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
         return aIndex != shapeSlot && super.allowPullStack(aBaseMetaTileEntity, aIndex, side, aStack);
-    }
-
-    @Override
-    public int getInventoryStackLimit() {
-        return 1;
     }
 
     @Override

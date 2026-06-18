@@ -16,6 +16,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.XSTR;
 import gregtech.api.render.TextureFactory;
@@ -24,7 +25,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.TurbineStatCalculator;
 
-public class MTESupercriticalFluidTurbineLegacy extends MTELargeTurbineBaseLegacy {
+public class MTESupercriticalFluidTurbineLegacy extends MTELargeTurbineBaseLegacy implements ICasingTextureProvider {
 
     private boolean looseFit = false;
 
@@ -66,7 +67,7 @@ public class MTESupercriticalFluidTurbineLegacy extends MTELargeTurbineBaseLegac
         }
         if (totalFlow <= 0) return 0;
         tEU = totalFlow;
-        addOutput(FluidRegistry.getFluidStack("ic2superheatedsteam", totalFlow));
+        addOutputPartial(FluidRegistry.getFluidStack("ic2superheatedsteam", totalFlow));
         if (totalFlow == realOptFlow) {
             tEU = GTUtility
                 .safeInt((long) (tEU * (looseFit ? turbine.getLooseSteamEfficiency() : turbine.getSteamEfficiency())));
@@ -165,10 +166,15 @@ public class MTESupercriticalFluidTurbineLegacy extends MTELargeTurbineBaseLegac
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
         int colorIndex, boolean aActive, boolean aRedstone) {
-        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(1538),
+        return new ITexture[] { getCasingTexture(),
             facing == side
                 ? (aActive ? TextureFactory.of(turbineOn)
                     : hasTurbine() ? TextureFactory.of(turbineOff) : TextureFactory.of(turbineEmpty))
-                : Textures.BlockIcons.getCasingTextureForId(1538) };
+                : getCasingTexture() };
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Textures.BlockIcons.getCasingTextureForId(1538);
     }
 }

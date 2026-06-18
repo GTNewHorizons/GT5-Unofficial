@@ -40,7 +40,6 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
@@ -62,13 +61,11 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.MathHelper;
 import net.minecraft.world.gen.feature.WorldGenMinable;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.EnderTeleportEvent;
-import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.player.ArrowLooseEvent;
 import net.minecraftforge.event.entity.player.ArrowNockEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -130,7 +127,6 @@ import gregtech.api.enums.TCAspects.TC_AspectStack;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.ToolDictNames;
 import gregtech.api.fluid.GTFluidFactory;
-import gregtech.api.interfaces.IBlockOnWalkOver;
 import gregtech.api.interfaces.IProjectileItem;
 import gregtech.api.interfaces.IToolStats;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -552,7 +548,6 @@ public class GTProxy implements IFuelHandler {
     public boolean mSurvivalIntoAdventure = false;
     public boolean mNerfedWoodPlank = true;
     public boolean mChangeWoodenVanillaTools = true;
-    public boolean mHungerEffect = true;
     public boolean mIgnoreTcon = true;
     public boolean mAchievements = true;
     private boolean mOreDictActivated = false;
@@ -1463,13 +1458,15 @@ public class GTProxy implements IFuelHandler {
             .getCurrentEquippedItem();
         if (item == null) return;
 
-        if (!(item.getItem() instanceof MetaGeneratedTool tool)) return;
+        if (item.getItem() instanceof MetaGeneratedTool tool) {
+            IToolStats stats = tool.getToolStats(item);
+            if (stats == null) return;
 
-        IToolStats stats = tool.getToolStats(item);
-        if (stats == null) return;
-
-        TileEntity tile = event.world.getTileEntity(event.x, event.y, event.z);
-        stats.onBreakBlock(player, event.x, event.y, event.z, event.block, event.blockMetadata, tile, event);
+            TileEntity tile = event.world.getTileEntity(event.x, event.y, event.z);
+            stats.onBreakBlock(player, event.x, event.y, event.z, event.block, event.blockMetadata, tile, event);
+        } else if (item.getItem() instanceof final ItemGTToolbox toolbox) {
+            toolbox.onBlockBreakingEvent(event);
+        }
     }
 
     @SubscribeEvent
@@ -1972,20 +1969,6 @@ public class GTProxy implements IFuelHandler {
     }
 
     @SubscribeEvent
-    public void applyBlockWalkOverEffects(LivingUpdateEvent event) {
-        final EntityLivingBase entity = event.entityLiving;
-        // the server should handle the movement of all entities except the players
-        if (!entity.worldObj.isRemote && entity.onGround && !(entity instanceof EntityPlayerMP)) {
-            int tX = MathHelper.floor_double(entity.posX),
-                tY = MathHelper.floor_double(entity.boundingBox.minY - 0.001F),
-                tZ = MathHelper.floor_double(entity.posZ);
-            Block tBlock = entity.worldObj.getBlock(tX, tY, tZ);
-            if (tBlock instanceof IBlockOnWalkOver)
-                ((IBlockOnWalkOver) tBlock).onWalkOver(entity, entity.worldObj, tX, tY, tZ);
-        }
-    }
-
-    @SubscribeEvent
     public void onFluidContainerRegistration(FluidContainerRegistry.FluidContainerRegisterEvent aFluidEvent) {
         if ((aFluidEvent.data.filledContainer.getItem() == Items.potionitem)
             && (aFluidEvent.data.filledContainer.getItemDamage() == 0)) {
@@ -2093,64 +2076,37 @@ public class GTProxy implements IFuelHandler {
     }
 
     @SubscribeEvent
-    public void onPlayerTickEventServer(TickEvent.PlayerTickEvent aEvent) {
-        if ((!aEvent.side.isServer()) || (aEvent.phase == TickEvent.Phase.END) || (aEvent.player.isDead)) {
+    public void onPlayerTickEventServer(TickEvent.PlayerTickEvent event) {
+        final EntityPlayer player = event.player;
+        if (!event.side.isServer() || event.phase == TickEvent.Phase.END
+            || player.isDead
+            || player.ticksExisted % 120 != 0) {
             return;
         }
 
-        final boolean tHungerEffect = (this.mHungerEffect) && (aEvent.player.ticksExisted % 2400 == 1200);
-
-        if (aEvent.player.ticksExisted % 120 != 0) {
-            return;
-        }
-
-        int tCount = 64;
-        final ItemStack[] mainInventory = aEvent.player.inventory.mainInventory;
-        for (ItemStack tStack : mainInventory) {
-            if (tStack == null) {
-                continue;
-            }
-            if (!aEvent.player.capabilities.isCreativeMode) {
-                GTUtility.applyRadioactivity(aEvent.player, GTUtility.getRadioactivityLevel(tStack), tStack.stackSize);
-                final float tHeat = GTUtility.getHeatDamageFromItem(tStack);
-                if (tHeat != 0.0F) {
-                    if (tHeat > 0.0F) {
-                        GTUtility.applyHeatDamageFromItem(aEvent.player, tHeat, tStack);
-                    } else {
-                        GTUtility.applyFrostDamage(aEvent.player, -tHeat);
-                    }
-                }
-            }
-            if (tHungerEffect) {
-                tCount += tStack.stackSize * 64 / Math.max(1, tStack.getMaxStackSize());
-            }
+        final ItemStack[] mainInventory = player.inventory.mainInventory;
+        for (ItemStack stack : mainInventory) {
+            applyItemEffects(player, stack);
             if (this.mInventoryUnification) {
-                GTOreDictUnificator.setStack(true, tStack);
+                GTOreDictUnificator.setStack(true, stack);
             }
+        }
+        final ItemStack[] armorInventory = player.inventory.armorInventory;
+        for (final ItemStack stack : armorInventory) {
+            applyItemEffects(player, stack);
+        }
+    }
 
+    private static void applyItemEffects(EntityPlayer player, ItemStack stack) {
+        if (stack == null || player.capabilities.isCreativeMode) {
+            return;
         }
-        final ItemStack[] armorInventory = aEvent.player.inventory.armorInventory;
-        for (final ItemStack tStack : armorInventory) {
-            if (tStack == null) {
-                continue;
-            }
-            if (!aEvent.player.capabilities.isCreativeMode) {
-                GTUtility.applyRadioactivity(aEvent.player, GTUtility.getRadioactivityLevel(tStack), tStack.stackSize);
-                final float tHeat = GTUtility.getHeatDamageFromItem(tStack);
-                if (tHeat != 0.0F) {
-                    if (tHeat > 0.0F) {
-                        GTUtility.applyHeatDamageFromItem(aEvent.player, tHeat, tStack);
-                    } else {
-                        GTUtility.applyFrostDamage(aEvent.player, -tHeat);
-                    }
-                }
-            }
-            if (tHungerEffect) {
-                tCount += 256;
-            }
-        }
-        if (tHungerEffect) {
-            aEvent.player.addExhaustion(Math.max(1.0F, tCount / 666.6F));
+        GTUtility.applyRadioactivity(player, GTUtility.getRadioactivityLevel(stack), stack.stackSize);
+        final float heat = GTUtility.getHeatDamageFromItem(stack);
+        if (heat > 0.0F) {
+            GTUtility.applyHeatDamageFromItem(player, heat, stack);
+        } else if (heat < 0.0F) {
+            GTUtility.applyFrostDamage(player, -heat);
         }
     }
 
