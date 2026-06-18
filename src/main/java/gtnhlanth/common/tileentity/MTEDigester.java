@@ -189,7 +189,7 @@ public class MTEDigester extends MTEEnhancedMultiBlockBase<MTEDigester> implemen
         // Oil Cracker textures cuz I'm lazy
 
         if (side == facing) {
-            if (active) return new ITexture[] { casingTexturePages[0][47], TextureFactory.builder()
+            if (active) return new ITexture[] { casingTexturePages[0][48], TextureFactory.builder()
                 .addIcon(OVERLAY_FRONT_OIL_CRACKER_ACTIVE)
                 .extFacing()
                 .build(),
@@ -198,7 +198,7 @@ public class MTEDigester extends MTEEnhancedMultiBlockBase<MTEDigester> implemen
                     .extFacing()
                     .glow()
                     .build() };
-            return new ITexture[] { casingTexturePages[0][47], TextureFactory.builder()
+            return new ITexture[] { casingTexturePages[0][48], TextureFactory.builder()
                 .addIcon(OVERLAY_FRONT_OIL_CRACKER)
                 .extFacing()
                 .build(),
@@ -208,7 +208,7 @@ public class MTEDigester extends MTEEnhancedMultiBlockBase<MTEDigester> implemen
                     .glow()
                     .build() };
         }
-        return new ITexture[] { casingTexturePages[0][47] };
+        return new ITexture[] { casingTexturePages[0][48] };
     }
 
     @Override
