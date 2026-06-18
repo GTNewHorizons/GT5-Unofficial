@@ -21,7 +21,6 @@ import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofHatchAdder;
-import static gregtech.api.util.GTUtility.getTier;
 import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.ArrayList;
@@ -760,9 +759,9 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
             int originalMaxParallel = 1;
             int maxParallel = originalMaxParallel;
 
-             // Delete this one before enable overclocking under one tick.
+            // Delete this one before enable overclocking under one tick.
             int maxOverclockTo1Tick = GTUtility.log2(recipe.mDuration / recipe.mInputs.length);
-  
+
             OverclockCalculator calculator = new OverclockCalculator().setRecipeEUt(recipe.mEUt)
                 .setDurationUnderOneTickSupplier(() -> ((double) (recipe.mDuration) / recipe.mInputs.length))
                 .setParallel(originalMaxParallel)
