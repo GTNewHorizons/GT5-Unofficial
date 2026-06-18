@@ -107,8 +107,7 @@ public class MTEDroneCentreGui extends MTEMultiBlockBaseGui<MTEDroneCentre> {
             (k, v) -> new DroneConnectionListPanel(syncManager, multiblock, productionPanel, panels[1], v));
 
         if (syncManager.isClient()) {
-            if (GTMod.proxy.cameraViewportManager != null
-                && GTMod.proxy.cameraViewportManager.activeConnection != null) {
+            if (GTMod.proxy.cameraViewportManager != null && GTMod.proxy.cameraViewportManager.isObservingActive()) {
                 syncManager.addOpenListener(p -> panels[1].openPanel());
             }
         } else {

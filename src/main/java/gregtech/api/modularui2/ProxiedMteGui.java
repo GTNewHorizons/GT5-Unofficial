@@ -14,19 +14,23 @@ import com.cleanroommc.modularui.factory.GuiData;
 import com.cleanroommc.modularui.factory.GuiManager;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.network.NetworkUtils;
+import com.cleanroommc.modularui.screen.ModularContainer;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.ModularScreen;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.GTMod;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.util.FieldsAreNonnullByDefault;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
+import gregtech.common.data.drone.CameraViewportManager;
 
 /**
  * This GUI may be opened when the corresponding TileEntity is not loaded on the client!
@@ -56,11 +60,58 @@ public final class ProxiedMteGui implements IGuiHolder<ProxiedMteGui.ProxiedMteG
     }
 
     public ModularPanel buildUI(ProxiedMteGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
+        syncManager.addCloseListener(player -> {
+            if (syncManager.isClient()) {
+                if (GTMod.proxy.cameraViewportManager != null
+                    && GTMod.proxy.cameraViewportManager.isObservingActive()) {
+                    GTMod.proxy.cameraViewportManager.setSwitchingToRemoteGui(true);
+                }
+            } else if (player instanceof EntityPlayerMP playerMP
+                && CameraViewportManager.sessions.containsKey(player.getUniqueID())) {
+                    CameraViewportManager.reopenDroneGuiOnServer(playerMP);
+                }
+        });
         IGregTechTileEntity base = mte.getBaseMetaTileEntity();
-        return mte.buildUI(
+        ModularPanel panel = mte.buildUI(
             new PosGuiData(data.getPlayer(), base.getXCoord(), base.getYCoord(), base.getZCoord()),
             syncManager,
             uiSettings);
+
+        boolean isRemote;
+        if (syncManager.isClient()) {
+            isRemote = GTMod.proxy.cameraViewportManager != null
+                && GTMod.proxy.cameraViewportManager.isObservingActive();
+        } else {
+            isRemote = GTMod.proxy.cameraViewportManager != null
+                && GTMod.proxy.cameraViewportManager.isObservingActive((EntityPlayerMP) data.getPlayer());
+        }
+
+        final boolean finalIsRemote = isRemote;
+        if (finalIsRemote) {
+            syncManager.onCommonTick(new Runnable() {
+
+                private int tickCount = 0;
+
+                // Lock every slot on remote GUI
+                @Override
+                public void run() {
+                    if (tickCount < 10) {
+                        EntityPlayer player = syncManager.getPlayer();
+                        if (player != null && player.openContainer instanceof ModularContainer mContainer) {
+                            for (Object slotObj : mContainer.inventorySlots) {
+                                if (slotObj instanceof ModularSlot slot) {
+                                    slot.accessibility(false, false);
+                                    slot.canDragInto(false);
+                                }
+                            }
+                        }
+                        tickCount++;
+                    }
+                }
+            });
+        }
+
+        return panel;
     }
 
     final public static class ProxiedMteGuiData extends GuiData {

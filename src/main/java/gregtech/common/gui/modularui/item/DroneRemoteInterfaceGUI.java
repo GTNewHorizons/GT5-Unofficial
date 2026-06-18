@@ -73,8 +73,7 @@ public class DroneRemoteInterfaceGUI {
             (k, v) -> new DroneConnectionListPanel(pSyncManager, multiblock, productionPanel, panels[1], v));
 
         if (pSyncManager.isClient()) {
-            if (GTMod.proxy.cameraViewportManager != null
-                && GTMod.proxy.cameraViewportManager.activeConnection != null) {
+            if (GTMod.proxy.cameraViewportManager != null && GTMod.proxy.cameraViewportManager.isObservingActive()) {
                 pSyncManager.addOpenListener(p -> panels[1].openPanel());
             }
         } else {
