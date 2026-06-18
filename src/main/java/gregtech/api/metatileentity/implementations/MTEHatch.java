@@ -90,6 +90,15 @@ public abstract class MTEHatch extends MTEBasicTank implements ICasingTexturePro
     }
 
     /**
+     * @return {@code true} if gathering this hatch's inputs for a recipe check is expensive (e.g. ME stocking hatches
+     *         that query the AE network per slot per check). The controller uses this to throttle repeated failed
+     *         checks via {@code recipeCheckFailCooldown}; cheap hatches (the default) are never throttled.
+     */
+    public boolean hasExpensiveRecipeCheck() {
+        return false;
+    }
+
+    /**
      * Notifies watchers when this hatch's inventory or tank changed this tick. Relies on
      * {@link IGregTechTileEntity#hasInventoryBeenModified()}, which every relevant insertion path sets (item slots via
      * {@code setInventorySlotContents}/{@code decrStackSize}, the GUI/AE handler via

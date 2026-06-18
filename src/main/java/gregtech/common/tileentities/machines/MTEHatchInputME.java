@@ -187,6 +187,12 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
     }
 
     @Override
+    public boolean hasExpensiveRecipeCheck() {
+        // Each recipe check simulates an AE extraction per configured slot, so throttle repeated failed checks.
+        return true;
+    }
+
+    @Override
     public void onDisableWorking() {
         super.onDisableWorking();
 

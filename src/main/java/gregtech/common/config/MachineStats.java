@@ -106,6 +106,14 @@ public class MachineStats {
         @Config.DefaultBoolean(false)
         @Config.RequiresMcRestart
         public boolean forceFreeFace;
+
+        @Config.Comment({
+            "Minimum ticks an idle multiblock waits after a failed recipe check before it is allowed to run another one.",
+            "Recipe checks are event-driven, so this only throttles repeated FAILED checks; new inputs/successes are unaffected.",
+            "0 (default) keeps checks fully instant. Raise this only if a heavily loaded ME network makes recipe checks expensive",
+            "(for reference, the legacy behaviour was roughly equivalent to 100 ticks)." })
+        @Config.DefaultInt(0)
+        public int recipeCheckFailCooldown;
     }
 
     @Config.LangKey("GT5U.gui.config.machine_stats.mass_fabricator")

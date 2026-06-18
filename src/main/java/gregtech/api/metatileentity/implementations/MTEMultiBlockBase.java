@@ -214,6 +214,17 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     private long lastSeenInputEnergy = 0;
     /** Repair status seen last tick, used to push a recipe check when maintenance is fixed. */
     private int lastRepairStatus = -1;
+    /**
+     * While {@code mTotalRunTime < this}, event-driven rechecks are deferred (the push flag is kept until it expires).
+     * Set after a failed check to {@code now + MachineStats.machines.recipeCheckFailCooldown}; 0 means no cooldown.
+     */
+    private long recipeCheckCooldownUntil = 0;
+    /**
+     * Whether any input hatch reports {@link MTEHatch#hasExpensiveRecipeCheck()} (ME stocking hatches). The fail
+     * cooldown only applies to these machines; everything else stays fully instant regardless of the config.
+     * Recomputed on each structure check.
+     */
+    private boolean hasExpensiveMEInput = false;
 
     protected static final String INPUT_SEPARATION_NBT_KEY = "inputSeparation";
     protected static final String VOID_EXCESS_NBT_KEY = "voidExcess";
@@ -565,6 +576,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             mMachine = structureErrors.isEmpty();
 
             registerHatchWatchers();
+            updateExpensiveMEInputFlag();
             onStructureCheckFinished(aBaseMetaTileEntity);
 
             // The structure may have just completed, or gained coils/energy/output capacity that unblocks a recipe.
@@ -593,6 +605,23 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         // Beamline inputs arrive as a BeamLinePacket outside mInventory, so register for their push.
         for (MTEHatchInputBeamline hatch : mBeamlineInputHatches) {
             hatch.addWatcher(this);
+        }
+    }
+
+    /** Recomputes whether this machine has any input hatch whose recipe check is expensive (ME stocking hatches). */
+    private void updateExpensiveMEInputFlag() {
+        hasExpensiveMEInput = false;
+        for (MTEHatchInputBus bus : mInputBusses) {
+            if (bus.hasExpensiveRecipeCheck()) {
+                hasExpensiveMEInput = true;
+                return;
+            }
+        }
+        for (MTEHatchInput hatch : mInputHatches) {
+            if (hatch.hasExpensiveRecipeCheck()) {
+                hasExpensiveMEInput = true;
+                return;
+            }
         }
     }
 
@@ -755,6 +784,14 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         // current stored energy as the baseline so we re-check the moment it rises.
         waitingForPower = !success && this.checkRecipeResult.isInsufficientPower();
         if (waitingForPower) lastSeenInputEnergy = getStoredEnergyInHatches();
+        // Optional throttle on repeated failed checks (see recipeCheckFailCooldown). Only applies to machines with an
+        // expensive ME stocking input; everything else stays fully instant. Default 0 keeps even those instant.
+        if (success) {
+            recipeCheckCooldownUntil = 0;
+        } else {
+            int cooldown = MachineStats.machines.recipeCheckFailCooldown;
+            recipeCheckCooldownUntil = (cooldown > 0 && hasExpensiveMEInput) ? mTotalRunTime + cooldown : 0;
+        }
         return success;
     }
 
@@ -875,9 +912,12 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             // Check if the machine is enabled in the first place!
             if (aBaseMetaTileEntity.isAllowedToWork()) {
 
-                if (shouldCheckRecipeThisTick(aTick) || aBaseMetaTileEntity.hasWorkJustBeenEnabled()
-                    || aBaseMetaTileEntity.hasInventoryBeenModified()
-                    || shouldRecheckForPower()) {
+                // During a post-failure cooldown, defer event-driven rechecks (the push flag is preserved until it
+                // expires); work-enable always bypasses it. With the default cooldown of 0 this is always off.
+                boolean offCooldown = mTotalRunTime >= recipeCheckCooldownUntil;
+                if (aBaseMetaTileEntity.hasWorkJustBeenEnabled() || (offCooldown
+                    && (shouldCheckRecipeThisTick(aTick) || aBaseMetaTileEntity.hasInventoryBeenModified()
+                        || shouldRecheckForPower()))) {
                     if (checkRecipe()) {
                         markDirty();
                     }
