@@ -73,7 +73,7 @@ public class MTEDigester extends MTEEnhancedMultiBlockBase<MTEDigester> implemen
             't',
             buildHatchAdder(MTEDigester.class)
                 .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy, Muffler)
-                .casingIndex(47)
+                .casingIndex(48) // Robust Tungstensteel Machine Casing
                 .hint(1)
                 .buildAndChain(onElementPass(MTEDigester::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings4, 0))))
         .addElement('h', ofBlock(GregTechAPI.sBlockCasings1, 11))
