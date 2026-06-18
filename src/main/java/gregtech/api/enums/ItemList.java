@@ -1516,6 +1516,11 @@ public enum ItemList implements IItemContainer {
 
     Machine_Multi_IndustrialBrewery,
 
+    Machine_Multi_Biodome,
+    Biodome_Casing,
+    Biodome_Glass,
+    Holographic_Floor,
+
     Machine_Multi_Spinmatron,
     Spinmatron_Casing,
     Spinmatron_Chamber_Grate,

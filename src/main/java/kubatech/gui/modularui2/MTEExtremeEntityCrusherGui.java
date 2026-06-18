@@ -16,6 +16,7 @@ import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.value.sync.StringSyncValue;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.ToggleButton;
@@ -40,6 +41,7 @@ public class MTEExtremeEntityCrusherGui extends KubaTechGTMultiBlockBaseGUI<MTEE
     private BooleanSyncValue ritualValidSyncer;
     private BooleanSyncValue preventingGUIWeaponUseSyncer;
     private IntSyncValue maxProgressSyncer;
+    private StringSyncValue biodomeDimSyncer;
 
     public MTEExtremeEntityCrusherGui(MTEExtremeEntityCrusher multiblock) {
         super(multiblock);
@@ -87,11 +89,24 @@ public class MTEExtremeEntityCrusherGui extends KubaTechGTMultiBlockBaseGUI<MTEE
             () -> multiblock.mMaxProgresstime,
             val -> multiblock.mMaxProgresstime = val);
         syncManager.syncValue("eecMaxProgress", maxProgressSyncer);
+
+        biodomeDimSyncer = new StringSyncValue(multiblock::getBiodomeDimensionName);
+        syncManager.syncValue("biodomeDimension", biodomeDimSyncer);
     }
 
     @Override
     protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {
         return super.createTerminalTextWidget(syncManager, parent)
+            .child(
+                IKey.dynamic(
+                    () -> StatCollector
+                        .translateToLocalFormatted("GT5U.gui.text.biodome_active", biodomeDimSyncer.getValue()))
+                    .asWidget()
+                    .textAlign(Alignment.CenterLeft)
+                    .fullWidth()
+                    .setEnabledIf(
+                        w -> !biodomeDimSyncer.getValue()
+                            .isEmpty()))
             .child(
                 IKey.dynamic(
                     () -> ritualValidSyncer.getBoolValue()

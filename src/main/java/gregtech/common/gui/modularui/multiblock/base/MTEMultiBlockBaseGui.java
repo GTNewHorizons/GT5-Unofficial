@@ -461,7 +461,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
         });
     }
 
-    private static final int DISPLAY_ROW_HEIGHT = 15;
+    protected static final int DISPLAY_ROW_HEIGHT = 15;
     private static final int DISPLAY_ROW_CHAR_LIMIT = 46;
 
     private IWidget createItemRecipeInfo(PacketBuffer packet, PanelSyncManager syncManager) {
@@ -575,7 +575,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
                     || Predicates.isNonEmptyList(syncManager.getSyncHandlerFromMapKey("fluidOutput:0")));
     }
 
-    private ItemDisplayWidget createItemDrawable(ItemDisplayKey key) {
+    protected ItemDisplayWidget createItemDrawable(ItemDisplayKey key) {
         // Second argument is stacksize, don't care about it
         ItemStack itemStack = new ItemStack(key.item(), 1, key.damage());
         itemStack.setTagCompound(key.nbt());

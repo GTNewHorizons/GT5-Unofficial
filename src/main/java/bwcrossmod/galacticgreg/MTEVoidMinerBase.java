@@ -37,6 +37,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import com.cleanroommc.modularui.utils.item.ItemStackHandler;
 import com.google.common.collect.ImmutableList;
@@ -47,10 +48,13 @@ import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import galacticgreg.api.ModDimensionDef;
 import galacticgreg.api.enums.DimensionDef;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
+import gregtech.api.interfaces.IBiodomeCompatible;
 import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
@@ -69,7 +73,7 @@ import gregtech.common.tileentities.machines.multi.MTEDrillerBase;
 import gtneioreplugin.util.DimensionHelper;
 
 public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MTEEnhancedMultiBlockBase<T>
-    implements ISurvivalConstructable, IDataCopyable {
+    implements ISurvivalConstructable, IBiodomeCompatible, IDataCopyable {
 
     public static final String COPIED_DATA_IDENTIFIER = "voidMiner";
 
@@ -85,6 +89,14 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
 
     public ItemStackHandler selected = new ItemStackHandler();
     public boolean blacklist = false;
+
+    @Nullable
+    private String biodomeDimensionName;
+
+    @NotNull
+    public String getBiodomeDimensionName() {
+        return biodomeDimensionName != null ? biodomeDimensionName : "";
+    }
 
     public MTEVoidMinerBase(int aID, String aName, String aNameRegional, int tier) {
         super(aID, aName, aNameRegional);
@@ -275,7 +287,12 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
         this.totalWeight = 0;
         this.canVoidMine = false;
 
-        dimensionDef = DimensionDef.getDefForWorld(getBaseMetaTileEntity().getWorld());
+        String override = getBiodomeDimensionName();
+        if (!override.isEmpty()) {
+            dimensionDef = DimensionDef.getDefByName(override);
+        } else {
+            dimensionDef = DimensionDef.getDefForWorld(getBaseMetaTileEntity().getWorld());
+        }
 
         if (dimensionDef == null || !dimensionDef.canBeVoidMined()) return;
 
@@ -473,5 +490,47 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
             EnumChatFormatting.GOLD,
             boost,
             EnumChatFormatting.GRAY);
+    }
+
+    @Override
+    public NBTTagCompound getDescriptionData() {
+        NBTTagCompound data = super.getDescriptionData();
+        if (data == null) data = new NBTTagCompound();
+        if (biodomeDimensionName != null) {
+            data.setString("biodomeDim", biodomeDimensionName);
+        }
+        return data;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void onDescriptionPacket(NBTTagCompound data) {
+        super.onDescriptionPacket(data);
+        String oldOverride = this.biodomeDimensionName;
+        if (data.hasKey("biodomeDim")) {
+            this.biodomeDimensionName = data.getString("biodomeDim");
+        } else {
+            this.biodomeDimensionName = null;
+        }
+        if (!java.util.Objects.equals(oldOverride, this.biodomeDimensionName)) {
+            recalculateDropMapAndResizeSelection();
+        }
+    }
+
+    private void recalculateDropMapAndResizeSelection() {
+        calculateDropMap();
+        if (this.dropMap != null) {
+            int size = dropMap.getOres().length;
+            if (selected.getSlots() != size) selected.setSize(size);
+        }
+    }
+
+    @Override
+    public void updateBiodome(@Nullable String dimensionName) {
+        this.biodomeDimensionName = dimensionName;
+        if (this.getBaseMetaTileEntity() != null) {
+            recalculateDropMapAndResizeSelection();
+            getBaseMetaTileEntity().issueTileUpdate();
+        }
     }
 }

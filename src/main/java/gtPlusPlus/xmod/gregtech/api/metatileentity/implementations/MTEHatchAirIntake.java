@@ -4,19 +4,24 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 
+import org.jetbrains.annotations.Nullable;
+
 import com.gtnewhorizons.modularui.common.widget.FluidSlotWidget;
 
+import galacticgreg.api.enums.DimensionDef;
 import gregtech.api.enums.Materials;
+import gregtech.api.interfaces.IBiodomeCompatible;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.util.Utils;
-import toxiceverglades.dimension.DimensionEverglades;
 
 @IMetaTileEntity.SkipGenerateDescription
-public class MTEHatchAirIntake extends MTEHatchFluidGenerator {
+public class MTEHatchAirIntake extends MTEHatchFluidGenerator implements IBiodomeCompatible {
+
+    private String biodomeDimensionName;
 
     public MTEHatchAirIntake(final int aID, final String aName, final String aNameRegional, final int aTier) {
         super(aID, aName, aNameRegional, aTier);
@@ -42,13 +47,15 @@ public class MTEHatchAirIntake extends MTEHatchFluidGenerator {
 
     @Override
     public Fluid getFluidToGenerate() {
-        int id = this.getBaseMetaTileEntity()
-            .getWorld().provider.dimensionId;
-        if (id == DimensionEverglades.DIMID) {
-            return Materials.ToxicAir.mGas;
+        String id = biodomeDimensionName;
+        if (id == null || id.isEmpty()) {
+            id = getBaseMetaTileEntity().getWorld().provider.getDimensionName();
         }
-        if (id == -1) {
+
+        if (id.equals(DimensionDef.Nether.name())) {
             return Materials.NetherAir.mFluid;
+        } else if (id.equals(DimensionDef.Everglades.name())) {
+            return Materials.ToxicAir.mGas;
         } else {
             return Materials.Air.getGas(1)
                 .getFluid();
@@ -141,5 +148,10 @@ public class MTEHatchAirIntake extends MTEHatchFluidGenerator {
     @Override
     protected FluidSlotWidget createFluidSlot() {
         return super.createFluidSlot().setFilter(f -> f == Materials.Air.mGas);
+    }
+
+    @Override
+    public void updateBiodome(@Nullable String dimensionName) {
+        this.biodomeDimensionName = dimensionName;
     }
 }
