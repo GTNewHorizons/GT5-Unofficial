@@ -807,6 +807,9 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
             tList.add(
                 "Machine is " + (mActive ? EnumChatFormatting.GREEN + "active" + EnumChatFormatting.RESET
                     : EnumChatFormatting.RED + "inactive" + EnumChatFormatting.RESET));
+            tList.add(
+                "Machine is " + ((isAllowedToWork() ? EnumChatFormatting.GREEN + "allowed" + EnumChatFormatting.RESET
+                    : EnumChatFormatting.RED + "not allowed") + EnumChatFormatting.RESET + " to work"));
             if (!mHasEnoughEnergy) tList
                 .add(EnumChatFormatting.RED + "ATTENTION: This Device needs more power." + EnumChatFormatting.RESET);
         }
