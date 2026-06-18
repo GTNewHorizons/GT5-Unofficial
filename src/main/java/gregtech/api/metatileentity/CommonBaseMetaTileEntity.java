@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.IllegalFormatException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -29,6 +30,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.gui.modularui.GUITextureSet;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
+import gregtech.api.interfaces.INonConsumedItemDisplay;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
@@ -562,15 +564,33 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
 
     @Override
     public String getInterfaceNameSuffix() {
+        StringBuilder suffix = new StringBuilder();
+
+        // Ghost circuit suffix
         final IConfigurationCircuitSupport ccs = getConfigurationCircuitSupport();
-        if (ccs == null || !ccs.allowSelectCircuit()) return null;
-        ItemStack stack = getStackInSlot(ccs.getCircuitSlot());
-        if (stack == null || stack.getItemDamage() <= 0) return null;
-        try {
-            return String.format(Gregtech.machines.ghostCircuitSuffixFormat, stack.getItemDamage());
-        } catch (IllegalFormatException e) {
-            return "";
+        if (ccs != null && ccs.allowSelectCircuit()) {
+            ItemStack stack = getStackInSlot(ccs.getCircuitSlot());
+            if (stack != null && stack.getItemDamage() > 0) {
+                try {
+                    suffix.append(String.format(Gregtech.machines.ghostCircuitSuffixFormat, stack.getItemDamage()));
+                } catch (IllegalFormatException ignored) {}
+            }
         }
+
+        // Non-consumed items suffix (e.g. molds in Extruder)
+        if (hasValidMetaTileEntity() && getMetaTileEntity() instanceof INonConsumedItemDisplay provider) {
+            List<ItemStack> items = provider.getNonConsumedInputDisplayItems();
+            if (!items.isEmpty()) {
+                String joined = items.stream()
+                    .map(ItemStack::getDisplayName)
+                    .collect(Collectors.joining(", "));
+                try {
+                    suffix.append(String.format(Gregtech.machines.itemSlotsSuffixFormat, joined));
+                } catch (IllegalFormatException ignored) {}
+            }
+        }
+
+        return suffix.length() > 0 ? suffix.toString() : null;
     }
 
     @Override

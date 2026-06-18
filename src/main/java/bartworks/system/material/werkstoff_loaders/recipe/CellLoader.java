@@ -15,6 +15,8 @@ package bartworks.system.material.werkstoff_loaders.recipe;
 
 import static gregtech.api.enums.OrePrefixes.cell;
 import static gregtech.api.enums.OrePrefixes.dust;
+import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
+import static gregtech.api.recipe.RecipeMaps.electrolyzerRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidSolidifierRecipes;
 import static gregtech.api.recipe.RecipeMaps.scannerFakeRecipes;
@@ -31,6 +33,7 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import bartworks.system.material.Werkstoff;
 import bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
+import bartworks.util.BWUtil;
 import gregtech.api.enums.Element;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -40,10 +43,8 @@ import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.recipe.RecipeCategories;
-import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTOreDictUnificator;
-import gregtech.api.util.GTRecipe;
 import gregtech.common.items.behaviors.BehaviourDataOrb;
 
 public class CellLoader implements IWerkstoffRunnable {
@@ -155,25 +156,23 @@ public class CellLoader implements IWerkstoffRunnable {
                         }
                     }
                 }
-                ItemStack input = werkstoff.get(cell);
-                input.stackSize = 1;
+                ItemStack werkstoffCell = werkstoff.get(cell);
+                werkstoffCell.stackSize = 1;
 
                 int cellEmpty = cells - 1;
 
-                stOutputs.add(Materials.Empty.getCells(-cellEmpty));
+                if (cellEmpty < 0) {
+                    stOutputs.add(Materials.Empty.getCells(-cellEmpty));
+                }
                 if (werkstoff.getStats()
                     .isElektrolysis())
-                    RecipeMaps.electrolyzerRecipes.add(
-                        new GTRecipe(
-                            new ItemStack[] { input, cellEmpty > 0 ? Materials.Empty.getCells(cellEmpty) : null },
-                            stOutputs.toArray(new ItemStack[0]),
-                            null,
-                            null,
-                            null,
-                            null,
-                            null,
-                            new FluidStack[] { null },
-                            new FluidStack[] { !flOutputs.isEmpty() ? flOutputs.get(0) : null },
+                    GTValues.RA.stdBuilder()
+                        .itemInputs(
+                            cellEmpty > 0 ? new ItemStack[] { werkstoffCell, Materials.Empty.getCells(cellEmpty) }
+                                : new ItemStack[] { werkstoffCell })
+                        .itemOutputs(stOutputs.toArray(new ItemStack[0]))
+                        .fluidOutputs(flOutputs.isEmpty() ? new FluidStack[0] : new FluidStack[] { flOutputs.get(0) })
+                        .duration(
                             (int) Math.max(
                                 1L,
                                 Math.abs(
@@ -181,27 +180,26 @@ public class CellLoader implements IWerkstoffRunnable {
                                         .getProtons()
                                         * werkstoff.getContents()
                                             .getValue()
-                                            .size())),
-                            Math.min(
-                                4,
-                                werkstoff.getContents()
-                                    .getValue()
-                                    .size())
-                                * 30,
-                            0));
+                                            .size())))
+                        .eut(
+                            BWUtil.calculateRecipeEU(
+                                werkstoff,
+                                Math.min(
+                                    4,
+                                    werkstoff.getContents()
+                                        .getValue()
+                                        .size())
+                                    * 30))
+                        .addTo(electrolyzerRecipes);
                 if (werkstoff.getStats()
                     .isCentrifuge())
-                    RecipeMaps.centrifugeRecipes.add(
-                        new GTRecipe(
-                            new ItemStack[] { input, cellEmpty > 0 ? Materials.Empty.getCells(cellEmpty) : null },
-                            stOutputs.toArray(new ItemStack[0]),
-                            null,
-                            null,
-                            null,
-                            null,
-                            null,
-                            new FluidStack[] { null },
-                            new FluidStack[] { !flOutputs.isEmpty() ? flOutputs.get(0) : null },
+                    GTValues.RA.stdBuilder()
+                        .itemInputs(
+                            cellEmpty > 0 ? new ItemStack[] { werkstoffCell, Materials.Empty.getCells(cellEmpty) }
+                                : new ItemStack[] { werkstoffCell })
+                        .itemOutputs(stOutputs.toArray(new ItemStack[0]))
+                        .fluidOutputs(flOutputs.isEmpty() ? new FluidStack[0] : new FluidStack[] { flOutputs.get(0) })
+                        .duration(
                             (int) Math.max(
                                 1L,
                                 Math.abs(
@@ -209,14 +207,17 @@ public class CellLoader implements IWerkstoffRunnable {
                                         .getMass()
                                         * werkstoff.getContents()
                                             .getValue()
-                                            .size())),
-                            Math.min(
-                                4,
-                                werkstoff.getContents()
-                                    .getValue()
-                                    .size())
-                                * 5,
-                            0));
+                                            .size())))
+                        .eut(
+                            BWUtil.calculateRecipeEU(
+                                werkstoff,
+                                Math.min(
+                                    4,
+                                    werkstoff.getContents()
+                                        .getValue()
+                                        .size())
+                                    * 5))
+                        .addTo(centrifugeRecipes);
             } else {
                 GTLog.err.println(
                     "Autogenerated recipe(s) using Werkstoff material '" + werkstoff.getDefaultName()
@@ -240,8 +241,10 @@ public class CellLoader implements IWerkstoffRunnable {
                     werkstoff.getStats()
                         .getMass())
                 .eut(
-                    werkstoff.getStats()
-                        .getMass() > 128 ? 64 : 30)
+                    BWUtil.calculateRecipeEU(
+                        werkstoff,
+                        werkstoff.getStats()
+                            .getMass() > 128 ? 64 : 30))
                 .recipeCategory(RecipeCategories.fluidExtractorRecycling)
                 .addTo(fluidExtractionRecipes);
 
@@ -253,8 +256,10 @@ public class CellLoader implements IWerkstoffRunnable {
                     (int) werkstoff.getStats()
                         .getMass())
                 .eut(
-                    werkstoff.getStats()
-                        .getMass() > 128 ? 64 : 30)
+                    BWUtil.calculateRecipeEU(
+                        werkstoff,
+                        werkstoff.getStats()
+                            .getMass() > 128 ? 64 : 30))
                 .addTo(fluidSolidifierRecipes);
 
         }
@@ -290,7 +295,7 @@ public class CellLoader implements IWerkstoffRunnable {
                 .itemOutputs(scannerOutput)
                 .special(ItemList.Tool_DataOrb.get(1L))
                 .duration(werkstoffBridgeMaterial.getMass() * 8192)
-                .eut(TierEU.RECIPE_LV)
+                .eut(BWUtil.calculateRecipeEU(werkstoff, (int) TierEU.RECIPE_LV))
                 .ignoreCollision()
                 .fake()
                 .addTo(scannerFakeRecipes);

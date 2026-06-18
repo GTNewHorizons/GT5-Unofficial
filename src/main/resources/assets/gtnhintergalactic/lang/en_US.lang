@@ -124,6 +124,9 @@ item.NtNanofibers.name=Neutronium Nanofibers
 item.UHTResistantMesh.name=Ultra High Temperature Resistant Mesh
 item.TaHfNanoparticles.name=Tantalum Hafnium Carbide Nanoparticles
 item.NtNanoparticles.name=Neutronium Nanoparticles
+item.droneCase.name=Corona-Resistant Drone Case
+item.femtocontroller.name=Magnetically Shielded Femtocontroller
+item.fuelPellet.name=Hyperfine TrNq+ Radioisomer Pellet
 
 # Blocks
 gt.blockcasingsSE.name=Space Elevator Part

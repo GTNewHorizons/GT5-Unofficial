@@ -10,12 +10,14 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 
 import org.jetbrains.annotations.NotNull;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
@@ -81,8 +83,20 @@ public class BlockBaseModular extends BasicBlock {
                 .registerOre("block" + unifyMaterialName(materialName), new ItemStack(this));
             case FRAME, ORE -> GTOreDictUnificator
                 .registerOre("frameGt" + unifyMaterialName(materialName), new ItemStack(this));
-
         }
+        if (blockType == BlockTypes.FRAME) GregTechAPI.registerMachineBlock(this, -1);
+    }
+
+    @Override
+    public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
+        if (blockType == BlockTypes.FRAME) GregTechAPI.causeMachineUpdate(world, x, y, z);
+        super.breakBlock(world, x, y, z, block, meta);
+    }
+
+    @Override
+    public void onBlockAdded(World world, int x, int y, int z) {
+        if (blockType == BlockTypes.FRAME) GregTechAPI.causeMachineUpdate(world, x, y, z);
+        super.onBlockAdded(world, x, y, z);
     }
 
     public static String unifyMaterialName(String rawMaterName) {
