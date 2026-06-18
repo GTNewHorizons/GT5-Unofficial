@@ -766,7 +766,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
                 .setDurationUnderOneTickSupplier(() -> ((double) (recipe.mDuration) / recipe.mInputs.length))
                 .setParallel(originalMaxParallel)
                 .setEUt(inputEUt / recipe.mInputs.length)
-                .setMaxRegularOverclocks(maxOverclockTo1Tick);
+                .setMaxOverclocks(maxOverclockTo1Tick);
 
             // Disabled to disable overclocking under one tick.
             /*

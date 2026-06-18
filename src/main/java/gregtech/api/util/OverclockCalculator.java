@@ -37,8 +37,6 @@ public class OverclockCalculator {
     protected boolean amperageOC;
     /** Maximum number of overclocks to perform. Defaults to no limit. */
     protected int maxOverclocks = Integer.MAX_VALUE;
-    /** Maximum number of regular overclocks to perform before exotic (e.g. laser) overclocks. Defaults to no limit. */
-    protected int maxRegularOverclocks = Integer.MAX_VALUE;
     /** How many overclocks have been performed */
     protected int overclocks = 0;
     /** Should we actually try to calculate overclocking */
@@ -227,16 +225,6 @@ public class OverclockCalculator {
     @Nonnull
     public OverclockCalculator setMaxOverclocks(int maxOverclocks) {
         this.maxOverclocks = Math.max(maxOverclocks, 0);
-        return this;
-    }
-
-    /**
-     * Sets the maximum number of regular overclocks that can be performed before exotic (e.g. laser) overclocks,
-     * regardless of how much power is available. Negative values are rounded up to 0.
-     */
-    @Nonnull
-    public OverclockCalculator setMaxRegularOverclocks(int maxRegularOverclocks) {
-        this.maxRegularOverclocks = Math.max(maxRegularOverclocks, 0);
         return this;
     }
 
