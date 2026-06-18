@@ -41,7 +41,8 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 @IMetaTileEntity.SkipGenerateDescription
-public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDualInputHatchWithPattern, IDataCopyable {
+public final class MTEHatchCraftingInputSlave extends MTEHatchInputBus
+    implements IDualInputHatchWithPattern, IDataCopyable {
 
     @Override
     protected boolean useMui2() {
@@ -49,6 +50,7 @@ public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDua
     }
 
     public static final String COPIED_DATA_IDENTIFIER = "craftingInputProxy";
+    private final List<IHatchWatcher> watchers = new ArrayList<>();
     private MTEHatchCraftingInputME master; // use getMaster() to access
     private int masterX, masterY, masterZ;
     private boolean masterSet = false; // indicate if values of masterX, masterY, masterZ are valid
@@ -187,8 +189,19 @@ public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDua
     }
 
     @Override
-    public boolean justUpdated() {
-        return getMaster() != null && getMaster().justUpdated();
+    public void addWatcher(IHatchWatcher watcher) {
+        watchers.add(watcher);
+    }
+
+    @Override
+    public void removeWatcher(IHatchWatcher watcher) {
+        watchers.remove(watcher);
+    }
+
+    public void onParentInvChange() {
+        for (IHatchWatcher watcher : watchers) {
+            watcher.scheduleRecipeCheckImmediate();
+        }
     }
 
     public MTEHatchCraftingInputME trySetMasterFromCoord(int x, int y, int z) {

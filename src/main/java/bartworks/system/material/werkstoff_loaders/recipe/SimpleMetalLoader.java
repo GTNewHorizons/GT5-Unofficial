@@ -31,11 +31,11 @@ import bartworks.client.textures.PrefixTextureLinker;
 import bartworks.system.material.Werkstoff;
 import bartworks.system.material.WerkstoffLoader;
 import bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
+import bartworks.util.BWUtil;
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.TextureSet;
-import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
@@ -55,7 +55,7 @@ public class SimpleMetalLoader implements IWerkstoffRunnable {
                             werkstoff.getStats()
                                 .getMass() * 5L,
                             1L))
-                    .eut(TierEU.RECIPE_LV / 2)
+                    .eut(BWUtil.calculateRecipeEU(werkstoff, 16))
                     .addTo(latheRecipes);
 
                 GTModHandler.addCraftingRecipe(
@@ -75,7 +75,7 @@ public class SimpleMetalLoader implements IWerkstoffRunnable {
                             werkstoff.getStats()
                                 .getMass(),
                             1L))
-                    .eut(TierEU.RECIPE_LV / 2)
+                    .eut(BWUtil.calculateRecipeEU(werkstoff, 16))
                     .addTo(hammerRecipes);
 
                 TextureSet texSet = werkstoff.getTexSet();
@@ -116,7 +116,7 @@ public class SimpleMetalLoader implements IWerkstoffRunnable {
                         werkstoff.getStats()
                             .getMass(),
                         1L))
-                .eut(24)
+                .eut(BWUtil.calculateRecipeEU(werkstoff, 24))
                 .addTo(benderRecipes);
 
             GTValues.RA.stdBuilder()
@@ -127,7 +127,7 @@ public class SimpleMetalLoader implements IWerkstoffRunnable {
                         werkstoff.getStats()
                             .getMass(),
                         1L))
-                .eut(TierEU.RECIPE_LV / 2)
+                .eut(BWUtil.calculateRecipeEU(werkstoff, 16))
                 .addTo(hammerRecipes);
 
             CoverRegistry.registerDecorativeCover(
@@ -142,7 +142,7 @@ public class SimpleMetalLoader implements IWerkstoffRunnable {
                         werkstoff.getStats()
                             .getMass() * 5L,
                         1L))
-                .eut(TierEU.RECIPE_LV / 2)
+                .eut(BWUtil.calculateRecipeEU(werkstoff, 16))
                 .addTo(latheRecipes);
 
             if (werkstoff != WerkstoffLoader.Fluorophlogopite) {
@@ -155,7 +155,7 @@ public class SimpleMetalLoader implements IWerkstoffRunnable {
                             werkstoff.getStats()
                                 .getMass(),
                             1L))
-                    .eut(24)
+                    .eut(BWUtil.calculateRecipeEU(werkstoff, 24))
                     .addTo(benderRecipes);
             }
 
@@ -168,7 +168,7 @@ public class SimpleMetalLoader implements IWerkstoffRunnable {
                         werkstoff.getStats()
                             .getMass() * 2L,
                         1L))
-                .eut(24)
+                .eut(BWUtil.calculateRecipeEU(werkstoff, 24))
                 .addTo(benderRecipes);
 
             GTValues.RA.stdBuilder()
@@ -179,8 +179,11 @@ public class SimpleMetalLoader implements IWerkstoffRunnable {
                         werkstoff.getStats()
                             .getMass(),
                         1L))
-                .eut(TierEU.RECIPE_LV / 2)
+                .eut(BWUtil.calculateRecipeEU(werkstoff, 16))
                 .addTo(hammerRecipes);
+
+            int voltageMultiplier = werkstoff.getStats()
+                .getMeltingPoint() >= 2800 ? 60 : 15;
 
             GTValues.RA.stdBuilder()
                 .itemInputs(werkstoff.get(ingot), ItemList.Shape_Extruder_Plate.get(0))
@@ -188,9 +191,9 @@ public class SimpleMetalLoader implements IWerkstoffRunnable {
                 .duration(
                     (int) Math.max(
                         werkstoff.getStats()
-                            .getMass() * 2L,
+                            .getMass(),
                         1L))
-                .eut(45)
+                .eut(BWUtil.calculateRecipeEU(werkstoff, 8 * voltageMultiplier))
                 .addTo(extruderRecipes);
 
             GTValues.RA.stdBuilder()
@@ -201,7 +204,7 @@ public class SimpleMetalLoader implements IWerkstoffRunnable {
                         werkstoff.getStats()
                             .getMass() * 2L,
                         1L))
-                .eut(45)
+                .eut(BWUtil.calculateRecipeEU(werkstoff, 6 * voltageMultiplier))
                 .addTo(extruderRecipes);
         }
     }

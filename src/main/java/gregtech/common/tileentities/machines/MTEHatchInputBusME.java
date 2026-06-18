@@ -6,6 +6,7 @@ import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_INPUT_HATCH;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_INPUT_HATCH_ACTIVE;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.Iterator;
@@ -100,6 +101,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
     protected boolean additionalConnection = false;
     protected boolean justHadNewItems = false;
     protected boolean expediteRecipeCheck = false;
+    private final List<IHatchWatcher> watchers = new ArrayList<>();
     /**
      * The cached activity for this bus. Only valid while processing a recipe. This avoids several expensive operations.
      */
@@ -138,6 +140,12 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
         if (aBaseMetaTileEntity.isServerSide()) {
             if (aTimer % autoPullRefreshTime == 0 && autoPullItemList) {
                 refreshItemList();
+                if (justHadNewItems && expediteRecipeCheck) {
+                    for (var multi : watchers) {
+                        multi.scheduleRecipeCheckImmediate();
+                    }
+                    justHadNewItems = false;
+                }
             }
             if (aTimer % 20 == 0) {
                 aBaseMetaTileEntity.setActive(isActive());
@@ -361,7 +369,6 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
         }
     }
 
-    @Override
     public boolean doFastRecipeCheck() {
         return expediteRecipeCheck;
     }
@@ -616,13 +623,13 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
     }
 
     @Override
-    public boolean justUpdated() {
-        if (expediteRecipeCheck && isAllowedToWork()) {
-            boolean ret = justHadNewItems;
-            justHadNewItems = false;
-            return ret;
-        }
-        return false;
+    public void addWatcher(IHatchWatcher watcher) {
+        watchers.add(watcher);
+    }
+
+    @Override
+    public void removeWatcher(IHatchWatcher watcher) {
+        watchers.remove(watcher);
     }
 
     @Override

@@ -178,17 +178,9 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>, F extends MEFi
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
         if (aPlayer.isSneaking()) {
-            checkMode = !checkMode;
-            GTUtility.sendChatTrans(aPlayer, "GT5U.hatch.outputme.checkMode." + this.checkMode);
-            if (checkMode) {
-                GTUtility.sendChatTrans(aPlayer, "GT5U.hatch.outputme.checkMode.desc");
-            }
+            setCheckMode(!checkMode);
         } else {
-            cacheMode = !cacheMode;
-            GTUtility.sendChatTrans(aPlayer, "GT5U.hatch.outputme.cacheMode." + this.cacheMode);
-            if (cacheMode) {
-                GTUtility.sendChatTrans(aPlayer, "GT5U.hatch.outputme.cacheMode.desc");
-            }
+            setCacheMode(!cacheMode);
             updateState();
             cellToCacheTransfer();
             this.updateCellArray();
@@ -403,12 +395,7 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>, F extends MEFi
     }
 
     long lastOutputTick = 0;
-    long lastInputTick = 0;
     long tickCounter = 0;
-
-    public final long getLastInputTick() {
-        return lastInputTick;
-    }
 
     public final long getTickCounter() {
         return tickCounter;
@@ -422,13 +409,12 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>, F extends MEFi
         return getCacheCapacity() - getCachedAmount();
     }
 
-    public boolean canAcceptAnyInput() {
-        if (shouldCheck()) return false;
-        return lastInputTick == tickCounter || hasAvailableSpace();
-    }
-
     public long getCachedAmount() {
         return cache.getTotal();
+    }
+
+    public long getCachedAmount(T key) {
+        return cache.get(key);
     }
 
     /**
@@ -452,9 +438,9 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>, F extends MEFi
         if (baseCapacity != DEFAULT_CAPACITY) aNBT.setLong("baseCapacity", baseCapacity);
     }
 
-    protected void flushCachedStack() {
+    public void flushCachedStack() {
         var proxy = getProxy();
-        if (!proxy.isActive() || cache.isEmpty()) return;
+        if (cache.isEmpty() || !proxy.isActive()) return;
         try {
             final IEnergySource energy = proxy.getEnergy();
             IMEInventory<T> sg = (cacheMode && cell != null) ? cell : env.getNetworkInvtory();
@@ -489,26 +475,13 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>, F extends MEFi
 
     public void setCheckMode(boolean cacheMode) {
         this.checkMode = cacheMode;
-    }
-
-    public boolean canStore(@NotNull I stack) {
-        if (shouldCheck()) {
-            T input = filter.fromNative(stack);
-            input.setStackSize(input.getStackSize() + cache.get(input));
-            final T returns = cell.injectItems(input, Actionable.SIMULATE, env.getActionSource());
-            return returns == null || returns.getStackSize() == 0;
+        EntityPlayer p = env.getLastClickedPlayer();
+        if (p != null && GTUtility.isServer()) {
+            GTUtility.sendChatTrans(p, "GT5U.hatch.outputme.checkMode." + this.checkMode);
+            if (checkMode) {
+                GTUtility.sendChatTrans(p, "GT5U.hatch.outputme.checkMode.desc");
+            }
         }
-        return hasAvailableSpace() && filter.isAllowed(stack);
-    }
-
-    public boolean canStore(@NotNull I stack, long size) {
-        if (shouldCheck()) {
-            T input = filter.fromNative(stack);
-            input.setStackSize(size);
-            final T returns = cell.injectItems(input, Actionable.SIMULATE, env.getActionSource());
-            return returns == null || returns.getStackSize() == 0;
-        }
-        return hasAvailableSpace() && filter.isAllowed(stack);
     }
 
     public void addToCache(@NotNull I stack) {
@@ -521,23 +494,28 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>, F extends MEFi
         }
     }
 
-    public void storeToCache(@NotNull T stack) {
-        addToCache(stack);
-        lastInputTick = tickCounter;
-    }
-
-    public void storeToCache(@NotNull I stack) {
-        storeToCache(filter.fromNative(stack));
-    }
-
-    public boolean storePartial(@NotNull I stack, boolean simulate) {
-        if (lastInputTick != tickCounter && !canStore(stack)) {
-            return false;
+    /**
+     * Attempt to store as many stacks as possible into the storage of this output.
+     *
+     * @param input    The stack to insert. Will be modified by this method (will contain whatever stacks could not be
+     *                 inserted; stackSize will be 0 when everything was inserted).
+     * @param simulate When true this output will not be modified.
+     * @return True if the stack was fully inserted into the output, false otherwise.
+     */
+    public boolean storePartial(@NotNull T input, boolean simulate) {
+        if (simulate && shouldCheck()) {
+            input.setStackSize(input.getStackSize() + cache.get(input));
+            final T rejected = cell.injectItems(input, Actionable.SIMULATE, env.getActionSource());
+            input.setStackSize(Math.min(input.getStackSize(), rejected == null ? 0 : rejected.getStackSize()));
+            return input.getStackSize() == 0;
         }
+        if (simulate && !hasAvailableSpace()) return false;
+        if (!filter.isAllowed(input)) return false;
         if (!simulate) {
-            storeToCache(stack);
+            addToCache(input);
             env.dispatchMarkDirty();
         }
+        input.setStackSize(0);
         return true;
     }
 
@@ -556,6 +534,13 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>, F extends MEFi
     public void setCacheMode(boolean cacheMode) {
         this.cacheMode = cacheMode;
         updateState();
+        EntityPlayer p = env.getLastClickedPlayer();
+        if (p != null && GTUtility.isServer()) {
+            GTUtility.sendChatTrans(p, "GT5U.hatch.outputme.cacheMode." + this.cacheMode);
+            if (cacheMode) {
+                GTUtility.sendChatTrans(p, "GT5U.hatch.outputme.cacheMode.desc");
+            }
+        }
     }
 
     public void saveNBTData(NBTTagCompound aNBT) {
