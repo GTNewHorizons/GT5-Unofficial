@@ -1,7 +1,6 @@
 package gregtech.common.items.armor;
 
 import static gregtech.api.enums.Mods.GregTech;
-import static gregtech.api.items.armor.ArmorHelper.SLOT_CHEST;
 import static gregtech.api.items.armor.ArmorHelper.SLOT_LEGS;
 import static gregtech.api.util.GTUtility.getOrCreateNbtCompound;
 
@@ -298,7 +297,7 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISp
 
         ArmorState state = ArmorState.load(itemStack);
 
-        model.jettank1.showModel = (armorSlot == SLOT_CHEST && state.hasBehavior(BehaviorName.Jetpack));
+        model.jettank1.showModel = (armorSlot == 1 && state.hasBehavior(BehaviorName.Jetpack));
 
         model.core1.showModel = false;
         model.core2.showModel = false;
