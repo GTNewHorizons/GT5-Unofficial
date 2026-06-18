@@ -13,6 +13,7 @@ public interface IAllSidedTexturedTileEntity extends ITexturedTileEntity {
     /**
      * @return the Textures rendered by the GT Rendering
      */
+    @Override
     default ITexture[] getTexture(Block aBlock, ForgeDirection side) {
         return getTexture(aBlock);
     }

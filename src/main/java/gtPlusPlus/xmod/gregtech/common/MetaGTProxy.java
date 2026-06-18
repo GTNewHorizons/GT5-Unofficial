@@ -9,20 +9,13 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.TAE;
 import gregtech.api.util.GTLanguageManager;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.handler.AchievementHandler;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.LangUtils;
-import gtPlusPlus.core.util.minecraft.gregtech.PollutionUtils;
 import gtPlusPlus.xmod.gregtech.common.covers.CoverManager;
 import ic2.core.init.BlocksItems;
 import ic2.core.init.InternalName;
 
 public class MetaGTProxy {
-
-    public static AchievementHandler mAssemblyAchievements;
-
-    public MetaGTProxy() {}
 
     public static void preInit() {
         fixIC2FluidNames();
@@ -30,14 +23,12 @@ public class MetaGTProxy {
     }
 
     public static void init() {
-        PollutionUtils.setPollutionFluids();
         fixIC2FluidNames();
     }
 
     public static void postInit() {
-        mAssemblyAchievements = new AchievementHandler();
+        new AchievementHandler();
         fixIC2FluidNames();
-
         // Finalise TAE
         TAE.finalizeTAE();
     }
@@ -47,7 +38,6 @@ public class MetaGTProxy {
         // Fix IC2 Hot Water name
         try {
             String aNewHeatedWaterName = "Heated Water";
-            Logger.INFO("Renaming [IC2 Hotspring Water] --> [" + aNewHeatedWaterName + "].");
             LanguageRegistry.instance()
                 .addStringLocalization("fluidHotWater", "Heated Water");
             LanguageRegistry.instance()
@@ -59,7 +49,7 @@ public class MetaGTProxy {
 
             Block b = BlocksItems.getFluidBlock(InternalName.fluidHotWater);
             if (b != null) {
-                LanguageRegistry.addName(ItemUtils.getSimpleStack(b), aNewHeatedWaterName);
+                LanguageRegistry.addName(new ItemStack(b), aNewHeatedWaterName);
                 LanguageRegistry.instance()
                     .addStringLocalization(b.getUnlocalizedName(), aNewHeatedWaterName);
                 GTLanguageManager.addStringLocalization(b.getUnlocalizedName(), aNewHeatedWaterName);
@@ -84,13 +74,11 @@ public class MetaGTProxy {
                 "Eau chauffée", "Acqua riscaldata", "온수", "Água aquecida", "Água aquecida", "Вода с подогревом",
                 "Uppvärmt vatten", "Isıtılmış Su", "热水", "热水", };
             for (int i = 0; i < aLangs.length; i++) {
-                Logger
-                    .REFLECTION("Trying to inject new lang data for " + aLangs[i] + ", using value: " + aLangValues[i]);
                 LangUtils.rewriteEntryForLanguageRegistry(aLangs[i], "fluidHotWater", aLangValues[i]);
                 LangUtils.rewriteEntryForLanguageRegistry(aLangs[i], "ic2.fluidHotWater", aLangValues[i]);
             }
-        } catch (Throwable t) {
-
+        } catch (Exception t) {
+            t.printStackTrace();
         }
     }
 }

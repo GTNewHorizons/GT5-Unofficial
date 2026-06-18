@@ -1,6 +1,6 @@
 package gregtech.common.render.items;
 
-import static gregtech.api.enums.Mods.HodgePodge;
+import static gregtech.api.enums.Textures.InvisibleIcon.INVISIBLE_ICON;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
@@ -11,12 +11,11 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.lwjgl.opengl.GL11;
 
-import com.mitchej123.hodgepodge.textures.IPatchedTextureAtlasSprite;
+import com.gtnewhorizon.gtnhlib.util.ItemRenderUtil;
 
 import codechicken.lib.render.TextureUtils;
 import gregtech.api.interfaces.IGT_ItemWithMaterialRenderer;
 import gregtech.api.util.GTUtility;
-import gregtech.common.render.GTRenderUtil;
 
 public class GeneratedMaterialRenderer implements IItemRenderer {
 
@@ -66,7 +65,6 @@ public class GeneratedMaterialRenderer implements IItemRenderer {
             GL11.glEnable(GL11.GL_ALPHA_TEST);
 
             if (tIcon != null) {
-                markNeedsAnimationUpdate(tIcon);
                 renderRegularItem(type, aStack, tIcon, aFluid == null, pass, data);
             }
 
@@ -74,16 +72,14 @@ public class GeneratedMaterialRenderer implements IItemRenderer {
                 IIcon fluidIcon = aFluid.getFluid()
                     .getIcon(aFluid);
                 if (fluidIcon != null) {
-                    markNeedsAnimationUpdate(fluidIcon);
                     // Adds colour to a cells fluid. Does not colour full fluid icons as shown in NEI etc.
                     renderContainedFluid(type, aFluid, fluidIcon);
                 }
             }
 
-            if (tOverlay != null) {
+            if (tOverlay != null && tOverlay != INVISIBLE_ICON) {
                 GL11.glColor3f(1.0F, 1.0F, 1.0F);
                 TextureUtils.bindAtlas(aItem.getSpriteNumber());
-                markNeedsAnimationUpdate(tOverlay);
                 renderItemOverlay(type, tOverlay);
             }
 
@@ -104,7 +100,7 @@ public class GeneratedMaterialRenderer implements IItemRenderer {
             GL11.glColor3f(tModulation[0] / 255.0F, tModulation[1] / 255.0F, tModulation[2] / 255.0F);
         }
 
-        GTRenderUtil.renderItem(type, icon);
+        ItemRenderUtil.renderItem(type, icon);
     }
 
     protected void renderContainedFluid(ItemRenderType type, FluidStack aFluidStack, IIcon fluidIcon) {
@@ -114,17 +110,11 @@ public class GeneratedMaterialRenderer implements IItemRenderer {
         TextureUtils.bindAtlas(aFluid.getSpriteNumber());
 
         GL11.glDepthFunc(GL11.GL_EQUAL);
-        GTRenderUtil.renderItem(type, fluidIcon);
+        ItemRenderUtil.renderItem(type, fluidIcon);
         GL11.glDepthFunc(GL11.GL_LEQUAL);
     }
 
     protected void renderItemOverlay(ItemRenderType type, IIcon overlay) {
-        GTRenderUtil.renderItem(type, overlay);
-    }
-
-    protected void markNeedsAnimationUpdate(IIcon icon) {
-        if (HodgePodge.isModLoaded() && icon instanceof IPatchedTextureAtlasSprite) {
-            ((IPatchedTextureAtlasSprite) icon).markNeedsAnimationUpdate();
-        }
+        ItemRenderUtil.renderItem(type, overlay);
     }
 }

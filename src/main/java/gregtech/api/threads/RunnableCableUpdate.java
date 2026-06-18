@@ -1,5 +1,7 @@
 package gregtech.api.threads;
 
+import java.util.HashMap;
+
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -10,7 +12,6 @@ import gregtech.GTMod;
 import gregtech.api.interfaces.tileentity.IMachineBlockUpdateable;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.implementations.MTECable;
-import gregtech.common.GTProxy;
 
 public class RunnableCableUpdate extends RunnableMachineUpdate {
 
@@ -18,10 +19,25 @@ public class RunnableCableUpdate extends RunnableMachineUpdate {
         super(aWorld, posX, posY, posZ);
     }
 
+    private final static HashMap<World, RunnableCableUpdate> perWorldHandler = new HashMap<>();
+
     public static void setCableUpdateValues(World aWorld, int posX, int posY, int posZ) {
         if (isEnabled) {
-            EXECUTOR_SERVICE.submit(new RunnableCableUpdate(aWorld, posX, posY, posZ));
+            RunnableCableUpdate handler = perWorldHandler.get(aWorld);
+            if (handler == null) {
+                handler = new RunnableCableUpdate(aWorld, posX, posY, posZ);
+                perWorldHandler.put(aWorld, handler);
+            } else {
+                final long coords = CoordinatePacker.pack(posX, posY, posZ);
+                handler.tQueue.enqueue(coords);
+                handler.visited.add(coords);
+            }
         }
+    }
+
+    public static void endTick() {
+        for (RunnableCableUpdate handler : perWorldHandler.values()) handler.run();
+        perWorldHandler.clear();
     }
 
     @Override
@@ -34,20 +50,11 @@ public class RunnableCableUpdate extends RunnableMachineUpdate {
                 posY = CoordinatePacker.unpackY(packedCoords);
                 posZ = CoordinatePacker.unpackZ(packedCoords);
 
-                final TileEntity tTileEntity;
-
-                GTProxy.TICK_LOCK.lock();
-                try {
-                    // we dont want to go over cables that are in unloaded chunks
-                    // keeping the lock just to make sure no CME happens
-                    if (world.blockExists(posX, posY, posZ)) {
-                        tTileEntity = world.getTileEntity(posX, posY, posZ);
-                    } else {
-                        tTileEntity = null;
-                    }
-                } finally {
-                    GTProxy.TICK_LOCK.unlock();
+                // we don't want to go over cables that are in unloaded chunks
+                if (!world.blockExists(posX, posY, posZ)) {
+                    continue;
                 }
+                final TileEntity tTileEntity = world.getTileEntity(posX, posY, posZ);
 
                 // See if the block itself needs an update
                 if (tTileEntity instanceof IMachineBlockUpdateable)

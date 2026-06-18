@@ -10,8 +10,6 @@ import gtPlusPlus.core.slots.SlotIntegratedCircuit;
 
 public class InventoryCircuitProgrammer implements IInventory {
 
-    private final String name = "Circuit Programmer";
-
     /** Defining your inventory size this way is handy */
     public static final int INV_SIZE = 26;
 
@@ -98,13 +96,13 @@ public class InventoryCircuitProgrammer implements IInventory {
     // 1.7.2+ renamed to getInventoryName
     @Override
     public String getInventoryName() {
-        return this.name;
+        return "gt.BWCircuitProgrammer.name";
     }
 
     // 1.7.2+ renamed to hasCustomInventoryName
     @Override
     public boolean hasCustomInventoryName() {
-        return !this.name.isEmpty();
+        return true;
     }
 
     @Override
@@ -122,10 +120,6 @@ public class InventoryCircuitProgrammer implements IInventory {
     public void markDirty() {
         for (int i = 0; i < this.getSizeInventory(); ++i) {
             final ItemStack temp = this.getStackInSlot(i);
-            if (temp != null) {
-                // Utils.LOG_INFO("Slot "+i+" contains "+temp.getDisplayName()+" x"+temp.stackSize);
-            }
-
             if ((temp != null) && (temp.stackSize == 0)) {
                 this.inventory[i] = null;
             }

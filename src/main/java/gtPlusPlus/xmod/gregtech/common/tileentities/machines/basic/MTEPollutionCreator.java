@@ -4,21 +4,22 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.ArrayUtils;
 
 import gregtech.GTMod;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTUtility;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.pollution.Pollution;
 import gtPlusPlus.core.lib.GTPPCore;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class MTEPollutionCreator extends MTETieredMachineBlock {
@@ -41,8 +42,11 @@ public class MTEPollutionCreator extends MTETieredMachineBlock {
 
     @Override
     public String[] getDescription() {
-        return ArrayUtils
-            .addAll(this.mDescriptionArray, "A useful debug machine to create pollution.", GTPPCore.GT_Tooltip.get());
+        return TooltipHelper.pollutionDisabledTooltip(
+            ArrayUtils.addAll(
+                this.mDescriptionArray,
+                "A useful debug machine to create pollution.",
+                GTPPCore.GT_Tooltip.get()));
     }
 
     @Override
@@ -122,14 +126,15 @@ public class MTEPollutionCreator extends MTETieredMachineBlock {
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
         if (pollutionMultiplier > 99) {
             pollutionMultiplier = 1;
         } else {
             pollutionMultiplier++;
         }
-        PlayerUtils.messagePlayer(aPlayer, "Pollution Mutliplier is now " + pollutionMultiplier + ".");
-        super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ);
+        GTUtility.sendChatToPlayer(aPlayer, "Pollution Mutliplier is now " + pollutionMultiplier + ".");
+        super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, aTool);
     }
 
     @Override
@@ -143,16 +148,6 @@ public class MTEPollutionCreator extends MTETieredMachineBlock {
     }
 
     @Override
-    public boolean isElectric() {
-        return true;
-    }
-
-    @Override
-    public boolean isValidSlot(final int aIndex) {
-        return true;
-    }
-
-    @Override
     public boolean isFacingValid(final ForgeDirection facing) {
         return true;
     }
@@ -160,11 +155,6 @@ public class MTEPollutionCreator extends MTETieredMachineBlock {
     @Override
     public boolean isEnetInput() {
         return true;
-    }
-
-    @Override
-    public boolean isEnetOutput() {
-        return false;
     }
 
     @Override
@@ -190,52 +180,12 @@ public class MTEPollutionCreator extends MTETieredMachineBlock {
     }
 
     @Override
-    public long maxEUStore() {
-        return 0;
-    }
-
-    @Override
-    public int getCapacity() {
-        return 0;
-    }
-
-    @Override
-    public long maxEUInput() {
-        return 0;
-    }
-
-    @Override
-    public long maxEUOutput() {
-        return 0;
-    }
-
-    @Override
     public long maxAmperesIn() {
         return 0;
     }
 
     @Override
     public long maxAmperesOut() {
-        return 0;
-    }
-
-    @Override
-    public int rechargerSlotStartIndex() {
-        return 0;
-    }
-
-    @Override
-    public int dechargerSlotStartIndex() {
-        return 0;
-    }
-
-    @Override
-    public int rechargerSlotCount() {
-        return 0;
-    }
-
-    @Override
-    public int dechargerSlotCount() {
         return 0;
     }
 
@@ -252,30 +202,23 @@ public class MTEPollutionCreator extends MTETieredMachineBlock {
     }
 
     @Override
-    public boolean isAccessAllowed(final EntityPlayer aPlayer) {
-        return true;
-    }
-
-    @Override
     public boolean onRightclick(final IGregTechTileEntity aBaseMetaTileEntity, final EntityPlayer aPlayer) {
         if (aBaseMetaTileEntity.isClientSide()) {
             return true;
         }
-        this.showPollution(aPlayer.getEntityWorld(), aPlayer);
+        this.showPollution(aPlayer);
         return true;
     }
 
     public int pollutionMultiplier = 1;
 
-    private void showPollution(final World worldIn, final EntityPlayer playerIn) {
-        if (!GTMod.gregtechproxy.mPollution) {
-            PlayerUtils.messagePlayer(playerIn, "This block is useless, Pollution is disabled.");
+    private void showPollution(final EntityPlayer playerIn) {
+        if (!GTMod.proxy.mPollution) {
+            GTUtility.sendChatToPlayer(playerIn, "This block is useless, Pollution is disabled.");
         } else {
             addPollution();
-            PlayerUtils
-                .messagePlayer(playerIn, "This chunk now contains " + getCurrentChunkPollution() + " pollution.");
-            // PlayerUtils.messagePlayer(playerIn, "Average over last ten minutes: "+getAveragePollutionOverLastTen()+"
-            // pollution.");
+            GTUtility
+                .sendChatToPlayer(playerIn, "This chunk now contains " + getCurrentChunkPollution() + " pollution.");
         }
     }
 
@@ -321,7 +264,7 @@ public class MTEPollutionCreator extends MTETieredMachineBlock {
 
     @Override
     public int[] getAccessibleSlotsFromSide(final int p_94128_1_) {
-        return new int[] {};
+        return GTValues.emptyIntArray;
     }
 
     @Override
@@ -350,38 +293,12 @@ public class MTEPollutionCreator extends MTETieredMachineBlock {
     }
 
     @Override
-    public ItemStack getStackInSlotOnClosing(final int p_70304_1_) {
-        return null;
-    }
-
-    @Override
     public void setInventorySlotContents(final int p_70299_1_, final ItemStack p_70299_2_) {}
-
-    @Override
-    public String getInventoryName() {
-        return null;
-    }
-
-    @Override
-    public boolean hasCustomInventoryName() {
-        return false;
-    }
 
     @Override
     public int getInventoryStackLimit() {
         return 0;
     }
-
-    @Override
-    public boolean isUseableByPlayer(final EntityPlayer p_70300_1_) {
-        return false;
-    }
-
-    @Override
-    public void openInventory() {}
-
-    @Override
-    public void closeInventory() {}
 
     @Override
     public boolean isItemValidForSlot(final int p_94041_1_, final ItemStack p_94041_2_) {
@@ -444,8 +361,6 @@ public class MTEPollutionCreator extends MTETieredMachineBlock {
         } else {
             returnValue = getCurrentChunkPollution();
         }
-        // Logger.INFO("| DEBUG: "+returnValue +" | ArrayPos:"+this.mArrayPos+" | Counter:"+counter+" | Total:"+total+"
-        // |");
         return returnValue;
     }
 }

@@ -12,6 +12,7 @@ import net.minecraft.world.World;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 
 import baubles.api.BaubleType;
 import baubles.api.IBauble;
@@ -19,11 +20,10 @@ import cpw.mods.fml.common.Optional;
 import gregtech.api.enums.Mods;
 import gregtech.api.util.GTLanguageManager;
 import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.util.minecraft.NBTUtils;
 
 @Optional.InterfaceList(
-    value = { @Optional.Interface(iface = "baubles.api.IBauble", modid = Mods.Names.BAUBLES),
-        @Optional.Interface(iface = "baubles.api.BaubleType", modid = Mods.Names.BAUBLES) })
+    value = { @Optional.Interface(iface = "baubles.api.IBauble", modid = Mods.ModIDs.BAUBLES),
+        @Optional.Interface(iface = "baubles.api.BaubleType", modid = Mods.ModIDs.BAUBLES) })
 public class BaseBauble extends Item implements IBauble {
 
     /**
@@ -103,10 +103,10 @@ public class BaseBauble extends Item implements IBauble {
     }
 
     public static int getPlayerHashcode(ItemStack stack) {
-        return NBTUtils.getInteger(stack, "mPlayerHashcode");
+        return ItemStackNBT.getInteger(stack, "mPlayerHashcode");
     }
 
     public static void setPlayerHashcode(ItemStack stack, int hash) {
-        NBTUtils.setInteger(stack, "mPlayerHashcode", hash);
+        ItemStackNBT.setInteger(stack, "mPlayerHashcode", hash);
     }
 }

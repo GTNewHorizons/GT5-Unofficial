@@ -1,21 +1,27 @@
 package gregtech.common.render;
 
+import static gregtech.api.enums.Mods.Angelica;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import gregtech.api.interfaces.IBlockContainer;
-import gregtech.api.interfaces.ITexture;
-import gregtech.api.util.LightingHelper;
+import com.prupe.mcpatcher.ctm.CTMUtils;
 
-public class GTCopiedBlockTextureRender extends GTTextureBase implements ITexture, IBlockContainer {
+import gregtech.api.interfaces.IBlockContainer;
+import gregtech.api.render.ISBRContext;
+import gregtech.api.render.ISBRWorldContext;
+
+public class GTCopiedBlockTextureRender extends GTTextureBase implements IBlockContainer {
+
+    private static final double COMPACT_CTM_LAYER_OFFSET = 0.001D;
 
     private final Block mBlock;
     private final byte mSide;
     private final int mMeta;
 
-    protected GTCopiedBlockTextureRender(Block aBlock, int ordinalSide, int aMeta, short[] aRGBa, boolean allowAlpha) {
+    protected GTCopiedBlockTextureRender(Block aBlock, int ordinalSide, int aMeta, short[] aRGBa) {
         if (aRGBa.length != 4)
             throw new IllegalArgumentException("RGBa doesn't have 4 Values @ GTCopiedBlockTextureRender");
         mBlock = aBlock;
@@ -23,78 +29,108 @@ public class GTCopiedBlockTextureRender extends GTTextureBase implements ITextur
         mMeta = aMeta;
     }
 
-    @Override
-    public boolean isOldTexture() {
-        return false;
+    public IIcon getIcon(int ordinalSide, ISBRContext ctx) {
+        final IIcon icon;
+        if (mSide == 6) icon = mBlock.getIcon(ordinalSide, mMeta);
+        else icon = mBlock.getIcon(mSide, mMeta);
+        if (!Angelica.isModLoaded()) return icon;
+        else return ctx instanceof ISBRWorldContext ctxW
+            ? CTMUtils
+                .getBlockIcon(icon, mBlock, ctxW.getBlockAccess(), ctxW.getX(), ctxW.getY(), ctxW.getZ(), ordinalSide)
+            : icon;
     }
 
-    private IIcon getIcon(int ordinalSide) {
-        if (mSide == 6) return mBlock.getIcon(ordinalSide, mMeta);
-        return mBlock.getIcon(mSide, mMeta);
-    }
-
     @Override
-    public void renderXPos(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
-        final IIcon aIcon = getIcon(ForgeDirection.EAST.ordinal());
-        aRenderer.field_152631_f = true;
-        startDrawingQuads(aRenderer, 1.0f, 0.0f, 0.0f);
-        new LightingHelper(aRenderer).setupLightingXPos(aBlock, aX, aY, aZ)
+    public void renderXPos(ISBRContext ctx) {
+        if (!ctx.canRenderInPass(mBlock::canRenderInPass)) return;
+        final IIcon aIcon = getIcon(ForgeDirection.EAST.ordinal(), ctx);
+        boolean usesCompactCtm = usesCompactCtm(ctx);
+        final RenderBlocks renderBlocks = ctx.getRenderBlocks();
+        renderBlocks.field_152631_f = true;
+        startDrawingQuads(renderBlocks, 1.0f, 0.0f, 0.0f);
+        ctx.reset()
             .setupColor(ForgeDirection.EAST, 0xffffff);
-        aRenderer.renderFaceXPos(aBlock, aX, aY, aZ, aIcon);
-        draw(aRenderer);
-        aRenderer.field_152631_f = false;
+        renderBlocks.renderFaceXPos(ctx.getBlock(), ctx.getX(), ctx.getY(), ctx.getZ(), aIcon);
+        draw(renderBlocks);
+        if (usesCompactCtm) renderBlocks.renderMaxX += COMPACT_CTM_LAYER_OFFSET;
+        renderBlocks.field_152631_f = false;
     }
 
     @Override
-    public void renderXNeg(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
-        startDrawingQuads(aRenderer, -1.0f, 0.0f, 0.0f);
-        final IIcon aIcon = getIcon(ForgeDirection.WEST.ordinal());
-        new LightingHelper(aRenderer).setupLightingXNeg(aBlock, aX, aY, aZ)
+    public void renderXNeg(ISBRContext ctx) {
+        if (!ctx.canRenderInPass(mBlock::canRenderInPass)) return;
+        final RenderBlocks renderBlocks = ctx.getRenderBlocks();
+        startDrawingQuads(renderBlocks, -1.0f, 0.0f, 0.0f);
+        final IIcon aIcon = getIcon(ForgeDirection.WEST.ordinal(), ctx);
+        boolean usesCompactCtm = usesCompactCtm(ctx);
+        ctx.reset()
             .setupColor(ForgeDirection.WEST, 0xffffff);
-        aRenderer.renderFaceXNeg(aBlock, aX, aY, aZ, aIcon);
-        draw(aRenderer);
+        renderBlocks.renderFaceXNeg(ctx.getBlock(), ctx.getX(), ctx.getY(), ctx.getZ(), aIcon);
+        draw(renderBlocks);
+        if (usesCompactCtm) renderBlocks.renderMinX -= COMPACT_CTM_LAYER_OFFSET;
     }
 
     @Override
-    public void renderYPos(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
-        startDrawingQuads(aRenderer, 0.0f, 1.0f, 0.0f);
-        final IIcon aIcon = getIcon(ForgeDirection.UP.ordinal());
-        new LightingHelper(aRenderer).setupLightingYPos(aBlock, aX, aY, aZ)
+    public void renderYPos(ISBRContext ctx) {
+        if (!ctx.canRenderInPass(mBlock::canRenderInPass)) return;
+        final RenderBlocks renderBlocks = ctx.getRenderBlocks();
+        startDrawingQuads(renderBlocks, 0.0f, 1.0f, 0.0f);
+        final IIcon aIcon = getIcon(ForgeDirection.UP.ordinal(), ctx);
+        boolean usesCompactCtm = usesCompactCtm(ctx);
+        ctx.reset()
             .setupColor(ForgeDirection.UP, 0xffffff);
-        aRenderer.renderFaceYPos(aBlock, aX, aY, aZ, aIcon);
-        draw(aRenderer);
+        renderBlocks.renderFaceYPos(ctx.getBlock(), ctx.getX(), ctx.getY(), ctx.getZ(), aIcon);
+        draw(renderBlocks);
+        if (usesCompactCtm) renderBlocks.renderMaxY += COMPACT_CTM_LAYER_OFFSET;
     }
 
     @Override
-    public void renderYNeg(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
-        startDrawingQuads(aRenderer, 0.0f, -1.0f, 0.0f);
-        final IIcon aIcon = getIcon(ForgeDirection.DOWN.ordinal());
-        new LightingHelper(aRenderer).setupLightingYNeg(aBlock, aX, aY, aZ)
+    public void renderYNeg(ISBRContext ctx) {
+        if (!ctx.canRenderInPass(mBlock::canRenderInPass)) return;
+        final RenderBlocks renderBlocks = ctx.getRenderBlocks();
+        startDrawingQuads(renderBlocks, 0.0f, -1.0f, 0.0f);
+        final IIcon aIcon = getIcon(ForgeDirection.DOWN.ordinal(), ctx);
+        boolean usesCompactCtm = usesCompactCtm(ctx);
+        ctx.reset()
             .setupColor(ForgeDirection.DOWN, 0xffffff);
-        aRenderer.renderFaceYNeg(aBlock, aX, aY, aZ, aIcon);
-        draw(aRenderer);
+        renderBlocks.renderFaceYNeg(ctx.getBlock(), ctx.getX(), ctx.getY(), ctx.getZ(), aIcon);
+        draw(renderBlocks);
+        if (usesCompactCtm) renderBlocks.renderMinY -= COMPACT_CTM_LAYER_OFFSET;
     }
 
     @Override
-    public void renderZPos(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
-        startDrawingQuads(aRenderer, 0.0f, 0.0f, 1.0f);
-        final IIcon aIcon = getIcon(ForgeDirection.SOUTH.ordinal());
-        new LightingHelper(aRenderer).setupLightingZPos(aBlock, aX, aY, aZ)
+    public void renderZPos(ISBRContext ctx) {
+        if (!ctx.canRenderInPass(mBlock::canRenderInPass)) return;
+        final RenderBlocks renderBlocks = ctx.getRenderBlocks();
+        startDrawingQuads(renderBlocks, 0.0f, 0.0f, 1.0f);
+        final IIcon aIcon = getIcon(ForgeDirection.SOUTH.ordinal(), ctx);
+        boolean usesCompactCtm = usesCompactCtm(ctx);
+        ctx.reset()
             .setupColor(ForgeDirection.SOUTH, 0xffffff);
-        aRenderer.renderFaceZPos(aBlock, aX, aY, aZ, aIcon);
-        draw(aRenderer);
+        renderBlocks.renderFaceZPos(ctx.getBlock(), ctx.getX(), ctx.getY(), ctx.getZ(), aIcon);
+        draw(renderBlocks);
+        if (usesCompactCtm) renderBlocks.renderMaxZ += COMPACT_CTM_LAYER_OFFSET;
     }
 
     @Override
-    public void renderZNeg(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
-        startDrawingQuads(aRenderer, 0.0f, 0.0f, -1.0f);
-        final IIcon aIcon = getIcon(ForgeDirection.NORTH.ordinal());
-        aRenderer.field_152631_f = true;
-        new LightingHelper(aRenderer).setupLightingZNeg(aBlock, aX, aY, aZ)
+    public void renderZNeg(ISBRContext ctx) {
+        if (!ctx.canRenderInPass(mBlock::canRenderInPass)) return;
+        final RenderBlocks renderBlocks = ctx.getRenderBlocks();
+        startDrawingQuads(renderBlocks, 0.0f, 0.0f, -1.0f);
+        final IIcon aIcon = getIcon(ForgeDirection.NORTH.ordinal(), ctx);
+        boolean usesCompactCtm = usesCompactCtm(ctx);
+        renderBlocks.field_152631_f = true;
+        ctx.reset()
             .setupColor(ForgeDirection.NORTH, 0xffffff);
-        aRenderer.renderFaceZNeg(aBlock, aX, aY, aZ, aIcon);
-        draw(aRenderer);
-        aRenderer.field_152631_f = false;
+        renderBlocks.renderFaceZNeg(ctx.getBlock(), ctx.getX(), ctx.getY(), ctx.getZ(), aIcon);
+        draw(renderBlocks);
+        renderBlocks.field_152631_f = false;
+        if (usesCompactCtm) renderBlocks.renderMinZ -= COMPACT_CTM_LAYER_OFFSET;
+    }
+
+    private static boolean usesCompactCtm(ISBRContext ctx) {
+        if (!Angelica.isModLoaded()) return false;
+        return ctx instanceof ISBRWorldContext && CTMUtils.getCurrentCompact() != null;
     }
 
     @Override

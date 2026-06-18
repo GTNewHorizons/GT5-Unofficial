@@ -9,7 +9,6 @@ import net.minecraft.item.ItemStack;
 import bartworks.common.loaders.BioItemList;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.TierEU;
-import gregtech.api.util.GTUtility;
 
 public class LaserEngraver implements Runnable {
 
@@ -17,7 +16,8 @@ public class LaserEngraver implements Runnable {
     public void run() {
 
         GTValues.RA.stdBuilder()
-            .itemInputs(new ItemStack(Items.emerald), GTUtility.getIntegratedCircuit(17))
+            .itemInputs(new ItemStack(Items.emerald))
+            .circuit(17)
             .itemOutputs(BioItemList.getPlasmidCell(null))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_LV)

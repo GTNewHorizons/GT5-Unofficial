@@ -1,8 +1,5 @@
 package gregtech.api.interfaces;
 
-import net.minecraft.block.Block;
-import net.minecraftforge.common.util.ForgeDirection;
-
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 
 import gregtech.api.render.TextureFactory;
@@ -26,29 +23,10 @@ public interface ITextureBuilder {
     ITexture build();
 
     /**
-     * @param block The {@link Block}
-     * @param meta  The meta value for the Block
+     * @param iconContainer The {@link IIconContainer}s to add
      * @return {@link ITextureBuilder} for chaining
      */
-    ITextureBuilder setFromBlock(final Block block, final int meta);
-
-    /**
-     * @param side
-     *             <p>
-     *             The {@link ForgeDirection} side providing the texture
-     *             </p>
-     *             <p>
-     *             Default is {@link ForgeDirection#UNKNOWN} to use same side as rendered
-     *             </p>
-     * @return {@link ITextureBuilder} for chaining
-     */
-    ITextureBuilder setFromSide(final ForgeDirection side);
-
-    /**
-     * @param iconContainers The {@link IIconContainer}s to add
-     * @return {@link ITextureBuilder} for chaining
-     */
-    ITextureBuilder addIcon(final IIconContainer... iconContainers);
+    ITextureBuilder addIcon(final IIconContainer iconContainer);
 
     /**
      * @param rgba The RGBA tint for this {@link ITexture}
@@ -57,41 +35,11 @@ public interface ITextureBuilder {
     ITextureBuilder setRGBA(final short[] rgba);
 
     /**
-     * @param iTextures The {@link ITexture} layers to add
-     * @return {@link ITextureBuilder} for chaining
-     */
-    ITextureBuilder addLayer(final ITexture... iTextures);
-
-    /**
-     * Set alpha blending
-     *
-     * @param allowAlpha to set
-     *
-     * @return {@link ITextureBuilder} for chaining
-     */
-    ITextureBuilder setAllowAlpha(final boolean allowAlpha);
-
-    /**
      * Texture will render with same orientation as with vanilla blocks
      *
      * @return {@link ITextureBuilder} for chaining
      */
     ITextureBuilder stdOrient();
-
-    /**
-     * Force using world coord overload of getIcon.
-     *
-     * @return {@link ITextureBuilder} for chaining
-     * @throws IllegalStateException if setFromBlock has never been called.
-     */
-    ITextureBuilder useWorldCoord();
-
-    /**
-     * Force using meta overload of getIcon.
-     *
-     * @return {@link ITextureBuilder} for chaining
-     */
-    ITextureBuilder noWorldCoord();
 
     /**
      * Texture will orientate from block's {@link ExtendedFacing}
@@ -106,20 +54,4 @@ public interface ITextureBuilder {
      * @return {@link ITextureBuilder} for chaining
      */
     ITextureBuilder glow();
-
-    /**
-     * Uses the given block/meta as the shader material. No effect shaders are off or not supported.
-     *
-     * @return {@link ITextureBuilder} for chaining
-     */
-    ITextureBuilder material(Block block, int meta);
-
-    /**
-     * Uses the given block as the shader material. No effect shaders are off or not supported.
-     *
-     * @return {@link ITextureBuilder} for chaining
-     */
-    default ITextureBuilder material(Block block) {
-        return material(block, 0);
-    }
 }

@@ -19,18 +19,20 @@ import org.apache.commons.lang3.ArrayUtils;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.NaniteTier;
 import gregtech.api.interfaces.IRecipeMap;
-import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.RecipeMetadataKey;
+import gregtech.api.recipe.metadata.CompressionTierKey;
 import gregtech.api.recipe.metadata.SimpleRecipeMetadataKey;
 import gregtech.api.util.recipe.QuantumComputerRecipeData;
 import gregtech.api.util.recipe.Scanning;
 import gregtech.api.util.recipe.Sievert;
 import gregtech.common.items.IDMetaItem03;
 import gregtech.common.items.MetaGeneratedItem03;
+import gregtech.common.tileentities.machines.multi.foundry.FoundryModule;
+import gregtech.common.tileentities.machines.multi.nanochip.util.CircuitCalibration;
 import gtnhlanth.common.item.ItemPhotolithographicMask;
 import gtnhlanth.common.item.MaskList;
 import gtnhlanth.common.register.LanthItemList;
@@ -63,9 +65,8 @@ public class GTRecipeConstants {
         .create(Long.class, "fusion_threshold");
 
     /**
-     * Scanning data used for scanner for assembly line recipes (time and voltage).
-     * Scanning time should be between 30 seconds and 3 minutes, and the voltage 1 tiers below the available scanner
-     * tier for the recipe.
+     * Scanning data used for scanner for assembly line recipes (time and voltage). Scanning time should be between 30
+     * seconds and 3 minutes, and the voltage 1 tiers below the available scanner tier for the recipe.
      */
     public static final RecipeMetadataKey<Scanning> SCANNING = SimpleRecipeMetadataKey
         .create(Scanning.class, "scanning");
@@ -154,6 +155,9 @@ public class GTRecipeConstants {
     public static final RecipeMetadataKey<String> FOG_UPGRADE_NAME_SHORT = SimpleRecipeMetadataKey
         .create(String.class, "fog_plasma_upgrade_name_short");
 
+    public static final RecipeMetadataKey<FoundryModule> FOUNDRY_MODULE = SimpleRecipeMetadataKey
+        .create(FoundryModule.class, "foundry_module");
+
     /**
      * DEFC Casing tier.
      */
@@ -165,6 +169,12 @@ public class GTRecipeConstants {
      */
     public static final RecipeMetadataKey<Integer> CHEMPLANT_CASING_TIER = SimpleRecipeMetadataKey
         .create(Integer.class, "chemplant_casing_tier");
+
+    /**
+     * Algae Pond tier.
+     */
+    public static final RecipeMetadataKey<Integer> ALGAE_POND_TIER = SimpleRecipeMetadataKey
+        .create(Integer.class, "algae_pond_tier");
 
     /**
      * QFT Focus tier.
@@ -181,8 +191,7 @@ public class GTRecipeConstants {
     /**
      * Tier of advanced compression (HIP/black hole)
      */
-    public static final RecipeMetadataKey<Integer> COMPRESSION_TIER = SimpleRecipeMetadataKey
-        .create(Integer.class, "compression");
+    public static final RecipeMetadataKey<Integer> COMPRESSION_TIER = CompressionTierKey.INSTANCE;
 
     /**
      * Dissolution Tank Ratio.
@@ -252,48 +261,114 @@ public class GTRecipeConstants {
 
     public static final RecipeMetadataKey<Integer> MASS = SimpleRecipeMetadataKey.create(Integer.class, "mass");
 
-    public static final RecipeMetadataKey<Boolean> NOBLE_GASES = SimpleRecipeMetadataKey
-        .create(Boolean.class, "noble_gases");
-
-    public static final RecipeMetadataKey<Boolean> ANAEROBE_GASES = SimpleRecipeMetadataKey
-        .create(Boolean.class, "anaerobe_gases");
-
+    /**
+     * Whether non-gas recipe should be generated together with gas recipes.
+     */
     public static final RecipeMetadataKey<Boolean> NO_GAS = SimpleRecipeMetadataKey.create(Boolean.class, "no_gas");
+
+    /**
+     * Circuit config in non-gas recipe. No integrated circuit applied if this is set to -1 (default).
+     */
+    public static final RecipeMetadataKey<Integer> NO_GAS_CIRCUIT_CONFIG = SimpleRecipeMetadataKey
+        .create(Integer.class, "no_gas_circuit_config");
 
     public static final RecipeMetadataKey<Integer> EU_MULTIPLIER = SimpleRecipeMetadataKey
         .create(Integer.class, "eu_multiplier");
 
+    public static final RecipeMetadataKey<Double> HALF_LIFE = SimpleRecipeMetadataKey.create(Double.class, "half-life");
+
+    public static final RecipeMetadataKey<CircuitCalibration> CIRCUIT_CALIBRATION_TYPE = SimpleRecipeMetadataKey
+        .create(CircuitCalibration.class, "circuit-calibration");
+
     /**
-     * Add a arc furnace recipe. Adds to both normal arc furnace and plasma arc furnace.
-     * Will override the fluid input with oxygen/plasma for the respective recipe maps, so there is no point setting it.
+     * Just some trivia to show in the decay recipes, since they don't have a lot of relevant info. Maybe this will come
+     * in handy some day.
+     */
+    public enum DecayType {
+        Unknown,
+        /** Nucleus emits 2 protons and 2 neutrons, to form a single new nucleus. */
+        Alpha,
+        /** Nucleus splits into two smaller nuclei, often emitting several alpha particles. */
+        SpontaneousFission,
+        /** Nucleus emits a small cluster of protons/neutrons instead of individual protons or neutrons. */
+        Cluster,
+        /** Nucleus emits an alpha particle, often emitting or absorbing other particles in the process. */
+        AlphaTransfer,
+        /**
+         * Nucleus emits a positron, which typically converts a neutron into a proton, emitting a neutrino in the
+         * process.
+         */
+        BetaMinus,
+        /** A proton in the nucleus captures an electron to form a neutron, emitting a neutrino in the process. */
+        BetaPlus,
+    }
+
+    public static final RecipeMetadataKey<DecayType> DECAY_TYPE = SimpleRecipeMetadataKey
+        .create(DecayType.class, "decay-type");
+
+    /// Each item in a BEC assembling recipe must have an associated nanite tier. This is because the I/O node will
+    /// change the progress speed depending on how many nanites are available, and whether their tier is high enough.
+    public static final RecipeMetadataKey<NaniteTier[]> NANITE_TIERS = SimpleRecipeMetadataKey
+        .create(NaniteTier[].class, "nanite_tiers");
+
+    /// This is just the fluid inputs for a BEC recipe, but we pull mFluidInputs into a meta entry so that recipes can
+    /// start without actually consuming them. I/O nodes will consume these fluids while the recipe runs. If it doesn't
+    /// get enough, the recipe fails.
+    public static final RecipeMetadataKey<FluidStack[]> CONDENSATE_INPUT = SimpleRecipeMetadataKey
+        .create(FluidStack[].class, "condensate_input");
+
+    /**
+     * Add a arc furnace recipe.
      */
     public static final IRecipeMap UniversalArcFurnace = IRecipeMap.newRecipeMap(builder -> {
-        if (!GTUtility.isArrayOfLength(builder.getItemInputsBasic(), 1)
-            || GTUtility.isArrayEmptyOrNull(builder.getItemOutputs())) return Collections.emptyList();
-        int aDuration = builder.getDuration();
-        if (aDuration <= 0) {
-            return Collections.emptyList();
-        }
-        boolean recycle = builder.getMetadataOrDefault(RECYCLE, false);
         Collection<GTRecipe> ret = new ArrayList<>();
-        for (Materials mat : new Materials[] { Materials.Argon, Materials.Nitrogen }) {
-            builder.duration(Math.max(1, mat == Materials.Nitrogen ? aDuration / 4 : aDuration / 24));
-            int tPlasmaAmount = (int) Math.max(1L, aDuration / (mat.getMass() * 16L));
-            GTRecipeBuilder plasmaBuilder = builder.copy()
-                .fluidInputs(mat.getPlasma(tPlasmaAmount))
-                .fluidOutputs(mat.getGas(tPlasmaAmount));
-            if (recycle) {
-                continue;
+        boolean foundAnyItem = false;
+        for (ItemStack itemStack : builder.inputsBasic) {
+            if (itemStack == null) continue;
+            if (!GTUtility.isAnyIntegratedCircuit(itemStack)) {
+                foundAnyItem = true;
+                break;
             }
-            ret.addAll(RecipeMaps.plasmaArcFurnaceRecipes.doAdd(plasmaBuilder));
         }
-        builder.duration(aDuration);
-        GTRecipeBuilder arcBuilder = builder.copy()
-            .fluidInputs(Materials.Oxygen.getGas(aDuration));
+        if (!foundAnyItem) return ret;
+
+        boolean recycle = builder.getMetadataOrDefault(RECYCLE, false);
+        int baseGasAmount = builder.getMetadataOrDefault(ADDITIVE_AMOUNT, 10);
+        int baseDuration = builder.getDuration();
+
         if (recycle) {
-            arcBuilder.recipeCategory(RecipeCategories.arcFurnaceRecycling);
+            // Recycling only has no gas variant
+            builder.recipeCategory(RecipeCategories.arcFurnaceRecycling);
+        } else {
+            // Generate recipe with gas
+            for (BlastFurnaceGasStat gasStat : BlastFurnaceGasStat.BlastFurnaceGasStats) {
+                int gasAmount = (int) (gasStat.recipeConsumedAmountMultiplier * baseGasAmount);
+                ret.addAll(
+                    builder.copy()
+                        .duration((int) Math.max(1, baseDuration * gasStat.recipeTimeMultiplier))
+                        .fluidInputs(GTUtility.copyAmount(gasAmount, gasStat.gas))
+                        .circuit(11)
+                        .addTo(RecipeMaps.arcFurnaceRecipes));
+            }
+
+            // Generate recipe with plasma
+            for (Materials mat : new Materials[] { Materials.Argon, Materials.Nitrogen }) {
+                int tPlasmaAmount = (int) Math.max(1L, baseDuration / (mat.getMass() * 16L));
+                GTRecipeBuilder plasmaBuilder = builder.copy()
+                    .duration(Math.max(1, mat == Materials.Nitrogen ? baseDuration / 4 : baseDuration / 24))
+                    .fluidInputs(mat.getPlasma(tPlasmaAmount))
+                    .circuit(11)
+                    .fluidOutputs(mat.getGas(tPlasmaAmount));
+                ret.addAll(RecipeMaps.arcFurnaceRecipes.doAdd(plasmaBuilder));
+            }
         }
-        ret.addAll(RecipeMaps.arcFurnaceRecipes.doAdd(arcBuilder));
+
+        ret.addAll(
+            builder.copy()
+                .duration((int) Math.max(1, baseDuration * 1.25d))
+                .circuit(1)
+                .addTo(RecipeMaps.arcFurnaceRecipes));
+
         return ret;
     });
     /**
@@ -367,24 +442,19 @@ public class GTRecipeConstants {
         if (wafer == null) return builder.addTo(RecipeMaps.laserEngraverRecipes);
         switch (wafer) {
             case Naquadah -> {
-                ArrayList<ItemStack> items = new ArrayList<>(Arrays.asList(builder.getItemInputsBasic()));
-                ItemStack[] itemInputs = items.toArray(new ItemStack[] {});
                 // Naquadah wafers can use grade 1-2 purified water for a bonus, otherwise use distilled so we don't
                 // have to
                 // deal with circuits
                 return GTUtility.concat(
                     builder.copy()
-                        .itemInputs(itemInputs)
                         .fluidInputs(ArrayUtils.addAll(builder.fluidInputs, GTModHandler.getDistilledWater(100L)))
                         .addTo(RecipeMaps.laserEngraverRecipes),
                     builder.copy()
-                        .itemInputs(itemInputs)
                         .fluidInputs(
                             ArrayUtils.addAll(builder.fluidInputs, Materials.Grade1PurifiedWater.getFluid(100L)))
                         .duration(halfBoostedRecipeTime)
                         .addTo(RecipeMaps.laserEngraverRecipes),
                     builder.copy()
-                        .itemInputs(itemInputs)
                         .fluidInputs(
                             ArrayUtils.addAll(builder.fluidInputs, Materials.Grade2PurifiedWater.getFluid(100L)))
                         .duration(boostedRecipeTime)
@@ -477,9 +547,8 @@ public class GTRecipeConstants {
     });
 
     /**
-     * The one and only :tm: assline recipe adder.
-     * Uses {@link #RESEARCH_ITEM} metadata as research item, and {@link #SCANNING} metadata as research time and
-     * voltage.
+     * The one and only :tm: assline recipe adder. Uses {@link #RESEARCH_ITEM} metadata as research item, and
+     * {@link #SCANNING} metadata as research time and voltage.
      */
     public static final IRecipeMap AssemblyLine = IRecipeMap.newRecipeMap(builder -> {
         Optional<GTRecipe.GTRecipe_WithAlt> rr = builder.forceOreDictInput()
@@ -566,7 +635,7 @@ public class GTRecipeConstants {
             GTValues.RA.stdBuilder()
                 .itemInputs(aResearchItem)
                 .itemOutputs(aOutput)
-                .special(tRecipe.newDataStickForNEI("Writes Research result"))
+                .special(tRecipe.newDataStickForNEI("Writes Research result", 1))
                 .duration(scanningData.time)
                 .eut(scanningData.voltage)
                 .specialValue(-201) // means it's scanned
@@ -579,82 +648,69 @@ public class GTRecipeConstants {
                 false,
                 r.mInputs,
                 new ItemStack[] { aOutput },
-                new ItemStack[] { tRecipe.newDataStickForNEI("Reads Research result") },
+                new ItemStack[] { tRecipe.newDataStickForNEI("Reads Research result", 0) },
                 r.mFluidInputs,
                 null,
                 r.mDuration,
                 r.mEUt,
                 0,
                 r.mOreDictAlt,
+                r.mAltFluidInputs,
                 false));
 
         return ret;
     });
 
     /**
-     * Adds an Electric Blast Furnace recipe that might use gas.
+     * Add Electric Blast Furnace recipes that use gasses to reduce recipe time. Keep circuit config.
+     * <p>
+     * Use {@link GTRecipeConstants#COIL_HEAT} as heat level. Use {@link #ADDITIVE_AMOUNT} metadata as base gas consumed
+     * amount, and {@link #NO_GAS} metadata to generate recipe that is without gas. Recipe time will be 1.25x without
+     * gas.<br>
+     * Use {@link #NO_GAS_CIRCUIT_CONFIG} metadata as circuit config used in non-gas recipe if {@link #NO_GAS} is set to
+     * true.
      */
     public static final IRecipeMap BlastFurnaceWithGas = IRecipeMap.newRecipeMap(builder -> {
         Collection<GTRecipe> ret = new ArrayList<>();
-        int basicGasAmount = builder.getMetadataOrDefault(ADDITIVE_AMOUNT, 1000);
-        double durationBase = builder.getDuration();
+        int baseGasAmount = builder.getMetadataOrDefault(ADDITIVE_AMOUNT, 1000);
+        double baseDuration = builder.getDuration();
         ArrayList<ItemStack> items = new ArrayList<>(Arrays.asList(builder.getItemInputsBasic()));
-        int circuitConfig = 1;
-        if (items.size() == 1) {// Set circuit config if it is a dust -> ingot recipe.
-            ItemData data = GTOreDictUnificator.getAssociation(items.get(0));
-            if (data != null) {
-                OrePrefixes prefix = data.mPrefix;
-                if (OrePrefixes.dust.equals(prefix)) {
-                    circuitConfig = 1;
-                } else if (OrePrefixes.dustSmall.equals(prefix)) {
-                    circuitConfig = 4;
-                } else if (OrePrefixes.dustTiny.equals(prefix)) {
-                    circuitConfig = 9;
-                }
-            }
-        } else { // Set circuit config if there is an integrated circuit
-            for (int i = 0; i < items.size(); i++) {
-                if (GTUtility.isAnyIntegratedCircuit(items.get(i))) {
-                    circuitConfig = items.get(i)
-                        .getItemDamage();
-                    items.remove(i--);
-                }
-            }
-        }
 
-        if (builder.getMetadataOrDefault(NO_GAS, false)) {
-            items.add(GTUtility.getIntegratedCircuit(circuitConfig));
+        // Generate recipe with gas
+        for (BlastFurnaceGasStat gasStat : BlastFurnaceGasStat.BlastFurnaceGasStats) {
+            int gasAmount = (int) (gasStat.recipeConsumedAmountMultiplier * baseGasAmount);
+            int duration = (int) Math.max(gasStat.recipeTimeMultiplier * baseDuration, 1);
             ret.addAll(
                 builder.copy()
                     .itemInputs(items.toArray(new ItemStack[0]))
-                    .fluidInputs()
-                    .duration((int) Math.max(durationBase * 1.1, 1))
-                    .addTo(RecipeMaps.blastFurnaceRecipes));
-            items.remove(items.size() - 1);
-            circuitConfig += 10;
-        }
-
-        items.add(GTUtility.getIntegratedCircuit(circuitConfig));
-        boolean nobleGases = builder.getMetadataOrDefault(NOBLE_GASES, false);
-        boolean anaerobeGases = builder.getMetadataOrDefault(ANAEROBE_GASES, false);
-        Collection<BlastFurnaceGasStat> gases = new ArrayList<>();
-
-        if (nobleGases && anaerobeGases) {
-            gases = BlastFurnaceGasStat.getNobleAndAnaerobeGases();
-        } else if (nobleGases) {
-            gases = BlastFurnaceGasStat.getNobleGases();
-        } else if (anaerobeGases) {
-            gases = BlastFurnaceGasStat.getAnaerobeGases();
-        }
-        for (BlastFurnaceGasStat gas : gases) {
-            int gasAmount = (int) (gas.recipeConsumedAmountMultiplier * basicGasAmount);
-            int duration = (int) Math.max(gas.recipeTimeMultiplier * durationBase, 1);
-            ret.addAll(
-                builder.copy()
-                    .itemInputs(items.toArray(new ItemStack[0]))
-                    .fluidInputs(GTUtility.copyAmount(gasAmount, gas.gas))
+                    .fluidInputs(GTUtility.copyAmount(gasAmount, gasStat.gas))
                     .duration(duration)
                     .addTo(RecipeMaps.blastFurnaceRecipes));
+        }
+
+        // Generate recipe without gas
+        if (builder.getMetadataOrDefault(NO_GAS, false)) {
+            int circuitConfig = builder.getMetadataOrDefault(NO_GAS_CIRCUIT_CONFIG, -1);
+            for (int i = 0; i < items.size(); i++) {
+                if (GTUtility.isAnyIntegratedCircuit(items.get(i))) {
+                    items.remove(i);
+                    break;
+                }
+            }
+            if (circuitConfig == -1) {
+                ret.addAll(
+                    builder.copy()
+                        .itemInputs(items.toArray(new ItemStack[0]))
+                        .duration((int) Math.max(baseDuration * 1.25, 1))
+                        .addTo(RecipeMaps.blastFurnaceRecipes));
+            } else {
+                ret.addAll(
+                    builder.copy()
+                        .itemInputs(items.toArray(new ItemStack[0]))
+                        .circuit(circuitConfig)
+                        .duration((int) Math.max(baseDuration * 1.25, 1))
+                        .addTo(RecipeMaps.blastFurnaceRecipes));
+            }
         }
         return ret;
     });
@@ -675,10 +731,10 @@ public class GTRecipeConstants {
     });
 
     /**
-     * A universal fuel adder. It's actually just a dispatcher towards all actual fuel recipe maps.
-     * Dispatch based on {@link #FUEL_TYPE}. Uses {@link #FUEL_VALUE} as fuel value.
-     * Can use {@link FuelType#ordinal()} as a human-readable form of what FUEL_TYPE should be.
-     * You can bypass this and add to relevant fuel maps directly if you wish.
+     * A universal fuel adder. It's actually just a dispatcher towards all actual fuel recipe maps. Dispatch based on
+     * {@link #FUEL_TYPE}. Uses {@link #FUEL_VALUE} as fuel value. Can use {@link FuelType#ordinal()} as a
+     * human-readable form of what FUEL_TYPE should be. You can bypass this and add to relevant fuel maps directly if
+     * you wish.
      */
     public static IRecipeMap Fuel = IRecipeMap.newRecipeMap(builder -> {
         builder.validateInputCount(1, 1)
@@ -730,6 +786,7 @@ public class GTRecipeConstants {
         GTRecipeMapUtil.SPECIAL_VALUE_ALIASES.add(FOG_PLASMA_TIER);
         GTRecipeMapUtil.SPECIAL_VALUE_ALIASES.add(DEFC_CASING_TIER);
         GTRecipeMapUtil.SPECIAL_VALUE_ALIASES.add(CHEMPLANT_CASING_TIER);
+        GTRecipeMapUtil.SPECIAL_VALUE_ALIASES.add(ALGAE_POND_TIER);
         GTRecipeMapUtil.SPECIAL_VALUE_ALIASES.add(QFT_FOCUS_TIER);
         GTRecipeMapUtil.SPECIAL_VALUE_ALIASES.add(DISSOLUTION_TANK_RATIO);
         GTRecipeMapUtil.SPECIAL_VALUE_ALIASES.add(RTG_DURATION_IN_DAYS);

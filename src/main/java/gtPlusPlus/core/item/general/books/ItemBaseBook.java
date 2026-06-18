@@ -13,10 +13,13 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Mods;
+import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.handler.BookHandler;
 import gtPlusPlus.core.util.Utils;
@@ -33,56 +36,56 @@ public class ItemBaseBook extends ItemWritableBook {
     }
 
     @Override
-    public void getSubItems(Item item, CreativeTabs tab, List list) {
-        for (int i = 0; i < BookHandler.mBookMap.size(); i++) {
-            ItemStack bookstack = new ItemStack(item, 1, i);
+    public void getSubItems(Item item, CreativeTabs tab, List<ItemStack> list) {
+        for (int meta : BookHandler.mBookMap.keySet()) {
+            ItemStack bookstack = new ItemStack(item, 1, meta);
 
             /*
              * bookstack = Utils.getWrittenBook( bookstack, i, mBookMap.get(i).mMapping, mBookMap.get(i).mTitle,
              * mBookMap.get(i).mAuthor, mBookMap.get(i).mPages);
              */
 
-            NBTUtils.createIntegerTagCompound(bookstack, "stats", "mMeta", i);
+            NBTUtils.createIntegerTagCompound(bookstack, "stats", "mMeta", meta);
             list.add(bookstack);
         }
     }
 
     @Override
     public String getItemStackDisplayName(final ItemStack tItem) {
-        if (NBTUtils.hasKey(tItem, "title")) {
-            return NBTUtils.getString(tItem, "title");
-        } else if (tItem.getItemDamage() > -1 && tItem.getItemDamage() <= BookHandler.mBookMap.size()) {
-            return EnumChatFormatting.ITALIC
-                + Utils.addBookTitleLocalization(BookHandler.mBookMap.get(tItem.getItemDamage()).mTitle);
+        if (ItemStackNBT.hasKey(tItem, "title")) {
+            return ItemStackNBT.getString(tItem, "title");
         }
-        // NBTUtils.tryIterateNBTData(tItem);
+        BookHandler.BookTemplate book = BookHandler.mBookMap.get(tItem.getItemDamage());
+        if (book != null) {
+            String titleKey = book.mTitle();
+            String title = StatCollector.canTranslate(titleKey) ? GTUtility.translate(titleKey) : titleKey;
+            return EnumChatFormatting.ITALIC + title;
+        }
         return "GT++ Storybook";
     }
 
     @Override
-    public void addInformation(ItemStack tItem, EntityPlayer player, List list, boolean bool) {
-        // TODO Auto-generated method stub
-        if (NBTUtils.hasKey(tItem, "author")) {
+    public void addInformation(ItemStack tItem, EntityPlayer player, List<String> list, boolean bool) {
+        BookHandler.BookTemplate bookTemplate = BookHandler.mBookMap.get(tItem.getItemDamage());
+        if (bookTemplate == null) return;
+        if (ItemStackNBT.hasKey(tItem, "author")) {
             list.add(
                 EnumChatFormatting.GRAY + StatCollector
-                    .translateToLocalFormatted("gtpp.tooltip.book.author", NBTUtils.getString(tItem, "author")));
-        } else if (BookHandler.mBookMap.get(tItem.getItemDamage()).mAuthor != null) {
+                    .translateToLocalFormatted("gtpp.tooltip.book.author", ItemStackNBT.getString(tItem, "author")));
+        } else if (bookTemplate.mAuthor() != null) {
             list.add(
-                EnumChatFormatting.WHITE + StatCollector.translateToLocalFormatted(
-                    "gtpp.tooltip.book.author",
-                    BookHandler.mBookMap.get(tItem.getItemDamage()).mAuthor));
+                EnumChatFormatting.WHITE
+                    + StatCollector.translateToLocalFormatted("gtpp.tooltip.book.author", bookTemplate.mAuthor()));
         }
-        if (NBTUtils.hasKey(tItem, "title")) {
+        if (ItemStackNBT.hasKey(tItem, "title")) {
             list.add(
                 EnumChatFormatting.GRAY + StatCollector
-                    .translateToLocalFormatted("gtpp.tooltip.book.pages.s", NBTUtils.getString(tItem, "pages")));
-        } else if (BookHandler.mBookMap.get(tItem.getItemDamage()).mPages != null) {
+                    .translateToLocalFormatted("gtpp.tooltip.book.pages.s", ItemStackNBT.getString(tItem, "pages")));
+        } else if (bookTemplate.mPages() != null) {
             list.add(
-                EnumChatFormatting.WHITE + StatCollector.translateToLocalFormatted(
-                    "gtpp.tooltip.book.pages.d",
-                    BookHandler.mBookMap.get(tItem.getItemDamage()).mPages.length));
+                EnumChatFormatting.WHITE + StatCollector
+                    .translateToLocalFormatted("gtpp.tooltip.book.pages.d", bookTemplate.mPages().length));
         }
-        // super.addInformation(p_77624_1_, p_77624_2_, p_77624_3_, p_77624_4_);
     }
 
     @Override
@@ -99,14 +102,15 @@ public class ItemBaseBook extends ItemWritableBook {
     @Override
     public ItemStack onItemRightClick(ItemStack item, World world, EntityPlayer player) {
         if (player.worldObj.isRemote) {
-            int i = item.getItemDamage();
+            BookHandler.BookTemplate bookTemplate = BookHandler.mBookMap.get(item.getItemDamage());
+            if (bookTemplate == null) return item;
             ItemStack bookstack = Utils.getWrittenBook(
                 null,
-                BookHandler.mBookMap.get(i).mMeta,
-                BookHandler.mBookMap.get(i).mMapping,
-                BookHandler.mBookMap.get(i).mTitle,
-                BookHandler.mBookMap.get(i).mAuthor,
-                BookHandler.mBookMap.get(i).mPages);
+                bookTemplate.mMeta(),
+                bookTemplate.mMapping(),
+                bookTemplate.mTitle(),
+                bookTemplate.mAuthor(),
+                bookTemplate.mPages());
             if (bookstack != null) {
                 Minecraft.getMinecraft()
                     .displayGuiScreen(new GuiScreenBook(player, bookstack, false));

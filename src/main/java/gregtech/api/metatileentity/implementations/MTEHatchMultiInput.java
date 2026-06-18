@@ -1,26 +1,30 @@
 package gregtech.api.metatileentity.implementations;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_INPUT_HATCH_2x2;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_INPUT_HATCH_2x2_COLORS;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 
-import com.gtnewhorizons.modularui.api.ModularUITextures;
-import com.gtnewhorizons.modularui.api.math.Pos2d;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.fluid.FluidStackTank;
-import com.gtnewhorizons.modularui.common.widget.FluidSlotWidget;
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.utils.fluid.FluidStackTank;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.modularui.IAddUIWidgets;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTSplit;
+import gregtech.common.gui.modularui.hatch.MTEHatchMultiInputGui;
 
-public class MTEHatchMultiInput extends MTEHatchInput implements IAddUIWidgets {
+@IMetaTileEntity.SkipGenerateDescription
+public class MTEHatchMultiInput extends MTEHatchInput {
 
     private final FluidStack[] mStoredFluid;
     private final FluidStackTank[] fluidTanks;
@@ -79,14 +83,22 @@ public class MTEHatchMultiInput extends MTEHatchInput implements IAddUIWidgets {
         return mStoredFluid;
     }
 
+    public FluidStackTank[] getFluidTanks() {
+        return fluidTanks;
+    }
+
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_INPUT_HATCH_2x2) };
+        byte color = getBaseMetaTileEntity().getColorization();
+        ITexture coloredPipeOverlay = TextureFactory.of(OVERLAY_INPUT_HATCH_2x2_COLORS[color + 1]);
+        return new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_INPUT_HATCH_2x2), coloredPipeOverlay };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_INPUT_HATCH_2x2) };
+        byte color = getBaseMetaTileEntity().getColorization();
+        ITexture coloredPipeOverlay = TextureFactory.of(OVERLAY_INPUT_HATCH_2x2_COLORS[color + 1]);
+        return new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_INPUT_HATCH_2x2), coloredPipeOverlay };
     }
 
     public int getMaxType() {
@@ -225,6 +237,11 @@ public class MTEHatchMultiInput extends MTEHatchInput implements IAddUIWidgets {
 
     @Override
     public FluidStack drain(ForgeDirection from, FluidStack aFluid, boolean doDrain) {
+        return drain(from, aFluid, aFluid == null ? 0 : aFluid.amount, doDrain);
+    }
+
+    @Override
+    public FluidStack drain(ForgeDirection from, FluidStack aFluid, int amount, boolean doDrain) {
         if (aFluid == null || !hasFluid(aFluid)) return null;
         FluidStack tStored = mStoredFluid[getFluidSlot(aFluid)];
         if (tStored.amount <= 0 && isFluidChangingAllowed()) {
@@ -233,7 +250,7 @@ public class MTEHatchMultiInput extends MTEHatchInput implements IAddUIWidgets {
             return null;
         }
         FluidStack tRemove = tStored.copy();
-        tRemove.amount = Math.min(aFluid.amount, tRemove.amount);
+        tRemove.amount = Math.min(amount, tRemove.amount);
         if (doDrain) {
             tStored.amount -= tRemove.amount;
             getBaseMetaTileEntity().markDirty();
@@ -272,15 +289,21 @@ public class MTEHatchMultiInput extends MTEHatchInput implements IAddUIWidgets {
     }
 
     @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        final int SLOT_NUMBER = 4;
-        final Pos2d[] positions = new Pos2d[] { new Pos2d(70, 25), new Pos2d(88, 25), new Pos2d(70, 43),
-            new Pos2d(88, 43), };
+    public String[] getDescription() {
+        final int slots = mInventory.length;
+        return GTSplit.splitLocalizedFormatted(
+            "gt.blockmachines.input_hatch_multislot.desc",
+            formatNumber(getCapacityPerTank(mTier, slots)),
+            slots);
+    }
 
-        for (int i = 0; i < SLOT_NUMBER; i++) {
-            builder.widget(
-                new FluidSlotWidget(fluidTanks[i]).setBackground(ModularUITextures.FLUID_SLOT)
-                    .setPos(positions[i]));
-        }
+    @Override
+    protected boolean useMui2() {
+        return true;
+    }
+
+    @Override
+    public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTEHatchMultiInputGui(this).build(guiData, syncManager, uiSettings);
     }
 }

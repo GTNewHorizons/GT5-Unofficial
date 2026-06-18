@@ -1,10 +1,16 @@
 package gregtech.api.modularui2;
 
 import com.cleanroommc.modularui.api.IThemeApi;
+import com.cleanroommc.modularui.api.drawable.IDrawable;
+import com.cleanroommc.modularui.drawable.DrawableStack;
 import com.cleanroommc.modularui.drawable.GuiTextures;
-import com.cleanroommc.modularui.theme.WidgetSlotTheme;
+import com.cleanroommc.modularui.drawable.Rectangle;
+import com.cleanroommc.modularui.theme.SlotTheme;
 import com.cleanroommc.modularui.theme.WidgetTheme;
+import com.cleanroommc.modularui.theme.WidgetThemeKey;
+import com.cleanroommc.modularui.theme.WidgetThemeParser;
 import com.cleanroommc.modularui.utils.Color;
+import com.cleanroommc.modularui.utils.JsonHelper;
 import com.cleanroommc.modularui.widget.Widget;
 
 import gregtech.common.modularui2.theme.ProgressbarWidgetTheme;
@@ -20,9 +26,9 @@ import gregtech.common.modularui2.theme.ProgressbarWidgetTheme;
  * To add new widget theme, follow these steps:
  * <ol>
  * <li>Define all the relevant texture IDs, typically at {@link GTTextureIds}.</li>
- * <li>Register {@link com.cleanroommc.modularui.drawable.UITexture UITexture}s, typically at
- * {@link GTGuiTextures}. Make sure to register texture ID with
- * {@link com.cleanroommc.modularui.drawable.UITexture.Builder#name(String) builder#name}.</li>
+ * <li>Register {@link com.cleanroommc.modularui.drawable.UITexture UITexture}s, typically at {@link GTGuiTextures}.
+ * Make sure to register texture ID with {@link com.cleanroommc.modularui.drawable.UITexture.Builder#name(String)
+ * builder#name}.</li>
  * <li>Define widget theme ID at this class.</li>
  * <li>Register widget theme at this class.</li>
  * <li>Register relevant information of the widget theme for each theme to use at {@link GTGuiThemes}.</li>
@@ -30,96 +36,169 @@ import gregtech.common.modularui2.theme.ProgressbarWidgetTheme;
  */
 public final class GTWidgetThemes {
 
-    public static final String TEXT_TITLE = "textTitle";
+    private static final IThemeApi themeApi = IThemeApi.get();
+    public static WidgetThemeKey<WidgetTheme> TEXT_TITLE = themeApi
+        .widgetThemeKeyBuilder("textTitle", WidgetTheme.class)
+        .defaultTheme(new WidgetTheme(0, 0, null, Color.WHITE.main, 0x404040, false, 0))
+        .defaultHoverTheme(null)
+        .register();
 
-    public static final String BACKGROUND_POPUP = "backgroundPopup";
-    public static final String BACKGROUND_TITLE = "backgroundTitle";
+    // Use for plain/unlocalized display strings and dynamic values (numbers, status text, mode text)
+    public static WidgetThemeKey<WidgetTheme> DISPLAY_TEXT_WHITE = themeApi
+        .widgetThemeKeyBuilder("displayTextWhite", WidgetTheme.class)
+        .defaultTheme(new WidgetTheme(0, 0, null, Color.WHITE.main, 0xFAFAFA, false, 0))
+        .defaultHoverTheme(null)
+        .register();
+    public static WidgetThemeKey<WidgetTheme> DISPLAY_TEXT_GRAY = themeApi
+        .widgetThemeKeyBuilder("displayTextGray", WidgetTheme.class)
+        .defaultTheme(new WidgetTheme(0, 0, null, Color.GREY.main, 0x404040, false, 0))
+        .defaultHoverTheme(null)
+        .register();
 
-    public static final String OVERLAY_ITEM_SLOT_DUST = "overlayItemSlotDust";
-    public static final String OVERLAY_ITEM_SLOT_INGOT = "overlayItemSlotIngot";
-    public static final String OVERLAY_ITEM_SLOT_FURNACE = "overlayItemSlotFurnace";
-    public static final String OVERLAY_ITEM_SLOT_IN = "overlayItemSlotIn";
-    public static final String OVERLAY_ITEM_SLOT_OUT = "overlayItemSlotOut";
-    public static final String OVERLAY_ITEM_SLOT_COAL = "overlayItemSlotCoal";
-    public static final String OVERLAY_ITEM_SLOT_BLOCK = "overlayItemSlotBlock";
+    public static WidgetThemeKey<WidgetTheme> BACKGROUND_POPUP = registerThemedTexture("backgroundPopup");
+    public static WidgetThemeKey<WidgetTheme> BACKGROUND_TITLE = registerThemedTexture("backgroundTitle");
+    public static WidgetThemeKey<WidgetTheme> BACKGROUND_TERMINAL = themeApi
+        .widgetThemeKeyBuilder("backgroundTerminal", WidgetTheme.class)
+        .defaultTheme(new WidgetTheme(0, 0, GTGuiTextures.BACKGROUND_TERMINAL, Color.WHITE.main, 0xFAFAFA, false, 0))
+        .defaultHoverTheme(null)
+        .register();
 
-    public static final String OVERLAY_FLUID_SLOT_IN = "overlayFluidSlotIn";
+    public static WidgetThemeKey<WidgetTheme> BACKGROUND_REDSTONE_SNIFFER = themeApi
+        .widgetThemeKeyBuilder("backgroundRedstoneSniffer", WidgetTheme.class)
+        .defaultTheme(
+            new WidgetTheme(0, 0, GTGuiTextures.BACKGROUND_REDSTONE_SNIFFER, Color.WHITE.main, 0xFAFAFA, false, 0))
+        .defaultHoverTheme(null)
+        .register();
 
-    public static final String PROGRESSBAR_BOILER_HEAT = "progressbarBoilerHeat";
-    public static final String PROGRESSBAR_FUEL = "progressbarFuel";
+    public static WidgetThemeKey<WidgetTheme> BACKGROUND_CHAOS_LOCATOR = themeApi
+        .widgetThemeKeyBuilder("backgroundChaosLocator", WidgetTheme.class)
+        .defaultTheme(
+            new WidgetTheme(0, 0, GTGuiTextures.BACKGROUND_CHAOS_LOCATOR, Color.WHITE.main, 0xFAFAFA, false, 0))
+        .defaultHoverTheme(null)
+        .register();
 
-    public static final String BUTTON_COVER_TAB_ENABLED = "buttonCoverTabEnabled";
-    public static final String BUTTON_COVER_TAB_DISABLED = "buttonCoverTabDisabled";
+    public static WidgetThemeKey<SlotTheme> OVERLAY_ITEM_SLOT_DUST = registerThemedItemSlot("overlayItemSlotDust");
+    public static WidgetThemeKey<SlotTheme> OVERLAY_ITEM_SLOT_INGOT = registerThemedItemSlot("overlayItemSlotIngot");
+    public static WidgetThemeKey<SlotTheme> OVERLAY_ITEM_SLOT_FURNACE = registerThemedItemSlot(
+        "overlayItemSlotFurnace");
+    public static WidgetThemeKey<SlotTheme> OVERLAY_ITEM_SLOT_IN = registerThemedItemSlot("overlayItemSlotIn");
+    public static WidgetThemeKey<SlotTheme> OVERLAY_ITEM_SLOT_OUT = registerThemedItemSlot("overlayItemSlotOut");
+    public static WidgetThemeKey<SlotTheme> OVERLAY_ITEM_SLOT_COAL = registerThemedItemSlot("overlayItemSlotCoal");
+    public static WidgetThemeKey<SlotTheme> OVERLAY_ITEM_SLOT_BLOCK = registerThemedItemSlot("overlayItemSlotBlock");
 
-    public static final String PICTURE_CANISTER = "pictureCanister";
-    public static final String PICTURE_LOGO = "pictureLogo";
+    public static WidgetThemeKey<SlotTheme> OVERLAY_FLUID_SLOT_IN = registerThemedFluidSlot("overlayFluidSlotIn");
 
-    public static void register() {
-        IThemeApi themeApi = IThemeApi.get();
+    public static WidgetThemeKey<ProgressbarWidgetTheme> PROGRESSBAR_BOILER_HEAT = themeApi
+        .widgetThemeKeyBuilder("progressbarBoilerHeat", ProgressbarWidgetTheme.class)
+        .defaultTheme(
+            new ProgressbarWidgetTheme(GTGuiTextures.SLOT_ITEM_STANDARD, GTGuiTextures.PROGRESSBAR_BOILER_HEAT, 54))
+        .defaultHoverTheme(null)
+        .register();
+    public static WidgetThemeKey<ProgressbarWidgetTheme> PROGRESSBAR_FUEL = themeApi
+        .widgetThemeKeyBuilder("progressbarFuel", ProgressbarWidgetTheme.class)
+        .defaultTheme(new ProgressbarWidgetTheme(GTGuiTextures.PROGRESSBAR_FUEL_STANDARD, 14))
+        .defaultHoverTheme(null)
+        .register();
+    public static WidgetThemeKey<WidgetTheme> STEAM_GAUGE = themeApi
+        .widgetThemeKeyBuilder("steamGauge", WidgetTheme.class)
+        .defaultTheme(new WidgetTheme(0, 0, GTGuiTextures.STEAM_GAUGE_BG, Color.WHITE.main, Color.WHITE.main, false, 0))
+        .defaultHoverTheme(null)
+        .register();
+    public static WidgetThemeKey<WidgetTheme> STEAM_GAUGE_NEEDLE = themeApi
+        .widgetThemeKeyBuilder("steamGaugeNeedle", WidgetTheme.class)
+        .defaultTheme(new WidgetTheme(0, 0, null, Color.BROWN.main, 0xFF404040, false, 0))
+        .defaultHoverTheme(null)
+        .parser(noInheritanceParser())
+        .register();
 
-        themeApi.registerWidgetTheme(
-            TEXT_TITLE,
-            new WidgetTheme(null, null, Color.WHITE.main, 0x404040, false),
-            WidgetTheme::new);
+    public static WidgetThemeKey<WidgetTheme> BUTTON_COVER_TAB_ENABLED = registerThemedButton("buttonCoverTabEnabled");
+    public static WidgetThemeKey<WidgetTheme> BUTTON_COVER_TAB_DISABLED = registerThemedButton(
+        "buttonCoverTabDisabled");
 
-        registerThemedTexture(BACKGROUND_POPUP);
-        registerThemedTexture(BACKGROUND_TITLE);
+    public static WidgetThemeKey<WidgetTheme> BUTTON_BLACK = themeApi
+        .widgetThemeKeyBuilder("buttonBlack", WidgetTheme.class)
+        .defaultTheme(new WidgetTheme(0, 0, GuiTextures.MC_BUTTON, 0x333333, 0xFAFAFA, false, 0))
+        .defaultHoverTheme(null)
+        .register();
 
-        registerThemedItemSlot(OVERLAY_ITEM_SLOT_DUST);
-        registerThemedItemSlot(OVERLAY_ITEM_SLOT_INGOT);
-        registerThemedItemSlot(OVERLAY_ITEM_SLOT_FURNACE);
-        registerThemedItemSlot(OVERLAY_ITEM_SLOT_IN);
-        registerThemedItemSlot(OVERLAY_ITEM_SLOT_OUT);
-        registerThemedItemSlot(OVERLAY_ITEM_SLOT_COAL);
-        registerThemedItemSlot(OVERLAY_ITEM_SLOT_BLOCK);
+    public static WidgetThemeKey<WidgetTheme> PICTURE_CANISTER = registerThemedTexture("pictureCanister");
+    public static WidgetThemeKey<WidgetTheme> PICTURE_LOGO = registerThemedTexture("pictureLogo");
 
-        registerThemedFluidSlot(OVERLAY_FLUID_SLOT_IN);
+    public static WidgetThemeKey<WidgetTheme> TESLA_TOWER_CHART = themeApi
+        .widgetThemeKeyBuilder("teslaTowerChart", WidgetTheme.class)
+        .defaultTheme(
+            new WidgetTheme(
+                0,
+                0,
+                new Rectangle().color(Color.rgb(100, 30, 80)),
+                Color.rgb(55, 255, 55),
+                0xFFFAFAFA,
+                false,
+                0))
+        .defaultHoverTheme(null)
+        .parser(noInheritanceParser())
+        .register();
 
-        themeApi.registerWidgetTheme(
-            PROGRESSBAR_BOILER_HEAT,
-            new ProgressbarWidgetTheme(GTGuiTextures.SLOT_ITEM_STANDARD, GTGuiTextures.PROGRESSBAR_BOILER_HEAT, 54),
-            ProgressbarWidgetTheme::new);
-        themeApi.registerWidgetTheme(
-            PROGRESSBAR_FUEL,
-            new ProgressbarWidgetTheme(GTGuiTextures.PROGRESSBAR_FUEL_STANDARD, 14),
-            ProgressbarWidgetTheme::new);
+    public static WidgetThemeKey<WidgetTheme> TESLA_TOWER_CHART_SPECIAL = themeApi
+        .widgetThemeKeyBuilder("teslaTowerChartSpecial", WidgetTheme.class)
+        .defaultTheme(
+            new WidgetTheme(
+                0,
+                0,
+                new DrawableStack(
+                    new Rectangle().color(Color.rgb(100, 30, 80)),
+                    GTGuiTextures.BACKGROUND_TESLA_TOWER_CHART),
+                Color.rgb(55, 255, 55),
+                0xFFFAFAFA,
+                false,
+                0))
+        .defaultHoverTheme(null)
+        .parser(noInheritanceParser())
+        .register();
 
-        registerThemedButton(BUTTON_COVER_TAB_ENABLED);
-        registerThemedButton(BUTTON_COVER_TAB_DISABLED);
-
-        registerThemedTexture(PICTURE_CANISTER);
-        registerThemedTexture(PICTURE_LOGO);
+    private static WidgetThemeKey<WidgetTheme> registerThemedTexture(String textureThemeId) {
+        return themeApi.widgetThemeKeyBuilder(textureThemeId, WidgetTheme.class)
+            .defaultTheme(new WidgetTheme(0, 0, null, Color.WHITE.main, 0xFF404040, false, 0))
+            .defaultHoverTheme(null)
+            .register();
     }
 
-    private static void registerThemedTexture(String textureThemeId) {
-        IThemeApi themeApi = IThemeApi.get();
-        themeApi.registerWidgetTheme(
-            textureThemeId,
-            new WidgetTheme(null, null, Color.WHITE.main, 0xFF404040, false),
-            WidgetTheme::new);
+    private static WidgetThemeKey<SlotTheme> registerThemedItemSlot(String textureThemeId) {
+        return themeApi.widgetThemeKeyBuilder(textureThemeId, SlotTheme.class)
+            .defaultTheme(new SlotTheme(GuiTextures.SLOT_ITEM, Color.withAlpha(Color.WHITE.main, 0x60)))
+            .defaultHoverTheme(null)
+            .register();
     }
 
-    private static void registerThemedItemSlot(String textureThemeId) {
-        IThemeApi themeApi = IThemeApi.get();
-        themeApi.registerWidgetTheme(
-            textureThemeId,
-            new WidgetSlotTheme(GuiTextures.SLOT_ITEM, Color.withAlpha(Color.WHITE.main, 0x60)),
-            WidgetSlotTheme::new);
+    private static WidgetThemeKey<SlotTheme> registerThemedFluidSlot(String textureThemeId) {
+        return themeApi.widgetThemeKeyBuilder(textureThemeId, SlotTheme.class)
+            .defaultTheme(new SlotTheme(GuiTextures.SLOT_FLUID, Color.withAlpha(Color.WHITE.main, 0x60)))
+            .defaultHoverTheme(null)
+            .register();
     }
 
-    private static void registerThemedFluidSlot(String textureThemeId) {
-        IThemeApi themeApi = IThemeApi.get();
-        themeApi.registerWidgetTheme(
-            textureThemeId,
-            new WidgetSlotTheme(GuiTextures.SLOT_FLUID, Color.withAlpha(Color.WHITE.main, 0x60)),
-            WidgetSlotTheme::new);
+    private static WidgetThemeKey<WidgetTheme> registerThemedButton(String textureThemeId) {
+        return themeApi.widgetThemeKeyBuilder(textureThemeId, WidgetTheme.class)
+            .defaultTheme(new WidgetTheme(0, 0, null, Color.WHITE.main, 0xFF404040, false, 0))
+            .defaultHoverTheme(null)
+            .register();
     }
 
-    private static void registerThemedButton(String textureThemeId) {
-        IThemeApi themeApi = IThemeApi.get();
-        themeApi.registerWidgetTheme(
-            textureThemeId,
-            new WidgetTheme(null, null, Color.WHITE.main, 0xFF404040, false),
-            WidgetTheme::new);
+    // Needed because by default it will inherit the global color
+    private static WidgetThemeParser<WidgetTheme> noInheritanceParser() {
+        return (parent, json, fallback) -> {
+            int defaultWidth = JsonHelper.getInt(json, parent.getDefaultWidth(), "w", "width");
+            int defaultHeight = JsonHelper.getInt(json, parent.getDefaultHeight(), "h", "height");
+            IDrawable background = JsonHelper
+                .deserialize(json, IDrawable.class, parent.getBackground(), IThemeApi.BACKGROUND, "bg");
+            int color = JsonHelper.getColorWithFallback(json, null, parent.getColor(), IThemeApi.COLOR);
+            int textColor = JsonHelper.getColorWithFallback(json, null, parent.getTextColor(), IThemeApi.TEXT_COLOR);
+            textColor = textColor == 0 ? color : textColor;
+            boolean textShadow = JsonHelper
+                .getBoolWithFallback(json, null, parent.getTextShadow(), IThemeApi.TEXT_SHADOW);
+            int iconColor = JsonHelper.getColorWithFallback(json, null, parent.getIconColor(), IThemeApi.ICON_COLOR);
+            iconColor = iconColor == 0 ? color : iconColor;
+            return new WidgetTheme(defaultWidth, defaultHeight, background, color, textColor, textShadow, iconColor);
+        };
     }
 }

@@ -4,8 +4,7 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.withChannel;
-import static gregtech.api.enums.GTValues.AuthorVolence;
+import static gregtech.api.enums.GTAuthors.AuthorVolence;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
@@ -16,12 +15,12 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_AUTOCLA
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_AUTOCLAVE_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_AUTOCLAVE_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_AUTOCLAVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.getCasingTextureForId;
 import static gregtech.api.util.GTStructureUtility.activeCoils;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofCoil;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
-import static net.minecraft.util.EnumChatFormatting.BLUE;
 
 import java.text.DecimalFormat;
 import java.util.List;
@@ -30,7 +29,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -57,21 +55,24 @@ import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
-import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.blocks.BlockCasings10;
+import gregtech.common.misc.GTStructureChannels;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAutoclave>
-    implements ISurvivalConstructable {
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     public MTEMultiAutoclave(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -155,15 +156,14 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
             buildHatchAdder(MTEMultiAutoclave.class)
                 .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Maintenance, Energy)
                 .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(3))
-                .dot(1)
+                .hint(1)
                 .buildAndChain(
                     onElementPass(MTEMultiAutoclave::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings10, 3))))
         .addElement('B', chainAllGlasses()) // Steel Casings
         .addElement('C', ofFrame(Materials.Polytetrafluoroethylene)) // PTFE Frame
         .addElement(
             'D',
-            withChannel(
-                "pipe",
+            GTStructureChannels.PIPE_CASING.use(
                 ofBlocksTiered(
                     MTEMultiAutoclave::getFluidTierFromMeta,
                     ImmutableList.of(
@@ -176,8 +176,7 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
                     MTEMultiAutoclave::getFluidPipeTier)))
         .addElement(
             'E',
-            withChannel(
-                "item_pipe",
+            GTStructureChannels.ITEM_PIPE_CASING.use(
                 ofBlocksTiered(
                     MTEMultiAutoclave::getItemPipeTierFromMeta,
                     ImmutableList.of(
@@ -194,7 +193,8 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
                     MTEMultiAutoclave::getItemPipeTier)))
         .addElement(
             'F',
-            withChannel("coil", activeCoils(ofCoil(MTEMultiAutoclave::setCoilLevel, MTEMultiAutoclave::getCoilLevel))))
+            GTStructureChannels.HEATING_COIL
+                .use(activeCoils(ofCoil(MTEMultiAutoclave::setCoilLevel, MTEMultiAutoclave::getCoilLevel))))
         .build();
 
     @Override
@@ -205,18 +205,17 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Autoclave")
-            .addInfo("Processes 12 items per Item Pipe Casing Tier.")
-            .addInfo("Energy consumption is reduced with higher fluid pipe tiers.")
-            .addInfo(BLUE + "Energy consumption = Recipe Consumption * (12 - Pipe Casing Tier) / 12.")
-            .addInfo("Each coil level makes the machine 25% faster than singleblock machines of the same voltage.")
+        tt.addMachineType("Autoclave, IAC")
+            .addDynamicParallelInfo(12, TooltipTier.ITEM_PIPE_CASING)
+            .addDynamicSpeedBonusInfo(0.25f, TooltipTier.COIL)
+            .addDynamicEuEffInfo(0.0833f, TooltipTier.PIPE_CASING)
             .beginStructureBlock(7, 7, 9, true)
-            .addController("Front Center")
-            .addCasingInfoMin("Pressure Containment Casings", 128, false)
+            .addController("Front bottom center")
+            .addCasingInfoMin("Pressure Containment Casing", 128, false)
             .addCasingInfoExactly("Any Tiered Glass", 42, false)
-            .addCasingInfoExactly("Item Pipe Casings", 7, true)
-            .addCasingInfoExactly("Pipe Casings", 14, true)
-            .addCasingInfoExactly("Heating Coils", 7, true)
+            .addCasingInfoExactly("Item Pipe Casing", 7, true)
+            .addCasingInfoExactly("Pipe Casing", 14, true)
+            .addCasingInfoExactly("Heating Coil", 7, true)
             .addCasingInfoExactly("PTFE Frame", 42, false)
             .addInputBus("Any Pressure Containment Casing", 1)
             .addOutputBus("Any Pressure Containment Casing", 1)
@@ -224,10 +223,10 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
             .addOutputHatch("Any Pressure Containment Casing", 1)
             .addEnergyHatch("Any Pressure Containment Casing", 1)
             .addMaintenanceHatch("Any Pressure Containment Casing", 1)
-            .addSubChannelUsage("glass", "Glass Tier")
-            .addSubChannelUsage("item_pipe", "Item Pipe Casing Tier")
-            .addSubChannelUsage("pipe", "Pipe Casing Tier")
-            .addSubChannelUsage("coil", "Heating Coils Tier")
+            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .addSubChannelUsage(GTStructureChannels.ITEM_PIPE_CASING)
+            .addSubChannelUsage(GTStructureChannels.PIPE_CASING)
+            .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher(AuthorVolence);
         return tt;
     }
@@ -239,53 +238,37 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         fluidPipeTier = -1;
         itemPipeTier = -1;
         mCasingAmount = 0;
         mEnergyHatches.clear();
         setCoilLevel(HeatingCoilLevel.None);
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, 3, 6, 0)) return false;
-        return mCasingAmount >= 128;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 3, 6, 0, errors)) return;
+        checkCasingMin(errors, mCasingAmount, 128);
+        checkHasEnergyHatch(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasAnyInput(errors);
+        checkHasAnyOutput(errors);
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
-        ITexture[] rTexture;
-        if (side == aFacing) {
-            if (aActive) {
-                rTexture = new ITexture[] {
-                    Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 3)),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_AUTOCLAVE_ACTIVE)
-                        .extFacing()
-                        .build(),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_AUTOCLAVE_ACTIVE_GLOW)
-                        .extFacing()
-                        .glow()
-                        .build() };
-            } else {
-                rTexture = new ITexture[] {
-                    Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 3)),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_AUTOCLAVE)
-                        .extFacing()
-                        .build(),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_AUTOCLAVE_GLOW)
-                        .extFacing()
-                        .glow()
-                        .build() };
-            }
-        } else {
-            rTexture = new ITexture[] { Textures.BlockIcons
-                .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 3)) };
-        }
-        return rTexture;
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            OVERLAY_FRONT_MULTI_AUTOCLAVE,
+            OVERLAY_FRONT_MULTI_AUTOCLAVE_GLOW,
+            OVERLAY_FRONT_MULTI_AUTOCLAVE_ACTIVE,
+            OVERLAY_FRONT_MULTI_AUTOCLAVE_ACTIVE_GLOW);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 3));
     }
 
     @Override
@@ -296,18 +279,13 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 3, 6, 0, elementBudget, env, false, true);
+        return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 3, 6, 0, elementBudget, env, false, true);
     }
 
     @SideOnly(Side.CLIENT)
     @Override
     protected SoundResource getActivitySoundLoop() {
         return SoundResource.GT_MACHINES_MULTI_AUTOCLAVE_LOOP;
-    }
-
-    @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
     }
 
     @Override
@@ -349,7 +327,6 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
         tag.setInteger("fluidPipeTier", getFluidPipeTier());
         tag.setInteger("itemPipeTier", getItemPipeTier());
         tag.setInteger("coilTier", getCoilTier());
-        tag.setFloat("getMaxParallelRecipes", getMaxParallelRecipes());
     }
 
     private static final DecimalFormat dfTwo = new DecimalFormat("0.00");
@@ -374,10 +351,6 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
                 + EnumChatFormatting.WHITE
                 + Math.max(0, tag.getInteger("itemPipeTier")));
         currenttip.add(
-            StatCollector.translateToLocal("GT5U.multiblock.parallelism") + ": "
-                + EnumChatFormatting.WHITE
-                + dfNone.format(Math.max(0, tag.getFloat("getMaxParallelRecipes"))));
-        currenttip.add(
             StatCollector.translateToLocal("GT5U.multiblock.coilLevel") + ": "
                 + EnumChatFormatting.WHITE
                 + Math.max(0, tag.getInteger("coilTier")));
@@ -394,21 +367,6 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
     }
 
     @Override
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
-    }
-
-    @Override
-    public int getDamageToComponent(ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
-    }
-
-    @Override
     public boolean supportsVoidProtection() {
         return true;
     }
@@ -420,29 +378,6 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
 
     @Override
     public boolean supportsInputSeparation() {
-        return true;
-    }
-
-    @Override
-    public boolean supportsSingleRecipeLocking() {
-        return true;
-    }
-
-    @Override
-    protected void setProcessingLogicPower(ProcessingLogic logic) {
-        logic.setAvailableVoltage(GTUtility.roundUpVoltage(this.getMaxInputVoltage()));
-        logic.setAvailableAmperage(1L);
-    }
-
-    @Override
-    public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ) {
-        batchMode = !batchMode;
-        if (batchMode) {
-            GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
-        } else {
-            GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
-        }
         return true;
     }
 }

@@ -26,6 +26,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -52,8 +53,7 @@ import gregtech.common.tileentities.storage.MTEDigitalTankBase;
 import io.netty.buffer.ByteBuf;
 
 /**
- * TODO: Implement overlay rendering only with
- * {@link Cover#getOverlayTexture()}
+ * TODO: Implement overlay rendering only with {@link Cover#getOverlayTexture()}
  */
 public class CoverFluidStorageMonitor extends Cover {
 
@@ -372,7 +372,10 @@ public class CoverFluidStorageMonitor extends Cover {
         if (aPlayer.isSneaking()) {
             setSide(ForgeDirection.values()[(fluidLookupSide.ordinal() + 1) % ForgeDirection.values().length])
                 .setSlot(0);
-            GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("SIDE", "Side: ") + fluidLookupSide.name());
+            GTUtility.sendChatTrans(
+                aPlayer,
+                "GT5U.chat.cover.fluid_storage_monitor.side",
+                new ChatComponentTranslation(GTUtility.getForgeDirectionNameKey(fluidLookupSide)));
             return;
         }
         final FluidTankInfo[] tanks = getValidFluidTankInfos(coveredTile.get(), fluidLookupSide);
@@ -386,7 +389,7 @@ public class CoverFluidStorageMonitor extends Cover {
         } else {
             setSlot((slot + tanks.length + (aPlayer.isSneaking() ? -1 : 1)) % tanks.length);
         }
-        GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("053", "Slot: ") + slot);
+        GTUtility.sendChatTrans(aPlayer, "GT5U.chat.cover.slot", slot);
     }
 
     @Override

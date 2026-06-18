@@ -3,7 +3,6 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.withChannel;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.ExoticEnergy;
 import static gregtech.api.enums.HatchElement.InputBus;
@@ -12,12 +11,11 @@ import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTOreDictUnificator.getAssociation;
-import static gregtech.api.util.GTRecipeBuilder.BUCKETS;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.ParallelHelper.addFluidsLong;
 import static gregtech.api.util.ParallelHelper.addItemsLong;
-import static gregtech.api.util.ParallelHelper.calculateChancedOutputMultiplier;
+import static gregtech.api.util.ParallelHelper.calculateIntegralChancedOutputMultiplier;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,7 +25,6 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -35,7 +32,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
-import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -52,7 +48,7 @@ import com.gtnewhorizon.structurelib.structure.StructureUtility;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.enums.GTValues;
+import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TAE;
@@ -60,6 +56,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
@@ -69,13 +66,16 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
-import gregtech.api.render.TextureFactory;
+import gregtech.api.render.ISBRWorldContext;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.ParallelHelper;
+import gregtech.api.util.tooltip.TooltipHelper;
+import gregtech.common.misc.GTStructureChannels;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.material.MaterialsElements;
@@ -83,7 +83,7 @@ import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 @SuppressWarnings("SpellCheckingInspection")
 public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<MTEQuantumForceTransformer>
-    implements ISurvivalConstructable {
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     private int mCasing;
     protected int mCraftingTier = 0;
@@ -93,7 +93,21 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
     private static final Fluid mNeptunium = MaterialsElements.getInstance().NEPTUNIUM.getPlasma();
     private static final Fluid mFermium = MaterialsElements.getInstance().FERMIUM.getPlasma();
     private static final String MAIN_PIECE = "main";
-    private final ArrayList<MTEHatchBulkCatalystHousing> catalystHounsings = new ArrayList<>();
+    private final ArrayList<MTEHatchBulkCatalystHousing> catalystHousings = new ArrayList<>();
+    // spotless:off
+    // y-axis offset by +0.5 to counter the coordinate adjustment when rendering
+    private static final double[][] FORCE_FIELD_BASE_COORDINATES = {
+        { 3, -3.5, 7 }, { 3, 0.5, 7 },
+        { -3, -3.5, 7 }, { -3, 0.5, 7 },
+        { -7, -3.5, 3 }, { -7, 0.5, 3 },
+        { -7, -3.5, -3 }, { -7, 0.5, -3 },
+        { -3, -3.5, -7 }, { -3, 0.5, -7 },
+        { 3, -3.5, -7 }, { 3, 0.5, -7 },
+        { 7, -3.5, -3 }, { 7, 0.5, -3 },
+        { 7, -3.5, 3 }, { 7, 0.5, 3 },
+        { 3, -3.5, 7 }, { 3, 0.5, 7 }
+    };
+    // spotless:on
     private static final IStructureDefinition<MTEQuantumForceTransformer> STRUCTURE_DEFINITION = StructureDefinition
         .<MTEQuantumForceTransformer>builder()
         .addShape(
@@ -118,8 +132,7 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
                 // spotless:on
         .addElement(
             'A',
-            withChannel(
-                "manipulator",
+            GTStructureChannels.QFT_MANIPULATOR.use(
                 StructureUtility.ofBlocksTiered(
                     craftingTierConverter(),
                     getAllCraftingTiers(),
@@ -128,8 +141,7 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
                     MTEQuantumForceTransformer::getCraftingTier)))
         .addElement(
             'B',
-            withChannel(
-                "shielding",
+            GTStructureChannels.QFT_SHIELDING.use(
                 StructureUtility.ofBlocksTiered(
                     focusingTierConverter(),
                     getAllFocusingTiers(),
@@ -149,13 +161,13 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
                     Energy.or(ExoticEnergy),
                     SpecialHatchElement.CatalystHousing)
                 .casingIndex(TAE.getIndexFromPage(0, 10))
-                .dot(4)
+                .hint(4)
                 .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings2Misc, 12))))
         .addElement(
             'T',
             buildHatchAdder(MTEQuantumForceTransformer.class).atLeast(OutputBus, OutputHatch, Maintenance)
                 .casingIndex(TAE.getIndexFromPage(0, 10))
-                .dot(5)
+                .hint(5)
                 .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings2Misc, 12))))
         .build();
 
@@ -175,45 +187,46 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
+        // spotless:off
         tt.addMachineType("Quantum Force Transformer, QFT")
-            .addInfo("Allows Complex chemical lines to be performed instantly in one step")
-            .addInfo("Every recipe requires a catalyst, each catalyst adds 1 parallel and lasts forever")
-            .addInfo("Catalysts have to be placed in a Bulk Catalyst Housing")
-            .addInfo("All inputs go on the bottom, all outputs go on the top")
-            .addInfo("Put a circuit in the controller to specify the focused output")
-            .addInfo("Check NEI to see the order of outputs, and which circuit number you need")
-            .addInfo("If separate input buses are enabled put the circuit in the circuit slot of the bus")
-            .addInfo("Uses FocusTier*4*sqrt(parallels) Neptunium Plasma if focusing")
-            .addInfo("Can use FocusTier*4*sqrt(parallels) Fermium Plasma for additional chance output")
-            .addInfo("Use a screwdriver to enable Fluid mode")
-            .addInfo(
-                "Fluid mode turns all possible outputs into their fluid variant, those which can't are left as they were")
-            .addInfo("This multi gets improved when all casings of some types are upgraded")
-            .addInfo("Casing functions:")
-            .addInfo("Pulse Manipulators: Recipe Tier Allowed (check NEI for the tier of each recipe)")
-            .addInfo("Shielding Cores: Focusing Tier (equal to or higher than recipe tier to allow focus)")
+            .addInfo("Allows Complex processing lines to be performed instantly in one step")
+            .addSeparator()
+            .addInfo(catalystText("Pulse Manipulator") + " Tier determines maximum recipe tier")
+            .addInfo("Every recipe requires a specific " + catalystText("catalyst"))
+            .addInfo(catalystText("Catalysts") + " have to be placed in a Bulk Catalyst Housing")
+            .addInfo("Gains " + TooltipHelper.parallelText("1") + " Parallel per " + catalystText("Catalyst"))
+            .addSeparator()
+            .addInfo(focusText("Shielding Core") + " Tier determines " + focusText("Focusing") + " Bonuses")
+            .addInfo("Put a circuit in the controller to specify the focused output, based on NEI order")
+            .addInfo("If Input Separation is on: put the circuit in the circuit slot of the bus")
+            .addInfo("Consumes 4 * " + focusText("Focus Tier") + " * sqrt(" + TooltipHelper.parallelText("parallels") + ") L "+EnumChatFormatting.BLUE+"Neptunium Plasma" +EnumChatFormatting.GRAY+" to "+focusText("focus"))
+            .addInfo("The better the " + focusText("Focus Tier") + ", the " + focusText("stronger") + " the effect")
+            .addInfo(focusText("Focused") + " Output will have its " + EnumChatFormatting.AQUA + "probability boosted" + EnumChatFormatting.GRAY + ", with other output's being reduced evenly by the total boost")
+            .addInfo("Consumes 4 * " + focusText("Focus Tier") + " * sqrt(" + TooltipHelper.parallelText("parallels") + ") L " + EnumChatFormatting.DARK_GREEN + "Fermium Plasma" + EnumChatFormatting.GRAY + " to " + EnumChatFormatting.DARK_GREEN + "boost all outputs")
+            .addSeparator()
+            .addInfo("Use a screwdriver to enable "+EnumChatFormatting.BLUE+"Fluid mode")
+            .addInfo("Fluid mode turns all possible outputs into their fluid variant, if avaliable")
+            .addUnlimitedTierSkips()
             .addTecTechHatchInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(15, 21, 15, true)
-            .addController("Bottom Center")
+            .addController("Front bottom center")
             .addCasingInfoMin("Bulk Production Frame", 80, false)
             .addCasingInfoMin("Quantum Force Conductor", 177, false)
             .addCasingInfoMin("Force Field Glass", 224, false)
-            .addCasingInfoMin("Pulse Manipulators", 236, true)
-            .addCasingInfoMin("Shielding Cores", 142, true)
+            .addCasingInfoMin("Pulse Manipulator", 236, true)
+            .addCasingInfoMin("Shielding Core", 142, true)
             .addInputBus(EnumChatFormatting.BLUE + "Bottom" + EnumChatFormatting.GRAY + " Layer", 4)
             .addInputHatch(EnumChatFormatting.BLUE + "Bottom" + EnumChatFormatting.GRAY + " Layer", 4)
             .addOutputHatch(EnumChatFormatting.AQUA + "Top" + EnumChatFormatting.GRAY + " Layer", 5)
             .addOutputBus(EnumChatFormatting.AQUA + "Top" + EnumChatFormatting.GRAY + " Layer", 5)
             .addEnergyHatch(EnumChatFormatting.BLUE + "Bottom" + EnumChatFormatting.GRAY + " Layer", 4)
-            .addStructureInfo(
-                EnumChatFormatting.WHITE + "Bulk Catalyst Housing: "
-                    + EnumChatFormatting.BLUE
-                    + "Bottom"
-                    + EnumChatFormatting.GRAY
-                    + " Layer")
-            .toolTipFinisher(GTValues.AuthorBlueWeabo, EnumChatFormatting.GREEN + "Steelux");
+            .addStructureInfo(EnumChatFormatting.WHITE + "Bulk Catalyst Housing: " + EnumChatFormatting.BLUE + "Bottom" + EnumChatFormatting.GRAY + " Layer")
+            .addSubChannelUsage(GTStructureChannels.QFT_SHIELDING)
+            .addSubChannelUsage(GTStructureChannels.QFT_MANIPULATOR)
+            .toolTipFinisher(GTAuthors.AuthorBlueWeabo, EnumChatFormatting.GREEN + "Steelux");
         return tt;
+        //spotless:on
     }
 
     @Override
@@ -222,22 +235,18 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         this.mCasing = 0;
         this.mCraftingTier = 0;
         this.mFocusingTier = 0;
-        catalystHounsings.clear();
-        if (!checkPiece(MAIN_PIECE, 7, 20, 4)) {
-            return false;
-        }
-
+        catalystHousings.clear();
+        if (!checkPiece(MAIN_PIECE, 7, 20, 4, errors)) return;
         // Maintenance hatch not required but left for compatibility.
         // Don't allow more than 1, no free casing spam!
-        if (mMaintenanceHatches.size() > 1) {
-            return false;
-        }
-
-        return checkExoticAndNormalEnergyHatches();
+        checkHatchMax(errors, Maintenance, 1);
+        checkHasAnyEnergy(errors);
+        checkHasAnyInput(errors);
+        checkHasAnyOutput(errors);
     }
 
     @Override
@@ -248,7 +257,7 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(MAIN_PIECE, stackSize, 7, 20, 4, elementBudget, env, false, true);
+        return survivalBuildPiece(MAIN_PIECE, stackSize, 7, 20, 4, elementBudget, env, false, true);
     }
 
     public static List<Pair<Block, Integer>> getAllCraftingTiers() {
@@ -349,11 +358,6 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
     }
 
     @Override
-    public boolean isCorrectMachinePart(final ItemStack aStack) {
-        return true;
-    }
-
-    @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic() {
 
@@ -371,11 +375,11 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
                 ItemStack requiredCatalyst = recipe.getMetadata(GTRecipeConstants.QFT_CATALYST);
                 assert requiredCatalyst != null;
                 int catalystMeta = requiredCatalyst.getItemDamage();
-                if (catalystHounsings.isEmpty()) {
+                if (catalystHousings.isEmpty()) {
                     return SimpleCheckRecipeResult.ofFailure("no_catalyst");
                 }
                 boolean catalystsFound = false;
-                for (MTEHatchBulkCatalystHousing catalystHousing : catalystHounsings) {
+                for (MTEHatchBulkCatalystHousing catalystHousing : catalystHousings) {
                     ItemStack storedCatalysts = catalystHousing.getItemStack();
                     int storedCatalystMeta = catalystHousing.getStoredCatalystMeta();
                     if (storedCatalysts == null || storedCatalystMeta != catalystMeta) {
@@ -421,9 +425,9 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
                         Materials mat = data == null ? null : data.mMaterial.mMaterial;
                         if (mat != null) {
                             if (mat.mStandardMoltenFluid != null) {
-                                fluidModeItems[i] = mat.getMolten(INGOTS);
+                                fluidModeItems[i] = mat.getMolten(1 * INGOTS);
                             } else if (mat.mFluid != null) {
-                                fluidModeItems[i] = mat.getFluid(BUCKETS);
+                                fluidModeItems[i] = mat.getFluid(1_000);
                             }
                         }
                     }
@@ -442,8 +446,8 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
                         ItemStack item = recipe.getOutput(i);
                         if (item == null || fluidModeItems[i] != null) continue;
                         ItemStack itemToAdd = item.copy();
-                        double outputMultiplier = calculateChancedOutputMultiplier(chances[i], parallel);
-                        long itemAmount = (long) (item.stackSize * outputMultiplier);
+                        long outputMultiplier = calculateIntegralChancedOutputMultiplier(chances[i], parallel);
+                        long itemAmount = item.stackSize * outputMultiplier;
                         addItemsLong(items, itemToAdd, itemAmount);
                     }
 
@@ -457,9 +461,9 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
                                 FluidStack fluid = fluidModeItems[i];
                                 if (fluid == null) continue;
                                 FluidStack fluidToAdd = fluid.copy();
-                                double outputMultiplier = calculateChancedOutputMultiplier(chances[i], parallel);
+                                long outputMultiplier = calculateIntegralChancedOutputMultiplier(chances[i], parallel);
                                 int itemAmount = recipe.mOutputs[i].stackSize;
-                                long fluidAmount = (long) (fluidToAdd.amount * outputMultiplier * itemAmount);
+                                long fluidAmount = fluidToAdd.amount * outputMultiplier * itemAmount;
                                 addFluidsLong(fluids, fluidToAdd, fluidAmount);
                             }
                         }
@@ -468,10 +472,10 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
                             FluidStack fluid = recipe.getFluidOutput(i);
                             if (fluid == null) continue;
                             FluidStack fluidToAdd = fluid.copy();
-                            double outputMultiplier = calculateChancedOutputMultiplier(
+                            long outputMultiplier = calculateIntegralChancedOutputMultiplier(
                                 chances[i + recipe.mOutputs.length],
                                 parallel);
-                            long fluidAmount = (long) (fluidToAdd.amount * outputMultiplier);
+                            long fluidAmount = fluidToAdd.amount * outputMultiplier;
                             addFluidsLong(fluids, fluidToAdd, fluidAmount);
                         }
 
@@ -504,6 +508,7 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
     protected void setProcessingLogicPower(ProcessingLogic logic) {
         logic.setAvailableVoltage(getAverageInputVoltage());
         logic.setAvailableAmperage(getMaxInputAmps());
+        logic.setUnlimitedTierSkips();
     }
 
     private byte runningTick = 0;
@@ -565,21 +570,6 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
             // Updates every 30 sec
             if (mUpdate <= -550) mUpdate = 50;
         }
-    }
-
-    @Override
-    public int getMaxEfficiency(final ItemStack aStack) {
-        return 10000;
-    }
-
-    @Override
-    public int getDamageToComponent(final ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(final ItemStack aStack) {
-        return false;
     }
 
     public static int getBaseOutputChance(GTRecipe tRecipe) {
@@ -645,7 +635,8 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
         mFluidMode = !mFluidMode;
         GTUtility.sendChatToPlayer(
             aPlayer,
@@ -657,7 +648,7 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
         IMetaTileEntity metaTileEntity = tileEntity.getMetaTileEntity();
         if (metaTileEntity instanceof MTEHatchBulkCatalystHousing catalystHousing) {
             catalystHousing.updateTexture(baseCasingIndex);
-            this.catalystHounsings.add(catalystHousing);
+            this.catalystHousings.add(catalystHousing);
             return true;
         }
         return false;
@@ -670,7 +661,7 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
 
             @Override
             public long count(MTEQuantumForceTransformer gtMetaTileEntityQFT) {
-                return gtMetaTileEntityQFT.catalystHounsings.size();
+                return gtMetaTileEntityQFT.catalystHousings.size();
             }
         };
 
@@ -689,6 +680,7 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
             return mteClasses;
         }
 
+        @Override
         public IGTHatchAdder<? super MTEQuantumForceTransformer> adder() {
             return adder;
         }
@@ -727,137 +719,66 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-        int aColorIndex, boolean aActive, boolean aRedstone) {
-        if (side == facing) {
-            if (aActive) {
-                return new ITexture[] { getCasingTexture(), TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.oMCAQFTActive)
-                    .extFacing()
-                    .build(),
-                    TextureFactory.builder()
-                        .addIcon(TexturesGtBlock.oMCAQFTActiveGlow)
-                        .extFacing()
-                        .glow()
-                        .build() };
-            }
-            return new ITexture[] { getCasingTexture(), TextureFactory.builder()
-                .addIcon(TexturesGtBlock.oMCAQFT)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.oMCAQFTGlow)
-                    .extFacing()
-                    .glow()
-                    .build() };
-        }
-        return new ITexture[] { getCasingTexture() };
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            TexturesGtBlock.oMCAQFT,
+            TexturesGtBlock.oMCAQFTGlow,
+            TexturesGtBlock.oMCAQFTActive,
+            TexturesGtBlock.oMCAQFTActiveGlow);
     }
 
-    private ITexture getCasingTexture() {
+    @Override
+    public ITexture getCasingTexture() {
         return Textures.BlockIcons.getCasingTextureForId(getCasingTextureId());
     }
 
     @SideOnly(Side.CLIENT)
-    private void renderForceField(double x, double y, double z, int side, double minU, double maxU, double minV,
-        double maxV) {
+    private void renderForceField(double x, double y, double z, double minU, double maxU, double minV, double maxV) {
         // spotless:off
         Tessellator tes = Tessellator.instance;
-        switch (side) {
-            case 0 -> {
-                tes.addVertexWithUV(x + 3, y, z + 7, maxU, maxV);
-                tes.addVertexWithUV(x + 3, y + 4, z + 7, maxU, minV);
-                tes.addVertexWithUV(x - 3, y + 4, z + 7, minU, minV);
-                tes.addVertexWithUV(x - 3, y, z + 7, minU, maxV);
-                tes.addVertexWithUV(x - 3, y, z + 7, minU, maxV);
-                tes.addVertexWithUV(x - 3, y + 4, z + 7, minU, minV);
-                tes.addVertexWithUV(x + 3, y + 4, z + 7, maxU, minV);
-                tes.addVertexWithUV(x + 3, y, z + 7, maxU, maxV);
-            }
-            case 1 -> {
-                tes.addVertexWithUV(x + 7, y, z + 4, maxU, maxV);
-                tes.addVertexWithUV(x + 7, y + 4, z + 4, maxU, minV);
-                tes.addVertexWithUV(x + 7, y + 4, z - 4, minU, minV);
-                tes.addVertexWithUV(x + 7, y, z - 4, minU, maxV);
-                tes.addVertexWithUV(x + 7, y, z - 4, minU, maxV);
-                tes.addVertexWithUV(x + 7, y + 4, z - 4, minU, minV);
-                tes.addVertexWithUV(x + 7, y + 4, z + 4, maxU, minV);
-                tes.addVertexWithUV(x + 7, y, z + 4, maxU, maxV);
-            }
-            case 2 -> {
-                tes.addVertexWithUV(x + 3, y, z - 7, maxU, maxV);
-                tes.addVertexWithUV(x + 3, y + 4, z - 7, maxU, minV);
-                tes.addVertexWithUV(x - 3, y + 4, z - 7, minU, minV);
-                tes.addVertexWithUV(x - 3, y, z - 7, minU, maxV);
-                tes.addVertexWithUV(x - 3, y, z - 7, minU, maxV);
-                tes.addVertexWithUV(x - 3, y + 4, z - 7, minU, minV);
-                tes.addVertexWithUV(x + 3, y + 4, z - 7, maxU, minV);
-                tes.addVertexWithUV(x + 3, y, z - 7, maxU, maxV);
-            }
-            case 3 -> {
-                tes.addVertexWithUV(x - 7, y, z + 4, maxU, maxV);
-                tes.addVertexWithUV(x - 7, y + 4, z + 4, maxU, minV);
-                tes.addVertexWithUV(x - 7, y + 4, z - 4, minU, minV);
-                tes.addVertexWithUV(x - 7, y, z - 4, minU, maxV);
-                tes.addVertexWithUV(x - 7, y, z - 4, minU, maxV);
-                tes.addVertexWithUV(x - 7, y + 4, z - 4, minU, minV);
-                tes.addVertexWithUV(x - 7, y + 4, z + 4, maxU, minV);
-                tes.addVertexWithUV(x - 7, y, z + 4, maxU, maxV);
-            }
-            case 4 -> {
-                tes.addVertexWithUV(x - 3, y, z + 7, maxU, maxV);
-                tes.addVertexWithUV(x - 3, y + 4, z + 7, maxU, minV);
-                tes.addVertexWithUV(x - 7, y + 4, z + 4, minU, minV);
-                tes.addVertexWithUV(x - 7, y, z + 4, minU, maxV);
-                tes.addVertexWithUV(x - 7, y, z + 4, minU, maxV);
-                tes.addVertexWithUV(x - 7, y + 4, z + 4, minU, minV);
-                tes.addVertexWithUV(x - 3, y + 4, z + 7, maxU, minV);
-                tes.addVertexWithUV(x - 3, y, z + 7, maxU, maxV);
-            }
-            case 5 -> {
-                tes.addVertexWithUV(x - 3, y, z - 7, maxU, maxV);
-                tes.addVertexWithUV(x - 3, y + 4, z - 7, maxU, minV);
-                tes.addVertexWithUV(x - 7, y + 4, z - 4, minU, minV);
-                tes.addVertexWithUV(x - 7, y, z - 4, minU, maxV);
-                tes.addVertexWithUV(x - 7, y, z - 4, minU, maxV);
-                tes.addVertexWithUV(x - 7, y + 4, z - 4, minU, minV);
-                tes.addVertexWithUV(x - 3, y + 4, z - 7, maxU, minV);
-                tes.addVertexWithUV(x - 3, y, z - 7, maxU, maxV);
-            }
-            case 6 -> {
-                tes.addVertexWithUV(x + 3, y, z + 7, maxU, maxV);
-                tes.addVertexWithUV(x + 3, y + 4, z + 7, maxU, minV);
-                tes.addVertexWithUV(x + 7, y + 4, z + 4, minU, minV);
-                tes.addVertexWithUV(x + 7, y, z + 4, minU, maxV);
-                tes.addVertexWithUV(x + 7, y, z + 4, minU, maxV);
-                tes.addVertexWithUV(x + 7, y + 4, z + 4, minU, minV);
-                tes.addVertexWithUV(x + 3, y + 4, z + 7, maxU, minV);
-                tes.addVertexWithUV(x + 3, y, z + 7, maxU, maxV);
-            }
-            case 7 -> {
-                tes.addVertexWithUV(x + 3, y, z - 7, maxU, maxV);
-                tes.addVertexWithUV(x + 3, y + 4, z - 7, maxU, minV);
-                tes.addVertexWithUV(x + 7, y + 4, z - 4, minU, minV);
-                tes.addVertexWithUV(x + 7, y, z - 4, minU, maxV);
-                tes.addVertexWithUV(x + 7, y, z - 4, minU, maxV);
-                tes.addVertexWithUV(x + 7, y + 4, z - 4, minU, minV);
-                tes.addVertexWithUV(x + 3, y + 4, z - 7, maxU, minV);
-                tes.addVertexWithUV(x + 3, y, z - 7, maxU, maxV);
-            }
+        // Convert base coords to world offset -> position transform -> push to tessellator
+        double [][] forceFieldCoordinates = new double [FORCE_FIELD_BASE_COORDINATES.length][];
+        for (int i = 0; i < FORCE_FIELD_BASE_COORDINATES.length; i++) {
+            double [] transformed = new double[3];
+            getExtendedFacing().getWorldOffset(FORCE_FIELD_BASE_COORDINATES[i], transformed);
+            transformed[0] += x;
+            transformed[1] += y;
+            transformed[2] += z;
+            forceFieldCoordinates[i] = transformed;
+        }
+        for (int cur = 0; cur < forceFieldCoordinates.length - 3; cur += 2) {
+            double [] cur_bot = forceFieldCoordinates[cur];
+            double [] cur_top = forceFieldCoordinates[cur+1];
+            double [] nex_bot = forceFieldCoordinates[cur+2];
+            double [] nex_top = forceFieldCoordinates[cur+3];
+            tes.addVertexWithUV(cur_bot[0], cur_bot[1], cur_bot[2], maxU, maxV);
+            tes.addVertexWithUV(cur_top[0], cur_top[1], cur_top[2], maxU, minV);
+            tes.addVertexWithUV(nex_top[0], nex_top[1], nex_top[2], minU, minV);
+            tes.addVertexWithUV(nex_bot[0], nex_bot[1], nex_bot[2], minU, maxV);
+            tes.addVertexWithUV(nex_bot[0], nex_bot[1], nex_bot[2], minU, maxV);
+            tes.addVertexWithUV(nex_top[0], nex_top[1], nex_top[2], minU, minV);
+            tes.addVertexWithUV(cur_top[0], cur_top[1], cur_top[2], maxU, minV);
+            tes.addVertexWithUV(cur_bot[0], cur_bot[1], cur_bot[2], maxU, maxV);
         }
     }
 
     @SideOnly(Side.CLIENT)
     @Override
-    public boolean renderInWorld(IBlockAccess aWorld, int x, int y, int z, Block block, RenderBlocks renderer) {
+    public boolean renderInWorld(ISBRWorldContext ctx) {
         Tessellator tes = Tessellator.instance;
-        IIcon forceField = TexturesGtBlock.ForceField.getIcon();
+        IIcon forceField = Textures.BlockIcons.ForceField.getIcon();
         if (getBaseMetaTileEntity().isActive()) {
             double minU = forceField.getMinU();
             double maxU = forceField.getMaxU();
             double minV = forceField.getMinV();
             double maxV = forceField.getMaxV();
             double xBaseOffset = 3 * getExtendedFacing().getRelativeBackInWorld().offsetX;
+            double yBaseOffset = 3 * getExtendedFacing().getRelativeBackInWorld().offsetY;
             double zBaseOffset = 3 * getExtendedFacing().getRelativeBackInWorld().offsetZ;
             tes.setColorOpaque_F(1f, 1f, 1f);
             tes.setBrightness(15728880);
@@ -870,14 +791,7 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
             //Corner 6: -2,  7     3 \             / 6
             //Corner 7:  3,  7        \           /
             //Corner 8:  7,  3         4 ------- 5
-            renderForceField(x + xBaseOffset + 0.5, y, z + zBaseOffset + 0.5, 0, minU, maxU, minV, maxV);
-            renderForceField(x + xBaseOffset + 0.5, y, z + zBaseOffset + 0.5, 1, minU, maxU, minV, maxV);
-            renderForceField(x + xBaseOffset + 0.5, y, z + zBaseOffset + 0.5, 2, minU, maxU, minV, maxV);
-            renderForceField(x + xBaseOffset + 0.5, y, z + zBaseOffset + 0.5, 3, minU, maxU, minV, maxV);
-            renderForceField(x + xBaseOffset + 0.5, y, z + zBaseOffset + 0.5, 4, minU, maxU, minV, maxV);
-            renderForceField(x + xBaseOffset + 0.5, y, z + zBaseOffset + 0.5, 5, minU, maxU, minV, maxV);
-            renderForceField(x + xBaseOffset + 0.5, y, z + zBaseOffset + 0.5, 6, minU, maxU, minV, maxV);
-            renderForceField(x + xBaseOffset + 0.5, y, z + zBaseOffset + 0.5, 7, minU, maxU, minV, maxV);
+            renderForceField(ctx.getX() + xBaseOffset + 0.5, ctx.getY() + yBaseOffset + 0.5, ctx.getZ() + zBaseOffset + 0.5, minU, maxU, minV, maxV);
         }
         // Needs to be false to render the controller
         return false;
@@ -905,15 +819,12 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
         return SoundResource.GT_MACHINES_QUANTUM_FORCE_TRANSFORMER_LOOP;
     }
 
-    @Override
-    public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ) {
-        batchMode = !batchMode;
-        if (batchMode) {
-            GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
-        } else {
-            GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
-        }
-        return true;
+    private String catalystText(String text) {
+        return String.format("%s%s%s", EnumChatFormatting.LIGHT_PURPLE, text, EnumChatFormatting.GRAY);
     }
+
+    private String focusText(String text) {
+        return String.format("%s%s%s", EnumChatFormatting.GREEN, text, EnumChatFormatting.GRAY);
+    }
+
 }

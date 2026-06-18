@@ -1,15 +1,16 @@
 package gregtech.common.gui.mui1.cover;
 
+import static net.minecraft.util.StatCollector.translateToLocal;
+
 import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.gui.modularui.CoverUIBuildContext;
-import gregtech.api.util.GTUtility;
 import gregtech.common.covers.redstone.CoverAdvancedWirelessRedstoneBase;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
-import gregtech.common.gui.modularui.widget.CoverDataFollowerNumericWidget;
+import gregtech.common.gui.modularui.widget.CoverDataFollowerTextFieldWidget;
 import gregtech.common.gui.modularui.widget.CoverDataFollowerToggleButtonWidget;
 
 public abstract class AdvancedWirelessRedstoneBaseUIFactory<C extends CoverAdvancedWirelessRedstoneBase>
@@ -41,24 +42,22 @@ public abstract class AdvancedWirelessRedstoneBaseUIFactory<C extends CoverAdvan
 
         builder.widget(dataController)
             .widget(
-                new TextWidget(GTUtility.trans("246", "Frequency")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                new TextWidget(translateToLocal("gt.interact.desc.freq"))
                     .setPos(startX + spaceX * 5, 4 + startY + spaceY * getFrequencyRow()))
             .widget(
-                new TextWidget(GTUtility.trans("602", "Use Private Frequency")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                new TextWidget(translateToLocal("gt.interact.desc.freq"))
                     .setPos(startX + spaceX * privateExtraColumn, 4 + startY + spaceY * getButtonRow()));
     }
 
     protected void addUIForDataController(CoverDataControllerWidget<C> controller) {
         controller.addFollower(
-            new CoverDataFollowerNumericWidget<>(),
-            coverData -> (double) coverData.getFrequency(),
+            new CoverDataFollowerTextFieldWidget<>(),
+            CoverAdvancedWirelessRedstoneBase::getFrequency,
             (coverData, state) -> {
-                coverData.setFrequency(state.intValue());
+                coverData.setFrequency(state);
                 return coverData;
             },
-            widget -> widget.setScrollValues(1, 1000, 10)
-                .setBounds(0, Integer.MAX_VALUE)
-                .setPos(1, 2 + spaceY * getFrequencyRow())
+            widget -> widget.setPos(1, 2 + spaceY * getFrequencyRow())
                 .setSize(spaceX * 5 - 4, 12))
             .addFollower(
                 CoverDataFollowerToggleButtonWidget.ofCheck(),

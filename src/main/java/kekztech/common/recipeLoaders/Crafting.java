@@ -1,8 +1,9 @@
 package kekztech.common.recipeLoaders;
 
+import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
+
 import net.minecraft.item.ItemStack;
 
-import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -35,9 +36,9 @@ public class Crafting implements Runnable {
         // SOFC Controller mk2
         final Object[] mk2_recipe = { "CCC", "PHP", "FBL", 'C', OrePrefixes.circuit.get(Materials.LuV), 'P',
             ItemList.Electric_Pump_IV.get(1L), 'H', ItemList.Hull_IV.get(1L), 'F',
-            GTOreDictUnificator.get(OrePrefixes.pipeSmall, Materials.Ultimate, 1), 'B',
+            GTOreDictUnificator.get(OrePrefixes.pipeSmall, Materials.ZPM, 1), 'B',
             Util.getStackofAmountFromOreDict("wireGt04SuperconductorEV", 1), 'L',
-            GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Ultimate, 1) };
+            GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.ZPM, 1) };
         GTModHandler.addCraftingRecipe(TileEntities.sofc2.getStackForm(1), mk2_recipe);
 
         // LSC Controller
@@ -59,7 +60,7 @@ public class Crafting implements Runnable {
 
         // EV Capacitor
         final Object[] lcEV_recipe = { "SLS", "LCL", "SLS", 'S', OrePrefixes.screw.get(Materials.Lapis), 'L',
-            OrePrefixes.plate.get(Materials.Lapis), 'C', GTModHandler.getIC2Item("lapotronCrystal", 1L, GTValues.W) };
+            OrePrefixes.plate.get(Materials.Lapis), 'C', GTModHandler.getIC2Item("lapotronCrystal", 1L, WILDCARD) };
         GTModHandler.addCraftingRecipe(new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 7), lcEV_recipe);
 
         // IV Capacitor

@@ -4,11 +4,21 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import com.gtnewhorizon.gtnhlib.capability.item.ItemIO;
+import com.gtnewhorizon.gtnhlib.capability.item.ItemSink;
+import com.gtnewhorizon.gtnhlib.capability.item.ItemSource;
+import com.gtnewhorizon.gtnhlib.item.AbstractInventoryIterator;
+import com.gtnewhorizon.gtnhlib.item.ImmutableItemStack;
+import com.gtnewhorizon.gtnhlib.item.InventoryIterator;
+import com.gtnewhorizon.gtnhlib.item.SimpleItemIO;
+
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
-import gtPlusPlus.core.util.sys.KeyboardUtils;
+import gregtech.api.util.GTUtility;
 import gtPlusPlus.xmod.gregtech.common.tileentities.storage.MTETieredChest;
 
 public class MTEInfiniteItemHolder extends MTETieredChest {
@@ -27,14 +37,14 @@ public class MTEInfiniteItemHolder extends MTETieredChest {
             return false;
         }
 
-        if (!KeyboardUtils.isShiftKeyDown()) {
+        if (!aPlayer.isSneaking()) {
             if (this.mItemStack == null) {
                 if (aPlayer.getHeldItem() != null) {
                     this.mItemStack = aPlayer.getHeldItem()
                         .copy();
                     this.mItemCount = Short.MAX_VALUE;
                     aPlayer.setCurrentItemOrArmor(0, null);
-                    PlayerUtils.messagePlayer(
+                    GTUtility.sendChatToPlayer(
                         aPlayer,
                         "Now holding " + this.mItemStack.getDisplayName() + " x" + Short.MAX_VALUE + ".");
                     return true;
@@ -44,13 +54,13 @@ public class MTEInfiniteItemHolder extends MTETieredChest {
                     aPlayer.entityDropItem(mItemStack, 1);
                     this.mItemStack = null;
                     this.mItemCount = 0;
-                    PlayerUtils.messagePlayer(aPlayer, "Emptying.");
+                    GTUtility.sendChatToPlayer(aPlayer, "Emptying.");
                     return true;
                 }
             }
         }
 
-        PlayerUtils.messagePlayer(
+        GTUtility.sendChatToPlayer(
             aPlayer,
             "Currently holding: " + (this.mItemStack != null ? this.mItemStack.getDisplayName() : "Nothing")
                 + " x"
@@ -87,5 +97,63 @@ public class MTEInfiniteItemHolder extends MTETieredChest {
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTEInfiniteItemHolder(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
+    }
+
+    @Override
+    protected ItemSink getItemSink(ForgeDirection side) {
+        return new ItemIOImpl();
+    }
+
+    @Override
+    protected ItemSource getItemSource(ForgeDirection side) {
+        return new ItemIOImpl();
+    }
+
+    @Override
+    protected ItemIO getItemIO(ForgeDirection side) {
+        return new ItemIOImpl();
+    }
+
+    class ItemIOImpl extends SimpleItemIO {
+
+        private static final int[] SLOTS = { 0 };
+
+        @Override
+        protected @NotNull InventoryIterator iterator(int[] allowedSlots) {
+            return new MTEInfiniteItemHolderInventoryIterator(ItemIOImpl.SLOTS, allowedSlots);
+        }
+
+        @Override
+        public @Nullable InventoryIterator simulatedSinkIterator() {
+            return new MTEInfiniteItemHolderInventoryIterator(ItemIOImpl.SLOTS, allowedSinkSlots);
+        }
+
+        private class MTEInfiniteItemHolderInventoryIterator extends AbstractInventoryIterator {
+
+            public MTEInfiniteItemHolderInventoryIterator(int[] slots, int[] allowedSlots) {
+                super(slots, allowedSlots);
+            }
+
+            @Override
+            protected ItemStack getStackInSlot(int slot) {
+                if (slot != 0) return null;
+
+                return GTUtility.copyAmountUnsafe(Integer.MAX_VALUE, mItemStack);
+            }
+
+            @Override
+            public ItemStack extract(int amount, boolean forced) {
+                if (getCurrentSlot() != 0) return null;
+
+                return GTUtility.copyAmountUnsafe(amount, mItemStack);
+            }
+
+            @Override
+            public int insert(ImmutableItemStack stack, boolean forced) {
+                if (getCurrentSlot() != 0) return stack.getStackSize();
+
+                return 0;
+            }
+        }
     }
 }

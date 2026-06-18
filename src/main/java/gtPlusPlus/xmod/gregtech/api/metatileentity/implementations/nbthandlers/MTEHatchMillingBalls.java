@@ -1,9 +1,6 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.nbthandlers;
 
-import java.util.ArrayList;
-
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -12,17 +9,17 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
 import gtPlusPlus.core.lib.GTPPCore;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.MTEIsaMill;
 
 public class MTEHatchMillingBalls extends MTEHatchNbtConsumable {
 
     public MTEHatchMillingBalls(int aID, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional, 6, 4, "Dedicated Milling Ball Storage", false);
+        super(aID, aName, aNameRegional, 6, 4, "Dedicated Milling Ball Storage");
     }
 
     public MTEHatchMillingBalls(String aName, String[] aDescription, ITexture[][][] aTextures) {
-        super(aName, 6, 4, aDescription, false, aTextures);
+        super(aName, 6, 4, aDescription, aTextures);
     }
 
     @Override
@@ -41,28 +38,13 @@ public class MTEHatchMillingBalls extends MTEHatchNbtConsumable {
     }
 
     @Override
-    public boolean isFacingValid(ForgeDirection facing) {
-        return true;
-    }
-
-    @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTEHatchMillingBalls(mName, mDescriptionArray, mTextures);
     }
 
     @Override
-    public String getNameGUI() {
-        return "Ball Housing";
-    }
-
-    @Override
-    public ArrayList<ItemStack> getItemsValidForUsageSlots() {
-        return new ArrayList<>();
-    }
-
-    @Override
-    public boolean isItemValidForUsageSlot(ItemStack aStack) {
-        return ItemUtils.isMillingBall(aStack);
+    public boolean isItemValidForInputSlot(ItemStack aStack) {
+        return MTEIsaMill.isMillingBall(aStack);
     }
 
     @Override

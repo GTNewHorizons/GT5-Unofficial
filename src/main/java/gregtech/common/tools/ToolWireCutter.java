@@ -8,36 +8,17 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
 
 import gregtech.api.enums.SoundResource;
-import gregtech.api.enums.Textures;
+import gregtech.api.enums.TextureSet;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.util.GTToolHarvestHelper;
+import gregtech.common.items.behaviors.BehaviourWireCutter;
 
 public class ToolWireCutter extends GTTool {
 
     @Override
-    public int getToolDamagePerBlockBreak() {
-        return 100;
-    }
-
-    @Override
-    public int getToolDamagePerDropConversion() {
-        return 100;
-    }
-
-    @Override
     public int getToolDamagePerContainerCraft() {
         return 400;
-    }
-
-    @Override
-    public int getToolDamagePerEntityAttack() {
-        return 200;
-    }
-
-    @Override
-    public int getBaseQuality() {
-        return 0;
     }
 
     @Override
@@ -46,38 +27,13 @@ public class ToolWireCutter extends GTTool {
     }
 
     @Override
-    public float getSpeedMultiplier() {
-        return 1.0F;
-    }
-
-    @Override
-    public float getMaxDurabilityMultiplier() {
-        return 1.0F;
-    }
-
-    @Override
     public String getCraftingSound() {
-        return SoundResource.IC2_TOOLS_INSULATION_CUTTERS.toString();
-    }
-
-    @Override
-    public String getEntityHitSound() {
-        return null;
+        return SoundResource.GTCEU_OP_WIRECUTTER.toString();
     }
 
     @Override
     public String getMiningSound() {
-        return SoundResource.IC2_TOOLS_INSULATION_CUTTERS.toString();
-    }
-
-    @Override
-    public boolean canBlock() {
-        return false;
-    }
-
-    @Override
-    public boolean isCrowbar() {
-        return false;
+        return SoundResource.GTCEU_OP_WIRECUTTER.toString();
     }
 
     @Override
@@ -86,13 +42,10 @@ public class ToolWireCutter extends GTTool {
     }
 
     @Override
-    public ItemStack getBrokenItem(ItemStack aStack) {
-        return null;
-    }
-
-    @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? Textures.ItemIcons.WIRE_CUTTER : null;
+        return aIsToolHead
+            ? MetaGeneratedTool.getPrimaryMaterial(aStack).mIconSet.mTextures[TextureSet.INDEX_wireCutter]
+            : null;
     }
 
     @Override
@@ -100,9 +53,6 @@ public class ToolWireCutter extends GTTool {
         return aIsToolHead ? MetaGeneratedTool.getPrimaryMaterial(aStack).mRGBa
             : MetaGeneratedTool.getSecondaryMaterial(aStack).mRGBa;
     }
-
-    @Override
-    public void onStatsAddedToTool(MetaGeneratedTool aItem, int aID) {}
 
     @Override
     public IChatComponent getDeathMessage(EntityLivingBase aPlayer, EntityLivingBase aEntity) {
@@ -113,5 +63,10 @@ public class ToolWireCutter extends GTTool {
                 + EnumChatFormatting.RED
                 + aEntity.getCommandSenderName()
                 + EnumChatFormatting.WHITE);
+    }
+
+    @Override
+    public void onStatsAddedToTool(MetaGeneratedTool aItem, int aID) {
+        aItem.addItemBehavior(aID, new BehaviourWireCutter());
     }
 }

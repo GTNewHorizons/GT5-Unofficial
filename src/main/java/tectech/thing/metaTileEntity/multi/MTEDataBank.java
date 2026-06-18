@@ -40,6 +40,8 @@ import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchDataAccess;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe.RecipeAssemblyLine;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
@@ -87,8 +89,8 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
             'C',
             buildHatchAdder(MTEDataBank.class).atLeast(Maintenance, Energy, EnergyMulti, Dynamo, DynamoMulti)
                 .casingIndex(BlockGTCasingsTT.textureOffset)
-                .dot(1)
-                .buildAndChain(TTCasingsContainer.sBlockCasingsTT, 0))
+                .hint(1)
+                .buildAndChain(ofBlock(TTCasingsContainer.sBlockCasingsTT, 0)))
         .addElement(
             'D',
             buildHatchAdder(MTEDataBank.class)
@@ -97,7 +99,7 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
                     DataBankHatches.InboundConnector,
                     DataBankHatches.WirelessOutboundConnector)
                 .casingIndex(BlockGTCasingsTT.textureOffset + 1)
-                .dot(2)
+                .hint(2)
                 .buildAndChain(
                     DataBankHatches.DataStick
                         .newAnyOrCasing(BlockGTCasingsTT.textureOffset + 1, 2, TTCasingsContainer.sBlockCasingsTT, 1)))
@@ -120,16 +122,19 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
     @Override
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.em.databank.name")) // Machine Type: Data Bank
+        tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.em.databank.type")) // Machine Type: Data
+                                                                                              // Bank, DB
             .addInfo(translateToLocal("gt.blockmachines.multimachine.em.databank.desc.0")) // Controller block of
                                                                                            // the Data Bank
             .addInfo(translateToLocal("gt.blockmachines.multimachine.em.databank.desc.1")) // Used to supply
                                                                                            // Assembling Lines
             // with more Data Sticks
             .addInfo(translateToLocal("gt.blockmachines.multimachine.em.databank.desc.2")) // and give multiple
-                                                                                           // Assembling Lines access to
+                                                                                           // Assembling Lines
+                                                                                           // access to
                                                                                            // the same Data
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.databank.desc.3")) // Use screwdriver to toggle
+            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.databank.desc.3")) // Use screwdriver to
+                                                                                           // toggle
                                                                                            // wireless mode
             .addTecTechHatchInfo()
             .beginStructureBlock(5, 3, 3, false)
@@ -150,17 +155,28 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
             .addMaintenanceHatch(translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"), 1) // Maintenance
                                                                                                  // Hatch: Any High
                                                                                                  // Power Casing
+            .addDynamoHatch(translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"), 1) // Dynamo Hatch: Any High
+                                                                                            // Power Casing
             .toolTipFinisher();
         return tt;
     }
 
     @Override
-    public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
+    public void checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack,
+        List<StructureError> errors) {
         eDataAccessHatches.clear();
         eStacksDataOutputs.clear();
         eWirelessStacksDataOutputs.clear();
         slave = false;
-        return structureCheck_EM("main", 2, 1, 0);
+        if (!checkPiece("main", 2, 1, 0, errors)) return;
+        checkHasAnyEnergy(errors);
+        checkHasMaintenanceHatch(errors);
+        if (eDataAccessHatches.isEmpty()) {
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.databank_missing_data_access"));
+        }
+        if (eStacksDataOutputs.isEmpty() && eWirelessStacksDataOutputs.isEmpty()) {
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.databank_missing_data_output"));
+        }
     }
 
     @Override
@@ -259,7 +275,8 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
         if (getBaseMetaTileEntity().isServerSide()) {
             wirelessModeEnabled = !wirelessModeEnabled;
             if (wirelessModeEnabled) {
@@ -290,13 +307,13 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        structureBuild_EM("main", 2, 1, 0, stackSize, hintsOnly);
+        buildPiece("main", stackSize, hintsOnly, 2, 1, 0);
     }
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece("main", stackSize, 2, 1, 0, elementBudget, env, false, true);
+        return survivalBuildPiece("main", stackSize, 2, 1, 0, elementBudget, env, false, true);
     }
 
     @Override
@@ -360,6 +377,11 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
 
     @Override
     public boolean isSafeVoidButtonEnabled() {
+        return false;
+    }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
         return false;
     }
 }

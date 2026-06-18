@@ -8,17 +8,20 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAYS_ENERGY_OUT;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicGenerator;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTUtility;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEPlasmaGenerator extends MTEBasicGenerator {
 
     public MTEPlasmaGenerator(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, "Plasma into energy");
+        super(aID, aName, aNameRegional, aTier, (String) null);
     }
 
     public MTEPlasmaGenerator(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -28,7 +31,7 @@ public class MTEPlasmaGenerator extends MTEBasicGenerator {
     @Override
     public ITexture[] getFront(byte aColor) {
         return new ITexture[] { super.getFront(aColor)[0], TextureFactory.of(MACHINE_CASING_FUSION_GLASS),
-            OVERLAYS_ENERGY_OUT[mTier] };
+            OVERLAYS_ENERGY_OUT[mTier + 1] };
     }
 
     @Override
@@ -58,7 +61,7 @@ public class MTEPlasmaGenerator extends MTEBasicGenerator {
                 .addIcon(MACHINE_CASING_FUSION_GLASS_YELLOW_GLOW)
                 .glow()
                 .build(),
-            OVERLAYS_ENERGY_OUT[mTier] };
+            OVERLAYS_ENERGY_OUT[mTier + 1] };
     }
 
     @Override
@@ -113,13 +116,13 @@ public class MTEPlasmaGenerator extends MTEBasicGenerator {
     }
 
     @Override
-    public int getCapacity() {
-        return 16000;
+    public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
+        return new MTEPlasmaGenerator(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
     }
 
     @Override
-    public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTEPlasmaGenerator(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
+    protected String[] getTooltipLines() {
+        return GTUtility.translateMultiline("gt.blockmachines.basicgenerator.plasmagenerator.tooltip");
     }
 
     @Override

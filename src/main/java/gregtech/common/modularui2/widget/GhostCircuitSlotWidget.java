@@ -7,20 +7,19 @@ import static gregtech.common.modularui2.sync.GhostCircuitSyncHandler.SYNC_CIRCU
 import org.jetbrains.annotations.NotNull;
 
 import com.cleanroommc.modularui.api.IPanelHandler;
-import com.cleanroommc.modularui.api.ITheme;
+import com.cleanroommc.modularui.api.UpOrDown;
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.Interactable;
-import com.cleanroommc.modularui.drawable.DrawableArray;
+import com.cleanroommc.modularui.drawable.DrawableStack;
 import com.cleanroommc.modularui.screen.ModularPanel;
-import com.cleanroommc.modularui.screen.ModularScreen;
 import com.cleanroommc.modularui.screen.RichTooltip;
-import com.cleanroommc.modularui.theme.WidgetTheme;
+import com.cleanroommc.modularui.theme.WidgetThemeEntry;
 import com.cleanroommc.modularui.utils.MouseData;
-import com.cleanroommc.modularui.value.sync.IntSyncValue;
-import com.cleanroommc.modularui.value.sync.ItemSlotSH;
-import com.cleanroommc.modularui.widgets.ItemSlot;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.value.sync.PhantomItemSlotSH;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
+import com.cleanroommc.modularui.widgets.slot.PhantomItemSlot;
 
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -33,25 +32,27 @@ import gregtech.common.modularui2.sync.GhostCircuitSyncHandler;
 /**
  * Item slot that appears on machines implementing {@link IConfigurationCircuitSupport}.
  */
-public class GhostCircuitSlotWidget extends ItemSlot {
+public class GhostCircuitSlotWidget extends PhantomItemSlot {
 
     private static final String GUI_ID = "circuit_selector";
 
     private final IMetaTileEntity mte;
-    private final IntSyncValue selectedSyncHandler;
+    private GhostCircuitSyncHandler circuitSyncHandler;
     private IPanelHandler selectorPanelHandler;
+    private final PanelSyncManager syncManager;
 
-    public GhostCircuitSlotWidget(IMetaTileEntity mte, IntSyncValue selectedSyncHandler) {
+    public GhostCircuitSlotWidget(IMetaTileEntity mte, PanelSyncManager syncManager) {
         super();
         this.mte = mte;
-        this.selectedSyncHandler = selectedSyncHandler;
+        this.syncManager = syncManager;
         tooltipBuilder(this::getCircuitSlotTooltip);
+        selectorPanelHandler = buildSelectorPanel();
     }
 
     @Override
-    public IDrawable getCurrentBackground(ITheme theme, WidgetTheme widgetTheme) {
-        IDrawable background = super.getCurrentBackground(theme, widgetTheme);
-        return new DrawableArray(background, GTGuiTextures.OVERLAY_SLOT_INT_CIRCUIT);
+    public IDrawable getCurrentBackground(WidgetThemeEntry<?> widgetTheme) {
+        IDrawable background = super.getCurrentBackground(widgetTheme);
+        return new DrawableStack(background, GTGuiTextures.OVERLAY_SLOT_INT_CIRCUIT);
     }
 
     @Override
@@ -61,33 +62,25 @@ public class GhostCircuitSlotWidget extends ItemSlot {
                 openSelectorPanel();
             } else {
                 MouseData mouseData = MouseData.create(mouseButton);
-                getSyncHandler().syncToServer(2, mouseData::writeToPacket);
+                getSyncHandler().syncToServer(PhantomItemSlotSH.SYNC_CLICK, mouseData::writeToPacket);
             }
         }
         return Result.SUCCESS;
     }
 
     @Override
-    public boolean onMouseRelease(int mouseButton) {
-        return true;
-    }
-
-    @Override
-    public boolean onMouseScroll(ModularScreen.UpOrDown scrollDirection, int amount) {
+    public boolean onMouseScroll(UpOrDown scrollDirection, int amount) {
         if (isSelectorPanelOpen()) return true;
         MouseData mouseData = MouseData.create(scrollDirection.modifier);
-        getSyncHandler().syncToServer(3, mouseData::writeToPacket);
+        getSyncHandler().syncToServer(PhantomItemSlotSH.SYNC_SCROLL, mouseData::writeToPacket);
         return true;
     }
 
     @Override
-    public void onMouseDrag(int mouseButton, long timeSinceClick) {}
-
-    @Override
-    public ItemSlot slot(ModularSlot slot) {
-        ItemSlotSH sh = new GhostCircuitSyncHandler(slot);
-        isValidSyncHandler(sh);
-        setSyncHandler(sh);
+    public PhantomItemSlot slot(ModularSlot slot) {
+        circuitSyncHandler = new GhostCircuitSyncHandler(slot, mte);
+        setSyncOrValue(circuitSyncHandler);
+        circuitSyncHandler.registerIndexSync(syncManager, "ghostCircuitIndex");
         return this;
     }
 
@@ -110,12 +103,6 @@ public class GhostCircuitSlotWidget extends ItemSlot {
             .addLine(IKey.lang("GT5U.machines.select_circuit.tooltip.3"));
     }
 
-    @NotNull
-    @Override
-    public GhostCircuitSyncHandler getSyncHandler() {
-        return (GhostCircuitSyncHandler) super.getSyncHandler();
-    }
-
     private boolean isSelectorPanelOpen() {
         return getPanel().getScreen()
             .isPanelOpen(GUI_ID);
@@ -123,18 +110,20 @@ public class GhostCircuitSlotWidget extends ItemSlot {
 
     private void openSelectorPanel() {
         if (selectorPanelHandler == null) {
-            selectorPanelHandler = buildSelectorPanel(selectedSyncHandler);
+
+            selectorPanelHandler = buildSelectorPanel();
         }
         selectorPanelHandler.openPanel();
     }
 
-    private IPanelHandler buildSelectorPanel(IntSyncValue selectedSyncHandler) {
-        return IPanelHandler.simple(getPanel(), (mainPanel, player) -> {
+    private IPanelHandler buildSelectorPanel() {
+
+        return syncManager.syncedPanel("ghostCircuitPanel", true, (mainPanel, player) -> {
             ModularPanel panel = GTGuis.createPopUpPanel(GUI_ID);
             return new SelectItemGuiBuilder(panel, GTUtility.getAllIntegratedCircuits()) //
                 .setHeaderItem(mte.getStackForm(1))
                 .setTitle(IKey.lang("GT5U.machines.select_circuit"))
-                .setSelectedSyncHandler(selectedSyncHandler)
+                .setSelectedSyncHandler(circuitSyncHandler.getIndexSync())
                 .setOnSelectedClientAction((selected, mouseData) -> {
                     getSyncHandler().syncToServer(SYNC_CIRCUIT_CONFIG, buffer -> {
                         // selected index 0 == config 1
@@ -142,12 +131,18 @@ public class GhostCircuitSlotWidget extends ItemSlot {
                         buffer.writeShort(circuitConfig);
                     });
                     if (mouseData.shift) {
-                        panel.animateClose();
+                        panel.closeIfOpen();
                     }
                 })
                 .setCurrentItemSlotOverlay(GTGuiTextures.OVERLAY_SLOT_INT_CIRCUIT)
                 .setAllowDeselected(true)
                 .build();
-        }, true);
+        });
+    }
+
+    @NotNull
+    @Override
+    public GhostCircuitSyncHandler getSyncHandler() {
+        return circuitSyncHandler;
     }
 }

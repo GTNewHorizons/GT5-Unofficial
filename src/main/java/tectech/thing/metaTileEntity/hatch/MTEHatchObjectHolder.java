@@ -8,32 +8,32 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.internal.wrapper.BaseSlot;
-import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
-import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
+import gregtech.api.modularui2.GTGuiTheme;
+import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.render.TextureFactory;
-import tectech.thing.gui.TecTechUITextures;
+import gregtech.common.gui.modularui.hatch.MTEHatchObjectHolderGui;
 import tectech.util.CommonValues;
 
 /**
  * Created by Tec on 03.04.2017.
  */
-public class MTEHatchObjectHolder extends MTEHatch implements IAddGregtechLogo {
+public class MTEHatchObjectHolder extends MTEHatch {
 
-    private static Textures.BlockIcons.CustomIcon EM_H;
-    private static Textures.BlockIcons.CustomIcon EM_H_ACTIVE;
+    private static IIconContainer EM_H;
+    private static IIconContainer EM_H_ACTIVE;
 
     public MTEHatchObjectHolder(int aID, String aName, String aNameRegional, int aTier) {
         super(
@@ -54,8 +54,8 @@ public class MTEHatchObjectHolder extends MTEHatch implements IAddGregtechLogo {
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
         super.registerIcons(aBlockIconRegister);
-        EM_H_ACTIVE = new Textures.BlockIcons.CustomIcon("iconsets/EM_HOLDER_ACTIVE");
-        EM_H = new Textures.BlockIcons.CustomIcon("iconsets/EM_HOLDER");
+        EM_H_ACTIVE = Textures.BlockIcons.custom("iconsets/EM_HOLDER_ACTIVE");
+        EM_H = Textures.BlockIcons.custom("iconsets/EM_HOLDER");
     }
 
     @Override
@@ -76,11 +76,6 @@ public class MTEHatchObjectHolder extends MTEHatch implements IAddGregtechLogo {
     @Override
     public boolean isFacingValid(ForgeDirection facing) {
         return facing.offsetY == 0;
-    }
-
-    @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
-        return true;
     }
 
     @Override
@@ -120,49 +115,17 @@ public class MTEHatchObjectHolder extends MTEHatch implements IAddGregtechLogo {
     }
 
     @Override
-    public void addGregTechLogo(ModularWindow.Builder builder) {
-        builder.widget(
-            new DrawableWidget().setDrawable(TecTechUITextures.PICTURE_TECTECH_LOGO)
-                .setSize(18, 18)
-                .setPos(151, 63));
+    protected boolean useMui2() {
+        return true;
     }
 
     @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        builder.widget(
-            new DrawableWidget().setDrawable(TecTechUITextures.PICTURE_HEAT_SINK)
-                .setPos(46, 17)
-                .setSize(84, 60))
-            .widget(
-                new DrawableWidget().setDrawable(TecTechUITextures.PICTURE_RACK_LARGE)
-                    .setPos(68, 27)
-                    .setSize(40, 40))
-            .widget(new SlotWidget(new BaseSlot(inventoryHandler, 0) {
+    public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTEHatchObjectHolderGui(this).build(guiData, syncManager, uiSettings);
+    }
 
-                @Override
-                public int getSlotStackLimit() {
-                    return 1;
-                }
-
-                @Override
-                public boolean isEnabled() {
-                    return !getBaseMetaTileEntity().isActive();
-                }
-            }).setPos(79, 38))
-            .widget(
-                new DrawableWidget().setDrawable(TecTechUITextures.BUTTON_STANDARD_LIGHT_16x16)
-                    .setPos(152, 24)
-                    .setSize(16, 16))
-            .widget(
-                new DrawableWidget()
-                    .setDrawable(
-                        () -> getBaseMetaTileEntity().isActive() ? TecTechUITextures.OVERLAY_BUTTON_POWER_SWITCH_ON
-                            : TecTechUITextures.OVERLAY_BUTTON_POWER_SWITCH_DISABLED)
-                    .setPos(152, 24)
-                    .setSize(16, 16))
-            .widget(
-                new FakeSyncWidget.BooleanSyncer(
-                    () -> getBaseMetaTileEntity().isActive(),
-                    val -> getBaseMetaTileEntity().setActive(val)));
+    @Override
+    protected GTGuiTheme getGuiTheme() {
+        return GTGuiThemes.TECTECH_STANDARD;
     }
 }

@@ -1,38 +1,34 @@
 package gtPlusPlus.core.block.machine;
 
-import static gregtech.api.enums.Mods.GTPlusPlus;
-
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
+import gregtech.api.enums.Textures;
 import gregtech.api.util.GTLog;
 import gregtech.common.items.MetaGeneratedTool01;
 import gtPlusPlus.GTplusplus;
-import gtPlusPlus.api.objects.minecraft.CubicObject;
 import gtPlusPlus.core.block.base.BasicTileBlockWithTooltip;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.handler.GuiHandler;
 import gtPlusPlus.core.tileentities.general.TileEntityCircuitProgrammer;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
 
 public class BlockCircuitProgrammer extends BasicTileBlockWithTooltip {
 
     /**
      * Determines which tooltip is displayed within the itemblock.
      */
-    private final int mTooltipID = 2;
+    private static final int mTooltipID = 2;
 
     @Override
     public int getTooltipID() {
-        return this.mTooltipID;
+        return mTooltipID;
     }
 
     public BlockCircuitProgrammer() {
@@ -43,36 +39,31 @@ public class BlockCircuitProgrammer extends BasicTileBlockWithTooltip {
      * Called upon block activation (right-click on the block.)
      */
     @Override
-    public boolean onBlockActivated(final World world, final int x, final int y, final int z, final EntityPlayer player,
-        final int side, final float lx, final float ly, final float lz) {
+    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float lx, float ly,
+        float lz) {
         if (world.isRemote) {
             return true;
-        } else {
-
-            boolean mDidScrewDriver = false;
-            // Check For Screwdriver
-            try {
-                final ItemStack mHandStack = PlayerUtils.getItemStackInPlayersHand(world, player.getDisplayName());
-                final Item mHandItem = mHandStack.getItem();
-                if (((mHandItem instanceof MetaGeneratedTool01)
-                    && ((mHandItem.getDamage(mHandStack) == 22) || (mHandItem.getDamage(mHandStack) == 150)))) {
-                    final TileEntityCircuitProgrammer tile = (TileEntityCircuitProgrammer) world.getTileEntity(x, y, z);
-                    if (tile != null) {
-                        mDidScrewDriver = tile.onScrewdriverRightClick((byte) side, player, x, y, z);
+        }
+        // Check For Screwdriver
+        try {
+            final ItemStack mHandStack = player.getHeldItem();
+            final Item mHandItem = mHandStack.getItem();
+            if (((mHandItem instanceof MetaGeneratedTool01)
+                && ((mHandItem.getDamage(mHandStack) == 22) || (mHandItem.getDamage(mHandStack) == 150)))) {
+                final TileEntityCircuitProgrammer tile = (TileEntityCircuitProgrammer) world.getTileEntity(x, y, z);
+                if (tile != null) {
+                    if (tile.onScrewdriverRightClick(player)) {
+                        return true;
                     }
                 }
-            } catch (Exception e) {
-                e.printStackTrace(GTLog.err);
             }
-            if (!mDidScrewDriver) {
-                final TileEntity te = world.getTileEntity(x, y, z);
-                if (te instanceof TileEntityCircuitProgrammer) {
-                    player.openGui(GTplusplus.instance, GuiHandler.GUI8, world, x, y, z);
-                    return true;
-                }
-            } else {
-                return true;
-            }
+        } catch (Exception e) {
+            e.printStackTrace(GTLog.err);
+        }
+        final TileEntity te = world.getTileEntity(x, y, z);
+        if (te instanceof TileEntityCircuitProgrammer) {
+            player.openGui(GTplusplus.instance, GuiHandler.GUI8, world, x, y, z);
+            return true;
         }
         return false;
     }
@@ -93,22 +84,11 @@ public class BlockCircuitProgrammer extends BasicTileBlockWithTooltip {
     }
 
     @Override
-    public void onBlockAdded(final World world, final int x, final int y, final int z) {
-        super.onBlockAdded(world, x, y, z);
-    }
-
-    @Override
     public void onBlockPlacedBy(final World world, final int x, final int y, final int z, final EntityLivingBase entity,
         final ItemStack stack) {
         if (stack.hasDisplayName()) {
             ((TileEntityCircuitProgrammer) world.getTileEntity(x, y, z)).setCustomName(stack.getDisplayName());
         }
-    }
-
-    @Override
-    public boolean canCreatureSpawn(final EnumCreatureType type, final IBlockAccess world, final int x, final int y,
-        final int z) {
-        return false;
     }
 
     @Override
@@ -142,11 +122,10 @@ public class BlockCircuitProgrammer extends BasicTileBlockWithTooltip {
     }
 
     @Override
-    public CubicObject<String>[] getCustomTextureDirectoryObject() {
-        String[] aTexData = new String[] { GTPlusPlus.ID + ":metro/TEXTURE_METAL_PANEL_H",
-            GTPlusPlus.ID + ":metro/TEXTURE_TECH_PANEL_B", GTPlusPlus.ID + ":metro/TEXTURE_METAL_PANEL_I",
-            GTPlusPlus.ID + ":metro/TEXTURE_METAL_PANEL_I", GTPlusPlus.ID + ":metro/TEXTURE_METAL_PANEL_I",
-            GTPlusPlus.ID + ":metro/TEXTURE_METAL_PANEL_I" };
-        return (CubicObject<String>[]) new CubicObject[] { new CubicObject<>(aTexData) };
+    public final IIcon getIcon(int side, int meta) {
+        IIcon sideIcon = Textures.BlockIcons.CIRCUIT_PROGRAMMER_SIDE.getIcon();
+        IIcon topIcon = Textures.BlockIcons.CIRCUIT_PROGRAMMER_TOP.getIcon();
+        if (side == 1) return topIcon;
+        return sideIcon;
     }
 }

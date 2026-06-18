@@ -60,11 +60,6 @@ public class BWMetaGeneratedBlocksCasing extends BWMetaGeneratedBlocks
     }
 
     @Override
-    protected boolean canSilkHarvest() {
-        return false;
-    }
-
-    @Override
     public void breakBlock(World aWorld, int aX, int aY, int aZ, Block aBlock, int aMetaData) {
         GregTechAPI.causeMachineUpdate(aWorld, aX, aY, aZ);
         super.breakBlock(aWorld, aX, aY, aZ, aBlock, aMetaData);
@@ -83,8 +78,8 @@ public class BWMetaGeneratedBlocksCasing extends BWMetaGeneratedBlocks
 
     @Override
     public String getUnlocalizedName() {
-        if (this._prefixes == OrePrefixes.blockCasing) return "bw.werkstoffblockscasing.01";
-        if (this._prefixes == OrePrefixes.blockCasingAdvanced) return "bw.werkstoffblockscasingadvanced.01";
+        if (this.prefix == OrePrefixes.blockCasing) return "bw.werkstoffblockscasing.01";
+        if (this.prefix == OrePrefixes.blockCasingAdvanced) return "bw.werkstoffblockscasingadvanced.01";
         return "";
     }
 
@@ -94,7 +89,7 @@ public class BWMetaGeneratedBlocksCasing extends BWMetaGeneratedBlocks
         Werkstoff.werkstoffHashSet.stream()
             .filter(
                 pMaterial -> Werkstoff.Types.BIOLOGICAL.equals(pMaterial.getType())
-                    && pMaterial.hasGenerationFeature(OrePrefixes.blockCasing)
+                    && pMaterial.hasItemType(OrePrefixes.blockCasing)
                     || pMaterial.doesOreDictedItemExists(OrePrefixes.plate)
                         && pMaterial.doesOreDictedItemExists(OrePrefixes.screw)
                         && pMaterial.doesOreDictedItemExists(OrePrefixes.plateDouble)
@@ -107,6 +102,7 @@ public class BWMetaGeneratedBlocksCasing extends BWMetaGeneratedBlocks
     /**
      * ICustomBlockSetting setBlock override
      */
+    @Override
     public void setBlock(World world, int x, int y, int z, int meta) {
         world.setBlock(x, y, z, this, meta, 2);
         try {

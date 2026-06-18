@@ -1,22 +1,19 @@
 package gregtech.common.tileentities.automation;
 
-import static gregtech.api.enums.GTValues.W;
 import static gregtech.api.enums.Textures.BlockIcons.AUTOMATION_TYPEFILTER;
 import static gregtech.api.enums.Textures.BlockIcons.AUTOMATION_TYPEFILTER_GLOW;
+import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.Function;
+import java.util.stream.IntStream;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.google.common.collect.ImmutableList;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.internal.wrapper.BaseSlot;
-import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.ITexture;
@@ -27,10 +24,10 @@ import gregtech.api.objects.ItemData;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
+import gregtech.common.gui.modularui.singleblock.MTETypeFilterGui;
 
 public class MTETypeFilter extends MTESpecialFilter {
 
-    private static final String REPRESENTATION_SLOT_TOOLTIP = "GT5U.type_filter.representation_slot.tooltip";
     public int mRotationIndex = 0;
     public OrePrefixes mPrefix = OrePrefixes.ore;
 
@@ -60,6 +57,22 @@ public class MTETypeFilter extends MTESpecialFilter {
 
     public MTETypeFilter(String aName, int aTier, int aInvSlotCount, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
+    }
+
+    public int getRotationIndex() {
+        return mRotationIndex;
+    }
+
+    public void setRotationIndex(int rotationIndex) {
+        this.mRotationIndex = rotationIndex;
+    }
+
+    public String getPrefix() {
+        return mPrefix.toString();
+    }
+
+    public void setPrefix(String prefix) {
+        this.mPrefix = OrePrefixes.getPrefix(prefix, this.mPrefix);
     }
 
     @Override
@@ -100,32 +113,23 @@ public class MTETypeFilter extends MTESpecialFilter {
         }
     }
 
-    private void cyclePrefix(boolean aRightClick) {
-        for (int i = 0; i < OrePrefixes.values().length; i++) {
-            if (this.mPrefix == OrePrefixes.values()[i]) {
-                for (this.mPrefix = null; this.mPrefix == null; this.mPrefix = OrePrefixes.values()[i]) {
-                    if (aRightClick) {
-                        do {
-                            i--;
-                            if (i < 0) {
-                                i = OrePrefixes.values().length - 1;
-                            }
-                        } while (OrePrefixes.values()[i].mPrefixedItems.isEmpty());
-                    } else {
-                        do {
-                            i++;
-                            if (i >= OrePrefixes.values().length) {
-                                i = 0;
-                            }
-                        } while (OrePrefixes.values()[i].mPrefixedItems.isEmpty());
-                    }
-                    if (!OrePrefixes.values()[i].mPrefixedItems.isEmpty()
-                        && OrePrefixes.values()[i].mPrefixInto == OrePrefixes.values()[i])
-                        mPrefix = OrePrefixes.values()[i];
-                }
-            }
-            this.mRotationIndex = -1;
-        }
+    private void cyclePrefix(boolean rightClick) {
+        mRotationIndex = -1;
+
+        final int start = IntStream.range(0, OrePrefixes.VALUES.length)
+            .filter(i -> mPrefix == OrePrefixes.VALUES[i])
+            .findFirst()
+            .orElse(0);
+
+        // spotless:off
+        mPrefix = IntStream.range(1, OrePrefixes.VALUES.length)
+            .map(offset -> start + (rightClick ? -offset : offset))                        // search up/down from start
+            .map(index -> (index + OrePrefixes.VALUES.length) % OrePrefixes.VALUES.length) // wrap around
+            .mapToObj(index -> OrePrefixes.VALUES[index])                                  // map to prefix
+            .filter(prefix -> !prefix.mPrefixedItems.isEmpty())                            // only prefixes with items
+            .findFirst()
+            .orElse(mPrefix);                                                              // fallback to current prefix
+        // spotless:on
     }
 
     @Override
@@ -141,7 +145,7 @@ public class MTETypeFilter extends MTESpecialFilter {
             this.mPrefix.mPrefixedItems
                 .get(this.mRotationIndex = (this.mRotationIndex + 1) % this.mPrefix.mPrefixedItems.size()));
         if (this.mInventory[FILTER_SLOT_INDEX] == null) return;
-        if (this.mInventory[FILTER_SLOT_INDEX].getItemDamage() == W) this.mInventory[9].setItemDamage(0);
+        if (this.mInventory[FILTER_SLOT_INDEX].getItemDamage() == WILDCARD) this.mInventory[9].setItemDamage(0);
     }
 
     @Override
@@ -168,40 +172,7 @@ public class MTETypeFilter extends MTESpecialFilter {
     }
 
     @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        super.addUIWidgets(builder, buildContext);
-        builder.widget(
-            new FakeSyncWidget.StringSyncer(
-                () -> this.mPrefix.toString(),
-                (prefix) -> this.mPrefix = OrePrefixes.getPrefix(prefix, this.mPrefix)));
-    }
-
-    @Override
-    protected Function<List<String>, List<String>> getItemStackReplacementTooltip() {
-        return (itemTooltip) -> {
-            List<String> replacementTooltip = new ArrayList<>();
-            replacementTooltip.add("Filter set to " + mPrefix.mRegularLocalName);
-            replacementTooltip.add("Ore prefix: §e" + mPrefix + "§r");
-            replacementTooltip.add("Filter size: §e" + mPrefix.mPrefixedItems.size() + "§r");
-            replacementTooltip.addAll(mTooltipCache.getData(REPRESENTATION_SLOT_TOOLTIP).text);
-            return replacementTooltip;
-        };
-    }
-
-    @Override
-    protected SlotWidget createFilterIconSlot(BaseSlot slot) {
-        return new TypeFilterIconSlotWidget(slot);
-    }
-
-    private class TypeFilterIconSlotWidget extends FilterIconSlotWidget {
-
-        public TypeFilterIconSlotWidget(BaseSlot slot) {
-            super(slot);
-        }
-
-        @Override
-        protected void phantomClick(ClickData clickData, ItemStack cursorStack) {
-            clickTypeIcon(clickData.mouseButton != 0, cursorStack);
-        }
+    public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTETypeFilterGui(this).build(guiData, syncManager, uiSettings);
     }
 }

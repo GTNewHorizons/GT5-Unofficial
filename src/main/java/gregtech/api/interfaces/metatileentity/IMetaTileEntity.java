@@ -1,13 +1,14 @@
 package gregtech.api.interfaces.metatileentity;
 
-import java.io.File;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.block.Block;
-import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,7 +17,7 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.IFluidHandler;
@@ -36,7 +37,8 @@ import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IGregtechWailaProvider;
 import gregtech.api.interfaces.tileentity.IMachineBlockUpdateable;
-import gregtech.api.util.GTUtil;
+import gregtech.api.render.ISBRInventoryContext;
+import gregtech.api.render.ISBRWorldContext;
 
 /**
  * Warning, this Interface has just been made to be able to add multiple kinds of MetaTileEntities (Cables, Pipes,
@@ -50,13 +52,21 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
     /**
      * This determines the BaseMetaTileEntity belonging to this MetaTileEntity by using the Meta ID of the Block itself.
      * <p/>
-     * 0 = BaseMetaTileEntity, Wrench lvl 0 to dismantle 1 = BaseMetaTileEntity, Wrench lvl 1 to dismantle 2 =
-     * BaseMetaTileEntity, Wrench lvl 2 to dismantle 3 = BaseMetaTileEntity, Wrench lvl 3 to dismantle 4 =
-     * BaseMetaPipeEntity, Wrench lvl 0 to dismantle 5 = BaseMetaPipeEntity, Wrench lvl 1 to dismantle 6 =
-     * BaseMetaPipeEntity, Wrench lvl 2 to dismantle 7 = BaseMetaPipeEntity, Wrench lvl 3 to dismantle 8 =
-     * BaseMetaPipeEntity, Cutter lvl 0 to dismantle 9 = BaseMetaPipeEntity, Cutter lvl 1 to dismantle 10 =
-     * BaseMetaPipeEntity, Cutter lvl 2 to dismantle 11 = BaseMetaPipeEntity, Cutter lvl 3 to dismantle 12 = GT++ 13 =
-     * GT++ 14 = GT++ 15 = GT++
+     * // spotless:off
+     * 0 = BaseMetaTileEntity, Wrench lvl 0 to dismantle
+     * 1 = BaseMetaTileEntity, Wrench lvl 1 to dismantle
+     * 2 = BaseMetaTileEntity, Wrench lvl 2 to dismantle
+     * 3 = BaseMetaTileEntity, Wrench lvl 3 to dismantle
+     * 4 = BaseMetaPipeEntity, Wrench lvl 0 to dismantle
+     * 5 = BaseMetaPipeEntity, Wrench lvl 1 to dismantle
+     * 6 = BaseMetaPipeEntity, Wrench lvl 2 to dismantle
+     * 7 = BaseMetaPipeEntity, Wrench lvl 3 to dismantle
+     * 8 = BaseMetaPipeEntity, Cutter lvl 0 to dismantle
+     * 9 = BaseMetaPipeEntity, Cutter lvl 1 to dismantle
+     * 10 = BaseMetaPipeEntity, Cutter lvl 2 to dismantle
+     * 11 = BaseMetaPipeEntity, Cutter lvl 3 to dismantle
+     * 12 = GT++ 13 = GT++ 14 = GT++ 15 = GT++
+     * // spotless:on
      */
     byte getTileEntityBaseType();
 
@@ -97,7 +107,7 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
     void loadNBTData(NBTTagCompound aNBT);
 
     /**
-     * Adds the NBT-Information to the ItemStack, when being dismanteled properly Used to store Machine specific Upgrade
+     * Adds the NBT-Information to the ItemStack, when being dismantled properly Used to store Machine specific Upgrade
      * Data.
      */
     void setItemNBT(NBTTagCompound aNBT);
@@ -106,17 +116,6 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
      * Called in the registered MetaTileEntity when the Server starts, to reset static variables
      */
     void onServerStart();
-
-    /**
-     * Called in the registered MetaTileEntity when the Server ticks a World the first time, to load things from the
-     * World Save
-     */
-    void onWorldLoad(File aSaveDirectory);
-
-    /**
-     * Called in the registered MetaTileEntity when the Server stops, to save the Game.
-     */
-    void onWorldSave(File aSaveDirectory);
 
     /**
      * Called to set Configuration values for this MetaTileEntity. Use aConfig.get(ConfigCategories.machineconfig,
@@ -213,6 +212,33 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
      */
     boolean isValidSlot(int aIndex);
 
+    /// Checks if the slot is an I/O slot that contributes to [GTItemSink#getStoredItemsInSink(ItemStackPredicate)].
+    /// Also controls which slots block AE pattern pushes for blocking mode.
+    default boolean isIOSlot(int slot) {
+        return true;
+    }
+
+    /**
+     * Gets the max stack size limit for a slot and a stack.
+     *
+     * @param slot  The slot, or -1 for a general 'lowest slot' query.
+     * @param stack The stack, or null for a general 'any standard stack' query (getMaxStackSize() == 64).
+     */
+    default int getStackSizeLimit(int slot, @Nullable ItemStack stack) {
+        return Math.min(getSlotLimit(slot), stack == null ? 64 : stack.getMaxStackSize());
+    }
+
+    /**
+     * Gets the max stack size limit for a slot. This should be prioritised over
+     * {@link IMetaTileEntity#getStackSizeLimit(int, ItemStack)}in cases where the limit is independent of the item
+     * stack.
+     *
+     * @param slot The slot index, or -1 for a general 'lowest slot' query.
+     */
+    default int getSlotLimit(int slot) {
+        return getInventoryStackLimit();
+    }
+
     /**
      * Check if the item at the specified index should be dropped
      *
@@ -220,6 +246,11 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
      * @return True if the item at the index should be dropped, else false
      */
     boolean shouldDropItemAt(int index);
+
+    /**
+     * Override to change which items are dropped when block is broken.
+     */
+    ArrayList<ItemStack> getDroppedItem();
 
     /**
      * @return if aIndex can be set to Zero stackSize, when being removed.
@@ -325,9 +356,70 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
         ArrayList<String> aList);
 
     /**
-     * get a small Description
+     * Get the description for the TileEntity.
+     * <p>
+     * The behavior of this method depends on whether the class is annotated with {@link SkipGenerateDescription}:
+     * </p>
+     * <ul>
+     * <li>When the class is annotated with {@link SkipGenerateDescription}, the returned value is displayed directly in
+     * the game.</li>
+     * <li>When the class is not annotated with {@link SkipGenerateDescription}, the returned value is automatically
+     * added to <code>GregTech.lang</code>, and display the value from <code>GregTech.lang</code> in the game</li>
+     * </ul>
+     * <p>
+     * Additional notes when the class is not annotated with {@link SkipGenerateDescription}:
+     * </p>
+     * <ul>
+     * <li>To use the %s format specifier, you can use the {@link #addFormattedString(String)}</li>
+     * <li>Only static text is supported(because of <code>GregTech.lang</code>); dynamic text (e.g. display different
+     * random text each time) should also use the {@link #addFormattedString(String)}</li>
+     * </ul>
+     *
+     * @return the description, will display in the tooltips
+     * @see SkipGenerateDescription
+     * @see #addFormattedString(String)
      */
     String[] getDescription();
+
+    /**
+     * Add a formatting marker for automatic parameter substitution.
+     * <p>
+     * This can also be used to display raw text.
+     *
+     * @param formattedStr the String to be formatted with parameter substitution markers.
+     * @return the special formatting markers for automatic parsing.
+     * @apiNote This method should NOT be used when the class is annotated with {@link SkipGenerateDescription},
+     *          otherwise the game will display the format used for marking.<br>
+     *          When use this method, please replace all "(number)%" with "(number)%%".
+     * @see #getDescription()
+     */
+    default String addFormattedString(String formattedStr) {
+        return "%%%" + formattedStr + "%%%";
+    }
+
+    /**
+     * Annotation to mark classes that should skip generating tooltips through the GregTech.lang system.
+     * <p>
+     *
+     * When a class is annotated with {@link SkipGenerateDescription}:
+     * </p>
+     * <ul>
+     * <li>The returned value of {@link #getDescription()} is displayed directly in the game</li>
+     * <li>Automatic addition to <code>GregTech.lang</code> is skipped</li>
+     * </ul>
+     * <p>
+     * When a class is not annotated with {@link SkipGenerateDescription}:
+     * </p>
+     * <ul>
+     * <li>The returned value of {@link #getDescription()} is automatically added to <code>GregTech.lang</code></li>
+     *
+     * @apiNote please ensure the return of {@link #getDescription()} is not Hardcoded if this annotation is present.
+     *          This annotation is only effective when annotated to subclasses of {@link IMetaTileEntity}.
+     * @see #getDescription()
+     */
+    @Target(ElementType.TYPE)
+    @Retention(RetentionPolicy.RUNTIME)
+    @interface SkipGenerateDescription {}
 
     /**
      * In case the Output Voltage varies.
@@ -362,13 +454,13 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
      * @return true if you override the Rendering.
      */
     @SideOnly(Side.CLIENT)
-    boolean renderInInventory(Block aBlock, int aMeta, RenderBlocks aRenderer);
+    boolean renderInInventory(ISBRInventoryContext ctx);
 
     /**
      * @return true if you override the Rendering.
      */
     @SideOnly(Side.CLIENT)
-    boolean renderInWorld(IBlockAccess aWorld, int aX, int aY, int aZ, Block aBlock, RenderBlocks aRenderer);
+    boolean renderInWorld(ISBRWorldContext ctx);
 
     /**
      * Gets the Output for the comparator on the given Side
@@ -385,6 +477,14 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
 
     void onColorChangeClient(byte aColor);
 
+    default NBTTagCompound getDescriptionData() {
+        return null;
+    }
+
+    default void onDescriptionPacket(NBTTagCompound data) {
+
+    }
+
     /**
      * @return Actual color shown on GUI
      */
@@ -392,7 +492,7 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
         if (getBaseMetaTileEntity() != null) {
             return getBaseMetaTileEntity().getGUIColorization();
         } else {
-            return GTUtil.getRGBInt(Dyes.MACHINE_METAL.getRGBA());
+            return Dyes.GUI_METAL.toInt();
         }
     }
 
@@ -419,21 +519,15 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
     boolean shouldJoinIc2Enet();
 
     /**
-     * The Machine Update, which is called when the Machine needs an Update of its Parts. I suggest to wait 1-5 seconds
-     * before actually checking the Machine Parts. RP-Frames could for example cause Problems when you instacheck the
-     * Machine Parts.
-     * <p>
-     * just do stuff since we are already in meta tile...
-     */
-    @Override
-    void onMachineBlockUpdate();
-
-    /**
      * just return in should recurse since we are already in meta tile...
      */
     @Override
     default boolean isMachineBlockUpdateRecursive() {
         return true;
+    }
+
+    default void onAdjacentBlockChange(int x, int y, int z) {
+        /* do nothing */
     }
 
     /**
@@ -461,8 +555,17 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
         return null;
     }
 
+    default String getLocalNameKey() {
+        return "GT5U.gui.title.unknown";
+    }
+
+    /**
+     * You should override {@link #getLocalNameKey()} instead of this one.
+     *
+     * @return localized name
+     */
     default String getLocalName() {
-        return "Unknown";
+        return StatCollector.translateToLocal(getLocalNameKey());
     }
 
     default boolean doesBindPlayerInventory() {
@@ -489,8 +592,8 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
     /**
      * Gets items to be displayed for HoloInventory mod.
      *
-     * @return null if default implementation should be used, i.e. {@link IInventory#getStackInSlot}.
-     *         Otherwise, a list of items to be displayed. Null element may be contained.
+     * @return null if default implementation should be used, i.e. {@link IInventory#getStackInSlot}. Otherwise, a list
+     *         of items to be displayed. Null element may be contained.
      */
     @Nullable
     default List<ItemStack> getItemsForHoloGlasses() {
@@ -501,4 +604,6 @@ public interface IMetaTileEntity extends ISidedInventory, IFluidTank, IFluidHand
      * Returns GUI ID used for resource packs as a distinguishable id to customize UI elements in MUI2.
      */
     String getGuiId();
+
+    default void onTextureUpdate() {}
 }

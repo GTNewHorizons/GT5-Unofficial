@@ -15,7 +15,6 @@ import net.minecraftforge.event.world.WorldEvent;
 
 import org.lwjgl.opengl.GL11;
 
-import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
@@ -26,49 +25,40 @@ import gregtech.GTMod;
 @SideOnly(Side.CLIENT)
 public class PollutionRenderer {
 
-    private static GTClientPollutionMap pollutionMap;
-    private static int playerPollution = 0;
-
     private static final boolean DEBUG = false;
 
     // PARTICLES_POLLUTION_START + PARTICLES_POLLUTION_END -> Max Particles
     private static final int PARTICLES_MAX_NUM = 100;
     private static final int PARTICLES_POLLUTION_START = 400000;
     private static final int PARTICLES_POLLUTION_END = 3500000;
+    private static final int END_MAX_DISTANCE = 192 - 1;
 
     private static final int FOG_START_AT_POLLUTION = 400000;
     private static final int FOG_MAX_AT_POLLUTION = 7000000;
     // jump from linear to exponential fog. x*FOG_MAX_AT_POLLUTION+FOG_START_AT_POLLUTION
     private static final double FOG_START_EXP_RATIO = 0.02D;
 
-    private static final float[] fogColor = { 0.3f, 0.25f, 0.1f };
-    private static final short[] grassColor = { 230, 180, 40 };
-    private static final short[] leavesColor = { 160, 80, 15 };
-    private static final short[] liquidColor = { 160, 200, 10 };
-    private static final short[] foliageColor = { 160, 80, 15 };
+    private static final float[] FOG_COLOR = { 0.3f, 0.25f, 0.1f };
+    private static final short[] GRASS_COLOR = { 230, 180, 40 };
+    private static final short[] LEAVES_COLOR = { 160, 80, 15 };
+    private static final short[] LIQUID_COLOR = { 160, 200, 10 };
+    private static final short[] FOLIAGE_COLOR = { 160, 80, 15 };
+
+    private final GTClientPollutionMap pollutionMap = new GTClientPollutionMap();
+    private int playerPollution = 0;
+    private double fogIntensityLastTick = 0;
 
     // TODO need to soft update some blocks, grass and leaves does more often than liquid it looks like.
-
-    public PollutionRenderer() {
-        pollutionMap = new GTClientPollutionMap();
-    }
-
-    public void preLoad() {
-        net.minecraftforge.common.MinecraftForge.EVENT_BUS.register(this);
-        FMLCommonHandler.instance()
-            .bus()
-            .register(this);
-    }
 
     public void processPacket(ChunkCoordIntPair chunk, int pollution) {
         pollutionMap.addChunkPollution(chunk.chunkXPos, chunk.chunkZPos, pollution);
     }
 
     @SubscribeEvent(priority = EventPriority.HIGH)
-    public void enteredWorld(WorldEvent.Load event) {
-        EntityClientPlayerMP p = Minecraft.getMinecraft().thePlayer;
-        if (!event.world.isRemote || p == null) return;
-        pollutionMap.reset();
+    public void onWorldUnload(WorldEvent.Unload event) {
+        if (event.world.isRemote) {
+            pollutionMap.needsRebuild();
+        }
     }
 
     private static int color(int color, int pollution, int low, float high, short[] colors) {
@@ -88,24 +78,23 @@ public class PollutionRenderer {
         return (r & 0xFF) << 16 | (g & 0xFF) << 8 | b & 0xFF;
     }
 
-    // Methods for hodgepodge to color grass / foliage blocks etc.
-    public static int colorGrass(int oColor, int x, int z) {
-        return color(oColor, pollutionMap.getPollution(x, z) / 1000, 350, 600, grassColor);
+    public int colorGrass(int oColor, int x, int z) {
+        return color(oColor, pollutionMap.getPollution(x, z) / 1000, 350, 600, GRASS_COLOR);
     }
 
-    public static int colorLeaves(int oColor, int x, int z) {
-        return color(oColor, pollutionMap.getPollution(x, z) / 1000, 300, 500, leavesColor);
+    public int colorLeaves(int oColor, int x, int z) {
+        return color(oColor, pollutionMap.getPollution(x, z) / 1000, 300, 500, LEAVES_COLOR);
     }
 
-    public static int colorLiquid(int oColor, int x, int z) {
-        return color(oColor, pollutionMap.getPollution(x, z) / 1000, 300, 500, liquidColor);
+    public int colorLiquid(int oColor, int x, int z) {
+        return color(oColor, pollutionMap.getPollution(x, z) / 1000, 300, 500, LIQUID_COLOR);
     }
 
-    public static int colorFoliage(int oColor, int x, int z) {
-        return color(oColor, pollutionMap.getPollution(x, z) / 1000, 300, 500, foliageColor);
+    public int colorFoliage(int oColor, int x, int z) {
+        return color(oColor, pollutionMap.getPollution(x, z) / 1000, 300, 500, FOLIAGE_COLOR);
     }
 
-    public static int getKnownPollution(int x, int z) {
+    public int getKnownPollution(int x, int z) {
         return pollutionMap.getPollution(x, z);
     }
 
@@ -118,17 +107,14 @@ public class PollutionRenderer {
         float x = fogIntensityLastTick > 1 ? 1F : (float) fogIntensityLastTick;
         float xi = 1 - x;
 
-        event.red = xi * event.red + x * fogColor[0];
-        event.green = xi * event.green + x * fogColor[1];
-        event.blue = xi * event.blue + x * fogColor[2];
+        event.red = xi * event.red + x * FOG_COLOR[0];
+        event.green = xi * event.green + x * FOG_COLOR[1];
+        event.blue = xi * event.blue + x * FOG_COLOR[2];
     }
-
-    private static final int END_MAX_DISTANCE = 192 - 1;
-    private static double fogIntensityLastTick = 0;
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void renderGTPollutionFog(EntityViewRenderEvent.RenderFogEvent event) {
-        if (!GTMod.gregtechproxy.mRenderPollutionFog) return;
+        if (!GTMod.proxy.mRenderPollutionFog) return;
 
         if ((!DEBUG && Minecraft.getMinecraft().thePlayer.capabilities.isCreativeMode)
             || (fogIntensityLastTick < FOG_START_EXP_RATIO)) return;
@@ -145,7 +131,7 @@ public class PollutionRenderer {
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void renderGTPollutionFog(EntityViewRenderEvent.FogDensity event) {
-        if (!GTMod.gregtechproxy.mRenderPollutionFog) return;
+        if (!GTMod.proxy.mRenderPollutionFog) return;
 
         if (!DEBUG && Minecraft.getMinecraft().thePlayer.capabilities.isCreativeMode) return;
 
@@ -201,7 +187,7 @@ public class PollutionRenderer {
     // Adding dirt particles in the air
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void onClientTick(TickEvent.ClientTickEvent event) {
-        if (!GTMod.gregtechproxy.mRenderDirtParticles) return;
+        if (!GTMod.proxy.mRenderDirtParticles) return;
         Minecraft mc = Minecraft.getMinecraft();
         if (mc == null) return;
         EntityClientPlayerMP player = mc.thePlayer;

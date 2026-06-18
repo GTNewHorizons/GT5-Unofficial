@@ -1,5 +1,7 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.advanced;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+
 import net.minecraft.block.Block;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -18,6 +20,7 @@ import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.objects.overclockdescriber.OverclockDescriber;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.AdvancedFusionOverclockDescriber;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.tileentities.machines.multi.MTEFusionComputer;
 import gtPlusPlus.core.block.ModBlocks;
@@ -43,18 +46,18 @@ public class MTEAdvFusionMk5 extends MTEFusionComputer {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Fusion Reactor")
             .addInfo("HARNESSING THE POWER OF A NEUTRON STAR")
-            .addInfo("524,288EU/t and 1.28B EU capacity per Energy Hatch")
+            .addInfo("§b524,288§7 EU/t and §b1.28B§7 EU capacity per Energy Hatch")
             .addInfo("If the recipe has a startup cost greater than the")
             .addInfo("number of energy hatches * cap, you can't do it")
             .addInfo("Performs 4/4 overclocks")
             .beginStructureBlock(15, 3, 15, false)
             .addController("See diagram when placed")
-            .addCasingInfoMin("Fusion Machine Casings MK IV", 79, false)
+            .addCasingInfoMin("Fusion Machine Casing MK IV", 79, false)
             .addStructureInfo("Cover the coils with casing")
-            .addOtherStructurePart("Advanced Fusion Coils II", "Center part of the ring")
-            .addEnergyHatch("1-16, Specified casings", 2)
-            .addInputHatch("2-16, Specified casings", 1)
-            .addOutputHatch("1-16, Specified casings", 3)
+            .addOtherStructurePart("Advanced Fusion Coil II", "Center part of the ring")
+            .addEnergyHatch("1-16, Specified Casing", 2)
+            .addInputHatch("2-16, Specified Casing", 1)
+            .addOutputHatch("1-16, Specified Casing", 3)
             .addStructureInfo("ALL Hatches must be UEV or better")
             .toolTipFinisher();
         return tt;
@@ -115,18 +118,17 @@ public class MTEAdvFusionMk5 extends MTEFusionComputer {
         final ForgeDirection facing, final int aColorIndex, final boolean aActive, final boolean aRedstone) {
         if (side == facing) {
             return new ITexture[] {
-                TextureFactory
-                    .of(Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS, Dyes.getModulation(-1, Dyes._NULL.mRGBa)),
+                TextureFactory.of(Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS, Dyes.getModulation(-1)),
                 TextureFactory.builder()
                     .addIcon(this.getIconOverlay())
                     .extFacing()
                     .build() };
         } else if (!aActive) {
-            return new ITexture[] { TextureFactory
-                .of(Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS, Dyes.getModulation(-1, Dyes._NULL.mRGBa)) };
+            return new ITexture[] {
+                TextureFactory.of(Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS, Dyes.getModulation(-1)) };
         } else {
-            return new ITexture[] { TextureFactory
-                .of(TexturesGtBlock.TEXTURE_CASING_FUSION_CASING_HYPER, Dyes.getModulation(-1, Dyes._NULL.mRGBa)) };
+            return new ITexture[] {
+                TextureFactory.of(TexturesGtBlock.TEXTURE_CASING_FUSION_OVERLAY, Dyes.getModulation(-1)) };
         }
     }
 
@@ -177,6 +179,8 @@ public class MTEAdvFusionMk5 extends MTEFusionComputer {
         return new String[] { StatCollector.translateToLocalFormatted("gtpp.infodata.adv_fusion.name", tier),
             StatCollector.translateToLocalFormatted("gtpp.infodata.adv_fusion.eu_required", powerRequired),
             StatCollector.translateToLocalFormatted("gtpp.infodata.adv_fusion.stored_eu", mEUStore, maxEUStore()),
-            StatCollector.translateToLocalFormatted("gtpp.infodata.adv_fusion.plasma_output", plasmaOut) };
+            StatCollector.translateToLocalFormatted("gtpp.infodata.adv_fusion.plasma_output", plasmaOut),
+            GTUtility.translate("GT5U.multiblock.recipesDone", formatNumber(recipesDone)) };
     }
+
 }

@@ -12,10 +12,9 @@ import net.minecraft.util.EnumChatFormatting;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.util.StringUtils;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.item.general.ItemGenericToken;
-import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class ItemDummyResearch extends ItemGenericToken {
 
@@ -34,40 +33,38 @@ public class ItemDummyResearch extends ItemGenericToken {
         RESEARCH_11_MOLECULAR_TRANSFORMER("Molecular Transformation", "Turning things into something better");
 
         private final String mName;
-        private final String mDesc;
 
         ASSEMBLY_LINE_RESEARCH(String aName, String aDesc) {
             mName = aName;
-            mDesc = aDesc;
-            ModItems.itemDummyResearch.register(mName, mDesc);
+            ModItems.itemDummyResearch.register(mName, aDesc);
         }
     }
 
     private static final Map<String, Integer> mInternalNameToIdMap = new LinkedHashMap<>();
 
     public static ItemStack getResearchStack(ASSEMBLY_LINE_RESEARCH aResearchName, int aStacksize) {
-        Integer aMeta = mInternalNameToIdMap.get(Utils.sanitizeString(aResearchName.mName));
+        Integer aMeta = mInternalNameToIdMap.get(StringUtils.sanitizeString(aResearchName.mName));
         if (aMeta == null) {
             aMeta = 0;
         }
-        return ItemUtils.simpleMetaStack(ModItems.itemDummyResearch, aMeta, aStacksize);
+        return new ItemStack(ModItems.itemDummyResearch, aStacksize, aMeta);
     }
 
     private int aID = 0;
 
     public ItemDummyResearch() {
-        super("dummyResearch", "Research", new String[] { "This object requires some further study" }, "research");
+        super("dummyResearch", new String[] { "This object requires some further study" }, "research");
     }
 
     /**
      *
      * @param aResearchType - What is the research for?
-     * @param aDescriptThe  - tooltip for this research
+     * @param aDescript     - tooltip for this research
      * @return - Did we register a custom research item?
      */
     public boolean register(String aResearchType, String aDescript) {
         int aNewID = aID++;
-        mInternalNameToIdMap.put(Utils.sanitizeString(aResearchType), aNewID);
+        mInternalNameToIdMap.put(StringUtils.sanitizeString(aResearchType), aNewID);
         return register(aNewID, "Research on " + aResearchType, 1, aDescript);
     }
 

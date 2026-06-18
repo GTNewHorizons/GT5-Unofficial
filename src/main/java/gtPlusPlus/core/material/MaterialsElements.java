@@ -2,10 +2,8 @@ package gtPlusPlus.core.material;
 
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TextureSet;
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.client.CustomTextureSet.TextureSets;
+import gregtech.api.util.StringUtils;
 import gtPlusPlus.core.material.state.MaterialState;
-import gtPlusPlus.core.util.data.StringUtils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
 
 public final class MaterialsElements {
@@ -143,7 +141,7 @@ public final class MaterialsElements {
     public final Material TECHNETIUM = new Material(
         "Technetium",
         MaterialState.SOLID,
-        TextureSets.NUCLEAR.get(),
+        TextureSet.SET_NUCLEAR,
         new short[] { 220, 220, 220 },
         2200,
         4877,
@@ -155,7 +153,7 @@ public final class MaterialsElements {
     public final Material NEPTUNIUM = new Material(
         "Neptunium",
         MaterialState.SOLID,
-        TextureSets.NUCLEAR.get(),
+        TextureSet.SET_NUCLEAR,
         new short[] { 200, 220, 205 },
         640,
         3902,
@@ -279,7 +277,7 @@ public final class MaterialsElements {
     public final Material POLONIUM = new Material(
         "Polonium",
         MaterialState.SOLID,
-        TextureSets.NUCLEAR.get(),
+        TextureSet.SET_NUCLEAR,
         new short[] { 180, 170, 180 },
         254,
         962,
@@ -294,7 +292,7 @@ public final class MaterialsElements {
     public final Material RADIUM = new Material(
         "Radium",
         MaterialState.SOLID,
-        TextureSets.NUCLEAR.get(),
+        TextureSet.SET_NUCLEAR,
         new short[] { 165, 165, 165 },
         700,
         1737,
@@ -313,12 +311,12 @@ public final class MaterialsElements {
         90,
         142,
         false,
-        StringUtils.superscript("Th"),
+        "Th",
         1);
     public final Material PROTACTINIUM = new Material(
         "Protactinium",
         MaterialState.SOLID,
-        TextureSets.NUCLEAR.get(),
+        TextureSet.SET_NUCLEAR,
         new short[] { 190, 150, 170 },
         1568,
         4027,
@@ -333,7 +331,7 @@ public final class MaterialsElements {
     public final Material CURIUM = new Material(
         "Curium",
         MaterialState.SOLID,
-        TextureSets.NUCLEAR.get(),
+        TextureSet.SET_NUCLEAR,
         new short[] { 175, 85, 110 },
         1340,
         3110,
@@ -346,7 +344,7 @@ public final class MaterialsElements {
     public final Material CALIFORNIUM = new Material(
         "Californium",
         MaterialState.SOLID,
-        TextureSets.NUCLEAR.get(),
+        TextureSet.SET_NUCLEAR,
         new short[] { 85, 110, 205 },
         899,
         1472,
@@ -359,7 +357,7 @@ public final class MaterialsElements {
     public final Material FERMIUM = new Material(
         "Fermium",
         MaterialState.LIQUID,
-        TextureSets.NUCLEAR.get(),
+        TextureSet.SET_NUCLEAR,
         new short[] { 75, 90, 25 },
         1527,
         3850,
@@ -370,17 +368,14 @@ public final class MaterialsElements {
         5); // Not a GT Inherited Material //Boiling Point is made up
 
     // Misc
-    public final Material AER = MaterialUtils.generateMaterialFromGtENUM(Materials.InfusedAir, TextureSets.GEM_A.get());
-    public final Material IGNIS = MaterialUtils
-        .generateMaterialFromGtENUM(Materials.InfusedFire, TextureSets.GEM_A.get());
+    public final Material AER = MaterialUtils.generateMaterialFromGtENUM(Materials.InfusedAir, TextureSet.SET_GEM_A);
+    public final Material IGNIS = MaterialUtils.generateMaterialFromGtENUM(Materials.InfusedFire, TextureSet.SET_GEM_A);
     public final Material TERRA = MaterialUtils
-        .generateMaterialFromGtENUM(Materials.InfusedEarth, TextureSets.GEM_A.get());
-    public final Material AQUA = MaterialUtils
-        .generateMaterialFromGtENUM(Materials.InfusedWater, TextureSets.GEM_A.get());
+        .generateMaterialFromGtENUM(Materials.InfusedEarth, TextureSet.SET_GEM_A);
+    public final Material AQUA = MaterialUtils.generateMaterialFromGtENUM(Materials.InfusedWater, TextureSet.SET_GEM_A);
     public final Material PERDITIO = MaterialUtils
-        .generateMaterialFromGtENUM(Materials.InfusedEntropy, TextureSets.GEM_A.get());
-    public final Material ORDO = MaterialUtils
-        .generateMaterialFromGtENUM(Materials.InfusedOrder, TextureSets.GEM_A.get());
+        .generateMaterialFromGtENUM(Materials.InfusedEntropy, TextureSet.SET_GEM_A);
+    public final Material ORDO = MaterialUtils.generateMaterialFromGtENUM(Materials.InfusedOrder, TextureSet.SET_GEM_A);
 
     public final Material NAQUADAH = MaterialUtils.generateMaterialFromGtENUM(Materials.Naquadah);
     public final Material NAQUADAH_ENRICHED = MaterialUtils.generateMaterialFromGtENUM(Materials.NaquadahEnriched);
@@ -406,7 +401,7 @@ public final class MaterialsElements {
     public final Material URANIUM232 = new Material(
         "Uranium 232",
         MaterialState.SOLID,
-        TextureSets.NUCLEAR.get(),
+        TextureSet.SET_NUCLEAR,
         new short[] { 88, 220, 103, 0 },
         1132,
         4131,
@@ -418,7 +413,7 @@ public final class MaterialsElements {
     public final Material URANIUM233 = new Material(
         "Uranium 233",
         MaterialState.SOLID,
-        TextureSets.NUCLEAR.get(),
+        TextureSet.SET_NUCLEAR,
         new short[] { 73, 220, 83, 0 },
         1132,
         4131,
@@ -430,7 +425,7 @@ public final class MaterialsElements {
     public final Material THORIUM232 = new Material(
         "Thorium 232",
         MaterialState.SOLID,
-        TextureSets.NUCLEAR.get(),
+        TextureSet.SET_NUCLEAR,
         new short[] { 15, 60, 15, 0 },
         Materials.Thorium.mMeltingPoint,
         Materials.Thorium.mBlastFurnaceTemp,
@@ -445,7 +440,7 @@ public final class MaterialsElements {
     public final Material PLUTONIUM238 = new Material(
         "Plutonium-238",
         MaterialState.SOLID,
-        TextureSets.NUCLEAR.get(),
+        TextureSet.SET_NUCLEAR,
         Materials.Plutonium241.mDurability,
         Materials.Plutonium241.mRGBa,
         Materials.Plutonium241.mMeltingPoint,
@@ -454,16 +449,11 @@ public final class MaterialsElements {
         144,
         false,
         StringUtils.superscript("238Pu"),
-        2,
-        false); // Not a GT Inherited Material
+        2); // Not a GT Inherited Material
 
     public final Material MAGIC = MaterialUtils
         .generateMaterialFromGtENUM(Materials.Magic, new short[] { 10, 185, 140 });
     public final Material THAUMIUM = MaterialUtils.generateMaterialFromGtENUM(Materials.Thaumium);
-
-    static {
-        Logger.MATERIALS("Initialising Base Elements.");
-    }
 
     private static final MaterialsElements INSTANCE = new MaterialsElements();
 
@@ -482,7 +472,7 @@ public final class MaterialsElements {
         public static final Material CELESTIAL_TUNGSTEN = new Material(
             "Celestial Tungsten",
             MaterialState.SOLID,
-            TextureSets.REFINED.get(),
+            TextureSet.SET_CELESTIAL_TUNGSTEN,
             new short[] { 50, 50, 50, 2 },
             INSTANCE.TUNGSTEN.getMeltingPointC() + 5200,
             INSTANCE.TUNGSTEN.getBoilingPointC() + 7500,
@@ -494,7 +484,7 @@ public final class MaterialsElements {
         public static final Material ASTRAL_TITANIUM = new Material(
             "Astral Titanium",
             MaterialState.SOLID,
-            TextureSets.REFINED.get(),
+            TextureSet.SET_ASTRAL_TITANIUM,
             new short[] { 220, 160, 240, 2 },
             INSTANCE.TITANIUM.getMeltingPointC() + 7500,
             INSTANCE.TITANIUM.getBoilingPointC() + 7500,
@@ -506,6 +496,7 @@ public final class MaterialsElements {
         public static final Material CHRONOMATIC_GLASS = new Material(
             "Chromatic Glass",
             MaterialState.SOLID,
+            TextureSet.SET_CHROMATIC_GLASS,
             new short[] { 255, 255, 255, 3 },
             9200,
             17550,
@@ -517,7 +508,7 @@ public final class MaterialsElements {
         public static final Material ADVANCED_NITINOL = new Material(
             "Advanced Nitinol",
             MaterialState.SOLID,
-            TextureSets.ENRICHED.get(),
+            TextureSet.SET_FIERY,
             MaterialsAlloy.NITINOL_60.getRGB(),
             8400,
             14377,
@@ -529,9 +520,9 @@ public final class MaterialsElements {
         public static final Material HYPOGEN = new Material(
             "Hypogen",
             MaterialState.SOLID,
-            TextureSets.NUCLEAR.get(),
-            new short[] { 220, 120, 75, 2 },
-            11255,
+            TextureSet.SET_HYPOGEN,
+            new short[] { 255, 255, 255 },
+            10255,
             19377,
             240,
             251,
@@ -541,7 +532,7 @@ public final class MaterialsElements {
         public static final Material RHUGNOR = new Material(
             "Rhugnor",
             MaterialState.SOLID,
-            TextureSets.ENRICHED.get(),
+            TextureSet.SET_RHUGNOR,
             new short[] { 190, 0, 255, 0 },
             8750,
             14757,
@@ -553,7 +544,7 @@ public final class MaterialsElements {
         public static final Material FORCE = new Material(
             "Force",
             MaterialState.SOLID,
-            TextureSets.ENRICHED.get(),
+            TextureSet.SET_FIERY,
             new short[] { 250, 250, 20, 0 },
             4550,
             6830,
@@ -583,22 +574,6 @@ public final class MaterialsElements {
                                                           // GT
                                                           // Inherited
                                                           // Material
-        public static final Material WHITE_METAL = new Material(
-            "White Metal",
-            MaterialState.SOLID,
-            TextureSet.SET_METALLIC,
-            new short[] { 255, 255, 255 },
-            4560,
-            7580,
-            35,
-            41,
-            false,
-            "҉",
-            0,
-            new MaterialStack(getInstance().COPPER, 5),
-            new MaterialStack(getInstance().ANTIMONY, 10),
-            new MaterialStack(getInstance().PLATINUM, 10),
-            new MaterialStack(getInstance().TIN, 75)); // Not a GT Inherited Material
 
         public static final Material GRANITE = new Material(
             "Ancient Granite",
@@ -641,8 +616,8 @@ public final class MaterialsElements {
         public static final Material DRAGON_METAL = new Material(
             "Dragonblood",
             MaterialState.SOLID,
-            TextureSet.SET_SHINY,
-            new short[] { 220, 40, 20, 2 },
+            TextureSet.SET_HYPOGEN,
+            new short[] { 220, 40, 20 },
             10160,
             17850,
             96,

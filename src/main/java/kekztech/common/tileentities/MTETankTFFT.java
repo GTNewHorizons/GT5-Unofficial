@@ -10,7 +10,6 @@ import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
-import static java.lang.Math.min;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.math.BigInteger;
@@ -22,11 +21,11 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -36,7 +35,6 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.StructureLibAPI;
-import com.gtnewhorizon.structurelib.alignment.constructable.ChannelDataAccessor;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.AutoPlaceEnvironment;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -52,16 +50,21 @@ import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.items.ItemIntegratedCircuit;
+import gregtech.common.misc.GTStructureChannels;
 import kekztech.common.Blocks;
 
 public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implements ISurvivalConstructable {
@@ -147,7 +150,7 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
         }
 
         private int getHint(ItemStack stack) {
-            return Math.min(Field.VALUES.length, ChannelDataAccessor.getChannelData(stack, "field"));
+            return GTStructureChannels.TFFT_FIELD.getValueClamped(stack, 1, Field.VALUES.length);
         }
 
         @Override
@@ -167,12 +170,13 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
             AutoPlaceEnvironment env) {
             if (check(t, world, x, y, z)) return PlaceResult.SKIP;
             int fieldTier = getHint(trigger);
+            boolean isPreview = !(env.getActor() instanceof EntityPlayerMP);
             ItemStack result = env.getSource()
                 .takeOne(
                     s -> s != null && s.stackSize >= 0
                         && s.getItem() == TFFT_FIELD_ITEM
                         && s.getItemDamage() != CASING_META
-                        && s.getItemDamage() <= fieldTier,
+                        && (isPreview ? s.getItemDamage() == fieldTier : s.getItemDamage() <= fieldTier),
                     true);
             if (result == null) return PlaceResult.REJECT;
 
@@ -191,11 +195,10 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
         }
     }
 
-    private static final IIconContainer TEXTURE_TFFT = new Textures.BlockIcons.CustomIcon("iconsets/TFFT");
-    private static final IIconContainer TEXTURE_TFFT_ACTIVE = new Textures.BlockIcons.CustomIcon(
-        "iconsets/TFFT_ACTIVE");
-    private static final IIconContainer TEXTURE_TFFT_ACTIVE_GLOW = new Textures.BlockIcons.CustomIcon(
-        "iconsets/TFFT_ACTIVE_GLOW");
+    private static final IIconContainer TEXTURE_TFFT = Textures.BlockIcons.custom("iconsets/TFFT");
+    private static final IIconContainer TEXTURE_TFFT_ACTIVE = Textures.BlockIcons.custom("iconsets/TFFT_ACTIVE");
+    private static final IIconContainer TEXTURE_TFFT_ACTIVE_GLOW = Textures.BlockIcons
+        .customOptional("iconsets/TFFT_ACTIVE_GLOW");
     private static final int CASING_TEXTURE_ID_1 = (12 << 7) | 127;
     private static final int CASING_TEXTURE_ID_2 = 176;
 
@@ -229,7 +232,7 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
         translateToLocal("tile.kekztech_tfftstoragefield_block.hint.4"), // Glass
     };
 
-    // height channel for height
+    // length channel for length
     // field channel for field
     private static final IStructureDefinition<MTETankTFFT> STRUCTURE_DEFINITION = IStructureDefinition
         .<MTETankTFFT>builder()
@@ -246,7 +249,7 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
             'c',
             buildHatchAdder(MTETankTFFT.class).atLeast(Energy, Maintenance)
                 .casingIndex(CASING_TEXTURE_ID_1)
-                .dot(1)
+                .hint(1)
                 .buildAndChain(onElementPass(te -> te.casingAmount++, ofBlock(TFFT_FIELD, CASING_META))))
         .addElement(
             'C',
@@ -256,14 +259,14 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
                     Maintenance,
                     InputHatch.or(TFFTMultiHatch.INSTANCE),
                     OutputHatch.or(TFFTMultiHatch.INSTANCE))
-                .dot(2)
+                .hint(2)
                 .buildAndChain(onElementPass(te -> te.casingAmount++, ofBlock(TFFT_FIELD, CASING_META))))
         .addElement(
             'G',
             buildHatchAdder(MTETankTFFT.class)
                 .atLeast(InputHatch.or(TFFTMultiHatch.INSTANCE), OutputHatch.or(TFFTMultiHatch.INSTANCE))
                 .casingIndex(CASING_TEXTURE_ID_2)
-                .dot(3)
+                .hint(3)
                 .buildAndChain(chainAllGlasses(-1, (te, t) -> te.glassTier = t, te -> te.glassTier)))
         .addElement('g', chainAllGlasses(-1, (te, t) -> te.glassTier = t, te -> te.glassTier))
         .addElement('f', ofChain(TFFTStorageFieldElement.INSTANCE))
@@ -288,7 +291,7 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
     private boolean doVoidExcess = false;
     private byte fluidSelector = -1;
 
-    private MTEHatchTFFT tfftHatch = null;
+    public MTEHatchTFFT tfftHatch = null;
 
     public MTETankTFFT(String aName) {
         super(aName);
@@ -341,70 +344,72 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Fluid Tank")
             .addInfo("High-Tech fluid tank that can hold up to 25 different fluids!")
-            .addInfo("Has 1/25th of the total capacity as capacity for each fluid.")
-            .addInfo("Right clicking the controller with a screwdriver will turn on excess voiding.")
-            .addInfo("Fluid storage amount and running cost depends on the storage field blocks used.")
+            .addInfo("Has 1/25th of the total capacity as capacity for each fluid")
+            .addInfo("Right clicking the controller with a screwdriver will turn on excess voiding")
+            .addInfo("Fluid storage amount and running cost depends on the Storage Field Block used")
             .addSeparator()
             .addInfo("Note on hatch locking:")
-            .addInfo("Use an Integrated Circuit in the GUI slot to limit which fluid is output.")
-            .addInfo("The index of a stored fluid can be obtained through the Tricorder.")
+            .addInfo("Use an Integrated Circuit in the GUI slot to limit which fluid is output")
+            .addInfo("The index of a stored fluid can be obtained through the Tricorder")
             .beginVariableStructureBlock(5, 5, 5, 15, 5, 5, false)
-            .addController("Top Center")
+            .addController("Front center")
             .addCasingInfoMin("T.F.F.T Casing", MIN_CASING_AMOUNT, false)
-            .addCasingInfoRange("Storage Field Blocks", 7, 117, true)
+            .addCasingInfoRange("Storage Field Block", 7, 117, true)
             .addStructureInfo("Energy hatch is not required when running cost is 0")
             .addCasingInfoRange("Any Tiered Glass (EV+)", 48, 208, false)
-            .addMaintenanceHatch("Any top or bottom casing")
-            .addEnergyHatch("Any top or bottom casing")
-            .addInputHatch("Instead of any casing or glass, has to touch storage field block")
-            .addOutputHatch("Instead of any casing or glass, has to touch storage field block")
+            .addMaintenanceHatch("Any top or bottom Casing")
+            .addEnergyHatch("Any top or bottom Casing")
+            .addInputHatch("Instead of any casing or glass, has to touch Storage Field Block")
+            .addOutputHatch("Instead of any casing or glass, has to touch Storage Field Block")
             .addStructureInfo("You can have a bunch of hatches")
             .addOtherStructurePart(
-                "Multi I/O Hatches",
-                "Instead of any casing or glass, has to touch storage field block")
+                "1x Multi I/O Hatch",
+                "Instead of any casing or glass, has to touch Storage Field Block")
             .addStructureInfo("Use MIOH with conduits or fluid storage buses to see all fluids at once.")
-            .addSubChannelUsage("glass", "Glass Tier")
+            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .addSubChannelUsage(GTStructureChannels.TFFT_FIELD)
+            .addSubChannelUsage(GTStructureChannels.STRUCTURE_LENGTH)
             .toolTipFinisher();
         return tt;
     }
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        int layer = min(stackSize.stackSize + DEFAULT_LAYER_AMOUNT, MAX_LAYER_AMOUNT + 1);
+        int layer = GTStructureChannels.STRUCTURE_LENGTH
+            .getValueClamped(stackSize, DEFAULT_LAYER_AMOUNT, MAX_LAYER_AMOUNT);
         buildPiece(STRUCTURE_PIECE_TOP, stackSize, hintsOnly, 2, 2, 0);
-        for (int i = -1; i >= 1 - layer; i--) buildPiece(STRUCTURE_PIECE_MID, stackSize, hintsOnly, 2, 2, i);
-        buildPiece(STRUCTURE_PIECE_BOTTOM, stackSize, hintsOnly, 2, 2, -layer);
+        for (int i = 1; i <= layer; i++) {
+            buildPiece(STRUCTURE_PIECE_MID, stackSize, hintsOnly, 2, 2, -i);
+        }
+        buildPiece(STRUCTURE_PIECE_BOTTOM, stackSize, hintsOnly, 2, 2, -layer - 1);
     }
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        int build = survivialBuildPiece(STRUCTURE_PIECE_TOP, stackSize, 2, 2, 0, elementBudget, env, false, true);
+        int build = survivalBuildPiece(STRUCTURE_PIECE_TOP, stackSize, 2, 2, 0, elementBudget, env, false, true);
         if (build >= 0) return build;
-        int layer = min(stackSize.stackSize + DEFAULT_LAYER_AMOUNT, MAX_LAYER_AMOUNT + 1);
-        for (int i = -1; i >= 1 - layer; i--) {
-            build = survivialBuildPiece(STRUCTURE_PIECE_MID, stackSize, 2, 2, i, elementBudget, env, false, true);
+        int layer = GTStructureChannels.STRUCTURE_LENGTH
+            .getValueClamped(stackSize, DEFAULT_LAYER_AMOUNT, MAX_LAYER_AMOUNT);
+        for (int i = 1; i <= layer; i++) {
+            build = survivalBuildPiece(STRUCTURE_PIECE_MID, stackSize, 2, 2, -i, elementBudget, env, false, true);
             if (build >= 0) return build;
         }
-        return survivialBuildPiece(STRUCTURE_PIECE_BOTTOM, stackSize, 2, 2, -layer, elementBudget, env, false, true);
-    }
-
-    @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
+        return survivalBuildPiece(STRUCTURE_PIECE_BOTTOM, stackSize, 2, 2, -layer - 1, elementBudget, env, false, true);
     }
 
     @Override
     public void clearHatches() {
         super.clearHatches();
-        if (tfftHatch != null) {
-            tfftHatch.unbind();
-            tfftHatch = null;
-        }
+        // do not call tfftHatch.unbind() here
+        // if tfftHatch is actually removed, tfftHatch will unbind itself later
+        // if tfftHatch is not removed, this will save a pair of unbind()/bind() call
+        tfftHatch = null;
+
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         Arrays.fill(FIELDS, 0);
 
         this.capacity = BigInteger.ZERO;
@@ -413,33 +418,49 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
         this.runningCost = 0;
         this.glassTier = -1;
 
-        if (!checkPiece(STRUCTURE_PIECE_TOP, 2, 2, 0)) return false;
+        if (!checkPiece(STRUCTURE_PIECE_TOP, 2, 2, 0, errors)) return;
 
         int layer = 1;
-        while (checkPiece(STRUCTURE_PIECE_MID, 2, 2, -layer)) layer++;
-        if (layer - 1 > MAX_LAYER_AMOUNT || layer - 1 < DEFAULT_LAYER_AMOUNT) return false;
-        if (!checkPiece(STRUCTURE_PIECE_BOTTOM, 2, 2, -layer)) return false;
-        if (casingAmount >= MIN_CASING_AMOUNT
-            && (tfftHatch != null || (!mInputHatches.isEmpty() && !mOutputHatches.isEmpty()))
-            && mInputHatches.size() + mOutputHatches.size() <= MAX_DISTINCT_FLUIDS * 2) {
-            BigInteger tempCap = BigInteger.ZERO;
-            for (int i = 0; i < this.FIELDS.length; i++) {
-                tempCap = tempCap.add(
-                    BigInteger.valueOf(Field.VALUES[i].getCapacity())
-                        .multiply(BigInteger.valueOf(this.FIELDS[i])));
-                this.runningCost += Field.VALUES[i].getCost() * this.FIELDS[i];
-            }
-            this.setCapacity(tempCap);
-
-            if (tfftHatch != null) tfftHatch.bind(this);
-
-            if (this.runningCost == 0) {
-                return true;
-            }
-
-            return !mEnergyHatches.isEmpty() && this.glassTier >= VoltageIndex.EV;
+        while (checkPiece(STRUCTURE_PIECE_MID, 2, 2, -layer, errors)) layer++;
+        errors.clear();
+        if (layer - 1 > MAX_LAYER_AMOUNT) {
+            errors.add(StructureErrorRegistry.TOO_TALL);
+            return;
         }
-        return false;
+        if (layer - 1 < DEFAULT_LAYER_AMOUNT) {
+            errors.add(StructureErrorRegistry.TOO_SHORT_LENGTH);
+            return;
+        }
+        if (!checkPiece(STRUCTURE_PIECE_BOTTOM, 2, 2, -layer, errors)) return;
+        checkCasingMin(errors, casingAmount, MIN_CASING_AMOUNT);
+        checkHasMaintenanceHatch(errors);
+        if (tfftHatch == null) {
+            checkHasInputHatch(errors);
+            checkHasOutputHatch(errors);
+        }
+        if (mInputHatches.size() + mOutputHatches.size() > MAX_DISTINCT_FLUIDS * 2) {
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.tfft_too_many_hatch"));
+        }
+        if (!errors.isEmpty()) return;
+        BigInteger tempCap = BigInteger.ZERO;
+        for (int i = 0; i < this.FIELDS.length; i++) {
+            tempCap = tempCap.add(
+                BigInteger.valueOf(Field.VALUES[i].getCapacity())
+                    .multiply(BigInteger.valueOf(this.FIELDS[i])));
+            this.runningCost += Field.VALUES[i].getCost() * this.FIELDS[i];
+        }
+        this.setCapacity(tempCap);
+
+        if (tfftHatch != null) tfftHatch.bind(this);
+
+        if (this.runningCost == 0) {
+            // skip later check
+            return;
+        }
+        checkHasEnergyHatch(errors);
+        if (glassTier < VoltageIndex.EV) {
+            errors.add(StructureErrors.glassTierNotEnough(VoltageIndex.EV));
+        }
     }
 
     @Override
@@ -462,6 +483,7 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
                 final FluidStack toDeplete = aFluid.copy();
                 toDeplete.amount = this.pull(aFluid, true);
                 depleteInput(toDeplete);
+                notifyMultiHatch(true, toDeplete);
             }
         }
 
@@ -480,7 +502,9 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
 
                     final FluidStack tFluid = tHatch.getFluid();
 
-                    String lockedFluidName = tHatch.getLockedFluidName() == null ? "" : tHatch.getLockedFluidName();
+                    String lockedFluidName = tHatch.getLockedFluid() == null ? ""
+                        : tHatch.getLockedFluid()
+                            .getName();
                     String tFluidName = tFluid == null ? ""
                         : tFluid.getFluid()
                             .getName();
@@ -495,8 +519,9 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
                     if (isFluidSelected) {
                         if (isFluidLocked && !lockedFluidName.equals(sFluid.name())) continue;
                         if (!isFluidEmpty && !sFluid.contains(tFluid)) continue;
-
-                        tHatch.fill(this.push(sFluid.get(remaining), true), true);
+                        FluidStack tofill = this.push(sFluid.get(remaining), true);
+                        tHatch.fill(tofill, true);
+                        notifyMultiHatch(false, tofill);
                     } else if (isFluidLocked) {
                         if (!isFluidEmpty && !lockedFluidName.equals(
                             tFluid.getFluid()
@@ -504,11 +529,19 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
                             continue;
 
                         FluidStack aFluid = FluidRegistry.getFluidStack(lockedFluidName, remaining);
-                        tHatch.fill(this.push(aFluid, true), true);
+                        FluidStack tofill = this.push(aFluid, true);
+                        tHatch.fill(tofill, true);
+                        notifyMultiHatch(false, tofill);
                     } else if (isFluidEmpty) {
-                        if (this.firstNotNull() != null) tHatch.fill(this.push(hatchCapacity, true), true);
+                        if (this.firstNotNull() != null) {
+                            FluidStack tofill = this.push(hatchCapacity, true);
+                            tHatch.fill(tofill, true);
+                            notifyMultiHatch(false, tofill);
+                        }
                     } else {
-                        tHatch.fill(this.push(new FluidStack(tFluid, remaining), true), true);
+                        FluidStack tofill = this.push(new FluidStack(tFluid, remaining), true);
+                        tHatch.fill(tofill, true);
+                        notifyMultiHatch(false, tofill);
                     }
                 }
             }
@@ -530,10 +563,7 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
         ArrayList<String> ll = new ArrayList<>();
         NumberFormat nf = NumberFormat.getNumberInstance();
 
-        ll.add(
-            EnumChatFormatting.YELLOW
-                + StatCollector.translateToLocalFormatted("kekztech.infodata.tank.tfft.stored_fluids")
-                + EnumChatFormatting.RESET);
+        ll.add(IGregTechDeviceInformation.encode("kekztech.infodata.tank.tfft.stored_fluids"));
         for (int i = 0; i < MAX_DISTINCT_FLUIDS; i++) {
             GTFluidTank tank = STORE[i];
             if (tank.isEmpty()) {
@@ -541,43 +571,32 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
                     MessageFormat.format(
                         "{0} - {1}: {2}L ({3}%)",
                         i,
-                        StatCollector.translateToLocal("kekztech.infodata.tank.tfft.stored_fluids.null"),
+                        GTUtility.translate("kekztech.infodata.tank.tfft.stored_fluids.null"),
                         0,
                         0));
             } else {
-                String localizedName = STORE[i].get()
-                    .getLocalizedName();
-                String amount = nf.format(STORE[i].amount());
-                String percentage = capacityPerFluid > 0 ? String.valueOf(STORE[i].amount() * 100 / capacityPerFluid)
-                    : "";
-
-                ll.add(MessageFormat.format("{0} - {1}: {2}L ({3}%)", i, localizedName, amount, percentage));
+                ll.add(
+                    MessageFormat.format(
+                        "{0} - {1}: {2}L ({3}%)",
+                        i,
+                        STORE[i].get()
+                            .getLocalizedName(),
+                        nf.format(STORE[i].amount()),
+                        capacityPerFluid > 0 ? STORE[i].amount() * 100 / capacityPerFluid : 0));
             }
         }
+        ll.add(IGregTechDeviceInformation.encode("kekztech.infodata.operational_data"));
+        ll.add(IGregTechDeviceInformation.encode("kekztech.infodata.tank.tfft.used", nf.format(getStoredAmount())));
+        ll.add(IGregTechDeviceInformation.encode("kekztech.infodata.tank.tfft.total", nf.format(capacity)));
         ll.add(
-            EnumChatFormatting.YELLOW + StatCollector.translateToLocal("kekztech.infodata.operational_data")
-                + EnumChatFormatting.RESET);
+            IGregTechDeviceInformation
+                .encode("kekztech.infodata.tank.tfft.per_fluid_capacity", nf.format(capacityPerFluid)));
+        ll.add(IGregTechDeviceInformation.encode("kekztech.infodata.tank.tfft.running_cost", getActualEnergyUsage()));
+        ll.add(IGregTechDeviceInformation.encode("kekztech.infodata.tank.tfft.auto_voiding", doVoidExcess));
         ll.add(
-            StatCollector.translateToLocalFormatted("kekztech.infodata.tank.tfft.used", nf.format(getStoredAmount())));
-        ll.add(StatCollector.translateToLocalFormatted("kekztech.infodata.tank.tfft.total", nf.format(capacity)));
-        ll.add(
-            StatCollector.translateToLocalFormatted(
-                "kekztech.infodata.tank.tfft.per_fluid_capacity",
-                nf.format(capacityPerFluid)));
-        ll.add(
-            StatCollector
-                .translateToLocalFormatted("kekztech.infodata.tank.tfft.running_cost", getActualEnergyUsage()));
-        ll.add(StatCollector.translateToLocalFormatted("kekztech.infodata.tank.tfft.auto_voiding", doVoidExcess));
-        ll.add(
-            StatCollector.translateToLocalFormatted(
-                "kekztech.infodata.multi.maintenance_status",
-                ((getRepairStatus() == getIdealStatus())
-                    ? EnumChatFormatting.GREEN
-                        + StatCollector.translateToLocal("kekztech.infodata.multi.maintenance_status.ok")
-                        + EnumChatFormatting.RESET
-                    : EnumChatFormatting.RED
-                        + StatCollector.translateToLocal("kekztech.infodata.multi.maintenance_status.bad")
-                        + EnumChatFormatting.RESET)));
+            IGregTechDeviceInformation.encode(
+                getRepairStatus() == getIdealStatus() ? "kekztech.infodata.multi.maintenance_status.ok"
+                    : "kekztech.infodata.multi.maintenance_status.bad"));
         ll.add(EnumChatFormatting.STRIKETHROUGH + "---------------------------------------------");
 
         return ll.toArray(new String[0]);
@@ -618,25 +637,16 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
     }
 
     @Override
-    public int getMaxEfficiency(ItemStack stack) {
-        return 10000;
-    }
-
-    @Override
-    public int getDamageToComponent(ItemStack stack) {
-        return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack stack) {
-        return false;
-    }
-
-    @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ);
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
+        super.onScrewdriverRightClick(side, aPlayer, aX, aY, aZ, aTool);
         this.setDoVoidExcess(!doVoidExcess);
         GTUtility.sendChatToPlayer(aPlayer, "Auto-voiding " + (this.doVoidExcess ? "enabled" : "disabled"));
+    }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
     }
 
     private boolean addMultiHatchToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
@@ -807,5 +817,11 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
             info[i] = STORE[i].getInfo();
         }
         return info;
+    }
+
+    public void notifyMultiHatch(boolean isIncrement, FluidStack stack) {
+        if (tfftHatch != null && tfftHatch.isValid()) {
+            tfftHatch.notifyListeners(isIncrement, stack);
+        }
     }
 }

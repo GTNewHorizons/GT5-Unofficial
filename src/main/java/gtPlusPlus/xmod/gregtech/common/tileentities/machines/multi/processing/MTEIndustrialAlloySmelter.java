@@ -12,7 +12,16 @@ import static gregtech.api.util.GTStructureUtility.activeCoils;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofCoil;
 
+import java.text.DecimalFormat;
+import java.util.List;
+
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -30,13 +39,20 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
+import gregtech.api.util.tooltip.TooltipHelper;
+import gregtech.api.util.tooltip.TooltipTier;
+import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class MTEIndustrialAlloySmelter extends GTPPMultiBlockBase<MTEIndustrialAlloySmelter>
     implements ISurvivalConstructable {
@@ -93,28 +109,8 @@ public class MTEIndustrialAlloySmelter extends GTPPMultiBlockBase<MTEIndustrialA
     }
 
     @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
-    }
-
-    @Override
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
-    }
-
-    @Override
     public int getPollutionPerSecond(ItemStack aStack) {
         return PollutionConfig.pollutionPerSecondMultiIndustrialAlloySmelter;
-    }
-
-    @Override
-    public int getDamageToComponent(ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
     }
 
     @Override
@@ -126,20 +122,21 @@ public class MTEIndustrialAlloySmelter extends GTPPMultiBlockBase<MTEIndustrialA
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Processes Voltage Tier * Coil Tier items")
-            .addInfo("Gains a 5% speed bonus for each coil tier")
+            .addInfo("Processes " + TooltipHelper.parallelText("Voltage Tier * Coil Tier") + " items")
+            .addDynamicSpeedBonusInfo(0.05f, TooltipTier.COIL)
             .addInfo("Each 900K of heat upgrades an overclock to a perfect overclock")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 5, 3, true)
-            .addController("Bottom center")
-            .addCasingInfoMin("Inconel Reinforced Casings", 8, false)
+            .addController("Front bottom center")
+            .addCasingInfoMin("Inconel Reinforced Casing", 8, false)
             .addOtherStructurePart("Integral Encasement V", "Middle Layer")
-            .addOtherStructurePart("Heating Coils", "Above and below Integral Encasements")
+            .addOtherStructurePart("Heating Coil", "Above and below Integral Encasements")
             .addInputBus("Any Inconel Reinforced Casing", 1)
             .addOutputBus("Any Inconel Reinforced Casing", 1)
             .addEnergyHatch("Any Inconel Reinforced Casing", 1)
             .addMaintenanceHatch("Any Inconel Reinforced Casing", 1)
             .addMufflerHatch("Any Inconel Reinforced Casing", 1)
+            .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
         return tt;
     }
@@ -158,12 +155,13 @@ public class MTEIndustrialAlloySmelter extends GTPPMultiBlockBase<MTEIndustrialA
                     buildHatchAdder(MTEIndustrialAlloySmelter.class)
                         .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler)
                         .casingIndex(CASING_TEXTURE_ID)
-                        .dot(1)
+                        .hint(1)
                         .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings3Misc, 1))))
                 .addElement(
                     'H',
-                    activeCoils(
-                        ofCoil(MTEIndustrialAlloySmelter::setCoilLevel, MTEIndustrialAlloySmelter::getCoilLevel)))
+                    GTStructureChannels.HEATING_COIL.use(
+                        activeCoils(
+                            ofCoil(MTEIndustrialAlloySmelter::setCoilLevel, MTEIndustrialAlloySmelter::getCoilLevel))))
                 .addElement('V', ofBlock(ModBlocks.blockCasingsTieredGTPP, 4))
                 .build();
         }
@@ -178,18 +176,24 @@ public class MTEIndustrialAlloySmelter extends GTPPMultiBlockBase<MTEIndustrialA
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(mName, stackSize, 1, 4, 0, elementBudget, env, false, true);
+        return survivalBuildPiece(mName, stackSize, 1, 4, 0, elementBudget, env, false, true);
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         mCasing = 0;
         mLevel = 0;
         setCoilLevel(HeatingCoilLevel.None);
-        return checkPiece(mName, 1, 4, 0) && mCasing >= 8
-            && getCoilLevel() != HeatingCoilLevel.None
-            && (mLevel = getCoilLevel().getTier() + 1) > 0
-            && checkHatch();
+        if (!checkPiece(mName, 1, 4, 0, errors)) return;
+        if (getCoilLevel() == HeatingCoilLevel.None) {
+            errors.add(StructureErrorRegistry.COIL_LEVEL_NOT_ENOUGH);
+        }
+        checkCasingMin(errors, mCasing, 8);
+        mLevel = getCoilLevel().getTier() + 1;
+        checkHatch(errors);
+        checkHasEnergyHatch(errors);
+        checkHasInputBus(errors);
+        checkHasOutputBus(errors);
     }
 
     @Override
@@ -226,5 +230,30 @@ public class MTEIndustrialAlloySmelter extends GTPPMultiBlockBase<MTEIndustrialA
     @Override
     public boolean isInputSeparationEnabled() {
         return true;
+    }
+
+    public float getSpeedBonus() {
+        return (float) 1 / (1 + 0.05f * mLevel);
+    }
+
+    @Override
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+        int z) {
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
+        tag.setFloat("speedBonus", getSpeedBonus());
+    }
+
+    private static final DecimalFormat dfNone = new DecimalFormat("#");
+
+    @Override
+    public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
+        IWailaConfigHandler config) {
+        super.getWailaBody(itemStack, currentTip, accessor, config);
+        final NBTTagCompound tag = accessor.getNBTData();
+        currentTip.add(
+            StatCollector.translateToLocal("GT5U.multiblock.speed") + ": "
+                + EnumChatFormatting.WHITE
+                + dfNone.format(Math.max(0, 100 / tag.getFloat("speedBonus")))
+                + "%");
     }
 }

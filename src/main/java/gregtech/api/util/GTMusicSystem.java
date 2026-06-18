@@ -50,10 +50,9 @@ import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 
 /**
- * A system that keeps track of jukebox music tracks playing in different locations.
- * Compared to vanilla jukebox handling, this allows music to resume playing after reloading the chunk the jukeboxes are
- * in.
- * It also allows the headphone item to modify the hearing range of a given disc, including other dimensions.
+ * A system that keeps track of jukebox music tracks playing in different locations. Compared to vanilla jukebox
+ * handling, this allows music to resume playing after reloading the chunk the jukeboxes are in. It also allows the
+ * headphone item to modify the hearing range of a given disc, including other dimensions.
  * <p>
  * Vector4i coordinates point to X,Y,Z,Dimension of the source
  *
@@ -113,7 +112,7 @@ public final class GTMusicSystem {
             }
         }
 
-        public void setEmitter(int index, Vector4i position, float volume) {
+        public void setEmitter(int index, Vector4i position, double volume) {
             int arrIndex = index * EMITTER_STRIDE;
             if (arrIndex < 0 || arrIndex >= emitterParameters.length) {
                 throw new IndexOutOfBoundsException(
@@ -138,7 +137,7 @@ public final class GTMusicSystem {
                 modified = true;
                 emitterParameters[arrIndex + EMITTER_DIMENSION] = position.w;
             }
-            final int intVolume = (int) (volume * 100.0f);
+            final int intVolume = (int) (volume * 100);
             if (emitterParameters[arrIndex + EMITTER_VOLUME_X_100] != intVolume) {
                 modified = true;
                 emitterParameters[arrIndex + EMITTER_VOLUME_X_100] = intVolume;
@@ -457,9 +456,8 @@ public final class GTMusicSystem {
                             .filter(Objects::nonNull)
                             .forEach(resources::add);
                     } else {
-                        final ResourceLocation res = record.getRecordResource(record.recordName);
-                        resources
-                            .add(new ResourceLocation(res.getResourceDomain(), "records." + res.getResourcePath()));
+                        final ResourceLocation res = record.getRecordResource("records." + record.recordName);
+                        resources.add(res);
                     }
                     for (final ResourceLocation res : resources) {
                         try {

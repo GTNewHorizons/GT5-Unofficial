@@ -13,10 +13,12 @@
 
 package bartworks.common.loaders;
 
+import cpw.mods.fml.common.event.FMLInitializationEvent;
+
 public class BioLabLoader {
 
-    public static void run() {
-        FluidLoader.run();
+    public static void run(FMLInitializationEvent event) {
+        FluidLoader.run(event);
         BioItemList.registerBioItems();
         BioRecipeLoader.run();
     }

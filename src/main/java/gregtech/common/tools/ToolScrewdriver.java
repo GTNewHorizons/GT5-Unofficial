@@ -15,8 +15,9 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
 
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
-import gregtech.api.enums.Textures;
+import gregtech.api.enums.TextureSet;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.util.GTToolHarvestHelper;
@@ -47,23 +48,8 @@ public class ToolScrewdriver extends GTTool {
     }
 
     @Override
-    public int getToolDamagePerDropConversion() {
-        return 100;
-    }
-
-    @Override
     public int getToolDamagePerContainerCraft() {
         return 400;
-    }
-
-    @Override
-    public int getToolDamagePerEntityAttack() {
-        return 200;
-    }
-
-    @Override
-    public int getBaseQuality() {
-        return 0;
     }
 
     @Override
@@ -72,38 +58,13 @@ public class ToolScrewdriver extends GTTool {
     }
 
     @Override
-    public float getSpeedMultiplier() {
-        return 1.0F;
-    }
-
-    @Override
-    public float getMaxDurabilityMultiplier() {
-        return 1.0F;
-    }
-
-    @Override
     public String getCraftingSound() {
-        return SoundResource.IC2_TOOLS_WRENCH.toString();
-    }
-
-    @Override
-    public String getEntityHitSound() {
-        return null;
-    }
-
-    @Override
-    public String getMiningSound() {
-        return null;
+        return SoundResource.GTCEU_OP_SCREWDRIVER.toString();
     }
 
     @Override
     public boolean canBlock() {
         return true;
-    }
-
-    @Override
-    public boolean isCrowbar() {
-        return false;
     }
 
     @Override
@@ -123,16 +84,11 @@ public class ToolScrewdriver extends GTTool {
     }
 
     @Override
-    public ItemStack getBrokenItem(ItemStack aStack) {
-        return null;
-    }
-
-    @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
         return !aIsToolHead
-            ? MetaGeneratedTool.getPrimaryMaterial(
-                aStack).mIconSet.mTextures[gregtech.api.enums.OrePrefixes.toolHeadScrewdriver.mTextureIndex]
-            : Textures.ItemIcons.HANDLE_SCREWDRIVER;
+            ? MetaGeneratedTool.getPrimaryMaterial(aStack).mIconSet.mTextures[OrePrefixes.toolHeadScrewdriver
+                .getTextureIndex()]
+            : MetaGeneratedTool.getSecondaryMaterial(aStack).mIconSet.mTextures[TextureSet.INDEX_handleScrewdriver];
     }
 
     @Override

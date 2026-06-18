@@ -1,0 +1,45 @@
+detrav.scanner.mode.0=Установить режим: Руды
+detrav.scanner.mode.1=Установить режим: Руды и Малые Руды
+detrav.scanner.mode.2=Установить режим: Жидкости под бедроком
+detrav.scanner.mode.3=Установить режим: Загрязнение
+detrav.scanner.mode.error=Установить режим: ОШИБКА
+
+detrav.scanner.distance.texts.0= §nрядом с тобой,§r
+detrav.scanner.distance.texts.1= §nблизко к тебе,§r
+detrav.scanner.distance.texts.2= §nблизко к тебе,§r
+detrav.scanner.distance.texts.3= §nна большом расстоянии,§r
+detrav.scanner.distance.texts.4= §nдалеко,§r
+
+detrav.scanner.small_ore.keyword=Маленький
+
+detrav.scanner.found.texts.0=Ничего интересного не найдено
+detrav.scanner.found.texts.1= §8следы§r.
+detrav.scanner.found.texts.2= §7маленький образец§r.
+detrav.scanner.found.texts.3= §2средний образец§r.
+detrav.scanner.found.texts.4= §eбольшой образец§r.
+detrav.scanner.found.texts.5= §dочень большой образец§r.
+detrav.scanner.found.texts.6=Найден 
+
+# Don't translate "%badluck"
+detrav.scanner.success=Все чанки успешно просканированы!
+detrav.scanner.fail=Не удалось выполнить %badluck чанков. Удачи в следующий раз!
+
+detrav.scanner.prospecting=Поиск в
+
+tooltip.detrav.scanner.durability=Прочность:
+tooltip.detrav.scanner.range=Чанки:
+tooltip.detrav.scanner.usage.0=ПКМ по камню для поиска в текущем чанке!
+tooltip.detrav.scanner.usage.1=ПКМ по бедроку для поиска жидкостей!
+tooltip.detrav.scanner.usage.2=ПКМ по воздуху для сканирования!
+tooltip.detrav.scanner.usage.3=Shift+ПКМ по воздуху для переключения режимов!
+tooltip.detrav.scanner.usage.4=Двойной клик по любой записи для инвертирования фонового цвета!
+tooltip.detrav.scanner.success.chance=Шанс успешного сканирования:
+tooltip.detrav.scanner.distance.0=рядом с тобой (0 чанков отсюда), близко к тебе (1-2)
+tooltip.detrav.scanner.distance.1=на среднем расстоянии (3-5), на большом расстоянии (6-8), далеко (9+)
+
+gui.detrav.scanner.pollution=Загрязнение
+gui.detrav.scanner.unknown_fluid=Неизвестное название жидкости!
+
+gui.detrav.scanner.tooltip.fluid_name=Название жидкости: 
+gui.detrav.scanner.tooltip.fluid_amount=Количество жидкости: 
+gui.detrav.scanner.tooltip.no_fluid=Пусто

@@ -30,4 +30,5 @@ public class CoverAdvancedRedstoneReceiverInternal extends CoverAdvancedRedstone
     public boolean isRedstoneSensitive(long aTimer) {
         return true;
     }
+
 }

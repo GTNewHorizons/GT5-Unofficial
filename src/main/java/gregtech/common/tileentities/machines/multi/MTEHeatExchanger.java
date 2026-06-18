@@ -1,5 +1,7 @@
 package gregtech.common.tileentities.machines.multi;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.getFluidUnit;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
@@ -14,6 +16,8 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGE
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_HEAT_EXCHANGER_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+
+import java.util.List;
 
 import javax.annotation.Nonnull;
 
@@ -33,8 +37,11 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatch;
@@ -43,7 +50,7 @@ import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.registries.LHECoolantRegistry;
-import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
@@ -51,7 +58,8 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
 import gregtech.common.tileentities.machines.MTEHatchInputME;
 
-public class MTEHeatExchanger extends MTEEnhancedMultiBlockBase<MTEHeatExchanger> implements ISurvivalConstructable {
+public class MTEHeatExchanger extends MTEEnhancedMultiBlockBase<MTEHeatExchanger>
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     private int dryHeatCounter = 0; // Counts up to dryHeatMaximum to check for explosion conditions
     private static final int dryHeatMaximum = 2000; // 2000 ticks = 100 seconds
@@ -74,12 +82,12 @@ public class MTEHeatExchanger extends MTEEnhancedMultiBlockBase<MTEHeatExchanger
             'H',
             InputHatch.withAdder(MTEHeatExchanger::addHotFluidInputToMachineList)
                 .withCount(t -> t.mInputHotFluidHatch.isValid() ? 1 : 0)
-                .newAny(CASING_INDEX, 3))
+                .newAny(CASING_INDEX, 2))
         .addElement(
             'c',
             buildHatchAdder(MTEHeatExchanger.class).atLeast(InputBus, InputHatch, OutputBus, OutputHatch, Maintenance)
                 .casingIndex(CASING_INDEX)
-                .dot(1)
+                .hint(1)
                 .buildAndChain(
                     onElementPass(MTEHeatExchanger::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings4, (byte) 2))))
         .build();
@@ -113,20 +121,38 @@ public class MTEHeatExchanger extends MTEEnhancedMultiBlockBase<MTEHeatExchanger
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Heat Exchanger, LHE")
-            .addInfo("More complicated than a Fusion Reactor. Seriously")
-            .addInfo("Inputs are Hot Coolant or Lava")
-            .addInfo("Outputs Coolant or Pahoehoe Lava and SH Steam/Steam")
-            .addInfo("Read the wiki article to understand how it works")
-            .addInfo("Then go to the Discord to understand the wiki")
+            .addInfo(GTUtility.translate("gt.multiblock.HeatExchanger.desc1"))
+            .addInfo(GTUtility.translate("gt.multiblock.HeatExchanger.desc2"))
+            .addInfo(GTUtility.translate("gt.multiblock.HeatExchanger.desc3"))
+            .addInfo(GTUtility.translate("gt.multiblock.HeatExchanger.desc4"))
+            .addInfo(GTUtility.translate("gt.multiblock.HeatExchanger.desc5"))
+            .addSeparator()
+            .addInfo(
+                GTUtility.translate("gt.multiblock.HeatExchanger.lava", getFluidUnit(), getFluidUnit(), getFluidUnit()))
+            .addInfo(
+                GTUtility.translate(
+                    "gt.multiblock.HeatExchanger.hotcoolant",
+                    getFluidUnit(),
+                    getFluidUnit(),
+                    getFluidUnit()))
+            .addInfo(
+                GTUtility.translate(
+                    "gt.multiblock.HeatExchanger.hotsolarsalt",
+                    getFluidUnit(),
+                    getFluidUnit(),
+                    getFluidUnit()))
+            .addSeparator()
+            .addInfo(GTUtility.translate("gt.multiblock.HeatExchanger.throttle1"))
+            .addInfo(GTUtility.translate("gt.multiblock.HeatExchanger.throttle2"))
             .beginStructureBlock(3, 4, 3, false)
-            .addController("Front bottom")
-            .addCasingInfoRange("Stable Titanium Machine Casing", 20, 32, false)
+            .addController("Front bottom center")
+            .addCasingInfoRange("Stable Titanium Machine Casing", 20, 28, false)
             .addOtherStructurePart("Titanium Pipe Casing", "Center 2 blocks")
-            .addMaintenanceHatch("Any casing", 1)
-            .addInputHatch("Hot fluid, bottom center", 2)
-            .addInputHatch("Distilled water, any casing", 1)
-            .addOutputHatch("Cold fluid, top center", 3)
-            .addOutputHatch("Steam/SH Steam, any casing", 1)
+            .addMaintenanceHatch("Any Casing", 1)
+            .addInputHatch("Hot Fluid, bottom center Casing", 2)
+            .addInputHatch("Distilled Water, any Casing", 1)
+            .addOutputHatch("Cold Fluid, top center Casing", 3)
+            .addOutputHatch("Steam/SH Steam, any Casing", 1)
             .toolTipFinisher();
         return tt;
     }
@@ -148,32 +174,20 @@ public class MTEHeatExchanger extends MTEEnhancedMultiBlockBase<MTEHeatExchanger
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
-        if (side == aFacing) {
-            if (aActive) return new ITexture[] { casingTexturePages[0][CASING_INDEX], TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_HEAT_EXCHANGER_ACTIVE)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_HEAT_EXCHANGER_ACTIVE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { casingTexturePages[0][CASING_INDEX], TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_HEAT_EXCHANGER)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_HEAT_EXCHANGER_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-        }
-        return new ITexture[] { casingTexturePages[0][CASING_INDEX] };
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            OVERLAY_FRONT_HEAT_EXCHANGER,
+            OVERLAY_FRONT_HEAT_EXCHANGER_GLOW,
+            OVERLAY_FRONT_HEAT_EXCHANGER_ACTIVE,
+            OVERLAY_FRONT_HEAT_EXCHANGER_ACTIVE_GLOW);
     }
 
     @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
+    public ITexture getCasingTexture() {
+        return casingTexturePages[0][CASING_INDEX];
     }
 
     @Override
@@ -271,18 +285,18 @@ public class MTEHeatExchanger extends MTEEnhancedMultiBlockBase<MTEHeatExchanger
                 if (depleteInput(distilledStack)) // Consume the distilled water
                 {
                     if (superheated) {
-                        addOutput(FluidRegistry.getFluidStack("ic2superheatedsteam", tGeneratedEU)); // Generate
-                                                                                                     // superheated
-                                                                                                     // steam
+                        addOutputPartial(FluidRegistry.getFluidStack("ic2superheatedsteam", tGeneratedEU)); // Generate
+                        // superheated
+                        // steam
                     } else {
-                        addOutput(GTModHandler.getSteam(tGeneratedEU)); // Generate regular steam
+                        addOutputPartial(Materials.Steam.getGas(tGeneratedEU)); // Generate regular steam
                     }
                     dryHeatCounter = 0;
                 } else {
                     if (dryHeatCounter < dryHeatMaximum) {
                         dryHeatCounter += 1;
                     } else {
-                        GTLog.exp.println(this.mName + " was too hot and had no more Distilled Water!");
+                        GTLog.writeExplosionLog(this, "was too hot and had no more Distilled Water!");
                         explodeMultiblock(); // Generate crater
                     }
                 }
@@ -303,11 +317,15 @@ public class MTEHeatExchanger extends MTEEnhancedMultiBlockBase<MTEHeatExchanger
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         mOutputColdFluidHatch = null;
         mInputHotFluidHatch = null;
         mCasingAmount = 0;
-        return checkPiece(STRUCTURE_PIECE_MAIN, 1, 3, 0) && mCasingAmount >= 20 && mMaintenanceHatches.size() == 1;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 1, 3, 0, errors)) return;
+        checkCasingMin(errors, mCasingAmount, 20);
+        checkHasMaintenanceHatch(errors);
+        checkHasInputHatch(errors);
+        checkHasOutputHatch(errors);
     }
 
     public boolean addColdFluidOutputToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
@@ -336,21 +354,6 @@ public class MTEHeatExchanger extends MTEEnhancedMultiBlockBase<MTEHeatExchanger
     }
 
     @Override
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
-    }
-
-    @Override
-    public int getDamageToComponent(ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
-    }
-
-    @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTEHeatExchanger(this.mName);
     }
@@ -360,18 +363,18 @@ public class MTEHeatExchanger extends MTEEnhancedMultiBlockBase<MTEHeatExchanger
         return new String[] {
             StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
                 + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(mProgresstime / 20)
+                + formatNumber(mProgresstime / 20)
                 + EnumChatFormatting.RESET
                 + " s / "
                 + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(mMaxProgresstime / 20)
+                + formatNumber(mMaxProgresstime / 20)
                 + EnumChatFormatting.RESET
                 + " s",
             StatCollector.translateToLocal("GT5U.multiblock.usage") + " "
                 + StatCollector.translateToLocal("GT5U.LHE.steam")
                 + ": "
                 + (superheated ? EnumChatFormatting.RED : EnumChatFormatting.YELLOW)
-                + GTUtility.formatNumbers(superheated ? -2L * mEUt : -mEUt)
+                + formatNumber(superheated ? -2L * mEUt : -mEUt)
                 + EnumChatFormatting.RESET
                 + " EU/t",
             StatCollector.translateToLocal("GT5U.multiblock.problems") + ": "
@@ -393,8 +396,9 @@ public class MTEHeatExchanger extends MTEEnhancedMultiBlockBase<MTEHeatExchanger
                 + StatCollector.translateToLocal("GT5U.LHE.threshold")
                 + ": "
                 + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(superheated_threshold)
-                + EnumChatFormatting.RESET };
+                + formatNumber(superheated_threshold)
+                + EnumChatFormatting.RESET,
+            GTUtility.translate("GT5U.multiblock.recipesDone", formatNumber(recipesDone)) };
     }
 
     @Override
@@ -405,7 +409,7 @@ public class MTEHeatExchanger extends MTEEnhancedMultiBlockBase<MTEHeatExchanger
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 1, 3, 0, elementBudget, env, false, true);
+        return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 1, 3, 0, elementBudget, env, false, true);
     }
 
     @Override
@@ -422,5 +426,10 @@ public class MTEHeatExchanger extends MTEEnhancedMultiBlockBase<MTEHeatExchanger
         if (mInputHotFluidHatch instanceof IRecipeProcessingAwareHatch aware && mInputHotFluidHatch.isValid()) {
             aware.endRecipeProcessing(this);
         }
+    }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
     }
 }

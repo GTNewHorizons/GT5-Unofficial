@@ -5,8 +5,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.ArrayUtils;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -14,8 +12,6 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicGenerator;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTUtility;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.lib.GTPPCore;
@@ -37,11 +33,6 @@ public class MTESemiFluidGenerator extends MTEBasicGenerator {
     }
 
     @Override
-    public int getCapacity() {
-        return 16000;
-    }
-
-    @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTESemiFluidGenerator(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
     }
@@ -55,8 +46,8 @@ public class MTESemiFluidGenerator extends MTEBasicGenerator {
     public String[] getDescription() {
         return ArrayUtils.addAll(
             this.mDescriptionArray,
-            "Produces " + (this.getPollution()) + " pollution/sec",
-            "Fuel Efficiency: " + this.getEfficiency() + "%",
+            "Produces " + addFormattedString(String.valueOf(this.getPollution())) + " pollution/sec",
+            "Fuel Efficiency: " + addFormattedString(String.valueOf(this.getEfficiency())) + "%%",
             GTPPCore.GT_Tooltip.get());
     }
 
@@ -80,22 +71,10 @@ public class MTESemiFluidGenerator extends MTEBasicGenerator {
     }
 
     @Override
-    public int getFuelValue(ItemStack aStack) {
-        if (GTUtility.isStackInvalid(aStack)) {
-            return 0;
-        }
-        int rValue = Math.max(GTModHandler.getFuelValue(aStack) * 6 / 5, super.getFuelValue(aStack));
-        if (ItemList.Fuel_Can_Plastic_Filled.isStackEqual(aStack, false, true)) {
-            rValue = Math.max(rValue, GameRegistry.getFuelValue(aStack) * 3);
-        }
-        return rValue;
-    }
-
-    @Override
     public ITexture[] getFront(byte aColor) {
         return new ITexture[] { super.getFront(aColor)[0],
             TextureFactory.of(Textures.BlockIcons.DIESEL_GENERATOR_FRONT),
-            Textures.BlockIcons.OVERLAYS_ENERGY_OUT[this.mTier] };
+            Textures.BlockIcons.OVERLAYS_ENERGY_OUT[this.mTier + 1] };
     }
 
     @Override
@@ -124,7 +103,7 @@ public class MTESemiFluidGenerator extends MTEBasicGenerator {
     public ITexture[] getFrontActive(byte aColor) {
         return new ITexture[] { super.getFrontActive(aColor)[0],
             TextureFactory.of(Textures.BlockIcons.DIESEL_GENERATOR_FRONT_ACTIVE),
-            Textures.BlockIcons.OVERLAYS_ENERGY_OUT[this.mTier] };
+            Textures.BlockIcons.OVERLAYS_ENERGY_OUT[this.mTier + 1] };
     }
 
     @Override

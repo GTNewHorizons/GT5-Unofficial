@@ -1,6 +1,6 @@
 package kubatech.tileentity.gregtech.multiblock.eigmodes;
 
-import static kubatech.api.utils.StringUtils.voltageTooltipFormatted;
+import static gregtech.api.util.StringUtils.voltageTooltipFormatted;
 import static kubatech.tileentity.gregtech.multiblock.MTEExtremeIndustrialGreenhouse.EIG_BALANCE_IC2_ACCELERATOR_TIER;
 
 import net.minecraft.util.EnumChatFormatting;
@@ -74,6 +74,7 @@ public class EIGIC2Mode extends EIGMode {
         String fertilizerBonus = String.format("%.0f%%", fertilizerBonusMultiplier);
 
         return builder.addSeparator()
+            .addInfo(EnumChatFormatting.RED + "DEPRECATED" + EnumChatFormatting.RESET)
             .addInfo(EnumChatFormatting.GOLD + "IC2 Crops:")
             .addInfo("Minimal voltage tier: " + minVoltageTier)
             .addInfo("Minimal glass tier: " + minGlassTier)

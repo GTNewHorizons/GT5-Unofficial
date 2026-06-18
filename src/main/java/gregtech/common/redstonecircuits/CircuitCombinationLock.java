@@ -1,5 +1,7 @@
 package gregtech.common.redstonecircuits;
 
+import net.minecraft.util.StatCollector;
+
 import gregtech.api.interfaces.IRedstoneCircuitBlock;
 import gregtech.api.util.CircuitryBehavior;
 
@@ -84,17 +86,18 @@ public class CircuitCombinationLock extends CircuitryBehavior {
 
     @Override
     public String getName() {
-        return "Combination Lock";
+        return StatCollector.translateToLocal("GT5U.gui.circuit.combination_lock.name");
     }
 
     @Override
     public String getDescription() {
-        return "Checks Combinations";
+        return StatCollector.translateToLocal("GT5U.gui.circuit.combination_lock.description");
     }
 
     @Override
     public String getDataDescription(int[] aCircuitData, int aCircuitDataIndex) {
-        return "Power " + aCircuitDataIndex;
+        return StatCollector
+            .translateToLocalFormatted("GT5U.gui.circuit.combination_lock.data_description", aCircuitDataIndex);
     }
 
     @Override

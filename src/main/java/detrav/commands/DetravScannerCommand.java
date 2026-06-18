@@ -3,46 +3,30 @@ package detrav.commands;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.function.BiFunction;
 
 import net.minecraft.block.Block;
-import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.chunk.Chunk;
 
-import gregtech.api.GregTechAPI;
-import gregtech.api.enums.Materials;
-import gregtech.api.util.GTLanguageManager;
-import gregtech.common.blocks.TileEntityOres;
+import gregtech.commands.GTBaseCommand;
+import gregtech.common.ores.OreInfo;
+import gregtech.common.ores.OreManager;
 
 /**
  * Created by wital_000 on 17.03.2016.
  */
-public class DetravScannerCommand implements ICommand {
-
-    private final List aliases;
+public class DetravScannerCommand extends GTBaseCommand {
 
     public DetravScannerCommand() {
-        this.aliases = new ArrayList<String>();
-        this.aliases.add("DetravScanner");
-        this.aliases.add("dscan");
+        super("dscan");
     }
 
     @Override
     public String getCommandName() {
-        return "DetravScanner";
-    }
-
-    @Override
-    public String getCommandUsage(ICommandSender sender) {
-        return "DetravScanner [\"Part of Greg ore name\"]";
-    }
-
-    @Override
-    public List getCommandAliases() {
-        return this.aliases;
+        return "detravscanner";
     }
 
     @Override
@@ -89,48 +73,40 @@ public class DetravScannerCommand implements ICommand {
     private void process(ICommandSender sender, int aX, int aZ, String fName) {
         Chunk c = sender.getEntityWorld()
             .getChunkFromChunkCoords(aX, aZ);
-        if (c == null) sender.addChatMessage(new ChatComponentText("ERROR"));
+
+        if (c == null) {
+            sender.addChatMessage(new ChatComponentText("ERROR"));
+            return;
+        }
+
         HashMap<String, Integer> ores = new HashMap<>();
+
+        BiFunction<Integer, Integer, Integer> sum = Integer::sum;
+
         for (int x = 0; x < 16; x++) for (int z = 0; z < 16; z++) {
             int ySize = c.getHeightValue(x, z);
             for (int y = 1; y < ySize; y++) {
                 Block b = c.getBlock(x, y, z);
-                if (b != GregTechAPI.sBlockOres1) {
-                    continue;
-                }
+                int meta = c.getBlockMetadata(x, y, z);
 
-                TileEntity entity = c.getTileEntityUnsafe(x, y, z);
+                try (OreInfo<?> info = OreManager.getOreInfo(b, meta)) {
+                    if (info == null || info.isSmall) continue;
 
-                if (entity == null) {
-                    continue;
-                }
+                    String matName = info.material.getLocalizedName();
 
-                TileEntityOres gt_entity = (TileEntityOres) entity;
-                short meta = gt_entity.getMetaData();
-                String name = Materials.getLocalizedNameForItem(
-                    GTLanguageManager.getTranslation(b.getUnlocalizedName() + "." + meta + ".name"),
-                    meta % 1000);
-                if (name.startsWith("Small")) continue;
-                if (fName == null || name.toLowerCase()
-                    .contains(fName)) {
-                    if (!ores.containsKey(name)) ores.put(name, 1);
-                    else {
-                        int val = ores.get(name);
-                        ores.put(name, val + 1);
+                    if (fName == null || matName.toLowerCase()
+                        .contains(fName)) {
+                        ores.merge(matName, 1, sum);
                     }
                 }
             }
-
         }
+
         sender.addChatMessage(new ChatComponentText("*** Detrav Scanner Begin"));
         for (String key : ores.keySet()) {
             sender.addChatMessage(new ChatComponentText(String.format("%s : %d", key, ores.get(key))));
         }
         sender.addChatMessage(new ChatComponentText("*** Detrav Scanner End"));
-    }
-
-    private void sendHelpMessage(ICommandSender sender) {
-        sender.addChatMessage(new ChatComponentText(getCommandUsage(sender)));
     }
 
     @Override
@@ -139,24 +115,14 @@ public class DetravScannerCommand implements ICommand {
     }
 
     @Override
-    public List addTabCompletionOptions(ICommandSender sender, String[] args) {
+    public List<String> addTabCompletionOptions(ICommandSender sender, String[] args) {
         if (args.length != 1) return null;
         if ("help".startsWith(args[0].toLowerCase())) {
-            List result = new ArrayList();
+            List<String> result = new ArrayList<>();
             result.add("help");
             sendHelpMessage(sender);
             return result;
         }
         return null;
-    }
-
-    @Override
-    public boolean isUsernameIndex(String[] p_82358_1_, int p_82358_2_) {
-        return false;
-    }
-
-    @Override
-    public int compareTo(Object o) {
-        return 0;
     }
 }

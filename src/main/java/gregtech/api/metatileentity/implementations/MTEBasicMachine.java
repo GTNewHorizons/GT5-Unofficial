@@ -1,5 +1,6 @@
 package gregtech.api.metatileentity.implementations;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.GTValues.debugCleanroom;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
@@ -14,9 +15,11 @@ import static gregtech.api.metatileentity.BaseTileEntity.STALLED_STUTTERING_TOOL
 import static gregtech.api.metatileentity.BaseTileEntity.STALLED_VENT_TOOLTIP;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.metatileentity.BaseTileEntity.UNUSED_SLOT_TOOLTIP;
+import static gregtech.api.util.GTRecipeConstants.COMPRESSION_TIER;
 import static gregtech.api.util.GTRecipeConstants.EXPLODE;
 import static gregtech.api.util.GTRecipeConstants.ON_FIRE;
-import static gregtech.api.util.GTUtility.moveMultipleItemStacks;
+import static net.minecraft.util.StatCollector.translateToLocal;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 import static net.minecraftforge.common.util.ForgeDirection.DOWN;
 import static net.minecraftforge.common.util.ForgeDirection.UNKNOWN;
 import static net.minecraftforge.common.util.ForgeDirection.UP;
@@ -24,16 +27,17 @@ import static net.minecraftforge.common.util.ForgeDirection.UP;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -57,17 +61,21 @@ import com.gtnewhorizons.modularui.common.widget.FluidSlotWidget;
 import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
 import gregtech.api.covers.CoverRegistry;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.SteamVariant;
+import gregtech.api.gui.modularui.CircularGaugeDrawable;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.gui.modularui.SteamTexture;
 import gregtech.api.interfaces.ICleanroom;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
+import gregtech.api.interfaces.INonConsumedItemDisplay;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
-import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IOverclockDescriptionProvider;
 import gregtech.api.interfaces.tileentity.RecipeMapWorkable;
@@ -75,9 +83,10 @@ import gregtech.api.objects.overclockdescriber.EUOverclockDescriber;
 import gregtech.api.objects.overclockdescriber.OverclockDescriber;
 import gregtech.api.recipe.BasicUIProperties;
 import gregtech.api.recipe.RecipeMap;
-import gregtech.api.recipe.metadata.CompressionTierKey;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.FakeCleanroom;
 import gregtech.api.util.GTClientPreference;
+import gregtech.api.util.GTItemTransfer;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
@@ -85,6 +94,7 @@ import gregtech.api.util.GTTooltipDataCache;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTWaila;
 import gregtech.api.util.OverclockCalculator;
+import gregtech.client.GTSoundLoop;
 import gregtech.common.gui.modularui.UIHelper;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -96,26 +106,30 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
  * Machine
  */
 public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapWorkable, IConfigurationCircuitSupport,
-    IOverclockDescriptionProvider, IAddGregtechLogo, IAddUIWidgets {
+    IOverclockDescriptionProvider, IAddGregtechLogo, INonConsumedItemDisplay {
 
     /**
      * return values for checkRecipe()
      */
     protected static final int DID_NOT_FIND_RECIPE = 0, FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS = 1,
         FOUND_AND_SUCCESSFULLY_USED_RECIPE = 2;
+    public static final String STEAM_AMOUNT_LANGKEY = "GT5U.machines.steam.amount";
 
     public static final int OTHER_SLOT_COUNT = 5;
     public final ItemStack[] mOutputItems;
-    public final int mInputSlotCount, mAmperage;
-    public boolean mAllowInputFromOutputSide = false, mFluidTransfer = false, mItemTransfer = false,
-        mHasBeenUpdated = false, mStuttering = false, mCharge = false, mDecharge = false;
+    public final int mInputSlotCount;
+    public int mAmperage;
+    public boolean mAllowInputFromOutputSide = true, mFluidTransfer = false, mItemTransfer = false, mStuttering = false,
+        mCharge = false, mDecharge = false;
     private int errorDisplayID;
     public boolean mDisableFilter = true;
     public boolean mDisableMultiStack = true;
     public int mProgresstime = 0, mMaxProgresstime = 0, mEUt = 0, mOutputBlocked = 0;
     public ForgeDirection mMainFacing = ForgeDirection.WEST;
     public FluidStack mOutputFluid;
-    protected final OverclockDescriber overclockDescriber;
+    protected OverclockDescriber overclockDescriber;
+    @SideOnly(Side.CLIENT)
+    protected GTSoundLoop activitySoundLoop;
 
     /**
      * Contains the Recipe which has been previously used, or null if there was no previous Recipe, which could have
@@ -128,6 +142,10 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
         () -> mFluidOut,
         fluidStack -> mFluidOut = fluidStack,
         this::getCapacity);
+
+    public FluidStackTank getFluidOutputTank() {
+        return this.fluidOutputTank;
+    }
 
     /**
      * Registers machine with single-line description.
@@ -184,6 +202,23 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
         mOutputItems = new ItemStack[Math.max(0, aOutputSlotCount)];
         mAmperage = aAmperage;
         overclockDescriber = createOverclockDescriber();
+        // In world basic machine have mMainFacing UNKNOWN for rotation fixes.
+        // During placement, mFacing initially mean main facing.
+        // This is then written to mMainFacing when the block is initialized.
+        // and mFacing become the output facing, initialized to the opposite side.
+        // This quirk is due to historical reasons, and it is mostly to support
+        // block saved with the old nbt to keep working. The ideal logic should be
+        // mFacing -> main facing and a new field mOutputFacing, and with wrenchRightClick
+        // overridden so that normal right click rotate the output face and sneak rotate
+        // the main face.
+
+        // The current logic is that the block is set to UNKNOWN before loading of NBT or rotation, and the
+        // very first rotation will cause mMainFacing and mFacing to be swapped and initialized.
+        mMainFacing = UNKNOWN;
+    }
+
+    public boolean isStuttering() {
+        return mStuttering;
     }
 
     /**
@@ -206,20 +241,6 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
         onFacingChange();
         onMachineBlockUpdate();
         return true;
-    }
-
-    @Override
-    public void onFacingChange() {
-        super.onFacingChange();
-        // Set up the correct facing (front towards player, output opposite) client-side before the server packet
-        // arrives
-        if (mMainFacing == UNKNOWN) {
-            IGregTechTileEntity te = getBaseMetaTileEntity();
-            if (te != null && te.getWorld().isRemote) {
-                mMainFacing = te.getFrontFacing();
-                te.setFrontFacing(te.getBackFacing());
-            }
-        }
     }
 
     @Override
@@ -288,11 +309,6 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     }
 
     @Override
-    public boolean isElectric() {
-        return true;
-    }
-
-    @Override
     public boolean isValidSlot(int aIndex) {
         return aIndex > 0 && super.isValidSlot(aIndex)
             && aIndex != getCircuitSlot()
@@ -300,9 +316,16 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     }
 
     @Override
+    public boolean isIOSlot(int slot) {
+        // Ignore output slots, special slots, battery slots, and circuit slots
+        return slot >= getInputSlot() && slot < getInputSlot() + mInputSlotCount;
+    }
+
+    @Override
     public boolean isFacingValid(ForgeDirection facing) {
-        // Either mMainFacing or mMainFacing is horizontal
-        return ((facing.flag | mMainFacing.flag) & ~(UP.flag | DOWN.flag | UNKNOWN.flag)) != 0;
+        // Due to initialization quirks.
+        if (mMainFacing == UNKNOWN) return isValidMainFacing(facing);
+        return facing != mMainFacing;
     }
 
     @Override
@@ -313,11 +336,6 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     @Override
     public boolean isInputFacing(ForgeDirection side) {
         return side != mMainFacing;
-    }
-
-    @Override
-    public boolean isOutputFacing(ForgeDirection side) {
-        return false;
     }
 
     @Override
@@ -351,13 +369,16 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     }
 
     @Override
-    public long maxSteamStore() {
-        return maxEUStore();
+    public long maxAmperesIn() {
+        return ((long) mEUt * 2L) / V[mTier] + 1L;
     }
 
     @Override
-    public long maxAmperesIn() {
-        return ((long) mEUt * 2L) / V[mTier] + 1L;
+    public List<ItemStack> getNonConsumedInputDisplayItems() {
+        if (mLastRecipe == null || mLastRecipe.mInputs == null) return Collections.emptyList();
+        return Arrays.stream(mLastRecipe.mInputs)
+            .filter(s -> s != null && s.stackSize == 0)
+            .collect(Collectors.toList());
     }
 
     @Override
@@ -372,11 +393,6 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
 
     public int getSpecialSlotIndex() {
         return 3;
-    }
-
-    @Override
-    public int getStackDisplaySlot() {
-        return 2;
     }
 
     @Override
@@ -400,11 +416,6 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     }
 
     @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
-        return true;
-    }
-
-    @Override
     public int getProgresstime() {
         return mProgresstime;
     }
@@ -423,11 +434,6 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     @Override
     public boolean isFluidInputAllowed(FluidStack aFluid) {
         return getFillableStack() != null || (getRecipeMap() != null && getRecipeMap().containsInput(aFluid));
-    }
-
-    @Override
-    public boolean isFluidChangingAllowed() {
-        return true;
     }
 
     @Override
@@ -470,7 +476,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
         if (aBaseMetaTileEntity.isClientSide()) return true;
-        if (!GTMod.gregtechproxy.mForceFreeFace) {
+        if (!GTMod.proxy.mForceFreeFace) {
             openGui(aPlayer);
             return true;
         }
@@ -480,15 +486,21 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
                 return true;
             }
         }
-        GTUtility.sendChatToPlayer(aPlayer, "No free Side!");
+        GTUtility.sendChatTrans(aPlayer, "GT5U.chat.machine.no_free_side");
         return true;
     }
 
     @Override
     public void initDefaultModes(NBTTagCompound aNBT) {
-        mMainFacing = ForgeDirection.UNKNOWN;
+        ForgeDirection facing = getBaseMetaTileEntity().getFrontFacing();
+        if (isValidMainFacing(facing)) {
+            setMainFacing(facing);
+        } else {
+            // Just in case someone set the facing wrongly, we still initialize main facing.
+            setMainFacing(ForgeDirection.WEST);
+        }
         if (!getBaseMetaTileEntity().getWorld().isRemote) {
-            final GTClientPreference tPreference = GTMod.gregtechproxy
+            final GTClientPreference tPreference = GTMod.proxy
                 .getClientPreference(getBaseMetaTileEntity().getOwnerUuid());
             if (tPreference != null) {
                 mDisableFilter = !tPreference.isSingleBlockInitialFilterEnabled();
@@ -502,7 +514,6 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
         super.saveNBTData(aNBT);
         aNBT.setBoolean("mFluidTransfer", mFluidTransfer);
         aNBT.setBoolean("mItemTransfer", mItemTransfer);
-        aNBT.setBoolean("mHasBeenUpdated", mHasBeenUpdated);
         aNBT.setBoolean("mAllowInputFromOutputSide", mAllowInputFromOutputSide);
         aNBT.setBoolean("mDisableFilter", mDisableFilter);
         aNBT.setBoolean("mDisableMultiStack", mDisableMultiStack);
@@ -522,7 +533,6 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
         super.loadNBTData(aNBT);
         mFluidTransfer = aNBT.getBoolean("mFluidTransfer");
         mItemTransfer = aNBT.getBoolean("mItemTransfer");
-        mHasBeenUpdated = aNBT.getBoolean("mHasBeenUpdated");
         mAllowInputFromOutputSide = aNBT.getBoolean("mAllowInputFromOutputSide");
         mDisableFilter = aNBT.getBoolean("mDisableFilter");
         mDisableMultiStack = aNBT.getBoolean("mDisableMultiStack");
@@ -558,14 +568,13 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
             mCharge = aBaseMetaTileEntity.getStoredEU() / 2 > aBaseMetaTileEntity.getEUCapacity() / 3;
             mDecharge = aBaseMetaTileEntity.getStoredEU() < aBaseMetaTileEntity.getEUCapacity() / 3;
 
-            doDisplayThings();
-
             boolean tSucceeded = false;
+            boolean isActive = mMaxProgresstime > 0;
 
-            if (mMaxProgresstime > 0 && (mProgresstime >= 0 || aBaseMetaTileEntity.isAllowedToWork())) {
+            if (isActive && (mProgresstime >= 0 || aBaseMetaTileEntity.isAllowedToWork())) {
                 markDirty();
-                aBaseMetaTileEntity.setActive(true);
                 if (mProgresstime < 0 || drainEnergyForProcess(mEUt)) {
+                    aBaseMetaTileEntity.setActive(mProgresstime >= 0);
                     if (++mProgresstime >= mMaxProgresstime) {
                         for (int i = 0; i < mOutputItems.length; i++)
                             for (int j = 0; j < mOutputItems.length; j++) if (aBaseMetaTileEntity
@@ -618,23 +627,14 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
                 && (tSucceeded || mOutputBlocked % 300 == 1
                     || aBaseMetaTileEntity.hasInventoryBeenModified()
                     || aTick % 600 == 0)) {
-                TileEntity tTileEntity2 = aBaseMetaTileEntity.getTileEntityAtSide(aBaseMetaTileEntity.getFrontFacing());
-                long tStoredEnergy = aBaseMetaTileEntity.getUniversalEnergyStored();
-                int tMaxStacks = (int) (tStoredEnergy / 64L);
-                if (tMaxStacks > mOutputItems.length) tMaxStacks = mOutputItems.length;
+                GTItemTransfer transfer = new GTItemTransfer();
 
-                moveMultipleItemStacks(
-                    aBaseMetaTileEntity,
-                    tTileEntity2,
-                    aBaseMetaTileEntity.getFrontFacing(),
-                    aBaseMetaTileEntity.getBackFacing(),
-                    null,
-                    false,
-                    (byte) 64,
-                    (byte) 1,
-                    (byte) 64,
-                    (byte) 1,
-                    tMaxStacks);
+                transfer.outOfMachine(this, aBaseMetaTileEntity.getFrontFacing());
+                transfer.dropItems(this);
+
+                transfer.setStacksToTransfer(mOutputItems.length);
+
+                transfer.transfer();
             }
 
             if (mOutputBlocked != 0) if (isOutputEmpty()) mOutputBlocked = 0;
@@ -673,9 +673,12 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
             } else {
                 if (!mStuttering) {
                     stutterProcess();
+                    aBaseMetaTileEntity.setActive(false);
                     mStuttering = true;
                 }
             }
+        } else {
+            updateSounds(getActivitySoundLoop());
         }
         // Only using mNeedsSteamVenting right now and assigning it to 64 to space in the range for more single block
         // machine problems.
@@ -684,16 +687,6 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
         // 64 | MTEBasicMachineBronze | mNeedsSteamVenting
         setErrorDisplayID((getErrorDisplayID() & ~127)); // | (mStuttering ? 1 :
                                                          // 0));
-    }
-
-    protected void doDisplayThings() {
-        if (!isValidMainFacing(mMainFacing) && isValidMainFacing(getBaseMetaTileEntity().getFrontFacing())) {
-            mMainFacing = getBaseMetaTileEntity().getFrontFacing();
-        }
-        if (isValidMainFacing(mMainFacing) && !mHasBeenUpdated) {
-            mHasBeenUpdated = true;
-            getBaseMetaTileEntity().setFrontFacing(getBaseMetaTileEntity().getBackFacing());
-        }
     }
 
     protected boolean hasEnoughEnergyToCheckRecipe() {
@@ -850,6 +843,49 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     }
 
     /**
+     * Returns the sound resource to use for the activity loop.
+     * Subclasses can override to provide their own.
+     */
+    @SideOnly(Side.CLIENT)
+    protected SoundResource getActivitySoundLoop() {
+        return null;
+    }
+
+    /**
+     * Starts the activity sound loop if it isn't already playing.
+     */
+    @SideOnly(Side.CLIENT)
+    protected void updateSounds(SoundResource activitySound) {
+        if (activitySound == null) return;
+
+        if (getBaseMetaTileEntity().isActive() && !getBaseMetaTileEntity().isMuffled()) {
+            if (activitySoundLoop == null) {
+                activitySoundLoop = new GTSoundLoop(
+                    activitySound.resourceLocation,
+                    getBaseMetaTileEntity(),
+                    false,
+                    true);
+                Minecraft.getMinecraft()
+                    .getSoundHandler()
+                    .playSound(activitySoundLoop);
+            }
+        } else {
+            stopActivitySound();
+        }
+    }
+
+    /**
+     * Stops the activity sound loop if playing.
+     */
+    @SideOnly(Side.CLIENT)
+    protected void stopActivitySound() {
+        if (activitySoundLoop != null) {
+            activitySoundLoop.setFadeMe(true);
+            activitySoundLoop = null;
+        }
+    }
+
+    /**
      * If this Machine can have the Insufficient Energy Line Problem
      */
     public boolean canHaveInsufficientEnergy() {
@@ -863,21 +899,20 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     @Override
     public String[] getInfoData() {
         return new String[] {
-            StatCollector.translateToLocalFormatted(
+            translateToLocalFormatted(
                 "GT5U.infodata.progress",
-                EnumChatFormatting.GREEN + GTUtility.formatNumbers((mProgresstime / 20)) + EnumChatFormatting.RESET,
-                EnumChatFormatting.YELLOW + GTUtility.formatNumbers(mMaxProgresstime / 20) + EnumChatFormatting.RESET),
-            StatCollector.translateToLocalFormatted(
+                EnumChatFormatting.GREEN + formatNumber((mProgresstime / 20)) + EnumChatFormatting.RESET,
+                EnumChatFormatting.YELLOW + formatNumber(mMaxProgresstime / 20) + EnumChatFormatting.RESET),
+            translateToLocalFormatted(
                 "GT5U.infodata.energy",
-                EnumChatFormatting.GREEN + GTUtility.formatNumbers(getBaseMetaTileEntity().getStoredEU())
+                EnumChatFormatting.GREEN + formatNumber(getBaseMetaTileEntity().getStoredEU())
                     + EnumChatFormatting.RESET,
-                EnumChatFormatting.YELLOW + GTUtility.formatNumbers(getBaseMetaTileEntity().getEUCapacity())
+                EnumChatFormatting.YELLOW + formatNumber(getBaseMetaTileEntity().getEUCapacity())
                     + EnumChatFormatting.RESET),
-            StatCollector.translateToLocalFormatted(
+            translateToLocalFormatted(
                 "GT5U.infodata.currently_uses",
-                EnumChatFormatting.RED + GTUtility.formatNumbers(mEUt) + EnumChatFormatting.RESET,
-                EnumChatFormatting.RED + GTUtility.formatNumbers(mEUt == 0 ? 0 : mAmperage)
-                    + EnumChatFormatting.RESET) };
+                EnumChatFormatting.RED + formatNumber(mEUt) + EnumChatFormatting.RESET,
+                EnumChatFormatting.RED + formatNumber(mEUt == 0 ? 0 : mAmperage) + EnumChatFormatting.RESET) };
     }
 
     @Override
@@ -886,34 +921,29 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
         if (side == getBaseMetaTileEntity().getFrontFacing() || side == mMainFacing) {
             if (aPlayer.isSneaking()) {
                 mDisableFilter = !mDisableFilter;
-                GTUtility.sendChatToPlayer(
-                    aPlayer,
-                    StatCollector.translateToLocal("GT5U.hatch.disableFilter." + mDisableFilter));
+                GTUtility.sendChatTrans(aPlayer, "GT5U.hatch.disableFilter." + mDisableFilter);
             } else {
                 mAllowInputFromOutputSide = !mAllowInputFromOutputSide;
-                GTUtility.sendChatToPlayer(
+                GTUtility.sendChatTrans(
                     aPlayer,
-                    mAllowInputFromOutputSide ? GTUtility.trans("095", "Input from Output Side allowed")
-                        : GTUtility.trans("096", "Input from Output Side forbidden"));
+                    mAllowInputFromOutputSide ? "gt.interact.desc.input_from_output_on"
+                        : "gt.interact.desc.input_from_output_off");
             }
         }
     }
 
     @Override
     public boolean onSolderingToolRightClick(ForgeDirection side, ForgeDirection wrenchingSide,
-        EntityPlayer entityPlayer, float aX, float aY, float aZ) {
-        if (!entityPlayer.isSneaking()) return false;
-        final boolean click = super.onSolderingToolRightClick(side, wrenchingSide, entityPlayer, aX, aY, aZ);
-        if (click) return true;
-        if (wrenchingSide != mMainFacing) return false;
+        EntityPlayer entityPlayer, float aX, float aY, float aZ, ItemStack aTool) {
+        if (!entityPlayer.isSneaking() || wrenchingSide != mMainFacing)
+            return super.onSolderingToolRightClick(side, wrenchingSide, entityPlayer, aX, aY, aZ, aTool);
         mDisableMultiStack = !mDisableMultiStack;
-        GTUtility.sendChatToPlayer(
-            entityPlayer,
-            StatCollector.translateToLocal("GT5U.hatch.disableMultiStack." + mDisableMultiStack));
+        GTUtility.sendChatTrans(entityPlayer, "GT5U.hatch.disableMultiStack." + mDisableMultiStack);
         return true;
     }
 
@@ -933,12 +963,17 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
-        if (side == mMainFacing || aIndex < getInputSlot()
-            || aIndex >= getInputSlot() + mInputSlotCount
-            || (!mAllowInputFromOutputSide && side == aBaseMetaTileEntity.getFrontFacing())) return false;
-        for (int i = getInputSlot(), j = i + mInputSlotCount; i < j; i++)
-            if (GTUtility.areStacksEqual(GTOreDictUnificator.get(aStack), mInventory[i]) && mDisableMultiStack)
+        if (side == mMainFacing) return false;
+        if (aIndex < getInputSlot()) return false;
+        if (aIndex >= getInputSlot() + mInputSlotCount) return false;
+        if (!mAllowInputFromOutputSide && side == aBaseMetaTileEntity.getFrontFacing()) return false;
+
+        for (int i = getInputSlot(), j = i + mInputSlotCount; i < j; i++) {
+            if (GTUtility.areStacksEqual(GTOreDictUnificator.get(aStack), mInventory[i]) && mDisableMultiStack) {
                 return i == aIndex;
+            }
+        }
+
         return mDisableFilter || allowPutStackValidated(aBaseMetaTileEntity, aIndex, side, aStack);
     }
 
@@ -994,6 +1029,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     }
 
     public static boolean isValidForLowGravity(GTRecipe tRecipe, int dimId) {
+        if (FakeCleanroom.isLowGravBypassEnabled()) return true;
         return // TODO check or get a better solution
         DimensionManager.getProvider(dimId)
             .getClass()
@@ -1014,7 +1050,11 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
             || DimensionManager.getProvider(dimId)
                 .getClass()
                 .getName()
-                .contains("SpaceStation");
+                .contains("SpaceStation")
+            || DimensionManager.getProvider(dimId)
+                .getClass()
+                .getName()
+                .contains("Mothership");
     }
 
     /**
@@ -1044,9 +1084,8 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
             getBaseMetaTileEntity().setOnFire();
             return DID_NOT_FIND_RECIPE;
         }
-        if (tRecipe.getMetadataOrDefault(CompressionTierKey.INSTANCE, 0) > 0)
-            return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
-        if (GTMod.gregtechproxy.mLowGravProcessing && (tRecipe.mSpecialValue == -100 || tRecipe.mSpecialValue == -300)
+        if (tRecipe.getMetadataOrDefault(COMPRESSION_TIER, 0) > 0) return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
+        if (GTMod.proxy.mLowGravProcessing && (tRecipe.mSpecialValue == -100 || tRecipe.mSpecialValue == -300)
             && !isValidForLowGravity(tRecipe, getBaseMetaTileEntity().getWorld().provider.dimensionId))
             return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
         if (tRecipe.mCanBeBuffered) mLastRecipe = tRecipe;
@@ -1077,7 +1116,8 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
                     mOutputItems[i] = null;
                 }
         }
-        mOutputFluid = tRecipe.getFluidOutput(0);
+        if (getBaseMetaTileEntity().getRandomNumber(10000) < tRecipe.getFluidOutputChance(0))
+            mOutputFluid = tRecipe.getFluidOutput(0);
         if (!skipOC) {
             calculateCustomOverclock(tRecipe);
             // In case recipe is too OP for that machine
@@ -1149,7 +1189,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
         final NBTTagCompound tag = accessor.getNBTData();
 
         if (tag.getBoolean("stutteringSingleBlock")) {
-            currenttip.add(StatCollector.translateToLocal(getWailaStutteringLine(tag)));
+            currenttip.add(translateToLocal(getWailaStutteringLine(tag)));
         } else {
             boolean isActive = tag.getBoolean("isActiveSingleBlock");
             if (isActive) {
@@ -1157,31 +1197,31 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
                 if (!isSteampowered()) {
                     if (mEUt > 0) {
                         currenttip.add(
-                            StatCollector.translateToLocalFormatted(
+                            translateToLocalFormatted(
                                 "GT5U.waila.energy.use_with_amperage",
-                                GTUtility.formatNumbers(mEUt),
+                                formatNumber(mEUt),
                                 GTUtility.getAmperageForTier(mEUt, (byte) getInputTier()),
                                 GTUtility.getColoredTierNameFromTier((byte) getInputTier())));
                     } else if (mEUt < 0) {
                         currenttip.add(
-                            StatCollector.translateToLocalFormatted(
+                            translateToLocalFormatted(
                                 "GT5U.waila.energy.produce_with_amperage",
-                                GTUtility.formatNumbers(-mEUt),
+                                formatNumber(-mEUt),
                                 GTUtility.getAmperageForTier(-mEUt, (byte) getOutputTier()),
                                 GTUtility.getColoredTierNameFromTier((byte) getOutputTier())));
                     }
                 } else {
                     if (mEUt > 0) {
                         currenttip.add(
-                            StatCollector.translateToLocalFormatted(
+                            translateToLocalFormatted(
                                 "GTPP.waila.steam.use",
-                                GTUtility.formatNumbers(mEUt * 40),
+                                formatNumber(mEUt * 40L),
                                 GTUtility.getColoredTierNameFromVoltage(mEUt)));
                     } else if (mEUt < 0) {
                         currenttip.add(
-                            StatCollector.translateToLocalFormatted(
+                            translateToLocalFormatted(
                                 "GTPP.waila.steam.use",
-                                GTUtility.formatNumbers(-mEUt * 40),
+                                formatNumber(-mEUt * 40L),
                                 GTUtility.getColoredTierNameFromVoltage(-mEUt)));
                     }
                 }
@@ -1195,12 +1235,12 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
         }
 
         currenttip.add(
-            StatCollector.translateToLocalFormatted(
+            translateToLocalFormatted(
                 "GT5U.waila.machine_facing",
                 getFacingNameLocalized(tag.getInteger("mainFacingSingleBlock"))));
 
         currenttip.add(
-            StatCollector.translateToLocalFormatted(
+            translateToLocalFormatted(
                 "GT5U.waila.output_facing",
                 getFacingNameLocalized(tag.getInteger("outputFacingSingleBlock"))));
     }
@@ -1279,6 +1319,8 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
         builder.widget(createChargerSlot(79, 62));
 
         addProgressBar(builder, uiProperties);
+
+        builder.widget(createMuffleButton());
 
         builder.widget(
             createErrorStatusArea(
@@ -1408,7 +1450,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     @Override
     protected SlotWidget createChargerSlot(int x, int y) {
         if (isSteampowered()) {
-            return (SlotWidget) createChargerSlot(x, y, UNUSED_SLOT_TOOLTIP, new String[0])
+            return (SlotWidget) createChargerSlot(x, y, UNUSED_SLOT_TOOLTIP, GTValues.emptyStringArray)
                 .setBackground(getGUITextureSet().getItemSlot());
         } else {
             return super.createChargerSlot(x, y);
@@ -1441,18 +1483,23 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     protected Widget createSteamProgressBar(ModularWindow.Builder builder) {
         builder.widget(new FakeSyncWidget.LongSyncer(this::getSteamVar, val -> getSteamVar = val));
 
-        return new ProgressBar().setProgress(() -> (float) getSteamVar() / maxSteamStore())
-            .setDirection(ProgressBar.Direction.UP)
-            .setTexture(
-                getSteamVariant() == SteamVariant.BRONZE ? GTUITextures.PROGRESSBAR_STEAM_FILL
-                    : GTUITextures.PROGRESSBAR_STEAM_FILL_STEEL,
-                54)
-            .setSynced(true, false)
-            .dynamicTooltip(() -> Collections.singletonList("Steam: " + getSteamVar + "/" + maxSteamStore() + "L"))
-            .setTooltipShowUpDelay(TOOLTIP_DELAY)
-            .setUpdateTooltipEveryTick(true)
-            .setSize(10, 54)
-            .setPos(7, 24);
+        boolean isSteel = getSteamVariant() == SteamVariant.STEEL;
+        builder.widget(
+            new DrawableWidget().setDrawable(isSteel ? GTUITextures.STEAM_GAUGE_BG_STEEL : GTUITextures.STEAM_GAUGE_BG)
+                .dynamicTooltip(
+                    () -> Collections.singletonList(
+                        translateToLocalFormatted(
+                            STEAM_AMOUNT_LANGKEY,
+                            numberFormat.format(getSteamVar * 2), // internal steam storage is done at a 2:1 ratio
+                            numberFormat.format(maxSteamStore() * 2))))// internal steam storage is done at a 2:1 ratio
+                .setTooltipShowUpDelay(TOOLTIP_DELAY)
+                .setUpdateTooltipEveryTick(true)
+                .setSize(48, 42)
+                .setPos(-48, -8));
+
+        return new DrawableWidget().setDrawable(new CircularGaugeDrawable(() -> (float) getSteamVar / maxSteamStore()))
+            .setPos(-48 + 21, -8 + 21)
+            .setSize(18, 4);
     }
 
     protected Widget setNEITransferRect(Widget widget, String transferRectID) {
@@ -1461,11 +1508,13 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
         }
         final String transferRectTooltip;
         if (isSteampowered()) {
-            transferRectTooltip = StatCollector
-                .translateToLocalFormatted(NEI_TRANSFER_STEAM_TOOLTIP, overclockDescriber.getTierString());
+            transferRectTooltip = translateToLocalFormatted(
+                NEI_TRANSFER_STEAM_TOOLTIP,
+                overclockDescriber.getTierString());
         } else {
-            transferRectTooltip = StatCollector
-                .translateToLocalFormatted(NEI_TRANSFER_VOLTAGE_TOOLTIP, overclockDescriber.getTierString());
+            transferRectTooltip = translateToLocalFormatted(
+                NEI_TRANSFER_VOLTAGE_TOOLTIP,
+                overclockDescriber.getTierString());
         }
         widget.setNEITransferRect(transferRectID, new Object[] { overclockDescriber }, transferRectTooltip);
         return widget;
@@ -1538,7 +1587,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
         if (mStuttering) {
             return mTooltipCache.getData(
                 STALLED_STUTTERING_TOOLTIP,
-                StatCollector.translateToLocal(POWER_SOURCE_KEY + (isSteampowered() ? "steam" : "power")));
+                translateToLocal(POWER_SOURCE_KEY + (isSteampowered() ? "steam" : "power")));
         }
         return null;
     }
@@ -1556,5 +1605,10 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
             case 4 -> 128000;
             default -> 256000;
         };
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return false;
     }
 }

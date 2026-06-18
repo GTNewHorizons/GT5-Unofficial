@@ -1,19 +1,16 @@
 package gtPlusPlus.api.recipe;
 
-import static net.minecraft.util.EnumChatFormatting.GRAY;
-
-import java.util.List;
-
 import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.util.StatCollector;
 
+import codechicken.nei.PositionedStack;
 import gregtech.api.recipe.BasicUIPropertiesBuilder;
 import gregtech.api.recipe.NEIRecipePropertiesBuilder;
 import gregtech.api.recipe.RecipeMapFrontend;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.nei.GTNEIDefaultHandler;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.MTEIsaMill;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
@@ -25,22 +22,13 @@ public class MillingFrontend extends RecipeMapFrontend {
     }
 
     @Override
-    protected List<String> handleNEIItemInputTooltip(List<String> currentTip,
-        GTNEIDefaultHandler.FixedPositionedStack pStack) {
-        if (ItemUtils.isMillingBall(pStack.item)) {
-            currentTip.add(GRAY + StatCollector.translateToLocal("gtpp.nei.milling.not_consumed"));
-        } else {
-            super.handleNEIItemInputTooltip(currentTip, pStack);
+    public void prepareRecipe(GTNEIDefaultHandler.CachedDefaultRecipe recipe) {
+        for (PositionedStack pStack : recipe.mInputs) {
+            if (pStack instanceof GTNEIDefaultHandler.FixedPositionedStack fixed
+                && MTEIsaMill.isMillingBall(pStack.item)) {
+                fixed.setCustomBadge("NC*", StatCollector.translateToLocal("gtpp.nei.milling.not_consumed"));
+            }
         }
-        return currentTip;
     }
 
-    @Override
-    protected void drawNEIOverlayForInput(GTNEIDefaultHandler.FixedPositionedStack stack) {
-        if (ItemUtils.isMillingBall(stack.item)) {
-            drawNEIOverlayText("NC*", stack);
-        } else {
-            super.drawNEIOverlayForInput(stack);
-        }
-    }
 }

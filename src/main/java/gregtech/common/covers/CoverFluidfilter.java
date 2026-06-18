@@ -1,11 +1,13 @@
 package gregtech.common.covers;
 
 import static gregtech.api.enums.GTValues.E;
+import static net.minecraft.util.StatCollector.translateToLocal;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -15,12 +17,18 @@ import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 
 import com.google.common.io.ByteArrayDataInput;
+import com.gtnewhorizon.gtnhlib.chat.customcomponents.ChatComponentFluidName;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 
 import gregtech.api.covers.CoverContext;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.util.GTUtility;
+import gregtech.common.covers.modes.BlockMode;
+import gregtech.common.covers.modes.FilterDirectionMode;
+import gregtech.common.covers.modes.FilterType;
+import gregtech.common.gui.modularui.cover.CoverFluidfilterGui;
+import gregtech.common.gui.modularui.cover.base.CoverBaseGui;
 import gregtech.common.gui.mui1.cover.FluidFilterUIFactory;
 import io.netty.buffer.ByteBuf;
 
@@ -63,6 +71,57 @@ public class CoverFluidfilter extends Cover {
         return this;
     }
 
+    public FilterDirectionMode getFilterDirection() {
+        return (getFilterMode() >> 2 & 0x1) == 0 ? FilterDirectionMode.INPUT : FilterDirectionMode.OUTPUT;
+    }
+
+    public void setFilterDirection(FilterDirectionMode ioMode) {
+        FilterDirectionMode oldMode = getFilterDirection();
+        if (ioMode == oldMode) return;
+
+        int filterMode = getFilterMode();
+        if (ioMode == FilterDirectionMode.INPUT) {
+            filterMode &= 0x3;
+        } else {
+            filterMode |= 0x4;
+        }
+        setFilterMode(filterMode);
+    }
+
+    public FilterType getFilterType() {
+        return (getFilterMode() & 0x1) == 0 ? FilterType.WHITELIST : FilterType.BLACKLIST;
+    }
+
+    public void setFilterType(FilterType filterType) {
+        FilterType oldFilterType = getFilterType();
+        if (filterType == oldFilterType) return;
+
+        int filterMode = getFilterMode();
+        if (filterType == FilterType.WHITELIST) {
+            filterMode &= 0x6;
+        } else {
+            filterMode |= 0x1;
+        }
+        setFilterMode(filterMode);
+    }
+
+    public BlockMode getBlockMode() {
+        return (getFilterMode() >> 1 & 0x1) == 0 ? BlockMode.BLOCK : BlockMode.ALLOW;
+    }
+
+    public void setBlockMode(BlockMode blockMode) {
+        BlockMode oldBlockMode = getBlockMode();
+        if (blockMode == oldBlockMode) return;
+
+        int filterMode = getFilterMode();
+        if (blockMode == BlockMode.BLOCK) {
+            filterMode &= 0x5;
+        } else {
+            filterMode |= 0x2;
+        }
+        setFilterMode(filterMode);
+    }
+
     @Override
     protected void readDataFromNbt(NBTBase nbt) {
         if (nbt instanceof NBTTagCompound tNBT) {
@@ -101,20 +160,27 @@ public class CoverFluidfilter extends Cover {
         if (fluid == null) return E;
 
         final FluidStack sFluid = new FluidStack(fluid, 1000);
-        return (String.format("Filtering Fluid: %s - %s", sFluid.getLocalizedName(), getFilterMode(mFilterMode)));
+        return (StatCollector.translateToLocalFormatted(
+            "gt.interact.desc.filtering_fuild",
+            sFluid.getLocalizedName(),
+            getFilterMode(mFilterMode)));
     }
 
     public String getFilterMode(int aFilterMode) {
+        return translateToLocal(getFilterModeKey(aFilterMode));
+    }
+
+    public String getFilterModeKey(int aFilterMode) {
         return switch (aFilterMode) {
-            case FILTER_INPUT_DENY_OUTPUT -> GTUtility.trans("043", "Filter input, Deny output");
-            case INVERT_INPUT_DENY_OUTPUT -> GTUtility.trans("044", "Invert input, Deny output");
-            case FILTER_INPUT_ANY_OUTPUT -> GTUtility.trans("045", "Filter input, Permit any output");
-            case INVERT_INPUT_ANY_OUTPUT -> GTUtility.trans("046", "Invert input, Permit any output");
-            case DENY_INPUT_FILTER_OUTPUT -> GTUtility.trans("307", "Deny input, Filter output");
-            case DENY_INPUT_INVERT_OUTPUT -> GTUtility.trans("308", "Deny input, Invert output");
-            case ANY_INPUT_FILTER_OUTPUT -> GTUtility.trans("309", "Permit any input, Filter output");
-            case ANY_INPUT_INVERT_OUTPUT -> GTUtility.trans("310", "Permit any input, Invert output");
-            default -> ("UNKNOWN");
+            case FILTER_INPUT_DENY_OUTPUT -> "gt.interact.desc.filter_i_deny_o";
+            case INVERT_INPUT_DENY_OUTPUT -> "gt.interact.desc.invert_i_deny_o";
+            case FILTER_INPUT_ANY_OUTPUT -> "gt.interact.desc.filter_i_any_o";
+            case INVERT_INPUT_ANY_OUTPUT -> "gt.interact.desc.invert_i_any_o";
+            case DENY_INPUT_FILTER_OUTPUT -> "gt.interact.desc.deny_i_filter_o";
+            case DENY_INPUT_INVERT_OUTPUT -> "gt.interact.desc.deny_i_invert_o";
+            case ANY_INPUT_FILTER_OUTPUT -> "gt.interact.desc.any_i_filter_o";
+            case ANY_INPUT_INVERT_OUTPUT -> "gt.interact.desc.any_i_invert_o";
+            default -> "gt.interact.desc.unknown";
         };
     }
 
@@ -125,7 +191,7 @@ public class CoverFluidfilter extends Cover {
             mFilterMode = 7;
         }
 
-        GTUtility.sendChatToPlayer(aPlayer, getFilterMode(mFilterMode));
+        GTUtility.sendChatTrans(aPlayer, getFilterModeKey(mFilterMode));
     }
 
     @Override
@@ -142,8 +208,7 @@ public class CoverFluidfilter extends Cover {
                 final int aFluid = tFluid.getFluidID();
                 mFluidID = aFluid;
                 final FluidStack sFluid = new FluidStack(FluidRegistry.getFluid(aFluid), 1000);
-                GTUtility
-                    .sendChatToPlayer(aPlayer, GTUtility.trans("047", "Filter Fluid: ") + sFluid.getLocalizedName());
+                GTUtility.sendChatTrans(aPlayer, "GT5U.chat.cover.fluid_filter", new ChatComponentFluidName(sFluid));
             }
             return true;
         }
@@ -214,6 +279,11 @@ public class CoverFluidfilter extends Cover {
     }
 
     // GUI stuff
+
+    @Override
+    protected @NotNull CoverBaseGui<?> getCoverGui() {
+        return new CoverFluidfilterGui(this);
+    }
 
     @Override
     public boolean hasCoverGUI() {

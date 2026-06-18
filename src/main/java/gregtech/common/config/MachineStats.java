@@ -5,7 +5,7 @@ import com.gtnewhorizon.gtnhlib.config.Config;
 import gregtech.api.enums.Mods;
 
 @Config(
-    modid = Mods.Names.GREG_TECH,
+    modid = Mods.ModIDs.GREG_TECH,
     category = "machine_stats",
     configSubDirectory = "GregTech",
     filename = "MachineStats")
@@ -117,7 +117,7 @@ public class MachineStats {
         public boolean requiresUUA;
 
         @Config.Comment("Duration multiplier.")
-        @Config.DefaultInt(3215)
+        @Config.DefaultInt(3200)
         @Config.RequiresMcRestart
         public int durationMultiplier;
 
@@ -186,7 +186,7 @@ public class MachineStats {
         public int maxReplacementPercentage;
 
         @Config.Comment("List of other blocks allowed as a part of the cleanroom. Format: <block name> or <block name>:<meta>.")
-        @Config.DefaultStringList({ "BW_GlasBlocks", // All Bart glass (including HV tier)
+        @Config.DefaultStringList({ "BW_TieredGlass", "BW_ExtraGlass", // All Bart glass (including HV tier)
             "tile.openblocks.elevator", "tile.openblocks.elevator_rotating", // OpenBlocks elevators
             "tile.blockTravelAnchor", // EnderIO travel anchors
             "tile.blockCosmeticOpaque:2", // TC Warded glass (usually HV tier)

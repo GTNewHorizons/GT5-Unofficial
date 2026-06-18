@@ -1,11 +1,11 @@
 package gtPlusPlus.core.item.general;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.Mods.GTPlusPlus;
-import static gregtech.api.enums.Mods.Names;
+import static gregtech.api.enums.Mods.ModIDs;
 
 import java.util.List;
 
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -13,65 +13,38 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.StatCollector;
-import net.minecraft.world.World;
 
 import baubles.api.BaubleType;
 import baubles.api.IBauble;
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.api.util.GTUtility;
+import gregtech.api.enums.Mods;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
 import ic2.api.item.IElectricItemManager;
 
 @Optional.InterfaceList(
-    value = { @Optional.Interface(iface = "baubles.api.IBauble", modid = Names.BAUBLES),
-        @Optional.Interface(iface = "baubles.api.BaubleType", modid = Names.BAUBLES) })
+    value = { @Optional.Interface(iface = "baubles.api.IBauble", modid = ModIDs.BAUBLES),
+        @Optional.Interface(iface = "baubles.api.BaubleType", modid = Mods.ModIDs.BAUBLES) })
 public class ItemCloakingDevice extends Item implements IElectricItem, IElectricItemManager, IBauble {
 
     private final String unlocalizedName = "personalCloakingDevice";
     private final ItemStack thisStack;
     private static final int maxValueEU = 10000 * 20 * 500;
-    protected double chargeEU = 0;
 
     public ItemCloakingDevice(final double charge) {
-        this.chargeEU = charge;
         this.setCreativeTab(AddToCreativeTab.tabMachines);
         this.setUnlocalizedName(this.unlocalizedName);
         this.setMaxStackSize(1);
         this.setTextureName(GTPlusPlus.ID + ":" + "personalCloakingDevice");
-        this.thisStack = ItemUtils.getSimpleStack(this);
+        this.thisStack = new ItemStack(this);
         this.charge(this.thisStack, charge, 3, true, false);
         if (charge == (10000 * 20 * 500)) {
             this.setDamage(this.thisStack, 13);
         }
         GameRegistry.registerItem(this, this.unlocalizedName + "-" + charge);
-    }
-
-    @Override
-    public void onUpdate(final ItemStack itemStack, final World worldObj, final Entity player, final int p_77663_4_,
-            final boolean p_77663_5_) {
-        if (worldObj.isRemote) {
-            return;
-        }
-
-        if (player instanceof EntityPlayer) {
-            for (final ItemStack is : ((EntityPlayer) player).inventory.mainInventory) {
-                if (is == itemStack) {
-                    continue;
-                }
-                if (is != null) {
-                    if (is.getItem() instanceof final IElectricItem electricItem) {
-                        this.chargeEU = ElectricItem.manager.getCharge(is);
-                    }
-                }
-            }
-        }
-
-        super.onUpdate(itemStack, worldObj, player, p_77663_4_, p_77663_5_);
     }
 
     @Override
@@ -126,7 +99,8 @@ public class ItemCloakingDevice extends Item implements IElectricItem, IElectric
     }
 
     @Override
-    public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
+    public void addInformation(final ItemStack stack, final EntityPlayer player, final List<String> list,
+        final boolean adv) {
         list.add("");
         list.add(StatCollector.translateToLocal("item.personalCloakingDevice.tooltip.0"));
         list.add(StatCollector.translateToLocal("item.personalCloakingDevice.tooltip.1"));
@@ -135,18 +109,18 @@ public class ItemCloakingDevice extends Item implements IElectricItem, IElectric
         list.add(
             StatCollector.translateToLocalFormatted(
                 "item.personalCloakingDevice.tooltip.3",
-                GTUtility.formatNumbers(this.getTier(this.thisStack)),
-                GTUtility.formatNumbers(this.getTransferLimit(this.thisStack))));
+                formatNumber(this.getTier(this.thisStack)),
+                formatNumber(this.getTransferLimit(this.thisStack))));
         list.add(
             StatCollector.translateToLocalFormatted(
                 "item.personalCloakingDevice.tooltip.4",
-                GTUtility.formatNumbers(this.getCharge(stack)),
+                formatNumber(this.getCharge(stack)),
                 MathUtils.findPercentage(this.getCharge(stack), this.getMaxCharge(stack))));
         list.add(
             StatCollector.translateToLocalFormatted(
                 "item.personalCloakingDevice.tooltip.5",
-                GTUtility.formatNumbers(this.secondsLeft(stack))));
-        super.addInformation(stack, aPlayer, list, bool);
+                formatNumber(this.secondsLeft(stack))));
+        super.addInformation(stack, player, list, adv);
     }
 
     @Override

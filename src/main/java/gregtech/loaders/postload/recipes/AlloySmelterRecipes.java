@@ -2,13 +2,20 @@ package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.recipe.RecipeMaps.alloySmelterRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
+import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
+import bartworks.common.loaders.ItemRegistry;
+import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.TierEU;
 import gregtech.api.objects.MaterialStack;
+import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.util.GTOreDictUnificator;
 
 public class AlloySmelterRecipes implements Runnable {
@@ -36,11 +43,11 @@ public class AlloySmelterRecipes implements Runnable {
             new MaterialStack(Materials.RedAlloy, 1L) },
         { new MaterialStack(Materials.Iron, 1L), new MaterialStack(Materials.Tin, 1L),
             new MaterialStack(Materials.TinAlloy, 2L) },
-        { new MaterialStack(Materials.WroughtIron, 1L), new MaterialStack(Materials.Tin, 1L),
+        { new MaterialStack(Materials.CastIron, 1L), new MaterialStack(Materials.Tin, 1L),
             new MaterialStack(Materials.TinAlloy, 2L) },
         { new MaterialStack(Materials.Iron, 2L), new MaterialStack(Materials.Nickel, 1L),
             new MaterialStack(Materials.Invar, 3L) },
-        { new MaterialStack(Materials.WroughtIron, 2L), new MaterialStack(Materials.Nickel, 1L),
+        { new MaterialStack(Materials.CastIron, 2L), new MaterialStack(Materials.Nickel, 1L),
             new MaterialStack(Materials.Invar, 3L) },
         { new MaterialStack(Materials.Tin, 9L), new MaterialStack(Materials.Antimony, 1L),
             new MaterialStack(Materials.SolderingAlloy, 10L) },
@@ -70,14 +77,14 @@ public class AlloySmelterRecipes implements Runnable {
                         .itemInputs(ingot1, dust2)
                         .itemOutputs(outputIngot)
                         .duration((int) materials[2].mAmount * 50)
-                        .eut(16)
+                        .eut(TierEU.RECIPE_LV / 2)
                         .addTo(alloySmelterRecipes);
                     if (ingot2 != null) {
                         GTValues.RA.stdBuilder()
                             .itemInputs(ingot1, ingot2)
                             .itemOutputs(outputIngot)
                             .duration((int) materials[2].mAmount * 50)
-                            .eut(16)
+                            .eut(TierEU.RECIPE_LV / 2)
                             .addTo(alloySmelterRecipes);
                     }
                 }
@@ -87,7 +94,7 @@ public class AlloySmelterRecipes implements Runnable {
                         .itemInputs(dust1, ingot2)
                         .itemOutputs(outputIngot)
                         .duration((int) materials[2].mAmount * 50)
-                        .eut(16)
+                        .eut(TierEU.RECIPE_LV / 2)
                         .addTo(alloySmelterRecipes);
                 }
 
@@ -95,7 +102,7 @@ public class AlloySmelterRecipes implements Runnable {
                     .itemInputs(dust1, dust2)
                     .itemOutputs(outputIngot)
                     .duration((int) materials[2].mAmount * 50)
-                    .eut(16)
+                    .eut(TierEU.RECIPE_LV / 2)
                     .addTo(alloySmelterRecipes);
 
             }
@@ -104,11 +111,42 @@ public class AlloySmelterRecipes implements Runnable {
         // We use rubber
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.RawRubber, 3L),
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.RubberRaw, 3L),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Sulfur, 1L))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Rubber, 1L))
             .duration(10 * SECONDS)
-            .eut(8)
+            .eut(TierEU.RECIPE_ULV)
             .addTo(alloySmelterRecipes);
+
+        // Bartworks Glass Tube
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Glass, 2L),
+                ItemList.Shape_Mold_Rod_Long.get(0L))
+            .itemOutputs(new ItemStack(ItemRegistry.PUMPPARTS, 1, 0))
+            .duration(15 * SECONDS)
+            .eut(TierEU.RECIPE_ULV)
+            .addTo(alloySmelterRecipes);
+
+        // From ProcessingDye - glass dyeing
+        for (Dyes dye : Dyes.VALUES) {
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.Glass, 8L),
+                    new OreDictItemStack(dye.name(), 1))
+                .itemOutputs(new net.minecraft.item.ItemStack(Blocks.stained_glass, 8, 15 - dye.mIndex))
+                .duration(10 * SECONDS)
+                .eut(TierEU.RECIPE_ULV)
+                .addTo(alloySmelterRecipes);
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(
+                    new net.minecraft.item.ItemStack(Blocks.glass, 8, WILDCARD),
+                    new OreDictItemStack(dye.name(), 1))
+                .itemOutputs(new net.minecraft.item.ItemStack(Blocks.stained_glass, 8, 15 - dye.mIndex))
+                .duration(10 * SECONDS)
+                .eut(TierEU.RECIPE_ULV)
+                .addTo(alloySmelterRecipes);
+        }
     }
 }

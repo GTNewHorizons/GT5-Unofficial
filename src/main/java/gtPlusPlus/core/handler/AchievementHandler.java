@@ -17,10 +17,9 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.ItemCraftedEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.ItemSmeltedEvent;
 import gregtech.GTMod;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GTLog;
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.core.material.MaterialsElements;
@@ -38,21 +37,18 @@ public class AchievementHandler {
     private static final String aBaseAchievementName = "gtpp.start";
 
     public AchievementHandler() {
-
-        Logger.INFO("Initializing GT++ achievements");
-        GTLog.out.println("Initializing GT++ achievements");
-
         // register first
         this.registerAchievement(
             aBaseAchievementName,
             0,
             0,
-            MetaGeneratedGregtechTools.INSTANCE.getToolWithStats(
-                MetaGeneratedGregtechTools.ANGLE_GRINDER,
-                1,
-                Materials.Osmium,
-                Materials.Osmium,
-                null),
+            MetaGeneratedGregtechTools.getInstance()
+                .getToolWithStats(
+                    MetaGeneratedGregtechTools.ANGLE_GRINDER,
+                    1,
+                    Materials.Osmium,
+                    Materials.Osmium,
+                    null),
             "",
             true);
 
@@ -106,20 +102,13 @@ public class AchievementHandler {
             aBaseAchievementName,
             false);
         this.registerAchievement(
-            "earlywasher",
-            -13,
-            -10,
-            GregtechItemList.SimpleDustWasher_ULV.get(1),
-            aBaseAchievementName,
-            false);
-        this.registerAchievement(
             "advancedsteam",
             -12,
             -10,
             GregtechItemList.Boiler_Advanced_MV.get(1),
             aBaseAchievementName,
             false);
-        if (GTMod.gregtechproxy.mPollution) {
+        if (GTMod.proxy.mPollution) {
             this.registerAchievement(
                 "pollutionremoval",
                 -11,
@@ -139,34 +128,10 @@ public class AchievementHandler {
         // Multis (-4/-2/0)
         this.registerAchievement("multi.pss", -16, -7, GregtechItemList.PowerSubStation.get(1), "multi.abs", false);
         this.registerAchievement("multi.cyclo", -15, -7, GregtechItemList.COMET_Cyclotron.get(1), "multi.abs", false);
-        this.registerAchievement(
-            "multi.sifter",
-            -14,
-            -7,
-            GregtechItemList.Industrial_Sifter.get(1),
-            "dust.eglin",
-            false);
-        this.registerAchievement(
-            "multi.cokeoven",
-            -13,
-            -7,
-            GregtechItemList.Industrial_CokeOven.get(1),
-            "multi.abs",
-            false);
-        this.registerAchievement(
-            "multi.boiler.thermal",
-            -12,
-            -7,
-            GregtechItemList.GT4_Thermal_Boiler.get(1),
-            "multi.abs",
-            false);
-        this.registerAchievement(
-            "multi.zhuhai",
-            -11,
-            -7,
-            GregtechItemList.Industrial_FishingPond.get(1),
-            aBaseAchievementName,
-            false);
+        this.registerAchievement("multi.sifter", -14, -7, ItemList.LargeSifter.get(1), "dust.eglin", false);
+        this.registerAchievement("multi.cokeoven", -13, -7, ItemList.IndustrialCokeOven.get(1), "multi.abs", false);
+        this.registerAchievement("multi.boiler.thermal", -12, -7, ItemList.ThermalBoiler.get(1), "multi.abs", false);
+        this.registerAchievement("multi.zhuhai", -11, -7, ItemList.FishingPort.get(1), aBaseAchievementName, false);
 
         // Casings
         this.registerAchievement(
@@ -203,23 +168,10 @@ public class AchievementHandler {
             "decay.neptunium238",
             11,
             8,
-            ItemUtils.getSimpleStack(ModItems.dustNeptunium238),
+            GregtechItemList.Neptunium238Dust.get(1),
             "multi.cyclo",
             false);
-        this.registerAchievement(
-            "decay.radium226",
-            12,
-            8,
-            ItemUtils.getSimpleStack(ModItems.dustRadium226),
-            "multi.cyclo",
-            false);
-        this.registerAchievement(
-            "decay.molybdenum99",
-            13,
-            8,
-            ItemUtils.getSimpleStack(ModItems.dustMolybdenum99),
-            "multi.cyclo",
-            false);
+        this.registerAchievement("decay.radium226", 12, 8, GregtechItemList.Radium226Dust.get(1), "multi.cyclo", false);
 
         AchievementPage.registerAchievementPage(
             new AchievementPage(
@@ -272,15 +224,14 @@ public class AchievementHandler {
      * @param aStack  - The Itemstack to check for achievements.
      * @param aPlayer - The player to unlock for.
      */
-    private void handleAchivement(ItemStack aStack, EntityPlayer aPlayer) {
+    private void handleAchievement(ItemStack aStack, EntityPlayer aPlayer) {
 
         if (aPlayer != null && aStack != null) {
             /*
              * Copy this to all events because I am lazy - Alk 2019
              */
 
-            // Safe name
-            String aUnlocalName = ItemUtils.getUnlocalizedItemName(aStack);
+            String aUnlocalName = aStack.getUnlocalizedName();
 
             boolean isValid = false;
             // Check if valid name // mod
@@ -460,7 +411,7 @@ public class AchievementHandler {
         EntityPlayer player = event.player;
         ItemStack stack = event.crafting;
         if (player != null && stack != null) {
-            handleAchivement(stack, player);
+            handleAchievement(stack, player);
         }
     }
 
@@ -469,7 +420,7 @@ public class AchievementHandler {
         EntityPlayer player = event.player;
         ItemStack stack = event.smelting;
         if (player != null && stack != null) {
-            handleAchivement(stack, player);
+            handleAchievement(stack, player);
         }
     }
 
@@ -478,7 +429,7 @@ public class AchievementHandler {
         EntityPlayer player = event.entityPlayer;
         ItemStack stack = event.item.getEntityItem();
         if (player != null && stack != null) {
-            handleAchivement(stack, player);
+            handleAchievement(stack, player);
         }
     }
 }

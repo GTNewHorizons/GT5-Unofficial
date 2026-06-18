@@ -58,6 +58,10 @@ public class BlockStorage extends GTGenericBlock {
         return this.mUnlocalizedName;
     }
 
+    public String getLocalizedName(int meta) {
+        return getLocalizedName();
+    }
+
     @Override
     public String getLocalizedName() {
         return StatCollector.translateToLocal(this.mUnlocalizedName + ".name");

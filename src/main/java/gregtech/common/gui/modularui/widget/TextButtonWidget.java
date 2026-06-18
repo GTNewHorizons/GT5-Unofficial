@@ -32,11 +32,6 @@ public class TextButtonWidget extends MultiChildWidget {
     }
 
     @Override
-    public Widget setPos(int x, int y) {
-        return super.setPos(x, y);
-    }
-
-    @Override
     public Widget setSize(int width, int height) {
         this.mButton.setSize(width, height);
         this.mText.setSize(width, height);

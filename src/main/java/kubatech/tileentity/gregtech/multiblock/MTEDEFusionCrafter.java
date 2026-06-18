@@ -18,6 +18,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TELEPORTER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TELEPORTER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TELEPORTER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TELEPORTER_GLOW;
+import static gregtech.api.util.GTRecipeConstants.DEFC_CASING_TIER;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
 import java.util.Arrays;
@@ -25,6 +26,7 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.tuple.Pair;
@@ -36,7 +38,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.GTValues;
+import gregtech.api.enums.GTAuthors;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -45,6 +47,8 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
@@ -104,7 +108,7 @@ public class MTEDEFusionCrafter extends KubaTechGTMultiBlockBase<MTEDEFusionCraf
             buildHatchAdder(MTEDEFusionCrafter.class)
                 .atLeast(InputBus, InputHatch, OutputBus, OutputHatch, Energy, Maintenance)
                 .casingIndex(CASING_INDEX)
-                .dot(1)
+                .hint(1)
                 .buildAndChain(onElementPass(e -> e.mCasing++, ofBlock(BlockLoader.defcCasingBlock, 7))))
         .addElement('n', onElementPass(e -> e.mCasing++, ofBlock(BlockLoader.defcCasingBlock, 7)))
         .addElement('f', ofBlock(GregTechAPI.sBlockCasings4, 7))
@@ -123,22 +127,31 @@ public class MTEDEFusionCrafter extends KubaTechGTMultiBlockBase<MTEDEFusionCraf
         return STRUCTURE_DEFINITION;
     }
 
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    @Override
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         mCasing = 0;
         mTierCasing = -1;
         mFusionTierCasing = -1;
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 9, 0)) return false;
-        if (mCasing < 19) return false;
-        if (mTierCasing > 3 && mFusionTierCasing < 2) return false;
-        return mMaintenanceHatches.size() == 1;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 9, 0, errors)) return;
+        checkCasingMin(errors, mCasing, 19);
+        if (mTierCasing > 3 && mFusionTierCasing < 2) {
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.defc_fusion_machine_casing"));
+        }
+        checkHasMaintenanceHatch(errors);
+        checkHasEnergyHatch(errors);
+        checkHasAnyInput(errors);
+        checkHasAnyOutput(errors);
     }
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Fusion Crafter, DEFC")
-            .addInfo("Machine can be overclocked by using casings above the recipe tier:")
-            .addInfo("Recipe time is divided by number of tiers above the recipe")
+            .addInfo(
+                "Gains 1 " + EnumChatFormatting.LIGHT_PURPLE
+                    + "perfect overclock"
+                    + EnumChatFormatting.GRAY
+                    + " per casing tier above recipe")
             .addInfo("Normal EU OC still applies !")
             .beginStructureBlock(5, 10, 5, false)
             .addController("Front bottom center")
@@ -147,17 +160,18 @@ public class MTEDEFusionCrafter extends KubaTechGTMultiBlockBase<MTEDEFusionCraf
             .addOtherStructurePart("Fusion Machine Casing", "Touching Fusion Coil Block at every side")
             .addOtherStructurePart("Tiered Fusion Casing", "Rings (5x5 hollow) at layer 4 and 7")
             .addStructureInfo("Bloody Ichorium for tier 1, Draconium for tier 2, etc")
-            .addStructureInfo("To use tier 3 + you have to use fusion casing MK II")
-            .addInputBus("Any bottom casing", 1)
-            .addInputHatch("Any bottom casing", 1)
-            .addOutputBus("Any bottom casing", 1)
-            .addOutputHatch("Any bottom casing", 1)
-            .addEnergyHatch("Any bottom casing", 1)
-            .addMaintenanceHatch("Any bottom casing", 1)
-            .toolTipFinisher(GTValues.AuthorKuba, "Prometheus0000");
+            .addStructureInfo("To use tier 3 + you have to use Fusion Casing MK II")
+            .addInputBus("Any bottom Casing", 1)
+            .addInputHatch("Any bottom Casing", 1)
+            .addOutputBus("Any bottom Casing", 1)
+            .addOutputHatch("Any bottom Casing", 1)
+            .addEnergyHatch("Any bottom Casing", 1)
+            .addMaintenanceHatch("Any bottom Casing", 1)
+            .toolTipFinisher(GTAuthors.AuthorKuba, "Prometheus0000");
         return tt;
     }
 
+    @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
         int colorIndex, boolean aActive, boolean aRedstone) {
         if (side == facing) {
@@ -201,11 +215,6 @@ public class MTEDEFusionCrafter extends KubaTechGTMultiBlockBase<MTEDEFusionCraf
     }
 
     @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
-    }
-
-    @Override
     public RecipeMap<?> getRecipeMap() {
         return DEFCRecipes.fusionCraftingRecipes;
     }
@@ -217,29 +226,24 @@ public class MTEDEFusionCrafter extends KubaTechGTMultiBlockBase<MTEDEFusionCraf
             @NotNull
             @Override
             protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
-                return recipe.mSpecialValue <= mTierCasing ? CheckRecipeResultRegistry.SUCCESSFUL
-                    : CheckRecipeResultRegistry.insufficientMachineTier(recipe.mSpecialValue);
+                int recipetier = recipe.getMetadataOrDefault(DEFC_CASING_TIER, 1);
+
+                return recipetier <= mTierCasing ? CheckRecipeResultRegistry.SUCCESSFUL
+                    : CheckRecipeResultRegistry.insufficientMachineTier(recipetier);
             }
 
             @NotNull
             @Override
             protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
+                int recipetier = recipe.getMetadataOrDefault(DEFC_CASING_TIER, 1);
                 return super.createOverclockCalculator(recipe)
-                    .setDurationModifier(1.0 / (mTierCasing - recipe.mSpecialValue + 1));
+                    .setMachineHeat(mTierCasing > recipetier ? 1800 * (mTierCasing - recipetier) : 1)
+                    .setRecipeHeat(0)
+                    .setHeatOC(true)
+                    .setHeatDiscount(false);
             }
+
         };
-    }
-
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
-    }
-
-    public int getDamageToComponent(ItemStack aStack) {
-        return 0;
-    }
-
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
     }
 
     @Override
@@ -249,7 +253,7 @@ public class MTEDEFusionCrafter extends KubaTechGTMultiBlockBase<MTEDEFusionCraf
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
-        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 2, 9, 0, elementBudget, env, true, true);
+        return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 2, 9, 0, elementBudget, env, true, true);
     }
 
     @Override

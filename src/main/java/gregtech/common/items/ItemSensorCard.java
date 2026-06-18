@@ -20,7 +20,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Mods;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.items.GTGenericItem;
-import gregtech.api.util.GTLanguageManager;
+import gregtech.api.util.GTUtility;
 import shedar.mods.ic2.nuclearcontrol.api.CardState;
 import shedar.mods.ic2.nuclearcontrol.api.ICardWrapper;
 import shedar.mods.ic2.nuclearcontrol.api.IPanelDataSource;
@@ -32,10 +32,10 @@ import shedar.mods.ic2.nuclearcontrol.api.PanelString;
     value = {
         @Optional.Interface(
             iface = "shedar.mods.ic2.nuclearcontrol.api.IRemoteSensor",
-            modid = Mods.Names.I_C2_NUCLEAR_CONTROL),
+            modid = Mods.ModIDs.I_C2_NUCLEAR_CONTROL),
         @Optional.Interface(
             iface = "shedar.mods.ic2.nuclearcontrol.api.IPanelDataSource",
-            modid = Mods.Names.I_C2_NUCLEAR_CONTROL) })
+            modid = Mods.ModIDs.I_C2_NUCLEAR_CONTROL) })
 public class ItemSensorCard extends GTGenericItem implements IRemoteSensor, IPanelDataSource {
 
     private static final UUID CARD_TYPE = new UUID(0L, 41L);
@@ -53,9 +53,9 @@ public class ItemSensorCard extends GTGenericItem implements IRemoteSensor, IPan
         if (aStack != null) {
             NBTTagCompound tNBT = aStack.getTagCompound();
             if (tNBT == null) {
-                aList.add(transItem("014", "Missing Coordinates!"));
+                aList.add(GTUtility.translate("gt.item.desc.miss_coord"));
             } else {
-                aList.add(transItem("015", "Device at:"));
+                aList.add(GTUtility.translate("gt.item.desc.device_at"));
                 aList.add(
                     String.format(
                         "x: %d, y: %d, z: %d",
@@ -94,7 +94,7 @@ public class ItemSensorCard extends GTGenericItem implements IRemoteSensor, IPan
         for (int i = 0; i < (strCount = aCard.getInt("mString")); i++) {
             if ((aSettings & 1 << i) != 0) {
                 PanelString line = new PanelString();
-                line.textLeft = GTLanguageManager.getTranslation(aCard.getString("mString" + i), "\\\\");
+                line.textLeft = IGregTechDeviceInformation.decode(aCard.getString("mString" + i));
                 rList.add(line);
             }
         }

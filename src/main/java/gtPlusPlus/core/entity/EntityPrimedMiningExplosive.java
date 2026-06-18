@@ -2,7 +2,6 @@ package gtPlusPlus.core.entity;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityTNTPrimed;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
 import gtPlusPlus.core.util.math.MathUtils;
@@ -34,26 +33,6 @@ public class EntityPrimedMiningExplosive extends EntityTNTPrimed {
         this.prevPosY = y;
         this.prevPosZ = z;
         this.tntPlacedBy = placingEntity;
-    }
-
-    @Override
-    protected void entityInit() {}
-
-    /**
-     * returns if this entity triggers Block.onEntityWalking on the blocks they walk on. used for spiders and wolves to
-     * prevent them from trampling crops
-     */
-    @Override
-    protected boolean canTriggerWalking() {
-        return false;
-    }
-
-    /**
-     * Returns true if other Entities should be prevented from moving through this Entity.
-     */
-    @Override
-    public boolean canBeCollidedWith() {
-        return !this.isDead;
     }
 
     /**
@@ -330,7 +309,7 @@ public class EntityPrimedMiningExplosive extends EntityTNTPrimed {
                         0.0D,
                         0.0D,
                         0.0D);
-                } else if (e >= 2) {
+                } else {
                     this.worldObj.spawnParticle(
                         "explode",
                         this.posX + MathUtils.randDouble(0, 1),
@@ -377,22 +356,6 @@ public class EntityPrimedMiningExplosive extends EntityTNTPrimed {
          * this.worldObj.createExplosion(this, this.posX+MathUtils.randDouble(-10, 10), this.posY,
          * this.posZ+MathUtils.randDouble(-10, 10), f+MathUtils.randFloat(-5F, 5F), true);
          */
-    }
-
-    /**
-     * (abstract) Protected helper method to write subclass entity data to NBT.
-     */
-    @Override
-    protected void writeEntityToNBT(final NBTTagCompound tag) {
-        tag.setByte("Fuse", (byte) this.fuse);
-    }
-
-    /**
-     * (abstract) Protected helper method to read subclass entity data from NBT.
-     */
-    @Override
-    protected void readEntityFromNBT(final NBTTagCompound tag) {
-        this.fuse = tag.getByte("Fuse");
     }
 
     /**

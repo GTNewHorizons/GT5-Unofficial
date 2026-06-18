@@ -6,9 +6,12 @@ import java.util.Arrays;
 import java.util.List;
 
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+
+import org.jetbrains.annotations.Nullable;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -16,7 +19,6 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -59,14 +61,7 @@ public abstract class MetaGeneratedItemX32 extends MetaGeneratedItem {
             if (tMaterial == null) continue;
             if (doesMaterialAllowGeneration(tPrefix, tMaterial)) {
                 ItemStack tStack = new ItemStack(this, 1, i);
-                GTLanguageManager.addStringLocalization(
-                    getUnlocalizedName(tStack) + ".name",
-                    GTLanguageManager.i18nPlaceholder ? getDefaultLocalizationFormat(tPrefix, tMaterial, i)
-                        : getDefaultLocalization(tPrefix, tMaterial, i));
-                GTLanguageManager.addStringLocalization(
-                    getUnlocalizedName(tStack) + ".tooltip",
-                    tMaterial.getToolTip(tPrefix.mMaterialAmount / M));
-                if (tPrefix.mIsUnificatable) {
+                if (tPrefix.isUnifiable()) {
                     GTOreDictUnificator.set(tPrefix, tMaterial, tStack);
                 } else {
                     GTOreDictUnificator.registerOre(tPrefix.get(tMaterial), tStack);
@@ -88,8 +83,14 @@ public abstract class MetaGeneratedItemX32 extends MetaGeneratedItem {
      */
     @Override
     public short[] getRGBa(ItemStack aStack) {
+        if (!Materials.isMaterialItem(getDamage(aStack))) {
+            return Materials._NULL.mRGBa;
+        }
         Materials tMaterial = GregTechAPI.sGeneratedMaterials[getDamage(aStack) % 1000];
-        return tMaterial == null ? Materials._NULL.mRGBa : tMaterial.mRGBa;
+        if (tMaterial == null) {
+            return Materials._NULL.mRGBa;
+        }
+        return tMaterial.mRGBa;
     }
 
     /**
@@ -105,37 +106,16 @@ public abstract class MetaGeneratedItemX32 extends MetaGeneratedItem {
     }
 
     /* ---------- OVERRIDEABLE FUNCTIONS ---------- */
-
-    /**
-     * @param aPrefix   the OreDict Prefix
-     * @param aMaterial the Material
-     * @param aMetaData a Index from [0 - 31999]
-     * @return the Localized Name when default LangFiles are used.
-     */
-    public String getDefaultLocalization(OrePrefixes aPrefix, Materials aMaterial, int aMetaData) {
-        return aPrefix.getDefaultLocalNameForItem(aMaterial);
-    }
-
-    /**
-     * @param aPrefix   the OreDict Prefix
-     * @param aMaterial the Material
-     * @param aMetaData a Index from [0 - 31999]
-     * @return the Localized Name Format when default LangFiles are used.
-     */
-    public String getDefaultLocalizationFormat(OrePrefixes aPrefix, Materials aMaterial, int aMetaData) {
-        return aPrefix.getDefaultLocalNameFormatForItem(aMaterial);
-    }
-
     /**
      * @param aMetaData a Index from [0 - 31999]
      * @param aMaterial the Material
      * @return an Icon Container for the Item Display.
      */
     public final IIconContainer getIconContainer(int aMetaData, Materials aMaterial) {
-        return mGeneratedPrefixList[aMetaData / 1000] != null
-            && mGeneratedPrefixList[aMetaData / 1000].mTextureIndex >= 0
-                ? aMaterial.mIconSet.mTextures[mGeneratedPrefixList[aMetaData / 1000].mTextureIndex]
-                : null;
+        final OrePrefixes prefixes = getOrePrefix(aMetaData);
+        return prefixes != null && prefixes.getTextureIndex() >= 0
+            ? aMaterial.mIconSet.mTextures[prefixes.getTextureIndex()]
+            : null;
     }
 
     /**
@@ -153,19 +133,20 @@ public abstract class MetaGeneratedItemX32 extends MetaGeneratedItem {
 
     @Override
     public String getItemStackDisplayName(ItemStack aStack) {
-        String aName = super.getItemStackDisplayName(aStack);
-        int aDamage = aStack.getItemDamage();
-        if (aDamage < 32000 && aDamage >= 0) return Materials.getLocalizedNameForItem(aName, aDamage % 1000);
-        return aName;
+        final int damage = aStack.getItemDamage();
+        final OrePrefixes prefix = getOrePrefix(damage);
+        final Materials material = getMaterial(damage);
+        if (prefix != null && material != null) return prefix.getLocalizedNameForItem(material);
+        return super.getItemStackDisplayName(aStack);
     }
 
     @Override
     public ItemStack getContainerItem(ItemStack aStack) {
         int aDamage = aStack.getItemDamage();
-        if (aDamage < 32000 && aDamage >= 0) {
-            Materials aMaterial = GregTechAPI.sGeneratedMaterials[aDamage % 1000];
+        if (Materials.isMaterialItem(aDamage)) {
+            Materials aMaterial = getMaterial(aDamage);
             if (aMaterial != null && aMaterial != Materials.Empty && aMaterial != Materials._NULL) {
-                OrePrefixes aPrefix = mGeneratedPrefixList[aDamage / 1000];
+                OrePrefixes aPrefix = getOrePrefix(aDamage);
                 if (aPrefix != null) return GTUtility.copyAmount(1, aPrefix.mContainerItem);
             }
         }
@@ -174,22 +155,24 @@ public abstract class MetaGeneratedItemX32 extends MetaGeneratedItem {
 
     @Override
     public final IIconContainer getIconContainer(int aMetaData) {
-        return GregTechAPI.sGeneratedMaterials[aMetaData % 1000] == null ? null
-            : getIconContainer(aMetaData, GregTechAPI.sGeneratedMaterials[aMetaData % 1000]);
+        if (!Materials.isMaterialItem(aMetaData)) return null;
+        final Materials materials = getMaterial(aMetaData);
+        return materials == null ? null : getIconContainer(aMetaData, materials);
     }
 
     @Override
     public GeneratedMaterialRenderer getMaterialRenderer(int aMetaData) {
-        return GregTechAPI.sGeneratedMaterials[aMetaData % 1000] == null ? null
-            : GregTechAPI.sGeneratedMaterials[aMetaData % 1000].renderer;
+        if (!Materials.isMaterialItem(aMetaData)) return null;
+        final Materials materials = getMaterial(aMetaData);
+        return materials == null ? null : materials.renderer;
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public final void getSubItems(Item aItem, CreativeTabs aCreativeTab, List<ItemStack> aList) {
         for (int i = 0; i < 32000; i++) {
-            OrePrefixes aPrefix = mGeneratedPrefixList[i / 1000];
-            Materials aMaterial = GregTechAPI.sGeneratedMaterials[i % 1000];
+            OrePrefixes aPrefix = getOrePrefix(i);
+            Materials aMaterial = getMaterial(i);
             if (aPrefix != null && aMaterial != null) {
                 if (doesMaterialAllowGeneration(aPrefix, aMaterial)
                     && doesShowInCreative(aPrefix, aMaterial, GregTechAPI.sDoShowAllItemsInCreative)) {
@@ -206,7 +189,7 @@ public abstract class MetaGeneratedItemX32 extends MetaGeneratedItem {
     public final IIcon getIconFromDamage(int aMetaData) {
         if (aMetaData < 0) return null;
         if (aMetaData < 32000) {
-            Materials tMaterial = GregTechAPI.sGeneratedMaterials[aMetaData % 1000];
+            Materials tMaterial = getMaterial(aMetaData);
             if (tMaterial == null) return null;
             IIconContainer tIcon = getIconContainer(aMetaData, tMaterial);
             if (tIcon != null) return tIcon.getIcon();
@@ -216,10 +199,31 @@ public abstract class MetaGeneratedItemX32 extends MetaGeneratedItem {
     }
 
     @Override
-    public int getItemStackLimit(ItemStack aStack) {
-        int tDamage = getDamage(aStack);
-        if (tDamage < 32000 && mGeneratedPrefixList[tDamage / 1000] != null)
-            return Math.min(super.getItemStackLimit(aStack), mGeneratedPrefixList[tDamage / 1000].mDefaultStackSize);
-        return super.getItemStackLimit(aStack);
+    public int getItemStackLimit(ItemStack stack) {
+        final int damage = getDamage(stack);
+        final int stackSize = super.getItemStackLimit(stack);
+        if (damage >= 32_000) return stackSize;
+
+        final OrePrefixes prefix = getOrePrefix(damage);
+        if (prefix == null) return stackSize;
+
+        return Math.min(stackSize, prefix.getDefaultStackSize());
+    }
+
+    @Override
+    protected void addAdditionalToolTips(List<String> aList, ItemStack aStack, EntityPlayer aPlayer) {
+        if (!Materials.isMaterialItem(getDamage(aStack))) return;
+        final int damage = aStack.getItemDamage();
+        final Materials material = getMaterial(damage);
+        final OrePrefixes prefix = getOrePrefix(damage);
+        if (material == null || prefix == null) return;
+        material.addTooltips(aList, prefix.getMaterialAmount() / M);
+    }
+
+    public @Nullable OrePrefixes getOrePrefix(int damage) {
+        if (!Materials.isMaterialItem(damage)) return null;
+        final int i = damage / 1000;
+        if (i >= mGeneratedPrefixList.length) return null;
+        return mGeneratedPrefixList[i];
     }
 }

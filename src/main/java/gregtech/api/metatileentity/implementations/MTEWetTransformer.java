@@ -5,23 +5,23 @@ import static gregtech.api.enums.GTValues.V;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
-
-import org.apache.commons.lang3.ArrayUtils;
 
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
+import gregtech.api.util.GTSplit;
+import gregtech.api.util.GTUtility;
+import tectech.util.CommonValues;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEWetTransformer extends MTETransformer {
 
     private boolean mHalfMode = false;
 
-    public MTEWetTransformer(int aID, String aName, String aNameRegional, int aTier, String aDescription) {
-        super(aID, aName, aNameRegional, aTier, aDescription);
+    public MTEWetTransformer(int aID, String aName, String aNameRegional, int aTier) {
+        super(aID, aName, aNameRegional, aTier);
     }
 
     public MTEWetTransformer(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -38,49 +38,41 @@ public class MTEWetTransformer extends MTETransformer {
         ITexture[][][] rTextures = new ITexture[12][17][];
         for (byte b = -1; b < 16; b++) {
             rTextures[0][b + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][b + 1],
-                Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[mTier] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_64A[mTier + 1] };
             rTextures[1][b + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][b + 1],
-                Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[mTier] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_64A[mTier + 1] };
             rTextures[2][b + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][b + 1],
-                Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[mTier] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_64A[mTier + 1] };
             rTextures[3][b + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][b + 1],
-                Textures.BlockIcons.OVERLAYS_ENERGY_IN_POWER[mTier + 1] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_16A[mTier + 2] };
             rTextures[4][b + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][b + 1],
-                Textures.BlockIcons.OVERLAYS_ENERGY_IN_POWER[mTier + 1] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_16A[mTier + 2] };
             rTextures[5][b + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][b + 1],
-                Textures.BlockIcons.OVERLAYS_ENERGY_IN_POWER[mTier + 1] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_16A[mTier + 2] };
             rTextures[6][b + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][b + 1],
-                Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI[mTier] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_64A[mTier + 1] };
             rTextures[7][b + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][b + 1],
-                Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI[mTier] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_64A[mTier + 1] };
             rTextures[8][b + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][b + 1],
-                Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI[mTier] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_64A[mTier + 1] };
             rTextures[9][b + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][b + 1],
-                Textures.BlockIcons.OVERLAYS_ENERGY_OUT_POWER[mTier + 1] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_16A[mTier + 2] };
             rTextures[10][b + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][b + 1],
-                Textures.BlockIcons.OVERLAYS_ENERGY_OUT_POWER[mTier + 1] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_16A[mTier + 2] };
             rTextures[11][b + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][b + 1],
-                Textures.BlockIcons.OVERLAYS_ENERGY_OUT_POWER[mTier + 1] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_16A[mTier + 2] };
         }
         return rTextures;
     }
 
     @Override
     public String[] getDescription() {
-        return ArrayUtils.addAll(
-            mDescriptionArray,
-            "Accepts 16A and outputs 64A",
-            "Toggle 2A/8A half-mode with Screwdriver",
-            EnumChatFormatting.BLUE + "Tec"
-                + EnumChatFormatting.DARK_BLUE
-                + "Tech"
-                + EnumChatFormatting.BLUE
-                + ": Interdimensional");
-    }
-
-    @Override
-    public long getMinimumStoredEU() {
-        return V[mTier + 1];
+        return GTSplit.splitLocalizedFormattedWithWarped(
+            "gt.blockmachines.transformer_advanced.desc",
+            super.getDescription()[0],
+            CommonValues.TEC_MARK_GENERAL,
+            16,
+            64);
     }
 
     @Override
@@ -98,6 +90,14 @@ public class MTEWetTransformer extends MTETransformer {
 
     @Override
     public long maxAmperesIn() {
+        if (mHalfMode) {
+            return getBaseMetaTileEntity().isAllowedToWork() ? 10 : 40;
+        }
+        return getBaseMetaTileEntity().isAllowedToWork() ? 20 : 80;
+    }
+
+    @Override
+    public long displayedAmperesIn() {
         if (mHalfMode) {
             return getBaseMetaTileEntity().isAllowedToWork() ? 8 : 32;
         }
@@ -121,9 +121,9 @@ public class MTEWetTransformer extends MTETransformer {
         ItemStack aTool) {
         this.mHalfMode = !mHalfMode;
         if (this.mHalfMode) {
-            PlayerUtils.messagePlayer(aPlayer, "Transformer is now running at 8A:32A in/out Ratio.");
+            GTUtility.sendChatTrans(aPlayer, "GT5U.chat.wet_transformer.half_mode.enable");
         } else {
-            PlayerUtils.messagePlayer(aPlayer, "Transformer is now running at 16A:64A in/out Ratio.");
+            GTUtility.sendChatTrans(aPlayer, "GT5U.chat.wet_transformer.half_mode.disable");
         }
     }
 }

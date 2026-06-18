@@ -1,5 +1,7 @@
 package gregtech.nei.formatter;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -8,7 +10,6 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import net.minecraft.util.StatCollector;
 
 import gregtech.api.enums.HeatingCoilLevel;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.nei.RecipeDisplayInfo;
 
@@ -24,7 +25,7 @@ public class HeatingCoilSpecialValueFormatter implements INEISpecialInfoFormatte
         return Collections.singletonList(
             StatCollector.translateToLocalFormatted(
                 "GT5U.nei.heat_capacity",
-                GTUtility.formatNumbers(heat),
+                formatNumber(heat),
                 HeatingCoilLevel.getDisplayNameFromHeat(heat, false)));
     }
 }

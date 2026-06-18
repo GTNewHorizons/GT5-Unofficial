@@ -10,18 +10,17 @@ import java.util.Set;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
-import gtPlusPlus.api.interfaces.RunnableWithInfo;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialGenerator;
-import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class RecipeGenPlasma extends RecipeGenBase {
 
-    public static final Set<RunnableWithInfo<Material>> mRecipeGenMap = new HashSet<>();
+    public static final Set<Runnable> mRecipeGenMap = new HashSet<>();
 
     static {
         MaterialGenerator.mRecipeMapsToGenerate.add(mRecipeGenMap);
@@ -44,7 +43,7 @@ public class RecipeGenPlasma extends RecipeGenBase {
             ItemStack aCell = material.getCell(1);
             ItemStack aContainerItem = GTUtility.getFluidForFilledItem(aPlasmaCell, true) == null
                 ? GTUtility.getContainerItem(aPlasmaCell, true)
-                : CI.emptyCells(1);
+                : ItemList.Cell_Empty.get(1);
             if (ItemUtils.checkForInvalidItems(new ItemStack[] { aPlasmaCell, aContainerItem })) {
                 switch (material.getUnlocalizedName()) {
                     case "Runite" -> GTValues.RA.stdBuilder()

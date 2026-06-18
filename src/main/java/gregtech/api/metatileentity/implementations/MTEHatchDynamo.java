@@ -2,25 +2,21 @@ package gregtech.api.metatileentity.implementations;
 
 import static gregtech.api.enums.GTValues.V;
 
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.api.util.GTSplit;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchDynamo extends MTEHatch {
 
     public MTEHatchDynamo(int aID, String aName, String aNameRegional, int aTier) {
-        super(
-            aID,
-            aName,
-            aNameRegional,
-            aTier,
-            0,
-            new String[] { "Generating electric Energy from Multiblocks", "Puts out up to 1 Amp" });
+        super(aID, aName, aNameRegional, aTier, 0, (String) null);
     }
 
     public MTEHatchDynamo(int aID, String aName, String aNameRegional, int aTier, String[] aDescription) {
@@ -33,21 +29,16 @@ public class MTEHatchDynamo extends MTEHatch {
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[mTier] };
+        return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_2A[mTier + 1] };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[mTier] };
+        return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_2A[mTier + 1] };
     }
 
     @Override
     public boolean isFacingValid(ForgeDirection facing) {
-        return true;
-    }
-
-    @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
         return true;
     }
 
@@ -64,11 +55,6 @@ public class MTEHatchDynamo extends MTEHatch {
     @Override
     public boolean isValidSlot(int aIndex) {
         return false;
-    }
-
-    @Override
-    public long getMinimumStoredEU() {
-        return 512;
     }
 
     @Override
@@ -96,5 +82,10 @@ public class MTEHatchDynamo extends MTEHatch {
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
         return false;
+    }
+
+    @Override
+    public String[] getDescription() {
+        return GTSplit.splitLocalized("gt.blockmachines.dynamo_hatch.desc");
     }
 }

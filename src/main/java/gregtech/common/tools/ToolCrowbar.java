@@ -10,7 +10,7 @@ import net.minecraft.util.IChatComponent;
 
 import com.google.common.base.Strings;
 
-import gregtech.api.enums.Textures;
+import gregtech.api.enums.TextureSet;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.IToolStats;
 import gregtech.api.items.MetaGeneratedTool;
@@ -25,53 +25,13 @@ public class ToolCrowbar extends GTTool {
     }
 
     @Override
-    public int getToolDamagePerDropConversion() {
-        return 100;
-    }
-
-    @Override
     public int getToolDamagePerContainerCraft() {
         return 100;
     }
 
     @Override
-    public int getToolDamagePerEntityAttack() {
-        return 200;
-    }
-
-    @Override
-    public int getBaseQuality() {
-        return 0;
-    }
-
-    @Override
     public float getBaseDamage() {
         return 2.0F;
-    }
-
-    @Override
-    public float getSpeedMultiplier() {
-        return 1.0F;
-    }
-
-    @Override
-    public float getMaxDurabilityMultiplier() {
-        return 1.0F;
-    }
-
-    @Override
-    public String getCraftingSound() {
-        return null;
-    }
-
-    @Override
-    public String getEntityHitSound() {
-        return null;
-    }
-
-    @Override
-    public String getMiningSound() {
-        return null;
     }
 
     @Override
@@ -107,13 +67,9 @@ public class ToolCrowbar extends GTTool {
     }
 
     @Override
-    public ItemStack getBrokenItem(ItemStack aStack) {
-        return null;
-    }
-
-    @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? Textures.ItemIcons.CROWBAR : null;
+        return aIsToolHead ? MetaGeneratedTool.getPrimaryMaterial(aStack).mIconSet.mTextures[TextureSet.INDEX_crowbar]
+            : null;
     }
 
     @Override

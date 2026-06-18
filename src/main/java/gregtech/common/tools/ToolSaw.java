@@ -15,7 +15,9 @@ import net.minecraft.util.IChatComponent;
 import net.minecraftforge.common.IShearable;
 import net.minecraftforge.event.world.BlockEvent;
 
-import gregtech.api.enums.Textures;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.SoundResource;
+import gregtech.api.enums.TextureSet;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.util.GTToolHarvestHelper;
@@ -28,23 +30,8 @@ public class ToolSaw extends GTTool {
     }
 
     @Override
-    public int getToolDamagePerDropConversion() {
-        return 100;
-    }
-
-    @Override
     public int getToolDamagePerContainerCraft() {
         return 200;
-    }
-
-    @Override
-    public int getToolDamagePerEntityAttack() {
-        return 200;
-    }
-
-    @Override
-    public int getBaseQuality() {
-        return 0;
     }
 
     @Override
@@ -53,28 +40,18 @@ public class ToolSaw extends GTTool {
     }
 
     @Override
-    public float getSpeedMultiplier() {
-        return 1.0F;
-    }
-
-    @Override
-    public float getMaxDurabilityMultiplier() {
-        return 1.0F;
-    }
-
-    @Override
     public String getCraftingSound() {
-        return null;
-    }
-
-    @Override
-    public String getEntityHitSound() {
-        return null;
+        return SoundResource.GTCEU_OP_SAW.toString();
     }
 
     @Override
     public String getMiningSound() {
-        return null;
+        return SoundResource.GTCEU_OP_SAW.toString();
+    }
+
+    @Override
+    public boolean isSaw() {
+        return true;
     }
 
     @Override
@@ -90,13 +67,7 @@ public class ToolSaw extends GTTool {
                 aEvent.dropChance = 1.0F;
             }
             aPlayer.worldObj.setBlock(aX, aY, aZ, Blocks.air, 0, 0);
-        } else if (((aBlock.getMaterial() == Material.ice) || (aBlock.getMaterial() == Material.packedIce))
-            && (aDrops.isEmpty())) {
-                aDrops.add(new ItemStack(aBlock, 1, aMetaData));
-                aPlayer.worldObj.setBlockToAir(aX, aY, aZ);
-                aEvent.dropChance = 1.0F;
-                return 1;
-            }
+        }
         return 0;
     }
 
@@ -115,16 +86,10 @@ public class ToolSaw extends GTTool {
     }
 
     @Override
-    public ItemStack getBrokenItem(ItemStack aStack) {
-        return null;
-    }
-
-    @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
         return aIsToolHead
-            ? MetaGeneratedTool
-                .getPrimaryMaterial(aStack).mIconSet.mTextures[gregtech.api.enums.OrePrefixes.toolHeadSaw.mTextureIndex]
-            : Textures.ItemIcons.HANDLE_SAW;
+            ? MetaGeneratedTool.getPrimaryMaterial(aStack).mIconSet.mTextures[OrePrefixes.toolHeadSaw.getTextureIndex()]
+            : MetaGeneratedTool.getSecondaryMaterial(aStack).mIconSet.mTextures[TextureSet.INDEX_handleSaw];
     }
 
     @Override
@@ -132,9 +97,6 @@ public class ToolSaw extends GTTool {
         return aIsToolHead ? MetaGeneratedTool.getPrimaryMaterial(aStack).mRGBa
             : MetaGeneratedTool.getSecondaryMaterial(aStack).mRGBa;
     }
-
-    @Override
-    public void onStatsAddedToTool(MetaGeneratedTool aItem, int aID) {}
 
     @Override
     public IChatComponent getDeathMessage(EntityLivingBase aPlayer, EntityLivingBase aEntity) {

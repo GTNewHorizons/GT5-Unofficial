@@ -28,6 +28,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
 import gregtech.api.items.GTGenericBlock;
 import gregtech.api.util.GTModHandler;
@@ -40,12 +41,12 @@ public class BlockStonesAbstract extends GTGenericBlock implements IOreRecipeReg
         OrePrefixes.crafting.add(this);
         setStepSound(soundTypeStone);
         setCreativeTab(GregTechAPI.TAB_GREGTECH_MATERIALS);
+        setHardness(4.5f);
 
         this.registerSmeltingRecipes();
         this.registerAssemblerRecipes();
         this.registerCraftingRecipes();
         this.registerForgeHammerRecipes();
-
     }
 
     private void registerSmeltingRecipes() {
@@ -70,13 +71,15 @@ public class BlockStonesAbstract extends GTGenericBlock implements IOreRecipeReg
 
     private void registerAssemblerRecipes() {
         GTValues.RA.stdBuilder()
-            .itemInputs(new ItemStack(this, 1, 0), GTUtility.getIntegratedCircuit(4))
+            .itemInputs(new ItemStack(this, 1, 0))
+            .circuit(4)
             .itemOutputs(new ItemStack(this, 1, 3))
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(4)
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(new ItemStack(this, 1, 8), GTUtility.getIntegratedCircuit(4))
+            .itemInputs(new ItemStack(this, 1, 8))
+            .circuit(4)
             .itemOutputs(new ItemStack(this, 1, 11))
             .duration(2 * SECONDS + 10 * TICKS)
             .eut(4)
@@ -165,14 +168,14 @@ public class BlockStonesAbstract extends GTGenericBlock implements IOreRecipeReg
                 .itemInputs(new ItemStack(this, 1, 7), GTUtility.copyAmount(0, aStack))
                 .itemOutputs(new ItemStack(this, 1, 6))
                 .duration(2 * SECONDS + 10 * TICKS)
-                .eut(16)
+                .eut(TierEU.RECIPE_LV / 2)
                 .addTo(laserEngraverRecipes);
 
             GTValues.RA.stdBuilder()
                 .itemInputs(new ItemStack(this, 1, 15), GTUtility.copyAmount(0, aStack))
                 .itemOutputs(new ItemStack(this, 1, 14))
                 .duration(2 * SECONDS + 10 * TICKS)
-                .eut(16)
+                .eut(TierEU.RECIPE_LV / 2)
                 .addTo(laserEngraverRecipes);
 
         }

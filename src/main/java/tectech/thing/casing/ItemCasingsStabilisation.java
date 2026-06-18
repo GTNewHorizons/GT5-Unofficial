@@ -1,15 +1,15 @@
 package tectech.thing.casing;
 
-import static gregtech.api.enums.GTValues.AuthorColen;
+import static gregtech.api.enums.GTAuthors.AuthorColen;
 
 import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 
-import gregtech.api.util.GTLanguageManager;
+import gregtech.api.enums.GTAuthors;
 import gregtech.common.blocks.ItemCasings;
 
 public class ItemCasingsStabilisation extends ItemCasings {
@@ -30,18 +30,11 @@ public class ItemCasingsStabilisation extends ItemCasings {
             case 6:
             case 7:
             case 8:
-                tooltip.add(
-                    EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD
-                        + GTLanguageManager.addStringLocalization(
-                            "EOH.Stability.Tooltip.0",
-                            "Increases stability of spacetime field."));
+                tooltip.add(StatCollector.translateToLocal("tt.eoh.stability.tooltip"));
                 break;
             default:
-                tooltip.add(
-                    EnumChatFormatting.RED.toString() + EnumChatFormatting.BOLD
-                        + GTLanguageManager
-                            .addStringLocalization("EOH.TimeDilation.Error.Tooltip", "Error, report to GTNH team"));
+                tooltip.add(StatCollector.translateToLocal("tt.eoh.time_dilation.error.tooltip"));
         }
-        tooltip.add(AuthorColen);
+        tooltip.add(GTAuthors.buildAuthorsWithFormat(AuthorColen));
     }
 }

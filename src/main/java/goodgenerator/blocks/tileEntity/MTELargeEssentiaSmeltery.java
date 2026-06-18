@@ -1,10 +1,23 @@
 package goodgenerator.blocks.tileEntity;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofSpecificTileAdder;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.InputBus;
+import static gregtech.api.enums.HatchElement.InputHatch;
+import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.Mods.ThaumicBases;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -18,9 +31,10 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 
-import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
+import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -31,9 +45,9 @@ import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
-import goodgenerator.blocks.tileEntity.base.MTETooltipMultiBlockBaseEM;
 import goodgenerator.loader.Loaders;
 import goodgenerator.util.DescTextLocalization;
+import gregtech.GTMod;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
@@ -45,9 +59,15 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
+import gregtech.api.structure.error.StructureErrors;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.shutdown.ShutDownReason;
+import gregtech.common.misc.GTStructureChannels;
+import gregtech.common.pollution.Pollution;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
@@ -55,17 +75,14 @@ import thaumcraft.api.visnet.VisNetHandler;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.lib.crafting.ThaumcraftCraftingManager;
 
-public class MTELargeEssentiaSmeltery extends MTETooltipMultiBlockBaseEM
-    implements IConstructable, ISurvivalConstructable {
+public class MTELargeEssentiaSmeltery extends TTMultiblockBase implements ISurvivalConstructable {
 
-    private static final IIconContainer textureFontOn = new Textures.BlockIcons.CustomIcon(
-        "icons/LargeEssentiaSmeltery_On");
-    private static final IIconContainer textureFontOn_Glow = new Textures.BlockIcons.CustomIcon(
-        "icons/LargeEssentiaSmeltery_On_GLOW");
-    private static final IIconContainer textureFontOff = new Textures.BlockIcons.CustomIcon(
-        "icons/LargeEssentiaSmeltery_Off");
-    private static final IIconContainer textureFontOff_Glow = new Textures.BlockIcons.CustomIcon(
-        "icons/LargeEssentiaSmeltery_Off_GLOW");
+    private static final IIconContainer textureFontOn = Textures.BlockIcons.custom("icons/LargeEssentiaSmeltery_On");
+    private static final IIconContainer textureFontOn_Glow = Textures.BlockIcons
+        .customOptional("icons/LargeEssentiaSmeltery_On_GLOW");
+    private static final IIconContainer textureFontOff = Textures.BlockIcons.custom("icons/LargeEssentiaSmeltery_Off");
+    private static final IIconContainer textureFontOff_Glow = Textures.BlockIcons
+        .customOptional("icons/LargeEssentiaSmeltery_Off_GLOW");
     private static final String STRUCTURE_PIECE_FIRST = "first";
     private static final String STRUCTURE_PIECE_LATER = "later";
     private static final String STRUCTURE_PIECE_LAST = "last";
@@ -101,48 +118,59 @@ public class MTELargeEssentiaSmeltery extends MTETooltipMultiBlockBaseEM
 
     @Override
     public void construct(ItemStack itemStack, boolean hintsOnly) {
-        structureBuild_EM(STRUCTURE_PIECE_FIRST, 2, 2, 0, itemStack, hintsOnly);
+        buildPiece(STRUCTURE_PIECE_FIRST, itemStack, hintsOnly, 2, 2, 0);
         // default
-        structureBuild_EM(STRUCTURE_PIECE_LATER, 2, 2, -1, itemStack, hintsOnly);
-        structureBuild_EM(STRUCTURE_PIECE_LATER, 2, 2, -2, itemStack, hintsOnly);
+        buildPiece(STRUCTURE_PIECE_LATER, itemStack, hintsOnly, 2, 2, -1);
+        buildPiece(STRUCTURE_PIECE_LATER, itemStack, hintsOnly, 2, 2, -2);
         int len = itemStack.stackSize;
         if (len > MAX_CONFIGURABLE_LENGTH) len = MAX_CONFIGURABLE_LENGTH;
-        structureBuild_EM(STRUCTURE_PIECE_LAST, 2, 2, -len - 3, itemStack, hintsOnly);
+        buildPiece(STRUCTURE_PIECE_LAST, itemStack, hintsOnly, 2, 2, -len - 3);
         while (len > 0) {
-            structureBuild_EM(STRUCTURE_PIECE_LATER, 2, 2, -len - 2, itemStack, hintsOnly);
+            buildPiece(STRUCTURE_PIECE_LATER, itemStack, hintsOnly, 2, 2, -len - 2);
             len--;
         }
     }
 
     @Override
-    protected void clearHatches_EM() {
-        super.clearHatches_EM();
+    public void clearHatches() {
+        super.clearHatches();
         mEssentiaOutputHatches.clear();
     }
 
     @Override
-    protected boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
+    public void checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack,
+        List<StructureError> errors) {
         this.mCasing = 0;
         this.mParallel = 0;
-        this.pTier = 0;
+        this.pTier = -1;
         this.nodePower = 0;
         this.nodePurificationEfficiency = 0;
         this.nodeIncrease = 0;
 
-        if (!structureCheck_EM(STRUCTURE_PIECE_FIRST, 2, 2, 0)) return false;
-        if (!structureCheck_EM(STRUCTURE_PIECE_LATER, 2, 2, -1)) return false;
-        if (!structureCheck_EM(STRUCTURE_PIECE_LATER, 2, 2, -2)) return false;
+        if (!checkPiece(STRUCTURE_PIECE_FIRST, 2, 2, 0, errors)) return;
+        if (!checkPiece(STRUCTURE_PIECE_LATER, 2, 2, -1, errors)) return;
+        if (!checkPiece(STRUCTURE_PIECE_LATER, 2, 2, -2, errors)) return;
         int len = 2;
-        while (structureCheck_EM(STRUCTURE_PIECE_LATER, 2, 2, -len - 1)) len++;
-        if (len > MAX_STRUCTURE_LENGTH - 1 || len < DEFAULT_STRUCTURE_LENGTH) return false;
-        if (!structureCheck_EM(STRUCTURE_PIECE_LAST, 2, 2, -len - 1)) return false;
-        if (this.mCasing >= 24 && this.mMaintenanceHatches.size() == 1
-            && !this.mInputBusses.isEmpty()
-            && !this.mEssentiaOutputHatches.isEmpty()) {
-            this.mParallel = (len + 1) * Math.pow(2, this.pTier);
-            return true;
+        while (checkPiece(STRUCTURE_PIECE_LATER, 2, 2, -len - 1, errors)) len++;
+        errors.clear();
+        if (len > MAX_STRUCTURE_LENGTH - 1) {
+            errors.add(StructureErrorRegistry.TOO_LONG);
+            return;
         }
-        return false;
+        if (len < DEFAULT_STRUCTURE_LENGTH) {
+            errors.add(StructureErrorRegistry.TOO_SHORT_LENGTH);
+            return;
+        }
+        if (!checkPiece(STRUCTURE_PIECE_LAST, 2, 2, -len - 1, errors)) return;
+        checkCasingMin(errors, mCasing, 24);
+        checkHasMaintenanceHatch(errors);
+        checkHasAnyInput(errors);
+        checkHasAnyEnergy(errors);
+        if (mEssentiaOutputHatches.isEmpty()) {
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.missing_essentia_output_hatch"));
+        }
+        if (!errors.isEmpty()) return;
+        this.mParallel = (len + 1) * GTUtility.powInt(2, this.pTier);
     }
 
     @Override
@@ -167,22 +195,25 @@ public class MTELargeEssentiaSmeltery extends MTETooltipMultiBlockBaseEM
                         : ofBlock(ConfigBlocks.blockStoneDevice, 0))
                 .addElement(
                     'E',
-                    ofChain(
-                        onElementPass(x -> x.onEssentiaCellFound(0), ofBlock(Loaders.essentiaCell, 0)),
-                        onElementPass(x -> x.onEssentiaCellFound(1), ofBlock(Loaders.essentiaCell, 1)),
-                        onElementPass(x -> x.onEssentiaCellFound(2), ofBlock(Loaders.essentiaCell, 2)),
-                        onElementPass(x -> x.onEssentiaCellFound(3), ofBlock(Loaders.essentiaCell, 3))))
+                    GTStructureChannels.LES_ESSENTIA_CELL.use(
+                        ofBlocksTiered(
+                            (block, meta) -> block == Loaders.essentiaCell ? meta : null,
+                            ImmutableList.of(
+                                Pair.of(Loaders.essentiaCell, 0),
+                                Pair.of(Loaders.essentiaCell, 1),
+                                Pair.of(Loaders.essentiaCell, 2),
+                                Pair.of(Loaders.essentiaCell, 3)),
+                            -1,
+                            (t, meta) -> t.pTier = meta,
+                            t -> t.pTier)))
                 .addElement(
                     'A',
                     ofChain(
                         buildHatchAdder(MTELargeEssentiaSmeltery.class)
-                            .atLeast(
-                                gregtech.api.enums.HatchElement.Maintenance,
-                                gregtech.api.enums.HatchElement.Energy,
-                                gregtech.api.enums.HatchElement.InputBus,
-                                gregtech.api.enums.HatchElement.InputHatch)
+                            .atLeast(Maintenance, Energy, InputBus, InputHatch)
                             .casingIndex(CASING_INDEX)
-                            .dot(1)
+                            .allowOnly(ForgeDirection.NORTH)
+                            .hint(1)
                             .build(),
                         ofSpecificTileAdder(
                             MTELargeEssentiaSmeltery::addEssentiaOutputHatchToMachineList,
@@ -190,7 +221,7 @@ public class MTELargeEssentiaSmeltery extends MTETooltipMultiBlockBaseEM
                             Loaders.essentiaOutputHatch,
                             0),
                         onElementPass(MTELargeEssentiaSmeltery::onCasingFound, ofBlock(Loaders.magicCasing, 0))))
-                .addElement('B', gregtech.api.enums.HatchElement.Muffler.newAny(CASING_INDEX, 2))
+                .addElement('B', Muffler.newAny(CASING_INDEX, 2, ForgeDirection.UP))
                 .build();
         }
         return this.multiDefinition;
@@ -200,22 +231,23 @@ public class MTELargeEssentiaSmeltery extends MTETooltipMultiBlockBaseEM
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Essentia Smeltery, LES")
-            .addInfo("Necessary evil.")
-            .addInfo("Advanced Essentia smelting technology.")
+            .addInfo("Necessary evil")
+            .addInfo("Advanced Essentia smelting technology")
             .addInfo("Maximum parallel = 2^Tier * (Length - 1)")
-            .addInfo("Diffusion Cell Tiers start from 0, Length is full multi length.")
+            .addInfo("Diffusion Cell Tiers start from 0, Length is full multi length")
             .addInfo("Energy Hatch tier: HV+")
-            .addInfo("You can find more information about this machine in the Thaumonomicon.")
+            .addInfo("You can find more information about this machine in the Thaumonomicon")
             .addTecTechHatchInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
+            .beginVariableStructureBlock(5, 5, 5, 5, 5, 8, true)
             .addController("Front center")
             .addCasingInfoMin("Magic Casing", 24, false)
-            .addMaintenanceHatch("Hint block with dot 1")
-            .addInputBus("Hint block with dot 1")
-            .addInputHatch("Hint block with dot 1")
-            .addEnergyHatch("Hint block with dot 1")
-            .addOtherStructurePart("Essentia Output Hatch", "Hint block with dot 1")
-            .addMufflerHatch("Hint block with dot 2")
+            .addMaintenanceHatch("Hint block number 1")
+            .addInputBus("Hint block number 1")
+            .addInputHatch("Hint block number 1")
+            .addEnergyHatch("Hint block number 1")
+            .addOtherStructurePart("Essentia Output Hatch", "Hint block number 1")
+            .addMufflerHatch("Hint block number 2")
             .toolTipFinisher();
         return tt;
     }
@@ -227,8 +259,9 @@ public class MTELargeEssentiaSmeltery extends MTETooltipMultiBlockBaseEM
 
     @Override
     public String[] getInfoData() {
-        String[] info = super.getInfoData();
-        info[8] = StatCollector.translateToLocal("gg.scanner.info.les.parallel") + " "
+        String[] origData = super.getInfoData();
+        String[] info = Arrays.copyOf(origData, origData.length + 1);
+        info[origData.length] = StatCollector.translateToLocal("gg.scanner.info.les.parallel") + " "
             + EnumChatFormatting.YELLOW
             + Math.round(this.mParallel)
             + EnumChatFormatting.RESET
@@ -277,10 +310,6 @@ public class MTELargeEssentiaSmeltery extends MTETooltipMultiBlockBaseEM
         this.mCasing++;
     }
 
-    protected void onEssentiaCellFound(int tier) {
-        this.pTier = tier;
-    }
-
     private boolean addEssentiaOutputHatchToMachineList(MTEEssentiaOutputHatch aTileEntity) {
         if (aTileEntity != null) {
             return this.mEssentiaOutputHatches.add(aTileEntity);
@@ -294,6 +323,7 @@ public class MTELargeEssentiaSmeltery extends MTETooltipMultiBlockBaseEM
         super.runMachine(aBaseMetaTileEntity, aTick);
     }
 
+    @Override
     protected void drawTexts(DynamicPositionedColumn screenElements, SlotWidget inventorySlot) {
         super.drawTexts(screenElements, inventorySlot);
 
@@ -301,19 +331,10 @@ public class MTELargeEssentiaSmeltery extends MTETooltipMultiBlockBaseEM
             .widget(
                 new TextWidget()
                     .setStringSupplier(
-                        () -> EnumChatFormatting.WHITE + "Requires "
-                            + EnumChatFormatting.YELLOW
-                            + numberFormat.format(nodePowerDisplay)
-                            + EnumChatFormatting.WHITE
-                            + " total "
-                            + EnumChatFormatting.AQUA
-                            + "Aqua"
-                            + EnumChatFormatting.WHITE
-                            + " and "
-                            + EnumChatFormatting.RED
-                            + "Ignis "
-                            + EnumChatFormatting.WHITE
-                            + "centivis to function.")
+                        () -> EnumChatFormatting.WHITE + StatCollector.translateToLocalFormatted(
+                            "gg.gui.text.large_essentia_smeltery.requires",
+                            EnumChatFormatting.YELLOW + numberFormat.format(nodePowerDisplay)
+                                + EnumChatFormatting.WHITE))
                     .setTextAlignment((Alignment.CenterLeft)))
             .widget(new FakeSyncWidget.IntegerSyncer(this::expectedPower, val -> nodePowerDisplay = val));
     }
@@ -431,7 +452,8 @@ public class MTELargeEssentiaSmeltery extends MTETooltipMultiBlockBaseEM
     }
 
     private int expectedPower() {
-        return (int) (Math.pow(this.getMaxEnergyInputTier_EM(), 2) * NODE_COST_MULTIPLIER);
+        int maxEnergyInputTier_EM = this.getMaxEnergyInputTier_EM();
+        return (int) (maxEnergyInputTier_EM * maxEnergyInputTier_EM * NODE_COST_MULTIPLIER);
     }
 
     private boolean isFullPower() {
@@ -567,6 +589,35 @@ public class MTELargeEssentiaSmeltery extends MTETooltipMultiBlockBaseEM
     }
 
     @Override
+    public boolean polluteEnvironment(int aPollutionLevel) {
+        // Since this multi places gas blocks on top of its mufflers
+        // we need to override default behavior to not fail if there is no air
+
+        // This function is similar to the base method but does no air check
+
+        final int VENT_AMOUNT = 10_000;
+        // Early exit if pollution is disabled
+        if (!GTMod.proxy.mPollution) return true;
+        mPollution += aPollutionLevel;
+        if (mPollution < VENT_AMOUNT) return true;
+        if (mMufflerHatches.size() == 0) {
+            // No muffler present. Fail.
+            return false;
+        }
+
+        int pollutionBatch = mPollution / mMufflerHatches.size();
+        int reducedPollution = 0;
+
+        for (MTEHatchMuffler muffler : validMTEList(mMufflerHatches)) {
+            mPollution -= pollutionBatch;
+            reducedPollution += muffler.calculatePollutionReduction(pollutionBatch);
+        }
+
+        Pollution.addPollution(getBaseMetaTileEntity(), reducedPollution);
+        return true;
+    }
+
+    @Override
     public int getPollutionPerSecond(ItemStack aStack) {
         return 22 * (100 - this.nodePurificationEfficiency);
     }
@@ -579,14 +630,19 @@ public class MTELargeEssentiaSmeltery extends MTETooltipMultiBlockBaseEM
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        int built = survivialBuildPiece(STRUCTURE_PIECE_FIRST, stackSize, 2, 2, 0, elementBudget, env, false, true);
+        int built = survivalBuildPiece(STRUCTURE_PIECE_FIRST, stackSize, 2, 2, 0, elementBudget, env, false, true);
         if (built >= 0) return built;
         int length = stackSize.stackSize + 2;
-        if (length > MAX_CONFIGURABLE_LENGTH) length = MAX_CONFIGURABLE_LENGTH + 2;
+        if (length > MAX_CONFIGURABLE_LENGTH + 2) length = MAX_CONFIGURABLE_LENGTH + 2;
         for (int i = 1; i <= length; i++) {
-            built = survivialBuildPiece(STRUCTURE_PIECE_LATER, stackSize, 2, 2, -i, elementBudget, env, false, true);
+            built = survivalBuildPiece(STRUCTURE_PIECE_LATER, stackSize, 2, 2, -i, elementBudget, env, false, true);
             if (built >= 0) return built;
         }
-        return survivialBuildPiece(STRUCTURE_PIECE_LAST, stackSize, 2, 2, -length - 1, elementBudget, env, false, true);
+        return survivalBuildPiece(STRUCTURE_PIECE_LAST, stackSize, 2, 2, -length - 1, elementBudget, env, false, true);
+    }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
     }
 }

@@ -1,9 +1,6 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.nbthandlers;
 
-import java.util.ArrayList;
-
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -12,17 +9,17 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
 import gtPlusPlus.core.lib.GTPPCore;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.chemplant.MTEChemicalPlant;
 
 public class MTEHatchCatalysts extends MTEHatchNbtConsumable {
 
     public MTEHatchCatalysts(int aID, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional, 0, 16, "Dedicated Catalyst Storage", false);
+        super(aID, aName, aNameRegional, 0, 16, "Dedicated Catalyst Storage");
     }
 
     public MTEHatchCatalysts(String aName, String[] aDescription, ITexture[][][] aTextures) {
-        super(aName, 0, 16, aDescription, false, aTextures);
+        super(aName, 0, 16, aDescription, aTextures);
     }
 
     @Override
@@ -57,28 +54,13 @@ public class MTEHatchCatalysts extends MTEHatchNbtConsumable {
     }
 
     @Override
-    public boolean isFacingValid(ForgeDirection facing) {
-        return true;
-    }
-
-    @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTEHatchCatalysts(mName, mDescriptionArray, mTextures);
     }
 
     @Override
-    public String getNameGUI() {
-        return "Catalyst Container";
-    }
-
-    @Override
-    public ArrayList<ItemStack> getItemsValidForUsageSlots() {
-        return new ArrayList<>();
-    }
-
-    @Override
-    public boolean isItemValidForUsageSlot(ItemStack aStack) {
-        return ItemUtils.isCatalyst(aStack);
+    public boolean isItemValidForInputSlot(ItemStack aStack) {
+        return MTEChemicalPlant.isCatalyst(aStack);
     }
 
     @Override

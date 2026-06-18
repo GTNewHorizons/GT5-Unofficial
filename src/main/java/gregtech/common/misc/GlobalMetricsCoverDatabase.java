@@ -1,5 +1,6 @@
 package gregtech.common.misc;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static net.minecraftforge.common.util.Constants.NBT.TAG_BYTE_ARRAY;
 
 import java.nio.ByteBuffer;
@@ -36,7 +37,6 @@ import org.jetbrains.annotations.Nullable;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import gregtech.api.metatileentity.CoverableTileEntity;
-import gregtech.api.util.GTUtility;
 import gregtech.common.covers.CoverMetricsTransmitter;
 import gregtech.common.events.MetricsCoverDataEvent;
 import gregtech.common.events.MetricsCoverHostDeconstructedEvent;
@@ -44,8 +44,7 @@ import gregtech.common.events.MetricsCoverSelfDestructEvent;
 
 /**
  * Catches and provides data transmitted from deployed Metrics Transmitter covers. Only stores one result per frequency
- * at a time. Metrics covers are intended to overwrite an old result every time they emit a new event.
- * <br />
+ * at a time. Metrics covers are intended to overwrite an old result every time they emit a new event. <br />
  * <br />
  * This information is only partially persisted; frequencies that are in a non-operational state will be written to
  * disk, while operational frequencies are volatile. The assumption is that any frequency with a broadcasting card will,
@@ -126,7 +125,7 @@ public class GlobalMetricsCoverDatabase extends WorldSavedData {
         // In case someone else wants to listen to these, go the roundabout way.
         final Set<UUID> uuids = REVERSE_LOOKUP.get(coords);
         if (uuids != null) {
-            uuids.forEach(
+            new HashSet<>(uuids).forEach(
                 uuid -> MinecraftForge.EVENT_BUS.post(
                     ForgeHooks.canHarvestBlock(event.block, event.getPlayer(), event.blockMetadata)
                         && !event.getPlayer().capabilities.isCreativeMode ? new MetricsCoverHostDeconstructedEvent(uuid)
@@ -180,8 +179,8 @@ public class GlobalMetricsCoverDatabase extends WorldSavedData {
     }
 
     /**
-     * Once a card has received the fact that it has self-destructed, this method can be called to free up its spot
-     * in the database. Does nothing if the frequency is missing or is not in a self-destructed state.
+     * Once a card has received the fact that it has self-destructed, this method can be called to free up its spot in
+     * the database. Does nothing if the frequency is missing or is not in a self-destructed state.
      *
      * @param frequency The UUID corresponding to the frequency to possibly cull.
      */
@@ -307,10 +306,9 @@ public class GlobalMetricsCoverDatabase extends WorldSavedData {
     /**
      * Data transmitted by a Metrics Transmitter cover.
      * <p>
-     * Since only negative states ({@link State#HOST_DECONSTRUCTED HOST_DECONSTRUCTED} and
-     * {@link State#SELF_DESTRUCTED SELF DESTRUCTED}) are persisted, additional fields can be added to this data with
-     * little consequence. Ensure that any new fields are nullable, and make any getter for these fields return an
-     * {@link Optional}.
+     * Since only negative states ({@link State#HOST_DECONSTRUCTED HOST_DECONSTRUCTED} and {@link State#SELF_DESTRUCTED
+     * SELF DESTRUCTED}) are persisted, additional fields can be added to this data with little consequence. Ensure that
+     * any new fields are nullable, and make any getter for these fields return an {@link Optional}.
      */
     public static class Data {
 
@@ -341,9 +339,9 @@ public class GlobalMetricsCoverDatabase extends WorldSavedData {
         }
 
         /**
-         * Retrieves the payload for this data. Only present if the frequency is in an
-         * {@link State#OPERATIONAL operational} state. Will be cleared if the frequency goes into a
-         * {@link State#HOST_DECONSTRUCTED host-deconstructed} or {@link State#SELF_DESTRUCTED self-destructed} state.
+         * Retrieves the payload for this data. Only present if the frequency is in an {@link State#OPERATIONAL
+         * operational} state. Will be cleared if the frequency goes into a {@link State#HOST_DECONSTRUCTED
+         * host-deconstructed} or {@link State#SELF_DESTRUCTED self-destructed} state.
          *
          * @return The data if present, or an empty Optional otherwise.
          */
@@ -422,9 +420,9 @@ public class GlobalMetricsCoverDatabase extends WorldSavedData {
         public String getLocalizedCoordinates() {
             return StatCollector.translateToLocalFormatted(
                 "gt.db.metrics_cover.coords",
-                GTUtility.formatNumbers(x),
-                GTUtility.formatNumbers(y),
-                GTUtility.formatNumbers(z));
+                formatNumber(x),
+                formatNumber(y),
+                formatNumber(z));
         }
 
         @Override

@@ -1,6 +1,6 @@
 package tectech.thing.metaTileEntity.multi.godforge;
 
-import static gregtech.api.util.GTUtility.formatNumbers;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.common.misc.WirelessNetworkManager.addEUToGlobalEnergyMap;
 import static gregtech.common.misc.WirelessNetworkManager.getUserEU;
 import static net.minecraft.util.EnumChatFormatting.GREEN;
@@ -25,6 +25,8 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
+import gregtech.common.gui.modularui.multiblock.godforge.MTEMoltenModuleGui;
 import tectech.recipe.TecTechRecipeMaps;
 
 public class MTEMoltenModule extends MTEBaseModule {
@@ -85,16 +87,17 @@ public class MTEMoltenModule extends MTEBaseModule {
             @NotNull
             @Override
             protected CheckRecipeResult onRecipeStart(@NotNull GTRecipe recipe) {
-                if (!addEUToGlobalEnergyMap(userUUID, -calculatedEut * duration)) {
-                    return CheckRecipeResultRegistry.insufficientPower(calculatedEut * duration);
+                BigInteger powerForRecipe = BigInteger.valueOf(calculatedEut)
+                    .multiply(BigInteger.valueOf(duration));
+                if (!addEUToGlobalEnergyMap(userUUID, powerForRecipe.negate())) {
+                    return CheckRecipeResultRegistry.insufficientStartupPower(powerForRecipe);
                 }
-                addToPowerTally(
-                    BigInteger.valueOf(calculatedEut)
-                        .multiply(BigInteger.valueOf(duration)));
+                addToPowerTally(powerForRecipe);
                 addToRecipeTally(calculatedParallels);
                 currentParallel = calculatedParallels;
                 EUt = calculatedEut;
                 overwriteCalculatedEut(0);
+                setCurrentRecipeHeat(recipe.mSpecialValue);
                 return CheckRecipeResultRegistry.SUCCESSFUL;
             }
         };
@@ -105,9 +108,15 @@ public class MTEMoltenModule extends MTEBaseModule {
         logic.setAvailableVoltage(Long.MAX_VALUE);
         logic.setAvailableAmperage(Integer.MAX_VALUE);
         logic.setAmperageOC(false);
+        logic.setUnlimitedTierSkips();
         logic.setMaxParallel(getActualParallel());
         logic.setSpeedBonus(getSpeedBonus());
         logic.setEuModifier(getEnergyDiscount());
+    }
+
+    @Override
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
+        return new MTEMoltenModuleGui(this);
     }
 
     @Override
@@ -121,39 +130,39 @@ public class MTEMoltenModule extends MTEBaseModule {
         str.add(
             StatCollector.translateToLocalFormatted(
                 "GT5U.infodata.progress",
-                GREEN + formatNumbers(mProgresstime / 20) + RESET,
-                YELLOW + formatNumbers(mMaxProgresstime / 20) + RESET));
+                GREEN + formatNumber(mProgresstime / 20) + RESET,
+                YELLOW + formatNumber(mMaxProgresstime / 20) + RESET));
         str.add(
             StatCollector.translateToLocalFormatted(
                 "tt.infodata.multi.currently_using",
-                RED + (getBaseMetaTileEntity().isActive() ? formatNumbers(EUt) : "0") + RESET));
+                RED + (getBaseMetaTileEntity().isActive() ? formatNumber(EUt) : "0") + RESET));
         str.add(
             YELLOW + StatCollector.translateToLocalFormatted(
                 "tt.infodata.multi.max_parallel",
-                RESET + formatNumbers(getActualParallel())));
+                RESET + formatNumber(getActualParallel())));
         str.add(
             YELLOW + StatCollector.translateToLocalFormatted(
                 "GT5U.infodata.parallel.current",
-                RESET + (getBaseMetaTileEntity().isActive() ? formatNumbers(currentParallel) : "0")));
+                RESET + (getBaseMetaTileEntity().isActive() ? formatNumber(currentParallel) : "0")));
         str.add(
             YELLOW + StatCollector
-                .translateToLocalFormatted("tt.infodata.multi.capacity.heat", RESET + formatNumbers(getHeat())));
+                .translateToLocalFormatted("tt.infodata.multi.capacity.heat", RESET + formatNumber(getHeat())));
         str.add(
             YELLOW + StatCollector.translateToLocalFormatted(
                 "tt.infodata.multi.capacity.heat.effective",
-                RESET + formatNumbers(getHeatForOC())));
+                RESET + formatNumber(getHeatForOC())));
         str.add(
             YELLOW + StatCollector.translateToLocalFormatted(
                 "tt.infodata.multi.multiplier.recipe_time",
-                RESET + formatNumbers(getSpeedBonus())));
+                RESET + formatNumber(getSpeedBonus())));
         str.add(
             YELLOW + StatCollector.translateToLocalFormatted(
                 "tt.infodata.multi.multiplier.energy",
-                RESET + formatNumbers(getEnergyDiscount())));
+                RESET + formatNumber(getEnergyDiscount())));
         str.add(
             YELLOW + StatCollector.translateToLocalFormatted(
                 "tt.infodata.multi.divisor.recipe_time.non_perfect_oc",
-                RESET + formatNumbers(getOverclockTimeFactor())));
+                RESET + formatNumber(getOverclockTimeFactor())));
         return str.toArray(new String[0]);
     }
 
@@ -161,15 +170,16 @@ public class MTEMoltenModule extends MTEBaseModule {
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Blast Smelter")
-            .addInfo("This is a module of the Godforge.")
-            .addInfo("Must be part of a Godforge to function.")
-            .addInfo("Used for high temperature material liquefaction.")
+            .addInfo("This is a module of the Godforge")
+            .addInfo("Must be part of a Godforge to function")
+            .addInfo("Used for high temperature material liquefaction")
             .addSeparator(EnumChatFormatting.AQUA, 74)
             .addInfo("The second module of the Godforge, this module melts materials directly into")
             .addInfo("their liquid form. If an output material does not have a liquid form, it will be output")
-            .addInfo("as a regular solid instead.")
-            .addInfo("This module is specialized towards parallel processing.")
+            .addInfo("as a regular solid instead")
+            .addInfo("This module is specialized towards parallel processing")
             .beginStructureBlock(7, 7, 13, false)
+            .addController("Front center")
             .addStructureInfo(
                 EnumChatFormatting.GOLD + "20"
                     + EnumChatFormatting.GRAY

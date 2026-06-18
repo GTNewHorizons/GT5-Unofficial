@@ -1,5 +1,6 @@
 package gtPlusPlus.xmod.gregtech.api.items;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTValues.V;
 
 import java.util.List;
@@ -15,10 +16,11 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidContainerItem;
 
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
+
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
-import gtPlusPlus.core.util.Utils;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
 import ic2.api.item.IElectricItemManager;
@@ -30,11 +32,10 @@ public abstract class GTMetaItemBase extends GTGenericItem
     /**
      * Creates the Item using these Parameters.
      *
-     * @param aUnlocalized         The Unlocalized Name of this Item.
-     * @param aGeneratedPrefixList The OreDict Prefixes you want to have generated.
+     * @param aUnlocalized The Unlocalized Name of this Item.
      */
     public GTMetaItemBase(final String aUnlocalized) {
-        super(aUnlocalized, "Generated Item", null, false);
+        super(aUnlocalized, null, null);
         this.setHasSubtypes(true);
         this.setMaxDamage(0);
     }
@@ -44,58 +45,54 @@ public abstract class GTMetaItemBase extends GTGenericItem
     public abstract Long[] getFluidContainerStats(ItemStack aStack);
 
     @Override
-    public final void addInformation(final ItemStack aStack, final EntityPlayer aPlayer, List aList,
+    public final void addInformation(final ItemStack stack, final EntityPlayer player, List<String> tooltip,
         final boolean aF3_H) {
-        final String tKey = this.getUnlocalizedName(aStack) + ".tooltip",
+        final String tKey = this.getUnlocalizedName(stack) + ".tooltip",
             tString = GTLanguageManager.getTranslation(tKey);
         if (GTUtility.isStringValid(tString) && !tKey.equals(tString)) {
-            aList.add(tString);
+            tooltip.add(tString);
         }
 
-        Long[] tStats = this.getElectricStats(aStack);
+        Long[] tStats = this.getElectricStats(stack);
         if (tStats != null) {
             if (tStats[3] > 0) {
-                aList.add(
+                tooltip.add(
                     EnumChatFormatting.AQUA + StatCollector.translateToLocalFormatted(
                         "item.itemBaseEuItem.tooltip.1",
-                        GTUtility.formatNumbers(tStats[3]),
+                        formatNumber(tStats[3]),
                         (tStats[2] >= 0 ? tStats[2] : 0)) + EnumChatFormatting.GRAY);
             } else {
-                final long tCharge = this.getRealCharge(aStack);
+                final long tCharge = this.getRealCharge(stack);
                 if ((tStats[3] == -2) && (tCharge <= 0)) {
-                    aList.add(
+                    tooltip.add(
                         EnumChatFormatting.AQUA + StatCollector.translateToLocal("item.itemBaseEuItem.tooltip.2")
                             + EnumChatFormatting.GRAY);
                 } else {
-                    aList.add(
+                    tooltip.add(
                         EnumChatFormatting.AQUA
                             + StatCollector.translateToLocalFormatted(
                                 "item.itemBaseEuItem.tooltip.3",
-                                GTUtility.formatNumbers(tCharge),
-                                GTUtility.formatNumbers(Math.abs(tStats[0])),
-                                GTUtility.formatNumbers(
+                                formatNumber(tCharge),
+                                formatNumber(Math.abs(tStats[0])),
+                                formatNumber(
                                     V[(int) (tStats[2] >= 0 ? tStats[2] < V.length ? tStats[2] : V.length - 1 : 1)]))
                             + EnumChatFormatting.GRAY);
                 }
             }
         }
 
-        tStats = this.getFluidContainerStats(aStack);
+        tStats = this.getFluidContainerStats(stack);
         if ((tStats != null) && (tStats[0] > 0)) {
-            final FluidStack tFluid = this.getFluidContent(aStack);
-            aList.add(
+            final FluidStack tFluid = this.getFluidContent(stack);
+            tooltip.add(
                 EnumChatFormatting.BLUE
                     + ((tFluid == null ? "No Fluids Contained" : GTUtility.getFluidName(tFluid, true)))
                     + EnumChatFormatting.GRAY);
-            aList.add(
+            tooltip.add(
                 EnumChatFormatting.BLUE
-                    + (GTUtility.formatNumbers(tFluid == null ? 0 : tFluid.amount) + "L / "
-                        + GTUtility.formatNumbers(tStats[0])
-                        + "L")
+                    + (formatNumber(tFluid == null ? 0 : tFluid.amount) + "L / " + formatNumber(tStats[0]) + "L")
                     + EnumChatFormatting.GRAY);
         }
-
-        this.addAdditionalToolTips(aList, aStack);
     }
 
     @Override
@@ -238,8 +235,7 @@ public abstract class GTMetaItemBase extends GTGenericItem
         if (tStats[3] > 0) {
             return (int) (long) tStats[3];
         }
-        final NBTTagCompound tNBT = aStack.getTagCompound();
-        return tNBT == null ? 0 : tNBT.getLong("GT.ItemCharge");
+        return ItemStackNBT.getLong(aStack, "GT.ItemCharge");
     }
 
     public final boolean setCharge(final ItemStack aStack, long aCharge) {
@@ -247,22 +243,13 @@ public abstract class GTMetaItemBase extends GTGenericItem
         if ((tStats == null) || (tStats[3] > 0)) {
             return false;
         }
-        NBTTagCompound tNBT = aStack.getTagCompound();
-        if (tNBT == null) {
-            tNBT = new NBTTagCompound();
-        }
-        tNBT.removeTag("GT.ItemCharge");
         aCharge = Math.min(tStats[0] < 0 ? Math.abs(tStats[0] / 2) : aCharge, Math.abs(tStats[0]));
         if (aCharge > 0) {
             aStack.setItemDamage(this.getChargedMetaData(aStack));
-            tNBT.setLong("GT.ItemCharge", aCharge);
+            ItemStackNBT.setLong(aStack, "GT.ItemCharge", aCharge);
         } else {
             aStack.setItemDamage(this.getEmptyMetaData(aStack));
-        }
-        if (tNBT.hasNoTags()) {
-            aStack.setTagCompound(null);
-        } else {
-            aStack.setTagCompound(tNBT);
+            ItemStackNBT.removeTag(aStack, "GT.ItemCharge");
         }
         this.isItemStackUsable(aStack);
         return true;
@@ -393,24 +380,15 @@ public abstract class GTMetaItemBase extends GTGenericItem
         if ((tStats == null) || (tStats[0] <= 0)) {
             return GTUtility.getFluidForFilledItem(aStack, false);
         }
-        final NBTTagCompound tNBT = aStack.getTagCompound();
-        return tNBT == null ? null : FluidStack.loadFluidStackFromNBT(tNBT.getCompoundTag("GT.FluidContent"));
+        final NBTTagCompound fluidContent = ItemStackNBT.getCompoundTag(aStack, "GT.FluidContent");
+        return fluidContent == null ? null : FluidStack.loadFluidStackFromNBT(fluidContent);
     }
 
     public void setFluidContent(final ItemStack aStack, final FluidStack aFluid) {
-        NBTTagCompound tNBT = aStack.getTagCompound();
-        if (tNBT == null) {
-            tNBT = new NBTTagCompound();
-        } else {
-            tNBT.removeTag("GT.FluidContent");
-        }
         if ((aFluid != null) && (aFluid.amount > 0)) {
-            tNBT.setTag("GT.FluidContent", aFluid.writeToNBT(new NBTTagCompound()));
-        }
-        if (tNBT.hasNoTags()) {
-            aStack.setTagCompound(null);
+            ItemStackNBT.setTag(aStack, "GT.FluidContent", aFluid.writeToNBT(new NBTTagCompound()));
         } else {
-            aStack.setTagCompound(tNBT);
+            ItemStackNBT.removeTag(aStack, "GT.FluidContent");
         }
         this.isItemStackUsable(aStack);
     }
@@ -460,46 +438,8 @@ public abstract class GTMetaItemBase extends GTGenericItem
     } // just to be sure.
 
     @Override
-    public int getItemEnchantability() {
-        return 0;
-    }
-
-    @Override
     public boolean isBookEnchantable(final ItemStack aStack, final ItemStack aBook) {
         return false;
     }
 
-    @Override
-    public boolean getIsRepairable(final ItemStack aStack, final ItemStack aMaterial) {
-        return false;
-    }
-
-    @Override
-    public int getColorFromItemStack(final ItemStack stack, int HEX_OxFFFFFF) {
-        if (stack.getDisplayName()
-            .contains("LuV")) {
-            HEX_OxFFFFFF = 0xffffcc;
-        } else if (stack.getDisplayName()
-            .contains("ZPM")) {
-                HEX_OxFFFFFF = 0xace600;
-            } else if (stack.getDisplayName()
-                .contains("UV")) {
-                    HEX_OxFFFFFF = 0xffff00;
-                } else if (stack.getDisplayName()
-                    .contains("MAX")) {
-                        HEX_OxFFFFFF = 0xff0000;
-                    } else if (stack.getDisplayName()
-                        .contains("Sodium")) {
-                            HEX_OxFFFFFF = Utils.rgbtoHexValue(0, 0, 150);
-                        } else if (stack.getDisplayName()
-                            .contains("Cadmium")) {
-                                HEX_OxFFFFFF = Utils.rgbtoHexValue(50, 50, 60);
-                            } else if (stack.getDisplayName()
-                                .contains("Lithium")) {
-                                    HEX_OxFFFFFF = Utils.rgbtoHexValue(225, 220, 255);
-                                } else {
-                                    HEX_OxFFFFFF = 0xffffff;
-                                }
-        return HEX_OxFFFFFF;
-    }
 }

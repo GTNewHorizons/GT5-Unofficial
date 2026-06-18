@@ -1,12 +1,10 @@
 package tectech.thing.metaTileEntity.hatch;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTValues.V;
-import static net.minecraft.util.StatCollector.translateToLocal;
-import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.List;
 
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -15,34 +13,28 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IHideTooltipEnergyInfo;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.util.GTUtility;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
-import tectech.thing.metaTileEntity.Textures;
-import tectech.util.CommonValues;
 
 /**
  * Created by danie_000 on 16.12.2016.
  */
-public class MTEHatchEnergyMulti extends MTEHatch {
+@IMetaTileEntity.SkipGenerateDescription
+public class MTEHatchEnergyMulti extends MTEHatch implements IHideTooltipEnergyInfo {
 
     public final int maxAmperes;
-    public int Amperes;
+    protected int Amperes;
 
     public MTEHatchEnergyMulti(int aID, String aName, String aNameRegional, int aTier, int aAmp) {
-        super(
-            aID,
-            aName,
-            aNameRegional,
-            aTier,
-            0,
-            new String[] { CommonValues.TEC_MARK_GENERAL, translateToLocal("gt.blockmachines.hatch.energymulti.desc.0"),
-                translateToLocalFormatted("gt.blockmachines.hatch.energymulti.desc.2", aAmp + (aAmp >> 2)),
-                translateToLocalFormatted("gt.blockmachines.hatch.energymulti.desc.3", aAmp) });
+        super(aID, aName, aNameRegional, aTier, 0, (String) null);
         Amperes = maxAmperes = aAmp;
     }
 
@@ -57,27 +49,50 @@ public class MTEHatchEnergyMulti extends MTEHatch {
         Amperes = maxAmperes = aAmp;
     }
 
+    public int getAmperes() {
+        return Amperes;
+    }
+
+    public void setAmperes(int amperes) {
+        Amperes = amperes;
+    }
+
     public int getHatchType() {
         return 1;
     }
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, Textures.OVERLAYS_ENERGY_IN_POWER_TT[mTier] };
+        if (maxAmperes > 64) {
+            return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_LASER[mTier + 1] };
+        } else if (maxAmperes > 16) {
+            return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_64A[mTier + 1] };
+        } else if (maxAmperes > 4) {
+            return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_16A[mTier + 1] };
+        } else if (maxAmperes > 2) {
+            return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_4A[mTier + 1] };
+        } else {
+            return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_2A[mTier + 1] };
+        }
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, Textures.OVERLAYS_ENERGY_IN_POWER_TT[mTier] };
+        if (maxAmperes > 64) {
+            return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_LASER[mTier + 1] };
+        } else if (maxAmperes > 16) {
+            return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_64A[mTier + 1] };
+        } else if (maxAmperes > 4) {
+            return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_16A[mTier + 1] };
+        } else if (maxAmperes > 2) {
+            return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_4A[mTier + 1] };
+        } else {
+            return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_2A[mTier + 1] };
+        }
     }
 
     @Override
     public boolean isFacingValid(ForgeDirection facing) {
-        return true;
-    }
-
-    @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
         return true;
     }
 
@@ -138,22 +153,20 @@ public class MTEHatchEnergyMulti extends MTEHatch {
         IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currenttip, accessor, config);
         currenttip.add(
-            translateToLocal("gt.blockmachines.hatch.energytunnel.desc.1") + ": "
-                + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(
+            GTUtility.translate(
+                "gt.tileentity.throughput",
+                EnumChatFormatting.YELLOW + formatNumber(
                     accessor.getNBTData()
                         .getLong("amperage") * V[mTier])
-                + EnumChatFormatting.RESET
-                + " EU/t");
+                    + EnumChatFormatting.RESET
+                    + " EU/t"));
     }
 
     @Override
     public String[] getInfoData() {
-        return new String[] { translateToLocal("gt.blockmachines.hatch.energytunnel.desc.1") + ": "
-            + EnumChatFormatting.YELLOW
-            + GTUtility.formatNumbers(Amperes * V[mTier])
-            + EnumChatFormatting.RESET
-            + " EU/t" };
+        return new String[] { GTUtility.translate(
+            "gt.tileentity.throughput",
+            EnumChatFormatting.YELLOW + formatNumber(Amperes * V[mTier]) + EnumChatFormatting.RESET + " EU/t") };
     }
 
     @Override
@@ -171,5 +184,16 @@ public class MTEHatchEnergyMulti extends MTEHatch {
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
         return false;
+    }
+
+    @Override
+    public String[] getDescription() {
+        return MTEHatch.formatEnergyInfoDesc(
+            false,
+            mTier,
+            maxAmperes,
+            "gt.blockmachines.hatch.energymulti.desc",
+            maxAmperes + (maxAmperes >> 2),
+            maxAmperes);
     }
 }

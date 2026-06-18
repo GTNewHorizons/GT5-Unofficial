@@ -1,5 +1,6 @@
 package goodgenerator.blocks.tileEntity;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FUSION2;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FUSION2_GLOW;
 
@@ -45,13 +46,13 @@ public class MTELargeFusionComputer2 extends MTELargeFusionComputer {
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Fusion Reactor")
-            .addInfo("Millions of nuclear.")
+            .addInfo("More Power!!!!")
             .addInfo(
-                EnumChatFormatting.AQUA + GTUtility.formatNumbers(getSingleHatchPower())
+                EnumChatFormatting.AQUA + formatNumber(getSingleHatchPower())
                     + EnumChatFormatting.GRAY
                     + " EU/t and "
                     + EnumChatFormatting.AQUA
-                    + GTUtility.formatNumbers(capableStartupCanonical() / 32 / M)
+                    + formatNumber(capableStartupCanonical() / 32 / M)
                     + "M"
                     + EnumChatFormatting.GRAY
                     + " EU capacity per Energy Hatch")
@@ -61,16 +62,16 @@ public class MTELargeFusionComputer2 extends MTELargeFusionComputer {
                 "If the recipe requires a voltage tier over " + GTUtility.getColoredTierNameFromTier((byte) tier())
                     + EnumChatFormatting.GRAY
                     + " , you can't do it either")
-            .addInfo("Startup < 160,000,000 EU: 128x Parallel")
-            .addInfo("Startup >= 160,000,000 EU: 64x Parallel")
+            .addInfo(createParallelText())
             .addTecTechHatchInfo()
+            .beginStructureBlock(47, 7, 47, false)
             .addCasingInfoMin("Fusion Machine Casing", 1664, false)
             .addCasingInfoMin("Compact Fusion Coil", 560, false)
             .addCasingInfoMin("Duranium Frame Box", 128, false)
             .addCasingInfoMin("Iridium Reinforced Borosilicate Glass Block", 63, false)
-            .addEnergyHatch("1-32, Hint block with dot 2", 2)
-            .addInputHatch("1-16, Hint block with dot 1", 1)
-            .addOutputHatch("1-16, Hint block with dot 1", 1)
+            .addEnergyHatch("1-32, Hint block number 2", 2)
+            .addInputHatch("1-16, Hint block number 1", 1)
+            .addOutputHatch("1-16, Hint block number 1", 1)
             .addStructureInfo("Supports Crafting Input Buffer")
             .addStructureInfo(
                 "Energy Hatches must be " + GTUtility.getColoredTierNameFromTier((byte) energyHatchTier())
@@ -137,7 +138,7 @@ public class MTELargeFusionComputer2 extends MTELargeFusionComputer {
 
     @Override
     public int extraPara(long startEnergy) {
-        return startEnergy < 160000000 ? 2 : 1;
+        return startEnergy < 160000000L ? 2 : 1;
     }
 
     @Override

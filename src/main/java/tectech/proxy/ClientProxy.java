@@ -7,7 +7,6 @@ import static tectech.thing.casing.TTCasingsContainer.forgeOfGodsRenderBlock;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiNewChat;
 import net.minecraft.client.particle.EntityFX;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentText;
@@ -22,10 +21,8 @@ import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import tectech.Reference;
-import tectech.rendering.EOH.EOHItemRenderer;
 import tectech.rendering.EOH.EOHTileEntitySR;
-import tectech.thing.block.BlockGodforgeGlass;
-import tectech.thing.block.BlockQuantumGlass;
+import tectech.rendering.EOH.ItemRenderEOH;
 import tectech.thing.block.RenderForgeOfGods;
 import tectech.thing.block.RenderGodforgeGlass;
 import tectech.thing.block.RenderQuantumGlass;
@@ -37,15 +34,12 @@ public class ClientProxy extends CommonProxy {
 
     @Override
     public void registerRenderInfo() {
-        BlockQuantumGlass.renderID = RenderingRegistry.getNextAvailableRenderId();
-        RenderingRegistry.registerBlockHandler(BlockQuantumGlass.renderID, new RenderQuantumGlass());
+        RenderingRegistry.registerBlockHandler(new RenderQuantumGlass());
 
-        MinecraftForgeClient
-            .registerItemRenderer(Item.getItemFromBlock(eyeOfHarmonyRenderBlock), new EOHItemRenderer());
+        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(eyeOfHarmonyRenderBlock), new ItemRenderEOH());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityEyeOfHarmony.class, new EOHTileEntitySR());
 
-        BlockGodforgeGlass.renderID = RenderingRegistry.getNextAvailableRenderId();
-        RenderingRegistry.registerBlockHandler(BlockGodforgeGlass.renderID, new RenderGodforgeGlass());
+        RenderingRegistry.registerBlockHandler(new RenderGodforgeGlass());
 
         MinecraftForgeClient
             .registerItemRenderer(Item.getItemFromBlock(forgeOfGodsRenderBlock), new ItemRenderForgeOfGods());
@@ -141,11 +135,6 @@ public class ClientProxy extends CommonProxy {
             0,
             0,
             0);
-    }
-
-    @Override
-    public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-        return null;
     }
 
     @Override

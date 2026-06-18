@@ -8,13 +8,14 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 
 import appeng.api.config.AccessRestriction;
 import appeng.api.config.Actionable;
+import appeng.api.implementations.IPowerChannelState;
 import appeng.api.networking.GridFlags;
 import appeng.api.networking.IGridNode;
 import appeng.api.networking.events.MENetworkCellArrayUpdate;
@@ -22,7 +23,6 @@ import appeng.api.networking.events.MENetworkChannelsChanged;
 import appeng.api.networking.events.MENetworkEventSubscribe;
 import appeng.api.networking.events.MENetworkPowerStatusChange;
 import appeng.api.networking.security.BaseActionSource;
-import appeng.api.networking.security.IActionHost;
 import appeng.api.networking.security.MachineSource;
 import appeng.api.storage.ICellContainer;
 import appeng.api.storage.IMEInventory;
@@ -48,16 +48,17 @@ import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 
-public class MTEYOTTAHatch extends MTEHatch implements IGridProxyable, IActionHost, ICellContainer,
-    IMEInventory<IAEFluidStack>, IMEInventoryHandler<IAEFluidStack> {
+public class MTEYOTTAHatch extends MTEHatch
+    implements IGridProxyable, ICellContainer, IMEInventoryHandler<IAEFluidStack>, IPowerChannelState {
 
-    private static final IIconContainer textureFont = new Textures.BlockIcons.CustomIcon("icons/YOTTAHatch");
+    private static final IIconContainer textureFont = Textures.BlockIcons.custom("icons/YOTTAHatch");
     private static final BigInteger LONG_MAX = BigInteger.valueOf(Long.MAX_VALUE);
     private static final BigInteger LONG_MIN = BigInteger.valueOf(Long.MIN_VALUE);
 
     private MTEYottaFluidTank host;
     private AENetworkProxy gridProxy = null;
     private int priority;
+    private boolean isSticky = false;
     private byte tickRate = 20;
     private FluidStack lastFluid = null;
     private BigInteger lastAmt = BigInteger.ZERO;
@@ -76,7 +77,8 @@ public class MTEYOTTAHatch extends MTEHatch implements IGridProxyable, IActionHo
             aTier,
             0,
             new String[] { "Special I/O port for AE2FC.", "Directly connected YOTTank with AE fluid storage system.",
-                "Use screwdriver to set storage priority", "Use soldering iron to set read/write mode" });
+                "Use screwdriver to set storage priority", "Use soldering iron to set read/write mode",
+                "Use wire cutter to enable/disable sticky mode" });
     }
 
     public MTEYOTTAHatch(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -95,6 +97,8 @@ public class MTEYOTTAHatch extends MTEHatch implements IGridProxyable, IActionHo
         super.saveNBTData(aNBT);
         aNBT.setInteger("mAEPriority", this.priority);
         aNBT.setInteger("mAEMode", this.readMode.ordinal());
+        aNBT.setBoolean("mAESticky", this.isSticky);
+        getProxy().writeToNBT(aNBT);
     }
 
     @Override
@@ -102,15 +106,12 @@ public class MTEYOTTAHatch extends MTEHatch implements IGridProxyable, IActionHo
         super.loadNBTData(aNBT);
         this.priority = aNBT.getInteger("mAEPriority");
         this.readMode = AEModes[aNBT.getInteger("mAEMode")];
+        this.isSticky = aNBT.getBoolean("mAESticky");
+        getProxy().readFromNBT(aNBT);
     }
 
     @Override
     public boolean isFacingValid(ForgeDirection facing) {
-        return true;
-    }
-
-    @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
         return true;
     }
 
@@ -128,16 +129,34 @@ public class MTEYOTTAHatch extends MTEHatch implements IGridProxyable, IActionHo
         } catch (GridAccessException e) {
             // :P
         }
-        GTUtility
-            .sendChatToPlayer(aPlayer, String.format(StatCollector.translateToLocal("yothatch.chat.0"), this.priority));
+        GTUtility.sendChatTrans(aPlayer, "yothatch.chat.0", this.priority);
     }
 
     @Override
     public boolean onSolderingToolRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
         float aX, float aY, float aZ, ItemStack toolStack) {
         this.readMode = AEModes[(readMode.ordinal() + 1) % 4];
-        GTUtility
-            .sendChatToPlayer(aPlayer, String.format(StatCollector.translateToLocal("yothatch.chat.1"), this.readMode));
+        GTUtility.sendChatTrans(
+            aPlayer,
+            "yothatch.chat.1",
+            new ChatComponentTranslation(getUnlocalizedReadMode(this.readMode)));
+        return true;
+    }
+
+    private static String getUnlocalizedReadMode(AccessRestriction readMode) {
+        return switch (readMode) {
+            case NO_ACCESS -> "gg.chat.ae_modes.no_access";
+            case READ -> "gg.chat.ae_modes.read";
+            case WRITE -> "gg.chat.ae_modes.write";
+            case READ_WRITE -> "gg.chat.ae_modes.read_write";
+        };
+    }
+
+    @Override
+    public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
+        float aX, float aY, float aZ, ItemStack aTool) {
+        this.isSticky = !this.isSticky;
+        GTUtility.sendChatTrans(aPlayer, this.isSticky ? "yothatch.chat.2" : "yothatch.chat.3");
         return true;
     }
 
@@ -159,10 +178,23 @@ public class MTEYOTTAHatch extends MTEHatch implements IGridProxyable, IActionHo
     public AENetworkProxy getProxy() {
         if (gridProxy == null) {
             gridProxy = new AENetworkProxy(this, "proxy", Loaders.YFH, true);
-            gridProxy.onReady();
+
             gridProxy.setFlags(GridFlags.REQUIRE_CHANNEL);
+            if (getBaseMetaTileEntity().getWorld() != null) gridProxy.setOwner(
+                getBaseMetaTileEntity().getWorld()
+                    .getPlayerEntityByName(getBaseMetaTileEntity().getOwnerName()));
         }
         return this.gridProxy;
+    }
+
+    @Override
+    public boolean isPowered() {
+        return getProxy() != null && getProxy().isPowered();
+    }
+
+    @Override
+    public boolean isActive() {
+        return getProxy() != null && getProxy().isActive();
     }
 
     // not sure if needed
@@ -250,7 +282,7 @@ public class MTEYOTTAHatch extends MTEHatch implements IGridProxyable, IActionHo
     @Override
     public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
         super.onFirstTick(aBaseMetaTileEntity);
-        getProxy();
+        getProxy().onReady();
     }
 
     private void postUpdate(AENetworkProxy proxy, FluidStack fluid, BigInteger amt) {
@@ -482,8 +514,10 @@ public class MTEYOTTAHatch extends MTEHatch implements IGridProxyable, IActionHo
 
     @Override
     public boolean canAccept(IAEFluidStack input) {
+        if (this.host == null) return false;
         FluidStack rInput = input.getFluidStack();
-        return fill(null, rInput, false) > 0;
+        return (host.mLockedFluid != null && !host.mLockedFluid.isFluidEqual(rInput)) || host.mFluid == null
+            || host.mFluid.isFluidEqual(rInput);
     }
 
     @Override
@@ -499,6 +533,11 @@ public class MTEYOTTAHatch extends MTEHatch implements IGridProxyable, IActionHo
     @Override
     public int getPriority() {
         return this.priority;
+    }
+
+    @Override
+    public boolean getSticky() {
+        return this.isSticky;
     }
 
     @Override

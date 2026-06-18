@@ -13,17 +13,20 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAYS_ENERGY_OUT;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicGenerator;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTUtility;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEMagicEnergyConverter extends MTEBasicGenerator {
 
     public MTEMagicEnergyConverter(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, "Put your strange stuff in here");
+        super(aID, aName, aNameRegional, aTier, (String) null);
     }
 
     public MTEMagicEnergyConverter(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -46,11 +49,6 @@ public class MTEMagicEnergyConverter extends MTEBasicGenerator {
     }
 
     @Override
-    public int getCapacity() {
-        return 16000;
-    }
-
-    @Override
     public int getEfficiency() {
         return 100 - this.mTier * 5;
     }
@@ -62,7 +60,7 @@ public class MTEMagicEnergyConverter extends MTEBasicGenerator {
                 .addIcon(MACHINE_CASING_MAGIC_GLOW)
                 .glow()
                 .build(),
-            OVERLAYS_ENERGY_OUT[mTier] };
+            OVERLAYS_ENERGY_OUT[mTier + 1] };
     }
 
     @Override
@@ -108,7 +106,7 @@ public class MTEMagicEnergyConverter extends MTEBasicGenerator {
                 .addIcon(MACHINE_CASING_MAGIC_ACTIVE_GLOW)
                 .glow()
                 .build(),
-            OVERLAYS_ENERGY_OUT[mTier] };
+            OVERLAYS_ENERGY_OUT[mTier + 1] };
     }
 
     @Override
@@ -145,6 +143,11 @@ public class MTEMagicEnergyConverter extends MTEBasicGenerator {
                 .addIcon(MACHINE_CASING_MAGIC_ACTIVE_GLOW)
                 .glow()
                 .build() };
+    }
+
+    @Override
+    protected String[] getTooltipLines() {
+        return GTUtility.translateMultiline("gt.blockmachines.basicgenerator.magicenergyconverter.tooltip");
     }
 
     @Override

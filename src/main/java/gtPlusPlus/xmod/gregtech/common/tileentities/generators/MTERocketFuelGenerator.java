@@ -1,24 +1,16 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.generators;
 
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.util.ForgeDirection;
-
-import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTModHandler;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.generators.MTERocketFuelGeneratorBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class MTERocketFuelGenerator extends MTERocketFuelGeneratorBase {
-
-    public int mEfficiency;
 
     public MTERocketFuelGenerator(final int aID, final String aName, final String aNameRegional, final int aTier) {
         super(aID, aName, aNameRegional, aTier, "Requires GT++ Rocket Fuels");
@@ -27,13 +19,6 @@ public class MTERocketFuelGenerator extends MTERocketFuelGeneratorBase {
     public MTERocketFuelGenerator(final String aName, final int aTier, final String[] aDescription,
         final ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
-        this.mEfficiency = getEfficiency();
-    }
-
-    @Override
-    public boolean isOutputFacing(final ForgeDirection side) {
-        return side == this.getBaseMetaTileEntity()
-            .getFrontFacing();
     }
 
     @Override
@@ -47,22 +32,8 @@ public class MTERocketFuelGenerator extends MTERocketFuelGeneratorBase {
     }
 
     @Override
-    public int getCapacity() {
-        return 32000;
-    }
-
-    @Override
     public int getEfficiency() {
         return 80 - (10 * (this.mTier - 4));
-    }
-
-    @Override
-    public int getFuelValue(final ItemStack aStack) {
-        int rValue = Math.max((GTModHandler.getFuelValue(aStack) * 6) / 5, super.getFuelValue(aStack));
-        if (ItemList.Fuel_Can_Plastic_Filled.isStackEqual(aStack, false, true)) {
-            rValue = Math.max(rValue, GameRegistry.getFuelValue(aStack) * 3);
-        }
-        return rValue;
     }
 
     private ITexture getCasingTexture() {
@@ -78,7 +49,7 @@ public class MTERocketFuelGenerator extends MTERocketFuelGeneratorBase {
     @Override
     public ITexture[] getFront(final byte aColor) {
         return new ITexture[] { super.getFront(aColor)[0], this.getCasingTexture(),
-            Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[this.mTier] };
+            Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_2A[this.mTier + 1] };
     }
 
     @Override
@@ -108,7 +79,7 @@ public class MTERocketFuelGenerator extends MTERocketFuelGeneratorBase {
     @Override
     public ITexture[] getFrontActive(final byte aColor) {
         return new ITexture[] { super.getFrontActive(aColor)[0], this.getCasingTexture(),
-            Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[this.mTier] };
+            Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_2A[this.mTier + 1] };
     }
 
     @Override

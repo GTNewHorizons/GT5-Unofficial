@@ -11,17 +11,14 @@ import static gregtech.api.enums.MetaTileEntityIDs.Energy_Buffer_1by1_ULV;
 import static gregtech.api.enums.MetaTileEntityIDs.Energy_Buffer_1by1_UV;
 import static gregtech.api.enums.MetaTileEntityIDs.Energy_Buffer_1by1_ZPM;
 
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.tileentities.storage.MTEEnergyBuffer;
 
 public class GregtechEnergyBuffer {
 
     // Misc Items
-    // public static Item itemBufferCore;
 
     public static void run() {
-        Logger.INFO("Gregtech5u Content | Registering Energy Buffer Blocks.");
         run1();
     }
 
@@ -99,7 +96,7 @@ public class GregtechEnergyBuffer {
             new MTEEnergyBuffer(
                 Energy_Buffer_1by1_MAX.ID,
                 "energybuffer.tier.09",
-                "MAX Voltage Energy Buffer",
+                "Highly Ultimate Voltage Energy Buffer",
                 9,
                 "",
                 1).getStackForm(1L));

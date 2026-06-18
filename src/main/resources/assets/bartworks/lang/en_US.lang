@@ -1,3 +1,7 @@
+# Components
+gt.oreprefix.bolted_material_casing=Bolted %s Casing
+gt.oreprefix.rebolted_material_casing=Rebolted %s Casing
+
 itemGroup.GT2C=Gregtech 2 Compat
 item.GT_Rockcutter_Item_LV.name=Rockcutter LV
 item.GT_Rockcutter_Item_MV.name=Rockcutter MV
@@ -15,10 +19,10 @@ bw.werkstoffblocks.01.name=Block
 bw.werkstoffblockscasing.01.name=Bolted Casing
 bw.werkstoffblockscasingadvanced.01.name=Rebolted Casing
 
-GT5U.gui.text.no_imprint=Missing imprint
-GT5U.gui.text.not_enough_length=Multiblock Too Short
-GT5U.gui.text.wrong_sievert_exactly=§7Wrong sievert. Requires exactly: %s §7Sv
-GT5U.gui.text.wrong_sievert_min=§7Wrong sievert. Requires at least: %s §7Sv
+GT5U.gui.text.recipe_result.no_imprint=Missing imprint
+GT5U.gui.text.recipe_result.not_enough_length=Multiblock Too Short
+GT5U.gui.text.wrong_sievert_exactly=§7Wrong Sievert. Requires exactly: %s §7Sv
+GT5U.gui.text.wrong_sievert_min=§7Wrong Sievert. Requires at least: %s §7Sv
 GT5U.gui.config.general.mixins=Mixins
 GT5U.gui.config.general.crossmodinteractions=CrossMod Interactions
 GT5U.gui.config.general.multiblocks=Multiblocks
@@ -92,26 +96,20 @@ labModule.item.PCRThermoclyclingModule.name=PCR Thermocycle Module
 labModule.item.PlasmidSynthesisModule.name=Plasmid Synthesis Module
 labModule.item.TransformationModule.name=Transformation Module
 labModule.item.ClonalCellularSynthesisModule.name=Clonal Cellular Synthesis Module
-BW_GlasBlocks.name=Borosilicate Glass Block
-BW_GlasBlocks.0.name=Borosilicate Glass Block
-BW_GlasBlocks.1.name=Titanium Reinforced Borosilicate Glass Block
-BW_GlasBlocks.2.name=Tungstensteel Reinforced Borosilicate Glass Block
-BW_GlasBlocks.3.name=Rhodium-Plated Palladium Reinforced Borosilicate Glass Block
-BW_GlasBlocks.4.name=Iridium Reinforced Borosilicate Glass Block
-BW_GlasBlocks.5.name=Osmium Reinforced Borosilicate Glass Block
-BW_GlasBlocks.6.name=Colored Borosilicate Glass Block (Red)
-BW_GlasBlocks.7.name=Colored Borosilicate Glass Block (Green)
-BW_GlasBlocks.8.name=Colored Borosilicate Glass Block (Purple)
-BW_GlasBlocks.9.name=Colored Borosilicate Glass Block (Yellow)
-BW_GlasBlocks.10.name=Colored Borosilicate Glass Block (Light Green)
-BW_GlasBlocks.11.name=Colored Borosilicate Glass Block (Brown)
-BW_GlasBlocks.12.name=Thorium Yttrium Glass Block
-BW_GlasBlocks.13.name=Neutronium Reinforced Borosilicate Glass Block
-BW_GlasBlocks.14.name=Cosmic Neutronium Reinforced Borosilicate Glass Block
-BW_GlasBlocks.15.name=Infinity Reinforced Borosilicate Glass Block
-BW_GlasBlocks2.name=Borosilicate Glass Block
-BW_GlasBlocks2.0.name=Transcendentally Reinforced Borosilicate Glass Block
-
+BW_TieredGlass.name=Borosilicate Glass Block
+BW_TieredGlass.0.name=Borosilicate Glass Block
+BW_TieredGlass.1.name=Titanium Reinforced Borosilicate Glass Block
+BW_TieredGlass.2.name=Tungstensteel Reinforced Borosilicate Glass Block
+BW_TieredGlass.3.name=Rhodium-Plated Palladium Reinforced Borosilicate Glass Block
+BW_TieredGlass.4.name=Iridium Reinforced Borosilicate Glass Block
+BW_TieredGlass.5.name=Osmium Reinforced Borosilicate Glass Block
+BW_TieredGlass.6.name=Neutronium Reinforced Borosilicate Glass Block
+BW_TieredGlass.7.name=Infinity Reinforced Borosilicate Glass Block
+BW_TieredGlass.8.name=Transcendentally Reinforced Borosilicate Glass Block
+BW_TieredGlass.9.name=Hexanite Reinforced Borosilicate Glass Block
+BW_TieredGlass.10.name=Universium Reinforced Borosilicate Glass Block
+BW_ExtraGlass.name=Borosilicate Glass Block
+BW_ExtraGlass.0.name=Thorium Yttrium Glass Block
 tooltip.glass_tier.0.name=Glass-Tier:
 tooltip.LESU.0.name=Maximum Capacity!
 tooltip.LESU.1.name=Multiple Controllers!
@@ -140,13 +138,11 @@ tooltip.bw.tier.name=Tier:
 tooltip.bw.empty.name=Empty
 tooltip.bw.mb_via.name=%s§7 via §2BartWorks
 
-tooltip.bw.high_temp_gas_cooled_reactor.material=Material for High Temperature Gas-cooled Reactor
-
-tooltip.bw.item.circuit.tagged=a circuit
 tooltip.bw.item.circuit.tagged.imprint=An imprint for: %s
 tooltip.bw.item.circuit.tagged.sliced=A sliced %s
-tooltip.bw.item.circuit.imprint=An imprint for a Circuit
-tooltip.bw.item.circuit.sliced=A sliced Circuit
+
+tooltip.item.CircuitParts.RawImprintBoard=A Raw Board needed for Circuit Imprints
+tooltip.item.CircuitParts.ImprintBoard=A Board needed for Circuit Imprints
 
 tooltip.teslastaff.0.name=No warranty!
 tooltip.labmodule.0.name=A Module used to change the BioLab's working Mode
@@ -155,10 +151,10 @@ tooltip.labparts.1.name=An empty DNA Flask.
 tooltip.labparts.2.name=An empty Plasmid Cell.
 tooltip.labparts.3.name=A special washing powder for Bio Engineering.
 tooltip.labparts.4.name=A powder for the separation of DNA by electrophoresis.
-tooltip.labparts.5.name=A Petri Dish containing:
-tooltip.labparts.6.name=This is a weak culture, it can not be bred in the Bacterial Vat!
-tooltip.labparts.7.name=A DNA Flask containing:
-tooltip.labparts.8.name=A Plasmid Cell containing:
+tooltip.labparts.5.name=A Petri Dish containing: %s
+tooltip.labparts.6.name=This is a weak culture, it cannot be bred in the Bacterial Vat!
+tooltip.labparts.7.name=A DNA Flask containing: %s
+tooltip.labparts.8.name=A Plasmid Cell containing: %s
 
 tooltip.tile.waterpump.0.name=Produces
 tooltip.tile.waterpump.1.name=L/s Water when fueled. Causes %d Pollution per second.
@@ -205,8 +201,8 @@ gt.recipe.electricimplosioncompressor=Electric Implosion Compressor
 bw.recipe.htgr=High Temperature Gas-cooled Reactor
 
 nei.biovat.0.name=Needs Glass Tier: %s
-nei.biovat.1.name=Need exactly Sievert: %s Sv
-nei.biovat.2.name=Need minimum Sievert: %s Sv
+nei.biovat.1.name=Needs exactly Sievert: %s Sv
+nei.biovat.2.name=Needs minimum Sievert: %s Sv
 nei.biovat.input.tooltip=Consumed up to 1,001x amount, depending on output rate
 nei.biovat.output.tooltip=Outputs up to 1,001x amount, depending on the amount of fluid stored in the Output Hatch
 
@@ -230,6 +226,12 @@ item.BISOPelletCompound.name=BISO pebble compound
 item.BurnedOutTRISOPelletBall.name=Burned Out TRISO pebble ball
 item.BurnedOutTRISOPellet.name=Burned Out TRISO pebble
 
+item.CircuitParts.Imprint.name=Circuit Imprint
+item.CircuitParts.Sliced.name=Sliced Circuit
+item.CircuitParts.RawImprintBoard.name=Raw Imprint supporting Board
+item.CircuitParts.ImprintBoard.name=Imprint supporting Board
+item.CircuitParts.Wrap.name=Wrap of %s
+
 itemGroup.bartworksMetaMaterials=BartWorks' Meta Materials
 
 planet.Ross128b=Ross128b
@@ -240,24 +242,14 @@ solarsystem.Ross128System=Ross128-System
 itemGroup.bw.MetaItems.0=BartWorks Circuit Overhaul Items
 
 # info data
-BW.infoData.BioVat.expectedProduction=Expected Production
-BW.infoData.BioVat.production=Production
+BW.infoData.BioVat.expectedProduction.s=Expected Production: §a %s §r%%
+BW.infoData.BioVat.production.s=Production: §a %s §r%%
 
 BW.infoData.htr.helium_level=Helium-Level: %sL / %sL
 BW.infoData.htr.problems=Problems: %s
 
-BW.infoData.htgr.mode=Mode: %s
-BW.infoData.htgr.mode.emptying=Emptying
-BW.infoData.htgr.mode.normal=Normal
-BW.infoData.htgr.progress=Progress: %ss / %ss
-BW.infoData.htgr.fuel_type=Fuel type: %s
-BW.infoData.htgr.fuel_type.none=NONE
-BW.infoData.htgr.fuel_type.triso=TRISO (%s)
-BW.infoData.htgr.fuel_amount=Fuel amount: %s pcs.
-BW.infoData.htgr.coolant=Coolant: %sL/s
-
-BW.infoData.thtr.progress=Progress: %ssecs / %ssecs
-BW.infoData.thtr.triso_pebbles=TRISO-Pebbles: %spcs. / %spcs.
+BW.infoData.thtr.progress=Progress: %s secs / %s secs
+BW.infoData.thtr.triso_pebbles=TRISO-Pebbles: %s pcs. / %s pcs.
 BW.infoData.thtr.coolant=Coolant/t: %sL/t
 
 BW.infoData.wind_mill.progress=Progress: %d Grindings of %d needed Grindings
@@ -271,10 +263,44 @@ BW.NEI.display.radhatch.0=Sievert: %s Sv
 BW.NEI.display.radhatch.1=Mass: %s kg
 BW.NEI.display.radhatch.2=Time: %s s
 
-misc.BatchModeTextOn=Batch recipes
-misc.BatchModeTextOff=Don't batch recipes
-
-tooltip.cal.imprintedWith=Imprinted with:
+tooltip.cal.imprintedWith=Imprinted with: %s
 chat.cal.mode.0=Circuit Assembly Line Mode
 chat.cal.mode.1=Circuit Assembler Mode
+
+chat.proxy.reverse.false=§aRegular§r Recipe Order
+chat.proxy.reverse.true=§dReversed§r Recipe Order
 #Liquids
+
+# gui
+BW.gui.text.radio_hatch.tooltip.radiation_shutter=Radiation Shutter
+BW.gui.text.radio_hatch.tooltip.radiation_shutter_control=Radiation Shutter Control
+
+BW.gui.text.lesu.eu=EU: %s
+BW.gui.text.lesu.max=MAX: %s
+BW.gui.text.lesu.max_in=MAX EU/t IN: %s
+BW.gui.text.lesu.eu_out=EU/t OUT: %s
+BW.gui.text.lesu.amp_io=AMP/t IN/OUT: %s
+
+# chat
+BW.chat.thtr.cannot_change_mode=THTR mode cannot be changed while the machine is running.
+BW.chat.thtr.running_in.emptying=THTR is now running in emptying mode.
+BW.chat.thtr.running_in.normal=THTR is now running in normal Operation.
+BW.chat.diode.max_amps=Max Amps: %s
+
+# bio name
+bw.bioname.latin.format=%s (%s)
+bw.bioname.saccharomyces_cerevisiae.latin=Saccharomyces cerevisiae
+bw.bioname.saccharomyces_cerevisiae=Common Yeast
+bw.bioname.saccharomyces_cerevisiae_var_bayanus.latin=Saccharomyces cerevisiae var bayanus
+bw.bioname.saccharomyces_cerevisiae_var_bayanus=Wine Yeast
+bw.bioname.saccharomyces_cerevisiae_var_cerevisiae.latin=Saccharomyces cerevisiae var cerevisiae
+bw.bioname.saccharomyces_cerevisiae_var_cerevisiae=Beer Yeast
+bw.bioname.escherichia_cadaver.latin=Escherichia cadaver
+bw.bioname.escherichia_cadaver=Rotten Flesh Bacteria
+bw.bioname.beta-lactamase=beta-Lactamase
+bw.bioname.escherichia_koli.latin=Escherichia koli
+bw.bioname.escherichia_koli=eColi Bacteria
+bw.bioname.pseudomonas_veronii.latin=Pseudomonas veronii
+bw.bioname.pseudomonas_veronii=Anaerobic Oil Bacteria
+bw.bioname.saccharomyces_escherichia.latin=Saccharomyces escherichia
+bw.bioname.saccharomyces_escherichia=General Purpose Fermenting Bacteria

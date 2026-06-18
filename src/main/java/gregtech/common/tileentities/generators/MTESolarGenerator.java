@@ -1,8 +1,8 @@
 package gregtech.common.tileentities.generators;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAYS_ENERGY_OUT;
-import static gregtech.api.util.GTUtility.formatNumbers;
 
 import java.util.List;
 
@@ -30,26 +30,27 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTUtility;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTESolarGenerator extends MTETieredMachineBlock implements IAddUIWidgets, IAddGregtechLogo {
 
     public MTESolarGenerator(int aID, String aName, String aNameRegional, int aTier) {
-        super(
-            aID,
-            aName,
-            aNameRegional,
-            aTier,
-            4,
-            new String[] { "Generates EU From Solar Power", "Does not generate power when raining",
-                "Cleans itself automatically", "Does not explode in rain!" });
+        super(aID, aName, aNameRegional, aTier, 4, (String) null);
+    }
+
+    @Override
+    public String[] getDescription() {
+        return GTUtility.translateMultiline("gt.blockmachines.basicgenerator.solarpanel.tooltip");
     }
 
     public MTESolarGenerator(String aName, int aTier, int aInvSlotCount, String[] aDescription,
@@ -66,7 +67,7 @@ public class MTESolarGenerator extends MTETieredMachineBlock implements IAddUIWi
         }
         if (sideDirection == facingDirection) {
             return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][colorIndex + 1],
-                OVERLAYS_ENERGY_OUT[mTier] };
+                OVERLAYS_ENERGY_OUT[mTier + 1] };
         }
         return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][colorIndex + 1] };
     }
@@ -95,11 +96,6 @@ public class MTESolarGenerator extends MTETieredMachineBlock implements IAddUIWi
     @Override
     public boolean willExplodeInRain() {
         return false;
-    }
-
-    @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
-        return true;
     }
 
     // No logic for charge vs decharge because generator should not be chargeable
@@ -144,11 +140,8 @@ public class MTESolarGenerator extends MTETieredMachineBlock implements IAddUIWi
                     .setPos(14, 74)
                     .setSize(147, 5))
             .widget(
-                new TextWidget()
-                    .setStringSupplier(
-                        () -> formatNumbers(clientEU) + "/"
-                            + formatNumbers(getBaseMetaTileEntity().getEUCapacity())
-                            + " EU")
+                new TextWidget().setStringSupplier(
+                    () -> formatNumber(clientEU) + "/" + formatNumber(getBaseMetaTileEntity().getEUCapacity()) + " EU")
                     .setTextAlignment(Alignment.Center)
                     .setPos(14, 66)
                     .setSize(147, 5))
@@ -245,11 +238,11 @@ public class MTESolarGenerator extends MTETieredMachineBlock implements IAddUIWi
                 ? EnumChatFormatting.GREEN + StatCollector.translateToLocal("GT5U.waila.generating.on")
                 : EnumChatFormatting.RED + StatCollector.translateToLocal("GT5U.waila.generating.off"));
         if (tag.hasKey("storedeu") && tag.hasKey("maxeu")) currenttip.add(
-            EnumChatFormatting.GREEN + formatNumbers(tag.getLong("storedeu"))
+            EnumChatFormatting.GREEN + formatNumber(tag.getLong("storedeu"))
                 + EnumChatFormatting.GRAY
                 + " / "
                 + EnumChatFormatting.YELLOW
-                + formatNumbers(tag.getLong("maxeu"))
+                + formatNumber(tag.getLong("maxeu"))
                 + EnumChatFormatting.GRAY
                 + " EU");
         super.getWailaBody(itemStack, currenttip, accessor, config);
@@ -257,12 +250,26 @@ public class MTESolarGenerator extends MTETieredMachineBlock implements IAddUIWi
 
     @Override
     public long maxEUStore() {
+        if (mTier == 0) {
+            return 2;
+        }
         return V[mTier] * 10000;
     }
 
     @Override
     public long maxEUOutput() {
+        if (mTier == 0) {
+            return 1;
+        }
         return GTValues.V[mTier];
+    }
+
+    @Override
+    public long getMinimumStoredEU() {
+        if (mTier == 0) {
+            return 0;
+        }
+        return super.getMinimumStoredEU();
     }
 
     @Override
@@ -289,6 +296,11 @@ public class MTESolarGenerator extends MTETieredMachineBlock implements IAddUIWi
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
+        return false;
+    }
+
+    @Override
+    protected boolean useMui2() {
         return false;
     }
 }

@@ -42,7 +42,7 @@ public class ItemDehydratorCoil extends Item {
     }
 
     @Override
-    public void getSubItems(Item item, CreativeTabs tab, List list) {
+    public void getSubItems(Item item, CreativeTabs tab, List<ItemStack> list) {
         for (int i = 0; i < 4; i++) {
             list.add(new ItemStack(item, 1, i));
         }
@@ -58,13 +58,4 @@ public class ItemDehydratorCoil extends Item {
         return StatCollector
             .translateToLocalFormatted("item.itemDehydratorCoil.name", GTValues.VN[tItem.getItemDamage() + 4]);
     }
-
-    /*
-     * @Override public int getColorFromItemStack(final ItemStack stack, int HEX_OxFFFFFF) { int meta =
-     * stack.getItemDamage(); if (meta == 0){ HEX_OxFFFFFF = Utils.rgbtoHexValue(10,110,30); } else if (meta == 1){
-     * HEX_OxFFFFFF = Utils.rgbtoHexValue(150,180,35); } else if (meta == 2){ HEX_OxFFFFFF =
-     * Utils.rgbtoHexValue(200,85,40); } else if (meta == 3){ HEX_OxFFFFFF = Utils.rgbtoHexValue(255,150,50); } return
-     * HEX_OxFFFFFF; }
-     */
-
 }

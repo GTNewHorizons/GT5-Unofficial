@@ -11,39 +11,38 @@ import static gregtech.api.enums.Textures.BlockIcons.ARROW_UP;
 import static gregtech.api.enums.Textures.BlockIcons.ARROW_UP_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_OUT;
-import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
+import java.util.OptionalInt;
 import java.util.stream.IntStream;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.gtnewhorizons.modularui.api.drawable.UITexture;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.api.widget.Widget;
-import com.gtnewhorizons.modularui.common.widget.CycleButtonWidget;
-import com.gtnewhorizons.modularui.common.widget.SlotGroup;
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.gtnewhorizon.gtnhlib.capability.item.ItemSink;
+import com.gtnewhorizon.gtnhlib.chat.customcomponents.ChatComponentNumber;
 
-import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTTooltipDataCache;
+import gregtech.api.util.GTItemTransfer;
 import gregtech.api.util.GTUtility;
+import gregtech.common.gui.modularui.singleblock.base.MTEBufferBaseGui;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public abstract class MTEBuffer extends MTETieredMachineBlock implements IAddUIWidgets {
+public abstract class MTEBuffer extends MTETieredMachineBlock {
 
     private static final int OUTPUT_INDEX = 0;
     private static final int ARROW_RIGHT_INDEX = 1;
@@ -52,19 +51,13 @@ public abstract class MTEBuffer extends MTETieredMachineBlock implements IAddUIW
     private static final int ARROW_UP_INDEX = 4;
     private static final int FRONT_INDEX = 5;
 
-    private static final String EMIT_ENERGY_TOOLTIP = "GT5U.machines.emit_energy.tooltip";
-    private static final String EMIT_REDSTONE_IF_FULL_TOOLTIP = "GT5U.machines.emit_redstone_if_full.tooltip";
-    private static final String INVERT_REDSTONE_TOOLTIP = "GT5U.machines.invert_redstone.tooltip";
-    private static final String STOCKING_MODE_TOOLTIP = "GT5U.machines.buffer_stocking_mode.tooltip";
-    private static final String SORTING_MODE_TOOLTIP = "GT5U.machines.sorting_mode.tooltip";
-    private static final int BUTTON_SIZE = 18;
+    private static final int NBT_INTEGER = 3;
 
     public int mMaxStackSize = 64;
     public static int MAX = 8;
     public boolean bOutput = false, bRedstoneIfFull = false, bInvert = false, bStockingMode = false,
         bSortStacks = false;
     public int mSuccess = 0, mTargetStackSize = 0;
-    private int uiButtonCount = 0;
 
     public MTEBuffer(int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount, String[] aDescription) {
         super(aID, aName, aNameRegional, aTier, aInvSlotCount, aDescription);
@@ -72,6 +65,46 @@ public abstract class MTEBuffer extends MTETieredMachineBlock implements IAddUIW
 
     public MTEBuffer(String aName, int aTier, int aInvSlotCount, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aInvSlotCount, aDescription, aTextures);
+    }
+
+    public boolean isOutput() {
+        return bOutput;
+    }
+
+    public void setOutput(boolean bOutput) {
+        this.bOutput = bOutput;
+    }
+
+    public boolean isRedstoneIfFull() {
+        return bRedstoneIfFull;
+    }
+
+    public void setRedstoneIfFull(boolean bRedstoneIfFull) {
+        this.bRedstoneIfFull = bRedstoneIfFull;
+    }
+
+    public boolean isInvert() {
+        return bInvert;
+    }
+
+    public void setInvert(boolean bInvert) {
+        this.bInvert = bInvert;
+    }
+
+    public boolean isStockingMode() {
+        return bStockingMode;
+    }
+
+    public void setStockingMode(boolean bStockingMode) {
+        this.bStockingMode = bStockingMode;
+    }
+
+    public boolean isSortStacks() {
+        return bSortStacks;
+    }
+
+    public void setSortStacks(boolean bSortStacks) {
+        this.bSortStacks = bSortStacks;
     }
 
     @Override
@@ -248,11 +281,6 @@ public abstract class MTEBuffer extends MTETieredMachineBlock implements IAddUIW
         return 2;
     }
 
-    @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
-        return true;
-    }
-
     public abstract ITexture getOverlayIcon();
 
     @Override
@@ -272,6 +300,13 @@ public abstract class MTEBuffer extends MTETieredMachineBlock implements IAddUIW
     }
 
     @Override
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+        int z) {
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
+        tag.setInteger("mTargetStackSize", mTargetStackSize);
+    }
+
+    @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         bInvert = aNBT.getBoolean("bInvert");
         bOutput = aNBT.getBoolean("bOutput");
@@ -288,32 +323,67 @@ public abstract class MTEBuffer extends MTETieredMachineBlock implements IAddUIW
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        if (side == getBaseMetaTileEntity().getBackFacing()) {
+    public void addAdditionalTooltipInformation(ItemStack stack, List<String> tooltip) {
+        super.addAdditionalTooltipInformation(stack, tooltip);
+        if (stack.hasTagCompound()) {
+            addAdditionalTooltipInformation(stack.getTagCompound(), tooltip);
+        }
+    }
+
+    @Override
+    public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
+        IWailaConfigHandler config) {
+        super.getWailaBody(itemStack, currentTip, accessor, config);
+        addAdditionalTooltipInformation(accessor.getNBTData(), currentTip);
+    }
+
+    public void addAdditionalTooltipInformation(NBTTagCompound nbt, List<String> tooltip) {
+        if (nbt.hasKey("mTargetStackSize", NBT_INTEGER)) {
+            addTargetStackTooltip(nbt.getInteger("mTargetStackSize"), tooltip);
+        }
+    }
+
+    public void addTargetStackTooltip(int targetStackSize, List<String> tooltip) {
+        if (targetStackSize > 0) {
+            tooltip.add(
+                GTUtility.translate("GT5U.machines.target_stack_size.tooltip")
+                    + String.format(": %s", targetStackSize));
+        }
+    }
+
+    @Override
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
+        ForgeDirection wrenchingSide = GTUtility.determineWrenchingSide(side, aX, aY, aZ);
+        onScrewdriverRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ, aTool);
+    }
+
+    public void onScrewdriverRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
+        float aX, float aY, float aZ, ItemStack aTool) {
+        if (wrenchingSide == getBaseMetaTileEntity().getBackFacing()) {
 
             mTargetStackSize = (byte) ((mTargetStackSize + (aPlayer.isSneaking() ? -1 : 1)) % 65);
             if (mTargetStackSize < 0) {
                 mTargetStackSize = mMaxStackSize;
             }
             if (mTargetStackSize == 0) {
-                GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("098", "Do not regulate Item Stack Size"));
+                GTUtility.sendChatTrans(aPlayer, "GT5U.chat.buffer.not_regulate");
             } else {
-                GTUtility.sendChatToPlayer(
-                    aPlayer,
-                    GTUtility.trans("099", "Regulate Item Stack Size to: ") + mTargetStackSize);
+                GTUtility
+                    .sendChatTrans(aPlayer, "GT5U.chat.buffer.regulate", new ChatComponentNumber(mTargetStackSize));
             }
         }
     }
 
     @Override
     public boolean onWrenchRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer entityPlayer,
-        float aX, float aY, float aZ) {
+        float aX, float aY, float aZ, ItemStack aTool) {
         wrenchingSide = wrenchingSide.getOpposite();
         if (getBaseMetaTileEntity().isValidFacing(wrenchingSide)) {
             getBaseMetaTileEntity().setFrontFacing(wrenchingSide);
             return true;
         }
-        return false;
+        return super.onWrenchRightClick(side, wrenchingSide, entityPlayer, aX, aY, aZ, aTool);
     }
 
     protected void handleRedstoneOutput(IGregTechTileEntity aBaseMetaTileEntity) {
@@ -322,11 +392,11 @@ public abstract class MTEBuffer extends MTETieredMachineBlock implements IAddUIW
             .forEach(side -> aBaseMetaTileEntity.setInternalOutputRedstoneSignal(side, (byte) redstoneOutput));
     }
 
-    protected int getRedstoneOutput() {
+    public int getRedstoneOutput() {
         return (!bRedstoneIfFull || (bInvert ^ hasEmptySlots())) ? 0 : 15;
     }
 
-    private boolean hasEmptySlots() {
+    public boolean hasEmptySlots() {
         return IntStream.range(0, mInventory.length)
             .anyMatch(i -> isValidSlot(i) && mInventory[i] == null);
     }
@@ -338,52 +408,75 @@ public abstract class MTEBuffer extends MTETieredMachineBlock implements IAddUIW
                 || aTimer % 200 == 0
                 || mSuccess > 0)) {
             mSuccess--;
-            updateSlots();
             moveItems(aBaseMetaTileEntity, aTimer);
             handleRedstoneOutput(aBaseMetaTileEntity);
         }
-    }
-
-    @Override
-    public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
-        for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS)
-            aBaseMetaTileEntity.setInternalOutputRedstoneSignal(side, (byte) 0);
     }
 
     protected void moveItems(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
         moveItems(aBaseMetaTileEntity, aTimer, 1);
     }
 
-    protected void moveItems(IGregTechTileEntity aBaseMetaTileEntity, long ignoredTimer, int stacks) {
-        int tCost;
-        if (bStockingMode) tCost = GTUtility.moveMultipleItemStacks(
-            aBaseMetaTileEntity,
-            aBaseMetaTileEntity.getTileEntityAtSide(aBaseMetaTileEntity.getBackFacing()),
-            aBaseMetaTileEntity.getBackFacing(),
-            aBaseMetaTileEntity.getFrontFacing(),
-            null,
-            false,
-            mTargetStackSize == 0 ? 64 : (byte) mTargetStackSize,
-            mTargetStackSize == 0 ? 1 : (byte) mTargetStackSize,
-            (byte) 64,
-            (byte) 1,
-            stacks);
-        else tCost = GTUtility.moveMultipleItemStacks(
-            aBaseMetaTileEntity,
-            aBaseMetaTileEntity.getTileEntityAtSide(aBaseMetaTileEntity.getBackFacing()),
-            aBaseMetaTileEntity.getBackFacing(),
-            aBaseMetaTileEntity.getFrontFacing(),
-            null,
-            false,
-            (byte) 64,
-            (byte) 1,
-            mTargetStackSize == 0 ? 64 : (byte) mTargetStackSize,
-            mTargetStackSize == 0 ? 1 : (byte) mTargetStackSize,
-            stacks);
+    protected void moveItems(IGregTechTileEntity igte, long ignoredTimer, int stacks) {
+        GTItemTransfer transfer = new GTItemTransfer();
 
-        if (tCost > 0 || aBaseMetaTileEntity.hasInventoryBeenModified()) {
-            mSuccess = 50;
+        transfer.source(igte, ForgeDirection.UNKNOWN);
+        transfer.sink(igte.getTileEntityAtSide(igte.getBackFacing()), igte.getFrontFacing());
+
+        transfer.setStacksToTransfer(stacks);
+
+        if (mTargetStackSize > 0) {
+            if (bStockingMode) {
+                ItemSink sink = transfer.getSink();
+
+                if (sink == null) return;
+
+                OptionalInt stored = sink.getStoredItemsInSink(null);
+
+                if (!stored.isPresent()) return;
+
+                int toTransfer = mTargetStackSize - stored.getAsInt();
+
+                transfer.setMaxTotalTransferred(toTransfer);
+            } else {
+                if (!hasTargetRoomForTransfer(igte)) return;
+
+                transfer.setFilter(stack -> stack.getStackSize() >= mTargetStackSize);
+                transfer.setMaxItemsPerTransfer(mTargetStackSize);
+            }
         }
+
+        if (transfer.transfer() > 0 || igte.hasInventoryBeenModified()) {
+            mSuccess = 50;
+
+            int end = getMovableInventoryEnd();
+            GTUtility.cleanInventory(this, 0, end);
+            if (bSortStacks) {
+                GTUtility.compactInventory(this, 0, end);
+            }
+        }
+    }
+
+    private boolean hasTargetRoomForTransfer(IGregTechTileEntity igte) {
+        var target = igte.getTileEntityAtSide(igte.getBackFacing());
+        if (!(target instanceof IInventory targetInv)) return true;
+
+        for (int i = 0; i < targetInv.getSizeInventory(); i++) {
+            ItemStack existing = targetInv.getStackInSlot(i);
+            int available;
+            if (existing == null) {
+                available = targetInv.getInventoryStackLimit();
+            } else {
+                available = Math.min(existing.getMaxStackSize(), targetInv.getInventoryStackLimit())
+                    - existing.stackSize;
+            }
+            if (available >= mTargetStackSize) return true;
+        }
+        return false;
+    }
+
+    protected int getMovableInventoryEnd() {
+        return mInventory.length;
     }
 
     @Override
@@ -403,143 +496,22 @@ public abstract class MTEBuffer extends MTETieredMachineBlock implements IAddUIW
         return true;
     }
 
-    public void updateSlots() {
-        for (int i = 0; i < mInventory.length; i++)
-            if (mInventory[i] != null && mInventory[i].stackSize <= 0) mInventory[i] = null;
-        if (bSortStacks) fillStacksIntoFirstSlots();
-    }
-
-    protected void fillStacksIntoFirstSlots() {
-        HashMap<GTUtility.ItemId, Integer> slots = new HashMap<>(mInventory.length);
-        HashMap<GTUtility.ItemId, ItemStack> stacks = new HashMap<>(mInventory.length);
-        List<GTUtility.ItemId> order = new ArrayList<>(mInventory.length);
-        List<Integer> validSlots = new ArrayList<>(mInventory.length);
-        for (int i = 0; i < mInventory.length - 1; i++) {
-            if (!isValidSlot(i)) continue;
-            validSlots.add(i);
-            ItemStack s = mInventory[i];
-            if (s == null) continue;
-            GTUtility.ItemId sID = GTUtility.ItemId.createNoCopy(s);
-            slots.merge(sID, s.stackSize, Integer::sum);
-            if (!stacks.containsKey(sID)) stacks.put(sID, s);
-            order.add(sID);
-            mInventory[i] = null;
-        }
-        int slotindex = 0;
-        for (GTUtility.ItemId sID : order) {
-            int toSet = slots.get(sID);
-            if (toSet == 0) continue;
-            int slot = validSlots.get(slotindex);
-            slotindex++;
-            mInventory[slot] = stacks.get(sID)
-                .copy();
-            toSet = Math.min(toSet, mInventory[slot].getMaxStackSize());
-            mInventory[slot].stackSize = toSet;
-            slots.merge(sID, toSet, (a, b) -> a - b);
-        }
-    }
-
     @Override
     public boolean onSolderingToolRightClick(ForgeDirection side, ForgeDirection wrenchingSide,
-        EntityPlayer entityPlayer, float aX, float aY, float aZ) {
+        EntityPlayer entityPlayer, float aX, float aY, float aZ, ItemStack aTool) {
         if (entityPlayer.isSneaking()) {
             // I was so proud of all this but I literally just copied code from OutputBus
             bSortStacks = !bSortStacks;
-            GTUtility.sendChatToPlayer(
+            GTUtility.sendChatTrans(
                 entityPlayer,
-                GTUtility.trans("200", "Sort mode: ")
-                    + (bSortStacks ? GTUtility.trans("088", "Enabled") : GTUtility.trans("087", "Disabled")));
+                bSortStacks ? "GT5U.chat.buffer.sort_mode.enable" : "GT5U.chat.buffer.sort_mode.disable");
             return true;
         }
-        return super.onSolderingToolRightClick(side, wrenchingSide, entityPlayer, aX, aY, aZ);
-    }
-
-    protected void addEmitEnergyButton(ModularWindow.Builder builder) {
-        builder.widget(
-            createToggleButton(
-                () -> bOutput,
-                val -> bOutput = val,
-                GTUITextures.OVERLAY_BUTTON_EMIT_ENERGY,
-                this::getEmitEnergyButtonTooltip));
-    }
-
-    private GTTooltipDataCache.TooltipData getEmitEnergyButtonTooltip() {
-        return mTooltipCache.getData(
-            EMIT_ENERGY_TOOLTIP,
-            EnumChatFormatting.GREEN + GTUtility.formatNumbers(V[mTier])
-                + " ("
-                + GTUtility.getColoredTierNameFromTier(mTier)
-                + EnumChatFormatting.GREEN
-                + ")"
-                + EnumChatFormatting.GRAY,
-            maxAmperesOut());
-    }
-
-    protected void addEmitRedstoneIfFullButton(ModularWindow.Builder builder) {
-        builder.widget(
-            createToggleButton(
-                () -> bRedstoneIfFull,
-                val -> bRedstoneIfFull = val,
-                GTUITextures.OVERLAY_BUTTON_EMIT_REDSTONE,
-                this::getEmitRedstoneIfFullButtonTooltip).setUpdateTooltipEveryTick(true));
-    }
-
-    private GTTooltipDataCache.TooltipData getEmitRedstoneIfFullButtonTooltip() {
-        return mTooltipCache.getUncachedTooltipData(
-            EMIT_REDSTONE_IF_FULL_TOOLTIP,
-            StatCollector.translateToLocal(hasEmptySlots() ? "gui.yes" : "gui.no"),
-            getRedstoneOutput());
-    }
-
-    protected void addInvertRedstoneButton(ModularWindow.Builder builder) {
-        builder.widget(
-            createToggleButton(
-                () -> bInvert,
-                val -> bInvert = val,
-                GTUITextures.OVERLAY_BUTTON_INVERT_REDSTONE,
-                () -> mTooltipCache.getData(INVERT_REDSTONE_TOOLTIP)));
-    }
-
-    protected void addStockingModeButton(ModularWindow.Builder builder) {
-        builder.widget(
-            createToggleButton(
-                () -> bStockingMode,
-                val -> bStockingMode = val,
-                GTUITextures.OVERLAY_BUTTON_STOCKING_MODE,
-                () -> mTooltipCache.getData(STOCKING_MODE_TOOLTIP)));
-    }
-
-    protected void addSortStacksButton(ModularWindow.Builder builder) {
-        builder.widget(
-            createToggleButton(
-                () -> bSortStacks,
-                val -> bSortStacks = val,
-                GTUITextures.OVERLAY_BUTTON_SORTING_MODE,
-                () -> mTooltipCache.getData(SORTING_MODE_TOOLTIP)));
+        return super.onSolderingToolRightClick(side, wrenchingSide, entityPlayer, aX, aY, aZ, aTool);
     }
 
     @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        buildContext.addCloseListener(() -> uiButtonCount = 0);
-        addEmitEnergyButton(builder);
-    }
-
-    protected Widget createToggleButton(Supplier<Boolean> getter, Consumer<Boolean> setter, UITexture picture,
-        Supplier<GTTooltipDataCache.TooltipData> tooltipDataSupplier) {
-        return new CycleButtonWidget().setToggle(getter, setter)
-            .setStaticTexture(picture)
-            .setVariableBackground(GTUITextures.BUTTON_STANDARD_TOGGLE)
-            .setTooltipShowUpDelay(TOOLTIP_DELAY)
-            .setPos(7 + (uiButtonCount++ * BUTTON_SIZE), 62)
-            .setSize(BUTTON_SIZE, BUTTON_SIZE)
-            .setGTTooltip(tooltipDataSupplier);
-    }
-
-    protected void addInventorySlots(ModularWindow.Builder builder) {
-        builder.widget(
-            SlotGroup.ofItemHandler(inventoryHandler, 9)
-                .endAtSlot(26)
-                .build()
-                .setPos(7, 4));
+    public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTEBufferBaseGui<>(this).build(guiData, syncManager, uiSettings);
     }
 }

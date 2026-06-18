@@ -11,6 +11,7 @@ import bartworks.system.material.Werkstoff;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
+import gregtech.api.enums.TierEU;
 
 public class WerkstoffMaterialPool implements Runnable {
 
@@ -50,7 +51,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff LowPurityHafnium = new Werkstoff(
         new short[] { 240, 223, 208 },
         "Low-Purity Hafnium",
-        subscriptNumbers("??Hf??"),
+        subscriptNumbers("Hf?"),
         new Werkstoff.Stats(),
         Werkstoff.Types.COMPOUND,
         new Werkstoff.GenerationFeatures().disable()
@@ -105,26 +106,13 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff HafniumRunoff = new Werkstoff(
         new short[] { 74, 65, 42 }, // Literally the statistically ugliest colour
         "Hafnium Runoff",
-        subscriptNumbers("??????"),
+        "??????",
         new Werkstoff.Stats(),
         Werkstoff.Types.COMPOUND,
         new Werkstoff.GenerationFeatures().disable()
             .onlyDust(),
         offsetID + 6,
         TextureSet.SET_DULL);
-
-    public static final Werkstoff Zirconium = new Werkstoff(
-        new short[] { 225, 230, 225 },
-        "Zirconium",
-        subscriptNumbers("Zr"),
-        new Werkstoff.Stats().setBlastFurnace(true),
-        Werkstoff.Types.ELEMENT,
-        new Werkstoff.GenerationFeatures().disable()
-            .onlyDust()
-            .addMetalItems(),
-        // .enforceUnification(),
-        offsetID + 7,
-        TextureSet.SET_METALLIC);
 
     public static final Werkstoff Zirconia = new Werkstoff(
         new short[] { 177, 152, 101 },
@@ -164,7 +152,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff HafniaZirconiaBlend = new Werkstoff(
         new short[] { 247, 223, 203 },
         "Hafnia-Zirconia Blend", // Maybe Hafnon??
-        subscriptNumbers("??HfZr??"),
+        subscriptNumbers("Hf?Zr?"),
         new Werkstoff.Stats(),
         Werkstoff.Types.COMPOUND,
         new Werkstoff.GenerationFeatures().disable()
@@ -193,7 +181,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff MuddyRareEarthMonaziteSolution = new Werkstoff(
         new short[] { 111, 78, 55 },
         "Muddy Monazite Rare Earth Solution",
-        subscriptNumbers("??LaNdZr??"),
+        subscriptNumbers("Sm?Hf?Zr?") + "??",
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -204,7 +192,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff DilutedRareEarthMonaziteMud = new Werkstoff(
         new short[] { 160, 120, 90 },
         "Diluted Monazite Rare Earth Mud",
-        subscriptNumbers("??LaNdHf??"),
+        subscriptNumbers("Sm?Ti?Si?") + "??",
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -215,7 +203,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff DilutedMonaziteSulfate = new Werkstoff(
         new short[] { 237, 201, 175 },
         "Diluted Monazite Sulfate",
-        subscriptNumbers("??LaNd??"),
+        subscriptNumbers("Sm?Th?U?") + "??",
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -226,7 +214,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff NitratedRareEarthMonaziteConcentrate = new Werkstoff(
         new short[] { 250, 223, 173 },
         "Nitrogenated Monazite Rare Earth Concentrate",
-        subscriptNumbers("????"),
+        subscriptNumbers("Sm?Ce?Eu?") + "??",
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -237,7 +225,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff NitricMonaziteLeachedConcentrate = new Werkstoff(
         new short[] { 244, 202, 22 },
         "Nitric Monazite Leached Concentrate",
-        subscriptNumbers("????"),
+        subscriptNumbers("Sm?Gd?Eu?"),
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -248,7 +236,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff MonaziteSulfate = new Werkstoff(
         new short[] { 152, 118, 84 },
         "Monazite Sulfate",
-        subscriptNumbers("??CeEu??"),
+        subscriptNumbers("Sm?Th?U?") + "??",
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -259,7 +247,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff AcidicMonazitePowder = new Werkstoff(
         new short[] { 50, 23, 77 },
         "Acidic Monazite Powder",
-        subscriptNumbers("????"),
+        subscriptNumbers("Sm?Th?U?") + "??",
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -270,7 +258,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff MonaziteRareEarthFiltrate = new Werkstoff(
         new short[] { 72, 60, 50 },
         "Monazite Rare Earth Filtrate",
-        subscriptNumbers("????"),
+        subscriptNumbers("Sm?Ce?U?") + "??",
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -281,7 +269,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff NeutralizedMonaziteRareEarthFiltrate = new Werkstoff(
         new short[] { 50, 23, 77 },
         "Neutralized Monazite Rare Earth Filtrate",
-        subscriptNumbers("????"),
+        subscriptNumbers("Sm?Ce?U?") + "??",
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -292,7 +280,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff MonaziteRareEarthHydroxideConcentrate = new Werkstoff(
         new short[] { 193, 154, 107 },
         "Monazite Rare Earth Hydroxide Concentrate",
-        subscriptNumbers("????"),
+        subscriptNumbers("Sm?Ce?Eu?") + "??",
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -303,7 +291,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff DriedMonaziteRareEarthConcentrate = new Werkstoff(
         new short[] { 250, 214, 165 },
         "Dried Monazite Rare Earth Concentrate",
-        subscriptNumbers("????"),
+        subscriptNumbers("Sm?Ce?Eu?") + "??",
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -362,7 +350,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff CeriumRichMixture = new Werkstoff(
         new short[] { 244, 164, 96 },
         "Cerium-Rich Mixture",
-        subscriptNumbers("??Ce??"),
+        subscriptNumbers("Ce?"),
         new Werkstoff.Stats(),
         Werkstoff.Types.COMPOUND,
         new Werkstoff.GenerationFeatures().disable()
@@ -373,7 +361,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff CooledMonaziteRareEarthConcentrate = new Werkstoff(
         new short[] { 250, 214, 165 },
         "Cooled Monazite Rare Earth Concentrate",
-        subscriptNumbers("????"),
+        subscriptNumbers("Sm?Gd?Eu?"),
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -383,8 +371,8 @@ public class WerkstoffMaterialPool implements Runnable {
 
     public static final Werkstoff MonaziteRarerEarthSediment = new Werkstoff(
         new short[] { 250, 214, 165 },
-        "MonaziteRarer Earth Sediment",
-        subscriptNumbers("????"),
+        "Monazite Rarer Earth Sediment",
+        subscriptNumbers("Sm?Gd?"),
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -395,7 +383,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff MonaziteHeterogenousHalogenicRareEarthMixture = new Werkstoff(
         new short[] { 250, 214, 165 },
         "Heterogenous Halogenic Monazite Rare Earth Mixture",
-        subscriptNumbers("????"),
+        subscriptNumbers("Sm?Gd?"),
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -406,7 +394,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff SaturatedMonaziteRareEarthMixture = new Werkstoff(
         new short[] { 250, 214, 165 },
         "Saturated Monazite Rare Earth",
-        subscriptNumbers("????"),
+        subscriptNumbers("Sm?Gd?"),
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -439,7 +427,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff ThoriumPhosphateCake = new Werkstoff(
         new short[] { 188, 143, 143 },
         "Thorium-Phosphate Cake",
-        subscriptNumbers("??ThP??"),
+        subscriptNumbers("Th?P?"),
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -450,7 +438,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff ThoriumPhosphateConcentrate = new Werkstoff(
         new short[] { 217, 144, 88 },
         "Thorium-Phosphate Concentrate",
-        subscriptNumbers("??ThP??"),
+        subscriptNumbers("Th?P?"),
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -461,7 +449,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff UraniumFiltrate = new Werkstoff(
         new short[] { 190, 240, 94 },
         "Uranium Filtrate",
-        subscriptNumbers("??U??"),
+        subscriptNumbers("U?"),
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -472,7 +460,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff NeutralizedUraniumFiltrate = new Werkstoff(
         new short[] { 217, 120, 88 },
         "Neutralized Uranium Filtrate",
-        subscriptNumbers("??U??"),
+        subscriptNumbers("U?"),
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -483,6 +471,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff SeaweedAsh = new Werkstoff(
         new short[] { 70, 75, 71 },
         "Seaweed Ash",
+        "C?I?Ca?",
         new Werkstoff.Stats(),
         Werkstoff.Types.BIOLOGICAL,
         new Werkstoff.GenerationFeatures().disable()
@@ -493,7 +482,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff SeaweedConcentrate = new Werkstoff(
         new short[] { 70, 100, 71 },
         "Seaweed Concentrate",
-        subscriptNumbers("??I??"),
+        subscriptNumbers("I?"),
         new Werkstoff.Stats(),
         Werkstoff.Types.BIOLOGICAL,
         new Werkstoff.GenerationFeatures().disable()
@@ -526,6 +515,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff SeaweedByproducts = new Werkstoff(
         new short[] { 125, 50, 138 },
         "Seaweed Byproducts",
+        "????",
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -536,6 +526,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff NitricLeachedMonaziteMixture = new Werkstoff(
         new short[] { 125, 50, 138 },
         "Nitric-Leached Monazite Mixture",
+        subscriptNumbers("Sm?Ce?Eu?") + "??",
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -567,7 +558,7 @@ public class WerkstoffMaterialPool implements Runnable {
 
     public static final Werkstoff UnknownBlend = new Werkstoff(
         new short[] { 0, 0, 5 },
-        "UnknownBlend",
+        "Unknown Blend",
         subscriptNumbers("?????"),
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
@@ -593,7 +584,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff MuddyRareEarthBastnasiteSolution = new Werkstoff(
         new short[] { 205, 133, 63 },
         "Muddy Bastnasite Rare Earth Solution",
-        subscriptNumbers("??LaCeY??"),
+        subscriptNumbers("Sm?Ti?Si?") + "??",
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -619,7 +610,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff SteamCrackedBasnasiteSolution = new Werkstoff(
         new short[] { 205, 133, 63 },
         "Steam-Cracked Bastnasite Mud",
-        subscriptNumbers("??LaCeY??"),
+        subscriptNumbers("Sm?Ti?Si?") + "??",
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -630,7 +621,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff ConditionedBastnasiteMud = new Werkstoff(
         new short[] { 205, 133, 63 },
         "Conditioned Bastnasite Mud",
-        subscriptNumbers("??LaCeY??"),
+        subscriptNumbers("Sm?Ti?Si?") + "??",
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -641,7 +632,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff DiltedRareEarthBastnasiteMud = new Werkstoff(
         new short[] { 205, 133, 63 },
         "Diluted Bastnasite Mud",
-        subscriptNumbers("??LaCeY??"),
+        subscriptNumbers("Sm?Ti?Si?") + "??",
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -652,7 +643,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff FilteredBastnasiteMud = new Werkstoff(
         new short[] { 205, 133, 63 },
         "Filtered Bastnasite Mud",
-        subscriptNumbers("??LaCeY??"),
+        subscriptNumbers("Sm?La?Ce?") + "??",
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -663,7 +654,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff BastnasiteRareEarthOxidePowder = new Werkstoff(
         new short[] { 205, 133, 63 },
         "Bastnasite Rare Earth Oxides",
-        subscriptNumbers("??LaCeY??"),
+        subscriptNumbers("Sm?La?Ce?") + "??",
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -674,7 +665,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff LeachedBastnasiteRareEarthOxides = new Werkstoff(
         new short[] { 205, 133, 63 },
         "Acid-Leached Bastnasite Rare Earth Oxides",
-        subscriptNumbers("??LaCeY??"),
+        subscriptNumbers("Sm?La?Ce?") + "??",
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -685,20 +676,20 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff Gangue = new Werkstoff(
         new short[] { 0, 0, 0 },
         "Gangue",
-        subscriptNumbers("Useless..."),
+        subscriptNumbers("Useless...?"),
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
             .onlyDust()
-            .addPrefix(OrePrefixes.block)
-            .removePrefix(OrePrefixes.ingot)
-            .removePrefix(OrePrefixes.gem),
+            // Used for gangue singularities
+            .addPrefix(OrePrefixes.block),
         offsetID2 + 9,
         TextureSet.SET_DULL);
     // TODO: Deal with colouring
     public static final Werkstoff RoastedRareEarthOxides = new Werkstoff(
         new short[] { 160, 82, 45 },
         "Roasted Rare Earth Oxides",
+        subscriptNumbers("Sm?La?Ce?") + "??",
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -709,6 +700,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff WetRareEarthOxides = new Werkstoff(
         new short[] { 160, 82, 49 },
         "Wet Rare Earth Oxides",
+        subscriptNumbers("Sm?La?Ce?") + "??",
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -719,6 +711,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff CeriumOxidisedRareEarthOxides = new Werkstoff(
         new short[] { 160, 82, 49 },
         "Cerium-Oxidised Rare Earth Oxides",
+        subscriptNumbers("Sm?La?Ce?") + "??",
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -729,6 +722,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff BastnasiteRarerEarthOxides = new Werkstoff(
         new short[] { 160, 82, 49 },
         "Bastnasite Rarer Earth Oxides",
+        subscriptNumbers("Sm?La?") + "??",
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -739,6 +733,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff NitratedBastnasiteRarerEarthOxides = new Werkstoff(
         new short[] { 160, 90, 60 },
         "Nitrogenated Bastnasite Rarer Earth Oxides",
+        subscriptNumbers("Sm?La?") + "??",
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -749,6 +744,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff SaturatedBastnasiteRarerEarthOxides = new Werkstoff(
         new short[] { 170, 90, 60 },
         "Bastnasite Rarer Earth Oxide Suspension",
+        subscriptNumbers("Sm?La?") + "??",
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -759,7 +755,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff SamaricRareEarthConcentrate = new Werkstoff(
         new short[] { 170, 90, 60 },
         "Samaric Rare Earth Concentrate",
-        subscriptNumbers("??SmHoTb??"),
+        subscriptNumbers("Sm?Ho?Tb?"),
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -770,7 +766,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff NeodymicRareEarthConcentrate = new Werkstoff(
         new short[] { 170, 90, 60 },
         "Neodymium Rare Earth Concentrate",
-        subscriptNumbers("??LaNdPr??"),
+        subscriptNumbers("La?Nd?"),
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -808,7 +804,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff FluorinatedSamaricConcentrate = new Werkstoff(
         new short[] { 255, 182, 193 },
         "Fluorinated Samaric Concentrate",
-        subscriptNumbers("??SmHo??"),
+        subscriptNumbers("Sm?Ho?Tb?") + "??",
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -834,7 +830,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff SamariumTerbiumMixture = new Werkstoff(
         new short[] { 223, 182, 193 },
         "Samarium-Terbium Mixture",
-        subscriptNumbers("??SmTb??"),
+        subscriptNumbers("Sm?Tb?") + "??",
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -845,7 +841,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff NitratedSamariumTerbiumMixture = new Werkstoff(
         new short[] { 223, 182, 193 },
         "Nitrogenated Samarium-Terbium Mixture",
-        subscriptNumbers("??SmTb??NH4NO3"),
+        subscriptNumbers("Sm?Tb?NH4NO3"),
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -871,7 +867,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff SamariumOreConcentrate = new Werkstoff(
         new short[] { 255, 200, 230 },
         "Samarium Ore Concentrate",
-        subscriptNumbers("??Sm??"),
+        subscriptNumbers("Sm?") + "??",
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -882,7 +878,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff DephosphatedSamariumConcentrate = new Werkstoff(
         new short[] { 255, 170, 220 },
         "Dephosphated Samarium Concentrate",
-        subscriptNumbers("??Sm??"),
+        subscriptNumbers("Sm?") + "??",
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -890,17 +886,8 @@ public class WerkstoffMaterialPool implements Runnable {
         offsetID2 + 29,
         TextureSet.SET_DULL);
 
-    // Weird/Exciting Chemicals
-    public static final Werkstoff Tetrahydrofuran = new Werkstoff(
-        new short[] { 222, 165, 164 },
-        "Tetrahydrofuran",
-        subscriptNumbers("(CH2)4O"),
-        new Werkstoff.Stats(),
-        Werkstoff.Types.COMPOUND,
-        new Werkstoff.GenerationFeatures().disable()
-            .addCells(),
-        offsetID3,
-        TextureSet.SET_FLUID);
+    // Material removed for 2.9, do not use until 2.10
+    // offsetID3
 
     // 1,4-Butanediol
     public static final Werkstoff Butanediol = new Werkstoff(
@@ -914,21 +901,14 @@ public class WerkstoffMaterialPool implements Runnable {
         offsetID3 + 1,
         TextureSet.SET_FLUID);
 
-    // Acidicised 1,4-Butanediol
-    public static final Werkstoff AcidicButanediol = new Werkstoff(
-        new short[] { 255, 239, 213 },
-        "Acidicised 1,4-Butanediol",
-        new Werkstoff.Stats(),
-        Werkstoff.Types.MIXTURE,
-        new Werkstoff.GenerationFeatures().disable()
-            .addCells(),
-        offsetID3 + 2,
-        TextureSet.SET_FLUID);
+    // Material removed for 2.9, do not use until 2.10
+    // offsetID3 + 2
 
     // Tellurium-Molybdenum-Oxide Catalyst
     public static final Werkstoff MoTeOCatalyst = new Werkstoff(
         new short[] { 238, 131, 238 },
         "Tellurium-Molybdenum-Oxide Catalyst",
+        subscriptNumbers("(MoO2)(TeO2)"),
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -959,39 +939,14 @@ public class WerkstoffMaterialPool implements Runnable {
         offsetID3 + 5,
         TextureSet.SET_DULL);
 
-    public static final Werkstoff Polytetrahydrofuran = new Werkstoff(
-        new short[] { 192, 128, 129 },
-        "Polytetrahydrofuran",
-        subscriptNumbers("(C4H8O)OH2"),
-        new Werkstoff.Stats(),
-        Werkstoff.Types.COMPOUND,
-        new Werkstoff.GenerationFeatures().disable()
-            .onlyDust()
-            .addCells(),
-        offsetID3 + 6,
-        TextureSet.SET_DULL);
+    // Material removed for 2.9, do not use until 2.10
+    // offsetID3 + 6
 
-    public static final Werkstoff TungstophosphoricAcid = new Werkstoff(
-        new short[] { 223, 255, 0 },
-        "Tungstophosphoric Acid",
-        subscriptNumbers("H3PW12O40"),
-        new Werkstoff.Stats(),
-        Werkstoff.Types.COMPOUND,
-        new Werkstoff.GenerationFeatures().disable()
-            .addCells(),
-        offsetID3 + 7,
-        TextureSet.SET_FLUID);
+    // Material removed for 2.9, do not use until 2.10
+    // offsetID3 + 7
 
-    public static final Werkstoff TolueneDiisocyanate = new Werkstoff(
-        new short[] { 255, 255, 102 },
-        "Toluene Diisocyanate",
-        subscriptNumbers("CH3C6H3(NCO)2"),
-        new Werkstoff.Stats(),
-        Werkstoff.Types.COMPOUND,
-        new Werkstoff.GenerationFeatures().disable()
-            .addCells(),
-        offsetID3 + 8,
-        TextureSet.SET_FLUID);
+    // Material removed for 2.9, do not use until 2.10
+    // offsetID3 + 8
 
     public static final Werkstoff Dinitrotoluene = new Werkstoff(
         new short[] { 216, 191, 216 },
@@ -1015,30 +970,11 @@ public class WerkstoffMaterialPool implements Runnable {
         offsetID3 + 10,
         TextureSet.SET_FLUID);
 
-    public static final Werkstoff TolueneTetramethylDiisocyanate = new Werkstoff(
-        new short[] { 255, 255, 255 },
-        "Toluene Tetramethyl Diisocyanate",
-        subscriptNumbers("(CONH)2(C6H4)2CH2(C4O)"),
-        new Werkstoff.Stats(),
-        Werkstoff.Types.COMPOUND,
-        new Werkstoff.GenerationFeatures().disable()
-            .addCells(),
-        offsetID3 + 11,
-        TextureSet.SET_FLUID);
+    // Material removed for 2.9, do not use until 2.10
+    // offsetID3 + 11
 
-    public static final Werkstoff PTMEGElastomer = new Werkstoff(
-        new short[] { 248, 248, 255 },
-        "PTMEG Elastomer",
-        new Werkstoff.Stats().setMeltingPoint(600)
-            .setMeltingVoltage(64),
-        Werkstoff.Types.COMPOUND,
-        new Werkstoff.GenerationFeatures().disable()
-            .onlyDust()
-            .addMolten()
-            .addMetalItems()
-            .addMetalCraftingSolidifierRecipes(),
-        offsetID3 + 12,
-        TextureSet.SET_DULL);
+    // Material removed for 2.9, do not use until 2.10
+    // offsetID3 + 12
 
     public static final Werkstoff PotassiumChlorate = new Werkstoff(
         new short[] { 240, 255, 255 },
@@ -1055,6 +991,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff DilutedAcetone = new Werkstoff(
         new short[] { 254, 254, 250 },
         "Diluted Acetone",
+        subscriptNumbers("C3H6O"),
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -1078,7 +1015,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff MuddySamariumRareEarthSolution = new Werkstoff(
         new short[] { 226, 180, 108 },
         "Muddy Samarium Rare Earth Solution",
-        subscriptNumbers("???Sm???"),
+        subscriptNumbers("Sm?") + "??",
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -1089,7 +1026,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff SamariumRareEarthMud = new Werkstoff(
         new short[] { 226, 180, 128 },
         "Samarium Rare Earth Mud",
-        subscriptNumbers("??Sm??"),
+        subscriptNumbers("Sm?") + "??",
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -1100,7 +1037,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff DilutedSamariumRareEarthSolution = new Werkstoff(
         new short[] { 226, 180, 148 },
         "Diluted Samarium Rare Earth Solution",
-        subscriptNumbers("?Sm?"),
+        subscriptNumbers("Sm?") + "??",
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -1111,7 +1048,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff SamariumOxalate = new Werkstoff(
         new short[] { 248, 248, 180 },
         "Samarium(III) Oxalate",
-        subscriptNumbers("?Sm2(C2O4)3"),
+        subscriptNumbers("Sm2(C2O4)3"),
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -1122,7 +1059,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff SamariumChloride = new Werkstoff(
         new short[] { 248, 248, 120 },
         "Samarium(III)-Chloride",
-        subscriptNumbers("?SmCl3"),
+        subscriptNumbers("SmCl3"),
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -1134,7 +1071,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff SamariumChlorideSodiumChlorideBlend = new Werkstoff(
         new short[] { 255, 200, 230 },
         "Samarium Chloride-Sodium Chloride Blend",
-        subscriptNumbers("?SmCl3NaCl"),
+        subscriptNumbers("SmCl3NaCl"),
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -1145,7 +1082,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff ImpureLanthanumChloride = new Werkstoff(
         new short[] { 90, 100, 30 },
         "Impure Lanthanum Chloride",
-        subscriptNumbers("?LaCl3"),
+        subscriptNumbers("La?Cl3"),
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -1170,6 +1107,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff ChlorinatedRareEarthConcentrate = new Werkstoff(
         new short[] { 130, 80, 60 },
         "Chlorinated Rare Earth Concentrate",
+        subscriptNumbers("Cl?") + "??",
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -1180,6 +1118,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff ChlorinatedRareEarthEnrichedSolution = new Werkstoff(
         new short[] { 130, 90, 60 },
         "Chlorinated Rare Earth Enriched Solution",
+        subscriptNumbers("Cl?") + "??",
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -1190,6 +1129,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff ChlorinatedRareEarthDilutedSolution = new Werkstoff(
         new short[] { 216, 180, 100 },
         "Chlorinated Rare Earth Diluted Solution",
+        subscriptNumbers("Cl?") + "??",
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -1200,7 +1140,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff RarestEarthResidue = new Werkstoff(
         new short[] { 224, 211, 211 },
         "Rarest Earth Residue",
-        subscriptNumbers("???"),
+        subscriptNumbers("????"),
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -1293,26 +1233,6 @@ public class WerkstoffMaterialPool implements Runnable {
         new Werkstoff.GenerationFeatures().disable()
             .addCells(),
         offsetID4 + 8,
-        TextureSet.SET_FLUID);
-
-    public static final Werkstoff PromethiumExtractingNanoResin = new Werkstoff(
-        new short[] { 110, 255, 60 },
-        "Promethium Extracting Nano Resin",
-        new Werkstoff.Stats(),
-        Werkstoff.Types.MATERIAL,
-        new Werkstoff.GenerationFeatures().disable()
-            .addCells(),
-        offsetID4 + 9,
-        TextureSet.SET_FLUID);
-
-    public static final Werkstoff FilledPromethiumExtractingNanoResin = new Werkstoff(
-        new short[] { 150, 255, 140 },
-        "Filled Promethium Extracting Nano Resin",
-        new Werkstoff.Stats(),
-        Werkstoff.Types.MATERIAL,
-        new Werkstoff.GenerationFeatures().disable()
-            .addCells(),
-        offsetID4 + 10,
         TextureSet.SET_FLUID);
 
     public static final Werkstoff SamariumExtractingNanoResin = new Werkstoff(
@@ -1520,6 +1440,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff LanthanumChlorideConcentrate = new Werkstoff(
         new short[] { 128, 128, 80 },
         "Lanthanum Chloride Concentrate",
+        subscriptNumbers("La?Cl?") + "??",
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -1531,6 +1452,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff PraseodymiumChlorideConcentrate = new Werkstoff(
         new short[] { 140, 192, 130 },
         "Praseodymium Chloride Concentrate",
+        subscriptNumbers("Pr?Cl?") + "??",
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -1542,6 +1464,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff CeriumChlorideConcentrate = new Werkstoff(
         new short[] { 160, 240, 180 },
         "Cerium Chloride Concentrate",
+        subscriptNumbers("Ce?Cl?") + "??",
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -1553,6 +1476,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff NeodymiumChlorideConcentrate = new Werkstoff(
         new short[] { 150, 150, 150 },
         "Neodymium Chloride Concentrate",
+        subscriptNumbers("Nd?Cl?") + "??",
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -1564,6 +1488,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff PromethiumChlorideConcentrate = new Werkstoff(
         new short[] { 150, 255, 140 },
         "Promethium Chloride Concentrate",
+        subscriptNumbers("Pm?Cl?") + "??",
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -1575,6 +1500,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff SamariumChlorideConcentrate = new Werkstoff(
         new short[] { 255, 240, 196 },
         "Samarium Chloride Concentrate",
+        subscriptNumbers("Sm?Cl?") + "??",
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -1586,6 +1512,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff EuropiumChlorideConcentrate = new Werkstoff(
         new short[] { 240, 200, 240 },
         "Europium Chloride Concentrate",
+        subscriptNumbers("Eu?Cl?") + "??",
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -1597,6 +1524,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff GadoliniumChlorideConcentrate = new Werkstoff(
         new short[] { 160, 255, 140 },
         "Gadolinium Chloride Concentrate",
+        subscriptNumbers("Gd?Cl?") + "??",
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -1608,6 +1536,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff TerbiumChlorideConcentrate = new Werkstoff(
         new short[] { 255, 255, 255 },
         "Terbium Chloride Concentrate",
+        subscriptNumbers("Tb?Cl?") + "??",
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -1619,6 +1548,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff DysprosiumChlorideConcentrate = new Werkstoff(
         new short[] { 150, 240, 180 },
         "Dysprosium Chloride Concentrate",
+        subscriptNumbers("Dy?Cl?") + "??",
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -1630,6 +1560,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff HolmiumChlorideConcentrate = new Werkstoff(
         new short[] { 60, 90, 255 },
         "Holmium Chloride Concentrate",
+        subscriptNumbers("Ho?Cl?") + "??",
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -1641,6 +1572,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff ErbiumChlorideConcentrate = new Werkstoff(
         new short[] { 233, 170, 100 },
         "Erbium Chloride Concentrate",
+        subscriptNumbers("Er?Cl?") + "??",
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -1652,6 +1584,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff ThuliumChlorideConcentrate = new Werkstoff(
         new short[] { 160, 200, 255 },
         "Thulium Chloride Concentrate",
+        subscriptNumbers("Tm?Cl?") + "??",
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -1663,6 +1596,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff YtterbiumChlorideConcentrate = new Werkstoff(
         new short[] { 100, 255, 100 },
         "Ytterbium Chloride Concentrate",
+        subscriptNumbers("Yb?Cl?") + "??",
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -1674,6 +1608,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff LutetiumChlorideConcentrate = new Werkstoff(
         new short[] { 240, 100, 240 },
         "Lutetium Chloride Concentrate",
+        subscriptNumbers("Lu?Cl?") + "??",
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -1687,7 +1622,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff LanthanumOreConcentrate = new Werkstoff(
         new short[] { 128, 128, 96 },
         "Lanthanum Ore Concentrate",
-        subscriptNumbers("??La??"),
+        subscriptNumbers("La?"),
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -1699,7 +1634,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff PraseodymiumOreConcentrate = new Werkstoff(
         new short[] { 140, 192, 130 },
         "Praseodymium Ore Concentrate",
-        subscriptNumbers("??Pr??"),
+        subscriptNumbers("Pr?"),
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -1714,7 +1649,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff NeodymiumOreConcentrate = new Werkstoff(
         new short[] { 128, 128, 128 },
         "Neodymium Ore Concentrate",
-        subscriptNumbers("??Nd??"),
+        subscriptNumbers("Nd?"),
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -1726,7 +1661,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff PromethiumOreConcentrate = new Werkstoff(
         new short[] { 150, 255, 140 },
         "Promethium Ore Concentrate",
-        subscriptNumbers("??Po??"),
+        subscriptNumbers("Pm?"),
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -1738,7 +1673,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff EuropiumOreConcentrate = new Werkstoff(
         new short[] { 240, 200, 240 },
         "Europium Ore Concentrate",
-        subscriptNumbers("??Eu??"),
+        subscriptNumbers("Eu?"),
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -1750,7 +1685,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff GadoliniumOreConcentrate = new Werkstoff(
         new short[] { 160, 255, 140 },
         "Gadolinium Ore Concentrate",
-        subscriptNumbers("??Gd??"),
+        subscriptNumbers("Gd?"),
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -1762,7 +1697,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff TerbiumOreConcentrate = new Werkstoff(
         new short[] { 255, 255, 255 },
         "Terbium Ore Concentrate",
-        subscriptNumbers("??Tb??"),
+        subscriptNumbers("Tb?"),
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -1774,7 +1709,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff DysprosiumOreConcentrate = new Werkstoff(
         new short[] { 150, 240, 180 },
         "Dysprosium Ore Concentrate",
-        subscriptNumbers("??Dy??"),
+        subscriptNumbers("Dy?"),
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -1786,7 +1721,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff HolmiumOreConcentrate = new Werkstoff(
         new short[] { 60, 90, 255 },
         "Holmium Ore Concentrate",
-        subscriptNumbers("??Ho??"),
+        subscriptNumbers("Ho?"),
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -1798,7 +1733,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff ErbiumOreConcentrate = new Werkstoff(
         new short[] { 233, 170, 100 },
         "Erbium Ore Concentrate",
-        subscriptNumbers("??Er??"),
+        subscriptNumbers("Er?"),
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -1810,7 +1745,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff ThuliumOreConcentrate = new Werkstoff(
         new short[] { 160, 200, 255 },
         "Thulium Ore Concentrate",
-        subscriptNumbers("??Tm??"),
+        subscriptNumbers("Tm?"),
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -1822,7 +1757,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff YtterbiumOreConcentrate = new Werkstoff(
         new short[] { 100, 255, 100 },
         "Ytterbium Ore Concentrate",
-        subscriptNumbers("??Yb??"),
+        subscriptNumbers("Yb?"),
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -1834,7 +1769,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff LutetiumOreConcentrate = new Werkstoff(
         new short[] { 240, 100, 240 },
         "Lutetium Ore Concentrate",
-        subscriptNumbers("??Lu??"),
+        subscriptNumbers("Lu?"),
         new Werkstoff.Stats(),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
@@ -1886,11 +1821,11 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff MuMetal = new Werkstoff(
         new short[] { 210, 230, 225 },
         "Mu-metal",
-        subscriptNumbers("?NiFeCuCrMo?"),
         new Werkstoff.Stats().setBlastFurnace(true)
             .setCentrifuge(true)
             .setMass(180)
-            .setSpeedOverride(3),
+            .setSpeedOverride(3)
+            .setProcessingMaterialTierEU(TierEU.RECIPE_EV),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
             .onlyDust()
@@ -1907,7 +1842,7 @@ public class WerkstoffMaterialPool implements Runnable {
     public static final Werkstoff Thorium234 = new Werkstoff(
         new short[] { 0, 40, 0 },
         "Thorium 234",
-        superscriptNumbers("Th234"),
+        superscriptNumbers("234Th"),
         new Werkstoff.Stats().setBlastFurnace(true)
             .setRadioactive(true),
         Werkstoff.Types.ISOTOPE,

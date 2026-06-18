@@ -19,8 +19,7 @@ public interface ICoverable extends IRedstoneTileEntity, IHasInventory, IBasicEn
     void dropCover(ForgeDirection side, ForgeDirection droppedSide);
 
     /**
-     * Actually removes the cover from the coverable and return the cover item.
-     * <br>
+     * Actually removes the cover from the coverable and return the cover item. <br>
      * Called by {@link #dropCover(ForgeDirection, ForgeDirection)}
      */
     ItemStack detachCover(ForgeDirection side);
@@ -30,7 +29,7 @@ public interface ICoverable extends IRedstoneTileEntity, IHasInventory, IBasicEn
      *
      * @param cover The cover
      */
-    void attachCover(Cover cover);
+    void attachCover(@NotNull Cover cover);
 
     boolean hasCoverAtSide(ForgeDirection side);
 
@@ -52,7 +51,9 @@ public interface ICoverable extends IRedstoneTileEntity, IHasInventory, IBasicEn
     void setInternalOutputRedstoneSignal(ForgeDirection side, byte aStrength);
 
     /**
-     * Causes a general Cover Texture update. Sends 6 Integers to Client + causes @issueTextureUpdate()
+     * Causes cover data to be sent. Use this when cover data is updated, and it needs to be synced to the client.
+     * If you need to sync data in cover GUI, you should just use MUI2 sync for that.
+     * THIS IS ONLY NEEDED IF THE COVER RENDER DEPEND ON THE DATA.
      */
     void issueCoverUpdate(ForgeDirection side);
 

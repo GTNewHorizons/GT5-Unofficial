@@ -3,16 +3,17 @@ package gregtech.common.tileentities.automation;
 import static gregtech.api.enums.Textures.BlockIcons.AUTOMATION_CHESTBUFFER;
 import static gregtech.api.enums.Textures.BlockIcons.AUTOMATION_CHESTBUFFER_GLOW;
 
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
-import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBuffer;
 import gregtech.api.render.TextureFactory;
+import gregtech.common.gui.modularui.singleblock.MTEChestBufferGui;
 
 public class MTEChestBuffer extends MTEBuffer {
 
@@ -60,11 +61,6 @@ public class MTEChestBuffer extends MTEBuffer {
     }
 
     @Override
-    public boolean isValidSlot(int aIndex) {
-        return aIndex < this.mInventory.length - 1;
-    }
-
-    @Override
     protected void moveItems(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
         if (aTimer % tickRate[mTier] > 0) return;
 
@@ -81,19 +77,19 @@ public class MTEChestBuffer extends MTEBuffer {
     }
 
     protected static String getTickRateDesc(int tier) {
-        int tickRate = getTickRate(tier);
+        final int tickRate = getTickRate(tier);
         String timeStr = "";
-        String numStr = "";
+        final String numStr;
         if (maxStacks[tier] > 1) {
-            numStr = maxStacks[tier] + " items";
+            numStr = maxStacks[tier] + " stacks";
         } else {
-            numStr = "1 item";
+            numStr = "1 stack";
         }
         if (tickRate < 20) timeStr = "1/" + 20 / tickRate + " ";
         else if (tickRate > 20) {
             timeStr = (tickRate / 20) + "th ";
         }
-        return "Moves " + numStr + " every " + timeStr + "second";
+        return numStr + " of 64 items every " + timeStr + "second";
     }
 
     protected static int getTickRate(int tier) {
@@ -101,26 +97,8 @@ public class MTEChestBuffer extends MTEBuffer {
         return tickRate[tier];
     }
 
-    protected static int getMaxStacks(int tier) {
-        // Included higher tiers on the off chance they actually work without blowing things up lmao
-        return tier > 9 ? MAX : Math.min(maxStacks[tier], MAX);
-    }
-
     @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        super.addUIWidgets(builder, buildContext);
-        addSortStacksButton(builder);
-        addEmitRedstoneIfFullButton(builder);
-        addInvertRedstoneButton(builder);
-        addStockingModeButton(builder);
-        builder.widget(
-            new DrawableWidget().setDrawable(GTUITextures.PICTURE_ARROW_22_RED.apply(69, true))
-                .setPos(98, 60)
-                .setSize(51, 22));
-        addMainUI(builder);
-    }
-
-    protected void addMainUI(ModularWindow.Builder builder) {
-        addInventorySlots(builder);
+    public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTEChestBufferGui(this).build(guiData, syncManager, uiSettings);
     }
 }

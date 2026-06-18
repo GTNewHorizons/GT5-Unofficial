@@ -10,11 +10,11 @@ import net.minecraft.util.IChatComponent;
 
 import gregtech.GTMod;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.Textures.ItemIcons;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.common.tools.ToolWireCutter;
-import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtTools;
 
 public class ToolElectricSnips extends ToolWireCutter {
 
@@ -24,23 +24,8 @@ public class ToolElectricSnips extends ToolWireCutter {
     }
 
     @Override
-    public int getToolDamagePerDropConversion() {
-        return 100;
-    }
-
-    @Override
-    public int getToolDamagePerContainerCraft() {
-        return 400;
-    }
-
-    @Override
     public int getToolDamagePerEntityAttack() {
         return 100;
-    }
-
-    @Override
-    public int getBaseQuality() {
-        return 0;
     }
 
     @Override
@@ -49,23 +34,15 @@ public class ToolElectricSnips extends ToolWireCutter {
     }
 
     @Override
-    public float getSpeedMultiplier() {
-        return 1F;
-    }
-
-    @Override
     public float getMaxDurabilityMultiplier() {
         return 1.4F;
     }
 
     @Override
-    public ItemStack getBrokenItem(final ItemStack aStack) {
-        return null;
-    }
-
-    @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? TexturesGtTools.ELECTRIC_SNIPS : ItemIcons.POWER_UNIT_MV;
+        return aIsToolHead
+            ? MetaGeneratedTool.getPrimaryMaterial(aStack).mIconSet.mTextures[TextureSet.INDEX_electricSnips]
+            : ItemIcons.POWER_UNIT_MV;
     }
 
     @Override
@@ -79,7 +56,6 @@ public class ToolElectricSnips extends ToolWireCutter {
         aPlayer.triggerAchievement(AchievementList.buildSword);
         try {
             GTMod.achievements.issueAchievement(aPlayer, "tools");
-            GTMod.achievements.issueAchievement(aPlayer, "unitool");
         } catch (final Exception e) {}
     }
 

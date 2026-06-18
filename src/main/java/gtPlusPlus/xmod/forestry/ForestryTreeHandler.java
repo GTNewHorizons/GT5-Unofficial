@@ -10,10 +10,16 @@ import forestry.api.arboriculture.ITree;
 import forestry.api.arboriculture.TreeManager;
 import forestry.arboriculture.genetics.TreeDefinition;
 import forestry.plugins.PluginArboriculture;
-import gtPlusPlus.core.util.reflect.ReflectionUtils;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.MTETreeFarm;
+import gregtech.common.tileentities.machines.multi.MTETreeFarm;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.MTETreeFarmLegacy;
 
 public class ForestryTreeHandler {
+
+    private static void registerForestryTree(String speciesUID, ItemStack sapling, ItemStack log, ItemStack leaves,
+        ItemStack fruit) {
+        MTETreeFarmLegacy.registerForestryTree(speciesUID, sapling, log, leaves, fruit);
+        MTETreeFarm.registerForestryTree(speciesUID, sapling, log, leaves, fruit);
+    }
 
     public static void generateForestryTrees() {
         for (TreeDefinition tree : TreeDefinition.values()) {
@@ -22,11 +28,11 @@ public class ForestryTreeHandler {
             ItemStack sapling = tree.getMemberStack(EnumGermlingType.SAPLING);
 
             ItemStack log;
-            EnumWoodType woodType = ReflectionUtils.getField(tree, "woodType");
+            EnumWoodType woodType = tree.getWoodType();
             if (woodType != null) {
                 log = TreeManager.woodItemAccess.getLog(woodType, false);
             } else {
-                log = ReflectionUtils.getField(tree, "vanillaWood");
+                log = tree.getVanillaWood();
             }
 
             ItemStack leaves = new ItemStack(PluginArboriculture.blocks.leaves, 1, 0);
@@ -45,11 +51,11 @@ public class ForestryTreeHandler {
                 }
             }
 
-            MTETreeFarm.registerForestryTree(
+            registerForestryTree(
                 speciesUID,
                 sapling == null ? null : sapling.copy(),
                 log == null ? null : log.copy(),
-                leaves == null ? null : leaves.copy(),
+                leaves.copy(),
                 fruit == null ? null : fruit.copy());
         }
     }
@@ -69,11 +75,10 @@ public class ForestryTreeHandler {
             }
 
             ItemStack leaves = new ItemStack(PluginArboriculture.blocks.leaves, 1, 0);
-            if (speciesUID != null) {
-                NBTTagCompound nbtTagCompound = new NBTTagCompound();
-                nbtTagCompound.setString("species", speciesUID);
-                leaves.setTagCompound(nbtTagCompound);
-            }
+
+            NBTTagCompound nbtTagCompound = new NBTTagCompound();
+            nbtTagCompound.setString("species", speciesUID);
+            leaves.setTagCompound(nbtTagCompound);
 
             ItemStack fruit = null;
             if (individual.canBearFruit()) {
@@ -83,11 +88,11 @@ public class ForestryTreeHandler {
                 }
             }
 
-            MTETreeFarm.registerForestryTree(
+            registerForestryTree(
                 speciesUID,
                 sapling == null ? null : sapling.copy(),
                 log == null ? null : log.copy(),
-                leaves == null ? null : leaves.copy(),
+                leaves.copy(),
                 fruit == null ? null : fruit.copy());
         }
     }

@@ -14,10 +14,12 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 
 /**
- * The glass is split into separate files because they are registered as regular blocks, and a regular block can have
- * 16 subtypes at most.
+ * The glass is split into separate files because they are registered as regular blocks, and a regular block can have 16
+ * subtypes at most.
  * <p>
  * This class hosts various special types of tiered glass with not many tiers.
+ * This class is for registration. For use inside MTE's, use {@link gregtech.api.casing.Casings#asElement()}
+ * Make sure to also register each new Casing inside of {@link gregtech.api.casing.Casings}
  */
 public class BlockGlass1 extends BlockCasingsAbstract {
 
@@ -25,15 +27,16 @@ public class BlockGlass1 extends BlockCasingsAbstract {
         super(ItemCasings.class, "gt.blockglass1", Material.glass, 4);
         this.opaque = false;
 
-        register(0, ItemList.GlassPHResistant, "Chemical Grade Glass", translatedText("gt.casing.chemical-resistant"));
-        register(1, ItemList.GlassUVResistant, "Electron-Permeable Neutronium Coated Glass");
-        register(2, ItemList.GlassOmniPurposeInfinityFused, "Omni-Purpose Infinity Fused Glass");
-        register(3, ItemList.GlassQuarkContainment, "Non-Photonic Matter Exclusion Glass");
-        register(
-            4,
-            ItemList.Hawking_Glass,
-            "Hawking Radiation Realignment Focus",
-            translatedText("gt.casing.hawking-focus"));
+        register(0, ItemList.GlassPHResistant, translatedText("gt.casing.chemical-resistant"));
+        register(1, ItemList.GlassUVResistant);
+        register(2, ItemList.GlassOmniPurposeInfinityFused);
+        register(3, ItemList.GlassQuarkContainment);
+        register(4, ItemList.Hawking_Glass, translatedText("gt.casing.hawking-focus"));
+        register(5, ItemList.NaniteShieldingGlass);
+        register(6, ItemList.Spinmatron_Chamber_Grate);
+        register(7, ItemList.Glass_ExoFoundry);
+        register(8, ItemList.ComplexNanochipGlass);
+        register(9, ItemList.ElectromagneticWaveguide);
     }
 
     @Override
@@ -72,6 +75,12 @@ public class BlockGlass1 extends BlockCasingsAbstract {
             case 2 -> Textures.BlockIcons.OMNI_PURPOSE_INFINITY_FUSED_GLASS.getIcon();
             case 3 -> Textures.BlockIcons.GLASS_QUARK_CONTAINMENT.getIcon();
             case 4 -> Textures.BlockIcons.HAWKING_GLASS.getIcon();
+            case 5 -> Textures.BlockIcons.NANITE_SHIELDING_FRAME.getIcon();
+            case 6 -> Textures.BlockIcons.SPINMATRON_GRATE.getIcon();
+            case 7 -> Textures.BlockIcons.EXOFOUNDRY_GLASS.getIcon();
+            case 8 -> Textures.BlockIcons.NANOCHIP_GLASS.getIcon();
+            case 9 -> Textures.BlockIcons.BEC_GLASS.getIcon();
+
             default -> Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL.getIcon();
         };
     }

@@ -1,5 +1,7 @@
 package gregtech.api.metatileentity;
 
+import static gregtech.api.interfaces.tileentity.IColoredTileEntity.UNCOLOURED;
+
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -14,6 +16,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -43,12 +46,14 @@ import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTTooltipDataCache;
-import gregtech.api.util.GTUtil;
 import gregtech.api.util.GTUtility;
 import gregtech.common.capability.CleanroomReference;
+import gregtech.common.gui.modularui.util.MTEItemStackHandler;
 import gregtech.mixin.interfaces.accessors.EntityPlayerMPAccessor;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
+import tectech.mechanics.pipe.IConnectsToDataPipe;
+import tectech.mechanics.pipe.IConnectsToEnergyTunnel;
 import tectech.thing.metaTileEntity.pipe.MTEPipeData;
 import tectech.thing.metaTileEntity.pipe.MTEPipeLaser;
 
@@ -58,8 +63,8 @@ import tectech.thing.metaTileEntity.pipe.MTEPipeLaser;
  * Extend this Class to add a new MetaMachine Call the Constructor with the desired ID at the load-phase (not preload
  * and also not postload!) Implement the newMetaEntity-Method to return a new ready instance of your MetaTileEntity
  * <p/>
- * Call the Constructor like the following example inside the Load Phase, to register it. "new
- * MTEFurnace(54, "GT_E_Furnace", "Automatic E-Furnace");"
+ * Call the Constructor like the following example inside the Load Phase, to register it. "new MTEFurnace(54,
+ * "GT_E_Furnace", "Automatic E-Furnace");"
  */
 @SuppressWarnings("unused")
 public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICraftingIconProvider {
@@ -70,7 +75,7 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
     public final ItemStackHandler inventoryHandler;
 
     protected GUIColorOverride colorOverride;
-    protected GTTooltipDataCache mTooltipCache = new GTTooltipDataCache();
+    public final GTTooltipDataCache mTooltipCache = new GTTooltipDataCache();
 
     private static final String[] FACING_DIRECTION_NAMES = new String[] { "GT5U.waila.facing.down",
         "GT5U.waila.facing.up", "GT5U.waila.facing.north", "GT5U.waila.facing.south", "GT5U.waila.facing.west",
@@ -91,11 +96,10 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
     private String playerLang;
 
     /**
-     * This registers your Machine at the List. Use only ID's larger than 2048 - the ones lower are reserved by GT.
-     * See also the list in the API package - it has a description that contains all the reservations.
+     * This registers your Machine at the List. Use only ID's larger than 2048 - the ones lower are reserved by GT. See
+     * also the list in the API package - it has a description that contains all the reservations.
      * <p>
-     * The constructor can be overloaded as follows:
-     * <blockquote>
+     * The constructor can be overloaded as follows: <blockquote>
      *
      * <pre>
      *
@@ -109,17 +113,13 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
      * @param aID the machine ID
      */
     public MetaTileEntity(int aID, String aBasicName, String aRegionalName, int aInvSlotCount) {
-        super(aID, aBasicName, aRegionalName, aInvSlotCount);
+        super(aID, aBasicName, aInvSlotCount);
         setBaseMetaTileEntity(GregTechAPI.constructBaseMetaTileEntity());
         getBaseMetaTileEntity().setMetaTileID((short) aID);
 
-        inventoryHandler = new ItemStackHandler(mInventory) {
+        GTLanguageManager.addStringLocalization("gt.blockmachines." + mName + ".name", aRegionalName);
 
-            @Override
-            protected void onContentsChanged(int slot) {
-                MetaTileEntity.this.onContentsChanged(slot);
-            }
-        };
+        inventoryHandler = new MTEItemStackHandler(mInventory, this);
     }
 
     /**
@@ -127,18 +127,14 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
      */
     public MetaTileEntity(String aName, int aInvSlotCount) {
         super(aName, aInvSlotCount);
-        inventoryHandler = new ItemStackHandler(mInventory) {
-
-            @Override
-            protected void onContentsChanged(int slot) {
-                MetaTileEntity.this.onContentsChanged(slot);
-            }
-        };
+        inventoryHandler = new MTEItemStackHandler(mInventory, this);
         colorOverride = GUIColorOverride.get(getGUITextureSet().getMainBackground().location);
     }
 
+    @Nullable
     @Override
-    public IGregTechTileEntity getBaseMetaTileEntity() {
+    // making this method final allows it to be inlined by the JIT compiler
+    public final IGregTechTileEntity getBaseMetaTileEntity() {
         return mBaseMetaTileEntity;
     }
 
@@ -185,38 +181,35 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
     }
 
     @Override
-    public String getLocalName() {
-        return GTLanguageManager.getTranslation("gt.blockmachines." + mName + ".name");
+    public String getLocalNameKey() {
+        return "gt.blockmachines." + mName + ".name";
     }
 
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
-        ItemStack aTool) {
-        onScrewdriverRightClick(side, aPlayer, aX, aY, aZ);
-    }
+        ItemStack aTool) {}
 
     @Override
     public boolean onWrenchRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer entityPlayer,
         float aX, float aY, float aZ, ItemStack aTool) {
+        final IGregTechTileEntity meta = getBaseMetaTileEntity();
+        if (!meta.isValidFacing(wrenchingSide)) return false;
+        meta.setFrontFacing(wrenchingSide);
 
-        // glue
-        if (onWrenchRightClick(side, wrenchingSide, entityPlayer, aX, aY, aZ)) {
-            return true;
+        for (final ForgeDirection s : ForgeDirection.VALID_DIRECTIONS) {
+            final IGregTechTileEntity iGregTechTileEntity = meta.getIGregTechTileEntityAtSide(s);
+            if (iGregTechTileEntity != null) {
+                if (iGregTechTileEntity.getMetaTileEntity() instanceof MTEPipeLaser pipe) pipe.updateNetwork(true);
+                if (iGregTechTileEntity.getMetaTileEntity() instanceof MTEPipeData pipe) pipe.updateNetwork(true);
+            }
         }
-        if (getBaseMetaTileEntity().isValidFacing(wrenchingSide)) {
-            getBaseMetaTileEntity().setFrontFacing(wrenchingSide);
-            return true;
-        }
-        return false;
+        return true;
     }
 
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
         float aX, float aY, float aZ, ItemStack aTool) {
-        // glue
-        if (onWireCutterRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ)) {
-            return true;
-        }
+
         if (!aPlayer.isSneaking()) return false;
         final ForgeDirection oppositeSide = wrenchingSide.getOpposite();
         final TileEntity tTileEntity = getBaseMetaTileEntity().getTileEntityAtSide(wrenchingSide);
@@ -233,11 +226,6 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
     public boolean onSolderingToolRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
         float aX, float aY, float aZ, ItemStack aTool) {
 
-        // glue
-        if (onSolderingToolRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ)) {
-            return true;
-        }
-
         if (!aPlayer.isSneaking()) return false;
         final ForgeDirection oppositeSide = wrenchingSide.getOpposite();
         TileEntity tTileEntity = getBaseMetaTileEntity().getTileEntityAtSide(wrenchingSide);
@@ -250,44 +238,9 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
         return false;
     }
 
-    @Deprecated
-    public boolean onSolderingToolRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ) {
-        return false;
-    }
-
-    @Deprecated
-    public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ) {
-        return false;
-    }
-
-    @Deprecated
-    public boolean onWrenchRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer, float aX,
-        float aY, float aZ) {
-        return false;
-    }
-
-    @Deprecated
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-
-    }
-
     @Override
     public void onExplosion() {
-        GTLog.exp.println(
-            "Machine at " + this.getBaseMetaTileEntity()
-                .getXCoord()
-                + " | "
-                + this.getBaseMetaTileEntity()
-                    .getYCoord()
-                + " | "
-                + this.getBaseMetaTileEntity()
-                    .getZCoord()
-                + " DIMID: "
-                + this.getBaseMetaTileEntity()
-                    .getWorld().provider.dimensionId
-                + " exploded.");
+        GTLog.writeExplosionLog(this, "Machine exploded");
     }
 
     /**
@@ -551,14 +504,6 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
     }
 
     /**
-     * If this TileEntity makes use of Sided Redstone behaviors. Determines only, if the Output Redstone Array is
-     * getting filled with 0 for true, or 15 for false.
-     */
-    public boolean hasSidedRedstoneOutputBehavior() {
-        return false;
-    }
-
-    /**
      * When the Facing gets changed.
      */
     public void onFacingChange() {
@@ -596,14 +541,22 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
     }
 
     /**
-     * Called when a slot is changed.
-     * Note: {@link #setInventorySlotContents} is not called when the player interacts with a
-     * {@link gregtech.api.interfaces.modularui.IAddInventorySlots} slot.
+     * Called when a slot is changed. Note: {@link #setInventorySlotContents} is not called when the player interacts
+     * with a {@link gregtech.api.interfaces.modularui.IAddInventorySlots} slot, nor when items are inserted/extracted
+     * through {@link #getInventoryHandler()} (the path used by the GUI and AE). Marking the tile dirty here makes
+     * {@link IGregTechTileEntity#hasInventoryBeenModified()} reliable across all of those paths, which input hatches
+     * rely on to trigger instant recipe checks.
      */
-    protected void onContentsChanged(int slot) {
-
+    public void onContentsChanged(int slot) {
+        markDirty();
     }
 
+    /**
+     * Implement {@link #fill(ForgeDirection, FluidStack, boolean)} instead.
+     */
+    @SuppressWarnings("DeprecatedIsStillUsed")
+    @Deprecated
+    @ApiStatus.ScheduledForRemoval
     public int fill_default(ForgeDirection side, FluidStack aFluid, boolean doFill) {
         int filled = fill(aFluid, doFill);
         if (filled > 0) {
@@ -614,7 +567,7 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
 
     @Override
     public int fill(ForgeDirection side, FluidStack aFluid, boolean doFill) {
-        if (getBaseMetaTileEntity().hasSteamEngineUpgrade() && GTModHandler.isSteam(aFluid) && aFluid.amount > 1) {
+        if (getBaseMetaTileEntity().isSteampowered() && GTModHandler.isSteam(aFluid) && aFluid.amount > 1) {
             int tSteam = (int) Math.min(
                 Integer.MAX_VALUE,
                 Math.min(
@@ -646,18 +599,29 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
     @Override
     public void onBlockDestroyed() {
         final IGregTechTileEntity meta = getBaseMetaTileEntity();
+        if (this instanceof IConnectsToEnergyTunnel) {
+            for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
+                final IGregTechTileEntity iGregTechTileEntity = meta.getIGregTechTileEntityAtSide(side);
 
-        for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
-            final IGregTechTileEntity iGregTechTileEntity = meta.getIGregTechTileEntityAtSide(side);
-
-            if (iGregTechTileEntity != null) {
-                if (iGregTechTileEntity.getMetaTileEntity() instanceof MTEPipeLaser neighbor) {
-                    neighbor.mConnections &= ~side.getOpposite().flag;
-                    neighbor.connectionCount--;
+                if (iGregTechTileEntity != null) {
+                    if (iGregTechTileEntity.getMetaTileEntity() instanceof MTEPipeLaser neighbor
+                        && neighbor.isConnectedAtSide(side.getOpposite())) {
+                        neighbor.mConnections &= ~side.getOpposite().flag;
+                        neighbor.connectionCount--;
+                    }
                 }
-                if (iGregTechTileEntity.getMetaTileEntity() instanceof MTEPipeData neighbor) {
-                    neighbor.mConnections &= ~side.getOpposite().flag;
-                    neighbor.connectionCount--;
+            }
+        }
+        if (this instanceof IConnectsToDataPipe) {
+            for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
+                final IGregTechTileEntity iGregTechTileEntity = meta.getIGregTechTileEntityAtSide(side);
+
+                if (iGregTechTileEntity != null) {
+                    if (iGregTechTileEntity.getMetaTileEntity() instanceof MTEPipeData neighbor
+                        && neighbor.isConnectedAtSide(side.getOpposite())) {
+                        neighbor.mConnections &= ~side.getOpposite().flag;
+                        neighbor.connectionCount--;
+                    }
                 }
             }
         }
@@ -694,7 +658,14 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
         final int tY = getBaseMetaTileEntity().getYCoord();
         final int tZ = getBaseMetaTileEntity().getZCoord();
         final World tWorld = getBaseMetaTileEntity().getWorld();
-        GTUtility.sendSoundToPlayers(tWorld, SoundResource.IC2_MACHINES_MACHINE_OVERLOAD, 1.0F, -1, tX, tY, tZ);
+        GTUtility.sendSoundToPlayers(
+            tWorld,
+            SoundResource.IC2_MACHINES_MACHINE_OVERLOAD,
+            1.0F,
+            -1,
+            tX + .5,
+            tY + .5,
+            tZ + .5);
         tWorld.setBlock(tX, tY, tZ, Blocks.air);
         if (GregTechAPI.sMachineExplosions) tWorld.createExplosion(null, tX + 0.5, tY + 0.5, tZ + 0.5, tStrength, true);
     }
@@ -791,7 +762,7 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
                 .getCache(IEnergyGrid.class);
             if (!eg.isNetworkPowered())
                 return StatCollector.translateToLocal("GT5U.infodata.hatch.me.diagnostics.power");
-        } catch (Throwable ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
         return "";
@@ -807,17 +778,17 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
         Dyes dye = Dyes.dyeWhite;
         if (this.colorOverride.sLoaded()) {
             if (this.colorOverride.sGuiTintingEnabled() && getBaseMetaTileEntity() != null) {
-                dye = Dyes.getDyeFromIndex(getBaseMetaTileEntity().getColorization());
-                return this.colorOverride.getGuiTintOrDefault(dye.mName, GTUtil.getRGBInt(dye.getRGBA()));
+                dye = Dyes.getOrDefault(getBaseMetaTileEntity().getColorization(), Dyes.GUI_METAL);
+                return this.colorOverride.getGuiTintOrDefault(dye.mName, dye.toInt());
             }
         } else if (GregTechAPI.sColoredGUI) {
             if (GregTechAPI.sMachineMetalGUI) {
-                dye = Dyes.MACHINE_METAL;
+                dye = Dyes.GUI_METAL;
             } else if (getBaseMetaTileEntity() != null) {
-                dye = Dyes.getDyeFromIndex(getBaseMetaTileEntity().getColorization());
+                dye = Dyes.getOrDefault(getBaseMetaTileEntity().getColorization(), Dyes.GUI_METAL);
             }
         }
-        return GTUtil.getRGBInt(dye.getRGBA());
+        return dye.toInt();
     }
 
     @Override
@@ -825,9 +796,40 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
         return colorOverride.getTextColorOrDefault(textType, defaultColor);
     }
 
+    final public byte getColor() {
+        IGregTechTileEntity baseMetaTileEntity = getBaseMetaTileEntity();
+        if (baseMetaTileEntity == null) return UNCOLOURED;
+        return baseMetaTileEntity.getColorization();
+    }
+
     protected Supplier<Integer> COLOR_TITLE = () -> getTextColorOrDefault("title", 0x404040);
     protected Supplier<Integer> COLOR_TITLE_WHITE = () -> getTextColorOrDefault("title_white", 0xfafaff);
     protected Supplier<Integer> COLOR_TEXT_WHITE = () -> getTextColorOrDefault("text_white", 0xfafaff);
     protected Supplier<Integer> COLOR_TEXT_GRAY = () -> getTextColorOrDefault("text_gray", 0x404040);
     protected Supplier<Integer> COLOR_TEXT_RED = () -> getTextColorOrDefault("text_red", 0xff0000);
+
+    // For MUI2 guis (which are usually built in a different class).
+    public int getTitleColor() {
+        return COLOR_TITLE.get();
+    }
+
+    public int getColorTitleWhite() {
+        return COLOR_TITLE_WHITE.get();
+    }
+
+    public int getColorTextWhite() {
+        return COLOR_TEXT_WHITE.get();
+    }
+
+    public int getColorTextGray() {
+        return COLOR_TEXT_GRAY.get();
+    }
+
+    public int getColorTextRed() {
+        return COLOR_TEXT_RED.get();
+    }
+
+    public boolean isItemValidForPhantomSlot(int index, ItemStack itemStack) {
+        return false;
+    }
 }

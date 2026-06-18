@@ -2,6 +2,7 @@ package gregtech.api.enums;
 
 public enum OreDictNames {
     craftingAnvil,
+    craftingBlastFurnace,
     craftingBook,
     craftingCentrifuge,
     craftingChest,
@@ -24,7 +25,6 @@ public enum OreDictNames {
     craftingGrinder,
     craftingInductionFurnace,
     craftingIndustrialDiamond,
-    craftingIronFurnace,
     craftingLensBlack,
     craftingLensBlue,
     craftingLensBrown,

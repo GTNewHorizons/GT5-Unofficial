@@ -21,8 +21,8 @@ import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.nei.formatter.INEISpecialInfoFormatter;
 
 /**
- * Data object storing info exclusively used to draw NEI recipe GUI. Not all the properties used to draw NEI
- * are present here. See {@link BasicUIProperties} for the rest.
+ * Data object storing info exclusively used to draw NEI recipe GUI. Not all the properties used to draw NEI are present
+ * here. See {@link BasicUIProperties} for the rest.
  * <p>
  * Use {@link #builder} for creation.
  */
@@ -45,8 +45,7 @@ public final class NEIRecipeProperties {
     /**
      * Size of background shown.
      */
-    // todo make it final
-    public Size recipeBackgroundSize;
+    public final Size recipeBackgroundSize;
     /**
      * Offset of background shown.
      */

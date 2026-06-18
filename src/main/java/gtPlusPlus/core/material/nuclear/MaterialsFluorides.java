@@ -11,8 +11,8 @@ public class MaterialsFluorides {
 
     public static final Material FLUORITE = new Material(
         "Fluorite (F)", // Material Name
-        MaterialState.ORE, // State
-        null, // Material Colour
+        MaterialState.SOLID, // State
+        new short[] { 0x30, 0x7d, 0x5d, 0x00 }, // Material Colour
         Materials.Fluorine.mMeltingPoint, // Melting Point in C
         Materials.Fluorine.mBlastFurnaceTemp, // Boiling Point in C
         -1, // Protons
@@ -165,9 +165,12 @@ public class MaterialsFluorides {
         -1, // Protons
         -1, // Neutrons
         false, // Uses Blast furnace?
+        "Be(OH)\u2082",
+        0,
         // Material Stacks with Percentage of required elements.
         new MaterialStack(MaterialsElements.getInstance().BERYLLIUM, 1),
-        new MaterialStack(MaterialMisc.HYDROXIDE, 2));
+        new MaterialStack(MaterialsElements.getInstance().OXYGEN, 2),
+        new MaterialStack(MaterialsElements.getInstance().HYDROGEN, 2));
 
     // (NH4)2BeF4
     public static final Material AMMONIUM_TETRAFLUOROBERYLLATE = new Material(
@@ -236,10 +239,4 @@ public class MaterialsFluorides {
         // Material Stacks with Percentage of required elements.
         new MaterialStack(MaterialsElements.getInstance().SODIUM, 1),
         new MaterialStack(MaterialsElements.getInstance().FLUORINE, 1));
-
-    private static final MaterialsFluorides INSTANCE = new MaterialsFluorides();
-
-    public static MaterialsFluorides getInstance() {
-        return INSTANCE;
-    }
 }

@@ -1,10 +1,5 @@
 package tectech.thing.metaTileEntity.hatch;
 
-import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.BLUE;
-import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.BOLD;
-import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.GRAY;
-import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.YELLOW;
-import static gregtech.api.enums.GTValues.AuthorColen;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.common.misc.WirelessNetworkManager.addEUToGlobalEnergyMap;
 import static gregtech.common.misc.WirelessNetworkManager.strongCheckOrAddUser;
@@ -21,58 +16,44 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.google.common.math.LongMath;
-import com.gtnewhorizons.modularui.api.math.Alignment;
-import com.gtnewhorizons.modularui.api.math.Color;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
-import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
 
-import gregtech.api.gui.modularui.GTUITextures;
+import gregtech.api.enums.GTAuthors;
+import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.util.GTUtility;
-import tectech.thing.metaTileEntity.Textures;
+import gregtech.api.metatileentity.implementations.MTEHatch;
+import gregtech.common.gui.modularui.hatch.MTEHatchWirelessMultiGui;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchWirelessMulti extends MTEHatchEnergyMulti {
 
-    private final long precisionMultiplier = LongMath.pow(10, 15);
-    private final BigInteger eu_transferred_per_operation = BigInteger.valueOf(Amperes * V[mTier])
+    public final long precisionMultiplier = LongMath.pow(10, 15);
+    public final BigInteger eu_transferred_per_operation = BigInteger.valueOf(Amperes * V[mTier])
         .multiply(BigInteger.valueOf(ticks_between_energy_addition));
 
-    private final double overflowDivisor = getOverflowDivisor(eu_transferred_per_operation);
+    public final double overflowDivisor = getOverflowDivisor(eu_transferred_per_operation);
 
-    private final long actualTicksBetweenEnergyAddition = overflowDivisor > 1
+    public final long actualTicksBetweenEnergyAddition = overflowDivisor > 1
         ? (long) (ticks_between_energy_addition / (overflowDivisor * 2))
         : ticks_between_energy_addition;
 
-    private final long eu_transferred_per_operation_long = overflowDivisor > 1
+    public final long eu_transferred_per_operation_long = overflowDivisor > 1
         ? eu_transferred_per_operation.divide(BigInteger.valueOf((long) (overflowDivisor * precisionMultiplier * 2)))
             .multiply(BigInteger.valueOf(precisionMultiplier))
             .longValue()
         : eu_transferred_per_operation.longValue();
 
-    private UUID owner_uuid;
+    public UUID owner_uuid;
 
     public MTEHatchWirelessMulti(int aID, String aName, String aNameRegional, int aTier, int aAmp) {
-        super(
-            aID,
-            aName,
-            aNameRegional,
-            aTier,
-            0,
-            new String[] { GRAY + "Stores energy globally in a network, up to 2^(2^31) EU.",
-                GRAY + "Does not connect to wires. This block withdraws EU from the network.",
-                translateToLocal("gt.blockmachines.hatch.screwdrivertooltip"),
-                AuthorColen + GRAY + BOLD + " & " + BLUE + BOLD + "Cloud",
-                translateToLocal("gt.blockmachines.hatch.energytunnel.desc.1") + ": "
-                    + YELLOW
-                    + GTUtility.formatNumbers(aAmp * V[aTier])
-                    + GRAY
-                    + " EU/t" },
-            aAmp);
+        super(aID, aName, aNameRegional, aTier, 0, null, aAmp);
     }
 
     @Override
@@ -85,51 +66,41 @@ public class MTEHatchWirelessMulti extends MTEHatchEnergyMulti {
         super(aName, aTier, aAmp, aDescription, aTextures);
     }
 
-    private double getOverflowDivisor(BigInteger euTransferredPerOperation) {
+    public double getOverflowDivisor(BigInteger euTransferredPerOperation) {
         if (euTransferredPerOperation.compareTo(BigInteger.valueOf(Long.MAX_VALUE)) > 0) {
             return euTransferredPerOperation.doubleValue() / Long.MAX_VALUE;
         }
         return 1d;
     }
 
-    private ITexture[] TEXTURE_OVERLAY;
-
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        switch (Amperes) {
-            case 4:
-                TEXTURE_OVERLAY = Textures.OVERLAYS_ENERGY_IN_WIRELESS_MULTI_4A;
-                break;
-            case 16:
-                TEXTURE_OVERLAY = Textures.OVERLAYS_ENERGY_IN_WIRELESS_MULTI_16A;
-                break;
-            case 64:
-                TEXTURE_OVERLAY = Textures.OVERLAYS_ENERGY_IN_WIRELESS_MULTI_64A;
-                break;
-            default:
-                TEXTURE_OVERLAY = Textures.OVERLAYS_ENERGY_IN_WIRELESS_LASER;
-                break;
+        if (maxAmperes > 64) {
+            return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_ON_WIRELESS_LASER[mTier + 1] };
+        } else if (maxAmperes > 16) {
+            return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_ON_WIRELESS_64A[mTier + 1] };
+        } else if (maxAmperes > 4) {
+            return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_ON_WIRELESS_16A[mTier + 1] };
+        } else if (maxAmperes > 2) {
+            return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_ON_WIRELESS_4A[mTier + 1] };
+        } else {
+            return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_ON_WIRELESS[mTier + 1] };
         }
-        return new ITexture[] { aBaseTexture, TEXTURE_OVERLAY[mTier] };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        switch (Amperes) {
-            case 4:
-                TEXTURE_OVERLAY = Textures.OVERLAYS_ENERGY_IN_WIRELESS_MULTI_4A;
-                break;
-            case 16:
-                TEXTURE_OVERLAY = Textures.OVERLAYS_ENERGY_IN_WIRELESS_MULTI_16A;
-                break;
-            case 64:
-                TEXTURE_OVERLAY = Textures.OVERLAYS_ENERGY_IN_WIRELESS_MULTI_64A;
-                break;
-            default:
-                TEXTURE_OVERLAY = Textures.OVERLAYS_ENERGY_IN_WIRELESS_LASER;
-                break;
+        if (maxAmperes > 64) {
+            return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_ON_WIRELESS_LASER[mTier + 1] };
+        } else if (maxAmperes > 16) {
+            return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_ON_WIRELESS_64A[mTier + 1] };
+        } else if (maxAmperes > 4) {
+            return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_ON_WIRELESS_16A[mTier + 1] };
+        } else if (maxAmperes > 2) {
+            return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_ON_WIRELESS_4A[mTier + 1] };
+        } else {
+            return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_ON_WIRELESS[mTier + 1] };
         }
-        return new ITexture[] { aBaseTexture, TEXTURE_OVERLAY[mTier] };
     }
 
     @Override
@@ -195,7 +166,7 @@ public class MTEHatchWirelessMulti extends MTEHatchEnergyMulti {
         }
     }
 
-    private void tryFetchingEnergy() {
+    public void tryFetchingEnergy() {
         long currentEU = getBaseMetaTileEntity().getStoredEU();
         long maxEU = maxEUStore();
         long euToTransfer = min(maxEU - currentEU, eu_transferred_per_operation_long);
@@ -229,24 +200,23 @@ public class MTEHatchWirelessMulti extends MTEHatchEnergyMulti {
     }
 
     @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        builder.setBackground(GTUITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
-        builder.setGuiTint(getGUIColorization());
-        final int x = getGUIWidth() / 2 - 37;
-        final int y = getGUIHeight() / 5 - 7;
-        builder.widget(
-            TextWidget.localised("GT5U.machines.laser_hatch.amperage")
-                .setPos(x, y)
-                .setSize(74, 14))
-            .widget(
-                new NumericWidget().setSetter(val -> Amperes = (int) val)
-                    .setGetter(() -> Amperes)
-                    .setBounds(1, maxAmperes)
-                    .setScrollValues(1, 4, 64)
-                    .setTextAlignment(Alignment.Center)
-                    .setTextColor(Color.WHITE.normal)
-                    .setSize(70, 18)
-                    .setPos(x, y + 16)
-                    .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD));
+    public String[] getDescription() {
+        return MTEHatch.formatEnergyInfoDesc(
+            new String[] { GTAuthors.AuthorColen, GTAuthors.AuthorCloud.get() },
+            translateToLocal("gt.blockmachines.hatch.screwdrivertooltip"),
+            false,
+            mTier,
+            maxAmperes,
+            "gt.blockmachines.energy_hatch.wireless");
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return true;
+    }
+
+    @Override
+    public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTEHatchWirelessMultiGui(this).build(guiData, syncManager, uiSettings);
     }
 }

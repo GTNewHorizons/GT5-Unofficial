@@ -52,6 +52,7 @@ public class SpaceProject implements ISpaceProject {
         return unlocalizedName;
     }
 
+    @Override
     public String getLocalizedName() {
         return StatCollector.translateToLocal(unlocalizedName);
     }

@@ -34,6 +34,7 @@ import gregtech.GTMod;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.ParticleFX;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicGenerator;
@@ -43,21 +44,13 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.WorldSpawnedEventBuilder.ParticleEventBuilder;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEDieselGenerator extends MTEBasicGenerator {
 
     private final int efficiency;
 
     public MTEDieselGenerator(int aID, String aName, String aNameRegional, int aTier, int efficiency) {
-        super(
-            aID,
-            aName,
-            aNameRegional,
-            aTier,
-            new String[] { "Requires liquid Fuel",
-                "Causes "
-                    + (int) (GTMod.gregtechproxy.mPollutionBaseDieselGeneratorPerSecond
-                        * GTMod.gregtechproxy.mPollutionDieselGeneratorReleasedByTier[aTier])
-                    + " Pollution per second" });
+        super(aID, aName, aNameRegional, aTier, (String) null);
         this.efficiency = efficiency;
     }
 
@@ -83,13 +76,15 @@ public class MTEDieselGenerator extends MTEBasicGenerator {
     }
 
     @Override
-    public int getCapacity() {
-        return 16000;
+    public int getEfficiency() {
+        return this.efficiency;
     }
 
     @Override
-    public int getEfficiency() {
-        return this.efficiency;
+    protected String[] getTooltipLines() {
+        int pollution = (int) (GTMod.proxy.mPollutionBaseDieselGeneratorPerSecond
+            * GTMod.proxy.mPollutionDieselGeneratorReleasedByTier[mTier]);
+        return GTUtility.translateMultiline("gt.blockmachines.basicgenerator.diesel.tooltip", pollution);
     }
 
     @Override
@@ -142,7 +137,7 @@ public class MTEDieselGenerator extends MTEBasicGenerator {
                     .addIcon(DIESEL_GENERATOR_FRONT_GLOW)
                     .glow()
                     .build()),
-            OVERLAYS_ENERGY_OUT[this.mTier] };
+            OVERLAYS_ENERGY_OUT[this.mTier + 1] };
     }
 
     @Override
@@ -198,7 +193,7 @@ public class MTEDieselGenerator extends MTEBasicGenerator {
                     .addIcon(DIESEL_GENERATOR_FRONT_ACTIVE_GLOW)
                     .glow()
                     .build()),
-            OVERLAYS_ENERGY_OUT[this.mTier] };
+            OVERLAYS_ENERGY_OUT[this.mTier + 1] };
     }
 
     @Override
@@ -247,7 +242,7 @@ public class MTEDieselGenerator extends MTEBasicGenerator {
 
     @Override
     public int getPollution() {
-        return (int) (GTMod.gregtechproxy.mPollutionBaseDieselGeneratorPerSecond
-            * GTMod.gregtechproxy.mPollutionDieselGeneratorReleasedByTier[mTier]);
+        return (int) (GTMod.proxy.mPollutionBaseDieselGeneratorPerSecond
+            * GTMod.proxy.mPollutionDieselGeneratorReleasedByTier[mTier]);
     }
 }

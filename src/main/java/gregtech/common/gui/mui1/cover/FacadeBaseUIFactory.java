@@ -1,11 +1,12 @@
 package gregtech.common.gui.mui1.cover;
 
+import net.minecraft.util.StatCollector;
+
 import com.gtnewhorizons.modularui.api.drawable.ItemDrawable;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import gregtech.api.gui.modularui.CoverUIBuildContext;
-import gregtech.api.util.GTUtility;
 import gregtech.common.covers.Cover;
 import gregtech.common.covers.CoverFacadeBase;
 import gregtech.common.gui.modularui.widget.CoverDataControllerWidget;
@@ -72,16 +73,16 @@ public class FacadeBaseUIFactory extends CoverUIFactory<CoverFacadeBase> {
                 .setDefaultColor(COLOR_TITLE.get())
                 .setPos(25, 9))
             .widget(
-                new TextWidget(GTUtility.trans("128", "Redstone")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                new TextWidget(StatCollector.translateToLocal("gt.interact.desc.facade.Redstone"))
                     .setPos(3 + startX + spaceX * 1, 4 + startY + spaceY * 0))
             .widget(
-                new TextWidget(GTUtility.trans("129", "Energy")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                new TextWidget(StatCollector.translateToLocal("gt.interact.desc.facade.Energy"))
                     .setPos(3 + startX + spaceX * 1, 4 + startY + spaceY * 1))
             .widget(
-                new TextWidget(GTUtility.trans("130", "Fluids")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                new TextWidget(StatCollector.translateToLocal("gt.interact.desc.facade.Fluids"))
                     .setPos(3 + startX + spaceX * 1, 4 + startY + spaceY * 2))
             .widget(
-                new TextWidget(GTUtility.trans("131", "Items")).setDefaultColor(COLOR_TEXT_GRAY.get())
+                new TextWidget(StatCollector.translateToLocal("gt.interact.desc.facade.Items"))
                     .setPos(3 + startX + spaceX * 1, 4 + startY + spaceY * 3));
     }
 

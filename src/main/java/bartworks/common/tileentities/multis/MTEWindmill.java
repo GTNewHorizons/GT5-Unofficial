@@ -83,6 +83,8 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
@@ -111,6 +113,43 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
         super(aName);
     }
 
+    private static final IStructureElement<MTEWindmill> DISPENSER_OR_CLAY = new IStructureElement<>() {
+
+        @Override
+        public boolean check(MTEWindmill t, World world, int x, int y, int z) {
+            Block block = world.getBlock(x, y, z);
+
+            if (block == Blocks.dispenser) {
+                return t.addDispenserToOutputSet(world.getTileEntity(x, y, z));
+            }
+
+            if (block == Blocks.hardened_clay && world.getBlockMetadata(x, y, z) == 0) {
+                t.mHardenedClay++;
+                return true;
+            }
+
+            return false;
+        }
+
+        @Override
+        public boolean spawnHint(MTEWindmill t, World world, int x, int y, int z, ItemStack trigger) {
+            StructureLibAPI.hintParticle(world, x, y, z, Blocks.hardened_clay, 0);
+            return true;
+        }
+
+        @Override
+        public boolean placeBlock(MTEWindmill t, World world, int x, int y, int z, ItemStack trigger) {
+            return world.setBlock(x, y, z, Blocks.hardened_clay, 0, 3);
+        }
+
+        @Override
+        public BlocksToPlace getBlocksToPlace(MTEWindmill t, World world, int x, int y, int z, ItemStack trigger,
+            AutoPlaceEnvironment env) {
+            return BlocksToPlace
+                .create(new ItemStack(Blocks.dispenser, 1, 0), new ItemStack(Blocks.hardened_clay, 1, 0));
+        }
+    };
+
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<MTEWindmill> STRUCTURE_DEFINITION = StructureDefinition
         .<MTEWindmill>builder()
@@ -125,7 +164,7 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
                     { " ppppp ", "p     p", "p     p", "p     p", "p     p", "p     p", " ppppp " },
                     { "       ", " ppppp ", " p   p ", " p   p ", " p   p ", " ppppp ", "       " },
                     { "       ", "  ccc  ", " c   c ", " c   c ", " c   c ", "  ccc  ", "       " },
-                    { "       ", "  ccc  ", " c   c ", " c   c ", " c   c ", "  ccc  ", "       " },
+                    { "       ", "  ccc  ", " c   c ", " c   c ", " c   c ", "  cdc  ", "       " },
                     { "       ", "  ccc  ", " c   c ", " c   c ", " c   c ", "  ccc  ", "       " },
                     { "       ", "  ccc  ", " c   c ", " c   c ", " c   c ", "  ccc  ", "       " },
                     { " bb~bb ", "bbbbbbb", "bbbbbbb", "bbbbbbb", "bbbbbbb", "bbbbbbb", " bbbbb " }, }))
@@ -150,6 +189,7 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
                         return this.delegate.spawnHint(gt_tileEntity_windmill, world, x, y, z, trigger);
                     }
                 })))
+        .addElement('d', DISPENSER_OR_CLAY)
         .addElement('b', ofBlock(Blocks.brick_block, 0))
         .addElement('s', new IStructureElement<>() {
 
@@ -198,24 +238,19 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Windmill")
+        tt.addMachineType("Macerator")
             .addInfo("A primitive Grinder powered by Kinetic energy")
             .addInfo("Speed and output will be affected by wind speed, recipe and rotor")
             .addInfo("Please use the Primitive Rotor")
             .addInfo("Macerates 16 items at a time")
             .beginStructureBlock(7, 12, 7, false)
             .addController("Front bottom center")
-            .addCasingInfoMin("Hardened Clay block", 40, false)
-            .addOtherStructurePart("Dispenser", "Any Hardened Clay block")
-            .addOtherStructurePart("0-1 Wooden door", "Any Hardened Clay block")
+            .addCasingInfoMin("Hardened Clay Block", 40, false)
+            .addOtherStructurePart("Dispenser", "Any Hardened Clay Block")
+            .addOtherStructurePart("0-1 Wooden door", "Any Hardened Clay Block")
             .addStructureHint("tile.BWRotorBlock.0.name", 1)
             .toolTipFinisher();
         return tt;
-    }
-
-    @Override
-    public boolean isCorrectMachinePart(ItemStack itemStack) {
-        return true;
     }
 
     private final Set<TileEntityDispenser> tileEntityDispensers = new HashSet<>();
@@ -296,6 +331,7 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
         if (this.mOutputItems == null) this.mOutputItems = new ItemStack[2];
 
         GTRecipe tRecipe = RecipeMaps.maceratorRecipes.findRecipeQuery()
+            .caching(false)
             .items(itemStack)
             .voltage(V[1])
             .find();
@@ -364,43 +400,50 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
     }
 
     @Override
-    public boolean addOutput(ItemStack aStack) {
-        if (GTUtility.isStackInvalid(aStack)) return false;
+    public boolean addItemOutputs(ItemStack[] stacks) {
+        for (ItemStack stack : stacks) {
+            if (GTUtility.isStackInvalid(stack)) continue;
 
-        for (TileEntityDispenser tHatch : this.tileEntityDispensers) {
-            for (int i = tHatch.getSizeInventory() - 1; i >= 0; i--) {
-                if (tHatch.getStackInSlot(i) == null || GTUtility.areStacksEqual(tHatch.getStackInSlot(i), aStack)
-                    && aStack.stackSize + tHatch.getStackInSlot(i).stackSize <= 64) {
-                    if (GTUtility.areStacksEqual(tHatch.getStackInSlot(i), aStack)) {
-                        ItemStack merge = tHatch.getStackInSlot(i)
-                            .copy();
-                        merge.stackSize = aStack.stackSize + tHatch.getStackInSlot(i).stackSize;
-                        tHatch.setInventorySlotContents(i, merge);
-                    } else {
-                        tHatch.setInventorySlotContents(i, aStack.copy());
-                    }
+            for (TileEntityDispenser tHatch : this.tileEntityDispensers) {
+                for (int i = tHatch.getSizeInventory() - 1; i >= 0; i--) {
+                    if (tHatch.getStackInSlot(i) == null || GTUtility.areStacksEqual(tHatch.getStackInSlot(i), stack)
+                        && stack.stackSize + tHatch.getStackInSlot(i).stackSize <= 64) {
+                        if (GTUtility.areStacksEqual(tHatch.getStackInSlot(i), stack)) {
+                            ItemStack merge = tHatch.getStackInSlot(i)
+                                .copy();
+                            merge.stackSize = stack.stackSize + tHatch.getStackInSlot(i).stackSize;
+                            tHatch.setInventorySlotContents(i, merge);
+                        } else {
+                            tHatch.setInventorySlotContents(i, stack.copy());
+                        }
 
-                    if (GTUtility.areStacksEqual(tHatch.getStackInSlot(i), aStack)) {
-                        return true;
+                        if (GTUtility.areStacksEqual(tHatch.getStackInSlot(i), stack)) {
+                            return true;
+                        }
+                        tHatch.setInventorySlotContents(i, null);
+                        return false;
                     }
-                    tHatch.setInventorySlotContents(i, null);
-                    return false;
                 }
             }
         }
+
         return false;
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack itemStack) {
-
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack itemStack,
+        List<StructureError> errors) {
         this.tileEntityDispensers.clear();
         this.mDoor = 0;
         this.mHardenedClay = 0;
-
-        return this.checkPiece(STRUCTURE_PIECE_MAIN, 3, 11, 0) && !this.tileEntityDispensers.isEmpty()
-            && this.mDoor <= 2
-            && this.mHardenedClay >= 40;
+        if (!this.checkPiece(STRUCTURE_PIECE_MAIN, 3, 11, 0, errors)) return;
+        if (this.tileEntityDispensers.isEmpty()) {
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.missing_dispenser"));
+        }
+        if (this.mDoor > 2) {
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.too_many_doors"));
+        }
+        checkCasingMin(errors, this.mHardenedClay, 40);
     }
 
     @Override
@@ -413,21 +456,6 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
         if (this.mInventory[1] != null && this.mInventory[1].stackSize <= 0) {
             this.mInventory[1] = null;
         }
-    }
-
-    @Override
-    public int getMaxEfficiency(ItemStack itemStack) {
-        return 10000;
-    }
-
-    @Override
-    public int getDamageToComponent(ItemStack itemStack) {
-        return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack itemStack) {
-        return false;
     }
 
     @Override
@@ -529,7 +557,7 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (this.mMachine) return -1;
-        return this.survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 3, 11, 0, elementBudget, env, false, true);
+        return this.survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 3, 11, 0, elementBudget, env, false, true);
     }
 
     public float OutputMultiplier(TileEntityRotorBlock rotorBlock) {
@@ -578,6 +606,11 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
     @Override
     public int getTitleColor() {
         return this.COLOR_TITLE_WHITE.get();
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return false;
     }
 
     @Override
@@ -636,6 +669,11 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
 
     @Override
     public boolean getDefaultHasMaintenanceChecks() {
+        return false;
+    }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
         return false;
     }
 }

@@ -1,6 +1,5 @@
 package gregtech.api.metatileentity.implementations;
 
-import static gregtech.api.enums.GTValues.AuthorColen;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.common.misc.WirelessNetworkManager.addEUToGlobalEnergyMap;
 import static gregtech.common.misc.WirelessNetworkManager.ticks_between_energy_addition;
@@ -10,17 +9,16 @@ import static java.lang.Long.min;
 import java.math.BigInteger;
 import java.util.UUID;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraftforge.common.util.ForgeDirection;
-
+import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.api.util.GTSplit;
 import gregtech.common.misc.spaceprojects.SpaceProjectManager;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEWirelessEnergy extends MTEHatchEnergy {
 
     private final BigInteger eu_transferred_per_operation = BigInteger
@@ -39,43 +37,23 @@ public class MTEWirelessEnergy extends MTEHatchEnergy {
 
     @Override
     public String[] getDescription() {
-        return new String[] { EnumChatFormatting.GRAY + "Stores energy globally in a network, up to 2^(2^31) EU.",
-            EnumChatFormatting.GRAY + "Does not connect to wires. This block withdraws EU from the network.",
-            AuthorColen };
+        return GTSplit.splitLocalizedWithSuffix(
+            "gt.blockmachines.energy_hatch_wireless.desc",
+            GTAuthors.buildAuthorsWithFormat(GTAuthors.AuthorColen));
     }
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_WIRELESS_ON[mTier] };
+        return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_ON_WIRELESS[mTier + 1] };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_WIRELESS_ON[mTier] };
-    }
-
-    @Override
-    public boolean isFacingValid(ForgeDirection facing) {
-        return true;
-    }
-
-    @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
-        return true;
+        return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_ON_WIRELESS[mTier + 1] };
     }
 
     @Override
     public boolean isEnetInput() {
-        return false;
-    }
-
-    @Override
-    public boolean isInputFacing(ForgeDirection side) {
-        return side == getBaseMetaTileEntity().getFrontFacing();
-    }
-
-    @Override
-    public boolean isValidSlot(int aIndex) {
         return false;
     }
 
@@ -85,18 +63,8 @@ public class MTEWirelessEnergy extends MTEHatchEnergy {
     }
 
     @Override
-    public long maxEUInput() {
-        return V[mTier];
-    }
-
-    @Override
     public long maxEUStore() {
         return totalStorage(V[mTier]);
-    }
-
-    @Override
-    public long maxAmperesIn() {
-        return 2;
     }
 
     @Override
@@ -107,18 +75,6 @@ public class MTEWirelessEnergy extends MTEHatchEnergy {
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTEWirelessEnergy(mName, mTier, new String[] { "" }, mTextures);
-    }
-
-    @Override
-    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
-        return false;
-    }
-
-    @Override
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
-        return false;
     }
 
     @Override

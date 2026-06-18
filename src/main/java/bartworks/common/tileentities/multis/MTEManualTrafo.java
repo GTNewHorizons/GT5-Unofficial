@@ -17,12 +17,16 @@ import static bartworks.common.loaders.ItemRegistry.BW_BLOCKS;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static gregtech.api.enums.HatchElement.Dynamo;
+import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_GLOW;
-import static gregtech.api.util.GTStructureUtility.ofHatchAdder;
-import static gregtech.api.util.GTStructureUtility.ofHatchAdderOptional;
+import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+
+import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -33,14 +37,17 @@ import net.minecraftforge.common.util.ForgeDirection;
 import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.StructureLibAPI;
+import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.IStructureElementNoPlacement;
+import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
@@ -48,12 +55,15 @@ import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 
-public class MTEManualTrafo extends MTEEnhancedMultiBlockBase<MTEManualTrafo> {
+public class MTEManualTrafo extends MTEEnhancedMultiBlockBase<MTEManualTrafo>
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     private byte mode;
     private int mTiers;
@@ -83,17 +93,19 @@ public class MTEManualTrafo extends MTEEnhancedMultiBlockBase<MTEManualTrafo> {
         .addElement(
             'b',
             ofChain(
-                ofHatchAdder(MTEManualTrafo::addEnergyInputToMachineList, CASING_INDEX, 1),
-                ofHatchAdder(MTEManualTrafo::addMaintenanceToMachineList, CASING_INDEX, 1),
+                buildHatchAdder(MTEManualTrafo.class).atLeast(Energy, Maintenance)
+                    .hint(1)
+                    .casingIndex(CASING_INDEX)
+                    .build(),
                 ofBlock(GregTechAPI.sBlockCasings1, 2)))
         .addElement(
             'o',
-            ofHatchAdderOptional(
-                MTEManualTrafo::addDynamoToMachineList,
-                CASING_INDEX,
-                2,
-                GregTechAPI.sBlockCasings1,
-                2))
+            ofChain(
+                buildHatchAdder(MTEManualTrafo.class).atLeast(Dynamo)
+                    .hint(2)
+                    .casingIndex(CASING_INDEX)
+                    .build(),
+                ofBlock(GregTechAPI.sBlockCasings1, 2)))
         .addElement('t', ofBlock(BW_BLOCKS[2], 1))
         .addElement('f', ofBlock(BW_BLOCKS[2], 0))
         .addElement('T', new IStructureElementNoPlacement<>() {
@@ -140,23 +152,18 @@ public class MTEManualTrafo extends MTEEnhancedMultiBlockBase<MTEManualTrafo> {
             .beginVariableStructureBlock(3, 3, 3, 10, 3, 3, false)
             .addController("Front bottom center")
             .addCasingInfoMin("MV Machine Casing", 0, false)
-            .addOtherStructurePart("Transformer-Winding Blocks", "1 Layer for each tier transformed")
-            .addOtherStructurePart("Nickel-Zinc-Ferrite Blocks", "Middle of Transformer-Winding Blocks")
-            .addMaintenanceHatch("Any bottom layer casing", 1)
-            .addEnergyHatch("Any bottom layer casing", 1)
-            .addDynamoHatch("Any top layer casing", 2)
+            .addOtherStructurePart("Transformer-Winding Block", "1 Layer for each tier transformed")
+            .addOtherStructurePart("Nickel-Zinc-Ferrite Block", "Middle of Transformer-Winding Block")
+            .addMaintenanceHatch("Any bottom layer Casing", 1)
+            .addEnergyHatch("Any bottom layer Casing", 1)
+            .addDynamoHatch("Any top layer Casing", 2)
             .addStructureInfo("")
             .addStructureInfo("Tapped Mode :")
-            .addEnergyHatch("Touching Transformer-Winding Blocks", 3)
-            .addDynamoHatch("Touching Transformer-Winding Blocks", 3)
-            .addStructureInfo("Hatches touching Transformer-Winding Blocks must be tiered from bottom to top")
+            .addEnergyHatch("Touching Transformer-Winding Block", 3)
+            .addDynamoHatch("Touching Transformer-Winding Block", 3)
+            .addStructureInfo("Hatches touching Transformer-Winding Block must be tiered from bottom to top")
             .toolTipFinisher();
         return tt;
-    }
-
-    @Override
-    public boolean isCorrectMachinePart(ItemStack itemStack) {
-        return true;
     }
 
     @Override
@@ -243,7 +250,8 @@ public class MTEManualTrafo extends MTEEnhancedMultiBlockBase<MTEManualTrafo> {
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack itemStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack itemStack,
+        List<StructureError> errors) {
 
         if (itemStack == null || !itemStack.getUnlocalizedName()
             .startsWith("gt.integrated_circuit")) this.mode = 0;
@@ -252,44 +260,54 @@ public class MTEManualTrafo extends MTEEnhancedMultiBlockBase<MTEManualTrafo> {
         this.upstep = this.mode % 2 == 0;
         boolean tapmode = this.mode > 1;
 
-        if (!this.checkPiece(STRUCTURE_PIECE_BASE, 1, 0, 0) || this.mEnergyHatches.isEmpty()) return false;
-
-        byte intier = this.mEnergyHatches.get(0).mTier;
-        for (MTEHatchEnergy in : this.mEnergyHatches) if (in.mTier != intier) return false;
+        if (!this.checkPiece(STRUCTURE_PIECE_BASE, 1, 0, 0, errors)) return;
 
         int mHeight;
         for (mHeight = 1; mHeight <= 8; mHeight++) {
             if (tapmode) {
                 this.mTiers = mHeight;
-                if (!this.checkPiece(STRUCTURE_PIECE_TAP_LAYER, 2, mHeight, 1)) break;
-            } else if (!this.checkPiece(STRUCTURE_PIECE_LAYER, 1, mHeight, 0)) break;
+                if (!this.checkPiece(STRUCTURE_PIECE_TAP_LAYER, 2, mHeight, 1, errors)) break;
+            } else if (!this.checkPiece(STRUCTURE_PIECE_LAYER, 1, mHeight, 0, errors)) break;
         }
-        if (!this.checkPiece(STRUCTURE_PIECE_TOP, 1, mHeight, 0)) return false;
+        errors.clear();
+        if (!this.checkPiece(STRUCTURE_PIECE_TOP, 1, mHeight, 0, errors)) return;
         this.mTiers = mHeight - 1;
+        if (mTiers == 0) {
+            errors.add(StructureErrorRegistry.TOO_SHORT_HEIGHT);
+            return;
+        }
 
-        if (this.mDynamoHatches.isEmpty() || this.mMaintenanceHatches.size() != 1 || this.mTiers == 0) return false;
+        checkHasEnergyHatch(errors);
+        checkHatchMin(errors, Dynamo, 1);
+        checkOneMaintenanceHatch(errors);
+
+        if (!errors.isEmpty()) return; // don't crash the game for accessing the first elem
+
+        byte intier = this.mEnergyHatches.get(0).mTier;
+        for (MTEHatchEnergy in : this.mEnergyHatches) {
+            if (in.mTier != intier) {
+                errors.add(StructureErrors.of("GT5U.gui.text.structure_error.manual_transformer_energy"));
+                break;
+            }
+        }
 
         byte outtier = this.mDynamoHatches.get(0).mTier;
         for (MTEHatchDynamo out : this.mDynamoHatches) {
-            if (out.mTier != outtier) return false;
+            if (out.mTier != outtier) {
+                errors.add(StructureErrors.of("GT5U.gui.text.structure_error.manual_transformer_dynamo"));
+                return;
+            }
         }
-
-        return true;
-    }
-
-    @Override
-    public int getMaxEfficiency(ItemStack itemStack) {
-        return 10000;
-    }
-
-    @Override
-    public int getDamageToComponent(ItemStack itemStack) {
-        return 0;
     }
 
     @Override
     public boolean explodesOnComponentBreak(ItemStack itemStack) {
         return true;
+    }
+
+    @Override
+    public boolean showRecipeTextInGUI() {
+        return false;
     }
 
     @Override
@@ -314,30 +332,22 @@ public class MTEManualTrafo extends MTEEnhancedMultiBlockBase<MTEManualTrafo> {
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-        int aColorIndex, boolean aActive, boolean aRedstone) {
-        if (side == facing) {
-            if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX), TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-        }
-        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX) };
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE,
+            OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_GLOW,
+            OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE,
+            OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE_GLOW);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Textures.BlockIcons.getCasingTextureForId(CASING_INDEX);
     }
 
     @Override
@@ -353,5 +363,51 @@ public class MTEManualTrafo extends MTEEnhancedMultiBlockBase<MTEManualTrafo> {
             else this.buildPiece(STRUCTURE_PIECE_LAYER, itemStack, b, 1, i + 1, 0);
         }
         this.buildPiece(STRUCTURE_PIECE_TOP, itemStack, b, 1, mHeight + 1, 0);
+    }
+
+    @Override
+    public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
+        if (mMachine) return -1;
+        if (this.mInventory[1] == null || !this.mInventory[1].getUnlocalizedName()
+            .startsWith("gt.integrated_circuit")) this.mode = 0;
+        else this.mode = (byte) Math.min(3, this.mInventory[1].getItemDamage());
+
+        int mHeight = Math.min(stackSize.stackSize, 8);
+        mTiers = 0;
+        boolean tapmode = this.mode > 1;
+        int built = survivalBuildPiece(STRUCTURE_PIECE_BASE, stackSize, 1, 0, 0, elementBudget, env, false, true);
+        if (built >= 0) return built;
+
+        for (int i = 0; i < mHeight; i++) {
+            mTiers = i;
+            if (tapmode) built = survivalBuildPiece(
+                STRUCTURE_PIECE_TAP_LAYER,
+                stackSize,
+                2,
+                i + 1,
+                0,
+                elementBudget,
+                env,
+                false,
+                true);
+            else built = survivalBuildPiece(
+                STRUCTURE_PIECE_LAYER,
+                stackSize,
+                1,
+                i + 1,
+                0,
+                elementBudget,
+                env,
+                false,
+                true);
+            if (built >= 0) return built;
+        }
+        mTiers = mHeight - 1;
+        return survivalBuildPiece(STRUCTURE_PIECE_TOP, stackSize, 1, mHeight + 1, 0, elementBudget, env, false, true);
+    }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
     }
 }

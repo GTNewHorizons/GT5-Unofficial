@@ -12,7 +12,15 @@ import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
+import java.util.List;
+
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -27,18 +35,19 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.recipe.RecipeMap;
-import gregtech.api.util.GTRecipe;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class MTENuclearSaltProcessingPlant extends GTPPMultiBlockBase<MTENuclearSaltProcessingPlant>
     implements ISurvivalConstructable {
 
-    protected GTRecipe lastRecipeToBuffer;
     private int casing;
     private static IStructureDefinition<MTENuclearSaltProcessingPlant> STRUCTURE_DEFINITION = null;
 
@@ -52,17 +61,12 @@ public class MTENuclearSaltProcessingPlant extends GTPPMultiBlockBase<MTENuclear
 
     @Override
     public String getMachineType() {
-        return "Reactor Processing Unit, Cold Trap";
+        return "Reactor Processing Unit, Cold Trap, NSPP";
     }
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity tileEntity) {
         return new MTENuclearSaltProcessingPlant(this.mName);
-    }
-
-    @Override
-    public int getMaxEfficiency(ItemStack itemStack) {
-        return 10000;
     }
 
     @Override
@@ -74,17 +78,16 @@ public class MTENuclearSaltProcessingPlant extends GTPPMultiBlockBase<MTENuclear
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
+            .addBulkMachineInfo(2, 2.5f, 1f)
             .addInfo("Processes depleted nuclear salts that come from the LFTR")
             .addInfo("Handles the recipes of the Reactor Processor Unit and Cold Trap")
             .addInfo("Only Thermally Insulated Casings can be replaced with hatches")
             .addInfo("Mufflers on top, Energy Hatches on bottom, exactly 2 of each are required")
             .addInfo("Maintenance Hatch goes on the back, opposite of the controller block")
             .addInfo("Inputs go on the left side of the multi, outputs on the right side")
-            .addInfo("150% faster than using single block machines of the same voltage")
-            .addInfo("Processes two items per voltage tier")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 3, 3, true)
-            .addController("Front Center")
+            .addController("Front center")
             .addCasingInfoMin("IV Machine Casing", 58, false)
             .addCasingInfoMin("Thermally Insulated Casing", 1, false)
             .addInputBus("Left Half", 2)
@@ -138,32 +141,32 @@ public class MTENuclearSaltProcessingPlant extends GTPPMultiBlockBase<MTENuclear
                     'B',
                     buildHatchAdder(MTENuclearSaltProcessingPlant.class).atLeast(InputBus, InputHatch)
                         .casingIndex(TAE.getIndexFromPage(0, 10))
-                        .dot(2)
+                        .hint(2)
                         .buildAndChain(onElementPass(x -> ++x.casing, ofBlock(ModBlocks.blockSpecialMultiCasings, 8))))
                 .addElement(
                     'C',
                     buildHatchAdder(MTENuclearSaltProcessingPlant.class).atLeast(OutputBus, OutputHatch)
                         .casingIndex(TAE.getIndexFromPage(0, 10))
-                        .dot(3)
+                        .hint(3)
                         .buildAndChain(onElementPass(x -> ++x.casing, ofBlock(ModBlocks.blockSpecialMultiCasings, 8))))
                 .addElement(
                     'D',
                     buildHatchAdder(MTENuclearSaltProcessingPlant.class).atLeast(Muffler)
                         .casingIndex(TAE.getIndexFromPage(0, 10))
-                        .dot(4)
+                        .hint(4)
                         .buildAndChain(onElementPass(x -> ++x.casing, ofBlock(ModBlocks.blockSpecialMultiCasings, 8))))
                 .addElement(
                     'E',
                     buildHatchAdder(MTENuclearSaltProcessingPlant.class).atLeast(Energy)
                         .casingIndex(TAE.getIndexFromPage(0, 10))
-                        .dot(5)
+                        .hint(5)
                         .buildAndChain(onElementPass(x -> ++x.casing, ofBlock(ModBlocks.blockSpecialMultiCasings, 8))))
                 .addElement(
-                    'F',
+                    'F', // This is the only position maintenance is allowed, and we force a maintenance hatch here
                     buildHatchAdder(MTENuclearSaltProcessingPlant.class).atLeast(Maintenance)
                         .casingIndex(TAE.getIndexFromPage(0, 10))
-                        .dot(6)
-                        .buildAndChain(onElementPass(x -> ++x.casing, ofBlock(ModBlocks.blockSpecialMultiCasings, 8))))
+                        .hint(6)
+                        .build())
                 .build();
         }
         return STRUCTURE_DEFINITION;
@@ -177,18 +180,23 @@ public class MTENuclearSaltProcessingPlant extends GTPPMultiBlockBase<MTENuclear
     @Override
     public int survivalConstruct(ItemStack itemStack, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(mName, itemStack, 4, 2, 0, elementBudget, env, false, true);
+        return survivalBuildPiece(mName, itemStack, 4, 2, 0, elementBudget, env, false, true);
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity baseMetaTileEntity, ItemStack itemStack) {
+    public void checkMachine(IGregTechTileEntity baseMetaTileEntity, ItemStack itemStack, List<StructureError> errors) {
         casing = 0;
-        return checkPiece(mName, 4, 2, 0) && checkHatch();
+        if (!checkPiece(mName, 4, 2, 0, errors)) return;
+        checkHatch(errors);
+        checkCasingMin(errors, casing, 1);
+        checkHasOutputHatch(errors);
+        checkHasInputHatch(errors);
     }
 
     @Override
-    public boolean checkHatch() {
-        return mEnergyHatches.size() == 2 && mMufflerHatches.size() == 2 && super.checkHatch();
+    public void checkHatch(List<StructureError> errors) {
+        checkHatchExact(errors, Energy, 2);
+        checkHatchExact(errors, Muffler, 2);
     }
 
     @Override
@@ -208,23 +216,25 @@ public class MTENuclearSaltProcessingPlant extends GTPPMultiBlockBase<MTENuclear
     }
 
     @Override
-    public String[] getExtraInfoData() {
-        final String running = (this.mMaxProgresstime > 0 ? "Salt Plant running" : "Salt Plant stopped");
-        final String maintenance = (this.getIdealStatus() == this.getRepairStatus() ? "No Maintenance issues"
-            : "Needs Maintenance");
-        String tSpecialText;
-
-        if (lastRecipeToBuffer != null && lastRecipeToBuffer.mOutputs[0].getDisplayName() != null) {
-            tSpecialText = "Currently processing: " + lastRecipeToBuffer.mOutputs[0].getDisplayName();
-        } else {
-            tSpecialText = "Currently processing: Nothing";
-        }
-
-        return new String[] { "Nuclear Salt Processing Plant", running, maintenance, tSpecialText };
+    public boolean supportsInputSeparation() {
+        return true;
     }
 
     @Override
-    public boolean supportsInputSeparation() {
-        return true;
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+        int z) {
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
+        tag.setInteger("maxParallelRecipes", getMaxParallelRecipes());
+    }
+
+    @Override
+    public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
+        IWailaConfigHandler config) {
+        super.getWailaBody(itemStack, currentTip, accessor, config);
+        final NBTTagCompound tag = accessor.getNBTData();
+        currentTip.add(
+            StatCollector.translateToLocal("GT5U.multiblock.parallelism") + ": "
+                + EnumChatFormatting.WHITE
+                + tag.getInteger("maxParallelRecipes"));
     }
 }

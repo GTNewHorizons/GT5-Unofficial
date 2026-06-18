@@ -1,5 +1,7 @@
 package gregtech.common.items;
 
+import net.minecraft.util.StatCollector;
+
 import org.apache.commons.lang3.text.WordUtils;
 
 import gregtech.api.enums.Materials;
@@ -28,15 +30,15 @@ public enum DropType {
     DropType(String pName, boolean show) {
         this.name = pName;
         this.showInList = show;
+        GTLanguageManager.addStringLocalization("drop." + this.name, WordUtils.capitalize(this.name) + " Drop");
     }
 
     public void setHidden() {
         this.showInList = false;
     }
 
-    public String getName() {
-
-        return GTLanguageManager.addStringLocalization("drop." + this.name, WordUtils.capitalize(this.name) + " Drop");
+    public String getLocalizedName() {
+        return StatCollector.translateToLocal("drop." + this.name);
     }
 
     public int[] getColours() {

@@ -12,12 +12,14 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.ArrayUtils;
 
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.IIconContainer;
@@ -31,14 +33,13 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTUtilityClient;
-import gtPlusPlus.api.objects.Logger;
+import gregtech.common.gui.modularui.hatch.MTEHatchTurbineGui;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
 import gtPlusPlus.core.handler.PacketHandler;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.network.packet.PacketTurbineHatchUpdate;
 import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.turbines.MTELargerTurbineBase;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.turbines.MTELargerTurbineBaseLegacy;
 
 public class MTEHatchTurbine extends MTEHatch {
 
@@ -48,7 +49,6 @@ public class MTEHatchTurbine extends MTEHatch {
     public int mEUt = 0;
 
     protected final List<RenderOverlay.OverlayTicket> overlayTickets = new ArrayList<>();
-    private boolean mFormed;
     private boolean mHasTurbine;
 
     public MTEHatchTurbine(int aID, String aName, String aNameRegional, int aTier) {
@@ -96,11 +96,6 @@ public class MTEHatchTurbine extends MTEHatch {
     }
 
     @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
-        return true;
-    }
-
-    @Override
     public boolean isValidSlot(int aIndex) {
         return false;
     }
@@ -108,7 +103,7 @@ public class MTEHatchTurbine extends MTEHatch {
     public boolean hasTurbine() {
         if (getBaseMetaTileEntity().isServerSide()) {
             ItemStack aStack = this.mInventory[0];
-            return MTELargerTurbineBase.isValidTurbine(aStack);
+            return MTELargerTurbineBaseLegacy.isValidTurbine(aStack);
         }
         return mHasTurbine;
     }
@@ -120,12 +115,8 @@ public class MTEHatchTurbine extends MTEHatch {
         return null;
     }
 
-    public boolean canWork() {
-        return hasTurbine();
-    }
-
     public boolean insertTurbine(ItemStack aTurbine) {
-        if (MTELargerTurbineBase.isValidTurbine(aTurbine)) {
+        if (MTELargerTurbineBaseLegacy.isValidTurbine(aTurbine)) {
             this.mInventory[0] = aTurbine;
             sendUpdate();
             return true;
@@ -161,10 +152,6 @@ public class MTEHatchTurbine extends MTEHatch {
         return 1;
     }
 
-    public void damageTurbine(int aEUt, int damageFactorLow, float damageFactorHigh) {
-        damageTurbine((long) aEUt, damageFactorLow, damageFactorHigh);
-    }
-
     public void damageTurbine(long aEUt, int damageFactorLow, float damageFactorHigh) {
         if (hasTurbine() && MathUtils.randInt(0, 1) == 0) {
             ItemStack aTurbine = getTurbine();
@@ -198,12 +185,8 @@ public class MTEHatchTurbine extends MTEHatch {
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (this.mHasController) {
             if (aTick % 20 == 0) {
-                boolean oActive = getBaseMetaTileEntity().isActive();
                 boolean active = isControllerActive();
                 getBaseMetaTileEntity().setActive(active);
-                if (active != oActive) {
-                    getBaseMetaTileEntity().issueClientUpdate();
-                }
             }
         } else if (this.mControllerLocation != null) {
             // Weird Invalid State
@@ -217,31 +200,21 @@ public class MTEHatchTurbine extends MTEHatch {
     }
 
     public boolean isControllerActive() {
-        MTELargerTurbineBase x = getController();
+        MTELargerTurbineBaseLegacy x = getController();
         if (x != null) {
-            // Logger.INFO("Checking Status of Controller. Running? "+(x.mEUt > 0));
             return x.lEUt > 0;
         }
-        // Logger.INFO("Status of Controller failed, controller is null.");
         return false;
     }
 
-    public MTELargerTurbineBase getController() {
+    public MTELargerTurbineBaseLegacy getController() {
         if (this.mHasController && this.mControllerLocation != null) {
             BlockPos p = mControllerLocation;
-            // Logger.INFO(p.getLocationString());
             IGregTechTileEntity tTileEntity = getBaseMetaTileEntity().getIGregTechTileEntity(p.xPos, p.yPos, p.zPos);
-            if (tTileEntity != null && tTileEntity.getMetaTileEntity() instanceof MTELargerTurbineBase) {
-                return (MTELargerTurbineBase) tTileEntity.getMetaTileEntity();
-            } else {
-                if (tTileEntity == null) {
-                    Logger.INFO("Controller MTE is null, somehow?");
-                } else {
-                    Logger.INFO("Controller is a different MTE to expected");
-                }
+            if (tTileEntity != null && tTileEntity.getMetaTileEntity() instanceof MTELargerTurbineBaseLegacy turbine) {
+                return turbine;
             }
         }
-        // Logger.INFO("Failed to Get Controller.");
         return null;
     }
 
@@ -254,7 +227,6 @@ public class MTEHatchTurbine extends MTEHatch {
         if (canSetNewController()) {
             mControllerLocation = aPos;
             mHasController = true;
-            Logger.INFO("Successfully injected controller into this Turbine Assembly Hatch.");
         }
         return mHasController;
     }
@@ -301,6 +273,11 @@ public class MTEHatchTurbine extends MTEHatch {
             overlayTickets);
     }
 
+    @Override
+    public void onTextureUpdate() {
+        setTurbineOverlay();
+    }
+
     public boolean usingAnimations() {
         return mUsingAnimation;
     }
@@ -317,7 +294,7 @@ public class MTEHatchTurbine extends MTEHatch {
 
     @Override
     public int[] getAccessibleSlotsFromSide(int ordinalSide) {
-        return new int[] {};
+        return GTValues.emptyIntArray;
     }
 
     @Override
@@ -342,70 +319,69 @@ public class MTEHatchTurbine extends MTEHatch {
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
         if (!aPlayer.isSneaking()) {
-            PlayerUtils.messagePlayer(aPlayer, "Using Animations? " + usingAnimations());
-            PlayerUtils.messagePlayer(aPlayer, "Has Controller? " + this.mHasController);
+            GTUtility.sendChatToPlayer(aPlayer, "Using Animations? " + usingAnimations());
+            GTUtility.sendChatToPlayer(aPlayer, "Has Controller? " + this.mHasController);
             if (mHasController) {
-                PlayerUtils.messagePlayer(aPlayer, "Controller Location: " + mControllerLocation.getLocationString());
-                PlayerUtils.messagePlayer(aPlayer, "Controller Active? " + this.isControllerActive());
+                GTUtility.sendChatToPlayer(aPlayer, "Controller Location: " + mControllerLocation.getLocationString());
+                GTUtility.sendChatToPlayer(aPlayer, "Controller Active? " + this.isControllerActive());
             }
-            PlayerUtils.messagePlayer(
+            GTUtility.sendChatToPlayer(
                 aPlayer,
                 "Active? " + this.getBaseMetaTileEntity()
                     .isActive());
-            PlayerUtils.messagePlayer(aPlayer, "Has Turbine inserted? " + this.hasTurbine());
+            GTUtility.sendChatToPlayer(aPlayer, "Has Turbine inserted? " + this.hasTurbine());
             if (this.hasTurbine()) {
                 Materials aMat = MetaGeneratedTool.getPrimaryMaterial(getTurbine());
-                String aSize = MTELargerTurbineBase
-                    .getTurbineSizeString(MTELargerTurbineBase.getTurbineSize(getTurbine()));
-                PlayerUtils.messagePlayer(aPlayer, "Using: " + aMat.mLocalizedName + " " + aSize);
+                String aSize = MTELargerTurbineBaseLegacy
+                    .getTurbineSizeString(MTELargerTurbineBaseLegacy.getTurbineSize(getTurbine()));
+                GTUtility.sendChatToPlayer(aPlayer, "Using: " + aMat.getLocalizedName() + " " + aSize);
             }
         } else {
             this.mUsingAnimation = !mUsingAnimation;
             if (this.mUsingAnimation) {
-                PlayerUtils.messagePlayer(aPlayer, "Using Animated Turbine Texture.");
+                GTUtility.sendChatToPlayer(aPlayer, "Using Animated Turbine Texture.");
             } else {
-                PlayerUtils.messagePlayer(aPlayer, "Using Static Turbine Texture.");
+                GTUtility.sendChatToPlayer(aPlayer, "Using Static Turbine Texture.");
             }
         }
     }
 
     @Override
     public boolean onWrenchRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer, float aX,
-        float aY, float aZ) {
+        float aY, float aZ, ItemStack aTool) {
         if (this.getBaseMetaTileEntity()
             .isServerSide() && !aPlayer.isSneaking()) {
-            ItemStack tCurrentItem = aPlayer.inventory.getCurrentItem();
-            if (tCurrentItem != null) {
-                if (tCurrentItem.getItem() instanceof MetaGeneratedTool) {
-                    return onToolClick(tCurrentItem, aPlayer, wrenchingSide);
+            if (aTool != null) {
+                if (aTool.getItem() instanceof MetaGeneratedTool) {
+                    return onToolClick(aTool, aPlayer, wrenchingSide);
                 }
             }
         }
-        return super.onWrenchRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ);
+        return super.onWrenchRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ, aTool);
     }
 
     @Override
     public boolean onSolderingToolRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ) {
+        float aX, float aY, float aZ, ItemStack aTool) {
         if (this.getBaseMetaTileEntity()
             .isServerSide()) {
-            ItemStack tCurrentItem = aPlayer.inventory.getCurrentItem();
-            if (tCurrentItem != null) {
-                if (tCurrentItem.getItem() instanceof MetaGeneratedTool) {
-                    return onToolClick(tCurrentItem, aPlayer, wrenchingSide);
+            if (aTool != null) {
+                if (aTool.getItem() instanceof MetaGeneratedTool) {
+                    return onToolClick(aTool, aPlayer, wrenchingSide);
                 }
             }
         }
-        return false;
+        return super.onSolderingToolRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ, aTool);
     }
 
     public boolean onToolClick(ItemStack tCurrentItem, EntityPlayer aPlayer, ForgeDirection side) {
         if (GTUtility.isStackInList(tCurrentItem, GregTechAPI.sWrenchList)) {
             boolean aHasTurbine = this.hasTurbine();
             if (aPlayer.inventory.getFirstEmptyStack() >= 0 && aHasTurbine) {
-                if (PlayerUtils.isCreative(aPlayer)
+                if (aPlayer.capabilities.isCreativeMode
                     || GTModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer)) {
                     aPlayer.inventory.addItemStackToInventory((this.getTurbine()));
                     this.mInventory[0] = null;
@@ -421,19 +397,19 @@ public class MTEHatchTurbine extends MTEHatch {
         } else if (GTUtility.isStackInList(tCurrentItem, GregTechAPI.sSolderingToolList)) {
             if (mControllerLocation != null) {
                 if (setController(mControllerLocation)) {
-                    if (PlayerUtils.isCreative(aPlayer)
+                    if (aPlayer.capabilities.isCreativeMode
                         || GTModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer)) {
                         String tChat = "Trying to Reset linked Controller";
                         IGregTechTileEntity g = this.getBaseMetaTileEntity();
                         GTUtility.sendChatToPlayer(aPlayer, tChat);
                         GTUtility.sendSoundToPlayers(
                             g.getWorld(),
-                            SoundResource.IC2_TOOLS_RUBBER_TRAMPOLINE,
+                            SoundResource.IC2_TOOLS_BATTERY_USE,
                             1.0F,
                             -1,
-                            g.getXCoord(),
-                            g.getYCoord(),
-                            g.getZCoord());
+                            g.getXCoord() + .5,
+                            g.getYCoord() + .5,
+                            g.getZCoord() + .5);
                         return true;
                     }
                 }
@@ -443,29 +419,30 @@ public class MTEHatchTurbine extends MTEHatch {
     }
 
     @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        SlotWidget slot = new SlotWidget(inventoryHandler, 0).setFilter(MTELargerTurbineBase::isValidTurbine);
-        if (getBaseMetaTileEntity().isServerSide()) slot.setChangeListener(this::sendUpdate);
-        builder.widget(
-            slot.setAccess(false, true)
-                .setPos(79, 34));
+    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTEHatchTurbineGui(this).build(data, syncManager, uiSettings);
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return true;
     }
 
     public void receiveUpdate(PacketTurbineHatchUpdate message) {
         mHasTurbine = message.isHasTurbine();
-        mFormed = message.isFormed();
-        if (message.getController() != null) clearController();
-        else setController(message.getController());
+        if (message.getController() != null) setController(message.getController());
+        else clearController();
         getBaseMetaTileEntity().issueTextureUpdate();
         setTurbineOverlay();
     }
 
     public void sendUpdate() {
         PacketTurbineHatchUpdate message = new PacketTurbineHatchUpdate();
+        MTELargerTurbineBaseLegacy controller = getController();
         message.setX(getBaseMetaTileEntity().getXCoord());
         message.setY(getBaseMetaTileEntity().getYCoord());
         message.setZ(getBaseMetaTileEntity().getZCoord());
-        message.setFormed(mHasController && getController().mMachine);
+        message.setFormed(mHasController && controller != null && controller.mMachine);
         message.setHasTurbine(hasTurbine());
         message.setController(mControllerLocation);
         PacketHandler.sendToAllAround(

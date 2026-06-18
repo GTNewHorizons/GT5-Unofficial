@@ -15,10 +15,17 @@ import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
@@ -27,6 +34,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import gregtech.api.enums.MetaTileEntityIDs;
 import gregtech.api.enums.TAE;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -34,13 +42,19 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.structure.error.ErrorType;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.core.block.ModBlocks;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchElementalDataOrbHolder;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class MTEElementalDuplicator extends GTPPMultiBlockBase<MTEElementalDuplicator>
     implements ISurvivalConstructable {
@@ -72,15 +86,14 @@ public class MTEElementalDuplicator extends GTPPMultiBlockBase<MTEElementalDupli
 
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Produces Elemental Material from UU Matter")
-            .addInfo("Speed: +100% | EU Usage: 100% | Parallel: 8 * Tier")
-            .addInfo(StatCollector.translateToLocal("GT5U.machines.perfectoc.tooltip"))
-            .addInfo("Maximum 1x of each bus/hatch.")
-            .addInfo("Requires circuit 1-16 in your Data Orb Repository")
-            .addInfo("depending on what Data Orb you want to prioritize")
+            .addInfo("Produces raw elements from UU-Matter")
+            .addBulkMachineInfo(8, 2f, 1f)
+            .addInfo("Maximum 1x Data Orb Repository")
+            .addInfo("The programmed circuit selects which Data Orb to use (1-16)")
+            .addPerfectOCInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(9, 6, 9, true)
-            .addController("Top Center")
+            .addController("Top center")
             .addCasingInfoMin("Elemental Confinement Shell", 120, false)
             .addCasingInfoMin("Matter Fabricator Casing", 24, false)
             .addCasingInfoMin("Particle Containment Casing", 24, false)
@@ -90,14 +103,14 @@ public class MTEElementalDuplicator extends GTPPMultiBlockBase<MTEElementalDupli
             .addCasingInfoMin("Modulator III", 16, false)
             .addOtherStructurePart(
                 StatCollector.translateToLocal("GTPP.tooltip.structure.data_orb_repository"),
-                "1x",
+                "Hint block number 1 (x1)",
                 1)
-            .addInputHatch("Any 1 dot hint", 1)
-            .addOutputBus("Any 1 dot hint", 1)
-            .addOutputHatch("Any 1 dot hint", 1)
-            .addEnergyHatch("Any 1 dot hint", 1)
-            .addMaintenanceHatch("Any 1 dot hint", 1)
-            .addMufflerHatch("Any 1 dot hint", 1)
+            .addInputHatch("Hint block number 1", 1)
+            .addOutputBus("Hint block number 1", 1)
+            .addOutputHatch("Hint block number 1", 1)
+            .addEnergyHatch("Hint block number 1", 1)
+            .addMaintenanceHatch("Hint block number 1", 1)
+            .addMufflerHatch("Hint block number 1", 1)
             .toolTipFinisher();
         return tt;
     }
@@ -150,14 +163,14 @@ public class MTEElementalDuplicator extends GTPPMultiBlockBase<MTEElementalDupli
                             buildHatchAdder(MTEElementalDuplicator.class)
                                 .atLeast(InputHatch, OutputBus, OutputHatch, Maintenance, Muffler, Energy)
                                 .casingIndex(getCasingTextureIndex())
-                                .dot(1)
+                                .hint(1)
                                 .build(),
                             buildHatchAdder(MTEElementalDuplicator.class)
-                                .hatchClass(MTEHatchElementalDataOrbHolder.class)
+                                .hatchId(MetaTileEntityIDs.Hatch_Input_Elemental_Duplicator.ID)
                                 .shouldReject(x -> !x.mReplicatorDataOrbHatches.isEmpty())
                                 .adder(MTEElementalDuplicator::addDataOrbHatch)
                                 .casingIndex(getCasingTextureIndex())
-                                .dot(1)
+                                .hint(1)
                                 .build(),
                             onElementPass(x -> ++x.mCasing, ofBlock(getCasingBlock(), getCasingMeta())))))
                 .build();
@@ -171,20 +184,29 @@ public class MTEElementalDuplicator extends GTPPMultiBlockBase<MTEElementalDupli
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         mCasing = 0;
-        boolean aDidBuild = checkPiece(STRUCTURE_PIECE_MAIN, 4, 4, 0);
-        if (this.mReplicatorDataOrbHatches.size() != 1) {
-            return false;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 4, 4, 0, errors)) return;
+        int hatchCount = this.mReplicatorDataOrbHatches.size();
+        if (hatchCount != 1) {
+            errors.add(
+                StructureErrors.hatchCount(
+                    ErrorType.NOT_MATCH,
+                    GregtechItemList.Hatch_Input_Elemental_Duplicator.get(1),
+                    hatchCount,
+                    1));
         }
-        log("Casings: " + mCasing);
-        return aDidBuild && mCasing >= 120 && checkHatch();
+        checkCasingMin(errors, mCasing, 120);
+        checkHatch(errors);
+        checkHasInputHatch(errors);
+        checkHasAnyOutput(errors);
+        checkHasEnergyHatch(errors);
     }
 
     @Override
     public int survivalConstruct(ItemStack itemStack, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, itemStack, 4, 4, 0, elementBudget, env, false, true);
+        return survivalBuildPiece(STRUCTURE_PIECE_MAIN, itemStack, 4, 4, 0, elementBudget, env, false, true);
     }
 
     protected static int getCasingTextureIndex() {
@@ -243,10 +265,10 @@ public class MTEElementalDuplicator extends GTPPMultiBlockBase<MTEElementalDupli
             if (aMetaTileEntity == null) {
                 return false;
             }
-            if (aMetaTileEntity instanceof MTEHatchElementalDataOrbHolder) {
+            if (aMetaTileEntity instanceof MTEHatchElementalDataOrbHolder hatch) {
                 try {
-                    return addToMachineListInternal(mReplicatorDataOrbHatches, aMetaTileEntity, aBaseCasingIndex);
-                } catch (Throwable t) {
+                    return addToMachineListInternal(mReplicatorDataOrbHatches, hatch, aBaseCasingIndex);
+                } catch (Exception t) {
                     t.printStackTrace();
                 }
             }
@@ -290,11 +312,6 @@ public class MTEElementalDuplicator extends GTPPMultiBlockBase<MTEElementalDupli
     }
 
     @Override
-    public boolean isCorrectMachinePart(final ItemStack aStack) {
-        return true;
-    }
-
-    @Override
     protected ProcessingLogic createProcessingLogic() {
         return new ProcessingLogic().setSpeedBonus(1F / 2F)
             .enablePerfectOverclock()
@@ -317,23 +334,8 @@ public class MTEElementalDuplicator extends GTPPMultiBlockBase<MTEElementalDupli
     }
 
     @Override
-    public int getMaxEfficiency(final ItemStack aStack) {
-        return 10000;
-    }
-
-    @Override
     public int getPollutionPerSecond(final ItemStack aStack) {
         return PollutionConfig.pollutionPerSecondElementalDuplicator;
-    }
-
-    @Override
-    public int getDamageToComponent(final ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(final ItemStack aStack) {
-        return false;
     }
 
     @Override
@@ -347,12 +349,33 @@ public class MTEElementalDuplicator extends GTPPMultiBlockBase<MTEElementalDupli
     }
 
     @Override
-    public ArrayList<ItemStack> getStoredInputs() {
-        ArrayList<ItemStack> tItems = super.getStoredInputs();
+    public ArrayList<ItemStack> getStoredInputsForColor(Optional<Byte> color) {
+        ArrayList<ItemStack> tItems = super.getStoredInputsForColor(Optional.empty());
         for (MTEHatchElementalDataOrbHolder tHatch : validMTEList(mReplicatorDataOrbHatches)) {
+            byte busColor = tHatch.getBaseMetaTileEntity()
+                .getColorization();
+            if (color.isPresent() && busColor != -1 && busColor != color.get()) continue;
             tItems.add(tHatch.getOrbByCircuit());
         }
         tItems.removeAll(Collections.singleton(null));
         return tItems;
+    }
+
+    @Override
+    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
+        int z) {
+        super.getWailaNBTData(player, tile, tag, world, x, y, z);
+        tag.setInteger("maxParallelRecipes", getMaxParallelRecipes());
+    }
+
+    @Override
+    public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
+        IWailaConfigHandler config) {
+        super.getWailaBody(itemStack, currentTip, accessor, config);
+        final NBTTagCompound tag = accessor.getNBTData();
+        currentTip.add(
+            StatCollector.translateToLocal("GT5U.multiblock.parallelism") + ": "
+                + EnumChatFormatting.WHITE
+                + tag.getInteger("maxParallelRecipes"));
     }
 }

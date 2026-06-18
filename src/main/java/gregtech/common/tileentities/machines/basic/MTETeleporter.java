@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.basic;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TELEPORTER;
@@ -10,7 +11,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TELEPORTER_SIDES;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TELEPORTER_SIDES_GLOW;
 
 import java.util.List;
-import java.util.function.Consumer;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityHanging;
@@ -31,7 +31,6 @@ import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.entity.projectile.EntityFireball;
 import net.minecraft.entity.projectile.EntityFishHook;
 import net.minecraft.entity.projectile.EntityThrowable;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
@@ -42,65 +41,91 @@ import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
-import com.gtnewhorizons.modularui.api.NumberFormatMUI;
-import com.gtnewhorizons.modularui.api.drawable.IDrawable;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
-import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
-import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
-import gregtech.api.gui.modularui.GTUITextures;
-import gregtech.api.gui.modularui.GUITextureSet;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.interfaces.modularui.IAddGregtechLogo;
-import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicTank;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTItemTransfer;
 import gregtech.api.util.GTUtility;
 import gregtech.common.config.MachineStats;
+import gregtech.common.gui.modularui.singleblock.MTETeleporterGui;
+import ic2.core.block.EntityItnt;
+import ic2.core.block.EntityNuke;
 
-public class MTETeleporter extends MTEBasicTank implements IAddGregtechLogo, IAddUIWidgets {
+@IMetaTileEntity.SkipGenerateDescription
+public class MTETeleporter extends MTEBasicTank {
 
     private static boolean sInterDimensionalTeleportAllowed = true;
     private static int sPassiveEnergyDrain = 2048;
     private static int sPowerMultiplyer = 100;
     private static double sFPowerMultiplyer = 1.0;
-    public int mTargetX = 0;
-    public int mTargetY = 0;
-    public int mTargetZ = 0;
-    public int mTargetD = Integer.MIN_VALUE;
+    private int mTargetX = 0;
+    private int mTargetY = 0;
+    private int mTargetZ = 0;
+    private int mTargetD = Integer.MIN_VALUE;
     public boolean mDebug = false;
 
     public MTETeleporter(int aID, String aName, String aNameRegional, int aTier) {
-        super(
-            aID,
-            aName,
-            aNameRegional,
-            aTier,
-            3,
-            new String[] { "Teleport long distances with this little device.", "Use a Dragon Egg or Nitrogen Plasma",
-                "for Inter-dimensional transmission" });
+        super(aID, aName, aNameRegional, aTier, 3, new String[] { "gt.blockmachines.basicmachine.teleporter.tooltip" });
+    }
+
+    public String[] getDescription() {
+        return GTUtility.translateMultiline("gt.blockmachines.basicmachine.teleporter.tooltip");
     }
 
     public MTETeleporter(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 3, aDescription, aTextures);
     }
 
-    private static float calculateWeight(Entity aEntity) {
-        if ((aEntity instanceof EntityFishHook)) {
+    public int getTargetX() {
+        return mTargetX;
+    }
+
+    public void setTargetX(int targetX) {
+        this.mTargetX = targetX;
+    }
+
+    public int getTargetY() {
+        return mTargetY;
+    }
+
+    public void setTargetY(int targetY) {
+        this.mTargetY = targetY;
+    }
+
+    public int getTargetZ() {
+        return mTargetZ;
+    }
+
+    public void setTargetZ(int targetZ) {
+        this.mTargetZ = targetZ;
+    }
+
+    public int getTargetD() {
+        return mTargetD;
+    }
+
+    public void setTargetD(int targetD) {
+        this.mTargetD = targetD;
+    }
+
+    private static float calculateWeight(Entity entity) {
+        if ((entity instanceof EntityFishHook)) {
             return -1.0F;
         }
-        if ((aEntity instanceof EntityDragonPart)) {
+        if ((entity instanceof EntityDragonPart)) {
             return -1.0F;
         }
-        if ((aEntity instanceof EntityWeatherEffect)) {
+        if ((entity instanceof EntityWeatherEffect)) {
             return -1.0F;
         }
-        if ((aEntity instanceof EntityPlayer tPlayer)) {
+        if ((entity instanceof EntityPlayer tPlayer)) {
             int tCount = 64;
             for (int i = 0; i < 36; i++) {
                 if (tPlayer.inventory.getStackInSlot(i) != null) {
@@ -115,51 +140,49 @@ public class MTETeleporter extends MTEBasicTank implements IAddGregtechLogo, IAd
             }
             return Math.min(5.0F, tCount / 666.6F);
         }
-        if (GTUtility.getClassName(aEntity)
-            .equals("EntityItnt")) {
+        if (entity instanceof EntityItnt) {
             return 5.0F;
         }
-        if (GTUtility.getClassName(aEntity)
-            .equals("EntityNuke")) {
+        if (entity instanceof EntityNuke) {
             return 50.0F;
         }
-        if ((aEntity instanceof EntityArrow)) {
+        if ((entity instanceof EntityArrow)) {
             return 0.001F;
         }
-        if ((aEntity instanceof EntityBoat)) {
+        if ((entity instanceof EntityBoat)) {
             return 0.1F;
         }
-        if ((aEntity instanceof EntityEnderCrystal)) {
+        if ((entity instanceof EntityEnderCrystal)) {
             return 2.0F;
         }
-        if ((aEntity instanceof EntityEnderEye)) {
+        if ((entity instanceof EntityEnderEye)) {
             return 0.001F;
         }
-        if ((aEntity instanceof EntityFireball)) {
+        if ((entity instanceof EntityFireball)) {
             return 0.001F;
         }
-        if ((aEntity instanceof EntityFireworkRocket)) {
+        if ((entity instanceof EntityFireworkRocket)) {
             return 0.001F;
         }
-        if ((aEntity instanceof EntityHanging)) {
+        if ((entity instanceof EntityHanging)) {
             return 0.005F;
         }
-        if ((aEntity instanceof EntityItem)) {
+        if ((entity instanceof EntityItem)) {
             return 0.001F;
         }
-        if ((aEntity instanceof EntityLiving)) {
+        if ((entity instanceof EntityLiving)) {
             return 0.5F;
         }
-        if ((aEntity instanceof EntityMinecart)) {
+        if ((entity instanceof EntityMinecart)) {
             return 0.1F;
         }
-        if ((aEntity instanceof EntityThrowable)) {
+        if ((entity instanceof EntityThrowable)) {
             return 0.001F;
         }
-        if ((aEntity instanceof EntityTNTPrimed)) {
+        if ((entity instanceof EntityTNTPrimed)) {
             return 5.0F;
         }
-        if ((aEntity instanceof EntityXPOrb)) {
+        if ((entity instanceof EntityXPOrb)) {
             return 0.001F;
         }
         return -1.0F;
@@ -187,13 +210,13 @@ public class MTETeleporter extends MTEBasicTank implements IAddGregtechLogo, IAd
         return new String[] { StatCollector.translateToLocal("GT5U.infodata.coordinates"),
             StatCollector.translateToLocalFormatted(
                 "GT5U.infodata.coordinates.x",
-                EnumChatFormatting.GREEN + GTUtility.formatNumbers(this.mTargetX) + EnumChatFormatting.RESET),
+                EnumChatFormatting.GREEN + formatNumber(this.mTargetX) + EnumChatFormatting.RESET),
             StatCollector.translateToLocalFormatted(
                 "GT5U.infodata.coordinates.y",
-                EnumChatFormatting.GREEN + GTUtility.formatNumbers(this.mTargetY) + EnumChatFormatting.RESET),
+                EnumChatFormatting.GREEN + formatNumber(this.mTargetY) + EnumChatFormatting.RESET),
             StatCollector.translateToLocalFormatted(
                 "GT5U.infodata.coordinates.z",
-                EnumChatFormatting.GREEN + GTUtility.formatNumbers(this.mTargetZ) + EnumChatFormatting.RESET),
+                EnumChatFormatting.GREEN + formatNumber(this.mTargetZ) + EnumChatFormatting.RESET),
             StatCollector.translateToLocalFormatted(
                 "GT5U.infodata.dimension",
                 "" + EnumChatFormatting.GREEN + this.mTargetD + EnumChatFormatting.RESET),
@@ -307,28 +330,19 @@ public class MTETeleporter extends MTEBasicTank implements IAddGregtechLogo, IAd
                                 tTile = tWorld.getTileEntity(this.mTargetX, this.mTargetY, this.mTargetZ);
                             }
                         }
-                        if (tTile instanceof IInventory) {
-                            int tStacksize = mInventory[0].stackSize;
-                            GTUtility.moveOneItemStack(
-                                this,
-                                tTile,
-                                ForgeDirection.DOWN,
-                                ForgeDirection.DOWN,
-                                null,
-                                false,
-                                (byte) 64,
-                                (byte) 1,
-                                (byte) 64,
-                                (byte) 1);
-                            if (mInventory[0] == null || mInventory[0].stackSize < tStacksize) {
-                                getBaseMetaTileEntity().decreaseStoredEnergyUnits(
-                                    (long) (Math.pow(tDistance, 1.5) * tDistance
-                                        * (tStacksize - (mInventory[0] == null ? 0 : mInventory[0].stackSize))
-                                        * sFPowerMultiplyer),
-                                    false);
-                            }
-                        }
+
+                        GTItemTransfer transfer = new GTItemTransfer();
+
+                        transfer.source(this, ForgeDirection.UNKNOWN);
+                        transfer.sink(tTile, ForgeDirection.UNKNOWN);
+
+                        int transferred = transfer.transfer();
+
+                        getBaseMetaTileEntity().decreaseStoredEnergyUnits(
+                            (long) (Math.pow(tDistance, 1.5) * tDistance * transferred * sFPowerMultiplyer),
+                            false);
                     }
+
                     List<Entity> entities_in_box = getBaseMetaTileEntity().getWorld()
                         .getEntitiesWithinAABB(
                             Entity.class,
@@ -384,19 +398,12 @@ public class MTETeleporter extends MTEBasicTank implements IAddGregtechLogo, IAd
     }
 
     private int distanceCalculation() {
+        double dx = getBaseMetaTileEntity().getXCoord() - this.mTargetX;
+        double dy = getBaseMetaTileEntity().getYCoord() - this.mTargetY;
+        double dz = getBaseMetaTileEntity().getZCoord() - this.mTargetZ;
         return Math.abs(
             ((this.mTargetD != getBaseMetaTileEntity().getWorld().provider.dimensionId)
-                && (isDimensionalTeleportAvailable())
-                    ? 4000
-                    : (int) Math.sqrt(
-                        Math.pow(getBaseMetaTileEntity().getXCoord() - this.mTargetX, 2.0D)
-                            + Math.pow(getBaseMetaTileEntity().getYCoord() - this.mTargetY, 2.0D)
-                            + Math.pow(getBaseMetaTileEntity().getZCoord() - this.mTargetZ, 2.0D))));
-    }
-
-    @Override
-    public boolean isElectric() {
-        return true;
+                && (isDimensionalTeleportAvailable()) ? 4000 : (int) Math.sqrt(dx * dx + dy * dy + dz * dz)));
     }
 
     @Override
@@ -412,11 +419,6 @@ public class MTETeleporter extends MTEBasicTank implements IAddGregtechLogo, IAd
     @Override
     public boolean isInputFacing(ForgeDirection side) {
         return true;
-    }
-
-    @Override
-    public boolean isOutputFacing(ForgeDirection side) {
-        return false;
     }
 
     @Override
@@ -440,28 +442,8 @@ public class MTETeleporter extends MTEBasicTank implements IAddGregtechLogo, IAd
     }
 
     @Override
-    public long maxSteamStore() {
-        return maxEUStore();
-    }
-
-    @Override
     public long maxAmperesIn() {
         return 2;
-    }
-
-    @Override
-    public int getStackDisplaySlot() {
-        return 2;
-    }
-
-    @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
-        return true;
-    }
-
-    @Override
-    public int getInputSlot() {
-        return 0;
     }
 
     @Override
@@ -499,75 +481,8 @@ public class MTETeleporter extends MTEBasicTank implements IAddGregtechLogo, IAd
         return null;
     }
 
-    protected static final NumberFormatMUI numberFormat = new NumberFormatMUI();
-
     @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        builder.widget(
-            new DrawableWidget().setDrawable(GTUITextures.PICTURE_SCREEN_BLACK)
-                .setSize(90, 72)
-                .setPos(43, 4))
-            .widget(
-                new TextWidget().setStringSupplier(() -> "X: " + numberFormat.format(mTargetX))
-                    .setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setPos(46, 8))
-            .widget(
-                new TextWidget().setStringSupplier(() -> "Y: " + numberFormat.format(mTargetY))
-                    .setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setPos(46, 16))
-            .widget(
-                new TextWidget().setStringSupplier(() -> "Z: " + numberFormat.format(mTargetZ))
-                    .setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setPos(46, 24))
-            .widget(
-                new TextWidget().setStringSupplier(() -> "Dim: " + numberFormat.format(mTargetD))
-                    .setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setPos(46, 32))
-            .widget(
-                TextWidget.dynamicString(() -> "Dim Valid: " + (GTUtility.isRealDimension(mTargetD) ? "Yes" : "No"))
-                    .setDefaultColor(COLOR_TEXT_WHITE.get())
-                    .setEnabled(widget -> hasDimensionalTeleportCapability())
-                    .setPos(46, 40))
-            .widget(new FakeSyncWidget.FluidStackSyncer(() -> mFluid, val -> mFluid = val));
-
-        addChangeNumberButtons(builder, GTUITextures.OVERLAY_BUTTON_MINUS_LARGE, -512, -64, 7);
-        addChangeNumberButtons(builder, GTUITextures.OVERLAY_BUTTON_MINUS_SMALL, -16, -1, 25);
-        addChangeNumberButtons(builder, GTUITextures.OVERLAY_BUTTON_PLUS_SMALL, 16, 1, 133);
-        addChangeNumberButtons(builder, GTUITextures.OVERLAY_BUTTON_PLUS_LARGE, 512, 64, 151);
-
-        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_MINUS_LARGE, val -> mTargetD += val, -16, -8, 7, 58);
-        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_MINUS_SMALL, val -> mTargetD += val, -4, -1, 25, 58);
-        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_PLUS_SMALL, val -> mTargetD += val, 4, 1, 133, 58);
-        addChangeNumberButton(builder, GTUITextures.OVERLAY_BUTTON_PLUS_LARGE, val -> mTargetD += val, 16, 8, 151, 58);
-    }
-
-    private void addChangeNumberButtons(ModularWindow.Builder builder, IDrawable overlay, int addNumberShift,
-        int addNumber, int xPos) {
-        addChangeNumberButton(builder, overlay, val -> mTargetX += val, addNumberShift, addNumber, xPos, 4);
-        addChangeNumberButton(builder, overlay, val -> mTargetY += val, addNumberShift, addNumber, xPos, 22);
-        addChangeNumberButton(builder, overlay, val -> mTargetZ += val, addNumberShift, addNumber, xPos, 40);
-    }
-
-    private void addChangeNumberButton(ModularWindow.Builder builder, IDrawable overlay, Consumer<Integer> setter,
-        int addNumberShift, int addNumber, int xPos, int yPos) {
-        builder.widget(
-            new ButtonWidget()
-                .setOnClick((clickData, widget) -> setter.accept(clickData.shift ? addNumberShift : addNumber))
-                .setBackground(GTUITextures.BUTTON_STANDARD, overlay)
-                .setSize(18, 18)
-                .setPos(xPos, yPos));
-    }
-
-    @Override
-    public GUITextureSet getGUITextureSet() {
-        return new GUITextureSet().setGregTechLogo(GTUITextures.PICTURE_GT_LOGO_17x17_TRANSPARENT_GRAY);
-    }
-
-    @Override
-    public void addGregTechLogo(ModularWindow.Builder builder) {
-        builder.widget(
-            new DrawableWidget().setDrawable(getGUITextureSet().getGregTechLogo())
-                .setSize(17, 17)
-                .setPos(113, 56));
+    public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTETeleporterGui(this).build(guiData, syncManager, uiSettings);
     }
 }

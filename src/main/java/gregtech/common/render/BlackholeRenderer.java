@@ -9,7 +9,6 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.AdvancedModelLoader;
 
 import org.joml.Matrix4fStack;
 import org.joml.Vector4f;
@@ -17,15 +16,13 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 
-import com.gtnewhorizon.gtnhlib.client.renderer.CapturingTessellator;
-import com.gtnewhorizon.gtnhlib.client.renderer.TessellatorManager;
+import com.gtnewhorizon.gtnhlib.client.model.wavefront.WavefrontVBOBuilder;
+import com.gtnewhorizon.gtnhlib.client.renderer.DirectTessellator;
 import com.gtnewhorizon.gtnhlib.client.renderer.shader.ShaderProgram;
-import com.gtnewhorizon.gtnhlib.client.renderer.vbo.IModelCustomExt;
-import com.gtnewhorizon.gtnhlib.client.renderer.vbo.VertexBuffer;
-import com.gtnewhorizon.gtnhlib.client.renderer.vertex.DefaultVertexFormat;
+import com.gtnewhorizon.gtnhlib.client.renderer.vao.IVertexArrayObject;
+import com.gtnewhorizon.gtnhlib.client.renderer.vao.VertexBufferType;
 
-import cpw.mods.fml.client.registry.ClientRegistry;
-import gregtech.common.tileentities.render.TileEntityBlackhole;
+import gregtech.common.tileentities.render.RenderingTileEntityBlackhole;
 
 public class BlackholeRenderer extends TileEntitySpecialRenderer {
 
@@ -35,23 +32,19 @@ public class BlackholeRenderer extends TileEntitySpecialRenderer {
     private static int u_CameraPosition = -1, u_Scale = -1, u_Time = -1, u_Stability = -1;
     private static final Matrix4fStack modelMatrixStack = new Matrix4fStack(4);
 
-    private static IModelCustomExt blackholeModel;
+    private static IVertexArrayObject blackholeModel;
     private static ResourceLocation blackholeTexture;
     private static final float modelScale = .5f;
 
     private ShaderProgram laserProgram;
     private static int u_LaserCameraPosition = -1, u_LaserColor = -1, u_LaserModelMatrix = -1;
-    private static VertexBuffer laserVBO;
+    private static IVertexArrayObject laserVBO;
     private static ResourceLocation laserTexture;
 
     private static final Matrix4fStack modelMatrix = new Matrix4fStack(2);
 
     private static final float WIDTH = .1f;
     private static final float EXCLUSION = 1f;
-
-    public BlackholeRenderer() {
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBlackhole.class, this);
-    }
 
     private void init() {
         try {
@@ -71,8 +64,8 @@ public class BlackholeRenderer extends TileEntitySpecialRenderer {
             return;
         }
 
-        blackholeModel = (IModelCustomExt) AdvancedModelLoader
-            .loadModel(new ResourceLocation(GregTech.resourceDomain, "textures/model/blackhole.obj"));
+        blackholeModel = WavefrontVBOBuilder
+            .compileToVBO(new ResourceLocation(GregTech.resourceDomain, "textures/model/blackhole.obj"));
         blackholeTexture = new ResourceLocation(GregTech.resourceDomain, "textures/model/blackhole.png");
 
         blackholeProgram.use();
@@ -96,8 +89,7 @@ public class BlackholeRenderer extends TileEntitySpecialRenderer {
 
         laserTexture = new ResourceLocation(GregTech.resourceDomain, "textures/model/laser.png");
 
-        TessellatorManager.startCapturing();
-        CapturingTessellator tess = (CapturingTessellator) TessellatorManager.get();
+        final DirectTessellator tess = DirectTessellator.startCapturing();
 
         tess.startDrawingQuads();
 
@@ -113,12 +105,12 @@ public class BlackholeRenderer extends TileEntitySpecialRenderer {
 
         tess.draw();
 
-        laserVBO = TessellatorManager.stopCapturingToVBO(DefaultVertexFormat.POSITION_TEXTURE_NORMAL);
+        laserVBO = DirectTessellator.stopCapturingToVBO(VertexBufferType.IMMUTABLE);
 
         initialized = true;
     }
 
-    private void renderBlackHole(TileEntityBlackhole tile, double x, double y, double z, float timer) {
+    private void renderBlackHole(RenderingTileEntityBlackhole tile, double x, double y, double z, float timer) {
         blackholeProgram.use();
         bindTexture(blackholeTexture);
         GL20.glUniform1f(u_Stability, tile.getStability());
@@ -149,14 +141,14 @@ public class BlackholeRenderer extends TileEntitySpecialRenderer {
 
         GL20.glUniform1f(u_Time, timer);
         GL11.glTranslated(x + .5f, y + .5f, z + .5f);
-        blackholeModel.renderAllVBO();
+        blackholeModel.render();
 
         GL11.glPopMatrix();
         GL11.glPopAttrib();
         ShaderProgram.clear();
     }
 
-    private void renderLasers(TileEntityBlackhole tile, double x, double y, double z, float timer) {
+    private void renderLasers(RenderingTileEntityBlackhole tile, double x, double y, double z) {
         laserProgram.use();
         bindTexture(laserTexture);
 
@@ -204,21 +196,16 @@ public class BlackholeRenderer extends TileEntitySpecialRenderer {
         ShaderProgram.clear();
     }
 
+    @Override
     public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float timeSinceLastTick) {
-        if (!(tile instanceof TileEntityBlackhole blackhole)) return;
+        if (!(tile instanceof RenderingTileEntityBlackhole blackhole)) return;
 
         if (!initialized) {
             init();
             if (!initialized) return;
         }
-        if (((TileEntityBlackhole) tile).getLaserRender()) {
-            renderLasers(
-                blackhole,
-                x,
-                y,
-                z,
-                tile.getWorldObj()
-                    .getTotalWorldTime() + timeSinceLastTick);
+        if (blackhole.getLaserRender()) {
+            renderLasers(blackhole, x, y, z);
         }
 
         renderBlackHole(

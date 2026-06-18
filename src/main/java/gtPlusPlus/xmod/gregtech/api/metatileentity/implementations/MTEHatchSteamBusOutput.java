@@ -1,68 +1,32 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
-import static gregtech.api.enums.Textures.BlockIcons.ITEM_OUT_SIGN;
-import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_OUT;
-
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.util.ForgeDirection;
 
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
-import gregtech.GTMod;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.MTEHatch;
+import gregtech.api.metatileentity.implementations.MTEHatchOutputBus;
 import gregtech.api.render.TextureFactory;
-import gtPlusPlus.core.lib.GTPPCore;
+import gregtech.api.util.GTUtility;
+import gregtech.common.gui.modularui.hatch.MTEHatchOutputBusGui;
+import gtPlusPlus.core.util.Utils;
 
-public class MTEHatchSteamBusOutput extends MTEHatch {
+@IMetaTileEntity.SkipGenerateDescription
+public class MTEHatchSteamBusOutput extends MTEHatchOutputBus {
 
     public MTEHatchSteamBusOutput(int aID, String aName, String aNameRegional, int aTier) {
-        super(
-            aID,
-            aName,
-            aNameRegional,
-            aTier,
-            4,
-            new String[] { "Item Output for Steam Multiblocks", "Does not automatically export items",
-                "Capacity: 4 stacks", "Does not work with non-steam multiblocks", GTPPCore.GT_Tooltip.get() });
+        super(aID, aName, aNameRegional, aTier, null, 4);
     }
 
     public MTEHatchSteamBusOutput(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 4, aDescription, aTextures);
-    }
-
-    @Override
-    public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return GTMod.gregtechproxy.mRenderIndicatorsOnHatch
-            ? new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PIPE_OUT), TextureFactory.of(ITEM_OUT_SIGN) }
-            : new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PIPE_OUT) };
-    }
-
-    @Override
-    public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return GTMod.gregtechproxy.mRenderIndicatorsOnHatch
-            ? new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PIPE_OUT), TextureFactory.of(ITEM_OUT_SIGN) }
-            : new ITexture[] { aBaseTexture, TextureFactory.of(OVERLAY_PIPE_OUT) };
-    }
-
-    @Override
-    public boolean isFacingValid(ForgeDirection facing) {
-        return true;
-    }
-
-    @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
-        return true;
-    }
-
-    @Override
-    public boolean isValidSlot(int aIndex) {
-        return true;
     }
 
     @Override
@@ -74,18 +38,6 @@ public class MTEHatchSteamBusOutput extends MTEHatch {
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
         openGui(aPlayer);
         return true;
-    }
-
-    @Override
-    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
-        return side == aBaseMetaTileEntity.getFrontFacing();
-    }
-
-    @Override
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
-        return false;
     }
 
     @Override
@@ -191,7 +143,34 @@ public class MTEHatchSteamBusOutput extends MTEHatch {
     }
 
     @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        getBaseMetaTileEntity().add2by2Slots(builder);
+    public boolean isFiltered() {
+        return false;
+    }
+
+    @Override
+    public boolean isFilteredToItem(GTUtility.ItemId id) {
+        return false;
+    }
+
+    @Override
+    public boolean pushOutputInventory() {
+        return false;
+    }
+
+    @Override
+    public String[] getDescription() {
+        return Utils.splitLocalizedWithAlkalus("gt.blockmachines.output_bus_steam.desc");
+    }
+
+    @Override
+    public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTEHatchOutputBusGui(this) {
+
+            // steam input buses don't follow into the common formula that others do, so its changed here,
+            @Override
+            protected int getDimension() {
+                return 2;
+            }
+        }.build(guiData, syncManager, uiSettings);
     }
 }

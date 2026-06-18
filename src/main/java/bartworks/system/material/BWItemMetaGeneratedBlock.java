@@ -34,24 +34,13 @@ public class BWItemMetaGeneratedBlock extends BWItemBlocks {
     }
 
     @Override
-    public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side,
-        float hitX, float hitY, float hitZ) {
-        return false;
-    }
-
-    @Override
-    public String getUnlocalizedName(ItemStack aStack) {
-        return this.field_150939_a.getUnlocalizedName() + "." + this.getDamage(aStack);
-    }
-
-    @Override
     public String getItemStackDisplayName(ItemStack aStack) {
         Block block = Block.getBlockFromItem(aStack.getItem());
         if (block instanceof BWMetaGeneratedBlocks metaBlock) {
             int aMetaData = aStack.getItemDamage();
             Werkstoff werkstoff = Werkstoff.werkstoffHashMap.get((short) aMetaData);
             if (werkstoff == null) werkstoff = Werkstoff.default_null_Werkstoff;
-            return metaBlock.blockTypeLocalizedName.replace("%material", werkstoff.getLocalizedName());
+            return metaBlock.prefix.getLocalizedNameForItem(werkstoff.getBridgeMaterial());
         }
         return GTLanguageManager.getTranslation(this.getUnlocalizedName(aStack) + ".name");
     }
@@ -67,10 +56,7 @@ public class BWItemMetaGeneratedBlock extends BWItemBlocks {
         }
         Werkstoff werkstoff = Werkstoff.werkstoffHashMap.get((short) aStack.getItemDamage());
         if (werkstoff != null) {
-            String tooltip = werkstoff.getLocalizedToolTip();
-            if (!tooltip.isEmpty()) {
-                aList.add(tooltip);
-            }
+            werkstoff.addTooltips(aList);
         }
     }
 

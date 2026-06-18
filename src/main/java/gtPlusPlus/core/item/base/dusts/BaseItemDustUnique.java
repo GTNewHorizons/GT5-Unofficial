@@ -1,8 +1,8 @@
 package gtPlusPlus.core.item.base.dusts;
 
-import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.GregTech;
 import static gtPlusPlus.core.creative.AddToCreativeTab.tabMisc;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.HashMap;
 import java.util.List;
@@ -11,23 +11,23 @@ import java.util.Map;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.enums.Dyes;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.config.Configuration;
-import gtPlusPlus.core.lib.GTPPCore;
+import gregtech.api.util.StringUtils;
+import gregtech.common.config.Client;
 import gtPlusPlus.core.material.Material;
-import gtPlusPlus.core.util.data.StringUtils;
-import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
+import gtPlusPlus.core.util.minecraft.MaterialUtils;
 
 public class BaseItemDustUnique extends Item {
 
     protected final int colour;
     protected final int sRadiation;
+    protected final String typeLoc;
     protected final String materialName;
     protected final String chemicalNotation;
 
@@ -42,8 +42,9 @@ public class BaseItemDustUnique extends Item {
         this.setMaxStackSize(64);
         this.setTextureName(this.getCorrectTexture(pileSize));
         this.setCreativeTab(tabMisc);
-        this.colour = colour;
+        this.colour = colour == 0 ? Dyes._NULL.toInt() : colour;
         this.materialName = materialName;
+        MaterialUtils.generateMaterialLocalizedName(materialName);
         if (mChemicalFormula == null || mChemicalFormula.isEmpty() || mChemicalFormula.equals("NullFormula")) {
             this.chemicalNotation = StringUtils.subscript(materialName);
         } else {
@@ -52,40 +53,24 @@ public class BaseItemDustUnique extends Item {
         this.sRadiation = ItemUtils.getRadioactivityLevel(materialName);
         GameRegistry.registerItem(this, unlocalizedName);
 
-        String type;
-        if (this.getUnlocalizedName()
-            .contains("DustTiny")) {
-            type = "Tiny Pile of %material Dust";
-        } else if (this.getUnlocalizedName()
-            .contains("DustSmall")) {
-                type = "Small Pile of %material Dust";
-            } else {
-                type = "%material Dust";
-            }
-        GTLanguageManager.addStringLocalization("gtplusplus." + this.getUnlocalizedName() + ".name", type);
-
         String temp = "";
-        Logger.WARNING("Unlocalized name for OreDict nameGen: " + this.getUnlocalizedName());
         if (this.getUnlocalizedName()
             .contains("item.")) {
             temp = this.getUnlocalizedName()
                 .replace("item.", "");
-            Logger.WARNING("Generating OreDict Name: " + temp);
         } else {
             temp = this.getUnlocalizedName();
         }
         if (temp.contains("DustTiny")) {
-            temp = temp.replace("itemD", "d");
-            Logger.WARNING("Generating OreDict Name: " + temp);
+            this.typeLoc = "gt.oreprefix.tiny_pile_of_material";
         } else if (temp.contains("DustSmall")) {
-            temp = temp.replace("itemD", "d");
-            Logger.WARNING("Generating OreDict Name: " + temp);
+            this.typeLoc = "gt.oreprefix.small_pile_of_material_dust";
         } else {
-            temp = temp.replace("itemD", "d");
-            Logger.WARNING("Generating OreDict Name: " + temp);
+            this.typeLoc = "gt.oreprefix.material_dust";
         }
-        if ((temp != null) && !temp.isEmpty()) {
-            GTOreDictUnificator.registerOre(temp, ItemUtils.getSimpleStack(this));
+        temp = temp.replace("itemD", "d");
+        if (!temp.isEmpty()) {
+            GTOreDictUnificator.registerOre(temp, new ItemStack(this));
         }
         registerComponent();
     }
@@ -100,34 +85,23 @@ public class BaseItemDustUnique extends Item {
         if (aMap == null) {
             aMap = new HashMap<>();
         }
-        String aKey = OrePrefixes.dust.name();
+        String aKey = OrePrefixes.dust.getName();
         ItemStack x = aMap.get(aKey);
         if (x == null) {
-            aMap.put(aKey, ItemUtils.getSimpleStack(this));
-            Logger.MATERIALS("Registering a material component. Item: [" + aName + "] Map: [" + aKey + "]");
+            aMap.put(aKey, new ItemStack(this));
             Material.mComponentMap.put(aName, aMap);
             return true;
         } else {
-            // Bad
-            Logger.MATERIALS("Tried to double register a material component. ");
             return false;
         }
     }
 
     @Override
     public String getItemStackDisplayName(final ItemStack iStack) {
-        return GTLanguageManager.getTranslation("gtplusplus." + getUnlocalizedName() + ".name")
-            .replace("%material", GTLanguageManager.getTranslation("gtplusplus.material." + materialName));
+        return translateToLocalFormatted(typeLoc, MaterialUtils.getMaterialLocalizedName(this.materialName));
     }
 
     private String getCorrectTexture(final String pileSize) {
-        if (!Configuration.visual.useGregtechTextures) {
-            if ((pileSize.equals("dust")) || (pileSize.equals("Dust"))) {
-                this.setTextureName(GTPlusPlus.ID + ":" + "dust");
-            } else {
-                this.setTextureName(GTPlusPlus.ID + ":" + "dust" + pileSize);
-            }
-        }
         if (pileSize.toLowerCase()
             .contains("small")) {
             return GregTech.ID + ":" + "materialicons/SHINY/dustSmall";
@@ -138,17 +112,20 @@ public class BaseItemDustUnique extends Item {
         return GregTech.ID + ":" + "materialicons/SHINY/dust";
     }
 
-    @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
-    public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
-        if (this.sRadiation > 0) {
-            list.add(GTPPCore.GT_Tooltip_Radioactive.get());
+    public void addInformation(final ItemStack stack, final EntityPlayer player, final List<String> list,
+        final boolean adv) {
+        if (Client.tooltip.showFormula) {
+            if (!this.chemicalNotation.isEmpty() && !chemicalNotation.equals("NullFormula")) {
+                list.add(this.chemicalNotation);
+            }
         }
-        if (!this.chemicalNotation.isEmpty() && !chemicalNotation.isEmpty()
-            && !chemicalNotation.equals("NullFormula")) {
-            list.add(this.chemicalNotation);
+        if (Client.tooltip.showRadioactiveText) {
+            if (this.sRadiation > 0) {
+                list.add(StatCollector.translateToLocalFormatted("GTPP.core.GT_Tooltip_Radioactive", this.sRadiation));
+            }
         }
-        super.addInformation(stack, aPlayer, list, bool);
+        super.addInformation(stack, player, list, adv);
     }
 
     public final String getMaterialName() {
@@ -157,9 +134,6 @@ public class BaseItemDustUnique extends Item {
 
     @Override
     public int getColorFromItemStack(final ItemStack stack, final int HEX_OxFFFFFF) {
-        if (this.colour == 0) {
-            return MathUtils.generateSingularRandomHexValue();
-        }
         return this.colour;
     }
 }

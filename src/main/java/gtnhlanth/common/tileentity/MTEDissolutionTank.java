@@ -1,7 +1,7 @@
 package gtnhlanth.common.tileentity;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAdder;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
@@ -15,6 +15,8 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_A
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
+import static gtnhlanth.util.DescTextLocalization.addHintNumber;
 
 import java.util.Arrays;
 import java.util.List;
@@ -23,6 +25,7 @@ import javax.annotation.Nonnull;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -35,7 +38,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import bartworks.common.loaders.ItemRegistry;
 import gregtech.api.GregTechAPI;
-import gregtech.api.interfaces.ISecondaryDescribable;
+import gregtech.api.casing.Casings;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -46,14 +49,20 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import gregtech.common.misc.GTStructureChannels;
 import gtnhlanth.api.recipe.LanthanidesRecipeMaps;
 import gtnhlanth.util.DescTextLocalization;
 
 public class MTEDissolutionTank extends MTEEnhancedMultiBlockBase<MTEDissolutionTank>
-    implements ISurvivalConstructable, ISecondaryDescribable {
+    implements ISurvivalConstructable {
+
+    private int casingAmount = 0;
+    // Old limit from tooltip: 42, it does not even allow 2 input hatch so it is lowered to reasonable amount.
+    private static final int MIN_CASINGS = 30;
 
     private final IStructureDefinition<MTEDissolutionTank> multiDefinition = StructureDefinition
         .<MTEDissolutionTank>builder()
@@ -68,10 +77,11 @@ public class MTEDissolutionTank extends MTEEnhancedMultiBlockBase<MTEDissolution
             buildHatchAdder(MTEDissolutionTank.class)
                 .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy)
                 .casingIndex(49)
-                .dot(1)
-                .buildAndChain(GregTechAPI.sBlockCasings4, 1))
+                .hint(1)
+                .buildAndChain(
+                    onElementPass(MTEDissolutionTank::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings4, 1))))
         .addElement('h', ofBlock(GregTechAPI.sBlockCasings1, 11))
-        .addElement('g', ofBlockAdder(MTEDissolutionTank::addGlass, ItemRegistry.bw_glasses[0], 1))
+        .addElement('g', chainAllGlasses())
         .build();
 
     public MTEDissolutionTank(String name) {
@@ -88,13 +98,18 @@ public class MTEDissolutionTank extends MTEEnhancedMultiBlockBase<MTEDissolution
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        return checkPiece(mName, 2, 3, 0) && mMaintenanceHatches.size() == 1;
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
+        casingAmount = 0;
+        if (!checkPiece(mName, 2, 3, 0, errors)) return;
+        checkCasingMin(errors, casingAmount, MIN_CASINGS);
+        checkHasEnergyHatch(errors);
+        checkOneMaintenanceHatch(errors);
+        checkHasAnyInput(errors);
+        checkHasAnyOutput(errors);
     }
 
-    @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
+    private void onCasingAdded() {
+        casingAmount++;
     }
 
     private boolean addGlass(Block block, int meta) {
@@ -138,51 +153,25 @@ public class MTEDissolutionTank extends MTEEnhancedMultiBlockBase<MTEDissolution
         return true;
     }
 
-    @Override
-    public boolean supportsSingleRecipeLocking() {
-        return true;
-    }
-
     private boolean checkRatio(GTRecipe tRecipe, List<FluidStack> tFluidInputs) {
         FluidStack majorGenericFluid = tRecipe.mFluidInputs[0];
         FluidStack minorGenericFluid = tRecipe.mFluidInputs[1];
 
-        int majorAmount;
-        int minorAmount;
+        int majorAmount = 0;
+        int minorAmount = 0;
 
-        FluidStack fluidInputOne = tFluidInputs.get(0);
-        FluidStack fluidInputTwo = tFluidInputs.get(1);
-
-        if (fluidInputOne.getUnlocalizedName()
-            .equals(majorGenericFluid.getUnlocalizedName())) {
-            if (fluidInputTwo.getUnlocalizedName()
+        for (int i = 0; i < tFluidInputs.size(); i++) {
+            FluidStack f = tFluidInputs.get(i);
+            if (f.getUnlocalizedName()
+                .equals(majorGenericFluid.getUnlocalizedName())) {
+                majorAmount += f.amount;
+            } else if (f.getUnlocalizedName()
                 .equals(minorGenericFluid.getUnlocalizedName())) {
-                // majorInput = fluidInputOne;
-                majorAmount = fluidInputOne.amount;
-                // minorInput = fluidInputTwo;
-                minorAmount = fluidInputTwo.amount;
-                // GTLog.out.print("in first IF");
-            } else return false; // No valid other input
+                    minorAmount += f.amount;
+                }
+        }
 
-        } else if (fluidInputTwo.getUnlocalizedName()
-            .equals(majorGenericFluid.getUnlocalizedName())) {
-                if (fluidInputOne.getUnlocalizedName()
-                    .equals(minorGenericFluid.getUnlocalizedName())) {
-                    // majorInput = fluidInputTwo;
-                    majorAmount = fluidInputTwo.amount;
-                    // minorInput = fluidInputOne;
-                    minorAmount = fluidInputOne.amount;
-                    // GTLog.out.print("in second if");
-                } else return false;
-
-            } else return false;
-
-        return majorAmount / tRecipe.mSpecialValue == minorAmount;
-    }
-
-    @Override
-    public int getMaxEfficiency(ItemStack itemStack) {
-        return 10000;
+        return majorAmount == minorAmount * tRecipe.mSpecialValue;
     }
 
     @Override
@@ -198,7 +187,7 @@ public class MTEDissolutionTank extends MTEEnhancedMultiBlockBase<MTEDissolution
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(mName, stackSize, 2, 3, 0, elementBudget, env, false, true);
+        return survivalBuildPiece(mName, stackSize, 2, 3, 0, elementBudget, env, false, true);
     }
 
     @Override
@@ -236,31 +225,24 @@ public class MTEDissolutionTank extends MTEEnhancedMultiBlockBase<MTEDissolution
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Dissolution Tank")
-            .addInfo("Input Water and Fluid, output Fluid")
-            .addInfo("You must input the Fluids at the correct Ratio")
+        tt.addMachineType(StatCollector.translateToLocal("gtnhlanth.tt.disstank.machinetype"))
+            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.disstank.info1"))
+            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.disstank.info2"))
             .beginStructureBlock(5, 5, 5, true)
-            .addController("Front bottom")
-            .addCasingInfoExactly("Clean Stainless Steel Machine Casing", 42, false)
-            .addCasingInfoExactly("Titanium Reinforced Borosilicate Glass", 24, false)
-            .addCasingInfoExactly("Heat Proof Machine Casing", 9, false)
-            .addInputHatch("Hint block with dot 1")
-            .addInputBus("Hint block with dot 1")
-            .addOutputHatch("Hint block with dot 1")
-            .addOutputBus("Hint block with dot 1")
-            .addMaintenanceHatch("Hint block with dot 1")
+            .addController("Front center, 2nd layer")
+            .addCasingInfoMin(Casings.CleanStainlessSteelMachineCasing.getLocalizedName(), MIN_CASINGS, false)
+            .addCasingInfoExactly("Any Tiered Glass", 24, false)
+            .addCasingInfoExactly(Casings.HeatProofMachineCasing.getLocalizedName(), 9, false)
+            .addInputHatch(addHintNumber(1))
+            .addInputBus(addHintNumber(1))
+            .addOutputHatch(addHintNumber(1))
+            .addOutputBus(addHintNumber(1))
+            .addEnergyHatch(addHintNumber(1))
+            .addMaintenanceHatch(addHintNumber(1))
+            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
 
         return tt;
     }
 
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack arg0) {
-        return false;
-    }
-
-    @Override
-    public int getDamageToComponent(ItemStack arg0) {
-        return 0;
-    }
 }

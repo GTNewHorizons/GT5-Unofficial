@@ -12,7 +12,6 @@ import java.util.WeakHashMap;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityBeacon;
@@ -27,10 +26,8 @@ import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.Phase;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.item.base.CoreItem;
-import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public class ItemMagicFeather extends CoreItem {
 
@@ -46,12 +43,11 @@ public class ItemMagicFeather extends CoreItem {
             100,
             new String[] { "Lets you fly around Beacons" },
             EnumRarity.uncommon,
-            null,
             false,
             null);
         setMaxStackSize(1);
         setUnlocalizedName(GTPlusPlus.ID + ":" + NAME);
-        MinecraftForge.EVENT_BUS.register(this);
+        MinecraftForge.EVENT_BUS.register(new EventHandler());
     }
 
     @Override
@@ -59,12 +55,12 @@ public class ItemMagicFeather extends CoreItem {
         return Integer.MAX_VALUE;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     @SideOnly(Side.CLIENT)
-    public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
+    public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List<String> list,
+        final boolean adv) {
         list.add(StatCollector.translateToLocal("gtpp.tooltip.magic_feather.0"));
-        super.addInformation(stack, aPlayer, list, bool);
+        super.addInformation(stack, aPlayer, list, adv);
         list.add(StatCollector.translateToLocal("gtpp.tooltip.magic_feather.1"));
         list.add(StatCollector.translateToLocal("gtpp.tooltip.magic_feather.2"));
     }
@@ -136,53 +132,7 @@ public class ItemMagicFeather extends CoreItem {
         player.sendPlayerAbilities();
     }
 
-    @SubscribeEvent(priority = EventPriority.HIGHEST)
-    public void onPlayerTick(TickEvent.PlayerTickEvent event) {
-        if (event.side != Side.SERVER || event.phase != Phase.END) {
-            return;
-        }
-        EntityPlayer player = event.player;
-        HashSet<TileEntityBeacon> aBeaconData = sBeaconData.get(player);
-        if (aBeaconData != null && !aBeaconData.isEmpty()) {
-            for (Iterator<TileEntityBeacon> iterator = aBeaconData.iterator(); iterator.hasNext();) {
-                TileEntityBeacon aBeacon = iterator.next();
-                int level = aBeacon.getLevels();
-                if (level == 0) {
-                    iterator.remove();
-                    continue;
-                }
-                int radius = (level * 10 + 10);
-                int x = aBeacon.xCoord;
-                int z = aBeacon.zCoord;
-                if (player.posX < (x - radius) || player.posX > (x + radius)
-                    || player.posZ < (z - radius)
-                    || player.posZ > (z + radius)) {
-                    iterator.remove();
-                }
-            }
-        }
-        boolean hasItem = hasItem(player, GregtechItemList.MagicFeather.getItem());
-        if (!hasItem) {
-            ItemMagicFeather.sPlayerData.remove(player);
-        }
-        MagicFeatherData data = ItemMagicFeather.sPlayerData.get(player);
-        if (data == null) {
-            data = new MagicFeatherData(player);
-            ItemMagicFeather.sPlayerData.put(player, data);
-        }
-        data.onTick();
-    }
-
-    @SubscribeEvent(priority = EventPriority.LOWEST)
-    public void onPlayerDeath(LivingDeathEvent event) {
-        if (event.entityLiving == null) return;
-        EntityLivingBase aEntity = event.entityLiving;
-        if (!(aEntity instanceof EntityPlayer aPlayer) || aEntity.worldObj == null || aEntity.worldObj.isRemote) return;
-        ItemMagicFeather.sPlayerData.remove(aPlayer);
-        ItemMagicFeather.sBeaconData.remove(aPlayer);
-    }
-
-    private static boolean hasItem(EntityPlayer player, Item item) {
+    private static boolean hasItem(EntityPlayer player) {
         for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
             ItemStack stack = player.inventory.getStackInSlot(i);
             if (stack != null && stack.getItem() != null && stack.getItem() instanceof ItemMagicFeather) {
@@ -208,7 +158,7 @@ public class ItemMagicFeather extends CoreItem {
             EntityPlayer player = this.player.get();
             if (player == null) return;
             try {
-                boolean hasItem = hasItem(player, GregtechItemList.MagicFeather.getItem());
+                boolean hasItem = hasItem(player);
                 if (hasItem != this.hasItem) {
                     if (hasItem) {
                         this.onAdd();
@@ -217,10 +167,9 @@ public class ItemMagicFeather extends CoreItem {
                         this.onRemove();
                     }
                     this.hasItem = hasItem;
-                    Logger.INFO("Ticking feather " + hasItem);
                     return;
                 }
-            } catch (Throwable t) {
+            } catch (Exception t) {
                 t.printStackTrace();
             }
 
@@ -256,6 +205,52 @@ public class ItemMagicFeather extends CoreItem {
 
         private EntityPlayer getPlayer() {
             return player.get();
+        }
+    }
+
+    public static class EventHandler {
+
+        @SubscribeEvent(priority = EventPriority.HIGHEST)
+        public void onPlayerTick(TickEvent.PlayerTickEvent event) {
+            if (event.side != Side.SERVER || event.phase != Phase.END) {
+                return;
+            }
+            EntityPlayer player = event.player;
+            HashSet<TileEntityBeacon> aBeaconData = sBeaconData.get(player);
+            if (aBeaconData != null && !aBeaconData.isEmpty()) {
+                for (Iterator<TileEntityBeacon> iterator = aBeaconData.iterator(); iterator.hasNext();) {
+                    TileEntityBeacon aBeacon = iterator.next();
+                    int level = aBeacon.getLevels();
+                    if (level == 0) {
+                        iterator.remove();
+                        continue;
+                    }
+                    int radius = (level * 10 + 10);
+                    int x = aBeacon.xCoord;
+                    int z = aBeacon.zCoord;
+                    if (player.posX < (x - radius) || player.posX > (x + radius)
+                        || player.posZ < (z - radius)
+                        || player.posZ > (z + radius)) {
+                        iterator.remove();
+                    }
+                }
+            }
+            boolean hasItem = hasItem(player);
+            if (!hasItem) {
+                ItemMagicFeather.sPlayerData.remove(player);
+            }
+            MagicFeatherData data = ItemMagicFeather.sPlayerData.computeIfAbsent(player, MagicFeatherData::new);
+            data.onTick();
+        }
+
+        @SubscribeEvent(priority = EventPriority.LOWEST)
+        public void onPlayerDeath(LivingDeathEvent event) {
+            if (event.entityLiving == null) return;
+            EntityLivingBase aEntity = event.entityLiving;
+            if (!(aEntity instanceof EntityPlayer aPlayer) || aEntity.worldObj == null || aEntity.worldObj.isRemote)
+                return;
+            ItemMagicFeather.sPlayerData.remove(aPlayer);
+            ItemMagicFeather.sBeaconData.remove(aPlayer);
         }
     }
 }

@@ -78,7 +78,7 @@ public class MTEFusionComputer1 extends MTEFusionComputer {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Fusion Reactor")
             .addInfo("It's over 9000!!!")
-            .addInfo("2048EU/t and 10M EU capacity per Energy Hatch")
+            .addInfo("§b2,048§7 EU/t and §b10M§7 EU capacity per Energy Hatch")
             .addInfo("If the recipe has a startup cost greater than the")
             .addInfo("number of energy hatches * cap, you can't do it")
             .beginStructureBlock(15, 3, 15, false)
@@ -86,9 +86,9 @@ public class MTEFusionComputer1 extends MTEFusionComputer {
             .addCasingInfoRange("LuV Machine Casing", 79, 123, false)
             .addStructureInfo("Cover the coils with casing")
             .addOtherStructurePart("Superconducting Coil Block", "Center part of the ring")
-            .addEnergyHatch("1-16, Specified casings", 2)
-            .addInputHatch("2-16, Specified casings", 1)
-            .addOutputHatch("1-16, Specified casings", 3)
+            .addEnergyHatch("1-16, Specified Casing", 2)
+            .addInputHatch("2-16, Specified Casing", 1)
+            .addOutputHatch("1-16, Specified Casing", 3)
             .addStructureInfo("ALL Hatches must be LuV or better")
             .toolTipFinisher();
         return tt;

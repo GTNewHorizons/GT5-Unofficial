@@ -13,6 +13,9 @@ import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.common.covers.CoverLiquidMeter;
+import gregtech.common.covers.CoverPosition;
+import gregtech.common.gui.modularui.cover.base.CoverBaseGui;
+import gregtech.common.gui.modularui.cover.redstone.CoverWirelessFluidDetectorGui;
 import gregtech.common.gui.mui1.cover.WirelessFluidDetectorUIFactory;
 import io.netty.buffer.ByteBuf;
 
@@ -90,8 +93,8 @@ public class CoverWirelessFluidDetector extends CoverAdvancedRedstoneTransmitter
             return;
         }
         final byte signal = CoverLiquidMeter.computeSignalBasedOnFluid(coverable, invert, threshold);
-        final long hash = hashCoverCoords(coverable, coverSide);
-        setSignalAt(getUuid(), getFrequency(), hash, signal);
+        final CoverPosition key = getCoverKey(coverable, coverSide);
+        setSignalAt(getUuid(), getFrequency(), key, signal);
 
         if (physical) {
             coverable.setOutputRedstoneSignal(coverSide, signal);
@@ -117,4 +120,8 @@ public class CoverWirelessFluidDetector extends CoverAdvancedRedstoneTransmitter
         return new WirelessFluidDetectorUIFactory(buildContext).createWindow();
     }
 
+    @Override
+    protected @NotNull CoverBaseGui<?> getCoverGui() {
+        return new CoverWirelessFluidDetectorGui(this);
+    }
 }

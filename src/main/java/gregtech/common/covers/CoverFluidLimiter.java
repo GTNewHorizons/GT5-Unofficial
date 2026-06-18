@@ -17,6 +17,8 @@ import gregtech.api.covers.CoverContext;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.util.GTUtility;
+import gregtech.common.gui.modularui.cover.CoverFluidLimiterGui;
+import gregtech.common.gui.modularui.cover.base.CoverBaseGui;
 import gregtech.common.gui.mui1.cover.FluidLimiterUIFactory;
 import io.netty.buffer.ByteBuf;
 
@@ -69,7 +71,7 @@ public class CoverFluidLimiter extends Cover {
     public void onCoverScrewdriverClick(EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (coveredTile.get() instanceof IFluidHandler) {
             adjustThreshold(!aPlayer.isSneaking());
-            GTUtility.sendChatToPlayer(aPlayer, String.format("Threshold: %f", threshold));
+            GTUtility.sendChatTrans(aPlayer, "GT5U.chat.cover.fluid_limiter", threshold);
         }
     }
 
@@ -127,6 +129,11 @@ public class CoverFluidLimiter extends Cover {
     @Override
     public boolean hasCoverGUI() {
         return true;
+    }
+
+    @Override
+    protected @NotNull CoverBaseGui<?> getCoverGui() {
+        return new CoverFluidLimiterGui(this);
     }
 
     @Override

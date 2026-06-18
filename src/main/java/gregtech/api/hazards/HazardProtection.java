@@ -1,6 +1,5 @@
 package gregtech.api.hazards;
 
-import java.util.Collection;
 import java.util.Map;
 
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -10,10 +9,7 @@ import net.minecraft.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import gregtech.api.GregTechAPI;
 import gregtech.api.enchants.EnchantmentHazmat;
-import gregtech.api.objects.GTItemStack;
-import gregtech.api.util.GTUtility;
 
 public class HazardProtection {
 
@@ -41,38 +37,54 @@ public class HazardProtection {
         return isWearingFullHazmatAgainst(entity, Hazard.GAS);
     }
 
+    public static boolean isWearingFullSpaceHazmat(@NotNull EntityLivingBase entity) {
+        return isWearingFullHazmatAgainst(entity, Hazard.SPACE);
+    }
+
     public static boolean isWearingFullHazmatAgainst(@NotNull EntityLivingBase entity, @NotNull Hazard hazard) {
+        boolean allProtect = true;
+
         for (byte i = 1; i < 5; i++) {
             ItemStack stack = entity.getEquipmentInSlot(i);
 
-            if (!protectsAgainstHazard(stack, hazard)) {
-                return false;
+            if (protectsAgainstHazardFully(entity, stack, hazard)) {
+                return true;
+            }
+
+            if (!protectsAgainstHazard(entity, stack, hazard)) {
+                allProtect = false;
             }
         }
-        return true;
+
+        return allProtect;
+    }
+
+    public static boolean protectsAgainstHazard(@Nullable EntityLivingBase entity, @Nullable ItemStack stack,
+        @NotNull Hazard hazard) {
+        return stack != null && (hasHazmatEnchant(stack) || (stack.getItem() instanceof IHazardProtector hazardProtector
+            && (hazardProtector.protectsAgainst(entity, stack, hazard)
+                || hazardProtector.protectsAgainstFully(entity, stack, hazard))));
+    }
+
+    public static boolean protectsAgainstHazardFully(@Nullable EntityLivingBase entity, @Nullable ItemStack stack,
+        @NotNull Hazard hazard) {
+        return stack != null && (hasHazmatEnchant(stack) || (stack.getItem() instanceof IHazardProtector hazardProtector
+            && hazardProtector.protectsAgainstFully(entity, stack, hazard)));
     }
 
     public static boolean protectsAgainstHazard(@Nullable ItemStack stack, @NotNull Hazard hazard) {
-        return stack != null
-            && (GTUtility.isStackInList(stack, getHazardProtectionEquipmentList(hazard)) || hasHazmatEnchant(stack)
-                || (stack.getItem() instanceof IHazardProtector hazardProtector
-                    && hazardProtector.protectsAgainst(stack, hazard)));
-    }
-
-    private static @NotNull Collection<GTItemStack> getHazardProtectionEquipmentList(@NotNull Hazard hazard) {
-        return switch (hazard) {
-            case BIOLOGICAL -> GregTechAPI.sBioHazmatList;
-            case FROST -> GregTechAPI.sFrostHazmatList;
-            case HEAT -> GregTechAPI.sHeatHazmatList;
-            case RADIOLOGICAL -> GregTechAPI.sRadioHazmatList;
-            case ELECTRICAL -> GregTechAPI.sElectroHazmatList;
-            case GAS -> GregTechAPI.sGasHazmatList;
-        };
+        return stack != null && (hasHazmatEnchant(stack) || (stack.getItem() instanceof IHazardProtector hazardProtector
+            && (hazardProtector.protectsAgainst(stack, hazard)
+                || hazardProtector.protectsAgainstFully(null, stack, hazard))));
     }
 
     public static boolean providesFullHazmatProtection(@Nullable ItemStack stack) {
         if (stack == null) return false;
-        for (Hazard hazard : Hazard.values()) {
+        for (Hazard hazard : Hazard.STANDARD_HAZARDS) {
+            if (protectsAgainstHazardFully(null, stack, hazard)) {
+                continue;
+            }
+
             if (!protectsAgainstHazard(stack, hazard)) {
                 return false;
             }

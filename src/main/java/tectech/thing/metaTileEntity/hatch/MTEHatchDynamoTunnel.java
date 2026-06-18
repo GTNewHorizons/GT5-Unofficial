@@ -6,24 +6,21 @@ import static net.minecraft.util.StatCollector.translateToLocal;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.gtnewhorizons.modularui.api.math.Alignment;
-import com.gtnewhorizons.modularui.api.math.Color;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
-import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
-import gregtech.api.gui.modularui.GTUITextures;
+import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.util.GTUtility;
+import gregtech.api.metatileentity.implementations.MTEHatch;
+import gregtech.common.gui.modularui.hatch.MTEHatchDynamoTunnelGui;
 import tectech.mechanics.pipe.IConnectsToEnergyTunnel;
-import tectech.thing.metaTileEntity.Textures;
 import tectech.thing.metaTileEntity.pipe.MTEPipeLaser;
 import tectech.thing.metaTileEntity.pipe.MTEPipeLaserMirror;
 import tectech.util.CommonValues;
@@ -31,24 +28,11 @@ import tectech.util.CommonValues;
 /**
  * Created by danie_000 on 16.12.2016.
  */
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchDynamoTunnel extends MTEHatchDynamoMulti implements IConnectsToEnergyTunnel {
 
     public MTEHatchDynamoTunnel(int ID, String unlocalisedName, String localisedName, int tier, int amps) {
-        super(
-            ID,
-            unlocalisedName,
-            localisedName,
-            tier,
-            0,
-            new String[] { CommonValues.TEC_MARK_GENERAL,
-                translateToLocal("gt.blockmachines.hatch.dynamotunnel.desc.0"),
-                translateToLocal("gt.blockmachines.hatch.screwdrivertooltip"),
-                translateToLocal("gt.blockmachines.hatch.dynamotunnel.desc.1") + ": "
-                    + EnumChatFormatting.YELLOW
-                    + GTUtility.formatNumbers(amps * V[tier])
-                    + EnumChatFormatting.RESET
-                    + " EU/t" },
-            amps);
+        super(ID, unlocalisedName, localisedName, tier, 0, null, amps);
     }
 
     public MTEHatchDynamoTunnel(String aName, int aTier, int aAmp, String[] aDescription, ITexture[][][] aTextures) {
@@ -57,41 +41,16 @@ public class MTEHatchDynamoTunnel extends MTEHatchDynamoMulti implements IConnec
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, Textures.OVERLAYS_ENERGY_OUT_LASER_TT[mTier] };
+        return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_LASER[mTier + 1] };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[] { aBaseTexture, Textures.OVERLAYS_ENERGY_OUT_LASER_TT[mTier] };
-    }
-
-    @Override
-    public boolean isFacingValid(ForgeDirection facing) {
-        return true;
-    }
-
-    @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
-        return true;
-    }
-
-    @Override
-    public boolean isOutputFacing(ForgeDirection side) {
-        return side == getBaseMetaTileEntity().getFrontFacing();
-    }
-
-    @Override
-    public boolean isValidSlot(int aIndex) {
-        return false;
+        return new ITexture[] { aBaseTexture, Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_LASER[mTier + 1] };
     }
 
     @Override
     public long getMinimumStoredEU() {
-        return V[mTier];
-    }
-
-    @Override
-    public long maxEUOutput() {
         return V[mTier];
     }
 
@@ -106,11 +65,6 @@ public class MTEHatchDynamoTunnel extends MTEHatchDynamoMulti implements IConnec
     }
 
     @Override
-    public boolean isEnetInput() {
-        return false;
-    }
-
-    @Override
     public ConnectionType getConnectionType() {
         return ConnectionType.LASER;
     }
@@ -118,18 +72,6 @@ public class MTEHatchDynamoTunnel extends MTEHatchDynamoMulti implements IConnec
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTEHatchDynamoTunnel(mName, mTier, Amperes, mDescriptionArray, mTextures);
-    }
-
-    @Override
-    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
-        return false;
-    }
-
-    @Override
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-        ItemStack aStack) {
-        return false;
     }
 
     @Override
@@ -240,29 +182,27 @@ public class MTEHatchDynamoTunnel extends MTEHatchDynamoMulti implements IConnec
     }
 
     @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        builder.setBackground(GTUITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
-        builder.setGuiTint(getGUIColorization());
-        final int x = getGUIWidth() / 2 - 37;
-        final int y = getGUIHeight() / 5 - 7;
-        builder.widget(
-            TextWidget.localised("GT5U.machines.laser_hatch.amperage")
-                .setPos(x, y)
-                .setSize(74, 14))
-            .widget(
-                new NumericWidget().setSetter(val -> Amperes = (int) val)
-                    .setGetter(() -> Amperes)
-                    .setBounds(1, maxAmperes)
-                    .setScrollValues(1, 4, 64)
-                    .setTextAlignment(Alignment.Center)
-                    .setTextColor(Color.WHITE.normal)
-                    .setSize(70, 18)
-                    .setPos(x, y + 16)
-                    .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD));
+    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTEHatchDynamoTunnelGui(this).build(data, syncManager, uiSettings);
     }
 
     @Override
     public boolean canConnect(ForgeDirection side) {
         return isOutputFacing(side);
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return true;
+    }
+
+    @Override
+    public String[] getDescription() {
+        return MTEHatch.formatEnergyInfoDesc(
+            translateToLocal("gt.blockmachines.hatch.screwdrivertooltip"),
+            true,
+            mTier,
+            maxAmperes,
+            "gt.blockmachines.hatch.dynamotunnel.desc");
     }
 }

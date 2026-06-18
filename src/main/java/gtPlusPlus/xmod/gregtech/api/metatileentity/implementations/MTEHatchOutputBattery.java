@@ -8,8 +8,10 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.ArrayUtils;
 
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -18,8 +20,8 @@ import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
+import gregtech.common.gui.modularui.hatch.MTEHatchOutputBatteryGui;
 import gtPlusPlus.core.lib.GTPPCore;
-import gtPlusPlus.xmod.gregtech.api.gui.widget.ElectricSlotWidget;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class MTEHatchOutputBattery extends MTEHatch {
@@ -86,11 +88,6 @@ public class MTEHatchOutputBattery extends MTEHatch {
     }
 
     @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
-        return true;
-    }
-
-    @Override
     public boolean isValidSlot(int aIndex) {
         return true;
     }
@@ -125,34 +122,7 @@ public class MTEHatchOutputBattery extends MTEHatch {
     }
 
     protected void fillStacksIntoFirstSlots() {
-        for (int i = 0; i < mInventory.length; i++)
-            for (int j = i + 1; j < mInventory.length; j++) if (mInventory[j] != null
-                && (mInventory[i] == null || GTUtility.areStacksEqual(mInventory[i], mInventory[j]))) {
-                    GTUtility.moveStackFromSlotAToSlotB(
-                        getBaseMetaTileEntity(),
-                        getBaseMetaTileEntity(),
-                        j,
-                        i,
-                        (byte) 64,
-                        (byte) 1,
-                        (byte) 64,
-                        (byte) 1);
-                }
-    }
-
-    @Override
-    public int rechargerSlotStartIndex() {
-        return 0;
-    }
-
-    @Override
-    public int rechargerSlotCount() {
-        return 0;
-    }
-
-    @Override
-    public int dechargerSlotStartIndex() {
-        return 0;
+        GTUtility.compactInventory(this);
     }
 
     @Override
@@ -195,16 +165,12 @@ public class MTEHatchOutputBattery extends MTEHatch {
     }
 
     @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        if (mTier == 2) {
-            for (int i = 0; i < 4; i++) {
-                builder
-                    .widget(new ElectricSlotWidget(inventoryHandler, i).setPos(70 + (i % 2) * 18, 25 + (i / 2) * 18));
-            }
-        } else {
-            for (int i = 0; i < 16; i++) {
-                builder.widget(new ElectricSlotWidget(inventoryHandler, i).setPos(52 + (i % 4) * 18, 7 + (i / 4) * 18));
-            }
-        }
+    protected boolean useMui2() {
+        return true;
+    }
+
+    @Override
+    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTEHatchOutputBatteryGui(this).build(data, syncManager, uiSettings);
     }
 }

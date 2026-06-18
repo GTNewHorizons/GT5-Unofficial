@@ -1,7 +1,6 @@
 package gregtech.common.tileentities.machines.multi;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
-import static gregtech.api.enums.GTValues.AuthorFourIsTheNumber;
 import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ENGRAVER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ENGRAVER_ACTIVE;
@@ -40,6 +39,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
@@ -49,20 +49,23 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.ErrorType;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.common.blocks.BlockCasings10;
-import gregtech.common.tileentities.render.TileEntityLaser;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
+import gregtech.common.misc.GTStructureChannels;
+import gregtech.common.tileentities.render.RenderingTileEntityLaser;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoTunnel;
 
 public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<MTEIndustrialLaserEngraver>
-    implements ISurvivalConstructable {
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<MTEIndustrialLaserEngraver> STRUCTURE_DEFINITION = StructureDefinition
@@ -77,7 +80,7 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
             buildHatchAdder(MTEIndustrialLaserEngraver.class)
                 .atLeast(InputBus, OutputBus, InputHatch, OutputHatch, Maintenance, Energy, MultiAmpEnergy)
                 .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(1))
-                .dot(1)
+                .hint(1)
                 .buildAndChain(
                     onElementPass(MTEIndustrialLaserEngraver::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings10, 1))))
         .addElement('f', ofFrame(Materials.TungstenSteel))
@@ -85,14 +88,14 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
         .addElement('r', ofBlock(GregTechAPI.sLaserRender, 0))
         .addElement(
             's',
-            buildHatchAdder(MTEIndustrialLaserEngraver.class).adder(MTEIndustrialLaserEngraver::addLaserSource)
-                .hatchClass(MTEHatchDynamoTunnel.class)
+            buildHatchAdder(MTEIndustrialLaserEngraver.class).anyOf(LaserSource)
+                .adder(MTEIndustrialLaserEngraver::addLaserSource)
                 .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(1))
-                .dot(3)
+                .hint(3)
                 .build())
         .build();
 
-    protected TileEntityLaser renderer;
+    protected RenderingTileEntityLaser renderer;
     private int glassTier = -1;
     private MTEHatchDynamoTunnel laserSource = null;
     private int laserAmps = 0;
@@ -141,11 +144,6 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
     }
 
     @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
-    }
-
-    @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTEIndustrialLaserEngraver(this.mName);
     }
@@ -156,26 +154,20 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
         ITexture[] rTexture;
         if (side == aFacing) {
             if (aActive) {
-                rTexture = new ITexture[] {
-                    Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 1)),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_ENGRAVER_ACTIVE)
-                        .extFacing()
-                        .build(),
+                rTexture = new ITexture[] { getCasingTexture(), TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_ENGRAVER_ACTIVE)
+                    .extFacing()
+                    .build(),
                     TextureFactory.builder()
                         .addIcon(OVERLAY_FRONT_ENGRAVER_ACTIVE_GLOW)
                         .extFacing()
                         .glow()
                         .build() };
             } else {
-                rTexture = new ITexture[] {
-                    Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 1)),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_ENGRAVER)
-                        .extFacing()
-                        .build(),
+                rTexture = new ITexture[] { getCasingTexture(), TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_ENGRAVER)
+                    .extFacing()
+                    .build(),
                     TextureFactory.builder()
                         .addIcon(OVERLAY_FRONT_ENGRAVER_GLOW)
                         .extFacing()
@@ -183,42 +175,40 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
                         .build() };
             }
         } else {
-            rTexture = new ITexture[] { Textures.BlockIcons
-                .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 1)) };
+            rTexture = new ITexture[] { getCasingTexture() };
         }
         return rTexture;
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Textures.BlockIcons
+            .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 1));
     }
 
     private boolean stopAllRendering = false;
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
         stopAllRendering = !stopAllRendering;
         if (stopAllRendering) {
-            PlayerUtils.messagePlayer(aPlayer, "Rendering off");
+            GTUtility.sendChatTrans(aPlayer, "GT5U.chat.rendering.off");
             if (renderer != null) renderer.setShouldRender(false);
-        } else PlayerUtils.messagePlayer(aPlayer, "Rendering on");
+        } else GTUtility.sendChatTrans(aPlayer, "GT5U.chat.rendering.on");
     }
 
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
         float aX, float aY, float aZ, ItemStack aTool) {
-        if (aPlayer.isSneaking()) {
-            batchMode = !batchMode;
-            if (batchMode) {
-                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
-            } else {
-                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
-            }
-            return true;
-        } else {
+        if (!aPlayer.isSneaking()) {
             if (renderer != null) {
                 renderer.toggleRealism();
-                PlayerUtils.messagePlayer(aPlayer, "Toggling realism!");
+                GTUtility.sendChatTrans(aPlayer, "GT5U.chat.laser.engraver.toggling_realism");
                 return true;
             }
         }
-        return false;
+        return super.onWireCutterRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ, aTool);
     }
 
     @Override
@@ -231,21 +221,24 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Laser Engraver, HILE")
-            .addInfo("250% faster than single block machines of the same voltage")
-            .addInfo("Uses 80% of the EU normally required")
+            .addStaticSpeedInfo(3.5F)
+            .addStaticEuEffInfo(0.8F)
             .addInfo("Laser source hatch determines maximum recipe tier and parallels")
             .addInfo("Recipe tier and overclocks limited to laser source tier + 1")
-            .addInfo("With UEV laser source, 1 multi-amp energy hatch is allowed (instead of regular hatches)")
-            .addInfo("Parallels equal to the cube root of laser source amperage input")
-            .addInfo("Glass tier determines maximum laser source tier")
             .addInfo(
-                GTValues.TIER_COLORS[VoltageIndex.UMV] + GTValues.VN[VoltageIndex.UMV]
+                "When using a " + GTValues.TIER_COLORS[VoltageIndex.UEV]
+                    + GTValues.VN[VoltageIndex.UEV]
                     + EnumChatFormatting.GRAY
-                    + "-tier glass accepts all laser source hatches")
+                    + "+ laser source, one multi-amp energy hatch is allowed instead of regular energy hatches")
+            .addInfo("Parallels equal to the cube root of laser source amperage input")
+            .addInfo(
+                EnumChatFormatting.WHITE + "Glass "
+                    + EnumChatFormatting.GRAY
+                    + "tier determines maximum laser source tier")
             .addInfo("Use screwdriver to disable laser rendering")
             .addInfo("Use wire cutter to toggle realism mode if you hate angled lasers")
             .beginStructureBlock(5, 5, 5, false)
-            .addController("Front Center")
+            .addController("Front bottom center")
             .addCasingInfoMin("Laser Containment Casing", 35, false)
             .addCasingInfoExactly("Tungstensteel Frame Box", 9, false)
             .addCasingInfoExactly("Any Tiered Glass", 3, true)
@@ -257,8 +250,8 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
             .addOutputHatch("Any Casing", 1)
             .addEnergyHatch("Any Casing", 1)
             .addMaintenanceHatch("Any Casing", 1)
-            .addSubChannelUsage("glass", "Glass Tier")
-            .toolTipFinisher(AuthorFourIsTheNumber);
+            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .toolTipFinisher();
         return tt;
     }
 
@@ -270,7 +263,7 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 2, 4, 0, elementBudget, env, false, true);
+        return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 2, 4, 0, elementBudget, env, false, true);
     }
 
     private int mCasingAmount;
@@ -284,33 +277,43 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
         x = x + opposite.offsetX;
         y = y + opposite.offsetY;
         z = z + opposite.offsetZ;
-        if (w.getTileEntity(x, y, z) instanceof TileEntityLaser laser) {
+        if (w.getTileEntity(x, y, z) instanceof RenderingTileEntityLaser laser) {
             renderer = laser;
-            renderer.setRotationFields(getDirection(), getRotation(), getFlip());
+            renderer.setRotationFields(getExtendedFacing());
             return true;
         }
         return false;
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         mCasingAmount = 0;
         glassTier = -1;
         IGregTechTileEntity base = getBaseMetaTileEntity();
 
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 4, 0)) return false;
-        if (mCasingAmount < 35) return false;
-        if (laserSource == null) return false;
-        if (!findLaserRenderer(base.getWorld(), base.getXCoord(), base.getYCoord(), base.getZCoord())) return false;
-
-        // If there are exotic hatches, ensure there is only 1 and that the laser source requirement is met
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 4, 0, errors)) return;
+        checkCasingMin(errors, mCasingAmount, 35);
         if (!mExoticEnergyHatches.isEmpty()) {
-            if (laserSource.mTier < VoltageIndex.UEV) return false;
-            if (!mEnergyHatches.isEmpty()) return false;
-            return (mExoticEnergyHatches.size() == 1);
+            if (laserSource.mTier < VoltageIndex.UEV) {
+                errors.add(StructureErrors.of("GT5U.gui.text.structure_error.laser_need_uev"));
+            } else {
+                int count = mEnergyHatches.size() + mExoticEnergyHatches.size();
+                if (count != 1) {
+                    errors.add(StructureErrors.hatchCount(ErrorType.TOO_MANY, Energy, count, 1));
+                }
+            }
+        } else {
+            checkHasEnergyHatch(errors);
         }
+        checkHasMaintenanceHatch(errors);
+        checkHasAnyOutput(errors);
+        checkHasAnyInput(errors);
 
-        return glassTier >= VoltageIndex.UMV || laserSource.mTier <= glassTier;
+        if (glassTier < laserSource.mTier) {
+            errors.add(StructureErrors.glassTierNotEnough(laserSource.mTier));
+        }
+        if (!errors.isEmpty()) return;
+        findLaserRenderer(base.getWorld(), base.getXCoord(), base.getYCoord(), base.getZCoord());
     }
 
     private static String getUniqueIdentifier(ItemStack is) {
@@ -353,10 +356,8 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
             @NotNull
             @Override
             protected OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                // Limit ocs up to hatch tier + 1
-                int ocs = (laserSource.mTier + 1) - GTUtility.getTier(recipe.mEUt);
-                if (ocs < 0) ocs = 0;
-                return super.createOverclockCalculator(recipe).limitOverclockCount(ocs);
+                return super.createOverclockCalculator(recipe)
+                    .setMaxOverclocks((laserSource.mTier + 1) - GTUtility.getTier(recipe.mEUt));
             }
 
             @Override
@@ -385,21 +386,6 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
     }
 
     @Override
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
-    }
-
-    @Override
-    public int getDamageToComponent(ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
-    }
-
-    @Override
     public int getRecipeCatalystPriority() {
         return -10;
     }
@@ -420,19 +406,6 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
     }
 
     @Override
-    public boolean supportsSingleRecipeLocking() {
-        return true;
-    }
-
-    @Override
-    protected void setProcessingLogicPower(ProcessingLogic logic) {
-        if (mExoticEnergyHatches.isEmpty()) {
-            logic.setAvailableVoltage(GTUtility.roundUpVoltage(this.getMaxInputVoltage()));
-            logic.setAvailableAmperage(1L);
-        } else super.setProcessingLogicPower(logic);
-    }
-
-    @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         aNBT.setBoolean("stopAllRendering", stopAllRendering);
         super.saveNBTData(aNBT);
@@ -450,7 +423,6 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        tag.setInteger("laserAmps", laserAmps);
         tag.setString("tierName", tierName);
     }
 
@@ -459,11 +431,6 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
         IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currentTip, accessor, config);
         final NBTTagCompound tag = accessor.getNBTData();
-        currentTip.add(
-            StatCollector.translateToLocal("GT5U.multiblock.parallelism") + ": "
-                + EnumChatFormatting.WHITE
-                + tag.getInteger("laserAmps")
-                + EnumChatFormatting.RESET);
         currentTip.add(
             StatCollector.translateToLocal("GT5U.multiblock.maxtier") + ": "
                 + EnumChatFormatting.WHITE
@@ -536,8 +503,7 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
         lensColors
             .put(getUniqueIdentifier(GTOreDictUnificator.get(OrePrefixes.lens, Materials.Firestone, 1)), Colors.Red);
         lensColors.put(getUniqueIdentifier(GTOreDictUnificator.get(OrePrefixes.lens, Materials.Jasper, 1)), Colors.Red);
-        lensColors
-            .put(getUniqueIdentifier(GTOreDictUnificator.get(OrePrefixes.lens, Materials.FoolsRuby, 1)), Colors.Red);
+        lensColors.put(getUniqueIdentifier(GTOreDictUnificator.get(OrePrefixes.lens, Materials.Spinel, 1)), Colors.Red);
         lensColors
             .put(getUniqueIdentifier(GTOreDictUnificator.get(OrePrefixes.lens, Materials.GarnetRed, 1)), Colors.Red);
         lensColors

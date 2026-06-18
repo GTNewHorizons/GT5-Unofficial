@@ -7,23 +7,26 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
+import gregtech.GTMod;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
-import gregtech.common.tileentities.machines.multi.MTELargeTurbine;
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.lib.GTPPCore;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
-import gtPlusPlus.core.util.sys.KeyboardUtils;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.turbines.MTELargerTurbineBase;
+import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
+import gregtech.api.util.GTUtility;
+import gregtech.common.gui.modularui.hatch.MTETurbineHousingGui;
+import gregtech.common.tileentities.machines.multi.MTELargeTurbineLegacy;
+import gregtech.common.tileentities.machines.multi.turbines.MTELargeTurbineBase;
+import gtPlusPlus.core.util.Utils;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchTurbineProvider extends MTEHatchInputBus {
 
     public MTEHatchTurbineProvider(int aID, String aName, String aNameRegional, int aTier) {
@@ -40,15 +43,16 @@ public class MTEHatchTurbineProvider extends MTEHatchInputBus {
     }
 
     @Override
-    public String[] getDescription() {
-        return new String[] { "An automation port for Large Turbines",
-            "Will attempt once per 1200 ticks to fill the turbine slot of it's parent turbine",
-            "You may adjust this with a screwdriver", "Hold shift to adjust in finer amounts",
-            "Hold control to adjust direction", "Left Click with Screwdriver to reset",
-            "This module assumes the entire turbine is in the same Chunk", GTPPCore.GT_Tooltip.get() };
+    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTETurbineHousingGui(this).build(data, syncManager, uiSettings);
     }
 
-    private MTELargeTurbine mParent = null;
+    @Override
+    public String[] getDescription() {
+        return Utils.splitLocalizedWithAlkalus("gt.blockmachines.input_bus_turbine.desc");
+    }
+
+    private MTEMultiBlockBase mParent = null;
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
@@ -60,7 +64,6 @@ public class MTEHatchTurbineProvider extends MTEHatchInputBus {
     }
 
     private void tryFindParentTurbine() {
-        Logger.INFO("This turbine housing has no parent, searching world.");
         IGregTechTileEntity T = this.getBaseMetaTileEntity();
         World W = T.getWorld();
         Chunk C = W.getChunkFromBlockCoords(T.getXCoord(), T.getZCoord());
@@ -70,11 +73,12 @@ public class MTEHatchTurbineProvider extends MTEHatchInputBus {
                 if (aMetaTileEntity == null) {
                     continue;
                 }
-                if (aMetaTileEntity instanceof MTELargeTurbine aTurb) {
+                if (aMetaTileEntity instanceof MTEMultiBlockBase aTurb
+                    && (aMetaTileEntity instanceof MTELargeTurbineLegacy
+                        || aMetaTileEntity instanceof MTELargeTurbineBase)) {
                     for (MTEHatchInputBus ee : aTurb.mInputBusses) {
                         if (ee.equals(this)) {
                             mParent = aTurb;
-                            Logger.INFO("Found a Parent to attach to this housing.");
                             return;
                         }
                     }
@@ -109,7 +113,7 @@ public class MTEHatchTurbineProvider extends MTEHatchInputBus {
     }
 
     public boolean isItemStackTurbine(ItemStack aStack) {
-        if (aStack.getItem() instanceof MetaGeneratedTool) {
+        if (aStack != null && aStack.getItem() instanceof MetaGeneratedTool) {
             return aStack.getItemDamage() >= 170 && aStack.getItemDamage() <= 176;
         }
         return false;
@@ -152,14 +156,15 @@ public class MTEHatchTurbineProvider extends MTEHatchInputBus {
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
         if (aPlayer != null) {
-            if (KeyboardUtils.isCtrlKeyDown()) {
+            if (GTMod.proxy.CTRL_KEYBIND.isKeyDown(aPlayer)) {
                 mDescending = !mDescending;
-                PlayerUtils.messagePlayer(aPlayer, "Direction: " + (mDescending ? "DOWN" : "UP"));
+                GTUtility.sendChatToPlayer(aPlayer, "Direction: " + (mDescending ? "DOWN" : "UP"));
             } else {
                 int aAmount = 0;
-                if (KeyboardUtils.isShiftKeyDown()) {
+                if (aPlayer.isSneaking()) {
                     aAmount = 10;
                 } else {
                     aAmount = 100;
@@ -175,7 +180,7 @@ public class MTEHatchTurbineProvider extends MTEHatchInputBus {
                         mRefreshTime = 0;
                     }
                 }
-                PlayerUtils.messagePlayer(aPlayer, "Set check time to be every " + mRefreshTime + " ticks.");
+                GTUtility.sendChatToPlayer(aPlayer, "Set check time to be every " + mRefreshTime + " ticks.");
             }
         }
     }
@@ -188,7 +193,7 @@ public class MTEHatchTurbineProvider extends MTEHatchInputBus {
                 if (isItemStackScrewdriver(aPlayer.getHeldItem())) {
                     aDidScrewdriver = true;
                     mRefreshTime = 1200;
-                    PlayerUtils.messagePlayer(aPlayer, "Reset check time to " + mRefreshTime + " ticks.");
+                    GTUtility.sendChatToPlayer(aPlayer, "Reset check time to " + mRefreshTime + " ticks.");
                 }
             }
         }
@@ -203,10 +208,7 @@ public class MTEHatchTurbineProvider extends MTEHatchInputBus {
     }
 
     @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        builder.widget(
-            new SlotWidget(inventoryHandler, 0).setFilter(MTELargerTurbineBase::isValidTurbine)
-                .setAccess(false, true)
-                .setPos(79, 34));
+    public boolean isItemValidForSlot(int index, ItemStack itemStack) {
+        return isItemStackTurbine(itemStack) && super.isItemValidForSlot(index, itemStack);
     }
 }

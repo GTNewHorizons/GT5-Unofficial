@@ -8,6 +8,9 @@ import javax.annotation.Nonnull;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.IFluidHandler;
 
@@ -67,9 +70,18 @@ public interface IGregTechTileEntity extends ITexturedTileEntity, ICoverable, IF
     void issueTextureUpdate();
 
     /**
-     * Causes the Machine to send its initial Data, like Covers and its ID.
+     * Causes the machine to send a tile entity description packet to the client. Only has an effect on the server.
+     * Also sends initial data and covers.
+     *
+     * @see IMetaTileEntity#getDescriptionData()
+     * @see IMetaTileEntity#onDescriptionPacket(NBTTagCompound)
+     * @see TileEntity#getDescriptionPacket()
+     * @see TileEntity#onDataPacket(NetworkManager, S35PacketUpdateTileEntity)
+     * @see net.minecraft.world.World#markBlockForUpdate(int, int, int)
      */
-    void issueClientUpdate();
+    default void issueTileUpdate() {
+
+    }
 
     /**
      * causes Explosion. Strength in Overload-EU
@@ -155,6 +167,10 @@ public interface IGregTechTileEntity extends ITexturedTileEntity, ICoverable, IF
 
     default void setShutDownReason(@Nonnull ShutDownReason reason) {}
 
+    void enableTicking();
+
+    void tryDisableTicking();
+
     /**
      * gets the time statistics used for CPU timing
      */
@@ -163,4 +179,11 @@ public interface IGregTechTileEntity extends ITexturedTileEntity, ICoverable, IF
     }
 
     default void startTimeStatistics() {}
+
+    /**
+     * Returns true if steam powers the tile entity
+     */
+    default boolean isSteampowered() {
+        return false;
+    };
 }

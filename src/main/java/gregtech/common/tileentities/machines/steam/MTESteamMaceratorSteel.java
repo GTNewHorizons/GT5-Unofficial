@@ -22,6 +22,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.ParticleFX;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TierEU;
@@ -79,6 +81,7 @@ public class MTESteamMaceratorSteel extends MTEBasicMachineSteel {
     @Override
     public int checkRecipe() {
         GTRecipe tRecipe = getRecipeMap().findRecipeQuery()
+            .caching(false)
             .items(getAllInputs())
             .voltage(TierEU.LV)
             .cachedRecipe(mLastRecipe)
@@ -104,17 +107,10 @@ public class MTESteamMaceratorSteel extends MTEBasicMachineSteel {
             && RecipeMaps.maceratorRecipes.containsInput(GTUtility.copyAmount(64, aStack));
     }
 
+    @SideOnly(Side.CLIENT)
     @Override
-    public void startSoundLoop(byte aIndex, double aX, double aY, double aZ) {
-        super.startSoundLoop(aIndex, aX, aY, aZ);
-        if (aIndex == 1) {
-            GTUtility.doSoundAtClient(SoundResource.IC2_MACHINES_MACERATOR_OP, 10, 1.0F, aX, aY, aZ);
-        }
-    }
-
-    @Override
-    public void startProcess() {
-        sendLoopStart((byte) 1);
+    protected SoundResource getActivitySoundLoop() {
+        return SoundResource.GTCEU_LOOP_MACERATOR;
     }
 
     @Override

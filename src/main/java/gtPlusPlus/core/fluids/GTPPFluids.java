@@ -5,7 +5,6 @@ import static gregtech.api.enums.Mods.TinkerConstruct;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import net.minecraft.block.Block;
@@ -19,7 +18,6 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import ic2.core.init.InternalName;
@@ -28,9 +26,6 @@ import ic2.core.item.resources.ItemCell;
 public class GTPPFluids {
 
     // Agricultural Chem
-    public static Fluid PoopJuice;
-    public static Fluid ManureSlurry;
-    public static Fluid FertileManureSlurry;
     public static Fluid RedMud;
     public static Fluid PropionicAcid;
     public static Fluid FermentationBase;
@@ -50,6 +45,7 @@ public class GTPPFluids {
     public static Fluid AlmandineFlotationFroth;
     public static Fluid PyropeFlotationFroth;
     public static Fluid MonaziteFlotationFroth;
+    public static Fluid NetherrackFlotationFroth;
 
     public static Fluid PineOil;
 
@@ -96,6 +92,7 @@ public class GTPPFluids {
     public static Fluid BurntLiFBeF2ZrF4UF4Salt;
     public static Fluid BurntLiFBeF2ZrF4U235Salt;
     public static Fluid ImpureMoltenSaltBase;
+    public static Fluid NuclearWaste;
 
     // Misc Fluids
     public static Fluid GeneticMutagen;
@@ -108,41 +105,13 @@ public class GTPPFluids {
     public static Fluid IndustrialStrengthHydrogenChloride;
     public static Fluid SulfuricLithiumMix;
     public static Fluid LithiumHydroxide;
+    public static Fluid RaisinJuice;
+    public static Fluid MobEssence;
 
     // Custom Blood Support
     private static final List<FluidStack> bloodFluids = new ArrayList<>();
 
     public static void init() {
-        PoopJuice = FluidUtils.generateFluidNonMolten(
-            "raw.waste",
-            "Raw Animal Waste",
-            32 + 175,
-            new short[] { 100, 70, 30, 100 },
-            null,
-            null,
-            0,
-            true);
-
-        ManureSlurry = FluidUtils.generateFluidNonMolten(
-            "manure.slurry",
-            "Manure Slurry",
-            39 + 175,
-            new short[] { 75, 45, 15, 100 },
-            null,
-            null,
-            0,
-            true);
-
-        FertileManureSlurry = FluidUtils.generateFluidNonMolten(
-            "fertile.manure.slurry",
-            "Fertile Manure Slurry",
-            45 + 175,
-            new short[] { 65, 50, 15, 100 },
-            null,
-            null,
-            0,
-            true);
-
         RedMud = FluidUtils.generateFluidNoPrefix(
             "mud.red.slurry",
             "Red Mud Slurry",
@@ -253,6 +222,14 @@ public class GTPPFluids {
             "Monazite Froth",
             32 + 175,
             new short[] { aMonaziteFrothRGB[0], aMonaziteFrothRGB[1], aMonaziteFrothRGB[2], 100 },
+            true);
+
+        short[] aNetherrackFrothRGB = Materials.Netherrack.mRGBa;
+        NetherrackFlotationFroth = FluidUtils.generateFluidNoPrefix(
+            "froth.Netherrackflotation",
+            "Netherrack Froth",
+            32 + 175,
+            new short[] { aNetherrackFrothRGB[0], aNetherrackFrothRGB[1], aNetherrackFrothRGB[2], 100 },
             true);
 
         PineOil = FluidUtils
@@ -454,6 +431,17 @@ public class GTPPFluids {
             null,
             null);
 
+        NuclearWaste = FluidUtils.addGTFluidNoPrefix(
+            "nuclear.waste",
+            "Nuclear Waste",
+            new short[] { 10, 250, 10, 100 },
+            0,
+            1000,
+            null,
+            ItemList.Cell_Empty.get(1),
+            1000,
+            true);
+
         GeneticMutagen = FluidUtils.generateFluidNonMolten(
             "GeneticMutagen",
             "Genetic Mutagen",
@@ -469,8 +457,10 @@ public class GTPPFluids {
             4,
             5,
             null,
-            ItemUtils.getEmptyCell(),
-            1000);
+            ItemList.Cell_Empty.get(1),
+            1000,
+            true,
+            true);
 
         Pyrotheum = FluidUtils.addGtFluid(
             "pyrotheum",
@@ -479,8 +469,10 @@ public class GTPPFluids {
             4,
             4000,
             null,
-            ItemUtils.getEmptyCell(),
-            1000);
+            ItemList.Cell_Empty.get(1),
+            1000,
+            true,
+            true);
 
         IndustrialStrengthHydrofluoricAcid = FluidUtils.addGtFluid(
             "hydrofluoricAcid",
@@ -489,7 +481,7 @@ public class GTPPFluids {
             1,
             120,
             null,
-            ItemUtils.getEmptyCell(),
+            ItemList.Cell_Empty.get(1),
             1000,
             false);
         generateIC2FluidCell(15, "HydrofluoricAcid");
@@ -507,7 +499,7 @@ public class GTPPFluids {
             4,
             75,
             null,
-            ItemUtils.getEmptyCell(),
+            ItemList.Cell_Empty.get(1),
             1000,
             false);
         generateIC2FluidCell(16, "SulfurousAcid");
@@ -519,7 +511,7 @@ public class GTPPFluids {
             4,
             500,
             null,
-            ItemUtils.getEmptyCell(),
+            ItemList.Cell_Empty.get(1),
             1000,
             false);
         generateIC2FluidCell(17, "SulfuricApatite");
@@ -531,7 +523,7 @@ public class GTPPFluids {
             4,
             75,
             null,
-            ItemUtils.getEmptyCell(),
+            ItemList.Cell_Empty.get(1),
             1000,
             false);
         generateIC2FluidCell(18, "HydrogenChloride");
@@ -543,7 +535,7 @@ public class GTPPFluids {
             4,
             280,
             null,
-            ItemUtils.getEmptyCell(),
+            ItemList.Cell_Empty.get(1),
             1000,
             false);
         generateIC2FluidCell(19, "SulfuricLithium");
@@ -555,10 +547,23 @@ public class GTPPFluids {
             4,
             500,
             null,
-            ItemUtils.getEmptyCell(),
+            ItemList.Cell_Empty.get(1),
             1000,
             false);
         generateIC2FluidCell(20, "LithiumHydroxide");
+
+        RaisinJuice = FluidUtils.generateFluidNonMolten(
+            "RaisinJuice",
+            "Raisin Juice",
+            2,
+            new short[] { 51, 0, 51, 100 },
+            ItemUtils.getItemStackOfAmountFromOreDictNoBroken("foodRaisins", 1),
+            ItemUtils.getItemStackOfAmountFromOreDictNoBroken("fruitRaisins", 1),
+            50,
+            true);
+
+        MobEssence = FluidUtils
+            .generateFluidNoPrefix("mobessence", "Mob Essence", 0, new short[] { 125, 175, 125, 100 });
 
         handleBlood();
     }
@@ -588,7 +593,6 @@ public class GTPPFluids {
         if (BiomesOPlenty.isModLoaded()) {
             FluidStack blood = FluidRegistry.getFluidStack("hell_blood", 100);
             if (blood != null) {
-                Logger.INFO("Found Biome's o Plenty, enabled Blood support.");
                 bloodFluids.add(blood);
             }
         }
@@ -596,21 +600,16 @@ public class GTPPFluids {
         if (TinkerConstruct.isModLoaded()) {
             FluidStack blood = FluidRegistry.getFluidStack("blood", 100);
             if (blood != null) {
-                Logger.INFO("Found Tinker's Construct, enabled Blood support.");
                 bloodFluids.add(blood);
             }
         }
 
         // Handle Blood Internally, Create if required.
         if (bloodFluids.isEmpty()) {
-            Logger.INFO("Did not find any existing Blood fluids, Generating our own");
             Fluid blood = FluidUtils
                 .generateFluidNoPrefix("blood", "Blood", 32 + 175, new short[] { 175, 25, 25, 100 }, true);
             bloodFluids.add(new FluidStack(blood, 100));
         }
     }
 
-    public static List<FluidStack> getBloodFluids() {
-        return Collections.unmodifiableList(bloodFluids);
-    }
 }

@@ -15,7 +15,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
+import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import toxiceverglades.dimension.DimensionEverglades;
 
@@ -33,7 +33,7 @@ public class RecipesLaserEngraver implements IOreRecipeRegistrator {
                 .itemInputs(
                     GTOreDictUnificator.get(OrePrefixes.plate, Materials.Lithium, 2L),
                     GTUtility.copyAmount(0L, aStack))
-                .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("plateDoubleLithium7", 1))
+                .itemOutputs(MaterialsElements.getInstance().LITHIUM7.getPlateDouble(1))
                 .duration(4 * MINUTES)
                 .eut(TierEU.RECIPE_EV)
                 .addTo(laserEngraverRecipes);
@@ -41,34 +41,27 @@ public class RecipesLaserEngraver implements IOreRecipeRegistrator {
                 .itemInputs(
                     GTOreDictUnificator.get(OrePrefixes.dust, Materials.Lithium, 3L),
                     GTUtility.copyAmount(0L, aStack))
-                .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("dustLithium7", 1))
+                .itemOutputs(MaterialsElements.getInstance().LITHIUM7.getDust(1))
                 .duration(2 * MINUTES)
                 .eut(TierEU.RECIPE_EV)
                 .addTo(laserEngraverRecipes);
 
         } else if (aOreDictName.equals(OreDictNames.craftingLensLime.toString())) {
             // Coil Wires
-            ItemStack coilWire1 = ItemUtils
-                .getItemStackWithMeta(true, "miscutils:itemDehydratorCoilWire", "coilWire1", 0, 1);
-            ItemStack coilWire2 = ItemUtils
-                .getItemStackWithMeta(true, "miscutils:itemDehydratorCoilWire:1", "coilWire2", 1, 1);
-            ItemStack coilWire3 = ItemUtils
-                .getItemStackWithMeta(true, "miscutils:itemDehydratorCoilWire:2", "coilWire3", 2, 1);
-            ItemStack coilWire4 = ItemUtils
-                .getItemStackWithMeta(true, "miscutils:itemDehydratorCoilWire:3", "coilWire4", 3, 1);
-
-            // Simple Life
-            String wire = "wireGt02";
+            ItemStack coilWire1 = GregtechItemList.DehydratorCoilWireEV.get(1);
+            ItemStack coilWire2 = GregtechItemList.DehydratorCoilWireIV.get(1);
+            ItemStack coilWire3 = GregtechItemList.DehydratorCoilWireLuV.get(1);
+            ItemStack coilWire4 = GregtechItemList.DehydratorCoilWireZPM.get(1);
 
             // Wires to Laser
-            ItemStack wireT1a = ItemUtils.getItemStackOfAmountFromOreDict(wire + "Aluminium", 1);
-            ItemStack wireT1b = ItemUtils.getItemStackOfAmountFromOreDict(wire + "Nichrome", 1);
-            ItemStack wireT2a = ItemUtils.getItemStackOfAmountFromOreDict(wire + "Osmium", 1);
-            ItemStack wireT2b = ItemUtils.getItemStackOfAmountFromOreDict(wire + "Platinum", 1);
-            ItemStack wireT3a = ItemUtils.getItemStackOfAmountFromOreDict(wire + "VanadiumGallium", 1);
-            ItemStack wireT3b = ItemUtils.getItemStackOfAmountFromOreDict(wire + "YttriumBariumCuprate", 1);
-            ItemStack wireT3c = ItemUtils.getItemStackOfAmountFromOreDict(wire + "NiobiumTitanium", 1);
-            ItemStack wireT4a = ItemUtils.getItemStackOfAmountFromOreDict(wire + "Naquadah", 1);
+            ItemStack wireT1a = GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.Aluminium, 1);
+            ItemStack wireT1b = GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.Nichrome, 1);
+            ItemStack wireT2a = GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.Osmium, 1);
+            ItemStack wireT2b = GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.Platinum, 1);
+            ItemStack wireT3a = GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.VanadiumGallium, 1);
+            ItemStack wireT3b = GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.YttriumBariumCuprate, 1);
+            ItemStack wireT3c = GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.NiobiumTitanium, 1);
+            ItemStack wireT4a = GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.Naquadah, 1);
 
             // T1
             GTValues.RA.stdBuilder()
@@ -126,7 +119,7 @@ public class RecipesLaserEngraver implements IOreRecipeRegistrator {
         } else if (aOreDictName.equals(OreDictNames.craftingLensOrange.toString())) {
             GTValues.RA.stdBuilder()
                 .itemInputs(GregtechItemList.AlkalusDisk.get(1), GTUtility.copyAmount(0L, aStack))
-                .itemOutputs(ItemUtils.getSimpleStack(DimensionEverglades.portalItem))
+                .itemOutputs(new ItemStack(DimensionEverglades.portalItem))
                 .duration(3 * HOURS)
                 .eut(TierEU.RECIPE_IV)
                 .addTo(laserEngraverRecipes);

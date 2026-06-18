@@ -7,8 +7,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
+
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
+import gregtech.api.enums.TierEU;
 import gregtech.api.recipe.RecipeMapBackend;
 import gregtech.api.recipe.RecipeMapBackendPropertiesBuilder;
 import gregtech.api.util.GTRecipe;
@@ -29,13 +32,19 @@ public class FormingPressBackend extends RecipeMapBackend {
     @Override
     protected GTRecipe modifyFoundRecipe(GTRecipe recipe, ItemStack[] items, FluidStack[] fluids,
         @Nullable ItemStack specialSlot) {
-        for (ItemStack mold : items) {
+        boolean isCreditRecipe = false;
+        for (ItemStack mold : recipe.mInputs) {
             if (ItemList.Shape_Mold_Credit.isStackEqual(mold, false, true)) {
-                NBTTagCompound nbt = mold.getTagCompound();
-                if (nbt == null) nbt = new NBTTagCompound();
-                if (!nbt.hasKey("credit_security_id")) nbt.setLong("credit_security_id", System.nanoTime());
-                mold.setTagCompound(nbt);
-
+                isCreditRecipe = true;
+                break;
+            }
+        }
+        if (isCreditRecipe) for (ItemStack mold : items) {
+            if (ItemList.Shape_Mold_Credit.isStackEqual(mold, false, true)) {
+                final NBTTagCompound nbt = ItemStackNBT.get(mold);
+                if (!nbt.hasKey("credit_security_id")) {
+                    nbt.setLong("credit_security_id", System.nanoTime());
+                }
                 recipe = recipe.copy();
                 recipe.mCanBeBuffered = false;
                 recipe.mOutputs[0].setTagCompound(nbt);
@@ -66,7 +75,7 @@ public class FormingPressBackend extends RecipeMapBackend {
             .itemInputs(GTUtility.copyAmount(0, mold), GTUtility.copyAmount(1, input))
             .itemOutputs(output)
             .duration(128)
-            .eut(8)
+            .eut(TierEU.RECIPE_ULV)
             .noBuffer()
             .nbtSensitive()
             .build()

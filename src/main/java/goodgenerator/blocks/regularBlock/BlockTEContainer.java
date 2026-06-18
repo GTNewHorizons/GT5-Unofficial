@@ -8,26 +8,23 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import goodgenerator.blocks.tileEntity.MTEEssentiaHatch;
 import goodgenerator.blocks.tileEntity.MTEEssentiaOutputHatch;
 import goodgenerator.blocks.tileEntity.MTEEssentiaOutputHatchME;
 import goodgenerator.main.GoodGenerator;
 import gregtech.api.GregTechAPI;
 import gregtech.api.util.GTUtility;
-import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.IEssentiaContainerItem;
 
 public class BlockTEContainer extends BlockContainer {
 
@@ -36,6 +33,11 @@ public class BlockTEContainer extends BlockContainer {
 
     String[] textureNames;
     protected String name;
+
+    // Index 0: Formerly Essentia Hatch, now removed
+    // Index 1: Essentia Output Hatch
+    // Index 2: Essentia Output Hatch (ME)
+    // Index 3+: Unused
     protected int index;
 
     public BlockTEContainer(String name, String[] texture, CreativeTabs Tab) {
@@ -98,8 +100,7 @@ public class BlockTEContainer extends BlockContainer {
 
     @Override
     @SideOnly(Side.CLIENT)
-    @SuppressWarnings("unchecked")
-    public void getSubBlocks(Item item, CreativeTabs tab, List list) {
+    public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {
         for (int i = 0; i < this.textureNames.length; i++) {
             list.add(new ItemStack(item, 1, i));
         }
@@ -143,8 +144,6 @@ public class BlockTEContainer extends BlockContainer {
     @Override
     public TileEntity createTileEntity(World world, int meta) {
         switch (index) {
-            case 1:
-                return new MTEEssentiaHatch();
             case 2:
                 return new MTEEssentiaOutputHatch();
             case 3:
@@ -161,38 +160,12 @@ public class BlockTEContainer extends BlockContainer {
             return false;
         } else {
             TileEntity tile = world.getTileEntity(x, y, z);
-            if (index == 1) {
-                if (tile instanceof MTEEssentiaHatch) {
-                    ItemStack tItemStack = player.getHeldItem();
-                    if (tItemStack != null) {
-                        Item tItem = tItemStack.getItem();
-                        if (tItem instanceof IEssentiaContainerItem
-                            && ((IEssentiaContainerItem) tItem).getAspects(player.getHeldItem()) != null
-                            && ((IEssentiaContainerItem) tItem).getAspects(player.getHeldItem())
-                                .size() > 0) {
-                            Aspect tLocked = ((IEssentiaContainerItem) tItem).getAspects(player.getHeldItem())
-                                .getAspects()[0];
-                            ((MTEEssentiaHatch) tile).setLockedAspect(tLocked);
-                            GTUtility.sendChatToPlayer(
-                                player,
-                                String.format(
-                                    StatCollector.translateToLocal("essentiahatch.chat.0"),
-                                    tLocked.getLocalizedDescription()));
-                        }
-                    } else {
-                        ((MTEEssentiaHatch) tile).setLockedAspect(null);
-                        GTUtility.sendChatToPlayer(player, StatCollector.translateToLocal("essentiahatch.chat.1"));
-                    }
-                    world.markBlockForUpdate(x, y, z);
-                    return true;
-                } else return false;
-            } else if (index == 2) {
+            if (index == 2) {
                 if (tile instanceof MTEEssentiaOutputHatch && player.isSneaking()) {
                     ItemStack tItemStack = player.getHeldItem();
                     if (tItemStack == null) {
                         ((MTEEssentiaOutputHatch) tile).clear();
-                        GTUtility
-                            .sendChatToPlayer(player, StatCollector.translateToLocal("essentiaoutputhatch.chat.0"));
+                        GTUtility.sendChatTrans(player, "essentiaoutputhatch.chat.0");
                     }
                     return true;
                 } else return false;
@@ -203,5 +176,16 @@ public class BlockTEContainer extends BlockContainer {
     @Override
     public TileEntity createNewTileEntity(World p_149915_1_, int p_149915_2_) {
         return null;
+    }
+
+    @Override
+    public void onBlockPlacedBy(World worldIn, int x, int y, int z, EntityLivingBase placer, ItemStack itemIn) {
+        super.onBlockPlacedBy(worldIn, x, y, z, placer, itemIn);
+        TileEntity te = worldIn.getTileEntity(x, y, z);
+        if (te instanceof MTEEssentiaOutputHatchME hatchME) {
+            hatchME.getProxy()
+                .setOwner((EntityPlayer) placer);
+        }
+
     }
 }

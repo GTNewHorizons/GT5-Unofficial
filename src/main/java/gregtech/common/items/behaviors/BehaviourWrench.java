@@ -9,6 +9,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.oredict.OreDictionary;
@@ -20,7 +21,6 @@ import gregtech.GTMod;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.items.MetaBaseItem;
 import gregtech.api.items.MetaGeneratedTool;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
 import ic2.api.tile.IWrenchable;
 import ic2.core.block.BlockRubWood;
@@ -28,8 +28,6 @@ import ic2.core.block.BlockRubWood;
 public class BehaviourWrench extends BehaviourNone {
 
     private final int mCosts;
-    private final String mTooltip = GTLanguageManager
-        .addStringLocalization("gt.behaviour.wrench", "Rotates Blocks on Rightclick");
 
     public BehaviourWrench(int aCosts) {
         this.mCosts = aCosts;
@@ -63,7 +61,7 @@ public class BehaviourWrench extends BehaviourNone {
 
         try {
             return handler.handle() && !aWorld.isRemote;
-        } catch (Throwable e) {
+        } catch (Exception e) {
             GTMod.GT_FML_LOGGER.error("Error wrenching", e);
         }
         return false;
@@ -71,10 +69,8 @@ public class BehaviourWrench extends BehaviourNone {
 
     /**
      * <p>
-     * A class to simplify wrenching operation,
-     * stopping "checking creative", "trying to damage tool",
-     * "doing the logic" and "playing sound" again and again.
-     * This should have been a record, but it's not available in Java 8.
+     * A class to simplify wrenching operation, stopping "checking creative", "trying to damage tool", "doing the logic"
+     * and "playing sound" again and again. This should have been a record, but it's not available in Java 8.
      * </p>
      * <p>
      * {@link WrenchHandler#handle()} is the entry point of main logic.
@@ -232,7 +228,8 @@ public class BehaviourWrench extends BehaviourNone {
             if (player.capabilities.isCreativeMode || item.canWrench(player, x, y, z)) {
                 if (operation.getAsBoolean()) {
                     item.doDamage(stack, damage);
-                    GTUtility.sendSoundToPlayers(world, SoundResource.IC2_TOOLS_WRENCH, 1.0F, -1.0F, x, y, z);
+                    GTUtility
+                        .sendSoundToPlayers(world, SoundResource.GTCEU_OP_WRENCH, 1.0F, 1.0F, x + .5, y + .5, z + .5);
                     return true;
                 }
             }
@@ -279,7 +276,7 @@ public class BehaviourWrench extends BehaviourNone {
 
     @Override
     public List<String> getAdditionalToolTips(MetaBaseItem aItem, List<String> aList, ItemStack aStack) {
-        aList.add(this.mTooltip);
+        aList.add(StatCollector.translateToLocal("gt.behaviour.wrench"));
         return aList;
     }
 }

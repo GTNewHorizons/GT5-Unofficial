@@ -11,6 +11,7 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase.GTPPHatchElement.TTDynamo;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
@@ -30,13 +31,10 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
-import gregtech.api.metatileentity.implementations.MTEHatchInput;
-import gregtech.api.metatileentity.implementations.MTEHatchMaintenance;
-import gregtech.api.metatileentity.implementations.MTEHatchMuffler;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.pollution.PollutionConfig;
@@ -66,21 +64,21 @@ public class MTELargeSemifluidGenerator extends GTPPMultiBlockBase<MTELargeSemif
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Engine Intake Casings must not be obstructed in front (only air blocks)")
-            .addInfo("Supply Semifluid Fuels and 2000L of Lubricant per hour to run.")
-            .addInfo("Supply 80L of Oxygen per second to boost output (optional).")
+            .addInfo("Supply Semifluid Fuels and 2000L of Lubricant per hour to run")
+            .addInfo("Supply 80L of Oxygen per second to boost output (optional)")
             .addInfo("Default: Produces 2048EU/t at 100% efficiency")
             .addInfo("Boosted: Produces 6144EU/t at 150% efficiency")
+            .addInfo("Engine Intake Casings must not be obstructed in front (only air blocks)")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 3, 4, false)
-            .addController("Front Center")
+            .addController("Front center")
             .addCasingInfoMin("Stable Titanium Machine Casing", 16, false)
             .addCasingInfoMin("Steel Gear Box Machine Casing", 2, false)
             .addCasingInfoMin("Engine Intake Machine Casing", 8, false)
             .addInputHatch("Any Casing", 1)
             .addMaintenanceHatch("Any Casing", 1)
             .addMufflerHatch("Any Casing", 1)
-            .addDynamoHatch("Back Center", 2)
+            .addDynamoHatch("Back center", 2)
             .toolTipFinisher();
         return tt;
     }
@@ -146,7 +144,7 @@ public class MTELargeSemifluidGenerator extends GTPPMultiBlockBase<MTELargeSemif
             GTRecipe aFuel = GTPPRecipeMaps.semiFluidFuels.getBackend()
                 .findFuel(hatchFluid);
             if (aFuel == null) {
-                // Not a valid semi-fluid fuel.
+                // Not a valid semifluid fuel.
                 continue;
             }
 
@@ -196,7 +194,7 @@ public class MTELargeSemifluidGenerator extends GTPPMultiBlockBase<MTELargeSemif
                     'C',
                     buildHatchAdder(MTELargeSemifluidGenerator.class).atLeast(Muffler, InputHatch, Maintenance)
                         .casingIndex(getCasingTextureIndex())
-                        .dot(1)
+                        .hint(1)
                         .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(getCasingBlock(), getCasingMeta()))))
                 .addElement('G', ofBlock(getGearboxBlock(), getGearboxMeta()))
                 .addElement('I', ofBlock(getIntakeBlock(), getIntakeMeta()))
@@ -217,42 +215,17 @@ public class MTELargeSemifluidGenerator extends GTPPMultiBlockBase<MTELargeSemif
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(mName, stackSize, 1, 1, 0, elementBudget, env, false, true);
+        return survivalBuildPiece(mName, stackSize, 1, 1, 0, elementBudget, env, false, true);
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         mCasing = 0;
         mDynamoHatches.clear();
-        return checkPiece(mName, 1, 1, 0) && mCasing >= 16 && checkHatch();
-    }
-
-    public final boolean addLargeSemifluidGeneratorList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-        if (aTileEntity == null) {
-            return false;
-        } else {
-            IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-            if (aMetaTileEntity instanceof MTEHatchMaintenance) {
-                return addToMachineList(aTileEntity, aBaseCasingIndex);
-            } else if (aMetaTileEntity instanceof MTEHatchMuffler) {
-                return addToMachineList(aTileEntity, aBaseCasingIndex);
-            } else if (aMetaTileEntity instanceof MTEHatchInput) {
-                return addToMachineList(aTileEntity, aBaseCasingIndex);
-            }
-        }
-        return false;
-    }
-
-    public final boolean addLargeSemifluidGeneratorBackList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-        if (aTileEntity == null) {
-            return false;
-        } else {
-            IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-            if (aMetaTileEntity instanceof MTEHatchDynamo || this.isThisHatchMultiDynamo(aTileEntity)) {
-                return addToMachineList(aTileEntity, aBaseCasingIndex);
-            }
-        }
-        return false;
+        if (!checkPiece(mName, 1, 1, 0, errors)) return;
+        checkCasingMin(errors, mCasing, 16);
+        checkHatch(errors);
+        checkHasInputHatch(errors);
     }
 
     public Block getCasingBlock() {
@@ -291,11 +264,21 @@ public class MTELargeSemifluidGenerator extends GTPPMultiBlockBase<MTELargeSemif
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
+        aNBT.setInteger("mEfficiency", mEfficiency);
+        aNBT.setBoolean("boostEu", boostEu);
+        aNBT.setInteger("fuelConsumption", fuelConsumption);
+        aNBT.setInteger("fuelValue", fuelValue);
+        aNBT.setInteger("fuelRemaining", fuelRemaining);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
+        mEfficiency = aNBT.getInteger("mEfficiency");
+        boostEu = aNBT.getBoolean("boostEu");
+        fuelConsumption = aNBT.getInteger("fuelConsumption");
+        fuelValue = aNBT.getInteger("fuelValue");
+        fuelRemaining = aNBT.getInteger("fuelRemaining");
     }
 
     @Override
@@ -319,21 +302,8 @@ public class MTELargeSemifluidGenerator extends GTPPMultiBlockBase<MTELargeSemif
     }
 
     @Override
-    public String[] getExtraInfoData() {
-        return new String[] { "Large Semifluid Generator", "Current Output: " + lEUt * mEfficiency / 10000 + " EU/t",
-            "Fuel Consumption: " + fuelConsumption + "L/t", "Fuel Value: " + fuelValue + " EU/L",
-            "Fuel Remaining: " + fuelRemaining + " Litres", "Current Efficiency: " + (mEfficiency / 100) + "%",
-            getIdealStatus() == getRepairStatus() ? "No Maintainance issues" : "Needs Maintainance" };
-    }
-
-    @Override
-    public boolean isGivingInformation() {
-        return true;
-    }
-
-    @Override
     public String getMachineType() {
-        return "Semifluid Generator";
+        return "Semifluid Generator, LSB";
     }
 
     @Override
@@ -341,4 +311,13 @@ public class MTELargeSemifluidGenerator extends GTPPMultiBlockBase<MTELargeSemif
         return 0;
     }
 
+    @Override
+    public boolean showRecipeTextInGUI() {
+        return false;
+    }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
+    }
 }

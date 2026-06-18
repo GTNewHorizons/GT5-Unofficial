@@ -5,7 +5,7 @@ import com.gtnewhorizon.gtnhlib.config.Config;
 import gregtech.api.enums.Mods;
 
 @Config(
-    modid = Mods.Names.GREG_TECH,
+    modid = Mods.ModIDs.GREG_TECH,
     category = "worldgen",
     configSubDirectory = "GregTech",
     filename = "WorldGeneration")
@@ -18,18 +18,18 @@ public class Worldgen {
     @Config.LangKey("GT5U.gui.config.worldgen.end_asteroids")
     public static class EndAsteroids {
 
-        @Config.Comment("The maximum size for the end asteroids.")
-        @Config.DefaultInt(200)
+        @Config.Comment("The maximum range for the end asteroids.")
+        @Config.DefaultInt(15)
         @Config.RequiresMcRestart
         public int EndAsteroidMaxSize;
 
-        @Config.Comment("The minimum size for the end asteroids.")
-        @Config.DefaultInt(200)
+        @Config.Comment("The minimum range for the end asteroids.")
+        @Config.DefaultInt(5)
         @Config.RequiresMcRestart
         public int EndAsteroidMinSize;
 
         @Config.Comment("The probability weight to generate end asteroids.")
-        @Config.DefaultInt(300)
+        @Config.DefaultInt(4)
         @Config.RequiresMcRestart
         public int EndAsteroidProbability;
 

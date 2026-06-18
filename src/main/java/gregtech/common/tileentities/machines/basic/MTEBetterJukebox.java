@@ -5,12 +5,9 @@ import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_OUT;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_SIDE_JUKEBOX;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_JUKEBOX;
-import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.EnumMap;
-import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
@@ -19,9 +16,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -29,49 +24,41 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector4i;
 
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.gtnhlib.api.MusicRecordMetadataProvider;
-import com.gtnewhorizons.modularui.api.drawable.FallbackableUITexture;
-import com.gtnewhorizons.modularui.api.drawable.UITexture;
-import com.gtnewhorizons.modularui.api.math.Pos2d;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.widget.CycleButtonWidget;
-import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
-import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
-import com.gtnewhorizons.modularui.common.widget.ProgressBar;
-import com.gtnewhorizons.modularui.common.widget.SliderWidget;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
 import appeng.api.implementations.tiles.ISoundP2PHandler;
 import appeng.me.GridAccessException;
 import appeng.me.cache.helpers.TunnelCollection;
 import appeng.me.helpers.AENetworkProxy;
 import appeng.parts.p2p.PartP2PSound;
-import gregtech.api.enums.GTValues;
+import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.VoltageIndex;
-import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicMachine;
-import gregtech.api.recipe.BasicUIProperties;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTMusicSystem;
-import gregtech.common.gui.modularui.UIHelper;
+import gregtech.api.util.GTUtility;
+import gregtech.common.gui.modularui.hatch.MTEBetterJukeboxGui;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 
-public class MTEBetterJukebox extends MTEBasicMachine implements IAddUIWidgets, ISoundP2PHandler {
+@IMetaTileEntity.SkipGenerateDescription
+public class MTEBetterJukebox extends MTEBasicMachine implements ISoundP2PHandler {
 
     // Stored state
     public UUID jukeboxUuid = UNSET_UUID;
     public boolean loopMode = true;
     public boolean shuffleMode = false;
-    public int playbackSlot = 0;
-    public float playbackVolume = BalanceMath.VANILLA_JUKEBOX_RANGE;
-    public float p2pVolume = BalanceMath.VANILLA_JUKEBOX_RANGE;
-    public long discProgressMs = 0;
+    private int playbackSlot = 0;
+    public double playbackVolume;
+    public double p2pVolume = BalanceMath.VANILLA_JUKEBOX_RANGE;
+    private long discProgressMs = 0;
     /** Makes all music discs play for 4 seconds */
     public boolean superFastDebugMode = false;
     // Computed state
@@ -79,7 +66,7 @@ public class MTEBetterJukebox extends MTEBasicMachine implements IAddUIWidgets, 
     private GTMusicSystem.MusicSource musicSource = null;
     private boolean powered = false;
     private long discStartMs = 0;
-    public long discDurationMs = 1;
+    private long discDurationMs = 1;
     private ItemRecord currentlyPlaying = null;
 
     // Constants
@@ -99,9 +86,9 @@ public class MTEBetterJukebox extends MTEBasicMachine implements IAddUIWidgets, 
     public static final class BalanceMath {
 
         public static int MAX_TIER = VoltageIndex.IV;
-        public static float VANILLA_JUKEBOX_RANGE = 4.0f; // 64 blocks
+        public static double VANILLA_JUKEBOX_RANGE = 4.0f; // 64 blocks
 
-        private static final float[] LISTENING_VOLUME = new float[] { //
+        private static final double[] LISTENING_VOLUME = new double[] { //
             VANILLA_JUKEBOX_RANGE, // ULV (unpowered fallback)
             VANILLA_JUKEBOX_RANGE + 1.0f, // LV, 80 blocks
             VANILLA_JUKEBOX_RANGE + 2.0f, // MV, 96 blocks
@@ -119,13 +106,13 @@ public class MTEBetterJukebox extends MTEBasicMachine implements IAddUIWidgets, 
             9002, // IV, already unlimited here - this value is ignored
         };
 
-        public static float listeningVolume(int tier) {
-            tier = MathHelper.clamp_int(tier, 0, MAX_TIER);
+        public static double listeningVolume(int tier) {
+            tier = Math.clamp(tier, 0, MAX_TIER);
             return LISTENING_VOLUME[tier];
         }
 
         public static int headphoneBlockRange(int tier) {
-            tier = MathHelper.clamp_int(tier, 0, MAX_TIER);
+            tier = Math.clamp(tier, 0, MAX_TIER);
             return HEADPHONE_BLOCK_RANGE[tier];
         }
 
@@ -139,44 +126,54 @@ public class MTEBetterJukebox extends MTEBasicMachine implements IAddUIWidgets, 
             }
         }
 
-        public static float volumeToAttenuationDistance(float range) {
+        public static double volumeToAttenuationDistance(double range) {
             // SoundManager.playSound logic
-            return 16.0f * range;
+            return 16 * range;
         }
 
-        public static float attenuationDistanceToVolume(float blockRange) {
-            return blockRange / 16.0f;
+        public static double attenuationDistanceToVolume(double blockRange) {
+            return blockRange / 16;
         }
 
         public static long eutUsage(int tier) {
-            tier = MathHelper.clamp_int(tier, 0, MAX_TIER);
+            tier = Math.clamp(tier, 0, MAX_TIER);
             return V[tier] / 16;
         }
     }
 
     private static String[] buildDescription(int aTier) {
         ArrayList<String> strings = new ArrayList<>(4);
-        strings.add("Plays music better than your average vanilla jukebox.");
+        strings.add(GTUtility.translate("gt.blockmachines.basicmachine.betterjukebox.tooltip.better_than_vanilla"));
         if (BalanceMath.headphoneLimit(aTier) != HeadphoneLimit.BLOCK_RANGE) {
-            strings.add(EnumChatFormatting.BLUE + "The raw power of Hatsune Miku in your ears");
+            strings.add(
+                EnumChatFormatting.BLUE
+                    + GTUtility.translate("gt.blockmachines.basicmachine.betterjukebox.tooltip.hatsune_miku_power"));
         }
         strings.add(
             String.format(
-                "Range: %s%.1f blocks",
+                GTUtility.translate("gt.blockmachines.basicmachine.betterjukebox.tooltip.range"),
                 EnumChatFormatting.WHITE,
                 BalanceMath.volumeToAttenuationDistance(BalanceMath.listeningVolume(aTier))));
         strings.add(switch (BalanceMath.headphoneLimit(aTier)) {
             case BLOCK_RANGE -> String.format(
-                "Headphone signal range: %s%d blocks",
+                GTUtility.translate("gt.blockmachines.basicmachine.betterjukebox.tooltip.headphone_range_blocks"),
                 EnumChatFormatting.WHITE,
                 BalanceMath.headphoneBlockRange(aTier));
-            case INSIDE_DIMENSION -> String
-                .format("Headphones work anywhere in %sthe same dimension", EnumChatFormatting.WHITE);
-            case BETWEEN_DIMENSIONS -> String
-                .format("Headphones work anywhere, in %sany dimension", EnumChatFormatting.WHITE);
+            case INSIDE_DIMENSION -> String.format(
+                GTUtility
+                    .translate("gt.blockmachines.basicmachine.betterjukebox.tooltip.headphone_range_same_dimension"),
+                EnumChatFormatting.WHITE);
+            case BETWEEN_DIMENSIONS -> String.format(
+                GTUtility
+                    .translate("gt.blockmachines.basicmachine.betterjukebox.tooltip.headphone_range_any_dimension"),
+                EnumChatFormatting.WHITE);
         });
-        strings.add(String.format("Cost: %s%d EU/t", EnumChatFormatting.WHITE, BalanceMath.eutUsage(aTier)));
-        strings.add(GTValues.AuthorEigenRaven);
+        strings.add(
+            String.format(
+                GTUtility.translate("gt.blockmachines.basicmachine.betterjukebox.tooltip.cost"),
+                EnumChatFormatting.WHITE,
+                BalanceMath.eutUsage(aTier)));
+        strings.add(GTAuthors.buildAuthorsWithFormat(GTAuthors.AuthorEigenRaven));
         return strings.toArray(new String[0]);
     }
 
@@ -188,6 +185,34 @@ public class MTEBetterJukebox extends MTEBasicMachine implements IAddUIWidgets, 
     public MTEBetterJukebox(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 1, aDescription, aTextures, INPUT_SLOTS, 1);
         playbackVolume = BalanceMath.listeningVolume(aTier);
+    }
+
+    public boolean isLoopMode() {
+        return loopMode;
+    }
+
+    public void setLoopMode(boolean loopMode) {
+        this.loopMode = loopMode;
+    }
+
+    public boolean isShuffleMode() {
+        return shuffleMode;
+    }
+
+    public void setShuffleMode(boolean shuffleMode) {
+        this.shuffleMode = shuffleMode;
+    }
+
+    public long getDiscProgressMs() {
+        return discProgressMs;
+    }
+
+    public long getDiscDurationMs() {
+        return discDurationMs;
+    }
+
+    public int getPlaybackSlot() {
+        return playbackSlot;
     }
 
     @Override
@@ -247,11 +272,10 @@ public class MTEBetterJukebox extends MTEBasicMachine implements IAddUIWidgets, 
             final ResourceLocation resource, playPath;
             if (record instanceof MusicRecordMetadataProvider mrmp) {
                 resource = mrmp.getMusicRecordResource(mInventory[getInputSlot() + playbackSlot]);
-                playPath = resource;
             } else {
-                resource = record.getRecordResource(record.recordName);
-                playPath = new ResourceLocation(resource.getResourceDomain(), "records." + resource.getResourcePath());
+                resource = record.getRecordResource("records." + record.recordName);
             }
+            playPath = resource;
             currentlyPlaying = record;
             // Assume a safe disc duration of 500 seconds if not known in the registry
             discDurationMs = GTMusicSystem.getMusicRecordDurations()
@@ -339,13 +363,10 @@ public class MTEBetterJukebox extends MTEBasicMachine implements IAddUIWidgets, 
                     final ResourceLocation resource, playPath;
                     if (record instanceof MusicRecordMetadataProvider mrmp) {
                         resource = mrmp.getMusicRecordResource(mInventory[getInputSlot() + playbackSlot]);
-                        playPath = resource;
                     } else {
-                        resource = record.getRecordResource(record.recordName);
-                        playPath = new ResourceLocation(
-                            resource.getResourceDomain(),
-                            "records." + resource.getResourcePath());
+                        resource = record.getRecordResource("records." + record.recordName);
                     }
+                    playPath = resource;
                     currentlyPlaying = record;
                     musicSource.setRecord(playPath);
                     // Assume a safe disc duration of 500 seconds if not known in the registry
@@ -372,7 +393,7 @@ public class MTEBetterJukebox extends MTEBasicMachine implements IAddUIWidgets, 
     }
 
     private void pickNextSlot() {
-        playbackSlot = MathHelper.clamp_int(playbackSlot, 0, INPUT_SLOTS);
+        playbackSlot = Math.clamp(playbackSlot, 0, INPUT_SLOTS);
         if (shuffleMode) {
             final int[] validSlots = new int[INPUT_SLOTS];
             int validSlotCount = 0;
@@ -455,22 +476,20 @@ public class MTEBetterJukebox extends MTEBasicMachine implements IAddUIWidgets, 
     @Override
     public String[] getInfoData() {
         return new String[] {
-            StatCollector.translateToLocalFormatted(
+            GTUtility.translate(
                 "GT5U.infodata.juke_box.uuid",
-                (jukeboxUuid == UNSET_UUID) ? StatCollector.translateToLocal("GT5U.infodata.juke_box.uuid.unset")
-                    : jukeboxUuid),
-            StatCollector.translateToLocalFormatted("GT5U.infodata.juke_box.loop_mode", loopMode),
-            StatCollector.translateToLocalFormatted("GT5U.infodata.juke_box.shuffle_mode", shuffleMode),
-            StatCollector.translateToLocalFormatted("GT5U.infodata.juke_box.played", discProgressMs),
-            StatCollector.translateToLocalFormatted("GT5U.infodata.juke_box.current", discDurationMs),
-            StatCollector.translateToLocalFormatted(
+                (jukeboxUuid == UNSET_UUID) ? GTUtility.translate("GT5U.infodata.juke_box.uuid.unset") : jukeboxUuid),
+            GTUtility.translate("GT5U.infodata.juke_box.loop_mode", loopMode),
+            GTUtility.translate("GT5U.infodata.juke_box.shuffle_mode", shuffleMode),
+            GTUtility.translate("GT5U.infodata.juke_box.played", discProgressMs),
+            GTUtility.translate("GT5U.infodata.juke_box.current", discDurationMs),
+            GTUtility.translate(
                 "GT5U.infodata.juke_box.playback_range",
                 BalanceMath.volumeToAttenuationDistance(playbackVolume)),
-            StatCollector.translateToLocalFormatted(
-                "GT5U.infodata.juke_box.p2p_range",
-                BalanceMath.volumeToAttenuationDistance(playbackVolume)),
-            StatCollector.translateToLocalFormatted("GT5U.infodata.juke_box.raw_playback_strength", playbackVolume),
-            StatCollector.translateToLocalFormatted("GT5U.infodata.juke_box.raw_p2p_strength", p2pVolume) };
+            GTUtility
+                .translate("GT5U.infodata.juke_box.p2p_range", BalanceMath.volumeToAttenuationDistance(playbackVolume)),
+            GTUtility.translate("GT5U.infodata.juke_box.raw_playback_strength", playbackVolume),
+            GTUtility.translate("GT5U.infodata.juke_box.raw_p2p_strength", p2pVolume) };
     }
 
     @Override
@@ -482,8 +501,8 @@ public class MTEBetterJukebox extends MTEBasicMachine implements IAddUIWidgets, 
             aNBT.setBoolean(NBTKEY_LOOP_MODE, loopMode);
             aNBT.setBoolean(NBTKEY_SHUFFLE_MODE, shuffleMode);
             aNBT.setInteger(NBTKEY_PLAYBACK_SLOT, playbackSlot);
-            aNBT.setFloat(NBTKEY_VOLUME_PLAY, playbackVolume);
-            aNBT.setFloat(NBTKEY_VOLUME_P2P, p2pVolume);
+            aNBT.setDouble(NBTKEY_VOLUME_PLAY, playbackVolume);
+            aNBT.setDouble(NBTKEY_VOLUME_P2P, p2pVolume);
             aNBT.setLong(NBTKEY_DISC_PROGRESS_MS, discProgressMs);
         }
     }
@@ -505,146 +524,31 @@ public class MTEBetterJukebox extends MTEBasicMachine implements IAddUIWidgets, 
             playbackSlot = aNBT.getInteger(NBTKEY_PLAYBACK_SLOT);
         }
         if (aNBT.hasKey(NBTKEY_VOLUME_PLAY, Constants.NBT.TAG_ANY_NUMERIC)) {
-            playbackVolume = aNBT.getFloat(NBTKEY_VOLUME_PLAY);
+            playbackVolume = aNBT.getDouble(NBTKEY_VOLUME_PLAY);
         }
         if (aNBT.hasKey(NBTKEY_VOLUME_P2P, Constants.NBT.TAG_ANY_NUMERIC)) {
-            p2pVolume = aNBT.getFloat(NBTKEY_VOLUME_P2P);
+            p2pVolume = aNBT.getDouble(NBTKEY_VOLUME_P2P);
         }
         if (aNBT.hasKey(NBTKEY_DISC_PROGRESS_MS, Constants.NBT.TAG_ANY_NUMERIC)) {
             discProgressMs = aNBT.getLong(NBTKEY_DISC_PROGRESS_MS);
         }
 
-        final float maxVolume = BalanceMath.listeningVolume(mTier);
-        playbackVolume = MathHelper.clamp_float(playbackVolume, 0.0f, maxVolume);
-        p2pVolume = MathHelper.clamp_float(p2pVolume, 0.0f, maxVolume);
+        final double maxVolume = BalanceMath.listeningVolume(mTier);
+        playbackVolume = Math.clamp(playbackVolume, 0.0f, maxVolume);
+        p2pVolume = Math.clamp(p2pVolume, 0.0f, maxVolume);
     }
 
-    @Override
-    protected BasicUIProperties getUIProperties() {
-        return super.getUIProperties().toBuilder()
-            .itemInputPositionsGetter(count -> UIHelper.getGridPositions(count, 7, 6, 7, 3))
-            .itemOutputPositionsGetter(count -> UIHelper.getGridPositions(count, 153, 24, 1))
-            .specialItemPositionGetter(() -> new Pos2d(115, 62))
-            .progressBarPos(Pos2d.cartesian(133, 24))
-            .progressBarTexture(new FallbackableUITexture(GTUITextures.PROGRESSBAR_ARROW))
-            .build();
-    }
-
-    @Override
-    protected void addProgressBar(ModularWindow.Builder builder, BasicUIProperties uiProperties) {
-        builder.widget(
-            setNEITransferRect(
-                new ProgressBar().setProgress(() -> discProgressMs / (float) Math.max(1, discDurationMs))
-                    .setTexture(uiProperties.progressBarTexture.get(), uiProperties.progressBarImageSize)
-                    .setDirection(uiProperties.progressBarDirection)
-                    .setPos(uiProperties.progressBarPos)
-                    .setSize(uiProperties.progressBarSize)
-                    .setUpdateTooltipEveryTick(true)
-                    .attachSyncer(
-                        new FakeSyncWidget.LongSyncer(() -> this.discProgressMs, val -> this.discProgressMs = val),
-                        builder)
-                    .attachSyncer(
-                        new FakeSyncWidget.LongSyncer(() -> this.discDurationMs, val -> this.discDurationMs = val),
-                        builder)
-                    .dynamicTooltip(
-                        () -> Collections.singletonList(
-                            String.format("%,.2f / %,.2f", discProgressMs / 1000.0f, discDurationMs / 1000.0f))),
-                uiProperties.neiTransferRectId));
-        addProgressBarSpecialTextures(builder, uiProperties);
-    }
-
-    @Override
-    protected SlotWidget createChargerSlot(int x, int y) {
-        return super.createChargerSlot(97, 62);
-    }
-
-    @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        super.addUIWidgets(builder, buildContext);
-        final BasicUIProperties props = getUIProperties();
-        final List<Pos2d> inputSlots = props.itemInputPositionsGetter.apply(mInputSlotCount);
-        // Loop
-        builder.widget(
-            new CycleButtonWidget().setToggle(() -> loopMode, val -> loopMode = val)
-                .setStaticTexture(GTUITextures.OVERLAY_BUTTON_CYCLIC)
-                .setVariableBackground(GTUITextures.BUTTON_STANDARD_TOGGLE)
-                .setGTTooltip(() -> mTooltipCache.getData("GT5U.machines.betterjukebox.loop.tooltip"))
-                .setTooltipShowUpDelay(TOOLTIP_DELAY)
-                .setPos(153, 6)
-                .setSize(18, 18));
-        // Shuffle
-        builder.widget(new CycleButtonWidget().setToggle(() -> shuffleMode, val -> {
-            shuffleMode = val;
-            if (shuffleMode) {
-                playbackSlot = -1;
-            } else {
-                playbackSlot = 0;
-            }
-        })
-            .setStaticTexture(GTUITextures.OVERLAY_BUTTON_SHUFFLE)
-            .setVariableBackground(GTUITextures.BUTTON_STANDARD_TOGGLE)
-            .setGTTooltip(() -> mTooltipCache.getData("GT5U.machines.betterjukebox.shuffle.tooltip"))
-            .setTooltipShowUpDelay(TOOLTIP_DELAY)
-            .setPos(153, 42)
-            .setSize(18, 18));
-        // Currently playing slot highlight using the hotbar active texture
-        final DrawableWidget slotHighlight = new DrawableWidget();
-        builder.widget(
-            slotHighlight
-                .setDrawable(
-                    new UITexture(
-                        new ResourceLocation("minecraft", "textures/gui/widgets.png"),
-                        0.0f,
-                        22.0f / 256.0f,
-                        24.0f / 256.0f,
-                        46.0f / 256.0f))
-                .setSize(24, 24)
-                .attachSyncer(new FakeSyncWidget.IntegerSyncer(() -> this.playbackSlot, val -> {
-                    this.playbackSlot = val;
-                    slotHighlight.checkNeedsRebuild();
-                }), builder)
-                .setPosProvider(
-                    (screenSize, window, parent) -> inputSlots.get(MathHelper.clamp_int(playbackSlot, 0, INPUT_SLOTS))
-                        .add(-3, -3)));
-        // Attenuation distance (controls internal "volume")
-        // Caching tooltip data caches the formatted p2p range value, so we have to use the uncached variant here.
-        builder.widget(
-            new SliderWidget()
-                .setBounds(0.0f, BalanceMath.volumeToAttenuationDistance(BalanceMath.listeningVolume(mTier)))
-                .setGetter(this::getPlaybackBlockRange)
-                .setSetter(this::setPlaybackBlockRange)
-                .dynamicTooltip(
-                    () -> mTooltipCache.getUncachedTooltipData(
-                        "GT5U.machines.betterjukebox.attenuationDistance.tooltip",
-                        (int) getPlaybackBlockRange()).text)
-                .setUpdateTooltipEveryTick(true)
-                .setPos(44, 63)
-                .setSize(52, 8));
-        builder.widget(
-            new SliderWidget()
-                .setBounds(0.0f, BalanceMath.volumeToAttenuationDistance(BalanceMath.listeningVolume(mTier)))
-                .setGetter(this::getP2PBlockRange)
-                .setSetter(this::setP2PBlockRange)
-                .dynamicTooltip(
-                    () -> mTooltipCache.getUncachedTooltipData(
-                        "GT5U.machines.betterjukebox.p2pAttenuationDistance.tooltip",
-                        (int) getP2PBlockRange()).text)
-                .setUpdateTooltipEveryTick(true)
-                .setPos(44, 71)
-                .setSize(52, 8));
-    }
-
-    private float getPlaybackBlockRange() {
+    public double getPlaybackBlockRange() {
         return BalanceMath.volumeToAttenuationDistance(playbackVolume);
     }
 
-    private float getP2PBlockRange() {
+    public double getP2PBlockRange() {
         return BalanceMath.volumeToAttenuationDistance(p2pVolume);
     }
 
-    private void setPlaybackBlockRange(float blockRange) {
-        float volume = BalanceMath.attenuationDistanceToVolume(blockRange);
-        volume = MathHelper.clamp_float(volume, 0.0f, BalanceMath.listeningVolume(mTier));
+    public void setPlaybackBlockRange(double blockRange) {
+        double volume = BalanceMath.attenuationDistanceToVolume(blockRange);
+        volume = Math.clamp(volume, 0.0f, BalanceMath.listeningVolume(mTier));
         if (volume != playbackVolume) {
             playbackVolume = volume;
             if (getBaseMetaTileEntity().isServerSide()) {
@@ -653,9 +557,9 @@ public class MTEBetterJukebox extends MTEBasicMachine implements IAddUIWidgets, 
         }
     }
 
-    private void setP2PBlockRange(float blockRange) {
-        float volume = BalanceMath.attenuationDistanceToVolume(blockRange);
-        volume = MathHelper.clamp_float(volume, 0.0f, BalanceMath.listeningVolume(mTier));
+    public void setP2PBlockRange(double blockRange) {
+        double volume = BalanceMath.attenuationDistanceToVolume(blockRange);
+        volume = Math.clamp(volume, 0.0f, BalanceMath.listeningVolume(mTier));
         if (volume != p2pVolume) {
             p2pVolume = volume;
             if (getBaseMetaTileEntity().isServerSide()) {
@@ -693,11 +597,9 @@ public class MTEBetterJukebox extends MTEBasicMachine implements IAddUIWidgets, 
         final Vector4i position = new Vector4i();
         target.resizeEmitterArray(1 + emitters.size());
         position.set(te.getXCoord(), te.getYCoord(), te.getZCoord(), te.getWorld().provider.dimensionId);
-        final float actualVolume = MathHelper
-            .clamp_float(playbackVolume, 0.0f, BalanceMath.listeningVolume(powered ? mTier : 0));
+        final double actualVolume = Math.clamp(playbackVolume, 0.0f, BalanceMath.listeningVolume(powered ? mTier : 0));
         target.setEmitter(0, position, actualVolume);
-        final float actualP2PVolume = MathHelper
-            .clamp_float(p2pVolume, 0.0f, powered ? BalanceMath.listeningVolume(mTier) : 0.0f);
+        final double actualP2PVolume = Math.clamp(p2pVolume, 0.0f, powered ? BalanceMath.listeningVolume(mTier) : 0.0f);
         for (int i = 0; i < emitters.size(); i++) {
             final PartP2PSound p2p = emitters.get(i);
             final AENetworkProxy proxy = p2p.getProxy();
@@ -735,4 +637,13 @@ public class MTEBetterJukebox extends MTEBasicMachine implements IAddUIWidgets, 
         updateEmitterList();
     }
 
+    @Override
+    protected boolean useMui2() {
+        return true;
+    }
+
+    @Override
+    public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTEBetterJukeboxGui(this, getUIProperties()).build(guiData, syncManager, uiSettings);
+    }
 }

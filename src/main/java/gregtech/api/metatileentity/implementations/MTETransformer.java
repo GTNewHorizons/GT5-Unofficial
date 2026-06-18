@@ -10,11 +10,12 @@ import static mcp.mobius.waila.api.SpecialChars.RESET;
 
 import java.util.List;
 
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -39,10 +40,11 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
  * This is the main construct for my Basic Machines such as the Automatic Extractor Extend this class to make a simple
  * Machine
  */
+@IMetaTileEntity.SkipGenerateDescription
 public class MTETransformer extends MTETieredMachineBlock {
 
-    public MTETransformer(int aID, String aName, String aNameRegional, int aTier, String aDescription) {
-        super(aID, aName, aNameRegional, aTier, 0, aDescription);
+    public MTETransformer(int aID, String aName, String aNameRegional, int aTier) {
+        super(aID, aName, aNameRegional, aTier, 0, (String) null);
     }
 
     public MTETransformer(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -54,29 +56,29 @@ public class MTETransformer extends MTETieredMachineBlock {
         ITexture[][][] rTextures = new ITexture[12][17][];
         for (byte i = -1; i < 16; i++) {
             rTextures[0][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1],
-                Textures.BlockIcons.OVERLAYS_ENERGY_OUT[mTier] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_4A[mTier + 1] };
             rTextures[1][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1],
-                Textures.BlockIcons.OVERLAYS_ENERGY_OUT[mTier] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_4A[mTier + 1] };
             rTextures[2][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1],
-                Textures.BlockIcons.OVERLAYS_ENERGY_OUT[mTier] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_4A[mTier + 1] };
             rTextures[3][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1],
-                Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI[mTier] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_IN[mTier + 2] };
             rTextures[4][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1],
-                Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI[mTier] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_IN[mTier + 2] };
             rTextures[5][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1],
-                Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI[mTier] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_IN[mTier + 2] };
             rTextures[6][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1],
-                Textures.BlockIcons.OVERLAYS_ENERGY_IN[mTier] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_4A[mTier + 1] };
             rTextures[7][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1],
-                Textures.BlockIcons.OVERLAYS_ENERGY_IN[mTier] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_4A[mTier + 1] };
             rTextures[8][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1],
-                Textures.BlockIcons.OVERLAYS_ENERGY_IN[mTier] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_IN_MULTI_4A[mTier + 1] };
             rTextures[9][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1],
-                Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[mTier] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_OUT[mTier + 2] };
             rTextures[10][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1],
-                Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[mTier] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_OUT[mTier + 2] };
             rTextures[11][i + 1] = new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1],
-                Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[mTier] };
+                Textures.BlockIcons.OVERLAYS_ENERGY_OUT[mTier + 2] };
         }
         return rTextures;
     }
@@ -91,11 +93,6 @@ public class MTETransformer extends MTETieredMachineBlock {
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTETransformer(mName, mTier, mDescriptionArray, mTextures);
-    }
-
-    @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
-        return true;
     }
 
     @Override
@@ -161,6 +158,10 @@ public class MTETransformer extends MTETieredMachineBlock {
 
     @Override
     public long maxAmperesIn() {
+        return getBaseMetaTileEntity().isAllowedToWork() ? 2 : 5;
+    }
+
+    public long displayedAmperesIn() {
         return getBaseMetaTileEntity().isAllowedToWork() ? 1 : 4;
     }
 
@@ -276,26 +277,27 @@ public class MTETransformer extends MTETieredMachineBlock {
         currenttip.add(
             String.format(
                 "%s %s(%dA) -> %s(%dA)",
-                (allowedToWork ? (GREEN + "Step Down") : (RED + "Step Up")) + RESET,
-                GTMod.gregtechproxy.mWailaTransformerVoltageTier ? GTUtility.getColoredTierNameFromTier(inputTier)
+                (allowedToWork ? (GREEN + StatCollector.translateToLocal("GT5U.waila.transformer.step_down"))
+                    : (RED + StatCollector.translateToLocal("GT5U.waila.transformer.step_up"))) + RESET,
+                GTMod.proxy.mWailaTransformerVoltageTier ? GTUtility.getColoredTierNameFromTier(inputTier)
                     : tag.getLong("maxEUInput"),
-                tag.getLong("maxAmperesIn"),
-                GTMod.gregtechproxy.mWailaTransformerVoltageTier ? GTUtility.getColoredTierNameFromTier(outputTier)
+                tag.getLong("displayedAmperesIn"),
+                GTMod.proxy.mWailaTransformerVoltageTier ? GTUtility.getColoredTierNameFromTier(outputTier)
                     : tag.getLong("maxEUOutput"),
                 tag.getLong("maxAmperesOut")));
 
         if ((side == facing && allowedToWork) || (side != facing && !allowedToWork)) {
             currenttip.add(
-                String.format(
-                    GOLD + "Input:" + RESET + " %s(%dA)",
-                    GTMod.gregtechproxy.mWailaTransformerVoltageTier ? GTUtility.getColoredTierNameFromTier(inputTier)
+                GOLD + StatCollector.translateToLocalFormatted(
+                    "GT5U.waila.transformer.input",
+                    GTMod.proxy.mWailaTransformerVoltageTier ? GTUtility.getColoredTierNameFromTier(inputTier)
                         : tag.getLong("maxEUInput"),
                     tag.getLong("maxAmperesIn")));
         } else {
             currenttip.add(
-                String.format(
-                    BLUE + "Output:" + RESET + " %s(%dA)",
-                    GTMod.gregtechproxy.mWailaTransformerVoltageTier ? GTUtility.getColoredTierNameFromTier(outputTier)
+                BLUE + StatCollector.translateToLocalFormatted(
+                    "GT5U.waila.transformer.output",
+                    GTMod.proxy.mWailaTransformerVoltageTier ? GTUtility.getColoredTierNameFromTier(outputTier)
                         : tag.getLong("maxEUOutput"),
                     tag.getLong("maxAmperesOut")));
         }
@@ -310,7 +312,16 @@ public class MTETransformer extends MTETieredMachineBlock {
         tag.setBoolean("isAllowedToWork", getBaseMetaTileEntity().isAllowedToWork());
         tag.setLong("maxEUInput", maxEUInput());
         tag.setLong("maxAmperesIn", maxAmperesIn());
+        tag.setLong("displayedAmperesIn", displayedAmperesIn());
         tag.setLong("maxEUOutput", maxEUOutput());
         tag.setLong("maxAmperesOut", maxAmperesOut());
+    }
+
+    @Override
+    public String[] getDescription() {
+        return new String[] { StatCollector.translateToLocalFormatted(
+            "gt.blockmachines.transformer.desc",
+            GTUtility.getColoredTierNameFromVoltage(maxEUInput()) + EnumChatFormatting.GRAY,
+            GTUtility.getColoredTierNameFromVoltage(maxEUOutput()) + EnumChatFormatting.GRAY) };
     }
 }

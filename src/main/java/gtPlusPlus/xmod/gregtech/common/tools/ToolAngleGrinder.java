@@ -13,17 +13,16 @@ import net.minecraft.stats.AchievementList;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
-import net.minecraftforge.event.world.BlockEvent;
 
 import gregtech.GTMod;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
+import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.Textures.ItemIcons;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.common.items.behaviors.BehaviourNone;
 import gregtech.common.tools.GTTool;
-import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtTools;
 
 public class ToolAngleGrinder extends GTTool {
 
@@ -45,11 +44,6 @@ public class ToolAngleGrinder extends GTTool {
     }
 
     @Override
-    public int getToolDamagePerDropConversion() {
-        return 100;
-    }
-
-    @Override
     public int getToolDamagePerContainerCraft() {
         return 400;
     }
@@ -57,11 +51,6 @@ public class ToolAngleGrinder extends GTTool {
     @Override
     public int getToolDamagePerEntityAttack() {
         return 100;
-    }
-
-    @Override
-    public int getBaseQuality() {
-        return 0;
     }
 
     @Override
@@ -81,32 +70,12 @@ public class ToolAngleGrinder extends GTTool {
 
     @Override
     public String getCraftingSound() {
-        return SoundResource.RANDOM_ANVIL_USE.toString();
+        return SoundResource.GTCEU_OP_FILE.toString();
     }
 
     @Override
     public String getEntityHitSound() {
-        return SoundResource.RANDOM_ANVIL_BREAK.toString();
-    }
-
-    @Override
-    public String getMiningSound() {
-        return null;
-    }
-
-    @Override
-    public boolean canBlock() {
-        return false;
-    }
-
-    @Override
-    public boolean isWrench() {
-        return false;
-    }
-
-    @Override
-    public boolean isCrowbar() {
-        return false;
+        return SoundResource.GTCEU_OP_FILE.toString();
     }
 
     @Override
@@ -121,20 +90,10 @@ public class ToolAngleGrinder extends GTTool {
     }
 
     @Override
-    public int convertBlockDrops(final List<ItemStack> aDrops, final ItemStack aStack, final EntityPlayer aPlayer,
-        final Block aBlock, final int aX, final int aY, final int aZ, final int aMetaData, final int aFortune,
-        final boolean aSilkTouch, final BlockEvent.HarvestDropsEvent aEvent) {
-        return 0;
-    }
-
-    @Override
-    public ItemStack getBrokenItem(final ItemStack aStack) {
-        return null;
-    }
-
-    @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? TexturesGtTools.ANGLE_GRINDER : ItemIcons.POWER_UNIT_HV;
+        return aIsToolHead
+            ? MetaGeneratedTool.getPrimaryMaterial(aStack).mIconSet.mTextures[TextureSet.INDEX_angleGrinder]
+            : ItemIcons.POWER_UNIT_HV;
     }
 
     @Override
@@ -148,7 +107,6 @@ public class ToolAngleGrinder extends GTTool {
         aPlayer.triggerAchievement(AchievementList.buildSword);
         try {
             GTMod.achievements.issueAchievement(aPlayer, "tools");
-            GTMod.achievements.issueAchievement(aPlayer, "unitool");
         } catch (final Exception e) {}
     }
 
@@ -168,8 +126,4 @@ public class ToolAngleGrinder extends GTTool {
         aItem.addItemBehavior(aID, new BehaviourNone());
     }
 
-    @Override
-    public boolean isGrafter() {
-        return false;
-    }
 }

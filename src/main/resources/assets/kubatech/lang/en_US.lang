@@ -2,6 +2,7 @@
 
 #RecipeMaps
 kubatech.defusioncrafter=Draconic Evolution Fusion Crafter
+kubatech.htgrrecipes=High Temperature Gas Reactor
 
 #NEI
 kubatech.defusioncrafter.tier=Tier Casing: %s
@@ -9,33 +10,117 @@ kubatech.mobhandler.eec_chance=§5Chance to drop in EEC: %.2f%%
 kubatech.mobhandler.eec_disabled=§5Does not drop in EEC
 
 #Commands
-kubatech.commandhandler.invalid=§cInvalid use ! The proper use of this command is /%s
+kubatech.commandhandler.invalid=§cInvalid use! The proper use of this command is /%s
 kubatech.commandhandler.cant_find=§cCan't find command option %s
 kubatech.commandhandler.generic_help=§cYou can also use "/kubatech help" to get possible commands
 kubatech.commandhandler.usage=<option>
 kubatech.command.help.possible_commands=Possible commands:
 kubatech.command.help.usage=- Shows all possible commands
-kubatech.command.config.invalid_option=§cInvalid option ! Possible options: reload
-kubatech.command.config.success=§aConfig reloaded successfully !
+kubatech.command.config.invalid_option=§cInvalid option! Possible options: reload
+kubatech.command.config.success=§aConfig reloaded successfully!
 kubatech.command.config.usage=<option>
 
-kubatech.command.tea.invalid_option=§cInvalid usage !
-kubatech.command.tea.player_not_found=§cPlayer not found !
+kubatech.command.tea.invalid_option=§cInvalid usage!
+kubatech.command.tea.player_not_found=§cPlayer not found!
 kubatech.command.tea.success_get=Player %s has %d Tea
 kubatech.command.tea.success_set=Player %s now has %d Tea
 kubatech.command.tea.success_add=Player %s now has %d Tea
 kubatech.command.tea.usage=<username> get/set/add (<amount>)
 
 #GUI
-GT5U.gui.text.EEC_nospawner=No powered spawner!
-GT5U.gui.text.EEC_invalidspawner=Invalid spawner!
-GT5U.gui.text.EEC_peaceful=Inserted mob cannot spawn on peaceful mode!
-GT5U.gui.text.MegaApiary_slotoverflow=Too much bees inside!
+GT5U.gui.text.recipe_result.EEC_nospawner=No powered spawner!
+GT5U.gui.text.recipe_result.EEC_invalidspawner=Invalid spawner!
+GT5U.gui.text.recipe_result.EEC_peaceful=Inserted mob cannot spawn on peaceful mode!
+GT5U.gui.text.recipe_result.MegaApiary_slotoverflow=Too many bees inside!
 GT5U.gui.text.MegaApiary_noflowers=Missing flowers!
-GT5U.gui.text.EIG_slotoverflow=Too many seed types inside!
-GT5U.gui.text.EIG_seedOverflow=Too many seeds inside!
-GT5U.gui.text.EIG_missingwater=No water!
+GT5U.gui.text.recipe_result.EIG_slotoverflow=Too many seed types inside!
+GT5U.gui.text.recipe_result.EIG_seedOverflow=Too many seeds inside!
+GT5U.gui.text.recipe_result.EIG_missingwater=No water!
 GT5U.gui.text.EIG_ic2glass=Insufficient glass tier!
+
+GT5U.gui.text.recipe_result.arc_shutdown=Arc Furnace is shutting down!
+GT5U.gui.text.recipe_result.arc_ignition=Arc Furnace is starting up!
+GT5U.gui.text.recipe_result.no_electrode=No electrode inserted!
+GT5U.gui.text.shutdown_reason.electrode_changed=Electrode changed while running!
+
+## General
+kubatech.gui.text.configuration=Configuration
+
+kubatech.gui.text.tea_ultimate.status=STATUS
+kubatech.gui.text.tea_ultimate.tea=Tea
+kubatech.gui.text.tea_ultimate.tea_limit=Tea limit
+kubatech.gui.text.tea_ultimate.exchange=EXCHANGE
+kubatech.gui.text.tea_ultimate.exchange.cost=Cost: %s Tea
+kubatech.gui.text.tea_ultimate.benefits=BENEFITS
+kubatech.gui.tooltip.tea_ultimate.tea_acceptor_research_note=Tea Acceptor Research Note
+
+kubatech.gui.text.tea_acceptor.name=Tea Acceptor
+kubatech.gui.text.tea_acceptor.tea=[Tea]
+kubatech.gui.text.tea_acceptor.not_owner=This is not your block
+kubatech.gui.text.tea_acceptor.in=IN: %s/t
+kubatech.gui.text.tea_acceptor.in.tooltip=Average input from the last 5 seconds
+
+kubatech.gui.text.eec.preserve_weapon_on=Weapon Preservation: ON
+kubatech.gui.text.eec.preserve_weapon_off=Weapon Preservation: OFF
+kubatech.gui.text.eec.preserve_weapon_warning=Not using GUI weapon.
+kubatech.gui.text.eec.cycle_weapons_on=Weapon Cycling: ON
+kubatech.gui.text.eec.cycle_weapons_off=Weapon Cycling: OFF
+kubatech.gui.text.eec.cycle_weapons.info=If §fWeapon Preservation§r is enabled, moves almost broken weapons from the GUI to Output Buses, if there's space.
+kubatech.gui.text.eec.void_all_damaged_on=Void damaged and enchanted items: ON
+kubatech.gui.text.eec.void_all_damaged_off=Void damaged and enchanted items: OFF
+kubatech.gui.text.eec.void_all_damaged.warning=Does not affect infernal drops and some special drops like the Sticky Sword! Will never void the weapon in the GUI slot.
+kubatech.gui.text.eec.infernal_drop_on=Allow Infernal Spawns: ON
+kubatech.gui.text.eec.infernal_drop_off=Allow Infernal Spawns: OFF
+kubatech.gui.text.eec.infernal_drop_always=Does not affect mobs that are always infernal!
+kubatech.gui.text.eec.ritual_mode_on=Ritual Mode: ON
+kubatech.gui.text.eec.ritual_mode_off=Ritual Mode: OFF
+kubatech.gui.text.eec.ritual_mode_connected=Connected to ritual.
+kubatech.gui.text.eec.ritual_mode_error=Can't connect to ritual!
+
+kubatech.gui.text.inventory=Inventory
+kubatech.gui.text.status=Status
+kubatech.gui.text.operating=Operating
+kubatech.gui.text.input=Input
+kubatech.gui.text.output=Output
+kubatech.gui.text.usage_line=Usage: %s EU/t
+kubatech.gui.text.time_line=Time: %s secs
+kubatech.gui.text.eig.setup_mode=Setup mode
+kubatech.gui.text.eig.disabled=Disabled
+kubatech.gui.text.eig.enabled=Enabled
+kubatech.gui.text.eig.ic2_mode=IC2 mode
+kubatech.gui.text.eig.no_humidity_mode=No Humidity mode
+kubatech.gui.text.eig.inventory_full_warning=Seed inventory is full!
+kubatech.gui.text.mia.primary_mode=Primary mode
+kubatech.gui.text.mia.normal=Normal
+kubatech.gui.text.mia.swarmer=Swarmer
+kubatech.gui.text.mia.secondary_mode=Secondary mode
+kubatech.gui.text.mia.show_bee_inventory=Show Bee Inventory
+kubatech.gui.text.mia.show_machine_status=Show Machine Status
+
+kubatech.gui.tooltip.contributors.added=Added by %s
+kubatech.gui.tooltip.contributors.design=Designed by %s
+kubatech.gui.tooltip.contributors.structure=Structure designed by %s
+
+kubatech.gui.tooltip.dynamic_inventory.identical_slots=There are %d identical slots
+kubatech.gui.tooltip.dynamic_inventory.empty_slot=Empty slot
+kubatech.gui.tooltip.dynamic_inventory.eig.seed_count=Seeds: %d
+kubatech.gui.tooltip.dynamic_inventory.eig.remaining_seed_types=Remaining seed types: %d
+kubatech.gui.tooltip.dynamic_inventory.eig.remaining_seed_capacity=Remaining seed capacity: %d
+
+kubatech.gui.text.electrode_detector=§8Threshold
+kubatech.gui.text.electrode_detector.durability=§8Durability value
+kubatech.gui.text.electrode_detector.percentage=§8Durability percentage
+
+#Chat Messages
+kubatech.chat.forbidden_while_running=Cannot change mode while running!
+kubatech.chat.mode.generic=Now running in mode: %s
+
+kubatech.chat.eec.ritual_mode_enabled=Ritual mode enabled
+kubatech.chat.eec.ritual_mode_disabled=Ritual mode disabled
+kubatech.chat.eec.ritual_mode_connected=Successfully connected to ritual
+kubatech.chat.eec.ritual_mode_error=Can't connect to ritual!
+kubatech.chat.eec.infernal_drops_enabled=Mobs can spawn infernal
+kubatech.chat.eec.infernal_drops_disabled=Mobs will be prevented from spawning infernal
 
 # info data
 ## general
@@ -54,13 +139,17 @@ kubatech.infodata.eec.in_ritual_mode.yes=Is in ritual mode: §eYes
 kubatech.infodata.eec.in_ritual_mode.no=Is in ritual mode: §eNo
 kubatech.infodata.eec.connected_to_ritual.yes=Is connected to ritual: §aYes
 kubatech.infodata.eec.connected_to_ritual.no=Is connected to ritual: §cNo
+kubatech.infodata.eec.cycle_weapons.yes=Is cycling weapons: §eYes
+kubatech.infodata.eec.cycle_weapons.no=Is cycling weapons: §eNo
+kubatech.infodata.eec.weapon_preservation.yes=Is preserving weapons: §eYes
+kubatech.infodata.eec.weapon_preservation.no=Is preserving weapons: §eNo
 kubatech.infodata.eec.inserted_weapon.yes=Inserted weapon: §eYes
 kubatech.infodata.eec.inserted_weapon.no=Inserted weapon: §eNo
 kubatech.infodata.eec.weapon.damage=Weapon attack damage: §e%f
 kubatech.infodata.eec.weapon.looting_level=Weapon looting level: §e%d
 kubatech.infodata.eec.total_damage=Total attack damage: §e%f
 
-## Exreme Industrial Greenhouse
+## Extreme Industrial Greenhouse
 kubatech.infodata.eig.running_mode.setup_mode.input=Setup mode (input)
 kubatech.infodata.eig.running_mode.setup_mode.output=Setup mode (output)
 kubatech.infodata.eig.uses.water=Uses %dL/operation of water
@@ -79,11 +168,33 @@ kubatech.infodata.mia.running_mode.output=Output mode
 kubatech.infodata.mia.running_mode.operating.normal=Operating mode (NORMAL)
 kubatech.infodata.mia.running_mode.operating.swarmer=Operating mode (SWARMER)
 kubatech.infodata.mia.running_mode.bee_storage=Bee storage (%s/%s):
+kubatech.infodata.mia.inventory_full=No more slots for bees!
+kubatech.gui.text.mia.inventory_full_warning=No more bee slots available!
+kubatech.gui.text.mia.locked_while_running=Bee inventory locked while machine is running
+kubatech.infodata.mia.gui_locked_while_running=Cannot modify bee inventory via GUI while running
 
+#HTGR
+kubatech.infodata.htgr.stored_fuel=Stored Fuel:
+kubatech.infodata.htgr.stored_fuel_entry=§f- §b%s §fx §6%s (%s, %s, %s)
+kubatech.infodata.htgr.burned_fuel=Burned Fuel:
+kubatech.infodata.htgr.burned_fuel_entry=§f- §b%s §fx §6%s%% to output
+kubatech.infodata.htgr.helium_supply=Helium Supply: §6%sL
+kubatech.infodata.htgr.coolant_per_tick=Coolant per tick: §6%sL
+kubatech.infodata.htgr.water_per_tick=Water per tick: §6%sL
+kubatech.infodata.htgr.fuel_supply=Fill level %s out of %s
+kubatech.infodata.htgr.fuel_properties=Properties: %s, %s, %s
+
+kubatech.MBTT.CoolantInputHatch=Input Hatch (Coolant)
+kubatech.MBTT.HeliumInputHatch=Input Hatch (Helium)
+kubatech.MBTT.WaterInputHatch=Input Hatch (Water)
+kubatech.MBTT.CoolantOutputHatch=Output Hatch (Coolant)
+kubatech.MBTT.SteamOutputHatch=Output Hatch (Steam)
 
 #Waila
 kubatech.waila.eec.mob_type=Mob Type: %s
 kubatech.waila.eec.no_mob=None
+kubatech.waila.eec.ritual_mode_connected=Connected to ritual
+kubatech.waila.eec.ritual_mode_error=Not connected to ritual!
 
 #Blocks
 kubablock.tea_acceptor.name=§4§lTea Acceptor
@@ -102,6 +213,44 @@ kubaitem.defc_schematic_t1.tip=This Schematic can be found in Pluto Dungeons
 kubaitem.defc_schematic_t2.name=Wyvern Core Schematic
 kubaitem.defc_schematic_t3.name=Awakened Core Schematic
 kubaitem.defc_schematic_t4.name=Chaotic Core Schematic
+
+item.htgr_item.triso_mixture.name=TRISO Fuel Mixture (%s)
+item.htgr_item.incomplete_biso_fuel.name=Incomplete BISO Fuel (%s)
+item.htgr_item.incomplete_triso_fuel.name=Incomplete TRISO Fuel (%s)
+item.htgr_item.triso_fuel.name=TRISO Fuel (%s)
+item.htgr_item.burned.name=Burned Out TRISO Fuel (%s)
+
+item.arc_furnace_electrode.GraphiteElectrode.name=Graphite Electrode
+item.arc_furnace_electrode.TantalumElectrode.name=Tantalum Electrode
+item.arc_furnace_electrode.MolybdenumElectrode.name=Molybdenum Electrode
+item.arc_furnace_electrode.TungstenElectrode.name=Tungsten Electrode
+item.arc_furnace_electrode.TungstenSteelElectrode.name=Tungstensteel Electrode
+item.arc_furnace_electrode.GrapheneElectrode.name=Graphene Electrode
+item.arc_furnace_electrode.YBCOElectrode.name=YBCO Electrode
+item.arc_furnace_electrode.NetheriteElectrode.name=Netherite Electrode
+item.arc_furnace_electrode.TritaniumElectrode.name=Tritanium Electrode
+item.arc_furnace_electrode.InfinityElectrode.name=Infinity Electrode
+item.arc_furnace_electrode.HypogenElectrode.name=Hypogen Electrode
+item.arc_furnace_electrode.NeutroniumNaniteElectrode.name=Neutronium Nanite Electrode
+item.arc_furnace_electrode.TranscendentNaniteElectrode.name=Transcendent Nanite Electrode
+item.arc_furnace_electrode.UniversiumNaniteElectrode.name=Universium Nanite Electrode
+
+item.arc_furnace_electrode.tip.durability=Durability: %s/%s
+item.arc_furnace_electrode.tip.speed=Speed: %s
+item.arc_furnace_electrode.tip.parallel_limit=Parallels: %s
+item.arc_furnace_electrode.tip.parallel_limit_none=None
+item.arc_furnace_electrode.tip.oc=OC: %s%s
+item.arc_furnace_electrode.tip.amperage_per_parallel=Amps/Parallel: %s
+item.arc_furnace_electrode.tip.startup_surge=Surge Power: %s
+
+item.arc_furnace_electrode.tip.special_effect.GraphiteElectrode=§6§lBread and Butter§r§6: No startup surge penalty
+item.arc_furnace_electrode.tip.special_effect.GrapheneElectrode=§6§lBread and Butter§r§6: No startup surge penalty
+item.arc_furnace_electrode.tip.special_effect.YBCOElectrode=§6§lRapid Oxidation§r§6: Every OC increases durability usage by 100%
+item.arc_furnace_electrode.tip.special_effect.NetheriteElectrode=§6§lHot Restart§r§6: There is no shutdown cooldown. If machine is off for less than 4 seconds, skip startup entirely
+item.arc_furnace_electrode.tip.special_effect.InfinityElectrode=§6§lTo Infinity!§r§6: Every successful processing doubles the amount of parallels, until power failure or machine shutdown (power usage is equal to the amount of parallels regardless of provided items)
+item.arc_furnace_electrode.tip.special_effect.NeutroniumNaniteElectrode=§6§lNanite Repair§r§6: Providing electrode material dust in the input bus gives a 70% chance per recipe to repair itself
+item.arc_furnace_electrode.tip.special_effect.TranscendentNaniteElectrode=§6§lNanite Maintenance§r§6: Providing electrode material dust in the input bus gives a 90% chance per recipe to repair itself
+item.arc_furnace_electrode.tip.special_effect.UniversiumNaniteElectrode=§6§lNanite Recovery§r§6: Providing electrode material dust in the input bus fully repairs the electrode
 
 #Tea
 kubaitem.tea.black_tea.name=Black Tea
@@ -166,12 +315,12 @@ achievement.teacollection.black_tea.desc=§6The most common and popular type of 
 achievement.teacollection.butterfly_tea.desc=§1Not even Tea
 achievement.teacollection.earl_gray_tea.desc=§6For the true Brits
 achievement.teacollection.green_tea.desc=§2Based
-achievement.teacollection.lemon_tea.desc=§eBlack Tea with lemon, what did You expect ?
-achievement.teacollection.milk_tea.desc=§fBlack Tea with milk, my favourite
+achievement.teacollection.lemon_tea.desc=§eBlack Tea with lemon, what did you expect?
+achievement.teacollection.milk_tea.desc=§fBlack Tea with milk, my favorite
 achievement.teacollection.oolong_tea.desc=§e對於真正的鑑賞家
 achievement.teacollection.peppermint_tea.desc=§aGood for stomach ache
 achievement.teacollection.pu-erh_tea.desc=§4Good for digestion, also tastes like dirt
-achievement.teacollection.red_tea.desc=§cWhy would anyone drink this ?
+achievement.teacollection.red_tea.desc=§cWhy would anyone drink this?
 achievement.teacollection.white_tea.desc=§eThe healthiest one
 achievement.teacollection.yellow_tea.desc=§6Green Tea with more grassy flavour
 achievement.teacollection.ultimate_tea.desc=§4§lOne Tea to drink them all
@@ -180,7 +329,7 @@ achievement.teacollection.ultimate_tea.desc=§4§lOne Tea to drink them all
 tc.research_category.KUBATECH=§lCamellia sinensis
 tc.research_name.KT_UltimateTea=%s §6§lTea
 tc.research_text.KT_UltimateTea=§4§lPure power
-KT.research.ultimatetea=You have found a way to convert all this Tea into pure power creating the %s §6§lTea
+KT.research.ultimatetea=You have found a way to convert all this Tea into pure power, creating the %s §6§lTea
 
 #Tooltip
 kubatech.tooltip.tea=Tea
@@ -190,3 +339,11 @@ kubatech.tooltip.tea_storage.0=Extends Tea Storage by %s
 kubatech.tooltip.tea_ingredient.0=This is Tea ingredient
 
 kubatech.tooltip.structure.flowers=Flowers
+
+kubatech.tooltip.htgr_material=Material for High Temperature Gas-cooled Reactor
+defc.casing.7.name=Naquadah Alloy Fusion Casing
+defc.casing.8.name=Bloody Ichorium Fusion Casing
+defc.casing.9.name=Draconium Fusion Casing
+defc.casing.10.name=Wyvern Fusion Casing
+defc.casing.11.name=Awakened Draconium Fusion Casing
+defc.casing.12.name=Chaotic Fusion Casing

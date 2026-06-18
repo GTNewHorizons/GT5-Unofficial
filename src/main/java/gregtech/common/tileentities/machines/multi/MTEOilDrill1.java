@@ -4,7 +4,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.util.MultiblockTooltipBuilder;
 
 public class MTEOilDrill1 extends MTEOilDrillBase {
 
@@ -14,11 +13,6 @@ public class MTEOilDrill1 extends MTEOilDrillBase {
 
     public MTEOilDrill1(String aName) {
         super(aName);
-    }
-
-    @Override
-    protected MultiblockTooltipBuilder createTooltip() {
-        return createTooltip("I");
     }
 
     @Override

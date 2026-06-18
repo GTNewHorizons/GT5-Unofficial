@@ -1,17 +1,22 @@
 package gregtech.api.interfaces.modularui;
 
 import static gregtech.api.gui.modularui.GTUITextures.OVERLAY_BUTTON_POWER_PANEL;
+import static gregtech.api.metatileentity.BaseTileEntity.BUTTON_FEATURE_DISABLED_TOOLTIP;
+import static gregtech.api.metatileentity.BaseTileEntity.BUTTON_FEATURE_ENABLED_TOOLTIP;
 import static gregtech.api.metatileentity.BaseTileEntity.BUTTON_FORBIDDEN_TOOLTIP;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Supplier;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.StatCollector;
 
+import com.cleanroommc.modularui.screen.RichTooltip;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
@@ -26,10 +31,12 @@ import gregtech.api.enums.VoidingMode;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.tileentity.IRecipeLockable;
 import gregtech.api.interfaces.tileentity.IVoidable;
+import gregtech.api.util.GTUtility;
+import gregtech.common.config.Gregtech;
 
 /**
- * Machines implementing this interface can have logic and GUI buttons
- * to configure various behaviors regarding multiblock.
+ * Machines implementing this interface can have logic and GUI buttons to configure various behaviors regarding
+ * multiblock.
  * <ul>
  * <li>Power switch</li>
  * <li>Void protection</li>
@@ -48,6 +55,10 @@ public interface IControllerWithOptionalFeatures extends IVoidable, IRecipeLocka
     void disableWorking();
 
     void enableWorking();
+
+    void setMuffled(boolean value);
+
+    boolean isMuffled();
 
     Pos2d getPowerSwitchButtonPos();
 
@@ -82,6 +93,27 @@ public interface IControllerWithOptionalFeatures extends IVoidable, IRecipeLocka
         return (ButtonWidget) button;
     }
 
+    default ButtonWidget createMuffleButton(IWidgetBuilder<?> builder, boolean canBeMuffled) {
+        return (ButtonWidget) new ButtonWidget().setOnClick((clickData, widget) -> { setMuffled(!isMuffled()); })
+            .setPlayClickSound(true)
+            .setEnabled(canBeMuffled)
+            .setBackground(() -> {
+                List<UITexture> ret = new ArrayList<>();
+                if (isMuffled()) {
+                    ret.add(GTUITextures.BUTTON_STANDARD_PRESSED);
+                    ret.add(GTUITextures.OVERLAY_BUTTON_MUFFLE_ON);
+                } else {
+                    ret.add(GTUITextures.BUTTON_STANDARD);
+                    ret.add(GTUITextures.OVERLAY_BUTTON_MUFFLE_OFF);
+                }
+                return ret.toArray(new IDrawable[0]);
+            })
+            .attachSyncer(new FakeSyncWidget.BooleanSyncer(this::isMuffled, this::setMuffled), builder)
+            .addTooltip(StatCollector.translateToLocal("GT5U.machines.muffled"))
+            .setPos(200, 0)
+            .setSize(12, 12);
+    }
+
     Pos2d getVoidingModeButtonPos();
 
     default ButtonWidget createVoidExcessButton(IWidgetBuilder<?> builder) {
@@ -98,8 +130,8 @@ public interface IControllerWithOptionalFeatures extends IVoidable, IRecipeLocka
             .setPlayClickSound(supportsVoidProtection())
             .setBackground(() -> {
                 List<UITexture> ret = new ArrayList<>();
-                ret.add(getVoidingMode().buttonTexture);
-                ret.add(getVoidingMode().buttonOverlay);
+                ret.add(getVoidingMode().buttonTextureLegacy);
+                ret.add(getVoidingMode().buttonOverlayLegacy);
                 if (!supportsVoidProtection()) {
                     ret.add(GTUITextures.OVERLAY_BUTTON_FORBIDDEN);
                 }
@@ -138,10 +170,20 @@ public interface IControllerWithOptionalFeatures extends IVoidable, IRecipeLocka
     }
 
     /**
+     * It is not recommended to override this function. It is recommended to override getMachineModeKey() and add the
+     * corresponding key in the language file to localize the mode name.
+     *
      * @return name for the current machine mode on this machine. Defaults "Unknown Mode"
      */
     default String getMachineModeName() {
-        return "Unknown Mode";
+        return StatCollector.translateToLocal(getMachineModeKey());
+    }
+
+    /**
+     * @return key of the name for the current machine mode on this machine. Defaults "Unknown Mode"
+     */
+    default String getMachineModeKey() {
+        return "GT5U.MULTI_MACHINE_MODE.unknown";
     }
 
     /**
@@ -181,20 +223,11 @@ public interface IControllerWithOptionalFeatures extends IVoidable, IRecipeLocka
     default ButtonWidget createModeSwitchButton(IWidgetBuilder<?> builder) {
         if (!supportsMachineModeSwitch()) return null;
         Widget button = new ButtonWidget().setOnClick((clickData, widget) -> {
-            if (supportsMachineModeSwitch()) {
-                onMachineModeSwitchClick();
-                setMachineMode(nextMachineMode());
-            }
+            onMachineModeSwitchClick();
+            setMachineMode(nextMachineMode());
         })
-            .setPlayClickSound(supportsMachineModeSwitch())
-            .setBackground(() -> {
-                List<UITexture> ret = new ArrayList<>();
-                if (supportsMachineModeSwitch()) {
-                    ret.add(GTUITextures.BUTTON_STANDARD);
-                    ret.add(getMachineModeIcon(getMachineMode()));
-                } else return null;
-                return ret.toArray(new IDrawable[0]);
-            })
+            .setPlayClickSound(true)
+            .setBackground(() -> new IDrawable[] { GTUITextures.BUTTON_STANDARD, getMachineModeIcon(getMachineMode()) })
             .attachSyncer(new FakeSyncWidget.IntegerSyncer(this::getMachineMode, this::setMachineMode), builder)
             .addTooltip(StatCollector.translateToLocal("GT5U.gui.button.mode_switch"))
             .setTooltipShowUpDelay(TOOLTIP_DELAY)
@@ -226,6 +259,7 @@ public interface IControllerWithOptionalFeatures extends IVoidable, IRecipeLocka
         Widget button = new ButtonWidget().setOnClick((clickData, widget) -> {
             if (supportsInputSeparation()) {
                 setInputSeparation(!isInputSeparationEnabled());
+                widget.notifyTooltipChange();
             }
         })
             .setPlayClickSound(supportsInputSeparation())
@@ -254,13 +288,16 @@ public interface IControllerWithOptionalFeatures extends IVoidable, IRecipeLocka
             .attachSyncer(
                 new FakeSyncWidget.BooleanSyncer(this::isInputSeparationEnabled, this::setInputSeparation),
                 builder)
-            .addTooltip(StatCollector.translateToLocal("GT5U.gui.button.input_separation"))
             .setTooltipShowUpDelay(TOOLTIP_DELAY)
             .setPos(getInputSeparationButtonPos())
             .setSize(16, 16);
-        if (!supportsInputSeparation()) {
-            button.addTooltip(StatCollector.translateToLocal(BUTTON_FORBIDDEN_TOOLTIP));
-        }
+
+        addDynamicTooltipOfFeatureToButton(
+            button,
+            this::supportsInputSeparation,
+            this::isInputSeparationEnabled,
+            StatCollector.translateToLocal("GT5U.gui.button.input_separation"));
+
         return (ButtonWidget) button;
     }
 
@@ -307,7 +344,7 @@ public interface IControllerWithOptionalFeatures extends IVoidable, IRecipeLocka
     void setBatchMode(boolean enabled);
 
     default boolean getDefaultBatchMode() {
-        return false;
+        return Gregtech.general.batchModeInitialValue;
     }
 
     Pos2d getBatchModeButtonPos();
@@ -316,6 +353,7 @@ public interface IControllerWithOptionalFeatures extends IVoidable, IRecipeLocka
         Widget button = new ButtonWidget().setOnClick((clickData, widget) -> {
             if (supportsBatchMode()) {
                 setBatchMode(!isBatchModeEnabled());
+                widget.notifyTooltipChange();
             }
         })
             .setPlayClickSound(supportsBatchMode())
@@ -342,13 +380,16 @@ public interface IControllerWithOptionalFeatures extends IVoidable, IRecipeLocka
                 return ret.toArray(new IDrawable[0]);
             })
             .attachSyncer(new FakeSyncWidget.BooleanSyncer(this::isBatchModeEnabled, this::setBatchMode), builder)
-            .addTooltip(StatCollector.translateToLocal("GT5U.gui.button.batch_mode"))
             .setTooltipShowUpDelay(TOOLTIP_DELAY)
             .setPos(getBatchModeButtonPos())
             .setSize(16, 16);
-        if (!supportsBatchMode()) {
-            button.addTooltip(StatCollector.translateToLocal(BUTTON_FORBIDDEN_TOOLTIP));
-        }
+
+        addDynamicTooltipOfFeatureToButton(
+            button,
+            this::supportsBatchMode,
+            this::isBatchModeEnabled,
+            StatCollector.translateToLocal("GT5U.gui.button.batch_mode"));
+
         return (ButtonWidget) button;
     }
 
@@ -358,6 +399,7 @@ public interface IControllerWithOptionalFeatures extends IVoidable, IRecipeLocka
         Widget button = new ButtonWidget().setOnClick((clickData, widget) -> {
             if (supportsSingleRecipeLocking()) {
                 setRecipeLocking(!isRecipeLockingEnabled());
+                widget.notifyTooltipChange();
             }
         })
             .setPlayClickSound(supportsSingleRecipeLocking())
@@ -386,14 +428,70 @@ public interface IControllerWithOptionalFeatures extends IVoidable, IRecipeLocka
             .attachSyncer(
                 new FakeSyncWidget.BooleanSyncer(this::isRecipeLockingEnabled, this::setRecipeLocking),
                 builder)
-            .addTooltip(StatCollector.translateToLocal("GT5U.gui.button.lock_recipe"))
             .setTooltipShowUpDelay(TOOLTIP_DELAY)
             .setPos(getRecipeLockingButtonPos())
             .setSize(16, 16);
-        if (!supportsSingleRecipeLocking()) {
-            button.addTooltip(StatCollector.translateToLocal(BUTTON_FORBIDDEN_TOOLTIP));
-        }
+
+        addDynamicTooltipOfFeatureToButton(
+            button,
+            this::supportsSingleRecipeLocking,
+            this::isRecipeLockingEnabled,
+            StatCollector.translateToLocal("GT5U.gui.button.lock_recipe"));
+
         return (ButtonWidget) button;
+    }
+
+    /**
+     * Adds a dynamic tooltip to a widget button that displays the status of a multi-block feature.
+     * <p>
+     * The tooltip behavior depends on feature support:
+     * <ul>
+     * <li>If the feature is supported: Shows a dynamic tooltip that updates based on the feature's enabled state</li>
+     * <li>If the feature is not supported: Shows a static tooltip with the current state plus a "forbidden"
+     * message</li>
+     * </ul>
+     *
+     * <p>
+     * <strong>Important:</strong> When implementing this method, ensure that any action that changes the feature's
+     * enabled state calls {@code widget.notifyTooltipChange()} to refresh the tooltip display.
+     *
+     * @param widget             the widget button to add the tooltip to
+     * @param supportsFeature    supplier that returns {@code true} if the multi-block feature is supported
+     * @param isFeatureEnabled   supplier that returns {@code true} if the feature is currently enabled
+     * @param tooltipFeatureName tooltip text to display as the name of the feature
+     *
+     *
+     * @see gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui#addDynamicTooltipOfFeatureToButton(RichTooltip,
+     *      Supplier, Supplier, String) For equivalent method but made for non-ModularUI
+     */
+    default void addDynamicTooltipOfFeatureToButton(Widget widget, Supplier<Boolean> supportsFeature,
+        Supplier<Boolean> isFeatureEnabled, String tooltipFeatureName) {
+        widget.addTooltip(tooltipFeatureName);
+        if (supportsFeature.get()) {
+            widget.dynamicTooltip(() -> {
+                if (isFeatureEnabled.get()) {
+                    return Collections.singletonList(
+                        GTUtility.getColoredSecondaryTooltip(
+                            StatCollector.translateToLocal(BUTTON_FEATURE_ENABLED_TOOLTIP)));
+                } else {
+                    return Collections.singletonList(
+                        GTUtility.getColoredSecondaryTooltip(
+                            StatCollector.translateToLocal(BUTTON_FEATURE_DISABLED_TOOLTIP)));
+                }
+            });
+        } else {
+            if (isFeatureEnabled.get()) {
+                widget.addTooltip(
+                    GTUtility
+                        .getColoredSecondaryTooltip(StatCollector.translateToLocal(BUTTON_FEATURE_ENABLED_TOOLTIP)));
+            } else {
+                widget.addTooltip(
+                    GTUtility
+                        .getColoredSecondaryTooltip(StatCollector.translateToLocal(BUTTON_FEATURE_DISABLED_TOOLTIP)));
+            }
+
+            widget.addTooltip(StatCollector.translateToLocal(BUTTON_FORBIDDEN_TOOLTIP));
+        }
     }
 
     Pos2d getStructureUpdateButtonPos();

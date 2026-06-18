@@ -2,6 +2,7 @@ package gregtech.loaders.oreprocessing;
 
 import static gregtech.api.recipe.RecipeMaps.alloySmelterRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidSolidifierRecipes;
+import static gregtech.api.util.GTRecipeBuilder.NUGGETS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTUtility.calculateRecipeEU;
@@ -55,20 +56,20 @@ public class ProcessingNugget implements gregtech.api.interfaces.IOreRecipeRegis
         }
 
         if (aMaterial.mStandardMoltenFluid != null) {
-            if (!(aMaterial == Materials.AnnealedCopper || aMaterial == Materials.WroughtIron)) {
+            if (!(aMaterial == Materials.AnnealedCopper || aMaterial == Materials.CastIron)) {
                 GTValues.RA.stdBuilder()
                     .itemInputs(ItemList.Shape_Mold_Nugget.get(0L))
                     .itemOutputs(GTOreDictUnificator.get(OrePrefixes.nugget, aMaterial, 1L))
-                    .fluidInputs(aMaterial.getMolten(16L))
+                    .fluidInputs(aMaterial.getMolten(1 * NUGGETS))
                     .duration(16 * TICKS)
                     .eut(calculateRecipeEU(aMaterial, 4))
                     .addTo(fluidSolidifierRecipes);
             }
         }
 
-        GTRecipeRegistrator.registerReverseFluidSmelting(aStack, aMaterial, aPrefix.mMaterialAmount, null, true);
+        GTRecipeRegistrator.registerReverseFluidSmelting(aStack, aMaterial, aPrefix.getMaterialAmount(), null, true);
         GTRecipeRegistrator
-            .registerReverseMacerating(aStack, aMaterial, aPrefix.mMaterialAmount, null, null, null, false, true);
+            .registerReverseMacerating(aStack, aMaterial, aPrefix.getMaterialAmount(), null, null, null, false, true);
         if (!aMaterial.contains(SubTag.NO_SMELTING)
             && GTOreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L) != null) {
             GTValues.RA.stdBuilder()

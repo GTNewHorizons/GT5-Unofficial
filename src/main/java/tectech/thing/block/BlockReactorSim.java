@@ -40,11 +40,6 @@ public class BlockReactorSim extends Block implements ITileEntityProvider {
     }
 
     @Override
-    public boolean isOpaqueCube() {
-        return true;
-    }
-
-    @Override
     public boolean getCanBlockGrass() {
         return true;
     }

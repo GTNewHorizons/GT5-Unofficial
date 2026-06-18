@@ -1,5 +1,7 @@
 package bartworks.util;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.StatCollector;
@@ -7,7 +9,6 @@ import net.minecraft.util.StatCollector;
 import org.jetbrains.annotations.NotNull;
 
 import gregtech.api.recipe.check.CheckRecipeResult;
-import gregtech.api.util.GTUtility;
 
 public class ResultWrongSievert implements CheckRecipeResult {
 
@@ -24,6 +25,7 @@ public class ResultWrongSievert implements CheckRecipeResult {
         this.type = type;
     }
 
+    @Override
     public @NotNull String getID() {
         return "wrong_sievert";
     }
@@ -36,11 +38,10 @@ public class ResultWrongSievert implements CheckRecipeResult {
     @Override
     public @NotNull String getDisplayString() {
         return switch (this.type) {
-            case EXACTLY -> StatCollector.translateToLocalFormatted(
-                "GT5U.gui.text.wrong_sievert_exactly",
-                GTUtility.formatNumbers(this.required));
+            case EXACTLY -> StatCollector
+                .translateToLocalFormatted("GT5U.gui.text.wrong_sievert_exactly", formatNumber(this.required));
             case MINIMUM -> StatCollector
-                .translateToLocalFormatted("GT5U.gui.text.wrong_sievert_min", GTUtility.formatNumbers(this.required));
+                .translateToLocalFormatted("GT5U.gui.text.wrong_sievert_min", formatNumber(this.required));
         };
     }
 

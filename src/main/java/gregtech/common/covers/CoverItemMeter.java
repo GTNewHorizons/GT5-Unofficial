@@ -18,8 +18,10 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GTUtility;
+import gregtech.common.gui.modularui.cover.CoverItemMeterGui;
+import gregtech.common.gui.modularui.cover.base.CoverBaseGui;
 import gregtech.common.gui.mui1.cover.ItemMeterUIFactory;
-import gregtech.common.tileentities.machines.MTEHatchOutputBusME;
+import gregtech.common.tileentities.machines.outputme.MTEHatchOutputBusME;
 import gregtech.common.tileentities.storage.MTEDigitalChestBase;
 import io.netty.buffer.ByteBuf;
 
@@ -60,7 +62,7 @@ public class CoverItemMeter extends Cover {
         return this.threshold;
     }
 
-    public CoverItemMeter setThresdhold(int threshold) {
+    public CoverItemMeter setThreshold(int threshold) {
         this.threshold = threshold;
         return this;
     }
@@ -104,10 +106,10 @@ public class CoverItemMeter extends Cover {
         if (mte instanceof MTEDigitalChestBase dc) {
             max = dc.getMaxItemCount();
             used = dc.getProgresstime();
-        } else if (mte instanceof MTEHatchOutputBusME) {
-            if (((MTEHatchOutputBusME) mte).canAcceptItem()) {
+        } else if (mte instanceof MTEHatchOutputBusME meoutputbus) {
+            // todo for cache mode
+            if (meoutputbus.hasAvailableSpace()) {
                 max = 64;
-                used = 0;
             }
         } else {
             final int[] slots = slot >= 0 ? new int[] { slot } : tileEntity.getAccessibleSlotsFromSide(ordinalSide);
@@ -142,18 +144,17 @@ public class CoverItemMeter extends Cover {
         if (aPlayer.isSneaking()) {
             if (inverted) {
                 inverted = false;
-                GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("055", "Normal"));
+                GTUtility.sendChatTrans(aPlayer, "gt.interact.desc.normal");
             } else {
                 inverted = true;
-                GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("054", "Inverted"));
+                GTUtility.sendChatTrans(aPlayer, "gt.interact.desc.inverted");
             }
         } else {
             slot++;
             if (slot > coverable.getSizeInventory()) slot = -1;
 
-            if (slot == -1)
-                GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("053", "Slot: ") + GTUtility.trans("ALL", "All"));
-            else GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("053", "Slot: ") + slot);
+            if (slot == -1) GTUtility.sendChatTrans(aPlayer, "GT5U.chat.cover.slot.all");
+            else GTUtility.sendChatTrans(aPlayer, "GT5U.chat.cover.slot", slot);
         }
     }
 
@@ -207,6 +208,11 @@ public class CoverItemMeter extends Cover {
     @Override
     public boolean hasCoverGUI() {
         return true;
+    }
+
+    @Override
+    protected @NotNull CoverBaseGui<?> getCoverGui() {
+        return new CoverItemMeterGui(this);
     }
 
     @Override

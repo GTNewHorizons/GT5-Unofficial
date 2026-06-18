@@ -1,10 +1,10 @@
 package gtPlusPlus.api.objects.minecraft;
 
-import java.util.ArrayList;
-
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class CubicObject<T> {
+import org.jetbrains.annotations.Nullable;
+
+public final class CubicObject<T> {
 
     public final T NORTH;
     public final T SOUTH;
@@ -14,14 +14,6 @@ public class CubicObject<T> {
 
     public final T UP;
     public final T DOWN;
-
-    public CubicObject(ArrayList<T> aDataSet) {
-        this(aDataSet.get(0), aDataSet.get(1), aDataSet.get(2), aDataSet.get(3), aDataSet.get(4), aDataSet.get(5));
-    }
-
-    public CubicObject(T[] aDataSet) {
-        this(aDataSet[0], aDataSet[1], aDataSet[2], aDataSet[3], aDataSet[4], aDataSet[5]);
-    }
 
     public CubicObject(T aDOWN, T aUP, T aNORTH, T aSOUTH, T aWEST, T aEAST) {
         DOWN = aDOWN;
@@ -36,21 +28,15 @@ public class CubicObject<T> {
         return get(ForgeDirection.getOrientation(ordinalSide));
     }
 
-    public T get(ForgeDirection side) {
-        if (side == ForgeDirection.DOWN) {
-            return DOWN;
-        } else if (side == ForgeDirection.UP) {
-            return UP;
-        } else if (side == ForgeDirection.NORTH) {
-            return NORTH;
-        } else if (side == ForgeDirection.SOUTH) {
-            return SOUTH;
-        } else if (side == ForgeDirection.WEST) {
-            return WEST;
-        } else if (side == ForgeDirection.EAST) {
-            return EAST;
-        } else {
-            return null;
-        }
+    public @Nullable T get(ForgeDirection side) {
+        return switch (side) {
+            case DOWN -> DOWN;
+            case UP -> UP;
+            case NORTH -> NORTH;
+            case SOUTH -> SOUTH;
+            case WEST -> WEST;
+            case EAST -> EAST;
+            default -> null;
+        };
     }
 }

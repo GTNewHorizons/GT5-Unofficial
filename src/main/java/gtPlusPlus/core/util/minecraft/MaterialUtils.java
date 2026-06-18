@@ -9,39 +9,26 @@ import java.util.Map;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.oredict.OreDictionary;
+import net.minecraft.util.StatCollector;
 
 import gregtech.api.enums.Element;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
-import gregtech.api.util.GTUtility;
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.client.CustomTextureSet.TextureSets;
+import gregtech.api.util.GTLanguageManager;
+import gregtech.api.util.StringUtils;
 import gtPlusPlus.core.item.base.BaseItemComponent;
 import gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes;
 import gtPlusPlus.core.item.base.foil.BaseItemFoil;
 import gtPlusPlus.core.item.base.wire.BaseItemFineWire;
-import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialStack;
 import gtPlusPlus.core.material.state.MaterialState;
-import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.data.StringUtils;
 import gtPlusPlus.core.util.math.MathUtils;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 
 public class MaterialUtils {
-
-    public static List<?> oreDictValuesForEntry(final String oredictName) {
-        List<?> oredictItemNames;
-        if (OreDictionary.doesOreNameExist(oredictName)) {
-            oredictItemNames = OreDictionary.getOres(oredictName);
-            return oredictItemNames;
-        }
-        return null;
-    }
 
     private static final Map<String, Material> mGeneratedMaterialMap = new HashMap<>();
 
@@ -66,6 +53,7 @@ public class MaterialUtils {
 
         try {
             String name = material.mName;
+            final String defaultLocalName = material.mDefaultLocalName;
             final short[] rgba = (customRGB == null ? material.mRGBa : customRGB);
             final int melting = material.mMeltingPoint;
             final int boiling = material.mBlastFurnaceTemp;
@@ -73,22 +61,9 @@ public class MaterialUtils {
             final long neutrons = material.getNeutrons();
             final boolean blastFurnace = material.mBlastFurnaceRequired;
             int radioactivity = 0;
-            if (material.isRadioactive()) {
-                ItemStack aDustStack = ItemUtils.getOrePrefixStack(OrePrefixes.dust, material, 1);
-                radioactivity = aDustStack != null ? GTUtility.getRadioactivityLevel(aDustStack) : 0;
-                if (radioactivity == 0) {
-                    long aProtons = material.getProtons();
-                    radioactivity = (int) Math.min(Math.max((aProtons / 30), 1), 9);
-                }
-            }
-            Logger.MATERIALS("[Debug] Calculated Radiation level to be " + radioactivity + ".");
-            TextureSet iconSet = null;
+            TextureSet iconSet;
             if (aCustomTextures == null) {
-                if (material.isRadioactive()) {
-                    iconSet = TextureSets.NUCLEAR.get();
-                } else {
-                    iconSet = material.mIconSet;
-                }
+                iconSet = material.mIconSet;
             } else {
                 iconSet = aCustomTextures;
             }
@@ -96,42 +71,32 @@ public class MaterialUtils {
                 .contains("fluid")) {
                 iconSet = TextureSet.SET_METALLIC;
             }
-            Logger.MATERIALS("[Debug] Calculated Texture Set to be " + iconSet.mSetName + ".");
 
             final int durability = material.mDurability;
             boolean mGenerateCell = false;
             boolean mGenerateFluid = true;
             MaterialState materialState;
-            String chemicalFormula = StringUtils.subscript(Utils.sanitizeString(material.mChemicalFormula));
+            String chemicalFormula = StringUtils.subscript(StringUtils.sanitizeString(material.getChemicalTooltip()));
             final Element element = material.mElement;
 
             // Weird Blacklist of Bad Chemical Strings
             if (material.mElement == Element.Pb || material.mElement == Element.Na || material.mElement == Element.Ar) {
-                chemicalFormula = StringUtils.subscript(Utils.sanitizeString(material.mElement.name()));
+                chemicalFormula = StringUtils.subscript(StringUtils.sanitizeString(material.mElement.name()));
             }
 
             // Determine default state
-            Logger.MATERIALS("[Debug] Setting State of GT generated material. " + material.mDefaultLocalName);
             if (material.getMolten(1) != null || material.getSolid(1) != null) {
                 materialState = MaterialState.SOLID;
-                Logger.MATERIALS("[Debug] Molten or Solid was not null.");
                 if (material.getMolten(1) == null && material.getSolid(1) != null) {
-                    Logger.MATERIALS("[Debug] Molten is Null, Solid is not. Enabling cell generation.");
                     mGenerateCell = true;
                 } else if (material.getMolten(1) != null && material.getSolid(1) == null) {
-                    Logger.MATERIALS("[Debug] Molten is not Null, Solid is null. Not enabling cell generation.");
                     // mGenerateCell = true;
                 }
-                Logger.MATERIALS("[Debug] State set as solid.");
             } else if (material.getFluid(1) != null) {
-                Logger.MATERIALS("[Debug] State set as liquid.");
                 materialState = MaterialState.LIQUID;
             } else if (material.getGas(1) != null) {
-                Logger.MATERIALS("[Debug] State set as gas.");
                 materialState = MaterialState.GAS;
             } else {
-                Logger.MATERIALS(
-                    "[Debug] State set as solid. This material has no alternative states, so for safety we wont generate anything.");
                 materialState = MaterialState.SOLID;
                 mGenerateFluid = false;
             }
@@ -147,6 +112,7 @@ public class MaterialUtils {
                     || (material == Materials.InfusedWater))) {
                 Material M = new Material(
                     name,
+                    defaultLocalName,
                     materialState,
                     iconSet,
                     durability,
@@ -162,39 +128,11 @@ public class MaterialUtils {
                     mGenerateFluid);
                 mGeneratedMaterialMap.put(aMaterialKey, M);
                 return M;
-            } else {
-                Logger.DEBUG_MATERIALS(
-                    "Failed to generate GT++ material instance for " + material.mName
-                        + " | Valid RGB? "
-                        + (hasValidRGBA(rgba)));
             }
-        } catch (Throwable t) {
-            Logger.DEBUG_MATERIALS("Failed to generate GT++ material instance for " + material.mName);
+        } catch (Exception t) {
             t.printStackTrace();
         }
         return null;
-    }
-
-    public static Material generateQuickMaterial(final String materialName, final MaterialState defaultState,
-        final short[] colour, final int sRadioactivity) {
-        String aMaterialKey = materialName.toLowerCase();
-        if (mGeneratedMaterialMap.containsKey(aMaterialKey)) {
-            return mGeneratedMaterialMap.get(aMaterialKey);
-        }
-
-        final Material temp = new Material(
-            materialName,
-            defaultState,
-            colour,
-            1000, // melting
-            3000, // boiling
-            50, // Protons
-            50, // Neutrons
-            false,
-            "",
-            sRadioactivity);
-        mGeneratedMaterialMap.put(aMaterialKey, temp);
-        return temp;
     }
 
     public static boolean hasValidRGBA(final short[] rgba) {
@@ -272,12 +210,7 @@ public class MaterialUtils {
             g = getMaterial(aFallbackMaterialName);
         }
         if (g == null) {
-            Logger.INFO(
-                "Failed finding material '" + aMaterialName
-                    + "' & fallback '"
-                    + aFallbackMaterialName
-                    + "', returning _NULL.");
-            GTPPCore.crash();
+            throw new IllegalStateException();
         }
         return g;
     }
@@ -288,7 +221,6 @@ public class MaterialUtils {
             m = getMaterialByName(aMaterialName);
         }
         if (m == null) {
-            Logger.INFO("Failed finding material '" + aMaterialName + "', returning _NULL.");
             m = Materials._NULL;
         }
         return m;
@@ -329,11 +261,6 @@ public class MaterialUtils {
     }
 
     public static void generateComponentAndAssignToAMaterial(ComponentTypes aType, Material aMaterial) {
-        generateComponentAndAssignToAMaterial(aType, aMaterial, true);
-    }
-
-    public static void generateComponentAndAssignToAMaterial(ComponentTypes aType, Material aMaterial,
-        boolean generateRecipes) {
         Item aGC;
         if (aType == ComponentTypes.FINEWIRE) {
             aGC = new BaseItemFineWire(aMaterial);
@@ -342,34 +269,38 @@ public class MaterialUtils {
         } else {
             aGC = new BaseItemComponent(aMaterial, aType);
         }
-        String aFormattedLangName = aType.getName();
-
-        if (!aFormattedLangName.startsWith(" ")) {
-            if (aFormattedLangName.contains("@")) {
-                String[] aSplit = aFormattedLangName.split("@");
-                aFormattedLangName = aSplit[0] + " " + aMaterial.getLocalizedName() + " " + aSplit[1];
-            }
-        }
-
-        if (aFormattedLangName.equals(aType.getName())) {
-            aFormattedLangName = aMaterial.getLocalizedName() + aFormattedLangName;
-        }
-
-        Logger.MATERIALS("[Lang] " + aGC.getUnlocalizedName() + ".name=" + aFormattedLangName);
-        aMaterial.registerComponentForMaterial(aType, ItemUtils.getSimpleStack(aGC));
+        aMaterial.registerComponentForMaterial(aType, new ItemStack(aGC));
     }
 
     public static void generateSpecialDustAndAssignToAMaterial(Material aMaterial, boolean generateMixerRecipes) {
         Item[] aDusts = ItemUtils.generateSpecialUseDusts(aMaterial, false, !generateMixerRecipes);
         if (aDusts.length > 0) {
-            aMaterial.registerComponentForMaterial(OrePrefixes.dust, ItemUtils.getSimpleStack(aDusts[0]));
-            aMaterial.registerComponentForMaterial(OrePrefixes.dustSmall, ItemUtils.getSimpleStack(aDusts[1]));
-            aMaterial.registerComponentForMaterial(OrePrefixes.dustTiny, ItemUtils.getSimpleStack(aDusts[2]));
+            aMaterial.registerComponentForMaterial(OrePrefixes.dust, new ItemStack(aDusts[0]));
+            aMaterial.registerComponentForMaterial(OrePrefixes.dustSmall, new ItemStack(aDusts[1]));
+            aMaterial.registerComponentForMaterial(OrePrefixes.dustTiny, new ItemStack(aDusts[2]));
         }
     }
 
     public static boolean isNullGregtechMaterial(Materials aGregtechMaterial) {
         return aGregtechMaterial == Materials._NULL || aGregtechMaterial.equals(Materials._NULL)
             || aGregtechMaterial.mName.equals(Materials._NULL.mName);
+    }
+
+    public static void generateMaterialLocalizedName(String materialNameForKey, String materialDefaultLocalName) {
+        GTLanguageManager
+            .addStringLocalization(getMaterialLocalizedNameKey(materialNameForKey), materialDefaultLocalName);
+    }
+
+    public static void generateMaterialLocalizedName(String name) {
+        generateMaterialLocalizedName(name, name);
+    }
+
+    public static String getMaterialLocalizedName(String defaultName) {
+        return StatCollector.translateToLocal(getMaterialLocalizedNameKey(defaultName));
+    }
+
+    public static String getMaterialLocalizedNameKey(String materialName) {
+        return "Material." + materialName.toLowerCase()
+            .replaceAll("[^a-zA-Z0-9]", "");
     }
 }

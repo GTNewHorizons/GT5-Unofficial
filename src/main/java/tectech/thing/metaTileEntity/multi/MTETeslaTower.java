@@ -1,5 +1,6 @@
 package tectech.thing.metaTileEntity.multi;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
@@ -14,11 +15,15 @@ import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTUtility.validMTEList;
 import static java.lang.Math.min;
 import static net.minecraft.util.StatCollector.translateToLocal;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -42,11 +47,13 @@ import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
 
+import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHatchElement;
+import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -56,11 +63,15 @@ import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchMaintenance;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
+import gregtech.api.objects.RingBuffer;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
+import gregtech.common.gui.modularui.multiblock.MTETeslaTowerGui;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import tectech.loader.ConfigHandler;
 import tectech.loader.NetworkDispatcher;
 import tectech.mechanics.spark.RendererMessage;
@@ -77,20 +88,26 @@ import tectech.thing.metaTileEntity.multi.base.IStatusFunction;
 import tectech.thing.metaTileEntity.multi.base.LedStatus;
 import tectech.thing.metaTileEntity.multi.base.Parameters;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
+import tectech.thing.metaTileEntity.multi.base.parameter.BooleanParameter;
+import tectech.thing.metaTileEntity.multi.base.parameter.DoubleParameter;
+import tectech.thing.metaTileEntity.multi.base.parameter.IParametrized;
+import tectech.thing.metaTileEntity.multi.base.parameter.IntegerParameter;
+import tectech.thing.metaTileEntity.multi.base.parameter.Parameter;
 import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTexture;
 
-public class MTETeslaTower extends TTMultiblockBase implements ISurvivalConstructable, ITeslaConnectable {
+public class MTETeslaTower extends TTMultiblockBase
+    implements ISurvivalConstructable, ITeslaConnectable, IParametrized {
 
     // Interface fields
     private final Multimap<Integer, ITeslaConnectableSimple> teslaNodeMap = MultimapBuilder.treeKeys()
         .linkedListValues()
         .build();
     private final HashSet<ThaumSpark> sparkList = new HashSet<>();
+    private Map<ITeslaConnectableSimple, Integer> ampsLastTickMap = new HashMap<>();
     private int sparkCount = 20;
-
     // Face icons
-    private static Textures.BlockIcons.CustomIcon ScreenOFF;
-    private static Textures.BlockIcons.CustomIcon ScreenON;
+    private static IIconContainer ScreenOFF;
+    private static IIconContainer ScreenON;
 
     private int mTier = 0; // Determines max voltage (LV to ZPM)
     private int plasmaTier = 0; // 0 is None, 1 is Helium or Nitrogen, 2 is Radon (Does not match actual plasma tiers)
@@ -111,9 +128,12 @@ public class MTETeslaTower extends TTMultiblockBase implements ISurvivalConstruc
     private int vTier = -1; // Tesla voltage tier limited by capacitors
     private long outputCurrentMax = 0; // Tesla current output limited by capacitors
 
-    // outputVoltage and current after settings
-    private long outputVoltage;
-    private long outputCurrent;
+    private long outputCurrentLastTick;
+    private int historySize = 30;
+    private RingBuffer outputCurrentHistory = new RingBuffer(historySize);
+    private int ticksBetweenDataPoints = 5;
+    private int dataPointTick = 0;
+    private int dataPointSum = 0;
 
     // Prevents unnecessary offset calculation, saving on lag
     private byte oldRotation = -1;
@@ -180,7 +200,7 @@ public class MTETeslaTower extends TTMultiblockBase implements ISurvivalConstruc
                     InputHatch,
                     OutputHatch,
                     Maintenance)
-                .dot(1)
+                .hint(1)
                 .casingIndex(BlockGTCasingsTT.textureOffset + 16 + 6)
                 .buildAndChain(TTCasingsContainer.sBlockCasingsBA0, 6))
         .addElement('F', ofFrame(Materials.Titanium))
@@ -194,6 +214,13 @@ public class MTETeslaTower extends TTMultiblockBase implements ISurvivalConstruc
     protected Parameters.Group.ParameterOut popogaDisplay, transferRadiusTowerDisplay, transferRadiusTransceiverDisplay,
         transferRadiusCoverUltimateDisplay, outputVoltageDisplay, outputCurrentDisplay, outputMaxDisplay,
         energyCapacityDisplay, energyStoredDisplay, energyFractionDisplay, sortTimeDisplay;
+
+    private DoubleParameter hysteresisLowParameter;
+    private DoubleParameter hysteresisHighParameter;
+    private IntegerParameter transferRadiusParameter;
+    private IntegerParameter outputVoltageParameter;
+    private IntegerParameter outputCurrentParameter;
+    private BooleanParameter overdriveParameter;
 
     private static final INameFunction<MTETeslaTower> HYSTERESIS_LOW_SETTING_NAME = (base,
         p) -> translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.cfgi.0"); // Hysteresis low setting
@@ -424,7 +451,8 @@ public class MTETeslaTower extends TTMultiblockBase implements ISurvivalConstruc
     }
 
     @Override
-    public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
+    public void checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack,
+        List<StructureError> errors) {
         for (MTEHatchCapacitor cap : validMTEList(eCapacitorHatches)) {
             cap.getBaseMetaTileEntity()
                 .setActive(false);
@@ -433,39 +461,37 @@ public class MTETeslaTower extends TTMultiblockBase implements ISurvivalConstruc
 
         mTier = -1;
 
-        if (structureCheck_EM("main", 3, 16, 0)) {
-            for (MTEHatchCapacitor cap : validMTEList(eCapacitorHatches)) {
-                cap.getBaseMetaTileEntity()
-                    .setActive(iGregTechTileEntity.isActive());
-            }
-
-            // Only recalculate offsets on orientation or rotation change
-            if (oldRotation != getExtendedFacing().ordinal()
-                || oldOrientation != iGregTechTileEntity.getFrontFacing()) {
-                oldRotation = (byte) getExtendedFacing().ordinal();
-                oldOrientation = iGregTechTileEntity.getFrontFacing();
-
-                Vec3Impl posBMTE = new Vec3Impl(
-                    getBaseMetaTileEntity().getXCoord(),
-                    getBaseMetaTileEntity().getYCoord(),
-                    getBaseMetaTileEntity().getZCoord());
-
-                // Calculate coordinates of the middle bottom
-                posTop = getExtendedFacing().getWorldOffset(new Vec3Impl(0, 0, 2))
-                    .add(posBMTE);
-
-                // Calculate coordinates of the top sphere
-                posTop = getExtendedFacing().getWorldOffset(new Vec3Impl(0, -14, 2))
-                    .add(posBMTE);
-            }
-            // Generate node map
-            if (!getBaseMetaTileEntity().isClientSide()) {
-                TeslaUtil.teslaSimpleNodeSetAdd(this);
-                TeslaUtil.generateTeslaNodeMap(this);
-            }
-            return true;
+        if (!checkPiece("main", 3, 16, 0, errors)) return;
+        for (MTEHatchCapacitor cap : validMTEList(eCapacitorHatches)) {
+            cap.getBaseMetaTileEntity()
+                .setActive(iGregTechTileEntity.isActive());
         }
-        return false;
+        checkHasMaintenanceHatch(errors);
+        checkHasAnyEnergy(errors);
+
+        // Only recalculate offsets on orientation or rotation change
+        if (oldRotation != getExtendedFacing().ordinal() || oldOrientation != iGregTechTileEntity.getFrontFacing()) {
+            oldRotation = (byte) getExtendedFacing().ordinal();
+            oldOrientation = iGregTechTileEntity.getFrontFacing();
+
+            Vec3Impl posBMTE = new Vec3Impl(
+                getBaseMetaTileEntity().getXCoord(),
+                getBaseMetaTileEntity().getYCoord(),
+                getBaseMetaTileEntity().getZCoord());
+
+            // Calculate coordinates of the middle bottom
+            posTop = getExtendedFacing().getWorldOffset(new Vec3Impl(0, 0, 2))
+                .add(posBMTE);
+
+            // Calculate coordinates of the top sphere
+            posTop = getExtendedFacing().getWorldOffset(new Vec3Impl(0, -14, 2))
+                .add(posBMTE);
+        }
+        // Generate node map
+        if (!getBaseMetaTileEntity().isClientSide()) {
+            TeslaUtil.teslaSimpleNodeSetAdd(this);
+            TeslaUtil.generateTeslaNodeMap(this);
+        }
     }
 
     @Override
@@ -549,6 +575,7 @@ public class MTETeslaTower extends TTMultiblockBase implements ISurvivalConstruc
             // the Tesla Capacitor
             .addTecTechHatchInfo()
             .beginStructureBlock(7, 17, 7, false)
+            .addController("Front bottom center")
             .addOtherStructurePart(
                 translateToLocal("gt.blockmachines.hatch.capacitor.tier.03.name"),
                 translateToLocal("tt.keyword.Structure.AnyTeslaBaseCasingOuter"),
@@ -560,6 +587,15 @@ public class MTETeslaTower extends TTMultiblockBase implements ISurvivalConstruc
                                                                                                       // Hatch: Any
                                                                                                       // outer Tesla
                                                                                                       // Base Casing
+            .addInputHatch(translateToLocal("tt.keyword.Structure.AnyTeslaBaseCasingOuter"), 1) // Input Hatch: Any
+                                                                                                // outer Tesla Base
+                                                                                                // Casing
+            .addOutputHatch(translateToLocal("tt.keyword.Structure.AnyTeslaBaseCasingOuter"), 1) // Output Hatch: Any
+                                                                                                 // outer Tesla Base
+                                                                                                 // Casing
+            .addDynamoHatch(translateToLocal("tt.keyword.Structure.AnyTeslaBaseCasingOuter"), 1) // Dynamo Hatch: Any
+                                                                                                 // outer Tesla Base
+                                                                                                 // Casing
             .toolTipFinisher();
         return tt;
     }
@@ -568,8 +604,8 @@ public class MTETeslaTower extends TTMultiblockBase implements ISurvivalConstruc
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
         super.registerIcons(aBlockIconRegister);
-        ScreenOFF = new Textures.BlockIcons.CustomIcon("iconsets/TM_TESLA_TOWER");
-        ScreenON = new Textures.BlockIcons.CustomIcon("iconsets/TM_TESLA_TOWER_ACTIVE");
+        ScreenOFF = Textures.BlockIcons.custom("iconsets/TM_TESLA_TOWER");
+        ScreenON = Textures.BlockIcons.custom("iconsets/TM_TESLA_TOWER_ACTIVE");
     }
 
     @Override
@@ -601,6 +637,7 @@ public class MTETeslaTower extends TTMultiblockBase implements ISurvivalConstruc
         }
     }
 
+    // TODO: REMOVE AFTER 2.9
     @Override
     protected void parametersInstantiation_EM() {
         Parameters.Group hatch_0 = parametrization.getGroup(0, true);
@@ -618,11 +655,8 @@ public class MTETeslaTower extends TTMultiblockBase implements ISurvivalConstruc
         popogaSetting = hatch_0.makeInParameter(1, 0, POPOGA_NAME, POPOGA_STATUS);
         histHighSetting = hatch_1.makeInParameter(0, 0.75, HYSTERESIS_HIGH_SETTING_NAME, HYSTERESIS_HIGH_STATUS);
         popogaSetting = hatch_1.makeInParameter(1, 0, POPOGA_NAME, POPOGA_STATUS);
-        transferRadiusTowerSetting = hatch_2.makeInParameter(
-            0,
-            ConfigHandler.TeslaTweaks.TESLA_MULTI_RANGE_TOWER,
-            TRANSFER_RADIUS_TOWER_SETTING_NAME,
-            TRANSFER_RADIUS_TOWER_STATUS);
+        transferRadiusTowerSetting = hatch_2
+            .makeInParameter(0, 256, TRANSFER_RADIUS_TOWER_SETTING_NAME, TRANSFER_RADIUS_TOWER_STATUS);
         popogaSetting = hatch_2.makeInParameter(1, 0, POPOGA_NAME, POPOGA_STATUS);
         transferRadiusTransceiverSetting = hatch_3.makeInParameter(
             0,
@@ -675,6 +709,48 @@ public class MTETeslaTower extends TTMultiblockBase implements ISurvivalConstruc
     }
 
     @Override
+    public void initParameters() {
+        hysteresisLowParameter = new DoubleParameter(
+            0.25,
+            "gt.blockmachines.multimachine.tm.teslaCoil.cfgi.0",
+            "hysteresisLow",
+            () -> 0.05,
+            () -> hysteresisHighParameter.getValue());
+
+        hysteresisHighParameter = new DoubleParameter(
+            0.75,
+            "gt.blockmachines.multimachine.tm.teslaCoil.cfgi.1",
+            "hysteresisHigh",
+            () -> hysteresisLowParameter.getValue(),
+            () -> 0.95);
+
+        transferRadiusParameter = new IntegerParameter(
+            32,
+            "gt.blockmachines.multimachine.tm.teslaCoil.cfgi.2",
+            "transferRadius",
+            () -> 1,
+            () -> Integer.MAX_VALUE);
+
+        outputVoltageParameter = new IntegerParameter(
+            -1,
+            "gt.blockmachines.multimachine.tm.teslaCoil.cfgi.5",
+            "outputVoltage",
+            () -> -1,
+            () -> Integer.MAX_VALUE);
+
+        outputCurrentParameter = new IntegerParameter(
+            -1,
+            "gt.blockmachines.multimachine.tm.teslaCoil.cfgi.6",
+            "outputCurrent",
+            () -> -1,
+            () -> (int) outputCurrentMax);
+        overdriveParameter = new BooleanParameter(
+            false,
+            "gt.blockmachines.multimachine.tm.teslaCoil.cfgi.8",
+            "overdrive");
+    }
+
+    @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setLong("eEnergyCapacity", energyCapacity);
@@ -688,6 +764,31 @@ public class MTETeslaTower extends TTMultiblockBase implements ISurvivalConstruc
     }
 
     @Override
+    public void loadLegacyParameters(NBTTagCompound nbt) {
+        NBTTagCompound oldParams = nbt.getCompoundTag("eParamsInD");
+        hysteresisLowParameter.setValue(oldParams.getDouble(String.valueOf(0)));
+        hysteresisHighParameter.setValue(oldParams.getDouble(String.valueOf(1)));
+        transferRadiusParameter.setValue((int) oldParams.getDouble(String.valueOf(2)));
+        outputVoltageParameter.setValue((int) oldParams.getDouble(String.valueOf(4)));
+        outputCurrentParameter.setValue((int) oldParams.getDouble(String.valueOf(5)));
+        overdriveParameter.setValue(oldParams.getDouble(String.valueOf(8)) != 0);
+    }
+
+    @Override
+    public List<Parameter<?>> getParameters() {
+        List<Parameter<?>> parameters = new ArrayList<>();
+
+        parameters.add(hysteresisLowParameter);
+        parameters.add(hysteresisHighParameter);
+        parameters.add(transferRadiusParameter);
+        parameters.add(outputVoltageParameter);
+        parameters.add(outputCurrentParameter);
+        parameters.add(overdriveParameter);
+
+        return parameters;
+    }
+
+    @Override
     public void stopMachine(@Nonnull ShutDownReason reason) {
         super.stopMachine(reason);
         for (MTEHatchCapacitor cap : validMTEList(eCapacitorHatches)) {
@@ -697,9 +798,6 @@ public class MTETeslaTower extends TTMultiblockBase implements ISurvivalConstruc
 
         ePowerPass = false;
         setEUVar(0);
-        energyStoredDisplay.set(0);
-        energyFractionDisplay.set(0);
-        outputMaxDisplay.set(0);
     }
 
     @Override
@@ -707,39 +805,28 @@ public class MTETeslaTower extends TTMultiblockBase implements ISurvivalConstruc
         // Hysteresis based ePowerPass setting
         float energyFrac = (float) getEUVar() / energyCapacity;
 
-        energyCapacityDisplay.set(energyCapacity);
-        energyStoredDisplay.set(getEUVar());
-        energyFractionDisplay.set(energyFrac);
-
-        if (!ePowerPass && energyFrac > histHighSetting.get()) {
+        if (!ePowerPass && energyFrac > hysteresisHighParameter.getValue()) {
             ePowerPass = true;
-        } else if (ePowerPass && energyFrac < histLowSetting.get()) {
+        } else if (ePowerPass && energyFrac < hysteresisLowParameter.getValue()) {
             ePowerPass = false;
         }
 
-        // Power Limit Settings
-        if (outputVoltageSetting.get() > 0) {
-            outputVoltage = min(outputVoltageMax, (long) outputVoltageSetting.get());
-        } else {
-            outputVoltage = outputVoltageMax;
-        }
-        outputVoltageDisplay.set(outputVoltage);
-
-        if (outputCurrentSetting.get() > 0) {
-            outputCurrent = min(outputCurrentMax, (long) outputCurrentSetting.get());
-        } else {
-            outputCurrent = outputCurrentMax;
-        }
-
-        // Range calculation and display
-        int transferRadiusTower = getTeslaTransmissionRange();
-        transferRadiusTowerDisplay.set(transferRadiusTower);
-        transferRadiusTransceiverDisplay.set(transferRadiusTower * 2);
-        transferRadiusCoverUltimateDisplay.set(transferRadiusTower);
-
         // Power transfer
-        outputCurrentDisplay.set(TeslaUtil.powerTeslaNodeMap(this));
-        outputMaxDisplay.set(Math.max(outputCurrentDisplay.get(), outputMaxDisplay.get()));
+        ampsLastTickMap = TeslaUtil.powerTeslaNodeMap(this);
+        int usedAmps = ampsLastTickMap.values()
+            .stream()
+            .reduce(Integer::sum)
+            .orElse(0);
+
+        outputCurrentLastTick = usedAmps;
+
+        dataPointSum += usedAmps;
+        dataPointTick++;
+        if (dataPointTick >= ticksBetweenDataPoints) {
+            outputCurrentHistory.add((double) dataPointSum / dataPointTick);
+            dataPointSum = 0;
+            dataPointTick = 0;
+        }
         // TODO Encapsulate the spark sender
         sparkCount--;
         if (sparkCount == 0 && ConfigHandler.teslaTweaks.TESLA_VISUAL_EFFECT) {
@@ -748,11 +835,12 @@ public class MTETeslaTower extends TTMultiblockBase implements ISurvivalConstruc
             if (!sparkList.isEmpty()) {
                 NetworkDispatcher.INSTANCE.sendToAllAround(
                     new RendererMessage.RendererData(sparkList),
-                    mte.getWorld().provider.dimensionId,
-                    mte.getXCoord(),
-                    mte.getYCoord(),
-                    mte.getZCoord(),
-                    256);
+                    new NetworkRegistry.TargetPoint(
+                        mte.getWorld().provider.dimensionId,
+                        mte.getXCoord(),
+                        mte.getYCoord(),
+                        mte.getZCoord(),
+                        256));
                 sparkList.clear();
             }
         }
@@ -772,7 +860,7 @@ public class MTETeslaTower extends TTMultiblockBase implements ISurvivalConstruc
         return getBaseMetaTileEntity().isActive() ? super.getEUVar() : 1;
     }
 
-    private boolean addCapacitorToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+    public boolean addCapacitorToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
         if (aTileEntity == null) {
             return false;
         }
@@ -786,23 +874,23 @@ public class MTETeslaTower extends TTMultiblockBase implements ISurvivalConstruc
         }
         if (aMetaTileEntity instanceof MTEHatchMaintenance) {
             ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return mMaintenanceHatches.add((MTEHatchMaintenance) aMetaTileEntity);
-        }
-        if (aMetaTileEntity instanceof MTEHatchEnergy) {
-            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return mEnergyHatches.add((MTEHatchEnergy) aMetaTileEntity);
+            return addMaintenanceToMachineList(aTileEntity, aBaseCasingIndex);
         }
         if (aMetaTileEntity instanceof MTEHatchEnergyMulti) {
             ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             return eEnergyMulti.add((MTEHatchEnergyMulti) aMetaTileEntity);
         }
-        if (aMetaTileEntity instanceof MTEHatchDynamo) {
+        if (aMetaTileEntity instanceof MTEHatchEnergy) {
             ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return mDynamoHatches.add((MTEHatchDynamo) aMetaTileEntity);
+            return mEnergyHatches.add((MTEHatchEnergy) aMetaTileEntity);
         }
         if (aMetaTileEntity instanceof MTEHatchDynamoMulti) {
             ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             return eDynamoMulti.add((MTEHatchDynamoMulti) aMetaTileEntity);
+        }
+        if (aMetaTileEntity instanceof MTEHatchDynamo) {
+            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            return mDynamoHatches.add((MTEHatchDynamo) aMetaTileEntity);
         }
         if (aMetaTileEntity instanceof MTEHatchInput) {
             ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
@@ -822,13 +910,13 @@ public class MTETeslaTower extends TTMultiblockBase implements ISurvivalConstruc
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        structureBuild_EM("main", 3, 16, 0, stackSize, hintsOnly);
+        buildPiece("main", stackSize, hintsOnly, 3, 16, 0);
     }
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
         if (mMachine) return -1;
-        return survivialBuildPiece("main", stackSize, 3, 16, 0, elementBudget, source, actor, false, true);
+        return survivalBuildPiece("main", stackSize, 3, 16, 0, elementBudget, source, actor, false, true);
     }
 
     @Override
@@ -863,12 +951,12 @@ public class MTETeslaTower extends TTMultiblockBase implements ISurvivalConstruc
 
     @Override
     public int getTeslaTransmissionRange() {
-        return (int) (transferRadiusTowerSetting.get() * getRangeMulti(mTier, vTier));
+        return (int) (transferRadiusParameter.getValue() * getRangeMulti(mTier, vTier));
     }
 
     @Override
     public boolean isOverdriveEnabled() {
-        return overDriveSetting.get() > 0;
+        return overdriveParameter.getValue();
     }
 
     @Override
@@ -889,12 +977,24 @@ public class MTETeslaTower extends TTMultiblockBase implements ISurvivalConstruc
 
     @Override
     public long getTeslaOutputVoltage() {
-        return outputVoltage;
+        int voltage = outputVoltageParameter.getValue();
+        if (voltage > 0) {
+            return min(outputVoltageMax, voltage);
+        }
+        return outputVoltageMax;
     }
 
     @Override
     public long getTeslaOutputCurrent() {
-        return outputCurrent;
+        int current = outputCurrentParameter.getValue();
+        if (current > 0) {
+            return min(outputCurrentMax, current);
+        }
+        return outputCurrentMax;
+    }
+
+    public long getOutputCurrentLastTick() {
+        return outputCurrentLastTick;
     }
 
     @Override
@@ -938,6 +1038,71 @@ public class MTETeslaTower extends TTMultiblockBase implements ISurvivalConstruc
         return false;
     }
 
+    public List<Double> getOutputCurrentHistory() {
+        return outputCurrentHistory;
+    }
+
+    public int getHistorySize() {
+        return historySize;
+    }
+
+    public void setHistorySize(int historySize) {
+        this.historySize = historySize;
+        outputCurrentHistory.resize(historySize);
+    }
+
+    public int getTicksBetweenDataPoints() {
+        return ticksBetweenDataPoints;
+    }
+
+    public void setTicksBetweenDataPoints(int ticksBetweenDataPoints) {
+        this.ticksBetweenDataPoints = ticksBetweenDataPoints;
+    }
+
+    public Map<ITeslaConnectableSimple, Integer> getAmpsLastTickMap() {
+        return ampsLastTickMap;
+    }
+
+    public long getOutputCurrentMax() {
+        return outputCurrentMax;
+    }
+
+    public void setOutputCurrentMax(long outputCurrentMax) {
+        this.outputCurrentMax = outputCurrentMax;
+    }
+
+    @Override
+    public String[] getInfoData() {
+        List<String> data = new ArrayList<>(Arrays.asList(super.getInfoData()));
+
+        data.add(
+            translateToLocalFormatted(
+                "tt.infodata.multi.energy_hatches",
+                EnumChatFormatting.GREEN + formatNumber(getTeslaStoredEnergy()) + EnumChatFormatting.RESET,
+                EnumChatFormatting.YELLOW + formatNumber(energyCapacity) + EnumChatFormatting.RESET));
+        data.add(
+            translateToLocalFormatted(
+                "tt.infodata.multi.current_output",
+                EnumChatFormatting.GREEN + formatNumber(getTeslaOutputCurrent()) + EnumChatFormatting.RESET,
+                EnumChatFormatting.YELLOW + formatNumber(outputCurrentMax) + EnumChatFormatting.RESET));
+
+        return data.toArray(new String[0]);
+    }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
+    }
+
+    protected boolean useMui2() {
+        return true;
+    }
+
+    @Override
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
+        return new MTETeslaTowerGui(this);
+    }
+
     private enum CapacitorHatchElement implements IHatchElement<MTETeslaTower> {
 
         INSTANCE;
@@ -957,4 +1122,5 @@ public class MTETeslaTower extends TTMultiblockBase implements ISurvivalConstruc
             return MTETeslaTower.eCapacitorHatches.size();
         }
     }
+
 }

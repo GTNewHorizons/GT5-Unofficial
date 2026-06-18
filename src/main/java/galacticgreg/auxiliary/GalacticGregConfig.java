@@ -5,9 +5,11 @@ import java.io.File;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 
+import com.gtnewhorizon.gtnhlib.util.data.BlockMeta;
+import com.gtnewhorizon.gtnhlib.util.data.ImmutableBlockMeta;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import galacticgreg.GalacticGreg;
-import galacticgreg.api.BlockMetaComb;
 
 public class GalacticGregConfig extends ConfigManager {
 
@@ -27,7 +29,9 @@ public class GalacticGregConfig extends ConfigManager {
     public String LootChestItemOverride;
     public boolean QuietMode;
 
-    public BlockMetaComb CustomLootChest;
+    public int ChaosIslandExclusionRadius;
+
+    public ImmutableBlockMeta CustomLootChest;
 
     @Override
     protected void PreInit() {
@@ -44,6 +48,8 @@ public class GalacticGregConfig extends ConfigManager {
 
         LootChestItemOverride = "";
         QuietMode = false;
+
+        ChaosIslandExclusionRadius = 200;
     }
 
     @Override
@@ -94,6 +100,13 @@ public class GalacticGregConfig extends ConfigManager {
             "Extras",
             LootChestItemOverride,
             "Define the chest you wish to use as LootChest. use the <ModID>:<Name>:<meta> format or leave empty for the default Minecraft Chest");
+        ChaosIslandExclusionRadius = _mainConfig.getInt(
+            "ChaosIslandExclusionRadius",
+            "Extras",
+            ChaosIslandExclusionRadius,
+            0,
+            500,
+            "Radius in blocks around a Draconic Evolution chaos island within which GalaxySpace asteroids will not generate. Set to 0 to disable.");
 
         GalacticGreg.Logger.setDebugOutput(PrintDebugMessagesToFMLLog);
         GalacticGreg.Logger.setTraceOutput(PrintTraceMessagesToFMLLog);
@@ -106,7 +119,7 @@ public class GalacticGregConfig extends ConfigManager {
     }
 
     public boolean serverPostInit() {
-        CustomLootChest = new BlockMetaComb(Blocks.chest);
+        CustomLootChest = new BlockMeta(Blocks.chest);
         try {
             if (LootChestItemOverride != null && !LootChestItemOverride.isEmpty()) {
                 String[] args = LootChestItemOverride.split(":");
@@ -124,7 +137,7 @@ public class GalacticGregConfig extends ConfigManager {
                     if (tBlock != null) {
                         GalacticGreg.Logger
                             .debug("Found valid ChestOverride: %s. LootChest replaced", LootChestItemOverride);
-                        CustomLootChest = new BlockMetaComb(tBlock, tMeta);
+                        CustomLootChest = new BlockMeta(tBlock, tMeta);
                     }
                 }
             }

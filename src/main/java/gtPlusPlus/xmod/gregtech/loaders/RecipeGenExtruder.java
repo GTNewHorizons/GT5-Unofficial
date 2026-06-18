@@ -10,15 +10,12 @@ import net.minecraft.item.ItemStack;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gtPlusPlus.api.interfaces.RunnableWithInfo;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialGenerator;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class RecipeGenExtruder extends RecipeGenBase {
 
-    public static final Set<RunnableWithInfo<Material>> mRecipeGenMap = new HashSet<>();
+    public static final Set<Runnable> mRecipeGenMap = new HashSet<>();
 
     static {
         MaterialGenerator.mRecipeMapsToGenerate.add(mRecipeGenMap);
@@ -48,10 +45,7 @@ public class RecipeGenExtruder extends RecipeGenBase {
         final ItemStack shape_Block = ItemList.Shape_Extruder_Block.get(0);
         final ItemStack shape_Ingot = ItemList.Shape_Extruder_Ingot.get(0);
 
-        Logger.WARNING("Generating Extruder recipes for " + material.getLocalizedName());
-
-        if (ItemUtils.checkForInvalidItems(material.getIngot(1))
-            && ItemUtils.checkForInvalidItems(material.getBlock(1))) {
+        if (material.getIngot(1) != null && material.getBlock(1) != null) {
             // Ingot Recipe
             GTValues.RA.stdBuilder()
                 .itemInputs(material.getBlock(1), shape_Ingot)
@@ -60,8 +54,6 @@ public class RecipeGenExtruder extends RecipeGenBase {
                 .eut(material.vVoltageMultiplier)
                 .addTo(extruderRecipes);
 
-            Logger.WARNING("Extruder Ingot Recipe: " + material.getLocalizedName() + " - Success");
-
             // Block Recipe
             GTValues.RA.stdBuilder()
                 .itemInputs(material.getIngot(9), shape_Block)
@@ -69,26 +61,20 @@ public class RecipeGenExtruder extends RecipeGenBase {
                 .duration((int) Math.max(material.getMass() * 2L * 1, 1))
                 .eut(material.vVoltageMultiplier)
                 .addTo(extruderRecipes);
-
-            Logger.WARNING("Extruder Block Recipe: " + material.getLocalizedName() + " - Success");
         }
 
         // Plate Recipe
-        if (ItemUtils.checkForInvalidItems(material.getIngot(1))
-            && ItemUtils.checkForInvalidItems(material.getPlate(1))) {
+        if (material.getIngot(1) != null && material.getPlate(1) != null) {
             GTValues.RA.stdBuilder()
                 .itemInputs(itemIngot, shape_Plate)
                 .itemOutputs(itemPlate)
                 .duration(10 * TICKS)
                 .eut(material.vVoltageMultiplier)
                 .addTo(extruderRecipes);
-
-            Logger.WARNING("Extruder Plate Recipe: " + material.getLocalizedName() + " - Success");
         }
 
         // Ring Recipe
-        if (ItemUtils.checkForInvalidItems(material.getIngot(1))
-            && ItemUtils.checkForInvalidItems(material.getRing(1))) {
+        if (material.getIngot(1) != null && material.getRing(1) != null) {
             if (!material.isRadioactive) {
                 GTValues.RA.stdBuilder()
                     .itemInputs(itemIngot, shape_Ring)
@@ -96,63 +82,48 @@ public class RecipeGenExtruder extends RecipeGenBase {
                     .duration((int) Math.max(material.getMass() * 2L * 1, 1))
                     .eut(material.vVoltageMultiplier)
                     .addTo(extruderRecipes);
-
-                Logger.WARNING("Extruder Ring Recipe: " + material.getLocalizedName() + " - Success");
             }
         }
 
         // Gear Recipe
-        if (ItemUtils.checkForInvalidItems(material.getIngot(1)) && ItemUtils.checkForInvalidItems(material.getGear(1)))
-            if (!material.isRadioactive) {
-                GTValues.RA.stdBuilder()
-                    .itemInputs(material.getIngot(4), shape_Gear)
-                    .itemOutputs(itemGear)
-                    .duration((int) Math.max(material.getMass() * 5L, 1))
-                    .eut(material.vVoltageMultiplier)
-                    .addTo(extruderRecipes);
-
-                Logger.WARNING("Extruder Gear Recipe: " + material.getLocalizedName() + " - Success");
-            }
+        if (material.getIngot(1) != null && material.getGear(1) != null && !material.isRadioactive) {
+            GTValues.RA.stdBuilder()
+                .itemInputs(material.getIngot(4), shape_Gear)
+                .itemOutputs(itemGear)
+                .duration((int) Math.max(material.getMass() * 5L, 1))
+                .eut(material.vVoltageMultiplier)
+                .addTo(extruderRecipes);
+        }
 
         // Rod Recipe
-        if (ItemUtils.checkForInvalidItems(material.getIngot(1))
-            && ItemUtils.checkForInvalidItems(material.getRod(1))) {
+        if (material.getIngot(1) != null && material.getRod(1) != null) {
             GTValues.RA.stdBuilder()
                 .itemInputs(itemIngot, shape_Rod)
                 .itemOutputs(material.getRod(2))
                 .duration((int) Math.max(material.getMass() * 2L * 1, 1))
                 .eut(material.vVoltageMultiplier)
                 .addTo(extruderRecipes);
-
-            Logger.WARNING("Extruder Rod Recipe: " + material.getLocalizedName() + " - Success");
         }
 
         // Bolt Recipe
-        if (ItemUtils.checkForInvalidItems(material.getIngot(1)) && ItemUtils.checkForInvalidItems(material.getBolt(1)))
-            if (!material.isRadioactive) {
-                GTValues.RA.stdBuilder()
-                    .itemInputs(itemIngot, shape_Bolt)
-                    .itemOutputs(material.getBolt(8))
-                    .duration((int) Math.max(material.getMass() * 2L * 1, 1))
-                    .eut(material.vVoltageMultiplier)
-                    .addTo(extruderRecipes);
-
-                Logger.WARNING("Extruder Bolt Recipe: " + material.getLocalizedName() + " - Success");
-            }
+        if (material.getIngot(1) != null && material.getBolt(1) != null && !material.isRadioactive) {
+            GTValues.RA.stdBuilder()
+                .itemInputs(itemIngot, shape_Bolt)
+                .itemOutputs(material.getBolt(8))
+                .duration((int) Math.max(material.getMass() * 2L, 1))
+                .eut(material.vVoltageMultiplier)
+                .addTo(extruderRecipes);
+        }
 
         // Rotor Recipe
         // Shape_Extruder_Rotor
-        if (ItemUtils.checkForInvalidItems(material.getIngot(1))
-            && ItemUtils.checkForInvalidItems(material.getRotor(1))) {
-
+        if (material.getIngot(1) != null && material.getRotor(1) != null) {
             GTValues.RA.stdBuilder()
                 .itemInputs(material.getIngot(5), ItemList.Shape_Extruder_Rotor.get(0))
                 .itemOutputs(material.getRotor(1))
                 .duration((int) Math.max(material.getMass() * 5L * 1, 1))
                 .eut(material.vVoltageMultiplier)
                 .addTo(extruderRecipes);
-
-            Logger.WARNING("Extruder Rotor Recipe: " + material.getLocalizedName() + " - Success");
         }
 
     }

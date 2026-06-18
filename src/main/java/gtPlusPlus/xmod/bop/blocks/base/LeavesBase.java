@@ -14,28 +14,30 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
+import net.minecraftforge.oredict.OreDictionary;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gtPlusPlus.api.objects.Logger;
+import gregtech.api.enums.GTValues;
+import gregtech.api.util.GTRecipeBuilder;
+import gregtech.api.util.GTUtility;
+import gregtech.api.util.StringUtils;
 import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class LeavesBase extends BlockLeaves {
 
     protected IIcon[][] leafTextures = new IIcon[2][];
     protected String[][] leafType = new String[][] { {}, {} };
-    protected String[] treeType = new String[] {};
+    protected String[] treeType = GTValues.emptyStringArray;
     protected ItemStack[] bonusDrops;
 
-    public LeavesBase(String blockNameLocalized, String blockNameUnlocalized, ItemStack[] bonusDrops) {
+    public LeavesBase(String blockNameLocalized, ItemStack[] bonusDrops) {
         this.bonusDrops = bonusDrops;
-        String blockName = "block" + Utils.sanitizeString(blockNameLocalized) + "Leaves";
+        String blockName = "block" + StringUtils.sanitizeString(blockNameLocalized) + "Leaves";
         GameRegistry.registerBlock(this, ItemBlock.class, blockName);
         this.setBlockName(blockName);
-        ItemUtils.addItemToOreDictionary(ItemUtils.getSimpleStack(this), "treeLeaves", true);
+        OreDictionary.registerOre("treeLeaves", new ItemStack(this, 1, GTRecipeBuilder.WILDCARD));
         this.setCreativeTab(AddToCreativeTab.tabBOP);
         Blocks.fire.setFireInfo(this, 80, 150);
     }
@@ -47,10 +49,9 @@ public class LeavesBase extends BlockLeaves {
 
     @Override // Drops when Leaf is broken
     protected void func_150124_c(World world, int x, int y, int z, int meta, int randomChance) {
-        Logger.INFO("Dropping Bonus Drops");
         for (ItemStack bonusDrop : this.bonusDrops) {
             if (bonusDrop != null && world.rand.nextInt(randomChance) == 0) {
-                this.dropBlockAsItem(world, x, y, z, ItemUtils.getSimpleStack(bonusDrop, 1));
+                this.dropBlockAsItem(world, x, y, z, GTUtility.copyAmount(1, bonusDrop));
             }
         }
     }
@@ -58,10 +59,9 @@ public class LeavesBase extends BlockLeaves {
     /**
      * returns a list of blocks with the same ID, but different meta (eg: wood returns 4 blocks)
      */
-    @SuppressWarnings("unchecked")
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubBlocks(Item item, CreativeTabs tab, @SuppressWarnings("rawtypes") List metaList) {
+    public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> metaList) {
         for (int i = 0; i < this.treeType.length; ++i) {
             metaList.add(new ItemStack(item, 1, i));
         }

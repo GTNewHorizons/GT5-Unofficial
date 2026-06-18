@@ -1,14 +1,15 @@
 package tectech.recipe;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.util.GTRecipeConstants.FOG_PLASMA_MULTISTEP;
 import static gregtech.api.util.GTRecipeConstants.FOG_PLASMA_TIER;
-import static gregtech.api.util.GTUtility.trans;
-import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.ParametersAreNonnullByDefault;
+
+import net.minecraft.util.StatCollector;
 
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
@@ -17,7 +18,6 @@ import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import gregtech.api.recipe.BasicUIPropertiesBuilder;
 import gregtech.api.recipe.NEIRecipePropertiesBuilder;
 import gregtech.api.recipe.RecipeMapFrontend;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.nei.RecipeDisplayInfo;
 import tectech.thing.gui.TecTechUITextures;
@@ -63,15 +63,29 @@ public class GodforgePlasmaFrontend extends RecipeMapFrontend {
             default -> "T1-T3";
         };
 
-        recipeInfo.drawText(trans("152", "Total: ") + GTUtility.formatNumbers(eut * duration) + " EU");
-        recipeInfo.drawText(trans("153", "Usage: ") + GTUtility.formatNumbers(eut) + " EU/t");
         recipeInfo.drawText(
-            trans("158", "Time: ") + GTUtility.formatNumbers(duration / 20d)
-                + " secs"
-                + (duration < 20 ? " (" + duration + " ticks)" : ""));
-        recipeInfo.drawText(translateToLocal("gt.blockmachines.multimachine.FOG.plasmamultistep") + ": " + multistep);
-        recipeInfo
-            .drawText(translateToLocal("gt.blockmachines.multimachine.FOG.plasmarecipetier") + ": " + requiredUpgrade);
+            StatCollector.translateToLocalFormatted("GT5U.gui.text.total_line", formatNumber(eut * duration)));
+
+        recipeInfo.drawText(StatCollector.translateToLocalFormatted("GT5U.gui.text.usage_line", formatNumber(eut)));
+
+        if (duration < 20) {
+            recipeInfo.drawText(
+                StatCollector.translateToLocalFormatted(
+                    "GT5U.gui.text.time_line_with_ticks",
+                    formatNumber(duration / 20d),
+                    duration));
+        } else {
+            recipeInfo.drawText(
+                StatCollector.translateToLocalFormatted("GT5U.gui.text.time_line", formatNumber(duration / 20d)));
+        }
+
+        recipeInfo.drawText(
+            StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.FOG.plasmamultistep", multistep));
+
+        recipeInfo.drawText(
+            StatCollector
+                .translateToLocalFormatted("gt.blockmachines.multimachine.FOG.plasmarecipetier", requiredUpgrade));
+
     }
 
     @Override

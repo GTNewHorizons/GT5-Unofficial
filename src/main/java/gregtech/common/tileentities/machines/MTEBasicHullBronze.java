@@ -7,11 +7,13 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicHullNonElectric;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTSplit;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEBasicHullBronze extends MTEBasicHullNonElectric {
 
-    public MTEBasicHullBronze(int aID, String aName, String aNameRegional, int aTier, String aDescription) {
-        super(aID, aName, aNameRegional, aTier, aDescription);
+    public MTEBasicHullBronze(int aID, String aName, String aNameRegional, int aTier) {
+        super(aID, aName, aNameRegional, aTier);
     }
 
     public MTEBasicHullBronze(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -28,12 +30,17 @@ public class MTEBasicHullBronze extends MTEBasicHullNonElectric {
         ITexture[][][] rTextures = new ITexture[3][17][];
         for (byte i = -1; i < 16; i = (byte) (i + 1)) {
             rTextures[0][(i + 1)] = new ITexture[] {
-                TextureFactory.of(Textures.BlockIcons.MACHINE_BRONZE_BOTTOM, Dyes.getModulation(i, Dyes._NULL.mRGBa)) };
+                TextureFactory.of(Textures.BlockIcons.MACHINE_BRONZE_BOTTOM, Dyes.getModulation(i)) };
             rTextures[1][(i + 1)] = new ITexture[] {
-                TextureFactory.of(Textures.BlockIcons.MACHINE_BRONZE_TOP, Dyes.getModulation(i, Dyes._NULL.mRGBa)) };
+                TextureFactory.of(Textures.BlockIcons.MACHINE_BRONZE_TOP, Dyes.getModulation(i)) };
             rTextures[2][(i + 1)] = new ITexture[] {
-                TextureFactory.of(Textures.BlockIcons.MACHINE_BRONZE_SIDE, Dyes.getModulation(i, Dyes._NULL.mRGBa)) };
+                TextureFactory.of(Textures.BlockIcons.MACHINE_BRONZE_SIDE, Dyes.getModulation(i)) };
         }
         return rTextures;
+    }
+
+    @Override
+    public String[] getDescription() {
+        return GTSplit.splitLocalized("gt.blockmachines.bronze_hull.desc");
     }
 }

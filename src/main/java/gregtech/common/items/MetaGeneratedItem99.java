@@ -2,11 +2,13 @@ package gregtech.common.items;
 
 import static gregtech.api.enums.GTValues.M;
 import static gregtech.api.enums.OrePrefixes.cellMolten;
+import static gregtech.api.enums.OrePrefixes.material;
 
 import java.util.BitSet;
 import java.util.List;
 
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
@@ -21,7 +23,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedItem;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
 
 public class MetaGeneratedItem99 extends MetaGeneratedItem {
@@ -63,7 +64,10 @@ public class MetaGeneratedItem99 extends MetaGeneratedItem {
 
             if ((tMaterial.contains(SubTag.SMELTING_TO_FLUID)) && (!tMaterial.contains(SubTag.NO_SMELTING))
                 && !tMaterial.contains(SubTag.SMELTING_TO_GEM)) {
-                registerMolten(tMaterial, tMaterial.mMetaItemSubID);
+                // extra check for if the material is not in the molten cell blacklist.
+                if (!cellMolten.mNotGeneratedItems.contains(tMaterial)) {
+                    registerMolten(tMaterial, tMaterial.mMetaItemSubID);
+                }
                 if (tMaterial.mSmeltInto != tMaterial && tMaterial.mSmeltInto.mMetaItemSubID >= 0
                     && tMaterial.mSmeltInto.mMetaItemSubID < 1_000) {
                     registerMolten(tMaterial.mSmeltInto, tMaterial.mSmeltInto.mMetaItemSubID);
@@ -84,14 +88,7 @@ public class MetaGeneratedItem99 extends MetaGeneratedItem {
         ItemStack tStack = new ItemStack(this, 1, i);
         enabled.set(i);
 
-        GTLanguageManager.addStringLocalization(
-            getUnlocalizedName(tStack) + ".name",
-            cellMolten.getDefaultLocalNameFormatForItem(tMaterial));
-        GTLanguageManager.addStringLocalization(
-            getUnlocalizedName(tStack) + ".tooltip",
-            tMaterial.getToolTip(cellMolten.mMaterialAmount / M));
-
-        if (cellMolten.mIsUnificatable) {
+        if (cellMolten.isUnifiable()) {
             GTOreDictUnificator.set(cellMolten, tMaterial, tStack);
         } else {
             GTOreDictUnificator.registerOre(cellMolten.get(tMaterial), tStack);
@@ -104,14 +101,7 @@ public class MetaGeneratedItem99 extends MetaGeneratedItem {
             ItemStack tStack = new ItemStack(this, 1, offset + i);
             enabled.set(offset + i);
 
-            GTLanguageManager.addStringLocalization(
-                getUnlocalizedName(tStack) + ".name",
-                prefix.getDefaultLocalNameFormatForItem(tMaterial));
-            GTLanguageManager.addStringLocalization(
-                getUnlocalizedName(tStack) + ".tooltip",
-                tMaterial.getToolTip(prefix.mMaterialAmount / M));
-
-            if (prefix.mIsUnificatable) {
+            if (prefix.isUnifiable()) {
                 GTOreDictUnificator.set(prefix, tMaterial, tStack);
             } else {
                 GTOreDictUnificator.registerOre(prefix.get(tMaterial), tStack);
@@ -119,14 +109,6 @@ public class MetaGeneratedItem99 extends MetaGeneratedItem {
 
             offset += 1_000;
         }
-    }
-
-    /** Returns null for item damage out of bounds. */
-    private Materials getMaterial(int damage) {
-        if (damage < 0) {
-            return null;
-        }
-        return GregTechAPI.sGeneratedMaterials[damage % 1_000];
     }
 
     /** Returns null for item damage out of bounds. */
@@ -158,12 +140,11 @@ public class MetaGeneratedItem99 extends MetaGeneratedItem {
 
     @Override
     public String getItemStackDisplayName(ItemStack aStack) {
-        String aName = super.getItemStackDisplayName(aStack);
-        Materials material = getMaterial(aStack.getItemDamage());
-        if (material != null) {
-            return material.getLocalizedNameForItem(aName);
-        }
-        return aName;
+        final int damage = aStack.getItemDamage();
+        final OrePrefixes prefix = getOrePrefix(damage);
+        final Materials material = getMaterial(damage);
+        if (prefix != null && material != null) return prefix.getLocalizedNameForItem(material);
+        return super.getItemStackDisplayName(aStack);
     }
 
     @Override
@@ -197,7 +178,7 @@ public class MetaGeneratedItem99 extends MetaGeneratedItem {
         Materials material = getMaterial(aMetaData);
         OrePrefixes prefix = getOrePrefix(aMetaData);
         if (material != null && prefix != null) {
-            return material.mIconSet.mTextures[prefix.mTextureIndex];
+            return material.mIconSet.mTextures[prefix.getTextureIndex()];
         }
         return null;
     }
@@ -206,9 +187,19 @@ public class MetaGeneratedItem99 extends MetaGeneratedItem {
     public int getItemStackLimit(ItemStack aStack) {
         OrePrefixes prefix = getOrePrefix(aStack.getItemDamage());
         if (prefix != null) {
-            return prefix.mDefaultStackSize;
+            return prefix.getDefaultStackSize();
         } else {
             return 64;
         }
+    }
+
+    @Override
+    protected void addAdditionalToolTips(List<String> aList, ItemStack aStack, EntityPlayer aPlayer) {
+        if (!Materials.isMaterialItem(aStack)) return;
+        final int damage = aStack.getItemDamage();
+        final Materials material = getMaterial(damage);
+        final OrePrefixes prefix = getOrePrefix(damage);
+        if (material == null || prefix == null) return;
+        material.addTooltips(aList, prefix.getMaterialAmount() / M);
     }
 }

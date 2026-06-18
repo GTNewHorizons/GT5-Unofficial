@@ -7,10 +7,10 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
+import gtPlusPlus.core.block.machine.BlockFishTrap;
 import gtPlusPlus.core.inventories.InventoryFishTrap;
 import gtPlusPlus.core.slots.SlotNoInput;
 import gtPlusPlus.core.tileentities.general.TileEntityFishTrap;
-import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public class ContainerFishTrap extends Container {
 
@@ -21,14 +21,6 @@ public class ContainerFishTrap extends Container {
     private final int posX;
     private final int posY;
     private final int posZ;
-
-    public static int StorageSlotNumber = 15; // Number of slots in storage area
-    public static int InventorySlotNumber = 36; // Inventory Slots (Inventory
-    // and Hotbar)
-    public static int FullSlotNumber = InventorySlotNumber + StorageSlotNumber; // All
-    // slots
-
-    private final int[] slotStorage = new int[15];
 
     public ContainerFishTrap(final InventoryPlayer inventory, final TileEntityFishTrap te) {
         this.tile_entity = te;
@@ -47,7 +39,6 @@ public class ContainerFishTrap extends Container {
         // Storage Side
         for (var6 = 0; var6 < 3; var6++) {
             for (var7 = 0; var7 < 5; var7++) {
-                this.slotStorage[o] = o;
                 this.addSlotToContainer(new SlotNoInput(this.inventoryChest, o++, 44 + (var7 * 18), 15 + (var6 * 18)));
             }
         }
@@ -66,18 +57,6 @@ public class ContainerFishTrap extends Container {
     }
 
     @Override
-    public ItemStack slotClick(final int aSlotIndex, final int aMouseclick, final int aShifthold,
-        final EntityPlayer aPlayer) {
-
-        if (!aPlayer.worldObj.isRemote) {
-            if ((aSlotIndex == 999) || (aSlotIndex == -999)) {
-                // Utils.LOG_WARNING("??? - "+aSlotIndex);
-            }
-        }
-        return super.slotClick(aSlotIndex, aMouseclick, aShifthold, aPlayer);
-    }
-
-    @Override
     public void onContainerClosed(final EntityPlayer par1EntityPlayer) {
         super.onContainerClosed(par1EntityPlayer);
         tile_entity.closeInventory();
@@ -85,7 +64,7 @@ public class ContainerFishTrap extends Container {
 
     @Override
     public boolean canInteractWith(final EntityPlayer par1EntityPlayer) {
-        if (this.worldObj.getBlock(this.posX, this.posY, this.posZ) != GregtechItemList.FishTrap.getBlock()) {
+        if (!(this.worldObj.getBlock(this.posX, this.posY, this.posZ) instanceof BlockFishTrap)) {
             return false;
         }
 

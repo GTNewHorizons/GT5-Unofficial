@@ -11,6 +11,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
@@ -57,13 +58,13 @@ public class MTEHatchDataItemsInput extends MTEHatchDataAccess implements IConne
     }
 
     @Override
-    public boolean isFacingValid(ForgeDirection facing) {
-        return true;
+    public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
+        return new MTEHatchDataItemsInput(this.mName, this.mTier, mDescriptionArray, this.mTextures);
     }
 
     @Override
-    public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTEHatchDataItemsInput(this.mName, this.mTier, mDescriptionArray, this.mTextures);
+    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+        return true;
     }
 
     @Override
@@ -90,11 +91,6 @@ public class MTEHatchDataItemsInput extends MTEHatchDataAccess implements IConne
 
     @Override
     public boolean shouldDropItemAt(int index) {
-        return false;
-    }
-
-    @Override
-    public boolean isOutputFacing(ForgeDirection side) {
         return false;
     }
 

@@ -11,14 +11,9 @@ import net.minecraft.tileentity.TileEntity;
 
 import org.lwjgl.opengl.GL11;
 
-import cpw.mods.fml.client.registry.ClientRegistry;
-import gregtech.common.tileentities.render.TileEntityWormhole;
+import gregtech.common.tileentities.render.RenderingTileEntityWormhole;
 
 public class WormholeRenderer extends TileEntitySpecialRenderer {
-
-    public WormholeRenderer() {
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityWormhole.class, this);
-    }
 
     private static final double trimPercentage = .95;
     private static final double corePercentage = trimPercentage / Math.sqrt(3);
@@ -29,27 +24,28 @@ public class WormholeRenderer extends TileEntitySpecialRenderer {
         GL11.glRotated(rotation, 2, 1, 0);
         GL11.glScaled(-1, -1, -1);
 
-        Tessellator.instance.startDrawingQuads();
-        Tessellator.instance.setColorOpaque_F(1f, 1f, 1f);
+        final Tessellator tess = Tessellator.instance;
+        tess.startDrawingQuads();
+        tess.setColorOpaque_F(1f, 1f, 1f);
         addRenderedBlockInWorld(Blocks.quartz_block, 0, 0, 0, 0);
-        Tessellator.instance.draw();
+        tess.draw();
 
         GL11.glScaled(trimPercentage, trimPercentage, trimPercentage);
 
-        Tessellator.instance.startDrawingQuads();
-        Tessellator.instance.setColorOpaque_F(0.1f, 0.1f, 0.1f);
+        tess.startDrawingQuads();
+        tess.setColorOpaque_F(0.1f, 0.1f, 0.1f);
         addRenderedBlockInWorld(Blocks.coal_block, 0, 0, 0, 0);
-        Tessellator.instance.draw();
+        tess.draw();
         GL11.glPopMatrix();
 
         if (coreBlock != null) {
             GL11.glPushMatrix();
             GL11.glScaled(corePercentage, corePercentage, corePercentage);
             GL11.glRotated(rotation, 0, -2, .1);
-            Tessellator.instance.startDrawingQuads();
-            Tessellator.instance.setColorOpaque_F(1f, 1f, 1f);
+            tess.startDrawingQuads();
+            tess.setColorOpaque_F(1f, 1f, 1f);
             addRenderedBlockInWorld(coreBlock, 0, 0, 0, 0);
-            Tessellator.instance.draw();
+            tess.draw();
             GL11.glPopMatrix();
         }
 
@@ -58,7 +54,7 @@ public class WormholeRenderer extends TileEntitySpecialRenderer {
     @Override
     public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float timeSinceLastTick) {
 
-        if (tile instanceof TileEntityWormhole wTile) {
+        if (tile instanceof RenderingTileEntityWormhole wTile) {
             GL11.glPushMatrix();
             GL11.glTranslated(x + 0.5, y + 0.5, z + 0.5);
             GL11.glScaled(wTile.targetRadius, wTile.targetRadius, wTile.targetRadius);

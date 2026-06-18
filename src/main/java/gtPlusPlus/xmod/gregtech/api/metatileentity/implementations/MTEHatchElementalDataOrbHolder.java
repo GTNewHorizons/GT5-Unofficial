@@ -1,36 +1,24 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
-import static gregtech.common.modularui2.util.CommonGuiComponents.gridTemplate4by4;
-
-import java.util.ArrayList;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.widgets.ItemSlot;
-import com.cleanroommc.modularui.widgets.slot.ModularSlot;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.widget.SlotGroup;
 
 import gregtech.api.enums.ItemList;
-import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
-import gregtech.api.modularui2.GTGuiTextures;
-import gregtech.api.modularui2.GTGuis;
 import gregtech.api.render.TextureFactory;
-import gtPlusPlus.api.objects.Logger;
+import gregtech.common.gui.modularui.hatch.MTEHatchElementalDataOrbHolderGui;
+import gregtech.common.items.ItemIntegratedCircuit;
 import gtPlusPlus.core.lib.GTPPCore;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class MTEHatchElementalDataOrbHolder extends MTEHatch implements IConfigurationCircuitSupport {
@@ -66,11 +54,6 @@ public class MTEHatchElementalDataOrbHolder extends MTEHatch implements IConfigu
     }
 
     @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
-        return true;
-    }
-
-    @Override
     public boolean isValidSlot(int aIndex) {
         return true;
     }
@@ -93,12 +76,6 @@ public class MTEHatchElementalDataOrbHolder extends MTEHatch implements IConfigu
         }
     }
 
-    public void updateSlots() {
-        for (int i = 0; i < mInventory.length - 1; i++)
-            if (mInventory[i] != null && mInventory[i].stackSize <= 0) mInventory[i] = null;
-        fillStacksIntoFirstSlots();
-    }
-
     protected void fillStacksIntoFirstSlots() {
         for (int i = 0; i < mInventory.length - 1; i++) {
             if (mInventory[i] != null && mInventory[i].stackSize <= 0) {
@@ -108,46 +85,24 @@ public class MTEHatchElementalDataOrbHolder extends MTEHatch implements IConfigu
     }
 
     @Override
-    public void saveNBTData(NBTTagCompound aNBT) {
-        super.saveNBTData(aNBT);
-    }
-
-    @Override
-    public void loadNBTData(NBTTagCompound aNBT) {
-        super.loadNBTData(aNBT);
-    }
-
-    @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {}
-
-    @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
-        Logger.INFO("Checking if we can pull " + aStack.getDisplayName() + " from slot " + aIndex);
-        return aIndex == mInventory.length - 1 && ItemUtils.isControlCircuit(aStack)
+        return aIndex == mInventory.length - 1 && aStack != null
+            && aStack.getItem() instanceof ItemIntegratedCircuit
             && side == getBaseMetaTileEntity().getFrontFacing();
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
-        Logger.INFO("Checking if we can put " + aStack.getDisplayName() + " into slot " + aIndex);
-        return aIndex == mInventory.length - 1 && ItemUtils.isControlCircuit(aStack)
+        return aIndex == mInventory.length - 1 && aStack != null
+            && aStack.getItem() instanceof ItemIntegratedCircuit
             && side == getBaseMetaTileEntity().getFrontFacing();
-    }
-
-    public ArrayList<ItemStack> getInventory() {
-        ArrayList<ItemStack> aContents = new ArrayList<>();
-        for (int i = getBaseMetaTileEntity().getSizeInventory() - 2; i >= 0; i--) {
-            if (getBaseMetaTileEntity().getStackInSlot(i) != null)
-                aContents.add(getBaseMetaTileEntity().getStackInSlot(i));
-        }
-        return aContents;
     }
 
     public ItemStack getOrbByCircuit() {
         ItemStack aCirc = getBaseMetaTileEntity().getStackInSlot(getCircuitSlot());
-        if (ItemUtils.isControlCircuit(aCirc)) {
+        if (aCirc != null && aCirc.getItem() instanceof ItemIntegratedCircuit) {
             int slot = aCirc.getItemDamage() - 1; // slots are 0 indexed but there's no 0 circuit
             if (slot < getBaseMetaTileEntity().getSizeInventory() - 1) {
                 return getBaseMetaTileEntity().getStackInSlot(slot);
@@ -161,10 +116,10 @@ public class MTEHatchElementalDataOrbHolder extends MTEHatch implements IConfigu
 
     @Override
     public boolean canInsertItem(int aIndex, ItemStack aStack, int ordinalSide) {
-        if (aIndex == mInventory.length - 1 && ItemUtils.isControlCircuit(aStack)
+        if (aIndex == mInventory.length - 1 && aStack != null
+            && aStack.getItem() instanceof ItemIntegratedCircuit
             && ordinalSide == getBaseMetaTileEntity().getFrontFacing()
                 .ordinal()) {
-            Logger.INFO("Putting " + aStack.getDisplayName() + " into slot " + aIndex);
             return true;
         }
         return false;
@@ -172,8 +127,7 @@ public class MTEHatchElementalDataOrbHolder extends MTEHatch implements IConfigu
 
     @Override
     public boolean canExtractItem(int aIndex, ItemStack aStack, int ordinalSide) {
-        if (aIndex == mInventory.length - 1 && ItemUtils.isControlCircuit(aStack)) {
-            Logger.INFO("Pulling " + aStack.getDisplayName() + " from slot " + aIndex);
+        if (aIndex == mInventory.length - 1 && aStack != null && aStack.getItem() instanceof ItemIntegratedCircuit) {
             return true;
         }
         return false;
@@ -186,7 +140,7 @@ public class MTEHatchElementalDataOrbHolder extends MTEHatch implements IConfigu
 
     @Override
     public int getCircuitSlot() {
-        return getSlots(mTier);
+        return this.getSizeInventory() - 1;
     }
 
     @Override
@@ -205,28 +159,12 @@ public class MTEHatchElementalDataOrbHolder extends MTEHatch implements IConfigu
     }
 
     @Override
-    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager) {
-        syncManager.registerSlotGroup("item_inv", 4);
-        return GTGuis.mteTemplatePanelBuilder(this, data, syncManager)
-            .build()
-            .child(
-                gridTemplate4by4(
-                    index -> new ItemSlot().slot(
-                        new ModularSlot(inventoryHandler, index).slotGroup("item_inv")
-                            .filter(stack -> ItemList.Tool_DataOrb.isStackEqual(stack, false, true)))
-                        .background(GTGuiTextures.SLOT_ITEM_STANDARD, GTGuiTextures.OVERLAY_SLOT_DATA_ORB)));
+    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTEHatchElementalDataOrbHolderGui(this).build(data, syncManager, uiSettings);
     }
 
     @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        builder.widget(
-            SlotGroup.ofItemHandler(inventoryHandler, 4)
-                .startFromSlot(0)
-                .endAtSlot(15)
-                .background(getGUITextureSet().getItemSlot(), GTUITextures.OVERLAY_SLOT_DATA_ORB)
-                .applyForWidget(
-                    widget -> widget.setFilter(stack -> ItemList.Tool_DataOrb.isStackEqual(stack, false, true)))
-                .build()
-                .setPos(52, 7));
+    public boolean isItemValidForSlot(int index, ItemStack itemStack) {
+        return ItemList.Tool_DataOrb.isStackEqual(itemStack, false, true) && super.isItemValidForSlot(index, itemStack);
     }
 }

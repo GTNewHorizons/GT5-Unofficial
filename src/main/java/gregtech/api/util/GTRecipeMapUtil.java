@@ -73,7 +73,10 @@ public class GTRecipeMapUtil {
         List<ItemStack> itemOutputs = new ArrayList<>(Arrays.asList(b.getItemOutputs()));
         List<FluidStack> fluidInputs = new ArrayList<>(Arrays.asList(b.getFluidInputs()));
         List<FluidStack> fluidOutputs = new ArrayList<>(Arrays.asList(b.getFluidOutputs()));
-        TIntList chances = b.getChances() != null ? new TIntArrayList(b.getChances()) : null;
+        TIntList chances = b.getOutputChances() != null ? new TIntArrayList(b.getOutputChances()) : null;
+        if (!hasCells(itemInputs, itemOutputs) && !removeIntegratedCircuit) {
+            return b; // Skip conversion if no cells/filled containers exist
+        }
         cellToFluid(itemInputs, fluidInputs, removeIntegratedCircuit, null);
         cellToFluid(itemOutputs, fluidOutputs, removeIntegratedCircuit, chances);
         itemInputs.removeIf(Objects::isNull);
@@ -102,7 +105,30 @@ public class GTRecipeMapUtil {
         }
     }
 
+    private static boolean hasCells(List<ItemStack> itemInputs, List<ItemStack> itemOutputs) {
+        // Check input items
+        for (ItemStack stack : itemInputs) {
+            if (stack == null) continue;
+            if (GTUtility.getFluidForFilledItem(stack, true) != null || GTUtility.isCellEmpty(stack)) {
+                return true;
+            }
+        }
+        // Check output items
+        for (ItemStack stack : itemOutputs) {
+            if (stack == null) continue;
+            if (GTUtility.getFluidForFilledItem(stack, true) != null || GTUtility.isCellEmpty(stack)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static List<GTRecipe> buildOrEmpty(GTRecipeBuilder builder) {
+        if (builder.getItemInputsOreDict() != null || builder.getFluidInputsInterchangeable() != null) {
+            return builder.buildWithAlt()
+                .<List<GTRecipe>>map(Collections::singletonList)
+                .orElse(Collections.emptyList());
+        }
         return builder.build()
             .map(Collections::singletonList)
             .orElse(Collections.emptyList());
@@ -168,10 +194,18 @@ public class GTRecipeMapUtil {
             // fix shallow references
             Set<Object> references = Collections.newSetFromMap(new IdentityHashMap<>());
             for (GTRecipe r : derivatives) {
-                if (!references.add(r.mInputs)) r.mInputs = r.mInputs.clone();
-                if (!references.add(r.mOutputs)) r.mOutputs = r.mOutputs.clone();
-                if (!references.add(r.mFluidInputs)) r.mFluidInputs = r.mFluidInputs.clone();
-                if (!references.add(r.mFluidOutputs)) r.mFluidOutputs = r.mFluidOutputs.clone();
+                if (r.mInputs.length != 0 && !references.add(r.mInputs)) {
+                    r.mInputs = r.mInputs.clone();
+                }
+                if (r.mOutputs.length != 0 && !references.add(r.mOutputs)) {
+                    r.mOutputs = r.mOutputs.clone();
+                }
+                if (r.mFluidInputs.length != 0 && !references.add(r.mFluidInputs)) {
+                    r.mFluidInputs = r.mFluidInputs.clone();
+                }
+                if (r.mFluidOutputs.length != 0 && !references.add(r.mFluidOutputs)) {
+                    r.mFluidOutputs = r.mFluidOutputs.clone();
+                }
             }
             return derivatives;
         }

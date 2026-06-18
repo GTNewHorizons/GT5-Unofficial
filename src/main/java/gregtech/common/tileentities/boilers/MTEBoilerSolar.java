@@ -1,7 +1,7 @@
 package gregtech.common.tileentities.boilers;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static mcp.mobius.waila.api.SpecialChars.GOLD;
-import static mcp.mobius.waila.api.SpecialChars.RESET;
 
 import java.util.List;
 
@@ -14,33 +14,26 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.gtnewhorizons.modularui.api.widget.Widget;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
-
 import gregtech.api.enums.Dyes;
-import gregtech.api.enums.SteamVariant;
+import gregtech.api.enums.GTValues;
+import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.modularui2.GTGuiTheme;
 import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTLanguageManager;
-import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTUtility;
+import gregtech.api.util.GTSplit;
 import gregtech.common.config.MachineStats;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEBoilerSolar extends MTEBoiler {
 
     public static final String LPS_FMT = "%s L/s";
-    private static final String localizedDescFormat = GTLanguageManager.addStringLocalization(
-        "gt.blockmachines.boiler.solar.desc.format",
-        "Steam Power by the Sun%n" + "Produces %sL of Steam per second%n"
-            + "Calcifies over time, reducing Steam output to %sL/s%n"
-            + "Break and replace to descale");
     protected int calcificationTicks = MachineStats.bronzeSolarBoiler.calcificationTicks;
     protected int cooldownTicks = MachineStats.bronzeSolarBoiler.cooldownTicks;
     protected int maxOutputPerSecond = MachineStats.bronzeSolarBoiler.maxOutputPerSecond;
@@ -50,7 +43,7 @@ public class MTEBoilerSolar extends MTEBoiler {
     private int mRunTimeTicks = 0;
 
     public MTEBoilerSolar(int aID, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional, new String[0]);
+        super(aID, aName, aNameRegional, GTValues.emptyStringArray);
     }
 
     public MTEBoilerSolar(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -63,12 +56,10 @@ public class MTEBoilerSolar extends MTEBoiler {
 
     @Override
     public String[] getDescription() {
-        return String
-            .format(
-                localizedDescFormat,
-                GTUtility.formatNumbers(getMaxOutputPerSecond()),
-                GTUtility.formatNumbers(getMinOutputPerSecond()))
-            .split("\\R");
+        return GTSplit.splitLocalizedFormatted(
+            "gt.blockmachines.boiler.solar.desc",
+            formatNumber(getMaxOutputPerSecond()),
+            formatNumber(getMinOutputPerSecond()));
     }
 
     public int getMinOutputPerSecond() {
@@ -77,10 +68,10 @@ public class MTEBoilerSolar extends MTEBoiler {
 
     @Override
     public ITexture[][][] getTextureSet(ITexture[] aTextures) {
-        ITexture[][][] rTextures = new ITexture[4][17][];
+        ITexture[][][] rTextures = new ITexture[5][17][];
         for (int color = -1; color < 16; color++) {
             int i = color + 1;
-            short[] colorModulation = Dyes.getModulation(color, Dyes._NULL.mRGBa);
+            short[] colorModulation = Dyes.getModulation(color);
             rTextures[0][i] = new ITexture[] {
                 TextureFactory.of(BlockIcons.MACHINE_BRONZEBRICKS_BOTTOM, colorModulation) };
             rTextures[1][i] = new ITexture[] { TextureFactory.of(BlockIcons.MACHINE_BRONZEBRICKS_TOP, colorModulation),
@@ -89,6 +80,8 @@ public class MTEBoilerSolar extends MTEBoiler {
                 TextureFactory.of(BlockIcons.MACHINE_BRONZEBRICKS_SIDE, colorModulation) };
             rTextures[3][i] = new ITexture[] { TextureFactory.of(BlockIcons.MACHINE_BRONZEBRICKS_SIDE, colorModulation),
                 TextureFactory.of(BlockIcons.OVERLAY_PIPE) };
+            rTextures[4][i] = new ITexture[] { TextureFactory.of(BlockIcons.MACHINE_BRONZEBRICKS_TOP, colorModulation),
+                TextureFactory.of(BlockIcons.BOILER_SOLAR_CALCIFIED) };
         }
         return rTextures;
     }
@@ -101,12 +94,13 @@ public class MTEBoilerSolar extends MTEBoiler {
             if (sideDirection != facingDirection) return mTextures[2][i];
             return mTextures[3][i];
         }
+        if (sideDirection == ForgeDirection.UP) {
+            if (isCalcified()) {
+                return mTextures[4][i];
+            }
+            return mTextures[1][i];
+        }
         return mTextures[sideDirection.ordinal()][i];
-    }
-
-    @Override
-    public int maxProgresstime() {
-        return 500;
     }
 
     @Override
@@ -125,10 +119,11 @@ public class MTEBoilerSolar extends MTEBoiler {
     protected void produceSteam(int aAmount) {
         super.produceSteam(aAmount);
         // Disable calcification when using distilled water
-        if (mFluid.isFluidEqual(GTModHandler.getWater(1))) {
+        if (mFluid.isFluidEqual(Materials.Water.getFluid(1))) {
             // produceSteam is getting called every 10 ticks
             if (mRunTimeTicks >= 0 && mRunTimeTicks < (Integer.MAX_VALUE - 10)) mRunTimeTicks += 10;
             else mRunTimeTicks = Integer.MAX_VALUE; // Prevent Integer overflow wrap
+            getBaseMetaTileEntity().issueTileUpdate();
         }
     }
 
@@ -160,6 +155,10 @@ public class MTEBoilerSolar extends MTEBoiler {
         } else {
             return getMaxOutputPerSecond();
         }
+    }
+
+    protected boolean isCalcified() {
+        return mRunTimeTicks > getCalcificationTicks();
     }
 
     protected int getCalcificationTicks() {
@@ -212,18 +211,26 @@ public class MTEBoilerSolar extends MTEBoiler {
         }
         if (weatherClear) {
             if (world.isDaytime()) {
-                mProcessingEnergy += 8 * basicTemperatureMod;
+                addProcessingEnergy(8 * basicTemperatureMod);
             } else {
-                mProcessingEnergy += basicTemperatureMod;
+                addProcessingEnergy(basicTemperatureMod);
             }
         } else {
-            mProcessingEnergy += basicTemperatureMod;
+            addProcessingEnergy(basicTemperatureMod);
         }
     }
 
     @Override
-    public SteamVariant getSteamVariant() {
-        return SteamVariant.BRONZE;
+    public NBTTagCompound getDescriptionData() {
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setInteger("RuntimeTicks", mRunTimeTicks);
+        return tag;
+    }
+
+    @Override
+    public void onDescriptionPacket(NBTTagCompound data) {
+        super.onDescriptionPacket(data);
+        mRunTimeTicks = data.getInteger("RuntimeTicks");
     }
 
     @Override
@@ -233,28 +240,26 @@ public class MTEBoilerSolar extends MTEBoiler {
 
     @Override
     public String[] getInfoData() {
-        return new String[] {
-            StatCollector.translateToLocalFormatted(
-                "GT5U.infodata.boiler_solar.heat",
-                String.format(
-                    EnumChatFormatting.GREEN + "%s %%" + EnumChatFormatting.RESET,
-                    GTUtility.formatNumbers(getHeatCapacityPercent())),
-                String.format(
-                    EnumChatFormatting.RED + "%s s" + EnumChatFormatting.RESET,
-                    GTUtility.formatNumbers(getHotTimeSeconds()))),
+        return new String[] { StatCollector.translateToLocalFormatted(
+            "GT5U.infodata.boiler_solar.heat",
+            String.format(
+                EnumChatFormatting.GREEN + "%s %%" + EnumChatFormatting.RESET,
+                formatNumber(getHeatCapacityPercent())),
+            String
+                .format(EnumChatFormatting.RED + "%s s" + EnumChatFormatting.RESET, formatNumber(getHotTimeSeconds()))),
             StatCollector.translateToLocalFormatted(
                 "GT5U.infodata.boiler_solar.output",
                 String.format(
                     EnumChatFormatting.RED + LPS_FMT + EnumChatFormatting.RESET,
-                    GTUtility.formatNumbers(getMinOutputPerSecond())),
+                    formatNumber(getMinOutputPerSecond())),
                 String.format(
                     EnumChatFormatting.RED + LPS_FMT + EnumChatFormatting.RESET,
-                    GTUtility.formatNumbers(getMaxOutputPerSecond()))),
+                    formatNumber(getMaxOutputPerSecond()))),
             StatCollector.translateToLocalFormatted(
                 "GT5U.infodata.boiler_solar.current_output",
                 String.format(
                     EnumChatFormatting.YELLOW + LPS_FMT + EnumChatFormatting.RESET,
-                    GTUtility.formatNumbers(getProductionPerSecond()))) };
+                    formatNumber(getProductionPerSecond()))) };
     }
 
     public int getHeatCapacityPercent() {
@@ -276,23 +281,13 @@ public class MTEBoilerSolar extends MTEBoiler {
     }
 
     @Override
-    protected boolean doesAddFuelSlot() {
+    public boolean doesAddFuelSlot() {
         return false;
     }
 
     @Override
-    protected boolean doesAddAshSlot() {
+    public boolean doesAddAshSlot() {
         return false;
-    }
-
-    @Override
-    protected Widget createFuelSlotMui1() {
-        return null;
-    }
-
-    @Override
-    protected SlotWidget createAshSlotMui1() {
-        return null;
     }
 
     @Override
@@ -300,8 +295,8 @@ public class MTEBoilerSolar extends MTEBoiler {
         IWailaConfigHandler config) {
         final NBTTagCompound tag = accessor.getNBTData();
         currentTip.add(
-            String.format(
-                (GOLD + "Solar Boiler Output: " + RESET + "%d/%d L/s"),
+            GOLD + StatCollector.translateToLocalFormatted(
+                "GT5U.waila.boiler_solar.output",
                 tag.getInteger("calcificationOutput"),
                 tag.getInteger("maxCalcificationOutput")));
 

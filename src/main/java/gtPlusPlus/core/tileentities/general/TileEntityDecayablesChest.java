@@ -16,16 +16,15 @@ import com.cleanroommc.modularui.api.IGuiHolder;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.factory.GuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
-import com.cleanroommc.modularui.utils.Alignment;
+import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.utils.item.InvWrapper;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.SyncHandlers;
-import com.cleanroommc.modularui.widgets.ItemSlot;
 import com.cleanroommc.modularui.widgets.SlotGroupWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
+import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.SlotGroup;
 
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.inventories.InventoryDecayablesChest;
 import gtPlusPlus.core.item.materials.DustDecayable;
@@ -63,7 +62,7 @@ public class TileEntityDecayablesChest extends TileEntity implements ISidedInven
         // Try do chesty stuff
         try {
             this.updateEntityChest();
-        } catch (Throwable ignored) {
+        } catch (Exception ignored) {
 
         }
 
@@ -87,7 +86,7 @@ public class TileEntityDecayablesChest extends TileEntity implements ISidedInven
                 }
                 updateSlots();
             }
-        } catch (final Throwable ignored) {}
+        } catch (final Exception ignored) {}
     }
 
     public void tryUpdateDecayable(final DustDecayable b, ItemStack iStack, final World world) {
@@ -100,21 +99,20 @@ public class TileEntityDecayablesChest extends TileEntity implements ISidedInven
 
         boolean a1, a2;
         int u = 0;
-        a1 = b.isTicking(world, iStack);
+        a1 = b.isTicking(iStack);
         a2 = false;
         int SECONDS_TO_PROCESS = 1;
         while (u < (20 * SECONDS_TO_PROCESS)) {
             if (!a1) {
                 break;
             }
-            a1 = b.isTicking(world, iStack);
-            a2 = b.tickItemTag(world, iStack);
+            a1 = b.isTicking(iStack);
+            a2 = b.tickItemTag(iStack);
             u++;
         }
-        Logger.MACHINE_INFO("| " + b.getUnlocalizedName() + " | " + a1 + "/" + a2);
 
         if (!a1 && !a2) {
-            ItemStack replacement = ItemUtils.getSimpleStack(b.getDecayResult());
+            ItemStack replacement = b.getDecayResult();
             replacement.stackSize = 1;
             // iStack = replacement.copy();
             for (int fff = 0; fff < this.inventoryContents.getSizeInventory(); fff++) {
@@ -126,17 +124,6 @@ public class TileEntityDecayablesChest extends TileEntity implements ISidedInven
             updateSlots();
             this.inventoryContents.markDirty();
         }
-    }
-
-    public boolean anyPlayerInRange() {
-        return this.worldObj.getClosestPlayer(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D, 32) != null;
-    }
-
-    public NBTTagCompound getTag(final NBTTagCompound nbt, final String tag) {
-        if (!nbt.hasKey(tag)) {
-            nbt.setTag(tag, new NBTTagCompound());
-        }
-        return nbt.getCompoundTag(tag);
     }
 
     @Override
@@ -282,7 +269,7 @@ public class TileEntityDecayablesChest extends TileEntity implements ISidedInven
 
     @Override
     public String getInventoryName() {
-        return this.hasCustomInventoryName() ? this.customName : "container.DecayablesChest";
+        return this.hasCustomInventoryName() ? this.customName : "tile.blockDecayablesChest.name";
     }
 
     @Override
@@ -388,7 +375,7 @@ public class TileEntityDecayablesChest extends TileEntity implements ISidedInven
     }
 
     @Override
-    public ModularPanel buildUI(GuiData data, PanelSyncManager syncManager) {
+    public ModularPanel buildUI(GuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
         final SlotGroup SLOT_GROUP = new SlotGroup("decayables", 5);
         syncManager.registerSlotGroup(SLOT_GROUP);
         syncManager.addOpenListener(player -> {
@@ -405,7 +392,7 @@ public class TileEntityDecayablesChest extends TileEntity implements ISidedInven
         final ModularPanel panel = ModularPanel.defaultPanel("decayablesChest");
         panel.bindPlayerInventory();
         panel.child(
-            new TextWidget(IKey.lang("tile.blockDecayablesChest.name")).top(5)
+            new TextWidget<>(IKey.lang("tile.blockDecayablesChest.name")).top(7)
                 .left(5));
         panel.child(
             SlotGroupWidget.builder()
@@ -416,10 +403,9 @@ public class TileEntityDecayablesChest extends TileEntity implements ISidedInven
                         SyncHandlers.itemSlot(contents, index)
                             .slotGroup(SLOT_GROUP)))
                 .build()
-                .flex(
-                    flex -> flex.anchor(Alignment.TopCenter)
-                        .marginTop(15)
-                        .leftRelAnchor(0.5f, 0.5f)));
+                .horizontalCenter()
+                .topRel(0.2f));
+
         return panel;
     }
 

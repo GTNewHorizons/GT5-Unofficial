@@ -18,13 +18,15 @@ import java.util.Collections;
 import net.minecraft.item.ItemStack;
 
 import bartworks.common.items.ItemLabParts;
+import bartworks.common.loaders.BioItemList;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.GuiCraftingRecipe;
 import codechicken.nei.recipe.GuiUsageRecipe;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 import cpw.mods.fml.common.event.FMLInterModComms;
-import gregtech.api.enums.GTValues;
+import gregtech.GTMod;
 import gregtech.api.recipe.RecipeCategory;
+import gregtech.api.util.GTUtility;
 import gregtech.nei.GTNEIDefaultHandler;
 
 public class BioVatNEIHandler extends GTNEIDefaultHandler {
@@ -33,7 +35,7 @@ public class BioVatNEIHandler extends GTNEIDefaultHandler {
         super(recipeCategory);
         if (!NEIBWConfig.sIsAdded) {
             FMLInterModComms.sendRuntimeMessage(
-                GTValues.GT,
+                GTMod.GT,
                 "NEIPlugins",
                 "register-crafting-handler",
                 "gregtech@" + this.getRecipeName() + "@" + this.getOverlayIdentifier());
@@ -49,10 +51,8 @@ public class BioVatNEIHandler extends GTNEIDefaultHandler {
 
     private void loadLabPartRecipes(ItemStack aResult) {
         for (CachedDefaultRecipe recipe : this.getCache()) {
-            // dirty way of finding the special slot item
-            // see constructor of CachedDefaultRecipe on why relx==120 and rely==52 means special slot
             for (PositionedStack stack : recipe.mInputs) {
-                if (stack.relx == 120 && stack.rely == 52
+                if (GTUtility.areStacksEqual(stack.item, BioItemList.getPetriDish(null), true)
                     && NEIBWConfig.checkRecipe(aResult, Collections.singletonList(stack))) this.arecipes.add(recipe);
             }
         }

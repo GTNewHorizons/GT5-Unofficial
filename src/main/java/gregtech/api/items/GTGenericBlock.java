@@ -1,7 +1,5 @@
 package gregtech.api.items;
 
-import static gregtech.api.enums.GTValues.W;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.ItemBlock;
@@ -17,6 +15,6 @@ public class GTGenericBlock extends Block {
         super(aMaterial);
         setBlockName(mUnlocalizedName = aName);
         GameRegistry.registerBlock(this, aItemClass, getUnlocalizedName());
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + "." + W + ".name", "Any Sub Block of this one");
+        GTLanguageManager.addAnySubBlockLocalization(getUnlocalizedName());
     }
 }

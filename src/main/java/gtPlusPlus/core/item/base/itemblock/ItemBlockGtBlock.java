@@ -3,6 +3,7 @@ package gtPlusPlus.core.item.base.itemblock;
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
@@ -12,22 +13,18 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import gregtech.api.util.GTLog;
-import gtPlusPlus.core.block.base.BasicBlock.BlockTypes;
+import gregtech.common.config.Client;
 import gtPlusPlus.core.block.base.BlockBaseModular;
 import gtPlusPlus.core.block.base.BlockBaseOre;
-import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialStack;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
-import gtPlusPlus.core.util.sys.KeyboardUtils;
 
 public class ItemBlockGtBlock extends ItemBlock {
 
-    protected final int blockColour;
     private int sRadiation;
 
     private Material mMaterial;
-    protected BlockTypes thisBlockType;
 
     private final Block thisBlock;
     private boolean isOre = false;
@@ -41,20 +38,10 @@ public class ItemBlockGtBlock extends ItemBlock {
         } else if (block instanceof BlockBaseModular) {
             this.isModular = true;
         }
-        final BlockBaseModular baseBlock = (BlockBaseModular) block;
-        if (isModular) {
-            this.blockColour = baseBlock.getRenderColor(0);
-        } else if (isOre) {
-            this.blockColour = block.getBlockColor();
-        } else {
-            this.blockColour = block.getBlockColor();
-        }
         if (block instanceof BlockBaseModular g) {
             this.mMaterial = g.getMaterialEx();
-            this.thisBlockType = g.thisBlock;
         } else {
             this.mMaterial = null;
-            this.thisBlockType = BlockTypes.STANDARD;
         }
     }
 
@@ -64,57 +51,57 @@ public class ItemBlockGtBlock extends ItemBlock {
     }
 
     @Override
-    public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
+    public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List<String> list,
+        final boolean bool) {
 
-        if (this.mMaterial != null) {
-            list.add(this.mMaterial.vChemicalFormula);
-        } else {
-            try {
-                BlockBaseModular g = (BlockBaseModular) thisBlock;
-                this.mMaterial = g.getMaterialEx();
-            } catch (Exception e) {
-                e.printStackTrace(GTLog.err);
+        if (Client.tooltip.showFormula) {
+            if (this.mMaterial == null) {
+                try {
+                    BlockBaseModular g = (BlockBaseModular) thisBlock;
+                    this.mMaterial = g.getMaterialEx();
+                } catch (Exception e) {
+                    e.printStackTrace(GTLog.err);
+                }
+                // list.add("Material is Null.");
             }
-            // list.add("Material is Null.");
+            if (this.mMaterial != null) this.mMaterial.addTooltips(list);
         }
 
         if (this.isOre) {
-            if (KeyboardUtils.isCtrlKeyDown()) {
-                Block b = Block.getBlockFromItem(stack.getItem());
-                if (b != null) {
-                    int aMiningLevel1 = b.getHarvestLevel(stack.getItemDamage());
-                    if (this.mMaterial != null) {
-                        list.add(
-                            StatCollector.translateToLocalFormatted(
-                                "GTPP.tooltip.block.mining_level",
-                                Math.min(Math.max(aMiningLevel1, 0), 5)));
-                        list.add(StatCollector.translateToLocal("GTPP.tooltip.block.contains"));
-                        if (mMaterial.getComposites()
-                            .isEmpty()) {
-                            list.add("- " + mMaterial.getLocalizedName());
-                        } else {
-                            for (MaterialStack m : mMaterial.getComposites()) {
-                                list.add(
-                                    "- " + m.getStackMaterial()
-                                        .getLocalizedName() + " x" + m.getPartsPerOneHundred());
+            if (Client.tooltip.showCtrlText) {
+                if (GuiScreen.isCtrlKeyDown()) {
+                    Block b = Block.getBlockFromItem(stack.getItem());
+                    if (b != null) {
+                        int aMiningLevel1 = b.getHarvestLevel(stack.getItemDamage());
+                        if (this.mMaterial != null) {
+                            list.add(
+                                StatCollector.translateToLocalFormatted(
+                                    "GTPP.tooltip.block.mining_level",
+                                    Math.min(Math.max(aMiningLevel1, 0), 5)));
+                            list.add(StatCollector.translateToLocal("GTPP.tooltip.block.contains"));
+                            if (mMaterial.getComposites()
+                                .isEmpty()) {
+                                list.add("- " + mMaterial.getLocalizedName());
+                            } else {
+                                for (MaterialStack m : mMaterial.getComposites()) {
+                                    list.add(
+                                        "- " + m.getStackMaterial()
+                                            .getLocalizedName() + " x" + m.getPartsPerOneHundred());
+                                }
                             }
                         }
                     }
+                } else {
+                    list.add(EnumChatFormatting.DARK_GRAY + StatCollector.translateToLocal("GTPP.tooltip.hold_ctrl"));
                 }
-            } else {
-                list.add(EnumChatFormatting.DARK_GRAY + StatCollector.translateToLocal("GTPP.tooltip.hold_ctrl"));
             }
         } else {
-            Block b = Block.getBlockFromItem(stack.getItem());
-            if (b != null) {
-                int aMiningLevel1 = b.getHarvestLevel(stack.getItemDamage());
-                list.add("Mining Level: " + Math.min(Math.max(aMiningLevel1, 0), 5));
-            }
-        }
-
-        if (this.mMaterial != null) {
-            if (this.mMaterial.vRadiationLevel > 0) {
-                list.add(GTPPCore.GT_Tooltip_Radioactive.get());
+            if (Client.tooltip.showMiningLevelText) {
+                Block b = Block.getBlockFromItem(stack.getItem());
+                if (b != null) {
+                    int aMiningLevel1 = b.getHarvestLevel(stack.getItemDamage());
+                    list.add("Mining Level: " + Math.min(Math.max(aMiningLevel1, 0), 5));
+                }
             }
         }
 

@@ -3,19 +3,22 @@ package gregtech.common.tileentities.machines.multi.compressor;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static gregtech.api.enums.GTValues.AuthorFourIsTheNumber;
-import static gregtech.api.enums.GTValues.Ollie;
+import static gregtech.api.enums.GTAuthors.Ollie;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
+import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_MULTI_NEUTRONIUM;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_MULTI_NEUTRONIUM_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_MULTI_NEUTRONIUM_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_MULTI_NEUTRONIUM_GLOW;
+import static gregtech.api.util.GTRecipeConstants.COMPRESSION_TIER;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
+
+import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
@@ -40,12 +43,13 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.recipe.metadata.CompressionTierKey;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.blocks.BlockCasings10;
+import gregtech.common.misc.GTStructureChannels;
 
 public class MTENeutroniumCompressor extends MTEExtendedPowerMultiBlockBase<MTENeutroniumCompressor>
     implements ISurvivalConstructable {
@@ -73,9 +77,9 @@ public class MTENeutroniumCompressor extends MTEExtendedPowerMultiBlockBase<MTEN
         .addElement('A', chainAllGlasses())
         .addElement(
             'B',
-            buildHatchAdder(MTENeutroniumCompressor.class).atLeast(InputBus, OutputBus, Maintenance, Energy)
+            buildHatchAdder(MTENeutroniumCompressor.class).atLeast(InputBus, InputHatch, OutputBus, Maintenance, Energy)
                 .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(6))
-                .dot(1)
+                .hint(1)
                 .buildAndChain(
                     onElementPass(MTENeutroniumCompressor::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings10, 6))))
         .addElement('C', ofBlock(GregTechAPI.sBlockCasings10, 8))
@@ -94,11 +98,6 @@ public class MTENeutroniumCompressor extends MTEExtendedPowerMultiBlockBase<MTEN
     @Override
     public IStructureDefinition<MTENeutroniumCompressor> getStructureDefinition() {
         return STRUCTURE_DEFINITION;
-    }
-
-    @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
     }
 
     @Override
@@ -149,11 +148,11 @@ public class MTENeutroniumCompressor extends MTEExtendedPowerMultiBlockBase<MTEN
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Neutronium Compressor")
-            .addInfo("Has a static 8 parallels")
+            .addStaticParallelInfo(8)
             .addInfo("Capable of compressing matter into " + EnumChatFormatting.GOLD + "singularities")
             .addInfo("More advanced singularities will require even stronger compression...")
             .beginStructureBlock(11, 11, 11, true)
-            .addController("Front Center")
+            .addController("Front center, 2nd layer")
             .addCasingInfoMin("Neutronium Casing", 220, false)
             .addCasingInfoExactly("Active Neutronium Casing", 63, false)
             .addCasingInfoExactly("Any Tiered Glass", 25, false)
@@ -163,8 +162,8 @@ public class MTENeutroniumCompressor extends MTEExtendedPowerMultiBlockBase<MTEN
             .addOutputBus("Any Neutronium Casing", 1)
             .addEnergyHatch("Any Neutronium Casing", 1)
             .addMaintenanceHatch("Any Neutronium Casing", 1)
-            .addSubChannelUsage("glass", "Glass Tier")
-            .toolTipFinisher(AuthorFourIsTheNumber, Ollie);
+            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .toolTipFinisher(Ollie);
         return tt;
     }
 
@@ -176,7 +175,7 @@ public class MTENeutroniumCompressor extends MTEExtendedPowerMultiBlockBase<MTEN
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 5, 9, 1, elementBudget, env, false, true);
+        return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 5, 9, 1, elementBudget, env, false, true);
     }
 
     private int mCasingAmount;
@@ -186,16 +185,14 @@ public class MTENeutroniumCompressor extends MTEExtendedPowerMultiBlockBase<MTEN
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         mCasingAmount = 0;
-
-        return (checkPiece(STRUCTURE_PIECE_MAIN, 5, 9, 1)) && mCasingAmount >= 220;
-    }
-
-    @Override
-    protected void setProcessingLogicPower(ProcessingLogic logic) {
-        logic.setAvailableVoltage(GTUtility.roundUpVoltage(this.getMaxInputVoltage()));
-        logic.setAvailableAmperage(1L);
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 5, 9, 1, errors)) return;
+        checkCasingMin(errors, mCasingAmount, 220);
+        checkHasMaintenanceHatch(errors);
+        checkHasEnergyHatch(errors);
+        checkHasAnyInput(errors);
+        checkHasOutputBus(errors);
     }
 
     @Override
@@ -206,12 +203,13 @@ public class MTENeutroniumCompressor extends MTEExtendedPowerMultiBlockBase<MTEN
             @NotNull
             @Override
             protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
-                if (recipe.getMetadataOrDefault(CompressionTierKey.INSTANCE, 0) > 0) {
+                if (recipe.getMetadataOrDefault(COMPRESSION_TIER, 0) > 0) {
                     return CheckRecipeResultRegistry.NO_BLACK_HOLE;
                 }
                 return super.validateRecipe(recipe);
             }
-        }.setMaxParallelSupplier(this::getTrueParallel);
+        }.noRecipeCaching()
+            .setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override
@@ -222,21 +220,6 @@ public class MTENeutroniumCompressor extends MTEExtendedPowerMultiBlockBase<MTEN
     @Override
     public RecipeMap<?> getRecipeMap() {
         return RecipeMaps.neutroniumCompressorRecipes;
-    }
-
-    @Override
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
-    }
-
-    @Override
-    public int getDamageToComponent(ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
     }
 
     @Override
@@ -251,11 +234,6 @@ public class MTENeutroniumCompressor extends MTEExtendedPowerMultiBlockBase<MTEN
 
     @Override
     public boolean supportsInputSeparation() {
-        return true;
-    }
-
-    @Override
-    public boolean supportsSingleRecipeLocking() {
         return true;
     }
 }

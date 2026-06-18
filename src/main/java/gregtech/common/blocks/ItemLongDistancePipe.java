@@ -1,5 +1,7 @@
 package gregtech.common.blocks;
 
+import static net.minecraft.util.StatCollector.translateToLocal;
+
 import java.util.List;
 
 import net.minecraft.block.Block;
@@ -8,14 +10,8 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
 import gregtech.api.GregTechAPI;
-import gregtech.api.util.GTLanguageManager;
 
 public class ItemLongDistancePipe extends ItemBlock {
-
-    protected final String mNoMobsToolTip = GTLanguageManager
-        .addStringLocalization("gt.nomobspawnsonthisblock", "Mobs cannot Spawn on this Block");
-    protected final String mNoTileEntityToolTip = GTLanguageManager
-        .addStringLocalization("gt.notileentityinthisblock", "This is NOT a TileEntity!");
 
     public ItemLongDistancePipe(Block block) {
         super(block);
@@ -37,7 +33,7 @@ public class ItemLongDistancePipe extends ItemBlock {
     @Override
     public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> aList, boolean aF3_H) {
         super.addInformation(aStack, aPlayer, aList, aF3_H);
-        aList.add(this.mNoMobsToolTip);
-        aList.add(this.mNoTileEntityToolTip);
+        aList.add(translateToLocal("gt.casing.no-mob-spawning"));
+        aList.add(translateToLocal("gt.casing.not-tile-entity"));
     }
 }

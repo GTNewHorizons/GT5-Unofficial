@@ -5,21 +5,19 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.enums.SoundResource;
 import gregtech.api.items.MetaBaseItem;
 import gregtech.api.items.MetaGeneratedTool;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
 import thaumcraft.api.aspects.IEssentiaTransport;
 
 public class BehaviourPlungerEssentia extends BehaviourNone {
 
     private final int mCosts;
-    private final String mTooltip = GTLanguageManager
-        .addStringLocalization("gt.behaviour.plunger.essentia", "Clears Essentia from Containers and Tubes");
 
     public BehaviourPlungerEssentia(int aCosts) {
         this.mCosts = aCosts;
@@ -34,7 +32,7 @@ public class BehaviourPlungerEssentia extends BehaviourNone {
         TileEntity aTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if (((aTileEntity instanceof IEssentiaTransport))
             && ((aPlayer.capabilities.isCreativeMode) || (((MetaGeneratedTool) aItem).doDamage(aStack, this.mCosts)))) {
-            GTUtility.sendSoundToPlayers(aWorld, SoundResource.IC2_TOOLS_RUBBER_TRAMPOLINE, 1.0F, -1.0F, aX, aY, aZ);
+            GTUtility.sendSoundToPlayers(aWorld, SoundResource.GTCEU_OP_PLUNGER, 1.0F, 1.0F, hitX, hitY, hitZ);
             for (ForgeDirection tDirection : ForgeDirection.VALID_DIRECTIONS) {
                 ((IEssentiaTransport) aTileEntity).takeEssentia(
                     ((IEssentiaTransport) aTileEntity).getEssentiaType(tDirection),
@@ -48,7 +46,7 @@ public class BehaviourPlungerEssentia extends BehaviourNone {
 
     @Override
     public List<String> getAdditionalToolTips(MetaBaseItem aItem, List<String> aList, ItemStack aStack) {
-        aList.add(this.mTooltip);
+        aList.add(StatCollector.translateToLocal("gt.behaviour.plunger.essentia"));
         return aList;
     }
 }

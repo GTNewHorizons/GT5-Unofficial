@@ -8,32 +8,14 @@ import net.minecraft.world.World;
 
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.interfaces.IBlockOnWalkOver;
-import gregtech.api.util.GTLanguageManager;
+import gregtech.api.interfaces.IUpdatePlayerMovement;
 import gregtech.api.util.GTOreDictUnificator;
 
-public class BlockConcretes extends BlockStonesAbstract implements IBlockOnWalkOver {
+public class BlockConcretes extends BlockStonesAbstract implements IUpdatePlayerMovement {
 
     public BlockConcretes() {
         super(ItemConcretes.class, "gt.blockconcretes");
         setResistance(20.0F);
-        // this.slipperiness = 0.9F;
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "Dark Concrete");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "Dark Concrete Cobblestone");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".2.name", "Mossy Dark Concrete Cobblestone");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".3.name", "Dark Concrete Bricks");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".4.name", "Cracked Dark Concrete Bricks");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".5.name", "Mossy Dark Concrete Bricks");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".6.name", "Chiseled Dark Concrete");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".7.name", "Smooth Dark Concrete");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".8.name", "Light Concrete");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".9.name", "Light Concrete Cobblestone");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".10.name", "Mossy Light Concrete Cobblestone");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".11.name", "Light Concrete Bricks");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".12.name", "Cracked Light Concrete Bricks");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".13.name", "Mossy Light Concrete Bricks");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".14.name", "Chiseled Light Concrete");
-        GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".15.name", "Smooth Light Concrete");
         GTOreDictUnificator.registerOre(OrePrefixes.stone, Materials.Concrete, new ItemStack(this, 1, 0));
         GTOreDictUnificator.registerOre(OrePrefixes.stone, Materials.Concrete, new ItemStack(this, 1, 1));
         GTOreDictUnificator.registerOre(OrePrefixes.stone, Materials.Concrete, new ItemStack(this, 1, 2));
@@ -53,11 +35,6 @@ public class BlockConcretes extends BlockStonesAbstract implements IBlockOnWalkO
     }
 
     @Override
-    public int getHarvestLevel(int aMeta) {
-        return 1;
-    }
-
-    @Override
     public float getBlockHardness(World aWorld, int aX, int aY, int aZ) {
         return this.blockHardness = Blocks.stone.getBlockHardness(aWorld, aX, aY, aZ);
     }
@@ -70,14 +47,11 @@ public class BlockConcretes extends BlockStonesAbstract implements IBlockOnWalkO
         return gregtech.api.enums.Textures.BlockIcons.CONCRETES[0].getIcon();
     }
 
+    // Increase horizontal movement speed. Should be the same as Chisel's concrete (0.05 + chisel.cfg value).
+    // Only called by the client
     @Override
-    public void onWalkOver(EntityLivingBase aEntity, World aWorld, int aX, int aY, int aZ) {
-        if ((aEntity.motionX != 0 || aEntity.motionZ != 0) && !aEntity.isInWater()
-            && !aEntity.isWet()
-            && !aEntity.isSneaking()) {
-            double tSpeed = (aWorld.getBlock(aX, aY - 1, aZ).slipperiness >= 0.8 ? 1.5 : 1.2);
-            aEntity.motionX *= tSpeed;
-            aEntity.motionZ *= tSpeed;
-        }
+    public void updatePlayerMovement(EntityLivingBase player) {
+        player.motionX *= 1.4;
+        player.motionZ *= 1.4;
     }
 }

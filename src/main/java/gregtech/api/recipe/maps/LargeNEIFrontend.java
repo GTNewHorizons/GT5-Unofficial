@@ -14,8 +14,8 @@ import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.common.gui.modularui.UIHelper;
 
 /**
- * Nicely display NEI with many items and fluids. Remember to call
- * If row count >= 6, it doesn't fit in 2 recipes per page, so change it via IMC.
+ * Nicely display NEI with many items and fluids. Remember to call If row count >= 6, it doesn't fit in 2 recipes per
+ * page, so change it via IMC.
  */
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
@@ -32,7 +32,14 @@ public class LargeNEIFrontend extends RecipeMapFrontend {
         super(uiPropertiesBuilder.logoPos(new Pos2d(80, 62)), neiPropertiesBuilder);
         this.itemRowCount = getItemRowCount();
         this.fluidRowCount = getFluidRowCount();
-        neiProperties.recipeBackgroundSize = new Size(170, 82 + (Math.max(itemRowCount + fluidRowCount - 4, 0)) * 18);
+    }
+
+    @Override
+    protected NEIRecipePropertiesBuilder modifyNEIProperties(NEIRecipePropertiesBuilder neiPropertiesBuilder) {
+        int itemRowCount = getItemRowCount();
+        int fluidRowCount = getFluidRowCount();
+        return neiPropertiesBuilder
+            .recipeBackgroundSize(new Size(170, 82 + (Math.max(itemRowCount + fluidRowCount - 4, 0)) * 18));
     }
 
     @Override

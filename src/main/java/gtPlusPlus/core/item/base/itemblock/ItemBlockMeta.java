@@ -29,9 +29,9 @@ public class ItemBlockMeta extends ItemBlockWithMetadata {
         // }
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
-    public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
+    public void addInformation(final ItemStack stack, final EntityPlayer player, final List<String> list,
+        final boolean adv) {
         Block aThis = Block.getBlockFromItem(stack.getItem());
         if (aThis != null) {
             if (!aTooltips.isEmpty()) {
@@ -41,7 +41,7 @@ public class ItemBlockMeta extends ItemBlockWithMetadata {
                 }
             }
         }
-        super.addInformation(stack, aPlayer, list, bool);
+        super.addInformation(stack, player, list, adv);
     }
 
     /**
@@ -53,14 +53,6 @@ public class ItemBlockMeta extends ItemBlockWithMetadata {
         return this.mBlock.getIcon(2, p_77617_1_);
     }
 
-    /**
-     * Returns the metadata of the block which this Item (ItemBlock) can place
-     */
-    @Override
-    public int getMetadata(final int p_77647_1_) {
-        return p_77647_1_;
-    }
-
     @Override
     public String getUnlocalizedName(final ItemStack stack) {
         return this.getUnlocalizedName() + "." + stack.getItemDamage();
@@ -68,16 +60,6 @@ public class ItemBlockMeta extends ItemBlockWithMetadata {
 
     @Override
     public boolean isDamageable() {
-        return false;
-    }
-
-    @Override
-    public int getItemEnchantability() {
-        return 0;
-    }
-
-    @Override
-    public boolean getIsRepairable(ItemStack p_82789_1_, ItemStack p_82789_2_) {
         return false;
     }
 

@@ -1,6 +1,6 @@
 package tectech.recipe;
 
-import static gregtech.api.util.GTUtility.trans;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.Collections;
@@ -9,6 +9,8 @@ import java.util.function.Supplier;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import net.minecraft.util.StatCollector;
+
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.common.widget.ProgressBar;
@@ -16,8 +18,8 @@ import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 import gregtech.api.recipe.BasicUIPropertiesBuilder;
 import gregtech.api.recipe.NEIRecipePropertiesBuilder;
 import gregtech.api.recipe.RecipeMapFrontend;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
+import gregtech.nei.GTNEIDefaultHandler;
 import gregtech.nei.RecipeDisplayInfo;
 import tectech.thing.gui.TecTechUITextures;
 
@@ -51,49 +53,50 @@ public class ResearchStationFrontend extends RecipeMapFrontend {
         int computation = recipeInfo.recipe.mDuration;
         short ampere = (short) (recipeInfo.recipe.mSpecialValue & 0xFFFF);
         short minComputationPerSec = (short) (recipeInfo.recipe.mSpecialValue >>> 16);
+
         recipeInfo.drawText(
             translateToLocalFormatted(
                 "tt.nei.research.max_eu",
-                GTUtility.formatNumbers(
-                    (1 + (computation - minComputationPerSec) / minComputationPerSec) * eut * ampere * 20)));
-        recipeInfo.drawText(trans("153", "Usage: ") + GTUtility.formatNumbers(eut * ampere) + " EU/t");
+                formatNumber((1 + (computation - minComputationPerSec) / minComputationPerSec) * eut * ampere * 20)));
+
         recipeInfo
-            .drawText(translateToLocalFormatted("tt.nei.research.computation", GTUtility.formatNumbers(computation)));
-        recipeInfo.drawText(
-            translateToLocalFormatted(
-                "tt.nei.research.min_computation",
-                GTUtility.formatNumbers(minComputationPerSec)));
+            .drawText(StatCollector.translateToLocalFormatted("GT5U.gui.text.usage_line", formatNumber(eut * ampere)));
+
+        recipeInfo.drawText(translateToLocalFormatted("tt.nei.research.computation", formatNumber(computation)));
+
+        recipeInfo
+            .drawText(translateToLocalFormatted("tt.nei.research.min_computation", formatNumber(minComputationPerSec)));
     }
 
     @Override
     protected void drawDurationInfo(RecipeDisplayInfo recipeInfo) {}
 
     @Override
-    public void addProgressBar(ModularWindow.Builder builder, Supplier<Float> progressSupplier, Pos2d windowOffset) {
+    public void addProgressBar(ModularWindow.Builder builder, GTNEIDefaultHandler.NEITemplateContext ctx) {
         int bar1Width = 25;
         int bar2Width = 11;
         int bar3Height = 18;
-        List<Supplier<Float>> splitProgress = splitProgress(progressSupplier, bar1Width, bar2Width, bar3Height);
+        List<Supplier<Float>> splitProgress = splitProgress(ctx.progressSupplier, bar1Width, bar2Width, bar3Height);
         builder.widget(
             new ProgressBar().setTexture(TecTechUITextures.PROGRESSBAR_RESEARCH_STATION_1, bar1Width)
                 .setDirection(ProgressBar.Direction.RIGHT)
                 .setProgress(splitProgress.get(0))
                 .setSynced(false, false)
-                .setPos(new Pos2d(81, 40).add(windowOffset))
+                .setPos(new Pos2d(81, 40).add(ctx.windowOffset))
                 .setSize(bar1Width, 5));
         builder.widget(
             new ProgressBar().setTexture(TecTechUITextures.PROGRESSBAR_RESEARCH_STATION_2, bar2Width)
                 .setDirection(ProgressBar.Direction.RIGHT)
                 .setProgress(splitProgress.get(1))
                 .setSynced(false, false)
-                .setPos(new Pos2d(124, 40).add(windowOffset))
+                .setPos(new Pos2d(124, 40).add(ctx.windowOffset))
                 .setSize(bar2Width, 5));
         builder.widget(
             new ProgressBar().setTexture(TecTechUITextures.PROGRESSBAR_RESEARCH_STATION_3, bar3Height)
                 .setDirection(ProgressBar.Direction.DOWN)
                 .setProgress(splitProgress.get(2))
                 .setSynced(false, false)
-                .setPos(new Pos2d(128, 44).add(windowOffset))
+                .setPos(new Pos2d(128, 44).add(ctx.windowOffset))
                 .setSize(10, bar3Height));
     }
 }

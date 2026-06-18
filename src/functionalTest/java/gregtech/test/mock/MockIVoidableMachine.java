@@ -1,13 +1,13 @@
 package gregtech.test.mock;
 
+import java.util.Collections;
 import java.util.List;
 
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
-
 import gregtech.api.enums.VoidingMode;
-import gregtech.api.interfaces.fluid.IFluidStore;
+import gregtech.api.interfaces.IOutputBus;
+import gregtech.api.interfaces.IOutputHatch;
 import gregtech.api.interfaces.tileentity.IVoidable;
+import gregtech.api.util.GTUtility;
 
 public class MockIVoidableMachine implements IVoidable {
 
@@ -29,22 +29,22 @@ public class MockIVoidableMachine implements IVoidable {
     }
 
     @Override
-    public List<ItemStack> getItemOutputSlots(ItemStack[] toOutput) {
-        return null;
+    public List<IOutputBus> getOutputBusses() {
+        return Collections.emptyList();
     }
 
     @Override
-    public List<? extends IFluidStore> getFluidOutputSlots(FluidStack[] toOutput) {
-        return null;
+    public List<IOutputHatch> getOutputHatches() {
+        return Collections.emptyList();
     }
 
     @Override
-    public boolean canDumpItemToME() {
+    public boolean canDumpItemToME(List<GTUtility.ItemId> outputs) {
         return false;
     }
 
     @Override
-    public boolean canDumpFluidToME() {
+    public boolean canDumpFluidToME(List<GTUtility.FluidId> outputs) {
         return false;
     }
 

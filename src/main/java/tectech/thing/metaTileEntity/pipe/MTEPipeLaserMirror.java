@@ -8,16 +8,18 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.GTMod;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IColoredTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.render.TextureFactory;
-import gregtech.common.GTClient;
 import tectech.TecTech;
 import tectech.loader.NetworkDispatcher;
 import tectech.mechanics.pipe.IConnectsToEnergyTunnel;
@@ -27,7 +29,7 @@ import tectech.util.CommonValues;
 
 public class MTEPipeLaserMirror extends MTEPipeLaser {
 
-    private static Textures.BlockIcons.CustomIcon EMpipe;
+    private static IIconContainer EMpipe;
     private final ForgeDirection[] connectedSides = { null, null };
     private ForgeDirection chainedFrontFacing = null;
 
@@ -49,7 +51,7 @@ public class MTEPipeLaserMirror extends MTEPipeLaser {
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
-        EMpipe = new Textures.BlockIcons.CustomIcon("iconsets/EM_LASERMIRROR");
+        EMpipe = Textures.BlockIcons.custom("iconsets/EM_LASERMIRROR");
         super.registerIcons(aBlockIconRegister);
     }
 
@@ -76,11 +78,12 @@ public class MTEPipeLaserMirror extends MTEPipeLaser {
                 if (TecTech.RANDOM.nextInt(15) == 0) {
                     NetworkDispatcher.INSTANCE.sendToAllAround(
                         new PipeActivityMessage.PipeActivityData(this),
-                        aBaseMetaTileEntity.getWorld().provider.dimensionId,
-                        aBaseMetaTileEntity.getXCoord(),
-                        aBaseMetaTileEntity.getYCoord(),
-                        aBaseMetaTileEntity.getZCoord(),
-                        256);
+                        new NetworkRegistry.TargetPoint(
+                            aBaseMetaTileEntity.getWorld().provider.dimensionId,
+                            aBaseMetaTileEntity.getXCoord(),
+                            aBaseMetaTileEntity.getYCoord(),
+                            aBaseMetaTileEntity.getZCoord(),
+                            256));
                 }
                 if (active) {
                     active = false;
@@ -121,19 +124,31 @@ public class MTEPipeLaserMirror extends MTEPipeLaser {
                 }
             }
 
-        } else if (aBaseMetaTileEntity.isClientSide() && GTClient.changeDetected == 4) {
-            aBaseMetaTileEntity.issueTextureUpdate();
-        }
+        } else if (aBaseMetaTileEntity.isClientSide() && GTMod.clientProxy()
+            .changeDetected() == 4) {
+                aBaseMetaTileEntity.issueTextureUpdate();
+            }
     }
 
     public ForgeDirection getBendDirection(ForgeDirection dir) {
         if (dir == null) return null;
-        for (ForgeDirection bendDir : connectedSides) {
-            if (bendDir != null && bendDir != dir) {
-                chainedFrontFacing = bendDir.getOpposite();
-                return bendDir;
-            }
+
+        if (connectionCount < 2) {
+            return null;
         }
+
+        ForgeDirection a = connectedSides[0];
+        ForgeDirection b = connectedSides[1];
+        if (dir == a) {
+            chainedFrontFacing = b.getOpposite();
+            return b;
+        }
+        if (dir == b) {
+            chainedFrontFacing = a.getOpposite();
+            return a;
+        }
+
+        // the input direction is not connected to this mirror
         return null;
     }
 

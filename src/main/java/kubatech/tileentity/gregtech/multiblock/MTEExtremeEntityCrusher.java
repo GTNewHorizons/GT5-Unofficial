@@ -25,6 +25,7 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
@@ -35,11 +36,11 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_GLOW;
-import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 
+import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -51,6 +52,7 @@ import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
@@ -74,20 +76,14 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
+import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
-import com.gtnewhorizons.modularui.api.drawable.Text;
-import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.api.forge.ItemStackHandler;
-import com.gtnewhorizons.modularui.api.math.Color;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.widget.CycleButtonWidget;
-import com.gtnewhorizons.modularui.common.widget.DynamicPositionedRow;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.kuba6000.mobsinfo.api.utils.FastRandom;
 import com.mojang.authlib.GameProfile;
 
@@ -98,48 +94,54 @@ import WayofTime.alchemicalWizardry.api.soulNetwork.SoulNetworkHandler;
 import WayofTime.alchemicalWizardry.api.tile.IBloodAltar;
 import WayofTime.alchemicalWizardry.common.rituals.RitualEffectWellOfSuffering;
 import WayofTime.alchemicalWizardry.common.tileEntity.TEMasterStone;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.GTValues;
+import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
-import gregtech.api.enums.VoltageIndex;
-import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
+import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
-import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import kubatech.Tags;
+import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
+import gregtech.common.misc.GTStructureChannels;
 import kubatech.api.implementations.KubaTechGTMultiBlockBase;
 import kubatech.api.tileentity.CustomTileEntityPacketHandler;
 import kubatech.api.utils.ModUtils;
 import kubatech.client.effect.EntityRenderer;
 import kubatech.config.Config;
+import kubatech.gui.modularui2.MTEExtremeEntityCrusherGui;
 import kubatech.loaders.MobHandlerLoader;
 import kubatech.network.CustomTileEntityPacket;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtremeEntityCrusher>
-    implements CustomTileEntityPacketHandler, ISurvivalConstructable {
+    implements CustomTileEntityPacketHandler, ISurvivalConstructable, ICasingTextureProvider {
 
-    public static final double DIAMOND_SPIKES_DAMAGE = 9d;
     // Powered spawner with octadic capacitor spawns ~22/min ~= 0.366/sec ~= 2.72s/spawn ~= 54.54t/spawn
     public static final int MOB_SPAWN_INTERVAL = 55;
+    public static final int MAX_LOOTING_LEVEL = 4;
+    public static final double DIAMOND_SPIKES_DAMAGE = 9d;
     public final Random rand = new FastRandom();
-    private final WeaponCache weaponCache;
+    public final WeaponCache weaponCache;
+    private EECEventHandler eventHandler;
 
     @SuppressWarnings("unused")
     public MTEExtremeEntityCrusher(int aID, String aName, String aNameRegional) {
@@ -150,20 +152,30 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
     public MTEExtremeEntityCrusher(String aName) {
         super(aName);
         weaponCache = new WeaponCache(mInventory);
-        if (BloodMagic.isModLoaded()) MinecraftForge.EVENT_BUS.register(this);
+        if (BloodMagic.isModLoaded() && FMLCommonHandler.instance()
+            .getEffectiveSide()
+            .isServer()) {
+            eventHandler = new EECEventHandler();
+            MinecraftForge.EVENT_BUS.register(eventHandler);
+        }
     }
 
     @Override
     public void onRemoval() {
-        if (BloodMagic.isModLoaded()) MinecraftForge.EVENT_BUS.unregister(this);
+        if (eventHandler != null) MinecraftForge.EVENT_BUS.unregister(eventHandler);
         if (getBaseMetaTileEntity().isClientSide() && entityRenderer != null) {
             entityRenderer.setDead();
         }
     }
 
     @Override
+    public boolean isRotationChangeAllowed() {
+        return true;
+    }
+
+    @Override
     public void onUnload() {
-        if (BloodMagic.isModLoaded()) MinecraftForge.EVENT_BUS.unregister(this);
+        if (eventHandler != null) MinecraftForge.EVENT_BUS.unregister(eventHandler);
     }
 
     private static final String WellOfSufferingRitualName = "AW013Suffering";
@@ -177,20 +189,21 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
             STRUCTURE_PIECE_MAIN,
             transpose(
                 new String[][] { // spotless:off
-                    { "ccccc", "ccccc", "ccccc", "ccccc", "ccccc" },
-                    { "fgggf", "g---g", "g---g", "g---g", "fgggf" },
-                    { "fgggf", "g---g", "g---g", "g---g", "fgggf" },
-                    { "fgggf", "g---g", "g---g", "g---g", "fgggf" },
-                    { "fgggf", "g---g", "g---g", "g---g", "fgggf" },
-                    { "fgggf", "gsssg", "gsssg", "gsssg", "fgggf" },
-                    { "CC~CC", "CCCCC", "CCCCC", "CCCCC", "CCCCC" },
+                    {"ccccc", "ccccc", "ccccc", "ccccc", "ccccc"},
+                    {"fgggf", "g---g", "g---g", "g---g", "fgggf"},
+                    {"fgggf", "g---g", "g---g", "g---g", "fgggf"},
+                    {"fgggf", "g---g", "g---g", "g---g", "fgggf"},
+                    {"fgggf", "g---g", "g---g", "g---g", "fgggf"},
+                    {"fgggf", "gsssg", "gsssg", "gsssg", "fgggf"},
+                    {"CC~CC", "CCCCC", "CCCCC", "CCCCC", "CCCCC"},
                 })) // spotless:on
         .addElement('c', onElementPass(t -> t.mCasing++, ofBlock(GregTechAPI.sBlockCasings2, 0)))
         .addElement(
             'C',
-            buildHatchAdder(MTEExtremeEntityCrusher.class).atLeast(OutputBus, OutputHatch, Energy, Maintenance)
+            buildHatchAdder(MTEExtremeEntityCrusher.class)
+                .atLeast(InputBus, OutputBus, OutputHatch, Energy, Maintenance)
                 .casingIndex(CASING_INDEX)
-                .dot(1)
+                .hint(1)
                 .buildAndChain(onElementPass(t -> t.mCasing++, ofBlock(GregTechAPI.sBlockCasings2, 0))))
         .addElement('g', chainAllGlasses(-1, (te, t) -> te.glassTier = t, te -> te.glassTier))
         .addElement('f', ofFrame(Materials.Steel))
@@ -200,18 +213,81 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
                 : isAir())
         .build();
 
+    private static final int[][] VALID_RITUAL_POSITIONS = { { 0, -8, 2 }, { 0, -7, 2 } };
+
     private TileEntity masterStoneRitual = null;
     private TileEntity tileAltar = null;
-    private boolean isInRitualMode = false;
+    protected boolean isInRitualMode = false;
     private int mCasing = 0;
     private int glassTier = -1;
     private boolean mAnimationEnabled = true;
-    private boolean mIsProducingInfernalDrops = true;
-    private boolean voidAllDamagedAndEnchantedItems = false;
+    protected boolean mIsProducingInfernalDrops = true;
+    protected boolean voidAllDamagedAndEnchantedItems = false;
+    protected boolean mPreserveWeapon;
+    protected boolean mCycleWeapons;
+
+    protected boolean mIsRitualValid;
+    protected boolean mIsPreventingGUIWeaponUse;
 
     private EntityRenderer entityRenderer = null;
     private boolean renderEntity = false;
     public EECFakePlayer EECPlayer = null;
+
+    public boolean isInRitualMode() {
+        return isInRitualMode;
+    }
+
+    public void setInRitualMode(boolean val) {
+        isInRitualMode = val;
+    }
+
+    public boolean isProducingInfernalDrops() {
+        return mIsProducingInfernalDrops;
+    }
+
+    public void setProducingInfernalDrops(boolean val) {
+        mIsProducingInfernalDrops = val;
+    }
+
+    public boolean isVoidAllDamagedAndEnchantedItems() {
+        return voidAllDamagedAndEnchantedItems;
+    }
+
+    public void setVoidAllDamagedAndEnchantedItems(boolean val) {
+        voidAllDamagedAndEnchantedItems = val;
+    }
+
+    public boolean isPreserveWeapon() {
+        return mPreserveWeapon;
+    }
+
+    public void setPreserveWeapon(boolean val) {
+        mPreserveWeapon = val;
+    }
+
+    public boolean isCycleWeapons() {
+        return mCycleWeapons;
+    }
+
+    public void setCycleWeapons(boolean val) {
+        mCycleWeapons = val;
+    }
+
+    public boolean isRitualValid() {
+        return mIsRitualValid;
+    }
+
+    public void setRitualValid(boolean val) {
+        mIsRitualValid = val;
+    }
+
+    public boolean isPreventingGUIWeaponUse() {
+        return mIsPreventingGUIWeaponUse;
+    }
+
+    public void setPreventingGUIWeaponUse(boolean val) {
+        mIsPreventingGUIWeaponUse = val;
+    }
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
@@ -220,6 +296,8 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
         aNBT.setBoolean("mAnimationEnabled", mAnimationEnabled);
         aNBT.setBoolean("mIsProducingInfernalDrops", mIsProducingInfernalDrops);
         aNBT.setBoolean("voidAllDamagedAndEnchantedItems", voidAllDamagedAndEnchantedItems);
+        aNBT.setBoolean("mPreserveWeapon", mPreserveWeapon);
+        aNBT.setBoolean("mCycleWeapons", mCycleWeapons);
         if (weaponCache.getStackInSlot(0) != null) aNBT.setTag(
             "weaponCache",
             weaponCache.getStackInSlot(0)
@@ -234,6 +312,8 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
         mIsProducingInfernalDrops = !aNBT.hasKey("mIsProducingInfernalDrops")
             || aNBT.getBoolean("mIsProducingInfernalDrops");
         voidAllDamagedAndEnchantedItems = aNBT.getBoolean("voidAllDamagedAndEnchantedItems");
+        mPreserveWeapon = aNBT.getBoolean("mPreserveWeapon");
+        mCycleWeapons = !aNBT.hasKey("mCycleWeapons") || aNBT.getBoolean("mCycleWeapons");
         if (aNBT.hasKey("weaponCache"))
             weaponCache.setStackInSlot(0, ItemStack.loadItemStackFromNBT(aNBT.getCompoundTag("weaponCache")));
     }
@@ -245,7 +325,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
 
     @Override
     protected int getOverclockTimeLimit() {
-        return 20;
+        return (batchMode ? 16 : 1) * 20;
     }
 
     @Override
@@ -254,44 +334,66 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
     }
 
     @Override
-    protected IAlignmentLimits getInitialAlignmentLimits() {
-        return (d, r, f) -> d.offsetY == 0 && r.isNotRotated();
-    }
-
-    @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Powered Spawner, EEC")
-            .addInfo("Spawns and kills monsters for you.")
-            .addInfo("You have to insert the powered spawner in the controller.")
-            .addInfo("Base energy usage: 1,920 EU/t")
-            .addInfo("Supports perfect OC, minimum time: 20 ticks, after that multiplies the outputs.")
-            .addInfo("Recipe time is based on mob health.")
-            .addInfo("You can additionally put a weapon inside the GUI.")
-            .addInfo("It will speed up the process and apply the looting level from the weapon (maximum 4 levels).")
-            .addInfo(EnumChatFormatting.RED + "Enchanting the spikes inside the structure does nothing!")
-            .addInfo("Also produces 120 Liquid XP per operation.")
-            .addInfo("If the mob spawns infernal, it will drain 8 times more power.")
-            .addInfo("You can prevent infernal spawns by shift clicking with a screwdriver.")
-            .addInfo("Note: If the mob has forced infernal spawn, it will do it anyway.")
-            .addInfo("You can enable ritual mode with a screwdriver.")
+            .addInfo("Spawns and kills monsters for you!")
             .addInfo(
-                "When in ritual mode and the Well Of Suffering ritual is built directly centered on top of the machine,")
-            .addInfo("the mobs will start to buffer and die very slowly by the ritual.")
-            .addInfo("You can disable mob animation with a soldering iron.")
-            .addGlassEnergyLimitInfo(VoltageIndex.UV)
+                "Produces " + EnumChatFormatting.GREEN + "120 Liquid XP" + EnumChatFormatting.GRAY + " per operation")
+            .addInfo("Powered Spawner goes in Controller Slot")
+            .addInfo("Base energy usage: " + EnumChatFormatting.AQUA + "1920" + EnumChatFormatting.GRAY + " EU/t")
+            .addInfo("Supports " + EnumChatFormatting.LIGHT_PURPLE + "perfect OC!")
+            .addSeparator()
+            .addInfo("Has a minimum recipe time of 20 ticks, further overclocks multiply outputs by 4x")
+            .addInfo("Recipe time is based on mob health")
+            .addInfo("You can additionally put a weapon inside the GUI")
+            .addInfo(
+                "It will speed up the process and apply the looting level from the weapon (maximum " + MAX_LOOTING_LEVEL
+                    + " levels)")
+            .addInfo("Enable Weapon Preservation to prevent the weapon from breaking on it's last hit")
+            .addInfo(
+                "Enable Weapon Cycling to pull a weapon from input when the current one breaks or is moved to an output")
+            .addInfo(EnumChatFormatting.RED + "Enchanting the spikes inside the structure does nothing!")
+            .addSeparator()
+            .addInfo(
+                "If the mob spawns " + EnumChatFormatting.RED
+                    + "infernal"
+                    + EnumChatFormatting.GRAY
+                    + ", it will drain 8 times more power!")
+            .addInfo(
+                "You can prevent " + EnumChatFormatting.RED
+                    + "infernal"
+                    + EnumChatFormatting.GRAY
+                    + " spawns by shift clicking with a screwdriver")
+            .addInfo(
+                "Mobs who are always " + EnumChatFormatting.RED
+                    + "infernal"
+                    + EnumChatFormatting.GRAY
+                    + " will ignore this factor")
+            .addSeparator()
+            .addInfo("You can enable ritual mode with a screwdriver")
+            .addInfo("When in ritual mode, can link to above Well of Suffering rituals")
+            .addInfo("The Ritual must be built directly centered above the machine")
+            .addInfo("When linked, mobs will start to buffer and die very slowly, providing blood to the linked altar")
+            .addSeparator()
+            .addInfo("You can disable mob animation with a soldering iron")
+            .addInfo(
+                "You can enable batch mode with wire cutters. Providing " + EnumChatFormatting.BLUE
+                    + " 16x Time, Output, Weapon Damage")
+            .addGlassEnergyLimitInfo()
             .beginStructureBlock(5, 7, 5, true)
-            .addController("Front Bottom Center")
+            .addController("Front bottom center")
             .addCasingInfoMin("Solid Steel Machine Casing", 35, false)
             .addCasingInfoExactly("Any Tiered Glass", 60, false)
             .addCasingInfoExactly("Steel Frame Box", 20, false)
             .addCasingInfoExactly("Diamond Spike", 9, false)
-            .addOutputBus("Any bottom casing", 1)
-            .addOutputHatch("Any bottom casing", 1)
-            .addEnergyHatch("Any bottom casing", 1)
-            .addMaintenanceHatch("Any bottom casing", 1)
-            .addSubChannelUsage("glass", "Glass Tier")
-            .toolTipFinisher(GTValues.AuthorKuba);
+            .addInputBus("Any bottom Casing (optional, for weapon with Looting)", 1)
+            .addOutputBus("Any bottom Casing", 1)
+            .addOutputHatch("Any bottom Casing", 1)
+            .addEnergyHatch("Any bottom Casing", 1)
+            .addMaintenanceHatch("Any bottom Casing", 1)
+            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .toolTipFinisher(GTAuthors.AuthorKuba);
         return tt;
     }
 
@@ -302,7 +404,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
-        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 2, 6, 0, elementBudget, env, true, true);
+        return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 2, 6, 0, elementBudget, env, true, true);
     }
 
     @Override
@@ -311,30 +413,22 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-        int colorIndex, boolean aActive, boolean aRedstone) {
-        if (side == facing) {
-            if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX), TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-        }
-        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX) };
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            OVERLAY_FRONT_DISTILLATION_TOWER,
+            OVERLAY_FRONT_DISTILLATION_TOWER_GLOW,
+            OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE,
+            OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Textures.BlockIcons.getCasingTextureForId(CASING_INDEX);
     }
 
     @SideOnly(Side.CLIENT)
@@ -342,14 +436,14 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
         if (entityRenderer == null) {
             ChunkCoordinates coords = this.getBaseMetaTileEntity()
                 .getCoords();
+            ExtendedFacing facing = this.getExtendedFacing();
             int[] abc = new int[] { 0, -2, 2 };
             int[] xyz = new int[] { 0, 0, 0 };
-            this.getExtendedFacing()
-                .getWorldOffset(abc, xyz);
+            facing.getWorldOffset(abc, xyz);
             xyz[0] += coords.posX;
             xyz[1] += coords.posY;
             xyz[2] += coords.posZ;
-            entityRenderer = new EntityRenderer(aBaseMetaTileEntity.getWorld(), xyz[0], xyz[1], xyz[2], time);
+            entityRenderer = new EntityRenderer(facing, aBaseMetaTileEntity.getWorld(), xyz[0], xyz[1], xyz[2], time);
         } else {
             entityRenderer.setDead();
             entityRenderer = new EntityRenderer(entityRenderer, time);
@@ -376,7 +470,12 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
             MobHandlerLoader.MobEECRecipe r = MobHandlerLoader.recipeMap.get(mobType);
             if (r != null) {
                 if (entityRenderer == null) setupEntityRenderer(getBaseMetaTileEntity(), 40);
-                entityRenderer.setEntity(r.entityCopy);
+                try {
+                    entityRenderer.setEntity(r.recipe.createEntityCopy());
+                } catch (NoSuchMethodException | InvocationTargetException | InstantiationException
+                    | IllegalAccessException e) {
+                    throw new RuntimeException(e);
+                }
             } else entityRenderer.setEntity(null);
         } else {
             renderEntity = false;
@@ -388,26 +487,30 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
         if (this.mMaxProgresstime > 0) {
-            GTUtility.sendChatToPlayer(aPlayer, "Can't change mode when running !");
+            GTUtility.sendChatTrans(aPlayer, "kubatech.chat.forbidden_while_running");
             return;
         }
         if (aPlayer.isSneaking()) {
             if (!InfernalMobs.isModLoaded()) return;
             mIsProducingInfernalDrops = !mIsProducingInfernalDrops;
-            if (!mIsProducingInfernalDrops)
-                GTUtility.sendChatToPlayer(aPlayer, "Mobs will now be prevented from spawning infernal");
-            else GTUtility.sendChatToPlayer(aPlayer, "Mobs can spawn infernal now");
+            GTUtility.sendChatTrans(
+                aPlayer,
+                "kubatech.chat.eec.infernal_drops_" + (mIsProducingInfernalDrops ? "enabled" : "disabled"));
         } else {
             if (!BloodMagic.isModLoaded()) return;
             isInRitualMode = !isInRitualMode;
+            checkRitualConnection();
+
             if (!isInRitualMode) {
-                GTUtility.sendChatToPlayer(aPlayer, "Ritual mode disabled");
+                GTUtility.sendChatTrans(aPlayer, "kubatech.chat.eec.ritual_mode_disabled");
             } else {
-                GTUtility.sendChatToPlayer(aPlayer, "Ritual mode enabled");
-                if (connectToRitual()) GTUtility.sendChatToPlayer(aPlayer, "Successfully connected to the ritual");
-                else GTUtility.sendChatToPlayer(aPlayer, "Can't connect to the ritual");
+                GTUtility.sendChatTrans(aPlayer, "kubatech.chat.eec.ritual_mode_enabled");
+                GTUtility.sendChatTrans(
+                    aPlayer,
+                    "kubatech.chat.eec.ritual_mode_" + (mIsRitualValid ? "connected" : "error"));
             }
         }
     }
@@ -422,53 +525,61 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
         } else return super.onSolderingToolRightClick(side, wrenchingSide, aPlayer, aX, aY, aZ, aTool);
     }
 
-    @SuppressWarnings("unused")
-    @SubscribeEvent(priority = EventPriority.LOWEST)
-    public void onRitualPerform(RitualRunEvent event) {
-        if (!isInRitualMode) return;
-        if (masterStoneRitual == null) return;
-        if (this.mMaxProgresstime == 0) return;
-        if (event.mrs.equals(masterStoneRitual) && event.ritualKey.equals(WellOfSufferingRitualName)) {
-            Rituals ritual = Rituals.ritualMap.get(WellOfSufferingRitualName);
-            if (ritual != null && ritual.effect instanceof RitualEffectWellOfSuffering effect) {
-                event.setCanceled(true); // we will handle that
-                String owner = event.mrs.getOwner();
-                int currentEssence = SoulNetworkHandler.getCurrentEssence(owner);
-                World world = event.mrs.getWorld();
-                int x = event.mrs.getXCoord();
-                int y = event.mrs.getYCoord();
-                int z = event.mrs.getZCoord();
+    // We place the event handler in an inner
+    // class to prevent high costs of registering
+    // the event because forge event bus reflects
+    // through all the methods and super of the class
+    // in order to find the @SubscribeEvent annotations
+    public class EECEventHandler {
 
-                if (world.getWorldTime() % RitualEffectWellOfSuffering.timeDelay != 0) return;
+        @SuppressWarnings("unused")
+        @SubscribeEvent(priority = EventPriority.LOWEST)
+        public void onRitualPerform(RitualRunEvent event) {
+            if (!isInRitualMode) return;
+            if (masterStoneRitual == null) return;
+            if (mMaxProgresstime == 0) return;
+            if (event.mrs.equals(masterStoneRitual)) {
+                Rituals ritual = Rituals.ritualMap.get(WellOfSufferingRitualName);
+                if (ritual != null && ritual.effect instanceof RitualEffectWellOfSuffering effect) {
+                    event.setCanceled(true); // we will handle that
+                    String owner = event.mrs.getOwner();
+                    int currentEssence = SoulNetworkHandler.getCurrentEssence(owner);
+                    World world = event.mrs.getWorld();
+                    int x = event.mrs.getXCoord();
+                    int y = event.mrs.getYCoord();
+                    int z = event.mrs.getZCoord();
 
-                if (tileAltar == null || tileAltar.isInvalid()) {
-                    tileAltar = null;
-                    for (int i = -5; i <= 5; i++) for (int j = -5; j <= 5; j++) for (int k = -10; k <= 10; k++)
-                        if (world.getTileEntity(x + i, y + k, z + j) instanceof IBloodAltar)
-                            tileAltar = world.getTileEntity(x + i, y + k, z + j);
+                    if (world.getWorldTime() % RitualEffectWellOfSuffering.timeDelay != 0) return;
+
+                    if (tileAltar == null || tileAltar.isInvalid()) {
+                        tileAltar = null;
+                        for (int i = -5; i <= 5; i++) for (int j = -5; j <= 5; j++) for (int k = -10; k <= 10; k++)
+                            if (world.getTileEntity(x + i, y + k, z + j) instanceof IBloodAltar)
+                                tileAltar = world.getTileEntity(x + i, y + k, z + j);
+                    }
+                    if (tileAltar == null) return;
+
+                    if (currentEssence < effect.getCostPerRefresh() * 100) {
+                        SoulNetworkHandler.causeNauseaToPlayer(owner);
+                        return;
+                    }
+
+                    ((IBloodAltar) tileAltar).sacrificialDaggerCall(
+                        100 * RitualEffectWellOfSuffering.amount
+                            * (effect.canDrainReagent(
+                                event.mrs,
+                                ReagentRegistry.offensaReagent,
+                                RitualEffectWellOfSuffering.offensaDrain,
+                                true) ? 2 : 1)
+                            * (effect.canDrainReagent(
+                                event.mrs,
+                                ReagentRegistry.tenebraeReagent,
+                                RitualEffectWellOfSuffering.tennebraeDrain,
+                                true) ? 2 : 1),
+                        true);
+
+                    SoulNetworkHandler.syphonFromNetwork(owner, effect.getCostPerRefresh() * 100);
                 }
-                if (tileAltar == null) return;
-
-                if (currentEssence < effect.getCostPerRefresh() * 100) {
-                    SoulNetworkHandler.causeNauseaToPlayer(owner);
-                    return;
-                }
-
-                ((IBloodAltar) tileAltar).sacrificialDaggerCall(
-                    100 * RitualEffectWellOfSuffering.amount
-                        * (effect.canDrainReagent(
-                            event.mrs,
-                            ReagentRegistry.offensaReagent,
-                            RitualEffectWellOfSuffering.offensaDrain,
-                            true) ? 2 : 1)
-                        * (effect.canDrainReagent(
-                            event.mrs,
-                            ReagentRegistry.tenebraeReagent,
-                            RitualEffectWellOfSuffering.tennebraeDrain,
-                            true) ? 2 : 1),
-                    true);
-
-                SoulNetworkHandler.syphonFromNetwork(owner, effect.getCostPerRefresh() * 100);
             }
         }
     }
@@ -486,7 +597,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
         }
 
         @Override
-        protected void onContentsChanged(int slot) {
+        protected final void onContentsChanged(final int slot) {
             if (slot != 0) return;
             if (ModUtils.isClientThreaded()) return;
             ItemStack stack = getStackInSlot(0);
@@ -494,20 +605,14 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
                 isValid = false;
                 return;
             }
-            attackDamage = stack.getAttributeModifiers()
-                .get(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName())
-                .stream()
-                .mapToDouble(
-                    attr -> attr.getAmount()
-                        + (double) EnchantmentHelper.func_152377_a(stack, EnumCreatureAttribute.UNDEFINED))
-                .sum();
-            looting = Math.min(4, EnchantmentHelper.getEnchantmentLevel(Enchantment.looting.effectId, stack));
+            attackDamage = MTEExtremeEntityCrusher.getWeaponAttackDamage(stack);
+            looting = MTEExtremeEntityCrusher.getWeaponLooting(stack);
             isValid = true;
         }
 
         @Override
-        public boolean isItemValid(int slot, ItemStack stack) {
-            return Enchantment.looting.canApply(stack);
+        public final boolean isItemValid(final int aSlot, final ItemStack aStack) {
+            return aSlot == 0 && MTEExtremeEntityCrusher.isUsableWeapon(aStack);
         }
     }
 
@@ -516,11 +621,19 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
         return aIndex >= 0;
     }
 
+    @Override
+    public void onSetActive(boolean active) {
+        super.onSetActive(active);
+        if (active) return;
+        checkRitualConnection();
+    }
+
     @SuppressWarnings("unlikely-arg-type")
     @Override
     @NotNull
     public CheckRecipeResult checkProcessing() {
         if (getBaseMetaTileEntity().isClientSide()) return CheckRecipeResultRegistry.NO_RECIPE;
+        mIsPreventingGUIWeaponUse = false;
         ItemStack aStack = mInventory[1];
         if (aStack == null) return SimpleCheckRecipeResult.ofFailure("EEC_nospawner");
 
@@ -541,7 +654,7 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
             .getWorld().difficultySetting == EnumDifficulty.PEACEFUL && !Config.MobHandler.ignorePeacefulCheck)
             return SimpleCheckRecipeResult.ofFailure("EEC_peaceful");
 
-        if (isInRitualMode && isRitualValid()) {
+        if (checkRitualConnection()) {
             if (getMaxInputEu() < recipe.mEUt / 4) return CheckRecipeResultRegistry.insufficientPower(recipe.mEUt / 4);
             this.mOutputFluids = new FluidStack[] { FluidRegistry.getFluidStack("xpjuice", 5000) };
             this.mOutputItems = recipe
@@ -549,42 +662,58 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
             this.lEUt /= 4L;
             this.mMaxProgresstime = 400;
         } else {
-            if (getMaxInputEu() < recipe.mEUt) return CheckRecipeResultRegistry.insufficientPower(recipe.mEUt);
-            if (recipe.recipe.alwaysinfernal && getMaxInputEu() < recipe.mEUt * 8)
-                return CheckRecipeResultRegistry.insufficientPower(recipe.mEUt * 8);
+            long tRecipeEUt = recipe.mEUt;
+            if (recipe.recipe.alwaysinfernal) tRecipeEUt *= 8;
 
-            double attackDamage = DIAMOND_SPIKES_DAMAGE; // damage from spikes
+            if (getMaxInputEu() < tRecipeEUt) return CheckRecipeResultRegistry.insufficientPower(tRecipeEUt);
 
-            if (weaponCache.isValid) attackDamage += weaponCache.attackDamage;
+            double tAttackDamage = DIAMOND_SPIKES_DAMAGE;
+            int tLootingLevel = 0;
+
+            final int tBatchMultiplier = batchMode ? 16 : 1;
+
+            final int tMaxTries = 2; // 2 => Weapon already in the slot + one extra
+            ItemStack tWeaponToUse = cycleWeaponsUntilNoBreakage(recipe, tBatchMultiplier, tMaxTries);
+
+            if (this.mCycleWeapons && weaponCache.getStackInSlot(0) == null) {
+                moveWeaponFromInputToCache();
+            }
+
+            ItemStack tWeaponInCache = weaponCache.getStackInSlot(0);
+            if (tWeaponToUse != null) {
+                if (tWeaponToUse == tWeaponInCache) {
+                    tAttackDamage += weaponCache.attackDamage;
+                    tLootingLevel += weaponCache.looting;
+                } else {
+                    tAttackDamage += getWeaponAttackDamage(tWeaponToUse);
+                    tLootingLevel += getWeaponLooting(tWeaponToUse);
+                }
+            } else if (tWeaponInCache != null) {
+                mIsPreventingGUIWeaponUse = true;
+            }
 
             if (EECPlayer == null) EECPlayer = new EECFakePlayer(this);
-            EECPlayer.currentWeapon = weaponCache.getStackInSlot(0);
 
+            EECPlayer.currentWeapon = tWeaponToUse;
             this.mOutputItems = recipe.generateOutputs(
                 rand,
                 this,
-                attackDamage,
-                weaponCache.isValid ? weaponCache.looting : 0,
+                tAttackDamage,
+                Math.min(tLootingLevel, MAX_LOOTING_LEVEL),
                 mIsProducingInfernalDrops,
                 voidAllDamagedAndEnchantedItems);
-
             EECPlayer.currentWeapon = null;
 
-            this.mOutputFluids = new FluidStack[] { FluidRegistry.getFluidStack("xpjuice", 120) };
-            ItemStack weapon = weaponCache.getStackInSlot(0);
-            int times = this.calculatePerfectOverclock(this.lEUt, this.mMaxProgresstime);
-            if (weaponCache.isValid && weapon.isItemStackDamageable()) {
-                EECPlayer.currentWeapon = weapon;
-                Item lootingHolderItem = weapon.getItem();
-                for (int i = 0; i < times + 1; i++) {
-                    if (!lootingHolderItem.hitEntity(weapon, recipe.recipe.entity, EECPlayer)) break;
-                    if (weapon.stackSize == 0) {
-                        weaponCache.setStackInSlot(0, null);
-                        break;
-                    }
+            if (batchMode) {
+                for (ItemStack item : mOutputItems) {
+                    item.stackSize *= tBatchMultiplier;
                 }
-                EECPlayer.currentWeapon = null;
             }
+
+            this.mOutputFluids = new FluidStack[] { FluidRegistry.getFluidStack("xpjuice", 120 * tBatchMultiplier) };
+            this.mMaxProgresstime *= tBatchMultiplier;
+
+            this.calculatePerfectOverclock(this.lEUt, this.mMaxProgresstime);
         }
         if (this.lEUt > 0) this.lEUt = -this.lEUt;
         this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
@@ -600,50 +729,255 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
         return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 
-    private boolean isRitualValid() {
-        if (!isInRitualMode) return false;
-        if (masterStoneRitual == null) return false;
-        if (masterStoneRitual.isInvalid() || !(((TEMasterStone) masterStoneRitual).getCurrentRitual()
-            .equals(WellOfSufferingRitualName))) {
-            masterStoneRitual = null;
-            return false;
+    private ItemStack cycleWeaponsUntilNoBreakage(final MobHandlerLoader.MobEECRecipe aRecipe,
+        final int aBatchModeMultiplier, int aMaxTries) {
+        final int tBusCount = mInputBusses.size();
+        int tCurrentInputBus = 0;
+        int tCurrentInputBusSlot = 0;
+
+        ItemStack tWeapon = this.weaponCache.getStackInSlot(0);
+        if (!this.weaponCache.isValid) {
+            if (!mCycleWeapons) return null;
+            aMaxTries--;
         }
-        return true;
+
+        for (int i = 0; i < aMaxTries; i++) {
+            if (!this.weaponCache.isValid) {
+                // Try to find weapon from inputs
+                if (tBusCount == 0) return null;
+
+                for (int tBusIndex = tCurrentInputBus; tBusIndex < tBusCount; tBusIndex++) {
+                    MTEHatchInputBus tBus = mInputBusses.get(tBusIndex);
+                    for (int tSlotIndex = tCurrentInputBusSlot; tSlotIndex < tBus.mInventory.length; tSlotIndex++) {
+                        tCurrentInputBusSlot++;
+
+                        if (!tBus.isValidSlot(tSlotIndex)) continue;
+
+                        ItemStack tItem = tBus.mInventory[tSlotIndex];
+                        if (tItem == null || tItem.stackSize == 0 || !isUsableWeapon(tItem)) continue;
+
+                        tWeapon = tItem;
+                        weaponCache.setStackInSlot(0, tItem);
+                        tBus.mInventory[tSlotIndex] = null;
+                        break;
+                    }
+                    if (weaponCache.isValid) break;
+
+                    tCurrentInputBusSlot = 0;
+                    tCurrentInputBus++;
+                }
+
+                // Looped through all buses and found no usable weapon
+                if (!weaponCache.isValid) {
+                    weaponCache.setStackInSlot(0, null);
+                    return null;
+                }
+            }
+
+            ItemStack tWeaponResult = runWeaponHitSimulation(
+                tWeapon,
+                aRecipe.recipe.entity,
+                aBatchModeMultiplier,
+                mPreserveWeapon);
+
+            // Weapon didn't break, use it
+            if (tWeaponResult != null) {
+                weaponCache.setStackInSlot(0, tWeaponResult);
+                return tWeaponResult;
+            }
+
+            // Weapon copy broke during simulation, do we care?
+
+            // We don't, use it for the next run and destroy it.
+            if (!mPreserveWeapon) {
+                weaponCache.setStackInSlot(0, null);
+                playWeaponBreakSound();
+                return tWeapon;
+            }
+
+            // We do care. Preserve the weapon
+            if (!mCycleWeapons || !addOutputAtomic(tWeapon)) return null;
+            weaponCache.setStackInSlot(0, null);
+            tWeapon = null;
+        }
+
+        return null;
+    }
+
+    private ItemStack runWeaponHitSimulation(ItemStack aWeapon, final EntityLiving aTarget,
+        final int aBatchModeMultiplier, final boolean aPreventPerfectUnbreaking) {
+        if (aWeapon == null || !aWeapon.isItemStackDamageable()) return aWeapon;
+        if (EECPlayer == null) EECPlayer = new EECFakePlayer(this);
+
+        ItemStack tWeaponCopy = aWeapon.copy();
+        Item tItem = tWeaponCopy.getItem();
+
+        EECPlayer.currentWeapon = tWeaponCopy;
+        for (int i = 0; i < aBatchModeMultiplier; i++) {
+            // Force weapons at max damage to be considered broken,
+            // even if they would survive a hit by having the Unbreaking enchantment.
+            // This prevents weapons from being effectively unbreakable due to being
+            // able to perfectly predict when a hit would or would not damage it.
+            if (aPreventPerfectUnbreaking && tWeaponCopy.getItemDamage() == tWeaponCopy.getMaxDamage()) {
+                EECPlayer.currentWeapon = null;
+                return null;
+            }
+
+            // Simulate hit on entity with the weapon's copy
+            if (!tItem.hitEntity(tWeaponCopy, aTarget, EECPlayer)) break;
+            if (tWeaponCopy.stackSize == 0) {
+                EECPlayer.currentWeapon = null;
+                return null;
+            }
+        }
+        EECPlayer.currentWeapon = null;
+        return tWeaponCopy;
+    }
+
+    private void moveWeaponFromInputToCache() {
+        if (this.weaponCache.isValid) return;
+        for (MTEHatchInputBus tBus : mInputBusses) {
+            for (int tSlotIndex = 0; tSlotIndex < tBus.mInventory.length; tSlotIndex++) {
+                if (!tBus.isValidSlot(tSlotIndex)) continue;
+
+                ItemStack tItem = tBus.mInventory[tSlotIndex];
+                if (tItem == null || tItem.stackSize == 0 || !isUsableWeapon(tItem)) continue;
+
+                weaponCache.setStackInSlot(0, tItem);
+                tBus.mInventory[tSlotIndex] = null;
+                return;
+            }
+        }
+    }
+
+    public static boolean isUsableWeapon(final ItemStack aWeapon) {
+        return Enchantment.looting.canApply(aWeapon);
+    }
+
+    private static double getWeaponAttackDamage(final ItemStack aWeapon) {
+        return aWeapon.getAttributeModifiers()
+            .get(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName())
+            .stream()
+            .mapToDouble(
+                attr -> attr.getAmount()
+                    + (double) EnchantmentHelper.func_152377_a(aWeapon, EnumCreatureAttribute.UNDEFINED))
+            .sum();
+    }
+
+    private static int getWeaponLooting(final ItemStack aWeapon) {
+        return EnchantmentHelper.getEnchantmentLevel(Enchantment.looting.effectId, aWeapon);
+    }
+
+    private void playWeaponBreakSound() {
+        final IGregTechTileEntity tMTE = this.getBaseMetaTileEntity();
+
+        if (tMTE == null || tMTE.isMuffled()) return;
+
+        // A little muffled and modulated, helps simulate a Low-Pass filter
+        GTUtility.sendSoundToPlayers(
+            tMTE.getWorld(),
+            SoundResource.RANDOM_BREAK,
+            0.5F,
+            0.9F,
+            tMTE.getXCoord() + .5,
+            tMTE.getYCoord() + .5,
+            tMTE.getZCoord() + .5);
+    }
+
+    public void updateWeaponCache() {
+        weaponCache.setStackInSlot(0, mInventory[0]);
+    }
+
+    public boolean checkRitualConnection() {
+        mIsRitualValid = isInRitualMode && connectToRitual();
+        return mIsRitualValid;
     }
 
     private boolean connectToRitual() {
-        if (!BloodMagic.isModLoaded()) return false;
-        ChunkCoordinates coords = this.getBaseMetaTileEntity()
-            .getCoords();
-        int[] abc = new int[] { 0, -8, 2 };
-        int[] xyz = new int[] { 0, 0, 0 };
-        this.getExtendedFacing()
-            .getWorldOffset(abc, xyz);
-        xyz[0] += coords.posX;
-        xyz[1] += coords.posY;
-        xyz[2] += coords.posZ;
-        TileEntity te = this.getBaseMetaTileEntity()
-            .getTileEntity(xyz[0], xyz[1], xyz[2]);
-        if (te instanceof TEMasterStone) {
-            if (((TEMasterStone) te).getCurrentRitual()
-                .equals(WellOfSufferingRitualName)) {
-                masterStoneRitual = te;
-                return true;
+        if (masterStoneRitual == null) {
+            if (!BloodMagic.isModLoaded()) return false;
+
+            for (int[] ritualRelativePos : VALID_RITUAL_POSITIONS) {
+                masterStoneRitual = getTileEntityAtRelativePosition(ritualRelativePos);
+                if (isWellOfSufferingRitual(masterStoneRitual)) return true;
             }
-        }
+        } else if (BloodMagic.isModLoaded() && isWellOfSufferingRitual(masterStoneRitual)) return true;
+
+        masterStoneRitual = null;
         return false;
     }
 
+    @Nullable
+    private TileEntity getTileEntityAtRelativePosition(int @NotNull [] relativePosition) {
+
+        if (relativePosition.length < 3) return null;
+
+        int[] relativeCoords = new int[] { 0, 0, 0 };
+        this.getExtendedFacing()
+            .getWorldOffset(relativePosition, relativeCoords);
+        ChunkCoordinates worldCoords = this.getBaseMetaTileEntity()
+            .getCoords();
+
+        return this.getBaseMetaTileEntity()
+            .getTileEntity(
+                worldCoords.posX + relativeCoords[0],
+                worldCoords.posY + relativeCoords[1],
+                worldCoords.posZ + relativeCoords[2]);
+    }
+
+    private static boolean isWellOfSufferingRitual(@Nullable TileEntity tileEntity) {
+        return tileEntity != null && !tileEntity.isInvalid()
+            && tileEntity instanceof TEMasterStone ritualTE
+            && ritualTE.getCurrentRitual()
+                .equals(WellOfSufferingRitualName);
+    }
+
+    private void rotateSpikes() {
+        ChunkCoordinates coords = this.getBaseMetaTileEntity()
+            .getCoords();
+        World world = this.getBaseMetaTileEntity()
+            .getWorld();
+        ExtendedFacing facing = this.getExtendedFacing();
+        int meta = facing.getRelativeUpInWorld()
+            .ordinal();
+        int[] abc = new int[] { 0, -1, 0 };
+        int[] xyz = new int[] { 0, 0, 0 };
+        for (int x = -1; x < 2; x++) {
+            abc[0] = x;
+            for (int z = 1; z < 4; z++) {
+                abc[2] = z;
+                facing.getWorldOffset(abc, xyz);
+                xyz[0] += coords.posX;
+                xyz[1] += coords.posY;
+                xyz[2] += coords.posZ;
+                world.setBlockMetadataWithNotify(xyz[0], xyz[1], xyz[2], meta, 3);
+            }
+        }
+    }
+
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         glassTier = -1;
         mCasing = 0;
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 6, 0)) return false;
-        if (mCasing < 35 || mEnergyHatches.isEmpty()) return false;
-        if (glassTier < VoltageIndex.UV)
-            for (MTEHatchEnergy hatch : mEnergyHatches) if (hatch.mTier > glassTier) return false;
-        if (isInRitualMode) connectToRitual();
-        return true;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 6, 0, errors)) return;
+        checkCasingMin(errors, mCasing, 35);
+        checkHasMaintenanceHatch(errors);
+        checkHasEnergyHatch(errors);
+        for (MTEHatchEnergy hatch : mEnergyHatches) {
+            if (hatch.mTier > glassTier) {
+                errors.add(StructureErrors.glassTierNotEnough(hatch.mTier));
+                break;
+            }
+        }
+        checkHasAnyOutput(errors);
+        if (!errors.isEmpty()) return;
+        checkRitualConnection();
+        this.rotateSpikes();
+    }
+
+    @Override
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
+        return new MTEExtremeEntityCrusherGui(this);
     }
 
     @Override
@@ -667,113 +1001,36 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
             isInRitualMode ? StatCollector.translateToLocal("kubatech.infodata.eec.in_ritual_mode.yes")
                 : StatCollector.translateToLocal("kubatech.infodata.eec.in_ritual_mode.no"));
         if (isInRitualMode) info.add(
-            isRitualValid() ? StatCollector.translateToLocal("kubatech.infodata.eec.connected_to_ritual.yes")
+            mIsRitualValid ? StatCollector.translateToLocal("kubatech.infodata.eec.connected_to_ritual.yes")
                 : StatCollector.translateToLocal("kubatech.infodata.eec.connected_to_ritual.no"));
         else {
             info.add(
+                mCycleWeapons ? StatCollector.translateToLocal("kubatech.infodata.eec.cycle_weapons.yes")
+                    : StatCollector.translateToLocal("kubatech.infodata.eec.cycle_weapons.no"));
+
+            info.add(
+                mPreserveWeapon ? StatCollector.translateToLocal("kubatech.infodata.eec.weapon_preservation.yes")
+                    : StatCollector.translateToLocal("kubatech.infodata.eec.weapon_preservation.no"));
+
+            info.add(
                 weaponCache.isValid ? StatCollector.translateToLocal("kubatech.infodata.eec.inserted_weapon.yes")
                     : StatCollector.translateToLocal("kubatech.infodata.eec.inserted_weapon.no"));
+
+            double tAttackDamage = DIAMOND_SPIKES_DAMAGE;
+
             if (weaponCache.isValid) {
+                tAttackDamage += weaponCache.attackDamage;
                 info.add(
                     StatCollector
                         .translateToLocalFormatted("kubatech.infodata.eec.weapon.damage", weaponCache.attackDamage));
                 info.add(
                     StatCollector
                         .translateToLocalFormatted("kubatech.infodata.eec.weapon.looting_level", weaponCache.looting));
-                info.add(
-                    StatCollector.translateToLocalFormatted(
-                        "kubatech.infodata.eec.total_damage",
-                        DIAMOND_SPIKES_DAMAGE + weaponCache.attackDamage));
-            } else info.add(
-                StatCollector.translateToLocalFormatted("kubatech.infodata.eec.total_damage", DIAMOND_SPIKES_DAMAGE));
+            }
+
+            info.add(StatCollector.translateToLocalFormatted("kubatech.infodata.eec.total_damage", tAttackDamage));
         }
         return info.toArray(new String[0]);
-    }
-
-    @Override
-    protected void addConfigurationWidgets(DynamicPositionedRow configurationElements, UIBuildContext buildContext) {
-        configurationElements.setSynced(true);
-        configurationElements.widget(new CycleButtonWidget().setToggle(() -> isInRitualMode, v -> {
-            if (this.mMaxProgresstime > 0) {
-                GTUtility.sendChatToPlayer(buildContext.getPlayer(), "Can't change mode when running !");
-                return;
-            }
-
-            isInRitualMode = v;
-
-            if (!(buildContext.getPlayer() instanceof EntityPlayerMP)) return;
-            if (!isInRitualMode) {
-                GTUtility.sendChatToPlayer(buildContext.getPlayer(), "Ritual mode disabled");
-            } else {
-                GTUtility.sendChatToPlayer(buildContext.getPlayer(), "Ritual mode enabled");
-                if (connectToRitual())
-                    GTUtility.sendChatToPlayer(buildContext.getPlayer(), "Successfully connected to the ritual");
-                else GTUtility.sendChatToPlayer(buildContext.getPlayer(), "Can't connect to the ritual");
-            }
-        })
-            .setTextureGetter(toggleButtonTextureGetter)
-            .setVariableBackgroundGetter(toggleButtonBackgroundGetter)
-            .setSize(16, 16)
-            .addTooltip("Ritual mode")
-            .setTooltipShowUpDelay(TOOLTIP_DELAY));
-        configurationElements.widget(new CycleButtonWidget().setToggle(() -> mIsProducingInfernalDrops, v -> {
-            if (this.mMaxProgresstime > 0) {
-                GTUtility.sendChatToPlayer(buildContext.getPlayer(), "Can't change mode when running !");
-                return;
-            }
-
-            mIsProducingInfernalDrops = v;
-
-            if (!(buildContext.getPlayer() instanceof EntityPlayerMP)) return;
-            if (!mIsProducingInfernalDrops) GTUtility
-                .sendChatToPlayer(buildContext.getPlayer(), "Mobs will now be prevented from spawning infernal");
-            else GTUtility.sendChatToPlayer(buildContext.getPlayer(), "Mobs can spawn infernal now");
-        })
-            .setTextureGetter(toggleButtonTextureGetter)
-            .setVariableBackgroundGetter(toggleButtonBackgroundGetter)
-            .setSize(16, 16)
-            .addTooltip("Is allowed to spawn infernal mobs")
-            .addTooltip(new Text("Does not affect mobs that are always infernal !").color(Color.GRAY.normal))
-            .setTooltipShowUpDelay(TOOLTIP_DELAY));
-        configurationElements.widget(new CycleButtonWidget().setToggle(() -> voidAllDamagedAndEnchantedItems, v -> {
-            if (this.mMaxProgresstime > 0) {
-                GTUtility.sendChatToPlayer(buildContext.getPlayer(), "Can't change mode when running !");
-                return;
-            }
-
-            voidAllDamagedAndEnchantedItems = v;
-
-            if (!(buildContext.getPlayer() instanceof EntityPlayerMP)) return;
-            if (!voidAllDamagedAndEnchantedItems) GTUtility.sendChatToPlayer(buildContext.getPlayer(), "Void nothing");
-            else GTUtility.sendChatToPlayer(buildContext.getPlayer(), "Void all damaged and enchanted items");
-        })
-            .setTextureGetter(toggleButtonTextureGetter)
-            .setVariableBackgroundGetter(toggleButtonBackgroundGetter)
-            .setSize(16, 16)
-            .addTooltip("Void all damaged and enchanted items")
-            .addTooltip(
-                new Text("Does not affect infernal drops and some special drops like Sticky Sword!")
-                    .color(Color.GRAY.normal))
-            .setTooltipShowUpDelay(TOOLTIP_DELAY));
-    }
-
-    @Override
-    public void createInventorySlots() {
-        final SlotWidget spawnerSlot = new SlotWidget(inventoryHandler, 1);
-        spawnerSlot.setBackground(
-            GTUITextures.SLOT_DARK_GRAY,
-            UITexture.fullImage(Tags.MODID, "gui/slot/gray_spawner")
-                .withFixedSize(16, 16)
-                .withOffset(1, 1));
-        spawnerSlot.setFilter(stack -> stack.getItem() == poweredSpawnerItem);
-        slotWidgets.add(spawnerSlot);
-        final SlotWidget weaponSlot = new SlotWidget(weaponCache, 0);
-        weaponSlot.setBackground(
-            GTUITextures.SLOT_DARK_GRAY,
-            UITexture.fullImage(Tags.MODID, "gui/slot/gray_sword")
-                .withFixedSize(16, 16)
-                .withOffset(1, 1));
-        slotWidgets.add(weaponSlot);
     }
 
     @SideOnly(Side.CLIENT)
@@ -799,13 +1056,17 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
         if (mob != null) {
             tag.setString("eecMobType", mob);
         }
+        if (isInRitualMode) {
+            tag.setBoolean("isInRitualMode", true);
+            tag.setBoolean("isRitualValid", mIsRitualValid);
+        }
     }
 
     @Override
     public void getWailaBody(ItemStack itemStack, List<String> currentTip, IWailaDataAccessor accessor,
         IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currentTip, accessor, config);
-        NBTTagCompound tag = accessor.getNBTData();
+        final NBTTagCompound tag = accessor.getNBTData();
 
         if (tag.hasKey("eecMobType", Constants.NBT.TAG_STRING)) {
             String mob = tag.getString("eecMobType");
@@ -824,6 +1085,27 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
                     "kubatech.waila.eec.mob_type",
                     StatCollector.translateToLocal("kubatech.waila.eec.no_mob")));
         }
+
+        if (tag.hasKey("isInRitualMode") && tag.getBoolean("isInRitualMode")) {
+            if (tag.hasKey("isRitualValid") && tag.getBoolean("isRitualValid")) {
+                currentTip.add(
+                    EnumChatFormatting.GREEN
+                        + StatCollector.translateToLocal("kubatech.waila.eec.ritual_mode_connected"));
+            } else {
+                currentTip.add(
+                    EnumChatFormatting.RED + StatCollector.translateToLocal("kubatech.waila.eec.ritual_mode_error"));
+            }
+        }
+    }
+
+    @Override
+    public final boolean supportsBatchMode() {
+        return true;
+    }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
+        return false;
     }
 
     private static class EECFakePlayer extends FakePlayer {

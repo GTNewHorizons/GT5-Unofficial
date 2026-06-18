@@ -1,14 +1,13 @@
 package tectech.mechanics.pipe;
 
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.client.Minecraft;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
+import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
-import eu.usrv.yamcore.network.client.AbstractClientMessageHandler;
-import eu.usrv.yamcore.network.server.AbstractServerMessageHandler;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import io.netty.buffer.ByteBuf;
@@ -92,16 +91,18 @@ public class PipeActivityMessage implements IMessage {
         }
     }
 
-    public static class ClientHandler extends AbstractClientMessageHandler<PipeActivityData> {
+    public static class ClientHandler implements IMessageHandler<PipeActivityData, IMessage> {
 
         @Override
-        public IMessage handleClientMessage(EntityPlayer pPlayer, PipeActivityData pMessage, MessageContext pCtx) {
-            if (pPlayer.worldObj.provider.dimensionId == pMessage.mPosD) {
-                TileEntity te = pPlayer.worldObj.getTileEntity(pMessage.mPosX, pMessage.mPosY, pMessage.mPosZ);
+        public IMessage onMessage(PipeActivityData message, MessageContext ctx) {
+            var world = Minecraft.getMinecraft().theWorld;
+
+            if (world.provider.dimensionId == message.mPosD) {
+                TileEntity te = world.getTileEntity(message.mPosX, message.mPosY, message.mPosZ);
                 if (te instanceof IGregTechTileEntity gregTile) {
                     IMetaTileEntity meta = gregTile.getMetaTileEntity();
                     if (meta instanceof IActivePipe activePipe) {
-                        activePipe.setActive(pMessage.mActive == 1);
+                        activePipe.setActive(message.mActive == 1);
                     }
                 }
             }
@@ -109,18 +110,18 @@ public class PipeActivityMessage implements IMessage {
         }
     }
 
-    public static class ServerHandler extends AbstractServerMessageHandler<PipeActivityQuery> {
+    public static class ServerHandler implements IMessageHandler<PipeActivityQuery, IMessage> {
 
         @Override
-        public IMessage handleServerMessage(EntityPlayer pPlayer, PipeActivityQuery pMessage, MessageContext pCtx) {
-            World world = DimensionManager.getWorld(pMessage.mPosD);
+        public IMessage onMessage(PipeActivityQuery message, MessageContext ctx) {
+            World world = DimensionManager.getWorld(message.mPosD);
             if (world != null) {
-                TileEntity te = world.getTileEntity(pMessage.mPosX, pMessage.mPosY, pMessage.mPosZ);
+                TileEntity te = world.getTileEntity(message.mPosX, message.mPosY, message.mPosZ);
                 if (te instanceof IGregTechTileEntity gregTile) {
                     IMetaTileEntity meta = gregTile.getMetaTileEntity();
                     if (meta instanceof IActivePipe activePipe) {
-                        pMessage.mActive = activePipe.getActive() ? 1 : 0;
-                        return new PipeActivityData(pMessage);
+                        message.mActive = activePipe.getActive() ? 1 : 0;
+                        return new PipeActivityData(message);
                     }
                 }
             }

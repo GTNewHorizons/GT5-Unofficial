@@ -1,11 +1,11 @@
 package gregtech.common.tileentities.machines.multi.purification;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAnyMeta;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
-import static gregtech.api.enums.GTValues.AuthorNotAPenguin;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR;
@@ -45,18 +45,17 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.recipe.RecipeMap;
-import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTModHandler;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTStructureUtility;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 
 public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTEPurificationUnitPlasmaHeater>
-    implements ISurvivalConstructable {
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     private static final int CASING_INDEX_HEATER = getTextureIndex(GregTechAPI.sBlockCasings9, 11);
     private static final int CASING_INDEX_TOWER = getTextureIndex(GregTechAPI.sBlockCasings9, 5);
@@ -149,7 +148,7 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
                 lazy(
                     t -> GTStructureUtility.<MTEPurificationUnitPlasmaHeater>buildHatchAdder()
                         .atLeastList(t.getAllowedHatches())
-                        .dot(1)
+                        .hint(1)
                         .casingIndex(CASING_INDEX_HEATER)
                         .build()),
                 onElementPass(t -> t.casingCount++, ofBlock(GregTechAPI.sBlockCasings9, 11))))
@@ -167,29 +166,17 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
             }
         }))
         // Superconductor Base ZPM frame box
-        .addElement('G', ofFrame(Materials.Tetranaquadahdiindiumhexaplatiumosminid))
+        .addElement('G', ofFrame(Materials.SuperconductorZPMBase))
         // Coolant input hatch
         .addElement(
             'K',
-            lazy(
-                t -> GTStructureUtility.<MTEPurificationUnitPlasmaHeater>buildHatchAdder()
-                    .hatchClass(MTEHatchInput.class)
-                    .dot(2)
-                    .adder(MTEPurificationUnitPlasmaHeater::addCoolantHatchToMachineList)
-                    .cacheHint(() -> "Input Hatch (Coolant)")
-                    .casingIndex(CASING_INDEX_TOWER)
-                    .buildAndChain(ofBlock(GregTechAPI.sBlockCasings9, 5))))
+            InputHatch.withAdder(MTEPurificationUnitPlasmaHeater::addCoolantHatchToMachineList)
+                .newAnyWithDescription(CASING_INDEX_TOWER, 2, () -> "GT5U.tooltip.structure.input_hatch_coolant"))
         // Plasma input hatch
         .addElement(
             'P',
-            lazy(
-                t -> GTStructureUtility.<MTEPurificationUnitPlasmaHeater>buildHatchAdder()
-                    .hatchClass(MTEHatchInput.class)
-                    .dot(3)
-                    .adder(MTEPurificationUnitPlasmaHeater::addPlasmaHatchToMachineList)
-                    .cacheHint(() -> "Input Hatch (Plasma)")
-                    .casingIndex(CASING_INDEX_HEATER)
-                    .buildAndChain(ofBlock(GregTechAPI.sBlockCasings9, 11))))
+            InputHatch.withAdder(MTEPurificationUnitPlasmaHeater::addPlasmaHatchToMachineList)
+                .newAnyWithDescription(CASING_INDEX_HEATER, 3, () -> "GT5U.tooltip.structure.input_hatch_plasma"))
         .build();
 
     private List<IHatchElement<? super MTEPurificationUnitPlasmaHeater>> getAllowedHatches() {
@@ -212,29 +199,20 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
     @Override
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
         int colorIndex, boolean active, boolean redstoneLevel) {
-        if (side == facing) {
-            if (active) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_HEATER),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_HEATER),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-        }
-        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_HEATER) };
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            facing,
+            active,
+            OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR,
+            OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_GLOW,
+            OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE,
+            OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE_GLOW);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_HEATER);
     }
 
     @Override
@@ -250,7 +228,7 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
-        return survivialBuildPiece(
+        return survivalBuildPiece(
             STRUCTURE_PIECE_MAIN,
             stackSize,
             STRUCTURE_X_OFFSET,
@@ -280,9 +258,9 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
                     + EnumChatFormatting.BOLD
                     + "Water Tier: "
                     + EnumChatFormatting.WHITE
-                    + GTUtility.formatNumbers(getWaterTier())
+                    + formatNumber(getWaterTier())
                     + EnumChatFormatting.RESET)
-            .addInfo("Must be linked to a Purification Plant using a data stick to work.")
+            .addInfo("Must be linked to a Purification Plant using a data stick to work")
             .addSeparator()
             .addInfo(
                 "Complete heating cycles by first heating the water to " + EnumChatFormatting.RED
@@ -290,26 +268,23 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
                     + "K"
                     + EnumChatFormatting.GRAY
                     + ",")
-            .addInfo(
-                "and then cooling it back down to " + EnumChatFormatting.RED + "0K" + EnumChatFormatting.GRAY + ".")
+            .addInfo("and then cooling it back down to " + EnumChatFormatting.RED + "0K")
             .addInfo(
                 "Initial temperature is reset to " + EnumChatFormatting.RED
                     + "0K"
                     + EnumChatFormatting.GRAY
-                    + " on recipe start.")
+                    + " on recipe start")
             .addInfo(
                 // TODO: Refer to heating cycles in another way to avoid confusion
                 "Each completed heating cycle boosts success chance by " + EnumChatFormatting.RED
                     + SUCCESS_PER_CYCLE
-                    + "%"
-                    + EnumChatFormatting.GRAY
-                    + ".")
+                    + "%")
             .addInfo(
                 "If the temperature ever reaches " + EnumChatFormatting.RED
                     + MAX_TEMP
                     + "K"
                     + EnumChatFormatting.GRAY
-                    + " the recipe will fail and output steam.")
+                    + " the recipe will fail and output steam")
             .addSeparator()
             .addInfo(
                 "Consumes up to " + EnumChatFormatting.RED
@@ -325,9 +300,7 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
                     + "L/s "
                     + EnumChatFormatting.WHITE
                     + coolantMaterial.getFluid(1)
-                        .getLocalizedName()
-                    + EnumChatFormatting.GRAY
-                    + ".")
+                        .getLocalizedName())
             .addInfo(
                 EnumChatFormatting.RED + "Raises "
                     + EnumChatFormatting.GRAY
@@ -336,7 +309,7 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
                     + PLASMA_TEMP_PER_LITER
                     + "K"
                     + EnumChatFormatting.GRAY
-                    + " per liter of plasma consumed.")
+                    + " per liter of plasma consumed")
             .addInfo(
                 EnumChatFormatting.RED + "Lowers "
                     + EnumChatFormatting.GRAY
@@ -345,7 +318,7 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
                     + -COOLANT_TEMP_PER_LITER
                     + "K"
                     + EnumChatFormatting.GRAY
-                    + " per liter of coolant consumed.")
+                    + " per liter of coolant consumed")
             .addSeparator()
             .addInfo(
                 EnumChatFormatting.AQUA + ""
@@ -362,9 +335,9 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
             .addInfo(
                 EnumChatFormatting.AQUA + ""
                     + EnumChatFormatting.ITALIC
-                    + "supercritical while evaporating any remaining contaminants, ready for filtration.")
+                    + "supercritical while evaporating any remaining contaminants, ready for filtration")
             .beginStructureBlock(23, 15, 15, false)
-            .addController("Front center")
+            .addController("Front bottom center")
             .addCasingInfoExactlyColored(
                 "Reinforced Sterile Water Plant Casing",
                 EnumChatFormatting.GRAY,
@@ -412,7 +385,7 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
                 StatCollector.translateToLocal("GT5U.tooltip.structure.input_hatch_plasma"),
                 EnumChatFormatting.GOLD + "1",
                 3)
-            .toolTipFinisher(AuthorNotAPenguin);
+            .toolTipFinisher();
         return tt;
     }
 
@@ -450,7 +423,7 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
             FluidStack insertedWater = currentRecipe.mFluidInputs[0];
             // Multiply by 60 since that's the water:steam ratio in GTNH
             long steamAmount = insertedWater.amount * 60L;
-            addOutput(GTModHandler.getSteam(steamAmount));
+            addOutputPartial(Materials.Steam.getGas(steamAmount));
         }
     }
 
@@ -555,11 +528,6 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
     }
 
     @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
-    }
-
-    @Override
     public int getWaterTier() {
         return 5;
     }
@@ -569,13 +537,18 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
         return TierEU.RECIPE_UV;
     }
 
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    @Override
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         casingCount = 0;
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, STRUCTURE_X_OFFSET, STRUCTURE_Y_OFFSET, STRUCTURE_Z_OFFSET)) return false;
-        if (casingCount < MIN_CASING) return false;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, STRUCTURE_X_OFFSET, STRUCTURE_Y_OFFSET, STRUCTURE_Z_OFFSET, errors))
+            return;
+        checkCasingMin(errors, casingCount, MIN_CASING);
+        checkHasInputHatch(errors);
+        checkHasOutputHatch(errors);
         // Do not form without positioned hatches
-        if (plasmaInputHatch == null || coolantInputHatch == null) return false;
-        return super.checkMachine(aBaseMetaTileEntity, aStack);
+        if (plasmaInputHatch == null || coolantInputHatch == null) {
+            throw new IllegalArgumentException("This should not happen because structure def include mandatory hatch");
+        }
     }
 
     @Override

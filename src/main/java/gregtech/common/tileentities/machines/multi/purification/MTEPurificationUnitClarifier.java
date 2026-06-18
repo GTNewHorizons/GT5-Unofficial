@@ -1,9 +1,10 @@
 package gregtech.common.tileentities.machines.multi.purification;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.isAir;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
-import static gregtech.api.enums.GTValues.AuthorNotAPenguin;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.OutputBus;
@@ -15,7 +16,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_
 import static gregtech.api.util.GTStructureUtility.ofAnyWater;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -41,20 +41,19 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
-import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTStructureUtility;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 
 public class MTEPurificationUnitClarifier extends MTEPurificationUnitBase<MTEPurificationUnitClarifier>
-    implements ISurvivalConstructable {
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
-    private static final String STRUCTURE_PIECE_MAIN_SURVIVAL = "main_survival";
 
     private static final int STRUCTURE_X_OFFSET = 5;
     private static final int STRUCTURE_Y_OFFSET = 2;
@@ -62,6 +61,8 @@ public class MTEPurificationUnitClarifier extends MTEPurificationUnitBase<MTEPur
 
     // Chance that the filter is damaged every cycle.
     public static final float FILTER_DAMAGE_RATE = 20.0f;
+
+    private boolean needsWaterFill = false;
 
     private static final int CASING_TEXTURE_INDEX = getTextureIndex(GregTechAPI.sBlockCasings9, 5);
 
@@ -85,14 +86,6 @@ public class MTEPurificationUnitClarifier extends MTEPurificationUnitBase<MTEPur
     private static final IStructureDefinition<MTEPurificationUnitClarifier> STRUCTURE_DEFINITION = StructureDefinition
         .<MTEPurificationUnitClarifier>builder()
         .addShape(STRUCTURE_PIECE_MAIN, structure)
-        .addShape(
-            STRUCTURE_PIECE_MAIN_SURVIVAL,
-            Arrays.stream(structure)
-                .map(
-                    sa -> Arrays.stream(sa)
-                        .map(s -> s.replaceAll("W", " "))
-                        .toArray(String[]::new))
-                .toArray(String[][]::new))
         // Hatches
         .addElement(
             'H',
@@ -101,7 +94,7 @@ public class MTEPurificationUnitClarifier extends MTEPurificationUnitBase<MTEPur
                     t -> GTStructureUtility.<MTEPurificationUnitClarifier>buildHatchAdder()
                         .atLeastList(t.getAllowedHatches())
                         .casingIndex(CASING_TEXTURE_INDEX)
-                        .dot(1)
+                        .hint(1)
                         .build()),
                 // Reinforced Sterile Water Plant Casing
                 ofBlock(GregTechAPI.sBlockCasings9, 5)))
@@ -111,7 +104,7 @@ public class MTEPurificationUnitClarifier extends MTEPurificationUnitBase<MTEPur
         .addElement('B', ofBlock(GregTechAPI.sBlockCasings8, 1))
         .addElement('C', ofFrame(Materials.Iridium))
         .addElement('D', ofFrame(Materials.DamascusSteel))
-        .addElement('W', ofAnyWater(false))
+        .addElement('W', ofChain(ofAnyWater(false), isAir()))
         // Filter machine casing
         .addElement('F', ofBlock(GregTechAPI.sBlockCasings3, 11))
         .build();
@@ -181,17 +174,17 @@ public class MTEPurificationUnitClarifier extends MTEPurificationUnitBase<MTEPur
                     + EnumChatFormatting.BOLD
                     + "Water Tier: "
                     + EnumChatFormatting.WHITE
-                    + GTUtility.formatNumbers(getWaterTier())
+                    + formatNumber(getWaterTier())
                     + EnumChatFormatting.RESET)
-            .addInfo("Must be linked to a Purification Plant using a data stick to work.")
+            .addInfo("Must be linked to a Purification Plant using a data stick to work")
             .addSeparator()
-            .addInfo("Requires a filter made of Activated Carbon to work.")
+            .addInfo("Requires a filter made of Activated Carbon to work")
             .addInfo(
                 "Every cycle, has a " + EnumChatFormatting.RED
-                    + GTUtility.formatNumbers(FILTER_DAMAGE_RATE)
+                    + formatNumber(FILTER_DAMAGE_RATE)
                     + "%"
                     + EnumChatFormatting.GRAY
-                    + " chance to destroy the filter.")
+                    + " chance to destroy the filter")
             .addSeparator()
             .addInfo(
                 EnumChatFormatting.AQUA + ""
@@ -237,8 +230,7 @@ public class MTEPurificationUnitClarifier extends MTEPurificationUnitBase<MTEPur
             .addOutputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
             .addInputHatch(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
             .addOutputHatch(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
-            .addStructureInfo("Requires water to be placed in the structure.")
-            .toolTipFinisher(AuthorNotAPenguin);
+            .toolTipFinisher();
         return tt;
     }
 
@@ -255,22 +247,17 @@ public class MTEPurificationUnitClarifier extends MTEPurificationUnitBase<MTEPur
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
-        int built = survivialBuildPiece(
-            STRUCTURE_PIECE_MAIN_SURVIVAL,
+        if (mMachine) return -1;
+        return survivalBuildPiece(
+            STRUCTURE_PIECE_MAIN,
             stackSize,
             STRUCTURE_X_OFFSET,
             STRUCTURE_Y_OFFSET,
             STRUCTURE_Z_OFFSET,
             elementBudget,
             env,
+            false,
             true);
-        if (built == -1) {
-            GTUtility.sendChatToPlayer(
-                env.getActor(),
-                EnumChatFormatting.GREEN + "Auto placing done ! Now go place the water yourself !");
-            return 0;
-        }
-        return built;
     }
 
     @Override
@@ -285,39 +272,58 @@ public class MTEPurificationUnitClarifier extends MTEPurificationUnitBase<MTEPur
     @Override
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection,
         ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
-        if (sideDirection == facingDirection) {
-            if (active) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_TEXTURE_INDEX),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_TEXTURE_INDEX),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-        }
-        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_TEXTURE_INDEX) };
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            sideDirection,
+            facingDirection,
+            active,
+            OVERLAY_FRONT_DISTILLATION_TOWER,
+            OVERLAY_FRONT_DISTILLATION_TOWER_GLOW,
+            OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE,
+            OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW);
     }
 
     @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
+    public ITexture getCasingTexture() {
+        return Textures.BlockIcons.getCasingTextureForId(CASING_TEXTURE_INDEX);
     }
 
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, STRUCTURE_X_OFFSET, STRUCTURE_Y_OFFSET, STRUCTURE_Z_OFFSET)) return false;
-        return super.checkMachine(aBaseMetaTileEntity, aStack);
+    @Override
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
+        needsWaterFill = false;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, STRUCTURE_X_OFFSET, STRUCTURE_Y_OFFSET, STRUCTURE_Z_OFFSET, errors)) {
+            needsWaterFill = GTStructureUtility.hasWaterAtStructurePosition(
+                aBaseMetaTileEntity,
+                getExtendedFacing(),
+                structure,
+                STRUCTURE_X_OFFSET,
+                STRUCTURE_Y_OFFSET,
+                STRUCTURE_Z_OFFSET,
+                'W');
+            return;
+        }
+        checkHasInputHatch(errors);
+        checkHasOutputHatch(errors);
+        checkHasInputBus(errors);
+        if (!errors.isEmpty()) return;
+        needsWaterFill = true;
+    }
+
+    @Override
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        super.onPostTick(aBaseMetaTileEntity, aTick);
+        if (aBaseMetaTileEntity.isServerSide() && needsWaterFill && aTick % 20 == 0) {
+            if (GTStructureUtility.fillStructureWithWater(
+                aBaseMetaTileEntity,
+                getExtendedFacing(),
+                structure,
+                STRUCTURE_X_OFFSET,
+                STRUCTURE_Y_OFFSET,
+                STRUCTURE_Z_OFFSET,
+                'W')) {
+                needsWaterFill = false;
+            }
+        }
     }
 
     @Override

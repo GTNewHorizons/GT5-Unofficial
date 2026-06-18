@@ -1,32 +1,27 @@
 package gregtech.common.tileentities.machines.multi.purification;
 
-import static gregtech.common.modularui2.util.CommonGuiComponents.gridTemplate1by1;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.widgets.ItemSlot;
-import com.cleanroommc.modularui.widgets.slot.ModularSlot;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
 
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
-import gregtech.api.modularui2.GTGuis;
 import gregtech.client.GTTooltipHandler;
+import gregtech.common.gui.modularui.hatch.MTEHatchLensHousingGui;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchLensHousing extends MTEHatchInputBus {
 
     public MTEHatchLensHousing(int id, String name, String nameRegional) {
-        super(
-            id,
-            name,
-            nameRegional,
-            GTTooltipHandler.Tier.UV.ordinal(),
-            1,
-            new String[] { "Holds a lens for UV laser focusing." });
+        super(id, name, nameRegional, GTTooltipHandler.Tier.UV.ordinal(), 1, null);
     }
 
     public MTEHatchLensHousing(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -54,22 +49,17 @@ public class MTEHatchLensHousing extends MTEHatchInputBus {
     }
 
     @Override
-    protected boolean useMui2() {
-        return true;
+    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTEHatchLensHousingGui(this).build(data, syncManager, uiSettings);
     }
 
     @Override
-    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager) {
-        syncManager.registerSlotGroup("item_inv", 1);
-        return GTGuis.mteTemplatePanelBuilder(this, data, syncManager)
-            .build()
-            .child(
-                gridTemplate1by1(
-                    index -> new ItemSlot().slot(new ModularSlot(inventoryHandler, index).slotGroup("item_inv"))));
+    public String[] getDescription() {
+        return new String[] { StatCollector.translateToLocal("gt.blockmachines.input_bus_lens.desc") };
     }
 
     @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        getBaseMetaTileEntity().add1by1Slot(builder);
+    public boolean isItemValidForSlot(int index, ItemStack itemStack) {
+        return OrePrefixes.lens.contains(itemStack) && super.isItemValidForSlot(index, itemStack);
     }
 }

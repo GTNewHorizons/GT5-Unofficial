@@ -1,19 +1,34 @@
 package gregtech.api.metatileentity.implementations;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import appeng.api.crafting.ICraftingIconProvider;
+import gregtech.api.enums.Dyes;
+import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.util.GTSplit;
+import gregtech.api.util.GTUtility;
+import gregtech.api.util.tooltip.TooltipHelper;
+import gregtech.common.tileentities.machines.IHatchWatcher;
 
 /**
  * Handles texture changes internally. No special calls are necessary other than updateTexture in add***ToMachineList.
  */
-public abstract class MTEHatch extends MTEBasicTank implements ICraftingIconProvider {
+public abstract class MTEHatch extends MTEBasicTank implements ICasingTextureProvider {
 
     public enum ConnectionType {
         CABLE,
@@ -21,16 +36,16 @@ public abstract class MTEHatch extends MTEBasicTank implements ICraftingIconProv
         LASER
     }
 
-    /**
-     * Uses new texture changing methods to avoid limitations of byte as texture index...
-     */
-    @Deprecated
-    public byte mMachineBlock = 0;
-
-    private byte mTexturePage = 0;
-    private byte actualTexture = 0;
+    private int texturePage = 0;
+    private int textureIndex = 0;
 
     private ItemStack ae2CraftingIcon;
+
+    /**
+     * Controllers watching this hatch for new ingredients (see {@link ISmartInputHatch}). When this hatch's contents
+     * change we notify them so they can run an immediate recipe check instead of waiting for their periodic poll.
+     */
+    private final List<IHatchWatcher> watchers = new ArrayList<>();
 
     public MTEHatch(int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount, String aDescription,
         ITexture... aTextures) {
@@ -47,7 +62,55 @@ public abstract class MTEHatch extends MTEBasicTank implements ICraftingIconProv
     }
 
     public static int getSlots(int aTier) {
-        return aTier < 1 ? 1 : aTier == 1 ? 4 : aTier == 2 ? 9 : 16;
+        return (aTier + 1) * (aTier + 1);
+    }
+
+    /**
+     * Registers a controller to be notified when this hatch gains new ingredients. Input hatches/busses implement
+     * {@link ISmartInputHatch} so the controller registers itself here during structure assembly; the inherited
+     * implementation satisfies that interface.
+     */
+    public void addWatcher(IHatchWatcher watcher) {
+        watchers.add(watcher);
+    }
+
+    public void removeWatcher(IHatchWatcher watcher) {
+        watchers.remove(watcher);
+    }
+
+    /** Asks every registered controller to run a recipe check on its next tick. */
+    protected void notifyWatchers() {
+        for (int i = 0; i < watchers.size(); i++) {
+            watchers.get(i)
+                .scheduleRecipeCheckImmediate();
+        }
+    }
+
+    /**
+     * Notifies watchers when this hatch's inventory or tank changed this tick. Relies on
+     * {@link IGregTechTileEntity#hasInventoryBeenModified()}, which every relevant insertion path sets (item slots via
+     * {@code setInventorySlotContents}/{@code decrStackSize}, the GUI/AE handler via
+     * {@link MetaTileEntity#onContentsChanged(int)}, and fluids via {@code fill}). Consuming ingredients also sets the
+     * flag, but that only ever costs a single redundant idle check at the tail of a run. Input hatches/busses should
+     * call this from {@code onPostTick}.
+     */
+    protected void detectInventoryChange() {
+        IGregTechTileEntity base = getBaseMetaTileEntity();
+        if (base != null && base.hasInventoryBeenModified()) {
+            notifyWatchers();
+        }
+    }
+
+    private int getOffsetTier() {
+        return mTier < 4 ? 0 : mTier - 1;
+    }
+
+    public int getOffsetX() {
+        return getOffsetTier() * 2;
+    }
+
+    public int getOffsetY() {
+        return getOffsetTier() * 16;
     }
 
     @Override
@@ -62,31 +125,21 @@ public abstract class MTEHatch extends MTEBasicTank implements ICraftingIconProv
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
-        // just to be sure, from my testing the 8th bit cannot be set clientside
-        int texturePointer = (byte) (actualTexture & 0x7F);
-        // Shift seven since one page is 128 textures!
-        int textureIndex = texturePointer | (mTexturePage << 7);
+
         try {
+            ITexture background = getCasingTexture();
+
+            if (background == null) {
+                background = Textures.BlockIcons.MACHINE_CASINGS[mTier][colorIndex + 1];
+            }
+
             if (side != aFacing) {
-                if (textureIndex > 0) {
-                    return new ITexture[] { Textures.BlockIcons.casingTexturePages[mTexturePage][texturePointer] };
-                } else {
-                    return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[mTier][colorIndex + 1] };
-                }
+                return new ITexture[] { background };
             } else {
-                if (textureIndex > 0) {
-                    if (aActive) {
-                        return getTexturesActive(Textures.BlockIcons.casingTexturePages[mTexturePage][texturePointer]);
-                    } else {
-                        return getTexturesInactive(
-                            Textures.BlockIcons.casingTexturePages[mTexturePage][texturePointer]);
-                    }
+                if (aActive) {
+                    return getTexturesActive(background);
                 } else {
-                    if (aActive) {
-                        return getTexturesActive(Textures.BlockIcons.MACHINE_CASINGS[mTier][colorIndex + 1]);
-                    } else {
-                        return getTexturesInactive(Textures.BlockIcons.MACHINE_CASINGS[mTier][colorIndex + 1]);
-                    }
+                    return getTexturesInactive(background);
                 }
             }
         } catch (NullPointerException npe) {
@@ -95,22 +148,27 @@ public abstract class MTEHatch extends MTEBasicTank implements ICraftingIconProv
     }
 
     @Override
+    public ITexture getCasingTexture() {
+        if (texturePage > 0 || textureIndex > 0) {
+            return Textures.BlockIcons.casingTexturePages[texturePage][textureIndex];
+        }
+        return null;
+    }
+
+    @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        aNBT.setByte("mMachineBlock", actualTexture);
-        aNBT.setByte("mTexturePage", mTexturePage);
+        aNBT.setInteger("texturePage", texturePage);
+        aNBT.setInteger("textureIndex", textureIndex);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        actualTexture = aNBT.getByte("mMachineBlock");
-        mTexturePage = aNBT.getByte("mTexturePage");
+        texturePage = aNBT.getInteger("texturePage");
+        textureIndex = aNBT.getInteger("textureIndex");
 
-        if (mTexturePage != 0 && GTValues.GT.isServerSide()) actualTexture |= 0x80; // <- lets just hope no one needs
-                                                                                    // the correct value for that on
-                                                                                    // server
-        mMachineBlock = actualTexture;
+        updateTexture(texturePage << 7 | textureIndex);
     }
 
     /**
@@ -119,8 +177,35 @@ public abstract class MTEHatch extends MTEBasicTank implements ICraftingIconProv
      * @param id (page<<7)+index of the texture
      */
     public final void updateTexture(int id) {
-        onValueUpdate((byte) id);
-        onTexturePageUpdate((byte) (id >> 7));
+        int newTexturePage = id >> 7;
+        int newTextureIndex = id & 127;
+        if (newTexturePage == texturePage && newTextureIndex == textureIndex) return;
+        texturePage = newTexturePage;
+        textureIndex = newTextureIndex;
+
+        IGregTechTileEntity base = getBaseMetaTileEntity();
+
+        if (base.isServerSide()) {
+            base.issueTileUpdate();
+        } else {
+            base.issueTextureUpdate();
+        }
+    }
+
+    @Override
+    public NBTTagCompound getDescriptionData() {
+        NBTTagCompound data = new NBTTagCompound();
+
+        data.setInteger("texturePage", texturePage);
+        data.setInteger("textureIndex", textureIndex);
+
+        return data;
+    }
+
+    @Override
+    public void onDescriptionPacket(NBTTagCompound data) {
+        texturePage = data.getInteger("texturePage");
+        textureIndex = data.getInteger("textureIndex");
     }
 
     /**
@@ -137,20 +222,13 @@ public abstract class MTEHatch extends MTEBasicTank implements ICraftingIconProv
     }
 
     /**
-     * Some multiblocks restrict hatches by tier. This method allows hatches to specify custom tier used for
-     * structure check, while keeping {@link #mTier} for other uses.
+     * Some multiblocks restrict hatches by tier. This method allows hatches to specify custom tier used for structure
+     * check, while keeping {@link #mTier} for other uses.
      *
      * @return Tier used for multiblock structure
      */
     public byte getTierForStructure() {
         return mTier;
-    }
-
-    @Override
-    public final void onValueUpdate(byte aValue) {
-        actualTexture = (byte) (aValue & 0x7F);
-        mMachineBlock = actualTexture;
-        mTexturePage = 0;
     }
 
     /**
@@ -169,33 +247,6 @@ public abstract class MTEHatch extends MTEBasicTank implements ICraftingIconProv
      */
     public ConnectionType getConnectionType() {
         return ConnectionType.CABLE;
-    }
-
-    @Override
-    public final byte getUpdateData() {
-        return (byte) (actualTexture & 0x7F);
-    }
-
-    public final void onTexturePageUpdate(byte aValue) {
-        mTexturePage = (byte) (aValue & 0x7F);
-        if (mTexturePage != 0 && getBaseMetaTileEntity().isServerSide()) { // just to be sure
-            mMachineBlock |= 0x80; // <- lets just hope no one needs the correct value for that on server
-            actualTexture = mMachineBlock;
-        }
-        // set last bit to allow working of the page reset-er to 0 in rare case when texture id is the same but page
-        // changes to 0
-    }
-
-    public final byte getTexturePage() {
-        return (byte) (mTexturePage & 0x7F);
-    }
-
-    public final byte getmTexturePage() {
-        return mTexturePage;
-    }
-
-    public final byte getActualTexture() {
-        return actualTexture;
     }
 
     @Override
@@ -218,23 +269,55 @@ public abstract class MTEHatch extends MTEBasicTank implements ICraftingIconProv
         return false;
     }
 
-    @Override
-    public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) { // in that method since it is usually
-                                                                                 // not overriden, especially for
-                                                                                 // hatches.
-        if (actualTexture != mMachineBlock) { // revert to page 0 on edition of the field - old code way
-            actualTexture = (byte) (mMachineBlock & 0x7F);
-            mMachineBlock = actualTexture; // clear last bit in mMachineBlock since now we are at page 0 after the
-                                           // direct field
-            // change
-            mTexturePage = 0; // assuming old code only supports page 0
-        }
-        super.onPreTick(aBaseMetaTileEntity, aTick);
-    }
-
-    // To change to other page -> use the setter method -> updateTexture
-
     public int getCircuitSlot() {
         return -1;
+    }
+
+    public static String[] formatEnergyInfoDesc(boolean isDynamo, int tier, int amp, String key, Object... formatted) {
+        return MTEHatch.formatEnergyInfoDesc(null, null, isDynamo, tier, amp, key, formatted);
+    }
+
+    public static String[] formatEnergyInfoDesc(String suffixTooltip, boolean isDynamo, int tier, int amp, String key,
+        Object... formatted) {
+        return MTEHatch.formatEnergyInfoDesc(null, suffixTooltip, isDynamo, tier, amp, key, formatted);
+    }
+
+    public static String[] formatEnergyInfoDesc(String[] author, String suffixTooltip, boolean isDynamo, int tier,
+        int amp, String key, Object... formatted) {
+        final List<String> additionalTooltips = new LinkedList<>();
+        if (suffixTooltip != null) {
+            Collections.addAll(additionalTooltips, suffixTooltip);
+        }
+        additionalTooltips.add(
+            GTUtility.translate(
+                "gt.tileentity.throughput",
+                EnumChatFormatting.YELLOW + formatNumber(amp * GTValues.V[tier]) + EnumChatFormatting.RESET + " EU/t"));
+        additionalTooltips.add(
+            GTUtility.translate(
+                isDynamo ? "gt.tileentity.eup_out" : "gt.tileentity.eup_in",
+                TooltipHelper.voltageText(GTValues.V[tier])));
+        additionalTooltips.add(GTUtility.translate("gt.tileentity.amperage", TooltipHelper.ampText(amp)));
+        if (author != null) {
+            additionalTooltips.add(GTAuthors.buildAuthorsWithFormat(author));
+        }
+        final String[] suffixs = additionalTooltips.toArray(new String[0]);
+        if (formatted.length == 0) {
+            return GTSplit.splitLocalizedWithSuffix(key, suffixs);
+        }
+        return GTSplit.splitLocalizedFormattedWithSuffix(key, suffixs, formatted);
+    }
+
+    public static void addColorChannelInfo(List<String> tooltip, byte color) {
+        if (color >= 0 && color < 16) {
+            tooltip.add(
+                StatCollector.translateToLocalFormatted(
+                    "GT5U.waila.hatch.color_channel",
+                    Dyes.VALUES[color].formatting + Dyes.VALUES[color].getLocalizedDyeName()));
+        }
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return false;
     }
 }

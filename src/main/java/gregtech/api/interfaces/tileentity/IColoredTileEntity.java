@@ -1,9 +1,10 @@
 package gregtech.api.interfaces.tileentity;
 
 import gregtech.api.enums.Dyes;
-import gregtech.api.util.GTUtil;
 
 public interface IColoredTileEntity {
+
+    int UNCOLOURED = -1;
 
     /**
      * @return 0 - 15 are Colors, while -1 means uncolored
@@ -21,6 +22,7 @@ public interface IColoredTileEntity {
      * @return Actual color shown on GUI
      */
     default int getGUIColorization() {
-        return GTUtil.getRGBInt((getColorization() != -1 ? Dyes.get(getColorization()) : Dyes.MACHINE_METAL).getRGBA());
+        return Dyes.getOrDefault(getColorization(), Dyes.GUI_METAL)
+            .toInt();
     }
 }

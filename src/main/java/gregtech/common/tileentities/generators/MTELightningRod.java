@@ -16,11 +16,18 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTUtility;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTELightningRod extends MTETieredMachineBlock {
 
     public MTELightningRod(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, 0, "Generates EU From Lightning Bolts");
+        super(aID, aName, aNameRegional, aTier, 0, (String) null);
+    }
+
+    @Override
+    public String[] getDescription() {
+        return GTUtility.translateMultiline("gt.blockmachines.basicgenerator.lightningrod.tooltip");
     }
 
     public MTELightningRod(String aName, int aTier, int aInvSlotCount, String[] aDescription,
@@ -33,7 +40,7 @@ public class MTELightningRod extends MTETieredMachineBlock {
         ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
         if (sideDirection != ForgeDirection.UP) {
             return new ITexture[] { BlockIcons.MACHINE_CASINGS[mTier][colorIndex + 1],
-                BlockIcons.OVERLAYS_ENERGY_OUT_POWER[mTier] };
+                BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_64A[mTier + 1] };
         }
         if (!active) return new ITexture[] { BlockIcons.MACHINE_CASINGS[mTier][colorIndex + 1],
             TextureFactory.of(BlockIcons.MACHINE_CASING_FUSION_GLASS) };
@@ -129,11 +136,6 @@ public class MTELightningRod extends MTETieredMachineBlock {
     @Override
     public boolean isEnetOutput() {
         return true;
-    }
-
-    @Override
-    public boolean isEnetInput() {
-        return false;
     }
 
     @Override

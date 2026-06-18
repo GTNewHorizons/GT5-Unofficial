@@ -7,6 +7,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_SOLAR_FACTORY
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_SOLAR_FACTORY_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_SOLAR_FACTORY_INACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_SOLAR_FACTORY_INACTIVE_GLOW;
+import static gregtech.api.structure.error.StructureErrorRegistry.UNKNOWN_TIER;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
@@ -17,10 +18,13 @@ import static net.minecraft.util.EnumChatFormatting.BOLD;
 import static net.minecraft.util.EnumChatFormatting.GREEN;
 import static net.minecraft.util.EnumChatFormatting.WHITE;
 
+import java.util.List;
+
 import javax.annotation.Nonnull;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -28,7 +32,6 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 
 import com.google.common.collect.ImmutableList;
-import com.gtnewhorizon.structurelib.alignment.constructable.IConstructable;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -36,7 +39,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import goodgenerator.loader.Loaders;
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.GTValues;
+import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
@@ -53,14 +56,18 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.recipe.metadata.SolarFactoryRecipeDataKey;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.ParallelHelper;
 import gregtech.api.util.recipe.SolarFactoryRecipeData;
+import gregtech.api.util.tooltip.TooltipHelper;
+import gregtech.common.misc.GTStructureChannels;
 
-public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFactory>
-    implements IConstructable, ISurvivalConstructable {
+public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFactory> implements ISurvivalConstructable {
 
     private static final int CASING_T1_INDEX = 49;
     private static final int CASING_T2_INDEX = 48;
@@ -142,7 +149,7 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
             'A',
             buildHatchAdder(MTESolarFactory.class).atLeast(InputHatch, InputBus, OutputBus, Maintenance, Energy)
                 .casingIndex(CASING_T1_INDEX)
-                .dot(1)
+                .hint(1)
                 .buildAndChain(onElementPass(MTESolarFactory::onCasingAdded, ofBlock(sBlockCasings4, 1))))
         // Tungstensteel
         .addElement(
@@ -150,7 +157,7 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
             buildHatchAdder(MTESolarFactory.class)
                 .atLeast(InputHatch, InputBus, OutputBus, Maintenance, Energy, MultiAmpEnergy)
                 .casingIndex(CASING_T2_INDEX)
-                .dot(1)
+                .hint(1)
                 .buildAndChain(onElementPass(MTESolarFactory::onCasingAdded, ofBlock(sBlockCasings4, 0))))
         // Advanced iridium
         .addElement(
@@ -158,7 +165,7 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
             buildHatchAdder(MTESolarFactory.class)
                 .atLeast(InputHatch, InputBus, OutputBus, Maintenance, Energy, MultiAmpEnergy, ExoticEnergy)
                 .casingIndex(CASING_T3_INDEX)
-                .dot(1)
+                .hint(1)
                 .buildAndChain(onElementPass(MTESolarFactory::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings8, 7))))
         .addElement('E', ofFrame(Materials.DamascusSteel))
         .addElement('F', ofFrame(Materials.Tungsten))
@@ -169,8 +176,7 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
         // P for Precise Electronic Unit Casing ^-^
         .addElement(
             'P',
-            withChannel(
-                "unit casing",
+            GTStructureChannels.PRASS_UNIT_CASING.use(
                 ofBlocksTiered(
                     (block, meta) -> block == Loaders.preciseUnitCasing ? meta : null,
                     ImmutableList.of(
@@ -215,23 +221,36 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         casingAmount = 0;
         hasEnoughCasings = false;
         casingTier = -3;
         mTier = 0;
-        if (checkPiece(STRUCTURE_TIER_1, 2, 4, 0)) {
+        if (checkPiece(STRUCTURE_TIER_1, 2, 4, 0, null)) {
             mTier = 1;
-            hasEnoughCasings = casingAmount >= 15;
-        } else if (checkPiece(STRUCTURE_TIER_2, 4, 5, 0)) {
+            checkCasingMin(errors, casingAmount, 15);
+        } else if (checkPiece(STRUCTURE_TIER_2, 4, 5, 0, null)) {
             mTier = 2;
-            hasEnoughCasings = casingAmount >= 35;
-        } else if (checkPiece(STRUCTURE_TIER_3, 4, 8, 0)) {
+            checkCasingMin(errors, casingAmount, 35);
+            if (casingTier < -1) {
+                errors.add(StructureErrors.of("GT5U.gui.text.structure_error.solar_factory_precise"));
+            }
+        } else if (checkPiece(STRUCTURE_TIER_3, 4, 8, 0, null)) {
             mTier = 3;
-            hasEnoughCasings = casingAmount >= 50;
+            checkCasingMin(errors, casingAmount, 50);
+            if (casingTier < -1) {
+                errors.add(StructureErrors.of("GT5U.gui.text.structure_error.solar_factory_precise"));
+            }
+        } else {
+            errors.add(UNKNOWN_TIER);
+            return;
         }
         getBaseMetaTileEntity().sendBlockEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, getUpdateData());
-        return mTier > 0 && hasEnoughCasings && (mTier == 1 || casingTier >= -1);
+        checkHasAnyEnergy(errors);
+        checkHasInputBus(errors);
+        checkHasOutputBus(errors);
+        checkHasInputHatch(errors);
+        checkHasMaintenanceHatch(errors);
     }
 
     @Override
@@ -251,13 +270,13 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
     public int survivalConstruct(ItemStack holoStack, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
         if (holoStack.stackSize == 1) {
-            return survivialBuildPiece(STRUCTURE_TIER_1, holoStack, 2, 4, 0, elementBudget, env, false, true);
+            return survivalBuildPiece(STRUCTURE_TIER_1, holoStack, 2, 4, 0, elementBudget, env, false, true);
         }
         if (holoStack.stackSize == 2) {
-            return survivialBuildPiece(STRUCTURE_TIER_2, holoStack, 4, 5, 0, elementBudget, env, false, true);
+            return survivalBuildPiece(STRUCTURE_TIER_2, holoStack, 4, 5, 0, elementBudget, env, false, true);
         }
         if (holoStack.stackSize >= 3) {
-            return survivialBuildPiece(STRUCTURE_TIER_3, holoStack, 4, 8, 0, elementBudget, env, false, true);
+            return survivalBuildPiece(STRUCTURE_TIER_3, holoStack, 4, 8, 0, elementBudget, env, false, true);
         }
         return 0;
     }
@@ -362,7 +381,7 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
     // 2^(casingTier + 3)
     protected int getMaxParallel() {
         if (mTier <= 1) return 1;
-        return (int) Math.pow(2, 1 + (casingTier + 2));
+        return (int) GTUtility.powInt(2, 1 + (casingTier + 2));
     }
 
     @Override
@@ -384,13 +403,23 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
             .addInfo("  The bonus to output occurs after parallels, and cannot be greater than 100%")
             .addInfo("  The recipes shown in NEI display the minimum wafer tier required")
             .addInfo("  LV-LuV Solar Panels can be made without the previous panel, but at a higher cost")
-            .addInfo("  Parallels are based on Precise Casing Tier")
-            .addInfo("  MK-I = 8x, MK-II = 16x, MK-III = 32x, MK-IV = 64x")
-            .addInfo(WHITE + "" + BOLD + "Tier " + AQUA + BOLD + "3")
+            .addInfo(
+                "  " + EnumChatFormatting.WHITE
+                    + "Precise Casing"
+                    + EnumChatFormatting.GRAY
+                    + " Tier determines "
+                    + TooltipHelper.parallelText("Parallels"))
+            .addInfo(
+                "  " + tieredTextLine("Mk-I", "MK-II", "MK-III", "MK-IV")
+                    + "->"
+                    + tieredTextLine("8", "16", "32", "64")
+                    + " Parallels")
+            .addInfo(WHITE + "" + BOLD + "Tier " + AQUA + BOLD + "3" + WHITE + BOLD + ":")
             .addInfo(GREEN + "  Supports Laser energy hatches")
             .addInfo("  ZPM-UV Solar Panels can be made without the previous panel, but at a higher cost")
             .addInfo("  Bonus per increased wafer tier is raised to 50%")
             .beginStructureBlock(7, 10, 9, false)
+            .addController("Front bottom center")
             .addStructureInfo(WHITE + "" + BOLD + "Tier " + AQUA + BOLD + "1:")
             .addCasingInfoRange("Clean Stainless Steel Machine Casing", 15, 41, false)
             .addCasingInfoExactly("Any Tiered Glass", 24, false)
@@ -407,13 +436,15 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
             .addCasingInfoExactly("Precise Electronic Unit Casing", 26, true)
             .addCasingInfoExactly("Black Plutonium Item Pipe", 6, false)
             .addStructureInfo(WHITE + "" + BOLD + "All Tiers: ")
-            .addStructureInfo(WHITE + "Imprecise Unit Casings cannot be used")
+            .addStructureInfo(WHITE + "Imprecise Unit Casing cannot be used")
             .addInputHatch("Any Machine Casing")
             .addInputBus("Any Machine Casing")
             .addOutputBus("Any Machine Casing")
             .addEnergyHatch("Any Machine Casing")
             .addMaintenanceHatch("Any Machine Casing")
-            .toolTipFinisher(GTValues.AuthorPureBluez);
+            .addSubChannelUsage(GTStructureChannels.PRASS_UNIT_CASING)
+            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .toolTipFinisher(GTAuthors.AuthorPureBluez);
         return tt;
     }
 
@@ -464,27 +495,34 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
     }
 
     @Override
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
-    }
-
-    @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
+    public boolean supportsInputSeparation() {
         return true;
     }
 
     @Override
-    public int getDamageToComponent(ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
+    public boolean supportsSingleRecipeLocking() {
         return false;
     }
 
     @Override
-    public boolean supportsInputSeparation() {
+    public boolean supportsBatchMode() {
         return true;
+    }
+
+    private String tieredTextLine(String mk1, String mk2, String mk3, String mk4) {
+        return GREEN + mk1
+            + EnumChatFormatting.GRAY
+            + "/"
+            + EnumChatFormatting.BLUE
+            + mk2
+            + EnumChatFormatting.GRAY
+            + "/"
+            + EnumChatFormatting.LIGHT_PURPLE
+            + mk3
+            + EnumChatFormatting.GRAY
+            + "/"
+            + EnumChatFormatting.GOLD
+            + mk4
+            + EnumChatFormatting.GRAY;
     }
 }

@@ -24,17 +24,20 @@ import static gregtech.api.enums.Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_TOP_
 import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicGenerator;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTUtility;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTENaquadahReactor extends MTEBasicGenerator {
 
     public MTENaquadahReactor(int aID, String aName, String[] aDescription, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, aDescription);
+        super(aID, aName, aNameRegional, aTier, (String) null);
         if (aTier > 8 || aTier < 4) {
             new Exception("Tier without Recipe Map!").printStackTrace();
         }
@@ -58,6 +61,11 @@ public class MTENaquadahReactor extends MTEBasicGenerator {
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTENaquadahReactor(mName, mTier, mDescriptionArray, mTextures);
+    }
+
+    @Override
+    protected String[] getTooltipLines() {
+        return GTUtility.translateMultiline("gt.blockmachines." + mName + ".tooltip");
     }
 
     @Override

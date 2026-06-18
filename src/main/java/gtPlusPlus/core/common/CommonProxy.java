@@ -18,15 +18,16 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import cpw.mods.fml.common.registry.GameRegistry;
 import galaxyspace.core.entity.mob.EntityEvolvedColdBlaze;
+import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
-import gtPlusPlus.api.objects.Logger;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.config.ASMConfiguration;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.entity.InternalEntityRegistry;
 import gtPlusPlus.core.fluids.GTPPFluids;
@@ -36,16 +37,12 @@ import gtPlusPlus.core.handler.CompatIntermodStaging;
 import gtPlusPlus.core.handler.GuiHandler;
 import gtPlusPlus.core.handler.events.EnderDragonDeathHandler;
 import gtPlusPlus.core.handler.events.EntityDeathHandler;
-import gtPlusPlus.core.handler.events.MolecularTransformerTooltipNotice;
 import gtPlusPlus.core.handler.events.PlayerSleepEventHandler;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.item.bauble.BaseBauble;
 import gtPlusPlus.core.lib.GTPPCore;
-import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.tileentities.ModTileEntities;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.xmod.gregtech.common.modularui2.GTPPGuiTextures;
 import gtPlusPlus.xmod.ic2.CustomInternalName;
 
 public class CommonProxy implements IFuelHandler {
@@ -56,13 +53,6 @@ public class CommonProxy implements IFuelHandler {
     }
 
     public void preInit(final FMLPreInitializationEvent e) {
-        Logger.INFO("Doing some house cleaning.");
-        if (ASMConfiguration.debug.debugMode) {
-            Logger.INFO("Development mode enabled.");
-        } else {
-            Logger.WARNING("Development mode not enabled.");
-        }
-
         AddToCreativeTab.initialiseTabs();
         CustomInternalName.init();
 
@@ -70,28 +60,15 @@ public class CommonProxy implements IFuelHandler {
         ModBlocks.init();
         GTPPFluids.init();
 
-        CI.preInit();
         CompatIntermodStaging.preInit(e);
         BookHandler.run();
         // Registration of entities and renderers
-        Logger.INFO("[Proxy] Calling Entity registration.");
         registerEntities();
-        Logger.INFO("[Proxy] Calling Tile Entity registration.");
         registerTileEntities();
-
-        Logger.INFO("[Proxy] Calling Render registration.");
         registerRenderThings();
-
-        GTPPGuiTextures.init();
     }
 
     public void init(final FMLInitializationEvent e) {
-        CI.init();
-
-        if (e.getSide()
-            .isClient() && Mods.AdvancedSolarPanel.isModLoaded()) {
-            MinecraftForge.EVENT_BUS.register(new MolecularTransformerTooltipNotice());
-        }
         // Handles Sleep Benefits
         PlayerSleepEventHandler.init();
 
@@ -107,23 +84,11 @@ public class CommonProxy implements IFuelHandler {
     public void postInit(final FMLPostInitializationEvent e) {
         GameRegistry.registerFuelHandler(this);
         // Compat Handling
-        Logger.INFO("Removing recipes from other mods.");
-        CompatHandler.RemoveRecipesFromOtherMods();
-        Logger.INFO("Initialising Handler, Then Adding Recipes");
         CompatHandler.InitialiseHandlerThenAddRecipes();
-        Logger.INFO("Loading Intermod staging.");
         CompatIntermodStaging.postInit(e);
-        Logger.INFO("Loading queued recipes.");
-        CompatHandler.runQueuedRecipes();
-        Logger.INFO("Registering custom mob drops.");
-        registerCustomMobDrops();
         // Moved last, to prevent recipes being generated post initialisation.
-        Logger.INFO("Loading Gregtech API recipes.");
         CompatHandler.startLoadingGregAPIBasedRecipes();
-    }
-
-    public void serverStarting(final FMLServerStartingEvent e) {
-        CompatHandler.InitialiseLateHandlerThenAddRecipes();
+        registerCustomMobDrops();
     }
 
     public void onLoadComplete(FMLLoadCompleteEvent event) {
@@ -144,33 +109,21 @@ public class CommonProxy implements IFuelHandler {
 
     public void registerRenderThings() {}
 
-    public int addArmor(final String armor) {
-        return 0;
-    }
-
     public void registerCustomMobDrops() {
 
         // Blazes
-        if (ItemUtils.doesOreDictHaveEntryFor("dustPyrotheum")) {
-            EntityUtils.registerDropsForMob(
-                EntityBlaze.class,
-                ItemUtils.getItemStackOfAmountFromOreDict("dustPyrotheum", 1),
-                1,
-                10);
-            EntityUtils.registerDropsForMob(
-                EntityBlaze.class,
-                ItemUtils.getItemStackOfAmountFromOreDict("dustPyrotheum", 1),
-                1,
-                10);
+        if (Mods.COFHCore.isModLoaded()) {
+            EntityUtils.registerDropsForMob(EntityBlaze.class, Materials.Pyrotheum.getDust(1), 1, 10);
+            EntityUtils.registerDropsForMob(EntityBlaze.class, Materials.Pyrotheum.getDust(1), 1, 10);
         }
 
         // GalaxySpace Support
         if (Mods.GalaxySpace.isModLoaded()) {
-            ItemStack aBlizz = ItemUtils.getItemStackOfAmountFromOreDict("dustBlizz", 1);
-            ItemStack aCryo = ItemUtils.getItemStackOfAmountFromOreDict("dustCryotheum", 1);
+            ItemStack aBlizz = Materials.Blizz.getDust(1);
+            ItemStack aCryo = Materials.Cryotheum.getDust(1);
             EntityUtils.registerDropsForMob(
                 EntityEvolvedColdBlaze.class,
-                ItemUtils.getItemStackOfAmountFromOreDict("stickBlizz", 1),
+                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Blizz, 1),
                 1,
                 2500);
             if (aBlizz != null) {
@@ -203,7 +156,7 @@ public class CommonProxy implements IFuelHandler {
             if (aStackID == burnID) {
                 int burn = temp.getKey();
                 ItemStack fuel = temp.getValue();
-                ItemStack testItem = ItemUtils.getSimpleStack(fuel, aStack.stackSize);
+                ItemStack testItem = GTUtility.copyAmount(aStack.stackSize, fuel);
 
                 if (aStack.isItemEqual(testItem)) {
                     return burn;
@@ -213,7 +166,7 @@ public class CommonProxy implements IFuelHandler {
         return 0;
     }
 
-    @Optional.Method(modid = Mods.Names.BAUBLES)
+    @Optional.Method(modid = Mods.ModIDs.BAUBLES)
     @SubscribeEvent
     public void onPlayerAttacked(LivingAttackEvent event) {
         if (!(event.entityLiving instanceof EntityPlayer player)) {

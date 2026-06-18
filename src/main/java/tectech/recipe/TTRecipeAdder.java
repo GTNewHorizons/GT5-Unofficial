@@ -17,7 +17,6 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
-import gregtech.api.util.GTRecipe.RecipeAssemblyLine;
 import gregtech.api.util.GTUtility;
 import gregtech.common.RecipeAdder;
 import tectech.TecTech;
@@ -25,18 +24,15 @@ import tectech.thing.CustomItemList;
 
 public class TTRecipeAdder extends RecipeAdder {
 
-    public static final ItemStack[] nullItem = new ItemStack[0];
-    public static final FluidStack[] nullFluid = new FluidStack[0];
-
     @Deprecated
     public static boolean addResearchableAssemblylineRecipe(ItemStack aResearchItem, int totalComputationRequired,
         int computationRequiredPerSec, int researchEUt, int researchAmperage, ItemStack[] aInputs,
         FluidStack[] aFluidInputs, ItemStack aOutput, int assDuration, int assEUt) {
         if (aInputs == null) {
-            aInputs = nullItem;
+            aInputs = GTValues.emptyItemStackArray;
         }
         if (aFluidInputs == null) {
-            aFluidInputs = nullFluid;
+            aFluidInputs = GTValues.emptyFluidStackArray;
         }
         if (aResearchItem == null || totalComputationRequired <= 0 || aOutput == null || aInputs.length > 16) {
             return false;
@@ -62,7 +58,7 @@ public class TTRecipeAdder extends RecipeAdder {
             aOutput,
             assDuration,
             assEUt);
-        RecipeAssemblyLine recipeTT = new GTRecipe.RecipeAssemblyLine(
+        TecTechRecipeMaps.TTResearchStationALRecipe recipeTT = new TecTechRecipeMaps.TTResearchStationALRecipe(
             aResearchItem,
             totalComputationRequired / computationRequiredPerSec,
             0,
@@ -70,14 +66,17 @@ public class TTRecipeAdder extends RecipeAdder {
             aFluidInputs,
             aOutput,
             assDuration,
-            assEUt);
+            assEUt,
+            totalComputationRequired,
+            researchAmperage,
+            computationRequiredPerSec);
         GTRecipe.RecipeAssemblyLine.sAssemblylineRecipes.add(recipeGT);
         TecTechRecipeMaps.researchableALRecipeList.add(recipeTT);
 
         GTValues.RA.stdBuilder()
             .itemInputs(aResearchItem)
-            .itemOutputs(aOutput)
-            .special(recipeGT.newDataStickForNEI("Writes Research result"))
+            .itemOutputs(GTUtility.copyAmount(1, aOutput))
+            .special(recipeGT.newDataStickForNEI("Writes Research result", 1))
             .duration(totalComputationRequired)
             .eut(researchEUt)
             .metadata(RESEARCH_STATION_DATA, researchAmperage | computationRequiredPerSec << 16)
@@ -89,7 +88,7 @@ public class TTRecipeAdder extends RecipeAdder {
             .itemInputs(aInputs)
             .itemOutputs(aOutput)
             .fluidInputs(aFluidInputs)
-            .special(recipeGT.newDataStickForNEI("Reads Research result"))
+            .special(recipeGT.newDataStickForNEI("Reads Research result", 0))
             .duration(assDuration)
             .eut(assEUt)
             .ignoreCollision()
@@ -103,10 +102,10 @@ public class TTRecipeAdder extends RecipeAdder {
         int computationRequiredPerSec, int researchEUt, int researchAmperage, Object[] aInputs,
         FluidStack[] aFluidInputs, ItemStack aOutput, int assDuration, int assEUt) {
         if (aInputs == null) {
-            aInputs = nullItem;
+            aInputs = GTValues.emptyItemStackArray;
         }
         if (aFluidInputs == null) {
-            aFluidInputs = nullFluid;
+            aFluidInputs = GTValues.emptyFluidStackArray;
         }
         if (aResearchItem == null || totalComputationRequired <= 0
             || aOutput == null
@@ -202,7 +201,7 @@ public class TTRecipeAdder extends RecipeAdder {
             tAlts);
         recipeGT.setPersistentHash(tPersistentHash);
         GTRecipe.RecipeAssemblyLine.sAssemblylineRecipes.add(recipeGT);
-        GTRecipe.RecipeAssemblyLine recipeTT = new GTRecipe.RecipeAssemblyLine(
+        TecTechRecipeMaps.TTResearchStationALRecipe recipeTT = new TecTechRecipeMaps.TTResearchStationALRecipe(
             aResearchItem,
             totalComputationRequired / computationRequiredPerSec,
             0,
@@ -211,14 +210,17 @@ public class TTRecipeAdder extends RecipeAdder {
             aOutput,
             assDuration,
             assEUt,
-            tAlts);
+            tAlts,
+            totalComputationRequired,
+            researchAmperage,
+            computationRequiredPerSec);
         recipeTT.setPersistentHash(tPersistentHash);
         TecTechRecipeMaps.researchableALRecipeList.add(recipeTT);
 
         GTValues.RA.stdBuilder()
             .itemInputs(aResearchItem)
-            .itemOutputs(aOutput)
-            .special(recipeGT.newDataStickForNEI("Writes Research result"))
+            .itemOutputs(GTUtility.copyAmount(1, aOutput))
+            .special(recipeGT.newDataStickForNEI("Writes Research result", 1))
             .duration(totalComputationRequired)
             .eut(researchEUt)
             .metadata(RESEARCH_STATION_DATA, researchAmperage | computationRequiredPerSec << 16)
@@ -230,13 +232,14 @@ public class TTRecipeAdder extends RecipeAdder {
             false,
             tInputs,
             new ItemStack[] { aOutput },
-            new ItemStack[] { recipeGT.newDataStickForNEI("Reads Research result") },
+            new ItemStack[] { recipeGT.newDataStickForNEI("Reads Research result", 0) },
             aFluidInputs,
             null,
             assDuration,
             assEUt,
             0,
             tAlts,
+            null,
             false);
         return true;
     }

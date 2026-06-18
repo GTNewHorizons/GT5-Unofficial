@@ -14,10 +14,8 @@ import net.minecraft.item.ItemStack;
 
 import org.apache.commons.lang3.tuple.Pair;
 
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.util.Utils;
+import gregtech.api.util.StringUtils;
 import gtPlusPlus.core.util.data.FileUtils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.thaumcraft.commands.CommandDumpAspects;
 
 public class ThreadAspectScanner extends Thread {
@@ -37,10 +35,10 @@ public class ThreadAspectScanner extends Thread {
         }
         String nameKey;
         try {
-            nameKey = ItemUtils.getUnlocalizedItemName(aStack);
+            nameKey = aStack.getUnlocalizedName();
         } catch (NullPointerException n) {
             try {
-                nameKey = Utils.sanitizeString(
+                nameKey = StringUtils.sanitizeString(
                     aStack.getDisplayName()
                         .toLowerCase());
             } catch (NullPointerException n2) {
@@ -65,7 +63,6 @@ public class ThreadAspectScanner extends Thread {
     public void run() {
         if (mDoWeScan) {
             Iterator iterator;
-            Logger.INFO("Finding Blocks and Items to scan for Aspect data.");
             long mBlocksCounter = 0;
             long mItemsCounter = 0;
 
@@ -76,11 +73,10 @@ public class ThreadAspectScanner extends Thread {
                 String s = (String) iterator.next();
                 Block block = (Block) Block.blockRegistry.getObject(s);
                 if (block != null) {
-                    tryCacheObject(ItemUtils.getSimpleStack(block));
+                    tryCacheObject(new ItemStack(block));
                     mBlocksCounter++;
                 }
             }
-            Logger.INFO("Completed Block Scan. Counted " + mBlocksCounter);
 
             // Second Find items, Skipping things that exist.
             iterator = Item.itemRegistry.getKeys()
@@ -90,36 +86,31 @@ public class ThreadAspectScanner extends Thread {
                 Item item = (Item) Item.itemRegistry.getObject(s);
                 if (item != null) {
                     if (item.getHasSubtypes()) {
-                        List q1 = new ArrayList();
+                        List<ItemStack> q1 = new ArrayList<>();
                         item.getSubItems(item, item.getCreativeTab(), q1);
-                        if (q1 != null && !q1.isEmpty()) {
+                        if (!q1.isEmpty()) {
                             for (int e = 0; e < q1.size(); e++) {
-                                ItemStack check = ItemUtils.simpleMetaStack(item, e, 1);
-                                if (check != null) {
-                                    tryCacheObject(check);
-                                    mItemsCounter++;
-                                }
+                                ItemStack check = new ItemStack(item, 1, e);
+                                tryCacheObject(check);
+                                mItemsCounter++;
                             }
                         } else {
-                            tryCacheObject(ItemUtils.getSimpleStack(item));
+                            tryCacheObject(new ItemStack(item));
                             mItemsCounter++;
                         }
                     } else {
-                        tryCacheObject(ItemUtils.getSimpleStack(item));
+                        tryCacheObject(new ItemStack(item));
                         mItemsCounter++;
                     }
                 }
             }
-            Logger.INFO("Completed Item Scan. Counted " + mItemsCounter);
 
             Set<String> y = mAllGameContent.keySet();
-            Logger.INFO("Beginning iteration of " + y.size() + " itemstacks for aspect information.");
 
             for (String key : y) {
-                // Logger.INFO("Looking for key: "+key);
                 if (mAllGameContent.containsKey(key)) {
                     ArrayList<ItemStack> group = mAllGameContent.get(key);
-                    if (group == null || group.size() <= 0) {
+                    if (group == null || group.size() == 0) {
                         continue;
                     }
                     for (ItemStack stack : group) {
@@ -148,15 +139,11 @@ public class ThreadAspectScanner extends Thread {
                                 if (mAspectCacheFile != null && mList.size() >= 3) {
                                     FileUtils.appendListToFile(mAspectCacheFile, mList);
                                 }
-                            } catch (Throwable t) {
-                                Logger.INFO("Error while iterating one item. " + t);
-                            }
+                            } catch (Exception ignored) {}
                         }
                     }
                 }
             }
-            Logger.INFO(
-                "Completed Aspect Iteration. AspectInfo.txt is now available to process in the GTplusplus configuration folder.");
             CommandDumpAspects.mLastScanTime = System.currentTimeMillis();
         }
     }

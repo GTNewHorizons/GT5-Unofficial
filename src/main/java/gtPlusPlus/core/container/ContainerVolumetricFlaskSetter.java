@@ -10,7 +10,6 @@ import net.minecraft.world.World;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.inventories.InventoryVolumetricFlaskSetter;
 import gtPlusPlus.core.slots.SlotNoInput;
@@ -33,12 +32,6 @@ public class ContainerVolumetricFlaskSetter extends Container {
     private final int posZ;
 
     public static final int SLOT_OUTPUT = 8;
-
-    public static int StorageSlotNumber = 8; // Number of slots in storage area
-    public static int InventorySlotNumber = 36; // Inventory Slots (Inventory
-    // and Hotbar)
-    public static int FullSlotNumber = InventorySlotNumber + StorageSlotNumber; // All
-    // slots
 
     public ContainerVolumetricFlaskSetter(final InventoryPlayer inventory, final TileEntityVolumetricFlaskSetter te) {
         this.mTileEntity = te;
@@ -90,7 +83,7 @@ public class ContainerVolumetricFlaskSetter extends Container {
                 this.addSlotToContainer(new Slot(inventory, var6, 8 + (var6 * 18), 142));
             }
             detectAndSendChanges();
-        } catch (Throwable t) {}
+        } catch (Exception t) {}
     }
 
     @Override
@@ -145,10 +138,9 @@ public class ContainerVolumetricFlaskSetter extends Container {
         mCustomValue = mTileEntity.getCustomValue();
         mTimer++;
 
-        for (Object crafter : this.crafters) {
-            ICrafting var1 = (ICrafting) crafter;
+        for (ICrafting crafter : this.crafters) {
             if (mTimer % 20 == 10 || oCustomValue != mCustomValue) {
-                var1.sendProgressBarUpdate(this, 0, mCustomValue);
+                crafter.sendProgressBarUpdate(this, 0, mCustomValue);
             }
         }
 
@@ -162,9 +154,5 @@ public class ContainerVolumetricFlaskSetter extends Container {
         if (par1 == 0) {
             mCustomValue = par2;
         }
-    }
-
-    public void log(String aString) {
-        Logger.INFO("[Flask-Container] " + aString);
     }
 }

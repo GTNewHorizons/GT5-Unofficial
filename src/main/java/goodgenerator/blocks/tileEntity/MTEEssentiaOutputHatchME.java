@@ -1,35 +1,39 @@
 package goodgenerator.blocks.tileEntity;
 
+import static thaumicenergistics.common.storage.AEEssentiaStackType.ESSENTIA_STACK_TYPE;
+
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import appeng.api.config.Actionable;
 import appeng.api.networking.GridFlags;
-import appeng.api.networking.IGrid;
 import appeng.api.networking.IGridNode;
 import appeng.api.networking.security.IActionHost;
 import appeng.api.networking.security.MachineSource;
+import appeng.api.storage.IMEMonitor;
 import appeng.api.util.AECableType;
 import appeng.api.util.DimensionalCoord;
+import appeng.me.GridAccessException;
 import appeng.me.helpers.AENetworkProxy;
 import appeng.me.helpers.IGridProxyable;
-import appeng.tile.TileEvent;
-import appeng.tile.events.TileEventType;
 import goodgenerator.util.ItemRefer;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
-import thaumicenergistics.api.grid.IEssentiaGrid;
-import thaumicenergistics.api.grid.IMEEssentiaMonitor;
+import thaumicenergistics.common.storage.AEEssentiaStack;
 
 public class MTEEssentiaOutputHatchME extends MTEEssentiaOutputHatch implements IActionHost, IGridProxyable {
 
     private AENetworkProxy gridProxy = null;
-    private IMEEssentiaMonitor monitor = null;
+    private IMEMonitor<AEEssentiaStack> monitor = null;
     private final MachineSource asMachineSource = new MachineSource(this);
+    public long mTickTimer = 0;
 
     @Override
     public void updateEntity() {
-        getProxy();
+        AENetworkProxy gp = getProxy();
+        if (mTickTimer++ == 0 && gp != null) {
+            gp.onReady();
+        }
         super.updateEntity();
     }
 
@@ -45,32 +49,29 @@ public class MTEEssentiaOutputHatchME extends MTEEssentiaOutputHatch implements 
         this.onChunkUnloadAE();
     }
 
-    @TileEvent(TileEventType.WORLD_NBT_READ)
-    public void readFromNBT_AENetwork(final NBTTagCompound data) {
-        AENetworkProxy gp = getProxy();
-        if (gp != null) getProxy().readFromNBT(data);
+    @Override
+    public void readFromNBT(NBTTagCompound aNBT) {
+        super.readFromNBT(aNBT);
+        getProxy().readFromNBT(aNBT);
     }
 
-    @TileEvent(TileEventType.WORLD_NBT_WRITE)
-    public void writeToNBT_AENetwork(final NBTTagCompound data) {
-        AENetworkProxy gp = getProxy();
-        if (gp != null) gp.writeToNBT(data);
+    @Override
+    public void writeToNBT(NBTTagCompound aNBT) {
+        super.writeToNBT(aNBT);
+        getProxy().writeToNBT(aNBT);
     }
 
     void onChunkUnloadAE() {
-        AENetworkProxy gp = getProxy();
-        if (gp != null) gp.onChunkUnload();
+        getProxy().onChunkUnload();
     }
 
     void invalidateAE() {
-        AENetworkProxy gp = getProxy();
-        if (gp != null) gp.invalidate();
+        getProxy().invalidate();
     }
 
     @Override
     public IGridNode getGridNode(ForgeDirection forgeDirection) {
-        AENetworkProxy gp = getProxy();
-        return gp != null ? gp.getNode() : null;
+        return getProxy().getNode();
     }
 
     @Override
@@ -88,7 +89,6 @@ public class MTEEssentiaOutputHatchME extends MTEEssentiaOutputHatch implements 
     public AENetworkProxy getProxy() {
         if (gridProxy == null) {
             gridProxy = new AENetworkProxy(this, "proxy", ItemRefer.Essentia_Output_Hatch_ME.get(1), true);
-            gridProxy.onReady();
             gridProxy.setFlags(GridFlags.REQUIRE_CHANNEL);
         }
         return this.gridProxy;
@@ -101,8 +101,7 @@ public class MTEEssentiaOutputHatchME extends MTEEssentiaOutputHatch implements 
 
     @Override
     public IGridNode getActionableNode() {
-        AENetworkProxy gp = getProxy();
-        return gp != null ? gp.getNode() : null;
+        return getProxy().getNode();
     }
 
     @Override
@@ -123,7 +122,10 @@ public class MTEEssentiaOutputHatchME extends MTEEssentiaOutputHatch implements 
     public int addEssentia(Aspect aspect, int amount, ForgeDirection side, Actionable mode) {
         long rejectedAmount = amount;
         if (this.getEssentiaMonitor()) {
-            rejectedAmount = this.monitor.injectEssentia(aspect, amount, mode, this.getMachineSource(), true);
+            AEEssentiaStack rejected = this.monitor
+                .injectItems(new AEEssentiaStack(aspect, amount), mode, this.getMachineSource());
+
+            rejectedAmount = rejected != null ? rejected.getStackSize() : 0;
         }
 
         long acceptedAmount = (long) amount - rejectedAmount;
@@ -131,16 +133,17 @@ public class MTEEssentiaOutputHatchME extends MTEEssentiaOutputHatch implements 
     }
 
     protected boolean getEssentiaMonitor() {
-        IMEEssentiaMonitor essentiaMonitor = null;
-        IGrid grid = null;
+        this.monitor = null;
         IGridNode node = this.getProxy()
             .getNode();
 
         if (node != null) {
-            grid = node.getGrid();
-            if (grid != null) essentiaMonitor = grid.getCache(IEssentiaGrid.class);
+            try {
+                this.monitor = (IMEMonitor<AEEssentiaStack>) this.getProxy()
+                    .getStorage()
+                    .getMEMonitor(ESSENTIA_STACK_TYPE);
+            } catch (GridAccessException ignored) {}
         }
-        this.monitor = essentiaMonitor;
         return (this.monitor != null);
     }
 

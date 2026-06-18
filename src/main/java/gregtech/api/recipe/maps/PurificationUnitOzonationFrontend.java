@@ -1,10 +1,10 @@
 package gregtech.api.recipe.maps;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import com.google.common.collect.ImmutableList;
 import com.gtnewhorizons.modularui.api.drawable.FallbackableUITexture;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.math.Size;
@@ -23,18 +23,14 @@ public class PurificationUnitOzonationFrontend extends PurificationUnitRecipeMap
         NEIRecipePropertiesBuilder neiPropertiesBuilder) {
         super(
             120,
-            uiPropertiesBuilder.logoPos(new Pos2d(160, 100))
-                .progressBarTexture(new FallbackableUITexture(GTUITextures.PROGRESSBAR_OZONATION))
-                .logoPos(new Pos2d(152, 97)),
+            uiPropertiesBuilder.logoPos(new Pos2d(152, 97))
+                .progressBarTexture(new FallbackableUITexture(GTUITextures.PROGRESSBAR_OZONATION)),
             neiPropertiesBuilder.recipeBackgroundSize(new Size(170, 180)));
     }
 
     @Override
     public List<Pos2d> getFluidInputPositions(int fluidInputCount) {
-        ArrayList<Pos2d> positions = new ArrayList<>();
-        positions.add(new Pos2d(79, 100));
-        positions.add(new Pos2d(27, 77));
-        return positions;
+        return ImmutableList.of(new Pos2d(79, 100), new Pos2d(27, 77));
     }
 
     @Override
@@ -44,8 +40,6 @@ public class PurificationUnitOzonationFrontend extends PurificationUnitRecipeMap
 
     @Override
     public List<Pos2d> getFluidOutputPositions(int fluidOutputCount) {
-        ArrayList<Pos2d> positions = new ArrayList<>();
-        positions.add(new Pos2d(131, 97));
-        return positions;
+        return ImmutableList.of(new Pos2d(131, 97));
     }
 }

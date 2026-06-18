@@ -6,23 +6,18 @@ import net.minecraft.item.ItemStack;
 
 import codechicken.nei.api.API;
 import codechicken.nei.api.IConfigureNEI;
+import gregtech.api.enums.ItemList;
 import gregtech.api.recipe.RecipeMaps;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
+@SuppressWarnings("unused")
 public class NEIGTPPConfig implements IConfigureNEI {
-
-    public static boolean sIsAdded = true;
 
     @Override
     public synchronized void loadConfig() {
-        sIsAdded = false;
-
-        Logger.INFO("NEI Registration: Registering NEI handler for " + DecayableRecipeHandler.mNEIName);
         API.registerRecipeHandler(new DecayableRecipeHandler());
         API.registerUsageHandler(new DecayableRecipeHandler());
         API.addRecipeCatalyst(new ItemStack(ModBlocks.blockDecayablesChest, 1), "GTPP_Decayables");
@@ -38,29 +33,17 @@ public class NEIGTPPConfig implements IConfigureNEI {
             GregtechItemList.GT4_Electric_Auto_Workbench_UV)) {
             API.addRecipeCatalyst(item.get(1), "crafting", -10);
         }
-        // Bronze workbench
-        API.removeRecipeCatalyst(ItemUtils.getItemStackFromFQRN("gregtech:gt.blockmachines:31081", 1), "crafting");
-        API.removeRecipeCatalyst(ItemUtils.getItemStackFromFQRN("gregtech:gt.blockmachines:31082", 1), "crafting");
 
         // Moved to its own handler
         API.removeRecipeCatalyst(
             GregtechItemList.Controller_Vacuum_Furnace.get(1),
             GTPPRecipeMaps.chemicalDehydratorRecipes.unlocalizedName);
 
-        // ULV simple washer
         API.removeRecipeCatalyst(
-            ItemUtils.getItemStackFromFQRN("gregtech:gt.blockmachines:767", 1),
-            GTPPRecipeMaps.simpleWasherRecipes.unlocalizedName);
+            GregtechItemList.Controller_IndustrialRockBreaker.get(1),
+            RecipeMaps.rockBreakerFakeRecipes.unlocalizedName);
 
-        // ULV combustion generator
-        API.removeRecipeCatalyst(
-            ItemUtils.getItemStackFromFQRN("gregtech:gt.blockmachines:960", 1),
-            RecipeMaps.dieselFuels.unlocalizedName);
-
-        // ULV gas turbine
-        API.removeRecipeCatalyst(
-            ItemUtils.getItemStackFromFQRN("gregtech:gt.blockmachines:961", 1),
-            RecipeMaps.gasTurbineFuels.unlocalizedName);
+        API.removeRecipeCatalyst(ItemList.Boldarnator.get(1), RecipeMaps.rockBreakerFakeRecipes.unlocalizedName);
 
         // Hide Flasks
         if (Utils.isClient()) {
@@ -68,7 +51,6 @@ public class NEIGTPPConfig implements IConfigureNEI {
             API.addItemListEntry(GregtechItemList.VOLUMETRIC_FLASK_32k.get(1));
             API.addItemListEntry(GregtechItemList.KLEIN_BOTTLE.get(1));
         }
-        sIsAdded = true;
     }
 
     @Override

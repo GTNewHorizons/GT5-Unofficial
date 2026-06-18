@@ -11,6 +11,8 @@ import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
+import java.util.List;
+
 import net.minecraft.item.ItemStack;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -26,7 +28,7 @@ import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.util.GTRecipe;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.pollution.PollutionConfig;
@@ -35,7 +37,6 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMult
 
 public class MTEAutoCrafter extends GTPPMultiBlockBase<MTEAutoCrafter> implements ISurvivalConstructable {
 
-    protected GTRecipe lastRecipeToBuffer;
     private int casing;
     private static IStructureDefinition<MTEAutoCrafter> STRUCTURE_DEFINITION = null;
 
@@ -58,26 +59,6 @@ public class MTEAutoCrafter extends GTPPMultiBlockBase<MTEAutoCrafter> implement
     }
 
     @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
-    }
-
-    @Override
-    public int getDamageToComponent(ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
-    }
-
-    @Override
-    public int getMaxEfficiency(ItemStack itemStack) {
-        return 10000;
-    }
-
-    @Override
     public int getPollutionPerSecond(ItemStack aStack) {
         return PollutionConfig.pollutionPerSecondMultiAutoCrafter;
     }
@@ -87,11 +68,10 @@ public class MTEAutoCrafter extends GTPPMultiBlockBase<MTEAutoCrafter> implement
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
             .addInfo("Highly Advanced Assembling Machine")
-            .addInfo("200% faster than using single block machines of the same voltage")
-            .addInfo("Processes two items per voltage tier")
+            .addBulkMachineInfo(2, 3f, 1f)
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 3, 3, true)
-            .addController("Front Center")
+            .addController("Front center")
             .addCasingInfoRange("Bulk Production Frame", 10, 25, false)
             .addInputBus("Any Casing", 1)
             .addOutputBus("Any Casing", 1)
@@ -141,7 +121,7 @@ public class MTEAutoCrafter extends GTPPMultiBlockBase<MTEAutoCrafter> implement
                     buildHatchAdder(MTEAutoCrafter.class)
                         .atLeast(InputBus, OutputBus, InputHatch, Maintenance, Energy, Muffler)
                         .casingIndex(TAE.getIndexFromPage(0, 10))
-                        .dot(1)
+                        .hint(1)
                         .buildAndChain(onElementPass(x -> ++x.casing, ofBlock(ModBlocks.blockCasings2Misc, 12))))
                 .build();
         }
@@ -156,13 +136,18 @@ public class MTEAutoCrafter extends GTPPMultiBlockBase<MTEAutoCrafter> implement
     @Override
     public int survivalConstruct(ItemStack itemStack, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(mName, itemStack, 1, 1, 0, elementBudget, env, false, true);
+        return survivalBuildPiece(mName, itemStack, 1, 1, 0, elementBudget, env, false, true);
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity baseMetaTileEntity, ItemStack itemStack) {
+    public void checkMachine(IGregTechTileEntity baseMetaTileEntity, ItemStack itemStack, List<StructureError> errors) {
         casing = 0;
-        return checkPiece(mName, 1, 1, 0) && casing >= 10 && checkHatch();
+        checkPiece(mName, 1, 1, 0, errors);
+        checkCasingMin(errors, casing, 10);
+        checkHatch(errors);
+        checkHasInputBus(errors);
+        checkHasOutputBus(errors);
+        checkHasEnergyHatch(errors);
     }
 
     @Override
@@ -179,22 +164,6 @@ public class MTEAutoCrafter extends GTPPMultiBlockBase<MTEAutoCrafter> implement
     @Override
     public int getMaxParallelRecipes() {
         return 2 * (Math.max(1, GTUtility.getTier(getMaxInputVoltage())));
-    }
-
-    @Override
-    public String[] getExtraInfoData() {
-        final String running = (this.mMaxProgresstime > 0 ? "Auto-Crafter running" : "Auto-Crafter stopped");
-        final String maintenance = (this.getIdealStatus() == this.getRepairStatus() ? "No Maintenance issues"
-            : "Needs Maintenance");
-        String tSpecialText;
-
-        if (lastRecipeToBuffer != null && lastRecipeToBuffer.mOutputs[0].getDisplayName() != null) {
-            tSpecialText = "Currently processing: " + lastRecipeToBuffer.mOutputs[0].getDisplayName();
-        } else {
-            tSpecialText = "Currently processing: Nothing";
-        }
-
-        return new String[] { "Large Scale Auto-Assembler v1.01c", running, maintenance, tSpecialText };
     }
 
     @Override

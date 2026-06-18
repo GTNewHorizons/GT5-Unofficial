@@ -15,6 +15,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 
 import gregtech.api.enums.Materials;
+import gregtech.api.util.StringUtils;
 import gtPlusPlus.core.item.base.misc.BaseItemParticle;
 import gtPlusPlus.core.util.Utils;
 
@@ -36,15 +37,11 @@ public class IonParticles extends BaseItemParticle {
         int key = 0;
         for (String s : ions) {
             // Map names to Meta
-            NameToMetaMap.put(Utils.sanitizeString(s.toLowerCase()), key);
-            MetaToNameMap.put(key, Utils.sanitizeString(s.toLowerCase()));
+            NameToMetaMap.put(StringUtils.sanitizeString(s.toLowerCase()), key);
+            MetaToNameMap.put(key, StringUtils.sanitizeString(s.toLowerCase()));
             Materials m = Materials.get(s);
             int aColour = 0;
-            if (m == null) {
-                aColour = Utils.rgbtoHexValue(128, 128, 128);
-            } else {
-                aColour = Utils.rgbtoHexValue(m.mRGBa[0], m.mRGBa[1], m.mRGBa[2]);
-            }
+            aColour = Utils.rgbtoHexValue(m.mRGBa[0], m.mRGBa[1], m.mRGBa[2]);
             aColourMap.put(key++, aColour);
         }
     }
@@ -107,7 +104,7 @@ public class IonParticles extends BaseItemParticle {
     }
 
     @Override
-    public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
+    public void addInformation(ItemStack stack, EntityPlayer player, List<String> list, boolean adv) {
         long aCharge = getChargeState(stack);
         String ionName = MetaToNameMap.get(stack.getItemDamage());
         // State not set
@@ -126,7 +123,7 @@ public class IonParticles extends BaseItemParticle {
                         .translateToLocalFormatted("gtpp.tooltip.ion_particles.charge_negative", ionName, aCharge));
             }
         }
-        super.addInformation(stack, player, list, bool);
+        super.addInformation(stack, player, list, adv);
     }
 
     @Override

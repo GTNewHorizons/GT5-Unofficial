@@ -1,6 +1,6 @@
 package gregtech.api.objects.overclockdescriber;
 
-import static gregtech.api.util.GTUtility.trans;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -8,7 +8,6 @@ import net.minecraft.util.StatCollector;
 
 import gregtech.api.enums.SteamVariant;
 import gregtech.api.util.GTRecipe;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.nei.RecipeDisplayInfo;
@@ -30,7 +29,7 @@ public class SteamOverclockDescriber extends OverclockDescriber {
 
     @Override
     public String getTierString() {
-        return StatCollector.translateToLocal("GT5U.steam_variant." + steamVariant.toString());
+        return StatCollector.translateToLocal("GT5U.nei.display.steam_variant." + steamVariant.toString());
     }
 
     @Override
@@ -44,17 +43,18 @@ public class SteamOverclockDescriber extends OverclockDescriber {
     public void drawEnergyInfo(RecipeDisplayInfo recipeInfo) {
         if (recipeInfo.calculator.getConsumption() <= 0) return;
 
-        recipeInfo.drawText(trans("152", "Total: ") + getTotalPowerString(recipeInfo.calculator));
-        recipeInfo.drawText(trans("153", "Usage: ") + getSteamUsageString(recipeInfo.calculator));
+        recipeInfo.drawText(getTotalPowerString(recipeInfo.calculator));
+        recipeInfo.drawText(getSteamUsageString(recipeInfo.calculator));
     }
 
     private String getTotalPowerString(OverclockCalculator calculator) {
-        return GTUtility.formatNumbers(convertEUToSteam(calculator.getConsumption() * calculator.getDuration()))
-            + " Steam";
+        long steamTotal = convertEUToSteam(calculator.getConsumption() * calculator.getDuration());
+        return StatCollector.translateToLocalFormatted("GT5U.nei.display.total.steam", formatNumber(steamTotal));
     }
 
     private String getSteamUsageString(OverclockCalculator calculator) {
-        return GTUtility.formatNumbers(20 * convertEUToSteam(calculator.getConsumption())) + " L/s Steam";
+        long steamUsage = 20 * convertEUToSteam(calculator.getConsumption());
+        return StatCollector.translateToLocalFormatted("GT5U.nei.display.usage.steam", formatNumber(steamUsage));
     }
 
     private static long convertEUToSteam(long eu) {

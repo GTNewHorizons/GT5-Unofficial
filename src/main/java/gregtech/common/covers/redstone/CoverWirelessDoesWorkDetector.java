@@ -11,8 +11,12 @@ import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import gregtech.api.covers.CoverContext;
 import gregtech.api.gui.modularui.CoverUIBuildContext;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.modularui.KeyProvider;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IMachineProgress;
+import gregtech.common.covers.CoverPosition;
+import gregtech.common.gui.modularui.cover.base.CoverBaseGui;
+import gregtech.common.gui.modularui.cover.redstone.CoverWirelessDoesWorkDetectorGui;
 import gregtech.common.gui.mui1.cover.WirelessActivityDetectorUIFactory;
 import io.netty.buffer.ByteBuf;
 
@@ -117,8 +121,8 @@ public class CoverWirelessDoesWorkDetector extends CoverAdvancedRedstoneTransmit
             return;
         }
         final byte signal = computeSignalBasedOnActivity(coverable);
-        final long hash = hashCoverCoords(coverable, coverSide);
-        setSignalAt(getUuid(), getFrequency(), hash, signal);
+        final CoverPosition key = getCoverKey(coverable, coverSide);
+        setSignalAt(getUuid(), getFrequency(), key, signal);
 
         if (physical) {
             coverable.setOutputRedstoneSignal(coverSide, signal);
@@ -137,10 +141,22 @@ public class CoverWirelessDoesWorkDetector extends CoverAdvancedRedstoneTransmit
         return true;
     }
 
-    public enum ActivityMode {
-        RECIPE_PROGRESS,
-        MACHINE_IDLE,
-        MACHINE_ENABLED,
+    public enum ActivityMode implements KeyProvider {
+
+        RECIPE_PROGRESS("gt.interact.desc.recipeprogress"),
+        MACHINE_IDLE("gt.interact.desc.machineidle"),
+        MACHINE_ENABLED("gt.interact.desc.mach_on");
+
+        private final String key;
+
+        ActivityMode(String key) {
+            this.key = key;
+        }
+
+        @Override
+        public String getKey() {
+            return this.key;
+        }
     }
 
     @Override
@@ -148,4 +164,8 @@ public class CoverWirelessDoesWorkDetector extends CoverAdvancedRedstoneTransmit
         return new WirelessActivityDetectorUIFactory(buildContext).createWindow();
     }
 
+    @Override
+    protected @NotNull CoverBaseGui<?> getCoverGui() {
+        return new CoverWirelessDoesWorkDetectorGui(this);
+    }
 }

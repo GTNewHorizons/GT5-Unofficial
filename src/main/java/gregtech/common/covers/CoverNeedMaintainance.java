@@ -1,8 +1,14 @@
 package gregtech.common.covers;
 
+import static gregtech.api.util.GTUtility.*;
+import static gregtech.common.gui.mui1.cover.NeedMaintainanceUIFactory.getMaintenanceIssuesCountChat;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraftforge.fluids.Fluid;
+
+import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 
@@ -14,7 +20,10 @@ import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
-import gregtech.api.util.GTUtility;
+import gregtech.common.covers.conditions.MaintenanceAlertCondition;
+import gregtech.common.covers.modes.RedstoneMode;
+import gregtech.common.gui.modularui.cover.CoverNeedMaintenanceGui;
+import gregtech.common.gui.modularui.cover.base.CoverBaseGui;
 import gregtech.common.gui.mui1.cover.NeedMaintainanceUIFactory;
 
 public class CoverNeedMaintainance extends CoverLegacyData {
@@ -29,6 +38,28 @@ public class CoverNeedMaintainance extends CoverLegacyData {
             && rotor.getItemDamage() <= 176);
     }
 
+    public MaintenanceAlertCondition getMaintenanceAlertCondition() {
+        int coverVariable = coverData;
+        if (coverVariable >= 0 && coverVariable < (MaintenanceAlertCondition.values().length << 1)) {
+            return MaintenanceAlertCondition.values()[coverVariable >> 1];
+        }
+        return MaintenanceAlertCondition.ISSUE_1;
+    }
+
+    public void setMaintenanceAlertCondition(MaintenanceAlertCondition threshold) {
+        setVariable((coverData & 0x1) | (threshold.ordinal() << 1));
+    }
+
+    public RedstoneMode getRedstoneMode() {
+        int coverVariable = coverData;
+        return (coverVariable & 0x1) > 0 ? RedstoneMode.INVERTED : RedstoneMode.NORMAL;
+    }
+
+    public void setRedstoneMode(RedstoneMode redstoneMode) {
+        setVariable(redstoneMode == RedstoneMode.NORMAL ? coverData & ~0x1 : coverData | 0x1);
+    }
+
+    @Override
     public boolean isRedstoneSensitive(long aTimer) {
         return false;
     }
@@ -83,31 +114,19 @@ public class CoverNeedMaintainance extends CoverLegacyData {
             this.coverData = 13;
         }
         switch (this.coverData) {
-            case 0 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("056", "Emit if 1 Maintenance Needed"));
-            case 1 -> GTUtility
-                .sendChatToPlayer(aPlayer, GTUtility.trans("057", "Emit if 1 Maintenance Needed(inverted)"));
-            case 2 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("058", "Emit if 2 Maintenance Needed"));
-            case 3 -> GTUtility
-                .sendChatToPlayer(aPlayer, GTUtility.trans("059", "Emit if 2 Maintenance Needed(inverted)"));
-            case 4 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("060", "Emit if 3 Maintenance Needed"));
-            case 5 -> GTUtility
-                .sendChatToPlayer(aPlayer, GTUtility.trans("061", "Emit if 3 Maintenance Needed(inverted)"));
-            case 6 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("062", "Emit if 4 Maintenance Needed"));
-            case 7 -> GTUtility
-                .sendChatToPlayer(aPlayer, GTUtility.trans("063", "Emit if 4 Maintenance Needed(inverted)"));
-            case 8 -> GTUtility.sendChatToPlayer(aPlayer, GTUtility.trans("064", "Emit if 5 Maintenance Needed"));
-            case 9 -> GTUtility
-                .sendChatToPlayer(aPlayer, GTUtility.trans("065", "Emit if 5 Maintenance Needed(inverted)"));
-            case 10 -> GTUtility
-                .sendChatToPlayer(aPlayer, GTUtility.trans("066", "Emit if rotor needs maintenance low accuracy mod"));
-            case 11 -> GTUtility.sendChatToPlayer(
+            case 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 -> sendChatComp(
                 aPlayer,
-                GTUtility.trans("067", "Emit if rotor needs maintenance low accuracy mod(inverted)"));
-            case 12 -> GTUtility
-                .sendChatToPlayer(aPlayer, GTUtility.trans("068", "Emit if rotor needs maintenance high accuracy mod"));
-            case 13 -> GTUtility.sendChatToPlayer(
+                getMaintenanceIssuesCountChat(this.coverData / 2 + 1, this.coverData % 2 != 0));
+            case 10 -> sendChatTrans(aPlayer, "gt.interact.desc.need_maint_rotor_lo");
+            case 11 -> sendChatComp(
                 aPlayer,
-                GTUtility.trans("069", "Emit if rotor needs maintenance high accuracy mod(inverted)"));
+                new ChatComponentTranslation("gt.interact.desc.need_maint_rotor_lo")
+                    .appendSibling(new ChatComponentTranslation("gt.interact.desc.inverted_b")));
+            case 12 -> sendChatTrans(aPlayer, "gt.interact.desc.need_maint_rotor_hi");
+            case 13 -> sendChatComp(
+                aPlayer,
+                new ChatComponentTranslation("gt.interact.desc.need_maint_rotor_hi")
+                    .appendSibling(new ChatComponentTranslation("gt.interact.desc.inverted_b")));
         }
     }
 
@@ -152,6 +171,11 @@ public class CoverNeedMaintainance extends CoverLegacyData {
     }
 
     // GUI stuff
+
+    @Override
+    protected @NotNull CoverBaseGui<?> getCoverGui() {
+        return new CoverNeedMaintenanceGui(this);
+    }
 
     @Override
     public boolean hasCoverGUI() {

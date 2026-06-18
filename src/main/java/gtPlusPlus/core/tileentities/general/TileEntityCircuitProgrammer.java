@@ -14,33 +14,16 @@ import net.minecraft.tileentity.TileEntity;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.inventories.InventoryCircuitProgrammer;
 import gtPlusPlus.core.slots.SlotIntegratedCircuit;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
 
 public class TileEntityCircuitProgrammer extends TileEntity implements ISidedInventory {
 
     private int tickCount = 0;
     private final InventoryCircuitProgrammer inventoryContents;
     private String customName;
-    public int locationX;
-    public int locationY;
-    public int locationZ;
     private int aCurrentMode = 0;
 
     public TileEntityCircuitProgrammer() {
         this.inventoryContents = new InventoryCircuitProgrammer();
-        this.setTileLocation();
-    }
-
-    public boolean setTileLocation() {
-        if (this.hasWorldObj()) {
-            if (!this.getWorldObj().isRemote) {
-                this.locationX = this.xCoord;
-                this.locationY = this.yCoord;
-                this.locationZ = this.zCoord;
-                return true;
-            }
-        }
-        return false;
     }
 
     // Rename to hasCircuitToConfigure
@@ -121,18 +104,7 @@ public class TileEntityCircuitProgrammer extends TileEntity implements ISidedInv
                 }
                 this.tickCount++;
             }
-        } catch (final Throwable ignored) {}
-    }
-
-    public boolean anyPlayerInRange() {
-        return this.worldObj.getClosestPlayer(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D, 32) != null;
-    }
-
-    public NBTTagCompound getTag(final NBTTagCompound nbt, final String tag) {
-        if (!nbt.hasKey(tag)) {
-            nbt.setTag(tag, new NBTTagCompound());
-        }
-        return nbt.getCompoundTag(tag);
+        } catch (final Exception ignored) {}
     }
 
     @Override
@@ -255,7 +227,7 @@ public class TileEntityCircuitProgrammer extends TileEntity implements ISidedInv
 
     @Override
     public String getInventoryName() {
-        return this.hasCustomInventoryName() ? this.customName : "container.circuitprogrammer";
+        return this.hasCustomInventoryName() ? this.customName : "tile.blockCircuitProgrammer.name";
     }
 
     @Override
@@ -276,16 +248,16 @@ public class TileEntityCircuitProgrammer extends TileEntity implements ISidedInv
         this.readFromNBT(tag);
     }
 
-    public boolean onScrewdriverRightClick(byte side, EntityPlayer player, int x, int y, int z) {
+    public boolean onScrewdriverRightClick(EntityPlayer player) {
         try {
             if (aCurrentMode == 24) {
                 aCurrentMode = 0;
             } else {
                 aCurrentMode++;
             }
-            PlayerUtils.messagePlayer(player, "Now configuring units for type " + aCurrentMode + ".");
+            GTUtility.sendChatToPlayer(player, "Now configuring units for type " + aCurrentMode + ".");
             return true;
-        } catch (Throwable t) {
+        } catch (Exception t) {
             return false;
         }
     }

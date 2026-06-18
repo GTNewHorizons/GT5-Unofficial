@@ -4,6 +4,7 @@ import gregtech.api.enums.Dyes;
 import gregtech.api.enums.SteamVariant;
 import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.modularui2.GTGuiTheme;
@@ -11,6 +12,7 @@ import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.render.TextureFactory;
 import gregtech.common.config.MachineStats;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEBoilerSolarSteel extends MTEBoilerSolar {
 
     public MTEBoilerSolarSteel(int aID, String aName, String aNameRegional) {
@@ -32,11 +34,10 @@ public class MTEBoilerSolarSteel extends MTEBoilerSolar {
 
     @Override
     public ITexture[][][] getTextureSet(ITexture[] aTextures) {
-
-        ITexture[][][] rTextures = new ITexture[4][17][];
+        ITexture[][][] rTextures = new ITexture[5][17][];
         for (int color = -1; color < 16; color++) {
             int i = color + 1;
-            short[] colorModulation = Dyes.getModulation(color, Dyes._NULL.mRGBa);
+            short[] colorModulation = Dyes.getModulation(color);
             rTextures[0][i] = new ITexture[] {
                 TextureFactory.of(BlockIcons.MACHINE_STEELBRICKS_BOTTOM, colorModulation) };
             rTextures[1][i] = new ITexture[] { TextureFactory.of(BlockIcons.MACHINE_STEELBRICKS_TOP, colorModulation),
@@ -45,6 +46,8 @@ public class MTEBoilerSolarSteel extends MTEBoilerSolar {
                 TextureFactory.of(BlockIcons.MACHINE_STEELBRICKS_SIDE, colorModulation) };
             rTextures[3][i] = new ITexture[] { TextureFactory.of(BlockIcons.MACHINE_STEELBRICKS_SIDE, colorModulation),
                 TextureFactory.of(BlockIcons.OVERLAY_PIPE) };
+            rTextures[4][i] = new ITexture[] { TextureFactory.of(BlockIcons.MACHINE_STEELBRICKS_TOP, colorModulation),
+                TextureFactory.of(BlockIcons.BOILER_SOLAR) };
         }
         return rTextures;
     }

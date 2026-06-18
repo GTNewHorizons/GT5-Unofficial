@@ -1,15 +1,16 @@
 package gtPlusPlus.recipes;
 
+import net.minecraft.item.ItemStack;
+
 import advsolar.common.AdvancedSolarPanel;
 import gregtech.api.enums.Mods;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
-import gtPlusPlus.core.util.minecraft.RecipeUtils;
+import gregtech.api.util.GTModHandler;
 
 public class RecipeRemovals {
 
     public static void postInit() {
         if (Mods.AdvancedSolarPanel.isModLoaded()) {
-            RecipeUtils.removeRecipeByOutput(ItemUtils.getSimpleStack(AdvancedSolarPanel.blockMolecularTransformer));
+            GTModHandler.removeRecipeByOutputDelayed(new ItemStack(AdvancedSolarPanel.blockMolecularTransformer));
         }
     }
 }

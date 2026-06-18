@@ -1,13 +1,9 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.generators;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.ArrayUtils;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -16,7 +12,6 @@ import gregtech.api.metatileentity.implementations.MTEBasicGenerator;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTModHandler;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
@@ -34,18 +29,13 @@ public class MTEGeothermalGenerator extends MTEBasicGenerator {
 
     @Override
     public String[] getDescription() {
-        String aPollution = "Causes " + this.getPollution() + " Pollution per second";
+        String aPollution = "Causes " + addFormattedString(String.valueOf(this.getPollution()))
+            + " Pollution per second";
         return ArrayUtils.addAll(
             this.mDescriptionArray,
-            "Generates power at " + this.getEfficiency() + "% Efficiency per tick",
+            "Generates power at " + addFormattedString(String.valueOf(this.getEfficiency())) + "%% Efficiency per tick",
             aPollution,
             GTPPCore.GT_Tooltip.get());
-    }
-
-    @Override
-    public boolean onRightclick(final IGregTechTileEntity aBaseMetaTileEntity, final EntityPlayer aPlayer) {
-        openGui(aPlayer);
-        return true;
     }
 
     @Override
@@ -57,15 +47,6 @@ public class MTEGeothermalGenerator extends MTEBasicGenerator {
     @Override
     public int getEfficiency() {
         return 100 - (this.mTier * 7);
-    }
-
-    @Override
-    public int getFuelValue(final ItemStack aStack) {
-        int rValue = Math.max((GTModHandler.getFuelValue(aStack) * 6) / 5, super.getFuelValue(aStack));
-        if (ItemList.Fuel_Can_Plastic_Filled.isStackEqual(aStack, false, true)) {
-            rValue = Math.max(rValue, GameRegistry.getFuelValue(aStack) * 3);
-        }
-        return rValue;
     }
 
     @Override
@@ -82,7 +63,7 @@ public class MTEGeothermalGenerator extends MTEBasicGenerator {
     @Override
     public ITexture[] getFront(final byte aColor) {
         return new ITexture[] { super.getFront(aColor)[0], TextureFactory.of(Textures.BlockIcons.DIESEL_GENERATOR_SIDE),
-            Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[this.mTier] };
+            Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_2A[this.mTier + 1] };
     }
 
     @Override
@@ -112,7 +93,7 @@ public class MTEGeothermalGenerator extends MTEBasicGenerator {
     public ITexture[] getFrontActive(final byte aColor) {
         return new ITexture[] { super.getFrontActive(aColor)[0],
             TextureFactory.of(Textures.BlockIcons.DIESEL_GENERATOR_SIDE_ACTIVE),
-            Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[this.mTier] };
+            Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI_2A[this.mTier + 1] };
     }
 
     @Override

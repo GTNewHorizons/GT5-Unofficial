@@ -9,7 +9,7 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
 
-import gregtech.api.enums.Textures;
+import gregtech.api.enums.TextureSet;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedTool;
 
@@ -21,18 +21,8 @@ public class ToolButcheryKnife extends GTTool {
     }
 
     @Override
-    public int getToolDamagePerDropConversion() {
-        return 100;
-    }
-
-    @Override
     public int getToolDamagePerContainerCraft() {
         return 100;
-    }
-
-    @Override
-    public int getToolDamagePerEntityAttack() {
-        return 200;
     }
 
     @Override
@@ -48,11 +38,6 @@ public class ToolButcheryKnife extends GTTool {
     @Override
     public float getSpeedMultiplier() {
         return 0.1F;
-    }
-
-    @Override
-    public float getMaxDurabilityMultiplier() {
-        return 1.0F;
     }
 
     @Override
@@ -77,7 +62,9 @@ public class ToolButcheryKnife extends GTTool {
 
     @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? Textures.ItemIcons.BUTCHERYKNIFE : null;
+        return aIsToolHead
+            ? MetaGeneratedTool.getPrimaryMaterial(aStack).mIconSet.mTextures[TextureSet.INDEX_butcheryKnife]
+            : null;
     }
 
     @Override

@@ -8,12 +8,12 @@ import javax.annotation.Nonnull;
 import javax.annotation.meta.TypeQualifierDefault;
 
 /**
- * This annotation can be applied to a package or class to indicate that
- * the methods in that element are nonnull by default unless there is:
+ * This annotation can be applied to a package or class to indicate that the methods in that element are nonnull by
+ * default unless there is:
  * <ul>
  * <li>An explicit nullness annotation
- * <li>The method overrides a method in a superclass (in which case the
- * annotation of the corresponding method in the superclass applies)
+ * <li>The method overrides a method in a superclass (in which case the annotation of the corresponding method in the
+ * superclass applies)
  * </ul>
  */
 @Nonnull

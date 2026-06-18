@@ -7,21 +7,21 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.ArrayUtils;
 
-import com.gtnewhorizons.modularui.api.drawable.FallbackableUITexture;
-import com.gtnewhorizons.modularui.api.drawable.IDrawable;
-import com.gtnewhorizons.modularui.api.math.Pos2d;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 import gregtech.api.enums.Textures.BlockIcons;
-import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicMachine;
+import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.recipe.BasicUIProperties;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
+import gregtech.common.gui.modularui.singleblock.MTEAutoChiselGui;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import team.chisel.carving.Carving;
 
@@ -187,7 +187,7 @@ public class MTEAutoChisel extends MTEBasicMachine {
                         return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
                     }
                     if (!tIsCached) {
-                        cacheItem(ItemUtils.getSimpleStack(aInput, 1), ItemUtils.getSimpleStack(tOutput, 1));
+                        cacheItem(GTUtility.copyAmount(1, aInput), GTUtility.copyAmount(1, tOutput));
                     }
                     this.mOutputItems[0] = tOutput.copy();
                     return FOUND_AND_SUCCESSFULLY_USED_RECIPE;
@@ -200,25 +200,36 @@ public class MTEAutoChisel extends MTEBasicMachine {
         return DID_NOT_FIND_RECIPE;
     }
 
-    private static final FallbackableUITexture progressBarTexture = GTUITextures
-        .fallbackableProgressbar("auto_chisel", GTUITextures.PROGRESSBAR_COMPRESS);
-
     @Override
     protected BasicUIProperties getUIProperties() {
         return super.getUIProperties().toBuilder()
-            .progressBarTexture(progressBarTexture)
+            .progressBarTextureMUI2(GTGuiTextures.PROGRESSBAR_COMPRESS)
+            .slotOverlaysMUI2((_, _, isOutput, _) -> isOutput ? null : GTGuiTextures.OVERLAY_SLOT_COMPRESSOR)
             .build();
     }
 
     @Override
-    protected SlotWidget createItemInputSlot(int index, IDrawable[] backgrounds, Pos2d pos) {
-        return (SlotWidget) super.createItemInputSlot(index, backgrounds, pos)
-            .setBackground(getGUITextureSet().getItemSlot(), GTUITextures.OVERLAY_SLOT_COMPRESSOR);
+    protected boolean useMui2() {
+        return true;
     }
 
     @Override
-    protected SlotWidget createSpecialSlot(IDrawable[] backgrounds, Pos2d pos, BasicUIProperties uiProperties) {
-        return (SlotWidget) super.createSpecialSlot(backgrounds, pos, uiProperties)
-            .setGTTooltip(() -> mTooltipCache.getData("GTPP.machines.chisel_slot.tooltip"));
+    public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTEAutoChiselGui(this, this.getUIProperties()).build(guiData, syncManager, uiSettings);
+    }
+
+    @Override
+    public int getSlotLimit(int slot) {
+        return slot == getSpecialSlotIndex() ? 1 : super.getSlotLimit(slot);
+    }
+
+    @Override
+    public boolean isValidSlot(int aIndex) {
+        return aIndex != getSpecialSlotIndex() && super.isValidSlot(aIndex);
+    }
+
+    @Override
+    public boolean isItemValidForPhantomSlot(int index, ItemStack itemStack) {
+        return index == getSpecialSlotIndex();
     }
 }

@@ -44,13 +44,6 @@ public class RenderSickBlaze extends RenderLiving {
     }
 
     /**
-     * Returns the location of an entity's texture. Doesn't seem to be called unless you call Render.bindEntityTexture.
-     */
-    protected ResourceLocation getEntityTexture(EntitySickBlaze p_110775_1_) {
-        return blazeTextures;
-    }
-
-    /**
      * Actually renders the given argument. This is a synthetic bridge method, always casting down its argument and then
      * handing it off to a worker function which does the actual work. In all probabilty, the class Render is generic
      * (Render<T extends Entity) and this method has signature public void func_76986_a(T entity, double d, double d1,
@@ -79,7 +72,7 @@ public class RenderSickBlaze extends RenderLiving {
      */
     @Override
     protected ResourceLocation getEntityTexture(Entity p_110775_1_) {
-        return this.getEntityTexture((EntitySickBlaze) p_110775_1_);
+        return blazeTextures;
     }
 
     /**

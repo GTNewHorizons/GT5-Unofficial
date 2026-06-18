@@ -1,20 +1,21 @@
 package gtPlusPlus.api.recipe;
 
-import static net.minecraft.util.EnumChatFormatting.GRAY;
-
 import java.util.List;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import net.minecraft.util.StatCollector;
+
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 
+import codechicken.nei.PositionedStack;
 import gregtech.api.recipe.BasicUIPropertiesBuilder;
 import gregtech.api.recipe.NEIRecipePropertiesBuilder;
 import gregtech.api.recipe.RecipeMapFrontend;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.common.gui.modularui.UIHelper;
 import gregtech.nei.GTNEIDefaultHandler;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.chemplant.MTEChemicalPlant;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
@@ -46,23 +47,16 @@ public class ChemicalPlantFrontend extends RecipeMapFrontend {
     }
 
     @Override
-    protected List<String> handleNEIItemInputTooltip(List<String> currentTip,
-        GTNEIDefaultHandler.FixedPositionedStack pStack) {
-        if (ItemUtils.isCatalyst(pStack.item)) {
-            currentTip.add(GRAY + "Does not always get consumed in the process");
-            currentTip.add(GRAY + "Higher tier pipe casings allow this item to last longer");
-        } else {
-            super.handleNEIItemInputTooltip(currentTip, pStack);
+    public void prepareRecipe(GTNEIDefaultHandler.CachedDefaultRecipe recipe) {
+        for (PositionedStack pStack : recipe.mInputs) {
+            if (pStack instanceof GTNEIDefaultHandler.FixedPositionedStack fixed
+                && MTEChemicalPlant.isCatalyst(pStack.item)) {
+                fixed.setCustomBadge(
+                    "NC*",
+                    StatCollector.translateToLocal("gtpp.nei.chemical_plant.not_consumed"),
+                    StatCollector.translateToLocal("gtpp.nei.chemical_plant.higher_tier_casing"));
+            }
         }
-        return currentTip;
     }
 
-    @Override
-    protected void drawNEIOverlayForInput(GTNEIDefaultHandler.FixedPositionedStack stack) {
-        if (ItemUtils.isCatalyst(stack.item)) {
-            drawNEIOverlayText("NC*", stack);
-        } else {
-            super.drawNEIOverlayForInput(stack);
-        }
-    }
 }

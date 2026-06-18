@@ -1,6 +1,6 @@
 package gregtech.api.render;
 
-import java.util.List;
+import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
@@ -17,7 +17,8 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.ListMultimap;
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
 import com.gtnewhorizons.angelica.api.IBlockAccessExtended;
 
 import gregtech.api.enums.Mods;
@@ -25,26 +26,23 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.mixin.interfaces.accessors.ChunkCacheAccessor;
 
 /**
- * Allows you to render an overlay above supported blocks. This overlay is rendered above any original block texture
- * the overlayed block would have, be it textures or covers.
+ * Allows you to render an overlay above supported blocks. This overlay is rendered above any original block texture the
+ * overlayed block would have, be it textures or covers.
  *
  * All overlays must have an owner, and each owner can have at most one ITexture assigned to each render location.
  * Different overlays from different owners will be rendered in the zlevel specified, with biggest zlevel meaning
- * rendered
- * on top. The exact render order remain unspecified if multiple overlay has the same zlevel.
+ * rendered on top. The exact render order remain unspecified if multiple overlay has the same zlevel.
  *
  * read methods are thread safe, but write methods are only supposed to be called on main thread only.
  *
  * Current supported blocks include all subclasses of {@link gregtech.common.blocks.BlockCasingsAbstract} and meta tile
- * entities that is rendered as a full block (e.g. very large pipes, frames or hatches)
- * To add support to a new type of block...
- * * if it's a simple dumb block, i.e. render type of 0, just switch to {@link gregtech.common.render.GTRendererCasing}
- * * if it already has a ISBRH/TESR, you need to render the overlay of each side after your blocks' main texture of each
- * side rendered
+ * entities that is rendered as a full block (e.g. very large pipes, frames or hatches) To add support to a new type of
+ * block... * if it's a simple dumb block, i.e. render type of 0, just switch to
+ * {@link gregtech.common.render.GTRendererCasing} * if it already has a ISBRH/TESR, you need to render the overlay of
+ * each side after your blocks' main texture of each side rendered
  *
  * {@link OverlayTicket OverlayTickets} returned by set methods will strongly hold a reference to RenderOverlay
- * instances.
- * Do not keep them around indefinitely or else there will be a memory leak
+ * instances. Do not keep them around indefinitely or else there will be a memory leak
  *
  * This obviously doesn't work on server side...
  */
@@ -60,8 +58,8 @@ public class RenderOverlay {
             }
         });
     private final Map<ChunkCoordinates, ITexture[]> overlays = new ConcurrentHashMap<>();
-    private final ListMultimap<RenderLocation, OverlayTicket> ticketsByLocation = ArrayListMultimap.create();
-    private final ListMultimap<ChunkCoordIntPair, OverlayTicket> byChunk = ArrayListMultimap.create();
+    private final Multimap<RenderLocation, OverlayTicket> ticketsByLocation = ArrayListMultimap.create();
+    private final Multimap<ChunkCoordIntPair, OverlayTicket> byChunk = HashMultimap.create();
 
     public OverlayTicket set(int xOwner, int yOwner, int zOwner, int x, int y, int z, ForgeDirection dir,
         ITexture texture, int zlevel) {
@@ -80,7 +78,7 @@ public class RenderOverlay {
     }
 
     private ITexture getTextureArray(RenderLocation renderLoc) {
-        List<OverlayTicket> tickets = ticketsByLocation.get(renderLoc);
+        Collection<OverlayTicket> tickets = ticketsByLocation.get(renderLoc);
         if (tickets.isEmpty()) {
             return null;
         }
@@ -96,9 +94,8 @@ public class RenderOverlay {
         return overlays.get(new ChunkCoordinates(x, y, z));
     }
 
-    public void reset() {
-        overlays.clear();
-        byChunk.clear();
+    public static void reset() {
+        instances.invalidateAll();
     }
 
     public static RenderOverlay getOrCreate(World world) {

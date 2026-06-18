@@ -8,57 +8,79 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.IChatComponent;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.IItemBehaviour;
 import gregtech.api.items.MetaBaseItem;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.scanner.ScannerHelper;
 
 public class BehaviourScanner extends BehaviourNone {
 
     public static final IItemBehaviour<MetaBaseItem> INSTANCE = new BehaviourScanner();
-    private final String mTooltip = GTLanguageManager
-        .addStringLocalization("gt.behaviour.scanning", "Can scan Blocks in World");
+
+    /** Serializes an {@link IChatComponent} to NBT via the built-in JSON serializer. */
+    private static NBTTagCompound componentToNBT(IChatComponent comp) {
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setString("s", IChatComponent.Serializer.func_150696_a(comp));
+        return tag;
+    }
+
+    /** Deserializes a component from NBT, returns null if the tag is missing or malformed. */
+    private static IChatComponent componentFromNBT(NBTTagCompound tag) {
+        if (!tag.hasKey("s")) return null;
+        return IChatComponent.Serializer.func_150699_a(tag.getString("s"));
+    }
 
     @Override
     public boolean onItemUseFirst(MetaBaseItem aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX,
         int aY, int aZ, ForgeDirection side, float hitX, float hitY, float hitZ) {
         final NBTTagCompound tNBT = aStack.getTagCompound();
         if (((aPlayer instanceof EntityPlayerMP)) && (aItem.canUse(aStack, 20000.0D))) {
-            final ArrayList<String> tList = new ArrayList<>();
+            final List<IChatComponent> list = new ArrayList<>();
             if (aItem.use(
                 aStack,
-                GTUtility.getCoordinateScan(tList, aPlayer, aWorld, 1, aX, aY, aZ, side, hitX, hitY, hitZ),
+                ScannerHelper.scanComponents(list, aPlayer, aWorld, 1, aX, aY, aZ, side, hitX, hitY, hitZ),
                 aPlayer)) {
-                final int tList_sS = tList.size();
-                tNBT.setInteger("dataLinesCount", tList_sS);
-                for (int i = 0; i < tList_sS; i++) {
-                    tNBT.setString("dataLines" + i, tList.get(i));
-                    GTUtility.sendChatToPlayer(aPlayer, tList.get(i));
+                final int count = list.size();
+                tNBT.setInteger("dataLinesCount", count);
+                for (int i = 0; i < count; i++) {
+                    tNBT.setTag("scanLine" + i, componentToNBT(list.get(i)));
+                    aPlayer.addChatComponentMessage(list.get(i));
                 }
             }
             return true;
         }
-        GTUtility.doSoundAtClient(SoundResource.IC2_TOOLS_OD_SCANNER, 1, 1.0F, aX, aY, aZ);
+        GTUtility.doSoundAtClient(SoundResource.GTCEU_OP_PORTABLE_SCANNER, 1, 1.0F, aX, aY, aZ);
         // doGuiAtClient()
         return aPlayer instanceof EntityPlayerMP;
     }
 
     @Override
     public List<String> getAdditionalToolTips(MetaBaseItem aItem, List<String> aList, ItemStack aStack) {
-        try {
-            NBTTagCompound tNBT = aStack.getTagCompound();
-            int lines = tNBT.getInteger("dataLinesCount");
-            if (lines < 1) throw new Exception();
-            aList.add(EnumChatFormatting.BLUE + "Block scan data result:");
+        final int lines = ItemStackNBT.getInteger(aStack, "dataLinesCount");
+        if (0 < lines) {
+            aList.add(EnumChatFormatting.BLUE + StatCollector.translateToLocal("gt.behaviour.scanning.result"));
+            final NBTTagCompound nbt = aStack.getTagCompound();
             for (int i = 0; i < lines; i++) {
-                aList.add(EnumChatFormatting.RESET + tNBT.getString("dataLines" + i));
+                IChatComponent comp = nbt != null && nbt.hasKey("scanLine" + i)
+                    ? componentFromNBT(nbt.getCompoundTag("scanLine" + i))
+                    : null;
+                if (comp != null) {
+                    aList.add(EnumChatFormatting.RESET + comp.getFormattedText());
+                } else {
+                    // fallback for items scanned before this change (or malformed NBT)
+                    aList.add(EnumChatFormatting.RESET + ItemStackNBT.getString(aStack, "dataLines" + i));
+                }
             }
-        } catch (Exception e) {
-            aList.add(this.mTooltip);
+        } else {
+            aList.add(StatCollector.translateToLocal("gt.behaviour.scanning"));
         }
         return aList;
     }

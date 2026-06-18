@@ -1,14 +1,20 @@
 package tectech.thing.metaTileEntity.multi;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.GregTechAPI.sBlockCasings4;
+import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.OutputBus;
+import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofHatchAdderOptional;
 import static net.minecraft.util.AxisAlignedBB.getBoundingBox;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
 import javax.annotation.Nonnull;
 
@@ -28,6 +34,7 @@ import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
 
+import gregtech.api.enums.HarvestTool;
 import gregtech.api.enums.Textures;
 import gregtech.api.hazards.HazardProtection;
 import gregtech.api.interfaces.ITexture;
@@ -36,13 +43,13 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import tectech.Reference;
 import tectech.loader.MainLoader;
-import tectech.recipe.TTRecipeAdder;
 import tectech.thing.metaTileEntity.multi.base.INameFunction;
 import tectech.thing.metaTileEntity.multi.base.IStatusFunction;
 import tectech.thing.metaTileEntity.multi.base.LedStatus;
@@ -55,6 +62,7 @@ import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTe
  */
 public class MTEMicrowave extends TTMultiblockBase implements ISurvivalConstructable {
 
+    private static final int CASING_INDEX = 49;
     // region variables
     private boolean hasBeenPausedThisCycle = false;
     // endregion
@@ -80,7 +88,14 @@ public class MTEMicrowave extends TTMultiblockBase implements ISurvivalConstruct
                     { "AAAAA", "A---A", "A---A", "A---A", "AAAAA" }, { "AA~AA", "A---A", "A---A", "A---A", "AAAAA" },
                     { "ABBBA", "BAAAB", "BAAAB", "BAAAB", "ABBBA" } }))
         .addElement('A', ofBlock(sBlockCasings4, 1))
-        .addElement('B', ofHatchAdderOptional(MTEMicrowave::addClassicToMachineList, 49, 1, sBlockCasings4, 1))
+        .addElement(
+            'B',
+            ofChain(
+                buildHatchAdder(MTEMicrowave.class).atLeast(Maintenance, Energy, OutputBus)
+                    .hint(1)
+                    .casingIndex(CASING_INDEX)
+                    .buildAndChain(ofBlock(sBlockCasings4, 1)),
+                ofHatchAdderOptional(MTEMicrowave::addClassicToMachineList, CASING_INDEX, 1, sBlockCasings4, 1)))
         .build();
     // endregion
 
@@ -122,8 +137,12 @@ public class MTEMicrowave extends TTMultiblockBase implements ISurvivalConstruct
     }
 
     @Override
-    public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
-        return structureCheck_EM("main", 2, 2, 0);
+    public void checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack,
+        List<StructureError> errors) {
+        if (!checkPiece("main", 2, 2, 0, errors)) return;
+        checkHasEnergyHatch(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasOutputBus(errors);
     }
 
     @Override
@@ -204,7 +223,7 @@ public class MTEMicrowave extends TTMultiblockBase implements ISurvivalConstruct
             damagingFactor >>= 1;
         } while (damagingFactor > 0);
 
-        mOutputItems = itemsToOutput.toArray(TTRecipeAdder.nullItem);
+        mOutputItems = itemsToOutput.toArray(new ItemStack[0]);
 
         if (remainingTime.get() <= 0) {
             mte.getWorld()
@@ -235,15 +254,16 @@ public class MTEMicrowave extends TTMultiblockBase implements ISurvivalConstruct
             .addInfo(translateToLocal("gt.blockmachines.multimachine.tm.microwave.desc.5")) // (Do not insert a
                                                                                             // Wither)
             .beginStructureBlock(5, 4, 5, true)
-            .addController(translateToLocal("tt.keyword.Structure.FrontCenter")) // Controller: Front center
+            .addController(translateToLocal("tt.keyword.Structure.FrontCenter")) // Controller:
+                                                                                 // Front
+                                                                                 // center
             .addCasingInfoMin(translateToLocal("tt.keyword.Structure.StainlessSteelCasing"), 60, false) // 60x
                                                                                                         // Stainless
                                                                                                         // Steel
             // Casing (minimum)
-            .addOtherStructurePart(
-                translateToLocal("tt.keyword.Structure.DataConnector"),
-                translateToLocal("tt.keyword.Structure.AnyOuterCasingOnBottom"),
-                2) // Output Bus: Any outer casing on the bottom layer
+            .addOutputBus(translateToLocal("tt.keyword.Structure.AnyOuterCasingOnBottom"), 2) // Output Bus: Any outer
+                                                                                              // casing on the bottom
+                                                                                              // layer
             .addEnergyHatch(translateToLocal("tt.keyword.Structure.AnyOuterCasingOnBottom"), 1) // Energy Hatch: Any
                                                                                                 // outer casing on
                                                                                                 // the bottom layer
@@ -297,21 +317,20 @@ public class MTEMicrowave extends TTMultiblockBase implements ISurvivalConstruct
         return hasBeenPausedThisCycle || super.onRunningTick(aStack); // consume eu and other resources if not paused
     }
 
-    // TODO Why is the basetype 1??
     @Override
     public byte getTileEntityBaseType() {
-        return 1;
+        return HarvestTool.WrenchLevel1.toTileEntityBaseType();
     }
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        structureBuild_EM("main", 2, 2, 0, stackSize, hintsOnly);
+        buildPiece("main", stackSize, hintsOnly, 2, 2, 0);
     }
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
         if (mMachine) return -1;
-        return survivialBuildPiece("main", stackSize, 2, 2, 0, elementBudget, source, actor, false, true);
+        return survivalBuildPiece("main", stackSize, 2, 2, 0, elementBudget, source, actor, false, true);
     }
 
     @Override
@@ -326,6 +345,11 @@ public class MTEMicrowave extends TTMultiblockBase implements ISurvivalConstruct
 
     @Override
     public boolean isSafeVoidButtonEnabled() {
+        return false;
+    }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
         return false;
     }
 }

@@ -1,13 +1,18 @@
 package gregtech.api.items;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTValues.D1;
 import static gregtech.api.enums.GTValues.V;
-import static gregtech.api.util.GTUtility.formatNumbers;
+import static net.minecraft.util.StatCollector.translateToLocal;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
 import java.util.function.Predicate;
 
 import net.minecraft.dispenser.IBlockSource;
@@ -20,19 +25,25 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.BlockSnapshot;
+import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidContainerItem;
 
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 import com.gtnewhorizons.modularui.api.KeyboardUtil;
 
 import gregtech.GTMod;
+import gregtech.api.GregTechAPI;
+import gregtech.api.enums.Materials;
 import gregtech.api.enums.SubTag;
 import gregtech.api.interfaces.IItemBehaviour;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
@@ -51,7 +62,7 @@ public abstract class MetaBaseItem extends GTGenericItem
      * @param aUnlocalized The Unlocalized Name of this Item.
      */
     public MetaBaseItem(String aUnlocalized) {
-        super(aUnlocalized, "Generated Item", null);
+        super(aUnlocalized, null, null);
         setHasSubtypes(true);
         setMaxDamage(0);
     }
@@ -76,6 +87,10 @@ public abstract class MetaBaseItem extends GTGenericItem
     public abstract Long[] getElectricStats(ItemStack aStack);
 
     public abstract Long[] getFluidContainerStats(ItemStack aStack);
+
+    protected Function<ItemStack, String> getToolTipLocalizationFunction(ItemStack aStack) {
+        return null;
+    }
 
     @Override
     public boolean hasProjectile(SubTag aProjectileType, ItemStack aStack) {
@@ -131,6 +146,12 @@ public abstract class MetaBaseItem extends GTGenericItem
         return forEachBehavior(aStack, behavior -> behavior.onMiddleClick(this, aStack, aPlayer));
     }
 
+    public void onBlockPlacedWhileWieldingOffhanded(BlockSnapshot snapshot, ItemStack itemStack, EntityPlayer player) {
+        forEachBehavior(
+            itemStack,
+            behavior -> behavior.onBlockPlacedWhileWieldingOffhanded(snapshot, itemStack, player));
+    }
+
     @Override
     public boolean onLeftClickEntity(ItemStack aStack, EntityPlayer aPlayer, Entity aEntity) {
         use(aStack, 0, aPlayer);
@@ -139,14 +160,14 @@ public abstract class MetaBaseItem extends GTGenericItem
         try {
             if (tList != null) for (IItemBehaviour<MetaBaseItem> tBehavior : tList)
                 if (tBehavior.onLeftClickEntity(this, aStack, aPlayer, aEntity)) {
-                    if (aStack.stackSize <= 0) aPlayer.destroyCurrentEquippedItem();
+                    if (aStack.stackSize <= 0) GTUtility.destroyCurrentItem(aPlayer);
                     return true;
                 }
             if (aStack.stackSize <= 0) {
-                aPlayer.destroyCurrentEquippedItem();
+                GTUtility.destroyCurrentItem(aPlayer);
                 return false;
             }
-        } catch (Throwable e) {
+        } catch (Exception e) {
             GTMod.GT_FML_LOGGER.error("Error left clicking entity", e);
         }
         return false;
@@ -161,14 +182,14 @@ public abstract class MetaBaseItem extends GTGenericItem
         try {
             if (tList != null) for (IItemBehaviour<MetaBaseItem> tBehavior : tList)
                 if (tBehavior.onItemUse(this, aStack, aPlayer, aWorld, aX, aY, aZ, ordinalSide, hitX, hitY, hitZ)) {
-                    if (aStack.stackSize <= 0) aPlayer.destroyCurrentEquippedItem();
+                    if (aStack.stackSize <= 0) GTUtility.destroyCurrentItem(aPlayer);
                     return true;
                 }
             if (aStack.stackSize <= 0) {
-                aPlayer.destroyCurrentEquippedItem();
+                GTUtility.destroyCurrentItem(aPlayer);
                 return false;
             }
-        } catch (Throwable e) {
+        } catch (Exception e) {
             GTMod.GT_FML_LOGGER.error("Error using item", e);
         }
         return false;
@@ -193,14 +214,14 @@ public abstract class MetaBaseItem extends GTGenericItem
                 hitX,
                 hitY,
                 hitZ)) {
-                    if (aStack.stackSize <= 0) aPlayer.destroyCurrentEquippedItem();
+                    if (aStack.stackSize <= 0) GTUtility.destroyCurrentItem(aPlayer);
                     return true;
                 }
             if (aStack.stackSize <= 0) {
-                aPlayer.destroyCurrentEquippedItem();
+                GTUtility.destroyCurrentItem(aPlayer);
                 return false;
             }
-        } catch (Throwable e) {
+        } catch (Exception e) {
             GTMod.GT_FML_LOGGER.error("Error using item", e);
         }
         return false;
@@ -214,42 +235,60 @@ public abstract class MetaBaseItem extends GTGenericItem
         try {
             if (tList != null) for (IItemBehaviour<MetaBaseItem> tBehavior : tList)
                 aStack = tBehavior.onItemRightClick(this, aStack, aWorld, aPlayer);
-        } catch (Throwable e) {
+        } catch (Exception e) {
             GTMod.GT_FML_LOGGER.error("Error right clicking item", e);
         }
         return aStack;
     }
 
+    /** Returns null for item damage out of bounds. */
+    public Materials getMaterial(int damage) {
+        if (!Materials.isMaterialItem(damage)) {
+            return null;
+        }
+        return GregTechAPI.sGeneratedMaterials[damage % 1_000];
+    }
+
     @Override
     public final void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> aList, boolean aF3_H) {
-        String tKey = getUnlocalizedName(aStack) + ".tooltip";
-        String[] tStrings = GTLanguageManager.getTranslation(tKey)
-            .split("/n ");
-        for (String tString : tStrings)
-            if (GTUtility.isStringValid(tString) && !tKey.equals(tString)) aList.add(tString);
-
+        final Function<ItemStack, String> tooltipFunction = getToolTipLocalizationFunction(aStack);
+        if (tooltipFunction != null) {
+            Collections.addAll(
+                aList,
+                Arrays.stream(GTSplit.split(tooltipFunction.apply(aStack)))
+                    .filter(GTUtility::isStringValid)
+                    .toArray(String[]::new));
+        }
+        final String key = getUnlocalizedName() + "." + aStack.getItemDamage() + ".tooltip";
+        if (StatCollector.canTranslate(key)) Collections.addAll(
+            aList,
+            Arrays.stream(GTSplit.splitLocalized(key))
+                .filter(GTUtility::isStringValid)
+                .toArray(String[]::new));
         Long[] tStats = getElectricStats(aStack);
         if (tStats != null) {
             if (tStats[3] > 0) {
                 aList.add(
-                    EnumChatFormatting.AQUA + String.format(
-                        transItem("009", "Contains %s EU   Tier: %s"),
-                        formatNumbers(tStats[3]),
-                        "" + (tStats[2] >= 0 ? tStats[2] : 0)) + EnumChatFormatting.GRAY);
+                    EnumChatFormatting.AQUA
+                        + translateToLocalFormatted(
+                            "gt.item.desc.stored_eu",
+                            formatNumber(tStats[3]),
+                            "" + (tStats[2] >= 0 ? tStats[2] : 0))
+                        + EnumChatFormatting.GRAY);
             } else {
                 long tCharge = getRealCharge(aStack);
                 if (tStats[3] == -2 && tCharge <= 0) {
                     aList.add(
-                        EnumChatFormatting.AQUA + transItem("010", "Empty. You should recycle it properly.")
-                            + EnumChatFormatting.GRAY);
+                        EnumChatFormatting.AQUA + translateToLocal("gt.item.desc.empty") + EnumChatFormatting.GRAY);
                 } else {
+                    int voltageTier = (int) GTUtility.clamp(tStats[2], 0, V.length - 1);
                     aList.add(
                         EnumChatFormatting.AQUA
-                            + String.format(
-                                transItem("011", "%s / %s EU - Voltage: %s"),
-                                formatNumbers(tCharge),
-                                formatNumbers(Math.abs(tStats[0])),
-                                "" + V[(int) (tStats[2] >= 0 ? tStats[2] < V.length ? tStats[2] : V.length - 1 : 1)])
+                            + translateToLocalFormatted(
+                                "gt.item.desc.eu_info",
+                                formatNumber(tCharge),
+                                formatNumber(Math.abs(tStats[0])),
+                                formatNumber(V[voltageTier]))
                             + EnumChatFormatting.GRAY);
                 }
             }
@@ -259,13 +298,15 @@ public abstract class MetaBaseItem extends GTGenericItem
         if (tStats != null && tStats[0] > 0) {
             FluidStack tFluid = getFluidContent(aStack);
             aList.add(
-                EnumChatFormatting.BLUE + ((tFluid == null ? transItem("012", "No Fluids Contained")
+                EnumChatFormatting.BLUE + ((tFluid == null ? translateToLocal("gt.item.desc.no_fluid")
                     : GTUtility.getFluidName(tFluid, true))) + EnumChatFormatting.GRAY);
             aList.add(
-                EnumChatFormatting.BLUE + String.format(
-                    transItem("013", "%sL / %sL"),
-                    tFluid == null ? 0 : formatNumbers(tFluid.amount),
-                    formatNumbers(tStats[0])) + EnumChatFormatting.GRAY);
+                EnumChatFormatting.BLUE
+                    + translateToLocalFormatted(
+                        "gt.item.desc.fluid_info",
+                        tFluid == null ? 0 : formatNumber(tFluid.amount),
+                        formatNumber(tStats[0]))
+                    + EnumChatFormatting.GRAY);
         }
 
         ArrayList<IItemBehaviour<MetaBaseItem>> behaviours = mItemBehaviors.get((short) getDamage(aStack));
@@ -437,25 +478,20 @@ public abstract class MetaBaseItem extends GTGenericItem
         Long[] tStats = getElectricStats(aStack);
         if (tStats == null) return 0;
         if (tStats[3] > 0) return (int) (long) tStats[3];
-        NBTTagCompound tNBT = aStack.getTagCompound();
-        return tNBT == null ? 0 : tNBT.getLong("GT.ItemCharge");
+        return ItemStackNBT.getLong(aStack, "GT.ItemCharge");
     }
 
     public final boolean setCharge(ItemStack aStack, long aCharge) {
         Long[] tStats = getElectricStats(aStack);
         if (tStats == null || tStats[3] > 0) return false;
-        NBTTagCompound tNBT = aStack.getTagCompound();
-        if (tNBT == null) tNBT = new NBTTagCompound();
-        tNBT.removeTag("GT.ItemCharge");
         aCharge = Math.min(tStats[0] < 0 ? Math.abs(tStats[0] / 2) : aCharge, Math.abs(tStats[0]));
         if (aCharge > 0) {
             aStack.setItemDamage(getChargedMetaData(aStack));
-            tNBT.setLong("GT.ItemCharge", aCharge);
+            ItemStackNBT.setLong(aStack, "GT.ItemCharge", aCharge);
         } else {
             aStack.setItemDamage(getEmptyMetaData(aStack));
+            ItemStackNBT.removeTag(aStack, "GT.ItemCharge");
         }
-        if (tNBT.hasNoTags()) aStack.setTagCompound(null);
-        else aStack.setTagCompound(tNBT);
         isItemStackUsable(aStack);
         return true;
     }
@@ -571,18 +607,18 @@ public abstract class MetaBaseItem extends GTGenericItem
     public FluidStack getFluidContent(ItemStack aStack) {
         Long[] tStats = getFluidContainerStats(aStack);
         if (tStats == null || tStats[0] <= 0) return GTUtility.getFluidForFilledItem(aStack, false);
-        NBTTagCompound tNBT = aStack.getTagCompound();
-        return tNBT == null ? null : FluidStack.loadFluidStackFromNBT(tNBT.getCompoundTag("GT.FluidContent"));
+        if (ItemStackNBT.hasKey(aStack, "GT.FluidContent", NBT.TAG_COMPOUND)) {
+            return FluidStack.loadFluidStackFromNBT(ItemStackNBT.getCompoundTag(aStack, "GT.FluidContent"));
+        }
+        return null;
     }
 
     public void setFluidContent(ItemStack aStack, FluidStack aFluid) {
-        NBTTagCompound tNBT = aStack.getTagCompound();
-        if (tNBT == null) tNBT = new NBTTagCompound();
-        else tNBT.removeTag("GT.FluidContent");
-        if (aFluid != null && aFluid.amount > 0)
-            tNBT.setTag("GT.FluidContent", aFluid.writeToNBT(new NBTTagCompound()));
-        if (tNBT.hasNoTags()) aStack.setTagCompound(null);
-        else aStack.setTagCompound(tNBT);
+        if (aFluid != null && aFluid.amount > 0) {
+            ItemStackNBT.setTag(aStack, "GT.FluidContent", aFluid.writeToNBT(new NBTTagCompound()));
+        } else {
+            ItemStackNBT.removeTag(aStack, "GT.FluidContent");
+        }
         isItemStackUsable(aStack);
     }
 
@@ -629,17 +665,7 @@ public abstract class MetaBaseItem extends GTGenericItem
     } // just to be sure.
 
     @Override
-    public int getItemEnchantability() {
-        return 0;
-    }
-
-    @Override
     public boolean isBookEnchantable(ItemStack aStack, ItemStack aBook) {
-        return false;
-    }
-
-    @Override
-    public boolean getIsRepairable(ItemStack aStack, ItemStack aMaterial) {
         return false;
     }
 
@@ -662,5 +688,4 @@ public abstract class MetaBaseItem extends GTGenericItem
 
         return false;
     }
-
 }

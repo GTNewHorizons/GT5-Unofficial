@@ -1,5 +1,6 @@
 package gtPlusPlus.core.item.general;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.Mods.GTPlusPlus;
 
 import java.util.List;
@@ -9,11 +10,12 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.FoodStats;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 
 import baubles.api.BaubleType;
 import baubles.api.IBauble;
@@ -22,31 +24,26 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Mods;
 import gregtech.api.util.GTUtility;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.core.util.minecraft.PlayerUtils;
-import gtPlusPlus.core.util.sys.KeyboardUtils;
-import gtPlusPlus.xmod.gregtech.common.helpers.ChargingHelper;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
 import ic2.api.item.IElectricItemManager;
 
 @Optional.InterfaceList(
-    value = { @Optional.Interface(iface = "baubles.api.IBauble", modid = Mods.Names.BAUBLES),
-        @Optional.Interface(iface = "baubles.api.BaubleType", modid = Mods.Names.BAUBLES) })
+    value = { @Optional.Interface(iface = "baubles.api.IBauble", modid = Mods.ModIDs.BAUBLES),
+        @Optional.Interface(iface = "baubles.api.BaubleType", modid = Mods.ModIDs.BAUBLES) })
 public class ItemHealingDevice extends Item implements IElectricItem, IElectricItemManager, IBauble {
 
-    private final String unlocalizedName = "personalHealingDevice";
     private static final int maxValueEU = 1000000000;
-    protected double chargeEU = 0;
 
     public ItemHealingDevice() {
         this.setCreativeTab(AddToCreativeTab.tabMachines);
-        this.setUnlocalizedName(this.unlocalizedName);
+        final String unlocalizedName = "personalHealingDevice";
+        this.setUnlocalizedName(unlocalizedName);
         this.setMaxStackSize(1);
         this.setTextureName(GTPlusPlus.ID + ":" + "personalCloakingDevice");
-        GameRegistry.registerItem(this, this.unlocalizedName);
+        GameRegistry.registerItem(this, unlocalizedName);
     }
 
     @Override
@@ -112,9 +109,9 @@ public class ItemHealingDevice extends Item implements IElectricItem, IElectricI
 
     int EUPerOperation = 1_638_400;
 
-    @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
-    public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
+    public void addInformation(final ItemStack stack, final EntityPlayer player, final List<String> list,
+        final boolean adv) {
 
         String aString1 = StatCollector.translateToLocal("GTPP.nanohealer.tooltip.1");
         String aString2 = StatCollector.translateToLocal("GTPP.nanohealer.tooltip.2");
@@ -138,7 +135,9 @@ public class ItemHealingDevice extends Item implements IElectricItem, IElectricI
         list.add(EnumChatFormatting.GREEN + aString1 + EnumChatFormatting.GRAY);
         list.add(
             EnumChatFormatting.GREEN + aString2
-                + GTUtility.formatNumbers(EUPerOperation)
+                + " "
+                + formatNumber(EUPerOperation)
+                + " "
                 + aString3
                 + EnumChatFormatting.GRAY);
         list.add(EnumChatFormatting.GREEN + aString4 + EnumChatFormatting.GRAY);
@@ -151,13 +150,13 @@ public class ItemHealingDevice extends Item implements IElectricItem, IElectricI
             EnumChatFormatting.GRAY + aTier
                 + ": ["
                 + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(this.getTier(stack))
+                + formatNumber(this.getTier(stack))
                 + EnumChatFormatting.GRAY
                 + "] "
                 + aInputLimit
                 + ": ["
                 + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(this.getTransferLimit(stack))
+                + formatNumber(this.getTransferLimit(stack))
                 + EnumChatFormatting.GRAY
                 + aEUT
                 + "]");
@@ -165,12 +164,12 @@ public class ItemHealingDevice extends Item implements IElectricItem, IElectricI
             EnumChatFormatting.GRAY + aCurrentPower
                 + ": ["
                 + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(this.getCharge(stack))
+                + formatNumber(this.getCharge(stack))
                 + EnumChatFormatting.GRAY
                 + aEU
                 + "] ["
                 + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(MathUtils.findPercentage(this.getCharge(stack), this.getMaxCharge(stack)))
+                + formatNumber(MathUtils.findPercentage(this.getCharge(stack), this.getMaxCharge(stack)))
                 + EnumChatFormatting.GRAY
                 + "%]");
         list.add(EnumChatFormatting.GOLD + aString6 + EnumChatFormatting.GRAY);
@@ -180,7 +179,7 @@ public class ItemHealingDevice extends Item implements IElectricItem, IElectricI
                 + (!isShowing ? EnumChatFormatting.DARK_GREEN : EnumChatFormatting.DARK_RED)
                 + !isShowing
                 + EnumChatFormatting.GRAY);
-        super.addInformation(stack, aPlayer, list, bool);
+        super.addInformation(stack, player, list, adv);
     }
 
     @Override
@@ -247,138 +246,98 @@ public class ItemHealingDevice extends Item implements IElectricItem, IElectricI
 
     @Override // TODO
     public void onWornTick(final ItemStack baubleStack, final EntityLivingBase arg1) {
-        if (arg1 != null && arg1.worldObj != null && !arg1.worldObj.isRemote) {
+        if (arg1 == null || arg1.worldObj == null || arg1.worldObj.isRemote || !(arg1 instanceof EntityPlayer g))
+            return;
+        // Try Charge First
 
-            // Try Charge First
-
-            // Inv Slots
-            for (final ItemStack aInvStack : ((EntityPlayer) arg1).inventory.mainInventory) {
-                if (aInvStack == baubleStack) {
-                    continue;
-                }
-
-                if (this.getCharge(baubleStack) == this.getMaxCharge(baubleStack)) {
-                    break;
-                }
-
-                if (aInvStack != null) {
-                    if (ChargingHelper.isItemValid(aInvStack)) {
-
-                        double aTransferRate;
-                        double aCurrentChargeForThisBauble;
-                        int mTier;
-                        final IElectricItem electricItem = (IElectricItem) aInvStack.getItem();
-
-                        if (electricItem != null) {
-
-                            aTransferRate = electricItem.getTransferLimit(aInvStack);
-                            mTier = electricItem.getTier(aInvStack);
-                            aCurrentChargeForThisBauble = ElectricItem.manager.getCharge(baubleStack);
-
-                            if (aCurrentChargeForThisBauble < maxValueEU) {
-                                if ((ElectricItem.manager.getCharge(aInvStack) >= aTransferRate)) {
-                                    if (electricItem.canProvideEnergy(aInvStack)) {
-                                        double d = ElectricItem.manager
-                                            .discharge(aInvStack, aTransferRate, mTier, false, true, false);
-                                        // Logger.INFO("Charging from "+aInvStack.getDisplayName() +" | "+d);
-                                        ElectricItem.manager.charge(baubleStack, d, mTier, true, false);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                if (!(this.getCharge(baubleStack)
-                    <= (this.getMaxCharge(baubleStack) - getTransferLimit(baubleStack)))) {
-                    break;
-                }
+        // Inv Slots
+        for (final ItemStack aInvStack : ((EntityPlayer) arg1).inventory.mainInventory) {
+            if (aInvStack == baubleStack) {
+                continue;
             }
 
-            // Try Heal
-            if (this.getCharge(baubleStack) > 0) {
+            if (this.getCharge(baubleStack) == this.getMaxCharge(baubleStack)) {
+                break;
+            }
 
-                if (!(arg1 instanceof EntityPlayer g)) {
-                    return;
-                }
-                // health Check
-                float hp = 0;
-                if (arg1.getHealth() < arg1.getMaxHealth()) {
-                    final float rx = arg1.getMaxHealth() - arg1.getHealth();
-                    Logger.INFO("rx:" + rx);
-                    arg1.heal(rx * 2);
-                    hp = rx;
-                    this.discharge(baubleStack, (1638400) * rx, 6, true, true, false);
-                }
+            if (aInvStack != null && aInvStack.getItem() instanceof IElectricItem electricItem) {
 
-                int hunger = 0;
-                float saturation = 0;
-                FoodStats aFood = g.getFoodStats();
-                if (aFood != null) {
-                    // Hunger Check
-                    hunger = 20 - aFood.getFoodLevel();
-                    // Saturation Check
-                    if (hunger > 0) {
-                        saturation = 20f - aFood.getSaturationLevel();
-                        saturation /= hunger * 2f;
-                        this.discharge(baubleStack, (1638400) * (hunger + saturation), 6, true, true, false);
-                        aFood.addStats(hunger, saturation);
-                    }
+                double aTransferRate;
+                double aCurrentChargeForThisBauble;
+                int mTier;
+
+                aTransferRate = electricItem.getTransferLimit(aInvStack);
+                mTier = electricItem.getTier(aInvStack);
+                aCurrentChargeForThisBauble = ElectricItem.manager.getCharge(baubleStack);
+
+                if (aCurrentChargeForThisBauble < maxValueEU
+                    && (ElectricItem.manager.getCharge(aInvStack) >= aTransferRate)
+                    && electricItem.canProvideEnergy(aInvStack)) {
+                    double d = ElectricItem.manager.discharge(aInvStack, aTransferRate, mTier, false, true, false);
+                    ElectricItem.manager.charge(baubleStack, d, mTier, true, false);
                 }
 
-                // Only show Messages if they're enabled.
-                if (getShowMessages(baubleStack)) {
-                    if (hp > 0 || hunger > 0 || saturation > 0) PlayerUtils
-                        .messagePlayer((EntityPlayer) arg1, "Your NanoBooster Whirs! Leaving you feeling stronger.");
-
-                    if (hp > 0) PlayerUtils
-                        .messagePlayer((EntityPlayer) arg1, "Healed " + GTUtility.formatNumbers(hp) + " hp.");
-
-                    if (hunger > 0) PlayerUtils
-                        .messagePlayer((EntityPlayer) arg1, "Healed " + GTUtility.formatNumbers(hunger) + " hunger.");
-
-                    if (saturation > 0) PlayerUtils.messagePlayer(
-                        (EntityPlayer) arg1,
-                        "Satured Hunger by " + GTUtility.formatNumbers(saturation) + ".");
-
-                    if (hp > 0 || hunger > 0 || saturation > 0) PlayerUtils.messagePlayer(
-                        (EntityPlayer) arg1,
-                        "You check it's remaining uses, it has " + GTUtility.formatNumbers(secondsLeft(baubleStack))
-                            + " seconds left.");
-                }
+            }
+            if (!(this.getCharge(baubleStack) <= (this.getMaxCharge(baubleStack) - getTransferLimit(baubleStack)))) {
+                break;
             }
         }
-    }
 
-    private static boolean createNBT(ItemStack rStack) {
-        final NBTTagCompound tagMain = new NBTTagCompound();
-        tagMain.setBoolean("ShowMSG", false);
-        rStack.setTagCompound(tagMain);
-        return true;
+        // Try Heal
+        if (this.getCharge(baubleStack) <= 0) return;
+
+        // health Check
+        float hp = 0;
+        if (arg1.getHealth() < arg1.getMaxHealth()) {
+            final float rx = arg1.getMaxHealth() - arg1.getHealth();
+            arg1.heal(rx * 2);
+            hp = rx;
+            this.discharge(baubleStack, (1638400) * rx, 6, true, true, false);
+        }
+
+        int hunger = 0;
+        float saturation = 0;
+        FoodStats aFood = g.getFoodStats();
+        if (aFood != null) {
+            // Hunger Check
+            hunger = 20 - aFood.getFoodLevel();
+            // Saturation Check
+            if (hunger > 0) {
+                saturation = 20f - aFood.getSaturationLevel();
+                saturation /= hunger * 2f;
+                this.discharge(baubleStack, (1638400) * (hunger + saturation), 6, true, true, false);
+                aFood.addStats(hunger, saturation);
+            }
+        }
+
+        // Only show Messages if they're enabled.
+        if (!getShowMessages(baubleStack)) return;
+
+        if (hp > 0 || hunger > 0 || saturation > 0)
+            GTUtility.sendChatToPlayer((EntityPlayer) arg1, "Your NanoBooster Whirs! Leaving you feeling stronger.");
+
+        if (hp > 0) GTUtility.sendChatToPlayer((EntityPlayer) arg1, "Healed " + formatNumber(hp) + " hp.");
+
+        if (hunger > 0) GTUtility.sendChatToPlayer((EntityPlayer) arg1, "Healed " + formatNumber(hunger) + " hunger.");
+
+        if (saturation > 0)
+            GTUtility.sendChatToPlayer((EntityPlayer) arg1, "Satured Hunger by " + formatNumber(saturation) + ".");
+
+        if (hp > 0 || hunger > 0 || saturation > 0) GTUtility.sendChatToPlayer(
+            (EntityPlayer) arg1,
+            "You check it's remaining uses, it has " + formatNumber(secondsLeft(baubleStack)) + " seconds left.");
+
     }
 
     public static boolean getShowMessages(final ItemStack aStack) {
-        NBTTagCompound aNBT = aStack.getTagCompound();
-        if (aNBT == null) {
-            if (!createNBT(aStack)) {
-                return false;
-            } else {
-                aNBT = aStack.getTagCompound();
-            }
+        if (!aStack.hasTagCompound()) {
+            ItemStackNBT.setBoolean(aStack, "ShowMSG", false);
         }
-        return aNBT.getBoolean("ShowMSG");
+        return ItemStackNBT.getBoolean(aStack, "ShowMSG");
     }
 
-    public static boolean setShowMessages(final ItemStack aStack, final boolean aShow) {
-        NBTTagCompound aNBT = aStack.getTagCompound();
-        if (aNBT == null) {
-            if (!createNBT(aStack)) {
-                return false;
-            } else {
-                aNBT = aStack.getTagCompound();
-            }
-        }
-        aNBT.setBoolean("ShowMSG", aShow);
-        return true;
+    public static void setShowMessages(final ItemStack aStack, final boolean aShow) {
+        ItemStackNBT.setBoolean(aStack, "ShowMSG", aShow);
     }
 
     @Override
@@ -401,12 +360,11 @@ public class ItemHealingDevice extends Item implements IElectricItem, IElectricI
     @Override
     public ItemStack onItemRightClick(ItemStack aStack, World aWorld, EntityPlayer aPlayer) {
         ItemStack superStack = super.onItemRightClick(aStack, aWorld, aPlayer);
-        boolean isShiftHeld = KeyboardUtils.isShiftKeyDown();
-        if (isShiftHeld) {
+        if (!aWorld.isRemote && aPlayer.isSneaking()) {
             boolean oldState = getShowMessages(superStack);
             boolean newState = !oldState;
             ItemHealingDevice.setShowMessages(superStack, newState);
-            PlayerUtils.messagePlayer(aPlayer, (!oldState ? "Showing info messages" : "Hiding info messages"));
+            GTUtility.sendChatToPlayer(aPlayer, (!oldState ? "Showing info messages" : "Hiding info messages"));
         }
         return superStack;
     }

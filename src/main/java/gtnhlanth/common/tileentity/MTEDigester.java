@@ -1,6 +1,7 @@
 package gtnhlanth.common.tileentity;
 
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
@@ -17,6 +18,9 @@ import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.util.GTStructureUtility.activeCoils;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofCoil;
+import static gtnhlanth.util.DescTextLocalization.addHintNumber;
+
+import java.util.List;
 
 import javax.annotation.Nonnull;
 
@@ -30,6 +34,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -40,9 +45,11 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
+import gregtech.common.misc.GTStructureChannels;
 import gtnhlanth.api.recipe.LanthanidesRecipeMaps;
 import gtnhlanth.util.DescTextLocalization;
 
@@ -67,11 +74,14 @@ public class MTEDigester extends MTEEnhancedMultiBlockBase<MTEDigester> implemen
             buildHatchAdder(MTEDigester.class)
                 .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Maintenance, Energy, Muffler)
                 .casingIndex(47)
-                .dot(1)
-                .buildAndChain(GregTechAPI.sBlockCasings4, 0))
+                .hint(1)
+                .buildAndChain(onElementPass(MTEDigester::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings4, 0))))
         .addElement('h', ofBlock(GregTechAPI.sBlockCasings1, 11))
         .addElement('s', ofBlock(GregTechAPI.sBlockCasings4, 1))
-        .addElement('c', activeCoils(ofCoil(MTEDigester::setCoilLevel, MTEDigester::getCoilLevel)))
+        .addElement(
+            'c',
+            GTStructureChannels.HEATING_COIL
+                .use(activeCoils(ofCoil(MTEDigester::setCoilLevel, MTEDigester::getCoilLevel))))
         .build();
 
     public MTEDigester(String name) {
@@ -83,13 +93,19 @@ public class MTEDigester extends MTEEnhancedMultiBlockBase<MTEDigester> implemen
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        return checkPiece(mName, 3, 3, 0) && !mMufflerHatches.isEmpty() && mMaintenanceHatches.size() == 1;
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
+        casingAmount = 0;
+        if (!checkPiece(mName, 3, 3, 0, errors)) return;
+        checkCasingMin(errors, casingAmount, 40);
+        checkHasEnergyHatch(errors);
+        checkOneMaintenanceHatch(errors);
+        checkHasMufflerHatch(errors);
+        checkHasAnyInput(errors);
+        checkHasAnyOutput(errors);
     }
 
-    @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
+    private void onCasingAdded() {
+        casingAmount++;
     }
 
     public HeatingCoilLevel getCoilLevel() {
@@ -141,16 +157,6 @@ public class MTEDigester extends MTEEnhancedMultiBlockBase<MTEDigester> implemen
     }
 
     @Override
-    public boolean supportsSingleRecipeLocking() {
-        return true;
-    }
-
-    @Override
-    public int getMaxEfficiency(ItemStack itemStack) {
-        return 10000;
-    }
-
-    @Override
     public int getPollutionPerSecond(ItemStack aStack) {
         return 400;
     }
@@ -168,7 +174,7 @@ public class MTEDigester extends MTEEnhancedMultiBlockBase<MTEDigester> implemen
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(mName, stackSize, 3, 3, 0, elementBudget, env, false, true);
+        return survivalBuildPiece(mName, stackSize, 3, 3, 0, elementBudget, env, false, true);
     }
 
     @Override
@@ -176,6 +182,7 @@ public class MTEDigester extends MTEEnhancedMultiBlockBase<MTEDigester> implemen
         return DescTextLocalization.addText("Digester.hint", 6);
     }
 
+    @Override
     public ITexture[] getTexture(IGregTechTileEntity te, ForgeDirection side, ForgeDirection facing, int colorIndex,
         boolean active, boolean redstone) {
 
@@ -207,22 +214,24 @@ public class MTEDigester extends MTEEnhancedMultiBlockBase<MTEDigester> implemen
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Digester")
-            .addInfo("Input ores and fluid, output water.")
-            .addInfo(StatCollector.translateToLocal("GT5U.machines.perfectoc.tooltip"))
+        tt.addMachineType(StatCollector.translateToLocal("gtnhlanth.tt.digester.machinetype"))
+            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.digester.info1"))
+            .addPerfectOCInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(7, 7, 4, true)
-            .addController("Front bottom")
-            .addCasingInfoExactly("Robust Tungstensteel Machine Casing", 52, false)
-            .addCasingInfoExactly("Heat Proof Machine Casing", 16, false)
-            .addCasingInfoExactly("Clean Stainless Steel Machine Casing", 9, false)
+            .addController("Front bottom center")
+            .addCasingInfoMin(Casings.RobustTungstenSteelMachineCasing.getLocalizedName(), 40, false)
+            .addCasingInfoExactly(Casings.HeatProofMachineCasing.getLocalizedName(), 16, false)
+            .addCasingInfoExactly(Casings.CleanStainlessSteelMachineCasing.getLocalizedName(), 9, false)
             .addCasingInfoExactly("Coil", 16, true)
-            .addInputHatch("Hint block with dot 1")
-            .addInputBus("Hint block with dot 1")
-            .addOutputHatch("Hint block with dot 1")
-            .addOutputBus("Hint block with dot 1")
-            .addMaintenanceHatch("Hint block with dot 1")
-            .addMufflerHatch("Hint block with dot 1")
+            .addInputHatch(addHintNumber(1))
+            .addInputBus(addHintNumber(1))
+            .addOutputHatch(addHintNumber(1))
+            .addOutputBus(addHintNumber(1))
+            .addEnergyHatch(addHintNumber(1))
+            .addMaintenanceHatch(addHintNumber(1))
+            .addMufflerHatch(addHintNumber(1))
+            .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
         return tt;
     }
@@ -232,15 +241,4 @@ public class MTEDigester extends MTEEnhancedMultiBlockBase<MTEDigester> implemen
         return multiDefinition;
     }
 
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack arg0) {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
-    public int getDamageToComponent(ItemStack arg0) {
-        // TODO Auto-generated method stub
-        return 0;
-    }
 }

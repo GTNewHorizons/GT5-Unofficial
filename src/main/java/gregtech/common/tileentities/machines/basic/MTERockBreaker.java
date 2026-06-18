@@ -31,11 +31,20 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.ArrayUtils;
 
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.MachineType;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicMachine;
@@ -43,9 +52,11 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTUtility;
+import gregtech.common.gui.modularui.singleblock.base.MTEBasicMachineBaseGui;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTERockBreaker extends MTEBasicMachine {
 
     private static final Int2ObjectMap<Set<RockBreakerRecipe>> ROCK_BREAKER_RECIPES = new Int2ObjectOpenHashMap<>();
@@ -320,8 +331,8 @@ public class MTERockBreaker extends MTEBasicMachine {
             }
 
             /**
-             * @param desc A description to show in NEI if there are no recipe inputs.
-             *             For example: "IT'S FREE! Place Lava on Side"
+             * @param desc A description to show in NEI if there are no recipe inputs. For example: "IT'S FREE! Place
+             *             Lava on Side"
              */
             public Builder recipeDescription(String desc) {
                 this.recipeDescription = desc;
@@ -372,12 +383,28 @@ public class MTERockBreaker extends MTEBasicMachine {
                     // Add the "IT'S FREE" item
                     inputs.add(ItemList.Display_ITS_FREE.getWithName(1, this.recipeDescription));
                 }
-                if (this.circuit != -1) {
-                    inputs.add(GTUtility.getIntegratedCircuit(this.circuit));
-                }
                 b.itemInputs(inputs.toArray(new ItemStack[0]));
+                if (this.circuit != -1) {
+                    b.circuit(this.circuit);
+                }
                 b.addTo(rockBreakerFakeRecipes);
             }
         }
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    protected SoundResource getActivitySoundLoop() {
+        return SoundResource.GTCEU_LOOP_FIRE;
+    }
+
+    @Override
+    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTEBasicMachineBaseGui<>(this, this.getUIProperties()).build(data, syncManager, uiSettings);
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return true;
     }
 }

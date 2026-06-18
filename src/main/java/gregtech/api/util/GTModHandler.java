@@ -8,10 +8,12 @@ import static gregtech.api.enums.GTValues.E;
 import static gregtech.api.enums.GTValues.M;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.GTValues.VN;
-import static gregtech.api.enums.GTValues.W;
+import static gregtech.api.enums.Mods.Gendustry;
+import static gregtech.api.enums.Mods.IndustrialCraft2;
 import static gregtech.api.recipe.RecipeMaps.alloySmelterRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
+import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,12 +23,9 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import javax.annotation.Nullable;
 
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.EntityLivingBase;
@@ -50,14 +49,18 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
+import org.jetbrains.annotations.Nullable;
+
+import bartworks.system.material.WerkstoffLoader;
 import cpw.mods.fml.common.registry.GameRegistry;
+import ganymedes01.etfuturum.recipes.BlastFurnaceRecipes;
+import ganymedes01.etfuturum.recipes.SmokerRecipes;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.Tier;
 import gregtech.api.enums.ToolDictNames;
 import gregtech.api.interfaces.IDamagableItem;
 import gregtech.api.interfaces.IItemContainer;
@@ -68,6 +71,9 @@ import gregtech.api.objects.GTHashSet;
 import gregtech.api.objects.GTItemStack;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeCategories;
+import gregtech.common.items.ItemGTToolbox;
+import gregtech.common.items.toolbox.ToolboxDelegateInventory;
+import gregtech.common.items.toolbox.ToolboxUtil;
 import ic2.api.item.IBoxable;
 import ic2.api.item.IC2Items;
 import ic2.api.item.IElectricItem;
@@ -76,6 +82,8 @@ import ic2.api.recipe.RecipeInputItemStack;
 import ic2.api.recipe.RecipeOutput;
 import ic2.api.recipe.Recipes;
 import ic2.core.item.ItemToolbox;
+import it.unimi.dsi.fastutil.objects.Object2IntOpenCustomHashMap;
+import it.unimi.dsi.fastutil.objects.ObjectOpenCustomHashSet;
 
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
@@ -90,11 +98,22 @@ public class GTModHandler {
     private static final Map<String, ItemStack> sIC2ItemMap = new HashMap<>();
 
     // public for bartworks
-    public static final List<IRecipe> sAllRecipeList = new ArrayList<>(5000), sBufferRecipeList = new ArrayList<>(1000);
-    private static final List<ItemStack> delayedRemovalByOutput = new ArrayList<>();
+    public static final List<IRecipe> sAllRecipeList = new ArrayList<>(5000);
+    public static final List<IRecipe> sBufferRecipeList = new ArrayList<>(1000);
+
+    private static final ObjectOpenCustomHashSet<ItemStack> delayedRemovalByOutput = new ObjectOpenCustomHashSet<>(
+        1024,
+        GTItemStack.ITEMSTACK_HASH_STRATEGY2);
+    private static final Object2IntOpenCustomHashMap<ItemStack> delayedRemovalByOutputFlags = new Object2IntOpenCustomHashMap<>(
+        512,
+        GTItemStack.ITEMSTACK_HASH_STRATEGY2);
+    private static final int DELAYED_REMOVAL_KEEP_SHAPELESS = 1 << 0;
+    private static final int DELAYED_REMOVAL_ONLY_REMOVE_NATIVE = 1 << 1;
+
     private static final List<InventoryCrafting> delayedRemovalByRecipe = new ArrayList<>();
 
-    public static Collection<String> sNativeRecipeClasses = new HashSet<>(), sSpecialRecipeClasses = new HashSet<>();
+    public static Collection<String> sNativeRecipeClasses = new HashSet<>();
+    public static Collection<String> sSpecialRecipeClasses = new HashSet<>();
     public static GTHashSet sNonReplaceableItems = new GTHashSet();
     public static Object sBoxableWrapper = new GTIBoxableWrapper();
     public static Collection<GTItemStack> sBoxableItems = new ArrayList<>();
@@ -156,14 +175,17 @@ public class GTModHandler {
      */
     public static boolean isWater(FluidStack aFluid) {
         if (aFluid == null) return false;
-        return aFluid.isFluidEqual(getWater(1)) || aFluid.isFluidEqual(getDistilledWater(1));
+        return aFluid.isFluidEqual(Materials.Water.getFluid(1)) || aFluid.isFluidEqual(getDistilledWater(1));
     }
 
     /**
      * Returns a Liquid Stack with given amount of Water.
+     *
+     * @deprecated Use {@link gregtech.api.enums.Materials} instead.
      */
+    @Deprecated
     public static FluidStack getWater(long aAmount) {
-        return FluidRegistry.getFluidStack("water", (int) aAmount);
+        return Materials.Water.getFluid(aAmount);
     }
 
     /**
@@ -171,8 +193,24 @@ public class GTModHandler {
      */
     public static FluidStack getDistilledWater(long aAmount) {
         FluidStack tFluid = FluidRegistry.getFluidStack("ic2distilledwater", (int) aAmount);
-        if (tFluid == null) tFluid = getWater(aAmount);
+        if (tFluid == null) tFluid = Materials.Water.getFluid(aAmount);
         return tFluid;
+    }
+
+    /**
+     * Returns a Liquid Stack with given amount of IC2 Coolant, falling back to water if not available.
+     */
+    public static FluidStack getIC2Coolant(long aAmount) {
+        if (IndustrialCraft2.isModLoaded()) return FluidRegistry.getFluidStack("ic2coolant", (int) aAmount);
+        else return Materials.Water.getFluid(aAmount);
+    }
+
+    /**
+     * Returns a Liquid Stack with given amount of Liquid DNA, falling back to Biomass if not available.
+     */
+    public static FluidStack getLiquidDNA(long aAmount) {
+        if (Gendustry.isModLoaded()) return FluidRegistry.getFluidStack("liquiddna", (int) aAmount);
+        else return Materials.Biomass.getFluid(aAmount);
     }
 
     /**
@@ -180,14 +218,17 @@ public class GTModHandler {
      */
     public static boolean isLava(FluidStack aFluid) {
         if (aFluid == null) return false;
-        return aFluid.isFluidEqual(getLava(1));
+        return aFluid.isFluidEqual(Materials.Lava.getFluid(1));
     }
 
     /**
      * Returns a Liquid Stack with given amount of Lava.
+     *
+     * @deprecated Use {@link gregtech.api.enums.Materials} instead.
      */
+    @Deprecated
     public static FluidStack getLava(long aAmount) {
-        return FluidRegistry.getFluidStack("lava", (int) aAmount);
+        return Materials.Lava.getFluid(aAmount);
     }
 
     /**
@@ -195,7 +236,7 @@ public class GTModHandler {
      */
     public static boolean isSteam(FluidStack aFluid) {
         if (aFluid == null) return false;
-        return aFluid.isFluidEqual(getSteam(1));
+        return aFluid.isFluidEqual(Materials.Steam.getGas(1));
     }
 
     /**
@@ -214,16 +255,50 @@ public class GTModHandler {
 
     /**
      * Returns a Liquid Stack with given amount of Steam.
+     *
+     * @deprecated Use {@link gregtech.api.enums.Materials} instead.
      */
+    @Deprecated
     public static FluidStack getSteam(long aAmount) {
-        return FluidRegistry.getFluidStack("steam", (int) aAmount);
+        return Materials.Steam.getGas(aAmount);
     }
 
     /**
      * Returns a Liquid Stack with given amount of Milk.
+     *
+     * @deprecated Use {@link gregtech.api.enums.Materials} instead.
      */
+    @Deprecated
     public static FluidStack getMilk(long aAmount) {
-        return FluidRegistry.getFluidStack("milk", (int) aAmount);
+        return Materials.Milk.getFluid(aAmount);
+    }
+
+    /**
+     * Returns a Liquid Stack with given amount of IC2 Hot Water
+     */
+    public static FluidStack getHotWater(final int amount) {
+        return FluidRegistry.getFluidStack("ic2hotwater", amount);
+    }
+
+    /**
+     * Returns a Liquid Stack with given amount of IC2 Pahoehoe Lava
+     */
+    public static FluidStack getPahoehoeLava(final int amount) {
+        return FluidRegistry.getFluidStack("ic2pahoehoelava", amount);
+    }
+
+    /**
+     * Returns a Liquid Stack with given amount of IC2 Superheated Steam
+     */
+    public static FluidStack getSuperHeatedSteam(final int amount) {
+        return FluidRegistry.getFluidStack("ic2superheatedsteam", amount);
+    }
+
+    /**
+     * Returns a Liquid Stack with given amount of IC2 Hot Coolant
+     */
+    public static FluidStack getHotCoolant(final int amount) {
+        return FluidRegistry.getFluidStack("ic2hotcoolant", amount);
     }
 
     /**
@@ -379,11 +454,18 @@ public class GTModHandler {
     /**
      * Just simple Furnace smelting. Unbelievable how Minecraft fails at making a simple ItemStack->ItemStack mapping...
      */
-    public static boolean addSmeltingRecipe(ItemStack aInput, ItemStack aOutput) {
-        aOutput = GTOreDictUnificator.get(true, aOutput);
-        if (aInput == null || aOutput == null) return false;
+    public static boolean addSmeltingRecipe(ItemStack input, ItemStack output) {
+        return addSmeltingRecipe(input, output, 0.0F);
+    }
+
+    /**
+     * Just simple Furnace smelting. Unbelievable how Minecraft fails at making a simple ItemStack->ItemStack mapping...
+     */
+    public static boolean addSmeltingRecipe(ItemStack input, ItemStack output, float xp) {
+        output = GTOreDictUnificator.get(true, output);
+        if (input == null || output == null) return false;
         FurnaceRecipes.smelting()
-            .func_151394_a(aInput, GTUtility.copyOrNull(aOutput), 0.0F);
+            .func_151394_a(input, GTUtility.copyOrNull(output), xp);
         return true;
     }
 
@@ -426,16 +508,11 @@ public class GTModHandler {
      * Removes IC2 recipes.
      */
     public static void removeAllIC2Recipes() {
-        getMaceratorRecipeList().entrySet()
-            .clear();
-        getCompressorRecipeList().entrySet()
-            .clear();
-        getExtractorRecipeList().entrySet()
-            .clear();
-        getOreWashingRecipeList().entrySet()
-            .clear();
-        getThermalCentrifugeRecipeList().entrySet()
-            .clear();
+        getMaceratorRecipeList().clear();
+        getCompressorRecipeList().clear();
+        getExtractorRecipeList().clear();
+        getOreWashingRecipeList().clear();
+        getThermalCentrifugeRecipeList().clear();
     }
 
     public static Map<IRecipeInput, RecipeOutput> getExtractorRecipeList() {
@@ -461,11 +538,12 @@ public class GTModHandler {
     public static void stopBufferingCraftingRecipes() {
         sBufferCraftingRecipes = false;
 
-        bulkRemoveRecipeByOutput(delayedRemovalByOutput);
-        bulkRemoveByRecipe(delayedRemovalByRecipe);
+        bulkRemoveRecipeByOutput();
+        bulkRemoveByRecipe();
         sBufferRecipeList.forEach(GameRegistry::addRecipe);
 
         delayedRemovalByOutput.clear();
+        delayedRemovalByOutputFlags.clear();
         delayedRemovalByRecipe.clear();
         sBufferRecipeList.clear();
     }
@@ -490,7 +568,6 @@ public class GTModHandler {
             false,
             false,
             false,
-            false,
             true,
             aRecipe);
     }
@@ -510,7 +587,7 @@ public class GTModHandler {
      * ToolDictNames.craftingToolHardHammer, 'i' ToolDictNames.craftingToolSolderingIron, 'j'
      * ToolDictNames.craftingToolSolderingMetal, 'k' ToolDictNames.craftingToolKnive 'm'
      * ToolDictNames.craftingToolMortar, 'p' ToolDictNames.craftingToolDrawplate, 'r'
-     * ToolDictNames.craftingToolSoftHammer, 's' ToolDictNames.craftingToolSaw, 'w' ToolDictNames.craftingToolWrench,
+     * ToolDictNames.craftingToolSoftMallet, 's' ToolDictNames.craftingToolSaw, 'w' ToolDictNames.craftingToolWrench,
      * 'x' ToolDictNames.craftingToolWireCutter,
      */
     public static boolean addCraftingRecipe(ItemStack aResult, Object[] aRecipe) {
@@ -532,18 +609,17 @@ public class GTModHandler {
      * ToolDictNames.craftingToolHardHammer, 'i' ToolDictNames.craftingToolSolderingIron, 'j'
      * ToolDictNames.craftingToolSolderingMetal, 'k' ToolDictNames.craftingToolKnive 'm'
      * ToolDictNames.craftingToolMortar, 'p' ToolDictNames.craftingToolDrawplate, 'r'
-     * ToolDictNames.craftingToolSoftHammer, 's' ToolDictNames.craftingToolSaw, 'w' ToolDictNames.craftingToolWrench,
+     * ToolDictNames.craftingToolSoftMallet, 's' ToolDictNames.craftingToolSaw, 'w' ToolDictNames.craftingToolWrench,
      * 'x' ToolDictNames.craftingToolWireCutter,
      */
     public static boolean addCraftingRecipe(ItemStack aResult, long aBitMask, Object[] aRecipe) {
         return addCraftingRecipe(
             aResult,
-            new Enchantment[0],
-            new int[0],
+            null,
+            null,
             (aBitMask & RecipeBits.MIRRORED) != 0,
             (aBitMask & RecipeBits.BUFFERED) != 0,
             (aBitMask & RecipeBits.KEEPNBT) != 0,
-            (aBitMask & RecipeBits.DISMANTLEABLE) != 0,
             (aBitMask & RecipeBits.NOT_REMOVABLE) == 0,
             (aBitMask & RecipeBits.REVERSIBLE) != 0,
             (aBitMask & RecipeBits.DELETE_ALL_OTHER_RECIPES) != 0,
@@ -556,280 +632,337 @@ public class GTModHandler {
             aRecipe);
     }
 
-    public static boolean addMachineCraftingRecipe(ItemStack aResult, long aBitMask, Object[] aRecipe,
+    public static void addMachineCraftingRecipe(ItemStack aResult, Object @Nullable [] aRecipe, int machineTier) {
+        addMachineCraftingRecipe(aResult, RecipeBits.BITS, aRecipe, machineTier);
+    }
+
+    public static void addMachineCraftingRecipe(ItemStack aResult, long aBitMask, Object @Nullable [] aRecipe,
         int machineTier) {
-        if (aRecipe != null) {
-            for (int i = 3; i < aRecipe.length; i++) {
-                if (!(aRecipe[i] instanceof MTEBasicMachineWithRecipe.X)) continue;
+        if (aRecipe == null) return;
 
-                // spotless:off
-                aRecipe[i] = switch ((MTEBasicMachineWithRecipe.X) aRecipe[i]) {
-                    case CIRCUIT            -> Tier.ELECTRIC[machineTier].mManagingObject;
-                    case BETTER_CIRCUIT     -> Tier.ELECTRIC[machineTier].mBetterManagingObject;
-                    case HULL               -> Tier.ELECTRIC[machineTier].mHullObject;
-                    case WIRE               -> Tier.ELECTRIC[machineTier].mConductingObject;
-                    case WIRE4              -> Tier.ELECTRIC[machineTier].mLargerConductingObject;
-                    case STICK_DISTILLATION -> OrePrefixes.stick.get(Materials.Blaze);
+        for (int i = 3; i < aRecipe.length; i++) {
+            if (!(aRecipe[i] instanceof MTEBasicMachineWithRecipe.X)) continue;
 
-                    case GLASS -> switch (machineTier) {
-                        case 0, 1, 2, 3    -> new ItemStack(Blocks.glass, 1, W);
-                        case 4, 5, 6, 7, 8 -> "blockGlass" + VN[machineTier];
-                        default            -> "blockGlass" + VN[8];
-                    };
-
-                    case PLATE -> switch (machineTier) {
-                        case 0, 1 -> OrePrefixes.plate.get(Materials.Steel);
-                        case 2    -> OrePrefixes.plate.get(Materials.Aluminium);
-                        case 3    -> OrePrefixes.plate.get(Materials.StainlessSteel);
-                        case 4    -> OrePrefixes.plate.get(Materials.Titanium);
-                        case 5    -> OrePrefixes.plate.get(Materials.TungstenSteel);
-                        case 6    -> OrePrefixes.plate.get(Materials.HSSG);
-                        case 7    -> OrePrefixes.plate.get(Materials.HSSE);
-                        default   -> OrePrefixes.plate.get(Materials.Neutronium);
-                    };
-
-                    case PIPE -> switch (machineTier) {
-                        case 0, 1 -> OrePrefixes.pipeMedium.get(Materials.Bronze);
-                        case 2    -> OrePrefixes.pipeMedium.get(Materials.Steel);
-                        case 3    -> OrePrefixes.pipeMedium.get(Materials.StainlessSteel);
-                        case 4    -> OrePrefixes.pipeMedium.get(Materials.Titanium);
-                        case 5    -> OrePrefixes.pipeMedium.get(Materials.TungstenSteel);
-                        case 6    -> OrePrefixes.pipeSmall.get(Materials.Ultimate);
-                        case 7    -> OrePrefixes.pipeMedium.get(Materials.Ultimate);
-                        case 8    -> OrePrefixes.pipeLarge.get(Materials.Ultimate);
-                        default   -> OrePrefixes.pipeHuge.get(Materials.Ultimate);
-                    };
-
-                    case COIL_HEATING -> switch (machineTier) {
-                        case 0, 1 -> OrePrefixes.wireGt02.get(Materials.AnyCopper);
-                        case 2    -> OrePrefixes.wireGt02.get(Materials.Cupronickel);
-                        case 3    -> OrePrefixes.wireGt02.get(Materials.Kanthal);
-                        case 4    -> OrePrefixes.wireGt02.get(Materials.Nichrome);
-                        case 5    -> OrePrefixes.wireGt02.get(Materials.TPV);
-                        case 6    -> OrePrefixes.wireGt02.get(Materials.HSSG);
-                        case 7    -> OrePrefixes.wireGt02.get(Materials.Naquadah);
-                        case 8    -> OrePrefixes.wireGt02.get(Materials.NaquadahAlloy);
-                        case 9    -> OrePrefixes.wireGt04.get(Materials.NaquadahAlloy);
-                        default   -> OrePrefixes.wireGt08.get(Materials.NaquadahAlloy);
-                    };
-
-                    case COIL_HEATING_DOUBLE -> switch (machineTier) {
-                        case 0, 1 -> OrePrefixes.wireGt04.get(Materials.AnyCopper);
-                        case 2    -> OrePrefixes.wireGt04.get(Materials.Cupronickel);
-                        case 3    -> OrePrefixes.wireGt04.get(Materials.Kanthal);
-                        case 4    -> OrePrefixes.wireGt04.get(Materials.Nichrome);
-                        case 5    -> OrePrefixes.wireGt04.get(Materials.TPV);
-                        case 6    -> OrePrefixes.wireGt04.get(Materials.HSSG);
-                        case 7    -> OrePrefixes.wireGt04.get(Materials.Naquadah);
-                        case 8    -> OrePrefixes.wireGt04.get(Materials.NaquadahAlloy);
-                        case 9    -> OrePrefixes.wireGt08.get(Materials.NaquadahAlloy);
-                        default   -> OrePrefixes.wireGt16.get(Materials.NaquadahAlloy);
-                    };
-
-                    case STICK_MAGNETIC -> switch (machineTier) {
-                        case 0, 1       -> OrePrefixes.stick.get(Materials.IronMagnetic);
-                        case 2, 3       -> OrePrefixes.stick.get(Materials.SteelMagnetic);
-                        case 4, 5       -> OrePrefixes.stick.get(Materials.NeodymiumMagnetic);
-                        case 6, 7, 8, 9 -> OrePrefixes.stick.get(Materials.SamariumMagnetic);
-                        default         -> OrePrefixes.stick.get(Materials.TengamAttuned);
-                    };
-
-                    case STICK_ELECTROMAGNETIC -> switch (machineTier) {
-                        case 0, 1 -> OrePrefixes.stick.get(Materials.AnyIron);
-                        case 2, 3 -> OrePrefixes.stick.get(Materials.Steel);
-                        case 4    -> OrePrefixes.stick.get(Materials.Neodymium);
-                        default   -> OrePrefixes.stick.get(Materials.VanadiumGallium);
-                    };
-
-                    case COIL_ELECTRIC -> switch (machineTier) {
-                        case 0  -> OrePrefixes.wireGt01.get(Materials.Lead);
-                        case 1  -> OrePrefixes.wireGt02.get(Materials.Tin);
-                        case 2  -> OrePrefixes.wireGt02.get(Materials.AnyCopper);
-                        case 3  -> OrePrefixes.wireGt04.get(Materials.AnyCopper);
-                        case 4  -> OrePrefixes.wireGt08.get(Materials.AnnealedCopper);
-                        case 5  -> OrePrefixes.wireGt16.get(Materials.AnnealedCopper);
-                        case 6  -> OrePrefixes.wireGt04.get(Materials.YttriumBariumCuprate);
-                        case 7  -> OrePrefixes.wireGt08.get(Materials.Iridium);
-                        default -> OrePrefixes.wireGt16.get(Materials.Osmium);
-                    };
-
-                    case ROBOT_ARM -> switch (machineTier) {
-                        case 0, 1 -> ItemList.Robot_Arm_LV;
-                        case 2    -> ItemList.Robot_Arm_MV;
-                        case 3    -> ItemList.Robot_Arm_HV;
-                        case 4    -> ItemList.Robot_Arm_EV;
-                        case 5    -> ItemList.Robot_Arm_IV;
-                        case 6    -> ItemList.Robot_Arm_LuV;
-                        case 7    -> ItemList.Robot_Arm_ZPM;
-                        case 8    -> ItemList.Robot_Arm_UV;
-                        case 9    -> ItemList.Robot_Arm_UHV;
-                        case 10   -> ItemList.Robot_Arm_UEV;
-                        case 11   -> ItemList.Robot_Arm_UIV;
-                        case 12   -> ItemList.Robot_Arm_UMV;
-                        case 13   -> ItemList.Robot_Arm_UXV;
-                        default   ->  ItemList.Robot_Arm_MAX;
-                    };
-
-                    case PUMP -> switch (machineTier) {
-                        case 0, 1 -> ItemList.Electric_Pump_LV;
-                        case 2    -> ItemList.Electric_Pump_MV;
-                        case 3    -> ItemList.Electric_Pump_HV;
-                        case 4    -> ItemList.Electric_Pump_EV;
-                        case 5    -> ItemList.Electric_Pump_IV;
-                        case 6    -> ItemList.Electric_Pump_LuV;
-                        case 7    -> ItemList.Electric_Pump_ZPM;
-                        case 8    -> ItemList.Electric_Pump_UV;
-                        case 9    -> ItemList.Electric_Pump_UHV;
-                        case 10   -> ItemList.Electric_Pump_UEV;
-                        case 11   -> ItemList.Electric_Pump_UIV;
-                        case 12   -> ItemList.Electric_Pump_UMV;
-                        case 13   -> ItemList.Electric_Pump_UXV;
-                        default   -> ItemList.Electric_Pump_MAX;
-                    };
-
-                    case MOTOR -> switch (machineTier) {
-                        case 0, 1 -> ItemList.Electric_Motor_LV;
-                        case 2    -> ItemList.Electric_Motor_MV;
-                        case 3    -> ItemList.Electric_Motor_HV;
-                        case 4    -> ItemList.Electric_Motor_EV;
-                        case 5    -> ItemList.Electric_Motor_IV;
-                        case 6    -> ItemList.Electric_Motor_LuV;
-                        case 7    -> ItemList.Electric_Motor_ZPM;
-                        case 8    -> ItemList.Electric_Motor_UV;
-                        case 9    -> ItemList.Electric_Motor_UHV;
-                        case 10   -> ItemList.Electric_Motor_UEV;
-                        case 11   -> ItemList.Electric_Motor_UIV;
-                        case 12   -> ItemList.Electric_Motor_UMV;
-                        case 13   -> ItemList.Electric_Motor_UXV;
-                        default   -> ItemList.Electric_Motor_MAX;
-                    };
-
-                    case PISTON -> switch (machineTier) {
-                        case 0, 1 -> ItemList.Electric_Piston_LV;
-                        case 2    -> ItemList.Electric_Piston_MV;
-                        case 3    -> ItemList.Electric_Piston_HV;
-                        case 4    -> ItemList.Electric_Piston_EV;
-                        case 5    -> ItemList.Electric_Piston_IV;
-                        case 6    -> ItemList.Electric_Piston_LuV;
-                        case 7    -> ItemList.Electric_Piston_ZPM;
-                        case 8    -> ItemList.Electric_Piston_UV;
-                        case 9    -> ItemList.Electric_Piston_UHV;
-                        case 10   -> ItemList.Electric_Piston_UEV;
-                        case 11   -> ItemList.Electric_Piston_UIV;
-                        case 12   -> ItemList.Electric_Piston_UMV;
-                        case 13   -> ItemList.Electric_Piston_UXV;
-                        default   -> ItemList.Electric_Piston_MAX;
-                    };
-
-                    case CONVEYOR -> switch (machineTier) {
-                        case 0, 1 -> ItemList.Conveyor_Module_LV;
-                        case 2    -> ItemList.Conveyor_Module_MV;
-                        case 3    -> ItemList.Conveyor_Module_HV;
-                        case 4    -> ItemList.Conveyor_Module_EV;
-                        case 5    -> ItemList.Conveyor_Module_IV;
-                        case 6    -> ItemList.Conveyor_Module_LuV;
-                        case 7    -> ItemList.Conveyor_Module_ZPM;
-                        case 8    -> ItemList.Conveyor_Module_UV;
-                        case 9    -> ItemList.Conveyor_Module_UHV;
-                        case 10   -> ItemList.Conveyor_Module_UEV;
-                        case 11   -> ItemList.Conveyor_Module_UIV;
-                        case 12   -> ItemList.Conveyor_Module_UMV;
-                        case 13   -> ItemList.Conveyor_Module_UXV;
-                        default   -> ItemList.Conveyor_Module_MAX;
-                    };
-
-                    case EMITTER -> switch (machineTier) {
-                        case 0, 1 -> ItemList.Emitter_LV;
-                        case 2    -> ItemList.Emitter_MV;
-                        case 3    -> ItemList.Emitter_HV;
-                        case 4    -> ItemList.Emitter_EV;
-                        case 5    -> ItemList.Emitter_IV;
-                        case 6    -> ItemList.Emitter_LuV;
-                        case 7    -> ItemList.Emitter_ZPM;
-                        case 8    -> ItemList.Emitter_UV;
-                        case 9    -> ItemList.Emitter_UHV;
-                        case 10   -> ItemList.Emitter_UEV;
-                        case 11   -> ItemList.Emitter_UIV;
-                        case 12   -> ItemList.Emitter_UMV;
-                        case 13   -> ItemList.Emitter_UXV;
-                        default   -> ItemList.Emitter_MAX;
-                    };
-
-                    case SENSOR -> switch (machineTier) {
-                        case 0, 1 -> ItemList.Sensor_LV;
-                        case 2    -> ItemList.Sensor_MV;
-                        case 3    -> ItemList.Sensor_HV;
-                        case 4    -> ItemList.Sensor_EV;
-                        case 5    -> ItemList.Sensor_IV;
-                        case 6    -> ItemList.Sensor_LuV;
-                        case 7    -> ItemList.Sensor_ZPM;
-                        case 8    -> ItemList.Sensor_UV;
-                        case 9    -> ItemList.Sensor_UHV;
-                        case 10   -> ItemList.Sensor_UEV;
-                        case 11   -> ItemList.Sensor_UIV;
-                        case 12   -> ItemList.Sensor_UMV;
-                        case 13   -> ItemList.Sensor_UXV;
-                        default   -> ItemList.Sensor_MAX;
-                    };
-
-                    case FIELD_GENERATOR -> switch (machineTier) {
-                        case 0, 1 -> ItemList.Field_Generator_LV;
-                        case 2    -> ItemList.Field_Generator_MV;
-                        case 3    -> ItemList.Field_Generator_HV;
-                        case 4    -> ItemList.Field_Generator_EV;
-                        case 5    -> ItemList.Field_Generator_IV;
-                        case 6    -> ItemList.Field_Generator_LuV;
-                        case 7    -> ItemList.Field_Generator_ZPM;
-                        case 8    -> ItemList.Field_Generator_UV;
-                        case 9    -> ItemList.Field_Generator_UHV;
-                        case 10   -> ItemList.Field_Generator_UEV;
-                        case 11   -> ItemList.Field_Generator_UIV;
-                        case 12   -> ItemList.Field_Generator_UMV;
-                        case 13   -> ItemList.Field_Generator_UXV;
-                        default   -> ItemList.Field_Generator_MAX;
-                    };
-
-                    case ROTOR -> switch (machineTier) {
-                        case 0, 1 -> OrePrefixes.rotor.get(Materials.Tin);
-                        case 2    -> OrePrefixes.rotor.get(Materials.Bronze);
-                        case 3    -> OrePrefixes.rotor.get(Materials.Steel);
-                        case 4    -> OrePrefixes.rotor.get(Materials.StainlessSteel);
-                        case 5    -> OrePrefixes.rotor.get(Materials.TungstenSteel);
-                        case 6    -> OrePrefixes.rotor.get(ExternalMaterials.getRhodiumPlatedPalladium());
-                        case 7    -> OrePrefixes.rotor.get(Materials.Iridium);
-                        default   -> OrePrefixes.rotor.get(Materials.Osmium);
-                    };
-
-                    default -> throw new IllegalArgumentException("MISSING TIER MAPPING FOR: " + aRecipe[i] + " AT TIER " + machineTier);
+            // spotless:off
+            aRecipe[i] = switch ((MTEBasicMachineWithRecipe.X) aRecipe[i]) {
+                case CIRCUIT -> switch (machineTier) {
+                    case  0 -> OrePrefixes.circuit.get(Materials.ULV);
+                    case  1 -> OrePrefixes.circuit.get(Materials.LV);
+                    case  2 -> OrePrefixes.circuit.get(Materials.MV);
+                    case  3 -> OrePrefixes.circuit.get(Materials.HV);
+                    case  4 -> OrePrefixes.circuit.get(Materials.EV);
+                    case  5 -> OrePrefixes.circuit.get(Materials.IV);
+                    case  6 -> OrePrefixes.circuit.get(Materials.LuV);
+                    case  7 -> OrePrefixes.circuit.get(Materials.ZPM);
+                    case  8 -> OrePrefixes.circuit.get(Materials.UV);
+                    default -> OrePrefixes.circuit.get(Materials.UHV);
                 };
-                // spotless:on
-            }
 
-            if (!GTModHandler.addCraftingRecipe(
-                aResult,
-                GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.BUFFERED
-                    | GTModHandler.RecipeBits.NOT_REMOVABLE
-                    | GTModHandler.RecipeBits.REVERSIBLE,
-                aRecipe)) {
-                throw new IllegalArgumentException("INVALID CRAFTING RECIPE FOR: " + aResult.getDisplayName());
-            }
+                case BETTER_CIRCUIT -> switch (machineTier) {
+                    case  0 -> OrePrefixes.circuit.get(Materials.LV);
+                    case  1 -> OrePrefixes.circuit.get(Materials.MV);
+                    case  2 -> OrePrefixes.circuit.get(Materials.HV);
+                    case  3 -> OrePrefixes.circuit.get(Materials.EV);
+                    case  4 -> OrePrefixes.circuit.get(Materials.IV);
+                    case  5 -> OrePrefixes.circuit.get(Materials.LuV);
+                    case  6 -> OrePrefixes.circuit.get(Materials.ZPM);
+                    case  7 -> OrePrefixes.circuit.get(Materials.UV);
+                    default -> OrePrefixes.circuit.get(Materials.UHV);
+                };
+
+                case HULL -> switch (machineTier) {
+                    case  0 -> ItemList.Hull_ULV;
+                    case  1 -> ItemList.Hull_LV;
+                    case  2 -> ItemList.Hull_MV;
+                    case  3 -> ItemList.Hull_HV;
+                    case  4 -> ItemList.Hull_EV;
+                    case  5 -> ItemList.Hull_IV;
+                    case  6 -> ItemList.Hull_LuV;
+                    case  7 -> ItemList.Hull_ZPM;
+                    case  8 -> ItemList.Hull_UV;
+                    default -> ItemList.Hull_MAX;
+                };
+
+                case WIRE -> switch (machineTier) {
+                    case  0 -> OrePrefixes.cableGt01.get(Materials.Lead);
+                    case  1 -> OrePrefixes.cableGt01.get(Materials.Tin);
+                    case  2 -> OrePrefixes.cableGt01.get(Materials.AnyCopper);
+                    case  3 -> OrePrefixes.cableGt01.get(Materials.Gold);
+                    case  4 -> OrePrefixes.cableGt01.get(Materials.Aluminium);
+                    case  5 -> OrePrefixes.cableGt01.get(Materials.Platinum);
+                    case  6 -> OrePrefixes.cableGt01.get(Materials.NiobiumTitanium);
+                    case  7 -> OrePrefixes.cableGt01.get(Materials.Naquadah);
+                    case  8 -> OrePrefixes.cableGt04.get(Materials.NaquadahAlloy);
+                    default -> OrePrefixes.wireGt01.get(Materials.SuperconductorUHV);
+                };
+
+                case WIRE4 -> switch (machineTier) {
+                    case  0 -> OrePrefixes.cableGt04.get(Materials.Lead);
+                    case  1 -> OrePrefixes.cableGt04.get(Materials.Tin);
+                    case  2 -> OrePrefixes.cableGt04.get(Materials.AnyCopper);
+                    case  3 -> OrePrefixes.cableGt04.get(Materials.Gold);
+                    case  4 -> OrePrefixes.cableGt04.get(Materials.Aluminium);
+                    case  5 -> OrePrefixes.cableGt04.get(Materials.Platinum);
+                    case  6 -> OrePrefixes.cableGt04.get(Materials.NiobiumTitanium);
+                    case  7 -> OrePrefixes.cableGt04.get(Materials.Naquadah);
+                    case  8 -> OrePrefixes.wireGt01.get(Materials.SuperconductorUHV);
+                    default -> OrePrefixes.wireGt04.get(Materials.SuperconductorUHV);
+                };
+
+                case STICK_DISTILLATION -> OrePrefixes.stick.get(Materials.Blaze);
+
+                case GLASS -> switch (machineTier) {
+                    case 0, 1, 2, 3    -> new ItemStack(Blocks.glass, 1, WILDCARD);
+                    case 4, 5, 6, 7, 8 -> "blockGlass" + VN[machineTier];
+                    default            -> "blockGlass" + VN[8];
+                };
+
+                case PLATE -> switch (machineTier) {
+                    case 0, 1 -> OrePrefixes.plate.get(Materials.Steel);
+                    case 2    -> OrePrefixes.plate.get(Materials.Aluminium);
+                    case 3    -> OrePrefixes.plate.get(Materials.StainlessSteel);
+                    case 4    -> OrePrefixes.plate.get(Materials.Titanium);
+                    case 5    -> OrePrefixes.plate.get(Materials.TungstenSteel);
+                    case 6    -> OrePrefixes.plate.get(Materials.HSSG);
+                    case 7    -> OrePrefixes.plate.get(Materials.HSSE);
+                    default   -> OrePrefixes.plate.get(Materials.Neutronium);
+                };
+
+                case PIPE -> switch (machineTier) {
+                    case 0, 1 -> OrePrefixes.pipeMedium.get(Materials.Bronze);
+                    case 2    -> OrePrefixes.pipeMedium.get(Materials.Steel);
+                    case 3    -> OrePrefixes.pipeMedium.get(Materials.StainlessSteel);
+                    case 4    -> OrePrefixes.pipeMedium.get(Materials.Titanium);
+                    case 5    -> OrePrefixes.pipeMedium.get(Materials.TungstenSteel);
+                    case 6    -> OrePrefixes.pipeSmall.get(Materials.ZPM);
+                    case 7    -> OrePrefixes.pipeMedium.get(Materials.ZPM);
+                    case 8    -> OrePrefixes.pipeLarge.get(Materials.ZPM);
+                    default   -> OrePrefixes.pipeHuge.get(Materials.ZPM);
+                };
+
+                case COIL_HEATING -> switch (machineTier) {
+                    case 0, 1 -> OrePrefixes.wireGt02.get(Materials.AnyCopper);
+                    case 2    -> OrePrefixes.wireGt02.get(Materials.Cupronickel);
+                    case 3    -> OrePrefixes.wireGt02.get(Materials.Kanthal);
+                    case 4    -> OrePrefixes.wireGt02.get(Materials.Nichrome);
+                    case 5    -> OrePrefixes.wireGt02.get(Materials.TPV);
+                    case 6    -> OrePrefixes.wireGt02.get(Materials.HSSG);
+                    case 7    -> OrePrefixes.wireGt02.get(Materials.Naquadah);
+                    case 8    -> OrePrefixes.wireGt02.get(Materials.NaquadahAlloy);
+                    case 9    -> OrePrefixes.wireGt04.get(Materials.NaquadahAlloy);
+                    default   -> OrePrefixes.wireGt08.get(Materials.NaquadahAlloy);
+                };
+
+                case COIL_HEATING_DOUBLE -> switch (machineTier) {
+                    case 0, 1 -> OrePrefixes.wireGt04.get(Materials.AnyCopper);
+                    case 2    -> OrePrefixes.wireGt04.get(Materials.Cupronickel);
+                    case 3    -> OrePrefixes.wireGt04.get(Materials.Kanthal);
+                    case 4    -> OrePrefixes.wireGt04.get(Materials.Nichrome);
+                    case 5    -> OrePrefixes.wireGt04.get(Materials.TPV);
+                    case 6    -> OrePrefixes.wireGt04.get(Materials.HSSG);
+                    case 7    -> OrePrefixes.wireGt04.get(Materials.Naquadah);
+                    case 8    -> OrePrefixes.wireGt04.get(Materials.NaquadahAlloy);
+                    case 9    -> OrePrefixes.wireGt08.get(Materials.NaquadahAlloy);
+                    default   -> OrePrefixes.wireGt16.get(Materials.NaquadahAlloy);
+                };
+
+                case STICK_MAGNETIC -> switch (machineTier) {
+                    case 0, 1       -> OrePrefixes.stick.get(Materials.IronMagnetic);
+                    case 2, 3       -> OrePrefixes.stick.get(Materials.SteelMagnetic);
+                    case 4, 5       -> OrePrefixes.stick.get(Materials.NeodymiumMagnetic);
+                    case 6, 7, 8, 9 -> OrePrefixes.stick.get(Materials.SamariumMagnetic);
+                    default         -> OrePrefixes.stick.get(Materials.TengamAttuned);
+                };
+
+                case STICK_ELECTROMAGNETIC -> switch (machineTier) {
+                    case 0, 1 -> OrePrefixes.stick.get(Materials.AnyIron);
+                    case 2, 3 -> OrePrefixes.stick.get(Materials.Steel);
+                    case 4    -> OrePrefixes.stick.get(Materials.Neodymium);
+                    default   -> OrePrefixes.stick.get(Materials.VanadiumGallium);
+                };
+
+                case COIL_ELECTRIC -> switch (machineTier) {
+                    case 0  -> OrePrefixes.wireGt01.get(Materials.Lead);
+                    case 1  -> OrePrefixes.wireGt02.get(Materials.Tin);
+                    case 2  -> OrePrefixes.wireGt02.get(Materials.AnyCopper);
+                    case 3  -> OrePrefixes.wireGt04.get(Materials.AnyCopper);
+                    case 4  -> OrePrefixes.wireGt08.get(Materials.AnnealedCopper);
+                    case 5  -> OrePrefixes.wireGt16.get(Materials.AnnealedCopper);
+                    case 6  -> OrePrefixes.wireGt04.get(Materials.YttriumBariumCuprate);
+                    case 7  -> OrePrefixes.wireGt08.get(Materials.Iridium);
+                    default -> OrePrefixes.wireGt16.get(Materials.Osmium);
+                };
+
+                case ROBOT_ARM -> switch (machineTier) {
+                    case 0, 1 -> ItemList.Robot_Arm_LV;
+                    case 2    -> ItemList.Robot_Arm_MV;
+                    case 3    -> ItemList.Robot_Arm_HV;
+                    case 4    -> ItemList.Robot_Arm_EV;
+                    case 5    -> ItemList.Robot_Arm_IV;
+                    case 6    -> ItemList.Robot_Arm_LuV;
+                    case 7    -> ItemList.Robot_Arm_ZPM;
+                    case 8    -> ItemList.Robot_Arm_UV;
+                    case 9    -> ItemList.Robot_Arm_UHV;
+                    case 10   -> ItemList.Robot_Arm_UEV;
+                    case 11   -> ItemList.Robot_Arm_UIV;
+                    case 12   -> ItemList.Robot_Arm_UMV;
+                    case 13   -> ItemList.Robot_Arm_UXV;
+                    default   ->  ItemList.Robot_Arm_MAX;
+                };
+
+                case PUMP -> switch (machineTier) {
+                    case 0, 1 -> ItemList.Electric_Pump_LV;
+                    case 2    -> ItemList.Electric_Pump_MV;
+                    case 3    -> ItemList.Electric_Pump_HV;
+                    case 4    -> ItemList.Electric_Pump_EV;
+                    case 5    -> ItemList.Electric_Pump_IV;
+                    case 6    -> ItemList.Electric_Pump_LuV;
+                    case 7    -> ItemList.Electric_Pump_ZPM;
+                    case 8    -> ItemList.Electric_Pump_UV;
+                    case 9    -> ItemList.Electric_Pump_UHV;
+                    case 10   -> ItemList.Electric_Pump_UEV;
+                    case 11   -> ItemList.Electric_Pump_UIV;
+                    case 12   -> ItemList.Electric_Pump_UMV;
+                    case 13   -> ItemList.Electric_Pump_UXV;
+                    default   -> ItemList.Electric_Pump_MAX;
+                };
+
+                case MOTOR -> switch (machineTier) {
+                    case 0, 1 -> ItemList.Electric_Motor_LV;
+                    case 2    -> ItemList.Electric_Motor_MV;
+                    case 3    -> ItemList.Electric_Motor_HV;
+                    case 4    -> ItemList.Electric_Motor_EV;
+                    case 5    -> ItemList.Electric_Motor_IV;
+                    case 6    -> ItemList.Electric_Motor_LuV;
+                    case 7    -> ItemList.Electric_Motor_ZPM;
+                    case 8    -> ItemList.Electric_Motor_UV;
+                    case 9    -> ItemList.Electric_Motor_UHV;
+                    case 10   -> ItemList.Electric_Motor_UEV;
+                    case 11   -> ItemList.Electric_Motor_UIV;
+                    case 12   -> ItemList.Electric_Motor_UMV;
+                    case 13   -> ItemList.Electric_Motor_UXV;
+                    default   -> ItemList.Electric_Motor_MAX;
+                };
+
+                case PISTON -> switch (machineTier) {
+                    case 0, 1 -> ItemList.Electric_Piston_LV;
+                    case 2    -> ItemList.Electric_Piston_MV;
+                    case 3    -> ItemList.Electric_Piston_HV;
+                    case 4    -> ItemList.Electric_Piston_EV;
+                    case 5    -> ItemList.Electric_Piston_IV;
+                    case 6    -> ItemList.Electric_Piston_LuV;
+                    case 7    -> ItemList.Electric_Piston_ZPM;
+                    case 8    -> ItemList.Electric_Piston_UV;
+                    case 9    -> ItemList.Electric_Piston_UHV;
+                    case 10   -> ItemList.Electric_Piston_UEV;
+                    case 11   -> ItemList.Electric_Piston_UIV;
+                    case 12   -> ItemList.Electric_Piston_UMV;
+                    case 13   -> ItemList.Electric_Piston_UXV;
+                    default   -> ItemList.Electric_Piston_MAX;
+                };
+
+                case CONVEYOR -> switch (machineTier) {
+                    case 0, 1 -> ItemList.Conveyor_Module_LV;
+                    case 2    -> ItemList.Conveyor_Module_MV;
+                    case 3    -> ItemList.Conveyor_Module_HV;
+                    case 4    -> ItemList.Conveyor_Module_EV;
+                    case 5    -> ItemList.Conveyor_Module_IV;
+                    case 6    -> ItemList.Conveyor_Module_LuV;
+                    case 7    -> ItemList.Conveyor_Module_ZPM;
+                    case 8    -> ItemList.Conveyor_Module_UV;
+                    case 9    -> ItemList.Conveyor_Module_UHV;
+                    case 10   -> ItemList.Conveyor_Module_UEV;
+                    case 11   -> ItemList.Conveyor_Module_UIV;
+                    case 12   -> ItemList.Conveyor_Module_UMV;
+                    case 13   -> ItemList.Conveyor_Module_UXV;
+                    default   -> ItemList.Conveyor_Module_MAX;
+                };
+
+                case EMITTER -> switch (machineTier) {
+                    case 0, 1 -> ItemList.Emitter_LV;
+                    case 2    -> ItemList.Emitter_MV;
+                    case 3    -> ItemList.Emitter_HV;
+                    case 4    -> ItemList.Emitter_EV;
+                    case 5    -> ItemList.Emitter_IV;
+                    case 6    -> ItemList.Emitter_LuV;
+                    case 7    -> ItemList.Emitter_ZPM;
+                    case 8    -> ItemList.Emitter_UV;
+                    case 9    -> ItemList.Emitter_UHV;
+                    case 10   -> ItemList.Emitter_UEV;
+                    case 11   -> ItemList.Emitter_UIV;
+                    case 12   -> ItemList.Emitter_UMV;
+                    case 13   -> ItemList.Emitter_UXV;
+                    default   -> ItemList.Emitter_MAX;
+                };
+
+                case SENSOR -> switch (machineTier) {
+                    case 0, 1 -> ItemList.Sensor_LV;
+                    case 2    -> ItemList.Sensor_MV;
+                    case 3    -> ItemList.Sensor_HV;
+                    case 4    -> ItemList.Sensor_EV;
+                    case 5    -> ItemList.Sensor_IV;
+                    case 6    -> ItemList.Sensor_LuV;
+                    case 7    -> ItemList.Sensor_ZPM;
+                    case 8    -> ItemList.Sensor_UV;
+                    case 9    -> ItemList.Sensor_UHV;
+                    case 10   -> ItemList.Sensor_UEV;
+                    case 11   -> ItemList.Sensor_UIV;
+                    case 12   -> ItemList.Sensor_UMV;
+                    case 13   -> ItemList.Sensor_UXV;
+                    default   -> ItemList.Sensor_MAX;
+                };
+
+                case FIELD_GENERATOR -> switch (machineTier) {
+                    case 0, 1 -> ItemList.Field_Generator_LV;
+                    case 2    -> ItemList.Field_Generator_MV;
+                    case 3    -> ItemList.Field_Generator_HV;
+                    case 4    -> ItemList.Field_Generator_EV;
+                    case 5    -> ItemList.Field_Generator_IV;
+                    case 6    -> ItemList.Field_Generator_LuV;
+                    case 7    -> ItemList.Field_Generator_ZPM;
+                    case 8    -> ItemList.Field_Generator_UV;
+                    case 9    -> ItemList.Field_Generator_UHV;
+                    case 10   -> ItemList.Field_Generator_UEV;
+                    case 11   -> ItemList.Field_Generator_UIV;
+                    case 12   -> ItemList.Field_Generator_UMV;
+                    case 13   -> ItemList.Field_Generator_UXV;
+                    default   -> ItemList.Field_Generator_MAX;
+                };
+
+                case ROTOR -> switch (machineTier) {
+                    case 0, 1 -> OrePrefixes.rotor.get(Materials.Tin);
+                    case 2    -> OrePrefixes.rotor.get(Materials.Bronze);
+                    case 3    -> OrePrefixes.rotor.get(Materials.Steel);
+                    case 4    -> OrePrefixes.rotor.get(Materials.StainlessSteel);
+                    case 5    -> OrePrefixes.rotor.get(Materials.TungstenSteel);
+                    case 6    -> OrePrefixes.rotor.get(WerkstoffLoader.RhodiumPlatedPalladium.getGTMaterial());
+                    case 7    -> OrePrefixes.rotor.get(Materials.Iridium);
+                    default   -> OrePrefixes.rotor.get(Materials.Osmium);
+                };
+
+                default -> throw new IllegalArgumentException("MISSING TIER MAPPING FOR: " + aRecipe[i] + " AT TIER " + machineTier);
+            };
+            // spotless:on
         }
-        return true;
+
+        if (!GTModHandler.addCraftingRecipe(aResult, aBitMask, aRecipe)) {
+            throw new IllegalArgumentException("INVALID CRAFTING RECIPE FOR: " + aResult.getDisplayName());
+        }
     }
 
     /**
      * Internal realisation of the Crafting Recipe adding Process.
      */
     private static boolean addCraftingRecipe(ItemStack aResult, Enchantment[] aEnchantmentsAdded,
-        int[] aEnchantmentLevelsAdded, boolean aMirrored, boolean aBuffered, boolean aKeepNBT, boolean aDismantleable,
-        boolean aRemovable, boolean aReversible, boolean aRemoveAllOthersWithSameOutput,
+        int[] aEnchantmentLevelsAdded, boolean aMirrored, boolean aBuffered, boolean aKeepNBT, boolean aRemovable,
+        boolean aReversible, boolean aRemoveAllOthersWithSameOutput,
         boolean aRemoveAllOthersWithSameOutputIfTheyHaveSameNBT, boolean aRemoveAllOtherShapedsWithSameOutput,
         boolean aRemoveAllOtherNativeRecipes, boolean aCheckForCollisions,
         boolean aOnlyAddIfThereIsAnyRecipeOutputtingThis, boolean aOnlyAddIfResultIsNotNull, Object[] aRecipe) {
 
         aResult = GTOreDictUnificator.get(true, aResult);
         if (aOnlyAddIfResultIsNotNull && aResult == null) return false;
-        if (aResult != null && Items.feather.getDamage(aResult) == W) Items.feather.setDamage(aResult, 0);
+        if (aResult != null && Items.feather.getDamage(aResult) == WILDCARD) Items.feather.setDamage(aResult, 0);
         if (aRecipe == null || aRecipe.length == 0) return false;
 
         // The renamed variable clarifies what's happening
@@ -905,7 +1038,7 @@ public class GTModHandler {
                     }
                     case 'r' -> {
                         tRecipeList.add(c);
-                        tRecipeList.add(ToolDictNames.craftingToolSoftHammer.name());
+                        tRecipeList.add(ToolDictNames.craftingToolSoftMallet.name());
                     }
                     case 's' -> {
                         tRecipeList.add(c);
@@ -997,7 +1130,7 @@ public class GTModHandler {
             for (char chr : shape.toString()
                 .toCharArray()) {
                 tRecipe[++x] = tItemStackMap.get(chr);
-                if (tRecipe[x] != null && Items.feather.getDamage(tRecipe[x]) == W)
+                if (tRecipe[x] != null && Items.feather.getDamage(tRecipe[x]) == WILDCARD)
                     Items.feather.setDamage(tRecipe[x], 0);
             }
             if (tDoWeCareIfThereWasARecipe || !aBuffered) tThereWasARecipe = removeRecipe(tRecipe) != null;
@@ -1035,7 +1168,7 @@ public class GTModHandler {
             }
         }
 
-        if (Items.feather.getDamage(aResult) == W || Items.feather.getDamage(aResult) < 0)
+        if (Items.feather.getDamage(aResult) == WILDCARD || Items.feather.getDamage(aResult) < 0)
             Items.feather.setDamage(aResult, 0);
 
         GTUtility.updateItemStack(aResult);
@@ -1044,7 +1177,6 @@ public class GTModHandler {
             if (sBufferCraftingRecipes && aBuffered) sBufferRecipeList.add(
                 new GTShapedRecipe(
                     GTUtility.copyOrNull(aResult),
-                    aDismantleable,
                     aRemovable,
                     aKeepNBT,
                     aEnchantmentsAdded,
@@ -1053,7 +1185,6 @@ public class GTModHandler {
             else GameRegistry.addRecipe(
                 new GTShapedRecipe(
                     GTUtility.copyOrNull(aResult),
-                    aDismantleable,
                     aRemovable,
                     aKeepNBT,
                     aEnchantmentsAdded,
@@ -1079,11 +1210,10 @@ public class GTModHandler {
     public static boolean addShapelessCraftingRecipe(ItemStack aResult, long aBitMask, Object[] aRecipe) {
         return addShapelessCraftingRecipe(
             aResult,
-            new Enchantment[0],
-            new int[0],
+            null,
+            null,
             (aBitMask & RecipeBits.BUFFERED) != 0,
             (aBitMask & RecipeBits.KEEPNBT) != 0,
-            (aBitMask & RecipeBits.DISMANTLEABLE) != 0,
             (aBitMask & RecipeBits.NOT_REMOVABLE) == 0,
             (aBitMask & RecipeBits.OVERWRITE_NBT) != 0,
             aRecipe);
@@ -1093,8 +1223,8 @@ public class GTModHandler {
      * Shapeless Crafting Recipes. Deletes conflicting Recipes too.
      */
     private static boolean addShapelessCraftingRecipe(ItemStack aResult, Enchantment[] aEnchantmentsAdded,
-        int[] aEnchantmentLevelsAdded, boolean aBuffered, boolean aKeepNBT, boolean aDismantleable, boolean aRemovable,
-        boolean overwriteNBT, Object[] aRecipe) {
+        int[] aEnchantmentLevelsAdded, boolean aBuffered, boolean aKeepNBT, boolean aRemovable, boolean overwriteNBT,
+        Object[] aRecipe) {
         aResult = GTOreDictUnificator.get(true, aResult);
         if (aRecipe == null || aRecipe.length == 0) return false;
         for (byte i = 0; i < aRecipe.length; i++) {
@@ -1128,7 +1258,7 @@ public class GTModHandler {
 
         if (aResult == null || aResult.stackSize <= 0) return false;
 
-        if (Items.feather.getDamage(aResult) == W || Items.feather.getDamage(aResult) < 0)
+        if (Items.feather.getDamage(aResult) == WILDCARD || Items.feather.getDamage(aResult) < 0)
             Items.feather.setDamage(aResult, 0);
 
         GTUtility.updateItemStack(aResult);
@@ -1136,7 +1266,6 @@ public class GTModHandler {
         if (sBufferCraftingRecipes && aBuffered) sBufferRecipeList.add(
             new GTShapelessRecipe(
                 GTUtility.copyOrNull(aResult),
-                aDismantleable,
                 aRemovable,
                 aKeepNBT,
                 overwriteNBT,
@@ -1146,7 +1275,6 @@ public class GTModHandler {
         else GameRegistry.addRecipe(
             new GTShapelessRecipe(
                 GTUtility.copyOrNull(aResult),
-                aDismantleable,
                 aRemovable,
                 aKeepNBT,
                 overwriteNBT,
@@ -1159,109 +1287,128 @@ public class GTModHandler {
     /**
      * Removes a Smelting Recipe
      */
-    public static boolean removeFurnaceSmelting(ItemStack aInput) {
-        if (aInput != null) {
-            for (ItemStack tInput : FurnaceRecipes.smelting()
-                .getSmeltingList()
-                .keySet()) {
-                if (GTUtility.isStackValid(tInput) && GTUtility.areStacksEqual(aInput, tInput, true)) {
-                    FurnaceRecipes.smelting()
-                        .getSmeltingList()
-                        .remove(tInput);
-                    return true;
-                }
-            }
-        }
-        return false;
+    public static boolean removeFurnaceSmelting(ItemStack input) {
+        if (input == null) return false;
+
+        // smelting list was optimized to allow fast operations like that, see MixinFurnaceRecipes.java in Hodgepodge
+        return FurnaceRecipes.smelting()
+            .getSmeltingList()
+            .remove(input) != null;
     }
 
     /**
      * Removes a Crafting Recipe and gives you the former output of it.
      *
-     * @param aRecipe The content of the Crafting Grid as ItemStackArray with length 9
+     * @param shape The content of the Crafting Grid as ItemStackArray with length 9
      * @return the output of the old Recipe or null if there was nothing.
      */
-    public static ItemStack removeRecipe(ItemStack... aRecipe) {
-        if (aRecipe == null) return null;
-        if (Arrays.stream(aRecipe)
-            .noneMatch(Objects::nonNull)) return null;
+    public static ItemStack removeRecipe(ItemStack... shape) {
+        if (shape == null) return null;
+        if (isAllNulls(shape)) return null;
 
         ItemStack rReturn = null;
-        InventoryCrafting aCrafting = new InventoryCrafting(new Container() {
+        InventoryCrafting craftMatrix = new InventoryCrafting(new Container() {
 
             @Override
             public boolean canInteractWith(EntityPlayer player) {
                 return false;
             }
         }, 3, 3);
-        for (int i = 0; i < aRecipe.length && i < 9; i++) aCrafting.setInventorySlotContents(i, aRecipe[i]);
-        ArrayList<IRecipe> tList = (ArrayList<IRecipe>) CraftingManager.getInstance()
+
+        for (int i = 0; i < shape.length && i < 9; i++) {
+            craftMatrix.setInventorySlotContents(i, shape[i]);
+        }
+
+        ArrayList<IRecipe> allRecipes = (ArrayList<IRecipe>) CraftingManager.getInstance()
             .getRecipeList();
-        int tList_sS = tList.size();
-        for (int i = 0; i < tList_sS; i++) {
-            for (; i < tList_sS; i++) {
-                if ((!(tList.get(i) instanceof IGTCraftingRecipe) || ((IGTCraftingRecipe) tList.get(i)).isRemovable())
-                    && tList.get(i)
-                        .matches(aCrafting, DW)) {
-                    rReturn = tList.get(i)
-                        .getCraftingResult(aCrafting);
-                    if (rReturn != null) tList.remove(i--);
-                    tList_sS = tList.size();
-                }
+        for (int i = 0; i < allRecipes.size(); i++) {
+            final IRecipe recipe = allRecipes.get(i);
+
+            if (recipe instanceof IGTCraftingRecipe && !((IGTCraftingRecipe) recipe).isRemovable()) {
+                continue;
+            }
+
+            if (recipe.matches(craftMatrix, DW)) {
+                rReturn = recipe.getCraftingResult(craftMatrix);
+                allRecipes.remove(i--);
             }
         }
         return rReturn;
     }
 
-    public static void removeRecipeDelayed(ItemStack... aRecipe) {
+    public static void removeRecipeDelayed(ItemStack... shape) {
         if (!sBufferCraftingRecipes) {
-            removeRecipe(aRecipe);
+            removeRecipe(shape);
             return;
         }
 
-        if (aRecipe == null) return;
-        if (Arrays.stream(aRecipe)
-            .noneMatch(Objects::nonNull)) return;
+        if (shape == null) return;
+        if (isAllNulls(shape)) return;
 
-        InventoryCrafting aCrafting = new InventoryCrafting(new Container() {
+        InventoryCrafting craftMatrix = new InventoryCrafting(new Container() {
 
             @Override
             public boolean canInteractWith(EntityPlayer player) {
                 return false;
             }
         }, 3, 3);
-        for (int i = 0; i < aRecipe.length && i < 9; i++) aCrafting.setInventorySlotContents(i, aRecipe[i]);
-        delayedRemovalByRecipe.add(aCrafting);
+
+        for (int i = 0; i < shape.length && i < 9; i++) {
+            craftMatrix.setInventorySlotContents(i, shape[i]);
+        }
+
+        delayedRemovalByRecipe.add(craftMatrix);
     }
 
-    public static void bulkRemoveByRecipe(List<InventoryCrafting> toRemove) {
-        ArrayList<IRecipe> tList = (ArrayList<IRecipe>) CraftingManager.getInstance()
+    private static void bulkRemoveByRecipe() {
+        ArrayList<IRecipe> allRecipes = (ArrayList<IRecipe>) CraftingManager.getInstance()
             .getRecipeList();
-        GT_FML_LOGGER.info("BulkRemoveByRecipe: tList: " + tList.size() + " toRemove: " + toRemove.size());
+        GT_FML_LOGGER
+            .info("BulkRemoveByRecipe: allRecipes: {}; toRemove: {}", allRecipes.size(), delayedRemovalByRecipe.size());
 
-        Set<IRecipe> tListToRemove = tList.parallelStream()
-            .filter(tRecipe -> {
-                if ((tRecipe instanceof IGTCraftingRecipe) && !((IGTCraftingRecipe) tRecipe).isRemovable())
+        Set<IRecipe> listToRemove = allRecipes.parallelStream()
+            .filter(recipe -> {
+                if (recipe instanceof IGTCraftingRecipe craftingRecipe && !craftingRecipe.isRemovable()) {
                     return false;
-                return toRemove.stream()
-                    .anyMatch(aCrafting -> tRecipe.matches(aCrafting, DW));
+                }
+                for (InventoryCrafting crafting : delayedRemovalByRecipe) {
+                    if (recipe.matches(crafting, DW)) {
+                        return true;
+                    }
+                }
+                return false;
             })
             .collect(Collectors.toSet());
 
-        tList.removeIf(tListToRemove::contains);
+        allRecipes.removeIf(listToRemove::contains);
     }
 
     public static boolean removeRecipeByOutputDelayed(ItemStack aOutput) {
-        if (sBufferCraftingRecipes) return delayedRemovalByOutput.add(aOutput);
-        else return removeRecipeByOutput(aOutput);
+        if (sBufferCraftingRecipes) {
+            return delayedRemovalByOutput.add(GTOreDictUnificator.get_nocopy(aOutput));
+        }
+
+        return removeRecipeByOutput(aOutput);
     }
 
-    public static boolean removeRecipeByOutputDelayed(ItemStack aOutput, boolean aIgnoreNBT,
-        boolean aNotRemoveShapelessRecipes, boolean aOnlyRemoveNativeHandlers) {
-        if (sBufferCraftingRecipes && (aIgnoreNBT && !aNotRemoveShapelessRecipes && !aOnlyRemoveNativeHandlers))
-            // Too lazy to handle deferred versions of the parameters that aren't used very often
-            return delayedRemovalByOutput.add(aOutput);
-        else return removeRecipeByOutput(aOutput, aIgnoreNBT, aNotRemoveShapelessRecipes, aOnlyRemoveNativeHandlers);
+    public static boolean removeRecipeByOutputDelayed(ItemStack output, boolean ignoreNBT, boolean keepShapelessRecipes,
+        boolean onlyRemoveNativeHandlers) {
+        // Handling NBT-sensitive stacks would be a nightmare, because we wouldn't be able to use HashMaps anymore.
+        // Luckily, ignoreNBT is almost never false, so we're not missing any performance gain by not handling it.
+        if (sBufferCraftingRecipes && ignoreNBT) {
+            ItemStack unifiedOutput = GTOreDictUnificator.get_nocopy(output);
+
+            int removalFlags = 0;
+            if (keepShapelessRecipes) removalFlags |= DELAYED_REMOVAL_KEEP_SHAPELESS;
+            if (onlyRemoveNativeHandlers) removalFlags |= DELAYED_REMOVAL_ONLY_REMOVE_NATIVE;
+
+            if (removalFlags != 0) {
+                delayedRemovalByOutputFlags.put(unifiedOutput, removalFlags);
+            }
+            return delayedRemovalByOutput.add(unifiedOutput);
+        }
+
+        return removeRecipeByOutput(output, ignoreNBT, keepShapelessRecipes, onlyRemoveNativeHandlers);
     }
 
     public static boolean removeRecipeByOutput(ItemStack aOutput) {
@@ -1271,118 +1418,138 @@ public class GTModHandler {
     /**
      * Removes a Crafting Recipe.
      *
-     * @param aOutput The output of the Recipe.
+     * @param output The output of the Recipe.
      * @return if it has removed at least one Recipe.
      */
-    public static boolean removeRecipeByOutput(ItemStack aOutput, boolean aIgnoreNBT,
-        boolean aNotRemoveShapelessRecipes, boolean aOnlyRemoveNativeHandlers) {
-        if (aOutput == null) return false;
-        boolean rReturn = false;
-        final ArrayList<IRecipe> tList = (ArrayList<IRecipe>) CraftingManager.getInstance()
+    public static boolean removeRecipeByOutput(ItemStack output, boolean ignoreNBT, boolean keepShapelessRecipes,
+        boolean onlyRemoveNativeHandlers) {
+
+        output = GTOreDictUnificator.get_nocopy(output);
+        if (output == null) return false;
+
+        final ArrayList<IRecipe> allRecipes = (ArrayList<IRecipe>) CraftingManager.getInstance()
             .getRecipeList();
-        aOutput = GTOreDictUnificator.get(aOutput);
-        int tList_sS = tList.size();
-        for (int i = 0; i < tList_sS; i++) {
-            final IRecipe tRecipe = tList.get(i);
-            if (aNotRemoveShapelessRecipes
-                && (tRecipe instanceof ShapelessRecipes || tRecipe instanceof ShapelessOreRecipe)) continue;
-            if (aOnlyRemoveNativeHandlers) {
-                if (!sNativeRecipeClasses.contains(
-                    tRecipe.getClass()
-                        .getName()))
-                    continue;
-            } else {
-                if (sSpecialRecipeClasses.contains(
-                    tRecipe.getClass()
-                        .getName()))
-                    continue;
+        int size = allRecipes.size();
+        boolean removed = false;
+
+        for (int i = 0; i < size; i++) {
+            final IRecipe recipe = allRecipes.get(i);
+
+            if (recipe instanceof IGTCraftingRecipe craftingRecipe && !craftingRecipe.isRemovable()) {
+                continue;
             }
-            ItemStack tStack = tRecipe.getRecipeOutput();
-            if ((!(tRecipe instanceof IGTCraftingRecipe) || ((IGTCraftingRecipe) tRecipe).isRemovable())
-                && GTUtility.areStacksEqual(GTOreDictUnificator.get(tStack), aOutput, aIgnoreNBT)) {
-                tList.remove(i--);
-                tList_sS = tList.size();
-                rReturn = true;
+
+            if (keepShapelessRecipes) {
+                if (recipe instanceof ShapelessRecipes || recipe instanceof ShapelessOreRecipe) {
+                    continue;
+                }
+            }
+
+            String recipeClassName = recipe.getClass()
+                .getName();
+            if (onlyRemoveNativeHandlers) {
+                if (!sNativeRecipeClasses.contains(recipeClassName)) continue;
+            } else {
+                if (sSpecialRecipeClasses.contains(recipeClassName)) continue;
+            }
+
+            ItemStack recipeOutput = GTOreDictUnificator.get_nocopy(recipe.getRecipeOutput());
+            if (GTUtility.areStacksEqual(recipeOutput, output, ignoreNBT)) {
+                allRecipes.remove(i--);
+                size = allRecipes.size();
+                removed = true;
             }
         }
-        return rReturn;
+
+        return removed;
     }
 
-    public static boolean bulkRemoveRecipeByOutput(List<ItemStack> toRemove) {
-        ArrayList<IRecipe> tList = (ArrayList<IRecipe>) CraftingManager.getInstance()
+    private static void bulkRemoveRecipeByOutput() {
+        ArrayList<IRecipe> allRecipes = (ArrayList<IRecipe>) CraftingManager.getInstance()
             .getRecipeList();
+        ItemStack wildcardItem = new ItemStack((Item) null, 0, WILDCARD);
 
-        Set<ItemStack> setToRemove = toRemove.parallelStream()
-            .map(GTOreDictUnificator::get_nocopy)
-            .collect(Collectors.toSet());
+        GT_FML_LOGGER.info(
+            "BulkRemoveRecipeByOutput: allRecipes: {}; toRemove: {}",
+            allRecipes.size(),
+            delayedRemovalByOutput.size());
 
-        GT_FML_LOGGER.info("BulkRemoveRecipeByOutput: tList: " + tList.size() + " setToRemove: " + setToRemove.size());
+        allRecipes.removeIf(recipe -> {
+            if (recipe instanceof IGTCraftingRecipe craftingRecipe && !craftingRecipe.isRemovable()) {
+                return false;
+            }
 
-        Set<IRecipe> tListToRemove = tList.parallelStream()
-            .filter(tRecipe -> {
-                if ((tRecipe instanceof IGTCraftingRecipe) && !((IGTCraftingRecipe) tRecipe).isRemovable())
+            ItemStack output = GTOreDictUnificator.get_nocopy(recipe.getRecipeOutput());
+            if (output == null) return false;
+
+            wildcardItem.func_150996_a(output.getItem());
+            if (delayedRemovalByOutput.contains(wildcardItem)) {
+                output = wildcardItem;
+            }
+
+            if (!delayedRemovalByOutput.contains(output)) {
+                return false;
+            }
+
+            final int flags = delayedRemovalByOutputFlags.getOrDefault(output, 0);
+            if ((flags & DELAYED_REMOVAL_KEEP_SHAPELESS) != 0) {
+                if (recipe instanceof ShapelessRecipes || recipe instanceof ShapelessOreRecipe) {
                     return false;
-                if (sSpecialRecipeClasses.contains(
-                    tRecipe.getClass()
-                        .getName()))
-                    return false;
-                final ItemStack tStack = GTOreDictUnificator.get_nocopy(tRecipe.getRecipeOutput());
-                return setToRemove.stream()
-                    .anyMatch(aOutput -> GTUtility.areStacksEqual(tStack, aOutput, true));
-            })
-            .collect(Collectors.toSet());
+                }
+            }
 
-        tList.removeIf(tListToRemove::contains);
-        return true;
+            String recipeClassName = recipe.getClass()
+                .getName();
+            if ((flags & DELAYED_REMOVAL_ONLY_REMOVE_NATIVE) != 0) {
+                return sNativeRecipeClasses.contains(recipeClassName);
+            } else {
+                return !sSpecialRecipeClasses.contains(recipeClassName);
+            }
+        });
     }
 
     /**
      * Checks all Crafting Handlers for Recipe Output Used for the Autocrafting Table
      */
-    public static ItemStack getAllRecipeOutput(World aWorld, ItemStack... aRecipe) {
-        if (aRecipe == null || aRecipe.length == 0) return null;
-
+    public static ItemStack getAllRecipeOutput(World aWorld, ItemStack... shape) {
+        if (shape == null || shape.length == 0 || isAllNulls(shape)) return null;
         if (aWorld == null) aWorld = DW;
 
-        boolean temp = false;
-        for (ItemStack itemStack : aRecipe) {
-            if (itemStack != null) {
-                temp = true;
-                break;
-            }
-        }
-        if (!temp) return null;
-        InventoryCrafting aCrafting = new InventoryCrafting(new Container() {
+        InventoryCrafting craftMatrix = new InventoryCrafting(new Container() {
 
             @Override
             public boolean canInteractWith(EntityPlayer player) {
                 return false;
             }
         }, 3, 3);
-        for (int i = 0; i < 9 && i < aRecipe.length; i++) aCrafting.setInventorySlotContents(i, aRecipe[i]);
-        List<IRecipe> tList = CraftingManager.getInstance()
+
+        for (int i = 0; i < 9 && i < shape.length; i++) {
+            craftMatrix.setInventorySlotContents(i, shape[i]);
+        }
+
+        List<IRecipe> allRecipes = CraftingManager.getInstance()
             .getRecipeList();
         synchronized (sAllRecipeList) {
-            if (sAllRecipeList.size() != tList.size()) {
+            if (sAllRecipeList.size() != allRecipes.size()) {
                 sAllRecipeList.clear();
-                sAllRecipeList.addAll(tList);
+                sAllRecipeList.addAll(allRecipes);
             }
             for (int i = 0, j = sAllRecipeList.size(); i < j; i++) {
                 IRecipe tRecipe = sAllRecipeList.get(i);
-                if (tRecipe.matches(aCrafting, aWorld)) {
+                if (tRecipe.matches(craftMatrix, aWorld)) {
                     if (i > 10) {
                         sAllRecipeList.remove(i);
                         sAllRecipeList.add(i - 10, tRecipe);
                     }
-                    return tRecipe.getCraftingResult(aCrafting);
+                    return tRecipe.getCraftingResult(craftMatrix);
                 }
             }
         }
 
         int tIndex = 0;
         ItemStack tStack1 = null, tStack2 = null;
-        for (int i = 0, j = aCrafting.getSizeInventory(); i < j; i++) {
-            ItemStack tStack = aCrafting.getStackInSlot(i);
+        for (int i = 0, j = craftMatrix.getSizeInventory(); i < j; i++) {
+            ItemStack tStack = craftMatrix.getStackInSlot(i);
             if (tStack != null) {
                 if (tIndex == 0) tStack1 = tStack;
                 if (tIndex == 1) tStack2 = tStack;
@@ -1408,54 +1575,85 @@ public class GTModHandler {
     /**
      * Gives you a copy of the Output from a Crafting Recipe Used for Recipe Detection.
      */
-    public static ItemStack getRecipeOutput(ItemStack... aRecipe) {
-        return getRecipeOutput(false, true, aRecipe);
+    public static ItemStack getRecipeOutput(ItemStack... shape) {
+        return getRecipeOutput(false, false, shape);
     }
 
-    public static ItemStack getRecipeOutputNoOreDict(ItemStack... aRecipe) {
-        return getRecipeOutput(false, false, aRecipe);
+    /**
+     * Gives you a copy of the Output from a Crafting Recipe Used for Recipe Detection. If available, will choose a
+     * recipe that wasn't auto generated during OreDictionary registration. The OreDict recipe is still chosen if it is
+     * the only one that exists.
+     * <p>
+     * For example: Many Planks -> Slab recipes may have a recipe to the corresponding slab, but also have another that
+     * results in Minecraft's default Oak Slab. This second recipe is generated automatically when the plank is
+     * registered as 'plankWood' in the OreDict. This method will select the former, regardless of the order they appear
+     * on the list.
+     */
+    public static ItemStack getRecipeOutputPreferNonOreDict(ItemStack... shape) {
+        return getRecipeOutput(false, true, shape);
     }
 
-    public static ItemStack getRecipeOutput(boolean aUncopiedStack, ItemStack... aRecipe) {
-        return getRecipeOutput(aUncopiedStack, true, aRecipe);
+    public static ItemStack getRecipeOutput(boolean aUncopiedStack, ItemStack... shape) {
+        return getRecipeOutput(aUncopiedStack, false, shape);
     }
 
     /**
      * Gives you a copy of the Output from a Crafting Recipe Used for Recipe Detection.
      */
-    public static ItemStack getRecipeOutput(boolean aUncopiedStack, boolean allowOreDict, ItemStack... aRecipe) {
-        if (aRecipe == null || Arrays.stream(aRecipe)
-            .noneMatch(Objects::nonNull)) return null;
+    public static ItemStack getRecipeOutput(boolean aUncopiedStack, boolean aPreferNonOreDict, ItemStack... shape) {
+        if (shape == null || isAllNulls(shape)) return null;
 
-        InventoryCrafting aCrafting = new InventoryCrafting(new Container() {
+        InventoryCrafting craftMatrix = new InventoryCrafting(new Container() {
 
             @Override
             public boolean canInteractWith(EntityPlayer player) {
                 return false;
             }
         }, 3, 3);
-        for (int i = 0; i < 9 && i < aRecipe.length; i++) aCrafting.setInventorySlotContents(i, aRecipe[i]);
-        ArrayList<IRecipe> tList = (ArrayList<IRecipe>) CraftingManager.getInstance()
+
+        for (int i = 0; i < 9 && i < shape.length; i++) {
+            craftMatrix.setInventorySlotContents(i, shape[i]);
+        }
+
+        ArrayList<IRecipe> recipes = (ArrayList<IRecipe>) CraftingManager.getInstance()
             .getRecipeList();
-        boolean found = false;
 
-        for (IRecipe iRecipe : tList) {
-            found = false;
-            if (!allowOreDict && iRecipe instanceof ShapedOreRecipe) continue;
+        boolean tOreDictRecipeFound = false;
+        ItemStack tOreDictOutput = null;
 
-            if (iRecipe.matches(aCrafting, DW)) {
-                ItemStack tOutput = aUncopiedStack ? iRecipe.getRecipeOutput() : iRecipe.getCraftingResult(aCrafting);
+        for (IRecipe recipe : recipes) {
+            if (recipe.matches(craftMatrix, DW)) {
+                ItemStack tOutput = aUncopiedStack ? recipe.getRecipeOutput() : recipe.getCraftingResult(craftMatrix);
+
+                if (aPreferNonOreDict && recipe instanceof ShapedOreRecipe) {
+                    if (!tOreDictRecipeFound) {
+                        tOreDictOutput = tOutput;
+                        tOreDictRecipeFound = true;
+                    }
+                    continue;
+                }
+
                 if (tOutput == null || tOutput.stackSize <= 0) {
                     // Seriously, who would ever do that shit?
                     if (!GregTechAPI.sPostloadFinished) throw new GTItsNotMyFaultException(
                         "Seems another Mod added a Crafting Recipe with null Output. Tell the Developer of said Mod to fix that.");
-                } else {
-                    if (aUncopiedStack) return tOutput;
-                    return GTUtility.copyOrNull(tOutput);
                 }
+
+                if (aUncopiedStack) return tOutput;
+                return GTUtility.copyOrNull(tOutput);
             }
         }
-        return null;
+
+        if (!tOreDictRecipeFound) return null;
+
+        if (tOreDictOutput == null || tOreDictOutput.stackSize <= 0) {
+            // Seriously, who would ever do that shit?
+            if (!GregTechAPI.sPostloadFinished) throw new GTItsNotMyFaultException(
+                "Seems another Mod added a Crafting Recipe with null Output. Tell the Developer of said Mod to fix that.");
+        }
+
+        if (aUncopiedStack) return tOreDictOutput;
+        return GTUtility.copyOrNull(tOreDictOutput);
     }
 
     private static List<IRecipe> bufferedRecipes = null;
@@ -1464,79 +1662,89 @@ public class GTModHandler {
      * Gives you a list of the Outputs from a Crafting Recipe If you have multiple Mods, which add Bronze Armor for
      * example Buffers a List which only has armor-alike crafting in it
      */
-    public static List<ItemStack> getRecipeOutputsBuffered(ItemStack... aRecipe) {
+    public static List<ItemStack> getRecipeOutputsBuffered(ItemStack... shape) {
+        if (bufferedRecipes == null) {
+            final List<IRecipe> recipes = CraftingManager.getInstance()
+                .getRecipeList();
+            bufferedRecipes = new ArrayList<>(recipes.size() / 2);
 
-        if (bufferedRecipes == null) bufferedRecipes = CraftingManager.getInstance()
-            .getRecipeList()
-            .stream()
-            .filter(
-                tRecipe -> !(tRecipe instanceof ShapelessRecipes) && !(tRecipe instanceof ShapelessOreRecipe)
-                    && !(tRecipe instanceof IGTCraftingRecipe))
-            .filter(tRecipe -> {
-                try {
-                    ItemStack tOutput = tRecipe.getRecipeOutput();
-                    if (tOutput.stackSize == 1 && tOutput.getMaxDamage() > 0 && tOutput.getMaxStackSize() == 1) {
-                        return true;
-                    }
-                } catch (Exception ignored) {}
-                return false;
-            })
-            .collect(Collectors.toList());
-        return getRecipeOutputs(bufferedRecipes, false, aRecipe);
+            for (IRecipe recipe : recipes) {
+                if (recipe instanceof ShapelessRecipes) continue;
+                if (recipe instanceof ShapelessOreRecipe) continue;
+                if (recipe instanceof IGTCraftingRecipe) continue;
+
+                ItemStack output = recipe.getRecipeOutput();
+                if (output == null || output.getItem() == null) continue;
+
+                if (output.stackSize == 1 && output.getMaxDamage() > 0 && output.getMaxStackSize() == 1) {
+                    bufferedRecipes.add(recipe);
+                }
+            }
+        }
+
+        return getRecipeOutputs(bufferedRecipes, false, shape);
     }
 
     /**
      * Gives you a list of the Outputs from a Crafting Recipe If you have multiple Mods, which add Bronze Armor for
      * example
      */
-    public static List<ItemStack> getRecipeOutputs(List<IRecipe> aList, boolean aDeleteFromList, ItemStack... aRecipe) {
-        List<ItemStack> rList = new ArrayList<>();
-        if (aRecipe == null || Arrays.stream(aRecipe)
-            .noneMatch(Objects::nonNull)) return rList;
-        InventoryCrafting aCrafting = new InventoryCrafting(new Container() {
+    public static List<ItemStack> getRecipeOutputs(List<IRecipe> recipeList, boolean deleteFromList,
+        ItemStack... shape) {
+
+        final ArrayList<ItemStack> outputList = new ArrayList<>();
+        if (shape == null || isAllNulls(shape)) return outputList;
+
+        InventoryCrafting craftMatrix = new InventoryCrafting(new Container() {
 
             @Override
             public boolean canInteractWith(EntityPlayer player) {
                 return false;
             }
         }, 3, 3);
-        for (int i = 0; i < 9 && i < aRecipe.length; i++) aCrafting.setInventorySlotContents(i, aRecipe[i]);
-        if (!aDeleteFromList) {
-            HashSet<ItemStack> stacks = new HashSet<>();
-            aList.stream()
-                .filter(tRecipe -> {
-                    if (tRecipe instanceof ShapelessRecipes || tRecipe instanceof ShapelessOreRecipe
-                        || tRecipe instanceof IGTCraftingRecipe) return false;
-                    return tRecipe.matches(aCrafting, DW);
-                })
-                .forEach(tRecipe -> stacks.add(tRecipe.getCraftingResult(aCrafting)));
-            rList = stacks.stream()
-                .filter(
-                    tOutput -> tOutput.stackSize == 1 && tOutput.getMaxDamage() > 0 && tOutput.getMaxStackSize() == 1)
-                .collect(Collectors.toList());
-        } else for (Iterator<IRecipe> iterator = aList.iterator(); iterator.hasNext();) {
-            IRecipe tRecipe = iterator.next();
 
-            if (tRecipe.matches(aCrafting, DW)) {
-                ItemStack tOutput = tRecipe.getCraftingResult(aCrafting);
+        for (int i = 0; i < 9 && i < shape.length; i++) {
+            craftMatrix.setInventorySlotContents(i, shape[i]);
+        }
 
-                if (tOutput == null || tOutput.stackSize <= 0) {
-                    // Seriously, who would ever do that shit?
-                    if (!GregTechAPI.sPostloadFinished) throw new GTItsNotMyFaultException(
+        for (Iterator<IRecipe> iterator = recipeList.iterator(); iterator.hasNext();) {
+            final IRecipe recipe = iterator.next();
+
+            if (recipe instanceof ShapelessRecipes) continue;
+            if (recipe instanceof ShapelessOreRecipe) continue;
+            if (recipe instanceof IGTCraftingRecipe) continue;
+
+            if (!recipe.matches(craftMatrix, DW)) continue;
+
+            final ItemStack output = recipe.getCraftingResult(craftMatrix);
+
+            if (output == null || output.stackSize <= 0) {
+                // Seriously, who would ever do that shit?
+                if (!GregTechAPI.sPostloadFinished) {
+                    throw new GTItsNotMyFaultException(
                         "Seems another Mod added a Crafting Recipe with null Output. Tell the Developer of said Mod to fix that.");
-                    continue;
                 }
-                if (tOutput.stackSize != 1) continue;
-                if (tOutput.getMaxDamage() <= 0) continue;
-                if (tOutput.getMaxStackSize() != 1) continue;
-                if (tRecipe instanceof ShapelessRecipes) continue;
-                if (tRecipe instanceof ShapelessOreRecipe) continue;
-                if (tRecipe instanceof IGTCraftingRecipe) continue;
-                rList.add(GTUtility.copyOrNull(tOutput));
-                iterator.remove();
+                continue;
+            }
+
+            if (output.stackSize != 1) continue;
+            if (output.getMaxDamage() <= 0) continue;
+            if (output.getMaxStackSize() != 1) continue;
+
+            outputList.add(output);
+            if (deleteFromList) iterator.remove();
+        }
+
+        return outputList;
+    }
+
+    private static boolean isAllNulls(ItemStack[] aRecipe) {
+        for (ItemStack stack : aRecipe) {
+            if (stack != null) {
+                return false;
             }
         }
-        return rList;
+        return true;
     }
 
     /**
@@ -1546,6 +1754,34 @@ public class GTModHandler {
         if (aInput == null || aInput.stackSize < 1) return null;
         ItemStack rStack = GTOreDictUnificator.get(
             FurnaceRecipes.smelting()
+                .getSmeltingResult(aInput));
+
+        if (rStack != null && (aOutputSlot == null || (GTUtility.areStacksEqual(rStack, aOutputSlot)
+            && rStack.stackSize + aOutputSlot.stackSize <= aOutputSlot.getMaxStackSize()))) {
+            if (aRemoveInput) aInput.stackSize--;
+            return rStack;
+        }
+        return null;
+    }
+
+    public static ItemStack getEFRBlastingOutput(ItemStack aInput, boolean aRemoveInput, ItemStack aOutputSlot) {
+        if (aInput == null || aInput.stackSize < 1) return null;
+        ItemStack rStack = GTOreDictUnificator.get(
+            BlastFurnaceRecipes.smelting()
+                .getSmeltingResult(aInput));
+
+        if (rStack != null && (aOutputSlot == null || (GTUtility.areStacksEqual(rStack, aOutputSlot)
+            && rStack.stackSize + aOutputSlot.stackSize <= aOutputSlot.getMaxStackSize()))) {
+            if (aRemoveInput) aInput.stackSize--;
+            return rStack;
+        }
+        return null;
+    }
+
+    public static ItemStack getEFRSmokingOutput(ItemStack aInput, boolean aRemoveInput, ItemStack aOutputSlot) {
+        if (aInput == null || aInput.stackSize < 1) return null;
+        ItemStack rStack = GTOreDictUnificator.get(
+            SmokerRecipes.smelting()
                 .getSmeltingResult(aInput));
 
         if (rStack != null && (aOutputSlot == null || (GTUtility.areStacksEqual(rStack, aOutputSlot)
@@ -1650,9 +1886,10 @@ public class GTModHandler {
         if (isElectricItem(aStack)) {
             int tTier = ((ic2.api.item.IElectricItem) aStack.getItem()).getTier(aStack);
             if (tTier < 0 || tTier == aTier || aTier == Integer.MAX_VALUE) {
-                if (!aIgnoreLimit && tTier >= 0) aCharge = (int) Math.min(
-                    aCharge,
-                    V[Math.max(0, Math.min(V.length - 1, tTier))] + B[Math.max(0, Math.min(V.length - 1, tTier))]);
+                if (!aIgnoreLimit && tTier >= 0) {
+                    int tier = Math.max(0, Math.min(V.length - 1, tTier));
+                    aCharge = (int) Math.min(aCharge, V[tier] + B[tier]);
+                }
                 if (aCharge > 0) {
                     int rCharge = (int) Math.max(
                         0,
@@ -1746,8 +1983,8 @@ public class GTModHandler {
             if (aPlayer instanceof EntityPlayer tPlayer) {
                 if (tPlayer.capabilities.isCreativeMode) return true;
                 if (isElectricItem(aStack) && ic2.api.item.ElectricItem.manager.getCharge(aStack) > 1000.0d) {
-                    if (consumeSolderingMaterial(tPlayer)
-                        || (aExternalInventory != null && consumeSolderingMaterial(aExternalInventory))) {
+                    if ((aExternalInventory != null && consumeSolderingMaterial(aExternalInventory))
+                        || consumeSolderingMaterial(tPlayer)) {
                         if (canUseElectricItem(aStack, 10000)) {
                             return GTModHandler.useElectricItem(aStack, 10000, (EntityPlayer) aPlayer);
                         }
@@ -1757,9 +1994,7 @@ public class GTModHandler {
                             (EntityPlayer) aPlayer);
                         return false;
                     } else {
-                        GTUtility.sendChatToPlayer(
-                            (EntityPlayer) aPlayer,
-                            GTUtility.trans("094.1", "Not enough soldering material!"));
+                        GTUtility.sendChatTrans((EntityPlayer) aPlayer, "GT5U.chat.soldering_iron.not_enough");
                     }
                 }
             } else {
@@ -1771,6 +2006,13 @@ public class GTModHandler {
     }
 
     public static boolean useSolderingIron(ItemStack aStack, EntityLivingBase aPlayer) {
+        if (aStack != null && aStack.getItem() instanceof ItemGTToolbox) {
+            final ToolboxDelegateInventory delegateInventory = new ToolboxDelegateInventory(aStack);
+            final boolean result = useSolderingIron(aStack, aPlayer, delegateInventory);
+
+            ToolboxUtil.saveToolbox(aStack, delegateInventory.getHandler());
+            return result;
+        }
         return useSolderingIron(aStack, aPlayer, null);
     }
 
@@ -1834,13 +2076,13 @@ public class GTModHandler {
      * Is this an electric Item?
      */
     public static boolean isElectricItem(ItemStack aStack) {
-        return aStack != null && aStack.getItem() instanceof ic2.api.item.IElectricItem
-            && ((IElectricItem) aStack.getItem()).getTier(aStack) < Integer.MAX_VALUE;
+        return aStack != null && aStack.getItem() instanceof ic2.api.item.IElectricItem electricItem
+            && electricItem.getTier(aStack) < Integer.MAX_VALUE;
     }
 
     public static boolean isElectricItem(ItemStack aStack, byte aTier) {
-        return aStack != null && aStack.getItem() instanceof ic2.api.item.IElectricItem
-            && ((IElectricItem) aStack.getItem()).getTier(aStack) == aTier;
+        return aStack != null && aStack.getItem() instanceof ic2.api.item.IElectricItem electricItem
+            && electricItem.getTier(aStack) == aTier;
     }
 
     /**
@@ -1848,7 +2090,7 @@ public class GTModHandler {
      *
      * @param aStack Any ItemStack.
      * @return Optional.empty() if the stack is null or not an electric item, or an Optional containing a payload of an
-     *         array containing [ current_charge, maximum_charge ] on success.
+     * array containing [ current_charge, maximum_charge ] on success.
      */
     public static Optional<Long[]> getElectricItemCharge(ItemStack aStack) {
         if (aStack == null || !isElectricItem(aStack)) {
@@ -1860,13 +2102,11 @@ public class GTModHandler {
         if (item instanceof final MetaBaseItem metaBaseItem) {
             final Long[] stats = metaBaseItem.getElectricStats(aStack);
             if (stats != null && stats.length > 0) {
-                return Optional.of(new Long[] { metaBaseItem.getRealCharge(aStack), stats[0] });
+                return Optional.of(new Long[]{metaBaseItem.getRealCharge(aStack), stats[0]});
             }
 
         } else if (item instanceof final IElectricItem ic2ElectricItem) {
-            return Optional.of(
-                new Long[] { (long) ic2.api.item.ElectricItem.manager.getCharge(aStack),
-                    (long) ic2ElectricItem.getMaxCharge(aStack) });
+            return Optional.of(new Long[]{(long) ic2.api.item.ElectricItem.manager.getCharge(aStack), (long) ic2ElectricItem.getMaxCharge(aStack)});
         }
 
         return Optional.empty();
@@ -1896,7 +2136,7 @@ public class GTModHandler {
             return 1;
         }
 
-        if (GTUtility.areStacksEqual(aStack, getIC2Item("waterCell", 1, W))) {
+        if (GTUtility.areStacksEqual(aStack, getIC2Item("waterCell", 1, WILDCARD))) {
             return 1;
         }
 
@@ -1914,76 +2154,86 @@ public class GTModHandler {
         /**
          * Mirrors the Recipe
          */
-        public static long MIRRORED = B[0];
+        public static final long MIRRORED = B[0];
         /**
          * Buffers the Recipe for later addition. This makes things more efficient.
          */
-        public static long BUFFERED = B[1];
+        public static final long BUFFERED = B[1];
         /**
-         * This is a special Tag I used for crafting Coins up and down.
-         * If all the input items have the same NBT, keep it in the output item.
+         * This is a special Tag I used for crafting Coins up and down. If all the input items have the same NBT, keep
+         * it in the output item.
          */
-        public static long KEEPNBT = B[2];
+        public static final long KEEPNBT = B[2];
         /**
          * Makes the Recipe Reverse Craftable in the Disassembler.
+         *
+         * @deprecated Disassembler was removed from the mod, this flag is no-op.
          */
-        public static long DISMANTLEABLE = B[3];
+        @Deprecated
+        public static final long DISMANTLEABLE = B[3];
         /**
          * Prevents the Recipe from accidentally getting removed by my own Handlers.
          */
-        public static long NOT_REMOVABLE = B[4];
+        public static final long NOT_REMOVABLE = B[4];
         /**
          * Reverses the Output of the Recipe for smelting and pulverising.
          */
-        public static long REVERSIBLE = B[5];
+        public static final long REVERSIBLE = B[5];
         /**
          * Removes all Recipes with the same Output Item regardless of NBT, unless another Recipe Deletion Bit is added
          * too.
          */
-        public static long DELETE_ALL_OTHER_RECIPES = B[6];
+        public static final long DELETE_ALL_OTHER_RECIPES = B[6];
         /**
          * Removes all Recipes with the same Output Item limited to the same NBT.
          */
-        public static long DELETE_ALL_OTHER_RECIPES_IF_SAME_NBT = B[7];
+        public static final long DELETE_ALL_OTHER_RECIPES_IF_SAME_NBT = B[7];
         /**
          * Removes all Recipes with the same Output Item limited to Shaped Recipes.
          */
-        public static long DELETE_ALL_OTHER_SHAPED_RECIPES = B[8];
+        public static final long DELETE_ALL_OTHER_SHAPED_RECIPES = B[8];
         /**
          * Removes all Recipes with the same Output Item limited to native Recipe Handlers.
          */
-        public static long DELETE_ALL_OTHER_NATIVE_RECIPES = B[9];
+        public static final long DELETE_ALL_OTHER_NATIVE_RECIPES = B[9];
         /**
          * Disables the check for colliding Recipes.
          */
-        public static long DO_NOT_CHECK_FOR_COLLISIONS = B[10];
+        public static final long DO_NOT_CHECK_FOR_COLLISIONS = B[10];
         /**
          * Only adds the Recipe if there is another Recipe having that Output
          */
-        public static long ONLY_ADD_IF_THERE_IS_ANOTHER_RECIPE_FOR_IT = B[11];
+        public static final long ONLY_ADD_IF_THERE_IS_ANOTHER_RECIPE_FOR_IT = B[11];
         /**
          * Only adds the Recipe if it has an Output
          */
-        public static long ONLY_ADD_IF_RESULT_IS_NOT_NULL = B[12];
+        public static final long ONLY_ADD_IF_RESULT_IS_NOT_NULL = B[12];
         /**
          * Don't remove shapeless recipes with this output
          */
-        public static long DONT_REMOVE_SHAPELESS = B[13];
+        public static final long DONT_REMOVE_SHAPELESS = B[13];
         /**
          * Keep input item's NBT if the input item is the same as output item, and try to overwrite input item's NBT
          * tags with output item's NBT tags if exists
          */
-        public static long OVERWRITE_NBT = B[14];
-
+        public static final long OVERWRITE_NBT = B[14];
         /**
-         * Combination of common bits.
-         * NOT_REMOVABLE, REVERSIBLE, and BUFFERED
+         * Combination of common bits. NOT_REMOVABLE, REVERSIBLE, and BUFFERED
          */
-        public static long BITS = NOT_REMOVABLE | REVERSIBLE | BUFFERED;
+        public static final long BITS = NOT_REMOVABLE | REVERSIBLE | BUFFERED;
         /**
-         * Combination of common bits.
-         * NOT_REMOVABLE, REVERSIBLE, BUFFERED, and DISMANTLEABLE
+         * Used to be BITS | DISMANTLEABLE.
+         *
+         * @deprecated Use BITS instead.
          */
-        public static long BITSD = BITS | DISMANTLEABLE;
+        @Deprecated
+        public static final long BITSD = BITS;
+        /**
+         * Combination of common bits. DO_NOT_CHECK_FOR_COLLISIONS, BUFFERED, ONLY_ADD_IF_RESULT_IS_NOT_NULL,
+         * NOT_REMOVABLE
+         */
+        public static final long BITS_STD = DO_NOT_CHECK_FOR_COLLISIONS | BUFFERED
+            | ONLY_ADD_IF_RESULT_IS_NOT_NULL
+            | NOT_REMOVABLE;
     }
 }

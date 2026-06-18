@@ -1,5 +1,7 @@
 package goodgenerator.api.recipe;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
@@ -12,13 +14,13 @@ import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMapBackend;
 import gregtech.api.recipe.RecipeMapBuilder;
-import gregtech.api.util.GTUtility;
+import gregtech.api.recipe.maps.FuelBackend;
 import gregtech.nei.formatter.SimpleSpecialValueFormatter;
 
 public class GoodGeneratorRecipeMaps {
 
-    public static final RecipeMap<RecipeMapBackend> naquadahReactorFuels = RecipeMapBuilder
-        .of("gg.recipe.naquadah_reactor")
+    public static final RecipeMap<FuelBackend> naquadahReactorFuels = RecipeMapBuilder
+        .of("gg.recipe.naquadah_reactor", FuelBackend::new)
         .maxIO(0, 0, 1, 1)
         .minInputs(0, 1)
         .neiSpecialInfoFormatter(new SimpleSpecialValueFormatter("value.naquadah_reactor"))
@@ -41,9 +43,9 @@ public class GoodGeneratorRecipeMaps {
             int maxNKE = recipeInfo.recipe.mSpecialValue / 10000;
             return Arrays.asList(
                 StatCollector.translateToLocal("value.neutron_activator.0"),
-                GTUtility.formatNumbers(minNKE) + StatCollector.translateToLocal("value.neutron_activator.2"),
+                formatNumber(minNKE) + StatCollector.translateToLocal("value.neutron_activator.2"),
                 StatCollector.translateToLocal("value.neutron_activator.1"),
-                GTUtility.formatNumbers(maxNKE) + StatCollector.translateToLocal("value.neutron_activator.2"));
+                formatNumber(maxNKE) + StatCollector.translateToLocal("value.neutron_activator.2"));
         })
         .build();
     public static final RecipeMap<ExtremeHeatExchangerBackend> extremeHeatExchangerFuels = RecipeMapBuilder

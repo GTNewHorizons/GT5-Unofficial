@@ -17,43 +17,36 @@ import bartworks.common.loaders.recipes.Assembler;
 import bartworks.common.loaders.recipes.AssemblyLine;
 import bartworks.common.loaders.recipes.Autoclave;
 import bartworks.common.loaders.recipes.Centrifuge;
-import bartworks.common.loaders.recipes.ChemicalBath;
 import bartworks.common.loaders.recipes.ChemicalReactor;
 import bartworks.common.loaders.recipes.CraftingRecipes;
 import bartworks.common.loaders.recipes.Electrolyzer;
 import bartworks.common.loaders.recipes.Extractor;
-import bartworks.common.loaders.recipes.FakeRecipes;
 import bartworks.common.loaders.recipes.FluidHeater;
 import bartworks.common.loaders.recipes.FluidSolidifier;
 import bartworks.common.loaders.recipes.FormingPress;
 import bartworks.common.loaders.recipes.LaserEngraver;
 import bartworks.common.loaders.recipes.Mixer;
 import bartworks.common.loaders.recipes.Pulverizer;
-import bartworks.common.loaders.recipes.PyrolyseOven;
 import gregtech.api.util.GTModHandler;
 
 public class RecipeLoader {
 
-    public static final long BITSD = GTModHandler.RecipeBits.DISMANTLEABLE | GTModHandler.RecipeBits.NOT_REMOVABLE
-        | GTModHandler.RecipeBits.REVERSIBLE;
+    public static final long BITSD = GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE;
 
     public static void run() {
         new Assembler().run();
         new AssemblyLine().run();
         new Autoclave().run();
         new Centrifuge().run();
-        new ChemicalBath().run();
         new ChemicalReactor().run();
         new CraftingRecipes().run();
         new Electrolyzer().run();
         new Extractor().run();
-        new FakeRecipes().run();
         new FluidHeater().run();
         new FluidSolidifier().run();
         new FormingPress().run();
         new LaserEngraver().run();
         new Mixer().run();
         new Pulverizer().run();
-        new PyrolyseOven().run();
     }
 }

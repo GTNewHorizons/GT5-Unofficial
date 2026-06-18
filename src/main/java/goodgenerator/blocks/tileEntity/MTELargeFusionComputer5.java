@@ -1,5 +1,6 @@
 package goodgenerator.blocks.tileEntity;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS;
 
 import net.minecraft.block.Block;
@@ -42,13 +43,13 @@ public class MTELargeFusionComputer5 extends MTELargeFusionComputerPP {
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Fusion Reactor")
-            .addInfo("Galaxy Collapse.")
+            .addInfo("Galaxy Collapse")
             .addInfo(
-                EnumChatFormatting.AQUA + GTUtility.formatNumbers(getSingleHatchPower())
+                EnumChatFormatting.AQUA + formatNumber(getSingleHatchPower())
                     + EnumChatFormatting.GRAY
                     + " EU/t and "
                     + EnumChatFormatting.AQUA
-                    + GTUtility.formatNumbers(capableStartupCanonical() / 32 / M)
+                    + formatNumber(capableStartupCanonical() / 32 / M)
                     + "M"
                     + EnumChatFormatting.GRAY
                     + " EU capacity per Energy Hatch")
@@ -58,20 +59,17 @@ public class MTELargeFusionComputer5 extends MTELargeFusionComputerPP {
                 "If the recipe requires a voltage tier over " + GTUtility.getColoredTierNameFromTier((byte) tier())
                     + EnumChatFormatting.GRAY
                     + " , you can't do it either")
-            .addInfo("Performs 4/4 overclock.")
-            .addInfo("Startup < 160,000,000 EU: 320x Parallel")
-            .addInfo("Startup < 320,000,000 EU: 256x Parallel")
-            .addInfo("Startup < 640,000,000 EU: 192x Parallel")
-            .addInfo("Startup < 1,200,000,000 EU: 128x Parallel")
-            .addInfo("Startup >= 1,200,000,000 EU: 64x Parallel")
+            .addInfo("Performs 4/4 overclock")
+            .addInfo(createParallelText())
             .addTecTechHatchInfo()
+            .beginStructureBlock(47, 7, 47, false)
             .addCasingInfoMin("Fusion Machine Casing MK IV", 1664, false)
             .addCasingInfoMin("Compact Fusion Coil MK-II Finaltype", 560, false)
             .addCasingInfoMin("Infinity Frame Box", 128, false)
-            .addCasingInfoMin("Cosmic Neutronium Reinforced Borosilicate Glass Block", 63, false)
-            .addEnergyHatch("1-32, Hint block with dot 2", 2)
-            .addInputHatch("1-16, Hint block with dot 1", 1)
-            .addOutputHatch("1-16, Hint block with dot 1", 1)
+            .addCasingInfoMin("Infinity Reinforced Borosilicate Glass Block", 63, false)
+            .addEnergyHatch("1-32, Hint block number 2", 2)
+            .addInputHatch("1-16, Hint block number 1", 1)
+            .addOutputHatch("1-16, Hint block number 1", 1)
             .addStructureInfo("Supports Crafting Input Buffer")
             .addStructureInfo(
                 "Energy Hatches must be " + GTUtility.getColoredTierNameFromTier((byte) energyHatchTier())
@@ -118,7 +116,7 @@ public class MTELargeFusionComputer5 extends MTELargeFusionComputerPP {
 
     @Override
     public int getGlassMeta() {
-        return 14;
+        return 7;
     }
 
     @Override
@@ -154,10 +152,10 @@ public class MTELargeFusionComputer5 extends MTELargeFusionComputerPP {
 
     @Override
     public int extraPara(long startEnergy) {
-        if (startEnergy < 160000000) return 5;
-        if (startEnergy < 320000000) return 4;
-        if (startEnergy < 640000000) return 3;
-        if (startEnergy < 1200000000) return 2;
+        if (startEnergy < 160000000L) return 5;
+        if (startEnergy < 320000000L) return 4;
+        if (startEnergy < 640000000L) return 3;
+        if (startEnergy < 5120000000L) return 2;
         return 1;
     }
 
@@ -205,7 +203,7 @@ public class MTELargeFusionComputer5 extends MTELargeFusionComputerPP {
             .build(), getTextureOverlay() };
         if (!aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(52) };
         return new ITexture[] { TextureFactory.builder()
-            .addIcon(TexturesGtBlock.TEXTURE_CASING_FUSION_CASING_HYPER)
+            .addIcon(TexturesGtBlock.TEXTURE_CASING_FUSION_OVERLAY)
             .extFacing()
             .build() };
     }

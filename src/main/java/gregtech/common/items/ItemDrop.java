@@ -100,7 +100,7 @@ public class ItemDrop extends Item {
 
     @Override
     public String getItemStackDisplayName(ItemStack stack) {
-        return DropType.values()[stack.getItemDamage()].getName();
+        return DropType.values()[stack.getItemDamage()].getLocalizedName();
     }
 
     public void initDropsRecipes() {
@@ -117,7 +117,7 @@ public class ItemDrop extends Item {
         RecipeManagers.squeezerManager.addRecipe(
             40,
             new ItemStack[] { tDrop },
-            new FluidStack(FluidRegistry.getFluid("ic2coolant"), 100),
+            GTModHandler.getIC2Coolant(100),
             GTModHandler.getModItem(MagicBees.ID, "propolis", 1L, 0),
             30);
         tDrop = getStackForType(DropType.HOT_COOLANT);
@@ -131,14 +131,14 @@ public class ItemDrop extends Item {
         addProcessMV(
             tDrop,
             Materials.FierySteel.getFluid(200L),
-            GTModHandler.getModItem(NewHorizonsCoreMod.ID, "item.SnowQueenBloodDrop", 1L, 0),
+            GTModHandler.getModItem(NewHorizonsCoreMod.ID, "SnowQueenBloodDrop", 1L, 0),
             1500,
             48);
         tDrop = getStackForType(DropType.LAPIS);
         RecipeManagers.squeezerManager.addRecipe(
             400,
             new ItemStack[] { tDrop },
-            new FluidStack(FluidRegistry.getFluid("ic2coolant"), 100),
+            GTModHandler.getIC2Coolant(100),
             GTModHandler.getModItem(MagicBees.ID, "propolis", 1L, 3),
             30);
         tDrop = getStackForType(DropType.HYDRA);
@@ -152,7 +152,7 @@ public class ItemDrop extends Item {
         RecipeManagers.squeezerManager.addRecipe(
             400,
             new ItemStack[] { tDrop },
-            new FluidStack(FluidRegistry.getFluid("liquidoxygen"), 100),
+            Materials.LiquidOxygen.getGas(100),
             GTModHandler.getModItem(ExtraBees.ID, "propolis", 1L, 2),
             30);
         tDrop = getStackForType(DropType.ENDERGOO);

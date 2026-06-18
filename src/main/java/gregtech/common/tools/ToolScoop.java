@@ -10,7 +10,7 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
 
-import gregtech.api.enums.Textures;
+import gregtech.api.enums.TextureSet;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.util.GTToolHarvestHelper;
@@ -27,63 +27,13 @@ public class ToolScoop extends GTTool {
     }
 
     @Override
-    public int getToolDamagePerDropConversion() {
-        return 100;
-    }
-
-    @Override
     public int getToolDamagePerContainerCraft() {
         return 200;
     }
 
     @Override
-    public int getToolDamagePerEntityAttack() {
-        return 200;
-    }
-
-    @Override
-    public int getBaseQuality() {
-        return 0;
-    }
-
-    @Override
     public float getBaseDamage() {
         return 1.0F;
-    }
-
-    @Override
-    public float getSpeedMultiplier() {
-        return 1.0F;
-    }
-
-    @Override
-    public float getMaxDurabilityMultiplier() {
-        return 1.0F;
-    }
-
-    @Override
-    public String getCraftingSound() {
-        return null;
-    }
-
-    @Override
-    public String getEntityHitSound() {
-        return null;
-    }
-
-    @Override
-    public String getMiningSound() {
-        return null;
-    }
-
-    @Override
-    public boolean canBlock() {
-        return false;
-    }
-
-    @Override
-    public boolean isCrowbar() {
-        return false;
     }
 
     @Override
@@ -93,13 +43,9 @@ public class ToolScoop extends GTTool {
     }
 
     @Override
-    public ItemStack getBrokenItem(ItemStack aStack) {
-        return null;
-    }
-
-    @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? Textures.ItemIcons.SCOOP : null;
+        return aIsToolHead ? MetaGeneratedTool.getPrimaryMaterial(aStack).mIconSet.mTextures[TextureSet.INDEX_scoop]
+            : null;
     }
 
     @Override

@@ -1,7 +1,6 @@
 package gtPlusPlus.xmod.gregtech.loaders;
 
 import static gregtech.api.enums.GTValues.VP;
-import static gregtech.api.recipe.RecipeMaps.fluidSolidifierRecipes;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.alloyBlastSmelterRecipes;
 
 import java.util.ArrayList;
@@ -15,12 +14,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.ItemList;
 import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.util.GTRecipeBuilder;
-import gregtech.api.util.GTUtility;
-import gtPlusPlus.api.interfaces.RunnableWithInfo;
-import gtPlusPlus.api.objects.Logger;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialGenerator;
 import gtPlusPlus.core.material.MaterialStack;
@@ -28,12 +23,10 @@ import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.core.material.nuclear.MaterialsFluorides;
 import gtPlusPlus.core.material.nuclear.MaterialsNuclides;
 import gtPlusPlus.core.material.state.MaterialState;
-import gtPlusPlus.core.util.minecraft.FluidUtils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class RecipeGenBlastSmelter extends RecipeGenBase {
 
-    public static final Set<RunnableWithInfo<Material>> mRecipeGenMap = new HashSet<>();
+    public static final Set<Runnable> mRecipeGenMap = new HashSet<>();
 
     static {
         MaterialGenerator.mRecipeMapsToGenerate.add(mRecipeGenMap);
@@ -68,14 +61,9 @@ public class RecipeGenBlastSmelter extends RecipeGenBase {
 
         // Prepare some Variables
         ItemStack[] components;
-        ArrayList<MaterialStack> tMaterial = new ArrayList<>();
         int inputStackCount = 0;
         int fluidAmount = 0;
-        final boolean doTest = true;
-        tMaterial = M.getComposites();
-
-        // This Bad boy here is what dictates unique recipes.
-        ItemStack circuitGT;
+        ArrayList<MaterialStack> tMaterial = M.getComposites();
 
         int tier = Math.max(1, M.vTier);
         long aVoltage = VP[tier];
@@ -101,106 +89,32 @@ public class RecipeGenBlastSmelter extends RecipeGenBase {
             mMaterialListSize = 1;
         }
 
-        Logger.WARNING("[BAS] Size: " + mMaterialListSize);
-
-        // Make a simple one Material MaterialStack[] and log it for validity.
-        circuitGT = GTUtility.getIntegratedCircuit(1);
-        final ItemStack[] tItemStackTest = new ItemStack[] { circuitGT, tStack };
+        // Make a simple one Material setup and log it for validity.
         inputStackCount = 1;
         fluidAmount = 144 * inputStackCount;
-        Logger.WARNING(
-            "[BAS] Adding an Alloy Blast Smelter Recipe for " + M.getLocalizedName()
-                + ". Gives "
-                + fluidAmount
-                + "L of molten metal.");
-        for (int das = 0; das < tItemStackTest.length; das++) {
-            if (tItemStackTest[das] != null) {
-                Logger.WARNING(
-                    "[BAS] tMaterial[" + das
-                        + "]: "
-                        + tItemStackTest[das].getDisplayName()
-                        + " Meta: "
-                        + tItemStackTest[das].getItemDamage()
-                        + ", Amount: "
-                        + tItemStackTest[das].stackSize);
-            }
-        }
-
-        final boolean hasMoreInputThanACircuit = (tItemStackTest.length > 1);
 
         // Generate Recipes for all singular materials that can be made molten.
-        if (hasMoreInputThanACircuit) {
-            if (M.requiresBlastFurnace()) {
-                GTValues.RA.stdBuilder()
-                    .itemInputs(tItemStackTest)
-                    .fluidOutputs(M.getFluidStack(fluidAmount))
-                    .duration(duration / (mTotalPartsCounter > 0 ? mTotalPartsCounter : 1))
-                    .eut(aVoltage)
-                    .recipeCategory(RecipeCategories.absNonAlloyRecipes)
-                    .addTo(alloyBlastSmelterRecipes);
-            } else {
-                Logger.WARNING("[BAS] Failed.");
-            }
-        } else {
+        if (M.requiresBlastFurnace()) {
             GTValues.RA.stdBuilder()
-                .itemInputs(tItemStackTest)
+                .itemInputs(tStack)
+                .circuit(1)
                 .fluidOutputs(M.getFluidStack(fluidAmount))
+                .duration(duration / (mTotalPartsCounter > 0 ? mTotalPartsCounter : 1))
                 .eut(aVoltage)
-                .duration(duration / (mTotalPartsCounter > 0 ? mTotalPartsCounter : 1) / 2)
+                .recipeCategory(RecipeCategories.absNonAlloyRecipes)
                 .addTo(alloyBlastSmelterRecipes);
-
-            Logger.WARNING("[BAS] Success.");
-            GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.Shape_Mold_Ingot.get(0))
-                .itemOutputs(M.getIngot(1))
-                .fluidInputs(M.getFluidStack(144))
-                .duration(duration / 2)
-                .eut(60)
-                .addTo(fluidSolidifierRecipes);
-
-            Logger.WARNING("[BAS] Success, Also added a Fluid solidifier recipe.");
-
         }
 
         if (tMaterial == null) {
-            Logger.WARNING("[BAS] doTest: " + doTest + " | tMaterial == null: true");
             return;
         }
 
         // Reset the Variables for compounds if last recipe was a success.
-        inputStackCount = 0;
 
         if (mMaterialListSize <= 1) {
             return;
         }
         // If this Material has some kind of compound list, proceed
-
-        final gtPlusPlus.core.material.MaterialStack[] tempStack = new gtPlusPlus.core.material.MaterialStack[mMaterialListSize];
-        circuitGT = GTUtility.getIntegratedCircuit(mMaterialListSize);
-
-        // Builds me a MaterialStack[] from the MaterialList of M.
-        int ooo = 0;
-        for (final gtPlusPlus.core.material.MaterialStack xMaterial : M.getComposites()) {
-            if (xMaterial == null) {
-                ooo++;
-                continue;
-            }
-
-            if (xMaterial.getStackMaterial() == null) {
-                tempStack[ooo] = xMaterial;
-                ooo++;
-                continue;
-            }
-
-            Logger.WARNING(
-                "[BAS] FOUND: " + xMaterial.getStackMaterial()
-                    .getLocalizedName());
-            Logger.WARNING(
-                "[BAS] ADDING: " + xMaterial.getStackMaterial()
-                    .getLocalizedName());
-            tempStack[ooo] = xMaterial;
-            ooo++;
-        }
 
         // Builds me an ItemStack[] of the materials. - Without a circuit - this gets a good count for
         // the 144L fluid multiplier
@@ -219,18 +133,16 @@ public class RecipeGenBlastSmelter extends RecipeGenBase {
             if ((M.getComposites()
                 .get(irc)
                 .getStackMaterial()
-                .getState() != MaterialState.SOLID) || !ItemUtils.checkForInvalidItems(
-                    M.getComposites()
-                        .get(irc)
-                        .getDustStack(r))) {
+                .getState() != MaterialState.SOLID)
+                || (M.getComposites()
+                    .get(irc)
+                    .getDustStack(r)) == null) {
                 if (r > 0 && r <= 100) {
                     final int mathmatics = (r * 1000);
-                    componentsFluid = FluidUtils.getFluidStack(
-                        M.getComposites()
-                            .get(irc)
-                            .getStackMaterial()
-                            .getFluidStack(mathmatics),
-                        mathmatics);
+                    componentsFluid = M.getComposites()
+                        .get(irc)
+                        .getStackMaterial()
+                        .getFluidStack(mathmatics);
                 }
             } else {
                 components[irc] = M.getComposites()
@@ -239,49 +151,11 @@ public class RecipeGenBlastSmelter extends RecipeGenBase {
             }
         }
 
-        // Adds a circuit
-        if ((mMaterialListSize < 9) && (mMaterialListSize != 0)) {
-            final ItemStack[] components_NoCircuit = components;
-            // Builds me an ItemStack[] of the materials. - With a circuit
-            components = new ItemStack[components_NoCircuit.length + 1];
-            for (int fr = 0; fr < components.length; fr++) {
-                if (fr == 0) {
-                    components[0] = circuitGT;
-                } else {
-                    components[fr] = components_NoCircuit[fr - 1];
-                }
-            }
-            Logger.WARNING(
-                "[BAS] Should have added a circuit. mMaterialListSize: " + mMaterialListSize
-                    + " | circuit: "
-                    + components[0].getDisplayName());
-        } else {
-            Logger.WARNING("[BAS] Did not add a circuit. mMaterialListSize: " + mMaterialListSize);
-        }
+        // Decide whether to add a circuit
+        boolean addCircuit = (mMaterialListSize < 9);
 
         // Set Fluid output
         fluidAmount = 144 * inputStackCount;
-
-        Logger.WARNING(
-            "[BAS] Adding an Alloy Blast Smelter Recipe for " + M.getLocalizedName()
-                + " using it's compound dusts. This material has "
-                + inputStackCount
-                + " parts. Gives "
-                + fluidAmount
-                + "L of molten metal.");
-        Logger.WARNING("[BAS] tMaterial.length: " + components.length + ".");
-        for (int das = 0; das < components.length; das++) {
-            if (components[das] != null) {
-                Logger.WARNING(
-                    "[BAS] tMaterial[" + das
-                        + "]: "
-                        + components[das].getDisplayName()
-                        + " Meta: "
-                        + components[das].getItemDamage()
-                        + ", Amount: "
-                        + components[das].stackSize);
-            }
-        }
 
         // Adds Recipe
         GTRecipeBuilder builder = GTValues.RA.stdBuilder();
@@ -289,7 +163,12 @@ public class RecipeGenBlastSmelter extends RecipeGenBase {
         inputs.removeIf(Objects::isNull);
         components = inputs.toArray(new ItemStack[0]);
 
-        builder = builder.itemInputs(components);
+        builder.itemInputs(components);
+
+        if (addCircuit) {
+            builder.circuit(mMaterialListSize);
+        }
+
         if (componentsFluid != null) {
             builder.fluidInputs(componentsFluid);
         }
@@ -302,6 +181,5 @@ public class RecipeGenBlastSmelter extends RecipeGenBase {
         }
         builder.duration(duration)
             .addTo(alloyBlastSmelterRecipes);
-        Logger.WARNING("[BAS] Success.");
     }
 }

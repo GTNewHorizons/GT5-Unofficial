@@ -25,11 +25,10 @@ import tectech.util.CommonValues;
 
 public class TestFactoryHatch extends MTEBaseFactoryHatch implements TestFactoryElement {
 
-    public TestFactoryHatch(int aID, String aName, String aNameRegional, int aTier) {
+    public TestFactoryHatch(int aID, String aName, int aTier) {
         super(
             aID,
             aName,
-            aNameRegional,
             aTier,
             new String[] { CommonValues.TEC_MARK_EM,
                 StatCollector.translateToLocal("gt.blockmachines.hatch.datain.desc.0"),
@@ -58,8 +57,10 @@ public class TestFactoryHatch extends MTEBaseFactoryHatch implements TestFactory
         IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currenttip, accessor, config);
         currenttip.add(
-            "Network: " + accessor.getNBTData()
-                .getString("network"));
+            StatCollector.translateToLocalFormatted(
+                "GT5U.waila.network",
+                accessor.getNBTData()
+                    .getString("network")));
     }
 
     @Override
@@ -122,7 +123,7 @@ public class TestFactoryHatch extends MTEBaseFactoryHatch implements TestFactory
     public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
         super.onFirstTick(aBaseMetaTileEntity);
 
-        TestFactoryGrid.INSTANCE.addElement(this);
+        TestFactoryGrid.INSTANCE.updateElement(this);
     }
 
     @Override
@@ -136,11 +137,11 @@ public class TestFactoryHatch extends MTEBaseFactoryHatch implements TestFactory
     public void onFacingChange() {
         super.onFacingChange();
 
-        TestFactoryGrid.INSTANCE.addElement(this);
+        TestFactoryGrid.INSTANCE.updateElement(this);
     }
 
     @Override
     public void onColorChangeServer(byte aColor) {
-        TestFactoryGrid.INSTANCE.addElement(this);
+        TestFactoryGrid.INSTANCE.updateElement(this);
     }
 }

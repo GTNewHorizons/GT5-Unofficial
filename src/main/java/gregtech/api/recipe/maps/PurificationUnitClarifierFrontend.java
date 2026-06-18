@@ -1,10 +1,10 @@
 package gregtech.api.recipe.maps;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import com.google.common.collect.ImmutableList;
 import com.gtnewhorizons.modularui.api.drawable.FallbackableUITexture;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.math.Size;
@@ -18,6 +18,7 @@ import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.common.gui.modularui.UIHelper;
 import gregtech.common.tileentities.machines.multi.purification.MTEPurificationUnitClarifier;
 import gregtech.nei.GTNEIDefaultHandler;
+import gregtech.nei.GTNEIDefaultHandler.FixedPositionedStack;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
@@ -35,23 +36,17 @@ public class PurificationUnitClarifierFrontend extends PurificationUnitRecipeMap
 
     @Override
     public List<Pos2d> getFluidInputPositions(int fluidInputCount) {
-        ArrayList<Pos2d> positions = new ArrayList<>();
-        positions.add(new Pos2d(6, 7));
-        return positions;
+        return ImmutableList.of(new Pos2d(6, 7));
     }
 
     @Override
     public List<Pos2d> getFluidOutputPositions(int fluidOutputCount) {
-        ArrayList<Pos2d> positions = new ArrayList<>();
-        positions.add(new Pos2d(154, 7));
-        return positions;
+        return ImmutableList.of(new Pos2d(154, 7));
     }
 
     @Override
     public List<Pos2d> getItemInputPositions(int itemInputCount) {
-        ArrayList<Pos2d> positions = new ArrayList<>();
-        positions.add(new Pos2d(79, 43));
-        return positions;
+        return ImmutableList.of(new Pos2d(79, 43));
     }
 
     @Override
@@ -60,13 +55,17 @@ public class PurificationUnitClarifierFrontend extends PurificationUnitRecipeMap
     }
 
     @Override
-    public void drawNEIOverlays(GTNEIDefaultHandler.CachedDefaultRecipe neiCachedRecipe) {
-        super.drawNEIOverlays(neiCachedRecipe);
+    public void prepareRecipe(GTNEIDefaultHandler.CachedDefaultRecipe recipe) {
+        super.prepareRecipe(recipe);
 
-        for (PositionedStack stack : neiCachedRecipe.mInputs) {
-            if (stack.item.isItemEqual(ItemList.ActivatedCarbonFilterMesh.get(1))) {
-                drawNEIOverlayText((int) (MTEPurificationUnitClarifier.FILTER_DAMAGE_RATE) + "%", stack);
+        for (PositionedStack stack : recipe.mInputs) {
+            if (stack instanceof FixedPositionedStack fixed
+                && stack.item.isItemEqual(ItemList.ActivatedCarbonFilterMesh.get(1))) {
+                fixed.setChance(
+                    (int) (MTEPurificationUnitClarifier.FILTER_DAMAGE_RATE / 100 * PositionedStack.CHANCE_FULL));
             }
         }
+
     }
+
 }

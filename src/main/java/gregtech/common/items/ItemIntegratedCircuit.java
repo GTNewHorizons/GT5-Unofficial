@@ -1,11 +1,12 @@
 package gregtech.common.items;
 
-import static ggfab.GGItemList.One_Use_craftingToolScrewdriver;
+import static ggfab.GGItemList.SingleUseScrewdriver;
 import static gregtech.GTMod.GT_FML_LOGGER;
 import static gregtech.api.enums.Mods.GregTech;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -24,37 +25,47 @@ import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.oredict.OreDictionary;
 
-import com.gtnewhorizons.modularui.api.UIInfos;
+import com.cleanroommc.modularui.api.IGuiHolder;
+import com.cleanroommc.modularui.factory.GuiFactories;
+import com.cleanroommc.modularui.factory.PlayerInventoryGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.ModularScreen;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 import bartworks.common.items.ItemCircuitProgrammer;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.ToolboxSlot;
 import gregtech.api.interfaces.INetworkUpdatableItem;
 import gregtech.api.items.GTGenericItem;
-import gregtech.api.net.GTPacketUpdateItem;
+import gregtech.api.items.MetaGeneratedTool;
+import gregtech.api.modularui2.GTGuiThemes;
+import gregtech.api.modularui2.GTModularScreen;
 import gregtech.api.objects.XSTR;
 import gregtech.api.util.GTConfig;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
-import gregtech.common.gui.modularui.uifactory.SelectItemUIFactory;
+import gregtech.common.gui.modularui.item.IntegratedCircuitGui;
+import gregtech.common.items.toolbox.ToolboxUtil;
+import gregtech.crossmod.backhand.Backhand;
 import ic2.core.IC2;
 import ic2.core.IHasGui;
 import ic2.core.item.ItemToolbox;
 
-public class ItemIntegratedCircuit extends GTGenericItem implements INetworkUpdatableItem {
+public class ItemIntegratedCircuit extends GTGenericItem
+    implements INetworkUpdatableItem, IGuiHolder<PlayerInventoryGuiData> {
 
     public static final int MAX_CIRCUIT_NUMBER = 24;
     public static final List<ItemStack> NON_ZERO_VARIANTS = new ArrayList<>(MAX_CIRCUIT_NUMBER);
 
     private static final String aTextEmptyRow = "   ";
-    private static final List<ItemStack> ALL_VARIANTS = new ArrayList<>(MAX_CIRCUIT_NUMBER + 1);
+    public static final List<ItemStack> ALL_VARIANTS = new ArrayList<>(MAX_CIRCUIT_NUMBER + 1);
     protected final IIcon[] mIconDamage = new IIcon[25];
 
     public ItemIntegratedCircuit() {
@@ -194,14 +205,11 @@ public class ItemIntegratedCircuit extends GTGenericItem implements INetworkUpda
     public void addAdditionalToolTips(List<String> aList, ItemStack aStack, EntityPlayer aPlayer) {
         super.addAdditionalToolTips(aList, aStack, aPlayer);
         aList.add(
-            GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".configuration", "Configuration: ")
-                + getConfigurationString(getDamage(aStack)));
-        aList.add(
-            GTLanguageManager.addStringLocalization(getUnlocalizedName() + ".tooltip.0", "Right click to reconfigure"));
-        aList.add(
-            GTLanguageManager.addStringLocalization(
-                getUnlocalizedName() + ".tooltip.1",
-                "Needs a screwdriver or circuit programming tool"));
+            StatCollector.translateToLocalFormatted(
+                "GT5U.item.programmed_circuit.tooltip.0",
+                getConfigurationString(getDamage(aStack))));
+        aList.add(StatCollector.translateToLocal("GT5U.item.programmed_circuit.tooltip.1"));
+        aList.add(StatCollector.translateToLocal("GT5U.item.programmed_circuit.tooltip.2"));
     }
 
     @Override
@@ -230,7 +238,7 @@ public class ItemIntegratedCircuit extends GTGenericItem implements INetworkUpda
             for (Runnable tRunnable : GregTechAPI.sGTItemIconload) {
                 try {
                     tRunnable.run();
-                } catch (Throwable e) {
+                } catch (Exception e) {
                     GTMod.GT_FML_LOGGER.error("Error registering icons", e);
                 }
             }
@@ -251,7 +259,13 @@ public class ItemIntegratedCircuit extends GTGenericItem implements INetworkUpda
         if (meta < 0 || meta > 24) return true;
 
         if (!player.capabilities.isCreativeMode) {
-            findConfiguratorInInv(player, true); // damage the tool
+            try {
+                findConfiguratorInInv(player, true); // damage the tool
+            } catch (IllegalStateException e) {
+                player.addChatComponentMessage(
+                    new ChatComponentText("Error while trying to configure circuit: " + e.getMessage()));
+                return true;
+            }
         }
         stack.setItemDamage(meta);
 
@@ -260,15 +274,9 @@ public class ItemIntegratedCircuit extends GTGenericItem implements INetworkUpda
 
     @Override
     public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
-        // nothing on server side or fake player
-        if (player instanceof FakePlayer || !world.isRemote) return stack;
-        // check if any screwdriver
-        ItemStack configuratorStack;
-        if (player.capabilities.isCreativeMode) {
-            configuratorStack = null;
-        } else {
-            configuratorStack = findConfiguratorInInv(player, false);
-            if (configuratorStack == null) {
+        if (!(player instanceof FakePlayer) && !world.isRemote) {
+            // check if any screwdriver
+            if (!player.capabilities.isCreativeMode && findConfiguratorInInv(player, false) == null) {
                 int count;
                 try {
                     count = Integer
@@ -283,29 +291,17 @@ public class ItemIntegratedCircuit extends GTGenericItem implements INetworkUpda
                 player.addChatComponentMessage(
                     new ChatComponentTranslation(
                         "GT5U.item.programmed_circuit.no_screwdriver." + XSTR.XSTR_INSTANCE.nextInt(count)));
-                return stack;
+                return super.onItemRightClick(stack, world, player);
             }
+
+            // open gui
+            if (stack == Backhand.getOffhandItem(player)) GuiFactories.playerInventory()
+                .openFromPlayerInventory(player, Backhand.getOffhandSlot(player));
+            else GuiFactories.playerInventory()
+                .openFromMainHand(player);
         }
-        openSelectorGui(configuratorStack, stack.getItemDamage(), player);
-        return stack;
-    }
 
-    private void openSelectorGui(ItemStack configurator, int meta, EntityPlayer player) {
-        UIInfos.openClientUI(
-            player,
-            buildContext -> new SelectItemUIFactory(
-                StatCollector.translateToLocal("GT5U.item.programmed_circuit.select.header"),
-                configurator,
-                ItemIntegratedCircuit::onConfigured,
-                ALL_VARIANTS,
-                meta,
-                true).createWindow(buildContext));
-    }
-
-    private static void onConfigured(ItemStack stack) {
-        NBTTagCompound tag = new NBTTagCompound();
-        tag.setByte("meta", (byte) stack.getItemDamage());
-        GTValues.NW.sendToServer(new GTPacketUpdateItem(tag));
+        return super.onItemRightClick(stack, world, player);
     }
 
     private static final int screwdriverOreId = OreDictionary.getOreID("craftingToolScrewdriver");
@@ -326,7 +322,11 @@ public class ItemIntegratedCircuit extends GTGenericItem implements INetworkUpda
 
             // Circuit Configurator
             if (potentialStack.getItem() instanceof ItemCircuitProgrammer programmer) {
-                if (doDamage) programmer.useItem(potentialStack, player);
+                if (doDamage) {
+                    boolean success = programmer.useItem(potentialStack, player);
+
+                    if(!success) throw new IllegalStateException("Circuit Configurator has no charge");
+                }
                 return potentialStack;
             }
 
@@ -355,6 +355,16 @@ public class ItemIntegratedCircuit extends GTGenericItem implements INetworkUpda
                         }
                     }
                 }
+            } else if (potentialStack.getItem() instanceof ItemGTToolbox) {
+                final Optional<ItemStack> potentialScrewdriver = ToolboxUtil.getItemInside(potentialStack, ToolboxSlot.SCREWDRIVER);
+                if (potentialScrewdriver.isPresent() && potentialScrewdriver.get().getItem() instanceof final MetaGeneratedTool mgTool) {
+                    final ItemStack screwdriver = potentialScrewdriver.get();
+                    if (doDamage && mgTool.doDamageToItem(screwdriver, 1)) {
+                        ToolboxUtil.saveItemInside(potentialStack, screwdriver, ToolboxSlot.SCREWDRIVER);
+                    }
+
+                    return potentialStack;
+                }
             }
 
             // Screwdriver
@@ -362,7 +372,7 @@ public class ItemIntegratedCircuit extends GTGenericItem implements INetworkUpda
                 if (id == screwdriverOreId) {
                     if (doDamage) {
                         if (potentialStack.getItem()
-                            .equals(One_Use_craftingToolScrewdriver.getItem())) {
+                            .equals(SingleUseScrewdriver.getItem())) {
                             potentialStack.stackSize -= 1;
                         } else {
                             potentialStack = potentialStack.getItem()
@@ -394,5 +404,20 @@ public class ItemIntegratedCircuit extends GTGenericItem implements INetworkUpda
                 toolboxInventory.setInventorySlotContents(i, ItemStack.loadItemStackFromNBT(slotNbt));
             }
         }
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public ModularScreen createScreen(PlayerInventoryGuiData data, ModularPanel mainPanel) {
+        return new GTModularScreen(mainPanel, GTGuiThemes.STANDARD);
+    }
+
+    @Override
+    public ModularPanel buildUI(PlayerInventoryGuiData data, PanelSyncManager syncManager, UISettings settings) {
+        EntityPlayer player = data.getPlayer();
+
+        return new IntegratedCircuitGui(
+            data,
+            player.capabilities.isCreativeMode ? null : findConfiguratorInInv(data.getPlayer(), false)).build();
     }
 }

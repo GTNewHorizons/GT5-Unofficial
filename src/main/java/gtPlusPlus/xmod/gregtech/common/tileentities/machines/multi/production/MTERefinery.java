@@ -13,6 +13,8 @@ import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.filterByMTETier;
 
+import java.util.List;
+
 import net.minecraft.item.ItemStack;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -28,6 +30,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEHatchMuffler;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
@@ -49,34 +52,32 @@ public class MTERefinery extends GTPPMultiBlockBase<MTERefinery> implements ISur
 
     @Override
     public String getMachineType() {
-        return "Fuel Refinery";
+        return "Fuel Refinery, RFPP";
     }
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Controller Block for the Fission Fuel Processing Unit")
             .addInfo("Refines fluorides and Uranium into nuclear fuel for the LFTR")
             .addInfo("LFTR Fuel 2 and Fuel 3 have alternative, much more efficient recipes")
-            .addInfo("However, they require fission breeding outputs from the LFTR itself")
             .addInfo("Only one Energy Hatch is allowed per Processing Unit")
             .addInfo("All recipe times in this multi are very long, watch out!")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 9, 3, false)
-            .addController("Bottom Center")
+            .addController("Front bottom center")
             .addCasingInfoMin("Hastelloy-X Structural Block", 7, false)
             .addCasingInfoMin("Incoloy-DS Fluid Containment Block", 5, false)
-            .addCasingInfoMin("Zeron-100 Reactor Shielding", 4, false)
-            .addCasingInfoMin("Hastelloy-N Sealant Blocks", 17, false)
+            .addCasingInfoMin("Reactor Shield Casing", 4, false)
+            .addCasingInfoMin("Hastelloy-N Sealant Block", 17, false)
             .addInputHatch("Base platform", 1)
             .addOutputHatch("Base platform", 1)
             .addMufflerHatch("Base platform", 1)
             .addMaintenanceHatch("Base platform", 1)
             .addEnergyHatch("Base platform", 1)
             .addStructureInfo("Muffler's Tier must be IV+")
-            .addStructureInfo("2-4x Input Hatches, 1-2x Output Hatches")
-            .addStructureInfo("1x Muffler, 1x Maintenance Hatch, 1x Energy Hatch")
+            .addStructureInfo("2+ Input Hatches, 1+ Output Hatches")
+            .addStructureInfo("1 Muffler Hatch, 1 Maintenance Hatch, 1 Energy Hatch")
             .toolTipFinisher();
         return tt;
     }
@@ -117,11 +118,6 @@ public class MTERefinery extends GTPPMultiBlockBase<MTERefinery> implements ISur
     }
 
     @Override
-    public int getMaxParallelRecipes() {
-        return 1;
-    }
-
-    @Override
     public boolean addMufflerToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
         if (aTileEntity == null) {
             return false;
@@ -150,13 +146,13 @@ public class MTERefinery extends GTPPMultiBlockBase<MTERefinery> implements ISur
                         buildHatchAdder(MTERefinery.class)
                             .atLeast(Energy, Maintenance, OutputHatch, OutputBus, InputHatch)
                             .casingIndex(TAE.GTPP_INDEX(18))
-                            .dot(1)
+                            .hint(1)
                             .build(),
                         buildHatchAdder(MTERefinery.class).atLeast(Muffler)
                             .adder(MTERefinery::addMufflerToMachineList)
                             .hatchItemFilterAnd(t -> filterByMTETier(6, Integer.MAX_VALUE))
                             .casingIndex(TAE.GTPP_INDEX(18))
-                            .dot(1)
+                            .hint(1)
                             .build(),
                         onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings2Misc, 2))))
                 .addElement('I', ofBlock(ModBlocks.blockCasings2Misc, 3))
@@ -175,49 +171,29 @@ public class MTERefinery extends GTPPMultiBlockBase<MTERefinery> implements ISur
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(mName, stackSize, 1, 7, 0, elementBudget, env, false, true);
+        return survivalBuildPiece(mName, stackSize, 1, 7, 0, elementBudget, env, false, true);
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         mCasing = 0;
-        if (checkPiece(mName, 1, 7, 0) && mCasing >= 7) {
-            if (this.mInputHatches.size() >= 2 && this.mInputHatches.size() <= 4
-                && !this.mOutputHatches.isEmpty()
-                && this.mOutputHatches.size() <= 2
-                && this.mMufflerHatches.size() == 1
-                && this.mMaintenanceHatches.size() == 1
-                && this.mEnergyHatches.size() == 1) {
-                this.resetRecipeMapForAllInputHatches(this.getRecipeMap());
-                return true;
-            }
+        if (!checkPiece(mName, 1, 7, 0, errors)) return;
+        checkCasingMin(errors, mCasing, 7);
+        checkHatchMin(errors, InputHatch, 2);
+        checkHatchMax(errors, InputHatch, 4);
+        checkHasOutputHatch(errors);
+        checkHatchMax(errors, OutputHatch, 2);
+        checkOneMufflerHatch(errors);
+        checkOneMaintenanceHatch(errors);
+        checkOneEnergyHatch(errors);
+        if (errors.isEmpty()) {
+            this.resetRecipeMapForAllInputHatches(this.getRecipeMap());
         }
-        return false;
-    }
-
-    @Override
-    public boolean isCorrectMachinePart(final ItemStack aStack) {
-        return true;
-    }
-
-    @Override
-    public int getMaxEfficiency(final ItemStack aStack) {
-        return 10000;
     }
 
     @Override
     public int getPollutionPerSecond(final ItemStack aStack) {
         return PollutionConfig.pollutionPerSecondMultiRefinery;
-    }
-
-    @Override
-    public int getDamageToComponent(final ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(final ItemStack aStack) {
-        return false;
     }
 
     @Override

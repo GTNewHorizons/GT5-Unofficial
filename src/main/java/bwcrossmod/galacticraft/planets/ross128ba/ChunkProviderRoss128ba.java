@@ -25,7 +25,6 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
 
 import bartworks.util.NoiseUtil.BartsNoise;
-import bwcrossmod.galacticraft.planets.ross128b.ChunkProviderRoss128b;
 import gregtech.api.objects.XSTR;
 import micdoodle8.mods.galacticraft.api.prefab.world.gen.MapGenBaseMeta;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
@@ -71,7 +70,6 @@ public class ChunkProviderRoss128ba extends ChunkProviderMoon {
     public void populate(IChunkProvider par1IChunkProvider, int par2, int par3) {
         super.populate(par1IChunkProvider, par2, par3);
         BlockFalling.fallInstantly = true;
-        ChunkProviderRoss128b.BWOreGen.generate(this.rand, par2, par3, this.worldObj, this, this);
         BlockFalling.fallInstantly = false;
     }
 

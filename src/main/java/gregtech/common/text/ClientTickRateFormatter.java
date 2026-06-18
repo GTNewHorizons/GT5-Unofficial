@@ -1,12 +1,13 @@
 package gregtech.common.text;
 
+import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.IChatComponent;
 import net.minecraft.util.StatCollector;
 
 public final class ClientTickRateFormatter {
 
     /**
-     * A translation key for the type of time units being used (e.g.: "tick",
-     * "seconds".)
+     * A translation key for the type of time units being used (e.g.: "tick", "seconds".)
      */
     private final String unitI18NKey;
     /**
@@ -17,8 +18,7 @@ public final class ClientTickRateFormatter {
     /**
      * Converts a given tick rate into a human-friendly format.
      *
-     * @param tickRate The rate at which something ticks, in ticks per
-     *                 operation.
+     * @param tickRate The rate at which something ticks, in ticks per operation.
      */
     public ClientTickRateFormatter(final int tickRate) {
         if (tickRate < 20) {
@@ -35,5 +35,12 @@ public final class ClientTickRateFormatter {
             "gt.cover.info.format.tick_rate",
             tickRate,
             StatCollector.translateToLocal(unitI18NKey));
+    }
+
+    public IChatComponent toChatComponent() {
+        return new ChatComponentTranslation(
+            "gt.cover.info.format.tick_rate",
+            tickRate,
+            new ChatComponentTranslation(unitI18NKey));
     }
 }

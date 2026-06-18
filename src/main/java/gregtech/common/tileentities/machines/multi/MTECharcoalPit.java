@@ -7,10 +7,12 @@ import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.annotation.Nonnull;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockLog;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -19,11 +21,11 @@ import net.minecraft.world.ChunkPosition;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.oredict.OreDictionary;
 
+import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.ParticleFX;
-import gregtech.api.interfaces.ISecondaryDescribable;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -31,13 +33,16 @@ import gregtech.api.metatileentity.implementations.MTETooltipMultiBlockBase;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.WorldSpawnedEventBuilder;
 import gregtech.common.pollution.Pollution;
 
-public class MTECharcoalPit extends MTETooltipMultiBlockBase implements ISecondaryDescribable {
+public class MTECharcoalPit extends MTETooltipMultiBlockBase {
 
     private boolean running = false;
+
+    private static final Block EtFuturumDirtPath = GameRegistry.findBlock("etfuturum", "grass_path");
 
     public MTECharcoalPit(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -56,11 +61,6 @@ public class MTECharcoalPit extends MTETooltipMultiBlockBase implements ISeconda
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
         // No GUI, do not capture right-click so it does not interfere when placing logs
         return false;
-    }
-
-    @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
     }
 
     @Nonnull
@@ -129,6 +129,7 @@ public class MTECharcoalPit extends MTETooltipMultiBlockBase implements ISeconda
     }
 
     private boolean isWoodLog(Block log, int meta) {
+        if (log instanceof BlockLog) return true;
         for (int id : OreDictionary.getOreIDs(new ItemStack(log, 1, meta))) {
             if (OreDictionary.getOreName(id)
                 .equals("logWood")) return true;
@@ -168,6 +169,8 @@ public class MTECharcoalPit extends MTETooltipMultiBlockBase implements ISeconda
             if (!aList1.contains(new ChunkPosition(aX, aY + 1, aZ))
                 && (!aList2.contains(new ChunkPosition(aX, aY + 1, aZ)))) expandToChunkYPos = true;
         } else if (!(blockYPos == Blocks.dirt || blockYPos == Blocks.grass
+            || blockYPos == Blocks.farmland
+            || (EtFuturumDirtPath != null && blockYPos == EtFuturumDirtPath)
             || (aX == 0 && aY == -1 && aZ == 0 && blockYPos == GregTechAPI.sBlockMachines))) {
                 return false;
             }
@@ -206,28 +209,11 @@ public class MTECharcoalPit extends MTETooltipMultiBlockBase implements ISeconda
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        return true;
-    }
-
-    @Override
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
-    }
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {}
 
     @Override
     public int getPollutionPerSecond(ItemStack aStack) {
-        return GTMod.gregtechproxy.mPollutionCharcoalPitPerSecond;
-    }
-
-    @Override
-    public int getDamageToComponent(ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
+        return GTMod.proxy.mPollutionCharcoalPitPerSecond;
     }
 
     @Override
@@ -235,15 +221,16 @@ public class MTECharcoalPit extends MTETooltipMultiBlockBase implements ISeconda
         return new MTECharcoalPit(mName);
     }
 
+    @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Charcoal Pile Igniter")
+        tt.addMachineType("Charcoal Pile Igniter, CPI")
             .addInfo("Converts Logs into Brittle Charcoal blocks")
-            .addInfo("Will automatically start when valid")
+            .addInfo("Automatically starts when formed")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginVariableStructureBlock(3, 13, 3, 7, 3, 13, false)
+            .addController("Top layer, directly touching a wood log")
             .addStructureInfo("Can be up to 13x7x13 in size, including the dirt; shape doesn't matter")
-            .addOtherStructurePart("Controller", "Top layer, directly touching a wood log")
             .addOtherStructurePart("Dirt/Grass", "Top and middle layers, covering wood logs")
             .addOtherStructurePart("Bricks", "Bottom layer, under all wood logs")
             .addOtherStructurePart("Wood Logs", "Up to 5 layers, inside the previously mentioned blocks")
@@ -293,6 +280,11 @@ public class MTECharcoalPit extends MTETooltipMultiBlockBase implements ISeconda
 
     @Override
     public boolean getDefaultHasMaintenanceChecks() {
+        return false;
+    }
+
+    @Override
+    public boolean supportsSingleRecipeLocking() {
         return false;
     }
 }

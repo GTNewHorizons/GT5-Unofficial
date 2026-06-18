@@ -11,6 +11,7 @@ public class CoverRedstoneReceiverExternal extends CoverRedstoneWirelessBase {
         super(context, coverTexture);
     }
 
+    @Override
     public boolean isRedstoneSensitive(long aTimer) {
         return false;
     }
@@ -23,8 +24,8 @@ public class CoverRedstoneReceiverExternal extends CoverRedstoneWirelessBase {
         }
         coverable.setOutputRedstoneSignal(
             coverSide,
-            GregTechAPI.sWirelessRedstone.get(this.coverData) == null ? 0
-                : GregTechAPI.sWirelessRedstone.get(this.coverData));
+            GregTechAPI.sWirelessRedstone.get(getMapFrequency()) == null ? 0
+                : GregTechAPI.sWirelessRedstone.get(getMapFrequency()));
     }
 
     @Override

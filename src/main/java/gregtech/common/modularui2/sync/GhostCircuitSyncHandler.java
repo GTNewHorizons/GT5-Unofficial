@@ -10,27 +10,82 @@ import net.minecraft.network.PacketBuffer;
 import com.cleanroommc.modularui.network.NetworkUtils;
 import com.cleanroommc.modularui.utils.MouseData;
 import com.cleanroommc.modularui.utils.item.IItemHandler;
+import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.ItemSlotSH;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.cleanroommc.modularui.value.sync.PhantomItemSlotSH;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
+import gregtech.api.interfaces.IConfigurationCircuitSupport;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.item.GhostCircuitItemStackHandler;
 import gregtech.common.items.ItemIntegratedCircuit;
 
 /**
- * Sync handler dedicated for {@link gregtech.common.modularui2.widget.GhostCircuitSlotWidget
- * GhostCircuitSlotWidget}.
+ * Sync handler dedicated for {@link gregtech.common.modularui2.widget.GhostCircuitSlotWidget GhostCircuitSlotWidget}.
  */
-public class GhostCircuitSyncHandler extends ItemSlotSH {
+public class GhostCircuitSyncHandler extends PhantomItemSlotSH {
 
     public static final int SYNC_CIRCUIT_CONFIG = 10;
 
+    private final IMetaTileEntity mte;
+    private IntSyncValue indexSync;
+
     @SuppressWarnings("UnstableApiUsage")
-    public GhostCircuitSyncHandler(ModularSlot slot) {
+    public GhostCircuitSyncHandler(ModularSlot slot, IMetaTileEntity mte) {
         super(slot);
+        this.mte = mte;
+        if (mte instanceof IConfigurationCircuitSupport circuitEnabled && circuitEnabled.allowSelectCircuit()) {
+            indexSync = new IntSyncValue(() -> {
+                ItemStack selectedItem = mte.getInventoryHandler()
+                    .getStackInSlot(circuitEnabled.getCircuitSlot());
+                if (selectedItem != null && selectedItem.getItem() instanceof ItemIntegratedCircuit) {
+                    // selected index 0 == config 1
+                    return selectedItem.getItemDamage() - 1;
+                }
+                return -1;
+            }, index -> {
+                if (index != -1) {
+                    mte.setInventorySlotContents(
+                        circuitEnabled.getCircuitSlot(),
+                        GTUtility.getAllIntegratedCircuits()
+                            .get(index)
+                            .copy());
+                } else {
+                    mte.setInventorySlotContents(circuitEnabled.getCircuitSlot(), null);
+                }
+            });
+        }
+    }
+
+    /**
+     * Registers the index sync value on the given sync manager. Must be called during widget construction,
+     * before {@link com.cleanroommc.modularui.value.sync.PanelSyncManager#initialize} runs, to avoid
+     * modifying the sync handler map during iteration.
+     */
+    public void registerIndexSync(PanelSyncManager syncManager, String key) {
+        if (indexSync != null) {
+            syncManager.syncValue(key, 0, indexSync);
+        }
+    }
+
+    @Override
+    public void init(String key, PanelSyncManager syncHandler) {
+        super.init(key, syncHandler);
+        if (indexSync != null) {
+            indexSync.setChangeListener(() -> {
+                if (indexSync.getSyncManager()
+                    .isClient()) return;
+                mte.getBaseMetaTileEntity()
+                    .markInventoryBeenModified();
+            });
+        }
     }
 
     @Override
     protected void phantomClick(MouseData mouseData, ItemStack cursorStack) {
+        if (indexSync == null) return;
         if (cursorStack != null && cursorStack.getItem() instanceof ItemIntegratedCircuit) {
             setCircuitConfig(cursorStack.getItemDamage());
         } else {
@@ -56,10 +111,11 @@ public class GhostCircuitSyncHandler extends ItemSlotSH {
         GhostCircuitItemStackHandler handler = getGhostCircuitHandler();
         if (handler.getCircuitConfig() != config) {
             handler.setCircuitConfig(config);
-            syncToClient(1, buf -> {
-                buf.writeBoolean(false);
+            syncToClient(ItemSlotSH.SYNC_ITEM, buf -> {
+                buf.writeBoolean(false);// onlyAmountChanged
                 NetworkUtils.writeItemStack(buf, handler.getStackInSlot(0));
-                buf.writeBoolean(false);
+                buf.writeBoolean(false);// init
+                buf.writeBoolean(false);// force sync
             });
         }
     }
@@ -99,5 +155,9 @@ public class GhostCircuitSyncHandler extends ItemSlotSH {
                 "GhostCircuitSyncHandler has IItemHandler that is not GhostCircuitItemStackHandler");
         }
         return ghostHandler;
+    }
+
+    public IntSyncValue getIndexSync() {
+        return indexSync;
     }
 }

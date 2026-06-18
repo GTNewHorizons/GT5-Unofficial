@@ -19,6 +19,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.common.blocks.BlockCasingsAbstract;
 import gregtech.common.blocks.MaterialCasings;
+import gregtech.common.misc.GTStructureChannels;
 import tectech.thing.CustomItemList;
 import tectech.util.CommonValues;
 
@@ -48,6 +49,7 @@ public class StabilisationFieldCasing extends BlockCasingsAbstract {
             GTLanguageManager.addStringLocalization(
                 getUnlocalizedName() + "." + i + ".name",
                 WHITE + CommonValues.EOH_TIER_FANCY_NAMES[i] + RESET + " Stabilisation Field Generator");
+            GTStructureChannels.EOH_STABILISATION.registerAsIndicator(new ItemStack(this, 1, i), i + 1);
         }
 
         CustomItemList.StabilisationFieldGeneratorTier0.set(new ItemStack(this, 1, 0));

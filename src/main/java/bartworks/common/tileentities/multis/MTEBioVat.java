@@ -19,21 +19,29 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAn
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofChain;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
+import static gregtech.api.enums.HatchElement.Energy;
+import static gregtech.api.enums.HatchElement.InputBus;
+import static gregtech.api.enums.HatchElement.InputHatch;
+import static gregtech.api.enums.HatchElement.Maintenance;
+import static gregtech.api.enums.HatchElement.OutputBus;
+import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DISTILLATION_TOWER_GLOW;
 import static gregtech.api.util.GTRecipeConstants.GLASS;
+import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
-import static gregtech.api.util.GTStructureUtility.ofHatchAdder;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -71,8 +79,10 @@ import bartworks.util.ResultWrongSievert;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
@@ -81,15 +91,18 @@ import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeConstants;
-import gregtech.api.util.GTUtility;
+import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.ParallelHelper;
 import gregtech.api.util.recipe.Sievert;
+import gregtech.common.misc.GTStructureChannels;
 
-public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> implements ISurvivalConstructable {
+public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat>
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     public static final HashMap<Coords, Integer> staticColorMap = new HashMap<>();
 
@@ -131,13 +144,20 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> implements I
         .addElement(
             'c',
             ofChain(
-                ofHatchAdder(MTEBioVat::addMaintenanceToMachineList, CASING_INDEX, 1),
-                ofHatchAdder(MTEBioVat::addOutputToMachineList, CASING_INDEX, 1),
-                ofHatchAdder(MTEBioVat::addInputToMachineList, CASING_INDEX, 1),
-                ofHatchAdder(MTEBioVat::addRadiationInputToMachineList, CASING_INDEX, 1),
-                ofHatchAdder(MTEBioVat::addEnergyInputToMachineList, CASING_INDEX, 1),
+                buildHatchAdder(MTEBioVat.class)
+                    .atLeast(
+                        Maintenance,
+                        InputBus,
+                        OutputBus,
+                        InputHatch,
+                        OutputHatch,
+                        Energy,
+                        RadioHatchElement.RadioHatch)
+                    .hint(1)
+                    .casingIndex(CASING_INDEX)
+                    .build(),
                 onElementPass(e -> e.mCasing++, ofBlock(GregTechAPI.sBlockCasings4, 1))))
-        .addElement('a', ofChain(isAir(), ofBlockAnyMeta(FluidLoader.bioFluidBlock)))
+        .addElement('a', ofChain(ofBlockAnyMeta(FluidLoader.bioFluidBlock), isAir()))
         .addElement('g', chainAllGlasses(-1, (te, t) -> te.glassTier = t, te -> te.glassTier))
         .build();
 
@@ -149,25 +169,53 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> implements I
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Bacterial Vat")
-            .addInfo("For maximum efficiency boost keep the Output Hatch always half filled!")
+        tt.addMachineType("Bacterial Vat, Bac Vat")
+            .addInfo(EnumChatFormatting.AQUA + "Advanced Bio Processing")
+            .addSeparator()
+            .addInfo(
+                "Some recipes require " + EnumChatFormatting.GREEN
+                    + "R"
+                    + EnumChatFormatting.DARK_GREEN
+                    + "A"
+                    + EnumChatFormatting.GREEN
+                    + "D"
+                    + EnumChatFormatting.DARK_GREEN
+                    + "I"
+                    + EnumChatFormatting.GREEN
+                    + "A"
+                    + EnumChatFormatting.DARK_GREEN
+                    + "T"
+                    + EnumChatFormatting.GREEN
+                    + "I"
+                    + EnumChatFormatting.DARK_GREEN
+                    + "O"
+                    + EnumChatFormatting.GREEN
+                    + "N"
+                    + EnumChatFormatting.GRAY
+                    + " supplied with a "
+                    + EnumChatFormatting.BOLD
+                    + EnumChatFormatting.GREEN
+                    + "Radio Hatch")
+            .addInfo("Radiation can be either a minimum requirement or an exact value")
+            .addInfo("Efficiency depends on Output Hatch fluid level")
+            .addInfo("Efficiency peaks at " + EnumChatFormatting.LIGHT_PURPLE + "50%")
             .beginStructureBlock(5, 4, 5, false)
             .addController("Front bottom center")
-            .addCasingInfoMin("Clean Stainless Steel Casings", 19, false)
+            .addCasingInfoMin("Clean Stainless Steel Casing", 19, false)
             .addOtherStructurePart(
                 StatCollector.translateToLocal("tooltip.bw.structure.glass"),
                 "Hollow two middle layers",
                 2)
             .addCasingInfoExactly("Any Tiered Glass", 32, true)
             .addStructureInfo("Some Recipes need more advanced Glass Types")
-            .addMaintenanceHatch("Any casing", 1)
-            .addOtherStructurePart(StatCollector.translateToLocal("tooltip.bw.structure.radio_hatch"), "Any casing", 1)
-            .addInputBus("Any casing", 1)
-            .addOutputBus("Any casing", 1)
-            .addInputHatch("Any casing", 1)
-            .addOutputHatch("Any casing", 1)
-            .addEnergyHatch("Any casing", 1)
-            .addSubChannelUsage("glass", "Glass Tier")
+            .addMaintenanceHatch("Any Casing", 1)
+            .addOtherStructurePart(StatCollector.translateToLocal("tooltip.bw.structure.radio_hatch"), "Any Casing", 1)
+            .addInputBus("Any Casing", 1)
+            .addOutputBus("Any Casing", 1)
+            .addInputHatch("Any Casing", 1)
+            .addOutputHatch("Any Casing", 1)
+            .addEnergyHatch("Any Casing", 1)
+            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         return tt;
     }
@@ -190,16 +238,6 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> implements I
         ret += this.getInputCapacity();
         // ret += getOutputCapacity();
         return ret;
-    }
-
-    @Override
-    public int fill(FluidStack resource, boolean doFill) {
-        return super.fill(resource, doFill);
-    }
-
-    @Override
-    public boolean isCorrectMachinePart(ItemStack itemStack) {
-        return true;
     }
 
     @Override
@@ -226,7 +264,7 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> implements I
     private int calcMod(double x) {
         double y = this.getOutputCapacity() / 2D, z = Configuration.Multiblocks.bioVatMaxParallelBonus;
 
-        int ret = MathUtils.ceilInt((-1D / y * Math.pow(x - y, 2D) + y) / y * z);
+        int ret = MathUtils.ceilInt((-1D / y * (x - y) * (x - y) + y) / y * z);
         return MathUtils.clamp(1, ret, Configuration.Multiblocks.bioVatMaxParallelBonus);
     }
 
@@ -295,8 +333,7 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> implements I
     }
 
     public FluidStack getStoredFluidOutputs() {
-        // Only one output Hatch
-        assert this.mOutputHatches.size() == 1;
+        // Only one output Hatch, enforced in checkMachine.
         return this.mOutputHatches.get(0)
             .getFluid();
     }
@@ -315,26 +352,24 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> implements I
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack itemStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack itemStack,
+        List<StructureError> errors) {
         this.mRadHatches.clear();
         this.glassTier = -1;
         this.mCasing = 0;
 
-        if (!this.checkPiece(STRUCTURE_PIECE_MAIN, 2, 3, 0)) return false;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 3, 0, errors)) return;
 
-        return this.mCasing >= 19 && this.mRadHatches.size() <= 1
-            && !this.mEnergyHatches.isEmpty()
-            && this.mMaintenanceHatches.size() == 1;
-    }
+        checkCasingMin(errors, mCasing, 19);
 
-    @Override
-    public int getMaxEfficiency(ItemStack itemStack) {
-        return 10000;
-    }
+        if (mRadHatches.size() > 1) {
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.too_many_radiation_hatch"));
+        }
 
-    @Override
-    public int getDamageToComponent(ItemStack itemStack) {
-        return 0;
+        checkHasEnergyHatch(errors);
+        checkHasMaintenanceHatch(errors);
+        checkOneOutputHatch(errors);
+        checkHasInputHatch(errors);
     }
 
     private void sendAllRequiredRendererPackets(int offsetX_L, int offsetY_L, int offsetZ_L, int offsetX_U,
@@ -609,14 +644,18 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> implements I
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (this.height != this.reCalculateHeight()) this.needsVisualUpdate = true;
         this.doAllVisualThings();
-        if (aBaseMetaTileEntity.isServerSide() && this.mRadHatches.size() == 1) {
-            this.mSievert = this.mRadHatches.get(0)
-                .getSievert();
+        if (aBaseMetaTileEntity.isServerSide()) {
+            if (this.mRadHatches.size() == 1) {
+                this.mSievert = this.mRadHatches.get(0)
+                    .getSievert();
+            } else {
+                this.mSievert = 0;
+            }
             if (aBaseMetaTileEntity.isActive() && this.mNeededSievert > this.mSievert) this.mOutputFluids = null;
-        }
-        if (aBaseMetaTileEntity.isServerSide() && this.mMaxProgresstime <= 0) {
-            this.mTimes = 0;
-            this.mMaxProgresstime = 0;
+            if (this.mMaxProgresstime <= 0) {
+                this.mTimes = 0;
+                this.mMaxProgresstime = 0;
+            }
         }
     }
 
@@ -686,40 +725,27 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> implements I
     }
 
     @Override
-    public boolean explodesOnComponentBreak(ItemStack itemStack) {
-        return false;
-    }
-
-    @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity iGregTechTileEntity) {
         return new MTEBioVat(this.mName);
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-        int aColorIndex, boolean aActive, boolean aRedstone) {
-        if (side == facing) {
-            if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX), TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-        }
-        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX) };
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            OVERLAY_FRONT_DISTILLATION_TOWER,
+            OVERLAY_FRONT_DISTILLATION_TOWER_GLOW,
+            OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE,
+            OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Textures.BlockIcons.getCasingTextureForId(CASING_INDEX);
     }
 
     @Override
@@ -730,30 +756,23 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> implements I
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 2, 3, 0, elementBudget, env, false, true);
+        return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 2, 3, 0, elementBudget, env, false, true);
     }
 
     @Override
-    public String[] getInfoData() {
-        final String[] baseInfoData = super.getInfoData();
-        final String[] infoData = new String[baseInfoData.length + 2];
-        System.arraycopy(baseInfoData, 0, infoData, 0, baseInfoData.length);
-        // See https://github.com/GTNewHorizons/GT-New-Horizons-Modpack/issues/11923
-        // here we must check the machine is well-formed as otherwise getExpectedMultiplier might error out!
-        infoData[infoData.length - 2] = StatCollector.translateToLocal("BW.infoData.BioVat.expectedProduction") + ": "
-            + EnumChatFormatting.GREEN
-            + (this.mMachine
-                ? (this.mMaxProgresstime <= 0 ? this.getExpectedMultiplier(null, false) : this.mExpectedMultiplier)
-                    * 100
-                : -1)
-            + EnumChatFormatting.RESET
-            + " %";
-        infoData[infoData.length - 1] = StatCollector.translateToLocal("BW.infoData.BioVat.production") + ": "
-            + EnumChatFormatting.GREEN
-            + (this.mMaxProgresstime <= 0 ? 0 : this.mTimes) * 100
-            + EnumChatFormatting.RESET
-            + " %";
-        return infoData;
+    public void getExtraInfoData(List<String> info) {
+        info.add(
+            StatCollector.translateToLocalFormatted(
+                "BW.infoData.BioVat.expectedProduction.s",
+                (this.mMachine
+                    ? (this.mMaxProgresstime <= 0 ? this.getExpectedMultiplier(null, false) : this.mExpectedMultiplier)
+                        * 100
+                    : -1)));
+
+        info.add(
+            StatCollector.translateToLocalFormatted(
+                "BW.infoData.BioVat.production.s",
+                (this.mMaxProgresstime <= 0 ? 0 : this.mTimes) * 100));
     }
 
     @Override
@@ -766,19 +785,33 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat> implements I
         return true;
     }
 
-    @Override
-    public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ, ItemStack aTool) {
-        if (aPlayer.isSneaking()) {
-            batchMode = !batchMode;
-            if (batchMode) {
-                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
-            } else {
-                GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
-            }
-            return true;
-        }
-        return false;
-    }
+    private enum RadioHatchElement implements IHatchElement<MTEBioVat> {
 
+        RadioHatch(MTEBioVat::addRadiationInputToMachineList, MTERadioHatch.class) {
+
+            @Override
+            public long count(MTEBioVat mteBioVat) {
+                return mteBioVat.mRadHatches.size();
+            }
+        };
+
+        private final List<Class<? extends IMetaTileEntity>> mteClasses;
+        private final IGTHatchAdder<MTEBioVat> adder;
+
+        @SafeVarargs
+        RadioHatchElement(IGTHatchAdder<MTEBioVat> adder, Class<? extends IMetaTileEntity>... mteClasses) {
+            this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
+            this.adder = adder;
+        }
+
+        @Override
+        public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
+            return mteClasses;
+        }
+
+        @Override
+        public IGTHatchAdder<? super MTEBioVat> adder() {
+            return adder;
+        }
+    }
 }

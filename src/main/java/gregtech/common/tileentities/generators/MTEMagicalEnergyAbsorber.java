@@ -14,14 +14,9 @@ import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASING_MAGIC_FRONT_
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASING_MAGIC_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAYS_ENERGY_OUT;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
-import static net.minecraft.util.EnumChatFormatting.GRAY;
-import static net.minecraft.util.EnumChatFormatting.GREEN;
-import static net.minecraft.util.EnumChatFormatting.LIGHT_PURPLE;
-import static net.minecraft.util.EnumChatFormatting.RESET;
-import static net.minecraft.util.EnumChatFormatting.UNDERLINE;
-import static net.minecraft.util.EnumChatFormatting.YELLOW;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -54,13 +49,13 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.ParticleFX;
 import gregtech.api.enums.TCAspects;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicGenerator;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.WorldSpawnedEventBuilder.ParticleEventBuilder;
@@ -76,6 +71,7 @@ interface MagicalEnergyBBListener {
     void onMagicalEnergyBBUpdate();
 }
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEMagicalEnergyAbsorber extends MTEBasicGenerator implements MagicalEnergyBBListener {
 
     private static final ConcurrentHashMap<UUID, MTEMagicalEnergyAbsorber> sSubscribedCrystals = new ConcurrentHashMap<>(
@@ -97,7 +93,7 @@ public class MTEMagicalEnergyAbsorber extends MTEBasicGenerator implements Magic
     private boolean mUsingEssentia = true;
 
     public MTEMagicalEnergyAbsorber(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, "Feasts on magic close to it:");
+        super(aID, aName, aNameRegional, aTier, (String) null);
         onConfigLoad();
     }
 
@@ -129,26 +125,24 @@ public class MTEMagicalEnergyAbsorber extends MTEBasicGenerator implements Magic
         sActiveSiphon = aSiphon;
     }
 
+    @Override
     public void onConfigLoad() {
         sharedConfigLoad();
         mMaxVisPerDrain = (int) Math.round(Math.sqrt((double) (V[mTier] * 10000) / (sEnergyFromVis * getEfficiency())));
-        if (Math.pow(mMaxVisPerDrain, 2) * sEnergyFromVis * getEfficiency() < V[mTier]) {
+        if ((long) mMaxVisPerDrain * mMaxVisPerDrain * sEnergyFromVis * getEfficiency() < V[mTier]) {
             mMaxVisPerDrain += 1;
         }
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
         if (aPlayer.isSneaking()) mMagicalEnergyBB.decreaseTier();
         else mMagicalEnergyBB.increaseTier();
-        GTUtility.sendChatToPlayer(
+        GTUtility.sendChatTrans(
             aPlayer,
-            String.format(
-                GTLanguageManager.addStringLocalization(
-                    "Interaction_DESCRIPTION_MagicalEnergyAbsorber_Screwdriver",
-                    "Absorption range: %s blocks"),
-                mMagicalEnergyBB.getRange(),
-                true));
+            "Interaction_DESCRIPTION_MagicalEnergyAbsorber_Screwdriver",
+            mMagicalEnergyBB.getRange());
         mMagicalEnergyBB.update();
     }
 
@@ -197,49 +191,27 @@ public class MTEMagicalEnergyAbsorber extends MTEBasicGenerator implements Magic
 
     @Override
     public String[] getDescription() {
-        final String LI = "- %%%";
-        final String EU_PER = "%%%EU per ";
-        List<String> description = new ArrayList<>();
-        description
-            .add(UNDERLINE + "Feasts on " + LIGHT_PURPLE + UNDERLINE + "magic" + GRAY + UNDERLINE + " close to it:");
-        description.add(
-            "- " + (sAllowMultipleEggs ? "A " : "An " + YELLOW + UNDERLINE + "EXCLUSIVE" + RESET)
-                + GRAY
-                + " "
-                + LIGHT_PURPLE
-                + "Dragon Egg"
-                + GRAY
-                + " atop");
-        if (sEnergyPerEndercrystal > 0) {
-            description.add(LI + sEnergyPerEndercrystal + EU_PER + LIGHT_PURPLE + "Ender Crystal" + GRAY + " in range");
-        }
+        final String KEY = "gt.blockmachines.basicgenerator.magicenergyabsorber.tooltip";
+        String dragonEgg = GTUtility
+            .translate(sAllowMultipleEggs ? KEY + ".dragon_egg.shared" : KEY + ".dragon_egg.exclusive");
+        List<String> description = new ArrayList<>(
+            Arrays.asList(
+                GTUtility.translateMultiline(
+                    KEY,
+                    dragonEgg,
+                    sEnergyPerEndercrystal,
+                    mMagicalEnergyBB.getDefaultRange(),
+                    mMagicalEnergyBB.getMaxRange(),
+                    10000 * getEfficiency() / 100,
+                    getEfficiency())));
         if (Thaumcraft.isModLoaded()) {
-            description.add(LI + mMaxVisPerDrain + "%%%CV/t from an " + LIGHT_PURPLE + "Energised Node" + GRAY);
-            description.add(
-                LI + (sEnergyPerEssentia * getEfficiency()) / 100
-                    + EU_PER
-                    + LIGHT_PURPLE
-                    + "Essentia"
-                    + GRAY
-                    + " Aspect-Value from containers in range");
+            description.addAll(
+                Arrays.asList(
+                    GTUtility.translateMultiline(
+                        KEY + ".thaumcraft",
+                        mMaxVisPerDrain,
+                        sEnergyPerEssentia * getEfficiency() / 100)));
         }
-        description.add(" ");
-        description.add(UNDERLINE + "Lookup range (Use Screwdriver to change):");
-        description.add("Default: %%%" + GREEN + mMagicalEnergyBB.getDefaultRange());
-        description.add("Max: %%%" + GREEN + mMagicalEnergyBB.getMaxRange());
-        description.add(" ");
-        description
-            .add(UNDERLINE + "Fuels on " + LIGHT_PURPLE + UNDERLINE + "enchantments" + GRAY + UNDERLINE + " input:");
-        description.add(
-            "- Item: %%%" + (10000 * getEfficiency()) / 100
-                + EU_PER
-                + LIGHT_PURPLE
-                + "enchant"
-                + GRAY
-                + " weight × level / max");
-        description.add("- Book: %%%" + 10000 + EU_PER + LIGHT_PURPLE + "enchant" + GRAY + " weight × level / max");
-        description.add(" ");
-        description.add("Efficiency: %%%" + GREEN + getEfficiency() + "%");
         return description.toArray(new String[0]);
     }
 
@@ -250,7 +222,7 @@ public class MTEMagicalEnergyAbsorber extends MTEBasicGenerator implements Magic
                 .addIcon(MACHINE_CASING_MAGIC_GLOW)
                 .glow()
                 .build(),
-            OVERLAYS_ENERGY_OUT[mTier] };
+            OVERLAYS_ENERGY_OUT[mTier + 1] };
     }
 
     @Override
@@ -292,7 +264,7 @@ public class MTEMagicalEnergyAbsorber extends MTEBasicGenerator implements Magic
                 .addIcon(MACHINE_CASING_MAGIC_ACTIVE_GLOW)
                 .glow()
                 .build(),
-            OVERLAYS_ENERGY_OUT[mTier] };
+            OVERLAYS_ENERGY_OUT[mTier + 1] };
     }
 
     @Override
@@ -441,11 +413,6 @@ public class MTEMagicalEnergyAbsorber extends MTEBasicGenerator implements Magic
         return (isDisenchantableItem(aStack) || isEnchantedBook(aStack));
     }
 
-    @Override
-    public int getCapacity() {
-        return 16000;
-    }
-
     private boolean isDisenchantableItem(ItemStack aStack) {
         return ((aStack.isItemEnchanted()) && (aStack.getItem()
             .getItemEnchantability() > 0));
@@ -562,7 +529,7 @@ public class MTEMagicalEnergyAbsorber extends MTEBasicGenerator implements Magic
         }
 
         int drained = mMaxVisPerDrain - toDrain;
-        tEU = (long) Math.min(maxEUOutput(), (Math.pow(drained, 2) * sEnergyFromVis * getEfficiency() / 10000));
+        tEU = Math.min(maxEUOutput(), (long) drained * drained * sEnergyFromVis * getEfficiency() / 10000);
 
         return tEU;
     }

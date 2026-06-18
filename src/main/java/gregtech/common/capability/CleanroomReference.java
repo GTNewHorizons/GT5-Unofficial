@@ -4,6 +4,7 @@ import javax.annotation.Nullable;
 
 import gregtech.api.interfaces.ICleanroom;
 import gregtech.api.interfaces.ICleanroomReceiver;
+import gregtech.api.util.FakeCleanroom;
 
 public class CleanroomReference implements ICleanroomReceiver {
 
@@ -14,6 +15,7 @@ public class CleanroomReference implements ICleanroomReceiver {
     @Nullable
     @Override
     public ICleanroom getCleanroom() {
+        if (FakeCleanroom.isCleanroomBypassEnabled()) return FakeCleanroom.INSTANCE;
         return this.cleanroom;
     }
 

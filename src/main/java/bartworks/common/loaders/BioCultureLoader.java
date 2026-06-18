@@ -92,13 +92,5 @@ public class BioCultureLoader {
             BioCultureLoader.eColi.getdDNA(),
             EnumRarity.epic,
             true);
-
-        BioCultureLoader.CommonYeast.setLocalisedName("Common Yeast");
-        BioCultureLoader.WhineYeast.setLocalisedName("Whine Yeast");
-        BioCultureLoader.BeerYeast.setLocalisedName("Beer Yeast");
-        BioCultureLoader.rottenFleshBacteria.setLocalisedName("Rotten Flesh Bacteria");
-        BioCultureLoader.eColi.setLocalisedName("eColi Bacteria");
-        BioCultureLoader.anaerobicOil.setLocalisedName("Anaerobic Oil Bacteria");
-        BioCultureLoader.generalPurposeFermentingBacteria.setLocalisedName("General Purpose Fermenting Bacteria");
     }
 }

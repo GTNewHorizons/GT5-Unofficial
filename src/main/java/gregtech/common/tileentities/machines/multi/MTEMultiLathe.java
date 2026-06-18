@@ -4,8 +4,7 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.withChannel;
-import static gregtech.api.enums.GTValues.AuthorVolence;
+import static gregtech.api.enums.GTAuthors.AuthorVolence;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.Maintenance;
@@ -18,12 +17,12 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -55,9 +54,13 @@ import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBas
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.blocks.BlockCasings2;
+import gregtech.common.misc.GTStructureChannels;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -114,14 +117,13 @@ public class MTEMultiLathe extends MTEExtendedPowerMultiBlockBase<MTEMultiLathe>
             'A',
             buildHatchAdder(MTEMultiLathe.class).atLeast(InputBus, OutputBus, Maintenance, Energy)
                 .casingIndex(((BlockCasings2) GregTechAPI.sBlockCasings2).getTextureIndex(0))
-                .dot(1)
+                .hint(1)
                 .buildAndChain(onElementPass(MTEMultiLathe::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings2, 0))))
         .addElement('B', ofBlock(GregTechAPI.sBlockCasings3, 10)) // Steel Casings
         .addElement('C', chainAllGlasses()) // Glass
         .addElement(
             'F',
-            withChannel(
-                "item_pipe",
+            GTStructureChannels.ITEM_PIPE_CASING.use(
                 ofBlocksTiered(
                     MTEMultiLathe::getTierFromMeta,
                     ImmutableList.of(
@@ -141,11 +143,6 @@ public class MTEMultiLathe extends MTEExtendedPowerMultiBlockBase<MTEMultiLathe>
     @Override
     public IStructureDefinition<MTEMultiLathe> getStructureDefinition() {
         return STRUCTURE_DEFINITION;
-    }
-
-    @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
     }
 
     @Override
@@ -195,25 +192,22 @@ public class MTEMultiLathe extends MTEExtendedPowerMultiBlockBase<MTEMultiLathe>
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Lathe")
-            .addInfo("300% faster than using single block machines of the same voltage")
-            .addInfo("Gains 8 parallel per Pipe Casing Tier")
-            .addInfo("Only uses 80% of the EU/t normally required.")
+        tt.addMachineType("Lathe, IPL")
+            .addDynamicParallelInfo(8, TooltipTier.PIPE_CASING)
+            .addStaticSpeedInfo(4f)
+            .addStaticEuEffInfo(0.8f)
             .beginStructureBlock(7, 5, 5, true)
-            .addController("Front Center")
+            .addController("Front bottom center")
             .addCasingInfoMin("Solid Steel Machine Casing", 42, false)
             .addCasingInfoExactly("Grate Machine Casing", 9, false)
             .addCasingInfoExactly("Any Tiered Glass", 32, false)
+            .addCasingInfoExactly("Item Pipe Casing", 4, true)
             .addInputBus("Any Solid Steel Casing", 1)
             .addOutputBus("Any Solid Steel Casing", 1)
             .addEnergyHatch("Any Solid Steel Casing", 1)
             .addMaintenanceHatch("Any Solid Steel Casing", 1)
-            .addOtherStructurePart(
-                StatCollector.translateToLocal("GT5U.tooltip.structure.four_item_pipe_casings"),
-                "Center of the glass",
-                4)
-            .addSubChannelUsage("glass", "Glass Tier")
-            .addSubChannelUsage("item_pipe", "Item Pipe Casings")
+            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .addSubChannelUsage(GTStructureChannels.ITEM_PIPE_CASING)
             .toolTipFinisher(AuthorVolence);
         return tt;
     }
@@ -227,11 +221,11 @@ public class MTEMultiLathe extends MTEExtendedPowerMultiBlockBase<MTEMultiLathe>
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        int build = survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 3, 4, 0, elementBudget, env, false, true);
+        int build = survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 3, 4, 0, elementBudget, env, false, true);
         if (build >= 0) return build;
-        build = survivialBuildPiece(STRUCTURE_PIECE_BODY, stackSize, 3, 4, -1, elementBudget, env, false, true);
+        build = survivalBuildPiece(STRUCTURE_PIECE_BODY, stackSize, 3, 4, -1, elementBudget, env, false, true);
         if (build >= 0) return build;
-        build = survivialBuildPiece(STRUCTURE_PIECE_BODY_ALT, stackSize, 3, 4, -1, elementBudget, env, false, true);
+        build = survivalBuildPiece(STRUCTURE_PIECE_BODY_ALT, stackSize, 3, 4, -1, elementBudget, env, false, true);
         return build;
     }
 
@@ -247,21 +241,39 @@ public class MTEMultiLathe extends MTEExtendedPowerMultiBlockBase<MTEMultiLathe>
         mCasingAmount++;
     }
 
-    @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    private void resetStructureState() {
         pipeTier = -1;
-        mEnergyHatches.clear();
         mCasingAmount = 0;
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, 3, 4, 0)) return false;
+        clearHatches();
+    }
+
+    private boolean checkBodyPiece(List<StructureError> errors) {
+        if (checkPiece(STRUCTURE_PIECE_BODY, 3, 4, -1, new ArrayList<>())) return true;
+        resetStructureState();
+        checkPiece(STRUCTURE_PIECE_MAIN, 3, 4, 0, new ArrayList<>());
+        return checkPiece(STRUCTURE_PIECE_BODY_ALT, 3, 4, -1, errors);
+    }
+
+    @Override
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
+        resetStructureState();
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 3, 4, 0, errors)) return;
         getBaseMetaTileEntity().sendBlockEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, getUpdateData());
-        if (!checkPiece(STRUCTURE_PIECE_BODY, 3, 4, -1) && !checkPiece(STRUCTURE_PIECE_BODY_ALT, 3, 4, -1))
-            return false;
-        return this.mMaintenanceHatches.size() == 1 && pipeTier > 0 && !mEnergyHatches.isEmpty() && mCasingAmount >= 42;
+        if (!checkBodyPiece(errors)) return;
+        checkHasMaintenanceHatch(errors);
+        if (pipeTier <= 0) {
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.missing_pipe_casing"));
+        }
+        checkHasEnergyHatch(errors);
+        checkCasingMin(errors, mCasingAmount, 42);
+        checkHasInputBus(errors);
+        checkHasOutputBus(errors);
     }
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic().setSpeedBonus(1F / 4F)
+        return new ProcessingLogic().noRecipeCaching()
+            .setSpeedBonus(1F / 4F)
             .setEuModifier(0.8F)
             .setMaxParallelSupplier(this::getTrueParallel);
     }
@@ -277,7 +289,6 @@ public class MTEMultiLathe extends MTEExtendedPowerMultiBlockBase<MTEMultiLathe>
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
         tag.setInteger("itemPipeTier", Math.max(0, getPipeTier()));
         tag.setFloat("speedBonus", 400);
-        tag.setFloat("getMaxParallelRecipes", Math.max(0, getMaxParallelRecipes()));
     }
 
     private static final DecimalFormat dfNone = new DecimalFormat("#");
@@ -292,10 +303,6 @@ public class MTEMultiLathe extends MTEExtendedPowerMultiBlockBase<MTEMultiLathe>
                 + EnumChatFormatting.WHITE
                 + Math.max(0, tag.getInteger("itemPipeTier")));
         currenttip.add(
-            StatCollector.translateToLocal("GT5U.multiblock.parallelism") + ": "
-                + EnumChatFormatting.WHITE
-                + dfNone.format(Math.max(0, tag.getFloat("getMaxParallelRecipes"))));
-        currenttip.add(
             StatCollector.translateToLocal("GT5U.multiblock.speed") + ": "
                 + EnumChatFormatting.WHITE
                 + dfNone.format((Math.max(0, tag.getInteger("speedBonus"))))
@@ -305,21 +312,6 @@ public class MTEMultiLathe extends MTEExtendedPowerMultiBlockBase<MTEMultiLathe>
     @Override
     public RecipeMap<?> getRecipeMap() {
         return RecipeMaps.latheRecipes;
-    }
-
-    @Override
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
-    }
-
-    @Override
-    public int getDamageToComponent(ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
     }
 
     @Override
@@ -334,29 +326,6 @@ public class MTEMultiLathe extends MTEExtendedPowerMultiBlockBase<MTEMultiLathe>
 
     @Override
     public boolean supportsInputSeparation() {
-        return true;
-    }
-
-    @Override
-    public boolean supportsSingleRecipeLocking() {
-        return true;
-    }
-
-    @Override
-    protected void setProcessingLogicPower(ProcessingLogic logic) {
-        logic.setAvailableVoltage(GTUtility.roundUpVoltage(this.getMaxInputVoltage()));
-        logic.setAvailableAmperage(1L);
-    }
-
-    @Override
-    public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ) {
-        batchMode = !batchMode;
-        if (batchMode) {
-            GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOn"));
-        } else {
-            GTUtility.sendChatToPlayer(aPlayer, StatCollector.translateToLocal("misc.BatchModeTextOff"));
-        }
         return true;
     }
 }

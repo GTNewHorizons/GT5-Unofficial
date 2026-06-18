@@ -3,7 +3,6 @@ package gregtech.api.metatileentity.implementations;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_MUFFLER;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -13,24 +12,18 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
 import gregtech.api.enums.ParticleFX;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTLanguageManager;
+import gregtech.api.util.GTSplit;
 import gregtech.api.util.WorldSpawnedEventBuilder;
+import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.pollution.Pollution;
 
 @SuppressWarnings("unused") // Unused API is expected within scope
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchMuffler extends MTEHatch {
-
-    private static final String localizedDescFormat = GTLanguageManager.addStringLocalization(
-        "gt.blockmachines.hatch.muffler.desc.format",
-        "Outputs the Pollution (Might cause ... things)%n" + "DO NOT OBSTRUCT THE OUTPUT!%n"
-            + "Reduces Pollution to %d%%%n");
-    private final int pollutionReduction = calculatePollutionReduction(100);
-    private final int pollutionRecover = 100 - pollutionReduction;
-    private final String[] description = String.format(localizedDescFormat, pollutionReduction, pollutionRecover)
-        .split("\\R");
 
     public MTEHatchMuffler(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 0, "");
@@ -52,7 +45,9 @@ public class MTEHatchMuffler extends MTEHatch {
 
     @Override
     public String[] getDescription() {
-        return description;
+        String[] description = GTSplit
+            .splitLocalizedFormatted("gt.blockmachines.muffler.desc", String.valueOf(calculatePollutionReduction(100)));
+        return mTier > 1 ? TooltipHelper.pollutionDisabledTooltip(description) : description;
     }
 
     @Override
@@ -97,15 +92,13 @@ public class MTEHatchMuffler extends MTEHatch {
                     .getWorld(),
                 ParticleFX.LARGE_SMOKE.toString());
         }
+        if (aBaseMetaTileEntity.isServerSide() && aTick % 100 == 0) {
+            aBaseMetaTileEntity.tryDisableTicking();
+        }
     }
 
     @Override
     public boolean isFacingValid(ForgeDirection facing) {
-        return true;
-    }
-
-    @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
         return true;
     }
 
@@ -114,7 +107,7 @@ public class MTEHatchMuffler extends MTEHatch {
         boolean chk1, chk2, chk3;
         float ran1 = XSTR_INSTANCE.nextFloat(), ran2, ran3;
         chk1 = ran1 * 100 < calculatePollutionReduction(100);
-        if (Pollution.getPollution(getBaseMetaTileEntity()) >= GTMod.gregtechproxy.mPollutionSmogLimit) {
+        if (Pollution.getPollution(getBaseMetaTileEntity()) >= GTMod.proxy.mPollutionSmogLimit) {
             ran2 = XSTR_INSTANCE.nextFloat();
             ran3 = XSTR_INSTANCE.nextFloat();
             chk2 = ran2 * 100 < calculatePollutionReduction(100);

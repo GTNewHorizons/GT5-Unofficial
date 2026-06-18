@@ -12,6 +12,8 @@ import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
+import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 
@@ -27,6 +29,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.pollution.PollutionConfig;
@@ -55,20 +58,18 @@ public class MTEIndustrialFluidHeater extends GTPPMultiBlockBase<MTEIndustrialFl
 
     @Override
     public String getMachineType() {
-        return "Fluid Heater";
+        return "Fluid Heater, THD";
     }
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("120% faster than using single block machines of the same voltage")
-            .addInfo("Only uses 90% of the EU/t normally required")
-            .addInfo("Processes eight items per voltage tier")
+            .addBulkMachineInfo(8, 2.2f, 0.9f)
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 6, 5, true)
-            .addController("Front Center")
-            .addCasingInfoMin("Top/Bottom layer: Multi-use Casings", 34, false)
+            .addController("Front center, 2nd layer")
+            .addCasingInfoMin("Top/Bottom layer: Multi-use Casing", 34, false)
             .addCasingInfoMin("Middle layers: Thermal Containment Casing", 47, false)
             .addInputBus("Bottom Layer (optional)", 1)
             .addInputHatch("Bottom Layer", 1)
@@ -99,7 +100,7 @@ public class MTEIndustrialFluidHeater extends GTPPMultiBlockBase<MTEIndustrialFl
                     buildHatchAdder(MTEIndustrialFluidHeater.class)
                         .atLeast(InputBus, InputHatch, Maintenance, Energy, Muffler)
                         .casingIndex(getCasingTextureIndex())
-                        .dot(1)
+                        .hint(1)
                         .buildAndChain(onElementPass(x -> ++x.mCasing1, ofBlock(getCasingBlock2(), getCasingMeta2()))))
                 .addElement('X', ofBlock(getCasingBlock1(), getCasingMeta1()))
                 .addElement(
@@ -107,7 +108,7 @@ public class MTEIndustrialFluidHeater extends GTPPMultiBlockBase<MTEIndustrialFl
                     buildHatchAdder(MTEIndustrialFluidHeater.class)
                         .atLeast(OutputBus, OutputHatch, Maintenance, Energy, Muffler)
                         .casingIndex(getCasingTextureIndex())
-                        .dot(1)
+                        .hint(1)
                         .buildAndChain(onElementPass(x -> ++x.mCasing1, ofBlock(getCasingBlock2(), getCasingMeta2()))))
                 .build();
         }
@@ -122,15 +123,18 @@ public class MTEIndustrialFluidHeater extends GTPPMultiBlockBase<MTEIndustrialFl
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(mName, stackSize, 2, 4, 0, elementBudget, env, false, true);
+        return survivalBuildPiece(mName, stackSize, 2, 4, 0, elementBudget, env, false, true);
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         mCasing1 = 0;
-        boolean didBuild = checkPiece(mName, 2, 4, 0);
-        log("Built? " + didBuild + ", " + mCasing1);
-        return didBuild && mCasing1 >= 34 && checkHatch();
+        if (!checkPiece(mName, 2, 4, 0, errors)) return;
+        checkCasingMin(errors, mCasing1, 34);
+        checkHatch(errors);
+        checkHasAnyInput(errors);
+        checkHasAnyOutput(errors);
+        checkHasEnergyHatch(errors);
     }
 
     @Override
@@ -176,18 +180,8 @@ public class MTEIndustrialFluidHeater extends GTPPMultiBlockBase<MTEIndustrialFl
     }
 
     @Override
-    public int getMaxEfficiency(final ItemStack aStack) {
-        return 10000;
-    }
-
-    @Override
     public int getPollutionPerSecond(final ItemStack aStack) {
         return PollutionConfig.pollutionPerSecondMultiIndustrialFluidHeater;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(final ItemStack aStack) {
-        return false;
     }
 
     public Block getCasingBlock1() {

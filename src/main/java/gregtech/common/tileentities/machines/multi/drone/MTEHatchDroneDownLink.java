@@ -1,60 +1,59 @@
 package gregtech.common.tileentities.machines.multi.drone;
 
-import java.util.HashSet;
-import java.util.LinkedList;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Queue;
+import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.UUID;
 
-import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
-import com.gtnewhorizons.modularui.api.math.Alignment;
-import com.gtnewhorizons.modularui.api.math.Color;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
-import com.gtnewhorizons.modularui.common.widget.textfield.TextFieldWidget;
+import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.GregTechAPI;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.interfaces.tileentity.IMachineBlockUpdateable;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchMaintenance;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.render.TextureFactory;
+import gregtech.common.gui.modularui.hatch.MTEHatchDroneDownLinkGui;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
 
     private Vec3Impl downlinkCoord;
-    private DroneConnection connection;
-    // This has to be existed for doing random damage.
-    private MTEMultiBlockBase machine;
-    private static final IIconContainer moduleActive = new Textures.BlockIcons.CustomIcon(
-        "iconsets/OVERLAY_DRONE_MODULE_ACTIVE");
+    private MTEDroneCentre centre;
+    private String key = "";
+    private final List<DroneConnection> connections = new ArrayList<>();
+    private final List<MTEMultiBlockBase> unlinkedMachines = new ArrayList<>();
+    private final HashMap<String, String> savedNameList = new HashMap<>();
+    private final HashMap<String, Integer> savedGroupList = new HashMap<>();
+
+    private static final IIconContainer moduleActive = Textures.BlockIcons
+        .custom("iconsets/OVERLAY_DRONE_MODULE_ACTIVE");
 
     public MTEHatchDroneDownLink(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier);
@@ -62,6 +61,10 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
 
     public MTEHatchDroneDownLink(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures, false);
+    }
+
+    public void registerMachineController(MTEMultiBlockBase machine) {
+        if (!addConnection(machine)) unlinkedMachines.add(machine);
     }
 
     @Override
@@ -93,39 +96,59 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
     @Override
     public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
         downlinkCoord = new Vec3Impl(
-            getBaseMetaTileEntity().getXCoord(),
-            getBaseMetaTileEntity().getYCoord(),
-            getBaseMetaTileEntity().getZCoord());
+            aBaseMetaTileEntity.getXCoord(),
+            aBaseMetaTileEntity.getYCoord(),
+            aBaseMetaTileEntity.getZCoord());
     }
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide()) {
-            if (hasConnection()) {
-                if (connection.centre.getBaseMetaTileEntity()
+            // We are not sure centre or downlink will be registered first, so we try to find it on the second tick.
+            if (aTick == 2) tryFindDroneCenter();
+            // validate that all connections to the center and the machines are still valid every 5s
+            if (aTick % 100 == 0) {
+                validateConnections();
+            }
+            // if we don't have a connection to a center, search for one every 10s
+            if (aTick % 200 == 0) {
+                if (centre == null || !centre.isValid()) {
+                    tryFindDroneCenter();
+                    if (centre == null) return;
+                }
+                // In rare cases, this status may not refresh to the connection. Manually refresh it.
+                for (DroneConnection conn : connections) {
+                    conn.setActive(
+                        conn.getLinkedMachine()
+                            .isAllowedToWork());
+                }
+            }
+
+            // Maintain
+            if (hasConnection() && centre.getBaseMetaTileEntity() != null
+                && centre.getBaseMetaTileEntity()
                     .isActive()) {
-                    doNormalMaintain();
-                } else {
-                    // Centre offline? ...do nothing.
-                    // machine.causeMaintenanceIssue();
-                }
-            } else {
-                // If the connection invalid, set it to null.
-                // Find connection every 10 second
-                if (aTick % 200 == 0) {
-                    connection = null;
-                    tryFindConnection();
-                    // Let's have some "surprise". Sorry, surprise party is over.
-                    // if (this.machine != null && this.machine.isValid()) {
-                    // machine.causeMaintenanceIssue();
-                }
+                doNormalMaintain();
             }
         }
     }
 
+    private void validateConnections() {
+        connections.removeIf(entry -> {
+            boolean result = entry.isValid();
+            if (!result) {
+                unlinkedMachines.add(entry.getLinkedMachine());
+                savedNameList.put(entry.uuid.toString(), entry.getCustomName());
+                savedGroupList.put(entry.uuid.toString(), entry.getGroup());
+                centre.getConnectionList()
+                    .remove(entry);
+            }
+            return !result;
+        });
+    }
+
     private void doNormalMaintain() {
-        this.mWrench = this.mScrewdriver = this.mSoftHammer = this.mHardHammer = this.mCrowbar = this.mSolderingTool = true;
-        connection.machine.mWrench = connection.machine.mScrewdriver = connection.machine.mSoftHammer = connection.machine.mHardHammer = connection.machine.mCrowbar = connection.machine.mSolderingTool = true;
+        this.mWrench = this.mScrewdriver = this.mSoftMallet = this.mHardHammer = this.mCrowbar = this.mSolderingTool = true;
     }
 
     @Override
@@ -134,14 +157,19 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
         if (aBaseMetaTileEntity.isClientSide()) return true;
         if (side == aBaseMetaTileEntity.getFrontFacing()) {
             if (aPlayer instanceof FakePlayer) return false;
-            if (connection == null || !connection.isValid()) {
-                aPlayer.addChatComponentMessage(new ChatComponentTranslation("GT5U.machines.dronecentre.noconnection"));
-                return false;
-            }
             openGui(aPlayer);
             return true;
         }
         return false;
+    }
+
+    @Override
+    public void onMaintenancePerformed(MTEMultiBlockBase aMaintenanceTarget) {
+        if (mMaintenanceSound == null) {
+            setMaintenanceSound(SoundResource.GT_MAINTENANCE_DRONE_DOWNLINK_HATCH, 1.0F, 1.0F);
+        }
+
+        super.onMaintenancePerformed(aMaintenanceTarget);
     }
 
     @Override
@@ -158,146 +186,188 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
 
     @Override
     public void onRemoval() {
-        if (hasConnection()) connection.machine = null;
+        if (centre == null) return;
+        centre.getConnectionList()
+            .removeAll(connections);
+    }
+
+    @Override
+    public void onUnload() {
+        if (centre == null) return;
+        centre.getConnectionList()
+            .removeAll(connections);
     }
 
     private boolean hasConnection() {
-        if (connection == null) return false;
-        if (connection.isValid()) return true;
-        return connection.reCheckConnection();
+        return !connections.isEmpty();
     }
 
     /**
-     * Find a drone connection. This will search for all DC in the same dimension, then find one in range.
+     * Find a drone center. If the key is set, traverse T4 map first. Then we can search for all DC in the same
+     * dimension and find one in range.
      */
-    private void tryFindConnection() {
-        if (MTEDroneCentre.getCentreMap()
+    private void tryFindDroneCenter() {
+        centre = null;
+        if (!key.isEmpty()) {
+            Set<MTEDroneCentre> t4Centres = MTEDroneCentre.getCentreMap()
+                .get(Integer.MAX_VALUE);
+            if (!t4Centres.isEmpty()) t4Centres.stream()
+                .filter(
+                    target -> target.getKey()
+                        .equals(this.key))
+                .findFirst()
+                .ifPresent(target -> this.centre = target);
+        }
+        if (centre == null && MTEDroneCentre.getCentreMap()
             .containsKey(getBaseMetaTileEntity().getWorld().provider.dimensionId)) {
-            List<MTEDroneCentre> target = MTEDroneCentre.getCentreMap()
+            MTEDroneCentre.getCentreMap()
                 .get(getBaseMetaTileEntity().getWorld().provider.dimensionId)
                 .stream()
-                .collect(Collectors.toList());
-            for (MTEDroneCentre centre : target) {
-                if (centre.getCoords()
-                    .withinDistance(this.downlinkCoord, centre.getRange())
-                    && centre.getBaseMetaTileEntity()
-                        .isActive()) {
-                    MTEMultiBlockBase machine = tryFindCoreGTMultiBlock();
-                    if (machine != null && machine.isValid()) {
-                        this.machine = machine;
-                        connection = new DroneConnection(machine, centre);
-                        connection.centre.getConnectionList()
-                            .add(connection);
-                        return;
-                    }
-                }
+                .filter(
+                    target -> target.getCoords()
+                        .withinDistance(this.downlinkCoord, target.getRange()))
+                .min(
+                    Comparator.comparing(
+                        target -> target.getKey()
+                            .equals(this.key) ? 0 : 1))
+                .ifPresent(target -> this.centre = target);
+        }
+        if (this.centre != null) {
+            if (centre.getBaseMetaTileEntity() != null && centre.getBaseMetaTileEntity()
+                .isActive()) {
+                clearConnections();
+                unlinkedMachines.removeIf(this::addConnection);
             }
         }
     }
 
-    // Find mainframe. Mainly from a method in GT_API——This will cause performance issue! Do not call it frequently.
-    private MTEMultiBlockBase tryFindCoreGTMultiBlock() {
-        Queue<ChunkCoordinates> tQueue = new LinkedList<>();
-        Set<ChunkCoordinates> visited = new HashSet<>(80);
-        tQueue.add(
-            this.getBaseMetaTileEntity()
-                .getCoords());
-        World world = this.getBaseMetaTileEntity()
-            .getWorld();
-        while (!tQueue.isEmpty()) {
-            final ChunkCoordinates aCoords = tQueue.poll();
-            final TileEntity tTileEntity;
-            final boolean isMachineBlock;
-            tTileEntity = world.getTileEntity(aCoords.posX, aCoords.posY, aCoords.posZ);
-            Block block = world.getBlock(aCoords.posX, aCoords.posY, aCoords.posZ);
-            // Plascrete block isn't registered as machineBlock, therefore we have to check it manually so that drone
-            // can work with cleanroom.
-            // Todo: loading cleanroom's config for other blocks
-            isMachineBlock = GregTechAPI
-                .isMachineBlock(block, world.getBlockMetadata(aCoords.posX, aCoords.posY, aCoords.posZ))
-                || (block == GregTechAPI.sBlockReinforced
-                    && world.getBlockMetadata(aCoords.posX, aCoords.posY, aCoords.posZ) == 2);
-            // See if the block itself is MultiBlock, also the one we need.
-            if (tTileEntity instanceof IGregTechTileEntity te
-                && te.getMetaTileEntity() instanceof MTEMultiBlockBase mte)
-                if (mte.mMaintenanceHatches.contains(this)) return mte;
+    private boolean addConnection(MTEMultiBlockBase machine) {
+        if (centre == null || findConnection(machine).isPresent()
+            || machine.getBaseMetaTileEntity() == null
+            || centre.getBaseMetaTileEntity() == null) {
+            return false;
+        }
+        DroneConnection connection = new DroneConnection(machine, centre, savedNameList, savedGroupList);
+        connections.add(connection);
+        centre.getConnectionList()
+            .add(connection);
+        return true;
+    }
 
-            // Now see if we should add the nearby blocks to the queue:
-            // 1) If we've visited less than 5 blocks, then yes
-            // 2) If the tile says we should recursively update (pipes don't, machine blocks do)
-            // 3) If the block at the coordinates is marked as a machine block
-            if (visited.size() < 5
-                || (tTileEntity instanceof IMachineBlockUpdateable
-                    && ((IMachineBlockUpdateable) tTileEntity).isMachineBlockUpdateRecursive())
-                || isMachineBlock) {
-                ChunkCoordinates tCoords;
+    private void clearConnections() {
+        // save data first
+        connections.removeIf(conn -> {
+            unlinkedMachines.add(conn.getLinkedMachine());
+            savedNameList.put(conn.uuid.toString(), conn.getCustomName());
+            savedGroupList.put(conn.uuid.toString(), conn.getGroup());
+            centre.getConnectionList()
+                .remove(conn);
+            return true;
+        });
+    }
 
-                if (visited.add(tCoords = new ChunkCoordinates(aCoords.posX + 1, aCoords.posY, aCoords.posZ)))
-                    tQueue.add(tCoords);
-                if (visited.add(tCoords = new ChunkCoordinates(aCoords.posX - 1, aCoords.posY, aCoords.posZ)))
-                    tQueue.add(tCoords);
-                if (visited.add(tCoords = new ChunkCoordinates(aCoords.posX, aCoords.posY + 1, aCoords.posZ)))
-                    tQueue.add(tCoords);
-                if (visited.add(tCoords = new ChunkCoordinates(aCoords.posX, aCoords.posY - 1, aCoords.posZ)))
-                    tQueue.add(tCoords);
-                if (visited.add(tCoords = new ChunkCoordinates(aCoords.posX, aCoords.posY, aCoords.posZ + 1)))
-                    tQueue.add(tCoords);
-                if (visited.add(tCoords = new ChunkCoordinates(aCoords.posX, aCoords.posY, aCoords.posZ - 1)))
-                    tQueue.add(tCoords);
+    public List<DroneConnection> getConnections() {
+        return connections;
+    }
+
+    public void setConnections(List<DroneConnection> connections) {
+        this.connections.clear();
+        this.connections.addAll(connections);
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        if (!key.equals(this.key)) {
+            this.key = key;
+            if (!NetworkUtils.isClient()) {
+                clearConnections();
+                tryFindDroneCenter();
             }
         }
-        return null;
+
+    }
+
+    public Optional<DroneConnection> findConnection(MTEMultiBlockBase machine) {
+        return connections.stream()
+            .filter(
+                connection -> connection.getLinkedMachine()
+                    .equals(machine))
+            .findFirst();
+    }
+
+    public Optional<DroneConnection> findConnection(UUID uuid1) {
+        return connections.stream()
+            .filter(connection -> connection.uuid.equals(uuid1))
+            .findFirst();
+    }
+
+    public MTEDroneCentre getCentre() {
+        return centre;
     }
 
     @Override
-    public boolean doesBindPlayerInventory() {
-        return false;
+    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTEHatchDroneDownLinkGui(this).build(data, syncManager, uiSettings);
     }
 
     @Override
-    public int getGUIWidth() {
-        return 150;
+    public void loadNBTData(NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
+        key = aNBT.getString("key");
+        NBTTagCompound nameList = aNBT.getCompoundTag("nameList");
+        NBTTagCompound groupList = aNBT.getCompoundTag("groupList");
+        for (String s : nameList.func_150296_c()) {
+            savedNameList.put(s, nameList.getString(s));
+        }
+        for (String s : groupList.func_150296_c()) {
+            savedGroupList.put(s, groupList.getInteger(s));
+        }
     }
 
     @Override
-    public int getGUIHeight() {
-        return 40;
-    }
-
-    @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        builder.setBackground(GTUITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
-        builder.setGuiTint(getGUIColorization());
-        builder.widget(
-            ButtonWidget.closeWindowButton(true)
-                .setPos(135, 3))
-            .widget(
-                new TextWidget(StatCollector.translateToLocal("GT5U.gui.text.drone_custom_name"))
-                    .setTextAlignment(Alignment.Center)
-                    .setPos(0, 5)
-                    .setSize(150, 8))
-            .widget(
-                new TextFieldWidget().setGetter(() -> connection == null ? "" : connection.getCustomName(false))
-                    .setSetter(var -> { if (connection != null) connection.setCustomName(var); })
-                    .setTextAlignment(Alignment.CenterLeft)
-                    .setTextColor(Color.WHITE.dark(1))
-                    .setFocusOnGuiOpen(true)
-                    .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD_LIGHT_GRAY.withOffset(-1, -1, 2, 2))
-                    .setPos(10, 16)
-                    .setSize(130, 16))
-            .build();
+    public void saveNBTData(NBTTagCompound aNBT) {
+        super.saveNBTData(aNBT);
+        aNBT.setString("key", key);
+        NBTTagCompound nameList = new NBTTagCompound();
+        NBTTagCompound groupList = new NBTTagCompound();
+        connections.forEach(conn -> {
+            nameList.setString(conn.uuid.toString(), conn.getCustomName());
+            groupList.setInteger(conn.uuid.toString(), conn.getGroup());
+        });
+        aNBT.setTag("nameList", nameList);
+        aNBT.setTag("groupList", groupList);
     }
 
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        tag.setBoolean("connection", connection == null);
-        if (connection != null) {
-            tag.setInteger("x", connection.centreCoord.posX);
-            tag.setInteger("y", connection.centreCoord.posY);
-            tag.setInteger("z", connection.centreCoord.posZ);
-            tag.setString("name", connection.customName);
+
+        tag.setBoolean("connected", hasConnection());
+        if (hasConnection()) {
+            tag.setInteger(
+                "x",
+                centre.getCoords()
+                    .get0());
+            tag.setInteger(
+                "y",
+                centre.getCoords()
+                    .get1());
+            tag.setInteger(
+                "z",
+                centre.getCoords()
+                    .get2());
+
+            int i = 0;
+            for (DroneConnection connection : connections) {
+                if (connection.getCustomName() != null) {
+                    tag.setString("name" + i, connection.getCustomName());
+                    i++;
+                }
+            }
         }
     }
 
@@ -305,18 +375,24 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
     public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
         IWailaConfigHandler config) {
         NBTTagCompound tag = accessor.getNBTData();
-        if (tag.getBoolean("connection")) {
+        if (tag.getBoolean("connected")) {
+            currenttip.add(
+                EnumChatFormatting.AQUA + StatCollector.translateToLocalFormatted(
+                    "GT5U.waila.drone_downlink.connection",
+                    tag.getInteger("x"),
+                    tag.getInteger("y"),
+                    tag.getInteger("z")));
+
+            if (tag.hasKey("name0")) {
+                int i = 0;
+                while (tag.hasKey("name" + i)) {
+                    currenttip.add(EnumChatFormatting.YELLOW + tag.getString("name" + i));
+                    i++;
+                }
+            }
+        } else {
             currenttip
                 .add(EnumChatFormatting.RED + StatCollector.translateToLocal("GT5U.waila.drone_downlink.noConnection"));
-        } else {
-            currenttip.add(
-                EnumChatFormatting.AQUA + StatCollector.translateToLocal("GT5U.waila.drone_downlink.connection")
-                    + tag.getInteger("x")
-                    + " "
-                    + tag.getInteger("y")
-                    + " "
-                    + tag.getInteger("z"));
-            currenttip.add(EnumChatFormatting.YELLOW + tag.getString("name"));
         }
         super.getWailaBody(itemStack, currenttip, accessor, config);
     }

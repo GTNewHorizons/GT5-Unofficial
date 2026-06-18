@@ -1,15 +1,17 @@
 package gregtech.api.items;
 
+import static net.minecraft.util.StatCollector.translateToLocal;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
+
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
+
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 
 import gregtech.api.GregTechAPI;
-import ic2.core.util.StackUtil;
 
 public class ItemCoolantCell extends GTGenericItem {
 
@@ -25,21 +27,11 @@ public class ItemCoolantCell extends GTGenericItem {
     }
 
     protected static int getHeatOfStack(ItemStack aStack) {
-        NBTTagCompound tNBT = aStack.getTagCompound();
-        if (tNBT == null) {
-            tNBT = new NBTTagCompound();
-            aStack.setTagCompound(tNBT);
-        }
-        return tNBT.getInteger("heat");
+        return ItemStackNBT.getInteger(aStack, "heat");
     }
 
     protected void setHeatForStack(ItemStack aStack, int aHeat) {
-        NBTTagCompound tNBT = aStack.getTagCompound();
-        if (tNBT == null) {
-            tNBT = new NBTTagCompound();
-            aStack.setTagCompound(tNBT);
-        }
-        tNBT.setInteger("heat", aHeat);
+        ItemStackNBT.setInteger(aStack, "heat", aHeat);
         if (this.heatStorage > 0) {
             double heatRatio = (double) aHeat / (double) this.heatStorage;
             int damage = (int) (aStack.getMaxDamage() * heatRatio);
@@ -63,20 +55,18 @@ public class ItemCoolantCell extends GTGenericItem {
         };
         aList.add(
             EnumChatFormatting.WHITE
-                + String.format(transItem("000", "Stored Heat: %s"), "" + color + getHeatOfStack(aStack)));
+                + translateToLocalFormatted("gt.item.desc.stored_heat", "" + color + getHeatOfStack(aStack)));
         if (getControlTagOfStack(aStack) == 1) {
-            aList.add(StatCollector.translateToLocal("ic2.reactoritem.heatwarning.line1"));
-            aList.add(StatCollector.translateToLocal("ic2.reactoritem.heatwarning.line2"));
+            aList.add(translateToLocal("ic2.reactoritem.heatwarning.line1"));
+            aList.add(translateToLocal("ic2.reactoritem.heatwarning.line2"));
         }
     }
 
     public int getControlTagOfStack(ItemStack stack) {
-        NBTTagCompound nbtData = StackUtil.getOrCreateNbtData(stack);
-        return nbtData.getInteger("tag");
+        return ItemStackNBT.getInteger(stack, "tag");
     }
 
     public void setControlTagOfStack(ItemStack stack, int tag) {
-        NBTTagCompound nbtData = StackUtil.getOrCreateNbtData(stack);
-        nbtData.setInteger("tag", tag);
+        ItemStackNBT.setInteger(stack, "tag", tag);
     }
 }

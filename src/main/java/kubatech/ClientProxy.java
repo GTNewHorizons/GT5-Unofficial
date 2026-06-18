@@ -34,39 +34,48 @@ import kubatech.api.utils.ModUtils;
 @SuppressWarnings("unused")
 public class ClientProxy extends CommonProxy {
 
+    @Override
     public void preInit(FMLPreInitializationEvent event) {
         ModUtils.isClientSided = true;
         super.preInit(event);
     }
 
+    @Override
     public void init(FMLInitializationEvent event) {
         super.init(event);
     }
 
+    @Override
     public void postInit(FMLPostInitializationEvent event) {
         super.postInit(event);
     }
 
+    @Override
     public void serverAboutToStart(FMLServerAboutToStartEvent event) {
         super.serverAboutToStart(event);
     }
 
+    @Override
     public void serverStarting(FMLServerStartingEvent event) {
         super.serverStarting(event);
     }
 
+    @Override
     public void serverStarted(FMLServerStartedEvent event) {
         super.serverStarted(event);
     }
 
+    @Override
     public void serverStopping(FMLServerStoppingEvent event) {
         super.serverStopping(event);
     }
 
+    @Override
     public void serverStopped(FMLServerStoppedEvent event) {
         super.serverStopped(event);
     }
 
+    @Override
     public void loadComplete(FMLLoadCompleteEvent event) {
         super.loadComplete(event);
     }

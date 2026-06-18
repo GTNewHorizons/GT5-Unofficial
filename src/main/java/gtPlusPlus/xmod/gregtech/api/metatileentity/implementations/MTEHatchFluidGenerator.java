@@ -1,6 +1,7 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
-import net.minecraft.entity.player.EntityPlayer;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
@@ -15,9 +16,8 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.objects.XSTR;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
-import gtPlusPlus.core.lib.GTPPCore;
-import gtPlusPlus.core.util.minecraft.FluidUtils;
 
 public abstract class MTEHatchFluidGenerator extends MTEHatchInput {
 
@@ -43,16 +43,11 @@ public abstract class MTEHatchFluidGenerator extends MTEHatchInput {
 
     @Override
     public synchronized String[] getDescription() {
-        mDescriptionArray[1] = "Capacity: " + GTUtility.formatNumbers(getCapacity()) + "L";
-        final String[] hatchTierString = new String[] { "Hatch Tier: " + GTUtility.getColoredTierNameFromTier(mTier) };
-
-        String[] aCustomTips = getCustomTooltip();
-        final String[] desc = new String[mDescriptionArray.length + aCustomTips.length + 2];
-        System.arraycopy(mDescriptionArray, 0, desc, 0, mDescriptionArray.length);
-        System.arraycopy(hatchTierString, 0, desc, mDescriptionArray.length, 1);
-        System.arraycopy(aCustomTips, 0, desc, mDescriptionArray.length + 1, aCustomTips.length);
-        desc[mDescriptionArray.length + aCustomTips.length + 1] = GTPPCore.GT_Tooltip.get();
-        return desc;
+        return GTSplit.splitLocalizedFormattedWithSuffix(
+            "gt.blockmachines.input_hatch_generator.desc",
+            getCustomTooltip(),
+            formatNumber(getCapacity()),
+            GTUtility.getColoredTierNameFromTier(mTier));
     }
 
     @Override
@@ -66,16 +61,6 @@ public abstract class MTEHatchFluidGenerator extends MTEHatchInput {
     }
 
     @Override
-    public boolean isFacingValid(final ForgeDirection facing) {
-        return true;
-    }
-
-    @Override
-    public boolean isAccessAllowed(final EntityPlayer aPlayer) {
-        return true;
-    }
-
-    @Override
     public boolean isValidSlot(final int aIndex) {
         return false;
     }
@@ -83,11 +68,13 @@ public abstract class MTEHatchFluidGenerator extends MTEHatchInput {
     @Override
     public abstract MetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity);
 
+    @Override
     public boolean allowPullStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex,
         final ForgeDirection side, final ItemStack aStack) {
         return false;
     }
 
+    @Override
     public boolean allowPutStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex,
         final ForgeDirection side, final ItemStack aStack) {
         return false;
@@ -105,7 +92,7 @@ public abstract class MTEHatchFluidGenerator extends MTEHatchInput {
             mMaxProgresstime = getMaxTickTime();
             if (++mProgresstime >= mMaxProgresstime) {
                 if (this.canTankBeFilled()) {
-                    addFluidToHatch(aTick);
+                    addFluidToHatch();
                 }
                 mProgresstime = 0;
             }
@@ -133,18 +120,13 @@ public abstract class MTEHatchFluidGenerator extends MTEHatchInput {
     @Override
     public abstract int getCapacity();
 
-    @Override
-    public boolean canTankBeEmptied() {
-        return true;
-    }
-
     public abstract boolean doesHatchMeetConditionsToGenerate();
 
-    public boolean addFluidToHatch(long aTick) {
+    private void addFluidToHatch() {
         if (!doesHatchMeetConditionsToGenerate()) {
-            return false;
+            return;
         }
-        int aFillAmount = this.fill(FluidUtils.getFluidStack(getFluidToGenerate(), getAmountOfFluidToGenerate()), true);
+        int aFillAmount = this.fill(new FluidStack(getFluidToGenerate(), getAmountOfFluidToGenerate()), true);
         if (aFillAmount > 0) {
             if (this.getBaseMetaTileEntity()
                 .isClientSide()) {
@@ -154,12 +136,6 @@ public abstract class MTEHatchFluidGenerator extends MTEHatchInput {
                     "cloud");
             }
         }
-        return aFillAmount > 0;
-    }
-
-    @Override
-    public boolean canTankBeFilled() {
-        return true;
     }
 
     @Override
@@ -216,12 +192,7 @@ public abstract class MTEHatchFluidGenerator extends MTEHatchInput {
     }
 
     @Override
-    public int fill(ForgeDirection arg0, FluidStack arg1, boolean arg2) {
-        return 0;
-    }
-
-    @Override
-    public int fill_default(ForgeDirection aSide, FluidStack aFluid, boolean doFill) {
+    public int fill(ForgeDirection side, FluidStack aFluid, boolean doFill) {
         return 0;
     }
 

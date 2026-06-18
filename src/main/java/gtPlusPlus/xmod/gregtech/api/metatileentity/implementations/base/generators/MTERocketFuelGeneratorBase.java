@@ -17,7 +17,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.RecipeMapWorkable;
 import gregtech.api.metatileentity.implementations.MTEBasicTank;
-import gregtech.api.recipe.RecipeMap;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.common.pollution.Pollution;
@@ -151,11 +150,6 @@ public abstract class MTERocketFuelGeneratorBase extends MTEBasicTank implements
     }
 
     @Override
-    public boolean isAccessAllowed(final EntityPlayer aPlayer) {
-        return true;
-    }
-
-    @Override
     public long maxEUOutput() {
         return V[this.mTier];
     }
@@ -248,9 +242,6 @@ public abstract class MTERocketFuelGeneratorBase extends MTEBasicTank implements
         return MathUtils.randInt(pollMin, pollMax);
     }
 
-    @Override
-    public abstract RecipeMap<?> getRecipeMap();
-
     public abstract int getEfficiency();
 
     public int consumedFluidPerOperation(final FluidStack aLiquid) {
@@ -315,4 +306,8 @@ public abstract class MTERocketFuelGeneratorBase extends MTEBasicTank implements
         return 32000;
     }
 
+    @Override
+    protected boolean useMui2() {
+        return false;
+    }
 }

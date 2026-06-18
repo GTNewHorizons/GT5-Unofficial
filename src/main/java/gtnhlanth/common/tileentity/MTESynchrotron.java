@@ -1,8 +1,11 @@
 package gtnhlanth.common.tileentity;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.getFluidUnit;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.withChannel;
 import static gregtech.api.enums.GTValues.VN;
+import static gregtech.api.enums.HatchElement.BeamlineInput;
+import static gregtech.api.enums.HatchElement.BeamlineOutput;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.ExoticEnergy;
 import static gregtech.api.enums.HatchElement.InputHatch;
@@ -12,12 +15,13 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_GLOW;
-import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
-import static gtnhlanth.util.DescTextLocalization.addDotText;
+import static gregtech.api.util.GTUtility.max;
+import static gtnhlanth.util.DescTextLocalization.addHintNumber;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import javax.annotation.Nullable;
@@ -28,7 +32,6 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.tuple.Pair;
@@ -42,7 +45,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizon.structurelib.structure.StructureUtility;
 
-import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.TickTime;
 import gregtech.api.enums.VoltageIndex;
@@ -55,11 +58,15 @@ import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.ErrorType;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.ExoticEnergyInputHelper;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.SimpleShutDownReason;
+import gregtech.common.misc.GTStructureChannels;
 import gtnhlanth.common.beamline.BeamInformation;
 import gtnhlanth.common.beamline.BeamLinePacket;
 import gtnhlanth.common.beamline.Particle;
@@ -81,11 +88,8 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
     public static final int CONSUMED_FLUID = 32_000; // Fluid consumed per processed recipe, maybe increase with EU
     public static final int MIN_INPUT_FOCUS = 25; // Inclusive
 
-    private final ArrayList<MTEHatchInputBeamline> mInputBeamline = new ArrayList<>();
-    private final ArrayList<MTEHatchOutputBeamline> mOutputBeamline = new ArrayList<>();
-
     public ArrayList<BlockAntennaCasing> mAntennaCasings = new ArrayList<>();
-    private static final int CASING_INDEX = 1662;
+    private static final int ShieldedAccCasingTextureID = Casings.ShieldedAcceleratorCasing.getTextureId();
 
     private int energyHatchTier;
     private boolean usingExotic = false;
@@ -101,10 +105,7 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
     private float outputFocus;
 
     /*
-     * c: Shielded accelerator casing
-     * v: Vacuum
-     * k: Superconducting coil
-     * d: Coolant Delivery casing
+     * c: Shielded accelerator casing v: Vacuum k: Superconducting coil d: Coolant Delivery casing
      */
 
     // TODO: E > 1200eV for x-ray lithography
@@ -454,28 +455,28 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
 
                    }
 
-                ).addElement('c', ofBlock(LanthItemList.SHIELDED_ACCELERATOR_CASING, 0))
-                .addElement('k', ofBlock(GregTechAPI.sBlockCasings1, 15)) // Superconducting coils
+                ).addElement('c', Casings.ShieldedAcceleratorCasing.asElement())
+                .addElement('k', Casings.SuperconductingCoilBlock.asElement())
                 .addElement('d', ofBlock(LanthItemList.COOLANT_DELIVERY_CASING, 0))
                 // Adder overriden due to ExoticEnergy originally calling its own adder, giving false positives
-                .addElement('e', buildHatchAdder(MTESynchrotron.class).atLeast(ImmutableMap.of(Energy.or(ExoticEnergy), 4)).adder(MTESynchrotron::addEnergyInputToMachineList).dot(6).casingIndex(CASING_INDEX).build())
+                .addElement('e', buildHatchAdder(MTESynchrotron.class).atLeast(ImmutableMap.of(Energy.or(ExoticEnergy), 4)).adder(MTESynchrotron::addEnergyInputToMachineList).hint(6).casingIndex(ShieldedAccCasingTextureID).build())
                 .addElement('n', ofBlock(LanthItemList.NIOBIUM_CAVITY_CASING, 0))
-                .addElement('a', withChannel("antenna", StructureUtility.ofBlocksTiered(
+                .addElement('a', GTStructureChannels.SYNCHROTRON_ANTENNA.use(StructureUtility.ofBlocksTiered(
                 		MTESynchrotron::getAntennaBlockTier,
                 		ImmutableList.of(
                 				Pair.of(LanthItemList.ANTENNA_CASING_T1, 0),
                 				Pair.of(LanthItemList.ANTENNA_CASING_T2, 0)),
                 		-1, MTESynchrotron::setAntennaTier, MTESynchrotron::getAntennaTier)))
-                .addElement('i', buildHatchAdder(MTESynchrotron.class).atLeast(ImmutableMap.of(InputHatch, 2)).dot(4).casingIndex(CASING_INDEX).build())
-                .addElement('o', buildHatchAdder(MTESynchrotron.class).atLeast(ImmutableMap.of(OutputHatch, 2)).dot(5).casingIndex(CASING_INDEX).build())
-                .addElement('v', buildHatchAdder(MTESynchrotron.class).hatchClass(MTEHatchInputBeamline.class).casingIndex(CASING_INDEX)
-                        .dot(1).adder(MTESynchrotron::addBeamlineInputHatch).build())
-                .addElement('b', buildHatchAdder(MTESynchrotron.class).hatchClass(MTEHatchOutputBeamline.class).casingIndex(CASING_INDEX)
-                        .dot(2).adder(MTESynchrotron::addBeamlineOutputHatch).build())
+                .addElement('i', buildHatchAdder(MTESynchrotron.class).atLeast(ImmutableMap.of(InputHatch, 2)).hint(4).casingIndex(ShieldedAccCasingTextureID).build())
+                .addElement('o', buildHatchAdder(MTESynchrotron.class).atLeast(ImmutableMap.of(OutputHatch, 2)).hint(5).casingIndex(ShieldedAccCasingTextureID).build())
+                .addElement('v', buildHatchAdder(MTESynchrotron.class).atLeast(BeamlineInput).casingIndex(ShieldedAccCasingTextureID)
+                        .hint(1).build())
+                .addElement('b', buildHatchAdder(MTESynchrotron.class).atLeast(BeamlineOutput).casingIndex(ShieldedAccCasingTextureID)
+                        .hint(2).build())
                 .addElement('g', chainAllGlasses(-1, (te, t) -> te.glassTier = t, te -> te.glassTier))
                 .addElement('j',
-                		buildHatchAdder(MTESynchrotron.class).atLeast(Maintenance).dot(3).casingIndex(CASING_INDEX)
-                		.buildAndChain(LanthItemList.SHIELDED_ACCELERATOR_CASING, 0))
+                		buildHatchAdder(MTESynchrotron.class).atLeast(Maintenance).hint(3).casingIndex(ShieldedAccCasingTextureID)
+                		.buildAndChain(Casings.ShieldedAcceleratorCasing.asElement()))
                 .build();
     }
     // spotless:on
@@ -496,68 +497,53 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Particle Accelerator")
-            .addInfo("Torus-shaped, accelerates electrons to produce high-energy electromagnetic radiation,")
-            .addInfo("in the form of photons")
-            .addInfo("Antenna Casings can be one of two tiers, upgrade them to improve output rate and energy scaling")
-            .addInfo("Minimum input focus: " + MIN_INPUT_FOCUS)
+        tt.addMachineType(StatCollector.translateToLocal("gtnhlanth.tt.synch.machinetype"))
+            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.synch.info1"))
+            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.synch.info2"))
             .addInfo(DescTextLocalization.BEAMLINE_SCANNER_INFO)
-            .addInfo("Use a lower temperature coolant to improve output focus")
-            .addInfo("Valid Coolants:");
-
-        // Valid coolant list
-        for (String fluidName : BeamlineRecipeLoader.coolantMap.keySet()) {
-            tt.addInfo(
-                "- " + FluidRegistry.getFluid(fluidName)
-                    .getLocalizedName(null));
-        }
-
-        tt.addInfo("Requires 32 kL/s of coolant")
+            .addSeparator()
+            .addInfo(StatCollector.translateToLocalFormatted("gtnhlanth.tt.synch.info3", getFluidUnit()))
+            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.coolant.oxygen"))
+            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.coolant.nitrogen"))
+            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.coolant.coolant"))
+            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.coolant.Scoolant"))
+            .addSeparator()
+            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.synch.info4"))
+            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.synch.info5"))
+            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.synch.info6"))
+            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.synch.info7"))
+            .addSeparator()
+            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.synch.info8"))
+            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.synch.info9"))
+            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.synch.info10"))
+            .addSeparator()
+            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.synch.info11"))
+            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.synch.info12"))
+            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.synch.info13"))
+            .addSeparator()
+            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.synch.info14"))
+            .addTecTechHatchInfo()
             .beginStructureBlock(36, 7, 34, true)
-            .addController("Front middle")
-            .addCasingInfoExactly(LanthItemList.SHIELDED_ACCELERATOR_CASING.getLocalizedName(), 676, false)
-            .addCasingInfoExactly("Superconducting Coil Block", 90, false)
-            .addCasingInfoExactly("Niobium Cavity Casing", 64, false)
+            .addController("Front center")
+            .addCasingInfoExactly(Casings.ShieldedAcceleratorCasing.getLocalizedName(), 676, false)
+            .addCasingInfoExactly(Casings.SuperdenseCastingBasinCasing.getLocalizedName(), 90, false)
+            .addCasingInfoExactly(LanthItemList.NIOBIUM_CAVITY_CASING.getLocalizedName(), 64, false)
             .addCasingInfoExactly(LanthItemList.COOLANT_DELIVERY_CASING.getLocalizedName(), 28, false)
             .addCasingInfoExactly("Any Tiered Glass (LuV+)", 16, false)
             .addCasingInfoExactly("Antenna Casing (must match)", 4, true)
-            .addOtherStructurePart("Beamline Input Hatch", addDotText(1))
-            .addOtherStructurePart("Beamline Output Hatch", addDotText(2))
-            .addMaintenanceHatch(addDotText(3))
-            .addInputHatch(addDotText(4))
-            .addOutputHatch(addDotText(5))
-            .addEnergyHatch(addDotText(6))
-            .addSubChannelUsage("glass", "Glass Tier")
+            .addOtherStructurePart(StatCollector.translateToLocal("gtnhlanth.tt.hatch.beaminput"), addHintNumber(1))
+            .addOtherStructurePart(StatCollector.translateToLocal("gtnhlanth.tt.hatch.beamoutput"), addHintNumber(2))
+            .addMaintenanceHatch(addHintNumber(3))
+            .addInputHatch(addHintNumber(4))
+            .addOutputHatch(addHintNumber(5))
+            .addEnergyHatch(addHintNumber(6))
+            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .addSubChannelUsage(GTStructureChannels.SYNCHROTRON_ANTENNA)
             .toolTipFinisher();
         return tt;
     }
 
-    private boolean addBeamlineInputHatch(IGregTechTileEntity te, int casingIndex) {
-        if (te == null) return false;
-
-        IMetaTileEntity mte = te.getMetaTileEntity();
-        if (mte == null) return false;
-
-        if (mte instanceof MTEHatchInputBeamline) {
-            return this.mInputBeamline.add((MTEHatchInputBeamline) mte);
-        }
-
-        return false;
-    }
-
-    private boolean addBeamlineOutputHatch(IGregTechTileEntity te, int casingIndex) {
-        if (te == null) return false;
-
-        IMetaTileEntity mte = te.getMetaTileEntity();
-        if (mte == null) return false;
-
-        if (mte instanceof MTEHatchOutputBeamline) {
-            return this.mOutputBeamline.add((MTEHatchOutputBeamline) mte);
-        }
-
-        return false;
-    }
-
+    @Override
     public boolean addEnergyInputToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
         if (aTileEntity == null) {
             return false;
@@ -589,7 +575,8 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
                 && ExoticEnergyInputHelper.isExoticEnergyInput(aMetaTileEntity)) {
                     if (firstHatch) this.usingExotic = true;
 
-                    if (!this.usingExotic) return false; // If normal hatches are already being used, disallow exotics
+                    if (!this.usingExotic) return false; // If normal hatches are already being used, disallow
+                                                         // exotics
 
                     hatchExotic.updateTexture(aBaseCasingIndex);
                     hatchExotic.updateCraftingIcon(this.getMachineCraftingIcon());
@@ -649,14 +636,13 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
         float voltageFactor = getVoltageFactor(voltage);
         this.outputEnergy = (float) calculateOutputParticleEnergy(voltage, inputEnergy, this.antennaeTier);
 
-        this.outputParticleID = 1; // Photon
+        this.outputParticleID = Particle.PHOTON.getId();
 
         /*
-         * If input focus > machine focus, divide their sum by 2.5, else weigh the former by the latter.
-         * This punishes having too low a machine focus for low values of input focus.
-         * EX: An input focus of 50 requires a machine focus of 100 to get an output focus of 50,
-         * whereas an input focus of 60 only requires around 80.
-         * In general, as input focus increases, output scales better with machine focus
+         * If input focus > machine focus, divide their sum by 2.5, else weigh the former by the latter. This punishes
+         * having too low a machine focus for low values of input focus. EX: An input focus of 50 requires a machine
+         * focus of 100 to get an output focus of 50, whereas an input focus of 60 only requires around 80. In general,
+         * as input focus increases, output scales better with machine focus
          */
         this.outputFocus = (inputFocus > this.machineFocus) ? ((inputFocus + this.machineFocus) / 2.5f)
             : inputFocus * (this.machineFocus / 100);
@@ -687,10 +673,10 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
     }
 
     private void outputPacketAfterRecipe() {
-        if (!this.mOutputBeamline.isEmpty()) {
+        if (!this.mBeamlineOutputHatches.isEmpty()) {
             BeamLinePacket packet = new BeamLinePacket(
                 new BeamInformation(this.outputEnergy, this.outputRate, this.outputParticleID, this.outputFocus));
-            for (MTEHatchOutputBeamline o : this.mOutputBeamline) {
+            for (MTEHatchOutputBeamline o : this.mBeamlineOutputHatches) {
                 o.dataPacket = packet;
             }
         }
@@ -708,7 +694,7 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
     }
 
     private BeamInformation getInputInformation() {
-        for (MTEHatchInputBeamline in : this.mInputBeamline) {
+        for (MTEHatchInputBeamline in : this.mBeamlineInputHatches) {
             if (in.dataPacket == null) return new BeamInformation(0, 0, 0, 0);
             return in.dataPacket.getContent();
         }
@@ -720,17 +706,15 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
     }
 
     /**
-     * Calculates the energy of the output particle as a function of machine voltage, input particle's energy,
-     * and the antenna tier.
-     * LaTeX:
-     * E_{Out} = \frac{E_{In}^{1.13*AntennaTier^{\frac{4}{9}}}}{40,000,000} *
+     * Calculates the energy of the output particle as a function of machine voltage, input particle's energy, and the
+     * antenna tier. LaTeX: E_{Out} = \frac{E_{In}^{1.13*AntennaTier^{\frac{4}{9}}}}{40,000,000} *
      * (-0.15^{\frac{2*EU_{In}}{60768*AntennaTier^{2.5}}}+1)
      *
      * @return The particle energy, in kEV
      */
     private static double calculateOutputParticleEnergy(long voltage, double inputParticleEnergy, int antennaTier) {
         return (Math.pow(inputParticleEnergy, 1.13 * Math.pow(antennaTier, 4.0 / 9.0)) / 40_000_000)
-            * (-(Math.pow(0.15, (2.0 * voltage) / ((Math.pow(antennaTier, 2.5) * 60768.0)))) + 1);
+            * (1 - (Math.pow(0.15, (voltage) / ((Math.pow(antennaTier, 2.5) * 30384.0)))));
 
     }
 
@@ -741,13 +725,11 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
     private static float getOutputRatio(float voltageFactor, int antennaTier) {
         // Scale ratio with antenna tier, such a high exponential should be fine so long as
         // there are only a few antenna tiers
-        return (float) (voltageFactor / (10.0 / Math.pow(2.5, antennaTier)));
+        return (float) (voltageFactor / (10.0 / GTUtility.powInt(2.5, antennaTier)));
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        this.mInputBeamline.clear();
-        this.mOutputBeamline.clear();
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         this.mAntennaCasings.clear();
         this.mEnergyHatches.clear();
         this.mExoticEnergyHatches.clear();
@@ -763,13 +745,25 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
         this.outputFocus = 0;
         this.outputParticleID = 0;
 
-        if (!checkPiece(STRUCTURE_PIECE_ENTRANCE, 16, 3, 1)) return false;
-        if (!checkPiece(STRUCTURE_PIECE_BASE, 16, 3, 0)) return false;
-
-        return this.mInputBeamline.size() == 1 && this.mOutputBeamline.size() == 1
-            && this.antennaeTier > 0
-            && (this.mEnergyHatches.size() == 4 || this.mExoticEnergyHatches.size() == 4)
-            && this.glassTier >= VoltageIndex.LuV;
+        if (!checkPiece(STRUCTURE_PIECE_ENTRANCE, 16, 3, 1, errors)) return;
+        if (!checkPiece(STRUCTURE_PIECE_BASE, 16, 3, 0, errors)) return;
+        if (this.antennaeTier <= 0) {
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.synchrotron_antenna"));
+        }
+        if (this.mEnergyHatches.size() != 4 && this.mExoticEnergyHatches.size() != 4) {
+            errors.add(
+                StructureErrors.hatchCount(
+                    ErrorType.NOT_MATCH,
+                    Energy,
+                    max(this.mEnergyHatches.size(), this.mExoticEnergyHatches.size()),
+                    4));
+        }
+        checkHatchMin(errors, InputHatch, 2);
+        checkHatchMin(errors, OutputHatch, 2);
+        checkHasMaintenanceHatch(errors);
+        if (glassTier < VoltageIndex.LuV) {
+            errors.add(StructureErrors.glassTierNotEnough(VoltageIndex.LuV));
+        }
     }
 
     @Override
@@ -783,10 +777,10 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
         elementBudget = 200;
         if (mMachine) return -1;
 
-        int build = survivialBuildPiece(STRUCTURE_PIECE_ENTRANCE, stackSize, 16, 3, 1, elementBudget, env, false, true);
+        int build = survivalBuildPiece(STRUCTURE_PIECE_ENTRANCE, stackSize, 16, 3, 1, elementBudget, env, false, true);
         if (build >= 0) return build;
 
-        return survivialBuildPiece(STRUCTURE_PIECE_BASE, stackSize, 16, 3, 0, elementBudget, env, false, true);
+        return survivalBuildPiece(STRUCTURE_PIECE_BASE, stackSize, 16, 3, 0, elementBudget, env, false, true);
     }
 
     @Override
@@ -794,16 +788,17 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
         int aColorIndex, boolean active, boolean aRedstone) {
         // Placeholder
         if (side == facing) {
-            if (active) return new ITexture[] { casingTexturePages[12][126], TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_OIL_CRACKER_ACTIVE)
-                .extFacing()
-                .build(),
+            if (active) return new ITexture[] { Casings.ShieldedAcceleratorCasing.getCasingTexture(),
+                TextureFactory.builder()
+                    .addIcon(OVERLAY_FRONT_OIL_CRACKER_ACTIVE)
+                    .extFacing()
+                    .build(),
                 TextureFactory.builder()
                     .addIcon(OVERLAY_FRONT_OIL_CRACKER_ACTIVE_GLOW)
                     .extFacing()
                     .glow()
                     .build() };
-            return new ITexture[] { casingTexturePages[12][126], TextureFactory.builder()
+            return new ITexture[] { Casings.ShieldedAcceleratorCasing.getCasingTexture(), TextureFactory.builder()
                 .addIcon(OVERLAY_FRONT_OIL_CRACKER)
                 .extFacing()
                 .build(),
@@ -813,7 +808,7 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
                     .glow()
                     .build() };
         }
-        return new ITexture[] { casingTexturePages[12][126] };
+        return new ITexture[] { Casings.ShieldedAcceleratorCasing.getCasingTexture() };
     }
 
     @Override
@@ -841,30 +836,30 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
             // from super()
             /* 1 */ StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
                 + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(mProgresstime / 20)
+                + formatNumber(mProgresstime / 20)
                 + EnumChatFormatting.RESET
                 + " s / "
                 + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(mMaxProgresstime / 20)
+                + formatNumber(mMaxProgresstime / 20)
                 + EnumChatFormatting.RESET
                 + " s",
             /* 2 */ StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
                 + EnumChatFormatting.GREEN
-                + GTUtility.formatNumbers(storedEnergy)
+                + formatNumber(storedEnergy)
                 + EnumChatFormatting.RESET
                 + " EU / "
                 + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(maxEnergy)
+                + formatNumber(maxEnergy)
                 + EnumChatFormatting.RESET
                 + " EU",
             /* 3 */ StatCollector.translateToLocal("GT5U.multiblock.usage") + ": "
                 + EnumChatFormatting.RED
-                + GTUtility.formatNumbers(getActualEnergyUsage())
+                + formatNumber(getActualEnergyUsage())
                 + EnumChatFormatting.RESET
                 + " EU/t",
             /* 4 */ StatCollector.translateToLocal("GT5U.multiblock.mei") + ": "
                 + EnumChatFormatting.YELLOW
-                + GTUtility.formatNumbers(getAverageInputVoltage())
+                + formatNumber(getAverageInputVoltage())
                 + EnumChatFormatting.RESET
                 + " EU/t(*"
                 + getMaxInputAmps()
@@ -886,6 +881,7 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
                 + EnumChatFormatting.RESET
                 + " %",
             /* 6 Pollution not included */
+            /* 7 */ GTUtility.translate("GT5U.multiblock.recipesDone", formatNumber(recipesDone)),
             // Beamline-specific
             EnumChatFormatting.BOLD + StatCollector.translateToLocal("beamline.info") + ": " + EnumChatFormatting.RESET,
             StatCollector.translateToLocal("beamline.focus") + ": " // Machine Focus:
@@ -910,7 +906,8 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
             StatCollector.translateToLocal("beamline.particle") + ": " // "Multiblock Beamline Input:"
                 + EnumChatFormatting.GOLD
                 + Particle.getParticleFromId(information.getParticleId())
-                    .getLocalisedName() // e.g. "Electron (e-)"
+                    .getLocalisedName() // e.g. "Electron
+                                        // (e-)"
                 + " "
                 + EnumChatFormatting.RESET,
             StatCollector.translateToLocal("beamline.energy") + ": " // "Energy:"
@@ -962,22 +959,30 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
     }
 
     @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
-    }
-
-    @Override
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
-    }
-
-    @Override
-    public int getDamageToComponent(ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
+    public boolean supportsSingleRecipeLocking() {
         return false;
     }
+
+    private String createFocusText(String text) {
+        return String.format("%s%s%s", EnumChatFormatting.RED, text, EnumChatFormatting.GRAY);
+    }
+
+    private String createEnergyText(String text) {
+        return String.format("%s%s%s", EnumChatFormatting.BLUE, text, EnumChatFormatting.GRAY);
+    }
+
+    private String createRateText(String text) {
+        return String.format("%s%s%s", EnumChatFormatting.GOLD, text, EnumChatFormatting.GRAY);
+    }
+
+    private String coolantLine(String coolant, int kelvin) {
+        return "  " + EnumChatFormatting.AQUA
+            + coolant
+            + EnumChatFormatting.GRAY
+            + " : "
+            + EnumChatFormatting.GOLD
+            + kelvin
+            + "K";
+    }
+
 }

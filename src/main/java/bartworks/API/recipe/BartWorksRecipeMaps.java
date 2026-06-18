@@ -83,7 +83,4 @@ public class BartWorksRecipeMaps {
             (index, isFluid, isOutput, isSpecial) -> !isFluid && !isOutput ? GTUITextures.OVERLAY_SLOT_IMPLOSION : null)
         .progressBar(GTUITextures.PROGRESSBAR_COMPRESS)
         .build();
-    public static final RecipeMap<RecipeMapBackend> htgrFakeRecipes = RecipeMapBuilder.of("bw.recipe.htgr")
-        .maxIO(1, 1, 0, 0)
-        .build();
 }

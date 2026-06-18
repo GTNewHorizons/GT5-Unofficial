@@ -1,18 +1,17 @@
 package gregtech.common.tileentities.machines;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.GTValues.TIER_COLORS;
 import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_INPUT_FLUID_HATCH;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_INPUT_FLUID_HATCH_ACTIVE;
 
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
+import java.util.Objects;
 
 import javax.annotation.Nullable;
 
@@ -23,54 +22,54 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTankInfo;
 
-import com.gtnewhorizons.modularui.api.ModularUITextures;
-import com.gtnewhorizons.modularui.api.drawable.IDrawable;
-import com.gtnewhorizons.modularui.api.drawable.Text;
-import com.gtnewhorizons.modularui.api.math.Alignment;
-import com.gtnewhorizons.modularui.api.math.Color;
-import com.gtnewhorizons.modularui.api.math.Pos2d;
-import com.gtnewhorizons.modularui.api.math.Size;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.api.widget.Interactable;
-import com.gtnewhorizons.modularui.common.fluid.FluidStackTank;
-import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
-import com.gtnewhorizons.modularui.common.widget.CycleButtonWidget;
-import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
-import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
-import com.gtnewhorizons.modularui.common.widget.FluidSlotWidget;
-import com.gtnewhorizons.modularui.common.widget.SlotGroup;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
-import com.gtnewhorizons.modularui.common.widget.textfield.NumericWidget;
+import org.jetbrains.annotations.NotNull;
+
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
 import appeng.api.config.Actionable;
-import appeng.api.config.PowerMultiplier;
 import appeng.api.implementations.IPowerChannelState;
 import appeng.api.networking.GridFlags;
+import appeng.api.networking.IGridNode;
+import appeng.api.networking.energy.IEnergyGrid;
+import appeng.api.networking.events.MENetworkBootingStatusChange;
+import appeng.api.networking.events.MENetworkEventSubscribe;
+import appeng.api.networking.events.MENetworkPowerStatusChange;
 import appeng.api.networking.security.BaseActionSource;
 import appeng.api.networking.security.IActionHost;
 import appeng.api.networking.security.MachineSource;
+import appeng.api.networking.storage.IStackWatcher;
+import appeng.api.networking.storage.IStackWatcherHost;
 import appeng.api.storage.IMEMonitor;
+import appeng.api.storage.StorageChannel;
 import appeng.api.storage.data.IAEFluidStack;
+import appeng.api.storage.data.IAEStack;
+import appeng.api.storage.data.IItemList;
 import appeng.api.util.AECableType;
-import appeng.core.localization.WailaText;
+import appeng.api.util.AEColor;
+import appeng.api.util.DimensionalCoord;
 import appeng.me.GridAccessException;
 import appeng.me.helpers.AENetworkProxy;
 import appeng.me.helpers.IGridProxyable;
+import appeng.util.Platform;
 import appeng.util.item.AEFluidStack;
+import gregtech.api.GregTechAPI;
+import gregtech.api.enums.Dyes;
+import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.IMEConnectable;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.modularui.IAddGregtechLogo;
-import gregtech.api.interfaces.modularui.IAddUIWidgets;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
@@ -79,25 +78,23 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTDataUtils;
+import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
+import gregtech.common.gui.modularui.hatch.MTEHatchInputMEGui;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState, IAddGregtechLogo, IAddUIWidgets,
-    IRecipeProcessingAwareHatch, ISmartInputHatch, IDataCopyable, IMEConnectable {
+@IMetaTileEntity.SkipGenerateDescription
+public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState, IRecipeProcessingAwareHatch,
+    ISmartInputHatch, IDataCopyable, IMEConnectable, IGridProxyable, IStackWatcherHost {
 
-    private static final int SLOT_COUNT = 16;
+    public static final int SLOT_COUNT = 16;
     public static final String COPIED_DATA_IDENTIFIER = "stockingHatch";
 
-    protected final FluidStack[] storedFluids = new FluidStack[SLOT_COUNT];
-    protected final FluidStack[] storedInformationFluids = new FluidStack[SLOT_COUNT];
-
-    // these two fields should ALWAYS be mutated simultaneously
-    // in most cases, you should call setSavedFluid() instead of trying to write to the array directly
-    // a desync of these two fields can lead to catastrophe
-    protected final FluidStack[] shadowStoredFluids = new FluidStack[SLOT_COUNT];
-    private final int[] savedStackSizes = new int[SLOT_COUNT];
+    protected final Slot[] slots = new Slot[SLOT_COUNT];
 
     private boolean additionalConnection = false;
 
@@ -106,20 +103,24 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
     @Nullable
     protected AENetworkProxy gridProxy = null;
 
-    private final boolean autoPullAvailable;
+    public final boolean autoPullAvailable;
     protected boolean autoPullFluidList = false;
     protected int minAutoPullAmount = 1;
     private int autoPullRefreshTime = 100;
     protected boolean processingRecipe = false;
     private boolean justHadNewFluids = false;
     private boolean expediteRecipeCheck = false;
+    private final List<IHatchWatcher> watchers = new ArrayList<>();
+    /**
+     * The cached activity for this hatch. Only valid while processing a recipe. This avoids several
+     * operations.
+     */
+    protected boolean cachedActivity = false;
 
-    protected static final int CONFIG_WINDOW_ID = 10;
-
-    protected static final FluidStack[] EMPTY_FLUID_STACK = new FluidStack[0];
+    protected static final FluidTankInfo[] EMPTY_FLUID_TANK_INFOS = new FluidTankInfo[0];
 
     public MTEHatchInputME(int aID, boolean autoPullAvailable, String aName, String aNameRegional) {
-        super(aID, 1, aName, aNameRegional, autoPullAvailable ? 9 : 8, getDescriptionArray(autoPullAvailable));
+        super(aID, 1, aName, aNameRegional, autoPullAvailable ? 9 : 8, null);
         this.autoPullAvailable = autoPullAvailable;
     }
 
@@ -149,122 +150,282 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
         if (aBaseMetaTileEntity.isServerSide()) {
             if (aTimer % autoPullRefreshTime == 0 && autoPullFluidList) {
                 refreshFluidList();
+                if (justHadNewFluids && expediteRecipeCheck) {
+                    for (var multi : watchers) {
+                        multi.scheduleRecipeCheckImmediate();
+                    }
+                    justHadNewFluids = false;
+                }
             }
             if (aTimer % 20 == 0) {
                 aBaseMetaTileEntity.setActive(isActive());
+                if (!autoPullAvailable) {
+                    aBaseMetaTileEntity.tryDisableTicking();
+                }
             }
         }
         super.onPostTick(aBaseMetaTileEntity, aTimer);
     }
 
-    protected boolean isAllowedToWork() {
+    public boolean isAllowedToWork() {
+        if (processingRecipe) return cachedActivity;
+
         IGregTechTileEntity igte = getBaseMetaTileEntity();
 
-        return igte != null && igte.isAllowedToWork();
+        if (igte == null || !igte.isAllowedToWork()) return false;
+
+        AENetworkProxy proxy = getProxy();
+
+        if (!proxy.isActive()) return false;
+
+        return true;
     }
 
     @Override
     public void onEnableWorking() {
+        super.onEnableWorking();
+
         if (expediteRecipeCheck) {
             justHadNewFluids = true;
         }
     }
 
-    private void refreshFluidList() {
-        AENetworkProxy proxy = getProxy();
-        if (proxy == null || !proxy.isActive()) {
-            return;
+    @Override
+    public void onDisableWorking() {
+        super.onDisableWorking();
+
+        if (autoPullFluidList) {
+            clearSlotConfigs();
+        } else {
+            clearExtractedStacks();
         }
-
-        try {
-            IMEMonitor<IAEFluidStack> sg = proxy.getStorage()
-                .getFluidInventory();
-            Iterator<IAEFluidStack> iterator = sg.getStorageList()
-                .iterator();
-
-            int index = 0;
-            while (iterator.hasNext() && index < SLOT_COUNT) {
-                IAEFluidStack currItem = iterator.next();
-                if (currItem.getStackSize() >= minAutoPullAmount) {
-                    FluidStack fluidStack = GTUtility.copyAmount(1, currItem.getFluidStack());
-                    if (expediteRecipeCheck) {
-                        FluidStack previous = storedFluids[index];
-                        if (fluidStack != null && previous != null) {
-                            justHadNewFluids = !fluidStack.isFluidEqual(previous);
-                        }
-                    }
-                    storedFluids[index] = fluidStack;
-                    index++;
-                }
-            }
-
-            for (int i = index; i < SLOT_COUNT; i++) {
-                storedFluids[i] = null;
-            }
-        } catch (final GridAccessException ignored) {}
-    }
-
-    protected void setSavedFluid(int i, FluidStack stack) {
-        shadowStoredFluids[i] = stack;
-        savedStackSizes[i] = stack == null ? 0 : stack.amount;
-    }
-
-    public FluidStack[] getStoredFluids() {
-        if (!processingRecipe) {
-            return EMPTY_FLUID_STACK;
-        }
-
-        AENetworkProxy proxy = getProxy();
-        if (proxy == null || !proxy.isActive()) {
-            return EMPTY_FLUID_STACK;
-        }
-
-        updateAllInformationSlots();
-
-        for (int i = 0; i < SLOT_COUNT; i++) {
-            if (storedFluids[i] == null) {
-                setSavedFluid(i, null);
-                continue;
-            }
-
-            FluidStack fluidStackWithAmount = storedInformationFluids[i];
-
-            setSavedFluid(i, fluidStackWithAmount);
-        }
-
-        return shadowStoredFluids;
     }
 
     @Override
-    public boolean justUpdated() {
-        if (expediteRecipeCheck && isAllowedToWork()) {
-            boolean ret = justHadNewFluids;
-            justHadNewFluids = false;
-            return ret;
+    public void onColorChangeServer(byte aColor) {
+        updateAE2ProxyColor();
+    }
+
+    public void updateAE2ProxyColor() {
+        AENetworkProxy proxy = getProxy();
+        byte color = this.getColor();
+        if (color == -1) {
+            proxy.setColor(AEColor.Transparent);
+        } else {
+            proxy.setColor(AEColor.values()[Dyes.transformDyeIndex(color)]);
         }
-        return false;
+        if (proxy.getNode() != null) {
+            proxy.getNode()
+                .updateState();
+        }
+    }
+
+    private void refreshFluidList() {
+        if (!isAllowedToWork()) return;
+
+        IMEMonitor<IAEFluidStack> sg;
+        Iterator<IAEFluidStack> iterator;
+
+        try {
+            sg = getProxy().getStorage()
+                .getFluidInventory();
+            iterator = sg.getStorageList()
+                .iterator();
+        } catch (final GridAccessException ignored) {
+            return;
+        }
+
+        int index = 0;
+        boolean configChanged = false;
+        while (iterator.hasNext() && index < SLOT_COUNT) {
+            IAEFluidStack curr = iterator.next();
+
+            if (curr.getStackSize() < minAutoPullAmount) continue;
+
+            Slot oldSlot = slots[index];
+            FluidStack oldStack = null;
+            if (oldSlot != null && oldSlot.extracted != null) oldStack = oldSlot.extracted.copy();
+
+            setSlotConfig(index, GTUtility.copyAmount(1, curr.getFluidStack()));
+
+            Slot newSlot = slots[index];
+            FluidStack newStack = null;
+            if (newSlot != null) {
+                newSlot.extracted = newStack = curr.getFluidStack();
+                newSlot.extractedAmount = newSlot.extracted.amount;
+            }
+            boolean sametype = GTUtility.areFluidsEqual(oldStack, newStack);
+            if (newStack != null) {
+                // lower amount/disappearance is not considered 'new fluids'
+                if (sametype) {
+                    if (newStack.amount > oldStack.amount) {
+                        justHadNewFluids = true; // same type, higher amount
+                    }
+                } else {
+                    justHadNewFluids = true; // different type
+                }
+            }
+            if (expediteRecipeCheck && !((oldStack == null && newStack == null) || sametype)) {
+                configChanged = true;
+            }
+            index++;
+        }
+        Arrays.fill(slots, index, slots.length, null);
+        if (configChanged) configureWatchers();
+    }
+
+    public FluidStack[] getStoredFluids() {
+        if (!isAllowedToWork()) {
+            return new FluidStack[0];
+        }
+
+        if (processingRecipe) {
+            List<FluidStack> fluids = new ObjectArrayList<>(GTDataUtils.countNonNulls(slots));
+
+            for (Slot slot : slots) {
+                if (slot == null) continue;
+
+                // Must pass the reference out to the multi
+                if (slot.extracted != null) fluids.add(slot.extracted);
+            }
+
+            return fluids.toArray(GTValues.emptyFluidStackArray);
+        } else {
+            List<FluidStack> fluids = new ObjectArrayList<>(GTDataUtils.countNonNulls(slots));
+
+            for (Slot slot : slots) {
+                if (slot == null) continue;
+
+                // The caller should only use this to determine the configuration.
+                // If it wants to know more, it can query AE itself.
+                fluids.add(GTUtility.copyAmount(1, slot.config));
+            }
+
+            return fluids.toArray(GTValues.emptyFluidStackArray);
+        }
+    }
+
+    @Override
+    public FluidTankInfo[] getTankInfo(ForgeDirection side) {
+        if (side != ForgeDirection.UNKNOWN || !isAllowedToWork()) {
+            return EMPTY_FLUID_TANK_INFOS;
+        }
+
+        if (processingRecipe) {
+            List<FluidTankInfo> tanks = new ObjectArrayList<>(GTDataUtils.countNonNulls(slots));
+
+            for (Slot slot : slots) {
+                if (slot == null) continue;
+
+                if (slot.extracted != null) tanks.add(new FluidTankInfo(slot.extracted, Integer.MAX_VALUE));
+            }
+
+            return tanks.toArray(EMPTY_FLUID_TANK_INFOS);
+        } else {
+            IMEMonitor<IAEFluidStack> sg;
+
+            try {
+                sg = getProxy().getStorage()
+                    .getFluidInventory();
+            } catch (GridAccessException e) {
+                return EMPTY_FLUID_TANK_INFOS;
+            }
+
+            List<FluidTankInfo> tanks = new ObjectArrayList<>(GTDataUtils.countNonNulls(slots));
+
+            for (Slot slot : slots) {
+                if (slot == null) continue;
+
+                IAEFluidStack request = AEFluidStack.create(slot.config);
+                request.setStackSize(Integer.MAX_VALUE);
+
+                IAEFluidStack result = sg.extractItems(request, Actionable.SIMULATE, getRequestSource());
+
+                if (result == null) continue;
+
+                tanks.add(new FluidTankInfo(result.getFluidStack(), Integer.MAX_VALUE));
+            }
+
+            return tanks.toArray(EMPTY_FLUID_TANK_INFOS);
+        }
+    }
+
+    @Override
+    public void addWatcher(IHatchWatcher watcher) {
+        watchers.add(watcher);
+    }
+
+    @Override
+    public void removeWatcher(IHatchWatcher watcher) {
+        watchers.remove(watcher);
     }
 
     public void setRecipeCheck(boolean value) {
         expediteRecipeCheck = value;
+        configureWatchers();
+        IGregTechTileEntity igte = getBaseMetaTileEntity();
+
+        // Changing this field requires a structure check/update, so let's do that automatically
+        if (igte.isServerSide()) {
+            GregTechAPI.causeMachineUpdate(igte.getWorld(), igte.getXCoord(), igte.getYCoord(), igte.getZCoord());
+        }
     }
 
     @Override
-    public FluidStack drain(ForgeDirection side, FluidStack aFluid, boolean doDrain) {
+    public FluidStack drain(ForgeDirection side, FluidStack fluid, boolean doDrain) {
+        return drain(side, fluid, fluid == null ? 0 : fluid.amount, doDrain);
+    }
+
+    @Override
+    public FluidStack drain(ForgeDirection side, FluidStack fluid, int amount, boolean doDrain) {
         // this is an ME input hatch. allowing draining via logistics would be very wrong (and against
         // canTankBeEmptied()) but we do need to support draining from controller, which uses the UNKNOWN direction.
         if (side != ForgeDirection.UNKNOWN) return null;
-        FluidStack stored = getMatchingFluidStack(aFluid);
-        if (stored == null) return null;
-        FluidStack drained = GTUtility.copyAmount(Math.min(stored.amount, aFluid.amount), stored);
-        if (doDrain) {
-            stored.amount -= drained.amount;
+
+        if (processingRecipe) {
+            // When processing a recipe, we just extract from the slot fake stacks
+            Slot slot = getMatchingSlot(fluid, true);
+            if (slot == null) return null;
+
+            int toDrain = Math.min(slot.extracted.amount, amount);
+
+            FluidStack drained = GTUtility.copyAmount(toDrain, slot.extracted);
+
+            if (doDrain) {
+                slot.extracted.amount -= toDrain;
+            }
+
+            return drained;
+        } else {
+            // Outside of processing a recipe, we need to extract everything manually
+            Slot slot = getMatchingSlot(fluid, false);
+            if (slot == null) return null;
+
+            IAEFluidStack request = AEFluidStack.create(fluid);
+            request.setStackSize(amount);
+
+            IMEMonitor<IAEFluidStack> sg;
+            IEnergyGrid energy;
+
+            try {
+                AENetworkProxy proxy = getProxy();
+                sg = proxy.getStorage()
+                    .getFluidInventory();
+                energy = proxy.getEnergy();
+            } catch (GridAccessException e) {
+                return null;
+            }
+
+            IAEFluidStack result = Platform.poweredExtraction(energy, sg, request, getRequestSource());
+
+            return result == null ? null : result.getFluidStack();
         }
-        return drained;
     }
 
     @Override
     public void startRecipeProcessing() {
+        // Call isAllowedToWork before setting processingRecipe to true
+        cachedActivity = isAllowedToWork();
         processingRecipe = true;
         updateAllInformationSlots();
     }
@@ -272,40 +433,53 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
     @Override
     public CheckRecipeResult endRecipeProcessing(MTEMultiBlockBase controller) {
         CheckRecipeResult checkRecipeResult = CheckRecipeResultRegistry.SUCCESSFUL;
-        AENetworkProxy proxy = getProxy();
 
-        for (int i = 0; i < SLOT_COUNT; ++i) {
-            FluidStack oldStack = shadowStoredFluids[i];
-            int toExtract = savedStackSizes[i] - (oldStack != null ? oldStack.amount : 0);
+        IMEMonitor<IAEFluidStack> sg;
+        IEnergyGrid energy;
+
+        try {
+            AENetworkProxy proxy = getProxy();
+
+            // on some setup endRecipeProcessing() somehow runs before onFirstTick();
+            // test world
+            // https://discord.com/channels/181078474394566657/522098956491030558/1441490828760449124
+            if (!proxy.isReady()) proxy.onReady();
+
+            sg = proxy.getStorage()
+                .getFluidInventory();
+            energy = proxy.getEnergy();
+        } catch (GridAccessException e) {
+            controller.stopMachine(ShutDownReasonRegistry.CRITICAL_NONE);
+            return SimpleCheckRecipeResult.ofFailurePersistOnShutdown("stocking_hatch_fail_extraction");
+        }
+
+        for (int i = 0; i < SLOT_COUNT; i++) {
+            Slot slot = slots[i];
+
+            if (slot == null || slot.extracted == null || slot.extractedAmount == 0) continue;
+
+            int toExtract = slot.extractedAmount - slot.extracted.amount;
+
             if (toExtract <= 0) continue;
 
-            try {
-                IMEMonitor<IAEFluidStack> sg = proxy.getStorage()
-                    .getFluidInventory();
+            // Reset the extracted amount to prevent double endRecipeProcessing calls from extracting twice, but keep
+            // the extracted stack intact so that it looks nice.
+            slot.extractedAmount = slot.extracted.amount;
 
-                IAEFluidStack request = AEFluidStack.create(storedFluids[i]);
-                request.setStackSize(toExtract);
-                IAEFluidStack extractionResult = sg.extractItems(request, Actionable.MODULATE, getRequestSource());
-                proxy.getEnergy()
-                    .extractAEPower(toExtract, Actionable.MODULATE, PowerMultiplier.CONFIG);
+            IAEFluidStack request = AEFluidStack.create(slot.extracted);
+            request.setStackSize(toExtract);
 
-                if (extractionResult == null || extractionResult.getStackSize() != toExtract) {
-                    controller.stopMachine(ShutDownReasonRegistry.CRITICAL_NONE);
-                    checkRecipeResult = SimpleCheckRecipeResult
-                        .ofFailurePersistOnShutdown("stocking_hatch_fail_extraction");
-                }
-            } catch (GridAccessException ignored) {
+            IAEFluidStack result = Platform.poweredExtraction(energy, sg, request, getRequestSource());
+
+            if (result == null || result.getStackSize() != toExtract) {
                 controller.stopMachine(ShutDownReasonRegistry.CRITICAL_NONE);
                 checkRecipeResult = SimpleCheckRecipeResult
                     .ofFailurePersistOnShutdown("stocking_hatch_fail_extraction");
             }
-            setSavedFluid(i, null);
-            if (storedInformationFluids[i] != null && storedInformationFluids[i].amount <= 0) {
-                storedInformationFluids[i] = null;
-            }
         }
 
         processingRecipe = false;
+
         return checkRecipeResult;
     }
 
@@ -335,7 +509,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
 
     @Override
     public boolean onWireCutterRightClick(ForgeDirection side, ForgeDirection wrenchingSide, EntityPlayer aPlayer,
-        float aX, float aY, float aZ) {
+        float aX, float aY, float aZ, ItemStack aTool) {
         additionalConnection = !additionalConnection;
         updateValidGridProxySides();
         aPlayer.addChatComponentMessage(
@@ -355,97 +529,146 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
     }
 
     @Override
-    public AENetworkProxy getProxy() {
+    public @NotNull AENetworkProxy getProxy() {
         if (gridProxy == null) {
-            if (getBaseMetaTileEntity() instanceof IGridProxyable) {
+            var base = getBaseMetaTileEntity();
+            if (base instanceof IGridProxyable) {
                 gridProxy = new AENetworkProxy(
-                    (IGridProxyable) getBaseMetaTileEntity(),
+                    this,
                     "proxy",
                     autoPullAvailable ? ItemList.Hatch_Input_ME_Advanced.get(1) : ItemList.Hatch_Input_ME.get(1),
                     true);
                 gridProxy.setFlags(GridFlags.REQUIRE_CHANNEL);
                 updateValidGridProxySides();
-                if (getBaseMetaTileEntity().getWorld() != null) gridProxy.setOwner(
-                    getBaseMetaTileEntity().getWorld()
-                        .getPlayerEntityByName(getBaseMetaTileEntity().getOwnerName()));
+                if (base.getWorld() != null && base.getOwnerUuid() != null) {
+                    gridProxy.setOwner(
+                        base.getWorld()
+                            .func_152378_a(base.getOwnerUuid()));
+                }
             }
         }
         return this.gridProxy;
     }
 
+    @MENetworkEventSubscribe
+    public void powerChangeME(MENetworkPowerStatusChange c) {
+        if (getBaseMetaTileEntity() != null) {
+            getBaseMetaTileEntity().setActive(isActive());
+        }
+    }
+
+    @MENetworkEventSubscribe
+    public void bootChangeME(MENetworkBootingStatusChange c) {
+        if (getBaseMetaTileEntity() != null) {
+            getBaseMetaTileEntity().setActive(isActive());
+        }
+    }
+
     @Override
     public boolean isPowered() {
-        return getProxy() != null && getProxy().isPowered();
+        return getProxy().isPowered();
     }
 
     @Override
     public boolean isActive() {
-        return getProxy() != null && getProxy().isActive();
+        return getProxy().isActive();
     }
 
-    private void setAutoPullFluidList(boolean pullFluidList) {
+    public int getMinAutoPullAmount() {
+        return minAutoPullAmount;
+    }
+
+    public void setMinAutoPullAmount(int minAutoPullAmount) {
+        this.minAutoPullAmount = minAutoPullAmount;
+    }
+
+    public int getAutoPullRefreshTime() {
+        return autoPullRefreshTime;
+    }
+
+    public void setAutoPullRefreshTime(int autoPullRefreshTime) {
+        this.autoPullRefreshTime = autoPullRefreshTime;
+    }
+
+    public boolean isAutoPullFluidList() {
+        return autoPullFluidList;
+    }
+
+    public void setAutoPullFluidList(boolean pullFluidList) {
         if (!autoPullAvailable) {
             return;
         }
 
-        autoPullFluidList = pullFluidList;
-        if (!autoPullFluidList) {
-            Arrays.fill(storedFluids, null);
-        } else {
-            refreshFluidList();
+        // check isServerSide to avoid refreshing twice
+        if (autoPullFluidList != pullFluidList && getBaseMetaTileEntity().isServerSide()) {
+            autoPullFluidList = pullFluidList;
+
+            clearSlotConfigs();
+
+            if (autoPullFluidList) {
+                refreshFluidList();
+            }
         }
-        updateAllInformationSlots();
     }
 
     public boolean doFastRecipeCheck() {
         return expediteRecipeCheck;
     }
 
-    private void updateAllInformationSlots() {
-        for (int index = 0; index < SLOT_COUNT; index++) {
-            updateInformationSlot(index);
+    protected void updateAllInformationSlots() {
+        if (isAllowedToWork()) {
+            try {
+                for (int index = 0; index < SLOT_COUNT; index++) {
+                    updateInformationSlot(index);
+                }
+            } catch (GridAccessException e) {
+                // :P
+            }
+        } else {
+            clearExtractedStacks();
         }
     }
 
-    public void updateInformationSlot(int index) {
-        if (index < 0 || index >= SLOT_COUNT) {
-            return;
-        }
+    public void setSlotConfig(int index, FluidStack config) {
+        slots[index] = config == null ? null : new Slot(config.copy());
+    }
 
-        FluidStack fluidStack = storedFluids[index];
-        if (fluidStack == null) {
-            storedInformationFluids[index] = null;
-            return;
-        }
+    /**
+     * Polls the AE network to update the available fluids for the given slot.
+     */
+    public void updateInformationSlot(int index) throws GridAccessException {
+        Slot slot = GTDataUtils.getIndexSafe(slots, index);
 
-        AENetworkProxy proxy = getProxy();
-        if (proxy == null || !proxy.isActive()) {
-            storedInformationFluids[index] = null;
-            return;
-        }
+        if (slot == null) return;
 
         if (!isAllowedToWork()) {
-            storedInformationFluids[index] = null;
+            slot.resetExtracted();
             return;
         }
 
-        try {
-            IMEMonitor<IAEFluidStack> sg = proxy.getStorage()
-                .getFluidInventory();
-            IAEFluidStack request = AEFluidStack.create(fluidStack);
-            request.setStackSize(Integer.MAX_VALUE);
-            IAEFluidStack result = sg.extractItems(request, Actionable.SIMULATE, getRequestSource());
-            FluidStack resultFluid = (result != null) ? result.getFluidStack() : null;
-            // We want to track if any FluidStack is modified to notify any connected controllers to make a recipe check
-            // early
-            if (expediteRecipeCheck) {
-                FluidStack previous = storedInformationFluids[index];
-                if (resultFluid != null) {
-                    justHadNewFluids = !resultFluid.isFluidEqual(previous);
-                }
-            }
-            storedInformationFluids[index] = resultFluid;
-        } catch (final GridAccessException ignored) {}
+        IMEMonitor<IAEFluidStack> sg = getProxy().getStorage()
+            .getFluidInventory();
+
+        IAEFluidStack request = AEFluidStack.create(slot.config);
+        request.setStackSize(Integer.MAX_VALUE);
+
+        IAEFluidStack result = sg.extractItems(request, Actionable.SIMULATE, getRequestSource());
+
+        slot.extracted = result != null ? result.getFluidStack() : null;
+        slot.extractedAmount = slot.extracted == null ? 0 : slot.extracted.amount;
+
+    }
+
+    protected void clearSlotConfigs() {
+        Arrays.fill(slots, null);
+    }
+
+    protected void clearExtractedStacks() {
+        for (Slot slot : slots) {
+            if (slot == null) continue;
+
+            slot.resetExtracted();
+        }
     }
 
     private BaseActionSource getRequestSource() {
@@ -453,58 +676,66 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
         return requestSource;
     }
 
-    public FluidStack getMatchingFluidStack(FluidStack fluidStack) {
+    protected Slot getMatchingSlot(FluidStack fluidStack, boolean requireExtracted) {
         if (fluidStack == null) return null;
+        if (!isAllowedToWork()) return null;
 
-        AENetworkProxy proxy = getProxy();
-        if (proxy == null || !proxy.isActive()) {
-            return null;
+        for (int i = 0; i < slots.length; i++) {
+            Slot slot = slots[i];
+
+            if (slot == null) continue;
+
+            if (requireExtracted && (slot.extracted == null || slot.extractedAmount == 0)) continue;
+
+            if (!GTUtility.areFluidsEqual(slot.config, fluidStack)) continue;
+
+            return slot;
         }
 
-        for (int i = 0; i < storedFluids.length; i++) {
-            if (storedFluids[i] == null) {
-                continue;
-            }
-
-            if (GTUtility.areFluidsEqual(fluidStack, storedFluids[i], false)) {
-                updateInformationSlot(i);
-                if (storedInformationFluids[i] != null) {
-                    setSavedFluid(i, storedInformationFluids[i]);
-                    return shadowStoredFluids[i];
-                }
-
-                setSavedFluid(i, null);
-                return null;
-            }
-        }
         return null;
     }
 
     /**
-     * Used to avoid slot update.
+     * Gets the first non-null extracted fluid stack.
+     *
+     * @return The first extracted fluid stack, or null if this doesn't exist.
      */
-    public FluidStack getShadowFluidStack(int index) {
-        if (index < 0 || index >= storedFluids.length) {
-            return null;
-        }
-
-        return shadowStoredFluids[index];
+    public FluidStack getFirstValidStack() {
+        return getFirstValidStack(false);
     }
 
-    public int getFluidSlot(FluidStack fluidStack) {
-        if (fluidStack == null) return -1;
+    /**
+     * Gets the first non-null extracted fluid stack.
+     *
+     * @param slotsMustMatch When true, every fluid in this input hatch must be the same (ignores amounts).
+     * @return The first extracted fluid stack, or null if this doesn't exist.
+     */
+    public FluidStack getFirstValidStack(boolean slotsMustMatch) {
+        if (slotsMustMatch) {
+            FluidStack firstValid = null;
 
-        for (int i = 0; i < storedFluids.length; i++) {
-            if (storedFluids[i] == null) {
-                continue;
+            for (Slot slot : slots) {
+                if (slot == null || slot.extracted == null) continue;
+
+                if (firstValid == null) {
+                    firstValid = slot.extracted;
+                } else {
+                    if (!GTUtility.areFluidsEqual(firstValid, slot.extracted)) {
+                        return null;
+                    }
+                }
             }
 
-            if (GTUtility.areFluidsEqual(fluidStack, storedFluids[i], false)) {
-                return i;
+            return firstValid;
+        } else {
+            for (Slot slot : slots) {
+                if (slot == null || slot.extracted == null) continue;
+
+                return slot.extracted;
             }
+
+            return null;
         }
-
-        return -1;
     }
 
     @Override
@@ -531,45 +762,33 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
 
-        NBTTagList nbtTagList = new NBTTagList();
-        for (int i = 0; i < SLOT_COUNT; i++) {
-            FluidStack fluidStack = storedFluids[i];
-            if (fluidStack == null) {
-                continue;
-            }
-            NBTTagCompound fluidTag = fluidStack.writeToNBT(new NBTTagCompound());
-            if (storedInformationFluids[i] != null)
-                fluidTag.setInteger("informationAmount", storedInformationFluids[i].amount);
-            nbtTagList.appendTag(fluidTag);
-        }
-
-        aNBT.setTag("storedFluids", nbtTagList);
+        aNBT.setInteger("version", 1);
         aNBT.setBoolean("autoPull", autoPullFluidList);
         aNBT.setInteger("minAmount", minAutoPullAmount);
         aNBT.setBoolean("additionalConnection", additionalConnection);
         aNBT.setBoolean("expediteRecipeCheck", expediteRecipeCheck);
         aNBT.setInteger("refreshTime", autoPullRefreshTime);
         getProxy().writeToNBT(aNBT);
+
+        NBTTagList slotList = new NBTTagList();
+        aNBT.setTag("slots", slotList);
+
+        for (int i = 0; i < slots.length; i++) {
+            Slot slot = slots[i];
+
+            if (slot == null) continue;
+
+            NBTTagCompound tag = new NBTTagCompound();
+            slot.writeToNBT(tag);
+            tag.setInteger("index", i);
+
+            slotList.appendTag(tag);
+        }
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        if (aNBT.hasKey("storedFluids")) {
-            NBTTagList nbtTagList = aNBT.getTagList("storedFluids", 10);
-            int c = Math.min(nbtTagList.tagCount(), SLOT_COUNT);
-            for (int i = 0; i < c; i++) {
-                NBTTagCompound nbtTagCompound = nbtTagList.getCompoundTagAt(i);
-                FluidStack fluidStack = GTUtility.loadFluid(nbtTagCompound);
-                storedFluids[i] = fluidStack;
-
-                if (nbtTagCompound.hasKey("informationAmount")) {
-                    int informationAmount = nbtTagCompound.getInteger("informationAmount");
-                    storedInformationFluids[i] = GTUtility.copyAmount(informationAmount, fluidStack);
-                }
-            }
-        }
-
         minAutoPullAmount = aNBT.getInteger("minAmount");
         autoPullFluidList = aNBT.getBoolean("autoPull");
         additionalConnection = aNBT.getBoolean("additionalConnection");
@@ -578,10 +797,45 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
             autoPullRefreshTime = aNBT.getInteger("refreshTime");
         }
         getProxy().readFromNBT(aNBT);
+        updateAE2ProxyColor();
+
+        switch (aNBT.getInteger("version")) {
+            case 0 -> {
+                if (aNBT.hasKey("storedFluids")) {
+                    NBTTagList nbtTagList = aNBT.getTagList("storedFluids", 10);
+                    int c = Math.min(nbtTagList.tagCount(), SLOT_COUNT);
+                    for (int i = 0; i < c; i++) {
+                        NBTTagCompound nbtTagCompound = nbtTagList.getCompoundTagAt(i);
+                        FluidStack fluidStack = GTUtility.loadFluid(nbtTagCompound);
+                        if (fluidStack == null) continue;
+
+                        Slot slot = new Slot(fluidStack);
+                        slots[i] = slot;
+
+                        if (nbtTagCompound.hasKey("informationAmount")) {
+                            int informationAmount = nbtTagCompound.getInteger("informationAmount");
+                            slot.extracted = GTUtility.copyAmount(informationAmount, fluidStack);
+                            slot.extractedAmount = informationAmount;
+                        }
+                    }
+                }
+            }
+            case 1 -> {
+                NBTTagList slotList = aNBT.getTagList("slots", Constants.NBT.TAG_COMPOUND);
+
+                // noinspection unchecked
+                for (NBTTagCompound tag : (List<NBTTagCompound>) slotList.tagList) {
+                    Slot slot = Slot.readFromNBT(tag);
+
+                    if (slot != null) slots[tag.getInteger("index")] = slot;
+                }
+            }
+        }
     }
 
     @Override
-    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
+        ItemStack aTool) {
         if (!autoPullAvailable) {
             return;
         }
@@ -611,11 +865,21 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
 
         if (!autoPullFluidList) {
             NBTTagList stockingFluids = nbt.getTagList("fluidsToStock", 10);
+
+            clearSlotConfigs();
             for (int i = 0; i < stockingFluids.tagCount(); i++) {
-                storedFluids[i] = GTUtility.loadFluid(stockingFluids.getCompoundTagAt(i));
+                final FluidStack fs = GTUtility.loadFluid(stockingFluids.getCompoundTagAt(i));
+                if (fs == null) continue;
+                slots[i] = new Slot(fs);
             }
         }
+
         updateValidGridProxySides();
+        byte color = nbt.getByte("color");
+        this.getBaseMetaTileEntity()
+            .setColorization(color);
+
+        updateAllInformationSlots();
         return true;
     }
 
@@ -628,18 +892,20 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
         tag.setBoolean("additionalConnection", additionalConnection);
         tag.setInteger("refreshTime", autoPullRefreshTime);
         tag.setBoolean("expediteRecipeCheck", expediteRecipeCheck);
+        tag.setByte("color", this.getColor());
 
-        NBTTagList stockingFluids = new NBTTagList();
         if (!autoPullFluidList) {
-            for (int index = 0; index < SLOT_COUNT; index++) {
-                FluidStack fluidStack = storedFluids[index];
-                if (fluidStack == null) {
-                    continue;
-                }
-                stockingFluids.appendTag(fluidStack.writeToNBT(new NBTTagCompound()));
+            NBTTagList stockingFluids = new NBTTagList();
+
+            for (Slot slot : slots) {
+                if (slot == null) continue;
+
+                stockingFluids.appendTag(slot.config.writeToNBT(new NBTTagCompound()));
             }
+
             tag.setTag("fluidsToStock", stockingFluids);
         }
+
         return tag;
     }
 
@@ -661,272 +927,12 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
     @Override
     public void onLeftclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
         if (!(aPlayer instanceof EntityPlayerMP)) return;
-
         ItemStack dataStick = aPlayer.inventory.getCurrentItem();
         if (!ItemList.Tool_DataStick.isStackEqual(dataStick, false, true)) return;
 
         dataStick.stackTagCompound = getCopiedData(aPlayer);
         dataStick.setStackDisplayName("Stocking Input Hatch Configuration");
         aPlayer.addChatMessage(new ChatComponentTranslation("GT5U.machines.stocking_bus.saved"));
-    }
-
-    @Override
-    public void onExplosion() {
-        for (int i = 0; i < SLOT_COUNT; i++) {
-            mInventory[i] = null;
-        }
-    }
-
-    public boolean containsSuchStack(FluidStack tStack) {
-        for (int i = 0; i < 16; ++i) {
-            if (GTUtility.areFluidsEqual(storedFluids[i], tStack, false)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    @Override
-    public int getGUIHeight() {
-        return 179;
-    }
-
-    @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        if (autoPullAvailable) {
-            buildContext.addSyncedWindow(CONFIG_WINDOW_ID, this::createStackSizeConfigurationWindow);
-        }
-
-        builder.widget(
-            SlotGroup.ofFluidTanks(
-                IntStream.range(0, SLOT_COUNT)
-                    .mapToObj(index -> createTankForFluidStack(storedFluids, index, 1))
-                    .collect(Collectors.toList()),
-                4)
-                .phantom(true)
-                .widgetCreator((slotIndex, h) -> (FluidSlotWidget) new FluidSlotWidget(h) {
-
-                    @Override
-                    protected void tryClickPhantom(ClickData clickData, ItemStack cursorStack) {
-                        if (clickData.mouseButton != 0 || autoPullFluidList) return;
-
-                        FluidStack heldFluid = getFluidForPhantomItem(cursorStack);
-                        if (cursorStack == null) {
-                            storedFluids[slotIndex] = null;
-                        } else {
-                            if (containsSuchStack(heldFluid)) return;
-                            storedFluids[slotIndex] = heldFluid;
-                        }
-                        if (getBaseMetaTileEntity().isServerSide()) {
-                            updateInformationSlot(slotIndex);
-                            detectAndSendChanges(false);
-                        }
-                    }
-
-                    @Override
-                    protected void tryScrollPhantom(int direction) {}
-
-                    @Override
-                    public IDrawable[] getBackground() {
-                        IDrawable slot;
-                        if (autoPullFluidList) {
-                            slot = GTUITextures.SLOT_DARK_GRAY;
-                        } else {
-                            slot = ModularUITextures.FLUID_SLOT;
-                        }
-                        return new IDrawable[] { slot, GTUITextures.OVERLAY_SLOT_ARROW_ME };
-                    }
-
-                    @Override
-                    public void buildTooltip(List<Text> tooltip) {
-                        FluidStack fluid = getContent();
-                        if (fluid != null) {
-                            addFluidNameInfo(tooltip, fluid);
-
-                            if (!autoPullFluidList) {
-                                tooltip.add(Text.localised("modularui.phantom.single.clear"));
-                            }
-                        } else {
-                            tooltip.add(
-                                Text.localised("modularui.fluid.empty")
-                                    .format(EnumChatFormatting.WHITE));
-                        }
-
-                        if (autoPullFluidList) {
-                            tooltip.add(Text.localised("GT5U.machines.stocking_bus.cannot_set_slot"));
-                        }
-                    }
-                }.setUpdateTooltipEveryTick(true))
-                .build()
-                .setPos(new Pos2d(7, 9)));
-
-        builder.widget(
-            SlotGroup.ofFluidTanks(
-                IntStream.range(0, SLOT_COUNT)
-                    .mapToObj(index -> createTankForFluidStack(storedInformationFluids, index, Integer.MAX_VALUE))
-                    .collect(Collectors.toList()),
-                4)
-                .phantom(true)
-                .widgetCreator((slotIndex, h) -> (FluidSlotWidget) new FluidSlotWidget(h) {
-
-                    @Override
-                    protected void tryClickPhantom(ClickData clickData, ItemStack cursorStack) {}
-
-                    @Override
-                    protected void tryScrollPhantom(int direction) {}
-
-                    @Override
-                    public void buildTooltip(List<Text> tooltip) {
-                        FluidStack fluid = getContent();
-                        if (fluid != null) {
-                            addFluidNameInfo(tooltip, fluid);
-                            tooltip.add(Text.localised("modularui.fluid.phantom.amount", fluid.amount));
-                            addAdditionalFluidInfo(tooltip, fluid);
-                            if (!Interactable.hasShiftDown()) {
-                                tooltip.add(Text.EMPTY);
-                                tooltip.add(Text.localised("modularui.tooltip.shift"));
-                            }
-                        } else {
-                            tooltip.add(
-                                Text.localised("modularui.fluid.empty")
-                                    .format(EnumChatFormatting.WHITE));
-                        }
-                    }
-                }.setUpdateTooltipEveryTick(true))
-                .background(GTUITextures.SLOT_DARK_GRAY)
-                .controlsAmount(true)
-                .build()
-                .setPos(new Pos2d(97, 9)));
-
-        if (autoPullAvailable) {
-            builder.widget(new ButtonWidget().setOnClick((clickData, widget) -> {
-                if (clickData.mouseButton == 0) {
-                    setAutoPullFluidList(!autoPullFluidList);
-                } else if (clickData.mouseButton == 1 && !widget.isClient()) {
-                    widget.getContext()
-                        .openSyncedWindow(CONFIG_WINDOW_ID);
-                }
-            })
-                .setPlayClickSound(true)
-                .setBackground(() -> {
-                    if (autoPullFluidList) {
-                        return new IDrawable[] { GTUITextures.BUTTON_STANDARD_PRESSED,
-                            GTUITextures.OVERLAY_BUTTON_AUTOPULL_ME };
-                    } else {
-                        return new IDrawable[] { GTUITextures.BUTTON_STANDARD,
-                            GTUITextures.OVERLAY_BUTTON_AUTOPULL_ME_DISABLED };
-                    }
-                })
-                .addTooltips(
-                    Arrays.asList(
-                        StatCollector.translateToLocal("GT5U.machines.stocking_hatch.auto_pull.tooltip.1"),
-                        StatCollector.translateToLocal("GT5U.machines.stocking_hatch.auto_pull.tooltip.2")))
-                .setSize(16, 16)
-                .setPos(80, 10))
-                .widget(new FakeSyncWidget.BooleanSyncer(() -> autoPullFluidList, this::setAutoPullFluidList));
-        }
-
-        builder.widget(
-            new DrawableWidget().setDrawable(GTUITextures.PICTURE_ARROW_DOUBLE)
-                .setPos(82, 30)
-                .setSize(12, 12))
-            .widget(TextWidget.dynamicString(() -> {
-                boolean isActive = isActive();
-                boolean isPowered = isPowered();
-                boolean isBooting = isBooting();
-
-                String state = WailaText.getPowerState(isActive, isPowered, isBooting);
-
-                if (isActive && isPowered) {
-                    return MessageFormat.format(
-                        "{0}{1}§f ({2})",
-                        EnumChatFormatting.GREEN,
-                        state,
-                        StatCollector
-                            .translateToLocal(isAllowedToWork() ? "GT5U.gui.text.enabled" : "GT5U.gui.text.disabled"));
-                } else {
-                    return EnumChatFormatting.DARK_RED + state;
-                }
-            })
-                .setTextAlignment(Alignment.Center)
-                .setSize(130, 9)
-                .setPos(23, 84));
-    }
-
-    private FluidStackTank createTankForFluidStack(FluidStack[] fluidStacks, int slotIndex, int capacity) {
-        return new FluidStackTank(() -> fluidStacks[slotIndex], (stack) -> {
-            if (getBaseMetaTileEntity().isServerSide()) {
-                return;
-            }
-
-            fluidStacks[slotIndex] = stack;
-        }, capacity);
-    }
-
-    protected ModularWindow createStackSizeConfigurationWindow(final EntityPlayer player) {
-        final int WIDTH = 78;
-        final int HEIGHT = 115;
-        final int PARENT_WIDTH = getGUIWidth();
-        final int PARENT_HEIGHT = getGUIHeight();
-        ModularWindow.Builder builder = ModularWindow.builder(WIDTH, HEIGHT);
-        builder.setBackground(GTUITextures.BACKGROUND_SINGLEBLOCK_DEFAULT);
-        builder.setGuiTint(getGUIColorization());
-        builder.setDraggable(true);
-        builder.setPos(
-            (size, window) -> Alignment.Center.getAlignedPos(size, new Size(PARENT_WIDTH, PARENT_HEIGHT))
-                .add(
-                    Alignment.TopRight.getAlignedPos(new Size(PARENT_WIDTH, PARENT_HEIGHT), new Size(WIDTH, HEIGHT))
-                        .add(WIDTH - 3, 0)));
-        builder.widget(
-            TextWidget.localised("GT5U.machines.stocking_hatch.min_amount")
-                .setPos(3, 2)
-                .setSize(74, 14))
-            .widget(
-                new NumericWidget().setSetter(val -> minAutoPullAmount = (int) val)
-                    .setGetter(() -> minAutoPullAmount)
-                    .setBounds(1, Integer.MAX_VALUE)
-                    .setScrollValues(1, 4, 64)
-                    .setTextAlignment(Alignment.Center)
-                    .setTextColor(Color.WHITE.normal)
-                    .setSize(70, 18)
-                    .setPos(3, 18)
-                    .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD));
-        builder.widget(
-            TextWidget.localised("GT5U.machines.stocking_bus.refresh_time")
-                .setPos(3, 42)
-                .setSize(74, 14))
-            .widget(
-                new NumericWidget().setSetter(val -> autoPullRefreshTime = (int) val)
-                    .setGetter(() -> autoPullRefreshTime)
-                    .setBounds(1, Integer.MAX_VALUE)
-                    .setScrollValues(1, 4, 64)
-                    .setTextAlignment(Alignment.Center)
-                    .setTextColor(Color.WHITE.normal)
-                    .setSize(70, 18)
-                    .setPos(3, 58)
-                    .setBackground(GTUITextures.BACKGROUND_TEXT_FIELD));
-        builder.widget(
-            TextWidget.localised("GT5U.machines.stocking_bus.force_check")
-                .setPos(3, 88)
-                .setSize(50, 14))
-            .widget(
-                new CycleButtonWidget().setToggle(() -> expediteRecipeCheck, val -> setRecipeCheck(val))
-                    .setTextureGetter(
-                        state -> expediteRecipeCheck ? GTUITextures.OVERLAY_BUTTON_CHECKMARK
-                            : GTUITextures.OVERLAY_BUTTON_CROSS)
-                    .setBackground(GTUITextures.BUTTON_STANDARD)
-                    .setPos(53, 87)
-                    .setSize(16, 16)
-                    .addTooltip(StatCollector.translateToLocal("GT5U.machines.stocking_bus.hatch_warning")));
-        return builder.build();
-    }
-
-    @Override
-    public void addGregTechLogo(ModularWindow.Builder builder) {
-        builder.widget(
-            new DrawableWidget().setDrawable(getGUITextureSet().getGregTechLogo())
-                .setSize(17, 17)
-                .setPos(80, 63));
     }
 
     @Override
@@ -944,9 +950,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
             StatCollector.translateToLocal("GT5U.waila.stocking_bus.auto_pull." + (autopull ? "enabled" : "disabled")));
         if (autopull) {
             currenttip.add(
-                StatCollector.translateToLocalFormatted(
-                    "GT5U.waila.stocking_hatch.min_amount",
-                    GTUtility.formatNumbers(minSize)));
+                StatCollector.translateToLocalFormatted("GT5U.waila.stocking_hatch.min_amount", formatNumber(minSize)));
         }
         super.getWailaBody(itemStack, currenttip, accessor, config);
     }
@@ -964,24 +968,129 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
     }
 
-    private static String[] getDescriptionArray(boolean autoPullAvailable) {
-        List<String> strings = new ArrayList<>(8);
-        strings.add("Advanced fluid input for Multiblocks");
-        strings.add("Hatch Tier: " + TIER_COLORS[autoPullAvailable ? 9 : 8] + VN[autoPullAvailable ? 9 : 8]);
-        strings.add("Retrieves directly from ME");
-        strings.add("Keeps 16 fluid types in stock");
+    @Override
+    public String[] getDescription() {
+        if (autoPullAvailable) return GTSplit
+            .splitLocalizedFormatted("gt.blockmachines.input_hatch_me.autopull.desc", TIER_COLORS[9] + VN[9]);
+        return GTSplit.splitLocalizedFormatted("gt.blockmachines.input_hatch_me.desc", TIER_COLORS[8] + VN[8]);
+    }
 
-        if (autoPullAvailable) {
-            strings.add(
-                "Auto-Pull from ME mode will automatically stock the first 16 fluid in the ME system, updated every 5 seconds.");
-            strings.add("Toggle by right-clicking with screwdriver, or use the GUI.");
-            strings.add(
-                "Use the GUI to limit the minimum stack size for Auto-Pulling, adjust the slot refresh timer and enable fast recipe checks.");
-            strings.add("WARNING: Fast recipe checks can be laggy. Use with caution.");
+    public static class Slot {
+
+        /** The fluid to pull into this slot. */
+        public final FluidStack config;
+
+        /** The amount of stuff initially in the ME system when the recipe check started. */
+        public int extractedAmount;
+        /**
+         * The extracted stack (almost certainly equal to config). This is shared as a reference to the multiblock,
+         * which decrements the stored amount as it gets consumed. After the recipe check has finished, the amount in
+         * this stack is compared to {@link #extractedAmount} and the difference is subtracted from the ME system. If
+         * this operation fails, the machine is shut down.
+         */
+        public FluidStack extracted;
+
+        public Slot(FluidStack config) {
+            this.config = config;
         }
 
-        strings.add("Change ME connection behavior by right-clicking with wire cutter.");
-        strings.add("Configuration data can be copy+pasted using a data stick.");
-        return strings.toArray(new String[0]);
+        public void resetExtracted() {
+            extracted = null;
+            extractedAmount = 0;
+        }
+
+        public FluidStack getOriginalExtracted() {
+            return extracted == null ? null : GTUtility.copyAmount(extractedAmount, extracted);
+        }
+
+        @Override
+        public final boolean equals(Object o) {
+            if (!(o instanceof Slot slot)) return false;
+
+            return extractedAmount == slot.extractedAmount && Objects.equals(config, slot.config)
+                && Objects.equals(extracted, slot.extracted);
+        }
+
+        public Slot copy() {
+            Slot copy = new Slot(this.config.copy());
+
+            copy.extracted = this.extracted;
+            copy.extractedAmount = this.extractedAmount;
+
+            return copy;
+        }
+
+        public void writeToNBT(NBTTagCompound tag) {
+            tag.setTag("config", config.writeToNBT(new NBTTagCompound()));
+            if (extracted != null) {
+                tag.setTag("extracted", extracted.writeToNBT(new NBTTagCompound()));
+                tag.setInteger("extractedAmount", extractedAmount);
+            }
+        }
+
+        public static Slot readFromNBT(NBTTagCompound tag) {
+            Slot slot = new Slot(FluidStack.loadFluidStackFromNBT(tag.getCompoundTag("config")));
+
+            if (slot.config == null) return null;
+
+            if (tag.hasKey("extracted")) {
+                slot.extracted = FluidStack.loadFluidStackFromNBT(tag.getCompoundTag("extracted"));
+                slot.extractedAmount = tag.getInteger("extractedAmount");
+            }
+
+            return slot;
+        }
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return true;
+    }
+
+    @Override
+    public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTEHatchInputMEGui(this, slots).build(guiData, syncManager, uiSettings);
+    }
+
+    @Override
+    public IGridNode getGridNode(ForgeDirection dir) {
+        return getProxy().getNode();
+    }
+
+    @Override
+    public void securityBreak() {}
+
+    @Override
+    public DimensionalCoord getLocation() {
+        return new DimensionalCoord(
+            getBaseMetaTileEntity().getWorld(),
+            getBaseMetaTileEntity().getXCoord(),
+            getBaseMetaTileEntity().getYCoord(),
+            getBaseMetaTileEntity().getZCoord());
+    }
+
+    private IStackWatcher watcher;
+
+    private void configureWatchers() {
+        if (this.watcher != null) {
+            this.watcher.clear();
+            if (expediteRecipeCheck) for (Slot slot : slots) {
+                if (slot != null && slot.config != null) {
+                    watcher.add(AEFluidStack.create(slot.config));
+                }
+            }
+        }
+    }
+
+    @Override
+    public void updateWatcher(IStackWatcher newWatcher) {
+        watcher = newWatcher;
+        configureWatchers();
+    }
+
+    @Override
+    public void onStackChange(IItemList o, IAEStack fullStack, IAEStack diffStack, BaseActionSource src,
+        StorageChannel chan) {
+        if (expediteRecipeCheck && diffStack.getStackSize() > 0) justHadNewFluids = true;
     }
 }

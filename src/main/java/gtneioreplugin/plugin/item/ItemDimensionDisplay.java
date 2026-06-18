@@ -1,9 +1,15 @@
 package gtneioreplugin.plugin.item;
 
+import java.util.List;
+
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.client.MinecraftForgeClient;
+
+import com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
@@ -35,6 +41,7 @@ public class ItemDimensionDisplay extends ItemBlock {
         return null;
     }
 
+    /** Gets the abbreviated dimension name for this block. */
     public static String getDimension(ItemStack stack) {
         if (stack.getItem() instanceof ItemDimensionDisplay) {
             return ((BlockDimensionDisplay) Block.getBlockFromItem(stack.getItem())).getDimension();
@@ -43,12 +50,40 @@ public class ItemDimensionDisplay extends ItemBlock {
     }
 
     @Override
+    public String getUnlocalizedName() {
+        return DimensionHelper.getDimUnlocalizedName("unknown");
+    }
+
+    @Override
+    public String getUnlocalizedName(ItemStack stack) {
+        String dimName = DimensionHelper.getFullName(getDimension(stack));
+
+        return DimensionHelper.getDimUnlocalizedName(dimName);
+    }
+
+    @Override
     public String getItemStackDisplayName(ItemStack stack) {
-        String dimension = getDimension(stack);
-        if (dimension != null) {
-            return DimensionHelper.convertCondensedStringToToolTip(dimension)
-                .get(0);
+        String dimName = DimensionHelper.getFullName(getDimension(stack));
+
+        String i18nName = DimensionHelper.getDimLocalizedName(dimName);
+
+        return StatCollector.translateToLocalFormatted(DimensionHelper.getDimTier(dimName), i18nName);
+    }
+
+    @Override
+    public void addInformation(ItemStack stack, EntityPlayer player, List<String> list, boolean advanced) {
+        super.addInformation(stack, player, list, advanced);
+
+        if (stack.hasTagCompound() && stack.getTagCompound()
+            .hasKey("VeinChance")) {
+
+            double chance = stack.getTagCompound()
+                .getDouble("VeinChance");
+
+            list.add(
+                StatCollector.translateToLocalFormatted(
+                    "gtnop.gui.nei.orechunkchance.value",
+                    NumberFormatUtil.formatNumber(100 * chance)));
         }
-        return super.getItemStackDisplayName(stack);
     }
 }

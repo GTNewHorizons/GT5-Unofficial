@@ -17,8 +17,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.annotation.Nonnull;
+import java.util.Optional;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -30,9 +29,12 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.HeatingCoilLevel;
+import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -43,10 +45,14 @@ import gregtech.api.metatileentity.implementations.MTEHatchMultiInput;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.maps.OilCrackerBackend;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.tooltip.TooltipHelper;
+import gregtech.api.util.tooltip.TooltipTier;
+import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
 import gregtech.common.tileentities.machines.MTEHatchInputME;
 
@@ -61,7 +67,10 @@ public class MTEOilCracker extends MTEEnhancedMultiBlockBase<MTEOilCracker> impl
             transpose(
                 new String[][] { { "lcmcr", "lcmcr", "lcmcr" }, { "lc~cr", "l---r", "lcmcr" },
                     { "lcmcr", "lcmcr", "lcmcr" }, }))
-        .addElement('c', activeCoils(ofCoil(MTEOilCracker::setCoilLevel, MTEOilCracker::getCoilLevel)))
+        .addElement(
+            'c',
+            GTStructureChannels.HEATING_COIL
+                .use(activeCoils(ofCoil(MTEOilCracker::setCoilLevel, MTEOilCracker::getCoilLevel))))
         .addElement(
             'l',
             buildHatchAdder(MTEOilCracker.class)
@@ -69,7 +78,7 @@ public class MTEOilCracker extends MTEEnhancedMultiBlockBase<MTEOilCracker> impl
                     HatchElement.InputHatch.withAdder(MTEOilCracker::addLeftHatchToMachineList),
                     HatchElement.Energy,
                     HatchElement.Maintenance)
-                .dot(2)
+                .hint(2)
                 .casingIndex(CASING_INDEX)
                 .buildAndChain(onElementPass(MTEOilCracker::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings4, 1))))
         .addElement(
@@ -79,7 +88,7 @@ public class MTEOilCracker extends MTEEnhancedMultiBlockBase<MTEOilCracker> impl
                     HatchElement.OutputHatch.withAdder(MTEOilCracker::addRightHatchToMachineList),
                     HatchElement.Energy,
                     HatchElement.Maintenance)
-                .dot(3)
+                .hint(3)
                 .casingIndex(CASING_INDEX)
                 .buildAndChain(onElementPass(MTEOilCracker::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings4, 1))))
         .addElement(
@@ -91,7 +100,7 @@ public class MTEOilCracker extends MTEEnhancedMultiBlockBase<MTEOilCracker> impl
                     HatchElement.InputBus,
                     HatchElement.Energy,
                     HatchElement.Maintenance)
-                .dot(1)
+                .hint(1)
                 .casingIndex(CASING_INDEX)
                 .buildAndChain(onElementPass(MTEOilCracker::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings4, 1))))
         .build();
@@ -113,7 +122,9 @@ public class MTEOilCracker extends MTEEnhancedMultiBlockBase<MTEOilCracker> impl
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Cracker")
+        tt.addMachineType("Cracker, OCU")
+            .addDynamicEuEffInfo(0.1f, TooltipTier.COIL)
+            .addInfo("Maximum of " + TooltipHelper.effText(0.5f) + " EU discount")
             .addInfo("Thermally cracks heavy hydrocarbons into lighter fractions")
             .addInfo("More efficient than the Chemical Reactor")
             .addInfo("Gives different benefits whether it hydro or steam-cracks:")
@@ -124,16 +135,16 @@ public class MTEOilCracker extends MTEEnhancedMultiBlockBase<MTEOilCracker> impl
             .beginStructureBlock(5, 3, 3, true)
             .addController("Front center")
             .addCasingInfoRange("Clean Stainless Steel Machine Casing", 18, 21, false)
-            .addOtherStructurePart("2 Rings of 8 Coils", "Each side of the controller")
-            .addInfo("Gets 10% EU/t reduction per coil tier, up to a maximum of 50%")
-            .addEnergyHatch("Any casing", 1, 2, 3)
-            .addMaintenanceHatch("Any casing", 1, 2, 3)
-            .addInputHatch("For cracking fluid (Steam/Hydrogen/etc.) ONLY, Any middle ring casing", 1)
-            .addInputHatch("Any left/right side casing", 2, 3)
-            .addOutputHatch("Any right/left side casing", 2, 3)
+            .addOtherStructurePart("Heating Coil", "2 rings of 8, each side of the controller")
+            .addEnergyHatch("Any Casing", 1, 2, 3)
+            .addMaintenanceHatch("Any Casing", 1, 2, 3)
+            .addInputHatch("For cracking fluid (Steam/Hydrogen/etc.) ONLY, any middle ring Casing", 1)
+            .addInputHatch("Any left/right side Casing", 2, 3)
+            .addOutputHatch("Any right/left side Casing", 2, 3)
             .addStructureInfo("Input/Output Hatches must be on opposite sides!")
-            .addInputBus("Any middle ring casing, optional for programmed circuit automation")
+            .addInputBus("Any middle ring Casing, optional for programmed circuit automation")
             .addStructureHint("GT5U.cracker.io_side")
+            .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
         return tt;
     }
@@ -171,15 +182,7 @@ public class MTEOilCracker extends MTEEnhancedMultiBlockBase<MTEOilCracker> impl
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic() {
-
-            @Nonnull
-            @Override
-            public CheckRecipeResult process() {
-                setEuModifier(1.0F - Math.min(0.1F * (heatLevel.getTier() + 1), 0.5F));
-                return super.process();
-            }
-        };
+        return new ProcessingLogic().setEuModifierSupplier(this::getEuModifier);
     }
 
     @Override
@@ -193,6 +196,10 @@ public class MTEOilCracker extends MTEEnhancedMultiBlockBase<MTEOilCracker> impl
 
     public void setCoilLevel(HeatingCoilLevel aCoilLevel) {
         heatLevel = aCoilLevel;
+    }
+
+    public double getEuModifier() {
+        return 1.0F - Math.min(0.1F * (heatLevel.getTier() + 1), 0.5F);
     }
 
     private boolean addMiddleInputToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
@@ -256,38 +263,25 @@ public class MTEOilCracker extends MTEEnhancedMultiBlockBase<MTEOilCracker> impl
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         setCoilLevel(HeatingCoilLevel.None);
         mCasingAmount = 0;
         mMiddleInputHatches.clear();
         mInputOnSide = -1;
         mOutputOnSide = -1;
-        replaceDeprecatedCoils(aBaseMetaTileEntity);
-        return checkPiece(STRUCTURE_PIECE_MAIN, 2, 1, 0) && mInputOnSide != -1
-            && mOutputOnSide != -1
-            && mCasingAmount >= 18
-            && mMaintenanceHatches.size() == 1
-            && !mMiddleInputHatches.isEmpty();
-    }
-
-    @Override
-    public boolean isCorrectMachinePart(ItemStack aStack) {
-        return true;
-    }
-
-    @Override
-    public int getMaxEfficiency(ItemStack aStack) {
-        return 10000;
-    }
-
-    @Override
-    public int getDamageToComponent(ItemStack aStack) {
-        return 0;
-    }
-
-    @Override
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
-        return false;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 1, 0, errors)) return;
+        if (mInputOnSide == -1) {
+            errors.add(StructureErrors.missingHatch(HatchElement.InputHatch));
+        }
+        if (mOutputOnSide == -1) {
+            errors.add(StructureErrors.missingHatch(HatchElement.OutputHatch));
+        }
+        checkCasingMin(errors, mCasingAmount, 18);
+        checkHasMaintenanceHatch(errors);
+        checkHasEnergyHatch(errors);
+        if (mMiddleInputHatches.isEmpty()) {
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.cracker_missing_middle_input_hatch"));
+        }
     }
 
     @Override
@@ -295,31 +289,14 @@ public class MTEOilCracker extends MTEEnhancedMultiBlockBase<MTEOilCracker> impl
         return new MTEOilCracker(this.mName);
     }
 
-    private void replaceDeprecatedCoils(IGregTechTileEntity aBaseMetaTileEntity) {
-        final int xDir = aBaseMetaTileEntity.getBackFacing().offsetX;
-        final int zDir = aBaseMetaTileEntity.getBackFacing().offsetZ;
-        final int tX = aBaseMetaTileEntity.getXCoord() + xDir;
-        final int tY = aBaseMetaTileEntity.getYCoord();
-        final int tZ = aBaseMetaTileEntity.getZCoord() + zDir;
-        for (int xPos = tX - 1; xPos <= tX + 1; xPos += (xDir != 0 ? 1 : 2))
-            for (int yPos = tY - 1; yPos <= tY + 1; yPos++)
-                for (int zPos = tZ - 1; zPos <= tZ + 1; zPos += (xDir != 0 ? 2 : 1)) {
-                    if ((yPos == tY) && (xPos == tX || zPos == tZ)) continue;
-                    final int tUsedMeta = aBaseMetaTileEntity.getMetaID(xPos, yPos, zPos);
-                    if (tUsedMeta < 12) continue;
-                    if (tUsedMeta > 14) continue;
-                    if (aBaseMetaTileEntity.getBlock(xPos, yPos, zPos) != GregTechAPI.sBlockCasings1) continue;
-
-                    aBaseMetaTileEntity.getWorld()
-                        .setBlock(xPos, yPos, zPos, GregTechAPI.sBlockCasings5, tUsedMeta - 12, 3);
-                }
-    }
-
     @Override
-    public ArrayList<FluidStack> getStoredFluids() {
+    public ArrayList<FluidStack> getStoredFluidsForColor(Optional<Byte> color) {
         final ArrayList<FluidStack> rList = new ArrayList<>();
         Map<Fluid, FluidStack> inputsFromME = new HashMap<>();
         for (final MTEHatchInput tHatch : validMTEList(mInputHatches)) {
+            byte hatchColor = tHatch.getBaseMetaTileEntity()
+                .getColorization();
+            if (color.isPresent() && hatchColor != -1 && hatchColor != color.get()) continue;
             tHatch.mRecipeMap = getRecipeMap();
             if (tHatch instanceof MTEHatchInputME meHatch) {
                 for (FluidStack tFluid : meHatch.getStoredFluids()) {
@@ -343,6 +320,9 @@ public class MTEOilCracker extends MTEEnhancedMultiBlockBase<MTEOilCracker> impl
             }
         }
         for (final MTEHatchInput tHatch : validMTEList(mMiddleInputHatches)) {
+            byte hatchColor = tHatch.getBaseMetaTileEntity()
+                .getColorization();
+            if (color.isPresent() && hatchColor != -1 && hatchColor != color.get()) continue;
             tHatch.mRecipeMap = getRecipeMap();
             if (tHatch instanceof MTEHatchInputME meHatch) {
                 for (FluidStack tFluid : meHatch.getStoredFluids()) {
@@ -382,7 +362,7 @@ public class MTEOilCracker extends MTEEnhancedMultiBlockBase<MTEOilCracker> impl
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
-        return survivialBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 2, 1, 0, elementBudget, env, false, true);
+        return survivalBuildPiece(STRUCTURE_PIECE_MAIN, stackSize, 2, 1, 0, elementBudget, env, false, true);
     }
 
     @Override
@@ -396,7 +376,7 @@ public class MTEOilCracker extends MTEEnhancedMultiBlockBase<MTEOilCracker> impl
     }
 
     @Override
-    protected void startRecipeProcessing() {
+    public void startRecipeProcessing() {
         for (MTEHatchInput hatch : validMTEList(mMiddleInputHatches)) {
             if (hatch instanceof IRecipeProcessingAwareHatch aware) {
                 aware.startRecipeProcessing();
@@ -406,12 +386,18 @@ public class MTEOilCracker extends MTEEnhancedMultiBlockBase<MTEOilCracker> impl
     }
 
     @Override
-    protected void endRecipeProcessing() {
+    public void endRecipeProcessing() {
         super.endRecipeProcessing();
         for (MTEHatchInput hatch : validMTEList(mMiddleInputHatches)) {
             if (hatch instanceof IRecipeProcessingAwareHatch aware) {
                 setResultIfFailure(aware.endRecipeProcessing(this));
             }
         }
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    protected SoundResource getActivitySoundLoop() {
+        return SoundResource.GTCEU_LOOP_FIRE;
     }
 }

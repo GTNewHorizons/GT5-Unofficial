@@ -1,5 +1,6 @@
 package gregtech.api.metatileentity.implementations;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
@@ -11,8 +12,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.api.screen.ModularWindow;
 import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
@@ -33,20 +36,19 @@ import appeng.api.storage.data.IItemList;
 import gregtech.api.enums.GTValues;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.modularui.IAddUIWidgets;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTUtility;
 import gregtech.crossmod.ae2.IMEAwareItemInventory;
 import gregtech.crossmod.ae2.MEItemInventoryHandler;
 
 public abstract class MTEHatchNonConsumableBase extends MTEHatch
-    implements IMEMonitor<IAEItemStack>, IMEAwareItemInventory, IAddUIWidgets {
+    implements IMEMonitor<IAEItemStack>, IMEAwareItemInventory {
 
     private ItemStack itemStack = null;
     private int itemCount = 0;
     private boolean isOutputSlotLocked = true;
     private final MEItemInventoryHandler<?> meInventoryHandler = new MEItemInventoryHandler<>(this);
+    private boolean changed = false;
 
     public MTEHatchNonConsumableBase(int ID, String name, String nameRegional, int tier, String description) {
         super(ID, name, nameRegional, tier, 3, new String[] { description, "Will keep its contents when broken" });
@@ -68,6 +70,10 @@ public abstract class MTEHatchNonConsumableBase extends MTEHatch
 
     @Override
     public void setItemStack(ItemStack stack) {
+        if (itemStack != stack) {
+            changed = true;
+        }
+
         itemStack = stack;
     }
 
@@ -78,10 +84,21 @@ public abstract class MTEHatchNonConsumableBase extends MTEHatch
 
     @Override
     public void setItemCount(int amount) {
+        if (itemCount != amount) {
+            changed = true;
+        }
+
         itemCount = amount;
     }
 
-    @Override
+    public boolean hasChanged() {
+        return changed;
+    }
+
+    public void unmarkChanged() {
+        changed = false;
+    }
+
     public abstract int getItemCapacity();
 
     @Override
@@ -119,7 +136,8 @@ public abstract class MTEHatchNonConsumableBase extends MTEHatch
                     .setBackground(GTUITextures.TRANSPARENT)
                     .setPos(59, 42))
             .widget(
-                new TextWidget("Item Amount").setDefaultColor(COLOR_TEXT_WHITE.get())
+                new TextWidget(StatCollector.translateToLocal("GT5U.gui.text.item_amount"))
+                    .setDefaultColor(COLOR_TEXT_WHITE.get())
                     .setPos(10, 20))
             .widget(
                 new TextWidget().setStringSupplier(() -> numberFormat.format(clientItemCount))
@@ -146,32 +164,25 @@ public abstract class MTEHatchNonConsumableBase extends MTEHatch
     @Override
     public void addAdditionalTooltipInformation(ItemStack stack, List<String> tooltip) {
         tooltip.add("Capacity: " + EnumChatFormatting.GOLD + getItemCapacity() + EnumChatFormatting.GRAY + " Items");
-        if (stack.hasTagCompound() && stack.stackTagCompound.hasKey("itemStack")) {
+        if (ItemStackNBT.hasKey(stack, "itemStack")) {
             final ItemStack tContents = ItemStack
                 .loadItemStackFromNBT(stack.stackTagCompound.getCompoundTag("itemStack"));
             final int tSize = stack.stackTagCompound.getInteger("itemCount");
             if (tContents != null && tSize > 0) {
                 tooltip.add(
-                    GTLanguageManager.addStringLocalization("TileEntity_CHEST_INFO", "Contains Item: ")
-                        + EnumChatFormatting.YELLOW
-                        + tContents.getDisplayName()
-                        + EnumChatFormatting.GRAY);
-                tooltip.add(
-                    GTLanguageManager.addStringLocalization("TileEntity_CHEST_AMOUNT", "Item Amount: ")
-                        + EnumChatFormatting.GREEN
-                        + GTUtility.formatNumbers(tSize)
-                        + EnumChatFormatting.GRAY);
+                    StatCollector.translateToLocalFormatted("gt.tileentity.chest_info", tContents.getDisplayName()));
+                tooltip.add(StatCollector.translateToLocalFormatted("gt.tileentity.chest_amount", formatNumber(tSize)));
             }
         }
     }
 
     @Override
-    public void addListener(IMEMonitorHandlerReceiver<IAEItemStack> meMonitorHandlerReceiver, Object o) {
+    public void addListener(IMEMonitorHandlerReceiver meMonitorHandlerReceiver, Object o) {
         meInventoryHandler.addListener(meMonitorHandlerReceiver, o);
     }
 
     @Override
-    public void removeListener(IMEMonitorHandlerReceiver<IAEItemStack> meMonitorHandlerReceiver) {
+    public void removeListener(IMEMonitorHandlerReceiver meMonitorHandlerReceiver) {
         meInventoryHandler.removeListener(meMonitorHandlerReceiver);
     }
 
@@ -277,11 +288,6 @@ public abstract class MTEHatchNonConsumableBase extends MTEHatch
             meInventoryHandler.notifyListeners(count - savedCount, stack);
             if (count != savedCount) getBaseMetaTileEntity().markDirty();
         }
-    }
-
-    @Override
-    public boolean isAccessAllowed(EntityPlayer aPlayer) {
-        return true;
     }
 
     @Override

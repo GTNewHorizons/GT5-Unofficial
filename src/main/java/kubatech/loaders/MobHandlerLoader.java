@@ -20,6 +20,7 @@
 
 package kubatech.loaders;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.enums.Mods.InfernalMobs;
 import static kubatech.tileentity.gregtech.multiblock.MTEExtremeEntityCrusher.DIAMOND_SPIKES_DAMAGE;
 import static kubatech.tileentity.gregtech.multiblock.MTEExtremeEntityCrusher.MOB_SPAWN_INTERVAL;
@@ -38,9 +39,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.MinecraftForge;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import com.kuba6000.mobsinfo.api.IChanceModifier;
 import com.kuba6000.mobsinfo.api.MobDrop;
 import com.kuba6000.mobsinfo.api.MobRecipe;
@@ -50,20 +48,13 @@ import com.kuba6000.mobsinfo.api.event.PreMobsRegistrationEvent;
 
 import atomicstryker.infernalmobs.common.InfernalMobsCore;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import gregtech.api.util.GTUtility;
-import kubatech.Tags;
 import kubatech.config.Config;
 import kubatech.tileentity.gregtech.multiblock.MTEExtremeEntityCrusher;
 
 public class MobHandlerLoader {
 
-    private static final Logger LOG = LogManager.getLogger(Tags.MODID + "[Mob Handler Loader]");
-
-    private static MobHandlerLoader instance = null;
-
     public static void init() {
-        instance = new MobHandlerLoader();
-        MinecraftForge.EVENT_BUS.register(instance);
+        MinecraftForge.EVENT_BUS.register(new MobHandlerLoader());
     }
 
     public static Map<String, MobEECRecipe> recipeMap = new HashMap<>();
@@ -83,17 +74,22 @@ public class MobHandlerLoader {
             this.recipe = recipe;
             try {
                 this.entityCopy = this.recipe.createEntityCopy();
+                this.entityCopy.setWorld(null);
             } catch (NoSuchMethodException | InvocationTargetException | InstantiationException
                 | IllegalAccessException e) {
                 throw new RuntimeException(e);
             }
-            mDuration = Math.max(MOB_SPAWN_INTERVAL, (int) ((recipe.maxEntityHealth / DIAMOND_SPIKES_DAMAGE) * 10d));
+            mDuration = getProgressTimeForAttackDamage(DIAMOND_SPIKES_DAMAGE);
+        }
+
+        public final int getProgressTimeForAttackDamage(final double attackDamage) {
+            return Math.max(MOB_SPAWN_INTERVAL, (int) ((recipe.maxEntityHealth / attackDamage) * 10d));
         }
 
         public ItemStack[] generateOutputs(Random rnd, MTEExtremeEntityCrusher MTE, double attackDamage,
             int lootinglevel, boolean preferInfernalDrops, boolean voidAllDamagedAndEnchantedItems) {
             MTE.lEUt = mEUt;
-            MTE.mMaxProgresstime = Math.max(MOB_SPAWN_INTERVAL, (int) ((recipe.maxEntityHealth / attackDamage) * 10d));
+            MTE.mMaxProgresstime = getProgressTimeForAttackDamage(attackDamage);
             ArrayList<ItemStack> stacks = new ArrayList<>(this.mOutputs.size());
             this.entityCopy.setPosition(
                 MTE.getBaseMetaTileEntity()
@@ -234,8 +230,10 @@ public class MobHandlerLoader {
         if (recipe != null) {
             event.additionalInformation.addAll(
                 Arrays.asList(
-                    GTUtility.trans("153", "Usage: ") + GTUtility.formatNumbers(recipe.mEUt) + " EU/t",
-                    GTUtility.trans("158", "Time: ") + GTUtility.formatNumbers(recipe.mDuration / 20d) + " secs"));
+                    StatCollector.translateToLocalFormatted("kubatech.gui.text.usage_line", formatNumber(recipe.mEUt)),
+                    StatCollector.translateToLocalFormatted(
+                        "kubatech.gui.text.time_line",
+                        formatNumber(recipe.mDuration / 20d))));
         }
     }
 }

@@ -17,12 +17,14 @@ import static gregtech.api.enums.OrePrefixes.block;
 import static gregtech.api.enums.OrePrefixes.cellMolten;
 import static gregtech.api.enums.OrePrefixes.ingot;
 import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
+import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeConstants.UniversalArcFurnace;
 
 import bartworks.system.material.Werkstoff;
 import bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
+import bartworks.util.BWUtil;
 import gregtech.api.enums.GTValues;
 import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.util.GTRecipeConstants;
@@ -37,7 +39,7 @@ public class BlockLoader implements IWerkstoffRunnable {
                 .itemInputs(werkstoff.get(block))
                 .itemOutputs(werkstoff.get(ingot, 9))
                 .duration(16 * TICKS)
-                .eut(90)
+                .eut(BWUtil.calculateRecipeEU(werkstoff, 16))
                 .metadata(GTRecipeConstants.RECYCLE, true)
                 .addTo(UniversalArcFurnace);
         }
@@ -45,10 +47,10 @@ public class BlockLoader implements IWerkstoffRunnable {
 
             GTValues.RA.stdBuilder()
                 .itemInputs(werkstoff.get(block))
-                .fluidOutputs(werkstoff.getMolten(1296))
+                .fluidOutputs(werkstoff.getMolten(9 * INGOTS))
                 .recipeCategory(RecipeCategories.fluidExtractorRecycling)
                 .duration(14 * SECONDS + 8 * TICKS)
-                .eut(8)
+                .eut(BWUtil.calculateRecipeEU(werkstoff, 8))
                 .addTo(fluidExtractionRecipes);
 
         }

@@ -14,15 +14,18 @@
 package bartworks.common.tileentities.tiered;
 
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEHumongousInputHatch extends MTEHatchInput {
+
+    final int CAPACITY = 2_000_000_000;
 
     public MTEHumongousInputHatch(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional, 13);
-        this.mDescriptionArray[1] = "Capacity: 2,000,000,000L";
     }
 
     public MTEHumongousInputHatch(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -31,7 +34,7 @@ public class MTEHumongousInputHatch extends MTEHatchInput {
 
     @Override
     public int getCapacity() {
-        return 2_000_000_000;
+        return CAPACITY;
     }
 
     @Override

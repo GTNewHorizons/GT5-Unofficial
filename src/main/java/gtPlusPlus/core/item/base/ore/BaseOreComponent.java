@@ -1,7 +1,6 @@
 package gtPlusPlus.core.item.base.ore;
 
 import static gregtech.api.enums.Mods.GTPlusPlus;
-import static gregtech.api.enums.Mods.GregTech;
 
 import java.util.HashMap;
 import java.util.List;
@@ -19,35 +18,33 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.util.GTOreDictUnificator;
-import gtPlusPlus.api.objects.Logger;
-import gtPlusPlus.core.config.Configuration;
+import gregtech.api.util.StringUtils;
+import gregtech.common.config.Client;
 import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
-import gtPlusPlus.core.util.minecraft.ItemUtils;
 
 public class BaseOreComponent extends Item {
 
     @SideOnly(Side.CLIENT)
-    private IIcon base;
-
+    private IIcon iconBase;
     @SideOnly(Side.CLIENT)
-    private IIcon overlay;
+    private IIcon iconOverlay;
 
     public final Material componentMaterial;
     public final String materialName;
     public final String unlocalName;
     public final ComponentTypes componentType;
     public final int componentColour;
-    public Object extraData;
 
     public BaseOreComponent(final Material material, final ComponentTypes componentType) {
         this.componentMaterial = material;
         this.unlocalName = componentType.COMPONENT_NAME + material.getUnlocalizedName();
-        this.materialName = material.getLocalizedName();
+        this.materialName = material.getDefaultLocalName();
         this.componentType = componentType;
         this.setCreativeTab(AddToCreativeTab.tabMisc);
         this.setUnlocalizedName(this.unlocalName);
@@ -56,13 +53,11 @@ public class BaseOreComponent extends Item {
         GameRegistry.registerItem(this, this.unlocalName);
         registerComponent();
         GTOreDictUnificator
-            .registerOre(componentType.getComponent() + material.getUnlocalizedName(), ItemUtils.getSimpleStack(this));
+            .registerOre(componentType.getOrePrefix() + material.getUnlocalizedName(), new ItemStack(this, 1));
     }
 
     public boolean registerComponent() {
-        Logger.MATERIALS("Attempting to register " + this.getUnlocalizedName() + ".");
         if (this.componentMaterial == null) {
-            Logger.MATERIALS("Tried to register " + this.getUnlocalizedName() + " but the material was null.");
             return false;
         }
         // Register Component
@@ -72,29 +67,22 @@ public class BaseOreComponent extends Item {
         }
         String aKey = "Invalid";
         switch (componentType) {
-            case CRUSHED -> aKey = OrePrefixes.crushed.name();
-            case CRUSHEDCENTRIFUGED -> aKey = OrePrefixes.crushedCentrifuged.name();
-            case CRUSHEDPURIFIED -> aKey = OrePrefixes.crushedPurified.name();
-            case DUST -> aKey = OrePrefixes.dust.name();
-            case DUSTIMPURE -> aKey = OrePrefixes.dustImpure.name();
-            case DUSTPURE -> aKey = OrePrefixes.dustPure.name();
-            case MILLED -> aKey = OrePrefixes.milled.name();
-            case RAWORE -> aKey = OrePrefixes.rawOre.name();
+            case CRUSHED -> aKey = OrePrefixes.crushed.getName();
+            case CRUSHEDCENTRIFUGED -> aKey = OrePrefixes.crushedCentrifuged.getName();
+            case CRUSHEDPURIFIED -> aKey = OrePrefixes.crushedPurified.getName();
+            case DUST -> aKey = OrePrefixes.dust.getName();
+            case DUSTIMPURE -> aKey = OrePrefixes.dustImpure.getName();
+            case DUSTPURE -> aKey = OrePrefixes.dustPure.getName();
+            case MILLED -> aKey = OrePrefixes.milled.getName();
+            case RAWORE -> aKey = OrePrefixes.rawOre.getName();
         }
 
         ItemStack x = aMap.get(aKey);
         if (x == null) {
-            aMap.put(aKey, ItemUtils.getSimpleStack(this));
-            Logger.MATERIALS(
-                "Registering a material component. Item: [" + componentMaterial.getUnlocalizedName()
-                    + "] Map: ["
-                    + aKey
-                    + "]");
+            aMap.put(aKey, new ItemStack(this));
             Material.mComponentMap.put(componentMaterial.getUnlocalizedName(), aMap);
             return true;
         } else {
-            // Bad
-            Logger.MATERIALS("Tried to double register a material component. ");
             return false;
         }
     }
@@ -108,52 +96,33 @@ public class BaseOreComponent extends Item {
         return this.materialName;
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
-    public final void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list,
-        final boolean bool) {
+    public final void addInformation(final ItemStack stack, final EntityPlayer player, final List<String> tooltip,
+        final boolean adv) {
         if (this.materialName != null && !this.materialName.isEmpty()) {
             if (this.componentMaterial != null) {
-                if (!this.componentMaterial.vChemicalFormula.contains("?")) {
-                    list.add(Utils.sanitizeStringKeepBrackets(this.componentMaterial.vChemicalFormula));
-                } else if (this.componentMaterial.vChemicalFormula.contains("?")) {
-                    String temp = componentMaterial.vChemicalFormula;
-                    temp = temp.replace(" ", "");
-                    temp = temp.replace("-", "");
-                    temp = temp.replace("_", "");
-                    temp = temp.replace("!", "");
-                    temp = temp.replace("@", "");
-                    temp = temp.replace("#", "");
-                    temp = temp.replace(" ", "");
-                    list.add(temp);
-                }
-                if (this.componentMaterial.isRadioactive) {
-                    list.add(
-                        GTPPCore.GT_Tooltip_Radioactive.get() + " | Level: " + this.componentMaterial.vRadiationLevel);
-                }
+                componentMaterial.addTooltips(tooltip);
             } else {
-                String aChemicalFormula = Material.sChemicalFormula.get(materialName.toLowerCase());
-                if (aChemicalFormula != null && !aChemicalFormula.isEmpty()) {
-                    list.add(Utils.sanitizeStringKeepBrackets(aChemicalFormula));
+                if (Client.tooltip.showFormula) {
+                    String aChemicalFormula = Material.sChemicalFormula.get(materialName.toLowerCase());
+                    if (aChemicalFormula != null && !aChemicalFormula.isEmpty()) {
+                        tooltip.add(StringUtils.sanitizeStringKeepBrackets(aChemicalFormula));
+                    }
                 }
             }
         }
-        super.addInformation(stack, aPlayer, list, bool);
+        super.addInformation(stack, player, tooltip, adv);
     }
 
     @Override
     public void onUpdate(final ItemStack iStack, final World world, final Entity entityHolding, final int p_77663_4_,
         final boolean p_77663_5_) {
         if (this.componentMaterial != null) {
-            if (entityHolding instanceof EntityPlayer) {
-                if (!((EntityPlayer) entityHolding).capabilities.isCreativeMode) {
-                    EntityUtils.applyRadiationDamageToEntity(
-                        iStack.stackSize,
-                        this.componentMaterial.vRadiationLevel,
-                        world,
-                        entityHolding);
-                }
-            }
+            EntityUtils.applyRadiationDamageToEntity(
+                iStack.stackSize,
+                this.componentMaterial.vRadiationLevel,
+                world,
+                entityHolding);
         }
     }
 
@@ -173,30 +142,16 @@ public class BaseOreComponent extends Item {
     @SideOnly(Side.CLIENT)
     public void registerIcons(final IIconRegister par1IconRegister) {
         if (this.componentType == ComponentTypes.MILLED) {
-            this.base = par1IconRegister.registerIcon(GTPlusPlus.ID + ":" + "processing/MilledOre/milled");
+            this.iconBase = par1IconRegister.registerIcon(GTPlusPlus.ID + ":" + "processing/MilledOre/milled");
             if (this.componentType.hasOverlay()) {
-                this.overlay = par1IconRegister
+                this.iconOverlay = par1IconRegister
                     .registerIcon(GTPlusPlus.ID + ":" + "processing/MilledOre/milled_OVERLAY");
             }
-        } else if (Configuration.visual.useGregtechTextures) {
-            // Logger.MATERIALS(this.componentType.getPrefix()+this.componentMaterial.getLocalizedName()+this.componentType.DISPLAY_NAME+"
-            // is using `"+GregTech.ID + ":" + "materialicons/METALLIC/" + this.componentType.COMPONENT_NAME+"' as the
-            // layer 0 texture path.");
-            this.base = par1IconRegister
-                .registerIcon(GregTech.ID + ":" + "materialicons/METALLIC/" + this.componentType.COMPONENT_NAME);
-            if (this.componentType.hasOverlay()) {
-                // Logger.MATERIALS(this.componentType.getPrefix()+this.componentMaterial.getLocalizedName()+this.componentType.DISPLAY_NAME+"
-                // is using `"+GregTech.ID + ":" + "materialicons/METALLIC/" +
-                // this.componentType.COMPONENT_NAME+"_OVERLAY"+"' as the layer 1 texture path.");
-                this.overlay = par1IconRegister.registerIcon(
-                    GregTech.ID + ":" + "materialicons/METALLIC/" + this.componentType.COMPONENT_NAME + "_OVERLAY");
-            }
         } else {
-            this.base = par1IconRegister.registerIcon(GTPlusPlus.ID + ":" + "item" + this.componentType.getComponent());
-            if (this.componentType.hasOverlay()) {
-                this.overlay = par1IconRegister
-                    .registerIcon(GTPlusPlus.ID + ":" + "item" + this.componentType.getComponent() + "_Overlay");
-            }
+            IIconContainer container = Textures.ItemIcons
+                .textureSetWithRegister("METALLIC", "/" + this.componentType.COMPONENT_NAME, par1IconRegister);
+            iconBase = container.getIcon();
+            iconOverlay = container.getOverlayIcon();
         }
     }
 
@@ -207,10 +162,7 @@ public class BaseOreComponent extends Item {
                 return Utils.rgbtoHexValue(230, 230, 230);
             }
         } else {
-            if (renderPass == 0 && !Configuration.visual.useGregtechTextures) {
-                return this.componentColour;
-            }
-            if (renderPass == 1 && Configuration.visual.useGregtechTextures) {
+            if (renderPass == 1) {
                 return Utils.rgbtoHexValue(230, 230, 230);
             }
         }
@@ -218,31 +170,35 @@ public class BaseOreComponent extends Item {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public IIcon getIconFromDamageForRenderPass(final int damage, final int pass) {
         if (pass == 0) {
-            return this.base;
+            return iconBase;
         }
-        return this.overlay;
+        return iconOverlay;
     }
 
     public enum ComponentTypes {
 
-        DUST("dust", "", " Dust", true),
-        DUSTIMPURE("dustImpure", "Impure ", " Dust", true),
-        DUSTPURE("dustPure", "Purified ", " Dust", true),
-        CRUSHED("crushed", "Crushed ", " Ore", true),
-        CRUSHEDCENTRIFUGED("crushedCentrifuged", "Centrifuged Crushed ", " Ore", true),
-        CRUSHEDPURIFIED("crushedPurified", "Purified Crushed ", " Ore", true),
-        RAWORE("oreRaw", "Raw ", " Ore", true),
-        MILLED("milled", "Milled ", " Ore", true);
+        DUST("dust", OrePrefixes.dust, "", " Dust", true),
+        DUSTIMPURE("dustImpure", OrePrefixes.dustImpure, "Impure ", " Dust", true),
+        DUSTPURE("dustPure", OrePrefixes.dustPure, "Purified ", " Dust", true),
+        CRUSHED("crushed", OrePrefixes.crushed, "Crushed ", " Ore", true),
+        CRUSHEDCENTRIFUGED("crushedCentrifuged", OrePrefixes.crushedCentrifuged, "Centrifuged Crushed ", " Ore", true),
+        CRUSHEDPURIFIED("crushedPurified", OrePrefixes.crushedPurified, "Purified Crushed ", " Ore", true),
+        RAWORE("oreRaw", OrePrefixes.rawOre, "Raw ", " Ore", true),
+        MILLED("milled", OrePrefixes.milled, "Milled ", " Ore", true);
 
         private final String COMPONENT_NAME;
         private final String PREFIX;
         private final String DISPLAY_NAME;
         private final boolean HAS_OVERLAY;
+        private final String orePrefix;
 
-        ComponentTypes(final String LocalName, final String prefix, final String DisplayName, final boolean overlay) {
+        ComponentTypes(final String LocalName, final OrePrefixes orePrefix, final String prefix,
+            final String DisplayName, final boolean overlay) {
             this.COMPONENT_NAME = LocalName;
+            this.orePrefix = orePrefix.getName();
             this.PREFIX = prefix;
             this.DISPLAY_NAME = DisplayName;
             this.HAS_OVERLAY = overlay;
@@ -252,6 +208,10 @@ public class BaseOreComponent extends Item {
 
         public String getComponent() {
             return this.COMPONENT_NAME;
+        }
+
+        public String getOrePrefix() {
+            return orePrefix;
         }
 
         public String getName() {

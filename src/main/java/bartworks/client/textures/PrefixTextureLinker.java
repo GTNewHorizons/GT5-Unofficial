@@ -29,8 +29,8 @@ import gregtech.api.interfaces.IIconContainer;
 @SideOnly(Side.CLIENT)
 public class PrefixTextureLinker implements Runnable {
 
-    public static Map<OrePrefixes, HashMap<TextureSet, Textures.ItemIcons.CustomIcon>> texMap = new HashMap<>();
-    public static Map<OrePrefixes, HashMap<TextureSet, IIconContainer>> texMapBlocks = new HashMap<>();
+    public static Map<OrePrefixes, Map<TextureSet, IIconContainer>> texMap = new HashMap<>();
+    public static Map<OrePrefixes, Map<TextureSet, IIconContainer>> texMapBlocks = new HashMap<>();
     public static Map<TextureSet, Short> blockTexMap = new HashMap<>();
 
     private static void fillBlockTexMap() {
@@ -46,9 +46,10 @@ public class PrefixTextureLinker implements Runnable {
                         try {
                             curr.put(
                                 (TextureSet) SET.get(null),
-                                new Textures.BlockIcons.CustomIcon(
-                                    "materialicons/" + SET.getName()
-                                        .substring(4) + "/" + prefixes));
+                                Textures.BlockIcons.textureSet(
+                                    SET.getName()
+                                        .substring(4),
+                                    "/" + prefixes.getName()));
                         } catch (IllegalAccessException e) {
                             e.printStackTrace();
                         }
@@ -58,12 +59,12 @@ public class PrefixTextureLinker implements Runnable {
     }
 
     private static void fillItemTexMap() {
-        Arrays.stream(OrePrefixes.values())
+        Arrays.stream(OrePrefixes.VALUES)
             .filter(
-                prefixes -> prefixes != OrePrefixes.rod && prefixes.mTextureIndex == -1
+                prefixes -> prefixes != OrePrefixes.rod && prefixes.getTextureIndex() == -1
                     && Werkstoff.GenerationFeatures.getPrefixDataRaw(prefixes) != 0)
             .forEach(prefixes -> {
-                HashMap<TextureSet, Textures.ItemIcons.CustomIcon> curr = new HashMap<>();
+                HashMap<TextureSet, IIconContainer> curr = new HashMap<>();
                 Arrays.stream(TextureSet.class.getFields())
                     .filter(
                         field -> field.getName()
@@ -72,9 +73,10 @@ public class PrefixTextureLinker implements Runnable {
                         try {
                             curr.put(
                                 (TextureSet) SET.get(null),
-                                new Textures.ItemIcons.CustomIcon(
-                                    "materialicons/" + SET.getName()
-                                        .substring(4) + "/" + prefixes));
+                                Textures.ItemIcons.textureSet(
+                                    SET.getName()
+                                        .substring(4),
+                                    "/" + prefixes.getName()));
                         } catch (IllegalAccessException e) {
                             e.printStackTrace();
                         }
