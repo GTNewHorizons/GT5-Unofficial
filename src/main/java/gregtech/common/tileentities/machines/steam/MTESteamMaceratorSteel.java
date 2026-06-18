@@ -95,7 +95,7 @@ public class MTESteamMaceratorSteel extends MTEBasicMachineSteel {
 
         if (!tRecipe.isRecipeInputEqual(true, new FluidStack[] { getFillableStack() }, getAllInputs()))
             return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
-        if (tRecipe.getOutput(0) != null) mOutputItems[0] = tRecipe.getOutput(0);
+        if (tRecipe.getOutput(0) != null) mOutputItems[0] = tRecipe.rollOutput(getBaseMetaTileEntity(), 0);
         calculateCustomOverclock(tRecipe);
         return FOUND_AND_SUCCESSFULLY_USED_RECIPE;
     }
