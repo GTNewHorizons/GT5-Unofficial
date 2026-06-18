@@ -5,6 +5,7 @@ import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.translatedTex
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.Facing;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
@@ -41,6 +42,7 @@ public class BlockGlass1 extends BlockCasingsAbstract {
         register(9, ItemList.ElectromagneticWaveguide);
         register(10, ItemList.ReinforcedGlass);
         ItemList.ReinforcedGlass.registerOre("glassReinforced");
+        ItemList.ReinforcedGlass.set(new ItemStack(this.setResistance(150.0f), 1, 10));
     }
 
     @Override

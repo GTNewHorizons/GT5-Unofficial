@@ -49,6 +49,8 @@ public class PosteaTransformers implements Runnable {
         // I.e. Reinforced glass, iron fences, etc.
 
         ItemStackReplacementManager.addSimpleReplacement("IC2:blockAlloyGlass", ItemList.ReinforcedGlass.get(1L));
+        BlockReplacementManager.addSimpleReplacement("IC2:blockAlloyGlass", GregTechAPI.sBlockGlass1, 10);
+        BlockReplacementManager.addSimpleReplacement("IC2:glassReinforced", GregTechAPI.sBlockGlass1, 10);
     }
 
     private void registerFrameboxTransformers() {
