@@ -55,8 +55,10 @@ import gregtech.api.enums.ToolboxSlot;
 import gregtech.api.interfaces.IDamagableItem;
 import gregtech.api.interfaces.IToolStats;
 import gregtech.api.interfaces.item.IPickBlockHandler;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.GTGenericItem;
 import gregtech.api.items.MetaGeneratedTool;
+import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.modularui2.ToolboxSelectGuiFactory;
 import gregtech.api.net.GTPacketToolboxEvent;
 import gregtech.api.util.GTModHandler;
@@ -451,6 +453,13 @@ public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInv
 
     public boolean shouldDrawHighlightGrid(DrawBlockHighlightEvent event) {
         if (event.currentItem == null || !(event.currentItem.getItem() instanceof ItemGTToolbox)) {
+            return false;
+        }
+
+        final TileEntity baseTE = event.player.worldObj.getTileEntity(event.target.blockX, event.target.blockY, event.target.blockZ);
+        if (baseTE instanceof final IGregTechTileEntity gregTE
+            && gregTE.getMetaTileEntity() instanceof MetaPipeEntity
+            && ToolboxUtil.getSelectedTool(event.currentItem).isEmpty()) {
             return false;
         }
 

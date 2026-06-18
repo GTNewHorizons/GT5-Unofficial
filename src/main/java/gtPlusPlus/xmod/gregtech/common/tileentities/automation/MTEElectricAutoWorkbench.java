@@ -40,6 +40,13 @@ public class MTEElectricAutoWorkbench extends MTEBasicTank {
     public static final int MAX_MODES = 10;
     public static final int MAX_THROUGHPUT = 4;
 
+    public static final int INPUT_SLOT_OFFSET = 0;
+    public static final int INPUT_SLOT_COUNT = 9;
+    public static final int OUTPUT_SLOT_OFFSET = INPUT_SLOT_OFFSET + INPUT_SLOT_COUNT;
+    public static final int OUTPUT_SLOT_COUNT = 9;
+    public static final int PHANTOM_SLOT_OFFSET = OUTPUT_SLOT_OFFSET + OUTPUT_SLOT_COUNT + 1;
+    public static final int PHANTOM_SLOT_COUNT = 9;
+
     public MTEElectricAutoWorkbench(final int aID, final int aTier, final String aDescription) {
         super(
             aID,
@@ -57,7 +64,7 @@ public class MTEElectricAutoWorkbench extends MTEBasicTank {
 
     @Override
     public boolean isValidSlot(int aIndex) {
-        return aIndex < 19;
+        return aIndex < PHANTOM_SLOT_OFFSET;
     }
 
     @Override
@@ -740,5 +747,19 @@ public class MTEElectricAutoWorkbench extends MTEBasicTank {
     @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
         return new MTEElectricAutoWorkbenchGui(this).buildUI(data, syncManager, uiSettings);
+    }
+
+    @Override
+    public boolean isItemValidForPhantomSlot(int index, ItemStack itemStack) {
+        return isPhantomSlot(index);
+    }
+
+    @Override
+    public int getSlotLimit(int slot) {
+        return isPhantomSlot(slot) ? 1 : super.getSlotLimit(slot);
+    }
+
+    private boolean isPhantomSlot(int index) {
+        return PHANTOM_SLOT_OFFSET <= index && index < PHANTOM_SLOT_OFFSET + PHANTOM_SLOT_COUNT;
     }
 }
