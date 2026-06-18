@@ -50,13 +50,13 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.structure.error.StructureErrors;
@@ -72,7 +72,7 @@ import tectech.thing.metaTileEntity.multi.base.LedStatus;
 import tectech.thing.metaTileEntity.multi.base.Parameters;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 
-public class MTEYottaFluidTank extends TTMultiblockBase implements ISurvivalConstructable {
+public class MTEYottaFluidTank extends TTMultiblockBase implements ISurvivalConstructable, ICasingTextureProvider {
 
     private static final IIconContainer textureFontOn = Textures.BlockIcons.custom("iconsets/OVERLAY_QTANK");
     private static final IIconContainer textureFontOn_Glow = Textures.BlockIcons
@@ -632,29 +632,22 @@ public class MTEYottaFluidTank extends TTMultiblockBase implements ISurvivalCons
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-        int colorIndex, boolean aActive, boolean aRedstone) {
-        if (side == facing) {
-            if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(1537),
-                TextureFactory.builder()
-                    .addIcon(textureFontOn)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(textureFontOn_Glow)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            else return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(1537), TextureFactory.builder()
-                .addIcon(textureFontOff)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(textureFontOff_Glow)
-                    .extFacing()
-                    .glow()
-                    .build() };
-        } else return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(1537) };
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            textureFontOff,
+            textureFontOff_Glow,
+            textureFontOn,
+            textureFontOn_Glow);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Textures.BlockIcons.getCasingTextureForId(1537);
     }
 
     @Override
