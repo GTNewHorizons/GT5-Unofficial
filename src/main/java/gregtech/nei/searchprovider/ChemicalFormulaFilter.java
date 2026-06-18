@@ -126,10 +126,9 @@ public class ChemicalFormulaFilter implements ItemFilter {
 
     public static String normalizeCustomGlyphs(String s) {
 
-        for (Map.Entry<String, String> e : GlyphReplacements.customGlyphs.entrySet()) {
-            if (e.getValue() != null) {
-                s = s.replace(e.getKey(), e.getValue());
-            }
+        for (Map.Entry<Character, Character> e : GlyphReplacements.getGlyphReplacementsMap()
+            .char2CharEntrySet()) {
+            s = s.replace(e.getKey(), e.getValue());
         }
 
         return s;

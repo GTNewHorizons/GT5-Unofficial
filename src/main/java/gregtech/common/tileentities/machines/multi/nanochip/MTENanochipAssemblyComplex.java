@@ -50,6 +50,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatch;
@@ -60,7 +61,6 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
@@ -85,7 +85,7 @@ import gregtech.common.tileentities.machines.multi.nanochip.util.NanochipTooltip
 import gregtech.common.tileentities.machines.multi.nanochip.util.VacuumConveyorHatchMap;
 
 public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<MTENanochipAssemblyComplex>
-    implements ISurvivalConstructable, NanochipTooltipValues {
+    implements ISurvivalConstructable, NanochipTooltipValues, ICasingTextureProvider {
 
     public static final String STRUCTURE_PIECE_MAIN = "main";
 
@@ -289,29 +289,20 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
-        if (side == aFacing) {
-            if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_WHITE),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_NANOCHIP_ASSEMBLY_COMPLEX_ACTIVE)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_NANOCHIP_ASSEMBLY_COMPLEX_ACTIVE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_WHITE),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_NANOCHIP_ASSEMBLY_COMPLEX)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_NANOCHIP_ASSEMBLY_COMPLEX_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-        }
-        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_WHITE) };
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            OVERLAY_FRONT_NANOCHIP_ASSEMBLY_COMPLEX,
+            OVERLAY_FRONT_NANOCHIP_ASSEMBLY_COMPLEX_GLOW,
+            OVERLAY_FRONT_NANOCHIP_ASSEMBLY_COMPLEX_ACTIVE,
+            OVERLAY_FRONT_NANOCHIP_ASSEMBLY_COMPLEX_ACTIVE_GLOW);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_WHITE);
     }
 
     public boolean addModuleToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {

@@ -30,7 +30,6 @@ import com.cleanroommc.modularui.widgets.slot.FluidSlot;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.gtnewhorizons.modularui.api.widget.Interactable;
 
-import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicMachine;
@@ -251,7 +250,7 @@ public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> extends MTETiered
 
     protected ProgressWidget createProgressBar(ModularPanel panel, PanelSyncManager syncManager) {
         return new GTProgressWidget()
-            .neiTransferRect(properties.neiTransferRectId, GTValues.emptyObjectArray, createTooltipForProgressBar())
+            .neiTransferRect(properties.neiTransferRectId, new Object[] { machine }, createTooltipForProgressBar())
             .value(new DoubleSyncValue(() -> (double) machine.mProgresstime / machine.mMaxProgresstime))
             .texture(properties.progressBarMUI2, properties.progressBarWidthMUI2)
             .size(properties.progressBarWidthMUI2, properties.progressBarHeightMUI2 / 2)

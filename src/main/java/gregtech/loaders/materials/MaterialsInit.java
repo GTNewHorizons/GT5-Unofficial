@@ -63,6 +63,8 @@ public class MaterialsInit {
         loadAluminiumOres();
         loadUEVPlusMaterials();
         loadGTNHMaterials();
+        loadLabGrownGems();
+        loadChimeraGems();
     }
 
     private static void loadElements() {
@@ -5404,7 +5406,6 @@ public class MaterialsInit {
     private static void loadDegree1Compounds() {
         Materials.AceticAcid = loadAceticAcid();
         Materials.Acetone = loadAcetone();
-        Materials.Air = loadAir();
         Materials.AllylChloride = loadAllylChloride();
         Materials.Almandine = loadAlmandine();
         Materials.Ammonia = loadAmmonia();
@@ -9639,6 +9640,7 @@ public class MaterialsInit {
     }
 
     private static void loadDegree2Compounds() {
+        Materials.Air = loadAir();
         Materials.Aluminiumhydroxide = loadAluminiumHydroxide();
         Materials.Aluminiumoxide = loadAluminiumoxide();
         Materials.Alumite = loadAlumite();
@@ -16621,7 +16623,8 @@ public class MaterialsInit {
             .setAutoGenerateBlastFurnaceRecipes(false)
             .addSubTag(SubTag.METAL)
             .addSubTag(SubTag.MULTI_PLATE)
-            .constructMaterial();
+            .constructMaterial()
+            .setProcessingMaterialTierEU(TierEU.RECIPE_ZPM);
     }
 
     private static Materials loadChuritsu() {
@@ -16645,6 +16648,39 @@ public class MaterialsInit {
             .setAutoGenerateBlastFurnaceRecipes(false)
             .addSubTag(SubTag.METAL)
             .addSubTag(SubTag.MULTI_PLATE)
-            .constructMaterial();
+            .constructMaterial()
+            .setProcessingMaterialTierEU(TierEU.RECIPE_ZPM);
+    }
+
+    private static void loadLabGrownGems() {
+
+    }
+
+    private static void loadChimeraGems() {
+        Materials.Amalgatite = loadAmalgatite();
+    }
+
+    private static Materials loadAmalgatite() {
+        return new MaterialBuilder().setName("Amalgatite")
+            .setDefaultLocalName("Amalgatite")
+            .setChemicalFormula(EnumChatFormatting.OBFUSCATED + "?????????")
+            .setFlavorText("It could have been great!")
+            .setIconSet(TextureSet.SET_SG_CRYSTAL_SLURRY)
+            .setColor(Dyes.dyeWhite)
+            .setARGB(0xffffffff)
+            .addSubTag(SubTag.CRYSTAL)
+            .addSubTag(SubTag.CRYSTALLISABLE)
+            .addSubTag(SubTag.NO_SMASHING)
+            .addSubTag(SubTag.NO_SMELTING)
+            .addSubTag(SubTag.NO_RECYCLING_RECIPES)
+            .addSubTag(SubTag.NO_RECIPES)
+            .addSubTag(SubTag.TRANSPARENT)
+            .addOrePrefix(OrePrefixes.gemChipped)
+            .addOrePrefix(OrePrefixes.gemFlawed)
+            .addOrePrefix(OrePrefixes.gem)
+            .addOrePrefix(OrePrefixes.gemFlawless)
+            .addOrePrefix(OrePrefixes.gemExquisite)
+            .constructMaterial()
+            .setProcessingMaterialTierEU(TierEU.RECIPE_MAX);
     }
 }
