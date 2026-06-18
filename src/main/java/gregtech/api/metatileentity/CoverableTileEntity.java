@@ -75,7 +75,6 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
     private byte validCoversMask;
 
     protected final byte[] mSidedRedstone = new byte[] { 0, 0, 0, 0, 0, 0 };
-    protected boolean mRedstone = false;
     protected byte mStrongRedstone = 0;
     protected byte oldStrongRedstone = 0;
 
@@ -92,7 +91,6 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
 
         if (!isDrop) {
             aNBT.setByteArray("mRedstoneSided", mSidedRedstone);
-            aNBT.setBoolean("mRedstone", mRedstone);
         }
     }
 
@@ -112,7 +110,6 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
     }
 
     protected void readCoverNBT(NBTTagCompound aNBT) {
-        mRedstone = aNBT.getBoolean("mRedstone");
         mStrongRedstone = aNBT.getByte("mStrongRedstone");
 
         if (aNBT.hasKey("mRedstoneSided")) {
@@ -148,6 +145,8 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
     protected boolean doCoverThings() {
         byte validCoversMask = this.validCoversMask;
         if (validCoversMask == 0) return true;
+
+        sendCoverDataIfNeeded();
 
         for (int i = Integer.numberOfTrailingZeros(validCoversMask); i < 6; i++) {
             if (((validCoversMask >>> i) & 1) == 0) continue;
@@ -200,7 +199,9 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         }
     }
 
-    public abstract void issueClientUpdate();
+    public abstract void issueTileUpdate();
+
+    public abstract void scheduleTexturePacket();
 
     @Override
     public void issueCoverUpdate(ForgeDirection side) {
@@ -250,6 +251,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
     private void synchronizeCover(@NotNull Cover cover, ForgeDirection side) {
         applyCover(cover, side);
         issueCoverUpdate(side);
+        issueTileUpdate();
         issueBlockUpdate();
     }
 
@@ -356,7 +358,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         if (mSidedRedstone[ordinalSide] != cappedStrength || (mStrongRedstone & (1 << ordinalSide)) > 0) {
             mSidedRedstone[ordinalSide] = cappedStrength;
             issueBlockUpdate();
-            issueClientUpdate();
+            scheduleTexturePacket();
         }
     }
 
@@ -419,12 +421,6 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         return side != ForgeDirection.UNKNOWN && (mStrongRedstone & (1 << ordinalSide)) != 0
             ? (byte) (mSidedRedstone[ordinalSide] & 15)
             : 0;
-    }
-
-    @Override
-    public void setGenericRedstoneOutput(boolean aOnOff) {
-        mRedstone = aOnOff;
-        issueClientUpdate();
     }
 
     @Override

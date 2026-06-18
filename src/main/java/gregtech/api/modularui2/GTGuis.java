@@ -57,5 +57,6 @@ public final class GTGuis {
         GuiManager.registerFactory(MetaTileEntityGuiHandler.INSTANCE);
         GuiManager.registerFactory(CoverUIFactory.INSTANCE);
         GuiManager.registerFactory(ToolboxSelectGuiFactory.INSTANCE);
+        GuiManager.registerFactory(ProxiedMteGui.GUI);
     }
 }

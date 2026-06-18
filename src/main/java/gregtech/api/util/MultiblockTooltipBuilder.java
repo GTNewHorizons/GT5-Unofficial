@@ -855,6 +855,7 @@ public class MultiblockTooltipBuilder {
      * @param t Tier of glass that unlocks all energy hatches
      * @return Instance this method was called on.
      */
+    @Deprecated
     public MultiblockTooltipBuilder addGlassEnergyLimitInfo(int t) {
         iLines.add(
             StatCollector.translateToLocal("GT5U.MBTT.Structure.GlassEnergyLimit") + ", "
