@@ -81,6 +81,7 @@ public class BlockGlass1 extends BlockCasingsAbstract {
             case 7 -> Textures.BlockIcons.EXOFOUNDRY_GLASS.getIcon();
             case 8 -> Textures.BlockIcons.NANOCHIP_GLASS.getIcon();
             case 9 -> Textures.BlockIcons.BEC_GLASS.getIcon();
+            case 10 -> Textures.BlockIcons.REINFORCED_GLASS.getIcon();
 
             default -> Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL.getIcon();
         };
