@@ -90,7 +90,6 @@ import gregtech.common.blocks.BlockCasings2;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
 import gregtech.common.tileentities.machines.MTEHatchInputME;
-import gregtech.common.tileentities.machines.outputme.MTEHatchOutputME;
 import kubatech.api.implementations.KubaTechGTMultiBlockBase;
 import kubatech.gui.modularui2.MTEHighTempGasCooledReactorGui;
 import kubatech.loaders.HTGRLoader;
@@ -492,10 +491,6 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
     private boolean addOutputToHatch(MTEHatchOutput hatch, FluidStack fluidStack) {
         if (hatch == null || !hatch.isValid()) return false;
         if (!hatch.canStoreFluid(fluidStack)) return false;
-
-        if (hatch instanceof MTEHatchOutputME tMEHatch) {
-            if (!tMEHatch.canFillFluid()) return false;
-        }
 
         int tAmount = hatch.fill(fluidStack, false);
         if (tAmount >= fluidStack.amount) {
