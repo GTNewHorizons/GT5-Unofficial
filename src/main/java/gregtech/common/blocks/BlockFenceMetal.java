@@ -20,6 +20,8 @@ import gregtech.api.interfaces.IItemContainer;
 
 public class BlockFenceMetal extends BlockFence {
 
+    String unlocalizedName;
+
     public BlockFenceMetal() {
         this(ItemFence.class, "gt.blockfencemetal", Material.iron);
 
@@ -29,11 +31,11 @@ public class BlockFenceMetal extends BlockFence {
     protected BlockFenceMetal(Class<? extends ItemBlock> aItemClass, String aName, Material aMaterial) {
         super(aName, aMaterial);
         GregTechAPI.registerMachineBlock(this, -1);
+        setBlockName(unlocalizedName = aName);
         GameRegistry.registerBlock(this, aItemClass, getUnlocalizedName());
         setHardness(3.0F);
         setResistance(10.0F);
         setStepSound(soundTypeMetal);
-        setBlockName(aName);
         this.isBlockContainer = false;
         this.useNeighborBrightness = true;
     }
@@ -55,10 +57,9 @@ public class BlockFenceMetal extends BlockFence {
         }
     }
 
-    public void onBlockAdded(World worldIn, int x, int y, int z) {}
-
-    public void breakBlock(World worldIn, int x, int y, int z, Block blockBroken, int meta) {
-
+    @Override
+    public String getUnlocalizedName() {
+        return this.unlocalizedName;
     }
 
 }

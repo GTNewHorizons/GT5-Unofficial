@@ -23,10 +23,6 @@ public class ItemFence extends ItemBlock {
 
     @Override
     public String getItemStackDisplayName(ItemStack stack) {
-        if (this.field_150939_a instanceof BlockStorage storage) {
-            return storage.getLocalizedName(stack.getItemDamage());
-        }
-
         return super.getItemStackDisplayName(stack);
     }
 
