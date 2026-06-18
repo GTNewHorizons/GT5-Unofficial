@@ -217,6 +217,7 @@ public class IG_RecipeAdder extends RecipeAdder {
             .metadata(IGRecipeMaps.SPACE_MINING_DATA, miningData)
             .duration(duration)
             .eut(EUt)
+            .ignoreCollision()
             .addTo(IGRecipeMaps.spaceMiningRecipes);
 
         return true;

@@ -27,6 +27,7 @@ import static net.minecraftforge.common.util.ForgeDirection.UP;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 
@@ -72,6 +73,7 @@ import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.gui.modularui.SteamTexture;
 import gregtech.api.interfaces.ICleanroom;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
+import gregtech.api.interfaces.INonConsumedItemDisplay;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -103,8 +105,8 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
  * This is the main construct for my Basic Machines such as the Automatic Extractor Extend this class to make a simple
  * Machine
  */
-public abstract class MTEBasicMachine extends MTEBasicTank
-    implements RecipeMapWorkable, IConfigurationCircuitSupport, IOverclockDescriptionProvider, IAddGregtechLogo {
+public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapWorkable, IConfigurationCircuitSupport,
+    IOverclockDescriptionProvider, IAddGregtechLogo, INonConsumedItemDisplay {
 
     /**
      * return values for checkRecipe()
@@ -213,6 +215,10 @@ public abstract class MTEBasicMachine extends MTEBasicTank
         // The current logic is that the block is set to UNKNOWN before loading of NBT or rotation, and the
         // very first rotation will cause mMainFacing and mFacing to be swapped and initialized.
         mMainFacing = UNKNOWN;
+    }
+
+    public boolean isStuttering() {
+        return mStuttering;
     }
 
     /**
@@ -365,6 +371,14 @@ public abstract class MTEBasicMachine extends MTEBasicTank
     @Override
     public long maxAmperesIn() {
         return ((long) mEUt * 2L) / V[mTier] + 1L;
+    }
+
+    @Override
+    public List<ItemStack> getNonConsumedInputDisplayItems() {
+        if (mLastRecipe == null || mLastRecipe.mInputs == null) return Collections.emptyList();
+        return Arrays.stream(mLastRecipe.mInputs)
+            .filter(s -> s != null && s.stackSize == 0)
+            .collect(Collectors.toList());
     }
 
     @Override
