@@ -279,7 +279,7 @@ public class ArmorState {
             try {
                 BehaviorName name = BehaviorName.valueOf(str.func_150285_a_());
                 if (state.behaviors.containsKey(name)) {
-                    state.activeBehaviors.add(BehaviorName.valueOf(str.func_150285_a_()));
+                    state.activeBehaviors.add(name);
                 }
             } catch (IllegalArgumentException e) {
                 GTMod.GT_FML_LOGGER.error("Could not load active behavior: {}", str.func_150285_a_(), e);
