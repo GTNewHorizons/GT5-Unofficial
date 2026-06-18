@@ -14,6 +14,10 @@ public class GogglesOfRevealingBehavior implements IArmorBehavior {
 
     public static final GogglesOfRevealingBehavior INSTANCE = new GogglesOfRevealingBehavior();
 
+    private static final Set<SyncedKeybind> LISTENED_KEYS = Collections.singleton(
+        ArmorActionManager.getAction("goggles_of_revealing")
+            .getKeybind());
+
     protected GogglesOfRevealingBehavior() {/**/}
 
     @Override
@@ -30,8 +34,6 @@ public class GogglesOfRevealingBehavior implements IArmorBehavior {
 
     @Override
     public Set<SyncedKeybind> getListenedKeys(@NotNull ArmorContext context) {
-        return Collections.singleton(
-            ArmorActionManager.getAction("goggles_of_revealing")
-                .getKeybind());
+        return LISTENED_KEYS;
     }
 }

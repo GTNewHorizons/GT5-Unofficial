@@ -16,6 +16,9 @@ import gregtech.api.items.armor.ArmorContext;
 public class NightVisionBehavior implements IArmorBehavior {
 
     public static final NightVisionBehavior INSTANCE = new NightVisionBehavior();
+    private static final Set<SyncedKeybind> LISTENED_KEYS = Collections.singleton(
+        ArmorActionManager.getAction("nightvision")
+            .getKeybind());
 
     protected NightVisionBehavior() {/**/}
 
@@ -33,9 +36,7 @@ public class NightVisionBehavior implements IArmorBehavior {
 
     @Override
     public Set<SyncedKeybind> getListenedKeys(@NotNull ArmorContext context) {
-        return Collections.singleton(
-            ArmorActionManager.getAction("nightvision")
-                .getKeybind());
+        return LISTENED_KEYS;
     }
 
     @Override

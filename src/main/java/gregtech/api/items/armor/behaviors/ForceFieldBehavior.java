@@ -14,6 +14,10 @@ public class ForceFieldBehavior implements IArmorBehavior {
 
     public static final ForceFieldBehavior INSTANCE = new ForceFieldBehavior();
 
+    private static final Set<SyncedKeybind> LISTENED_KEYS = Collections.singleton(
+        ArmorActionManager.getAction("force_field")
+            .getKeybind());
+
     @Override
     public BehaviorName getName() {
         return BehaviorName.ForceField;
@@ -28,8 +32,6 @@ public class ForceFieldBehavior implements IArmorBehavior {
 
     @Override
     public Set<SyncedKeybind> getListenedKeys(@NotNull ArmorContext context) {
-        return Collections.singleton(
-            ArmorActionManager.getAction("force_field")
-                .getKeybind());
+        return LISTENED_KEYS;
     }
 }

@@ -13,6 +13,9 @@ import gregtech.api.items.armor.ArmorContext;
 public class OmniMovementBehavior implements IArmorBehavior {
 
     public static final OmniMovementBehavior INSTANCE = new OmniMovementBehavior();
+    private static final Set<SyncedKeybind> LISTENED_KEYS = Collections.singleton(
+        ArmorActionManager.getAction("omni_movement")
+            .getKeybind());
 
     @Override
     public void onKeyPressed(@NotNull ArmorContext context, SyncedKeybind keyPressed, boolean isDown) {
@@ -28,8 +31,6 @@ public class OmniMovementBehavior implements IArmorBehavior {
 
     @Override
     public Set<SyncedKeybind> getListenedKeys(@NotNull ArmorContext context) {
-        return Collections.singleton(
-            ArmorActionManager.getAction("omni_movement")
-                .getKeybind());
+        return LISTENED_KEYS;
     }
 }

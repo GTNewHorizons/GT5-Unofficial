@@ -13,6 +13,9 @@ import gregtech.api.items.armor.ArmorContext;
 public class JetpackHoverBehavior implements IArmorBehavior {
 
     public static final JetpackHoverBehavior INSTANCE = new JetpackHoverBehavior();
+    private static final Set<SyncedKeybind> LISTENED_KEYS = Collections.singleton(
+        ArmorActionManager.getAction("jetpack_hover")
+            .getKeybind());
 
     protected JetpackHoverBehavior() {
 
@@ -32,8 +35,6 @@ public class JetpackHoverBehavior implements IArmorBehavior {
 
     @Override
     public Set<SyncedKeybind> getListenedKeys(@NotNull ArmorContext context) {
-        return Collections.singleton(
-            ArmorActionManager.getAction("jetpack_hover")
-                .getKeybind());
+        return LISTENED_KEYS;
     }
 }
