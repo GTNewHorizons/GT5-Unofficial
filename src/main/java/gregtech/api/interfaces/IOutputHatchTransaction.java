@@ -51,4 +51,9 @@ public interface IOutputHatchTransaction {
      * any way.
      */
     void commit();
+
+    interface IRecipeCheckAware {
+
+        void setRecipeCheck(boolean isRecipeCheck);
+    }
 }

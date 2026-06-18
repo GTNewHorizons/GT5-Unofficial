@@ -193,6 +193,16 @@ public class MTESteamMixer extends MTESteamMultiBlockBase<MTESteamMixer> impleme
     }
 
     @Override
+    protected IIconContainer getInactiveGlowOverlay() {
+        return Textures.BlockIcons.OVERLAY_FRONT_STEAM_CENTRIFUGE_GLOW;
+    }
+
+    @Override
+    protected IIconContainer getActiveGlowOverlay() {
+        return Textures.BlockIcons.OVERLAY_FRONT_STEAM_CENTRIFUGE_ACTIVE_GLOW;
+    }
+
+    @Override
     public IStructureDefinition<MTESteamMixer> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
 
