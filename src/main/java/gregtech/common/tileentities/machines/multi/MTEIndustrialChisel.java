@@ -1,6 +1,5 @@
 package gregtech.common.tileentities.machines.multi;
 
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
@@ -31,10 +30,8 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -129,7 +126,7 @@ public class MTEIndustrialChisel extends MTEExtendedPowerMultiBlockBase<MTEIndus
                         { " HHDDDF", "H H   D", "H H   D", "H H   D", "FHHHHHF" },
                         { " HHFFFF", " HHAAAF", " HHAAAF", " HHAAAF", "FFFFFFF" } })
                 .addElement('A', chainAllGlasses())
-                .addElement('B', ofBlock(GameRegistry.findBlock(Mods.IndustrialCraft2.ID, "blockFenceIron"), 0))
+                .addElement('B', Casings.IronFence.asElement())
                 .addElement('C', Casings.SteelGearBoxCasing.asElement())
                 .addElement('D', Casings.SteelPipeCasing.asElement())
                 .addElement('E', Casings.CupronickelCoilBlock.asElement())

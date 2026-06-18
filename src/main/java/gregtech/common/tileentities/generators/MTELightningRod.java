@@ -87,8 +87,8 @@ public class MTELightningRod extends MTETieredMachineBlock {
 
                 for (int i = aBaseMetaTileEntity.getYCoord() + 1; i < aWorld.getHeight() - 1; i++) {
                     Block block = aBaseMetaTileEntity.getBlock(aX, i, aZ);
-                    if (isRodValid && (block.getUnlocalizedName()
-                        .equals("blockFenceIron") || block == Blocks.iron_bars)) {
+                    if (isRodValid && block.getUnlocalizedName()
+                        .equals("gt.blockfencemetal.0")) {
                         aRodValue++;
                     } else {
                         isRodValid = false;
