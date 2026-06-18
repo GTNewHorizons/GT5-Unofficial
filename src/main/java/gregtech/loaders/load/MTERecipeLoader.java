@@ -2782,7 +2782,7 @@ public class MTERecipeLoader implements Runnable {
             new Object[] { "GGG", "WSW", aTextPlateMotor, 'M', ItemList.Machine_Bronze_Boiler_Solar, 'P',
                 OrePrefixes.pipeSmall.get(Materials.Steel), 'S', OrePrefixes.plateTriple.get(Materials.Silver), 'W',
                 OrePrefixes.plateDouble.get(Materials.CastIron), 'G',
-                GTModHandler.getModItem(IndustrialCraft2.ID, "blockAlloyGlass", 1L) });
+                ItemList.ReinforcedGlass.get(1L) });
 
         GTModHandler.addCraftingRecipe(
             ItemList.Machine_Bronze_Furnace.get(1L),

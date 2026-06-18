@@ -134,7 +134,7 @@ public class FluidExtractorRecipes implements Runnable {
             .addTo(fluidExtractionRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(getModItem(IndustrialCraft2.ID, "blockAlloyGlass", 1L, 0))
+            .itemInputs(ItemList.ReinforcedGlass.get(1L))
             .fluidOutputs(Materials.ReinforcedGlass.getMolten(1 * INGOTS))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_EV)

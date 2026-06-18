@@ -194,7 +194,7 @@ public class FluidSolidifierRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Shape_Mold_Block.get(0L))
-            .itemOutputs(getModItem(IndustrialCraft2.ID, "blockAlloyGlass", 1L))
+            .itemOutputs(ItemList.ReinforcedGlass.get(1L))
             .fluidInputs(Materials.ReinforcedGlass.getMolten(1 * INGOTS))
             .duration(8 * SECONDS)
             .eut(TierEU.RECIPE_EV)
