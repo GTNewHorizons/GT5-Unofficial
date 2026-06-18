@@ -19,12 +19,10 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ISpecialArmor;
-import net.minecraftforge.common.util.Constants.NBT;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -378,14 +376,10 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISp
     @Override
     @SideOnly(Side.CLIENT)
     public boolean shouldRender(ItemStack stack) {
-        NBTTagCompound tag = stack.getTagCompound();
-        if (tag != null) {
-            NBTTagList active = tag.getTagList("active", NBT.TAG_STRING);
-            String name = BehaviorName.HoloInventory.name();
-            for (int i = 0; i < active.tagCount(); i++) {
-                if (name.equals(active.getStringTagAt(i))) return true;
-            }
-        }
+        ArmorContext context = load(null, stack);
+
+        if (context.isBehaviorActive(BehaviorName.HoloInventory)) return true;
+
         // No augment - fall through to baubles so original holo glasses still work
         EntityPlayer player = Minecraft.getMinecraft().thePlayer;
         if (player == null) return false;
