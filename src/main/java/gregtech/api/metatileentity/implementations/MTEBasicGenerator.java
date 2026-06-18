@@ -71,12 +71,17 @@ public abstract class MTEBasicGenerator extends MTEBasicTank implements RecipeMa
                 : side == ForgeDirection.DOWN ? 2 : side == ForgeDirection.UP ? 3 : 4)][colorIndex + 1];
     }
 
+    protected String[] getTooltipLines() {
+        return mDescriptionArray;
+    }
+
     @Override
     public String[] getDescription() {
-        String[] desc = new String[mDescriptionArray.length + 1];
-        System.arraycopy(mDescriptionArray, 0, desc, 0, mDescriptionArray.length);
-        desc[mDescriptionArray.length] = "Fuel Efficiency: " + addFormattedString(String.valueOf(getEfficiency()))
-            + "%%";
+        String[] base = getTooltipLines();
+        String[] desc = new String[base.length + 1];
+        System.arraycopy(base, 0, desc, 0, base.length);
+        desc[base.length] = GTUtility
+            .translate("gt.blockmachines.basicgenerator.fuel_efficiency", String.valueOf(getEfficiency()));
         return desc;
     }
 
