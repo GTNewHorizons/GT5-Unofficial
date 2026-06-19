@@ -66,15 +66,13 @@ public abstract class MTEHatch extends MTEBasicTank implements ICasingTexturePro
     }
 
     /**
-     * Registers a controller to be notified when this hatch's contents/config change. Input hatches/busses implement
-     * {@link ISmartInputHatch} so the controller registers itself here during structure assembly; output and energy
-     * hatches are registered directly by the controller. Idempotent so re-registration on a structure re-check (or a
-     * hatch list that isn't cleared between checks) cannot leak duplicate watchers.
+     * Registers a controller to be notified when this hatch's contents/config change. Hatches that want to push an
+     * immediate recipe check implement {@link ISmartInputHatch}, and the controller registers itself here when the
+     * hatch is added to the structure. A hatch belongs to a multiblock exactly once, so this does not guard against
+     * duplicate watchers - a duplicate registration would indicate a structure bug.
      */
     public void addWatcher(IHatchWatcher watcher) {
-        if (!watchers.contains(watcher)) {
-            watchers.add(watcher);
-        }
+        watchers.add(watcher);
     }
 
     public void removeWatcher(IHatchWatcher watcher) {
@@ -87,15 +85,6 @@ public abstract class MTEHatch extends MTEBasicTank implements ICasingTexturePro
             watchers.get(i)
                 .scheduleRecipeCheckImmediate();
         }
-    }
-
-    /**
-     * @return {@code true} if gathering this hatch's inputs for a recipe check is expensive (e.g. ME stocking hatches
-     *         that query the AE network per slot per check). The controller uses this to throttle repeated failed
-     *         checks via {@code recipeCheckFailCooldown}; cheap hatches (the default) are never throttled.
-     */
-    public boolean hasExpensiveRecipeCheck() {
-        return false;
     }
 
     /**

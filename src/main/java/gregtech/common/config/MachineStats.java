@@ -108,9 +108,10 @@ public class MachineStats {
         public boolean forceFreeFace;
 
         @Config.Comment({
-            "Minimum ticks an idle multiblock with any ME hatches waits after a failed recipe check before it is allowed to run another one.",
-            "Recipe checks are event-driven, so this only throttles repeated FAILED checks; new inputs/successes are unaffected.",
-            "0 (default) keeps checks fully instant. Raise this only if a heavily loaded ME network makes recipe checks expensive",
+            "Minimum ticks an idle multiblock waits after a failed recipe check before a throttleable push may run another one.",
+            "Only throttleable sources are affected (ME stocking inputs restocking, power trickling into a buffer); new inputs,",
+            "drained outputs and user actions are immediate and ignore this entirely.",
+            "0 (default) keeps every check instant. Raise this only if a heavily loaded ME network makes recipe checks expensive",
             "(for reference, the legacy behaviour was roughly equivalent to 100 ticks)." })
         @Config.DefaultInt(0)
         public int recipeCheckFailCooldown;

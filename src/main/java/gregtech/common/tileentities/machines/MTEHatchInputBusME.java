@@ -139,7 +139,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
                 refreshItemList();
                 if (justHadNewItems) {
                     for (var multi : watchers) {
-                        multi.scheduleRecipeCheckImmediate();
+                        multi.scheduleRecipeCheck(RecipeCheckReason.THROTTLED);
                     }
                     justHadNewItems = false;
                 }
@@ -173,12 +173,6 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
         super.onEnableWorking();
 
         justHadNewItems = true;
-    }
-
-    @Override
-    public boolean hasExpensiveRecipeCheck() {
-        // Each recipe check simulates an AE extraction per configured slot, so throttle repeated failed checks.
-        return true;
     }
 
     @Override
@@ -1123,7 +1117,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
             // Push directly: a configured (non-auto-pull) bus may have its GT ticking disabled, so the onPostTick
             // consume above would never run. The AE watcher callback still fires regardless.
             for (var multi : watchers) {
-                multi.scheduleRecipeCheckImmediate();
+                multi.scheduleRecipeCheck(RecipeCheckReason.THROTTLED);
             }
         }
     }

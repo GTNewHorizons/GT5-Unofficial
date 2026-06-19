@@ -249,19 +249,16 @@ public class MTEHatchOutputME extends MTEHatchOutput
         return getProxy() != null && getProxy().isActive();
     }
 
-    /** Tracks AE network output space so we can push a recipe check when a full network frees up. */
-    private boolean hadOutputSpace = true;
-
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         provider.onPostTick(aBaseMetaTileEntity, aTick);
         super.onPostTick(aBaseMetaTileEntity, aTick);
-        if (aBaseMetaTileEntity.isServerSide()) {
-            // When the ME network drains and our cache can flush again, a recipe blocked on output-full can run.
-            boolean spaceNow = provider.hasAvailableSpace();
-            if (spaceNow && !hadOutputSpace) notifyWatchers();
-            hadOutputSpace = spaceNow;
-        }
+    }
+
+    @Override
+    public void notifyOutputSpaceFreed() {
+        // The provider detected its free space grew (cache flushed, a fuller cell drained); re-check a blocked recipe.
+        notifyWatchers();
     }
 
     @Override

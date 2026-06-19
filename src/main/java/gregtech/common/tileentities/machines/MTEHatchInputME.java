@@ -150,7 +150,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
                 refreshFluidList();
                 if (justHadNewFluids) {
                     for (var multi : watchers) {
-                        multi.scheduleRecipeCheckImmediate();
+                        multi.scheduleRecipeCheck(RecipeCheckReason.THROTTLED);
                     }
                     justHadNewFluids = false;
                 }
@@ -184,12 +184,6 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
         super.onEnableWorking();
 
         justHadNewFluids = true;
-    }
-
-    @Override
-    public boolean hasExpensiveRecipeCheck() {
-        // Each recipe check simulates an AE extraction per configured slot, so throttle repeated failed checks.
-        return true;
     }
 
     @Override
@@ -1079,7 +1073,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
             // Push directly: a configured (non-auto-pull) hatch may have its GT ticking disabled, so the onPostTick
             // consume above would never run. The AE watcher callback still fires regardless.
             for (var multi : watchers) {
-                multi.scheduleRecipeCheckImmediate();
+                multi.scheduleRecipeCheck(RecipeCheckReason.THROTTLED);
             }
         }
     }

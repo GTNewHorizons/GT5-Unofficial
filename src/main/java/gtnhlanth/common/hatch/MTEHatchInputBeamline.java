@@ -11,11 +11,12 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
+import gregtech.common.tileentities.machines.ISmartInputHatch;
 import gtnhlanth.common.beamline.BeamInformation;
 import gtnhlanth.common.beamline.BeamLinePacket;
 import gtnhlanth.common.beamline.IConnectsToBeamline;
 
-public class MTEHatchInputBeamline extends MTEHatchBeamlineConnector {
+public class MTEHatchInputBeamline extends MTEHatchBeamlineConnector implements ISmartInputHatch {
 
     private boolean delay = true;
 

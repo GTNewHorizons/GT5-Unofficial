@@ -145,6 +145,7 @@ import gregtech.common.tileentities.machines.ISmartInputHatch;
 import gregtech.common.tileentities.machines.MTEHatchCraftingInputME;
 import gregtech.common.tileentities.machines.MTEHatchInputBusME;
 import gregtech.common.tileentities.machines.MTEHatchInputME;
+import gregtech.common.tileentities.machines.RecipeCheckReason;
 import gregtech.common.tileentities.machines.multi.MTELargeTurbineLegacy;
 import gregtech.common.tileentities.machines.multi.beamcrafting.MTEHatchAdvancedOutputBeamline;
 import gregtech.common.tileentities.machines.multi.drone.MTEDroneCentre;
@@ -207,24 +208,18 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     protected boolean usesTurbine = false;
     protected boolean canBeMuffled = true;
     protected boolean debugEnergyPresent = false;
+    /** A pending IMMEDIATE recipe-check push (new inputs, drained output, user/structure change); never throttled. */
     private boolean recipeCheckImmediately = false;
-    /** Set when the last recipe check failed for lack of power; arms the stored-energy poll in runMachine(). */
-    private boolean waitingForPower = false;
-    /** Stored energy seen when {@link #waitingForPower} was armed, used to detect power recovery. */
-    private long lastSeenInputEnergy = 0;
-    /** Repair status seen last tick, used to push a recipe check when maintenance is fixed. */
-    private int lastRepairStatus = -1;
     /**
-     * While {@code mTotalRunTime < this}, event-driven rechecks are deferred (the push flag is kept until it expires).
+     * A pending THROTTLED recipe-check push (ME restock, power trickle); deferred while the fail cooldown is active.
+     */
+    private boolean recipeCheckThrottled = false;
+    /**
+     * While {@code mTotalRunTime < this}, THROTTLED rechecks are deferred (the push flag is kept until it expires).
      * Set after a failed check to {@code now + MachineStats.machines.recipeCheckFailCooldown}; 0 means no cooldown.
+     * IMMEDIATE pushes ignore this entirely.
      */
     private long recipeCheckCooldownUntil = 0;
-    /**
-     * Whether any input hatch reports {@link MTEHatch#hasExpensiveRecipeCheck()} (ME stocking hatches). The fail
-     * cooldown only applies to these machines; everything else stays fully instant regardless of the config.
-     * Recomputed on each structure check.
-     */
-    private boolean hasExpensiveMEInput = false;
 
     protected static final String INPUT_SEPARATION_NBT_KEY = "inputSeparation";
     protected static final String VOID_EXCESS_NBT_KEY = "voidExcess";
@@ -534,16 +529,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     public void clearHatches() {
         mInputHatches.clear();
         mInputBusses.clear();
-        // Output hatches push a recipe check when drained (output-full unblock); drop our watcher before clearing.
-        for (var hatch : mOutputHatches) {
-            hatch.removeWatcher(this);
-        }
-        for (var hatch : mOutputBusses) {
-            hatch.removeWatcher(this);
-        }
-        for (MTEHatch hatch : getExtraOutputHatchesForWatching()) {
-            hatch.removeWatcher(this);
-        }
         mOutputHatches.clear();
         mOutputBusses.clear();
         mDynamoHatches.clear();
@@ -552,14 +537,13 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         mMufflerHatches.clear();
         mMaintenanceHatches.clear();
         mDualInputHatches.clear();
+        // Inputs, outputs, beamline and data-access hatches all register through addIfSmartInput, so dropping our
+        // watcher from every mSmartInputHatches entry covers all of them.
         for (var hatch : mSmartInputHatches) {
             hatch.removeWatcher(this);
         }
         mSmartInputHatches.clear();
         mCryotheumHatches.clear();
-        for (var hatch : mBeamlineInputHatches) {
-            hatch.removeWatcher(this);
-        }
         mBeamlineInputHatches.clear();
         mBeamlineOutputHatches.clear();
         mFocusInputBuses.clear();
@@ -578,8 +562,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             checkMachine(aBaseMetaTileEntity, mInventory[1], structureErrors);
             mMachine = structureErrors.isEmpty();
 
-            registerHatchWatchers();
-            updateExpensiveMEInputFlag();
             onStructureCheckFinished(aBaseMetaTileEntity);
 
             // The structure may have just completed, or gained coils/energy/output capacity that unblocks a recipe.
@@ -587,71 +569,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         }
         mStructureChanged = false;
         return mMachine;
-    }
-
-    /**
-     * Registers this controller as a watcher on the output and adjustable-energy hatches so they can push a recipe
-     * check when they drain (output-full unblock) or are reconfigured (e.g. a laser hatch amperage increase). Input
-     * hatches register themselves via {@link #addIfSmartInput}. Called after the hatch lists are rebuilt; safe to call
-     * repeatedly because {@link MTEHatch#addWatcher} is idempotent.
-     */
-    private void registerHatchWatchers() {
-        for (MTEHatchOutput hatch : mOutputHatches) {
-            hatch.addWatcher(this);
-        }
-        for (MTEHatchOutputBus hatch : mOutputBusses) {
-            hatch.addWatcher(this);
-        }
-        for (MTEHatch hatch : mExoticEnergyHatches) {
-            hatch.addWatcher(this);
-        }
-        // Beamline inputs arrive as a BeamLinePacket outside mInventory, so register for their push.
-        for (MTEHatchInputBeamline hatch : mBeamlineInputHatches) {
-            hatch.addWatcher(this);
-        }
-        // Output hatches kept in custom lists (e.g. distillation by-layer) aren't in the lists above; register them
-        // too.
-        for (MTEHatch hatch : getExtraOutputHatchesForWatching()) {
-            hatch.addWatcher(this);
-        }
-    }
-
-    /**
-     * Output hatches that this multiblock stores in custom collections instead of {@link #mOutputHatches} /
-     * {@link #mOutputBusses} (e.g. distillation-tower by-layer lists). They must be returned here so the controller
-     * registers as a watcher on them and gets an immediate recipe check when they are drained. Without this, such a
-     * machine can stay stuck idle after its output fills up and is later emptied. Default: none.
-     */
-    protected Iterable<? extends MTEHatch> getExtraOutputHatchesForWatching() {
-        return Collections.emptyList();
-    }
-
-    /**
-     * Flattens a by-layer hatch list (the shape several multiblocks use for output hatches) for watcher registration.
-     */
-    protected static Iterable<? extends MTEHatch> flattenHatchLayers(List<? extends List<? extends MTEHatch>> byLayer) {
-        List<MTEHatch> all = new ArrayList<>();
-        for (List<? extends MTEHatch> layer : byLayer) {
-            all.addAll(layer);
-        }
-        return all;
-    }
-
-    /** Recomputes whether this machine has any input hatch whose recipe check is expensive (ME stocking hatches). */
-    private void updateExpensiveMEInputFlag() {
-        hasExpensiveMEInput = false;
-        for (MTEHatchInputBus bus : mInputBusses) {
-            if (bus.hasExpensiveRecipeCheck()) {
-                hasExpensiveMEInput = true;
-                return;
-            }
-        }
-        for (MTEHatchInput hatch : mInputHatches) {
-            if (hatch.hasExpensiveRecipeCheck()) {
-                hasExpensiveMEInput = true;
-                return;
-            }
-        }
     }
 
     /**
@@ -779,13 +696,6 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                 if (tDidRepair) tHatch.onMaintenancePerformed(this);
             }
         }
-        // A repaired maintenance issue raises the repair status, which can restart a machine that was stopped for
-        // maintenance, so push a recipe check whenever it rises.
-        int repairStatus = getRepairStatus();
-        if (repairStatus > lastRepairStatus) {
-            scheduleRecipeCheckImmediate();
-        }
-        lastRepairStatus = repairStatus;
     }
 
     /**
@@ -809,62 +719,43 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         endRecipeProcessing();
         // Don't use `result` here because `endRecipeProcessing()` might mutate `this.checkRecipeResult`
         boolean success = this.checkRecipeResult.wasSuccessful();
-        // If we failed specifically for lack of power, arm the energy poll (see shouldRecheckForPower) with the
-        // current stored energy as the baseline so we re-check the moment it rises.
-        waitingForPower = !success && this.checkRecipeResult.isInsufficientPower();
-        if (waitingForPower) lastSeenInputEnergy = getStoredEnergyInHatches();
-        // Optional throttle on repeated failed checks (see recipeCheckFailCooldown). Only applies to machines with an
-        // expensive ME stocking input; everything else stays fully instant. Default 0 keeps even those instant.
+        // Arm the fail cooldown (see recipeCheckFailCooldown) that defers THROTTLED rechecks (ME restock, power
+        // trickle). IMMEDIATE pushes ignore it, so only machines with throttleable sources are affected, and the
+        // default of 0 keeps everything instant.
         if (success) {
             recipeCheckCooldownUntil = 0;
         } else {
             int cooldown = MachineStats.machines.recipeCheckFailCooldown;
-            recipeCheckCooldownUntil = (cooldown > 0 && hasExpensiveMEInput) ? mTotalRunTime + cooldown : 0;
+            recipeCheckCooldownUntil = cooldown > 0 ? mTotalRunTime + cooldown : 0;
         }
         return success;
     }
 
-    public void scheduleRecipeCheckImmediate() {
-        recipeCheckImmediately = true;
+    @Override
+    public void scheduleRecipeCheck(RecipeCheckReason reason) {
+        if (reason.throttled) {
+            recipeCheckThrottled = true;
+        } else {
+            recipeCheckImmediately = true;
+        }
     }
 
     private boolean shouldCheckRecipeThisTick(long aTick) {
-        // Recipe checks are purely event-driven: input/output hatches, energy hatches and config changes push via
-        // scheduleRecipeCheckImmediate() instead of being polled on a periodic timer. The one state change with no
-        // event to push from - stored power recovering - is handled by shouldRecheckForPower() in runMachine().
+        // Recipe checks are purely event-driven: hatches and config changes push via scheduleRecipeCheck(reason)
+        // instead of being polled on a periodic timer.
         if (recipeCheckImmediately) {
+            // An immediate push (new inputs, drained output, user/structure change) always runs, and covers any
+            // pending throttled push too.
             recipeCheckImmediately = false;
+            recipeCheckThrottled = false;
+            return true;
+        }
+        if (recipeCheckThrottled && mTotalRunTime >= recipeCheckCooldownUntil) {
+            // A throttleable push (ME restock, power trickle) runs once the post-failure cooldown has expired.
+            recipeCheckThrottled = false;
             return true;
         }
         return false;
-    }
-
-    /**
-     * Power accumulation has no event to push a recipe check from (energy trickles in every tick), so when an idle
-     * controller is blocked specifically on insufficient power we poll its stored energy and re-check the moment it
-     * increases. Gated on {@link #waitingForPower} so this only runs for actually power-starved machines.
-     */
-    private boolean shouldRecheckForPower() {
-        if (!waitingForPower) return false;
-        long current = getStoredEnergyInHatches();
-        if (current > lastSeenInputEnergy) {
-            lastSeenInputEnergy = current;
-            return true;
-        }
-        return false;
-    }
-
-    private long getStoredEnergyInHatches() {
-        long energy = 0;
-        for (MTEHatchEnergy hatch : validMTEList(mEnergyHatches)) {
-            energy += hatch.getBaseMetaTileEntity()
-                .getStoredEU();
-        }
-        for (MTEHatch hatch : validMTEList(mExoticEnergyHatches)) {
-            energy += hatch.getBaseMetaTileEntity()
-                .getStoredEU();
-        }
-        return energy;
     }
 
     @Override
@@ -941,12 +832,10 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             // Check if the machine is enabled in the first place!
             if (aBaseMetaTileEntity.isAllowedToWork()) {
 
-                // During a post-failure cooldown, defer event-driven rechecks (the push flag is preserved until it
-                // expires); work-enable always bypasses it. With the default cooldown of 0 this is always off.
-                boolean offCooldown = mTotalRunTime >= recipeCheckCooldownUntil;
-                if (aBaseMetaTileEntity.hasWorkJustBeenEnabled() || (offCooldown
-                    && (shouldCheckRecipeThisTick(aTick) || aBaseMetaTileEntity.hasInventoryBeenModified()
-                        || shouldRecheckForPower()))) {
+                // shouldCheckRecipeThisTick() consumes pending pushes and applies the post-failure cooldown to
+                // throttled ones; hasInventoryBeenModified() covers a change to the controller's own inventory slot.
+                if (aBaseMetaTileEntity.hasWorkJustBeenEnabled() || shouldCheckRecipeThisTick(aTick)
+                    || aBaseMetaTileEntity.hasInventoryBeenModified()) {
                     if (checkRecipe()) {
                         markDirty();
                     }
@@ -2386,6 +2275,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         if (aMetaTileEntity instanceof MTEHatchInputBeamline mteHatchInputBeamline) {
             mteHatchInputBeamline.updateTexture(aBaseCasingIndex);
             mteHatchInputBeamline.updateCraftingIcon(this.getMachineCraftingIcon());
+            addIfSmartInput(aMetaTileEntity);
             return mBeamlineInputHatches.add(mteHatchInputBeamline);
         }
         return false;
@@ -2469,6 +2359,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         if (aMetaTileEntity instanceof MTEHatchOutputBus hatch) {
             hatch.updateTexture(aBaseCasingIndex);
             hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+            addIfSmartInput(aMetaTileEntity);
             return mOutputBusses.add(hatch);
         }
         return false;
@@ -2495,6 +2386,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         if (aMetaTileEntity instanceof MTEHatchOutput hatch) {
             hatch.updateTexture(aBaseCasingIndex);
             hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+            addIfSmartInput(aMetaTileEntity);
             return mOutputHatches.add(hatch);
         }
         return false;

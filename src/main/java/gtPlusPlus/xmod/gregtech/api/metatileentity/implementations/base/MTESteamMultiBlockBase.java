@@ -480,11 +480,6 @@ public abstract class MTESteamMultiBlockBase<T extends MTESteamMultiBlockBase<T>
         mSteamOutputs.clear();
     }
 
-    @Override
-    protected Iterable<? extends MTEHatch> getExtraOutputHatchesForWatching() {
-        return mSteamOutputs;
-    }
-
     protected final void checkHasSteamInput(List<StructureError> errors) {
         if (mSteamInputFluids.isEmpty()) {
             errors.add(StructureErrors.of("GT5U.gui.text.structure_error.missing_steam_input"));

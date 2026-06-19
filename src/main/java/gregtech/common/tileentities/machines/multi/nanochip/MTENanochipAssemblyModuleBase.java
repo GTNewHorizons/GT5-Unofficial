@@ -60,6 +60,7 @@ import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.api.util.shutdown.SimpleShutDownReason;
 import gregtech.common.gui.modularui.multiblock.MTENanochipAssemblyModuleBaseGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
+import gregtech.common.tileentities.machines.RecipeCheckReason;
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacuumConveyor;
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacuumConveyorInput;
 import gregtech.common.tileentities.machines.multi.nanochip.hatches.MTEHatchVacuumConveyorOutput;
@@ -490,6 +491,9 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
                 .multiply(BigInteger.valueOf(properRecipe.mEUt));
 
             if (euToConsume.compareTo(this.currentEU) > 0) {
+                // Remember how much this recipe needs so increaseStoredEU() re-checks exactly once the buffer reaches
+                // it, instead of every tick while power trickles in.
+                pendingPowerRequirement = euToConsume;
                 return CheckRecipeResultRegistry.NAC_WAITING_FOR_POWER;
             }
 
@@ -508,6 +512,8 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
             mMaxProgresstime = properRecipe.mDuration;
             // Needs to be negative obviously to display correctly
             this.lEUt = -(long) properRecipe.mEUt * (long) this.currentParallel;
+            // Recipe started, so drop any pending power-wait target.
+            pendingPowerRequirement = null;
         }
 
         return result;
@@ -557,6 +563,8 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
 
     protected BigInteger euBufferSize = BigInteger.ZERO;
     protected BigInteger currentEU = BigInteger.ZERO;
+    /** EU the last power-starved recipe needed; gates the increaseStoredEU() recheck so it fires once, not per tick. */
+    private BigInteger pendingPowerRequirement = null;
 
     public void setBufferSize(BigInteger buffer) {
         this.euBufferSize = buffer;
@@ -659,9 +667,13 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
         BigInteger increasedEU = euToFull.min(maximumIncrease);
         currentEU = currentEU.add(increasedEU);
         // Modules buffer power in currentEU rather than energy hatches, so the controller's stored-energy poll can't
-        // see it. Push a recipe check while idle so a recipe blocked on NAC_WAITING_FOR_POWER restarts as power fills.
-        if (increasedEU.signum() > 0 && mMaxProgresstime <= 0) {
-            scheduleRecipeCheckImmediate();
+        // see it. When a recipe was blocked on NAC_WAITING_FOR_POWER, re-check only once the buffer has actually
+        // reached the amount that recipe needed - re-checking every tick as power trickles in would just fail until
+        // then. Throttled so a heavily loaded base can defer it further.
+        if (pendingPowerRequirement != null && mMaxProgresstime <= 0
+            && currentEU.compareTo(pendingPowerRequirement) >= 0) {
+            pendingPowerRequirement = null;
+            scheduleRecipeCheck(RecipeCheckReason.THROTTLED);
         }
         return increasedEU;
     }

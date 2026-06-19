@@ -32,11 +32,6 @@ public class ResultInsufficientStartupPower implements CheckRecipeResult {
     }
 
     @Override
-    public boolean isInsufficientPower() {
-        return true;
-    }
-
-    @Override
     @Nonnull
     public @NotNull String getDisplayString() {
         return Objects.requireNonNull(

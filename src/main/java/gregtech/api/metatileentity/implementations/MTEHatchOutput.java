@@ -46,9 +46,11 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.hatch.MTEHatchOutputGui;
+import gregtech.common.tileentities.machines.ISmartInputHatch;
 
 @IMetaTileEntity.SkipGenerateDescription
-public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLockableMui2, IOutputHatch {
+public class MTEHatchOutput extends MTEHatch
+    implements IFluidStore, IFluidLockableMui2, IOutputHatch, ISmartInputHatch {
 
     protected Fluid lockedFluid = null;
     private WeakReference<EntityPlayer> playerThatLockedfluid = null;

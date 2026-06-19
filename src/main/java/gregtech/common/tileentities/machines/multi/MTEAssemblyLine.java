@@ -400,9 +400,7 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
 
     @Override
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
-        for (MTEHatchDataAccess hatch : mDataAccessHatches) {
-            hatch.removeWatcher(this);
-        }
+        // Data-access hatches register/unregister as watchers through addIfSmartInput + the base clearHatches.
         mDataAccessHatches.clear();
         if (!checkPiece(STRUCTURE_PIECE_FIRST, 0, 1, 0, errors)) return;
         int recognizedLayers = checkMachine(true, errors);
@@ -451,7 +449,7 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
             ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             // Data sticks (and data-bank/wireless recipe data) define which recipes are available, so let the hatch
             // push a recipe check when its contents change.
-            ((MTEHatchDataAccess) aMetaTileEntity).addWatcher(this);
+            addIfSmartInput(aMetaTileEntity);
             return mDataAccessHatches.add((MTEHatchDataAccess) aMetaTileEntity);
         }
         return false;

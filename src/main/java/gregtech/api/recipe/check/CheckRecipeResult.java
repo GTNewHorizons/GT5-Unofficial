@@ -21,12 +21,4 @@ public interface CheckRecipeResult extends IMachineMessage<CheckRecipeResult> {
     default boolean persistsOnShutdown() {
         return false;
     }
-
-    /**
-     * @return If this failure is due to insufficient power/voltage. Power accumulation has no event to push from, so an
-     *         idle controller blocked on power polls its stored energy until it recovers; this flags when to do so.
-     */
-    default boolean isInsufficientPower() {
-        return false;
-    }
 }
