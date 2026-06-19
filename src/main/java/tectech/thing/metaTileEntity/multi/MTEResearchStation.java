@@ -13,8 +13,6 @@ import static gregtech.api.recipe.RecipeMaps.scannerFakeRecipes;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTUtility.getTier;
 import static gregtech.api.util.GTUtility.validMTEList;
-import static net.minecraft.util.StatCollector.translateToLocal;
-import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 import static tectech.thing.CustomItemList.holder_Hatch;
 
 import java.util.ArrayList;
@@ -33,7 +31,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -50,6 +47,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
@@ -105,11 +103,12 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
     private long packetLossDecayFrom = 0;
 
     private static final String[] description = new String[] {
-        EnumChatFormatting.AQUA + translateToLocal("tt.keyphrase.Hint_Details") + ":",
-        translateToLocal("gt.blockmachines.multimachine.em.research.hint.0"), // 1 - Classic/Data Hatches or
+        EnumChatFormatting.AQUA + GTUtility.translate("tt.keyphrase.Hint_Details") + ":",
+        GTUtility.translate("gt.blockmachines.multimachine.em.research.hint.0"), // 1 - Classic/Data Hatches or
         // Computer casing
-        translateToLocal("gt.blockmachines.multimachine.em.research.hint.1"), // 2 - Holder Hatch
-        translateToLocal("gt.blockmachines.multimachine.em.research.hint.2"), // 3 - Output Bus, Input Hatch or Advanced
+        GTUtility.translate("gt.blockmachines.multimachine.em.research.hint.1"), // 2 - Holder Hatch
+        GTUtility.translate("gt.blockmachines.multimachine.em.research.hint.2"), // 3 - Output Bus, Input Hatch or
+                                                                                 // Advanced
         // Computer Casing
     };
     // endregion
@@ -251,36 +250,36 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         // Machine Type: Research Station, Scanner
-        tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.em.research.type"))
+        tt.addMachineType(GTUtility.translate("gt.blockmachines.multimachine.em.research.type"))
             // Used to scan Data Sticks for Assembling Line Recipes
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.research.desc.1"))
+            .addInfo(GTUtility.translate("gt.blockmachines.multimachine.em.research.desc.1"))
             // Needs to be fed with computation to work
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.research.desc.2"))
+            .addInfo(GTUtility.translate("gt.blockmachines.multimachine.em.research.desc.2"))
             // Does not consume the item until the Data Stick is written
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.research.desc.3"))
+            .addInfo(GTUtility.translate("gt.blockmachines.multimachine.em.research.desc.3"))
             // Use screwdriver to change mode
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.research.desc.4"))
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.research.desc.5"))
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.research.desc.6"))
+            .addInfo(GTUtility.translate("gt.blockmachines.multimachine.em.research.desc.4"))
+            .addInfo(GTUtility.translate("gt.blockmachines.multimachine.em.research.desc.5"))
+            .addInfo(GTUtility.translate("gt.blockmachines.multimachine.em.research.desc.6"))
             .addTecTechHatchInfo()
             .beginStructureBlock(3, 7, 7, false)
             .addController("Front center on the frontside of the main body")
             // Object Holder: Center of the front pillar
             .addOtherStructurePart(
-                translateToLocal("gt.blockmachines.hatch.holder.tier.09.name"),
-                translateToLocal("tt.keyword.Structure.CenterPillar"),
+                GTUtility.translate("gt.blockmachines.hatch.holder.tier.09.name"),
+                GTUtility.translate("tt.keyword.Structure.CenterPillar"),
                 2)
             // Optical Connector: Any Computer Casing on the backside of the main body
             .addOtherStructurePart(
-                translateToLocal("tt.keyword.Structure.DataConnector"),
-                translateToLocal("tt.keyword.Structure.AnyComputerCasingBackMain"),
+                GTUtility.translate("tt.keyword.Structure.DataConnector"),
+                GTUtility.translate("tt.keyword.Structure.AnyComputerCasingBackMain"),
                 1)
             // Energy Hatch: Any Computer Casing on the backside of the main body
-            .addEnergyHatch(translateToLocal("tt.keyword.Structure.AnyComputerCasingBackMain"), 1)
+            .addEnergyHatch(GTUtility.translate("tt.keyword.Structure.AnyComputerCasingBackMain"), 1)
             // Maintenance Hatch: Any Computer Casing on the backside of the main body
-            .addMaintenanceHatch(translateToLocal("tt.keyword.Structure.AnyComputerCasingsHint1or3"), 1, 3)
-            .addOutputBus(translateToLocal("tt.keyword.Structure.AnyComputerCasingsHint1or3"), 1, 3)
-            .addInputHatch(translateToLocal("tt.keyword.Structure.AnyComputerCasingsHint1or3"), 1, 3)
+            .addMaintenanceHatch(GTUtility.translate("tt.keyword.Structure.AnyComputerCasingsHint1or3"), 1, 3)
+            .addOutputBus(GTUtility.translate("tt.keyword.Structure.AnyComputerCasingsHint1or3"), 1, 3)
+            .addInputHatch(GTUtility.translate("tt.keyword.Structure.AnyComputerCasingsHint1or3"), 1, 3)
             .toolTipFinisher();
         return tt;
     }
@@ -726,92 +725,52 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
 
         String connectionStatus;
         if (this.mMaxProgresstime <= 0) {
-            connectionStatus = translateToLocalFormatted("tt.infodata.multi.connection_health.inactive");
+            connectionStatus = GTUtility.translate("tt.infodata.multi.connection_health.inactive");
         } else if (this.ticksUntilPacketLossFail >= PACKET_LOSS_FULL_WINDOW) {
             connectionStatus = EnumChatFormatting.GREEN
-                + translateToLocalFormatted("tt.infodata.multi.connection_health.established")
+                + GTUtility.translate("tt.infodata.multi.connection_health.established")
                 + EnumChatFormatting.RESET;
         } else if (this.ticksUntilPacketLossFail >= PACKET_LOSS_DECAY_WINDOW) {
             connectionStatus = EnumChatFormatting.YELLOW
-                + translateToLocalFormatted("tt.infodata.multi.connection_health.waiting")
+                + GTUtility.translate("tt.infodata.multi.connection_health.waiting")
                 + EnumChatFormatting.RESET;
         } else {
             connectionStatus = EnumChatFormatting.RED
-                + translateToLocalFormatted("tt.infodata.multi.connection_health.decoherence")
+                + GTUtility.translate("tt.infodata.multi.connection_health.decoherence")
                 + EnumChatFormatting.RESET;
         }
 
-        return new String[] { translateToLocal("tt.keyphrase.Energy_Hatches") + ":",
-            EnumChatFormatting.GREEN + formatNumber(storedEnergy)
-                + EnumChatFormatting.RESET
-                + " EU / "
-                + EnumChatFormatting.YELLOW
-                + formatNumber(maxEnergy)
-                + EnumChatFormatting.RESET
-                + " EU",
-            (mEUt <= 0 ? translateToLocal("tt.keyphrase.Probably_uses") + ": "
-                : translateToLocal("tt.keyphrase.Probably_makes") + ": ") + EnumChatFormatting.RED
-                + formatNumber(Math.abs(mEUt))
-                + EnumChatFormatting.RESET
-                + " EU/t "
-                + translateToLocal("tt.keyword.at")
-                + " "
-                + EnumChatFormatting.RED
-                + formatNumber(eAmpereFlow)
-                + EnumChatFormatting.RESET
-                + " A",
-            translateToLocal("tt.keyphrase.Tier_Rating") + ": "
-                + EnumChatFormatting.YELLOW
-                + VN[getMaxEnergyInputTier_EM()]
-                + EnumChatFormatting.RESET
-                + " / "
-                + EnumChatFormatting.GREEN
-                + VN[getMinEnergyInputTier_EM()]
-                + EnumChatFormatting.RESET
-                + " "
-                + translateToLocal("tt.keyphrase.Amp_Rating")
-                + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(eMaxAmpereFlow)
-                + EnumChatFormatting.RESET
-                + " A",
-            translateToLocal("tt.keyword.Problems") + ": "
-                + EnumChatFormatting.RED
-                + (getIdealStatus() - getRepairStatus())
-                + EnumChatFormatting.RESET
-                + " "
-                + translateToLocal("tt.keyword.Efficiency")
-                + ": "
-                + EnumChatFormatting.YELLOW
-                + mEfficiency / 100.0F
-                + EnumChatFormatting.RESET
-                + " %",
-            translateToLocal("tt.keyword.PowerPass") + ": "
-                + EnumChatFormatting.BLUE
-                + ePowerPass
-                + EnumChatFormatting.RESET
-                + " "
-                + translateToLocal("tt.keyword.SafeVoid")
-                + ": "
-                + EnumChatFormatting.BLUE
-                + eSafeVoid,
-            translateToLocal("tt.keyphrase.Computation_Available") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(this.eAvailableData)
-                + EnumChatFormatting.RESET
-                + " / "
-                + EnumChatFormatting.YELLOW
-                + formatNumber(this.eRequiredData)
-                + EnumChatFormatting.RESET,
-            translateToLocal("tt.keyphrase.Computation_Remaining") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(this.computationRemaining / 20L)
-                + EnumChatFormatting.RESET
-                + " / "
-                + EnumChatFormatting.YELLOW
-                + formatNumber(getComputationRequired()),
-            translateToLocalFormatted("tt.infodata.multi.connection_health", connectionStatus),
-            GTUtility.translate("GT5U.multiblock.recipesDone", formatNumber(recipesDone)) };
+        return new String[] { "tt.infodata.research.energy_hatches.header",
+            IGregTechDeviceInformation.encode(
+                "tt.infodata.multi.energy_hatches",
+                EnumChatFormatting.GREEN + formatNumber(storedEnergy) + EnumChatFormatting.RESET,
+                EnumChatFormatting.YELLOW + formatNumber(maxEnergy) + EnumChatFormatting.RESET),
+            mEUt <= 0 ? IGregTechDeviceInformation
+                .encode("tt.infodata.research.currently_uses", formatNumber(Math.abs(mEUt)), formatNumber(eAmpereFlow))
+                : IGregTechDeviceInformation.encode(
+                    "tt.infodata.multi.currently_generates",
+                    EnumChatFormatting.RED + formatNumber(Math.abs(mEUt)) + EnumChatFormatting.RESET,
+                    EnumChatFormatting.RED + formatNumber(eAmpereFlow) + EnumChatFormatting.RESET),
+            IGregTechDeviceInformation.encode(
+                "tt.infodata.research.tier_amp",
+                VN[getMaxEnergyInputTier_EM()],
+                VN[getMinEnergyInputTier_EM()],
+                formatNumber(eMaxAmpereFlow)),
+            IGregTechDeviceInformation.encode(
+                "tt.infodata.research.problems_efficiency",
+                getIdealStatus() - getRepairStatus(),
+                mEfficiency / 100.0F),
+            IGregTechDeviceInformation.encode("tt.infodata.research.power_pass_safe_void", ePowerPass, eSafeVoid),
+            IGregTechDeviceInformation.encode(
+                "tt.infodata.research.computation_available",
+                formatNumber(this.eAvailableData),
+                formatNumber(this.eRequiredData)),
+            IGregTechDeviceInformation.encode(
+                "tt.infodata.research.computation_remaining",
+                formatNumber(this.computationRemaining / 20L),
+                formatNumber(getComputationRequired())),
+            IGregTechDeviceInformation.encode("tt.infodata.multi.connection_health", connectionStatus),
+            IGregTechDeviceInformation.encode("GT5U.multiblock.recipesDone.fmt", formatNumber(recipesDone)) };
     }
     // endregion scanner output
 
@@ -870,8 +829,9 @@ public class MTEResearchStation extends TTMultiblockBase implements ISurvivalCon
         IWailaConfigHandler config) {
         super.getWailaBody(itemStack, currentTip, accessor, config);
         final NBTTagCompound tag = accessor.getNBTData();
+        currentTip.add(GTUtility.translate(getMachineModeKey(tag.getInteger("machineMode"))));
         currentTip.add(
-            StatCollector.translateToLocalFormatted(
+            GTUtility.translate(
                 "gt.blockmachines.multimachine.em.research.computation",
                 tag.getInteger("computation"),
                 tag.getInteger("computationRequired")));

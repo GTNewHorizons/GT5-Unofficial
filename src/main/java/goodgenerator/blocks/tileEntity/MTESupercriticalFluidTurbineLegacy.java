@@ -153,7 +153,7 @@ public class MTESupercriticalFluidTurbineLegacy extends MTELargeTurbineBaseLegac
             .addDynamoHatch("Back center", 1)
             .addMaintenanceHatch("Side centered", 2)
             .addInputHatch("Supercritical Fluid, Side centered", 2)
-            .addOutputHatch("Superheated Steam, Side centered", 3)
+            .addOutputHatch("Superheated Steam, Side centered", 2)
             .toolTipFinisher();
         return tt;
     }
