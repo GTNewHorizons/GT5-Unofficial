@@ -148,7 +148,7 @@ public class MechArmorAugmentRegistries {
             .setSlotCounts(1, 4, 1, 1)
             .setColor(new short[] {121, 84, 206, 0})
             .setRarity(EnumRarity.rare)
-            .setProtection(0.95f)
+            .setProtection(0.9f)
         ),
         Morphic(ItemList.Armor_Frame_Morphic, new FrameBuilder()
             .setId("Morphic")
@@ -156,7 +156,7 @@ public class MechArmorAugmentRegistries {
             .setSlotCounts(2, 1, 2, 2)
             .setColor(new short[] {156, 212, 227, 0})
             .setRarity(EnumRarity.rare)
-            .setProtection(0.97f)
+            .setProtection(0.95f)
         ),
         Bulwark(ItemList.Armor_Frame_Bulwark, new FrameBuilder()
             .setId("Bulwark")
