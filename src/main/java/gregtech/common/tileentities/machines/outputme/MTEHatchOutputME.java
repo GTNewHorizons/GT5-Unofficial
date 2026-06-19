@@ -67,14 +67,12 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.hatch.MTEHatchOutputMEGui;
 import gregtech.common.tileentities.machines.outputme.base.MTEHatchOutputMEBase;
-import gregtech.common.tileentities.machines.outputme.filter.MEFilterFluid;
 import gregtech.common.tileentities.machines.outputme.util.AECacheCounter;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public class MTEHatchOutputME extends MTEHatchOutput
-    implements IPowerChannelState, IMEConnectable, IDataCopyable, ICellContainer, IGridProxyable, IPriorityHost,
-    MTEHatchOutputMEBase.Environment<IAEFluidStack, MEFilterFluid, FluidStack> {
+public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelState, IMEConnectable, IDataCopyable,
+    ICellContainer, IGridProxyable, IPriorityHost, MTEHatchOutputMEBase.Environment<IAEFluidStack> {
 
     public MTEHatchOutputME(int aID, String aName, String aNameRegional) {
         super(
@@ -91,9 +89,8 @@ public class MTEHatchOutputME extends MTEHatchOutput
             1);
     }
 
-    private final MTEHatchOutputMEBase<IAEFluidStack, MEFilterFluid, FluidStack> provider = new MTEHatchOutputMEBase<IAEFluidStack, MEFilterFluid, FluidStack>(
+    private final MTEHatchOutputMEBase<IAEFluidStack> provider = new MTEHatchOutputMEBase<IAEFluidStack>(
         this,
-        new MEFilterFluid(),
         128_000) {};
 
     public MTEHatchOutputME(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -141,8 +138,7 @@ public class MTEHatchOutputME extends MTEHatchOutput
 
     @Override
     public boolean canStoreFluid(@NotNull FluidStack fluidStack) {
-        return provider.getFilter()
-            .isAllowed(fluidStack);
+        return provider.canStore(AEFluidStack.create(fluidStack));
     }
 
     @Override
@@ -490,8 +486,18 @@ public class MTEHatchOutputME extends MTEHatchOutput
     }
 
     @Override
-    public MTEHatchOutputMEBase<IAEFluidStack, MEFilterFluid, FluidStack> getProvider() {
+    public MTEHatchOutputMEBase<IAEFluidStack> getProvider() {
         return provider;
+    }
+
+    @Override
+    public String getEnableKey() {
+        return "GT5U.hatch.fluid.filter.enable";
+    }
+
+    @Override
+    public String getDisableKey() {
+        return "GT5U.hatch.fluid.filter.disable";
     }
 
     @Override
@@ -506,8 +512,7 @@ public class MTEHatchOutputME extends MTEHatchOutput
 
     @Override
     public boolean isFilteredToFluid(GTUtility.FluidId id) {
-        return provider.getFilter()
-            .isFilteredToFluid(id);
+        return canStoreFluid(id.getFluidStack());
     }
 
     @Override
@@ -567,8 +572,7 @@ public class MTEHatchOutputME extends MTEHatchOutput
                 stack.amount -= inserted;
                 return stack.amount == 0;
             }
-            if (!hasAvailableSpace() || !provider.getFilter()
-                .isFilteredToFluid(id)) {
+            if (!hasAvailableSpace() || !isFilteredToFluid(id)) {
                 return false;
             }
             cache.insert(id, stack.amount);
@@ -586,8 +590,7 @@ public class MTEHatchOutputME extends MTEHatchOutput
             cache.iterateAll(
                 (id, amount) -> {
                     provider.addToCache(
-                        provider.getFilter()
-                            .fromNative(id.getFluidStack())
+                        AEFluidStack.create(id.getFluidStack())
                             .setStackSize(amount));
                 });
 
