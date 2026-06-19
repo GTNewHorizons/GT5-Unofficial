@@ -95,7 +95,9 @@ import gregtech.client.GTMouseEventHandler;
 import gregtech.client.GTPowerfailRenderer;
 import gregtech.client.GTWorkAreaRenderer;
 import gregtech.client.SeekingOggCodec;
+import gregtech.client.entity.EntityCamera;
 import gregtech.client.handler.CondensateAnimationTickHandler;
+import gregtech.client.renderer.entity.RenderCamera;
 import gregtech.client.renderer.entity.RenderPowderBarrel;
 import gregtech.client.renderer.waila.TTRenderGTProgressBar;
 import gregtech.common.blocks.ItemMachines;
@@ -261,6 +263,7 @@ public class GTClient extends GTProxy {
             .register(new CondensateAnimationTickHandler());
 
         RenderManager.instance.entityRenderMap.put(EntityPowderBarrelPrimed.class, new RenderPowderBarrel());
+        RenderManager.instance.entityRenderMap.put(EntityCamera.class, new RenderCamera());
         // spotless:on
     }
 

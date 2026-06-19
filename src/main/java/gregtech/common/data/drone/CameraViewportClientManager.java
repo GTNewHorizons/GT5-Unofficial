@@ -72,6 +72,7 @@ public class CameraViewportClientManager extends CameraViewportManager {
     private boolean wasGDown = false;
     private boolean hadNightVisionBefore = false;
     private boolean wasTabDown = false;
+    private boolean wasF5Down = false;
     private float originalFov = -1.0F;
     private boolean wasPageUpDown = false;
     private int lastHoveredX = -1;
@@ -233,6 +234,7 @@ public class CameraViewportClientManager extends CameraViewportManager {
         this.sendUpdateTimer = 0;
         this.flashlightActive = false;
         this.wasLDown = false;
+        this.wasF5Down = false;
         this.hadNightVisionBefore = false;
         this.switchingToRemoteGui = false;
         this.hoveredMachineX = -1;
@@ -323,6 +325,7 @@ public class CameraViewportClientManager extends CameraViewportManager {
         zoomLevel = 1.0F;
         wasPageUpDown = false;
         wasTabDown = false;
+        wasF5Down = false;
 
         if (originalViewEntity != null) {
             mc.renderViewEntity = originalViewEntity;
@@ -392,6 +395,12 @@ public class CameraViewportClientManager extends CameraViewportManager {
             updateFlashlightPotionEffects(flashlightActive);
         }
         wasLDown = isLDown;
+
+        boolean isF5Down = Keyboard.isKeyDown(Keyboard.KEY_F5);
+        if (isF5Down && !wasF5Down) {
+            mc.gameSettings.thirdPersonView = mc.gameSettings.thirdPersonView == 0 ? 1 : 0;
+        }
+        wasF5Down = isF5Down;
 
         boolean isGDown = Keyboard.isKeyDown(Keyboard.KEY_G);
         if (isGDown && !wasGDown) {
