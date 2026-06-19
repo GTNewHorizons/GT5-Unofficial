@@ -118,10 +118,6 @@ public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLocka
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
-        // A drained output hatch frees up space, which can unblock a recipe that failed with FLUID_OUTPUT_FULL.
-        if (aBaseMetaTileEntity.isServerSide()) {
-            detectInventoryChange();
-        }
         if (aBaseMetaTileEntity.isServerSide() && aBaseMetaTileEntity.isAllowedToWork() && mFluid != null) {
             IFluidHandler tTileEntity = aBaseMetaTileEntity
                 .getITankContainerAtSide(aBaseMetaTileEntity.getFrontFacing());
@@ -133,6 +129,12 @@ public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLocka
                     Math.max(1, mFluid.amount),
                     null);
             }
+        }
+        // A drained output hatch frees up space, which can unblock a recipe that failed with FLUID_OUTPUT_FULL. This
+        // must run AFTER the auto-eject above: that eject marks the tank dirty within this same tick, and the dirty
+        // flag is cleared at the end of the tick, so a self-eject that frees space would otherwise never push a check.
+        if (aBaseMetaTileEntity.isServerSide()) {
+            detectInventoryChange();
         }
     }
 
