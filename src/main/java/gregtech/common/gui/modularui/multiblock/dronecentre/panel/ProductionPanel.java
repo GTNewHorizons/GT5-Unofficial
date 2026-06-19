@@ -339,8 +339,8 @@ public class ProductionPanel extends ModularPanel {
             .scrollable(new VerticalScrollData(true))
             .alignment(Alignment.CenterLeft)
             .minElementMargin(4, 2)
-            .gridOf(getOptimalColumns(), cells);
-        return grid.expanded();
+            .gridOf(5, cells);
+        return grid.full();
     }
 
     private IWidget createItemGrid(Map<ItemStack, Long> itemList) {
@@ -389,13 +389,7 @@ public class ProductionPanel extends ModularPanel {
             .scrollable(new VerticalScrollData(true))
             .alignment(Alignment.CenterLeft)
             .minElementMargin(4, 2)
-            .gridOf(getOptimalColumns(), cells);
-        return grid.expanded();
-    }
-
-    private int getOptimalColumns() {
-        int panelWidth = getArea().w();
-        int availableWidth = (int) ((panelWidth - 20) * 0.95f) - 14;
-        return Math.max(1, availableWidth / 44);
+            .gridOf(4, cells);
+        return grid.full();
     }
 }
