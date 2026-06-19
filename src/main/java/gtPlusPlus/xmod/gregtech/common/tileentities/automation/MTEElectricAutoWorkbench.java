@@ -487,26 +487,13 @@ public class MTEElectricAutoWorkbench extends MTEBasicTank {
                             }
                         }
                         case 9 -> {
-                            if (isItemTypeOrItsEmptyLiquidContainerInCraftingGrid(mInventory[mCurrentSlot])) {
-                                if (mInventory[18] == null && mThroughPut < 2) {
-                                    mInventory[18] = mInventory[mCurrentSlot];
-                                    mInventory[mCurrentSlot] = null;
-                                    mTicksUntilNextUpdate = 1;
-                                }
-                                break;
-                            }
-                            for (byte i = 0, j = 0; i < 18 && j < 9
-                                && (j < 2
-                                    || GTModHandler.getAllRecipeOutput(getBaseMetaTileEntity().getWorld(), tRecipe)
-                                        == null); i++) {
-                                tRecipe[j] = mInventory[(mCurrentSlot + i) % 18];
-                                if (tRecipe[j] != null) {
-                                    tRecipe[j] = GTUtility.copy(tRecipe[j]);
-                                    tRecipe[j].stackSize = 1;
-                                    j++;
+                            for (int i = 0; i < 9; i++) {
+                                tRecipe[i] = null;
+                                if (mInventory[i] != null) {
+                                    tRecipe[i] = GTUtility.copy(mInventory[i]);
+                                    tRecipe[i].stackSize = 1;
                                 }
                             }
-                            if (tRecipe[1] == null) tRecipe[0] = null;
                         }
                     }
                 }
@@ -514,7 +501,7 @@ public class MTEElectricAutoWorkbench extends MTEBasicTank {
                 if (tOutput == null)
                     tOutput = GTModHandler.getAllRecipeOutput(getBaseMetaTileEntity().getWorld(), tRecipe);
 
-                if (tOutput != null || mMode == 0) mInventory[28] = tOutput;
+                mInventory[28] = tOutput;
 
                 if (tOutput == null) {
                     mLastCraftSuccessful = false;
@@ -649,7 +636,7 @@ public class MTEElectricAutoWorkbench extends MTEBasicTank {
             if (mInventory[i] != null) {
                 boolean temp = false;
                 for (byte j = 0; j < tList.size(); j++) {
-                    if (GTUtility.areStacksEqual(mInventory[i], mInventory[j])) {
+                    if (GTUtility.areStacksEqual(mInventory[i], tList.get(j))) {
                         tList.get(j).stackSize += mInventory[i].stackSize;
                         temp = true;
                         break;
