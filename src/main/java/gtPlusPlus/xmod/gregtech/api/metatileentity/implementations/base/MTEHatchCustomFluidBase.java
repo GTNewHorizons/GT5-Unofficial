@@ -20,9 +20,10 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
+import gregtech.common.tileentities.machines.ISmartInputHatch;
 import gtPlusPlus.core.lib.GTPPCore;
 
-public class MTEHatchCustomFluidBase extends MTEHatch {
+public class MTEHatchCustomFluidBase extends MTEHatch implements ISmartInputHatch {
 
     public final Fluid mLockedFluid;
     public final int mFluidCapacity;
@@ -116,6 +117,15 @@ public class MTEHatchCustomFluidBase extends MTEHatch {
     public void updateSlots() {
         if (mInventory[getInputSlot()] != null && mInventory[getInputSlot()].stackSize <= 0)
             mInventory[getInputSlot()] = null;
+    }
+
+    @Override
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
+        super.onPostTick(aBaseMetaTileEntity, aTimer);
+        if (aBaseMetaTileEntity.isServerSide()) {
+            // Pushing on change lets a machine that stalled on running out of steam restart the instant steam returns.
+            detectInventoryChange();
+        }
     }
 
     @Override

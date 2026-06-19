@@ -51,6 +51,7 @@ import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
+import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
@@ -434,6 +435,11 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
     @Override
     public List<IOutputHatch> getOutputHatches(FluidStack[] toOutput) {
         return this.getOutputHatchesByLayers(toOutput, this.outputHatchesPerLayer);
+    }
+
+    @Override
+    protected Iterable<? extends MTEHatch> getExtraOutputHatchesForWatching() {
+        return flattenHatchLayers(this.outputHatchesPerLayer);
     }
 
     @Override

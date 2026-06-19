@@ -37,6 +37,7 @@ import gregtech.api.interfaces.IOutputHatch;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.structure.error.StructureError;
@@ -241,6 +242,11 @@ public class MTESpargeTower extends GTPPMultiBlockBase<MTESpargeTower> implement
     @Override
     public List<IOutputHatch> getOutputHatches(FluidStack[] toOutput) {
         return getOutputHatchesByLayers(toOutput, mOutputHatchesByLayer);
+    }
+
+    @Override
+    protected Iterable<? extends MTEHatch> getExtraOutputHatchesForWatching() {
+        return flattenHatchLayers(mOutputHatchesByLayer);
     }
 
     @Override

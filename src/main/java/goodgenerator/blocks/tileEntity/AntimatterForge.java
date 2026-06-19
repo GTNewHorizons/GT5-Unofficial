@@ -654,6 +654,11 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
     }
 
     @Override
+    protected Iterable<? extends MTEHatch> getExtraOutputHatchesForWatching() {
+        return amOutputHatches;
+    }
+
+    @Override
     public void onRemoval() {
         if (this.isLoadedChunk) GTChunkManager.releaseTicket((TileEntity) getBaseMetaTileEntity());
         super.onRemoval();

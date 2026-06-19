@@ -541,6 +541,9 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         for (var hatch : mOutputBusses) {
             hatch.removeWatcher(this);
         }
+        for (MTEHatch hatch : getExtraOutputHatchesForWatching()) {
+            hatch.removeWatcher(this);
+        }
         mOutputHatches.clear();
         mOutputBusses.clear();
         mDynamoHatches.clear();
@@ -606,6 +609,32 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         for (MTEHatchInputBeamline hatch : mBeamlineInputHatches) {
             hatch.addWatcher(this);
         }
+        // Output hatches kept in custom lists (e.g. distillation by-layer) aren't in the lists above; register them
+        // too.
+        for (MTEHatch hatch : getExtraOutputHatchesForWatching()) {
+            hatch.addWatcher(this);
+        }
+    }
+
+    /**
+     * Output hatches that this multiblock stores in custom collections instead of {@link #mOutputHatches} /
+     * {@link #mOutputBusses} (e.g. distillation-tower by-layer lists). They must be returned here so the controller
+     * registers as a watcher on them and gets an immediate recipe check when they are drained. Without this, such a
+     * machine can stay stuck idle after its output fills up and is later emptied. Default: none.
+     */
+    protected Iterable<? extends MTEHatch> getExtraOutputHatchesForWatching() {
+        return Collections.emptyList();
+    }
+
+    /**
+     * Flattens a by-layer hatch list (the shape several multiblocks use for output hatches) for watcher registration.
+     */
+    protected static Iterable<? extends MTEHatch> flattenHatchLayers(List<? extends List<? extends MTEHatch>> byLayer) {
+        List<MTEHatch> all = new ArrayList<>();
+        for (List<? extends MTEHatch> layer : byLayer) {
+            all.addAll(layer);
+        }
+        return all;
     }
 
     /** Recomputes whether this machine has any input hatch whose recipe check is expensive (ME stocking hatches). */
