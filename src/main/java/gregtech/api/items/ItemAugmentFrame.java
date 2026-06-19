@@ -30,8 +30,9 @@ public class ItemAugmentFrame extends ItemAugmentAbstract {
         addSeparatorIfNeeded(desc);
 
         desc.add(
-            GTUtility
-                .translate("GT5U.armor.tooltip.armorvalue", GTTextBuilder.NUMERIC.toString() + frame.getProtection()));
+            GTUtility.translate(
+                "GT5U.armor.tooltip.armorvalue",
+                GTTextBuilder.NUMERIC.toString() + (frame.getProtection() * 100)));
 
         addSeparatorIfNeeded(desc);
 
