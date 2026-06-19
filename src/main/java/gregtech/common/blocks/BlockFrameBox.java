@@ -80,7 +80,7 @@ public class BlockFrameBox extends BlockContainer implements IBlockWithTextures 
     public ItemStack getStackForm(int amount, int meta) {
         return new ItemStack(this, amount, meta & MATERIAL_MASK);
     }
-    
+
     @Override
     public String getUnlocalizedName() {
         return mUnlocalizedName;
