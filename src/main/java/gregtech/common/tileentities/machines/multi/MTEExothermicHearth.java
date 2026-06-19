@@ -65,7 +65,6 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.structure.error.StructureErrors;
@@ -384,6 +383,7 @@ public class MTEExothermicHearth extends MTEExtendedPowerMultiBlockBase<MTEExoth
         tag.setBoolean("pyrotheum", isPyroSupplied);
         tag.setInteger("drain", (int) Math.floor(parallelModifier * PYROTHEUM_DRAIN_BASE));
         tag.setFloat("parallelModifier", parallelModifier);
+        tag.setInteger("heatingCapacity", heatingCapacity);
 
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
     }
@@ -400,7 +400,9 @@ public class MTEExothermicHearth extends MTEExtendedPowerMultiBlockBase<MTEExoth
             currentTip
                 .add(translateToLocalFormatted("GT5U.waila.mebf.pyrotheum", formatFluid(tag.getInteger("drain"))));
         }
-
+        currentTip.add(
+            StatCollector
+                .translateToLocalFormatted("GT5U.multiblock.heat", formatNumber(tag.getInteger("heatingCapacity"))));
     }
 
     @Override
@@ -438,35 +440,17 @@ public class MTEExothermicHearth extends MTEExtendedPowerMultiBlockBase<MTEExoth
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
-        ITexture[] rTexture;
-        if (side == aFacing) {
-            if (aActive) {
-                rTexture = new ITexture[] { getCasingTexture(), TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_HEARTH_ACTIVE)
-                    .extFacing()
-                    .build(),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_HEARTH_ACTIVE_GLOW)
-                        .extFacing()
-                        .glow()
-                        .build() };
-            } else {
-                rTexture = new ITexture[] { getCasingTexture(), TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_HEARTH)
-                    .extFacing()
-                    .build(),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_HEARTH_GLOW)
-                        .extFacing()
-                        .glow()
-                        .build() };
-            }
-        } else {
-            rTexture = new ITexture[] { getCasingTexture() };
-        }
-        return rTexture;
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            OVERLAY_FRONT_HEARTH,
+            OVERLAY_FRONT_HEARTH_GLOW,
+            OVERLAY_FRONT_HEARTH_ACTIVE,
+            OVERLAY_FRONT_HEARTH_ACTIVE_GLOW);
     }
 
     @Override

@@ -219,6 +219,16 @@ public class MTESteamWaterPump extends MTESteamMultiBlockBase<MTESteamWaterPump>
     }
 
     @Override
+    protected IIconContainer getInactiveGlowOverlay() {
+        return Textures.BlockIcons.OVERLAY_FRONT_WATER_PUMP_GLOW;
+    }
+
+    @Override
+    protected IIconContainer getActiveGlowOverlay() {
+        return Textures.BlockIcons.OVERLAY_FRONT_WATER_PUMP_ACTIVE_GLOW;
+    }
+
+    @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())

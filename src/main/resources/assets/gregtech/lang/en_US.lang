@@ -1919,6 +1919,7 @@ gt.recipe.compressor=Compressor
 gt.recipe.compressor.description=Compress-O-Matic C77
 gt.recipe.cuttingsaw=Cutting Machine
 gt.recipe.cuttingsaw.description=Slice'N Dice
+gt.recipe.fakecuttingsaw=Cutting Machine
 gt.recipe.distillery=Distillery
 gt.recipe.distillery.description=Extracting the most relevant Parts of Fluids
 gt.recipe.furnace=Furnace
@@ -3749,6 +3750,7 @@ GT5U.hatch.chisel.configure.grid=Configure Templates
 GT5U.bus.filterTooltip.empty=§aDrag item from NEI to set output filter
 GT5U.bus.filterTooltip.full=§aClick to clear output filter
 
+GT5U.multiblock.heat=§cHeat: §f%sK
 GT5U.multiblock.pollution=Pollution reduced to
 GT5U.multiblock.energy=Stored Energy
 GT5U.multiblock.Progress=Progress
@@ -8837,3 +8839,80 @@ GT5U.chat.bec-storage-controller-pos=Outer wall of center pillar, second layer f
 # Test Factory Machines
 gt.blockmachines.pipe.test.name=Test Factory Pipe
 gt.blockmachines.hatch.test.name=Test Factory Hatch
+
+# Basic Generators - Shared
+gt.blockmachines.basicgenerator.fuel_efficiency=Fuel Efficiency: %s%%
+
+# Basic Generators - Combustion
+gt.blockmachines.basicgenerator.diesel.tier.01.name=Basic Combustion Generator
+gt.blockmachines.basicgenerator.diesel.tier.02.name=Advanced Combustion Generator
+gt.blockmachines.basicgenerator.diesel.tier.03.name=Turbo Combustion Generator
+gt.blockmachines.basicgenerator.diesel.tooltip=Requires liquid Fuel\nCauses %d Pollution per second
+
+# Basic Generators - Gas Turbine
+gt.blockmachines.basicgenerator.gasturbine.tier.01.name=Basic Gas Turbine
+gt.blockmachines.basicgenerator.gasturbine.tier.02.name=Advanced Gas Turbine
+gt.blockmachines.basicgenerator.gasturbine.tier.03.name=Turbo Gas Turbine
+gt.blockmachines.basicgenerator.gasturbine.tier.04.name=Turbo Gas Turbine II
+gt.blockmachines.basicgenerator.gasturbine.tier.05.name=Turbo Gas Turbine III
+gt.blockmachines.basicgenerator.gasturbine.tooltip=Requires flammable Gasses\nCauses %d Pollution per second
+
+# Basic Generators - Steam Turbine
+gt.blockmachines.basicgenerator.steamturbine.tier.01.name=Basic Steam Turbine
+gt.blockmachines.basicgenerator.steamturbine.tier.02.name=Advanced Steam Turbine
+gt.blockmachines.basicgenerator.steamturbine.tier.03.name=Turbo Steam Turbine
+gt.blockmachines.basicgenerator.steamturbine.tooltip=Converts Steam into EU\nBase rate: 2L of Steam -> 1 EU\nFuel Efficiency: %s%%\nConsumes up to %sL of Steam per second
+
+# Basic Generators - Naquadah Reactor
+gt.blockmachines.basicgenerator.naquadah.tier.04.name=Naquadah Reactor Mark I
+gt.blockmachines.basicgenerator.naquadah.tier.04.tooltip=Requires Enriched Naquadah Bolts
+gt.blockmachines.basicgenerator.naquadah.tier.05.name=Naquadah Reactor Mark II
+gt.blockmachines.basicgenerator.naquadah.tier.05.tooltip=Requires Enriched Naquadah Rods
+gt.blockmachines.basicgenerator.naquadah.tier.06.name=Naquadah Reactor Mark III
+gt.blockmachines.basicgenerator.naquadah.tier.06.tooltip=Requires Enriched Naquadah Long Rods
+gt.blockmachines.basicgenerator.naquadah.tier.07.name=Naquadah Reactor Mark IV
+gt.blockmachines.basicgenerator.naquadah.tier.07.tooltip=Requires Naquadria Bolts
+gt.blockmachines.basicgenerator.naquadah.tier.08.name=Naquadah Reactor Mark V
+gt.blockmachines.basicgenerator.naquadah.tier.08.tooltip=Requires Naquadria Rods
+
+# Basic Generators - Plasma Generator
+gt.blockmachines.basicgenerator.plasmagenerator.tier.05.name=Plasma Generator Mark I
+gt.blockmachines.basicgenerator.plasmagenerator.tier.06.name=Plasma Generator Mark II
+gt.blockmachines.basicgenerator.plasmagenerator.tier.07.name=Plasma Generator Mark III
+gt.blockmachines.basicgenerator.plasmagenerator.tier.08.name=Plasma Generator Mark IV
+gt.blockmachines.basicgenerator.plasmagenerator.tier.09.name=Ultimate Pocket Sun
+gt.blockmachines.basicgenerator.plasmagenerator.tooltip=Plasma into energy
+
+# Basic Generators - Magic Energy Converter
+gt.blockmachines.basicgenerator.magicenergyconverter.tier.01.name=Novice Magic Energy Converter
+gt.blockmachines.basicgenerator.magicenergyconverter.tier.02.name=Adept Magic Energy Converter
+gt.blockmachines.basicgenerator.magicenergyconverter.tier.03.name=Master Magic Energy Converter
+gt.blockmachines.basicgenerator.magicenergyconverter.tooltip=Put your strange stuff in here
+
+# Basic Generators - Magic Energy Absorber
+gt.blockmachines.basicgenerator.magicenergyabsorber.tier.01.name=Novice Magic Energy Absorber
+gt.blockmachines.basicgenerator.magicenergyabsorber.tier.02.name=Adept Magic Energy Absorber
+gt.blockmachines.basicgenerator.magicenergyabsorber.tier.03.name=Master Magic Energy Absorber
+gt.blockmachines.basicgenerator.magicenergyabsorber.tier.04.name=Grandmaster Magic Energy Absorber
+gt.blockmachines.basicgenerator.magicenergyabsorber.tooltip=§nFeasts on §d§nmagic§7§n close to it:\n- %s\n- %sEU per §dEnder Crystal§7 in range\n§r \n§nLookup range (Use Screwdriver to change):\nDefault: §a%s\nMax: §a%s\n§r \n§nFuels on §d§nenchantments§7§n input:\n- Item: %sEU per §denchant§7 weight × level / max\n- Book: 10000EU per §denchant§7 weight × level / max\n§r \nEfficiency: §a%s%%
+gt.blockmachines.basicgenerator.magicenergyabsorber.tooltip.dragon_egg.shared=A §7 §dDragon Egg§7 atop
+gt.blockmachines.basicgenerator.magicenergyabsorber.tooltip.dragon_egg.exclusive=An §e§nEXCLUSIVE§r§7 §dDragon Egg§7 atop
+gt.blockmachines.basicgenerator.magicenergyabsorber.tooltip.thaumcraft=- %sCV/t from an §dEnergised Node§7\n- %sEU per §dEssentia§7 Aspect-Value from containers in range
+
+# Basic Generators - Solar Panel
+gt.blockmachines.basicgenerator.solarpanel.00.name=1-volt Solar Panel
+gt.blockmachines.basicgenerator.solarpanel.01.name=Basic Solar Panel
+gt.blockmachines.basicgenerator.solarpanel.02.name=Advanced Solar Panel
+gt.blockmachines.basicgenerator.solarpanel.03.name=Advanced Solar Panel II
+gt.blockmachines.basicgenerator.solarpanel.04.name=Advanced Solar Panel III
+gt.blockmachines.basicgenerator.solarpanel.05.name=Advanced Solar Panel IV
+gt.blockmachines.basicgenerator.solarpanel.06.name=Elite Solar Panel
+gt.blockmachines.basicgenerator.solarpanel.07.name=Elite Solar Panel II
+gt.blockmachines.basicgenerator.solarpanel.08.name=Ultimate Solar Panel
+gt.blockmachines.basicgenerator.solarpanel.tooltip=Generates EU From Solar Power\nDoes not generate power when raining\nCleans itself automatically\nDoes not explode in rain!
+
+# Basic Generators - Lightning Rod
+gt.blockmachines.basicgenerator.lightningrod.03.name=Lightning Rod
+gt.blockmachines.basicgenerator.lightningrod.04.name=Lightning Rod II
+gt.blockmachines.basicgenerator.lightningrod.05.name=Lightning Rod III
+gt.blockmachines.basicgenerator.lightningrod.tooltip=Generates EU From Lightning Bolts
