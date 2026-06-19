@@ -97,6 +97,14 @@ public class MTEWetTransformer extends MTETransformer {
     }
 
     @Override
+    public long displayedAmperesIn() {
+        if (mHalfMode) {
+            return getBaseMetaTileEntity().isAllowedToWork() ? 8 : 32;
+        }
+        return getBaseMetaTileEntity().isAllowedToWork() ? 16 : 64;
+    }
+
+    @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setBoolean("mHalfMode", mHalfMode);

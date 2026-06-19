@@ -1630,7 +1630,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     public boolean drainEnergyInput(long aEU) {
         if (aEU <= 0) return true;
 
-        for (MTEHatchEnergy tHatch : validMTEList(mEnergyHatches)) {
+        for (MTEHatchEnergy tHatch : mEnergyHatches) {
+            if (!tHatch.isValid()) continue;
             long tDrain = Math.min(
                 tHatch.getBaseMetaTileEntity()
                     .getStoredEU(),
@@ -3044,7 +3045,11 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
     protected boolean canDumpFluidToMEByLayer(List<GTUtility.FluidId> outputs,
         List<List<MTEHatchOutput>> hatchesByLayer) {
-        for (int i = 0; i < hatchesByLayer.size(); i++) {
+        for (int i = 0; i < outputs.size(); i++) {
+            if (i >= hatchesByLayer.size()) {
+                // Less layer than recipe size
+                return false;
+            }
             List<MTEHatchOutputME> hatches = GTUtility.getMTEsOfType(hatchesByLayer.get(i), MTEHatchOutputME.class);
             GTUtility.FluidId output = outputs.get(i);
             boolean handled = false;
