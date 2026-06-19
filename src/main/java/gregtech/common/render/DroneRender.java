@@ -25,7 +25,7 @@ public class DroneRender {
     }
 
     public static void renderDrone(double x, double y, double z, float timeSinceLastTick, int level) {
-        if (level <= 0 || level >= DroneTextures.length) return;
+        if (level <= 0 || level > DroneTextures.length) return;
         Minecraft mc = Minecraft.getMinecraft();
         mc.getTextureManager()
             .bindTexture(DroneTextures[level - 1]);
