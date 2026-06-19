@@ -359,7 +359,7 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISp
 
     @Override
     public int getArmorDisplay(EntityPlayer player, ItemStack armor, int slot) {
-        return (int) getDamageReduction(armor);
+        return (int) (20 * getDamageReduction(armor));
     }
 
     @Override
