@@ -18,7 +18,7 @@ detrav.scanner.found.texts.2= §7small sample§r.
 detrav.scanner.found.texts.3= §2medium sample§r.
 detrav.scanner.found.texts.4= §elarge sample§r.
 detrav.scanner.found.texts.5= §dvery large sample§r.
-detrav.scanner.found.texts.6=Found
+detrav.scanner.found.texts.6=Found 
 
 # Don't translate "%badluck"
 detrav.scanner.success=All chunks scanned successfully!
@@ -40,8 +40,8 @@ tooltip.detrav.scanner.distance.1=at medium range (3-5), at long range (6-8), fa
 gui.detrav.scanner.pollution=Pollution
 gui.detrav.scanner.unknown_fluid=Unknown Fluid name!
 
-gui.detrav.scanner.tooltip.fluid_name=Fluid Name:
-gui.detrav.scanner.tooltip.fluid_amount=Fluid Amount:
+gui.detrav.scanner.tooltip.fluid_name=Fluid Name: 
+gui.detrav.scanner.tooltip.fluid_amount=Fluid Amount: 
 gui.detrav.scanner.tooltip.no_fluid=Empty
 gui.detrav.scanner.tooltip.ore_pos=X: %d, Z: %d
 gui.detrav.scanner.tooltip.ore_depth=Y: %d
