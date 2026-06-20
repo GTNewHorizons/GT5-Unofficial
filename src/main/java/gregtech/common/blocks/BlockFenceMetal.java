@@ -60,4 +60,9 @@ public class BlockFenceMetal extends BlockFence {
         return this.unlocalizedName;
     }
 
+    @Override
+    public int damageDropped(int meta) {
+        return meta;
+    }
+
 }
