@@ -688,8 +688,11 @@ public class Textures {
             BLOCK_POWDER = create("BLOCK_POWDER"),
 
             // IC2 Replacements
-            BLOCK_BOUNCE_PAD = create("BLOCK_BOUNCE_PAD"),
-            BLOCK_STICKY_PAD = create("BLOCK_STICKY_PAD"),
+            BLOCK_BOUNCE_PAD_SIDE = create("BLOCK_BOUNCE_PAD_SIDE"),
+            BLOCK_BOUNCE_PAD_TOP = create("BLOCK_BOUNCE_PAD_TOP"),
+            BLOCK_STICKY_PAD_TOP = create("BLOCK_STICKY_PAD_TOP"),
+            BLOCK_STICKY_PAD_SIDE = create("BLOCK_STICKY_PAD_SIDE"),
+            BLOCK_STICKY_PAD_BOTTOM = create("BLOCK_STICKY_PAD_BOTTOM"),
 
             OVERLAY_LOCKER = createOptional("OVERLAY_LOCKER"),
             OVERLAY_LOCKER_000 = createOptional("OVERLAY_LOCKER_000"),

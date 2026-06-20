@@ -4,6 +4,7 @@ import static gregtech.api.enums.OrePrefixes.___placeholder___;
 
 import java.util.Arrays;
 
+import gregtech.api.enums.ItemList;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
@@ -36,10 +37,20 @@ public class PosteaTransformers implements Runnable {
         registerPotassiumHydroxideTransformer();
         registerPTMEGTransformers();
         registerBorosilicateGlassTransformers();
+        registerIC2BlocksTransformer();
     }
 
     private static NBTTagCompound passthrough(NBTTagCompound tag) {
         return tag;
+    }
+
+    private void registerIC2BlocksTransformer() {
+        // These are used to convert ic2 blocks to their new counterparts.
+        // I.e. Reinforced glass, iron fences, etc.
+
+        // rubber pad
+        ItemStackReplacementManager.addSimpleReplacement("IC2:blockRubber", ItemList.PadBouncy.get(1L));
+        BlockReplacementManager.addSimpleReplacement("IC2:blockRubber", ItemList.PadBouncy.getBlock(), 0);
     }
 
     private void registerFrameboxTransformers() {

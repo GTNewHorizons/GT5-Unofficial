@@ -1,13 +1,16 @@
 package gregtech.common.blocks;
 
-import static java.lang.Math.abs;
+import java.util.List;
 
 import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
@@ -25,6 +28,7 @@ import gregtech.api.interfaces.IItemContainer;
 public class BlockPad extends Block {
 
     protected String unlocalizedName;
+    protected int subTypes = 0;
 
     public BlockPad() {
         this(ItemBlockPad.class, "gt.blockpad", Material.cloth);
@@ -48,13 +52,24 @@ public class BlockPad extends Block {
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int ordinalSide, int aMeta) {
         return switch (aMeta) {
-            case 0 -> Textures.BlockIcons.BLOCK_BOUNCE_PAD.getIcon();
-            case 1 -> Textures.BlockIcons.BLOCK_STICKY_PAD.getIcon();
-            default -> Textures.BlockIcons.BLOCK_BOUNCE_PAD.getIcon();
+            case 0 -> ordinalSide >= 2 ? Textures.BlockIcons.BLOCK_BOUNCE_PAD_SIDE.getIcon()
+                : Textures.BlockIcons.BLOCK_BOUNCE_PAD_TOP.getIcon();
+            case 1 -> ordinalSide == 0 ? Textures.BlockIcons.BLOCK_STICKY_PAD_BOTTOM.getIcon()
+                : ordinalSide == 1 ? Textures.BlockIcons.BLOCK_STICKY_PAD_TOP.getIcon()
+                  : Textures.BlockIcons.BLOCK_STICKY_PAD_SIDE.getIcon();
+            default -> Textures.BlockIcons.BLOCK_BOUNCE_PAD_TOP.getIcon();
         };
     }
 
+    @Override
+    public void getSubBlocks(final Item item, final CreativeTabs tab, final List<ItemStack> list) {
+        for (int i = 0; i < this.subTypes; i++) {
+            list.add(new ItemStack(item, 1, i));
+        }
+    }
+
     protected final void register(int meta, @Nullable IItemContainer container) {
+        this.subTypes++;
         ItemStack stack = new ItemStack(this, 1, meta);
 
         if (container != null) {
@@ -64,31 +79,37 @@ public class BlockPad extends Block {
 
     @Override
     public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity) {
-        if (!entity.boundingBox.intersectsWith(getCollisionBoundingBox(world, x, y, z))) return;
         int meta = world.getBlockMetadata(x, y, z);
+        // first of all, make sure it's actually colliding for the sticky pad. Stops it working when you're on a slab,
+        // for example.
+        if (meta == 1 && !entity.boundingBox.intersectsWith(getCollisionBoundingBox(world, x, y, z))) return;
         switch (meta) {
             case 0 -> {
                 // bounce pad
                 // too weakly supported, it breaks
-                if (supportedSides(world, x, y, z) < 2) {
+                int supports = supportedSides(world, x, y, z);
+                if (supports < 2) {
                     this.dropBlockAsItem(world, x, y, z, meta, 0);
                     world.setBlockToAir(x, y, z);
                     break;
-                }
+                } else if (supports == 99) break; // No give, do nothing.
 
                 float fallDist = entity.fallDistance;
-                float motionMult = 0.35F;
+                float motionMult = -0.9F;
 
-                if (fallDist > 0F && fallDist <= 11F) {
-                    if (entity instanceof EntityPlayerSP player) {
-                        if (player.movementInput.jump) {
-                            motionMult = 1.25F;
+                if (fallDist <= 15F) {
+                    if (entity instanceof EntityPlayerSP) {
+                        if (Minecraft.getMinecraft().gameSettings.keyBindJump.getIsKeyPressed()) {
+                            motionMult = -1.35F;
+                        } else if (Minecraft.getMinecraft().gameSettings.keyBindSneak.getIsKeyPressed()) {
+                            motionMult = -0.3F;
                         }
                     }
-                    // bounce back 1/3 as high, but if player is holding jump, jump a little higher than fall
-                    entity.addVelocity(0, abs(entity.motionY) * motionMult, 0);
+                    // bounce back lower, but if player is holding jump, jump a little higher than fall. Sneak to mostly
+                    // break fall.
+                    if (entity.motionY < -0.32F) entity.motionY *= motionMult;
                     entity.fallDistance = 0.0F;
-                } else if (fallDist > 11F) {
+                } else if (fallDist > 15F) {
                     this.dropBlockAsItem(world, x, y, z, meta, 0);
                     world.setBlockToAir(x, y, z);
                     // break fall a bit.
@@ -100,7 +121,7 @@ public class BlockPad extends Block {
                 // sticky pad
                 entity.motionZ *= 0.25F;
                 entity.motionX *= 0.25F;
-                entity.motionY *= .5F;
+                if (entity.fallDistance < 1) entity.motionY *= .5F;
             }
         }
     }
@@ -116,21 +137,22 @@ public class BlockPad extends Block {
             (double) y + this.minY,
             (double) z + this.minZ,
             (double) x + this.maxX,
-            (double) y + this.maxY,
+            (double) y + this.maxY * 2, // need some space for entity to collide with.
             (double) z + this.maxZ);
     }
 
     @Override
     public boolean canBlockStay(World worldIn, int x, int y, int z) {
-        // check all four sides for supports
-        for (int i = -1; i <= 1 && worldIn.getBlockMetadata(x, y, z) != 1; i += 2) {
+        int meta = worldIn.getBlockMetadata(x, y, z);
+        // check all four sides for supports for trampoline. Needs space for give.
+        for (int i = -1; i <= 1 && meta != 1; i += 2) {
             for (int j = -1; j <= 1; j += 2) {
                 if (!worldIn.isAirBlock(x + i, y, z + j)) {
                     return true;
                 }
             }
         }
-        // If on bottom
+        // Sticky pad only if on bottom
         return !worldIn.isAirBlock(x, y - 1, z);
     }
 
@@ -178,5 +200,10 @@ public class BlockPad extends Block {
             this.dropBlockAsItem(worldIn, x, y, z, worldIn.getBlockMetadata(x, y, z), 0);
             worldIn.setBlockToAir(x, y, z);
         }
+    }
+
+    @Override
+    public int damageDropped(int meta) {
+        return meta;
     }
 }

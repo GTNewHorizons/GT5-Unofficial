@@ -925,6 +925,7 @@ gt.blockcasings10.name=Machine Casing
 gt.blockcasings11.name=Machine Casing
 gt.blockcasingsNH.name=Machine Casing
 gt.blockconcretes.name=Concrete
+gt.blockpad=Pad
 gt.blockframes.name=Frame
 gt.blockgem1.name=Block
 gt.blockgem2.name=Block
@@ -4295,6 +4296,10 @@ gt.item.paper.magic.page.name=Enchanted Page
 gt.item.paper.magic.pages.name=Enchanted Pages
 gt.item.paper.punch_card.empty.name=Punch Card
 gt.item.paper.punch_card.encoded.name=Punched Card
+
+# Pads
+gt.blockpad.0.name=Bounce Pad
+gt.blockpad.1.name=Sticky Pad
 
 ## Book
 gt.item.book.written.01.name=Book
