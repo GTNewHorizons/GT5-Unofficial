@@ -97,6 +97,7 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
     private int selectedTime = 10;
     private int activeGroup = 0;
     private String searchFilter = "";
+    private String productionSearchFilter = "";
     private boolean useRender = true;
     private boolean renderActive = false;
     private boolean searchOriginalName;
@@ -613,6 +614,14 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
 
     public void setSearchBarText(String text) {
         searchFilter = text;
+    }
+
+    public String getProductionSearchFilter() {
+        return productionSearchFilter;
+    }
+
+    public void setProductionSearchFilter(String productionSearchFilter) {
+        this.productionSearchFilter = productionSearchFilter;
     }
 
     public boolean getSearchOriginalName() {
