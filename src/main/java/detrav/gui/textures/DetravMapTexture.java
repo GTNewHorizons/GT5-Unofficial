@@ -218,15 +218,11 @@ public class DetravMapTexture extends AbstractTexture {
     }
 
     public void draw(int x, int y) {
-        draw(x, y, width, height);
-    }
-
-    public void draw(int x, int y, int w, int h) {
         Tessellator tessellator = Tessellator.instance;
         tessellator.startDrawingQuads();
-        tessellator.addVertexWithUV(x, y + h, 0, 0F, 1F);
-        tessellator.addVertexWithUV(x + w, y + h, 0, 1F, 1F);
-        tessellator.addVertexWithUV(x + w, y, 0, 1F, 0F);
+        tessellator.addVertexWithUV(x, y + height, 0, 0F, 1F);
+        tessellator.addVertexWithUV(x + width, y + height, 0, 1F, 1F);
+        tessellator.addVertexWithUV(x + width, y, 0, 1F, 0F);
         tessellator.addVertexWithUV(x, y, 0, 0F, 0F);
         tessellator.draw();
     }

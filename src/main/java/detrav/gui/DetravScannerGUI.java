@@ -44,6 +44,7 @@ public class DetravScannerGUI extends GuiScreen {
     private int mapW, mapH;
     private int listX, listW;
     private int viewW, viewH; // visible area of the (full-scale) map
+    private int mvX, mvY; // top-left of the map viewport
     // scroll offset into the full-scale map
     private int panX, panY;
     private int maxPanX, maxPanY;
@@ -100,6 +101,9 @@ public class DetravScannerGUI extends GuiScreen {
         aY = (this.height - mapH) / 2;
         listX = aX + mapW;
 
+        mvX = aX + (mapW - viewW) / 2;
+        mvY = aY + (mapH - viewH) / 2;
+
         if (!panInit) {
             // start centred on the player marker
             panX = map.packet.posX - (map.packet.chunkX - map.packet.size) * 16 - 1 - viewW / 2;
@@ -150,9 +154,9 @@ public class DetravScannerGUI extends GuiScreen {
         boolean down = Mouse.isButtonDown(0);
 
         if (down && !wasMouseDown) {
-            if (maxPanY > 0 && x >= aX + viewW - scrollbar && x < aX + viewW && y >= aY && y < aY + viewH) {
+            if (overVScrollbar(x, y)) {
                 dragMode = 3;
-            } else if (maxPanX > 0 && y >= aY + viewH - scrollbar && y < aY + viewH && x >= aX && x < aX + viewW) {
+            } else if (overHScrollbar(x, y)) {
                 dragMode = 2;
             } else if (inViewport(x, y) && (maxPanX > 0 || maxPanY > 0)) {
                 dragMode = 1;
@@ -181,12 +185,20 @@ public class DetravScannerGUI extends GuiScreen {
 
     /** Centres the horizontal view on the cursor position along the bottom scrollbar. */
     private void dragToHBar(int mx) {
-        panX = clamp(Math.round((mx - aX) / (float) viewW * map.width - viewW / 2f), 0, maxPanX);
+        panX = clamp(Math.round((mx - mvX) / (float) viewW * map.width - viewW / 2f), 0, maxPanX);
     }
 
     /** Centres the vertical view on the cursor position along the right scrollbar. */
     private void dragToVBar(int my) {
-        panY = clamp(Math.round((my - aY) / (float) viewH * map.height - viewH / 2f), 0, maxPanY);
+        panY = clamp(Math.round((my - mvY) / (float) viewH * map.height - viewH / 2f), 0, maxPanY);
+    }
+
+    private boolean overVScrollbar(int x, int y) {
+        return maxPanY > 0 && x >= mvX + viewW - scrollbar && x < mvX + viewW && y >= mvY && y < mvY + viewH;
+    }
+
+    private boolean overHScrollbar(int x, int y) {
+        return maxPanX > 0 && y >= mvY + viewH - scrollbar && y < mvY + viewH && x >= mvX && x < mvX + viewW;
     }
 
     private static int clamp(int v, int min, int max) {
@@ -219,18 +231,18 @@ public class DetravScannerGUI extends GuiScreen {
         ScaledResolution res = new ScaledResolution(mc, mc.displayWidth, mc.displayHeight);
         int sf = res.getScaleFactor();
         GL11.glEnable(GL11.GL_SCISSOR_TEST);
-        GL11.glScissor(aX * sf, mc.displayHeight - (aY + viewH) * sf, viewW * sf, viewH * sf);
+        GL11.glScissor(mvX * sf, mc.displayHeight - (mvY + viewH) * sf, viewW * sf, viewH * sf);
 
         map.glBindTexture();
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
-        map.draw(aX - panX, aY - panY);
+        map.draw(mvX - panX, mvY - panY);
         drawPlayerDirectionMarker();
 
         GL11.glDisable(GL11.GL_SCISSOR_TEST);
 
         // "North" label pinned to the top of the viewport
-        mc.fontRenderer.drawStringWithShadow("N", aX + viewW / 2 - 2, aY + 1, 0xFFFFFFFF);
+        mc.fontRenderer.drawStringWithShadow("N", mvX + viewW / 2 - 2, mvY + 1, 0xFFFFFFFF);
 
         drawMapScrollbars();
 
@@ -282,11 +294,17 @@ public class DetravScannerGUI extends GuiScreen {
         for (int i = aY; i < aY + mapH; i += 128)
             drawFramePiece(aX + mapW + listW, i, 171, 5, 5, Math.min(128, aY + mapH - i)); // right
 
-        // Mouse hover ore pos
-        if (inViewport(x, y) && (map.packet.ptype == DetravMetaGeneratedTool01.MODE_BIG_ORES
-            || map.packet.ptype == DetravMetaGeneratedTool01.MODE_ALL_ORES)) {
-            int bx = x - aX + panX;
-            int bz = y - aY + panY;
+        drawHoverTooltip(x, y);
+    }
+
+    /** Tooltip for the map cell under the cursor: ore name + coords, fluid amount, or pollution. */
+    private void drawHoverTooltip(int x, int y) {
+        if (!inViewport(x, y)) return;
+
+        if (map.packet.ptype == DetravMetaGeneratedTool01.MODE_BIG_ORES
+            || map.packet.ptype == DetravMetaGeneratedTool01.MODE_ALL_ORES) {
+            int bx = x - mvX + panX;
+            int bz = y - mvY + panY;
 
             String name = map.getTopOreName(bx, bz);
             if (name != null) {
@@ -301,11 +319,9 @@ public class DetravScannerGUI extends GuiScreen {
                         .translateToLocalFormatted("gui.detrav.scanner.tooltip.ore_depth", map.getTopOreY(bx, bz)));
                 func_146283_a(info, x, y);
             }
-        }
-
-        if (inViewport(x, y) && map.packet.ptype == DetravMetaGeneratedTool01.MODE_FLUIDS) {
-            int cX = (x - aX + panX) / 16;
-            int cZ = (y - aY + panY) / 16;
+        } else if (map.packet.ptype == DetravMetaGeneratedTool01.MODE_FLUIDS) {
+            int cX = (x - mvX + panX) / 16;
+            int cZ = (y - mvY + panY) / 16;
 
             if (cX >= 0 && cZ >= 0 && cX < map.packet.size * 2 + 1 && cZ < map.packet.size * 2 + 1) {
                 List<String> info = new ArrayList<>();
@@ -325,11 +341,9 @@ public class DetravScannerGUI extends GuiScreen {
                 }
                 func_146283_a(info, x, y);
             }
-        }
-
-        if (inViewport(x, y) && map.packet.ptype == DetravMetaGeneratedTool01.MODE_POLLUTION) {
-            int cX = (x - aX + panX) / 16;
-            int cZ = (y - aY + panY) / 16;
+        } else if (map.packet.ptype == DetravMetaGeneratedTool01.MODE_POLLUTION) {
+            int cX = (x - mvX + panX) / 16;
+            int cZ = (y - mvY + panY) / 16;
 
             if (cX >= 0 && cZ >= 0 && cX < map.packet.size * 2 + 1 && cZ < map.packet.size * 2 + 1) {
                 List<String> info = new ArrayList<>();
@@ -349,29 +363,29 @@ public class DetravScannerGUI extends GuiScreen {
     }
 
     private boolean inViewport(int x, int y) {
-        return x >= aX && x < aX + viewW && y >= aY && y < aY + viewH;
+        return x >= mvX && x < mvX + viewW && y >= mvY && y < mvY + viewH;
     }
 
     /** Overlay scrollbars on the bottom/right edges of the map viewport when it is larger than the window. */
     private void drawMapScrollbars() {
         if (maxPanX > 0 && maxPanY > 0) {
             // fill the gap in the corner where the two scrollbars meet
-            drawRect(aX + viewW - scrollbar, aY + viewH - scrollbar, aX + viewW, aY + viewH, 0x80000000);
+            drawRect(mvX + viewW - scrollbar, mvY + viewH - scrollbar, mvX + viewW, mvY + viewH, 0x80000000);
         }
         if (maxPanX > 0) {
             int trackW = viewW - (maxPanY > 0 ? scrollbar : 0);
-            int top = aY + viewH - scrollbar;
-            drawRect(aX, top, aX + trackW, top + scrollbar, 0x80000000);
+            int top = mvY + viewH - scrollbar;
+            drawRect(mvX, top, mvX + trackW, top + scrollbar, 0x80000000);
             int thumbW = Math.max(12, (int) ((long) trackW * viewW / map.width));
-            int thumbX = aX + (int) ((long) (trackW - thumbW) * panX / maxPanX);
+            int thumbX = mvX + (int) ((long) (trackW - thumbW) * panX / maxPanX);
             drawRect(thumbX, top, thumbX + thumbW, top + scrollbar, 0xFFB0B0B0);
         }
         if (maxPanY > 0) {
             int trackH = viewH - (maxPanX > 0 ? scrollbar : 0);
-            int left = aX + viewW - scrollbar;
-            drawRect(left, aY, left + scrollbar, aY + trackH, 0x80000000);
+            int left = mvX + viewW - scrollbar;
+            drawRect(left, mvY, left + scrollbar, mvY + trackH, 0x80000000);
             int thumbH = Math.max(12, (int) ((long) trackH * viewH / map.height));
-            int thumbY = aY + (int) ((long) (trackH - thumbH) * panY / maxPanY);
+            int thumbY = mvY + (int) ((long) (trackH - thumbH) * panY / maxPanY);
             drawRect(left, thumbY, left + scrollbar, thumbY + thumbH, 0xFFB0B0B0);
         }
     }
@@ -384,7 +398,7 @@ public class DetravScannerGUI extends GuiScreen {
 
         if (playerI < 0 || playerJ < 0 || playerI >= map.width || playerJ >= map.height) return;
 
-        drawPlayerHeading(aX - panX + playerI, aY - panY + playerJ, mc.thePlayer.rotationYaw);
+        drawPlayerHeading(mvX - panX + playerI, mvY - panY + playerJ, mc.thePlayer.rotationYaw);
     }
 
     private void drawFramePiece(int x, int y, int u, int v, int w, int h) {
