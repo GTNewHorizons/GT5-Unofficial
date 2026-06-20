@@ -89,7 +89,7 @@ public class RecipeGenFluids extends RecipeGenBase {
             }
 
             // Small Gear
-            if (material.getGear(1) != null) {
+            if (material.getGearSmall(1) != null) {
                 GTValues.RA.stdBuilder()
                     .itemInputs(ItemList.Shape_Mold_Gear_Small.get(0))
                     .itemOutputs(material.getGearSmall(1))
