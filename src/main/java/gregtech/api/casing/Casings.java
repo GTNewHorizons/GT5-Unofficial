@@ -622,6 +622,22 @@ public enum Casings implements ICasing {
     CondensateGuidanceCoil
         (() -> GregTechAPI.sBlockCasingsBEC, 6, gt(17, 0, 6)),
 
+    CompressibleComputationCoreULV(() -> GregTechAPI.sBlockCompressibleComputationCore, 0, gt(17, 1, 0)),
+    CompressibleComputationCoreLV(() -> GregTechAPI.sBlockCompressibleComputationCore, 1, gt(17, 1, 1)),
+    CompressibleComputationCoreMV(() -> GregTechAPI.sBlockCompressibleComputationCore, 2, gt(17, 1, 2)),
+    CompressibleComputationCoreHV(() -> GregTechAPI.sBlockCompressibleComputationCore, 3, gt(17, 1, 3)),
+    CompressibleComputationCoreEV(() -> GregTechAPI.sBlockCompressibleComputationCore, 4, gt(17, 1, 4)),
+    CompressibleComputationCoreIV(() -> GregTechAPI.sBlockCompressibleComputationCore, 5, gt(17, 1, 5)),
+    CompressibleComputationCoreLUV(() -> GregTechAPI.sBlockCompressibleComputationCore, 6, gt(17, 1, 6)),
+    CompressibleComputationCoreZPM(() -> GregTechAPI.sBlockCompressibleComputationCore, 7, gt(17, 1, 7)),
+    CompressibleComputationCoreUV(() -> GregTechAPI.sBlockCompressibleComputationCore, 8, gt(17, 1, 8)),
+    CompressibleComputationCoreUHV(() -> GregTechAPI.sBlockCompressibleComputationCore, 9, gt(17, 1, 9)),
+    CompressibleComputationCoreUEV(() -> GregTechAPI.sBlockCompressibleComputationCore, 10, gt(17, 1, 10)),
+    CompressibleComputationCoreUIV(() -> GregTechAPI.sBlockCompressibleComputationCore, 11, gt(17, 1, 11)),
+    CompressibleComputationCoreUMV(() -> GregTechAPI.sBlockCompressibleComputationCore, 12, gt(17, 1, 12)),
+    CompressibleComputationCoreUXV(() -> GregTechAPI.sBlockCompressibleComputationCore, 13, gt(17, 1, 13)),
+    CompressibleComputationCoreMAX(() -> GregTechAPI.sBlockCompressibleComputationCore, 14, gt(17, 1, 14)),
+
     // Block Glass 1
     ChemicalGradeGlass
         (() -> GregTechAPI.sBlockGlass1, 0, gt(16, 0, 0)),

@@ -8405,6 +8405,22 @@ gt.blockcasings.bec.4.name=Peace Enforcement Casing
 gt.blockcasings.bec.5.name=Condensate Transformative Coil
 gt.blockcasings.bec.6.name=Condensate Guidance Coil
 
+gt.blockcasings.compcore.0.name=Compressible Computation Core (ULV)
+gt.blockcasings.compcore.1.name=Compressible Computation Core (LV)
+gt.blockcasings.compcore.2.name=Compressible Computation Core (MV)
+gt.blockcasings.compcore.3.name=Compressible Computation Core (HV)
+gt.blockcasings.compcore.4.name=Compressible Computation Core (EV)
+gt.blockcasings.compcore.5.name=Compressible Computation Core (IV)
+gt.blockcasings.compcore.6.name=Compressible Computation Core (LuV)
+gt.blockcasings.compcore.7.name=Compressible Computation Core (ZPM)
+gt.blockcasings.compcore.8.name=Compressible Computation Core (UV)
+gt.blockcasings.compcore.9.name=Compressible Computation Core (UHV)
+gt.blockcasings.compcore.10.name=Compressible Computation Core (UEV)
+gt.blockcasings.compcore.11.name=Compressible Computation Core (UIV)
+gt.blockcasings.compcore.12.name=Compressible Computation Core (UMV)
+gt.blockcasings.compcore.13.name=Compressible Computation Core (UXV)
+gt.blockcasings.compcore.14.name=Compressible Computation Core (MAX)
+
 gt.blockglass1.0.name=Chemical Grade Glass
 gt.blockglass1.1.name=Electron-Permeable Neutronium Coated Glass
 gt.blockglass1.2.name=Omni-Purpose Infinity Fused Glass
