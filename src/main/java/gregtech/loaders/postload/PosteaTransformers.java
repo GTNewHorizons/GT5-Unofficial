@@ -17,6 +17,7 @@ import com.gtnewhorizons.postea.utility.BlockInfo;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.common.blocks.BlockFrameBox;
@@ -36,10 +37,24 @@ public class PosteaTransformers implements Runnable {
         registerPotassiumHydroxideTransformer();
         registerPTMEGTransformers();
         registerBorosilicateGlassTransformers();
+        registerIC2BlocksTransformer();
     }
 
     private static NBTTagCompound passthrough(NBTTagCompound tag) {
         return tag;
+    }
+
+    private void registerIC2BlocksTransformer() {
+        // These are used to convert ic2 blocks to their new counterparts.
+        // I.e. Reinforced glass, iron fences, etc.
+
+        ItemStackReplacementManager.addSimpleReplacement("IC2:blockAlloy", ItemList.Block_ReinforcedConcrete.get(1L));
+        ItemStackReplacementManager
+            .addSimpleReplacement("IC2:reinforcedStone", ItemList.Block_ReinforcedConcrete.get(1L));
+        BlockReplacementManager
+            .addSimpleReplacement("IC2:blockAlloy", ItemList.Block_ReinforcedConcrete.getBlock(), 13);
+        BlockReplacementManager
+            .addSimpleReplacement("IC2:reinforcedStone", ItemList.Block_ReinforcedConcrete.getBlock(), 13);
     }
 
     private void registerFrameboxTransformers() {

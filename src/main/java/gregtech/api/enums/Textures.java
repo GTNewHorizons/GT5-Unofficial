@@ -682,6 +682,7 @@ public class Textures {
             BLOCK_NAQUADAHPREIN = create("BLOCK_NAQUADAHPREIN"),
             BLOCK_NEUTRONIUMPREIN = create("BLOCK_NEUTRONIUMPREIN"),
             BLOCK_DEEP_DARK_RAW = create("BLOCK_DEEP_DARK_RAW"),
+            BLOCK_REINFORCED_CONCRETE = create("BLOCK_REINFORCED_CONCRETE"),
             BLOCK_IRREIN = create("BLOCK_IRREIN"),
             BLOCK_PLASCRETE = create("BLOCK_PLASCRETE"),
             BLOCK_TSREIN = create("BLOCK_TSREIN"),
