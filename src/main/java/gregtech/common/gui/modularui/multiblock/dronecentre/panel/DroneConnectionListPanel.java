@@ -35,7 +35,6 @@ import com.cleanroommc.modularui.widgets.ListWidget;
 import com.cleanroommc.modularui.widgets.ToggleButton;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
-import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 
 import gregtech.GTMod;
 import gregtech.api.modularui2.GTGuiTextures;
@@ -88,6 +87,14 @@ public class DroneConnectionListPanel extends ModularPanel {
         }.widgetProvider((pSyncManager, packet) -> {
             if (packet == null) {
                 return new EmptyWidget();
+            }
+            if (dynamicWidget.hasChildren()) {
+                IWidget child = dynamicWidget.getChildren()
+                    .getFirst();
+                if (child instanceof DroneListWidget<?, ?>list && list.getScrollData()
+                    .getScrollSize() != 0) {
+                    lastScroll = list.getScrollY();
+                }
             }
             return createListArea(syncManager, pSyncManager);
         })
@@ -310,11 +317,11 @@ public class DroneConnectionListPanel extends ModularPanel {
                         .getValue()
                         .get(activeGroup),
                     var -> {
-                        if (var != null && !var.trim()
-                            .isEmpty()) {
-                            centre.group.set(activeGroup, var);
-                        }
-                        if (!NetworkUtils.isClient()) {
+                        if (!syncManager.isClient()) {
+                            if (var != null && !var.trim()
+                                .isEmpty()) {
+                                centre.group.set(activeGroup, var);
+                            }
                             syncManager.findSyncHandler("groupNameList", GenericListSyncHandler.class)
                                 .notifyUpdate();
                         }
@@ -442,19 +449,24 @@ public class DroneConnectionListPanel extends ModularPanel {
                     .map(con -> (con.getGroupMask() & (1L << centre.getActiveGroup())) != 0)
                     .findFirst()
                     .orElse(false),
-                bool -> centre.getConnectionList()
-                    .stream()
-                    .filter(c -> c.uuid.equals(conn.uuid))
-                    .findFirst()
-                    .ifPresent(con -> {
-                        int active = centre.getActiveGroup();
-                        long mask = con.getGroupMask();
-                        if (bool) {
-                            con.setGroupMask(mask | (1L << active));
-                        } else {
-                            con.setGroupMask(mask & ~(1L << active));
-                        }
-                    })).allowC2S());
+                bool -> {
+                    if (!dynamicSyncManager.isClient()) {
+                        centre.getConnectionList()
+                            .stream()
+                            .filter(c -> c.uuid.equals(conn.uuid))
+                            .findFirst()
+                            .ifPresent(con -> {
+                                int active = centre.getActiveGroup();
+                                long mask = con.getGroupMask();
+                                if (bool) {
+                                    con.setGroupMask(mask | (1L << active));
+                                } else {
+                                    con.setGroupMask(mask & ~(1L << active));
+                                }
+                                droneConnectionListSyncHandler.notifyUpdate();
+                            });
+                    }
+                }).allowC2S());
         return new ToggleButton().value(groupSyncHandler)
             .size(16)
             .disableThemeBackground(true)
@@ -541,18 +553,20 @@ public class DroneConnectionListPanel extends ModularPanel {
                     .map(DroneConnection::getCustomName)
                     .orElse(""),
                 var -> {
-                    if (var != null && !var.trim()
-                        .isEmpty()) {
-                        centre.getConnectionList()
-                            .stream()
-                            .filter(connection -> connection.uuid.equals(conn.uuid))
-                            .findFirst()
-                            .ifPresent(c -> {
-                                c.setCustomName(var);
-                                droneConnectionListSyncHandler.notifyUpdate();
-                            });
-                    } else {
-                        droneConnectionListSyncHandler.notifyUpdate();
+                    if (!dynamicSyncManager.isClient()) {
+                        if (var != null && !var.trim()
+                            .isEmpty()) {
+                            centre.getConnectionList()
+                                .stream()
+                                .filter(connection -> connection.uuid.equals(conn.uuid))
+                                .findFirst()
+                                .ifPresent(c -> {
+                                    c.setCustomName(var);
+                                    droneConnectionListSyncHandler.notifyUpdate();
+                                });
+                        } else {
+                            droneConnectionListSyncHandler.notifyUpdate();
+                        }
                     }
                 }).allowC2S());
         return new TextFieldWidget().expanded()

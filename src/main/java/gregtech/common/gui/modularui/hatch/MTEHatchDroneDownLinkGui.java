@@ -120,15 +120,17 @@ public class MTEHatchDroneDownLinkGui extends MTEHatchBaseGui<MTEHatchDroneDownL
                             .map(DroneConnection::getCustomName)
                             .orElse(""),
                         var -> {
-                            if (var != null && !var.trim()
-                                .isEmpty()) {
-                                machine.findConnection(conn.uuid)
-                                    .ifPresent(c -> {
-                                        c.setCustomName(var);
-                                        droneConnectionListSyncHandler.notifyUpdate();
-                                    });
-                            } else {
-                                droneConnectionListSyncHandler.notifyUpdate();
+                            if (!syncManager1.isClient()) {
+                                if (var != null && !var.trim()
+                                    .isEmpty()) {
+                                    machine.findConnection(conn.uuid)
+                                        .ifPresent(c -> {
+                                            c.setCustomName(var);
+                                            droneConnectionListSyncHandler.notifyUpdate();
+                                        });
+                                } else {
+                                    droneConnectionListSyncHandler.notifyUpdate();
+                                }
                             }
                         }).allowC2S());
                 column.child(
