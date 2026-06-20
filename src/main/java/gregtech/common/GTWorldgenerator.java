@@ -61,7 +61,10 @@ public class GTWorldgenerator implements IWorldGenerator {
             .inBetween(Materials.Aluminium)
             .sporadic(Materials.Aluminium));
 
-    public static Hashtable<Long, WorldgenGTOreLayer> validOreveins = new Hashtable<>(1024);
+    /** Caches the resolved layer and placement seed so all chunks of an oreseed use the same vein geometry. */
+    public record CachedOreVein(WorldgenGTOreLayer layer, long placementSeed) {}
+
+    public static Hashtable<Long, CachedOreVein> validOreveins = new Hashtable<>(1024);
     public boolean mIsGenerating = false;
     public static OregenPattern oregenPattern = OregenPattern.AXISSYMMETRICAL;
 
@@ -298,35 +301,7 @@ public class GTWorldgenerator implements IWorldGenerator {
                 // Oreseed is located in the previously processed table
                 if (debugOrevein) GTLog.out
                     .print(" Valid oreveinSeed=" + oreveinSeed + " validOreveins.size()=" + validOreveins.size() + " ");
-                WorldgenGTOreLayer tWorldGen = validOreveins.get(oreveinSeed);
-
-                // Reset RNG to only be based on oreseed X/Z and type of vein
-                oreveinRNG.setSeed(oreveinSeed ^ tWorldGen.mPrimary.getId());
-
-                int placementResult = tWorldGen.executeWorldgenChunkified(
-                    this.mWorld,
-                    oreveinRNG,
-                    this.mBiome,
-                    this.mX * 16,
-                    this.mZ * 16,
-                    oreseedX * 16,
-                    oreseedZ * 16,
-                    this.mChunkGenerator,
-                    this.mChunkProvider);
-
-                VeinGenerateEvent event = new VeinGenerateEvent(
-                    mWorld,
-                    mX,
-                    mZ,
-                    oreseedX,
-                    oreseedZ,
-                    tWorldGen,
-                    placementResult);
-                MinecraftForge.EVENT_BUS.post(event);
-
-                if (placementResult == WorldgenGTOreLayer.NO_OVERLAP && debugOrevein) {
-                    GTLog.out.println(" No overlap");
-                }
+                generateCachedVein(validOreveins.get(oreveinSeed), oreveinSeed, oreseedX, oreseedZ);
 
                 return;
             }
@@ -337,6 +312,8 @@ public class GTWorldgenerator implements IWorldGenerator {
                 int placementAttempts = 0;
                 boolean oreveinFound = false;
                 int i = 0;
+                CachedOreVein cachedOreVein = null;
+                String seedBiome = mWorld.getBiomeGenForCoords(oreseedX * 16 + 8, oreseedZ * 16 + 8).biomeName;
 
                 // Used for outputting orevein weights and bins
                 /*
@@ -365,35 +342,23 @@ public class GTWorldgenerator implements IWorldGenerator {
 
                     int placementResult = 0;
 
+                    // Resolve the exact placement seed using the canonical oreseed chunk, then cache it so every
+                    // chunk in this vein regenerates the same geometry regardless of generation order.
+                    long placementSeed = Fnv1a64.hashStep(seed, oreLayer.mPrimary.getId());
+
                     try {
-                        seed = Fnv1a64.hashStep(seed, oreLayer.mPrimary.getId());
+                        veinRNG.setSeed(placementSeed);
 
-                        veinRNG.setSeed(seed);
-
-                        // Adjust the seed so that this layer has a series of unique random numbers.
-                        // Otherwise multiple attempts at this same oreseed will get the same offset and X/Z values.
-                        // If an orevein failed, any orevein with the same minimum heights would fail as well. This
-                        // prevents that, giving each orevein a unique height each pass through here.
-                        placementResult = oreLayer.executeWorldgenChunkified(
+                        placementResult = oreLayer.testWorldgenChunkified(
                             this.mWorld,
                             veinRNG,
-                            this.mBiome,
-                            this.mX * 16,
-                            this.mZ * 16,
+                            seedBiome,
+                            oreseedX * 16,
+                            oreseedZ * 16,
                             oreseedX * 16,
                             oreseedZ * 16,
                             this.mChunkGenerator,
                             this.mChunkProvider);
-
-                        VeinGenerateEvent event = new VeinGenerateEvent(
-                            mWorld,
-                            mX,
-                            mZ,
-                            oreseedX,
-                            oreseedZ,
-                            oreLayer,
-                            placementResult);
-                        MinecraftForge.EVENT_BUS.post(event);
                     } catch (Exception e) {
                         if (debugOrevein) GTLog.out.println(
                             "Exception occurred on oreVein" + oreLayer
@@ -422,7 +387,8 @@ public class GTWorldgenerator implements IWorldGenerator {
                                     + placementAttempts
                                     + " dimensionName="
                                     + dimensionName);
-                            validOreveins.put(oreveinSeed, oreLayer);
+                            cachedOreVein = new CachedOreVein(oreLayer, placementSeed);
+                            validOreveins.put(oreveinSeed, cachedOreVein);
                             oreveinFound = true;
                         }
 
@@ -438,7 +404,8 @@ public class GTWorldgenerator implements IWorldGenerator {
                                     + placementAttempts
                                     + " dimensionName="
                                     + dimensionName);
-                            validOreveins.put(oreveinSeed, oreLayer);
+                            cachedOreVein = new CachedOreVein(oreLayer, placementSeed);
+                            validOreveins.put(oreveinSeed, cachedOreVein);
                             oreveinFound = true;
                         }
                         case WorldgenGTOreLayer.NO_OVERLAP_AIR_BLOCK -> {
@@ -458,8 +425,13 @@ public class GTWorldgenerator implements IWorldGenerator {
                     }
                 }
 
-                // Only add an empty orevein if unable to place a vein at the oreseed chunk.
-                if (!oreveinFound && this.mX == oreseedX && this.mZ == oreseedZ) {
+                if (oreveinFound) {
+                    generateCachedVein(cachedOreVein, oreveinSeed, oreseedX, oreseedZ);
+                    return;
+                }
+
+                // Only add an empty orevein once canonical oreseed chunk placement has failed.
+                if (!oreveinFound) {
                     if (debugOrevein) GTLog.out.println(
                         " Empty oreveinSeed=" + oreveinSeed
                             + " mX="
@@ -476,7 +448,7 @@ public class GTWorldgenerator implements IWorldGenerator {
                             + placementAttempts
                             + " dimensionName="
                             + dimensionName);
-                    validOreveins.put(oreveinSeed, noOresInVein);
+                    validOreveins.put(oreveinSeed, new CachedOreVein(noOresInVein, oreveinSeed));
                 }
             } else if (oreveinPercentageRoll >= dimensionDef.getOreVeinChance()) {
                 if (debugOrevein) GTLog.out.println(
@@ -495,7 +467,37 @@ public class GTWorldgenerator implements IWorldGenerator {
                         + dimensionDef.getOreVeinChance()
                         + " dimensionName="
                         + dimensionName);
-                validOreveins.put(oreveinSeed, noOresInVein);
+                validOreveins.put(oreveinSeed, new CachedOreVein(noOresInVein, oreveinSeed));
+            }
+        }
+
+        private void generateCachedVein(CachedOreVein cachedOreVein, long oreveinSeed, int oreseedX, int oreseedZ) {
+            WorldgenGTOreLayer tWorldGen = cachedOreVein.layer();
+            XSTR oreveinRNG = new XSTR(cachedOreVein.placementSeed());
+
+            int placementResult = tWorldGen.executeWorldgenChunkified(
+                this.mWorld,
+                oreveinRNG,
+                this.mBiome,
+                this.mX * 16,
+                this.mZ * 16,
+                oreseedX * 16,
+                oreseedZ * 16,
+                this.mChunkGenerator,
+                this.mChunkProvider);
+
+            VeinGenerateEvent event = new VeinGenerateEvent(
+                mWorld,
+                mX,
+                mZ,
+                oreseedX,
+                oreseedZ,
+                tWorldGen,
+                placementResult);
+            MinecraftForge.EVENT_BUS.post(event);
+
+            if (placementResult == WorldgenGTOreLayer.NO_OVERLAP && debugOrevein) {
+                GTLog.out.println(" No overlap");
             }
         }
 

@@ -160,6 +160,39 @@ public class WorldgenGTOreLayer extends GTWorldgen implements IWorldgenLayer {
     @Override
     public int executeWorldgenChunkified(World world, Random rng, String biome, int chunkX, int chunkZ, int seedX,
         int seedZ, IChunkProvider chunkGenerator, IChunkProvider chunkProvider) {
+        return executeWorldgenChunkified(
+            world,
+            rng,
+            biome,
+            chunkX,
+            chunkZ,
+            seedX,
+            seedZ,
+            chunkGenerator,
+            chunkProvider,
+            false);
+    }
+
+    /**
+     * Dry-runs vein placement without modifying the world, so oreseed attempt selection is deterministic.
+     */
+    public int testWorldgenChunkified(World world, Random rng, String biome, int chunkX, int chunkZ, int seedX,
+        int seedZ, IChunkProvider chunkGenerator, IChunkProvider chunkProvider) {
+        return executeWorldgenChunkified(
+            world,
+            rng,
+            biome,
+            chunkX,
+            chunkZ,
+            seedX,
+            seedZ,
+            chunkGenerator,
+            chunkProvider,
+            true);
+    }
+
+    private int executeWorldgenChunkified(World world, Random rng, String biome, int chunkX, int chunkZ, int seedX,
+        int seedZ, IChunkProvider chunkGenerator, IChunkProvider chunkProvider, boolean dryRun) {
         if (mWorldGenName.equals("NoOresInVein")) {
             if (debugOrevein) GTLog.out.println(" NoOresInVein");
             // Return a special empty orevein
@@ -269,7 +302,7 @@ public class WorldgenGTOreLayer extends GTWorldgen implements IWorldgenLayer {
             }
         }
 
-        if (debugOrevein) {
+        if (debugOrevein && !dryRun) {
             GTLog.out.print(
                 "Trying Orevein:" + this.mWorldGenName
                     + " Dimension="
@@ -305,6 +338,7 @@ public class WorldgenGTOreLayer extends GTWorldgen implements IWorldgenLayer {
         generator.veinSouthZ = veinSouthZ;
         generator.veinNorthZ = veinNorthZ;
         generator.localDensity = localDensity;
+        generator.dryRun = dryRun;
         // Dunno why, but the first layer is actually played one below tMinY. Go figure.
         generator.level = veinMinY - 1;
         generator.placeCount = placeCount;
@@ -329,7 +363,7 @@ public class WorldgenGTOreLayer extends GTWorldgen implements IWorldgenLayer {
         }
 
         // Place small ores for the vein
-        if (oreveinPlacerOres) {
+        if (oreveinPlacerOres && !dryRun) {
             int smallOresToGenerate = (limitEastX - limitWestX) * (limitSouthZ - limitNorthZ)
                 * this.mDensity
                 / 10
@@ -366,7 +400,7 @@ public class WorldgenGTOreLayer extends GTWorldgen implements IWorldgenLayer {
                 }
             }
         }
-        if (debugOrevein) {
+        if (debugOrevein && !dryRun) {
             GTLog.out.println(
                 " wXVein" + veinWestX
                     + " eXVein"
@@ -400,9 +434,12 @@ public class WorldgenGTOreLayer extends GTWorldgen implements IWorldgenLayer {
         int veinWestX, veinEastX, veinSouthZ, veinNorthZ;
         int localDensity, level;
         int[] placeCount;
+        boolean dryRun;
         boolean placed = false;
 
         private void generateLayer(boolean secondary, boolean between, boolean primary) {
+            if (dryRun && placed) return;
+
             for (int tX = limitWestX; tX < limitEastX; tX++) {
                 int chanceX = Math.max(1, Math.max(Math.abs(veinWestX - tX), Math.abs(veinEastX - tX)) / localDensity);
 
@@ -412,9 +449,10 @@ public class WorldgenGTOreLayer extends GTWorldgen implements IWorldgenLayer {
 
                     if (primary) {
                         if ((rng.nextInt(chanceZ) == 0 || rng.nextInt(chanceX) == 0) && mPrimary != null) {
-                            if (OreManager.setOreForWorldGen(world, tX, level, tZ, null, mPrimary, false)) {
+                            if (placeOre(tX, level, tZ, mPrimary)) {
                                 placeCount[0]++;
                                 placed = true;
+                                if (dryRun) return;
                             }
                             continue;
                         }
@@ -422,9 +460,10 @@ public class WorldgenGTOreLayer extends GTWorldgen implements IWorldgenLayer {
 
                     if (between) {
                         if ((rng.nextInt(chanceZ) == 0 || rng.nextInt(chanceX) == 0) && mBetween != null) {
-                            if (OreManager.setOreForWorldGen(world, tX, level, tZ, null, mBetween, false)) {
+                            if (placeOre(tX, level, tZ, mBetween)) {
                                 placeCount[2]++;
                                 placed = true;
+                                if (dryRun) return;
                             }
                             continue;
                         }
@@ -432,9 +471,10 @@ public class WorldgenGTOreLayer extends GTWorldgen implements IWorldgenLayer {
 
                     if (secondary) {
                         if ((rng.nextInt(chanceZ) == 0 || rng.nextInt(chanceX) == 0) && mSecondary != null) {
-                            if (OreManager.setOreForWorldGen(world, tX, level, tZ, null, mSecondary, false)) {
+                            if (placeOre(tX, level, tZ, mSecondary)) {
                                 placeCount[1]++;
                                 placed = true;
+                                if (dryRun) return;
                             }
                             continue;
                         }
@@ -442,9 +482,10 @@ public class WorldgenGTOreLayer extends GTWorldgen implements IWorldgenLayer {
 
                     if (rng.nextInt(7) == 0 && (rng.nextInt(chanceZ) == 0 || rng.nextInt(chanceX) == 0)
                         && mSporadic != null) { // Sporadics are reduced by 1/7 to compensate
-                        if (OreManager.setOreForWorldGen(world, tX, level, tZ, null, mSporadic, false)) {
+                        if (placeOre(tX, level, tZ, mSporadic)) {
                             placeCount[3]++;
                             placed = true;
+                            if (dryRun) return;
                         }
                         continue;
                     }
@@ -452,6 +493,14 @@ public class WorldgenGTOreLayer extends GTWorldgen implements IWorldgenLayer {
             }
 
             level++;
+        }
+
+        private boolean placeOre(int x, int y, int z, IOreMaterial material) {
+            if (dryRun) {
+                return OreManager.canSetOreForWorldGenOrAlreadySet(world, x, y, z, null, material, false);
+            }
+
+            return OreManager.setOreForWorldGen(world, x, y, z, null, material, false);
         }
     }
 }
