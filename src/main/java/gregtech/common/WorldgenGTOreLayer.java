@@ -58,7 +58,6 @@ public class WorldgenGTOreLayer extends GTWorldgen implements IWorldgenLayer {
             ShortShortPair pair = entry.getValue();
             dimVeinHeights.put(entry.getKey(), validateHeights(pair.leftShort(), pair.rightShort()));
         }
-        this.dimVeinHeights = mix.dimVeinHeights;
         this.mWeight = (short) mix.weight;
         this.mDensity = (short) mix.density;
         this.mSize = (short) Math.max(1, mix.size);

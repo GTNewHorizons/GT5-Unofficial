@@ -7,7 +7,6 @@ import static gregtech.api.enums.GTValues.oreveinMaxPlacementAttempts;
 import static gregtech.api.enums.GTValues.profileWorldGen;
 
 import java.util.Collections;
-import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -40,6 +39,7 @@ import gregtech.api.objects.XSTR;
 import gregtech.api.util.GTLog;
 import gregtech.api.world.GTWorldgen;
 import gregtech.common.worldgen.WorldgenQuery;
+import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 
 public class GTWorldgenerator implements IWorldGenerator {
 
@@ -64,7 +64,7 @@ public class GTWorldgenerator implements IWorldGenerator {
     /** Caches the resolved layer and placement seed so all chunks of an oreseed use the same vein geometry. */
     public record CachedOreVein(WorldgenGTOreLayer layer, long placementSeed) {}
 
-    public static Hashtable<Long, CachedOreVein> validOreveins = new Hashtable<>(1024);
+    public static Long2ObjectOpenHashMap<CachedOreVein> validOreveins = new Long2ObjectOpenHashMap<>(1024);
     public boolean mIsGenerating = false;
     public static OregenPattern oregenPattern = OregenPattern.AXISSYMMETRICAL;
 
@@ -113,7 +113,7 @@ public class GTWorldgenerator implements IWorldGenerator {
 
             // Run a maximum of 5 chunks at a time through worldgen. Extra chunks get done later.
             for (int i = 0; i < Math.min(PENDING_TASKS.size(), 5); i++) {
-                WorldGenContainer task = PENDING_TASKS.remove(0);
+                WorldGenContainer task = PENDING_TASKS.removeFirst();
 
                 if (debugWorldGen) GTLog.out.println(
                     "RUN WorldSeed:" + aWorld.getSeed()
@@ -553,12 +553,10 @@ public class GTWorldgenerator implements IWorldGenerator {
 
             if (debugWorldGen || profileWorldGen) {
                 GTMod.GT_FML_LOGGER.info(
-                    " Oregen took " + (oregenTime - stonegenTime) / 1e3
-                        + "us Stonegen took "
-                        + (stonegenTime - startTime) / 1e3
-                        + "us Worldgen took "
-                        + (endTime - startTime) / 1e3
-                        + "us");
+                    " Oregen took {}us Stonegen took {}us Worldgen took {}us",
+                    (oregenTime - stonegenTime) / 1e3,
+                    (stonegenTime - startTime) / 1e3,
+                    (endTime - startTime) / 1e3);
             }
         }
     }
