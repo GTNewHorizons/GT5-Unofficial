@@ -121,7 +121,7 @@ public class MTENuclearReactor extends GTPPMultiBlockBase<MTENuclearReactor> imp
             .addInputHatch("Top or bottom layer edges", 1)
             .addOutputHatch("Top or bottom layer edges", 1)
             .addDynamoHatch("Top or bottom layer edges", 1)
-            .addMufflerHatch("Top 3x3", 2)
+            .addMufflerHatch("Top 3x3", 1)
             .addStructureInfo("All dynamos must be between EV and LuV tier.")
             .addStructureInfo("All other hatches must be IV+ tier.")
             .addStructureInfo("4x Output Hatches or 1x Output Hatch (ME), 1+ Input Hatches")
