@@ -410,19 +410,20 @@ public class AdditionalRecipes {
             .addTo(fusionRecipes);
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.LiquidAir.getFluid(100_000_000))
+            .fluidInputs(Materials.LiquidAir.getFluid(100_000))
             .fluidOutputs(
-                Materials.Nitrogen.getGas(78_084_000),
-                Materials.Oxygen.getGas(20_946_000),
-                Materials.Argon.getGas(934_000),
-                Materials.CarbonDioxide.getGas(40_700),
-                WerkstoffLoader.Neon.getFluidOrGas(1_818),
-                Materials.Helium.getGas(524),
-                Materials.Methane.getGas(180),
-                WerkstoffLoader.Krypton.getFluidOrGas(114),
-                Materials.Hydrogen.getGas(55),
-                WerkstoffLoader.Xenon.getFluidOrGas(9))
-            .duration(6 * MINUTES + 15 * SECONDS)
+                Materials.Nitrogen.getGas(78_084),
+                Materials.Oxygen.getGas(20_946),
+                Materials.Argon.getGas(934),
+                Materials.CarbonDioxide.getGas(41),
+                WerkstoffLoader.Neon.getFluidOrGas(2),
+                Materials.Helium.getGas(1),
+                Materials.Methane.getGas(1),
+                WerkstoffLoader.Krypton.getFluidOrGas(1),
+                Materials.Hydrogen.getGas(1),
+                WerkstoffLoader.Xenon.getFluidOrGas(1))
+            .fluidOutputChances(100_00, 100_00, 100_00, 100_00, 100_00, 100_00, 18_00, 11_40, 5_50, 90)
+            .duration(7)
             .eut(TierEU.RECIPE_EV)
             .addTo(distillationTowerRecipes);
 
