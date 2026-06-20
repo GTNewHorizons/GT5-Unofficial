@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.IllegalFormatException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -29,6 +30,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.gui.modularui.GUITextureSet;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
+import gregtech.api.interfaces.INonConsumedItemDisplay;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
@@ -359,7 +361,7 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
 
     protected void addProfilingInformation(List<String> tList) {
         if (mTickDisabled) {
-            tList.add("Tick Disabled");
+            tList.add(GTUtility.translate("GT5U.scanner.debug.tick_disabled"));
         } else if (hasTimeStatisticsStarted) {
             double tAverageTime = 0;
             double tWorstTime = 0;
@@ -379,23 +381,22 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
             int samples = mTimeStatistics.length - amountOfZero;
             if (samples > 0) {
                 tList.add(
-                    "Average CPU load of ~" + formatNumber(tAverageTime / samples)
-                        + "ns over "
-                        + formatNumber(samples)
-                        + " ticks with worst time of "
-                        + formatNumber(tWorstTime)
-                        + "ns.");
+                    GTUtility.translate(
+                        "GT5U.scanner.debug.tick_stats",
+                        formatNumber(tAverageTime / samples),
+                        formatNumber(samples),
+                        formatNumber(tWorstTime)));
             }
         } else {
             startTimeStatistics();
-            tList.add("Just started tick time statistics.");
+            tList.add(GTUtility.translate("GT5U.scanner.debug.tick_stats_started"));
         }
         if (mLagWarningCount > 0) {
             tList.add(
-                "Caused " + (mLagWarningCount >= 10 ? "more than 10" : mLagWarningCount)
-                    + " Lag Spike Warnings (anything taking longer than "
-                    + GregTechAPI.MILLISECOND_THRESHOLD_UNTIL_LAG_WARNING
-                    + "ms) on the Server.");
+                GTUtility.translate(
+                    mLagWarningCount >= 10 ? "GT5U.scanner.debug.lag_warnings_many" : "GT5U.scanner.debug.lag_warnings",
+                    mLagWarningCount >= 10 ? GregTechAPI.MILLISECOND_THRESHOLD_UNTIL_LAG_WARNING : mLagWarningCount,
+                    GregTechAPI.MILLISECOND_THRESHOLD_UNTIL_LAG_WARNING));
         }
     }
 
@@ -563,15 +564,33 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
 
     @Override
     public String getInterfaceNameSuffix() {
+        StringBuilder suffix = new StringBuilder();
+
+        // Ghost circuit suffix
         final IConfigurationCircuitSupport ccs = getConfigurationCircuitSupport();
-        if (ccs == null || !ccs.allowSelectCircuit()) return null;
-        ItemStack stack = getStackInSlot(ccs.getCircuitSlot());
-        if (stack == null || stack.getItemDamage() <= 0) return null;
-        try {
-            return String.format(Gregtech.machines.ghostCircuitSuffixFormat, stack.getItemDamage());
-        } catch (IllegalFormatException e) {
-            return "";
+        if (ccs != null && ccs.allowSelectCircuit()) {
+            ItemStack stack = getStackInSlot(ccs.getCircuitSlot());
+            if (stack != null && stack.getItemDamage() > 0) {
+                try {
+                    suffix.append(String.format(Gregtech.machines.ghostCircuitSuffixFormat, stack.getItemDamage()));
+                } catch (IllegalFormatException ignored) {}
+            }
         }
+
+        // Non-consumed items suffix (e.g. molds in Extruder)
+        if (hasValidMetaTileEntity() && getMetaTileEntity() instanceof INonConsumedItemDisplay provider) {
+            List<ItemStack> items = provider.getNonConsumedInputDisplayItems();
+            if (!items.isEmpty()) {
+                String joined = items.stream()
+                    .map(ItemStack::getDisplayName)
+                    .collect(Collectors.joining(", "));
+                try {
+                    suffix.append(String.format(Gregtech.machines.itemSlotsSuffixFormat, joined));
+                } catch (IllegalFormatException ignored) {}
+            }
+        }
+
+        return suffix.length() > 0 ? suffix.toString() : null;
     }
 
     @Override

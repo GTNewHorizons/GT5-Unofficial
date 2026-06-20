@@ -16,11 +16,18 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTUtility;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTELightningRod extends MTETieredMachineBlock {
 
     public MTELightningRod(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, 0, "Generates EU From Lightning Bolts");
+        super(aID, aName, aNameRegional, aTier, 0, (String) null);
+    }
+
+    @Override
+    public String[] getDescription() {
+        return GTUtility.translateMultiline("gt.blockmachines.basicgenerator.lightningrod.tooltip");
     }
 
     public MTELightningRod(String aName, int aTier, int aInvSlotCount, String[] aDescription,

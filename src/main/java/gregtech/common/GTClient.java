@@ -8,10 +8,7 @@ package gregtech.common;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.GregTech;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
 
@@ -113,7 +110,6 @@ import gregtech.common.pollution.PollutionRenderer;
 import gregtech.common.powergoggles.PowerGogglesCommand;
 import gregtech.common.render.BaseMetaTileEntityRenderer;
 import gregtech.common.render.BlackholeRenderer;
-import gregtech.common.render.DroneRender;
 import gregtech.common.render.FlaskRenderer;
 import gregtech.common.render.FluidDisplayStackRenderer;
 import gregtech.common.render.GTRendererBlock;
@@ -130,7 +126,6 @@ import gregtech.common.render.items.MetaGeneratedItemRenderer;
 import gregtech.common.render.items.ToolboxRenderer;
 import gregtech.common.tileentities.debug.MTEDebugStructureWriter;
 import gregtech.common.tileentities.render.RenderingTileEntityBlackhole;
-import gregtech.common.tileentities.render.RenderingTileEntityDrone;
 import gregtech.common.tileentities.render.RenderingTileEntityLaser;
 import gregtech.common.tileentities.render.RenderingTileEntityNanoForge;
 import gregtech.common.tileentities.render.RenderingTileEntityWormhole;
@@ -151,24 +146,7 @@ public class GTClient extends GTProxy {
     public GTPowerfailRenderer powerfailRenderer;
     public KeyBinding shakeLockKey;
     public final boolean fixedBottomFaceUV;
-    private final List<Materials> mPosR;
-    private final List<Materials> mPosG;
-    private final List<Materials> mPosB;
-    private final List<Materials> mPosA = Collections.emptyList();
-    private final List<Materials> mNegR;
-    private final List<Materials> mNegG;
-    private final List<Materials> mNegB;
-    private final List<Materials> mNegA = Collections.emptyList();
-    private final List<Materials> mMoltenPosR;
-    private final List<Materials> mMoltenPosG;
-    private final List<Materials> mMoltenPosB;
-    private final List<Materials> mMoltenPosA = Collections.emptyList();
-    private final List<Materials> mMoltenNegR;
-    private final List<Materials> mMoltenNegG;
-    private final List<Materials> mMoltenNegB;
-    private final List<Materials> mMoltenNegA = Collections.emptyList();
     private long mAnimationTick;
-    private boolean mAnimationDirection;
     private GTClientPreference mPreference;
     private boolean mFirstTick = false;
     private int mReloadCount;
@@ -179,108 +157,6 @@ public class GTClient extends GTProxy {
 
     public GTClient() {
         mAnimationTick = 0L;
-        mAnimationDirection = false;
-        mPosR = Arrays.asList(
-            Materials.Enderium,
-            Materials.Vinteum,
-            Materials.Uranium235,
-            Materials.InfusedGold,
-            Materials.Plutonium241,
-            Materials.NaquadahEnriched,
-            Materials.Naquadria,
-            Materials.InfusedOrder,
-            Materials.Force,
-            Materials.Pyrotheum,
-            Materials.Sunnarium,
-            Materials.Glowstone,
-            Materials.Thaumium,
-            Materials.InfusedVis,
-            Materials.InfusedAir,
-            Materials.InfusedFire,
-            Materials.FierySteel,
-            Materials.Firestone);
-        mPosG = Arrays.asList(
-            Materials.Enderium,
-            Materials.Vinteum,
-            Materials.Uranium235,
-            Materials.InfusedGold,
-            Materials.Plutonium241,
-            Materials.NaquadahEnriched,
-            Materials.Naquadria,
-            Materials.InfusedOrder,
-            Materials.Force,
-            Materials.Pyrotheum,
-            Materials.Sunnarium,
-            Materials.Glowstone,
-            Materials.InfusedAir,
-            Materials.InfusedEarth);
-        mPosB = Arrays.asList(
-            Materials.Enderium,
-            Materials.Vinteum,
-            Materials.Uranium235,
-            Materials.InfusedGold,
-            Materials.Plutonium241,
-            Materials.NaquadahEnriched,
-            Materials.Naquadria,
-            Materials.InfusedOrder,
-            Materials.InfusedVis,
-            Materials.InfusedWater,
-            Materials.Thaumium);
-        mNegR = Arrays.asList(Materials.InfusedEntropy, Materials.NetherStar);
-        mNegG = Arrays.asList(Materials.InfusedEntropy, Materials.NetherStar);
-        mNegB = Arrays.asList(Materials.InfusedEntropy, Materials.NetherStar);
-        mMoltenPosR = Arrays.asList(
-            Materials.Enderium,
-            Materials.NetherStar,
-            Materials.Vinteum,
-            Materials.Uranium235,
-            Materials.InfusedGold,
-            Materials.Plutonium241,
-            Materials.NaquadahEnriched,
-            Materials.Naquadria,
-            Materials.InfusedOrder,
-            Materials.Force,
-            Materials.Pyrotheum,
-            Materials.Sunnarium,
-            Materials.Glowstone,
-            Materials.Thaumium,
-            Materials.InfusedVis,
-            Materials.InfusedAir,
-            Materials.InfusedFire,
-            Materials.FierySteel,
-            Materials.Firestone);
-        mMoltenPosG = Arrays.asList(
-            Materials.Enderium,
-            Materials.NetherStar,
-            Materials.Vinteum,
-            Materials.Uranium235,
-            Materials.InfusedGold,
-            Materials.Plutonium241,
-            Materials.NaquadahEnriched,
-            Materials.Naquadria,
-            Materials.InfusedOrder,
-            Materials.Force,
-            Materials.Pyrotheum,
-            Materials.Sunnarium,
-            Materials.Glowstone,
-            Materials.InfusedAir,
-            Materials.InfusedEarth);
-        mMoltenPosB = Arrays.asList(
-            Materials.Enderium,
-            Materials.NetherStar,
-            Materials.Vinteum,
-            Materials.Uranium235,
-            Materials.InfusedGold,
-            Materials.Plutonium241,
-            Materials.NaquadahEnriched,
-            Materials.Naquadria,
-            Materials.InfusedOrder,
-            Materials.InfusedVis,
-            Materials.InfusedWater,
-            Materials.Thaumium);
-        mMoltenNegR = Collections.singletonList(Materials.InfusedEntropy);
-        mMoltenNegG = Collections.singletonList(Materials.InfusedEntropy);
-        mMoltenNegB = Collections.singletonList(Materials.InfusedEntropy);
         fixedBottomFaceUV = (boolean) Launch.blackboard
             .getOrDefault("hodgepodge.FixesConfig.fixBottomFaceUV", Boolean.FALSE);
     }
@@ -327,7 +203,6 @@ public class GTClient extends GTProxy {
         RenderingRegistry.registerBlockHandler(new GTRendererBlock());
         RenderingRegistry.registerBlockHandler(new GTRendererCasing());
 
-        ClientRegistry.bindTileEntitySpecialRenderer(RenderingTileEntityDrone.class, new DroneRender());
         ClientRegistry.bindTileEntitySpecialRenderer(RenderingTileEntityLaser.class, new LaserRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(RenderingTileEntityWormhole.class, new WormholeRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(RenderingTileEntityBlackhole.class, new BlackholeRenderer());
@@ -539,75 +414,6 @@ public class GTClient extends GTProxy {
             if (!Minecraft.getMinecraft()
                 .isGamePaused()) {
                 mAnimationTick++;
-
-                if (mAnimationTick % 50L == 0L) {
-                    mAnimationDirection = !mAnimationDirection;
-                }
-
-                final int tDirection = mAnimationDirection ? 1 : -1;
-                for (Materials tMaterial : mPosR) {
-                    tMaterial.mRGBa[0] = getSafeRGBValue(tMaterial.mRGBa[0], tDirection);
-                }
-
-                for (Materials tMaterial : mPosG) {
-                    tMaterial.mRGBa[1] = getSafeRGBValue(tMaterial.mRGBa[1], tDirection);
-                }
-
-                for (Materials tMaterial : mPosB) {
-                    tMaterial.mRGBa[2] = getSafeRGBValue(tMaterial.mRGBa[2], tDirection);
-                }
-
-                for (Materials tMaterial : mPosA) {
-                    tMaterial.mRGBa[3] = getSafeRGBValue(tMaterial.mRGBa[3], tDirection);
-                }
-
-                for (Materials tMaterial : mNegR) {
-                    tMaterial.mRGBa[0] = getSafeRGBValue(tMaterial.mRGBa[0], -tDirection);
-                }
-
-                for (Materials tMaterial : mNegG) {
-                    tMaterial.mRGBa[1] = getSafeRGBValue(tMaterial.mRGBa[1], -tDirection);
-                }
-
-                for (Materials tMaterial : mNegB) {
-                    tMaterial.mRGBa[2] = getSafeRGBValue(tMaterial.mRGBa[2], -tDirection);
-                }
-
-                for (Materials tMaterial : mNegA) {
-                    tMaterial.mRGBa[3] = getSafeRGBValue(tMaterial.mRGBa[3], -tDirection);
-                }
-
-                for (Materials tMaterial : mMoltenPosR) {
-                    tMaterial.mMoltenRGBa[0] = getSafeRGBValue(tMaterial.mMoltenRGBa[0], tDirection);
-                }
-
-                for (Materials tMaterial : mMoltenPosG) {
-                    tMaterial.mMoltenRGBa[1] = getSafeRGBValue(tMaterial.mMoltenRGBa[1], tDirection);
-                }
-
-                for (Materials tMaterial : mMoltenPosB) {
-                    tMaterial.mMoltenRGBa[2] = getSafeRGBValue(tMaterial.mMoltenRGBa[2], tDirection);
-                }
-
-                for (Materials tMaterial : mMoltenPosA) {
-                    tMaterial.mMoltenRGBa[3] = getSafeRGBValue(tMaterial.mMoltenRGBa[3], tDirection);
-                }
-
-                for (Materials tMaterial : mMoltenNegR) {
-                    tMaterial.mMoltenRGBa[0] = getSafeRGBValue(tMaterial.mMoltenRGBa[0], -tDirection);
-                }
-
-                for (Materials tMaterial : mMoltenNegG) {
-                    tMaterial.mMoltenRGBa[1] = getSafeRGBValue(tMaterial.mMoltenRGBa[1], -tDirection);
-                }
-
-                for (Materials tMaterial : mMoltenNegB) {
-                    tMaterial.mMoltenRGBa[2] = getSafeRGBValue(tMaterial.mMoltenRGBa[2], -tDirection);
-                }
-
-                for (Materials tMaterial : mMoltenNegA) {
-                    tMaterial.mMoltenRGBa[3] = getSafeRGBValue(tMaterial.mMoltenRGBa[3], -tDirection);
-                }
             }
         }
     }
@@ -758,7 +564,6 @@ public class GTClient extends GTProxy {
             || GTUtility.isStackInList(stack, GregTechAPI.sSolderingToolList)
             || GTUtility.isStackInList(stack, GregTechAPI.sCrowbarList)
             || CoverRegistry.isCover(stack)
-            || stack.getItem() instanceof ItemGTToolbox
             || (stack.getItem() instanceof ItemMachines
                 && GregTechAPI.METATILEENTITIES[stack.getItemDamage()] instanceof MetaPipeEntity
                 && player.isSneaking());

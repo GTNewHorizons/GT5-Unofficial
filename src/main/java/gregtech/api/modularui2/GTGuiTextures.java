@@ -105,11 +105,17 @@ public final class GTGuiTextures {
             GTTextureIds.BACKGROUND_POPUP_STEEL,
             GTTextureIds.BACKGROUND_POPUP_PRIMITIVE)
         .build();
+    public static final UITexture BACKGROUND_TERMINAL = UITexture.builder()
+        .location(GregTech.ID, "gui/background/terminal")
+        .imageSize(142, 28)
+        .adaptable(4)
+        .name(GTTextureIds.BACKGROUND_TERMINAL_STANDARD)
+        .build();
     public static final UITexture BACKGROUND_TEXT_FIELD = UITexture.builder()
         .location(GregTech.ID, "gui/background/text_field")
         .imageSize(142, 28)
         .adaptable(1)
-        .name(GTTextureIds.BACKGROUND_TERMINAL_STANDARD)
+        .name(GTTextureIds.BACKGROUND_TERMINAL_TEXT_FILED_STANDARD)
         .build();
 
     public static final UITexture TT_BACKGROUND_TEXT_FIELD = UITexture.builder()
@@ -204,8 +210,11 @@ public final class GTGuiTextures {
     public static final UITexture OVERLAY_NEEDS_WRENCH = UITexture.fullImage(GregTech.ID, "gui/icons/needsWrench");
 
     public static final UITexture OVERLAY_TOO_DAMAGED = UITexture.fullImage(GregTech.ID, "gui/icons/needsWrench");
-    public static final UITexture OVERLAY_POWER_LOSS = UITexture
-        .fullImage(GregTech.ID, "gui/picture/stalled_electricity");
+    public static final UITexture OVERLAY_POWER_LOSS = UITexture.builder()
+        .location(GregTech.ID, "gui/picture/stalled_electricity")
+        .canApplyTheme()
+        .fullImage()
+        .build();
     public static final UITexture OVERLAY_STRUCTURE_INCOMPLETE = UITexture
         .fullImage(GregTech.ID, "gui/icons/structureIncomplete");
     public static final UITexture OVERLAY_MANUAL_SHUTDOWN = UITexture
@@ -1474,7 +1483,6 @@ public final class GTGuiTextures {
     public static final UITexture OVERLAY_BUTTON_BLOCK_OUTPUT = fullImageGT("overlay_button/block_output");
     public static final UITexture OVERLAY_BUTTON_CHECKMARK = fullImageGT("overlay_button/checkmark");
     public static final UITexture OVERLAY_BUTTON_CROSS = fullImageGT("overlay_button/cross");
-    public static final UITexture OVERLAY_BUTTON_CYCLIC = fullImageGT("overlay_button/cyclic");
     public static final UITexture OVERLAY_BUTTON_EXPORT = fullImageGT("overlay_button/export");
     public static final UITexture OVERLAY_BUTTON_HOURGLASS = fullImageGT("overlay_button/hourglass");
     public static final UITexture OVERLAY_BUTTON_IMPORT = fullImageGT("overlay_button/import");
@@ -1756,12 +1764,24 @@ public final class GTGuiTextures {
         .canApplyTheme()
         .nonOpaque()
         .build();
+
+    public static final UITexture OVERLAY_BUTTON_CYCLIC = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_button/cyclic")
+        .fullImage()
+        .canApplyTheme()
+        .build();
+    public static final UITexture OVERLAY_BUTTON_SHUFFLE = UITexture.builder()
+        .location(GregTech.ID, "gui/overlay_button/shuffle")
+        .fullImage()
+        .canApplyTheme()
+        .build();
     // endregion button overlay
 
     // region picture
 
     public static final UITexture PICTURE_GT_LOGO_STANDARD = UITexture.builder()
         .location(GregTech.ID, "gui/picture/gt_logo_standard")
+        .canApplyTheme()
         .fullImage()
         .name(GTTextureIds.PICTURE_GT_LOGO_STANDARD)
         .build();

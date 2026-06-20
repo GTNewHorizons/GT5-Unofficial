@@ -548,7 +548,7 @@ public class MTESolarTower extends GTPPMultiBlockBase<MTESolarTower> implements 
 
                     this.mHeatLevel -= aFluidAmount;
                     this.depleteInput(new FluidStack(mColdSalt, aFluidAmount));
-                    this.addOutput(new FluidStack(mHotSalt, aFluidAmount));
+                    this.addOutputPartial(new FluidStack(mHotSalt, aFluidAmount));
                     this.mHeatLevel = Math.max(this.mHeatLevel, 0);
 
                     break;

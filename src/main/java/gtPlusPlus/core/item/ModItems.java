@@ -6,6 +6,7 @@ import static gregtech.client.GTTooltipHandler.registerTieredTooltip;
 import static gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes.FINEWIRE;
 import static gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes.FOIL;
 import static gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes.GEAR;
+import static gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes.PLATESUPERDENSE;
 import static gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes.SMALLGEAR;
 import static gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes.SMALLSPRING;
 import static gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes.SPRING;
@@ -421,6 +422,22 @@ public final class ModItems {
         MaterialUtils.generateComponentAndAssignToAMaterial(FOIL, MaterialsAlloy.LAFIUM);
         MaterialUtils.generateComponentAndAssignToAMaterial(FOIL, MaterialsAlloy.TRINIUM_REINFORCED_STEEL);
         MaterialUtils.generateComponentAndAssignToAMaterial(FOIL, MaterialsElements.STANDALONE.CHRONOMATIC_GLASS);
+
+        // Superdense Plate
+        MaterialUtils.generateComponentAndAssignToAMaterial(PLATESUPERDENSE, MaterialsAlloy.BOTMIUM);
+        MaterialUtils.generateComponentAndAssignToAMaterial(PLATESUPERDENSE, MaterialsAlloy.QUANTUM);
+        MaterialUtils.generateComponentAndAssignToAMaterial(PLATESUPERDENSE, MaterialsAlloy.LAURENIUM);
+        MaterialUtils.generateComponentAndAssignToAMaterial(PLATESUPERDENSE, MaterialsAlloy.ABYSSAL);
+        MaterialUtils.generateComponentAndAssignToAMaterial(PLATESUPERDENSE, MaterialsElements.STANDALONE.HYPOGEN);
+        MaterialUtils
+            .generateComponentAndAssignToAMaterial(PLATESUPERDENSE, MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN);
+        MaterialUtils
+            .generateComponentAndAssignToAMaterial(PLATESUPERDENSE, MaterialsElements.STANDALONE.ASTRAL_TITANIUM);
+        MaterialUtils.generateComponentAndAssignToAMaterial(PLATESUPERDENSE, MaterialsElements.STANDALONE.RHUGNOR);
+        MaterialUtils
+            .generateComponentAndAssignToAMaterial(PLATESUPERDENSE, MaterialsElements.STANDALONE.ADVANCED_NITINOL);
+        MaterialUtils
+            .generateComponentAndAssignToAMaterial(PLATESUPERDENSE, MaterialsElements.STANDALONE.CHRONOMATIC_GLASS);
 
         // Gear
         MaterialUtils.generateComponentAndAssignToAMaterial(GEAR, MaterialsElements.STANDALONE.RHUGNOR);
