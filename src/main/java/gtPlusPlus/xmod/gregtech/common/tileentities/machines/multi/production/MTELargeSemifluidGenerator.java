@@ -31,6 +31,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
@@ -38,7 +39,6 @@ import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.pollution.PollutionConfig;
-import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 
 public class MTELargeSemifluidGenerator extends GTPPMultiBlockBase<MTELargeSemifluidGenerator>
@@ -141,7 +141,7 @@ public class MTELargeSemifluidGenerator extends GTPPMultiBlockBase<MTELargeSemif
         }
 
         for (FluidStack hatchFluid : tFluids) { // Loops through hatches
-            GTRecipe aFuel = GTPPRecipeMaps.semiFluidFuels.getBackend()
+            GTRecipe aFuel = RecipeMaps.semiFluidFuels.getBackend()
                 .findFuel(hatchFluid);
             if (aFuel == null) {
                 // Not a valid semifluid fuel.

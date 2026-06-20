@@ -10,6 +10,7 @@ import static gregtech.api.recipe.RecipeMaps.fluidSolidifierRecipes;
 import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
 import static gregtech.api.recipe.RecipeMaps.multiblockChemicalReactorRecipes;
+import static gregtech.api.recipe.RecipeMaps.quantumForceTransformerRecipes;
 import static gregtech.api.recipe.RecipeMaps.vacuumFreezerRecipes;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
@@ -24,7 +25,6 @@ import static gregtech.api.util.GTRecipeConstants.QFT_CATALYST;
 import static gregtech.api.util.GTRecipeConstants.QFT_FOCUS_TIER;
 import static gregtech.api.util.GTRecipeConstants.UniversalChemical;
 import static gregtech.common.items.MetaGeneratedItem01.registerCauldronCleaningFor;
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.quantumForceTransformerRecipes;
 
 import java.util.HashSet;
 
@@ -54,7 +54,6 @@ import gregtech.api.util.GTUtility;
 import gregtech.common.items.CombType;
 import gregtech.loaders.misc.GTBees;
 import gregtech.mixin.interfaces.accessors.IRecipeMutableAccess;
-import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public class NaquadahReworkRecipeLoader {
@@ -931,7 +930,7 @@ public class NaquadahReworkRecipeLoader {
         GTLog.out.print("Multi Chemical Reactor done!\n");
 
         // For Simple Washer
-        for (GTRecipe recipe : GTPPRecipeMaps.simpleWasherRecipes.getAllRecipes()) {
+        for (GTRecipe recipe : RecipeMaps.simpleWasherRecipes.getAllRecipes()) {
             ItemStack input = recipe.mInputs[0];
             if (!GTUtility.isStackValid(input)) continue;
             int[] oreDict = OreDictionary.getOreIDs(input);
@@ -970,10 +969,10 @@ public class NaquadahReworkRecipeLoader {
             }
 
         }
-        GTPPRecipeMaps.simpleWasherRecipes.getBackend()
+        RecipeMaps.simpleWasherRecipes.getBackend()
             .removeRecipes(remove);
-        reAdd.forEach(GTPPRecipeMaps.simpleWasherRecipes::add);
-        GTPPRecipeMaps.simpleWasherRecipes.getBackend()
+        reAdd.forEach(RecipeMaps.simpleWasherRecipes::add);
+        RecipeMaps.simpleWasherRecipes.getBackend()
             .reInit();
 
         GTLog.out.print(GoodGenerator.MOD_ID + ": Replace " + remove.size() + "! ");

@@ -59,6 +59,7 @@ import gregtech.api.metatileentity.implementations.MTEHatchMaintenance;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.metatileentity.implementations.MTEHatchOutputBus;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
@@ -71,7 +72,6 @@ import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.machines.IDualInputHatch;
-import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.item.chemistry.general.ItemGenericChemBase;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -476,7 +476,7 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return GTPPRecipeMaps.chemicalPlantRecipes;
+        return RecipeMaps.chemicalPlantRecipes;
     }
 
     @Override
@@ -654,9 +654,6 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
         ItemGenericChemBase.setCatalystDamage(aStack, aAmount);
     }
 
-    /*
-     * Catalyst Handling
-     */
     public ArrayList<ItemStack> getCatalystInputs() {
         ArrayList<ItemStack> tItems = new ArrayList<>();
         for (MTEHatchCatalysts tHatch : validMTEList(mCatalystBuses)) {
@@ -670,7 +667,6 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
 
     public static void registerChemplantCatalyst(ItemStack stack) {
         if (stack == null) return;
-
         CHEMPLANT_CATALYSTS.add(GTUtility.ItemId.createWithoutNBT(stack));
     }
 

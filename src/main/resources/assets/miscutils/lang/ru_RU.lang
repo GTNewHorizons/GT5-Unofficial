@@ -61,78 +61,6 @@ GTPP.core.GT_Tooltip=Добавлено: §2Alkalus §7- §c[GT++]
 GTPP.core.GT_Tooltip_Builder=§2Alkalus §7- §c[GT++]
 GTPP.core.GT_Tooltip_Radioactive=§7Внимание: §aРадиоактивно! §6Избегайте прямого контакта без средств защиты.
 
-# RecipeMaps
-gtpp.recipe.cokeoven=Коксовая печь
-gtpp.recipe.matterfab2=Генератор материи
-gtpp.recipe.rocketenginefuel=Топливо для ракетного двигателя
-gtpp.recipe.quantumforcesmelter=Квантовый силовой преобразователь
-gtpp.recipe.chemicaldehydrator=Дегидратор
-gtpp.recipe.vacfurnace=Вакуумная печь
-gtpp.recipe.alloyblastsmelter=Плавильная доменная печь
-gtpp.recipe.lftr=Жидкостный фтористо-ториевый реактор
-gtpp.recipe.lftr.sparging=Барботирование газа ЖФТР
-gtpp.recipe.nuclearsaltprocessingplant=Завод по переработке ядерной соли
-gtpp.recipe.oremill=Измельчение
-gtpp.recipe.fissionfuel=Переработка ядерного топлива
-gtpp.recipe.coldtrap=Холодная ловушка
-gtpp.recipe.reactorprocessingunit=Реакторное процессорное устройство
-gtpp.recipe.simplewasher=Простая мойка пыли
-gtpp.recipe.moleculartransformer=Молекулярный преобразователь
-gtpp.recipe.fluidchemicaleactor=Химический завод
-gtpp.recipe.RTGgenerators=RTG
-gtpp.recipe.thermalgeneratorfuel=Тепловой бойлер
-gtpp.recipe.solartower=Солнечная башня
-gtpp.recipe.cyclotron=КОМЕТА - Компактный циклотрон
-gtpp.recipe.fishpond=Чжухай - Рыбный порт
-gtpp.recipe.cryogenicfreezer=Криогенный морозильник
-gtpp.recipe.multicentrifuge=Мультиблоковая центрифуга
-gtpp.recipe.multielectro=Мультиблоковый электролизер
-gtpp.recipe.multimixer=Мультиблоковый миксер
-gtpp.recipe.multidehydrator=Мультиблоковый дегидратор
-gtpp.recipe.semifluidgeneratorfuels=Топливо полужидкостного генератора
-gtpp.recipe.flotationcell=Флотационная камера
-gtpp.recipe.treefarm=Симулятор роста деревьев
-
-# Recipe categories
-gtpp.recipe.category.abs_non_alloy_recipes=Рецепты ABS без сплавов
-
-# NEI
-gtpp.nei.lftr.power=Power: %s EU/t per Dynamo
-gtpp.nei.lftr.dynamo=Dynamo: %s EU
-gtpp.nei.lftr.total=Всего: %s EU
-gtpp.nei.milling.not_consumed=Не всегда расходуется в процессе работы
-gtpp.nei.chemplant.tier.1=Бронза
-gtpp.nei.chemplant.tier.2=Сталь
-gtpp.nei.chemplant.tier.3=Алюминий
-gtpp.nei.chemplant.tier.4=Нержавеющая сталь
-gtpp.nei.chemplant.tier.5=Титан
-gtpp.nei.chemplant.tier.6=Вольфрамовая сталь
-gtpp.nei.chemplant.tier.7=Лаурений
-gtpp.nei.chemplant.tier.8=Ботмий
-gtpp.nei.rtg.days=Стоимость топлива: %s Minecraft дней
-gtpp.nei.solar_tower.1=Solar Heater rings boost tier
-gtpp.nei.solar_tower.2=R1:T1, R2:T2, R3:T4, R4:T8, R5:T16
-gtpp.nei.solar_tower.3=Input Amount = 1000 x T
-gtpp.nei.tgs.1=Саженец не расходуется.
-gtpp.nei.tgs.2=Если указан %s,
-gtpp.nei.tgs.3=Вместо этого выращивают саженцы.
-gtpp.nei.tgs.sapling=Выводится, если указан %s
-
-gtpp.nei.tgs.tooltip.sapling=Поместите в слот контроллера механизма
-gtpp.nei.tgs.tooltip.saw=Поместите в входной люк для сбора брёвен
-gtpp.nei.tgs.tooltip.needsSaw=Для сбора урожая требуется пила
-gtpp.nei.tgs.tooltip.cutter=Поместите в входной люк для сбора саженцев
-gtpp.nei.tgs.tooltip.needsCutter=Для сбора урожая требуется секатор
-gtpp.nei.tgs.tooltip.shears=Поместите в входной люк для сбора листвы
-gtpp.nei.tgs.tooltip.needsShears=Для сбора урожая требуется ножницы
-gtpp.nei.tgs.tooltip.knife=Поместите в входной люк для сбора фруктов
-gtpp.nei.tgs.tooltip.needsKnife=Для сбора урожая требуется нож
-gtpp.nei.tgs.tooltip.multiplier=Выходной множитель:
-gtpp.nei.tgs.info-1=Производительность дополнительно повышается
-gtpp.nei.tgs.info-2=за счет тира механизма
-gtpp.nei.tgs.info-3=и типа инструмента
-
-
 # Thermal Foundation Stuff
 item.MiscUtils.bucket.bucketPyrotheum.name=Ведро пылающего пиротеума
 item.MiscUtils.bucket.bucketCryotheum.name=Ведро ледяного криотеума
@@ -3478,7 +3406,6 @@ item.itemCellSeleniumDioxide.name=Капсула диоксида селена
 item.itemCellSeleniousAcid.name=Капсула селенистой кислоты
 
 # Added 15/8/19
-gtpp.nei.decayables=Decayables Chest
 entity.batKing.name=Король летучих мышей
 item.itemCellCarbyne.name=Капсула карбина
 item.itemCellHydrogenCyanide.name=Капсула с синильной кислотой

@@ -2,8 +2,8 @@ package gtPlusPlus.xmod.forestry.bees.items.output;
 
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.GTPlusPlus;
+import static gregtech.api.recipe.RecipeMaps.chemicalPlantRecipes;
 import static gregtech.api.util.GTRecipeConstants.CHEMPLANT_CASING_TIER;
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalPlantRecipes;
 
 import java.util.List;
 

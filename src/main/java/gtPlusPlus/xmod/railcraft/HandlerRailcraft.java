@@ -4,11 +4,11 @@ import static gregtech.api.enums.Materials.BioDiesel;
 import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.enums.Mods.Railcraft;
+import static gregtech.api.recipe.RecipeMaps.industrialCokeOvenRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeConstants.UniversalChemical;
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.cokeOvenRecipes;
 import static gtPlusPlus.core.creative.AddToCreativeTab.tabMisc;
 
 import net.minecraft.init.Blocks;
@@ -91,7 +91,7 @@ public class HandlerRailcraft {
             .fluidOutputs(Materials.Creosote.getFluid(100))
             .eut(TierEU.RECIPE_LV / 2)
             .duration(1 * SECONDS)
-            .addTo(cokeOvenRecipes);
+            .addTo(industrialCokeOvenRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(plant)
@@ -101,7 +101,7 @@ public class HandlerRailcraft {
             .fluidOutputs(Materials.CharcoalByproducts.getGas(200))
             .eut(TierEU.RECIPE_LV / 2)
             .duration(10 * TICKS)
-            .addTo(cokeOvenRecipes);
+            .addTo(industrialCokeOvenRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(charcoal)
@@ -110,7 +110,7 @@ public class HandlerRailcraft {
             .fluidOutputs(Materials.Creosote.getFluid(200))
             .eut(TierEU.RECIPE_LV / 2)
             .duration(2 * SECONDS)
-            .addTo(cokeOvenRecipes);
+            .addTo(industrialCokeOvenRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(charcoal)
@@ -120,7 +120,7 @@ public class HandlerRailcraft {
             .fluidOutputs(Materials.CharcoalByproducts.getGas(100))
             .eut(TierEU.RECIPE_LV / 2)
             .duration(1 * SECONDS)
-            .addTo(cokeOvenRecipes);
+            .addTo(industrialCokeOvenRecipes);
 
         // Generate Wood Tar and Wood Gas from these Cokes
         GTValues.RA.stdBuilder()
@@ -131,7 +131,7 @@ public class HandlerRailcraft {
             .fluidOutputs(Materials.WoodTar.getFluid(200))
             .eut(TierEU.RECIPE_HV / 2)
             .duration(3 * SECONDS)
-            .addTo(cokeOvenRecipes);
+            .addTo(industrialCokeOvenRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(coke)
@@ -141,7 +141,7 @@ public class HandlerRailcraft {
             .fluidOutputs(Materials.WoodGas.getGas(300))
             .eut(TierEU.RECIPE_HV / 2)
             .duration(3 * SECONDS)
-            .addTo(cokeOvenRecipes);
+            .addTo(industrialCokeOvenRecipes);
 
         // Fluid Extracting the Charcoals for Wood Tar
         GTValues.RA.stdBuilder()

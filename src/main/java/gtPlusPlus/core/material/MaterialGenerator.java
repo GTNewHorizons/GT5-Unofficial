@@ -1,7 +1,7 @@
 package gtPlusPlus.core.material;
 
+import static gregtech.api.recipe.RecipeMaps.chemicalDehydratorRecipes;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
-import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
 
 import java.util.ArrayList;
 import java.util.Set;

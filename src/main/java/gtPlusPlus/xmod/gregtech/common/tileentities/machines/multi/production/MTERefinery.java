@@ -30,10 +30,10 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEHatchMuffler;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.pollution.PollutionConfig;
-import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 
@@ -109,7 +109,7 @@ public class MTERefinery extends GTPPMultiBlockBase<MTERefinery> implements ISur
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return GTPPRecipeMaps.fissionFuelProcessingRecipes;
+        return RecipeMaps.fissionFuelProcessingRecipes;
     }
 
     @Override
