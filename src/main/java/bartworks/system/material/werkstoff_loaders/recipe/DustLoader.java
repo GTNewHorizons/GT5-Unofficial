@@ -421,14 +421,14 @@ public class DustLoader implements IWerkstoffRunnable {
                 GTValues.RA.stdBuilder()
                     .itemInputs(werkstoff.get(ingot))
                     .itemOutputs(werkstoff.get(dust))
-                    .duration(20 * SECONDS)
+                    .duration(5 * SECONDS)
                     .eut(BWUtil.calculateRecipeEU(werkstoff, 2))
                     .addTo(maceratorRecipes);
 
                 GTValues.RA.stdBuilder()
                     .itemInputs(werkstoff.get(nugget))
                     .itemOutputs(werkstoff.get(dustTiny))
-                    .duration(20 * SECONDS)
+                    .duration(10)
                     .eut(BWUtil.calculateRecipeEU(werkstoff, 2))
                     .addTo(maceratorRecipes);
 
