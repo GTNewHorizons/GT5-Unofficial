@@ -56,7 +56,7 @@ public class BlockPad extends Block {
                 : Textures.BlockIcons.BLOCK_BOUNCE_PAD_TOP.getIcon();
             case 1 -> ordinalSide == 0 ? Textures.BlockIcons.BLOCK_STICKY_PAD_BOTTOM.getIcon()
                 : ordinalSide == 1 ? Textures.BlockIcons.BLOCK_STICKY_PAD_TOP.getIcon()
-                  : Textures.BlockIcons.BLOCK_STICKY_PAD_SIDE.getIcon();
+                    : Textures.BlockIcons.BLOCK_STICKY_PAD_SIDE.getIcon();
             default -> Textures.BlockIcons.BLOCK_BOUNCE_PAD_TOP.getIcon();
         };
     }
