@@ -414,9 +414,12 @@ public class DetravScannerGUI extends GuiScreen {
     }
 
     private void drawPlayerHeading(int cx, int cy, float yaw) {
+        GL11.glPushAttrib(GL11.GL_ENABLE_BIT | GL11.GL_LINE_BIT | GL11.GL_COLOR_BUFFER_BIT);
         GL11.glPushMatrix();
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         GL11.glDisable(GL11.GL_CULL_FACE);
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glTranslatef(cx + 0.5F, cy + 0.5F, 0F);
         GL11.glRotatef(yaw + 180F, 0F, 0F, 1F);
 
@@ -430,9 +433,14 @@ public class DetravScannerGUI extends GuiScreen {
         fanShape(t, body, ccx, ccy, 0.9F, 0xEDD8FF); // Outline
         fanShape(t, body, ccx, ccy, 0.75F, 0xC071FF); // fill
 
-        GL11.glEnable(GL11.GL_CULL_FACE);
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
+        // Anti-aliased rim over the silhouette.
+        GL11.glEnable(GL11.GL_LINE_SMOOTH);
+        GL11.glHint(GL11.GL_LINE_SMOOTH_HINT, GL11.GL_NICEST);
+        GL11.glLineWidth(1.5F);
+        strokeShape(t, body, ccx, ccy, 0.9F, 0xEDD8FF);
+
         GL11.glPopMatrix();
+        GL11.glPopAttrib();
         GL11.glColor4f(1F, 1F, 1F, 1F);
     }
 
@@ -443,6 +451,16 @@ public class DetravScannerGUI extends GuiScreen {
         t.addVertex(cx, cy, 0); // fan hub
         for (int i = 0; i <= pts.length; i++) {
             float[] p = pts[i % pts.length]; // repeat first vertex to close
+            t.addVertex(cx + (p[0] - cx) * scale, cy + (p[1] - cy) * scale, 0);
+        }
+        t.draw();
+    }
+
+    // Traces the polygon perimeter as an anti-aliased line loop, scaled about (cx,cy).
+    private void strokeShape(Tessellator t, float[][] pts, float cx, float cy, float scale, int color) {
+        t.startDrawing(GL11.GL_LINE_LOOP);
+        t.setColorOpaque_I(color);
+        for (float[] p : pts) {
             t.addVertex(cx + (p[0] - cx) * scale, cy + (p[1] - cy) * scale, 0);
         }
         t.draw();
