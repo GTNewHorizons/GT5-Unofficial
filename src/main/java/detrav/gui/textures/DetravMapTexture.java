@@ -100,24 +100,33 @@ public class DetravMapTexture extends AbstractTexture {
                 }
             }
             case DetravMetaGeneratedTool01.MODE_FLUIDS -> {
+                // Tank-fill: each chunk is filled bottom-up to a level proportional to its amount on one
+                // shared linear scale (richest chunk in the scan = full).
+                int maxAmount = 1;
                 for (int cZ = 0; cZ < chunkSize; cZ++) {
                     for (int cX = 0; cX < chunkSize; cX++) {
+                        var object = packet.objects.get(packet.map.get(CoordinatePacker.pack(cX, 0, cZ)));
+                        int amount = packet.getAmount(cX, cZ);
+                        if (object == null || amount <= 0) continue;
+                        if (!selected.equals("All") && !selected.equals(object.left())) continue;
+                        maxAmount = Math.max(maxAmount, amount);
+                    }
+                }
+
+                for (int cZ = 0; cZ < chunkSize; cZ++) {
+                    for (int cX = 0; cX < chunkSize; cX++) {
+                        var object = packet.objects.get(packet.map.get(CoordinatePacker.pack(cX, 0, cZ)));
                         int amount = packet.getAmount(cX, cZ);
 
-                        var object = packet.objects.get(packet.map.get(CoordinatePacker.pack(cX, 0, cZ)));
+                        if (object == null || amount <= 0) continue;
+                        if (!selected.equals("All") && !selected.equals(object.left())) continue;
 
-                        if (object == null) continue;
-
-                        String name = object.left();
                         int rgba = object.rightInt();
+                        int fill = Math.max(1, Math.round(16F * amount / maxAmount)); // bottom-up rows, 1..16
 
-                        if (!selected.equals("All") && !selected.equals(name)) continue;
-
-                        for (int x = 0; x < 16; x++) {
-                            for (int y = 0; y < 16; y++) {
-                                if ((x + y * 16) * 3 < amount + 48) {
-                                    image.setRGB(cX * 16 + x, cZ * 16 + y, rgba);
-                                }
+                        for (int y = 16 - fill; y < 16; y++) {
+                            for (int x = 0; x < 16; x++) {
+                                image.setRGB(cX * 16 + x, cZ * 16 + y, rgba);
                             }
                         }
                     }
