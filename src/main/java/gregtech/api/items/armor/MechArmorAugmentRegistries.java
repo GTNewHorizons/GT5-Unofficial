@@ -48,6 +48,7 @@ import gregtech.api.items.armor.behaviors.SpaceSuitBehavior;
 import gregtech.api.items.armor.behaviors.SpeedBoostBehavior;
 import gregtech.api.items.armor.behaviors.StepAssistBehavior;
 import gregtech.api.items.armor.behaviors.SwimSpeedBehavior;
+import gregtech.api.items.armor.behaviors.TerrasteelBehavior;
 import gregtech.api.items.armor.behaviors.VisDiscountBehavior;
 import gregtech.api.items.armor.behaviors.WaterBreathingBehavior;
 
@@ -387,25 +388,44 @@ public class MechArmorAugmentRegistries {
     public enum Augments implements IArmorPart {
 
         // spotless:off
-        NightVision(ItemList.Augment_NightVision, new AugmentBuilder()
-            .setId("NightVision")
-            .setItemId("augmentnightvision")
-            .fitsInto(ArmorType.Helmet)
-            .setTexture(ArmorType.Helmet, () -> nightVisionAugment)
-            .providesBehaviors(NightVisionBehavior.INSTANCE)
+
+        // When adding new augments please sort them here according to tier and category.
+        // This sorts the registration order and therefore the order in which they appear in NEI.
+
+        // Tier 1 - Protection
+        Hazmat(ItemList.Augment_Hazmat, new AugmentBuilder()
+            .setId("Hazmat")
+            .setItemId("augmenthazmat")
+            .providesBehaviors(HazmatBehavior.INSTANCE)
             .setMinimumCoreTier(1)
-            .setCategory(AugmentCategory.Utility)
+            .setCategory(AugmentCategory.Protection)
         ),
-        CreativeFlight(ItemList.Augment_CreativeFlight, new AugmentBuilder()
-            .setId("CreativeFlight")
-            .setItemId("augmentcreativeflight")
-            .fitsInto(ArmorType.Chestplate)
-            .setTexture(ArmorType.Chestplate, () -> creativeFlightAugment)
-            .providesBehaviors(CreativeFlightBehavior.INSTANCE)
-            .incompatibleBehaviors(BehaviorName.Jetpack)
-            .setMinimumCoreTier(3)
-            .setCategory(AugmentCategory.Movement)
+        FallProtection(ItemList.Augment_FallProtection, new AugmentBuilder()
+            .setId("FallProtection")
+            .setItemId("augmentfallprotection")
+            .fitsInto(ArmorType.Boots)
+            .providesBehaviors(FallProtectionBehavior.INSTANCE)
+            .setMinimumCoreTier(1)
+            .setCategory(AugmentCategory.Protection)
         ),
+        SpaceSuit(ItemList.Augment_SpaceSuit, new AugmentBuilder()
+            .setId("SpaceSuit")
+            .setItemId("augmentspacesuit")
+            .providesBehaviors(SpaceSuitBehavior.INSTANCE)
+            .setMinimumCoreTier(1)
+            .setCategory(AugmentCategory.Protection)
+        ),
+        WaterBreathing(ItemList.Augment_WaterBreathing, new AugmentBuilder()
+            .setId("WaterBreathing")
+            .setItemId("augmentwaterbreathing")
+            .fitsInto(ArmorType.Helmet)
+            .setTexture(ArmorType.Helmet, () -> rebreatherAugment)
+            .providesBehaviors(WaterBreathingBehavior.INSTANCE)
+            .setMinimumCoreTier(1)
+            .setCategory(AugmentCategory.Protection)
+        ),
+
+        // Tier 1 - Movement
         Jetpack(ItemList.Augment_Jetpack, new AugmentBuilder()
             .setId("Jetpack")
             .setItemId("augmentjetpack")
@@ -416,30 +436,36 @@ public class MechArmorAugmentRegistries {
             .setMinimumCoreTier(1)
             .setCategory(AugmentCategory.Movement)
         ),
-        JetpackPerfectHover(ItemList.Augment_Jetpack_PerfectHover, new AugmentBuilder()
-            .setId("JetpackPerfectHover")
-            .setItemId("augmentjetpackperfecthover")
-            .fitsInto(ArmorType.Chestplate)
-            .providesBehaviors(JetpackPerfectHoverBehavior.INSTANCE)
-            .requiresBehaviors(BehaviorName.Jetpack)
-            .setMinimumCoreTier(2)
-            .setCategory(AugmentCategory.Movement)
-        ),
-        FireImmunity(ItemList.Augment_FireImmunity, new AugmentBuilder()
-            .setId("FireImmunity")
-            .setItemId("augmentfireimmunity")
+        SwimSpeed(ItemList.Augment_SwimSpeed, new AugmentBuilder()
+            .setId("SwimSpeed")
+            .setItemId("augmentswimspeed")
             .fitsInto(ArmorType.Leggings)
-            .providesBehaviors(FireImmunityBehavior.INSTANCE)
-            .setMinimumCoreTier(2)
-            .setCategory(AugmentCategory.Protection)
-        ),
-        StepAssist(ItemList.Augment_StepAssist, new AugmentBuilder()
-            .setId("StepAssist")
-            .setItemId("augmentstepassist")
-            .fitsInto(ArmorType.Boots)
-            .providesBehaviors(StepAssistBehavior.INSTANCE)
-            .setMinimumCoreTier(2)
+            .providesBehaviors(SwimSpeedBehavior.INSTANCE)
             .setCategory(AugmentCategory.Movement)
+            .setMinimumCoreTier(1)
+            .setMaxStack(2)
+        ),
+        TravelersBoots(ItemList.Augment_Travelers, new AugmentBuilder()
+            .setId("Travelers")
+            .setItemId("augmenttravelers")
+            .fitsInto(ArmorType.Boots)
+            .providesBehaviors(new JumpBoostBehavior(0.6F),
+                new SpeedBoostBehavior(0.15F),
+                StepAssistBehavior.INSTANCE,
+                new VisDiscountBehavior(4))
+            .setMinimumCoreTier(1)
+            .setCategory(AugmentCategory.Movement)
+        ),
+
+        // Tier 1 - Utility
+        NightVision(ItemList.Augment_NightVision, new AugmentBuilder()
+            .setId("NightVision")
+            .setItemId("augmentnightvision")
+            .fitsInto(ArmorType.Helmet)
+            .setTexture(ArmorType.Helmet, () -> nightVisionAugment)
+            .providesBehaviors(NightVisionBehavior.INSTANCE)
+            .setMinimumCoreTier(1)
+            .setCategory(AugmentCategory.Utility)
         ),
         GogglesOfRevealing(ItemList.Augment_GogglesOfRevealing, new AugmentBuilder()
             .setId("GogglesOfRevealing")
@@ -450,22 +476,6 @@ public class MechArmorAugmentRegistries {
             .setMinimumCoreTier(1)
             .setCategory(AugmentCategory.Utility)
         ),
-        InertiaCanceling(ItemList.Augment_InertiaCanceling, new AugmentBuilder()
-            .setId("InertiaCanceling")
-            .setItemId("augmentinertiacanceling")
-            .fitsInto(ArmorType.Chestplate)
-            .providesBehaviors(InertiaCancelingBehavior.INSTANCE)
-            .requiresBehaviors(BehaviorName.CreativeFlight)
-            .setMinimumCoreTier(3)
-            .setCategory(AugmentCategory.Movement)
-        ),
-        Hazmat(ItemList.Augment_Hazmat, new AugmentBuilder()
-            .setId("Hazmat")
-            .setItemId("augmenthazmat")
-            .providesBehaviors(HazmatBehavior.INSTANCE)
-            .setMinimumCoreTier(1)
-            .setCategory(AugmentCategory.Protection)
-        ),
         Apiarist(ItemList.Augment_Apiarist, new AugmentBuilder()
             .setId("Apiarist")
             .setItemId("augmentapiarist")
@@ -473,14 +483,30 @@ public class MechArmorAugmentRegistries {
             .setMinimumCoreTier(1)
             .setCategory(AugmentCategory.Utility)
         ),
-        SwimSpeed(ItemList.Augment_SwimSpeed, new AugmentBuilder()
-            .setId("SwimSpeed")
-            .setItemId("augmentswimspeed")
-            .fitsInto(ArmorType.Leggings)
-            .providesBehaviors(SwimSpeedBehavior.INSTANCE)
-            .setCategory(AugmentCategory.Movement)
+        HoloInventory(ItemList.Augment_HoloInventory, new AugmentBuilder()
+            .setId("HoloInventory")
+            .setItemId("augmentholoinventory")
+            .providesBehaviors(HoloInventoryBehavior.INSTANCE)
+            .setTexture(ArmorType.Helmet,() -> holoInventoryAugment)
             .setMinimumCoreTier(1)
-            .setMaxStack(2)
+            .setCategory(AugmentCategory.Utility)
+        ),
+        TerrasteelAugment(ItemList.Augment_Terrasteel, new AugmentBuilder()
+            .setId("Terrasteel")
+            .setItemId("augmentterrasteel")
+            .providesBehaviors(TerrasteelBehavior.INSTANCE)
+            .setMinimumCoreTier(1)
+            .setCategory(AugmentCategory.Utility)
+        ),
+
+        // Tier 2 - Protection
+        FireImmunity(ItemList.Augment_FireImmunity, new AugmentBuilder()
+            .setId("FireImmunity")
+            .setItemId("augmentfireimmunity")
+            .fitsInto(ArmorType.Leggings)
+            .providesBehaviors(FireImmunityBehavior.INSTANCE)
+            .setMinimumCoreTier(2)
+            .setCategory(AugmentCategory.Protection)
         ),
         KnockbackResistance(ItemList.Augment_KnockbackResistance, new AugmentBuilder()
             .setId("KnockbackResistance")
@@ -489,6 +515,25 @@ public class MechArmorAugmentRegistries {
             .providesBehaviors(KnockbackResistBehavior.INSTANCE)
             .setMinimumCoreTier(2)
             .setCategory(AugmentCategory.Protection)
+        ),
+
+        // Tier 2 - Movement
+        JetpackPerfectHover(ItemList.Augment_Jetpack_PerfectHover, new AugmentBuilder()
+            .setId("JetpackPerfectHover")
+            .setItemId("augmentjetpackperfecthover")
+            .fitsInto(ArmorType.Chestplate)
+            .providesBehaviors(JetpackPerfectHoverBehavior.INSTANCE)
+            .requiresBehaviors(BehaviorName.Jetpack)
+            .setMinimumCoreTier(2)
+            .setCategory(AugmentCategory.Movement)
+        ),
+        StepAssist(ItemList.Augment_StepAssist, new AugmentBuilder()
+            .setId("StepAssist")
+            .setItemId("augmentstepassist")
+            .fitsInto(ArmorType.Boots)
+            .providesBehaviors(StepAssistBehavior.INSTANCE)
+            .setMinimumCoreTier(2)
+            .setCategory(AugmentCategory.Movement)
         ),
         SpeedBoost(ItemList.Augment_SpeedBoost, new AugmentBuilder()
             .setId("SpeedBoost")
@@ -508,30 +553,6 @@ public class MechArmorAugmentRegistries {
             .setMaxStack(2)
             .setCategory(AugmentCategory.Movement)
         ),
-        FallProtection(ItemList.Augment_FallProtection, new AugmentBuilder()
-            .setId("FallProtection")
-            .setItemId("augmentfallprotection")
-            .fitsInto(ArmorType.Boots)
-            .providesBehaviors(FallProtectionBehavior.INSTANCE)
-            .setMinimumCoreTier(1)
-            .setCategory(AugmentCategory.Protection)
-        ),
-        SpaceSuit(ItemList.Augment_SpaceSuit, new AugmentBuilder()
-            .setId("SpaceSuit")
-            .setItemId("augmentspacesuit")
-            .providesBehaviors(SpaceSuitBehavior.INSTANCE)
-            .setMinimumCoreTier(1)
-            .setCategory(AugmentCategory.Protection)
-        ),
-        ForceField(ItemList.Augment_ForceField, new AugmentBuilder()
-            .setId("ForceField")
-            .setItemId("augmentforcefield")
-            .fitsInto(ArmorType.Chestplate)
-            .setTexture(ArmorType.Chestplate,() ->forceFieldAugment)
-            .providesBehaviors(ForceFieldBehavior.INSTANCE)
-            .setMinimumCoreTier(3)
-            .setCategory(AugmentCategory.Protection)
-        ),
         OmniMovement(ItemList.Augment_OmniMovement, new AugmentBuilder()
             .setId("OmniMovement")
             .setItemId("augmentomnimovement")
@@ -541,15 +562,8 @@ public class MechArmorAugmentRegistries {
             .setMinimumCoreTier(2)
             .setCategory(AugmentCategory.Movement)
         ),
-        WaterBreathing(ItemList.Augment_WaterBreathing, new AugmentBuilder()
-            .setId("WaterBreathing")
-            .setItemId("augmentwaterbreathing")
-            .fitsInto(ArmorType.Helmet)
-            .setTexture(ArmorType.Helmet, () -> rebreatherAugment)
-            .providesBehaviors(WaterBreathingBehavior.INSTANCE)
-            .setMinimumCoreTier(1)
-            .setCategory(AugmentCategory.Protection)
-        ),
+
+        // Tier 2 - Utility
         MilkInfusion(ItemList.Augment_MilkInfusion, new AugmentBuilder()
             .setId("MilkInfusion")
             .setItemId("augmentmilkinfusion")
@@ -558,25 +572,42 @@ public class MechArmorAugmentRegistries {
             .setMinimumCoreTier(2)
             .setCategory(AugmentCategory.Utility)
         ),
-        HoloInventory(ItemList.Augment_HoloInventory, new AugmentBuilder()
-            .setId("HoloInventory")
-            .setItemId("augmentholoinventory")
-            .providesBehaviors(HoloInventoryBehavior.INSTANCE)
-            .setTexture(ArmorType.Helmet,() -> holoInventoryAugment)
-            .setMinimumCoreTier(1)
-            .setCategory(AugmentCategory.Utility)
+
+        // Tier 3 - Protection
+        ForceField(ItemList.Augment_ForceField, new AugmentBuilder()
+            .setId("ForceField")
+            .setItemId("augmentforcefield")
+            .fitsInto(ArmorType.Chestplate)
+            .setTexture(ArmorType.Chestplate,() ->forceFieldAugment)
+            .providesBehaviors(ForceFieldBehavior.INSTANCE)
+            .setMinimumCoreTier(3)
+            .setCategory(AugmentCategory.Protection)
         ),
-        TravelersBoots(ItemList.Augment_Travelers, new AugmentBuilder()
-            .setId("Travelers")
-            .setItemId("augmenttravelers")
-            .fitsInto(ArmorType.Boots)
-            .providesBehaviors(new JumpBoostBehavior(0.6F),
-                new SpeedBoostBehavior(0.15F),
-                StepAssistBehavior.INSTANCE,
-                new VisDiscountBehavior(4))
-            .setMinimumCoreTier(1)
+
+        // Tier 3 - Movement
+        CreativeFlight(ItemList.Augment_CreativeFlight, new AugmentBuilder()
+            .setId("CreativeFlight")
+            .setItemId("augmentcreativeflight")
+            .fitsInto(ArmorType.Chestplate)
+            .setTexture(ArmorType.Chestplate, () -> creativeFlightAugment)
+            .providesBehaviors(CreativeFlightBehavior.INSTANCE)
+            .incompatibleBehaviors(BehaviorName.Jetpack)
+            .setMinimumCoreTier(3)
+            .setCategory(AugmentCategory.Movement)
+        ),
+        InertiaCanceling(ItemList.Augment_InertiaCanceling, new AugmentBuilder()
+            .setId("InertiaCanceling")
+            .setItemId("augmentinertiacanceling")
+            .fitsInto(ArmorType.Chestplate)
+            .providesBehaviors(InertiaCancelingBehavior.INSTANCE)
+            .requiresBehaviors(BehaviorName.CreativeFlight)
+            .setMinimumCoreTier(3)
             .setCategory(AugmentCategory.Movement)
         );
+
+        // Tier 3 - Utility
+
+
         // spotless:on
 
         private final ItemList item;

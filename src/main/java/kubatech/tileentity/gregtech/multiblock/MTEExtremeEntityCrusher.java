@@ -108,13 +108,14 @@ import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
@@ -133,7 +134,7 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtremeEntityCrusher>
-    implements CustomTileEntityPacketHandler, ISurvivalConstructable {
+    implements CustomTileEntityPacketHandler, ISurvivalConstructable, ICasingTextureProvider {
 
     // Powered spawner with octadic capacitor spawns ~22/min ~= 0.366/sec ~= 2.72s/spawn ~= 54.54t/spawn
     public static final int MOB_SPAWN_INTERVAL = 55;
@@ -413,30 +414,22 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-        int colorIndex, boolean aActive, boolean aRedstone) {
-        if (side == facing) {
-            if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX), TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-        }
-        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX) };
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            OVERLAY_FRONT_DISTILLATION_TOWER,
+            OVERLAY_FRONT_DISTILLATION_TOWER_GLOW,
+            OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE,
+            OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Textures.BlockIcons.getCasingTextureForId(CASING_INDEX);
     }
 
     @SideOnly(Side.CLIENT)
@@ -993,50 +986,46 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
         ArrayList<String> info = new ArrayList<>(Arrays.asList(super.getInfoData()));
         String mobName = getCurrentMob();
         info.add(
-            mobName != null ? StatCollector.translateToLocalFormatted("kubatech.infodata.eec.current_mob", mobName)
-                : StatCollector.translateToLocal("kubatech.infodata.eec.current_mob.none"));
+            mobName != null ? IGregTechDeviceInformation.encode("kubatech.infodata.eec.current_mob", mobName)
+                : "kubatech.infodata.eec.current_mob.none");
         info.add(
-            mAnimationEnabled ? StatCollector.translateToLocal("kubatech.infodata.eec.animations.enabled")
-                : StatCollector.translateToLocal("kubatech.infodata.eec.animations.disabled"));
+            mAnimationEnabled ? "kubatech.infodata.eec.animations.enabled"
+                : "kubatech.infodata.eec.animations.disabled");
         info.add(
-            mIsProducingInfernalDrops
-                ? StatCollector.translateToLocal("kubatech.infodata.eec.produce_infernal_drops.allowed")
-                : StatCollector.translateToLocal("kubatech.infodata.eec.produce_infernal_drops.not_allowed"));
+            mIsProducingInfernalDrops ? "kubatech.infodata.eec.produce_infernal_drops.allowed"
+                : "kubatech.infodata.eec.produce_infernal_drops.not_allowed");
         info.add(
-            voidAllDamagedAndEnchantedItems ? StatCollector.translateToLocal("kubatech.infodata.eec.void_damaged.yes")
-                : StatCollector.translateToLocal("kubatech.infodata.eec.void_damaged.no"));
+            voidAllDamagedAndEnchantedItems ? "kubatech.infodata.eec.void_damaged.yes"
+                : "kubatech.infodata.eec.void_damaged.no");
         info.add(
-            isInRitualMode ? StatCollector.translateToLocal("kubatech.infodata.eec.in_ritual_mode.yes")
-                : StatCollector.translateToLocal("kubatech.infodata.eec.in_ritual_mode.no"));
+            isInRitualMode ? "kubatech.infodata.eec.in_ritual_mode.yes" : "kubatech.infodata.eec.in_ritual_mode.no");
         if (isInRitualMode) info.add(
-            mIsRitualValid ? StatCollector.translateToLocal("kubatech.infodata.eec.connected_to_ritual.yes")
-                : StatCollector.translateToLocal("kubatech.infodata.eec.connected_to_ritual.no"));
+            mIsRitualValid ? "kubatech.infodata.eec.connected_to_ritual.yes"
+                : "kubatech.infodata.eec.connected_to_ritual.no");
         else {
             info.add(
-                mCycleWeapons ? StatCollector.translateToLocal("kubatech.infodata.eec.cycle_weapons.yes")
-                    : StatCollector.translateToLocal("kubatech.infodata.eec.cycle_weapons.no"));
+                mCycleWeapons ? "kubatech.infodata.eec.cycle_weapons.yes" : "kubatech.infodata.eec.cycle_weapons.no");
 
             info.add(
-                mPreserveWeapon ? StatCollector.translateToLocal("kubatech.infodata.eec.weapon_preservation.yes")
-                    : StatCollector.translateToLocal("kubatech.infodata.eec.weapon_preservation.no"));
+                mPreserveWeapon ? "kubatech.infodata.eec.weapon_preservation.yes"
+                    : "kubatech.infodata.eec.weapon_preservation.no");
 
             info.add(
-                weaponCache.isValid ? StatCollector.translateToLocal("kubatech.infodata.eec.inserted_weapon.yes")
-                    : StatCollector.translateToLocal("kubatech.infodata.eec.inserted_weapon.no"));
+                weaponCache.isValid ? "kubatech.infodata.eec.inserted_weapon.yes"
+                    : "kubatech.infodata.eec.inserted_weapon.no");
 
             double tAttackDamage = DIAMOND_SPIKES_DAMAGE;
 
             if (weaponCache.isValid) {
                 tAttackDamage += weaponCache.attackDamage;
                 info.add(
-                    StatCollector
-                        .translateToLocalFormatted("kubatech.infodata.eec.weapon.damage", weaponCache.attackDamage));
+                    IGregTechDeviceInformation.encode("kubatech.infodata.eec.weapon.damage", weaponCache.attackDamage));
                 info.add(
-                    StatCollector
-                        .translateToLocalFormatted("kubatech.infodata.eec.weapon.looting_level", weaponCache.looting));
+                    IGregTechDeviceInformation
+                        .encode("kubatech.infodata.eec.weapon.looting_level", weaponCache.looting));
             }
 
-            info.add(StatCollector.translateToLocalFormatted("kubatech.infodata.eec.total_damage", tAttackDamage));
+            info.add(IGregTechDeviceInformation.encode("kubatech.infodata.eec.total_damage", tAttackDamage));
         }
         return info.toArray(new String[0]);
     }

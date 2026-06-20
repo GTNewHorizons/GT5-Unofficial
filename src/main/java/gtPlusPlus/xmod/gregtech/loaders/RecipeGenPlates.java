@@ -1,9 +1,12 @@
 package gtPlusPlus.xmod.gregtech.loaders;
 
+import static gregtech.api.enums.GTValues.VP;
 import static gregtech.api.recipe.RecipeMaps.alloySmelterRecipes;
 import static gregtech.api.recipe.RecipeMaps.benderRecipes;
+import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
 import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
 import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
+import static gregtech.api.util.GTRecipeConstants.COMPRESSION_TIER;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -13,6 +16,7 @@ import net.minecraft.item.ItemStack;
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
+import gregtech.api.enums.TierEU;
 import gregtech.api.render.TextureFactory;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialGenerator;
@@ -45,8 +49,10 @@ public class RecipeGenPlates extends RecipeGenBase {
         final ItemStack plate_Single = material.getPlate(1);
         final ItemStack plate_SingleTwo = material.getPlate(2);
         final ItemStack plate_SingleNine = material.getPlate(9);
+        final ItemStack plate_Stack64 = material.getPlate(64);
         final ItemStack plate_Double = material.getPlateDouble(1);
         final ItemStack plate_Dense = material.getPlateDense(1);
+        final ItemStack plate_Superdense = material.getPlateSuperdense(1);
         final ItemStack foil_SingleFour = material.getFoil(4);
         final ItemStack block = material.getBlock(1);
         // Forge Hammer
@@ -154,6 +160,22 @@ public class RecipeGenPlates extends RecipeGenBase {
                 .duration(Math.max(material.getMass() * 2L, 1L))
                 .eut(material.vVoltageMultiplier)
                 .addTo(benderRecipes);
+
+        }
+
+        int tier = Math.max(1, material.vTier);
+        long aVoltage = VP[tier];
+
+        // Making Superdense Plates
+        if (plate_Stack64 != null && plate_Superdense != null) {
+            int compressionTier = aVoltage >= TierEU.RECIPE_UEV ? 2 : 1;
+            GTValues.RA.stdBuilder()
+                .itemInputs(plate_Stack64)
+                .itemOutputs(plate_Superdense)
+                .metadata(COMPRESSION_TIER, compressionTier)
+                .duration(Math.max(material.getMass() * 4L, 1L))
+                .eut(material.vVoltageMultiplier)
+                .addTo(compressorRecipes);
         }
     }
 }
