@@ -5,6 +5,7 @@ import static gregtech.api.items.armor.ArmorHelper.SLOT_CHEST;
 import static gregtech.api.items.armor.ArmorHelper.SLOT_LEGS;
 import static gregtech.api.util.GTUtility.getOrCreateNbtCompound;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.client.Minecraft;
@@ -18,6 +19,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
+import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -52,6 +54,9 @@ import gregtech.api.items.armor.MechArmorAugmentRegistries.Cores;
 import gregtech.api.items.armor.MechArmorAugmentRegistries.Frames;
 import gregtech.api.items.armor.behaviors.BehaviorName;
 import gregtech.api.items.armor.behaviors.IArmorBehavior;
+import gregtech.api.items.armor.renderer.ArmorComponent;
+import gregtech.api.items.armor.renderer.ArmorRegistry;
+import gregtech.api.items.armor.renderer.VoxelArmorRenderer;
 import gregtech.api.util.GTUtility;
 import gregtech.common.misc.NoTooltipElectricItemManager;
 import ic2.api.item.ICustomDamageItem;
@@ -73,6 +78,8 @@ import thaumcraft.api.nodes.IRevealer;
 public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISpecialArmor, ISpecialElectricItem,
     IGoggles, IRevealer, IVisDiscountGear, IArmorApiarist, IHazardProtector, ICustomDamageItem,
     net.dries007.holoInventory.api.IHoloGlasses, vazkii.botania.api.mana.IManaDiscountArmor {
+
+    public boolean USE_3D_MODELS = true;
 
     protected IIcon coreIcon;
     protected IIcon frameIcon;
@@ -255,6 +262,48 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISp
         tooltip.replaceAll(GTUtility::processFormatStacks);
     }
 
+    private ArmorComponent getBaseComponent(ItemStack stack) {
+        ArmorState state = ArmorState.load(stack);
+
+        String frameName = (state != null && state.frame != null) ? state.frame.name()
+            .toLowerCase() : "frameless";
+        String armorTypeName = getArmorType().name()
+            .toLowerCase();
+
+        String componentId = frameName + "_" + armorTypeName;
+
+        // feel free to relocate these
+        String jsonPath = "textures/model/armor/models" + componentId + ".geo.json";
+        String texPath = "textures/model/armor/textures" + componentId + ".png";
+
+        return new ArmorComponent(componentId, jsonPath, texPath);
+    }
+
+    private List<ArmorComponent> getActiveAugments(ItemStack stack) {
+        List<ArmorComponent> activeAugments = new ArrayList<>();
+        ArmorState state = ArmorState.load(stack);
+
+        if (state == null || state.augments == null) {
+            return activeAugments;
+        }
+
+        String armorTypeName = getArmorType().name()
+            .toLowerCase();
+
+        for (var augment : state.augments.values()) {
+            String augmentName = augment.name()
+                .toLowerCase();
+
+            String componentId = augmentName + "_" + armorTypeName;
+            String jsonPath = "textures/model/armor/augment_models" + componentId + ".geo.json";
+            String texPath = "textures/model/armor/augment_textures" + componentId + ".png";
+
+            activeAugments.add(new ArmorComponent(componentId, jsonPath, texPath));
+        }
+
+        return activeAugments;
+    }
+
     @Override
     public String getArmorTexture(ItemStack stack, Entity entity, int slot, String type) {
         if (getFrame(stack) == null) {
@@ -265,9 +314,42 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISp
         return GregTech.getResourcePath("textures/items/mech_armor/texture_layer1.png");
     }
 
+    private void setupVanillaVisibilities(ModelBiped model, int armorSlot) {
+        model.bipedHead.showModel = (armorSlot == 0);
+        model.bipedBody.showModel = (armorSlot == 1 || armorSlot == 2);
+        model.bipedLeftArm.showModel = (armorSlot == 1);
+        model.bipedRightArm.showModel = (armorSlot == 1);
+        model.bipedLeftLeg.showModel = (armorSlot == 2 || armorSlot == 3);
+        model.bipedRightLeg.showModel = (armorSlot == 2 || armorSlot == 3);
+    }
+
     @Override
     @SideOnly(Side.CLIENT)
     public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, int armorSlot) {
+        if (USE_3D_MODELS) {
+            ArmorComponent baseArmor = getBaseComponent(itemStack);
+            List<ArmorComponent> augments = getActiveAugments(itemStack);
+
+            float scale = (armorSlot == SLOT_LEGS) ? 0.25F : 0.5F;
+
+            VoxelArmorRenderer model = ArmorRegistry.getOrCompileModel(baseArmor, augments, scale);
+
+            if (model != null) {
+                setupVanillaVisibilities(model, armorSlot);
+
+                if (entityLiving instanceof EntityPlayer player) {
+                    model.isSneak = player.isSneaking();
+                    model.isRiding = player.isRiding();
+                    model.heldItemRight = player.getCurrentEquippedItem() != null ? 1 : 0;
+
+                    model.aimedBow = player.getItemInUse() != null && player.getItemInUse()
+                        .getItem() instanceof ItemBow;
+                }
+
+                return model;
+            }
+        }
+
         if (modelLegs == null) modelLegs = new ModelMechArmor(0.25F);
         if (modelOther == null) modelOther = new ModelMechArmor(0.5F);
 
