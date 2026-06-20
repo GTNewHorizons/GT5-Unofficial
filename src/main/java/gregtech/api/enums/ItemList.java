@@ -3194,7 +3194,13 @@ public enum ItemList implements IItemContainer {
             Cover_Wireless_Energy_UMV, Cover_Wireless_Energy_UXV, Cover_Wireless_Energy_MAX },
         ROBOT_ARMS = { Robot_Arm_LV, Robot_Arm_MV, Robot_Arm_HV, Robot_Arm_EV, Robot_Arm_IV, Robot_Arm_LuV,
             Robot_Arm_ZPM, Robot_Arm_UV, Robot_Arm_UHV, Robot_Arm_UEV, Robot_Arm_UIV, Robot_Arm_UMV, Robot_Arm_UXV,
-            Robot_Arm_MAX };
+            Robot_Arm_MAX },
+        COMPRESSIBLE_COMPUTATION_CORES = { CompressibleComputationCoreULV, CompressibleComputationCoreLV,
+            CompressibleComputationCoreMV, CompressibleComputationCoreHV, CompressibleComputationCoreEV,
+            CompressibleComputationCoreIV, CompressibleComputationCoreLuV, CompressibleComputationCoreZPM,
+            CompressibleComputationCoreUV, CompressibleComputationCoreUHV, CompressibleComputationCoreUEV,
+            CompressibleComputationCoreUIV, CompressibleComputationCoreUMV, CompressibleComputationCoreUXV,
+            CompressibleComputationCoreMAX };
 
     public static Fluid sOilExtraHeavy, sEpichlorhydrin, sDrillingFluid, sBlueVitriol, sNickelSulfate, sGreenVitriol,
         sToluene, sNitrationMixture, sRocketFuel, sHydricSulfur, sIndiumConcentrate, sLeadZincSolution,
