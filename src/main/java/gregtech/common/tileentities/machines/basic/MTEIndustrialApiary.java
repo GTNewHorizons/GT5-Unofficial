@@ -1214,12 +1214,39 @@ public class MTEIndustrialApiary extends MTEBasicMachine
         super.addUIWidgets(builder, buildContext);
 
         builder.widget(
-            new ButtonWidget().setOnClick((clickData, widget) -> cancelProcess())
-                .setBackground(GTUITextures.BUTTON_STANDARD, GTUITextures.OVERLAY_BUTTON_CROSS)
-                .setGTTooltip(() -> mTooltipCache.getData(CANCEL_PROCESS_TOOLTIP))
+            new CycleButtonWidget().setToggle(
+                () -> this.getBaseMetaTileEntity()
+                    .isAllowedToWork(),
+                x -> {
+                    final IGregTechTileEntity te = this.getBaseMetaTileEntity();
+                    if (x) te.enableWorking();
+                    else te.disableWorking();
+                })
+                .setTextureGetter(
+                    i -> i == 0 ? GTUITextures.OVERLAY_BUTTON_POWER_SWITCH_OFF
+                        : GTUITextures.OVERLAY_BUTTON_POWER_SWITCH_ON)
+                .setGTTooltip(() -> mTooltipCache.getData("GT5U.gui.button.power_switch"))
+                .setBackground(() -> {
+                    if (this.getBaseMetaTileEntity()
+                        .isAllowedToWork()) {
+                        return new IDrawable[] { GTUITextures.BUTTON_STANDARD_PRESSED,
+                            GTUITextures.OVERLAY_BUTTON_POWER_SWITCH_ON };
+                    } else {
+                        return new IDrawable[] { GTUITextures.BUTTON_STANDARD,
+                            GTUITextures.OVERLAY_BUTTON_POWER_SWITCH_OFF };
+                    }
+                })
                 .setTooltipShowUpDelay(TOOLTIP_DELAY)
-                .setPos(7, 26)
+                .setPos(7, 8)
                 .setSize(18, 18))
+            .widget(
+                new ButtonWidget().setOnClick((clickData, widget) -> cancelProcess())
+                    .setBackground(GTUITextures.BUTTON_STANDARD, GTUITextures.OVERLAY_BUTTON_CROSS)
+                    .setGTTooltip(() -> mTooltipCache.getData(CANCEL_PROCESS_TOOLTIP))
+                    .setTooltipShowUpDelay(TOOLTIP_DELAY)
+                    .setPos(7, 26)
+                    .setSize(18, 18))
+
             .widget(
                 new CycleButtonWidget().setToggle(() -> mAutoQueen, x -> mAutoQueen = x)
                     .setTextureGetter(
