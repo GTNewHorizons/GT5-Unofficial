@@ -14,11 +14,7 @@ public class ItemFence extends ItemBlock {
 
     @Override
     public String getUnlocalizedName(ItemStack aStack) {
-        return this.field_150939_a.getUnlocalizedName() + "." + damageDropped(getDamage(aStack));
-    }
-
-    public int damageDropped(int metadata) {
-        return metadata;
+        return this.field_150939_a.getUnlocalizedName() + "." + getDamage(aStack);
     }
 
     @Override
