@@ -2,9 +2,9 @@ package gtPlusPlus.core.item.chemistry;
 
 import static gregtech.api.recipe.RecipeMaps.chemicalDehydratorRecipes;
 import static gregtech.api.recipe.RecipeMaps.chemicalReactorRecipes;
-import static gregtech.api.recipe.RecipeMaps.industrialCokeOvenRecipes;
 import static gregtech.api.recipe.RecipeMaps.distillationTowerRecipes;
 import static gregtech.api.recipe.RecipeMaps.distilleryRecipes;
+import static gregtech.api.recipe.RecipeMaps.industrialCokeOvenRecipes;
 import static gregtech.api.recipe.RecipeMaps.pyrolyseRecipes;
 import static gregtech.api.recipe.RecipeMaps.semiFluidFuels;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
