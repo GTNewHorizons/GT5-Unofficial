@@ -1282,7 +1282,7 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
         int densityMultiplier, int densityDivider,
         int oreMultiplier,
         List<MaterialStack> materialList,
-        List<TC_AspectStack> aspects,
+        List<TCAspects.TC_AspectStack> aspects,
         List<Supplier<Materials>> pendingOreByproducts,
         Supplier<Materials> pendingSmeltingInto,
         Supplier<Materials> pendingMaceratingInto,
@@ -1290,8 +1290,9 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
         Map<Supplier<Materials>, Supplier<Materials>> pendingArcSmeltingIntoWithGas,
         Supplier<Materials> pendingDirectSmelting,
         LinkedHashSet<SubTag> subTags,
+        boolean hasGlowingOre
         // spotless:on
-        boolean hasGlowingOre) {
+    ) {
 
         // Set names
         mName = name;
