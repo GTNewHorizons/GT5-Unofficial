@@ -23,6 +23,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IFluidContainerItemMetaTile;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicTank;
@@ -136,15 +137,16 @@ public class MTETieredTank extends MTEBasicTank implements IFluidContainerItemMe
 
         if (this.mFluid == null) {
             return new String[] {
-                GTUtility.translate("gtpp.infodata.tiered_tank.name", GTValues.getLocalizedLongVoltageName(this.mTier)),
-                GTUtility.translate("GT5U.infodata.digital_tank.stored_fluid"),
-                GTUtility.translate("GT5U.infodata.digital_tank.stored_fluid.empty"), 0 + "L",
+                IGregTechDeviceInformation
+                    .encode("gtpp.infodata.tiered_tank.name", GTValues.getLocalizedLongVoltageName(this.mTier)),
+                "GT5U.infodata.digital_tank.stored_fluid", "GT5U.infodata.digital_tank.stored_fluid.empty", 0 + "L",
                 this.getCapacity() + "L" };
         }
         return new String[] {
-            GTUtility.translate("gtpp.infodata.tiered_tank.name", GTValues.getLocalizedLongVoltageName(this.mTier)),
-            GTUtility.translate("GT5U.infodata.digital_tank.stored_fluid"), this.mFluid.getLocalizedName(),
-            this.mFluid.amount + "L", this.getCapacity() + "L" };
+            IGregTechDeviceInformation
+                .encode("gtpp.infodata.tiered_tank.name", GTValues.getLocalizedLongVoltageName(this.mTier)),
+            "GT5U.infodata.digital_tank.stored_fluid", this.mFluid.getLocalizedName(), this.mFluid.amount + "L",
+            this.getCapacity() + "L" };
     }
 
     @Override
