@@ -31,7 +31,6 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.StringSyncValue;
 import com.cleanroommc.modularui.widget.EmptyWidget;
 import com.cleanroommc.modularui.widget.scroll.VerticalScrollData;
-import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.DynamicSyncedWidget;
 import com.cleanroommc.modularui.widgets.FluidDisplayWidget;
@@ -41,6 +40,7 @@ import com.cleanroommc.modularui.widgets.PagedWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.layout.Grid;
+import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 
 import gregtech.api.modularui2.GTGuiTextures;
@@ -109,16 +109,16 @@ public class ProductionPanel extends ModularPanel {
                                     .asWidget()
                                     .tooltipBuilder(
                                         t -> t.addLine(IKey.lang("GT5U.gui.tooltip.drone_active_production"))))
-                            .child(
-                                new TextFieldWidget() {
-                                    @Override
-                                    public void onRemoveFocus(ModularGuiContext context) {
-                                        super.onRemoveFocus(context);
-                                        productionHandler.notifyUpdate(_ -> {});
-                                    }
-                                }.height(16)
-                                    .expanded()
-                                    .value(syncManager.findSyncHandler("productionSearchFilter", StringSyncValue.class))))
+                            .child(new TextFieldWidget() {
+
+                                @Override
+                                public void onRemoveFocus(ModularGuiContext context) {
+                                    super.onRemoveFocus(context);
+                                    productionHandler.notifyUpdate(_ -> {});
+                                }
+                            }.height(16)
+                                .expanded()
+                                .value(syncManager.findSyncHandler("productionSearchFilter", StringSyncValue.class))))
                     .child(
                         new DynamicSyncedWidget<>().fullWidth()
                             .heightRel(0.9f)
@@ -383,7 +383,8 @@ public class ProductionPanel extends ModularPanel {
 
     private <T> IWidget createStatsGrid(Map<T, Long> data, int childPadding,
         Function<T, IWidget> displayWidgetFactory) {
-        Map<T, Long> filteredData = data.entrySet().stream()
+        Map<T, Long> filteredData = data.entrySet()
+            .stream()
             .filter(entry -> matchesSearchFilter(entry.getKey()))
             .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
 
@@ -422,43 +423,64 @@ public class ProductionPanel extends ModularPanel {
         }
         String search = filter.toLowerCase();
         if (obj instanceof DroneConnection conn) {
-            if (conn.getCustomName() != null && conn.getCustomName().toLowerCase().contains(search)) {
+            if (conn.getCustomName() != null && conn.getCustomName()
+                .toLowerCase()
+                .contains(search)) {
                 return true;
             }
-            if (conn.getLocalizedName() != null && conn.getLocalizedName().toLowerCase().contains(search)) {
+            if (conn.getLocalizedName() != null && conn.getLocalizedName()
+                .toLowerCase()
+                .contains(search)) {
                 return true;
             }
             ItemStack item = conn.getMachineItem();
             if (item != null) {
-                if (item.getDisplayName() != null && item.getDisplayName().toLowerCase().contains(search)) {
+                if (item.getDisplayName() != null && item.getDisplayName()
+                    .toLowerCase()
+                    .contains(search)) {
                     return true;
                 }
                 String name = Item.itemRegistry.getNameForObject(item.getItem());
-                if (name != null && name.toLowerCase().contains(search)) {
+                if (name != null && name.toLowerCase()
+                    .contains(search)) {
                     return true;
                 }
             }
             return false;
         } else if (obj instanceof ItemStack stack) {
-            if (stack.getDisplayName() != null && stack.getDisplayName().toLowerCase().contains(search)) {
+            if (stack.getDisplayName() != null && stack.getDisplayName()
+                .toLowerCase()
+                .contains(search)) {
                 return true;
             }
-            if (stack.getUnlocalizedName() != null && stack.getUnlocalizedName().toLowerCase().contains(search)) {
+            if (stack.getUnlocalizedName() != null && stack.getUnlocalizedName()
+                .toLowerCase()
+                .contains(search)) {
                 return true;
             }
             String name = Item.itemRegistry.getNameForObject(stack.getItem());
-            if (name != null && name.toLowerCase().contains(search)) {
+            if (name != null && name.toLowerCase()
+                .contains(search)) {
                 return true;
             }
             return false;
         } else if (obj instanceof FluidStack fluid) {
-            if (fluid.getLocalizedName() != null && fluid.getLocalizedName().toLowerCase().contains(search)) {
+            if (fluid.getLocalizedName() != null && fluid.getLocalizedName()
+                .toLowerCase()
+                .contains(search)) {
                 return true;
             }
-            if (fluid.getUnlocalizedName() != null && fluid.getUnlocalizedName().toLowerCase().contains(search)) {
+            if (fluid.getUnlocalizedName() != null && fluid.getUnlocalizedName()
+                .toLowerCase()
+                .contains(search)) {
                 return true;
             }
-            if (fluid.getFluid() != null && fluid.getFluid().getName() != null && fluid.getFluid().getName().toLowerCase().contains(search)) {
+            if (fluid.getFluid() != null && fluid.getFluid()
+                .getName() != null
+                && fluid.getFluid()
+                    .getName()
+                    .toLowerCase()
+                    .contains(search)) {
                 return true;
             }
             return false;
