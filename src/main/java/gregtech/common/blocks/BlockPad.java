@@ -206,4 +206,38 @@ public class BlockPad extends Block {
     public int damageDropped(int meta) {
         return meta;
     }
+
+    public static class ItemBlockPad extends ItemBlock {
+
+        public ItemBlockPad(Block block) {
+            super(block);
+            setMaxDamage(0);
+            setHasSubtypes(true);
+        }
+
+        @Override
+        public String getUnlocalizedName(ItemStack aStack) {
+            return this.field_150939_a.getUnlocalizedName() + "." + damageDropped(getDamage(aStack));
+        }
+
+        public int damageDropped(int metadata) {
+            return metadata;
+        }
+
+        @Override
+        public void getSubItems(Item aStack, CreativeTabs tabs, List<ItemStack> stackList) {
+            this.field_150939_a.getSubBlocks(aStack, tabs, stackList);
+        }
+
+        @Override
+        public String getItemStackDisplayName(ItemStack stack) {
+            return super.getItemStackDisplayName(stack);
+        }
+
+        @Override
+        public int getMetadata(int aMeta) {
+            return aMeta;
+        }
+    }
+
 }
