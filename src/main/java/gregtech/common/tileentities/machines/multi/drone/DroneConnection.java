@@ -1,8 +1,6 @@
 package gregtech.common.tileentities.machines.multi.drone;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Optional;
 import java.util.UUID;
 
 import net.minecraft.item.ItemStack;
@@ -38,13 +36,12 @@ public class DroneConnection {
     private boolean machineStatus;
     private String shutdownReason;
     private boolean isSelected;
-    private int group;
+    private long groupMask;
 
     private final MTEMultiBlockBase cachedCentre;
     private final MTEMultiBlockBase cachedMachine;
 
-    public DroneConnection(MTEMultiBlockBase machine, MTEDroneCentre centre, HashMap<String, String> tempNameList,
-        HashMap<String, Integer> tempGroupList) {
+    public DroneConnection(MTEMultiBlockBase machine, MTEDroneCentre centre) {
         this.machineItem = machine.getStackForm(1);
         this.machineCoord = machine.getBaseMetaTileEntity()
             .getCoords();
@@ -61,10 +58,8 @@ public class DroneConnection {
             .ordinal();
         this.uuid = UUID.nameUUIDFromBytes((machineCoord.toString() + machineWorld).getBytes());
         this.unlocalizedName = machine.mName;
-        this.customName = Optional.ofNullable(tempNameList.remove(uuid.toString()))
-            .orElse(machine.getLocalName());
-        this.group = Optional.ofNullable(tempGroupList.remove(uuid.toString()))
-            .orElse(0);
+        this.customName = centre.getConnectionName(uuid.toString(), machine.getLocalName());
+        this.groupMask = centre.getConnectionGroups(uuid.toString());
         this.machineStatus = machine.isAllowedToWork();
         this.shutdownReason = machine.getBaseMetaTileEntity()
             .getLastShutDownReason()
@@ -92,7 +87,7 @@ public class DroneConnection {
         this.machineStatus = aNBT.getBoolean("machineStatus");
         this.shutdownReason = aNBT.getString("shutdownReason");
         this.isSelected = aNBT.getBoolean("isSelected");
-        this.group = aNBT.getInteger("group");
+        this.groupMask = aNBT.getLong("groupMask");
         if (!NetworkUtils.isClient()) {
             this.cachedCentre = getLoadedGTBaseMachineAt(centreCoord, DimensionManager.getWorld(centreWorld), false);
             this.cachedMachine = getLoadedGTBaseMachineAt(machineCoord, DimensionManager.getWorld(machineWorld), false);
@@ -136,6 +131,9 @@ public class DroneConnection {
 
     public void setCustomName(String name) {
         customName = name;
+        if (cachedCentre instanceof MTEDroneCentre dc) {
+            dc.setConnectionName(uuid.toString(), name);
+        }
     }
 
     public boolean isMachineShutdown() {
@@ -160,7 +158,7 @@ public class DroneConnection {
         aNBT.setBoolean("machineStatus", machineStatus);
         aNBT.setString("shutdownReason", shutdownReason);
         aNBT.setBoolean("isSelected", isSelected);
-        aNBT.setInteger("group", group);
+        aNBT.setLong("groupMask", groupMask);
         return aNBT;
     }
 
@@ -202,7 +200,7 @@ public class DroneConnection {
         return a.customName.equals(b.customName) && a.isSelected == b.isSelected
             && a.machineStatus == b.machineStatus
             && a.shutdownReason.equals(b.shutdownReason)
-            && a.group == b.group;
+            && a.groupMask == b.groupMask;
     }
 
     public boolean isActive() {
@@ -221,12 +219,15 @@ public class DroneConnection {
         return isSelected;
     }
 
-    public int getGroup() {
-        return group;
+    public long getGroupMask() {
+        return groupMask;
     }
 
-    public void setGroup(int group) {
-        this.group = group;
+    public void setGroupMask(long groupMask) {
+        this.groupMask = groupMask;
+        if (cachedCentre instanceof MTEDroneCentre dc) {
+            dc.setConnectionGroups(uuid.toString(), groupMask);
+        }
     }
 
     public int getMachineWorld() {

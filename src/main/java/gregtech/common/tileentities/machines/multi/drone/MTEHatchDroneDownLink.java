@@ -2,7 +2,6 @@ package gregtech.common.tileentities.machines.multi.drone;
 
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -49,8 +48,6 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
     private String key = "";
     private final List<DroneConnection> connections = new ArrayList<>();
     private final List<MTEMultiBlockBase> unlinkedMachines = new ArrayList<>();
-    private final HashMap<String, String> savedNameList = new HashMap<>();
-    private final HashMap<String, Integer> savedGroupList = new HashMap<>();
 
     private static final IIconContainer moduleActive = Textures.BlockIcons
         .custom("iconsets/OVERLAY_DRONE_MODULE_ACTIVE");
@@ -138,8 +135,6 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
             boolean result = entry.isValid();
             if (!result) {
                 unlinkedMachines.add(entry.getLinkedMachine());
-                savedNameList.put(entry.uuid.toString(), entry.getCustomName());
-                savedGroupList.put(entry.uuid.toString(), entry.getGroup());
                 centre.getConnectionList()
                     .remove(entry);
             }
@@ -247,7 +242,7 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
             || centre.getBaseMetaTileEntity() == null) {
             return false;
         }
-        DroneConnection connection = new DroneConnection(machine, centre, savedNameList, savedGroupList);
+        DroneConnection connection = new DroneConnection(machine, centre);
         connections.add(connection);
         centre.getConnectionList()
             .add(connection);
@@ -255,11 +250,8 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
     }
 
     private void clearConnections() {
-        // save data first
         connections.removeIf(conn -> {
             unlinkedMachines.add(conn.getLinkedMachine());
-            savedNameList.put(conn.uuid.toString(), conn.getCustomName());
-            savedGroupList.put(conn.uuid.toString(), conn.getGroup());
             centre.getConnectionList()
                 .remove(conn);
             return true;
@@ -317,28 +309,12 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         key = aNBT.getString("key");
-        NBTTagCompound nameList = aNBT.getCompoundTag("nameList");
-        NBTTagCompound groupList = aNBT.getCompoundTag("groupList");
-        for (String s : nameList.func_150296_c()) {
-            savedNameList.put(s, nameList.getString(s));
-        }
-        for (String s : groupList.func_150296_c()) {
-            savedGroupList.put(s, groupList.getInteger(s));
-        }
     }
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setString("key", key);
-        NBTTagCompound nameList = new NBTTagCompound();
-        NBTTagCompound groupList = new NBTTagCompound();
-        connections.forEach(conn -> {
-            nameList.setString(conn.uuid.toString(), conn.getCustomName());
-            groupList.setInteger(conn.uuid.toString(), conn.getGroup());
-        });
-        aNBT.setTag("nameList", nameList);
-        aNBT.setTag("groupList", groupList);
     }
 
     @Override

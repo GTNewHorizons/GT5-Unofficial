@@ -131,7 +131,7 @@ public class DroneCentreGuiUtil {
                 lines.set(i, EnumChatFormatting.GRAY + lines.get(i));
             }
         }
-        tooltipBuilder.add(lines.get(0))
+        tooltipBuilder.add(lines.getFirst())
             .newLine();
         if (lines.size() > 1) {
             tooltipBuilder.spaceLine();
@@ -233,6 +233,9 @@ public class DroneCentreGuiUtil {
             .allowC2S();
         BooleanSyncValue updateSyncHandler = new BooleanSyncValue(multiblock::shouldUpdate, multiblock::setUpdate)
             .allowC2S();
+        BooleanSyncValue renamingActiveGroupSyncHandler = new BooleanSyncValue(
+            multiblock::getRenamingActiveGroup,
+            multiblock::setRenamingActiveGroup).allowC2S();
 
         GenericListSyncHandler<String> groupSyncHandler = new GenericListSyncHandler<>(
             () -> multiblock.group,
@@ -251,6 +254,26 @@ public class DroneCentreGuiUtil {
         syncManager.syncValue("searchOri", searchOriSyncHandler);
         syncManager.syncValue("editMode", editModeSyncHandler);
         syncManager.syncValue("update", updateSyncHandler);
+        syncManager.syncValue("renamingActiveGroup", renamingActiveGroupSyncHandler);
+        syncManager.syncValue("addNewGroup", new InteractionSyncHandler().setOnMousePressed(var -> {
+            if (!NetworkUtils.isClient()) {
+                multiblock.addNewGroup();
+                syncManager.findSyncHandler("groupNameList", GenericListSyncHandler.class)
+                    .notifyUpdate();
+            }
+        }));
+        syncManager.syncValue("deleteGroup", new InteractionSyncHandler().setOnMousePressed(var -> {
+            if (!NetworkUtils.isClient()) {
+                multiblock.deleteGroup(multiblock.getActiveGroup());
+                multiblock.setActiveGroup(0);
+                syncManager.findSyncHandler("activeGroup", IntSyncValue.class)
+                    .notifyUpdate();
+                syncManager.findSyncHandler("groupNameList", GenericListSyncHandler.class)
+                    .notifyUpdate();
+                syncManager.findSyncHandler("droneList", DroneConnectionListSyncHandler.class)
+                    .notifyUpdate();
+            }
+        }));
 
         IntSyncValue selectTimeSyncHandler = new IntSyncValue(multiblock::getSelectedTime, multiblock::setSelectedTime)
             .allowC2S();
