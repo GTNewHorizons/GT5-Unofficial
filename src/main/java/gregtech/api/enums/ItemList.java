@@ -176,6 +176,7 @@ public enum ItemList implements IItemContainer {
     // IC2 Replacements
     PadBouncy,
     PadSticky,
+    FenceIron,
 
     Credit_Copper,
     Credit_Iron,

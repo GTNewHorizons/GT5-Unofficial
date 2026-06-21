@@ -693,6 +693,7 @@ public class Textures {
             BLOCK_STICKY_PAD_TOP = create("BLOCK_STICKY_PAD_TOP"),
             BLOCK_STICKY_PAD_SIDE = create("BLOCK_STICKY_PAD_SIDE"),
             BLOCK_STICKY_PAD_BOTTOM = create("BLOCK_STICKY_PAD_BOTTOM"),
+            BLOCK_IRON_FENCE = create("BLOCK_IRON_FENCE"),
 
             OVERLAY_LOCKER = createOptional("OVERLAY_LOCKER"),
             OVERLAY_LOCKER_000 = createOptional("OVERLAY_LOCKER_000"),

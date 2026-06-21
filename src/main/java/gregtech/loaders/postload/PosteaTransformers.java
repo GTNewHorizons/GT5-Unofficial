@@ -16,6 +16,7 @@ import com.gtnewhorizons.postea.utility.BlockInfo;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -51,6 +52,8 @@ public class PosteaTransformers implements Runnable {
         // rubber pad
         ItemStackReplacementManager.addSimpleReplacement("IC2:blockRubber", ItemList.PadBouncy.get(1L));
         BlockReplacementManager.addSimpleReplacement("IC2:blockRubber", ItemList.PadBouncy.getBlock(), 0);
+        ItemStackReplacementManager.addSimpleReplacement("IC2:blockFenceIron", ItemList.FenceIron.get(1L));
+        BlockReplacementManager.addSimpleReplacement("IC2:blockFenceIron", Casings.IronFence.getBlock(), 0);
     }
 
     private void registerFrameboxTransformers() {
