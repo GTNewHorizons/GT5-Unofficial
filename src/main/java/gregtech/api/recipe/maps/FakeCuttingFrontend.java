@@ -53,7 +53,7 @@ public class FakeCuttingFrontend extends RecipeMapFrontend {
         long fluidTotal = (long) fluidDuration * currentRecipe.mEUt;
 
         double displayTime = (fluidDuration * overclockFactor) / SECONDS;
-        float displayDiscount = ((float)(recipeTotal - fluidTotal) / recipeTotal) * 100;
+        float displayDiscount = ((float) (recipeTotal - fluidTotal) / recipeTotal) * 100;
 
         currentTip.add(
             EnumChatFormatting.AQUA
@@ -69,9 +69,10 @@ public class FakeCuttingFrontend extends RecipeMapFrontend {
     protected void drawSpecialInfo(RecipeDisplayInfo recipeInfo) {
         FakeCuttingSpecialInfo specialInfo = (FakeCuttingSpecialInfo) recipeInfo.recipe.mSpecialItems;
 
-        recipeInfo.drawText(StatCollector.translateToLocalFormatted("GT5U.nei.display.duration.seconds",
-            specialInfo.getDurationsString(recipeInfo)
-        ));
+        recipeInfo.drawText(
+            StatCollector.translateToLocalFormatted(
+                "GT5U.nei.display.duration.seconds",
+                specialInfo.getDurationsString(recipeInfo)));
         recipeInfo.drawTextMultipleLines(neiProperties.neiSpecialInfoFormatter.format(recipeInfo));
     }
 }

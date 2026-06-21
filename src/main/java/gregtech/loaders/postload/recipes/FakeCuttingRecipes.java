@@ -10,11 +10,11 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import gregtech.api.recipe.RecipeMetadataKey;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.objects.SubstituteFluidStack;
+import gregtech.api.recipe.RecipeMetadataKey;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTUtility;
@@ -120,7 +120,8 @@ public class FakeCuttingRecipes implements Runnable {
 
     // Surely no one will add "Liquid Cleanroom skipper 9000" right?
     private void mergeRecipeMetadata(GTRecipe recipe, Map<RecipeMetadataKey<?>, Object> metadata) {
-        for (Map.Entry<RecipeMetadataKey<?>, Object> entry : recipe.getMetadataStorage().getEntries()) {
+        for (Map.Entry<RecipeMetadataKey<?>, Object> entry : recipe.getMetadataStorage()
+            .getEntries()) {
             @SuppressWarnings("unchecked")
             RecipeMetadataKey<Object> key = (RecipeMetadataKey<Object>) entry.getKey();
             metadata.put(key, entry.getValue());

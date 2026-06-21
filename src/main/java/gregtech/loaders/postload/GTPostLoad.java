@@ -56,7 +56,6 @@ import gregtech.common.config.Other;
 import gregtech.common.items.MetaGeneratedItem01;
 import gregtech.common.tileentities.machines.basic.MTEMassfabricator;
 import gregtech.common.tileentities.machines.basic.MTERockBreaker;
-import gregtech.loaders.postload.recipes.FakeCuttingRecipes;
 import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeOutput;
 

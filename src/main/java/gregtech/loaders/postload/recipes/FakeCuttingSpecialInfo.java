@@ -1,16 +1,17 @@
 package gregtech.loaders.postload.recipes;
 
+import static gregtech.api.util.GTRecipeBuilder.SECONDS;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil;
-import gregtech.nei.RecipeDisplayInfo;
 import net.minecraftforge.fluids.FluidStack;
 
-import gregtech.api.util.GTUtility;
+import com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil;
 
-import static gregtech.api.util.GTRecipeBuilder.SECONDS;
+import gregtech.api.util.GTUtility;
+import gregtech.nei.RecipeDisplayInfo;
 
 public class FakeCuttingSpecialInfo {
 
@@ -28,6 +29,7 @@ public class FakeCuttingSpecialInfo {
             .findFirst()
             .orElse(-1);
     }
+
     public String getDurationsString(RecipeDisplayInfo recipeInfo) {
         double overclockFactor = (double) recipeInfo.calculator.getDuration() / recipeInfo.recipe.mDuration;
 
