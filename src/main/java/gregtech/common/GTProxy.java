@@ -134,6 +134,7 @@ import gregtech.api.items.MetaGeneratedItem;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.items.armor.ArmorEventHandlers;
 import gregtech.api.items.armor.ArmorKeybinds;
+import gregtech.api.items.armor.renderer.ArmorComponentRegistry;
 import gregtech.api.net.GTPacketMusicSystemData;
 import gregtech.api.objects.GTChunkManager;
 import gregtech.api.objects.GTUODimensionList;
@@ -1029,6 +1030,8 @@ public class GTProxy implements IFuelHandler {
 
     public void onInitialization(FMLInitializationEvent event) {
         GTLog.out.println("GTMod: Beginning Load-Phase.");
+
+        ArmorComponentRegistry.loadAllAssets();
 
         // Clay buckets, which don't get registered until Iguana Tweaks pre-init
         if (IguanaTweaksTinkerConstruct.isModLoaded()) {

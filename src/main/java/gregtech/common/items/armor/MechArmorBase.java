@@ -55,6 +55,7 @@ import gregtech.api.items.armor.MechArmorAugmentRegistries.Frames;
 import gregtech.api.items.armor.behaviors.BehaviorName;
 import gregtech.api.items.armor.behaviors.IArmorBehavior;
 import gregtech.api.items.armor.renderer.ArmorComponent;
+import gregtech.api.items.armor.renderer.ArmorComponentRegistry;
 import gregtech.api.items.armor.renderer.ArmorRegistry;
 import gregtech.api.items.armor.renderer.VoxelArmorRenderer;
 import gregtech.api.util.GTUtility;
@@ -272,11 +273,7 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISp
 
         String componentId = frameName + "_" + armorTypeName;
 
-        // feel free to relocate these
-        String jsonPath = "textures/model/armor/models" + componentId + ".geo.json";
-        String texPath = "textures/model/armor/textures" + componentId + ".png";
-
-        return new ArmorComponent(componentId, jsonPath, texPath);
+        return ArmorComponentRegistry.getComponent(componentId);
     }
 
     private List<ArmorComponent> getActiveAugments(ItemStack stack) {
@@ -295,10 +292,10 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISp
                 .toLowerCase();
 
             String componentId = augmentName + "_" + armorTypeName;
-            String jsonPath = "textures/model/armor/augment_models" + componentId + ".geo.json";
-            String texPath = "textures/model/armor/augment_textures" + componentId + ".png";
-
-            activeAugments.add(new ArmorComponent(componentId, jsonPath, texPath));
+            ArmorComponent component = ArmorComponentRegistry.getComponent(componentId);
+            if (component != null) {
+                activeAugments.add(component);
+            }
         }
 
         return activeAugments;

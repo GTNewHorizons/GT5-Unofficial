@@ -2,16 +2,7 @@ package gregtech.api.items.armor.renderer;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.List;
-
-import javax.imageio.ImageIO;
-
-import net.minecraft.client.Minecraft;
-import net.minecraft.util.ResourceLocation;
-
-import com.google.gson.Gson;
 
 public class ArmorModelCompiler {
 
@@ -24,15 +15,13 @@ public class ArmorModelCompiler {
     public static CompileResult compile(ArmorComponent baseArmor, List<ArmorComponent> augments) throws Exception {
         CompileResult result = new CompileResult();
 
-        BedrockArmorModel baseJson = loadJson(baseArmor.modelLocation);
-        BufferedImage baseImage = loadImage(baseArmor.textureLocation);
-
-        result.mergedJson = baseArmor.cloneModel(baseJson);
+        result.mergedJson = baseArmor.getClone();
+        BufferedImage baseImage = baseArmor.getTexture();
 
         int totalWidth = baseImage.getWidth();
         int totalHeight = baseImage.getHeight();
         for (ArmorComponent augment : augments) {
-            BufferedImage augImg = loadImage(augment.textureLocation);
+            BufferedImage augImg = augment.getTexture();
             totalWidth = Math.max(totalWidth, augImg.getWidth());
             totalHeight += augImg.getHeight();
         }
@@ -44,8 +33,8 @@ public class ArmorModelCompiler {
         int currentYOffset = baseImage.getHeight();
 
         for (ArmorComponent augment : augments) {
-            BedrockArmorModel augJson = loadJson(augment.modelLocation);
-            BufferedImage augImg = loadImage(augment.textureLocation);
+            BedrockArmorModel augJson = augment.getModel();
+            BufferedImage augImg = augment.getTexture();
 
             g2d.drawImage(augImg, 0, currentYOffset, null);
 
@@ -104,33 +93,6 @@ public class ArmorModelCompiler {
         if (face != null && face.uv != null && face.uv.length >= 2) {
             face.uv[0] += uOffset;
             face.uv[1] += vOffset;
-        }
-    }
-
-    private static BufferedImage loadImage(ResourceLocation loc) throws Exception {
-        try (InputStream is = Minecraft.getMinecraft()
-            .getResourceManager()
-            .getResource(loc)
-            .getInputStream()) {
-            return ImageIO.read(is);
-        }
-    }
-
-    private static BedrockArmorModel loadJson(ResourceLocation loc) throws Exception {
-        Gson gson = new Gson();
-
-        try (InputStreamReader reader = new InputStreamReader(
-            Minecraft.getMinecraft()
-                .getResourceManager()
-                .getResource(loc)
-                .getInputStream())) {
-
-            return gson.fromJson(reader, BedrockArmorModel.class);
-
-        } catch (Exception e) {
-            System.out.println("[GTNH-VoxelArmor] Error while parsing JSON of " + loc.getResourcePath());
-            e.printStackTrace();
-            return null;
         }
     }
 }

@@ -3,11 +3,12 @@ package gregtech.api.items.armor.renderer;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.util.ResourceLocation;
+
+import gregtech.GTMod;
 
 public class ArmorRegistry {
 
@@ -20,7 +21,7 @@ public class ArmorRegistry {
             List<String> sortedAugments = augments.stream()
                 .map(a -> a.componentId)
                 .sorted()
-                .collect(Collectors.toList());
+                .toList();
 
             for (String augId : sortedAugments) {
                 keyBuilder.append("+")
@@ -52,9 +53,16 @@ public class ArmorRegistry {
             return newRenderer;
 
         } catch (Exception e) {
-            System.err.println("[GTNH-VoxelArmor] Error compiling: " + cacheKey);
-            e.printStackTrace();
+            GTMod.GT_FML_LOGGER.error("[GTNH-VoxelArmor] Error compiling: {}", cacheKey, e);
             return null;
         }
+    }
+
+    public static void clearCache() {
+        for (VoxelArmorRenderer renderer : modelCache.values()) {
+            renderer.deleteOpenGLData();
+        }
+
+        modelCache.clear();
     }
 }

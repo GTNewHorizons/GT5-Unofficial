@@ -1,7 +1,10 @@
 package gregtech.api.items.armor.renderer;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
+import java.util.WeakHashMap;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBiped;
@@ -14,10 +17,13 @@ import org.lwjgl.opengl.GL11;
 
 public class VoxelArmorRenderer extends ModelBiped {
 
+    private static final Set<VoxelArmorRenderer> ALL_INSTANCES = Collections
+        .newSetFromMap(new WeakHashMap<VoxelArmorRenderer, Boolean>());
+
     private final ResourceLocation compiledTexture;
 
     private final Map<String, Integer> displayLists = new HashMap<>();
-    private final BedrockArmorModel rawModel;
+    private BedrockArmorModel rawModel;
     private boolean isCompiled = false;
 
     private static final float PIXEL_SCALE = 0.0625F;
@@ -27,10 +33,15 @@ public class VoxelArmorRenderer extends ModelBiped {
         super(scale, 0, 64, 64);
         this.rawModel = compiledModel;
         this.compiledTexture = compiledTexture;
+
+        ALL_INSTANCES.add(this);
     }
 
-    private void drawFace(Tessellator tess, float[] uv, float[] uvSize, int texWidth, int texHeight, float x1, float y1,
-        float z1, float x2, float y2, float z2, float x3, float y3, float z3, float x4, float y4, float z4) {
+    private void drawFace(Tessellator tess, float[] uv, float[] uvSize, int texWidth, int texHeight, float trX,
+        float trY, float trZ, // Top-Right
+        float tlX, float tlY, float tlZ, // Top-Left
+        float blX, float blY, float blZ, // Bottom-Left
+        float brX, float brY, float brZ) { // Bottom-Right
 
         if (uv == null || uvSize == null || uv.length < 2 || uvSize.length < 2) return;
 
@@ -39,10 +50,10 @@ public class VoxelArmorRenderer extends ModelBiped {
         float uMax = (uv[0] + uvSize[0]) / (float) texWidth;
         float vMax = (uv[1] + uvSize[1]) / (float) texHeight;
 
-        tess.addVertexWithUV(x1, y1, z1, uMax, vMax);
-        tess.addVertexWithUV(x2, y2, z2, uMin, vMax);
-        tess.addVertexWithUV(x3, y3, z3, uMin, vMin);
-        tess.addVertexWithUV(x4, y4, z4, uMax, vMin);
+        tess.addVertexWithUV(trX, trY, trZ, uMax, vMin);
+        tess.addVertexWithUV(tlX, tlY, tlZ, uMin, vMin);
+        tess.addVertexWithUV(blX, blY, blZ, uMin, vMax);
+        tess.addVertexWithUV(brX, brY, brZ, uMax, vMax);
     }
 
     private void compileModelToOpenGL() {
@@ -76,55 +87,85 @@ public class VoxelArmorRenderer extends ModelBiped {
 
                     // spotless:off
                     if (cube.uv != null) {
-                        // 1. TOP (up)
+
+                        // UP (-Y)
+                        tess.setNormal(0.0F, 1.0F, 0.0F);
                         if (cube.uv.up != null) {
                             drawFace(tess, cube.uv.up.uv, cube.uv.up.uv_size, tw, th,
-                                minX, minY, maxZ, maxX, minY, maxZ, maxX, minY, minZ, minX, minY, minZ);
+                                maxX, minY, minZ, // TR
+                                minX, minY, minZ, // TL
+                                minX, minY, maxZ, // BL
+                                maxX, minY, maxZ  // BR
+                            );
                         }
 
-                        // 2. BOTTOM (down)
+                        // DOWN (+Y)
+                        tess.setNormal(0.0F, -1.0F, 0.0F);
                         if (cube.uv.down != null) {
                             drawFace(tess, cube.uv.down.uv, cube.uv.down.uv_size, tw, th,
-                                minX, maxY, maxZ, maxX, maxY, maxZ, maxX, maxY, minZ, minX, maxY, minZ);
+                                maxX, maxY, maxZ, // TR
+                                minX, maxY, maxZ, // TL
+                                minX, maxY, minZ, // BL
+                                maxX, maxY, minZ  // BR
+                            );
                         }
 
-                        // 3. NORTH
+                        // NORTH (-Z)
+                        tess.setNormal(0.0F, 0.0F, -1.0F);
                         if (cube.uv.north != null) {
                             drawFace(tess, cube.uv.north.uv, cube.uv.north.uv_size, tw, th,
-                                maxX, maxY, minZ, minX, maxY, minZ, minX, minY, minZ, maxX, minY, minZ);
+                                maxX, minY, minZ, // TR
+                                minX, minY, minZ, // TL
+                                minX, maxY, minZ, // BL
+                                maxX, maxY, minZ  // BR
+                            );
                         }
 
-                        // 4. SOUTH
+                        // SOUTH (+Z)
+                        tess.setNormal(0.0F, 0.0F, 1.0F);
                         if (cube.uv.south != null) {
                             drawFace(tess, cube.uv.south.uv, cube.uv.south.uv_size, tw, th,
-                                minX, maxY, maxZ, maxX, maxY, maxZ, maxX, minY, maxZ, minX, minY, maxZ);
+                                minX, minY, maxZ, // TR
+                                maxX, minY, maxZ, // TL
+                                maxX, maxY, maxZ, // BL
+                                minX, maxY, maxZ  // BR
+                            );
                         }
 
-                        // 5. WEST
+                        // WEST (-X)
+                        tess.setNormal(-1.0F, 0.0F, 0.0F);
                         if (cube.uv.west != null) {
                             drawFace(tess, cube.uv.west.uv, cube.uv.west.uv_size, tw, th,
-                                minX, maxY, minZ, minX, maxY, maxZ, minX, minY, maxZ, minX, minY, minZ);
+                                minX, minY, minZ, // TR
+                                minX, minY, maxZ, // TL
+                                minX, maxY, maxZ, // BL
+                                minX, maxY, minZ  // BR
+                            );
                         }
 
-                        // 6. EAST
+                        // EAST (+X)
+                        tess.setNormal(1.0F, 0.0F, 0.0F);
                         if (cube.uv.east != null) {
                             drawFace(tess, cube.uv.east.uv, cube.uv.east.uv_size, tw, th,
-                                maxX, maxY, maxZ, maxX, maxY, minZ, maxX, minY, minZ, maxX, minY, maxZ);
+                                maxX, minY, maxZ, // TR
+                                maxX, minY, minZ, // TL
+                                maxX, maxY, minZ, // BL
+                                maxX, maxY, maxZ  // BR
+                            );
                         }
                     }
                     // spotless:on
 
                     tess.draw();
-
                     GL11.glPopMatrix();
                 }
             }
 
             GL11.glEndList();
-
             this.displayLists.put(bone.name, listId);
         }
 
+        this.rawModel = null;
         this.isCompiled = true;
     }
 
@@ -170,17 +211,34 @@ public class VoxelArmorRenderer extends ModelBiped {
 
         GL11.glPushMatrix();
 
-        GL11.glTranslatef(
-            vanillaPart.rotationPointX * 0.0625F,
-            vanillaPart.rotationPointY * 0.0625F,
-            vanillaPart.rotationPointZ * 0.0625F);
+        GL11.glTranslatef(0.0F, vanillaPart.rotationPointY * 0.0625F, vanillaPart.rotationPointZ * 0.0625F);
 
         if (vanillaPart.rotateAngleZ != 0.0F) GL11.glRotatef(vanillaPart.rotateAngleZ * RAD_TO_DEG, 0.0F, 0.0F, 1.0F);
         if (vanillaPart.rotateAngleY != 0.0F) GL11.glRotatef(vanillaPart.rotateAngleY * RAD_TO_DEG, 0.0F, 1.0F, 0.0F);
         if (vanillaPart.rotateAngleX != 0.0F) GL11.glRotatef(vanillaPart.rotateAngleX * RAD_TO_DEG, 1.0F, 0.0F, 0.0F);
 
+        GL11.glEnable(GL11.GL_NORMALIZE);
         GL11.glCallList(listId);
+        GL11.glDisable(GL11.GL_NORMALIZE);
 
         GL11.glPopMatrix();
+    }
+
+    public void deleteOpenGLData() {
+        if (!this.isCompiled) return;
+
+        for (Integer listId : this.displayLists.values()) {
+            GL11.glDeleteLists(listId, 1);
+        }
+        this.displayLists.clear();
+        this.isCompiled = false;
+    }
+
+    public static void invalidateAllRenderers() {
+        for (VoxelArmorRenderer renderer : ALL_INSTANCES) {
+            if (renderer != null) {
+                renderer.deleteOpenGLData();
+            }
+        }
     }
 }

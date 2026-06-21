@@ -1,25 +1,32 @@
 package gregtech.api.items.armor.renderer;
 
-import net.minecraft.util.ResourceLocation;
+import java.awt.image.BufferedImage;
 
 import com.google.gson.Gson;
 
 public final class ArmorComponent {
 
     public final String componentId;
+    public BedrockArmorModel jsonModel;
+    public BufferedImage texture;
 
-    public final ResourceLocation modelLocation;
-    public final ResourceLocation textureLocation;
-
-    public ArmorComponent(String componentId, String modelPath, String texturePath) {
+    public ArmorComponent(String componentId, BedrockArmorModel jsonModel, BufferedImage texture) {
         this.componentId = componentId;
 
-        this.modelLocation = new ResourceLocation("gregtech", modelPath);
-        this.textureLocation = new ResourceLocation("gregtech", texturePath);
+        this.jsonModel = jsonModel;
+        this.texture = texture;
     }
 
-    public BedrockArmorModel cloneModel(BedrockArmorModel original) {
+    public BufferedImage getTexture() {
+        return texture;
+    }
+
+    public BedrockArmorModel getModel() {
+        return jsonModel;
+    }
+
+    public BedrockArmorModel getClone() {
         Gson gson = new Gson();
-        return gson.fromJson(gson.toJson(original), BedrockArmorModel.class);
+        return gson.fromJson(gson.toJson(jsonModel), BedrockArmorModel.class);
     }
 }
