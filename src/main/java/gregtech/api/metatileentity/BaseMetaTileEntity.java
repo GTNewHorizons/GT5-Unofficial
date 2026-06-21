@@ -1517,9 +1517,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
 
                             if (shouldEnable) {
                                 if (!mWorks) {
-                                    if (this.getLastShutDownReason() == ShutDownReasonRegistry.POWER_LOSS) {
-                                        GTMod.proxy.powerfailTracker.removePowerfailEvents(this);
-                                    }
+                                    GTMod.proxy.powerfailTracker.removePowerfailEvents(this);
                                     enableWorking();
                                 }
                             } else if (mWorks) {
