@@ -179,7 +179,6 @@ public class GregTechAPI {
         sBlockCasingsSEMotor, sBlockCasingsDyson, sBlockCasingsSiphon;
     public static Block sBlockLongDistancePipes;
     public static Block sBlockFrames;
-    public static Block sBlockCompressibleComputationCore;
     public static Block sBlockGlass1;
     public static Block sBlockTintedGlass;
     public static Block sLaserRender;
