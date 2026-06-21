@@ -688,6 +688,8 @@ public class Textures {
             BLOCK_TSREIN = create("BLOCK_TSREIN"),
             BLOCK_POWDER = create("BLOCK_POWDER"),
 
+            BLOCK_IRON_FENCE = create("BLOCK_IRON_FENCE"),
+
             OVERLAY_LOCKER = createOptional("OVERLAY_LOCKER"),
             OVERLAY_LOCKER_000 = createOptional("OVERLAY_LOCKER_000"),
             OVERLAY_LOCKER_001 = createOptional("OVERLAY_LOCKER_001"),

@@ -16,6 +16,7 @@ import com.gtnewhorizons.postea.utility.BlockInfo;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -55,6 +56,8 @@ public class PosteaTransformers implements Runnable {
             .addSimpleReplacement("IC2:blockAlloy", ItemList.Block_ReinforcedConcrete.getBlock(), 13);
         BlockReplacementManager
             .addSimpleReplacement("IC2:reinforcedStone", ItemList.Block_ReinforcedConcrete.getBlock(), 13);
+        ItemStackReplacementManager.addSimpleReplacement("IC2:blockFenceIron", ItemList.FenceIron.get(1L));
+        BlockReplacementManager.addSimpleReplacement("IC2:blockFenceIron", Casings.IronFence.getBlock(), 0);
     }
 
     private void registerFrameboxTransformers() {
