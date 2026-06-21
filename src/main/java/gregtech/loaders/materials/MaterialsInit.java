@@ -15561,6 +15561,7 @@ public class MaterialsInit {
         Materials.BiocatalyzedPropulsionFluid = loadBiocatalyzedPropulsionFluid();
         Materials.Shijima = loadShijima();
         Materials.Churitsu = loadChuritsu();
+        Materials.ComputationBase = loadComputationBase();
     }
 
     private static Materials loadDTCC() {
@@ -16650,6 +16651,19 @@ public class MaterialsInit {
             .addSubTag(SubTag.MULTI_PLATE)
             .constructMaterial()
             .setProcessingMaterialTierEU(TierEU.RECIPE_ZPM);
+    }
+
+    private static Materials loadComputationBase() {
+        return new MaterialBuilder().setName("Computation Base")
+            .setDefaultLocalName("Computation Base")
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeGray)
+            .setARGB(0x00523a51)
+            .addCell()
+            .setMeltingPoint(100_000_000)
+            .setBlastFurnaceTemp(100_000_000)
+            .constructMaterial()
+            .setProcessingMaterialTierEU(TierEU.RECIPE_UXV);
     }
 
     private static void loadLabGrownGems() {
