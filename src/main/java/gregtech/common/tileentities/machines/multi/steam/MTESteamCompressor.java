@@ -173,6 +173,16 @@ public class MTESteamCompressor extends MTESteamMultiBlockBase<MTESteamCompresso
     }
 
     @Override
+    protected IIconContainer getInactiveGlowOverlay() {
+        return Textures.BlockIcons.OVERLAY_FRONT_STEAM_COMPRESSOR_GLOW;
+    }
+
+    @Override
+    protected IIconContainer getActiveGlowOverlay() {
+        return Textures.BlockIcons.OVERLAY_FRONT_STEAM_COMPRESSOR_ACTIVE_GLOW;
+    }
+
+    @Override
     public IStructureDefinition<MTESteamCompressor> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
             STRUCTURE_DEFINITION = StructureDefinition.<MTESteamCompressor>builder()

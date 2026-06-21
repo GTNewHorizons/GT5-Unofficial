@@ -5406,7 +5406,6 @@ public class MaterialsInit {
     private static void loadDegree1Compounds() {
         Materials.AceticAcid = loadAceticAcid();
         Materials.Acetone = loadAcetone();
-        Materials.Air = loadAir();
         Materials.AllylChloride = loadAllylChloride();
         Materials.Almandine = loadAlmandine();
         Materials.Ammonia = loadAmmonia();
@@ -9641,6 +9640,7 @@ public class MaterialsInit {
     }
 
     private static void loadDegree2Compounds() {
+        Materials.Air = loadAir();
         Materials.Aluminiumhydroxide = loadAluminiumHydroxide();
         Materials.Aluminiumoxide = loadAluminiumoxide();
         Materials.Alumite = loadAlumite();

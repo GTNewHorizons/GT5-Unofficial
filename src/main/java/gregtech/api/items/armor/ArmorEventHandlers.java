@@ -97,6 +97,10 @@ public class ArmorEventHandlers {
     public void onPlayerTick(TickEvent.PlayerTickEvent event) {
         EntityPlayer player = event.player;
 
+        if (event.phase != TickEvent.Phase.START || player == null || player.isDead) {
+            return;
+        }
+
         // Step Assist
         // for some reason, doing this in ticking and on unequip is not sufficient, this value is somewhat sticky
         if (!player.isSneaking()) {
@@ -116,8 +120,8 @@ public class ArmorEventHandlers {
                 }
             }
         }
-        if (player.stepHeight == MAGIC_STEP_HEIGHT) {
-            player.stepHeight = savedStepHeight.getOrDefault(player, 0.6f);
+        if (savedStepHeight.containsKey(player)) {
+            player.stepHeight = savedStepHeight.get(player);
             savedStepHeight.remove(player);
         }
     }

@@ -75,12 +75,15 @@ public interface IGregTechDeviceInformation {
     /**
      * Converts a string produced by {@link #encode} (or a bare translation key) into an {@link IChatComponent} so
      * the client resolves the translation key in the player's own language.
+     * Due to current workaround, the key part must not contain any % or it will be converted away. You should use a
+     * lang key instead.
      * <p>
      * Prefer this over {@link #decode} when sending chat messages from the server.
      */
     static IChatComponent toComponent(String encoded) {
         if (encoded == null) return new ChatComponentTranslation("");
         String[] parts = encoded.split("\\\\\\\\");
+        parts[0] = parts[0].replaceAll("%", "%%");
         if (parts.length == 1) return new ChatComponentTranslation(parts[0]);
         return new ChatComponentTranslation(parts[0], (Object[]) Arrays.copyOfRange(parts, 1, parts.length));
     }
