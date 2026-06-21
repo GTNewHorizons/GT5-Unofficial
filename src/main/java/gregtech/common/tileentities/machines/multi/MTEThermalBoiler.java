@@ -50,7 +50,6 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.ParallelHelper;
-import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
@@ -249,11 +248,6 @@ public class MTEThermalBoiler extends MTEExtendedPowerMultiBlockBase<MTEThermalB
     }
 
     @Override
-    public int getPollutionPerSecond(ItemStack aStack) {
-        return PollutionConfig.pollutionPerSecondMultiThermalBoiler;
-    }
-
-    @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Heat Exchanger")
@@ -261,7 +255,6 @@ public class MTEThermalBoiler extends MTEExtendedPowerMultiBlockBase<MTEThermalB
             .addInfo(GTUtility.translate("gt.multiblock.ThermalBoiler.desc2"))
             .addInfo(GTUtility.translate("gt.multiblock.ThermalBoiler.desc3"))
             .addInfo(GTUtility.translate("gt.multiblock.ThermalBoiler.desc4"))
-            .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 5, 5, false)
             .addController("Front center")
             .addCasingInfoMin("Thermal Containment Casing", 20, false)

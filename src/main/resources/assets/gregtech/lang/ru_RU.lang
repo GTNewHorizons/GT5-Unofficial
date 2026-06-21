@@ -1918,6 +1918,7 @@ gt.recipe.compressor=Компрессор
 gt.recipe.compressor.description=Сожми до чёрной дыры C77
 gt.recipe.cuttingsaw=Режущий станок
 gt.recipe.cuttingsaw.description=Режет вдоль и поперёк!
+gt.recipe.fakecuttingsaw=Режущий станок
 gt.recipe.distillery=Дистилятор
 gt.recipe.distillery.description=Извлечение наиболее важных частей жидкостей
 gt.recipe.furnace=Печь
@@ -3288,7 +3289,7 @@ gt.blockmachines.multimachine.beamcrafting.LHC.tooltip6=Accelerates the beam in 
 gt.blockmachines.multimachine.beamcrafting.LHC.tooltip7=Accelerator mode increases the §9Beam Energy§7 by §3EU Consumed in cycle§7 * §f0.1eV§7 / §6Beam Rate§7,
 gt.blockmachines.multimachine.beamcrafting.LHC.tooltip8=until the §9Target Beam Energy§7 is reached, or the §dmaximum number of cycles§7 is reached
 gt.blockmachines.multimachine.beamcrafting.LHC.tooltip9=If the §9Target Beam Energy§7 is reached, add §f0.3§7 * §6Beam Rate§7 to the current §6Beam Rate§7
-gt.blockmachines.multimachine.beamcrafting.LHC.tooltip10=However, if the current §6Beam Rate§7 >= §f2000§7, add (§f0.3§7 * §6Beam Rate§7)^§f0.5§7
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip10=However, if the current §6Beam Rate§7 >= §f5000§7, add (§f0.3§7 * §6Beam Rate§7)^§f0.5§7
 gt.blockmachines.multimachine.beamcrafting.LHC.tooltip11=to the current §6Beam Rate§7 instead
 gt.blockmachines.multimachine.beamcrafting.LHC.tooltip12=§aP§7 = §f(1A UV)§7 * §cR§7 * §dN§7^2
 gt.blockmachines.multimachine.beamcrafting.LHC.tooltip13=with the §dnumber of completed cycles§7

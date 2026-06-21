@@ -39,6 +39,7 @@ import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IOutputHatch;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
@@ -54,7 +55,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
 
 public class MTEDistillationTower extends MTEEnhancedMultiBlockBase<MTEDistillationTower>
-    implements ISurvivalConstructable {
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     protected static final int CASING_INDEX = 49;
     protected static final String STRUCTURE_PIECE_BASE = "base";
@@ -176,6 +177,11 @@ public class MTEDistillationTower extends MTEEnhancedMultiBlockBase<MTEDistillat
                     .build() };
         }
         return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX) };
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Textures.BlockIcons.getCasingTextureForId(CASING_INDEX);
     }
 
     @Override

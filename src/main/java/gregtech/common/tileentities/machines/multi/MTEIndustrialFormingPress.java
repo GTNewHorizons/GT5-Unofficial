@@ -26,6 +26,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
@@ -39,7 +40,7 @@ import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class MTEIndustrialFormingPress extends MTEExtendedPowerMultiBlockBase<MTEIndustrialFormingPress>
-    implements ISurvivalConstructable {
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     private int casingAmount;
     private static final int OFFSET_X = 2;
@@ -170,6 +171,11 @@ public class MTEIndustrialFormingPress extends MTEExtendedPowerMultiBlockBase<MT
                     .build() };
         }
         return new ITexture[] { Casings.MaterialPressCasing.getCasingTexture() };
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Casings.MaterialPressCasing.getCasingTexture();
     }
 
     @Override

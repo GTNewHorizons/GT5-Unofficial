@@ -6,7 +6,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_WIRE_TRACER_A
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_WIRE_TRACER_GLOW;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTStructureUtility.ofSheetMetal;
-import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.CASING_INDEX_WHITE;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
@@ -17,13 +16,11 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyModuleBase;
 import gregtech.common.tileentities.machines.multi.nanochip.util.ModuleStructureDefinition;
@@ -61,33 +58,14 @@ public class MTEWireTracerModule extends MTENanochipAssemblyModuleBase<MTEWireTr
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
-        if (side == aFacing) {
-            if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_WHITE),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_WIRE_TRACER)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_WIRE_TRACER_ACTIVE)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_WIRE_TRACER_ACTIVE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_WHITE),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_WIRE_TRACER)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_WIRE_TRACER_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-        }
-        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_WHITE) };
+        return createNanochipModuleTextures(
+            side,
+            aFacing,
+            aActive,
+            OVERLAY_FRONT_WIRE_TRACER,
+            OVERLAY_FRONT_WIRE_TRACER_GLOW,
+            OVERLAY_FRONT_WIRE_TRACER_ACTIVE,
+            OVERLAY_FRONT_WIRE_TRACER_ACTIVE_GLOW);
     }
 
     public MTEWireTracerModule(int aID, String aName, String aNameRegional) {

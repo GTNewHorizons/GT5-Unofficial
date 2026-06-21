@@ -11,6 +11,10 @@ import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.OutputBus;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DIESEL_ENGINE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DIESEL_ENGINE_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DIESEL_ENGINE_ACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_DIESEL_ENGINE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.TURBINE_NEW;
 import static gregtech.api.enums.Textures.BlockIcons.TURBINE_NEW_ACTIVE;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
@@ -49,6 +53,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.IToolStats;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
@@ -57,7 +62,6 @@ import gregtech.api.objects.XSTR;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.RenderOverlay;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
@@ -68,7 +72,7 @@ import gregtech.common.items.MetaGeneratedTool01;
 import gregtech.common.pollution.Pollution;
 
 public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirFilterBase>
-    implements ISurvivalConstructable {
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     // Formerly configurable values
     public static final int POLLUTION_THRESHOLD = 10000;
@@ -209,7 +213,7 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
             .addController("Front bottom center")
             .addOtherStructurePart(getCasingString(), "Top and bottom layers")
             .addOtherStructurePart(getPipeString(), "Corners of the middle two layers")
-            .addOtherStructurePart("Muffler Hatch", "Sides of the middle two layers")
+            .addMufflerHatch("Sides of the middle two layers", 2)
             .addEnergyHatch("Any bottom layer Casing", 1)
             .addMaintenanceHatch("Any bottom layer Casing", 1)
             .addInputBus("Any bottom layer Casing (optional)", 1)
@@ -219,24 +223,22 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-        int colorIndex, boolean aActive, boolean aRedstone) {
-        ITexture casingTexture = Textures.BlockIcons.getCasingTextureForId(getCasingIndex());
-        if (side == facing) {
-            if (aActive) {
-                return new ITexture[] { casingTexture,
-                    TextureFactory.of(Textures.BlockIcons.OVERLAY_FRONT_DIESEL_ENGINE_ACTIVE), TextureFactory.builder()
-                        .addIcon(Textures.BlockIcons.OVERLAY_FRONT_DIESEL_ENGINE_ACTIVE_GLOW)
-                        .glow()
-                        .build() };
-            }
-            return new ITexture[] { casingTexture, TextureFactory.of(Textures.BlockIcons.OVERLAY_FRONT_DIESEL_ENGINE),
-                TextureFactory.builder()
-                    .addIcon(Textures.BlockIcons.OVERLAY_FRONT_DIESEL_ENGINE_GLOW)
-                    .glow()
-                    .build() };
-        }
-        return new ITexture[] { casingTexture };
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            OVERLAY_FRONT_DIESEL_ENGINE,
+            OVERLAY_FRONT_DIESEL_ENGINE_GLOW,
+            OVERLAY_FRONT_DIESEL_ENGINE_ACTIVE,
+            OVERLAY_FRONT_DIESEL_ENGINE_ACTIVE_GLOW);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Textures.BlockIcons.getCasingTextureForId(getCasingIndex());
     }
 
     public abstract float getBonusByTier();
