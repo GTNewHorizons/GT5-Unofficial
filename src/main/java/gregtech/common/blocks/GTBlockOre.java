@@ -209,29 +209,25 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures, IB
         Materials mat = getMaterial(metadata);
         boolean small = isSmallOre(metadata);
 
-        ITexture[] textures;
-
-        if (stoneType == null) stoneType = StoneType.Stone;
+        final ITextureBuilder fgBuilder;
 
         if (mat != null) {
-            ITextureBuilder builder = TextureFactory.builder()
+            fgBuilder = TextureFactory.builder()
                 .addIcon(
                     mat.mIconSet.mTextures[small ? OrePrefixes.oreSmall.getTextureIndex()
                         : OrePrefixes.ore.getTextureIndex()])
                 .setRGBA(mat.mRGBa)
-                .stdOrient();
-            if (mat.hasGlowingOre()) {
-                builder = builder.glow();
-            }
-            ITexture iTexture = builder.build();
-
-            textures = new ITexture[] { stoneType.getTexture(0), iTexture };
+                .glow(mat.hasGlowingOre());
         } else {
-            textures = new ITexture[] { stoneType.getTexture(0), TextureFactory.builder()
-                .addIcon(TextureSet.SET_NONE.mTextures[OrePrefixes.ore.getTextureIndex()])
-                .stdOrient()
-                .build() };
+            fgBuilder = TextureFactory.builder()
+                .addIcon(TextureSet.SET_NONE.mTextures[OrePrefixes.ore.getTextureIndex()]);
         }
+
+        final ITexture bg = (stoneType == null ? StoneType.Stone : stoneType).getTexture(0);
+        final ITexture fg = fgBuilder.stdOrient()
+            .build();
+
+        final ITexture[] textures = new ITexture[] { bg, fg };
 
         return new ITexture[][] { textures, textures, textures, textures, textures, textures };
     }
