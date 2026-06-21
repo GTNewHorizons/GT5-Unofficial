@@ -2747,7 +2747,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
         IGregTechTileEntity igte = getBaseMetaTileEntity();
 
-        if (igte != null && igte.getLastShutDownReason() == ShutDownReasonRegistry.POWER_LOSS) {
+        if (igte != null) {
             GTMod.proxy.powerfailTracker.removePowerfailEvents(igte);
         }
     }
@@ -2760,7 +2760,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
         IGregTechTileEntity igte = getBaseMetaTileEntity();
 
-        if (igte != null && igte.getLastShutDownReason() == ShutDownReasonRegistry.POWER_LOSS) {
+        if (igte != null) {
             GTMod.proxy.powerfailTracker.removePowerfailEvents(igte);
         }
 
