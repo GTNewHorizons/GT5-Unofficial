@@ -6,12 +6,13 @@ import java.util.Objects;
 
 import javax.annotation.Nonnull;
 
-import gregtech.api.enums.GTValues;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.StatCollector;
 
 import org.jetbrains.annotations.NotNull;
+
+import gregtech.api.enums.GTValues;
 
 public class ResultInsufficientStartupPower implements CheckRecipeResult {
 

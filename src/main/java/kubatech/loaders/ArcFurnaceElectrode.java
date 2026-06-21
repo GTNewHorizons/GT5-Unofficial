@@ -44,7 +44,8 @@ public enum ArcFurnaceElectrode {
         }
         if (event instanceof ArcFurnaceProcessingEvent.EventStartIgnition startIgnition) {
             long lastCompletedStartupTick = event.arcFurnace.getLastCompletedStartupTick();
-            if (lastCompletedStartupTick >= 0 && event.arcFurnace.getTotalRunTime() - lastCompletedStartupTick < 20 * 4) {
+            if (lastCompletedStartupTick >= 0
+                && event.arcFurnace.getTotalRunTime() - lastCompletedStartupTick < 20 * 4) {
                 startIgnition.duration = 1;
                 startIgnition.eut = 1;
             }
@@ -230,8 +231,8 @@ public enum ArcFurnaceElectrode {
     private long getStartupAmperage() {
         return Math.max(
             1L,
-            (long) Math.ceil(30d / 32d * Math.max(1, this.parallelLimit) * (this.startupSurge + 1d)
-                * this.amperagePerParallel));
+            (long) Math.ceil(
+                30d / 32d * Math.max(1, this.parallelLimit) * (this.startupSurge + 1d) * this.amperagePerParallel));
     }
 
     private static long getRequiredSixtyFourAmpHatches(long amperage) {
