@@ -51,12 +51,15 @@ public enum HatchElement implements IHatchElement<MTEMultiBlockBase> {
 
         @Override
         public long count(MTEMultiBlockBase t) {
-            return t.mInputHatches.size();
+            return t.mInputHatches.size() + t.mDualInputHatches.stream()
+                .filter(hatch -> hatch.supportsFluids() || hatch instanceof MTEHatchCraftingInputSlave)
+                .count();
         }
 
         @Override
         public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
-            return ImmutableList.of(MTEHatchInput.class, MTEHatchCraftingInputME.class, MTEHatchCraftingInputSlave.class);
+            return ImmutableList
+                .of(MTEHatchInput.class, MTEHatchCraftingInputME.class, MTEHatchCraftingInputSlave.class);
         }
     },
     InputBus("GT5U.MBTT.InputBus", MTEMultiBlockBase::addInputBusToMachineList, MTEHatchInputBus.class) {
