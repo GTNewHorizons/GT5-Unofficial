@@ -646,6 +646,11 @@ public enum Casings implements ICasing {
     ReinforcedGlass
         (() -> GregTechAPI.sBlockGlass1, 10, -1),
 
+    // Fences
+
+    IronFence
+        (()-> GregTechAPI.sBlockFenceMetal, 0, -1),
+
     // ------------------ Bartworks Casings -----------------
 
     BoltedOsmiridiumCasing

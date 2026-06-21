@@ -1138,7 +1138,7 @@ public enum OreMixes {
         .sporadic(MaterialsOres.AGARDITE_ND)),
 
     GTPP5(new OreMixBuilder().name("ore.mix.gtpp5")
-        .heightRange(30, 128)
+        .heightRange(15, 58)
         .weight(20)
         .density(2)
         .size(48)
@@ -1160,7 +1160,7 @@ public enum OreMixes {
         .sporadic(MaterialsOres.IRARSITE)),
 
     GTPP7(new OreMixBuilder().name("ore.mix.gtpp7")
-        .heightRange(40, 128)
+        .heightRange(20, 58)
         .weight(20)
         .density(2)
         .size(48)
@@ -1204,7 +1204,7 @@ public enum OreMixes {
         .sporadic(MaterialsOres.RADIOBARITE)),
 
     GTPP11(new OreMixBuilder().name("ore.mix.gtpp11")
-        .heightRange(30, 70)
+        .heightRange(18, 58)
         .weight(20)
         .density(1)
         .size(48)
@@ -1215,7 +1215,7 @@ public enum OreMixes {
         .sporadic(MaterialsOres.CRYOLITE)),
 
     GTPP12(new OreMixBuilder().name("ore.mix.gtpp12")
-        .heightRange(40, 80)
+        .heightRange(22, 58)
         .weight(20)
         .density(3)
         .size(32)

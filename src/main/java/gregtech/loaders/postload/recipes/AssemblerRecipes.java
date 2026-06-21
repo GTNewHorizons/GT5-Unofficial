@@ -2411,7 +2411,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.stick, Materials.Iron, 1))
             .circuit(1)
-            .itemOutputs(GTModHandler.getIC2Item("ironFence", 1))
+            .itemOutputs(ItemList.FenceIron.get(1L))
             .duration(5 * SECONDS)
             .eut(4)
             .addTo(assemblerRecipes);
@@ -2427,7 +2427,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.stick, Materials.CastIron, 1))
             .circuit(1)
-            .itemOutputs(GTModHandler.getIC2Item("ironFence", 1))
+            .itemOutputs(ItemList.FenceIron.get(1L))
             .duration(5 * SECONDS)
             .eut(4)
             .addTo(assemblerRecipes);

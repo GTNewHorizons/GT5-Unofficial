@@ -357,10 +357,10 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
             .addCasingInfoRange("Storage Field Block", 7, 117, true)
             .addStructureInfo("Energy hatch is not required when running cost is 0")
             .addCasingInfoRange("Any Tiered Glass (EV+)", 48, 208, false)
-            .addMaintenanceHatch("Any top or bottom Casing")
-            .addEnergyHatch("Any top or bottom Casing")
-            .addInputHatch("Instead of any casing or glass, has to touch Storage Field Block")
-            .addOutputHatch("Instead of any casing or glass, has to touch Storage Field Block")
+            .addMaintenanceHatch("Any top or bottom Casing", 1, 2)
+            .addEnergyHatch("Any top or bottom Casing", 1, 2)
+            .addInputHatch("Instead of any casing or glass, has to touch Storage Field Block", 2, 3)
+            .addOutputHatch("Instead of any casing or glass, has to touch Storage Field Block", 2, 3)
             .addStructureInfo("You can have a bunch of hatches")
             .addOtherStructurePart(
                 "1x Multi I/O Hatch",
