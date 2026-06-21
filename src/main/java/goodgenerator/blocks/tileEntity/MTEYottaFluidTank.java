@@ -467,8 +467,8 @@ public class MTEYottaFluidTank extends TTMultiblockBase implements ISurvivalCons
             .addCasingInfoRange("Any Tiered Glass", 16, 240, true)
             .addCasingInfoRange("Fluid Cell Block", 9, 135, true)
             .addCasingInfoRange("YOTTank Casing", 25, 43, false)
-            .addInputHatch("Hint block number 1")
-            .addOutputHatch("Hint block number 3 (optional)")
+            .addInputHatch("Hint block number 1", 1)
+            .addOutputHatch("Hint block number 1 (optional)", 1)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         return tt;
