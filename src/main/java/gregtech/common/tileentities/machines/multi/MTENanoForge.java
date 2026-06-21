@@ -341,8 +341,8 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
         .addElement('Q', ofBlock(GregTechAPI.sBlockCasings13, 9))
         .addElement(
             'V',
-            buildHatchAdder(MTENanoForge.class).atLeast(
-                ImmutableMap.of(InputHatch, 1, OutputBus, 1, InputBus, 1, Maintenance, 0, Energy.or(ExoticEnergy), 1))
+            buildHatchAdder(MTENanoForge.class)
+                .atLeast(ImmutableMap.of(InputHatch, 1, OutputBus, 1, InputBus, 1, Energy.or(ExoticEnergy), 1))
                 .hint(1)
                 .casingIndex(((BlockCasings13) GregTechAPI.sBlockCasings13).getTextureIndex(6))
                 .buildAndChain(onElementPass(MTENanoForge::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings13, 6))))
@@ -621,7 +621,7 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
             // tier 4
             casingAmount = 0;
             if (!checkPiece(STRUCTURE_PIECE_TIER4_BASE, 20, 33, 0, errors)) return;
-            checkCasingMin(errors, casingAmount, 2784);
+            checkCasingMin(errors, casingAmount, 2780);
             if (renderActive) {
                 if (checkPiece(STRUCTURE_PIECE_TIER4_AIR_RENDER, 20, 50, 0, errors)) {
                     mSpecialTier = 4;
@@ -657,7 +657,7 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
             errors.add(StructureErrorRegistry.UNKNOWN_TIER);
             return;
         }
-        checkHasMaintenanceHatch(errors);
+
         checkExoticAndNormalEnergyHatches(errors);
         checkHasAnyInput(errors);
         checkHasOutputBus(errors);
