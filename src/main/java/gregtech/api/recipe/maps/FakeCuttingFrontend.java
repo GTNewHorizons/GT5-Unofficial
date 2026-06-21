@@ -51,4 +51,14 @@ public class FakeCuttingFrontend extends RecipeMapFrontend {
                 + translateToLocalFormatted("GT5U.nei.display.duration.seconds", formatNumber(displayTime)));
         return currentTip;
     }
+
+    @Override
+    protected void drawSpecialInfo(RecipeDisplayInfo recipeInfo) {
+        FakeCuttingSpecialInfo specialInfo = (FakeCuttingSpecialInfo) recipeInfo.recipe.mSpecialItems;
+
+        recipeInfo.drawText(StatCollector.translateToLocalFormatted("GT5U.nei.display.duration.seconds",
+            specialInfo.getDurationsString(recipeInfo)
+        ));
+        recipeInfo.drawTextMultipleLines(neiProperties.neiSpecialInfoFormatter.format(recipeInfo));
+    }
 }

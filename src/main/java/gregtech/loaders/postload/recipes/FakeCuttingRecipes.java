@@ -2,18 +2,15 @@ package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.recipe.RecipeMaps.cutterFakeRecipes;
 import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
-import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
-import net.minecraft.util.StatCollector;
+import gregtech.api.recipe.RecipeMetadataKey;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.GTValues;
@@ -33,7 +30,6 @@ public class FakeCuttingRecipes implements Runnable {
 
         for (GTRecipe recipe : recipes) {
             if (!recipe.mEnabled) continue;
-            if (recipe.mFakeRecipe) continue;
             if (recipe.mHidden) continue;
             if (recipe.mInputs == null) continue;
             if (recipe.mOutputs == null) continue;
@@ -46,24 +42,13 @@ public class FakeCuttingRecipes implements Runnable {
         for (List<GTRecipe> group : groups.values()) {
 
             GTRecipe template = group.get(0);
-            List<Integer> durations = new ArrayList<>();
             List<FluidStack> fluids = new ArrayList<>();
-
-            for (GTRecipe recipe : group) {
-                mergeFluidVariants(recipe, fluids);
-                durations.add(recipe.mDuration);
-            }
-
-            String durationInfo = durations.stream()
-                .map(
-                    t -> new BigDecimal(String.format("%.3f", (double) t / SECONDS)).stripTrailingZeros()
-                        .toPlainString())
-                .collect(Collectors.joining("/"));
-
+            Map<RecipeMetadataKey<?>, Object> metadata = new LinkedHashMap<>();
             FakeCuttingSpecialInfo specialInfo = new FakeCuttingSpecialInfo();
 
-            for (int i = 0; i < fluids.size(); i++) {
-                specialInfo.add(fluids.get(i), durations.get(i));
+            for (GTRecipe recipe : group) {
+                mergeFluidVariants(recipe, fluids, specialInfo);
+                mergeRecipeMetadata(recipe, metadata);
             }
 
             GTRecipeBuilder builder = GTValues.RA.stdBuilder()
@@ -72,8 +57,12 @@ public class FakeCuttingRecipes implements Runnable {
                 .eut(template.mEUt)
                 .duration(template.mDuration)
                 .special(specialInfo)
-                .setNEIDesc(StatCollector.translateToLocalFormatted("GT5U.nei.display.duration.seconds", durationInfo))
                 .fake();
+
+            for (Map.Entry<RecipeMetadataKey<?>, Object> entry : metadata.entrySet()) {
+                RecipeMetadataKey<Object> key = (RecipeMetadataKey<Object>) entry.getKey();
+                builder.metadata(key, entry.getValue());
+            }
 
             if (!fluids.isEmpty()) {
                 builder.fluidInputs(new SubstituteFluidStack(fluids.toArray(new FluidStack[0])));
@@ -103,7 +92,7 @@ public class FakeCuttingRecipes implements Runnable {
         return sb.toString();
     }
 
-    private void mergeFluidVariants(GTRecipe recipe, List<FluidStack> fluids) {
+    private void mergeFluidVariants(GTRecipe recipe, List<FluidStack> fluids, FakeCuttingSpecialInfo specialInfo) {
 
         List<FluidStack> candidates = new ArrayList<>();
 
@@ -121,7 +110,19 @@ public class FakeCuttingRecipes implements Runnable {
             boolean isDuplicate = fluids.stream()
                 .anyMatch(f -> f.isFluidStackIdentical(candidate));
 
-            if (!isDuplicate) fluids.add(candidate);
+            if (!isDuplicate) {
+                fluids.add(candidate);
+                specialInfo.add(candidate, recipe.mDuration);
+            }
+        }
+    }
+
+    // Surely no one will add "Liquid Cleanroom skipper 9000" right?
+    private void mergeRecipeMetadata(GTRecipe recipe, Map<RecipeMetadataKey<?>, Object> metadata) {
+        for (Map.Entry<RecipeMetadataKey<?>, Object> entry : recipe.getMetadataStorage().getEntries()) {
+            @SuppressWarnings("unchecked")
+            RecipeMetadataKey<Object> key = (RecipeMetadataKey<Object>) entry.getKey();
+            metadata.put(key, entry.getValue());
         }
     }
 }

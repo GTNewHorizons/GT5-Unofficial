@@ -2,10 +2,15 @@ package gregtech.loaders.postload.recipes;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
+import com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil;
+import gregtech.nei.RecipeDisplayInfo;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.util.GTUtility;
+
+import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 public class FakeCuttingSpecialInfo {
 
@@ -22,5 +27,14 @@ public class FakeCuttingSpecialInfo {
             .map(Map.Entry::getValue)
             .findFirst()
             .orElse(-1);
+    }
+    public String getDurationsString(RecipeDisplayInfo recipeInfo) {
+        double overclockFactor = (double) recipeInfo.calculator.getDuration() / recipeInfo.recipe.mDuration;
+
+        return fluidsToDurations.values()
+            .stream()
+            .map(baseDuration -> (baseDuration * overclockFactor) / SECONDS)
+            .map(NumberFormatUtil::formatNumber)
+            .collect(Collectors.joining("/"));
     }
 }
