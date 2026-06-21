@@ -203,8 +203,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
             .addOtherStructurePart(
                 StatCollector
                     .translateToLocalFormatted("tooltip.bw.structure.tier_glass", getColoredTierNameFromTier((byte) 4)),
-                "As specified on layer 2",
-                5)
+                "As specified on layer 2")
             .addMaintenanceHatch("Any layer 1 casing", 2)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
