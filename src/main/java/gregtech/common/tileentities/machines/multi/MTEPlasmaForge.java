@@ -637,10 +637,10 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
                     + "1"
                     + EnumChatFormatting.GRAY
                     + " TT energy hatch")
-            .addInputHatch("Any Casing")
-            .addOutputHatch("Any Casing")
-            .addInputBus("Any Casing")
-            .addOutputBus("Any Casing")
+            .addInputHatch("Any Casing", 3)
+            .addOutputHatch("Any Casing", 3)
+            .addInputBus("Any Casing", 3)
+            .addOutputBus("Any Casing", 3)
             .addStructureInfo("")
             .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
             .addTecTechHatchInfo()
