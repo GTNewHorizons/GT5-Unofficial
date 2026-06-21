@@ -171,7 +171,7 @@ public class BECRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Eternity, 16),
                 ItemList.Transdimensional_Alignment_Matrix.get(1), ItemList.MetaMaterial_Shielding3.get(16),
                 ItemList.MetaMaterial_ElectrograviticValve3.get(16), ItemList.MetaMaterial_FieldManipulator4.get(32) },
-            nanites(1, 1, 3, 9, 6, 6, 6, 6, 6, 6, 7, 4, 4, 4, 10),
+            nanites(6, 6, 6, 8, 6, 6, 6, 3, 1, 1, 2, 9, 10, 4, 5, 7),
             new FluidStack[] { CondensateType.ChromaticGlass.getEntangled(65_536 * INGOTS),
                 CondensateType.Space.getEntangled(8_192 * 64), CondensateType.Time.getEntangled(8_192 * 64),
                 CondensateType.Eternity.getEntangled(4_096 * 64) },
