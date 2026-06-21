@@ -19,6 +19,7 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTUtility;
 
+// Called from coremod after it finishes adding its recipes
 public class FakeCuttingRecipes implements Runnable {
 
     @Override
