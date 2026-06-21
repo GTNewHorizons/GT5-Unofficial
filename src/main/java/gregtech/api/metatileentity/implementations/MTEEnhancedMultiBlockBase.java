@@ -624,9 +624,6 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
         checkHatchMin(errors, HatchElement.OutputBus, 1);
     }
 
-    // NOTE: Despite the name, this also allow crafting inputs, if they support fluids
-    // Most of the time it's what you want. If you don't want such inputs,
-    // you can omit InputBus in your structure or roll your own checks
     protected final void checkHasInputHatch(List<StructureError> errors) {
         checkHatchMin(errors, HatchElement.InputHatch, 1);
     }
