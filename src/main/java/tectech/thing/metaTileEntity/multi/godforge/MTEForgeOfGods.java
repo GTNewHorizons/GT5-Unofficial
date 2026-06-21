@@ -42,7 +42,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -63,6 +62,7 @@ import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
@@ -733,20 +733,13 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
     public String[] getInfoData() {
         ArrayList<String> str = new ArrayList<>(Arrays.asList(super.getInfoData()));
         str.add(SCANNER_INFO_BAR);
+        str.add(IGregTechDeviceInformation.encode("tt.infodata.fog.rings", data.getRingAmount()));
         str.add(
-            StatCollector.translateToLocalFormatted(
-                "tt.infodata.fog.rings",
-                "" + EnumChatFormatting.GOLD + data.getRingAmount()));
-        str.add(
-            StatCollector.translateToLocalFormatted(
+            IGregTechDeviceInformation.encode(
                 "tt.infodata.fog.upgrades.unlocked",
-                "" + EnumChatFormatting.GOLD
-                    + data.getUpgrades()
-                        .getTotalActiveUpgrades()));
-        str.add(
-            StatCollector.translateToLocalFormatted(
-                "tt.infodata.fog.connected",
-                "" + EnumChatFormatting.GOLD + moduleHatches.size()));
+                data.getUpgrades()
+                    .getTotalActiveUpgrades()));
+        str.add(IGregTechDeviceInformation.encode("tt.infodata.fog.connected", moduleHatches.size()));
         str.add(SCANNER_INFO_BAR);
         return str.toArray(new String[0]);
     }
