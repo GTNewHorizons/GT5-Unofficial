@@ -16,6 +16,7 @@ import gregtech.api.enums.Materials;
 public class GasSiphonRecipes {
 
     public static final Map<String, Map<Integer, FluidStack>> RECIPES = new HashMap<>();
+    public static final Map<String, Integer> PLANET_TIERS = new HashMap<>();
 
     /**
      * Add all pumping recipes to the siphon
@@ -53,5 +54,11 @@ public class GasSiphonRecipes {
         RECIPES.put("planet.saturn", saturnRecipes);
         RECIPES.put("planet.uranus", uranusRecipes);
         RECIPES.put("planet.neptune", neptuneRecipes);
+
+        // Store the correct planet tier's
+        PLANET_TIERS.put("planet.jupiter", 3);
+        PLANET_TIERS.put("planet.saturn", 5);
+        PLANET_TIERS.put("planet.uranus", 5);
+        PLANET_TIERS.put("planet.neptune", 6);
     }
 }

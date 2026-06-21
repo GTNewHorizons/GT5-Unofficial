@@ -53,6 +53,8 @@ public class GasSiphonRecipeHandler extends TemplateRecipeHandler {
     private static final int GAS_TYPE_Y = PLANET_TYPE_Y + 15;
     /** Y coordinate of the output amount */
     private static final int OUT_AMOUNT_Y = GAS_TYPE_Y + 15;
+    /** Y cordinate of the eu/t */
+    private static final int EUT_Y = OUT_AMOUNT_Y + 15;
     /** Color of all texts */
     private static final int TEXT_COLOR = 0x404040;
     /** Optional lang key for value formatting */
@@ -133,7 +135,8 @@ public class GasSiphonRecipeHandler extends TemplateRecipeHandler {
                             innerEntry.getKey(),
                             innerEntry.getValue()
                                 .getFluid(),
-                            innerEntry.getValue().amount));
+                            innerEntry.getValue().amount,
+                            innerEntry.getKey() * (4 << (2 * GasSiphonRecipes.PLANET_TIERS.get(entry.getKey()) + 2))));
                 }
             }
         } else {
@@ -198,7 +201,8 @@ public class GasSiphonRecipeHandler extends TemplateRecipeHandler {
                             entry.getKey(),
                             innerEntry.getKey(),
                             fluid,
-                            innerEntry.getValue().amount));
+                            innerEntry.getValue().amount,
+                            innerEntry.getKey() * (4 << (2 * GasSiphonRecipes.PLANET_TIERS.get(entry.getKey()) + 2))));
                 }
             }
         }
@@ -220,6 +224,7 @@ public class GasSiphonRecipeHandler extends TemplateRecipeHandler {
             OUT_AMOUNT_Y,
             TEXT_COLOR,
             false);
+        GuiDraw.drawStringC(I18n.format("ig.nei.elevatorpump.eut") + ":", CATEGORY_TITLE_X, EUT_Y, TEXT_COLOR, false);
 
         CachedSiphonRecipe recipe = (CachedSiphonRecipe) this.arecipes.get(recipeIndex);
         GuiDraw.drawStringC(
@@ -231,6 +236,7 @@ public class GasSiphonRecipeHandler extends TemplateRecipeHandler {
         GuiDraw.drawStringC(formatValue(recipe.depth), CATEGORY_VALUE_X, GAS_TYPE_Y, TEXT_COLOR, false);
         GuiDraw
             .drawStringC(formatValue(formatNumber(recipe.amount)), CATEGORY_VALUE_X, OUT_AMOUNT_Y, TEXT_COLOR, false);
+        GuiDraw.drawStringC(formatValue(formatNumber(recipe.eut)), CATEGORY_VALUE_X, EUT_Y, TEXT_COLOR, false);
 
         GuiDraw.drawStringR(
             EnumChatFormatting.BOLD + I18n.format(SEE_ALL),
@@ -279,6 +285,8 @@ public class GasSiphonRecipeHandler extends TemplateRecipeHandler {
         private final int depth;
         /** Amount that will be pumped per operation */
         private final int amount;
+        /** Eu/t the recipe runs at */
+        private final int eut;
 
         /**
          * Create a new cached gas siphon recipe
@@ -288,11 +296,12 @@ public class GasSiphonRecipeHandler extends TemplateRecipeHandler {
          * @param output       Output of the operation
          * @param outputAmount Output amount of the operation
          */
-        private CachedSiphonRecipe(String planet, int depth, Fluid output, int outputAmount) {
+        private CachedSiphonRecipe(String planet, int depth, Fluid output, int outputAmount, int eut) {
             targetFluidDisplay = new PositionedStack(GTUtility.getFluidDisplayStack(output), getGuiWidth() - 19, 0);
             this.planet = planet;
             this.depth = depth;
             amount = outputAmount;
+            this.eut = eut;
         }
 
         /**
