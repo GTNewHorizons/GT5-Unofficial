@@ -10,6 +10,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.recipe.BasicUIPropertiesBuilder;
@@ -44,11 +45,23 @@ public class FakeCuttingFrontend extends RecipeMapFrontend {
 
         GTRecipe currentRecipe = neiCachedRecipe.mRecipe;
         FakeCuttingSpecialInfo specialInfo = (FakeCuttingSpecialInfo) currentRecipe.mSpecialItems;
-        float displayTime = (float) specialInfo.getDurationForFluid(fluid) / SECONDS;
+        int fluidDuration = specialInfo.getDurationForFluid(fluid);
+
+        double overclockFactor = (double) neiCachedRecipe.calculator.getDuration() / currentRecipe.mDuration;
+
+        long recipeTotal = (long) currentRecipe.mDuration * currentRecipe.mEUt;
+        long fluidTotal = (long) fluidDuration * currentRecipe.mEUt;
+
+        double displayTime = (fluidDuration * overclockFactor) / SECONDS;
+        float displayDiscount = ((float)(recipeTotal - fluidTotal) / recipeTotal) * 100;
 
         currentTip.add(
             EnumChatFormatting.AQUA
                 + translateToLocalFormatted("GT5U.nei.display.duration.seconds", formatNumber(displayTime)));
+        currentTip.add(
+            EnumChatFormatting.GREEN
+                + translateToLocalFormatted("GT5U.nei.display.discount.energy", formatNumber(displayDiscount)));
+
         return currentTip;
     }
 

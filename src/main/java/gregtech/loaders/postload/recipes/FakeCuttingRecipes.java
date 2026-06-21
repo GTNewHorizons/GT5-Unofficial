@@ -41,7 +41,7 @@ public class FakeCuttingRecipes implements Runnable {
 
         for (List<GTRecipe> group : groups.values()) {
 
-            GTRecipe template = group.get(0);
+            GTRecipe template = group.getFirst();
             List<FluidStack> fluids = new ArrayList<>();
             Map<RecipeMetadataKey<?>, Object> metadata = new LinkedHashMap<>();
             FakeCuttingSpecialInfo specialInfo = new FakeCuttingSpecialInfo();
@@ -60,6 +60,7 @@ public class FakeCuttingRecipes implements Runnable {
                 .fake();
 
             for (Map.Entry<RecipeMetadataKey<?>, Object> entry : metadata.entrySet()) {
+                @SuppressWarnings("unchecked")
                 RecipeMetadataKey<Object> key = (RecipeMetadataKey<Object>) entry.getKey();
                 builder.metadata(key, entry.getValue());
             }
