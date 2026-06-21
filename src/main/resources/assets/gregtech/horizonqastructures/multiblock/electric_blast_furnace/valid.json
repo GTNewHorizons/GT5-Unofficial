@@ -1,0 +1,32 @@
+{
+  "format_version": 1,
+  "size": [3, 4, 3],
+  "palette": {
+    "A": {"name": "gregtech:gt.blockcasings5", "meta": 0, "label": "Cupronickel Coil Block"},
+    "B": {"name": "gregtech:gt.blockcasings", "meta": 11, "label": "Heat Proof Machine Casing"},
+    "C": {"name": "gregtech:gt.blockmachines", "meta": 1, "label": "Bronze Hull"},
+    "D": {"name": "gregtech:gt.blockmachines", "meta": 2, "label": "Bricked Bronze Hull"}
+  },
+  "layers": [
+    [
+      "CDC",
+      "CCB",
+      "BCB"
+    ],
+    [
+      "AAA",
+      "A.A",
+      "AAA"
+    ],
+    [
+      "AAA",
+      "A.A",
+      "AAA"
+    ],
+    [
+      "BBB",
+      "BCB",
+      "BBB"
+    ]
+  ]
+}

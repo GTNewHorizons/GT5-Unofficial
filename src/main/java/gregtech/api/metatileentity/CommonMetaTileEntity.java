@@ -414,10 +414,6 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
         return 64;
     }
 
-    public int getSlotLimit(int slot) {
-        return getInventoryStackLimit();
-    }
-
     @Override
     public boolean isItemValidForSlot(int index, ItemStack itemStack) {
         return getBaseMetaTileEntity().isValidSlot(index);
@@ -676,7 +672,7 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
         return new GTModularScreen(mainPanel, getColoredTheme());
     }
 
-    private GTGuiTheme getColoredTheme() {
+    public final GTGuiTheme getColoredTheme() {
         GTGuiTheme baseTheme = getGuiTheme();
         if (baseTheme != GTGuiThemes.STANDARD) return baseTheme;
         byte color = this.getBaseMetaTileEntity()

@@ -44,6 +44,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureElement;
 
 import bartworks.API.BorosilicateGlass;
 import bartworks.MainMod;
+import bartworks.system.material.Werkstoff;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.ToolDictNames;
@@ -62,6 +63,12 @@ public class BWUtil {
 
     @Deprecated
     public static final int CLEANROOM = -200;
+
+    public static int calculateRecipeEU(Werkstoff werkstoff, int defaultRecipeEUPerTick) {
+        int tier = werkstoff.getStats()
+            .getProcessingMaterialTierEU();
+        return tier == 0 ? defaultRecipeEUPerTick : tier;
+    }
 
     public static String translateGTItemStack(ItemStack itemStack) {
         if (!GTUtility.isStackValid(itemStack)) return "Not a Valid ItemStack:" + itemStack;

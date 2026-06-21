@@ -41,6 +41,7 @@ import gregtech.api.enums.TextureSet;
 import gregtech.api.events.OreInteractEvent;
 import gregtech.api.interfaces.IBlockWithTextures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.ITextureBuilder;
 import gregtech.api.items.GTGenericBlock;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTDataUtils;
@@ -213,13 +214,16 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures, IB
         if (stoneType == null) stoneType = StoneType.Stone;
 
         if (mat != null) {
-            ITexture iTexture = TextureFactory.builder()
+            ITextureBuilder builder = TextureFactory.builder()
                 .addIcon(
                     mat.mIconSet.mTextures[small ? OrePrefixes.oreSmall.getTextureIndex()
                         : OrePrefixes.ore.getTextureIndex()])
                 .setRGBA(mat.mRGBa)
-                .stdOrient()
-                .build();
+                .stdOrient();
+            if (mat.hasGlowingOre()) {
+                builder = builder.glow();
+            }
+            ITexture iTexture = builder.build();
 
             textures = new ITexture[] { stoneType.getTexture(0), iTexture };
         } else {
@@ -387,6 +391,14 @@ public class GTBlockOre extends GTGenericBlock implements IBlockWithTextures, IB
             .post(new OreInteractEvent(world, x, y, z, this, world.getBlockMetadata(x, y, z), player));
 
         return false;
+    }
+
+    @Override
+    public void onBlockClicked(World world, int x, int y, int z, EntityPlayer player) {
+        super.onBlockClicked(world, x, y, z, player);
+
+        MinecraftForge.EVENT_BUS
+            .post(new OreInteractEvent(world, x, y, z, this, world.getBlockMetadata(x, y, z), player));
     }
 
     @Override
