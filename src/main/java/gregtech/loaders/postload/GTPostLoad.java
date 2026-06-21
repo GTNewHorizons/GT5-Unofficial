@@ -137,8 +137,6 @@ public class GTPostLoad {
     public static void addFakeRecipes() {
         GTLog.out.println("GTMod: Adding Fake Recipes for NEI");
 
-        new FakeCuttingRecipes().run();
-
         if (Forestry.isModLoaded()) {
             GTForestryCompat.populateFakeNeiRecipes();
         }
