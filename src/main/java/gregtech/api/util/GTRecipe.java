@@ -25,6 +25,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.metatileentity.implementations.MTEHatchMultiInput;
@@ -350,6 +351,18 @@ public class GTRecipe implements Comparable<GTRecipe> {
         if (mOutputChances == null) return 10000;
         if (aIndex < 0 || aIndex >= mOutputChances.length) return 10000;
         return mOutputChances[aIndex];
+    }
+
+    public ItemStack rollOutput(IGregTechTileEntity te, int aIndex) {
+        if (te == null) return null;
+        return rollOutput(te.getRandomNumber(10000), aIndex);
+    }
+
+    public ItemStack rollOutput(int rng, int aIndex) {
+        if (rng < getOutputChance(aIndex)) {
+            return getOutput(aIndex);
+        }
+        return null;
     }
 
     public FluidStack getRepresentativeFluidInput(int aIndex) {
