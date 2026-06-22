@@ -1225,17 +1225,10 @@ public class MTEIndustrialApiary extends MTEBasicMachine
                 .setTextureGetter(
                     i -> i == 0 ? GTUITextures.OVERLAY_BUTTON_POWER_SWITCH_OFF
                         : GTUITextures.OVERLAY_BUTTON_POWER_SWITCH_ON)
+                .setVariableBackgroundGetter(
+                    i -> i == 0 ? new IDrawable[] { GTUITextures.BUTTON_STANDARD }
+                        : new IDrawable[] { GTUITextures.BUTTON_STANDARD_PRESSED })
                 .setGTTooltip(() -> mTooltipCache.getData("GT5U.gui.button.power_switch"))
-                .setBackground(() -> {
-                    if (this.getBaseMetaTileEntity()
-                        .isAllowedToWork()) {
-                        return new IDrawable[] { GTUITextures.BUTTON_STANDARD_PRESSED,
-                            GTUITextures.OVERLAY_BUTTON_POWER_SWITCH_ON };
-                    } else {
-                        return new IDrawable[] { GTUITextures.BUTTON_STANDARD,
-                            GTUITextures.OVERLAY_BUTTON_POWER_SWITCH_OFF };
-                    }
-                })
                 .setTooltipShowUpDelay(TOOLTIP_DELAY)
                 .setPos(7, 8)
                 .setSize(18, 18))
