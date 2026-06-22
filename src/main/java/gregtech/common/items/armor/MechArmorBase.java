@@ -345,25 +345,21 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISp
     @Override
     public ArmorProperties getProperties(EntityLivingBase player, ItemStack armor, DamageSource source, double damage,
         int slot) {
-        if (source.isUnblockable()) return new ArmorProperties(0, getDamageReduction(armor) / 100D, 15);
-
         ArmorContext context = load(player, armor);
-
         if (context.isBehaviorActive(BehaviorName.ForceField) && context.drainEnergy(100000 * damage)) {
             context.save();
             return new ArmorProperties(0, 100, Integer.MAX_VALUE);
         }
 
-        if (source.isDamageAbsolute() || source.isMagicDamage() || context.getArmorState().charge < damage * 100) {
-            return new ArmorProperties(0, getDamageReduction(armor) / 100D, 15);
-        }
+        if (source.isUnblockable()) return new ArmorProperties(0, 0, 0);
 
-        return new ArmorProperties(0, getDamageReduction(armor) / 24.5D, 1000);
+        int max = context.getArmorState().charge < damage * 100 ? 0 : Integer.MAX_VALUE;
+        return new ArmorProperties(0, getDamageReduction(armor), max);
     }
 
     @Override
     public int getArmorDisplay(EntityPlayer player, ItemStack armor, int slot) {
-        return (int) getDamageReduction(armor);
+        return (int) (20 * getDamageReduction(armor));
     }
 
     @Override
