@@ -1,6 +1,7 @@
 package gregtech.common.tileentities.machines.multi.purification;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.isAir;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.lazy;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAnyMeta;
@@ -137,7 +138,7 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
         // Sterile Water Plant Casing
         .addElement('D', ofBlock(GregTechAPI.sBlockCasings9, 4))
         .addElement('E', ofFrame(Materials.Adamantium))
-        .addElement('W', ofAnyWater(false))
+        .addElement('W', ofChain(ofAnyWater(false), isAir()))
         // Tinted industrial glass
         .addElement('G', ofBlockAnyMeta(GregTechAPI.sBlockTintedGlass))
         .build();

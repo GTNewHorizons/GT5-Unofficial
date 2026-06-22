@@ -243,6 +243,7 @@ item.arc_furnace_electrode.tip.parallel_limit_none=None
 item.arc_furnace_electrode.tip.oc=OC: %s%s
 item.arc_furnace_electrode.tip.amperage_per_parallel=Amps/Parallel: %s
 item.arc_furnace_electrode.tip.startup_surge=Surge Power: %s
+item.arc_furnace_electrode.tip.startup_amperage=Startup Amperage: %s A (%sx 64A hatches)
 
 item.arc_furnace_electrode.tip.special_effect.GraphiteElectrode=§6§lBread and Butter§r§6: No startup surge penalty
 item.arc_furnace_electrode.tip.special_effect.GrapheneElectrode=§6§lBread and Butter§r§6: No startup surge penalty

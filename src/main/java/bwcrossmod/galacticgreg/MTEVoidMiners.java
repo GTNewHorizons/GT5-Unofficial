@@ -95,11 +95,11 @@ public class MTEVoidMiners {
                     EnumChatFormatting.GOLD + "6x" + EnumChatFormatting.GRAY + " Bolted Osmiridium Casing")
                 .addStructureInfo(
                     EnumChatFormatting.GOLD + "6x" + EnumChatFormatting.GRAY + " Rebolted Osmiridium Casing")
-                .addEnergyHatch(VN[this.getMinTier()] + "+, any base Casing")
-                .addMaintenanceHatch("Any base Casing")
-                .addInputBus("(Optional) For Mining Pipes or ores, any base Casing")
-                .addInputHatch("(Optional) For noble gas, any base Casing")
-                .addOutputBus("Any base Casing")
+                .addEnergyHatch(VN[this.getMinTier()] + "+, any base Casing", 1)
+                .addMaintenanceHatch("Any base Casing", 1)
+                .addInputBus("(Optional) For Mining Pipes or ores, any base Casing", 1)
+                .addInputHatch("(Optional) For noble gas, any base Casing", 1)
+                .addOutputBus("Any base Casing", 1)
                 .toolTipFinisher();
             return tt;
         }
@@ -211,11 +211,11 @@ public class MTEVoidMiners {
                     EnumChatFormatting.GOLD + "10x" + EnumChatFormatting.GRAY + " Bolted Naquadah Alloy Casing")
                 .addStructureInfo(
                     EnumChatFormatting.GOLD + "9x" + EnumChatFormatting.GRAY + " Rebolted Naquadah Alloy Casing")
-                .addEnergyHatch(VN[this.getMinTier()] + "+, any base Casing")
-                .addMaintenanceHatch("Any base Casing")
-                .addInputBus("Ores, optional, any base Casing")
-                .addInputHatch("Optional noble gas, any base Casing")
-                .addOutputBus("Any base Casing")
+                .addEnergyHatch(VN[this.getMinTier()] + "+, any base Casing", 1)
+                .addMaintenanceHatch("Any base Casing", 1)
+                .addInputBus("Ores, optional, any base Casing", 1)
+                .addInputHatch("Optional noble gas, any base Casing", 1)
+                .addOutputBus("Any base Casing", 1)
                 .toolTipFinisher();
             return tt;
         }
@@ -320,11 +320,11 @@ public class MTEVoidMiners {
                 .addStructureInfo(EnumChatFormatting.GOLD + "20x" + EnumChatFormatting.GRAY + " Bolted Iridium Casing")
                 .addStructureInfo(
                     EnumChatFormatting.GOLD + "36x" + EnumChatFormatting.GRAY + " Rebolted Iridium Casing")
-                .addEnergyHatch(VN[this.getMinTier()] + "+, any base Casing")
-                .addMaintenanceHatch("Any base Casing")
-                .addInputBus("Ores, optional, any base Casing")
-                .addInputHatch("Optional noble gas, any base Casing")
-                .addOutputBus("Any base Casing")
+                .addEnergyHatch(VN[this.getMinTier()] + "+, any base Casing", 1)
+                .addMaintenanceHatch("Any base Casing", 1)
+                .addInputBus("Ores, optional, any base Casing", 1)
+                .addInputHatch("Optional noble gas, any base Casing", 1)
+                .addOutputBus("Any base Casing", 1)
                 .toolTipFinisher();
             return tt;
         }
