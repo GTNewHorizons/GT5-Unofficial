@@ -164,7 +164,7 @@ public class GlassTier {
             for (int i = 0; i < 4; i++) {
                 addCustomGlass(GregTechAPI.sBlockTintedGlass, i, 4, i + 2);
             }
-            addCustomGlass(GregTechAPI.sBlockGlass1, 10, 4, 6); // TODO replace ic2 glass (postea)
+            addCustomGlass(GregTechAPI.sBlockGlass1, 10, 4, 6);
             if (BloodArsenal.isModLoaded()) {
                 addCustomGlass(BloodArsenal.ID, "blood_stained_glass", 0, 4, 7);
             }

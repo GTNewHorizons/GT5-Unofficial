@@ -4,6 +4,7 @@ import static gregtech.api.enums.OrePrefixes.___placeholder___;
 
 import java.util.Arrays;
 
+import gregtech.api.enums.ItemList;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
