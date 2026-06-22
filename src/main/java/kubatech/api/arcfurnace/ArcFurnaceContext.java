@@ -11,6 +11,8 @@ public interface ArcFurnaceContext {
 
     long getLastWorkingTick();
 
+    long getLastCompletedStartupTick();
+
     long getTotalRunTime();
 
     NBTTagCompound getEffectState();
