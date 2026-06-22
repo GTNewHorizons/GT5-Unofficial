@@ -69,7 +69,6 @@ public class LoaderGTOreDictionary implements Runnable {
         GTOreDictUnificator.set(OrePrefixes.ingot, Materials.Lead, GTModHandler.getIC2Item("leadIngot", 1L));
         GTOreDictUnificator.set(OrePrefixes.ingot, Materials.Bronze, GTModHandler.getIC2Item("bronzeIngot", 1L));
         GTOreDictUnificator.set(OrePrefixes.ingot, Materials.Silver, GTModHandler.getIC2Item("silverIngot", 1L));
-        GTOreDictUnificator.set(OrePrefixes.gem, Materials.Iridium, GTModHandler.getIC2Item("iridiumOre", 1L));
         GTOreDictUnificator.set(OrePrefixes.gem, Materials.Lapis, new ItemStack(Items.dye, 1, 4));
         GTOreDictUnificator.set(OrePrefixes.gem, Materials.EnderEye, new ItemStack(Items.ender_eye, 1));
         GTOreDictUnificator.set(OrePrefixes.gem, Materials.EnderPearl, new ItemStack(Items.ender_pearl, 1));

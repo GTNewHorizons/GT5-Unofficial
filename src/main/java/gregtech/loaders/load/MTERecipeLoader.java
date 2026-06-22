@@ -39,7 +39,6 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.loaders.postload.PCBFactoryMaterialLoader;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import ic2.core.Ic2Items;
 
 public class MTERecipeLoader implements Runnable {
 
@@ -3408,7 +3407,7 @@ public class MTERecipeLoader implements Runnable {
             ItemList.Machine_Multi_ImplosionCompressor.get(1L),
             GTModHandler.RecipeBits.BITS,
             new Object[] { "OOO", aTextCableHull, aTextWireCoil, 'M', ItemList.Casing_SolidSteel, 'O',
-                Ic2Items.reinforcedStone, 'C', OrePrefixes.circuit.get(Materials.HV), 'W',
+                ItemList.Block_ReinforcedConcrete, 'C', OrePrefixes.circuit.get(Materials.HV), 'W',
                 OrePrefixes.cableGt01.get(Materials.Gold) });
         GTModHandler.addCraftingRecipe(
             ItemList.Machine_Multi_Furnace.get(1L),
