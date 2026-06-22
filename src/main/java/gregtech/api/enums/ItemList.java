@@ -1765,6 +1765,8 @@ public enum ItemList implements IItemContainer {
     CondensateGuidanceCoil,
     ElectromagneticWaveguide,
 
+    ReinforcedGlass,
+
     MobRep_LV,
     MobRep_MV,
     MobRep_HV,
