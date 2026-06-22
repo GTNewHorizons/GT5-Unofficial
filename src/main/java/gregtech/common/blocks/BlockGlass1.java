@@ -42,7 +42,7 @@ public class BlockGlass1 extends BlockCasingsAbstract {
         register(9, ItemList.ElectromagneticWaveguide);
         register(10, ItemList.ReinforcedGlass);
         ItemList.ReinforcedGlass.registerOre("glassReinforced");
-        ItemList.ReinforcedGlass.set(new ItemStack(this.setResistance(150.0f), 1, 10));
+        ItemList.ReinforcedGlass.set(new ItemStack(this.setResistance(108.0f), 1, 10));
     }
 
     @Override
