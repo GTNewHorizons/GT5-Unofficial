@@ -2516,7 +2516,8 @@ GT5U.gui.text.recipe_result.insufficient_power=§7Recipe needs more power to sta
 GT5U.gui.text.recipe_result.insufficient_voltage=§7Recipe needs a higher voltage to start. Required: %s EU/t (%s§7)
 GT5U.gui.text.recipe_result.insufficient_heat=§7Recipe needs more heat to start. Required: %s K (%s§7)
 GT5U.gui.text.recipe_result.insufficient_machine_tier=§7Recipe needs higher structure tier. Required: %s
-GT5U.gui.text.recipe_result.insufficient_startup_power=§7Recipe needs higher startup power. Required: %s
+GT5U.gui.text.recipe_result.insufficient_startup_power=§7Recipe needs higher startup power. Required: %s EU/t
+GT5U.gui.text.recipe_result.insufficient_startup_power_with_amperage=§7Recipe needs higher startup power. Required: %s EU/t. Requires %s A rounded to %s 64A energy hatches
 GT5U.gui.text.recipe_result.internal_error=§4Recipe was found, but had internal error
 GT5U.gui.text.drill_ores_left_chunk=Ores left in current chunk: §a%s
 GT5U.gui.text.drill_ores_left_layer=Ores left at y-level %s: §a%s
@@ -6220,14 +6221,14 @@ gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip4=   - Incre
 gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip5=   - Subtracts %s10%%§7 from Initial EU Cost per module
 gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip6=- §f3+ Modules:
 gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip7=   - Adds %s6§7 Parallels per %sVoltage§7 tier per module
-gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip8=   - Increases Overclock Factor by §d0.1
+gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip8=   - Increases Overclock Factor by §d0.08
 gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip9=- §f4 Modules:
 gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip10=   - Grants 2 maximum§d overclocks
 
 gt.blockmachines.multimachine.foundry.parallel.flavor=Greater Fate
 gt.blockmachines.multimachine.foundry.parallel.tooltip1=- Adds §612 §7Parallels per %s §7tier
 gt.blockmachines.multimachine.foundry.parallel.tooltip2=- Increases Hatch Space by §636
-gt.blockmachines.multimachine.foundry.parallel.tooltip3=- Adds an additional §66 §7Parallels per %s §7tier when
+gt.blockmachines.multimachine.foundry.parallel.tooltip3=- Adds an additional §68 §7Parallels per %s §7tier when
 gt.blockmachines.multimachine.foundry.parallel.tooltip4=   paired with the §cStreamlined Casting §7module
 
 gt.blockmachines.multimachine.foundry.hypercooler.flavor=Tempered Fury
@@ -6240,7 +6241,7 @@ gt.blockmachines.multimachine.foundry.hypercooler.tooltip6=   paired with the §
 
 gt.blockmachines.multimachine.foundry.streamlinedcasters.flavor=Witch Time!
 gt.blockmachines.multimachine.foundry.streamlinedcasters.tooltip1=- Increases Base Speed by %s150%%
-gt.blockmachines.multimachine.foundry.streamlinedcasters.tooltip2=- Increases Base Speed by an additional %s75%% when
+gt.blockmachines.multimachine.foundry.streamlinedcasters.tooltip2=- Increases Base Speed by an additional %s80%% when
 gt.blockmachines.multimachine.foundry.streamlinedcasters.tooltip3=   paired with the §eSuperdense Casting Basins §7module
 # Exo-Foundry GUI
 GT5U.gui.text.foundry.modules.preview=Showing Preview Modules
