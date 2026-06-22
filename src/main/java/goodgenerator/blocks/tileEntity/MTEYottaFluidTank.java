@@ -289,7 +289,12 @@ public class MTEYottaFluidTank extends TTMultiblockBase implements ISurvivalCons
             return;
         }
         if (!checkPiece(YOTTANK_TOP, 2, cnt + 2, 0, errors)) return;
-        checkHasInputHatch(errors);
+
+        if (this.mYottaHatch.isEmpty()) {
+            checkHasInputHatch(errors);
+            checkHasOutputHatch(errors);
+        }
+
         // maxCell+1 = Tier of highest Cell. glassTier is the glass voltage tier
         if (maxCell + 3 > glassTier) {
             errors.add(StructureErrors.glassTierNotEnough(maxCell + 3));
