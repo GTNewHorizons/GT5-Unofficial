@@ -925,6 +925,8 @@ gt.blockcasings10.name=Machine Casing
 gt.blockcasings11.name=Machine Casing
 gt.blockcasingsNH.name=Machine Casing
 gt.blockconcretes.name=Concrete
+gt.blockpad=Pad
+gt.blockfencemetal=Fence
 gt.blockframes.name=Frame
 gt.blockgem1.name=Block
 gt.blockgem2.name=Block
@@ -2380,7 +2382,7 @@ channels.gregtech.spacetime_compression=Decides the tier of Spacetime Compressio
 channels.gregtech.stabilisation=Decides the tier of Stabilisation Field Generator. Starts at §6Crude Stabilisation Field Generator§r at value 1 and ends at §6Gallifreyan Stabilisation Field Generator§r at value 9.
 channels.gregtech.time_dilation=Decides the tier of Time Dilation Field Generator. Starts at §6Crude Time Dilation Field Generator§r at value 1 and ends at §6Gallifreyan Time Dilation Field Generator§r at value 9.
 channels.gregtech.gt_hatch=Enables automatic hatch placement
-channels.gregtech.field=Decides the tier of T.F.F.T. Storage Field.
+channels.gregtech.field=Decides the tier of TFFT Storage Field.
 channels.gregtech.component_casing=Decides the tier of Component Assembly Line Casing. Starts at §6LV§r at value 1 and ends at §6MAX§r at value 14.
 
 GT5U.gui.select.current=§8Current:
@@ -2515,7 +2517,8 @@ GT5U.gui.text.recipe_result.insufficient_power=§7Recipe needs more power to sta
 GT5U.gui.text.recipe_result.insufficient_voltage=§7Recipe needs a higher voltage to start. Required: %s EU/t (%s§7)
 GT5U.gui.text.recipe_result.insufficient_heat=§7Recipe needs more heat to start. Required: %s K (%s§7)
 GT5U.gui.text.recipe_result.insufficient_machine_tier=§7Recipe needs higher structure tier. Required: %s
-GT5U.gui.text.recipe_result.insufficient_startup_power=§7Recipe needs higher startup power. Required: %s
+GT5U.gui.text.recipe_result.insufficient_startup_power=§7Recipe needs higher startup power. Required: %s EU/t
+GT5U.gui.text.recipe_result.insufficient_startup_power_with_amperage=§7Recipe needs higher startup power. Required: %s EU/t. Requires %s A rounded to %s 64A energy hatches
 GT5U.gui.text.recipe_result.internal_error=§4Recipe was found, but had internal error
 GT5U.gui.text.drill_ores_left_chunk=Ores left in current chunk: §a%s
 GT5U.gui.text.drill_ores_left_layer=Ores left at y-level %s: §a%s
@@ -4295,6 +4298,10 @@ gt.item.paper.magic.page.name=Enchanted Page
 gt.item.paper.magic.pages.name=Enchanted Pages
 gt.item.paper.punch_card.empty.name=Punch Card
 gt.item.paper.punch_card.encoded.name=Punched Card
+
+# Pads
+gt.blockpad.0.name=Bounce Pad
+gt.blockpad.1.name=Sticky Pad
 
 ## Book
 gt.item.book.written.01.name=Book
@@ -6220,14 +6227,14 @@ gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip4=   - Incre
 gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip5=   - Subtracts %s10%%§7 from Initial EU Cost per module
 gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip6=- §f3+ Modules:
 gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip7=   - Adds %s6§7 Parallels per %sVoltage§7 tier per module
-gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip8=   - Increases Overclock Factor by §d0.1
+gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip8=   - Increases Overclock Factor by §d0.08
 gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip9=- §f4 Modules:
 gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip10=   - Grants 2 maximum§d overclocks
 
 gt.blockmachines.multimachine.foundry.parallel.flavor=Greater Fate
 gt.blockmachines.multimachine.foundry.parallel.tooltip1=- Adds §612 §7Parallels per %s §7tier
 gt.blockmachines.multimachine.foundry.parallel.tooltip2=- Increases Hatch Space by §636
-gt.blockmachines.multimachine.foundry.parallel.tooltip3=- Adds an additional §66 §7Parallels per %s §7tier when
+gt.blockmachines.multimachine.foundry.parallel.tooltip3=- Adds an additional §68 §7Parallels per %s §7tier when
 gt.blockmachines.multimachine.foundry.parallel.tooltip4=   paired with the §cStreamlined Casting §7module
 
 gt.blockmachines.multimachine.foundry.hypercooler.flavor=Tempered Fury
@@ -6240,7 +6247,7 @@ gt.blockmachines.multimachine.foundry.hypercooler.tooltip6=   paired with the §
 
 gt.blockmachines.multimachine.foundry.streamlinedcasters.flavor=Witch Time!
 gt.blockmachines.multimachine.foundry.streamlinedcasters.tooltip1=- Increases Base Speed by %s150%%
-gt.blockmachines.multimachine.foundry.streamlinedcasters.tooltip2=- Increases Base Speed by an additional %s75%% when
+gt.blockmachines.multimachine.foundry.streamlinedcasters.tooltip2=- Increases Base Speed by an additional %s80%% when
 gt.blockmachines.multimachine.foundry.streamlinedcasters.tooltip3=   paired with the §eSuperdense Casting Basins §7module
 # Exo-Foundry GUI
 GT5U.gui.text.foundry.modules.preview=Showing Preview Modules
@@ -8003,15 +8010,15 @@ achievement.gt.blockmachines.voidminer3=Void Miner III
 achievement.gt.blockmachines.voidminer3.desc=Pick up this item to see the recipe in NEI
 achievement.gt.blockmachines.electricimplosioncompressor=Electric Implosion Compressor
 achievement.gt.blockmachines.electricimplosioncompressor.desc=Pick up this item to see the recipe in NEI
-achievement.tile.kekztech_tfftstoragefield_block.6=T.F.F.T Storage Field Block (Tier VI)
+achievement.tile.kekztech_tfftstoragefield_block.6=TFFT Storage Field Block (Tier VI)
 achievement.tile.kekztech_tfftstoragefield_block.6.desc=Pick up this item to see the recipe in NEI
-achievement.tile.kekztech_tfftstoragefield_block.7=T.F.F.T Storage Field Block (Tier VII)
+achievement.tile.kekztech_tfftstoragefield_block.7=TFFT Storage Field Block (Tier VII)
 achievement.tile.kekztech_tfftstoragefield_block.7.desc=Pick up this item to see the recipe in NEI
-achievement.tile.kekztech_tfftstoragefield_block.8=T.F.F.T Storage Field Block (Tier VIII)
+achievement.tile.kekztech_tfftstoragefield_block.8=TFFT Storage Field Block (Tier VIII)
 achievement.tile.kekztech_tfftstoragefield_block.8.desc=Pick up this item to see the recipe in NEI
-achievement.tile.kekztech_tfftstoragefield_block.9=T.F.F.T Storage Field Block (Tier IX)
+achievement.tile.kekztech_tfftstoragefield_block.9=TFFT Storage Field Block (Tier IX)
 achievement.tile.kekztech_tfftstoragefield_block.9.desc=Pick up this item to see the recipe in NEI
-achievement.tile.kekztech_tfftstoragefield_block.10=T.F.F.T Storage Field Block (Tier X)
+achievement.tile.kekztech_tfftstoragefield_block.10=TFFT Storage Field Block (Tier X)
 achievement.tile.kekztech_tfftstoragefield_block.10.desc=Pick up this item to see the recipe in NEI
 achievement.gt.blockmachines.multimachine.extremeapiary=Industrial Apicultural Acclimatiser and Drone Domestication Station
 achievement.gt.blockmachines.multimachine.extremeapiary.desc=Pick up this item to see the recipe in NEI
@@ -8475,6 +8482,7 @@ gt.blockreinforced.9.name=Titanium Reinforced Block
 gt.blockreinforced.10.name=Naquadah Reinforced Block
 gt.blockreinforced.11.name=Neutronium Reinforced Block
 gt.blockreinforced.12.name=Raw Deep Dark Portal Block
+gt.blockreinforced.13.name=Reinforced Block
 
 # BlockStones
 gt.blockstones.0.name=Marble
@@ -8493,6 +8501,9 @@ gt.blockstones.12.name=Cracked Basalt Bricks
 gt.blockstones.13.name=Mossy Basalt Bricks
 gt.blockstones.14.name=Chiseled Basalt
 gt.blockstones.15.name=Smooth Basalt
+
+#Fences
+gt.blockfencemetal.0.name=Iron Fence
 
 # Book
 gt.book.credits=Credits to %s for writing this Book. This was Book Nr. %d at its creation. Gotta get 'em all

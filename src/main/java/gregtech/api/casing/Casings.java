@@ -644,6 +644,11 @@ public enum Casings implements ICasing {
     ElectromagneticWaveguide
         (() -> GregTechAPI.sBlockGlass1, 9, -1),
 
+    // Fences
+
+    IronFence
+        (()-> GregTechAPI.sBlockFenceMetal, 0, -1),
+
     // ------------------ Bartworks Casings -----------------
 
     BoltedOsmiridiumCasing
