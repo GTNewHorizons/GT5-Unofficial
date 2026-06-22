@@ -98,7 +98,7 @@ public class MechArmorAugmentRegistries {
             .setSlotCounts(1, 2, 0, 0)
             .setColor(new short[] {103, 90, 104, 0})
             .setRarity(EnumRarity.common)
-            .setProtection(8)
+            .setProtection(0.7f)
         ),
         Medium(ItemList.Armor_Frame_Medium, new FrameBuilder()
             .setId("Medium")
@@ -106,7 +106,7 @@ public class MechArmorAugmentRegistries {
             .setSlotCounts(1, 0, 2, 0)
             .setColor(new short[] {146, 153, 171, 0})
             .setRarity(EnumRarity.common)
-            .setProtection(11)
+            .setProtection(0.75f)
         ),
         Heavy(ItemList.Armor_Frame_Heavy, new FrameBuilder()
             .setId("Heavy")
@@ -114,7 +114,7 @@ public class MechArmorAugmentRegistries {
             .setSlotCounts(2, 0, 1, 0)
             .setColor(new short[] {74, 78, 87, 0})
             .setRarity(EnumRarity.common)
-            .setProtection(15)
+            .setProtection(0.8f)
         ),
 
         Nimble(ItemList.Armor_Frame_Nimble, new FrameBuilder()
@@ -123,7 +123,7 @@ public class MechArmorAugmentRegistries {
             .setSlotCounts(1, 3, 1, 0)
             .setColor(new short[] {182, 35, 40, 0})
             .setRarity(EnumRarity.uncommon)
-            .setProtection(10)
+            .setProtection(0.8f)
         ),
         Adaptive(ItemList.Armor_Frame_Adaptive, new FrameBuilder()
             .setId("Adaptive")
@@ -131,7 +131,7 @@ public class MechArmorAugmentRegistries {
             .setSlotCounts(2, 1, 1, 1)
             .setColor(new short[] {93, 115, 35, 0})
             .setRarity(EnumRarity.uncommon)
-            .setProtection(13)
+            .setProtection(0.85f)
         ),
         Tough(ItemList.Armor_Frame_Tough, new FrameBuilder()
             .setId("Tough")
@@ -139,7 +139,7 @@ public class MechArmorAugmentRegistries {
             .setSlotCounts(3, 0, 2, 0)
             .setColor(new short[] {44, 33, 35, 0})
             .setRarity(EnumRarity.uncommon)
-            .setProtection(17)
+            .setProtection(0.9f)
         ),
 
         Lightning(ItemList.Armor_Frame_Lightning, new FrameBuilder()
@@ -148,7 +148,7 @@ public class MechArmorAugmentRegistries {
             .setSlotCounts(1, 4, 1, 1)
             .setColor(new short[] {121, 84, 206, 0})
             .setRarity(EnumRarity.rare)
-            .setProtection(15)
+            .setProtection(0.9f)
         ),
         Morphic(ItemList.Armor_Frame_Morphic, new FrameBuilder()
             .setId("Morphic")
@@ -156,7 +156,7 @@ public class MechArmorAugmentRegistries {
             .setSlotCounts(2, 1, 2, 2)
             .setColor(new short[] {156, 212, 227, 0})
             .setRarity(EnumRarity.rare)
-            .setProtection(17)
+            .setProtection(0.95f)
         ),
         Bulwark(ItemList.Armor_Frame_Bulwark, new FrameBuilder()
             .setId("Bulwark")
@@ -164,7 +164,7 @@ public class MechArmorAugmentRegistries {
             .setSlotCounts(4, 1, 1, 1)
             .setColor(new short[] {113, 88, 78, 0})
             .setRarity(EnumRarity.rare)
-            .setProtection(20)
+            .setProtection(0.99f)
         ),
 
         Infinity(ItemList.Armor_Frame_Infinity, new FrameBuilder()
@@ -173,7 +173,7 @@ public class MechArmorAugmentRegistries {
             .setSlotCounts(5, 5, 5, 5)
             .setColor(Materials.Infinity.mRGBa)
             .setRarity(EnumRarity.epic)
-            .setProtection(30)
+            .setProtection(1)
         );
         // spotless:on
 
@@ -259,7 +259,7 @@ public class MechArmorAugmentRegistries {
             return this.builder.getColor();
         }
 
-        public int getProtection() {
+        public float getProtection() {
             return this.builder.getProtection();
         }
 
