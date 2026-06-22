@@ -101,6 +101,7 @@ import gregtech.api.recipe.check.ResultMissingApiaryFlowers;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrors;
+import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTUtility.ItemId;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -116,6 +117,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
     protected int glassTier = -1;
     protected int mCasing = 0;
     public int mMaxSlots = 0;
+    private boolean needsWaterFill = false;
 
     public int mPrimaryMode = MODE_PRIMARY_INPUT;
     public int mSecondaryMode = MODE_SECONDARY_NORMAL;
@@ -168,9 +170,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
             Arrays.stream(struct)
                 .map(
                     sa -> Arrays.stream(sa)
-                        .map(
-                            s -> s.replaceAll("W", " ")
-                                .replaceAll("F", " "))
+                        .map(s -> s.replaceAll("F", " "))
                         .toArray(String[]::new))
                 .toArray(String[][]::new))
         .addShape(
@@ -312,7 +312,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
         if (built == -1) {
             GTUtility.sendChatToPlayer(
                 env.getActor(),
-                EnumChatFormatting.GREEN + "Auto placing done ! Now go place the water and flowers yourself !");
+                EnumChatFormatting.GREEN + "Auto placing done! Now go place the flowers yourself !");
             return 0;
         }
         return built;
@@ -462,6 +462,12 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (aBaseMetaTileEntity.isServerSide()) {
+            if (needsWaterFill && aTick % 20 == 0) {
+                if (GTStructureUtility
+                    .fillStructureWithWater(aBaseMetaTileEntity, getExtendedFacing(), struct, 7, 8, 0, 'W')) {
+                    needsWaterFill = false;
+                }
+            }
             // TODO: Look for proper fix
             if (mUpdate < -550) mUpdate = 50;
         } else {
@@ -654,9 +660,14 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
 
     @Override
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
+        needsWaterFill = false;
         glassTier = -1;
         mCasing = 0;
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, 7, 8, 0, errors)) return;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 7, 8, 0, errors)) {
+            needsWaterFill = GTStructureUtility
+                .hasWaterAtStructurePosition(aBaseMetaTileEntity, getExtendedFacing(), struct, 7, 8, 0, 'W');
+            return;
+        }
         for (MTEHatchEnergy hatchEnergy : this.mEnergyHatches) {
             if (this.glassTier < hatchEnergy.getTierForStructure()) {
                 errors.add(StructureErrors.glassTierNotEnough(hatchEnergy.mTier));
@@ -675,6 +686,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
         }
         if (errors.isEmpty()) {
             updateMaxSlots();
+            needsWaterFill = true;
         }
         checkRequiredFlowers();
     }
