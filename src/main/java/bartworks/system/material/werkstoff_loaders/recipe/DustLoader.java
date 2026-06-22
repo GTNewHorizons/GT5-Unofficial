@@ -29,6 +29,7 @@ import static gregtech.api.recipe.RecipeMaps.packagerRecipes;
 import static gregtech.api.recipe.RecipeMaps.primitiveBlastRecipes;
 import static gregtech.api.recipe.RecipeMaps.vacuumFreezerRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
+import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeConstants.ADDITIVE_AMOUNT;
 import static gregtech.api.util.GTRecipeConstants.BlastFurnaceWithGas;
 import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
@@ -421,14 +422,14 @@ public class DustLoader implements IWerkstoffRunnable {
                 GTValues.RA.stdBuilder()
                     .itemInputs(werkstoff.get(ingot))
                     .itemOutputs(werkstoff.get(dust))
-                    .duration(20 * SECONDS)
+                    .duration(5 * SECONDS)
                     .eut(BWUtil.calculateRecipeEU(werkstoff, 2))
                     .addTo(maceratorRecipes);
 
                 GTValues.RA.stdBuilder()
                     .itemInputs(werkstoff.get(nugget))
                     .itemOutputs(werkstoff.get(dustTiny))
-                    .duration(20 * SECONDS)
+                    .duration(10 * TICKS)
                     .eut(BWUtil.calculateRecipeEU(werkstoff, 2))
                     .addTo(maceratorRecipes);
 
