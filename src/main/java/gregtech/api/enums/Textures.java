@@ -141,6 +141,8 @@ public class Textures {
 
             HIDDEN_FACE = create("HIDDEN_FACE"),
 
+            REINFORCED_GLASS = create("REINFORCED_GLASS"),
+
             MACHINE_CASING_TANK_1 = create("MACHINE_CASING_TANK_1"),
             MACHINE_CASING_TANK_2 = create("MACHINE_CASING_TANK_2"),
             MACHINE_CASING_TANK_3 = create("MACHINE_CASING_TANK_3"),
