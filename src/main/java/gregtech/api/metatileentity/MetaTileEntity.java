@@ -1,5 +1,7 @@
 package gregtech.api.metatileentity;
 
+import static gregtech.api.interfaces.tileentity.IColoredTileEntity.UNCOLOURED;
+
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -540,10 +542,13 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
 
     /**
      * Called when a slot is changed. Note: {@link #setInventorySlotContents} is not called when the player interacts
-     * with a {@link gregtech.api.interfaces.modularui.IAddInventorySlots} slot.
+     * with a {@link gregtech.api.interfaces.modularui.IAddInventorySlots} slot, nor when items are inserted/extracted
+     * through {@link #getInventoryHandler()} (the path used by the GUI and AE). Marking the tile dirty here makes
+     * {@link IGregTechTileEntity#hasInventoryBeenModified()} reliable across all of those paths, which input hatches
+     * rely on to trigger instant recipe checks.
      */
     public void onContentsChanged(int slot) {
-
+        markDirty();
     }
 
     /**
@@ -792,7 +797,9 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
     }
 
     final public byte getColor() {
-        return getBaseMetaTileEntity().getColorization();
+        IGregTechTileEntity baseMetaTileEntity = getBaseMetaTileEntity();
+        if (baseMetaTileEntity == null) return UNCOLOURED;
+        return baseMetaTileEntity.getColorization();
     }
 
     protected Supplier<Integer> COLOR_TITLE = () -> getTextColorOrDefault("title", 0x404040);
@@ -820,5 +827,9 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
 
     public int getColorTextRed() {
         return COLOR_TEXT_RED.get();
+    }
+
+    public boolean isItemValidForPhantomSlot(int index, ItemStack itemStack) {
+        return false;
     }
 }

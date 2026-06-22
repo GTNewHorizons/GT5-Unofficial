@@ -22,8 +22,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
+import bartworks.common.loaders.FluidLoader;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import goodgenerator.loader.Loaders;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.IDamagableItem;
@@ -44,6 +46,7 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.world.GTWorldgen;
 import gregtech.common.GTDummyWorld;
 import gregtech.common.covers.CoverPosition;
+import tectech.thing.casing.TTCasingsContainer;
 
 /**
  * Please do not include this File in your Mod-download as it ruins compatibility, like with the IC2-API You may just
@@ -176,6 +179,8 @@ public class GregTechAPI {
         sBlockCasingsSEMotor, sBlockCasingsDyson, sBlockCasingsSiphon;
     public static Block sBlockLongDistancePipes;
     public static Block sDroneRender;
+    public static Block sBlockFenceMetal;
+    public static Block sBlockPad;
     public static Block sBlockFrames;
     public static Block sBlockGlass1;
     public static Block sBlockTintedGlass;
@@ -319,6 +324,19 @@ public class GregTechAPI {
                 return (id & B[aMeta]) != 0;
             }
         }
+        return false;
+    }
+
+    /**
+     * if this Block is a TESR Render Block
+     */
+    public static boolean isGTRenderer(Block block) {
+        if (block == GregTechAPI.sWormholeRender) return true;
+        if (block == GregTechAPI.sBlackholeRender) return true;
+        if (block == TTCasingsContainer.eyeOfHarmonyRenderBlock) return true;
+        if (block == TTCasingsContainer.forgeOfGodsRenderBlock) return true;
+        if (block == FluidLoader.bioFluidBlock) return true;
+        if (block == Loaders.antimatterRenderBlock) return true;
         return false;
     }
 

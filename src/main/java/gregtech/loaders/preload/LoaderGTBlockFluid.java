@@ -71,6 +71,7 @@ import gregtech.common.blocks.BlockCasingsNH;
 import gregtech.common.blocks.BlockConcretes;
 import gregtech.common.blocks.BlockCyclotronCoils;
 import gregtech.common.blocks.BlockDecorativeFrame;
+import gregtech.common.blocks.BlockFenceMetal;
 import gregtech.common.blocks.BlockFrameBox;
 import gregtech.common.blocks.BlockGlass1;
 import gregtech.common.blocks.BlockGranites;
@@ -78,6 +79,7 @@ import gregtech.common.blocks.BlockLaser;
 import gregtech.common.blocks.BlockMachines;
 import gregtech.common.blocks.BlockMetal;
 import gregtech.common.blocks.BlockOresLegacy;
+import gregtech.common.blocks.BlockPad;
 import gregtech.common.blocks.BlockReinforced;
 import gregtech.common.blocks.BlockRenderer;
 import gregtech.common.blocks.BlockSheetMetal;
@@ -103,7 +105,6 @@ import gregtech.common.items.MetaGeneratedTool01;
 import gregtech.common.items.armor.MechArmorLoader;
 import gregtech.common.ores.GTOreAdapter;
 import gregtech.common.tileentities.render.RenderingTileEntityBlackhole;
-import gregtech.common.tileentities.render.RenderingTileEntityDrone;
 import gregtech.common.tileentities.render.RenderingTileEntityLaser;
 import gregtech.common.tileentities.render.RenderingTileEntityNanoForge;
 import gregtech.common.tileentities.render.RenderingTileEntityWormhole;
@@ -750,12 +751,13 @@ public class LoaderGTBlockFluid implements Runnable {
         GregTechAPI.sBlockConcretes = new BlockConcretes();
         GregTechAPI.sBlockStones = new BlockStones();
         GregTechAPI.sBlockOres1 = new BlockOresLegacy();
+        GregTechAPI.sBlockPad = new BlockPad();
+        GregTechAPI.sBlockFenceMetal = new BlockFenceMetal();
         GregTechAPI.sBlockFrames = new BlockFrameBox();
         GregTechAPI.sBlockGlass1 = new BlockGlass1();
         GregTechAPI.sBlockTintedGlass = new BlockTintedIndustrialGlass();
         GregTechAPI.sLaserRender = new BlockLaser();
         GTLog.out.println("GTMod: Adding Renderer Blocks.");
-        GregTechAPI.sDroneRender = new BlockRenderer<>("dronerenderer", RenderingTileEntityDrone::new);
         GregTechAPI.sWormholeRender = new BlockRenderer<>("wormholerenderer", RenderingTileEntityWormhole::new);
         GregTechAPI.sBlackholeRender = new BlockRenderer<>("blackholerenderer", RenderingTileEntityBlackhole::new);
         GregTechAPI.nanoForgeRender = new BlockRenderer<>("nanoforgerenderer", RenderingTileEntityNanoForge::new);
@@ -905,9 +907,6 @@ public class LoaderGTBlockFluid implements Runnable {
             "whitelist-spatial",
             tBaseMetaTileEntity.getClass()
                 .getName());
-
-        GTLog.out.println("GTMod: Registering the DroneRender.");
-        GameRegistry.registerTileEntity(RenderingTileEntityDrone.class, "DroneRender");
 
         GTLog.out.println("GTMod: Registering the LaserRender.");
         GameRegistry.registerTileEntity(RenderingTileEntityLaser.class, "LaserRenderer");
@@ -2656,8 +2655,6 @@ public class LoaderGTBlockFluid implements Runnable {
             OrePrefixes.dust,
             Materials.Cocoa,
             GTModHandler.getModItem(PamsHarvestCraft.ID, "cocoapowderItem", 1L, 0));
-
-        GregTechAPI.registerMachineBlock(GTUtility.getBlockFromStack(GTModHandler.getIC2Item("reinforcedGlass", 0)), 0);
 
         GregTechAPI.sSolenoidCoilCasings = new BlockCyclotronCoils();
         ItemList.TierdDrone0

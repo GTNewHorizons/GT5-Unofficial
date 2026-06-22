@@ -114,7 +114,7 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
             .addCasingInfoRange("Heat Proof Machine Casing", 7, 14, false)
             .addOtherStructurePart("Heating Coil", "Middle layer")
             .addEnergyHatch("Any bottom Casing", 1)
-            .addMaintenanceHatch("Any Heat Proof Machine Casing", 1)
+            .addMaintenanceHatch("Any Heat Proof Machine Casing", 1, 3)
             .addMufflerHatch("Top Middle", 2)
             .addInputBus("Any bottom Casing", 1)
             .addOutputBus("Any bottom Casing", 1)
@@ -363,10 +363,7 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
                 + getAveragePollutionPercentage()
                 + EnumChatFormatting.RESET
                 + " %",
-            StatCollector.translateToLocal("GT5U.multiblock.recipesDone") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(recipesDone)
-                + EnumChatFormatting.RESET };
+            GTUtility.translate("GT5U.multiblock.recipesDone", formatNumber(recipesDone)) };
     }
 
     @Override

@@ -25,6 +25,8 @@ import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.api.modularui2.GTGuiTheme;
+import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.common.WirelessComputationPacket;
 import gregtech.common.gui.modularui.hatch.MTEHatchWirelessComputationInputGui;
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -191,5 +193,10 @@ public class MTEHatchWirelessComputationInput extends MTEHatchDataInput implemen
     @Override
     public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
         return new MTEHatchWirelessComputationInputGui(this).build(guiData, syncManager, uiSettings);
+    }
+
+    @Override
+    protected GTGuiTheme getGuiTheme() {
+        return GTGuiThemes.TECTECH_STANDARD;
     }
 }

@@ -104,6 +104,7 @@ public class MTESolarTower extends GTPPMultiBlockBase<MTESolarTower> implements 
             .beginVariableStructureBlock(15, 31, 28, 28, 15, 31, false)
             .addController("Top center")
             .addCasingInfoMin("Structural Solar Casing", 229, false)
+            .addCasingInfoRange("Solar Reflector", 36, 340, false)
             .addCasingInfoMin("Thermally Insulated Casing", 60, false)
             .addCasingInfoMin("Salt Containment Casing", 66, false)
             .addCasingInfoMin("Thermal Containment Casing", 60, false)
@@ -548,7 +549,7 @@ public class MTESolarTower extends GTPPMultiBlockBase<MTESolarTower> implements 
 
                     this.mHeatLevel -= aFluidAmount;
                     this.depleteInput(new FluidStack(mColdSalt, aFluidAmount));
-                    this.addOutput(new FluidStack(mHotSalt, aFluidAmount));
+                    this.addOutputPartial(new FluidStack(mHotSalt, aFluidAmount));
                     this.mHeatLevel = Math.max(this.mHeatLevel, 0);
 
                     break;

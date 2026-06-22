@@ -32,6 +32,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
+import gregtech.api.modularui2.ProxiedMteGui;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
@@ -39,7 +40,8 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 @IMetaTileEntity.SkipGenerateDescription
-public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDualInputHatchWithPattern, IDataCopyable {
+public final class MTEHatchCraftingInputSlave extends MTEHatchInputBus
+    implements IDualInputHatchWithPattern, IDataCopyable {
 
     @Override
     protected boolean useMui2() {
@@ -47,6 +49,7 @@ public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDua
     }
 
     public static final String COPIED_DATA_IDENTIFIER = "craftingInputProxy";
+    private final List<IHatchWatcher> watchers = new ArrayList<>();
     private MTEHatchCraftingInputME master; // use getMaster() to access
     private int masterX, masterY, masterZ;
     private boolean masterSet = false; // indicate if values of masterX, masterY, masterZ are valid
@@ -189,8 +192,19 @@ public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDua
     }
 
     @Override
-    public boolean justUpdated() {
-        return getMaster() != null && getMaster().justUpdated();
+    public void addWatcher(IHatchWatcher watcher) {
+        watchers.add(watcher);
+    }
+
+    @Override
+    public void removeWatcher(IHatchWatcher watcher) {
+        watchers.remove(watcher);
+    }
+
+    public void onParentInvChange() {
+        for (IHatchWatcher watcher : watchers) {
+            watcher.scheduleRecipeCheckImmediate();
+        }
     }
 
     public MTEHatchCraftingInputME trySetMasterFromCoord(int x, int y, int z) {
@@ -236,7 +250,7 @@ public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDua
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        if (!(aPlayer instanceof EntityPlayerMP)) {
+        if (!(aPlayer instanceof EntityPlayerMP player)) {
             return false;
         }
         if (tryLinkDataStick(aPlayer)) {
@@ -244,7 +258,10 @@ public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDua
         }
         var master = getMaster();
         if (master != null) {
-            return master.onRightclick(master.getBaseMetaTileEntity(), aPlayer);
+            if (aBaseMetaTileEntity.isServerSide()) {
+                ProxiedMteGui.open(master, player);
+            }
+            return true;
         }
         return false;
     }
