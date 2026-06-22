@@ -213,7 +213,7 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
             .addController("Front bottom center")
             .addOtherStructurePart(getCasingString(), "Top and bottom layers")
             .addOtherStructurePart(getPipeString(), "Corners of the middle two layers")
-            .addOtherStructurePart("Muffler Hatch", "Sides of the middle two layers")
+            .addMufflerHatch("Sides of the middle two layers", 2)
             .addEnergyHatch("Any bottom layer Casing", 1)
             .addMaintenanceHatch("Any bottom layer Casing", 1)
             .addInputBus("Any bottom layer Casing (optional)", 1)
