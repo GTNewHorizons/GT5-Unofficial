@@ -151,13 +151,13 @@ public class WorldGeneratorSpace implements IWorldGenerator {
             List<Ellipsoid> positive = new ArrayList<>();
             List<Ellipsoid> negative = new ArrayList<>();
 
-            int radius = asteroidConfig.MinSize + rng.nextInt(asteroidConfig.MinSize - asteroidConfig.MaxSize + 1);
+            int radius = asteroidConfig.MinSize + rng.nextInt(asteroidConfig.MaxSize - asteroidConfig.MinSize + 1);
             positive.add(new Ellipsoid(0, 0, 0, radius));
 
             if (asteroidConfig.PositiveEllipsoids > 0) {
                 int k = rng.nextInt(2);
                 for (int i = 0; i < k; i++) {
-                    negative.add(
+                    positive.add(
                         new Ellipsoid(
                             radius * (rng.nextFloat() * 2 - 1),
                             radius * (rng.nextFloat() * 2 - 1),
@@ -169,7 +169,7 @@ public class WorldGeneratorSpace implements IWorldGenerator {
             if (asteroidConfig.NegativeEllipsoids > 0 && rng.nextInt(4) == 0) {
                 int k = rng.nextInt(asteroidConfig.NegativeEllipsoids);
                 for (int i = 0; i < k; i++) {
-                    positive.add(
+                    negative.add(
                         new Ellipsoid(
                             radius * (rng.nextFloat() * 2 - 1),
                             radius * (rng.nextFloat() * 2 - 1),

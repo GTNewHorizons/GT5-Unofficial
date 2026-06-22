@@ -99,9 +99,9 @@ public class MTEIndustrialExtruder extends MTEExtendedPowerMultiBlockBase<MTEInd
             .addCasingInfoExactly("Chemically Inert Casing", 24, false)
             .addInputBus("Any Pressure Containment Casing", 1)
             .addOutputBus("Any Pressure Containment Casing", 1)
-            .addEnergyHatch("Any Pressure Containment or Clean Stainless Steel Casing", 1)
-            .addMaintenanceHatch("Any Pressure Containment or Clean Stainless Steel Casing", 1)
-            .addMufflerHatch("Any Pressure Containment or Clean Stainless Steel Casing", 1)
+            .addEnergyHatch("Any Pressure Containment or Clean Stainless Steel Casing", 1, 2)
+            .addMaintenanceHatch("Any Pressure Containment or Clean Stainless Steel Casing", 1, 2)
+            .addMufflerHatch("Any Pressure Containment or Clean Stainless Steel Casing", 1, 2)
             .addStructureAuthors(EnumChatFormatting.GOLD + "cauchemard")
             .toolTipFinisher();
         return tt;

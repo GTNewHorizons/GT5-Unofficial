@@ -160,6 +160,7 @@ public class MTENeutroniumCompressor extends MTEExtendedPowerMultiBlockBase<MTEN
             .addCasingInfoExactly("Neutronium Stabilization Casing", 67, false)
             .addInputBus("Any Neutronium Casing", 1)
             .addOutputBus("Any Neutronium Casing", 1)
+            .addInputHatch("Any Neutronium Casing", 1)
             .addEnergyHatch("Any Neutronium Casing", 1)
             .addMaintenanceHatch("Any Neutronium Casing", 1)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
