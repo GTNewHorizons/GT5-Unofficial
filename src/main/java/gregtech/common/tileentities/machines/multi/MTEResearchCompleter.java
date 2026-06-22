@@ -361,10 +361,10 @@ public class MTEResearchCompleter extends MTEEnhancedMultiBlockBase<MTEResearchC
             .addController("Front center")
             .addOtherStructurePart("Magical Machine Casing", "Top and bottom layers outside. 3 x L minimum")
             .addOtherStructurePart("Warded Glass", "Middle layer outside")
-            .addEnergyHatch("Any Casing")
-            .addMaintenanceHatch("Any Casing")
-            .addInputBus("Any Casing")
-            .addOutputBus("Any Casing")
+            .addEnergyHatch("Any Casing", 1)
+            .addMaintenanceHatch("Any Casing", 1)
+            .addInputBus("Any Casing", 1)
+            .addOutputBus("Any Casing", 1)
             .toolTipFinisher();
         return tt;
     }
