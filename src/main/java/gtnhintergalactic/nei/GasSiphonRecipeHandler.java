@@ -2,6 +2,7 @@ package gtnhintergalactic.nei;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.api.util.GTUtility.getColoredTierNameFromVoltage;
+import static gtnhintergalactic.recipe.GasSiphonRecipes.calculateEUt;
 
 import java.awt.Rectangle;
 import java.util.Map;
@@ -127,9 +128,8 @@ public class GasSiphonRecipeHandler extends TemplateRecipeHandler {
     @Override
     public void loadCraftingRecipes(String outputId, Object... results) {
         if (outputId.equals(getOutputId())) {
-            for (Map.Entry<String, Map<Integer, FluidStack>> entry : GasSiphonRecipes.RECIPES.entrySet()) {
-                for (Map.Entry<Integer, FluidStack> innerEntry : entry.getValue()
-                    .entrySet()) {
+            for (Map.Entry<String, GasSiphonRecipes.GasSiphonRecipe> entry : GasSiphonRecipes.RECIPES.entrySet()) {
+                for (Map.Entry<Integer, FluidStack> innerEntry : entry.getValue().DEPTHS.entrySet()) {
                     arecipes.add(
                         new CachedSiphonRecipe(
                             entry.getKey(),
@@ -137,7 +137,7 @@ public class GasSiphonRecipeHandler extends TemplateRecipeHandler {
                             innerEntry.getValue()
                                 .getFluid(),
                             innerEntry.getValue().amount,
-                            innerEntry.getKey() * (4 << (2 * GasSiphonRecipes.PLANET_TIERS.get(entry.getKey()) + 2))));
+                            calculateEUt(innerEntry.getKey(), entry.getValue().tier)));
                 }
             }
         } else {
@@ -192,9 +192,8 @@ public class GasSiphonRecipeHandler extends TemplateRecipeHandler {
         }
         if (fluid == null) return;
 
-        for (Map.Entry<String, Map<Integer, FluidStack>> entry : GasSiphonRecipes.RECIPES.entrySet()) {
-            for (Map.Entry<Integer, FluidStack> innerEntry : entry.getValue()
-                .entrySet()) {
+        for (Map.Entry<String, GasSiphonRecipes.GasSiphonRecipe> entry : GasSiphonRecipes.RECIPES.entrySet()) {
+            for (Map.Entry<Integer, FluidStack> innerEntry : entry.getValue().DEPTHS.entrySet()) {
                 if (innerEntry.getValue()
                     .isFluidEqual(new FluidStack(fluid, 0))) {
                     arecipes.add(
@@ -203,7 +202,7 @@ public class GasSiphonRecipeHandler extends TemplateRecipeHandler {
                             innerEntry.getKey(),
                             fluid,
                             innerEntry.getValue().amount,
-                            innerEntry.getKey() * (4 << (2 * GasSiphonRecipes.PLANET_TIERS.get(entry.getKey()) + 2))));
+                            calculateEUt(innerEntry.getKey(), entry.getValue().tier)));
                 }
             }
         }
