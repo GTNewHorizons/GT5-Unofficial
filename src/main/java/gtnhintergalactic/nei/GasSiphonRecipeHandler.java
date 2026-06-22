@@ -54,7 +54,7 @@ public class GasSiphonRecipeHandler extends TemplateRecipeHandler {
     private static final int GAS_TYPE_Y = PLANET_TYPE_Y + 15;
     /** Y coordinate of the output amount */
     private static final int OUT_AMOUNT_Y = GAS_TYPE_Y + 15;
-    /** Y cordinate of the eu/t */
+    /** Y coordinate of the eu/t */
     private static final int EUT_Y = OUT_AMOUNT_Y + 15;
     /** Color of all texts */
     private static final int TEXT_COLOR = 0x404040;

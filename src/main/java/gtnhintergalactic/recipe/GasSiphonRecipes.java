@@ -55,7 +55,7 @@ public class GasSiphonRecipes {
         RECIPES.put("planet.uranus", uranusRecipes);
         RECIPES.put("planet.neptune", neptuneRecipes);
 
-        // Store the correct planet tier's
+        // Store the correct planet tiers
         PLANET_TIERS.put("planet.jupiter", 3);
         PLANET_TIERS.put("planet.saturn", 5);
         PLANET_TIERS.put("planet.uranus", 5);
