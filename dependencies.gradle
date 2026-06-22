@@ -146,7 +146,7 @@ dependencies {
     // runtimeOnlyNonPublishable("thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev") { transitive = false }
     // runtimeOnlyNonPublishable("com.github.GTNewHorizons:Electro-Magic-Tools:1.7.22:dev") { transitive = false }
 
-    // For testing ctm
+    // For testing ctm and animation interpolation
     // runtimeOnlyNonPublishable('com.github.GTNewHorizons:Angelica:2.1.42:dev') { transitive = false }
 
     // Speeds up mod identification and loading in dev
