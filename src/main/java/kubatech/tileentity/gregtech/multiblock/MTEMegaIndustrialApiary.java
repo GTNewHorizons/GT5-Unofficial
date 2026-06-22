@@ -170,8 +170,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
             Arrays.stream(struct)
                 .map(
                     sa -> Arrays.stream(sa)
-                        .map(
-                            s -> s.replaceAll("F", " "))
+                        .map(s -> s.replaceAll("F", " "))
                         .toArray(String[]::new))
                 .toArray(String[][]::new))
         .addShape(
@@ -464,14 +463,8 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (aBaseMetaTileEntity.isServerSide()) {
             if (needsWaterFill && aTick % 20 == 0) {
-                if (GTStructureUtility.fillStructureWithWater(
-                    aBaseMetaTileEntity,
-                    getExtendedFacing(),
-                    struct,
-                    7,
-                    8,
-                    0,
-                    'W')) {
+                if (GTStructureUtility
+                    .fillStructureWithWater(aBaseMetaTileEntity, getExtendedFacing(), struct, 7, 8, 0, 'W')) {
                     needsWaterFill = false;
                 }
             }
@@ -671,14 +664,8 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
         glassTier = -1;
         mCasing = 0;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 7, 8, 0, errors)) {
-            needsWaterFill = GTStructureUtility.hasWaterAtStructurePosition(
-                aBaseMetaTileEntity,
-                getExtendedFacing(),
-                struct,
-                7,
-                8,
-                0,
-                'W');
+            needsWaterFill = GTStructureUtility
+                .hasWaterAtStructurePosition(aBaseMetaTileEntity, getExtendedFacing(), struct, 7, 8, 0, 'W');
             return;
         }
         for (MTEHatchEnergy hatchEnergy : this.mEnergyHatches) {
