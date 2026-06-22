@@ -3548,7 +3548,7 @@ GT5U.armor.part.name.Tough=Tough Mechanical Armor Frame
 GT5U.armor.part.name.Lightning=Lightning Mechanical Armor Frame
 GT5U.armor.part.name.Morphic=Morphic Mechanical Armor Frame
 GT5U.armor.part.name.Bulwark=Bulwark Mechanical Armor Frame
-GT5U.armor.part.name.Infinity=Infinitely Adaptive Armor Frame
+GT5U.armor.part.name.Infinity=Infinitely Adaptive Mechanical Armor Frame
 
 GT5U.armor.part.name.Nano=Armor Core (Nano)
 GT5U.armor.part.name.Quantum=Armor Core (Quantum)
@@ -3656,7 +3656,7 @@ GT5U.armor.tooltip.incompatible=Incompatible With:
 GT5U.armor.tooltip.stackable= (Stackable)
 GT5U.armor.tooltip.category=Category: %s
 GT5U.armor.tooltip.slots=Armor Slots:
-GT5U.armor.tooltip.armorvalue=Protection: %s
+GT5U.armor.tooltip.armorvalue=Damage Reduction: %d%%
 GT5U.armor.tooltip.protection=§6Protection§r
 GT5U.armor.tooltip.movement=§aMovement§r
 GT5U.armor.tooltip.utility=§dUtility§r
