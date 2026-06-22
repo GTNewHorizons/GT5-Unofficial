@@ -651,8 +651,8 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
                 mSpecialTier = 3;
             }
 
-            checkHasMaintenanceHatch(errors);
             if (!errors.isEmpty()) return;
+            checkHasMaintenanceHatch(errors);
         }
         if (mSpecialTier == 0) {
             errors.add(StructureErrorRegistry.UNKNOWN_TIER);
