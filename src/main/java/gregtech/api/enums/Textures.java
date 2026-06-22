@@ -682,10 +682,19 @@ public class Textures {
             BLOCK_NAQUADAHPREIN = create("BLOCK_NAQUADAHPREIN"),
             BLOCK_NEUTRONIUMPREIN = create("BLOCK_NEUTRONIUMPREIN"),
             BLOCK_DEEP_DARK_RAW = create("BLOCK_DEEP_DARK_RAW"),
+            BLOCK_REINFORCED_CONCRETE = create("BLOCK_REINFORCED_CONCRETE"),
             BLOCK_IRREIN = create("BLOCK_IRREIN"),
             BLOCK_PLASCRETE = create("BLOCK_PLASCRETE"),
             BLOCK_TSREIN = create("BLOCK_TSREIN"),
             BLOCK_POWDER = create("BLOCK_POWDER"),
+
+            // IC2 Replacements
+            BLOCK_BOUNCE_PAD_SIDE = create("BLOCK_BOUNCE_PAD_SIDE"),
+            BLOCK_BOUNCE_PAD_TOP = create("BLOCK_BOUNCE_PAD_TOP"),
+            BLOCK_STICKY_PAD_TOP = create("BLOCK_STICKY_PAD_TOP"),
+            BLOCK_STICKY_PAD_SIDE = create("BLOCK_STICKY_PAD_SIDE"),
+            BLOCK_STICKY_PAD_BOTTOM = create("BLOCK_STICKY_PAD_BOTTOM"),
+            BLOCK_IRON_FENCE = create("BLOCK_IRON_FENCE"),
 
             OVERLAY_LOCKER = createOptional("OVERLAY_LOCKER"),
             OVERLAY_LOCKER_000 = createOptional("OVERLAY_LOCKER_000"),

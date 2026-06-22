@@ -20,6 +20,7 @@
 
 package kubatech.tileentity.gregtech.multiblock;
 
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.isAir;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAnyMeta;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksMap;
@@ -91,6 +92,7 @@ import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -195,7 +197,7 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
         .addElement('N', ofBlock(PluginApiculture.blocks.alveary, BlockAlveary.Type.STABILIZER.ordinal()))
         .addElement('O', ofBlock(PluginApiculture.blocks.alveary, BlockAlveary.Type.HEATER.ordinal()))
         .addElement('P', ofBlock(PluginApiculture.blocks.alveary, BlockAlveary.Type.FAN.ordinal()))
-        .addElement('W', ofAnyWater())
+        .addElement('W', ofChain(ofAnyWater(false), isAir()))
         .addElement('F', new IStructureElementNoPlacement<>() {
 
             @Override
@@ -608,16 +610,12 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
     public String[] getInfoData() {
         ArrayList<String> info = new ArrayList<>(Arrays.asList(super.getInfoData()));
         info.add(
-            StatCollector.translateToLocal("kubatech.infodata.running_mode") + " "
-                + EnumChatFormatting.GOLD
-                + (mPrimaryMode == 0 ? StatCollector.translateToLocal("kubatech.infodata.mia.running_mode.input")
-                    : (mPrimaryMode == 1 ? StatCollector.translateToLocal("kubatech.infodata.mia.running_mode.output")
-                        : (mSecondaryMode == 0
-                            ? StatCollector.translateToLocal("kubatech.infodata.mia.running_mode.operating.normal")
-                            : StatCollector
-                                .translateToLocal("kubatech.infodata.mia.running_mode.operating.swarmer")))));
+            mPrimaryMode == 0 ? "kubatech.infodata.mia.running_mode.input"
+                : (mPrimaryMode == 1 ? "kubatech.infodata.mia.running_mode.output"
+                    : (mSecondaryMode == 0 ? "kubatech.infodata.mia.running_mode.operating.normal"
+                        : "kubatech.infodata.mia.running_mode.operating.swarmer")));
         info.add(
-            StatCollector.translateToLocalFormatted(
+            IGregTechDeviceInformation.encode(
                 "kubatech.infodata.mia.running_mode.bee_storage",
                 "" + EnumChatFormatting.GOLD + mStorage.size() + EnumChatFormatting.RESET,
                 (mStorage.size() > mMaxSlots ? EnumChatFormatting.DARK_RED.toString()
