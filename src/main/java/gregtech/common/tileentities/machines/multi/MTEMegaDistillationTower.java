@@ -44,8 +44,8 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHatchElement;
+import gregtech.api.interfaces.IOutputHatch;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.fluid.IFluidStore;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -54,7 +54,6 @@ import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBas
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
@@ -62,7 +61,6 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.misc.GTStructureChannels;
-import gregtech.common.tileentities.machines.outputme.MTEHatchOutputME;
 
 public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTEMegaDistillationTower>
     implements ISurvivalConstructable, ICasingTextureProvider {
@@ -418,43 +416,24 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
     }
 
     @Override
-    public boolean canDumpFluidToME() {
-
-        // All fluids can be dumped to ME only if each layer contains a ME Output Hatch.
-        for (List<MTEHatchOutput> tLayerOutputHatches : this.outputHatchesPerLayer) {
-
-            boolean foundMEHatch = false;
-
-            for (IFluidStore tHatch : tLayerOutputHatches) {
-                if (tHatch instanceof MTEHatchOutputME tMEHatch) {
-                    if (tMEHatch.canAcceptFluid()) {
-                        foundMEHatch = true;
-                        break;
-                    }
-                }
-            }
-
-            // Exit if we didn't find a valid hatch on this layer.
-            if (!foundMEHatch) {
-                return false;
-            }
-        }
-
-        return true;
+    public boolean canDumpFluidToME(List<GTUtility.FluidId> outputs) {
+        return canDumpFluidToMEByLayer(outputs, outputHatchesPerLayer);
     }
 
     @Override
-    protected void addFluidOutputs(FluidStack[] outputFluids) {
+    protected boolean addFluidOutputs(FluidStack[] outputFluids) {
+        boolean succeed = true;
         for (int i = 0; i < outputFluids.length && i < this.outputHatchesPerLayer.size(); i++) {
-            FluidStack tStack = outputFluids[i].copy();
-            if (!dumpFluid(this.outputHatchesPerLayer.get(i), tStack, true))
-                dumpFluid(this.outputHatchesPerLayer.get(i), tStack, false);
+            FluidStack stack = outputFluids[i].copy();
+            addOutputPartial(stack, outputHatchesPerLayer.get(i));
+            if (stack.amount > 0) succeed = false;
         }
+        return succeed;
     }
 
     @Override
-    public List<? extends IFluidStore> getFluidOutputSlots(FluidStack[] toOutput) {
-        return this.getFluidOutputSlotsByLayer(toOutput, this.outputHatchesPerLayer);
+    public List<IOutputHatch> getOutputHatches(FluidStack[] toOutput) {
+        return this.getOutputHatchesByLayers(toOutput, this.outputHatchesPerLayer);
     }
 
     @Override
@@ -560,7 +539,7 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
     }
 
     @Override
-    protected SoundResource getProcessStartSound() {
+    protected SoundResource getActivitySoundLoop() {
         return SoundResource.GT_MACHINES_DISTILLERY_LOOP;
     }
 
@@ -624,27 +603,15 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
         int aColorIndex, boolean aActive, boolean aRedstone) {
-        if (side == facing) {
-            if (aActive) return new ITexture[] { getCasingTexture(), TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_MEGA_DISTILLATION_TOWER_ACTIVE)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_MEGA_DISTILLATION_TOWER_ACTIVE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { getCasingTexture(), TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_MEGA_DISTILLATION_TOWER)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_MEGA_DISTILLATION_TOWER_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-        }
-        return new ITexture[] { getCasingTexture() };
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            facing,
+            aActive,
+            OVERLAY_FRONT_MEGA_DISTILLATION_TOWER,
+            OVERLAY_FRONT_MEGA_DISTILLATION_TOWER_GLOW,
+            OVERLAY_FRONT_MEGA_DISTILLATION_TOWER_ACTIVE,
+            OVERLAY_FRONT_MEGA_DISTILLATION_TOWER_ACTIVE_GLOW);
     }
 
     @Override

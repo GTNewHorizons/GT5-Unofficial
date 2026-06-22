@@ -15,7 +15,6 @@ import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTUtility.validMTEList;
 import static java.lang.Math.min;
 import static net.minecraft.util.StatCollector.translateToLocal;
-import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -56,6 +55,7 @@ import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
@@ -1076,15 +1076,15 @@ public class MTETeslaTower extends TTMultiblockBase
         List<String> data = new ArrayList<>(Arrays.asList(super.getInfoData()));
 
         data.add(
-            translateToLocalFormatted(
+            IGregTechDeviceInformation.encode(
                 "tt.infodata.multi.energy_hatches",
-                EnumChatFormatting.GREEN + formatNumber(getTeslaStoredEnergy()) + EnumChatFormatting.RESET,
-                EnumChatFormatting.YELLOW + formatNumber(energyCapacity) + EnumChatFormatting.RESET));
+                formatNumber(getTeslaStoredEnergy()),
+                formatNumber(energyCapacity)));
         data.add(
-            translateToLocalFormatted(
+            IGregTechDeviceInformation.encode(
                 "tt.infodata.multi.current_output",
-                EnumChatFormatting.GREEN + formatNumber(getTeslaOutputCurrent()) + EnumChatFormatting.RESET,
-                EnumChatFormatting.YELLOW + formatNumber(outputCurrentMax) + EnumChatFormatting.RESET));
+                formatNumber(getTeslaOutputCurrent()),
+                formatNumber(outputCurrentMax)));
 
         return data.toArray(new String[0]);
     }

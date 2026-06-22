@@ -1,6 +1,7 @@
 package kubatech.tileentity.gregtech.multiblock.eigbuckets;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Objects;
@@ -22,6 +23,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IPlantable;
+import net.minecraftforge.oredict.OreDictionary;
 
 import com.mitchej123.hodgepodge.mixins.interfaces.INetherSeed;
 
@@ -164,7 +166,10 @@ public class EIGSeedBucket extends EIGBucket {
         seedSafe.stackSize = 1;
         // first check if we dropped an item identical to our seed item.
         int inputSeedDropCountAfterRemoval = (int) Math.round(drops.getItemAmount(seedSafe)) - seedsToConsume;
-        if (inputSeedDropCountAfterRemoval > 0) {
+        // true seeds should be removed entirely, potatos/carrots should only be reduced.
+        boolean isTrueSeed = Arrays.stream(OreDictionary.getOreIDs(seedSafe))
+            .anyMatch(id -> id == OreDictionary.getOreID("listAllseed"));
+        if (inputSeedDropCountAfterRemoval > 0 && !isTrueSeed) {
             drops.setItemAmount(seedSafe, inputSeedDropCountAfterRemoval);
         } else {
             drops.removeItem(seedSafe);

@@ -27,11 +27,13 @@ import gregtech.GTMod;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SteamVariant;
+import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.IOutputBus;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IOverclockDescriptionProvider;
 import gregtech.api.logic.ProcessingLogic;
@@ -46,7 +48,6 @@ import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.objects.overclockdescriber.OverclockDescriber;
 import gregtech.api.objects.overclockdescriber.SteamOverclockDescriber;
 import gregtech.api.recipe.RecipeMap;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
@@ -62,7 +63,7 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public abstract class MTESteamMultiBlockBase<T extends MTESteamMultiBlockBase<T>>
-    extends MTEExtendedPowerMultiBlockBase<T> implements IOverclockDescriptionProvider {
+    extends MTEExtendedPowerMultiBlockBase<T> implements IOverclockDescriptionProvider, ICasingTextureProvider {
 
     private final OverclockDescriber overclockDescriber;
 
@@ -119,20 +120,14 @@ public abstract class MTESteamMultiBlockBase<T extends MTESteamMultiBlockBase<T>
     protected abstract IIconContainer getInactiveOverlay();
 
     /**
-     * Optional glow layer shown only when active. Returns null by default (no glow).
+     * Glow layer shown only when active.
      */
-    @Nullable
-    protected IIconContainer getActiveGlowOverlay() {
-        return null;
-    }
+    protected abstract IIconContainer getActiveGlowOverlay();
 
     /**
-     * Optional glow layer shown only when disabled. Returns null by default (no glow).
+     * Glow layer shown only when disabled.
      */
-    @Nullable
-    protected IIconContainer getInactiveGlowOverlay() {
-        return null;
-    }
+    protected abstract IIconContainer getInactiveGlowOverlay();
 
     /**
      * Builds the texture array from the overlay hooks above, using the correct tier
@@ -141,28 +136,20 @@ public abstract class MTESteamMultiBlockBase<T extends MTESteamMultiBlockBase<T>
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
-        Casings casing = getCurrentCasing();
-        if (side != aFacing) {
-            return new ITexture[] { casing.getCasingTexture() };
-        }
-        IIconContainer overlayIcon = aActive ? getActiveOverlay() : getInactiveOverlay();
-        IIconContainer glowIcon = aActive ? getActiveGlowOverlay() : getInactiveGlowOverlay();
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            getInactiveOverlay(),
+            getInactiveGlowOverlay(),
+            getActiveOverlay(),
+            getActiveGlowOverlay());
+    }
 
-        if (glowIcon != null) {
-            return new ITexture[] { casing.getCasingTexture(), TextureFactory.builder()
-                .addIcon(overlayIcon)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(glowIcon)
-                    .extFacing()
-                    .glow()
-                    .build() };
-        }
-        return new ITexture[] { casing.getCasingTexture(), TextureFactory.builder()
-            .addIcon(overlayIcon)
-            .extFacing()
-            .build() };
+    @Override
+    public ITexture getCasingTexture() {
+        return getCurrentCasing().getCasingTexture();
     }
 
     /**
