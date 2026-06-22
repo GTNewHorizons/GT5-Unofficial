@@ -360,7 +360,6 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
 
     @Override
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
-        mInputBeamline.clear();
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 8, 2, 6, errors)) return;
         checkHasAnyEnergy(errors);
         checkHasAnyInput(errors);
@@ -420,6 +419,11 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
     }
 
     @Override
+    public boolean supportsCraftingMEBuffer() {
+        return false;
+    }
+
+    @Override
     public @NotNull CheckRecipeResult checkProcessing() {
         this.currentRecipeMaxAmountA = 0;
         this.currentRecipeMaxAmountB = 0;
@@ -439,7 +443,6 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
             .fluids(inputFluids)
             .voltage(tVoltageActual)
             .filter((GTRecipe recipe) -> (recipe.getMetadata(BEAMCRAFTER_METADATA) != null))
-            .cachedRecipe(this.lastRecipe)
             .find();
         if (tRecipe == null) return CheckRecipeResultRegistry.NO_RECIPE;
 

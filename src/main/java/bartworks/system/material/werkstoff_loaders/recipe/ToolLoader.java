@@ -43,12 +43,12 @@ import net.minecraft.item.ItemStack;
 
 import bartworks.system.material.Werkstoff;
 import bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
+import bartworks.util.BWUtil;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.common.items.IDMetaTool01;
@@ -843,6 +843,8 @@ public class ToolLoader implements IWerkstoffRunnable {
             new Object[] { "II ", "IIh", "II ", 'P', plate.get(werkstoff.getBridgeMaterial()), 'I',
                 ingot.get(werkstoff.getBridgeMaterial()) });
         if (werkstoff.hasItemType(plateDouble) && werkstoff.hasItemType(cellMolten)) {
+            int voltageMultiplier = werkstoff.getStats()
+                .getMeltingPoint() >= 2800 ? 60 : 15;
             GTModHandler.addCraftingRecipe(
                 GTOreDictUnificator.get(turbineBlade, werkstoff.getBridgeMaterial(), 1L),
                 GTModHandler.RecipeBits.BITS_STD,
@@ -853,19 +855,19 @@ public class ToolLoader implements IWerkstoffRunnable {
                 .itemInputs(werkstoff.get(ingot, 6), ItemList.Shape_Extruder_Turbine_Blade.get(0))
                 .itemOutputs(werkstoff.get(turbineBlade, 1))
                 .duration(
-                    (int) werkstoff.getStats()
-                        .getMass() / 2 * 20)
-                .eut(TierEU.RECIPE_MV)
+                    (int) Math.max(
+                        werkstoff.getStats()
+                            .getMass(),
+                        1L))
+                .eut(BWUtil.calculateRecipeEU(werkstoff, 8 * voltageMultiplier))
                 .addTo(extruderRecipes);
 
             GTValues.RA.stdBuilder()
                 .itemInputs(ItemList.Shape_Mold_Turbine_Blade.get(0))
                 .itemOutputs(werkstoff.get(turbineBlade, 1))
                 .fluidInputs(werkstoff.getMolten(6 * INGOTS))
-                .duration(
-                    (int) werkstoff.getStats()
-                        .getMass() * 20)
-                .eut(TierEU.RECIPE_MV)
+                .duration(20 * SECONDS)
+                .eut(BWUtil.calculateRecipeEU(werkstoff, 8 * voltageMultiplier))
                 .addTo(fluidSolidifierRecipes);
 
             GTValues.RA.stdBuilder()
@@ -874,7 +876,7 @@ public class ToolLoader implements IWerkstoffRunnable {
                 .duration(
                     (werkstoff.getStats()
                         .getMass() / 4) * SECONDS)
-                .eut(TierEU.RECIPE_LV)
+                .eut(BWUtil.calculateRecipeEU(werkstoff, 32))
                 .addTo(formingPressRecipes);
 
             GTValues.RA.stdBuilder()
@@ -887,7 +889,7 @@ public class ToolLoader implements IWerkstoffRunnable {
                         Materials.Magnalium,
                         null))
                 .duration(8 * SECONDS)
-                .eut(100)
+                .eut(BWUtil.calculateRecipeEU(werkstoff, 100))
                 .addTo(assemblerRecipes);
 
             GTValues.RA.stdBuilder()
@@ -900,7 +902,7 @@ public class ToolLoader implements IWerkstoffRunnable {
                         Materials.Titanium,
                         null))
                 .duration(16 * SECONDS)
-                .eut(400)
+                .eut(BWUtil.calculateRecipeEU(werkstoff, 400))
                 .addTo(assemblerRecipes);
 
             GTValues.RA.stdBuilder()
@@ -915,7 +917,7 @@ public class ToolLoader implements IWerkstoffRunnable {
                         Materials.TungstenSteel,
                         null))
                 .duration(32 * SECONDS)
-                .eut(1600)
+                .eut(BWUtil.calculateRecipeEU(werkstoff, 1600))
                 .addTo(assemblerRecipes);
 
             GTValues.RA.stdBuilder()
@@ -928,7 +930,7 @@ public class ToolLoader implements IWerkstoffRunnable {
                         Materials.Americium,
                         null))
                 .duration(1 * MINUTES + 4 * SECONDS)
-                .eut(6400)
+                .eut(BWUtil.calculateRecipeEU(werkstoff, 6400))
                 .addTo(assemblerRecipes);
         }
 

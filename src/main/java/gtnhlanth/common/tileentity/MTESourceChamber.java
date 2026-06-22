@@ -135,46 +135,36 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        // spotless:off
-        tt.addMachineType("Particle Source")
-            .addInfo("Creates beams of Particles")
+        tt.addMachineType(StatCollector.translateToLocal("gtnhlanth.tt.sc.machinetype"))
+            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.sc.info1"))
             .addInfo(DescTextLocalization.BEAMLINE_SCANNER_INFO)
             .addSeparator()
-            .addInfo(EnumChatFormatting.RED + "Takes 1 input bus OR 1 input hatch")
-            .addInfo("NEI shows the minimum " + EnumChatFormatting.AQUA + "EU/t requirement" + EnumChatFormatting.GRAY + ", Beam Focus, Beam Rate, and " + EnumChatFormatting.YELLOW + "Maximum Beam Energy")
-            .addInfo("All recipes last for one second")
-            .addInfo("This upper limit is approached asymptotically as operating power increases")
+            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.sc.info2"))
+            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.sc.info3"))
+            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.sc.info4"))
             .addSeparator()
-            .addInfo("Each " + particleText("Particle Type") + " has a " + energyText("Maximum Particle Energy"))
-            .addInfo(particleLine("Alpha", "8000"))
-            .addInfo(particleLine("Proton", "15000"))
-            .addInfo(particleLine("Neutron", "15000"))
-            .addInfo(particleLine("Electron", "5000"))
+            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.sc.info5"))
+            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.sc.info6"))
+            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.sc.info7"))
+            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.sc.info8"))
+            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.sc.info9"))
             .addSeparator()
-            .addInfo("Each " + sourceText("Source input") + " has an Associated " + ratioText("Energy Ratio"))
-            .addInfo(sourceLine("U-238 Dust", "999"))
-            .addInfo(sourceLine("Californium Dust", "999"))
-            .addInfo(sourceLine("Tungsten Rods", "0.1"))
-            .addInfo(sourceLine("Long LaB6 Rods", "0.3"))
-            .addSeparator()
-            .addInfo(EnumChatFormatting.WHITE + "Actual Beam Energy = min(" + energyText("Max Particle Energy") + ", " + EnumChatFormatting.GOLD + "aeV" + EnumChatFormatting.GRAY + ")")
-            .addInfo("Where " + EnumChatFormatting.GOLD + "aeV" + EnumChatFormatting.WHITE + " =  "+EnumChatFormatting.YELLOW+"Max Beam Energy"+EnumChatFormatting.WHITE+" * (1 - 1.001^(" + ratioText("-Energy Ratio") + " * (" + EnumChatFormatting.RED + "EU/t provided"+EnumChatFormatting.WHITE+" - "+EnumChatFormatting.AQUA+"EU/t required"+EnumChatFormatting.WHITE+")))")
-            .addInfo("In short, the " + particleText("particle beam's") + " energy is capped to the " + energyText("Max Particle Energy"))
-            .addInfo("Any one recipe can only provide up to its own " + EnumChatFormatting.YELLOW + "Maximum Beam Energy")
+            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.sc.info10"))
+            .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.sc.info11"))
             .beginStructureBlock(5, 5, 6, true)
             .addController("Front bottom center")
             .addCasingInfoExactly(Casings.ShieldedAcceleratorCasing.getLocalizedName(), 56, false)
             .addCasingInfoExactly(LanthItemList.SHIELDED_ACCELERATOR_GLASS.getLocalizedName(), 52, false)
             .addCasingInfoExactly(LanthItemList.ELECTRODE_CASING.getLocalizedName(), 16, false)
-            .addOtherStructurePart("Beam Output Hatch", addHintNumber(4))
+            .addOtherStructurePart(StatCollector.translateToLocal("gtnhlanth.tt.hatch.beamoutput"), addHintNumber(4))
             .addEnergyHatch(addHintNumber(3))
             .addMaintenanceHatch(addHintNumber(3))
             .addInputBus(addHintNumber(1))
             .addInputHatch(addHintNumber(1))
             .addOutputBus(addHintNumber(2))
+            .addStructureInfo(StatCollector.translateToLocal("gtnhlanth.tt.sc.input"))
             .toolTipFinisher();
         return tt;
-        //spotless:on
     }
 
     @NotNull
@@ -326,10 +316,7 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
                 + EnumChatFormatting.RESET
                 + " %",
             /* 6 Pollution not included */
-            /* 7 */ StatCollector.translateToLocal("GT5U.multiblock.recipesDone") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(recipesDone)
-                + EnumChatFormatting.RESET,
+            /* 7 */ GTUtility.translate("GT5U.multiblock.recipesDone", formatNumber(recipesDone)),
             // Beamline-specific
             EnumChatFormatting.BOLD + StatCollector.translateToLocal("beamline.out_pre")
                 + ": "

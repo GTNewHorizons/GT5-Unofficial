@@ -156,6 +156,16 @@ public class MTESteamCentrifuge extends MTESteamMultiBlockBase<MTESteamCentrifug
     }
 
     @Override
+    protected IIconContainer getActiveGlowOverlay() {
+        return Textures.BlockIcons.OVERLAY_FRONT_STEAM_CENTRIFUGE_ACTIVE_GLOW;
+    }
+
+    @Override
+    protected IIconContainer getInactiveGlowOverlay() {
+        return Textures.BlockIcons.OVERLAY_FRONT_STEAM_CENTRIFUGE_GLOW;
+    }
+
+    @Override
     public IStructureDefinition<MTESteamCentrifuge> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
 

@@ -71,6 +71,7 @@ public class AssemblerRecipes implements Runnable {
         this.loadOutputBusesRecipes();
         this.loadOutputHatchesRecipes();
         this.withIC2NuclearControl();
+        this.withBEC();
 
         {
             GTValues.RA.stdBuilder()
@@ -2411,7 +2412,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.stick, Materials.Iron, 1))
             .circuit(1)
-            .itemOutputs(GTModHandler.getIC2Item("ironFence", 1))
+            .itemOutputs(ItemList.FenceIron.get(1L))
             .duration(5 * SECONDS)
             .eut(4)
             .addTo(assemblerRecipes);
@@ -2427,7 +2428,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.stick, Materials.CastIron, 1))
             .circuit(1)
-            .itemOutputs(GTModHandler.getIC2Item("ironFence", 1))
+            .itemOutputs(ItemList.FenceIron.get(1L))
             .duration(5 * SECONDS)
             .eut(4)
             .addTo(assemblerRecipes);
@@ -3370,6 +3371,20 @@ public class AssemblerRecipes implements Runnable {
             .itemOutputs(ItemList.Hatch_ToxicResidueSensor.get(1L))
             .eut(TierEU.RECIPE_LV / 2)
             .duration(50 * TICKS)
+            .addTo(assemblerRecipes);
+
+        // Naquadah Reinforced Distillation Casing
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                ItemList.Casing_CleanStainlessSteel.get(4),
+                GTOreDictUnificator.get(OrePrefixes.stick, Materials.Naquadah, 4),
+                GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.TungstenSteel, 4),
+                new Object[] { OrePrefixes.circuit.get(Materials.IV), 1 })
+            .fluidInputs(Materials.SolderingAlloy.getMolten(16 * INGOTS))
+            .itemOutputs(ItemList.CasingNaquadahReinforcedDistillation.get(4))
+            .duration(2 * SECONDS)
+            .eut(TierEU.RECIPE_LuV)
             .addTo(assemblerRecipes);
     }
 
@@ -4575,6 +4590,28 @@ public class AssemblerRecipes implements Runnable {
                 .eut(TierEU.RECIPE_LV)
                 .addTo(assemblerRecipes);
         }
+    }
+
+    /**
+     * BEC block assembler recipes.
+     */
+    private void withBEC() {
+        // Conduit
+        GTValues.RA.stdBuilder()
+            .itemInputs(CustomItemList.LASERpipe.get(1), ItemList.Naquarite_Universal_Insulator_Foil.get(4))
+            .itemOutputs(CustomItemList.Pipe_BEC.get(1))
+            .fluidInputs(MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getFluidStack(INGOTS))
+            .duration(5 * SECONDS)
+            .eut(TierEU.RECIPE_UEV)
+            .addTo(assemblerRecipes);
+
+        // Conduit Casing
+        GTValues.RA.stdBuilder()
+            .itemInputs(CustomItemList.Pipe_BEC.get(1), ItemList.Casing_UV.get(1))
+            .itemOutputs(CustomItemList.Pipe_BEC_Block.get(1))
+            .duration(1 * SECONDS)
+            .eut(TierEU.RECIPE_UV)
+            .addTo(assemblerRecipes);
     }
 
     /**

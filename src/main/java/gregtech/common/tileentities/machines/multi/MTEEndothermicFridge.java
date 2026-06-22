@@ -57,6 +57,7 @@ import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
@@ -65,10 +66,10 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
+import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.gui.modularui.multiblock.MTEEndothermicFridgeGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
@@ -78,7 +79,7 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class MTEEndothermicFridge extends MTEExtendedPowerMultiBlockBase<MTEEndothermicFridge>
-    implements ISurvivalConstructable {
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final int HORIZONTAL_OFFSET = 11;
@@ -204,23 +205,17 @@ public class MTEEndothermicFridge extends MTEExtendedPowerMultiBlockBase<MTEEndo
                     + EnumChatFormatting.DARK_AQUA
                     + "Subspace Cooling")
             .addInfo(
-                "Will further multiply " + EnumChatFormatting.GREEN
-                    + "speed bonus "
+                "Will apply " + EnumChatFormatting.GREEN
+                    + "perfect overclocks "
                     + EnumChatFormatting.GRAY
                     + "by "
                     + EnumChatFormatting.GOLD
                     + "consuming "
                     + EnumChatFormatting.LIGHT_PURPLE
                     + "exotic coolants:")
-            .addInfo(getCoolantTextFormatted("Molten Infinity", 200))
-            .addInfo(getCoolantTextFormatted("Molten Spacetime", 400))
-            .addInfo(getCoolantTextFormatted("Molten Eternity", 800))
-            .addInfo(
-                EnumChatFormatting.AQUA + "Cryotheum"
-                    + EnumChatFormatting.GRAY
-                    + " drain rate is further multiplied by the "
-                    + EnumChatFormatting.GREEN
-                    + "speed bonus")
+            .addInfo(getCoolantTextFormatted("Molten Infinity", 1))
+            .addInfo(getCoolantTextFormatted("Molten Spacetime", 2))
+            .addInfo(getCoolantTextFormatted("Molten Eternity", 3))
             .addSeparator()
             .addTecTechHatchInfo()
             .addUnlimitedTierSkips()
@@ -272,7 +267,7 @@ public class MTEEndothermicFridge extends MTEExtendedPowerMultiBlockBase<MTEEndo
 
     private String getCoolantTextFormatted(String fluidType, int speedBoost) {
         return String.format(
-            "%s%d L/s%s : %s%d%% %s: %s%s",
+            "%s%d L/s%s : %s%d %s: %s%s",
             EnumChatFormatting.GOLD,
             BOOSTER_DRAIN,
             EnumChatFormatting.GRAY,
@@ -321,8 +316,8 @@ public class MTEEndothermicFridge extends MTEExtendedPowerMultiBlockBase<MTEEndo
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         tag.setBoolean("cryotheum", isCryoEnabled);
-        tag.setInteger("drain", (int) Math.floor(speedBoost * speedMultiplier * CRYOTHEUM_DRAIN_BASE));
-        tag.setFloat("speedBoost", speedBoost * speedMultiplier);
+        tag.setInteger("drain", (int) Math.floor(speedBoost * CRYOTHEUM_DRAIN_BASE));
+        tag.setFloat("speedBoost", speedBoost);
         if (this.machineTier == 2 && this.currentBoosterFluid != null) {
             tag.setBoolean("subspaceCooling", true);
             tag.setString(
@@ -408,9 +403,9 @@ public class MTEEndothermicFridge extends MTEExtendedPowerMultiBlockBase<MTEEndo
 
     private static final int BOOSTER_DRAIN = 20;
     private static final List<BoosterFluid> BOOSTER_FLUIDS = ImmutableList.of(
-        new BoosterFluid(Materials.Infinity, 2f, BOOSTER_DRAIN),
-        new BoosterFluid(Materials.SpaceTime, 4f, BOOSTER_DRAIN),
-        new BoosterFluid(Materials.Eternity, 8f, BOOSTER_DRAIN));
+        new BoosterFluid(Materials.Infinity, 1, BOOSTER_DRAIN),
+        new BoosterFluid(Materials.SpaceTime, 2, BOOSTER_DRAIN),
+        new BoosterFluid(Materials.Eternity, 3, BOOSTER_DRAIN));
 
     // without cryotheum, max speed up takes 5 minutes of running to reach max speed (50%)
     // with cryotheum, it takes 1 minute.
@@ -423,7 +418,6 @@ public class MTEEndothermicFridge extends MTEExtendedPowerMultiBlockBase<MTEEndo
     public boolean isCryoEnabled;
     private int runningTickCounter = 0;
     private float speedBoost = 1;
-    private float speedMultiplier = 1;
     private BoosterFluid currentBoosterFluid = null;
 
     @Override
@@ -442,7 +436,7 @@ public class MTEEndothermicFridge extends MTEExtendedPowerMultiBlockBase<MTEEndo
             if (isCryoEnabled) { // cryotheum for incrementing
                 final FluidStack cryotheum = new FluidStack(
                     TFFluids.fluidCryotheum,
-                    (int) Math.floor(CRYOTHEUM_DRAIN_BASE * speedBoost * speedMultiplier));
+                    (int) Math.floor(CRYOTHEUM_DRAIN_BASE * speedBoost));
                 if (!this.depleteInput(cryotheum, false)) {
                     stopMachine(ShutDownReasonRegistry.outOfFluid(cryotheum));
                     return false;
@@ -467,12 +461,8 @@ public class MTEEndothermicFridge extends MTEExtendedPowerMultiBlockBase<MTEEndo
 
     @Override
     protected void setProcessingLogicPower(ProcessingLogic logic) {
-        speedMultiplier = 1;
-        if (machineTier == 2) {
-            currentBoosterFluid = findBoosterFluid();
-            speedMultiplier = currentBoosterFluid == null ? 1 : currentBoosterFluid.speedMultiplier;
-        }
-        logic.setSpeedBonus(1f / (speedMultiplier * speedBoost));
+
+        logic.setSpeedBonus(1f / (speedBoost));
         logic.setAvailableVoltage(this.getMaxInputEu());
         logic.setAvailableAmperage(1);
         logic.setUnlimitedTierSkips();
@@ -485,14 +475,26 @@ public class MTEEndothermicFridge extends MTEExtendedPowerMultiBlockBase<MTEEndo
             @Override
             protected @NotNull CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
                 if (isCryoEnabled) {
-                    if (!checkFluid((int) Math.floor(CRYOTHEUM_DRAIN_BASE * speedBoost * speedMultiplier)))
+                    if (!checkFluid((int) Math.floor(CRYOTHEUM_DRAIN_BASE * speedBoost)))
                         return SimpleCheckRecipeResult.ofFailure("invalidfluidsup");
                 }
 
                 return super.validateRecipe(recipe);
             }
-        }.setMaxParallelSupplier(this::getTrueParallel)
-            .setSpeedBonus(1 / (speedBoost * speedMultiplier));
+
+            @Override
+            protected @NotNull OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
+                if (machineTier == 1) {
+                    return super.createOverclockCalculator(recipe);
+                }
+                currentBoosterFluid = findBoosterFluid();
+                return super.createOverclockCalculator(recipe)
+                    .setMachineHeat(currentBoosterFluid == null ? 0 : currentBoosterFluid.perfectOverclock * 1800)
+                    .setRecipeHeat(0)
+                    .setHeatOC(true)
+                    .setHeatDiscount(false);
+            }
+        }.setMaxParallelSupplier(this::getTrueParallel);
     }
 
     @Override
@@ -516,15 +518,12 @@ public class MTEEndothermicFridge extends MTEExtendedPowerMultiBlockBase<MTEEndo
             StatCollector.translateToLocal(
                 this.isCryoEnabled ? "GT5U.gui.text.button.cryotheum.enabled"
                     : "GT5U.gui.text.button.cryotheum.disabled"));
-        info.add(
-            StatCollector.translateToLocalFormatted(
-                "GT5U.waila.mvf.speedboost",
-                formatNumber(this.speedBoost * this.speedMultiplier)));
+        info.add(StatCollector.translateToLocalFormatted("GT5U.waila.mvf.speedboost", formatNumber(this.speedBoost)));
         if (this.isCryoEnabled) {
             info.add(
                 StatCollector.translateToLocalFormatted(
                     "GT5U.waila.mvf.cryotheum",
-                    formatFluid((int) Math.floor(CRYOTHEUM_DRAIN_BASE * this.speedBoost * this.speedMultiplier))));
+                    formatFluid((int) Math.floor(CRYOTHEUM_DRAIN_BASE * this.speedBoost))));
         }
     }
 
@@ -549,37 +548,22 @@ public class MTEEndothermicFridge extends MTEExtendedPowerMultiBlockBase<MTEEndo
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
-        ITexture[] rTexture;
-        if (side == aFacing) {
-            if (aActive) {
-                rTexture = new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TEXTURE_ID),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_FRIDGE_ACTIVE)
-                        .extFacing()
-                        .build(),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_FRIDGE_ACTIVE_GLOW)
-                        .extFacing()
-                        .glow()
-                        .build() };
-            } else {
-                rTexture = new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TEXTURE_ID),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_FRIDGE)
-                        .extFacing()
-                        .build(),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_FRIDGE_GLOW)
-                        .extFacing()
-                        .glow()
-                        .build() };
-            }
-        } else {
-            rTexture = new ITexture[] { Textures.BlockIcons.getCasingTextureForId(TEXTURE_ID) };
-        }
-        return rTexture;
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            OVERLAY_FRONT_FRIDGE,
+            OVERLAY_FRONT_FRIDGE_GLOW,
+            OVERLAY_FRONT_FRIDGE_ACTIVE,
+            OVERLAY_FRONT_FRIDGE_ACTIVE_GLOW);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Textures.BlockIcons.getCasingTextureForId(TEXTURE_ID);
     }
 
     @SideOnly(Side.CLIENT)
@@ -592,12 +576,12 @@ public class MTEEndothermicFridge extends MTEExtendedPowerMultiBlockBase<MTEEndo
     public static class BoosterFluid {
 
         public Materials material;
-        public float speedMultiplier;
+        public int perfectOverclock;
         public int amount;
 
-        public BoosterFluid(Materials material, float speedMultiplier, int amount) {
+        public BoosterFluid(Materials material, int perfectOverclock, int amount) {
             this.material = material;
-            this.speedMultiplier = speedMultiplier;
+            this.perfectOverclock = perfectOverclock;
             this.amount = amount;
         }
 

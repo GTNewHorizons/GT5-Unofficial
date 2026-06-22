@@ -45,13 +45,13 @@ import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.objects.XSTR;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.structure.error.StructureErrors;
@@ -67,7 +67,7 @@ import tectech.thing.metaTileEntity.multi.base.LedStatus;
 import tectech.thing.metaTileEntity.multi.base.Parameters;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 
-public class MTENeutronActivator extends TTMultiblockBase implements ISurvivalConstructable {
+public class MTENeutronActivator extends TTMultiblockBase implements ISurvivalConstructable, ICasingTextureProvider {
 
     public Parameters.Group.ParameterIn batchSetting;
 
@@ -447,36 +447,26 @@ public class MTENeutronActivator extends TTMultiblockBase implements ISurvivalCo
                 + formatNumber(getCurrentNeutronKineticEnergy())
                 + EnumChatFormatting.RESET
                 + "eV",
-            StatCollector.translateToLocal("GT5U.multiblock.recipesDone") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(recipesDone)
-                + EnumChatFormatting.RESET };
+            GTUtility.translate("GT5U.multiblock.recipesDone", formatNumber(recipesDone)) };
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-        int colorIndex, boolean aActive, boolean aRedstone) {
-        if (side == facing) {
-            if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(49), TextureFactory.builder()
-                .addIcon(textureFontOn)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(textureFontOn_Glow)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            else return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(49), TextureFactory.builder()
-                .addIcon(textureFontOff)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(textureFontOff_Glow)
-                    .extFacing()
-                    .glow()
-                    .build() };
-        }
-        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(49) };
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            textureFontOff,
+            textureFontOff_Glow,
+            textureFontOn,
+            textureFontOn_Glow);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Textures.BlockIcons.getCasingTextureForId(49);
     }
 
     @Override

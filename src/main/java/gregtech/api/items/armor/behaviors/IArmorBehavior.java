@@ -9,7 +9,6 @@ import java.util.Set;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.IIcon;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -29,14 +28,6 @@ public interface IArmorBehavior {
      * Gets this behavior's name. This is used to check for behavior presence and equality.
      */
     BehaviorName getName();
-
-    /**
-     * Used in renderItem to get the texture that will be drawn onto modular armor. Ignore if this behavior is not
-     * intended to dynamically change a texture.
-     */
-    default IIcon getModularArmorTexture() {
-        return null;
-    }
 
     /**
      * Called every tick that this behavior's armor item is equipped.
@@ -96,7 +87,7 @@ public interface IArmorBehavior {
      * Checks if this behavior provides protection against a hazard.
      */
     default boolean protectsAgainst(@NotNull ArmorContext context, Hazard hazard) {
-        return false;
+        return protectsAgainstFully(context, hazard);
     }
 
     /**

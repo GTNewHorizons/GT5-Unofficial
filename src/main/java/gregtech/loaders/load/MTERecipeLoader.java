@@ -1668,6 +1668,17 @@ public class MTERecipeLoader implements Runnable {
             new Object[] { "PhP", "SFS", "PwP", 'P', OrePrefixes.plate.get(Materials.RoseGold), 'S',
                 OrePrefixes.plate.get(Materials.StainlessSteel), 'F', OrePrefixes.frameGt.get(Materials.RoseGold) });
 
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.RoseGold, 1),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.RoseGold, 4),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.StainlessSteel, 2))
+            .circuit(1)
+            .itemOutputs(ItemList.AlgaeCasing.get(1))
+            .duration(2 * SECONDS + 10 * TICKS)
+            .eut(TierEU.RECIPE_LV / 2)
+            .addTo(assemblerRecipes);
+
         // Naquadah Reactor Casing
         GTValues.RA.stdBuilder()
             .itemInputs(
@@ -1912,6 +1923,15 @@ public class MTERecipeLoader implements Runnable {
             ItemList.LargeCombustionEngine.get(1),
             new Object[] { ItemList.Machine_Multi_DieselEngine });
 
+        // Mega Distillation Tower Conversion Recipe
+        // Assembler to avoid accidental softlocks
+        GTValues.RA.stdBuilder()
+            .itemInputs((ItemRegistry.megaMachines[2]))
+            .itemOutputs(ItemList.MegaDistillationTower.get(1))
+            .duration(TICKS)
+            .eut(TierEU.RECIPE_LuV)
+            .addTo(assemblerRecipes);
+
         // Mega Vacuum Freezer -> Endothermic Fridge Conversion Recipe
         // Assembler to avoid accidental softlocks (due to tiering change)
         GTValues.RA.stdBuilder()
@@ -1928,6 +1948,15 @@ public class MTERecipeLoader implements Runnable {
             .itemOutputs(ItemList.ExothermicHearth.get(1))
             .duration(TICKS)
             .eut(TierEU.RECIPE_ZPM)
+            .addTo(assemblerRecipes);
+
+        // Mega Oil Cracker Conversion Recipe
+        // Assembler to avoid accidental softlocks (due to tiering change)
+        GTValues.RA.stdBuilder()
+            .itemInputs((ItemRegistry.megaMachines[4]))
+            .itemOutputs(ItemList.MegaOilCracker.get(1))
+            .duration(TICKS)
+            .eut(TierEU.RECIPE_LuV)
             .addTo(assemblerRecipes);
 
         // Industrial Arc Furnace Conversion Recipe

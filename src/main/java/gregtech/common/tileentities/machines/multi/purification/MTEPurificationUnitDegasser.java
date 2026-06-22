@@ -45,13 +45,13 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchMultiInput;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTStructureUtility;
@@ -59,7 +59,7 @@ import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 
 public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPurificationUnitDegasser>
-    implements ISurvivalConstructable {
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     private static final int CASING_INDEX_MAIN = getTextureIndex(GregTechAPI.sBlockCasings9, 11);
 
@@ -226,31 +226,22 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-        int colorIndex, boolean active, boolean redstoneLevel) {
-        if (side == facing) {
-            if (active) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_MAIN),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_MAIN),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-        }
-        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_MAIN) };
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR,
+            OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_GLOW,
+            OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE,
+            OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE_GLOW);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_MAIN);
     }
 
     @Override
@@ -672,7 +663,7 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
             FluidStack bonusOutput = new FluidStack(
                 waterOutput.getFluid(),
                 (int) (waterOutput.amount * (outputMultiplier - 1.0d)));
-            this.addOutput(bonusOutput);
+            this.addOutputPartial(bonusOutput);
         }
     }
 

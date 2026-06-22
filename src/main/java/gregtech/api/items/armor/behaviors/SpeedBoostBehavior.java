@@ -20,6 +20,7 @@ import gregtech.api.util.GTUtility;
 public class SpeedBoostBehavior implements IArmorBehavior {
 
     public static final SpeedBoostBehavior MECH_ARMOR_INSTANCE = new SpeedBoostBehavior(0.05F);
+
     /// Somewhat arbitrary multiplier to make vertical flight speed comparable to horizontal flight speed
     private static final double VERTICAL_SPEED_MULT = 8;
 
@@ -27,7 +28,7 @@ public class SpeedBoostBehavior implements IArmorBehavior {
 
     private final float speedup;
 
-    protected SpeedBoostBehavior(float speedUp) {
+    public SpeedBoostBehavior(float speedUp) {
         this.speedup = speedUp;
     }
 

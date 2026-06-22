@@ -260,7 +260,7 @@ public class StarCosmeticsPanel {
                 .style(EnumChatFormatting.GOLD)
                 .alignment(Alignment.CenterLeft)
                 .asWidget()
-                .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
+                .widgetTheme(GTWidgetThemes.DISPLAY_TEXT_WHITE)
                 .size(75, 16)
                 .marginLeft(4));
 
@@ -282,8 +282,8 @@ public class StarCosmeticsPanel {
                     .asWidget()
                     .size(34, 16))
             .child(
-                new TextFieldWidget().setFormatAsInteger(true)
-                    .setNumbers(0, maxValue)
+                new TextFieldWidget().formatAsInteger(true)
+                    .numbersInt(0, maxValue)
                     .setTextAlignment(Alignment.CENTER)
                     .value(syncValue)
                     .tooltip(t -> t.addLine(translateToLocal("fog.cosmetics.onlyintegers")))

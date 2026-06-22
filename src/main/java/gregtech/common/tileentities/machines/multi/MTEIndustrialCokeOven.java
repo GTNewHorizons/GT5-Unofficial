@@ -164,11 +164,11 @@ public class MTEIndustrialCokeOven extends MTEExtendedPowerMultiBlockBase<MTEInd
                     { "      ", "   C  ", "   C  ", "   C  ", "   C  ", "   C  ", "   DDD" } })
             .addShape(
                 STRUCTURE_PIECE_NEXT,
-                new String[][] { { "    ", " C  ", " C  ", " C  ", " C  ", " C  ", " FFF" },
-                    { "    ", " E  ", " BF ", " BF ", " BF ", " BF ", " FFF" },
-                    { "AA  ", " A  ", "  F ", "  E ", "  E ", "  E ", " FFF" },
-                    { "    ", " E  ", " BF ", " BF ", " BF ", " BF ", " FFF" },
-                    { "    ", " C  ", " C  ", " C  ", " C  ", " C  ", " FFF" } })
+                new String[][] { { "    ", " C  ", " C  ", " C  ", " C  ", " C  ", "  FF" },
+                    { "    ", " E  ", " BF ", " BF ", " BF ", " BF ", "  FF" },
+                    { "AA  ", " A  ", "  F ", "  E ", "  E ", "  E ", "  FF" },
+                    { "    ", " E  ", " BF ", " BF ", " BF ", " BF ", "  FF" },
+                    { "    ", " C  ", " C  ", " C  ", " C  ", " C  ", "  FF" } })
             .addElement(
                 'D',
                 buildHatchAdder(MTEIndustrialCokeOven.class)

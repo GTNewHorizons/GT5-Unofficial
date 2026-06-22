@@ -2,6 +2,7 @@ package gregtech.api.metatileentity.implementations;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -17,15 +18,17 @@ import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.tooltip.TooltipHelper;
+import gregtech.common.tileentities.machines.IHatchWatcher;
 
 /**
  * Handles texture changes internally. No special calls are necessary other than updateTexture in add***ToMachineList.
  */
-public abstract class MTEHatch extends MTEBasicTank {
+public abstract class MTEHatch extends MTEBasicTank implements ICasingTextureProvider {
 
     public enum ConnectionType {
         CABLE,
@@ -37,6 +40,12 @@ public abstract class MTEHatch extends MTEBasicTank {
     private int textureIndex = 0;
 
     private ItemStack ae2CraftingIcon;
+
+    /**
+     * Controllers watching this hatch for new ingredients (see {@link ISmartInputHatch}). When this hatch's contents
+     * change we notify them so they can run an immediate recipe check instead of waiting for their periodic poll.
+     */
+    private final List<IHatchWatcher> watchers = new ArrayList<>();
 
     public MTEHatch(int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount, String aDescription,
         ITexture... aTextures) {
@@ -54,6 +63,42 @@ public abstract class MTEHatch extends MTEBasicTank {
 
     public static int getSlots(int aTier) {
         return (aTier + 1) * (aTier + 1);
+    }
+
+    /**
+     * Registers a controller to be notified when this hatch gains new ingredients. Input hatches/busses implement
+     * {@link ISmartInputHatch} so the controller registers itself here during structure assembly; the inherited
+     * implementation satisfies that interface.
+     */
+    public void addWatcher(IHatchWatcher watcher) {
+        watchers.add(watcher);
+    }
+
+    public void removeWatcher(IHatchWatcher watcher) {
+        watchers.remove(watcher);
+    }
+
+    /** Asks every registered controller to run a recipe check on its next tick. */
+    protected void notifyWatchers() {
+        for (int i = 0; i < watchers.size(); i++) {
+            watchers.get(i)
+                .scheduleRecipeCheckImmediate();
+        }
+    }
+
+    /**
+     * Notifies watchers when this hatch's inventory or tank changed this tick. Relies on
+     * {@link IGregTechTileEntity#hasInventoryBeenModified()}, which every relevant insertion path sets (item slots via
+     * {@code setInventorySlotContents}/{@code decrStackSize}, the GUI/AE handler via
+     * {@link MetaTileEntity#onContentsChanged(int)}, and fluids via {@code fill}). Consuming ingredients also sets the
+     * flag, but that only ever costs a single redundant idle check at the tail of a run. Input hatches/busses should
+     * call this from {@code onPostTick}.
+     */
+    protected void detectInventoryChange() {
+        IGregTechTileEntity base = getBaseMetaTileEntity();
+        if (base != null && base.hasInventoryBeenModified()) {
+            notifyWatchers();
+        }
     }
 
     private int getOffsetTier() {
@@ -82,11 +127,9 @@ public abstract class MTEHatch extends MTEBasicTank {
         int colorIndex, boolean aActive, boolean redstoneLevel) {
 
         try {
-            ITexture background;
+            ITexture background = getCasingTexture();
 
-            if (texturePage > 0 || textureIndex > 0) {
-                background = Textures.BlockIcons.casingTexturePages[texturePage][textureIndex];
-            } else {
+            if (background == null) {
                 background = Textures.BlockIcons.MACHINE_CASINGS[mTier][colorIndex + 1];
             }
 
@@ -102,6 +145,14 @@ public abstract class MTEHatch extends MTEBasicTank {
         } catch (NullPointerException npe) {
             return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[0][0] };
         }
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        if (texturePage > 0 || textureIndex > 0) {
+            return Textures.BlockIcons.casingTexturePages[texturePage][textureIndex];
+        }
+        return null;
     }
 
     @Override
