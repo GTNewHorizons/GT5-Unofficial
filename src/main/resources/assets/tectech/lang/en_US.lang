@@ -2075,6 +2075,9 @@ tt.spaceminer.filter.addOre=Click to add this ore to the filter
 tt.gui.tooltip.power_pass=Power Pass
 tt.gui.tooltip.safe_void=Safe Void
 tt.gui.tooltip.power_switch=Power Switch
+tt.gui.tooltip.edit_parameters=Edit Parameters
+tt.gui.tooltip.open_editor=Open Editor
+tt.gui.parameter.header=Parameters
 
 tt.gui.tooltip.plasma_module.debug_window=Debug Window
 tt.gui.tooltip.plasma_module.debug_window.multi_step=multi-step
