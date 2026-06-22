@@ -1,7 +1,5 @@
 package gregtech.common.gui.modularui.hatch;
 
-import net.minecraft.item.ItemStack;
-
 import com.cleanroommc.modularui.drawable.GuiTextures;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
@@ -20,7 +18,6 @@ import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
 import gregtech.common.tileentities.machines.outputme.MTEHatchOutputBusME;
 import gregtech.common.tileentities.machines.outputme.base.MTEHatchOutputMEBase;
-import gregtech.common.tileentities.machines.outputme.filter.MEFilterItem;
 
 public class MTEHatchOutputBusMEGui extends MTEHatchBaseGui<MTEHatchOutputBusME> {
 
@@ -30,7 +27,7 @@ public class MTEHatchOutputBusMEGui extends MTEHatchBaseGui<MTEHatchOutputBusME>
 
     @Override
     protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
-        MTEHatchOutputMEBase<IAEItemStack, MEFilterItem, ItemStack> provider = machine.getProvider();
+        MTEHatchOutputMEBase<IAEItemStack> provider = machine.getProvider();
         IntSyncValue prioritySyncer = new IntSyncValue(provider::getPriority, provider::setPriority).allowC2S();
         BooleanSyncValue isCaching = new BooleanSyncValue(provider::getCacheMode, provider::setCacheMode).allowC2S();
         BooleanSyncValue isChecking = new BooleanSyncValue(provider::getCheckMode, provider::setCheckMode).allowC2S();
