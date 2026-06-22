@@ -42,16 +42,17 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
+import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.INEIPreviewModifier;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -66,7 +67,7 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class MTEIndustrialMacerator extends MTEExtendedPowerMultiBlockBase<MTEIndustrialMacerator>
-    implements ISurvivalConstructable, INEIPreviewModifier {
+    implements ISurvivalConstructable, INEIPreviewModifier, ICasingTextureProvider {
 
     private int controllerTier = 1;
     private int structureTier;
@@ -237,34 +238,21 @@ public class MTEIndustrialMacerator extends MTEExtendedPowerMultiBlockBase<MTEIn
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
-        if (side == aFacing) {
-            if (aActive) return new ITexture[] {
-                structureTier == 2 ? Casings.MacerationStackCasing.getCasingTexture()
-                    : Casings.StableTitaniumMachineCasing.getCasingTexture(),
-                TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.Overlay_MatterFab_Active)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.Overlay_MatterFab_Active_Glow)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] {
-                structureTier == 2 ? Casings.MacerationStackCasing.getCasingTexture()
-                    : Casings.StableTitaniumMachineCasing.getCasingTexture(),
-                TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.Overlay_MatterFab)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.Overlay_MatterFab_Glow)
-                    .extFacing()
-                    .glow()
-                    .build() };
-        }
-        return new ITexture[] { structureTier == 2 ? Casings.MacerationStackCasing.getCasingTexture()
-            : Casings.StableTitaniumMachineCasing.getCasingTexture() };
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            TexturesGtBlock.Overlay_MatterFab,
+            TexturesGtBlock.Overlay_MatterFab_Glow,
+            TexturesGtBlock.Overlay_MatterFab_Active,
+            TexturesGtBlock.Overlay_MatterFab_Active_Glow);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return structureTier == 2 ? Casings.MacerationStackCasing.getCasingTexture()
+            : Casings.StableTitaniumMachineCasing.getCasingTexture();
     }
 
     @Override

@@ -33,6 +33,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.casing.Casings;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
@@ -52,7 +53,7 @@ import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.material.MaterialsAlloy;
 
 public class MTEIndustrialCentrifuge extends MTEExtendedPowerMultiBlockBase<MTEIndustrialCentrifuge>
-    implements ISurvivalConstructable {
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     private static IStructureDefinition<MTEIndustrialCentrifuge> STRUCTURE_DEFINITION = null;
     private static final String STRUCTURE_PIECE_MAIN = "main";
@@ -139,16 +140,21 @@ public class MTEIndustrialCentrifuge extends MTEExtendedPowerMultiBlockBase<MTEI
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
         if (side == aFacing) {
-            if (aActive) return new ITexture[] { Casings.CentrifugeCasing.getCasingTexture(), TextureFactory.builder()
+            if (aActive) return new ITexture[] { getCasingTexture(), TextureFactory.builder()
                 .addIcon(LARGETURBINE_NEW_ACTIVE5)
                 .extFacing()
                 .build() };
-            return new ITexture[] { Casings.CentrifugeCasing.getCasingTexture(), TextureFactory.builder()
+            return new ITexture[] { getCasingTexture(), TextureFactory.builder()
                 .addIcon(LARGETURBINE_NEW5)
                 .extFacing()
                 .build() };
         }
-        return new ITexture[] { Casings.CentrifugeCasing.getCasingTexture() };
+        return new ITexture[] { getCasingTexture() };
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Casings.CentrifugeCasing.getCasingTexture();
     }
 
     @Override

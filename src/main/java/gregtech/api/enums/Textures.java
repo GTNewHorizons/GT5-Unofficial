@@ -802,6 +802,7 @@ public class Textures {
             OVERLAY_FLUID_STORAGE_MONITOR14 = create("OVERLAY_FLUID_STORAGE_MONITOR14"),
 
             OVERLAY_DTPF_OFF = createOptional("OVERLAY_DTPF_OFF"),
+            OVERLAY_DTPF_OFF_GLOW = createOptional("OVERLAY_DTPF_OFF_GLOW"),
             OVERLAY_DTPF_ON = createOptional("OVERLAY_DTPF_ON"),
             OVERLAY_FUSION1 = createOptional("OVERLAY_FUSION1"),
             OVERLAY_FUSION1_GLOW = createOptional("OVERLAY_FUSION1_GLOW"),
@@ -1446,6 +1447,7 @@ public class Textures {
             OVERLAY_SIDE_RTG = createOptional("OVERLAY_SIDE_RTG"),
 
             OVERLAY_CHARCOAL_PIT = createOptional("OVERLAY_CHARCOAL_PIT"),
+            OVERLAY_CHARCOAL_PIT_GLOW = createOptional("OVERLAY_CHARCOAL_PIT_GLOW"),
             OVERLAY_CHARCOAL_PIT_ACTIVE = createOptional("OVERLAY_CHARCOAL_PIT_ACTIVE"),
             OVERLAY_CHARCOAL_PIT_ACTIVE_GLOW = createOptional("OVERLAY_CHARCOAL_PIT_ACTIVE_GLOW"),
 
@@ -1948,7 +1950,9 @@ public class Textures {
             PIPE_RESTRICTOR_LR = create("PIPE_RESTRICTOR_LR"),
 
             OVERLAY_ME_HATCH = createOptional("OVERLAY_ME_HATCH"),
+            OVERLAY_ME_HATCH_GLOW = createOptional("OVERLAY_ME_HATCH_GLOW"),
             OVERLAY_ME_HATCH_ACTIVE = createOptional("OVERLAY_ME_HATCH_ACTIVE"),
+            OVERLAY_ME_HATCH_ACTIVE_GLOW = createOptional("OVERLAY_ME_HATCH_ACTIVE_GLOW"),
             OVERLAY_ME_INPUT_HATCH = createOptional("OVERLAY_ME_INPUT_HATCH"),
             OVERLAY_ME_INPUT_HATCH_ACTIVE = createOptional("OVERLAY_ME_INPUT_HATCH_ACTIVE"),
             OVERLAY_ME_INPUT_FLUID_HATCH = createOptional("OVERLAY_ME_INPUT_FLUID_HATCH"),
