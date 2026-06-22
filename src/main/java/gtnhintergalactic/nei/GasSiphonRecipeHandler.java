@@ -1,6 +1,7 @@
 package gtnhintergalactic.nei;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static gregtech.api.util.GTUtility.getFormattedTierNameFromVoltage;
 
 import java.awt.Rectangle;
 import java.util.Map;
@@ -236,7 +237,12 @@ public class GasSiphonRecipeHandler extends TemplateRecipeHandler {
         GuiDraw.drawStringC(formatValue(recipe.depth), CATEGORY_VALUE_X, GAS_TYPE_Y, TEXT_COLOR, false);
         GuiDraw
             .drawStringC(formatValue(formatNumber(recipe.amount)), CATEGORY_VALUE_X, OUT_AMOUNT_Y, TEXT_COLOR, false);
-        GuiDraw.drawStringC(formatValue(formatNumber(recipe.eut)), CATEGORY_VALUE_X, EUT_Y, TEXT_COLOR, false);
+        GuiDraw.drawStringC(
+            formatValue(formatNumber(recipe.eut) + getFormattedTierNameFromVoltage(recipe.eut)),
+            CATEGORY_VALUE_X,
+            EUT_Y,
+            TEXT_COLOR,
+            false);
 
         GuiDraw.drawStringR(
             EnumChatFormatting.BOLD + I18n.format(SEE_ALL),

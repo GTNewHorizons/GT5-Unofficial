@@ -480,6 +480,10 @@ public class GTUtility {
         return getColoredTierNameFromTier(getTier(voltage));
     }
 
+    public static String getFormattedTierNameFromVoltage(long voltage) {
+        return " (" + getColoredTierNameFromVoltage(voltage) + ")";
+    }
+
     public static String getColoredTierNameFromTier(byte tier) {
         return GTValues.TIER_COLORS[tier] + GTValues.VN[tier] + EnumChatFormatting.RESET;
     }
