@@ -1777,6 +1777,7 @@ public enum ItemList implements IItemContainer {
     MagLevPython_HV,
     MagLevPython_EV,
 
+    Block_ReinforcedConcrete,
     Block_BronzePlate,
     Block_SteelPlate,
     Block_TitaniumPlate,
