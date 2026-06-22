@@ -8,11 +8,13 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.client.iconContainers.blocks.GTBlockIconContainer;
@@ -505,9 +507,10 @@ public class Textures {
             MACHINE_CASING_CHEMICALLY_INERT = create("MACHINE_CASING_CHEMICALLY_INERT"),
 
             MACHINE_CASING_DENSEBRICKS = create("MACHINE_CASING_DENSEBRICKS"),
+            MACHINE_CASING_BRICKEDBLASTFURNACE_INACTIVE = create("MACHINE_CASING_BRICKEDBLASTFURNACE_INACTIVE"),
+            MACHINE_CASING_BRICKEDBLASTFURNACE_INACTIVE_GLOW = createOptional("MACHINE_CASING_BRICKEDBLASTFURNACE_INACTIVE_GLOW"),
             MACHINE_CASING_BRICKEDBLASTFURNACE_ACTIVE = create("MACHINE_CASING_BRICKEDBLASTFURNACE_ACTIVE"),
             MACHINE_CASING_BRICKEDBLASTFURNACE_ACTIVE_GLOW = createOptional("MACHINE_CASING_BRICKEDBLASTFURNACE_ACTIVE_GLOW"),
-            MACHINE_CASING_BRICKEDBLASTFURNACE_INACTIVE = create("MACHINE_CASING_BRICKEDBLASTFURNACE_INACTIVE"),
 
             MODIFICATIONTABLE_TOP = create("MODIFICATIONTABLE_TOP"),
             MODIFICATIONTABLE_SIDE = create("MODIFICATIONTABLE_SIDE"),
@@ -683,6 +686,8 @@ public class Textures {
             BLOCK_PLASCRETE = create("BLOCK_PLASCRETE"),
             BLOCK_TSREIN = create("BLOCK_TSREIN"),
             BLOCK_POWDER = create("BLOCK_POWDER"),
+
+            BLOCK_IRON_FENCE = create("BLOCK_IRON_FENCE"),
 
             OVERLAY_LOCKER = createOptional("OVERLAY_LOCKER"),
             OVERLAY_LOCKER_000 = createOptional("OVERLAY_LOCKER_000"),
@@ -1260,19 +1265,29 @@ public class Textures {
             OVERLAY_FRONT_STEAM_MACERATOR_ACTIVE = createOptional("OVERLAY_FRONT_STEAM_MACERATOR_ACTIVE"),
             OVERLAY_FRONT_STEAM_MACERATOR_ACTIVE_GLOW = createOptional("OVERLAY_FRONT_STEAM_MACERATOR_ACTIVE_GLOW"),
             OVERLAY_FRONT_STEAM_WASHER = createOptional("OVERLAY_FRONT_STEAM_WASHER"),
+                OVERLAY_FRONT_STEAM_WASHER_GLOW = createOptional("OVERLAY_FRONT_STEAM_WASHERR_GLOW"),
             OVERLAY_FRONT_STEAM_WASHER_ACTIVE = createOptional("OVERLAY_FRONT_STEAM_WASHER_ACTIVE"),
+                OVERLAY_FRONT_STEAM_WASHER_ACTIVE_GLOW = createOptional("OVERLAY_FRONT_STEAM_WASHER_ACTIVER_GLOW"),
             OVERLAY_FRONT_WATER_PUMP = createOptional("OVERLAY_FRONT_WATER_PUMP"),
+                OVERLAY_FRONT_WATER_PUMP_GLOW = createOptional("OVERLAY_FRONT_WATER_PUMP_GLOW"),
             OVERLAY_FRONT_WATER_PUMP_ACTIVE = createOptional("OVERLAY_FRONT_WATER_PUMP_ACTIVE"),
+                OVERLAY_FRONT_WATER_PUMP_ACTIVE_GLOW = createOptional("OVERLAY_FRONT_WATER_PUMP_ACTIVE_GLOW"),
             OVERLAY_FRONT_STEAM_CENTRIFUGE = createOptional("OVERLAY_FRONT_STEAM_CENTRIFUGE"),
+                OVERLAY_FRONT_STEAM_CENTRIFUGE_GLOW = createOptional("OVERLAY_FRONT_STEAM_CENTRIFUGE_GLOW"),
             OVERLAY_FRONT_STEAM_CENTRIFUGE_ACTIVE = createOptional("OVERLAY_FRONT_STEAM_CENTRIFUGE_ACTIVE"),
+                OVERLAY_FRONT_STEAM_CENTRIFUGE_ACTIVE_GLOW = createOptional("OVERLAY_FRONT_STEAM_CENTRIFUGE_ACTIVE_GLOW"),
             OVERLAY_FRONT_STEAM_FORGE_HAMMER = createOptional("OVERLAY_FRONT_STEAM_FORGE_HAMMER"),
+                OVERLAY_FRONT_STEAM_FORGE_HAMMER_GLOW = createOptional("OVERLAY_FRONT_STEAM_FORGE_HAMMER_GLOW"),
             OVERLAY_FRONT_STEAM_FORGE_HAMMER_ACTIVE = createOptional("OVERLAY_FRONT_STEAM_FORGE_HAMMER_ACTIVE"),
+                OVERLAY_FRONT_STEAM_FORGE_HAMMER_ACTIVE_GLOW = createOptional("OVERLAY_FRONT_STEAM_FORGE_HAMMER_ACTIVE_GLOW"),
             OVERLAY_FRONT_STEAM_COMPRESSOR = createOptional("OVERLAY_FRONT_STEAM_COMPRESSOR"),
             OVERLAY_FRONT_STEAM_COMPRESSOR_GLOW = createOptional("OVERLAY_FRONT_STEAM_COMPRESSOR_GLOW"),
             OVERLAY_FRONT_STEAM_EXTRACTOR = createOptional("OVERLAY_FRONT_STEAM_EXTRACTOR"),
             OVERLAY_FRONT_STEAM_EXTRACTOR_GLOW = createOptional("OVERLAY_FRONT_STEAM_EXTRACTOR_GLOW"),
             OVERLAY_FRONT_STEAM_ALLOY_SMELTER_MULTI = createOptional("OVERLAY_FRONT_STEAM_ALLOY_SMELTER_MULTI"),
+            OVERLAY_FRONT_STEAM_ALLOY_SMELTER_MULTI_GLOW = createOptional("OVERLAY_FRONT_STEAM_ALLOY_SMELTER_MULTI_GLOW"),
             OVERLAY_FRONT_STEAM_ALLOY_SMELTER_MULTI_ACTIVE = createOptional("OVERLAY_FRONT_STEAM_ALLOY_SMELTER_MULTI_ACTIVE"),
+            OVERLAY_FRONT_STEAM_ALLOY_SMELTER_MULTI_ACTIVE_GLOW = createOptional("OVERLAY_FRONT_STEAM_ALLOY_SMELTER_MULTI_ACTIVE_GLOW"),
             OVERLAY_FRONT_STEAM_FURNACE_MULTI = createOptional("OVERLAY_FRONT_STEAM_FURNACE_MULTI"),
             OVERLAY_FRONT_STEAM_FURNACE_MULTI_ACTIVE = createOptional("OVERLAY_FRONT_STEAM_FURNACE_MULTI_ACTIVE"),
             OVERLAY_FRONT_STEAM_FURNACE_MULTI_GLOW = createOptional("OVERLAY_FRONT_STEAM_FURNACE_MULTI_GLOW"),
@@ -2082,7 +2097,9 @@ public class Textures {
             OVERLAY_FRONT_EXOFOUNDRY_ACTIVE_GLOW = createOptional("OVERLAY_FRONT_EXOFOUNDRY_ACTIVE_GLOW"),
             COKE_OVEN_CASING = create("COKE_OVEN_CASING"),
             COKE_OVEN_OVERLAY_INACTIVE = createOptional("COKE_OVEN_OVERLAY_INACTIVE"),
+            COKE_OVEN_OVERLAY_INACTIVE_GLOW = createOptional("COKE_OVEN_OVERLAY_INACTIVE_GLOW"),
             COKE_OVEN_OVERLAY_ACTIVE = createOptional("COKE_OVEN_OVERLAY_ACTIVE"),
+            COKE_OVEN_OVERLAY_ACTIVE_GLOW = createOptional("COKE_OVEN_OVERLAY_ACTIVE_GLOW"),
 
             OVERLAY_FRONT_MASS_SOLIDIFIER = createOptional("OVERLAY_FRONT_MASS_SOLIDIFIER"),
             OVERLAY_FRONT_MASS_SOLIDIFIER_ACTIVE = createOptional("OVERLAY_FRONT_MASS_SOLIDIFIER_ACTIVE"),
@@ -2686,6 +2703,32 @@ public class Textures {
 
         private static @NotNull IIconContainer createOptional(@NotNull String name) {
             return GTOptionalBlockIconContainer.create(name);
+        }
+
+        public static ITexture[] createTextureWithCasing(ICasingTextureProvider mte, ForgeDirection side,
+            ForgeDirection aFacing, boolean aActive, IIconContainer tex, IIconContainer texGlow,
+            IIconContainer texActive, IIconContainer texActiveGlow) {
+            if (side == aFacing) {
+                if (aActive) return new ITexture[] { mte.getCasingTexture(), TextureFactory.builder()
+                    .addIcon(texActive)
+                    .extFacing()
+                    .build(),
+                    TextureFactory.builder()
+                        .addIcon(texActiveGlow)
+                        .extFacing()
+                        .glow()
+                        .build() };
+                return new ITexture[] { mte.getCasingTexture(), TextureFactory.builder()
+                    .addIcon(tex)
+                    .extFacing()
+                    .build(),
+                    TextureFactory.builder()
+                        .addIcon(texGlow)
+                        .extFacing()
+                        .glow()
+                        .build() };
+            }
+            return new ITexture[] { mte.getCasingTexture() };
         }
 
         public static void cleanup() {
