@@ -169,6 +169,7 @@ public class MTECyclotron extends GTPPMultiBlockBase<MTECyclotron> implements IS
             .addInputHatch("Any Casing", 1)
             .addOutputHatch("Any Casing", 1)
             .addEnergyHatch("Any Casing", 1)
+            .addMaintenanceHatch("Any Casing", 1)
             .toolTipFinisher();
         return tt;
     }

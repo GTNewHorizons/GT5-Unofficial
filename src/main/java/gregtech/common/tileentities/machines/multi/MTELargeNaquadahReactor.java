@@ -428,10 +428,10 @@ public class MTELargeNaquadahReactor extends TTMultiblockBase implements ISurviv
             .addCasingInfoMin("Naquadah Reactor Casing", 130, false)
             .addCasingInfoExactly("Field Restriction Casing", 81, false)
             .addCasingInfoExactly("Radiation Proof Steel Frame Box", 36, false)
-            .addDynamoHatch("Any Naquadah Reactor Casing, only accepts ONE!")
-            .addInputHatch("Any Naquadah Reactor Casing")
-            .addOutputHatch("Any Naquadah Reactor Casing")
-            .addMaintenanceHatch("Any Naquadah Reactor Casing")
+            .addDynamoHatch("Any Naquadah Reactor Casing, only accepts ONE!", 1)
+            .addInputHatch("Any Naquadah Reactor Casing", 1)
+            .addOutputHatch("Any Naquadah Reactor Casing", 1)
+            .addMaintenanceHatch("Any Naquadah Reactor Casing", 1)
             .addStructureAuthors(EnumChatFormatting.GOLD + "N7Paddy")
             .toolTipFinisher();
         return tt;
