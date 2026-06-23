@@ -3021,28 +3021,6 @@ public class ResearchStationAssemblyLine implements Runnable {
             ItemList.CondensateTransformativeCoil.get(1),
             30 * SECONDS,
             (int) TierEU.RECIPE_UIV);
-
-        // Electromagnetic Waveguide
-        TTRecipeAdder.addResearchableAssemblylineRecipe(
-            ItemRefer.AntimatterContainmentCasing.get(1),
-            48_000_000,
-            8_192,
-            (int) TierEU.RECIPE_UMV,
-            64,
-            new Object[] { ItemRefer.AntimatterContainmentCasing.get(6),
-                GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.ProtoHalkonite, 6),
-                GGMaterial.tairitsu.get(OrePrefixes.wireFine, 24),
-                GTOreDictUnificator.get(OrePrefixes.foil, Materials.Churitsu, 12),
-                GTOreDictUnificator.get(OrePrefixes.screw, Materials.Shijima, 24),
-                GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.Churitsu, 6),
-                ItemList.Field_Generator_UEV.get(2) },
-            new FluidStack[] { CHRONOMATIC_GLASS.getFluidStack(768 * INGOTS),
-                Materials.Infinity.getMolten(192 * INGOTS),
-                MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getFluidStack(192 * INGOTS),
-                Materials.SpaceTime.getMolten(24 * INGOTS) },
-            ItemList.ElectromagneticWaveguide.get(4),
-            120 * SECONDS,
-            (int) TierEU.RECIPE_UIV);
     }
 
     private void addGodforgeRecipes() {
