@@ -775,8 +775,8 @@ public class MTETeslaTower extends TTMultiblockBase
     }
 
     @Override
-    public List<Parameter<?>> getParameters() {
-        List<Parameter<?>> parameters = new ArrayList<>();
+    public List<Parameter<?, ?>> getParameters() {
+        List<Parameter<?, ?>> parameters = new ArrayList<>();
 
         parameters.add(hysteresisLowParameter);
         parameters.add(hysteresisHighParameter);
