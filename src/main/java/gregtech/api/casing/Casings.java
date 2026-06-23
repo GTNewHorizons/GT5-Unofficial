@@ -643,6 +643,8 @@ public enum Casings implements ICasing {
         (() -> GregTechAPI.sBlockGlass1, 8,  gt(16, 0, 8)),
     ElectromagneticWaveguide
         (() -> GregTechAPI.sBlockGlass1, 9, -1),
+    ReinforcedGlass
+        (() -> GregTechAPI.sBlockGlass1, 10, -1),
 
     // Fences
 
