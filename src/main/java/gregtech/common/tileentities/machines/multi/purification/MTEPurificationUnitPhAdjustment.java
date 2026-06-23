@@ -44,6 +44,7 @@ import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
@@ -559,7 +560,7 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
     public String[] getInfoData() {
         ArrayList<String> infoData = new ArrayList<>(Arrays.asList(super.getInfoData()));
         infoData.add(
-            StatCollector.translateToLocalFormatted(
+            IGregTechDeviceInformation.encode(
                 "GT5U.infodata.purification_unit_ph_adjustment.ph",
                 "" + EnumChatFormatting.YELLOW + currentpHValue));
         return infoData.toArray(new String[] {});

@@ -22,6 +22,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -44,6 +45,7 @@ import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IOverclockDescriptionProvider;
 import gregtech.api.logic.ProcessingLogic;
@@ -301,7 +303,8 @@ public abstract class MTELargeFusionComputer extends TTMultiblockBase
                             .decreaseStoredEnergyUnits(-lEUt, true);
                         if (mMaxProgresstime > 0 && ++mProgresstime >= mMaxProgresstime) {
                             if (mOutputItems != null) addItemOutputs(mOutputItems);
-                            if (mOutputFluids != null) addFluidOutputs(mOutputFluids);
+                            if (mOutputFluids != null)
+                                for (FluidStack tStack : mOutputFluids) if (tStack != null) addOutput(tStack);
                             mEfficiency = Math
                                 .max(0, Math.min(mEfficiency + mEfficiencyIncrease, getMaxEfficiency(mInventory[1])));
                             mOutputItems = null;
@@ -525,35 +528,15 @@ public abstract class MTELargeFusionComputer extends TTMultiblockBase
         double plasmaOut = 0;
         if (mMaxProgresstime > 0) plasmaOut = (double) mOutputFluids[0].amount / mMaxProgresstime;
 
-        return new String[] {
-            EnumChatFormatting.BLUE + StatCollector.translateToLocal("gg.scanner.info.fusion_reactor_mk")
-                + " "
-                + EnumChatFormatting.RESET
-                + tier,
-            StatCollector.translateToLocal("scanner.info.UX.0") + ": "
-                + EnumChatFormatting.LIGHT_PURPLE
-                + formatNumber(this.para)
-                + EnumChatFormatting.RESET,
-            StatCollector.translateToLocal("GT5U.fusion.req") + ": "
-                + EnumChatFormatting.RED
-                + formatNumber(-lEUt)
-                + EnumChatFormatting.RESET
-                + "EU/t",
-            StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(baseMetaTileEntity != null ? baseMetaTileEntity.getStoredEU() : 0)
-                + EnumChatFormatting.RESET
-                + " EU / "
-                + EnumChatFormatting.YELLOW
-                + formatNumber(maxEUStore())
-                + EnumChatFormatting.RESET
-                + " EU",
-            StatCollector.translateToLocal("GT5U.fusion.plasma") + ": "
-                + EnumChatFormatting.YELLOW
-                + formatNumber(plasmaOut)
-                + EnumChatFormatting.RESET
-                + "L/t",
-            GTUtility.translate("GT5U.multiblock.recipesDone", formatNumber(recipesDone)) };
+        return new String[] { IGregTechDeviceInformation.encode("gg.infodata.fusion.header", tier),
+            IGregTechDeviceInformation.encode("gg.infodata.fusion.parallel", formatNumber(this.para)),
+            IGregTechDeviceInformation.encode("gg.infodata.fusion.req", formatNumber(-lEUt)),
+            IGregTechDeviceInformation.encode(
+                "GT5U.multiblock.energy.fmt",
+                formatNumber(baseMetaTileEntity != null ? baseMetaTileEntity.getStoredEU() : 0),
+                formatNumber(maxEUStore())),
+            IGregTechDeviceInformation.encode("gg.infodata.fusion.plasma", formatNumber(plasmaOut)),
+            IGregTechDeviceInformation.encode("GT5U.multiblock.recipesDone.fmt", formatNumber(recipesDone)) };
     }
 
     protected long energyStorageCache;

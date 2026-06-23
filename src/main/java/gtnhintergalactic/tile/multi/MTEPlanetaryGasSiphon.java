@@ -12,6 +12,7 @@ import static gregtech.api.util.GTStructureUtility.activeCoils;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofCoil;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
+import static gtnhintergalactic.recipe.GasSiphonRecipes.calculateEUt;
 
 import java.util.List;
 import java.util.Map;
@@ -49,6 +50,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IChunkLoader;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
@@ -305,7 +307,7 @@ public class MTEPlanetaryGasSiphon extends MTEExtendedPowerMultiBlockBase<MTEPla
             return SimpleCheckRecipeResult.ofFailure("no_space_station");
         }
 
-        Map<Integer, FluidStack> planetRecipes = GasSiphonRecipes.RECIPES.get(provider.getPlanetToOrbit());
+        Map<Integer, FluidStack> planetRecipes = GasSiphonRecipes.RECIPES.get(provider.getPlanetToOrbit()).depths;
         if (planetRecipes == null) {
             resetMachine();
             return CheckRecipeResultRegistry.NO_RECIPE;
@@ -366,8 +368,10 @@ public class MTEPlanetaryGasSiphon extends MTEExtendedPowerMultiBlockBase<MTEPla
             return CheckRecipeResultRegistry.FLUID_OUTPUT_FULL;
         }
 
-        int recipeEUt = depth * (4 << (2 * provider.getCelestialBody()
-            .getTierRequirement() + 2));
+        int recipeEUt = calculateEUt(
+            depth,
+            provider.getCelestialBody()
+                .getTierRequirement());
         int ocLevel = MathHelper.floor_double(Math.log10((double) this.getMaxInputVoltage() / recipeEUt) / LOG4);
 
         if (ocLevel < 0) {
@@ -475,19 +479,14 @@ public class MTEPlanetaryGasSiphon extends MTEExtendedPowerMultiBlockBase<MTEPla
 
     @Override
     public String[] getInfoData() {
-        return new String[] { EnumChatFormatting.LIGHT_PURPLE + "Operational Data:" + EnumChatFormatting.RESET,
-            "Depth: " + EnumChatFormatting.YELLOW + depth + EnumChatFormatting.RESET,
-            "Fluid: " + EnumChatFormatting.YELLOW
-                + fluid.amount
-                + EnumChatFormatting.RESET
-                + "L/s "
-                + EnumChatFormatting.BLUE
-                + fluid.getLocalizedName()
-                + EnumChatFormatting.RESET,
-            "EU/t required: " + EnumChatFormatting.YELLOW + formatNumber(-lEUt) + EnumChatFormatting.RESET + " EU/t",
-            "Maintenance Status: " + (getRepairStatus() == getIdealStatus()
-                ? EnumChatFormatting.GREEN + "Working perfectly" + EnumChatFormatting.RESET
-                : EnumChatFormatting.RED + "Has problems" + EnumChatFormatting.RESET),
+        return new String[] { "ig.infodata.hdr.operational_data",
+            IGregTechDeviceInformation.encode("ig.infodata.gas_siphon.depth.fmt", depth),
+            IGregTechDeviceInformation.encode(
+                "ig.infodata.gas_siphon.fluid.fmt",
+                fluid.amount,
+                IGregTechDeviceInformation.translatable(fluid.getUnlocalizedName())),
+            IGregTechDeviceInformation.encode("ig.infodata.gas_siphon.eu_required.fmt", formatNumber(-lEUt)),
+            getRepairStatus() == getIdealStatus() ? "ig.infodata.maintenance.ok" : "ig.infodata.maintenance.problems",
             "---------------------------------------------" };
     }
 
