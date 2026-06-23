@@ -481,22 +481,14 @@ public class MTEElectricAutoWorkbench extends MTEBasicTank {
                                 }
                             }
                         }
-                        case 9 -> {
-                            for (int i = 0; i < 9; i++) {
-                                tRecipe[i] = null;
-                                if (mInventory[i] != null) {
-                                    tRecipe[i] = GTUtility.copy(mInventory[i]);
-                                    tRecipe[i].stackSize = 1;
-                                }
-                            }
-                        }
+                        case 9 -> System.arraycopy(buildCircleRecipe(mInventory), 0, tRecipe, 0, 9);
                     }
                 }
 
                 if (tOutput == null)
                     tOutput = GTModHandler.getAllRecipeOutput(getBaseMetaTileEntity().getWorld(), tRecipe);
 
-                mInventory[28] = tOutput;
+                updateRecipePreview(mInventory, tOutput);
 
                 if (tOutput == null) {
                     mLastCraftSuccessful = false;
@@ -646,6 +638,32 @@ public class MTEElectricAutoWorkbench extends MTEBasicTank {
         return tRecipe;
     }
 
+    /**
+     * Builds the Circle mode (mode 9) recipe grid directly from the live input grid (slots 0-8),
+     * preserving slot positions (empty slots stay null). Reading positionally - rather than compacting
+     * non-null items toward the front - is what lets shaped recipes match.
+     */
+    static ItemStack[] buildCircleRecipe(ItemStack[] mInventory) {
+        ItemStack[] tRecipe = new ItemStack[9];
+        for (int i = 0; i < 9; i++) {
+            tRecipe[i] = null;
+            if (mInventory[i] != null) {
+                tRecipe[i] = GTUtility.copy(mInventory[i]);
+                tRecipe[i].stackSize = 1;
+            }
+        }
+        return tRecipe;
+    }
+
+    /**
+     * Writes the current recipe output into the preview slot (28). Done unconditionally for every mode
+     * so the preview always reflects the current grid and is cleared (set to null) as soon as no recipe
+     * matches.
+     */
+    static void updateRecipePreview(ItemStack[] mInventory, ItemStack tOutput) {
+        mInventory[28] = tOutput;
+    }
+
     private ArrayList<ItemStack> recipeContent(ItemStack[] tRecipe) {
         ArrayList<ItemStack> tList = new ArrayList<>();
         for (byte i = 0; i < 9; i++) {
@@ -665,6 +683,10 @@ public class MTEElectricAutoWorkbench extends MTEBasicTank {
     }
 
     private ArrayList<ItemStack> benchContent() {
+        return benchContent(mInventory);
+    }
+
+    static ArrayList<ItemStack> benchContent(ItemStack[] mInventory) {
         ArrayList<ItemStack> tList = new ArrayList<>();
         for (byte i = 0; i < 18; i++) {
             if (mInventory[i] != null) {
