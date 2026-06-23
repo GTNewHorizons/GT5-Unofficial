@@ -724,10 +724,19 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
 
     @Override
     public void getExtraInfoData(List<String> info) {
-        info.add(IGregTechDeviceInformation.encode("gui.AntimatterForge.0.s", formatNumber(getAntimatterAmount())));
-        info.add(IGregTechDeviceInformation.encode("gui.AntimatterForge.1.s", formatNumber(getPassiveConsumption())));
-        info.add(IGregTechDeviceInformation.encode("gui.AntimatterForge.2.s", formatNumber(getActiveConsumption())));
-        info.add(IGregTechDeviceInformation.encode("gui.AntimatterForge.3.s", formatNumber(getAntimatterChange())));
+        info.add("gg.infodata.antimatter_forge.header");
+        info.add(
+            IGregTechDeviceInformation
+                .encode("gg.infodata.antimatter_forge.antimatter", formatNumber(getAntimatterAmount())));
+        info.add(
+            IGregTechDeviceInformation
+                .encode("gg.infodata.antimatter_forge.passive", formatNumber(getPassiveConsumption())));
+        info.add(
+            IGregTechDeviceInformation
+                .encode("gg.infodata.antimatter_forge.active", formatNumber(getActiveConsumption())));
+        info.add(
+            IGregTechDeviceInformation
+                .encode("gg.infodata.antimatter_forge.change", formatNumber(getAntimatterChange())));
     }
 
     public long getAntimatterAmount() {

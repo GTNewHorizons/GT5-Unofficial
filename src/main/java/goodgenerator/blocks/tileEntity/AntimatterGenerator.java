@@ -400,13 +400,17 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase<Antimatt
 
     @Override
     public void getExtraInfoData(List<String> info) {
-        info.add(IGregTechDeviceInformation.encode("gui.AntimatterGenerator.0.s", formatNumber(this.euLastCycle)));
+        info.add("gg.infodata.antimatter_generator.header");
         info.add(
             IGregTechDeviceInformation
-                .encode("gui.AntimatterGenerator.1.s", formatNumber(Math.ceil(this.annihilationEfficiency * 100))));
+                .encode("gg.infodata.antimatter_generator.eu_produced", formatNumber(this.euLastCycle)));
+        info.add(
+            IGregTechDeviceInformation.encode(
+                "gg.infodata.antimatter_generator.efficiency",
+                formatNumber(Math.ceil(this.annihilationEfficiency * 100))));
         info.add(
             IGregTechDeviceInformation
-                .encode("gui.AntimatterGenerator.2.s", formatNumber(Math.ceil(this.avgEffCache * 100))));
+                .encode("gg.infodata.antimatter_generator.efficiency.avg", formatNumber(Math.ceil(this.avgEffCache * 100))));
     }
 
     public long getEnergyProduced() {

@@ -263,7 +263,7 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
         System.arraycopy(origin, 0, ret, 0, origin.length);
         ret[origin.length] = IGregTechDeviceInformation.encode(
             "scanner.info.CASS.tier",
-            casingTier >= 0 ? GTValues.VN[casingTier + 1] : "scanner.info.CASS.tier.none");
+            casingTier >= 0 ? GTValues.VN[casingTier + 1] : GTUtility.translate("scanner.info.CASS.tier.none"));
         return ret;
     }
 
