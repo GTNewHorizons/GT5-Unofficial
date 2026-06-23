@@ -2,6 +2,7 @@ package gregtech.common.tileentities.generators;
 
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -9,6 +10,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.interfaces.ITexture;
@@ -85,13 +87,12 @@ public class MTELightningRod extends MTETieredMachineBlock {
                 int aZ = aBaseMetaTileEntity.getZCoord();
 
                 for (int i = aBaseMetaTileEntity.getYCoord() + 1; i < aWorld.getHeight() - 1; i++) {
-                    if (isRodValid && aBaseMetaTileEntity.getBlock(aX, i, aZ)
-                        .getUnlocalizedName()
-                        .equals("blockFenceIron")) {
+                    Block block = aBaseMetaTileEntity.getBlock(aX, i, aZ);
+                    if (isRodValid && block == Casings.IronFence.getBlock()) {
                         aRodValue++;
                     } else {
                         isRodValid = false;
-                        if (aBaseMetaTileEntity.getBlock(aX, i, aZ) != Blocks.air) {
+                        if (block != Blocks.air) {
                             aRodValue = 0;
                             break;
                         }

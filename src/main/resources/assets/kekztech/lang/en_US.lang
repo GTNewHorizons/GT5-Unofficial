@@ -33,22 +33,22 @@ item.kekztech_crafting_item.14.name=YSZ Ceramic Plate
 item.kekztech_crafting_item.15.name=GDC Ceramic Plate
 
 # -------- TFFT: Structure Blocks
-tile.kekztech_tfftstoragefield_block.name=T.F.F.T Casing/Storage Field Block
-tile.kekztech_tfftstoragefield_block.0.name=T.F.F.T Casing
-tile.kekztech_tfftstoragefield_block.1.name=T.F.F.T Storage Field Block (Tier I)
-tile.kekztech_tfftstoragefield_block.2.name=T.F.F.T Storage Field Block (Tier II)
-tile.kekztech_tfftstoragefield_block.3.name=T.F.F.T Storage Field Block (Tier III)
-tile.kekztech_tfftstoragefield_block.4.name=T.F.F.T Storage Field Block (Tier IV)
-tile.kekztech_tfftstoragefield_block.5.name=T.F.F.T Storage Field Block (Tier V)
-tile.kekztech_tfftstoragefield_block.6.name=T.F.F.T Storage Field Block (Tier VI)
-tile.kekztech_tfftstoragefield_block.7.name=T.F.F.T Storage Field Block (Tier VII)
-tile.kekztech_tfftstoragefield_block.8.name=T.F.F.T Storage Field Block (Tier VIII)
-tile.kekztech_tfftstoragefield_block.9.name=T.F.F.T Storage Field Block (Tier IX)
-tile.kekztech_tfftstoragefield_block.10.name=T.F.F.T Storage Field Block (Tier X)
+tile.kekztech_tfftstoragefield_block.name=TFFT Casing/Storage Field Block
+tile.kekztech_tfftstoragefield_block.0.name=TFFT Casing
+tile.kekztech_tfftstoragefield_block.1.name=TFFT Storage Field Block (Tier I)
+tile.kekztech_tfftstoragefield_block.2.name=TFFT Storage Field Block (Tier II)
+tile.kekztech_tfftstoragefield_block.3.name=TFFT Storage Field Block (Tier III)
+tile.kekztech_tfftstoragefield_block.4.name=TFFT Storage Field Block (Tier IV)
+tile.kekztech_tfftstoragefield_block.5.name=TFFT Storage Field Block (Tier V)
+tile.kekztech_tfftstoragefield_block.6.name=TFFT Storage Field Block (Tier VI)
+tile.kekztech_tfftstoragefield_block.7.name=TFFT Storage Field Block (Tier VII)
+tile.kekztech_tfftstoragefield_block.8.name=TFFT Storage Field Block (Tier VIII)
+tile.kekztech_tfftstoragefield_block.9.name=TFFT Storage Field Block (Tier IX)
+tile.kekztech_tfftstoragefield_block.10.name=TFFT Storage Field Block (Tier X)
 tile.kekztech_tfftstoragefield_block.desc=This is not a fluid tank
-tile.kekztech_tfftstoragefield_block.hint.1=Hint 1 Dot: T.F.F.T Casing
-tile.kekztech_tfftstoragefield_block.hint.2=Hint 2 Dot: T.F.F.T Casing, Maintenance Hatch, T.F.F.T Multi I/O Hatch, Input/Output Hatch, Energy Hatch
-tile.kekztech_tfftstoragefield_block.hint.3=Hint 3 Dot: EV+ Tier Glass, T.F.F.T Multi I/O Hatch, Input/Output Hatch
+tile.kekztech_tfftstoragefield_block.hint.1=Hint 1 Dot: TFFT Casing
+tile.kekztech_tfftstoragefield_block.hint.2=Hint 2 Dot: TFFT Casing, Maintenance Hatch, TFFT Multi I/O Hatch, Input/Output Hatch, Energy Hatch
+tile.kekztech_tfftstoragefield_block.hint.3=Hint 3 Dot: EV+ Tier Glass, TFFT Multi I/O Hatch, Input/Output Hatch
 tile.kekztech_tfftstoragefield_block.hint.4=Hint 4 Dot: EV+ Tier Glass
 
 # -------- Lapotronic Super Capacitor: Structure Blocks
