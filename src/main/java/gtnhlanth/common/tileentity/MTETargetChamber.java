@@ -425,10 +425,8 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
             /* 6 Pollution not included */
             // Beamline-specific
             "beamline.in_pre.hdr",
-            IGregTechDeviceInformation.encode(
-                "beamline.particle.fmt",
-                Particle.getParticleFromId(information.getParticleId())
-                    .getLocalisedName()),
+            Particle.getParticleFromId(information.getParticleId())
+                .encodeInfoData(),
             IGregTechDeviceInformation.encode("beamline.energy.eV.fmt", information.getEnergy() * 1000),
             IGregTechDeviceInformation.encode("beamline.focus.fmt", information.getFocus()),
             IGregTechDeviceInformation.encode("beamline.amount.fmt", information.getRate()) };

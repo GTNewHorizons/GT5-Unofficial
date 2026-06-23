@@ -473,17 +473,13 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
             // Beamline-specific
             "beamline.info.hdr", IGregTechDeviceInformation.encode("beamline.temperature.fmt", machineTemp),
             IGregTechDeviceInformation.encode("beamline.coolusage.fmt", length), "beamline.in_pre.hdr",
-            IGregTechDeviceInformation.encode(
-                "beamline.particle.fmt",
-                Particle.getParticleFromId(information.getParticleId())
-                    .getLocalisedName()),
+            Particle.getParticleFromId(information.getParticleId())
+                .encodeInfoData(),
             IGregTechDeviceInformation.encode("beamline.energy.keV.fmt", information.getEnergy()),
             IGregTechDeviceInformation.encode("beamline.focus.fmt", information.getFocus()),
             IGregTechDeviceInformation.encode("beamline.amount.fmt", information.getRate()), "beamline.out_pre.hdr",
-            IGregTechDeviceInformation.encode(
-                "beamline.particle.fmt",
-                Particle.getParticleFromId(this.outputParticleID)
-                    .getLocalisedName()),
+            Particle.getParticleFromId(this.outputParticleID)
+                .encodeInfoData(),
             IGregTechDeviceInformation.encode("beamline.energy.keV.fmt", this.outputEnergy),
             IGregTechDeviceInformation.encode("beamline.focus.fmt", this.outputFocus),
             IGregTechDeviceInformation.encode("beamline.amount.fmt", this.outputRate) };
