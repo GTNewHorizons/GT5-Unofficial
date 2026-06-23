@@ -925,6 +925,8 @@ gt.blockcasings10.name=Machine Casing
 gt.blockcasings11.name=Machine Casing
 gt.blockcasingsNH.name=Machine Casing
 gt.blockconcretes.name=Concrete
+gt.blockpad=Pad
+gt.blockfencemetal=Fence
 gt.blockframes.name=Frame
 gt.blockgem1.name=Block
 gt.blockgem2.name=Block
@@ -2380,7 +2382,7 @@ channels.gregtech.spacetime_compression=Decides the tier of Spacetime Compressio
 channels.gregtech.stabilisation=Decides the tier of Stabilisation Field Generator. Starts at §6Crude Stabilisation Field Generator§r at value 1 and ends at §6Gallifreyan Stabilisation Field Generator§r at value 9.
 channels.gregtech.time_dilation=Decides the tier of Time Dilation Field Generator. Starts at §6Crude Time Dilation Field Generator§r at value 1 and ends at §6Gallifreyan Time Dilation Field Generator§r at value 9.
 channels.gregtech.gt_hatch=Enables automatic hatch placement
-channels.gregtech.field=Decides the tier of T.F.F.T. Storage Field.
+channels.gregtech.field=Decides the tier of TFFT Storage Field.
 channels.gregtech.component_casing=Decides the tier of Component Assembly Line Casing. Starts at §6LV§r at value 1 and ends at §6MAX§r at value 14.
 
 GT5U.gui.select.current=§8Current:
@@ -2515,7 +2517,8 @@ GT5U.gui.text.recipe_result.insufficient_power=§7Recipe needs more power to sta
 GT5U.gui.text.recipe_result.insufficient_voltage=§7Recipe needs a higher voltage to start. Required: %s EU/t (%s§7)
 GT5U.gui.text.recipe_result.insufficient_heat=§7Recipe needs more heat to start. Required: %s K (%s§7)
 GT5U.gui.text.recipe_result.insufficient_machine_tier=§7Recipe needs higher structure tier. Required: %s
-GT5U.gui.text.recipe_result.insufficient_startup_power=§7Recipe needs higher startup power. Required: %s
+GT5U.gui.text.recipe_result.insufficient_startup_power=§7Recipe needs higher startup power. Required: %s EU/t
+GT5U.gui.text.recipe_result.insufficient_startup_power_with_amperage=§7Recipe needs higher startup power. Required: %s EU/t. Requires %s A rounded to %s 64A energy hatches
 GT5U.gui.text.recipe_result.internal_error=§4Recipe was found, but had internal error
 GT5U.gui.text.drill_ores_left_chunk=Ores left in current chunk: §a%s
 GT5U.gui.text.drill_ores_left_layer=Ores left at y-level %s: §a%s
@@ -3282,7 +3285,7 @@ gt.blockmachines.multimachine.beamcrafting.LHC.tooltip6=Accelerates the beam in 
 gt.blockmachines.multimachine.beamcrafting.LHC.tooltip7=Accelerator mode increases the §9Beam Energy§7 by §3EU Consumed in cycle§7 * §f0.1eV§7 / §6Beam Rate§7,
 gt.blockmachines.multimachine.beamcrafting.LHC.tooltip8=until the §9Target Beam Energy§7 is reached, or the §dmaximum number of cycles§7 is reached
 gt.blockmachines.multimachine.beamcrafting.LHC.tooltip9=If the §9Target Beam Energy§7 is reached, add §f0.3§7 * §6Beam Rate§7 to the current §6Beam Rate§7
-gt.blockmachines.multimachine.beamcrafting.LHC.tooltip10=However, if the current §6Beam Rate§7 >= §f2000§7, add (§f0.3§7 * §6Beam Rate§7)^§f0.5§7
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip10=However, if the current §6Beam Rate§7 >= §f5000§7, add (§f0.3§7 * §6Beam Rate§7)^§f0.5§7
 gt.blockmachines.multimachine.beamcrafting.LHC.tooltip11=to the current §6Beam Rate§7 instead
 gt.blockmachines.multimachine.beamcrafting.LHC.tooltip12=§3Power§7 cost starts at §f1A§7 of §fUV§7 per §6Beam Rate§7 and increases quadratically
 gt.blockmachines.multimachine.beamcrafting.LHC.tooltip13=with the §dnumber of completed cycles§7
@@ -3545,7 +3548,7 @@ GT5U.armor.part.name.Tough=Tough Mechanical Armor Frame
 GT5U.armor.part.name.Lightning=Lightning Mechanical Armor Frame
 GT5U.armor.part.name.Morphic=Morphic Mechanical Armor Frame
 GT5U.armor.part.name.Bulwark=Bulwark Mechanical Armor Frame
-GT5U.armor.part.name.Infinity=Infinitely Adaptive Armor Frame
+GT5U.armor.part.name.Infinity=Infinitely Adaptive Mechanical Armor Frame
 
 GT5U.armor.part.name.Nano=Armor Core (Nano)
 GT5U.armor.part.name.Quantum=Armor Core (Quantum)
@@ -3653,7 +3656,7 @@ GT5U.armor.tooltip.incompatible=Incompatible With:
 GT5U.armor.tooltip.stackable= (Stackable)
 GT5U.armor.tooltip.category=Category: %s
 GT5U.armor.tooltip.slots=Armor Slots:
-GT5U.armor.tooltip.armorvalue=Protection: %s
+GT5U.armor.tooltip.armorvalue=Damage Reduction: %d%%
 GT5U.armor.tooltip.protection=§6Protection§r
 GT5U.armor.tooltip.movement=§aMovement§r
 GT5U.armor.tooltip.utility=§dUtility§r
@@ -3701,12 +3704,13 @@ GT5U.hatch.infiniteCacheFluid.true=ME Output hatch will infinitely cache fluid, 
 GT5U.hatch.infiniteCacheFluid.false=ME Output hatch will stop accepting fluid when offline for more than 2 seconds
 GT5U.hatch.additionalConnection.true=ME channels connect to any side
 GT5U.hatch.additionalConnection.false=ME channels connect to front side only
-GT5U.hatch.fluid.filter.enable=Fluid output filter set to:
-GT5U.hatch.item.filter.enable=Item output filter set to:
+GT5U.hatch.fluid.filter.enable=Fluid output filter set to
+GT5U.hatch.item.filter.enable=Item output filter set to
 GT5U.hatch.fluid.filter.disable=Fluid output filtering disabled
 GT5U.hatch.item.filter.disable=Item output filtering disabled
 GT5U.hatch.filter.none=Filter Empty
 GT5U.hatch.filter.tooltip.0=§6Left-Click§8 to remove
+GT5U.hatch.outputme.filter.format=%s: %s:
 GT5U.hatch.outputme.checkMode.true=Check Mode §cOn§r
 GT5U.hatch.outputme.checkMode.false=Check Mode §aOff§r
 GT5U.hatch.outputme.checkMode.desc=NOTE: Simulates insertion into the internal cell during recipe checks, limiting parallel by cell space. (requires a cell to work, increases recipe calculation cost)
@@ -4294,6 +4298,10 @@ gt.item.paper.magic.page.name=Enchanted Page
 gt.item.paper.magic.pages.name=Enchanted Pages
 gt.item.paper.punch_card.empty.name=Punch Card
 gt.item.paper.punch_card.encoded.name=Punched Card
+
+# Pads
+gt.blockpad.0.name=Bounce Pad
+gt.blockpad.1.name=Sticky Pad
 
 ## Book
 gt.item.book.written.01.name=Book
@@ -5645,6 +5653,7 @@ GT5U.nei.display.steam_variant.bronze=Bronze
 GT5U.nei.display.steam_variant.steel=Steel
 GT5U.nei.display.duration.seconds=Time: %s seconds
 GT5U.nei.display.duration.ticks=Time: %s ticks
+GT5U.nei.display.discount.energy=Energy discount: %s%%
 GT5U.nei.display.total=Total: %s EU
 GT5U.nei.display.total.steam=Total: %s L of Steam
 GT5U.nei.display.usage=Usage: %s EU/t %s
@@ -6218,14 +6227,14 @@ gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip4=   - Incre
 gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip5=   - Subtracts %s10%%§7 from Initial EU Cost per module
 gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip6=- §f3+ Modules:
 gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip7=   - Adds %s6§7 Parallels per %sVoltage§7 tier per module
-gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip8=   - Increases Overclock Factor by §d0.1
+gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip8=   - Increases Overclock Factor by §d0.08
 gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip9=- §f4 Modules:
 gt.blockmachines.multimachine.foundry.heliocastreinforcement.tooltip10=   - Grants 2 maximum§d overclocks
 
 gt.blockmachines.multimachine.foundry.parallel.flavor=Greater Fate
 gt.blockmachines.multimachine.foundry.parallel.tooltip1=- Adds §612 §7Parallels per %s §7tier
 gt.blockmachines.multimachine.foundry.parallel.tooltip2=- Increases Hatch Space by §636
-gt.blockmachines.multimachine.foundry.parallel.tooltip3=- Adds an additional §66 §7Parallels per %s §7tier when
+gt.blockmachines.multimachine.foundry.parallel.tooltip3=- Adds an additional §68 §7Parallels per %s §7tier when
 gt.blockmachines.multimachine.foundry.parallel.tooltip4=   paired with the §cStreamlined Casting §7module
 
 gt.blockmachines.multimachine.foundry.hypercooler.flavor=Tempered Fury
@@ -6238,7 +6247,7 @@ gt.blockmachines.multimachine.foundry.hypercooler.tooltip6=   paired with the §
 
 gt.blockmachines.multimachine.foundry.streamlinedcasters.flavor=Witch Time!
 gt.blockmachines.multimachine.foundry.streamlinedcasters.tooltip1=- Increases Base Speed by %s150%%
-gt.blockmachines.multimachine.foundry.streamlinedcasters.tooltip2=- Increases Base Speed by an additional %s75%% when
+gt.blockmachines.multimachine.foundry.streamlinedcasters.tooltip2=- Increases Base Speed by an additional %s80%% when
 gt.blockmachines.multimachine.foundry.streamlinedcasters.tooltip3=   paired with the §eSuperdense Casting Basins §7module
 # Exo-Foundry GUI
 GT5U.gui.text.foundry.modules.preview=Showing Preview Modules
@@ -7656,6 +7665,8 @@ abbrev.entangled_celestialtungsten=Celestial Tungsten
 abbrev.entangled_chromaticglass=Chromatic Glass
 abbrev.entangled_cosmicsolder=Cosmic Solder
 abbrev.entangled_dimshiftedsuperfluid=Dim. Shifted Superfluid
+abbrev.entangled_phononmedium=Lossless Phonon Transfer Medium
+abbrev.entangled_quarkgluonplasma=Degenerate Quark Gluon Plasma
 abbrev.entangled_eternity=Eternity
 abbrev.entangled_hypogen=Hypogen
 abbrev.entangled_infinity=Infinity
@@ -7674,6 +7685,8 @@ fluid.entangled_celestialtungsten=Entangled Celestial Tungsten Bose-Einstein Con
 fluid.entangled_chromaticglass=Entangled Chromatic Glass Bose-Einstein Condensate
 fluid.entangled_cosmicsolder=Entangled Cosmic Solder Bose-Einstein Condensate
 fluid.entangled_dimshiftedsuperfluid=Entangled Dimensionally Shifted Superfluid Bose-Einstein Condensate
+fluid.entangled_phononmedium=Entangled Lossless Phonon Transfer Medium Bose-Einstein Condensate
+fluid.entangled_quarkgluonplasma=Entangled Degenerate Quark Gluon Plasma Bose-Einstein Condensate
 fluid.entangled_eternity=Entangled Eternity Bose-Einstein Condensate
 fluid.entangled_hypogen=Entangled Hypogen Bose-Einstein Condensate
 fluid.entangled_infinity=Entangled Infinity Bose-Einstein Condensate
@@ -7692,6 +7705,8 @@ item.gt.cell.entangled_celestialtungsten.name=Entangled Celestial Tungsten Bose-
 item.gt.cell.entangled_chromaticglass.name=Entangled Chromatic Glass Bose-Einstein Condensate Cell
 item.gt.cell.entangled_cosmicsolder.name=Entangled Cosmic Solder Bose-Einstein Condensate Cell
 item.gt.cell.entangled_dimshiftedsuperfluid.name=Entangled Dimensionally Shifted Superfluid Bose-Einstein Condensate Cell
+item.gt.cell.entangled_phononmedium.name=Entangled Lossless Phonon Transfer Medium Bose-Einstein Condensate Cell
+item.gt.cell.entangled_quarkgluonplasma.name=Entangled Degenerate Quark Gluon Plasma Bose-Einstein Condensate Cell
 item.gt.cell.entangled_eternity.name=Entangled Eternity Bose-Einstein Condensate Cell
 item.gt.cell.entangled_hypogen.name=Entangled Hypogen Bose-Einstein Condensate Cell
 item.gt.cell.entangled_infinity.name=Entangled Infinity Bose-Einstein Condensate Cell
@@ -8001,15 +8016,15 @@ achievement.gt.blockmachines.voidminer3=Void Miner III
 achievement.gt.blockmachines.voidminer3.desc=Pick up this item to see the recipe in NEI
 achievement.gt.blockmachines.electricimplosioncompressor=Electric Implosion Compressor
 achievement.gt.blockmachines.electricimplosioncompressor.desc=Pick up this item to see the recipe in NEI
-achievement.tile.kekztech_tfftstoragefield_block.6=T.F.F.T Storage Field Block (Tier VI)
+achievement.tile.kekztech_tfftstoragefield_block.6=TFFT Storage Field Block (Tier VI)
 achievement.tile.kekztech_tfftstoragefield_block.6.desc=Pick up this item to see the recipe in NEI
-achievement.tile.kekztech_tfftstoragefield_block.7=T.F.F.T Storage Field Block (Tier VII)
+achievement.tile.kekztech_tfftstoragefield_block.7=TFFT Storage Field Block (Tier VII)
 achievement.tile.kekztech_tfftstoragefield_block.7.desc=Pick up this item to see the recipe in NEI
-achievement.tile.kekztech_tfftstoragefield_block.8=T.F.F.T Storage Field Block (Tier VIII)
+achievement.tile.kekztech_tfftstoragefield_block.8=TFFT Storage Field Block (Tier VIII)
 achievement.tile.kekztech_tfftstoragefield_block.8.desc=Pick up this item to see the recipe in NEI
-achievement.tile.kekztech_tfftstoragefield_block.9=T.F.F.T Storage Field Block (Tier IX)
+achievement.tile.kekztech_tfftstoragefield_block.9=TFFT Storage Field Block (Tier IX)
 achievement.tile.kekztech_tfftstoragefield_block.9.desc=Pick up this item to see the recipe in NEI
-achievement.tile.kekztech_tfftstoragefield_block.10=T.F.F.T Storage Field Block (Tier X)
+achievement.tile.kekztech_tfftstoragefield_block.10=TFFT Storage Field Block (Tier X)
 achievement.tile.kekztech_tfftstoragefield_block.10.desc=Pick up this item to see the recipe in NEI
 achievement.gt.blockmachines.multimachine.extremeapiary=Industrial Apicultural Acclimatiser and Drone Domestication Station
 achievement.gt.blockmachines.multimachine.extremeapiary.desc=Pick up this item to see the recipe in NEI
@@ -8414,6 +8429,7 @@ gt.blockglass1.6.name=Chamber Grate
 gt.blockglass1.7.name=Exo-Foundry Containment Glass
 gt.blockglass1.8.name=Nanochip Complex Glass
 gt.blockglass1.9.name=Electromagnetic Waveguide
+gt.blockglass1.10.name=Reinforced Glass
 gt.blocktintedglass.0.name=Tinted Industrial Glass (White)
 gt.blocktintedglass.1.name=Tinted Industrial Glass (Light Gray)
 gt.blocktintedglass.2.name=Tinted Industrial Glass (Gray)
@@ -8473,6 +8489,7 @@ gt.blockreinforced.9.name=Titanium Reinforced Block
 gt.blockreinforced.10.name=Naquadah Reinforced Block
 gt.blockreinforced.11.name=Neutronium Reinforced Block
 gt.blockreinforced.12.name=Raw Deep Dark Portal Block
+gt.blockreinforced.13.name=Reinforced Block
 
 # BlockStones
 gt.blockstones.0.name=Marble
@@ -8491,6 +8508,9 @@ gt.blockstones.12.name=Cracked Basalt Bricks
 gt.blockstones.13.name=Mossy Basalt Bricks
 gt.blockstones.14.name=Chiseled Basalt
 gt.blockstones.15.name=Smooth Basalt
+
+#Fences
+gt.blockfencemetal.0.name=Iron Fence
 
 # Book
 gt.book.credits=Credits to %s for writing this Book. This was Book Nr. %d at its creation. Gotta get 'em all
@@ -8777,7 +8797,6 @@ GT5U.gui.text.bec-generator-input-hatch-pos=Any %s in the first slice
 GT5U.gui.text.bec-generator-bec-hatch-pos=The center Casing in the last slice
 
 # BEC Settings
-GT5U.gui.text.bec-parameters=Parameters
 GT5U.gui.text.bec-filter=Filter
 GT5U.gui.text.bec-operation=Operation
 GT5U.gui.text.bec-threshold=Threshold

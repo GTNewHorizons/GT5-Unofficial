@@ -25,7 +25,7 @@ public abstract class ItemAugmentAbstract extends GTGenericItem {
     private final IArmorPart part;
 
     public ItemAugmentAbstract(IArmorPart part) {
-        super(part.getItemId(), part.getLocalizedName(), part.getTooltip());
+        super(part.getItemId(), part.getLocalizedName(), part.hasTooltip() ? part.getTooltip() : null);
         this.part = part;
     }
 
