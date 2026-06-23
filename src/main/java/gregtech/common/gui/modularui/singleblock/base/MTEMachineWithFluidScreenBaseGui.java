@@ -82,13 +82,24 @@ public class MTEMachineWithFluidScreenBaseGui<T extends MTETieredMachineBlock> e
         return true;
     }
 
-    protected Flow createIO(ModularPanel panel, PanelSyncManager syncManager, int inputSlot, int outputSlot) {
+    protected Flow createIO(ModularPanel panel, PanelSyncManager syncManager, int inputSlot, int outputSlot,
+        IFluidTank fluidTank) {
         Flow ioColumn = Flow.column()
             .coverChildrenWidth()
             .fullHeight()
             .mainAxisAlignment(Alignment.MainAxis.SPACE_BETWEEN);
 
         ioColumn.child(createInputSlot(panel, syncManager, inputSlot));
+        ioColumn.child(
+            new FluidSlot().size(16)
+                .syncHandler(
+                    new FluidSlotSyncHandler(fluidTank).controlsAmount(false)
+                        .canDrainSlot(false)
+                        .canFillSlot(false))
+                .alwaysShowFull(false)
+                .background()
+                .hoverBackground()
+                .overlay(GTGuiTextures.PICTURE_GAUGE));
         ioColumn.child(createOutputSlot(panel, syncManager, outputSlot));
 
         return ioColumn;

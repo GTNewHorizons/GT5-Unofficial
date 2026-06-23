@@ -24,7 +24,8 @@ public class MTEBasicTankBaseGui<T extends MTEBasicTank> extends MTEMachineWithF
             .childPadding(1);
 
         mainRow.child(createScreen(panel, syncManager, machine.getFluidTank()));
-        mainRow.child(createIO(panel, syncManager, machine.getInputSlot(), machine.getOutputSlot()));
+        mainRow.child(
+            createIO(panel, syncManager, machine.getInputSlot(), machine.getOutputSlot(), machine.getFluidTank()));
         mainRow.childIf(supportsFluidFilterScreen(), () -> createFilterScreen(panel, syncManager));
 
         return super.createContentSection(panel, syncManager).child(mainRow);

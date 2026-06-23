@@ -41,7 +41,12 @@ public class MTEHatchOutputGui extends MTEHatchBaseGui<MTEHatchOutput> {
         mainRow.childIf(supportsFluidScreen(), () -> createScreen(panel, syncManager, machine.getFluidTank()));
         mainRow.childIf(
             supportsFluidIOColumn(),
-            () -> createIO(panel, syncManager, machine.getInputSlot(), machine.getOutputSlot()));
+            () -> createIO(
+                panel,
+                syncManager,
+                machine.getInputSlot(),
+                machine.getOutputSlot(),
+                machine.getFluidTank()));
         mainRow.childIf(supportsFluidFilterScreen(), () -> createFilterScreen(panel, syncManager));
 
         return super.createContentSection(panel, syncManager).child(mainRow);
