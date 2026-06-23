@@ -68,7 +68,7 @@ public class MTELinkedInputBusGui extends MTEHatchBaseGui<MTELinkedInputBus> {
         mainColumn.child(
             new ItemSlotGridBuilder(machine.getHandler(), syncManager).size(SLOT_PER_ROW, SLOT_ROW)
                 .filter(
-                    $ -> !channelSyncer.getStringValue()
+                    _ -> !channelSyncer.getStringValue()
                         .isEmpty())
                 .build());
 

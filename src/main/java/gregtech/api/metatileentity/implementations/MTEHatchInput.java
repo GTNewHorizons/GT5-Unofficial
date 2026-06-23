@@ -32,11 +32,12 @@ import gregtech.api.util.GTClientPreference;
 import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.hatch.MTEHatchInputGui;
+import gregtech.common.tileentities.machines.ISmartInputHatch;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 @IMetaTileEntity.SkipGenerateDescription
-public class MTEHatchInput extends MTEHatch {
+public class MTEHatchInput extends MTEHatch implements ISmartInputHatch {
 
     // hatch filter is disabled by default, meaning any fluid can be inserted when in structure.
     public boolean disableFilter = true;
@@ -161,6 +162,14 @@ public class MTEHatchInput extends MTEHatch {
     @Override
     public boolean canTankBeEmptied() {
         return true;
+    }
+
+    @Override
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
+        super.onPostTick(aBaseMetaTileEntity, aTimer);
+        if (aBaseMetaTileEntity.isServerSide()) {
+            detectInventoryChange();
+        }
     }
 
     public void updateSlots() {

@@ -124,6 +124,9 @@ item.NtNanofibers.name=Neutronium Nanofibers
 item.UHTResistantMesh.name=Ultra High Temperature Resistant Mesh
 item.TaHfNanoparticles.name=Tantalum Hafnium Carbide Nanoparticles
 item.NtNanoparticles.name=Neutronium Nanoparticles
+item.droneCase.name=Corona-Resistant Drone Case
+item.femtocontroller.name=Magnetically Shielded Femtocontroller
+item.fuelPellet.name=Hyperfine TrNq+ Radioisomer Pellet
 
 # Blocks
 gt.blockcasingsSE.name=Space Elevator Part
@@ -193,7 +196,7 @@ gt.blockmachines.multimachine.ig.siphon.type=Pump, PGS
 gt.blockmachines.multimachine.ig.siphon.desc1=Build on a Space Station orbiting a Gas Planet
 gt.blockmachines.multimachine.ig.siphon.desc2=Requires a Programmed Circuit set to the depth you want to pump from (1 - 4)
 gt.blockmachines.multimachine.ig.siphon.desc3=Requires 64x depth Mining Pipes
-gt.blockmachines.multimachine.ig.siphon.desc4=EU/t: d*4^(t+2), t is the Space Station's tier and d the depth
+gt.blockmachines.multimachine.ig.siphon.desc4=Power cost depends on planet tier and depth. See NEI page for more details.
 gt.blockmachines.multimachine.ig.siphon.desc5=Can load the chunk it is in (toggle using a Soldering Iron)
 gt.blockmachines.multimachine.ig.siphon.lore0=Taking Space-Mining to another Level!
 gt.blockmachines.multimachine.ig.siphon.lore1=It's time to SUCC!
@@ -339,6 +342,7 @@ ig.nei.elevatorpump.name=Space Pumping Module
 ig.nei.elevatorpump.planettype=Planet
 ig.nei.elevatorpump.gastype=Gas
 ig.nei.elevatorpump.amount=Amount
+ig.nei.elevatorpump.eut=EU/t
 ig.nei.elevatorpump.see_all=See All
 ig.nei.spaceproject.name=Space Projects
 ig.nei.spaceproject.stages=Stages:
@@ -457,3 +461,16 @@ gt.blockcasingsSEMotor.1.name=Space Elevator Motor MK-II
 gt.blockcasingsSEMotor.2.name=Space Elevator Motor MK-III
 gt.blockcasingsSEMotor.3.name=Space Elevator Motor MK-IV
 gt.blockcasingsSEMotor.4.name=Space Elevator Motor MK-V
+
+# info data
+ig.infodata.hdr.operational_data=§5Operational Data:§r
+ig.infodata.maintenance.ok=Maintenance Status: §aWorking perfectly§r
+ig.infodata.maintenance.problems=Maintenance Status: §cHas problems§r
+ig.infodata.dyson_swarm.modules.fmt=Modules: §e%s§r
+ig.infodata.dyson_swarm.power_factor.fmt=Power Factor: %s
+ig.infodata.dyson_swarm.theoretical_output.fmt=Theoretical Output: §e%s§r EU/t
+ig.infodata.dyson_swarm.current_output.fmt=Current Output: §e%s§r EU/t
+ig.infodata.dyson_swarm.computation.fmt=Computation required: §e%s§r/t
+ig.infodata.gas_siphon.depth.fmt=Depth: §e%s§r
+ig.infodata.gas_siphon.fluid.fmt=Fluid: §e%s§rL/s §9%s§r
+ig.infodata.gas_siphon.eu_required.fmt=EU/t required: §e%s§r EU/t

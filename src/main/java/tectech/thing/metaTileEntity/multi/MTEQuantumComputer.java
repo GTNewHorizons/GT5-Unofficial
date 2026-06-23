@@ -25,7 +25,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -44,6 +43,7 @@ import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
@@ -560,9 +560,9 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
         WirelessComputationPacket wirelessComputationPacket = WirelessComputationPacket
             .getPacketByUserId(getBaseMetaTileEntity().getOwnerUuid());
         data.add(
-            StatCollector.translateToLocalFormatted(
+            IGregTechDeviceInformation.encode(
                 "tt.infodata.qc.total_wireless_computation",
-                "" + EnumChatFormatting.YELLOW + wirelessComputationPacket.getAvailableComputationStored()));
+                wirelessComputationPacket.getAvailableComputationStored()));
         return data.toArray(new String[] {});
     }
 

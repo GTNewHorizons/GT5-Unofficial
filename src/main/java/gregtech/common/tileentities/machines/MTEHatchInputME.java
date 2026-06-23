@@ -6,6 +6,7 @@ import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_INPUT_FLUID_HATCH;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_INPUT_FLUID_HATCH_ACTIVE;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.Iterator;
@@ -109,6 +110,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
     protected boolean processingRecipe = false;
     private boolean justHadNewFluids = false;
     private boolean expediteRecipeCheck = false;
+    private final List<IHatchWatcher> watchers = new ArrayList<>();
     /**
      * The cached activity for this hatch. Only valid while processing a recipe. This avoids several
      * operations.
@@ -148,6 +150,12 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
         if (aBaseMetaTileEntity.isServerSide()) {
             if (aTimer % autoPullRefreshTime == 0 && autoPullFluidList) {
                 refreshFluidList();
+                if (justHadNewFluids && expediteRecipeCheck) {
+                    for (var multi : watchers) {
+                        multi.scheduleRecipeCheckImmediate();
+                    }
+                    justHadNewFluids = false;
+                }
             }
             if (aTimer % 20 == 0) {
                 aBaseMetaTileEntity.setActive(isActive());
@@ -343,13 +351,13 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
     }
 
     @Override
-    public boolean justUpdated() {
-        if (expediteRecipeCheck && isAllowedToWork()) {
-            boolean ret = justHadNewFluids;
-            justHadNewFluids = false;
-            return ret;
-        }
-        return false;
+    public void addWatcher(IHatchWatcher watcher) {
+        watchers.add(watcher);
+    }
+
+    @Override
+    public void removeWatcher(IHatchWatcher watcher) {
+        watchers.remove(watcher);
     }
 
     public void setRecipeCheck(boolean value) {
@@ -603,7 +611,6 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
         }
     }
 
-    @Override
     public boolean doFastRecipeCheck() {
         return expediteRecipeCheck;
     }

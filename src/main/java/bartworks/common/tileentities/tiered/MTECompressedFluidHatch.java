@@ -44,7 +44,8 @@ public class MTECompressedFluidHatch extends MTEHatchInput {
     @Override
     public boolean isFluidInputAllowed(FluidStack aFluid) {
         return GTUtility.areFluidsEqual(aFluid, Materials.LiquidAir.getFluid(1))
-            || GTUtility.areFluidsEqual(aFluid, Materials.NetherSemiFluid.getFluid(1));
+            || GTUtility.areFluidsEqual(aFluid, Materials.NetherSemiFluid.getFluid(1))
+            || GTUtility.areFluidsEqual(aFluid, Materials.ToxicAir.getFluid(1));
     }
 
     @Override

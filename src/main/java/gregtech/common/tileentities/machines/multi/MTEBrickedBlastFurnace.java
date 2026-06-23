@@ -49,6 +49,7 @@ import gregtech.api.gui.modularui.GUITextureSet;
 import gregtech.api.interfaces.ISecondaryDescribable;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IGetTitleColor;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.RecipeMapWorkable;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -68,8 +69,8 @@ import gregtech.common.pollution.Pollution;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public class MTEBrickedBlastFurnace extends MetaTileEntity
-    implements IAlignment, ISurvivalConstructable, RecipeMapWorkable, IGetTitleColor, ISecondaryDescribable {
+public class MTEBrickedBlastFurnace extends MetaTileEntity implements IAlignment, ISurvivalConstructable,
+    RecipeMapWorkable, IGetTitleColor, ISecondaryDescribable, ICasingTextureProvider {
 
     public static final int INPUT_SLOTS = 3, OUTPUT_SLOTS = 3;
     private static final IStructureDefinition<MTEBrickedBlastFurnace> STRUCTURE_DEFINITION = IStructureDefinition
@@ -80,16 +81,8 @@ public class MTEBrickedBlastFurnace extends MetaTileEntity
                 new String[][] { { "ccc", "c-c", "ccc" }, { "ccc", "clc", "ccc" }, { "c~c", "clc", "ccc" },
                     { "ccc", "ccc", "ccc" }, }))
         .addElement('c', lazy(t -> ofBlock(GregTechAPI.sBlockCasings4, 15)))
-        .addElement('l', ofChain(isAir(), ofBlockAnyMeta(Blocks.lava, 1), ofBlockAnyMeta(Blocks.flowing_lava, 1)))
+        .addElement('l', ofChain(ofBlockAnyMeta(Blocks.lava, 1), ofBlockAnyMeta(Blocks.flowing_lava, 1), isAir()))
         .build();
-    private static final ITexture[] FACING_SIDE = { TextureFactory.of(Textures.BlockIcons.MACHINE_CASING_DENSEBRICKS) };
-    private static final ITexture[] FACING_FRONT = {
-        TextureFactory.of(Textures.BlockIcons.MACHINE_CASING_BRICKEDBLASTFURNACE_INACTIVE) };
-    private static final ITexture[] FACING_ACTIVE = {
-        TextureFactory.of(Textures.BlockIcons.MACHINE_CASING_BRICKEDBLASTFURNACE_ACTIVE), TextureFactory.builder()
-            .addIcon(Textures.BlockIcons.MACHINE_CASING_BRICKEDBLASTFURNACE_ACTIVE_GLOW)
-            .glow()
-            .build() };
 
     private MultiblockTooltipBuilder tooltipBuilder;
 
@@ -168,10 +161,20 @@ public class MTEBrickedBlastFurnace extends MetaTileEntity
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
-        if (side == aFacing) {
-            return aActive ? FACING_ACTIVE : FACING_FRONT;
-        }
-        return FACING_SIDE;
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            Textures.BlockIcons.MACHINE_CASING_BRICKEDBLASTFURNACE_INACTIVE,
+            Textures.BlockIcons.MACHINE_CASING_BRICKEDBLASTFURNACE_INACTIVE_GLOW,
+            Textures.BlockIcons.MACHINE_CASING_BRICKEDBLASTFURNACE_ACTIVE,
+            Textures.BlockIcons.MACHINE_CASING_BRICKEDBLASTFURNACE_ACTIVE_GLOW);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return TextureFactory.of(Textures.BlockIcons.MACHINE_CASING_DENSEBRICKS);
     }
 
     @Override

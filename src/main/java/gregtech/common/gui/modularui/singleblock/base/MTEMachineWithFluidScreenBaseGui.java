@@ -52,13 +52,13 @@ public class MTEMachineWithFluidScreenBaseGui<T extends MTETieredMachineBlock> e
         textColumn.child(
             IKey.lang("GT5U.machines.basic_tank.liquid_amount")
                 .asWidget()
-                .widgetTheme(GTWidgetThemes.DISPLAY_TEXT));
+                .widgetTheme(GTWidgetThemes.DISPLAY_TEXT_WHITE));
 
         // liquid amount
         textColumn.child(
             IKey.dynamic(() -> formatNumber(fluidTank.getFluidAmount()))
                 .asWidget()
-                .widgetTheme(GTWidgetThemes.DISPLAY_TEXT));
+                .widgetTheme(GTWidgetThemes.DISPLAY_TEXT_WHITE));
 
         screen.child(textColumn);
 
@@ -124,7 +124,7 @@ public class MTEMachineWithFluidScreenBaseGui<T extends MTETieredMachineBlock> e
         textColumn.child(
             IKey.lang("GT5U.machines.digitaltank.lockfluid.label")
                 .asWidget()
-                .widgetTheme(GTWidgetThemes.DISPLAY_TEXT));
+                .widgetTheme(GTWidgetThemes.DISPLAY_TEXT_WHITE));
 
         // fluid name
         textColumn.child(IKey.dynamic(() -> {
@@ -135,7 +135,7 @@ public class MTEMachineWithFluidScreenBaseGui<T extends MTETieredMachineBlock> e
             return translateToLocal("GT5U.machines.digitaltank.lockfluid.empty");
         })
             .asWidget()
-            .widgetTheme(GTWidgetThemes.DISPLAY_TEXT));
+            .widgetTheme(GTWidgetThemes.DISPLAY_TEXT_WHITE));
 
         screen.child(textColumn);
 

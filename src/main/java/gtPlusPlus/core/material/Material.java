@@ -898,8 +898,16 @@ public class Material implements IOreMaterial {
         return getComponentByPrefix(OrePrefixes.plateDense, stacksize);
     }
 
+    public final ItemStack getPlateSuperdense(final int stacksize) {
+        return getComponentByPrefix(OrePrefixes.plateSuperdense, stacksize);
+    }
+
     public final ItemStack getGear(final int stacksize) {
         return getComponentByPrefix(OrePrefixes.gearGt, stacksize);
+    }
+
+    public final ItemStack getGearSmall(final int stacksize) {
+        return getComponentByPrefix(OrePrefixes.gearGtSmall, stacksize);
     }
 
     public final ItemStack getRod(final int stacksize) {

@@ -8,7 +8,6 @@ import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.GalacticraftCore;
 import static gregtech.api.enums.Mods.GalacticraftMars;
 import static gregtech.api.enums.Mods.IC2NuclearControl;
-import static gregtech.api.enums.Mods.IndustrialCraft2;
 import static gregtech.api.enums.Mods.IronChests;
 import static gregtech.api.enums.Mods.IronTanks;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
@@ -71,6 +70,7 @@ public class AssemblerRecipes implements Runnable {
         this.loadOutputBusesRecipes();
         this.loadOutputHatchesRecipes();
         this.withIC2NuclearControl();
+        this.withBEC();
 
         {
             GTValues.RA.stdBuilder()
@@ -2411,7 +2411,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.stick, Materials.Iron, 1))
             .circuit(1)
-            .itemOutputs(GTModHandler.getIC2Item("ironFence", 1))
+            .itemOutputs(ItemList.FenceIron.get(1L))
             .duration(5 * SECONDS)
             .eut(4)
             .addTo(assemblerRecipes);
@@ -2427,7 +2427,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.stick, Materials.CastIron, 1))
             .circuit(1)
-            .itemOutputs(GTModHandler.getIC2Item("ironFence", 1))
+            .itemOutputs(ItemList.FenceIron.get(1L))
             .duration(5 * SECONDS)
             .eut(4)
             .addTo(assemblerRecipes);
@@ -3284,7 +3284,7 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTModHandler.getModItem(IndustrialCraft2.ID, "blockAlloyGlass", 3L),
+                ItemList.ReinforcedGlass.get(3L),
                 GTOreDictUnificator.get(OrePrefixes.plateTriple, Materials.Silver, 1),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.CastIron, 2),
                 GTOreDictUnificator.get(OrePrefixes.pipeSmall, Materials.Steel, 1),
@@ -3309,9 +3309,9 @@ public class AssemblerRecipes implements Runnable {
 
         GTOreDictUnificator.addItemDataFromInputs(
             ItemList.Machine_HP_Solar.get(1L),
-            GTModHandler.getModItem(IndustrialCraft2.ID, "blockAlloyGlass", 1L),
-            GTModHandler.getModItem(IndustrialCraft2.ID, "blockAlloyGlass", 1L),
-            GTModHandler.getModItem(IndustrialCraft2.ID, "blockAlloyGlass", 1L),
+            ItemList.ReinforcedGlass.get(1L),
+            ItemList.ReinforcedGlass.get(1L),
+            ItemList.ReinforcedGlass.get(1L),
             GTOreDictUnificator.get(OrePrefixes.plateTriple, Materials.Silver, 1),
             GTOreDictUnificator.get(OrePrefixes.plate, Materials.CastIron, 1),
             GTOreDictUnificator.get(OrePrefixes.plate, Materials.CastIron, 1),
@@ -4589,6 +4589,28 @@ public class AssemblerRecipes implements Runnable {
                 .eut(TierEU.RECIPE_LV)
                 .addTo(assemblerRecipes);
         }
+    }
+
+    /**
+     * BEC block assembler recipes.
+     */
+    private void withBEC() {
+        // Conduit
+        GTValues.RA.stdBuilder()
+            .itemInputs(CustomItemList.LASERpipe.get(1), ItemList.Naquarite_Universal_Insulator_Foil.get(4))
+            .itemOutputs(CustomItemList.Pipe_BEC.get(1))
+            .fluidInputs(MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getFluidStack(INGOTS))
+            .duration(5 * SECONDS)
+            .eut(TierEU.RECIPE_UEV)
+            .addTo(assemblerRecipes);
+
+        // Conduit Casing
+        GTValues.RA.stdBuilder()
+            .itemInputs(CustomItemList.Pipe_BEC.get(1), ItemList.Casing_UV.get(1))
+            .itemOutputs(CustomItemList.Pipe_BEC_Block.get(1))
+            .duration(1 * SECONDS)
+            .eut(TierEU.RECIPE_UV)
+            .addTo(assemblerRecipes);
     }
 
     /**

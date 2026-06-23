@@ -173,6 +173,11 @@ public enum ItemList implements IItemContainer {
     Shape_Extruder_Small_Gear,
     Shape_Extruder_ToolHeadDrill,
 
+    // IC2 Replacements
+    PadBouncy,
+    PadSticky,
+    FenceIron,
+
     Credit_Copper,
     Credit_Iron,
     Credit_Silver,
@@ -1760,6 +1765,8 @@ public enum ItemList implements IItemContainer {
     CondensateGuidanceCoil,
     ElectromagneticWaveguide,
 
+    ReinforcedGlass,
+
     MobRep_LV,
     MobRep_MV,
     MobRep_HV,
@@ -1775,6 +1782,7 @@ public enum ItemList implements IItemContainer {
     MagLevPython_HV,
     MagLevPython_EV,
 
+    Block_ReinforcedConcrete,
     Block_BronzePlate,
     Block_SteelPlate,
     Block_TitaniumPlate,
@@ -2151,7 +2159,11 @@ public enum ItemList implements IItemContainer {
     Hatch_CraftingInput_Bus_ME,
     Hatch_CraftingInput_Bus_ME_ItemOnly,
     Hatch_CraftingInput_Bus_Slave,
-    Hatch_PatternProvider_Crafting,
+    Hatch_PatternProvider_Crafting_IV,
+    Hatch_PatternProvider_Crafting_LuV,
+    Hatch_PatternProvider_Crafting_ZPM,
+    Hatch_PatternProvider_Crafting_UV,
+    Hatch_PatternProvider_Crafting_UHV,
     DebugStructureWriter,
 
     Superconducting_Magnet_Solenoid_MV,
@@ -2764,6 +2776,9 @@ public enum ItemList implements IItemContainer {
     UHTResistantMesh,
     TaHfNanoparticles,
     NtNanoparticles,
+    DroneCase,
+    Femtocontroller,
+    FuelPellet,
 
     PrecisionFieldSyncCasing,
     MagneticAnchorCasing,
@@ -2851,6 +2866,8 @@ public enum ItemList implements IItemContainer {
     Augment_WaterBreathing,
     Augment_MilkInfusion,
     Augment_HoloInventory,
+    Augment_Travelers,
+    Augment_Terrasteel,
 
     CompressedOutputBusLuV,
     CompressedOutputBusZPM,
@@ -2929,6 +2946,7 @@ public enum ItemList implements IItemContainer {
     IndustrialMixer,
     MegaChemicalReactor,
     InfiniteFluidDrillingRig,
+    MegaOilCracker,
 
     BasicCircuitBoard,
     EnhancedCircuitBoard,
@@ -3093,6 +3111,35 @@ public enum ItemList implements IItemContainer {
     ComplexNanochipGlass,
     Gravitational_Lens,
     Planck_Manifold,
+
+    MetaMaterial_Shielding1,
+    MetaMaterial_Shielding2,
+    MetaMaterial_Shielding3,
+    MetaMaterial_Waveguide1,
+    MetaMaterial_Waveguide2,
+    MetaMaterial_Waveguide3,
+    MetaMaterial_EnergyConduit1,
+    MetaMaterial_EnergyConduit2,
+    MetaMaterial_EnergyConduit3,
+    MetaMaterial_ElectrograviticValve1,
+    MetaMaterial_ElectrograviticValve2,
+    MetaMaterial_ElectrograviticValve3,
+    MetaMaterial_WaveFocus1,
+    MetaMaterial_WaveFocus2,
+    MetaMaterial_WaveFocus3,
+    MetaMaterial_WaveFocus4,
+    MetaMaterial_ResonanceChamber1,
+    MetaMaterial_ResonanceChamber2,
+    MetaMaterial_ResonanceChamber3,
+    MetaMaterial_ResonanceChamber4,
+    MetaMaterial_SensorArray1,
+    MetaMaterial_SensorArray2,
+    MetaMaterial_SensorArray3,
+    MetaMaterial_SensorArray4,
+    MetaMaterial_FieldManipulator1,
+    MetaMaterial_FieldManipulator2,
+    MetaMaterial_FieldManipulator3,
+    MetaMaterial_FieldManipulator4,
 
     // semicolon after the comment to reduce merge conflicts
     ;

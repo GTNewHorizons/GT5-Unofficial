@@ -75,7 +75,7 @@ public class MTEHatchOutputGui extends MTEHatchBaseGui<MTEHatchOutput> {
         textColumn.child(
             IKey.lang("GT5U.machines.hatch_output.lockfluid.label")
                 .asWidget()
-                .widgetTheme(GTWidgetThemes.DISPLAY_TEXT));
+                .widgetTheme(GTWidgetThemes.DISPLAY_TEXT_WHITE));
 
         // fluid name
         IKey lockKey = IKey.dynamic(() -> {
@@ -97,7 +97,7 @@ public class MTEHatchOutputGui extends MTEHatchBaseGui<MTEHatchOutput> {
                 1,
                 (float) FILTER_TEXT_MAX_SCALE_LENGTH / lockKey.getFormatted()
                     .length()))
-            .widgetTheme(GTWidgetThemes.DISPLAY_TEXT));
+            .widgetTheme(GTWidgetThemes.DISPLAY_TEXT_WHITE));
 
         screen.child(textColumn);
 

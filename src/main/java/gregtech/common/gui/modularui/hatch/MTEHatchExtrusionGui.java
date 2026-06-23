@@ -6,17 +6,16 @@ import net.minecraft.item.ItemStack;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
-import com.cleanroommc.modularui.widgets.ToggleButton;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.layout.Grid;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
 import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.api.modularui2.common.CommonButtons;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
 import gregtech.common.modularui2.widget.GhostShapeSlotWidget;
@@ -50,19 +49,12 @@ public class MTEHatchExtrusionGui extends MTEHatchBaseGui<MTEHatchExtrusion> {
         int rows = (itemSlots + COLS - 1) / COLS;
 
         return new ItemSlotGridBuilder(machine.inventoryHandler, syncManager).size(COLS, rows)
-            .filter(this::isShape)
             .build();
     }
 
     private boolean isShape(ItemStack itemStack) {
         return Arrays.stream(MTEHatchExtrusion.extruderShapes)
             .anyMatch(shape -> GTUtility.areStacksEqual(shape, itemStack, true));
-    }
-
-    private ToggleButton createToggleButton(BooleanSyncValue sync, UITexture texture, String tooltipKey) {
-        return new ToggleButton().value(sync)
-            .overlay(texture)
-            .addTooltipLine(GTUtility.translate(tooltipKey));
     }
 
     @Override
@@ -75,8 +67,7 @@ public class MTEHatchExtrusionGui extends MTEHatchBaseGui<MTEHatchExtrusion> {
             public int getItemStackLimit(@NotNull ItemStack stack) {
                 return 1;
             }
-        }.singletonSlotGroup()
-            .filter(this::isShape));
+        }.singletonSlotGroup());
 
         BooleanSyncValue stackSync = new BooleanSyncValue(() -> !machine.disableSort, v -> machine.disableSort = !v)
             .allowC2S();
@@ -87,12 +78,12 @@ public class MTEHatchExtrusionGui extends MTEHatchBaseGui<MTEHatchExtrusion> {
 
         return super.createBottomLeftCornerFlow(panel, syncManager).child(shapeSlot)
             .child(
-                createToggleButton(
+                CommonButtons.createToggleButton(
                     stackSync,
                     GTGuiTextures.OVERLAY_BUTTON_SORTING_MODE,
                     "GT5U.machines.sorting_mode.tooltip"))
             .child(
-                createToggleButton(
+                CommonButtons.createToggleButton(
                     insertionSync,
                     GTGuiTextures.OVERLAY_BUTTON_ONE_STACK_LIMIT,
                     "GT5U.machines.one_stack_limit.tooltip"));

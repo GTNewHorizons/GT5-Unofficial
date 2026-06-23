@@ -43,6 +43,7 @@ public class GTUITextures {
     public static final UITexture OVERLAY_SLOT_BEAKER_2 = UITexture.fullImage(GregTech.ID, "gui/overlay_slot/beaker_2");
     public static final UITexture OVERLAY_SLOT_BEE_DRONE = UITexture.fullImage(GregTech.ID, "gui/overlay_slot/bee_drone");
     public static final UITexture OVERLAY_SLOT_BEE_QUEEN = UITexture.fullImage(GregTech.ID, "gui/overlay_slot/bee_queen");
+    public static final UITexture OVERLAY_SLOT_UPGRADE = UITexture.fullImage(GregTech.ID, "gui/overlay_slot/slot_upgrade");
     public static final UITexture OVERLAY_SLOT_BENDER = UITexture.fullImage(GregTech.ID, "gui/overlay_slot/bender");
     public static final UITexture OVERLAY_SLOT_BOX = UITexture.fullImage(GregTech.ID, "gui/overlay_slot/box");
     public static final UITexture OVERLAY_SLOT_BOXED = UITexture.fullImage(GregTech.ID, "gui/overlay_slot/boxed");
