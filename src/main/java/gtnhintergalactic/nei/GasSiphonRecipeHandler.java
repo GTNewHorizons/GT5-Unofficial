@@ -129,7 +129,7 @@ public class GasSiphonRecipeHandler extends TemplateRecipeHandler {
     public void loadCraftingRecipes(String outputId, Object... results) {
         if (outputId.equals(getOutputId())) {
             for (Map.Entry<String, GasSiphonRecipes.GasSiphonRecipe> entry : GasSiphonRecipes.RECIPES.entrySet()) {
-                for (Map.Entry<Integer, FluidStack> innerEntry : entry.getValue().DEPTHS.entrySet()) {
+                for (Map.Entry<Integer, FluidStack> innerEntry : entry.getValue().depths.entrySet()) {
                     arecipes.add(
                         new CachedSiphonRecipe(
                             entry.getKey(),
@@ -193,7 +193,7 @@ public class GasSiphonRecipeHandler extends TemplateRecipeHandler {
         if (fluid == null) return;
 
         for (Map.Entry<String, GasSiphonRecipes.GasSiphonRecipe> entry : GasSiphonRecipes.RECIPES.entrySet()) {
-            for (Map.Entry<Integer, FluidStack> innerEntry : entry.getValue().DEPTHS.entrySet()) {
+            for (Map.Entry<Integer, FluidStack> innerEntry : entry.getValue().depths.entrySet()) {
                 if (innerEntry.getValue()
                     .isFluidEqual(new FluidStack(fluid, 0))) {
                     arecipes.add(

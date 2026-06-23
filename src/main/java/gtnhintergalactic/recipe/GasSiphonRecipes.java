@@ -73,14 +73,12 @@ public class GasSiphonRecipes {
      * <p>
      * This class does not perform validation; it simply stores the data in a
      * clean, readable format for NEI display and machine logic.
-     *
-     * @author jude123412
      */
     public static class GasSiphonRecipe {
 
         public final String planet;
         public final int tier;
-        public final Map<Integer, FluidStack> DEPTHS = new HashMap<>();
+        public final Map<Integer, FluidStack> depths = new HashMap<>();
 
         public GasSiphonRecipe(String planet, int tier) {
             this.planet = planet;
@@ -88,7 +86,7 @@ public class GasSiphonRecipes {
         }
 
         public GasSiphonRecipe addFluid(int depth, FluidStack result) {
-            DEPTHS.put(depth, result);
+            depths.put(depth, result);
             return this;
         }
 
