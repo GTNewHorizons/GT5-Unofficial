@@ -3,7 +3,6 @@ package gregtech.loaders.load;
 import static gregtech.api.enums.Mods.BuildCraftFactory;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.Gendustry;
-import static gregtech.api.enums.Mods.IndustrialCraft2;
 import static gregtech.api.enums.Mods.NotEnoughItems;
 import static gregtech.api.enums.Mods.StorageDrawers;
 import static gregtech.api.enums.Mods.Thaumcraft;
@@ -40,7 +39,6 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.loaders.postload.PCBFactoryMaterialLoader;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import ic2.core.Ic2Items;
 
 public class MTERecipeLoader implements Runnable {
 
@@ -2792,8 +2790,7 @@ public class MTERecipeLoader implements Runnable {
             NOT_REMOVABLE | BUFFERED,
             new Object[] { "GGG", "WSW", aTextPlateMotor, 'M', ItemList.Machine_Bronze_Boiler_Solar, 'P',
                 OrePrefixes.pipeSmall.get(Materials.Steel), 'S', OrePrefixes.plateTriple.get(Materials.Silver), 'W',
-                OrePrefixes.plateDouble.get(Materials.CastIron), 'G',
-                GTModHandler.getModItem(IndustrialCraft2.ID, "blockAlloyGlass", 1L) });
+                OrePrefixes.plateDouble.get(Materials.CastIron), 'G', ItemList.ReinforcedGlass.get(1L) });
 
         GTModHandler.addCraftingRecipe(
             ItemList.Machine_Bronze_Furnace.get(1L),
@@ -3410,7 +3407,7 @@ public class MTERecipeLoader implements Runnable {
             ItemList.Machine_Multi_ImplosionCompressor.get(1L),
             GTModHandler.RecipeBits.BITS,
             new Object[] { "OOO", aTextCableHull, aTextWireCoil, 'M', ItemList.Casing_SolidSteel, 'O',
-                Ic2Items.reinforcedStone, 'C', OrePrefixes.circuit.get(Materials.HV), 'W',
+                ItemList.Block_ReinforcedConcrete, 'C', OrePrefixes.circuit.get(Materials.HV), 'W',
                 OrePrefixes.cableGt01.get(Materials.Gold) });
         GTModHandler.addCraftingRecipe(
             ItemList.Machine_Multi_Furnace.get(1L),
