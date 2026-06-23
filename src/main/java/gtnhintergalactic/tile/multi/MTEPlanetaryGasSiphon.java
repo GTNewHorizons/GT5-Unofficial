@@ -478,8 +478,10 @@ public class MTEPlanetaryGasSiphon extends MTEExtendedPowerMultiBlockBase<MTEPla
     public String[] getInfoData() {
         return new String[] { "ig.infodata.hdr.operational_data",
             IGregTechDeviceInformation.encode("ig.infodata.gas_siphon.depth.fmt", depth),
-            IGregTechDeviceInformation
-                .encode("ig.infodata.gas_siphon.fluid.fmt", fluid.amount, fluid.getLocalizedName()),
+            IGregTechDeviceInformation.encode(
+                "ig.infodata.gas_siphon.fluid.fmt",
+                fluid.amount,
+                IGregTechDeviceInformation.translatable(fluid.getUnlocalizedName())),
             IGregTechDeviceInformation.encode("ig.infodata.gas_siphon.eu_required.fmt", formatNumber(-lEUt)),
             getRepairStatus() == getIdealStatus() ? "ig.infodata.maintenance.ok" : "ig.infodata.maintenance.problems",
             "---------------------------------------------" };
