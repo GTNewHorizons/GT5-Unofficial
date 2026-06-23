@@ -282,8 +282,8 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
     }
 
     @Override
-    public List<Parameter<?>> getParameters() {
-        List<Parameter<?>> parameters = new ArrayList<>();
+    public List<Parameter<?, ?>> getParameters() {
+        List<Parameter<?, ?>> parameters = new ArrayList<>();
 
         parameters.add(distanceParameter);
         parameters.add(parallelParameter);
