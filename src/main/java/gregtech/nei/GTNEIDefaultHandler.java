@@ -492,6 +492,8 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
             recipe);
         calculator.calculate();
 
+        cachedRecipe.calculator = calculator;
+
         frontend.drawDescription(
             new RecipeDisplayInfo(
                 recipe,
@@ -722,6 +724,7 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
     public class CachedDefaultRecipe extends TemplateRecipeHandler.CachedRecipe {
 
         public final GTRecipe mRecipe;
+        public OverclockCalculator calculator;
         public final List<PositionedStack> mOutputs = new ArrayList<>();
         public final List<PositionedStack> mInputs = new ArrayList<>();
 
