@@ -31,6 +31,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 
 import gregtech.api.GregTechAPI;
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -94,7 +95,7 @@ public class MTESOFuelCellMK1 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK1
                     .build(),
                 onElementPass(te -> te.mCasing++, ofBlock(GregTechAPI.sBlockCasings4, 1))))
         .addElement('d', Dynamo.newAny(CASING_TEXTURE_ID, 2))
-        .addElement('g', ofBlock(GregTechAPI.sBlockGlass1, 0))
+        .addElement('g', Casings.ReinforcedGlass.asElement())
         .addElement('e', ofBlockAnyMeta(Blocks.yszUnit))
         .build();
 
