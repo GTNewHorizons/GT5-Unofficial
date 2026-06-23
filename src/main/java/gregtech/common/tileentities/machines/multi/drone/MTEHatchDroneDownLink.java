@@ -13,11 +13,15 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import org.jetbrains.annotations.Nullable;
 
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
@@ -28,8 +32,10 @@ import com.gtnewhorizons.modularui.common.internal.network.NetworkUtils;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -41,13 +47,15 @@ import gregtech.common.gui.modularui.hatch.MTEHatchDroneDownLinkGui;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
+public class MTEHatchDroneDownLink extends MTEHatchMaintenance implements IDataCopyable {
 
     private Vec3Impl downlinkCoord;
     private MTEDroneCentre centre;
     private String key = "";
     private final List<DroneConnection> connections = new ArrayList<>();
     private final List<MTEMultiBlockBase> unlinkedMachines = new ArrayList<>();
+
+    public static final String COPIED_DATA_IDENTIFIER = "droneDownLink";
 
     private static final IIconContainer moduleActive = Textures.BlockIcons
         .custom("iconsets/OVERLAY_DRONE_MODULE_ACTIVE");
@@ -147,15 +155,33 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
     }
 
     @Override
+    public void onLeftclick(IGregTechTileEntity igte, EntityPlayer player) {
+        if (!(player instanceof EntityPlayerMP)) return;
+        ItemStack heldItem = player.getHeldItem();
+        if (!ItemList.Tool_DataStick.isStackEqual(heldItem, false, true)) return;
+        heldItem.setTagCompound(getCopiedData(player));
+        heldItem.setStackDisplayName(StatCollector.translateToLocal("GT5U.gui.text.drone_key") + ": " + this.key);
+        player.addChatComponentMessage(new ChatComponentTranslation("GT5U.machines.controller_hatch.saved"));
+    }
+
+    @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, ForgeDirection side,
         float aX, float aY, float aZ) {
         if (aBaseMetaTileEntity.isClientSide()) return true;
-        if (side == aBaseMetaTileEntity.getFrontFacing()) {
-            if (aPlayer instanceof FakePlayer) return false;
-            openGui(aPlayer);
+        ItemStack heldItem = aPlayer.inventory.getCurrentItem();
+        if (!ItemList.Tool_DataStick.isStackEqual(heldItem, false, true)) {
+            if (side == aBaseMetaTileEntity.getFrontFacing()) {
+                if (aPlayer instanceof FakePlayer) return false;
+                openGui(aPlayer);
+                return true;
+            }
+            return false;
+        } else {
+            if (!pasteCopiedData(aPlayer, heldItem.stackTagCompound)) return false;
+            aPlayer.addChatMessage(
+                new ChatComponentText(StatCollector.translateToLocal("GT5U.gui.text.drone_key") + ": " + this.key));
             return true;
         }
-        return false;
     }
 
     @Override
@@ -371,5 +397,25 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance {
                 .add(EnumChatFormatting.RED + StatCollector.translateToLocal("GT5U.waila.drone_downlink.noConnection"));
         }
         super.getWailaBody(itemStack, currenttip, accessor, config);
+    }
+
+    @Override
+    public @Nullable NBTTagCompound getCopiedData(EntityPlayer player) {
+        final NBTTagCompound nbt = new NBTTagCompound();
+        nbt.setString("type", COPIED_DATA_IDENTIFIER);
+        nbt.setString("key", key);
+        return nbt;
+    }
+
+    @Override
+    public boolean pasteCopiedData(EntityPlayer player, @Nullable NBTTagCompound nbt) {
+        if (nbt == null || !nbt.hasKey("type") || !COPIED_DATA_IDENTIFIER.equals(nbt.getString("type"))) return false;
+        if (nbt.hasKey("key")) this.key = nbt.getString("key");
+        return true;
+    }
+
+    @Override
+    public String getCopiedDataIdentifier(EntityPlayer player) {
+        return COPIED_DATA_IDENTIFIER;
     }
 }
