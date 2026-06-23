@@ -10,9 +10,6 @@ import static gregtech.api.casing.Casings.PeaceEnforcementCasing;
 import static gregtech.api.casing.Casings.SuperconductivePlasmaEnergyConduit;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.ExoticEnergy;
-import static net.minecraft.util.EnumChatFormatting.AQUA;
-import static net.minecraft.util.EnumChatFormatting.GOLD;
-import static net.minecraft.util.EnumChatFormatting.GRAY;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -21,22 +18,11 @@ import java.util.List;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.cleanroommc.modularui.api.drawable.IKey;
-import com.cleanroommc.modularui.api.widget.IWidget;
-import com.cleanroommc.modularui.screen.ModularPanel;
-import com.cleanroommc.modularui.value.sync.GenericSyncValue;
-import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.widget.Widget;
-import com.cleanroommc.modularui.widgets.ListWidget;
-import com.cleanroommc.modularui.widgets.TextWidget;
-import com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 
-import gregtech.api.enums.CondensateType;
 import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
@@ -50,27 +36,25 @@ import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.StructureWrapperTooltipBuilder;
 import gregtech.api.util.GTStructureUtility;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
-import gregtech.common.gui.modularui.adapter.CondensateListAdapter;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
-import gregtech.common.gui.modularui.multiblock.base.TTMultiblockBaseGui;
-import gregtech.common.gui.modularui.widget.settings.SettingsPanel;
 import tectech.mechanics.boseEinsteinCondensate.BECFactoryElement;
-import tectech.mechanics.boseEinsteinCondensate.CondensateList;
 import tectech.thing.CustomItemList;
+import tectech.thing.gui.bec.MTEBECDiodeGui;
 import tectech.thing.metaTileEntity.hatch.bec.MTEHatchBEC;
 import tectech.thing.metaTileEntity.multi.base.MTEBECMultiblockBase;
+import tectech.thing.metaTileEntity.multi.base.parameter.FluidParameter;
+import tectech.thing.metaTileEntity.multi.base.parameter.IParametrized;
 import tectech.thing.metaTileEntity.multi.base.parameter.Parameter;
 import tectech.thing.metaTileEntity.multi.structures.BECStructureDefinitions;
 
-public class MTEBECDiode extends MTEBECMultiblockBase<MTEBECDiode> {
+public class MTEBECDiode extends MTEBECMultiblockBase<MTEBECDiode> implements IParametrized {
 
     private MTEHatchBEC inputHatch;
     private boolean wasWorking;
-    private Fluid condensateFilter;
+    private FluidParameter condensateParameter;
 
     public MTEBECDiode(int aID, String aName) {
         super(aID, aName);
@@ -150,24 +134,8 @@ public class MTEBECDiode extends MTEBECMultiblockBase<MTEBECDiode> {
     }
 
     @Override
-    public void loadNBTData(NBTTagCompound aNBT) {
-        super.loadNBTData(aNBT);
-
-        condensateFilter = aNBT.hasKey("condensateFilter") ? FluidRegistry.getFluid(aNBT.getString("condensateFilter"))
-            : null;
-    }
-
-    @Override
-    public void saveNBTData(NBTTagCompound aNBT) {
-        super.saveNBTData(aNBT);
-
-        if (condensateFilter != null) {
-            aNBT.setString("condensateFilter", FluidRegistry.getFluidName(condensateFilter));
-        }
-    }
-
-    @Override
     public boolean allowsCondensateThrough(Fluid condensate) {
+        Fluid condensateFilter = condensateParameter.getValue();
         return condensateFilter == null || condensate == condensateFilter;
     }
 
@@ -205,12 +173,12 @@ public class MTEBECDiode extends MTEBECMultiblockBase<MTEBECDiode> {
 
     @OCMethod
     public Fluid getCondensateFilter() {
-        return condensateFilter;
+        return condensateParameter.getValue();
     }
 
     @OCMethod
     public void setCondensateFilter(Fluid condensateFilter) {
-        this.condensateFilter = condensateFilter;
+        condensateParameter.setValue(condensateFilter);
     }
 
     @Override
@@ -220,7 +188,7 @@ public class MTEBECDiode extends MTEBECMultiblockBase<MTEBECDiode> {
 
     @Override
     protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
-        return new Gui();
+        return new MTEBECDiodeGui(this);
     }
 
     private static final IHatchElement<MTEBECMultiblockBase<?>> INPUT_HATCH = new GTStructureUtility.ProxyHatchElement<>(
@@ -242,72 +210,16 @@ public class MTEBECDiode extends MTEBECMultiblockBase<MTEBECDiode> {
         }
     };
 
-    private class Gui extends TTMultiblockBaseGui<MTEBECDiode> {
+    @Override
+    public void initParameters() {
+        condensateParameter = new FluidParameter(null, "GT5U.gui.text.bec-filter", "condensate");
+    }
 
-        public Gui() {
-            super(MTEBECDiode.this);
-        }
+    @Override
+    public void loadLegacyParameters(NBTTagCompound nbt) {}
 
-        @Override
-        protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {
-            GenericSyncValue<CondensateList, ?> contents = GenericSyncValue.builder(CondensateList.class)
-                .getter(() -> network == null ? new CondensateList() : network.getStoredCondensate(MTEBECDiode.this))
-                .adapter(new CondensateListAdapter())
-                .build();
-
-            syncManager.syncValue("contents", contents);
-
-            TextWidget<?> contentsWidget = IKey.dynamic(() -> {
-                StringBuilder ret = new StringBuilder();
-
-                ret.append(GRAY)
-                    .append(GTUtility.translate("GT5U.gui.text.available-condensate"))
-                    .append('\n');
-
-                if (contents.getValue()
-                    .isEmpty()) {
-                    ret.append(GRAY)
-                        .append(GTUtility.translate("GT5U.gui.text.nil"));
-                }
-
-                for (var e : contents.getValue()
-                    .object2LongEntrySet()) {
-                    ret.append("  ")
-                        .append(AQUA)
-                        .append(CondensateType.getCondensateName(e.getKey()))
-                        .append(GRAY)
-                        .append(" x ")
-                        .append(GOLD)
-                        .append(NumberFormatUtil.formatFluid(e.getLongValue()))
-                        .append(GRAY)
-                        .append('\n');
-                }
-
-                return ret.toString();
-            })
-                .asWidget()
-                .widthRel(1);
-
-            return super.createTerminalTextWidget(syncManager, parent).child(contentsWidget);
-        }
-
-        @Override
-        protected boolean isParametrized() {
-            return true;
-        }
-
-        @Override
-        protected Widget<?> getParameterEditor(ModularPanel panel, PanelSyncManager syncManager,
-            List<Parameter<?>> parameters, boolean isRoot, String prefix) {
-            return SettingsPanel.builder()
-                .setDividerPosition(35)
-                .addHeader(IKey.lang("GT5U.gui.text.bec-parameters"))
-                .addPhantomFluidSlot(
-                    IKey.lang("GT5U.gui.text.bec-filter"),
-                    () -> condensateFilter,
-                    f -> condensateFilter = f)
-                .build(panel, syncManager)
-                .size(100, 50);
-        }
+    @Override
+    public List<Parameter<?, ?>> getParameters() {
+        return List.of(condensateParameter);
     }
 }

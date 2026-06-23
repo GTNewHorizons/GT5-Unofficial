@@ -173,6 +173,9 @@ public enum ItemList implements IItemContainer {
     Shape_Extruder_Small_Gear,
     Shape_Extruder_ToolHeadDrill,
 
+    // IC2 Replacements
+    PadBouncy,
+    PadSticky,
     FenceIron,
 
     Credit_Copper,
@@ -1761,6 +1764,8 @@ public enum ItemList implements IItemContainer {
     CondensateTransformativeCoil,
     CondensateGuidanceCoil,
     ElectromagneticWaveguide,
+
+    ReinforcedGlass,
 
     MobRep_LV,
     MobRep_MV,

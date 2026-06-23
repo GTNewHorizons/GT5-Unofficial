@@ -141,6 +141,8 @@ public class Textures {
 
             HIDDEN_FACE = create("HIDDEN_FACE"),
 
+            REINFORCED_GLASS = create("REINFORCED_GLASS"),
+
             MACHINE_CASING_TANK_1 = create("MACHINE_CASING_TANK_1"),
             MACHINE_CASING_TANK_2 = create("MACHINE_CASING_TANK_2"),
             MACHINE_CASING_TANK_3 = create("MACHINE_CASING_TANK_3"),
@@ -688,6 +690,12 @@ public class Textures {
             BLOCK_TSREIN = create("BLOCK_TSREIN"),
             BLOCK_POWDER = create("BLOCK_POWDER"),
 
+            // IC2 Replacements
+            BLOCK_BOUNCE_PAD_SIDE = create("BLOCK_BOUNCE_PAD_SIDE"),
+            BLOCK_BOUNCE_PAD_TOP = create("BLOCK_BOUNCE_PAD_TOP"),
+            BLOCK_STICKY_PAD_TOP = create("BLOCK_STICKY_PAD_TOP"),
+            BLOCK_STICKY_PAD_SIDE = create("BLOCK_STICKY_PAD_SIDE"),
+            BLOCK_STICKY_PAD_BOTTOM = create("BLOCK_STICKY_PAD_BOTTOM"),
             BLOCK_IRON_FENCE = create("BLOCK_IRON_FENCE"),
 
             OVERLAY_LOCKER = createOptional("OVERLAY_LOCKER"),
