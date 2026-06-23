@@ -230,21 +230,16 @@ public class MTEElectricAutoWorkbench extends MTEBasicTank {
                     }
                     switch (mMode) {
                         case 0 -> {
-                            if (mInventory[mCurrentSlot] != null
-                                && !isItemTypeOrItsEmptyLiquidContainerInCraftingGrid(mInventory[mCurrentSlot])) {
-                                if (mInventory[18] == null && mThroughPut < 2 && mCurrentSlot < 8) {
-                                    mInventory[18] = mInventory[mCurrentSlot];
-                                    mInventory[mCurrentSlot] = null;
-                                    mTicksUntilNextUpdate = 1;
-                                }
-                                break;
-                            }
-                            for (int i = 0; i < 9; i++) {
-                                tRecipe[i] = mInventory[i + 19];
-                                if (tRecipe[i] != null) {
-                                    tRecipe[i] = GTUtility.copy(tRecipe[i]);
-                                    tRecipe[i].stackSize = 1;
-                                }
+                            System.arraycopy(
+                                buildModeZeroRecipe(mInventory, mCurrentSlot, mThroughPut),
+                                0,
+                                tRecipe,
+                                0,
+                                9);
+                            if (isStrayBeingEjectedInModeZero(mInventory, mCurrentSlot, mThroughPut)) {
+                                mInventory[18] = mInventory[mCurrentSlot];
+                                mInventory[mCurrentSlot] = null;
+                                mTicksUntilNextUpdate = 1;
                             }
                         }
                         case 1 -> {
@@ -601,6 +596,10 @@ public class MTEElectricAutoWorkbench extends MTEBasicTank {
     }
 
     private boolean isItemTypeOrItsEmptyLiquidContainerInCraftingGrid(ItemStack aStack) {
+        return isItemTypeOrItsEmptyLiquidContainerInCraftingGrid(mInventory, aStack);
+    }
+
+    static boolean isItemTypeOrItsEmptyLiquidContainerInCraftingGrid(ItemStack[] mInventory, ItemStack aStack) {
         if (aStack == null) return true;
         for (byte i = 19; i < 28; i++) {
             if (mInventory[i] != null) {
@@ -610,6 +609,41 @@ public class MTEElectricAutoWorkbench extends MTEBasicTank {
             }
         }
         return false;
+    }
+
+    /**
+     * In mode 0 a stray (non-template) item sitting in the input grid is moved to the output slot. This
+     * is only possible when the output is free, throughput allows ejecting, and the item is in the input
+     * grid (slots 0-7).
+     */
+    static boolean isStrayBeingEjectedInModeZero(ItemStack[] mInventory, int currentSlot, int throughPut) {
+        return mInventory[currentSlot] != null
+            && !isItemTypeOrItsEmptyLiquidContainerInCraftingGrid(mInventory, mInventory[currentSlot])
+            && mInventory[18] == null
+            && throughPut < 2
+            && currentSlot < 8;
+    }
+
+    /**
+     * Builds the mode 0 (Normal Crafting Table) recipe grid from the phantom template (slots 19-27). The
+     * grid - and therefore the recipe preview in slot 28 - must reflect the template even when a stray
+     * item is present in the input buffer. The only exception is the single tick on which a stray item is
+     * ejected: the grid is left empty so the machine does not craft over the item just moved to the
+     * output slot.
+     */
+    static ItemStack[] buildModeZeroRecipe(ItemStack[] mInventory, int currentSlot, int throughPut) {
+        ItemStack[] tRecipe = new ItemStack[9];
+        if (isStrayBeingEjectedInModeZero(mInventory, currentSlot, throughPut)) {
+            return tRecipe;
+        }
+        for (int i = 0; i < 9; i++) {
+            tRecipe[i] = mInventory[i + 19];
+            if (tRecipe[i] != null) {
+                tRecipe[i] = GTUtility.copy(tRecipe[i]);
+                tRecipe[i].stackSize = 1;
+            }
+        }
+        return tRecipe;
     }
 
     private ArrayList<ItemStack> recipeContent(ItemStack[] tRecipe) {
