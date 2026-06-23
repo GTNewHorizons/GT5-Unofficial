@@ -291,8 +291,7 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
             /* 6 Pollution not included */
             /* 7 */ IGregTechDeviceInformation.encode("GT5U.multiblock.recipesDone.fmt", formatNumber(recipesDone)),
             // Beamline-specific
-            "beamline.out_pre.hdr",
-            Particle.getParticleFromId(this.outputParticle)
+            "beamline.out_pre.hdr", Particle.getParticleFromId(this.outputParticle)
                 .encodeInfoData(),
             IGregTechDeviceInformation.encode("beamline.energy.eV.fmt", this.outputEnergy * 1000),
             IGregTechDeviceInformation.encode("beamline.focus.fmt", this.outputFocus),
