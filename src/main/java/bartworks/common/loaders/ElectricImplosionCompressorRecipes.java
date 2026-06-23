@@ -22,12 +22,14 @@ import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
 import net.minecraft.item.ItemStack;
 
+import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTUtility;
 import gtnhlanth.common.register.WerkstoffMaterialPool;
 
 @SuppressWarnings({ "PointlessArithmeticExpression" })
@@ -113,6 +115,21 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
             .fluidInputs(Materials.RawStarMatter.getFluid(2 * STACKS))
             .fluidOutputs(Materials.MHDCSM.getMolten(32 * INGOTS))
             .duration(1 * SECONDS)
+            .eut(TierEU.RECIPE_MAX)
+            .addTo(electricImplosionCompressorRecipes);
+
+        // Flawed Amalgatite
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                GTUtility.copyAmount(0, GTOreDictUnificator.get(OrePrefixes.nanite, Materials.MagMatter, 1)),
+                GTOreDictUnificator.get(OrePrefixes.gemChipped, Materials.Amalgatite, 3),
+                GTOreDictUnificator.get(OrePrefixes.gemFlawless, Materials.Spinel, 64),
+                GTOreDictUnificator.get(OrePrefixes.gemFlawless, Materials.Amethyst, 64),
+                WerkstoffLoader.Fluorspar.get(OrePrefixes.gemFlawless, 64),
+                GTOreDictUnificator.get(OrePrefixes.gemFlawless, Materials.Tanzanite, 64))
+            .fluidInputs(Materials.PhononCrystalSolution.getFluid(500))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gemFlawed, Materials.Amalgatite, 1))
+            .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_MAX)
             .addTo(electricImplosionCompressorRecipes);
 
