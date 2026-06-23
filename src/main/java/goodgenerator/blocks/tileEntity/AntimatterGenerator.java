@@ -409,8 +409,9 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase<Antimatt
                 "gg.infodata.antimatter_generator.efficiency",
                 formatNumber(Math.ceil(this.annihilationEfficiency * 100))));
         info.add(
-            IGregTechDeviceInformation
-                .encode("gg.infodata.antimatter_generator.efficiency.avg", formatNumber(Math.ceil(this.avgEffCache * 100))));
+            IGregTechDeviceInformation.encode(
+                "gg.infodata.antimatter_generator.efficiency.avg",
+                formatNumber(Math.ceil(this.avgEffCache * 100))));
     }
 
     public long getEnergyProduced() {
