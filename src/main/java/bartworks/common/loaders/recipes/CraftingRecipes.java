@@ -1,5 +1,7 @@
 package bartworks.common.loaders.recipes;
 
+import static gregtech.api.GregTechAPI.sBlockCasings11;
+import static gregtech.api.GregTechAPI.sBlockCasingsWindmill;
 import static gregtech.api.enums.MetaTileEntityIDs.BioLab_EV;
 import static gregtech.api.enums.MetaTileEntityIDs.BioLab_HV;
 import static gregtech.api.enums.MetaTileEntityIDs.BioLab_IV;
@@ -14,7 +16,9 @@ import static gregtech.api.enums.MetaTileEntityIDs.LESU;
 import static gregtech.api.enums.MetaTileEntityIDs.ManualTrafo;
 import static gregtech.api.enums.MetaTileEntityIDs.RadioHatch_HV;
 import static gregtech.api.enums.MetaTileEntityIDs.Windmill;
+import static gregtech.api.enums.Mods.Backpack;
 import static gregtech.api.enums.Mods.IndustrialCraft2;
+import static gregtech.api.util.GTModHandler.getModItem;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -244,9 +248,9 @@ public class CraftingRecipes implements Runnable {
             new MTEWindmill(Windmill.ID, "bw.windmill", StatCollector.translateToLocal("tile.bw.windmill.name"))
                 .getStackForm(1L),
             RecipeLoader.BITSD | GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { "BHB", "WGW", "BWB", 'B', new ItemStack(Blocks.brick_block), 'W',
+            new Object[] { "BHB", "WGW", "BWB", 'B', new ItemStack(sBlockCasingsWindmill, 1, 0), 'W',
                 GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.Iron, 1L), 'H', new ItemStack(Blocks.hopper), 'G',
-                new ItemStack(ItemRegistry.CRAFTING_PARTS, 1, 2), });
+                new ItemStack(sBlockCasings11, 1, 0), });
 
         GTModHandler.addCraftingRecipe(
             new ItemStack(ItemRegistry.CRAFTING_PARTS, 1, 2),
@@ -303,6 +307,25 @@ public class CraftingRecipes implements Runnable {
                 new ItemStack(ItemRegistry.CRAFTING_PARTS, 1, 4), 'E', new ItemStack(ItemRegistry.CRAFTING_PARTS, 1, 5),
                 'W', "logWood", });
 
+        if (Backpack.isModLoaded()) {
+            GTModHandler.addCraftingRecipe(
+                new ItemStack(ItemRegistry.CRAFTING_PARTS, 1, 7),
+                GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.BUFFERED,
+                new Object[] { "SFS", "LPL", "SLS", 'S',
+                    GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Steel, 1L), 'F',
+                    GTOreDictUnificator.get(OrePrefixes.foil, Materials.Steel, 1L), 'L',
+                    getModItem(Backpack.ID, "tannedLeather", 1), 'P',
+                    new ItemStack(ItemRegistry.CRAFTING_PARTS, 1, 6) });
+        } else {
+            GTModHandler.addCraftingRecipe(
+                new ItemStack(ItemRegistry.CRAFTING_PARTS, 1, 7),
+                GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.BUFFERED,
+                new Object[] { "SFS", "LPL", "SLS", 'S',
+                    GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Steel, 1L), 'F',
+                    GTOreDictUnificator.get(OrePrefixes.foil, Materials.Steel, 1L), 'L',
+                    new ItemStack(Items.leather, 1), 'P', new ItemStack(ItemRegistry.CRAFTING_PARTS, 1, 6) });
+        }
+
         GTModHandler.addCraftingRecipe(
             new ItemStack(ItemRegistry.LEATHER_ROTOR),
             GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.BUFFERED,
@@ -324,6 +347,11 @@ public class CraftingRecipes implements Runnable {
             new Object[] { "hPf", "PWP", "sPr", 'P', new ItemStack(ItemRegistry.CRAFTING_PARTS, 1, 6), 'W',
                 GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.Iron, 1L), });
         GTModHandler.addCraftingRecipe(
+            new ItemStack(ItemRegistry.REINFORCED_ROTOR),
+            GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.BUFFERED,
+            new Object[] { "hPf", "PWP", "sPr", 'P', new ItemStack(ItemRegistry.CRAFTING_PARTS, 1, 7), 'W',
+                GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.Steel, 1L) });
+        GTModHandler.addCraftingRecipe(
             new ItemStack(ItemRegistry.ROTORBLOCK),
             RecipeLoader.BITSD | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "WRW", "RGR", "WRW", 'R', GTOreDictUnificator.get(OrePrefixes.ring, Materials.Iron, 1L), 'W',
@@ -333,7 +361,7 @@ public class CraftingRecipes implements Runnable {
             ItemRegistry.THTR,
             RecipeLoader.BITSD | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "BZB", "BRB", "BZB", 'B', new ItemStack(GregTechAPI.sBlockCasings3, 1, 12), 'R',
-                GTModHandler.getModItem(IndustrialCraft2.ID, "blockGenerator", 1, 5), 'Z', "circuitUltimate" });
+                getModItem(IndustrialCraft2.ID, "blockGenerator", 1, 5), 'Z', "circuitUltimate" });
 
         // DNAExtractionModule
         GTModHandler.addCraftingRecipe(

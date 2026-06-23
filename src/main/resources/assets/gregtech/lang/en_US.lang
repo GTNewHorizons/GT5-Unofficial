@@ -2642,6 +2642,9 @@ GT5U.gui.text.structure_error.need_exactly_one_coil=Needs exactly 1 Heating Coil
 GT5U.gui.text.structure_error.missing_pipe_casing=Missing Pipe Casing
 GT5U.gui.text.structure_error.missing_dispenser=Missing Dispenser
 GT5U.gui.text.structure_error.too_many_doors=Too many doors (max 2)
+GT5U.gui.text.structure_error.missing_rotor=Missing Rotor
+GT5U.gui.text.recipe_result.wind_low=There is not enough wind here
+GT5U.gui.text.recipe_result.wind_high=The wind here is too strong
 GT5U.gui.text.structure_error.need_exactly_one_beamline_output=Needs exactly 1 Beam Output Hatch
 GT5U.gui.text.structure_error.need_exactly_one_beamline_input=Needs exactly 1 Beam Input Hatch
 GT5U.gui.text.structure_error.need_exactly_one_focus_input=Needs exactly 1 Focus Input Hatch
@@ -5663,6 +5666,7 @@ GT5U.nei.display.voltage=Voltage: %s EU/t %s
 GT5U.nei.display.amperage=Amperage: %s A
 GT5U.nei.display.overclock=(OC)
 GT5U.nei.display.average=Average: %s EU/t %s
+GT5U.nei.display.windmill=Windmill
 
 GT5U.biomes.humidity=Humidity:
 
@@ -8370,6 +8374,9 @@ gt.blockcasings14.3.name=Hearth Casing
 gt.blockcasings14.4.name=Fridge Casing
 gt.blockcasings14.5.name=Naquadah Reinforced Distillation Casing
 
+gt.blockcasingswindmill.0.name=Windmill Base Casing
+gt.blockcasingswindmill.1.name=Windmill Shaft Casing
+gt.blockcasingswindmill.2.name=Windmill Grindstone Housing
 
 gt.blockcasingsNH.0.name=Air Filter Turbine Casing
 gt.blockcasingsNH.1.name=Air Filter Vent Casing

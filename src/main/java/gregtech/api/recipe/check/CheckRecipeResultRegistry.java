@@ -142,6 +142,10 @@ public final class CheckRecipeResultRegistry {
     public static final CheckRecipeResult NAC_WAITING_FOR_POWER = SimpleCheckRecipeResult
         .ofFailure("nac.waiting_for_power");
 
+    public static final CheckRecipeResult WIND_HIGH = SimpleCheckRecipeResult.ofFailure("wind_high");
+
+    public static final CheckRecipeResult WIND_LOW = SimpleCheckRecipeResult.ofFailure("wind_low");
+
     /**
      * Cannot process recipe because the machine cannot handle required EUt.
      */

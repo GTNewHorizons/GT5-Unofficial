@@ -143,6 +143,7 @@ public class GTAuthors {
         + EnumChatFormatting.BOLD
         + "Raven";
     public static final String AuthorPineapple = EnumChatFormatting.BLUE + "Recursive Pineapple";
+    public static final String AuthorMilkFox = EnumChatFormatting.AQUA + "Milk" + EnumChatFormatting.WHITE + "Fox";
     public static final Supplier<String> AuthorNoc = chain(
         animatedText(
             "Noc",
