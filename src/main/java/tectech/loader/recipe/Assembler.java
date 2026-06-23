@@ -47,7 +47,7 @@ public class Assembler implements Runnable {
 
         // Quantum Glass
         GTValues.RA.stdBuilder()
-            .itemInputs(CustomItemList.eM_Containment.get(1), GTModHandler.getIC2Item("reinforcedGlass", 1L))
+            .itemInputs(CustomItemList.eM_Containment.get(1), ItemList.ReinforcedGlass.get(1L))
             .itemOutputs(new ItemStack(BlockQuantumGlass.INSTANCE, 1))
             .fluidInputs(
                 BaseRecipeLoader.getOrDefault("Trinium", Materials.Osmium)
@@ -2692,7 +2692,7 @@ public class Assembler implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 CustomItemList.DATApipe.get(1),
-                GTModHandler.getIC2Item("reinforcedGlass", 1L),
+                ItemList.ReinforcedGlass.get(1L),
                 GTOreDictUnificator.get(OrePrefixes.foil, Materials.Osmiridium, 2))
             .itemOutputs(CustomItemList.LASERpipe.get(1))
             .requiresCleanRoom()

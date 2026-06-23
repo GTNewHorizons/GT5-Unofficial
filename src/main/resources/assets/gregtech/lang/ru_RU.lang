@@ -2379,7 +2379,7 @@ channels.gregtech.spacetime_compression=Определяет тир Генера
 channels.gregtech.stabilisation=Определяет тир Генератора поля стабилизации. Начинается с §6ГГрубый генератор поля стабилизации§r со значением 1 и заканчивается §6Галлифрейский генератор поля стабилизации§r со значением 9.
 channels.gregtech.time_dilation=Определяет тир Генератора поля замедления времени. Начинается с §6Грубый генератор поля замедления времени§r со значением 1 и заканчивается §6Галлифрейский генератор поля замедления времени§r со значением 9.
 channels.gregtech.gt_hatch=Enables automatic hatch placement
-channels.gregtech.field=Определяет тир T.F.F.T блока хранения жидкостей.
+channels.gregtech.field=Определяет тир TFFT блока хранения жидкостей.
 channels.gregtech.component_casing=Определяет тир корпуса компонентной сборочной линии. Начинается с §6LV§r со значением 1 и заканчивается на §6MAX§r со значением 14.
 
 GT5U.gui.select.current=§8Состояние:
@@ -3289,7 +3289,7 @@ gt.blockmachines.multimachine.beamcrafting.LHC.tooltip6=Accelerates the beam in 
 gt.blockmachines.multimachine.beamcrafting.LHC.tooltip7=Accelerator mode increases the §9Beam Energy§7 by §3EU Consumed in cycle§7 * §f0.1eV§7 / §6Beam Rate§7,
 gt.blockmachines.multimachine.beamcrafting.LHC.tooltip8=until the §9Target Beam Energy§7 is reached, or the §dmaximum number of cycles§7 is reached
 gt.blockmachines.multimachine.beamcrafting.LHC.tooltip9=If the §9Target Beam Energy§7 is reached, add §f0.3§7 * §6Beam Rate§7 to the current §6Beam Rate§7
-gt.blockmachines.multimachine.beamcrafting.LHC.tooltip10=However, if the current §6Beam Rate§7 >= §f2000§7, add (§f0.3§7 * §6Beam Rate§7)^§f0.5§7
+gt.blockmachines.multimachine.beamcrafting.LHC.tooltip10=However, if the current §6Beam Rate§7 >= §f5000§7, add (§f0.3§7 * §6Beam Rate§7)^§f0.5§7
 gt.blockmachines.multimachine.beamcrafting.LHC.tooltip11=to the current §6Beam Rate§7 instead
 gt.blockmachines.multimachine.beamcrafting.LHC.tooltip12=§aP§7 = §f(1A UV)§7 * §cR§7 * §dN§7^2
 gt.blockmachines.multimachine.beamcrafting.LHC.tooltip13=with the §dnumber of completed cycles§7
@@ -3552,7 +3552,7 @@ GT5U.armor.part.name.Tough=Tough Mechanical Armor Frame
 GT5U.armor.part.name.Lightning=Lightning Mechanical Armor Frame
 GT5U.armor.part.name.Morphic=Morphic Mechanical Armor Frame
 GT5U.armor.part.name.Bulwark=Bulwark Mechanical Armor Frame
-GT5U.armor.part.name.Infinity=Infinitely Adaptive Armor Frame
+GT5U.armor.part.name.Infinity=Infinitely Adaptive Mechanical Armor Frame
 
 GT5U.armor.part.name.Nano=Ядро брони (Нано)
 GT5U.armor.part.name.Quantum=Ядро брони (Квантум)
@@ -8004,15 +8004,15 @@ achievement.gt.blockmachines.voidminer3=Пустотный шахтёр III
 achievement.gt.blockmachines.voidminer3.desc=Просто посмотри рецепт в NEI
 achievement.gt.blockmachines.electricimplosioncompressor=Электрический имплозионный компрессор
 achievement.gt.blockmachines.electricimplosioncompressor.desc=Просто посмотри рецепт в NEI
-achievement.tile.kekztech_tfftstoragefield_block.6=T.F.F.T Блок хранения жидкостей (T6)
+achievement.tile.kekztech_tfftstoragefield_block.6=TFFT Блок хранения жидкостей (T6)
 achievement.tile.kekztech_tfftstoragefield_block.6.desc=Просто посмотри рецепт в NEI
-achievement.tile.kekztech_tfftstoragefield_block.7=T.F.F.T Блок хранения жидкостей (T7)
+achievement.tile.kekztech_tfftstoragefield_block.7=TFFT Блок хранения жидкостей (T7)
 achievement.tile.kekztech_tfftstoragefield_block.7.desc=Просто посмотри рецепт в NEI
-achievement.tile.kekztech_tfftstoragefield_block.8=T.F.F.T Блок хранения жидкостей (T8)
+achievement.tile.kekztech_tfftstoragefield_block.8=TFFT Блок хранения жидкостей (T8)
 achievement.tile.kekztech_tfftstoragefield_block.8.desc=Просто посмотри рецепт в NEI
-achievement.tile.kekztech_tfftstoragefield_block.9=T.F.F.T Блок хранения жидкостей (T9)
+achievement.tile.kekztech_tfftstoragefield_block.9=TFFT Блок хранения жидкостей (T9)
 achievement.tile.kekztech_tfftstoragefield_block.9.desc=Просто посмотри рецепт в NEI
-achievement.tile.kekztech_tfftstoragefield_block.10=T.F.F.T Блок хранения жидкостей (T10)
+achievement.tile.kekztech_tfftstoragefield_block.10=TFFT Блок хранения жидкостей (T10)
 achievement.tile.kekztech_tfftstoragefield_block.10.desc=Просто посмотри рецепт в NEI
 achievement.gt.blockmachines.multimachine.extremeapiary=Промышленный акклиматизатор для пчеловодства и станция приручения трутней
 achievement.gt.blockmachines.multimachine.extremeapiary.desc=Просто посмотри рецепт в NEI
