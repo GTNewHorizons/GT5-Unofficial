@@ -7257,7 +7257,7 @@ GT5U.infodata.cable.avg_amperage=Avg Amperage (20t): %s A
 GT5U.infodata.cable.avg_output=Avg Output (20t): %s EU/t
 
 GT5U.infodata.hatch.output=§9Output Hatch§r
-GT5U.infodata.hatch.output.fluid=Stored Fluid: %s
+GT5U.infodata.hatch.output.fluid=Stored Fluid: §6%s§r
 GT5U.infodata.hatch.output.fluid.none=No Fluid
 GT5U.infodata.hatch.output.fluid.locked_to.none=Not Locked
 GT5U.infodata.hatch.output.fluid.locked_to=Locked to %s

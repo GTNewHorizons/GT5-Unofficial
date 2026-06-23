@@ -66,7 +66,7 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
      * Maximum distance in each axis between the purification plant main controller and the controller blocks of the
      * purification plant units.
      */
-    public static final int MAX_UNIT_DISTANCE = 32;
+    public static final int MAX_UNIT_DISTANCE = 64;
 
     /**
      * Time in ticks for a full processing cycle to complete.

@@ -7203,7 +7203,7 @@ GT5U.infodata.cable.avg_amperage=Ср. ампераж (20t): %s A
 GT5U.infodata.cable.avg_output=Ср. выход (20t): %s EU/t
 
 GT5U.infodata.hatch.output=Выходной шлюз
-GT5U.infodata.hatch.output.fluid=Хранящаяся жидкость: %s
+GT5U.infodata.hatch.output.fluid=Хранящаяся жидкость: §6%s§r
 GT5U.infodata.hatch.output.fluid.none=Нет жидкости
 GT5U.infodata.hatch.output.fluid.locked_to.none=Не заблокировано
 GT5U.infodata.hatch.output.fluid.locked_to=Заблокировано на %s

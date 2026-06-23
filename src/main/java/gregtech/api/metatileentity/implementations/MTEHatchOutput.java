@@ -14,7 +14,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
@@ -370,10 +369,8 @@ public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLocka
         return new String[] { "GT5U.infodata.hatch.output",
             IGregTechDeviceInformation.encode(
                 "GT5U.infodata.hatch.output.fluid",
-                EnumChatFormatting.GOLD
-                    + (mFluid == null ? StatCollector.translateToLocal("GT5U.infodata.hatch.output.fluid.none")
-                        : mFluid.getLocalizedName())
-                    + EnumChatFormatting.RESET),
+                mFluid == null ? IGregTechDeviceInformation.translatable("GT5U.infodata.hatch.output.fluid.none")
+                    : IGregTechDeviceInformation.translatable(mFluid.getUnlocalizedName())),
             EnumChatFormatting.GREEN + formatNumber(mFluid == null ? 0 : mFluid.amount)
                 + " L"
                 + EnumChatFormatting.RESET
@@ -385,7 +382,7 @@ public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLocka
             (!isFluidLocked() || lockedFluid == null) ? "GT5U.infodata.hatch.output.fluid.locked_to.none"
                 : IGregTechDeviceInformation.encode(
                     "GT5U.infodata.hatch.output.fluid.locked_to",
-                    StatCollector.translateToLocal(
+                    IGregTechDeviceInformation.translatable(
                         FluidRegistry.getFluidStack(lockedFluid.getName(), 1)
                             .getUnlocalizedName())) };
     }
