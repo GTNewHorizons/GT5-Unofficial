@@ -53,7 +53,7 @@ public class MTEHatchExtrusion extends MTEHatchInputBus {
     }
 
     public static int getSlots(int aTier) {
-        return (aTier - 4) * 18 + 9;
+        return MTEHatchInputBus.getSlots(aTier);
     }
 
     @Override
