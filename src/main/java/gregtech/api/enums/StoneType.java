@@ -394,17 +394,34 @@ public enum StoneType implements IStoneType {
             || builder.allowedDimensions.contains(DimensionDef.getDimensionName(world));
     }
 
+    /**
+     * Finds the stone type for the block at the given position, considering only types that can generate in
+     * this dimension so blocks claimed by several dimension-scoped types resolve to the one valid here.
+     */
     @Nullable
     public static StoneType findStoneType(World world, int x, int y, int z) {
-        return findStoneType(world.getBlock(x, y, z), world.getBlockMetadata(x, y, z));
+        Block block = world.getBlock(x, y, z);
+        if (block == Blocks.air) return null;
+
+        int meta = world.getBlockMetadata(x, y, z);
+
+        for (StoneType stoneType : STONE_TYPES) {
+            if (stoneType.builder.enabled && stoneType.canGenerateInWorld(world) && stoneType.contains(block, meta)) {
+                return stoneType;
+            }
+        }
+
+        return null;
     }
 
+    /**
+     * Finds the stone type for a block, ignoring dimension constraints. Returns the first match by enum order.
+     */
     @Nullable
     public static StoneType findStoneType(Block block, int meta) {
         if (block == Blocks.air) return null;
 
-        for (int i = 0, stoneTypesSize = STONE_TYPES.size(); i < stoneTypesSize; i++) {
-            StoneType stoneType = STONE_TYPES.get(i);
+        for (StoneType stoneType : STONE_TYPES) {
             if (stoneType.builder.enabled && stoneType.contains(block, meta)) {
                 return stoneType;
             }

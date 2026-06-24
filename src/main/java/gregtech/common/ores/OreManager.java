@@ -90,9 +90,7 @@ public final class OreManager {
         IOreMaterial material, boolean small) {
         if (y < 0 || y >= world.getActualHeight()) return false;
 
-        IStoneType existingStone = StoneType.findStoneType(world.getBlock(x, y, z), world.getBlockMetadata(x, y, z));
-
-        if (existingStone != null && !existingStone.canGenerateInWorld(world)) return false;
+        IStoneType existingStone = StoneType.findStoneType(world, x, y, z);
 
         if (existingStone == null) {
             if (defaultStone != null) {
