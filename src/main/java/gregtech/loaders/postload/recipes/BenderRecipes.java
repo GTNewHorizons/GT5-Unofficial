@@ -231,7 +231,7 @@ public class BenderRecipes implements Runnable {
             .addTo(benderRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.IC2_Mixed_Metal_Ingot.get(1L))
+            .itemInputs(ItemList.Mixed_Alloy_Ingot.get(1L))
             .circuit(1)
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plateAlloy, Materials.HV, 1L))
             .duration(5 * SECONDS)

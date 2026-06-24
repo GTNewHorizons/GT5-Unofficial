@@ -4370,6 +4370,10 @@ gt.item.paper.punch_card.encoded.name=Punched Card
 gt.blockpad.0.name=Bounce Pad
 gt.blockpad.1.name=Sticky Pad
 
+# IC2 items replacements
+gt.item.mixed_alloy_ingot.name=Mixed Metal Ingot
+gt.item.mixed_alloy_plate.name=Advanced Alloy Plate
+
 ## Book
 gt.item.book.written.01.name=Book
 gt.item.book.written.02.name=Book
