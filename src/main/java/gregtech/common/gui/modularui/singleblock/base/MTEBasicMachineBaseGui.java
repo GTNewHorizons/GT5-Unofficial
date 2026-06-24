@@ -244,7 +244,6 @@ public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> extends MTETiered
         return super.createBottomRightCornerFlow(panel, syncManager)
             .childIf(this.doesAddSpecialSlot(), this::createSpecialSlot)
             .childIf(properties.maxFluidOutputs > 0, this::createFluidOutputSlot);
-        // the fluid output slot is positioned under the first item output slot, which is 0.5 slots over in the gui.
     }
 
     protected boolean supportsChargerSlot() {

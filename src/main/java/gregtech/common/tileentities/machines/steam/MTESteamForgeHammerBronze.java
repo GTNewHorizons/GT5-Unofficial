@@ -18,6 +18,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_STEAM_HAMMER_AC
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_STEAM_HAMMER_GLOW;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
+import gregtech.api.recipe.BasicUIProperties;
 import net.minecraft.block.Block;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -190,5 +191,12 @@ public class MTESteamForgeHammerBronze extends MTEBasicMachineBronze {
                     .run();
             }
         }
+    }
+
+    @Override
+    protected BasicUIProperties getUIProperties() {
+        return super.getUIProperties().toBuilder()
+            .maxFluidOutputs(0)
+            .build();
     }
 }
