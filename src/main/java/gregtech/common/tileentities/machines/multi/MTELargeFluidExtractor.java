@@ -15,7 +15,6 @@ import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofCoil;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTStructureUtility.ofSolenoidCoil;
-import static gregtech.api.util.GTUtility.min;
 import static net.minecraft.util.EnumChatFormatting.RESET;
 import static net.minecraft.util.EnumChatFormatting.YELLOW;
 
@@ -27,7 +26,6 @@ import javax.annotation.Nullable;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
@@ -40,9 +38,9 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
@@ -189,9 +187,8 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
                 continue;
             }
 
-            if (glassTier < VoltageIndex.UEV && energyHatch.getTierForStructure() > glassTier) {
-                errors
-                    .add(StructureErrors.glassTierNotEnough(min(VoltageIndex.UEV, energyHatch.getTierForStructure())));
+            if (energyHatch.getTierForStructure() > glassTier) {
+                errors.add(StructureErrors.glassTierNotEnough(energyHatch.getTierForStructure()));
                 return;
             }
         }
@@ -291,7 +288,7 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
                 HEATING_COIL_EU_MULTIPLIER,
                 EnumChatFormatting.GRAY
             ))
-            .addInfo("The energy hatch tier is limited by the glass tier. UEV glass unlocks all tiers")
+            .addGlassEnergyLimitInfo()
             .beginStructureBlock(5, 9, 5, false)
             .addController("Front bottom center")
             .addCasingInfoMin("Robust Tungstensteel Machine Casing", BASE_CASING_COUNT - MAX_HATCHES_ALLOWED, false)
@@ -348,22 +345,23 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
         ArrayList<String> data = new ArrayList<>(Arrays.asList(super.getInfoData()));
 
         data.add(
-            StatCollector.translateToLocalFormatted("Max Parallels: %s%d%s", YELLOW, getMaxParallelRecipes(), RESET));
+            IGregTechDeviceInformation
+                .encode("GT5U.infodata.large_fluid_extractor.max_parallels", YELLOW, getMaxParallelRecipes(), RESET));
         data.add(
-            StatCollector.translateToLocalFormatted(
-                "Heating Coil Speed Bonus: +%s%.0f%s %%",
+            IGregTechDeviceInformation.encode(
+                "GT5U.infodata.large_fluid_extractor.heating_coil_speed_bonus",
                 YELLOW,
                 getCoilSpeedBonus() * 100,
                 RESET));
         data.add(
-            StatCollector.translateToLocalFormatted(
-                "Total Speed Multiplier: %s%.0f%s %%",
+            IGregTechDeviceInformation.encode(
+                "GT5U.infodata.large_fluid_extractor.total_speed_multiplier",
                 YELLOW,
                 (BASE_SPEED_BONUS + getCoilSpeedBonus()) * 100,
                 RESET));
         data.add(
-            StatCollector.translateToLocalFormatted(
-                "Total EU/t Multiplier: %s%.0f%s %%",
+            IGregTechDeviceInformation.encode(
+                "GT5U.infodata.large_fluid_extractor.total_eu_multiplier",
                 YELLOW,
                 getEUMultiplier() * 100,
                 RESET));

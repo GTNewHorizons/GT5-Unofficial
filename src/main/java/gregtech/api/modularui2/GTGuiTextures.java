@@ -99,6 +99,12 @@ public final class GTGuiTextures {
         .canApplyTheme()
         .name(GTTextureIds.BACKGROUND_POPUP_STEAM)
         .build();
+    public static final UITexture BACKGROUND_TERMINAL = UITexture.builder()
+        .location(GregTech.ID, "gui/background/terminal")
+        .imageSize(142, 28)
+        .adaptable(4)
+        .name(GTTextureIds.BACKGROUND_TERMINAL_STANDARD)
+        .build();
     public static final UITexture BACKGROUND_TEXT_FIELD = UITexture.builder()
         .location(GregTech.ID, "gui/background/text_field")
         .imageSize(142, 28)
@@ -2154,6 +2160,13 @@ public final class GTGuiTextures {
         .location(GregTech.ID, "gui/picture/super_buffer")
         .fullImage()
         .canApplyTheme()
+        .build();
+
+    public static final UITexture PICTURE_GAUGE = UITexture.builder()
+        .location(GregTech.ID, "gui/picture/gauge.png")
+        .fullImage()
+        .canApplyTheme()
+        .nonOpaque()
         .build();
     // endregion picture
 

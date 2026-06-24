@@ -39,7 +39,6 @@ import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.ToolDictNames;
-import gregtech.api.objects.SubstituteFluidStack;
 import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
@@ -440,21 +439,26 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 .itemInputs(GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L))
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.itemCasing, aMaterial, 2L))
                 .fluidInputs(
-                    new SubstituteFluidStack(
-                        Materials.Water.getFluid(
-                            Math.max(
-                                4,
-                                Math.min(
-                                    1000,
-                                    ((int) Math.max(aMaterial.getMass(), 1L)) * (calculateRecipeEU(aMaterial, 16))
-                                        / 320))),
-                        GTModHandler.getDistilledWater(
-                            Math.max(
-                                3,
-                                Math.min(
-                                    750,
-                                    ((int) Math.max(aMaterial.getMass(), 1L)) * (calculateRecipeEU(aMaterial, 16))
-                                        / 426)))))
+                    Materials.Water.getFluid(
+                        Math.max(
+                            4,
+                            Math.min(
+                                1000,
+                                ((int) Math.max(aMaterial.getMass(), 1L)) * (calculateRecipeEU(aMaterial, 16)) / 320))))
+                .duration(2 * ((int) Math.max(aMaterial.getMass(), 1L)) * TICKS)
+                .eut(calculateRecipeEU(aMaterial, 16))
+                .addTo(cutterRecipes);
+
+            GTValues.RA.stdBuilder()
+                .itemInputs(GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.itemCasing, aMaterial, 2L))
+                .fluidInputs(
+                    GTModHandler.getDistilledWater(
+                        Math.max(
+                            3,
+                            Math.min(
+                                750,
+                                ((int) Math.max(aMaterial.getMass(), 1L)) * (calculateRecipeEU(aMaterial, 16)) / 426))))
                 .duration(2 * ((int) Math.max(aMaterial.getMass(), 1L)) * TICKS)
                 .eut(calculateRecipeEU(aMaterial, 16))
                 .addTo(cutterRecipes);
@@ -504,13 +508,13 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
 
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(1, aStack), new ItemStack(Blocks.glass, 3, WILDCARD))
-                    .itemOutputs(GTModHandler.getIC2Item("reinforcedGlass", 4L))
+                    .itemOutputs(ItemList.ReinforcedGlass.get(4L))
                     .duration(20 * SECONDS)
                     .eut(4)
                     .addTo(alloySmelterRecipes);
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(1, aStack), Materials.Glass.getDust(3))
-                    .itemOutputs(GTModHandler.getIC2Item("reinforcedGlass", 4L))
+                    .itemOutputs(ItemList.ReinforcedGlass.get(4L))
                     .duration(20 * SECONDS)
                     .eut(4)
                     .addTo(alloySmelterRecipes);
@@ -518,13 +522,13 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
             case "plateAlloyAdvanced" -> {
                 RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(1, aStack), new ItemStack(Blocks.glass, 3, WILDCARD))
-                    .itemOutputs(GTModHandler.getIC2Item("reinforcedGlass", 4L))
+                    .itemOutputs(ItemList.ReinforcedGlass.get(4L))
                     .duration(20 * SECONDS)
                     .eut(4)
                     .addTo(alloySmelterRecipes);
                 RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(1, aStack), Materials.Glass.getDust(3))
-                    .itemOutputs(GTModHandler.getIC2Item("reinforcedGlass", 4L))
+                    .itemOutputs(ItemList.ReinforcedGlass.get(4L))
                     .duration(20 * SECONDS)
                     .eut(4)
                     .addTo(alloySmelterRecipes);

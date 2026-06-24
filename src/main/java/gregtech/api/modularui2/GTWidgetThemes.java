@@ -64,7 +64,7 @@ public final class GTWidgetThemes {
     public static WidgetThemeKey<WidgetTheme> BACKGROUND_TITLE = registerThemedTexture("backgroundTitle");
     public static WidgetThemeKey<WidgetTheme> BACKGROUND_TERMINAL = themeApi
         .widgetThemeKeyBuilder("backgroundTerminal", WidgetTheme.class)
-        .defaultTheme(new WidgetTheme(0, 0, GTGuiTextures.BACKGROUND_TEXT_FIELD, Color.WHITE.main, 0xFAFAFA, false, 0))
+        .defaultTheme(new WidgetTheme(0, 0, GTGuiTextures.BACKGROUND_TERMINAL, Color.WHITE.main, 0xFAFAFA, false, 0))
         .defaultHoverTheme(null)
         .register();
 
@@ -93,14 +93,14 @@ public final class GTWidgetThemes {
 
     public static WidgetThemeKey<SlotTheme> OVERLAY_FLUID_SLOT_IN = registerThemedFluidSlot("overlayFluidSlotIn");
 
-    public static WidgetThemeKey<WidgetTheme> PROGRESSBAR_BOILER_HEAT = themeApi
-        .widgetThemeKeyBuilder("progressbarBoilerHeat", WidgetTheme.class)
+    public static WidgetThemeKey<ProgressbarWidgetTheme> PROGRESSBAR_BOILER_HEAT = themeApi
+        .widgetThemeKeyBuilder("progressbarBoilerHeat", ProgressbarWidgetTheme.class)
         .defaultTheme(
             new ProgressbarWidgetTheme(GTGuiTextures.SLOT_ITEM_STANDARD, GTGuiTextures.PROGRESSBAR_BOILER_HEAT, 54))
         .defaultHoverTheme(null)
         .register();
-    public static WidgetThemeKey<WidgetTheme> PROGRESSBAR_FUEL = themeApi
-        .widgetThemeKeyBuilder("progressbarFuel", WidgetTheme.class)
+    public static WidgetThemeKey<ProgressbarWidgetTheme> PROGRESSBAR_FUEL = themeApi
+        .widgetThemeKeyBuilder("progressbarFuel", ProgressbarWidgetTheme.class)
         .defaultTheme(new ProgressbarWidgetTheme(GTGuiTextures.PROGRESSBAR_FUEL_STANDARD, 14))
         .defaultHoverTheme(null)
         .register();

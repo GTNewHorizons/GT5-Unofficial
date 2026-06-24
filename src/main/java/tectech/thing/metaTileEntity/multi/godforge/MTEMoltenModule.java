@@ -12,11 +12,11 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 
 import org.jetbrains.annotations.NotNull;
 
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.RecipeMap;
@@ -128,39 +128,33 @@ public class MTEMoltenModule extends MTEBaseModule {
     public String[] getInfoData() {
         ArrayList<String> str = new ArrayList<>();
         str.add(
-            StatCollector.translateToLocalFormatted(
+            IGregTechDeviceInformation.encode(
                 "GT5U.infodata.progress",
                 GREEN + formatNumber(mProgresstime / 20) + RESET,
                 YELLOW + formatNumber(mMaxProgresstime / 20) + RESET));
         str.add(
-            StatCollector.translateToLocalFormatted(
+            IGregTechDeviceInformation.encode(
                 "tt.infodata.multi.currently_using",
                 RED + (getBaseMetaTileEntity().isActive() ? formatNumber(EUt) : "0") + RESET));
         str.add(
-            YELLOW + StatCollector.translateToLocalFormatted(
-                "tt.infodata.multi.max_parallel",
-                RESET + formatNumber(getActualParallel())));
+            IGregTechDeviceInformation
+                .encode("tt.infodata.multi.max_parallel", RESET + formatNumber(getActualParallel())));
         str.add(
-            YELLOW + StatCollector.translateToLocalFormatted(
+            IGregTechDeviceInformation.encode(
                 "GT5U.infodata.parallel.current",
                 RESET + (getBaseMetaTileEntity().isActive() ? formatNumber(currentParallel) : "0")));
+        str.add(IGregTechDeviceInformation.encode("tt.infodata.multi.capacity.heat", RESET + formatNumber(getHeat())));
         str.add(
-            YELLOW + StatCollector
-                .translateToLocalFormatted("tt.infodata.multi.capacity.heat", RESET + formatNumber(getHeat())));
+            IGregTechDeviceInformation
+                .encode("tt.infodata.multi.capacity.heat.effective", RESET + formatNumber(getHeatForOC())));
         str.add(
-            YELLOW + StatCollector.translateToLocalFormatted(
-                "tt.infodata.multi.capacity.heat.effective",
-                RESET + formatNumber(getHeatForOC())));
+            IGregTechDeviceInformation
+                .encode("tt.infodata.multi.multiplier.recipe_time", RESET + formatNumber(getSpeedBonus())));
         str.add(
-            YELLOW + StatCollector.translateToLocalFormatted(
-                "tt.infodata.multi.multiplier.recipe_time",
-                RESET + formatNumber(getSpeedBonus())));
+            IGregTechDeviceInformation
+                .encode("tt.infodata.multi.multiplier.energy", RESET + formatNumber(getEnergyDiscount())));
         str.add(
-            YELLOW + StatCollector.translateToLocalFormatted(
-                "tt.infodata.multi.multiplier.energy",
-                RESET + formatNumber(getEnergyDiscount())));
-        str.add(
-            YELLOW + StatCollector.translateToLocalFormatted(
+            IGregTechDeviceInformation.encode(
                 "tt.infodata.multi.divisor.recipe_time.non_perfect_oc",
                 RESET + formatNumber(getOverclockTimeFactor())));
         return str.toArray(new String[0]);

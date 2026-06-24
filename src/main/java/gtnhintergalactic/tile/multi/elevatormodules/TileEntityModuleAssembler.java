@@ -114,7 +114,7 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase
     }
 
     @Override
-    public List<Parameter<?>> getParameters() {
+    public List<Parameter<?, ?>> getParameters() {
         return Collections.singletonList(parallelParameter);
     }
 

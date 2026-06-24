@@ -193,7 +193,7 @@ public abstract class MTEBasicMachineBronze extends MTEBasicMachine {
             .find();
         if ((tRecipe != null) && (canOutput(tRecipe.mOutputs))
             && (tRecipe.isRecipeInputEqual(true, null, getAllInputs()))) {
-            this.mOutputItems[0] = tRecipe.getOutput(0);
+            this.mOutputItems[0] = tRecipe.rollOutput(getBaseMetaTileEntity(), 0);
             calculateCustomOverclock(tRecipe);
             return FOUND_AND_SUCCESSFULLY_USED_RECIPE;
         }

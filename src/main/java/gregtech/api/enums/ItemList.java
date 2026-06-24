@@ -173,6 +173,11 @@ public enum ItemList implements IItemContainer {
     Shape_Extruder_Small_Gear,
     Shape_Extruder_ToolHeadDrill,
 
+    // IC2 Replacements
+    PadBouncy,
+    PadSticky,
+    FenceIron,
+
     Credit_Copper,
     Credit_Iron,
     Credit_Silver,
@@ -1760,6 +1765,8 @@ public enum ItemList implements IItemContainer {
     CondensateGuidanceCoil,
     ElectromagneticWaveguide,
 
+    ReinforcedGlass,
+
     MobRep_LV,
     MobRep_MV,
     MobRep_HV,
@@ -1775,6 +1782,7 @@ public enum ItemList implements IItemContainer {
     MagLevPython_HV,
     MagLevPython_EV,
 
+    Block_ReinforcedConcrete,
     Block_BronzePlate,
     Block_SteelPlate,
     Block_TitaniumPlate,
@@ -2768,6 +2776,9 @@ public enum ItemList implements IItemContainer {
     UHTResistantMesh,
     TaHfNanoparticles,
     NtNanoparticles,
+    DroneCase,
+    Femtocontroller,
+    FuelPellet,
 
     PrecisionFieldSyncCasing,
     MagneticAnchorCasing,
@@ -2856,6 +2867,7 @@ public enum ItemList implements IItemContainer {
     Augment_MilkInfusion,
     Augment_HoloInventory,
     Augment_Travelers,
+    Augment_Terrasteel,
 
     CompressedOutputBusLuV,
     CompressedOutputBusZPM,
