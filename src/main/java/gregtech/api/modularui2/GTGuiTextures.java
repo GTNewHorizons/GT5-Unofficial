@@ -103,7 +103,6 @@ public final class GTGuiTextures {
         .location(GregTech.ID, "gui/background/terminal")
         .imageSize(142, 28)
         .adaptable(4)
-        .name(GTTextureIds.BACKGROUND_TERMINAL_STANDARD)
         .build();
     public static final UITexture BACKGROUND_TEXT_FIELD = UITexture.builder()
         .location(GregTech.ID, "gui/background/text_field")

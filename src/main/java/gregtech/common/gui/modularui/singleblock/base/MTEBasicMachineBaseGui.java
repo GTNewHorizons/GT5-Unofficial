@@ -33,7 +33,6 @@ import com.cleanroommc.modularui.widgets.slot.FluidSlot;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.gtnewhorizons.modularui.api.widget.Interactable;
 
-import gregtech.api.enums.GTValues;
 import gregtech.api.enums.SteamVariant;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseTileEntity;
