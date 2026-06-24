@@ -390,7 +390,8 @@ public enum StoneType implements IStoneType {
 
         int meta = world.getBlockMetadata(x, y, z);
 
-        for (StoneType stoneType : STONE_TYPES) {
+        for (int i = 0, stoneTypesSize = STONE_TYPES.size(); i < stoneTypesSize; i++) {
+            StoneType stoneType = STONE_TYPES.get(i);
             if (stoneType.builder.enabled && stoneType.canGenerateInWorld(world) && stoneType.contains(block, meta)) {
                 return stoneType;
             }
@@ -406,7 +407,8 @@ public enum StoneType implements IStoneType {
     public static StoneType findStoneType(Block block, int meta) {
         if (block == Blocks.air) return null;
 
-        for (StoneType stoneType : STONE_TYPES) {
+        for (int i = 0, stoneTypesSize = STONE_TYPES.size(); i < stoneTypesSize; i++) {
+            StoneType stoneType = STONE_TYPES.get(i);
             if (stoneType.builder.enabled && stoneType.contains(block, meta)) {
                 return stoneType;
             }
