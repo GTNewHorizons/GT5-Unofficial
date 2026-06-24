@@ -12,7 +12,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
-import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 import javax.annotation.Nullable;
 
@@ -27,9 +27,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ListMultimap;
-import com.google.common.collect.MultimapBuilder;
-import com.google.common.collect.Multimaps;
 import com.gtnewhorizon.gtnhlib.util.data.BlockSupplier;
 import com.gtnewhorizon.gtnhlib.util.data.ImmutableBlockMeta;
 import com.gtnewhorizon.gtnhlib.util.data.LazyBlock;
@@ -45,9 +42,7 @@ import gregtech.api.interfaces.IStoneCategory;
 import gregtech.api.interfaces.IStoneType;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTDataUtils;
 import gregtech.api.util.GTOreDictUnificator;
-import it.unimi.dsi.fastutil.Pair;
 
 public enum StoneType implements IStoneType {
 
@@ -187,10 +182,6 @@ public enum StoneType implements IStoneType {
     // spotless:on
 
     public static final List<StoneType> STONE_TYPES = ImmutableList.copyOf(values());
-    public static final List<StoneType> VISUAL_STONE_TYPES = ImmutableList.copyOf(
-        Arrays.stream(values())
-            .filter(s -> s.builder.enabled && !s.isExtraneous())
-            .toArray(StoneType[]::new));
 
     public static final List<IStoneType> STONE_ONLY = ImmutableList.of(StoneType.Stone);
     public static final List<IStoneType> STONES = ImmutableList.copyOf(
@@ -205,15 +196,9 @@ public enum StoneType implements IStoneType {
     public static final ImmutableMap<OrePrefixes, List<StoneType>> STONE_TYPES_BY_PREFIX;
 
     static {
-        Supplier<ListMultimap<OrePrefixes, StoneType>> mapMaker = () -> MultimapBuilder.hashKeys()
-            .arrayListValues()
-            .build();
-
-        var map = StoneType.STONE_TYPES.stream()
-            .map(s -> Pair.of(s.builder.oreBlockPrefix, s))
-            .collect(GTDataUtils.toMultiMap(mapMaker));
-
-        STONE_TYPES_BY_PREFIX = ImmutableMap.copyOf(Multimaps.asMap(map));
+        STONE_TYPES_BY_PREFIX = ImmutableMap.copyOf(
+            StoneType.STONE_TYPES.stream()
+                .collect(Collectors.groupingBy(s -> s.builder.oreBlockPrefix)));
     }
 
     private final StoneBuilder builder;
@@ -435,7 +420,7 @@ public enum StoneType implements IStoneType {
 
         if (options.isEmpty()) return null;
 
-        return options.get(0);
+        return options.getFirst();
     }
 
     private static class StoneBuilder {
