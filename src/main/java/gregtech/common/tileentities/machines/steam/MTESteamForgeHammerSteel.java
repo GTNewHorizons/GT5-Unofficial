@@ -18,7 +18,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_STEAM_HAMMER_AC
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_STEAM_HAMMER_GLOW;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
-import gregtech.api.recipe.BasicUIProperties;
 import net.minecraft.block.Block;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -30,6 +29,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicMachineSteel;
+import gregtech.api.recipe.BasicUIProperties;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
