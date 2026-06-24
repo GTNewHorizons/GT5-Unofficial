@@ -123,11 +123,6 @@ public class MTEHatchInputBusDebug extends MTEHatchInputBus {
     }
 
     @Override
-    public ItemStack decrStackSize(int index, int amount) {
-        return super.decrStackSize(index, 0);
-    }
-
-    @Override
     public ItemStack getStackInSlot(int slotIndex) {
         if (slotIndex < 0 || slotIndex >= getSizeInventory()) return null;
         if (slotIndex == getCircuitSlot() + SLOT_COUNT) return mInventory[getCircuitSlot()];
