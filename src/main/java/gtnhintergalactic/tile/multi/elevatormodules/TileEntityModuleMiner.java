@@ -906,7 +906,6 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
         if (!errors.isEmpty()) return;
         checkHasInputBus(errors);
         checkHasOutputBus(errors);
-        checkHasInputHatch(errors);
         if (eInputData.isEmpty() && this.parent != null && !this.parent.hasDataHatches()) {
             errors.add(StructureErrorRegistry.MISSING_DATA_HATCH);
         }
