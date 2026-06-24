@@ -2235,6 +2235,13 @@ public final class GTGuiTextures {
         .fullImage()
         .canApplyTheme()
         .build();
+
+    public static final UITexture PICTURE_GAUGE = UITexture.builder()
+        .location(GregTech.ID, "gui/picture/gauge.png")
+        .fullImage()
+        .canApplyTheme()
+        .nonOpaque()
+        .build();
     // endregion picture
 
     // region machine modes

@@ -11,8 +11,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
-import com.gtnewhorizons.modularui.common.widget.FluidSlotWidget;
-
 import gregtech.GTMod;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -178,10 +176,5 @@ public class MTEHatchCustomFluidBase extends MTEHatch {
             this.mTier,
             this.mDescriptionArray,
             this.mTextures);
-    }
-
-    @Override
-    protected FluidSlotWidget createFluidSlot() {
-        return super.createFluidSlot().setFilter(f -> f == mLockedFluid);
     }
 }
