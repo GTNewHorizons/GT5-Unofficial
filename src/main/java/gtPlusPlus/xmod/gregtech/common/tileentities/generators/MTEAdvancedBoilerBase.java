@@ -16,8 +16,6 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.modularui2.GTGuiTheme;
-import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.common.pollution.PollutionConfig;
@@ -277,11 +275,6 @@ public class MTEAdvancedBoilerBase extends MTEBoiler {
             return true;
         }
         return super.allowCoverOnSide(side, coverItem);
-    }
-
-    @Override
-    protected GTGuiTheme getGuiTheme() {
-        return GTGuiThemes.STANDARD;
     }
 
     @Override

@@ -4,7 +4,7 @@ import static gregtech.api.enums.Mods.GregTech;
 
 import com.cleanroommc.modularui.drawable.UITexture;
 
-import gregtech.api.enums.SteamVariant;
+import gregtech.api.enums.TieredVariant;
 
 /**
  * Registers {@link UITexture}s for bronze, steel and primitive variants, all at once.
@@ -21,11 +21,11 @@ public class SteamTexture {
         this.primitiveTexture = primitiveTexture;
     }
 
-    public UITexture get(SteamVariant variant) {
+    public UITexture get(TieredVariant variant) {
         return switch (variant) {
-            case SteamVariant.BRONZE -> bronzeTexture;
-            case SteamVariant.STEEL -> steelTexture;
-            case SteamVariant.PRIMITIVE -> primitiveTexture;
+            case TieredVariant.BRONZE -> bronzeTexture;
+            case TieredVariant.STEEL -> steelTexture;
+            case TieredVariant.PRIMITIVE -> primitiveTexture;
             default -> null;
         };
     }
@@ -45,9 +45,9 @@ public class SteamTexture {
         private final UITexture.Builder primitiveBuilder = UITexture.builder();
 
         public Builder location(String pathPlaceholder) {
-            bronzeBuilder.location(GregTech.ID, String.format(pathPlaceholder, SteamVariant.BRONZE));
-            steelBuilder.location(GregTech.ID, String.format(pathPlaceholder, SteamVariant.STEEL));
-            primitiveBuilder.location(GregTech.ID, String.format(pathPlaceholder, SteamVariant.PRIMITIVE));
+            bronzeBuilder.location(GregTech.ID, String.format(pathPlaceholder, TieredVariant.BRONZE));
+            steelBuilder.location(GregTech.ID, String.format(pathPlaceholder, TieredVariant.STEEL));
+            primitiveBuilder.location(GregTech.ID, String.format(pathPlaceholder, TieredVariant.PRIMITIVE));
             return this;
         }
 
@@ -87,9 +87,9 @@ public class SteamTexture {
         }
 
         public Builder name(String namePlaceholder) {
-            bronzeBuilder.name(String.format(namePlaceholder, SteamVariant.BRONZE));
-            steelBuilder.name(String.format(namePlaceholder, SteamVariant.STEEL));
-            primitiveBuilder.name(String.format(namePlaceholder, SteamVariant.PRIMITIVE));
+            bronzeBuilder.name(String.format(namePlaceholder, TieredVariant.BRONZE));
+            steelBuilder.name(String.format(namePlaceholder, TieredVariant.STEEL));
+            primitiveBuilder.name(String.format(namePlaceholder, TieredVariant.PRIMITIVE));
             return this;
         }
 

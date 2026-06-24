@@ -10,12 +10,10 @@ import static gregtech.api.enums.Textures.BlockIcons.MACHINE_STEELBRICKS_TOP;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE;
 
 import gregtech.GTMod;
-import gregtech.api.enums.SteamVariant;
+import gregtech.api.enums.TieredVariant;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.modularui2.GTGuiTheme;
-import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.render.TextureFactory;
 
 public class MTEBoilerSteel extends MTEBoilerBronze {
@@ -100,12 +98,7 @@ public class MTEBoilerSteel extends MTEBoilerBronze {
     }
 
     @Override
-    public SteamVariant getSteamVariant() {
-        return SteamVariant.STEEL;
-    }
-
-    @Override
-    protected GTGuiTheme getGuiTheme() {
-        return GTGuiThemes.STEAM.get(getSteamVariant());
+    public TieredVariant getTieredVariant() {
+        return TieredVariant.STEEL;
     }
 }

@@ -8,14 +8,16 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 
 import gregtech.api.enums.Dyes;
-import gregtech.api.enums.SteamVariant;
+import gregtech.api.enums.TieredVariant;
 
 /**
  * Holds all the {@link GTGuiTheme}s registered.
  */
 public final class GTGuiThemes {
 
-    public static void init() {}
+    public static void init() {
+        TIERED_VARIANTS.put(TieredVariant.STANDARD, STANDARD);
+    }
 
     public static final GTGuiTheme STANDARD = GTGuiTheme.builder("gregtech:standard")
         .panel(GTTextureIds.BACKGROUND_STANDARD)
@@ -141,9 +143,9 @@ public final class GTGuiThemes {
         .textField(Dyes.dyeWhite.toInt())
         .build();
 
-    private static final BiFunction<SteamVariant, GTGuiTheme.Builder, GTGuiTheme.Builder> STEAM_BUILDER_MODIFIER = (
+    private static final BiFunction<TieredVariant, GTGuiTheme.Builder, GTGuiTheme.Builder> TIERED_VARIANT_BUILDER_MODIFIER = (
         variant, builder) -> {
-        if (variant == SteamVariant.BRONZE || variant == SteamVariant.STEEL) builder
+        if (variant == TieredVariant.BRONZE || variant == TieredVariant.STEEL) builder
             .themedOverlayItemSlot(
                 GTWidgetThemes.OVERLAY_ITEM_SLOT_COAL.getFullName(),
                 String.format(GTTextureIds.OVERLAY_SLOT_COAL_STEAM, variant))
@@ -161,19 +163,19 @@ public final class GTGuiThemes {
                 GTWidgetThemes.PICTURE_CANISTER.getFullName(),
                 String.format(GTTextureIds.OVERLAY_SLOT_CANISTER_STEAM, variant));
 
-        if (variant == SteamVariant.STEEL || variant == SteamVariant.PRIMITIVE)
+        if (variant == TieredVariant.STEEL || variant == TieredVariant.PRIMITIVE)
             builder.customTextColor(GTWidgetThemes.TEXT_TITLE.getFullName(), 0xfafaff);
 
-        if (variant == SteamVariant.STEEL) builder.textColor(0x404040)
+        if (variant == TieredVariant.STEEL) builder.textColor(0x404040)
             .themedTexture(GTWidgetThemes.STEAM_GAUGE.getFullName(), GTTextureIds.PICTURE_STEAM_GAUGE_STEEL)
             .themedColor(GTWidgetThemes.STEAM_GAUGE_NEEDLE.getFullName(), 0x3d3847);
 
-        if (variant == SteamVariant.PRIMITIVE) builder.textColor(0xfafaff);
+        if (variant == TieredVariant.PRIMITIVE) builder.textColor(0xfafaff);
 
         return builder;
     };
 
-    private static final Function<SteamVariant, GTGuiTheme> STEAM_BUILDER_BASE = variant -> STEAM_BUILDER_MODIFIER
+    private static final Function<TieredVariant, GTGuiTheme> SPECIAL_VARIANT_BUILDER_BASE = variant -> TIERED_VARIANT_BUILDER_MODIFIER
         .apply(
             variant,
             GTGuiTheme.builder(String.format("gregtech:%s", variant))
@@ -226,8 +228,8 @@ public final class GTGuiThemes {
                 .themedTexture(GTWidgetThemes.PICTURE_ERROR.getFullName(), GTTextureIds.PICTURE_ERROR_STEAM))
         .build();
 
-    public static final Map<SteamVariant, GTGuiTheme> STEAM = Arrays.stream(SteamVariant.variants)
-        .collect(HashMap::new, (acc, var) -> acc.put(var, STEAM_BUILDER_BASE.apply(var)), HashMap::putAll);
+    public static final Map<TieredVariant, GTGuiTheme> TIERED_VARIANTS = Arrays.stream(TieredVariant.special_variants)
+        .collect(HashMap::new, (acc, var) -> acc.put(var, SPECIAL_VARIANT_BUILDER_BASE.apply(var)), HashMap::putAll);
 
     public static final GTGuiTheme TECTECH_STANDARD = GTGuiTheme.builder("tectech:standard")
         .parent(STANDARD)
@@ -252,7 +254,7 @@ public final class GTGuiThemes {
         .build();
 
     public static final GTGuiTheme COKE_OVEN = GTGuiTheme.builder("gregtech:coke_oven")
-        .parent(STEAM.get(SteamVariant.PRIMITIVE))
+        .parent(TIERED_VARIANTS.get(TieredVariant.PRIMITIVE))
         .panel(GTTextureIds.BACKGROUND_COKE_OVEN)
         .build();
     public static final GTGuiTheme INTERGALACTIC_STANDARD = GTGuiTheme.builder("inntergalactic:standard")

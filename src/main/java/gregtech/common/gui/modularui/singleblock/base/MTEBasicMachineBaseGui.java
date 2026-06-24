@@ -33,7 +33,7 @@ import com.cleanroommc.modularui.widgets.slot.FluidSlot;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.gtnewhorizons.modularui.api.widget.Interactable;
 
-import gregtech.api.enums.SteamVariant;
+import gregtech.api.enums.TieredVariant;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicMachine;
@@ -61,13 +61,13 @@ public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> extends MTETiered
         super(machine);
         this.properties = properties;
 
-        SteamVariant steamVariant = machine.getSteamVariant();
-        this.slotOverlayFunction = steamVariant == SteamVariant.NONE ? properties.slotOverlaysMUI2
+        TieredVariant tieredVariant = machine.getTieredVariant();
+        this.slotOverlayFunction = tieredVariant == TieredVariant.STANDARD ? properties.slotOverlaysMUI2
             : (index, isFluid, isOutput, isSpecial) -> properties.slotOverlaysSteamMUI2
                 .apply(index, isFluid, isOutput, isSpecial)
-                .get(steamVariant);
-        this.progressBarTexture = steamVariant == SteamVariant.NONE ? properties.progressBarMUI2
-            : properties.progressBarTextureSteamMUI2.get(steamVariant);
+                .get(tieredVariant);
+        this.progressBarTexture = tieredVariant == TieredVariant.STANDARD ? properties.progressBarMUI2
+            : properties.progressBarTextureSteamMUI2.get(tieredVariant);
     }
 
     public MTEBasicMachineBaseGui<T> useGregTechLogo(boolean addLogo) {

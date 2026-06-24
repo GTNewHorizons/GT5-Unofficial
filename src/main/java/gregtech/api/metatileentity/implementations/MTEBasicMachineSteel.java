@@ -9,7 +9,7 @@ import static gregtech.api.enums.Textures.BlockIcons.MACHINE_STEEL_TOP;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_PIPE_OUT;
 
 import gregtech.api.enums.Dyes;
-import gregtech.api.enums.SteamVariant;
+import gregtech.api.enums.TieredVariant;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IGetTitleColor;
 import gregtech.api.objects.overclockdescriber.OverclockDescriber;
@@ -36,7 +36,7 @@ public abstract class MTEBasicMachineSteel extends MTEBasicMachineBronze impleme
 
     @Override
     public OverclockDescriber createOverclockDescriber() {
-        return new SteamOverclockDescriber(SteamVariant.STEEL, 2, 1);
+        return new SteamOverclockDescriber(TieredVariant.STEEL, 2, 1);
     }
 
     @Override
@@ -132,7 +132,7 @@ public abstract class MTEBasicMachineSteel extends MTEBasicMachineBronze impleme
     }
 
     @Override
-    public SteamVariant getSteamVariant() {
-        return SteamVariant.STEEL;
+    public TieredVariant getTieredVariant() {
+        return TieredVariant.STEEL;
     }
 }

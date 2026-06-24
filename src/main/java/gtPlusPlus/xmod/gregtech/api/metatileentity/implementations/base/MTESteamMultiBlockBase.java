@@ -26,8 +26,8 @@ import org.jetbrains.annotations.Nullable;
 import gregtech.GTMod;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.SteamVariant;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.TieredVariant;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.IOutputBus;
@@ -167,12 +167,12 @@ public abstract class MTESteamMultiBlockBase<T extends MTESteamMultiBlockBase<T>
 
     @Override
     protected GTGuiTheme getGuiTheme() {
-        return GTGuiThemes.STEAM.get(getSteamVariant());
+        return GTGuiThemes.TIERED_VARIANTS.get(getTieredVariant());
     }
 
     @Override
-    public SteamVariant getSteamVariant() {
-        return isHighPressure() ? SteamVariant.STEEL : SteamVariant.BRONZE;
+    public TieredVariant getTieredVariant() {
+        return isHighPressure() ? TieredVariant.STEEL : TieredVariant.BRONZE;
     }
 
     @Override
@@ -586,7 +586,7 @@ public abstract class MTESteamMultiBlockBase<T extends MTESteamMultiBlockBase<T>
     }
 
     protected static OverclockDescriber createOverclockDescriber() {
-        return new SteamOverclockDescriber(SteamVariant.BRONZE, 1, 2);
+        return new SteamOverclockDescriber(TieredVariant.BRONZE, 1, 2);
     }
 
     @Override

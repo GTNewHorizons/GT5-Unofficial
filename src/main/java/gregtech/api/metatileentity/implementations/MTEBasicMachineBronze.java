@@ -31,8 +31,8 @@ import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.ParticleFX;
 import gregtech.api.enums.SoundResource;
-import gregtech.api.enums.SteamVariant;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.TieredVariant;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.modularui2.GTGuiTheme;
@@ -76,7 +76,7 @@ public abstract class MTEBasicMachineBronze extends MTEBasicMachine {
 
     @Override
     public OverclockDescriber createOverclockDescriber() {
-        return new SteamOverclockDescriber(SteamVariant.BRONZE, 1, 2);
+        return new SteamOverclockDescriber(TieredVariant.BRONZE, 1, 2);
     }
 
     @Override
@@ -345,13 +345,13 @@ public abstract class MTEBasicMachineBronze extends MTEBasicMachine {
     }
 
     @Override
-    public SteamVariant getSteamVariant() {
-        return SteamVariant.BRONZE;
+    public TieredVariant getTieredVariant() {
+        return TieredVariant.BRONZE;
     }
 
     @Override
     protected GTGuiTheme getGuiTheme() {
-        return GTGuiThemes.STEAM.get(getSteamVariant());
+        return GTGuiThemes.TIERED_VARIANTS.get(getTieredVariant());
     }
 
     @Override

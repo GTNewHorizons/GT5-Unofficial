@@ -51,7 +51,7 @@ import codechicken.nei.recipe.TemplateRecipeHandler;
 import gregtech.GTMod;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.SteamVariant;
+import gregtech.api.enums.TieredVariant;
 import gregtech.api.gui.GUIColorOverride;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -912,7 +912,7 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
                 aRecipe.mOutputs.length,
                 aRecipe.mFluidInputs.length,
                 aRecipe.mFluidOutputs.length,
-                SteamVariant.NONE,
+                TieredVariant.STANDARD,
                 WINDOW_OFFSET);
         }
 
