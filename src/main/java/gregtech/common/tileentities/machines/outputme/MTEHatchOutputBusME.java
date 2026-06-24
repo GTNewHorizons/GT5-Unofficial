@@ -345,6 +345,12 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
     }
 
     @Override
+    public void notifyOutputSpaceFreed() {
+        // The provider detected its free space grew (cache flushed, a fuller cell drained); re-check a blocked recipe.
+        notifyWatchers();
+    }
+
+    @Override
     public void onColorChangeServer(byte aColor) {
         provider.updateAE2ProxyColor();
     }

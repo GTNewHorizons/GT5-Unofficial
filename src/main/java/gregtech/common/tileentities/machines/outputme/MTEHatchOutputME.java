@@ -252,6 +252,12 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
     }
 
     @Override
+    public void notifyOutputSpaceFreed() {
+        // The provider detected its free space grew (cache flushed, a fuller cell drained); re-check a blocked recipe.
+        notifyWatchers();
+    }
+
+    @Override
     public void addAdditionalTooltipInformation(ItemStack stack, List<String> tooltip) {
         provider.addAdditionalTooltipInformation(stack, tooltip);
     }

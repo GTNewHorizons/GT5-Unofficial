@@ -214,6 +214,7 @@ public class MTEMegaDistillTowerLegacy extends MegaMultiBlockBase<MTEMegaDistill
             || !(aTileEntity.getMetaTileEntity() instanceof MTEHatchOutput tHatch)) return false;
         while (this.mOutputHatchesByLayer.size() < this.mHeight) this.mOutputHatchesByLayer.add(new ArrayList<>());
         tHatch.updateTexture(aBaseCasingIndex);
+        addIfSmartInput(tHatch);
         return this.mOutputHatchesByLayer.get(this.mHeight - 1)
             .add(tHatch);
     }

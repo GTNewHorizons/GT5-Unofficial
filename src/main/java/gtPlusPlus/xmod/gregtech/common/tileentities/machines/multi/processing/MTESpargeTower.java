@@ -233,6 +233,7 @@ public class MTESpargeTower extends GTPPMultiBlockBase<MTESpargeTower> implement
             mOutputHatchesByLayer.add(new ArrayList<>());
         }
         tHatch.updateTexture(aBaseCasingIndex);
+        addIfSmartInput(tHatch);
         boolean addedHatch = mOutputHatchesByLayer.get(mHeight - 1)
             .add(tHatch);
         return addedHatch;
