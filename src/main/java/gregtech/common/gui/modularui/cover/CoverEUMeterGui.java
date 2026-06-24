@@ -66,7 +66,7 @@ public class CoverEUMeterGui extends CoverBaseGui<CoverEUMeter> {
                         () -> String.valueOf(cover.getThreshold()),
                         s -> {
                             if (s.endsWith("%")) {
-                                cover.setThresdhold((long) (Double.parseDouble(s.substring(0, s.length() - 1))
+                                cover.setThresdhold((long) (MathExpressionParser.parse(s.substring(0, s.length() - 1))
                                     / 100 * cover.getType().getTileEntityEnergyCapacity(cover.getTile())
                                 ));
                             } else {
