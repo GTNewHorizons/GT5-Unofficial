@@ -2,11 +2,13 @@ package gregtech.common.gui.modularui.cover;
 
 import static gregtech.api.modularui2.GTGuiTextures.OVERLAY_BUTTON_CYCLIC;
 
+import com.cleanroommc.modularui.value.sync.StringSyncValue;
+import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
+import com.gtnewhorizon.gtnhlib.util.parsing.MathExpressionParser;
 import org.jetbrains.annotations.NotNull;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.value.sync.EnumSyncValue;
-import com.cleanroommc.modularui.value.sync.LongSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.CycleButtonWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
@@ -57,11 +59,20 @@ public class CoverEUMeterGui extends CoverBaseGui<CoverEUMeter> {
     private @NotNull Flow makeEnergyThresholdRow() {
         return makeNamedColumn(IKey.lang("gt.interact.desc.EnergyThreshold"))
             .child(
-                makeNumberField(120).value(new LongSyncValue(cover::getThreshold, cover::setThresdhold).allowC2S())
-                    .numbersLong(
-                        () -> 0L,
-                        () -> cover.getType()
-                            .getTileEntityEnergyCapacity(cover.getTile()))
+                new TextFieldWidget()
+                    .width(120)
+                    .height(12)
+                    .value(new StringSyncValue(
+                        () -> String.valueOf(cover.getThreshold()),
+                        s -> {
+                            if (s.endsWith("%")) {
+                                cover.setThresdhold((long) (Double.parseDouble(s.substring(0, s.length() - 1))
+                                    / 100 * cover.getType().getTileEntityEnergyCapacity(cover.getTile())
+                                ));
+                            } else {
+                                cover.setThresdhold(((long) MathExpressionParser.parse(s)));
+                            }
+                        }).allowC2S())
                     .setFocusOnGuiOpen(true))
             .paddingRight(TICK_RATE_BUTTON_SIZE);
     }
