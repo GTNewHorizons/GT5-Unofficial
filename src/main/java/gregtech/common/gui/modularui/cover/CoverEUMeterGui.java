@@ -2,9 +2,8 @@ package gregtech.common.gui.modularui.cover;
 
 import static gregtech.api.modularui2.GTGuiTextures.OVERLAY_BUTTON_CYCLIC;
 
-import com.cleanroommc.modularui.value.sync.StringSyncValue;
+import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
-import com.gtnewhorizon.gtnhlib.util.parsing.MathExpressionParser;
 import org.jetbrains.annotations.NotNull;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
@@ -62,18 +61,21 @@ public class CoverEUMeterGui extends CoverBaseGui<CoverEUMeter> {
                 new TextFieldWidget()
                     .width(120)
                     .height(12)
-                    .value(new StringSyncValue(
-                        () -> String.valueOf(cover.getThreshold()),
-                        s -> {
-                            if (s.endsWith("%")) {
-                                cover.setThresdhold((long) (MathExpressionParser.parse(s.substring(0, s.length() - 1))
-                                    / 100 * cover.getType().getTileEntityEnergyCapacity(cover.getTile())
-                                ));
-                            } else {
-                                cover.setThresdhold(((long) MathExpressionParser.parse(s)));
+                    .value(new DoubleSyncValue(
+                        cover::getThreshold,
+                        v -> {
+                            if (v < 1) {
+                                v *= cover.getType().getTileEntityEnergyCapacity(cover.getTile());
                             }
-                        }).allowC2S())
-                    .setFocusOnGuiOpen(true))
+                            cover.setThresdhold((long) v);
+                        }
+                    ).allowC2S())
+                    .numbersDouble(
+                        () -> 0,
+                        () -> cover.getType().getTileEntityEnergyCapacity(cover.getTile())
+                    )
+                    .setFocusOnGuiOpen(true)
+            )
             .paddingRight(TICK_RATE_BUTTON_SIZE);
     }
 }
