@@ -224,10 +224,10 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
 
     private static final String[] description = new String[] {
         translateToLocal("tile.kekztech_tfftstoragefield_block.hint.1"), // Casing
-        translateToLocal("tile.kekztech_tfftstoragefield_block.hint.2"), // Casing, Maintenance Hatch, T.F.F.T Multi
+        translateToLocal("tile.kekztech_tfftstoragefield_block.hint.2"), // Casing, Maintenance Hatch, TFFT Multi
                                                                          // I/O Hatch, Input/Output Hatch, Energy
                                                                          // Hatch
-        translateToLocal("tile.kekztech_tfftstoragefield_block.hint.3"), // Glass, T.F.F.T Multi I/O Hatch,
+        translateToLocal("tile.kekztech_tfftstoragefield_block.hint.3"), // Glass, TFFT Multi I/O Hatch,
                                                                          // Input/Output Hatch
         translateToLocal("tile.kekztech_tfftstoragefield_block.hint.4"), // Glass
     };
@@ -353,14 +353,14 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
             .addInfo("The index of a stored fluid can be obtained through the Tricorder")
             .beginVariableStructureBlock(5, 5, 5, 15, 5, 5, false)
             .addController("Front center")
-            .addCasingInfoMin("T.F.F.T Casing", MIN_CASING_AMOUNT, false)
+            .addCasingInfoMin("TFFT Casing", MIN_CASING_AMOUNT, false)
             .addCasingInfoRange("Storage Field Block", 7, 117, true)
             .addStructureInfo("Energy hatch is not required when running cost is 0")
             .addCasingInfoRange("Any Tiered Glass (EV+)", 48, 208, false)
-            .addMaintenanceHatch("Any top or bottom Casing")
-            .addEnergyHatch("Any top or bottom Casing")
-            .addInputHatch("Instead of any casing or glass, has to touch Storage Field Block")
-            .addOutputHatch("Instead of any casing or glass, has to touch Storage Field Block")
+            .addMaintenanceHatch("Any top or bottom Casing", 1, 2)
+            .addEnergyHatch("Any top or bottom Casing", 1, 2)
+            .addInputHatch("Instead of any casing or glass, has to touch Storage Field Block", 2, 3)
+            .addOutputHatch("Instead of any casing or glass, has to touch Storage Field Block", 2, 3)
             .addStructureInfo("You can have a bunch of hatches")
             .addOtherStructurePart(
                 "1x Multi I/O Hatch",

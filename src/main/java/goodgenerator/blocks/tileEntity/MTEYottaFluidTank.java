@@ -51,6 +51,7 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
@@ -289,7 +290,12 @@ public class MTEYottaFluidTank extends TTMultiblockBase implements ISurvivalCons
             return;
         }
         if (!checkPiece(YOTTANK_TOP, 2, cnt + 2, 0, errors)) return;
-        checkHasInputHatch(errors);
+
+        if (this.mYottaHatch.isEmpty()) {
+            checkHasInputHatch(errors);
+            checkHasOutputHatch(errors);
+        }
+
         // maxCell+1 = Tier of highest Cell. glassTier is the glass voltage tier
         if (maxCell + 3 > glassTier) {
             errors.add(StructureErrors.glassTierNotEnough(maxCell + 3));
@@ -382,31 +388,12 @@ public class MTEYottaFluidTank extends TTMultiblockBase implements ISurvivalCons
     @Override
     public String[] getInfoData() {
         final ArrayList<String> info = new ArrayList<>();
+        info.add(IGregTechDeviceInformation.encode("gg.infodata.yottank.fluid", getFluidName()));
+        info.add(IGregTechDeviceInformation.encode("gg.infodata.yottank.cap", formatNumber(getCap())));
         info.add(
-            translateToLocal("scanner.info.YOTTank.1") + " "
-                + translateToLocal(
-                    EnumChatFormatting.YELLOW + formatNumber(getFluidName() + EnumChatFormatting.RESET)));
-        info.add(
-            translateToLocal("scanner.info.YOTTank.0") + " "
-                + translateToLocal(
-                    EnumChatFormatting.GREEN + formatNumber(getCap()) + EnumChatFormatting.RESET + " L"));
-        info.add(
-            translateToLocal("scanner.info.YOTTank.2") + " "
-                + translateToLocal(
-                    EnumChatFormatting.GREEN + formatNumber(getStored())
-                        + EnumChatFormatting.RESET
-                        + " L"
-                        + " ("
-                        + EnumChatFormatting.GREEN
-                        + getPercent()
-                        + "%"
-                        + EnumChatFormatting.RESET
-                        + ")"));
+            IGregTechDeviceInformation.encode("gg.infodata.yottank.stored", formatNumber(getStored()), getPercent()));
         info.add(getTimeTo());
-        info.add(
-            StatCollector.translateToLocal("scanner.info.YOTTank.3") + " "
-                + EnumChatFormatting.YELLOW
-                + formatNumber(getLockedFluidName()));
+        info.add(IGregTechDeviceInformation.encode("gg.infodata.yottank.locked", getLockedFluidName()));
         final String[] a = new String[info.size()];
         return info.toArray(a);
     }
@@ -467,8 +454,8 @@ public class MTEYottaFluidTank extends TTMultiblockBase implements ISurvivalCons
             .addCasingInfoRange("Any Tiered Glass", 16, 240, true)
             .addCasingInfoRange("Fluid Cell Block", 9, 135, true)
             .addCasingInfoRange("YOTTank Casing", 25, 43, false)
-            .addInputHatch("Hint block number 1")
-            .addOutputHatch("Hint block number 3 (optional)")
+            .addInputHatch("Hint block number 1", 1)
+            .addOutputHatch("Hint block number 1 (optional)", 1)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         return tt;

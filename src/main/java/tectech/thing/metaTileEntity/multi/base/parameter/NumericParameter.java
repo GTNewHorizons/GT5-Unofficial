@@ -2,23 +2,32 @@ package tectech.thing.metaTileEntity.multi.base.parameter;
 
 import java.util.function.Supplier;
 
-public abstract class NumericParameter<T extends Number> extends Parameter<T> {
+import com.cleanroommc.modularui.value.sync.SyncHandler;
+
+public abstract class NumericParameter<T extends Number, S extends SyncHandler<?>> extends Parameter<T, S> {
+
+    private final Supplier<T> min;
+    private final Supplier<T> max;
 
     public NumericParameter(T value, String langKey, String nbtKey, Supplier<T> min, Supplier<T> max,
         Object... langArgs) {
-        super(value, langKey, nbtKey, min, max, langArgs);
+        super(value, langKey, nbtKey, langArgs);
+        this.min = min;
+        this.max = max;
     }
 
     @Override
     public void setValue(T value) {
-        if (value.doubleValue() < this.getMin()
-            .doubleValue()) {
-            super.setValue(this.getMin());
-        } else if (value.doubleValue() > this.getMax()
-            .doubleValue()) {
-                super.setValue(this.getMax());
-            } else {
-                super.setValue(value);
-            }
+        super.setValue(validate(value));
     }
+
+    public T getMin() {
+        return min.get();
+    }
+
+    public T getMax() {
+        return max.get();
+    }
+
+    public abstract T validate(T value);
 }
