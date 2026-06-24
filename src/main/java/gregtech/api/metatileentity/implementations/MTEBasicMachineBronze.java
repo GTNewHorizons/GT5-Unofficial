@@ -351,7 +351,7 @@ public abstract class MTEBasicMachineBronze extends MTEBasicMachine {
 
     @Override
     protected GTGuiTheme getGuiTheme() {
-        return GTGuiThemes.STEAM.apply(getSteamVariant());
+        return GTGuiThemes.STEAM.get(getSteamVariant());
     }
 
     @Override

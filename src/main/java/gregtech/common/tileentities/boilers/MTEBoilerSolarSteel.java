@@ -7,8 +7,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.modularui2.GTGuiTheme;
-import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.render.TextureFactory;
 import gregtech.common.config.MachineStats;
 
@@ -60,11 +58,6 @@ public class MTEBoilerSolarSteel extends MTEBoilerSolar {
     @Override
     public SteamVariant getSteamVariant() {
         return SteamVariant.STEEL;
-    }
-
-    @Override
-    protected GTGuiTheme getGuiTheme() {
-        return GTGuiThemes.STEAM.apply(getSteamVariant());
     }
 
     @Override

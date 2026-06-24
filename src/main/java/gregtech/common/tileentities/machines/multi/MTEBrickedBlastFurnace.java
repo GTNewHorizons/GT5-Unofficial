@@ -572,7 +572,7 @@ public class MTEBrickedBlastFurnace extends MetaTileEntity implements IAlignment
 
     @Override
     protected GTGuiTheme getGuiTheme() {
-        return GTGuiThemes.STEAM.apply(getSteamVariant());
+        return GTGuiThemes.STEAM.get(getSteamVariant());
     }
 
     @Override

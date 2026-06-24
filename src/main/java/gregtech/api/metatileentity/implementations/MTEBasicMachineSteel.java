@@ -12,8 +12,6 @@ import gregtech.api.enums.Dyes;
 import gregtech.api.enums.SteamVariant;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IGetTitleColor;
-import gregtech.api.modularui2.GTGuiTheme;
-import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.objects.overclockdescriber.OverclockDescriber;
 import gregtech.api.objects.overclockdescriber.SteamOverclockDescriber;
 import gregtech.api.render.TextureFactory;
@@ -136,10 +134,5 @@ public abstract class MTEBasicMachineSteel extends MTEBasicMachineBronze impleme
     @Override
     public SteamVariant getSteamVariant() {
         return SteamVariant.STEEL;
-    }
-
-    @Override
-    protected GTGuiTheme getGuiTheme() {
-        return GTGuiThemes.STEAM.apply(getSteamVariant());
     }
 }

@@ -1,6 +1,9 @@
 package gregtech.api.modularui2;
 
 import java.awt.Color;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
@@ -12,10 +15,7 @@ import gregtech.api.enums.SteamVariant;
  */
 public final class GTGuiThemes {
 
-    public static void init() {
-        // initialize all valid steam variant themes
-        for (SteamVariant variant : SteamVariant.variants) GTGuiThemes.STEAM.apply(variant);
-    }
+    public static void init() {}
 
     public static final GTGuiTheme STANDARD = GTGuiTheme.builder("gregtech:standard")
         .panel(GTTextureIds.BACKGROUND_STANDARD)
@@ -141,8 +141,8 @@ public final class GTGuiThemes {
         .textField(Dyes.dyeWhite.toInt())
         .build();
 
-    private static final BiFunction<SteamVariant, GTGuiTheme.Builder, GTGuiTheme.Builder> STEAM_MODIFIER = (variant,
-        builder) -> {
+    private static final BiFunction<SteamVariant, GTGuiTheme.Builder, GTGuiTheme.Builder> STEAM_BUILDER_MODIFIER = (
+        variant, builder) -> {
         if (variant == SteamVariant.BRONZE || variant == SteamVariant.STEEL) builder
             .themedOverlayItemSlot(
                 GTWidgetThemes.OVERLAY_ITEM_SLOT_COAL.getFullName(),
@@ -173,7 +173,7 @@ public final class GTGuiThemes {
         return builder;
     };
 
-    public static final Function<SteamVariant, GTGuiTheme> STEAM = variant -> STEAM_MODIFIER
+    private static final Function<SteamVariant, GTGuiTheme> STEAM_BUILDER_BASE = variant -> STEAM_BUILDER_MODIFIER
         .apply(
             variant,
             GTGuiTheme.builder(String.format("gregtech:%s", variant))
@@ -226,6 +226,9 @@ public final class GTGuiThemes {
                 .themedTexture(GTWidgetThemes.PICTURE_ERROR.getFullName(), GTTextureIds.PICTURE_ERROR_STEAM))
         .build();
 
+    public static final Map<SteamVariant, GTGuiTheme> STEAM = Arrays.stream(SteamVariant.variants)
+        .collect(HashMap::new, (acc, var) -> acc.put(var, STEAM_BUILDER_BASE.apply(var)), HashMap::putAll);
+
     public static final GTGuiTheme TECTECH_STANDARD = GTGuiTheme.builder("tectech:standard")
         .parent(STANDARD)
         .themedTexture(GTWidgetThemes.PICTURE_LOGO.getFullName(), GTTextureIds.PICTURE_TECTECH_LOGO)
@@ -249,7 +252,7 @@ public final class GTGuiThemes {
         .build();
 
     public static final GTGuiTheme COKE_OVEN = GTGuiTheme.builder("gregtech:coke_oven")
-        .parent(STEAM.apply(SteamVariant.PRIMITIVE))
+        .parent(STEAM.get(SteamVariant.PRIMITIVE))
         .panel(GTTextureIds.BACKGROUND_COKE_OVEN)
         .build();
     public static final GTGuiTheme INTERGALACTIC_STANDARD = GTGuiTheme.builder("inntergalactic:standard")

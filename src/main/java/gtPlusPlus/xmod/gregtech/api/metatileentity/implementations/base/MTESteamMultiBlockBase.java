@@ -167,7 +167,7 @@ public abstract class MTESteamMultiBlockBase<T extends MTESteamMultiBlockBase<T>
 
     @Override
     protected GTGuiTheme getGuiTheme() {
-        return GTGuiThemes.STEAM.apply(getSteamVariant());
+        return GTGuiThemes.STEAM.get(getSteamVariant());
     }
 
     @Override
