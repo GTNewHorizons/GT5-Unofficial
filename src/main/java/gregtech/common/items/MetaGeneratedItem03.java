@@ -258,6 +258,8 @@ import static gregtech.common.items.IDMetaItem03.MetaMaterial_WaveFocus4;
 import static gregtech.common.items.IDMetaItem03.MetaMaterial_Waveguide1;
 import static gregtech.common.items.IDMetaItem03.MetaMaterial_Waveguide2;
 import static gregtech.common.items.IDMetaItem03.MetaMaterial_Waveguide3;
+import static gregtech.common.items.IDMetaItem03.Mixed_Alloy_Ingot;
+import static gregtech.common.items.IDMetaItem03.Mixed_Alloy_Plate;
 import static gregtech.common.items.IDMetaItem03.NandChip;
 import static gregtech.common.items.IDMetaItem03.Naquarite_Universal_Insulator_Foil;
 import static gregtech.common.items.IDMetaItem03.Netherite_Nanoparticles;
@@ -1965,6 +1967,21 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                     "gt.item.planck_manifold.name",
                     "gt.item.planck_manifold.tooltip"))
             .setRender(new CosmicNeutroniumMetaItemRenderer());
+        ItemList.Mixed_Alloy_Ingot.set(
+            addItemWithLocalizationKeys(
+                Mixed_Alloy_Ingot.ID,
+                "gt.item.mixed_alloy_ingot.name",
+                "",
+                "ingotMixedMetal",
+                new TCAspects.TC_AspectStack(TCAspects.METALLUM, 3L)));
+        ItemList.Mixed_Alloy_Plate.set(
+            addItemWithLocalizationKeys(
+                Mixed_Alloy_Plate.ID,
+                "gt.item.mixed_alloy_plate.name",
+                "",
+                OrePrefixes.plateAlloy.get(Materials.HV),
+                new TCAspects.TC_AspectStack(TCAspects.METALLUM, 4L),
+                new TCAspects.TC_AspectStack(TCAspects.VACUOS, 2L)));
 
         registerMetaMaterials();
 

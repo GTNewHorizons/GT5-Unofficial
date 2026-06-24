@@ -46,7 +46,7 @@ public class CompressorRecipes implements Runnable {
             .addTo(compressorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(ItemList.IC2_Mixed_Metal_Ingot.get(1L))
+            .itemInputs(ItemList.Mixed_Alloy_Ingot.get(1L))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plateAlloy, Materials.HV, 1L))
             .duration(15 * SECONDS)
             .eut(2)

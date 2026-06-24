@@ -266,6 +266,9 @@ public enum IDMetaItem03 {
     MetaMaterial_FieldManipulator3(333),
     MetaMaterial_FieldManipulator4(334),
 
+    Mixed_Alloy_Ingot(340),
+    Mixed_Alloy_Plate(341),
+
     Circuit_Silicon_Ingot6(721),
     Circuit_Silicon_Wafer6(722),
     Circuit_Silicon_Wafer7(723),
