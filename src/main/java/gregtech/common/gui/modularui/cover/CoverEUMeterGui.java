@@ -58,22 +58,17 @@ public class CoverEUMeterGui extends CoverBaseGui<CoverEUMeter> {
     private @NotNull Flow makeEnergyThresholdRow() {
         return makeNamedColumn(IKey.lang("gt.interact.desc.EnergyThreshold"))
             .child(
-                new TextFieldWidget()
-                    .width(120)
-                    .height(12)
-                    .value(new DoubleSyncValue(
-                        cover::getThreshold,
-                        v -> {
-                            if (v < 1) {
-                                v *= cover.getType().getTileEntityEnergyCapacity(cover.getTile());
-                            }
-                            cover.setThresdhold((long) v);
-                        }
-                    ).allowC2S())
-                    .numbersDouble(
-                        () -> 0,
-                        () -> cover.getType().getTileEntityEnergyCapacity(cover.getTile())
-                    )
+                makeNumberField(120)
+                    .value(new LongSyncValue(cover::getThreshold, cover::setThresdhold).allowC2S())
+                    .numbersLong(() -> 0, () -> cover.getType().getTileEntityEnergyCapacity(cover.getTile()))
+                    .numberParser((expr, defaultValue) -> {
+                        MathExpressionParser.Context ctx = new MathExpressionParser.Context();
+                        ctx.setDefaultValue(defaultValue);
+                        ctx.setHundredPercent(cover.getType().getTileEntityEnergyCapacity(cover.getTile()));
+                        ctx.setNumberFormat(NumberFormat.getInstance());
+                        double result = MathExpressionParser.parse(expr, ctx);
+                        return ParseResult.success(EvaluationValue.numberValue(BigDecimal.valueOf(result)));
+                    })
                     .setFocusOnGuiOpen(true)
             )
             .paddingRight(TICK_RATE_BUTTON_SIZE);
