@@ -26,6 +26,11 @@ public class MTEBasicMachineBronzeGui extends MTEBasicMachineBaseGui<MTEBasicMac
     }
 
     @Override
+    protected boolean supportsPowerSwitch() {
+        return false;
+    }
+
+    @Override
     protected ItemSlot createChargerSlot() {
         String[] tooltipKeys = new String[2];
         if (properties.useSpecialSlot) {
