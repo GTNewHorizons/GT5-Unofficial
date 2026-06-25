@@ -2,15 +2,20 @@ package gregtech.common.gui.modularui.cover;
 
 import static gregtech.api.modularui2.GTGuiTextures.OVERLAY_BUTTON_CYCLIC;
 
-import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
-import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
+import java.math.BigDecimal;
+import java.text.NumberFormat;
+
 import org.jetbrains.annotations.NotNull;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
+import com.cleanroommc.modularui.utils.ParseResult;
 import com.cleanroommc.modularui.value.sync.EnumSyncValue;
+import com.cleanroommc.modularui.value.sync.LongSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.CycleButtonWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
+import com.ezylang.evalex.data.EvaluationValue;
+import com.gtnewhorizon.gtnhlib.util.parsing.MathExpressionParser;
 
 import gregtech.api.modularui2.CoverGuiData;
 import gregtech.common.covers.CoverEUMeter;
@@ -56,21 +61,23 @@ public class CoverEUMeterGui extends CoverBaseGui<CoverEUMeter> {
     }
 
     private @NotNull Flow makeEnergyThresholdRow() {
-        return makeNamedColumn(IKey.lang("gt.interact.desc.EnergyThreshold"))
-            .child(
-                makeNumberField(120)
-                    .value(new LongSyncValue(cover::getThreshold, cover::setThresdhold).allowC2S())
-                    .numbersLong(() -> 0, () -> cover.getType().getTileEntityEnergyCapacity(cover.getTile()))
-                    .numberParser((expr, defaultValue) -> {
-                        MathExpressionParser.Context ctx = new MathExpressionParser.Context();
-                        ctx.setDefaultValue(defaultValue);
-                        ctx.setHundredPercent(cover.getType().getTileEntityEnergyCapacity(cover.getTile()));
-                        ctx.setNumberFormat(NumberFormat.getInstance());
-                        double result = MathExpressionParser.parse(expr, ctx);
-                        return ParseResult.success(EvaluationValue.numberValue(BigDecimal.valueOf(result)));
-                    })
-                    .setFocusOnGuiOpen(true)
-            )
+        return makeNamedColumn(IKey.lang("gt.interact.desc.EnergyThreshold")).child(
+            makeNumberField(120).value(new LongSyncValue(cover::getThreshold, cover::setThresdhold).allowC2S())
+                .numbersLong(
+                    () -> 0,
+                    () -> cover.getType()
+                        .getTileEntityEnergyCapacity(cover.getTile()))
+                .numberParser((expr, defaultValue) -> {
+                    MathExpressionParser.Context ctx = new MathExpressionParser.Context();
+                    ctx.setDefaultValue(defaultValue);
+                    ctx.setHundredPercent(
+                        cover.getType()
+                            .getTileEntityEnergyCapacity(cover.getTile()));
+                    ctx.setNumberFormat(NumberFormat.getInstance());
+                    double result = MathExpressionParser.parse(expr, ctx);
+                    return ParseResult.success(EvaluationValue.numberValue(BigDecimal.valueOf(result)));
+                })
+                .setFocusOnGuiOpen(true))
             .paddingRight(TICK_RATE_BUTTON_SIZE);
     }
 }
