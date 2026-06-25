@@ -2,6 +2,7 @@ package gregtech.api.structure.error;
 
 import java.io.IOException;
 
+import com.cleanroommc.modularui.utils.Alignment;
 import net.minecraft.network.PacketBuffer;
 
 import com.cleanroommc.modularui.api.widget.IWidget;
@@ -34,6 +35,7 @@ public record TranslatableStructureError(TranslatableText message) implements St
     public IWidget createWidget(MTEMultiBlockBaseGui<?> gui) {
         return message.toIKey()
             .color(TEXT_COLOR)
+            .alignment(Alignment.CenterLeft)
             .asWidget();
     }
 

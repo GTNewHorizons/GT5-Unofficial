@@ -2,6 +2,7 @@ package gregtech.api.structure.error;
 
 import java.util.function.Supplier;
 
+import com.cleanroommc.modularui.utils.Alignment;
 import net.minecraft.network.PacketBuffer;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
@@ -23,6 +24,7 @@ public record SingletonStructureError(StructureErrorId id, String langKey, Suppl
             langKey,
             () -> IKey.lang(langKey)
                 .color(TEXT_COLOR)
+                .alignment(Alignment.CenterLeft)
                 .asWidget());
     }
 
