@@ -165,7 +165,7 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase implemen
                 () -> 0,
                 this::getParallels);
 
-            List<Parameter<?>> parameters = new ArrayList<>();
+            List<Parameter<?, ?>> parameters = new ArrayList<>();
             parameters.add(planetTypeParameters[i]);
             parameters.add(gasTypeParameters[i]);
             parameters.add(parallelParameters[i]);
@@ -192,8 +192,8 @@ public abstract class TileEntityModulePump extends TileEntityModuleBase implemen
     }
 
     @Override
-    public List<Parameter<?>> getParameters() {
-        List<Parameter<?>> parameters = new ArrayList<>();
+    public List<Parameter<?, ?>> getParameters() {
+        List<Parameter<?, ?>> parameters = new ArrayList<>();
 
         parameters.add(batchParameter);
         parameters.addAll(Arrays.asList(recipeParameters));
