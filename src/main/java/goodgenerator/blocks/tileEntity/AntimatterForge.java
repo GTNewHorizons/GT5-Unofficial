@@ -796,6 +796,8 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setBoolean("canRender", this.canRender);
+        aNBT.setLong("rollingCost", this.rollingCost);
+        aNBT.setFloat("currentMagneticModifier", this.modifiers[MAGNETIC_ID]);
     }
 
     @Override
@@ -803,6 +805,12 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         super.loadNBTData(aNBT);
         if (aNBT.hasKey("canRender")) {
             this.canRender = aNBT.getBoolean("canRender");
+        }
+        if (aNBT.hasKey("rollingCost")) {
+            this.rollingCost = aNBT.getLong("rollingCost");
+        }
+        if (aNBT.hasKey("currentMagneticModifier")) {
+            this.modifiers[MAGNETIC_ID] = aNBT.getFloat("currentMagneticModifier");
         }
     }
 
