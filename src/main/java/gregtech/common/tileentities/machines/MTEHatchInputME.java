@@ -419,6 +419,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
             IAEFluidStack result;
             if (doDrain) {
                 result = Platform.poweredExtraction(energy, sg, request, getRequestSource());
+                updateAllInformationSlots();
             } else {
                 result = sg.extractItems(request, Actionable.SIMULATE, getRequestSource());
             }

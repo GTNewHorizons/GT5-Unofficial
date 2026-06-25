@@ -347,7 +347,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
         DynamicSyncHandler errorSyncer = new DynamicSyncHandler().widgetProvider((syncManager1, packet) -> {
             Flow columns = Flow.column()
                 .coverChildrenHeight(0)
-                .crossAxisAlignment(Alignment.CrossAxis.START)
+                .mainAxisAlignment(MainAxis.CENTER)
                 .childPadding(1);
 
             for (StructureError error : errors.getValue()) {
