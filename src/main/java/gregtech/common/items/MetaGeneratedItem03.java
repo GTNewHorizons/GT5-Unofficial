@@ -2148,6 +2148,7 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
         GTOreDictUnificator.set(OrePrefixes.componentCircuit, Materials.Inductor, ItemList.Circuit_Parts_Coil.get(1L));
         GTOreDictUnificator
             .set(OrePrefixes.componentCircuit, Materials.Capacitor, ItemList.Circuit_Parts_Capacitor.get(1L));
+        GTOreDictUnificator.set(OrePrefixes.plateAlloy, Materials.HV, ItemList.Mixed_Alloy_Plate.get(1L));
 
         GTOreDictUnificator.addAssociation(
             OrePrefixes.componentCircuit,
