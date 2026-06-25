@@ -5,6 +5,7 @@ import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.fo
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.gui.ScaledResolution;
@@ -19,6 +20,8 @@ import org.lwjgl.opengl.GL11;
 
 import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
 
+import detrav.client.DetravOreMarker;
+import detrav.client.DetravOreMarkerRenderer;
 import detrav.gui.textures.DetravMapTexture;
 import detrav.items.DetravMetaGeneratedTool01;
 import gregtech.api.util.GTUtility;
@@ -56,6 +59,7 @@ public class DetravScannerGUI extends GuiScreen {
     private String searchText = "";
 
     private static final ResourceLocation back = new ResourceLocation("gregtech:textures/gui/propick.png");
+    private static final ResourceLocation CLICK_SOUND = new ResourceLocation("gui.button.press");
 
     public DetravScannerGUI() {
 
@@ -149,6 +153,68 @@ public class DetravScannerGUI extends GuiScreen {
         if (searchField != null) searchField.mouseClicked(mx, my, btn);
     }
 
+    private boolean wasRightDown = false;
+
+    private void pollMarkerClick(int x, int y) {
+        boolean down = Mouse.isButtonDown(1);
+        if (down && !wasRightDown) tryToggleMarker(x, y);
+        wasRightDown = down;
+    }
+
+    // how far (in blocks/pixels) around the cursor to look for an ore
+    private static final int ORE_SEARCH_RADIUS = 5;
+    private int nearestOreX, nearestOreZ;
+
+    private boolean findNearestOre(int mx, int my) {
+        if (map == null) return false;
+
+        int bx = mx - mvX + panX;
+        int bz = my - mvY + panY;
+
+        int bestDist = Integer.MAX_VALUE;
+        boolean found = false;
+        for (int dz = -ORE_SEARCH_RADIUS; dz <= ORE_SEARCH_RADIUS; dz++) {
+            for (int dx = -ORE_SEARCH_RADIUS; dx <= ORE_SEARCH_RADIUS; dx++) {
+                int cx = bx + dx, cz = bz + dz;
+                if (map.getTopOreName(cx, cz) == null) continue;
+                int d = dx * dx + dz * dz;
+                if (d < bestDist) {
+                    bestDist = d;
+                    nearestOreX = cx;
+                    nearestOreZ = cz;
+                    found = true;
+                }
+            }
+        }
+        return found;
+    }
+
+    /**
+     * Right-click on an ore in the map drops a temporary in-world marker at that ore's location.
+     * Right-clicking the same ore again removes it.
+     */
+    private void tryToggleMarker(int mx, int my) {
+        if (map == null || !inViewport(mx, my)) return;
+        if (map.packet.ptype != DetravMetaGeneratedTool01.MODE_BIG_ORES
+            && map.packet.ptype != DetravMetaGeneratedTool01.MODE_ALL_ORES) return;
+        if (!findNearestOre(mx, my)) return;
+
+        int worldX = nearestOreX + (map.packet.chunkX - map.packet.size) * 16;
+        int worldZ = nearestOreZ + (map.packet.chunkZ - map.packet.size) * 16;
+
+        DetravOreMarkerRenderer.toggleMarker(
+            mc.thePlayer.dimension,
+            worldX,
+            map.getTopOreY(nearestOreX, nearestOreZ),
+            worldZ,
+            map.getTopOreName(nearestOreX, nearestOreZ),
+            map.getTopOreColor(nearestOreX, nearestOreZ),
+            map.getTopOreMaterialName(nearestOreX, nearestOreZ));
+
+        mc.getSoundHandler()
+            .playSound(PositionedSoundRecord.func_147674_a(CLICK_SOUND, 1.0F));
+    }
+
     /** Polls the mouse to pan the map or drag its scrollbars. */
     private void updateMapDrag(int x, int y) {
         boolean down = Mouse.isButtonDown(0);
@@ -223,6 +289,7 @@ public class DetravScannerGUI extends GuiScreen {
         if (map == null || oresList == null) return;
 
         updateMapDrag(x, y);
+        pollMarkerClick(x, y);
 
         // grey panel behind the map and the list
         drawRect(aX, aY, aX + mapW + listW, aY + mapH, 0xFFC6C6C6);
@@ -238,6 +305,7 @@ public class DetravScannerGUI extends GuiScreen {
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
         map.draw(mvX - panX, mvY - panY);
         drawPlayerDirectionMarker();
+        drawMarkerOverlays();
 
         GL11.glDisable(GL11.GL_SCISSOR_TEST);
 
@@ -303,20 +371,20 @@ public class DetravScannerGUI extends GuiScreen {
 
         if (map.packet.ptype == DetravMetaGeneratedTool01.MODE_BIG_ORES
             || map.packet.ptype == DetravMetaGeneratedTool01.MODE_ALL_ORES) {
-            int bx = x - mvX + panX;
-            int bz = y - mvY + panY;
-
-            String name = map.getTopOreName(bx, bz);
-            if (name != null) {
+            if (findNearestOre(x, y)) {
+                int bx = nearestOreX, bz = nearestOreZ;
                 List<String> info = new ArrayList<>();
                 int worldX = bx + (map.packet.chunkX - map.packet.size) * 16;
                 int worldZ = bz + (map.packet.chunkZ - map.packet.size) * 16;
 
-                info.add(name);
+                info.add(map.getTopOreName(bx, bz));
                 info.add(StatCollector.translateToLocalFormatted("gui.detrav.scanner.tooltip.ore_pos", worldX, worldZ));
                 info.add(
                     StatCollector
                         .translateToLocalFormatted("gui.detrav.scanner.tooltip.ore_depth", map.getTopOreY(bx, bz)));
+                info.add(
+                    EnumChatFormatting.DARK_GRAY
+                        + StatCollector.translateToLocal("gui.detrav.scanner.tooltip.mark_hint"));
                 func_146283_a(info, x, y);
             }
         } else if (map.packet.ptype == DetravMetaGeneratedTool01.MODE_FLUIDS) {
@@ -332,10 +400,13 @@ public class DetravScannerGUI extends GuiScreen {
                 if (objectId != -1 && amount > 0) {
                     var object = map.packet.objects.get(objectId);
 
-                    info.add(StatCollector.translateToLocal("gui.detrav.scanner.tooltip.fluid_name") + object.left());
                     info.add(
-                        StatCollector.translateToLocal("gui.detrav.scanner.tooltip.fluid_amount") + formatNumber(amount)
-                            + " L");
+                        StatCollector
+                            .translateToLocalFormatted("gui.detrav.scanner.tooltip.fluid_name", object.left()));
+                    info.add(
+                        StatCollector.translateToLocalFormatted(
+                            "gui.detrav.scanner.tooltip.fluid_amount",
+                            formatNumber(amount)));
                 } else {
                     info.add(StatCollector.translateToLocal("gui.detrav.scanner.tooltip.no_fluid"));
                 }
@@ -399,6 +470,37 @@ public class DetravScannerGUI extends GuiScreen {
         if (playerI < 0 || playerJ < 0 || playerI >= map.width || playerJ >= map.height) return;
 
         drawPlayerHeading(mvX - panX + playerI, mvY - panY + playerJ, mc.thePlayer.rotationYaw);
+    }
+
+    /** Outlines the ores that currently have a temporary marker. */
+    private void drawMarkerOverlays() {
+        if (map.packet.ptype != DetravMetaGeneratedTool01.MODE_BIG_ORES
+            && map.packet.ptype != DetravMetaGeneratedTool01.MODE_ALL_ORES) return;
+
+        int dim = mc.thePlayer.dimension;
+        int originX = (map.packet.chunkX - map.packet.size) * 16;
+        int originZ = (map.packet.chunkZ - map.packet.size) * 16;
+
+        for (DetravOreMarker m : DetravOreMarkerRenderer.getMarkers()) {
+            if (m.dim != dim) continue;
+
+            int cellX = m.x - originX;
+            int cellZ = m.z - originZ;
+            if (cellX < 0 || cellZ < 0 || cellX >= map.width || cellZ >= map.height) continue;
+
+            int sx = mvX - panX + cellX;
+            int sy = mvY - panY + cellZ;
+
+            drawHollowRect(sx - 2, sy - 2, 5, 0xFF000000);
+            drawHollowRect(sx - 1, sy - 1, 3, 0xFFFFD700);
+        }
+    }
+
+    private void drawHollowRect(int x, int y, int side, int color) {
+        drawRect(x, y, x + side, y + 1, color); // top
+        drawRect(x, y + side - 1, x + side, y + side, color); // bottom
+        drawRect(x, y + 1, x + 1, y + side - 1, color); // left
+        drawRect(x + side - 1, y + 1, x + side, y + side - 1, color); // right
     }
 
     private void drawFramePiece(int x, int y, int u, int v, int w, int h) {

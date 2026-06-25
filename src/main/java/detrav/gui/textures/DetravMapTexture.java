@@ -198,6 +198,25 @@ public class DetravMapTexture extends AbstractTexture {
         return topY[x + z * bs];
     }
 
+    /** ARGB colour of the topmost ore drawn at the given block column, or 0 if none. */
+    public int getTopOreColor(int x, int z) {
+        int bs = packet.getSize();
+        if (topId == null || x < 0 || z < 0 || x >= bs || z >= bs) return 0;
+        short id = topId[x + z * bs];
+        if (id < 0) return 0;
+        var object = packet.objects.get(id);
+        return object == null ? 0 : object.rightInt();
+    }
+
+    /** Ore material internal name of the topmost ore at the given block column, or empty string. */
+    public String getTopOreMaterialName(int x, int z) {
+        int bs = packet.getSize();
+        if (topId == null || x < 0 || z < 0 || x >= bs || z >= bs) return "";
+        short id = topId[x + z * bs];
+        if (id < 0) return "";
+        return packet.oreMaterialNames.getOrDefault(id, "");
+    }
+
     @Override
     public void loadTexture(IResourceManager resourceManager) {
         this.deleteGlTexture();
