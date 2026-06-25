@@ -2,10 +2,10 @@ package gregtech.api.structure.error;
 
 import java.io.IOException;
 
-import com.cleanroommc.modularui.utils.Alignment;
 import net.minecraft.network.PacketBuffer;
 
 import com.cleanroommc.modularui.api.widget.IWidget;
+import com.cleanroommc.modularui.utils.Alignment;
 import com.github.bsideup.jabel.Desugar;
 
 import gregtech.api.enums.StructureErrorId;
