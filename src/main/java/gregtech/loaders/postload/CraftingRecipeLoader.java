@@ -764,7 +764,7 @@ public class CraftingRecipeLoader implements Runnable {
                 OrePrefixes.dust.get(Materials.Ash) });
 
         GTLog.out.println("GTMod: Adding Mixed Metal Ingot Recipes.");
-        GTModHandler.removeRecipeByOutputDelayed(ItemList.Mixed_Alloy_Ingot.get(1L));
+        GTModHandler.removeRecipeByOutputDelayed(GTModHandler.getIC2Item("mixedMetalIngot", 1L));
 
         GTModHandler.addCraftingRecipe(
             ItemList.Mixed_Alloy_Ingot.get(1L),
