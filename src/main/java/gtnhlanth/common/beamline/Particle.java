@@ -5,6 +5,7 @@ import net.minecraft.util.StatCollector;
 
 import com.cleanroommc.modularui.drawable.UITexture;
 
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.modularui2.GTGuiTextures;
 import gtnhlanth.common.item.ItemParticle;
 
@@ -116,6 +117,17 @@ public enum Particle {
 
     public String getLocalisedName() {
         return StatCollector.translateToLocal("particle." + this.name) + " (" + this.shortName + ")";
+    }
+
+    /**
+     * Encodes a {@code beamline.particle.fmt} info-data line with the particle name deferred for client-side
+     * translation, so it shows in the reader's own language rather than the server locale.
+     */
+    public String encodeInfoData() {
+        return IGregTechDeviceInformation.encode(
+            "beamline.particle.fmt",
+            IGregTechDeviceInformation.translatable("particle." + this.name),
+            this.shortName);
     }
 
     public static Particle getParticleFromId(int id) {

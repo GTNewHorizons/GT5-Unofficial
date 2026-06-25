@@ -3745,7 +3745,18 @@ GT5U.multiblock.coilLevel=Heating Coil Level
 GT5U.multiblock.preciseassemblercasing=Voltage limited by casing tier: %s
 GT5U.multiblock.runningMode=§eRunning Mode:
 GT5U.multiblock.startup=Starting up...
-GT5U.multiblock.recipesDone=Recipes Finished: §a%s
+GT5U.multiblock.recipesDone=Recipes Finished
+GT5U.multiblock.recipesDone.fmt=Recipes Finished: §a%s§r
+GT5U.multiblock.Progress.fmt.s=Progress: §a%s§r s / §e%s§r s
+GT5U.multiblock.Progress.fmt.t=Progress: §a%s§r t / §e%s§r t
+GT5U.multiblock.energy.fmt=Stored Energy: §a%s§r EU / §e%s§r EU
+GT5U.multiblock.usage.fmt=Currently uses: §c%s§r EU/t
+GT5U.multiblock.mei.fmt.2A=Max Energy Income: §e%s§r EU/t(*2A) Tier: §e%s§r
+GT5U.multiblock.mei.fmt.xA=Max Energy Income: §e%s§r EU/t(*§e%s§rA) Tier: §e%s§r
+GT5U.multiblock.mei.fmt.mega=Max Energy Income: §e%s§r EU/t(*%sA) = §e%s§r
+GT5U.machines.tier.fmt=Tier: §e%s§r
+GT5U.multiblock.pollution.fmt=Pollution reduced to: §a%s§r %%
+GT5U.multiblock.problems.efficiency.fmt=Problems: §c%s§r  Efficiency: §e%s
 
 
 GT5U.multiblock.scanner.pollution=Pollution reduced to: §a%s§r%%
@@ -7239,14 +7250,14 @@ GT5U.infodata.probably_uses=Probably uses: %s EU/t
 GT5U.infodata.parallel.current=Current Parallel: %s
 GT5U.infodata.max_energy_income_tier=Max Energy Income: %s EU/t(*2A) Tier: %s
 GT5U.infodata.problems_efficiency=Problems: %s Efficiency: %s
-GT5U.infodata.cable.failed=Failed to get Power Node info
+GT5U.infodata.cable.failed=§cFailed to get Power Node info§r
 GT5U.infodata.cable.amperage=Amperage: %s / %s A
 GT5U.infodata.cable.voltage_out=Voltage Out: %s / %s EU/t
 GT5U.infodata.cable.avg_amperage=Avg Amperage (20t): %s A
 GT5U.infodata.cable.avg_output=Avg Output (20t): %s EU/t
 
-GT5U.infodata.hatch.output=Output Hatch
-GT5U.infodata.hatch.output.fluid=Stored Fluid: %s
+GT5U.infodata.hatch.output=§9Output Hatch§r
+GT5U.infodata.hatch.output.fluid=Stored Fluid: §6%s§r
 GT5U.infodata.hatch.output.fluid.none=No Fluid
 GT5U.infodata.hatch.output.fluid.locked_to.none=Not Locked
 GT5U.infodata.hatch.output.fluid.locked_to=Locked to %s
@@ -7271,16 +7282,16 @@ GT5U.infodata.hatch.crafting_input_me.optimize_pattern=Pattern Optimization
 GT5U.infodata.hatch.crafting_input_me.optimize_pattern.enable=§7Allowed
 GT5U.infodata.hatch.crafting_input_me.optimize_pattern.disabled=§7Disabled
 GT5U.infodata.hatch.internal_inventory=Internal Inventory:
-GT5U.infodata.hatch.internal_inventory.slot=Slot %d %s
-GT5U.infodata.hatch.crafting_input_slave.linked_to=This bus is linked to the Crafting Input Buffer at %d, %d, %d.
+GT5U.infodata.hatch.internal_inventory.slot=Slot %s %s
+GT5U.infodata.hatch.crafting_input_slave.linked_to=This bus is linked to the Crafting Input Buffer at %s, %s, %s.
 GT5U.infodata.hatch.crafting_input_slave.not_linked_to=This bus is not linked to any Crafting Input Buffer.
 GT5U.infodata.hatch.crafting_input_slave.reverseRecipes=Reverse recipes mode is %s
 GT5U.infodata.hatch.output_bus_me.cache_capacity=Item cache capacity: %s
 GT5U.infodata.hatch.output_bus_me.empty=The bus has no cached items
-GT5U.infodata.hatch.output_bus_me.contains=The bus contains %d cached stacks:
+GT5U.infodata.hatch.output_bus_me.contains=The bus contains %s cached stacks:
 GT5U.infodata.hatch.output_me.cache_capacity=Fluid cache capacity: %s
 GT5U.infodata.hatch.output_me.empty=The bus has no cached fluids
-GT5U.infodata.hatch.output_me.contains=The hatch contains %d cached fluids:
+GT5U.infodata.hatch.output_me.contains=The hatch contains %s cached fluids:
 
 GT5U.infodata.juke_box.uuid=Jukebox UUID: %s
 GT5U.infodata.juke_box.uuid.unset=unset
@@ -7299,15 +7310,21 @@ GT5U.infodata.coordinates.y=Y: %s
 GT5U.infodata.coordinates.z=Z: %s
 GT5U.infodata.dimension=Dimension: %s
 GT5U.infodata.dimension.valid=Dimension Valid: %s
+GT5U.infodata.dimension.valid.yes=Dimension Valid: §aYes§r
+GT5U.infodata.dimension.valid.no=Dimension Valid: §cNo§r
 GT5U.infodata.dimension.registered=Dimension Registered: %s
+GT5U.infodata.dimension.registered.yes=Dimension Registered: §aYes§r
+GT5U.infodata.dimension.registered.no=Dimension Registered: §cNo§r
 GT5U.infodata.yes=Yes
 GT5U.infodata.no=No
 
 
 GT5U.infodata.world_accelerator.mode=Accelerator running in %s mode
-GT5U.infodata.world_accelerator.speed=Speed setting: [%d / %d]
-GT5U.infodata.world_accelerator.consuming=Consuming %d EU/t
-GT5U.infodata.world_accelerator.radius=Radius setting: [%d / %d]
+GT5U.infodata.world_accelerator.mode.blocks=Accelerator running in Blocks mode
+GT5U.infodata.world_accelerator.mode.tile_entities=Accelerator running in TileEntities mode
+GT5U.infodata.world_accelerator.speed=Speed setting: [%s / %s]
+GT5U.infodata.world_accelerator.consuming=Consuming %s EU/t
+GT5U.infodata.world_accelerator.radius=Radius setting: [%s / %s]
 
 GT5U.infodata.air_filter.has_filter=Has a filter in it: %b
 GT5U.infodata.air_filter.pollution_reduction=Pollution reduction: %s gibbl/t
@@ -7316,6 +7333,24 @@ GT5U.infodata.air_filter.remaining_cycles=remaining cycles for the filter (if pr
 GT5U.infodata.diesel_engine=Diesel Engine
 GT5U.infodata.extreme_diesel_engine=Extreme Diesel Engine
 GT5U.infodata.fusion_reactor_mk=Fusion Reactor MK
+GT5U.infodata.engine.diesel_title=§9Diesel Engine§r
+GT5U.infodata.engine.extreme_diesel_title=§9Extreme Diesel Engine§r
+GT5U.infodata.engine.maintenance.ok=§aNo Maintenance issues§r
+GT5U.infodata.engine.maintenance.needed=§cNeeds Maintenance§r
+GT5U.infodata.engine.output=Current Output: §c%s§r EU/t
+GT5U.infodata.engine.consumption=Fuel Consumption: §e%s§r L/t
+GT5U.infodata.engine.value=Fuel Value: §e%s§r EU/L
+GT5U.infodata.engine.fuel_remaining=Fuel Remaining: §6%s§r L
+GT5U.infodata.engine.efficiency=Current Efficiency: §e%s§r %%
+GT5U.infodata.ebf.heat=Heat Capacity: §a%s§r K
+GT5U.infodata.ms.multismelting=Multi Smelting: §a%s§r
+GT5U.infodata.lhe.steam=Currently uses (in steam): %s EU/t
+GT5U.infodata.lhe.superheated=Superheated: %s
+GT5U.infodata.lhe.threshold=Superheated threshold: §a%s§r
+GT5U.infodata.fusion.mk_tier=§9Fusion Reactor MK§r %s
+GT5U.infodata.fusion.req=EU Required: §c%s§rEU/t
+GT5U.infodata.fusion.plasma=Plasma Output: §e%s§rL/t
+GT5U.infodata.naquadah_refinery.coil_tier=Coil Tier: %s
 
 GT5U.infodata.large_fluid_extractor.max_parallels=Max Parallels: %s%d%s
 GT5U.infodata.large_fluid_extractor.heating_coil_speed_bonus=Heating Coil Speed Bonus: +%s%.0f%s %%
@@ -7323,11 +7358,27 @@ GT5U.infodata.large_fluid_extractor.total_speed_multiplier=Total Speed Multiplie
 GT5U.infodata.large_fluid_extractor.total_eu_multiplier=Total EU/t Multiplier: %s%.0f%s %%
 
 GT5U.infodata.large_neutralization_engine=Large Neutralization Engine
+GT5U.infodata.engine.large_neutralization_title=§9Large Neutralization Engine§r
 
+GT5U.infodata.oil_drill.title=§9Oil/Fluid Pump§r
+GT5U.infodata.oil_drill.work_area=Work Area: §a%s x %s§r Chunks
 GT5U.infodata.oil_drill.drilling_fluid=Drilling Fluid: %s
 GT5U.infodata.oil_drill.drilling_flow=Drilling flow: %s L/t
 
+GT5U.infodata.ore_drill.title=§9Multiblock Miner§r
+GT5U.infodata.ore_drill.work_area=Work Area: §a%sx%s§r Chunks
+
+GT5U.infodata.integrated_ore_factory.parallelism=Max Parallel: §9%s§r
+
+GT5U.infodata.pcb_factory.mei=Max Energy Income: §e%s§r EU/t(*%s A) Tier: §e%s§r
+GT5U.infodata.pcb_factory.parallel=Max Parallel: §a%s§r, Current Parallel: §a%s§r
+GT5U.infodata.pcb_factory.upgrades=Upgrades: %s
+
+GT5U.infodata.pcb_upgrade_base.linked_at=Linked at: %s, %s, %s
+GT5U.infodata.pcb_upgrade_base.not_linked=Not linked
+
 GT5U.infodata.critical_info=Critical Information
+GT5U.infodata.critical_info.hdr=§m------------§r §lCritical Information§r §m------------
 GT5U.infodata.plasma_forge.ticks_run_fuel_discount=Ticks run: %s, Fuel Discount: %s (Extra catalyst use: %sL)
 GT5U.infodata.plasma_forge.fuel_discount=Fuel Discount: %s
 GT5U.infodata.plasma_forge.convergence=Convergence: %s
@@ -7404,13 +7455,13 @@ GT5U.infodata.purification_unit_uv_treatment.lens_requested=Current lens request
 GT5U.infodata.purification_unit_uv_treatment.removed_too_early=Removed lens too early. Failing this recipe.
 
 GT5U.infodata.digital_chest.stored_items=Stored Items:
-GT5U.infodata.digital_chest.stored_items.empty=No Items
+GT5U.infodata.digital_chest.stored_items.empty=§6No Items§r
 GT5U.infodata.quantum_chest.name=Quantum Chest
 GT5U.infodata.super_chest.name=Super Chest
 GT5U.infodata.digital_tank.stored_fluid=Stored Fluid:
-GT5U.infodata.digital_tank.stored_fluid.empty=No Fluid
-GT5U.infodata.quantum_tank.name=Quantum Tank
-GT5U.infodata.super_tank.name=Super Tank
+GT5U.infodata.digital_tank.stored_fluid.empty=§6No Fluid§r
+GT5U.infodata.quantum_tank.name=§9Quantum Tank§r
+GT5U.infodata.super_tank.name=§9Super Tank§r
 
 GT5U.word_accelerator.mode.blocks=Blocks
 GT5U.word_accelerator.mode.tile_entities=TileEntities
