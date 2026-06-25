@@ -570,9 +570,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             .asWidget()
             .marginBottom(2)
             .fullWidth()
-            .setEnabledIf(
-                widget -> Predicates.isNonEmptyList(syncManager.getSyncHandlerFromMapKey("itemOutput:0"))
-                    || Predicates.isNonEmptyList(syncManager.getSyncHandlerFromMapKey("fluidOutput:0")));
+            .setEnabledIf(_ -> Predicates.isPositive(syncManager.getSyncHandlerFromMapKey("maxProgressTime:0")));
     }
 
     private ItemDisplayWidget createItemDrawable(ItemDisplayKey key) {

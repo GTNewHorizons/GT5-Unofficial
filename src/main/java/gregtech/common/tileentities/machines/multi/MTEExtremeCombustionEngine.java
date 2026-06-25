@@ -20,7 +20,6 @@ import java.util.List;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -36,6 +35,7 @@ import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
@@ -243,54 +243,18 @@ public class MTEExtremeCombustionEngine extends MTEExtendedPowerMultiBlockBase<M
                 .getEUCapacity();
         }
 
-        return new String[] {
-            EnumChatFormatting.BLUE + StatCollector.translateToLocal("GT5U.infodata.extreme_diesel_engine")
-                + EnumChatFormatting.RESET,
-            StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(storedEnergy)
-                + EnumChatFormatting.RESET
-                + " EU / "
-                + EnumChatFormatting.YELLOW
-                + formatNumber(maxEnergy)
-                + EnumChatFormatting.RESET
-                + " EU",
-            getIdealStatus() == getRepairStatus()
-                ? EnumChatFormatting.GREEN + StatCollector.translateToLocal("GT5U.turbine.maintenance.false")
-                    + EnumChatFormatting.RESET
-                : EnumChatFormatting.RED + StatCollector.translateToLocal("GT5U.turbine.maintenance.true")
-                    + EnumChatFormatting.RESET,
-            StatCollector.translateToLocal("GT5U.engine.output") + ": "
-                + EnumChatFormatting.RED
-                + formatNumber(lEUt * mEfficiency / 10000)
-                + EnumChatFormatting.RESET
-                + " EU/t",
-            StatCollector.translateToLocal("GT5U.engine.consumption") + ": "
-                + EnumChatFormatting.YELLOW
-                + formatNumber(fuelConsumption)
-                + EnumChatFormatting.RESET
-                + " L/t",
-            StatCollector.translateToLocal("GT5U.engine.value") + ": "
-                + EnumChatFormatting.YELLOW
-                + formatNumber(fuelValue)
-                + EnumChatFormatting.RESET
-                + " EU/L",
-            StatCollector.translateToLocal("GT5U.turbine.fuel") + ": "
-                + EnumChatFormatting.GOLD
-                + formatNumber(fuelRemaining)
-                + EnumChatFormatting.RESET
-                + " L",
-            StatCollector.translateToLocal("GT5U.engine.efficiency") + ": "
-                + EnumChatFormatting.YELLOW
-                + (mEfficiency / 100F)
-                + EnumChatFormatting.YELLOW
-                + " %",
-            StatCollector.translateToLocal("GT5U.multiblock.pollution") + ": "
-                + EnumChatFormatting.GREEN
-                + getAveragePollutionPercentage()
-                + EnumChatFormatting.RESET
-                + " %",
-            GTUtility.translate("GT5U.multiblock.recipesDone", formatNumber(recipesDone)) };
+        return new String[] { "GT5U.infodata.engine.extreme_diesel_title",
+            IGregTechDeviceInformation
+                .encode("GT5U.multiblock.energy.fmt", formatNumber(storedEnergy), formatNumber(maxEnergy)),
+            getIdealStatus() == getRepairStatus() ? "GT5U.infodata.engine.maintenance.ok"
+                : "GT5U.infodata.engine.maintenance.needed",
+            IGregTechDeviceInformation.encode("GT5U.infodata.engine.output", formatNumber(lEUt * mEfficiency / 10000)),
+            IGregTechDeviceInformation.encode("GT5U.infodata.engine.consumption", formatNumber(fuelConsumption)),
+            IGregTechDeviceInformation.encode("GT5U.infodata.engine.value", formatNumber(fuelValue)),
+            IGregTechDeviceInformation.encode("GT5U.infodata.engine.fuel_remaining", formatNumber(fuelRemaining)),
+            IGregTechDeviceInformation.encode("GT5U.infodata.engine.efficiency", mEfficiency / 100F),
+            IGregTechDeviceInformation.encode("GT5U.multiblock.pollution.fmt", getAveragePollutionPercentage()),
+            IGregTechDeviceInformation.encode("GT5U.multiblock.recipesDone.fmt", formatNumber(recipesDone)) };
     }
 
     @Override
