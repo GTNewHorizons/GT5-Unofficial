@@ -624,7 +624,7 @@ public enum CircuitComponent {
     IntegratedProcessor(
         2203,
         "gt.arrayparts.integratedprocessor",
-        () -> ItemList.Circuit_Integrated.get(1)),
+        () -> ItemList.Circuit_Processor.get(1)),
     NanoProcessor(
         2204,
         "gt.arrayparts.nanoprocessor",
@@ -802,47 +802,47 @@ public enum CircuitComponent {
     CableMV(
         2246,
         "gt.arrayparts.cablemv",
-        () -> GTOreDictUnificator.get(OrePrefixes.cableGt16, Materials.SuperconductorMV, 1)),
+        () -> GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorMV, 1)),
     CableHV(
         2247,
         "gt.arrayparts.cablehv",
-        () -> GTOreDictUnificator.get(OrePrefixes.cableGt16, Materials.SuperconductorHV, 1)),
+        () -> GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorHV, 1)),
     CableEV(
         2248,
         "gt.arrayparts.cableev",
-        () -> GTOreDictUnificator.get(OrePrefixes.cableGt16, Materials.SuperconductorEV, 1)),
+        () -> GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorEV, 1)),
     CableIV(
         2249,
         "gt.arrayparts.cableiv",
-        () -> GTOreDictUnificator.get(OrePrefixes.cableGt16, Materials.SuperconductorIV, 1)),
+        () -> GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorIV, 1)),
     CableLuV(
         2250,
         "gt.arrayparts.cableluv",
-        () -> GTOreDictUnificator.get(OrePrefixes.cableGt16, Materials.SuperconductorLuV, 1)),
+        () -> GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorLuV, 1)),
     CableZPM(
         2251,
         "gt.arrayparts.cablezpm",
-        () -> GTOreDictUnificator.get(OrePrefixes.cableGt16, Materials.SuperconductorZPM, 1)),
+        () -> GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorZPM, 1)),
     CableUV(
         2252,
         "gt.arrayparts.cableuv",
-        () -> GTOreDictUnificator.get(OrePrefixes.cableGt16, Materials.SuperconductorUV, 1)),
+        () -> GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUV, 1)),
     CableUHV(
         2253,
         "gt.arrayparts.cableuhv",
-        () -> GTOreDictUnificator.get(OrePrefixes.cableGt16, Materials.SuperconductorUHV, 1)),
+        () -> GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUHV, 1)),
     CableUEV(
         2254,
         "gt.arrayparts.cableuev",
-        () -> GTOreDictUnificator.get(OrePrefixes.cableGt16, Materials.SuperconductorUEV, 1)),
+        () -> GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUEV, 1)),
     CableUIV(
         2255,
         "gt.arrayparts.cableuiv",
-        () -> GTOreDictUnificator.get(OrePrefixes.cableGt16, Materials.SuperconductorUIV, 1)),
+        () -> GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUIV, 1)),
     CableUMV(
         2256,
         "gt.arrayparts.cableumv",
-        () -> GTOreDictUnificator.get(OrePrefixes.cableGt16, Materials.SuperconductorUMV, 1)),
+        () -> GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUMV, 1)),
     CableUXV(
         2257,
         "gt.arrayparts.cableuxv",
