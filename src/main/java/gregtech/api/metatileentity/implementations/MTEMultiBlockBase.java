@@ -1914,15 +1914,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         }
 
         if (hatch instanceof MTEHatchInput tHatch && tHatch.isValid()) {
-            if (tHatch instanceof MTEHatchInputME meHatch) {
-                meHatch.startRecipeProcessing();
-                FluidStack tFluid = meHatch.drain(ForgeDirection.UNKNOWN, fluid, doDrain);
-                meHatch.endRecipeProcessing(this);
-                return tFluid != null && tFluid.amount >= fluid.amount;
-            } else {
-                FluidStack tFluid = tHatch.drain(ForgeDirection.UNKNOWN, fluid, doDrain);
-                return tFluid != null && tFluid.amount >= fluid.amount;
-            }
+            FluidStack tFluid = tHatch.drain(ForgeDirection.UNKNOWN, fluid, doDrain);
+            return tFluid != null && tFluid.amount >= fluid.amount;
         }
 
         return false;

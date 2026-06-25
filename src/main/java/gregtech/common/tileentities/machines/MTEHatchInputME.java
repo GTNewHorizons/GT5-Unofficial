@@ -416,7 +416,12 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
                 return null;
             }
 
-            IAEFluidStack result = Platform.poweredExtraction(energy, sg, request, getRequestSource());
+            IAEFluidStack result;
+            if (doDrain) {
+                result = Platform.poweredExtraction(energy, sg, request, getRequestSource());
+            } else {
+                result = sg.extractItems(request, Actionable.SIMULATE, getRequestSource());
+            }
 
             return result == null ? null : result.getFluidStack();
         }
