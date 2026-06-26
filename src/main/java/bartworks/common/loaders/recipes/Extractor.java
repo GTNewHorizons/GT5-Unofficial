@@ -9,7 +9,6 @@ import java.util.List;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
-import bartworks.common.loaders.BioItemList;
 import bartworks.util.BWUtil;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -25,7 +24,7 @@ public class Extractor implements Runnable {
 
                 GTValues.RA.stdBuilder()
                     .itemInputs(BWUtil.setStackSize(stack, 12))
-                    .itemOutputs(BioItemList.getOther(1))
+                    .itemOutputs(ItemList.DetergentPowder.get(1))
                     .duration(25 * SECONDS)
                     .eut((int) TierEU.RECIPE_HV)
                     .addTo(extractorRecipes);
@@ -35,7 +34,7 @@ public class Extractor implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Circuit_Chip_Stemcell.get(1L))
-            .itemOutputs(BioItemList.getOther(4))
+            .itemOutputs(ItemList.PlasmaMembrane.get(1))
             .duration(25 * SECONDS)
             .eut((int) TierEU.RECIPE_LuV)
             .addTo(extractorRecipes);
