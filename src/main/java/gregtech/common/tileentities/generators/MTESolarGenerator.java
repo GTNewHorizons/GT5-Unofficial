@@ -29,8 +29,8 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 import gregtech.api.render.TextureFactory;
-import gregtech.common.gui.modularui.hatch.MTESolarGeneratorGui;
 import gregtech.api.util.GTUtility;
+import gregtech.common.gui.modularui.hatch.MTESolarGeneratorGui;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 

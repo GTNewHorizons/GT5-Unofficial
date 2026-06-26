@@ -41,7 +41,7 @@ public class MTESolarGeneratorGui extends MTETieredMachineBlockBaseGui<MTESolarG
 
         return super.createContentSection(panel, syncManager).child(mainRow)
             .child(
-                createLogo().topRel(0)
+                makeLogoWidget().topRel(0)
                     .rightRel(0));
     }
 
