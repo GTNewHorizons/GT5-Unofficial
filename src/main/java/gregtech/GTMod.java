@@ -107,7 +107,6 @@ import gregtech.crossmod.ae2.AE2Compat;
 import gregtech.crossmod.chunkapi.ClientMetaManager;
 import gregtech.crossmod.holoinventory.HoloInventory;
 import gregtech.crossmod.waila.Waila;
-import gregtech.loaders.load.BECRecipeLoader;
 import gregtech.loaders.load.FissionFuelLoader;
 import gregtech.loaders.load.FuelLoader;
 import gregtech.loaders.load.GTItemIterator;
@@ -575,7 +574,6 @@ public class GTMod {
         GTPostLoad.processToolboxBans();
 
         VoidMinerLoader.init();
-        BECRecipeLoader.run();
 
         achievements = new GTAchievements();
 
