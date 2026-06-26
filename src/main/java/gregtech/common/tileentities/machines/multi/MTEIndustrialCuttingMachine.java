@@ -504,9 +504,9 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
 
         double clipD = BLADE_HEIGHT / 2.0 - BLADE_CLIP_BOTTOM;
         CLIP_PLANE_BUFFER.clear();
-        CLIP_PLANE_BUFFER.put(0.0)
-            .put(1.0)
-            .put(0.0)
+        CLIP_PLANE_BUFFER.put(context.verticalX)
+            .put(context.verticalY)
+            .put(context.verticalZ)
             .put(clipD);
         CLIP_PLANE_BUFFER.flip();
         GL11.glClipPlane(GL11.GL_CLIP_PLANE0, CLIP_PLANE_BUFFER);
