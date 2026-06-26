@@ -74,6 +74,8 @@ public enum BioCultureEnum {
     public final ItemList culture;
     public final BioCulture bioCulture;
 
+    public static final BioCultureEnum[] VALUES = BioCultureEnum.values();
+
     BioCultureEnum(String name, int id, EnumRarity rarity, boolean breedable, BioDataEnum dna, BioDataEnum plasmid,
         Color color, ItemList culture) {
         this.name = name;
@@ -88,7 +90,7 @@ public enum BioCultureEnum {
     }
 
     public static void registerLoopkups() {
-        for (BioCultureEnum culture : BioCultureEnum.values()) {
+        for (BioCultureEnum culture : BioCultureEnum.VALUES) {
             LOOKUPS_BY_NAME.put(culture.name, culture);
             LOOKUPS_BY_BIODATA.put(culture.bioCulture, culture);
             BIO_CULTURES.add(culture.bioCulture);
@@ -96,7 +98,7 @@ public enum BioCultureEnum {
     }
 
     public static void registerAllCultures() {
-        for (BioCultureEnum culture : BioCultureEnum.values()) {
+        for (BioCultureEnum culture : BioCultureEnum.VALUES) {
             ItemStack stack = new ItemStack(BioItemList.vanillaBioLabParts, 1, ItemLabParts.PETRI_DISH);
             stack.setTagCompound(BioCulture.getNBTTagFromCulture(culture.bioCulture));
             culture.culture.set(stack);
@@ -105,7 +107,7 @@ public enum BioCultureEnum {
 
     public static Collection<ItemStack> getAllPetriDishes() {
         if (!BIO_CULTURE_STACKS.isEmpty()) return BIO_CULTURE_STACKS;
-        for (BioCultureEnum data : BioCultureEnum.values()) {
+        for (BioCultureEnum data : BioCultureEnum.VALUES) {
             BIO_CULTURE_STACKS.add(data.culture.get(1));
         }
         return BIO_CULTURE_STACKS;

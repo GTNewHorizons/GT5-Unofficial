@@ -88,7 +88,7 @@ public class AdditionalRecipes {
 
     private static void runBWRecipes() {
 
-        for (BioCultureEnum culture : BioCultureEnum.values()) {
+        for (BioCultureEnum culture : BioCultureEnum.VALUES) {
             BioData DNA = culture.dna.getBioData();
             ItemStack Detergent = ItemList.DetergentPowder.get(1);
             ItemStack DNAFlask = ItemList.EmptyDNAFlask.get(1);
@@ -164,7 +164,7 @@ public class AdditionalRecipes {
         }
 
         long energyUsageWithTransformModule = 1;
-        for (BioCultureEnum culture : BioCultureEnum.values()) {
+        for (BioCultureEnum culture : BioCultureEnum.VALUES) {
             BioData DNA = culture.dna.getBioData();
             BioData Plasmid = culture.plasmid.getBioData();
             if (BioDataEnum.NullBioData.getBioData()
