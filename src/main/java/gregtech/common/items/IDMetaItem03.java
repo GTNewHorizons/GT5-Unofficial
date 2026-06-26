@@ -268,6 +268,10 @@ public enum IDMetaItem03 {
 
     Mixed_Alloy_Ingot(340),
     Mixed_Alloy_Plate(341),
+    Carbon_Fibre(342),
+    Carbon_Mesh(343),
+    Carbon_Plate(344),
+    Iridium_Reinforced_Plate(345),
 
     Circuit_Silicon_Ingot6(721),
     Circuit_Silicon_Wafer6(722),
