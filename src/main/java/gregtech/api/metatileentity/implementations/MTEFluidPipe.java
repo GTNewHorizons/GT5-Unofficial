@@ -564,7 +564,7 @@ public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEn
         aBaseMetaTileEntity.markDirty();
         aBaseMetaTileEntity.issueTextureUpdate();
         aBaseMetaTileEntity.issueBlockUpdate();
-        aBaseMetaTileEntity.issueClientUpdate();
+        aBaseMetaTileEntity.issueTileUpdate();
 
         // Handle inventory operations unless in creative mode
         if (!aPlayer.capabilities.isCreativeMode) {

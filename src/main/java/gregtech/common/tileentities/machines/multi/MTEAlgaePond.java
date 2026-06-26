@@ -38,16 +38,16 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
-import gregtech.api.enums.VoltageIndex;
+import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
@@ -62,7 +62,8 @@ import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
-public class MTEAlgaePond extends MTEExtendedPowerMultiBlockBase<MTEAlgaePond> implements ISurvivalConstructable {
+public class MTEAlgaePond extends MTEExtendedPowerMultiBlockBase<MTEAlgaePond>
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     private static final int OFFSET_X = 1;
     private static final int OFFSET_Y = 3;
@@ -105,10 +106,7 @@ public class MTEAlgaePond extends MTEExtendedPowerMultiBlockBase<MTEAlgaePond> i
         tt.addMachineType("Algae Pond")
             .addInfo("Grows Algae!")
             .addInfo("Provide compost to boost production by one tier")
-            .addInfo("Machine tier is equal to the highest energy hatch tier, capped by glass tier")
-            .addInfo(
-                GTUtility.getColoredTierNameFromTier((byte) 12) + EnumChatFormatting.GRAY
-                    + "-glass unlocks all above energy tiers")
+            .addGlassEnergyLimitInfo()
             .addInfo("Accepts exactly 1 Energy Hatch")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 6, 10, false)
@@ -192,7 +190,7 @@ public class MTEAlgaePond extends MTEExtendedPowerMultiBlockBase<MTEAlgaePond> i
 
         if (!mEnergyHatches.isEmpty()) {
             int inputTier = (int) getInputVoltageTier();
-            if (glassTier < VoltageIndex.UMV && glassTier < inputTier) {
+            if (glassTier < inputTier) {
                 errors.add(StructureErrors.glassTierNotEnough(inputTier));
                 return;
             }
@@ -215,27 +213,20 @@ public class MTEAlgaePond extends MTEExtendedPowerMultiBlockBase<MTEAlgaePond> i
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
-        if (side == aFacing) {
-            if (aActive) return new ITexture[] { Casings.AlgaeCasing.getCasingTexture(), TextureFactory.builder()
-                .addIcon(TexturesGtBlock.oMCDAlgaePondBaseActive)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.oMCDAlgaePondBaseActiveGlow)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { Casings.AlgaeCasing.getCasingTexture(), TextureFactory.builder()
-                .addIcon(TexturesGtBlock.oMCDAlgaePondBase)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.oMCDAlgaePondBaseGlow)
-                    .extFacing()
-                    .glow()
-                    .build() };
-        }
-        return new ITexture[] { Casings.AlgaeCasing.getCasingTexture() };
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            TexturesGtBlock.oMCDAlgaePondBase,
+            TexturesGtBlock.oMCDAlgaePondBaseGlow,
+            TexturesGtBlock.oMCDAlgaePondBaseActive,
+            TexturesGtBlock.oMCDAlgaePondBaseActiveGlow);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Casings.AlgaeCasing.getCasingTexture();
     }
 
     @Override

@@ -482,7 +482,7 @@ gt.blockmachines.hatch.dataout.desc.0=Quantum Data Output for Multiblocks
 gt.blockmachines.hatch.dataout.desc.1=High speed fibre optics connector.
 gt.blockmachines.hatch.dataout.desc.2=Must be painted to work
 
-gt.blockmachines.hatch.datainass.tier.07.name=Assembly line Reception Connector
+gt.blockmachines.hatch.datainass.tier.07.name=Assembly Line Reception Connector
 gt.blockmachines.hatch.datainass.desc.0=ItemStack Data Input for Multiblocks
 gt.blockmachines.hatch.datainass.desc.1=High speed fibre optics connector.
 gt.blockmachines.hatch.datainass.desc.2=Must be painted to work
@@ -667,6 +667,7 @@ gt.blockmachines.multimachine.tm.teslaCoil.cfgo.9=Output max display
 gt.blockmachines.multimachine.tm.teslaCoil.outputVoltage=Output Voltage:
 gt.blockmachines.multimachine.tm.teslaCoil.chartButtonTooltip=Open amperage over time chart
 gt.blockmachines.multimachine.tm.teslaCoil.heatMapButtonTooltip=Open heat map
+gt.blockmachines.multimachine.tm.teslaCoil.powerPassAutomatic=Power Pass (automatic via hysteresis)
 
 gt.blockmachines.multimachine.em.switch.type=Computation Network Switch, CNS
 gt.blockmachines.multimachine.em.switch.name=Weighted Network Switch With QoS
@@ -996,7 +997,7 @@ fog.upgrade.text.10=Adds a x2 multiplier to maximum parallel.
 fog.upgrade.text.11=Unlocks the Heliofusion Exoticizer module and quark gluon plasma creation. At this point this module is not affected by any other multipliers or bonuses from other upgrades.
 fog.upgrade.text.12=Improves the fuel consumption -> heat conversion formula. Improved formula: Power Forge Heat = log_1.12(Stellar Fuel Units/sec) * 1000 + 12601, Melting Core Heat = log1.18(Stellar Fuel Units/sec) * 1000 + 12601
 fog.upgrade.text.13=Improves the formula of SA to: Multiplier = 1 + (Stellar Fuel Units/sec) / 5
-fog.upgrade.text.14=Improves the OC formula from 4/2 OCs to 4/2.3 OCs.
+fog.upgrade.text.14=Improves the OC formula from 2/4 OCs to 2.3/4 OCs.
 fog.upgrade.text.15=Allows the Heliothermal Plasma Fabricator to process multi step plasmas. Tier restriction still applies.
 fog.upgrade.text.16=Allows the Helioflare Power Forge to receive the full benefits of the Helioflux Melting Core upgrade path.
 fog.upgrade.text.17=Increases the cap of EBF heat bonuses to 30,000K.
@@ -1462,7 +1463,10 @@ tt.keyword.input=input
 tt.keyword.output=output
 tt.keyword.Status=Status
 tt.keyword.Content=Content
+tt.keyword.Content.fmt=Content: §b%s
 tt.keyword.PacketHistory=PacketHistory
+tt.keyword.PacketHistory.fmt=PacketHistory: §c%s
+tt.keyword.ID.fmt=ID: §b%s
 
 #Used when 0 Elemental Matter Stacks
 tt.keyphrase.No_Stacks=No Stacks
@@ -1972,10 +1976,17 @@ tt.infodata.multi.divisor.recipe_time.non_perfect_oc=Recipe time divisor per non
 tt.infodata.multi.currently_using=Currently using: %s EU/t
 tt.infodata.multi.capacity.heat=Heat Capacity: %s
 tt.infodata.multi.capacity.heat.effective=Effective Heat Capacity: %s
-tt.infodata.multi.min_hatch_tier.s=Min hatch tier: %s
-tt.infodata.multi.last_seconds.0.s=Last 5 seconds: %s EU/t
-tt.infodata.multi.last_seconds.1.s=Last 30 seconds: %s EU/t
-tt.infodata.multi.last_seconds.2.s=Last minute: %s EU/t
+tt.infodata.active_transformer.min_hatch_tier=Min hatch tier: %s
+tt.infodata.active_transformer.last_5s=Last 5 seconds: %s EU/t
+tt.infodata.active_transformer.last_30s=Last 30 seconds: %s EU/t
+tt.infodata.active_transformer.last_1min=Last minute: %s EU/t
+tt.infodata.research.energy_hatches.header=Energy Hatches:
+tt.infodata.research.currently_uses=Currently uses: §c%s§r EU/t at §c%s§r A
+tt.infodata.research.tier_amp=Tier Rating: §e%s§r / §a%s§r Amp Rating: §a%s§r A
+tt.infodata.research.problems_efficiency=Problems: §c%s§r Efficiency: §e%s§r %%
+tt.infodata.research.power_pass_safe_void=PowerPass: §9%s§r SafeVoid: §9%s
+tt.infodata.research.computation_available=Computation Available: §a%s§r / §e%s§r
+tt.infodata.research.computation_remaining=Computation Remaining: §a%s§r / §e%s§r
 
 ## Waila
 
@@ -1983,6 +1994,10 @@ tt.waila.multi.computation=§7Computation: §a%s
 
 ## Eye of Harmony
 tt.infodata.eoh.control_block_statistics=Control Block Statistics
+tt.infodata.eoh.control_block_statistics.header=§6§m-------------§r§6 Control Block Statistics §m-------------
+tt.infodata.eoh.internal_storage.header=§6§m-----------------§r§6 Internal Storage §m----------------
+tt.infodata.eoh.other_stats.header=§6§m-----------------§r§6 Other Stats §m-----------------
+tt.infodata.eoh.divider=§6§m-----------------------------------------------------
 tt.infodata.eoh.spacetime_compression.grade=Spacetime Compression Field Grade: %s (%s)
 tt.infodata.eoh.spacetime_compression.grade.none=Spacetime Compression Field Grade: None
 tt.infodata.eoh.time_dilation.grade=Time Dilation Field Grade: %s (%s)
@@ -1991,6 +2006,7 @@ tt.infodata.eoh.stabilisation.grade=Stabilisation Field Grade: %s (%s)
 tt.infodata.eoh.stabilisation.grade.none=Stabilisation Field Grade: None
 tt.infodata.eoh.internal_storage=Internal Storage
 tt.infodata.eoh.astral_array_fabricators=Astral Array Fabricators
+tt.infodata.eoh.astral_array_fabricators.count=§9Astral Array Fabricators§r : §c%s
 tt.infodata.eoh.other_stats=Other Stats
 tt.infodata.eoh.success_chance=Recipe Success Chance: %s
 tt.infodata.eoh.recipe_yield=Recipe Yield: %s
@@ -2059,6 +2075,9 @@ tt.spaceminer.filter.addOre=Click to add this ore to the filter
 tt.gui.tooltip.power_pass=Power Pass
 tt.gui.tooltip.safe_void=Safe Void
 tt.gui.tooltip.power_switch=Power Switch
+tt.gui.tooltip.edit_parameters=Edit Parameters
+tt.gui.tooltip.open_editor=Open Editor
+tt.gui.parameter.header=Parameters
 
 tt.gui.tooltip.plasma_module.debug_window=Debug Window
 tt.gui.tooltip.plasma_module.debug_window.multi_step=multi-step

@@ -16,6 +16,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
+import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -40,6 +41,14 @@ public class Pulverizer implements Runnable {
             .outputChances(10000, 8000)
             .duration(20 * SECONDS)
             .eut(2)
+            .addTo(maceratorRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(getIC2Item("iridiumOre", 1))
+            .itemOutputs(WerkstoffLoader.IrLeachResidue.get(OrePrefixes.dust, 1))
+            .duration(16 * TICKS)
+            .eut(4)
+            .recipeCategory(RecipeCategories.maceratorRecycling)
             .addTo(maceratorRecipes);
 
         // recycling Long Distance Pipes
@@ -133,6 +142,13 @@ public class Pulverizer implements Runnable {
             .itemInputs(new ItemStack(Items.reeds, 1))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Sugar, 1))
             .duration(2 * SECONDS + 10 * TICKS)
+            .eut(2)
+            .addTo(maceratorRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(new OreDictItemStack("cropChilipepper", 1))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Chili, 1))
+            .duration(2 * SECONDS)
             .eut(2)
             .addTo(maceratorRecipes);
 

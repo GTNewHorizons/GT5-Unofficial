@@ -55,6 +55,7 @@ public class ArmorState {
     public double charge;
 
     public int visDiscount;
+    public float manaDiscount;
     public float speedBoost, jumpBoost;
 
     public void addArmorInformation(ArmorContext context, List<String> tooltip) {
@@ -276,7 +277,10 @@ public class ArmorState {
         // noinspection unchecked
         for (NBTTagString str : (List<NBTTagString>) tag.getTagList("active", NBT.TAG_STRING).tagList) {
             try {
-                state.activeBehaviors.add(BehaviorName.valueOf(str.func_150285_a_()));
+                BehaviorName name = BehaviorName.valueOf(str.func_150285_a_());
+                if (state.behaviors.containsKey(name)) {
+                    state.activeBehaviors.add(name);
+                }
             } catch (IllegalArgumentException e) {
                 GTMod.GT_FML_LOGGER.error("Could not load active behavior: {}", str.func_150285_a_(), e);
             }

@@ -301,7 +301,7 @@ public class AdditionalRecipes {
         // Thorium/Yttrium Glass
         GTValues.RA.stdBuilder()
             .itemInputs(WerkstoffLoader.YttriumOxide.get(dustSmall, 2), WerkstoffLoader.Thorianit.get(dustSmall, 2))
-            .itemOutputs(new ItemStack(ItemRegistry.bw_glasses[0], 1, 12))
+            .itemOutputs(new ItemStack(ItemRegistry.bw_glasses[1], 1, 0))
             .fluidInputs(Materials.Glass.getMolten(1 * INGOTS))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_IV)

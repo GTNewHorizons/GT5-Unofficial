@@ -117,6 +117,9 @@ item.NtNanofibers.name=Нейтрониевые нановолокна
 item.UHTResistantMesh.name=Сетка устойчивая к ультравысоким температурам
 item.TaHfNanoparticles.name=Наночастицы тантал-гафниевого карбида
 item.NtNanoparticles.name=Наночастицы из нейтрония
+item.droneCase.name=Короностойкий корпус дрона
+item.femtocontroller.name=Фемтоконтроллер с магнитной защитой
+item.fuelPellet.name=Сверхтонкая TrNq+ радиоизомер Пеллета
 
 # Blocks
 gt.blockcasingsSE.name=Часть космического лифта
@@ -432,3 +435,16 @@ ig.asteroid.lanthanumAsteroid=Лантан
 ig.asteroid.tengamAsteroid=Тингам
 ig.asteroid.naquadahAsteroid=Наквадах
 ig.asteroid.draconicCoreRuin=Ядро Дракона
+
+# info data
+ig.infodata.hdr.operational_data=§5Рабочие данные:§r
+ig.infodata.maintenance.ok=Состояние: §aРаботает исправно§r
+ig.infodata.maintenance.problems=Состояние: §cЕсть проблемы§r
+ig.infodata.dyson_swarm.modules.fmt=Модули: §e%s§r
+ig.infodata.dyson_swarm.power_factor.fmt=Коэффициент мощности: %s
+ig.infodata.dyson_swarm.theoretical_output.fmt=Теоретическая выработка: §e%s§r EU/t
+ig.infodata.dyson_swarm.current_output.fmt=Текущая выработка: §e%s§r EU/t
+ig.infodata.dyson_swarm.computation.fmt=Требуется вычислений: §e%s§r/t
+ig.infodata.gas_siphon.depth.fmt=Глубина: §e%s§r
+ig.infodata.gas_siphon.fluid.fmt=Жидкость: §e%s§rЛ/с §9%s§r
+ig.infodata.gas_siphon.eu_required.fmt=Требуется EU/t: §e%s§r EU/t

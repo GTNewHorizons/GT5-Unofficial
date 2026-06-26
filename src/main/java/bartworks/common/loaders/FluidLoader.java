@@ -117,7 +117,6 @@ public class FluidLoader {
         if (event.getSide()
             .isClient()) {
             RendererSwitchingColorFluid.register();
-            RenderingRegistry.registerBlockHandler(new RendererGlassBlock());
         }
     }
 
