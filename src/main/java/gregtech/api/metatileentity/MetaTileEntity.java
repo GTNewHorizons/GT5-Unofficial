@@ -35,7 +35,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.SoundResource;
-import gregtech.api.enums.SteamVariant;
+import gregtech.api.enums.TieredVariant;
 import gregtech.api.gui.GUIColorOverride;
 import gregtech.api.gui.modularui.GUITextureSet;
 import gregtech.api.interfaces.ICleanroomReceiver;
@@ -312,8 +312,8 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
     /**
      * @return what type of texture does this machine use for GUI, i.e. Bronze, Steel, or Primitive
      */
-    public SteamVariant getSteamVariant() {
-        return SteamVariant.NONE;
+    public TieredVariant getTieredVariant() {
+        return TieredVariant.STANDARD;
     }
 
     /**
