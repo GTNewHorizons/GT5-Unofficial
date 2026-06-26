@@ -604,6 +604,12 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> {
 
         if (GTUtility.isServer()) {
             if (losHatch != null) {
+                // Disconnect the peer from our side. Avoid calling disconnectImpl on losHatch itself
+                // since its TE may also be unloading.
+                var connected = losHatch.getConnectedHatch();
+                if (connected != null) {
+                    connected.disconnectImpl();
+                }
                 losHatch.setOwner(null);
                 losHatch = null;
             }

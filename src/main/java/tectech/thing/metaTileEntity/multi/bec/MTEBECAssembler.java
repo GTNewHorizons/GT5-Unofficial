@@ -118,6 +118,9 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> {
     public void clearHatches() {
         super.clearHatches();
 
+        for (MTEHatchLoS hatch : this.losHatches) {
+            hatch.setOwner(null);
+        }
         this.losHatches.clear();
         this.naniteHatches.clear();
     }

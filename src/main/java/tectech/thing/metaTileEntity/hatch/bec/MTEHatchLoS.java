@@ -50,6 +50,7 @@ public class MTEHatchLoS extends MTEBaseFactoryHatch implements IMTERenderer {
 
     @Nullable
     private WeakReference<MetaTileEntity> owner;
+    private boolean ownerDirty = false;
 
     @SideOnly(Side.CLIENT)
     private boolean canRender;
@@ -114,23 +115,22 @@ public class MTEHatchLoS extends MTEBaseFactoryHatch implements IMTERenderer {
     }
 
     public boolean hasOwner() {
-        var owner = getOwner();
-
-        return owner != null && owner.isValid();
+        return getOwner() != null;
     }
 
     public MetaTileEntity getOwner() {
-        return owner != null ? owner.get() : null;
+        if (owner != null) {
+            MetaTileEntity mte = owner.get();
+            if (mte != null && mte.isValid()) return mte;
+            owner = null;
+        }
+        return null;
     }
 
     public void setOwner(MetaTileEntity owner) {
         if (getOwner() != owner) {
             this.owner = new WeakReference<>(owner);
-
-            IGregTechTileEntity igte = this.getBaseMetaTileEntity();
-            if (igte != null) {
-                igte.issueTileUpdate();
-            }
+            this.ownerDirty = true;
         }
     }
 
@@ -149,8 +149,8 @@ public class MTEHatchLoS extends MTEBaseFactoryHatch implements IMTERenderer {
             if (other != null) {
                 if (other.getBaseMetaTileEntity()
                     .getFrontFacing() == facing.getOpposite()) {
-                    // Already correctly connected — skip reconnect churn
-                    if (other == getConnectedHatch()) {
+                    // Already correctly connected - skip reconnect churn
+                    if (other == getConnectedHatch() && other.getConnectedHatch() == this) {
                         return;
                     }
 
@@ -174,7 +174,7 @@ public class MTEHatchLoS extends MTEBaseFactoryHatch implements IMTERenderer {
                     this.isRenderer = true;
                     other.isRenderer = false;
                 } else {
-                    // Hatch found but facing incompatible — clean up any stale connection
+                    // Hatch found but facing incompatible - clean up any stale connection
                     var existing = getConnectedHatch();
                     if (existing != null) {
                         this.disconnectImpl();
@@ -183,6 +183,11 @@ public class MTEHatchLoS extends MTEBaseFactoryHatch implements IMTERenderer {
                 }
 
                 return;
+            }
+
+            if (!world.blockExists(pos.getX(), pos.getY(), pos.getZ())) {
+                // Chunk not loaded - unloaded chunks report air, so stop scanning.
+                break;
             }
 
             if (world.getBlockLightOpacity(pos.getX(), pos.getY(), pos.getZ()) > 0) {
@@ -197,7 +202,10 @@ public class MTEHatchLoS extends MTEBaseFactoryHatch implements IMTERenderer {
 
         if (existing != null) {
             this.disconnectImpl();
-            existing.disconnectImpl();
+
+	    if (existing.getConnectedHatch() == this) {
+                existing.disconnectImpl();
+            }
         }
     }
 
@@ -206,9 +214,18 @@ public class MTEHatchLoS extends MTEBaseFactoryHatch implements IMTERenderer {
 
         IGregTechTileEntity igte = getBaseMetaTileEntity();
 
-        if (igte == null || igte.isDead()) return null;
+        if (igte == null || igte.isDead()) {
+            connection = null;
+            return null;
+        }
 
-        return igte.getMetaTileEntity(connection, MTEHatchLoS.class);
+        MTEHatchLoS result = igte.getMetaTileEntity(connection, MTEHatchLoS.class);
+
+        if (result == null) {
+            connection = null;
+        }
+
+        return result;
     }
 
     @Override
@@ -254,9 +271,16 @@ public class MTEHatchLoS extends MTEBaseFactoryHatch implements IMTERenderer {
     public void onPostTick(IGregTechTileEntity baseMetaTileEntity, long tick) {
         super.onPostTick(baseMetaTileEntity, tick);
 
-        // Try to reconnect every 5 seconds in case a chunk loaded or something
-        if (tick % 100 == 0 && GTUtility.isServer()) {
-            doScan();
+        if (GTUtility.isServer()) {
+            if (ownerDirty) {
+                ownerDirty = false;
+                baseMetaTileEntity.issueTileUpdate();
+            }
+
+            // Try to reconnect every 5 seconds in case a chunk loaded or something
+            if (tick % 100 == 0) {
+                doScan();
+            }
         }
     }
 
