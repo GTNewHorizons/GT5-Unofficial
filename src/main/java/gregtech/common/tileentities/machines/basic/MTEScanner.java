@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.basic;
 
+import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_BOTTOM_SCANNER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_BOTTOM_SCANNER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_BOTTOM_SCANNER_ACTIVE_GLOW;
@@ -151,6 +152,11 @@ public class MTEScanner extends MTEBasicMachine {
         if (result.isNotMet()) return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
 
         // check if oc fails
+        if (result instanceof GTScannerResult.ALScannerResult alScannerResult) {
+            if (alScannerResult.eut > V[mTier]) {
+                return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
+            }
+        }
         calculateOverclockedNess(result.eut, result.duration);
         if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1)
             return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;

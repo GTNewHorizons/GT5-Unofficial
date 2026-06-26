@@ -1,7 +1,5 @@
 package tectech.thing.metaTileEntity.multi.bec;
 
-import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.GOLD;
-import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.WHITE;
 import static gregtech.api.casing.Casings.CondensateGuidanceCoil;
 import static gregtech.api.casing.Casings.CondensateTransformativeCoil;
 import static gregtech.api.casing.Casings.ConflictInducementCasing;
@@ -37,24 +35,12 @@ import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import com.cleanroommc.modularui.api.drawable.IKey;
-import com.cleanroommc.modularui.api.widget.IWidget;
-import com.cleanroommc.modularui.screen.ModularPanel;
-import com.cleanroommc.modularui.value.sync.EnumSyncValue;
-import com.cleanroommc.modularui.value.sync.GenericSyncValue;
-import com.cleanroommc.modularui.value.sync.IntSyncValue;
-import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.widget.Widget;
-import com.cleanroommc.modularui.widgets.ListWidget;
-import com.cleanroommc.modularui.widgets.TextWidget;
 import com.github.bsideup.jabel.Desugar;
-import com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 
 import appeng.api.storage.data.IAEFluidStack;
 import appeng.util.item.AEFluidStack;
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.CondensateType;
 import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.NaniteTier;
 import gregtech.api.enums.Textures.BlockIcons;
@@ -80,12 +66,7 @@ import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.shutdown.ReasonMissingCondensate;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.api.util.shutdown.SimpleShutDownReason;
-import gregtech.api.util.tooltip.MarkdownTooltipLoader;
-import gregtech.common.gui.modularui.adapter.CondensateListAdapter;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
-import gregtech.common.gui.modularui.multiblock.base.TTMultiblockBaseGui;
-import gregtech.common.gui.modularui.widget.settings.SettingsPanel;
-import gregtech.common.modularui2.sync.NaniteTierSyncValue;
 import it.unimi.dsi.fastutil.Pair;
 import it.unimi.dsi.fastutil.ints.IntIterator;
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -93,15 +74,18 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 import tectech.mechanics.boseEinsteinCondensate.CondensateList;
 import tectech.recipe.TecTechRecipeMaps;
 import tectech.thing.CustomItemList;
+import tectech.thing.gui.bec.MTEBECIONodeGui;
 import tectech.thing.metaTileEntity.hatch.bec.MTEHatchIONodeController;
 import tectech.thing.metaTileEntity.hatch.bec.MTEHatchIONodeController.Mode;
 import tectech.thing.metaTileEntity.hatch.bec.MTEHatchLoS;
 import tectech.thing.metaTileEntity.hatch.bec.MTEHatchNaniteDetector;
 import tectech.thing.metaTileEntity.multi.base.MTEBECMultiblockBase;
+import tectech.thing.metaTileEntity.multi.base.parameter.IParametrized;
+import tectech.thing.metaTileEntity.multi.base.parameter.IntegerParameter;
 import tectech.thing.metaTileEntity.multi.base.parameter.Parameter;
 import tectech.thing.metaTileEntity.multi.structures.BECStructureDefinitions;
 
-public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> {
+public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements IParametrized {
 
     private @Nullable NaniteTier[] requiredNanites;
     private @Nullable CondensateList requiredCondensate, consumedCondensate;
@@ -114,13 +98,19 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> {
     private boolean powered;
     private NodeState state = NodeState.Idle;
 
-    private int minParallel = 1, speedDivisor = 1;
+    private IntegerParameter minParallelParameter;
+    private IntegerParameter maxParallelParameter;
+    private IntegerParameter speedDivisorParameter;
+
+    public static final String MIN_PARALLEL_PARAMETER = "minParallel";
+    public static final String MAX_PARALLEL_PARAMETER = "maxParallel";
+    public static final String SPEED_DIVISOR_PARAMETER = "speedDivisor";
 
     private final List<MTEHatchNaniteDetector> naniteDetectors = new ArrayList<>();
     private final List<MTEHatchIONodeController> controllerHatches = new ArrayList<>();
     private MTEHatchLoS losHatch;
 
-    private enum NodeState {
+    public enum NodeState {
         Idle,
         Unpowered,
         AssemblerOffline,
@@ -142,6 +132,38 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> {
 
     protected MTEBECIONode(MTEBECIONode prototype) {
         super(prototype);
+    }
+
+    public void setAvailableNanites(int availableNanites) {
+        this.availableNanites = availableNanites;
+    }
+
+    public NodeState getStateEnum() {
+        return state;
+    }
+
+    public void setState(NodeState state) {
+        this.state = state;
+    }
+
+    public void setProvidedTier(@Nullable NaniteTier providedTier) {
+        this.providedTier = providedTier;
+    }
+
+    public @Nullable CondensateList getRequiredCondensateSimple() {
+        return requiredCondensate;
+    }
+
+    public void setRequiredCondensate(@Nullable CondensateList requiredCondensate) {
+        this.requiredCondensate = requiredCondensate;
+    }
+
+    public @Nullable CondensateList getConsumedCondensateSimple() {
+        return consumedCondensate;
+    }
+
+    public void setConsumedCondensate(@Nullable CondensateList consumedCondensate) {
+        this.consumedCondensate = consumedCondensate;
     }
 
     @Override
@@ -248,7 +270,7 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> {
                 double parallels = recipe
                     .maxParallelCalculatedByInputs(MTEBECIONode.this.maxParallel, this.inputFluids, this.inputItems);
 
-                if (parallels >= minParallel) {
+                if (parallels >= minParallelParameter.getValue()) {
                     return CheckRecipeResultRegistry.SUCCESSFUL;
                 } else {
                     return NOT_ENOUGH_PARALLELS;
@@ -376,7 +398,7 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> {
         this.availableNanites = nanites;
     }
 
-    private void setRequiredTier(NaniteTier tier) {
+    public void setRequiredTier(NaniteTier tier) {
         this.requiredTier = tier;
 
         Iterator<MTEHatchNaniteDetector> iter = this.naniteDetectors.iterator();
@@ -507,7 +529,8 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> {
             return;
         }
 
-        int divisor = this.parallelRecipesInProgress * Math.max(this.slowdowns + 1, this.speedDivisor);
+        int divisor = this.parallelRecipesInProgress
+            * Math.max(this.slowdowns + 1, this.speedDivisorParameter.getValue());
 
         this.subtickCounter += availableNanites;
 
@@ -659,7 +682,7 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> {
 
     @OCMethod
     public int getMinParallel() {
-        return minParallel;
+        return minParallelParameter.getValue();
     }
 
     @OCMethod
@@ -668,8 +691,8 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> {
     }
 
     @OCMethod
-    public int getSpeedDivisor() {
-        return speedDivisor;
+    public int getManualSlowdown() {
+        return speedDivisorParameter.getValue();
     }
 
     @OCMethod
@@ -693,7 +716,7 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> {
 
     @OCMethod
     public void setMinParallel(int minParallel) {
-        this.minParallel = minParallel;
+        this.minParallelParameter.setValue(minParallel);
     }
 
     @OCMethod
@@ -703,7 +726,7 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> {
 
     @OCMethod
     public void setSpeedDivisor(int speedDivisor) {
-        this.speedDivisor = Math.max(1, speedDivisor);
+        this.speedDivisorParameter.setValue(Math.max(1, speedDivisor));
     }
 
     @Override
@@ -713,154 +736,7 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> {
 
     @Override
     protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
-        return new Gui();
-    }
-
-    private class Gui extends TTMultiblockBaseGui<MTEBECIONode> {
-
-        public Gui() {
-            super(MTEBECIONode.this);
-        }
-
-        @Override
-        protected ListWidget<IWidget, ?> createTerminalTextWidget(PanelSyncManager syncManager, ModularPanel parent) {
-            syncManager
-                .syncValue("availableNanites", new IntSyncValue(() -> availableNanites, i -> availableNanites = i));
-            syncManager.syncValue("state", new EnumSyncValue<>(NodeState.class, () -> state, s -> state = s));
-            syncManager.syncValue("providedTier", new NaniteTierSyncValue(() -> providedTier, t -> providedTier = t));
-            syncManager.syncValue("requiredTier", new NaniteTierSyncValue(() -> requiredTier, t -> requiredTier = t));
-
-            syncManager.syncValue(
-                "requiredCondensate",
-                GenericSyncValue.builder(CondensateList.class)
-                    .getter(() -> requiredCondensate)
-                    .setter(c -> requiredCondensate = c)
-                    .adapter(new CondensateListAdapter())
-                    .build());
-
-            syncManager.syncValue(
-                "consumedCondensate",
-                GenericSyncValue.builder(CondensateList.class)
-                    .getter(() -> consumedCondensate)
-                    .setter(c -> consumedCondensate = c)
-                    .adapter(new CondensateListAdapter())
-                    .build());
-
-            TextWidget<?> contentsWidget = IKey.dynamic(() -> {
-                StringBuilder ret = new StringBuilder();
-
-                ret.append(
-                    translate("GT5U.gui.text.ionode_status", translate("GT5U.gui.text.ionode_status." + state.name())));
-                ret.append("\n");
-
-                ret.append(
-                    translate(
-                        "GT5U.gui.text.provided_nanite",
-                        providedTier == null ? translate("GT5U.gui.text.nil")
-                            : translate("GT5U.gui.text.nanite_desc", availableNanites, providedTier.describe())));
-                ret.append("\n");
-
-                ret.append(
-                    translate(
-                        "GT5U.gui.text.required_nanite",
-                        requiredTier == null ? translate("GT5U.gui.text.nil")
-                            : GOLD + requiredTier.describe() + WHITE));
-                ret.append("\n");
-
-                boolean hasAny = false;
-
-                ret.append(translate("GT5U.gui.text.required_condensate"));
-                ret.append("\n");
-
-                if (requiredCondensate != null && consumedCondensate != null && mMaxProgresstime > 0) {
-                    for (var e : requiredCondensate.object2LongEntrySet()) {
-                        hasAny = true;
-
-                        long consumed = consumedCondensate.getLong(e.getKey());
-
-                        ret.append(
-                            translate(
-                                "GT5U.gui.text.remaining_condensate",
-                                CondensateType.getCondensateName(e.getKey()),
-                                NumberFormatUtil.formatFluid(consumed),
-                                NumberFormatUtil.formatFluid(e.getLongValue())));
-                    }
-                }
-
-                if (!hasAny) {
-                    ret.append(translate("GT5U.gui.text.nil"));
-                }
-
-                return ret.toString();
-            })
-                .asWidget()
-                .widthRel(1);
-
-            return super.createTerminalTextWidget(syncManager, parent).child(contentsWidget);
-        }
-
-        @Override
-        protected boolean isParametrized() {
-            return true;
-        }
-
-        @Override
-        public boolean showMaxParallelRow() {
-            // Handled by custom parallel system.
-            // It's less confusing to put the existing max parallel option in the parameters window.
-            return false;
-        }
-
-        @Override
-        protected boolean showOutputRates() {
-            return false;
-        }
-
-        @Override
-        protected Widget<?> getParameterEditor(ModularPanel panel, PanelSyncManager syncManager,
-            List<Parameter<?>> parameters, boolean isRoot, String prefix) {
-            return SettingsPanel.builder()
-                .setDividerPosition(75)
-                .addHeader(IKey.lang("GT5U.gui.text.bec-parameters"))
-                .addIntEditor(
-                    IKey.lang("GT5U.gui.text.bec-min-parallels"),
-                    () -> minParallel,
-                    f -> minParallel = f,
-                    (panel2, sync, widget) -> {
-                        widget.numbersInt(1, Integer.MAX_VALUE);
-                        widget.tooltip(
-                            t -> t.addStringLines(
-                                MarkdownTooltipLoader.STANDARD.loadStandardPath(
-                                    new ResourceLocation("gregtech", "bec-ionode/min-parallels"),
-                                    Collections.emptyMap())));
-                    })
-                .addIntEditor(
-                    IKey.lang("GT5U.gui.text.bec-max-parallels"),
-                    () -> maxParallel,
-                    f -> maxParallel = f,
-                    (panel2, sync, widget) -> {
-                        widget.numbersInt(1, Integer.MAX_VALUE);
-                        widget.tooltip(
-                            t -> t.addStringLines(
-                                MarkdownTooltipLoader.STANDARD.loadStandardPath(
-                                    new ResourceLocation("gregtech", "bec-ionode/max-parallels"),
-                                    Collections.emptyMap())));
-                    })
-                .addIntEditor(
-                    IKey.lang("GT5U.gui.text.bec-speed-divisor"),
-                    () -> speedDivisor,
-                    i -> speedDivisor = i,
-                    (panel2, sync, widget) -> {
-                        widget.numbersInt(1, Integer.MAX_VALUE);
-                        widget.tooltip(
-                            t -> t.addStringLines(
-                                MarkdownTooltipLoader.STANDARD.loadStandardPath(
-                                    new ResourceLocation("gregtech", "bec-ionode/speed-divisor"),
-                                    Collections.emptyMap())));
-                    })
-                .build(panel, syncManager)
-                .size(150, 90);
-        }
+        return new MTEBECIONodeGui(this);
     }
 
     @Override
@@ -921,10 +797,6 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> {
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
 
-        aNBT.setInteger("minParallels", minParallel);
-        aNBT.setInteger("maxParallels", maxParallel);
-        aNBT.setInteger("speedDivisor", speedDivisor);
-
         if (requiredNanites != null) {
             aNBT.setInteger("naniteCount", requiredNanites.length);
 
@@ -959,10 +831,6 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> {
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-
-        minParallel = aNBT.getInteger("minParallels");
-        maxParallel = aNBT.getInteger("maxParallels");
-        speedDivisor = aNBT.getInteger("speedDivisor");
 
         int count = aNBT.getInteger("naniteCount");
 
@@ -1166,5 +1034,46 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> {
                 }
             };
         }
+    }
+
+    @Override
+    public void initParameters() {
+        minParallelParameter = new IntegerParameter(
+            1,
+            "GT5U.gui.text.bec-min-parallels",
+            MIN_PARALLEL_PARAMETER,
+            () -> 1,
+            () -> Integer.MAX_VALUE);
+        maxParallelParameter = new IntegerParameter(
+            maxParallel,
+            "GT5U.gui.text.bec-max-parallels",
+            MAX_PARALLEL_PARAMETER,
+            () -> 1,
+            () -> Integer.MAX_VALUE) {
+
+            @Override
+            public Integer getValue() {
+                return getMaxParallel();
+            }
+
+            @Override
+            public void setValue(Integer value) {
+                setMaxParallel(value);
+            }
+        };
+        speedDivisorParameter = new IntegerParameter(
+            1,
+            "GT5U.gui.text.bec-speed-divisor",
+            SPEED_DIVISOR_PARAMETER,
+            () -> 1,
+            () -> Integer.MAX_VALUE);
+    }
+
+    @Override
+    public void loadLegacyParameters(NBTTagCompound nbt) {}
+
+    @Override
+    public List<Parameter<?, ?>> getParameters() {
+        return List.of(minParallelParameter, maxParallelParameter, speedDivisorParameter);
     }
 }

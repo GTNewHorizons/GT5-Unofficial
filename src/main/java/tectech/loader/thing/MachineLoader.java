@@ -2055,7 +2055,7 @@ public class MachineLoader implements Runnable {
             new MTEHatchDataItemsInput(
                 AssemblylineSlaveConnector.ID,
                 "hatch.datainass.tier.07",
-                "Assembly line Reception Connector",
+                "Assembly Line Reception Connector",
                 7).getStackForm(1L));
         dataOutAss_Hatch.set(
             new MTEHatchDataItemsOutput(
@@ -2079,7 +2079,7 @@ public class MachineLoader implements Runnable {
             new MTEHatchWirelessDataItemsInput(
                 WirelessAssemblylineSlaveConnector.ID,
                 "hatch.datainass.wireless.tier.12",
-                "Wireless Assembly line Reception Connector",
+                "Wireless Assembly Line Reception Connector",
                 10).getStackForm(1L));
         dataOutAss_Wireless_Hatch.set(
             new MTEHatchWirelessDataItemsOutput(

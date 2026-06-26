@@ -32,7 +32,7 @@ public class FoundryData {
 
     public boolean UIVRecipesEnabled = false;
     public boolean hypercoolerPresent = false;
-    public boolean tdsPresent = false;
+    public boolean universalCollapserPresent = false;
     public boolean effOCPresent = false;
     public boolean allowEternity = false;
 
@@ -55,7 +55,7 @@ public class FoundryData {
 
         hypercoolerPresent = false;
         UIVRecipesEnabled = false;
-        tdsPresent = false;
+        universalCollapserPresent = false;
         effOCPresent = false;
         allowEternity = false;
         extraOverclocks = 0;
@@ -86,8 +86,8 @@ public class FoundryData {
     private void calculatePairings(FoundryModule[] modules) {
         if (ArrayUtils.contains(modules, FoundryModule.STREAMLINED_CASTERS)
             && ArrayUtils.contains(modules, FoundryModule.EXTRA_CASTING_BASINS)) {
-            speedAdditive += 0.75F;
-            parallelScaleAdditive += 6;
+            speedAdditive += 0.8F;
+            parallelScaleAdditive += 8;
             isProductionPairPresent = true;
         }
 
@@ -114,7 +114,7 @@ public class FoundryData {
             speedAdditive += (0.75F * numHelio);
             euEffAdditive -= (0.1F * numHelio);
             if (numHelio >= 3) {
-                ocFactorAdditive += 0.1F;
+                ocFactorAdditive += 0.08F;
                 parallelScaleAdditive += (6 * numHelio);
             }
             if (numHelio == 4) {
@@ -156,7 +156,7 @@ public class FoundryData {
         }
         if (moduleToAdd == FoundryModule.UNIVERSAL_COLLAPSER) {
             checkSolidifierModules();
-            if (tdsPresent) return;
+            if (universalCollapserPresent) return;
         }
         if (moduleToAdd == FoundryModule.EFFICIENT_OC) {
             checkSolidifierModules();
