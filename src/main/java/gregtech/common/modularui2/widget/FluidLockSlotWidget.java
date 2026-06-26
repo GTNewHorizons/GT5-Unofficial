@@ -73,9 +73,12 @@ public class FluidLockSlotWidget extends FluidSlot implements IFluidTank {
 
     @Override
     public int fill(FluidStack fluidStack, boolean doFill) {
-        // null check for fluidStack?
         Fluid fluid = fluidStack.getFluid();
-        if (doFill && machine.acceptsFluidLock(fluid)) machine.setLockedFluid(fluid);
+        if (doFill && machine.acceptsFluidLock(fluid)) {
+            machine.setLockedFluid(fluid);
+            machine.lockFluid(true);
+        }
+
         return 1;
     }
 
@@ -83,6 +86,7 @@ public class FluidLockSlotWidget extends FluidSlot implements IFluidTank {
     public FluidStack drain(int maxDrain, boolean doDrain) {
         if (doDrain) {
             machine.setLockedFluid(null);
+            machine.lockFluid(false);
         }
 
         return null;

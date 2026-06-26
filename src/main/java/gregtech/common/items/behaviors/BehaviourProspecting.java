@@ -63,7 +63,6 @@ public class BehaviourProspecting extends BehaviourNone {
 
         IOreMaterial mat = OreManager.getMaterial(aBlock, aMeta);
         if (mat != null) {
-            // TODO: localize the `mat.getLocalizedName()`
             GTUtility.sendChatTrans(aPlayer, "GT5U.chat.behaviour.prospecting.ore", mat.getLocalizedName());
             GTUtility.sendSoundToPlayers(aWorld, SoundResource.RANDOM_ANVIL_USE, 1.0F, -1.0F, hitX, hitY, hitZ);
             return true;
@@ -72,8 +71,7 @@ public class BehaviourProspecting extends BehaviourNone {
         Materials oreMat = getOreMaterial(aBlock, aMeta);
 
         if (oreMat != null) {
-            // TODO: localize the `oreMat.mDefaultLocalName`
-            GTUtility.sendChatTrans(aPlayer, "GT5U.chat.behaviour.prospecting.ore", oreMat.mDefaultLocalName);
+            GTUtility.sendChatTrans(aPlayer, "GT5U.chat.behaviour.prospecting.ore", oreMat.getLocalizedName());
             GTUtility.sendSoundToPlayers(aWorld, SoundResource.RANDOM_ANVIL_USE, 1.0F, -1.0F, hitX, hitY, hitZ);
             return true;
         }
@@ -121,7 +119,6 @@ public class BehaviourProspecting extends BehaviourNone {
 
                 mat = OreManager.getMaterial(tBlock, tMeta);
                 if (mat != null) {
-                    // TODO: localize the `mat.getLocalizedName()`
                     GTUtility
                         .sendChatTrans(aPlayer, "GT5U.chat.behaviour.prospecting.traces_of", mat.getLocalizedName());
                     return true;
@@ -130,9 +127,8 @@ public class BehaviourProspecting extends BehaviourNone {
                 oreMat = getOreMaterial(tBlock, tMeta);
 
                 if (oreMat != null) {
-                    // TODO: localize the `oreMat.mDefaultLocalName`
                     GTUtility
-                        .sendChatTrans(aPlayer, "GT5U.chat.behaviour.prospecting.traces_of", oreMat.mDefaultLocalName);
+                        .sendChatTrans(aPlayer, "GT5U.chat.behaviour.prospecting.traces_of", oreMat.getLocalizedName());
                     return true;
                 }
             }

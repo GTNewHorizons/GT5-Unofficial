@@ -3,11 +3,14 @@ package gregtech.api.metatileentity.implementations;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.mockito.Answers;
 import org.mockito.Mockito;
+
+import gregtech.api.structure.error.StructureError;
 
 /**
  * Tests some functions of {@link MTEMultiBlockBase}.
@@ -23,11 +26,12 @@ class MTEMultiBlockBaseTest {
     void checkExoticAndNormalEnergyHatches_parametrizedTest(int exoticEnergyHatchesCount, int normalEnergyHatchesCount,
         boolean expectedResult) {
         MTEMultiBlockBase testedClassInstance = Mockito.mock(MTEMultiBlockBase.class, Answers.CALLS_REAL_METHODS);
+        List<StructureError> errors = new ArrayList<>();
 
         testedClassInstance.setEnergyHatches(fillList(MTEHatchEnergy.class, normalEnergyHatchesCount));
         testedClassInstance.setExoticEnergyHatches(fillList(MTEHatch.class, exoticEnergyHatchesCount));
-
-        assertEquals(expectedResult, testedClassInstance.checkExoticAndNormalEnergyHatches());
+        testedClassInstance.checkExoticAndNormalEnergyHatches(errors);
+        assertEquals(expectedResult, errors.isEmpty());
     }
 
     private <T> ArrayList<T> fillList(Class<T> classData, int returnedListSize) {

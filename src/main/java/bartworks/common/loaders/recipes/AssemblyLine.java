@@ -54,7 +54,7 @@ public class AssemblyLine implements Runnable {
                 ItemList.Field_Generator_LuV.get(1L),
                 ItemList.Emitter_LuV.get(1L),
                 ItemList.Sensor_LuV.get(1L),
-                WerkstoffLoader.LuVTierMaterial.get(OrePrefixes.plate, 8))
+                WerkstoffLoader.RhodiumPlatedPalladium.get(OrePrefixes.plate, 8))
             .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(10 * INGOTS))
             .itemOutputs(ItemRegistry.cal.copy())
             .eut(TierEU.RECIPE_ZPM)

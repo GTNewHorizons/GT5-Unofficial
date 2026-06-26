@@ -49,7 +49,9 @@ import appeng.api.networking.IGridNode;
 import appeng.api.networking.crafting.ICraftingPatternDetails;
 import appeng.api.networking.crafting.ICraftingProvider;
 import appeng.api.networking.crafting.ICraftingProviderHelper;
+import appeng.api.networking.events.MENetworkChannelsChanged;
 import appeng.api.networking.events.MENetworkCraftingPatternChange;
+import appeng.api.networking.events.MENetworkEventSubscribe;
 import appeng.api.networking.security.BaseActionSource;
 import appeng.api.networking.security.IActionHost;
 import appeng.api.networking.security.MachineSource;
@@ -79,6 +81,7 @@ import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBas
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.net.GTPacketLMACraftingFX;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -285,6 +288,11 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
         return new MultiblockTooltipBuilder().addMachineType(MACHINE_TYPE)
             .addInfo("Needs a Data Orb to be placed in the controller")
             .addInfo(
+                "Uses " + EnumChatFormatting.YELLOW
+                    + "Crafting Pattern Providers"
+                    + EnumChatFormatting.RESET
+                    + " to store patterns")
+            .addInfo(
                 "Basic: " + EnumChatFormatting.GREEN
                     + EU_PER_TICK_BASIC
                     + EnumChatFormatting.GRAY
@@ -327,28 +335,26 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
                     .getLocalizedName(),
                 54,
                 false)
-            .addInputBus("Any casing", 1)
-            .addEnergyHatch("Any casing", 1)
-            .addMaintenanceHatch("Any casing", 1)
+            .addInputBus("Any Casing", 1)
+            .addEnergyHatch("Any Casing", 1)
+            .addMaintenanceHatch("Any Casing", 1)
             .toolTipFinisher();
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         casing = 0;
         if (!checkPiece(
             STRUCTURE_PIECE_MAIN,
             STRUCTURE_HORIZONTAL_OFFSET,
             STRUCTURE_VERTICAL_OFFSET,
-            STRUCTURE_DEPTH_OFFSET)) {
-            return false;
-        }
+            STRUCTURE_DEPTH_OFFSET,
+            errors)) return;
 
-        if (mMaintenanceHatches.size() != 1 || mEnergyHatches.isEmpty()) {
-            return false;
-        }
-
-        return casing >= MIN_CASING_COUNT;
+        checkOneMaintenanceHatch(errors);
+        checkHasEnergyHatch(errors);
+        checkHasInputBus(errors);
+        checkCasingMin(errors, casing, MIN_CASING_COUNT);
     }
 
     @Override
@@ -666,11 +672,24 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
         return withAeJobs(($, aeJobs) -> aeJobs.size() >= 256);
     }
 
+    @MENetworkEventSubscribe
+    public void channelStateChange(final MENetworkChannelsChanged c) {
+        AENetworkProxy proxy = getProxy();
+        if (proxy == null) return;
+
+        if (proxy.isActive()) {
+            try {
+                proxy.getGrid()
+                    .postEvent(new MENetworkCraftingPatternChange(this, proxy.getNode()));
+            } catch (final GridAccessException ignored) {}
+        }
+    }
+
     @Override
     public void provideCrafting(ICraftingProviderHelper craftingTracker) {
         AENetworkProxy proxy = getProxy();
         if (proxy == null) return;
-        if (proxy.isReady()) {
+        if (proxy.isActive()) {
             for (ICraftingPatternDetails detail : cachedPatternDetail.values()) {
                 craftingTracker.addCraftingOption(this, detail);
             }

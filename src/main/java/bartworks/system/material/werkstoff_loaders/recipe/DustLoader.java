@@ -21,11 +21,15 @@ import static gregtech.api.enums.OrePrefixes.ingot;
 import static gregtech.api.enums.OrePrefixes.ingotHot;
 import static gregtech.api.enums.OrePrefixes.nugget;
 import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
+import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
+import static gregtech.api.recipe.RecipeMaps.electrolyzerRecipes;
 import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
+import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
 import static gregtech.api.recipe.RecipeMaps.packagerRecipes;
 import static gregtech.api.recipe.RecipeMaps.primitiveBlastRecipes;
 import static gregtech.api.recipe.RecipeMaps.vacuumFreezerRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
+import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gregtech.api.util.GTRecipeConstants.ADDITIVE_AMOUNT;
 import static gregtech.api.util.GTRecipeConstants.BlastFurnaceWithGas;
 import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
@@ -42,16 +46,14 @@ import org.apache.commons.lang3.tuple.Pair;
 import bartworks.system.material.Werkstoff;
 import bartworks.system.material.WerkstoffLoader;
 import bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
+import bartworks.util.BWUtil;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TextureSet;
-import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.ISubTagContainer;
-import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTUtility;
 
@@ -61,8 +63,8 @@ public class DustLoader implements IWerkstoffRunnable {
     @SuppressWarnings("unchecked")
     public void run(Werkstoff werkstoff) {
         if (werkstoff.hasItemType(dust)) {
-            List<FluidStack> flOutputs = new ArrayList<>();
-            List<ItemStack> stOutputs = new ArrayList<>();
+            List<FluidStack> fluidComponents = new ArrayList<>();
+            List<ItemStack> itemComponents = new ArrayList<>();
             HashMap<ISubTagContainer, Pair<Integer, Integer>> tracker = new HashMap<>();
 
             Werkstoff.Stats werkstoffStats = werkstoff.getStats();
@@ -91,17 +93,17 @@ public class DustLoader implements IWerkstoffRunnable {
                                 if (tmpFl == null || tmpFl.getFluid() == null) {
                                     tmpFl = materialKey.getFluid(1000L * value);
                                 }
-                                flOutputs.add(tmpFl);
-                                if (flOutputs.size() > 1) {
+                                fluidComponents.add(tmpFl);
+                                if (fluidComponents.size() > 1) {
                                     if (!tracker.containsKey(key)) {
-                                        stOutputs.add(materialKey.getCells(value));
-                                        tracker.put(key, Pair.of(value, stOutputs.size() - 1));
+                                        itemComponents.add(materialKey.getCells(value));
+                                        tracker.put(key, Pair.of(value, itemComponents.size() - 1));
                                     } else {
-                                        stOutputs.add(
+                                        itemComponents.add(
                                             materialKey.getCells(
                                                 tracker.get(key)
                                                     .getKey() + value));
-                                        stOutputs.remove(
+                                        itemComponents.remove(
                                             tracker.get(key)
                                                 .getValue() + 1);
                                     }
@@ -116,17 +118,17 @@ public class DustLoader implements IWerkstoffRunnable {
                                     if (tmpFl == null || tmpFl.getFluid() == null) {
                                         tmpFl = materialKey.getSolid(1000L * value);
                                     }
-                                    flOutputs.add(tmpFl);
-                                    if (flOutputs.size() > 1) {
+                                    fluidComponents.add(tmpFl);
+                                    if (fluidComponents.size() > 1) {
                                         if (!tracker.containsKey(key)) {
-                                            stOutputs.add(materialKey.getCells(value));
-                                            tracker.put(key, Pair.of(value, stOutputs.size() - 1));
+                                            itemComponents.add(materialKey.getCells(value));
+                                            tracker.put(key, Pair.of(value, itemComponents.size() - 1));
                                         } else {
-                                            stOutputs.add(
+                                            itemComponents.add(
                                                 materialKey.getCells(
                                                     tracker.get(key)
                                                         .getKey() + value));
-                                            stOutputs.remove(
+                                            itemComponents.remove(
                                                 tracker.get(key)
                                                     .getValue() + 1);
                                         }
@@ -134,14 +136,14 @@ public class DustLoader implements IWerkstoffRunnable {
                                     }
                                 }
                                 if (!tracker.containsKey(key)) {
-                                    stOutputs.add(materialKey.getDust(value));
-                                    tracker.put(key, Pair.of(value, stOutputs.size() - 1));
+                                    itemComponents.add(materialKey.getDust(value));
+                                    tracker.put(key, Pair.of(value, itemComponents.size() - 1));
                                 } else {
-                                    stOutputs.add(
+                                    itemComponents.add(
                                         materialKey.getDust(
                                             tracker.get(key)
                                                 .getKey() + value));
-                                    stOutputs.remove(
+                                    itemComponents.remove(
                                         tracker.get(key)
                                             .getValue() + 1);
                                 }
@@ -153,18 +155,18 @@ public class DustLoader implements IWerkstoffRunnable {
                                 if (tmpFl == null || tmpFl.getFluid() == null) {
                                     tmpFl = werkstoffKey.getFluidOrGas(1000 * value);
                                 }
-                                flOutputs.add(tmpFl);
-                                if (flOutputs.size() > 1) {
+                                fluidComponents.add(tmpFl);
+                                if (fluidComponents.size() > 1) {
                                     if (!tracker.containsKey(key)) {
-                                        stOutputs.add(werkstoffKey.get(cell, value));
-                                        tracker.put(key, Pair.of(value, stOutputs.size() - 1));
+                                        itemComponents.add(werkstoffKey.get(cell, value));
+                                        tracker.put(key, Pair.of(value, itemComponents.size() - 1));
                                     } else {
-                                        stOutputs.add(
+                                        itemComponents.add(
                                             werkstoffKey.get(
                                                 cell,
                                                 tracker.get(key)
                                                     .getKey() + value));
-                                        stOutputs.remove(
+                                        itemComponents.remove(
                                             tracker.get(key)
                                                 .getValue() + 1);
                                     }
@@ -173,83 +175,33 @@ public class DustLoader implements IWerkstoffRunnable {
                             } else {
                                 if (!werkstoffKey.hasItemType(dust)) continue;
                                 if (!tracker.containsKey(key)) {
-                                    stOutputs.add(werkstoffKey.get(dust, value));
-                                    tracker.put(key, Pair.of(value, stOutputs.size() - 1));
+                                    itemComponents.add(werkstoffKey.get(dust, value));
+                                    tracker.put(key, Pair.of(value, itemComponents.size() - 1));
                                 } else {
-                                    stOutputs.add(
+                                    itemComponents.add(
                                         werkstoffKey.get(
                                             dust,
                                             tracker.get(key)
                                                 .getKey() + value));
-                                    stOutputs.remove(
+                                    itemComponents.remove(
                                         tracker.get(key)
                                             .getValue() + 1);
                                 }
                             }
                         }
                     }
-                    ItemStack input = werkstoff.get(dust);
-                    input.stackSize = werkstoff.getContents()
+                    ItemStack werkstoffDust = werkstoff.get(dust);
+                    werkstoffDust.stackSize = werkstoff.getContents()
                         .getKey();
                     if (werkstoffStats.isElektrolysis()) {
-                        GTRecipe tRecipe = new GTRecipe(
-                            new ItemStack[] { input, cells > 0 ? Materials.Empty.getCells(cells) : null },
-                            stOutputs.toArray(new ItemStack[0]),
-                            null,
-                            null,
-                            null,
-                            null,
-                            null,
-                            new FluidStack[] { null },
-                            new FluidStack[] { !flOutputs.isEmpty() ? flOutputs.get(0) : null },
-                            (int) Math.max(
-                                1L,
-                                Math.abs(
-                                    werkstoffStats.getProtons() / werkstoff.getContents()
-                                        .getValue()
-                                        .size())),
-                            Math.min(
-                                4,
-                                werkstoff.getContents()
-                                    .getValue()
-                                    .size())
-                                * 30,
-                            0);
-                        RecipeMaps.electrolyzerRecipes.add(tRecipe);
-                    }
-                    if (werkstoffStats.isCentrifuge()) {
-                        RecipeMaps.centrifugeRecipes.add(
-                            new GTRecipe(
-                                new ItemStack[] { input, cells > 0 ? Materials.Empty.getCells(cells) : null },
-                                stOutputs.toArray(new ItemStack[0]),
-                                null,
-                                null,
-                                null,
-                                null,
-                                null,
-                                new FluidStack[] { null },
-                                new FluidStack[] { !flOutputs.isEmpty() ? flOutputs.get(0) : null },
-                                (int) Math.max(
-                                    1L,
-                                    Math.abs(
-                                        werkstoffStats.getMass() / werkstoff.getContents()
-                                            .getValue()
-                                            .size())),
-                                Math.min(
-                                    4,
-                                    werkstoff.getContents()
-                                        .getValue()
-                                        .size())
-                                    * 5,
-                                0));
-                    }
-                    if (werkstoff.getGenerationFeatures()
-                        .hasChemicalRecipes()) {
-                        if (cells > 0) stOutputs.add(Materials.Empty.getCells(cells));
                         GTValues.RA.stdBuilder()
-                            .itemInputs(stOutputs.toArray(new ItemStack[0]))
-                            .itemOutputs(input)
-                            .fluidInputs(flOutputs.toArray(new FluidStack[0]))
+                            .itemInputs(
+                                cells > 0 ? new ItemStack[] { werkstoffDust, Materials.Empty.getCells(cells) }
+                                    : new ItemStack[] { werkstoffDust })
+                            .itemOutputs(itemComponents.toArray(new ItemStack[0]))
+                            .fluidOutputs(
+                                fluidComponents.isEmpty() ? new FluidStack[0]
+                                    : new FluidStack[] { fluidComponents.get(0) })
                             .duration(
                                 (int) Math.max(
                                     1L,
@@ -258,44 +210,97 @@ public class DustLoader implements IWerkstoffRunnable {
                                             .getValue()
                                             .size())))
                             .eut(
-                                Math.min(
-                                    4,
-                                    werkstoff.getContents()
-                                        .getValue()
-                                        .size())
-                                    * 30)
-                            .addTo(GTRecipeConstants.UniversalChemical);
+                                BWUtil.calculateRecipeEU(
+                                    werkstoff,
+                                    Math.min(
+                                        4,
+                                        werkstoff.getContents()
+                                            .getValue()
+                                            .size())
+                                        * 30))
+                            .addTo(electrolyzerRecipes);
                     }
-                    if (werkstoff.getGenerationFeatures()
-                        .hasMixerRecipes()) {
-                        if (cells > 0) stOutputs.add(Materials.Empty.getCells(cells));
-                        short circuitID = werkstoff.getMixCircuit();
-                        ItemStack circuit = circuitID == -1 ? null : GTUtility.getIntegratedCircuit(circuitID);
-                        if (circuit != null) stOutputs.add(circuit);
-                        RecipeMaps.mixerRecipes.add(
-                            new GTRecipe(
-                                stOutputs.toArray(new ItemStack[0]),
-                                new ItemStack[] { input },
-                                null,
-                                null,
-                                null,
-                                null,
-                                null,
-                                new FluidStack[] { !flOutputs.isEmpty() ? flOutputs.get(0) : null },
-                                null,
+                    if (werkstoffStats.isCentrifuge()) {
+                        GTValues.RA.stdBuilder()
+                            .itemInputs(
+                                cells > 0 ? new ItemStack[] { werkstoffDust, Materials.Empty.getCells(cells) }
+                                    : new ItemStack[] { werkstoffDust })
+                            .itemOutputs(itemComponents.toArray(new ItemStack[0]))
+                            .fluidOutputs(
+                                fluidComponents.isEmpty() ? new FluidStack[0]
+                                    : new FluidStack[] { fluidComponents.get(0) })
+                            .duration(
                                 (int) Math.max(
                                     1L,
                                     Math.abs(
                                         werkstoffStats.getMass() / werkstoff.getContents()
                                             .getValue()
-                                            .size())),
-                                Math.min(
-                                    4,
-                                    werkstoff.getContents()
-                                        .getValue()
-                                        .size())
-                                    * 5,
-                                0));
+                                            .size())))
+                            .eut(
+                                BWUtil.calculateRecipeEU(
+                                    werkstoff,
+                                    Math.min(
+                                        4,
+                                        werkstoff.getContents()
+                                            .getValue()
+                                            .size())
+                                        * 5))
+                            .addTo(centrifugeRecipes);
+                    }
+                    if (werkstoff.getGenerationFeatures()
+                        .hasChemicalRecipes()) {
+                        if (cells > 0) itemComponents.add(Materials.Empty.getCells(cells));
+                        GTValues.RA.stdBuilder()
+                            .itemInputs(itemComponents.toArray(new ItemStack[0]))
+                            .itemOutputs(werkstoffDust)
+                            .fluidInputs(fluidComponents.toArray(new FluidStack[0]))
+                            .duration(
+                                (int) Math.max(
+                                    1L,
+                                    Math.abs(
+                                        werkstoffStats.getProtons() / werkstoff.getContents()
+                                            .getValue()
+                                            .size())))
+                            .eut(
+                                BWUtil.calculateRecipeEU(
+                                    werkstoff,
+                                    Math.min(
+                                        4,
+                                        werkstoff.getContents()
+                                            .getValue()
+                                            .size())
+                                        * 30))
+                            .addTo(GTRecipeConstants.UniversalChemical);
+                    }
+                    if (werkstoff.getGenerationFeatures()
+                        .hasMixerRecipes()) {
+                        if (cells > 0) itemComponents.add(Materials.Empty.getCells(cells));
+                        short circuitID = werkstoff.getMixCircuit();
+                        ItemStack circuit = circuitID == -1 ? null : GTUtility.getIntegratedCircuit(circuitID);
+                        if (circuit != null) itemComponents.add(circuit);
+                        GTValues.RA.stdBuilder()
+                            .itemInputs(itemComponents.toArray(new ItemStack[0]))
+                            .itemOutputs(werkstoffDust)
+                            .fluidInputs(
+                                fluidComponents.isEmpty() ? new FluidStack[0]
+                                    : new FluidStack[] { fluidComponents.get(0) })
+                            .duration(
+                                (int) Math.max(
+                                    1L,
+                                    Math.abs(
+                                        werkstoffStats.getMass() / werkstoff.getContents()
+                                            .getValue()
+                                            .size())))
+                            .eut(
+                                BWUtil.calculateRecipeEU(
+                                    werkstoff,
+                                    Math.min(
+                                        4,
+                                        werkstoff.getContents()
+                                            .getValue()
+                                            .size())
+                                        * 5))
+                            .addTo(mixerRecipes);
                     }
                 } else {
                     GTLog.err.println(
@@ -325,35 +330,35 @@ public class DustLoader implements IWerkstoffRunnable {
                 .itemInputs(werkstoff.get(dustTiny, 9), ItemList.Schematic_Dust.get(0L))
                 .itemOutputs(werkstoff.get(dust))
                 .duration(5 * SECONDS)
-                .eut(4)
+                .eut(BWUtil.calculateRecipeEU(werkstoff, 4))
                 .addTo(packagerRecipes);
 
             GTValues.RA.stdBuilder()
                 .itemInputs(werkstoff.get(dustSmall, 4), ItemList.Schematic_Dust.get(0L))
                 .itemOutputs(werkstoff.get(dust))
                 .duration(5 * SECONDS)
-                .eut(4)
+                .eut(BWUtil.calculateRecipeEU(werkstoff, 4))
                 .addTo(packagerRecipes);
 
             GTValues.RA.stdBuilder()
                 .itemInputs(werkstoff.get(dustTiny, 9), ItemList.Schematic_3by3.get(0L))
                 .itemOutputs(werkstoff.get(dust))
                 .duration(5 * SECONDS)
-                .eut(4)
+                .eut(BWUtil.calculateRecipeEU(werkstoff, 4))
                 .addTo(packagerRecipes);
 
             GTValues.RA.stdBuilder()
                 .itemInputs(werkstoff.get(dustSmall, 4), ItemList.Schematic_2by2.get(0L))
                 .itemOutputs(werkstoff.get(dust))
                 .duration(5 * SECONDS)
-                .eut(4)
+                .eut(BWUtil.calculateRecipeEU(werkstoff, 4))
                 .addTo(packagerRecipes);
 
             GTValues.RA.stdBuilder()
                 .itemInputs(werkstoff.get(dust, 1), ItemList.Schematic_Dust_Small.get(0L))
                 .itemOutputs(werkstoff.get(dustSmall, 4))
                 .duration(5 * SECONDS)
-                .eut(4)
+                .eut(BWUtil.calculateRecipeEU(werkstoff, 4))
                 .addTo(packagerRecipes);
 
             if (werkstoff.hasItemType(ingot) && !werkstoffStats.isBlastFurnace()) {
@@ -408,7 +413,7 @@ public class DustLoader implements IWerkstoffRunnable {
                     .itemInputs(werkstoff.get(ingotHot))
                     .itemOutputs(werkstoff.get(ingot))
                     .duration((int) Math.max(werkstoffStats.getMass() * 3L, 1L))
-                    .eut(TierEU.RECIPE_MV)
+                    .eut(BWUtil.calculateRecipeEU(werkstoff, 128))
                     .addTo(vacuumFreezerRecipes);
             }
 
@@ -417,15 +422,15 @@ public class DustLoader implements IWerkstoffRunnable {
                 GTValues.RA.stdBuilder()
                     .itemInputs(werkstoff.get(ingot))
                     .itemOutputs(werkstoff.get(dust))
-                    .duration(20 * SECONDS)
-                    .eut(2)
+                    .duration(5 * SECONDS)
+                    .eut(BWUtil.calculateRecipeEU(werkstoff, 2))
                     .addTo(maceratorRecipes);
 
                 GTValues.RA.stdBuilder()
                     .itemInputs(werkstoff.get(nugget))
                     .itemOutputs(werkstoff.get(dustTiny))
-                    .duration(20 * SECONDS)
-                    .eut(2)
+                    .duration(10 * TICKS)
+                    .eut(BWUtil.calculateRecipeEU(werkstoff, 2))
                     .addTo(maceratorRecipes);
 
             }

@@ -74,12 +74,15 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.INEIPreviewModifier;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.recipe.RecipeMap;
-import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.ErrorType;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
@@ -87,7 +90,7 @@ import gregtech.common.misc.GTStructureChannels;
 
 public class MTEElectricImplosionCompressorLegacy
     extends MTEExtendedPowerMultiBlockBase<MTEElectricImplosionCompressorLegacy>
-    implements ISurvivalConstructable, INEIPreviewModifier {
+    implements ISurvivalConstructable, INEIPreviewModifier, ICasingTextureProvider {
 
     private static final boolean pistonEnabled = !Configuration.multiblocks.disablePistonInEIC;
     private boolean piston = true;
@@ -235,13 +238,13 @@ public class MTEElectricImplosionCompressorLegacy
             .addController("Front center, 3rd layer")
             .addCasingInfoMin("Solid Steel Machine Casing", 8, false)
             .addStructureInfo("Casings can be replaced with Explosion Hazard Signs")
-            .addOtherStructurePart("Transformer-Winding Blocks", "Outer layer 2,3,7,8")
-            .addOtherStructurePart("Nickel-Zinc-Ferrite Blocks", "Inner layer 2,3,7,8")
-            .addOtherStructurePart("Containment Blocks", "Layer 4,5,6")
-            .addMaintenanceHatch("Any Solid Steel Machine casing", 1)
-            .addInputBus("Any Solid Steel Machine casing", 1)
-            .addInputHatch("Any Solid Steel Machine casing", 1)
-            .addOutputBus("Any Solid Steel Machine casing", 1)
+            .addOtherStructurePart("Transformer-Winding Block", "Outer layer 2,3,7,8")
+            .addOtherStructurePart("Nickel-Zinc-Ferrite Block", "Inner layer 2,3,7,8")
+            .addOtherStructurePart("Containment Block", "Layer 4,5,6")
+            .addMaintenanceHatch("Any Solid Steel Machine Casing", 1)
+            .addInputBus("Any Solid Steel Machine Casing", 1)
+            .addInputHatch("Any Solid Steel Machine Casing", 1)
+            .addOutputBus("Any Solid Steel Machine Casing", 1)
             .addEnergyHatch("Bottom middle and/or top middle", 2)
             .addSubChannelUsage(GTStructureChannels.EIC_PISTON)
             .toolTipFinisher();
@@ -394,7 +397,8 @@ public class MTEElectricImplosionCompressorLegacy
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack itemStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack itemStack,
+        List<StructureError> errors) {
         int pistonTier = this.mBlockTier;
         int mMaxHatchTier = 0;
         boolean isOK;
@@ -402,9 +406,9 @@ public class MTEElectricImplosionCompressorLegacy
         this.mBlockTier = -1;
 
         if (this.isSuccessful) {
-            isOK = this.checkPiece(STRUCTURE_PIECE_MAIN_SUCCESSFUL, 1, 6, 0);
+            this.checkPiece(STRUCTURE_PIECE_MAIN_SUCCESSFUL, 1, 6, 0, errors);
         } else {
-            isOK = this.checkPiece(STRUCTURE_PIECE_MAIN, 1, 6, 0);
+            this.checkPiece(STRUCTURE_PIECE_MAIN, 1, 6, 0, errors);
         }
 
         List<MTEHatch> energyHatches = this.getExoticAndNormalEnergyHatchList();
@@ -412,15 +416,19 @@ public class MTEElectricImplosionCompressorLegacy
             mMaxHatchTier = Math.max(mMaxHatchTier, hatch.mTier);
         }
 
-        isOK = isOK && this.mMaintenanceHatches.size() == 1 && !energyHatches.isEmpty();
-        if (isOK) {
+        if (errors.isEmpty()) {
+            checkOneMaintenanceHatch(errors);
+            if (energyHatches.isEmpty()) {
+                errors.add(StructureErrors.hatchCount(ErrorType.TOO_FEW, Energy, 0, 1));
+            }
+        }
+        if (errors.isEmpty()) {
             this.activatePiston();
-            return true;
+            return;
         }
 
         this.isSuccessful = false;
         this.resetPiston(pistonTier);
-        return false;
     }
 
     @Override
@@ -430,30 +438,22 @@ public class MTEElectricImplosionCompressorLegacy
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-        int aColorIndex, boolean aActive, boolean aRedstone) {
-        if (side == facing) {
-            if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_IMPLOSION_COMPRESSOR_ACTIVE)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_IMPLOSION_COMPRESSOR_ACTIVE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX), TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_IMPLOSION_COMPRESSOR)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_IMPLOSION_COMPRESSOR_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-        }
-        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX) };
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            OVERLAY_FRONT_IMPLOSION_COMPRESSOR,
+            OVERLAY_FRONT_IMPLOSION_COMPRESSOR_GLOW,
+            OVERLAY_FRONT_IMPLOSION_COMPRESSOR_ACTIVE,
+            OVERLAY_FRONT_IMPLOSION_COMPRESSOR_ACTIVE_GLOW);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Textures.BlockIcons.getCasingTextureForId(CASING_INDEX);
     }
 
     @Override

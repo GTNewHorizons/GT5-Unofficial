@@ -15,6 +15,7 @@ import static gregtech.api.metatileentity.BaseTileEntity.STALLED_STUTTERING_TOOL
 import static gregtech.api.metatileentity.BaseTileEntity.STALLED_VENT_TOOLTIP;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.metatileentity.BaseTileEntity.UNUSED_SLOT_TOOLTIP;
+import static gregtech.api.util.GTRecipeConstants.COMPRESSION_TIER;
 import static gregtech.api.util.GTRecipeConstants.EXPLODE;
 import static gregtech.api.util.GTRecipeConstants.ON_FIRE;
 import static net.minecraft.util.StatCollector.translateToLocal;
@@ -26,6 +27,7 @@ import static net.minecraftforge.common.util.ForgeDirection.UP;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 
@@ -45,10 +47,6 @@ import net.minecraftforge.fluids.IFluidHandler;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 
-import com.cleanroommc.modularui.factory.PosGuiData;
-import com.cleanroommc.modularui.screen.ModularPanel;
-import com.cleanroommc.modularui.screen.UISettings;
-import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 import com.gtnewhorizons.modularui.api.math.Size;
@@ -75,8 +73,10 @@ import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.gui.modularui.SteamTexture;
 import gregtech.api.interfaces.ICleanroom;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
+import gregtech.api.interfaces.INonConsumedItemDisplay;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IOverclockDescriptionProvider;
 import gregtech.api.interfaces.tileentity.RecipeMapWorkable;
@@ -84,7 +84,6 @@ import gregtech.api.objects.overclockdescriber.EUOverclockDescriber;
 import gregtech.api.objects.overclockdescriber.OverclockDescriber;
 import gregtech.api.recipe.BasicUIProperties;
 import gregtech.api.recipe.RecipeMap;
-import gregtech.api.recipe.metadata.CompressionTierKey;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.FakeCleanroom;
 import gregtech.api.util.GTClientPreference;
@@ -98,7 +97,6 @@ import gregtech.api.util.GTWaila;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.client.GTSoundLoop;
 import gregtech.common.gui.modularui.UIHelper;
-import gregtech.common.gui.modularui.singleblock.base.MTETieredMachineBlockBaseGui;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -108,8 +106,8 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
  * This is the main construct for my Basic Machines such as the Automatic Extractor Extend this class to make a simple
  * Machine
  */
-public abstract class MTEBasicMachine extends MTEBasicTank
-    implements RecipeMapWorkable, IConfigurationCircuitSupport, IOverclockDescriptionProvider, IAddGregtechLogo {
+public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapWorkable, IConfigurationCircuitSupport,
+    IOverclockDescriptionProvider, IAddGregtechLogo, INonConsumedItemDisplay {
 
     /**
      * return values for checkRecipe()
@@ -120,16 +118,17 @@ public abstract class MTEBasicMachine extends MTEBasicTank
 
     public static final int OTHER_SLOT_COUNT = 5;
     public final ItemStack[] mOutputItems;
-    public final int mInputSlotCount, mAmperage;
-    public boolean mAllowInputFromOutputSide = false, mFluidTransfer = false, mItemTransfer = false,
-        mHasBeenUpdated = false, mStuttering = false, mCharge = false, mDecharge = false;
+    public final int mInputSlotCount;
+    public int mAmperage;
+    public boolean mAllowInputFromOutputSide = true, mFluidTransfer = false, mItemTransfer = false, mStuttering = false,
+        mCharge = false, mDecharge = false;
     private int errorDisplayID;
     public boolean mDisableFilter = true;
     public boolean mDisableMultiStack = true;
     public int mProgresstime = 0, mMaxProgresstime = 0, mEUt = 0, mOutputBlocked = 0;
     public ForgeDirection mMainFacing = ForgeDirection.WEST;
     public FluidStack mOutputFluid;
-    protected final OverclockDescriber overclockDescriber;
+    protected OverclockDescriber overclockDescriber;
     @SideOnly(Side.CLIENT)
     protected GTSoundLoop activitySoundLoop;
 
@@ -204,6 +203,23 @@ public abstract class MTEBasicMachine extends MTEBasicTank
         mOutputItems = new ItemStack[Math.max(0, aOutputSlotCount)];
         mAmperage = aAmperage;
         overclockDescriber = createOverclockDescriber();
+        // In world basic machine have mMainFacing UNKNOWN for rotation fixes.
+        // During placement, mFacing initially mean main facing.
+        // This is then written to mMainFacing when the block is initialized.
+        // and mFacing become the output facing, initialized to the opposite side.
+        // This quirk is due to historical reasons, and it is mostly to support
+        // block saved with the old nbt to keep working. The ideal logic should be
+        // mFacing -> main facing and a new field mOutputFacing, and with wrenchRightClick
+        // overridden so that normal right click rotate the output face and sneak rotate
+        // the main face.
+
+        // The current logic is that the block is set to UNKNOWN before loading of NBT or rotation, and the
+        // very first rotation will cause mMainFacing and mFacing to be swapped and initialized.
+        mMainFacing = UNKNOWN;
+    }
+
+    public boolean isStuttering() {
+        return mStuttering;
     }
 
     /**
@@ -226,20 +242,6 @@ public abstract class MTEBasicMachine extends MTEBasicTank
         onFacingChange();
         onMachineBlockUpdate();
         return true;
-    }
-
-    @Override
-    public void onFacingChange() {
-        super.onFacingChange();
-        // Set up the correct facing (front towards player, output opposite) client-side before the server packet
-        // arrives
-        if (mMainFacing == UNKNOWN) {
-            IGregTechTileEntity te = getBaseMetaTileEntity();
-            if (te != null && te.getWorld().isRemote) {
-                mMainFacing = te.getFrontFacing();
-                te.setFrontFacing(te.getBackFacing());
-            }
-        }
     }
 
     @Override
@@ -322,8 +324,9 @@ public abstract class MTEBasicMachine extends MTEBasicTank
 
     @Override
     public boolean isFacingValid(ForgeDirection facing) {
-        // Either mMainFacing or mMainFacing is horizontal
-        return ((facing.flag | mMainFacing.flag) & ~(UP.flag | DOWN.flag | UNKNOWN.flag)) != 0;
+        // Due to initialization quirks.
+        if (mMainFacing == UNKNOWN) return isValidMainFacing(facing);
+        return facing != mMainFacing;
     }
 
     @Override
@@ -369,6 +372,14 @@ public abstract class MTEBasicMachine extends MTEBasicTank
     @Override
     public long maxAmperesIn() {
         return ((long) mEUt * 2L) / V[mTier] + 1L;
+    }
+
+    @Override
+    public List<ItemStack> getNonConsumedInputDisplayItems() {
+        if (mLastRecipe == null || mLastRecipe.mInputs == null) return Collections.emptyList();
+        return Arrays.stream(mLastRecipe.mInputs)
+            .filter(s -> s != null && s.stackSize == 0)
+            .collect(Collectors.toList());
     }
 
     @Override
@@ -482,7 +493,13 @@ public abstract class MTEBasicMachine extends MTEBasicTank
 
     @Override
     public void initDefaultModes(NBTTagCompound aNBT) {
-        mMainFacing = ForgeDirection.UNKNOWN;
+        ForgeDirection facing = getBaseMetaTileEntity().getFrontFacing();
+        if (isValidMainFacing(facing)) {
+            setMainFacing(facing);
+        } else {
+            // Just in case someone set the facing wrongly, we still initialize main facing.
+            setMainFacing(ForgeDirection.WEST);
+        }
         if (!getBaseMetaTileEntity().getWorld().isRemote) {
             final GTClientPreference tPreference = GTMod.proxy
                 .getClientPreference(getBaseMetaTileEntity().getOwnerUuid());
@@ -498,7 +515,6 @@ public abstract class MTEBasicMachine extends MTEBasicTank
         super.saveNBTData(aNBT);
         aNBT.setBoolean("mFluidTransfer", mFluidTransfer);
         aNBT.setBoolean("mItemTransfer", mItemTransfer);
-        aNBT.setBoolean("mHasBeenUpdated", mHasBeenUpdated);
         aNBT.setBoolean("mAllowInputFromOutputSide", mAllowInputFromOutputSide);
         aNBT.setBoolean("mDisableFilter", mDisableFilter);
         aNBT.setBoolean("mDisableMultiStack", mDisableMultiStack);
@@ -518,7 +534,6 @@ public abstract class MTEBasicMachine extends MTEBasicTank
         super.loadNBTData(aNBT);
         mFluidTransfer = aNBT.getBoolean("mFluidTransfer");
         mItemTransfer = aNBT.getBoolean("mItemTransfer");
-        mHasBeenUpdated = aNBT.getBoolean("mHasBeenUpdated");
         mAllowInputFromOutputSide = aNBT.getBoolean("mAllowInputFromOutputSide");
         mDisableFilter = aNBT.getBoolean("mDisableFilter");
         mDisableMultiStack = aNBT.getBoolean("mDisableMultiStack");
@@ -553,8 +568,6 @@ public abstract class MTEBasicMachine extends MTEBasicTank
         if (aBaseMetaTileEntity.isServerSide()) {
             mCharge = aBaseMetaTileEntity.getStoredEU() / 2 > aBaseMetaTileEntity.getEUCapacity() / 3;
             mDecharge = aBaseMetaTileEntity.getStoredEU() < aBaseMetaTileEntity.getEUCapacity() / 3;
-
-            doDisplayThings();
 
             boolean tSucceeded = false;
             boolean isActive = mMaxProgresstime > 0;
@@ -675,16 +688,6 @@ public abstract class MTEBasicMachine extends MTEBasicTank
         // 64 | MTEBasicMachineBronze | mNeedsSteamVenting
         setErrorDisplayID((getErrorDisplayID() & ~127)); // | (mStuttering ? 1 :
                                                          // 0));
-    }
-
-    protected void doDisplayThings() {
-        if (!isValidMainFacing(mMainFacing) && isValidMainFacing(getBaseMetaTileEntity().getFrontFacing())) {
-            mMainFacing = getBaseMetaTileEntity().getFrontFacing();
-        }
-        if (isValidMainFacing(mMainFacing) && !mHasBeenUpdated) {
-            mHasBeenUpdated = true;
-            getBaseMetaTileEntity().setFrontFacing(getBaseMetaTileEntity().getBackFacing());
-        }
     }
 
     protected boolean hasEnoughEnergyToCheckRecipe() {
@@ -897,17 +900,17 @@ public abstract class MTEBasicMachine extends MTEBasicTank
     @Override
     public String[] getInfoData() {
         return new String[] {
-            translateToLocalFormatted(
+            IGregTechDeviceInformation.encode(
                 "GT5U.infodata.progress",
                 EnumChatFormatting.GREEN + formatNumber((mProgresstime / 20)) + EnumChatFormatting.RESET,
                 EnumChatFormatting.YELLOW + formatNumber(mMaxProgresstime / 20) + EnumChatFormatting.RESET),
-            translateToLocalFormatted(
+            IGregTechDeviceInformation.encode(
                 "GT5U.infodata.energy",
                 EnumChatFormatting.GREEN + formatNumber(getBaseMetaTileEntity().getStoredEU())
                     + EnumChatFormatting.RESET,
                 EnumChatFormatting.YELLOW + formatNumber(getBaseMetaTileEntity().getEUCapacity())
                     + EnumChatFormatting.RESET),
-            translateToLocalFormatted(
+            IGregTechDeviceInformation.encode(
                 "GT5U.infodata.currently_uses",
                 EnumChatFormatting.RED + formatNumber(mEUt) + EnumChatFormatting.RESET,
                 EnumChatFormatting.RED + formatNumber(mEUt == 0 ? 0 : mAmperage) + EnumChatFormatting.RESET) };
@@ -1082,8 +1085,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank
             getBaseMetaTileEntity().setOnFire();
             return DID_NOT_FIND_RECIPE;
         }
-        if (tRecipe.getMetadataOrDefault(CompressionTierKey.INSTANCE, 0) > 0)
-            return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
+        if (tRecipe.getMetadataOrDefault(COMPRESSION_TIER, 0) > 0) return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
         if (GTMod.proxy.mLowGravProcessing && (tRecipe.mSpecialValue == -100 || tRecipe.mSpecialValue == -300)
             && !isValidForLowGravity(tRecipe, getBaseMetaTileEntity().getWorld().provider.dimensionId))
             return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
@@ -1100,9 +1102,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank
         }
         if (!tRecipe.isRecipeInputEqual(true, new FluidStack[] { getFillableStack() }, getAllInputs()))
             return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
-        for (int i = 0; i < mOutputItems.length; i++)
-            if (getBaseMetaTileEntity().getRandomNumber(10000) < tRecipe.getOutputChance(i))
-                mOutputItems[i] = tRecipe.getOutput(i);
+        for (int i = 0; i < mOutputItems.length; i++) mOutputItems[i] = tRecipe.rollOutput(getBaseMetaTileEntity(), i);
         if (tRecipe.mSpecialValue == -200 || tRecipe.mSpecialValue == -300) {
             assert cleanroom != null;
             for (int i = 0; i < mOutputItems.length; i++) if (mOutputItems[i] != null
@@ -1301,11 +1301,6 @@ public abstract class MTEBasicMachine extends MTEBasicTank
                     .setSize(17, 17)
                     .setPos(152, 63));
         }
-    }
-
-    @Override
-    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
-        return new MTETieredMachineBlockBaseGui(this).build(data, syncManager, uiSettings);
     }
 
     @Override

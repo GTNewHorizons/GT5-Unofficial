@@ -12,8 +12,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
 import java.util.function.Predicate;
-import java.util.function.Supplier;
 
 import net.minecraft.dispenser.IBlockSource;
 import net.minecraft.entity.Entity;
@@ -88,7 +88,7 @@ public abstract class MetaBaseItem extends GTGenericItem
 
     public abstract Long[] getFluidContainerStats(ItemStack aStack);
 
-    protected Supplier<String> getToolTipLocalizationSupplier(ItemStack aStack) {
+    protected Function<ItemStack, String> getToolTipLocalizationFunction(ItemStack aStack) {
         return null;
     }
 
@@ -251,11 +251,11 @@ public abstract class MetaBaseItem extends GTGenericItem
 
     @Override
     public final void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> aList, boolean aF3_H) {
-        final Supplier<String> tooltipSupplier = getToolTipLocalizationSupplier(aStack);
-        if (tooltipSupplier != null) {
+        final Function<ItemStack, String> tooltipFunction = getToolTipLocalizationFunction(aStack);
+        if (tooltipFunction != null) {
             Collections.addAll(
                 aList,
-                Arrays.stream(GTSplit.split(tooltipSupplier.get()))
+                Arrays.stream(GTSplit.split(tooltipFunction.apply(aStack)))
                     .filter(GTUtility::isStringValid)
                     .toArray(String[]::new));
         }
@@ -687,28 +687,5 @@ public abstract class MetaBaseItem extends GTGenericItem
         }
 
         return false;
-    }
-
-    @Override
-    public String getItemStackDisplayName(final ItemStack itemStack) {
-        final String base = super.getItemStackDisplayName(itemStack);
-
-        ArrayList<IItemBehaviour<MetaBaseItem>> behaviorList = mItemBehaviors.get((short) getDamage(itemStack));
-        if (behaviorList == null) {
-            return base;
-        }
-
-        try {
-            for (IItemBehaviour<MetaBaseItem> behavior : behaviorList) {
-                final String newName = behavior.getNameOverride(base, itemStack);
-                if (newName != null) {
-                    return newName;
-                }
-            }
-        } catch (Exception e) {
-            if (D1) e.printStackTrace(GTLog.err);
-        }
-
-        return base;
     }
 }

@@ -8,11 +8,13 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.client.iconContainers.blocks.GTBlockIconContainer;
@@ -20,10 +22,16 @@ import gregtech.client.iconContainers.blocks.GTCustomAlphaBlockIconContainer;
 import gregtech.client.iconContainers.blocks.GTCustomBlockIconContainer;
 import gregtech.client.iconContainers.blocks.GTCustomOptionalBlockIconContainer;
 import gregtech.client.iconContainers.blocks.GTOptionalBlockIconContainer;
+import gregtech.client.iconContainers.blocks.GTTextureSetBlockIconContainer;
 import gregtech.client.iconContainers.items.GTCustomItemIconContainer;
 import gregtech.client.iconContainers.items.GTItemIconContainer;
+import gregtech.client.iconContainers.items.GTTextureSetItemIconContainer;
 
 public class Textures {
+
+    public static final String TextureMaterialIconDirectory = "materialicons/";
+    public static final String TextureSetFallback = "NONE";
+    public static final String OverlaySuffix = "_OVERLAY";
 
     // spotless:off
     public enum InvisibleIcon implements IIcon {
@@ -78,7 +86,7 @@ public class Textures {
         }
     }
 
-    public final class BlockIcons {
+    public static final class BlockIcons {
 
         // spotless:off
         public static final IIconContainer
@@ -132,6 +140,8 @@ public class Textures {
             LONG_DISTANCE_PIPE_ITEM = create("LONG_DISTANCE_PIPE_ITEM"),
 
             HIDDEN_FACE = create("HIDDEN_FACE"),
+
+            REINFORCED_GLASS = create("REINFORCED_GLASS"),
 
             MACHINE_CASING_TANK_1 = create("MACHINE_CASING_TANK_1"),
             MACHINE_CASING_TANK_2 = create("MACHINE_CASING_TANK_2"),
@@ -334,6 +344,7 @@ public class Textures {
             MACHINE_CASING_RADIANT_NAQUADAH_ALLOY = create("MACHINE_CASING_RADIANT_NAQUADAH_ALLOY"),
 
             MACHINE_CASING_FIREBOX_TITANIUM = create("MACHINE_CASING_FIREBOX_TITANIUM"),
+            MACHINE_CASING_FIREBOX_TITANIUM_TOP = create("MACHINE_CASING_FIREBOX_TITANIUM_TOP"),
             MACHINE_CASING_FUSION_COIL = create("MACHINE_CASING_FUSION_COIL"),
             MACHINE_CASING_FUSION = create("MACHINE_CASING_FUSION"),
             MACHINE_CASING_FUSION_GLASS = create("MACHINE_CASING_FUSION_GLASS"),
@@ -422,6 +433,9 @@ public class Textures {
             OVERLAY_MULTI_NEUTRONIUM_ACTIVE = createOptional("OVERLAY_MULTI_NEUTRONIUM_ACTIVE"),
             OVERLAY_MULTI_NEUTRONIUM_ACTIVE_GLOW = createOptional("OVERLAY_MULTI_NEUTRONIUM_ACTIVE_GLOW"),
 
+            OVERLAY_HATCH_TOXIC_RESIDUE_SENSOR=createOptional("OVERLAY_HATCH_TOXIC_RESIDUE_SENSOR"),
+            OVERLAY_HATCH_TOXIC_RESIDUE_SENSOR_GLOW=createOptional("OVERLAY_HATCH_TOXIC_RESIDUE_SENSOR_GLOW"),
+
             OVERLAY_MULTI_BLACKHOLE = createOptional("OVERLAY_MULTI_BLACKHOLE"),
             OVERLAY_MULTI_BLACKHOLE_GLOW = createOptional("OVERLAY_MULTI_BLACKHOLE_GLOW"),
             OVERLAY_MULTI_BLACKHOLE_ACTIVE = createOptional("OVERLAY_MULTI_BLACKHOLE_ACTIVE"),
@@ -469,23 +483,40 @@ public class Textures {
 
             MIXING_CASING = create("MIXING_CASING"),
             FORMING_CORE = create("FORMING_CORE"),
+            MACHINE_CASING_HEARTH_TOP = create("MACHINE_CASING_HEARTH_TOP"),
+            MACHINE_CASING_HEARTH_SIDE = create("MACHINE_CASING_HEARTH_SIDE"),
+            MACHINE_CASING_HEARTH_BOTTOM = create("MACHINE_CASING_HEARTH_BOTTOM"),
+            MACHINE_CASING_NAQUADAH_REINFORCED_DISTILLATION = create("MACHINE_CASING_NAQUADAH_REINFORCED_DISTILLATION"),
+            ALGAE_CASING = create("ALGAE_CASING"),
+            NAQUADAH_REACTOR_CASING = create("NAQUADAH_REACTOR_CASING"),
 
+            MACHINE_CASING_FRIDGE_TOP = create("MACHINE_CASING_FRIDGE_TOP"),
+            MACHINE_CASING_FRIDGE_SIDE = create("MACHINE_CASING_FRIDGE_SIDE"),
+            MACHINE_CASING_FRIDGE_BOTTOM = create("MACHINE_CASING_FRIDGE_BOTTOM"),
             DECAY_WAREHOUSE_BACKGROUND = create("DECAY_WAREHOUSE_BACKGROUND"),
             DECAY_WAREHOUSE_GLOW = createOptional("DECAY_WAREHOUSE_GLOW"),
 
             MACHINE_CASING_RADIATIONPROOF = create("MACHINE_CASING_RADIATIONPROOF"),
             MACHINE_CASING_ADVANCEDRADIATIONPROOF = create("MACHINE_CASING_ADVANCEDRADIATIONPROOF"),
             MACHINE_CASING_FIREBOX_BRONZE = create("MACHINE_CASING_FIREBOX_BRONZE"),
+            MACHINE_CASING_FIREBOX_BRONZE_TOP = create("MACHINE_CASING_FIREBOX_BRONZE_TOP"),
             MACHINE_CASING_FIREBOX_STEEL = create("MACHINE_CASING_FIREBOX_STEEL"),
+            MACHINE_CASING_FIREBOX_STEEL_TOP = create("MACHINE_CASING_FIREBOX_STEEL_TOP"),
             MACHINE_CASING_FIREBOX_TUNGSTENSTEEL = create("MACHINE_CASING_FIREBOX_TUNGSTENSTEEL"),
+            MACHINE_CASING_FIREBOX_TUNGSTENSTEEL_TOP = create("MACHINE_CASING_FIREBOX_TUNGSTENSTEEL_TOP"),
             MACHINE_CASING_ENGINE_INTAKE = create("MACHINE_CASING_ENGINE_INTAKE"),
             MACHINE_CASING_EXTREME_ENGINE_INTAKE = create("MACHINE_CASING_EXTREME_ENGINE_INTAKE"), // changed color in a terrible way
             MACHINE_CASING_CHEMICALLY_INERT = create("MACHINE_CASING_CHEMICALLY_INERT"),
 
             MACHINE_CASING_DENSEBRICKS = create("MACHINE_CASING_DENSEBRICKS"),
+            MACHINE_CASING_BRICKEDBLASTFURNACE_INACTIVE = create("MACHINE_CASING_BRICKEDBLASTFURNACE_INACTIVE"),
+            MACHINE_CASING_BRICKEDBLASTFURNACE_INACTIVE_GLOW = createOptional("MACHINE_CASING_BRICKEDBLASTFURNACE_INACTIVE_GLOW"),
             MACHINE_CASING_BRICKEDBLASTFURNACE_ACTIVE = create("MACHINE_CASING_BRICKEDBLASTFURNACE_ACTIVE"),
             MACHINE_CASING_BRICKEDBLASTFURNACE_ACTIVE_GLOW = createOptional("MACHINE_CASING_BRICKEDBLASTFURNACE_ACTIVE_GLOW"),
-            MACHINE_CASING_BRICKEDBLASTFURNACE_INACTIVE = create("MACHINE_CASING_BRICKEDBLASTFURNACE_INACTIVE"),
+
+            MODIFICATIONTABLE_TOP = create("MODIFICATIONTABLE_TOP"),
+            MODIFICATIONTABLE_SIDE = create("MODIFICATIONTABLE_SIDE"),
+            MODIFICATIONTABLE_BOTTOM = create("MODIFICATIONTABLE_BOTTOM"),
 
             MACHINE_COIL_CUPRONICKEL = create("MACHINE_COIL_CUPRONICKEL"),
             MACHINE_COIL_CUPRONICKEL_BACKGROUND = create("MACHINE_COIL_CUPRONICKEL_BACKGROUND"),
@@ -653,10 +684,19 @@ public class Textures {
             BLOCK_NAQUADAHPREIN = create("BLOCK_NAQUADAHPREIN"),
             BLOCK_NEUTRONIUMPREIN = create("BLOCK_NEUTRONIUMPREIN"),
             BLOCK_DEEP_DARK_RAW = create("BLOCK_DEEP_DARK_RAW"),
+            BLOCK_REINFORCED_CONCRETE = create("BLOCK_REINFORCED_CONCRETE"),
             BLOCK_IRREIN = create("BLOCK_IRREIN"),
             BLOCK_PLASCRETE = create("BLOCK_PLASCRETE"),
             BLOCK_TSREIN = create("BLOCK_TSREIN"),
             BLOCK_POWDER = create("BLOCK_POWDER"),
+
+            // IC2 Replacements
+            BLOCK_BOUNCE_PAD_SIDE = create("BLOCK_BOUNCE_PAD_SIDE"),
+            BLOCK_BOUNCE_PAD_TOP = create("BLOCK_BOUNCE_PAD_TOP"),
+            BLOCK_STICKY_PAD_TOP = create("BLOCK_STICKY_PAD_TOP"),
+            BLOCK_STICKY_PAD_SIDE = create("BLOCK_STICKY_PAD_SIDE"),
+            BLOCK_STICKY_PAD_BOTTOM = create("BLOCK_STICKY_PAD_BOTTOM"),
+            BLOCK_IRON_FENCE = create("BLOCK_IRON_FENCE"),
 
             OVERLAY_LOCKER = createOptional("OVERLAY_LOCKER"),
             OVERLAY_LOCKER_000 = createOptional("OVERLAY_LOCKER_000"),
@@ -1234,19 +1274,29 @@ public class Textures {
             OVERLAY_FRONT_STEAM_MACERATOR_ACTIVE = createOptional("OVERLAY_FRONT_STEAM_MACERATOR_ACTIVE"),
             OVERLAY_FRONT_STEAM_MACERATOR_ACTIVE_GLOW = createOptional("OVERLAY_FRONT_STEAM_MACERATOR_ACTIVE_GLOW"),
             OVERLAY_FRONT_STEAM_WASHER = createOptional("OVERLAY_FRONT_STEAM_WASHER"),
+                OVERLAY_FRONT_STEAM_WASHER_GLOW = createOptional("OVERLAY_FRONT_STEAM_WASHERR_GLOW"),
             OVERLAY_FRONT_STEAM_WASHER_ACTIVE = createOptional("OVERLAY_FRONT_STEAM_WASHER_ACTIVE"),
+                OVERLAY_FRONT_STEAM_WASHER_ACTIVE_GLOW = createOptional("OVERLAY_FRONT_STEAM_WASHER_ACTIVER_GLOW"),
             OVERLAY_FRONT_WATER_PUMP = createOptional("OVERLAY_FRONT_WATER_PUMP"),
+                OVERLAY_FRONT_WATER_PUMP_GLOW = createOptional("OVERLAY_FRONT_WATER_PUMP_GLOW"),
             OVERLAY_FRONT_WATER_PUMP_ACTIVE = createOptional("OVERLAY_FRONT_WATER_PUMP_ACTIVE"),
+                OVERLAY_FRONT_WATER_PUMP_ACTIVE_GLOW = createOptional("OVERLAY_FRONT_WATER_PUMP_ACTIVE_GLOW"),
             OVERLAY_FRONT_STEAM_CENTRIFUGE = createOptional("OVERLAY_FRONT_STEAM_CENTRIFUGE"),
+                OVERLAY_FRONT_STEAM_CENTRIFUGE_GLOW = createOptional("OVERLAY_FRONT_STEAM_CENTRIFUGE_GLOW"),
             OVERLAY_FRONT_STEAM_CENTRIFUGE_ACTIVE = createOptional("OVERLAY_FRONT_STEAM_CENTRIFUGE_ACTIVE"),
+                OVERLAY_FRONT_STEAM_CENTRIFUGE_ACTIVE_GLOW = createOptional("OVERLAY_FRONT_STEAM_CENTRIFUGE_ACTIVE_GLOW"),
             OVERLAY_FRONT_STEAM_FORGE_HAMMER = createOptional("OVERLAY_FRONT_STEAM_FORGE_HAMMER"),
+                OVERLAY_FRONT_STEAM_FORGE_HAMMER_GLOW = createOptional("OVERLAY_FRONT_STEAM_FORGE_HAMMER_GLOW"),
             OVERLAY_FRONT_STEAM_FORGE_HAMMER_ACTIVE = createOptional("OVERLAY_FRONT_STEAM_FORGE_HAMMER_ACTIVE"),
+                OVERLAY_FRONT_STEAM_FORGE_HAMMER_ACTIVE_GLOW = createOptional("OVERLAY_FRONT_STEAM_FORGE_HAMMER_ACTIVE_GLOW"),
             OVERLAY_FRONT_STEAM_COMPRESSOR = createOptional("OVERLAY_FRONT_STEAM_COMPRESSOR"),
             OVERLAY_FRONT_STEAM_COMPRESSOR_GLOW = createOptional("OVERLAY_FRONT_STEAM_COMPRESSOR_GLOW"),
             OVERLAY_FRONT_STEAM_EXTRACTOR = createOptional("OVERLAY_FRONT_STEAM_EXTRACTOR"),
             OVERLAY_FRONT_STEAM_EXTRACTOR_GLOW = createOptional("OVERLAY_FRONT_STEAM_EXTRACTOR_GLOW"),
             OVERLAY_FRONT_STEAM_ALLOY_SMELTER_MULTI = createOptional("OVERLAY_FRONT_STEAM_ALLOY_SMELTER_MULTI"),
+            OVERLAY_FRONT_STEAM_ALLOY_SMELTER_MULTI_GLOW = createOptional("OVERLAY_FRONT_STEAM_ALLOY_SMELTER_MULTI_GLOW"),
             OVERLAY_FRONT_STEAM_ALLOY_SMELTER_MULTI_ACTIVE = createOptional("OVERLAY_FRONT_STEAM_ALLOY_SMELTER_MULTI_ACTIVE"),
+            OVERLAY_FRONT_STEAM_ALLOY_SMELTER_MULTI_ACTIVE_GLOW = createOptional("OVERLAY_FRONT_STEAM_ALLOY_SMELTER_MULTI_ACTIVE_GLOW"),
             OVERLAY_FRONT_STEAM_FURNACE_MULTI = createOptional("OVERLAY_FRONT_STEAM_FURNACE_MULTI"),
             OVERLAY_FRONT_STEAM_FURNACE_MULTI_ACTIVE = createOptional("OVERLAY_FRONT_STEAM_FURNACE_MULTI_ACTIVE"),
             OVERLAY_FRONT_STEAM_FURNACE_MULTI_GLOW = createOptional("OVERLAY_FRONT_STEAM_FURNACE_MULTI_GLOW"),
@@ -1412,7 +1462,29 @@ public class Textures {
             OVERLAY_FRONT_SEISMIC_PROSPECTOR_ACTIVE = createOptional("OVERLAY_FRONT_SEISMIC_PROSPECTOR_ACTIVE"),
             OVERLAY_FRONT_SEISMIC_PROSPECTOR_ACTIVE_GLOW = createOptional("OVERLAY_FRONT_SEISMIC_PROSPECTOR_ACTIVE_GLOW"),
 
-        OVERLAY_ADV_PUMP = createOptional("OVERLAY_ADV_PUMP"),
+            BEC_CONDUIT = create("BEC_CONDUIT"),
+            BEC_CASING = create("BEC_CASING"),
+            BEC_MANIPULATOR = create("BEC_MANIPULATOR"),
+            BEC_CONFLICTCASING = create("BEC_CONFLICTCASING"),
+            BEC_PEACECASING = create("BEC_PEACECASING"),
+            BEC_PRIMARYCOIL = create("BEC_PRIMARYCOIL"),
+            BEC_SECONDARYCOIL = create("BEC_SECONDARYCOIL"),
+            BEC_GLASS = create("BEC_GLASS"),
+
+            BEC_CONTROLLER_BACKGROUND = createOptional("BEC_CONTROLLER_BACKGROUND"),
+            BEC_GENERATOR_ACTIVE = createOptional("BEC_GENERATOR_ACTIVE"),
+            BEC_STORAGE_ACTIVE = createOptional("BEC_STORAGE_ACTIVE"),
+            BEC_ASSEMBLER_ACTIVE = createOptional("BEC_ASSEMBLER_ACTIVE"),
+            BEC_IONODE_ACTIVE = createOptional("BEC_IONODE_ACTIVE"),
+            BEC_MAXWELL_GATE_ACTIVE = createOptional("BEC_MAXWELL_GATE_ACTIVE"),
+
+            OVERLAY_HATCH_NANITE_DETECTOR = createOptional("OVERLAY_HATCH_NANITE_DETECTOR"),
+            OVERLAY_HATCH_NANITE_DETECTOR_GLOW = createOptional("OVERLAY_HATCH_NANITE_DETECTOR_GLOW"),
+
+            OVERLAY_HATCH_CONDENSATE_DETECTOR = createOptional("OVERLAY_HATCH_CONDENSATE_DETECTOR"),
+            OVERLAY_HATCH_CONDENSATE_DETECTOR_GLOW = createOptional("OVERLAY_HATCH_CONDENSATE_DETECTOR_GLOW"),
+
+            OVERLAY_ADV_PUMP = createOptional("OVERLAY_ADV_PUMP"),
             OVERLAY_TELEPORTER = createOptional("OVERLAY_TELEPORTER"),
             OVERLAY_TELEPORTER_GLOW = createOptional("OVERLAY_TELEPORTER_GLOW"),
             OVERLAY_TELEPORTER_ACTIVE = createOptional("OVERLAY_TELEPORTER_ACTIVE"),
@@ -1508,8 +1580,7 @@ public class Textures {
             CONTAINMENT_CASING = create("CONTAINMENT_CASING"),
             CONTAINMENT_FRAME = create("CONTAINMENT_FRAME"),
             MOLECULAR_CONTAINMENT_CASING = create("MOLECULAR_CONTAINMENT_CASING"),
-            CUTTING_FACTORY_FRAME_SIDE = create("CUTTING_FACTORY_FRAME_SIDE"),
-            CUTTING_FACTORY_FRAME_TOP = create("CUTTING_FACTORY_FRAME_TOP"),
+            CUTTING_FACTORY_FRAME = create("CUTTING_FACTORY_FRAME"),
             ELEMENTAL_CONFINEMENT_SHELL = create("ELEMENTAL_CONFINEMENT_SHELL"),
             FORGE_CASING = create("FORGE_CASING"),
             INCONEL_REINFORCED_CASING = create("INCONEL_REINFORCED_CASING"),
@@ -1706,7 +1777,7 @@ public class Textures {
             BLOCK_URANIUM235 = create("BLOCK_URANIUM235"),
             BLOCK_VANADIUM = create("BLOCK_VANADIUM"),
             BLOCK_VANADIUMGALLIUM = create("BLOCK_VANADIUMGALLIUM"),
-            BLOCK_WROUGHTIRON = create("BLOCK_WROUGHTIRON"),
+            BLOCK_CASTIRON = create("BLOCK_CASTIRON"),
             BLOCK_YTTRBIUM = create("BLOCK_YTTRBIUM"),
             BLOCK_YTTRIUM = create("BLOCK_YTTRIUM"),
             BLOCK_YTTRIUMBARIUMCUPRATE = create("BLOCK_YTTRIUMBARIUMCUPRATE"),
@@ -1770,6 +1841,9 @@ public class Textures {
             BLOCK_SIXPHASEDCOPPER = create("BLOCK_SIXPHASEDCOPPER"),
             BLOCK_HELLISHMETAL = create("BLOCK_HELLISHMETAL"),
             BLOCK_MAGNETOHYDRODYNAMICALLYCONSTRAINEDSTARMATTER = create("BLOCK_MAGNETOHYDRODYNAMICALLYCONSTRAINEDSTARMATTER"),
+            BLOCK_HEXANITE = create("BLOCK_HEXANITE"),
+            BLOCK_SHIJIMA = create("BLOCK_SHIJIMA"),
+            BLOCK_CHURITSU = create("BLOCK_CHURITSU"),
 
             BLOCK_ORIHARUKON = create("BLOCK_ORIHARUKON"),
 
@@ -1981,6 +2055,7 @@ public class Textures {
             BLOCK_QUARK_CONTAINMENT_CASING = create("BLOCK_QUARK_CONTAINMENT_CASING"),
             COMPRESSOR_CASING = create("COMPRESSOR_CASING"),
             COMPRESSOR_PIPE_CASING = create("COMPRESSOR_PIPE_CASING"),
+                COMPRESSOR_PIPE_CASING_TOP = create("COMPRESSOR_PIPE_CASING_TOP"),
             HEATING_DUCT_CASING = create("HEATING_DUCT_CASING"),
             COOLANT_DUCT_CASING = create("COOLANT_DUCT_CASING"),
             NEUTRONIUM_CASING = create("NEUTRONIUM_CASING"),
@@ -2031,7 +2106,9 @@ public class Textures {
             OVERLAY_FRONT_EXOFOUNDRY_ACTIVE_GLOW = createOptional("OVERLAY_FRONT_EXOFOUNDRY_ACTIVE_GLOW"),
             COKE_OVEN_CASING = create("COKE_OVEN_CASING"),
             COKE_OVEN_OVERLAY_INACTIVE = createOptional("COKE_OVEN_OVERLAY_INACTIVE"),
+            COKE_OVEN_OVERLAY_INACTIVE_GLOW = createOptional("COKE_OVEN_OVERLAY_INACTIVE_GLOW"),
             COKE_OVEN_OVERLAY_ACTIVE = createOptional("COKE_OVEN_OVERLAY_ACTIVE"),
+            COKE_OVEN_OVERLAY_ACTIVE_GLOW = createOptional("COKE_OVEN_OVERLAY_ACTIVE_GLOW"),
 
             OVERLAY_FRONT_MASS_SOLIDIFIER = createOptional("OVERLAY_FRONT_MASS_SOLIDIFIER"),
             OVERLAY_FRONT_MASS_SOLIDIFIER_ACTIVE = createOptional("OVERLAY_FRONT_MASS_SOLIDIFIER_ACTIVE"),
@@ -2060,12 +2137,37 @@ public class Textures {
             OVERLAY_FRONT_MEGA_CHEMICAL_REACTOR_GLOW = createOptional("OVERLAY_FRONT_MEGA_CHEMICAL_REACTOR_GLOW"),
             OVERLAY_FRONT_MEGA_CHEMICAL_REACTOR_ACTIVE = createOptional("OVERLAY_FRONT_MEGA_CHEMICAL_REACTOR_ACTIVE"),
             OVERLAY_FRONT_MEGA_CHEMICAL_REACTOR_ACTIVE_GLOW = createOptional("OVERLAY_FRONT_MEGA_CHEMICAL_REACTOR_ACTIVE_GLOW"),
+            OVERLAY_FRONT_MEGA_DISTILLATION_TOWER = createOptional("OVERLAY_FRONT_MEGA_DISTILLATION_TOWER"),
+            OVERLAY_FRONT_MEGA_DISTILLATION_TOWER_GLOW = createOptional("OVERLAY_FRONT_MEGA_DISTILLATION_TOWER_GLOW"),
+            OVERLAY_FRONT_MEGA_DISTILLATION_TOWER_ACTIVE = createOptional("OVERLAY_FRONT_MEGA_DISTILLATION_TOWER_ACTIVE"),
+            OVERLAY_FRONT_MEGA_DISTILLATION_TOWER_ACTIVE_GLOW = createOptional("OVERLAY_FRONT_MEGA_DISTILLATION_TOWER_ACTIVE_GLOW"),
+            OVERLAY_FRONT_MEGA_OIL_CRACKER = createOptional("OVERLAY_FRONT_MEGA_OIL_CRACKER"),
+            OVERLAY_FRONT_MEGA_OIL_CRACKER_GLOW = createOptional("OVERLAY_FRONT_MEGA_OIL_CRACKER_GLOW"),
+            OVERLAY_FRONT_MEGA_OIL_CRACKER_ACTIVE = createOptional("OVERLAY_FRONT_MEGA_OIL_CRACKER_ACTIVE"),
+            OVERLAY_FRONT_MEGA_OIL_CRACKER_ACTIVE_GLOW = createOptional("OVERLAY_FRONT_MEGA_OIL_CRACKER_ACTIVE_GLOW"),
+            OVERLAY_FRONT_FRIDGE = createOptional("OVERLAY_FRONT_FRIDGE"),
+            OVERLAY_FRONT_FRIDGE_GLOW = createOptional("OVERLAY_FRONT_FRIDGE_GLOW"),
+            OVERLAY_FRONT_FRIDGE_ACTIVE = createOptional("OVERLAY_FRONT_FRIDGE_ACTIVE"),
+            OVERLAY_FRONT_FRIDGE_ACTIVE_GLOW = createOptional("OVERLAY_FRONT_FRIDGE_ACTIVE_GLOW"),
+            OVERLAY_FRONT_HEARTH = createOptional("OVERLAY_FRONT_HEARTH"),
+            OVERLAY_FRONT_HEARTH_GLOW = createOptional("OVERLAY_FRONT_HEARTH_GLOW"),
+            OVERLAY_FRONT_HEARTH_ACTIVE = createOptional("OVERLAY_FRONT_HEARTH_ACTIVE"),
+            OVERLAY_FRONT_HEARTH_ACTIVE_GLOW = createOptional("OVERLAY_FRONT_HEARTH_ACTIVE_GLOW"),
             NANOCHIP_MESH_INTERFACE_CASING = create("NANOCHIP_MESH_INTERFACE_CASING"),
             NANOCHIP_REINFORCEMENT_CASING = create("NANOCHIP_REINFORCEMENT_CASING"),
             NANOCHIP_FIREWALL_PROJECTION_CASING = create("NANOCHIP_FIREWALL_PROJECTION_CASING"),
             NANOCHIP_FIREWALL_PROJECTION_CASING_TOP = create("NANOCHIP_FIREWALL_PROJECTION_CASING_TOP"),
             NANOCHIP_COMPUTATIONAL_MATRIX_CASING = create("NANOCHIP_COMPUTATIONAL_MATRIX_CASING"),
             NANOCHIP_GLASS = create("NANOCHIP_GLASS"),
+
+            MACHINE_CASING_STRENGTHENED_INANIMATE=createOptional("MACHINE_CASING_STRENGTHENED_INANIMATE"),
+            MACHINE_CASING_PRECISE_STATIONARY=createOptional("MACHINE_CASING_PRECISE_STATIONARY"),
+            MACHINE_CASING_ULTIMATELY_STATIC=createOptional("MACHINE_CASING_ULTIMATELY_STATIC"),
+
+            OVERLAY_FRONT_LNE=createOptional("OVERLAY_FRONT_LNE"),
+            OVERLAY_FRONT_LNE_ACTIVE=createOptional("OVERLAY_FRONT_LNE_ACTIVE"),
+            OVERLAY_FRONT_LNE_ACTIVE_GLOW=createOptional("OVERLAY_FRONT_LNE_ACTIVE_GLOW"),
+            OVERLAY_FRONT_LNE_GLOW=createOptional("OVERLAY_FRONT_LNE_GLOW"),
 
             OVERLAY_FRONT_NANOCHIP_ASSEMBLY_COMPLEX = createOptional("OVERLAY_FRONT_NANOCHIP_ASSEMBLY_COMPLEX"),
             OVERLAY_FRONT_NANOCHIP_ASSEMBLY_COMPLEX_ACTIVE = createOptional("OVERLAY_FRONT_NANOCHIP_ASSEMBLY_COMPLEX_ACTIVE"),
@@ -2196,7 +2298,7 @@ public class Textures {
             STORAGE_BLOCKS7 = { BLOCK_SUNNARIUM, BLOCK_TANTALUM, BLOCK_TELLURIUM, BLOCK_TERBIUM, BLOCK_THAUMIUM,
                 BLOCK_THORIUM, BLOCK_THULIUM, BLOCK_TIN, BLOCK_TINALLOY, BLOCK_TITANIUM, BLOCK_TRITANIUM,
                 BLOCK_TUNGSTEN, BLOCK_TUNGSTENSTEEL, BLOCK_ULTIMET, BLOCK_URANIUM, BLOCK_URANIUM235 },
-            STORAGE_BLOCKS8 = { BLOCK_VANADIUM, BLOCK_VANADIUMGALLIUM, BLOCK_WROUGHTIRON, BLOCK_YTTRBIUM, BLOCK_YTTRIUM,
+            STORAGE_BLOCKS8 = { BLOCK_VANADIUM, BLOCK_VANADIUMGALLIUM, BLOCK_CASTIRON, BLOCK_YTTRBIUM, BLOCK_YTTRIUM,
                 BLOCK_YTTRIUMBARIUMCUPRATE, BLOCK_ZINC, BLOCK_TUNGSTENCARBIDE, BLOCK_VANADIUMSTEEL, BLOCK_HSSG,
                 BLOCK_HSSE, BLOCK_HSSS, BLOCK_STEELEAF, BLOCK_ICHORIUM, BLOCK_FIRESTONE, BLOCK_SHADOW },
             STORAGE_BLOCKS9 = { BLOCK_AERCRYSTAL, BLOCK_AMBER, BLOCK_AMETHYST, BLOCK_AQUACRYSTAL, BLOCK_BLUETOPAZ,
@@ -2210,7 +2312,8 @@ public class Textures {
             STORAGE_BLOCKS12 = { BLOCK_CRYOLITE, BLOCK_SILICONSG, BLOCK_NICKELALUMINIUM, BLOCK_SPACETIME,
                 BLOCK_TRANSCENDENTMETAL, BLOCK_ORIHARUKON, BLOCK_WHITEDWARFMATTER, BLOCK_BLACKDWARFMATTER,
                 BLOCK_UNIVERSIUM, BLOCK_ETERNITY, BLOCK_MAGMATTER, BLOCK_SIXPHASEDCOPPER, BLOCK_HELLISHMETAL,
-                BLOCK_MAGNETOHYDRODYNAMICALLYCONSTRAINEDSTARMATTER };
+                BLOCK_MAGNETOHYDRODYNAMICALLYCONSTRAINEDSTARMATTER, BLOCK_HEXANITE },
+            STORAGE_BLOCKS13 = { BLOCK_SHIJIMA, BLOCK_CHURITSU };
 
         public static final ITexture[] HIDDEN_TEXTURE = { TextureFactory.builder()
             .addIcon(HIDDEN_FACE)
@@ -2525,6 +2628,7 @@ public class Textures {
             GTUtility.addTexturePage((byte) 2);
             GTUtility.addTexturePage((byte) 8);
             GTUtility.addTexturePage((byte) 16);
+            GTUtility.addTexturePage((byte) 17);
             setCasingTextureForId(ERROR_TEXTURE_INDEX, ERROR_RENDERING[0]);
         }
 
@@ -2586,26 +2690,20 @@ public class Textures {
         }
 
         /**
-         * @deprecated Internal implementation detail. Will be removed in a future release.
-         *             <p>
-         *             Use the factory methods on {@link BlockIcons} instead:
-         *             <ul>
-         *             <li>{@link BlockIcons#custom(String)}</li>
-         *             <li>{@link BlockIcons#customOptional(String)}</li>
-         *             <li>{@link BlockIcons#customAlpha(String)}</li>
-         *             </ul>
+         * Registers a Block {@link IIconContainer} for a {@link TextureSet}
+         *
+         * @param setName The name of the TextureSet
+         * @param prefix  The prefix for the file name
+         *
+         * @return The {@link IIconContainer} instance
          */
-        // TODO: Delete this once the deprecated API is no longer used
-        @Deprecated
-        public static class CustomIcon extends GTCustomBlockIconContainer {
+        public static @NotNull IIconContainer textureSet(@NotNull String setName, @NotNull String prefix) {
+            return GTTextureSetBlockIconContainer.create(setName, prefix, null);
+        }
 
-            /**
-             * @deprecated Use {@link BlockIcons#custom(String)} instead.
-             */
-            @Deprecated
-            public CustomIcon(@NotNull String aIconName) {
-                super(aIconName);
-            }
+        public static @NotNull IIconContainer textureSetWithRegister(@NotNull String setName, @NotNull String prefix,
+            IIconRegister register) {
+            return GTTextureSetBlockIconContainer.create(setName, prefix, register);
         }
 
         private static @NotNull IIconContainer create(@NotNull String name) {
@@ -2615,9 +2713,40 @@ public class Textures {
         private static @NotNull IIconContainer createOptional(@NotNull String name) {
             return GTOptionalBlockIconContainer.create(name);
         }
+
+        public static ITexture[] createTextureWithCasing(ICasingTextureProvider mte, ForgeDirection side,
+            ForgeDirection aFacing, boolean aActive, IIconContainer tex, IIconContainer texGlow,
+            IIconContainer texActive, IIconContainer texActiveGlow) {
+            if (side == aFacing) {
+                if (aActive) return new ITexture[] { mte.getCasingTexture(), TextureFactory.builder()
+                    .addIcon(texActive)
+                    .extFacing()
+                    .build(),
+                    TextureFactory.builder()
+                        .addIcon(texActiveGlow)
+                        .extFacing()
+                        .glow()
+                        .build() };
+                return new ITexture[] { mte.getCasingTexture(), TextureFactory.builder()
+                    .addIcon(tex)
+                    .extFacing()
+                    .build(),
+                    TextureFactory.builder()
+                        .addIcon(texGlow)
+                        .extFacing()
+                        .glow()
+                        .build() };
+            }
+            return new ITexture[] { mte.getCasingTexture() };
+        }
+
+        public static void cleanup() {
+            GTTextureSetBlockIconContainer.cleanup();
+            GTCustomBlockIconContainer.cleanup();
+        }
     }
 
-    public final class ItemIcons {
+    public static final class ItemIcons {
 
         // spotless:off
         public static final IIconContainer
@@ -2656,6 +2785,7 @@ public class Textures {
             WIRELESS_HEADPHONES = create("WIRELESS_HEADPHONES"),
             HALO = create("HALO"),
             HALO_FUZZY = create("HALO_FUZZY"),
+            MASK_VOLTAGE_COIL = create("MASK_VOLTAGE_COIL"),
             JACKHAMMER_BASE = create("JACKHAMMER_BASE");
         // spotless:on
 
@@ -2686,26 +2816,29 @@ public class Textures {
         }
 
         /**
-         * @deprecated Internal implementation detail. Will be removed in a future release.
-         *             <p>
-         *             Use the factory methods on {@link ItemIcons#custom(String)} instead:
+         * Registers a Item {@link IIconContainer} for a {@link TextureSet}
+         *
+         * @param setName The name of the TextureSet
+         * @param prefix  The prefix for the file name
+         *
+         * @return The {@link IIconContainer} instance
          */
-        // TODO: Delete this once the deprecated API is no longer used
-        @Deprecated
-        public static class CustomIcon extends GTCustomItemIconContainer {
+        public static @NotNull IIconContainer textureSet(@NotNull String setName, @NotNull String prefix) {
+            return GTTextureSetItemIconContainer.create(setName, prefix, null);
+        }
 
-            /**
-             * @deprecated Use {@link ItemIcons#custom(String)} instead.
-             *             This constructor will become private later.
-             */
-            @Deprecated
-            public CustomIcon(@NotNull String aIconName) {
-                super(aIconName);
-            }
+        public static @NotNull IIconContainer textureSetWithRegister(@NotNull String setName, @NotNull String prefix,
+            IIconRegister register) {
+            return GTTextureSetItemIconContainer.create(setName, prefix, register);
         }
 
         private static @NotNull IIconContainer create(@NotNull String name) {
             return GTItemIconContainer.create(name);
+        }
+
+        public static void cleanup() {
+            GTTextureSetItemIconContainer.cleanup();
+            GTCustomItemIconContainer.cleanup();
         }
 
     }

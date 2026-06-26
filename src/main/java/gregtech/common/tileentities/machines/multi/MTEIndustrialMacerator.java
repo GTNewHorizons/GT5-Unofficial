@@ -1,7 +1,6 @@
 package gregtech.common.tileentities.machines.multi;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
-import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlockAnyMeta;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlocksTiered;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
@@ -11,6 +10,7 @@ import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
+import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 
 import java.util.List;
@@ -39,7 +39,6 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
@@ -53,9 +52,11 @@ import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.tooltip.TooltipHelper;
+import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.pollution.PollutionConfig;
 import gregtech.common.tileentities.machines.IDualInputHatch;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -125,7 +126,8 @@ public class MTEIndustrialMacerator extends MTEExtendedPowerMultiBlockBase<MTEIn
             .addCasingInfoExactly("Grate Machine Casing", 6, false)
             .addCasingInfoExactly("Steel Gear Box", 18, false)
             .addCasingInfoExactly("HSS-G Frame Box", 20, false)
-            .addCasingInfoExactly("Any Tinted Industrial Glass", 8, false)
+            .addCasingInfoExactly("Any Tiered Glass", 8, false)
+            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .addStructureAuthors(EnumChatFormatting.GOLD + "VorTex")
             .toolTipFinisher();
         return tt;
@@ -174,7 +176,7 @@ public class MTEIndustrialMacerator extends MTEExtendedPowerMultiBlockBase<MTEIn
                                     m -> m.structureTier))))
                 .addElement('A', Casings.SteelGearBoxCasing.asElement())
                 .addElement('B', Casings.GrateMachineCasing.asElement())
-                .addElement('E', ofBlockAnyMeta(GregTechAPI.sBlockTintedGlass))
+                .addElement('E', chainAllGlasses())
                 .addElement('D', ofFrame(Materials.HSSG))
                 .build();
         }
@@ -203,19 +205,22 @@ public class MTEIndustrialMacerator extends MTEExtendedPowerMultiBlockBase<MTEIn
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         casingAmount = 0;
         structureTier = -1;
-        if (!checkPiece(getActiveStructurePiece(), getActiveOffsetX(), getActiveOffsetY(), getActiveOffsetZ()))
-            return false;
+        if (!checkPiece(getActiveStructurePiece(), getActiveOffsetX(), getActiveOffsetY(), getActiveOffsetZ(), errors))
+            return;
         if (controllerTier == 2) {
             structureTier = 2;
         } else structureTier = 1;
-        if (structureTier < 1 || (structureTier == 1 && casingAmount < 26)
-            || (structureTier == 2 && casingAmount < 69)
-            || !checkHatch()) return false;
-        updateHatchTexture();
-        return true;
+        int minCasings = structureTier == 2 ? 69 : 26;
+        checkCasingMin(errors, casingAmount, minCasings);
+        checkHasEnergyHatch(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasMufflerHatch(errors);
+        checkHasInputBus(errors);
+        checkHasOutputBus(errors);
+        if (errors.isEmpty()) updateHatchTexture();
     }
 
     protected void updateHatchTexture() {
@@ -227,11 +232,6 @@ public class MTEIndustrialMacerator extends MTEExtendedPowerMultiBlockBase<MTEIn
         for (MTEHatch h : mMaintenanceHatches) h.updateTexture(textureID);
         for (MTEHatch h : mMufflerHatches) h.updateTexture(textureID);
         for (MTEHatch h : mEnergyHatches) h.updateTexture(textureID);
-    }
-
-    public boolean checkHatch() {
-        return !mMufflerHatches.isEmpty() && !mOutputBusses.isEmpty()
-            && (!mInputBusses.isEmpty() || !mDualInputHatches.isEmpty());
     }
 
     @Override
@@ -345,6 +345,16 @@ public class MTEIndustrialMacerator extends MTEExtendedPowerMultiBlockBase<MTEIn
     @Override
     public byte getUpdateData() {
         return (byte) structureTier;
+    }
+
+    @Override
+    public boolean supportsVoidProtection() {
+        return true;
+    }
+
+    @Override
+    public boolean supportsBatchMode() {
+        return true;
     }
 
     @Override

@@ -5,7 +5,6 @@ import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.Mods.BloodArsenal;
 import static gregtech.api.enums.Mods.Botania;
 import static gregtech.api.enums.Mods.EnderIO;
-import static gregtech.api.enums.Mods.IndustrialCraft2;
 import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.util.GTUtility.getColoredTierNameFromTier;
 
@@ -51,7 +50,7 @@ public class GlassTier {
     private static final HashMap<Pair<Block, Integer>, Pair<Integer, Integer>> glassToTierAndIndex = new HashMap<>();
     // For default tier ordering, so the primary (borosilicate) glasses come before the variants
     private static final int minTier = VoltageIndex.HV;
-    private static final int maxTier = VoltageIndex.UMV;
+    private static final int maxTier = VoltageIndex.UXV;
     private static final Pair<Integer, Integer> defaultGlassTier = Pair.of(null, 0);
     private static final List<Pair<Block, Integer>> mainGlass = new ArrayList<>(
         Collections.nCopies(maxTier + 1 - minTier, null));
@@ -132,7 +131,6 @@ public class GlassTier {
                     .registerAsIndicator(new ItemStack(glass.getLeft(), 1, glass.getRight()), ctr);
                 ctr++;
             }
-            glassList.add(mainGlass.get(mainGlass.size() - 1));
         }
         return glassList;
     }
@@ -166,7 +164,7 @@ public class GlassTier {
             for (int i = 0; i < 4; i++) {
                 addCustomGlass(GregTechAPI.sBlockTintedGlass, i, 4, i + 2);
             }
-            addCustomGlass(IndustrialCraft2.ID, "blockAlloyGlass", 0, 4, 6);
+            addCustomGlass(GregTechAPI.sBlockGlass1, 10, 4, 6);
             if (BloodArsenal.isModLoaded()) {
                 addCustomGlass(BloodArsenal.ID, "blood_stained_glass", 0, 4, 7);
             }
@@ -177,7 +175,7 @@ public class GlassTier {
             // --- IV ---
             addCustomGlass(ItemRegistry.bw_realglas, 2, 5, 0);
             // Thorium-Yttrium
-            addCustomGlass(ItemRegistry.bw_realglas, 12, 5, 1);
+            addCustomGlass(ItemRegistry.bw_realglas2, 0, 5, 1);
             if (Botania.isModLoaded()) {
                 addCustomGlass(Botania.ID, "elfGlass", 0, 5, 2);
                 addCustomGlass(Botania.ID, "bifrostPerm", 0, 5, 3);
@@ -194,24 +192,29 @@ public class GlassTier {
             addCustomGlass(BlockQuantumGlass.INSTANCE, 0, 8, 1);
 
             // --- UHV ---
-            addCustomGlass(ItemRegistry.bw_realglas, 13, 9, 0);
+            addCustomGlass(ItemRegistry.bw_realglas, 6, 9, 0);
             addCustomGlass(GregTechAPI.sBlockGlass1, 1, 9, 1);
             addCustomGlass(GregTechAPI.sBlockGlass1, 2, 9, 2);
+            addCustomGlass(GregTechAPI.sBlockGlass1, 7, 9, 3);
+            addCustomGlass(GregTechAPI.sBlockGlass1, 8, 9, 4);
 
             // --- UEV ---
-            addCustomGlass(ItemRegistry.bw_realglas, 14, 10, 0);
-            addCustomGlass(GregTechAPI.sBlockGlass1, 7, 10, 1);
-            addCustomGlass(GregTechAPI.sBlockGlass1, 3, 10, 2);
+            addCustomGlass(ItemRegistry.bw_realglas, 7, 10, 0);
+            addCustomGlass(GregTechAPI.sBlockGlass1, 3, 10, 1);
 
             // --- UIV ---
-            addCustomGlass(ItemRegistry.bw_realglas, 15, 11, 0);
+            addCustomGlass(ItemRegistry.bw_realglas, 8, 11, 0);
             addCustomGlass(GregTechAPI.sBlockGlass1, 4, 11, 1);
+            addCustomGlass(Loaders.antimatterContainmentCasing, 0, 11, 2);
 
             // --- UMV ---
-            addCustomGlass(ItemRegistry.bw_realglas2, 0, 12, 0);
+            addCustomGlass(ItemRegistry.bw_realglas, 9, 12, 0);
             addCustomGlass(BlockGodforgeGlass.INSTANCE, 0, 12, 1);
-            addCustomGlass(Loaders.antimatterContainmentCasing, 0, 12, 2);
+            addCustomGlass(GregTechAPI.sBlockGlass1, 9, 12, 2);
             addCustomGlass(GregTechAPI.sBlockGlass1, 5, 12, 3);
+
+            // --- UXV ---
+            addCustomGlass(ItemRegistry.bw_realglas, 10, 13, 0);
         }
 
         private static void registerGlassOreDicts() {

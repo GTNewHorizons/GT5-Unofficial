@@ -26,6 +26,7 @@ public final class GTTextureIds {
     public static final String BACKGROUND_NAMEPLATE_NANOCHIP = "gregtech:bg_nameplate_nanochip";
 
     public static final String BACKGROUND_TERMINAL_STANDARD = "gregtech:bg_terminal_standard";
+    public static final String BACKGROUND_TERMINAL_TEXT_FILED_STANDARD = "gregtech:bg_terminal_text_filed_standard";
     public static final String BACKGROUND_TERMINAL_BLACK = "gregtech:bg_terminal_black";
     public static final String BACKGROUND_TERMINAL_TECTECH = "gregtech:bg_terminal_tectech";
     public static final String BACKGROUND_REDSTONE_SNIFFER = "gregtech:bg_redstone_sniffer";
@@ -41,6 +42,10 @@ public final class GTTextureIds {
     public static final String SLOT_ITEM_PRIMITIVE = "gregtech:slot_item_primitive";
     public static final String SLOT_ITEM_FOUNDRY = "gregtech:slot_item_foundry";
     public static final String SLOT_EXTRUDER_SHAPE = "gregtech:slot_extrusion_standard";
+    public static final String SLOT_ITEM_GOLD = "gregtech:slot_item_gold";
+    public static final String SLOT_ITEM_GREEN = "gregtech:slot_item_green";
+    public static final String SLOT_ITEM_PURPLE = "gregtech:slot_item_purple";
+    public static final String SLOT_ITEM_PRISMATIC = "gregtech:slot_item_prismatic";
     public static final String SLOT_ITEM_NANOCHIP = "gregtech:slot_item_nanochip";
 
     public static final String SLOT_FLUID_STANDARD = "gregtech:slot_fluid_standard";
@@ -54,7 +59,7 @@ public final class GTTextureIds {
     public static final String OVERLAY_SLOT_BLOCK_STEEL = "gregtech:overlay_slot_block_steel";
     public static final String OVERLAY_SLOT_BLOCK_PRIMITIVE = "gregtech:overlay_slot_block_primitive";
 
-    public static final String OVERLAY_SLOT_CANISTER_STANDARD = "gregtech:overlay_slot_canister_standard";
+    public static final String OVERLAY_SLOT_CANISTER_DARK = "gregtech:overlay_slot_canister_dark";
     public static final String OVERLAY_SLOT_CANISTER_BRONZE = "gregtech:overlay_slot_canister_bronze";
     public static final String OVERLAY_SLOT_CANISTER_STEEL = "gregtech:overlay_slot_canister_steel";
 
@@ -84,6 +89,13 @@ public final class GTTextureIds {
     public static final String OVERLAY_SLOT_OUT_STANDARD = "gregtech:overlay_slot_out_standard";
     public static final String OVERLAY_SLOT_OUT_BRONZE = "gregtech:overlay_slot_out_bronze";
     public static final String OVERLAY_SLOT_OUT_STEEL = "gregtech:overlay_slot_out_steel";
+
+    public static final String OVERLAY_SLOT_DRAWER_STANDARD = "gregtech:overlay_slot_drawer_standard";
+    public static final String OVERLAY_SLOT_DRAWER_SIDE_STANDARD = "gregtech:overlay_slot_drawer_side_standard";
+    public static final String OVERLAY_SLOT_DRAWER_FRONT_STANDARD = "gregtech:overlay_slot_drawer_front_standard";
+    public static final String OVERLAY_SLOT_DRAWER_TRIM_STANDARD = "gregtech:overlay_slot_drawer_trim_standard";
+
+    public static final String OVERLAY_SLOT_MINING_PIPE_STANDARD = "gregtech:overlay_slot_mining_pipe_standard";
 
     public static final String PROGRESSBAR_BOILER_HEAT = "gregtech:progressbar_boiler_heat";
 
@@ -128,6 +140,7 @@ public final class GTTextureIds {
     public static final String PICTURE_GT_LOGO_BRONZE = "gregtech:picture_gt_logo_bronze";
     public static final String PICTURE_GT_LOGO_STEEL = "gregtech:picture_gt_logo_steel";
     public static final String PICTURE_GT_LOGO_PRIMITIVE = "gregtech:picture_gt_logo_primitive";
+    public static final String PICTURE_TECTECH_LOGO = "tectech:picture_tt_logo";
     public static final String PICTURE_TECTECH_LOGO_DARK = "tectech:picture_tt_logo_dark";
     public static final String PICTURE_INTERGALACTIC_LOGO = "intergalactic:picture_intergalactic_logo";
     public static final String PICTURE_LOGO_EXOFOUNDRY = "gregtech:picture_logo_exofoundry";
@@ -162,4 +175,7 @@ public final class GTTextureIds {
     public static final String PICTURE_WATER_PURIFICATION_ONLINE = "gregtech:picture_water_purification_online";
     public static final String PICTURE_WATER_PURIFICATION_IDLE = "gregtech:picture_water_purification_idle";
     public static final String PICTURE_WATER_PURIFICATION_OFFLINE = "gregtech:picture_water_purification_offline";
+    public static final String PICTURE_STEAM_GAUGE = "gregtech:steam_dial";
+    public static final String PICTURE_STEAM_GAUGE_STEEL = "gregtech:steam_dial_steel";
+
 }

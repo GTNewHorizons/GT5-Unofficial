@@ -17,6 +17,8 @@ GT5U.providesfullhazmatprotection=防化效果与单件防化服一致
 # Multiblock Tooltip Builder Keywords
 # Context can be found in the class gregtech.api.util.GT_Multiblock_Tooltip_Builder
 GT5U.MBTT.MachineType=机器类型
+GT5U.MBTT.PowerUsage=功率消耗
+GT5U.MBTT.BaseAmperage=基础电流
 GT5U.MBTT.Dimensions=大小
 GT5U.MBTT.Hollow=(中空)
 GT5U.MBTT.Structure=结构
@@ -69,7 +71,7 @@ GT5U.LHE.threshold=阈值
 GT5U.fusion.req=需要EU
 GT5U.fusion.plasma=等离子体输出
 
-GT5U.EBF.heat=热容
+GT5U.EBF.heat.s=热容: §a%s §rK
 GT5U.coil.None=无
 GT5U.coil.ULV=无
 GT5U.coil.LV=白铜

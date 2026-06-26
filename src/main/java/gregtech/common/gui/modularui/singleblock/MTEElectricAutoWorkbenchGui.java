@@ -1,5 +1,8 @@
 package gregtech.common.gui.modularui.singleblock;
 
+import static gtPlusPlus.xmod.gregtech.common.tileentities.automation.MTEElectricAutoWorkbench.OUTPUT_SLOT_OFFSET;
+import static gtPlusPlus.xmod.gregtech.common.tileentities.automation.MTEElectricAutoWorkbench.PHANTOM_SLOT_OFFSET;
+
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
@@ -8,9 +11,7 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.CycleButtonWidget;
 import com.cleanroommc.modularui.widgets.SlotGroupWidget;
-import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Flow;
-import com.cleanroommc.modularui.widgets.layout.Row;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.slot.PhantomItemSlot;
@@ -35,7 +36,8 @@ public class MTEElectricAutoWorkbenchGui {
             .doesAddGregTechLogo(false)
             .build();
 
-        Flow column = new Column().coverChildren()
+        Flow column = Flow.column()
+            .coverChildren()
             .marginTop(4)
             .marginLeft(7);
         column.child(createMainRow().marginBottom(1));
@@ -46,8 +48,10 @@ public class MTEElectricAutoWorkbenchGui {
                 .key(
                     'S',
                     index -> new ItemSlot()
-                        .slot(new ModularSlot(machine.inventoryHandler, index + 9).accessibility(false, true))
-                        .background(GTGuiTextures.SLOT_ITEM_DARK))
+                        .slot(
+                            new ModularSlot(machine.inventoryHandler, index + OUTPUT_SLOT_OFFSET)
+                                .accessibility(false, true))
+                        .backgroundOverlay(GTGuiTextures.SLOT_ITEM_DARK))
                 .build());
 
         panel.child(column);
@@ -55,7 +59,8 @@ public class MTEElectricAutoWorkbenchGui {
     }
 
     private Flow createMainRow() {
-        Flow row = new Row().coverChildren();
+        Flow row = Flow.row()
+            .coverChildren();
 
         row.child(
             SlotGroupWidget.builder()
@@ -74,7 +79,8 @@ public class MTEElectricAutoWorkbenchGui {
                 .matrix("SSS", "SSS", "SSS")
                 .key(
                     'S',
-                    index -> new PhantomItemSlot().slot(new ModularSlot(machine.inventoryHandler, index + 19))
+                    index -> new PhantomItemSlot()
+                        .slot(new ModularSlot(machine.inventoryHandler, index + PHANTOM_SLOT_OFFSET))
                         .disableThemeBackground(true)
                         .disableHoverThemeBackground(true))
                 .build());
@@ -85,15 +91,16 @@ public class MTEElectricAutoWorkbenchGui {
     }
 
     private Flow createSquareGroup() {
-        Flow column = new Column().size(51, 54);
+        Flow column = Flow.column()
+            .size(51, 54);
 
-        Flow topRow = new Row().widthRel(1)
+        Flow topRow = Flow.row()
+            .fullWidth()
             .height(18);
 
-        CycleButtonWidget throughputButton = new CycleButtonWidget().size(18)
-            .marginLeft(2)
+        CycleButtonWidget throughputButton = new CycleButtonWidget().marginLeft(2)
             .marginRight(13)
-            .value(new IntSyncValue(() -> machine.mThroughPut, val -> machine.mThroughPut = val))
+            .value(new IntSyncValue(() -> machine.mThroughPut, val -> machine.mThroughPut = val).allowC2S())
             .stateCount(MTEElectricAutoWorkbench.MAX_THROUGHPUT);
 
         for (int i = 0; i < MTEElectricAutoWorkbench.MAX_THROUGHPUT; i++) {
@@ -105,7 +112,8 @@ public class MTEElectricAutoWorkbenchGui {
             new PhantomItemSlot().slot(new ModularSlot(machine.inventoryHandler, 28).accessibility(false, false))
                 .backgroundOverlay(GTGuiTextures.OVERLAY_SLOT_ARROW_4));
 
-        Flow middleRow = new Row().widthRel(1)
+        Flow middleRow = Flow.row()
+            .fullWidth()
             .height(18);
 
         middleRow.child(
@@ -125,16 +133,16 @@ public class MTEElectricAutoWorkbenchGui {
                 .size(10, 16)
                 .marginTop(1));
 
-        Flow bottomRow = new Row().widthRel(1)
+        Flow bottomRow = Flow.row()
+            .fullWidth()
             .coverChildrenHeight();
 
-        CycleButtonWidget modeButton = new CycleButtonWidget().size(18)
-            .marginLeft(2)
+        CycleButtonWidget modeButton = new CycleButtonWidget().marginLeft(2)
             .marginRight(13)
             .value(new IntSyncValue(() -> machine.mMode, val -> {
                 machine.mMode = val;
                 machine.switchMode();
-            }))
+            }).allowC2S())
             .stateCount(MTEElectricAutoWorkbench.MAX_MODES);
 
         for (int i = 0; i < MTEElectricAutoWorkbench.MAX_MODES; i++) {

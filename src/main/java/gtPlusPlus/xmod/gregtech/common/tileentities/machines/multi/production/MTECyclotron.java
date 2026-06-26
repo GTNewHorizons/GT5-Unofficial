@@ -11,6 +11,8 @@ import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
+import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 
@@ -31,6 +33,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchOutputBus;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
@@ -118,9 +121,13 @@ public class MTECyclotron extends GTPPMultiBlockBase<MTECyclotron> implements IS
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         mCasing = 0;
-        return checkPiece(mName, 7, 1, 12) && mCasing >= 40;
+        if (!checkPiece(mName, 7, 1, 12, errors)) return;
+        checkCasingMin(errors, mCasing, 40);
+        checkHasEnergyHatch(errors);
+        checkHasAnyInput(errors);
+        checkHasAnyOutput(errors);
     }
 
     public Block getCasingBlock() {
@@ -151,17 +158,18 @@ public class MTECyclotron extends GTPPMultiBlockBase<MTECyclotron> implements IS
             .addSeparator()
             .addInfo("Similar structure to the Fusion Reactor")
             .addInfo("Any external casing can be a hatch/bus, unlike Fusion")
-            .addInfo("Cyclotron Machine Casings around Cyclotron Coil Blocks")
+            .addInfo("Cyclotron Machine Casing around Cyclotron Coil Block")
             .addSeparator()
             .addInfo("§4DEPRECATED")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .addCasingInfoMin("Cyclotron Machine Casings", 40, false)
+            .addCasingInfoMin("Cyclotron Machine Casing", 40, false)
             .addCasingInfoMin("Cyclotron Coil", 32, false)
             .addInputBus("Any Casing", 1)
             .addOutputBus("Any Casing", 1)
             .addInputHatch("Any Casing", 1)
             .addOutputHatch("Any Casing", 1)
             .addEnergyHatch("Any Casing", 1)
+            .addMaintenanceHatch("Any Casing", 1)
             .toolTipFinisher();
         return tt;
     }

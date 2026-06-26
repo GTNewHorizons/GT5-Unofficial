@@ -7,6 +7,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_SOLAR_FACTORY
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_SOLAR_FACTORY_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_SOLAR_FACTORY_INACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_SOLAR_FACTORY_INACTIVE_GLOW;
+import static gregtech.api.structure.error.StructureErrorRegistry.UNKNOWN_TIER;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
@@ -16,6 +17,8 @@ import static net.minecraft.util.EnumChatFormatting.AQUA;
 import static net.minecraft.util.EnumChatFormatting.BOLD;
 import static net.minecraft.util.EnumChatFormatting.GREEN;
 import static net.minecraft.util.EnumChatFormatting.WHITE;
+
+import java.util.List;
 
 import javax.annotation.Nonnull;
 
@@ -53,6 +56,8 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.recipe.metadata.SolarFactoryRecipeDataKey;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -216,23 +221,36 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         casingAmount = 0;
         hasEnoughCasings = false;
         casingTier = -3;
         mTier = 0;
-        if (checkPiece(STRUCTURE_TIER_1, 2, 4, 0)) {
+        if (checkPiece(STRUCTURE_TIER_1, 2, 4, 0, null)) {
             mTier = 1;
-            hasEnoughCasings = casingAmount >= 15;
-        } else if (checkPiece(STRUCTURE_TIER_2, 4, 5, 0)) {
+            checkCasingMin(errors, casingAmount, 15);
+        } else if (checkPiece(STRUCTURE_TIER_2, 4, 5, 0, null)) {
             mTier = 2;
-            hasEnoughCasings = casingAmount >= 35;
-        } else if (checkPiece(STRUCTURE_TIER_3, 4, 8, 0)) {
+            checkCasingMin(errors, casingAmount, 35);
+            if (casingTier < -1) {
+                errors.add(StructureErrors.of("GT5U.gui.text.structure_error.solar_factory_precise"));
+            }
+        } else if (checkPiece(STRUCTURE_TIER_3, 4, 8, 0, null)) {
             mTier = 3;
-            hasEnoughCasings = casingAmount >= 50;
+            checkCasingMin(errors, casingAmount, 50);
+            if (casingTier < -1) {
+                errors.add(StructureErrors.of("GT5U.gui.text.structure_error.solar_factory_precise"));
+            }
+        } else {
+            errors.add(UNKNOWN_TIER);
+            return;
         }
         getBaseMetaTileEntity().sendBlockEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, getUpdateData());
-        return mTier > 0 && hasEnoughCasings && (mTier == 1 || casingTier >= -1);
+        checkHasAnyEnergy(errors);
+        checkHasInputBus(errors);
+        checkHasOutputBus(errors);
+        checkHasInputHatch(errors);
+        checkHasMaintenanceHatch(errors);
     }
 
     @Override
@@ -418,12 +436,12 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
             .addCasingInfoExactly("Precise Electronic Unit Casing", 26, true)
             .addCasingInfoExactly("Black Plutonium Item Pipe", 6, false)
             .addStructureInfo(WHITE + "" + BOLD + "All Tiers: ")
-            .addStructureInfo(WHITE + "Imprecise Unit Casings cannot be used")
-            .addInputHatch("Any Machine Casing")
-            .addInputBus("Any Machine Casing")
-            .addOutputBus("Any Machine Casing")
-            .addEnergyHatch("Any Machine Casing")
-            .addMaintenanceHatch("Any Machine Casing")
+            .addStructureInfo(WHITE + "Imprecise Unit Casing cannot be used")
+            .addInputHatch("Any Machine Casing", 1)
+            .addInputBus("Any Machine Casing", 1)
+            .addOutputBus("Any Machine Casing", 1)
+            .addEnergyHatch("Any Machine Casing", 1)
+            .addMaintenanceHatch("Any Machine Casing", 1)
             .addSubChannelUsage(GTStructureChannels.PRASS_UNIT_CASING)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher(GTAuthors.AuthorPureBluez);
@@ -484,6 +502,11 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
     @Override
     public boolean supportsSingleRecipeLocking() {
         return false;
+    }
+
+    @Override
+    public boolean supportsBatchMode() {
+        return true;
     }
 
     private String tieredTextLine(String mk1, String mk2, String mk3, String mk4) {

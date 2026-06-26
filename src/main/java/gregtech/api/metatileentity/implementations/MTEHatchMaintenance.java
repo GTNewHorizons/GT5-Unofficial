@@ -389,7 +389,8 @@ public class MTEHatchMaintenance extends MTEHatch implements IAlignment {
             mSoftMallet = true;
             setMaintenanceSound(SoundResource.GTCEU_OP_SOFT_HAMMER, 1.0F, 1.0F);
         }
-        if (GTUtility.isStackInList(aStack, GregTechAPI.sHardHammerList) && !mHardHammer
+        if ((GTUtility.isStackInList(aStack, GregTechAPI.sHardHammerList)
+            || GTUtility.isStackInList(aStack, GregTechAPI.sJackhammerList)) && !mHardHammer
             && GTModHandler.damageOrDechargeItem(aStack, 1, 1000, aPlayer)) {
             mHardHammer = true;
             setMaintenanceSound(SoundResource.GTCEU_LOOP_FORGE_HAMMER, 1.0F, 1.0F);
@@ -453,6 +454,14 @@ public class MTEHatchMaintenance extends MTEHatch implements IAlignment {
         getBaseMetaTileEntity().setActive(false);
     }
 
+    public boolean IsAutoMaintenanceInput(ItemStack aStack) {
+        for (ItemStack tInput : getAutoMaintenanceInputs()) {
+            if (GTUtility.areUnificationsEqual(tInput, aStack, true)
+                || GTUtility.areUnificationsEqual(GTOreDictUnificator.get(false, aStack), tInput, true)) return true;
+        }
+        return false;
+    }
+
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
@@ -466,8 +475,9 @@ public class MTEHatchMaintenance extends MTEHatch implements IAlignment {
             for (int i = 0; i < getSizeInventory(); i++) if (GTUtility.areStacksEqual(
                 GTOreDictUnificator.get(false, aStack),
                 GTOreDictUnificator.get(false, getStackInSlot(i)))) return i == aIndex;
-            for (ItemStack tInput : getAutoMaintenanceInputs()) if (GTUtility.areUnificationsEqual(tInput, aStack, true)
-                || GTUtility.areUnificationsEqual(GTOreDictUnificator.get(false, aStack), tInput, true)) return true;
+            if (IsAutoMaintenanceInput(aStack)) {
+                return true;
+            }
         }
         return false;
     }
@@ -540,5 +550,10 @@ public class MTEHatchMaintenance extends MTEHatch implements IAlignment {
     @Override
     public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
         return new MTEHatchMaintenanceGui(this, mAuto).build(guiData, syncManager, uiSettings);
+    }
+
+    @Override
+    public boolean isItemValidForSlot(int index, ItemStack itemStack) {
+        return IsAutoMaintenanceInput(itemStack) && super.isItemValidForSlot(index, itemStack);
     }
 }

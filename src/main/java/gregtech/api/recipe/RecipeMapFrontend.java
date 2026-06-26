@@ -67,7 +67,11 @@ public class RecipeMapFrontend {
             .fluidInputPositionsGetter(this::getFluidInputPositions)
             .fluidOutputPositionsGetter(this::getFluidOutputPositions)
             .build();
-        this.neiProperties = neiPropertiesBuilder.build();
+        this.neiProperties = modifyNEIProperties(neiPropertiesBuilder).build();
+    }
+
+    protected NEIRecipePropertiesBuilder modifyNEIProperties(NEIRecipePropertiesBuilder neiPropertiesBuilder) {
+        return neiPropertiesBuilder;
     }
 
     /**
@@ -278,7 +282,7 @@ public class RecipeMapFrontend {
     public List<String> handleNEIItemTooltip(ItemStack stack, List<String> currentTip,
         GTNEIDefaultHandler.CachedDefaultRecipe neiCachedRecipe) {
         for (PositionedStack pStack : neiCachedRecipe.mInputs) {
-            if (stack == pStack.item) {
+            if (pStack.containsWithNBT(stack)) {
                 if (pStack instanceof GTNEIDefaultHandler.FixedPositionedStack fixed) {
                     currentTip = handleNEIItemInputTooltip(currentTip, fixed);
                 }
@@ -286,7 +290,7 @@ public class RecipeMapFrontend {
             }
         }
         for (PositionedStack pStack : neiCachedRecipe.mOutputs) {
-            if (stack == pStack.item) {
+            if (pStack.containsWithNBT(stack)) {
                 if (pStack instanceof GTNEIDefaultHandler.FixedPositionedStack fixed) {
                     currentTip = handleNEIItemOutputTooltip(currentTip, fixed);
                 }

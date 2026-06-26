@@ -1,29 +1,26 @@
 package tectech.thing.metaTileEntity.multi.base.parameter;
 
-import java.util.function.Supplier;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTTagString;
 
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.value.sync.SyncHandler;
 
-public abstract class Parameter<T> {
+public abstract class Parameter<T, S extends SyncHandler<?>> {
 
-    protected T value;
-    // Suppliers relevant to number parameters only
-    protected Supplier<T> min;
-    protected Supplier<T> max;
-
+    private T value;
+    private final String nbtKey;
     private final String langKey;
+    private final Object[] langArgs;
     private boolean showInGui = true;
+    private S syncHandler;
 
-    public Parameter(T value, String langKey) {
+    public Parameter(T value, String langKey, String nbtKey, Object... langArgs) {
         this.value = value;
         this.langKey = langKey;
-    }
-
-    public Parameter(T value, String langKey, Supplier<T> min, Supplier<T> max) {
-        this.value = value;
-        this.langKey = langKey;
-        this.min = min;
-        this.max = max;
+        this.nbtKey = nbtKey;
+        this.langArgs = langArgs;
     }
 
     public T getValue() {
@@ -34,26 +31,55 @@ public abstract class Parameter<T> {
         this.value = value;
     }
 
+    public String getNbtKey() {
+        return nbtKey;
+    }
+
     public String getLangKey() {
         return langKey;
     }
 
-    public T getMin() {
-        return min.get();
+    public Object[] getLangArgs() {
+        return langArgs;
     }
 
-    public T getMax() {
-        return max.get();
-    }
-
-    public Parameter<T> disableGui() {
+    public void disableGui() {
         this.showInGui = false;
-        return this;
     }
+
+    public abstract void saveNBT(NBTTagCompound tag);
+
+    public abstract void loadNBT(NBTTagCompound tag);
+
+    public void saveToParameterCard(NBTTagCompound tag) {
+        tag.setString("langKey", langKey);
+        if (langArgs != null) {
+            NBTTagList tagList = new NBTTagList();
+
+            for (Object arg : langArgs) tagList.appendTag(new NBTTagString(arg.toString()));
+
+            tag.setTag("langArgs", tagList);
+        }
+    }
+
+    public abstract void loadFromParameterCard(NBTTagCompound tag);
 
     public boolean shouldShowInGui() {
         return showInGui;
     }
 
-    public abstract SyncHandler createSyncHandler();
+    protected abstract S createSyncHandler();
+
+    public void registerSyncValue(PanelSyncManager syncManager) {
+        this.registerSyncValue(syncManager, "");
+    }
+
+    protected void registerSyncValue(PanelSyncManager syncManager, String prefix) {
+        syncManager.syncValue(prefix + getNbtKey(), this.createSyncHandler());
+    }
+
+    public S getSyncHandler() {
+        if (syncHandler == null) syncHandler = createSyncHandler();
+        return syncHandler;
+    }
 }
