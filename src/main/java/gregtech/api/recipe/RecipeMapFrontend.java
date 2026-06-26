@@ -27,7 +27,7 @@ import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
 import codechicken.nei.PositionedStack;
-import gregtech.api.enums.SteamVariant;
+import gregtech.api.enums.TieredVariant;
 import gregtech.api.gui.GUIColorOverride;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.recipe.metadata.IRecipeMetadataStorage;
@@ -67,7 +67,11 @@ public class RecipeMapFrontend {
             .fluidInputPositionsGetter(this::getFluidInputPositions)
             .fluidOutputPositionsGetter(this::getFluidOutputPositions)
             .build();
-        this.neiProperties = neiPropertiesBuilder.build();
+        this.neiProperties = modifyNEIProperties(neiPropertiesBuilder).build();
+    }
+
+    protected NEIRecipePropertiesBuilder modifyNEIProperties(NEIRecipePropertiesBuilder neiPropertiesBuilder) {
+        return neiPropertiesBuilder;
     }
 
     /**
@@ -130,7 +134,7 @@ public class RecipeMapFrontend {
             uiProperties.maxItemOutputs,
             uiProperties.maxFluidInputs,
             uiProperties.maxFluidOutputs,
-            SteamVariant.NONE,
+            TieredVariant.STANDARD,
             ctx.windowOffset);
 
         addGregTechLogo(builder, ctx.windowOffset);
@@ -278,7 +282,7 @@ public class RecipeMapFrontend {
     public List<String> handleNEIItemTooltip(ItemStack stack, List<String> currentTip,
         GTNEIDefaultHandler.CachedDefaultRecipe neiCachedRecipe) {
         for (PositionedStack pStack : neiCachedRecipe.mInputs) {
-            if (stack == pStack.item) {
+            if (pStack.containsWithNBT(stack)) {
                 if (pStack instanceof GTNEIDefaultHandler.FixedPositionedStack fixed) {
                     currentTip = handleNEIItemInputTooltip(currentTip, fixed);
                 }
@@ -286,7 +290,7 @@ public class RecipeMapFrontend {
             }
         }
         for (PositionedStack pStack : neiCachedRecipe.mOutputs) {
-            if (stack == pStack.item) {
+            if (pStack.containsWithNBT(stack)) {
                 if (pStack instanceof GTNEIDefaultHandler.FixedPositionedStack fixed) {
                     currentTip = handleNEIItemOutputTooltip(currentTip, fixed);
                 }

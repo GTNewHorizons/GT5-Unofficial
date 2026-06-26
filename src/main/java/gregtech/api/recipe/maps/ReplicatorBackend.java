@@ -39,14 +39,43 @@ public class ReplicatorBackend extends RecipeMapBackend {
     @Override
     public GTRecipe compileRecipe(GTRecipe recipe) {
         super.compileRecipe(recipe);
-        Materials material = recipe.getMetadata(GTRecipeConstants.MATERIAL);
-        assert material != null; // checked by replicatorRecipeEmitter
-        recipesByMaterial.put(material, recipe);
+        addRecipeToMaterialIndex(recipe);
         return recipe;
     }
 
     @Override
-    protected boolean doesOverwriteFindRecipe() {
+    public void removeRecipes(Collection<? extends GTRecipe> recipesToRemove) {
+        super.removeRecipes(recipesToRemove);
+        rebuildMaterialIndex();
+    }
+
+    @Override
+    public void clearRecipes() {
+        super.clearRecipes();
+        recipesByMaterial.clear();
+    }
+
+    @Override
+    public void reInit() {
+        super.reInit();
+        rebuildMaterialIndex();
+    }
+
+    private void rebuildMaterialIndex() {
+        recipesByMaterial.clear();
+        for (GTRecipe recipe : getAllRecipes()) {
+            addRecipeToMaterialIndex(recipe);
+        }
+    }
+
+    private void addRecipeToMaterialIndex(GTRecipe recipe) {
+        Materials material = recipe.getMetadata(GTRecipeConstants.MATERIAL);
+        assert material != null; // checked by replicatorRecipeEmitter
+        recipesByMaterial.put(material, recipe);
+    }
+
+    @Override
+    public boolean doesOverwriteFindRecipe() {
         return true;
     }
 

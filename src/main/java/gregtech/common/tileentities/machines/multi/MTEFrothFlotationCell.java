@@ -16,12 +16,9 @@ import static gregtech.api.util.GTStructureUtility.ofFrame;
 import java.util.List;
 import java.util.Objects;
 
-import net.minecraft.block.Block;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.oredict.OreDictionary;
@@ -29,6 +26,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
+import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
@@ -51,7 +49,9 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
@@ -82,7 +82,21 @@ public class MTEFrothFlotationCell extends MTEExtendedPowerMultiBlockBase<MTEFro
         { "           ", "           ", "           ", "  DDWWWDD  ", "  CCCCCCC  " },
         { "           ", "           ", "           ", "    DDD    ", "   CCCCC   " } };
 
-    private static IStructureDefinition<MTEFrothFlotationCell> STRUCTURE_DEFINITION = null;
+    private static final IStructureDefinition<MTEFrothFlotationCell> STRUCTURE_DEFINITION = StructureDefinition
+        .<MTEFrothFlotationCell>builder()
+        .addShape(STRUCTURE_PIECE_MAIN, structure)
+        .addElement(
+            'C',
+            buildHatchAdder(MTEFrothFlotationCell.class).atLeast(InputBus, InputHatch, OutputHatch, Maintenance, Energy)
+                .casingIndex(Casings.InconelReinforcedCasing.textureId)
+                .hint(1)
+                .buildAndChain(onElementPass(x -> ++x.casingAmount, Casings.InconelReinforcedCasing.asElement())))
+        .addElement('D', Casings.FlotationCellCasings.asElement())
+        .addElement('E', Casings.InconelReinforcedCasing.asElement())
+        .addElement('A', ofFrame(MaterialsAlloy.INCONEL_690))
+        .addElement('B', ofFrame(MaterialsAlloy.STABALLOY))
+        .addElement('W', ofChain(ofAnyWater(false), isAir()))
+        .build();
 
     public MTEFrothFlotationCell(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -132,24 +146,6 @@ public class MTEFrothFlotationCell extends MTEExtendedPowerMultiBlockBase<MTEFro
 
     @Override
     public IStructureDefinition<MTEFrothFlotationCell> getStructureDefinition() {
-        if (STRUCTURE_DEFINITION == null) {
-            STRUCTURE_DEFINITION = StructureDefinition.<MTEFrothFlotationCell>builder()
-                .addShape(STRUCTURE_PIECE_MAIN, structure)
-                .addElement(
-                    'C',
-                    buildHatchAdder(MTEFrothFlotationCell.class)
-                        .atLeast(InputBus, InputHatch, OutputHatch, Maintenance, Energy)
-                        .casingIndex(Casings.InconelReinforcedCasing.textureId)
-                        .hint(1)
-                        .buildAndChain(
-                            onElementPass(x -> ++x.casingAmount, Casings.InconelReinforcedCasing.asElement())))
-                .addElement('D', Casings.FlotationCellCasings.asElement())
-                .addElement('E', Casings.InconelReinforcedCasing.asElement())
-                .addElement('A', ofFrame(MaterialsAlloy.INCONEL_690))
-                .addElement('B', ofFrame(MaterialsAlloy.STABALLOY))
-                .addElement('W', ofChain(isAir(), ofAnyWater(false)))
-                .build();
-        }
         return STRUCTURE_DEFINITION;
     }
 
@@ -201,16 +197,28 @@ public class MTEFrothFlotationCell extends MTEExtendedPowerMultiBlockBase<MTEFro
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
+        needsWaterFill = false;
         casingAmount = 0;
-        boolean valid = checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z) && casingAmount >= 90
-            && checkHatch();
-        if (valid) needsWaterFill = true;
-        return valid;
-    }
-
-    public boolean checkHatch() {
-        return mEnergyHatches.size() >= 1;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z, errors)) {
+            needsWaterFill = GTStructureUtility.hasWaterAtStructurePosition(
+                aBaseMetaTileEntity,
+                getExtendedFacing(),
+                structure,
+                OFFSET_X,
+                OFFSET_Y,
+                OFFSET_Z,
+                'W');
+            return;
+        }
+        checkCasingMin(errors, casingAmount, 90);
+        checkHasEnergyHatch(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasOutputHatch(errors);
+        checkHasInputHatch(errors);
+        checkHasInputBus(errors);
+        if (!errors.isEmpty()) return;
+        needsWaterFill = true;
     }
 
     @Override
@@ -304,6 +312,11 @@ public class MTEFrothFlotationCell extends MTEExtendedPowerMultiBlockBase<MTEFro
     }
 
     @Override
+    protected IAlignmentLimits getInitialAlignmentLimits() {
+        return (d, r, f) -> d.offsetY == 0 && r.isNotRotated() && !f.isVerticallyFliped();
+    }
+
+    @Override
     public boolean isRecipeLockingEnabled() {
         return lockedMaterialName != null && !lockedMaterialName.isEmpty();
     }
@@ -337,43 +350,17 @@ public class MTEFrothFlotationCell extends MTEExtendedPowerMultiBlockBase<MTEFro
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
-        if (aBaseMetaTileEntity.isServerSide() && needsWaterFill && mMachine && aTick % 20 == 0) {
-            World world = aBaseMetaTileEntity.getWorld();
-            boolean allFilled = true;
-            int controllerX = aBaseMetaTileEntity.getXCoord();
-            int controllerY = aBaseMetaTileEntity.getYCoord();
-            int controllerZ = aBaseMetaTileEntity.getZCoord();
-
-            for (int sliceZ = 0; sliceZ < structure.length; sliceZ++) {
-                String[] layers = structure[sliceZ];
-                for (int layerY = 0; layerY < layers.length; layerY++) {
-                    String row = layers[layerY];
-                    for (int charX = 0; charX < row.length(); charX++) {
-                        if (row.charAt(charX) != 'W') continue;
-
-                        int[] abc = new int[] { charX - OFFSET_X, layerY - OFFSET_Y, sliceZ - OFFSET_Z };
-                        int[] xyz = new int[] { 0, 0, 0 };
-                        this.getExtendedFacing()
-                            .getWorldOffset(abc, xyz);
-                        int wx = controllerX + xyz[0];
-                        int wy = controllerY + xyz[1];
-                        int wz = controllerZ + xyz[2];
-
-                        Block block = world.getBlock(wx, wy, wz);
-                        if (block != Blocks.water) {
-                            boolean isReplaceable = block == Blocks.air || block == Blocks.flowing_water
-                                || block.isReplaceable(world, wx, wy, wz);
-                            if (isReplaceable) {
-                                world.setBlock(wx, wy, wz, Blocks.water, 0, 3);
-                            } else {
-                                allFilled = false;
-                            }
-                        }
-                    }
-                }
+        if (aBaseMetaTileEntity.isServerSide() && needsWaterFill && aTick % 20 == 0) {
+            if (GTStructureUtility.fillStructureWithWater(
+                aBaseMetaTileEntity,
+                getExtendedFacing(),
+                structure,
+                OFFSET_X,
+                OFFSET_Y,
+                OFFSET_Z,
+                'W')) {
+                needsWaterFill = false;
             }
-
-            if (allFilled) needsWaterFill = false;
         }
     }
 }

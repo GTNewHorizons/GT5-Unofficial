@@ -17,9 +17,6 @@ import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.gtnewhorizon.structurelib.alignment.enumerable.ExtendedFacing;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
@@ -42,7 +39,7 @@ import gtPlusPlus.core.handler.PacketHandler;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.network.packet.PacketTurbineHatchUpdate;
 import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.turbines.MTELargerTurbineBase;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.turbines.MTELargerTurbineBaseLegacy;
 
 public class MTEHatchTurbine extends MTEHatch {
 
@@ -106,7 +103,7 @@ public class MTEHatchTurbine extends MTEHatch {
     public boolean hasTurbine() {
         if (getBaseMetaTileEntity().isServerSide()) {
             ItemStack aStack = this.mInventory[0];
-            return MTELargerTurbineBase.isValidTurbine(aStack);
+            return MTELargerTurbineBaseLegacy.isValidTurbine(aStack);
         }
         return mHasTurbine;
     }
@@ -119,7 +116,7 @@ public class MTEHatchTurbine extends MTEHatch {
     }
 
     public boolean insertTurbine(ItemStack aTurbine) {
-        if (MTELargerTurbineBase.isValidTurbine(aTurbine)) {
+        if (MTELargerTurbineBaseLegacy.isValidTurbine(aTurbine)) {
             this.mInventory[0] = aTurbine;
             sendUpdate();
             return true;
@@ -188,12 +185,8 @@ public class MTEHatchTurbine extends MTEHatch {
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (this.mHasController) {
             if (aTick % 20 == 0) {
-                boolean oActive = getBaseMetaTileEntity().isActive();
                 boolean active = isControllerActive();
                 getBaseMetaTileEntity().setActive(active);
-                if (active != oActive) {
-                    getBaseMetaTileEntity().issueClientUpdate();
-                }
             }
         } else if (this.mControllerLocation != null) {
             // Weird Invalid State
@@ -207,19 +200,19 @@ public class MTEHatchTurbine extends MTEHatch {
     }
 
     public boolean isControllerActive() {
-        MTELargerTurbineBase x = getController();
+        MTELargerTurbineBaseLegacy x = getController();
         if (x != null) {
             return x.lEUt > 0;
         }
         return false;
     }
 
-    public MTELargerTurbineBase getController() {
+    public MTELargerTurbineBaseLegacy getController() {
         if (this.mHasController && this.mControllerLocation != null) {
             BlockPos p = mControllerLocation;
             IGregTechTileEntity tTileEntity = getBaseMetaTileEntity().getIGregTechTileEntity(p.xPos, p.yPos, p.zPos);
-            if (tTileEntity != null && tTileEntity.getMetaTileEntity() instanceof MTELargerTurbineBase) {
-                return (MTELargerTurbineBase) tTileEntity.getMetaTileEntity();
+            if (tTileEntity != null && tTileEntity.getMetaTileEntity() instanceof MTELargerTurbineBaseLegacy turbine) {
+                return turbine;
             }
         }
         return null;
@@ -342,8 +335,8 @@ public class MTEHatchTurbine extends MTEHatch {
             GTUtility.sendChatToPlayer(aPlayer, "Has Turbine inserted? " + this.hasTurbine());
             if (this.hasTurbine()) {
                 Materials aMat = MetaGeneratedTool.getPrimaryMaterial(getTurbine());
-                String aSize = MTELargerTurbineBase
-                    .getTurbineSizeString(MTELargerTurbineBase.getTurbineSize(getTurbine()));
+                String aSize = MTELargerTurbineBaseLegacy
+                    .getTurbineSizeString(MTELargerTurbineBaseLegacy.getTurbineSize(getTurbine()));
                 GTUtility.sendChatToPlayer(aPlayer, "Using: " + aMat.getLocalizedName() + " " + aSize);
             }
         } else {
@@ -426,15 +419,6 @@ public class MTEHatchTurbine extends MTEHatch {
     }
 
     @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        SlotWidget slot = new SlotWidget(inventoryHandler, 0).setFilter(MTELargerTurbineBase::isValidTurbine);
-        if (getBaseMetaTileEntity().isServerSide()) slot.setChangeListener(this::sendUpdate);
-        builder.widget(
-            slot.setAccess(false, true)
-                .setPos(79, 34));
-    }
-
-    @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
         return new MTEHatchTurbineGui(this).build(data, syncManager, uiSettings);
     }
@@ -446,18 +430,19 @@ public class MTEHatchTurbine extends MTEHatch {
 
     public void receiveUpdate(PacketTurbineHatchUpdate message) {
         mHasTurbine = message.isHasTurbine();
-        if (message.getController() != null) clearController();
-        else setController(message.getController());
+        if (message.getController() != null) setController(message.getController());
+        else clearController();
         getBaseMetaTileEntity().issueTextureUpdate();
         setTurbineOverlay();
     }
 
     public void sendUpdate() {
         PacketTurbineHatchUpdate message = new PacketTurbineHatchUpdate();
+        MTELargerTurbineBaseLegacy controller = getController();
         message.setX(getBaseMetaTileEntity().getXCoord());
         message.setY(getBaseMetaTileEntity().getYCoord());
         message.setZ(getBaseMetaTileEntity().getZCoord());
-        message.setFormed(mHasController && getController().mMachine);
+        message.setFormed(mHasController && controller != null && controller.mMachine);
         message.setHasTurbine(hasTurbine());
         message.setController(mControllerLocation);
         PacketHandler.sendToAllAround(

@@ -35,6 +35,7 @@ public class ProcessingStickLong implements gregtech.api.interfaces.IOreRecipeRe
         if (!aMaterial.contains(SubTag.NO_WORKING)) {
 
             if (GTOreDictUnificator.get(OrePrefixes.stick, aMaterial, 1L) != null) {
+
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(1, aStack))
                     .itemOutputs(GTOreDictUnificator.get(OrePrefixes.stick, aMaterial, 2L))

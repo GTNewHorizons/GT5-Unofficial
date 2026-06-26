@@ -32,6 +32,7 @@ import com.gtnewhorizons.modularui.common.widget.MultiChildWidget;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.VoidingMode;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
@@ -125,12 +126,6 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
 
     protected MTEPurificationUnitBase(String aName) {
         super(aName);
-    }
-
-    @Override
-    public boolean doRandomMaintenanceDamage() {
-        // The individual purification unit structures cannot have maintenance issues, so do nothing.
-        return true;
     }
 
     @Override
@@ -437,7 +432,7 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
         // Note that if there is no space for this, it will be voided regardless of fluid void setting!
         if (mOutputFluids != null) {
             FluidStack outputWater = getDegradedOutputWater();
-            this.addOutput(outputWater);
+            this.addOutputPartial(outputWater);
         }
     }
 
@@ -477,18 +472,6 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
 
     public long getActualPowerUsage() {
         return getBasePowerUsage() * effectiveParallel;
-    }
-
-    @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        // The individual purification unit structures cannot have maintenance issues, so fix them all.
-        this.mCrowbar = true;
-        this.mWrench = true;
-        this.mHardHammer = true;
-        this.mSoftMallet = true;
-        this.mSolderingTool = true;
-        this.mScrewdriver = true;
-        return true;
     }
 
     @Override
@@ -650,27 +633,23 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
         // If this purification unit is linked to a controller, add this info to the scanner output.
         if (getController() != null) {
             ret.add(
-                StatCollector.translateToLocalFormatted(
-                    "GT5U.infodata.purification_unit_base.linked_at",
-                    controllerX,
-                    controllerY,
-                    controllerZ));
+                IGregTechDeviceInformation
+                    .encode("GT5U.infodata.purification_unit_base.linked_at", controllerX, controllerY, controllerZ));
 
             // If recipe is running, display success chance
             if (this.mMaxProgresstime != 0) {
                 ret.add(
-                    StatCollector.translateToLocalFormatted(
+                    IGregTechDeviceInformation.encode(
                         "GT5U.infodata.purification_unit_base.success_chance",
                         EnumChatFormatting.YELLOW + formatNumber(this.calculateFinalSuccessChance())
                             + "%"
                             + EnumChatFormatting.RESET));
             }
 
-        } else ret.add(StatCollector.translateToLocal("GT5U.infodata.purification_unit_base.not_linked"));
+        } else ret.add("GT5U.infodata.purification_unit_base.not_linked");
         ret.add(
-            StatCollector.translateToLocalFormatted(
-                "GT5U.infodata.parallel.current",
-                "" + EnumChatFormatting.YELLOW + this.effectiveParallel));
+            IGregTechDeviceInformation
+                .encode("GT5U.infodata.parallel.current", "" + EnumChatFormatting.YELLOW + this.effectiveParallel));
         return ret.toArray(new String[0]);
     }
 
@@ -741,11 +720,6 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
 
     public void setMaxParallel(int value) {
         maxParallel = value;
-    }
-
-    @Override
-    public boolean supportsMaintenanceIssueHoverable() {
-        return false;
     }
 
     @Override

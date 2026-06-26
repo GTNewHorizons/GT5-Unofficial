@@ -11,6 +11,7 @@ import bartworks.system.material.Werkstoff;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
+import gregtech.api.enums.TierEU;
 
 public class WerkstoffMaterialPool implements Runnable {
 
@@ -885,17 +886,8 @@ public class WerkstoffMaterialPool implements Runnable {
         offsetID2 + 29,
         TextureSet.SET_DULL);
 
-    // Weird/Exciting Chemicals
-    public static final Werkstoff Tetrahydrofuran = new Werkstoff(
-        new short[] { 222, 165, 164 },
-        "Tetrahydrofuran",
-        subscriptNumbers("(CH2)4O"),
-        new Werkstoff.Stats(),
-        Werkstoff.Types.COMPOUND,
-        new Werkstoff.GenerationFeatures().disable()
-            .addCells(),
-        offsetID3,
-        TextureSet.SET_FLUID);
+    // Material removed for 2.9, do not use until 2.10
+    // offsetID3
 
     // 1,4-Butanediol
     public static final Werkstoff Butanediol = new Werkstoff(
@@ -909,17 +901,8 @@ public class WerkstoffMaterialPool implements Runnable {
         offsetID3 + 1,
         TextureSet.SET_FLUID);
 
-    // Acidicised 1,4-Butanediol
-    public static final Werkstoff AcidicButanediol = new Werkstoff(
-        new short[] { 255, 239, 213 },
-        "Acidicised 1,4-Butanediol",
-        subscriptNumbers("HO(CH2)4OH"),
-        new Werkstoff.Stats(),
-        Werkstoff.Types.MIXTURE,
-        new Werkstoff.GenerationFeatures().disable()
-            .addCells(),
-        offsetID3 + 2,
-        TextureSet.SET_FLUID);
+    // Material removed for 2.9, do not use until 2.10
+    // offsetID3 + 2
 
     // Tellurium-Molybdenum-Oxide Catalyst
     public static final Werkstoff MoTeOCatalyst = new Werkstoff(
@@ -956,39 +939,14 @@ public class WerkstoffMaterialPool implements Runnable {
         offsetID3 + 5,
         TextureSet.SET_DULL);
 
-    public static final Werkstoff Polytetrahydrofuran = new Werkstoff(
-        new short[] { 192, 128, 129 },
-        "Polytetrahydrofuran",
-        subscriptNumbers("(C4H8O)OH2"),
-        new Werkstoff.Stats(),
-        Werkstoff.Types.COMPOUND,
-        new Werkstoff.GenerationFeatures().disable()
-            .onlyDust()
-            .addCells(),
-        offsetID3 + 6,
-        TextureSet.SET_DULL);
+    // Material removed for 2.9, do not use until 2.10
+    // offsetID3 + 6
 
-    public static final Werkstoff TungstophosphoricAcid = new Werkstoff(
-        new short[] { 223, 255, 0 },
-        "Tungstophosphoric Acid",
-        subscriptNumbers("H3PW12O40"),
-        new Werkstoff.Stats(),
-        Werkstoff.Types.COMPOUND,
-        new Werkstoff.GenerationFeatures().disable()
-            .addCells(),
-        offsetID3 + 7,
-        TextureSet.SET_FLUID);
+    // Material removed for 2.9, do not use until 2.10
+    // offsetID3 + 7
 
-    public static final Werkstoff TolueneDiisocyanate = new Werkstoff(
-        new short[] { 255, 255, 102 },
-        "Toluene Diisocyanate",
-        subscriptNumbers("CH3C6H3(NCO)2"),
-        new Werkstoff.Stats(),
-        Werkstoff.Types.COMPOUND,
-        new Werkstoff.GenerationFeatures().disable()
-            .addCells(),
-        offsetID3 + 8,
-        TextureSet.SET_FLUID);
+    // Material removed for 2.9, do not use until 2.10
+    // offsetID3 + 8
 
     public static final Werkstoff Dinitrotoluene = new Werkstoff(
         new short[] { 216, 191, 216 },
@@ -1012,31 +970,11 @@ public class WerkstoffMaterialPool implements Runnable {
         offsetID3 + 10,
         TextureSet.SET_FLUID);
 
-    public static final Werkstoff TolueneTetramethylDiisocyanate = new Werkstoff(
-        new short[] { 255, 255, 255 },
-        "Toluene Tetramethyl Diisocyanate",
-        subscriptNumbers("(CONH)2(C6H4)2CH2(C4O)"),
-        new Werkstoff.Stats(),
-        Werkstoff.Types.COMPOUND,
-        new Werkstoff.GenerationFeatures().disable()
-            .addCells(),
-        offsetID3 + 11,
-        TextureSet.SET_FLUID);
+    // Material removed for 2.9, do not use until 2.10
+    // offsetID3 + 11
 
-    public static final Werkstoff PTMEGElastomer = new Werkstoff(
-        new short[] { 248, 248, 255 },
-        "PTMEG Elastomer",
-        subscriptNumbers("C4H8O"),
-        new Werkstoff.Stats().setMeltingPoint(600)
-            .setMeltingVoltage(64),
-        Werkstoff.Types.COMPOUND,
-        new Werkstoff.GenerationFeatures().disable()
-            .onlyDust()
-            .addMolten()
-            .addMetalItems()
-            .addMetalCraftingSolidifierRecipes(),
-        offsetID3 + 12,
-        TextureSet.SET_DULL);
+    // Material removed for 2.9, do not use until 2.10
+    // offsetID3 + 12
 
     public static final Werkstoff PotassiumChlorate = new Werkstoff(
         new short[] { 240, 255, 255 },
@@ -1886,7 +1824,8 @@ public class WerkstoffMaterialPool implements Runnable {
         new Werkstoff.Stats().setBlastFurnace(true)
             .setCentrifuge(true)
             .setMass(180)
-            .setSpeedOverride(3),
+            .setSpeedOverride(3)
+            .setProcessingMaterialTierEU(TierEU.RECIPE_EV),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
             .onlyDust()

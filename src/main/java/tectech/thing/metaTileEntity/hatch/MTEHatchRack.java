@@ -7,7 +7,6 @@ import static gregtech.api.recipe.RecipeMaps.quantumComputerFakeRecipes;
 import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeConstants.QUANTUM_COMPUTER_DATA;
 import static net.minecraft.util.StatCollector.translateToLocal;
-import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,9 +32,12 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
+import gregtech.api.modularui2.GTGuiTheme;
+import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.recipe.QuantumComputerRecipeData;
@@ -133,6 +135,15 @@ public class MTEHatchRack extends MTEHatch {
         return Math.max(0, heat);
     }
 
+    public void setHeat(int heat) {
+        this.heat = heat;
+    }
+
+    public boolean isValidItem(ItemStack itemStack) {
+        return MTEHatchRack.validRackItems.stream()
+            .anyMatch(itemStack::isItemEqual);
+    }
+
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
@@ -148,7 +159,7 @@ public class MTEHatchRack extends MTEHatch {
         if (aBaseMetaTileEntity.isActive() || heat > 2000) {
             return false;
         }
-        return side == aBaseMetaTileEntity.getFrontFacing();
+        return side == aBaseMetaTileEntity.getFrontFacing() && isValidItem(aStack);
     }
 
     @Override
@@ -164,11 +175,6 @@ public class MTEHatchRack extends MTEHatch {
         if (aPlayer instanceof EntityPlayerMPAccessor) {
             clientLocale = ((EntityPlayerMPAccessor) aPlayer).gt5u$getTranslator();
         }
-        // if(aBaseMetaTileEntity.isActive())
-        // aPlayer.addChatComponentMessage(new ChatComponentText("It is still active..."));
-        // else if(heat>0)
-        // aPlayer.addChatComponentMessage(new ChatComponentText("It is still warm..."));
-        // else
         openGui(aPlayer);
         return true;
     }
@@ -247,13 +253,9 @@ public class MTEHatchRack extends MTEHatch {
     @Override
     public String[] getInfoData() {
         return new String[] {
-            translateToLocalFormatted("tt.keyphrase.Base_computation", clientLocale) + ": "
-                + EnumChatFormatting.AQUA
-                + getComputationPower(overClock, overVolt, false),
-            translateToLocalFormatted("tt.keyphrase.Heat_Accumulated", clientLocale) + ": "
-                + EnumChatFormatting.RED
-                + heat
-                + EnumChatFormatting.RESET };
+            IGregTechDeviceInformation
+                .encode("tt.infodata.rack.base_computation", getComputationPower(overClock, overVolt, false)),
+            IGregTechDeviceInformation.encode("tt.infodata.rack.heat_accumulated", heat) };
     }
 
     public static void run() { // 20k heat cap max!
@@ -362,5 +364,15 @@ public class MTEHatchRack extends MTEHatch {
     @Override
     public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
         return new MTEHatchRackGui(this).build(guiData, syncManager, uiSettings);
+    }
+
+    @Override
+    protected GTGuiTheme getGuiTheme() {
+        return GTGuiThemes.TECTECH_STANDARD;
+    }
+
+    @Override
+    public boolean isItemValidForSlot(int index, ItemStack itemStack) {
+        return isValidItem(itemStack) && super.isItemValidForSlot(index, itemStack);
     }
 }

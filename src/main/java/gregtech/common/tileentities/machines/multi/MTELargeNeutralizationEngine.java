@@ -31,7 +31,6 @@ import javax.annotation.Nullable;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -50,9 +49,12 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.GregTechTileClientEvents;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
@@ -62,7 +64,10 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.maps.FuelBackend;
-import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.ErrorType;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
@@ -72,7 +77,7 @@ import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.tileentities.machines.IDualInputHatch;
 
 public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTELargeNeutralizationEngine>
-    implements ISurvivalConstructable {
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
 
@@ -100,6 +105,8 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
     private int randomFactor;
     private int randomGoal;
     private boolean isApproachingFromHigher;
+    private static final int RANDOM_MIN = 700;
+    private static final int RANDOM_MAX = 1300;
 
     private int maxFluidUse = 200;
 
@@ -107,8 +114,6 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
     private final static ItemStack CAESIUM_HYDROXIDE_DUST = Materials.CaesiumHydroxide.getDust(1);
     private final static ItemStack POTASSIUM_HYDROXIDE_DUST = Materials.PotassiumHydroxide.getDust(1);
     private final static ItemStack SODIUM_HYDROXIDE_DUST = Materials.SodiumHydroxide.getDust(1);
-
-    private static final String SEPARATOR = EnumChatFormatting.GRAY + " : ";
 
     private final ArrayList<MTEToxicResidueSensor> sensorHatches = new ArrayList<>();
 
@@ -171,7 +176,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
     private void randomWalk() {
         if (getDistanceFromGoal() <= 0) {
             do {
-                randomGoal = getBaseMetaTileEntity().getRandomNumber(1001) + 500;
+                randomGoal = getBaseMetaTileEntity().getRandomNumber(RANDOM_MAX - RANDOM_MIN + 1) + RANDOM_MIN;
             } while (Math.abs(randomFactor - randomGoal) <= 50);
             isApproachingFromHigher = randomFactor > randomGoal;
         }
@@ -288,248 +293,79 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
         return STRUCTURE_DEFINITION;
     }
 
-    private static String getAlkaliTextFormatted(String baseName, int efficiency, int frequency) {
-        return EnumChatFormatting.AQUA + baseName
-            + SEPARATOR
-            + EnumChatFormatting.LIGHT_PURPLE
-            + efficiency
-            + "%"
-            + SEPARATOR
-            + EnumChatFormatting.WHITE
-            + frequency
-            + EnumChatFormatting.GRAY
-            + "/minute";
-    }
-
-    private static String getTierInfoTextFormatted(int tier, String casingName, int baseDecay, int capacity) {
-        return EnumChatFormatting.WHITE + "T"
-            + tier
-            + SEPARATOR
-            + EnumChatFormatting.WHITE
-            + casingName
-            + SEPARATOR
-            + EnumChatFormatting.BLUE
-            + baseDecay
-            + SEPARATOR
-            + EnumChatFormatting.DARK_AQUA
-            + formatNumber(capacity);
-    }
-
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Acid Generator, LNE")
             .addInfo("(Dis)solves all your problems!")
             .addSeparator()
+            .addInfo(StatCollector.translateToLocal("gt.multiblock.NeutralizationEngine.efficiency"))
             .addInfo(
-                "Can " + EnumChatFormatting.WHITE
-                    + "use "
-                    + EnumChatFormatting.GRAY
-                    + "a "
-                    + EnumChatFormatting.AQUA
-                    + "base "
-                    + EnumChatFormatting.GRAY
-                    + "to boost "
-                    + EnumChatFormatting.LIGHT_PURPLE
-                    + "efficiency "
-                    + EnumChatFormatting.GRAY
-                    + "(consumes one by one):")
-            .addInfo(getAlkaliTextFormatted("Sodium Hydroxide", 150, 60))
-            .addInfo(getAlkaliTextFormatted("Potassium Hydroxide", 190, 24))
-            .addInfo(getAlkaliTextFormatted("Caesium Hydroxide", 250, 6))
-            .addInfo(getAlkaliTextFormatted("Francium Hydroxide", 500, 5))
+                StatCollector.translateToLocalFormatted(
+                    "gt.multiblock.NeutralizationEngine.alkali_text",
+                    "Sodium Hydroxide",
+                    150,
+                    60))
+            .addInfo(
+                StatCollector.translateToLocalFormatted(
+                    "gt.multiblock.NeutralizationEngine.alkali_text",
+                    "Potassium Hydroxide",
+                    190,
+                    24))
+            .addInfo(
+                StatCollector.translateToLocalFormatted(
+                    "gt.multiblock.NeutralizationEngine.alkali_text",
+                    "Caesium Hydroxide",
+                    250,
+                    6))
+            .addInfo(
+                StatCollector.translateToLocalFormatted(
+                    "gt.multiblock.NeutralizationEngine.alkali_text",
+                    "Francium Hydroxide",
+                    500,
+                    5))
             .addSeparator()
+            .addInfo(StatCollector.translateToLocal("gt.multiblock.NeutralizationEngine.toxic_residue.1"))
+            .addInfo(StatCollector.translateToLocal("gt.multiblock.NeutralizationEngine.toxic_residue.2"))
             .addInfo(
-                "Produces " + EnumChatFormatting.RED
-                    + "Toxic Residue "
-                    + EnumChatFormatting.GRAY
-                    + "from burning acids")
-            .addInfo(
-                "If the " + EnumChatFormatting.RED
-                    + "Toxic Residue "
-                    + EnumChatFormatting.GRAY
-                    + "exceeds the "
-                    + EnumChatFormatting.DARK_AQUA
-                    + "Capacity"
-                    + EnumChatFormatting.GRAY
-                    + ", the multiblock will "
-                    + EnumChatFormatting.DARK_RED
-                    + "EXPLODE!")
-            .addInfo(
-                "Every " + EnumChatFormatting.WHITE
-                    + "tick"
-                    + EnumChatFormatting.GRAY
-                    + ", "
-                    + EnumChatFormatting.RED
-                    + "Toxic Residue "
-                    + EnumChatFormatting.GRAY
-                    + "will "
-                    + EnumChatFormatting.WHITE
-                    + "increase "
-                    + EnumChatFormatting.GRAY
-                    + "by "
-                    + EnumChatFormatting.GOLD
-                    + "Residue Rate"
-                    + EnumChatFormatting.GRAY
-                    + "*"
-                    + EnumChatFormatting.YELLOW
-                    + "Fuel Consumption(L/t)"
-                    + EnumChatFormatting.GRAY
-                    + "*rand("
-                    + EnumChatFormatting.WHITE
-                    + "0.5"
-                    + EnumChatFormatting.GRAY
-                    + "-"
-                    + EnumChatFormatting.WHITE
-                    + "1.5"
-                    + EnumChatFormatting.GRAY
-                    + ")")
-            .addInfo(
-                EnumChatFormatting.GOLD + "Residue Rate "
-                    + EnumChatFormatting.GRAY
-                    + "is calculated as "
-                    + EnumChatFormatting.WHITE
-                    + "0.05"
-                    + EnumChatFormatting.GRAY
-                    + "*("
-                    + EnumChatFormatting.LIGHT_PURPLE
-                    + "Fuel Value (EU/L)"
-                    + EnumChatFormatting.GRAY
-                    + ")^"
-                    + EnumChatFormatting.WHITE
-                    + "0.8")
-            .addInfo(
-                "Every " + EnumChatFormatting.WHITE
-                    + "tick"
-                    + EnumChatFormatting.GRAY
-                    + ", "
-                    + EnumChatFormatting.RED
-                    + "Toxic Residue "
-                    + EnumChatFormatting.GRAY
-                    + "will "
-                    + EnumChatFormatting.WHITE
-                    + "decrease "
-                    + EnumChatFormatting.GRAY
-                    + "by "
-                    + EnumChatFormatting.BLUE
-                    + "Base Decay"
-                    + EnumChatFormatting.GRAY
-                    + "*"
-                    + EnumChatFormatting.YELLOW
-                    + "Decay Boost"
-                    + EnumChatFormatting.GRAY
-                    + "*("
-                    + EnumChatFormatting.RED
-                    + "Toxic Residue"
-                    + EnumChatFormatting.GRAY
-                    + "^"
-                    + EnumChatFormatting.WHITE
-                    + "0.08"
-                    + EnumChatFormatting.GRAY
-                    + ")")
-            .addInfo(
-                "Residue will decay " + EnumChatFormatting.WHITE
-                    + "10 "
-                    + EnumChatFormatting.GRAY
-                    + "times slower when multiblock is disabled")
+                StatCollector.translateToLocalFormatted(
+                    "gt.multiblock.NeutralizationEngine.toxic_residue.3",
+                    (float) RANDOM_MIN / 1000,
+                    (float) RANDOM_MAX / 1000))
+            .addInfo(StatCollector.translateToLocal("gt.multiblock.NeutralizationEngine.toxic_residue.4"))
+            .addInfo(StatCollector.translateToLocal("gt.multiblock.NeutralizationEngine.toxic_residue.5"))
+            .addInfo(StatCollector.translateToLocal("gt.multiblock.NeutralizationEngine.toxic_residue.6"))
             .addSeparator()
-            .addInfo(
-                "Insert " + EnumChatFormatting.LIGHT_PURPLE
-                    + "Robot Arms "
-                    + EnumChatFormatting.GRAY
-                    + "to increase "
-                    + EnumChatFormatting.YELLOW
-                    + "Decay Boost"
-                    + EnumChatFormatting.GRAY
-                    + ":")
-            .addInfo(
-                EnumChatFormatting.YELLOW + "Decay Boost "
-                    + EnumChatFormatting.GRAY
-                    + "is calculated as "
-                    + EnumChatFormatting.WHITE
-                    + "1.2"
-                    + EnumChatFormatting.GRAY
-                    + "^"
-                    + EnumChatFormatting.LIGHT_PURPLE
-                    + "Robot Arm Tier "
-                    + EnumChatFormatting.GRAY
-                    + "if "
-                    + EnumChatFormatting.GREEN
-                    + "IV"
-                    + EnumChatFormatting.GRAY
-                    + " or below, "
-                    + EnumChatFormatting.WHITE
-                    + "1.4"
-                    + EnumChatFormatting.GRAY
-                    + "^"
-                    + EnumChatFormatting.LIGHT_PURPLE
-                    + "Robot Arm Tier "
-                    + EnumChatFormatting.GRAY
-                    + "if "
-                    + EnumChatFormatting.LIGHT_PURPLE
-                    + "LuV"
-                    + EnumChatFormatting.GRAY
-                    + " or above")
-            .addInfo(
-                "Insert " + EnumChatFormatting.LIGHT_PURPLE
-                    + "multiple "
-                    + EnumChatFormatting.GRAY
-                    + "("
-                    + EnumChatFormatting.WHITE
-                    + "16"
-                    + EnumChatFormatting.GRAY
-                    + " max) robot arms to multiply "
-                    + EnumChatFormatting.YELLOW
-                    + "Decay Boost "
-                    + EnumChatFormatting.GRAY
-                    + "by sqrt("
-                    + EnumChatFormatting.LIGHT_PURPLE
-                    + "Robot Arm Amount"
-                    + EnumChatFormatting.GRAY
-                    + ")")
-            .addInfo(
-                "Every " + EnumChatFormatting.WHITE
-                    + "minute"
-                    + EnumChatFormatting.GRAY
-                    + ", 1/("
-                    + EnumChatFormatting.WHITE
-                    + "45"
-                    + EnumChatFormatting.GRAY
-                    + "*(1+"
-                    + EnumChatFormatting.LIGHT_PURPLE
-                    + "Robot Arm Tier"
-                    + EnumChatFormatting.GRAY
-                    + "))chance for "
-                    + EnumChatFormatting.WHITE
-                    + "all "
-                    + EnumChatFormatting.GRAY
-                    + "used robot arms to "
-                    + EnumChatFormatting.RED
-                    + "void")
+            .addInfo(StatCollector.translateToLocal("gt.multiblock.NeutralizationEngine.decay_boost.1"))
+            .addInfo(StatCollector.translateToLocal("gt.multiblock.NeutralizationEngine.decay_boost.2"))
+            .addInfo(StatCollector.translateToLocal("gt.multiblock.NeutralizationEngine.decay_boost.3"))
+            .addInfo(StatCollector.translateToLocal("gt.multiblock.NeutralizationEngine.decay_boost.4"))
             .addSeparator()
+            .addInfo(StatCollector.translateToLocal("gt.multiblock.NeutralizationEngine.structure_tiers"))
             .addInfo(
-                "Structure has " + EnumChatFormatting.WHITE
-                    + "3 Tiers"
-                    + EnumChatFormatting.GRAY
-                    + ", "
-                    + EnumChatFormatting.WHITE
-                    + "Tier "
-                    + EnumChatFormatting.GRAY
-                    + "determines "
-                    + EnumChatFormatting.BLUE
-                    + "Base Decay "
-                    + EnumChatFormatting.GRAY
-                    + "and "
-                    + EnumChatFormatting.DARK_AQUA
-                    + "Capacity"
-                    + EnumChatFormatting.GRAY
-                    + ":")
-            .addInfo(getTierInfoTextFormatted(1, "Strengthened Inanimate Machine Casing", 200, 375000))
-            .addInfo(getTierInfoTextFormatted(2, "Precise Stationary Machine Casing", 400, 1000000))
-            .addInfo(getTierInfoTextFormatted(3, "Ultimate Static Machine Casing", 700, 2500000))
+                StatCollector.translateToLocalFormatted(
+                    "gt.multiblock.NeutralizationEngine.tier_info",
+                    1,
+                    "Strengthened Inanimate Machine Casing",
+                    200,
+                    formatNumber(375000)))
+            .addInfo(
+                StatCollector.translateToLocalFormatted(
+                    "gt.multiblock.NeutralizationEngine.tier_info",
+                    2,
+                    "Precise Stationary Machine Casing",
+                    400,
+                    formatNumber(1000000)))
+            .addInfo(
+                StatCollector.translateToLocalFormatted(
+                    "gt.multiblock.NeutralizationEngine.tier_info",
+                    3,
+                    "Ultimate Static Machine Casing",
+                    700,
+                    formatNumber(2500000)))
             .beginStructureBlock(11, 7, 3, true)
             .addController("Top center")
-            .addCasingInfoRange("Tiered Casings", 30, 46, false)
+            .addCasingInfoRange("Tiered Casing", 30, 46, false)
             .addCasingInfoExactly("Polytetrafluoroethylene Frame Box", 34, false)
             .addCasingInfoExactly("PTFE Pipe Casing", 15, false)
             .addInputBus("Any Tiered Casing", 1)
@@ -543,18 +379,24 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         mCasing = 0;
         structureTier = -1;
         sensorHatches.clear();
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) return false;
-        if (mCasing < 30 || structureTier < 1) return false;
-        if (mMaintenanceHatches.size() != 1) return false;
-        if (getBaseMetaTileEntity() == null) return false;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET, errors)) return;
+        if (structureTier < 1) {
+            errors.add(StructureErrorRegistry.UNKNOWN_TIER);
+            return;
+        }
+        checkCasingMin(errors, mCasing, 30);
+        checkHasMaintenanceHatch(errors);
+        checkHasInputHatch(errors);
+        if (mDynamoHatches.isEmpty() && mExoticDynamoHatches.isEmpty()) {
+            errors.add(StructureErrors.hatchCount(ErrorType.TOO_FEW, Dynamo, 0, 1));
+        }
         getBaseMetaTileEntity().sendBlockEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, getUpdateData());
         updateHatchTexture();
         updateResidueCapacity();
-        return true;
     }
 
     public void updateHatchTexture() {
@@ -571,30 +413,19 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
-        if (side == aFacing) {
-            if (aActive) return new ITexture[] { getCasingTexture(), TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_LNE_ACTIVE)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_LNE_ACTIVE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { getCasingTexture(), TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_LNE)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_LNE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-        }
-        return new ITexture[] { getCasingTexture() };
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            OVERLAY_FRONT_LNE,
+            OVERLAY_FRONT_LNE_GLOW,
+            OVERLAY_FRONT_LNE_ACTIVE,
+            OVERLAY_FRONT_LNE_ACTIVE_GLOW);
     }
 
-    private ITexture getCasingTexture() {
+    @Override
+    public ITexture getCasingTexture() {
         return getCasingTextureForId(getCasingTextureId());
     }
 
@@ -778,15 +609,15 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
                                                                               // even when multi is off
             toxicResidueSensorHatch.updateRedstoneOutput(toxicResidue, residueCapacity);
         }
-        robotArmTier = getRobotArmTier();
+        robotArmTier = getRobotArmTier(); // robotArmTier is 1 less than real robot arm tier
         if (robotArmTier != -1) {
             int amount = Math.min(robotArmAmount, 16);
             this.robotArmDecayBoost = (float) (getRobotArmDecayBoost(robotArmTier) * Math.sqrt(amount));
             if (getBaseMetaTileEntity().getWorld()
                 .getTotalWorldTime() % MINUTES == 0) {
-                int random = getBaseMetaTileEntity().getRandomNumber(45 * (1 + robotArmTier));
-                ItemStack robotArmItemStack = ItemList.ROBOT_ARMS[robotArmTier].get(amount);
-                if (random == 0) depleteInput(robotArmItemStack);
+                int random = getBaseMetaTileEntity().getRandomNumber(45 * (2 + robotArmTier));
+                ItemStack robotArmItemStack = ItemList.ROBOT_ARMS[robotArmTier].get(1);
+                if (random < amount) depleteInput(robotArmItemStack);
             }
         } else {
             this.robotArmDecayBoost = 1;
@@ -820,47 +651,17 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
                 .getEUCapacity();
         }
 
-        return new String[] {
-            EnumChatFormatting.BLUE + StatCollector.translateToLocal("GT5U.infodata.large_neutralization_engine")
-                + EnumChatFormatting.RESET,
-            StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(storedEnergy)
-                + EnumChatFormatting.RESET
-                + " EU / "
-                + EnumChatFormatting.YELLOW
-                + formatNumber(maxEnergy)
-                + EnumChatFormatting.RESET
-                + " EU",
-            getIdealStatus() == getRepairStatus()
-                ? EnumChatFormatting.GREEN + StatCollector.translateToLocal("GT5U.turbine.maintenance.false")
-                    + EnumChatFormatting.RESET
-                : EnumChatFormatting.RED + StatCollector.translateToLocal("GT5U.turbine.maintenance.true")
-                    + EnumChatFormatting.RESET,
-            StatCollector.translateToLocal("GT5U.engine.output") + ": "
-                + EnumChatFormatting.RED
-                + formatNumber(((long) mEUt * mEfficiency / 10000))
-                + EnumChatFormatting.RESET
-                + " EU/t",
-            StatCollector.translateToLocal("GT5U.engine.consumption") + ": "
-                + EnumChatFormatting.YELLOW
-                + formatNumber(fuelConsumption)
-                + EnumChatFormatting.RESET
-                + " L/t",
-            StatCollector.translateToLocal("GT5U.engine.value") + ": "
-                + EnumChatFormatting.YELLOW
-                + formatNumber(fuelValue)
-                + EnumChatFormatting.RESET
-                + " EU/L",
-            StatCollector.translateToLocal("GT5U.engine.efficiency") + ": "
-                + EnumChatFormatting.YELLOW
-                + (mEfficiency / 100F)
-                + EnumChatFormatting.YELLOW
-                + " %",
-            StatCollector.translateToLocal("GT5U.multiblock.recipesDone") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(recipesDone)
-                + EnumChatFormatting.RESET };
+        return new String[] { "GT5U.infodata.engine.large_neutralization_title",
+            IGregTechDeviceInformation
+                .encode("GT5U.multiblock.energy.fmt", formatNumber(storedEnergy), formatNumber(maxEnergy)),
+            getIdealStatus() == getRepairStatus() ? "GT5U.infodata.engine.maintenance.ok"
+                : "GT5U.infodata.engine.maintenance.needed",
+            IGregTechDeviceInformation
+                .encode("GT5U.infodata.engine.output", formatNumber((long) mEUt * mEfficiency / 10000)),
+            IGregTechDeviceInformation.encode("GT5U.infodata.engine.consumption", formatNumber(fuelConsumption)),
+            IGregTechDeviceInformation.encode("GT5U.infodata.engine.value", formatNumber(fuelValue)),
+            IGregTechDeviceInformation.encode("GT5U.infodata.engine.efficiency", mEfficiency / 100F),
+            IGregTechDeviceInformation.encode("GT5U.multiblock.recipesDone.fmt", formatNumber(recipesDone)) };
     }
 
     @Override

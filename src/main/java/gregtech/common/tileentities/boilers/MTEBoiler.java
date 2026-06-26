@@ -29,13 +29,13 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.ParticleFX;
 import gregtech.api.enums.SoundResource;
-import gregtech.api.enums.SteamVariant;
-import gregtech.api.gui.modularui.GUITextureSet;
+import gregtech.api.enums.TieredVariant;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IGetTitleColor;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicTank;
 import gregtech.api.modularui2.GTGuiTheme;
+import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
@@ -50,6 +50,7 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor {
     public static final byte SOUND_EVENT_LET_OFF_EXCESS_STEAM = 1;
     public int mTemperature = 20;
     public int mProcessingEnergy = 0;
+    public int fuelMaxEnergy = 0;
     public int mLossTimer = 0;
     public FluidStack mSteam = null;
     protected final FluidStackTank steamTank = new FluidStackTank(
@@ -190,6 +191,7 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor {
         aNBT.setInteger("mLossTimer", this.mLossTimer);
         aNBT.setInteger("mTemperature", this.mTemperature);
         aNBT.setInteger("mProcessingEnergy", this.mProcessingEnergy);
+        aNBT.setInteger("fuelMaxEnergy", this.fuelMaxEnergy);
         aNBT.setInteger("mExcessWater", this.mExcessWater);
         if (mSteam != null) {
             aNBT.setTag("mSteam", this.mSteam.writeToNBT(new NBTTagCompound()));
@@ -202,6 +204,8 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor {
         this.mLossTimer = aNBT.getInteger("mLossTimer");
         this.mTemperature = aNBT.getInteger("mTemperature");
         this.mProcessingEnergy = aNBT.getInteger("mProcessingEnergy");
+        this.fuelMaxEnergy = aNBT.getInteger("fuelMaxEnergy") > 0 ? aNBT.getInteger("fuelMaxEnergy")
+            : this.mProcessingEnergy;
         this.mExcessWater = aNBT.getInteger("mExcessWater");
         this.mSteam = FluidStack.loadFluidStackFromNBT(aNBT.getCompoundTag("mSteam"));
     }
@@ -313,6 +317,9 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor {
             this.mProcessingEnergy -= getEnergyConsumption();
             this.mTemperature += getHeatUpAmount();
         }
+        if (this.mProcessingEnergy <= 0) {
+            this.fuelMaxEnergy = 0;
+        }
         aBaseMetaTileEntity.setActive(this.mProcessingEnergy > 0);
     }
 
@@ -419,7 +426,7 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor {
             new ParticleEventBuilder().setIdentifier(ParticleFX.CLOUD)
                 .setWorld(getBaseMetaTileEntity().getWorld())
                 .setMotion(0D, 0D, 0D)
-                .<ParticleEventBuilder>times(
+                .times(
                     8,
                     x -> x.setPosition(aX - 0.5D + XSTR_INSTANCE.nextFloat(), aY, aZ - 0.5D + XSTR_INSTANCE.nextFloat())
                         .run());
@@ -453,10 +460,17 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor {
         return 1;
     }
 
+    protected void addProcessingEnergy(int amount) {
+        this.mProcessingEnergy += amount;
+        this.fuelMaxEnergy = Math.max(this.fuelMaxEnergy, this.mProcessingEnergy);
+    }
+
     protected abstract void updateFuel(IGregTechTileEntity aBaseMetaTileEntity, long aTick);
 
     @Override
-    protected abstract GTGuiTheme getGuiTheme();
+    protected GTGuiTheme getGuiTheme() {
+        return GTGuiThemes.TIERED_VARIANTS.get(getTieredVariant());
+    }
 
     // this is the mui1 fluid tank, but mui2 has compat with it
     public FluidStackTank getFluidStackTank() {
@@ -477,9 +491,7 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor {
     }
 
     public com.cleanroommc.modularui.widget.Widget<?> createFuelSlot() {
-        return new ItemSlot().slot(
-            new ModularSlot(inventoryHandler, 2).slotGroup("item_inv")
-                .filter(this::isItemValidFuel))
+        return new ItemSlot().slot(new ModularSlot(inventoryHandler, 2).slotGroup("item_inv"))
             .widgetTheme(GTWidgetThemes.OVERLAY_ITEM_SLOT_COAL);
     }
 
@@ -495,8 +507,8 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor {
     }
 
     @Override
-    public SteamVariant getSteamVariant() {
-        return SteamVariant.BRONZE;
+    public TieredVariant getTieredVariant() {
+        return TieredVariant.BRONZE;
     }
 
     public boolean isValidFluidInputSlotItem(@NotNull ItemStack stack) {
@@ -509,12 +521,13 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor {
     }
 
     @Override
-    public GUITextureSet getGUITextureSet() {
-        return GUITextureSet.STEAM.apply(getSteamVariant());
+    public int getTitleColor() {
+        return getTieredVariant() == TieredVariant.BRONZE ? COLOR_TITLE.get() : COLOR_TITLE_WHITE.get();
     }
 
     @Override
-    public int getTitleColor() {
-        return getSteamVariant() == SteamVariant.BRONZE ? COLOR_TITLE.get() : COLOR_TITLE_WHITE.get();
+    public boolean isItemValidForSlot(int index, ItemStack itemStack) {
+        return (index == 0 && isValidFluidInputSlotItem(itemStack) || index == 2 && isItemValidFuel(itemStack))
+            && super.isItemValidForSlot(index, itemStack);
     }
 }

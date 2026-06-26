@@ -33,7 +33,7 @@ public class ProcessingGear implements gregtech.api.interfaces.IOreRecipeRegistr
             case "gearGt" -> {
                 GTModHandler.removeRecipeByOutputDelayed(aStack);
                 if (aMaterial.mStandardMoltenFluid != null) {
-                    if (!(aMaterial == Materials.AnnealedCopper || aMaterial == Materials.WroughtIron)) {
+                    if (!(aMaterial == Materials.AnnealedCopper || aMaterial == Materials.CastIron)) {
                         GTValues.RA.stdBuilder()
                             .itemInputs(ItemList.Shape_Mold_Gear.get(0L))
                             .itemOutputs(GTOreDictUnificator.get(aPrefix, aMaterial, 1L))
@@ -70,7 +70,7 @@ public class ProcessingGear implements gregtech.api.interfaces.IOreRecipeRegistr
             }
             case "gearGtSmall" -> {
                 if (aMaterial.mStandardMoltenFluid != null) {
-                    if (!(aMaterial == Materials.AnnealedCopper || aMaterial == Materials.WroughtIron)) {
+                    if (!(aMaterial == Materials.AnnealedCopper || aMaterial == Materials.CastIron)) {
                         GTValues.RA.stdBuilder()
                             .itemInputs(ItemList.Shape_Mold_Gear_Small.get(0L))
                             .itemOutputs(GTUtility.copyAmount(1, aStack))

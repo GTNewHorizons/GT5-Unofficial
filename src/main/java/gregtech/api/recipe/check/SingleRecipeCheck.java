@@ -247,7 +247,7 @@ public class SingleRecipeCheck {
         if (recipe.mFluidInputChances != null) {
             tag.setIntArray("fluidInputChances", recipe.mFluidInputChances);
         }
-        if (recipe.mOutputChances != null) {
+        if (recipe.mFluidOutputChances != null) {
             tag.setIntArray("fluidOutputChances", recipe.mFluidOutputChances);
         }
         if (recipe.mFluidInputs != null) {

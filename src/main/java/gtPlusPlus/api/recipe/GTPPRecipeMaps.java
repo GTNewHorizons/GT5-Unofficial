@@ -236,10 +236,6 @@ public class GTPPRecipeMaps {
         .frontend(SpargeTowerFrontend::new)
         .maxIO(0, 0, 9, 9)
         .build();
-    public static final RecipeMap<RecipeMapBackend> advancedFreezerRecipes = RecipeMapBuilder
-        .of("gtpp.recipe.cryogenicfreezer")
-        .maxIO(1, 1, 2, 1)
-        .build();
     public static final RecipeMap<RecipeMapBackend> centrifugeNonCellRecipes = RecipeMapBuilder
         .of("gtpp.recipe.multicentrifuge")
         .maxIO(6, 6, 6, 6)
@@ -294,7 +290,7 @@ public class GTPPRecipeMaps {
         .build();
     public static final RecipeMap<RecipeMapBackend> multiblockRockBreakerRecipes = RecipeMapBuilder
         .of("gtpp.recipe.multiblockrockbreaker")
-        .maxIO(3, 1, 2, 0)
+        .maxIO(3, 3, 2, 0)
         .progressBar(GTUITextures.PROGRESSBAR_MACERATE)
         .neiFluidInputsGetter(gtRecipe -> new FluidStack[] { Materials.Water.getFluid(0), Materials.Lava.getFluid(0) })
         .build();

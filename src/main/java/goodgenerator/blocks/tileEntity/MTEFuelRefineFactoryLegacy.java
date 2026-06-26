@@ -11,7 +11,6 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.tuple.Pair;
@@ -29,12 +28,14 @@ import goodgenerator.util.DescTextLocalization;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
@@ -64,7 +65,7 @@ public class MTEFuelRefineFactoryLegacy extends TTMultiblockBase implements ISur
 
     @Override
     public void construct(ItemStack itemStack, boolean hintsOnly) {
-        structureBuild_EM(mName, 7, 12, 1, itemStack, hintsOnly);
+        buildPiece(mName, itemStack, hintsOnly, 7, 12, 1);
     }
 
     @Override
@@ -157,15 +158,16 @@ public class MTEFuelRefineFactoryLegacy extends TTMultiblockBase implements ISur
             .addTecTechHatchInfo()
             .addUnlimitedTierSkips()
             .beginStructureBlock(3, 15, 15, false)
-            .addController("Middle of the third layer")
+            .addController("Middle of the 3rd layer")
             .addCasingInfoExactly("Naquadah Fuel Refinery Casing", 114, false)
             .addCasingInfoExactly("Field Restriction Coil", 32, true)
             .addCasingInfoExactly("Field Restriction Glass", 8, false)
-            .addInputHatch("The casings adjacent to field restriction glass.")
-            .addInputBus("The casings adjacent to field restriction glass.", 1)
-            .addOutputHatch("The casings adjacent to field restriction glass.", 1)
-            .addEnergyHatch("The casings adjacent to field restriction glass.", 1)
-            .addDynamoHatch("The casings adjacent to field restriction glass.", 1)
+            .addMaintenanceHatch("Any Casing adjacent to Field Restriction Glass.", 1)
+            .addInputHatch("Any Casing adjacent to Field Restriction Glass.", 1)
+            .addInputBus("Any Casing adjacent to Field Restriction Glass.", 1)
+            .addOutputHatch("Any Casing adjacent to Field Restriction Glass.", 1)
+            .addEnergyHatch("Any Casing adjacent to Field Restriction Glass.", 1)
+            .addDynamoHatch("Any Casing adjacent to Field Restriction Glass.", 1)
             .toolTipFinisher();
         return tt;
     }
@@ -188,9 +190,9 @@ public class MTEFuelRefineFactoryLegacy extends TTMultiblockBase implements ISur
     }
 
     @Override
-    public boolean checkMachine_EM(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         tier = -1;
-        return structureCheck_EM(mName, 7, 12, 1);
+        checkPiece(mName, 7, 12, 1, errors);
     }
 
     @Override
@@ -234,7 +236,7 @@ public class MTEFuelRefineFactoryLegacy extends TTMultiblockBase implements ISur
     public String[] getInfoData() {
         String[] infoData = new String[super.getInfoData().length + 1];
         System.arraycopy(super.getInfoData(), 0, infoData, 0, super.getInfoData().length);
-        infoData[super.getInfoData().length] = StatCollector.translateToLocal("scanner.info.FRF") + " " + this.tier;
+        infoData[super.getInfoData().length] = IGregTechDeviceInformation.encode("gg.infodata.frf.tier", this.tier);
         return infoData;
     }
 

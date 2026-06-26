@@ -55,6 +55,16 @@ public class ShutDownReasonRegistry {
     @Nonnull
     public static final ShutDownReason POLLUTION_FAIL = SimpleShutDownReason.ofCritical("pollution_fail");
     /**
+     * Failed to output the fluids.
+     */
+    @Nonnull
+    public static final ShutDownReason FLUID_OUTPUT_FAILED = SimpleShutDownReason.ofCritical("fluid_output_failed");
+    /**
+     * Failed to output the items.
+     */
+    @Nonnull
+    public static final ShutDownReason ITEM_OUTPUT_FAILED = SimpleShutDownReason.ofCritical("item_output_failed");
+    /**
      * Shut down due to incomplete structure.
      */
     @Nonnull
@@ -126,5 +136,6 @@ public class ShutDownReasonRegistry {
         register(new ReasonOutOfFluid(Materials.Water.getFluid(0)));
         register(new ReasonOutOfItem(new ItemStack(Items.feather, 1)));
         register(new ReasonOutOfStuff("stuff", 1));
+        register(new ReasonMissingCondensate(null));
     }
 }

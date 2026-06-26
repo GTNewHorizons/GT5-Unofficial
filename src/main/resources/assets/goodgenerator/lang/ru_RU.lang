@@ -342,8 +342,43 @@ gg.scanner.info.neutron_activator.input=Текущая кинетическая 
 
 gg.scanner.info.fusion_reactor_mk=Термоядерный реактор MK
 
+#InfoData (Nuclear Control panel)
+gg.infodata.antimatter_forge.header=§9Кузница антиматерии §7
+gg.infodata.antimatter_forge.antimatter=Содержит антиматерии: §9%s§r L
+gg.infodata.antimatter_forge.passive=Пассивное потребление: §c%s§r EU/t
+gg.infodata.antimatter_forge.active=Активное потребление: §d%s§r EU/t
+gg.infodata.antimatter_forge.change=Изменение антиматерии: §b%s§r L
+gg.infodata.antimatter_generator.header=§9Генератор антиматерии §7
+gg.infodata.antimatter_generator.eu_produced=EU Произведено: §a%s§r EU
+gg.infodata.antimatter_generator.efficiency=Эффективность: §b%s§r %%
+gg.infodata.antimatter_generator.efficiency.avg=Эффективность: ⟨ §b%s§r %% ⟩₁₀
+gg.infodata.xhe.steam_output=Выход пара равен %s EU/t
+gg.infodata.xhe.threshold=Порог перегрева: §a%s§r L/s
+gg.infodata.les.stats=Параллель: §e%s§r Сила узла: §c%s§r Эффективность очистки: §b%s§r%% Ускорение: §7%s§r%%
+gg.infodata.generator.problems_efficiency=Проблемы: §c%s§r Эффективность: §e%s§r %%
+gg.infodata.neutron_activator.nke=Текущая кинетическая энергия нейтронов: §d%s§reV
+gg.infodata.frf.tier=Тир катушки: %s
+gg.infodata.fusion.header=§9Термоядерный реактор MK §r%s
+gg.infodata.fusion.parallel=Параллель работает: §d%s§r
+gg.infodata.fusion.req=Требует EU: §c%s§rEU/t
+gg.infodata.fusion.plasma=Выход плазмы: §e%s§rL/t
+gg.infodata.turbine.running.true=§aТурбина работает§r: §c%s§r EU/t
+gg.infodata.turbine.running.false=§cТурбина остановлена§r: §c%s§r EU/t
+gg.infodata.turbine.maintenance.false=§aПроблем с обслуживанием нет§r
+gg.infodata.turbine.maintenance.true=§cТребует обслуживания§r
+gg.infodata.turbine.efficiency=Текущая скорость: §e%s§r%%
+gg.infodata.turbine.flow.loose=Оптимальный поток: §e%s§r L/t §e(Слабый)
+gg.infodata.turbine.flow.tight=Оптимальный поток: §e%s§r L/t §e(Плотный)
+gg.infodata.turbine.fuel=Остаток топлива: §6%s§rL
+gg.infodata.turbine.dmg=Износ турбины: §c%s§r%%
+gg.infodata.turbine.pollution=Загрязнение: §a%s§r %%
+gg.infodata.yottank.fluid=Название жидкости: §e%s§r
+gg.infodata.yottank.cap=Текущая вместимость: §a%s§r L
+gg.infodata.yottank.stored=Текущее использование: §a%s§r L (§a%s§r%%)
+gg.infodata.yottank.locked=Заблокировано для: §e%s§r
+
 #GUI Info
-GT5U.gui.text.node_too_small=§7Узел слишком маленький
+GT5U.gui.text.recipe_result.node_too_small=§7Узел слишком маленький
 
 gui.NeutronSensor.0=Введите значение кинетической энергии нейтрона.
 gui.NeutronSensor.1=пример >5000KeV, <=30MeV . . .
@@ -360,12 +395,12 @@ gui.YOTTank.button.void=Уничтожение излишек
 gui.YOTTank.button.locking=Блокировка жидкости
 gui.LargeFusion.0=Энергоемкость:
 gui.LargeFusion.1=Энергии накоплено:
-gui.AntimatterForge.0=Содержит антиматерии
-gui.AntimatterForge.1=Пассивное потребление
-gui.AntimatterForge.2=Активное потребление
-gui.AntimatterForge.3=Изменение антиматерии
-gui.AntimatterGenerator.0=EU Произведено
-gui.AntimatterGenerator.1=Эффективность
+gui.AntimatterForge.0.s=§fСодержит антиматерии: §9%s §fL
+gui.AntimatterForge.1.s=§fПассивное потребление: §c%s §fEU/t
+gui.AntimatterForge.2.s=§fАктивное потребление: §d%s §fEU/t
+gui.AntimatterForge.3.s=§fИзменение антиматерии: §b%s §fL
+gui.AntimatterGenerator.0.s=§fEU Произведено: §9%s §fEU
+gui.AntimatterGenerator.1.s=§fЭффективность: §b%s §f%%
 batch_mode.cfgi.0=Размер партии
 gt.blockmachines.YottaFluidTank.cfgi.0=Ticks Between I/O Update
 
@@ -498,7 +533,7 @@ LargeEssentiaSmeltery.hint.4=0 - Воздух
 LargeEssentiaSmeltery.hint.5=1 - Основной шлюз/Магический корпус
 LargeEssentiaSmeltery.hint.6=2 - Выхлопная система
 LargeEssentiaSmeltery.hint.7=Поддержка TecTech Энерговводов.
-CoolantTower.hint.0=Любой вид GT бетона
+CoolantTower.hint.0=277x Любой вид GT бетона
 CoolantTower.hint.1=28x Каркас из карбида вольфрама
 CoolantTower.hint.2=1 - Входной/Выходной шлюз
 

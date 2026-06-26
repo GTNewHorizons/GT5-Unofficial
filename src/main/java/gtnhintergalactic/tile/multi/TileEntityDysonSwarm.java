@@ -8,9 +8,8 @@ import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTUtility.filterValidMTEs;
+import static gregtech.api.util.GTUtility.translate;
 import static net.minecraft.util.EnumChatFormatting.*;
-import static net.minecraft.util.StatCollector.translateToLocal;
-import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 import static tectech.thing.metaTileEntity.multi.base.TTMultiblockBase.HatchElement.DynamoMulti;
 import static tectech.thing.metaTileEntity.multi.base.TTMultiblockBase.HatchElement.InputData;
 
@@ -18,6 +17,7 @@ import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -25,8 +25,6 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.WorldProvider;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -43,10 +41,15 @@ import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.ErrorType;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.items.IDMetaTool01;
 import gregtech.common.items.MetaGeneratedTool01;
@@ -216,7 +219,7 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
      *************/
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        structureBuild_EM(STRUCTURE_PIECE_MAIN, 10, 18, 3, stackSize, hintsOnly);
+        buildPiece(STRUCTURE_PIECE_MAIN, stackSize, hintsOnly, 10, 18, 3);
     }
 
     @Override
@@ -231,11 +234,16 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
     }
 
     @Override
-    public boolean checkMachine_EM(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        return structureCheck_EM(STRUCTURE_PIECE_MAIN, 10, 18, 3) && mInputBusses.size() > 0
-            && mInputHatches.size() > 0
-            && eInputData.size() > 0
-            && (mDynamoHatches.size() > 0 || eDynamoMulti.size() > 0);
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 10, 18, 3, errors)) return;
+        checkHasInputBus(errors);
+        checkHasInputHatch(errors);
+        if (eInputData.isEmpty()) {
+            errors.add(StructureErrorRegistry.MISSING_DATA_HATCH);
+        }
+        if (mDynamoHatches.isEmpty() && eDynamoMulti.isEmpty()) {
+            errors.add(StructureErrors.hatchCount(ErrorType.TOO_FEW, Dynamo, 0, 1));
+        }
     }
 
     @Override
@@ -424,72 +432,70 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.ig.dyson.type"));
+        tt.addMachineType(translate("gt.blockmachines.multimachine.ig.dyson.type"));
         if (TooltipUtil.dysonLoreText != null) tt.addInfo(ITALIC + addFormattedString(TooltipUtil.dysonLoreText));
 
-        tt.addInfo(translateToLocal("gt.blockmachines.multimachine.ig.dyson.desc1"))
+        tt.addInfo(translate("gt.blockmachines.multimachine.ig.dyson.desc1"))
             .addInfo(
-                translateToLocalFormatted(
+                translate(
                     "gt.blockmachines.multimachine.ig.dyson.desc2",
                     getDecimalFormat().format(IGConfig.dysonSwarm.euPerModule)))
             .addInfo(
-                translateToLocalFormatted(
+                translate(
                     "gt.blockmachines.multimachine.ig.dyson.desc3",
                     getDecimalFormat().format(IGConfig.dysonSwarm.destroyModuleChance),
                     getDecimalFormat().format(IGConfig.dysonSwarm.destroyModuleA),
                     getDecimalFormat().format(IGConfig.dysonSwarm.destroyModuleB)))
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.ig.dyson.desc4"))
+            .addInfo(translate("gt.blockmachines.multimachine.ig.dyson.desc4"))
             .addInfo(
-                translateToLocalFormatted(
+                translate(
                     "gt.blockmachines.multimachine.ig.dyson.desc5",
                     getDecimalFormat().format(IGConfig.dysonSwarm.coolantConsumption),
                     IGConfig.dysonSwarm.getCoolantStack()
                         .getLocalizedName()))
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.ig.dyson.desc6"))
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.ig.dyson.desc7"))
+            .addInfo(translate("gt.blockmachines.multimachine.ig.dyson.desc6"))
+            .addInfo(translate("gt.blockmachines.multimachine.ig.dyson.desc7"))
             .addTecTechHatchInfo()
             .beginStructureBlock(16, 20, 16, false)
             .addController("Front bottom center of the Dyson Swarm Energy Receiver Base")
-            .addDynamoHatch(translateToLocal("ig.dyson.structure.dynamo"), 1)
+            .addDynamoHatch(translate("ig.dyson.structure.dynamo"), 1)
             .addInputBus("1 - 11", 2)
             .addInputHatch("1 - 11", 2)
-            .addOtherStructurePart(translateToLocal("ig.dyson.structure.optical"), "1 - 24", 4)
+            .addOtherStructurePart(translate("ig.dyson.structure.optical"), "1 - 24", 4)
             .addStructureInfo("")
-            .addStructureInfo(ITALIC + translateToLocal("ig.dyson.structure.additionally"))
-            .addCasingInfoRange(translateToLocal("ig.dyson.structure.receiver.base"), 53, 64, false)
-            .addCasingInfoExactly(translateToLocal("ig.dyson.structure.receiver.dish"), 81, false)
-            .addCasingInfoRange(translateToLocal("ig.dyson.structure.deployment.base"), 62, 72, false)
-            .addCasingInfoExactly(translateToLocal("ig.dyson.structure.deployment.core"), 1, false)
-            .addCasingInfoExactly(translateToLocal("ig.dyson.structure.deployment.magnet"), 32, false)
-            .addCasingInfoRange(translateToLocal("ig.dyson.structure.control.base"), 115, 138, false)
-            .addCasingInfoExactly(translateToLocal("ig.dyson.structure.control.primary"), 20, false)
-            .addCasingInfoExactly(translateToLocal("ig.dyson.structure.control.secondary"), 12, false)
-            .addCasingInfoExactly(translateToLocal("ig.dyson.structure.control.toroid"), 128, false)
-            .addCasingInfoExactly(translateToLocal("ig.dyson.structure.base.floor"), 256, false)
-            .addCasingInfoExactly(translateToLocal("ig.dyson.structure.base.coil"), 9, false)
-            .addCasingInfoExactly(translateToLocal("ig.dyson.structure.base.hermetic"), 1, false)
-            .addCasingInfoExactly(translateToLocal("ig.dyson.structure.base.frameTitanium"), 16, false)
-            .addCasingInfoExactly(translateToLocal("ig.dyson.structure.base.frameHSSS"), 23, false)
-            .addCasingInfoExactly(translateToLocal("ig.dyson.structure.base.frameUHVBase"), 64, false)
+            .addStructureInfo(ITALIC + translate("ig.dyson.structure.additionally"))
+            .addCasingInfoRange(translate("ig.dyson.structure.receiver.base"), 53, 64, false)
+            .addCasingInfoExactly(translate("ig.dyson.structure.receiver.dish"), 81, false)
+            .addCasingInfoRange(translate("ig.dyson.structure.deployment.base"), 62, 72, false)
+            .addCasingInfoExactly(translate("ig.dyson.structure.deployment.core"), 1, false)
+            .addCasingInfoExactly(translate("ig.dyson.structure.deployment.magnet"), 32, false)
+            .addCasingInfoRange(translate("ig.dyson.structure.control.base"), 115, 138, false)
+            .addCasingInfoExactly(translate("ig.dyson.structure.control.primary"), 20, false)
+            .addCasingInfoExactly(translate("ig.dyson.structure.control.secondary"), 12, false)
+            .addCasingInfoExactly(translate("ig.dyson.structure.control.toroid"), 128, false)
+            .addCasingInfoExactly(translate("ig.dyson.structure.base.floor"), 256, false)
+            .addCasingInfoExactly(translate("ig.dyson.structure.base.coil"), 9, false)
+            .addCasingInfoExactly(translate("ig.dyson.structure.base.hermetic"), 1, false)
+            .addCasingInfoExactly(translate("ig.dyson.structure.base.frameTitanium"), 16, false)
+            .addCasingInfoExactly(translate("ig.dyson.structure.base.frameHSSS"), 23, false)
+            .addCasingInfoExactly(translate("ig.dyson.structure.base.frameUHVBase"), 64, false)
             .toolTipFinisher();
         return tt;
     }
 
     @Override
     public String[] getInfoData() {
-        return new String[] { LIGHT_PURPLE + "Operational Data:" + RESET,
-            "Modules: " + YELLOW + formatNumber(moduleCount) + RESET,
-            "Power Factor: " + (powerFactor < 1.0f ? RED : GREEN) + formatNumber(powerFactor * 100.0) + "%" + RESET,
-            "Theoretical Output: " + YELLOW
-                + formatNumber((long) moduleCount * IGConfig.dysonSwarm.euPerModule * powerFactor)
-                + RESET
-                + " EU/t",
-            "Current Output: " + YELLOW + formatNumber(euPerTick) + RESET + " EU/t",
-            "Computation required: " + YELLOW + formatNumber(eRequiredData) + RESET + "/t",
-            StatCollector.translateToLocal("GT5U.multiblock.recipesDone") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(recipesDone)
-                + EnumChatFormatting.RESET,
+        return new String[] { "ig.infodata.hdr.operational_data",
+            IGregTechDeviceInformation.encode("ig.infodata.dyson_swarm.modules.fmt", formatNumber(moduleCount)),
+            IGregTechDeviceInformation.encode(
+                "ig.infodata.dyson_swarm.power_factor.fmt",
+                (powerFactor < 1.0f ? RED : GREEN) + formatNumber(powerFactor * 100.0) + "%" + RESET),
+            IGregTechDeviceInformation.encode(
+                "ig.infodata.dyson_swarm.theoretical_output.fmt",
+                formatNumber((long) moduleCount * IGConfig.dysonSwarm.euPerModule * powerFactor)),
+            IGregTechDeviceInformation.encode("ig.infodata.dyson_swarm.current_output.fmt", formatNumber(euPerTick)),
+            IGregTechDeviceInformation.encode("ig.infodata.dyson_swarm.computation.fmt", formatNumber(eRequiredData)),
+            IGregTechDeviceInformation.encode("GT5U.multiblock.recipesDone.fmt", formatNumber(recipesDone)),
             "---------------------------------------------" };
     }
 

@@ -27,11 +27,12 @@ import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTUtility.validMTEList;
 
+import java.util.List;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -53,12 +54,14 @@ import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -171,14 +174,14 @@ public class MTEThoriumHighTempReactor extends MTEEnhancedMultiBlockBase<MTEThor
             .addInfo("One Operation takes 9 hours")
             .beginStructureBlock(11, 12, 11, true)
             .addController("Front bottom center")
-            .addCasingInfoMin("Radiation Proof Casings", 500, false)
+            .addCasingInfoMin("Radiation Proof Casing", 500, false)
             .addStructureInfo("Corners and the 2 touching blocks are air (cylindric)")
-            .addInputBus("Any top layer casing", 2)
-            .addInputHatch("Any top layer casing", 2)
-            .addOutputBus("Any bottom layer casing", 1)
-            .addOutputHatch("Any bottom layer casing", 1)
-            .addEnergyHatch("Any bottom layer casing", 1)
-            .addMaintenanceHatch("Any bottom layer casing", 1)
+            .addInputBus("Any top layer Casing", 2)
+            .addInputHatch("Any top layer Casing", 2)
+            .addOutputBus("Any bottom layer Casing", 1)
+            .addOutputHatch("Any bottom layer Casing", 1)
+            .addEnergyHatch("Any bottom layer Casing", 1)
+            .addMaintenanceHatch("Any bottom layer Casing", 1)
             .toolTipFinisher();
         return tt;
     }
@@ -199,15 +202,17 @@ public class MTEThoriumHighTempReactor extends MTEEnhancedMultiBlockBase<MTEThor
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack itemStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack itemStack,
+        List<StructureError> errors) {
         this.mCasingAmount = 0;
-        return this.checkPiece(STRUCTURE_PIECE_MAIN, 5, 11, 0) && this.mCasingAmount >= 500
-            && this.mMaintenanceHatches.size() == 1
-            && !this.mInputHatches.isEmpty()
-            && !this.mOutputHatches.isEmpty()
-            && !this.mInputBusses.isEmpty()
-            && !this.mOutputBusses.isEmpty()
-            && !this.mEnergyHatches.isEmpty();
+        if (!this.checkPiece(STRUCTURE_PIECE_MAIN, 5, 11, 0, errors)) return;
+        checkCasingMin(errors, this.mCasingAmount, 500);
+        checkHasMaintenanceHatch(errors);
+        checkHasInputHatch(errors);
+        checkHasOutputHatch(errors);
+        checkHasInputBus(errors);
+        checkHasOutputBus(errors);
+        checkHasEnergyHatch(errors);
     }
 
     @Override
@@ -305,7 +310,7 @@ public class MTEThoriumHighTempReactor extends MTEEnhancedMultiBlockBase<MTEThor
     public boolean onRunningTick(ItemStack aStack) {
 
         if (this.emptyingMode) {
-            this.addOutput(Materials.Helium.getGas(this.HeliumSupply));
+            this.addOutputPartial(Materials.Helium.getGas(this.HeliumSupply));
             this.addOutputPartial(
                 new ItemStack(THTRMaterials.aTHTR_Materials, this.fuelSupply, THTRMaterials.MATERIAL_FUEL_INDEX));
             this.HeliumSupply = 0;
@@ -329,7 +334,7 @@ public class MTEThoriumHighTempReactor extends MTEEnhancedMultiBlockBase<MTEThor
             }
         }
 
-        if (drainedamount > 0) this.addOutput(FluidRegistry.getFluidStack("ic2hotcoolant", drainedamount));
+        if (drainedamount > 0) this.addOutputPartial(FluidRegistry.getFluidStack("ic2hotcoolant", drainedamount));
 
         this.updateSlots();
 
@@ -344,24 +349,20 @@ public class MTEThoriumHighTempReactor extends MTEEnhancedMultiBlockBase<MTEThor
     @Override
     public String[] getInfoData() {
         return new String[] {
-            StatCollector.translateToLocalFormatted(
+            IGregTechDeviceInformation.encode(
                 "BW.infoData.thtr.progress",
                 formatNumber(this.mProgresstime / 20),
                 formatNumber(this.mMaxProgresstime / 20)),
-            StatCollector.translateToLocalFormatted(
-                "BW.infoData.thtr.triso_pebbles",
-                formatNumber(this.fuelSupply),
-                formatNumber(this.fuelSupply)),
-            StatCollector.translateToLocalFormatted(
+            IGregTechDeviceInformation
+                .encode("BW.infoData.thtr.triso_pebbles", formatNumber(this.fuelSupply), formatNumber(this.fuelSupply)),
+            IGregTechDeviceInformation.encode(
                 "BW.infoData.htr.helium_level",
                 formatNumber(this.HeliumSupply),
                 formatNumber(MTEThoriumHighTempReactor.HELIUM_NEEDED)),
-            StatCollector.translateToLocalFormatted(
-                "BW.infoData.thtr.coolant",
-                formatNumber(this.mProgresstime == 0 ? 0 : this.coolingPerTick)),
-            StatCollector.translateToLocalFormatted(
-                "BW.infoData.htr.problems",
-                String.valueOf(this.getIdealStatus() - this.getRepairStatus())) };
+            IGregTechDeviceInformation
+                .encode("BW.infoData.thtr.coolant", formatNumber(this.mProgresstime == 0 ? 0 : this.coolingPerTick)),
+            IGregTechDeviceInformation
+                .encode("BW.infoData.htr.problems", String.valueOf(this.getIdealStatus() - this.getRepairStatus())) };
     }
 
     @Override

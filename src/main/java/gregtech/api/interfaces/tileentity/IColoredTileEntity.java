@@ -4,6 +4,8 @@ import gregtech.api.enums.Dyes;
 
 public interface IColoredTileEntity {
 
+    int UNCOLOURED = -1;
+
     /**
      * @return 0 - 15 are Colors, while -1 means uncolored
      */

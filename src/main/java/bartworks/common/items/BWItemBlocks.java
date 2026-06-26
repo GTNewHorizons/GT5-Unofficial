@@ -15,7 +15,6 @@ package bartworks.common.items;
 
 import static net.minecraft.util.StatCollector.translateToLocal;
 
-import java.util.Arrays;
 import java.util.List;
 
 import net.minecraft.block.Block;
@@ -29,6 +28,7 @@ import bartworks.API.ITileAddsInformation;
 import bartworks.MainMod;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 
 public class BWItemBlocks extends ItemBlock {
 
@@ -54,7 +54,8 @@ public class BWItemBlocks extends ItemBlock {
     public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List<String> aList, boolean aF3_H) {
 
         if (this.field_150939_a instanceof ITileAddsInformation) {
-            aList.addAll(Arrays.asList(((ITileAddsInformation) this.field_150939_a).getInfoData()));
+            for (String s : ((ITileAddsInformation) this.field_150939_a).getInfoData())
+                aList.add(IGregTechDeviceInformation.decode(s));
         }
         aList.add(translateToLocal("gt.casing.no-mob-spawning"));
         if (!(this.field_150939_a instanceof ITileEntityProvider))

@@ -15,9 +15,7 @@ import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.TextWidget;
-import com.cleanroommc.modularui.widgets.layout.Column;
 import com.cleanroommc.modularui.widgets.layout.Flow;
-import com.cleanroommc.modularui.widgets.layout.Row;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
 
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
@@ -34,7 +32,8 @@ public class MTEBeamStabilizerGui extends MTEMultiBlockBaseGui<MTEBeamStabilizer
         super.registerSyncValues(syncManager);
         syncManager.syncValue(
             "playerTargetBeamRate",
-            new IntSyncValue(() -> multiblock.playerTargetBeamRate, i -> multiblock.playerTargetBeamRate = i));
+            new IntSyncValue(() -> multiblock.playerTargetBeamRate, i -> multiblock.playerTargetBeamRate = i)
+                .allowC2S());
         syncManager.syncValue("inputBeamRate", new IntSyncValue(multiblock::getCachedBeamRate));
     }
 
@@ -44,10 +43,10 @@ public class MTEBeamStabilizerGui extends MTEMultiBlockBaseGui<MTEBeamStabilizer
     }
 
     protected IWidget createOverviewButton(PanelSyncManager syncManager, ModularPanel parent) {
-        IPanelHandler statsPanel = syncManager.panel(
+        IPanelHandler statsPanel = syncManager.syncedPanel(
             "statsPanel",
-            (p_syncManager, syncHandler) -> openInfoPanel(p_syncManager, parent, syncManager),
-            true);
+            true,
+            (p_syncManager, syncHandler) -> openInfoPanel(p_syncManager, parent, syncManager));
         return new ButtonWidget<>().size(18, 18)
             .topRel(0)
             .overlay(UITexture.fullImage(GregTech.ID, "gui/overlay_button/cyclic"))
@@ -74,10 +73,12 @@ public class MTEBeamStabilizerGui extends MTEMultiBlockBaseGui<MTEBeamStabilizer
             .size(180, 110)
             .widgetTheme("backgroundPopup")
             .child(
-                new Row().sizeRel(1)
+                Flow.row()
+                    .full()
                     .widgetTheme("backgroundPopup")
                     .child(
-                        new Column().size(160, 60)
+                        Flow.column()
+                            .size(160, 60)
                             .paddingLeft(40)
                             .child(
                                 new TextWidget<>(
@@ -85,15 +86,15 @@ public class MTEBeamStabilizerGui extends MTEMultiBlockBaseGui<MTEBeamStabilizer
                                         () -> StatCollector.translateToLocalFormatted(
                                             "gt.blockmachines.multimachine.beamcrafting.beamstabilizer.gui.targetbeamrate")))
                                                 .size(160, 20)
-                                                .alignment(Alignment.CENTER))
+                                                .textAlign(Alignment.CENTER))
                             .child(
                                 new TextFieldWidget().setTextAlignment(Alignment.CenterRight)
-                                    .setNumbersLong(() -> 1L, () -> Long.MAX_VALUE)
+                                    .numbersLong(() -> 1L, () -> Long.MAX_VALUE)
                                     .width(120)
                                     .height(14)
                                     .marginRight(2)
                                     .value(playerTargetBeamRateSync)
-                                    .setDefaultNumber(100))));
+                                    .defaultNumber(100))));
     }
 
 }

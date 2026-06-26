@@ -45,13 +45,17 @@ import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.objects.XSTR;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
-import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
@@ -64,7 +68,7 @@ import tectech.thing.metaTileEntity.multi.base.LedStatus;
 import tectech.thing.metaTileEntity.multi.base.Parameters;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 
-public class MTENeutronActivator extends TTMultiblockBase implements ISurvivalConstructable {
+public class MTENeutronActivator extends TTMultiblockBase implements ISurvivalConstructable, ICasingTextureProvider {
 
     public Parameters.Group.ParameterIn batchSetting;
 
@@ -207,13 +211,13 @@ public class MTENeutronActivator extends TTMultiblockBase implements ISurvivalCo
             .addCasingInfoMin("Steel Frame Box", 16, false)
             .addCasingInfoMin("Speeding Pipe Casing", 4, false)
             .addCasingInfoMin("Any Tiered Glass", 32, false)
-            .addInputHatch("Hint Block Number 1")
-            .addInputBus("Hint Block Number 1")
-            .addOutputHatch("Hint Block Number 2")
-            .addOutputBus("Hint Block Number 2")
-            .addMaintenanceHatch("Hint Block Number 2")
-            .addOtherStructurePart("Neutron Accelerator", "Hint Block Number 2")
-            .addOtherStructurePart("Neutron Sensor", "Hint Block Number 2")
+            .addInputHatch("Hint block number 1")
+            .addInputBus("Hint block number 1")
+            .addOutputHatch("Hint block number 2")
+            .addOutputBus("Hint block number 2")
+            .addMaintenanceHatch("Hint block number 2")
+            .addOtherStructurePart("Neutron Accelerator", "Hint block number 2")
+            .addOtherStructurePart("Neutron Sensor", "Hint block number 2")
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         return tt;
@@ -262,30 +266,41 @@ public class MTENeutronActivator extends TTMultiblockBase implements ISurvivalCo
     }
 
     @Override
-    protected void clearHatches_EM() {
-        super.clearHatches_EM();
+    public void clearHatches() {
+        super.clearHatches();
         this.mNeutronAccelerator.clear();
         this.mNeutronSensor.clear();
     }
 
     @Override
-    public boolean checkMachine_EM(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         this.casingAmount = 0;
-        if (!structureCheck_EM(NA_BOTTOM, 2, 0, 0)) return false;
+        if (!checkPiece(NA_BOTTOM, 2, 0, 0, errors)) return;
 
         if (!mMachine) {
             height = 0;
-            while (structureCheck_EM(NA_MID, 2, height + 1, 0)) {
+            while (checkPiece(NA_MID, 2, height + 1, 0, errors)) {
                 height++;
             }
+            errors.clear();
         } else {
             for (int i = 0; i < height; i++) {
-                if (!structureCheck_EM(NA_MID, 2, i + 1, 0)) return false;
+                if (!checkPiece(NA_MID, 2, i + 1, 0, errors)) return;
             }
         }
 
-        if (height < 4) return false;
-        return structureCheck_EM(NA_TOP, 2, height + 1, 0) && casingAmount >= 7;
+        if (height < 4) {
+            errors.add(StructureErrorRegistry.TOO_SHORT_HEIGHT);
+            return;
+        }
+        if (!checkPiece(NA_TOP, 2, height + 1, 0, errors)) return;
+        checkCasingMin(errors, casingAmount, 7);
+        checkHasAnyInput(errors);
+        checkHasAnyOutput(errors);
+        checkHasMaintenanceHatch(errors);
+        if (mNeutronAccelerator.isEmpty()) {
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.missing_neutron_accelerator"));
+        }
     }
 
     public final boolean addAcceleratorAndSensor(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
@@ -393,11 +408,11 @@ public class MTENeutronActivator extends TTMultiblockBase implements ISurvivalCo
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        structureBuild_EM(NA_BOTTOM, 2, 0, 0, stackSize, hintsOnly);
+        buildPiece(NA_BOTTOM, stackSize, hintsOnly, 2, 0, 0);
         int heights = stackSize.stackSize + 3;
-        structureBuild_EM(NA_TOP, 2, heights + 1, 0, stackSize, hintsOnly);
+        buildPiece(NA_TOP, stackSize, hintsOnly, 2, heights + 1, 0);
         while (heights > 0) {
-            structureBuild_EM(NA_MID, 2, heights, 0, stackSize, hintsOnly);
+            buildPiece(NA_MID, stackSize, hintsOnly, 2, heights, 0);
             heights--;
         }
     }
@@ -421,48 +436,33 @@ public class MTENeutronActivator extends TTMultiblockBase implements ISurvivalCo
         }
         if (!anyWorking) currentNKEInput = -72000;
         return new String[] {
-            StatCollector.translateToLocalFormatted(
+            IGregTechDeviceInformation.encode(
                 "gg.scanner.info.neutron_activator.progress",
-                EnumChatFormatting.GREEN + Integer.toString(this.mProgresstime / 20) + EnumChatFormatting.RESET,
-                EnumChatFormatting.YELLOW + Integer.toString(this.mMaxProgresstime / 20) + EnumChatFormatting.RESET),
-            StatCollector.translateToLocalFormatted(
-                "gg.scanner.info.neutron_activator.input",
-                EnumChatFormatting.GREEN + formatNumber(currentNKEInput) + EnumChatFormatting.RESET),
-            StatCollector.translateToLocal("scanner.info.NA") + " "
-                + EnumChatFormatting.LIGHT_PURPLE
-                + formatNumber(getCurrentNeutronKineticEnergy())
-                + EnumChatFormatting.RESET
-                + "eV",
-            StatCollector.translateToLocal("GT5U.multiblock.recipesDone") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(recipesDone)
-                + EnumChatFormatting.RESET };
+                Integer.toString(this.mProgresstime / 20),
+                Integer.toString(this.mMaxProgresstime / 20)),
+            IGregTechDeviceInformation.encode("gg.scanner.info.neutron_activator.input", formatNumber(currentNKEInput)),
+            IGregTechDeviceInformation
+                .encode("gg.infodata.neutron_activator.nke", formatNumber(getCurrentNeutronKineticEnergy())),
+            IGregTechDeviceInformation.encode("GT5U.multiblock.recipesDone.fmt", formatNumber(recipesDone)) };
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-        int colorIndex, boolean aActive, boolean aRedstone) {
-        if (side == facing) {
-            if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(49), TextureFactory.builder()
-                .addIcon(textureFontOn)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(textureFontOn_Glow)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            else return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(49), TextureFactory.builder()
-                .addIcon(textureFontOff)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(textureFontOff_Glow)
-                    .extFacing()
-                    .glow()
-                    .build() };
-        }
-        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(49) };
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            textureFontOff,
+            textureFontOff_Glow,
+            textureFontOn,
+            textureFontOn_Glow);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Textures.BlockIcons.getCasingTextureForId(49);
     }
 
     @Override

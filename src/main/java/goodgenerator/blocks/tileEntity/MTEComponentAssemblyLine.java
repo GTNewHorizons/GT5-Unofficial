@@ -5,6 +5,7 @@ import static gregtech.api.enums.HatchElement.*;
 import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 
+import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -14,7 +15,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.tuple.Pair;
@@ -34,13 +34,16 @@ import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GTUtility;
@@ -49,7 +52,7 @@ import gregtech.api.util.OverclockCalculator;
 import gregtech.common.misc.GTStructureChannels;
 
 public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEComponentAssemblyLine>
-    implements ISurvivalConstructable {
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     private int casingTier = -1;
     private int glassTier = -1;
@@ -258,38 +261,29 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
         String[] origin = super.getInfoData();
         String[] ret = new String[origin.length + 1];
         System.arraycopy(origin, 0, ret, 0, origin.length);
-        ret[origin.length] = StatCollector.translateToLocalFormatted(
+        ret[origin.length] = IGregTechDeviceInformation.encode(
             "scanner.info.CASS.tier",
-            casingTier >= 0 ? GTValues.VN[casingTier + 1]
-                : StatCollector.translateToLocal("scanner.info.CASS.tier.none"));
+            casingTier >= 0 ? GTValues.VN[casingTier + 1] : GTUtility.translate("scanner.info.CASS.tier.none"));
         return ret;
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-        int colorIndex, boolean aActive, boolean aRedstone) {
-        if (side == facing) {
-            if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(183),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_COMPONENT_ASSEMBLY_LINE_ACTIVE)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_COMPONENT_ASSEMBLY_LINE_ACTIVE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(183), TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_COMPONENT_ASSEMBLY_LINE)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_COMPONENT_ASSEMBLY_LINE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-        }
-        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(183) };
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            OVERLAY_FRONT_COMPONENT_ASSEMBLY_LINE,
+            OVERLAY_FRONT_COMPONENT_ASSEMBLY_LINE_GLOW,
+            OVERLAY_FRONT_COMPONENT_ASSEMBLY_LINE_ACTIVE,
+            OVERLAY_FRONT_COMPONENT_ASSEMBLY_LINE_ACTIVE_GLOW);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Textures.BlockIcons.getCasingTextureForId(183);
     }
 
     @Override
@@ -337,14 +331,17 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         this.casingTier = -1;
         this.glassTier = -1;
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, 4, 2, 0)) {
-            return false;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 4, 2, 0, errors)) return;
+        if (this.glassTier < VoltageIndex.UV) {
+            errors.add(StructureErrors.glassTierNotEnough(VoltageIndex.UV));
         }
-
-        return this.glassTier >= VoltageIndex.UV;
+        checkHasInputBus(errors);
+        checkHasOutputBus(errors);
+        checkOneMaintenanceHatch(errors);
+        checkHasAnyEnergy(errors);
     }
 
     @Override

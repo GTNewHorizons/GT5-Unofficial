@@ -46,7 +46,8 @@ public class CoverUIFactory extends AbstractUIFactory<CoverGuiData> {
             tile.getXCoord(),
             tile.getYCoord(),
             tile.getZCoord(),
-            side);
+            side,
+            false);
         GuiManager.open(this, guiData, player);
     }
 
@@ -104,6 +105,7 @@ public class CoverUIFactory extends AbstractUIFactory<CoverGuiData> {
             buffer.readVarIntFromBuffer(),
             buffer.readVarIntFromBuffer(),
             buffer.readVarIntFromBuffer(),
-            ForgeDirection.getOrientation(buffer.readByte()));
+            ForgeDirection.getOrientation(buffer.readByte()),
+            false);
     }
 }

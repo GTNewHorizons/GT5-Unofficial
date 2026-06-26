@@ -2,20 +2,17 @@ package gregtech.common.gui.modularui.singleblock.base;
 
 import static net.minecraft.util.StatCollector.translateToLocal;
 
-import com.cleanroommc.modularui.api.drawable.IKey;
+import net.minecraftforge.fluids.IFluidTank;
+
 import com.cleanroommc.modularui.screen.ModularPanel;
-import com.cleanroommc.modularui.utils.Alignment;
-import com.cleanroommc.modularui.utils.Color;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.FluidSlotSyncHandler;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
-import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widgets.ToggleButton;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.slot.FluidSlot;
 
 import gregtech.api.modularui2.GTGuiTextures;
-import gregtech.common.modularui2.widget.FluidLockSlotWidget;
 import gregtech.common.tileentities.storage.MTEDigitalTankBase;
 
 public class MTEDigitalTankBaseGui<T extends MTEDigitalTankBase> extends MTEBasicTankBaseGui<T> {
@@ -25,52 +22,23 @@ public class MTEDigitalTankBaseGui<T extends MTEDigitalTankBase> extends MTEBasi
     }
 
     @Override
-    protected boolean supportsMuffler() {
+    protected boolean supportsTopRightCornerFlow() {
         return false;
     }
 
     @Override
-    protected boolean supportsPowerSwitch() {
-        return false;
-    }
-
-    @Override
-    protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
-
-        Flow mainRow = Flow.row()
-            .coverChildren()
-            .childPadding(1)
-            .paddingLeft(4)
-            .paddingTop(10)
-            .crossAxisAlignment(Alignment.CrossAxis.START);
-
-        mainRow.child(createLeftSide(panel, syncManager));
-        mainRow.child(createIO(panel, syncManager));
-        mainRow.child(createRightSide(panel, syncManager));
-
-        return super.createContentSection(panel, syncManager).child(mainRow);
-    }
-
-    protected Flow createLeftSide(ModularPanel panel, PanelSyncManager syncManager) {
-        Flow leftSide = Flow.column()
-            .childPadding(2)
-            .coverChildren()
-            .crossAxisAlignment(Alignment.CrossAxis.START);
-
-        Flow buttonRow = Flow.row()
-            .coverChildren();
+    protected Flow createBottomLeftCornerFlow(ModularPanel panel, PanelSyncManager syncManager) {
+        Flow row = super.createBottomLeftCornerFlow(panel, syncManager);
 
         // auto output
-        buttonRow.child(
-            new ToggleButton().size(18)
-                .value(new BooleanSyncValue(machine::isOutputFluid, machine::setOutputFluid))
+        row.child(
+            new ToggleButton().value(new BooleanSyncValue(machine::isOutputFluid, machine::setOutputFluid).allowC2S())
                 .overlay(GTGuiTextures.OVERLAY_BUTTON_AUTOOUTPUT_FLUID)
                 .tooltip(t -> t.addLine(translateToLocal("GT5U.machines.digitaltank.autooutput.tooltip"))));
 
         // lock
-        buttonRow.child(
-            new ToggleButton().size(18)
-                .value(new BooleanSyncValue(machine::isFluidLocked, machine::lockFluid))
+        row.child(
+            new ToggleButton().value(new BooleanSyncValue(machine::isFluidLocked, machine::lockFluid).allowC2S())
                 .overlay(GTGuiTextures.OVERLAY_BUTTON_LOCK)
                 .tooltip(t -> {
                     t.addLine(translateToLocal("GT5U.machines.digitaltank.lockfluid.tooltip"));
@@ -79,43 +47,35 @@ public class MTEDigitalTankBaseGui<T extends MTEDigitalTankBase> extends MTEBasi
                 }));
 
         // allow input
-        buttonRow.child(
-            new ToggleButton().size(18)
-                .value(new BooleanSyncValue(machine::isAllowInputFromOutputSide, machine::setAllowInputFromOutputSide))
+        row.child(
+            new ToggleButton()
+                .value(
+                    new BooleanSyncValue(machine::isAllowInputFromOutputSide, machine::setAllowInputFromOutputSide)
+                        .allowC2S())
                 .overlay(GTGuiTextures.OVERLAY_BUTTON_INPUT_FROM_OUTPUT_SIDE)
                 .tooltip(t -> t.addLine(translateToLocal("GT5U.machines.digitaltank.inputfromoutput.tooltip"))));
 
-        leftSide.child(createScreen(panel, syncManager));
-        leftSide.child(buttonRow);
-
-        return leftSide;
+        return row;
     }
 
     @Override
-    protected FluidSlot createFluidSlot(ModularPanel panel, PanelSyncManager syncManager) {
-        FluidSlotSyncHandler fluidSlotSH = new FluidSlotSyncHandler(machine.getFluidTank());
+    protected FluidSlot createFluidSlot(ModularPanel panel, PanelSyncManager syncManager, IFluidTank fluidTank) {
+        FluidSlotSyncHandler fluidSlotSH = new FluidSlotSyncHandler(fluidTank);
         fluidSlotSH.setChangeListener(machine::setLockIfEmpty);
 
-        return new FluidSlot().syncHandler(fluidSlotSH)
-            .bottomRel(0)
-            .rightRel(0)
-            .disableThemeBackground(true)
-            .disableHoverThemeBackground(true);
+        return super.createFluidSlot(panel, syncManager, fluidTank).syncHandler(fluidSlotSH);
     }
 
-    protected Flow createRightSide(ModularPanel panel, PanelSyncManager syncManager) {
-        Flow rightSide = Flow.column()
-            .childPadding(2)
-            .coverChildren()
-            .crossAxisAlignment(Alignment.CrossAxis.START);
-
+    @Override
+    protected Flow createBottomRightCornerFlow(ModularPanel panel, PanelSyncManager syncManager) {
         Flow buttonRow = Flow.row()
-            .coverChildren();
+            .coverChildren()
+            .marginRight(SLOT_SIZE);
 
         // overflow
         buttonRow.child(
-            new ToggleButton().size(18)
-                .value(new BooleanSyncValue(machine::isVoidFluidPart, machine::setVoidFluidPart))
+            new ToggleButton()
+                .value(new BooleanSyncValue(machine::isVoidFluidPart, machine::setVoidFluidPart).allowC2S())
                 .overlay(GTGuiTextures.OVERLAY_BUTTON_TANK_VOID_EXCESS)
                 .tooltip(t -> {
                     t.addLine(translateToLocal("GT5U.machines.digitaltank.voidoverflow.tooltip"));
@@ -124,59 +84,15 @@ public class MTEDigitalTankBaseGui<T extends MTEDigitalTankBase> extends MTEBasi
 
         // void
         buttonRow.child(
-            new ToggleButton().size(18)
-                .value(new BooleanSyncValue(machine::isVoidFluidFull, machine::setVoidFluidFull))
+            new ToggleButton()
+                .value(new BooleanSyncValue(machine::isVoidFluidFull, machine::setVoidFluidFull).allowC2S())
                 .overlay(GTGuiTextures.OVERLAY_BUTTON_TANK_VOID_ALL)
                 .tooltip(t -> {
                     t.addLine(translateToLocal("GT5U.machines.digitaltank.voidfull.tooltip"));
                     t.addLine(translateToLocal("GT5U.machines.digitaltank.voidfull.tooltip.1"));
                 }));
 
-        rightSide.child(createFilterScreen(panel, syncManager));
-        rightSide.child(buttonRow);
-
-        return rightSide;
-    }
-
-    protected ParentWidget<?> createFilterScreen(ModularPanel panel, PanelSyncManager syncManager) {
-        ParentWidget<?> screen = new ParentWidget<>().size(71, 45)
-            .padding(3, 2, 3, 2)
-            .background(GTGuiTextures.PICTURE_SCREEN_BLACK);
-
-        Flow textColumn = Flow.column()
-            .childPadding(1)
-            .crossAxisAlignment(Alignment.CrossAxis.START);
-
-        FluidLockSlotWidget fluidLockSlotWidget = new FluidLockSlotWidget(machine);
-
-        // fluid amount label
-        textColumn.child(
-            IKey.lang("GT5U.machines.digitaltank.lockfluid.label")
-                .asWidget()
-                .color(Color.WHITE.main));
-
-        // fluid name
-        textColumn.child(IKey.dynamic(() -> {
-            if (fluidLockSlotWidget.getFluid() != null) {
-                return fluidLockSlotWidget.getFluid()
-                    .getLocalizedName();
-            }
-            return translateToLocal("GT5U.machines.digitaltank.lockfluid.empty");
-        })
-            .asWidget()
-            .color(Color.WHITE.main));
-
-        screen.child(textColumn);
-
-        // fluid lock slot
-        screen.child(
-            fluidLockSlotWidget.syncHandler(new FluidSlotSyncHandler(fluidLockSlotWidget).phantom(true))
-                .bottomRel(0)
-                .rightRel(0)
-                .disableThemeBackground(true)
-                .disableHoverThemeBackground(true));
-
-        return screen;
+        return super.createBottomRightCornerFlow(panel, syncManager).child(buttonRow);
     }
 
     @Override

@@ -41,8 +41,8 @@ public class BlockCasings11 extends BlockCasingsAbstract {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int ordinalSide, int aMeta) {
-        return switch (aMeta) {
+    public IIcon getIcon(int side, int meta) {
+        return switch (meta) {
             case 1 -> Textures.BlockIcons.MACHINE_CASING_ITEM_PIPE_BRASS.getIcon();
             case 2 -> Textures.BlockIcons.MACHINE_CASING_ITEM_PIPE_ELECTRUM.getIcon();
             case 3 -> Textures.BlockIcons.MACHINE_CASING_ITEM_PIPE_PLATINUM.getIcon();
@@ -53,5 +53,4 @@ public class BlockCasings11 extends BlockCasingsAbstract {
             default -> Textures.BlockIcons.MACHINE_CASING_ITEM_PIPE_TIN.getIcon();
         };
     }
-
 }
