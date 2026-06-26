@@ -1,11 +1,12 @@
 package gregtech.api.modularui2;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import static gregtech.common.gui.modularui.widget.SteamGaugeWidget.GAUGE_CONNECTOR_SIZE;
 import static gregtech.common.gui.modularui.widget.SteamGaugeWidget.GAUGE_NEEDLE_HEIGHT;
 import static gregtech.common.gui.modularui.widget.SteamGaugeWidget.GAUGE_NEEDLE_WIDTH;
 import static gregtech.common.gui.modularui.widget.SteamGaugeWidget.GAUGE_SIZE;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 
 import com.cleanroommc.modularui.api.IThemeApi;
 import com.cleanroommc.modularui.drawable.DrawableStack;
