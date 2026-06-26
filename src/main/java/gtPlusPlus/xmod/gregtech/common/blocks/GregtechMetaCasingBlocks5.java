@@ -99,11 +99,6 @@ public class GregtechMetaCasingBlocks5 extends GregtechMetaCasingBlocksAbstract 
         return mGrinderOverlayHandler.handleCasingsGT(aWorld, xCoord, yCoord, zCoord, ordinalSide);
     }
 
-    @Override
-    public boolean renderAsNormalBlock() {
-        return false;
-    }
-
     @SideOnly(Side.CLIENT)
     @Override
     public boolean shouldSideBeRendered(IBlockAccess worldIn, int x, int y, int z, int side) {
