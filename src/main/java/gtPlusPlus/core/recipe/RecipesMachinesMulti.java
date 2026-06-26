@@ -18,6 +18,7 @@ import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalPlantRecipes;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -494,6 +495,26 @@ public class RecipesMachinesMulti {
             GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PMP", "MCM", "PMP", 'P', OrePrefixes.plate.get(Materials.TungstenCarbide), 'M',
                 ItemList.Machine_IV_Macerator, 'C', "circuitUltimate" });
+
+        // Maceration Stack T2 Shapeless Craft
+        ItemStack t2MacerationStack = ItemList.MacerationStack.get(1);
+        NBTTagCompound upgradeTag = new NBTTagCompound();
+        upgradeTag.setByte("mTier", (byte) 2);
+        t2MacerationStack.setTagCompound(upgradeTag);
+
+        GTModHandler.addShapelessCraftingRecipe(
+            t2MacerationStack,
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.OVERWRITE_NBT,
+            grid -> {
+                for (int i = 0; i < grid.getSizeInventory(); i++) {
+                    ItemStack stack = grid.getStackInSlot(i);
+                    if (!ItemList.MacerationStack.isStackEqual(stack, false, true)) continue;
+                    if (stack.hasTagCompound() && stack.getTagCompound()
+                        .getByte("mTier") >= 2) return false;
+                }
+                return true;
+            },
+            new Object[] { ItemList.MacerationStack, GregtechItemList.Maceration_Upgrade_Chip });
     }
 
     private static void multiWiremill() {
