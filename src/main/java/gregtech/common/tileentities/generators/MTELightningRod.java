@@ -2,6 +2,7 @@ package gregtech.common.tileentities.generators;
 
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -9,6 +10,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.interfaces.ITexture;
@@ -16,11 +18,18 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTUtility;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTELightningRod extends MTETieredMachineBlock {
 
     public MTELightningRod(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, 0, "Generates EU From Lightning Bolts");
+        super(aID, aName, aNameRegional, aTier, 0, (String) null);
+    }
+
+    @Override
+    public String[] getDescription() {
+        return GTUtility.translateMultiline("gt.blockmachines.basicgenerator.lightningrod.tooltip");
     }
 
     public MTELightningRod(String aName, int aTier, int aInvSlotCount, String[] aDescription,
@@ -78,13 +87,12 @@ public class MTELightningRod extends MTETieredMachineBlock {
                 int aZ = aBaseMetaTileEntity.getZCoord();
 
                 for (int i = aBaseMetaTileEntity.getYCoord() + 1; i < aWorld.getHeight() - 1; i++) {
-                    if (isRodValid && aBaseMetaTileEntity.getBlock(aX, i, aZ)
-                        .getUnlocalizedName()
-                        .equals("blockFenceIron")) {
+                    Block block = aBaseMetaTileEntity.getBlock(aX, i, aZ);
+                    if (isRodValid && block == Casings.IronFence.getBlock()) {
                         aRodValue++;
                     } else {
                         isRodValid = false;
-                        if (aBaseMetaTileEntity.getBlock(aX, i, aZ) != Blocks.air) {
+                        if (block != Blocks.air) {
                             aRodValue = 0;
                             break;
                         }

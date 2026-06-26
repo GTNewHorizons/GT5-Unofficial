@@ -39,7 +39,6 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Textures;
-import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -198,7 +197,7 @@ public class MTEFluidShaper extends MTEExtendedPowerMultiBlockBase<MTEFluidShape
             .addInfo("Speeds up to a maximum of " + TooltipHelper.speedText(3f))
             .addInfo("Decays at double the rate that it speeds up at")
             .addStaticEuEffInfo(0.8f)
-            .addGlassEnergyLimitInfo(VoltageIndex.UMV)
+            .addGlassEnergyLimitInfo()
             .addInfo(EnumChatFormatting.BLUE + "Pretty Ⱄⱁⰾⰻⰴ, isn't it")
             .beginVariableStructureBlock(9, 33, 5, 5, 5, 5, true)
             .addController("Front bottom center")
@@ -278,7 +277,7 @@ public class MTEFluidShaper extends MTEExtendedPowerMultiBlockBase<MTEFluidShape
         }
 
         for (MTEHatchEnergy mEnergyHatch : this.mEnergyHatches) {
-            if (glassTier < VoltageIndex.UMV & mEnergyHatch.mTier > glassTier) {
+            if (mEnergyHatch.mTier > glassTier) {
                 errors.add(StructureErrors.glassTierNotEnough(mEnergyHatch.mTier));
             }
         }

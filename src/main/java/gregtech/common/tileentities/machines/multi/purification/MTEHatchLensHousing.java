@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.multi.purification;
 
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 
 import com.cleanroommc.modularui.factory.PosGuiData;
@@ -7,6 +8,7 @@ import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -54,5 +56,10 @@ public class MTEHatchLensHousing extends MTEHatchInputBus {
     @Override
     public String[] getDescription() {
         return new String[] { StatCollector.translateToLocal("gt.blockmachines.input_bus_lens.desc") };
+    }
+
+    @Override
+    public boolean isItemValidForSlot(int index, ItemStack itemStack) {
+        return OrePrefixes.lens.contains(itemStack) && super.isItemValidForSlot(index, itemStack);
     }
 }

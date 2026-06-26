@@ -56,6 +56,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
@@ -66,7 +67,6 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.ISBRWorldContext;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeConstants;
@@ -83,7 +83,7 @@ import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 @SuppressWarnings("SpellCheckingInspection")
 public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<MTEQuantumForceTransformer>
-    implements ISurvivalConstructable {
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     private int mCasing;
     protected int mCraftingTier = 0;
@@ -719,34 +719,21 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-        int aColorIndex, boolean aActive, boolean aRedstone) {
-        if (side == facing) {
-            if (aActive) {
-                return new ITexture[] { getCasingTexture(), TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.oMCAQFTActive)
-                    .extFacing()
-                    .build(),
-                    TextureFactory.builder()
-                        .addIcon(TexturesGtBlock.oMCAQFTActiveGlow)
-                        .extFacing()
-                        .glow()
-                        .build() };
-            }
-            return new ITexture[] { getCasingTexture(), TextureFactory.builder()
-                .addIcon(TexturesGtBlock.oMCAQFT)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.oMCAQFTGlow)
-                    .extFacing()
-                    .glow()
-                    .build() };
-        }
-        return new ITexture[] { getCasingTexture() };
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            TexturesGtBlock.oMCAQFT,
+            TexturesGtBlock.oMCAQFTGlow,
+            TexturesGtBlock.oMCAQFTActive,
+            TexturesGtBlock.oMCAQFTActiveGlow);
     }
 
-    private ITexture getCasingTexture() {
+    @Override
+    public ITexture getCasingTexture() {
         return Textures.BlockIcons.getCasingTextureForId(getCasingTextureId());
     }
 

@@ -19,11 +19,8 @@ import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.minecraft.block.Block;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
@@ -41,16 +38,16 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
-import gregtech.api.enums.VoltageIndex;
+import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
@@ -59,12 +56,14 @@ import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
+import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
-public class MTEAlgaePond extends MTEExtendedPowerMultiBlockBase<MTEAlgaePond> implements ISurvivalConstructable {
+public class MTEAlgaePond extends MTEExtendedPowerMultiBlockBase<MTEAlgaePond>
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     private static final int OFFSET_X = 1;
     private static final int OFFSET_Y = 3;
@@ -107,10 +106,7 @@ public class MTEAlgaePond extends MTEExtendedPowerMultiBlockBase<MTEAlgaePond> i
         tt.addMachineType("Algae Pond")
             .addInfo("Grows Algae!")
             .addInfo("Provide compost to boost production by one tier")
-            .addInfo("Machine tier is equal to the highest energy hatch tier, capped by glass tier")
-            .addInfo(
-                GTUtility.getColoredTierNameFromTier((byte) 12) + EnumChatFormatting.GRAY
-                    + "-glass unlocks all above energy tiers")
+            .addGlassEnergyLimitInfo()
             .addInfo("Accepts exactly 1 Energy Hatch")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 6, 10, false)
@@ -123,6 +119,7 @@ public class MTEAlgaePond extends MTEExtendedPowerMultiBlockBase<MTEAlgaePond> i
             .addInputHatch("Any Casing", 1)
             .addEnergyHatch("Any Casing", 1)
             .addMaintenanceHatch("Any Casing", 1)
+            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .addStructureAuthors(EnumChatFormatting.GOLD + "IX")
             .toolTipFinisher();
         return tt;
@@ -142,7 +139,7 @@ public class MTEAlgaePond extends MTEExtendedPowerMultiBlockBase<MTEAlgaePond> i
                         .buildAndChain(onElementPass(x -> ++x.casingAmount, Casings.AlgaeCasing.asElement())))
                 .addElement('C', Casings.FilterMachineCasing.asElement())
                 .addElement('D', ofFrame(Materials.StainlessSteel))
-                .addElement('E', ofChain(isAir(), ofAnyWater(false)))
+                .addElement('E', ofChain(ofAnyWater(false), isAir()))
                 .build();
         }
         return STRUCTURE_DEFINITION;
@@ -170,6 +167,7 @@ public class MTEAlgaePond extends MTEExtendedPowerMultiBlockBase<MTEAlgaePond> i
 
     @Override
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
+        needsWaterFill = false;
         casingAmount = 0;
         glassTier = -1;
         tier = -1;
@@ -192,7 +190,7 @@ public class MTEAlgaePond extends MTEExtendedPowerMultiBlockBase<MTEAlgaePond> i
 
         if (!mEnergyHatches.isEmpty()) {
             int inputTier = (int) getInputVoltageTier();
-            if (glassTier < VoltageIndex.UMV && glassTier < inputTier) {
+            if (glassTier < inputTier) {
                 errors.add(StructureErrors.glassTierNotEnough(inputTier));
                 return;
             }
@@ -215,63 +213,36 @@ public class MTEAlgaePond extends MTEExtendedPowerMultiBlockBase<MTEAlgaePond> i
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
-        if (side == aFacing) {
-            if (aActive) return new ITexture[] { Casings.AlgaeCasing.getCasingTexture(), TextureFactory.builder()
-                .addIcon(TexturesGtBlock.oMCDAlgaePondBaseActive)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.oMCDAlgaePondBaseActiveGlow)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { Casings.AlgaeCasing.getCasingTexture(), TextureFactory.builder()
-                .addIcon(TexturesGtBlock.oMCDAlgaePondBase)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.oMCDAlgaePondBaseGlow)
-                    .extFacing()
-                    .glow()
-                    .build() };
-        }
-        return new ITexture[] { Casings.AlgaeCasing.getCasingTexture() };
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            TexturesGtBlock.oMCDAlgaePondBase,
+            TexturesGtBlock.oMCDAlgaePondBaseGlow,
+            TexturesGtBlock.oMCDAlgaePondBaseActive,
+            TexturesGtBlock.oMCDAlgaePondBaseActiveGlow);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Casings.AlgaeCasing.getCasingTexture();
     }
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (aBaseMetaTileEntity.isServerSide() && needsWaterFill && aTick % 20 == 0) {
-            World world = aBaseMetaTileEntity.getWorld();
-            boolean allFilled = true;
-            int controllerX = aBaseMetaTileEntity.getXCoord();
-            int controllerY = aBaseMetaTileEntity.getYCoord();
-            int controllerZ = aBaseMetaTileEntity.getZCoord();
-
-            for (int sliceZ = 0; sliceZ < structure.length; sliceZ++) {
-                String[] layers = structure[sliceZ];
-                for (int layerY = 0; layerY < layers.length; layerY++) {
-                    String row = layers[layerY];
-                    for (int charX = 0; charX < row.length(); charX++) {
-                        if (row.charAt(charX) != 'E') continue;
-
-                        int[] abc = new int[] { charX - OFFSET_X, layerY - OFFSET_Y, sliceZ - OFFSET_Z };
-                        int[] xyz = new int[] { 0, 0, 0 };
-                        this.getExtendedFacing()
-                            .getWorldOffset(abc, xyz);
-                        int wx = controllerX + xyz[0];
-                        int wy = controllerY + xyz[1];
-                        int wz = controllerZ + xyz[2];
-                        Block block = world.getBlock(wx, wy, wz);
-                        if (GTUtility.canReplaceBlockWithWater(world, wx, wy, wz)) {
-                            world.setBlock(wx, wy, wz, Blocks.water, 0, 3);
-                        } else if (!GTUtility.isSourceWater(block, world, wx, wy, wz)) {
-                            allFilled = false;
-                        }
-                    }
-                }
+            if (GTStructureUtility.fillStructureWithWater(
+                aBaseMetaTileEntity,
+                getExtendedFacing(),
+                structure,
+                OFFSET_X,
+                OFFSET_Y,
+                OFFSET_Z,
+                'E')) {
+                needsWaterFill = false;
             }
-            if (allFilled) needsWaterFill = false;
         }
     }
 

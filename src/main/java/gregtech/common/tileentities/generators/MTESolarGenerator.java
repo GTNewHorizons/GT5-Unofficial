@@ -24,25 +24,26 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
 import gregtech.api.render.TextureFactory;
 import gregtech.common.gui.modularui.hatch.MTESolarGeneratorGui;
+import gregtech.api.util.GTUtility;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTESolarGenerator extends MTETieredMachineBlock {
 
     public MTESolarGenerator(int aID, String aName, String aNameRegional, int aTier) {
-        super(
-            aID,
-            aName,
-            aNameRegional,
-            aTier,
-            4,
-            new String[] { "Generates EU From Solar Power", "Does not generate power when raining",
-                "Cleans itself automatically", "Does not explode in rain!" });
+        super(aID, aName, aNameRegional, aTier, 4, (String) null);
+    }
+
+    @Override
+    public String[] getDescription() {
+        return GTUtility.translateMultiline("gt.blockmachines.basicgenerator.solarpanel.tooltip");
     }
 
     public MTESolarGenerator(String aName, int aTier, int aInvSlotCount, String[] aDescription,

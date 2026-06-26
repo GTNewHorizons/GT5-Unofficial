@@ -39,6 +39,7 @@ import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
 import bartworks.system.material.Werkstoff;
 import bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
+import bartworks.util.BWUtil;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SubTag;
@@ -85,14 +86,14 @@ public class CrushedLoader implements IWerkstoffRunnable {
             .itemInputs(werkstoff.get(crushed))
             .itemOutputs(werkstoff.get(dustImpure))
             .duration(10 * TICKS)
-            .eut(TierEU.RECIPE_LV / 2)
+            .eut(BWUtil.calculateRecipeEU(werkstoff, (int) (TierEU.RECIPE_LV / 2)))
             .addTo(hammerRecipes);
 
         RA.stdBuilder()
             .itemInputs(werkstoff.get(crushed))
             .itemOutputs(werkstoff.get(dustImpure), werkstoff.getOreByProduct(0, dust))
             .outputChances(100_00, 10_00)
-            .eut(2)
+            .eut(BWUtil.calculateRecipeEU(werkstoff, 2))
             .duration(20 * SECONDS)
             .addTo(maceratorRecipes);
 
@@ -105,7 +106,7 @@ public class CrushedLoader implements IWerkstoffRunnable {
             .outputChances(100_00, 11_11, 100_00)
             .fluidInputs(Materials.Water.getFluid(1_000))
             .duration(25 * SECONDS)
-            .eut(TierEU.RECIPE_LV / 2)
+            .eut(BWUtil.calculateRecipeEU(werkstoff, (int) (TierEU.RECIPE_LV / 2)))
             .addTo(oreWasherRecipes);
 
         RA.stdBuilder()
@@ -117,7 +118,7 @@ public class CrushedLoader implements IWerkstoffRunnable {
             .outputChances(100_00, 11_11, 100_00)
             .fluidInputs(GTModHandler.getDistilledWater(200))
             .duration(15 * SECONDS)
-            .eut(TierEU.RECIPE_LV / 2)
+            .eut(BWUtil.calculateRecipeEU(werkstoff, (int) (TierEU.RECIPE_LV / 2)))
             .addTo(oreWasherRecipes);
 
         GTValues.RA.stdBuilder()
@@ -128,21 +129,21 @@ public class CrushedLoader implements IWerkstoffRunnable {
                 GTOreDictUnificator.get(dust, Materials.Stone, 1L))
             .outputChances(100_00, 11_11, 100_00)
             .duration(25 * SECONDS)
-            .eut(48)
+            .eut(BWUtil.calculateRecipeEU(werkstoff, 48))
             .addTo(thermalCentrifugeRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(werkstoff.get(crushedPurified))
             .itemOutputs(werkstoff.get(dustPure))
             .duration(10 * TICKS)
-            .eut(TierEU.RECIPE_LV / 2)
+            .eut(BWUtil.calculateRecipeEU(werkstoff, (int) (TierEU.RECIPE_LV / 2)))
             .addTo(hammerRecipes);
 
         RA.stdBuilder()
             .itemInputs(werkstoff.get(crushedPurified))
             .itemOutputs(werkstoff.get(dustPure), werkstoff.getOreByProduct(1, dust))
             .outputChances(100_00, 10_00)
-            .eut(2)
+            .eut(BWUtil.calculateRecipeEU(werkstoff, 2))
             .duration(20 * SECONDS)
             .addTo(maceratorRecipes);
 
@@ -151,21 +152,21 @@ public class CrushedLoader implements IWerkstoffRunnable {
             .itemOutputs(werkstoff.get(crushedCentrifuged), werkstoff.getOreByProduct(1, dust))
             .outputChances(100_00, 11_11)
             .duration(25 * SECONDS)
-            .eut(48)
+            .eut(BWUtil.calculateRecipeEU(werkstoff, 48))
             .addTo(thermalCentrifugeRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(werkstoff.get(crushedCentrifuged))
             .itemOutputs(werkstoff.get(dust))
             .duration(10 * TICKS)
-            .eut(TierEU.RECIPE_LV / 2)
+            .eut(BWUtil.calculateRecipeEU(werkstoff, (int) (TierEU.RECIPE_LV / 2)))
             .addTo(hammerRecipes);
 
         RA.stdBuilder()
             .itemInputs(werkstoff.get(crushedCentrifuged))
             .itemOutputs(werkstoff.get(dust), werkstoff.getOreByProduct(2, dust))
             .outputChances(100_00, 10_00)
-            .eut(2)
+            .eut(BWUtil.calculateRecipeEU(werkstoff, 2))
             .duration(20 * SECONDS)
             .addTo(maceratorRecipes);
 
@@ -178,7 +179,7 @@ public class CrushedLoader implements IWerkstoffRunnable {
                     1L,
                     werkstoff.getStats()
                         .getMass() * 8L))
-            .eut(5)
+            .eut(BWUtil.calculateRecipeEU(werkstoff, 5))
             .addTo(centrifugeRecipes);
 
         GTValues.RA.stdBuilder()
@@ -190,7 +191,7 @@ public class CrushedLoader implements IWerkstoffRunnable {
                     1L,
                     werkstoff.getStats()
                         .getMass() * 8L))
-            .eut(5)
+            .eut(BWUtil.calculateRecipeEU(werkstoff, 5))
             .addTo(centrifugeRecipes);
 
         if (werkstoff.contains(SubTag.CRYSTALLISABLE)) {
@@ -201,7 +202,7 @@ public class CrushedLoader implements IWerkstoffRunnable {
                 .outputChances(9500)
                 .fluidInputs(Materials.Water.getFluid(200L))
                 .duration(1 * MINUTES + 40 * SECONDS)
-                .eut(24)
+                .eut(BWUtil.calculateRecipeEU(werkstoff, 24))
                 .addTo(autoclaveRecipes);
 
             GTValues.RA.stdBuilder()
@@ -210,7 +211,7 @@ public class CrushedLoader implements IWerkstoffRunnable {
                 .outputChances(9000)
                 .fluidInputs(Materials.Water.getFluid(200L))
                 .duration(1 * MINUTES + 40 * SECONDS)
-                .eut(24)
+                .eut(BWUtil.calculateRecipeEU(werkstoff, 24))
                 .addTo(autoclaveRecipes);
 
             GTValues.RA.stdBuilder()
@@ -219,7 +220,7 @@ public class CrushedLoader implements IWerkstoffRunnable {
                 .outputChances(10000)
                 .fluidInputs(GTModHandler.getDistilledWater(200L))
                 .duration(1 * MINUTES + 15 * SECONDS)
-                .eut(24)
+                .eut(BWUtil.calculateRecipeEU(werkstoff, 24))
                 .addTo(autoclaveRecipes);
 
             GTValues.RA.stdBuilder()
@@ -228,7 +229,7 @@ public class CrushedLoader implements IWerkstoffRunnable {
                 .outputChances(9500)
                 .fluidInputs(GTModHandler.getDistilledWater(200L))
                 .duration(1 * MINUTES + 15 * SECONDS)
-                .eut(24)
+                .eut(BWUtil.calculateRecipeEU(werkstoff, 24))
                 .addTo(autoclaveRecipes);
 
         }
@@ -243,7 +244,7 @@ public class CrushedLoader implements IWerkstoffRunnable {
                 .outputChances(10000, 7000, 4000)
                 .fluidInputs(Materials.Mercury.getFluid(1_000))
                 .duration(40 * SECONDS)
-                .eut(TierEU.RECIPE_ULV)
+                .eut(BWUtil.calculateRecipeEU(werkstoff, (int) TierEU.RECIPE_ULV))
                 .addTo(chemicalBathRecipes);
 
         }
@@ -258,7 +259,7 @@ public class CrushedLoader implements IWerkstoffRunnable {
                 .outputChances(10000, 7000, 4000)
                 .fluidInputs(Materials.SodiumPersulfate.getFluid(100L))
                 .duration(40 * SECONDS)
-                .eut(TierEU.RECIPE_ULV)
+                .eut(BWUtil.calculateRecipeEU(werkstoff, (int) TierEU.RECIPE_ULV))
                 .addTo(chemicalBathRecipes);
 
         }
@@ -272,7 +273,7 @@ public class CrushedLoader implements IWerkstoffRunnable {
                     GTOreDictUnificator.get(nugget, Materials.Gold, 1L))
                 .outputChances(10000, 4000, 2000)
                 .duration(20 * SECONDS)
-                .eut(24)
+                .eut(BWUtil.calculateRecipeEU(werkstoff, 24))
                 .addTo(electroMagneticSeparatorRecipes);
 
         } else if (werkstoff.contains(SubTag.ELECTROMAGNETIC_SEPERATION_IRON)) {
@@ -285,7 +286,7 @@ public class CrushedLoader implements IWerkstoffRunnable {
                     GTOreDictUnificator.get(nugget, Materials.Iron, 1L))
                 .outputChances(10000, 4000, 2000)
                 .duration(20 * SECONDS)
-                .eut(24)
+                .eut(BWUtil.calculateRecipeEU(werkstoff, 24))
                 .addTo(electroMagneticSeparatorRecipes);
 
         } else if (werkstoff.contains(SubTag.ELECTROMAGNETIC_SEPERATION_NEODYMIUM)) {
@@ -298,7 +299,7 @@ public class CrushedLoader implements IWerkstoffRunnable {
                     GTOreDictUnificator.get(nugget, Materials.Neodymium, 1L))
                 .outputChances(10000, 4000, 2000)
                 .duration(20 * SECONDS)
-                .eut(24)
+                .eut(BWUtil.calculateRecipeEU(werkstoff, 24))
                 .addTo(electroMagneticSeparatorRecipes);
 
         }

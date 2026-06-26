@@ -89,7 +89,7 @@ public class MTEActiveTransformerGui extends TTMultiblockBaseGui<MTEActiveTransf
                         .add(TIER_COLORS[hatchTierSyncer.getValue()], VN[hatchTierSyncer.getValue()])
                         .toString())
                     .asWidget()
-                    .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
+                    .widgetTheme(GTWidgetThemes.DISPLAY_TEXT_WHITE)
                     .anchorLeft(0));
     }
 }

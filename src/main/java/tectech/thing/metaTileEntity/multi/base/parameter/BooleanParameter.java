@@ -3,9 +3,8 @@ package tectech.thing.metaTileEntity.multi.base.parameter;
 import net.minecraft.nbt.NBTTagCompound;
 
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
-import com.cleanroommc.modularui.value.sync.SyncHandler;
 
-public class BooleanParameter extends Parameter<Boolean> {
+public class BooleanParameter extends Parameter<Boolean, BooleanSyncValue> {
 
     public BooleanParameter(Boolean value, String langKey, String nbtKey, Object... langArgs) {
         super(value, langKey, nbtKey, langArgs);
@@ -35,7 +34,7 @@ public class BooleanParameter extends Parameter<Boolean> {
     }
 
     @Override
-    public SyncHandler<?> createSyncHandler() {
+    protected BooleanSyncValue createSyncHandler() {
         return new BooleanSyncValue(this::getValue, this::setValue).allowC2S();
     }
 }

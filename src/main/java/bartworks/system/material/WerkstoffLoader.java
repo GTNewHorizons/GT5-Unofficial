@@ -47,6 +47,7 @@ import static gregtech.api.enums.OrePrefixes.plateDense;
 import static gregtech.api.enums.OrePrefixes.plateDouble;
 import static gregtech.api.enums.OrePrefixes.plateQuadruple;
 import static gregtech.api.enums.OrePrefixes.plateQuintuple;
+import static gregtech.api.enums.OrePrefixes.plateSuperdense;
 import static gregtech.api.enums.OrePrefixes.plateTriple;
 import static gregtech.api.enums.OrePrefixes.rawOre;
 import static gregtech.api.enums.OrePrefixes.ring;
@@ -117,6 +118,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TextureSet;
+import gregtech.api.enums.TierEU;
 import gregtech.api.fluid.GTFluidFactory;
 import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.util.GTOreDictUnificator;
@@ -1031,7 +1033,8 @@ public class WerkstoffLoader {
         new Werkstoff.Stats().setBlastFurnace(true)
             .setMeltingPoint(2607)
             .setMass(Element.Ru.getMass())
-            .setProtons(Element.Ru.mProtons),
+            .setProtons(Element.Ru.mProtons)
+            .setProcessingMaterialTierEU(TierEU.RECIPE_EV),
         Werkstoff.Types.ELEMENT,
         new Werkstoff.GenerationFeatures().onlyDust()
             .addMolten()
@@ -1197,7 +1200,8 @@ public class WerkstoffLoader {
         new Werkstoff.Stats().setProtons(Element.Rh.mProtons)
             .setMass(Element.Rh.getMass())
             .setBlastFurnace(true)
-            .setMeltingPoint(2237),
+            .setMeltingPoint(2237)
+            .setProcessingMaterialTierEU(TierEU.RECIPE_EV),
         Werkstoff.Types.ELEMENT,
         new Werkstoff.GenerationFeatures().disable()
             .onlyDust()
@@ -1311,7 +1315,8 @@ public class WerkstoffLoader {
         new Werkstoff.Stats().setCentrifuge(true)
             .setBlastFurnace(true)
             .setMeltingPoint(4500)
-            .setMeltingVoltage(480),
+            .setMeltingVoltage(480)
+            .setProcessingMaterialTierEU(TierEU.RECIPE_EV),
         Werkstoff.Types.COMPOUND,
         new Werkstoff.GenerationFeatures().disable()
             .onlyDust()
@@ -1349,7 +1354,8 @@ public class WerkstoffLoader {
         new Werkstoff.Stats().setCentrifuge(true)
             .setBlastFurnace(true)
             .setMeltingPoint(4500)
-            .setMeltingVoltage(480),
+            .setMeltingVoltage(480)
+            .setProcessingMaterialTierEU(TierEU.RECIPE_EV),
         Werkstoff.Types.COMPOUND,
         new Werkstoff.GenerationFeatures().disable()
             .onlyDust()
@@ -1381,7 +1387,8 @@ public class WerkstoffLoader {
         new Werkstoff.Stats().setCentrifuge(true)
             .setBlastFurnace(true)
             .setMeltingPoint(9000)
-            .setMeltingVoltage(7680),
+            .setMeltingVoltage(7680)
+            .setProcessingMaterialTierEU(TierEU.RECIPE_LuV),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().disable()
             .onlyDust()
@@ -1446,7 +1453,8 @@ public class WerkstoffLoader {
             .setMeltingPoint(1800)
             .setSpeedOverride(12)
             .setQualityOverride((byte) 4)
-            .setMeltingVoltage(1920),
+            .setMeltingVoltage(1920)
+            .setProcessingMaterialTierEU(TierEU.RECIPE_IV),
         Werkstoff.Types.MIXTURE,
         new Werkstoff.GenerationFeatures().onlyDust()
             .addMetalItems()
@@ -1656,6 +1664,9 @@ public class WerkstoffLoader {
         }
         if (orePrefixes == OrePrefixes.sheetmetal) {
             return new ItemStack(GregTechAPI.sBlockSheetmetalBW, amount, werkstoff.getmID());
+        }
+        if (orePrefixes == OrePrefixes.frameGt) {
+            return new ItemStack(GregTechAPI.sBlockFramesBW, amount, werkstoff.getmID());
         }
 
         if (WerkstoffLoader.items.get(orePrefixes) == null) {
@@ -1901,17 +1912,17 @@ public class WerkstoffLoader {
                 | werkstoff.getGenerationFeatures().toGenerate;
         }
         DebugLog.log("GlobalGeneration: " + WerkstoffLoader.toGenerateGlobal);
-        if ((WerkstoffLoader.toGenerateGlobal & 0b1) != 0) {
+        if ((WerkstoffLoader.toGenerateGlobal & Werkstoff.GenerationFeatures.DUSTS) != 0) {
             WerkstoffLoader.items.put(dust, new BWMetaGeneratedItems(dust));
             WerkstoffLoader.items.put(dustTiny, new BWMetaGeneratedItems(dustTiny));
             WerkstoffLoader.items.put(dustSmall, new BWMetaGeneratedItems(dustSmall));
         }
-        if ((WerkstoffLoader.toGenerateGlobal & 0b10) != 0) {
+        if ((WerkstoffLoader.toGenerateGlobal & Werkstoff.GenerationFeatures.METALS) != 0) {
             WerkstoffLoader.items.put(ingot, new BWMetaGeneratedItems(ingot));
             WerkstoffLoader.items.put(ingotHot, new BWMetaGeneratedItems(ingotHot)); // 1750
             WerkstoffLoader.items.put(nugget, new BWMetaGeneratedItems(nugget));
         }
-        if ((WerkstoffLoader.toGenerateGlobal & 0b100) != 0) {
+        if ((WerkstoffLoader.toGenerateGlobal & Werkstoff.GenerationFeatures.GEMS) != 0) {
             WerkstoffLoader.items.put(gem, new BWMetaGeneratedItems(gem));
             WerkstoffLoader.items.put(gemChipped, new BWMetaGeneratedItems(gemChipped));
             WerkstoffLoader.items.put(gemExquisite, new BWMetaGeneratedItems(gemExquisite));
@@ -1919,7 +1930,7 @@ public class WerkstoffLoader {
             WerkstoffLoader.items.put(gemFlawless, new BWMetaGeneratedItems(gemFlawless));
             WerkstoffLoader.items.put(lens, new BWMetaGeneratedItems(lens));
         }
-        if ((WerkstoffLoader.toGenerateGlobal & 0b1000) != 0) {
+        if ((WerkstoffLoader.toGenerateGlobal & Werkstoff.GenerationFeatures.ORES) != 0) {
             gameRegistryHandler();
             WerkstoffLoader.items.put(crushed, new BWMetaGeneratedItems(crushed));
             WerkstoffLoader.items.put(crushedPurified, new BWMetaGeneratedItems(crushedPurified));
@@ -1928,16 +1939,16 @@ public class WerkstoffLoader {
             WerkstoffLoader.items.put(dustImpure, new BWMetaGeneratedItems(dustImpure));
             WerkstoffLoader.items.put(rawOre, new BWMetaGeneratedItems(rawOre));
         }
-        if ((WerkstoffLoader.toGenerateGlobal & 0b10000) != 0) {
+        if ((WerkstoffLoader.toGenerateGlobal & Werkstoff.GenerationFeatures.LIQUID_CELLS) != 0) {
             WerkstoffLoader.items.put(cell, new BWMetaGeneratedItems(cell));
         }
-        if ((WerkstoffLoader.toGenerateGlobal & 0b100000) != 0) {
+        if ((WerkstoffLoader.toGenerateGlobal & Werkstoff.GenerationFeatures.PLASMA_CELLS) != 0) {
             WerkstoffLoader.items.put(cellPlasma, new BWMetaGeneratedItems(cellPlasma));
         }
-        if ((WerkstoffLoader.toGenerateGlobal & 0b1000000) != 0) {
+        if ((WerkstoffLoader.toGenerateGlobal & Werkstoff.GenerationFeatures.MOLTEN_CELLS) != 0) {
             WerkstoffLoader.items.put(OrePrefixes.cellMolten, new BWMetaGeneratedItems(OrePrefixes.cellMolten));
         }
-        if ((WerkstoffLoader.toGenerateGlobal & 0b10000000) != 0) {
+        if ((WerkstoffLoader.toGenerateGlobal & Werkstoff.GenerationFeatures.SIMPLE_METALWORKING) != 0) {
             WerkstoffLoader.items.put(plate, new BWMetaGeneratedItems(plate));
             WerkstoffLoader.items.put(foil, new BWMetaGeneratedItems(foil));
             WerkstoffLoader.items.put(stick, new BWMetaGeneratedItems(stick));
@@ -1947,7 +1958,7 @@ public class WerkstoffLoader {
             WerkstoffLoader.items.put(toolHeadSaw, new BWMetaGeneratedItems(toolHeadSaw));
             WerkstoffLoader.items.put(turbineBlade, new BWMetaGeneratedItems(turbineBlade));
         }
-        if ((WerkstoffLoader.toGenerateGlobal & 0b100000000) != 0) {
+        if ((WerkstoffLoader.toGenerateGlobal & Werkstoff.GenerationFeatures.CRAFTING_METALWORKING) != 0) {
             WerkstoffLoader.items.put(gearGt, new BWMetaGeneratedItems(gearGt));
             WerkstoffLoader.items.put(gearGtSmall, new BWMetaGeneratedItems(gearGtSmall));
             WerkstoffLoader.items.put(bolt, new BWMetaGeneratedItems(bolt));
@@ -1958,11 +1969,12 @@ public class WerkstoffLoader {
             WerkstoffLoader.items.put(rotor, new BWMetaGeneratedItems(rotor));
             WerkstoffLoader.items.put(wireFine, new BWMetaGeneratedItems(wireFine));
         }
-        if ((WerkstoffLoader.toGenerateGlobal & 0b1000000000) != 0) {
-            WerkstoffLoader.items.put(plateDense, new BWMetaGeneratedItems(plateDense));;
-        }
-        if ((WerkstoffLoader.toGenerateGlobal & 0b10000000000) != 0) {
+        if ((WerkstoffLoader.toGenerateGlobal & Werkstoff.GenerationFeatures.DOUBLE_DENSE_PLATES) != 0) {
             WerkstoffLoader.items.put(plateDouble, new BWMetaGeneratedItems(plateDouble));
+            WerkstoffLoader.items.put(plateDense, new BWMetaGeneratedItems(plateDense));
+            WerkstoffLoader.items.put(plateSuperdense, new BWMetaGeneratedItems(plateSuperdense));
+        }
+        if ((WerkstoffLoader.toGenerateGlobal & Werkstoff.GenerationFeatures.MULTI_PLATES) != 0) {
             WerkstoffLoader.items.put(plateTriple, new BWMetaGeneratedItems(plateTriple));
             WerkstoffLoader.items.put(plateQuadruple, new BWMetaGeneratedItems(plateQuadruple));
             WerkstoffLoader.items.put(plateQuintuple, new BWMetaGeneratedItems(plateQuintuple));
