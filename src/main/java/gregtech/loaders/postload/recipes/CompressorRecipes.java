@@ -144,8 +144,8 @@ public class CompressorRecipes implements Runnable {
             .addTo(compressorRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTModHandler.getIC2Item("carbonMesh", 1))
-            .itemOutputs(GTModHandler.getIC2Item("carbonPlate", 1))
+            .itemInputs(ItemList.Carbon_Mesh.get(1))
+            .itemOutputs(ItemList.Carbon_Plate.get(1))
             .duration(15 * SECONDS)
             .eut(2)
             .addTo(compressorRecipes);

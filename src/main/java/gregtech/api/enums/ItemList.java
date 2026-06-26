@@ -175,6 +175,10 @@ public enum ItemList implements IItemContainer {
     // IC2 Replacements
     Mixed_Alloy_Ingot,
     Mixed_Alloy_Plate,
+    Carbon_Fibre,
+    Carbon_Mesh,
+    Carbon_Plate,
+    Iridium_Reinforced_Plate,
     PadBouncy,
     PadSticky,
     FenceIron,

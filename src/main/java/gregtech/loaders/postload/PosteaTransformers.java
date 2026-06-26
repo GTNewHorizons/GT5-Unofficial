@@ -62,6 +62,11 @@ public class PosteaTransformers implements Runnable {
 
         ItemStackReplacementManager.addSimpleReplacement("IC2:itemIngot", 4, ItemList.Mixed_Alloy_Ingot.get(1));
         ItemStackReplacementManager.addSimpleReplacement("IC2:itemPartAlloy", 0, ItemList.Mixed_Alloy_Plate.get(1));
+        ItemStackReplacementManager.addSimpleReplacement("IC2:itemPartCarbonFibre", 0, ItemList.Carbon_Fibre.get(1));
+        ItemStackReplacementManager.addSimpleReplacement("IC2:itemPartCarbonMesh", 0, ItemList.Carbon_Mesh.get(1));
+        ItemStackReplacementManager.addSimpleReplacement("IC2:itemPartCarbonPlate", 0, ItemList.Carbon_Plate.get(1));
+        ItemStackReplacementManager
+            .addSimpleReplacement("IC2:itemPartIridium", 0, ItemList.Iridium_Reinforced_Plate.get(1));
     }
 
     private void registerFrameboxTransformers() {

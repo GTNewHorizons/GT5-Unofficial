@@ -31,6 +31,9 @@ import static gregtech.common.items.IDMetaItem03.Armor_Chip_T2;
 import static gregtech.common.items.IDMetaItem03.Armor_Chip_T3;
 import static gregtech.common.items.IDMetaItem03.Beryllium_Shielding_Plate;
 import static gregtech.common.items.IDMetaItem03.Brittle_Netherite_Scrap;
+import static gregtech.common.items.IDMetaItem03.Carbon_Fibre;
+import static gregtech.common.items.IDMetaItem03.Carbon_Mesh;
+import static gregtech.common.items.IDMetaItem03.Carbon_Plate;
 import static gregtech.common.items.IDMetaItem03.Circuit_AdvancedIntegrated;
 import static gregtech.common.items.IDMetaItem03.Circuit_BasicElectronic;
 import static gregtech.common.items.IDMetaItem03.Circuit_Biomainframe;
@@ -224,6 +227,7 @@ import static gregtech.common.items.IDMetaItem03.IndustrialApiary_Upgrade_TERRIT
 import static gregtech.common.items.IDMetaItem03.IndustrialApiary_Upgrade_UNLIGHT;
 import static gregtech.common.items.IDMetaItem03.IndustrialApiary_Upgrade_WINTER;
 import static gregtech.common.items.IDMetaItem03.Intensely_Bonded_Netherite_Nanoparticles;
+import static gregtech.common.items.IDMetaItem03.Iridium_Reinforced_Plate;
 import static gregtech.common.items.IDMetaItem03.KevlarFiber;
 import static gregtech.common.items.IDMetaItem03.LV_Coil;
 import static gregtech.common.items.IDMetaItem03.LuV_Coil;
@@ -1979,9 +1983,41 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                 Mixed_Alloy_Plate.ID,
                 "gt.item.mixed_alloy_plate.name",
                 "",
-                OrePrefixes.plateAlloy.get(Materials.HV),
                 new TCAspects.TC_AspectStack(TCAspects.METALLUM, 4L),
                 new TCAspects.TC_AspectStack(TCAspects.VACUOS, 2L)));
+        ItemList.Carbon_Fibre.set(
+            addItemWithLocalizationKeys(
+                Carbon_Fibre.ID,
+                "gt.item.carbon_fibre.name",
+                "",
+                new TCAspects.TC_AspectStack(TCAspects.METALLUM, 3L),
+                new TCAspects.TC_AspectStack(TCAspects.IGNIS, 3L),
+                new TCAspects.TC_AspectStack(TCAspects.VITREUS, 3L)));
+        ItemList.Carbon_Mesh.set(
+            addItemWithLocalizationKeys(
+                Carbon_Mesh.ID,
+                "gt.item.carbon_mesh.name",
+                "",
+                new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2L),
+                new TCAspects.TC_AspectStack(TCAspects.IGNIS, 2L),
+                new TCAspects.TC_AspectStack(TCAspects.VITREUS, 2L)));
+        ItemList.Carbon_Plate.set(
+            addItemWithLocalizationKeys(
+                Carbon_Plate.ID,
+                "gt.item.carbon_plate.name",
+                "",
+                new TCAspects.TC_AspectStack(TCAspects.METALLUM, 4L),
+                new TCAspects.TC_AspectStack(TCAspects.IGNIS, 4L),
+                new TCAspects.TC_AspectStack(TCAspects.VITREUS, 4L)));
+        ItemList.Iridium_Reinforced_Plate.set(
+            addItemWithLocalizationKeys(
+                Iridium_Reinforced_Plate.ID,
+                "gt.item.iridium_reinforced_plate.name",
+                "",
+                new TCAspects.TC_AspectStack(TCAspects.METALLUM, 8L),
+                new TCAspects.TC_AspectStack(TCAspects.FABRICO, 4L),
+                new TCAspects.TC_AspectStack(TCAspects.MACHINA, 4L),
+                new TCAspects.TC_AspectStack(TCAspects.VITREUS, 4L)));
 
         registerMetaMaterials();
 
@@ -2149,6 +2185,8 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
         GTOreDictUnificator
             .set(OrePrefixes.componentCircuit, Materials.Capacitor, ItemList.Circuit_Parts_Capacitor.get(1L));
         GTOreDictUnificator.set(OrePrefixes.plateAlloy, Materials.HV, ItemList.Mixed_Alloy_Plate.get(1L));
+        GTOreDictUnificator.set(OrePrefixes.plateAlloy, Materials.Carbon, ItemList.Carbon_Plate.get(1L));
+        GTOreDictUnificator.set(OrePrefixes.plateAlloy, Materials.Iridium, ItemList.Iridium_Reinforced_Plate.get(1L));
 
         GTOreDictUnificator.addAssociation(
             OrePrefixes.componentCircuit,
