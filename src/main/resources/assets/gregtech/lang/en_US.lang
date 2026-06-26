@@ -1890,6 +1890,8 @@ gt.blockcasings.bec.4.tooltip=§f§lEndless sacrifice for tranquility.
 gt.blockcasings.bec.5.tooltip=§f§lTaste the rainbow!
 gt.blockcasings.bec.6.tooltip=§f§lFollow the path.
 
+GT5U.Centrifuge.momentum=Momentum: §a%s§r%%
+
 # Machine types
 gt.recipe.alloysmelter=Alloy Smelter
 gt.recipe.alloysmelter.description=HighTech combination Smelter

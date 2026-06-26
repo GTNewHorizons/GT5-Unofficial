@@ -67,7 +67,7 @@ import gregtech.GTMod;
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.SoundResource;
-import gregtech.api.enums.SteamVariant;
+import gregtech.api.enums.TieredVariant;
 import gregtech.api.gui.modularui.CircularGaugeDrawable;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.gui.modularui.SteamTexture;
@@ -1366,7 +1366,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
             uiProperties.maxItemOutputs,
             uiProperties.maxFluidInputs,
             uiProperties.maxFluidOutputs,
-            getSteamVariant(),
+            getTieredVariant(),
             Pos2d.ZERO);
     }
 
@@ -1394,7 +1394,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
                 new ProgressBar()
                     .setProgress(() -> maxProgresstime() != 0 ? (float) getProgresstime() / maxProgresstime() : 0)
                     .setTexture(
-                        isSteamPowered ? uiProperties.progressBarTextureSteam.get(getSteamVariant())
+                        isSteamPowered ? uiProperties.progressBarTextureSteam.get(getTieredVariant())
                             : uiProperties.progressBarTexture.get(),
                         uiProperties.progressBarImageSize)
                     .setDirection(uiProperties.progressBarDirection)
@@ -1482,7 +1482,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
     protected Widget createSteamProgressBar(ModularWindow.Builder builder) {
         builder.widget(new FakeSyncWidget.LongSyncer(this::getSteamVar, val -> getSteamVar = val));
 
-        boolean isSteel = getSteamVariant() == SteamVariant.STEEL;
+        boolean isSteel = getTieredVariant() == TieredVariant.STEEL;
         builder.widget(
             new DrawableWidget().setDrawable(isSteel ? GTUITextures.STEAM_GAUGE_BG_STEEL : GTUITextures.STEAM_GAUGE_BG)
                 .dynamicTooltip(
@@ -1525,7 +1525,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapW
                 builder.widget(
                     new DrawableWidget().setDrawable(
                         specialTexture.getLeft()
-                            .get(getSteamVariant()))
+                            .get(getTieredVariant()))
                         .setSize(
                             specialTexture.getRight()
                                 .getLeft())
