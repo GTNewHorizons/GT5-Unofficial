@@ -65,6 +65,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
 
 import bartworks.API.SideReference;
+import bartworks.API.enums.BioCultureEnum;
 import bartworks.API.recipe.BartWorksRecipeMaps;
 import bartworks.common.configs.Configuration;
 import bartworks.common.items.ItemLabParts;
@@ -403,7 +404,7 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat>
                 y + aBaseMetaTileEntity.getYCoord(),
                 zDir + z + aBaseMetaTileEntity.getZCoord(),
                 aBaseMetaTileEntity.getWorld().provider.dimensionId),
-            lCulture == null ? BioCulture.NULLCULTURE.getColorRGB() : lCulture.getColorRGB());
+            lCulture == null ? BioCultureEnum.NullBioCulture.bioCulture.getColorRGB() : lCulture.getColorRGB());
 
         if (SideReference.Side.Server) {
             GTValues.NW.sendPacketToAllPlayersInRange(
@@ -414,7 +415,7 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat>
                         y + aBaseMetaTileEntity.getYCoord(),
                         zDir + z + aBaseMetaTileEntity.getZCoord(),
                         aBaseMetaTileEntity.getWorld().provider.dimensionId),
-                    lCulture == null ? BioCulture.NULLCULTURE.getColorRGB() : lCulture.getColorRGB(),
+                    lCulture == null ? BioCultureEnum.NullBioCulture.bioCulture.getColorRGB() : lCulture.getColorRGB(),
                     true),
                 aBaseMetaTileEntity.getXCoord(),
                 aBaseMetaTileEntity.getZCoord());
@@ -426,7 +427,7 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat>
                         y + aBaseMetaTileEntity.getYCoord(),
                         zDir + z + aBaseMetaTileEntity.getZCoord(),
                         aBaseMetaTileEntity.getWorld().provider.dimensionId),
-                    lCulture == null ? BioCulture.NULLCULTURE.getColorRGB() : lCulture.getColorRGB(),
+                    lCulture == null ? BioCultureEnum.NullBioCulture.bioCulture.getColorRGB() : lCulture.getColorRGB(),
                     false),
                 aBaseMetaTileEntity.getXCoord(),
                 aBaseMetaTileEntity.getZCoord());
@@ -575,36 +576,37 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat>
                 }
 
                 this.height = this.reCalculateHeight();
-                if (this.mFluid != null && this.height > 1 && this.reCalculateFluidAmmount() > 0) {
-                    if (!BWUtil.areStacksEqualOrNull(aStack, this.mStack)
-                        || this.needsVisualUpdate && aBaseMetaTileEntity.getTimer() % MTEBioVat.TIMERDIVIDER == 1) {
-                        for (int x = offsetX_L; x <= offsetX_U; x++) {
-                            for (int y = offsetY_L; y <= offsetY_U; y++) {
-                                for (int z = offsetZ_L; z <= offsetZ_U; z++) {
-                                    if (aStack == null
-                                        || aStack.getItem() instanceof ItemLabParts && aStack.getItemDamage() == 0) {
-                                        if (this.mCulture == null || aStack == null
-                                            || aStack.getTagCompound() == null
-                                            || this.mCulture.getID() != aStack.getTagCompound()
-                                                .getInteger("ID")) {
-                                            lCulture = aStack == null || aStack.getTagCompound() == null ? null
-                                                : BioCulture.getBioCulture(
-                                                    aStack.getTagCompound()
-                                                        .getString("Name"));
-                                            this.sendPackagesOrRenewRenderer(x, y, z, lCulture);
-                                        }
-                                    }
-                                }
-                            }
+                if (this.mFluid == null || this.height <= 1 || this.reCalculateFluidAmmount() <= 0) {
+                    return;
+                }
+                if (BWUtil.areStacksEqualOrNull(aStack, this.mStack)
+                    && (!this.needsVisualUpdate || aBaseMetaTileEntity.getTimer() % MTEBioVat.TIMERDIVIDER != 1)) {
+                    return;
+                }
+                if (aStack == null
+                    || aStack.getItem() instanceof ItemLabParts && aStack.getItemDamage() == ItemLabParts.PETRI_DISH) {
+                    // TODO check if BioVat still renders correctly, because of the missing ID in culture tag
+                    if (this.mCulture == null || aStack == null
+                        || aStack.getTagCompound() == null
+                        || this.mCulture.getID() != aStack.getTagCompound()
+                            .getInteger("ID")) {
+                        lCulture = (aStack == null) ? null
+                            : BioCulture.getBioCultureFromNBTTag(aStack.getTagCompound());
+                    }
+                }
+                for (int x = offsetX_L; x <= offsetX_U; x++) {
+                    for (int y = offsetY_L; y <= offsetY_U; y++) {
+                        for (int z = offsetZ_L; z <= offsetZ_U; z++) {
+                            this.sendPackagesOrRenewRenderer(x, y, z, lCulture);
                         }
-                        this.mStack = aStack;
-                        this.mCulture = lCulture;
                     }
-                    if (this.needsVisualUpdate && aBaseMetaTileEntity.getTimer() % MTEBioVat.TIMERDIVIDER == 1) {
-                        if (aBaseMetaTileEntity.isClientSide()) new Throwable().printStackTrace();
-                        this.placeFluid(xDir, zDir, offsetX_L, offsetY_L, offsetZ_L, offsetX_U, offsetY_U, offsetZ_U);
-                        this.needsVisualUpdate = false;
-                    }
+                }
+                this.mStack = aStack;
+                this.mCulture = lCulture;
+                if (this.needsVisualUpdate && aBaseMetaTileEntity.getTimer() % MTEBioVat.TIMERDIVIDER == 1) {
+                    if (aBaseMetaTileEntity.isClientSide()) new Throwable().printStackTrace();
+                    this.placeFluid(xDir, zDir, offsetX_L, offsetY_L, offsetZ_L, offsetX_U, offsetY_U, offsetZ_U);
+                    this.needsVisualUpdate = false;
                 }
             } else {
                 this.onRemoval();
@@ -701,7 +703,7 @@ public class MTEBioVat extends MTEEnhancedMultiBlockBase<MTEBioVat>
                                     y + aBaseMetaTileEntity.getYCoord(),
                                     zDir + z + aBaseMetaTileEntity.getZCoord(),
                                     aBaseMetaTileEntity.getWorld().provider.dimensionId),
-                                this.mCulture == null ? BioCulture.NULLCULTURE.getColorRGB()
+                                this.mCulture == null ? BioCultureEnum.NullBioCulture.bioCulture.getColorRGB()
                                     : this.mCulture.getColorRGB(),
                                 true),
                             aBaseMetaTileEntity.getXCoord(),
