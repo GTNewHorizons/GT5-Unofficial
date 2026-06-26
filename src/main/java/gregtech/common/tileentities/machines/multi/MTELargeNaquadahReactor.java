@@ -379,11 +379,6 @@ public class MTELargeNaquadahReactor extends TTMultiblockBase implements ISurviv
                     EnumChatFormatting.AQUA,
                     LiquidAirConsumptionPerSecond,
                     EnumChatFormatting.GRAY))
-            .addInfo(
-                "The reactor will explode when there is more than" + EnumChatFormatting.RED
-                    + " ONE"
-                    + EnumChatFormatting.GRAY
-                    + " type of fuel in hatches!")
             .addInfo("Input liquid nuclear fuel or liquid naquadah fuel")
             .addSeparator()
             .addInfo(
