@@ -28,17 +28,17 @@ import tectech.recipe.TecTechRecipeMaps;
 public enum CondensateType {
 
     // spotless:off
-    NEUTRONIUM(
+    Neutronium(
         "neutronium",
         () -> Materials.Neutronium,
         144,
         () -> Materials.Neutronium.getMolten(144), 20, TierEU.RECIPE_UHV),
-    COSMICNEUTRONIUM(
+    CosmicNeutronium(
         "cosmicneutronium",
         () -> Materials.CosmicNeutronium,
         144,
         () -> Materials.CosmicNeutronium.getMolten(144), 20, TierEU.RECIPE_UHV),
-    BEDROCKIUM(
+    Bedrockium(
         "bedrockium",
         () -> Materials.Bedrockium,
         144,
@@ -71,13 +71,23 @@ public enum CondensateType {
     DimensionallyShiftedSuperfluid(
         "dimshiftedsuperfluid",
         () -> Materials.DimensionallyShiftedSuperfluid,
-        144,
-        () -> Materials.DimensionallyShiftedSuperfluid.getFluid(144), 40, TierEU.RECIPE_UIV),
+        1000,
+        () -> Materials.DimensionallyShiftedSuperfluid.getFluid(1000), 120, TierEU.RECIPE_UIV),
+    PhononMedium(
+        "phononmedium",
+        () -> Materials.PhononMedium,
+        1000,
+        () -> Materials.PhononMedium.getFluid(1000), 120, TierEU.RECIPE_UIV),
+    QuarkGluonPlasma(
+        "quarkgluonplasma",
+        () -> Materials.QuarkGluonPlasma,
+        1000,
+        () -> Materials.QuarkGluonPlasma.getFluid(1000), 120, TierEU.RECIPE_UIV),
     SpaceTime(
         "spacetime",
         () -> Materials.SpaceTime,
         144,
-        () -> Materials.SpaceTime.getMolten(144), 40, TierEU.RECIPE_UIV),
+        () -> Materials.SpaceTime.getMolten(144), 60, TierEU.RECIPE_UIV),
     Time(
         "time",
         () -> Materials.Time,
@@ -91,8 +101,8 @@ public enum CondensateType {
     BoundlessCosmicSolder(
         "cosmicsolder",
         () -> Materials.BoundlessCosmicSolder,
-        144,
-        () -> Materials.BoundlessCosmicSolder.getFluid(144), 60, TierEU.RECIPE_UMV),
+        1000,
+        () -> Materials.BoundlessCosmicSolder.getFluid(1000), 160, TierEU.RECIPE_UMV),
     MHDCSM(
         "mhdcsm",
         () -> Materials.MHDCSM,

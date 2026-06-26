@@ -10,6 +10,8 @@ import net.minecraft.world.World;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.Iterables;
+
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -79,7 +81,7 @@ public abstract class MTEExtendedPowerMultiBlockBase<T extends MTEEnhancedMultiB
 
     @Override
     public boolean drainEnergyInput(long aEU) {
-        return ExoticEnergyInputHelper.drainEnergy(aEU, getExoticAndNormalEnergyHatchList());
+        return ExoticEnergyInputHelper.drainEnergy(aEU, Iterables.concat(mEnergyHatches, mExoticEnergyHatches));
     }
 
     @Override

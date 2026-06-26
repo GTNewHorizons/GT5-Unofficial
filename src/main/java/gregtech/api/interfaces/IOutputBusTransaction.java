@@ -48,4 +48,9 @@ public interface IOutputBusTransaction {
      * way.
      */
     void commit();
+
+    interface IRecipeCheckAware {
+
+        void setRecipeCheck(boolean isRecipeCheck);
+    }
 }

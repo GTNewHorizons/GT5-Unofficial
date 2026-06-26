@@ -164,6 +164,16 @@ public class MTESteamForgeHammer extends MTESteamMultiBlockBase<MTESteamForgeHam
     }
 
     @Override
+    protected IIconContainer getInactiveGlowOverlay() {
+        return Textures.BlockIcons.OVERLAY_FRONT_STEAM_FORGE_HAMMER_GLOW;
+    }
+
+    @Override
+    protected IIconContainer getActiveGlowOverlay() {
+        return Textures.BlockIcons.OVERLAY_FRONT_STEAM_FORGE_HAMMER_ACTIVE_GLOW;
+    }
+
+    @Override
     public IStructureDefinition<MTESteamForgeHammer> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
 

@@ -29,6 +29,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
@@ -40,7 +41,8 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 @IMetaTileEntity.SkipGenerateDescription
-public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDualInputHatchWithPattern, IDataCopyable {
+public final class MTEHatchCraftingInputSlave extends MTEHatchInputBus
+    implements IDualInputHatchWithPattern, IDataCopyable {
 
     @Override
     protected boolean useMui2() {
@@ -48,6 +50,7 @@ public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDua
     }
 
     public static final String COPIED_DATA_IDENTIFIER = "craftingInputProxy";
+    private final List<IHatchWatcher> watchers = new ArrayList<>();
     private MTEHatchCraftingInputME master; // use getMaster() to access
     private int masterX, masterY, masterZ;
     private boolean masterSet = false; // indicate if values of masterX, masterY, masterZ are valid
@@ -128,17 +131,13 @@ public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDua
         var ret = new ArrayList<String>();
         if (getMaster() != null) {
             ret.add(
-                StatCollector.translateToLocalFormatted(
-                    "GT5U.infodata.hatch.crafting_input_slave.linked_to",
-                    masterX,
-                    masterY,
-                    masterZ));
+                IGregTechDeviceInformation
+                    .encode("GT5U.infodata.hatch.crafting_input_slave.linked_to", masterX, masterY, masterZ));
             ret.addAll(Arrays.asList(getMaster().getInfoData()));
-        } else ret.add(StatCollector.translateToLocal("GT5U.infodata.hatch.crafting_input_slave.not_linked_to"));
+        } else ret.add("GT5U.infodata.hatch.crafting_input_slave.not_linked_to");
         ret.add(
-            StatCollector.translateToLocalFormatted(
-                "GT5U.infodata.hatch.crafting_input_slave.reverseRecipes",
-                reverseRecipes ? "on" : "off"));
+            IGregTechDeviceInformation
+                .encode("GT5U.infodata.hatch.crafting_input_slave.reverseRecipes", reverseRecipes ? "on" : "off"));
         return ret.toArray(new String[0]);
     }
 
@@ -190,8 +189,19 @@ public class MTEHatchCraftingInputSlave extends MTEHatchInputBus implements IDua
     }
 
     @Override
-    public boolean justUpdated() {
-        return getMaster() != null && getMaster().justUpdated();
+    public void addWatcher(IHatchWatcher watcher) {
+        watchers.add(watcher);
+    }
+
+    @Override
+    public void removeWatcher(IHatchWatcher watcher) {
+        watchers.remove(watcher);
+    }
+
+    public void onParentInvChange() {
+        for (IHatchWatcher watcher : watchers) {
+            watcher.scheduleRecipeCheckImmediate();
+        }
     }
 
     public MTEHatchCraftingInputME trySetMasterFromCoord(int x, int y, int z) {

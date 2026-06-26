@@ -26,6 +26,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicGenerator;
@@ -34,6 +35,7 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTESteamTurbine extends MTEBasicGenerator {
 
     public MTESteamTurbine(int aID, String aName, String aNameRegional, int aTier) {
@@ -61,13 +63,12 @@ public class MTESteamTurbine extends MTEBasicGenerator {
 
     @Override
     public String[] getDescription() {
-        return new String[] { "Converts Steam into EU", "Base rate: 2L of Steam -> 1 EU",
-            "Fuel Efficiency: " + addFormattedString(String.valueOf(600 / getEfficiency())) + "%%",
-            "Consumes up to " + addFormattedString(
-                String.valueOf(
-                    (int) (4000 * (8 * GTUtility.powInt(4, mTier) + GTUtility.powInt(2, Math.max(mTier - 1, 0)))
-                        / (600 / getEfficiency()))))
-                + "L of Steam per second" };
+        return GTUtility.translateMultiline(
+            "gt.blockmachines.basicgenerator.steamturbine.tooltip",
+            String.valueOf(600 / getEfficiency()),
+            String.valueOf(
+                (int) (4000 * (8 * GTUtility.powInt(4, mTier) + GTUtility.powInt(2, Math.max(mTier - 1, 0)))
+                    / (600 / getEfficiency()))));
     }
 
     @Override
