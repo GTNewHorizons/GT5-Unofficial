@@ -44,13 +44,10 @@ import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
-import gregtech.common.gui.modularui.multiblock.base.TTMultiblockBaseGui;
-import gregtech.common.modularui2.sync.NaniteTierSyncValue;
-import tectech.mechanics.boseEinsteinCondensate.CondensateList;
 import tectech.recipe.TecTechRecipeMaps;
 import tectech.thing.CustomItemList;
-import tectech.thing.metaTileEntity.hatch.bec.MTEHatchLoS;
 import tectech.thing.gui.bec.MTEBECAssemblerGui;
+import tectech.thing.metaTileEntity.hatch.bec.MTEHatchLoS;
 import tectech.thing.metaTileEntity.multi.base.MTEBECMultiblockBase;
 import tectech.thing.metaTileEntity.multi.structures.BECStructureDefinitions;
 
