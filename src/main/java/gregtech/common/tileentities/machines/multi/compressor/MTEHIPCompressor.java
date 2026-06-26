@@ -313,7 +313,7 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         setCoilLevel(HeatingCoilLevel.None);
         mCasingAmount = 0;
-        sensorHatches.clear();        
+        sensorHatches.clear();
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 7, 9, 0, errors)) return;
         checkCasingMin(errors, mCasingAmount, 95);
         checkHasEnergyHatch(errors);
