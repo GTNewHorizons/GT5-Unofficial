@@ -203,7 +203,7 @@ public class MTEHatchLoS extends MTEBaseFactoryHatch implements IMTERenderer {
         if (existing != null) {
             this.disconnectImpl();
 
-	    if (existing.getConnectedHatch() == this) {
+            if (existing.getConnectedHatch() == this) {
                 existing.disconnectImpl();
             }
         }
