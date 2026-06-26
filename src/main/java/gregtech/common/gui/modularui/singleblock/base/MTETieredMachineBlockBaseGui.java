@@ -284,7 +284,7 @@ public class MTETieredMachineBlockBaseGui<T extends MTETieredMachineBlock> {
     /// Accounts for extended tooltips shown when shift is held down.
     protected Consumer<RichTooltip> configureTooltip(String key, Object... args) {
         GTTooltipDataCache.TooltipData data = machine.mTooltipCache.getData(key, args);
-        return addToRichTooltip(() -> data);
+        return addTooltipDataToRichTooltip(() -> data);
     }
 
     /// Sets a dynamic tooltip without saving it to the machine's tooltip cache. This means the tooltip **can** change
@@ -293,7 +293,7 @@ public class MTETieredMachineBlockBaseGui<T extends MTETieredMachineBlock> {
     /// Accounts for extended tooltips shown when shift is held down.
     @SafeVarargs
     protected final Consumer<RichTooltip> configureDynamicTooltip(String key, Supplier<Object>... args) {
-        return addToRichTooltip(
+        return addTooltipDataToRichTooltip(
             () -> machine.mTooltipCache.getUncachedTooltipData(
                 key,
                 Arrays.stream(args)
@@ -301,7 +301,8 @@ public class MTETieredMachineBlockBaseGui<T extends MTETieredMachineBlock> {
                     .toArray()));
     }
 
-    protected static @NotNull Consumer<RichTooltip> addToRichTooltip(Supplier<GTTooltipDataCache.TooltipData> data) {
+    protected static @NotNull Consumer<RichTooltip> addTooltipDataToRichTooltip(
+        Supplier<GTTooltipDataCache.TooltipData> data) {
         return t -> t.addStringLines(Interactable.hasShiftDown() ? data.get().shiftText : data.get().text)
             .titleMargin(2);
     }

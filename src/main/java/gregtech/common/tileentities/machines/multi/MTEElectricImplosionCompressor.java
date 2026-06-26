@@ -149,6 +149,7 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
             .addInputBus("Any Naquadah Reinforced Block", 1)
             .addInputHatch("Any Naquadah Reinforced Block", 1)
             .addOutputBus("Any Naquadah Reinforced Block", 1)
+            .addOutputHatch("Any Naquadah Reinforced Block", 1)
             .addEnergyHatch("Any Naquadah Reinforced Block", 1)
             .addSubChannelUsage(GTStructureChannels.EIC_PISTON)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)

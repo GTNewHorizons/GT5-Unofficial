@@ -319,6 +319,41 @@ gg.scanner.info.neutron_activator.input=Current Neutron Kinetic Energy Input: %s
 
 gg.scanner.info.fusion_reactor_mk=Fusion Reactor MK
 
+#InfoData (Nuclear Control panel)
+gg.infodata.antimatter_forge.header=§9Antimatter Forge §7
+gg.infodata.antimatter_forge.antimatter=Contained Antimatter: §9%s§r L
+gg.infodata.antimatter_forge.passive=Passive Consumption: §c%s§r EU/t
+gg.infodata.antimatter_forge.active=Active Consumption: §d%s§r EU/t
+gg.infodata.antimatter_forge.change=Antimatter Change: §b%s§r L
+gg.infodata.antimatter_generator.header=§9Antimatter Generator §7
+gg.infodata.antimatter_generator.eu_produced=EU Produced: §a%s§r EU
+gg.infodata.antimatter_generator.efficiency=Efficiency: §b%s§r %%
+gg.infodata.antimatter_generator.efficiency.avg=Efficiency: ⟨ §b%s§r %% ⟩₁₀
+gg.infodata.xhe.steam_output=Steam Output is equal to %s EU/t
+gg.infodata.xhe.threshold=Overheated Threshold: §a%s§r L/s
+gg.infodata.les.stats=Parallel: §e%s§r Node Power: §c%s§r Purification Efficiency: §b%s§r%% Speed Up: §7%s§r%%
+gg.infodata.generator.problems_efficiency=Problems: §c%s§r Efficiency: §e%s§r %%
+gg.infodata.neutron_activator.nke=Current Neutron Kinetic Energy: §d%s§reV
+gg.infodata.frf.tier=Coil Tier: %s
+gg.infodata.fusion.header=§9Fusion Reactor MK §r%s
+gg.infodata.fusion.parallel=Running Parallel: §d%s§r
+gg.infodata.fusion.req=EU Required: §c%s§rEU/t
+gg.infodata.fusion.plasma=Plasma Output: §e%s§rL/t
+gg.infodata.turbine.running.true=§aTurbine running§r: §c%s§r EU/t
+gg.infodata.turbine.running.false=§cTurbine stopped§r: §c%s§r EU/t
+gg.infodata.turbine.maintenance.false=§aNo Maintenance issues§r
+gg.infodata.turbine.maintenance.true=§cNeeds Maintenance§r
+gg.infodata.turbine.efficiency=Current Speed: §e%s§r%%
+gg.infodata.turbine.flow.loose=Optimal Flow: §e%s§r L/t §e(Loose)
+gg.infodata.turbine.flow.tight=Optimal Flow: §e%s§r L/t §e(Tight)
+gg.infodata.turbine.fuel=Fuel Remaining: §6%s§rL
+gg.infodata.turbine.dmg=Turbine Damage: §c%s§r%%
+gg.infodata.turbine.pollution=Pollution: §a%s§r %%
+gg.infodata.yottank.fluid=Fluid Name: §e%s§r
+gg.infodata.yottank.cap=Current Capacity: §a%s§r L
+gg.infodata.yottank.stored=Current Used: §a%s§r L (§a%s§r%%)
+gg.infodata.yottank.locked=Locked to: §e%s§r
+
 #GUI Info
 GT5U.gui.text.recipe_result.node_too_small=§7Node too small
 
