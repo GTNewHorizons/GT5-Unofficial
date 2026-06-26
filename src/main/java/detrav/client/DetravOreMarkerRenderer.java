@@ -12,6 +12,7 @@ import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
@@ -21,8 +22,6 @@ import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3d;
 import org.lwjgl.opengl.GL11;
 
-import com.github.bsideup.jabel.Desugar;
-
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import galacticgreg.api.enums.DimensionDef;
 import gregtech.api.enums.OrePrefixes;
@@ -30,6 +29,8 @@ import gregtech.api.enums.StoneType;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.IOreMaterial;
+import gregtech.client.renderer.BillboardRenderHelper;
+import gregtech.client.renderer.BillboardRenderHelper.Plane;
 import gregtech.common.config.Client;
 import gtneioreplugin.util.DimensionHelper;
 
@@ -125,9 +126,8 @@ public class DetravOreMarkerRenderer {
             Plane plane = Plane.lookingAt(centre.set(m.x + 0.5d, m.y + 0.5d, m.z + 0.5d), eye);
             float half = (float) Math.max(0.25d, dist * 0.03d);
 
-            if (m.ore != null && m.ore.getIcon() != null) {
-                renderIcon(plane, half, m, background);
-            } else {
+            IIconContainer ore = m.ore;
+            if (ore == null || !renderIcon(plane, half, m.color, ore, background)) {
                 renderDiamond(plane, half, m);
             }
 
@@ -138,7 +138,11 @@ public class DetravOreMarkerRenderer {
         GL11.glPopAttrib();
     }
 
-    private void renderIcon(Plane plane, float half, DetravOreMarker m, IIcon background) {
+    private boolean renderIcon(Plane plane, float half, int color, IIconContainer ore, IIcon background) {
+        IIcon icon = ore.getIcon();
+        ResourceLocation textureFile = ore.getTextureFile();
+        if (icon == null || textureFile == null) return false;
+
         GL11.glEnable(GL11.GL_TEXTURE_2D);
         Minecraft mc = Minecraft.getMinecraft();
 
@@ -147,10 +151,11 @@ public class DetravOreMarkerRenderer {
         iconQuad(plane, background, half, 0xFFFFFF);
 
         mc.getTextureManager()
-            .bindTexture(m.ore.getTextureFile());
-        iconQuad(plane, m.ore.getIcon(), half, m.color);
-        IIcon overlay = m.ore.getOverlayIcon();
+            .bindTexture(textureFile);
+        iconQuad(plane, icon, half, color);
+        IIcon overlay = ore.getOverlayIcon();
         if (overlay != null) iconQuad(plane, overlay, half, 0xFFFFFF);
+        return true;
     }
 
     private static IIcon resolveBackground(World world) {
@@ -203,14 +208,7 @@ public class DetravOreMarkerRenderer {
         Tessellator t = Tessellator.instance;
         t.startDrawingQuads();
         t.setColorOpaque_I(color & 0xFFFFFF);
-        plane.get(half, half, V);
-        t.addVertexWithUV(V.x, V.y, V.z, icon.getMaxU(), icon.getMaxV());
-        plane.get(half, -half, V);
-        t.addVertexWithUV(V.x, V.y, V.z, icon.getMaxU(), icon.getMinV());
-        plane.get(-half, -half, V);
-        t.addVertexWithUV(V.x, V.y, V.z, icon.getMinU(), icon.getMinV());
-        plane.get(-half, half, V);
-        t.addVertexWithUV(V.x, V.y, V.z, icon.getMinU(), icon.getMaxV());
+        BillboardRenderHelper.addTexturedQuad(t, plane, icon, half, V);
         t.draw();
     }
 
@@ -234,32 +232,4 @@ public class DetravOreMarkerRenderer {
         t.draw();
     }
 
-    /**
-     * camera facing plane (eye-relative), mirroring {@code GTPowerfailRenderer.Plane}.
-     */
-    @Desugar
-    private record Plane(Vector3d centre, Vector3d s, Vector3d t) {
-
-        private static Plane lookingAt(Vector3d centre, Vector3d pos) {
-            Vector3d normal = new Vector3d();
-            Vector3d relCentre = new Vector3d();
-
-            relCentre.set(centre)
-                .sub(pos);
-            relCentre.normalize(normal);
-
-            double radians = Math.atan2(normal.x, normal.z) + Math.PI / 2;
-
-            Vector3d s = new Vector3d(0, 0, -1).rotateY(radians);
-            Vector3d t = normal.cross(s, new Vector3d());
-
-            return new Plane(relCentre, s, t);
-        }
-
-        private void get(double sk, double tk, Vector3d dest) {
-            dest.x = centre.x + s.x * sk + t.x * tk;
-            dest.y = centre.y + s.y * sk + t.y * tk;
-            dest.z = centre.z + s.z * sk + t.z * tk;
-        }
-    }
 }
