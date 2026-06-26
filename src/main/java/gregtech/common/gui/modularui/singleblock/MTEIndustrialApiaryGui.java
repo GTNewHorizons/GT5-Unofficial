@@ -29,7 +29,6 @@ import com.cleanroommc.modularui.widgets.ToggleButton;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 
-import forestry.api.apiculture.BeeManager;
 import forestry.api.apiculture.EnumBeeType;
 import forestry.api.apiculture.IBee;
 import forestry.api.apiculture.IBeeGenome;
@@ -171,7 +170,7 @@ public class MTEIndustrialApiaryGui extends MTEBasicMachineBaseGui<MTEIndustrial
                             final int[] t = Arrays.stream(genome.getTerritory())
                                 .map(i -> (int) ((float) i * tmod))
                                 .toArray();
-                            addToRichTooltip(
+                            addTooltipDataToRichTooltip(
                                 () -> machine.mTooltipCache.getUncachedTooltipData(
                                     "GT5U.machines.industrialapiary.infoextended.tooltip",
                                     energyreq,
@@ -192,7 +191,7 @@ public class MTEIndustrialApiaryGui extends MTEBasicMachineBaseGui<MTEIndustrial
                             return;
                         }
                     }
-                    addToRichTooltip(
+                    addTooltipDataToRichTooltip(
                         () -> machine.mTooltipCache.getUncachedTooltipData(
                             "GT5U.machines.industrialapiary.info.tooltip",
                             energyreq,
@@ -315,17 +314,14 @@ public class MTEIndustrialApiaryGui extends MTEBasicMachineBaseGui<MTEIndustrial
             .coverChildren()
             .bottomRel(0)
             .rightRel(0)
-            .child(createErrorIcon(panel, syncManager).marginRight(SLOT_SIZE / 2))
+            .child(createErrorWidget(panel, syncManager).marginRight(SLOT_SIZE / 2))
             .child(createSpecialSlot())
             .child(makeLogoWidget());
     }
 
-    private boolean isValidForQueenSlot(ItemStack itemStack) {
-        return BeeManager.beeRoot.isMember(itemStack, EnumBeeType.QUEEN.ordinal())
-            || BeeManager.beeRoot.isMember(itemStack, EnumBeeType.PRINCESS.ordinal());
-    }
+    @Override
+    protected void initErrors(PanelSyncManager syncManager) {
+        super.initErrors(syncManager);
 
-    private boolean isValidForDroneSlot(ItemStack itemStack) {
-        return BeeManager.beeRoot.isMember(itemStack, EnumBeeType.DRONE.ordinal());
     }
 }
