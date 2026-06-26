@@ -70,6 +70,7 @@ import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
@@ -464,9 +465,8 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
         String[] oldInfo = super.getInfoData();
         this.infoDataBuffer = new String[oldInfo.length + 1];
         System.arraycopy(oldInfo, 0, this.infoDataBuffer, 0, oldInfo.length);
-        this.infoDataBuffer[oldInfo.length] = StatCollector.translateToLocalFormatted(
-            "tooltip.cal.imprintedWith",
-            EnumChatFormatting.YELLOW + this.getTypeForDisplay());
+        this.infoDataBuffer[oldInfo.length] = IGregTechDeviceInformation
+            .encode("tooltip.cal.imprintedWith", EnumChatFormatting.YELLOW + this.getTypeForDisplay());
         return this.infoDataBuffer;
     }
 

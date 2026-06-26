@@ -51,6 +51,7 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
@@ -387,31 +388,12 @@ public class MTEYottaFluidTank extends TTMultiblockBase implements ISurvivalCons
     @Override
     public String[] getInfoData() {
         final ArrayList<String> info = new ArrayList<>();
+        info.add(IGregTechDeviceInformation.encode("gg.infodata.yottank.fluid", getFluidName()));
+        info.add(IGregTechDeviceInformation.encode("gg.infodata.yottank.cap", formatNumber(getCap())));
         info.add(
-            translateToLocal("scanner.info.YOTTank.1") + " "
-                + translateToLocal(
-                    EnumChatFormatting.YELLOW + formatNumber(getFluidName() + EnumChatFormatting.RESET)));
-        info.add(
-            translateToLocal("scanner.info.YOTTank.0") + " "
-                + translateToLocal(
-                    EnumChatFormatting.GREEN + formatNumber(getCap()) + EnumChatFormatting.RESET + " L"));
-        info.add(
-            translateToLocal("scanner.info.YOTTank.2") + " "
-                + translateToLocal(
-                    EnumChatFormatting.GREEN + formatNumber(getStored())
-                        + EnumChatFormatting.RESET
-                        + " L"
-                        + " ("
-                        + EnumChatFormatting.GREEN
-                        + getPercent()
-                        + "%"
-                        + EnumChatFormatting.RESET
-                        + ")"));
+            IGregTechDeviceInformation.encode("gg.infodata.yottank.stored", formatNumber(getStored()), getPercent()));
         info.add(getTimeTo());
-        info.add(
-            StatCollector.translateToLocal("scanner.info.YOTTank.3") + " "
-                + EnumChatFormatting.YELLOW
-                + formatNumber(getLockedFluidName()));
+        info.add(IGregTechDeviceInformation.encode("gg.infodata.yottank.locked", getLockedFluidName()));
         final String[] a = new String[info.size()];
         return info.toArray(a);
     }
