@@ -371,7 +371,7 @@ public class MTEHatchLoS extends MTEBaseFactoryHatch implements IMTERenderer {
         GL11.glDepthMask(true);
         OpenGlHelper.glBlendFunc(770, 1, 1, 0);
 
-        double outerRadius = 0.2;
+        double outerRadius = 0.6;
         double rot = (double) worldTime * -0.0375;
         double c1x = Math.cos(rot + Math.PI * 0.75) * outerRadius;
         double c1z = Math.sin(rot + Math.PI * 0.75) * outerRadius;
@@ -402,7 +402,7 @@ public class MTEHatchLoS extends MTEBaseFactoryHatch implements IMTERenderer {
         OpenGlHelper.glBlendFunc(770, 771, 1, 0);
         GL11.glDepthMask(false);
 
-        double inner = 0.3;
+        double inner = 0.6;
         double vMin2 = -1.0 + scroll;
         double vMax2 = length + vMin2;
 
