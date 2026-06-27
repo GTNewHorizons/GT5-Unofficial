@@ -667,6 +667,7 @@ gt.blockmachines.multimachine.tm.teslaCoil.cfgo.9=Output max display
 gt.blockmachines.multimachine.tm.teslaCoil.outputVoltage=Output Voltage:
 gt.blockmachines.multimachine.tm.teslaCoil.chartButtonTooltip=Open amperage over time chart
 gt.blockmachines.multimachine.tm.teslaCoil.heatMapButtonTooltip=Open heat map
+gt.blockmachines.multimachine.tm.teslaCoil.powerPassAutomatic=Power Pass (automatic via hysteresis)
 
 gt.blockmachines.multimachine.em.switch.type=Computation Network Switch, CNS
 gt.blockmachines.multimachine.em.switch.name=Weighted Network Switch With QoS
@@ -1462,7 +1463,10 @@ tt.keyword.input=input
 tt.keyword.output=output
 tt.keyword.Status=Status
 tt.keyword.Content=Content
+tt.keyword.Content.fmt=Content: §b%s
 tt.keyword.PacketHistory=PacketHistory
+tt.keyword.PacketHistory.fmt=PacketHistory: §c%s
+tt.keyword.ID.fmt=ID: §b%s
 
 #Used when 0 Elemental Matter Stacks
 tt.keyphrase.No_Stacks=No Stacks
@@ -1972,10 +1976,17 @@ tt.infodata.multi.divisor.recipe_time.non_perfect_oc=Recipe time divisor per non
 tt.infodata.multi.currently_using=Currently using: %s EU/t
 tt.infodata.multi.capacity.heat=Heat Capacity: %s
 tt.infodata.multi.capacity.heat.effective=Effective Heat Capacity: %s
-tt.infodata.multi.min_hatch_tier.s=Min hatch tier: %s
-tt.infodata.multi.last_seconds.0.s=Last 5 seconds: %s EU/t
-tt.infodata.multi.last_seconds.1.s=Last 30 seconds: %s EU/t
-tt.infodata.multi.last_seconds.2.s=Last minute: %s EU/t
+tt.infodata.active_transformer.min_hatch_tier=Min hatch tier: %s
+tt.infodata.active_transformer.last_5s=Last 5 seconds: %s EU/t
+tt.infodata.active_transformer.last_30s=Last 30 seconds: %s EU/t
+tt.infodata.active_transformer.last_1min=Last minute: %s EU/t
+tt.infodata.research.energy_hatches.header=Energy Hatches:
+tt.infodata.research.currently_uses=Currently uses: §c%s§r EU/t at §c%s§r A
+tt.infodata.research.tier_amp=Tier Rating: §e%s§r / §a%s§r Amp Rating: §a%s§r A
+tt.infodata.research.problems_efficiency=Problems: §c%s§r Efficiency: §e%s§r %%
+tt.infodata.research.power_pass_safe_void=PowerPass: §9%s§r SafeVoid: §9%s
+tt.infodata.research.computation_available=Computation Available: §a%s§r / §e%s§r
+tt.infodata.research.computation_remaining=Computation Remaining: §a%s§r / §e%s§r
 
 ## Waila
 
@@ -1983,6 +1994,10 @@ tt.waila.multi.computation=§7Computation: §a%s
 
 ## Eye of Harmony
 tt.infodata.eoh.control_block_statistics=Control Block Statistics
+tt.infodata.eoh.control_block_statistics.header=§6§m-------------§r§6 Control Block Statistics §m-------------
+tt.infodata.eoh.internal_storage.header=§6§m-----------------§r§6 Internal Storage §m----------------
+tt.infodata.eoh.other_stats.header=§6§m-----------------§r§6 Other Stats §m-----------------
+tt.infodata.eoh.divider=§6§m-----------------------------------------------------
 tt.infodata.eoh.spacetime_compression.grade=Spacetime Compression Field Grade: %s (%s)
 tt.infodata.eoh.spacetime_compression.grade.none=Spacetime Compression Field Grade: None
 tt.infodata.eoh.time_dilation.grade=Time Dilation Field Grade: %s (%s)
@@ -1991,6 +2006,7 @@ tt.infodata.eoh.stabilisation.grade=Stabilisation Field Grade: %s (%s)
 tt.infodata.eoh.stabilisation.grade.none=Stabilisation Field Grade: None
 tt.infodata.eoh.internal_storage=Internal Storage
 tt.infodata.eoh.astral_array_fabricators=Astral Array Fabricators
+tt.infodata.eoh.astral_array_fabricators.count=§9Astral Array Fabricators§r : §c%s
 tt.infodata.eoh.other_stats=Other Stats
 tt.infodata.eoh.success_chance=Recipe Success Chance: %s
 tt.infodata.eoh.recipe_yield=Recipe Yield: %s
@@ -2059,6 +2075,9 @@ tt.spaceminer.filter.addOre=Click to add this ore to the filter
 tt.gui.tooltip.power_pass=Power Pass
 tt.gui.tooltip.safe_void=Safe Void
 tt.gui.tooltip.power_switch=Power Switch
+tt.gui.tooltip.edit_parameters=Edit Parameters
+tt.gui.tooltip.open_editor=Open Editor
+tt.gui.parameter.header=Parameters
 
 tt.gui.tooltip.plasma_module.debug_window=Debug Window
 tt.gui.tooltip.plasma_module.debug_window.multi_step=multi-step

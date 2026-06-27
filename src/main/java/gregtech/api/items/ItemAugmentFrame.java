@@ -1,6 +1,5 @@
 package gregtech.api.items;
 
-import static gregtech.api.items.armor.ArmorHelper.isShiftPressed;
 import static gregtech.api.util.GTUtility.addSeparatorIfNeeded;
 
 import java.util.List;
@@ -22,36 +21,36 @@ public class ItemAugmentFrame extends ItemAugmentAbstract {
     }
 
     @Override
+    protected boolean showAllInfo() {
+        return true;
+    }
+
+    @Override
     protected void addAdditionalToolTips(List<String> desc, ItemStack augmentStack, EntityPlayer player) {
         super.addAdditionalToolTips(desc, augmentStack, player);
 
-        boolean shiftPressed = isShiftPressed();
-
-        addSeparatorIfNeeded(desc);
-
         desc.add(
-            GTUtility
-                .translate("GT5U.armor.tooltip.armorvalue", GTTextBuilder.NUMERIC.toString() + frame.getProtection()));
+            GTUtility.translate(
+                "GT5U.armor.tooltip.armorvalue",
+                GTTextBuilder.NUMERIC.toString() + (int) (frame.getProtection() * 100)));
 
         addSeparatorIfNeeded(desc);
 
-        if (shiftPressed) {
-            desc.add(GTUtility.translate("GT5U.armor.tooltip.slots"));
-            if (frame.getProtectionSlots() > 0) {
-                desc.add(frame.getProtectionSlots() + " " + GTUtility.translate("GT5U.armor.tooltip.protection"));
-            }
+        desc.add(GTUtility.translate("GT5U.armor.tooltip.slots"));
+        if (frame.getProtectionSlots() > 0) {
+            desc.add(frame.getProtectionSlots() + " " + GTUtility.translate("GT5U.armor.tooltip.protection"));
+        }
 
-            if (frame.getMovementSlots() > 0) {
-                desc.add(frame.getMovementSlots() + " " + GTUtility.translate("GT5U.armor.tooltip.movement"));
-            }
+        if (frame.getMovementSlots() > 0) {
+            desc.add(frame.getMovementSlots() + " " + GTUtility.translate("GT5U.armor.tooltip.movement"));
+        }
 
-            if (frame.getUtilitySlots() > 0) {
-                desc.add(frame.getUtilitySlots() + " " + GTUtility.translate("GT5U.armor.tooltip.utility"));
-            }
+        if (frame.getUtilitySlots() > 0) {
+            desc.add(frame.getUtilitySlots() + " " + GTUtility.translate("GT5U.armor.tooltip.utility"));
+        }
 
-            if (frame.getPrismaticSlots() > 0) {
-                desc.add(frame.getPrismaticSlots() + " " + GTUtility.translate("GT5U.armor.tooltip.prismatic"));
-            }
+        if (frame.getPrismaticSlots() > 0) {
+            desc.add(frame.getPrismaticSlots() + " " + GTUtility.translate("GT5U.armor.tooltip.prismatic"));
         }
     }
 }

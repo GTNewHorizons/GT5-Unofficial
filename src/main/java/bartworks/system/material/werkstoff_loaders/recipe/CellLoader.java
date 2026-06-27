@@ -156,18 +156,20 @@ public class CellLoader implements IWerkstoffRunnable {
                         }
                     }
                 }
-                ItemStack input = werkstoff.get(cell);
-                input.stackSize = 1;
+                ItemStack werkstoffCell = werkstoff.get(cell);
+                werkstoffCell.stackSize = 1;
 
                 int cellEmpty = cells - 1;
 
-                stOutputs.add(Materials.Empty.getCells(-cellEmpty));
+                if (cellEmpty < 0) {
+                    stOutputs.add(Materials.Empty.getCells(-cellEmpty));
+                }
                 if (werkstoff.getStats()
                     .isElektrolysis())
                     GTValues.RA.stdBuilder()
                         .itemInputs(
-                            cellEmpty > 0 ? new ItemStack[] { input, Materials.Empty.getCells(cellEmpty) }
-                                : new ItemStack[] { input })
+                            cellEmpty > 0 ? new ItemStack[] { werkstoffCell, Materials.Empty.getCells(cellEmpty) }
+                                : new ItemStack[] { werkstoffCell })
                         .itemOutputs(stOutputs.toArray(new ItemStack[0]))
                         .fluidOutputs(flOutputs.isEmpty() ? new FluidStack[0] : new FluidStack[] { flOutputs.get(0) })
                         .duration(
@@ -193,8 +195,8 @@ public class CellLoader implements IWerkstoffRunnable {
                     .isCentrifuge())
                     GTValues.RA.stdBuilder()
                         .itemInputs(
-                            cellEmpty > 0 ? new ItemStack[] { input, Materials.Empty.getCells(cellEmpty) }
-                                : new ItemStack[] { input })
+                            cellEmpty > 0 ? new ItemStack[] { werkstoffCell, Materials.Empty.getCells(cellEmpty) }
+                                : new ItemStack[] { werkstoffCell })
                         .itemOutputs(stOutputs.toArray(new ItemStack[0]))
                         .fluidOutputs(flOutputs.isEmpty() ? new FluidStack[0] : new FluidStack[] { flOutputs.get(0) })
                         .duration(

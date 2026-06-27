@@ -1694,6 +1694,7 @@ public class OrePrefixes {
         .build();
 
     public static final OrePrefixes frameGt = new OrePrefixBuilder("frameGt").withDefaultLocalName("Frame Boxes")
+        .withSuffix(" Frame Box")
         .unifiable()
         .materialBased()
         .skipActiveUnification()

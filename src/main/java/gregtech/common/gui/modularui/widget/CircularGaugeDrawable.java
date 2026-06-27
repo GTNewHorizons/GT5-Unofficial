@@ -3,15 +3,18 @@ package gregtech.common.gui.modularui.widget;
 import java.util.function.DoubleSupplier;
 
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.util.MathHelper;
 
 import org.lwjgl.opengl.GL11;
 
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.screen.viewport.GuiContext;
 import com.cleanroommc.modularui.theme.WidgetTheme;
+import com.cleanroommc.modularui.widget.Widget;
 import com.gtnewhorizons.modularui.api.GlStateManager;
 import com.gtnewhorizons.modularui.api.math.Color;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * Draws a gauge pointer hand, rotating around the x&y coordinates of the widget.
@@ -19,16 +22,17 @@ import com.gtnewhorizons.modularui.api.math.Color;
  */
 public class CircularGaugeDrawable implements IDrawable {
 
-    private DoubleSupplier progressSupplier;
-    private float minAngle = (float) Math.toRadians(-235.0);
-    private float maxAngle = (float) Math.toRadians(45.0);
-    private float lastAngle = Float.NaN;
+    private final DoubleSupplier progressSupplier;
+    private final double minAngle = Math.toRadians(-230.0);
+    private final double maxAngle = Math.toRadians(47.0);
+    private double lastAngle = Double.NaN;
 
     public CircularGaugeDrawable(DoubleSupplier progressSupplier) {
         this.progressSupplier = progressSupplier;
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public void draw(GuiContext context, int x, int y, int width, int height, WidgetTheme widgetTheme) {
         GlStateManager.disableTexture2D();
         GlStateManager.enableBlend();
@@ -42,16 +46,16 @@ public class CircularGaugeDrawable implements IDrawable {
         GlStateManager.shadeModel(GL11.GL_SMOOTH);
         final Tessellator tessellator = Tessellator.instance;
 
-        final float progress = MathHelper.clamp_float((float) progressSupplier.getAsDouble(), 0.0f, 1.0f);
-        final float newDialAngle = minAngle + progress * (maxAngle - minAngle);
-        if (Float.isNaN(lastAngle)) {
+        final double progress = Math.clamp(progressSupplier.getAsDouble(), 0.0, 1.0);
+        final double newDialAngle = minAngle + progress * (maxAngle - minAngle);
+        if (Double.isNaN(lastAngle)) {
             lastAngle = newDialAngle;
         } else {
             lastAngle = (lastAngle + newDialAngle) / 2.0f;
         }
-        final float angle = lastAngle;
-        final float sinA = (float) Math.sin(-angle);
-        final float cosA = (float) Math.cos(-angle);
+        final double angle = lastAngle;
+        final double sinA = Math.sin(-angle);
+        final double cosA = Math.cos(-angle);
         height /= 2;
 
         tessellator.startDrawing(GL11.GL_TRIANGLE_STRIP);
@@ -73,5 +77,16 @@ public class CircularGaugeDrawable implements IDrawable {
     @Override
     public boolean canApplyTheme() {
         return true;
+    }
+
+    @Override
+    public Widget<?> asWidget() {
+        return new DrawableWidget(this) {
+
+            @Override
+            public boolean canHoverThrough() {
+                return true;
+            }
+        };
     }
 }
