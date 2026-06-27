@@ -37,6 +37,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
@@ -383,40 +384,20 @@ public class MTEExtremeHeatExchanger extends TTMultiblockBase implements ISurviv
     public String[] getInfoData() {
         int tThreshold = tRunningRecipe != null ? tRunningRecipe.mSpecialValue : 0;
         return new String[] {
-            StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(mProgresstime / 20)
-                + EnumChatFormatting.RESET
-                + " s / "
-                + EnumChatFormatting.YELLOW
-                + formatNumber(mMaxProgresstime / 20)
-                + EnumChatFormatting.RESET
-                + " s",
-            StatCollector.translateToLocal("GT5U.multiblock.problems") + ": "
-                + EnumChatFormatting.RED
-                + (getIdealStatus() - getRepairStatus())
-                + EnumChatFormatting.RESET
-                + " "
-                + StatCollector.translateToLocal("GT5U.multiblock.efficiency")
-                + ": "
-                + EnumChatFormatting.YELLOW
-                + mEfficiency / 100.0F
-                + EnumChatFormatting.RESET
-                + " %",
-            StatCollector.translateToLocal("scanner.info.XHE.0") + " "
-                + (transformed ? EnumChatFormatting.RED : EnumChatFormatting.YELLOW)
-                + formatNumber(this.mEUt)
-                + EnumChatFormatting.RESET
-                + " EU/t",
-            StatCollector.translateToLocal("scanner.info.XHE.1") + " "
-                + EnumChatFormatting.GREEN
-                + formatNumber(tThreshold)
-                + EnumChatFormatting.RESET
-                + " L/s",
-            StatCollector.translateToLocal("GT5U.multiblock.recipesDone") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(recipesDone)
-                + EnumChatFormatting.RESET };
+            IGregTechDeviceInformation.encode(
+                "GT5U.multiblock.Progress.fmt.s",
+                formatNumber(mProgresstime / 20),
+                formatNumber(mMaxProgresstime / 20)),
+            IGregTechDeviceInformation.encode(
+                "GT5U.multiblock.problems.efficiency.fmt",
+                getIdealStatus() - getRepairStatus(),
+                mEfficiency / 100.0F + " %"),
+            IGregTechDeviceInformation.encode(
+                "gg.infodata.xhe.steam_output",
+                (transformed ? EnumChatFormatting.RED : EnumChatFormatting.YELLOW) + formatNumber(this.mEUt)
+                    + EnumChatFormatting.RESET),
+            IGregTechDeviceInformation.encode("gg.infodata.xhe.threshold", formatNumber(tThreshold)),
+            IGregTechDeviceInformation.encode("GT5U.multiblock.recipesDone.fmt", formatNumber(recipesDone)) };
     }
 
     @Override

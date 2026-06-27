@@ -46,7 +46,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GTUtility;
@@ -194,27 +193,15 @@ public class MTEPurificationUnitBaryonicPerfection
     @Override
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
         int colorIndex, boolean active, boolean redstoneLevel) {
-        if (side == facing) {
-            if (active) return new ITexture[] { getCasingTexture(), TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_WATER_T8_ACTIVE)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_WATER_T8_ACTIVE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { getCasingTexture(), TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_WATER_T8)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_WATER_T8_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-        }
-        return new ITexture[] { getCasingTexture() };
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            facing,
+            active,
+            OVERLAY_FRONT_WATER_T8,
+            OVERLAY_FRONT_WATER_T8_GLOW,
+            OVERLAY_FRONT_WATER_T8_ACTIVE,
+            OVERLAY_FRONT_WATER_T8_ACTIVE_GLOW);
     }
 
     @Override
@@ -509,7 +496,8 @@ public class MTEPurificationUnitBaryonicPerfection
             // Now check the sequence for a correct combination
             correctStartIndex = checkSequence();
             // If we found something, immediately output stable baryonic matter
-            if (correctStartIndex != -1) addOutput(Materials.StableBaryonicMatter.getFluid(BARYONIC_MATTER_OUTPUT));
+            if (correctStartIndex != -1)
+                addOutputPartial(Materials.StableBaryonicMatter.getFluid(BARYONIC_MATTER_OUTPUT));
         }
     }
 

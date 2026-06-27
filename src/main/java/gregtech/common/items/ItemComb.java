@@ -580,7 +580,7 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
             30 * 100);
 
         // Rare Metals Line
-        addProcessGT(CombType.BAUXITE, new Materials[] { Materials.Bauxite }, Voltage.LV);
+        addProcessGT(CombType.BAUXITE, new Materials[] { Materials.Bauxite }, Voltage.HV);
         addProcessGT(CombType.ALUMINIUM, new Materials[] { Materials.Aluminium }, Voltage.LV);
         addProcessGT(CombType.MANGANESE, new Materials[] { Materials.Manganese }, Voltage.LV);
         addProcessGT(CombType.TITANIUM, new Materials[] { Materials.Titanium }, Voltage.EV);

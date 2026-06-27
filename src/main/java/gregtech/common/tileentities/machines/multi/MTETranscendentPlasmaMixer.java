@@ -29,7 +29,6 @@ import javax.annotation.Nonnull;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
@@ -43,6 +42,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.GregTechAPI;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
@@ -301,25 +301,19 @@ public class MTETranscendentPlasmaMixer extends MTEEnhancedMultiBlockBase<MTETra
     @Override
     public String[] getInfoData() {
         return new String[] {
-            StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(mProgresstime / 20)
-                + EnumChatFormatting.RESET
-                + " s / "
-                + EnumChatFormatting.YELLOW
-                + formatNumber(mMaxProgresstime / 20)
-                + EnumChatFormatting.RESET
-                + " s",
-            StatCollector.translateToLocal("GT5U.multiblock.usage") + ": "
-                + EnumChatFormatting.RED
-                + (mMaxProgresstime == 0 ? "0"
-                    : toStandardForm(finalConsumption.divide(BigInteger.valueOf(-mMaxProgresstime))))
-                + EnumChatFormatting.RESET
-                + " EU/t",
-            StatCollector.translateToLocal("GT5U.multiblock.recipesDone") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(recipesDone)
-                + EnumChatFormatting.RESET };
+            IGregTechDeviceInformation.encode(
+                "GT5U.infodata.progress",
+                EnumChatFormatting.GREEN + formatNumber(mProgresstime / 20) + EnumChatFormatting.RESET,
+                EnumChatFormatting.YELLOW + formatNumber(mMaxProgresstime / 20) + EnumChatFormatting.RESET),
+            IGregTechDeviceInformation.encode(
+                "GT5U.infodata.usage",
+                EnumChatFormatting.RED
+                    + (mMaxProgresstime == 0 ? "0"
+                        : toStandardForm(finalConsumption.divide(BigInteger.valueOf(-mMaxProgresstime))))
+                    + EnumChatFormatting.RESET),
+            IGregTechDeviceInformation.encode(
+                "GT5U.infodata.multiblock.recipes_done",
+                EnumChatFormatting.GREEN + formatNumber(recipesDone) + EnumChatFormatting.RESET) };
     }
 
     @Override

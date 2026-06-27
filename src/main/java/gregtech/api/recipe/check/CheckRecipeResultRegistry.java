@@ -183,6 +183,11 @@ public final class CheckRecipeResultRegistry {
     }
 
     @Nonnull
+    public static CheckRecipeResult insufficientStartupPower(int required, int machineTier) {
+        return new ResultInsufficientStartupPower(required, machineTier);
+    }
+
+    @Nonnull
     public static CheckRecipeResult insufficientStartupPower(BigInteger required) {
         return new ResultInsufficientStartupPowerBigInt(required);
     }

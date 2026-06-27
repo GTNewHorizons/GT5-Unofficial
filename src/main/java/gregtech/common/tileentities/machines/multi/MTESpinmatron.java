@@ -461,7 +461,7 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
             .addInfo(EnumChatFormatting.ITALIC + "" + EnumChatFormatting.DARK_RED + "Maahes guides the way...")
             .beginStructureBlock(17, 17, 17, false)
             .addController("Front center")
-            .addCasingInfoExactly("Any Tiered Glass", 81, true)
+            .addCasingInfoExactly("Any Tiered Glass", 81, false)
             .addCasingInfoMin("Vibration-Safe Casing", 550, false)
             .addCasingInfoExactly("Chamber Grate", 144, false)
             .addCasingInfoExactly("Central Frame Block", 9, true)
