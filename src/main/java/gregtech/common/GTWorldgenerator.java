@@ -313,7 +313,6 @@ public class GTWorldgenerator implements IWorldGenerator {
                 boolean oreveinFound = false;
                 int i = 0;
                 CachedOreVein cachedOreVein = null;
-                String seedBiome = mWorld.getBiomeGenForCoords(oreseedX * 16 + 8, oreseedZ * 16 + 8).biomeName;
 
                 // Used for outputting orevein weights and bins
                 /*
@@ -342,8 +341,8 @@ public class GTWorldgenerator implements IWorldGenerator {
 
                     int placementResult = 0;
 
-                    // Resolve the exact placement seed using the canonical oreseed chunk, then cache it so every
-                    // chunk in this vein regenerates the same geometry regardless of generation order.
+                    // Resolve the exact placement seed using the first processed chunk, then cache it so every chunk
+                    // in this vein regenerates the same geometry.
                     long placementSeed = Fnv1a64.hashStep(seed, oreLayer.mPrimary.getId());
 
                     try {
@@ -352,9 +351,9 @@ public class GTWorldgenerator implements IWorldGenerator {
                         placementResult = oreLayer.testWorldgenChunkified(
                             this.mWorld,
                             veinRNG,
-                            seedBiome,
-                            oreseedX * 16,
-                            oreseedZ * 16,
+                            this.mBiome,
+                            this.mX * 16,
+                            this.mZ * 16,
                             oreseedX * 16,
                             oreseedZ * 16,
                             this.mChunkGenerator,
