@@ -63,7 +63,6 @@ import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.StoneType;
 import gregtech.api.gui.modularui.GTUIInfos;
-import gregtech.api.materials.bec.BECMaterialList;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTGuiTheme;
@@ -378,8 +377,6 @@ public class GTMod {
         proxy.registerUnificationEntries();
         new FuelLoader().run();
         new FissionFuelLoader().run();
-
-        BECMaterialList.init();
 
         if (Mods.Waila.isModLoaded()) {
             Waila.init();
