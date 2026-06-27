@@ -52,6 +52,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchMuffler;
 import gregtech.api.objects.XSTR;
@@ -261,30 +262,12 @@ public class MTELargeEssentiaSmeltery extends TTMultiblockBase implements ISurvi
     public String[] getInfoData() {
         String[] origData = super.getInfoData();
         String[] info = Arrays.copyOf(origData, origData.length + 1);
-        info[origData.length] = StatCollector.translateToLocal("gg.scanner.info.les.parallel") + " "
-            + EnumChatFormatting.YELLOW
-            + Math.round(this.mParallel)
-            + EnumChatFormatting.RESET
-            + " "
-            + StatCollector.translateToLocal("gg.scanner.info.les.node_power")
-            + " "
-            + EnumChatFormatting.RED
-            + this.nodePower
-            + EnumChatFormatting.RESET
-            + " "
-            + StatCollector.translateToLocal("gg.scanner.info.les.purification_efficiency")
-            + " "
-            + EnumChatFormatting.AQUA
-            + this.nodePurificationEfficiency
-            + "%"
-            + EnumChatFormatting.RESET
-            + " "
-            + StatCollector.translateToLocal("gg.scanner.info.les.speed_up")
-            + " "
-            + EnumChatFormatting.GRAY
-            + this.nodeIncrease
-            + "%"
-            + EnumChatFormatting.RESET;
+        info[origData.length] = IGregTechDeviceInformation.encode(
+            "gg.infodata.les.stats",
+            Math.round(this.mParallel),
+            this.nodePower,
+            this.nodePurificationEfficiency,
+            this.nodeIncrease);
         return info;
     }
 

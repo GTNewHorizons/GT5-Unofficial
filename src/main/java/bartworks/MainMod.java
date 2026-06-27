@@ -26,6 +26,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import bartworks.API.BioObjectAdder;
+import bartworks.API.enums.BioCultureEnum;
+import bartworks.API.enums.BioDataEnum;
 import bartworks.API.enums.CircuitImprint;
 import bartworks.client.creativetabs.BartWorksTab;
 import bartworks.client.creativetabs.BioTab;
@@ -119,6 +121,8 @@ public final class MainMod {
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
+        BioDataEnum.registerLoopkups();
+        BioCultureEnum.registerLoopkups();
         GameRegistry.registerBlock(ItemRegistry.bw_glasses[0], BWItemBlocks.class, "BW_TieredGlass");
         GameRegistry.registerBlock(ItemRegistry.bw_glasses[1], BWItemBlocks.class, "BW_ExtraGlass");
 
