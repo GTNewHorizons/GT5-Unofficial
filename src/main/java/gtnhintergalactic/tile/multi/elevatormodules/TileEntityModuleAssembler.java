@@ -124,6 +124,11 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase
     protected abstract int getMaxParallels();
 
     /**
+     * @return Speed bonus that this module possesses
+     */
+    protected abstract int getSpeedBonus();
+
+    /**
      * @return Power object used for displaying in NEI
      */
     @Override
@@ -177,7 +182,8 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase
                 return CheckRecipeResultRegistry.SUCCESSFUL;
             }
         }.setAmperageOC(false)
-            .setMaxParallelSupplier(() -> Math.min(getMaxParallels(), parallelParameter.getValue()));
+            .setMaxParallelSupplier(() -> Math.min(getMaxParallels(), parallelParameter.getValue()))
+            .setSpeedBonus(getSpeedBonus());
     }
 
     /**
@@ -269,6 +275,8 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase
         protected static final int MINIMUM_MOTOR_TIER = 1;
         /** Maximum parallels which this module can handle */
         protected static final int MAX_PARALLELS = 4;
+        /** Speed Bonus which this module possesses */
+        protected static final int SPEED_BONUS = 1;
 
         /**
          * Create a new T1 assembler module controller
