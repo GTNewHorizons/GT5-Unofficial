@@ -1,9 +1,11 @@
 package gregtech.loaders.postload.recipes;
 
+import static gregtech.api.enums.Mods.EternalSingularity;
 import static gregtech.api.enums.Mods.GalacticraftAmunRa;
 import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
+import static gregtech.api.util.GTRecipeBuilder.STACKS;
 import static gregtech.api.util.GTRecipeConstants.NANITE_TIERS;
 import static tectech.loader.recipe.BaseRecipeLoader.getNHCoreModItem;
 
@@ -23,6 +25,7 @@ import gregtech.api.enums.NaniteTier;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTOreDictUnificator;
+import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import kekztech.common.Blocks;
@@ -124,7 +127,7 @@ public class BECRecipes implements Runnable {
                 ItemList.Emitter_UIV.get(4), GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UEV, 16),
                 GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Silver, 2),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.SuperconductorUIVBase, 32) },
-            nanites(1, 2, 1, 1, 1, 1, 2, 4, 3),
+            nanites(1, 2, 1, 1, 1, 1, 3, 4, 2, 3),
             new FluidStack[] { CondensateType.ChromaticGlass.getEntangled(32 * INGOTS),
                 CondensateType.Infinity.getEntangled(32 * INGOTS) },
             450 * SECONDS,
@@ -159,8 +162,7 @@ public class BECRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.Mellion, 64),
                 GregtechItemList.SpaceTimeContinuumRipper.get(8), GregtechItemList.Battery_Gem_4.get(8),
                 GregtechItemList.Laser_Lens_Special.get(8),
-                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.MAX, 4),
-                GregtechItemList.Laser_Lens_Special.get(8), ItemList.Emitter_UXV.get(4),
+                GTOreDictUnificator.get(OrePrefixes.circuit, Materials.MAX, 4), ItemList.Emitter_UXV.get(4),
                 ItemList.MetaMaterial_Waveguide2.get(64), ItemList.MetaMaterial_EnergyConduit2.get(64),
                 ItemList.MetaMaterial_EnergyConduit3.get(8),
                 GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Silver, 8),
@@ -190,6 +192,35 @@ public class BECRecipes implements Runnable {
                 CondensateType.CelestialTungsten.getEntangled(16 * INGOTS), },
             300 * SECONDS,
             TierEU.RECIPE_UXV);
+    }
+
+    public void runLateRecipes() {
+        // Shielding Casing
+        addBec(
+            CustomItemList.Godforge_SingularityShieldingCasing.get(6),
+            new ItemStack[] { GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.SixPhasedCopper, 4),
+                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Infinity, 2),
+                MaterialsAlloy.QUANTUM.getPlate(16),
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.InfinityCatalyst, 4),
+                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Netherite, 2),
+                getModItem(EternalSingularity.ID, "combined_singularity", 1L, 2),
+                GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.SuperconductorUIVBase, 8),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Creon, 16),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Mellion, 16),
+                GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.SuperconductorUEVBase, 8),
+                getModItem(EternalSingularity.ID, "combined_singularity", 1L, 4),
+                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.TranscendentMetal, 2),
+                MaterialsAlloy.TITANSTEEL.getFrameBox(4),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.ProtoHalkonite, 16),
+                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.CosmicNeutronium, 2),
+                MaterialsAlloy.ABYSSAL.getFrameBox(4) },
+            nanites(1, 2, 1, 1, 2, 4, 3, 1, 1, 3, 4, 2, 1, 1, 2, 1),
+            new FluidStack[] { CondensateType.Hypogen.getEntangled(4 * INGOTS),
+                CondensateType.Bedrockium.getEntangled(256 * STACKS),
+                CondensateType.CelestialTungsten.getEntangled(32 * STACKS),
+                CondensateType.Neutronium.getEntangled(32 * STACKS) },
+            300 * SECONDS,
+            TierEU.RECIPE_UMV);
     }
 
     private void addBECCasingRecipes() {
