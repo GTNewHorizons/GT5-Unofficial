@@ -352,7 +352,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
             }
 
             // Delete zero size stacks
-            this.isItemEmpty();
+            this.isEmpty();
         }
 
         private void insertItem(IAEItemStack inserted) {
