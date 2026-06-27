@@ -47,6 +47,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.RecipeMap;
@@ -155,7 +156,7 @@ public class MTEElectricBlastFurnace extends MTEAbstractMultiFurnace<MTEElectric
             .addInputBus("Any bottom layer Casing", 1)
             .addInputHatch("Any bottom layer Casing", 1)
             .addOutputBus("Any bottom layer Casing", 1)
-            .addOutputHatch("Any Heat Proof Machine Casing", 3)
+            .addOutputHatch("Any Heat Proof Machine Casing", 1, 3)
             .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
         return tt;
@@ -238,7 +239,7 @@ public class MTEElectricBlastFurnace extends MTEAbstractMultiFurnace<MTEElectric
 
     @Override
     public void getExtraInfoData(List<String> info) {
-        info.add(StatCollector.translateToLocalFormatted("GT5U.EBF.heat.s", formatNumber(mHeatingCapacity)));
+        info.add(IGregTechDeviceInformation.encode("GT5U.EBF.heat.s", formatNumber(mHeatingCapacity)));
     }
 
     @Override

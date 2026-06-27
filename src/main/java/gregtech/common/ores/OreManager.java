@@ -3,8 +3,6 @@ package gregtech.common.ores;
 import java.util.List;
 import java.util.Random;
 
-import javax.annotation.Nullable;
-
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -115,9 +113,7 @@ public final class OreManager {
         IOreMaterial material, boolean small) {
         if (y < 0 || y >= world.getActualHeight()) return null;
 
-        IStoneType existingStone = StoneType.findStoneType(world.getBlock(x, y, z), world.getBlockMetadata(x, y, z));
-
-        if (existingStone != null && !existingStone.canGenerateInWorld(world)) return null;
+        IStoneType existingStone = StoneType.findStoneType(world, x, y, z);
 
         if (existingStone == null) {
             if (defaultStone != null) {
@@ -149,34 +145,6 @@ public final class OreManager {
         }
     }
 
-    public static boolean setOre(World world, int x, int y, int z, @Nullable IStoneType stoneType,
-        IOreMaterial material, boolean small) {
-        if (y < 0 || y >= world.getActualHeight()) return false;
-
-        try (OreInfo<IOreMaterial> info = OreInfo.getNewInfo()) {
-            info.material = material;
-            info.stoneType = stoneType;
-            info.isSmall = small;
-            info.isNatural = true;
-
-            int size = ORE_ADAPTERS.size();
-
-            for (int i = 0; i < size; i++) {
-                IOreAdapter<?> oreAdapter = ORE_ADAPTERS.get(i);
-
-                ImmutableBlockMeta oreBlock = oreAdapter.getBlock(info);
-
-                if (oreBlock != null) {
-                    world.setBlock(x, y, z, oreBlock.getBlock(), oreBlock.getBlockMeta(), 2);
-
-                    return true;
-                }
-            }
-
-            return false;
-        }
-    }
-
     public static boolean setExistingOreStoneType(World world, int x, int y, int z, IStoneType newStoneType) {
         Block block = world.getBlock(x, y, z);
         int meta = world.getBlockMetadata(x, y, z);
@@ -186,7 +154,10 @@ public final class OreManager {
 
             info.stoneType = newStoneType;
 
-            ImmutableBlockMeta oreBlock = getAdapter(info).getBlock(info);
+            IOreAdapter<?> adapter = getAdapter(info);
+            if (adapter == null) return false;
+
+            ImmutableBlockMeta oreBlock = adapter.getBlock(info);
 
             if (oreBlock == null) return false;
 

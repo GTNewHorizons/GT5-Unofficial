@@ -335,7 +335,7 @@ public class ScannerHelper {
                 if (resultList.isEmpty()) return;
 
                 list.add(addTitleComp("title_custom_info"));
-                for (String s : resultList) list.add(new ChatComponentText(s));
+                for (String s : resultList) list.add(IGregTechDeviceInformation.toComponent(s));
             }
         } catch (Exception e) {
             list.add(transComp("error_custom_info").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));

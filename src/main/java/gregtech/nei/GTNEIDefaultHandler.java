@@ -51,7 +51,7 @@ import codechicken.nei.recipe.TemplateRecipeHandler;
 import gregtech.GTMod;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.SteamVariant;
+import gregtech.api.enums.TieredVariant;
 import gregtech.api.gui.GUIColorOverride;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -492,6 +492,8 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
             recipe);
         calculator.calculate();
 
+        cachedRecipe.calculator = calculator;
+
         frontend.drawDescription(
             new RecipeDisplayInfo(
                 recipe,
@@ -722,6 +724,7 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
     public class CachedDefaultRecipe extends TemplateRecipeHandler.CachedRecipe {
 
         public final GTRecipe mRecipe;
+        public OverclockCalculator calculator;
         public final List<PositionedStack> mOutputs = new ArrayList<>();
         public final List<PositionedStack> mInputs = new ArrayList<>();
 
@@ -909,7 +912,7 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
                 aRecipe.mOutputs.length,
                 aRecipe.mFluidInputs.length,
                 aRecipe.mFluidOutputs.length,
-                SteamVariant.NONE,
+                TieredVariant.STANDARD,
                 WINDOW_OFFSET);
         }
 

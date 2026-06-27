@@ -225,11 +225,15 @@ public abstract class MTEBECMultiblockBase<TSelf extends MTEBECMultiblockBase<TS
         return ConnectionType.NONE;
     }
 
+    protected boolean connectsToNetwork() {
+        return true;
+    }
+
     @Override
     public void onFirstTick_EM(IGregTechTileEntity aBaseMetaTileEntity) {
         super.onFirstTick_EM(aBaseMetaTileEntity);
 
-        if (GTUtility.isServer()) {
+        if (GTUtility.isServer() && connectsToNetwork()) {
             BECFactoryGrid.INSTANCE.updateElement(this);
         }
     }
@@ -238,7 +242,7 @@ public abstract class MTEBECMultiblockBase<TSelf extends MTEBECMultiblockBase<TS
     public void onRemoval() {
         super.onRemoval();
 
-        if (GTUtility.isServer()) {
+        if (GTUtility.isServer() && connectsToNetwork()) {
             BECFactoryGrid.INSTANCE.removeElement(this);
         }
     }

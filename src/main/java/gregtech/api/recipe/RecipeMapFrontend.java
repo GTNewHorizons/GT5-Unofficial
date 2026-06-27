@@ -27,7 +27,7 @@ import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
 import codechicken.nei.PositionedStack;
-import gregtech.api.enums.SteamVariant;
+import gregtech.api.enums.TieredVariant;
 import gregtech.api.gui.GUIColorOverride;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.recipe.metadata.IRecipeMetadataStorage;
@@ -134,7 +134,7 @@ public class RecipeMapFrontend {
             uiProperties.maxItemOutputs,
             uiProperties.maxFluidInputs,
             uiProperties.maxFluidOutputs,
-            SteamVariant.NONE,
+            TieredVariant.STANDARD,
             ctx.windowOffset);
 
         addGregTechLogo(builder, ctx.windowOffset);
