@@ -168,6 +168,7 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>> {
         myPriority = newValue;
         isCached = false;
         updateState();
+        updateCellArray();
         env.dispatchMarkDirty();
     }
 
@@ -447,7 +448,10 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>> {
         if (aBaseMetaTileEntity.isServerSide()) {
             tickCounter = aTick;
             if (tickCounter > (lastOutputTick + 40)) flushCachedStack();
-            if (tickCounter % 20 == 0) aBaseMetaTileEntity.setActive(getProxy().isActive());
+            if (tickCounter % 20 == 0) {
+                updateCell();
+                aBaseMetaTileEntity.setActive(wasActive);
+            }
         }
     }
 
@@ -554,6 +558,7 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>> {
     public void setCacheMode(boolean cacheMode) {
         this.cacheMode = cacheMode;
         updateState();
+        updateCellArray();
         EntityPlayer p = env.getLastClickedPlayer();
         if (p != null && GTUtility.isServer()) {
             GTUtility.sendChatTrans(p, "GT5U.hatch.outputme.cacheMode." + this.cacheMode);
