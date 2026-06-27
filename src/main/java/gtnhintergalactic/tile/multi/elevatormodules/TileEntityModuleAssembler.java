@@ -126,7 +126,7 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase
     /**
      * @return Speed bonus that this module possesses
      */
-    protected abstract int getSpeedBonus();
+    protected abstract float getSpeedBonus();
 
     /**
      * @return Power object used for displaying in NEI
@@ -276,7 +276,7 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase
         /** Maximum parallels which this module can handle */
         protected static final int MAX_PARALLELS = 4;
         /** Speed Bonus which this module possesses */
-        protected static final int SPEED_BONUS = 1;
+        protected static final float SPEED_BONUS = 1.0F;
 
         /**
          * Create a new T1 assembler module controller
@@ -309,12 +309,14 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase
             return new TileEntityModuleAssemblerT1(mName);
         }
 
-        /**
-         * @return Maximum parallels that this module allows
-         */
         @Override
         protected int getMaxParallels() {
             return MAX_PARALLELS;
+        }
+
+        @Override
+        protected float getSpeedBonus() {
+            return SPEED_BONUS;
         }
 
         /**
@@ -356,6 +358,8 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase
         protected static final int MINIMUM_MOTOR_TIER = 3;
         /** Maximum parallels which this module can handle */
         protected static final int MAX_PARALLELS = 16;
+        /** Speed Bonus which this module possesses */
+        protected static final float SPEED_BONUS = 1.5F;
 
         /**
          * Create a new T2 assembler module controller
@@ -388,12 +392,14 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase
             return new TileEntityModuleAssemblerT2(mName);
         }
 
-        /**
-         * @return Maximum parallels that this module allows
-         */
         @Override
         protected int getMaxParallels() {
             return MAX_PARALLELS;
+        }
+
+        @Override
+        protected float getSpeedBonus() {
+            return SPEED_BONUS;
         }
 
         /**
@@ -434,6 +440,8 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase
         protected static final int MINIMUM_MOTOR_TIER = 5;
         /** Maximum parallels which this module can handle */
         protected static final int MAX_PARALLELS = 64;
+        /** Speed Bonus which this module possesses */
+        protected static final float SPEED_BONUS = 2.0F;
 
         /**
          * Create a new T3 assembler module controller
@@ -466,12 +474,14 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase
             return new TileEntityModuleAssemblerT3(mName);
         }
 
-        /**
-         * @return Maximum parallels that this module allows
-         */
         @Override
         protected int getMaxParallels() {
             return MAX_PARALLELS;
+        }
+
+        @Override
+        protected float getSpeedBonus() {
+            return SPEED_BONUS;
         }
 
         /**
