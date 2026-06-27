@@ -1,10 +1,9 @@
 package gregtech.common.tileentities.machines.outputme.base;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static gregtech.api.util.GTUtility.translate;
 import static gregtech.common.covers.modes.FilterType.BLACKLIST;
 import static gregtech.common.covers.modes.FilterType.WHITELIST;
-import static net.minecraft.util.StatCollector.translateToLocal;
-import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -25,7 +24,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -70,6 +68,7 @@ import appeng.util.prioitylist.OreFilteredList;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Dyes;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GTUtility;
 import gregtech.common.tileentities.machines.outputme.util.AECacheCounter;
@@ -169,6 +168,7 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>> {
         myPriority = newValue;
         isCached = false;
         updateState();
+        updateCellArray();
         env.dispatchMarkDirty();
     }
 
@@ -448,7 +448,10 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>> {
         if (aBaseMetaTileEntity.isServerSide()) {
             tickCounter = aTick;
             if (tickCounter > (lastOutputTick + 40)) flushCachedStack();
-            if (tickCounter % 20 == 0) aBaseMetaTileEntity.setActive(getProxy().isActive());
+            if (tickCounter % 20 == 0) {
+                updateCell();
+                aBaseMetaTileEntity.setActive(wasActive);
+            }
         }
     }
 
@@ -555,6 +558,7 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>> {
     public void setCacheMode(boolean cacheMode) {
         this.cacheMode = cacheMode;
         updateState();
+        updateCellArray();
         EntityPlayer p = env.getLastClickedPlayer();
         if (p != null && GTUtility.isServer()) {
             GTUtility.sendChatTrans(p, "GT5U.hatch.outputme.cacheMode." + this.cacheMode);
@@ -669,7 +673,7 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>> {
     public void addAdditionalTooltipInformation(ItemStack stack, List<String> tooltip) {
         if (ItemStackNBT.hasKey(stack, "baseCapacity")) {
             tooltip.add(
-                translateToLocalFormatted(
+                translate(
                     "GT5U.hatch.outputme.cache_capacity_label",
                     ReadableNumberConverter.INSTANCE
                         .toWideReadableForm(stack.stackTagCompound.getLong("baseCapacity"))));
@@ -712,9 +716,9 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>> {
 
     private void processInfoData(String langBaseKey, Function<T, String> nameGetter, List<T> list, List<String> ss) {
         if (list.isEmpty()) {
-            ss.add(StatCollector.translateToLocal(langBaseKey + ".empty"));
+            ss.add(langBaseKey + ".empty");
         } else {
-            ss.add(StatCollector.translateToLocalFormatted(langBaseKey + ".contains", list.size()));
+            ss.add(IGregTechDeviceInformation.encode(langBaseKey + ".contains", list.size()));
             list.stream()
                 .limit(100)
                 .forEach(s -> {
@@ -731,12 +735,11 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>> {
     public String[] getInfoData(String AEDiagnostics, String langBaseKey, Function<T, String> nameGetter) {
         List<String> ss = new ArrayList<>();
         ss.add(
-            (getProxy() != null && getProxy().isActive())
-                ? StatCollector.translateToLocal("GT5U.infodata.hatch.crafting_input_me.bus.online")
-                : StatCollector
-                    .translateToLocalFormatted("GT5U.infodata.hatch.crafting_input_me.bus.offline", AEDiagnostics));
+            (getProxy() != null && getProxy().isActive()) ? "GT5U.infodata.hatch.crafting_input_me.bus.online"
+                : IGregTechDeviceInformation
+                    .encode("GT5U.infodata.hatch.crafting_input_me.bus.offline", AEDiagnostics));
         ss.add(
-            StatCollector.translateToLocalFormatted(
+            IGregTechDeviceInformation.encode(
                 "GT5U.infodata.hatch.output_me.cache_capacity",
                 EnumChatFormatting.GOLD + formatNumber(getCacheCapacity()) + " L" + EnumChatFormatting.RESET));
         processInfoData(langBaseKey, nameGetter, getCacheList(), ss);
@@ -747,7 +750,7 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>> {
                     .createPrimitiveList(),
                 IterationCounter.fetchNewId());
             iter.forEach(cacheList::add);
-            ss.add(translateToLocal("GT5U.waila.hatch.outputme.storage_cache"));
+            ss.add("GT5U.waila.hatch.outputme.storage_cache");
             processInfoData(langBaseKey, nameGetter, cacheList, ss);
         }
         return ss.toArray(new String[0]);
@@ -762,11 +765,11 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>> {
             int stackCount = tag.getInteger(countKey);
 
             if (stackCount == 0) {
-                ss.add(translateToLocal("GT5U.waila.hatch.outputme." + prefix + "_cache_empty"));
+                ss.add(translate("GT5U.waila.hatch.outputme." + prefix + "_cache_empty"));
                 return;
             }
             ss.add(
-                translateToLocalFormatted(
+                translate(
                     "GT5U.waila.hatch.outputme." + prefix + "_cache_detail",
                     stackCount,
                     stackCount > 1 ? "s" : ""));
@@ -785,7 +788,7 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>> {
 
             if (stackCount > stacks.tagCount()) {
                 ss.add(
-                    translateToLocalFormatted(
+                    translate(
                         "GT5U.waila.hatch.outputme." + prefix + "_cache_detail.more",
                         stackCount - stacks.tagCount()));
             }
@@ -795,7 +798,7 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>> {
             NBTTagCompound tag = accessor.getNBTData();
             processWailaAdvancedBody(prefix, ss, "stacks", "stackCount", tag);
             if (tag.hasKey("cacheCount")) {
-                ss.add(translateToLocal("GT5U.waila.hatch.outputme.storage_cache"));
+                ss.add(translate("GT5U.waila.hatch.outputme.storage_cache"));
                 processWailaAdvancedBody(prefix, ss, "cacheStacks", "cacheCount", tag);
             }
         }

@@ -32,6 +32,7 @@ import com.gtnewhorizons.modularui.common.widget.MultiChildWidget;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.VoidingMode;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
@@ -632,27 +633,23 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
         // If this purification unit is linked to a controller, add this info to the scanner output.
         if (getController() != null) {
             ret.add(
-                StatCollector.translateToLocalFormatted(
-                    "GT5U.infodata.purification_unit_base.linked_at",
-                    controllerX,
-                    controllerY,
-                    controllerZ));
+                IGregTechDeviceInformation
+                    .encode("GT5U.infodata.purification_unit_base.linked_at", controllerX, controllerY, controllerZ));
 
             // If recipe is running, display success chance
             if (this.mMaxProgresstime != 0) {
                 ret.add(
-                    StatCollector.translateToLocalFormatted(
+                    IGregTechDeviceInformation.encode(
                         "GT5U.infodata.purification_unit_base.success_chance",
                         EnumChatFormatting.YELLOW + formatNumber(this.calculateFinalSuccessChance())
                             + "%"
                             + EnumChatFormatting.RESET));
             }
 
-        } else ret.add(StatCollector.translateToLocal("GT5U.infodata.purification_unit_base.not_linked"));
+        } else ret.add("GT5U.infodata.purification_unit_base.not_linked");
         ret.add(
-            StatCollector.translateToLocalFormatted(
-                "GT5U.infodata.parallel.current",
-                "" + EnumChatFormatting.YELLOW + this.effectiveParallel));
+            IGregTechDeviceInformation
+                .encode("GT5U.infodata.parallel.current", "" + EnumChatFormatting.YELLOW + this.effectiveParallel));
         return ret.toArray(new String[0]);
     }
 

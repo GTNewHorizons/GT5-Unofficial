@@ -1243,6 +1243,7 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     private boolean mCanBeCracked = false;
     private Fluid[] hydroCrackedFluids = new Fluid[3];
     private Fluid[] steamCrackedFluids = new Fluid[3];
+    private boolean hasGlowingOre = false;
 
     protected Materials(
         // spotless:off
@@ -1289,7 +1290,8 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
         Supplier<Materials> pendingArcSmeltingInto,
         Map<Supplier<Materials>, Supplier<Materials>> pendingArcSmeltingIntoWithGas,
         Supplier<Materials> pendingDirectSmelting,
-        LinkedHashSet<SubTag> subTags
+        LinkedHashSet<SubTag> subTags,
+        boolean hasGlowingOre
         // spotless:on
     ) {
 
@@ -1428,6 +1430,7 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
         } else {
             mAspects.addAll(aspects);
         }
+        this.hasGlowingOre = hasGlowingOre;
     }
 
     private static void setOreByproducts() {
@@ -2324,5 +2327,9 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
 
     public ItemStack getNanite(int amount) {
         return GTOreDictUnificator.get(OrePrefixes.nanite, this, amount);
+    }
+
+    public boolean hasGlowingOre() {
+        return hasGlowingOre;
     }
 }
