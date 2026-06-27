@@ -62,7 +62,7 @@ public class ChemicalBathRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Steel, 1))
-            .itemOutputs(GTModHandler.getIC2Item("reinforcedStone", 1))
+            .itemOutputs(ItemList.Block_ReinforcedConcrete.get(1L))
             .fluidInputs(Materials.Concrete.getMolten(1 * INGOTS))
             .duration(10 * SECONDS)
             .eut(4)

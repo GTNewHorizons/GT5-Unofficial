@@ -142,7 +142,6 @@ public class MTEHatchCondensateDetector extends MTEHatchConfigurableBase {
             // spotless:off
             return super.createContentSection(panel, syncManager)
                 .child(SettingsPanel.builder()
-                    .setDividerPosition(60)
                     .addPhantomFluidSlot(
                         IKey.lang("GT5U.gui.text.bec-filter"),
                         () -> condensateFilter,
@@ -156,17 +155,14 @@ public class MTEHatchCondensateDetector extends MTEHatchConfigurableBase {
                     .addLongEditor(
                         IKey.lang("GT5U.gui.text.bec-threshold"),
                         () -> requestedAmount,
-                        l -> requestedAmount = (long) l,
-                        (panel1, syncManager1, widget) -> {
-                            widget.numbersLong(() -> 1L, () -> Long.MAX_VALUE);
-                        })
+                        l -> requestedAmount = l,
+                        l -> Math.clamp(l, 1L, Long.MAX_VALUE))
                     .addReadout(
                         IKey.lang("GT5U.gui.text.bec-current"),
                         new LongSyncValue(() -> actualAmount),
                         amount -> IKey.str(NumberFormatUtil.formatFluid(amount)))
-                    .build(panel, syncManager)
-                    .widthRel(1)
-                    .height(getContentHolderHeight()));
+                    .build(panel, syncManager, getContentHolderHeight())
+                    .horizontalCenter());
             // spotless:on
         }
     }
