@@ -316,7 +316,7 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase
 
         @Override
         protected float getSpeedBonus() {
-            return SPEED_BONUS;
+            return 1.0F / SPEED_BONUS;
         }
 
         /**
@@ -399,7 +399,7 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase
 
         @Override
         protected float getSpeedBonus() {
-            return SPEED_BONUS;
+            return 1.0F / SPEED_BONUS;
         }
 
         /**
@@ -481,7 +481,7 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase
 
         @Override
         protected float getSpeedBonus() {
-            return SPEED_BONUS;
+            return 1.0F / SPEED_BONUS;
         }
 
         /**
