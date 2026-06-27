@@ -431,25 +431,23 @@ public class GTWorldgenerator implements IWorldGenerator {
                 }
 
                 // Only add an empty orevein once canonical oreseed chunk placement has failed.
-                if (!oreveinFound) {
-                    if (debugOrevein) GTLog.out.println(
-                        " Empty oreveinSeed=" + oreveinSeed
-                            + " mX="
-                            + this.mX
-                            + " mZ="
-                            + this.mZ
-                            + " oreseedX="
-                            + oreseedX
-                            + " oreseedZ="
-                            + oreseedZ
-                            + " tries at oremix="
-                            + i
-                            + " placementAttempts="
-                            + placementAttempts
-                            + " dimensionName="
-                            + dimensionName);
-                    validOreveins.put(oreveinSeed, new CachedOreVein(noOresInVein, oreveinSeed));
-                }
+                if (debugOrevein) GTLog.out.println(
+                    " Empty oreveinSeed=" + oreveinSeed
+                        + " mX="
+                        + this.mX
+                        + " mZ="
+                        + this.mZ
+                        + " oreseedX="
+                        + oreseedX
+                        + " oreseedZ="
+                        + oreseedZ
+                        + " tries at oremix="
+                        + i
+                        + " placementAttempts="
+                        + placementAttempts
+                        + " dimensionName="
+                        + dimensionName);
+                validOreveins.put(oreveinSeed, new CachedOreVein(noOresInVein, oreveinSeed));
             } else if (oreveinPercentageRoll >= dimensionDef.getOreVeinChance()) {
                 if (debugOrevein) GTLog.out.println(
                     " Skipped oreveinSeed=" + oreveinSeed
