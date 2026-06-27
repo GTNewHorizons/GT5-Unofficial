@@ -62,8 +62,9 @@ public class GTWorldgenerator implements IWorldGenerator {
             .inBetween(Materials.Aluminium)
             .sporadic(Materials.Aluminium));
 
-    /** Caches the resolved layer and placement seed so all chunks of an oreseed use the same vein geometry. */
-    public record CachedOreVein(WorldgenGTOreLayer layer, long placementSeed) {}
+    /** Caches the resolved layer and placement so all chunks of an oreseed use the same vein geometry. */
+    public record CachedOreVein(WorldgenGTOreLayer layer, long placementSeed,
+        WorldgenGTOreLayer.VeinPlacement placement) {}
 
     public static Long2ObjectOpenHashMap<CachedOreVein> validOreveins = new Long2ObjectOpenHashMap<>(1024);
     public boolean mIsGenerating = false;
@@ -374,6 +375,13 @@ public class GTWorldgenerator implements IWorldGenerator {
 
                     try {
                         veinRNG.setSeed(placementSeed);
+                        WorldgenGTOreLayer.VeinPlacement placement = oreLayer.resolveVeinPlacement(
+                            this.mWorld,
+                            veinRNG,
+                            this.mX * 16,
+                            this.mZ * 16,
+                            oreseedX * 16,
+                            oreseedZ * 16);
 
                         placementResult = oreLayer.testWorldgenChunkified(
                             this.mWorld,
@@ -383,8 +391,12 @@ public class GTWorldgenerator implements IWorldGenerator {
                             this.mZ * 16,
                             oreseedX * 16,
                             oreseedZ * 16,
-                            this.mChunkGenerator,
-                            this.mChunkProvider);
+                            placement);
+
+                        if (placementResult == WorldgenGTOreLayer.ORE_PLACED
+                            || placementResult == WorldgenGTOreLayer.NO_OVERLAP) {
+                            cachedOreVein = new CachedOreVein(oreLayer, placementSeed, placement);
+                        }
                     } catch (Exception e) {
                         if (debugOrevein) GTLog.out.println(
                             "Exception occurred on oreVein" + oreLayer
@@ -413,7 +425,6 @@ public class GTWorldgenerator implements IWorldGenerator {
                                     + placementAttempts
                                     + " dimensionName="
                                     + dimensionName);
-                            cachedOreVein = new CachedOreVein(oreLayer, placementSeed);
                             validOreveins.put(oreveinSeed, cachedOreVein);
                             oreveinFound = true;
                         }
@@ -430,7 +441,6 @@ public class GTWorldgenerator implements IWorldGenerator {
                                     + placementAttempts
                                     + " dimensionName="
                                     + dimensionName);
-                            cachedOreVein = new CachedOreVein(oreLayer, placementSeed);
                             validOreveins.put(oreveinSeed, cachedOreVein);
                             oreveinFound = true;
                         }
@@ -456,7 +466,7 @@ public class GTWorldgenerator implements IWorldGenerator {
                     return;
                 }
 
-                // Only add an empty orevein once canonical oreseed chunk placement has failed.
+                // Only add an empty orevein once placement has failed from the first processed chunk.
                 if (debugOrevein) GTLog.out.println(
                     " Empty oreveinSeed=" + oreveinSeed
                         + " mX="
@@ -473,7 +483,7 @@ public class GTWorldgenerator implements IWorldGenerator {
                         + placementAttempts
                         + " dimensionName="
                         + dimensionName);
-                validOreveins.put(oreveinSeed, new CachedOreVein(noOresInVein, oreveinSeed));
+                validOreveins.put(oreveinSeed, new CachedOreVein(noOresInVein, oreveinSeed, null));
             } else if (oreveinPercentageRoll >= dimensionDef.getOreVeinChance()) {
                 if (debugOrevein) GTLog.out.println(
                     " Skipped oreveinSeed=" + oreveinSeed
@@ -491,7 +501,7 @@ public class GTWorldgenerator implements IWorldGenerator {
                         + dimensionDef.getOreVeinChance()
                         + " dimensionName="
                         + dimensionName);
-                validOreveins.put(oreveinSeed, new CachedOreVein(noOresInVein, oreveinSeed));
+                validOreveins.put(oreveinSeed, new CachedOreVein(noOresInVein, oreveinSeed, null));
             }
         }
 
@@ -507,8 +517,7 @@ public class GTWorldgenerator implements IWorldGenerator {
                 this.mZ * 16,
                 oreseedX * 16,
                 oreseedZ * 16,
-                this.mChunkGenerator,
-                this.mChunkProvider);
+                cachedOreVein.placement());
 
             VeinGenerateEvent event = new VeinGenerateEvent(
                 mWorld,

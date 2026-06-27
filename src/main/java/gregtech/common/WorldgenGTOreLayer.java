@@ -34,6 +34,11 @@ import it.unimi.dsi.fastutil.shorts.ShortShortPair;
 public class WorldgenGTOreLayer extends GTWorldgen implements IWorldgenLayer {
 
     public static final ArrayList<WorldgenGTOreLayer> sList = new ArrayList<>();
+    private static final int VALID_WORLDGEN = -1;
+
+    record VeinPlacement(int veinMinY, int veinWestX, int veinEastX, int veinNorthZ, int veinSouthZ,
+        long generationSeed) {}
+
     // Pair of (minY, maxY) this vein generates at
     public final ShortShortPair veinHeight;
     // Map for dim -> (minY, maxY) height overrides
@@ -159,39 +164,122 @@ public class WorldgenGTOreLayer extends GTWorldgen implements IWorldgenLayer {
     @Override
     public int executeWorldgenChunkified(World world, Random rng, String biome, int chunkX, int chunkZ, int seedX,
         int seedZ, IChunkProvider chunkGenerator, IChunkProvider chunkProvider) {
-        return executeWorldgenChunkified(
-            world,
-            rng,
-            biome,
-            chunkX,
-            chunkZ,
-            seedX,
-            seedZ,
-            chunkGenerator,
-            chunkProvider,
-            false);
+        return executeWorldgenChunkified(world, rng, biome, chunkX, chunkZ, seedX, seedZ);
     }
 
-    /**
-     * Dry-runs vein placement without modifying the world, so oreseed attempt selection is deterministic.
-     */
-    public int testWorldgenChunkified(World world, Random rng, String biome, int chunkX, int chunkZ, int seedX,
-        int seedZ, IChunkProvider chunkGenerator, IChunkProvider chunkProvider) {
-        return executeWorldgenChunkified(
-            world,
-            rng,
-            biome,
-            chunkX,
-            chunkZ,
-            seedX,
-            seedZ,
-            chunkGenerator,
-            chunkProvider,
-            true);
+    int executeWorldgenChunkified(World world, Random rng, String biome, int chunkX, int chunkZ, int seedX, int seedZ,
+        VeinPlacement placement) {
+        if (placement == null) {
+            return executeWorldgenChunkified(world, rng, biome, chunkX, chunkZ, seedX, seedZ);
+        }
+
+        return executeWorldgenChunkified(world, rng, biome, chunkX, chunkZ, seedX, seedZ, placement, false, true);
+    }
+
+    /** Dry-runs vein placement without modifying the world. */
+    int testWorldgenChunkified(World world, Random rng, String biome, int chunkX, int chunkZ, int seedX, int seedZ,
+        VeinPlacement placement) {
+        return executeWorldgenChunkified(world, rng, biome, chunkX, chunkZ, seedX, seedZ, placement, true, false);
     }
 
     private int executeWorldgenChunkified(World world, Random rng, String biome, int chunkX, int chunkZ, int seedX,
-        int seedZ, IChunkProvider chunkGenerator, IChunkProvider chunkProvider, boolean dryRun) {
+        int seedZ) {
+        int validationResult = validateWorldgen(world, biome);
+        if (validationResult != VALID_WORLDGEN) return validationResult;
+
+        return executeWorldgenChunkified(
+            world,
+            rng,
+            biome,
+            chunkX,
+            chunkZ,
+            seedX,
+            seedZ,
+            resolveVeinPlacement(world, rng, chunkX, chunkZ, seedX, seedZ),
+            false,
+            false);
+    }
+
+    private int executeWorldgenChunkified(World world, Random rng, String biome, int chunkX, int chunkZ, int seedX,
+        int seedZ, VeinPlacement placement, boolean dryRun, boolean resetRng) {
+        int validationResult = validateWorldgen(world, biome);
+        if (validationResult != VALID_WORLDGEN) return validationResult;
+
+        if (resetRng && rng instanceof gregtech.api.objects.XSTR xstr) {
+            xstr.setSeed(placement.generationSeed());
+        }
+
+        int veinMinY = placement.veinMinY();
+        int veinWestX = placement.veinWestX();
+        int veinEastX = placement.veinEastX();
+        int veinNorthZ = placement.veinNorthZ();
+        int veinSouthZ = placement.veinSouthZ();
+
+        // Limit Orevein to only blocks present in current chunk
+        int limitWestX = Math.max(veinWestX, chunkX + 2); // Bias placement by 2 blocks to prevent worldgen cascade.
+        int limitEastX = Math.min(veinEastX, chunkX + 2 + 16);
+
+        if (limitWestX >= limitEastX) { // No overlap between orevein and this chunk exists in X
+            int hits = 0;
+
+            // Check for stone at the center of the chunk and the bottom of the orevein.
+            for (int i = 0; i < 9; i++) {
+                if (StoneType.findStoneType(world, chunkX + 7, veinMinY + i, chunkZ + 9) != null) {
+                    hits++;
+                }
+            }
+
+            if (hits >= 5) {
+                // Didn't reach, but could have placed. Save orevein for future use.
+                return NO_OVERLAP;
+            } else {
+                // Didn't reach, but couldn't place in test spot anyways, try for another orevein
+                return NO_OVERLAP_AIR_BLOCK;
+            }
+        }
+
+        int limitNorthZ = Math.max(veinNorthZ, chunkZ + 2); // Bias placement by 2 blocks to prevent worldgen cascade.
+        int limitSouthZ = Math.min(veinSouthZ, chunkZ + 2 + 16);
+
+        if (limitNorthZ >= limitSouthZ) { // No overlap between orevein and this chunk exists in Z
+            int hits = 0;
+
+            // Check for stone at the center of the chunk and the bottom of the orevein.
+            for (int i = 0; i < 9; i++) {
+                if (StoneType.findStoneType(world, chunkX + 7, veinMinY + i, chunkZ + 9) != null) {
+                    hits++;
+                }
+            }
+
+            if (hits >= 5) {
+                // Didn't reach, but could have placed. Save orevein for future use.
+                return NO_OVERLAP;
+            } else {
+                // Didn't reach, but couldn't place in test spot anyways, try for another orevein
+                return NO_OVERLAP_AIR_BLOCK;
+            }
+        }
+
+        return generateWithPlacement(
+            world,
+            rng,
+            dryRun,
+            chunkX,
+            chunkZ,
+            seedX,
+            seedZ,
+            veinMinY,
+            veinWestX,
+            veinEastX,
+            veinNorthZ,
+            veinSouthZ,
+            limitWestX,
+            limitEastX,
+            limitNorthZ,
+            limitSouthZ);
+    }
+
+    private int validateWorldgen(World world, String biome) {
         if (mWorldGenName.equals("NoOresInVein")) {
             if (debugOrevein) GTLog.out.println(" NoOresInVein");
             // Return a special empty orevein
@@ -208,8 +296,11 @@ public class WorldgenGTOreLayer extends GTWorldgen implements IWorldgenLayer {
             return WRONG_BIOME;
         }
 
-        int[] placeCount = new int[4];
+        return VALID_WORLDGEN;
+    }
 
+    VeinPlacement resolveVeinPlacement(World world, Random rng, int chunkX, int chunkZ, int seedX, int seedZ) {
+        String dimName = DimensionDef.getDimensionName(world);
         ShortShortPair heights = dimVeinHeights.getOrDefault(dimName, veinHeight);
         short dimMinY = heights.leftShort();
         short dimMaxY = heights.rightShort();
@@ -218,9 +309,6 @@ public class WorldgenGTOreLayer extends GTWorldgen implements IWorldgenLayer {
         // Determine West/East ends of orevein
         int veinWestX = seedX - rng.nextInt(mSize); // West side
         int veinEastX = seedX + 16 + rng.nextInt(mSize);
-        // Limit Orevein to only blocks present in current chunk
-        int limitWestX = Math.max(veinWestX, chunkX + 2); // Bias placement by 2 blocks to prevent worldgen cascade.
-        int limitEastX = Math.min(veinEastX, chunkX + 2 + 16);
 
         ModDimensionDef dimensionDef = DimensionDef.getDefForWorld(world);
 
@@ -256,50 +344,17 @@ public class WorldgenGTOreLayer extends GTWorldgen implements IWorldgenLayer {
             veinMinY = minY + rng.nextInt(maxY - minY + 1);
         }
 
-        if (limitWestX >= limitEastX) { // No overlap between orevein and this chunk exists in X
-            int hits = 0;
-
-            // Check for stone at the center of the chunk and the bottom of the orevein.
-            for (int i = 0; i < 9; i++) {
-                if (StoneType.findStoneType(world, chunkX + 7, veinMinY + i, chunkZ + 9) != null) {
-                    hits++;
-                }
-            }
-
-            if (hits >= 5) {
-                // Didn't reach, but could have placed. Save orevein for future use.
-                return NO_OVERLAP;
-            } else {
-                // Didn't reach, but couldn't place in test spot anyways, try for another orevein
-                return NO_OVERLAP_AIR_BLOCK;
-            }
-        }
-
         // Determine North/Sound ends of orevein
         int veinNorthZ = seedZ - rng.nextInt(mSize);
         int veinSouthZ = seedZ + 16 + rng.nextInt(mSize);
 
-        int limitNorthZ = Math.max(veinNorthZ, chunkZ + 2); // Bias placement by 2 blocks to prevent worldgen cascade.
-        int limitSouthZ = Math.min(veinSouthZ, chunkZ + 2 + 16);
+        long generationSeed = rng instanceof gregtech.api.objects.XSTR xstr ? xstr.getSeed() : 0L;
+        return new VeinPlacement(veinMinY, veinWestX, veinEastX, veinNorthZ, veinSouthZ, generationSeed);
+    }
 
-        if (limitNorthZ >= limitSouthZ) { // No overlap between orevein and this chunk exists in Z
-            int hits = 0;
-
-            // Check for stone at the center of the chunk and the bottom of the orevein.
-            for (int i = 0; i < 9; i++) {
-                if (StoneType.findStoneType(world, chunkX + 7, veinMinY + i, chunkZ + 9) != null) {
-                    hits++;
-                }
-            }
-
-            if (hits >= 5) {
-                // Didn't reach, but could have placed. Save orevein for future use.
-                return NO_OVERLAP;
-            } else {
-                // Didn't reach, but couldn't place in test spot anyways, try for another orevein
-                return NO_OVERLAP_AIR_BLOCK;
-            }
-        }
+    private int generateWithPlacement(World world, Random rng, boolean dryRun, int chunkX, int chunkZ, int seedX,
+        int seedZ, int veinMinY, int veinWestX, int veinEastX, int veinNorthZ, int veinSouthZ, int limitWestX,
+        int limitEastX, int limitNorthZ, int limitSouthZ) {
 
         if (debugOrevein && !dryRun) {
             GTLog.out.print(
@@ -325,6 +380,7 @@ public class WorldgenGTOreLayer extends GTWorldgen implements IWorldgenLayer {
         int localDensity = Math.max(1, this.mDensity / (int) Math.sqrt(2 + dx * dx + dz * dz));
 
         LayerGenerator generator = new LayerGenerator();
+        int[] placeCount = new int[4];
 
         generator.world = world;
         generator.rng = rng;
