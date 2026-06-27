@@ -25,6 +25,7 @@ import galacticgreg.api.enums.DimensionDef;
 import gregtech.api.enums.StoneType;
 import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.interfaces.IStoneCategory;
+import gregtech.api.objects.XSTR;
 import gregtech.api.util.GTLog;
 import gregtech.api.world.GTWorldgen;
 import gregtech.common.ores.OreManager;
@@ -162,46 +163,41 @@ public class WorldgenGTOreLayer extends GTWorldgen implements IWorldgenLayer {
         return mAllowedDimensions;
     }
 
-    int executeWorldgenChunkified(World world, Random rng, String biome, int chunkX, int chunkZ, int seedX, int seedZ,
+    int executeWorldgenChunkified(World world, XSTR rng, String biome, int chunkX, int chunkZ, int seedX, int seedZ,
         @Nullable VeinPlacement placement) {
         if (placement == null) {
-            return executeWorldgenChunkified(world, rng, biome, chunkX, chunkZ, seedX, seedZ);
+            int validationResult = validateWorldgen(world, biome);
+            if (validationResult != VALID_WORLDGEN) return validationResult;
+
+            return executeWorldgenChunkified(
+                world,
+                rng,
+                biome,
+                chunkX,
+                chunkZ,
+                seedX,
+                seedZ,
+                resolveVeinPlacement(world, rng, chunkX, chunkZ, seedX, seedZ),
+                false,
+                false);
         }
 
         return executeWorldgenChunkified(world, rng, biome, chunkX, chunkZ, seedX, seedZ, placement, false, true);
     }
 
     /** Dry-runs vein placement without modifying the world. */
-    int testWorldgenChunkified(World world, Random rng, String biome, int chunkX, int chunkZ, int seedX, int seedZ,
+    int testWorldgenChunkified(World world, XSTR rng, String biome, int chunkX, int chunkZ, int seedX, int seedZ,
         VeinPlacement placement) {
         return executeWorldgenChunkified(world, rng, biome, chunkX, chunkZ, seedX, seedZ, placement, true, false);
     }
 
-    private int executeWorldgenChunkified(World world, Random rng, String biome, int chunkX, int chunkZ, int seedX,
-        int seedZ) {
-        int validationResult = validateWorldgen(world, biome);
-        if (validationResult != VALID_WORLDGEN) return validationResult;
-
-        return executeWorldgenChunkified(
-            world,
-            rng,
-            biome,
-            chunkX,
-            chunkZ,
-            seedX,
-            seedZ,
-            resolveVeinPlacement(world, rng, chunkX, chunkZ, seedX, seedZ),
-            false,
-            false);
-    }
-
-    private int executeWorldgenChunkified(World world, Random rng, String biome, int chunkX, int chunkZ, int seedX,
+    private int executeWorldgenChunkified(World world, XSTR rng, String biome, int chunkX, int chunkZ, int seedX,
         int seedZ, VeinPlacement placement, boolean dryRun, boolean resetRng) {
         int validationResult = validateWorldgen(world, biome);
         if (validationResult != VALID_WORLDGEN) return validationResult;
 
-        if (resetRng && rng instanceof gregtech.api.objects.XSTR xstr) {
-            xstr.setSeed(placement.generationSeed());
+        if (resetRng) {
+            rng.setSeed(placement.generationSeed());
         }
 
         int veinMinY = placement.veinMinY();
@@ -294,7 +290,7 @@ public class WorldgenGTOreLayer extends GTWorldgen implements IWorldgenLayer {
         return VALID_WORLDGEN;
     }
 
-    VeinPlacement resolveVeinPlacement(World world, Random rng, int chunkX, int chunkZ, int seedX, int seedZ) {
+    VeinPlacement resolveVeinPlacement(World world, XSTR rng, int chunkX, int chunkZ, int seedX, int seedZ) {
         String dimName = DimensionDef.getDimensionName(world);
         ShortShortPair heights = dimVeinHeights.getOrDefault(dimName, veinHeight);
         short dimMinY = heights.leftShort();
@@ -343,7 +339,7 @@ public class WorldgenGTOreLayer extends GTWorldgen implements IWorldgenLayer {
         int veinNorthZ = seedZ - rng.nextInt(mSize);
         int veinSouthZ = seedZ + 16 + rng.nextInt(mSize);
 
-        long generationSeed = rng instanceof gregtech.api.objects.XSTR xstr ? xstr.getSeed() : 0L;
+        long generationSeed = rng.getSeed();
         return new VeinPlacement(veinMinY, veinWestX, veinEastX, veinNorthZ, veinSouthZ, generationSeed);
     }
 
