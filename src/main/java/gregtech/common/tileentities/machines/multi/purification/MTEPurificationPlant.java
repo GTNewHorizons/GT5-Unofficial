@@ -18,7 +18,6 @@ import static gregtech.api.util.GTStructureUtility.ofAnyWater;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.common.tileentities.machines.multi.purification.MTEPurificationUnitBase.WATER_BOOST_BONUS_CHANCE;
 import static gregtech.common.tileentities.machines.multi.purification.MTEPurificationUnitBase.WATER_BOOST_NEEDED_FLUID;
-import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +46,7 @@ import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.structure.error.StructureError;
@@ -480,9 +480,12 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
     @Override
     public String[] getInfoData() {
         var ret = new ArrayList<String>();
-        ret.add(GTUtility.translate("GT5U.multiblock.recipesDone", formatNumber(recipesDone)));
+        ret.add(
+            IGregTechDeviceInformation.encode(
+                "GT5U.infodata.multiblock.recipes_done",
+                EnumChatFormatting.GREEN + formatNumber(recipesDone) + EnumChatFormatting.RESET));
         // Show linked purification units and their status
-        ret.add(translateToLocal("GT5U.infodata.purification_plant.linked_units"));
+        ret.add("GT5U.infodata.purification_plant.linked_units");
         for (LinkedPurificationUnit unit : this.linkedUnits) {
             String text = EnumChatFormatting.AQUA + unit.metaTileEntity()
                 .getLocalName() + ": ";
@@ -491,19 +494,23 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
             switch (status) {
                 case ACTIVE -> {
                     text = text + EnumChatFormatting.GREEN
-                        + translateToLocal("GT5U.infodata.purification_plant.linked_units.status.active");
+                        + IGregTechDeviceInformation
+                            .decode("GT5U.infodata.purification_plant.linked_units.status.active");
                 }
                 case IDLE -> {
                     text = text + EnumChatFormatting.GREEN
-                        + translateToLocal("GT5U.infodata.purification_plant.linked_units.status.idle");
+                        + IGregTechDeviceInformation
+                            .decode("GT5U.infodata.purification_plant.linked_units.status.idle");
                 }
                 case DISABLED -> {
                     text = text + EnumChatFormatting.YELLOW
-                        + translateToLocal("GT5U.infodata.purification_plant.linked_units.status.disabled");
+                        + IGregTechDeviceInformation
+                            .decode("GT5U.infodata.purification_plant.linked_units.status.disabled");
                 }
                 case INCOMPLETE_STRUCTURE -> {
                     text = text + EnumChatFormatting.RED
-                        + translateToLocal("GT5U.infodata.purification_plant.linked_units.status.incomplete");
+                        + IGregTechDeviceInformation
+                            .decode("GT5U.infodata.purification_plant.linked_units.status.incomplete");
                 }
             }
             ret.add(text);
