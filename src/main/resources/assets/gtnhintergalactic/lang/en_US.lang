@@ -259,8 +259,8 @@ gt.blockmachines.multimachine.project.ig.assembler.t1.desc1=Why do I need to ass
 gt.blockmachines.multimachine.project.ig.assembler.t2.desc1=Is this really necessary?
 gt.blockmachines.multimachine.project.ig.assembler.t3.desc1=I guess we'll never know.
 gt.blockmachines.multimachine.project.ig.assembler.t1.desc2=Runs at UHV with up to §64§7 parallels
-gt.blockmachines.multimachine.project.ig.assembler.t2.desc2=Runs at UIV with a §a50%§7 speed bonus and up to §616§7 parallels
-gt.blockmachines.multimachine.project.ig.assembler.t3.desc2=Runs at UXV with a §a100%§7 speed bonus and up to §664§7 parallels
+gt.blockmachines.multimachine.project.ig.assembler.t2.desc2=Runs at UIV at §a150%§7 speed with up to §616§7 parallels
+gt.blockmachines.multimachine.project.ig.assembler.t3.desc2=Runs at UXV at §a200%§7 speed with up to §664§7 parallels
 gt.blockmachines.multimachine.project.ig.assembler.cfgi.0=Max parallels
 
 # Module Miner
