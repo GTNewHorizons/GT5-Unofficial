@@ -22,6 +22,8 @@ import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.WorldEvent;
 
+import org.jetbrains.annotations.Nullable;
+
 import com.gtnewhorizon.gtnhlib.hash.Fnv1a64;
 
 import cpw.mods.fml.common.IWorldGenerator;
@@ -62,15 +64,19 @@ public class GTWorldgenerator implements IWorldGenerator {
             .inBetween(Materials.Aluminium)
             .sporadic(Materials.Aluminium));
 
-    /** Caches the resolved layer and placement so all chunks of an oreseed use the same vein geometry. */
+    /**
+     * Caches the resolved layer and placement so all chunks of an oreseed use the same vein geometry.
+     * A null placement marks a cached empty vein that should fall back to NoOresInVein handling.
+     */
     public record CachedOreVein(WorldgenGTOreLayer layer, long placementSeed,
-        WorldgenGTOreLayer.VeinPlacement placement) {}
+        @Nullable WorldgenGTOreLayer.VeinPlacement placement) {}
 
     public static Long2ObjectOpenHashMap<CachedOreVein> validOreveins = new Long2ObjectOpenHashMap<>(1024);
     public boolean mIsGenerating = false;
     private static OregenPattern oregenPattern = OregenPattern.AXISSYMMETRICAL;
     private static OregenPattern clientOregenPattern = OregenPattern.AXISSYMMETRICAL;
 
+    // Used in VisualProspecting
     public static OregenPattern getClientOregenPattern() {
         return clientOregenPattern;
     }

@@ -15,9 +15,10 @@ import java.util.Set;
 import net.minecraft.block.Block;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.chunk.storage.ExtendedBlockStorage;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import org.jetbrains.annotations.Nullable;
 
 import galacticgreg.api.ModDimensionDef;
 import galacticgreg.api.enums.DimensionDef;
@@ -161,14 +162,8 @@ public class WorldgenGTOreLayer extends GTWorldgen implements IWorldgenLayer {
         return mAllowedDimensions;
     }
 
-    @Override
-    public int executeWorldgenChunkified(World world, Random rng, String biome, int chunkX, int chunkZ, int seedX,
-        int seedZ, IChunkProvider chunkGenerator, IChunkProvider chunkProvider) {
-        return executeWorldgenChunkified(world, rng, biome, chunkX, chunkZ, seedX, seedZ);
-    }
-
     int executeWorldgenChunkified(World world, Random rng, String biome, int chunkX, int chunkZ, int seedX, int seedZ,
-        VeinPlacement placement) {
+        @Nullable VeinPlacement placement) {
         if (placement == null) {
             return executeWorldgenChunkified(world, rng, biome, chunkX, chunkZ, seedX, seedZ);
         }
