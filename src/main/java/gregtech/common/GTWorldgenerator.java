@@ -6,6 +6,7 @@ import static gregtech.api.enums.GTValues.oreveinAttempts;
 import static gregtech.api.enums.GTValues.oreveinMaxPlacementAttempts;
 import static gregtech.api.enums.GTValues.profileWorldGen;
 
+import java.lang.ref.WeakReference;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -66,7 +67,20 @@ public class GTWorldgenerator implements IWorldGenerator {
 
     public static Long2ObjectOpenHashMap<CachedOreVein> validOreveins = new Long2ObjectOpenHashMap<>(1024);
     public boolean mIsGenerating = false;
-    public static OregenPattern oregenPattern = OregenPattern.AXISSYMMETRICAL;
+    private static OregenPattern oregenPattern = OregenPattern.AXISSYMMETRICAL;
+    private static OregenPattern clientOregenPattern = OregenPattern.AXISSYMMETRICAL;
+
+    public static OregenPattern getClientOregenPattern() {
+        return clientOregenPattern;
+    }
+
+    private static OregenPattern getServerOregenPattern() {
+        return oregenPattern;
+    }
+
+    public static void setClientOregenPattern(OregenPattern pattern) {
+        clientOregenPattern = pattern;
+    }
 
     public GTWorldgenerator() {
         // The weight here is irrelevant since the code in GameRegistryMixin forces GTWorldgenerator to the end of the
@@ -80,6 +94,11 @@ public class GTWorldgenerator implements IWorldGenerator {
     @Override
     public void generate(Random aRandom, int aX, int aZ, World aWorld, IChunkProvider aChunkGenerator,
         IChunkProvider aChunkProvider) {
+
+        if (!aWorld.isRemote && aWorld.provider.dimensionId == 0) {
+            // Spawn search can populate chunks before WorldEvent.Load initializes the saved oregen pattern.
+            OregenPatternSavedData.ensureLoaded(aWorld);
+        }
 
         ModDimensionDef def = DimensionDef.getEffectiveDefForChunk(aWorld, aX, aZ);
 
@@ -135,7 +154,7 @@ public class GTWorldgenerator implements IWorldGenerator {
     }
 
     public static boolean isOreChunk(int chunkX, int chunkZ) {
-        if (oregenPattern == OregenPattern.EQUAL_SPACING) {
+        if (getServerOregenPattern() == OregenPattern.EQUAL_SPACING) {
             return Math.floorMod(chunkX, 3) == 1 && Math.floorMod(chunkZ, 3) == 1;
         }
         // add next if statement here or convert to switch when expanding OregenPattern enum
@@ -148,9 +167,16 @@ public class GTWorldgenerator implements IWorldGenerator {
 
         private static final String NAME = "GregTech_OregenPattern";
         private static final String KEY = "oregenPattern";
+        private static WeakReference<World> loadedWorld = new WeakReference<>(null);
 
         public OregenPatternSavedData(String p_i2141_1_) {
             super(p_i2141_1_);
+        }
+
+        public static void ensureLoaded(World world) {
+            if (loadedWorld.get() != world) {
+                loadData(world);
+            }
         }
 
         public static void loadData(World world) {
@@ -172,6 +198,7 @@ public class GTWorldgenerator implements IWorldGenerator {
                 world.mapStorage.setData(OregenPatternSavedData.NAME, instance);
             }
             instance.markDirty();
+            loadedWorld = new WeakReference<>(world);
         }
 
         @SubscribeEvent
