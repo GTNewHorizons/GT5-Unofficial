@@ -301,7 +301,7 @@ public class GTWorldgenerator implements IWorldGenerator {
                 // Oreseed is located in the previously processed table
                 if (debugOrevein) GTLog.out
                     .print(" Valid oreveinSeed=" + oreveinSeed + " validOreveins.size()=" + validOreveins.size() + " ");
-                generateCachedVein(validOreveins.get(oreveinSeed), oreveinSeed, oreseedX, oreseedZ);
+                generateCachedVein(oreveinRNG, validOreveins.get(oreveinSeed), oreseedX, oreseedZ);
 
                 return;
             }
@@ -426,7 +426,7 @@ public class GTWorldgenerator implements IWorldGenerator {
                 }
 
                 if (oreveinFound) {
-                    generateCachedVein(cachedOreVein, oreveinSeed, oreseedX, oreseedZ);
+                    generateCachedVein(oreveinRNG, cachedOreVein, oreseedX, oreseedZ);
                     return;
                 }
 
@@ -469,9 +469,9 @@ public class GTWorldgenerator implements IWorldGenerator {
             }
         }
 
-        private void generateCachedVein(CachedOreVein cachedOreVein, long oreveinSeed, int oreseedX, int oreseedZ) {
+        private void generateCachedVein(XSTR oreveinRNG, CachedOreVein cachedOreVein, int oreseedX, int oreseedZ) {
             WorldgenGTOreLayer tWorldGen = cachedOreVein.layer();
-            XSTR oreveinRNG = new XSTR(cachedOreVein.placementSeed());
+            oreveinRNG.setSeed(cachedOreVein.placementSeed());
 
             int placementResult = tWorldGen.executeWorldgenChunkified(
                 this.mWorld,
