@@ -17,8 +17,6 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -32,6 +30,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.INEIPreviewModifier;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
@@ -311,16 +310,6 @@ public abstract class MTELargeTurbineBaseLegacy extends MTEEnhancedMultiBlockBas
 
     @Override
     public String[] getInfoData() {
-        String tRunning = mMaxProgresstime > 0
-            ? EnumChatFormatting.GREEN + StatCollector.translateToLocal("GT5U.turbine.running.true")
-                + EnumChatFormatting.RESET
-            : EnumChatFormatting.RED + StatCollector.translateToLocal("GT5U.turbine.running.false")
-                + EnumChatFormatting.RESET;
-        String tMaintainance = getIdealStatus() == getRepairStatus()
-            ? EnumChatFormatting.GREEN + StatCollector.translateToLocal("GT5U.turbine.maintenance.false")
-                + EnumChatFormatting.RESET
-            : EnumChatFormatting.RED + StatCollector.translateToLocal("GT5U.turbine.maintenance.true")
-                + EnumChatFormatting.RESET;
         int tDura = 0;
 
         if (mInventory[1] != null && mInventory[1].getItem() instanceof MetaGeneratedTool01) {
@@ -339,48 +328,21 @@ public abstract class MTELargeTurbineBaseLegacy extends MTEEnhancedMultiBlockBas
         }
         return new String[] {
             // 8 Lines available for information panels
-            tRunning + ": " + EnumChatFormatting.RED + formatNumber(mEUt) + EnumChatFormatting.RESET + " EU/t", /* 1 */
-            tMaintainance, /* 2 */
-            StatCollector.translateToLocal("GT5U.turbine.efficiency") + ": "
-                + EnumChatFormatting.YELLOW
-                + (mEfficiency / 100F)
-                + EnumChatFormatting.RESET
-                + "%", /* 2 */
-            StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(storedEnergy)
-                + EnumChatFormatting.RESET
-                + " EU / "
-                + /* 3 */ EnumChatFormatting.YELLOW
-                + formatNumber(maxEnergy)
-                + EnumChatFormatting.RESET
-                + " EU",
-            StatCollector.translateToLocal("GT5U.turbine.flow") + ": "
-                + EnumChatFormatting.YELLOW
-                + formatNumber(GTUtility.safeInt((long) realOptFlow))
-                + EnumChatFormatting.RESET
-                + " L/t"
-                + /* 4 */ EnumChatFormatting.YELLOW
-                + " ("
-                + (looseFit ? StatCollector.translateToLocal("GT5U.turbine.loose")
-                    : StatCollector.translateToLocal("GT5U.turbine.tight"))
-                + ")", /* 5 */
-            StatCollector.translateToLocal("GT5U.turbine.fuel") + ": "
-                + EnumChatFormatting.GOLD
-                + formatNumber(storedFluid)
-                + EnumChatFormatting.RESET
-                + "L", /* 6 */
-            StatCollector.translateToLocal(
-                "GT5U.turbine.dmg") + ": " + EnumChatFormatting.RED + tDura + EnumChatFormatting.RESET + "%", /* 7 */
-            StatCollector.translateToLocal("GT5U.multiblock.pollution") + ": "
-                + EnumChatFormatting.GREEN
-                + getAveragePollutionPercentage()
-                + EnumChatFormatting.RESET
-                + " %", /* 8 */
-            StatCollector.translateToLocal("GT5U.multiblock.recipesDone") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(recipesDone)
-                + EnumChatFormatting.RESET /* 9 */
+            IGregTechDeviceInformation.encode(
+                mMaxProgresstime > 0 ? "gg.infodata.turbine.running.true" : "gg.infodata.turbine.running.false",
+                formatNumber(mEUt)), /* 1 */
+            getIdealStatus() == getRepairStatus() ? "gg.infodata.turbine.maintenance.false"
+                : "gg.infodata.turbine.maintenance.true", /* 2 */
+            IGregTechDeviceInformation.encode("gg.infodata.turbine.efficiency", mEfficiency / 100F), /* 3 */
+            IGregTechDeviceInformation
+                .encode("GT5U.multiblock.energy.fmt", formatNumber(storedEnergy), formatNumber(maxEnergy)), /* 4 */
+            IGregTechDeviceInformation.encode(
+                looseFit ? "gg.infodata.turbine.flow.loose" : "gg.infodata.turbine.flow.tight",
+                formatNumber(GTUtility.safeInt((long) realOptFlow))), /* 5 */
+            IGregTechDeviceInformation.encode("gg.infodata.turbine.fuel", formatNumber(storedFluid)), /* 6 */
+            IGregTechDeviceInformation.encode("gg.infodata.turbine.dmg", tDura), /* 7 */
+            IGregTechDeviceInformation.encode("gg.infodata.turbine.pollution", getAveragePollutionPercentage()), /* 8 */
+            IGregTechDeviceInformation.encode("GT5U.multiblock.recipesDone.fmt", formatNumber(recipesDone)) /* 9 */
         };
     }
 

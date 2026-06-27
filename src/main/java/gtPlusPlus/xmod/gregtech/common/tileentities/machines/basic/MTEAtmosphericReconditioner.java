@@ -27,6 +27,7 @@ import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -667,17 +668,15 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
             reduction = MathUtils.safeInt(((long) reduction / 100) * this.mOptimalAirFlow);
 
             aTooltipSuper.add(
-                StatCollector.translateToLocalFormatted(
-                    "gtpp.infodata.atmospheric_reconditioner.maximum_pollution_removed",
-                    reduction));
+                IGregTechDeviceInformation
+                    .encode("gtpp.infodata.atmospheric_reconditioner.maximum_pollution_removed", reduction));
         } catch (Exception t) {
             aTooltipSuper.add(
-                StatCollector.translateToLocalFormatted(
-                    "gtpp.infodata.atmospheric_reconditioner.maximum_pollution_removed",
-                    mPollutionReduction));
+                IGregTechDeviceInformation
+                    .encode("gtpp.infodata.atmospheric_reconditioner.maximum_pollution_removed", mPollutionReduction));
         }
-        aTooltipSuper.add(
-            StatCollector.translateToLocalFormatted("gtpp.infodata.atmospheric_reconditioner.air_sides", mAirSides));
+        aTooltipSuper
+            .add(IGregTechDeviceInformation.encode("gtpp.infodata.atmospheric_reconditioner.air_sides", mAirSides));
 
         String[] mBuiltOutput = new String[aTooltipSuper.size()];
         int aIndex = 0;

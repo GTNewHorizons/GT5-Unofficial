@@ -109,6 +109,14 @@ public abstract class MTEBeamMultiBase<T extends MTEExtendedPowerMultiBlockBase<
         return false;
     }
 
+    @Override
+    public void clearHatches() {
+        super.clearHatches();
+        this.mInputBeamline.clear();
+        this.mOutputBeamline.clear();
+        this.mAdvancedOutputBeamline.clear();
+    }
+
     protected static <T extends MTEBeamMultiBase<T>> IStructureElement<T> buildBeamlineInputHatch(Class<T> clazz,
         int casingIndex, int hint) {
         return buildHatchAdder(clazz).hatchId(HATCH_BEAMLINE_INPUT.ID)

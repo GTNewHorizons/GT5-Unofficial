@@ -437,11 +437,11 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
             .addCasingInfoExactly("Black Plutonium Item Pipe", 6, false)
             .addStructureInfo(WHITE + "" + BOLD + "All Tiers: ")
             .addStructureInfo(WHITE + "Imprecise Unit Casing cannot be used")
-            .addInputHatch("Any Machine Casing")
-            .addInputBus("Any Machine Casing")
-            .addOutputBus("Any Machine Casing")
-            .addEnergyHatch("Any Machine Casing")
-            .addMaintenanceHatch("Any Machine Casing")
+            .addInputHatch("Any Machine Casing", 1)
+            .addInputBus("Any Machine Casing", 1)
+            .addOutputBus("Any Machine Casing", 1)
+            .addEnergyHatch("Any Machine Casing", 1)
+            .addMaintenanceHatch("Any Machine Casing", 1)
             .addSubChannelUsage(GTStructureChannels.PRASS_UNIT_CASING)
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .toolTipFinisher(GTAuthors.AuthorPureBluez);
@@ -502,6 +502,11 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
     @Override
     public boolean supportsSingleRecipeLocking() {
         return false;
+    }
+
+    @Override
+    public boolean supportsBatchMode() {
+        return true;
     }
 
     private String tieredTextLine(String mk1, String mk2, String mk3, String mk4) {

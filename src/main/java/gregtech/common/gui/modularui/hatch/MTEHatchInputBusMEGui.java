@@ -232,8 +232,8 @@ public class MTEHatchInputBusMEGui extends MTEHatchBaseGui<MTEHatchInputBusME> {
         // stack size text field
         mainColumn.child(
             new TextFieldWidget().value(minAutoPullStackSizeSyncer)
-                .setNumbers(1, Integer.MAX_VALUE)
-                .setFormatAsInteger(true)
+                .numbersInt(1, Integer.MAX_VALUE)
+                .formatAsInteger(true)
                 .setMaxLength(10)
                 .setTextAlignment(Alignment.CENTER)
                 .width(72));
@@ -248,8 +248,8 @@ public class MTEHatchInputBusMEGui extends MTEHatchBaseGui<MTEHatchInputBusME> {
         // refresh time text field
         mainColumn.child(
             new TextFieldWidget().value(autoPullRefreshTimeSyncer)
-                .setNumbers(1, Integer.MAX_VALUE)
-                .setFormatAsInteger(true)
+                .numbersInt(1, Integer.MAX_VALUE)
+                .formatAsInteger(true)
                 .setMaxLength(10)
                 .setTextAlignment(Alignment.CENTER)
                 .width(72));
@@ -295,7 +295,7 @@ public class MTEHatchInputBusMEGui extends MTEHatchBaseGui<MTEHatchInputBusME> {
             .coverChildren()
             .verticalCenter()
             .rightRel(0)
-            .child(createLogo());
+            .child(makeLogoWidget());
     }
 
     @Override
@@ -329,7 +329,7 @@ public class MTEHatchInputBusMEGui extends MTEHatchBaseGui<MTEHatchInputBusME> {
             }
         })
             .asWidget()
-            .widgetTheme(GTWidgetThemes.DISPLAY_TEXT);
+            .widgetTheme(GTWidgetThemes.DISPLAY_TEXT_WHITE);
 
         return super.createBottomLeftCornerFlow(panel, syncManager).child(status);
     }

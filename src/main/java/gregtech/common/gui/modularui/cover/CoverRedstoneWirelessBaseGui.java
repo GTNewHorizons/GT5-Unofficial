@@ -26,7 +26,7 @@ public class CoverRedstoneWirelessBaseGui extends CoverBaseGui<CoverRedstoneWire
     }
 
     private Flow createFrequencyRow() {
-        IntSyncValue frequencySyncer = new IntSyncValue(cover::getFrequency, cover::setFrequency).allowC2S();
+        IntSyncValue frequencySyncer = new IntSyncValue(cover::getFrequency, cover::processCoverData).allowC2S();
 
         return Flow.row()
             .marginBottom(4)
@@ -39,12 +39,12 @@ public class CoverRedstoneWirelessBaseGui extends CoverBaseGui<CoverRedstoneWire
     private IWidget createFrequencyInputField(IntSyncValue frequencySyncer) {
         return makeNumberField(88).marginRight(2)
             .height(12)
-            .setNumbers(0, CoverRedstoneWirelessBase.MAX_CHANNEL)
+            .numbersInt(0, CoverRedstoneWirelessBase.MAX_CHANNEL)
             .value(frequencySyncer);
     }
 
     private Flow createRedstoneModeRow() {
-        BooleanSyncValue privateChannelSyncer = new BooleanSyncValue(cover::isPrivateChannel, cover::setPrivateChannel)
+        BooleanSyncValue privateChannelSyncer = new BooleanSyncValue(cover::isPrivateChannel, cover::processCoverData)
             .allowC2S();
         return Flow.row()
             .child(createPrivacyModeButton(privateChannelSyncer))

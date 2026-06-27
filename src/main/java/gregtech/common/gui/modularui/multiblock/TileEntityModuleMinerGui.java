@@ -636,8 +636,8 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
             .child(
                 new TextFieldWidget().size(60, 9)
                     .value(distanceSyncer)
-                    .setDefaultNumber(0)
-                    .setNumbers(0, Integer.MAX_VALUE));
+                    .defaultNumber(0)
+                    .numbersInt(0, Integer.MAX_VALUE));
     }
 
     private Flow createTierInputRow(PanelSyncManager syncManager) {
@@ -652,8 +652,8 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
             .child(
                 new TextFieldWidget().size(60, 9)
                     .value(moduleTierFilterSyncer)
-                    .setDefaultNumber(0)
-                    .setNumbers(0, 3));
+                    .defaultNumber(0)
+                    .numbersInt(0, 3));
     }
 
     private SlotLikeButtonWidget createUtilityPanelDroneSelector(PanelSyncManager syncManager) {
@@ -1163,8 +1163,8 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
             .child(
                 new TextFieldWidget().size(60, 9)
                     .value(distanceSyncer)
-                    .setDefaultNumber(0)
-                    .setNumbers(0, Integer.MAX_VALUE));
+                    .defaultNumber(0)
+                    .numbersInt(0, Integer.MAX_VALUE));
     }
 
     private IWidget createCalculatorTierInput(IntSyncValue moduleTierSyncer) {
@@ -1178,8 +1178,8 @@ public class TileEntityModuleMinerGui extends TileEntityModuleBaseGui<TileEntity
             .child(
                 new TextFieldWidget().size(60, 9)
                     .value(moduleTierSyncer)
-                    .setDefaultNumber(0)
-                    .setNumbers(0, 3));
+                    .defaultNumber(0)
+                    .numbersInt(0, 3));
     }
 
     private IWidget createCalculatorDroneInput(IPanelHandler droneSelectorPanel, IntSyncValue distanceSyncer,

@@ -115,6 +115,7 @@ public class MTELapotronicSuperCapacitorGui extends MTEMultiBlockBaseGui<MTELapo
         BooleanSyncValue canRebalance = syncManager.findSyncHandler("canRebalance", BooleanSyncValue.class);
         BooleanSyncValue rebalanced = syncManager.findSyncHandler("rebalanced", BooleanSyncValue.class);
         BooleanSyncValue wireless = syncManager.findSyncHandler("wirelessMode", BooleanSyncValue.class);
+        BooleanSyncValue wirelessCapable = syncManager.findSyncHandler("wirelessCapable", BooleanSyncValue.class);
         IPanelHandler warningPanel = syncManager.syncedPanel("warning panel", true, ((a, b) -> warningPanel()));
 
         return super.createLeftPanelGapRow(parent, syncManager)
@@ -152,6 +153,7 @@ public class MTELapotronicSuperCapacitorGui extends MTEMultiBlockBaseGui<MTELapo
 
                     return false;
                 })
+                .setEnabledIf((w) -> wirelessCapable.getBoolValue())
 
             )
             .child(
@@ -166,7 +168,7 @@ public class MTELapotronicSuperCapacitorGui extends MTEMultiBlockBaseGui<MTELapo
                             rebalanced.setBoolValue(true);
                         }
                     }))
-                    .setEnabledIf((w) -> canRebalance.getBoolValue()));
+                    .setEnabledIf((w) -> canRebalance.getBoolValue() && wirelessCapable.getBoolValue()));
     }
 
     private ModularPanel warningPanel() {
@@ -293,6 +295,8 @@ public class MTELapotronicSuperCapacitorGui extends MTEMultiBlockBaseGui<MTELapo
         syncManager.syncValue("warning", warningSync);
         syncManager.syncValue("canRebalance", canRebalance);
         syncManager.syncValue("wireless value", wirelessValueSync);
+        BooleanSyncValue wirelessCapable = new BooleanSyncValue(multiblock::canUseWireless);
+        syncManager.syncValue("wirelessCapable", wirelessCapable);
 
     }
 
@@ -310,7 +314,7 @@ public class MTELapotronicSuperCapacitorGui extends MTEMultiBlockBaseGui<MTELapo
                             .margin(4, 4, 7, 4))
                     .child(
                         new TextFieldWidget().value(stored)
-                            .setNumbersLong(() -> 0L, () -> Long.MAX_VALUE)
+                            .numbersLong(() -> 0L, () -> Long.MAX_VALUE)
                             .marginLeft(4)
                             .marginRight(4)
                             .marginBottom(4)
