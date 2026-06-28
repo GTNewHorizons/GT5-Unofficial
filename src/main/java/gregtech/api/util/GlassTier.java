@@ -88,6 +88,13 @@ public class GlassTier {
     }
 
     /**
+     * Used for determining maximum tier of a multiblock, extra glass type should not be considered tiered.
+     */
+    public static int getMaxTierIndex() {
+        return maxTier - minTier + 1;
+    }
+
+    /**
      * Gets the tier of the glass represented by the block:meta passed. If passed non-glass or glass without a tier,
      * returns null.
      *
