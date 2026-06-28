@@ -71,9 +71,15 @@ public class FluidDisplayStackRenderer implements IItemRenderer {
             tess.draw();
 
             if (condensate != null) {
-                Minecraft.getMinecraft()
-                    .getTextureManager()
-                    .bindTexture(CondensateAnimationTickHandler.texture);
+                if (CondensateType.MHDCSM.equals(condensate)) {
+                    Minecraft.getMinecraft()
+                        .getTextureManager()
+                        .bindTexture(CondensateAnimationTickHandler.textureBorderless);
+                } else {
+                    Minecraft.getMinecraft()
+                        .getTextureManager()
+                        .bindTexture(CondensateAnimationTickHandler.texture);
+                }
                 GL11.glColor4f(1f, 1f, 1f, 1f);
                 final float vMin = CondensateAnimationTickHandler.currentFrame / 64f;
                 final float vMax = (CondensateAnimationTickHandler.currentFrame + 1) / 64f;
