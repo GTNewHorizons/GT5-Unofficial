@@ -1021,8 +1021,7 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
                     ignitionRecipe.mEUt = event.eut;
                     ignitionRecipe.mDuration = event.duration;
                     startupRequiredPower = ignitionRecipe.mEUt;
-                    return super.createParallelHelper(ignitionRecipe)
-                        .setAvailableEUt(getMaxInputEu())
+                    return super.createParallelHelper(ignitionRecipe).setAvailableEUt(getMaxInputEu())
                         .setEUtModifier(1)
                         .setConsumption(false)
                         .setMaxParallel(1);
