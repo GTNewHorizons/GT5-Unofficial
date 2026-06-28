@@ -65,14 +65,12 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.hatch.MTEHatchOutputBusMEGui;
 import gregtech.common.tileentities.machines.outputme.base.MTEHatchOutputMEBase;
-import gregtech.common.tileentities.machines.outputme.filter.MEFilterItem;
 import gregtech.common.tileentities.machines.outputme.util.AECacheCounter;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public class MTEHatchOutputBusME extends MTEHatchOutputBus
-    implements IPowerChannelState, IMEConnectable, ICellContainer, IGridProxyable, IPriorityHost,
-    MTEHatchOutputMEBase.Environment<IAEItemStack, MEFilterItem, ItemStack> {
+public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChannelState, IMEConnectable,
+    ICellContainer, IGridProxyable, IPriorityHost, MTEHatchOutputMEBase.Environment<IAEItemStack> {
 
     public MTEHatchOutputBusME(int aID, String aName, String aNameRegional) {
         super(
@@ -110,10 +108,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus
 
     EntityPlayer lastClickedPlayer = null;
 
-    private final MTEHatchOutputMEBase<IAEItemStack, MEFilterItem, ItemStack> provider = new MTEHatchOutputMEBase<IAEItemStack, MEFilterItem, ItemStack>(
-        this,
-        new MEFilterItem(),
-        1_600) {};
+    private final MTEHatchOutputMEBase<IAEItemStack> provider = new MTEHatchOutputMEBase<IAEItemStack>(this, 1_600) {};
 
     @Override
     public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
@@ -142,8 +137,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus
 
     @Override
     public boolean isFilteredToItem(GTUtility.ItemId id) {
-        return provider.getFilter()
-            .isFilteredToItem(id);
+        return provider.canStore(AEItemStack.create(id.getItemStack()));
     }
 
     @Override
@@ -242,8 +236,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus
                 stack.stackSize -= inserted;
                 return stack.stackSize == 0;
             }
-            if (!hasAvailableSpace() || !provider.getFilter()
-                .isFilteredToItem(id)) {
+            if (!hasAvailableSpace() || !isFilteredToItem(id)) {
                 return false;
             }
 
@@ -263,8 +256,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus
             cache.iterateAll(
                 (id, amount) -> {
                     provider.addToCache(
-                        provider.getFilter()
-                            .fromNative(id.getItemStack())
+                        AEItemStack.create(id.getItemStack())
                             .setStackSize(amount));
                 });
 
@@ -578,8 +570,18 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus
     }
 
     @Override
-    public MTEHatchOutputMEBase<IAEItemStack, MEFilterItem, ItemStack> getProvider() {
+    public MTEHatchOutputMEBase<IAEItemStack> getProvider() {
         return provider;
+    }
+
+    @Override
+    public String getEnableKey() {
+        return "GT5U.hatch.item.filter.enable";
+    }
+
+    @Override
+    public String getDisableKey() {
+        return "GT5U.hatch.item.filter.disable";
     }
 
     @Override

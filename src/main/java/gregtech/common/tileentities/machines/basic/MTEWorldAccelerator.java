@@ -18,7 +18,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.ChatStyle;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -29,6 +28,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -145,23 +145,22 @@ public class MTEWorldAccelerator extends MTETieredMachineBlock {
         List<String> tInfoDisplay = new ArrayList<>();
 
         tInfoDisplay.add(
-            StatCollector.translateToLocalFormatted(
-                "GT5U.infodata.world_accelerator.mode",
-                StatCollector.translateToLocal(mUnlocalizedModeStr[mMode])));
+            IGregTechDeviceInformation
+                .encode("GT5U.infodata.world_accelerator.mode", GTUtility.translate(mUnlocalizedModeStr[mMode])));
         tInfoDisplay.add(
-            StatCollector.translateToLocalFormatted(
+            IGregTechDeviceInformation.encode(
                 "GT5U.infodata.world_accelerator.speed",
                 mAccelerateStatic[getSpeedTierOverride()],
                 mAccelerateStatic[mTier]));
         tInfoDisplay.add(
-            StatCollector.translateToLocalFormatted(
+            IGregTechDeviceInformation.encode(
                 "GT5U.infodata.world_accelerator.consuming",
                 getEnergyDemand(getSpeedTierOverride(), getRadiusTierOverride(), mMode == 1)));
 
         // Don't show radius setting if in TE Mode
         if (mMode == 0) tInfoDisplay.add(
-            StatCollector
-                .translateToLocalFormatted("GT5U.infodata.world_accelerator.radius", getRadiusTierOverride(), mTier));
+            IGregTechDeviceInformation
+                .encode("GT5U.infodata.world_accelerator.radius", getRadiusTierOverride(), mTier));
 
         return tInfoDisplay.toArray(new String[0]);
     }

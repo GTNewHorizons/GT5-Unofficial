@@ -44,9 +44,9 @@ import com.cleanroommc.modularui.widgets.ProgressWidget;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 
+import bartworks.API.enums.BioCultureEnum;
 import bartworks.API.recipe.BartWorksRecipeMaps;
 import bartworks.common.loaders.BioCultureLoader;
-import bartworks.common.loaders.BioItemList;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -185,7 +185,10 @@ public final class RecipeMaps {
         .slotOverlaysSteam(
             (index, isFluid, isOutput, isSpecial) -> !isFluid && !isOutput ? GTUITextures.OVERLAY_SLOT_COMPRESSOR_STEAM
                 : null)
+        .slotOverlaysSteamMUI2(
+            (_, isFluid, isOutput, _) -> !isFluid && !isOutput ? GTGuiTextures.OVERLAY_SLOT_COMPRESSOR_STEAM : null)
         .progressBarSteam(GTUITextures.PROGRESSBAR_COMPRESS_STEAM)
+        .progressBarTextureSteamMUI2(GTGuiTextures.PROGRESSBAR_COMPRESS_STEAM)
         .neiRecipeComparator(
             Comparator.<GTRecipe, Integer>comparing(recipe -> recipe.getMetadataOrDefault(COMPRESSION_TIER, 0))
                 .thenComparing(GTRecipe::compareTo))
@@ -222,7 +225,10 @@ public final class RecipeMaps {
         .slotOverlaysSteam(
             (index, isFluid, isOutput, isSpecial) -> !isFluid && !isOutput ? GTUITextures.OVERLAY_SLOT_CENTRIFUGE_STEAM
                 : null)
+        .slotOverlaysSteamMUI2(
+            (_, isFluid, isOutput, _) -> !isFluid && !isOutput ? GTGuiTextures.OVERLAY_SLOT_CENTRIFUGE_STEAM : null)
         .progressBarSteam(GTUITextures.PROGRESSBAR_EXTRACT_STEAM)
+        .progressBarTextureSteamMUI2(GTGuiTextures.PROGRESSBAR_EXTRACT_STEAM)
         // Avoid steam machine being used as handler icon
         .neiHandlerInfo(builder -> builder.setDisplayStack(ItemList.Machine_LV_Extractor.get(1)))
         .build();
@@ -250,7 +256,10 @@ public final class RecipeMaps {
         .slotOverlaysSteam(
             (index, isFluid, isOutput, isSpecial) -> !isFluid && !isOutput ? GTUITextures.OVERLAY_SLOT_FURNACE_STEAM
                 : null)
+        .slotOverlaysSteamMUI2(
+            (_, isFluid, isOutput, _) -> !isFluid && !isOutput ? GTGuiTextures.OVERLAY_SLOT_FURNACE_STEAM : null)
         .progressBarSteam(GTUITextures.PROGRESSBAR_ARROW_STEAM)
+        .progressBarTextureSteamMUI2(GTGuiTextures.PROGRESSBAR_ARROW_STEAM)
         .neiTransferRectId("smelting")
         .disableRegisterNEI()
         .build();
@@ -265,7 +274,10 @@ public final class RecipeMaps {
         .slotOverlaysSteam(
             (index, isFluid, isOutput, isSpecial) -> !isFluid && !isOutput ? GTUITextures.OVERLAY_SLOT_FURNACE_STEAM
                 : null)
+        .slotOverlaysSteamMUI2(
+            (_, isFluid, isOutput, _) -> !isFluid && !isOutput ? GTGuiTextures.OVERLAY_SLOT_FURNACE_STEAM : null)
         .progressBarSteam(GTUITextures.PROGRESSBAR_ARROW_STEAM)
+        .progressBarTextureSteamMUI2(GTGuiTextures.PROGRESSBAR_ARROW_STEAM)
         .neiTransferRectId("smelting")
         .disableRegisterNEI()
         .build();
@@ -280,7 +292,10 @@ public final class RecipeMaps {
         .slotOverlaysSteam(
             (index, isFluid, isOutput, isSpecial) -> !isFluid && !isOutput ? GTUITextures.OVERLAY_SLOT_FURNACE_STEAM
                 : null)
+        .slotOverlaysSteamMUI2(
+            (_, isFluid, isOutput, _) -> !isFluid && !isOutput ? GTGuiTextures.OVERLAY_SLOT_FURNACE_STEAM : null)
         .progressBarSteam(GTUITextures.PROGRESSBAR_ARROW_STEAM)
+        .progressBarTextureSteamMUI2(GTGuiTextures.PROGRESSBAR_ARROW_STEAM)
         .neiTransferRectId("smelting")
         .disableRegisterNEI()
         .build();
@@ -545,14 +560,18 @@ public final class RecipeMaps {
         .slotOverlaysSteam(
             (index, isFluid, isOutput, isSpecial) -> isOutput ? GTUITextures.OVERLAY_SLOT_DUST_STEAM
                 : GTUITextures.OVERLAY_SLOT_CRUSHED_ORE_STEAM)
+        .slotOverlaysSteamMUI2(
+            (_, _, isOutput, _) -> isOutput ? GTGuiTextures.OVERLAY_SLOT_DUST_STEAM
+                : GTGuiTextures.OVERLAY_SLOT_CRUSHED_ORE_STEAM)
         .progressBar(GTUITextures.PROGRESSBAR_MACERATE)
         .progressBarMUI2(GTGuiTextures.PROGRESSBAR_MACERATE)
         .progressBarSteam(GTUITextures.PROGRESSBAR_MACERATE_STEAM)
+        .progressBarTextureSteamMUI2(GTGuiTextures.PROGRESSBAR_MACERATE_STEAM)
         // Avoid steam machine being used as handler icon
         .neiHandlerInfo(builder -> builder.setDisplayStack(ItemList.Machine_LV_Macerator.get(1)))
         .build();
     public static final RecipeMap<RecipeMapBackend> chemicalBathRecipes = RecipeMapBuilder.of("gt.recipe.chemicalbath")
-        .maxIO(2, 3, 2, 2)
+        .maxIO(2, 6, 2, 2)
         .minInputs(1, 1)
         .progressBar(GTUITextures.PROGRESSBAR_BATH, ProgressBar.Direction.CIRCULAR_CW)
         .progressBarMUI2(GTGuiTextures.PROGRESSBAR_BATH, ProgressWidget.Direction.CIRCULAR_CW)
@@ -661,7 +680,7 @@ public final class RecipeMaps {
         .progressBarMUI2(GTGuiTextures.PROGRESSBAR_ARROW_MULTIPLE)
         .builderTransformer(
             b -> b.copy()
-                .special(BioItemList.getPetriDish(BioCultureLoader.generalPurposeFermentingBacteria))
+                .special(BioCultureEnum.getPetriDish(BioCultureLoader.generalPurposeFermentingBacteria))
                 .metadata(GLASS, 3)
                 .eut(b.getEUt())
                 .addTo(BartWorksRecipeMaps.bacterialVatRecipes))
@@ -1184,7 +1203,9 @@ public final class RecipeMaps {
         .slotOverlaysMUI2(
             (index, isFluid, isOutput, isSpecial) -> !isFluid && !isOutput ? GTGuiTextures.OVERLAY_SLOT_FURNACE : null)
         .slotOverlaysSteam((index, isFluid, isOutput, isSpecial) -> GTUITextures.OVERLAY_SLOT_FURNACE_STEAM)
+        .slotOverlaysSteamMUI2((_, _, _, _) -> GTGuiTextures.OVERLAY_SLOT_FURNACE_STEAM)
         .progressBarSteam(GTUITextures.PROGRESSBAR_ARROW_STEAM)
+        .progressBarTextureSteamMUI2(GTGuiTextures.PROGRESSBAR_ARROW_STEAM)
         .recipeEmitter(b -> {
             if (Materials.Graphite.contains(b.getItemInputBasic(0))) return Collections.emptyList();
             if (GTUtility.isArrayOfLength(b.getItemInputsBasic(), 1)) {
@@ -1393,7 +1414,9 @@ public final class RecipeMaps {
         .addSpecialTexture(78, 42, 20, 6, GTUITextures.PROGRESSBAR_HAMMER_BASE)
         .slotOverlaysSteam(
             (index, isFluid, isOutput, isSpecial) -> !isOutput ? GTUITextures.OVERLAY_SLOT_HAMMER_STEAM : null)
+        .slotOverlaysSteamMUI2((_, _, isOutput, _) -> !isOutput ? GTGuiTextures.OVERLAY_SLOT_HAMMER_STEAM : null)
         .progressBarSteam(GTUITextures.PROGRESSBAR_HAMMER_STEAM)
+        .progressBarTextureSteamMUI2(GTGuiTextures.PROGRESSBAR_HAMMER_STEAM)
         .addSpecialTextureSteam(78, 42, 20, 6, GTUITextures.PROGRESSBAR_HAMMER_BASE_STEAM)
         // Avoid steam machine being used as handler icon
         .neiHandlerInfo(builder -> builder.setDisplayStack(ItemList.Machine_LV_Hammer.get(1)))

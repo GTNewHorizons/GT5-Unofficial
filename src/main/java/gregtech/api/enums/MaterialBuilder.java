@@ -90,6 +90,7 @@ public class MaterialBuilder {
     private final LinkedHashSet<SubTag> subTags = new LinkedHashSet<>();
     private final List<OrePrefixes> orePrefixBlacklist = new ArrayList<>();
     private final List<OrePrefixes> orePrefixWhitelist = new ArrayList<>();
+    private boolean hasGlowingOre;
 
     public MaterialBuilder() {}
 
@@ -139,7 +140,8 @@ public class MaterialBuilder {
             pendingArcSmeltingInto,
             pendingArcSmeltingIntoWithGas.isEmpty() ? null : pendingArcSmeltingIntoWithGas,
             pendingDirectSmelting,
-            subTags
+            subTags,
+            hasGlowingOre
             // spotless:on
         );
 
@@ -558,6 +560,11 @@ public class MaterialBuilder {
     /** Adds an {@link OrePrefixes} that will be generated. */
     public MaterialBuilder addOrePrefix(OrePrefixes prefix) {
         this.orePrefixWhitelist.add(prefix);
+        return this;
+    }
+
+    public MaterialBuilder hasGlowingOre() {
+        this.hasGlowingOre = true;
         return this;
     }
 }

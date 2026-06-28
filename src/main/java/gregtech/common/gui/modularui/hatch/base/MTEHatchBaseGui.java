@@ -1,5 +1,9 @@
 package gregtech.common.gui.modularui.hatch.base;
 
+import java.util.function.Predicate;
+
+import net.minecraftforge.fluids.FluidStack;
+
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.common.gui.modularui.singleblock.base.MTEMachineWithFluidScreenBaseGui;
 
@@ -21,5 +25,10 @@ public class MTEHatchBaseGui<T extends MTEHatch> extends MTEMachineWithFluidScre
     @Override
     protected boolean supportsTopRightCornerFlow() {
         return false;
+    }
+
+    @Override
+    protected Predicate<FluidStack> getFluidSlotFilter() {
+        return machine::isFluidInputAllowed;
     }
 }

@@ -117,12 +117,12 @@ public class MTELargeChemicalReactor extends MTEEnhancedMultiBlockBase<MTELargeC
                 StatCollector.translateToLocal("GT5U.tooltip.structure.heating_coil"),
                 "Adjacent to the PTFE Pipe Machine Casing",
                 1)
-            .addEnergyHatch("Any Casing", 1, 2)
-            .addMaintenanceHatch("Any Casing", 1, 2)
-            .addInputBus("Any Casing", 1, 2)
-            .addInputHatch("Any Casing", 1, 2)
-            .addOutputBus("Any Casing", 1, 2)
-            .addOutputHatch("Any Casing", 1, 2)
+            .addEnergyHatch("Any Casing", 1)
+            .addMaintenanceHatch("Any Casing", 1)
+            .addInputBus("Any Casing", 1)
+            .addInputHatch("Any Casing", 1)
+            .addOutputBus("Any Casing", 1)
+            .addOutputHatch("Any Casing", 1)
             .addStructureInfo("You can have multiple hatches/buses")
             .toolTipFinisher();
         return tt;

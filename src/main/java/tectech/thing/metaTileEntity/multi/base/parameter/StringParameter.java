@@ -3,9 +3,8 @@ package tectech.thing.metaTileEntity.multi.base.parameter;
 import net.minecraft.nbt.NBTTagCompound;
 
 import com.cleanroommc.modularui.value.sync.StringSyncValue;
-import com.cleanroommc.modularui.value.sync.SyncHandler;
 
-public class StringParameter extends Parameter<String> {
+public class StringParameter extends Parameter<String, StringSyncValue> {
 
     public StringParameter(String value, String langKey, String nbtKey, Object... langArgs) {
         super(value, langKey, nbtKey, langArgs);
@@ -35,7 +34,7 @@ public class StringParameter extends Parameter<String> {
     }
 
     @Override
-    public SyncHandler<?> createSyncHandler() {
+    protected StringSyncValue createSyncHandler() {
         return new StringSyncValue(this::getValue, this::setValue).allowC2S();
     }
 }

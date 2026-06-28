@@ -6,7 +6,6 @@ import static gregtech.api.util.GTUtility.getOrCreateNbtCompound;
 
 import java.util.List;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -14,7 +13,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
@@ -31,7 +29,6 @@ import org.lwjgl.input.Keyboard;
 import com.gtnewhorizon.gtnhlib.keybind.IKeyPressedListener;
 import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
 
-import baubles.api.BaublesApi;
 import cpw.mods.fml.common.Optional.Interface;
 import cpw.mods.fml.common.Optional.InterfaceList;
 import cpw.mods.fml.relauncher.Side;
@@ -360,25 +357,21 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISp
     @Override
     public ArmorProperties getProperties(EntityLivingBase player, ItemStack armor, DamageSource source, double damage,
         int slot) {
-        if (source.isUnblockable()) return new ArmorProperties(0, getDamageReduction(armor) / 100D, 15);
-
         ArmorContext context = load(player, armor);
-
         if (context.isBehaviorActive(BehaviorName.ForceField) && context.drainEnergy(100000 * damage)) {
             context.save();
             return new ArmorProperties(0, 100, Integer.MAX_VALUE);
         }
 
-        if (source.isDamageAbsolute() || source.isMagicDamage() || context.getArmorState().charge < damage * 100) {
-            return new ArmorProperties(0, getDamageReduction(armor) / 100D, 15);
-        }
+        if (source.isUnblockable()) return new ArmorProperties(0, 0, 0);
 
-        return new ArmorProperties(0, getDamageReduction(armor) / 24.5D, 1000);
+        int max = context.getArmorState().charge < damage * 100 ? 0 : Integer.MAX_VALUE;
+        return new ArmorProperties(0, getDamageReduction(armor), max);
     }
 
     @Override
     public int getArmorDisplay(EntityPlayer player, ItemStack armor, int slot) {
-        return (int) getDamageReduction(armor);
+        return (int) (20 * getDamageReduction(armor));
     }
 
     @Override
@@ -392,20 +385,7 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISp
     @SideOnly(Side.CLIENT)
     public boolean shouldRender(ItemStack stack) {
         ArmorContext context = load(null, stack);
-
-        if (context.isBehaviorActive(BehaviorName.HoloInventory)) return true;
-
-        // No augment - fall through to baubles so original holo glasses still work
-        EntityPlayer player = Minecraft.getMinecraft().thePlayer;
-        if (player == null) return false;
-        IInventory baubles = BaublesApi.getBaubles(player);
-        for (int i = 0; i < baubles.getSizeInventory(); i++) {
-            ItemStack bauble = baubles.getStackInSlot(i);
-            if (bauble != null && bauble.getItem() instanceof net.dries007.holoInventory.api.IHoloGlasses holoGlasses) {
-                return holoGlasses.shouldRender(bauble);
-            }
-        }
-        return false;
+        return context.isBehaviorActive(BehaviorName.HoloInventory);
     }
 
     // Thaumcraft compat
