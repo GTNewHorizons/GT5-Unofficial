@@ -1,24 +1,18 @@
 package tectech.loader.recipe;
 
-import static com.google.common.math.LongMath.pow;
 import static goodgenerator.loader.Loaders.NeutronAccelerators;
 import static goodgenerator.loader.Loaders.compactFusionCoil;
-import static goodgenerator.loader.Loaders.yottaFluidTankCell;
 import static gregtech.api.enums.Mods.Avaritia;
-import static gregtech.api.enums.Mods.AvaritiaAddons;
 import static gregtech.api.enums.Mods.BloodMagic;
 import static gregtech.api.enums.Mods.DraconicEvolution;
 import static gregtech.api.enums.Mods.EtFuturumRequiem;
 import static gregtech.api.enums.Mods.EternalSingularity;
 import static gregtech.api.enums.Mods.ExtraUtilities;
 import static gregtech.api.enums.Mods.GalacticraftAmunRa;
-import static gregtech.api.enums.Mods.GraviSuite;
 import static gregtech.api.enums.Mods.IndustrialCraft2;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.enums.Mods.Railcraft;
-import static gregtech.api.enums.Mods.SuperSolarPanels;
 import static gregtech.api.enums.Mods.Thaumcraft;
-import static gregtech.api.enums.Mods.TinkersGregworks;
 import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.MINUTES;
@@ -34,7 +28,6 @@ import static gtPlusPlus.core.material.MaterialsAlloy.TRINIUM_REINFORCED_STEEL;
 import static gtPlusPlus.core.material.MaterialsElements.STANDALONE.ASTRAL_TITANIUM;
 import static gtPlusPlus.core.material.MaterialsElements.STANDALONE.CHRONOMATIC_GLASS;
 import static gtPlusPlus.core.material.MaterialsElements.STANDALONE.HYPOGEN;
-import static kekztech.common.Blocks.lscLapotronicEnergyUnit;
 import static kubatech.api.enums.ItemList.DEFCAwakenedSchematic;
 import static kubatech.api.enums.ItemList.DEFCChaoticSchematic;
 import static kubatech.api.enums.ItemList.DEFCDraconicSchematic;
@@ -48,11 +41,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
-import com.rwtema.extrautils.ExtraUtils;
-
 import bartworks.common.loaders.ItemRegistry;
 import bartworks.system.material.WerkstoffLoader;
-import fox.spiteful.avaritia.compat.ticon.Tonkers;
 import goodgenerator.items.GGMaterial;
 import goodgenerator.util.ItemRefer;
 import gregtech.api.casing.Casings;
@@ -69,14 +59,10 @@ import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtnhlanth.common.register.LanthItemList;
 import kekztech.common.Blocks;
-import kekztech.common.TileEntities;
-import tconstruct.tools.TinkerTools;
 import tectech.recipe.TTRecipeAdder;
 import tectech.thing.CustomItemList;
 import tectech.thing.block.BlockGodforgeGlass;
 import tectech.thing.block.BlockQuantumGlass;
-import vexatos.tgregworks.reference.PartTypes;
-import vexatos.tgregworks.util.TGregUtils;
 
 public class ResearchStationAssemblyLine implements Runnable {
 
@@ -94,12 +80,6 @@ public class ResearchStationAssemblyLine implements Runnable {
         if (NewHorizonsCoreMod.isModLoaded() && Railcraft.isModLoaded()) {
             // Here instead of CoreMod to coincide with the non-AAL BEC Recipes
             addBecCasingRecipes();
-        }
-
-        if (TinkersGregworks.isModLoaded() && Avaritia.isModLoaded() // Infinity, Cosmic Neutronium
-            && ExtraUtilities.isModLoaded() // Bedrockium
-        ) {
-            addEOHRecipes();
         }
 
         // Infinite Oil Rig
@@ -167,6 +147,34 @@ public class ResearchStationAssemblyLine implements Runnable {
             new FluidStack[] { new FluidStack(FluidRegistry.getFluid("molten.hypogen"), 576), },
             ItemList.Casing_Coil_Eternal.get(1),
             60 * 20,
+            (int) TierEU.RECIPE_UMV);
+
+        // EOH Controller Recipe.
+        TTRecipeAdder.addResearchableAssemblylineRecipe(
+            ItemList.Machine_Multi_PlasmaForge.get(1),
+            512_000_000, // total comp
+            2 * 16_384, // comp/s
+            (int) TierEU.RECIPE_MAX, // eu/t
+            64, // amperage
+            new Object[] { ItemList.SpaceElevatorController.get(16), CustomItemList.Machine_Multi_ForgeOfGods.get(4),
+                ItemList.Machine_Multi_PlasmaForge.get(4),
+
+                CustomItemList.EOH_Infinite_Energy_Casing.get(1),
+                CustomItemList.TimeAccelerationFieldGeneratorTier0.get(1),
+                CustomItemList.SpacetimeCompressionFieldGeneratorTier0.get(1),
+                CustomItemList.StabilisationFieldGeneratorTier0.get(1),
+
+                CustomItemList.Machine_Multi_Computer.get(64), ItemList.AcceleratorUV.get(64),
+                ItemList.Quantum_Chest_IV.get(64),
+                // Void miner III.
+                GTUtility.copyAmount(64, ItemRegistry.voidminer[2]), ItemList.InfiniteFluidDrillingRig.get(64),
+
+                ItemList.Field_Generator_UMV.get(16), ItemList.Robot_Arm_UMV.get(16), ItemList.ZPM5.get(4),
+                GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUMV, 64) },
+            new FluidStack[] { Materials.Time.getMolten(144_000), Materials.Space.getMolten(144_000),
+                GGMaterial.metastableOganesson.getMolten(16 * STACKS), GGMaterial.shirabon.getMolten(16 * STACKS), },
+            CustomItemList.Machine_Multi_EyeOfHarmony.get(1),
+            400 * MINUTES,
             (int) TierEU.RECIPE_UMV);
 
         // UHV-UMV Energy Hatch & Dynamo
@@ -692,26 +700,6 @@ public class ResearchStationAssemblyLine implements Runnable {
                 ItemList.Casing_Dim_Trans.get(1),
                 20 * 20,
                 (int) TierEU.RECIPE_UIV);
-
-            // Transdimensional Alignment Matrix
-            TTRecipeAdder.addResearchableAssemblylineRecipe(
-                ItemList.MicroTransmitter_UV.get(1),
-                32_000_000,
-                8192,
-                (int) TierEU.RECIPE_UMV,
-                64,
-                new Object[] { CustomItemList.EOH_Infinite_Energy_Casing.get(1),
-                    GregtechItemList.SpaceTimeContinuumRipper.get(4), ItemList.Robot_Arm_UMV.get(64),
-                    ItemList.Sensor_UMV.get(16), ItemList.Field_Generator_UMV.get(4), ItemList.ZPM5.get(1),
-                    ItemList.EnergisedTesseract.get(32),
-                    GTOreDictUnificator.get(OrePrefixes.nanite, Materials.TranscendentMetal, 16),
-                    GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Flerovium, 64),
-                    GGMaterial.metastableOganesson.get(OrePrefixes.plateDense, 32) },
-                new FluidStack[] { MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(16 * STACKS),
-                    Materials.Lead.getPlasma(1 * STACKS), Materials.Space.getMolten(1 * STACKS) },
-                ItemList.Transdimensional_Alignment_Matrix.get(1),
-                50 * SECONDS,
-                (int) TierEU.RECIPE_UMV);
         }
 
         // Deep Dark Portal
@@ -2197,639 +2185,6 @@ public class ResearchStationAssemblyLine implements Runnable {
 
     }
 
-    private void addEOHRecipes() {
-        ItemStack largeShirabonPlate = TGregUtils.newItemStack(Materials.get("Shirabon"), PartTypes.LargePlate, 1);
-        ItemStack largeInfinityPlate = new ItemStack(TinkerTools.largePlate, 1, Tonkers.infinityMetalId);
-        ItemStack largeBedrockiumPlate = new ItemStack(TinkerTools.largePlate, 1, ExtraUtils.tcon_bedrock_material_id);
-        ItemStack largeCosmicNeutroniumPlate = new ItemStack(TinkerTools.largePlate, 1, Tonkers.neutroniumId);
-
-        final FluidStack[] specialFluid = new FluidStack[] { Materials.SpaceTime.getMolten(1_440),
-            Materials.SpaceTime.getMolten(1_440), Materials.SpaceTime.getMolten(1_440),
-            Materials.SpaceTime.getMolten(1_440), Materials.SpaceTime.getMolten(1_440),
-            Materials.SpaceTime.getMolten(1_440), Materials.SpaceTime.getMolten(1_440),
-            Materials.SpaceTime.getMolten(1_440), Materials.SpaceTime.getMolten(1_440) };
-
-        final ItemStack[] plateList = new ItemStack[] {
-            // Dense Shirabon plate.
-            GTOreDictUnificator.get("boltShirabon", 2),
-            GTOreDictUnificator.get(OrePrefixes.bolt, Materials.WhiteDwarfMatter, 2),
-            GTOreDictUnificator.get(OrePrefixes.bolt, Materials.WhiteDwarfMatter, 8),
-            GTOreDictUnificator.get(OrePrefixes.bolt, Materials.WhiteDwarfMatter, 32),
-            GTOreDictUnificator.get(OrePrefixes.bolt, Materials.BlackDwarfMatter, 2),
-            GTOreDictUnificator.get(OrePrefixes.bolt, Materials.BlackDwarfMatter, 8),
-            GTOreDictUnificator.get(OrePrefixes.bolt, Materials.BlackDwarfMatter, 32),
-            GTOreDictUnificator.get(OrePrefixes.bolt, Materials.MHDCSM, 2),
-            GTOreDictUnificator.get(OrePrefixes.bolt, Materials.MHDCSM, 8) };
-
-        // EOH Controller Recipe.
-        {
-            TTRecipeAdder.addResearchableAssemblylineRecipe(
-                ItemList.Machine_Multi_PlasmaForge.get(1),
-                512_000_000, // total comp
-                2 * 16_384, // comp/s
-                (int) TierEU.RECIPE_MAX, // eu/t
-                64, // amperage
-                new Object[] { ItemList.SpaceElevatorController.get(16),
-                    CustomItemList.Machine_Multi_ForgeOfGods.get(4), ItemList.Machine_Multi_PlasmaForge.get(4),
-
-                    CustomItemList.EOH_Infinite_Energy_Casing.get(1),
-                    CustomItemList.TimeAccelerationFieldGeneratorTier0.get(1),
-                    CustomItemList.SpacetimeCompressionFieldGeneratorTier0.get(1),
-                    CustomItemList.StabilisationFieldGeneratorTier0.get(1),
-
-                    CustomItemList.Machine_Multi_Computer.get(64), ItemList.AcceleratorUV.get(64),
-                    ItemList.Quantum_Chest_IV.get(64),
-                    // Void miner III.
-                    GTUtility.copyAmount(64, ItemRegistry.voidminer[2]), ItemList.InfiniteFluidDrillingRig.get(64),
-
-                    ItemList.Field_Generator_UMV.get(16), ItemList.Robot_Arm_UMV.get(16), ItemList.ZPM5.get(4),
-                    GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUMV, 64) },
-                new FluidStack[] { Materials.Time.getMolten(144_000), Materials.Space.getMolten(144_000),
-                    GGMaterial.metastableOganesson.getMolten(16 * STACKS),
-                    GGMaterial.shirabon.getMolten(16 * STACKS), },
-                CustomItemList.Machine_Multi_EyeOfHarmony.get(1),
-                400 * MINUTES,
-                (int) TierEU.RECIPE_UMV);
-        }
-
-        // EOH Spatial Individual Casing
-        {
-            TTRecipeAdder.addResearchableAssemblylineRecipe(
-                ItemList.DysonSwarmDeploymentUnitCasing.get(1),
-                256_000_000, // total comp
-                16_384, // comp/s
-                (int) TierEU.RECIPE_MAX, // eu/t
-                32, // amperage
-                new Object[] { CustomItemList.Godforge_SingularityShieldingCasing.get(32),
-                    // Cosmic neutronium block.
-                    getModItem(Avaritia.ID, "Resource_Block", 64, 0),
-                    GTOreDictUnificator.get(OrePrefixes.block, Materials.Neutronium, 64),
-                    GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Neutronium, 48), largeBedrockiumPlate,
-                    largeCosmicNeutroniumPlate, largeShirabonPlate, largeInfinityPlate,
-                    // UV Solar panel
-                    ItemList.Machine_UV_SolarPanel.get(1), ItemList.Quantum_Chest_IV.get(1),
-                    // Gravitation Engine
-                    getModItem(GraviSuite.ID, "itemSimpleItem", 64, 3), ItemList.EnergisedTesseract.get(1) },
-
-                new FluidStack[] { Materials.Neutronium.getMolten(16 * STACKS),
-                    Materials.CosmicNeutronium.getMolten(16 * STACKS),
-                    MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(8 * STACKS),
-                    Materials.Space.getMolten(10 * INGOTS) },
-                CustomItemList.EOH_Reinforced_Spatial_Casing.get(4),
-                10_000,
-                (int) TierEU.RECIPE_UMV);
-        }
-
-        // EOH Spacetime Compression
-        {
-            // ME Digital singularity.
-            final ItemStack ME_Singularity = getModItem(
-                "appliedenergistics2",
-                "item.ItemExtremeStorageCell.Singularity",
-                1);
-            final ItemStack baseCasing = CustomItemList.EOH_Reinforced_Spatial_Casing.get(1);
-
-            int baseCompPerSec = 16_384;
-
-            int set;
-            int tier;
-            int absoluteTier;
-
-            // T0 - Shirabon
-            // T1 - White Dwarf Matter
-            // T2 - White Dwarf Matter
-            // T3 - White Dwarf Matter
-            // T4 - Black Dwarf Matter
-            // T5 - Black Dwarf Matter
-            // T6 - Black Dwarf Matter
-            // T7 - Black Dwarf Matter
-            // T8 - MHDCSM.
-
-            {
-                tier = 1;
-                set = 1;
-
-                absoluteTier = 0;
-                TTRecipeAdder.addResearchableAssemblylineRecipe(
-                    CustomItemList.EOH_Reinforced_Spatial_Casing.get(1),
-                    (absoluteTier + 1) * 48_000_000, // total comp
-                    (absoluteTier + 1) * baseCompPerSec, // comp/s
-                    (int) TierEU.RECIPE_MAX, // eu/t
-                    (absoluteTier + 1) * 8, // amperage
-                    new Object[] { baseCasing,
-                        // T7 Yotta cell.
-                        new ItemStack(yottaFluidTankCell, tier, (5 + set)),
-                        // quantum tank V (max tier)
-                        ItemList.Quantum_Tank_IV.get(4 * (1 + absoluteTier)),
-                        // Inf chest
-                        getModItem(AvaritiaAddons.ID, "InfinityChest", absoluteTier + 1),
-                        // Cosmic fabric manipulator
-                        GregtechItemList.CosmicFabricManipulator.get(tier), ME_Singularity, plateList[absoluteTier],
-                        new Object[] { OrePrefixes.circuit.get(Materials.UXV), set } },
-                    new FluidStack[] {
-                        MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack((int) (20 * INGOTS * pow(2L, absoluteTier))),
-                        Materials.Space.getMolten(1_440 * (absoluteTier + 1)), specialFluid[absoluteTier] },
-                    CustomItemList.SpacetimeCompressionFieldGeneratorTier0.get(1),
-                    (absoluteTier + 1) * 4_000 * 20,
-                    (int) TierEU.RECIPE_UMV);
-
-                tier++;
-                absoluteTier = 1;
-                TTRecipeAdder.addResearchableAssemblylineRecipe(
-                    CustomItemList.SpacetimeCompressionFieldGeneratorTier0.get(1),
-                    (absoluteTier + 1) * 48_000_000, // total comp
-                    (absoluteTier + 1) * baseCompPerSec, // comp/s
-                    (int) TierEU.RECIPE_MAX, // eu/t
-                    (absoluteTier + 1) * 8, // amperage
-                    new Object[] { baseCasing,
-                        // T7 Yotta cell.
-                        new ItemStack(yottaFluidTankCell, tier, (5 + set)),
-                        // quantum tank V (max tier)
-                        ItemList.Quantum_Tank_IV.get(4 * (1 + absoluteTier)),
-                        // Inf chest
-                        getModItem(AvaritiaAddons.ID, "InfinityChest", absoluteTier + 1),
-                        // Cosmic fabric manipulator
-                        GregtechItemList.CosmicFabricManipulator.get(tier), ME_Singularity, ME_Singularity,
-                        plateList[absoluteTier], new Object[] { OrePrefixes.circuit.get(Materials.UXV), set } },
-                    new FluidStack[] {
-                        MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack((int) (20 * INGOTS * pow(2L, absoluteTier))),
-                        Materials.Space.getMolten(1_440 * (absoluteTier + 1)), specialFluid[absoluteTier] },
-                    CustomItemList.SpacetimeCompressionFieldGeneratorTier1.get(1),
-                    (absoluteTier + 1) * 4_000 * 20,
-                    (int) TierEU.RECIPE_UMV);
-
-                tier++;
-                absoluteTier = 2;
-                TTRecipeAdder.addResearchableAssemblylineRecipe(
-                    CustomItemList.SpacetimeCompressionFieldGeneratorTier1.get(1),
-                    (absoluteTier + 1) * 48_000_000, // total comp
-                    (absoluteTier + 1) * baseCompPerSec, // comp/s
-                    (int) TierEU.RECIPE_MAX, // eu/t
-                    (absoluteTier + 1) * 8, // amperage
-                    new Object[] { baseCasing,
-                        // T7 Yotta cell.
-                        new ItemStack(yottaFluidTankCell, tier, (5 + set)),
-                        // quantum tank V (max tier)
-                        ItemList.Quantum_Tank_IV.get(4 * (1 + absoluteTier)),
-                        // Inf chest
-                        getModItem(AvaritiaAddons.ID, "InfinityChest", absoluteTier + 1),
-                        // Cosmic fabric manipulator
-                        GregtechItemList.CosmicFabricManipulator.get(tier), ME_Singularity, ME_Singularity,
-                        ME_Singularity, plateList[absoluteTier],
-                        new Object[] { OrePrefixes.circuit.get(Materials.UXV), set } },
-                    new FluidStack[] {
-                        MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack((int) (20 * INGOTS * pow(2L, absoluteTier))),
-                        Materials.Space.getMolten(1_440 * (absoluteTier + 1)), specialFluid[absoluteTier], },
-                    CustomItemList.SpacetimeCompressionFieldGeneratorTier2.get(1),
-                    (absoluteTier + 1) * 4_000 * 20,
-                    (int) TierEU.RECIPE_UMV);
-            }
-
-            {
-                tier = 1;
-                set = 2;
-                absoluteTier = 3;
-                TTRecipeAdder.addResearchableAssemblylineRecipe(
-                    CustomItemList.SpacetimeCompressionFieldGeneratorTier2.get(1),
-                    (absoluteTier + 1) * 48_000_000, // total comp
-                    (absoluteTier + 1) * baseCompPerSec, // comp/s
-                    (int) TierEU.RECIPE_MAX, // eu/t
-                    (absoluteTier + 1) * 8, // amperage
-                    new Object[] { baseCasing,
-                        // T8 Yotta cell.
-                        new ItemStack(yottaFluidTankCell, tier, (5 + set)),
-                        // quantum tank V (max tier)
-                        ItemList.Quantum_Tank_IV.get(4 * (1 + absoluteTier)),
-                        // Inf chest
-                        getModItem(AvaritiaAddons.ID, "InfinityChest", absoluteTier + 1),
-                        // Infinity infused manipulator
-                        GregtechItemList.InfinityInfusedManipulator.get(tier), ME_Singularity, ME_Singularity,
-                        ME_Singularity, ME_Singularity, plateList[absoluteTier],
-                        new Object[] { OrePrefixes.circuit.get(Materials.UXV), set } },
-                    new FluidStack[] {
-                        MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack((int) (20 * INGOTS * pow(2L, absoluteTier))),
-                        Materials.Space.getMolten(1_440 * (absoluteTier + 1)), specialFluid[absoluteTier], },
-                    CustomItemList.SpacetimeCompressionFieldGeneratorTier3.get(1),
-                    (absoluteTier + 1) * 4_000 * 20,
-                    (int) TierEU.RECIPE_UMV);
-
-                tier++;
-                absoluteTier = 4;
-                TTRecipeAdder.addResearchableAssemblylineRecipe(
-                    CustomItemList.SpacetimeCompressionFieldGeneratorTier3.get(1),
-                    (absoluteTier + 1) * 48_000_000, // total comp
-                    (absoluteTier + 1) * baseCompPerSec, // comp/s
-                    (int) TierEU.RECIPE_MAX, // eu/t
-                    (absoluteTier + 1) * 8, // amperage
-                    new Object[] { baseCasing,
-                        // T8 Yotta cell.
-                        new ItemStack(yottaFluidTankCell, tier, (5 + set)),
-                        // quantum tank V (max tier)
-                        ItemList.Quantum_Tank_IV.get(4 * (1 + absoluteTier)),
-                        // Inf chest
-                        getModItem(AvaritiaAddons.ID, "InfinityChest", absoluteTier + 1),
-                        // Infinity infused manipulator
-                        GregtechItemList.InfinityInfusedManipulator.get(tier), ME_Singularity, ME_Singularity,
-                        ME_Singularity, ME_Singularity, ME_Singularity, plateList[absoluteTier],
-                        new Object[] { OrePrefixes.circuit.get(Materials.UXV), set } },
-                    new FluidStack[] {
-                        MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack((int) (20 * INGOTS * pow(2L, absoluteTier))),
-                        Materials.Space.getMolten(1_440 * (absoluteTier + 1)), specialFluid[absoluteTier], },
-                    CustomItemList.SpacetimeCompressionFieldGeneratorTier4.get(1),
-                    (absoluteTier + 1) * 4_000 * 20,
-                    (int) TierEU.RECIPE_UMV);
-
-                tier++;
-                absoluteTier = 5;
-                TTRecipeAdder.addResearchableAssemblylineRecipe(
-                    CustomItemList.SpacetimeCompressionFieldGeneratorTier4.get(1),
-                    (absoluteTier + 1) * 48_000_000, // total comp
-                    (absoluteTier + 1) * baseCompPerSec, // comp/s
-                    (int) TierEU.RECIPE_MAX, // eu/t
-                    (absoluteTier + 1) * 8, // amperage
-                    new Object[] { baseCasing,
-                        // T8 Yotta cell.
-                        new ItemStack(yottaFluidTankCell, tier, (5 + set)),
-                        // quantum tank V (max tier)
-                        ItemList.Quantum_Tank_IV.get(4 * (1 + absoluteTier)),
-                        // Inf chest
-                        getModItem(AvaritiaAddons.ID, "InfinityChest", absoluteTier + 1),
-                        // Infinity infused manipulator
-                        GregtechItemList.InfinityInfusedManipulator.get(tier), ME_Singularity, ME_Singularity,
-                        ME_Singularity, ME_Singularity, ME_Singularity, ME_Singularity, plateList[absoluteTier],
-                        new Object[] { OrePrefixes.circuit.get(Materials.UXV), set } },
-                    new FluidStack[] {
-                        MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack((int) (20 * INGOTS * pow(2L, absoluteTier))),
-                        Materials.Space.getMolten(1_440 * (absoluteTier + 1)), specialFluid[absoluteTier], },
-                    CustomItemList.SpacetimeCompressionFieldGeneratorTier5.get(1),
-                    (absoluteTier + 1) * 4_000 * 20,
-                    (int) TierEU.RECIPE_UMV);
-            }
-
-            {
-                tier = 1;
-                set = 3;
-                absoluteTier = 6;
-                TTRecipeAdder.addResearchableAssemblylineRecipe(
-                    CustomItemList.SpacetimeCompressionFieldGeneratorTier5.get(1),
-                    (absoluteTier + 1) * 48_000_000, // total comp
-                    (absoluteTier + 1) * baseCompPerSec, // comp/s
-                    (int) TierEU.RECIPE_MAX, // eu/t
-                    (absoluteTier + 1) * 8, // amperage
-                    new Object[] { baseCasing,
-                        // T9 Yotta cell.
-                        new ItemStack(yottaFluidTankCell, tier, (5 + set)),
-                        // quantum tank V (max tier)
-                        ItemList.Quantum_Tank_IV.get(4 * (1 + absoluteTier)),
-                        // Inf chest
-                        getModItem(AvaritiaAddons.ID, "InfinityChest", absoluteTier + 1),
-                        // Spacetime continuum ripper
-                        GregtechItemList.SpaceTimeContinuumRipper.get(tier), ME_Singularity, ME_Singularity,
-                        ME_Singularity, ME_Singularity, ME_Singularity, ME_Singularity, ME_Singularity,
-                        plateList[absoluteTier], new Object[] { OrePrefixes.circuit.get(Materials.UXV), set } },
-                    new FluidStack[] {
-                        MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack((int) (20 * INGOTS * pow(2L, absoluteTier))),
-                        Materials.Space.getMolten(1_440 * (absoluteTier + 1)), specialFluid[absoluteTier], },
-                    CustomItemList.SpacetimeCompressionFieldGeneratorTier6.get(1),
-                    (absoluteTier + 1) * 4_000 * 20,
-                    (int) TierEU.RECIPE_UMV);
-
-                tier++;
-                absoluteTier = 7;
-                TTRecipeAdder.addResearchableAssemblylineRecipe(
-                    CustomItemList.SpacetimeCompressionFieldGeneratorTier6.get(1),
-                    (absoluteTier + 1) * 48_000_000, // total comp
-                    (absoluteTier + 1) * baseCompPerSec, // comp/s
-                    (int) TierEU.RECIPE_MAX, // eu/t
-                    (absoluteTier + 1) * 8, // amperage
-                    new Object[] { baseCasing,
-                        // T9 Yotta cell.
-                        new ItemStack(yottaFluidTankCell, tier, (5 + set)),
-                        // quantum tank V (max tier)
-                        ItemList.Quantum_Tank_IV.get(4 * (1 + absoluteTier)),
-                        // Inf chest
-                        getModItem(AvaritiaAddons.ID, "InfinityChest", absoluteTier + 1),
-                        // Spacetime continuum ripper
-                        GregtechItemList.SpaceTimeContinuumRipper.get(tier), ME_Singularity, ME_Singularity,
-                        ME_Singularity, ME_Singularity, ME_Singularity, ME_Singularity, ME_Singularity, ME_Singularity,
-                        plateList[absoluteTier], new Object[] { OrePrefixes.circuit.get(Materials.UXV), set } },
-                    new FluidStack[] {
-                        MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack((int) (20 * INGOTS * pow(2L, absoluteTier))),
-                        Materials.Space.getMolten(1_440 * (absoluteTier + 1)), specialFluid[absoluteTier], },
-                    CustomItemList.SpacetimeCompressionFieldGeneratorTier7.get(1),
-                    (absoluteTier + 1) * 4_000 * 20,
-                    (int) TierEU.RECIPE_UMV);
-
-                tier++;
-                absoluteTier = 8;
-                TTRecipeAdder.addResearchableAssemblylineRecipe(
-                    CustomItemList.SpacetimeCompressionFieldGeneratorTier7.get(1),
-                    (absoluteTier + 1) * 48_000_000, // total comp
-                    (absoluteTier + 1) * baseCompPerSec, // comp/s
-                    (int) TierEU.RECIPE_MAX, // eu/t
-                    (absoluteTier + 1) * 8, // amperage
-                    new Object[] { baseCasing,
-                        // T9 Yotta cell.
-                        new ItemStack(yottaFluidTankCell, tier, (5 + set)),
-                        // quantum tank V (max tier)
-                        ItemList.Quantum_Tank_IV.get(4 * (1 + absoluteTier)),
-                        // Inf chest
-                        getModItem(AvaritiaAddons.ID, "InfinityChest", absoluteTier + 1),
-                        // Spacetime continuum ripper
-                        GregtechItemList.SpaceTimeContinuumRipper.get(tier), ME_Singularity, ME_Singularity,
-                        ME_Singularity, ME_Singularity, ME_Singularity, ME_Singularity, ME_Singularity, ME_Singularity,
-                        ME_Singularity, plateList[absoluteTier],
-                        new Object[] { OrePrefixes.circuit.get(Materials.UXV), set } },
-                    new FluidStack[] {
-                        MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack((int) (20 * INGOTS * pow(2L, absoluteTier))),
-                        Materials.Space.getMolten(1_440 * (absoluteTier + 1)), specialFluid[absoluteTier], },
-                    CustomItemList.SpacetimeCompressionFieldGeneratorTier8.get(1),
-                    (absoluteTier + 1) * 4_000 * 20,
-                    (int) TierEU.RECIPE_UMV);
-            }
-        }
-
-        // EOH Time Dilation Field Generators.
-        {
-            final ItemStack baseCasing = CustomItemList.EOH_Reinforced_Temporal_Casing.get(1);
-
-            int baseCompPerSec = 16_384;
-
-            // T0 - Shirabon
-            // T1 - White Dwarf Matter
-            // T2 - White Dwarf Matter
-            // T3 - White Dwarf Matter
-            // T4 - Black Dwarf Matter
-            // T5 - Black Dwarf Matter
-            // T6 - Black Dwarf Matter
-            // T7 - Black Dwarf Matter
-            // T8 - MHDCSM.
-
-            final ItemStack[] fusionReactors = new ItemStack[] { ItemList.FusionComputer_ZPMV.get(1),
-                ItemList.FusionComputer_ZPMV.get(2), ItemList.FusionComputer_ZPMV.get(3),
-                ItemList.FusionComputer_UV.get(1), ItemList.FusionComputer_UV.get(2), ItemList.FusionComputer_UV.get(3),
-                // MK4 Fusion Computer.
-                GregtechItemList.FusionComputer_UV2.get(1), GregtechItemList.FusionComputer_UV2.get(2),
-                GregtechItemList.FusionComputer_UV2.get(3) };
-
-            final ItemStack[] fusionCoils = new ItemStack[] { new ItemStack(compactFusionCoil, 1, 1),
-                new ItemStack(compactFusionCoil, 2, 1), new ItemStack(compactFusionCoil, 3, 1),
-                new ItemStack(compactFusionCoil, 1, 2), new ItemStack(compactFusionCoil, 2, 2),
-                new ItemStack(compactFusionCoil, 3, 2), new ItemStack(compactFusionCoil, 1, 3),
-                new ItemStack(compactFusionCoil, 2, 3), new ItemStack(compactFusionCoil, 3, 3) };
-
-            final ItemStack[] researchStuff = new ItemStack[] { baseCasing,
-                CustomItemList.TimeAccelerationFieldGeneratorTier0.get(1),
-                CustomItemList.TimeAccelerationFieldGeneratorTier1.get(1),
-                CustomItemList.TimeAccelerationFieldGeneratorTier2.get(1),
-                CustomItemList.TimeAccelerationFieldGeneratorTier3.get(1),
-                CustomItemList.TimeAccelerationFieldGeneratorTier4.get(1),
-                CustomItemList.TimeAccelerationFieldGeneratorTier5.get(1),
-                CustomItemList.TimeAccelerationFieldGeneratorTier6.get(1),
-                CustomItemList.TimeAccelerationFieldGeneratorTier7.get(1),
-                CustomItemList.TimeAccelerationFieldGeneratorTier8.get(1) };
-
-            // Spectral Components
-            // Cycling should fix issues with conflicting recipes for T1-T2, T4-T5 & T7-T8
-            final ItemStack[] spectralComponents = new ItemStack[] {
-                // Red Spectral Component
-                getModItem(SuperSolarPanels.ID, "redcomponent", 64),
-                // Green Spectral Component
-                getModItem(SuperSolarPanels.ID, "greencomponent", 64),
-                // Blue Spectral Component
-                getModItem(SuperSolarPanels.ID, "bluecomponent", 64) };
-
-            for (int absoluteTier = 0; absoluteTier < 9; absoluteTier++) {
-
-                TTRecipeAdder.addResearchableAssemblylineRecipe(
-                    researchStuff[absoluteTier],
-                    (absoluteTier + 1) * 48_000_000, // total comp
-                    (absoluteTier + 1) * baseCompPerSec, // comp/s
-                    (int) TierEU.RECIPE_MAX, // eu/t
-                    (absoluteTier + 1) * 8, // amperage
-                    new Object[] { baseCasing, fusionReactors[absoluteTier], fusionCoils[absoluteTier],
-                        // UV Solar panel
-                        ItemList.Machine_UV_SolarPanel.get(absoluteTier + 1),
-
-                        new Object[] { OrePrefixes.circuit.get(Materials.UXV), absoluteTier + 1 },
-                        // Red Spectral Component
-                        spectralComponents[absoluteTier % spectralComponents.length],
-                        // Green Spectral Component
-                        spectralComponents[(absoluteTier + 1) % spectralComponents.length],
-                        // Blue Spectral Component
-                        spectralComponents[(absoluteTier + 2) % spectralComponents.length],
-
-                        plateList[absoluteTier], ItemList.DysonSwarmDeploymentUnitCasing.get((absoluteTier + 1) * 4),
-                        ItemList.DysonSwarmReceiverDish.get((absoluteTier + 1) * 4),
-                        ItemList.AcceleratorUV.get((absoluteTier + 1) * 4),
-
-                        ItemList.Energy_Module.get(absoluteTier + 1), GTOreDictUnificator
-                            .get(OrePrefixes.wireGt01, Materials.SuperconductorUMV, (absoluteTier + 1) * 4),
-
-                    },
-                    new FluidStack[] {
-                        MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack((int) (20 * INGOTS * pow(2L, absoluteTier))),
-                        Materials.Time.getMolten(1_440 * (absoluteTier + 1)), specialFluid[absoluteTier] },
-                    researchStuff[absoluteTier + 1],
-                    (absoluteTier + 1) * 4_000 * 20,
-                    (int) TierEU.RECIPE_UMV);
-            }
-
-        }
-
-        // EOH Stabilisation Field Generators.
-        {
-            final ItemStack baseCasing = CustomItemList.EOH_Infinite_Energy_Casing.get(1);
-
-            int baseCompPerSec = 16_384;
-
-            // T0 - Shirabon
-            // T1 - White Dwarf Matter
-            // T2 - White Dwarf Matter
-            // T3 - White Dwarf Matter
-            // T4 - Black Dwarf Matter
-            // T5 - Black Dwarf Matter
-            // T6 - Black Dwarf Matter
-            // T7 - Black Dwarf Matter
-            // T8 - MHDCSM.
-
-            final ItemStack[] researchStuff = new ItemStack[] { baseCasing,
-                CustomItemList.StabilisationFieldGeneratorTier0.get(1),
-                CustomItemList.StabilisationFieldGeneratorTier1.get(1),
-                CustomItemList.StabilisationFieldGeneratorTier2.get(1),
-                CustomItemList.StabilisationFieldGeneratorTier3.get(1),
-                CustomItemList.StabilisationFieldGeneratorTier4.get(1),
-                CustomItemList.StabilisationFieldGeneratorTier5.get(1),
-                CustomItemList.StabilisationFieldGeneratorTier6.get(1),
-                CustomItemList.StabilisationFieldGeneratorTier7.get(1),
-                CustomItemList.StabilisationFieldGeneratorTier8.get(1) };
-
-            final ItemStack[] timeCasings = new ItemStack[] { CustomItemList.TimeAccelerationFieldGeneratorTier0.get(1),
-                CustomItemList.TimeAccelerationFieldGeneratorTier1.get(1),
-                CustomItemList.TimeAccelerationFieldGeneratorTier2.get(1),
-                CustomItemList.TimeAccelerationFieldGeneratorTier3.get(1),
-                CustomItemList.TimeAccelerationFieldGeneratorTier4.get(1),
-                CustomItemList.TimeAccelerationFieldGeneratorTier5.get(1),
-                CustomItemList.TimeAccelerationFieldGeneratorTier6.get(1),
-                CustomItemList.TimeAccelerationFieldGeneratorTier7.get(1),
-                CustomItemList.TimeAccelerationFieldGeneratorTier8.get(1) };
-
-            final ItemStack[] spatialCasings = new ItemStack[] {
-                CustomItemList.SpacetimeCompressionFieldGeneratorTier0.get(1),
-                CustomItemList.SpacetimeCompressionFieldGeneratorTier1.get(1),
-                CustomItemList.SpacetimeCompressionFieldGeneratorTier2.get(1),
-                CustomItemList.SpacetimeCompressionFieldGeneratorTier3.get(1),
-                CustomItemList.SpacetimeCompressionFieldGeneratorTier4.get(1),
-                CustomItemList.SpacetimeCompressionFieldGeneratorTier5.get(1),
-                CustomItemList.SpacetimeCompressionFieldGeneratorTier6.get(1),
-                CustomItemList.SpacetimeCompressionFieldGeneratorTier7.get(1),
-                CustomItemList.SpacetimeCompressionFieldGeneratorTier8.get(1) };
-
-            for (int absoluteTier = 0; absoluteTier < 9; absoluteTier++) {
-
-                // spotless:off
-                TTRecipeAdder.addResearchableAssemblylineRecipe(
-                        researchStuff[absoluteTier],
-                        (absoluteTier + 1) * 48_000_000, // total comp
-                        (absoluteTier + 1) * baseCompPerSec, // comp/s
-                        (int) TierEU.RECIPE_MAX, // eu/t
-                        (absoluteTier + 1) * 8, // amperage
-                        new Object[] {
-                                timeCasings[absoluteTier],
-                                spatialCasings[absoluteTier],
-                                baseCasing,
-                                ItemList.DysonSwarmModule.get(4 * (absoluteTier + 1)),
-
-                                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.SuperconductorUMVBase, 4 * (absoluteTier + 1)),
-                                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.SuperconductorUIVBase, 4 * (absoluteTier + 1)),
-                                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.SuperconductorUEVBase, 4 * (absoluteTier + 1)),
-                                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.SuperconductorUHVBase, 4 * (absoluteTier + 1)),
-
-                                // Gravitation Engine
-                                getModItem(GraviSuite.ID, "itemSimpleItem", 64, 3),
-                                getModItem(GraviSuite.ID, "itemSimpleItem", 64, 3),
-                                getModItem(GraviSuite.ID, "itemSimpleItem", 64, 3),
-                                getModItem(GraviSuite.ID, "itemSimpleItem", 64, 3),
-
-                                plateList[absoluteTier],
-                                new Object[] { OrePrefixes.circuit.get(Materials.UXV), 2 * (absoluteTier + 1) },
-                                GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.SpaceTime, absoluteTier + 1),
-                                GTOreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.SpaceTime, absoluteTier + 1)
-
-
-                        },
-                        new FluidStack[] { MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack((int) (20 * INGOTS * pow(2L, absoluteTier))),
-                                Materials.Time.getMolten(1_440 * (absoluteTier + 1)),
-                                Materials.Space.getMolten(1_440 * (absoluteTier + 1)),
-                                specialFluid[absoluteTier] },
-                        researchStuff[absoluteTier + 1],
-                        (absoluteTier + 1) * 4_000 * 20,
-                        (int) TierEU.RECIPE_UMV);
-                // spotless:on
-            }
-
-        }
-
-        // EOH Reinforced Temporal casings
-        {
-            TTRecipeAdder.addResearchableAssemblylineRecipe(
-                ItemList.AcceleratorUV.get(1),
-                256_000_000, // total comp
-                16_384, // comp/s
-                (int) TierEU.RECIPE_MAX, // eu/t
-                32, // amperage
-                new Object[] { CustomItemList.Godforge_SingularityShieldingCasing.get(32),
-                    // Cosmic neutronium block.
-                    getModItem(Avaritia.ID, "Resource_Block", 64, 0),
-                    GTOreDictUnificator.get(OrePrefixes.block, Materials.Neutronium, 64),
-                    GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Neutronium, 48),
-                    // Large Bedrockium Plate
-                    largeBedrockiumPlate, largeCosmicNeutroniumPlate, largeShirabonPlate, largeInfinityPlate,
-                    // UV Solar panel
-                    ItemList.Machine_UV_SolarPanel.get(1),
-                    // Ultimate Time Anomaly.
-                    ItemList.AcceleratorUV.get(4),
-                    // Gravitation Engine.
-                    getModItem(GraviSuite.ID, "itemSimpleItem", 64, 3), ItemList.EnergisedTesseract.get(1) },
-
-                new FluidStack[] { Materials.Neutronium.getMolten(16 * STACKS),
-                    Materials.CosmicNeutronium.getMolten(16 * STACKS),
-                    MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(8 * STACKS),
-                    Materials.Time.getMolten(10 * INGOTS) },
-                CustomItemList.EOH_Reinforced_Temporal_Casing.get(4),
-                10_000,
-                (int) TierEU.RECIPE_UMV);
-        }
-
-        // EOH Infinite Spacetime Energy Boundary Casing
-        {
-            TTRecipeAdder.addResearchableAssemblylineRecipe(
-                GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUMV, 1),
-                256_000_000, // total comp
-                16_384, // comp/s
-                (int) TierEU.RECIPE_MAX, // eu/t
-                32, // amperage
-                new Object[] { TileEntities.lsc.getStackForm(1),
-                    // UV Solar panel
-                    ItemList.Machine_UV_SolarPanel.get(1),
-                    // UHV Capacitor block
-                    new ItemStack(lscLapotronicEnergyUnit, 1, 5),
-                    GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUMV, 4),
-
-                    CustomItemList.Machine_Multi_Transformer.get(16), ItemList.Wireless_Hatch_Energy_UMV.get(4),
-                    CustomItemList.eM_energyTunnel5_UMV.get(1),
-                    // High Energy Flow Circuit.
-                    getModItem(NewHorizonsCoreMod.ID, "HighEnergyFlowCircuit", 64, 0),
-
-                    // Metastable Oganesson Plate.
-                    GTOreDictUnificator.get("plateMetastableOganesson", 6),
-                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.BlueTopaz, 6),
-                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.CallistoIce, 6),
-                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.Ledox, 6),
-
-                    // Metastable Oganesson Screw.
-                    GTOreDictUnificator.get("screwMetastableOganesson", 6),
-                    GTOreDictUnificator.get(OrePrefixes.screw, Materials.BlueTopaz, 6),
-                    GTOreDictUnificator.get(OrePrefixes.screw, Materials.CallistoIce, 6),
-                    GTOreDictUnificator.get(OrePrefixes.screw, Materials.Ledox, 6), },
-
-                new FluidStack[] { Materials.Neutronium.getMolten(64 * STACKS),
-                    Materials.CosmicNeutronium.getMolten(64 * STACKS),
-                    MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(32 * STACKS),
-                    Materials.SpaceTime.getMolten(16_000) },
-                CustomItemList.EOH_Infinite_Energy_Casing.get(1),
-                10_000,
-                (int) TierEU.RECIPE_UMV);
-        }
-
-        // Astral Array Fabricator
-        TTRecipeAdder.addResearchableAssemblylineRecipe(
-            CustomItemList.SpacetimeCompressionFieldGeneratorTier8.get(1),
-            480_000_000,
-            32_768,
-            (int) TierEU.RECIPE_MAX,
-            64,
-            new Object[] { GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.WhiteDwarfMatter, 8),
-                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.BlackDwarfMatter, 8),
-                ItemList.EnergisedTesseract.get(32),
-                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Eternity, 16),
-                CustomItemList.SpacetimeCompressionFieldGeneratorTier8.get(64),
-                CustomItemList.SpacetimeCompressionFieldGeneratorTier8.get(64),
-                CustomItemList.SpacetimeCompressionFieldGeneratorTier8.get(10),
-                CustomItemList.TimeAccelerationFieldGeneratorTier8.get(64),
-                CustomItemList.TimeAccelerationFieldGeneratorTier8.get(64),
-                CustomItemList.TimeAccelerationFieldGeneratorTier8.get(40),
-                CustomItemList.StabilisationFieldGeneratorTier8.get(48),
-                CustomItemList.EOH_Infinite_Energy_Casing.get(32),
-                CustomItemList.EOH_Reinforced_Temporal_Casing.get(64),
-                CustomItemList.EOH_Reinforced_Spatial_Casing.get(64), ItemList.Field_Generator_UMV.get(16) },
-            new FluidStack[] { Materials.Space.getMolten(32_768L * 64), Materials.Eternity.getMolten(16_384L * 64),
-                Materials.ExcitedDTSC.getFluid(8_192L * 64) },
-            CustomItemList.astralArrayFabricator.get(1),
-            300 * SECONDS,
-            (int) TierEU.RECIPE_UXV);
-    }
-
     private void addBeamcraftingRecipes() {
 
         ItemStack neutronAcceleratorUV = NeutronAccelerators[8].copy();
@@ -3197,52 +2552,6 @@ public class ResearchStationAssemblyLine implements Runnable {
             CustomItemList.Godforge_GravitonFlowModulatorTier1.get(2),
             10 * SECONDS,
             (int) TierEU.RECIPE_UIV);
-
-        // Graviton Modulator 2
-        TTRecipeAdder.addResearchableAssemblylineRecipe(
-            CustomItemList.Godforge_GravitonFlowModulatorTier1.get(1),
-            96_000_000,
-            16_384,
-            (int) TierEU.RECIPE_UXV,
-            128,
-            new Object[] { CustomItemList.Godforge_MagneticConfinementCasing.get(1),
-                ItemRefer.Field_Restriction_Coil_T4.get(1),
-                GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Creon, 8),
-                GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.Mellion, 4),
-                GregtechItemList.Battery_Gem_4.get(4), GregtechItemList.Laser_Lens_Special.get(8),
-                ItemList.Emitter_UMV.get(4), new Object[] { OrePrefixes.circuit.get(Materials.UMV), 8L },
-                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Silver, 2),
-                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Gold, 2) },
-            new FluidStack[] { MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(1 * STACKS),
-                Materials.SuperconductorUMVBase.getMolten(1 * STACKS), Materials.SpaceTime.getMolten(1 * STACKS) },
-            CustomItemList.Godforge_GravitonFlowModulatorTier2.get(1),
-            10 * SECONDS,
-            (int) TierEU.RECIPE_UMV);
-
-        // Graviton Modulator 3
-        TTRecipeAdder.addResearchableAssemblylineRecipe(
-            CustomItemList.Godforge_GravitonFlowModulatorTier2.get(1),
-            192_000_000,
-            32_768,
-            (int) TierEU.RECIPE_MAX,
-            256,
-            new Object[] { CustomItemList.Godforge_MagneticConfinementCasing.get(1),
-                ItemRefer.Field_Restriction_Coil_T4.get(4),
-                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Creon, 8),
-                GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.Mellion, 64),
-                GregtechItemList.SpaceTimeContinuumRipper.get(8), GregtechItemList.Battery_Gem_4.get(8),
-                GregtechItemList.Laser_Lens_Special.get(8), ItemList.Emitter_UXV.get(4),
-                new Object[] { OrePrefixes.circuit.get(Materials.MAX), 4L },
-                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Silver, 8),
-                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Gold, 8),
-                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.SixPhasedCopper, 8),
-                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Universium, 8) },
-            new FluidStack[] { MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(4 * STACKS),
-                Materials.SuperconductorUMVBase.getMolten(4 * STACKS), Materials.WhiteDwarfMatter.getMolten(4 * STACKS),
-                Materials.Eternity.getMolten(4 * STACKS) },
-            CustomItemList.Godforge_GravitonFlowModulatorTier3.get(1),
-            10 * SECONDS,
-            (int) TierEU.RECIPE_UXV);
 
         // Phonon Transmission Conduit
         TTRecipeAdder.addResearchableAssemblylineRecipe(
