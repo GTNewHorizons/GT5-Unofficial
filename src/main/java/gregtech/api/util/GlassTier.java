@@ -131,6 +131,8 @@ public class GlassTier {
                     .registerAsIndicator(new ItemStack(glass.getLeft(), 1, glass.getRight()), ctr);
                 ctr++;
             }
+            // Re-add the highest tier borosilicate to the end of the list so the max slider value is maximum tier glass
+            glassList.add(mainGlass.getLast());
         }
         return glassList;
     }
