@@ -317,7 +317,7 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide()) {
-            if (aTick % 20 == 0) {
+            if (aBaseMetaTileEntity.isActive() && aTick % 20 == 0) {
                 if (switch (droneLevel) {
                     case 1 -> aBaseMetaTileEntity.getRandomNumber(28800);
                     case 2 -> aBaseMetaTileEntity.getRandomNumber(172800);
@@ -516,6 +516,9 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
                 this.droneLevel = drone.getLevel();
                 item.stackSize--;
                 updateSlots();
+                if (this.droneLevel == 4) {
+                    droneMap.put(Integer.MAX_VALUE, this);
+                }
                 issueTileUpdate();
                 return true;
             }
