@@ -27,7 +27,7 @@ public class ArmorRadialUIFactory {
     private static final int ROW_WIDTH = 120;
     private static final int ROW_HEIGHT = 18;
     private static final int PANEL_PADDING = 4;
-    private static final int LIST_ITEM_HEIGHT = 20;
+    private static final int LIST_ITEM_HEIGHT = 18;
     private static final int MIN_POPUP_HEIGHT = 100;
 
     public static ModularPanel createMainPanel(ArmorRadialMenuSession session) {
@@ -36,7 +36,6 @@ public class ArmorRadialUIFactory {
         Flow radialContainer = new Flow(GuiAxis.X);
 
         session.setUiUpdateCallback(() -> updateRadialMenu(radialContainer, session));
-
         updateRadialMenu(radialContainer, session);
 
         IPanelHandler popupPanel = session.getSyncManager()
@@ -74,9 +73,9 @@ public class ArmorRadialUIFactory {
                 } else {
                     displayName.style(EnumChatFormatting.RED);
                 }
-            } ;
+            }
 
-            if (!action.isToggle() || session.isVisible(actionId)) {
+            if (session.isVisible(actionId)) {
                 builder.option()
                     .label(displayName)
                     .onClicked(
@@ -106,6 +105,9 @@ public class ArmorRadialUIFactory {
             @Override
             public void onInit() {
                 super.onInit();
+
+                this.getChildren()
+                    .clear();
 
                 int dynamicHeight = Math.max(
                     40,

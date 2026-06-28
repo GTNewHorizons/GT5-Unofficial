@@ -46,7 +46,7 @@ public class ArmorRadialMenuSession {
 
         this.actionTriggerSync = createActionSync();
 
-        Set<BehaviorName> visibleBehaviors = getVisibleArmorBehaviors();
+        Set<BehaviorName> visibleBehaviors = getActiveArmorBehaviors();
         List<String> validActionIds = filterValidActions(visibleBehaviors);
         initSyncAndCollections(validActionIds);
     }
@@ -119,10 +119,16 @@ public class ArmorRadialMenuSession {
     }
 
     private void executeArmorAction(String clickedActionId) {
+        if (player.getEntityWorld().isRemote) {
+            return;
+        }
+
         if (clickedActionId == null || clickedActionId.isEmpty()) return;
 
         ArmorAction action = ArmorActionManager.getAction(clickedActionId);
         if (action == null) return;
+
+        ArmorState state = new ArmorState();
 
         for (int i = 0; i < ARMOR_SLOTS_COUNT; i++) {
             ItemStack armorPiece = player.getCurrentArmor(i);
@@ -130,9 +136,8 @@ public class ArmorRadialMenuSession {
             if (armorPiece == null) continue;
             if (!(armorPiece.getItem() instanceof MechArmorBase)) continue;
 
-            ArmorState state = new ArmorState();
             ArmorContext.ArmorContextImpl context = new ArmorContext.ArmorContextImpl(player, armorPiece, state);
-            ArmorState.load(context);
+            state = ArmorState.load(context);
 
             boolean stateChanged = false;
 
@@ -175,15 +180,15 @@ public class ArmorRadialMenuSession {
         return persisted.getCompoundTag("ArmorRadialSettings");
     }
 
-    private Set<BehaviorName> getVisibleArmorBehaviors() {
-        Set<BehaviorName> visibleBehaviors = new HashSet<>();
+    private Set<BehaviorName> getActiveArmorBehaviors() {
+        Set<BehaviorName> activeBehaviors = new HashSet<>();
         for (int i = 0; i < ARMOR_SLOTS_COUNT; i++) {
             ItemStack armorPiece = this.player.getCurrentArmor(i);
             if (armorPiece != null) {
-                visibleBehaviors.addAll(ArmorState.load(armorPiece).behaviors.keySet());
+                activeBehaviors.addAll(ArmorState.load(armorPiece).behaviors.keySet());
             }
         }
-        return visibleBehaviors;
+        return activeBehaviors;
     }
 
     private List<String> filterValidActions(Set<BehaviorName> visibleBehaviors) {
@@ -212,6 +217,16 @@ public class ArmorRadialMenuSession {
 
         parseCurrentOrder(validActionIds);
         parseVisibleSet();
+
+        this.syncedOrder.changeListener(() -> {
+            parseCurrentOrder(validActionIds);
+            triggerUiUpdate();
+        });
+
+        this.syncedVisible.changeListener(() -> {
+            parseVisibleSet();
+            triggerUiUpdate();
+        });
     }
 
     private void parseCurrentOrder(List<String> validActionIds) {

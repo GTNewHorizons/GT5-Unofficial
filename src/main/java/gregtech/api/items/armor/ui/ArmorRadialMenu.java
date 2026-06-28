@@ -20,9 +20,7 @@ public class ArmorRadialMenu extends AbstractUIFactory<GuiData> {
     public static final ArmorRadialMenu INSTANCE = new ArmorRadialMenu();
 
     public void open(EntityPlayer player) {
-        if (player.getEntityWorld().isRemote) {
-            GuiManager.openFromClient(this, new GuiData(player));
-        } else if (player instanceof EntityPlayerMP playerMP) {
+        if (!player.getEntityWorld().isRemote && player instanceof EntityPlayerMP playerMP) {
             GuiManager.open(this, new GuiData(player), playerMP);
         }
     }
