@@ -25,7 +25,7 @@ public class CoverWirelessController extends CoverAdvancedRedstoneReceiverBase {
         DISABLE_WITH_SIGNAL,
         DISABLED,
         ENABLE_WITH_SIGNAL_SAFE,
-        DISABLE_WITH_SIGNAL_SAFE;
+        DISABLE_WITH_SIGNAL_SAFE
     }
 
     private State state = State.DISABLED;
@@ -40,6 +40,7 @@ public class CoverWirelessController extends CoverAdvancedRedstoneReceiverBase {
     protected void readDataFromNbt(NBTBase nbt) {
         super.readDataFromNbt(nbt);
         NBTTagCompound tag = (NBTTagCompound) nbt;
+        if (!tag.hasKey("mode")) setMode(GateMode.SINGLE_SOURCE);
         state = State.values()[tag.getByte("state")];
     }
 
