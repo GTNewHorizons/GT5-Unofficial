@@ -2,12 +2,12 @@ package gregtech.loaders.postload.recipes;
 
 import static gregtech.api.enums.Mods.EternalSingularity;
 import static gregtech.api.enums.Mods.GalacticraftAmunRa;
+import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.STACKS;
 import static gregtech.api.util.GTRecipeConstants.NANITE_TIERS;
-import static tectech.loader.recipe.BaseRecipeLoader.getNHCoreModItem;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -44,7 +44,7 @@ public class BECRecipes implements Runnable {
     @Override
     public void run() {
         addBECCasingRecipes();
-        addGodforgeRecipes();
+        if (NewHorizonsCoreMod.isModLoaded()) addGodforgeRecipes();
     }
 
     private void addGodforgeRecipes() {
@@ -103,8 +103,9 @@ public class BECRecipes implements Runnable {
             new ItemStack(BlockGodforgeGlass.INSTANCE, 2),
             new ItemStack[] { new ItemStack(BlockQuantumGlass.INSTANCE, 12),
                 new ItemStack(ItemRegistry.bw_glasses[0], 12, 8), GregtechItemList.ForceFieldGlass.get(12),
-                ItemList.StableBosonContainmentUnit.get(6), getNHCoreModItem("RadoxPolymerLens", 9),
-                getNHCoreModItem("ChromaticLens", 9), getNHCoreModItem("MysteriousCrystalLens", 9),
+                ItemList.StableBosonContainmentUnit.get(6), getModItem(NewHorizonsCoreMod.ID, "RadoxPolymerLens", 9),
+                getModItem(NewHorizonsCoreMod.ID, "ChromaticLens", 9),
+                getModItem(NewHorizonsCoreMod.ID, "MysteriousCrystalLens", 9),
                 WerkstoffLoader.MagnetoResonaticDust.get(OrePrefixes.lens, 9),
                 MaterialsElements.STANDALONE.RHUGNOR.getPlate(24),
                 GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Creon, 33),
