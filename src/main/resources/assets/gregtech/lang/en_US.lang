@@ -1599,8 +1599,8 @@ GT5U.MBTT.Dimensions=Dimensions
 GT5U.MBTT.Hollow=(Hollow)
 GT5U.MBTT.Structure=Structure
 GT5U.MBTT.Controller=Controller
-GT5U.MBTT.Minimum=(minimum)
-GT5U.MBTT.Tiered=(tiered)
+GT5U.MBTT.Minimum=(Minimum)
+GT5U.MBTT.Tiered=§b(Tiered)
 GT5U.MBTT.MaintenanceHatch=Maintenance Hatch
 GT5U.MBTT.MufflerHatch=Muffler Hatch
 GT5U.MBTT.EnergyHatch=Energy Hatch
@@ -1616,10 +1616,13 @@ GT5U.MBTT.ExoticEnergyHatch=Laser/Multi-Amp Energy Hatch
 GT5U.MBTT.ExoticEnergyDynamo=Laser/Multi-Amp Dynamo Hatch
 GT5U.MBTT.InputBus=Input Bus
 GT5U.MBTT.InputHatch=Input Hatch
+GT5U.MBTT.InputAny=Input Bus/Hatch
 GT5U.MBTT.OutputBus=Output Bus
 GT5U.MBTT.OutputHatch=Output Hatch
-GT5U.MBTT.TecTechMultiAmp=Supports TecTech Multi-Amp Hatches!
-GT5U.MBTT.TecTechHatch=Supports TecTech Multi-Amp and Laser Hatches!
+GT5U.MBTT.OutputAny=Output Bus/Hatch
+GT5U.MBTT.SupportMultiAmp=Supports Multi-Amp Hatches!
+GT5U.MBTT.SupportLaser=Supports Laser Hatches!
+GT5U.MBTT.SupportAny=Supports Multi-Amp and Laser Hatches!
 GT5U.MBTT.Param=Parametrizer Hatch
 GT5U.MBTT.Uncertainty=Uncertainty Hatch
 GT5U.MBTT.InputData=Data Reception Connector
@@ -1796,7 +1799,7 @@ gt.multiblock.NeutralizationEngine.decay_boost.4=Every §fminute§7, §dRobot Ar
 gt.multiblock.NeutralizationEngine.structure_tiers=Structure has §f3 Tiers§7, §fTier §7determines §9Base Decay §7and §3Capacity§7:
 gt.multiblock.NeutralizationEngine.tier_info=§fT%d§7 : §f%s§7 : §9%d§7 : §3%s
 
-GT5U.MBTT.subchannel=Uses sub channel §6%s§r§7 for §6%s
+GT5U.MBTT.subchannel=Uses sub channel §b%s§7 for §b%s
 
 GT5U.MBTT.CokeOvenHatch=Coke Oven Hatch
 GT5U.MBTT.CryotheumHatch=Cryotheum Cooling Hatch
@@ -2606,7 +2609,7 @@ GT5U.gui.text.structure_error.energy_hatch_tier_too_low=Energy hatch tier too lo
 GT5U.gui.text.structure_error.hatch_tier_too_low=%s tier too low (minimum: %s)
 GT5U.gui.text.structure_error.hatch_tier_too_high=%s tier too high (maximum: %s)
 GT5U.gui.text.structure_error.energy_hatch_exceed_glass=Energy hatch tier cannot exceed glass tier
-GT5U.gui.text.structure_error.one_tt_or_two_energy=Either 1 TecTech energy hatch or 2 normal energy hatches are allowed.
+GT5U.gui.text.structure_error.one_tt_or_two_energy=Either 1 exotic energy hatch or 2 normal energy hatches are allowed.
 GT5U.gui.text.structure_error.pss_dynamo=Bad dynamo hatch tier
 GT5U.gui.text.structure_error.pss_energy=Bad energy hatch tier
 GT5U.gui.text.structure_error.pss_cell=Cell tier must match
@@ -7084,8 +7087,8 @@ GTPP.time.months=Months
 
 # Steam MultiBlock Tooltips
 GTPP.MBTT.SteamHatch=Steam Hatch
-GTPP.MBTT.SteamInputBus=Input Bus (Steam)
-GTPP.MBTT.SteamOutputBus=Output Bus (Steam)
+GTPP.MBTT.SteamInputBus=Steam Input Bus
+GTPP.MBTT.SteamOutputBus=Steam Output Bus
 
 # Item Tooltips
 GTPP.tooltip.hold_ctrl=Hold Ctrl to show additional info.
