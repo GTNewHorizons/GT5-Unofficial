@@ -1121,6 +1121,27 @@ public class RecipesGregTech {
             .duration(60 * SECONDS)
             .addTo(alloyBlastSmelterRecipes);
 
+        // Computation Base
+        GTValues.RA.stdBuilder()
+            .itemInputs(
+                Materials.SuperconductorEVBase.getDust(61),
+                Materials.SuperconductorIVBase.getDust(59),
+                Materials.SuperconductorLuVBase.getDust(53),
+                Materials.SuperconductorZPMBase.getDust(47),
+                Materials.SuperconductorUVBase.getDust(43),
+                Materials.SuperconductorUHVBase.getDust(41),
+                Materials.SuperconductorUEVBase.getDust(37),
+                Materials.SuperconductorUIVBase.getDust(31),
+                Materials.SuperconductorUMVBase.getDust(29))
+            .fluidInputs(
+                MaterialsAlloy.INDALLOY_140.getFluidStack(1_000_000),
+                MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(100_000),
+                Materials.BoundlessCosmicSolder.getFluid(1_000))
+            .fluidOutputs(Materials.ComputationBase.getMolten(100_000))
+            .eut(TierEU.RECIPE_UXV)
+            .duration(600 * SECONDS)
+            .addTo(alloyBlastSmelterRecipes);
+
         // Incoloy-903
         GTValues.RA.stdBuilder()
             .itemInputs(

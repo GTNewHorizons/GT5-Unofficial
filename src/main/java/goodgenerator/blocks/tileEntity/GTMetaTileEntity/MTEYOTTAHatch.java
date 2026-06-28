@@ -514,10 +514,11 @@ public class MTEYOTTAHatch extends MTEHatch
 
     @Override
     public boolean canAccept(IAEFluidStack input) {
-        if (this.host == null) return false;
+        if (this.host == null || input == null) return false;
         FluidStack rInput = input.getFluidStack();
-        return (host.mLockedFluid != null && !host.mLockedFluid.isFluidEqual(rInput)) || host.mFluid == null
-            || host.mFluid.isFluidEqual(rInput);
+        if (rInput == null) return false;
+        return (this.host.mLockedFluid == null || this.host.mLockedFluid.isFluidEqual(rInput))
+            && (this.host.mFluid == null || this.host.mFluid.isFluidEqual(rInput));
     }
 
     @Override
