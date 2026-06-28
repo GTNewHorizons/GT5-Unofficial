@@ -8,18 +8,13 @@ import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BEAMCRAFTER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BEAMCRAFTER_ACTIVE;
-import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 import static gregtech.api.recipe.RecipeMaps.BEAMCRAFTER_METADATA;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import gregtech.api.logic.ProcessingLogic;
-import gregtech.api.util.OverclockCalculator;
-import gregtech.api.util.ParallelHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
@@ -38,6 +33,7 @@ import gregtech.api.enums.GTAuthors;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -46,16 +42,14 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.extensions.ArrayExt;
+import gregtech.api.util.OverclockCalculator;
+import gregtech.api.util.ParallelHelper;
 import gregtech.common.gui.modularui.multiblock.MTEBeamCrafterGui;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.loaders.postload.recipes.beamcrafter.BeamCrafterMetadata;
 import gtnhlanth.common.beamline.BeamInformation;
 import gtnhlanth.common.beamline.Particle;
 import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
-
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
 
 public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements ISurvivalConstructable {
 
@@ -435,25 +429,26 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
 
             @Override
             protected @NotNull ParallelHelper createParallelHelper(@NotNull GTRecipe recipe1) {
-                return super.createParallelHelper(recipe1).setMaxParallelCalculator((GTRecipe recipe, int maxParallel, FluidStack[] fluids, ItemStack[] items) -> {
-                    BeamCrafterMetadata metadata = recipe.getMetadata(BEAMCRAFTER_METADATA);
-                    if (metadata == null) return 0;
-                    int parallel = Math.max(MAX_PARALLEL, maxParallel);
+                return super.createParallelHelper(recipe1).setMaxParallelCalculator(
+                    (GTRecipe recipe, int maxParallel, FluidStack[] fluids, ItemStack[] items) -> {
+                        BeamCrafterMetadata metadata = recipe.getMetadata(BEAMCRAFTER_METADATA);
+                        if (metadata == null) return 0;
+                        int parallel = Math.max(MAX_PARALLEL, maxParallel);
 
-                    int availableA = bufferMap.getOrDefault(metadata.particleID_A, 0);
-                    int availableB = bufferMap.getOrDefault(metadata.particleID_B, 0);
+                        int availableA = bufferMap.getOrDefault(metadata.particleID_A, 0);
+                        int availableB = bufferMap.getOrDefault(metadata.particleID_B, 0);
 
-                    parallel = Math.min(parallel, availableA / metadata.amount_A);
-                    parallel = Math.min(parallel, availableB / metadata.amount_B);
+                        parallel = Math.min(parallel, availableA / metadata.amount_A);
+                        parallel = Math.min(parallel, availableB / metadata.amount_B);
 
-                    parallel = Math.max(1, parallel); // so it can't be 0
-                    return parallel;
-                });
+                        parallel = Math.max(1, parallel); // so it can't be 0
+                        return parallel;
+                    });
             }
 
             @Override
             protected @NotNull CheckRecipeResult applyRecipe(@NotNull GTRecipe recipe, @NotNull ParallelHelper helper,
-                                                             @NotNull OverclockCalculator calculator, @NotNull CheckRecipeResult result) {
+                @NotNull OverclockCalculator calculator, @NotNull CheckRecipeResult result) {
                 BeamCrafterMetadata metadata = recipe.getMetadata(BEAMCRAFTER_METADATA);
                 if (metadata == null) {
                     return CheckRecipeResultRegistry.NO_RECIPE;
