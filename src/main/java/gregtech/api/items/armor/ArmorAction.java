@@ -1,7 +1,6 @@
 package gregtech.api.items.armor;
 
-import net.minecraft.util.IIcon;
-
+import com.cleanroommc.modularui.drawable.Icon;
 import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
 import com.gtnewhorizons.angelica.shadow.javax.annotation.Nullable;
 
@@ -12,15 +11,15 @@ public class ArmorAction {
     private final String id;
     private final String displayName;
     private final SyncedKeybind keybind;
-    private final IIcon icon;
+    private final Icon icon;
     private final boolean isToggle;
     private final BehaviorName behaviorName;
 
-    public ArmorAction(String id, String displayName, IIcon icon, boolean isToggle, SyncedKeybind keybind) {
+    public ArmorAction(String id, String displayName, Icon icon, boolean isToggle, SyncedKeybind keybind) {
         this(id, displayName, icon, isToggle, keybind, null);
     }
 
-    public ArmorAction(String id, String displayName, IIcon icon, boolean isToggle, SyncedKeybind keybind,
+    public ArmorAction(String id, String displayName, Icon icon, boolean isToggle, SyncedKeybind keybind,
         BehaviorName behaviorName) {
         this.id = id;
         this.displayName = displayName;
@@ -30,7 +29,7 @@ public class ArmorAction {
         this.behaviorName = behaviorName;
     }
 
-    public IIcon getIcon() {
+    public Icon getIcon() {
         return icon;
     }
 

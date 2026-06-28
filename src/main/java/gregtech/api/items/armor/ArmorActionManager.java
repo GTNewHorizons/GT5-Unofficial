@@ -1,6 +1,6 @@
 package gregtech.api.items.armor;
 
-import static gregtech.loaders.ExtraIcons.jetpackAugment;
+import static gregtech.api.enums.Mods.GregTech;
 
 import java.util.Collection;
 import java.util.LinkedHashMap;
@@ -10,6 +10,8 @@ import net.minecraft.client.Minecraft;
 
 import org.lwjgl.input.Keyboard;
 
+import com.cleanroommc.modularui.drawable.Icon;
+import com.cleanroommc.modularui.drawable.UITexture;
 import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
 
 import gregtech.api.items.armor.behaviors.BehaviorName;
@@ -24,7 +26,7 @@ public class ArmorActionManager {
             new ArmorAction(
                 "nightvision",
                 "Nightvision",
-                jetpackAugment,
+                createActionIcon("nightvision"),
                 true,
                 SyncedKeybind.createConfigurable("key.gt.toggle_night_vision", "Gregtech Armor", Keyboard.KEY_R),
                 BehaviorName.NightVision));
@@ -33,7 +35,7 @@ public class ArmorActionManager {
             new ArmorAction(
                 "jetpack_hover",
                 "Jetpack Hover",
-                jetpackAugment,
+                createActionIcon("jetpack_hover"),
                 true,
                 SyncedKeybind.createConfigurable("key.gt.toggle_jetpack_hover", "Gregtech Armor", Keyboard.KEY_G),
                 BehaviorName.JetpackHover));
@@ -42,7 +44,7 @@ public class ArmorActionManager {
             new ArmorAction(
                 "jetpack",
                 "Jetpack",
-                jetpackAugment,
+                createActionIcon("jetpack"),
                 true,
                 SyncedKeybind.createConfigurable("key.gt.toggle_jetpack", "Gregtech Armor", Keyboard.KEY_F),
                 BehaviorName.Jetpack
@@ -53,7 +55,7 @@ public class ArmorActionManager {
             new ArmorAction(
                 "goggles_of_revealing",
                 "Goggles of Revealing",
-                jetpackAugment,
+                createActionIcon("goggles_of_revealing"),
                 true,
                 SyncedKeybind
                     .createConfigurable("key.gt.toggle_goggles_of_revealing", "Gregtech Armor", Keyboard.KEY_T),
@@ -63,7 +65,7 @@ public class ArmorActionManager {
             new ArmorAction(
                 "inertia_canceling",
                 "Inertia Canceling",
-                jetpackAugment,
+                createActionIcon("inertia_canceling"),
                 true,
                 SyncedKeybind.createConfigurable("key.gt.toggle_inertiacanceling", "Gregtech Armor", Keyboard.KEY_J),
                 BehaviorName.InertiaCanceling));
@@ -72,7 +74,7 @@ public class ArmorActionManager {
             new ArmorAction(
                 "omni_movement",
                 "Omni Movement",
-                jetpackAugment,
+                createActionIcon("omni_movement"),
                 true,
                 SyncedKeybind.createConfigurable("key.gt.toggle_omnimovement", "Gregtech Armor", Keyboard.KEY_V),
                 BehaviorName.OmniMovement));
@@ -81,7 +83,7 @@ public class ArmorActionManager {
             new ArmorAction(
                 "speed_increase",
                 "Speed Increase",
-                jetpackAugment,
+                createActionIcon("speed_increase"),
                 false,
                 SyncedKeybind.createConfigurable("key.gt.speed_increase", "Gregtech Armor", Keyboard.KEY_EQUALS),
                 BehaviorName.SpeedBoost));
@@ -90,7 +92,7 @@ public class ArmorActionManager {
             new ArmorAction(
                 "speed_decrease",
                 "Speed Decrease",
-                jetpackAugment,
+                createActionIcon("speed_decrease"),
                 false,
                 SyncedKeybind.createConfigurable("key.gt.speed_decrease", "Gregtech Armor", Keyboard.KEY_MINUS),
                 BehaviorName.SpeedBoost));
@@ -99,7 +101,7 @@ public class ArmorActionManager {
             new ArmorAction(
                 "force_field",
                 "Force Field",
-                jetpackAugment,
+                createActionIcon("force_field"),
                 true,
                 SyncedKeybind.createConfigurable("key.gt.force_field", "Gregtech Armor", Keyboard.KEY_K),
                 BehaviorName.ForceField));
@@ -108,7 +110,7 @@ public class ArmorActionManager {
             new ArmorAction(
                 "holo_inventory",
                 "Holo Inventory",
-                jetpackAugment,
+                createActionIcon("holo_inventory"),
                 true,
                 SyncedKeybind.createConfigurable("key.gt.toggle_holo_inventory", "Gregtech Armor", Keyboard.KEY_H),
                 BehaviorName.HoloInventory));
@@ -151,6 +153,14 @@ public class ArmorActionManager {
 
     private static void register(ArmorAction action) {
         REGISTRY.put(action.getId(), action);
+    }
+
+    private static Icon createActionIcon(String actionName) {
+        return UITexture.builder()
+            .location(GregTech.ID, "textures/items/mech_armor/radial_ui_actions/" + actionName + ".png")
+            .imageSize(16, 16)
+            .build()
+            .asIcon();
     }
 
     public static ArmorAction getAction(String id) {

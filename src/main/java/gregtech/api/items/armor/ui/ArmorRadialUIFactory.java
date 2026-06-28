@@ -1,9 +1,10 @@
 package gregtech.api.items.armor.ui;
 
+import static gregtech.api.modularui2.GTGuiTextures.OVERLAY_BUTTON_WHITELIST;
+
 import com.cleanroommc.modularui.api.GuiAxis;
 import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.api.drawable.IKey;
-import com.cleanroommc.modularui.drawable.Rectangle;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.value.BoolValue;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
@@ -21,7 +22,6 @@ public class ArmorRadialUIFactory {
 
     private static final int ROW_WIDTH = 120;
     private static final int ROW_HEIGHT = 18;
-    private static final int ICON_SIZE = 18;
     private static final int PANEL_PADDING = 4;
     private static final int LIST_ITEM_HEIGHT = 20;
     private static final int MIN_POPUP_HEIGHT = 100;
@@ -45,10 +45,12 @@ public class ArmorRadialUIFactory {
         panel.fullScreenInvisible();
         panel.child(radialContainer);
 
-        panel.child(new ButtonWidget<>().onMousePressed(mouseButton -> {
-            popupPanel.togglePanel();
-            return true;
-        }));
+        panel.child(
+            new ButtonWidget<>().overlay(OVERLAY_BUTTON_WHITELIST)
+                .onMousePressed(mouseButton -> {
+                    popupPanel.togglePanel();
+                    return true;
+                }));
 
         return panel;
     }
@@ -139,14 +141,7 @@ public class ArmorRadialUIFactory {
 
         flow.child(toggle);
 
-        // TODO: Replace placeholder Rectangle for an Icon (accessible with action.getIcon())
-        flow.child(
-            new Rectangle().asWidget()
-                .size(ICON_SIZE, ICON_SIZE));
-
-        flow.child(
-            new TextWidget<>(action.getDisplayName()).color(0xFFFFFF)
-                .paddingLeft(2));
+        flow.child(new TextWidget<>(action.getDisplayName()).paddingLeft(2));
 
         return new SortableListWidget.Item<>(actionId).child(flow);
     }
