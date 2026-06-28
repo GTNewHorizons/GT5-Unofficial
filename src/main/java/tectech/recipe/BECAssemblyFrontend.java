@@ -56,7 +56,8 @@ public class BECAssemblyFrontend extends AssemblyLineFrontend {
                 if (tier.tier > maxTier.tier) maxTier = tier;
             }
 
-            recipeInfo.drawText(GTUtility.translate("gt.tooltip.max-nanite", maxTier.describe()));
+            recipeInfo.drawText(GTUtility.translate("gt.tooltip.max-nanite"));
+            recipeInfo.drawText(maxTier.describe());
         }
     }
 }
