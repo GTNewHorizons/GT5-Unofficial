@@ -467,7 +467,7 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
                 }
                 return result;
             }
-        };
+        }.setMaxParallel(MAX_PARALLEL);
     }
 
     @Override
