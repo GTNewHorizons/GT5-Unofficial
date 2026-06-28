@@ -81,7 +81,8 @@ public class GTWorldgenerator implements IWorldGenerator {
         return clientOregenPattern;
     }
 
-    private static OregenPattern getServerOregenPattern() {
+    // Used in VisualProspecting
+    public static OregenPattern getServerOregenPattern() {
         return oregenPattern;
     }
 
