@@ -3198,52 +3198,6 @@ public class ResearchStationAssemblyLine implements Runnable {
             10 * SECONDS,
             (int) TierEU.RECIPE_UIV);
 
-        // Graviton Modulator 2
-        TTRecipeAdder.addResearchableAssemblylineRecipe(
-            CustomItemList.Godforge_GravitonFlowModulatorTier1.get(1),
-            96_000_000,
-            16_384,
-            (int) TierEU.RECIPE_UXV,
-            128,
-            new Object[] { CustomItemList.Godforge_MagneticConfinementCasing.get(1),
-                ItemRefer.Field_Restriction_Coil_T4.get(1),
-                GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Creon, 8),
-                GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.Mellion, 4),
-                GregtechItemList.Battery_Gem_4.get(4), GregtechItemList.Laser_Lens_Special.get(8),
-                ItemList.Emitter_UMV.get(4), new Object[] { OrePrefixes.circuit.get(Materials.UMV), 8L },
-                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Silver, 2),
-                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Gold, 2) },
-            new FluidStack[] { MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(1 * STACKS),
-                Materials.SuperconductorUMVBase.getMolten(1 * STACKS), Materials.SpaceTime.getMolten(1 * STACKS) },
-            CustomItemList.Godforge_GravitonFlowModulatorTier2.get(1),
-            10 * SECONDS,
-            (int) TierEU.RECIPE_UMV);
-
-        // Graviton Modulator 3
-        TTRecipeAdder.addResearchableAssemblylineRecipe(
-            CustomItemList.Godforge_GravitonFlowModulatorTier2.get(1),
-            192_000_000,
-            32_768,
-            (int) TierEU.RECIPE_MAX,
-            256,
-            new Object[] { CustomItemList.Godforge_MagneticConfinementCasing.get(1),
-                ItemRefer.Field_Restriction_Coil_T4.get(4),
-                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Creon, 8),
-                GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.Mellion, 64),
-                GregtechItemList.SpaceTimeContinuumRipper.get(8), GregtechItemList.Battery_Gem_4.get(8),
-                GregtechItemList.Laser_Lens_Special.get(8), ItemList.Emitter_UXV.get(4),
-                new Object[] { OrePrefixes.circuit.get(Materials.MAX), 4L },
-                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Silver, 8),
-                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Gold, 8),
-                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.SixPhasedCopper, 8),
-                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Universium, 8) },
-            new FluidStack[] { MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(4 * STACKS),
-                Materials.SuperconductorUMVBase.getMolten(4 * STACKS), Materials.WhiteDwarfMatter.getMolten(4 * STACKS),
-                Materials.Eternity.getMolten(4 * STACKS) },
-            CustomItemList.Godforge_GravitonFlowModulatorTier3.get(1),
-            10 * SECONDS,
-            (int) TierEU.RECIPE_UXV);
-
         // Phonon Transmission Conduit
         TTRecipeAdder.addResearchableAssemblylineRecipe(
             ItemList.Relativistic_Heat_Capacitor.get(1),
