@@ -24,18 +24,18 @@ import gregtech.common.items.armor.MechArmorBase;
 
 public class ArmorRadialMenuSession {
 
-    private static final int ARMOR_SLOTS_COUNT = 4;
+    public static final int ARMOR_SLOTS_COUNT = 4;
 
     private final EntityPlayer player;
     private final PanelSyncManager syncManager;
     private final NBTTagCompound nbt;
 
-    private final Set<String> activeSet = new HashSet<>();
+    private final Set<String> visibleSet = new HashSet<>();
     private final List<String> currentOrder = new ArrayList<>();
 
     private final StringSyncValue actionTriggerSync;
     private StringSyncValue syncedOrder;
-    private StringSyncValue syncedActive;
+    private StringSyncValue syncedVisible;
 
     private Runnable onMenuUpdateCallback;
 
@@ -46,8 +46,8 @@ public class ArmorRadialMenuSession {
 
         this.actionTriggerSync = createActionSync();
 
-        Set<BehaviorName> activeBehaviors = getActiveArmorBehaviors();
-        List<String> validActionIds = filterValidActions(activeBehaviors);
+        Set<BehaviorName> visibleBehaviors = getVisibleArmorBehaviors();
+        List<String> validActionIds = filterValidActions(visibleBehaviors);
         initSyncAndCollections(validActionIds);
     }
 
@@ -63,17 +63,17 @@ public class ArmorRadialMenuSession {
         return actionTriggerSync;
     }
 
-    public boolean isActive(String actionId) {
-        return activeSet.contains(actionId);
+    public boolean isVisible(String actionId) {
+        return visibleSet.contains(actionId);
     }
 
-    public void toggleActiveState(String actionId, boolean isActive) {
-        if (isActive) {
-            this.activeSet.add(actionId);
+    public void toggleVisibleState(String actionId, boolean isVisible) {
+        if (isVisible) {
+            this.visibleSet.add(actionId);
         } else {
-            this.activeSet.remove(actionId);
+            this.visibleSet.remove(actionId);
         }
-        this.syncedActive.setStringValue(String.join(",", this.activeSet) + ",");
+        this.syncedVisible.setStringValue(String.join(",", this.visibleSet) + ",");
         triggerUiUpdate();
     }
 
@@ -86,6 +86,30 @@ public class ArmorRadialMenuSession {
 
     public void setUiUpdateCallback(Runnable callback) {
         this.onMenuUpdateCallback = callback;
+    }
+
+    public boolean getActionToggleState(String actionId) {
+        ArmorAction action = ArmorActionManager.getAction(actionId);
+        if (action == null) return false;
+
+        for (int i = 0; i < ARMOR_SLOTS_COUNT; i++) {
+            ItemStack armorPiece = player.getCurrentArmor(i);
+
+            if (armorPiece == null) continue;
+            if (!(armorPiece.getItem() instanceof MechArmorBase)) continue;
+
+            ArmorState state = new ArmorState();
+            ArmorContext.ArmorContextImpl context = new ArmorContext.ArmorContextImpl(player, armorPiece, state);
+            ArmorState.load(context);
+
+            if (action.getBehaviorName() != null) {
+                if (context.hasBehavior(action.getBehaviorName())) {
+                    return context.isBehaviorActive(action.getBehaviorName());
+                }
+            }
+        }
+
+        return false;
     }
 
     private void triggerUiUpdate() {
@@ -151,21 +175,21 @@ public class ArmorRadialMenuSession {
         return persisted.getCompoundTag("ArmorRadialSettings");
     }
 
-    private Set<BehaviorName> getActiveArmorBehaviors() {
-        Set<BehaviorName> activeBehaviors = new HashSet<>();
+    private Set<BehaviorName> getVisibleArmorBehaviors() {
+        Set<BehaviorName> visibleBehaviors = new HashSet<>();
         for (int i = 0; i < ARMOR_SLOTS_COUNT; i++) {
             ItemStack armorPiece = this.player.getCurrentArmor(i);
             if (armorPiece != null) {
-                activeBehaviors.addAll(ArmorState.load(armorPiece).behaviors.keySet());
+                visibleBehaviors.addAll(ArmorState.load(armorPiece).behaviors.keySet());
             }
         }
-        return activeBehaviors;
+        return visibleBehaviors;
     }
 
-    private List<String> filterValidActions(Set<BehaviorName> activeBehaviors) {
+    private List<String> filterValidActions(Set<BehaviorName> visibleBehaviors) {
         List<String> validActionIds = new ArrayList<>();
         for (ArmorAction action : ArmorActionManager.getAllActions()) {
-            if (action.getBehaviorName() == null || activeBehaviors.contains(action.getBehaviorName())) {
+            if (action.getBehaviorName() == null || visibleBehaviors.contains(action.getBehaviorName())) {
                 validActionIds.add(action.getId());
             }
         }
@@ -179,15 +203,15 @@ public class ArmorRadialMenuSession {
             () -> this.nbt.hasKey("RadialOrder") ? this.nbt.getString("RadialOrder") : defaultString,
             (newOrder) -> this.nbt.setString("RadialOrder", newOrder)).allowC2S();
 
-        this.syncedActive = new StringSyncValue(
-            () -> this.nbt.hasKey("RadialActive") ? this.nbt.getString("RadialActive") : defaultString,
-            (newActive) -> this.nbt.setString("RadialActive", newActive)).allowC2S();
+        this.syncedVisible = new StringSyncValue(
+            () -> this.nbt.hasKey("RadialVisible") ? this.nbt.getString("RadialVisible") : defaultString,
+            (newVisible) -> this.nbt.setString("RadialVisible", newVisible)).allowC2S();
 
         this.syncManager.syncValue("orderSync", this.syncedOrder);
-        this.syncManager.syncValue("activeSync", this.syncedActive);
+        this.syncManager.syncValue("visibleSync", this.syncedVisible);
 
         parseCurrentOrder(validActionIds);
-        parseActiveSet();
+        parseVisibleSet();
     }
 
     private void parseCurrentOrder(List<String> validActionIds) {
@@ -205,12 +229,12 @@ public class ArmorRadialMenuSession {
         }
     }
 
-    private void parseActiveSet() {
-        this.activeSet.clear();
-        for (String s : this.syncedActive.getStringValue()
+    private void parseVisibleSet() {
+        this.visibleSet.clear();
+        for (String s : this.syncedVisible.getStringValue()
             .split(",")) {
             if (!s.isEmpty()) {
-                this.activeSet.add(s);
+                this.visibleSet.add(s);
             }
         }
     }

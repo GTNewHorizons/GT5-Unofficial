@@ -2,9 +2,12 @@ package gregtech.api.items.armor.ui;
 
 import static gregtech.api.modularui2.GTGuiTextures.OVERLAY_BUTTON_WHITELIST;
 
+import net.minecraft.util.EnumChatFormatting;
+
 import com.cleanroommc.modularui.api.GuiAxis;
 import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.api.drawable.IKey;
+import com.cleanroommc.modularui.drawable.DynamicDrawable;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.value.BoolValue;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
@@ -15,6 +18,7 @@ import com.cleanroommc.modularui.widgets.layout.Flow;
 
 import gregtech.api.items.armor.ArmorAction;
 import gregtech.api.items.armor.ArmorActionManager;
+import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.gui.modularui.widget.radialmenu.RadialMenuBuilder;
 import gregtech.common.gui.modularui.widget.radialmenu.RadialMenuTheme;
 
@@ -29,11 +33,7 @@ public class ArmorRadialUIFactory {
     public static ModularPanel createMainPanel(ArmorRadialMenuSession session) {
         ModularPanel panel = ModularPanel.defaultPanel("Armor Settings Panel");
 
-        Flow radialContainer = new Flow(GuiAxis.X).relativeToScreen()
-            .top(0)
-            .bottom(0)
-            .left(0)
-            .right(0);
+        Flow radialContainer = new Flow(GuiAxis.X);
 
         session.setUiUpdateCallback(() -> updateRadialMenu(radialContainer, session));
 
@@ -66,9 +66,19 @@ public class ArmorRadialUIFactory {
             ArmorAction action = ArmorActionManager.getAction(actionId);
             if (action == null) continue;
 
-            if (!action.isToggle() || session.isActive(actionId)) {
+            IKey displayName = IKey.str(action.getDisplayName());
+
+            if (action.isToggle()) {
+                if (session.getActionToggleState(actionId)) {
+                    displayName.style(EnumChatFormatting.GREEN);
+                } else {
+                    displayName.style(EnumChatFormatting.RED);
+                }
+            } ;
+
+            if (!action.isToggle() || session.isVisible(actionId)) {
                 builder.option()
-                    .label(IKey.str(action.getDisplayName()))
+                    .label(displayName)
                     .onClicked(
                         () -> session.getActionTriggerSync()
                             .setStringValue(action.getId()))
@@ -134,10 +144,18 @@ public class ArmorRadialUIFactory {
             .size(ROW_WIDTH, ROW_HEIGHT);
 
         BoolValue.Dynamic localToggle = new BoolValue.Dynamic(
-            () -> !session.isActive(actionId),
-            (newState) -> session.toggleActiveState(actionId, !newState));
+            () -> !session.isVisible(actionId),
+            (newState) -> session.toggleVisibleState(actionId, !newState));
 
         ToggleButton toggle = new ToggleButton().value(localToggle);
+
+        toggle.overlay(new DynamicDrawable(() -> {
+            if (toggle.isValueSelected()) {
+                return GTGuiTextures.OVERLAY_BUTTON_CROSS;
+            } else {
+                return GTGuiTextures.OVERLAY_BUTTON_CHECKMARK;
+            }
+        }));
 
         flow.child(toggle);
 
