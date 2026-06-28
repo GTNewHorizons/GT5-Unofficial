@@ -7,6 +7,7 @@ import static gregtech.api.enums.Mods.Botania;
 import static gregtech.api.enums.Mods.EnderIO;
 import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.util.GTUtility.getColoredTierNameFromTier;
+import static gregtech.api.util.GTUtility.max;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -85,6 +86,13 @@ public class GlassTier {
         if (subtier == 0) {
             mainGlass.set(tier - minTier, Pair.of(block, meta));
         }
+    }
+
+    /**
+     * Used for determining maximum tier of a multiblock, extra glass type should not be considered tiered.
+     */
+    public int getMaxTierIndex() {
+        return maxTier - minTier + 1;
     }
 
     /**
