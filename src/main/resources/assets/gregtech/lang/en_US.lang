@@ -8821,6 +8821,7 @@ gt.blockmachines.hatch.bec.name=Bose-Einstein Condensate Hatch
 gt.blockmachines.hatch.nanite-detector.name=Nanite Detector Hatch
 gt.blockmachines.hatch.io-node-controller.name=Teleportation Node Controller Hatch
 gt.blockmachines.hatch.condensate-detector.name=Bose-Einstein Condensate Detector Hatch
+gt.blockmachines.hatch.line-of-sight-connector.name=Line-Of-Sight Connector Hatch
 
 gt.blockmachines.multi.bec.generator.name=Bose-Einstein Condensate Entanglement Apparatus
 gt.blockmachines.multi.bec.storage.name=Bose-Einstein Condensate Containment Field
@@ -8874,7 +8875,7 @@ GT5U.gui.text.bec-speed-divisor=Speed Divisor
 
 # Misc BEC Tooltips
 gt.tooltip.nanite-tier=Nanite Tier: %s
-gt.tooltip.max-nanite=Max Nanite Tier: %s
+gt.tooltip.max-nanite=Max Nanite Tier:
 GT5U.gui.text.pause-immediately.tooltip=The I/O Node will stop processing when it receives a redstone signal
 GT5U.gui.text.pause-next-step.tooltip=The I/O Node will stop upon transitioning into a new input step when it receives a redstone signal
 
