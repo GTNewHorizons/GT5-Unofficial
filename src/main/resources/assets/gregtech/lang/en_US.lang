@@ -1675,8 +1675,7 @@ GT5U.MBTT.Tiers.Glass=Glass
 GT5U.MBTT.Tiers.ComponentAssemblyLineCasing=Component Assembly Line Casing
 GT5U.MBTT.Steam.Speed=%s faster than using single block steam machines of the same pressure
 GT5U.MBTT.Steam.Eff=Only consumes steam at %s of the steam flowrate normally required
-GT5U.MBTT.Structure.SeeStructure1=To see the structure, use a
-GT5U.MBTT.Structure.SeeStructure2=Hologram Projector on the Controller!
+GT5U.MBTT.Structure.Projector=§fUse the Multiblock Structure §9Hologram §1Projector§f to visualize/build the structure!
 GT5U.MBTT.Structure.MinGlassForLaser=-tier §fGlass§7 required for §9Tec§1Tech§7 Laser Hatches
 GT5U.MBTT.Structure.GlassEnergyLimit=Energy Hatch limited by §fGlass§7 Tier
 GT5U.MBTT.Structure.GlassEnergyLimitTier=-tier unlocks all
@@ -1799,7 +1798,7 @@ gt.multiblock.NeutralizationEngine.decay_boost.4=Every §fminute§7, §dRobot Ar
 gt.multiblock.NeutralizationEngine.structure_tiers=Structure has §f3 Tiers§7, §fTier §7determines §9Base Decay §7and §3Capacity§7:
 gt.multiblock.NeutralizationEngine.tier_info=§fT%d§7 : §f%s§7 : §9%d§7 : §3%s
 
-GT5U.MBTT.subchannel=Uses sub channel §b%s§7 for §b%s
+GT5U.MBTT.subchannel=Follows subchannel §b%s§7 for §b%s
 
 GT5U.MBTT.CokeOvenHatch=Coke Oven Hatch
 GT5U.MBTT.CryotheumHatch=Cryotheum Cooling Hatch

@@ -100,8 +100,7 @@ public class MultiblockTooltipBuilder {
     private static final String TT_structurehint = StatCollector.translateToLocal("GT5U.MBTT.StructureHint");
     private static final String TT_addedBy = StatCollector.translateToLocal("GT5U.MBTT.Mod");
     private static final String TT_air = StatCollector.translateToLocal("GT5U.MBTT.Air");
-    private static final String TT_SeeStructure1 = StatCollector.translateToLocal("GT5U.MBTT.Structure.SeeStructure1");
-    private static final String TT_SeeStructure2 = StatCollector.translateToLocal("GT5U.MBTT.Structure.SeeStructure2");
+    private static final String TT_projector = StatCollector.translateToLocal("GT5U.MBTT.Structure.Projector");
     private static final String TT_PerfectOC = StatCollector.translateToLocal("GT5U.MBTT.PerfectOC");
     private static final String[] TT_dots = IntStream.range(0, 16)
         .mapToObj(i -> StatCollector.translateToLocal("structurelib.blockhint." + i + ".name"))
@@ -1476,19 +1475,17 @@ public class MultiblockTooltipBuilder {
         if (useFinisherConfig) {
             switch (GTMod.proxy.tooltipFinisherStyle) {
                 case 0 -> {}
-                case 1 -> sLines.add(TAB + " ");
-                case 2 -> sLines.add(TAB + color + StringUtils.getRepetitionOf('-', length));
+                case 1 -> sLines.add(" ");
+                case 2 -> sLines.add(color + StringUtils.getRepetitionOf('-', length));
                 default -> sLines.add(
-                    TAB + color.toString()
-                        + EnumChatFormatting.STRIKETHROUGH
-                        + StringUtils.getRepetitionOf('-', length));
+                    color.toString() + EnumChatFormatting.STRIKETHROUGH + StringUtils.getRepetitionOf('-', length));
             }
         } else {
             switch (GTMod.proxy.getSeparatorStyle()) {
-                case Empty -> sLines.add(TAB + " ");
-                case Dashes -> sLines.add(TAB + color + StringUtils.getRepetitionOf('-', length));
-                case ContinuousLine -> sLines
-                    .add(TAB + color + EnumChatFormatting.STRIKETHROUGH + StringUtils.getRepetitionOf('-', length));
+                case Empty -> sLines.add(" ");
+                case Dashes -> sLines.add(color + StringUtils.getRepetitionOf('-', length));
+                case ContinuousLine -> sLines.add(
+                    color.toString() + EnumChatFormatting.STRIKETHROUGH + StringUtils.getRepetitionOf('-', length));
             }
         }
         return this;
@@ -1668,15 +1665,7 @@ public class MultiblockTooltipBuilder {
 
         hLines.add(TT_structurehint);
         this.addStructureInfoSeparator(EnumChatFormatting.GRAY, 30, true);
-        sLines.add(
-            EnumChatFormatting.WHITE + TT_SeeStructure1
-                + EnumChatFormatting.BLUE
-                + " Structure"
-                + EnumChatFormatting.DARK_BLUE
-                + "Lib "
-                + EnumChatFormatting.RESET
-                + EnumChatFormatting.WHITE
-                + TT_SeeStructure2);
+        sLines.add(TT_projector);
         // create the final arrays
         iArray = iLines.toArray(new String[0]);
         sArray = sLines.toArray(new String[0]);
