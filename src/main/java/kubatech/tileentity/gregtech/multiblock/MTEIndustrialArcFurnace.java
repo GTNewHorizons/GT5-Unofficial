@@ -843,10 +843,13 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
 
     @Override
     public boolean onRunningTick(ItemStack aStack) {
-        if (phase == ArcFurnacePhase.ArcIgnition && lEUt < 0 && !drainEnergyInput(getActualEnergyUsage())) {
-            checkRecipeResult = insufficientStartupPowerWithAmperageEstimate();
-            stopMachine(ShutDownReasonRegistry.POWER_LOSS);
-            return false;
+        if (phase == ArcFurnacePhase.ArcIgnition) {
+            if (lEUt < 0 && !drainEnergyInput(getActualEnergyUsage())) {
+                checkRecipeResult = insufficientStartupPowerWithAmperageEstimate();
+                stopMachine(ShutDownReasonRegistry.POWER_LOSS);
+                return false;
+            }
+            return true;
         }
         return super.onRunningTick(aStack);
     }
@@ -923,8 +926,7 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
             @Override
             protected @NotNull CheckRecipeResult applyRecipe(@NotNull GTRecipe recipe, @NotNull ParallelHelper helper,
                 @NotNull OverclockCalculator calculator, @NotNull CheckRecipeResult result) {
-                if (phase == ArcFurnacePhase.ArcIgnition
-                    && this.availableVoltage * this.availableAmperage < startupRequiredPower) {
+                if (phase == ArcFurnacePhase.ArcIgnition && getMaxInputEu() < startupRequiredPower) {
                     return insufficientStartupPowerWithAmperageEstimate();
                 }
 
@@ -959,11 +961,7 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
                 applySpecialEffect(afterRecipe);
                 this.calculatedEut = afterRecipe.eut;
                 if (phase == ArcFurnacePhase.ArcIgnition) {
-                    this.calculatedEut = (long) (getAverageInputVoltage() * 30d
-                        / 32d
-                        * this.maxParallel
-                        * (electrode.startupSurge + 1d)
-                        * electrode.amperagePerParallel);
+                    this.calculatedEut = startupRequiredPower;
                     sendSound(START_ARC_SOUND_INDEX);
                     return SimpleCheckRecipeResult.ofSuccess("arc_ignition");
                 }
@@ -986,7 +984,8 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
                 if (phase == ArcFurnacePhase.ArcIgnition || (mode == ArcFurnaceMode.Ore && recipe == fakeRecipe())) {
                     return super.createOverclockCalculator(fakeRecipe()).setNoOverclock(true)
                         .setAmperage(1)
-                        .setEUt(this.availableVoltage * this.availableAmperage)
+                        .setEUt(getMaxInputEu())
+                        .setEUtDiscount(1)
                         .setDurationModifier(1);
                 }
                 OverclockCalculator calculator = super.createOverclockCalculator(recipe)
@@ -1014,7 +1013,6 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
                     // we set here to generate insufficient power error
                     ignitionRecipe.mEUt = (int) Math.min(use, Integer.MAX_VALUE);
                     ignitionRecipe.mDuration = STARTUP_DURATION_TICKS;
-                    startupRequiredPower = ignitionRecipe.mEUt;
                     ArcFurnaceProcessingEvent.EventStartIgnition event = new ArcFurnaceProcessingEvent.EventStartIgnition(
                         MTEIndustrialArcFurnace.this,
                         ignitionRecipe.mDuration,
@@ -1022,7 +1020,11 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
                     applySpecialEffect(event);
                     ignitionRecipe.mEUt = event.eut;
                     ignitionRecipe.mDuration = event.duration;
-                    return super.createParallelHelper(ignitionRecipe).setConsumption(false)
+                    startupRequiredPower = ignitionRecipe.mEUt;
+                    return super.createParallelHelper(ignitionRecipe)
+                        .setAvailableEUt(getMaxInputEu())
+                        .setEUtModifier(1)
+                        .setConsumption(false)
                         .setMaxParallel(1);
                 }
                 if (phase == ArcFurnacePhase.Processing && mode == ArcFurnaceMode.Ore && recipe == fakeRecipe()) {
