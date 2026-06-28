@@ -1,5 +1,7 @@
 package gtPlusPlus.xmod.gregtech.loaders;
 
+import static gregtech.api.util.GTRecipeConstants.SKIP_CELL_RECIPE_GENERATION;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -56,6 +58,7 @@ public class RecipeGenMultisUsingFluidInsteadOfCells {
 
         recipeLoop: for (GTRecipe recipe : aInputs.getAllRecipes()) {
             if (recipe == null) continue;
+            if (recipe.getMetadataOrDefault(SKIP_CELL_RECIPE_GENERATION, false)) continue;
 
             ArrayList<ItemStack> aInputItemsMap = new ArrayList<>();
             ArrayList<ItemStack> aOutputItemsMap = new ArrayList<>();

@@ -73,16 +73,42 @@ public interface IGregTechDeviceInformation {
     }
 
     /**
+     * Marker prepended to an {@link #encode} argument that is itself a translation key. {@link #decode} and
+     * {@link #toComponent} resolve such arguments in the reader's language instead of inserting them verbatim, so the
+     * substitution is translated client-side rather than in the server locale.
+     */
+    char TRANSLATABLE_MARKER = '\u0001';
+
+    /**
+     * Wraps a translation key so that, when passed as an argument to {@link #encode}, it is translated on decode in the
+     * reader's own language rather than inserted as a raw string. Use this for substitution values that are themselves
+     * localizable (e.g. fluid or particle names) to keep translation deferred to the client.
+     */
+    static String translatable(String key) {
+        return TRANSLATABLE_MARKER + key;
+    }
+
+    /**
      * Converts a string produced by {@link #encode} (or a bare translation key) into an {@link IChatComponent} so
      * the client resolves the translation key in the player's own language.
+     * Due to current workaround, the key part must not contain any % or it will be converted away. You should use a
+     * lang key instead.
      * <p>
      * Prefer this over {@link #decode} when sending chat messages from the server.
      */
     static IChatComponent toComponent(String encoded) {
         if (encoded == null) return new ChatComponentTranslation("");
         String[] parts = encoded.split("\\\\\\\\");
+        parts[0] = parts[0].replaceAll("%", "%%");
         if (parts.length == 1) return new ChatComponentTranslation(parts[0]);
-        return new ChatComponentTranslation(parts[0], (Object[]) Arrays.copyOfRange(parts, 1, parts.length));
+        Object[] args = Arrays.copyOfRange(parts, 1, parts.length);
+        for (int i = 0; i < args.length; i++) {
+            String arg = (String) args[i];
+            if (arg != null && !arg.isEmpty() && arg.charAt(0) == TRANSLATABLE_MARKER) {
+                args[i] = new ChatComponentTranslation(arg.substring(1));
+            }
+        }
+        return new ChatComponentTranslation(parts[0], args);
     }
 
     /**
@@ -98,6 +124,12 @@ public interface IGregTechDeviceInformation {
         String translated = StatCollector.translateToLocal(parts[0]);
         if (parts.length == 1) return translated;
         Object[] args = Arrays.copyOfRange(parts, 1, parts.length);
+        for (int i = 0; i < args.length; i++) {
+            String arg = (String) args[i];
+            if (arg != null && !arg.isEmpty() && arg.charAt(0) == TRANSLATABLE_MARKER) {
+                args[i] = StatCollector.translateToLocal(arg.substring(1));
+            }
+        }
         try {
             return String.format(translated, (Object[]) args);
         } catch (Exception e) {
