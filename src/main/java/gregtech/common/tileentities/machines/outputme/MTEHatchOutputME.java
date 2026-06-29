@@ -571,7 +571,7 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
         }
 
         @Override
-        public boolean storePartial(GTUtility.FluidId id, FluidStack stack) {
+        public boolean storePartial(GTUtility.FluidId id, @NotNull FluidStack stack) {
             if (!active) throw new IllegalStateException("Cannot add to a transaction after committing it");
 
             if (isRecipeCheck && provider.shouldCheck()) {
@@ -591,7 +591,7 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
         }
 
         @Override
-        public void completeFluid(GTUtility.FluidId id) {
+        public void complete(GTUtility.FluidId id) {
             // Do nothing
         }
 

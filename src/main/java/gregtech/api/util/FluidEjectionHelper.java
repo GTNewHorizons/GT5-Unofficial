@@ -107,7 +107,7 @@ public class FluidEjectionHelper {
                 if (ofType == null) continue;
 
                 GTDataUtils
-                    .addAllFiltered(ofType, transactions, t -> !t.isFiltered() || t.isFilteredToFluid(parallelData.id));
+                    .addAllFiltered(ofType, transactions, t -> !t.isFiltered() || t.isFilteredTo(parallelData.id));
             }
 
             parallelData.outputs = Iterators.peekingIterator(transactions.iterator());
@@ -129,7 +129,7 @@ public class FluidEjectionHelper {
 
                 // If this hatch is completely full, don't bother checking it.
                 if (!transaction.hasAvailableSpace()) {
-                    transaction.completeFluid(output.id);
+                    transaction.complete(output.id);
                     outputHatches.next();
                     continue;
                 }

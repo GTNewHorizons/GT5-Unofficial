@@ -143,7 +143,7 @@ public class ItemEjectionHelper {
 
                 // If this bus is completely full, don't bother checking it.
                 if (!transaction.hasAvailableSpace()) {
-                    transaction.completeItem(output.id);
+                    transaction.complete(output.id);
                     outputBusses.next();
                     continue;
                 }

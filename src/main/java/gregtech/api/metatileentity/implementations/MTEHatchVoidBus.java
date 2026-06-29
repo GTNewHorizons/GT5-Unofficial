@@ -244,7 +244,7 @@ public class MTEHatchVoidBus extends MTEHatchOutputBus implements IAddGregtechLo
         }
 
         @Override
-        public void completeItem(GTUtility.ItemId id) {
+        public void complete(GTUtility.ItemId id) {
             // do nothing
         }
 

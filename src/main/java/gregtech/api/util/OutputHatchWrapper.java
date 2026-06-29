@@ -100,8 +100,8 @@ public class OutputHatchWrapper implements IOutputHatch {
         }
 
         @Override
-        public void completeFluid(GTUtility.FluidId id) {
-            transaction.completeFluid(id);
+        public void complete(GTUtility.FluidId id) {
+            transaction.complete(id);
         }
 
         @Override
