@@ -406,8 +406,16 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
         return new ProcessingLogic() {
 
             @Override
+            protected @NotNull CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
+                if (availableAmperage * availableVoltage < recipe.mEUt) {
+                    return CheckRecipeResultRegistry.insufficientPower(recipe.mEUt);
+                }
+                return super.validateRecipe(recipe);
+            }
+
+            @Override
             protected @NotNull OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                return OverclockCalculator.ofNoOverclock(recipe);
+                return super.createOverclockCalculator(recipe).setNoOverclock(true);
             }
 
             @Override
@@ -452,10 +460,13 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
                     currentRecipeMaxAmountA = metadata.amount_A * activeParallel;
                     currentRecipeMaxAmountB = metadata.amount_B * activeParallel;
                     duration = currentRecipeMaxAmountA + currentRecipeMaxAmountB;
+                    calculatedEut = recipe.mEUt; // Set the real eu/t usage or else it will not consume power
                 }
                 return result;
             }
-        }.setMaxParallel(MAX_PARALLEL);
+        }.setEuModifier(0) // Set eu/t to 0 for parallel calculation
+            .setMaxParallel(MAX_PARALLEL)
+            .setUnlimitedTierSkips();
     }
 
     @Override
