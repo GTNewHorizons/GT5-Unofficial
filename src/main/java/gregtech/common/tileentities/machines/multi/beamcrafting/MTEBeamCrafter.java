@@ -416,7 +416,7 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
                     (GTRecipe recipe, int maxParallel, FluidStack[] fluids, ItemStack[] items) -> {
                         BeamCrafterMetadata metadata = recipe.getMetadata(BEAMCRAFTER_METADATA);
                         if (metadata == null) return 0;
-                        int parallel = Math.min(MAX_PARALLEL, maxParallel);
+                        int parallel = Math.min(maxParallel, (int) recipe.maxParallelCalculatedByInputs(maxParallel, fluids, items));
 
                         if (metadata.particleID_A == metadata.particleID_B) {
                             int available = bufferMap.getOrDefault(metadata.particleID_A, 0);
