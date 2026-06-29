@@ -52,6 +52,9 @@ public class ItemEjectionHelper {
             if (transaction instanceof IOutputBusTransaction.IRecipeCheckAware tran) {
                 tran.setRecipeCheck(isRecipeCheck);
             }
+            if (transaction instanceof IOutputBusTransaction.IProtectOutputAware tran) {
+                tran.setProtectOutput(protectItems);
+            }
             transactionsByType.computeIfAbsent(bus.getBusType(), x -> new ArrayList<>())
                 .add(transaction);
         }

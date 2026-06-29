@@ -191,12 +191,14 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
             .getItemInventory();
     }
 
-    class MEOutputBusTransaction implements IOutputBusTransaction, IOutputBusTransaction.IRecipeCheckAware {
+    class MEOutputBusTransaction implements IOutputBusTransaction, IOutputBusTransaction.IRecipeCheckAware,
+        IOutputBusTransaction.IProtectOutputAware {
 
         private final AECacheCounter<GTUtility.ItemId> cache = new AECacheCounter<>();
         private final long availableSpace;
         private boolean active = true;
         private boolean isRecipeCheck = false;
+        private boolean isProtectOutput = true;
         private IMEInventoryHandler<IAEItemStack> cell = null;
 
         public MEOutputBusTransaction() {
@@ -214,6 +216,10 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
             }
         }
 
+        public void setProtectOutput(boolean isProtectOutput) {
+            this.isProtectOutput = isProtectOutput;
+        }
+
         @Override
         public IOutputBus getBus() {
             return MTEHatchOutputBusME.this;
@@ -221,7 +227,7 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
 
         @Override
         public boolean hasAvailableSpace() {
-            return !isRecipeCheck || cache.getTotal() < availableSpace;
+            return (isProtectOutput && !isRecipeCheck) || cache.getTotal() < availableSpace;
         }
 
         @Override

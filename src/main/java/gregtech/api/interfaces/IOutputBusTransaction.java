@@ -53,4 +53,10 @@ public interface IOutputBusTransaction {
 
         void setRecipeCheck(boolean isRecipeCheck);
     }
+
+    interface IProtectOutputAware {
+
+        void setProtectOutput(boolean isProtectOutput);
+    }
+
 }

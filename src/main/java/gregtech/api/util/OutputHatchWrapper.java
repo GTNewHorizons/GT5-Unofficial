@@ -54,8 +54,8 @@ public class OutputHatchWrapper implements IOutputHatch {
         return new FilteredTransactionWrapper();
     }
 
-    public class FilteredTransactionWrapper
-        implements IOutputHatchTransaction, IOutputHatchTransaction.IRecipeCheckAware {
+    public class FilteredTransactionWrapper implements IOutputHatchTransaction,
+        IOutputHatchTransaction.IRecipeCheckAware, IOutputHatchTransaction.IProtectOutputAware {
 
         private final OutputHatchWrapper hatch = OutputHatchWrapper.this;
         private final IOutputHatchTransaction transaction = OutputHatchWrapper.this.outputHatch.createTransaction();
@@ -72,6 +72,12 @@ public class OutputHatchWrapper implements IOutputHatch {
             }
         }
 
+        @Override
+        public void setProtectOutput(boolean isProtectOutput) {
+            if (transaction instanceof IOutputHatchTransaction.IProtectOutputAware rt) {
+                rt.setProtectOutput(isProtectOutput);
+            }
+        }
         @Override
         public boolean hasAvailableSpace() {
             return transaction.hasAvailableSpace();

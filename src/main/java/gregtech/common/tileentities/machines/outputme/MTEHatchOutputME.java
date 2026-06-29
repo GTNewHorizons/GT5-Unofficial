@@ -518,12 +518,14 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
         return new MEOutputHatchTransaction();
     }
 
-    class MEOutputHatchTransaction implements IOutputHatchTransaction, IOutputHatchTransaction.IRecipeCheckAware {
+    class MEOutputHatchTransaction implements IOutputHatchTransaction, IOutputHatchTransaction.IRecipeCheckAware,
+        IOutputHatchTransaction.IProtectOutputAware {
 
         private final AECacheCounter<GTUtility.FluidId> cache = new AECacheCounter<>();
         private final long availableSpace;
         private boolean active = true;
         private boolean isRecipeCheck = false;
+        private boolean isProtectOutput = true;
         private IMEInventoryHandler<IAEFluidStack> cell = null;
 
         public MEOutputHatchTransaction() {
@@ -541,6 +543,10 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
             }
         }
 
+        public void setProtectOutput(boolean isProtectOutput) {
+            this.isProtectOutput = isProtectOutput;
+        }
+
         @Override
         public IOutputHatch getHatch() {
             return MTEHatchOutputME.this;
@@ -548,7 +554,7 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
 
         @Override
         public boolean hasAvailableSpace() {
-            return !isRecipeCheck || cache.getTotal() < availableSpace;
+            return (isProtectOutput && !isRecipeCheck) || cache.getTotal() < availableSpace;
         }
 
         @Override

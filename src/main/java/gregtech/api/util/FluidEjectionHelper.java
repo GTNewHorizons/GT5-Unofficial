@@ -44,6 +44,9 @@ public class FluidEjectionHelper {
             if (transaction instanceof IOutputHatchTransaction.IRecipeCheckAware tran) {
                 tran.setRecipeCheck(isRecipeCheck);
             }
+            if (transaction instanceof IOutputHatchTransaction.IProtectOutputAware tran) {
+                tran.setProtectOutput(protectFluids);
+            }
             transactionsByType.computeIfAbsent(hatch.getHatchType(), x -> new ArrayList<>())
                 .add(transaction);
         }
