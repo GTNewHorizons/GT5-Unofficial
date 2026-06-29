@@ -11,9 +11,15 @@ import static galacticgreg.api.enums.DimensionDef.DimNames.ROSS128BA;
 import static galacticgreg.api.enums.DimensionDef.DimNames.THE_END;
 import static galacticgreg.api.enums.DimensionDef.DimNames.TWILIGHT_FOREST;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import net.minecraft.item.ItemStack;
+
 import bartworks.system.material.WerkstoffLoader;
 import galacticgreg.api.enums.DimensionDef;
-import gregtech.GTMod;
 import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -22,13 +28,6 @@ import gregtech.common.WorldgenGTOreLayer;
 import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.core.material.MaterialsOres;
 import gtPlusPlus.core.material.nuclear.MaterialsFluorides;
-import gtneioreplugin.util.Oremix;
-import net.minecraft.item.ItemStack;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 public enum OreMixes {
 
@@ -1527,14 +1526,15 @@ public enum OreMixes {
     // used in the coremod, for the shuttle schematic recipe
     /**
      * Give all the stone variants of an ore, with the specified stack size.
-     * @param material The material of the ore
+     * 
+     * @param material  The material of the ore
      * @param stackSize The stacksize of the variants
      * @return The array containing all the stone variants of the given ore, with the given stack size
      */
-    public static ItemStack[] getOreVariants(IOreMaterial material, int stackSize){
+    public static ItemStack[] getOreVariants(IOreMaterial material, int stackSize) {
         List<ItemStack> variants = new ArrayList<>();
         Set<StoneType> stoneTypes = getStoneTypesFromMixes(material);
-        for (StoneType stoneType : stoneTypes){
+        for (StoneType stoneType : stoneTypes) {
             OrePrefixes prefix = stoneType.getPrefix();
             ItemStack ore = GTOreDictUnificator.get(prefix, material, 1L);
             if (!GTUtility.isStackValid(ore)) {
@@ -1549,7 +1549,7 @@ public enum OreMixes {
             }
         }
 
-        return variants.toArray(new ItemStack[]{});
+        return variants.toArray(new ItemStack[] {});
     }
 
     public static boolean containsStack(List<ItemStack> stacks, ItemStack candidate) {
@@ -1561,10 +1561,10 @@ public enum OreMixes {
         return false;
     }
 
-    public static List<OreMixes> getOreMixes(IOreMaterial material){
+    public static List<OreMixes> getOreMixes(IOreMaterial material) {
         List<OreMixes> mixes = new ArrayList<>();
-        for (OreMixes mix: OreMixes.VALUES){
-            if (mix.containMaterial(material)){
+        for (OreMixes mix : OreMixes.VALUES) {
+            if (mix.containMaterial(material)) {
                 mixes.add(mix);
             }
         }
@@ -1572,12 +1572,12 @@ public enum OreMixes {
         return mixes;
     }
 
-    public static Set<StoneType> getStoneTypesFromMixes(IOreMaterial material){
+    public static Set<StoneType> getStoneTypesFromMixes(IOreMaterial material) {
         List<OreMixes> mixes = getOreMixes(material);
         Set<StoneType> stoneTypes = new HashSet<>();
-        for (OreMixes mix : mixes){
+        for (OreMixes mix : mixes) {
             Set<String> dims = mix.oreMixBuilder.dimsEnabled;
-            for (String dim : dims){
+            for (String dim : dims) {
                 stoneTypes.addAll(StoneType.STONE_TYPES_BY_WORLD_NAME.get(dim));
             }
         }
@@ -1585,7 +1585,9 @@ public enum OreMixes {
         return stoneTypes;
     }
 
-    public boolean containMaterial(IOreMaterial material){
-        return oreMixBuilder.primary == material || oreMixBuilder.secondary == material || oreMixBuilder.sporadic == material || oreMixBuilder.between == material;
+    public boolean containMaterial(IOreMaterial material) {
+        return oreMixBuilder.primary == material || oreMixBuilder.secondary == material
+            || oreMixBuilder.sporadic == material
+            || oreMixBuilder.between == material;
     }
 }
