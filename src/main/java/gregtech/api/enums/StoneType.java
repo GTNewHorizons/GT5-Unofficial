@@ -191,12 +191,13 @@ public enum StoneType implements IStoneType {
 
     public static final ImmutableMap<OrePrefixes, List<StoneType>> STONE_TYPES_BY_PREFIX;
     public static final Map<String, List<StoneType>> STONE_TYPES_BY_WORLD_NAME = new HashMap<>();
+    public static final StoneType[] VALUES = StoneType.values();
     static {
         STONE_TYPES_BY_PREFIX = ImmutableMap.copyOf(
             StoneType.STONE_TYPES.stream()
                 .collect(Collectors.groupingBy(s -> s.builder.oreBlockPrefix)));
 
-        for (StoneType type : StoneType.values()) {
+        for (StoneType type : StoneType.VALUES) {
             for (String allowedDim : type.builder.allowedDimensions) {
                 if (STONE_TYPES_BY_WORLD_NAME.containsKey(allowedDim)) {
                     STONE_TYPES_BY_WORLD_NAME.get(allowedDim)
