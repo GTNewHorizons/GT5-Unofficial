@@ -110,14 +110,15 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 3, 3, true)
             .addController("Front bottom center")
-            .addCasingInfoRange("Heat Proof Machine Casing", 7, 14, false)
-            .addOtherStructurePart("Heating Coil", "Middle layer")
-            .addEnergyHatch("Any bottom Casing", 1)
-            .addMaintenanceHatch("Any Heat Proof Machine Casing", 1, 3)
-            .addMufflerHatch("Top Middle", 2)
-            .addInputBus("Any bottom Casing", 1)
-            .addOutputBus("Any bottom Casing", 1)
-            .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
+            .addCasing("8-12", "Heat Proof Machine Casing", false)
+            .addCasing("8", "Heating Coil", true)
+            .addEnergyHatch("1", "Any bottom casing", 1)
+            .addMaintenanceHatch("1", "Any bottom casing", 1)
+            .addMufflerHatch("1", "Top center casing", 2)
+            .addInputBus("1+", "Any bottom casing", 1)
+            .addOutputBus("1+", "Any bottom casing", 1)
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
         return tt;
     }
@@ -291,10 +292,10 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
         } else {
             this.mLevel = 4 << (getCoilLevel().ordinal() - 1);
         }
-        checkHasMaintenanceHatch(errors);
         checkHasEnergyHatch(errors);
-        checkHasOutputBus(errors);
+        checkHasMaintenanceHatch(errors);
         checkHasInputBus(errors);
+        checkHasOutputBus(errors);
     }
 
     @Override
