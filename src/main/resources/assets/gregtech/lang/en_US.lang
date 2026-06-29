@@ -1798,6 +1798,7 @@ gt.multiblock.NeutralizationEngine.decay_boost.4=Every §fminute§7, §dRobot Ar
 gt.multiblock.NeutralizationEngine.structure_tiers=Structure has §f3 Tiers§7, §fTier §7determines §9Base Decay §7and §3Capacity§7:
 gt.multiblock.NeutralizationEngine.tier_info=§fT%d§7 : §f%s§7 : §9%d§7 : §3%s
 
+GT5U.MBTT.masterchannel=Projector stack size determines
 GT5U.MBTT.subchannel=Follows subchannel §b%s§7 for §b%s
 
 GT5U.MBTT.CokeOvenHatch=Coke Oven Hatch

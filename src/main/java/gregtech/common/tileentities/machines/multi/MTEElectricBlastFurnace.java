@@ -149,7 +149,7 @@ public class MTEElectricBlastFurnace extends MTEAbstractMultiFurnace<MTEElectric
             .beginStructureBlock(3, 3, 4, true)
             .addController("Front bottom center")
             .addCasingInfo("16", "Heating Coil", true)
-            .addCasingInfo("0-15", "Heat Proof Machine Casing", false)
+            .addCasingInfo("0-12", "Heat Proof Machine Casing", false)
             .addEnergyHatch("1+", "Any bottom layer casing", 1)
             .addMaintenanceHatch("1", "Any bottom layer casing", 1)
             .addMufflerHatch("1", "Top middle", 2)

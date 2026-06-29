@@ -202,9 +202,9 @@ public class MTESteamWaterPump extends MTESteamMultiBlockBase<MTESteamWaterPump>
 
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET, errors)) return;
 
+        checkCasingMin(errors, mCountCasing, 9);
         checkHasSteamInput(errors);
         checkOneOutputHatch(errors);
-        checkCasingMin(errors, mCountCasing, 9);
         currentHumidity = getHumidity();
     }
 
@@ -252,23 +252,20 @@ public class MTESteamWaterPump extends MTESteamMultiBlockBase<MTESteamWaterPump>
                     + EnumChatFormatting.RED
                     + " of Steam"
                     + EnumChatFormatting.RESET)
-            .beginStructureBlock(3, 3, 4, false)
+            .beginStructureBlock(4, 3, 3, false)
             .addController("Front bottom center")
-            .addOutputHatch(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any Casing", 1)
-            .addStructureInfo(
-                EnumChatFormatting.WHITE + "Steam Input Hatch "
-                    + EnumChatFormatting.GOLD
-                    + "1"
-                    + EnumChatFormatting.GRAY
-                    + " Any Casing")
+            .addSteamHatch("1", "Any casing", 1)
+            .addOutputHatch("1", "Any casing", 1)
             .addStructureInfo("")
             .addStructureInfo(EnumChatFormatting.BLUE + "Tier " + EnumChatFormatting.DARK_PURPLE + 1)
-            .addStructureInfo(EnumChatFormatting.GOLD + "10" + EnumChatFormatting.GRAY + " Bronze Frame Box")
-            .addStructureInfo(EnumChatFormatting.GOLD + "9" + EnumChatFormatting.GRAY + " Wooden Casing")
+            .addCasingInfo("10", "Bronze Frame Box", true)
+            .addCasingInfo("9", "Wooden Casing", false)
             .addStructureInfo("")
             .addStructureInfo(EnumChatFormatting.BLUE + "Tier " + EnumChatFormatting.DARK_PURPLE + 2)
-            .addStructureInfo(EnumChatFormatting.GOLD + "10" + EnumChatFormatting.GRAY + " Steel Frame Box")
-            .addStructureInfo(EnumChatFormatting.GOLD + "9 " + EnumChatFormatting.GRAY + " Wooden Casing")
+            .addCasingInfo("10", "Steel Frame Box", true)
+            .addCasingInfo("9", "Wooden Casing", false)
+            .addStructureInfo("")
+            .addMasterChannel("Machine Tier")
             .toolTipFinisher(GTAuthors.AuthorEvgenWarGold);
         return tt;
     }
