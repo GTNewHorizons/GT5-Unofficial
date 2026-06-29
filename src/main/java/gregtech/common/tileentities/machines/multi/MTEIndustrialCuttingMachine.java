@@ -80,7 +80,7 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
     private static final double BLADE_WIDTH = 3.0D;
     private static final double BLADE_HEIGHT = 3.0D;
     private static final double BLADE_PADDING = 0.25D;
-    private static final float BLADE_ROTATION_SPEED = 64.0F;
+    private static final float BLADE_ROTATION_SPEED = 64.72132F;
     private static final int BLADE_SPINUP_TICKS = 20;
     private static final double BLADE_CLIP_BOTTOM = 1.0D;
     @SideOnly(Side.CLIENT)
@@ -93,8 +93,10 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
     private int casingAmount;
     private boolean stopAllRendering;
     private int renderSawbladeTier = -1;
-    private long activeTicks;
+    private int activeTicks;
     private double bladeRotation;
+    private double bladeSpeedOffset;
+    private boolean wasActive = false;
     private ExtendedFacing cachedBladeRenderFacing;
     private final BladeRenderContext bladeRenderContext = new BladeRenderContext();
 
@@ -394,8 +396,33 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
                 boolean active = base.isActive();
                 activeTicks += active ? 1 : -1;
                 activeTicks = Math.clamp(0, BLADE_SPINUP_TICKS, activeTicks);
-                bladeRotation += Math.lerp(0, BLADE_ROTATION_SPEED, activeTicks / (double) BLADE_SPINUP_TICKS);
-                bladeRotation %= 360;
+
+                // Attempts to have the blade finish at a 90-degree angle
+                if (active != wasActive) {
+                    wasActive = active;
+                    bladeSpeedOffset = 0;
+                    if (!active && activeTicks > 0) {
+                        double finalRotation = bladeRotation;
+                        for (int i = 1; i <= activeTicks; i++) {
+                            finalRotation += Math.lerp(0, BLADE_ROTATION_SPEED, i / (double) BLADE_SPINUP_TICKS);
+                        }
+                        finalRotation %= 90;
+                        finalRotation = 90 - finalRotation;
+                        bladeSpeedOffset = finalRotation / activeTicks;
+
+                        // The blade will not be able to smoothly finish at a 90-degree angle so give up
+                        // Only a possibility if the blade wasn't already at full speed
+                        if (Math.abs(bladeSpeedOffset) > 5.0) {
+                            bladeSpeedOffset = 0;
+                        }
+                    }
+                }
+
+                if (activeTicks > 0) {
+                    bladeRotation += Math.lerp(0, BLADE_ROTATION_SPEED, activeTicks / (double) BLADE_SPINUP_TICKS)
+                        + bladeSpeedOffset;
+                    bladeRotation %= 360;
+                }
             }
             return;
         }
@@ -521,9 +548,10 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
     }
 
     private double getRenderBladeRotation(float timeSinceLastTick) {
+        if (activeTicks == 0) return bladeRotation;
         double offset = Math.lerp(0, BLADE_ROTATION_SPEED, activeTicks / (double) BLADE_SPINUP_TICKS)
-            * timeSinceLastTick;
-        return bladeRotation + offset;
+            + bladeSpeedOffset;
+        return bladeRotation + (offset * timeSinceLastTick);
     }
 
     @Override
