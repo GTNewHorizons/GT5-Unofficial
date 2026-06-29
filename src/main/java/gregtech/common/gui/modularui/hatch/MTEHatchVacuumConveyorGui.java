@@ -94,7 +94,8 @@ public class MTEHatchVacuumConveyorGui extends MTEHatchBaseGui<MTEHatchVacuumCon
             .equals(
                 (a, b) -> a.getComponents()
                     .equals(b.getComponents()))
-            .build();
+            .build()
+            .allowC2S();
         syncManager.syncValue("contents", contentsSyncHandler);
         syncManager.registerSyncedAction("dumpCCs", Side.SERVER, p -> {
             GenericSyncValue<CircuitComponentPacket, ?> syncContents = syncManager
