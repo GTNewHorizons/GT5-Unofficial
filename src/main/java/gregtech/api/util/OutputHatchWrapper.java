@@ -54,8 +54,9 @@ public class OutputHatchWrapper implements IOutputHatch {
         return new FilteredTransactionWrapper();
     }
 
-    public class FilteredTransactionWrapper implements IOutputHatchTransaction,
-        IOutputHatchTransaction.IRecipeCheckAware, IOutputHatchTransaction.IProtectOutputAware {
+    public class FilteredTransactionWrapper
+        implements IOutputHatchTransaction, IOutputHatchTransaction.IRecipeCheckAware,
+        IOutputHatchTransaction.IProtectOutputAware, IOutputHatchTransaction.IDynamicCapacityOutputAware {
 
         private final OutputHatchWrapper hatch = OutputHatchWrapper.this;
         private final IOutputHatchTransaction transaction = OutputHatchWrapper.this.outputHatch.createTransaction();
@@ -78,6 +79,15 @@ public class OutputHatchWrapper implements IOutputHatch {
                 rt.setProtectOutput(isProtectOutput);
             }
         }
+
+        @Override
+        public boolean isDynamicCapacity() {
+            if (transaction instanceof IOutputHatchTransaction.IDynamicCapacityOutputAware rt) {
+                return rt.isDynamicCapacity();
+            }
+            return false;
+        }
+
         @Override
         public boolean hasAvailableSpace() {
             return transaction.hasAvailableSpace();

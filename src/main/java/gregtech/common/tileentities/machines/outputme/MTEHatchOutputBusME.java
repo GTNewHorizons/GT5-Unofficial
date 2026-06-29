@@ -192,13 +192,14 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
     }
 
     class MEOutputBusTransaction implements IOutputBusTransaction, IOutputBusTransaction.IRecipeCheckAware,
-        IOutputBusTransaction.IProtectOutputAware {
+        IOutputBusTransaction.IProtectOutputAware, IOutputBusTransaction.IDynamicCapacityOutputAware {
 
         private final AECacheCounter<GTUtility.ItemId> cache = new AECacheCounter<>();
         private final long availableSpace;
         private boolean active = true;
         private boolean isRecipeCheck = false;
         private boolean isProtectOutput = true;
+        private boolean isDynamicCapacity = false;
         private IMEInventoryHandler<IAEItemStack> cell = null;
 
         public MEOutputBusTransaction() {
@@ -214,10 +215,22 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
                     .cell()
                     .getCellInventory(getCellStack().copy(), getISaveProvider(), getChannel());
             }
+            updateDynamicCapacity();
         }
 
         public void setProtectOutput(boolean isProtectOutput) {
             this.isProtectOutput = isProtectOutput;
+            updateDynamicCapacity();
+        }
+
+        private void updateDynamicCapacity() {
+            isDynamicCapacity = isRecipeCheck && isProtectOutput
+                && provider.shouldCheck()
+                && !provider.isDistribution();
+        }
+
+        public boolean isDynamicCapacity() {
+            return isDynamicCapacity;
         }
 
         @Override

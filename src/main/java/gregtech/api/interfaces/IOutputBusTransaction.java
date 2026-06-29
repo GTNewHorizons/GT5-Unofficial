@@ -59,4 +59,16 @@ public interface IOutputBusTransaction {
         void setProtectOutput(boolean isProtectOutput);
     }
 
+    /**
+     * Represents an output that may have a finite capacity but allows for dynamic resource allocation.
+     */
+    interface IDynamicCapacityOutputAware {
+
+        /**
+         * Checks if this output has a finite capacity but allows for dynamic resource allocation.
+         * 
+         * @return true if it is, false otherwise
+         */
+        boolean isDynamicCapacity();
+    }
 }

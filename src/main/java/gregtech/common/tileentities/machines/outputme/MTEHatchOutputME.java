@@ -519,13 +519,14 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
     }
 
     class MEOutputHatchTransaction implements IOutputHatchTransaction, IOutputHatchTransaction.IRecipeCheckAware,
-        IOutputHatchTransaction.IProtectOutputAware {
+        IOutputHatchTransaction.IProtectOutputAware, IOutputHatchTransaction.IDynamicCapacityOutputAware {
 
         private final AECacheCounter<GTUtility.FluidId> cache = new AECacheCounter<>();
         private final long availableSpace;
         private boolean active = true;
         private boolean isRecipeCheck = false;
         private boolean isProtectOutput = true;
+        private boolean isDynamicCapacity = false;
         private IMEInventoryHandler<IAEFluidStack> cell = null;
 
         public MEOutputHatchTransaction() {
@@ -541,10 +542,22 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
                     .cell()
                     .getCellInventory(getCellStack().copy(), getISaveProvider(), getChannel());
             }
+            updateDynamicCapacity();
         }
 
         public void setProtectOutput(boolean isProtectOutput) {
             this.isProtectOutput = isProtectOutput;
+            updateDynamicCapacity();
+        }
+
+        private void updateDynamicCapacity() {
+            isDynamicCapacity = isRecipeCheck && isProtectOutput
+                && provider.shouldCheck()
+                && !provider.isDistribution();
+        }
+
+        public boolean isDynamicCapacity() {
+            return isDynamicCapacity;
         }
 
         @Override

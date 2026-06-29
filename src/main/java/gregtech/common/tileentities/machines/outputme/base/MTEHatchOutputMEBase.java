@@ -546,6 +546,11 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>> {
         return handler.getWhitelist() == IncludeExclude.WHITELIST;
     }
 
+    public boolean isDistribution() {
+        if (handler == null) return false;
+        return handler.isDistribution();
+    }
+
     public boolean canStore(@NotNull T input) {
         if (handler == null || !handler.isPreformatted()) return true;
         return handler.canAccept(input);
