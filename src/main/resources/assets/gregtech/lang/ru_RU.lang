@@ -8794,7 +8794,7 @@ GT5U.gui.text.bec-speed-divisor=Speed Divisor
 
 # Misc BEC Tooltips
 gt.tooltip.nanite-tier=Тир нанита: %s
-gt.tooltip.max-nanite=Макс. тир нанита: %s
+gt.tooltip.max-nanite=Макс. тир нанита:
 GT5U.gui.text.pause-immediately.tooltip=The I/O Node will stop processing when it receives a redstone signal
 GT5U.gui.text.pause-next-step.tooltip=The I/O Node will stop upon transitioning into a new input step when it receives a redstone signal
 
