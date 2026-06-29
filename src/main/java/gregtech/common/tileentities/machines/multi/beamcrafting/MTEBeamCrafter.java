@@ -416,22 +416,23 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
                     (GTRecipe recipe, int maxParallel, FluidStack[] fluids, ItemStack[] items) -> {
                         BeamCrafterMetadata metadata = recipe.getMetadata(BEAMCRAFTER_METADATA);
                         if (metadata == null) return 0;
-                        int parallel = Math.min(maxParallel, (int) recipe.maxParallelCalculatedByInputs(maxParallel, fluids, items));
+                        double parallel = recipe.maxParallelCalculatedByInputs(maxParallel, fluids, items);
+                        if (parallel < 1) return parallel;
 
                         if (metadata.particleID_A == metadata.particleID_B) {
-                            int available = bufferMap.getOrDefault(metadata.particleID_A, 0);
+                            double available = bufferMap.getOrDefault(metadata.particleID_A, 0);
 
                             parallel = Math.min(parallel, available / (metadata.amount_A + metadata.amount_B));
 
                         } else {
-                            int availableA = bufferMap.getOrDefault(metadata.particleID_A, 0);
-                            int availableB = bufferMap.getOrDefault(metadata.particleID_B, 0);
+                            double availableA = bufferMap.getOrDefault(metadata.particleID_A, 0);
+                            double availableB = bufferMap.getOrDefault(metadata.particleID_B, 0);
 
                             parallel = Math.min(parallel, availableA / metadata.amount_A);
                             parallel = Math.min(parallel, availableB / metadata.amount_B);
                         }
 
-                        parallel = Math.max(1, parallel); // so it can't be 0
+                        parallel = Math.max(1, parallel); // allow starting when item and fluid are enough but beam is not
                         return parallel;
                     });
             }
