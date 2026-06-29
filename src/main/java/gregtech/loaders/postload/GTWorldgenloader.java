@@ -25,7 +25,7 @@ public class GTWorldgenloader implements Runnable {
         }
 
         // GT Veins registration
-        for (OreMixes oreMix : OreMixes.values()) {
+        for (OreMixes oreMix : OreMixes.VALUES) {
             oreMix.addGTOreLayer();
         }
 

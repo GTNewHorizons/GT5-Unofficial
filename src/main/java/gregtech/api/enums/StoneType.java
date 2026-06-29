@@ -7,15 +7,12 @@ import static gregtech.api.enums.Mods.GalaxySpace;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nullable;
 
+import galacticgreg.api.ModDimensionDef;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.init.Blocks;
@@ -194,11 +191,23 @@ public enum StoneType implements IStoneType {
             .toArray(StoneType[]::new));
 
     public static final ImmutableMap<OrePrefixes, List<StoneType>> STONE_TYPES_BY_PREFIX;
-
+    public static final Map<String, List<StoneType>> STONE_TYPES_BY_WORLD_NAME = new HashMap<>();
     static {
         STONE_TYPES_BY_PREFIX = ImmutableMap.copyOf(
             StoneType.STONE_TYPES.stream()
                 .collect(Collectors.groupingBy(s -> s.builder.oreBlockPrefix)));
+
+        for (StoneType type: StoneType.values()){
+            for (String allowedDim : type.builder.allowedDimensions){
+                if (STONE_TYPES_BY_WORLD_NAME.containsKey(allowedDim)){
+                    STONE_TYPES_BY_WORLD_NAME.get(allowedDim).add(type);
+                } else {
+                    List<StoneType> list = new ArrayList<>();
+                    list.add(type);
+                    STONE_TYPES_BY_WORLD_NAME.put(allowedDim, list);
+                }
+            }
+        }
     }
 
     private final StoneBuilder builder;
