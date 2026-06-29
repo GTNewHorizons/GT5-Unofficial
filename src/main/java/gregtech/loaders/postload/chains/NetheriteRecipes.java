@@ -8,6 +8,7 @@ import static gregtech.api.recipe.RecipeMaps.*;
 import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.*;
 import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
+import static gregtech.api.util.GTRecipeConstants.COMPRESSION_TIER;
 import static gregtech.api.util.GTRecipeConstants.DISSOLUTION_TANK_RATIO;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.alloyBlastSmelterRecipes;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.centrifugeNonCellRecipes;
@@ -27,7 +28,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.recipe.metadata.CompressionTierKey;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.common.items.CombType;
 import gregtech.loaders.misc.GTBees;
@@ -411,7 +411,7 @@ public class NetheriteRecipes {
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Netherite, 1))
             .duration(500 * SECONDS)
             .eut(TierEU.RECIPE_ZPM)
-            .metadata(CompressionTierKey.INSTANCE, 1)
+            .metadata(COMPRESSION_TIER, 1)
             .addTo(compressorRecipes);
 
         GTValues.RA.stdBuilder()
@@ -461,7 +461,7 @@ public class NetheriteRecipes {
             .itemOutputs(GTOreDictUnificator.get(prefix, Materials.Netherite, multiplier))
             .fluidInputs(Materials.Boron.getPlasma(2L * inverseMultiplier))
             .fluidOutputs(Materials.Boron.getMolten(2L * inverseMultiplier))
-            .duration(8 * SECONDS)
+            .duration(4 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(arcFurnaceRecipes);
 
@@ -474,7 +474,7 @@ public class NetheriteRecipes {
             .itemOutputs(outputStack)
             .fluidInputs(Materials.Boron.getPlasma(2L * inverseMultiplier))
             .fluidOutputs(Materials.Boron.getMolten(2L * inverseMultiplier))
-            .duration(8 * SECONDS)
+            .duration(4 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(arcFurnaceRecipes);
 

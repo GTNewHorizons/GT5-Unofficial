@@ -17,11 +17,8 @@ import static gregtech.api.util.GTStructureUtility.ofFrame;
 
 import java.util.List;
 
-import net.minecraft.block.Block;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
@@ -35,8 +32,10 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.SoundResource;
+import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
@@ -53,7 +52,7 @@ import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class MTEIndustrialChemicalBath extends MTEExtendedPowerMultiBlockBase<MTEIndustrialChemicalBath>
-    implements ISurvivalConstructable {
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     private int casingAmount;
     private boolean needsWaterFill = false;
@@ -123,7 +122,7 @@ public class MTEIndustrialChemicalBath extends MTEExtendedPowerMultiBlockBase<MT
                         .casingIndex(114) // WashPlantCasing
                         .hint(1)
                         .buildAndChain(onElementPass(x -> ++x.casingAmount, Casings.WashPlantCasing.asElement())))
-                .addElement('F', ofChain(isAir(), ofAnyWater(false)))
+                .addElement('F', ofChain(ofAnyWater(false), isAir()))
                 .build();
         }
         return STRUCTURE_DEFINITION;
@@ -151,6 +150,7 @@ public class MTEIndustrialChemicalBath extends MTEExtendedPowerMultiBlockBase<MT
 
     @Override
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
+        needsWaterFill = false;
         casingAmount = 0;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z, errors)) {
             needsWaterFill = GTStructureUtility.hasWaterAtStructurePosition(
@@ -180,30 +180,22 @@ public class MTEIndustrialChemicalBath extends MTEExtendedPowerMultiBlockBase<MT
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection,
-        ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
-        if (sideDirection == facingDirection) {
-            if (active) return new ITexture[] { TextureFactory.of(ModBlocks.blockCasings2Misc, 4),
-                TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.oMCDIndustrialWashPlantActive)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.oMCDIndustrialWashPlantActiveGlow)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { TextureFactory.of(ModBlocks.blockCasings2Misc, 4), TextureFactory.builder()
-                .addIcon(TexturesGtBlock.oMCDIndustrialWashPlant)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.oMCDIndustrialWashPlantGlow)
-                    .extFacing()
-                    .glow()
-                    .build() };
-        }
-        return new ITexture[] { TextureFactory.of(ModBlocks.blockCasings2Misc, 4) };
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            TexturesGtBlock.oMCDIndustrialWashPlant,
+            TexturesGtBlock.oMCDIndustrialWashPlantGlow,
+            TexturesGtBlock.oMCDIndustrialWashPlantActive,
+            TexturesGtBlock.oMCDIndustrialWashPlantActiveGlow);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return TextureFactory.of(ModBlocks.blockCasings2Misc, 4);
     }
 
     @Override
@@ -237,36 +229,16 @@ public class MTEIndustrialChemicalBath extends MTEExtendedPowerMultiBlockBase<MT
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (aBaseMetaTileEntity.isServerSide() && needsWaterFill && aTick % 20 == 0) {
-            World world = aBaseMetaTileEntity.getWorld();
-            boolean allFilled = true;
-            int controllerX = aBaseMetaTileEntity.getXCoord();
-            int controllerY = aBaseMetaTileEntity.getYCoord();
-            int controllerZ = aBaseMetaTileEntity.getZCoord();
-
-            for (int sliceZ = 0; sliceZ < structure.length; sliceZ++) {
-                String[] layers = structure[sliceZ];
-                for (int layerY = 0; layerY < layers.length; layerY++) {
-                    String row = layers[layerY];
-                    for (int charX = 0; charX < row.length(); charX++) {
-                        if (row.charAt(charX) != 'F') continue;
-
-                        int[] abc = new int[] { charX - OFFSET_X, layerY - OFFSET_Y, sliceZ - OFFSET_Z };
-                        int[] xyz = new int[] { 0, 0, 0 };
-                        this.getExtendedFacing()
-                            .getWorldOffset(abc, xyz);
-                        int wx = controllerX + xyz[0];
-                        int wy = controllerY + xyz[1];
-                        int wz = controllerZ + xyz[2];
-                        Block block = world.getBlock(wx, wy, wz);
-                        if (GTUtility.canReplaceBlockWithWater(world, wx, wy, wz)) {
-                            world.setBlock(wx, wy, wz, Blocks.water, 0, 3);
-                        } else if (!GTUtility.isSourceWater(block, world, wx, wy, wz)) {
-                            allFilled = false;
-                        }
-                    }
-                }
+            if (GTStructureUtility.fillStructureWithWater(
+                aBaseMetaTileEntity,
+                getExtendedFacing(),
+                structure,
+                OFFSET_X,
+                OFFSET_Y,
+                OFFSET_Z,
+                'F')) {
+                needsWaterFill = false;
             }
-            if (allFilled) needsWaterFill = false;
         }
     }
 

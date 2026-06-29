@@ -260,7 +260,7 @@ public class StarCosmeticsPanel {
                 .style(EnumChatFormatting.GOLD)
                 .alignment(Alignment.CenterLeft)
                 .asWidget()
-                .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
+                .widgetTheme(GTWidgetThemes.DISPLAY_TEXT_WHITE)
                 .size(75, 16)
                 .marginLeft(4));
 

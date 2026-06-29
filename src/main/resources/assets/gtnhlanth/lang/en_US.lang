@@ -30,7 +30,7 @@ gtnhlanth.tt.sc.info6=§5Type§7 determines the charge, rest mass, and §9Max Pa
 gtnhlanth.tt.sc.info7=§9Energy§7 is the energy of the particle beam in electron volts (eV)
 gtnhlanth.tt.sc.info8=§2Focus§7 is the width of the particle beam
 gtnhlanth.tt.sc.info9=§6Rate§7 is the amount of particles per packet
-gtnhlanth.tt.sc.info10=§9Output Beam Energy§7 = min(§9Max Particle Energy§7, §eaeV§f)
+gtnhlanth.tt.sc.info10=§9Output Beam Energy§f = min(§9Max Particle Energy§7, §eaeV§f)
 gtnhlanth.tt.sc.info11=where §eaeV§f = §dMax Material Energy§f * (1 - 1.001^(§9-Energy Ratio§f * (§3EU/t Provided§f - §3EU/t Required§f)))
 gtnhlanth.tt.sc.input=§cRequires 1 input bus OR 1 input hatch
 
@@ -57,8 +57,8 @@ gtnhlanth.tt.synch.info4=Increasing power increases the §6Output Beam Rate
 gtnhlanth.tt.synch.info5=Preserve §2Beam Focus§7 more effectively with lower temperature §bcoolant
 gtnhlanth.tt.synch.info6=Increasing the tier of the §dAntenna Casings§7 improves the efficiency of the machine
 gtnhlanth.tt.synch.info7=The §9energies§7 in the following formulae must all be in keV
-gtnhlanth.tt.synch.info8=§9Output Beam Energy§f = §eIR§7 * §ePower Scale Factor
-gtnhlanth.tt.synch.info9=where §eIR§7 = (§9Input Beam Energy§f)^(1.13 * (§dAntenna Tier§f)^(4/9)) / 40,000,000
+gtnhlanth.tt.synch.info8=§9Output Beam Energy§f = §eIR§f * §ePower Scale Factor
+gtnhlanth.tt.synch.info9=where §eIR§f = (§9Input Beam Energy§f)^(1.13 * (§dAntenna Tier§f)^(4/9)) / 40,000,000
 gtnhlanth.tt.synch.info10=and §ePower Scale Factor§f = 1 - 0.15^(§3Total EU/t Provided§f / (30,384 * (§dAntenna Tier§f)^2.5))
 gtnhlanth.tt.synch.info11=§2Output Beam Focus§f = (§2Input Beam Focus§f + §eMachine Focus§f)/2.5§7 if §2Input Beam Focus§f > §eMachine Focus
 gtnhlanth.tt.synch.info12=§2Output Beam Focus§f = §2Input Beam Focus§f * §eMachine Focus§f/100§7 if §2Input Beam Focus§f <= §eMachine Focus
@@ -217,20 +217,33 @@ item.masked_mask_substrate.name=Processed Mask Substrate
 
 
 beamline.info=Machine Information
-beamline.in_pre=Multiblock Beam Input
-beamline.out_pre=Multiblock Beam Output
+beamline.info.hdr=§lMachine Information: §r
+
+beamline.in_pre=Multiblock Beamline Input
+beamline.in_pre.hdr=§lMultiblock Beamline Input: §r
 beamline.particle=Particle
+beamline.particle.fmt=Particle: §6%s (%s)§r
 beamline.energy=Energy
+beamline.energy.eV.fmt=Energy: §4%s§r eV
+beamline.energy.keV.fmt=Energy: §4%s§r keV
 beamline.focus=Focus
+beamline.focus.fmt=Focus: §9%s§r
 beamline.amount=Amount
+beamline.amount.fmt=Amount: §d%s§r
 beamline.rate=Rate
 beamline.materialenergy=Max Material Energy
 beamline.particleenergy=Max Particle Energy
 beamline.energyratio=Energy Ratio
 beamline.temperature=Temperature
+beamline.temperature.fmt=Temperature: §4%s§r K
 beamline.coolusage=Coolant Usage
+beamline.coolusage.fmt=Coolant Usage: §b%s§r kL/s
+
+beamline.out_pre=Multiblock Beamline Output
+beamline.out_pre.hdr=§lMultiblock Beamline Output: §r
 
 gt.blockmachines.beamline_pipe.name=Beam Pipe
+
 beamline.pipe.desc.0=Transport for particles
 beamline.pipe.desc.1=Beams cannot cross or bend
 

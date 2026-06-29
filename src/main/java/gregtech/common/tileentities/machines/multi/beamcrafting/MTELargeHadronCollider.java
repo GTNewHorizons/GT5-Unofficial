@@ -44,6 +44,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.enums.TickTime;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
@@ -77,6 +78,8 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
     public static final float MAXIMUM_PARTICLE_ENERGY_keV = 2_000_000_000; // 2TeV max
     public static final double keV_EU_RATIO = 0.1 / 1000; // 1 EU = 0.1 eV, so 1 EU = 0.1/1000 keV
     public static final float RATE_SCALE_FACTOR = 1.3F;
+    public static final int RATE_NERF_CUTOFF = 5000;
+    public static final float RATE_NERF_POWER = 0.5F;
     public static final float MASSLESS_PARTICLE_THRESHOLD = 0.5F;
 
     private static final int ShieldedAccCasingTextureID = Casings.ShieldedAcceleratorCasing.getTextureId();
@@ -331,11 +334,11 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
                 StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip12"))
             .addInfo(
                 StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip13"))
-            .addSeparator()
             .addInfo(
                 StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip14"))
             .addInfo(
                 StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip15"))
+            .addSeparator()
             .addInfo(
                 StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip16"))
             .addInfo(
@@ -356,17 +359,21 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
                 StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip24"))
             .addInfo(
                 StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip25"))
-            .addSeparator()
             .addInfo(
                 StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip26"))
             .addInfo(
                 StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip27"))
+            .addSeparator()
             .addInfo(
                 StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip28"))
             .addInfo(
                 StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip29"))
             .addInfo(
                 StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip30"))
+            .addInfo(
+                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip31"))
+            .addInfo(
+                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip32"))
             .addSeparator()
             .beginStructureBlock(109, 13, 122, false)
             .addController(
@@ -464,12 +471,8 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
         BeamLinePacket dataPacket = new BeamLinePacket(cachedOutputParticle);
 
         return new String[] {
-            StatCollector.translateToLocalFormatted("tt.keyword.Content") + ": "
-                + EnumChatFormatting.AQUA
-                + dataPacket.getContentString(),
-            StatCollector.translateToLocalFormatted("tt.keyword.PacketHistory") + ": "
-                + EnumChatFormatting.RED
-                + dataPacket.getTraceSize(), };
+            IGregTechDeviceInformation.encode("tt.keyword.Content.fmt", dataPacket.getContentString()),
+            IGregTechDeviceInformation.encode("tt.keyword.PacketHistory.fmt", dataPacket.getTraceSize()), };
     }
 
     public double getCachedBeamEnergy() {
@@ -500,7 +503,11 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
             }
 
         } else {
-            outRate = (int) Math.ceil(outRate * RATE_SCALE_FACTOR);
+            if (outRate < RATE_NERF_CUTOFF) {
+                outRate = (int) Math.ceil(outRate * RATE_SCALE_FACTOR);
+            } else {
+                outRate = outRate + (int) Math.ceil(Math.pow(outRate * (RATE_SCALE_FACTOR - 1), RATE_NERF_POWER));
+            }
         }
 
         return new BeamInformation(outEnergy, outRate, particle.getParticleId(), particle.getFocus());
@@ -540,7 +547,11 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
                     outEnergy = MAXIMUM_PARTICLE_ENERGY_keV;
                 }
             } else {
-                outRate = (int) Math.ceil(outRate * RATE_SCALE_FACTOR);
+                if (outRate < RATE_NERF_CUTOFF) {
+                    outRate = (int) Math.ceil(outRate * RATE_SCALE_FACTOR);
+                } else {
+                    outRate = outRate + (int) Math.ceil(Math.pow(outRate * (RATE_SCALE_FACTOR - 1), RATE_NERF_POWER));
+                }
             }
             EUtCost = perCyclePowerCost(outRate, c + 1);
         }

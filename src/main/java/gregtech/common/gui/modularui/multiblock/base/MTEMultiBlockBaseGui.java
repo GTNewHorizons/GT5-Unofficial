@@ -566,13 +566,11 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
     }
 
     private IWidget createRecipeInfoTextWidget(PanelSyncManager syncManager) {
-        return IKey.dynamic(() -> ((StringSyncValue) syncManager.getSyncHandlerFromMapKey("recipeInfo:0")).getValue())
+        return IKey.dynamic(multiblock::generateCurrentRecipeInfoString)
             .asWidget()
             .marginBottom(2)
             .fullWidth()
-            .setEnabledIf(
-                widget -> Predicates.isNonEmptyList(syncManager.getSyncHandlerFromMapKey("itemOutput:0"))
-                    || Predicates.isNonEmptyList(syncManager.getSyncHandlerFromMapKey("fluidOutput:0")));
+            .setEnabledIf(_ -> Predicates.isPositive(syncManager.getSyncHandlerFromMapKey("maxProgressTime:0")));
     }
 
     private ItemDisplayWidget createItemDrawable(ItemDisplayKey key) {
@@ -594,7 +592,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
         ItemStack itemStack = new ItemStack(key.item(), 1, key.damage());
         itemStack.setTagCompound(key.nbt());
         IntSyncValue maxProgressTimeSyncer = (IntSyncValue) syncManager.getSyncHandlerFromMapKey("maxProgressTime:0");
-        String itemName = EnumChatFormatting.AQUA + itemStack.getDisplayName() + EnumChatFormatting.RESET;
+        String itemName = itemStack.getDisplayName();
 
         return new TextWidget<>(IKey.dynamic(() -> getItemTextLine(itemName, amount, maxProgressTimeSyncer)))
             .height(DISPLAY_ROW_HEIGHT)
@@ -610,31 +608,16 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
     }
 
     private @NotNull String getItemTextLine(String itemName, long amount, IntSyncValue maxProgressTimeSyncer) {
-        String amountString = EnumChatFormatting.WHITE + " x "
-            + EnumChatFormatting.GOLD
-            + GTUtility.formatShortenedLong(amount)
-            + EnumChatFormatting.WHITE
-            + (showOutputRates() ? GTUtility.appendRate(false, amount, true, maxProgressTimeSyncer.getValue()) : "");
-        String truncatedItemName = GTUtility.truncateText(itemName, DISPLAY_ROW_CHAR_LIMIT - amountString.length());
-        String localizedLine = StatCollector.translateToLocal("gt.interact.desc.mb.ItemTextLine");
-        if (!localizedLine.equals("gt.interact.desc.mb.ItemTextLine")) {
-            String amountShort = GTUtility.formatShortenedLong(amount);
-            String rateText = EnumChatFormatting.getTextWithoutFormattingCodes(
-                GTUtility.appendRate(false, amount, true, maxProgressTimeSyncer.getValue()));
-            String trimmedRate = rateText.trim();
-            String rateInner = trimmedRate;
-            if (trimmedRate.length() >= 2 && trimmedRate.startsWith("(") && trimmedRate.endsWith(")")) {
-                rateInner = trimmedRate.substring(1, trimmedRate.length() - 1);
-            }
-            return StatCollector.translateToLocalFormatted(
-                "gt.interact.desc.mb.ItemTextLine",
-                truncatedItemName,
-                amountShort,
-                showOutputRates() ? "(" : "",
-                showOutputRates() ? rateInner : "",
-                showOutputRates() ? ")" : "");
-        }
-        return EnumChatFormatting.AQUA + truncatedItemName + amountString;
+        String shortenedCount = GTUtility.formatShortenedLong(amount);
+        String rateShort = showOutputRates()
+            ? GTUtility.appendRate(false, amount, true, maxProgressTimeSyncer.getValue())
+            : "";
+        int amountLen = (StatCollector
+            .translateToLocalFormatted("GT5U.gui.text.item_amount_display", "", shortenedCount) + rateShort).length();
+        return StatCollector.translateToLocalFormatted(
+            "GT5U.gui.text.item_amount_display",
+            GTUtility.truncateText(itemName, DISPLAY_ROW_CHAR_LIMIT - amountLen),
+            shortenedCount) + rateShort;
     }
 
     private FluidDisplayWidget createFluidDrawable(FluidStack fluidStack) {
@@ -650,7 +633,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
     private TextWidget<?> createHoverableTextForFluid(FluidStack fluidStack, long amount,
         PanelSyncManager syncManager) {
         IntSyncValue maxProgressSyncer = (IntSyncValue) syncManager.getSyncHandlerFromMapKey("maxProgressTime:0");
-        String fluidName = EnumChatFormatting.AQUA + fluidStack.getLocalizedName() + EnumChatFormatting.RESET;
+        String fluidName = fluidStack.getLocalizedName();
 
         return new TextWidget<>(IKey.dynamic(() -> getFluidTextLine(fluidName, amount, maxProgressSyncer)))
             .height(DISPLAY_ROW_HEIGHT)
@@ -666,32 +649,16 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
     }
 
     private @NotNull String getFluidTextLine(String fluidName, long amount, IntSyncValue maxProgressTimeSyncer) {
-        String amountString = EnumChatFormatting.WHITE + " x "
-            + EnumChatFormatting.GOLD
-            + GTUtility.formatShortenedLong(amount)
-            + "L"
-            + EnumChatFormatting.WHITE
-            + (showOutputRates() ? GTUtility.appendRate(false, amount, true, maxProgressTimeSyncer.getValue()) : "");
-        String truncatedFluidName = GTUtility.truncateText(fluidName, DISPLAY_ROW_CHAR_LIMIT - amountString.length());
-        String localizedLine = StatCollector.translateToLocal("gt.interact.desc.mb.FluidTextLine");
-        if (!localizedLine.equals("gt.interact.desc.mb.FluidTextLine")) {
-            String amountShort = GTUtility.formatShortenedLong(amount);
-            String rateText = EnumChatFormatting.getTextWithoutFormattingCodes(
-                GTUtility.appendRate(false, amount, true, maxProgressTimeSyncer.getValue()));
-            String trimmedRate = rateText.trim();
-            String rateInner = trimmedRate;
-            if (trimmedRate.length() >= 2 && trimmedRate.startsWith("(") && trimmedRate.endsWith(")")) {
-                rateInner = trimmedRate.substring(1, trimmedRate.length() - 1);
-            }
-            return StatCollector.translateToLocalFormatted(
-                "gt.interact.desc.mb.FluidTextLine",
-                truncatedFluidName,
-                amountShort,
-                showOutputRates() ? "(" : "",
-                showOutputRates() ? rateInner : "",
-                showOutputRates() ? ")" : "");
-        }
-        return EnumChatFormatting.AQUA + truncatedFluidName + amountString;
+        String shortenedCount = GTUtility.formatShortenedLong(amount);
+        String rateShort = showOutputRates()
+            ? GTUtility.appendRate(false, amount, true, maxProgressTimeSyncer.getValue())
+            : "";
+        int amountLen = (StatCollector
+            .translateToLocalFormatted("GT5U.gui.text.fluid_amount_display", "", shortenedCount) + rateShort).length();
+        return StatCollector.translateToLocalFormatted(
+            "GT5U.gui.text.fluid_amount_display",
+            GTUtility.truncateText(fluidName, DISPLAY_ROW_CHAR_LIMIT - amountLen),
+            shortenedCount) + rateShort;
     }
 
     /**
@@ -1369,9 +1336,6 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             (a, b) -> a.isItemEqual(b) && a.stackSize == b.stackSize,
             null);
         syncManager.syncValue("itemOutput", itemOutputSyncer);
-
-        StringSyncValue recipeInfoSyncer = new StringSyncValue(multiblock::generateCurrentRecipeInfoString);
-        syncManager.syncValue("recipeInfo", recipeInfoSyncer);
 
         // Widget Specific
         BooleanSyncValue powerSwitchSyncer = new BooleanSyncValue(multiblock::isAllowedToWork, bool -> {

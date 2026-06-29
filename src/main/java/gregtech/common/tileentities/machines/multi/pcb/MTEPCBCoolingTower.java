@@ -232,8 +232,7 @@ public class MTEPCBCoolingTower extends MTEPCBUpgradeBase<MTEPCBCoolingTower>
                 EnumChatFormatting.GOLD,
                 false)
             .addInputHatch("Bottom center")
-            .addStructureInfoSeparator()
-            .addStructureInfo(EnumChatFormatting.GRAY + "Does not require power or maintenance.")
+            .addStructureInfo(EnumChatFormatting.GRAY + "Does not require maintenance or power.")
             .toolTipFinisher(AuthorBlueWeabo, Authorguid118);
         return tt;
     }

@@ -44,7 +44,6 @@ import appeng.api.implementations.items.IAEWrench;
 import buildcraft.api.tools.IToolWrench;
 import cpw.mods.fml.common.Optional.Interface;
 import cpw.mods.fml.common.Optional.InterfaceList;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.api.tool.ITool;
@@ -56,8 +55,10 @@ import gregtech.api.enums.ToolboxSlot;
 import gregtech.api.interfaces.IDamagableItem;
 import gregtech.api.interfaces.IToolStats;
 import gregtech.api.interfaces.item.IPickBlockHandler;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.GTGenericItem;
 import gregtech.api.items.MetaGeneratedTool;
+import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.modularui2.ToolboxSelectGuiFactory;
 import gregtech.api.net.GTPacketToolboxEvent;
 import gregtech.api.util.GTModHandler;
@@ -455,6 +456,13 @@ public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInv
             return false;
         }
 
+        final TileEntity baseTE = event.player.worldObj.getTileEntity(event.target.blockX, event.target.blockY, event.target.blockZ);
+        if (baseTE instanceof final IGregTechTileEntity gregTE
+            && gregTE.getMetaTileEntity() instanceof MetaPipeEntity
+            && ToolboxUtil.getSelectedTool(event.currentItem).isEmpty()) {
+            return false;
+        }
+
         return !ToolboxPickBlockDecider.getSuggestedTool(event)
             .suggestedTools()
             .isEmpty();
@@ -607,7 +615,6 @@ public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInv
         });
     }
 
-    @SubscribeEvent
     public void onBlockBreakingEvent(BlockEvent.BreakEvent event) {
         getToolboxIfEquipped(event.getPlayer()).flatMap(ToolboxUtil::getSelectedTool).ifPresent(tool -> {
             if (tool.getItem() instanceof final MetaGeneratedTool toolItem) {
@@ -620,7 +627,6 @@ public class ItemGTToolbox extends GTGenericItem implements IGuiHolder<PlayerInv
         });
     }
 
-    @SubscribeEvent
     public void onBlockHarvestingEvent(BlockEvent.HarvestDropsEvent aEvent) {
         getToolboxIfEquipped(aEvent.harvester).flatMap(ToolboxUtil::getSelectedTool)
             .ifPresent(tool -> {

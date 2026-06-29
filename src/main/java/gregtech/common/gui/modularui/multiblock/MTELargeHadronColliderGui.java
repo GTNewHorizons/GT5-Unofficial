@@ -97,8 +97,8 @@ public class MTELargeHadronColliderGui extends MTEMultiBlockBaseGui<MTELargeHadr
 
     @Override
     protected Flow createRightPanelGapRow(ModularPanel panel, PanelSyncManager syncManager) {
-        return super.createRightPanelGapRow(panel, syncManager).child(createCalculatorButton(syncManager, panel))
-            .child(createProbTableButton(syncManager, panel));
+        return super.createRightPanelGapRow(panel, syncManager).child(createProbTableButton(syncManager, panel))
+            .child(createCalculatorButton(syncManager, panel));
     }
 
     protected static final NumberFormatMUI numberFormat = new NumberFormatMUI();
@@ -236,22 +236,22 @@ public class MTELargeHadronColliderGui extends MTEMultiBlockBaseGui<MTELargeHadr
 
         outputWidget.child(
             new TextWidget<>(beamEnergyTextKey).marginBottom(9)
-                .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
+                .widgetTheme(GTWidgetThemes.DISPLAY_TEXT_WHITE)
                 .setEnabledIf(w -> multiblock.mMachine))
             .child(
                 new TextWidget<>(beamRateTextKey).marginBottom(9)
-                    .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
+                    .widgetTheme(GTWidgetThemes.DISPLAY_TEXT_WHITE)
                     .setEnabledIf(w -> multiblock.mMachine))
             .child(
                 new TextWidget<>(powerCostTextKey).marginBottom(9)
-                    .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
+                    .widgetTheme(GTWidgetThemes.DISPLAY_TEXT_WHITE)
                     .setEnabledIf(w -> multiblock.mMachine))
             .child(
                 new TextWidget<>(accelCycleTextKey).marginBottom(9)
-                    .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
+                    .widgetTheme(GTWidgetThemes.DISPLAY_TEXT_WHITE)
                     .setEnabledIf(w -> multiblock.mMachine))
             .child(
-                new TextWidget<>(statusTextKey).widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
+                new TextWidget<>(statusTextKey).widgetTheme(GTWidgetThemes.DISPLAY_TEXT_WHITE)
                     .setEnabledIf(w -> multiblock.mMachine));
 
         return outputWidget;
@@ -449,11 +449,11 @@ public class MTELargeHadronColliderGui extends MTEMultiBlockBaseGui<MTELargeHadr
 
         return EnumChatFormatting.GREEN + format(collisionEnergyeV)
             + "eV"
-            + EnumChatFormatting.WHITE
+            + EnumChatFormatting.RESET
             + " | "
             + EnumChatFormatting.YELLOW
             + finalRate
-            + EnumChatFormatting.WHITE
+            + EnumChatFormatting.RESET
             + " | "
             + EnumChatFormatting.GOLD
             + format(finalEUt)
