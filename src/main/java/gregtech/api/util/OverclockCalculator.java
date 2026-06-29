@@ -32,7 +32,7 @@ public class OverclockCalculator {
     /** How much the energy would be multiplied by per overclock available */
     protected double eutIncreasePerOC = 4;
     /** How much the duration would be divided by per overclock made that isn't an overclock from HEAT */
-    private double durationDecreasePerOC = 2;
+    protected double durationDecreasePerOC = 2;
     /** Whether the multi should use amperage to overclock normally. */
     protected boolean amperageOC;
     /** Maximum number of overclocks to perform. Defaults to no limit. */
