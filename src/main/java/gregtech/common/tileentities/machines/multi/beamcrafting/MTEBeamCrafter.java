@@ -421,18 +421,16 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
 
                         if (metadata.particleID_A == metadata.particleID_B) {
                             double available = bufferMap.getOrDefault(metadata.particleID_A, 0);
-
                             parallel = Math.min(parallel, available / (metadata.amount_A + metadata.amount_B));
-
                         } else {
                             double availableA = bufferMap.getOrDefault(metadata.particleID_A, 0);
                             double availableB = bufferMap.getOrDefault(metadata.particleID_B, 0);
-
                             parallel = Math.min(parallel, availableA / metadata.amount_A);
                             parallel = Math.min(parallel, availableB / metadata.amount_B);
                         }
 
-                        parallel = Math.max(1, parallel); // allow starting when item and fluid are enough but beam is not
+                        parallel = Math.max(1, parallel); // allow starting when item and fluid are enough but beam is
+                                                          // not
                         return parallel;
                     });
             }
