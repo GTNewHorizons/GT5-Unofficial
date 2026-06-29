@@ -59,6 +59,7 @@ import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.IMEConnectable;
 import gregtech.api.interfaces.IOutputHatch;
 import gregtech.api.interfaces.IOutputHatchTransaction;
+import gregtech.api.interfaces.IOutputTransaction;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -153,6 +154,10 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
 
     public boolean shouldCheck() {
         return provider.shouldCheck();
+    }
+
+    public boolean hasPhysicalSpace() {
+        return provider.hasPhysicalSpace();
     }
 
     public boolean hasAvailableSpace() {
@@ -518,19 +523,20 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
         return new MEOutputHatchTransaction();
     }
 
-    class MEOutputHatchTransaction implements IOutputHatchTransaction, IOutputHatchTransaction.IRecipeCheckAware,
-        IOutputHatchTransaction.IProtectOutputAware, IOutputHatchTransaction.IDynamicCapacityOutputAware {
+    class MEOutputHatchTransaction implements IOutputHatchTransaction, IOutputTransaction.IRecipeCheckAware,
+        IOutputTransaction.IProtectOutputAware, IOutputTransaction.IDynamicCapacityOutputAware {
 
         private final AECacheCounter<GTUtility.FluidId> cache = new AECacheCounter<>();
         private final long availableSpace;
         private boolean active = true;
+        private boolean allowAnyInput = false;
         private boolean isRecipeCheck = false;
         private boolean isProtectOutput = true;
         private boolean isDynamicCapacity = false;
         private IMEInventoryHandler<IAEFluidStack> cell = null;
 
         public MEOutputHatchTransaction() {
-            availableSpace = provider.getAvailableSpace();
+            availableSpace = provider.getPhysicalSpace();
         }
 
         public void setRecipeCheck(boolean isRecipeCheck) {
@@ -542,18 +548,18 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
                     .cell()
                     .getCellInventory(getCellStack().copy(), getISaveProvider(), getChannel());
             }
-            updateDynamicCapacity();
+            updateFlags();
         }
 
         public void setProtectOutput(boolean isProtectOutput) {
             this.isProtectOutput = isProtectOutput;
-            updateDynamicCapacity();
+            updateFlags();
         }
 
-        private void updateDynamicCapacity() {
-            isDynamicCapacity = isRecipeCheck && isProtectOutput
-                && provider.shouldCheck()
-                && !provider.isDistribution();
+        private void updateFlags() {
+            isDynamicCapacity = isRecipeCheck && isProtectOutput && shouldCheck() && !provider.isDistribution();
+            allowAnyInput = isRecipeCheck ? availableSpace > 0
+                : provider.getLastInputTick() == provider.getTickCounter();
         }
 
         public boolean isDynamicCapacity() {
@@ -567,7 +573,7 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
 
         @Override
         public boolean hasAvailableSpace() {
-            return (isProtectOutput && !isRecipeCheck) || cache.getTotal() < availableSpace;
+            return allowAnyInput || cache.getTotal() < availableSpace;
         }
 
         @Override
@@ -582,7 +588,7 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
                 stack.amount -= inserted;
                 return stack.amount == 0;
             }
-            if (!hasAvailableSpace() || !isFilteredToFluid(id)) {
+            if (!hasAvailableSpace() || !isFilteredTo(id)) {
                 return false;
             }
             cache.insert(id, stack.amount);
@@ -597,14 +603,16 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
 
         @Override
         public void commit() {
-            cache.iterateAll(
-                (id, amount) -> {
-                    provider.addToCache(
-                        AEFluidStack.create(id.getFluidStack())
-                            .setStackSize(amount));
-                });
-
-            MTEHatchOutputME.this.markDirty();
+            if (cache.getTotal() > 0) {
+                cache.iterateAll(
+                    (id, amount) -> {
+                        provider.addToCache(
+                            AEFluidStack.create(id.getFluidStack())
+                                .setStackSize(amount));
+                    });
+                provider.updateLastInputTick();
+                MTEHatchOutputME.this.markDirty();
+            }
             active = false;
         }
     }

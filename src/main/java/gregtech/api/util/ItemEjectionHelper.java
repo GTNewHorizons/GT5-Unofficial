@@ -118,7 +118,7 @@ public class ItemEjectionHelper {
                 if (ofType == null) continue;
 
                 if (busType.isFiltered()) {
-                    GTDataUtils.addAllFiltered(ofType, transactions, t -> t.isFilteredToItem(parallelData.id));
+                    GTDataUtils.addAllFiltered(ofType, transactions, t -> t.isFilteredTo(parallelData.id));
                 } else {
                     transactions.addAll(ofType);
                 }

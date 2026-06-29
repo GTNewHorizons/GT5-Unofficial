@@ -413,17 +413,30 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>> {
     }
 
     long lastOutputTick = 0;
+    long lastInputTick = 0;
     long tickCounter = 0;
 
     public final long getTickCounter() {
         return tickCounter;
     }
 
+    public final long getLastInputTick() {
+        return lastInputTick;
+    }
+
+    public final void updateLastInputTick() {
+        lastInputTick = tickCounter;
+    }
+
+    public boolean hasPhysicalSpace() {
+        return getCachedAmount() < getCacheCapacity();
+    }
+
     public boolean hasAvailableSpace() {
         return getCachedAmount() < getCacheCapacity();
     }
 
-    public long getAvailableSpace() {
+    public long getPhysicalSpace() {
         return getCacheCapacity() - getCachedAmount();
     }
 
@@ -526,10 +539,12 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>> {
             input.setStackSize(Math.min(input.getStackSize(), rejected == null ? 0 : rejected.getStackSize()));
             return input.getStackSize() == 0;
         }
-        if (simulate && !hasAvailableSpace()) return false;
+        boolean isAllowed = hasAvailableSpace() || (tickCounter == lastInputTick);
+        if (!isAllowed) return false;
         if (!canStore(input)) return false;
         if (!simulate) {
             addToCache(input);
+            updateLastInputTick();
             env.dispatchMarkDirty();
         }
         input.setStackSize(0);
