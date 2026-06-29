@@ -7,6 +7,8 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.PriorityQueue;
 
+import javax.annotation.Nullable;
+
 import net.minecraftforge.fluids.FluidStack;
 
 import com.google.common.collect.Iterators;
@@ -68,6 +70,10 @@ public class FluidEjectionHelper {
         return ejected;
     }
 
+    public int ejectFluids(List<FluidStack> outputs, int startingParallels) {
+        return ejectFluids(outputs, startingParallels, null);
+    }
+
     /**
      * Ejects fluids into the contained output hatch transactions, and calculates the number of parallels that were
      * successfully ran.
@@ -75,9 +81,13 @@ public class FluidEjectionHelper {
      * @param outputs           The fluids to eject per parallel. Each stack is multiplied by startingParallels to
      *                          determine the total number of fluids to eject. This param is not modified.
      * @param startingParallels The number of parallels to calculate. Must be an integer >= 0.
+     * @param remaining         A list to collect the remaining output stacks that couldn't be ejected, can be null if
+     *                          not need.
+     *                          Note: This list may contain null to keep the order for order-sensitive machines (e.g.,
+     *                          distillation tower)
      * @return The number of parallels that can be safely ran without voiding fluids.
      */
-    public int ejectFluids(List<FluidStack> outputs, int startingParallels) {
+    public int ejectFluids(List<FluidStack> outputs, int startingParallels, @Nullable List<FluidStack> remaining) {
         if (outputs == null || outputs.isEmpty()) return 0;
         if (!active)
             throw new IllegalStateException("Cannot eject additional fluids after committing an FluidEjectionHelper");
@@ -157,9 +167,31 @@ public class FluidEjectionHelper {
 
             for (FluidParallelData parallelData : outputParallels) {
                 long ejected = parallelData.initialAmount - parallelData.remainingAmount;
-
                 startingParallels = (int) Math.min(startingParallels, ejected / parallelData.perParallel);
             }
+        }
+        if (remaining != null) {
+            for (FluidStack stack : outputs) {
+                if (stack == null) {
+                    remaining.add(null);
+                    continue;
+                }
+                boolean found = false;
+                for (FluidParallelData parallelData : outputParallels) {
+                    if (stack.isFluidEqual(parallelData.tmpStack)) {
+                        if (parallelData.remainingAmount > 0) {
+                            FluidStack t = parallelData.tmpStack.copy();
+                            t.amount = (int) Math.min(Integer.MAX_VALUE, parallelData.remainingAmount);
+                            parallelData.remainingAmount -= t.amount;
+                            remaining.add(t);
+                            found = true;
+                        }
+                        break;
+                    }
+                }
+                if (!found) remaining.add(null);
+            }
+            GTUtility.removeTailingNulls(remaining);
         }
 
         return startingParallels;

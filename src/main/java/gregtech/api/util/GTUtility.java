@@ -1812,6 +1812,14 @@ public class GTUtility {
         }
     }
 
+    public static void removeTailingNulls(@Nullable List<?> list) {
+        if (list == null || list.isEmpty()) return;
+        for (int i = list.size() - 1; i >= 0; i--) {
+            if (list.get(i) == null) list.remove(i);
+            else break;
+        }
+    }
+
     /**
      * Initializes new empty texture page for casings page 0 is old CASING_BLOCKS
      * <p>
