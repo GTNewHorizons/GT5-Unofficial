@@ -288,7 +288,7 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
                     ofBlock(Block.getBlockFromName("ProjRed|Illumination:projectred.illumination.lamp"), 10),
                     ofBlock(Block.getBlockFromName("ProjRed|Illumination:projectred.illumination.lamp"), 26))
                 : ofChain(ofBlock(Blocks.redstone_lamp, 0)))
-        .addElement('g', chainAllGlasses(-1, (te, t) -> te.glassTier = t.byteValue(), te -> (int) te.glassTier))
+        .addElement('g', GTStructureChannels.TiredGlassStructureElement.chainAllGlasses(-1, (te, t) -> te.glassTier = t.byteValue(), te -> (int) te.glassTier))
         .addElement('d', ofChain(ofBlock(TILLED_DIRT_BLOCK, 0), ofBlock(DIRT_BLOCK, 0)))
         .addElement('w', ofChain(ofAnyWater(false), isAir()))
         .addElement(

@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -29,6 +30,8 @@ import net.minecraftforge.oredict.OreDictionary;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 
+import com.gtnewhorizon.gtnhlib.util.data.BlockMeta;
+
 import bartworks.common.loaders.ItemRegistry;
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -38,6 +41,7 @@ import goodgenerator.loader.Loaders;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.VoltageIndex;
 import gregtech.common.misc.GTStructureChannels;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import tectech.thing.block.BlockGodforgeGlass;
 import tectech.thing.block.BlockQuantumGlass;
 
@@ -46,15 +50,17 @@ public class GlassTier {
     private static final Comparator<Pair<Integer, Integer>> tierComparator = Comparator
         .comparing(Pair<Integer, Integer>::getLeft)
         .thenComparing(Pair::getRight);
-    private static final Map<Pair<Integer, Integer>, Pair<Block, Integer>> tierToGlass = new TreeMap<>(tierComparator);
-    private static final HashMap<Pair<Block, Integer>, Pair<Integer, Integer>> glassToTierAndIndex = new HashMap<>();
     // For default tier ordering, so the primary (borosilicate) glasses come before the variants
     private static final int minTier = VoltageIndex.HV;
     private static final int maxTier = VoltageIndex.UXV;
+    private static final Map<Pair<Integer, Integer>, BlockMeta> tierAndSubtierToGlass = new TreeMap<>(tierComparator);
+    private static final Int2ObjectOpenHashMap<LinkedList<BlockMeta>> tierToGlasses = new Int2ObjectOpenHashMap<>();
+    private static final HashMap<BlockMeta, Pair<Integer, Integer>> glassToTierAndIndex = new HashMap<>();
     private static final Pair<Integer, Integer> defaultGlassTier = Pair.of(null, 0);
-    private static final List<Pair<Block, Integer>> mainGlass = new ArrayList<>(
-        Collections.nCopies(maxTier + 1 - minTier, null));
+    private static final List<BlockMeta> mainGlass = new ArrayList<>(Collections.nCopies(maxTier + 1 - minTier, null));
     private static final List<Pair<Block, Integer>> glassList = new ArrayList<>();
+    private static BlockMeta[][] glassesByChannel = new BlockMeta[getNumGlassTiers()][0];
+    private static boolean glassesComputed = false;
 
     /**
      * Register a glass as a tiered glass.
@@ -80,10 +86,16 @@ public class GlassTier {
 
     public static void addCustomGlass(@NotNull Block block, int meta, int tier, int subtier) {
         Objects.requireNonNull(block, "Glass block cannot be null");
-        GlassTier.glassToTierAndIndex.put(Pair.of(block, meta), Pair.of(tier, -1));
-        GlassTier.tierToGlass.put(Pair.of(tier, subtier), Pair.of(block, meta));
+        glassesComputed = false;
+        GlassTier.glassToTierAndIndex.put(new BlockMeta(block, meta), Pair.of(tier, -1));
+        GlassTier.tierAndSubtierToGlass.put(Pair.of(tier, subtier), new BlockMeta(block, meta));
+        LinkedList<BlockMeta> tierList = tierToGlasses.computeIfAbsent(tier, x -> new LinkedList<>());
+        BlockMeta blockPair = new BlockMeta(block, meta);
         if (subtier == 0) {
-            mainGlass.set(tier - minTier, Pair.of(block, meta));
+            mainGlass.set(tier - minTier, new BlockMeta(block, meta));
+            tierList.addFirst(blockPair);
+        } else {
+            tierList.addLast(blockPair);
         }
     }
 
@@ -104,43 +116,79 @@ public class GlassTier {
      */
     @Nullable
     public static Integer getGlassBlockTier(Block block, int meta) {
-        return glassToTierAndIndex.getOrDefault(Pair.of(block, meta), defaultGlassTier)
+        return glassToTierAndIndex.getOrDefault(new BlockMeta(block, meta), defaultGlassTier)
             .getLeft();
     }
 
     public static int getGlassChannelValue(Block block, int meta) {
-        return glassToTierAndIndex.getOrDefault(Pair.of(block, meta), defaultGlassTier)
+        return glassToTierAndIndex.getOrDefault(new BlockMeta(block, meta), defaultGlassTier)
             .getRight();
     }
 
-    public static List<Pair<Block, Integer>> getGlassList() {
-        if (glassList.isEmpty()) {
-            int ctr = 1; // For channel index, starts at 1
-            for (Pair<Block, Integer> glass : mainGlass) {
-                glassList.add(glass);
-                glassToTierAndIndex.put(glass, Pair.of(getGlassBlockTier(glass.getLeft(), glass.getRight()), ctr));
-                GTStructureChannels.BOROGLASS
-                    .registerAsIndicator(new ItemStack(glass.getLeft(), 1, glass.getRight()), ctr);
-                ctr++;
+    public static int getNumGlassTiers() {
+        return maxTier - minTier + 1;
+    }
+
+    private static void computeGlassLists() {
+        if (glassesComputed) return;
+
+        // replace with a 2d array to speedup lookups
+        final List<BlockMeta[]> newGlassesByChannel = new ArrayList<BlockMeta[]>();
+        for (int i = minTier; i <= maxTier; i++) {
+            LinkedList<BlockMeta> list = tierToGlasses.getOrDefault(i, null);
+            if (list == null) {
+                throw new IllegalStateException("No glasses registered for tier " + VN[i]);
+            } else {
+                newGlassesByChannel.add(list.toArray(new BlockMeta[0]));
             }
-            for (Map.Entry<Pair<Integer, Integer>, Pair<Block, Integer>> entry : tierToGlass.entrySet()) {
-                if (entry.getKey()
-                    .getRight() == 0) continue;
-                Pair<Block, Integer> glass = entry.getValue();
-                glassList.add(glass);
-                glassToTierAndIndex.put(
-                    glass,
-                    Pair.of(
-                        entry.getKey()
-                            .getLeft(),
-                        ctr));
-                GTStructureChannels.BOROGLASS
-                    .registerAsIndicator(new ItemStack(glass.getLeft(), 1, glass.getRight()), ctr);
-                ctr++;
-            }
-            // Re-add the highest tier borosilicate to the end of the list so the max slider value is maximum tier glass
-            glassList.add(mainGlass.getLast());
         }
+
+        int ctr = 1 + getNumGlassTiers(); // For channel index, starts at numGlassTier + 1
+        int tierCounter = 1;
+        for (BlockMeta glass : mainGlass) {
+            glassList.add(Pair.of(glass.getBlock(), glass.getBlockMeta()));
+            glassToTierAndIndex.put(glass, Pair.of(getGlassBlockTier(glass.getBlock(), glass.getBlockMeta()), ctr));
+            newGlassesByChannel.add(new BlockMeta[] { glass });
+            GTStructureChannels.BOROGLASS
+                .registerAsIndicator(new ItemStack(glass.getBlock(), 1, glass.getBlockMeta()), tierCounter++);
+            GTStructureChannels.BOROGLASS
+                .registerAsIndicator(new ItemStack(glass.getBlock(), 1, glass.getBlockMeta()), ctr);
+            ctr++;
+        }
+        for (Map.Entry<Pair<Integer, Integer>, BlockMeta> entry : tierAndSubtierToGlass.entrySet()) {
+            if (entry.getKey()
+                .getRight() == 0) continue;
+            BlockMeta glass = entry.getValue();
+            glassList.add(Pair.of(glass.getBlock(), glass.getBlockMeta()));
+            glassToTierAndIndex.put(
+                glass,
+                Pair.of(
+                    entry.getKey()
+                        .getLeft(),
+                    ctr));
+            newGlassesByChannel.add(new BlockMeta[] { glass });
+            GTStructureChannels.BOROGLASS.registerAsIndicator(
+                new ItemStack(glass.getBlock(), 1, glass.getBlockMeta()),
+                entry.getKey()
+                    .getLeft() - minTier
+                    + 1);
+            GTStructureChannels.BOROGLASS
+                .registerAsIndicator(new ItemStack(glass.getBlock(), 1, glass.getBlockMeta()), ctr);
+
+            ctr++;
+        }
+
+        glassesByChannel = newGlassesByChannel.toArray(new BlockMeta[0][]);
+        glassesComputed = true;
+    }
+
+    public static BlockMeta[][] getGlassesByChannel() {
+        computeGlassLists();
+        return glassesByChannel;
+    }
+
+    public static List<Pair<Block, Integer>> getGlassList() {
+        computeGlassLists();
         return glassList;
     }
 
@@ -229,15 +277,15 @@ public class GlassTier {
         private static void registerGlassOreDicts() {
 
             // Register glass ore dict entries.
-            for (Map.Entry<Pair<Block, Integer>, Pair<Integer, Integer>> entry : glassToTierAndIndex.entrySet()) {
+            for (Map.Entry<BlockMeta, Pair<Integer, Integer>> entry : glassToTierAndIndex.entrySet()) {
                 String oreName = "blockGlass" + VN[entry.getValue()
                     .getLeft()];
                 ItemStack itemStack = new ItemStack(
                     entry.getKey()
-                        .getLeft(),
+                        .getBlock(),
                     1,
                     entry.getKey()
-                        .getRight());
+                        .getBlockMeta());
                 OreDictionary.registerOre(oreName, itemStack);
             }
         }
