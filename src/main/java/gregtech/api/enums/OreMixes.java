@@ -1,23 +1,5 @@
 package gregtech.api.enums;
 
-import static galacticgreg.api.enums.DimensionDef.*;
-import static galacticgreg.api.enums.DimensionDef.DimNames.ASTEROIDS;
-import static galacticgreg.api.enums.DimensionDef.DimNames.EVERGLADES;
-import static galacticgreg.api.enums.DimensionDef.DimNames.KUIPERBELT;
-import static galacticgreg.api.enums.DimensionDef.DimNames.NETHER;
-import static galacticgreg.api.enums.DimensionDef.DimNames.OW;
-import static galacticgreg.api.enums.DimensionDef.DimNames.ROSS128B;
-import static galacticgreg.api.enums.DimensionDef.DimNames.ROSS128BA;
-import static galacticgreg.api.enums.DimensionDef.DimNames.THE_END;
-import static galacticgreg.api.enums.DimensionDef.DimNames.TWILIGHT_FOREST;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import net.minecraft.item.ItemStack;
-
 import bartworks.system.material.WerkstoffLoader;
 import galacticgreg.api.enums.DimensionDef;
 import gregtech.api.interfaces.IOreMaterial;
@@ -28,6 +10,57 @@ import gregtech.common.WorldgenGTOreLayer;
 import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.core.material.MaterialsOres;
 import gtPlusPlus.core.material.nuclear.MaterialsFluorides;
+import net.minecraft.item.ItemStack;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import static galacticgreg.api.enums.DimensionDef.Anubis;
+import static galacticgreg.api.enums.DimensionDef.Asteroids;
+import static galacticgreg.api.enums.DimensionDef.BarnardC;
+import static galacticgreg.api.enums.DimensionDef.BarnardE;
+import static galacticgreg.api.enums.DimensionDef.BarnardF;
+import static galacticgreg.api.enums.DimensionDef.Callisto;
+import static galacticgreg.api.enums.DimensionDef.CentauriBb;
+import static galacticgreg.api.enums.DimensionDef.Ceres;
+import static galacticgreg.api.enums.DimensionDef.Deimos;
+import static galacticgreg.api.enums.DimensionDef.DimNames.ASTEROIDS;
+import static galacticgreg.api.enums.DimensionDef.DimNames.EVERGLADES;
+import static galacticgreg.api.enums.DimensionDef.DimNames.KUIPERBELT;
+import static galacticgreg.api.enums.DimensionDef.DimNames.NETHER;
+import static galacticgreg.api.enums.DimensionDef.DimNames.OW;
+import static galacticgreg.api.enums.DimensionDef.DimNames.ROSS128B;
+import static galacticgreg.api.enums.DimensionDef.DimNames.ROSS128BA;
+import static galacticgreg.api.enums.DimensionDef.DimNames.THE_END;
+import static galacticgreg.api.enums.DimensionDef.DimNames.TWILIGHT_FOREST;
+import static galacticgreg.api.enums.DimensionDef.Enceladus;
+import static galacticgreg.api.enums.DimensionDef.EndAsteroids;
+import static galacticgreg.api.enums.DimensionDef.Ganymede;
+import static galacticgreg.api.enums.DimensionDef.Haumea;
+import static galacticgreg.api.enums.DimensionDef.Horus;
+import static galacticgreg.api.enums.DimensionDef.Io;
+import static galacticgreg.api.enums.DimensionDef.KuiperBelt;
+import static galacticgreg.api.enums.DimensionDef.Maahes;
+import static galacticgreg.api.enums.DimensionDef.MakeMake;
+import static galacticgreg.api.enums.DimensionDef.Mars;
+import static galacticgreg.api.enums.DimensionDef.MehenBelt;
+import static galacticgreg.api.enums.DimensionDef.Mercury;
+import static galacticgreg.api.enums.DimensionDef.Miranda;
+import static galacticgreg.api.enums.DimensionDef.Moon;
+import static galacticgreg.api.enums.DimensionDef.Neper;
+import static galacticgreg.api.enums.DimensionDef.Oberon;
+import static galacticgreg.api.enums.DimensionDef.Phobos;
+import static galacticgreg.api.enums.DimensionDef.Pluto;
+import static galacticgreg.api.enums.DimensionDef.Proteus;
+import static galacticgreg.api.enums.DimensionDef.Seth;
+import static galacticgreg.api.enums.DimensionDef.TcetiE;
+import static galacticgreg.api.enums.DimensionDef.Titan;
+import static galacticgreg.api.enums.DimensionDef.Triton;
+import static galacticgreg.api.enums.DimensionDef.TwilightForest;
+import static galacticgreg.api.enums.DimensionDef.VegaB;
+import static galacticgreg.api.enums.DimensionDef.Venus;
 
 public enum OreMixes {
 
@@ -1526,7 +1559,7 @@ public enum OreMixes {
     // used in the coremod, for the shuttle schematic recipe
     /**
      * Give all the stone variants of an ore, with the specified stack size.
-     * 
+     *
      * @param material  The material of the ore
      * @param stackSize The stacksize of the variants
      * @return The array containing all the stone variants of the given ore, with the given stack size
