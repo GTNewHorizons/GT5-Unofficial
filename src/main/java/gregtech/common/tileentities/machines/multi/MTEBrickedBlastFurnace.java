@@ -133,9 +133,10 @@ public class MTEBrickedBlastFurnace extends MetaTileEntity implements IAlignment
                 .addPollutionAmount(GTMod.proxy.mPollutionPrimitveBlastFurnacePerSecond)
                 .beginStructureBlock(3, 3, 4, true)
                 .addController("Front center")
-                .addCasingInfo("32", "Firebricks", false)
-                .addStructureInfo("GregTech multiblocks may wallshare each of their sides")
-                .addStructureInfo("to save on blocks, casings, buses/hatches, etc.")
+                .addCasing("32", "Firebricks", false)
+                .addStructureInfo("")
+                .addStructureFooter("GregTech multiblocks may wallshare each of their sides")
+                .addStructureFooter("to save on blocks, casings, glass, buses/hatches, etc.")
                 .toolTipFinisher();
         }
         return tooltipBuilder;

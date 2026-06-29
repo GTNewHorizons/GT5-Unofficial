@@ -159,7 +159,7 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
             .addOutputHatch("Any Casing", 1)
             .addEnergyHatch("Any Casing", 1)
             .addMaintenanceHatch("Any Casing", 1)
-            .addSubChannelUsage(GTStructureChannels.METAL_MACHINE_CASING, "Metal Machine Casing (minimum 70)")
+            .addSubChannelUsage(GTStructureChannels.METAL_MACHINE_CASING)
             .addSubChannelUsage(GTStructureChannels.TIER_MACHINE_CASING)
             .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
             .addSubChannelUsage(GTStructureChannels.PIPE_CASING)

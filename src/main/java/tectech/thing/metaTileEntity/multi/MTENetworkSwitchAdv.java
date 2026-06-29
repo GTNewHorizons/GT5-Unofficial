@@ -289,7 +289,7 @@ public class MTENetworkSwitchAdv extends TTMultiblockBase
         tt.addController("Front center");
         tt.addAllCasingInfo();
 
-        tt.addSubChannelUsage(GTStructureChannels.STRUCTURE_LENGTH, "middle slice count");
+        tt.addSubChannelUsage(GTStructureChannels.STRUCTURE_LENGTH);
 
         tt.toolTipFinisher();
 

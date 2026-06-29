@@ -34,7 +34,7 @@ import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.api.util.tooltip.TooltipTier;
 
 /**
- * This makes it easier to build multi tooltips, with a standardized format. <br>
+ * This makes it easier to build multiblock tooltips, with a standardized format. <br>
  * Info section order should be:<br>
  * addMachineType<br>
  * addInfo, for what it does, special notes, etc.<br>
@@ -44,16 +44,17 @@ import gregtech.api.util.tooltip.TooltipTier;
  * Structure order should be:<br>
  * beginStructureBlock<br>
  * addController<br>
- * addCasingInfo<br>
+ * addCasing<br>
  * addOtherStructurePart, for secondary structure block info (pipes, coils, etc)<br>
  * addEnergyHatch/addDynamoHatch<br>
  * addMaintenanceHatch<br>
  * addMufflerHatch<br>
  * addInputBus/addInputHatch/addOutputBus/addOutputHatch, in that order<br>
- * Use addStructureInfo for any comments on nonstandard structure info wherever needed <br>
+ * Use addStructureInfo for any comments on nonstandard structure info wherever needed<br>
+ * Use addStructureFooter for any final comments on nonstandard structure info at the bottom<br>
  * toolTipFinisher goes at the very end<br>
  * <br>
- * Originally created by kekzdealer
+ * Originally created by kekzdealer, Revamped by Fox
  */
 public class MultiblockTooltipBuilder {
 
@@ -513,6 +514,28 @@ public class MultiblockTooltipBuilder {
      * @param isTiered Flag for the (Tiered) tag
      * @return Instance this method was called on.
      */
+    public MultiblockTooltipBuilder addCasing(String count, String name, boolean isTiered) {
+        sLines.add(
+            TAB + EnumChatFormatting.GOLD
+                + count
+                + " "
+                + EnumChatFormatting.WHITE
+                + name
+                + (isTiered ? " " + TT_tiered : ""));
+        return this;
+    }
+
+    /**
+     * @deprecated Use addCasing() instead
+     *             Add a line of information about the structure:<br>
+     *             (indent)count name (Tiered)
+     *
+     * @param count    Number of casings
+     * @param name     Name of casing
+     * @param isTiered Flag for the (Tiered) tag
+     * @return Instance this method was called on.
+     */
+    @Deprecated
     public MultiblockTooltipBuilder addCasingInfo(String count, String name, boolean isTiered) {
         sLines.add(
             TAB + EnumChatFormatting.GOLD
@@ -525,7 +548,7 @@ public class MultiblockTooltipBuilder {
     }
 
     /**
-     * @deprecated use addCasingInfo() instead
+     * @deprecated use addCasing() instead
      *             Add a line of information about the structure:<br>
      *             (indent)count name (Tiered)
      *
@@ -539,7 +562,7 @@ public class MultiblockTooltipBuilder {
     }
 
     /**
-     * @deprecated use addCasingInfo() instead
+     * @deprecated use addCasing() instead
      *             Add a line of information about the structure:<br>
      *             (indent)count name (Tiered)
      *
@@ -557,7 +580,7 @@ public class MultiblockTooltipBuilder {
     }
 
     /**
-     * @deprecated use addCasingInfo() instead
+     * @deprecated use addCasing() instead
      *             Add a line of information about the structure:<br>
      *             (indent)minCount+ name (Tiered)
      *
@@ -579,7 +602,7 @@ public class MultiblockTooltipBuilder {
     }
 
     /**
-     * @deprecated use addCasingInfo() instead
+     * @deprecated use addCasing() instead
      *             Add a line of information about the structure:<br>
      *             (indent)minCount name (Minimum) (Tiered)
      *
@@ -606,7 +629,7 @@ public class MultiblockTooltipBuilder {
     }
 
     /**
-     * @deprecated use addCasingInfo() instead
+     * @deprecated use addCasing() instead
      *             Add a line of information about the structure:<br>
      *             (indent)minCount-maxCount name (Tiered)
      *
@@ -631,7 +654,7 @@ public class MultiblockTooltipBuilder {
     }
 
     /**
-     * @deprecated use addCasingInfo() instead
+     * @deprecated use addCasing() instead
      *             Add a line of information about the structure:<br>
      *             (indent)minCount-maxCount name (Minimum) (Tiered)
      *
@@ -1466,6 +1489,18 @@ public class MultiblockTooltipBuilder {
     }
 
     /**
+     * Use this method to add non-standard structural info without indent:<br>
+     * info
+     *
+     * @param info The line to be added
+     * @return Instance this method was called on.
+     */
+    public MultiblockTooltipBuilder addStructureFooter(String info) {
+        sLines.add(info);
+        return this;
+    }
+
+    /**
      * Add a colored separator line with specified length to structure info<br>
      *
      * @return Instance this method was called on.
@@ -1502,52 +1537,37 @@ public class MultiblockTooltipBuilder {
 
     /**
      * Use this method to add non-standard structural info:<br>
-     * (indent)Projector stack size determines info
+     * (indent)Projector stack size determines [purpose]
      *
-     * @param info Effect of Master Channel
+     * @param effect Effect of master channel
      * @return Instance this method was called on.
      */
-    public MultiblockTooltipBuilder addMasterChannel(String info) {
-        sLines.add(
-            TAB + EnumChatFormatting.WHITE
-                + translateToLocal("GT5U.MBTT.masterchannel")
-                + " "
-                + EnumChatFormatting.AQUA
-                + info);
-        return this;
-    }
-
-    /**
-     * @deprecated use overload that accepts {@link IStructureChannels} instead
-     */
-    @Deprecated
-    public MultiblockTooltipBuilder addSubChannelUsage(String channel, String purpose) {
-        sLines.add(TAB + translateToLocalFormatted("GT5U.MBTT.subchannel", channel, purpose));
+    public MultiblockTooltipBuilder addMasterChannel(String effect) {
+        sLines.add(translateToLocalFormatted("GT5U.MBTT.masterchannel", effect));
         return this;
     }
 
     /**
      * Use this method to add non-standard structural info:<br>
-     * (indent)Follows subchannel info for info
+     * (indent)Subchannel [channel] determines [channel.tooltip]
      *
      * @param channel Name of subchannel
-     * @param purpose Purpose of subchannel
      * @return Instance this method was called on.
      */
-    public MultiblockTooltipBuilder addSubChannelUsage(IStructureChannels channel, String purpose) {
-        sLines.add(TAB + translateToLocalFormatted("GT5U.MBTT.subchannel", channel.get(), purpose));
+    public MultiblockTooltipBuilder addSubChannel(IStructureChannels channel) {
+        sLines.add(translateToLocalFormatted("GT5U.MBTT.subchannel", channel.get(), channel.getDefaultTooltip()));
         return this;
     }
 
     /**
      * Use this method to add non-standard structural info:<br>
-     * (indent)Follows subchannel info for info
+     * (indent)Subchannel [channel] determines [channel.tooltip]
      *
-     * @param channel the name of subchannel
+     * @param channel Name of subchannel
      * @return Instance this method was called on.
      */
     public MultiblockTooltipBuilder addSubChannelUsage(IStructureChannels channel) {
-        sLines.add(TAB + translateToLocalFormatted("GT5U.MBTT.subchannel", channel.get(), channel.getDefaultTooltip()));
+        sLines.add(translateToLocalFormatted("GT5U.MBTT.subchannel", channel.get(), channel.getDefaultTooltip()));
         return this;
     }
 

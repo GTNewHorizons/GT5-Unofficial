@@ -86,8 +86,8 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven>
             .addInfo("Turns coal into coke and produces creosote oil")
             .beginStructureBlock(3, 3, 3, true)
             .addController("Front center")
-            .addCasingInfo("0-26", "Coke Oven Casing", false)
-            .addMiscHatch("0+", StatCollector.translateToLocal("GT5U.MBTT.CokeOvenHatch"), "Any Coke Oven Casing", 1)
+            .addCasing("0-26", "Coke Oven Casing", false)
+            .addMiscHatch("0+", StatCollector.translateToLocal("GT5U.MBTT.CokeOvenHatch"), "Any casing", 1)
             .addPollutionAmount(GTMod.proxy.mPollutionCokeOvenPerSecond)
             .toolTipFinisher(AuthorJulia);
     }

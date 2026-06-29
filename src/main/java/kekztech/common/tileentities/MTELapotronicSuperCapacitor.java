@@ -485,9 +485,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                     + "-tier glass")
             .addStructureInfo("You can have several I/O Hatches")
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
-            .addSubChannelUsage(
-                GTStructureChannels.LSC_CAPACITOR,
-                "Capacitor Tier if specified. Otherwise pick any acceptable capacitor.")
+            .addSubChannelUsage(GTStructureChannels.LSC_CAPACITOR)
             .addSubChannelUsage(GTStructureChannels.STRUCTURE_HEIGHT)
             .addMaintenanceHatch("Any Casing")
             .toolTipFinisher();

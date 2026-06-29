@@ -232,9 +232,9 @@ public class MTESteamWaterPump extends MTESteamMultiBlockBase<MTESteamWaterPump>
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
-            .addInfo("Pumps Water based on humidity")
-            .addInfo("Has 2 tiers: Bronze and Steel")
-            .addInfo("Steel tier extracts 2x Water")
+            .addInfo("Converts steam to water based on humidity")
+            .addInfo("Has two tiers: Basic and High-Pressure")
+            .addInfo("High-Pressure produces 2x Water from the same steam")
             .addInfo(
                 EnumChatFormatting.AQUA + "Generates: "
                     + EnumChatFormatting.WHITE
@@ -257,15 +257,15 @@ public class MTESteamWaterPump extends MTESteamMultiBlockBase<MTESteamWaterPump>
             .addSteamHatch("1", "Any casing", 1)
             .addOutputHatch("1", "Any casing", 1)
             .addStructureInfo("")
-            .addStructureInfo(EnumChatFormatting.BLUE + "Tier " + EnumChatFormatting.DARK_PURPLE + 1)
-            .addCasingInfo("10", "Bronze Frame Box", true)
-            .addCasingInfo("9", "Wooden Casing", false)
+            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Tiers.Basic"))
+            .addCasing("10", "Bronze Frame Box", false)
+            .addCasing("9", "Wooden Casing", false)
             .addStructureInfo("")
-            .addStructureInfo(EnumChatFormatting.BLUE + "Tier " + EnumChatFormatting.DARK_PURPLE + 2)
-            .addCasingInfo("10", "Steel Frame Box", true)
-            .addCasingInfo("9", "Wooden Casing", false)
+            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Tiers.HighPressure"))
+            .addCasing("10", "Steel Frame Box", false)
+            .addCasing("9", "Wooden Casing", false)
             .addStructureInfo("")
-            .addMasterChannel("Machine Tier")
+            .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.structuretier"))
             .toolTipFinisher(GTAuthors.AuthorEvgenWarGold);
         return tt;
     }

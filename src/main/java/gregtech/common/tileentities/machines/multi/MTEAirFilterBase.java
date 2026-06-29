@@ -147,9 +147,9 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
     @Override
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 1, 3, 0, errors)) return;
-        checkHasMufflerHatch(errors);
-        checkHasMaintenanceHatch(errors);
         checkHasEnergyHatch(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasMufflerHatch(errors);
     }
 
     @Override
@@ -209,15 +209,15 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
             .addInfo("Insert Absorption Filter in an input bus")
             .addInfo("  to double pollution cleaning amount (30 uses per item)")
             .addInfo("Each maintenance issue reduces cleaning amount by 10%")
-            .beginStructureBlock(3, 4, 3, true)
+            .beginStructureBlock(3, 3, 4, true)
             .addController("Front bottom center")
-            .addOtherStructurePart(getCasingString(), "Top and bottom layers")
-            .addOtherStructurePart(getPipeString(), "Corners of the middle two layers")
-            .addMufflerHatch("Sides of the middle two layers", 2)
-            .addEnergyHatch("Any bottom layer Casing", 1)
-            .addMaintenanceHatch("Any bottom layer Casing", 1)
-            .addInputBus("Any bottom layer Casing (optional)", 1)
-            .addOutputBus("Any bottom layer Casing (optional)", 1)
+            .addCasingInfo("9-22", getCasingString(), false)
+            .addCasingInfo("8", getPipeString(), false)
+            .addEnergyHatch("1+", "Any bottom casing", 1)
+            .addMaintenanceHatch("1", "Any bottom casing", 1)
+            .addMufflerHatch("1-8", "Any center side casing", 2)
+            .addInputBus("0+", "Any bottom casing", 1)
+            .addOutputBus("0+", "Any bottom casing", 1)
             .toolTipFinisher();
         return tt;
     }
