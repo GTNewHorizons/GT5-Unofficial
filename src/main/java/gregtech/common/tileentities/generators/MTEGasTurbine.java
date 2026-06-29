@@ -26,28 +26,22 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.GTMod;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicGenerator;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.GTUtility;
 
+@IMetaTileEntity.SkipGenerateDescription
 public class MTEGasTurbine extends MTEBasicGenerator {
 
     private final int efficiency;
 
     public MTEGasTurbine(int aID, String aName, String aNameRegional, int aTier, int efficiency) {
-        super(
-            aID,
-            aName,
-            aNameRegional,
-            aTier,
-            new String[] { "Requires flammable Gasses",
-                "Causes "
-                    + (int) (GTMod.proxy.mPollutionBaseGasTurbinePerSecond
-                        * GTMod.proxy.mPollutionGasTurbineReleasedByTier[aTier])
-                    + " Pollution per second" });
+        super(aID, aName, aNameRegional, aTier, (String) null);
         this.efficiency = efficiency;
     }
 
@@ -74,6 +68,13 @@ public class MTEGasTurbine extends MTEBasicGenerator {
     @Override
     public int getEfficiency() {
         return this.efficiency;
+    }
+
+    @Override
+    protected String[] getTooltipLines() {
+        int pollution = (int) (GTMod.proxy.mPollutionBaseGasTurbinePerSecond
+            * GTMod.proxy.mPollutionGasTurbineReleasedByTier[mTier]);
+        return GTUtility.translateMultiline("gt.blockmachines.basicgenerator.gasturbine.tooltip", pollution);
     }
 
     @Override

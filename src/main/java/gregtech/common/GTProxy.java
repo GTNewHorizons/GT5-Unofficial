@@ -2486,12 +2486,6 @@ public class GTProxy implements IFuelHandler {
         }
     }
 
-    @SubscribeEvent
-    public void onBlockEvent(BlockEvent event) {
-        if (event.block.getUnlocalizedName()
-            .equals("blockAlloyGlass")) GregTechAPI.causeMachineUpdate(event.world, event.x, event.y, event.z);
-    }
-
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void playerMap$onPlayerLoggedIn(PlayerLoggedInEvent event) {
         if (!(event.player instanceof EntityPlayerMP player)) {

@@ -9,13 +9,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 
-public interface IDualInputHatch extends IMetaTileEntity {
-
-    /**
-     * @return {@code true} if there is new items and/or fluids inserted to the inventories, and it will trigger the
-     *         recipe check.
-     */
-    boolean justUpdated();
+public interface IDualInputHatch extends IMetaTileEntity, ISmartInputHatch {
 
     Iterator<? extends IDualInputInventory> inventories();
 

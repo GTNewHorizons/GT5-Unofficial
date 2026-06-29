@@ -1,5 +1,10 @@
 package gregtech.api.modularui2;
 
+import static gregtech.common.gui.modularui.widget.SteamGaugeWidget.GAUGE_CONNECTOR_SIZE;
+import static gregtech.common.gui.modularui.widget.SteamGaugeWidget.GAUGE_NEEDLE_HEIGHT;
+import static gregtech.common.gui.modularui.widget.SteamGaugeWidget.GAUGE_NEEDLE_WIDTH;
+import static gregtech.common.gui.modularui.widget.SteamGaugeWidget.GAUGE_SIZE;
+
 import com.cleanroommc.modularui.api.IThemeApi;
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.drawable.DrawableStack;
@@ -59,7 +64,7 @@ public final class GTWidgetThemes {
     public static WidgetThemeKey<WidgetTheme> BACKGROUND_TITLE = registerThemedTexture("backgroundTitle");
     public static WidgetThemeKey<WidgetTheme> BACKGROUND_TERMINAL = themeApi
         .widgetThemeKeyBuilder("backgroundTerminal", WidgetTheme.class)
-        .defaultTheme(new WidgetTheme(0, 0, GTGuiTextures.BACKGROUND_TEXT_FIELD, Color.WHITE.main, 0xFAFAFA, false, 0))
+        .defaultTheme(new WidgetTheme(0, 0, GTGuiTextures.BACKGROUND_TERMINAL, Color.WHITE.main, 0xFAFAFA, false, 0))
         .defaultHoverTheme(null)
         .register();
 
@@ -101,12 +106,21 @@ public final class GTWidgetThemes {
         .register();
     public static WidgetThemeKey<WidgetTheme> STEAM_GAUGE = themeApi
         .widgetThemeKeyBuilder("steamGauge", WidgetTheme.class)
-        .defaultTheme(new WidgetTheme(0, 0, GTGuiTextures.STEAM_GAUGE_BG, Color.WHITE.main, Color.WHITE.main, false, 0))
+        .defaultTheme(
+            new WidgetTheme(
+                GAUGE_SIZE + GAUGE_CONNECTOR_SIZE,
+                GAUGE_SIZE,
+                GTGuiTextures.STEAM_GAUGE_BG,
+                Color.WHITE.main,
+                Color.WHITE.main,
+                false,
+                0))
         .defaultHoverTheme(null)
         .register();
     public static WidgetThemeKey<WidgetTheme> STEAM_GAUGE_NEEDLE = themeApi
         .widgetThemeKeyBuilder("steamGaugeNeedle", WidgetTheme.class)
-        .defaultTheme(new WidgetTheme(0, 0, null, Color.BROWN.main, 0xFF404040, false, 0))
+        .defaultTheme(
+            new WidgetTheme(GAUGE_NEEDLE_WIDTH, GAUGE_NEEDLE_HEIGHT, null, Color.BROWN.main, 0xFF404040, false, 0))
         .defaultHoverTheme(null)
         .parser(noInheritanceParser())
         .register();
@@ -123,6 +137,7 @@ public final class GTWidgetThemes {
 
     public static WidgetThemeKey<WidgetTheme> PICTURE_CANISTER = registerThemedTexture("pictureCanister");
     public static WidgetThemeKey<WidgetTheme> PICTURE_LOGO = registerThemedTexture("pictureLogo");
+    public static WidgetThemeKey<WidgetTheme> PICTURE_ERROR = registerThemedTexture("pictureError");
 
     public static WidgetThemeKey<WidgetTheme> TESLA_TOWER_CHART = themeApi
         .widgetThemeKeyBuilder("teslaTowerChart", WidgetTheme.class)
