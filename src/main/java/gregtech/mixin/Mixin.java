@@ -90,11 +90,6 @@ public enum Mixin implements IMixins {
         .addRequiredMod(TargetedMod.IC2)
         .setPhase(Phase.LATE)),
 
-    IC2_REINFORCED_GLASS_SILK(
-        new MixinBuilder("Lets Reinforced Glass be harvested by silk touch")
-            .addCommonMixins("ic2.MixinIc2ReinforcedGlass")
-            .addRequiredMod(TargetedMod.IC2)
-            .setPhase(Phase.LATE)),
     IC2_REMOVE_FISSION_FUELS(new MixinBuilder()
         .addCommonMixins("ic2.MixinIc2FissionFuelRemoval")
         .addRequiredMod(TargetedMod.IC2)

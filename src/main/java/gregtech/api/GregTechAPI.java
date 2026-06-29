@@ -180,6 +180,7 @@ public class GregTechAPI {
     public static Block sBlockLongDistancePipes;
     public static Block sDroneRender;
     public static Block sBlockFenceMetal;
+    public static Block sBlockPad;
     public static Block sBlockFrames;
     public static Block sBlockGlass1;
     public static Block sBlockTintedGlass;

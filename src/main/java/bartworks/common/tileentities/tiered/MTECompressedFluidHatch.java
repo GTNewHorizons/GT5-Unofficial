@@ -15,8 +15,6 @@ package bartworks.common.tileentities.tiered;
 
 import net.minecraftforge.fluids.FluidStack;
 
-import com.gtnewhorizons.modularui.common.widget.FluidSlotWidget;
-
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -53,11 +51,5 @@ public class MTECompressedFluidHatch extends MTEHatchInput {
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTECompressedFluidHatch(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
-    }
-
-    @Override
-    protected FluidSlotWidget createFluidSlot() {
-        return super.createFluidSlot()
-            .setFilter(f -> (f == Materials.LiquidAir.mFluid || f == Materials.NetherSemiFluid.mFluid));
     }
 }
