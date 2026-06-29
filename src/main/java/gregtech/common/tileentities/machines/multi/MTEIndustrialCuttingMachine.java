@@ -81,7 +81,7 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
     private static final double BLADE_HEIGHT = 3.0D;
     private static final double BLADE_PADDING = 0.25D;
     private static final float BLADE_ROTATION_SPEED = 64.72132F;
-    private static final int BLADE_SPINUP_TICKS = 20;
+    private static final int BLADE_SPINUP_TICKS = 30;
     private static final double BLADE_CLIP_BOTTOM = 1.0D;
     @SideOnly(Side.CLIENT)
     private static DoubleBuffer CLIP_PLANE_BUFFER;
