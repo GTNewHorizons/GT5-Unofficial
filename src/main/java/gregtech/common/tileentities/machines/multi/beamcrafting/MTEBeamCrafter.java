@@ -389,12 +389,12 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
         int availableA = bufferMap.getOrDefault(currentRecipeParticleIDA, 0);
         int neededA = currentRecipeMaxAmountA - currentRecipeCurrentAmountA;
         int consumeA = Math.min(availableA, neededA);
-        bufferMap.put(currentRecipeParticleIDA, consumeA);
+        bufferMap.put(currentRecipeParticleIDA, availableA - consumeA);
 
         int availableB = bufferMap.getOrDefault(currentRecipeParticleIDB, 0);
         int neededB = currentRecipeMaxAmountB - currentRecipeCurrentAmountB;
         int consumeB = Math.min(availableB, neededB);
-        bufferMap.put(currentRecipeParticleIDB, consumeB);
+        bufferMap.put(currentRecipeParticleIDB, availableB - consumeB);
 
         currentRecipeCurrentAmountA += consumeA;
         currentRecipeCurrentAmountB += consumeB;
