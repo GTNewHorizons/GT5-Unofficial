@@ -70,8 +70,6 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
     private int currentRecipeParticleIDA;
     private int currentRecipeParticleIDB;
 
-    private int activeParallel = 1;
-
     public Int2IntOpenHashMap bufferMap = new Int2IntOpenHashMap();
     private boolean bufferMapInitialized = false;
 
@@ -380,42 +378,27 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
                 .setContents(null);
         }
 
-        contributeToProgress(this.currentRecipeParticleIDA, this.currentRecipeParticleIDB);
+        contributeToProgress();
         if (mProgresstime >= mMaxProgresstime) {
             currentRecipeCurrentAmountA = 0;
             currentRecipeCurrentAmountB = 0;
         }
     }
 
-    private void contributeToProgress(int recipeParticleIDA, int recipeParticleIDB) {
-        int availableA = bufferMap.getOrDefault(recipeParticleIDA, 0);
-        int availableB = bufferMap.getOrDefault(recipeParticleIDB, 0);
-
+    private void contributeToProgress() {
+        int availableA = bufferMap.getOrDefault(currentRecipeParticleIDA, 0);
         int neededA = currentRecipeMaxAmountA - currentRecipeCurrentAmountA;
+        int consumeA = Math.min(availableA, neededA);
+        bufferMap.put(currentRecipeParticleIDA, consumeA);
+
+        int availableB = bufferMap.getOrDefault(currentRecipeParticleIDB, 0);
         int neededB = currentRecipeMaxAmountB - currentRecipeCurrentAmountB;
+        int consumeB = Math.min(availableB, neededB);
+        bufferMap.put(currentRecipeParticleIDB, consumeB);
 
-        int availAfterCurrentA = availableA - neededA;
-        int availAfterCurrentB = availableB - neededB;
-
-        int consumedA = 0;
-        int consumedB = 0;
-
-        if (this.activeParallel == 1) {
-            consumedA = Math.min(availableA, neededA);
-            consumedB = Math.min(availableB, neededB);
-        } else {
-            consumedA = Math.min(availableA, neededA + ((this.activeParallel - 1) * currentRecipeMaxAmountA));
-            consumedB = Math.min(availableB, neededB + ((this.activeParallel - 1) * currentRecipeMaxAmountB));
-        }
-
-        bufferMap.put(recipeParticleIDA, availableA - consumedA);
-        bufferMap.put(recipeParticleIDB, availableB - consumedB);
-
-        currentRecipeCurrentAmountA += consumedA;
-        currentRecipeCurrentAmountB += consumedB;
-
-        mProgresstime += consumedA + consumedB;
-
+        currentRecipeCurrentAmountA += consumeA;
+        currentRecipeCurrentAmountB += consumeB;
+        mProgresstime += consumeA + consumeB;
     }
 
     @Override
@@ -435,11 +418,18 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
                         if (metadata == null) return 0;
                         int parallel = Math.min(MAX_PARALLEL, maxParallel);
 
-                        int availableA = bufferMap.getOrDefault(metadata.particleID_A, 0);
-                        int availableB = bufferMap.getOrDefault(metadata.particleID_B, 0);
+                        if (metadata.particleID_A == metadata.particleID_B) {
+                            int available = bufferMap.getOrDefault(metadata.particleID_A, 0);
 
-                        parallel = Math.min(parallel, availableA / metadata.amount_A);
-                        parallel = Math.min(parallel, availableB / metadata.amount_B);
+                            parallel = Math.min(parallel, available / (metadata.amount_A + metadata.amount_B));
+
+                        } else {
+                            int availableA = bufferMap.getOrDefault(metadata.particleID_A, 0);
+                            int availableB = bufferMap.getOrDefault(metadata.particleID_B, 0);
+
+                            parallel = Math.min(parallel, availableA / metadata.amount_A);
+                            parallel = Math.min(parallel, availableB / metadata.amount_B);
+                        }
 
                         parallel = Math.max(1, parallel); // so it can't be 0
                         return parallel;
@@ -459,10 +449,9 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
                     currentRecipeParticleIDB = metadata.particleID_B;
                     currentRecipeCurrentAmountA = 0;
                     currentRecipeCurrentAmountB = 0;
-                    currentRecipeMaxAmountA = metadata.amount_A;
-                    currentRecipeMaxAmountB = metadata.amount_B;
-                    activeParallel = helper.getCurrentParallel();
-
+                    int activeParallel = helper.getCurrentParallel();
+                    currentRecipeMaxAmountA = metadata.amount_A * activeParallel;
+                    currentRecipeMaxAmountB = metadata.amount_B * activeParallel;
                     duration = currentRecipeMaxAmountA + currentRecipeMaxAmountB;
                 }
                 return result;
