@@ -33,7 +33,6 @@ import gtPlusPlus.core.item.base.rods.BaseItemRod;
 import gtPlusPlus.core.item.base.rods.BaseItemRodLong;
 import gtPlusPlus.core.item.base.rotors.BaseItemRotor;
 import gtPlusPlus.core.item.base.screws.BaseItemScrew;
-import gtPlusPlus.core.material.nuclear.MaterialsFluorides;
 import gtPlusPlus.core.material.state.MaterialState;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
@@ -43,7 +42,6 @@ import gtPlusPlus.xmod.gregtech.loaders.RecipeGenBlastSmelter;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGenDustGeneration;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGenExtruder;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGenFluids;
-import gtPlusPlus.xmod.gregtech.loaders.RecipeGenFluorite;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGenMaterialProcessing;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGenMetalRecipe;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGenOre;
@@ -270,11 +268,7 @@ public class MaterialGenerator {
             new BaseItemPurifiedDust(matInfo);
             new BaseItemRawOre(matInfo);
 
-            if (matInfo == MaterialsFluorides.FLUORITE) {
-                new RecipeGenFluorite(matInfo);
-            } else {
-                new RecipeGenOre(matInfo);
-            }
+            new RecipeGenOre(matInfo);
 
         } catch (final Exception t) {
             t.printStackTrace();

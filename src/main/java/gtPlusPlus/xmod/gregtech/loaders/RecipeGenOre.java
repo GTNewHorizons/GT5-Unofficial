@@ -2,6 +2,7 @@ package gtPlusPlus.xmod.gregtech.loaders;
 
 import static gregtech.api.enums.GTValues.RA;
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
+import static gregtech.api.recipe.RecipeMaps.chemicalBathRecipes;
 import static gregtech.api.recipe.RecipeMaps.electrolyzerRecipes;
 import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
 import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
@@ -208,6 +209,19 @@ public class RecipeGenOre extends RecipeGenBase {
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(oreWasherRecipes);
+
+        // Fluorite Hydrogen Chemical Bath
+        if (material.getLocalizedName()
+            .equals("Fluorite (F)")) {
+            GTValues.RA.stdBuilder()
+                .itemInputs(material.getCrushed(1))
+                .itemOutputs(material.getCrushedPurified(4), material.getDustImpure(2), material.getDustPurified(1))
+                .outputChances(100_00, 50_00, 10_00)
+                .fluidInputs(Materials.Hydrogen.getGas(1_000))
+                .duration(15 * SECONDS)
+                .eut(TierEU.RECIPE_HV / 2)
+                .addTo(chemicalBathRecipes);
+        }
 
         // Thermal Centrifuge
 
