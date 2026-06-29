@@ -274,6 +274,31 @@ public class DroneCentreGuiUtil {
                     .notifyUpdate();
             }
         }));
+        syncManager.syncValue("toggleSelectAll", new InteractionSyncHandler().setOnMousePressed(var -> {
+            if (!NetworkUtils.isClient()) {
+                int activeGroup = multiblock.getActiveGroup();
+                if (activeGroup == 0) return;
+                List<DroneConnection> allConnections = multiblock.getConnectionList();
+                if (allConnections == null || allConnections.isEmpty()) return;
+                List<DroneConnection> filtered = allConnections.stream()
+                    .filter(conn -> matchesSearchFilter(conn, multiblock))
+                    .toList();
+                if (filtered.isEmpty()) return;
+                long groupBit = 1L << activeGroup;
+                boolean allInGroup = filtered.stream()
+                    .allMatch(conn -> (conn.getGroupMask() & groupBit) != 0);
+                for (DroneConnection conn : filtered) {
+                    long mask = conn.getGroupMask();
+                    if (allInGroup) {
+                        conn.setGroupMask(mask & ~groupBit);
+                    } else {
+                        conn.setGroupMask(mask | groupBit);
+                    }
+                }
+                syncManager.findSyncHandler("droneList", DroneConnectionListSyncHandler.class)
+                    .notifyUpdate();
+            }
+        }));
 
         IntSyncValue selectTimeSyncHandler = new IntSyncValue(multiblock::getSelectedTime, multiblock::setSelectedTime)
             .allowC2S();
@@ -282,6 +307,24 @@ public class DroneCentreGuiUtil {
                 .allowC2S();
         syncManager.syncValue("selectTime", selectTimeSyncHandler);
         syncManager.syncValue("productionStats", productionStatsSyncHandler);
+    }
+
+    public static boolean matchesSearchFilter(DroneConnection conn, MTEDroneCentre centre) {
+        String searchText = centre.getSearchBarText();
+        if (searchText == null || searchText.isEmpty()) return true;
+        String searchTextLower = searchText.toLowerCase();
+
+        String customName = conn.getCustomName();
+        String customNameLower = customName == null ? "" : customName.toLowerCase();
+        if (customNameLower.contains(searchTextLower)) {
+            return true;
+        }
+        if (centre.getSearchOriginalName()) {
+            String locName = conn.getLocalizedName();
+            String locNameLower = locName == null ? "" : locName.toLowerCase();
+            return locNameLower.contains(searchTextLower);
+        }
+        return false;
     }
 
     public enum SortMode {

@@ -2546,6 +2546,7 @@ GT5U.gui.text.recipe_result.drone_operating=§aDrone operating normally!
 GT5U.gui.text.drone_title=Drone Control Centre
 GT5U.gui.text.drone_group_all=All Connections
 GT5U.gui.button.drone_rename_group=Rename Group
+GT5U.gui.button.drone_toggle_select_all=Toggle Select All
 GT5U.gui.button.drone_add_group=Add Group
 GT5U.gui.button.drone_delete_group=Delete Group
 GT5U.gui.text.drone_custom_name=Custom Machine Name

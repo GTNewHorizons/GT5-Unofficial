@@ -216,7 +216,7 @@ public class DroneConnectionListPanel extends ModularPanel {
                     })
                     .tooltipBuilder(t -> t.addLine(IKey.lang("GT5U.gui.button.drone_production"))))
             .child(
-                new UpdatableToggleButton(droneListHandler, groupHandler).size(16)
+                new UpdatableToggleButton(droneListHandler, groupHandler, titleBarHandler).size(16)
                     .value(syncManager.findSyncHandler("editMode", BooleanSyncValue.class))
                     .overlay(true, GTGuiTextures.OVERLAY_BUTTON_BATCH_MODE_ON)
                     .overlay(false, GTGuiTextures.OVERLAY_BUTTON_BATCH_MODE_OFF)
@@ -348,23 +348,30 @@ public class DroneConnectionListPanel extends ModularPanel {
         String groupName = (String) syncManager.findSyncHandler("groupNameList", GenericListSyncHandler.class)
             .getValue()
             .get(activeGroup);
-        return Flow.row()
+        Flow row = Flow.row()
             .fullWidth()
             .height(18)
-            .childPadding(4)
-            .child(
+            .childPadding(4);
+        if (centre.getEditMode()) {
+            row.child(
                 new ButtonWidget<>().size(16)
-                    .overlay(GTGuiTextures.OVERLAY_BUTTON_PRINT)
-                    .onMousePressed(mouseButton -> {
-                        if (mouseButton == 0) {
-                            centre.setRenamingActiveGroup(true);
-                            syncManager.findSyncHandler("renamingActiveGroup", BooleanSyncValue.class)
-                                .notifyUpdate();
-                            titleBarHandler.notifyUpdate(packet -> {});
-                        }
-                        return true;
-                    })
-                    .tooltipBuilder(t -> t.add(IKey.lang("GT5U.gui.button.drone_rename_group"))))
+                    .overlay(GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
+                    .syncHandler(syncManager.findSyncHandler("toggleSelectAll", InteractionSyncHandler.class))
+                    .tooltipBuilder(t -> t.add(IKey.lang("GT5U.gui.button.drone_toggle_select_all"))));
+        }
+        row.child(
+            new ButtonWidget<>().size(16)
+                .overlay(GTGuiTextures.OVERLAY_BUTTON_PRINT)
+                .onMousePressed(mouseButton -> {
+                    if (mouseButton == 0) {
+                        centre.setRenamingActiveGroup(true);
+                        syncManager.findSyncHandler("renamingActiveGroup", BooleanSyncValue.class)
+                            .notifyUpdate();
+                        titleBarHandler.notifyUpdate(packet -> {});
+                    }
+                    return true;
+                })
+                .tooltipBuilder(t -> t.add(IKey.lang("GT5U.gui.button.drone_rename_group"))))
             .child(
                 IKey.str(groupName)
                     .asWidget()
@@ -376,6 +383,7 @@ public class DroneConnectionListPanel extends ModularPanel {
                     .overlay(GTGuiTextures.OVERLAY_BUTTON_CROSS)
                     .syncHandler(syncManager.findSyncHandler("deleteGroup", InteractionSyncHandler.class))
                     .tooltipBuilder(t -> t.add(IKey.lang("GT5U.gui.button.drone_delete_group"))));
+        return row;
     }
 
     private IWidget createListArea(PanelSyncManager syncManager, PanelSyncManager dynamicSyncManager) {
@@ -401,7 +409,7 @@ public class DroneConnectionListPanel extends ModularPanel {
         };
 
         List<Flow> rows = clientConnections.stream()
-            .filter(conn -> matchesSearchFilter(conn) && isInActiveGroup(conn))
+            .filter(conn -> DroneCentreGuiUtil.matchesSearchFilter(conn, centre) && isInActiveGroup(conn))
             .sorted(sorter)
             .map(connection -> {
                 Flow row = Flow.row()
@@ -594,17 +602,6 @@ public class DroneConnectionListPanel extends ModularPanel {
                 });
         }
         return button;
-    }
-
-    private boolean matchesSearchFilter(DroneConnection conn) {
-        String searchText = centre.getSearchBarText()
-            .toLowerCase();
-        return conn.getCustomName()
-            .toLowerCase()
-            .contains(searchText)
-            || (centre.getSearchOriginalName() && conn.getLocalizedName()
-                .toLowerCase()
-                .contains(searchText));
     }
 
     private boolean isInActiveGroup(DroneConnection conn) {
