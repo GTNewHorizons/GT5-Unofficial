@@ -43,8 +43,8 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchMaintenance;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.render.TextureFactory;
-import gregtech.common.gui.modularui.hatch.MTEHatchDroneDownLinkGui;
 import gregtech.common.entity.EntityDrone;
+import gregtech.common.gui.modularui.hatch.MTEHatchDroneDownLinkGui;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 

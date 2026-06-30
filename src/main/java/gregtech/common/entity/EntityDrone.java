@@ -76,8 +76,7 @@ public class EntityDrone extends EntityLivingBase {
     }
 
     @Override
-    public void moveEntityWithHeading(float strafe, float forward) {
-    }
+    public void moveEntityWithHeading(float strafe, float forward) {}
 
     @Override
     public float getEyeHeight() {
@@ -131,8 +130,7 @@ public class EntityDrone extends EntityLivingBase {
     }
 
     @Override
-    public void setCurrentItemOrArmor(int slot, ItemStack stack) {
-    }
+    public void setCurrentItemOrArmor(int slot, ItemStack stack) {}
 
     @Override
     public ItemStack[] getLastActiveItems() {
@@ -140,16 +138,12 @@ public class EntityDrone extends EntityLivingBase {
     }
 
     @Override
-    public void readEntityFromNBT(NBTTagCompound tag) {
-    }
+    public void readEntityFromNBT(NBTTagCompound tag) {}
 
     @Override
-    public void writeEntityToNBT(NBTTagCompound tag) {
-    }
+    public void writeEntityToNBT(NBTTagCompound tag) {}
 
-    public void initAutoFlight(int hatchX, int hatchY, int hatchZ,
-                                       int ctrlX, int ctrlY, int ctrlZ,
-                                       int droneLevel) {
+    public void initAutoFlight(int hatchX, int hatchY, int hatchZ, int ctrlX, int ctrlY, int ctrlZ, int droneLevel) {
         dataWatcher.updateObject(DW_AUTO_MODE, (byte) 1);
         dataWatcher.updateObject(DW_DRONE_LEVEL, droneLevel);
         this.noClip = true;
@@ -158,9 +152,7 @@ public class EntityDrone extends EntityLivingBase {
         orbitCenterX = ctrlX + 0.5;
         orbitCenterY = ctrlY + 2.5;
         orbitCenterZ = ctrlZ + 0.5;
-        double approachAngle = Math.atan2(
-            (hatchZ + 0.5) - orbitCenterZ,
-            (hatchX + 0.5) - orbitCenterX);
+        double approachAngle = Math.atan2((hatchZ + 0.5) - orbitCenterZ, (hatchX + 0.5) - orbitCenterX);
         double orbitEntryX = orbitCenterX + ORBIT_RADIUS * Math.cos(approachAngle);
         double orbitEntryZ = orbitCenterZ + ORBIT_RADIUS * Math.sin(approachAngle);
         orbitStartAngle = approachAngle;
@@ -255,14 +247,12 @@ public class EntityDrone extends EntityLivingBase {
         rotationPitch = lerpAngle(rotationPitch, targetPitch, 0.1f);
     }
 
-    private static int findSafeCruiseAltitude(World world,
-                                               int hatchX, int hatchY, int hatchZ,
-                                               int ctrlX, int ctrlY, int ctrlZ) {
+    private static int findSafeCruiseAltitude(World world, int hatchX, int hatchY, int hatchZ, int ctrlX, int ctrlY,
+        int ctrlZ) {
         int safeY = Math.max(hatchY, ctrlY) + 3;
         for (int[] xz : bresenhamLine2D(hatchX, hatchZ, ctrlX, ctrlZ)) {
             while (safeY < 250
-                && (!world.isAirBlock(xz[0], safeY, xz[1])
-                    || !world.isAirBlock(xz[0], safeY + 1, xz[1]))) {
+                && (!world.isAirBlock(xz[0], safeY, xz[1]) || !world.isAirBlock(xz[0], safeY + 1, xz[1]))) {
                 safeY++;
             }
         }

@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-import gregtech.common.entity.EntityDrone;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -29,6 +28,7 @@ import gregtech.api.modularui2.MetaTileEntityGuiHandler;
 import gregtech.api.net.PacketObserveMachine;
 import gregtech.api.objects.GTChunkManager;
 import gregtech.api.util.GTLog;
+import gregtech.common.entity.EntityDrone;
 import gregtech.common.items.ItemDroneRemoteInterface;
 
 public class CameraViewportManager {
