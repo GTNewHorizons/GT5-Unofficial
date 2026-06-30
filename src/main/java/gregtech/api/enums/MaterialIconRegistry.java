@@ -8,6 +8,11 @@ public class MaterialIconRegistry {
         ITEM,
     }
 
+    /**
+     * Order of these entries must remain intact,
+     * Either change existing entries, VOID entries
+     * or add new ones at the end.
+     */
     public enum IconType {
 
         DUST_TINY("/dustTiny", TextureType.ITEM),
@@ -193,7 +198,11 @@ public class MaterialIconRegistry {
         TOOL_PROSPECTOR_LUV("/toolProspectorElectricLuV", TextureType.ITEM),
         TOOL_PROSPECTOR_ZPM("/toolProspectorElectricZPM", TextureType.ITEM),
         TOOL_PROSPECTOR_UV("/toolProspectorElectricUV", TextureType.ITEM),
-        TOOL_PROSPECTOR_UHV("/toolProspectorElectricUHV", TextureType.ITEM);
+        TOOL_PROSPECTOR_UHV("/toolProspectorElectricUHV", TextureType.ITEM),
+
+        // spotless:off
+        ;
+        // spotless:on
 
         public final String suffix;
         public final TextureType texture;
