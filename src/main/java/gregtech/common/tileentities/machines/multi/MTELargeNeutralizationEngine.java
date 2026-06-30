@@ -64,10 +64,8 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.maps.FuelBackend;
-import gregtech.api.structure.error.ErrorType;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrorRegistry;
-import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
@@ -363,17 +361,19 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
                     "Ultimate Static Machine Casing",
                     700,
                     formatNumber(2500000)))
-            .beginStructureBlock(11, 7, 3, true)
-            .addController("Top center")
-            .addCasingInfoRange("Tiered Casing", 30, 46, false)
-            .addCasingInfoExactly("Polytetrafluoroethylene Frame Box", 34, false)
-            .addCasingInfoExactly("PTFE Pipe Casing", 15, false)
-            .addInputBus("Any Tiered Casing", 1)
-            .addInputHatch("Any Tiered Casing", 1)
-            .addMaintenanceHatch("Any Tiered Casing", 1)
-            .addDynamoHatch("Any Tiered Casing", 1)
-            .addOtherStructurePart("Toxic Residue Sensor Hatch", "Any Tiered Casing")
             .addTecTechHatchInfo()
+            .beginStructureBlock(3, 11, 7, true)
+            .addController("Top center")
+            .addCasing("30-43", "Machine Casing", true)
+            .addCasing("34", "PTFE Frame Box", false)
+            .addCasing("15", "PTFE Pipe Casing", false)
+            .addMiscHatch("0+", "Toxic Residue Sensor Hatch", "Any machine casing", 1)
+            .addDynamoHatch("1+", "Any machine casing", 1)
+            .addMaintenanceHatch("1", "Any machine casing", 1)
+            .addInputBus("0+", "Any machine casing", 1)
+            .addInputHatch("1+", "Any machine casing", 1)
+            .addStructureInfo("")
+            .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.casingtier"))
             .toolTipFinisher();
         return tt;
     }
@@ -389,11 +389,10 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
             return;
         }
         checkCasingMin(errors, mCasing, 30);
+        checkHasAnyDynamo(errors);
         checkHasMaintenanceHatch(errors);
         checkHasInputHatch(errors);
-        if (mDynamoHatches.isEmpty() && mExoticDynamoHatches.isEmpty()) {
-            errors.add(StructureErrors.hatchCount(ErrorType.TOO_FEW, Dynamo, 0, 1));
-        }
+
         getBaseMetaTileEntity().sendBlockEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, getUpdateData());
         updateHatchTexture();
         updateResidueCapacity();

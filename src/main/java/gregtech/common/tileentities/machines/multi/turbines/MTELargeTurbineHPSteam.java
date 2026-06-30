@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -86,13 +87,13 @@ public class MTELargeTurbineHPSteam extends MTELargeTurbineBase {
             .addCasing("14", "Titanium Frame Box", false)
             .addCasing("8-14", "Titanium Turbine Casing", false)
             .addCasing("12", "Titanium Pipe Casing", false)
-            .addDynamoHatch("1", "Back center turbine casing", 1)
-            .addMaintenanceHatch("1", "Any back turbine casing", 2)
-            .addInputHatch("1+", "Any back turbine casing", 2)
-            .addOutputHatch("0+", "Any back turbine casing", 2)
+            .addDynamoHatch("1", "Back center turbine casing", 2)
+            .addMaintenanceHatch("1", "Any back turbine casing", 1)
+            .addInputHatch("1+", "Any back turbine casing", 1)
+            .addOutputHatch("0+", "Any back turbine casing", 1)
             .addAir("3x3 area in front of controller")
             .addStructureInfo("")
-            .addStructureFooter("Dynamo cannot be greater than 4A")
+            .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.DynamoLimit"))
             .addStructureAuthors(EnumChatFormatting.GOLD + "hugetrust")
             .toolTipFinisher();
         return tt;

@@ -145,10 +145,8 @@ public class MTETeslaTower extends TTMultiblockBase
     // region structure
     private static final String[] description = new String[] {
         EnumChatFormatting.AQUA + translateToLocal("tt.keyphrase.Hint_Details") + ":",
-        translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.hint.0"), // 1 - Classic Hatches, Capacitor
-                                                                               // Hatches or Tesla
-        // Base Casing
-        translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.hint.1"), // 2 - ""Titanium frames""
+        translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.hint.0") // Capacitor Hatch, Energy Hatch,
+                                                                              // Maintenance Hatch, Input Hatch
     };
 
     private static final IStructureDefinition<MTETeslaTower> STRUCTURE_DEFINITION = IStructureDefinition
@@ -466,8 +464,8 @@ public class MTETeslaTower extends TTMultiblockBase
             cap.getBaseMetaTileEntity()
                 .setActive(iGregTechTileEntity.isActive());
         }
-        checkHasMaintenanceHatch(errors);
         checkHasAnyEnergy(errors);
+        checkHasMaintenanceHatch(errors);
 
         // Only recalculate offsets on orientation or rotation change
         if (oldRotation != getExtendedFacing().ordinal() || oldOrientation != iGregTechTileEntity.getFrontFacing()) {
@@ -574,28 +572,17 @@ public class MTETeslaTower extends TTMultiblockBase
             // be at least the same tier as
             // the Tesla Capacitor
             .addTecTechHatchInfo()
-            .beginStructureBlock(7, 17, 7, false)
+            .beginStructureBlock(7, 7, 17, false)
             .addController("Front bottom center")
-            .addOtherStructurePart(
-                translateToLocal("gt.blockmachines.hatch.capacitor.tier.03.name"),
-                translateToLocal("tt.keyword.Structure.AnyTeslaBaseCasingOuter"),
-                1) // Capacitor Hatch: Any outer Tesla Base Casing
-            .addEnergyHatch(translateToLocal("tt.keyword.Structure.AnyTeslaBaseCasingOuter"), 1) // Energy Hatch:
-                                                                                                 // Any outer Tesla
-                                                                                                 // Base Casing
-            .addMaintenanceHatch(translateToLocal("tt.keyword.Structure.AnyTeslaBaseCasingOuter"), 1) // Maintenance
-                                                                                                      // Hatch: Any
-                                                                                                      // outer Tesla
-                                                                                                      // Base Casing
-            .addInputHatch(translateToLocal("tt.keyword.Structure.AnyTeslaBaseCasingOuter"), 1) // Input Hatch: Any
-                                                                                                // outer Tesla Base
-                                                                                                // Casing
-            .addOutputHatch(translateToLocal("tt.keyword.Structure.AnyTeslaBaseCasingOuter"), 1) // Output Hatch: Any
-                                                                                                 // outer Tesla Base
-                                                                                                 // Casing
-            .addDynamoHatch(translateToLocal("tt.keyword.Structure.AnyTeslaBaseCasingOuter"), 1) // Dynamo Hatch: Any
-                                                                                                 // outer Tesla Base
-                                                                                                 // Casing
+            .addCasing("128", "Tesla Toroid Casing", false)
+            .addCasing("17-33", "Tesla Base Casing", false)
+            .addCasing("20", "Primary Tesla Windings", true)
+            .addCasing("16", "Titanium Frame Box", false)
+            .addCasing("12", "Secondary Tesla Windings", false)
+            .addMiscHatch("1+", "Capacitor Hatch", translateToLocal("tt.keyword.Structure.AnyTeslaBaseCasingOuter"), 1)
+            .addEnergyHatch("1+", translateToLocal("tt.keyword.Structure.AnyTeslaBaseCasingOuter"), 1)
+            .addMaintenanceHatch("1", translateToLocal("tt.keyword.Structure.AnyTeslaBaseCasingOuter"), 1)
+            .addInputHatch("0+", translateToLocal("tt.keyword.Structure.AnyTeslaBaseCasingOuter"), 1)
             .toolTipFinisher();
         return tt;
     }

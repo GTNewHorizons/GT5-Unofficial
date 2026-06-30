@@ -1,6 +1,7 @@
 package gregtech.common.tileentities.machines.multi;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.GTValues.debugDriller;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
@@ -307,10 +308,12 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
             .addController("Front bottom center")
             .addCasing("15", getFrameMaterial().mName + " Frame Box", false)
             .addCasing("7-8", casings, false)
-            .addEnergyHatch("1", "Any bottom casing", 1)
+            .addEnergyHatch("1", "Any bottom casing (" + VN[getMinTier()] + "+)", 1)
             .addMaintenanceHatch("1", "Any bottom casing", 1)
             .addInputBus("0-1", "Any bottom casing", 1)
             .addOutputHatch("1", "Any bottom casing", 1)
+            .addStructureInfo("")
+            .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.Rain"))
             .toolTipFinisher();
         return tt;
     }

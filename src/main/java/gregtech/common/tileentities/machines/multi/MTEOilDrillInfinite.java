@@ -15,6 +15,7 @@ import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -120,12 +121,13 @@ public class MTEOilDrillInfinite extends MTEOilDrillBase {
             .addCasing("12", "Advanced Computer Casing", false)
             .addCasing("9", "PBI Pipe Casing", false)
             .addCasing("8", "Infinity Sheetmetal", false)
-            .addEnergyHatch("1", "Any neutronium casing", 1)
-            .addMaintenanceHatch("1", "Any neutronium casing", 1)
-            .addInputBus("0-1", "Any neutronium casing", 1)
-            .addOutputHatch("1", "Any neutronium casing", 1)
+            .addEnergyHatch("1", "Any mining casing (UHV+)", 1)
+            .addMaintenanceHatch("1", "Any mining casing", 1)
+            .addInputBus("0-1", "Any mining casing", 1)
+            .addOutputHatch("1", "Any mining casing", 1)
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.BOROGLASS)
+            .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.Rain"))
             .addStructureAuthors(EnumChatFormatting.GOLD + "Pix3lated")
             .toolTipFinisher();
         return tt;

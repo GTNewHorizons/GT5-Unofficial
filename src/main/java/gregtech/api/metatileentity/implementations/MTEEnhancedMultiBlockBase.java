@@ -685,6 +685,12 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
         }
     }
 
+    protected void checkHasAnyDynamo(List<StructureError> errors) {
+        if (mDynamoHatches.isEmpty() && mExoticDynamoHatches.isEmpty()) {
+            errors.add(StructureErrors.hatchCount(ErrorType.TOO_FEW, HatchElement.Dynamo, 0, 1));
+        }
+    }
+
     protected void checkOneEnergyHatchMaybeExotic(List<StructureError> errors) {
         int count = mEnergyHatches.size() + mExoticEnergyHatches.size();
         if (count == 0) {

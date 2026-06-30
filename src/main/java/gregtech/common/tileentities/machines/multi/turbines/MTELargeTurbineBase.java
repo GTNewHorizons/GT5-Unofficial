@@ -76,13 +76,13 @@ public abstract class MTELargeTurbineBase extends MTEExtendedPowerMultiBlockBase
                     lazy(
                         t -> t.getPipeCasing()
                             .asElement()))
-                .addElement('D', lazy(t -> Dynamo.newAny(t.getTurbineCasing().textureId, 1)))
+                .addElement('D', lazy(t -> Dynamo.newAny(t.getTurbineCasing().textureId, 2)))
                 .addElement(
                     'E',
                     lazy(
                         t -> buildHatchAdder(MTELargeTurbineBase.class).atLeast(t.getHatchElements())
                             .casingIndex(t.getTurbineCasing().textureId)
-                            .hint(2)
+                            .hint(1)
                             .buildAndChain(
                                 t.getTurbineCasing()
                                     .asElement())))

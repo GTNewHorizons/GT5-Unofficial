@@ -31,6 +31,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -450,44 +451,25 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                     + EnumChatFormatting.GRAY
                     + "-fold"
                     + " for every capacitor tier above")
-            .beginVariableStructureBlock(5, 5, 4, 50, 5, 5, false)
-            .addStructureInfo("Modular height of 4-50 blocks.")
+            .beginVariableStructureBlock(5, 5, 5, 5, 4, 50, false)
             .addController("Front bottom center")
-            .addOtherStructurePart("Lapotronic Super Capacitor Casing", "5x2x5 base (at least 17x)")
-            .addOtherStructurePart(
-                "Lapotronic Capacitor (" + GTValues.TIER_COLORS[4]
-                    + GTValues.VN[4]
-                    + EnumChatFormatting.GRAY
-                    + "-"
-                    + GTValues.TIER_COLORS[8]
-                    + GTValues.VN[8]
-                    + EnumChatFormatting.GRAY
-                    + "), Ultimate Capacitor ("
-                    + GTValues.TIER_COLORS[9]
-                    + GTValues.VN[9]
-                    + EnumChatFormatting.GRAY
-                    + "-"
-                    + GTValues.TIER_COLORS[12]
-                    + GTValues.VN[12]
-                    + EnumChatFormatting.GRAY
-                    + ")",
-                "Center 3x(1-47)x3 above base (9-423 blocks)")
-            .addStructureInfo(
-                "You can also use the Empty Capacitor to save materials if you use it for less than half the blocks")
-            .addCasingInfoRange("Any Tiered Glass", 41, 777, true)
-            .addEnergyHatch("Any Casing")
-            .addDynamoHatch("Any Casing")
-            .addOtherStructurePart(
-                "Laser Target/Source Hatches",
-                "Any Casing, must be using " + GTValues.TIER_COLORS[8]
-                    + GTValues.VN[8]
-                    + EnumChatFormatting.GRAY
-                    + "-tier glass")
-            .addStructureInfo("You can have several I/O Hatches")
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
-            .addSubChannelUsage(GTStructureChannels.LSC_CAPACITOR)
-            .addSubChannelUsage(GTStructureChannels.STRUCTURE_HEIGHT)
-            .addMaintenanceHatch("Any Casing")
+            .addEnergyHatch("0+", "Any casing", 1)
+            .addDynamoHatch("0+", "Any casing", 1)
+            .addMaintenanceHatch("1", "Any casing", 1)
+            .addStructureInfo("")
+            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Base"))
+            .addCasing("17-48", "Lapotronic Supercapacitor Casing", false)
+            .addCasing("41", "Any Tiered Glass", true)
+            .addCasing("9", "Lapotronic Capacitor", true)
+            .addStructureInfo("")
+            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Layer"))
+            .addCasing("16", "Any Tiered Glass", true)
+            .addCasing("9", "Lapotronic Capacitor", true)
+            .addStructureInfo("")
+            .addStructureFooter("Only 50% or more of the capacitors need to be non-empty")
+            .addSubChannel(GTStructureChannels.STRUCTURE_HEIGHT)
+            .addSubChannel(GTStructureChannels.BOROGLASS)
+            .addSubChannel(GTStructureChannels.LSC_CAPACITOR)
             .toolTipFinisher();
         return tt;
     }

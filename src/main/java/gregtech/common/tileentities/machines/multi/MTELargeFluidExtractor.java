@@ -179,9 +179,10 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 8, 0, errors)) return;
 
         checkCasingMin(errors, casingAmount, BASE_CASING_COUNT - MAX_HATCHES_ALLOWED);
+        checkHasEnergyHatch(errors);
+        checkHasMaintenanceHatch(errors);
         checkHasInputBus(errors);
         checkHasOutputHatch(errors);
-        checkHasMaintenanceHatch(errors);
         for (var energyHatch : mEnergyHatches) {
             if (energyHatch.getBaseMetaTileEntity() == null) {
                 continue;
@@ -289,21 +290,22 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
                 EnumChatFormatting.GRAY
             ))
             .addGlassEnergyLimitInfo()
-            .beginStructureBlock(5, 9, 5, false)
+            .beginStructureBlock(5, 5, 9, false)
             .addController("Front bottom center")
-            .addCasingInfoMin("Robust Tungstensteel Machine Casing", BASE_CASING_COUNT - MAX_HATCHES_ALLOWED, false)
-            .addCasingInfoExactly("Any Tiered Glass", 9 * 4, true)
-            .addCasingInfoExactly("Solenoid Superconducting Coil", 7, true)
-            .addCasingInfoExactly("Heating Coil", 8 * 3, true)
-            .addCasingInfoExactly("Black Steel Frame Box", 3 * 8, false)
-            .addInputBus("Any Robust Tungstensteel Machine Casing", 1)
-            .addOutputBus("Any Robust Tungstensteel Machine Casing", 1)
-            .addOutputHatch("Any Robust Tungstensteel Machine Casing", 1)
-            .addEnergyHatch("Any Robust Tungstensteel Machine Casing", 1)
-            .addMaintenanceHatch("Any Robust Tungstensteel Machine Casing", 1)
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
-            .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
-            .addSubChannelUsage(GTStructureChannels.SOLENOID)
+            .addCasing(BASE_CASING_COUNT - MAX_HATCHES_ALLOWED + "-53", "Robust Tungstensteel Machine Casing", false)
+            .addCasing("36", "Any Tiered Glass", true)
+            .addCasing("24", "Heating Coil", true)
+            .addCasing("24", "Black Steel Frame Box", false)
+            .addCasing("7", "Solenoid Superconductor Coil", true)
+            .addEnergyHatch("1+", "Any casing", 1)
+            .addMaintenanceHatch("1", "Any casing", 1)
+            .addInputBus("1+", "Any casing", 1)
+            .addOutputBus("0+", "Any casing", 1)
+            .addOutputHatch("1+", "Any casing", 1)
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.BOROGLASS)
+            .addSubChannel(GTStructureChannels.HEATING_COIL)
+            .addSubChannel(GTStructureChannels.SOLENOID)
             .toolTipFinisher();
         // spotless:on
 
