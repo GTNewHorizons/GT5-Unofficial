@@ -13,6 +13,7 @@ import static gregtech.api.enums.Mods.Translocator;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 import static net.minecraft.util.StatCollector.translateToLocal;
+import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 import static net.minecraftforge.common.util.ForgeDirection.DOWN;
 import static net.minecraftforge.common.util.ForgeDirection.EAST;
 import static net.minecraftforge.common.util.ForgeDirection.NORTH;
@@ -4202,17 +4203,14 @@ public class GTUtility {
         };
 
         if (isFormatShortened) {
-            ret.append(" (");
-            ret.append(EnumChatFormatting.GRAY);
+            ret.append(" ");
             if (perSecond <= 1) {
-                ret.append(df.format(progressTime / amount));
-                ret.append("s/each");
+                ret.append(
+                    translateToLocalFormatted("GT5U.gui.text.rate_short_slow", df.format(progressTime / amount)));
             } else {
-                ret.append(formatShortenedLong((long) perSecond));
-                ret.append("/s");
+                ret.append(
+                    translateToLocalFormatted("GT5U.gui.text.rate_short", formatShortenedLong((long) perSecond)));
             }
-            ret.append(EnumChatFormatting.WHITE);
-            ret.append(")");
         } else {
             ret.append(EnumChatFormatting.RESET);
             ret.append(
@@ -4225,65 +4223,45 @@ public class GTUtility {
                 perTickText + EnumChatFormatting.GOLD
                     + formatNumber(roundNumber.apply(perTick))
                     + (isLiquid ? "L" : "")
-                    + (perSecond > 1_000_000
-                        ? EnumChatFormatting.WHITE + " ["
-                            + EnumChatFormatting.GRAY
-                            + formatShortenedLong((long) perTick)
-                            + EnumChatFormatting.WHITE
-                            + "]"
-                        : "")
+                    + (perSecond > 1_000_000 ? " " + translateToLocalFormatted(
+                        "GT5U.gui.text.rate_large_suffix",
+                        formatShortenedLong((long) perTick)) : "")
                     + EnumChatFormatting.RESET);
             ret.append("\n");
             ret.append(
                 perSecondText + EnumChatFormatting.GOLD
                     + formatNumber(roundNumber.apply(perSecond))
                     + (isLiquid ? "L" : "")
-                    + (perSecond > 1_000_000
-                        ? EnumChatFormatting.WHITE + " ["
-                            + EnumChatFormatting.GRAY
-                            + formatShortenedLong((long) perSecond)
-                            + EnumChatFormatting.WHITE
-                            + "]"
-                        : "")
+                    + (perSecond > 1_000_000 ? " " + translateToLocalFormatted(
+                        "GT5U.gui.text.rate_large_suffix",
+                        formatShortenedLong((long) perSecond)) : "")
                     + EnumChatFormatting.RESET);
             ret.append("\n");
             ret.append(
                 perMinuteText + EnumChatFormatting.GOLD
                     + formatNumber(roundNumber.apply(perMinute))
                     + (isLiquid ? "L" : "")
-                    + (perMinute > 1_000_000
-                        ? EnumChatFormatting.WHITE + " ["
-                            + EnumChatFormatting.GRAY
-                            + formatShortenedLong((long) perMinute)
-                            + EnumChatFormatting.WHITE
-                            + "]"
-                        : "")
+                    + (perMinute > 1_000_000 ? " " + translateToLocalFormatted(
+                        "GT5U.gui.text.rate_large_suffix",
+                        formatShortenedLong((long) perMinute)) : "")
                     + EnumChatFormatting.RESET);
             ret.append("\n");
             ret.append(
                 perHourText + EnumChatFormatting.GOLD
                     + formatNumber(roundNumber.apply(perHour))
                     + (isLiquid ? "L" : "")
-                    + (perHour > 1_000_000
-                        ? EnumChatFormatting.WHITE + " ["
-                            + EnumChatFormatting.GRAY
-                            + formatShortenedLong((long) perHour)
-                            + EnumChatFormatting.WHITE
-                            + "]"
-                        : "")
+                    + (perHour > 1_000_000 ? " " + translateToLocalFormatted(
+                        "GT5U.gui.text.rate_large_suffix",
+                        formatShortenedLong((long) perHour)) : "")
                     + EnumChatFormatting.RESET);
             ret.append("\n");
             ret.append(
                 perDayText + EnumChatFormatting.GOLD
                     + formatNumber(roundNumber.apply(perDay))
                     + (isLiquid ? "L" : "")
-                    + (perDay > 1_000_000
-                        ? EnumChatFormatting.WHITE + " ["
-                            + EnumChatFormatting.GRAY
-                            + formatShortenedLong((long) perDay)
-                            + EnumChatFormatting.WHITE
-                            + "]"
-                        : "")
+                    + (perDay > 1_000_000 ? " " + translateToLocalFormatted(
+                        "GT5U.gui.text.rate_large_suffix",
+                        formatShortenedLong((long) perDay)) : "")
                     + EnumChatFormatting.RESET);
         }
         return ret.toString();

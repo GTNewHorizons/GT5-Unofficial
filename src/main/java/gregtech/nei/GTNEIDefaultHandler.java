@@ -51,7 +51,7 @@ import codechicken.nei.recipe.TemplateRecipeHandler;
 import gregtech.GTMod;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.SteamVariant;
+import gregtech.api.enums.TieredVariant;
 import gregtech.api.gui.GUIColorOverride;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -357,9 +357,18 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
 
     @Override
     public ICraftingHandler getRecipeHandler(String outputId, Object... results) {
-        GTNEIDefaultHandler handler = (GTNEIDefaultHandler) super.getRecipeHandler(outputId, results);
-        if (results.length > 0 && results[0] instanceof OverclockDescriber) {
-            handler.overclockDescriber = (OverclockDescriber) results[0];
+        GTNEIDefaultHandler handler;
+        if (outputId.equals(recipeMap.unlocalizedName) && results.length > 0
+            && results[0] instanceof IOverclockDescriptionProvider provider
+            && provider.getOverclockDescriber() instanceof OverclockDescriber describer) {
+            handler = (GTNEIDefaultHandler) newInstance();
+            handler.overclockDescriber = describer;
+            handler.loadTieredRecipesUpTo(describer.getTier());
+        } else {
+            handler = (GTNEIDefaultHandler) super.getRecipeHandler(outputId, results);
+            if (results.length > 0 && results[0] instanceof OverclockDescriber) {
+                handler.overclockDescriber = (OverclockDescriber) results[0];
+            }
         }
         return handler;
     }
@@ -482,6 +491,8 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
                 .setDuration(recipe.mDuration),
             recipe);
         calculator.calculate();
+
+        cachedRecipe.calculator = calculator;
 
         frontend.drawDescription(
             new RecipeDisplayInfo(
@@ -713,6 +724,7 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
     public class CachedDefaultRecipe extends TemplateRecipeHandler.CachedRecipe {
 
         public final GTRecipe mRecipe;
+        public OverclockCalculator calculator;
         public final List<PositionedStack> mOutputs = new ArrayList<>();
         public final List<PositionedStack> mInputs = new ArrayList<>();
 
@@ -900,7 +912,7 @@ public class GTNEIDefaultHandler extends TemplateRecipeHandler {
                 aRecipe.mOutputs.length,
                 aRecipe.mFluidInputs.length,
                 aRecipe.mFluidOutputs.length,
-                SteamVariant.NONE,
+                TieredVariant.STANDARD,
                 WINDOW_OFFSET);
         }
 

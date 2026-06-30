@@ -35,7 +35,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.SoundResource;
-import gregtech.api.enums.SteamVariant;
+import gregtech.api.enums.TieredVariant;
 import gregtech.api.gui.GUIColorOverride;
 import gregtech.api.gui.modularui.GUITextureSet;
 import gregtech.api.interfaces.ICleanroomReceiver;
@@ -312,8 +312,8 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
     /**
      * @return what type of texture does this machine use for GUI, i.e. Bronze, Steel, or Primitive
      */
-    public SteamVariant getSteamVariant() {
-        return SteamVariant.NONE;
+    public TieredVariant getTieredVariant() {
+        return TieredVariant.STANDARD;
     }
 
     /**
@@ -542,10 +542,13 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
 
     /**
      * Called when a slot is changed. Note: {@link #setInventorySlotContents} is not called when the player interacts
-     * with a {@link gregtech.api.interfaces.modularui.IAddInventorySlots} slot.
+     * with a {@link gregtech.api.interfaces.modularui.IAddInventorySlots} slot, nor when items are inserted/extracted
+     * through {@link #getInventoryHandler()} (the path used by the GUI and AE). Marking the tile dirty here makes
+     * {@link IGregTechTileEntity#hasInventoryBeenModified()} reliable across all of those paths, which input hatches
+     * rely on to trigger instant recipe checks.
      */
     public void onContentsChanged(int slot) {
-
+        markDirty();
     }
 
     /**
@@ -824,5 +827,9 @@ public abstract class MetaTileEntity extends CommonMetaTileEntity implements ICr
 
     public int getColorTextRed() {
         return COLOR_TEXT_RED.get();
+    }
+
+    public boolean isItemValidForPhantomSlot(int index, ItemStack itemStack) {
+        return false;
     }
 }

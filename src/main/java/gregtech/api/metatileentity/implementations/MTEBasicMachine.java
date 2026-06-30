@@ -27,6 +27,7 @@ import static net.minecraftforge.common.util.ForgeDirection.UP;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 
@@ -66,14 +67,16 @@ import gregtech.GTMod;
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.SoundResource;
-import gregtech.api.enums.SteamVariant;
+import gregtech.api.enums.TieredVariant;
 import gregtech.api.gui.modularui.CircularGaugeDrawable;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.gui.modularui.SteamTexture;
 import gregtech.api.interfaces.ICleanroom;
 import gregtech.api.interfaces.IConfigurationCircuitSupport;
+import gregtech.api.interfaces.INonConsumedItemDisplay;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IAddGregtechLogo;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IOverclockDescriptionProvider;
 import gregtech.api.interfaces.tileentity.RecipeMapWorkable;
@@ -103,8 +106,8 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
  * This is the main construct for my Basic Machines such as the Automatic Extractor Extend this class to make a simple
  * Machine
  */
-public abstract class MTEBasicMachine extends MTEBasicTank
-    implements RecipeMapWorkable, IConfigurationCircuitSupport, IOverclockDescriptionProvider, IAddGregtechLogo {
+public abstract class MTEBasicMachine extends MTEBasicTank implements RecipeMapWorkable, IConfigurationCircuitSupport,
+    IOverclockDescriptionProvider, IAddGregtechLogo, INonConsumedItemDisplay {
 
     /**
      * return values for checkRecipe()
@@ -369,6 +372,14 @@ public abstract class MTEBasicMachine extends MTEBasicTank
     @Override
     public long maxAmperesIn() {
         return ((long) mEUt * 2L) / V[mTier] + 1L;
+    }
+
+    @Override
+    public List<ItemStack> getNonConsumedInputDisplayItems() {
+        if (mLastRecipe == null || mLastRecipe.mInputs == null) return Collections.emptyList();
+        return Arrays.stream(mLastRecipe.mInputs)
+            .filter(s -> s != null && s.stackSize == 0)
+            .collect(Collectors.toList());
     }
 
     @Override
@@ -889,17 +900,17 @@ public abstract class MTEBasicMachine extends MTEBasicTank
     @Override
     public String[] getInfoData() {
         return new String[] {
-            translateToLocalFormatted(
+            IGregTechDeviceInformation.encode(
                 "GT5U.infodata.progress",
                 EnumChatFormatting.GREEN + formatNumber((mProgresstime / 20)) + EnumChatFormatting.RESET,
                 EnumChatFormatting.YELLOW + formatNumber(mMaxProgresstime / 20) + EnumChatFormatting.RESET),
-            translateToLocalFormatted(
+            IGregTechDeviceInformation.encode(
                 "GT5U.infodata.energy",
                 EnumChatFormatting.GREEN + formatNumber(getBaseMetaTileEntity().getStoredEU())
                     + EnumChatFormatting.RESET,
                 EnumChatFormatting.YELLOW + formatNumber(getBaseMetaTileEntity().getEUCapacity())
                     + EnumChatFormatting.RESET),
-            translateToLocalFormatted(
+            IGregTechDeviceInformation.encode(
                 "GT5U.infodata.currently_uses",
                 EnumChatFormatting.RED + formatNumber(mEUt) + EnumChatFormatting.RESET,
                 EnumChatFormatting.RED + formatNumber(mEUt == 0 ? 0 : mAmperage) + EnumChatFormatting.RESET) };
@@ -1091,9 +1102,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank
         }
         if (!tRecipe.isRecipeInputEqual(true, new FluidStack[] { getFillableStack() }, getAllInputs()))
             return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
-        for (int i = 0; i < mOutputItems.length; i++)
-            if (getBaseMetaTileEntity().getRandomNumber(10000) < tRecipe.getOutputChance(i))
-                mOutputItems[i] = tRecipe.getOutput(i);
+        for (int i = 0; i < mOutputItems.length; i++) mOutputItems[i] = tRecipe.rollOutput(getBaseMetaTileEntity(), i);
         if (tRecipe.mSpecialValue == -200 || tRecipe.mSpecialValue == -300) {
             assert cleanroom != null;
             for (int i = 0; i < mOutputItems.length; i++) if (mOutputItems[i] != null
@@ -1357,7 +1366,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank
             uiProperties.maxItemOutputs,
             uiProperties.maxFluidInputs,
             uiProperties.maxFluidOutputs,
-            getSteamVariant(),
+            getTieredVariant(),
             Pos2d.ZERO);
     }
 
@@ -1385,7 +1394,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank
                 new ProgressBar()
                     .setProgress(() -> maxProgresstime() != 0 ? (float) getProgresstime() / maxProgresstime() : 0)
                     .setTexture(
-                        isSteamPowered ? uiProperties.progressBarTextureSteam.get(getSteamVariant())
+                        isSteamPowered ? uiProperties.progressBarTextureSteam.get(getTieredVariant())
                             : uiProperties.progressBarTexture.get(),
                         uiProperties.progressBarImageSize)
                     .setDirection(uiProperties.progressBarDirection)
@@ -1473,7 +1482,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank
     protected Widget createSteamProgressBar(ModularWindow.Builder builder) {
         builder.widget(new FakeSyncWidget.LongSyncer(this::getSteamVar, val -> getSteamVar = val));
 
-        boolean isSteel = getSteamVariant() == SteamVariant.STEEL;
+        boolean isSteel = getTieredVariant() == TieredVariant.STEEL;
         builder.widget(
             new DrawableWidget().setDrawable(isSteel ? GTUITextures.STEAM_GAUGE_BG_STEEL : GTUITextures.STEAM_GAUGE_BG)
                 .dynamicTooltip(
@@ -1516,7 +1525,7 @@ public abstract class MTEBasicMachine extends MTEBasicTank
                 builder.widget(
                     new DrawableWidget().setDrawable(
                         specialTexture.getLeft()
-                            .get(getSteamVariant()))
+                            .get(getTieredVariant()))
                         .setSize(
                             specialTexture.getRight()
                                 .getLeft())
