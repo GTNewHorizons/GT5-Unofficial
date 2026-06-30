@@ -50,12 +50,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import gtneioreplugin.util.DimensionHelper;
 import net.minecraft.item.ItemStack;
 
 import bartworks.system.material.WerkstoffLoader;
 import galacticgreg.api.enums.DimensionDef;
-import gregtech.GTMod;
 import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -64,6 +62,7 @@ import gregtech.common.WorldgenGTOreLayer;
 import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.core.material.MaterialsOres;
 import gtPlusPlus.core.material.nuclear.MaterialsFluorides;
+import gtneioreplugin.util.DimensionHelper;
 
 public enum OreMixes {
 
@@ -1615,7 +1614,9 @@ public enum OreMixes {
             Set<String> dims = mix.oreMixBuilder.dimsEnabled;
             for (String dim : dims) {
                 String fullName = DimensionHelper.getDimFullName(dim);
-                stoneTypes.addAll(DimensionHelper.REGISTRY.get(fullName).stoneTypes());
+                stoneTypes.addAll(
+                    DimensionHelper.REGISTRY.get(fullName)
+                        .stoneTypes());
             }
         }
 
