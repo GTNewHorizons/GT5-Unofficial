@@ -4,72 +4,6 @@ import gregtech.api.interfaces.IIconContainer;
 
 public class TextureSet {
 
-    private static final String aTextVoidDir = "/void";
-
-    private static final TextureType[] IS_BLOCK_TEXTURE = new TextureType[] { TextureType.ITEM, TextureType.ITEM,
-        TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM,
-        TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM,
-        TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM,
-        TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM,
-        TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM,
-        TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM,
-        TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM,
-        TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM,
-        TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM,
-        TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM,
-        TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.BLOCK, TextureType.BLOCK, TextureType.BLOCK,
-        TextureType.BLOCK, TextureType.BLOCK, TextureType.BLOCK, TextureType.BLOCK, TextureType.BLOCK,
-        TextureType.BLOCK, TextureType.BLOCK, TextureType.BLOCK, TextureType.BLOCK, TextureType.BLOCK,
-        TextureType.BLOCK, TextureType.BLOCK, TextureType.BLOCK, TextureType.BLOCK, TextureType.BLOCK,
-        TextureType.BLOCK, TextureType.BLOCK, TextureType.BLOCK, TextureType.BLOCK, TextureType.BLOCK,
-        TextureType.BLOCK, TextureType.BLOCK, TextureType.BLOCK, TextureType.BLOCK, TextureType.BLOCK,
-        TextureType.BLOCK, TextureType.BLOCK, TextureType.BLOCK, TextureType.BLOCK, TextureType.ITEM, TextureType.ITEM,
-        TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM,
-        TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM,
-        TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM,
-        TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM,
-        TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM,
-        TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM,
-        TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM,
-        TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM,
-        TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM,
-        TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM,
-        TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM,
-        TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM,
-        TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM,
-        TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM,
-        TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM,
-        TextureType.ITEM, TextureType.ITEM, TextureType.ITEM };
-    private static final String[] SUFFIXES = new String[] { "/dustTiny", "/dustSmall", "/dust", "/dustImpure",
-        "/dustPure", "/crushed", "/crushedPurified", "/crushedCentrifuged", "/gem", "/nugget", "/casingSmall", "/ingot",
-        "/ingotHot", aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, "/plate", "/plateDouble", "/plateTriple",
-        "/plateQuadruple", "/plateQuintuple", "/plateDense", "/stick", "/lens", "/round", "/bolt", "/screw", "/ring",
-        "/foil", "/cell", "/cellPlasma", aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir,
-        "/toolHeadHammer", "/toolHeadFile", "/toolHeadSaw", "/toolHeadDrill", "/toolHeadChainsaw", "/toolHeadWrench",
-        aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, "/toolHeadScrewdriver", "/toolHeadBuzzSaw",
-        "/toolHeadSoldering", "/nanites", "/wireFine", "/gearGtSmall", "/rotor", "/stickLong", "/springSmall",
-        "/spring", "/arrowGtWood", "/arrowGtPlastic", "/gemChipped", "/gemFlawed", "/gemFlawless", "/gemExquisite",
-        "/gearGt", "/oreRaw", aTextVoidDir, aTextVoidDir, "/oreSmall", "/ore", "/wire", "/foil", "/block1", "/block2",
-        "/block3", "/block4", "/block5", "/block6", "/pipeSide", "/pipeTiny", "/pipeSmall", "/pipeMedium", "/pipeLarge",
-        "/pipeHuge", "/frameGt", "/pipeQuadruple", "/pipeNonuple", "/sheetmetal", aTextVoidDir, aTextVoidDir,
-        aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir,
-        "/crateGtDust", "/crateGtIngot", "/crateGtGem", "/crateGtPlate", "/turbineBlade", aTextVoidDir, aTextVoidDir,
-        aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir,
-        aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir,
-        aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, "/plateSuperdense",
-        "/handleMallet", "/toolHeadMallet", "/toolTurbine", "/toolWrench", "/toolCrowbar", "/toolWireCutter",
-        "/toolScoop", "/toolBranchCutter", "/toolKnife", "/toolKnifeButchery", "/toolPlunger", "/toolJackHammer",
-        "/pocketMultiToolClosed", "/pocketMultiToolKnife", "/pocketMultiToolSaw", "/pocketMultiToolFile",
-        "/pocketMultiToolScrewdriver", "/pocketMultiToolWireCutter", "/pocketMultiToolBranchCutter", "/toolTrowel",
-        "/toolHeadAngleGrinder", "/toolHeadElectricSnips", "/handleFile", "/handleTrowel", "/handleSaw",
-        "/handleScrewdriver", "/toolHeadMallet", "/toolProspector", "/toolProspectorElectricLuV",
-        "/toolProspectorElectricZPM", "/toolProspectorElectricUV", "/toolProspectorElectricUHV", aTextVoidDir,
-        aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir,
-        aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir,
-        aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir,
-        aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir,
-        aTextVoidDir };
-
     public boolean is_custom = false;
 
     public String aTextCustomAutogenerated = "autogenerated";
@@ -146,20 +80,22 @@ public class TextureSet {
         INDEX_handleSaw = 150, INDEX_handleScrewdriver = 151, INDEX_prospector = 153, INDEX_prospectorElectricLuV = 154,
         INDEX_prospectorElectricZPM = 155, INDEX_prospectorElectricUV = 156, INDEX_prospectorElectricUHV = 157;
 
-    public final IIconContainer[] mTextures = new IIconContainer[192];
+    public final IIconContainer[] mTextures = new IIconContainer[MaterialIconType.IconType.values().length];
     public final String mSetName;
 
     public TextureSet(String aSetName) {
         mSetName = aSetName;
-        for (int i = 0; i < 192; i++) {
-            if (IS_BLOCK_TEXTURE[i] == TextureType.BLOCK) {
-                switch (SUFFIXES[i]) {
-                    case "/ore", "/oreSmall" -> mTextures[i] = Textures.BlockIcons
-                        .customAlpha(Textures.TextureMaterialIconDirectory + aSetName + SUFFIXES[i]);
-                    default -> mTextures[i] = Textures.BlockIcons.textureSet(aSetName, SUFFIXES[i]);
-                }
+        for (MaterialIconType.IconType type : MaterialIconType.IconType.values()) {
+            int index = type.ordinal();
+            String suffix = type.suffix;
+
+            if (type.texture == MaterialIconType.TextureType.BLOCK) {
+                mTextures[index] = Textures.BlockIcons.textureSet(aSetName, suffix);
+            } else if (type.texture == MaterialIconType.TextureType.BLOCK_WITH_ALPHA) {
+                mTextures[index] = Textures.BlockIcons
+                    .customAlpha(Textures.TextureMaterialIconDirectory + aSetName + suffix);
             } else {
-                mTextures[i] = Textures.ItemIcons.textureSet(aSetName, SUFFIXES[i]);
+                mTextures[index] = Textures.ItemIcons.textureSet(aSetName, suffix);
             }
         }
     }
@@ -179,18 +115,22 @@ public class TextureSet {
         mSetName = "CUSTOM/" + aSetName;
         this.is_custom = true;
 
-        for (int i = 0; i < 192; i++) {
-            if (IS_BLOCK_TEXTURE[i] == TextureType.BLOCK) {
+        for (MaterialIconType.IconType type : MaterialIconType.IconType.values()) {
+            int index = type.ordinal();
+            String suffix = type.suffix;
+
+            if (type.texture == MaterialIconType.TextureType.BLOCK
+                || type.texture == MaterialIconType.TextureType.BLOCK_WITH_ALPHA) {
                 if (overrideBlock) {
-                    mTextures[i] = Textures.BlockIcons.textureSet(mSetName, SUFFIXES[i]);
+                    mTextures[index] = Textures.BlockIcons.textureSet(mSetName, suffix);
                 } else {
-                    mTextures[i] = origin.mTextures[i];
+                    mTextures[index] = origin.mTextures[index];
                 }
             } else {
                 if (overrideItem) {
-                    mTextures[i] = Textures.ItemIcons.textureSet(aSetName, SUFFIXES[i]);
+                    mTextures[index] = Textures.ItemIcons.textureSet(aSetName, suffix);
                 } else {
-                    mTextures[i] = origin.mTextures[i];
+                    mTextures[index] = origin.mTextures[index];
                 }
             }
         }
@@ -200,8 +140,9 @@ public class TextureSet {
         return new TextureSet(aNewSetName, this, true, false);
     }
 
-    private enum TextureType {
+    public enum TextureType {
         BLOCK,
+        BLOCK_WITH_ALPHA,
         ITEM,
     }
 }
