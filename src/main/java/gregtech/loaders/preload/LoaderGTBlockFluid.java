@@ -1743,6 +1743,16 @@ public class LoaderGTBlockFluid implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.BoundlessCosmicSolder, 1L),
                 ItemList.Cell_Empty.get(1L));
 
+        GTFluidFactory.builder("ComputationBase")
+            .withDefaultLocalName(Materials.ComputationBase.mDefaultLocalName)
+            .withStateAndTemperature(MOLTEN, 100_000_000)
+            .buildAndRegister()
+            .configureMaterials(Materials.ComputationBase)
+            .addLocalizedName(Materials.ComputationBase)
+            .registerBContainers(
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials.ComputationBase, 1L),
+                ItemList.Cell_Empty.get(1L));
+
         GTFluidFactory.builder("fieryblood")
             .withDefaultLocalName("Fiery Blood")
             .withStateAndTemperature(LIQUID, 6400)

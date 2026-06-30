@@ -63,7 +63,6 @@ import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.StoneType;
 import gregtech.api.gui.modularui.GTUIInfos;
-import gregtech.api.materials.bec.BECMaterialList;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.modularui2.GTGuiTheme;
@@ -107,7 +106,6 @@ import gregtech.crossmod.ae2.AE2Compat;
 import gregtech.crossmod.chunkapi.ClientMetaManager;
 import gregtech.crossmod.holoinventory.HoloInventory;
 import gregtech.crossmod.waila.Waila;
-import gregtech.loaders.load.BECRecipeLoader;
 import gregtech.loaders.load.FissionFuelLoader;
 import gregtech.loaders.load.FuelLoader;
 import gregtech.loaders.load.GTItemIterator;
@@ -381,8 +379,6 @@ public class GTMod {
         new FuelLoader().run();
         new FissionFuelLoader().run();
 
-        BECMaterialList.init();
-
         if (Mods.Waila.isModLoaded()) {
             Waila.init();
         }
@@ -576,7 +572,6 @@ public class GTMod {
         GTPostLoad.processToolboxBans();
 
         VoidMinerLoader.init();
-        BECRecipeLoader.run();
 
         achievements = new GTAchievements();
 
