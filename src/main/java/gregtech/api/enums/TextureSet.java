@@ -62,30 +62,18 @@ public class TextureSet {
         SET_ASTRAL_TITANIUM = new TextureSet("astraltitanium", true),
         SET_CELESTIAL_TUNGSTEN = new TextureSet("celestialtungsten", true);
 
-    /**
-     * For Tools that don't have a prefix associated with them
-     */
-    public static final short INDEX_turbine = 128, INDEX_wrench = 129, INDEX_crowbar = 130, INDEX_wireCutter = 131,
-        INDEX_scoop = 132, INDEX_branchCutter = 133, INDEX_knife = 134, INDEX_butcheryKnife = 135, INDEX_plunger = 136,
-        INDEX_jackHammer = 137, INDEX_pocketMultiToolClosed = 138, INDEX_pocketMultiToolKnife = 139,
-        INDEX_pocketMultiToolSaw = 140, INDEX_pocketMultiToolFile = 141, INDEX_pocketMultiToolScrewdriver = 142,
-        INDEX_pocketMultiToolWireCutter = 143, INDEX_pocketMultiToolBranchCutter = 144, INDEX_trowel = 145,
-        INDEX_angleGrinder = 146, INDEX_electricSnips = 147, INDEX_handleFile = 148, INDEX_handleTrowel = 149,
-        INDEX_handleSaw = 150, INDEX_handleScrewdriver = 151, INDEX_prospector = 153, INDEX_prospectorElectricLuV = 154,
-        INDEX_prospectorElectricZPM = 155, INDEX_prospectorElectricUV = 156, INDEX_prospectorElectricUHV = 157;
-
-    public final IIconContainer[] mTextures = new IIconContainer[MaterialIconType.IconType.values().length];
+    public final IIconContainer[] mTextures = new IIconContainer[MaterialIconRegistry.IconType.values().length];
     public final String mSetName;
 
     public TextureSet(String aSetName) {
         mSetName = aSetName;
-        for (MaterialIconType.IconType type : MaterialIconType.IconType.values()) {
+        for (MaterialIconRegistry.IconType type : MaterialIconRegistry.IconType.values()) {
             int index = type.ordinal();
             String suffix = type.suffix;
 
-            if (type.texture == MaterialIconType.TextureType.BLOCK) {
+            if (type.texture == MaterialIconRegistry.TextureType.BLOCK) {
                 mTextures[index] = Textures.BlockIcons.textureSet(aSetName, suffix);
-            } else if (type.texture == MaterialIconType.TextureType.BLOCK_WITH_ALPHA) {
+            } else if (type.texture == MaterialIconRegistry.TextureType.BLOCK_WITH_ALPHA) {
                 mTextures[index] = Textures.BlockIcons
                     .customAlpha(Textures.TextureMaterialIconDirectory + aSetName + suffix);
             } else {
@@ -109,12 +97,12 @@ public class TextureSet {
         mSetName = "CUSTOM/" + aSetName;
         this.is_custom = true;
 
-        for (MaterialIconType.IconType type : MaterialIconType.IconType.values()) {
+        for (MaterialIconRegistry.IconType type : MaterialIconRegistry.IconType.values()) {
             int index = type.ordinal();
             String suffix = type.suffix;
 
-            if (type.texture == MaterialIconType.TextureType.BLOCK
-                || type.texture == MaterialIconType.TextureType.BLOCK_WITH_ALPHA) {
+            if (type.texture == MaterialIconRegistry.TextureType.BLOCK
+                || type.texture == MaterialIconRegistry.TextureType.BLOCK_WITH_ALPHA) {
                 if (overrideBlock) {
                     mTextures[index] = Textures.BlockIcons.textureSet(mSetName, suffix);
                 } else {

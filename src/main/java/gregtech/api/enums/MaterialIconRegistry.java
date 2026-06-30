@@ -1,6 +1,6 @@
 package gregtech.api.enums;
 
-public class MaterialIconType {
+public class MaterialIconRegistry {
 
     public enum TextureType {
         BLOCK,

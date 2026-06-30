@@ -3,7 +3,7 @@ package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.enums.Dyes;
-import gregtech.api.enums.MaterialIconType;
+import gregtech.api.enums.MaterialIconRegistry;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IOreMaterial;
@@ -100,7 +100,7 @@ public class GTPPMTECable extends MTECable {
         final Material wireMaterial = material;
 
         if (!mInsulated) return new ITexture[] { TextureFactory.of(
-            wireMaterial.getTextureSet().mTextures[MaterialIconType.IconType.WIRE.ordinal()],
+            wireMaterial.getTextureSet().mTextures[MaterialIconRegistry.IconType.WIRE.ordinal()],
             Dyes.getModulation(aColorIndex, vRGB)) };
         if (aConnected) {
             float tThickNess = getThickness();
@@ -110,41 +110,41 @@ public class GTPPMTECable extends MTECable {
             if (tThickNess < 0.374F) // 0.375 x1
                 return new ITexture[] {
                     TextureFactory
-                        .of(wireMaterial.getTextureSet().mTextures[MaterialIconType.IconType.WIRE.ordinal()], vRGB),
+                        .of(wireMaterial.getTextureSet().mTextures[MaterialIconRegistry.IconType.WIRE.ordinal()], vRGB),
                     TextureFactory.of(
                         Textures.BlockIcons.INSULATION_TINY,
                         Dyes.getModulation(aColorIndex, Dyes.CABLE_INSULATION.getRGBA())) };
             if (tThickNess < 0.499F) // 0.500 x2
                 return new ITexture[] {
                     TextureFactory
-                        .of(wireMaterial.getTextureSet().mTextures[MaterialIconType.IconType.WIRE.ordinal()], vRGB),
+                        .of(wireMaterial.getTextureSet().mTextures[MaterialIconRegistry.IconType.WIRE.ordinal()], vRGB),
                     TextureFactory.of(
                         Textures.BlockIcons.INSULATION_SMALL,
                         Dyes.getModulation(aColorIndex, Dyes.CABLE_INSULATION.getRGBA())) };
             if (tThickNess < 0.624F) // 0.625 x4
                 return new ITexture[] {
                     TextureFactory
-                        .of(wireMaterial.getTextureSet().mTextures[MaterialIconType.IconType.WIRE.ordinal()], vRGB),
+                        .of(wireMaterial.getTextureSet().mTextures[MaterialIconRegistry.IconType.WIRE.ordinal()], vRGB),
                     TextureFactory.of(
                         Textures.BlockIcons.INSULATION_MEDIUM,
                         Dyes.getModulation(aColorIndex, Dyes.CABLE_INSULATION.getRGBA())) };
             if (tThickNess < 0.749F) // 0.750 x8
                 return new ITexture[] {
                     TextureFactory
-                        .of(wireMaterial.getTextureSet().mTextures[MaterialIconType.IconType.WIRE.ordinal()], vRGB),
+                        .of(wireMaterial.getTextureSet().mTextures[MaterialIconRegistry.IconType.WIRE.ordinal()], vRGB),
                     TextureFactory.of(
                         Textures.BlockIcons.INSULATION_MEDIUM_PLUS,
                         Dyes.getModulation(aColorIndex, Dyes.CABLE_INSULATION.getRGBA())) };
             if (tThickNess < 0.874F) // 0.825 x12
                 return new ITexture[] {
                     TextureFactory
-                        .of(wireMaterial.getTextureSet().mTextures[MaterialIconType.IconType.WIRE.ordinal()], vRGB),
+                        .of(wireMaterial.getTextureSet().mTextures[MaterialIconRegistry.IconType.WIRE.ordinal()], vRGB),
                     TextureFactory.of(
                         Textures.BlockIcons.INSULATION_LARGE,
                         Dyes.getModulation(aColorIndex, Dyes.CABLE_INSULATION.getRGBA())) };
             return new ITexture[] {
                 TextureFactory
-                    .of(wireMaterial.getTextureSet().mTextures[MaterialIconType.IconType.WIRE.ordinal()], vRGB),
+                    .of(wireMaterial.getTextureSet().mTextures[MaterialIconRegistry.IconType.WIRE.ordinal()], vRGB),
                 TextureFactory.of(
                     Textures.BlockIcons.INSULATION_HUGE,
                     Dyes.getModulation(aColorIndex, Dyes.CABLE_INSULATION.getRGBA())) };
