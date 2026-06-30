@@ -15,7 +15,6 @@ public class EntityDrone extends EntityLivingBase {
     private static final int DW_AUTO_MODE = 21;
     private static final double SPEED = 0.1;
     private static final int ORBIT_TOTAL_TICKS = 200;
-    private static final double ORBIT_RADIUS = 3.0;
     private static final int MAX_LIFETIME_TICKS = 6000;
 
     private final List<double[]> waypoints = new ArrayList<>();
@@ -27,6 +26,7 @@ public class EntityDrone extends EntityLivingBase {
     private double orbitCenterY;
     private double orbitCenterZ;
     private double orbitStartAngle = 0;
+    private double orbitRadius = 3.0;
     private boolean flightDone = false;
     private int totalTicksAlive = 0;
 
@@ -104,6 +104,11 @@ public class EntityDrone extends EntityLivingBase {
     }
 
     @Override
+    public void setLocationAndAngles(double x, double y, double z, float yaw, float pitch) {
+        super.setLocationAndAngles(x, y - this.yOffset, z, yaw, pitch);
+    }
+
+    @Override
     public void moveEntity(double dx, double dy, double dz) {
         super.moveEntity(dx, dy, dz);
         this.posY = (this.boundingBox.minY + this.boundingBox.maxY) / 2.0D;
@@ -148,23 +153,48 @@ public class EntityDrone extends EntityLivingBase {
         dataWatcher.updateObject(DW_DRONE_LEVEL, droneLevel);
         this.noClip = true;
         setPosition(hatchX + 0.5, hatchY + 0.5, hatchZ + 0.5);
-        int cruiseY = findSafeCruiseAltitude(worldObj, hatchX, hatchY, hatchZ, ctrlX, ctrlY, ctrlZ);
+
         orbitCenterX = ctrlX + 0.5;
         orbitCenterY = ctrlY + 2.5;
         orbitCenterZ = ctrlZ + 0.5;
+
+        double[] safeOrbit = DronePathfinder.findSafeOrbit(worldObj, orbitCenterX, ctrlY, orbitCenterZ);
+        this.orbitRadius = safeOrbit[0];
+        this.orbitCenterY = safeOrbit[1];
+
         double approachAngle = Math.atan2((hatchZ + 0.5) - orbitCenterZ, (hatchX + 0.5) - orbitCenterX);
-        double orbitEntryX = orbitCenterX + ORBIT_RADIUS * Math.cos(approachAngle);
-        double orbitEntryZ = orbitCenterZ + ORBIT_RADIUS * Math.sin(approachAngle);
+        double orbitEntryX = orbitCenterX + orbitRadius * Math.cos(approachAngle);
+        double orbitEntryZ = orbitCenterZ + orbitRadius * Math.sin(approachAngle);
         orbitStartAngle = approachAngle;
-        waypoints.add(new double[] { hatchX + 0.5, cruiseY, hatchZ + 0.5 });
-        waypoints.add(new double[] { ctrlX + 0.5, cruiseY, ctrlZ + 0.5 });
-        waypoints.add(new double[] { orbitEntryX, orbitCenterY, orbitEntryZ });
-        orbitAfterWaypointIndex = 2;
-        waypoints.add(new double[] { ctrlX + 0.5, cruiseY, ctrlZ + 0.5 });
-        waypoints.add(new double[] { hatchX + 0.5, cruiseY, hatchZ + 0.5 });
-        waypoints.add(new double[] { hatchX + 0.5, hatchY + 0.5, hatchZ + 0.5 });
-        double dx = waypoints.get(0)[0] - posX;
-        double dz = waypoints.get(0)[2] - posZ;
+
+        int entryBlockX = (int) Math.floor(orbitEntryX);
+        int entryBlockY = (int) Math.floor(orbitCenterY);
+        int entryBlockZ = (int) Math.floor(orbitEntryZ);
+
+        List<DronePathfinder.Node> path = DronePathfinder
+            .findSmoothPath(worldObj, hatchX, hatchY, hatchZ, entryBlockX, entryBlockY, entryBlockZ);
+
+        if (path != null && path.size() >= 2) {
+            for (int i = 1; i < path.size() - 1; i++) {
+                DronePathfinder.Node node = path.get(i);
+                waypoints.add(new double[] { node.x + 0.5, node.y + 0.5, node.z + 0.5 });
+            }
+            waypoints.add(new double[] { orbitEntryX, orbitCenterY, orbitEntryZ });
+            orbitAfterWaypointIndex = waypoints.size() - 1;
+
+            for (int i = path.size() - 2; i >= 1; i--) {
+                DronePathfinder.Node node = path.get(i);
+                waypoints.add(new double[] { node.x + 0.5, node.y + 0.5, node.z + 0.5 });
+            }
+            waypoints.add(new double[] { hatchX + 0.5, hatchY + 0.5, hatchZ + 0.5 });
+        } else {
+            waypoints.add(new double[] { orbitEntryX, orbitCenterY, orbitEntryZ });
+            orbitAfterWaypointIndex = 0;
+            waypoints.add(new double[] { hatchX + 0.5, hatchY + 0.5, hatchZ + 0.5 });
+        }
+
+        double dx = waypoints.getFirst()[0] - posX;
+        double dz = waypoints.getFirst()[2] - posZ;
         if (Math.abs(dx) > 0.01 || Math.abs(dz) > 0.01) {
             rotationYaw = (float) Math.toDegrees(Math.atan2(-dx, dz));
         }
@@ -214,18 +244,18 @@ public class EntityDrone extends EntityLivingBase {
         if (orbitTicks >= ORBIT_TOTAL_TICKS) {
             orbiting = false;
             setPosition(
-                orbitCenterX + ORBIT_RADIUS * Math.cos(orbitStartAngle),
+                orbitCenterX + orbitRadius * Math.cos(orbitStartAngle),
                 orbitCenterY,
-                orbitCenterZ + ORBIT_RADIUS * Math.sin(orbitStartAngle));
+                orbitCenterZ + orbitRadius * Math.sin(orbitStartAngle));
             rotationPitch = 0;
             return;
         }
         double angularSpeed = 2.0 * Math.PI / ORBIT_TOTAL_TICKS;
         double angle = orbitStartAngle + orbitTicks * angularSpeed;
         setPosition(
-            orbitCenterX + ORBIT_RADIUS * Math.cos(angle),
+            orbitCenterX + orbitRadius * Math.cos(angle),
             orbitCenterY,
-            orbitCenterZ + ORBIT_RADIUS * Math.sin(angle));
+            orbitCenterZ + orbitRadius * Math.sin(angle));
         double faceDx = orbitCenterX - posX;
         double faceDz = orbitCenterZ - posZ;
         rotationYaw = (float) Math.toDegrees(Math.atan2(-faceDx, faceDz));
@@ -242,44 +272,9 @@ public class EntityDrone extends EntityLivingBase {
         double totalDist = Math.sqrt(dx * dx + dy * dy + dz * dz);
         if (totalDist > 0.01) {
             targetPitch = (float) -Math.toDegrees(Math.atan2(dy, Math.max(horizontalDist, 0.01)));
-            targetPitch = Math.max(-25.0f, Math.min(25.0f, targetPitch));
+            targetPitch = Math.clamp(targetPitch, -25.0f, 25.0f);
         }
         rotationPitch = lerpAngle(rotationPitch, targetPitch, 0.1f);
-    }
-
-    private static int findSafeCruiseAltitude(World world, int hatchX, int hatchY, int hatchZ, int ctrlX, int ctrlY,
-        int ctrlZ) {
-        int safeY = Math.max(hatchY, ctrlY) + 3;
-        for (int[] xz : bresenhamLine2D(hatchX, hatchZ, ctrlX, ctrlZ)) {
-            while (safeY < 250
-                && (!world.isAirBlock(xz[0], safeY, xz[1]) || !world.isAirBlock(xz[0], safeY + 1, xz[1]))) {
-                safeY++;
-            }
-        }
-        return Math.min(safeY, 250);
-    }
-
-    private static List<int[]> bresenhamLine2D(int x0, int z0, int x1, int z1) {
-        List<int[]> points = new ArrayList<>();
-        int dx = Math.abs(x1 - x0);
-        int dz = Math.abs(z1 - z0);
-        int sx = x0 < x1 ? 1 : -1;
-        int sz = z0 < z1 ? 1 : -1;
-        int err = dx - dz;
-        while (true) {
-            points.add(new int[] { x0, z0 });
-            if (x0 == x1 && z0 == z1) break;
-            int e2 = 2 * err;
-            if (e2 > -dz) {
-                err -= dz;
-                x0 += sx;
-            }
-            if (e2 < dx) {
-                err += dx;
-                z0 += sz;
-            }
-        }
-        return points;
     }
 
     private static float lerpAngle(float from, float to, float factor) {

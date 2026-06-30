@@ -200,6 +200,11 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance implements IDataC
             int hY = base.getYCoord();
             int hZ = base.getZCoord();
 
+            ForgeDirection facing = base.getFrontFacing();
+            int spawnX = hX + facing.offsetX;
+            int spawnY = hY + facing.offsetY;
+            int spawnZ = hZ + facing.offsetZ;
+
             IGregTechTileEntity targetBase = aMaintenanceTarget.getBaseMetaTileEntity();
             if (targetBase != null) {
                 int cX = targetBase.getXCoord();
@@ -210,7 +215,7 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance implements IDataC
                 if (level <= 0) level = 1;
 
                 EntityDrone drone = new EntityDrone(world);
-                drone.initAutoFlight(hX, hY, hZ, cX, cY, cZ, level);
+                drone.initAutoFlight(spawnX, spawnY, spawnZ, cX, cY, cZ, level);
                 world.spawnEntityInWorld(drone);
             }
         }
