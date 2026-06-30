@@ -1892,7 +1892,10 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     }
 
     /**
-     * Drains fluid from the given hatch, including {@link IDualInputHatch}. Should never be used during recipe check!
+     * Drains fluid from the given hatch, including {@link IDualInputHatch}.
+     * Note that you should not modify any hatch content during recipe check as it will
+     * lead to possible failed extraction when the recipe processing tries to extract
+     * the recipe from the hatch. Doing simulate check is fine, however.
      *
      * @param doDrain If false, fluid will not actually be consumed
      * @return Whether the hatch contains enough fluid to drain
@@ -1914,15 +1917,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         }
 
         if (hatch instanceof MTEHatchInput tHatch && tHatch.isValid()) {
-            if (tHatch instanceof MTEHatchInputME meHatch) {
-                meHatch.startRecipeProcessing();
-                FluidStack tFluid = meHatch.drain(ForgeDirection.UNKNOWN, fluid, doDrain);
-                meHatch.endRecipeProcessing(this);
-                return tFluid != null && tFluid.amount >= fluid.amount;
-            } else {
-                FluidStack tFluid = tHatch.drain(ForgeDirection.UNKNOWN, fluid, doDrain);
-                return tFluid != null && tFluid.amount >= fluid.amount;
-            }
+            FluidStack tFluid = tHatch.drain(ForgeDirection.UNKNOWN, fluid, doDrain);
+            return tFluid != null && tFluid.amount >= fluid.amount;
         }
 
         return false;
