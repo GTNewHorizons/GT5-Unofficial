@@ -361,7 +361,7 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 8, 2, 6, errors)) return;
         checkHasAnyEnergy(errors);
         checkHasAnyInput(errors);
-        checkHasOutputBus(errors);
+        checkHasAnyOutput(errors);
     }
 
     @Override
