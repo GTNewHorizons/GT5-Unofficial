@@ -113,7 +113,7 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(Materials.Eternity.getNanite(1), Materials.Universium.getNanite(1))
             .fluidInputs(Materials.RawStarMatter.getFluid(2 * STACKS))
-            .fluidOutputs(Materials.MHDCSM.getMolten(32 * INGOTS))
+            .fluidOutputs(Materials.MHDCSM.getMolten(36 * INGOTS))
             .duration(1 * SECONDS)
             .eut(TierEU.RECIPE_MAX)
             .addTo(electricImplosionCompressorRecipes);

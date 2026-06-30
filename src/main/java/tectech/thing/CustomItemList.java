@@ -43,6 +43,7 @@ public enum CustomItemList implements IItemContainer {
     Hatch_BEC_Nanites,
     Hatch_BEC_IOController,
     Hatch_BEC_CondensateDetector,
+    Hatch_LineOfSight_Connector,
     rack_Hatch,
     holder_Hatch,
     capacitor_Hatch,
