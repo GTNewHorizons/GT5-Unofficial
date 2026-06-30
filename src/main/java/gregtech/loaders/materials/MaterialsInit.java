@@ -6341,7 +6341,11 @@ public class MaterialsInit {
     private static Materials loadEmerald() {
         return new MaterialBuilder().setName("Emerald")
             .setDefaultLocalName("Emerald")
-            .setIconSet(TextureSet.SET_EMERALD)
+            .setIconSet(
+                TextureSet.SET_EMERALD.withCustomTextures(
+                    "emerald",
+                    MaterialIconRegistry.IconType.ORE,
+                    MaterialIconRegistry.IconType.ORE_SMALL))
             .setColor(Dyes.dyeGreen)
             .setARGB(0x7f50ff50)
             .setTool(256, 4, 7.0f)
