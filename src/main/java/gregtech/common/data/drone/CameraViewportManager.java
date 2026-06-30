@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
+import gregtech.common.entity.EntityDrone;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -118,7 +119,7 @@ public class CameraViewportManager {
         public int hoveredY = -1;
         public int hoveredZ = -1;
 
-        gregtech.common.entity.EntityCamera cameraEntity;
+        EntityDrone cameraEntity;
 
         public int getDim() {
             return dim;
@@ -234,7 +235,7 @@ public class CameraViewportManager {
                 }
             }
             active = true;
-            cameraEntity = new gregtech.common.entity.EntityCamera(world);
+            cameraEntity = new EntityDrone(world);
             cameraEntity.setPosition(machineX + 0.5, machineY + 1.5, machineZ + 0.5);
             world.spawnEntityInWorld(cameraEntity);
         }

@@ -10,22 +10,23 @@ import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.common.entity.EntityCamera;
+import gregtech.common.entity.EntityDrone;
 import gregtech.common.render.DroneRender;
 
 @SideOnly(Side.CLIENT)
-public class RenderCamera extends Render {
+public class RenderDrone extends Render {
 
-    public RenderCamera() {
+    public RenderDrone() {
         this.shadowSize = 0.5F;
         this.renderManager = RenderManager.instance;
     }
 
     @Override
     public void doRender(Entity entity, double x, double y, double z, float yaw, float partialTicks) {
-        if (entity instanceof EntityCamera) {
+        if (entity instanceof EntityDrone) {
+            EntityDrone drone = (EntityDrone) entity;
             Minecraft mc = Minecraft.getMinecraft();
-            if (mc.renderViewEntity instanceof EntityCamera && entity != mc.renderViewEntity) {
+            if (mc.renderViewEntity instanceof EntityDrone && entity != mc.renderViewEntity) {
                 double dx = entity.posX - mc.renderViewEntity.posX;
                 double dy = entity.posY - mc.renderViewEntity.posY;
                 double dz = entity.posZ - mc.renderViewEntity.posZ;
@@ -36,8 +37,17 @@ public class RenderCamera extends Render {
             GL11.glPushMatrix();
             GL11.glTranslated(x, y, z);
             GL11.glRotated(180.0D - yaw, 0.0D, 1.0D, 0.0D);
+
+            // Interpolate pitch for smooth rendering rotation
+            float pitch = drone.prevRotationPitch + (drone.rotationPitch - drone.prevRotationPitch) * partialTicks;
+            GL11.glRotated(pitch, 1.0D, 0.0D, 0.0D);
+
             GL11.glScalef(0.3F, 0.3F, 0.3F);
-            DroneRender.renderDrone(-0.5, -0.5, -0.5, partialTicks, 1);
+            int level = drone.getDroneLevel();
+            if (level <= 0) {
+                level = 1;
+            }
+            DroneRender.renderDrone(-0.5, -0.5, -0.5, partialTicks, level);
             GL11.glPopMatrix();
         }
     }

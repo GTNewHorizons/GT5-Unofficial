@@ -37,7 +37,7 @@ import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.net.PacketObserveMachine;
 import gregtech.api.net.PacketOpenRemoteMteGui;
-import gregtech.common.entity.EntityCamera;
+import gregtech.common.entity.EntityDrone;
 import gregtech.common.tileentities.machines.multi.drone.DroneConnection;
 import gregtech.common.tileentities.machines.multi.drone.MTEDroneCentre;
 
@@ -60,7 +60,7 @@ public class CameraViewportClientManager extends CameraViewportManager {
     public float zoomLevel = 1.0F;
 
     private ModularPanel originalMainPanelRef = null;
-    private EntityCamera dummyCamera = null;
+    private EntityDrone dummyCamera = null;
     public EntityLivingBase originalViewEntity = null;
 
     private int backgroundTextureId = -1;
@@ -245,7 +245,7 @@ public class CameraViewportClientManager extends CameraViewportManager {
         this.lastHoveredZ = -1;
 
         if (dummyCamera == null || dummyCamera.worldObj != mc.theWorld) {
-            dummyCamera = new EntityCamera(mc.theWorld);
+            dummyCamera = new EntityDrone(mc.theWorld);
             if (mc.theWorld instanceof WorldClient) {
                 mc.theWorld.addEntityToWorld(-9999, dummyCamera);
             }
@@ -457,7 +457,7 @@ public class CameraViewportClientManager extends CameraViewportManager {
         wasPageUpDown = isZoomIn || isZoomOut;
 
         if (dummyCamera == null || dummyCamera.worldObj != mc.theWorld) {
-            dummyCamera = new EntityCamera(mc.theWorld);
+            dummyCamera = new EntityDrone(mc.theWorld);
             if (mc.theWorld instanceof WorldClient) {
                 mc.theWorld.addEntityToWorld(-9999, dummyCamera);
             }

@@ -163,7 +163,7 @@ import gregtech.common.config.OPStuff;
 import gregtech.common.data.GTPowerfailTracker;
 import gregtech.common.data.drone.CameraViewportManager;
 import gregtech.common.data.maglev.TetherManager;
-import gregtech.common.entity.EntityCamera;
+import gregtech.common.entity.EntityDrone;
 import gregtech.common.handlers.OffhandToolFunctionalityHandler;
 import gregtech.common.items.ItemGTToolbox;
 import gregtech.common.items.MetaGeneratedItem98;
@@ -1199,7 +1199,7 @@ public class GTProxy implements IFuelHandler {
         // MUI2, but for the time being it stays here. -- miozune
         CoverRegistry.reloadCoverColorOverrides();
         CALImprintRecipe.register();
-        EntityRegistry.registerModEntity(EntityCamera.class, "EntityCamera", 1, GTMod.GT, 64, 3, true);
+        EntityRegistry.registerModEntity(EntityDrone.class, "EntityDrone", 1, GTMod.GT, 64, 3, true);
     }
 
     public void onLoadComplete(FMLLoadCompleteEvent event) {}

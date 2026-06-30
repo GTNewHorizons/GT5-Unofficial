@@ -44,6 +44,7 @@ import gregtech.api.metatileentity.implementations.MTEHatchMaintenance;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.render.TextureFactory;
 import gregtech.common.gui.modularui.hatch.MTEHatchDroneDownLinkGui;
+import gregtech.common.entity.EntityDrone;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -191,6 +192,28 @@ public class MTEHatchDroneDownLink extends MTEHatchMaintenance implements IDataC
         }
 
         super.onMaintenancePerformed(aMaintenanceTarget);
+
+        IGregTechTileEntity base = getBaseMetaTileEntity();
+        if (base != null && !base.getWorld().isRemote) {
+            World world = base.getWorld();
+            int hX = base.getXCoord();
+            int hY = base.getYCoord();
+            int hZ = base.getZCoord();
+
+            IGregTechTileEntity targetBase = aMaintenanceTarget.getBaseMetaTileEntity();
+            if (targetBase != null) {
+                int cX = targetBase.getXCoord();
+                int cY = targetBase.getYCoord();
+                int cZ = targetBase.getZCoord();
+
+                int level = (centre != null) ? centre.getDroneLevel() : 1;
+                if (level <= 0) level = 1;
+
+                EntityDrone drone = new EntityDrone(world);
+                drone.initAutoFlight(hX, hY, hZ, cX, cY, cZ, level);
+                world.spawnEntityInWorld(drone);
+            }
+        }
     }
 
     @Override

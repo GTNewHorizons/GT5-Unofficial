@@ -96,13 +96,13 @@ import gregtech.client.GTPowerfailRenderer;
 import gregtech.client.GTWorkAreaRenderer;
 import gregtech.client.SeekingOggCodec;
 import gregtech.client.handler.CondensateAnimationTickHandler;
-import gregtech.client.renderer.entity.RenderCamera;
+import gregtech.client.renderer.entity.RenderDrone;
 import gregtech.client.renderer.entity.RenderPowderBarrel;
 import gregtech.client.renderer.waila.TTRenderGTProgressBar;
 import gregtech.common.blocks.ItemMachines;
 import gregtech.common.config.Client;
 import gregtech.common.data.drone.CameraViewportClientManager;
-import gregtech.common.entity.EntityCamera;
+import gregtech.common.entity.EntityDrone;
 import gregtech.common.entity.EntityPowderBarrelPrimed;
 import gregtech.common.items.ItemGTToolbox;
 import gregtech.common.items.toolbox.ToolboxUtil;
@@ -263,7 +263,7 @@ public class GTClient extends GTProxy {
             .register(new CondensateAnimationTickHandler());
 
         RenderManager.instance.entityRenderMap.put(EntityPowderBarrelPrimed.class, new RenderPowderBarrel());
-        RenderManager.instance.entityRenderMap.put(EntityCamera.class, new RenderCamera());
+        RenderManager.instance.entityRenderMap.put(EntityDrone.class, new RenderDrone());
         // spotless:on
     }
 
