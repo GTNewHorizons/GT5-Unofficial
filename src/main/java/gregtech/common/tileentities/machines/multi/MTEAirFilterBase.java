@@ -218,6 +218,7 @@ public abstract class MTEAirFilterBase extends MTEEnhancedMultiBlockBase<MTEAirF
             .addMufflerHatch("1-8", "Any center side casing", 2)
             .addInputBus("0+", "Any bottom casing", 1)
             .addOutputBus("0+", "Any bottom casing", 1)
+            .addAir("Interior of the structure")
             .toolTipFinisher();
         return tt;
     }

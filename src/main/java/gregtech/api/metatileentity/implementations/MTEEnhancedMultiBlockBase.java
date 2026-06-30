@@ -643,6 +643,14 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
         checkHatchExact(errors, HatchElement.Energy, 1);
     }
 
+    protected final void checkHasDynamoHatch(List<StructureError> errors) {
+        checkHatchMin(errors, HatchElement.Dynamo, 1);
+    }
+
+    protected final void checkOneDynamoHatch(List<StructureError> errors) {
+        checkHatchExact(errors, HatchElement.Dynamo, 1);
+    }
+
     protected final void checkHasMufflerHatch(List<StructureError> errors) {
         checkHatchMin(errors, HatchElement.Muffler, 1);
     }

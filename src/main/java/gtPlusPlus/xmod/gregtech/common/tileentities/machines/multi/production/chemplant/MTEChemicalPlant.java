@@ -156,15 +156,16 @@ public class MTEChemicalPlant extends GTPPMultiBlockBase<MTEChemicalPlant> imple
             .addCasing("57", "Machine Casing", true)
             .addCasing("27", "Heating Coil", true)
             .addCasing("18", "Pipe Casing", true)
+            .addStructureHint("item.GTPP.catalyst_housing.name", 1)
             .addMiscHatch(
                 "0-1",
                 StatCollector.translateToLocal("item.GTPP.catalyst_housing.name"),
-                "Any bottom metal machine casing",
+                "Any metal machine casing",
                 1)
-            .addEnergyHatch("1+", "Any bottom metal machine casing", 1)
-            .addMaintenanceHatch("1", "Any bottom metal machine casing", 1)
-            .addInputAny("1+", "Any bottom metal machine casing", 1)
-            .addOutputAny("1+", "Any bottom metal machine casing", 1)
+            .addEnergyHatch("1+", "Any metal machine casing", 1)
+            .addMaintenanceHatch("1", "Any metal machine casing", 1)
+            .addInputAny("1+", "Any metal machine casing", 1)
+            .addOutputAny("1+", "Any metal machine casing", 1)
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.METAL_MACHINE_CASING)
             .addSubChannel(GTStructureChannels.TIER_MACHINE_CASING)

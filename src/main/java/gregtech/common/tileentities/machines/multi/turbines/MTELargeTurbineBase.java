@@ -76,15 +76,7 @@ public abstract class MTELargeTurbineBase extends MTEExtendedPowerMultiBlockBase
                     lazy(
                         t -> t.getPipeCasing()
                             .asElement()))
-                .addElement(
-                    'D',
-                    lazy(
-                        t -> buildHatchAdder(MTELargeTurbineBase.class).atLeast(Dynamo)
-                            .casingIndex(t.getTurbineCasing().textureId)
-                            .hint(1)
-                            .buildAndChain(
-                                t.getTurbineCasing()
-                                    .asElement())))
+                .addElement('D', lazy(t -> Dynamo.newAny(t.getTurbineCasing().textureId, 1)))
                 .addElement(
                     'E',
                     lazy(
@@ -165,10 +157,10 @@ public abstract class MTELargeTurbineBase extends MTEExtendedPowerMultiBlockBase
         maxPower = 0;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 1, 1, 1, errors)) return;
         checkOneMaintenanceHatch(errors);
-        checkHasInputHatch(errors);
         if (getPollutionPerTick(null) != 0) {
             checkHasMufflerHatch(errors);
         }
+        checkHasInputHatch(errors);
         if (!errors.isEmpty()) return;
         maxPower = getMaximumOutput();
     }

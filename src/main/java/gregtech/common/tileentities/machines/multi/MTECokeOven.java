@@ -84,11 +84,15 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven>
     protected MultiblockTooltipBuilder createTooltip() {
         return new MultiblockTooltipBuilder().addMachineType("Coke Oven")
             .addInfo("Turns coal into coke and produces creosote oil")
+            .addPollutionAmount(GTMod.proxy.mPollutionCokeOvenPerSecond)
             .beginStructureBlock(3, 3, 3, true)
             .addController("Front center")
             .addCasing("0-26", "Coke Oven Casing", false)
             .addMiscHatch("0+", StatCollector.translateToLocal("GT5U.MBTT.CokeOvenHatch"), "Any casing", 1)
-            .addPollutionAmount(GTMod.proxy.mPollutionCokeOvenPerSecond)
+            .addAir("Interior of the structure")
+            .addStructureInfo("")
+            .addStructureFooter("GregTech multiblocks may wallshare each of their sides")
+            .addStructureFooter("to save on blocks, casings, glass, buses/hatches, etc.")
             .toolTipFinisher(AuthorJulia);
     }
 

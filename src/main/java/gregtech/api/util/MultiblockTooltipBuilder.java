@@ -79,20 +79,20 @@ public class MultiblockTooltipBuilder {
     private static final String TT_controller = StatCollector.translateToLocal("GT5U.MBTT.Controller");
     private static final String TT_minimum = StatCollector.translateToLocal("GT5U.MBTT.Minimum");
     private static final String TT_tiered = StatCollector.translateToLocal("GT5U.MBTT.Tiered");
-    private static final String TT_maintenancehatch = StatCollector.translateToLocal("GT5U.MBTT.MaintenanceHatch");
     private static final String TT_energyhatch = StatCollector.translateToLocal("GT5U.MBTT.EnergyHatch");
     private static final String TT_dynamohatch = StatCollector.translateToLocal("GT5U.MBTT.DynamoHatch");
+    private static final String TT_tectechhatch = StatCollector.translateToLocal("GT5U.MBTT.TecTechHatch");
+    private static final String TT_maintenancehatch = StatCollector.translateToLocal("GT5U.MBTT.MaintenanceHatch");
     private static final String TT_mufflerhatch = StatCollector.translateToLocal("GT5U.MBTT.MufflerHatch");
+    private static final String TT_steaminputbus = StatCollector.translateToLocal("GTPP.MBTT.SteamInputBus");
     private static final String TT_inputbus = StatCollector.translateToLocal("GT5U.MBTT.InputBus");
     private static final String TT_inputhatch = StatCollector.translateToLocal("GT5U.MBTT.InputHatch");
     private static final String TT_inputany = StatCollector.translateToLocal("GT5U.MBTT.InputAny");
+    private static final String TT_steamhatch = StatCollector.translateToLocal("GTPP.MBTT.SteamHatch");
+    private static final String TT_steamoutputbus = StatCollector.translateToLocal("GTPP.MBTT.SteamOutputBus");
     private static final String TT_outputbus = StatCollector.translateToLocal("GT5U.MBTT.OutputBus");
     private static final String TT_outputhatch = StatCollector.translateToLocal("GT5U.MBTT.OutputHatch");
     private static final String TT_outputany = StatCollector.translateToLocal("GT5U.MBTT.OutputAny");
-    private static final String TT_tectechhatch = StatCollector.translateToLocal("GT5U.MBTT.TecTechHatch");
-    private static final String TT_steaminputbus = StatCollector.translateToLocal("GTPP.MBTT.SteamInputBus");
-    private static final String TT_steamoutputbus = StatCollector.translateToLocal("GTPP.MBTT.SteamOutputBus");
-    private static final String TT_steamhatch = StatCollector.translateToLocal("GTPP.MBTT.SteamHatch");
     private static final String TT_causes = StatCollector.translateToLocal("GT5U.MBTT.Causes");
     private static final String TT_produces = StatCollector.translateToLocal("GT5U.MBTT.Produces");
     private static final String TT_pps = StatCollector.translateToLocal("GT5U.MBTT.PPS");
@@ -1170,6 +1170,18 @@ public class MultiblockTooltipBuilder {
 
     /**
      * Add a line of information about the structure:<br>
+     * (indent)Mandatory Air: info
+     *
+     * @param info Location description
+     * @return Instance this method was called on.
+     */
+    public MultiblockTooltipBuilder addAir(String info) {
+        sLines.add(TAB + EnumChatFormatting.WHITE + TT_air + COLON + EnumChatFormatting.GRAY + info);
+        return this;
+    }
+
+    /**
+     * Add a line of information about the structure:<br>
      * Supports Multi-Amp Hatches!
      *
      * @return Instance this method was called on.
@@ -1202,7 +1214,7 @@ public class MultiblockTooltipBuilder {
     }
 
     /**
-     * @deprecated use addSupportMultiAmpInfo() instead.
+     * @deprecated use addSupportMultiAmp() instead.
      *             Add a line of information about the structure:<br>
      *             Supports Multi-Amp Hatches!
      *
@@ -1215,7 +1227,7 @@ public class MultiblockTooltipBuilder {
     }
 
     /**
-     * @deprecated use addSupportAnyInfo() instead.
+     * @deprecated use addSupportAny() instead.
      *             Add a line of information about the structure:<br>
      *             Supports Multi-Amp and Laser Hatches!
      *

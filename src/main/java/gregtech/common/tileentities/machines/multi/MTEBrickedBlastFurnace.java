@@ -134,6 +134,7 @@ public class MTEBrickedBlastFurnace extends MetaTileEntity implements IAlignment
                 .beginStructureBlock(3, 3, 4, true)
                 .addController("Front center")
                 .addCasing("32", "Firebricks", false)
+                .addAir("Interior and top center of the structure")
                 .addStructureInfo("")
                 .addStructureFooter("GregTech multiblocks may wallshare each of their sides")
                 .addStructureFooter("to save on blocks, casings, glass, buses/hatches, etc.")

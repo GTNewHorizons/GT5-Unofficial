@@ -117,6 +117,7 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
             .addMufflerHatch("1", "Top center casing", 2)
             .addInputBus("1+", "Any bottom casing", 1)
             .addOutputBus("1+", "Any bottom casing", 1)
+            .addAir("Interior of the structure")
             .addStructureInfo("")
             .addSubChannel(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
