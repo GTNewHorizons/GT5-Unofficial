@@ -72,16 +72,18 @@ public class TextureSet {
     public TextureSet(String aSetName) {
         mSetName = aSetName;
         for (MaterialIconRegistry.IconType type : MaterialIconRegistry.IconType.values()) {
-            int index = type.ordinal();
-            String suffix = type.suffix;
-
-            if (type.texture == MaterialIconRegistry.TextureType.BLOCK) {
-                mTextures[index] = Textures.BlockIcons.textureSet(aSetName, suffix);
-            } else if (type.texture == MaterialIconRegistry.TextureType.BLOCK_WITH_ALPHA) {
-                mTextures[index] = Textures.BlockIcons
-                    .customAlpha(Textures.TextureMaterialIconDirectory + aSetName + suffix);
-            } else {
-                mTextures[index] = Textures.ItemIcons.textureSet(aSetName, suffix);
+            switch (type.texture) {
+                case BLOCK:
+                    mTextures[type.ordinal()] = Textures.BlockIcons.textureSet(aSetName, type.suffix);
+                    break;
+                case BLOCK_WITH_ALPHA:
+                    mTextures[type.ordinal()] = Textures.BlockIcons
+                        .customAlpha(Textures.TextureMaterialIconDirectory + aSetName + type.suffix);
+                    break;
+                case ITEM:
+                default:
+                    mTextures[type.ordinal()] = Textures.ItemIcons.textureSet(aSetName, type.suffix);
+                    break;
             }
         }
     }
@@ -102,30 +104,24 @@ public class TextureSet {
         this.is_custom = true;
 
         for (MaterialIconRegistry.IconType type : MaterialIconRegistry.IconType.values()) {
-            int index = type.ordinal();
-
             if (overrides.contains(type)) {
-                System.out.println("Overriding " + type + " with " + mSetName + type.suffix);
-
                 // Override this specific icon
                 switch (type.texture) {
                     case BLOCK:
-                        mTextures[index] = Textures.BlockIcons.textureSet(mSetName, type.suffix);
+                        mTextures[type.ordinal()] = Textures.BlockIcons.textureSet(mSetName, type.suffix);
                         break;
-
                     case BLOCK_WITH_ALPHA:
-                        mTextures[index] = Textures.BlockIcons
+                        mTextures[type.ordinal()] = Textures.BlockIcons
                             .customAlpha(Textures.TextureMaterialIconDirectory + mSetName + type.suffix);
                         break;
-
                     case ITEM:
                     default:
-                        mTextures[index] = Textures.ItemIcons.textureSet(mSetName, type.suffix);
+                        mTextures[type.ordinal()] = Textures.ItemIcons.textureSet(mSetName, type.suffix);
                         break;
                 }
             } else {
                 // Use origin texture
-                mTextures[index] = origin.mTextures[index];
+                mTextures[type.ordinal()] = origin.mTextures[type.ordinal()];
             }
         }
     }
