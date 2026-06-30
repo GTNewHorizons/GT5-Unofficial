@@ -1,4 +1,4 @@
-package gregtech.client.entity;
+package gregtech.common.entity;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
@@ -73,4 +73,14 @@ public class EntityCamera extends EntityLivingBase {
 
     @Override
     public void writeEntityToNBT(NBTTagCompound tag) {}
+
+    @Override
+    public boolean writeToNBTOptional(NBTTagCompound tag) {
+        return false;
+    }
+
+    @Override
+    public boolean writeMountToNBT(NBTTagCompound tag) {
+        return false;
+    }
 }

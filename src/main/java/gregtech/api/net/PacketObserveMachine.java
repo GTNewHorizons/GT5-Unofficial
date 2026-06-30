@@ -23,6 +23,7 @@ public class PacketObserveMachine extends GTPacket {
     private int machineX, machineY, machineZ;
     private boolean isObserving;
     private double camX, camY, camZ;
+    private float yaw;
     private EntityPlayerMP player;
 
     public NBTTagCompound statusTag;
@@ -33,7 +34,7 @@ public class PacketObserveMachine extends GTPacket {
     public PacketObserveMachine() {}
 
     public PacketObserveMachine(int dim, int centreX, int centreY, int centreZ, int machineX, int machineY,
-        int machineZ, boolean isObserving, double camX, double camY, double camZ) {
+        int machineZ, boolean isObserving, double camX, double camY, double camZ, float yaw) {
         this.dim = dim;
         this.centreX = centreX;
         this.centreY = centreY;
@@ -45,6 +46,7 @@ public class PacketObserveMachine extends GTPacket {
         this.camX = camX;
         this.camY = camY;
         this.camZ = camZ;
+        this.yaw = yaw;
     }
 
     @Override
@@ -65,6 +67,7 @@ public class PacketObserveMachine extends GTPacket {
         buf.writeDouble(camX);
         buf.writeDouble(camY);
         buf.writeDouble(camZ);
+        buf.writeFloat(yaw);
         buf.writeInt(hoveredX);
         buf.writeInt(hoveredY);
         buf.writeInt(hoveredZ);
@@ -88,6 +91,7 @@ public class PacketObserveMachine extends GTPacket {
         double camX = buf.readDouble();
         double camY = buf.readDouble();
         double camZ = buf.readDouble();
+        float yaw = buf.readFloat();
         int hX = buf.readInt();
         int hY = buf.readInt();
         int hZ = buf.readInt();
@@ -98,7 +102,7 @@ public class PacketObserveMachine extends GTPacket {
             tag = GTByteBuffer.readCompoundTagFromGreggyByteBuf(buf);
         }
 
-        PacketObserveMachine pkt = new PacketObserveMachine(dim, cX, cY, cZ, mX, mY, mZ, isObs, camX, camY, camZ);
+        PacketObserveMachine pkt = new PacketObserveMachine(dim, cX, cY, cZ, mX, mY, mZ, isObs, camX, camY, camZ, yaw);
         pkt.hoveredX = hX;
         pkt.hoveredY = hY;
         pkt.hoveredZ = hZ;
@@ -142,7 +146,7 @@ public class PacketObserveMachine extends GTPacket {
                 CameraViewportManager.sessions.put(playerUUID, session);
                 session.init(player);
             }
-            session.update(player, camX, camY, camZ, hoveredX, hoveredY, hoveredZ);
+            session.update(player, camX, camY, camZ, yaw, hoveredX, hoveredY, hoveredZ);
         }
     }
 }

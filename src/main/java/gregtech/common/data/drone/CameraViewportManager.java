@@ -53,6 +53,13 @@ public class CameraViewportManager {
     }
 
     public void resetStatus() {
+        for (ObservationSession session : sessions.values()) {
+            if (session.cameraEntity != null) {
+                session.cameraEntity.setDead();
+                session.cameraEntity = null;
+            }
+            session.active = false;
+        }
         sessions.clear();
         synchronized (pendingServerActions) {
             pendingServerActions.clear();
@@ -110,6 +117,8 @@ public class CameraViewportManager {
         public int hoveredX = -1;
         public int hoveredY = -1;
         public int hoveredZ = -1;
+
+        gregtech.common.entity.EntityCamera cameraEntity;
 
         public int getDim() {
             return dim;
@@ -225,13 +234,22 @@ public class CameraViewportManager {
                 }
             }
             active = true;
+            cameraEntity = new gregtech.common.entity.EntityCamera(world);
+            cameraEntity.setPosition(machineX + 0.5, machineY + 1.5, machineZ + 0.5);
+            world.spawnEntityInWorld(cameraEntity);
         }
 
-        public void update(EntityPlayerMP player, double x, double y, double z, int hX, int hY, int hZ) {
+        public void update(EntityPlayerMP player, double x, double y, double z, float yaw, int hX, int hY, int hZ) {
             if (!active) return;
             this.hoveredX = hX;
             this.hoveredY = hY;
             this.hoveredZ = hZ;
+
+            if (cameraEntity != null) {
+                cameraEntity.setPosition(x, y, z);
+                cameraEntity.rotationYaw = yaw;
+                cameraEntity.prevRotationYaw = yaw;
+            }
 
             int chunkX = (int) Math.floor(x) >> 4;
             int chunkZ = (int) Math.floor(z) >> 4;
@@ -271,7 +289,8 @@ public class CameraViewportManager {
                     true,
                     x,
                     y,
-                    z);
+                    z,
+                    yaw);
                 reply.hoveredX = hX;
                 reply.hoveredY = hY;
                 reply.hoveredZ = hZ;
@@ -282,29 +301,37 @@ public class CameraViewportManager {
 
         public void cleanup(EntityPlayerMP player) {
             if (!active) return;
-            WorldServer world = player.getServerForPlayer();
-            PlayerManager pm = world.getPlayerManager();
-            TileEntity centreTe = world.getTileEntity(centreX, centreY, centreZ);
+            try {
+                WorldServer world = player.getServerForPlayer();
+                PlayerManager pm = world.getPlayerManager();
+                TileEntity centreTe = world.getTileEntity(centreX, centreY, centreZ);
 
-            int r = getViewRadius(pm);
-            int playerChunkX = ((int) Math.floor(player.posX)) >> 4;
-            int playerChunkZ = ((int) Math.floor(player.posZ)) >> 4;
+                int r = getViewRadius(pm);
+                int playerChunkX = ((int) Math.floor(player.posX)) >> 4;
+                int playerChunkZ = ((int) Math.floor(player.posZ)) >> 4;
 
-            for (int cx = targetChunkX - 2; cx <= targetChunkX + 2; cx++) {
-                for (int cz = targetChunkZ - 2; cz <= targetChunkZ + 2; cz++) {
-                    boolean isWithinPlayerView = Math.abs(cx - playerChunkX) <= r && Math.abs(cz - playerChunkZ) <= r;
-                    if (!isWithinPlayerView) {
-                        removePlayerFromWatcher(pm, cx, cz, player);
-                    }
-                    if (centreTe != null) {
-                        GTChunkManager.releaseChunk(centreTe, new ChunkCoordIntPair(cx, cz));
+                for (int cx = targetChunkX - 2; cx <= targetChunkX + 2; cx++) {
+                    for (int cz = targetChunkZ - 2; cz <= targetChunkZ + 2; cz++) {
+                        boolean isWithinPlayerView = Math.abs(cx - playerChunkX) <= r
+                            && Math.abs(cz - playerChunkZ) <= r;
+                        if (!isWithinPlayerView) {
+                            removePlayerFromWatcher(pm, cx, cz, player);
+                        }
+                        if (centreTe != null) {
+                            GTChunkManager.releaseChunk(centreTe, new ChunkCoordIntPair(cx, cz));
+                        }
                     }
                 }
+                if (centreTe != null) {
+                    GTChunkManager.releaseTicket(centreTe);
+                }
+            } finally {
+                if (cameraEntity != null) {
+                    cameraEntity.setDead();
+                    cameraEntity = null;
+                }
+                active = false;
             }
-            if (centreTe != null) {
-                GTChunkManager.releaseTicket(centreTe);
-            }
-            active = false;
         }
     }
 

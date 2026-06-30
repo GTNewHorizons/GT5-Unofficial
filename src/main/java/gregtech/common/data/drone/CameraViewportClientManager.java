@@ -37,7 +37,7 @@ import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.net.PacketObserveMachine;
 import gregtech.api.net.PacketOpenRemoteMteGui;
-import gregtech.client.entity.EntityCamera;
+import gregtech.common.entity.EntityCamera;
 import gregtech.common.tileentities.machines.multi.drone.DroneConnection;
 import gregtech.common.tileentities.machines.multi.drone.MTEDroneCentre;
 
@@ -348,7 +348,8 @@ public class CameraViewportClientManager extends CameraViewportManager {
             isObserving,
             cameraX,
             cameraY,
-            cameraZ);
+            cameraZ,
+            cameraYaw);
         pkt.hoveredX = this.hoveredMachineX;
         pkt.hoveredY = this.hoveredMachineY;
         pkt.hoveredZ = this.hoveredMachineZ;
