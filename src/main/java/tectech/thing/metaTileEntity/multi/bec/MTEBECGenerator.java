@@ -13,6 +13,9 @@ import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
 
 import java.util.Arrays;
+import java.util.List;
+
+import javax.annotation.Nullable;
 
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
@@ -134,14 +137,24 @@ public class MTEBECGenerator extends MTEBECMultiblockBase<MTEBECGenerator> {
     // #endregion
 
     @Override
-    protected boolean addFluidOutputs(FluidStack[] outputFluids) {
+    protected boolean addFluidOutputs(FluidStack[] outputFluids, @Nullable List<FluidStack> remaining) {
         if (network != null) {
             boolean succeed = true;
             for (FluidStack output : outputFluids) {
+                if (output == null) {
+                    if (remaining != null) remaining.add(null);
+                    continue;
+                }
                 AEFluidStack stack = AEFluidStack.create(output);
                 network.injectCondensate(this, stack);
-                if (stack.getStackSize() > 0) succeed = false;
+                if (stack.getStackSize() > 0) {
+                    succeed = false;
+                    if (remaining != null) remaining.add(stack.getFluidStack());
+                } else {
+                    if (remaining != null) remaining.add(null);
+                }
             }
+            GTUtility.removeTailingNulls(remaining);
             return succeed;
         }
         return false;

@@ -124,6 +124,7 @@ public class MTEExoticModule extends MTEBaseModule {
                                     return copy;
                                 })
                                 .toArray(FluidStack[]::new),
+                            null,
                             mOutputHatches);
                     }
 

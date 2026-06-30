@@ -9,6 +9,8 @@ import java.util.PriorityQueue;
 
 import net.minecraft.item.ItemStack;
 
+import org.jetbrains.annotations.Nullable;
+
 import com.google.common.collect.Iterators;
 import com.google.common.collect.PeekingIterator;
 
@@ -52,6 +54,9 @@ public class ItemEjectionHelper {
             if (transaction instanceof IOutputBusTransaction.IRecipeCheckAware tran) {
                 tran.setRecipeCheck(isRecipeCheck);
             }
+            if (transaction instanceof IOutputBusTransaction.IProtectOutputAware tran) {
+                tran.setProtectOutput(protectItems);
+            }
             transactionsByType.computeIfAbsent(bus.getBusType(), x -> new ArrayList<>())
                 .add(transaction);
         }
@@ -73,6 +78,10 @@ public class ItemEjectionHelper {
         return ejected;
     }
 
+    public int ejectItems(List<ItemStack> outputs, int startingParallels) {
+        return ejectItems(outputs, startingParallels, null);
+    }
+
     /**
      * Ejects items into the contained output bus transactions, and calculates the number of parallels that were
      * successfully ran.
@@ -80,9 +89,11 @@ public class ItemEjectionHelper {
      * @param outputs           The items to eject per parallel. Each stack is multiplied by startingParallels to
      *                          determine the total number of items to eject. This param is not modified.
      * @param startingParallels The number of parallels to calculate. Must be an integer >= 0.
+     * @param remaining         A list to collect the remaining output stacks that couldn't be ejected, can be null if
+     *                          not need.
      * @return The number of parallels that can be safely ran without voiding items.
      */
-    public int ejectItems(List<ItemStack> outputs, int startingParallels) {
+    public int ejectItems(List<ItemStack> outputs, int startingParallels, @Nullable List<ItemStack> remaining) {
         if (outputs == null || outputs.isEmpty()) return 0;
         if (!active)
             throw new IllegalStateException("Cannot eject additional items after committing an ItemEjectionHelper");
@@ -115,7 +126,7 @@ public class ItemEjectionHelper {
                 if (ofType == null) continue;
 
                 if (busType.isFiltered()) {
-                    GTDataUtils.addAllFiltered(ofType, transactions, t -> t.isFilteredToItem(parallelData.id));
+                    GTDataUtils.addAllFiltered(ofType, transactions, t -> t.isFilteredTo(parallelData.id));
                 } else {
                     transactions.addAll(ofType);
                 }
@@ -140,13 +151,13 @@ public class ItemEjectionHelper {
 
                 // If this bus is completely full, don't bother checking it.
                 if (!transaction.hasAvailableSpace()) {
-                    transaction.completeItem(output.id);
+                    transaction.complete(output.id);
                     outputBusses.next();
                     continue;
                 }
 
                 // Fill at most one slot with the remaining items
-                if (transaction.storePartial(output.id, output.remaining)) {
+                if (output.storePartial(transaction)) {
                     break;
                 } else {
                     // If we couldn't insert anything into the bus, go to the next one
@@ -161,15 +172,19 @@ public class ItemEjectionHelper {
             }
         }
 
-        if (itemProtectionEnabled) {
+        if (itemProtectionEnabled || remaining != null) {
             // If we care about protecting the items, reduce the starting parallels by however many batches of items
             // were ejected.
             // Otherwise, we can just tell the multi to run the full amount and it'll void everything that doesn't fit.
 
             for (ItemParallelData parallelData : outputParallels) {
-                int ejected = parallelData.initialAmount - parallelData.remaining.stackSize;
-
-                startingParallels = Math.min(startingParallels, ejected / parallelData.perParallel);
+                if (itemProtectionEnabled) {
+                    int ejected = parallelData.initialAmount - parallelData.remaining.stackSize;
+                    startingParallels = Math.min(startingParallels, ejected / parallelData.perParallel);
+                }
+                if (remaining != null && parallelData.remaining.stackSize > 0) {
+                    remaining.add(parallelData.remaining);
+                }
             }
         }
 
@@ -194,6 +209,19 @@ public class ItemEjectionHelper {
             this.remaining = id.getItemStack(amount);
             this.perParallel = perParallel;
             this.initialAmount = amount;
+        }
+
+        public boolean storePartial(IOutputBusTransaction transaction) {
+            if (transaction instanceof IOutputBusTransaction.IDynamicCapacityOutputAware sharedOutput
+                && sharedOutput.isDynamicCapacity()) {
+                int origin = remaining.stackSize;
+                int amount = Math.min(origin, perParallel);
+                remaining.stackSize = amount;
+                boolean succeed = transaction.storePartial(id, remaining);
+                remaining.stackSize += origin - amount;
+                return succeed;
+            }
+            return transaction.storePartial(id, remaining);
         }
     }
 }
