@@ -63,6 +63,7 @@ public record MissingStructureWrapperCasings(NBTTagList list) implements Structu
                         tag.getInteger("req"),
                         tag.getInteger("pres")))
                     .color(TEXT_COLOR)
+                    .alignment(Alignment.CenterLeft)
                     .asWidget());
         }
         return column;

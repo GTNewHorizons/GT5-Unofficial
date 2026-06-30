@@ -1008,6 +1008,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
         mWorks = true;
         scheduleTexturePacket();
         setShutdownStatus(false);
+        setShutDownReason(ShutDownReasonRegistry.NONE);
         if (hasValidMetaTileEntity()) {
             mMetaTileEntity.onEnableWorking();
         }
