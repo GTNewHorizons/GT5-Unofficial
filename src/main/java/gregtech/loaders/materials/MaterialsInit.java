@@ -504,9 +504,9 @@ public class MaterialsInit {
             .setIconSet(
                 TextureSet.SET_DULL.withCustomTextures(
                     "copper",
-                    MaterialIconRegistry.IconType.ORE_RAW,
                     MaterialIconRegistry.IconType.ORE,
-                    MaterialIconRegistry.IconType.ORE_SMALL))
+                    MaterialIconRegistry.IconType.ORE_SMALL,
+                    MaterialIconRegistry.IconType.ORE_RAW))
             .setColor(Dyes.dyeOrange)
             .setARGB(0x00ff6400)
             .setMiningLevel(1)
@@ -861,7 +861,12 @@ public class MaterialsInit {
         return new MaterialBuilder().setName("Iron")
             .setDefaultLocalName("Iron")
             .setElement(Element.Fe)
-            .setIconSet(TextureSet.SET_METALLIC)
+            .setIconSet(
+                TextureSet.SET_METALLIC.withCustomTextures(
+                    "iron",
+                    MaterialIconRegistry.IconType.ORE,
+                    MaterialIconRegistry.IconType.ORE_SMALL,
+                    MaterialIconRegistry.IconType.ORE_RAW))
             .setColor(Dyes.dyeLightGray)
             .setARGB(0x00c8c8c8)
             .setTool(256, 2, 6.0f)
