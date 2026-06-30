@@ -130,6 +130,34 @@ public class TextureSet {
         }
     }
 
+    /**
+     * Creates a new TextureSet that overrides only the specific material icons provided.
+     *
+     * <p>
+     * This method is the flexible, per-icon replacement for the old boolean-based
+     * block/item override system. Instead of overriding all block or all item textures,
+     * you explicitly list the MaterialIconRegistry.IconType entries you want to replace.
+     *
+     * <p>
+     * <strong>Example icon set for Materials.Copper:</strong>
+     *
+     * <pre>
+     *     .setIconSet(
+     *         TextureSet.SET_DULL.withCustomTextures(
+     *             "copper",
+     *             MaterialIconRegistry.IconType.ORE_RAW,
+     *             MaterialIconRegistry.IconType.ORE,
+     *             MaterialIconRegistry.IconType.ORE_SMALL))
+     * </pre>
+     *
+     * In this example, only the raw ore, ore, and small ore icons are replaced with
+     * textures from {@code CUSTOM/copper/}, while all other icons (dust, ingot, plate,
+     * etc.) remain unchanged.
+     *
+     * @param newSetName the name of the custom texture folder under CUSTOM/
+     * @param types      the specific icon types to override with custom textures
+     * @return a new TextureSet with the requested icons overridden
+     */
     public TextureSet withCustomTextures(String newSetName, MaterialIconRegistry.IconType... types) {
         Set<MaterialIconRegistry.IconType> overrideSet = new HashSet<>(Arrays.asList(types));
         return new TextureSet(newSetName, this, overrideSet);

@@ -501,7 +501,12 @@ public class MaterialsInit {
         return new MaterialBuilder().setName("Copper")
             .setDefaultLocalName("Copper")
             .setElement(Element.Cu)
-            .setIconSet(TextureSet.SET_DULL.withCustomTextures("copper", MaterialIconRegistry.IconType.ORE_RAW))
+            .setIconSet(
+                TextureSet.SET_DULL.withCustomTextures(
+                    "copper",
+                    MaterialIconRegistry.IconType.ORE_RAW,
+                    MaterialIconRegistry.IconType.ORE,
+                    MaterialIconRegistry.IconType.ORE_SMALL))
             .setColor(Dyes.dyeOrange)
             .setARGB(0x00ff6400)
             .setMiningLevel(1)
