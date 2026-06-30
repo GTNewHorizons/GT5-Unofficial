@@ -8,6 +8,7 @@ import gregtech.api.enchants.EnchantmentRadioactivity;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Element;
 import gregtech.api.enums.MaterialBuilder;
+import gregtech.api.enums.MaterialIconRegistry;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
@@ -500,7 +501,7 @@ public class MaterialsInit {
         return new MaterialBuilder().setName("Copper")
             .setDefaultLocalName("Copper")
             .setElement(Element.Cu)
-            .setIconSet(TextureSet.SET_DULL)
+            .setIconSet(TextureSet.SET_DULL.withCustomTextures("copper", MaterialIconRegistry.IconType.ORE_RAW))
             .setColor(Dyes.dyeOrange)
             .setARGB(0x00ff6400)
             .setMiningLevel(1)

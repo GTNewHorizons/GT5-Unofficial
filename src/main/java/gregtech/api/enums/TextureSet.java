@@ -1,5 +1,9 @@
 package gregtech.api.enums;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 import gregtech.api.interfaces.IIconContainer;
 
 public class TextureSet {
@@ -93,32 +97,41 @@ public class TextureSet {
      * <p>
      * This assumes you want to construct a custom texture set.
      */
-    private TextureSet(String aSetName, TextureSet origin, boolean overrideBlock, boolean overrideItem) {
-        mSetName = "CUSTOM/" + aSetName;
+    private TextureSet(String newSetName, TextureSet origin, Set<MaterialIconRegistry.IconType> overrides) {
+        this.mSetName = "CUSTOM/" + newSetName;
         this.is_custom = true;
 
         for (MaterialIconRegistry.IconType type : MaterialIconRegistry.IconType.values()) {
             int index = type.ordinal();
-            String suffix = type.suffix;
 
-            if (type.texture == MaterialIconRegistry.TextureType.BLOCK
-                || type.texture == MaterialIconRegistry.TextureType.BLOCK_WITH_ALPHA) {
-                if (overrideBlock) {
-                    mTextures[index] = Textures.BlockIcons.textureSet(mSetName, suffix);
-                } else {
-                    mTextures[index] = origin.mTextures[index];
+            if (overrides.contains(type)) {
+                System.out.println("Overriding " + type + " with " + mSetName + type.suffix);
+
+                // Override this specific icon
+                switch (type.texture) {
+                    case BLOCK:
+                        mTextures[index] = Textures.BlockIcons.textureSet(mSetName, type.suffix);
+                        break;
+
+                    case BLOCK_WITH_ALPHA:
+                        mTextures[index] = Textures.BlockIcons
+                            .customAlpha(Textures.TextureMaterialIconDirectory + mSetName + type.suffix);
+                        break;
+
+                    case ITEM:
+                    default:
+                        mTextures[index] = Textures.ItemIcons.textureSet(mSetName, type.suffix);
+                        break;
                 }
             } else {
-                if (overrideItem) {
-                    mTextures[index] = Textures.ItemIcons.textureSet(aSetName, suffix);
-                } else {
-                    mTextures[index] = origin.mTextures[index];
-                }
+                // Use origin texture
+                mTextures[index] = origin.mTextures[index];
             }
         }
     }
 
-    public TextureSet withBlockTextures(String aNewSetName) {
-        return new TextureSet(aNewSetName, this, true, false);
+    public TextureSet withCustomTextures(String newSetName, MaterialIconRegistry.IconType... types) {
+        Set<MaterialIconRegistry.IconType> overrideSet = new HashSet<>(Arrays.asList(types));
+        return new TextureSet(newSetName, this, overrideSet);
     }
 }
