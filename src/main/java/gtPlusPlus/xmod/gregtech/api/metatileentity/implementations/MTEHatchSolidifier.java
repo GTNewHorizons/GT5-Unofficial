@@ -32,7 +32,7 @@ public class MTEHatchSolidifier extends MTEHatchInput implements IConfigurationC
     public static final int moldSlot = 2;
     public static final int circuitSlot = 3;
 
-    public static ArrayList<ItemStack> solidifierMolds = new ArrayList<>(
+    public static final ArrayList<ItemStack> solidifierMolds = new ArrayList<>(
         Arrays.asList(
             ItemList.Shape_Mold_Bottle.get(1),
             ItemList.Shape_Mold_Plate.get(1),
