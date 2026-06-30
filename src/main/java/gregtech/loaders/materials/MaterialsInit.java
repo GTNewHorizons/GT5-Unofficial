@@ -6273,7 +6273,11 @@ public class MaterialsInit {
     private static Materials loadDiamond() {
         return new MaterialBuilder().setName("Diamond")
             .setDefaultLocalName("Diamond")
-            .setIconSet(TextureSet.SET_DIAMOND)
+            .setIconSet(
+                TextureSet.SET_DIAMOND.withCustomTextures(
+                    "diamond",
+                    MaterialIconRegistry.IconType.ORE,
+                    MaterialIconRegistry.IconType.ORE_SMALL))
             .setColor(Dyes.dyeWhite)
             .setARGB(0x7fc8ffff)
             .setTool(1_280, 4, 8.0f)
