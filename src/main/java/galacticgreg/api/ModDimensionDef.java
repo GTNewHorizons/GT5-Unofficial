@@ -1,6 +1,7 @@
 package galacticgreg.api;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -281,6 +282,10 @@ public class ModDimensionDef {
         } else {
             return specialBlocksForAsteroids.get(rng.nextInt(specialBlocksForAsteroids.size()));
         }
+    }
+
+    public @NotNull List<IStoneType> getAsteroidMaterials() {
+        return Collections.unmodifiableList(validAsteroidMaterials);
     }
 
     /**
