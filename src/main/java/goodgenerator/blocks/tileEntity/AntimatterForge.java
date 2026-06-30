@@ -41,6 +41,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.MetaTileEntityIDs;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IOverclockDescriptionProvider;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
@@ -723,17 +724,19 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
 
     @Override
     public void getExtraInfoData(List<String> info) {
+        info.add("gg.infodata.antimatter_forge.header");
         info.add(
-            StatCollector.translateToLocalFormatted("gui.AntimatterForge.0.s", formatNumber(getAntimatterAmount())));
-
+            IGregTechDeviceInformation
+                .encode("gg.infodata.antimatter_forge.antimatter", formatNumber(getAntimatterAmount())));
         info.add(
-            StatCollector.translateToLocalFormatted("gui.AntimatterForge.1.s", formatNumber(getPassiveConsumption())));
-
+            IGregTechDeviceInformation
+                .encode("gg.infodata.antimatter_forge.passive", formatNumber(getPassiveConsumption())));
         info.add(
-            StatCollector.translateToLocalFormatted("gui.AntimatterForge.2.s", formatNumber(getActiveConsumption())));
-
+            IGregTechDeviceInformation
+                .encode("gg.infodata.antimatter_forge.active", formatNumber(getActiveConsumption())));
         info.add(
-            StatCollector.translateToLocalFormatted("gui.AntimatterForge.3.s", formatNumber(getAntimatterChange())));
+            IGregTechDeviceInformation
+                .encode("gg.infodata.antimatter_forge.change", formatNumber(getAntimatterChange())));
     }
 
     public long getAntimatterAmount() {

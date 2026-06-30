@@ -7,6 +7,8 @@ import java.util.stream.Stream;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import org.jetbrains.annotations.NotNull;
+
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 public final class GTStreamUtil {
@@ -14,7 +16,7 @@ public final class GTStreamUtil {
     /**
      * Backport of {@link Stream#ofNullable}.
      */
-    public static <T> Stream<T> ofNullable(@Nullable T value) {
+    public static <T> Stream<@NotNull T> ofNullable(@Nullable T value) {
         return value == null ? Stream.empty() : Stream.of(value);
     }
 

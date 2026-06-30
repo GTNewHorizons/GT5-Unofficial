@@ -158,7 +158,7 @@ public class MTELargeTurbinePlasma extends MTELargeTurbineBase {
             if (output == null) {
                 output = FluidRegistry.getFluidStack("molten." + outputName, totalFlow);
             }
-            if (output != null) addOutput(output);
+            if (output != null) addOutputPartial(output);
         }
 
         if (totalFlow <= 0) return 0;

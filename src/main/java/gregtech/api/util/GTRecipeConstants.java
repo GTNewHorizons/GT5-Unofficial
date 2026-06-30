@@ -24,6 +24,7 @@ import gregtech.api.interfaces.IRecipeMap;
 import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.RecipeMetadataKey;
+import gregtech.api.recipe.metadata.CompressionTierKey;
 import gregtech.api.recipe.metadata.SimpleRecipeMetadataKey;
 import gregtech.api.util.recipe.QuantumComputerRecipeData;
 import gregtech.api.util.recipe.Scanning;
@@ -190,8 +191,7 @@ public class GTRecipeConstants {
     /**
      * Tier of advanced compression (HIP/black hole)
      */
-    public static final RecipeMetadataKey<Integer> COMPRESSION_TIER = SimpleRecipeMetadataKey
-        .create(Integer.class, "compression");
+    public static final RecipeMetadataKey<Integer> COMPRESSION_TIER = CompressionTierKey.INSTANCE;
 
     /**
      * Dissolution Tank Ratio.
@@ -265,6 +265,12 @@ public class GTRecipeConstants {
      * Whether non-gas recipe should be generated together with gas recipes.
      */
     public static final RecipeMetadataKey<Boolean> NO_GAS = SimpleRecipeMetadataKey.create(Boolean.class, "no_gas");
+
+    /**
+     * Prevents automatic generation of a non-cell multiblock variant from this recipe.
+     */
+    public static final RecipeMetadataKey<Boolean> SKIP_CELL_RECIPE_GENERATION = SimpleRecipeMetadataKey
+        .create(Boolean.class, "skip_cell_recipe_generation");
 
     /**
      * Circuit config in non-gas recipe. No integrated circuit applied if this is set to -1 (default).

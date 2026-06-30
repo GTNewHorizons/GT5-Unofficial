@@ -3,13 +3,11 @@ package gregtech.common.tileentities.machines;
 public interface ISmartInputHatch {
 
     /*
-     * An interface to allow advanced interaction between hatches and a multiblock controller Adapted from the Crafting
-     * Input Buffer functionality
+     * An interface to allow hatch to emit change notification for instant recipe check
      */
 
-    // Have the contents of the hatch changed since the last check?
-    boolean justUpdated();
+    void addWatcher(IHatchWatcher watcher);
 
-    boolean doFastRecipeCheck();
+    void removeWatcher(IHatchWatcher watcher);
 
 }

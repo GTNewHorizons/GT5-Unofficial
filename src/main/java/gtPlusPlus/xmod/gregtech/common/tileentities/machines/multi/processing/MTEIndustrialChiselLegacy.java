@@ -303,11 +303,12 @@ public class MTEIndustrialChiselLegacy extends GTPPMultiBlockBase<MTEIndustrialC
     private GTRecipe getRecipe() {
         for (MTEHatchInputBus bus : this.mInputBusses) {
             if (bus instanceof MTEHatchChiselBus) { // Chisel buses
-                if (bus.mInventory[bus.getSizeInventory() - 1] == null) continue;
-                this.target = bus.mInventory[bus.getSizeInventory() - 1];
+                ItemStack lastSlot = bus.getStackInSlot(bus.getSizeInventory() - 1);
+                if (lastSlot == null) continue;
+                this.target = lastSlot;
 
                 for (int i = bus.getSizeInventory() - 2; i >= 0; i--) {
-                    ItemStack itemsInSlot = bus.mInventory[i];
+                    ItemStack itemsInSlot = bus.getStackInSlot(i);
                     if (itemsInSlot != null) {
                         GTRecipe tRecipe = generateChiselRecipe(itemsInSlot);
                         if (tRecipe != null) {
@@ -318,7 +319,7 @@ public class MTEIndustrialChiselLegacy extends GTPPMultiBlockBase<MTEIndustrialC
             } else {
                 target = this.getControllerSlot(); // Common buses
                 for (int i = bus.getSizeInventory() - 1; i >= 0; i--) {
-                    ItemStack itemsInSlot = bus.mInventory[i];
+                    ItemStack itemsInSlot = bus.getStackInSlot(i);
                     if (itemsInSlot != null) {
                         GTRecipe tRecipe = generateChiselRecipe(itemsInSlot);
                         if (tRecipe != null) {

@@ -1,5 +1,6 @@
 package tectech.recipe;
 
+import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.AQUA;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.GRAY;
 
 import java.util.List;
@@ -36,7 +37,7 @@ public class BECAssemblyFrontend extends AssemblyLineFrontend {
             .getIndexSafe(pStack.recipe.mRecipe.getMetadata(GTRecipeConstants.NANITE_TIERS), slot);
 
         if (tier != null) {
-            currentTip.add(GRAY + GTUtility.translate("gt.tooltip.nanite-tier", tier.describe()));
+            currentTip.add(AQUA + GTUtility.translate("gt.tooltip.nanite-tier", tier.describe()) + GRAY);
         }
 
         return currentTip;
@@ -55,7 +56,8 @@ public class BECAssemblyFrontend extends AssemblyLineFrontend {
                 if (tier.tier > maxTier.tier) maxTier = tier;
             }
 
-            recipeInfo.drawText(GTUtility.translate("gt.tooltip.max-nanite", maxTier.describe()));
+            recipeInfo.drawText(GTUtility.translate("gt.tooltip.max-nanite"));
+            recipeInfo.drawText(maxTier.describe());
         }
     }
 }
