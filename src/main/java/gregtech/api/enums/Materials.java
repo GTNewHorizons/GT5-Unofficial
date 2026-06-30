@@ -1102,6 +1102,7 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     public static Materials Churitsu;
     public static Materials InactiveCosmicSolder;
     public static Materials BoundlessCosmicSolder;
+    public static Materials ComputationBase;
     // endregion
 
     // region GTNH Materials

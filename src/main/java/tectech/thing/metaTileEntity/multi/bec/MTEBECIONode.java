@@ -13,10 +13,8 @@ import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.util.GTDataUtils.oneshot;
 import static gregtech.api.util.GTDataUtils.zip;
 
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -24,13 +22,11 @@ import java.util.List;
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants.NBT;
@@ -46,10 +42,8 @@ import appeng.api.storage.data.IAEFluidStack;
 import appeng.util.item.AEFluidStack;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTAuthors;
-import gregtech.api.enums.ItemList;
 import gregtech.api.enums.NaniteTier;
 import gregtech.api.enums.Textures.BlockIcons;
-import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.OCMethod;
@@ -77,14 +71,13 @@ import it.unimi.dsi.fastutil.Pair;
 import it.unimi.dsi.fastutil.ints.IntIterator;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
-import tectech.mechanics.boseEinsteinCondensate.BECFactoryElement;
-import tectech.mechanics.boseEinsteinCondensate.BECFactoryGrid;
 import tectech.mechanics.boseEinsteinCondensate.CondensateList;
 import tectech.recipe.TecTechRecipeMaps;
 import tectech.thing.CustomItemList;
 import tectech.thing.gui.bec.MTEBECIONodeGui;
 import tectech.thing.metaTileEntity.hatch.bec.MTEHatchIONodeController;
 import tectech.thing.metaTileEntity.hatch.bec.MTEHatchIONodeController.Mode;
+import tectech.thing.metaTileEntity.hatch.bec.MTEHatchLoS;
 import tectech.thing.metaTileEntity.hatch.bec.MTEHatchNaniteDetector;
 import tectech.thing.metaTileEntity.multi.base.MTEBECMultiblockBase;
 import tectech.thing.metaTileEntity.multi.base.parameter.IParametrized;
@@ -92,10 +85,7 @@ import tectech.thing.metaTileEntity.multi.base.parameter.IntegerParameter;
 import tectech.thing.metaTileEntity.multi.base.parameter.Parameter;
 import tectech.thing.metaTileEntity.multi.structures.BECStructureDefinitions;
 
-public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements IDataCopyable, IParametrized {
-
-    private int assemblerX, assemblerY, assemblerZ;
-    private @Nullable MTEBECAssembler assembler;
+public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements IParametrized {
 
     private @Nullable NaniteTier[] requiredNanites;
     private @Nullable CondensateList requiredCondensate, consumedCondensate;
@@ -118,6 +108,7 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
 
     private final List<MTEHatchNaniteDetector> naniteDetectors = new ArrayList<>();
     private final List<MTEHatchIONodeController> controllerHatches = new ArrayList<>();
+    private MTEHatchLoS losHatch;
 
     public enum NodeState {
         Idle,
@@ -189,13 +180,15 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
     public IStructureDefinition<MTEBECIONode> compile(String[][] definition) {
         structure.addCasing('A', SuperconductivePlasmaEnergyConduit);
         structure.addCasing('B', ElectromagneticallyIsolatedCasing)
-            .withHatches(1, 64, Arrays.asList(InputBus, OutputBus, NaniteHatch.INSTANCE, ControllerHatch.INSTANCE));
+            .withHatches(1, 32, Arrays.asList(InputBus, OutputBus, NaniteHatch.INSTANCE, ControllerHatch.INSTANCE));
         structure.addCasing('C', FineStructureConstantManipulator);
         structure.addCasing('D', ConflictInducementCasing);
         structure.addCasing('E', PeaceEnforcementCasing);
         structure.addCasing('F', CondensateTransformativeCoil);
         structure.addCasing('G', CondensateGuidanceCoil);
         structure.addCasing('H', ElectromagneticWaveguide);
+        structure.addCasing('1', FineStructureConstantManipulator)
+            .withHatches(2, 1, List.of(IONodeLineOfSightHatch.INSTANCE));
 
         return structure.buildStructure(definition);
     }
@@ -206,6 +199,11 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
 
         naniteDetectors.clear();
         controllerHatches.clear();
+
+        if (losHatch != null) {
+            losHatch.setOwner(null);
+            losHatch = null;
+        }
     }
 
     @Override
@@ -283,6 +281,8 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
 
     @Override
     protected void setProcessingLogicPower(ProcessingLogic logic) {
+        var assembler = getAssembler();
+
         logic.setAmperageOC(false);
         logic.setAvailableVoltage(GTUtility.roundUpVoltage(assembler == null ? 0 : assembler.getMaxInputVoltage()));
         logic.setAvailableAmperage(1);
@@ -320,13 +320,13 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
 
         if (!GTUtility.isServer()) return null;
 
-        if (!igte.getWorld()
-            .getChunkProvider()
-            .chunkExists(assemblerX >> 4, assemblerZ >> 4)) return null;
+        if (losHatch == null) return null;
 
-        if (!(igte.getTileEntity(assemblerX, assemblerY, assemblerZ) instanceof IGregTechTileEntity other)) return null;
+        var connection = losHatch.getConnectedHatch();
 
-        if (!(other.getMetaTileEntity() instanceof MTEBECAssembler assembler2)) return null;
+        if (connection == null) return null;
+
+        if (!(connection.getOwner() instanceof MTEBECAssembler assembler2)) return null;
 
         return assembler2;
     }
@@ -335,11 +335,9 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
 
     @Override
     protected @NotNull CheckRecipeResult checkProcessing_EM() {
-        if (assembler == null) {
-            connect(getAssembler());
+        if (getAssembler() == null) {
+            return NO_ASSEMBLER;
         }
-
-        if (assembler == null) return NO_ASSEMBLER;
 
         return super.checkProcessing_EM();
     }
@@ -493,9 +491,12 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
             return;
         }
 
+        var assembler = getAssembler();
+
         // Assembler is missing or not running
-        if (this.assembler == null || this.assembler.mMaxProgresstime <= 0) {
+        if (assembler == null || assembler.mMaxProgresstime <= 0) {
             state = NodeState.AssemblerOffline;
+            setNaniteShare(null, 0);
             return;
         }
 
@@ -589,7 +590,7 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
             IAEFluidStack toConsume = AEFluidStack.create(new FluidStack(required.getKey(), 1))
                 .setStackSize(remainingCondensate);
 
-            this.assembler.drainCondensate(toConsume);
+            assembler.drainCondensate(toConsume);
 
             long consumed = remainingCondensate - toConsume.getStackSize();
 
@@ -615,37 +616,9 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
         }
     }
 
-    private void connect(MTEBECAssembler assembler) {
-        if (!GTUtility.isServer()) return;
-
-        disconnect();
-
-        if (assembler != null) {
-            this.assembler = assembler;
-            assembler.addIONode(this);
-            BECFactoryGrid.INSTANCE.updateElement(this);
-        }
-    }
-
-    public void disconnect() {
-        if (!GTUtility.isServer()) return;
-
-        if (assembler != null) {
-            assembler.removeIONode(this);
-            assembler = null;
-            BECFactoryGrid.INSTANCE.updateElement(this);
-        }
-
-        setNaniteShare(null, 0);
-    }
-
     @Override
-    public void onFirstTick_EM(IGregTechTileEntity igte) {
-        super.onFirstTick_EM(igte);
-
-        if (GTUtility.isServer()) {
-            connect(getAssembler());
-        }
+    protected boolean connectsToNetwork() {
+        return false;
     }
 
     @Override
@@ -653,103 +626,16 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
         super.onUnload();
 
         if (GTUtility.isServer()) {
-            disconnect();
-        }
-    }
-
-    @Override
-    public void onPostTick(IGregTechTileEntity igte, long aTick) {
-        super.onPostTick(igte, aTick);
-
-        if (GTUtility.isServer()) {
-            // periodically try to reconnect to the assembler if we're supposed to be running but the assembler isn't
-            // loaded
-            if (assembler == null && mMaxProgresstime > 0 && aTick % 200 == 0) {
-                connect(getAssembler());
+            if (losHatch != null) {
+                // Disconnect the peer from our side. Avoid calling disconnectImpl on losHatch itself
+                // since its TE may also be unloading.
+                var connected = losHatch.getConnectedHatch();
+                if (connected != null) {
+                    connected.disconnectImpl();
+                }
+                losHatch.setOwner(null);
+                losHatch = null;
             }
-        }
-    }
-
-    @Override
-    public void onLeftclick(IGregTechTileEntity igte, EntityPlayer player) {
-        if (!(player instanceof EntityPlayerMP)) return;
-
-        ItemStack heldItem = player.getHeldItem();
-        if (!ItemList.Tool_DataStick.isStackEqual(heldItem, false, true)) return;
-
-        heldItem.setTagCompound(getCopiedData(player));
-        heldItem.setStackDisplayName(
-            MessageFormat.format(
-                "{0} Link Data Stick ({1}, {2}, {3})",
-                getStackForm(1).getDisplayName(),
-                igte.getXCoord(),
-                igte.getYCoord(),
-                igte.getZCoord()));
-        player.addChatMessage(new ChatComponentTranslation("GT5U.chat.bec-saved-link-data"));
-    }
-
-    @Override
-    public boolean onRightclick(IGregTechTileEntity igte, EntityPlayer player) {
-        ItemStack heldItem = player.getHeldItem();
-        if (!ItemList.Tool_DataStick.isStackEqual(heldItem, false, true)) {
-            return super.onRightclick(igte, player);
-        }
-
-        // intentionally run on the client so that the player's arm swings
-        if (pasteCopiedData(player, heldItem.getTagCompound())) {
-            if (GTUtility.isServer()) {
-                player.addChatMessage(new ChatComponentTranslation("GT5U.chat.bec-connected-assembler"));
-            }
-
-            return true;
-        } else {
-            if (GTUtility.isServer()) {
-                player.addChatMessage(new ChatComponentTranslation("GT5U.chat.bec-no-connect-assembler"));
-            }
-
-            return false;
-        }
-    }
-
-    @Override
-    public NBTTagCompound getCopiedData(EntityPlayer player) {
-        NBTTagCompound tag = new NBTTagCompound();
-
-        tag.setString("type", getCopiedDataIdentifier(player));
-        tag.setInteger("x", assemblerX);
-        tag.setInteger("y", assemblerY);
-        tag.setInteger("z", assemblerZ);
-
-        return tag;
-    }
-
-    @Override
-    public boolean pasteCopiedData(EntityPlayer player, NBTTagCompound nbt) {
-        if (nbt == null) return false;
-        if (!nbt.getString("type")
-            .equals(getCopiedDataIdentifier(player))) return false;
-
-        assemblerX = nbt.getInteger("x");
-        assemblerY = nbt.getInteger("y");
-        assemblerZ = nbt.getInteger("z");
-
-        disconnect();
-        connect(getAssembler());
-
-        return true;
-    }
-
-    @Override
-    public String getCopiedDataIdentifier(EntityPlayer player) {
-        return "bec-assembler";
-    }
-
-    @Override
-    public void getNeighbours(Collection<BECFactoryElement> neighbours) {
-        super.getNeighbours(neighbours);
-
-        if (assembler != null) {
-            neighbours.add(assembler);
         }
     }
 
@@ -911,10 +797,6 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
 
-        aNBT.setInteger("assemblerX", assemblerX);
-        aNBT.setInteger("assemblerY", assemblerY);
-        aNBT.setInteger("assemblerZ", assemblerZ);
-
         if (requiredNanites != null) {
             aNBT.setInteger("naniteCount", requiredNanites.length);
 
@@ -949,10 +831,6 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-
-        assemblerX = aNBT.getInteger("assemblerX");
-        assemblerY = aNBT.getInteger("assemblerY");
-        assemblerZ = aNBT.getInteger("assemblerZ");
 
         int count = aNBT.getInteger("naniteCount");
 
@@ -1110,6 +988,45 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
                     hatch.updateCraftingIcon(self.getMachineCraftingIcon());
 
                     self.controllerHatches.add(hatch);
+
+                    return true;
+                } else {
+                    return false;
+                }
+            };
+        }
+    }
+
+    public enum IONodeLineOfSightHatch implements IHatchElement<MTEBECIONode> {
+
+        INSTANCE;
+
+        @Override
+        public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
+            return List.of(MTEHatchLoS.class);
+        }
+
+        @Override
+        public String getDisplayName() {
+            return CustomItemList.Hatch_LineOfSight_Connector.getDisplayName();
+        }
+
+        @Override
+        public long count(MTEBECIONode self) {
+            return self.losHatch != null ? 1 : 0;
+        }
+
+        @Override
+        public IGTHatchAdder<MTEBECIONode> adder() {
+            return (self, igtme, id) -> {
+                IMetaTileEntity imte = igtme.getMetaTileEntity();
+
+                if (self.losHatch == null && imte instanceof MTEHatchLoS hatch) {
+                    hatch.updateTexture(id);
+                    hatch.updateCraftingIcon(self.getMachineCraftingIcon());
+                    hatch.setOwner(self);
+
+                    self.losHatch = hatch;
 
                     return true;
                 } else {
