@@ -50,6 +50,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import gtneioreplugin.util.DimensionHelper;
 import net.minecraft.item.ItemStack;
 
 import bartworks.system.material.WerkstoffLoader;
@@ -1613,12 +1614,8 @@ public enum OreMixes {
         for (OreMixes mix : mixes) {
             Set<String> dims = mix.oreMixBuilder.dimsEnabled;
             for (String dim : dims) {
-                List<StoneType> typeDim = StoneType.STONE_TYPES_BY_WORLD_NAME.get(dim);
-                if (typeDim == null) {
-                    GTMod.GT_FML_LOGGER.error("{} has no stone type!", dim);
-                    continue;
-                }
-                stoneTypes.addAll(typeDim);
+                String fullName = DimensionHelper.getDimFullName(dim);
+                stoneTypes.addAll(DimensionHelper.REGISTRY.get(fullName).stoneTypes());
             }
         }
 
