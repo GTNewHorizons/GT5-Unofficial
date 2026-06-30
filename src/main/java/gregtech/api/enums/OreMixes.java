@@ -55,6 +55,7 @@ import net.minecraft.item.ItemStack;
 import bartworks.system.material.WerkstoffLoader;
 import galacticgreg.api.enums.DimensionDef;
 import gregtech.api.interfaces.IOreMaterial;
+import gregtech.api.interfaces.IStoneType;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.common.OreMixBuilder;
@@ -1611,16 +1612,57 @@ public enum OreMixes {
         List<OreMixes> mixes = getOreMixes(material);
         Set<StoneType> stoneTypes = new HashSet<>();
         for (OreMixes mix : mixes) {
-            Set<String> dims = mix.oreMixBuilder.dimsEnabled;
-            for (String dim : dims) {
-                String fullName = DimensionHelper.getDimFullName(dim);
-                stoneTypes.addAll(
-                    DimensionHelper.REGISTRY.get(fullName)
-                        .stoneTypes());
+            for (String dim : mix.oreMixBuilder.dimsEnabled) {
+                for (StoneType stoneType : getStoneTypesForDim(dim)) {
+                    if (mix.oreMixBuilder.stoneCategories.contains(stoneType.getCategory())) {
+                        stoneTypes.add(stoneType);
+                    }
+                }
             }
         }
 
         return stoneTypes;
+    }
+
+    private static Set<StoneType> getStoneTypesForDim(String dim) {
+        Set<StoneType> stoneTypes = new HashSet<>();
+        String fullName = DimensionHelper.getDimFullName(dim);
+        stoneTypes.addAll(
+            DimensionHelper.REGISTRY.get(fullName)
+                .stoneTypes());
+        addGTStoneTypes(stoneTypes, dim);
+        addAsteroidStoneTypes(stoneTypes, dim);
+        return stoneTypes;
+    }
+
+    private static void addGTStoneTypes(Set<StoneType> stoneTypes, String dim) {
+        // To account for all the GTStones entries, which apply only either in OW or Nether
+        Integer dimensionId = switch (dim) {
+            case OW -> 0;
+            case NETHER -> -1;
+            default -> null;
+        };
+
+        if (dimensionId == null) return;
+
+        for (GTStones gtStone : GTStones.VALUES) {
+            if (gtStone.stone.enabledByDefault && gtStone.stone.dimension == dimensionId) {
+                StoneType stoneType = StoneType.findStoneType(gtStone.stone.block, gtStone.stone.blockMeta);
+                if (stoneType != null) stoneTypes.add(stoneType);
+            }
+        }
+    }
+
+    private static void addAsteroidStoneTypes(Set<StoneType> stoneTypes, String dim) {
+        for (DimensionDef def : DimensionDef.VALUES) {
+            if (!def.modDimensionDef.getDimensionName()
+                .equals(dim)) continue;
+
+            for (IStoneType stoneType : def.modDimensionDef.getAsteroidMaterials()) {
+                if (stoneType instanceof StoneType gtStoneType) stoneTypes.add(gtStoneType);
+            }
+            return;
+        }
     }
 
     public boolean containMaterial(IOreMaterial material) {

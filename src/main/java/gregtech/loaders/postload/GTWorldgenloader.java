@@ -15,7 +15,7 @@ public class GTWorldgenloader implements Runnable {
         new WorldGeneratorSpace();
 
         // GT Stones
-        for (GTStones stone : GTStones.values()) {
+        for (GTStones stone : GTStones.VALUES) {
             stone.addGTStone();
         }
 
