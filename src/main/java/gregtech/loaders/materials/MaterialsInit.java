@@ -726,7 +726,12 @@ public class MaterialsInit {
         return new MaterialBuilder().setName("Gold")
             .setDefaultLocalName("Gold")
             .setElement(Element.Au)
-            .setIconSet(TextureSet.SET_SHINY)
+            .setIconSet(
+                TextureSet.SET_SHINY.withCustomTextures(
+                    "gold",
+                    MaterialIconRegistry.IconType.ORE,
+                    MaterialIconRegistry.IconType.ORE_SMALL,
+                    MaterialIconRegistry.IconType.ORE_RAW))
             .setColor(Dyes.dyeYellow)
             .setARGB(0x00ffff1e)
             .setTool(64, 2, 12.0f)
