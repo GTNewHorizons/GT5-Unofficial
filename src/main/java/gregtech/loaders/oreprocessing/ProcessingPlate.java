@@ -33,10 +33,10 @@ import net.minecraft.item.ItemStack;
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
+import gregtech.api.enums.MaterialIconType;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
-import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.ToolDictNames;
 import gregtech.api.recipe.RecipeCategories;
@@ -558,7 +558,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
             tStack == NI ?
             // Use Materials mRGBa dyed blocs/materialicons/MATERIALSET/block1 icons
                 TextureFactory.builder()
-                    .addIcon(aMaterial.mIconSet.mTextures[TextureSet.INDEX_block1])
+                    .addIcon(aMaterial.mIconSet.mTextures[MaterialIconType.IconType.BLOCK1.ordinal()])
                     .setRGBA(aMaterial.mRGBa)
                     .stdOrient()
                     .build()

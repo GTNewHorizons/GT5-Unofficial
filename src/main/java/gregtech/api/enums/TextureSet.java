@@ -63,12 +63,6 @@ public class TextureSet {
         SET_CELESTIAL_TUNGSTEN = new TextureSet("celestialtungsten", true);
 
     /**
-     * For the Indices of OrePrefixes you need to look into the OrePrefix Enum.
-     */
-    public static final short INDEX_wire = 69, INDEX_foil = 70, INDEX_block1 = 71, INDEX_block2 = 72, INDEX_block3 = 73,
-        INDEX_block4 = 74, INDEX_block5 = 75, INDEX_block6 = 76;
-
-    /**
      * For Tools that don't have a prefix associated with them
      */
     public static final short INDEX_turbine = 128, INDEX_wrench = 129, INDEX_crowbar = 130, INDEX_wireCutter = 131,
@@ -138,11 +132,5 @@ public class TextureSet {
 
     public TextureSet withBlockTextures(String aNewSetName) {
         return new TextureSet(aNewSetName, this, true, false);
-    }
-
-    public enum TextureType {
-        BLOCK,
-        BLOCK_WITH_ALPHA,
-        ITEM,
     }
 }
