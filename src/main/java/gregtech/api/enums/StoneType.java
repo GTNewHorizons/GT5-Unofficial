@@ -204,6 +204,8 @@ public enum StoneType implements IStoneType {
                 .collect(Collectors.groupingBy(s -> s.builder.oreBlockPrefix)));
 
         for (StoneType type : StoneType.VALUES) {
+            if (type.builder.allowedDimensions == null) continue;
+
             for (String allowedDim : type.builder.allowedDimensions) {
                 if (STONE_TYPES_BY_WORLD_NAME.containsKey(allowedDim)) {
                     STONE_TYPES_BY_WORLD_NAME.get(allowedDim)

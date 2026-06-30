@@ -1,22 +1,5 @@
 package gregtech.api.enums;
 
-import bartworks.system.material.WerkstoffLoader;
-import galacticgreg.api.enums.DimensionDef;
-import gregtech.api.interfaces.IOreMaterial;
-import gregtech.api.util.GTOreDictUnificator;
-import gregtech.api.util.GTUtility;
-import gregtech.common.OreMixBuilder;
-import gregtech.common.WorldgenGTOreLayer;
-import gtPlusPlus.core.material.MaterialsElements;
-import gtPlusPlus.core.material.MaterialsOres;
-import gtPlusPlus.core.material.nuclear.MaterialsFluorides;
-import net.minecraft.item.ItemStack;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import static galacticgreg.api.enums.DimensionDef.Anubis;
 import static galacticgreg.api.enums.DimensionDef.Asteroids;
 import static galacticgreg.api.enums.DimensionDef.BarnardC;
@@ -61,6 +44,25 @@ import static galacticgreg.api.enums.DimensionDef.Triton;
 import static galacticgreg.api.enums.DimensionDef.TwilightForest;
 import static galacticgreg.api.enums.DimensionDef.VegaB;
 import static galacticgreg.api.enums.DimensionDef.Venus;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import net.minecraft.item.ItemStack;
+
+import bartworks.system.material.WerkstoffLoader;
+import galacticgreg.api.enums.DimensionDef;
+import gregtech.GTMod;
+import gregtech.api.interfaces.IOreMaterial;
+import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.util.GTUtility;
+import gregtech.common.OreMixBuilder;
+import gregtech.common.WorldgenGTOreLayer;
+import gtPlusPlus.core.material.MaterialsElements;
+import gtPlusPlus.core.material.MaterialsOres;
+import gtPlusPlus.core.material.nuclear.MaterialsFluorides;
 
 public enum OreMixes {
 
@@ -1582,7 +1584,7 @@ public enum OreMixes {
             }
         }
 
-        return variants.toArray(new ItemStack[] {});
+        return variants.toArray(new ItemStack[0]);
     }
 
     public static boolean containsStack(List<ItemStack> stacks, ItemStack candidate) {
@@ -1611,7 +1613,12 @@ public enum OreMixes {
         for (OreMixes mix : mixes) {
             Set<String> dims = mix.oreMixBuilder.dimsEnabled;
             for (String dim : dims) {
-                stoneTypes.addAll(StoneType.STONE_TYPES_BY_WORLD_NAME.get(dim));
+                List<StoneType> typeDim = StoneType.STONE_TYPES_BY_WORLD_NAME.get(dim);
+                if (typeDim == null) {
+                    GTMod.GT_FML_LOGGER.error("{} has no stone type!", dim);
+                    continue;
+                }
+                stoneTypes.addAll(typeDim);
             }
         }
 
