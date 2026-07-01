@@ -38,7 +38,7 @@ public class MTEHatchNaniteDetector extends MTEHatchConfigurableBase {
     private Comparison comparison = Comparison.EQ;
 
     public MTEHatchNaniteDetector(int aID, String aName) {
-        super(aID, aName, VoltageIndex.UEV, null);
+        super(aID, aName, VoltageIndex.UIV, null);
     }
 
     protected MTEHatchNaniteDetector(MTEHatchNaniteDetector prototype) {
