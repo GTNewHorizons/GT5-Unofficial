@@ -1,12 +1,15 @@
 package gtPlusPlus.core.material;
 
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
+import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
 
 import java.util.ArrayList;
 import java.util.Set;
 
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.TierEU;
 import gtPlusPlus.core.block.base.BasicBlock.BlockTypes;
 import gtPlusPlus.core.block.base.BlockBaseModular;
 import gtPlusPlus.core.block.base.BlockBaseOre;
@@ -269,6 +272,25 @@ public class MaterialGenerator {
             new BaseItemRawOre(matInfo);
 
             new RecipeGenOre(matInfo);
+
+            // Fluorite Dehydrator
+            if (matInfo.getLocalizedName()
+                .equals("Fluorite (F)")) {
+                GTValues.RA.stdBuilder()
+                    .itemInputs(matInfo.getDust(37))
+                    .itemOutputs(
+                        Materials.Gypsum.getDust(15),
+                        Materials.Silver.getDust(1),
+                        Materials.Gold.getDust(2),
+                        Materials.Tin.getDust(1),
+                        Materials.Copper.getDust(2))
+                    .outputChances(10000, 1000, 1000, 3000, 2000)
+                    .fluidInputs(Materials.SulfuricAcid.getFluid(8000))
+                    .fluidOutputs(Materials.HydrofluoricAcid.getFluid(16000))
+                    .eut(TierEU.RECIPE_HV / 2)
+                    .duration(10 * MINUTES)
+                    .addTo(chemicalDehydratorRecipes);
+            }
 
         } catch (final Exception t) {
             t.printStackTrace();
