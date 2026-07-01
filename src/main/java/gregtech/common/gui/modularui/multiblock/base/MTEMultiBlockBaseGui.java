@@ -348,7 +348,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             Flow columns = Flow.column()
                 .coverChildrenHeight(0)
                 .crossAxisAlignment(Alignment.CrossAxis.START)
-                .childPadding(1);
+                .childPadding(2);
 
             for (StructureError error : errors.getValue()) {
                 // For now just skip these errors, they will be present in most multiblock and will cause confusion.

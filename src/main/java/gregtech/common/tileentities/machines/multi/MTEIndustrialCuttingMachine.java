@@ -14,6 +14,7 @@ import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTStructureUtility.ofSheetMetal;
 
+import java.nio.DoubleBuffer;
 import java.util.List;
 
 import net.minecraft.client.Minecraft;
@@ -28,6 +29,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
+import org.joml.Math;
+import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -72,13 +75,16 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
     private static final int OFFSET_Y = 2;
     private static final int OFFSET_Z = 0;
     private static final double RENDER_OFFSET_RIGHT = 2.5D;
-    private static final double RENDER_OFFSET_UP = 0.25D;
+    private static final double RENDER_OFFSET_UP = -0.5D;
     private static final double RENDER_OFFSET_BACK = 1.0D;
     private static final double BLADE_WIDTH = 3.0D;
-    private static final double BLADE_HEIGHT = 1.5D;
+    private static final double BLADE_HEIGHT = 3.0D;
     private static final double BLADE_PADDING = 0.25D;
-    private static final int BLADE_FRAMES = 3;
-    private static final long BLADE_FRAME_TICKS = 10L;
+    private static final float BLADE_ROTATION_SPEED = 64.72132F;
+    private static final int BLADE_SPINUP_TICKS = 30;
+    private static final double BLADE_CLIP_BOTTOM = 1.0D;
+    @SideOnly(Side.CLIENT)
+    private static DoubleBuffer CLIP_PLANE_BUFFER;
     private static final ResourceLocation[] BLADE_TEXTURES = new ResourceLocation[] {
         new ResourceLocation(GregTech.resourceDomain, "textures/model/cutter_t1.png"),
         new ResourceLocation(GregTech.resourceDomain, "textures/model/cutter_t2.png"),
@@ -87,6 +93,10 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
     private int casingAmount;
     private boolean stopAllRendering;
     private int renderSawbladeTier = -1;
+    private int activeTicks;
+    private double bladeRotation;
+    private double bladeSpeedOffset;
+    private boolean wasActive = false;
     private ExtendedFacing cachedBladeRenderFacing;
     private final BladeRenderContext bladeRenderContext = new BladeRenderContext();
 
@@ -379,9 +389,43 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
     }
 
     @Override
-    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        super.onPostTick(aBaseMetaTileEntity, aTick);
-        if (!aBaseMetaTileEntity.isServerSide()) return;
+    public void onPostTick(IGregTechTileEntity base, long aTick) {
+        super.onPostTick(base, aTick);
+        if (!base.isServerSide()) {
+            if (!stopAllRendering) {
+                boolean active = base.isActive();
+                activeTicks += active ? 1 : -1;
+                activeTicks = Math.clamp(0, BLADE_SPINUP_TICKS, activeTicks);
+
+                // Attempts to have the blade finish at a 90-degree angle
+                if (active != wasActive) {
+                    wasActive = active;
+                    bladeSpeedOffset = 0;
+                    if (!active && activeTicks > 0) {
+                        double finalRotation = bladeRotation;
+                        for (int i = 1; i <= activeTicks; i++) {
+                            finalRotation += Math.lerp(0, BLADE_ROTATION_SPEED, i / (double) BLADE_SPINUP_TICKS);
+                        }
+                        finalRotation %= 90;
+                        finalRotation = 90 - finalRotation;
+                        bladeSpeedOffset = finalRotation / activeTicks;
+
+                        // The blade will not be able to smoothly finish at a 90-degree angle so give up
+                        // Only a possibility if the blade wasn't already at full speed
+                        if (Math.abs(bladeSpeedOffset) > 5.0) {
+                            bladeSpeedOffset = 0;
+                        }
+                    }
+                }
+
+                if (activeTicks > 0) {
+                    bladeRotation += Math.lerp(0, BLADE_ROTATION_SPEED, activeTicks / (double) BLADE_SPINUP_TICKS)
+                        + bladeSpeedOffset;
+                    bladeRotation %= 360;
+                }
+            }
+            return;
+        }
         if (aTick % 100 != 0) return;
         updateSawbladeRenderTier();
     }
@@ -445,6 +489,11 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
 
     @Override
     public void renderTESR(double x, double y, double z, float timeSinceLastTick) {
+
+        if (CLIP_PLANE_BUFFER == null) {
+            CLIP_PLANE_BUFFER = BufferUtils.createDoubleBuffer(4);
+        }
+
         IGregTechTileEntity base = getBaseMetaTileEntity();
         if (base == null || stopAllRendering
             || !mMachine
@@ -454,7 +503,8 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
         }
 
         BladeRenderContext context = getBladeRenderContext();
-        int frame = base.isActive() ? (int) ((base.getTimer() / BLADE_FRAME_TICKS) % BLADE_FRAMES) : 0;
+
+        float angle = (float) getRenderBladeRotation(timeSinceLastTick);
 
         GL11.glPushMatrix();
         GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
@@ -465,14 +515,43 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240.0F, 240.0F);
 
+        int blurAmount;
+        if (activeTicks == BLADE_SPINUP_TICKS) {
+            blurAmount = 3;
+        } else if (activeTicks > BLADE_SPINUP_TICKS * 0.66) {
+            blurAmount = 2;
+        } else if (activeTicks > BLADE_SPINUP_TICKS * 0.33) {
+            blurAmount = 1;
+        } else {
+            blurAmount = 0;
+        }
         Minecraft.getMinecraft().renderEngine.bindTexture(BLADE_TEXTURES[renderSawbladeTier]);
 
         GL11.glTranslated(x + context.centerX, y + context.centerY, z + context.centerZ);
 
-        renderBladeFrame(frame, context);
+        double clipD = BLADE_HEIGHT / 2.0 - BLADE_CLIP_BOTTOM;
+        CLIP_PLANE_BUFFER.clear();
+        CLIP_PLANE_BUFFER.put(context.verticalX)
+            .put(context.verticalY)
+            .put(context.verticalZ)
+            .put(clipD);
+        CLIP_PLANE_BUFFER.flip();
+        GL11.glClipPlane(GL11.GL_CLIP_PLANE0, CLIP_PLANE_BUFFER);
+        GL11.glEnable(GL11.GL_CLIP_PLANE0);
+
+        GL11.glRotatef(-angle, context.depthX, context.depthY, context.depthZ);
+
+        renderBlade(context, blurAmount);
 
         GL11.glPopAttrib();
         GL11.glPopMatrix();
+    }
+
+    private double getRenderBladeRotation(float timeSinceLastTick) {
+        if (activeTicks == 0) return bladeRotation;
+        double offset = Math.lerp(0, BLADE_ROTATION_SPEED, activeTicks / (double) BLADE_SPINUP_TICKS)
+            + bladeSpeedOffset;
+        return bladeRotation + (offset * timeSinceLastTick);
     }
 
     @Override
@@ -488,21 +567,19 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
             z + context.centerZ + context.halfZ);
     }
 
-    private void renderBladeFrame(int frame, BladeRenderContext context) {
+    private void renderBlade(BladeRenderContext context, int blurAmount) {
         double halfWidth = BLADE_WIDTH / 2.0D;
         double halfHeight = BLADE_HEIGHT / 2.0D;
-        double minU = 0.0D;
-        double maxU = 1.0D;
-        double minV = frame / (double) BLADE_FRAMES;
-        double maxV = (frame + 1) / (double) BLADE_FRAMES;
 
+        double vMin = blurAmount / 4.0;
+        double vMax = (blurAmount + 1) / 4.0;
         Tessellator tessellator = Tessellator.instance;
         tessellator.startDrawingQuads();
         tessellator.setColorRGBA_F(1.0F, 1.0F, 1.0F, 1.0F);
-        addBladeVertex(tessellator, context, -halfWidth, -halfHeight, minU, maxV);
-        addBladeVertex(tessellator, context, -halfWidth, halfHeight, minU, minV);
-        addBladeVertex(tessellator, context, halfWidth, halfHeight, maxU, minV);
-        addBladeVertex(tessellator, context, halfWidth, -halfHeight, maxU, maxV);
+        addBladeVertex(tessellator, context, -halfWidth, -halfHeight, 0.0D, vMax);
+        addBladeVertex(tessellator, context, -halfWidth, halfHeight, 0.0D, vMin);
+        addBladeVertex(tessellator, context, halfWidth, halfHeight, 1.0D, vMin);
+        addBladeVertex(tessellator, context, halfWidth, -halfHeight, 1.0D, vMax);
         tessellator.draw();
     }
 
@@ -551,6 +628,9 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
         private int verticalX;
         private int verticalY;
         private int verticalZ;
+        private int depthX;
+        private int depthY;
+        private int depthZ;
 
         private void update(ExtendedFacing facing) {
             ForgeDirection horizontal = facing.getRelativeRightInWorld();
@@ -567,6 +647,9 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
             verticalX = vertical.offsetX;
             verticalY = vertical.offsetY;
             verticalZ = vertical.offsetZ;
+            depthX = depth.offsetX;
+            depthY = depth.offsetY;
+            depthZ = depth.offsetZ;
             centerX = getRenderCenterCoordinate(centerHorizontal.offsetX, vertical.offsetX, depth.offsetX);
             centerY = getRenderCenterCoordinate(centerHorizontal.offsetY, vertical.offsetY, depth.offsetY);
             centerZ = getRenderCenterCoordinate(centerHorizontal.offsetZ, vertical.offsetZ, depth.offsetZ);

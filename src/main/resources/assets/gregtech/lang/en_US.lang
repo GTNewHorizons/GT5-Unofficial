@@ -1890,6 +1890,8 @@ gt.blockcasings.bec.4.tooltip=§f§lEndless sacrifice for tranquility.
 gt.blockcasings.bec.5.tooltip=§f§lTaste the rainbow!
 gt.blockcasings.bec.6.tooltip=§f§lFollow the path.
 
+GT5U.Centrifuge.momentum=Momentum: §a%s§r%%
+
 # Machine types
 gt.recipe.alloysmelter=Alloy Smelter
 gt.recipe.alloysmelter.description=HighTech combination Smelter
@@ -2047,6 +2049,9 @@ gt.recipe.large_hadron_collider=Large Hadron Collider
 gt.recipe.foundry_modules=Foundry Module Components
 gt.recipe.create-condensate=Condensate Entanglement
 gt.recipe.assemble-condensate=Condensate Assembling
+# TODO: Remove in 2.10
+gt.recipe.macerator.conversion=Macerator Conversion
+gt.macerator.upgraded=Has Maceration Upgrade Chip
 
 # Recipe categories
 gt.recipe.category.arc_furnace_recycling=Arc Furnace Recycling
@@ -2406,6 +2411,13 @@ GT5U.gui.button.feature_disabled=Disabled
 GT5U.gui.button.forbidden=§4Cannot change mode for this machine
 GT5U.gui.button.forbidden_while_running=§4Cannot change mode while running
 GT5U.gui.button.chunk_loading=Chunk Loading
+GT5U.gui.button.finite_mode=Finite Mode
+GT5U.gui.button.finite_mode_toggle=Toggle Finite Mode
+GT5U.gui.button.finite_mode_panel=Open Finite Mode Panel
+GT5U.gui.button.finite_mode.stack_size_parse=Stack Size Parse Amount
+GT5U.gui.button.finite_mode_info=When finite mode is on, stack sizes will be parsed as the amount within the text box above. Items will still not be consumed. Otherwise, stack sizes will be parsed as infinite regardless of it's actual amount in the input bus.
+GT5U.gui.button.chunk_loading_on=§7Chunk Loading: §aON
+GT5U.gui.button.chunk_loading_off=§7Chunk Loading: §4OFF
 GT5U.gui.button.ore_drill_radius_1=Current Radius: §a%s blocks
 GT5U.gui.button.ore_drill_radius_2=§7Left-click to increment, right-click to decrement
 GT5U.gui.button.ore_drill_cobblestone=Replace with cobblestone
@@ -2559,6 +2571,8 @@ GT5U.gui.text.out_of_stuff=§4No following stuffs supplied: §b%s§f x §6%s
 GT5U.gui.text.shutdown_reason.power_loss=§4Shut down due to power loss.
 GT5U.gui.text.no_void_mining=§4Cannot void mine this dimension (%s).
 GT5U.gui.text.shutdown_reason.pollution_fail=§4Failed to output the pollution.
+GT5U.gui.text.shutdown_reason.fluid_output_failed=§4Failed to output all the fluids.
+GT5U.gui.text.shutdown_reason.item_output_failed=§4Failed to output all the items.
 GT5U.gui.text.shutdown_reason.structure_incomplete=§4Shut down due to incomplete structure.
 GT5U.gui.text.shutdown_reason.no_repair=§4Shut down due to machine damage.
 GT5U.gui.text.shutdown_reason.no_machine_part=No correct machine part in controller slot.
@@ -4770,7 +4784,9 @@ gt.item.cover.redstone_transmitter_internal.tooltip=Transfers Redstone signals w
 gt.item.cover.redstone_receiver.name=Redstone Receiver
 gt.item.cover.redstone_receiver.tooltip=Transfers Redstone signals wireless
 gt.item.cover.wireless_controller.name=Wireless Machine Controller Cover
-gt.item.cover.wireless_controller.tooltip=Turns Machines ON/OFF wirelessly\nCan only connect with advanced wireless covers
+gt.item.cover.wireless_controller.tooltip=Turns Machines ON/OFF wirelessly\nDoes NOT include Logic Gates, will only accept a single signal source!\nCan only connect with advanced wireless covers
+gt.item.cover.advanced_wireless_controller.name=Advanced Wireless Machine Controller Cover
+gt.item.cover.advanced_wireless_controller.tooltip=Turns Machines ON/OFF wirelessly\nIncludes Logic Gates\nCan only connect with advanced wireless covers
 
 ### Maintenance Cover
 gt.item.cover.needs_maintenance.name=Needs Maintenance Cover
@@ -8816,6 +8832,7 @@ gt.blockmachines.hatch.bec.name=Bose-Einstein Condensate Hatch
 gt.blockmachines.hatch.nanite-detector.name=Nanite Detector Hatch
 gt.blockmachines.hatch.io-node-controller.name=Teleportation Node Controller Hatch
 gt.blockmachines.hatch.condensate-detector.name=Bose-Einstein Condensate Detector Hatch
+gt.blockmachines.hatch.line-of-sight-connector.name=Line-Of-Sight Connector Hatch
 
 gt.blockmachines.multi.bec.generator.name=Bose-Einstein Condensate Entanglement Apparatus
 gt.blockmachines.multi.bec.storage.name=Bose-Einstein Condensate Containment Field
@@ -8869,7 +8886,7 @@ GT5U.gui.text.bec-speed-divisor=Speed Divisor
 
 # Misc BEC Tooltips
 gt.tooltip.nanite-tier=Nanite Tier: %s
-gt.tooltip.max-nanite=Max Nanite Tier: %s
+gt.tooltip.max-nanite=Max Nanite Tier:
 GT5U.gui.text.pause-immediately.tooltip=The I/O Node will stop processing when it receives a redstone signal
 GT5U.gui.text.pause-next-step.tooltip=The I/O Node will stop upon transitioning into a new input step when it receives a redstone signal
 

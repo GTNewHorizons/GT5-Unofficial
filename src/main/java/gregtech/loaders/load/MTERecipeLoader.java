@@ -85,7 +85,6 @@ public class MTERecipeLoader implements Runnable {
         registerMixer();
         registerOreWasher();
         registerOven();
-        registerPlasmaArcFurnace();
         registerPolarizer();
         registerPrinter();
         registerRecycler();
@@ -1413,49 +1412,6 @@ public class MTERecipeLoader implements Runnable {
 
     }
 
-    private static void registerPlasmaArcFurnace() {
-        GTModHandler.addMachineCraftingRecipe(
-            ItemList.Machine_LV_PlasmaArcFurnace.get(1),
-            new Object[] { "WGW", aTextCableHull, "TPT", 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
-                MTEBasicMachineWithRecipe.X.PLATE, 'C', MTEBasicMachineWithRecipe.X.BETTER_CIRCUIT, 'W',
-                MTEBasicMachineWithRecipe.X.WIRE4, 'T', MTEBasicMachineWithRecipe.X.PUMP, 'G',
-                OrePrefixes.cell.get(Materials.Graphite) },
-            1);
-
-        GTModHandler.addMachineCraftingRecipe(
-            ItemList.Machine_MV_PlasmaArcFurnace.get(1),
-            new Object[] { "WGW", aTextCableHull, "TPT", 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
-                MTEBasicMachineWithRecipe.X.PLATE, 'C', MTEBasicMachineWithRecipe.X.BETTER_CIRCUIT, 'W',
-                MTEBasicMachineWithRecipe.X.WIRE4, 'T', MTEBasicMachineWithRecipe.X.PUMP, 'G',
-                OrePrefixes.cell.get(Materials.Graphite) },
-            2);
-
-        GTModHandler.addMachineCraftingRecipe(
-            ItemList.Machine_HV_PlasmaArcFurnace.get(1),
-            new Object[] { "WGW", aTextCableHull, "TPT", 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
-                MTEBasicMachineWithRecipe.X.PLATE, 'C', MTEBasicMachineWithRecipe.X.BETTER_CIRCUIT, 'W',
-                MTEBasicMachineWithRecipe.X.WIRE4, 'T', MTEBasicMachineWithRecipe.X.PUMP, 'G',
-                OrePrefixes.cell.get(Materials.Graphite) },
-            3);
-
-        GTModHandler.addMachineCraftingRecipe(
-            ItemList.Machine_EV_PlasmaArcFurnace.get(1),
-            new Object[] { "WGW", aTextCableHull, "TPT", 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
-                MTEBasicMachineWithRecipe.X.PLATE, 'C', MTEBasicMachineWithRecipe.X.BETTER_CIRCUIT, 'W',
-                MTEBasicMachineWithRecipe.X.WIRE4, 'T', MTEBasicMachineWithRecipe.X.PUMP, 'G',
-                OrePrefixes.cell.get(Materials.Graphite) },
-            4);
-
-        GTModHandler.addMachineCraftingRecipe(
-            ItemList.Machine_IV_PlasmaArcFurnace.get(1),
-            new Object[] { "WGW", aTextCableHull, "TPT", 'M', MTEBasicMachineWithRecipe.X.HULL, 'P',
-                MTEBasicMachineWithRecipe.X.PLATE, 'C', MTEBasicMachineWithRecipe.X.BETTER_CIRCUIT, 'W',
-                MTEBasicMachineWithRecipe.X.WIRE4, 'T', MTEBasicMachineWithRecipe.X.PUMP, 'G',
-                OrePrefixes.cell.get(Materials.Graphite) },
-            5);
-
-    }
-
     private static void registerPolarizer() {
         GTModHandler.addMachineCraftingRecipe(
             ItemList.Machine_LV_Polarizer.get(1),
@@ -1879,11 +1835,6 @@ public class MTERecipeLoader implements Runnable {
         GTModHandler.addShapelessCraftingRecipe(ItemList.GasTurbine.get(1), new Object[] { ItemList.LargeGasTurbine });
         GTModHandler
             .addShapelessCraftingRecipe(ItemList.PlasmaTurbine.get(1), new Object[] { ItemList.LargePlasmaTurbine });
-
-        // Maceration Stack conversion Recipe
-        GTModHandler.addShapelessCraftingRecipe(
-            ItemList.MacerationStack.get(1),
-            new Object[] { GregtechItemList.Industrial_MacerationStack });
 
         // Mega Chemical Reactor Conversion Recipe
         GTModHandler.addShapelessCraftingRecipe(
