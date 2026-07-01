@@ -5614,7 +5614,6 @@ public class MaterialsInit {
             .setARGB(0x003f3480)
             .setOreMultiplier(4)
             .addCell()
-            .addGas()
             .addMaterial(Materials.Nitrogen, 1)
             .addMaterial(Materials.Hydrogen, 3)
             .addElectrolyzerRecipe()
