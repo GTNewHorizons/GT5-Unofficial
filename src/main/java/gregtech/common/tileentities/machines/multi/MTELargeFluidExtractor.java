@@ -179,9 +179,10 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 8, 0, errors)) return;
 
         checkCasingMin(errors, casingAmount, BASE_CASING_COUNT - MAX_HATCHES_ALLOWED);
+        checkHasEnergyHatch(errors);
+        checkHasMaintenanceHatch(errors);
         checkHasInputBus(errors);
         checkHasOutputHatch(errors);
-        checkHasMaintenanceHatch(errors);
         for (var energyHatch : mEnergyHatches) {
             if (energyHatch.getBaseMetaTileEntity() == null) {
                 continue;
@@ -270,43 +271,40 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-
-        // spotless:off
         tt.addMachineType("Fluid Extractor, LFE")
             .addDynamicParallelInfo(PARALLELS_PER_SOLENOID, TooltipTier.SOLENOID)
             .addStaticSpeedInfo((float) BASE_SPEED_BONUS)
             .addStaticEuEffInfo((float) BASE_EU_MULTIPLIER)
-            .addInfo(String.format(
-                "Every coil tier gives a %s speed bonus and a %s EU/t discount (multiplicative)",
-                TooltipHelper.speedText("+") + TooltipHelper.speedText((float) SPEED_PER_COIL),
-                TooltipHelper.effText((float) (1-HEATING_COIL_EU_MULTIPLIER))
-            ))
-            .addInfo(String.format(
-                "The EU multiplier is %s%.2f * (%.2f ^ Heating Coil Tier)%s, prior to overclocks",
-                EnumChatFormatting.ITALIC,
-                BASE_EU_MULTIPLIER,
-                HEATING_COIL_EU_MULTIPLIER,
-                EnumChatFormatting.GRAY
-            ))
+            .addInfo(
+                String.format(
+                    "Every coil tier gives a %s speed bonus and a %s EU/t discount (multiplicative)",
+                    TooltipHelper.speedText("+") + TooltipHelper.speedText((float) SPEED_PER_COIL),
+                    TooltipHelper.effText((float) (1 - HEATING_COIL_EU_MULTIPLIER))))
+            .addInfo(
+                String.format(
+                    "The EU multiplier is %s%.2f * (%.2f ^ Heating Coil Tier)%s, prior to overclocks",
+                    EnumChatFormatting.ITALIC,
+                    BASE_EU_MULTIPLIER,
+                    HEATING_COIL_EU_MULTIPLIER,
+                    EnumChatFormatting.GRAY))
             .addGlassEnergyLimitInfo()
-            .beginStructureBlock(5, 9, 5, false)
+            .beginStructureBlock(5, 5, 9, false)
             .addController("Front bottom center")
-            .addCasingInfoMin("Robust Tungstensteel Machine Casing", BASE_CASING_COUNT - MAX_HATCHES_ALLOWED, false)
-            .addCasingInfoExactly("Any Tiered Glass", 9 * 4, true)
-            .addCasingInfoExactly("Solenoid Superconducting Coil", 7, true)
-            .addCasingInfoExactly("Heating Coil", 8 * 3, true)
-            .addCasingInfoExactly("Black Steel Frame Box", 3 * 8, false)
-            .addInputBus("Any Robust Tungstensteel Machine Casing", 1)
-            .addOutputBus("Any Robust Tungstensteel Machine Casing", 1)
-            .addOutputHatch("Any Robust Tungstensteel Machine Casing", 1)
-            .addEnergyHatch("Any Robust Tungstensteel Machine Casing", 1)
-            .addMaintenanceHatch("Any Robust Tungstensteel Machine Casing", 1)
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
-            .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
-            .addSubChannelUsage(GTStructureChannels.SOLENOID)
+            .addCasing(BASE_CASING_COUNT - MAX_HATCHES_ALLOWED + "-53", "Robust Tungstensteel Machine Casing", false)
+            .addCasing("36", "Any Tiered Glass", true)
+            .addCasing("24", "Heating Coil", true)
+            .addCasing("24", "Black Steel Frame Box", false)
+            .addCasing("7", "Solenoid Superconductor Coil", true)
+            .addEnergyHatch("1+", "Any casing", 1)
+            .addMaintenanceHatch("1", "Any casing", 1)
+            .addInputBus("1+", "Any casing", 1)
+            .addOutputBus("0+", "Any casing", 1)
+            .addOutputHatch("1+", "Any casing", 1)
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.BOROGLASS)
+            .addSubChannel(GTStructureChannels.HEATING_COIL)
+            .addSubChannel(GTStructureChannels.SOLENOID)
             .toolTipFinisher();
-        // spotless:on
-
         return tt;
     }
 

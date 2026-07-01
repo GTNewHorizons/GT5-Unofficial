@@ -64,7 +64,7 @@ public class MTEIndustrialCompressor extends MTEExtendedPowerMultiBlockBase<MTEI
             //spotless:on
         .addElement(
             'C',
-            buildHatchAdder(MTEIndustrialCompressor.class).atLeast(InputBus, OutputBus, InputHatch)
+            buildHatchAdder(MTEIndustrialCompressor.class).atLeast(InputBus, InputHatch, OutputBus)
                 .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(5))
                 .hint(2)
                 .buildAndChain(
@@ -144,15 +144,16 @@ public class MTEIndustrialCompressor extends MTEExtendedPowerMultiBlockBase<MTEI
             .addBulkMachineInfo(2, 2f, 0.9f)
             .beginStructureBlock(7, 8, 7, true)
             .addController("Front bottom center")
-            .addCasingInfoMin("Electric Compressor Casing", 95, false)
-            .addCasingInfoMin("Compressor Pipe Casing", 45, false)
-            .addCasingInfoExactly("Any Tiered Glass", 6, false)
-            .addInputBus("Pipe Casing on Side", 2)
-            .addInputHatch("Pipe Casing on Side", 2)
-            .addOutputBus("Pipe Casing on Side", 2)
-            .addEnergyHatch("Any Electric Compressor Casing", 1)
-            .addMaintenanceHatch("Any Electric Compressor Casing", 1)
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .addCasing("95-103", "Electric Compressor Casing", false)
+            .addCasing("45-61", "Compression Pipe Casing", false)
+            .addCasing("6", "Any Tiered Glass", false)
+            .addEnergyHatch("1+", "Any electric compressor casing", 1)
+            .addMaintenanceHatch("1", "Any electric compressor casing", 1)
+            .addInputBus("1+", "Any side pipe casing", 2)
+            .addInputHatch("0+", "Any side pipe casing", 2)
+            .addOutputBus("1+", "Any side pipe casing", 2)
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher(Ollie);
         return tt;
     }

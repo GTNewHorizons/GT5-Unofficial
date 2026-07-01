@@ -23,6 +23,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -113,20 +114,21 @@ public class MTESOFuelCellMK2 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK2
             .addInfo(
                 "Consumes up to " + formatNumber(EU_PER_TICK * 20)
                     + "EU worth of fuel with up to 100% efficiency each second")
-            .addInfo("Nitrobenzene and other gas fuels above 1M EU/bucket are more efficient")
-            .addInfo("Steam production requires the SOFC to heat up completely first")
-            .addInfo("Outputs " + EU_PER_TICK + "EU/t and " + STEAM_PER_SEC + "L/s Superheated Steam")
+            .addInfo("Nitrobenzene and other gas fuels above 1,000 EU/L are more efficient")
+            .addInfo("Superheated (SH) Steam production requires the SOFC to heat up completely first")
+            .addInfo("Outputs " + EU_PER_TICK + "EU/t and " + STEAM_PER_SEC + "L/s SH Steam")
             .addInfo("Additionally, requires " + OXYGEN_PER_SEC + "L/s Oxygen gas")
-            .beginStructureBlock(3, 3, 5, false)
+            .beginStructureBlock(5, 3, 3, false)
             .addController("Front center")
-            .addCasingInfoMin("Robust Tungstensteel Machine Casing", 12, false)
-            .addOtherStructurePart("GDC Ceramic Electrolyte Unit", "3x, Center 1x1x3")
-            .addOtherStructurePart("Reinforced Glass", "6x, touching the electrolyte units on the horizontal sides")
-            .addDynamoHatch("Back center", 2)
-            .addMaintenanceHatch("Any Casing", 1)
-            .addInputHatch("Fuel, any Casing", 1)
-            .addInputHatch("Oxygen, any Casing", 1)
-            .addOutputHatch("Superheated Steam, any Casing", 1)
+            .addCasing("12-31", "Robust Tungstensteel Machine Casing", false)
+            .addCasing("6", "Reinforced Glass", false)
+            .addCasing("3", "GDC Ceramic Electrolyte Unit", false)
+            .addDynamoHatch("1", "Back center casing", 2)
+            .addMaintenanceHatch("1", "Any casing", 1)
+            .addInputHatch("1+", "Any casing", 1)
+            .addOutputHatch("1+", "Any casing", 1)
+            .addStructureInfo("")
+            .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.DynamoLimit"))
             .toolTipFinisher();
         return tt;
     }

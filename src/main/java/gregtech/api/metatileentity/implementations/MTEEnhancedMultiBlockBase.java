@@ -643,6 +643,14 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
         checkHatchExact(errors, HatchElement.Energy, 1);
     }
 
+    protected final void checkHasDynamoHatch(List<StructureError> errors) {
+        checkHatchMin(errors, HatchElement.Dynamo, 1);
+    }
+
+    protected final void checkOneDynamoHatch(List<StructureError> errors) {
+        checkHatchExact(errors, HatchElement.Dynamo, 1);
+    }
+
     protected final void checkHasMufflerHatch(List<StructureError> errors) {
         checkHatchMin(errors, HatchElement.Muffler, 1);
     }
@@ -674,6 +682,12 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
     protected void checkHasAnyEnergy(List<StructureError> errors) {
         if (mEnergyHatches.isEmpty() && mExoticEnergyHatches.isEmpty()) {
             errors.add(StructureErrors.hatchCount(ErrorType.TOO_FEW, HatchElement.Energy, 0, 1));
+        }
+    }
+
+    protected void checkHasAnyDynamo(List<StructureError> errors) {
+        if (mDynamoHatches.isEmpty() && mExoticDynamoHatches.isEmpty()) {
+            errors.add(StructureErrors.hatchCount(ErrorType.TOO_FEW, HatchElement.Dynamo, 0, 1));
         }
     }
 

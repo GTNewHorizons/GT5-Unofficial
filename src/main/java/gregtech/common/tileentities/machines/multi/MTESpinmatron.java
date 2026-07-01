@@ -30,6 +30,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -461,25 +462,35 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
             .addInfo(EnumChatFormatting.ITALIC + "" + EnumChatFormatting.DARK_RED + "Maahes guides the way...")
             .beginStructureBlock(17, 17, 17, false)
             .addController("Front center")
-            .addCasingInfoExactly("Any Tiered Glass", 81, false)
-            .addCasingInfoMin("Vibration-Safe Casing", 550, false)
-            .addCasingInfoExactly("Chamber Grate", 144, false)
-            .addCasingInfoExactly("Central Frame Block", 9, true)
-            .addCasingInfoExactly("Central Rotor Block", 56, true)
-            .addCasingInfoExactly("IsaMill Gearbox Casing", 54, false)
-            .addCasingInfoExactly("PBI Pipe Casing", 160, false)
-            .addCasingInfoExactly("Turbine Shaft", 24, false)
-            .addCasingInfoExactly("Rotor Assembly", 8, false)
-            .addCasingInfoExactly("SC Turbine Casing", 264, false)
-            .addInputBus("Any Vibration-Safe Casing", 1)
-            .addOutputBus("Any Vibration-Safe Casing", 1)
-            .addInputHatch("Any Vibration-Safe Casing", 1)
-            .addOutputHatch("Any Vibration-Safe Casing", 1)
-            .addEnergyHatch("Any Vibration-Safe Casing", 1)
-            .addMaintenanceHatch("Any Vibration-Safe Casing", 1)
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .addCasing("550-712", "Vibration Safe Casing", false)
+            .addCasing("264", "SC Turbine Casing", false)
+            .addCasing("160", "PBI Pipe Casing", false)
+            .addCasing("144", "Chamber Grate", false)
+            .addCasing("81", "Any Tiered Glass", false)
+            .addCasing("54", "IsaMill Gearbox", false)
+            .addCasing("24", "Turbine Shaft", false)
+            .addCasing("8", "Rotor Assembly", false)
+            .addEnergyHatch("1+", "Any vibration safe casing", 1)
+            .addMaintenanceHatch("1", "Any vibration safe casing", 1)
+            .addInputAny("1+", "Any vibration safe casing", 1)
+            .addOutputAny("1+", "Any vibration safe casing", 1)
+            .addStructureInfo("")
+            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Tiers.One"))
+            .addCasing("56", "Block of Naquadah Alloy", false)
+            .addCasing("9", "Pikyonium 64B Frame Box", false)
+            .addStructureInfo("")
+            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Tiers.Two"))
+            .addCasing("56", "Cosmic Neutronium Block", false)
+            .addCasing("9", "Neutronium Frame Box", false)
+            .addStructureInfo("")
+            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Tiers.Three"))
+            .addCasing("56", "Infinity Block", false)
+            .addCasing("9", "Infinity Frame Box", false)
+            .addStructureInfo("")
+            .addStructureFooter("Rotors go in the controller, not the rotor assemblies")
+            .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.structuretier"))
+            .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
-
         return tt;
     }
 
@@ -577,7 +588,10 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
                 lastCheckedTierIndex = i;
                 rotateTurbines();
                 checkCasingMin(errors, casingAmount, 550);
+                checkHasAnyEnergy(errors);
                 checkHasMaintenanceHatch(errors);
+                checkHasAnyInput(errors);
+                checkHasAnyOutput(errors);
                 return;
             }
         }

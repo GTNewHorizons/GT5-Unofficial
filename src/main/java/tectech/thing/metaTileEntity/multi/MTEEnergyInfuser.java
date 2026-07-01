@@ -52,11 +52,6 @@ public class MTEEnergyInfuser extends TTMultiblockBase implements ISurvivalConst
     private static final int maxRepairedDamagePerOperation = 1000;
     private static final long usedEuPerDurability = 1000;
     private static final int usedUumPerDurability = 1;
-    // region structure
-    private static final String[] description = new String[] {
-        EnumChatFormatting.AQUA + translateToLocal("tt.keyphrase.Hint_Details") + ":",
-        // 1 - Classic Hatches or High Power Casing
-        translateToLocal("gt.blockmachines.multimachine.em.infuser.hint"), };
 
     private static final IStructureDefinition<MTEEnergyInfuser> STRUCTURE_DEFINITION = IStructureDefinition
         .<MTEEnergyInfuser>builder()
@@ -162,9 +157,9 @@ public class MTEEnergyInfuser extends TTMultiblockBase implements ISurvivalConst
         List<StructureError> errors) {
         if (!checkPiece("main", 1, 2, 0, errors)) return;
         checkHasAnyEnergy(errors);
+        checkHasMaintenanceHatch(errors);
         checkHasInputBus(errors);
         checkHasOutputBus(errors);
-        checkHasMaintenanceHatch(errors);
     }
 
     @Override
@@ -252,36 +247,16 @@ public class MTEEnergyInfuser extends TTMultiblockBase implements ISurvivalConst
                     + EnumChatFormatting.GRAY
                     + ": Max 1k durability/t, consumes 1k EU + 1L UUM per point")
             .addTecTechHatchInfo()
-            .beginStructureBlock(3, 5, 3, false)
-            // Controller: Front 3rd layer center
-            .addController(translateToLocal("tt.keyword.Structure.FrontCenter3rd"))
-            .addOtherStructurePart(
-                // High Power
-                translateToLocal("gt.blockcasingsTT.0.name"),
-                translateToLocal("gt.blockmachines.multimachine.em.infuser.Structure.HighPowerCasing"))
-            // Casing: Layer
-            // 1 and 5
-            .addOtherStructurePart(
-                // Molecular Coil
-                translateToLocal("gt.blockcasingsTT.7.name"),
-                translateToLocal("gt.blockmachines.multimachine.em.infuser.Structure.MolecularCoil"))
-            // Layer 2 and 4
-            .addOtherStructurePart(
-                // Molecular
-                translateToLocal("gt.blockcasingsTT.4.name"),
-                translateToLocal("gt.blockmachines.multimachine.em.infuser.Structure.MolecularCasing"))
-            // Casing: Layer
-            // 3 (hollow)
-            // Energy Hatch: Any High Power Casing
-            .addEnergyHatch(translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"), 1)
-            // Maintenance Hatch: Any High Power Casing
-            .addMaintenanceHatch(translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"), 1)
-            // Input Bus: Any High Power Casing
-            .addInputBus(translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"), 1)
-            // Output Bus: Any High Power Casing
-            .addOutputBus(translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"), 1)
-            // Input Hatch: Any High Power Casing
-            .addInputHatch(translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"), 1)
+            .beginStructureBlock(3, 3, 5, false)
+            .addController("Front center, 3rd layer")
+            .addCasing("16", translateToLocal("gt.blockcasingsTT.7.name"), false)
+            .addCasing("0-14", translateToLocal("gt.blockcasingsTT.0.name"), false)
+            .addCasing("10", translateToLocal("gt.blockcasingsTT.4.name"), false)
+            .addEnergyHatch("1+", "Any high power casing", 1)
+            .addMaintenanceHatch("1", "Any high power casing", 1)
+            .addInputBus("1+", "Any high power casing", 1)
+            .addInputHatch("0+", "Any high power casing", 1)
+            .addOutputBus("1+", "Any high power casing", 1)
             .toolTipFinisher();
         return tt;
     }
@@ -381,11 +356,6 @@ public class MTEEnergyInfuser extends TTMultiblockBase implements ISurvivalConst
     @Override
     public IStructureDefinition<MTEEnergyInfuser> getStructure_EM() {
         return STRUCTURE_DEFINITION;
-    }
-
-    @Override
-    public String[] getStructureDescription(ItemStack stackSize) {
-        return description;
     }
 
     @Override

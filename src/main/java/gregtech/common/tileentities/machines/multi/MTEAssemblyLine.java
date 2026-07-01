@@ -27,6 +27,7 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -91,12 +92,12 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
         .addElement(
             'e',
             ofChain(
-                Energy.newAny(16, 1, ForgeDirection.UP, ForgeDirection.NORTH, ForgeDirection.SOUTH),
+                Energy.newAny(16, 4, ForgeDirection.UP, ForgeDirection.NORTH, ForgeDirection.SOUTH),
                 ofBlock(GregTechAPI.sBlockCasings2, 0)))
         .addElement(
             'd',
             buildHatchAdder(MTEAssemblyLine.class).atLeast(DataHatchElement.DataAccess)
-                .hint(2)
+                .hint(3)
                 .casingIndex(42)
                 .allowOnly(ForgeDirection.NORTH)
                 .buildAndChain(GregTechAPI.sBlockCasings3, 10))
@@ -104,7 +105,7 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
             'b',
             buildHatchAdder(MTEAssemblyLine.class).atLeast(InputHatch, InputHatch, InputHatch, InputHatch, Maintenance)
                 .casingIndex(16)
-                .hint(3)
+                .hint(1)
                 .allowOnly(ForgeDirection.DOWN)
                 .buildAndChain(
                     ofBlock(GregTechAPI.sBlockCasings2, 0),
@@ -113,10 +114,10 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
             'I',
             ofChain(
                 // all blocks nearby use solid steel casing, so let's use the texture of that
-                InputBus.newAny(16, 4, ForgeDirection.DOWN),
+                InputBus.newAny(16, 2, ForgeDirection.DOWN),
                 ofHatchAdder(MTEAssemblyLine::addOutputToMachineList, 16, 3)))
-        .addElement('i', InputBus.newAny(16, 4, ForgeDirection.DOWN))
-        .addElement('o', OutputBus.newAny(16, 3, ForgeDirection.DOWN))
+        .addElement('i', InputBus.newAny(16, 2, ForgeDirection.DOWN))
+        .addElement('o', OutputBus.newAny(16, 1, ForgeDirection.DOWN))
         .build();
 
     public MTEAssemblyLine(int aID, String aName, String aNameRegional) {
@@ -140,25 +141,47 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
             .addInfo("Items & Fluids are inserted in NEI order, one per slice")
             .addInfo("Does not run Assembler recipes")
             .addMaxTierSkips(1)
-            .beginVariableStructureBlock(5, 16, 4, 4, 3, 3, false) // ?
-            .addStructureInfo("From Bottom to Top, Left to Right")
-            .addStructureInfo("Layer 1 - Solid Steel Machine Casing, Input Bus, Solid Steel Machine Casing")
-            .addStructureInfo("Layer 2 - Glass, Assembly Line Casing, Glass")
-            .addStructureInfo("Layer 3 - Grate Machine Casing, Assembler Machine Casing, Grate Machine Casing")
-            .addStructureInfo("Layer 4 - Empty, Solid Steel Machine Casing, Empty")
-            .addStructureInfo("Up to 16 repeating slices, each one allows for 1 more item in recipes")
-            .addController("Either Grate Machine Casing on the first slice")
-            .addEnergyHatch("Any layer 4 casing", 1)
-            .addMaintenanceHatch("Any layer 1 casing", 3)
-            .addInputBus("As specified on layer 1", 4)
-            .addInputHatch("Any layer 1 casing", 3)
-            .addOutputBus("Replaces Input Bus or Solid Steel Machine Casing on layer 1 of last slice", 3)
-            .addOtherStructurePart(
+            .beginVariableStructureBlock(3, 3, 5, 16, 4, 4, false)
+            .addController("First slice, 3rd layer")
+            .addMiscHatch(
+                "1",
                 StatCollector.translateToLocal("GT5U.tooltip.structure.data_access_hatch"),
-                "Any Grate Machine Casing NOT on the first slice",
-                2)
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
-            .addSubChannelUsage(GTStructureChannels.STRUCTURE_LENGTH)
+                "Any grate machine casing NOT on first slice",
+                3)
+            .addEnergyHatch("1+", "Any layer 4 casing", 4)
+            .addMaintenanceHatch("1", "Any layer 1 side casing", 1)
+            .addInputBus("5-16", "Bottom center of each slice", 2)
+            .addInputHatch("1-4", "Any layer 1 side casing", 1)
+            .addOutputBus("1", "Any layer 1 casing on last slice", 1)
+            .addStructureInfo("")
+            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Base"))
+            .addCasing("10", "Any Tiered Glass", false)
+            .addCasing("8", "Grate Machine Casing", false)
+            .addCasing("4-8", "Solid Steel Machine Casing", false)
+            .addCasing("5", "Assembly Line Casing", false)
+            .addCasing("5", "Assembler Machine Casing", false)
+            .addStructureInfo("")
+            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Slice"))
+            .addStructureInfo(
+                EnumChatFormatting.WHITE + "Layer 4: "
+                    + EnumChatFormatting.GRAY
+                    + "Empty, Solid Steel Machine Casing, Empty")
+            .addStructureInfo(
+                EnumChatFormatting.WHITE + "Layer 3: "
+                    + EnumChatFormatting.GRAY
+                    + "Grate Machine Casing, Assembler Machine Casing, Grate Machine Casing")
+            .addStructureInfo(
+                EnumChatFormatting.WHITE + "Layer 2: "
+                    + EnumChatFormatting.GRAY
+                    + "Any Tiered Glass, Assembly Line Casing, Any Tiered Glass")
+            .addStructureInfo(
+                EnumChatFormatting.WHITE + "Layer 1: "
+                    + EnumChatFormatting.GRAY
+                    + "Solid Steel Machine Casing, Input Bus, Solid Steel Machine Casing")
+            .addStructureInfo("")
+            .addStructureFooter("Up to 16 total slices, each one allows for 1 more item in recipes")
+            .addSubChannel(GTStructureChannels.STRUCTURE_LENGTH)
+            .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         return tt;
     }
@@ -428,11 +451,11 @@ public class MTEAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTEAssemblyL
             if (!checkPiece(STRUCTURE_PIECE_LATER, leftToRight ? -i : i, 1, 0, errors)) return i;
             if (!mOutputBusses.isEmpty()) {
                 // Output layer found, check machine conditions
-                checkHasEnergyHatch(errors);
-                checkHasMaintenanceHatch(errors);
                 if (mDataAccessHatches.size() > 1) {
                     errors.add(StructureErrors.of("GT5U.gui.text.structure_error.al_too_many_data_access_hatch"));
                 }
+                checkHasEnergyHatch(errors);
+                checkHasMaintenanceHatch(errors);
                 return i;
             }
         }

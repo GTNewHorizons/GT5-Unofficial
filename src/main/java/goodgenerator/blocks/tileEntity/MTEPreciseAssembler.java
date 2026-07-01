@@ -46,7 +46,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import goodgenerator.api.recipe.GoodGeneratorRecipeMaps;
 import goodgenerator.loader.Loaders;
-import goodgenerator.util.DescTextLocalization;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
@@ -275,6 +274,7 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
         }
         getBaseMetaTileEntity().sendBlockEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, getUpdateData());
         checkCasingMin(errors, casingAmount, 42);
+        checkHasAnyEnergy(errors);
         checkOneMaintenanceHatch(errors);
         checkHasMufflerHatch(errors);
         checkHasInputBus(errors);
@@ -316,21 +316,22 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
             .addTecTechHatchInfo()
             .addNoTierSkips()
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(9, 5, 5, true)
+            .beginStructureBlock(5, 9, 5, true)
             .addController("Front bottom center")
-            .addCasingInfoExactly("Machine Casing", 21, true)
-            .addCasingInfoExactly("Any Tiered Glass (EV+)", 42, false)
-            .addCasingInfoRange("Precise Electronic Unit Casing", 42, 86, true)
-            .addInputHatch("Any Casing")
-            .addInputBus("Any Casing")
-            .addOutputHatch("Any Casing")
-            .addOutputBus("Any Casing")
-            .addEnergyHatch("Any Casing")
-            .addMufflerHatch("Any Casing")
-            .addMaintenanceHatch("Any Casing")
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
-            .addSubChannelUsage(GTStructureChannels.PRASS_UNIT_CASING)
-            .addSubChannelUsage(GTStructureChannels.TIER_MACHINE_CASING)
+            .addCasing("42-81", "Precise Electronic Unit Casing", true)
+            .addCasing("42", "EV+ Tiered Glass", false)
+            .addCasing("21", "Machine Casing", true)
+            .addCasing("12", "Tungstensteel Frame Box", false)
+            .addEnergyHatch("1+", "Any unit casing", 1)
+            .addMaintenanceHatch("1", "Any unit casing", 1)
+            .addMufflerHatch("1", "Any unit casing", 1)
+            .addInputBus("1+", "Any unit casing", 1)
+            .addInputHatch("0+", "Any unit casing", 1)
+            .addOutputBus("1+", "Any unit casing", 1)
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.PRASS_UNIT_CASING)
+            .addSubChannel(GTStructureChannels.BOROGLASS)
+            .addSubChannel(GTStructureChannels.TIER_MACHINE_CASING)
             .toolTipFinisher();
         return tt;
     }
@@ -338,11 +339,6 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
     @Override
     public int getPollutionPerSecond(ItemStack aStack) {
         return 780;
-    }
-
-    @Override
-    public String[] getStructureDescription(ItemStack stackSize) {
-        return DescTextLocalization.addText("PreciseAssembler.hint", 7);
     }
 
     @Override

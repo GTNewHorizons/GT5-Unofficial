@@ -126,17 +126,19 @@ public class MTEIndustrialAlloySmelter extends GTPPMultiBlockBase<MTEIndustrialA
             .addDynamicSpeedBonusInfo(0.05f, TooltipTier.COIL)
             .addInfo("Each 900K of heat upgrades an overclock to a perfect overclock")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(3, 5, 3, true)
+            .beginStructureBlock(3, 3, 5, true)
             .addController("Front bottom center")
-            .addCasingInfoMin("Inconel Reinforced Casing", 8, false)
-            .addOtherStructurePart("Integral Encasement V", "Middle Layer")
-            .addOtherStructurePart("Heating Coil", "Above and below Integral Encasements")
-            .addInputBus("Any Inconel Reinforced Casing", 1)
-            .addOutputBus("Any Inconel Reinforced Casing", 1)
-            .addEnergyHatch("Any Inconel Reinforced Casing", 1)
-            .addMaintenanceHatch("Any Inconel Reinforced Casing", 1)
-            .addMufflerHatch("Any Inconel Reinforced Casing", 1)
-            .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
+            .addCasing("16", "Heating Coil", true)
+            .addCasing("8-12", "Inconel Reinforced Casing", false)
+            .addCasing("8", "Integral Encasement V", false)
+            .addEnergyHatch("1+", "Any casing", 1)
+            .addMaintenanceHatch("1", "Any casing", 1)
+            .addMufflerHatch("1", "Any casing", 1)
+            .addInputBus("1+", "Any casing", 1)
+            .addOutputBus("1+", "Any casing", 1)
+            .addAir("Interior of the structure")
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
         return tt;
     }
@@ -190,8 +192,9 @@ public class MTEIndustrialAlloySmelter extends GTPPMultiBlockBase<MTEIndustrialA
         }
         checkCasingMin(errors, mCasing, 8);
         mLevel = getCoilLevel().getTier() + 1;
-        checkHatch(errors);
         checkHasEnergyHatch(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasMufflerHatch(errors);
         checkHasInputBus(errors);
         checkHasOutputBus(errors);
     }
