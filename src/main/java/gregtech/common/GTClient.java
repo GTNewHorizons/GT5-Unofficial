@@ -77,6 +77,8 @@ import gregtech.api.interfaces.IUpdatePlayerMovement;
 import gregtech.api.items.CircuitComponentFakeItem;
 import gregtech.api.items.MetaGeneratedItem;
 import gregtech.api.items.MetaGeneratedTool;
+import gregtech.api.items.armor.renderer.ArmorComponentRegistry;
+import gregtech.api.items.armor.renderer.CommandReloadArmor;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.net.GTPacketClientPreference;
@@ -185,6 +187,7 @@ public class GTClient extends GTProxy {
         ClientCommandHandler.instance.registerCommand(new GTPowerfailCommandClient());
         ClientCommandHandler.instance.registerCommand(new PowerGogglesCommand());
         ClientCommandHandler.instance.registerCommand(new GTCapeCommand());
+        ClientCommandHandler.instance.registerCommand(new CommandReloadArmor());
 
         if (Mods.Navigator.isModLoaded()) {
             registerMapLayers();
@@ -200,6 +203,9 @@ public class GTClient extends GTProxy {
     public void onInitialization(FMLInitializationEvent event) {
         // spotless:off
         super.onInitialization(event);
+
+        ArmorComponentRegistry.loadAllAssets();
+
         RenderingRegistry.registerBlockHandler(new GTRendererBlock());
         RenderingRegistry.registerBlockHandler(new GTRendererCasing());
 
