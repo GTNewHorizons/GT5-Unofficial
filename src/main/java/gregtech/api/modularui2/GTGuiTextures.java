@@ -1023,6 +1023,13 @@ public final class GTGuiTextures {
     public static final UITexture OVERLAY_TOOLBOX_BATTERY = UITexture.builder()
         .location(GregTech.ID, "gui/overlay_slot/toolbox_slot_battery")
         .build();
+
+    public static final UITexture OVERLAY_SLOT_TURBINE = UITexture.builder()
+        .location(GTPlusPlus.ID, "gui/overlay_slot/turbine")
+        .fullImage()
+        .canApplyTheme()
+        .build();
+
     // endregion slot overlay
 
     // region progressbar
