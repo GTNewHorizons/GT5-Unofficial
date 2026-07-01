@@ -27,20 +27,24 @@ public class RenderDrone extends Render {
             EntityDrone drone = (EntityDrone) entity;
             Minecraft mc = Minecraft.getMinecraft();
             if (mc.renderViewEntity instanceof EntityDrone && entity != mc.renderViewEntity) {
+                if (!drone.isAutoMode()) {
+                    return;
+                }
                 double dx = entity.posX - mc.renderViewEntity.posX;
                 double dy = entity.posY - mc.renderViewEntity.posY;
                 double dz = entity.posZ - mc.renderViewEntity.posZ;
                 if (dx * dx + dy * dy + dz * dz < 0.01) {
-                    return; // Do not render our own drone model
+                    return;
                 }
             }
+
             GL11.glPushMatrix();
             GL11.glTranslated(x, y, z);
             GL11.glRotated(180.0D - yaw, 0.0D, 1.0D, 0.0D);
-
-            // Interpolate pitch for smooth rendering rotation
-            float pitch = drone.prevRotationPitch + (drone.rotationPitch - drone.prevRotationPitch) * partialTicks;
-            GL11.glRotated(pitch, 1.0D, 0.0D, 0.0D);
+            if (drone.isAutoMode()) {
+                float pitch = drone.prevRotationPitch + (drone.rotationPitch - drone.prevRotationPitch) * partialTicks;
+                GL11.glRotated(pitch, 1.0D, 0.0D, 0.0D);
+            }
 
             GL11.glScalef(0.3F, 0.3F, 0.3F);
             int level = drone.getDroneLevel();
