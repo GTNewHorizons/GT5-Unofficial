@@ -134,10 +134,6 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>> {
             proxy.setFlags(GridFlags.REQUIRE_CHANNEL);
             proxy.setValidSides(EnumSet.noneOf(ForgeDirection.class));
             updateValidGridProxySides();
-            var bmte = env.getBaseMetaTileEntity();
-            if (bmte != null && bmte.getWorld() != null) proxy.setOwner(
-                bmte.getWorld()
-                    .getPlayerEntityByName(bmte.getOwnerName()));
         }
         return proxy;
     }

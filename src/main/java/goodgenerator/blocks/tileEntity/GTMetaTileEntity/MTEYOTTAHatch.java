@@ -180,9 +180,6 @@ public class MTEYOTTAHatch extends MTEHatch
             gridProxy = new AENetworkProxy(this, "proxy", Loaders.YFH, true);
 
             gridProxy.setFlags(GridFlags.REQUIRE_CHANNEL);
-            if (getBaseMetaTileEntity().getWorld() != null) gridProxy.setOwner(
-                getBaseMetaTileEntity().getWorld()
-                    .getPlayerEntityByName(getBaseMetaTileEntity().getOwnerName()));
         }
         return this.gridProxy;
     }
