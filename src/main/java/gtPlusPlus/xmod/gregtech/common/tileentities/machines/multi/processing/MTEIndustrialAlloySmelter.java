@@ -7,6 +7,7 @@ import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.Muffler;
+import static gregtech.api.enums.HatchElement.MultiAmpEnergy;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.util.GTStructureUtility.activeCoils;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
@@ -125,6 +126,8 @@ public class MTEIndustrialAlloySmelter extends GTPPMultiBlockBase<MTEIndustrialA
             .addInfo("Processes " + TooltipHelper.parallelText("Voltage Tier * Coil Tier") + " items")
             .addDynamicSpeedBonusInfo(0.05f, TooltipTier.COIL)
             .addInfo("Each 900K of heat upgrades an overclock to a perfect overclock")
+            .addInfo("Hypogen Coils and higher allow for single multi-amp energy hatch")
+            .addMultiAmpHatchInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(3, 5, 3, true)
             .addController("Front bottom center")
@@ -153,7 +156,7 @@ public class MTEIndustrialAlloySmelter extends GTPPMultiBlockBase<MTEIndustrialA
                 .addElement(
                     'C',
                     buildHatchAdder(MTEIndustrialAlloySmelter.class)
-                        .atLeast(InputBus, OutputBus, Maintenance, Energy, Muffler)
+                        .atLeast(InputBus, OutputBus, Maintenance, Energy.or(MultiAmpEnergy), Muffler)
                         .casingIndex(CASING_TEXTURE_ID)
                         .hint(1)
                         .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings3Misc, 1))))
@@ -191,7 +194,15 @@ public class MTEIndustrialAlloySmelter extends GTPPMultiBlockBase<MTEIndustrialA
         checkCasingMin(errors, mCasing, 8);
         mLevel = getCoilLevel().getTier() + 1;
         checkHatch(errors);
-        checkHasEnergyHatch(errors);
+        if (!mExoticEnergyHatches.isEmpty()) {
+            if (!mEnergyHatches.isEmpty()) errors.add(StructureErrorRegistry.ONE_ENERGY_HATCH_ON_MULTI_OR_LASER);
+            if (mExoticEnergyHatches.size() != 1) errors.add(StructureErrorRegistry.ONE_ENERGY_HATCH_ON_MULTI_OR_LASER);
+            if (mLevel < HeatingCoilLevel.UXV.getTier() + 1) {
+                errors.add(StructureErrorRegistry.COIL_LEVEL_NOT_ENOUGH);
+            }
+        } else {
+            checkHasEnergyHatch(errors);
+        }
         checkHasInputBus(errors);
         checkHasOutputBus(errors);
     }
