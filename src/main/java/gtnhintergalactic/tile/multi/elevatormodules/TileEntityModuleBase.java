@@ -109,7 +109,7 @@ public abstract class TileEntityModuleBase extends TTMultiblockBase implements I
         this.tTier = tTier;
         this.tModuleTier = tModuleTier;
         this.tMinMotorTier = tMinMotorTier;
-        euBufferSize = EU_BUFFER_BASE_SIZE * (1L << (tTier - 7));
+        euBufferSize = EU_BUFFER_BASE_SIZE * (2L << (tTier - 7));
         useLongPower = true;
     }
 
@@ -129,7 +129,7 @@ public abstract class TileEntityModuleBase extends TTMultiblockBase implements I
         this.tTier = tTier;
         this.tModuleTier = tModuleTier;
         this.tMinMotorTier = tMinMotorTier;
-        euBufferSize = EU_BUFFER_BASE_SIZE * (1L << (tTier - 7)) * bufferSizeMultiplier;
+        euBufferSize = EU_BUFFER_BASE_SIZE * (2L << (tTier - 7)) * bufferSizeMultiplier;
         useLongPower = true;
     }
 
@@ -145,7 +145,7 @@ public abstract class TileEntityModuleBase extends TTMultiblockBase implements I
         this.tTier = tTier;
         this.tModuleTier = tModuleTier;
         this.tMinMotorTier = tMinMotorTier;
-        euBufferSize = EU_BUFFER_BASE_SIZE * (1L << (tTier - 7));
+        euBufferSize = EU_BUFFER_BASE_SIZE * (2L << (tTier - 7));
         useLongPower = true;
     }
 
@@ -163,7 +163,7 @@ public abstract class TileEntityModuleBase extends TTMultiblockBase implements I
         this.tTier = tTier;
         this.tModuleTier = tModuleTier;
         this.tMinMotorTier = tMinMotorTier;
-        euBufferSize = EU_BUFFER_BASE_SIZE * (1L << (tTier - 7)) * bufferSizeMultiplier;
+        euBufferSize = EU_BUFFER_BASE_SIZE * (2L << (tTier - 7)) * bufferSizeMultiplier;
         useLongPower = true;
     }
 
