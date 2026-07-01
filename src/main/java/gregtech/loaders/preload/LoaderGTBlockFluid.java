@@ -1937,7 +1937,9 @@ public class LoaderGTBlockFluid implements Runnable {
             .buildAndRegister()
             .configureMaterials(Materials.CarbonDioxide)
             .addLocalizedName(Materials.CarbonDioxide)
-            .registerBContainers(GTOreDictUnificator.get(OrePrefixes.cell, Materials.CarbonDioxide, 1L), ItemList.Cell_Empty.get(1L));
+            .registerBContainers(
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials.CarbonDioxide, 1L),
+                ItemList.Cell_Empty.get(1L));
 
         ResourceLocation stillTexture = new ResourceLocation(GregTech.ID, "fluids/fluid.ammonia.still");
         ResourceLocation flowTexture = new ResourceLocation(GregTech.ID, "fluids/fluid.ammonia.flow");
@@ -1949,8 +1951,9 @@ public class LoaderGTBlockFluid implements Runnable {
             .buildAndRegister()
             .configureMaterials(Materials.Ammonia)
             .addLocalizedName(Materials.Ammonia)
-            .registerBContainers(GTOreDictUnificator.get(OrePrefixes.cell, Materials.Ammonia, 1L), ItemList.Cell_Empty.get(1L));
-
+            .registerBContainers(
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials.Ammonia, 1L),
+                ItemList.Cell_Empty.get(1L));
 
         for (Materials tMaterial : Materials.values()) {
             if ((tMaterial.mStandardMoltenFluid == null) && (tMaterial.contains(SubTag.SMELTING_TO_FLUID))
