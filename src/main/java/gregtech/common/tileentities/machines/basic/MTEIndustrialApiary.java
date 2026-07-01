@@ -1,6 +1,7 @@
 package gregtech.common.tileentities.machines.basic;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+import static forestry.api.apiculture.BeeManager.beeRoot;
 import static gregtech.api.enums.GTAuthors.AuthorKuba;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_BOTTOM_INDUSTRIAL_APIARY;
@@ -48,6 +49,12 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.jetbrains.annotations.Nullable;
+
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.google.common.collect.ImmutableSet;
 import com.gtnewhorizons.modularui.api.drawable.FallbackableUITexture;
 import com.gtnewhorizons.modularui.api.drawable.IDrawable;
@@ -68,7 +75,6 @@ import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.mojang.authlib.GameProfile;
 
-import forestry.api.apiculture.BeeManager;
 import forestry.api.apiculture.EnumBeeChromosome;
 import forestry.api.apiculture.EnumBeeType;
 import forestry.api.apiculture.FlowerManager;
@@ -82,7 +88,6 @@ import forestry.api.apiculture.IBeeHousing;
 import forestry.api.apiculture.IBeeHousingInventory;
 import forestry.api.apiculture.IBeeListener;
 import forestry.api.apiculture.IBeeModifier;
-import forestry.api.apiculture.IBeeRoot;
 import forestry.api.apiculture.IBeekeepingLogic;
 import forestry.api.apiculture.IBeekeepingMode;
 import forestry.api.arboriculture.EnumGermlingType;
@@ -113,6 +118,7 @@ import gregtech.api.util.GTApiaryModifier;
 import gregtech.api.util.GTApiaryUpgrade;
 import gregtech.api.util.GTItemTransfer;
 import gregtech.api.util.GTUtility;
+import gregtech.common.gui.modularui.singleblock.MTEIndustrialApiaryGui;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -126,11 +132,9 @@ public class MTEIndustrialApiary extends MTEBasicMachine
     private static final int upgradeSlot = drone + 1;
     private static final int upgradeSlotCount = 4;
 
-    final IBeeRoot beeRoot = (IBeeRoot) AlleleManager.alleleRegistry.getSpeciesRoot("rootBees");
-
-    public int mSpeed = 0;
-    public boolean mLockedSpeed = true;
-    public boolean mAutoQueen = true;
+    private int mSpeed = 0;
+    private boolean mLockedSpeed = true;
+    private boolean mAutoQueen = true;
 
     private ItemStack usedQueen = null;
     private IBee usedQueenBee = null;
@@ -206,6 +210,30 @@ public class MTEIndustrialApiary extends MTEBasicMachine
         super(aName, aTier, 4, aDescription, aTextures, 6, 9);
     }
 
+    public boolean isLockedSpeed() {
+        return mLockedSpeed;
+    }
+
+    public void setLockedSpeed(boolean lockedSpeed) {
+        this.mLockedSpeed = lockedSpeed;
+    }
+
+    public boolean isAutoQueen() {
+        return mAutoQueen;
+    }
+
+    public void setAutoQueen(boolean autoQueen) {
+        this.mAutoQueen = autoQueen;
+    }
+
+    public int getSpeed() {
+        return mSpeed;
+    }
+
+    public void setSpeed(int speed) {
+        this.mSpeed = speed;
+    }
+
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTEIndustrialApiary(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
@@ -213,7 +241,9 @@ public class MTEIndustrialApiary extends MTEBasicMachine
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+        // TODO remove mui1 code
         if (aBaseMetaTileEntity.isClientSide()) return true;
+        if (useMui2()) return super.onRightclick(aBaseMetaTileEntity, aPlayer);
         if (!GTMod.proxy.mForceFreeFace) {
             openGUI(aBaseMetaTileEntity, aPlayer);
             return true;
@@ -1258,12 +1288,11 @@ public class MTEIndustrialApiary extends MTEBasicMachine
                         // The localization in Forestry is written like this.
                         final String Temp = AlleleManager.climateHelper.toDisplay(getTemperature());
                         final String Hum = AlleleManager.climateHelper.toDisplay(getHumidity());
-                        if (getUsedQueen() != null
-                            && BeeManager.beeRoot.isMember(getUsedQueen(), EnumBeeType.QUEEN.ordinal())) {
-                            final IBee bee = BeeManager.beeRoot.getMember(getUsedQueen());
+                        if (getUsedQueen() != null && beeRoot.isMember(getUsedQueen(), EnumBeeType.QUEEN.ordinal())) {
+                            final IBee bee = beeRoot.getMember(getUsedQueen());
                             if (bee.isAnalyzed()) {
                                 final IBeeGenome genome = bee.getGenome();
-                                final IBeeModifier mod = BeeManager.beeRoot.getBeekeepingMode(getWorld())
+                                final IBeeModifier mod = beeRoot.getBeekeepingMode(getWorld())
                                     .getBeeModifier();
                                 final float tmod = getTerritoryModifier(null, 1f) * mod.getTerritoryModifier(null, 1f);
                                 final int[] t = Arrays.stream(genome.getTerritory())
@@ -1405,11 +1434,11 @@ public class MTEIndustrialApiary extends MTEBasicMachine
         return getErrorDescriptions();
     }
 
-    private int getAcceleration() {
+    public int getAcceleration() {
         return 1 << mSpeed;
     }
 
-    private int getAdditionalEnergyUsage() {
+    public int getAdditionalEnergyUsage() {
         final int accelerated = getAcceleration();
         int energyusage = 0;
         if (accelerated == 2) energyusage = 32;
@@ -1564,5 +1593,24 @@ public class MTEIndustrialApiary extends MTEBasicMachine
             errorNbt.setInteger("size", errorCounter);
             tag.setTag("errors", errorNbt);
         }
+    }
+
+    @Override
+    public int getStackSizeLimit(int slot, @Nullable ItemStack stack) {
+        if (drone < slot && slot < getOutputSlot() && GTApiaryUpgrade.isUpgrade(stack)) return Math.min(
+            GTApiaryUpgrade.getUpgrade(stack)
+                .getMaxNumber(),
+            super.getStackSizeLimit(slot, stack));
+        return super.getStackSizeLimit(slot, stack);
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return true;
+    }
+
+    @Override
+    public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTEIndustrialApiaryGui(this, getUIProperties()).build(guiData, syncManager, uiSettings);
     }
 }

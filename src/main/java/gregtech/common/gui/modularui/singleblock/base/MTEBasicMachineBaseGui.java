@@ -143,7 +143,7 @@ public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> extends MTETiered
             .childIf(properties.maxFluidInputs > 0, () -> createFluidInputSlot().marginLeft(SLOT_SIZE / 2));
     }
 
-    private ButtonWidget<?> createAutoOutputButton(PanelSyncManager syncManager, String syncKey, IDrawable overlay,
+    protected ButtonWidget<?> createAutoOutputButton(PanelSyncManager syncManager, String syncKey, IDrawable overlay,
         String tooltipKey) {
         BooleanSyncValue syncHandler = syncManager.findSyncHandler(syncKey, BooleanSyncValue.class);
 
@@ -218,16 +218,15 @@ public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> extends MTETiered
     }
 
     private IWidget createSideSelectionButton(ModularPanel panel, ForgeDirection direction, IDrawable texture) {
-        InteractionSyncHandler sideSelectionHandler = new InteractionSyncHandler().setOnMousePressed(mouseButton -> {
+        InteractionSyncHandler sideSelectionHandler = new InteractionSyncHandler().setOnMousePressed(_ -> {
             // This is copied 1:1 from MetaTileEntity code because i didn't want to hook into onWrenchRightClick
-            final IGregTechTileEntity meta = this.machine.getBaseMetaTileEntity();
-            if (!meta.isValidFacing(direction)) {
+            if (!baseMetaTileEntity.isValidFacing(direction)) {
                 return;
             }
-            meta.setFrontFacing(direction);
+            baseMetaTileEntity.setFrontFacing(direction);
 
             for (final ForgeDirection s : ForgeDirection.VALID_DIRECTIONS) {
-                final IGregTechTileEntity iGregTechTileEntity = meta.getIGregTechTileEntityAtSide(s);
+                final IGregTechTileEntity iGregTechTileEntity = baseMetaTileEntity.getIGregTechTileEntityAtSide(s);
                 if (iGregTechTileEntity != null) {
                     if (iGregTechTileEntity.getMetaTileEntity() instanceof MTEPipeLaser pipe) pipe.updateNetwork(true);
                     if (iGregTechTileEntity.getMetaTileEntity() instanceof MTEPipeData pipe) pipe.updateNetwork(true);
