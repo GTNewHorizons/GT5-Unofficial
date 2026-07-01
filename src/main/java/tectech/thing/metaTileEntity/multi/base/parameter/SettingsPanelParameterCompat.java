@@ -32,26 +32,62 @@ public final class SettingsPanelParameterCompat {
     }
 
     @SuppressWarnings("unchecked")
-    private static SettingsPanelBuilder addSettingsForParameters(SettingsPanelBuilder builder, List<Parameter<?, ?>> parameters, Function<Parameter<?,?>, WidgetConfigurator<?>> configurator, String prefix){
-        for (Parameter<?, ?> parameter : parameters){
-            if(!parameter.shouldShowInGui()) continue;
+    private static SettingsPanelBuilder addSettingsForParameters(SettingsPanelBuilder builder,
+        List<Parameter<?, ?>> parameters, Function<Parameter<?, ?>, WidgetConfigurator<?>> configurator,
+        String prefix) {
+        for (Parameter<?, ?> parameter : parameters) {
+            if (!parameter.shouldShowInGui()) continue;
 
             IKey label = IKey.lang(parameter.getLangKey(), parameter.getLangArgs());
             WidgetConfigurator<?> configure = configurator.apply(parameter);
-            switch (parameter){
-                case IntegerParameter integerParameter -> builder.addIntEditor(label, integerParameter.getSyncHandler(), integerParameter::validate, (WidgetConfigurator<TextFieldWidget>) configure);
-                case LongParameter longParameter -> builder.addLongEditor(label, longParameter.getSyncHandler(), longParameter::validate, (WidgetConfigurator<TextFieldWidget>) configure);
-                case DoubleParameter doubleParameter -> builder.addDoubleEditor(label, doubleParameter.getSyncHandler(), doubleParameter::validate, (WidgetConfigurator<TextFieldWidget>) configure);
-                case StringParameter stringParameter -> builder.addStringEditor(label, stringParameter.getSyncHandler(), (WidgetConfigurator<TextFieldWidget>) configure);
-                case EnumParameter<?> enumParameter -> addEnumCycleButtonWithCast(builder, label, enumParameter.getEnumClass(), enumParameter.getSyncHandler(), configure);
-                case FluidParameter fluidParameter -> builder.addPhantomFluidSlot(label, fluidParameter.getSyncHandler(), (WidgetConfigurator<FluidSlot>) configure);
-                case BooleanParameter booleanParameter -> builder.addToggleButton(label, booleanParameter.getSyncHandler(), (panel, syncManager, widget) -> {
+
+            if (parameter instanceof IntegerParameter integerParameter) {
+                builder.addIntEditor(
+                    label,
+                    integerParameter.getSyncHandler(),
+                    integerParameter::validate,
+                    (WidgetConfigurator<TextFieldWidget>) configure);
+            } else if (parameter instanceof LongParameter longParameter) {
+                builder.addLongEditor(
+                    label,
+                    longParameter.getSyncHandler(),
+                    longParameter::validate,
+                    (WidgetConfigurator<TextFieldWidget>) configure);
+            } else if (parameter instanceof DoubleParameter doubleParameter) {
+                builder.addDoubleEditor(
+                    label,
+                    doubleParameter.getSyncHandler(),
+                    doubleParameter::validate,
+                    (WidgetConfigurator<TextFieldWidget>) configure);
+            } else if (parameter instanceof StringParameter stringParameter) {
+                builder.addStringEditor(
+                    label,
+                    stringParameter.getSyncHandler(),
+                    (WidgetConfigurator<TextFieldWidget>) configure);
+            } else if (parameter instanceof EnumParameter<?>enumParameter) {
+                addEnumCycleButtonWithCast(
+                    builder,
+                    label,
+                    enumParameter.getEnumClass(),
+                    enumParameter.getSyncHandler(),
+                    configure);
+            } else if (parameter instanceof FluidParameter fluidParameter) {
+                builder.addPhantomFluidSlot(
+                    label,
+                    fluidParameter.getSyncHandler(),
+                    (WidgetConfigurator<FluidSlot>) configure);
+            } else if (parameter instanceof BooleanParameter booleanParameter) {
+                builder.addToggleButton(label, booleanParameter.getSyncHandler(), (panel, syncManager, widget) -> {
                     widget.overlay(true, GTGuiTextures.OVERLAY_BUTTON_CHECKMARK)
                         .overlay(false, GTGuiTextures.OVERLAY_BUTTON_CROSS);
-                    if(configure != null) ((WidgetConfigurator<ToggleButton>) configure).configure(panel, syncManager, widget);
+                    if (configure != null)
+                        ((WidgetConfigurator<ToggleButton>) configure).configure(panel, syncManager, widget);
                 });
-                case CompositeParameter compositeParameter -> builder.addButton(label, compositeParameterConfigurator(compositeParameter, prefix, configurator));
-                default -> throw new UnsupportedOperationException("This parameter type is not yet supported by the SettingsPanel: " + parameter.getClass());
+            } else if (parameter instanceof CompositeParameter compositeParameter) {
+                builder.addButton(label, compositeParameterConfigurator(compositeParameter, prefix, configurator));
+            } else {
+                throw new UnsupportedOperationException(
+                    "This parameter type is not yet supported by the SettingsPanel: " + parameter.getClass());
             }
         }
         return builder;
