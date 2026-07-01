@@ -421,6 +421,7 @@ public final class ModItems {
             .generateComponentAndAssignToAMaterial(PLATESUPERDENSE, MaterialsElements.STANDALONE.ADVANCED_NITINOL);
         MaterialUtils
             .generateComponentAndAssignToAMaterial(PLATESUPERDENSE, MaterialsElements.STANDALONE.CHRONOMATIC_GLASS);
+        MaterialUtils.generateComponentAndAssignToAMaterial(PLATESUPERDENSE, MaterialsElements.STANDALONE.DRAGON_METAL);
 
         // Gear
         MaterialUtils.generateComponentAndAssignToAMaterial(GEAR, MaterialsElements.STANDALONE.RHUGNOR);
