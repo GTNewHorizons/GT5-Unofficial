@@ -808,7 +808,13 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
             tList.add(
                 GTUtility
                     .translate(mActive ? "GT5U.scanner.debug.machine_active" : "GT5U.scanner.debug.machine_inactive"));
+            tList.add(
+                GTUtility.translate(
+                    isAllowedToWork() ? "GT5U.scanner.debug.machine_allowed_to_work"
+                        : "GT5U.scanner.debug.machine_not_allowed_to_work"));
             if (!mHasEnoughEnergy) tList.add(GTUtility.translate("GT5U.scanner.debug.needs_power"));
+            if (!mHasEnoughEnergy) tList
+                .add(EnumChatFormatting.RED + "ATTENTION: This Device needs more power." + EnumChatFormatting.RESET);
         }
         if (joinedIc2Enet) tList.add(GTUtility.translate("GT5U.scanner.debug.ic2_enet"));
         return mMetaTileEntity.getSpecialDebugInfo(this, aPlayer, aLogLevel, tList);
