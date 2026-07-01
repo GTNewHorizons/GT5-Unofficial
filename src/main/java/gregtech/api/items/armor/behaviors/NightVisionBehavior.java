@@ -1,7 +1,5 @@
 package gregtech.api.items.armor.behaviors;
 
-import static gregtech.api.items.armor.ArmorKeybinds.NIGHT_VISION_KEYBIND;
-
 import java.util.Collections;
 import java.util.Set;
 
@@ -12,11 +10,15 @@ import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
 
+import gregtech.api.items.armor.ArmorActionManager;
 import gregtech.api.items.armor.ArmorContext;
 
 public class NightVisionBehavior implements IArmorBehavior {
 
     public static final NightVisionBehavior INSTANCE = new NightVisionBehavior();
+    private static final Set<SyncedKeybind> LISTENED_KEYS = Collections.singleton(
+        ArmorActionManager.getAction("nightvision")
+            .getKeybind());
 
     protected NightVisionBehavior() {/**/}
 
@@ -34,7 +36,7 @@ public class NightVisionBehavior implements IArmorBehavior {
 
     @Override
     public Set<SyncedKeybind> getListenedKeys(@NotNull ArmorContext context) {
-        return Collections.singleton(NIGHT_VISION_KEYBIND);
+        return LISTENED_KEYS;
     }
 
     @Override

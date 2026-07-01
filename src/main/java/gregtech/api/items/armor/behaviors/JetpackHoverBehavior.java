@@ -7,12 +7,15 @@ import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
 
+import gregtech.api.items.armor.ArmorActionManager;
 import gregtech.api.items.armor.ArmorContext;
-import gregtech.api.items.armor.ArmorKeybinds;
 
 public class JetpackHoverBehavior implements IArmorBehavior {
 
     public static final JetpackHoverBehavior INSTANCE = new JetpackHoverBehavior();
+    private static final Set<SyncedKeybind> LISTENED_KEYS = Collections.singleton(
+        ArmorActionManager.getAction("jetpack_hover")
+            .getKeybind());
 
     protected JetpackHoverBehavior() {
 
@@ -32,6 +35,6 @@ public class JetpackHoverBehavior implements IArmorBehavior {
 
     @Override
     public Set<SyncedKeybind> getListenedKeys(@NotNull ArmorContext context) {
-        return Collections.singleton(ArmorKeybinds.JETPACK_HOVER_KEYBIND);
+        return LISTENED_KEYS;
     }
 }
