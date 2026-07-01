@@ -1,6 +1,7 @@
 package gregtech.nei;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagByte;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
@@ -89,9 +90,10 @@ public class GTNEIMacerationStackConversion extends ShapelessRecipeHandler {
         NBTTagList lore = new NBTTagList();
         lore.appendTag(new NBTTagString(StatCollector.translateToLocal("gt.macerator.upgraded")));
         display.setTag("Lore", lore);
-        display.setByte(MTEIndustrialMacerator.TIER, (byte) 2);
         oldController.setTagInfo("display", display);
+        oldController.setTagInfo(MTEIndustrialMacerator.TIER, new NBTTagByte((byte) 2));
         newController.setTagInfo("display", display);
+        newController.setTagInfo(MTEIndustrialMacerator.TIER, new NBTTagByte((byte) 2));
         arecipes.add(new CachedShapelessRecipe(new Object[] { oldController }, newController));
     }
 
