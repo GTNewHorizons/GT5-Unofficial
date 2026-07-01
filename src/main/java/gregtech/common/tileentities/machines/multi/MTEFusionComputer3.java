@@ -81,15 +81,13 @@ public class MTEFusionComputer3 extends MTEFusionComputer {
             .addInfo("§b32,768§7 EU/t and §b40M§7 EU capacity per Energy Hatch")
             .addInfo("If the recipe has a startup cost greater than the")
             .addInfo("number of energy hatches * cap, you can't do it")
-            .beginStructureBlock(15, 3, 15, false)
+            .beginStructureBlock(15, 15, 3, false)
             .addController("See diagram when placed")
-            .addCasingInfoRange("Fusion Machine Casing Mk II", 79, 123, false)
-            .addStructureInfo("Cover the coils with casing")
-            .addOtherStructurePart("Fusion Coil Block", "Center part of the ring")
-            .addEnergyHatch("1-16, Specified Casing", 2)
-            .addInputHatch("2-16, Specified Casing", 1)
-            .addOutputHatch("1-16, Specified Casing", 3)
-            .addStructureInfo("ALL Hatches must be UV or better")
+            .addCasing("79-123", "Fusion Machine Casing Mk-II", false)
+            .addCasing("32", "Fusion Coil Block", false)
+            .addEnergyHatch("1-16", "Specified casings (UV+)", 2)
+            .addInputHatch("1+", "Specified casings", 1)
+            .addOutputHatch("1+", "Specified casings", 3)
             .toolTipFinisher();
         return tt;
     }
