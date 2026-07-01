@@ -445,14 +445,16 @@ public class MechArmorAugmentRegistries {
             .setMinimumCoreTier(1)
             .setMaxStack(2)
         ),
-        TravelersBoots(ItemList.Augment_Travelers, new AugmentBuilder()
-            .setId("Travelers")
-            .setItemId("augmenttravelers")
+        ApprenticeStriders(ItemList.ApprenticeStriders, new AugmentBuilder()
+            .setId("ApprenticeStriders")
+            .setItemId("augmentapprenticestriders")
             .fitsInto(ArmorType.Boots)
-            .providesBehaviors(new JumpBoostBehavior(0.6F),
-                new SpeedBoostBehavior(0.15F),
+            .providesBehaviors(
+                new SpeedBoostBehavior(3.0F),
+                new JumpBoostBehavior(2.0F),
                 StepAssistBehavior.INSTANCE,
-                new VisDiscountBehavior(4))
+                new VisDiscountBehavior(4)
+            )
             .setMinimumCoreTier(1)
             .setCategory(AugmentCategory.Movement)
         ),
@@ -541,7 +543,7 @@ public class MechArmorAugmentRegistries {
             .fitsInto(ArmorType.Boots)
             .providesBehaviors(SpeedBoostBehavior.MECH_ARMOR_INSTANCE)
             .setMinimumCoreTier(2)
-            .setMaxStack(3)
+            .setMaxStack(2)
             .setCategory(AugmentCategory.Movement)
         ),
         JumpBoost(ItemList.Augment_JumpBoost, new AugmentBuilder()
@@ -559,6 +561,19 @@ public class MechArmorAugmentRegistries {
             .fitsInto(ArmorType.Boots)
             .providesBehaviors(OmniMovementBehavior.INSTANCE)
             .requiresBehaviors(BehaviorName.SpeedBoost)
+            .setMinimumCoreTier(2)
+            .setCategory(AugmentCategory.Movement)
+        ),
+        ArchmageStriders(ItemList.ArchmageStriders, new AugmentBuilder()
+            .setId("ArchmageStriders")
+            .setItemId("augmentarchmagestriders")
+            .fitsInto(ArmorType.Boots)
+            .providesBehaviors(
+                new SpeedBoostBehavior(5.0F),
+                new JumpBoostBehavior(3.0F),
+                StepAssistBehavior.INSTANCE,
+                new VisDiscountBehavior(5)
+            )
             .setMinimumCoreTier(2)
             .setCategory(AugmentCategory.Movement)
         ),
@@ -601,6 +616,20 @@ public class MechArmorAugmentRegistries {
             .fitsInto(ArmorType.Chestplate)
             .providesBehaviors(InertiaCancelingBehavior.INSTANCE)
             .requiresBehaviors(BehaviorName.CreativeFlight)
+            .setMinimumCoreTier(3)
+            .setCategory(AugmentCategory.Movement)
+        ),
+        // TODO: add speed as an incompatible augment
+        EldritchStriders(ItemList.EldritchStriders, new AugmentBuilder()
+            .setId("EldritchStriders")
+            .setItemId("augmenteldritchstriders")
+            .fitsInto(ArmorType.Boots)
+            .providesBehaviors(
+                new SpeedBoostBehavior(10.0F),
+                new JumpBoostBehavior(4.0F),
+                StepAssistBehavior.INSTANCE,
+                new VisDiscountBehavior(10)
+            )
             .setMinimumCoreTier(3)
             .setCategory(AugmentCategory.Movement)
         );
