@@ -2854,7 +2854,7 @@ public enum ItemList implements IItemContainer {
     Augment_StepAssist,
     Augment_GogglesOfRevealing,
     Augment_InertiaCanceling,
-    EldritchStriders,
+    Augment_EldritchStriders,
     Augment_OmniMovement,
     ArchmageStriders,
     Augment_Hazmat,
@@ -2870,7 +2870,6 @@ public enum ItemList implements IItemContainer {
     Augment_WaterBreathing,
     Augment_MilkInfusion,
     Augment_HoloInventory,
-    Augment_Travelers,
     Augment_Terrasteel,
 
     CompressedOutputBusLuV,

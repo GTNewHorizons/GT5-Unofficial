@@ -23,7 +23,7 @@ public class SpeedBoostBehavior implements IArmorBehavior {
     /// Somewhat arbitrary multiplier to make vertical flight speed comparable to horizontal flight speed
     private static final double VERTICAL_SPEED_MULT = 2.5;
 
-    public static final float SPEED_INCREMENT = 0.5F;
+    public static final float SPEED_INCREMENT = 0.25F;
 
     private final float speedMaxMulti;
 
@@ -83,29 +83,34 @@ public class SpeedBoostBehavior implements IArmorBehavior {
     public void onArmorTick(@NotNull ArmorContext context) {
         EntityPlayer player = context.getPlayer();
 
-        float speed = (context.getArmorState().speedBoostMulti - 1) * BASE_SPEED;
-
-        if (player.capabilities.isFlying) {
-            speed *= 0.5F;
-        }
-
+        float speed = (context.getArmorState().speedBoostMulti - 1.0F) * BASE_SPEED;
         if (speed <= 0) return;
 
-        boolean isMoving = !player.isInWater() && (player.moveForward != 0 || player.moveStrafing != 0
-            || (player.capabilities.isFlying && (player.isSneaking() || ArmorKeybinds.VANILLA_JUMP.isKeyDown(player))));
+        if (player.capabilities.isFlying) {
+            speed *= 0.75F;
+        }
+        if (player.isInWater()) {
+            speed *= 0.25F;
+        }
+
+        boolean isJumping = ArmorKeybinds.VANILLA_JUMP.isKeyDown(player);
+        boolean isMoving = player.moveForward != 0 || player.moveStrafing != 0 ||
+            (player.capabilities.isFlying && (player.isSneaking() || isJumping));
 
         if (!isMoving || !context.drainEnergy(1)) return;
 
         if (!context.isRemote()) return;
 
+        float currentSpeed = (player.onGround || player.capabilities.isFlying || player.isOnLadder()) ? speed : speed * 0.280F;
+
         if (player.moveForward > 0F) {
-            player.moveFlying(0F, 1F, speed);
+            player.moveFlying(0F, 1F, currentSpeed);
         }
 
         if (context.isBehaviorActive(BehaviorName.OmniMovement)) {
-            if (player.moveForward < 0F) player.moveFlying(0F, -1F, speed);
-            if (player.moveStrafing > 0F) player.moveFlying(1F, 0F, speed);
-            if (player.moveStrafing < 0F) player.moveFlying(-1F, 0F, speed);
+            if (player.moveForward < 0F) player.moveFlying(0F, -1F, currentSpeed);
+            if (player.moveStrafing > 0F) player.moveFlying(1F, 0F, currentSpeed);
+            if (player.moveStrafing < 0F) player.moveFlying(-1F, 0F, currentSpeed);
 
             if (player.capabilities.isFlying) {
                 float verticalSpeed = (float) (speed * VERTICAL_SPEED_MULT);

@@ -620,7 +620,7 @@ public class MechArmorAugmentRegistries {
             .setCategory(AugmentCategory.Movement)
         ),
         // TODO: add speed as an incompatible augment
-        EldritchStriders(ItemList.EldritchStriders, new AugmentBuilder()
+        EldritchStriders(ItemList.Augment_EldritchStriders, new AugmentBuilder()
             .setId("EldritchStriders")
             .setItemId("augmenteldritchstriders")
             .fitsInto(ArmorType.Boots)

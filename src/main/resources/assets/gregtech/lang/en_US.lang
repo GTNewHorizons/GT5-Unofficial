@@ -3592,7 +3592,6 @@ GT5U.armor.part.name.OmniMovement=Augment: Rotational Movement Adjusters
 GT5U.armor.part.name.WaterBreathing=Augment: Rebreather
 GT5U.armor.part.name.MilkInfusion=Augment: Milk Infusion
 GT5U.armor.part.name.HoloInventory=Augment: Holographic Inventory
-GT5U.armor.part.name.Travelers=Augment: Thaumic Accelerators
 GT5U.armor.part.name.Terrasteel=Augment: Terrestrial Enhancement
 GT5U.armor.part.name.ApprenticeStriders= Augment: Apprentice Striders
 GT5U.armor.part.name.ArchmageStriders= Augment: Archmage Striders
@@ -3619,7 +3618,6 @@ GT5U.armor.part.tooltip.OmniMovement=Allows user to move at increased speed in a
 GT5U.armor.part.tooltip.WaterBreathing=Restores the user's air if they run out underwater
 GT5U.armor.part.tooltip.MilkInfusion=Removes bad potion effects
 GT5U.armor.part.tooltip.HoloInventory=Opens a holographic view of nearby inventories
-GT5U.armor.part.tooltip.Travelers=Grants the user a more powerful version of Boots of the Traveler
 GT5U.armor.part.tooltip.Terrasteel=Grants the Will of the Ancients. Effects include:\n - 20% Mana Discount\n - Passive Mana generation for Mana Tablets\n - Passive health regeneration when not fully fed
 
 GT5U.armor.behavior.NightVision=Night Vision
@@ -3652,7 +3650,7 @@ GT5U.armor.message.enabled=%s Enabled
 GT5U.armor.message.disabled=%s Disabled
 GT5U.armor.message.installed=%s Installed
 GT5U.armor.message.systems_online=Armor Systems Online... Active keybindings:
-GT5U.armor.message.speed_set=New speed: %s%%
+GT5U.armor.message.speed_set=New speed: %sx
 
 GT5U.armor.tooltip.hold_shift=Hold Shift for more info
 GT5U.armor.tooltip.armorframe=Armor Frame: %s
