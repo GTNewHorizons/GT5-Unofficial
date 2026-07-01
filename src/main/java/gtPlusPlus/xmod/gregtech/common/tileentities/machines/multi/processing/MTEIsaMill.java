@@ -14,6 +14,7 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
@@ -40,6 +41,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
@@ -51,7 +53,6 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.api.objects.minecraft.BlockPos;
-import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.item.chemistry.general.ItemGenericChemBase;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -65,6 +66,8 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
 
     private int mCasing;
     private static IStructureDefinition<MTEIsaMill> STRUCTURE_DEFINITION = null;
+
+    private static final Set<GTUtility.ItemId> MILLING_BALLS = new HashSet<>();
 
     private static final IIconContainer frontFaceActive = new CustomIcon("iconsets/Grinder/GRINDER_ACTIVE5");
     private static final IIconContainer frontFace = new CustomIcon("iconsets/Grinder/GRINDER5");
@@ -217,7 +220,7 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
 
     @Override
     public RecipeMap<?> getRecipeMap() {
-        return GTPPRecipeMaps.millingRecipes;
+        return RecipeMaps.millingRecipes;
     }
 
     @Override
@@ -396,11 +399,18 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
         return ItemGenericChemBase.getMaxBallDurability(aStack);
     }
 
+    public static void registerMillingBall(ItemStack stack) {
+        if (stack == null) return;
+        MILLING_BALLS.add(GTUtility.ItemId.createWithoutNBT(stack));
+    }
+
     public static boolean isMillingBall(ItemStack aStack) {
-        if (GTUtility.areStacksEqual(aStack, GregtechItemList.Milling_Ball_Alumina.get(1), true)) {
-            return true;
-        }
-        return GTUtility.areStacksEqual(aStack, GregtechItemList.Milling_Ball_Soapstone.get(1), true);
+        return aStack != null && MILLING_BALLS.contains(GTUtility.ItemId.createWithoutNBT(aStack));
+    }
+
+    static {
+        registerMillingBall(GregtechItemList.Milling_Ball_Alumina.get(1));
+        registerMillingBall(GregtechItemList.Milling_Ball_Soapstone.get(1));
     }
 
     @NotNull
