@@ -6968,6 +6968,28 @@ gt.vajra.tooltip.flavor=Your friendly instant block breaker
 gt.vajra.tooltip.charge=Can be charged in any %s machine
 gt.vajra.tooltip.silk_touch=Shift right click air to toggle silk touch
 
+# Network Analyzer
+gt.NetworkAnalyzer.name=Network Analyzer
+gt.NetworkAnalyzer.bound=§aVisualising network at %s %s %s
+gt.NetworkAnalyzer.target_lost=§cNetwork Analyzer target block not found, binding cleared
+gt.NetworkAnalyzer.set=Mode changed to §e%s
+gt.NetworkAnalyzer.mode=Mode: §e%s
+gt.NetworkAnalyzer.mode.topology=Topology
+gt.NetworkAnalyzer.mode.critical=Critical
+gt.NetworkAnalyzer.mode.active=Active
+gt.NetworkAnalyzer.mode.amperage=Amperage
+gt.NetworkAnalyzer.mode.voltage=Voltage
+gt.NetworkAnalyzer.amperage.short=%s A / %s A
+gt.NetworkAnalyzer.amperage.input=↑%s A / %s A
+gt.NetworkAnalyzer.amperage.output=↓%s A / %s A
+gt.NetworkAnalyzer.amperage.full=↑%s A ↓%s A / %s A
+gt.NetworkAnalyzer.loss.short=%s%% loss
+gt.NetworkAnalyzer.loss.full=%s%% loss (%s V)
+gt.NetworkAnalyzer.voltage.burn=§cBurns
+gt.NetworkAnalyzer.voltage.burn.full=§cWire burns: %s V / %s V
+gt.NetworkAnalyzer.voltage.explosion=§cExplodes
+gt.NetworkAnalyzer.voltage.explosion.full=§cMachine explodes: %s V / %s V
+
 # GT++
 
 GT5U.gui.text.recipe_result.no_water=§7Missing water
