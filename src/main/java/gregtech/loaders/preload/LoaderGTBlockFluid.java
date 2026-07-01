@@ -6,6 +6,7 @@ import static gregtech.api.enums.FluidState.MOLTEN;
 import static gregtech.api.enums.FluidState.PLASMA;
 import static gregtech.api.enums.FluidState.SLURRY;
 import static gregtech.api.enums.Mods.AppliedEnergistics2;
+import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.enums.Mods.PamsHarvestCraft;
 import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.enums.Mods.Thaumcraft;
@@ -22,6 +23,7 @@ import java.util.Locale;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 
@@ -1937,6 +1939,20 @@ public class LoaderGTBlockFluid implements Runnable {
             .configureMaterials(Materials.CarbonDioxide)
             .addLocalizedName(Materials.CarbonDioxide)
             .registerBContainers(GTOreDictUnificator.get(OrePrefixes.cell, Materials.CarbonDioxide, 1L), ItemList.Cell_Empty.get(1L))
+            .asFluid();
+
+        ResourceLocation stillTexture = new ResourceLocation(GregTech.ID, "fluids/fluid.ammonia.still");
+        ResourceLocation flowTexture = new ResourceLocation(GregTech.ID, "fluids/fluid.ammonia.flow");
+
+        GTFluidFactory.builder(Materials.Ammonia.mName.toLowerCase(Locale.ENGLISH))
+            .withDefaultLocalName(Materials.Ammonia.mDefaultLocalName)
+            .withTextures(stillTexture, flowTexture)
+            .withColorRGBA(Materials.Ammonia.mRGBa)
+            .withStateAndTemperature(LIQUID, Materials.Ammonia.getLiquidTemperature())
+            .buildAndRegister()
+            .configureMaterials(Materials.Ammonia)
+            .addLocalizedName(Materials.Ammonia)
+            .registerBContainers(GTOreDictUnificator.get(OrePrefixes.cell, Materials.Ammonia, 1L), ItemList.Cell_Empty.get(1L))
             .asFluid();
 
         for (Materials tMaterial : Materials.values()) {
