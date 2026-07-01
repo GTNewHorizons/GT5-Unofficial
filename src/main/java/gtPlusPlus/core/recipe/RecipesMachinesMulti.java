@@ -16,6 +16,7 @@ import static gregtech.api.util.GTRecipeConstants.RESEARCH_ITEM;
 import static gregtech.api.util.GTRecipeConstants.SCANNING;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalPlantRecipes;
 
+import gregtech.common.tileentities.machines.multi.MTEIndustrialMacerator;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -499,7 +500,7 @@ public class RecipesMachinesMulti {
         // Maceration Stack T2 Shapeless Craft
         ItemStack t2MacerationStack = ItemList.MacerationStack.get(1);
         NBTTagCompound upgradeTag = new NBTTagCompound();
-        upgradeTag.setByte("mTier", (byte) 2);
+        upgradeTag.setByte(MTEIndustrialMacerator.TIER, (byte) 2);
         t2MacerationStack.setTagCompound(upgradeTag);
 
         GTModHandler.addShapelessCraftingRecipe(
@@ -510,7 +511,7 @@ public class RecipesMachinesMulti {
                     ItemStack stack = grid.getStackInSlot(i);
                     if (!ItemList.MacerationStack.isStackEqual(stack, false, true)) continue;
                     if (stack.hasTagCompound() && stack.getTagCompound()
-                        .getByte("mTier") >= 2) return false;
+                        .getByte(MTEIndustrialMacerator.TIER) >= 2) return false;
                 }
                 return true;
             },
