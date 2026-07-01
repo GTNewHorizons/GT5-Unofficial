@@ -54,7 +54,6 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.misc.GTStructureChannels;
 import gtnhlanth.api.recipe.LanthanidesRecipeMaps;
-import gtnhlanth.util.DescTextLocalization;
 
 public class MTEDissolutionTank extends MTEEnhancedMultiBlockBase<MTEDissolutionTank>
     implements ISurvivalConstructable {
@@ -187,11 +186,6 @@ public class MTEDissolutionTank extends MTEEnhancedMultiBlockBase<MTEDissolution
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
         return survivalBuildPiece(mName, stackSize, 2, 3, 0, elementBudget, env, false, true);
-    }
-
-    @Override
-    public String[] getStructureDescription(ItemStack arg0) {
-        return DescTextLocalization.addText("DissolutionTank.hint", 4);
     }
 
     @Override

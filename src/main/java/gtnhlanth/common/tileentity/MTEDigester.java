@@ -51,7 +51,6 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.common.misc.GTStructureChannels;
 import gtnhlanth.api.recipe.LanthanidesRecipeMaps;
-import gtnhlanth.util.DescTextLocalization;
 
 public class MTEDigester extends MTEEnhancedMultiBlockBase<MTEDigester>
     implements ISurvivalConstructable, ICasingTextureProvider {
@@ -176,11 +175,6 @@ public class MTEDigester extends MTEEnhancedMultiBlockBase<MTEDigester>
     public int survivalConstruct(ItemStack stackSize, int elementBudget, ISurvivalBuildEnvironment env) {
         if (mMachine) return -1;
         return survivalBuildPiece(mName, stackSize, 3, 3, 0, elementBudget, env, false, true);
-    }
-
-    @Override
-    public String[] getStructureDescription(ItemStack arg0) {
-        return DescTextLocalization.addText("Digester.hint", 6);
     }
 
     @Override

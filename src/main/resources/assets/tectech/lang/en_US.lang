@@ -618,7 +618,6 @@ gt.blockcasingsBA0.12.name=Infinite Spacetime Energy Boundary Casing
 #Multiblocks
 gt.blockmachines.multimachine.em.transformer.name=Active Transformer
 gt.blockmachines.multimachine.em.transformer.machinetype=Active Transformer, AT
-gt.blockmachines.multimachine.em.transformer.hint=1 - Energy IO Hatches or High Power Casing
 gt.blockmachines.multimachine.em.transformer.desc.1=Can transform to and from any voltage
 gt.blockmachines.multimachine.em.transformer.desc.2=Only 0.004% power loss, HAYO!
 
@@ -699,8 +698,6 @@ gt.blockmachines.multimachine.em.computer.desc.2=Use screwdriver to toggle wirel
 
 gt.blockmachines.multimachine.em.databank.name=Data Bank
 gt.blockmachines.multimachine.em.databank.type=Data Bank, DB
-gt.blockmachines.multimachine.em.databank.hint.0=1 - Classic Hatches or High Power Casing
-gt.blockmachines.multimachine.em.databank.hint.1=2 - Data Access/Data Bank Master Hatches or Computer Casing
 gt.blockmachines.multimachine.em.databank.desc.0=Controller block of the Data Bank
 gt.blockmachines.multimachine.em.databank.desc.1=Used to supply Assembly Lines with more Data Sticks
 gt.blockmachines.multimachine.em.databank.desc.2=and give multiple Assembly Lines access to the same Data Stick
