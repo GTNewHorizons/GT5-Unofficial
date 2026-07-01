@@ -44,6 +44,9 @@ public class FluidEjectionHelper {
             if (transaction instanceof IOutputHatchTransaction.IRecipeCheckAware tran) {
                 tran.setRecipeCheck(isRecipeCheck);
             }
+            if (transaction instanceof IOutputHatchTransaction.IProtectOutputAware tran) {
+                tran.setProtectOutput(protectFluids);
+            }
             transactionsByType.computeIfAbsent(hatch.getHatchType(), x -> new ArrayList<>())
                 .add(transaction);
         }
@@ -104,7 +107,7 @@ public class FluidEjectionHelper {
                 if (ofType == null) continue;
 
                 GTDataUtils
-                    .addAllFiltered(ofType, transactions, t -> !t.isFiltered() || t.isFilteredToFluid(parallelData.id));
+                    .addAllFiltered(ofType, transactions, t -> !t.isFiltered() || t.isFilteredTo(parallelData.id));
             }
 
             parallelData.outputs = Iterators.peekingIterator(transactions.iterator());
@@ -126,24 +129,13 @@ public class FluidEjectionHelper {
 
                 // If this hatch is completely full, don't bother checking it.
                 if (!transaction.hasAvailableSpace()) {
-                    transaction.completeFluid(output.id);
+                    transaction.complete(output.id);
                     outputHatches.next();
                     continue;
                 }
 
-                boolean insertAnything = false;
-                while (output.remainingAmount > 0) {
-                    int amount = (int) Math.min(output.remainingAmount, Integer.MAX_VALUE);
-                    FluidStack tmp = output.id.getFluidStack(amount);
-                    transaction.storePartial(output.id, tmp);
-                    long actuallyInsert = amount - tmp.amount;
-                    output.remainingAmount -= actuallyInsert;
-                    if (actuallyInsert > 0) insertAnything = true;
-                    if (tmp.amount > 0) break;
-                }
-
                 // Fill at most one slot with the remaining fluids
-                if (insertAnything) {
+                if (output.storePartial(transaction)) {
                     break;
                 } else {
                     // If we couldn't insert anything into the hatch, go to the next one
@@ -185,12 +177,39 @@ public class FluidEjectionHelper {
         public long initialAmount, remainingAmount;
         public long perParallel;
         public PeekingIterator<IOutputHatchTransaction> outputs;
+        private final FluidStack tmpStack;
 
         private FluidParallelData(GTUtility.FluidId id, long amount, long perParallel) {
             this.id = id;
             this.remainingAmount = amount;
             this.perParallel = perParallel;
             this.initialAmount = amount;
+            this.tmpStack = id.getFluidStack();
+        }
+
+        public boolean storePartial(IOutputHatchTransaction transaction) {
+            boolean isSharedOutput = transaction instanceof IOutputHatchTransaction.IDynamicCapacityOutputAware sharedOutput
+                && sharedOutput.isDynamicCapacity();
+            long untried = 0;
+            if (isSharedOutput) {
+                long limit = Math.min(remainingAmount, perParallel);
+                untried = remainingAmount - limit;
+                remainingAmount = limit;
+            }
+            boolean insertAnything = false;
+            while (remainingAmount > 0) {
+                int amount = (int) Math.min(remainingAmount, Integer.MAX_VALUE);
+                tmpStack.amount = amount;
+                transaction.storePartial(id, tmpStack);
+                long actuallyInsert = amount - tmpStack.amount;
+                remainingAmount -= actuallyInsert;
+                if (actuallyInsert > 0) insertAnything = true;
+                if (tmpStack.amount > 0) break;
+            }
+            if (isSharedOutput) {
+                remainingAmount += untried;
+            }
+            return insertAnything;
         }
     }
 }
