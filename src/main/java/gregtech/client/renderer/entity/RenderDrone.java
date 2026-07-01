@@ -23,8 +23,7 @@ public class RenderDrone extends Render {
 
     @Override
     public void doRender(Entity entity, double x, double y, double z, float yaw, float partialTicks) {
-        if (entity instanceof EntityDrone) {
-            EntityDrone drone = (EntityDrone) entity;
+        if (entity instanceof EntityDrone drone) {
             Minecraft mc = Minecraft.getMinecraft();
             if (mc.renderViewEntity instanceof EntityDrone && entity != mc.renderViewEntity) {
                 if (!drone.isAutoMode()) {

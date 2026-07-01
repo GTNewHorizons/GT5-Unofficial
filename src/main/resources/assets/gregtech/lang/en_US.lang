@@ -6628,6 +6628,7 @@ gregtech.effectTreetwister=Treetwister
 gregtech.effectMachineBoost=Machine Booster
 
 entity.gregtech.GT_Entity_Arrow.name= a GregTech arrow
+entity.gregtech.GTDrone.name=Drone
 
 # Fluids
 fluid.aniline=Aniline

@@ -15,6 +15,11 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.minecraftforge.client.event.GuiScreenEvent;
+import net.minecraftforge.client.event.RenderHandEvent;
+import net.minecraftforge.client.event.RenderWorldLastEvent;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -176,7 +181,7 @@ public class CameraViewportClientManager extends CameraViewportManager {
             FMLCommonHandler.instance()
                 .bus()
                 .register(this);
-            net.minecraftforge.common.MinecraftForge.EVENT_BUS.register(this);
+            MinecraftForge.EVENT_BUS.register(this);
         }
         Minecraft mc = Minecraft.getMinecraft();
         int width = mc.displayWidth;
@@ -199,8 +204,7 @@ public class CameraViewportClientManager extends CameraViewportManager {
         double spawnZ = connection.getMachineCoord().posZ + 0.5;
         float spawnYaw = 0;
 
-        net.minecraftforge.common.util.ForgeDirection facing = net.minecraftforge.common.util.ForgeDirection
-            .getOrientation(connection.getMachineFacing());
+        ForgeDirection facing = ForgeDirection.getOrientation(connection.getMachineFacing());
         switch (facing) {
             case NORTH:
                 spawnZ -= 1.2;
@@ -291,7 +295,7 @@ public class CameraViewportClientManager extends CameraViewportManager {
         FMLCommonHandler.instance()
             .bus()
             .unregister(this);
-        net.minecraftforge.common.MinecraftForge.EVENT_BUS.unregister(this);
+        MinecraftForge.EVENT_BUS.unregister(this);
         activeConnection = null;
         observedMachineStatus = null;
         hoveredMachineX = -1;
@@ -612,7 +616,7 @@ public class CameraViewportClientManager extends CameraViewportManager {
     }
 
     @SubscribeEvent
-    public void onDrawScreenPre(net.minecraftforge.client.event.GuiScreenEvent.DrawScreenEvent.Pre event) {
+    public void onDrawScreenPre(GuiScreenEvent.DrawScreenEvent.Pre event) {
         if (activeConnection == null || switchingToRemoteGui) return;
 
         Minecraft mc = Minecraft.getMinecraft();
@@ -660,7 +664,7 @@ public class CameraViewportClientManager extends CameraViewportManager {
     }
 
     @SubscribeEvent
-    public void onRenderWorldLast(net.minecraftforge.client.event.RenderWorldLastEvent event) {
+    public void onRenderWorldLast(RenderWorldLastEvent event) {
         if (activeConnection == null) return;
 
         double renderX = RenderManager.renderPosX;
@@ -780,7 +784,7 @@ public class CameraViewportClientManager extends CameraViewportManager {
     }
 
     @SubscribeEvent
-    public void onRenderHand(net.minecraftforge.client.event.RenderHandEvent event) {
+    public void onRenderHand(RenderHandEvent event) {
         if (activeConnection != null) {
             event.setCanceled(true);
         }

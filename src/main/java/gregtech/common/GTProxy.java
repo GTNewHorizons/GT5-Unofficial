@@ -1200,7 +1200,7 @@ public class GTProxy implements IFuelHandler {
         // MUI2, but for the time being it stays here. -- miozune
         CoverRegistry.reloadCoverColorOverrides();
         CALImprintRecipe.register();
-        EntityRegistry.registerModEntity(EntityDrone.class, "EntityDrone", 1, GTMod.GT, 64, 3, true);
+        EntityRegistry.registerModEntity(EntityDrone.class, "GTDrone", 1, GTMod.GT, 64, 3, true);
         MacerationStackConversionRecipe.register();
     }
 
