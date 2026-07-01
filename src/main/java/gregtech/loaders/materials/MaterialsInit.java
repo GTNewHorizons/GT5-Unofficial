@@ -5614,7 +5614,6 @@ public class MaterialsInit {
             .setARGB(0x003f3480)
             .setOreMultiplier(4)
             .addCell()
-            .addGas()
             .addMaterial(Materials.Nitrogen, 1)
             .addMaterial(Materials.Hydrogen, 3)
             .addElectrolyzerRecipe()
@@ -5941,7 +5940,6 @@ public class MaterialsInit {
             .setARGB(0xf0a9d0f5)
             .setOreMultiplier(4)
             .addCell()
-            .addGas()
             .setMeltingPoint(25)
             .setBlastFurnaceTemp(1)
             .addMaterial(Materials.Carbon, 1)
@@ -15574,6 +15572,7 @@ public class MaterialsInit {
         Materials.BiocatalyzedPropulsionFluid = loadBiocatalyzedPropulsionFluid();
         Materials.Shijima = loadShijima();
         Materials.Churitsu = loadChuritsu();
+        Materials.ComputationBase = loadComputationBase();
     }
 
     private static Materials loadDTCC() {
@@ -16603,6 +16602,7 @@ public class MaterialsInit {
             .addSubTag(SubTag.NO_RECIPES)
             .addSubTag(SubTag.NO_RECYCLING_RECIPES)
             .addOrePrefix(OrePrefixes.itemCasing)
+            .addOrePrefix(OrePrefixes.plateSuperdense)
             .removeOrePrefix(OrePrefixes.dust)
             .removeOrePrefix(OrePrefixes.dustSmall)
             .removeOrePrefix(OrePrefixes.dustTiny)
@@ -16663,6 +16663,21 @@ public class MaterialsInit {
             .addSubTag(SubTag.MULTI_PLATE)
             .constructMaterial()
             .setProcessingMaterialTierEU(TierEU.RECIPE_ZPM);
+    }
+
+    private static Materials loadComputationBase() {
+        return new MaterialBuilder().setName("Computation Base")
+            .setDefaultLocalName("Computation Base")
+            .setChemicalFormula("01010011 01000111")
+            .setFlavorText("01000011 01101111 01101101 01110000 01110101 01110100 01100101")
+            .setIconSet(TextureSet.SET_FLUID)
+            .setColor(Dyes.dyeBrown)
+            .setARGB(0x00523a51)
+            .addCell()
+            .setMeltingPoint(100_000_000)
+            .setBlastFurnaceTemp(100_000_000)
+            .constructMaterial()
+            .setProcessingMaterialTierEU(TierEU.RECIPE_UXV);
     }
 
     private static void loadLabGrownGems() {
