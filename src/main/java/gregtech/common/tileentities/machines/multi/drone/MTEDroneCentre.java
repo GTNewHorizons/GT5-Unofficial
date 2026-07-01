@@ -13,6 +13,7 @@ import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTStructureUtility.ofSheetMetal;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -44,6 +45,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import com.gtnewhorizon.structurelib.util.Vec3Impl;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.GTMod;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -96,6 +98,7 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
     private int selectedTime = 10;
     private int activeGroup = 0;
     private String searchFilter = "";
+    private String productionSearchFilter = "";
     private boolean useRender = true;
     private boolean renderActive = false;
     private boolean searchOriginalName;
@@ -106,7 +109,10 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
 
     public List<String> group = IntStream.rangeClosed(0, 7)
         .mapToObj(String::valueOf)
-        .collect(Collectors.toList());
+        .collect(Collectors.toCollection(ArrayList::new));
+    private final HashMap<String, String> connectionNames = new HashMap<>();
+    private final HashMap<String, Long> connectionGroups = new HashMap<>();
+    private boolean renamingActiveGroup = false;
     public ProductionRecord productionDataRecorder = new ProductionRecord();
     public List<DroneConnection> connectionList = new ArrayList<>();
 
@@ -131,7 +137,7 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
         if (side == aFacing) {
-            if (getBaseMetaTileEntity().isActive()) {
+            if (getBaseMetaTileEntity() != null && getBaseMetaTileEntity().isActive()) {
                 return new ITexture[] { Casings.SolidSteelMachineCasing.getCasingTexture(), TextureFactory.builder()
                     .addIcon(ACTIVE)
                     .extFacing()
@@ -311,7 +317,7 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide()) {
-            if (aTick % 20 == 0) {
+            if (aBaseMetaTileEntity.isActive() && aTick % 20 == 0) {
                 if (switch (droneLevel) {
                     case 1 -> aBaseMetaTileEntity.getRandomNumber(28800);
                     case 2 -> aBaseMetaTileEntity.getRandomNumber(172800);
@@ -345,10 +351,32 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
         sortMode = DroneCentreGuiUtil.SortMode.valueOf(aNBT.getString("sort"));
         productionDataRecorder.readFromNBT(aNBT.getCompoundTag("productionData"));
         NBTTagCompound GroupNBT = aNBT.getCompoundTag("Group");
-        for (int i = 0; i < 8; i++) group.set(i, GroupNBT.getString(String.valueOf(i)));
+        int size = GroupNBT.getInteger("size");
+        if (size == 0) {
+            size = 8;
+        }
+        group.clear();
+        for (int i = 0; i < size; i++) {
+            String name = GroupNBT.getString(String.valueOf(i));
+            if (name.isEmpty()) {
+                name = String.valueOf(i);
+            }
+            group.add(name);
+        }
         activeGroup = aNBT.getInteger("activeGroup");
         autoUpdate = aNBT.getBoolean("dynamicUpdate");
         key = aNBT.getString("key");
+
+        NBTTagCompound connNamesNBT = aNBT.getCompoundTag("connectionNames");
+        connectionNames.clear();
+        for (String uuidStr : connNamesNBT.func_150296_c()) {
+            connectionNames.put(uuidStr, connNamesNBT.getString(uuidStr));
+        }
+        NBTTagCompound connGroupsNBT = aNBT.getCompoundTag("connectionGroups");
+        connectionGroups.clear();
+        for (String uuidStr : connGroupsNBT.func_150296_c()) {
+            connectionGroups.put(uuidStr, connGroupsNBT.getLong(uuidStr));
+        }
     }
 
     @Override
@@ -359,11 +387,20 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
         aNBT.setString("sort", sortMode.toString());
         aNBT.setTag("productionData", productionDataRecorder.writeToNBT());
         NBTTagCompound GroupNBT = new NBTTagCompound();
-        for (int i = 0; i < 8; i++) GroupNBT.setString(String.valueOf(i), group.get(i));
+        GroupNBT.setInteger("size", group.size());
+        for (int i = 0; i < group.size(); i++) GroupNBT.setString(String.valueOf(i), group.get(i));
         aNBT.setTag("Group", GroupNBT);
         aNBT.setInteger("activeGroup", activeGroup);
         aNBT.setBoolean("dynamicUpdate", autoUpdate);
         aNBT.setString("key", key);
+
+        NBTTagCompound connNamesNBT = new NBTTagCompound();
+        connectionNames.forEach(connNamesNBT::setString);
+        aNBT.setTag("connectionNames", connNamesNBT);
+
+        NBTTagCompound connGroupsNBT = new NBTTagCompound();
+        connectionGroups.forEach(connGroupsNBT::setLong);
+        aNBT.setTag("connectionGroups", connGroupsNBT);
     }
 
     @Override
@@ -423,16 +460,11 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
 
     private void spawnDroneItem() {
         ItemStack insideDrone = new ItemStack(switch (droneLevel) {
-            case 1:
-                yield ItemList.TierdDrone0.getItem();
-            case 2:
-                yield ItemList.TierdDrone1.getItem();
-            case 3:
-                yield ItemList.TierdDrone2.getItem();
-            case 4:
-                yield ItemList.TierdDrone3.getItem();
-            default:
-                yield null;
+            case 1 -> ItemList.TierdDrone0.getItem();
+            case 2 -> ItemList.TierdDrone1.getItem();
+            case 3 -> ItemList.TierdDrone2.getItem();
+            case 4 -> ItemList.TierdDrone3.getItem();
+            default -> null;
         }, 1);
         final EntityItem tItemEntity = new EntityItem(
             getBaseMetaTileEntity().getWorld(),
@@ -484,6 +516,9 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
                 this.droneLevel = drone.getLevel();
                 item.stackSize--;
                 updateSlots();
+                if (this.droneLevel == 4) {
+                    droneMap.put(Integer.MAX_VALUE, this);
+                }
                 issueTileUpdate();
                 return true;
             }
@@ -511,16 +546,24 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
 
     public void turnOnAll() {
         for (DroneConnection droneConnection : connectionList) {
-            if (droneConnection.isValid() && (activeGroup == 0 || droneConnection.getGroup() == activeGroup)) {
-                droneConnection.getLinkedMachine()
-                    .enableWorking();
+            if (droneConnection.isValid()
+                && (activeGroup == 0 || (droneConnection.getGroupMask() & (1L << activeGroup)) != 0)) {
+                MTEMultiBlockBase linkedMachine = droneConnection.getLinkedMachine();
+                if (linkedMachine != null) {
+                    linkedMachine.enableWorking();
+                    IGregTechTileEntity igte = linkedMachine.getBaseMetaTileEntity();
+                    if (igte != null && igte.getLastShutDownReason() == ShutDownReasonRegistry.POWER_LOSS) {
+                        GTMod.proxy.powerfailTracker.removePowerfailEvents(igte);
+                    }
+                }
             }
         }
     }
 
     public void turnOffAll(boolean force) {
         for (DroneConnection droneConnection : connectionList) {
-            if (droneConnection.isValid() && (activeGroup == 0 || droneConnection.getGroup() == activeGroup)) {
+            if (droneConnection.isValid()
+                && (activeGroup == 0 || (droneConnection.getGroupMask() & (1L << activeGroup)) != 0)) {
                 MTEMultiBlockBase mte = droneConnection.getLinkedMachine();
                 mte.disableWorking();
                 if (force && mte.getBaseMetaTileEntity() != null) {
@@ -611,6 +654,64 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
 
     public void setSearchBarText(String text) {
         searchFilter = text;
+    }
+
+    public String getProductionSearchFilter() {
+        return productionSearchFilter;
+    }
+
+    public void setProductionSearchFilter(String productionSearchFilter) {
+        this.productionSearchFilter = productionSearchFilter;
+    }
+
+    public void setConnectionName(String uuidStr, String name) {
+        connectionNames.put(uuidStr, name);
+    }
+
+    public String getConnectionName(String uuidStr, String defaultName) {
+        return connectionNames.getOrDefault(uuidStr, defaultName);
+    }
+
+    public void setConnectionGroups(String uuidStr, long mask) {
+        connectionGroups.put(uuidStr, mask);
+    }
+
+    public long getConnectionGroups(String uuidStr) {
+        return connectionGroups.getOrDefault(uuidStr, 0L);
+    }
+
+    public boolean getRenamingActiveGroup() {
+        return renamingActiveGroup;
+    }
+
+    public void setRenamingActiveGroup(boolean renamingActiveGroup) {
+        this.renamingActiveGroup = renamingActiveGroup;
+    }
+
+    public void addNewGroup() {
+        if (group.size() < 64) {
+            group.add(String.valueOf(group.size()));
+        }
+    }
+
+    public void deleteGroup(int index) {
+        if (index > 0 && index < group.size()) {
+            group.remove(index);
+            for (DroneConnection conn : connectionList) {
+                long mask = conn.getGroupMask();
+                long lowerBits = mask & ((1L << index) - 1);
+                long upperBits = (mask >> 1) & -(1L << index);
+                conn.setGroupMask(lowerBits | upperBits);
+            }
+            HashMap<String, Long> updatedGroups = new HashMap<>();
+            connectionGroups.forEach((uuid, mask) -> {
+                long lowerBits = mask & ((1L << index) - 1);
+                long upperBits = (mask >> 1) & -(1L << index);
+                updatedGroups.put(uuid, lowerBits | upperBits);
+            });
+            connectionGroups.clear();
+            connectionGroups.putAll(updatedGroups);
+        }
     }
 
     public boolean getSearchOriginalName() {

@@ -34,7 +34,7 @@ import gregtech.common.tileentities.machines.multi.drone.MTEDroneCentre;
 
 public class ItemDroneRemoteInterface extends GTGenericItem implements IGuiHolder<ItemStackGuiData> {
 
-    ItemStackGuiFactory factory = new ItemStackGuiFactory("mui2:itemstack", this);
+    public final ItemStackGuiFactory factory = new ItemStackGuiFactory("mui2:itemstack", this);
 
     public ItemDroneRemoteInterface(String aUnlocalized, String aEnglish, String aEnglishTooltip) {
         super(aUnlocalized, aEnglish, aEnglishTooltip);
@@ -43,25 +43,33 @@ public class ItemDroneRemoteInterface extends GTGenericItem implements IGuiHolde
 
     @Override
     public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
-        if (!world.isRemote && ItemStackNBT.hasKey(stack, "droneCentre")) {
-            // check whether drone centre is still exists
-            NBTTagCompound centreNbt = stack.getTagCompound()
-                .getCompoundTag("droneCentre");
-            int x = centreNbt.getInteger("x");
-            int y = centreNbt.getInteger("y");
-            int z = centreNbt.getInteger("z");
-            int dim = centreNbt.getInteger("dim");
+        if (!world.isRemote) {
+            if (ItemStackNBT.hasKey(stack, "droneCentre")) {
+                // check whether drone centre is still exists
+                NBTTagCompound centreNbt = stack.getTagCompound()
+                    .getCompoundTag("droneCentre");
+                int x = centreNbt.getInteger("x");
+                int y = centreNbt.getInteger("y");
+                int z = centreNbt.getInteger("z");
+                int dim = centreNbt.getInteger("dim");
 
-            World targetWorld = MinecraftServer.getServer()
-                .worldServerForDimension(dim);
-            if (targetWorld != null) {
-                TileEntity te = targetWorld.getTileEntity(x, y, z);
-                if (te instanceof IGregTechTileEntity
-                    && ((IGregTechTileEntity) te).getMetaTileEntity() instanceof MTEDroneCentre)
-                    GuiManager.open(factory, new ItemStackGuiData(player, stack), (EntityPlayerMP) player);
-                else player
-                    .addChatMessage(new ChatComponentTranslation("GT5U.tooltip.drone_remote_not_found", x, y, z, dim));
-            }
+                World targetWorld = MinecraftServer.getServer()
+                    .worldServerForDimension(dim);
+                if (targetWorld != null) {
+                    if (targetWorld.getChunkProvider()
+                        .chunkExists(x >> 4, z >> 4)) {
+                        TileEntity te = targetWorld.getTileEntity(x, y, z);
+                        if (te instanceof IGregTechTileEntity
+                            && ((IGregTechTileEntity) te).getMetaTileEntity() instanceof MTEDroneCentre)
+                            GuiManager.open(factory, new ItemStackGuiData(player, stack), (EntityPlayerMP) player);
+                        else player.addChatMessage(
+                            new ChatComponentTranslation("GT5U.tooltip.drone_remote_not_found", x, y, z, dim));
+                    } else {
+                        player.addChatMessage(
+                            new ChatComponentTranslation("GT5U.tooltip.drone_remote_not_loaded", x, y, z, dim));
+                    }
+                }
+            } else player.addChatMessage(new ChatComponentTranslation("GT5U.tooltip.drone_remote_disconnected"));
         }
         return super.onItemRightClick(stack, world, player);
     }
@@ -125,7 +133,7 @@ public class ItemDroneRemoteInterface extends GTGenericItem implements IGuiHolde
                 }
             }
         }
-        return new DroneRemoteInterfaceGUI(guiSyncManager, centre).build();
+        return new DroneRemoteInterfaceGUI(guiSyncManager, centre, guiData.getPlayer()).build();
     }
 
     @SideOnly(Side.CLIENT)

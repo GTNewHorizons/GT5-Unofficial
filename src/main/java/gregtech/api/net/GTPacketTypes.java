@@ -51,6 +51,8 @@ public enum GTPacketTypes {
     LIST_CAPES(41, new GTPacketListCapes()),
     SET_CAPE(42, new GTPacketSetCape()),
     TOOLBOX_EVENT(43, new GTPacketToolboxEvent()),
+    OBSERVE_MACHINE(44, new PacketObserveMachine()),
+    OPEN_REMOTE_MTE_GUI(45, new PacketOpenRemoteMteGui()),
 
     // merge conflict prevention comment, keep a trailing comma above
     ;
