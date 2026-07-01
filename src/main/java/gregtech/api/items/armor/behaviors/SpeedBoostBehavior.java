@@ -2,7 +2,6 @@ package gregtech.api.items.armor.behaviors;
 
 import java.util.Set;
 
-import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -22,7 +21,7 @@ public class SpeedBoostBehavior implements IArmorBehavior {
     public static final SpeedBoostBehavior MECH_ARMOR_INSTANCE = new SpeedBoostBehavior(2.0F);
 
     /// Somewhat arbitrary multiplier to make vertical flight speed comparable to horizontal flight speed
-    private static final double VERTICAL_SPEED_MULT = 2.0;
+    private static final double VERTICAL_SPEED_MULT = 2.5;
 
     public static final float SPEED_INCREMENT = 0.5F;
 
@@ -99,30 +98,24 @@ public class SpeedBoostBehavior implements IArmorBehavior {
 
         if (!context.isRemote()) return;
 
-        EntityPlayerSP sp = (EntityPlayerSP) player;
-
-        if (!context.isRemote()) return;
-        if (player.onGround || player.capabilities.isFlying) {
-            if (player.moveForward > 0F) {
-                player.moveFlying(0F, 1F, speed);
-            }
-
-            if (context.isBehaviorActive(BehaviorName.OmniMovement)) {
-                if (player.moveForward < 0F) player.moveFlying(0F, -1F, speed);
-                if (player.moveStrafing > 0F) player.moveFlying(1F, 0F, speed);
-                if (player.moveStrafing < 0F) player.moveFlying(-1F, 0F, speed);
-            }
-        } else {
-            player.jumpMovementFactor = 0.02F + (speed * 0.2F);
+        if (player.moveForward > 0F) {
+            player.moveFlying(0F, 1F, speed);
         }
 
-        if (context.isBehaviorActive(BehaviorName.OmniMovement) && player.capabilities.isFlying) {
-            if (player.isSneaking()) {
-                player.moveEntity(0, -speed * VERTICAL_SPEED_MULT, 0);
-            }
+        if (context.isBehaviorActive(BehaviorName.OmniMovement)) {
+            if (player.moveForward < 0F) player.moveFlying(0F, -1F, speed);
+            if (player.moveStrafing > 0F) player.moveFlying(1F, 0F, speed);
+            if (player.moveStrafing < 0F) player.moveFlying(-1F, 0F, speed);
 
-            if (ArmorKeybinds.VANILLA_JUMP.isKeyDown(player)) {
-                player.moveEntity(0, speed * VERTICAL_SPEED_MULT, 0);
+            if (player.capabilities.isFlying) {
+                float verticalSpeed = (float) (speed * VERTICAL_SPEED_MULT);
+
+                if (player.isSneaking()) {
+                    player.moveEntity(0, -verticalSpeed, 0);
+                }
+                if (ArmorKeybinds.VANILLA_JUMP.isKeyDown(player)) {
+                    player.moveEntity(0, verticalSpeed, 0);
+                }
             }
         }
     }
