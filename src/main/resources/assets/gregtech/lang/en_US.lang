@@ -4478,7 +4478,7 @@ gt.item.electric_pump.uiv.name=Electric Pump (UIV)
 gt.item.electric_pump.umv.name=Electric Pump (UMV)
 gt.item.electric_pump.uxv.name=Electric Pump (UXV)
 gt.item.electric_pump.max.name=Electric Pump (MAX)
-gt.item.electric_pump.tooltip=%s L/t %s L
+gt.item.electric_pump.tooltip=%s L/t (%s L/s)
 
 ## Other items
 gt.item.electronics_lump.name=Lump of Electronics
