@@ -5941,7 +5941,6 @@ public class MaterialsInit {
             .setARGB(0xf0a9d0f5)
             .setOreMultiplier(4)
             .addCell()
-            .addGas()
             .setMeltingPoint(25)
             .setBlastFurnaceTemp(1)
             .addMaterial(Materials.Carbon, 1)

@@ -1928,6 +1928,17 @@ public class LoaderGTBlockFluid implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.ActivatedNetherite, 1L),
                 ItemList.Cell_Empty.get(1L));
 
+        GTFluidFactory.builder(Materials.CarbonDioxide.mName.toLowerCase(Locale.ENGLISH))
+            .withDefaultLocalName(Materials.CarbonDioxide.mDefaultLocalName)
+            .withTextureName("carbondioxide")
+            .withColorRGBA(Materials.CarbonDioxide.mRGBa)
+            .withStateAndTemperature(GAS, Materials.CarbonDioxide.getGasTemperature())
+            .buildAndRegister()
+            .configureMaterials(Materials.CarbonDioxide)
+            .addLocalizedName(Materials.CarbonDioxide)
+            .registerBContainers(GTOreDictUnificator.get(OrePrefixes.cell, Materials.CarbonDioxide, 1L), ItemList.Cell_Empty.get(1L))
+            .asFluid();
+
         for (Materials tMaterial : Materials.values()) {
             if ((tMaterial.mStandardMoltenFluid == null) && (tMaterial.contains(SubTag.SMELTING_TO_FLUID))
                 && (!tMaterial.contains(SubTag.NO_SMELTING))) {
