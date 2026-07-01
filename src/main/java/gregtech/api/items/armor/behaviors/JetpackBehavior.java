@@ -55,8 +55,20 @@ public class JetpackBehavior implements IArmorBehavior {
     private void performFlying(@NotNull ArmorContext context) {
         EntityPlayer player = context.getPlayer();
 
+        float groundSpeedBoost = context.getArmorState().speedBoostMulti;
+        if (groundSpeedBoost < 1.0F) groundSpeedBoost = 1.0F;
+
+        final float AIR_EFFICIENCY = 0.25F;
+        float jetpackMultiplier = 1.0F + ((groundSpeedBoost - 1.0F) * AIR_EFFICIENCY);
+
         double currentAccel = jetpackStats.getVerticalAcceleration() * (player.motionY < 0.3D ? 2.5D : 1.0D);
         double currentSpeedVertical = jetpackStats.getVerticalSpeed() * (player.isInWater() ? 0.4D : 1.0D);
+
+        float speedSideways = (float) ((player.isSneaking() ? jetpackStats.getSidewaysSpeed() * 0.5f
+            : jetpackStats.getSidewaysSpeed()) * jetpackMultiplier);
+        float speedForward = (float) (player.isSprinting() ? speedSideways * jetpackStats.getSprintSpeedModifier()
+            : speedSideways);
+
         boolean ascend = ArmorKeybinds.VANILLA_JUMP.isKeyDown(player);
         boolean descend = ArmorKeybinds.VANILLA_SNEAK.isKeyDown(player);
         boolean isHovering = context.isBehaviorActive(BehaviorName.JetpackHover);
@@ -81,27 +93,17 @@ public class JetpackBehavior implements IArmorBehavior {
                         context.hasBehavior(BehaviorName.JetpackPerfectHover) ? 0
                             : -jetpackStats.getVerticalHoverSlowSpeed());
                 }
-                float speedSideways = (float) (player.isSneaking() ? jetpackStats.getSidewaysSpeed() * 0.5f
-                    : jetpackStats.getSidewaysSpeed());
-                float speedForward = (float) (player.isSprinting()
-                    ? speedSideways * jetpackStats.getSprintSpeedModifier()
-                    : speedSideways);
 
                 if (!isGuiOpen) {
-                    if (ArmorKeybinds.VANILLA_FORWARD.isKeyDown(player))
-                        player.moveFlying(0, speedForward, speedForward);
-                    if (ArmorKeybinds.VANILLA_BACK.isKeyDown(player))
-                        player.moveFlying(0, -speedSideways, speedSideways * 0.8f);
-                    if (ArmorKeybinds.VANILLA_LEFT.isKeyDown(player))
-                        player.moveFlying(speedSideways, 0, speedSideways);
-                    if (ArmorKeybinds.VANILLA_RIGHT.isKeyDown(player))
-                        player.moveFlying(-speedSideways, 0, speedSideways);
+                    if (ArmorKeybinds.VANILLA_FORWARD.isKeyDown(player)) player.moveFlying(0F, 1F, speedForward);
+                    if (ArmorKeybinds.VANILLA_BACK.isKeyDown(player)) player.moveFlying(0F, -1F, speedSideways * 0.8f);
+                    if (ArmorKeybinds.VANILLA_LEFT.isKeyDown(player)) player.moveFlying(1F, 0F, speedSideways);
+                    if (ArmorKeybinds.VANILLA_RIGHT.isKeyDown(player)) player.moveFlying(-1F, 0F, speedSideways);
                 }
 
                 if (!player.getEntityWorld().isRemote) {
                     player.fallDistance = 0;
                 }
-                // spawnParticle(player.getEntityWorld(), player, jetpackStats.getParticle());
             }
         }
     }

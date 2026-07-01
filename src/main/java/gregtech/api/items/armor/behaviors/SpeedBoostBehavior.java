@@ -19,17 +19,19 @@ import gregtech.api.util.GTUtility;
 
 public class SpeedBoostBehavior implements IArmorBehavior {
 
-    public static final SpeedBoostBehavior MECH_ARMOR_INSTANCE = new SpeedBoostBehavior(0.05F);
+    public static final SpeedBoostBehavior MECH_ARMOR_INSTANCE = new SpeedBoostBehavior(2.0F);
 
     /// Somewhat arbitrary multiplier to make vertical flight speed comparable to horizontal flight speed
-    private static final double VERTICAL_SPEED_MULT = 8;
+    private static final double VERTICAL_SPEED_MULT = 2.0;
 
-    public static final float SPEED_INCREMENT = 0.25F;
+    public static final float SPEED_INCREMENT = 0.5F;
 
-    private final float speedup;
+    private final float speedMaxMulti;
+
+    private final float BASE_SPEED = 0.127F;
 
     public SpeedBoostBehavior(float speedUp) {
-        this.speedup = speedUp;
+        this.speedMaxMulti = speedUp;
     }
 
     @Override
@@ -44,32 +46,33 @@ public class SpeedBoostBehavior implements IArmorBehavior {
         ArmorState state = context.getArmorState();
 
         if (keyPressed == ArmorKeybinds.SPEED_INCREASE_KEYBIND) {
-            state.speedBoost += SPEED_INCREMENT;
+            state.speedBoostMulti += SPEED_INCREMENT;
         } else if (keyPressed == ArmorKeybinds.SPEED_DECREASE_KEYBIND) {
-            state.speedBoost -= SPEED_INCREMENT;
+            state.speedBoostMulti -= SPEED_INCREMENT;
         }
 
-        state.speedBoost = MathUtils.clamp(state.speedBoost, 0, 1);
+        state.speedBoostMulti = MathUtils.clamp(state.speedBoostMulti, 1, speedMaxMulti);
 
         GTUtility.sendChatToPlayer(
             context.getPlayer(),
-            GTUtility.translate("GT5U.armor.message.speed_set", Math.round(state.speedBoost * 100F)));
+            GTUtility.translate("GT5U.armor.message.speed_set", state.speedBoostMulti));
     }
 
     @Override
     public void configureArmorState(@NotNull ArmorContext context, @NotNull NBTTagCompound stackTag) {
-        context.getArmorState().speedBoost = stackTag.getFloat("speedBoost");
+        float savedBoost = stackTag.getFloat("speedBoostMulti");
+        context.getArmorState().speedBoostMulti = Math.max(savedBoost, 1.0F);
     }
 
     @Override
     public void saveArmorState(@NotNull ArmorContext context, @NotNull NBTTagCompound stackTag) {
-        stackTag.setFloat("speedBoost", context.getArmorState().speedBoost);
+        stackTag.setFloat("speedBoostMulti", context.getArmorState().speedBoostMulti);
     }
 
     @Override
     public @NotNull IArmorBehavior merge(@NotNull IArmorBehavior other) {
         if (!(other instanceof SpeedBoostBehavior o)) return this;
-        return new SpeedBoostBehavior(this.speedup + o.speedup);
+        return new SpeedBoostBehavior(this.speedMaxMulti + o.speedMaxMulti);
     }
 
     @Override
@@ -81,13 +84,16 @@ public class SpeedBoostBehavior implements IArmorBehavior {
     public void onArmorTick(@NotNull ArmorContext context) {
         EntityPlayer player = context.getPlayer();
 
-        float speed = context.getArmorState().speedBoost * this.speedup;
+        float speed = (context.getArmorState().speedBoostMulti - 1) * BASE_SPEED;
+
+        if (player.capabilities.isFlying) {
+            speed *= 0.5F;
+        }
 
         if (speed <= 0) return;
 
-        boolean isMoving = (player.onGround || player.capabilities.isFlying) && !player.isInWater()
-            && (player.moveForward != 0 || player.moveStrafing != 0
-                || (player.capabilities.isFlying && player.isSneaking()));
+        boolean isMoving = !player.isInWater() && (player.moveForward != 0 || player.moveStrafing != 0
+            || (player.capabilities.isFlying && (player.isSneaking() || ArmorKeybinds.VANILLA_JUMP.isKeyDown(player))));
 
         if (!isMoving || !context.drainEnergy(1)) return;
 
@@ -95,31 +101,28 @@ public class SpeedBoostBehavior implements IArmorBehavior {
 
         EntityPlayerSP sp = (EntityPlayerSP) player;
 
-        if (sp.moveForward > 0F) {
-            sp.moveFlying(0F, 1F, speed);
+        if (!context.isRemote()) return;
+        if (player.onGround || player.capabilities.isFlying) {
+            if (player.moveForward > 0F) {
+                player.moveFlying(0F, 1F, speed);
+            }
+
+            if (context.isBehaviorActive(BehaviorName.OmniMovement)) {
+                if (player.moveForward < 0F) player.moveFlying(0F, -1F, speed);
+                if (player.moveStrafing > 0F) player.moveFlying(1F, 0F, speed);
+                if (player.moveStrafing < 0F) player.moveFlying(-1F, 0F, speed);
+            }
+        } else {
+            player.jumpMovementFactor = 0.02F + (speed * 0.2F);
         }
 
-        if (context.isBehaviorActive(BehaviorName.OmniMovement)) {
-            if (sp.moveForward < 0F) {
-                sp.moveFlying(0F, -1F, speed);
+        if (context.isBehaviorActive(BehaviorName.OmniMovement) && player.capabilities.isFlying) {
+            if (player.isSneaking()) {
+                player.moveEntity(0, -speed * VERTICAL_SPEED_MULT, 0);
             }
 
-            if (sp.moveStrafing > 0F) {
-                sp.moveFlying(1F, 0F, speed);
-            }
-
-            if (sp.moveStrafing < 0F) {
-                sp.moveFlying(-1F, 0F, speed);
-            }
-
-            if (sp.capabilities.isFlying) {
-                if (sp.movementInput.sneak) {
-                    sp.moveEntity(0, -speed * VERTICAL_SPEED_MULT, 0);
-                }
-
-                if (sp.movementInput.jump) {
-                    sp.moveEntity(0, speed * VERTICAL_SPEED_MULT, 0);
-                }
+            if (ArmorKeybinds.VANILLA_JUMP.isKeyDown(player)) {
+                player.moveEntity(0, speed * VERTICAL_SPEED_MULT, 0);
             }
         }
     }

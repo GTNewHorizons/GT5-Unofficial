@@ -8,7 +8,7 @@ import gregtech.api.items.armor.ArmorContext;
 
 public class JumpBoostBehavior implements IArmorBehavior {
 
-    public static final JumpBoostBehavior MECH_ARMOR_INSTANCE = new JumpBoostBehavior(0.2F);
+    public static final JumpBoostBehavior MECH_ARMOR_INSTANCE = new JumpBoostBehavior(1.0F);
 
     private final float boost;
 
@@ -23,7 +23,7 @@ public class JumpBoostBehavior implements IArmorBehavior {
 
     @Override
     public void configureArmorState(@NotNull ArmorContext context, @NotNull NBTTagCompound stackTag) {
-        context.getArmorState().jumpBoost = boost;
+        context.getArmorState().jumpBoostLevel = boost;
     }
 
     @Override
