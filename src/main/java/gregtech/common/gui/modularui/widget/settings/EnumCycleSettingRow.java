@@ -13,6 +13,7 @@ import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.github.bsideup.jabel.Desugar;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import gregtech.common.gui.modularui.widget.EnumCycleButtonWidget;
 import gregtech.common.gui.modularui.widget.WidgetConfigurator;
 import it.unimi.dsi.fastutil.Pair;
@@ -24,18 +25,22 @@ record EnumCycleSettingRow<E extends Enum<E>> (IKey label, Class<E> clazz, IIntV
     @Override
     public @NotNull Pair<IKey, EnumCycleButtonWidget<E>> build(ModularPanel panel, PanelSyncManager syncManager,
         SettingsPanel settings) {
-        FontRenderer fontRenderer = TextRenderer.getFontRenderer();
 
         EnumCycleButtonWidget<E> button = new EnumCycleButtonWidget<>(clazz).value(value);
 
         if (configure != null) configure.configure(panel, syncManager, button);
 
-        if (button.hasDefaultOverlay()) button.width(
-            Arrays.stream(clazz.getEnumConstants())
-                .map(Enum::toString)
-                .mapToInt(fontRenderer::getStringWidth)
-                .max()
-                .getAsInt() + 10);
+        if (button.hasDefaultOverlay() && FMLCommonHandler.instance()
+            .getEffectiveSide()
+            .isClient()) {
+            FontRenderer fontRenderer = TextRenderer.getFontRenderer();
+            button.width(
+                Arrays.stream(clazz.getEnumConstants())
+                    .map(Enum::toString)
+                    .mapToInt(fontRenderer::getStringWidth)
+                    .max()
+                    .getAsInt() + 10);
+        }
 
         return Pair.of(label, button);
     }
