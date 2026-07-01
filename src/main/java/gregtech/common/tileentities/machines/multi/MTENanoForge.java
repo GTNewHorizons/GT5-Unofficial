@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.multi;
 
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.isAir;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
@@ -24,7 +25,6 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -350,7 +350,7 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
         .addElement('W', ofBlock(GregTechAPI.nanoForgeRender, 0))
         .addElement('X', ofBlock(GregTechAPI.sBlockCasings8, 7))
         .addElement('Y', ofBlock(GregTechAPI.sBlockCasings8, 10))
-        .addElement('Z', ofBlock(Blocks.air, 0))
+        .addElement('Z', isAir())
         .build();
     private byte mSpecialTier = 0;
     private boolean renderActive = false;
