@@ -7,8 +7,7 @@ import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
 import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.recipe.RecipeMaps.oreWasherRecipes;
 import static gregtech.api.recipe.RecipeMaps.thermalCentrifugeRecipes;
-import static gregtech.api.util.GTRecipeBuilder.SECONDS;
-import static gregtech.api.util.GTRecipeBuilder.TICKS;
+import static gregtech.api.util.GTRecipeBuilder.*;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
 
 import java.util.ArrayList;
@@ -147,10 +146,12 @@ public class RecipeGenOre extends RecipeGenBase {
         /**
          * Macerate
          */
+
         // Macerate ore to Crushed
         GTValues.RA.stdBuilder()
             .itemInputs(material.getOre(1))
-            .itemOutputs(material.getCrushed(2))
+            .itemOutputs(material.getCrushed(2), matDustA, dustStone)
+            .outputChances(100_00, 10_00, 50_00)
             .duration(20 * SECONDS)
             .eut(tVoltageMultiplier / 2)
             .addTo(maceratorRecipes);
@@ -158,7 +159,8 @@ public class RecipeGenOre extends RecipeGenBase {
         // Macerate raw ore to Crushed
         GTValues.RA.stdBuilder()
             .itemInputs(material.getRawOre(1))
-            .itemOutputs(material.getCrushed(2))
+            .itemOutputs(material.getCrushed(2), matDustA, dustStone)
+            .outputChances(100_00, 5_00, 50_00)
             .duration(20 * SECONDS)
             .eut(tVoltageMultiplier / 2)
             .addTo(maceratorRecipes);
