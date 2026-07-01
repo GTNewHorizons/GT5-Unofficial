@@ -26,6 +26,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -352,15 +353,22 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
             .addInfo("The index of a stored fluid can be obtained through the Tricorder")
             .beginVariableStructureBlock(5, 15, 5, 5, 5, 5, false)
             .addController("Front center")
-            .addCasing("48-208", "EV+ Tiered Glass", false)
-            .addCasing("27-117", "Field Storage Block", true)
-            .addCasing(MIN_CASING_AMOUNT + "-46", "TFFT Casing", false)
             .addEnergyHatch("0+", "Any casing", 1, 2)
             .addMaintenanceHatch("1", "Any casing", 1, 2)
             .addMiscHatch("0-1", "TFFT Multi I/O Hatch", "Any casing/glass adjacent to a field storage block", 2, 3)
             .addInputHatch("1+", "Any casing/glass adjacent to a field storage block", 2, 3)
             .addOutputHatch("1+", "Any casing/glass adjacent to a field storage block", 2, 3)
             .addStructureInfo("")
+            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Base"))
+            .addCasing("12-48", "EV+ Tiered Glass", false)
+            .addCasing(MIN_CASING_AMOUNT + "-46", "TFFT Casing", false)
+            .addCasing("27", "Field Storage Block", true)
+            .addStructureInfo("")
+            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Slice"))
+            .addCasing("4-16", "EV+ Tiered Glass", false)
+            .addCasing("9", "Field Storage Block", true)
+            .addStructureInfo("")
+            .addStructureFooter("No air gaps allowed, but the field storage blocks can be different tiers")
             .addStructureFooter("Place a fluid storage bus on the Multi I/O Hatch to interact with all fluids directly")
             .addSubChannel(GTStructureChannels.STRUCTURE_LENGTH)
             .addSubChannel(GTStructureChannels.BOROGLASS)

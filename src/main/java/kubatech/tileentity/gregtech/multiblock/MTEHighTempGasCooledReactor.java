@@ -151,11 +151,11 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
             'v',
             HatchElement.OutputBus.newAny(((BlockCasings13) GregTechAPI.sBlockCasings13).getTextureIndex(3), 3))
         .addElement(
-            'c',
-            HTGRHatches.CoolantInputHatch.newAny(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(3), 4))
-        .addElement(
             'h',
-            HTGRHatches.CoolantOutputHatch.newAny(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(3), 5))
+            HTGRHatches.CoolantOutputHatch.newAny(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(3), 4))
+        .addElement(
+            'c',
+            HTGRHatches.CoolantInputHatch.newAny(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(3), 5))
         .addElement(
             'w',
             HTGRHatches.WaterInputHatch.newAny(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(3), 6))
@@ -176,10 +176,10 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
                                                                          // will be multiplied by this number+1
 
     private static final double BASE_PROCESSING_TIME = 2000d; // Minimum operation time
-    private static final double SCALING_PROCESSING_TIME = 18000; // Scaling operation time with amount of pellets in
+    private static final double SCALING_PROCESSING_TIME = 18000; // Scaling operation time with amount of balls in
                                                                  // the reactor
 
-    private static final int MAX_CAPACITY = 10000; // Max pellets in reactor
+    private static final int MAX_CAPACITY = 10000; // Max balls in reactor
     private static final int MIN_CAPACITY = MAX_CAPACITY / 100; // min 1% reactor fill to start
 
     private static final double COOLANT_SPEEDUP = 0.07d / 20d; // 7% recipe time per second if supplied with 100% of all
@@ -187,8 +187,8 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
     private static final double WATER_SPEEDUP = 0.03d / 20d; // 3% recipe time per second if supplied with 100% of all
                                                              // needed water
 
-    private static final double COOLANT_PER_PELLET = 0.5d; // coolant needed per tick to cool one pellet
-    private static final double WATER_PER_PELLET = 0.1d; // water needed per tick to cool one pellet
+    private static final double COOLANT_PER_BALL = 0.5d; // coolant needed per tick to cool one ball
+    private static final double WATER_PER_BALL = 0.1d; // water needed per tick to cool one ball
 
     private static final double HELIUM_LOST_PER_CYCLE = 0.0005d; // Helium lost per one operation
 
@@ -382,26 +382,42 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
                     + EnumChatFormatting.GRAY
                     + "% total recipe time/second")
             .addInfo(
-                "The amount of necessary fluid for maximum bonus speed scales with pellets, " + EnumChatFormatting.RED
-                    + formatNumber(COOLANT_PER_PELLET)
-                    + EnumChatFormatting.GRAY
-                    + " coolant/tick/pellet and "
+                "The amount of necessary fluid for maximum bonus speed scales with TRISO Balls, "
                     + EnumChatFormatting.RED
-                    + formatNumber(WATER_PER_PELLET)
+                    + formatNumber(COOLANT_PER_BALL)
                     + EnumChatFormatting.GRAY
-                    + " distilled water/tick/pellet")
-            .beginStructureBlock(29, 16, 18, true)
+                    + " coolant/tick/ball and "
+                    + EnumChatFormatting.RED
+                    + formatNumber(WATER_PER_BALL)
+                    + EnumChatFormatting.GRAY
+                    + " distilled water/tick/ball")
+            .beginStructureBlock(16, 27, 15, true)
             .addController("Front center")
-            .addInputHatch("Top of the Pump - Accepts Helium", 1)
-            .addEnergyHatch("Top of the Pump", 1)
-            .addMaintenanceHatch("Top of the Pump", 1)
-            .addInputBus("Top of the Reactor - Accepts Fuel", 2)
-            .addOutputBus("Bottom of the Reactor - Outputs Fuel", 3)
-            .addInputHatch("Bottom of the tall Coolant Tower - Accepts Coolant", 4)
-            .addOutputHatch("Top of the tall Coolant Tower - Outputs Hot Coolant", 5)
-            .addInputHatch("Top of the short Coolant Tower - Accepts Distilled Water", 6)
-            .addOutputHatch("Bottom of the short Coolant Tower - Outputs Steam", 7)
-
+            .addCasing("273", "Beryllium Integrated Reactor Casing", false)
+            .addCasing("272", "Pressure Containment Casing", false)
+            .addCasing("164", "Tungsten Frame Box", false)
+            .addCasing("162", "Graphite Moderator Casing", false)
+            .addCasing("45", "Tungstensteel Pipe Casing", false)
+            .addCasing("41", "Insulated Fluid Pipe Casing", false)
+            .addCasing("30", "Titanium Pipe Casing", false)
+            .addCasing("24", "Cable Casing", false)
+            .addCasing("23", "IV Machine Casing", false)
+            .addCasing("20", "Refined Graphite Block", false)
+            .addCasing("17", "Steel Pipe Casing", false)
+            .addCasing("3", "Pump Machine Casing", false)
+            .addCasing("2", "Motor Machine Casing", false)
+            .addCasing("1", "Processor Machine Casing", false)
+            .addEnergyHatch("1", "Any top pump casing", 1)
+            .addMaintenanceHatch("1", "Any top pump casing", 1)
+            .addInputBus("1+", "Top of reactor (TRISO Balls)", 2)
+            .addInputHatch(
+                "3+",
+                "Any top pump casing (helium), bottom of tall tower (coolant), top of short tower (distilled water)",
+                1,
+                5,
+                6)
+            .addOutputBus("1+", "Bottom of reactor (Burned Out TRISO Balls)", 3)
+            .addOutputHatch("2+", "Top of tall tower (hot coolant), bottom of short tower (steam)", 4, 7)
             .toolTipFinisher(AuthorKuba, AuthorPxx500);
         return tt;
     }
@@ -426,13 +442,13 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack itemStack,
         List<StructureError> errors) {
         if (!checkPiece("main", 16, 13, 1, errors)) return;
+        checkHasEnergyHatch(errors);
         checkHasMaintenanceHatch(errors);
         checkHasInputBus(errors);
-        checkHasOutputBus(errors);
-        checkHasEnergyHatch(errors);
         if (heliumInputHatch == null) {
             errors.add(StructureErrors.of("GT5U.gui.text.structure_error.htgr_missing_helium_hatch"));
         }
+        checkHasOutputBus(errors);
     }
 
     @Override
@@ -671,8 +687,8 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
         /*
          * each fuel ball has 3 values:
          * fuelbase responsible for base generation, averaged from all balls in the reactor
-         * fuelmultiplier and fuelexponent are defined as "full reactor" values (at MAX_CAPACITY pellets)
-         * per-pellet contribution is (value - 1) / MAX_CAPACITY because multiplier/exponent start from 1
+         * fuelmultiplier and fuelexponent are defined as "full reactor" values (at MAX_CAPACITY Balls)
+         * per-ball contribution is (value - 1) / MAX_CAPACITY because multiplier/exponent start from 1
          * example: uranium (1,1,1) plutonium (2,1.2,1.1) tungsten (0.5,0.9,0.5)
          * exponent affects the strength of multiplier at the cost of reactor recipe time (overclocking basically, but
          * depending on multiplier can be a hindrance or a boost)
@@ -683,11 +699,11 @@ public class MTEHighTempGasCooledReactor extends KubaTechGTMultiBlockBase<MTEHig
         this.timeMultiplier = 1 / Math.pow(fuelExponent, 2);
 
         this.coolanttaking = (int) (energyMultiplier
-            * ((COOLANT_PER_PELLET * this.fuelsupply * this.heliumSupply / HELIUM_NEEDED)
+            * ((COOLANT_PER_BALL * this.fuelsupply * this.heliumSupply / HELIUM_NEEDED)
                 * (1 - (this.getIdealStatus() - this.getRepairStatus()) / 5d)));
 
         this.watertaking = (int) (energyMultiplier
-            * ((WATER_PER_PELLET * this.fuelsupply * this.heliumSupply / HELIUM_NEEDED)
+            * ((WATER_PER_BALL * this.fuelsupply * this.heliumSupply / HELIUM_NEEDED)
                 * (1 - (this.getIdealStatus() - this.getRepairStatus()) / 5d)));
 
         this.mEfficiency = (int) (eff * 10000D);

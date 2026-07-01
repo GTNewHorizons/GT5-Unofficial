@@ -18,7 +18,6 @@ import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.util.GTStructureUtility.activeCoils;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofCoil;
-import static gtnhlanth.util.DescTextLocalization.addHintNumber;
 
 import java.util.List;
 
@@ -212,18 +211,18 @@ public class MTEDigester extends MTEEnhancedMultiBlockBase<MTEDigester>
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(7, 7, 4, true)
             .addController("Front bottom center")
-            .addCasingInfoMin(Casings.RobustTungstenSteelMachineCasing.getLocalizedName(), 40, false)
-            .addCasingInfoExactly(Casings.HeatProofMachineCasing.getLocalizedName(), 16, false)
-            .addCasingInfoExactly(Casings.CleanStainlessSteelMachineCasing.getLocalizedName(), 9, false)
-            .addCasingInfoExactly("Coil", 16, true)
-            .addInputHatch(addHintNumber(1))
-            .addInputBus(addHintNumber(1))
-            .addOutputHatch(addHintNumber(1))
-            .addOutputBus(addHintNumber(1))
-            .addEnergyHatch(addHintNumber(1))
-            .addMaintenanceHatch(addHintNumber(1))
-            .addMufflerHatch(addHintNumber(1))
-            .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
+            .addCasing("40-54", Casings.RobustTungstenSteelMachineCasing.getLocalizedName(), false)
+            .addCasing("16", Casings.HeatProofMachineCasing.getLocalizedName(), false)
+            .addCasing("16", "Heating Coil", false)
+            .addCasing("9", Casings.CleanStainlessSteelMachineCasing.getLocalizedName(), false)
+            .addEnergyHatch("1+", "Any tungstensteel casing", 1)
+            .addMaintenanceHatch("1", "Any tungstensteel casing", 1)
+            .addMufflerHatch("1", "Any tungstensteel casing", 1)
+            .addInputAny("1+", "Any tungstensteel casing", 1)
+            .addOutputAny("1+", "Any tungstensteel casing", 1)
+            .addAir("Interior and top of the structure")
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
         return tt;
     }

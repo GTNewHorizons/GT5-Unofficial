@@ -351,7 +351,7 @@ ig.nei.siphon.planet=Planet
 ig.nei.siphon.depth=Depth
 
 # Structure and Tooltip
-ig.siphon.structure.ControllerPos=Front center of the middle structure
+ig.siphon.structure.ControllerPos=Front center of the main body
 ig.siphon.structure.ControllerPos2=Front bottom center
 ig.siphon.structure.HatchRequirement=Must have exactly §61§7 of each hatch!
 ig.siphon.structure.AnySiphonCasing=Any Planetary Siphon Casing

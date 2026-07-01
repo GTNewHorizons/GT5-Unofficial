@@ -1164,7 +1164,7 @@ public class MultiblockTooltipBuilder {
                 + COLON
                 + EnumChatFormatting.GRAY
                 + info);
-        for (int dot : dots) hBlocks.put(dot, TT_outputany);
+        for (int dot : dots) hBlocks.put(dot, name);
         return this;
     }
 

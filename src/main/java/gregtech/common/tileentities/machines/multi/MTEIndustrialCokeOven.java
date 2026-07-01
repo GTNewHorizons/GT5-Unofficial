@@ -143,9 +143,9 @@ public class MTEIndustrialCokeOven extends MTEExtendedPowerMultiBlockBase<MTEInd
             .addCasing("5", "Heat Resistant/Proof Coke Oven Casing", true)
             .addCasing("3", "Steel Pipe Casing", false)
             .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.STRUCTURE_LENGTH)
             .addSubChannel(GTStructureChannels.HEATING_COIL)
             .addSubChannel(GTStructureChannels.COKE_OVEN_CASING)
-            .addSubChannel(GTStructureChannels.STRUCTURE_LENGTH)
             .addStructureAuthors(EnumChatFormatting.GOLD + "Nicouuuuu")
             .toolTipFinisher();
         return tt;

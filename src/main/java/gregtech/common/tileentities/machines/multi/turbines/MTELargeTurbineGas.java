@@ -58,6 +58,11 @@ public class MTELargeTurbineGas extends MTELargeTurbineBase {
     }
 
     @Override
+    public boolean requiresOutputHatch() {
+        return false;
+    }
+
+    @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
         return new ITexture[] { MACHINE_CASINGS[1][colorIndex + 1],
@@ -79,7 +84,8 @@ public class MTELargeTurbineGas extends MTELargeTurbineBase {
         tt.addMachineType("Gas Turbine, LGT")
             .addInfo("Needs a Turbine, place inside controller")
             .addInfo("Generates power from Gas based on the turbine and fitting")
-            .addInfo("Use screwdriver to adjust fitting of turbine")
+            .addInfo("Use a screwdriver to adjust the fitting of the turbine")
+            .addInfo("Loose fit increases flow in exchange for efficiency")
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(6, 3, 3, false)
             .addController("Front center")

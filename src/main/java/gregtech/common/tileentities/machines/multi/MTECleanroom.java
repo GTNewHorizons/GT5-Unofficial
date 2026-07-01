@@ -180,6 +180,7 @@ public class MTECleanroom extends MTETooltipMultiBlockBase implements IConstruct
                     + EnumChatFormatting.GRAY
                     + " for more valid blocks")
             .addStructureFooter("Use Wireless Connectors for transferring AE2 channels")
+            .addStructureInfo("")
             .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.size"))
             .toolTipFinisher();
         return tt;

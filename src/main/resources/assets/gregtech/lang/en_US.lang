@@ -1691,6 +1691,7 @@ GT5U.MBTT.Structure.GlassEnergyLimit=Energy Hatch limited by §fGlass§7 Tier
 GT5U.MBTT.Structure.GlassEnergyLimitTier=-tier unlocks all
 GT5U.MBTT.Structure.DynamoLimit=§cDynamo cannot be greater than 4A
 GT5U.MBTT.Structure.Rain=§cDon't forget to protect the machine from rain and/or meteors!
+GT5U.MBTT.Structure.WaterCost=The water is a one-time-cost to prime the machine, insert with a hatch
 GT5U.MBTT.Structure.NoTierSkips=This machine can only run recipes matching its average energy hatch tier
 GT5U.MBTT.Structure.MaxTierSkips=This machine can run recipes at most %d tiers above its average energy hatch tier
 GT5U.MBTT.Structure.UnlimitedTierSkips=This machine can run recipes regardless of tier, if given enough energy
@@ -2401,6 +2402,7 @@ channels.gregtech.time_dilation=Decides the tier of Time Dilation Field Generato
 channels.gregtech.gt_hatch=Enables automatic hatch placement
 channels.gregtech.field=Decides the tier of TFFT Storage Field.
 channels.gregtech.component_casing=Decides the tier of Component Assembly Line Casing. Starts at §6LV§r at value 1 and ends at §6MAX§r at value 14.
+channels.gregtech.super_chest=Decides the tier of Super/Quantum Chest. Starts at §6Super Chest I§r at value 1 and ends at §6Quantum Chest V§r at value 10.
 
 channels.gregtech.master.structuretier=Structure Tier
 channels.gregtech.master.casingtier=Casing Tier
@@ -2409,7 +2411,6 @@ channels.gregtech.master.windingtier=Primary Winding Tier
 channels.gregtech.master.size=Total Size
 channels.gregtech.master.length=Length
 channels.gregtech.master.height=Height
-channels.gregtech.master.slices=Number of Slices
 channels.gregtech.master.modules=Number of Modules
 channels.gregtech.master.rings=Number of Rings
 

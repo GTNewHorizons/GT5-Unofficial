@@ -152,6 +152,10 @@ public abstract class MTELargeTurbineBase extends MTEExtendedPowerMultiBlockBase
         return new IHatchElement[] { Maintenance, InputHatch, OutputHatch, OutputBus, InputBus, Muffler };
     }
 
+    public boolean requiresOutputHatch() {
+        return true;
+    }
+
     @Override
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         maxPower = 0;
@@ -161,6 +165,10 @@ public abstract class MTELargeTurbineBase extends MTEExtendedPowerMultiBlockBase
             checkHasMufflerHatch(errors);
         }
         checkHasInputHatch(errors);
+        if (requiresOutputHatch()) {
+            checkHasOutputHatch(errors);
+        }
+
         if (!errors.isEmpty()) return;
         maxPower = getMaximumOutput();
     }
