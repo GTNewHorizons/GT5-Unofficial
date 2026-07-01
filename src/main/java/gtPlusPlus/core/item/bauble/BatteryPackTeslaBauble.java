@@ -1,7 +1,7 @@
 package gtPlusPlus.core.item.bauble;
 
-import static gregtech.api.enums.Mods.Baubles;
 import static gregtech.api.enums.Mods.GTPlusPlus;
+import static gtPlusPlus.core.item.bauble.BatteryPackBaseBauble.getBaublesItems;
 
 import java.util.List;
 
@@ -9,16 +9,12 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
-import org.jetbrains.annotations.NotNull;
-
 import baubles.api.BaubleType;
-import baubles.api.BaublesApi;
 import cofh.api.energy.IEnergyContainerItem;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -28,12 +24,14 @@ import gregtech.common.config.OPStuff;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
+import tectech.mechanics.tesla.ITeslaConnectable;
+import tectech.mechanics.tesla.TeslaItemConnection;
 
-public class BatteryPackBaseBauble extends ElectricBaseBauble {
+public class BatteryPackTeslaBauble extends ElectricBaseBauble {
 
-    public BatteryPackBaseBauble(int tier) {
-        super(BaubleType.BELT, tier, GTValues.V[tier] * 20 * 300, "GTPP.BattPack.0" + tier + ".name");
-        String aUnlocalName = "GTPP.BattPack.0" + tier + ".name";
+    public BatteryPackTeslaBauble(int tier) {
+        super(BaubleType.BELT, tier, GTValues.V[tier] * 20 * 300, "GTPP.BattPackTesla.0" + tier + ".name");
+        String aUnlocalName = "GTPP.BattPackTesla.0" + tier + ".name";
         this.setCreativeTab(AddToCreativeTab.tabMachines);
         if (GameRegistry.findItem(GTPlusPlus.ID, aUnlocalName) == null) {
             GameRegistry.registerItem(this, aUnlocalName);
@@ -70,7 +68,8 @@ public class BatteryPackBaseBauble extends ElectricBaseBauble {
         String aString2 = StatCollector.translateToLocal("GTPP.battpack.tooltip.2");
         String aString3 = StatCollector.translateToLocal("GTPP.battpack.tooltip.3");
         String aString4 = StatCollector.translateToLocal("GTPP.battpack.tooltip.4");
-
+        String aString5 = StatCollector.translateToLocal("GTPP.battpack.tooltip.5");
+        String aString6 = StatCollector.translateToLocal("GTPP.battpack.tooltip.6");
         String aEU = StatCollector.translateToLocal("GTPP.info.eu");
         String aEUT = aEU + "/t";
 
@@ -84,6 +83,9 @@ public class BatteryPackBaseBauble extends ElectricBaseBauble {
                 + aString3
                 + EnumChatFormatting.GRAY);
         list.add(EnumChatFormatting.GREEN + aString4 + EnumChatFormatting.GRAY);
+        list.add("");
+        list.add(EnumChatFormatting.YELLOW + aString5 + EnumChatFormatting.GRAY);
+        list.add(EnumChatFormatting.RED + aString6 + EnumChatFormatting.GRAY);
         super.addInformation(stack, aPlayer, list, bool);
     }
 
@@ -103,33 +105,39 @@ public class BatteryPackBaseBauble extends ElectricBaseBauble {
     }
 
     @Override
-    public void onEquipped(final ItemStack arg0, final EntityLivingBase arg1) {}
+    public void onEquipped(final ItemStack arg0, final EntityLivingBase arg1) {
+        /**
+         * if (arg1.worldObj.isRemote) {return;}
+         * ITeslaConnectable.TeslaUtil.teslaSimpleNodeSetAdd(
+         * new TeslaItemConnection(
+         * arg1,
+         * arg0,
+         * (byte) 2
+         * ));
+         **/ // doesnt work :sad:
+    }
 
     @Override
-    public void onUnequipped(final ItemStack arg0, final EntityLivingBase arg1) {}
-
-    // stolen from WirelessChargerManager.java
-    static ItemStack[] getBaublesItems(@NotNull EntityPlayer player) {
-        ItemStack[] baubleItems = null;
-        if (Baubles.isModLoaded()) {
-            IInventory baubleInv = BaublesApi.getBaubles(player);
-            if (baubleInv != null) {
-                baubleItems = new ItemStack[baubleInv.getSizeInventory()];
-                for (int i = 0; i < baubleInv.getSizeInventory(); i++) {
-                    baubleItems[i] = baubleInv.getStackInSlot(i);
-                }
-            }
+    public void onUnequipped(final ItemStack arg0, final EntityLivingBase arg1) {
+        if (arg1.worldObj.isRemote) {
+            return;
         }
-        return baubleItems;
+        ITeslaConnectable.TeslaUtil.teslaSimpleNodeSetRemove(new TeslaItemConnection(arg1, arg0, (byte) 2));
     }
 
     @Override
     public void onWornTick(final ItemStack aBaubleStack, final EntityLivingBase aLivingBase) {
         if (!aLivingBase.worldObj.isRemote) {
+            TeslaItemConnection connect = new TeslaItemConnection(aLivingBase, aBaubleStack, (byte) 2);
+            ITeslaConnectable.TeslaUtil.teslaSimpleNodeSetRemove(connect);
+            ITeslaConnectable.TeslaUtil.teslaSimpleNodeSetAdd(connect);
             try {
+                // System.out.println("I AM REAL, I AM ALIVE");
+                // double d = ElectricItem.manager.charge(aBaubleStack,2048,mTier,true,false);
+                // System.out.println(d);
+
                 if (this.getCharge(aBaubleStack) >= getTransferLimit(aBaubleStack)) {
                     if (aLivingBase instanceof EntityPlayer aPlayer) {
-
                         // Armor
                         ItemStack[] inv = aPlayer.inventory.armorInventory;
                         chargeInventory(inv, inv.length, aBaubleStack);
@@ -192,15 +200,15 @@ public class BatteryPackBaseBauble extends ElectricBaseBauble {
                     }
                 }
             }
-
             if (this.getCharge(aBaubleStack) <= 0) {
                 break;
             }
         }
+
     }
 
     @Override
     public String getTextureNameForBauble() {
-        return "chargepack/" + mTier;
+        return "teslachargepack/" + mTier;
     }
 }

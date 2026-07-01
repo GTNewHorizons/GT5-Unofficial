@@ -88,6 +88,7 @@ import gtPlusPlus.xmod.bop.blocks.BOPBlockRegistrator;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.thermalfoundation.fluid.TFFluids;
 import ic2.core.Ic2Items;
+import tectech.thing.CustomItemList;
 
 public class RecipesGregTech {
 
@@ -1350,7 +1351,7 @@ public class RecipesGregTech {
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);
 
-        // Low tier Charge Packs
+        // Low tier Charge Packs and Both Tier Charge Packs
 
         // LV
         GTValues.RA.stdBuilder()
@@ -1363,6 +1364,13 @@ public class RecipesGregTech {
                 ItemList.Sensor_LV.get(4))
             .itemOutputs(GregtechItemList.ChargePack_LV.get(1))
             .fluidInputs(MaterialsAlloy.TUMBAGA.getFluidStack(4 * INGOTS))
+            .duration(30 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(assemblerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(GregtechItemList.ChargePack_LV.get(1), CustomItemList.teslaCover.getWithDamage(1, 0))
+            .itemOutputs(GregtechItemList.TeslaChargePack_LV.get(1))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(assemblerRecipes);
@@ -1382,6 +1390,13 @@ public class RecipesGregTech {
             .eut(TierEU.RECIPE_MV)
             .addTo(assemblerRecipes);
 
+        GTValues.RA.stdBuilder()
+            .itemInputs(GregtechItemList.ChargePack_MV.get(1), CustomItemList.teslaCover.getWithDamage(1, 0))
+            .itemOutputs(GregtechItemList.TeslaChargePack_MV.get(1))
+            .duration(30 * SECONDS)
+            .eut(TierEU.RECIPE_MV)
+            .addTo(assemblerRecipes);
+
         // HV
         GTValues.RA.stdBuilder()
             .itemInputs(
@@ -1394,6 +1409,13 @@ public class RecipesGregTech {
             .itemOutputs(GregtechItemList.ChargePack_HV.get(1))
             .fluidInputs(MaterialsAlloy.TANTALUM_CARBIDE.getFluidStack(4 * INGOTS))
             .duration(90 * SECONDS)
+            .eut(TierEU.RECIPE_HV)
+            .addTo(assemblerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(GregtechItemList.ChargePack_HV.get(1), CustomItemList.teslaCover.getWithDamage(1, 0))
+            .itemOutputs(GregtechItemList.TeslaChargePack_HV.get(1))
+            .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_HV)
             .addTo(assemblerRecipes);
 
@@ -1412,6 +1434,13 @@ public class RecipesGregTech {
             .eut(TierEU.RECIPE_EV)
             .addTo(assemblerRecipes);
 
+        GTValues.RA.stdBuilder()
+            .itemInputs(GregtechItemList.ChargePack_EV.get(1), CustomItemList.teslaCover.getWithDamage(1, 0))
+            .itemOutputs(GregtechItemList.TeslaChargePack_EV.get(1))
+            .duration(30 * SECONDS)
+            .eut(TierEU.RECIPE_EV)
+            .addTo(assemblerRecipes);
+
         // IV
         GTValues.RA.stdBuilder()
             .itemInputs(
@@ -1425,6 +1454,45 @@ public class RecipesGregTech {
             .fluidInputs(MaterialsAlloy.INCONEL_625.getFluidStack(4 * INGOTS))
             .duration(150 * SECONDS)
             .eut(TierEU.RECIPE_IV)
+            .addTo(assemblerRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(GregtechItemList.ChargePack_IV.get(1), CustomItemList.teslaCover.getWithDamage(1, 0))
+            .itemOutputs(GregtechItemList.TeslaChargePack_IV.get(1))
+            .duration(30 * SECONDS)
+            .eut(TierEU.RECIPE_IV)
+            .addTo(assemblerRecipes);
+
+        // LuV
+        GTValues.RA.stdBuilder()
+            .itemInputs(GregtechItemList.ChargePack_LuV.get(1), CustomItemList.teslaCover.getWithDamage(1, 0))
+            .itemOutputs(GregtechItemList.TeslaChargePack_LuV.get(1))
+            .duration(30 * SECONDS)
+            .eut(TierEU.RECIPE_LuV)
+            .addTo(assemblerRecipes);
+
+        // ZPM
+        GTValues.RA.stdBuilder()
+            .itemInputs(GregtechItemList.ChargePack_ZPM.get(1), CustomItemList.teslaCover.getWithDamage(1, 0))
+            .itemOutputs(GregtechItemList.TeslaChargePack_ZPM.get(1))
+            .duration(30 * SECONDS)
+            .eut(TierEU.RECIPE_ZPM)
+            .addTo(assemblerRecipes);
+
+        // UV
+        GTValues.RA.stdBuilder()
+            .itemInputs(GregtechItemList.ChargePack_UV.get(1), CustomItemList.teslaCover.getWithDamage(1, 0))
+            .itemOutputs(GregtechItemList.TeslaChargePack_UV.get(1))
+            .duration(30 * SECONDS)
+            .eut(TierEU.RECIPE_UV)
+            .addTo(assemblerRecipes);
+
+        // UHV
+        GTValues.RA.stdBuilder()
+            .itemInputs(GregtechItemList.ChargePack_UHV.get(1), CustomItemList.teslaCover.getWithDamage(1, 0))
+            .itemOutputs(GregtechItemList.TeslaChargePack_UHV.get(1))
+            .duration(30 * SECONDS)
+            .eut(TierEU.RECIPE_UHV)
             .addTo(assemblerRecipes);
 
         // Research on Turbine Automation

@@ -962,6 +962,16 @@ public enum GregtechItemList implements IItemContainer {
     ChargePack_UV,
     ChargePack_UHV,
 
+    TeslaChargePack_LV,
+    TeslaChargePack_MV,
+    TeslaChargePack_HV,
+    TeslaChargePack_EV,
+    TeslaChargePack_IV,
+    TeslaChargePack_LuV,
+    TeslaChargePack_ZPM,
+    TeslaChargePack_UV,
+    TeslaChargePack_UHV,
+
     HalfCompleteCasing_I,
     HalfCompleteCasing_II,
     HalfCompleteCasing_III,
