@@ -430,13 +430,6 @@ MultiNqGenerator.hint.4=1~4x Input Hatch
 MultiNqGenerator.hint.5=0~1x Output Hatch
 MultiNqGenerator.hint.6=1x Maintenance Hatch
 MultiNqGenerator.hint.7=1x Dynamo Hatch
-LargeNaquadahReactor.hint.0=At least 130x Naquadah Reactor Casing
-LargeNaquadahReactor.hint.1=81x Field Restriction Casing
-LargeNaquadahReactor.hint.2=32x Radiation Proof Steel Frame Box
-LargeNaquadahReactor.hint.3=1+ Input Hatch
-LargeNaquadahReactor.hint.4=1x Output Hatch
-LargeNaquadahReactor.hint.5=1x Maintenance Hatch
-LargeNaquadahReactor.hint.6=1x Dynamo Hatch
 UniversalChemicalFuelEngineLegacy.hint.hint.0=93x Stable Titanium Machine Casing
 UniversalChemicalFuelEngineLegacy.hint.hint.1=14x Titanium Pipe Casing
 UniversalChemicalFuelEngineLegacy.hint.hint.2=14x Titanium Gear Box Casing
@@ -455,9 +448,6 @@ LargeEssentiaSmeltery.hint.4=0 - Air
 LargeEssentiaSmeltery.hint.5=1 - Basic Hatch/Magic Casing
 LargeEssentiaSmeltery.hint.6=2 - Muffler Hatch
 LargeEssentiaSmeltery.hint.7=Support TecTech Hatches.
-CoolantTower.hint.0=277x Any kind of GT concrete
-CoolantTower.hint.1=28x Tungstencarbide Frame Box
-CoolantTower.hint.2=1 - Input/Output Hatch
 
 #Chat
 yothatch.chat.0=Set storage priority to %s.

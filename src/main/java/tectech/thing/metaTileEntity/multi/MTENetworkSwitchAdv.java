@@ -117,10 +117,10 @@ public class MTENetworkSwitchAdv extends TTMultiblockBase
     @Override
     public IStructureDefinition<MTENetworkSwitchAdv> compile(String[][] definition) {
         structure.addCasing('A', Casings.ComputerCasing)
-            .withUnlimitedHatches(1, Arrays.asList(Energy, EnergyMulti, Dynamo, DynamoMulti, OutputData));
+            .withUnlimitedHatches(2, Arrays.asList(Energy, EnergyMulti, Dynamo, DynamoMulti, OutputData));
         structure.addCasing('B', Casings.AdvancedComputerCasing);
         structure.addCasing('C', Casings.AdvancedComputerCasing)
-            .withUnlimitedHatches(2, Arrays.asList(InputData, OutputData));
+            .withUnlimitedHatches(1, Arrays.asList(Energy, EnergyMulti, Dynamo, DynamoMulti, InputData, OutputData));
 
         var shapes = Arrays.asList(
             Pair.of(STRUCTURE_SHAPE_FIRST, new String[][] { FIRST }),
@@ -261,9 +261,9 @@ public class MTENetworkSwitchAdv extends TTMultiblockBase
         GTDataUtils.dedupList(eOutputData);
 
         structureInstanceInfo.validate(errors);
-        checkHasAnyEnergy(errors);
         checkHasDataInput(errors);
         checkHasDataOutput(errors);
+        checkHasAnyEnergy(errors);
     }
 
     @Override
@@ -283,16 +283,23 @@ public class MTENetworkSwitchAdv extends TTMultiblockBase
                     "gt.blockmachines.multimachine.em.switch.adv.desc.5",
                     Machine_Multi_Switch.get(1)
                         .getDisplayName()))
-            .addSeparator();
-
-        tt.beginStructureBlock();
-        tt.addController("Front center");
-        tt.addAllCasingInfo();
-
-        tt.addSubChannelUsage(GTStructureChannels.STRUCTURE_LENGTH);
-
-        tt.toolTipFinisher();
-
+            .addSeparator()
+            .beginVariableStructureBlock(3, 18, 3, 3, 3, 3, false)
+            .addController(translateToLocal("tt.keyword.Structure.FrontCenter"))
+            .addMiscHatch("1+", "Optical Reception Connector", "Any advanced computer casing", 1)
+            .addMiscHatch("1+", "Optical Transmission Connector", "Any casing", 1, 2)
+            .addEnergyHatch("1+", "Any casing", 1, 2)
+            .addStructureInfo("")
+            .addStructureInfo(translateToLocal("GT5U.MBTT.Structure.Base"))
+            .addCasing("0-18", "Computer Casing", false)
+            .addCasing("0-5", "Advanced Computer Casing", false)
+            .addStructureInfo("")
+            .addStructureInfo(translateToLocal("GT5U.MBTT.Structure.Slice"))
+            .addCasing("0-5", "Advanced Computer Casing", false)
+            .addCasing("0-4", "Computer Casing", false)
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.STRUCTURE_LENGTH)
+            .toolTipFinisher();
         return tt;
     }
 

@@ -207,6 +207,7 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
             .addOutputHatch("1", "Top casing 8th block from back", 2)
             .addAir("Interior of the structure")
             .addStructureInfo("")
+            .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.length"))
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         return tt;
