@@ -1933,7 +1933,6 @@ public class LoaderGTBlockFluid implements Runnable {
         GTFluidFactory.builder(Materials.CarbonDioxide.mName.toLowerCase(Locale.ENGLISH))
             .withDefaultLocalName(Materials.CarbonDioxide.mDefaultLocalName)
             .withTextureName("carbondioxide")
-            .withColorRGBA(Materials.CarbonDioxide.mRGBa)
             .withStateAndTemperature(GAS, Materials.CarbonDioxide.getGasTemperature())
             .buildAndRegister()
             .configureMaterials(Materials.CarbonDioxide)
@@ -1946,13 +1945,12 @@ public class LoaderGTBlockFluid implements Runnable {
         GTFluidFactory.builder(Materials.Ammonia.mName.toLowerCase(Locale.ENGLISH))
             .withDefaultLocalName(Materials.Ammonia.mDefaultLocalName)
             .withTextures(stillTexture, flowTexture)
-            .withColorRGBA(Materials.Ammonia.mRGBa)
             .withStateAndTemperature(GAS, Materials.Ammonia.getGasTemperature())
             .buildAndRegister()
             .configureMaterials(Materials.Ammonia)
             .addLocalizedName(Materials.Ammonia)
             .registerBContainers(GTOreDictUnificator.get(OrePrefixes.cell, Materials.Ammonia, 1L), ItemList.Cell_Empty.get(1L));
-            
+
 
         for (Materials tMaterial : Materials.values()) {
             if ((tMaterial.mStandardMoltenFluid == null) && (tMaterial.contains(SubTag.SMELTING_TO_FLUID))
