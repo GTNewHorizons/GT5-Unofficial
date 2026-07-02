@@ -346,7 +346,7 @@ public class MTEPurificationUnitBaryonicPerfection
             .addCasing("108", "Bedrockium Frame Box", false)
             .addCasing("96", "Femtometer-Calibrated Particle Beam Casing", false)
             .addCasing("37", "Particle Beam Guidance Pipe Casing", false)
-            .addInputBus("1+", "Any quark exclusion casing (No stocking bus)", 1)
+            .addInputBus("1+", "Any quark exclusion casing (no stocking bus)", 1)
             .addInputHatch("1+", "Any quark exclusion casing", 1)
             .addOutputBus("1+", "Any quark exclusion casing", 1)
             .addOutputHatch("1+", "Any quark exclusion casing", 1)

@@ -33,7 +33,7 @@ try {
 } catch (_: Exception) {
     try {
         val verStr = providers.exec {
-            commandLine("cmd", "git", "describe")
+            commandLine("git", "describe")
         }.standardOutput.asText.get()
         gtNbtVersion = parseGtVersion(verStr)
         logLevel = LogLevel.LIFECYCLE
