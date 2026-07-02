@@ -441,14 +441,6 @@ MultiNqGenerator.hint.4=1~4x Входной шлюз
 MultiNqGenerator.hint.5=0~1x Выходной шлюз
 MultiNqGenerator.hint.6=1x Люк техобслуживания
 MultiNqGenerator.hint.7=1x Энерговывод
-LargeEssentiaSmeltery.hint.0=Не меньше 24x Магических корпусов
-LargeEssentiaSmeltery.hint.1=Не меньше 12x Диффузионная ячейка эссенции
-LargeEssentiaSmeltery.hint.2=Как минимум 3 блока улучшенной алхимической печи
-LargeEssentiaSmeltery.hint.3=Не меньше 3x Корпусов фильтра эссенции
-LargeEssentiaSmeltery.hint.4=0 - Воздух
-LargeEssentiaSmeltery.hint.5=1 - Основной шлюз/Магический корпус
-LargeEssentiaSmeltery.hint.6=2 - Выхлопная система
-LargeEssentiaSmeltery.hint.7=Поддержка TecTech Энерговводов.
 
 #Chat
 yothatch.chat.0=Установите приоритет хранения на %s.

@@ -432,14 +432,6 @@ UniversalChemicalFuelEngineLegacy.hint.hint.6=1 - Maintenance Hatch
 UniversalChemicalFuelEngineLegacy.hint.hint.7=2 - Muffler Hatch
 UniversalChemicalFuelEngineLegacy.hint.hint.8=3 - Input Hatch
 UniversalChemicalFuelEngineLegacy.hint.hint.9=4 - Dynamo Hatch
-LargeEssentiaSmeltery.hint.0=At least 24x Magic Casing
-LargeEssentiaSmeltery.hint.1=At least 12x Essentia Diffusion Cell
-LargeEssentiaSmeltery.hint.2=At least 3x Advanced Alchemical Furnace Block
-LargeEssentiaSmeltery.hint.3=At least 3x Essentia Filter Casing
-LargeEssentiaSmeltery.hint.4=0 - Air
-LargeEssentiaSmeltery.hint.5=1 - Basic Hatch/Magic Casing
-LargeEssentiaSmeltery.hint.6=2 - Muffler Hatch
-LargeEssentiaSmeltery.hint.7=Support TecTech Hatches.
 
 #Chat
 yothatch.chat.0=Set storage priority to %s.

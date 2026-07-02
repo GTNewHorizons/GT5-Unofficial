@@ -361,7 +361,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
                     "Ultimate Static Machine Casing",
                     700,
                     formatNumber(2500000)))
-            .addTecTechHatchInfo()
+            .addSupportAny()
             .beginStructureBlock(3, 11, 7, true)
             .addController("Top center")
             .addCasing("30-43", "Machine Casing", true)

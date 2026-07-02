@@ -410,7 +410,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
             .addInfo("Passive loss is multiplied by the number of maintenance issues present")
             .addSeparator()
             .addInfo("Glass shell has to be Tier - 3 of the highest capacitor tier")
-            .addTecTechHatchInfo()
+            .addSupportAny()
             .addMinGlassForLaser(VoltageIndex.UV)
             .addInfo("Add more or better capacitors to increase capacity")
             .addSeparator()

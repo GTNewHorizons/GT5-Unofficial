@@ -349,7 +349,7 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
             .addInfo(EnumChatFormatting.BOLD + "Does not overclock beyond 1 tick")
             .addSeparator(EnumChatFormatting.GOLD, 67)
             .addInfo("Constructed identically to the Assembly Line")
-            .addTecTechHatchInfo()
+            .addSupportAny()
             .beginVariableStructureBlock(3, 3, 5, 16, 4, 4, false)
             .addController("First slice, 3rd layer")
             .addMiscHatch(

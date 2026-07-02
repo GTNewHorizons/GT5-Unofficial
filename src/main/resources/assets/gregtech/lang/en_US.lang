@@ -8891,9 +8891,31 @@ GT5U.gui.text.providing-nanites=Providing Nanites:
 GT5U.gui.text.available-condensate=Available Condensate:
 GT5U.gui.text.bec-stored-condensate=Stored Condensate:
 
-# BEC Structure Hints
-GT5U.gui.text.bec-generator-input-hatch-pos=Any %s in the first slice
-GT5U.gui.text.bec-generator-bec-hatch-pos=The center Casing in the last slice
+# BEC I/O Node Structure Hints
+GT5U.tooltip.bec-ionode.controller-pos=Front center, 12th layer
+GT5U.tooltip.bec-ionode.hatch-pos=Any electromagnetically-isolated casing
+GT5U.tooltip.bec-ionode.los-hatch-pos=Back center casing
+
+# BEC Generator Structure Hints
+GT5U.tooltip.bec-generator.controller-pos=Front center, 10th layer
+GT5U.tooltip.bec-generator.hatch-pos=Any electromagnetically-isolated casing around controller
+GT5U.tooltip.bec-generator.bec-hatch-pos=Back center casing
+
+# BEC Storage Structure Hints
+GT5U.tooltip.bec-storage.controller-pos=Bottom front of central pillar, 3rd layer
+GT5U.tooltip.bec-storage.hatch-pos=Any electromagnetically-isolated casing
+GT5U.tooltip.bec-storage.bec-hatch-pos=Any center side casing
+
+# BEC Diode Structure Hints
+GT5U.tooltip.bec-diode.controller-pos=Front center, 6th layer
+GT5U.tooltip.bec-diode.hatch-pos=Any electromagnetically-isolated casing
+GT5U.tooltip.bec-diode.bec-hatch-pos=Center left casing (input), center right casing (output)
+
+# BEC Assembler Structure Hints
+GT5U.tooltip.bec-assembler.controller-pos=Front center, 16th layer
+GT5U.tooltip.bec-assembler.hatch-pos=Any electromagnetically-isolated casing
+GT5U.tooltip.bec-assembler.bec-hatch-pos=Center left or right casing
+GT5U.tooltip.bec-assembler.los-hatch-pos=Center side casing of each ring
 
 # BEC Settings
 GT5U.gui.text.bec-filter=Filter
@@ -8921,9 +8943,6 @@ GT5U.chat.bec-no-connect-assembler=Could not connect to the Observation Array
 # BEC Waila
 GT5U.chat.bec-processing-speed=Processing Speed: x%s
 GT5U.chat.bec-slowdowns=Slowdowns: %s
-
-# BEC Structure
-GT5U.chat.bec-storage-controller-pos=Outer wall of center pillar, second layer from the bottom
 
 # Test Factory Machines
 gt.blockmachines.pipe.test.name=Test Factory Pipe

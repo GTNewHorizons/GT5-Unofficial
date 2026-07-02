@@ -217,7 +217,7 @@ public class MTEEndothermicFridge extends MTEExtendedPowerMultiBlockBase<MTEEndo
             .addInfo(getCoolantTextFormatted("Molten Spacetime", 2))
             .addInfo(getCoolantTextFormatted("Molten Eternity", 3))
             .addSeparator()
-            .addTecTechHatchInfo()
+            .addSupportAny()
             .addUnlimitedTierSkips()
             .addSeparator()
             .addInfo(EnumChatFormatting.ITALIC + "" + EnumChatFormatting.AQUA + "... without the other!")
@@ -244,7 +244,7 @@ public class MTEEndothermicFridge extends MTEExtendedPowerMultiBlockBase<MTEEndo
             .addCasing("143", "Frost Proof Machine Casing", false)
             .addStructureInfo("")
             .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.structuretier"))
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .addSubChannel(GTStructureChannels.BOROGLASS)
             .addStructureAuthors("Pix3lated")
             .toolTipFinisher();
         return tt;

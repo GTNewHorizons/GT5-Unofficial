@@ -210,6 +210,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
                     + "Solid Steel Machine Casing, Input Bus, Solid Steel Machine Casing")
             .addStructureInfo("")
             .addStructureFooter("Up to 7 total slices, each one allows for 1 more item in recipes")
+            .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.length"))
             .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         return tt;

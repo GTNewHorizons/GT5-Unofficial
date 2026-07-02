@@ -288,14 +288,6 @@ MultiNqGenerator.hint.4=1~4x输入仓
 MultiNqGenerator.hint.5=0~1x输出仓
 MultiNqGenerator.hint.6=1x维护仓
 MultiNqGenerator.hint.7=1x动力仓
-LargeEssentiaSmeltery.hint.0=24x魔法机械方块(至少！)
-LargeEssentiaSmeltery.hint.1=12x源质扩散单元(至少！)
-LargeEssentiaSmeltery.hint.2=3x高级炼金炉(至少！)
-LargeEssentiaSmeltery.hint.3=3x源质过滤方块(至少！)
-LargeEssentiaSmeltery.hint.4=0 - 空气
-LargeEssentiaSmeltery.hint.5=1 - 基础仓室/魔法机械方块
-LargeEssentiaSmeltery.hint.6=2 - 消声仓
-LargeEssentiaSmeltery.hint.7=支持TecTech能源仓.
 
 #Chat
 yothatch.chat.0=存储优先级设为 %s.

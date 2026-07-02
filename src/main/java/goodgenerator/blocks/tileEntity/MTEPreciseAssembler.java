@@ -313,7 +313,7 @@ public class MTEPreciseAssembler extends MTEExtendedPowerMultiBlockBase<MTEPreci
                     + "UHV"
                     + EnumChatFormatting.GRAY
                     + "-tier Machine Casing unlocks all.")
-            .addTecTechHatchInfo()
+            .addSupportAny()
             .addNoTierSkips()
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 9, 5, true)

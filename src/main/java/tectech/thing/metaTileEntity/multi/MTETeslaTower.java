@@ -571,7 +571,7 @@ public class MTETeslaTower extends TTMultiblockBase
                                                                                             // Windings need to
             // be at least the same tier as
             // the Tesla Capacitor
-            .addTecTechHatchInfo()
+            .addSupportAny()
             .beginStructureBlock(7, 7, 17, false)
             .addController("Front bottom center")
             .addCasing("128", "Tesla Toroid Casing", false)

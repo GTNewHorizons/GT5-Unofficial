@@ -246,7 +246,7 @@ public class MTEEnergyInfuser extends TTMultiblockBase implements ISurvivalConst
                 EnumChatFormatting.GOLD + "Repairing"
                     + EnumChatFormatting.GRAY
                     + ": Max 1k durability/t, consumes 1k EU + 1L UUM per point")
-            .addTecTechHatchInfo()
+            .addSupportAny()
             .beginStructureBlock(3, 3, 5, false)
             .addController("Front center, 3rd layer")
             .addCasing("16", translateToLocal("gt.blockcasingsTT.7.name"), false)
