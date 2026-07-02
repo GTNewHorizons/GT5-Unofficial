@@ -162,6 +162,10 @@ public enum CondensateType {
         return new FluidStack(entangledFluid, amount);
     }
 
+    public int getUnit() {
+        return unit;
+    }
+
     public String getAbbrevName() {
         return GTUtility.translate("abbrev.entangled_" + id);
     }
