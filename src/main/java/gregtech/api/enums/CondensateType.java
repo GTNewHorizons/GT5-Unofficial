@@ -150,6 +150,15 @@ public enum CondensateType {
     }
 
     public FluidStack getEntangled(int amount) {
+        // Half the unit allows for some niche balance cases while being easy to handle on the player side,
+        // but any other non-multiple is needlessly complicated and bad player experience.
+        if (amount % (unit / 2) != 0) throw new IllegalArgumentException(
+            "amount " + amount
+                + " of condensate "
+                + id
+                + " is not cleanly divisible by its unit amount "
+                + unit
+                + " or half that");
         return new FluidStack(entangledFluid, amount);
     }
 
