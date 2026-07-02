@@ -42,9 +42,7 @@ import gregtech.api.gui.modularui.GTUIInfos;
 import gregtech.api.implementation.items.GTItemSink;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.modularui.IAddUIWidgets;
-import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.modularui2.GTGuiTheme;
 import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.modularui2.GTGuis;
@@ -88,9 +86,6 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
             throw new IllegalAccessError("This Constructor has to be called in the load Phase");
         if (GregTechAPI.METATILEENTITIES[id] == null) {
             GregTechAPI.METATILEENTITIES[id] = this;
-            if (!(this instanceof ICasingTextureProvider) && this instanceof MTEMultiBlockBase) {
-                System.out.println("Not a casing texture provider: " + this.getClass());
-            }
         } else {
             var existing = GregTechAPI.METATILEENTITIES[id];
             throw new IllegalArgumentException(

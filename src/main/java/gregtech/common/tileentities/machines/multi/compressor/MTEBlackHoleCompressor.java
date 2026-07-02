@@ -73,7 +73,6 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.util.GTRecipe;
@@ -313,39 +312,32 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
     @Override
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
-        ITexture[] rTexture;
-        if (side == aFacing) {
-            IIconContainer MAIN_OVERLAY;
-            IIconContainer GLOW_OVERLAY;
-            switch (blackHoleStatus) {
-                default -> {
-                    MAIN_OVERLAY = OVERLAY_MULTI_BLACKHOLE;
-                    GLOW_OVERLAY = OVERLAY_MULTI_BLACKHOLE_GLOW;
-                }
-                case 2, 4 -> {
-                    MAIN_OVERLAY = OVERLAY_MULTI_BLACKHOLE_ACTIVE;
-                    GLOW_OVERLAY = OVERLAY_MULTI_BLACKHOLE_ACTIVE_GLOW;
-                }
-                case 3 -> {
-                    MAIN_OVERLAY = OVERLAY_MULTI_BLACKHOLE_UNSTABLE;
-                    GLOW_OVERLAY = OVERLAY_MULTI_BLACKHOLE_UNSTABLE_GLOW;
-                }
+        IIconContainer MAIN_OVERLAY;
+        IIconContainer GLOW_OVERLAY;
+        switch (blackHoleStatus) {
+            default -> {
+                MAIN_OVERLAY = OVERLAY_MULTI_BLACKHOLE;
+                GLOW_OVERLAY = OVERLAY_MULTI_BLACKHOLE_GLOW;
             }
-
-            rTexture = new ITexture[] { getCasingTexture(), TextureFactory.builder()
-                .addIcon(MAIN_OVERLAY)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(GLOW_OVERLAY)
-                    .extFacing()
-                    .glow()
-                    .build() };
-
-        } else {
-            rTexture = new ITexture[] { getCasingTexture() };
+            case 2, 4 -> {
+                MAIN_OVERLAY = OVERLAY_MULTI_BLACKHOLE_ACTIVE;
+                GLOW_OVERLAY = OVERLAY_MULTI_BLACKHOLE_ACTIVE_GLOW;
+            }
+            case 3 -> {
+                MAIN_OVERLAY = OVERLAY_MULTI_BLACKHOLE_UNSTABLE;
+                GLOW_OVERLAY = OVERLAY_MULTI_BLACKHOLE_UNSTABLE_GLOW;
+            }
         }
-        return rTexture;
+
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            MAIN_OVERLAY,
+            GLOW_OVERLAY,
+            MAIN_OVERLAY,
+            GLOW_OVERLAY);
     }
 
     @Override

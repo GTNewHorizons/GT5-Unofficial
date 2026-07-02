@@ -198,9 +198,9 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
             aFacing,
             aActive,
             TexturesGtBlock.Overlay_Machine_Controller_Advanced,
-            Textures.BlockIcons.VOID,
+            TexturesGtBlock.Overlay_Machine_Controller_Advanced_Glow,
             TexturesGtBlock.Overlay_Machine_Controller_Advanced_Active,
-            Textures.BlockIcons.VOID);
+            TexturesGtBlock.Overlay_Machine_Controller_Advanced_Active_Glow);
     }
 
     @Override

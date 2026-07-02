@@ -87,7 +87,6 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.AssemblyLineUtils;
@@ -297,26 +296,15 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
-        if (side == aFacing && stuck) {
-            return new ITexture[] { getCasingTexture(), TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_ADV_ASSLINE_STUCK)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_ADV_ASSLINE_STUCK_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-        }
         return Textures.BlockIcons.createTextureWithCasing(
             this,
             side,
             aFacing,
-            aActive,
+            aActive || stuck,
             OVERLAY_FRONT_ADV_ASSLINE,
             OVERLAY_FRONT_ADV_ASSLINE_GLOW,
-            OVERLAY_FRONT_ADV_ASSLINE_ACTIVE,
-            OVERLAY_FRONT_ADV_ASSLINE_ACTIVE_GLOW);
+            stuck ? OVERLAY_FRONT_ADV_ASSLINE_STUCK : OVERLAY_FRONT_ADV_ASSLINE_ACTIVE,
+            stuck ? OVERLAY_FRONT_ADV_ASSLINE_STUCK_GLOW : OVERLAY_FRONT_ADV_ASSLINE_ACTIVE_GLOW);
     }
 
     @Override
