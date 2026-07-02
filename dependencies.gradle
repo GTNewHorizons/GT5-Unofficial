@@ -62,7 +62,7 @@ dependencies {
     compileOnlyApi("com.github.GTNewHorizons:AppleCore:3.3.11:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:BuildCraft:7.1.61:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:EnderIO:2.10.31:dev") { transitive = false }
-    compileOnlyApi("com.github.GTNewHorizons:ForestryMC:4.11.28:dev") { transitive = false }
+    compileOnlyApi("com.github.GTNewHorizons:ForestryMC:4.11.30:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:Galacticraft:3.4.31-GTNH:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:ProjectRed:4.12.39-GTNH:dev") { transitive = false }
     compileOnlyApi("com.github.GTNewHorizons:Railcraft:9.17.28:dev") { transitive = false }

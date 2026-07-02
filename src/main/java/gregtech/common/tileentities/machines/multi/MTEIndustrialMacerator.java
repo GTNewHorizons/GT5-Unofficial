@@ -69,6 +69,7 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 public class MTEIndustrialMacerator extends MTEExtendedPowerMultiBlockBase<MTEIndustrialMacerator>
     implements ISurvivalConstructable, INEIPreviewModifier, ICasingTextureProvider {
 
+    public static final String TIER = "mTier";
     private int controllerTier = 1;
     private int structureTier;
     private int casingAmount;
@@ -348,18 +349,18 @@ public class MTEIndustrialMacerator extends MTEExtendedPowerMultiBlockBase<MTEIn
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        aNBT.setByte("mTier", (byte) controllerTier);
+        aNBT.setByte(TIER, (byte) controllerTier);
         aNBT.setByte("structureTier", (byte) structureTier);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        if (!aNBT.hasKey("mTier", NBT.TAG_BYTE))
+        if (!aNBT.hasKey(TIER, NBT.TAG_BYTE))
             // we assume old macerators are all T2 variants, as they were made before price reduction and shouldn't need
             // to worry about upgrading
             controllerTier = 2;
-        else controllerTier = aNBT.getByte("mTier");
+        else controllerTier = aNBT.getByte(TIER);
 
         structureTier = aNBT.getByte("structureTier");
     }
@@ -367,17 +368,17 @@ public class MTEIndustrialMacerator extends MTEExtendedPowerMultiBlockBase<MTEIn
     @Override
     public void initDefaultModes(NBTTagCompound aNBT) {
         super.initDefaultModes(aNBT);
-        if (aNBT == null || !aNBT.hasKey("mTier")) {
+        if (aNBT == null || !aNBT.hasKey(TIER)) {
             controllerTier = 1;
         } else {
-            controllerTier = aNBT.getByte("mTier");
+            controllerTier = aNBT.getByte(TIER);
         }
     }
 
     @Override
     public void setItemNBT(NBTTagCompound aNBT) {
         super.setItemNBT(aNBT);
-        if (controllerTier > 1) aNBT.setByte("mTier", (byte) controllerTier);
+        if (controllerTier > 1) aNBT.setByte(TIER, (byte) controllerTier);
     }
 
     @Override
