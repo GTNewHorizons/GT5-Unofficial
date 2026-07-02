@@ -309,7 +309,7 @@ public class MTEBECIONode extends MTEBECMultiblockBase<MTEBECIONode> implements 
 
         logic.setAmperageOC(false);
         logic.setAvailableVoltage(GTUtility.roundUpVoltage(assembler == null ? 0 : assembler.getMaxInputVoltage()));
-        logic.setAvailableAmperage(1);
+        logic.setAvailableAmperage(this.maxParallel);
         logic.setMaxParallel(this.maxParallel);
     }
 
