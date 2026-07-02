@@ -200,8 +200,8 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
         // other order makes nei preview go crazy
         if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z, errors)) return;
         checkHatchMax(errors, ExoticEnergy, 1);
-        checkHasMufflerHatch(errors);
         checkHasMaintenanceHatch(errors);
+        checkHasMufflerHatch(errors);
         checkHasInputBus(errors);
         checkHasInputHatch(errors);
         checkHasOutputBus(errors);
@@ -637,29 +637,30 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
             .addInfo("Processing time is dependent on mode")
             .addInfo("Use a screwdriver to switch mode")
             .addInfo("Sneak click with screwdriver to void the stone dust")
-            .addTecTechHatchInfo()
+            .addSupportAny()
             .addPollutionAmount(getPollutionPerSecond(null))
             .addSeparator()
             .addInfo(EnumChatFormatting.GREEN + "OP stands for Ore Processor ;)")
-            .beginStructureBlock(15, 9, 13, false)
+            .beginStructureBlock(13, 15, 9, false)
             .addController("Front center")
-            .addCasingInfoExactly("Awakened Draconium Coil Block", 7, false)
-            .addCasingInfoExactly("Centrifuge Casing", 7, false)
-            .addCasingInfoExactly("Grate Machine Casing", 7, false)
-            .addCasingInfoExactly("Large Sieve Grate", 7, false)
-            .addCasingInfoExactly("Titanium Gear Box Casing", 7, false)
-            .addCasingInfoExactly("Any Tiered Glass", 90, false)
-            .addCasingInfoExactly("Stainless Steel Frame Box", 23, false)
-            .addCasingInfoExactly("Clean Stainless Steel Machine Casing", 169, false)
-            .addCasingInfoExactly("Iridium Sheetmetal", 98, false)
-            .addCasingInfoExactly("Advanced Iridium Plated Machine Casing", 462, false)
-            .addEnergyHatch("Any Stainless Steel Casing", 1)
-            .addMaintenanceHatch("Any Stainless Steel Casing", 1)
-            .addInputBus("Any Stainless Steel Casing", 1)
-            .addInputHatch("Any Stainless Steel Casing", 1)
-            .addMufflerHatch("Any Stainless Steel Casing", 1)
-            .addOutputBus("Any Stainless Steel Casing", 1)
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .addCasing("462", "Advanced Iridium Plated Machine Casing", false)
+            .addCasing("0-163", "Clean Stainless Steel Machine Casing", false)
+            .addCasing("96", "Iridium Sheetmetal", false)
+            .addCasing("90", "Any Tiered Glass", false)
+            .addCasing("23", "Stainless Steel Frame Box", false)
+            .addCasing("7", "Awakened Draconium Coil Block", false)
+            .addCasing("7", "Titanium Gear Box Casing", false)
+            .addCasing("7", "Large Sieve Grate", false)
+            .addCasing("7", "Grate Machine Casing", false)
+            .addCasing("7", "Centrifuge Casing", false)
+            .addEnergyHatch("1+", "Any stainless steel casing", 1)
+            .addMaintenanceHatch("1", "Any stainless steel casing", 1)
+            .addMufflerHatch("1", "Any stainless steel casing", 1)
+            .addInputBus("1+", "Any stainless steel casing", 1)
+            .addInputHatch("1+", "Any stainless steel casing", 1)
+            .addOutputBus("1+", "Any stainless steel casing", 1)
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.BOROGLASS)
             .addStructureAuthors(EnumChatFormatting.GOLD + "Bavib")
             .toolTipFinisher();
         return tt;
