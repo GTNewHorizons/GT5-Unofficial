@@ -166,10 +166,8 @@ public class RecipesGregTech {
                 new ItemStack(Blocks.sandstone, 64))
             .circuit(17)
             .itemOutputs(
-                MaterialsFluorides.FLUORITE.getOre(8),
-                MaterialsFluorides.FLUORITE.getOre(4),
-                MaterialsFluorides.FLUORITE.getOre(4),
-                MaterialsFluorides.FLUORITE.getOre(4))
+                MaterialsFluorides.FLUORITE.getOre(64),
+                MaterialsFluorides.FLUORITE.getOre(16))
             .fluidInputs(Materials.NitricAcid.getFluid(4_000), Materials.Air.getGas(8_000))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_EV / 2)
@@ -184,10 +182,7 @@ public class RecipesGregTech {
                 new ItemStack(Blocks.sand, 64))
             .circuit(17)
             .itemOutputs(
-                MaterialsFluorides.FLUORITE.getOre(4),
-                MaterialsFluorides.FLUORITE.getOre(2),
-                MaterialsFluorides.FLUORITE.getOre(2),
-                MaterialsFluorides.FLUORITE.getOre(2))
+                MaterialsFluorides.FLUORITE.getOre(40))
             .fluidInputs(Materials.NitricAcid.getFluid(5_000), Materials.Air.getGas(12_000))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_EV / 2)
