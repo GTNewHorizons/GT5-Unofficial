@@ -223,25 +223,27 @@ public class MTEMegaOilCracker extends MTEExtendedPowerMultiBlockBase<MTEMegaOil
                     + " more cracked fluid")
             .addInfo(TooltipHelper.italicText("In comparison to a chemical reactor"))
             .addSeparator()
-            .addTecTechHatchInfo()
+            .addSupportAny()
             .addMinGlassForLaser(VoltageIndex.UV)
             .addGlassEnergyLimitInfo()
             .addUnlimitedTierSkips()
-            .beginStructureBlock(13, 8, 9, true)
+            .beginStructureBlock(9, 13, 8, true)
             .addController("Front bottom center")
-            .addCasingInfoMin("Naquadah Reinforced Distillation Machine Casing", 145, false)
-            .addCasingInfoExactly("Clean Stainless Steel Machine Casing", 84, false)
-            .addCasingInfoExactly("Heating Coil", 77, true)
-            .addCasingInfoExactly("Any Tiered Glass", 162, true)
-            .addCasingInfoExactly("Steel Pipe Casing", 9, false)
-            .addInputBus("Any Base Naquadah Reinforced Distillation Machine Casing, for Programmed Circuits", 1)
-            .addEnergyHatch("Any Base Naquadah Reinforced Distillation Machine Casing", 1)
-            .addMaintenanceHatch("Any Base Naquadah Reinforced Distillation Machine Casing", 1)
-            .addInputHatch("Left Side Section, Uncracked Fluid Only", 2)
-            .addInputHatch("Top Side Section, Steam/Hydrogen Only", 3)
-            .addOutputHatch("Right Side Section", 4)
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
-            .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
+            .addCasing("162", "Any Tiered Glass", true)
+            .addCasing("145-151", "Naquadah Reinforced Distillation Casing", false)
+            .addCasing("84", "Clean Stainless Steel Machine Casing", false)
+            .addCasing("77", "Heating Coil", true)
+            .addCasing("14", "Naquadah Sheetmetal", false)
+            .addCasing("9", "Steel Pipe Casing", false)
+            .addEnergyHatch("1+", "Any reinforced distillation casing", 1)
+            .addMaintenanceHatch("1", "Any reinforced distillation casing", 1)
+            .addInputBus("0+", "Any reinforced distillation casing", 1)
+            .addInputHatch("2", "Any middle casing (cracking fluid), any side casing (hydrocarbon)", 2, 3, 4)
+            .addOutputHatch("1", "Any side casing", 2, 4)
+            .addStructureInfo("")
+            .addStructureFooter("The input hatch with the hydrocarbon and the output hatch must be on opposite sides!")
+            .addSubChannel(GTStructureChannels.BOROGLASS)
+            .addSubChannel(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
         return tt;
     }
@@ -290,9 +292,9 @@ public class MTEMegaOilCracker extends MTEExtendedPowerMultiBlockBase<MTEMegaOil
         this.mOutputOnSide = -1;
         this.mMiddleInputHatches.clear();
         if (!this.checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFFSET, VERTICAL_OFFSET, DEPTH_OFFSET, errors)) return;
-        checkOneMaintenanceHatch(errors);
-        checkHasAnyEnergy(errors);
         checkCasingMin(errors, casingAmount, 145);
+        checkHasAnyEnergy(errors);
+        checkOneMaintenanceHatch(errors);
         checkHasInputHatch(errors);
         checkHasOutputHatch(errors);
         if (this.glassTier < VoltageIndex.UV) {

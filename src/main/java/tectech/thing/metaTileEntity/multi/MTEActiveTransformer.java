@@ -15,7 +15,7 @@ import java.util.Map;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
@@ -94,12 +94,6 @@ public class MTEActiveTransformer extends TTMultiblockBase implements ISurvivalC
         }
     }
 
-    // region structure
-    private static final String[] description = new String[] {
-        EnumChatFormatting.AQUA + GTUtility.translate("tt.keyphrase.Hint_Details") + ":",
-        GTUtility.translate("gt.blockmachines.multimachine.em.transformer.hint"), // 1 - Energy IO Hatches or High
-                                                                                  // Power Casing
-    };
     private static final IStructureDefinition<MTEActiveTransformer> STRUCTURE_DEFINITION = IStructureDefinition
         .<MTEActiveTransformer>builder()
         .addShape(
@@ -174,26 +168,16 @@ public class MTEActiveTransformer extends TTMultiblockBase implements ISurvivalC
     @Override
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(GTUtility.translate("gt.blockmachines.multimachine.em.transformer.machinetype")) // Machine
-                                                                                                           // Type:
-            // Transformer
-            .addInfo(GTUtility.translate("gt.blockmachines.multimachine.em.transformer.desc.1")) // Can transform to
-                                                                                                 // and from any
-                                                                                                 // voltage
-            .addInfo(GTUtility.translate("gt.blockmachines.multimachine.em.transformer.desc.2")) // Only 0.004% power
-                                                                                                 // loss, HAYO!
-            .addTecTechHatchInfo()
+        tt.addMachineType(StatCollector.translateToLocal("gt.blockmachines.multimachine.em.transformer.machinetype"))
+            .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.em.transformer.desc.1"))
+            .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.em.transformer.desc.2"))
+            .addSupportAny()
             .beginStructureBlock(3, 3, 3, false)
-            .addController(GTUtility.translate("tt.keyword.Structure.FrontCenter")) // Controller: Front center
-            .addCasingInfoMin(GTUtility.translate("gt.blockcasingsTT.0.name"), 5, false) // 5x High Power Casing
-                                                                                         // (minimum)
-            .addOtherStructurePart(
-                GTUtility.translate("tt.keyword.Structure.SuperconductingCoilBlock"),
-                GTUtility.translate("tt.keyword.Structure.Center")) // SuperconductingCoilBlock: Center
-            .addEnergyHatch(GTUtility.translate("tt.keyword.Structure.AnyHighPowerCasing"), 1) // Energy Hatch: Any
-                                                                                               // High Power Casing
-            .addDynamoHatch(GTUtility.translate("tt.keyword.Structure.AnyHighPowerCasing"), 1) // Dynamo Hatch: Any
-                                                                                               // High Power Casing
+            .addController("Front center, 2nd layer")
+            .addCasing("5-24", StatCollector.translateToLocal("gt.blockcasingsTT.0.name"), false)
+            .addCasing("1", StatCollector.translateToLocal("tt.keyword.Structure.SuperconductingCoilBlock"), false)
+            .addEnergyHatch("1+", "Any casing", 1)
+            .addDynamoHatch("0+", "Any casing", 1)
             .toolTipFinisher();
         return tt;
     }
@@ -383,11 +367,6 @@ public class MTEActiveTransformer extends TTMultiblockBase implements ISurvivalC
     public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
         if (mMachine) return -1;
         return survivalBuildPiece("main", stackSize, 1, 1, 0, elementBudget, source, actor, false, true);
-    }
-
-    @Override
-    public String[] getStructureDescription(ItemStack stackSize) {
-        return description;
     }
 
     @Override

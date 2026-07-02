@@ -46,10 +46,10 @@ tile.kekztech_tfftstoragefield_block.8.name=TFFT Storage Field Block (Tier VIII)
 tile.kekztech_tfftstoragefield_block.9.name=TFFT Storage Field Block (Tier IX)
 tile.kekztech_tfftstoragefield_block.10.name=TFFT Storage Field Block (Tier X)
 tile.kekztech_tfftstoragefield_block.desc=This is not a fluid tank
-tile.kekztech_tfftstoragefield_block.hint.1=Hint 1 Dot: TFFT Casing
-tile.kekztech_tfftstoragefield_block.hint.2=Hint 2 Dot: TFFT Casing, Maintenance Hatch, TFFT Multi I/O Hatch, Input/Output Hatch, Energy Hatch
-tile.kekztech_tfftstoragefield_block.hint.3=Hint 3 Dot: EV+ Tier Glass, TFFT Multi I/O Hatch, Input/Output Hatch
-tile.kekztech_tfftstoragefield_block.hint.4=Hint 4 Dot: EV+ Tier Glass
+tile.kekztech_tfftstoragefield_block.hint.1=Hint 1 Dot: TFFT Casing, Energy Hatch, Maintenance Hatch
+tile.kekztech_tfftstoragefield_block.hint.2=Hint 2 Dot: TFFT Casing, Energy Hatch, Maintenance Hatch, TFFT Multi I/O Hatch, Input/Output Hatch
+tile.kekztech_tfftstoragefield_block.hint.3=Hint 3 Dot: EV+ Tiered Glass, TFFT Multi I/O Hatch, Input/Output Hatch
+tile.kekztech_tfftstoragefield_block.hint.4=Hint 4 Dot: EV+ Tiered Glass
 
 # -------- Lapotronic Super Capacitor: Structure Blocks
 tile.kekztech_lapotronicenergyunit_block.name=Lapotronic Casing/Capacitor

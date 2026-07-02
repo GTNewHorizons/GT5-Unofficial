@@ -269,6 +269,10 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
                 else updateDetectorHatches(0, 0);
             }
         }
+        checkHasAnyEnergy(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasAnyInput(errors);
+        checkHasAnyOutput(errors);
     }
 
     @Override
@@ -403,19 +407,26 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
                     + " ticks, startup ends immediately")
             .addInfo("Outputs molten metals")
             .addInfo("Right-click with Screwdriver to change mode")
-            .beginStructureBlock(17, 11, 19, false)
-            .addController("Front center")
-            .addCasingInfoMin("Solid Steel Machine Casing", 10, false)
-            .addInputBus("Any Casing", 1)
-            .addOutputBus("Any Casing", 1)
-            .addInputHatch("Any Casing", 1)
-            .addOutputHatch("Any Casing", 1)
-            .addEnergyHatch("Any Casing", 1)
-            .addMultiAmpHatchInfo()
-            .addMaintenanceHatch("Any Casing", 1)
-            .addOtherStructurePart("Electrode Hatch", "Any Casing", 1)
-            .addOtherStructurePart("Electrode Sensor Hatch", "Any Casing", 1)
-            .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
+            .addSupportMultiAmp()
+            .beginStructureBlock(19, 17, 11, true)
+            .addController("Front center, 4th layer")
+            .addCasing("175", "Steel Frame Box", false)
+            .addCasing("10-172", "Solid Steel Machine Casing", false)
+            .addCasing("101", "Steel Pipe Casing", false)
+            .addCasing("72", "Bolted Naquadah Casing", false)
+            .addCasing("30", "Heating Coil", false)
+            .addCasing("17", "Blast Smelter Heat Containment Coil", false)
+            .addCasing("15", "Refined Graphite Block", false)
+            .addCasing("12", "Insulated Fluid Pipe Casing", false)
+            .addCasing("12", "Heat Proof Coke Oven Casing", false)
+            .addMiscHatch("1", "Electrode Hatch", "Any steel machine casing", 1)
+            .addMiscHatch("0+", "Electrode Detector Hatch", "Any steel machine casing", 1)
+            .addEnergyHatch("1+", "Any steel machine casing", 1)
+            .addMaintenanceHatch("1", "Any steel machine casing", 1)
+            .addInputAny("1+", "Any steel machine casing", 1)
+            .addOutputAny("1+", "Any steel machine casing", 1)
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
         return tt;
     }

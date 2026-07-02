@@ -175,19 +175,20 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
                     + ", one multi-amp hatch is allowed")
             .addInfo("Use screwdriver to disable sawblade rendering")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(9, 4, 3, false)
+            .beginStructureBlock(3, 9, 4, false)
             .addController("Front left, 2nd layer")
-            .addCasingInfoMin("Cutting Factory Frame", 10, false)
-            .addCasingInfoExactly("Tantalum Carbide Frame Box", 18, false)
-            .addCasingInfoExactly("Any Tiered Glass", 16, false)
-            .addCasingInfoExactly("Black Steel Sheetmetal", 13, false)
-            .addInputBus("Any Casing", 1)
-            .addOutputBus("Any Casing", 1)
-            .addInputHatch("Any Casing", 1)
-            .addEnergyHatch("Any Casing", 1)
-            .addMaintenanceHatch("Any Casing", 1)
-            .addMufflerHatch("Any Casing", 1)
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .addCasing("10-29", "Cutting Factory Frame", false)
+            .addCasing("18", "Tantalum Carbide Frame Box", false)
+            .addCasing("16", "Any Tiered Glass", false)
+            .addCasing("13", "Black Steel Sheetmetal", false)
+            .addEnergyHatch("1+", "Any cutting factory frame", 1)
+            .addMaintenanceHatch("1", "Any cutting factory frame", 1)
+            .addMufflerHatch("1", "Any cutting factory frame", 1)
+            .addInputBus("1+", "Any cutting factory frame", 1)
+            .addInputHatch("1+", "Any cutting factory frame", 1)
+            .addOutputBus("1+", "Any cutting factory frame", 1)
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.BOROGLASS)
             .addStructureAuthors(EnumChatFormatting.LIGHT_PURPLE + "Auynonymous")
             .toolTipFinisher();
         return tt;
@@ -242,17 +243,17 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
         casingAmount = 0;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z, errors)) return;
         checkCasingMin(errors, casingAmount, 10);
-        checkHasInputBus(errors);
-        checkHasInputHatch(errors);
-        checkHasOutputBus(errors);
-        checkHasMaintenanceHatch(errors);
-        checkHasMufflerHatch(errors);
         if (!mExoticEnergyHatches.isEmpty()) {
             if (!mEnergyHatches.isEmpty()) errors.add(StructureErrorRegistry.ONE_ENERGY_HATCH_ON_MULTI_OR_LASER);
             if (mExoticEnergyHatches.size() != 1) errors.add(StructureErrorRegistry.ONE_ENERGY_HATCH_ON_MULTI_OR_LASER);
         } else {
             checkHasEnergyHatch(errors);
         }
+        checkHasMaintenanceHatch(errors);
+        checkHasMufflerHatch(errors);
+        checkHasInputBus(errors);
+        checkHasInputHatch(errors);
+        checkHasOutputBus(errors);
     }
 
     @Override

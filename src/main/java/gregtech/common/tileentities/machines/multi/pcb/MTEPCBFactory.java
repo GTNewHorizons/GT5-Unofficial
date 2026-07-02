@@ -336,8 +336,9 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
             if (!checkPiece(OCUpgradeCompat, compatMode.OCX, 0, compatMode.OCZ, errors)) return;
         }
         if (newTier == 3) checkCasingMin(errors, casingAmount, 256); // 292 - 36
-        checkOneMaintenanceHatch(errors);
+
         checkExoticAndNormalEnergyHatches(errors);
+        checkOneMaintenanceHatch(errors);
         checkHasInputBus(errors);
         checkHasInputHatch(errors);
         checkHasOutputBus(errors);
@@ -767,111 +768,43 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                     + "perfect overclocks")
             .addInfo("Trace size can be changed to modify the material usage and machine speed")
             .addInfo("Configure Trace Size in UI")
-            .addTecTechHatchInfo()
-            .beginStructureBlock(30, 38, 13, false)
+            .addSupportAny()
+            .beginStructureBlock(7, 7, 6, true)
             .addController("Front bottom center")
-            .addMaintenanceHatch(EnumChatFormatting.GOLD + "1", 1)
-            .addEnergyHatch(
-                EnumChatFormatting.GOLD + "1"
-                    + EnumChatFormatting.GRAY
-                    + "-"
-                    + EnumChatFormatting.GOLD
-                    + "2"
-                    + EnumChatFormatting.GRAY
-                    + " or "
-                    + EnumChatFormatting.GOLD
-                    + "1"
-                    + EnumChatFormatting.GRAY
-                    + " TT energy hatch",
-                1)
-            .addInputBus(EnumChatFormatting.GOLD + "0" + EnumChatFormatting.GRAY + "+", 1)
-            .addOutputBus(EnumChatFormatting.GOLD + "0" + EnumChatFormatting.GRAY + "+", 1)
-            .addInputHatch(EnumChatFormatting.GOLD + "0" + EnumChatFormatting.GRAY + "+", 1)
-            .addStructureInfo(
-                EnumChatFormatting.WHITE + "Nanite Containment Bus: "
-                    + EnumChatFormatting.GOLD
-                    + "0"
-                    + EnumChatFormatting.GRAY
-                    + "+")
-            .addStructureInfo(
-                EnumChatFormatting.WHITE + "Coolant Hatch (Input Hatch): "
-                    + EnumChatFormatting.GOLD
-                    + "1"
-                    + EnumChatFormatting.GRAY
-                    + " Bottom Center of the Cooling Tower")
-            .addStructureInfo(
-                EnumChatFormatting.BLUE + "Base Multi (Tier "
-                    + EnumChatFormatting.DARK_PURPLE
-                    + 1
-                    + EnumChatFormatting.BLUE
-                    + "):")
-            .addStructureInfo(EnumChatFormatting.GOLD + "40" + EnumChatFormatting.GRAY + " Damascus Steel Frame Box")
-            .addStructureInfo(EnumChatFormatting.GOLD + "9" + EnumChatFormatting.GRAY + " Vibrant Alloy Frame Box")
-            .addStructureInfo(EnumChatFormatting.GOLD + "25" + EnumChatFormatting.GRAY + " Any Tiered Glass")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "77" + EnumChatFormatting.GRAY + " Basic Photolithographic Framework Casing")
-            .addStructureInfo(EnumChatFormatting.GOLD + "12" + EnumChatFormatting.GRAY + " Grate Machine Casing")
-            .addStructureInfo(EnumChatFormatting.GOLD + "25" + EnumChatFormatting.GRAY + " Plascrete Block")
-            .addStructureInfo(
-                EnumChatFormatting.BLUE + "Tier "
-                    + EnumChatFormatting.DARK_PURPLE
-                    + 2
-                    + EnumChatFormatting.BLUE
-                    + " (Adds to Tier "
-                    + EnumChatFormatting.DARK_PURPLE
-                    + 1
-                    + EnumChatFormatting.BLUE
-                    + "):")
-            .addStructureInfo(EnumChatFormatting.GOLD + "34" + EnumChatFormatting.GRAY + " Duranium Frame Box")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "158"
-                    + EnumChatFormatting.GRAY
-                    + " Reinforced Photolithographic Framework Casing")
-            .addStructureInfo(
-                EnumChatFormatting.BLUE + "Tier " + EnumChatFormatting.DARK_PURPLE + 3 + EnumChatFormatting.BLUE + ":")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "292"
-                    + EnumChatFormatting.GRAY
-                    + " Radiation Proof Photolithographic Framework Casing")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "76" + EnumChatFormatting.GRAY + " Radiant Naquadah Alloy Casing")
-            .addStructureInfo(EnumChatFormatting.BLUE + "Bio Chamber:")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "68" + EnumChatFormatting.GRAY + " Clean Stainless Steel Machine Casing")
-            .addStructureInfo(EnumChatFormatting.GOLD + "40" + EnumChatFormatting.GRAY + " Damascus Steel Frame Box")
-            .addStructureInfo(EnumChatFormatting.GOLD + "72" + EnumChatFormatting.GRAY + " Any Tiered Glass")
-            .addStructureInfo(
-                EnumChatFormatting.BLUE + "Cooling Tower (Tier "
-                    + EnumChatFormatting.DARK_PURPLE
-                    + 1
-                    + EnumChatFormatting.BLUE
-                    + "):")
-            .addStructureInfo(EnumChatFormatting.GOLD + "40" + EnumChatFormatting.GRAY + " Damascus Steel Frame Box")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "68" + EnumChatFormatting.GRAY + " Radiant Naquadah Alloy Casing")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "12" + EnumChatFormatting.GRAY + " Extreme Engine Intake Casing")
-            .addStructureInfo(EnumChatFormatting.GOLD + "20" + EnumChatFormatting.GRAY + " Tungstensteel Pipe Casing")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "19"
-                    + EnumChatFormatting.GRAY
-                    + " Reinforced Photolithographic Framework Casing")
-            .addStructureInfo(
-                EnumChatFormatting.BLUE + "Cooling Tower (Tier "
-                    + EnumChatFormatting.DARK_PURPLE
-                    + 2
-                    + EnumChatFormatting.BLUE
-                    + "):")
-            .addStructureInfo(EnumChatFormatting.GOLD + "40" + EnumChatFormatting.GRAY + " Americium Frame Box")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "39"
-                    + EnumChatFormatting.GRAY
-                    + " Reinforced Photolithographic Framework Casing")
-            .addStructureInfo(EnumChatFormatting.GOLD + "8" + EnumChatFormatting.GRAY + " Superconducting Coil Block")
-            .addStructureInfo(EnumChatFormatting.GOLD + "20" + EnumChatFormatting.GRAY + " Tungstensteel Pipe Casing")
-            .addStructureInfo(EnumChatFormatting.GOLD + "48" + EnumChatFormatting.GRAY + " Infinity Cooled Casing")
+            .addEnergyHatch("1-2", "Any lower back casing", 1)
+            .addMaintenanceHatch("1", "Any lower back casing", 1)
+            .addInputBus("1+", "Any lower back casing", 1)
+            .addInputHatch("1+", "Any lower back casing", 1)
+            .addOutputBus("1+", "Any lower back casing", 1)
             .addStructureInfo("")
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Tiers.One"))
+            .addStructureInfo(EnumChatFormatting.ITALIC + "Unlocks T1 Recipes")
+            .addCasing("67-72", "Basic Photolithographic Framework Casing", false)
+            .addCasing("40", "Damascus Steel Frame Box", false)
+            .addCasing("25", "Plascrete Block", false)
+            .addCasing("25", "Any Tiered Glass", false)
+            .addCasing("12", "Grate Machine Casing", false)
+            .addCasing("9", "Vibrant Alloy Frame Box", false)
+            .addStructureInfo("")
+            .addStructureInfo(EnumChatFormatting.AQUA + "Tier 2 " + EnumChatFormatting.BLUE + "(Adds to T1)")
+            .addStructureInfo(EnumChatFormatting.ITALIC + "Unlocks T2 Recipes and Parallels with Silver Nanites")
+            .addCasing("158", "Reinforced Photolithographic Framework Casing", false)
+            .addCasing("34", "Duranium Frame Box", false)
+            .addMiscHatch("0-1", "Nanite Containment Bus", "Any lower back casing", 1)
+            .addStructureInfo("")
+            .addStructureInfo(EnumChatFormatting.AQUA + "Tier 3 " + EnumChatFormatting.BLUE + "(New Structure)")
+            .addStructureInfo(EnumChatFormatting.ITALIC + "Unlocks T3 Recipes and Parallels with Gold Nanites")
+            .addCasing("256-292", "Radiation Proof Photolithographic Framework Casing", false)
+            .addCasing("76", "Radiant Naquadah Alloy Casing", false)
+            .addMiscHatch("0-1", "Nanite Containment Bus", "Any photolithographic casing", 1)
+            .addEnergyHatch("1-2", "Any photolithographic casing", 1)
+            .addMaintenanceHatch("1", "Any photolithographic casing", 1)
+            .addInputBus("1+", "Any photolithographic casing", 1)
+            .addInputHatch("1+", "Any photolithographic casing", 1)
+            .addOutputBus("1+", "Any photolithographic casing", 1)
+            .addStructureInfo("")
+            .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.structuretier"))
+            .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher(AuthorBlueWeabo);
         return tt;
     }

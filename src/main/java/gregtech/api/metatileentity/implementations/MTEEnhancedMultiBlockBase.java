@@ -615,32 +615,28 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
         }
     }
 
-    protected final void checkHasInputBus(List<StructureError> errors) {
-        checkHatchMin(errors, HatchElement.InputBus, 1);
-    }
-
-    protected final void checkHasOutputBus(List<StructureError> errors) {
-        checkHatchMin(errors, HatchElement.OutputBus, 1);
-    }
-
-    protected final void checkHasInputHatch(List<StructureError> errors) {
-        checkHatchMin(errors, HatchElement.InputHatch, 1);
-    }
-
-    protected final void checkHasOutputHatch(List<StructureError> errors) {
-        checkHatchMin(errors, HatchElement.OutputHatch, 1);
-    }
-
-    protected final void checkOneOutputHatch(List<StructureError> errors) {
-        checkHatchExact(errors, HatchElement.OutputHatch, 1);
-    }
-
     protected final void checkHasEnergyHatch(List<StructureError> errors) {
         checkHatchMin(errors, HatchElement.Energy, 1);
     }
 
     protected final void checkOneEnergyHatch(List<StructureError> errors) {
         checkHatchExact(errors, HatchElement.Energy, 1);
+    }
+
+    protected final void checkHasDynamoHatch(List<StructureError> errors) {
+        checkHatchMin(errors, HatchElement.Dynamo, 1);
+    }
+
+    protected final void checkHasMaintenanceHatch(List<StructureError> errors) {
+        checkHatchMin(errors, HatchElement.Maintenance, 1);
+    }
+
+    protected final void checkOneMaintenanceHatch(List<StructureError> errors) {
+        checkHatchExact(errors, HatchElement.Maintenance, 1);
+    }
+
+    protected final void checkOneDynamoHatch(List<StructureError> errors) {
+        checkHatchExact(errors, HatchElement.Dynamo, 1);
     }
 
     protected final void checkHasMufflerHatch(List<StructureError> errors) {
@@ -651,12 +647,36 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
         checkHatchExact(errors, HatchElement.Muffler, 1);
     }
 
-    protected final void checkHasMaintenanceHatch(List<StructureError> errors) {
-        checkHatchMin(errors, HatchElement.Maintenance, 1);
+    protected final void checkHasInputBus(List<StructureError> errors) {
+        checkHatchMin(errors, HatchElement.InputBus, 1);
     }
 
-    protected final void checkOneMaintenanceHatch(List<StructureError> errors) {
-        checkHatchExact(errors, HatchElement.Maintenance, 1);
+    protected final void checkOneInputBus(List<StructureError> errors) {
+        checkHatchExact(errors, HatchElement.InputBus, 1);
+    }
+
+    protected final void checkHasInputHatch(List<StructureError> errors) {
+        checkHatchMin(errors, HatchElement.InputHatch, 1);
+    }
+
+    protected final void checkOneInputHatch(List<StructureError> errors) {
+        checkHatchExact(errors, HatchElement.InputHatch, 1);
+    }
+
+    protected final void checkHasOutputBus(List<StructureError> errors) {
+        checkHatchMin(errors, HatchElement.OutputBus, 1);
+    }
+
+    protected final void checkOneOutputBus(List<StructureError> errors) {
+        checkHatchExact(errors, HatchElement.OutputBus, 1);
+    }
+
+    protected final void checkHasOutputHatch(List<StructureError> errors) {
+        checkHatchMin(errors, HatchElement.OutputHatch, 1);
+    }
+
+    protected final void checkOneOutputHatch(List<StructureError> errors) {
+        checkHatchExact(errors, HatchElement.OutputHatch, 1);
     }
 
     protected void checkHasAnyInput(List<StructureError> errors) {
@@ -674,6 +694,12 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
     protected void checkHasAnyEnergy(List<StructureError> errors) {
         if (mEnergyHatches.isEmpty() && mExoticEnergyHatches.isEmpty()) {
             errors.add(StructureErrors.hatchCount(ErrorType.TOO_FEW, HatchElement.Energy, 0, 1));
+        }
+    }
+
+    protected void checkHasAnyDynamo(List<StructureError> errors) {
+        if (mDynamoHatches.isEmpty() && mExoticDynamoHatches.isEmpty()) {
+            errors.add(StructureErrors.hatchCount(ErrorType.TOO_FEW, HatchElement.Dynamo, 0, 1));
         }
     }
 

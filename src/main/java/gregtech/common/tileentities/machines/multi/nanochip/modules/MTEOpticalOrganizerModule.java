@@ -144,24 +144,22 @@ public class MTEOpticalOrganizerModule extends MTENanochipAssemblyModuleBase<MTE
             .addInfo(getWaterTooltipLine("8", WATER_LIST.get(5).amount, translateToLocalFormatted("GT5U.tooltip.nac.module.optical_organizer.body.water78","0.7x"), TooltipHelper.EFF_COLOR))
             .addSeparator()
             .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.optical_organizer.flavor.1")))
-            .beginStructureBlock(7, 10, 7, false)
+            .beginStructureBlock(7, 7, 10, false)
             .addController(translateToLocal("GT5U.tooltip.nac.interface.structure.module_controller"))
             // Nanochip Reinforcement Casing
-            .addCasingInfoExactly(translateToLocal("gt.blockcasings12.2.name"), 56, false)
+            .addCasing("56", translateToLocal("gt.blockcasings12.2.name"), false)
             // Nanochip Mesh Interface Casing
-            .addCasingInfoExactly(translateToLocal("gt.blockcasings12.1.name"), 49, false)
+            .addCasing("49", translateToLocal("gt.blockcasings12.1.name"), false)
             // Awakened Draconium Frame Box
-            .addCasingInfoExactly(
-                translateToLocal("gt.blockframes.10.name").replace("%material", Materials.DraconiumAwakened.getLocalizedName()),
-                48,
-                false)
+            .addCasing("48", "Awakened Draconium Frame Box", false)
             // Nanochip Complex Glass
-            .addCasingInfoExactly(translateToLocal("gt.blockglass1.8.name"), 40, false)
-            .addInputHatch(TOOLTIP_STRUCTURE_BASE_CASING)
-            .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCI)
-            .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCO)
-            .addStructureInfoSeparator()
-            .addStructureInfo(translateToLocal("GT5U.tooltip.nac.interface.structure.module_description"))
+            .addCasing("40", translateToLocal("gt.blockglass1.8.name"), false)
+            .addInputHatch("1-2", translateToLocal("GT5U.tooltip.nac.interface.structure.module_hatches"), 3)
+            .addMiscHatch("0+", TOOLTIP_VCI_LONG, translateToLocal("GT5U.tooltip.nac.interface.structure.module_hatches"), 3)
+            .addMiscHatch("0+", TOOLTIP_VCO_LONG, translateToLocal("GT5U.tooltip.nac.interface.structure.module_hatches"), 3)
+            .addStructureInfo("")
+            .addStructureFooter(translateToLocal("GT5U.tooltip.nac.interface.structure.module_cost"))
+            .addStructureFooter(translateToLocal("GT5U.tooltip.nac.interface.structure.module_power"))
             .toolTipFinisher();
         // spotless:on
     }

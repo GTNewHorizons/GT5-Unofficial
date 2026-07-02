@@ -429,9 +429,9 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
     }
 
     protected void checkHatches(List<StructureError> errors) {
+        checkHasEnergyHatch(errors);
         checkOneMaintenanceHatch(errors);
         checkHasOutputBus(errors);
-        checkHasEnergyHatch(errors);
     }
 
     @Override
