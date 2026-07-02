@@ -30,6 +30,7 @@ import gregtech.api.util.GTModHandler;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialGenerator;
 import gtPlusPlus.core.material.MaterialStack;
+import gtPlusPlus.core.material.nuclear.MaterialsFluorides;
 import gtPlusPlus.core.material.state.MaterialState;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
@@ -213,8 +214,7 @@ public class RecipeGenOre extends RecipeGenBase {
             .addTo(oreWasherRecipes);
 
         // Fluorite Hydrogen Chemical Bath
-        if (material.getLocalizedName()
-            .equals("Fluorite (F)")) {
+        if (material == MaterialsFluorides.FLUORITE) {
             GTValues.RA.stdBuilder()
                 .itemInputs(material.getCrushed(1))
                 .itemOutputs(material.getCrushedPurified(4), material.getDustImpure(2), material.getDustPurified(1))
