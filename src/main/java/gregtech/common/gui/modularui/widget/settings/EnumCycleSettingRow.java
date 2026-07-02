@@ -9,11 +9,11 @@ import org.jetbrains.annotations.NotNull;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.value.IIntValue;
 import com.cleanroommc.modularui.drawable.text.TextRenderer;
+import com.cleanroommc.modularui.network.NetworkUtils;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.github.bsideup.jabel.Desugar;
 
-import cpw.mods.fml.common.FMLCommonHandler;
 import gregtech.common.gui.modularui.widget.EnumCycleButtonWidget;
 import gregtech.common.gui.modularui.widget.WidgetConfigurator;
 import it.unimi.dsi.fastutil.Pair;
@@ -30,9 +30,7 @@ record EnumCycleSettingRow<E extends Enum<E>> (IKey label, Class<E> clazz, IIntV
 
         if (configure != null) configure.configure(panel, syncManager, button);
 
-        if (button.hasDefaultOverlay() && FMLCommonHandler.instance()
-            .getEffectiveSide()
-            .isClient()) {
+        if (button.hasDefaultOverlay() && NetworkUtils.isClient()) {
             FontRenderer fontRenderer = TextRenderer.getFontRenderer();
             button.width(
                 Arrays.stream(clazz.getEnumConstants())
