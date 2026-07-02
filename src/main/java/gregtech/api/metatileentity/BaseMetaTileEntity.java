@@ -2,10 +2,10 @@ package gregtech.api.metatileentity;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static gregtech.GTMod.GT_FML_LOGGER;
-import static gregtech.api.enums.GTValues.NW;
 import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -69,7 +69,6 @@ import gregtech.api.interfaces.tileentity.IEnergyConnected;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.metatileentity.implementations.MTEBasicMachine;
-import gregtech.api.net.GTPacketTileEntity;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -105,12 +104,10 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
     protected boolean mReleaseEnergy = false;
     protected final long[] mAverageEUInput = new long[] { 0, 0, 0, 0, 0 };
     protected final long[] mAverageEUOutput = new long[] { 0, 0, 0, 0, 0 };
+    private boolean mTexturePacketScheduled = false;
     private boolean mHasEnoughEnergy = true, mRunningThroughTick = false, mInputDisabled = false,
-        mOutputDisabled = false, mMuffler = false, mLockUpgrade = false;
-    private boolean mActive = false;
+        mOutputDisabled = false;
     private boolean mWorkUpdate = false;
-    private boolean mWorks = true;
-    private boolean oRedstone = false;
     private byte oldTextureData = 0;
     private byte oldLightValueClient = 0, oldLightValue = -1, mLightValue = 0, mOtherUpgrades = 0;
     private ForgeDirection mFacing = ForgeDirection.DOWN, oldFacing = ForgeDirection.DOWN;
@@ -119,6 +116,9 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
     private String mOwnerName = "";
     private UUID mOwnerUuid = GTUtility.defaultUuid;
     private int cableUpdateDelay = 30;
+
+    // Texture data, must call scheduleTexturePacket when changed.
+    private boolean mActive = false, mRedstone = false, mLockUpgrade = false, mWorks = true, mMuffler = false;
 
     public BaseMetaTileEntity() {}
 
@@ -135,7 +135,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
             nbt.setLong("mStoredSteam", mStoredSteam);
             nbt.setLong("mStoredEnergy", mStoredEnergy);
             writeCoverNBT(nbt, false);
-            nbt.setByte("mColor", mColor);
+            writeCommonNBT(nbt);
             nbt.setByte("mLightValue", mLightValue);
             nbt.setByte("mOtherUpgrades", mOtherUpgrades);
             nbt.setShort("mFacing", (short) mFacing.ordinal());
@@ -145,6 +145,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
             nbt.setBoolean("mMuffler", mMuffler);
             nbt.setBoolean("mActive", mActive);
             nbt.setBoolean("mWorks", !mWorks);
+            nbt.setBoolean("mRedstone", mRedstone);
             nbt.setBoolean("mInputDisabled", mInputDisabled);
             nbt.setBoolean("mOutputDisabled", mOutputDisabled);
             nbt.setString("shutDownReasonID", getLastShutDownReason().getID());
@@ -172,7 +173,6 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
             else mID = aID;
             mStoredSteam = aNBT.getLong("mStoredSteam");
             mStoredEnergy = aNBT.getLong("mStoredEnergy");
-            mColor = aNBT.getByte("mColor");
             mLightValue = aNBT.getByte("mLightValue");
             mFacing = oldFacing = ForgeDirection.getOrientation(aNBT.getShort("mFacing"));
             mOwnerName = aNBT.getString("mOwnerName");
@@ -193,12 +193,14 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
             mMuffler = aNBT.getBoolean("mMuffler");
             mActive = aNBT.getBoolean("mActive");
             mWorks = !aNBT.getBoolean("mWorks");
+            mRedstone = aNBT.getBoolean("mRedstone");
             mInputDisabled = aNBT.getBoolean("mInputDisabled");
             mOutputDisabled = aNBT.getBoolean("mOutputDisabled");
             mOtherUpgrades = (byte) (aNBT.getByte("mOtherUpgrades") + aNBT.getByte("mBatteries")
                 + aNBT.getByte("mLiBatteries"));
 
             final int nbtVersion = aNBT.getInteger("nbtVersion");
+            readCommonNBT(aNBT);
             readCoverNBT(aNBT);
             loadMetaTileNBT(aNBT);
         }
@@ -285,8 +287,6 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
                 }
             }
             if (!isServerSide) {
-                handleColorChangeClient();
-
                 if (mLightValue != oldLightValueClient) {
                     updateLightValue();
                     oldLightValueClient = mLightValue;
@@ -302,14 +302,13 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
                 updateAvgEUIO();
             }
 
-            mMetaTileEntity.onPreTick(this, mTickTimer);
+            doPreTick();
 
             if (!hasValidMetaTileEntity()) {
                 mRunningThroughTick = false;
                 return;
             }
             if (isServerSide) {
-                handleRedstoneChange();
                 if (mTickTimer == 10) {
                     joinEnet();
                 }
@@ -335,7 +334,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
                 mRunningThroughTick = false;
                 return;
             }
-            mMetaTileEntity.onPostTick(this, mTickTimer);
+            doPostTick();
             if (!hasValidMetaTileEntity()) {
                 mRunningThroughTick = false;
                 return;
@@ -343,14 +342,9 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
             if (isServerSide) {
                 handleCableUpdates();
 
-                if (mTickTimer % 10 == 0) {
-                    sendClientData();
-                }
-
                 if (mTickTimer > 10) {
                     maybeSendTextureData();
                     handleUpdateDataChangeServer();
-                    handleColorChangeServer();
                     handleSidedRedstoneChangeServer();
 
                     if (mLightValue != oldLightValue) {
@@ -367,6 +361,14 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
             }
         }
         mWorkUpdate = mInventoryChanged = mRunningThroughTick = false;
+    }
+
+    private void doPreTick() {
+        mMetaTileEntity.onPreTick(this, mTickTimer);
+    }
+
+    private void doPostTick() {
+        mMetaTileEntity.onPostTick(this, mTickTimer);
     }
 
     /**
@@ -395,17 +397,6 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
         }
         mAverageEUInput[mAverageEUInputIndex] = 0;
         mAverageEUOutput[mAverageEUOutputIndex] = 0;
-    }
-
-    /**
-     * Handles generic Redstone changing
-     */
-    private void handleRedstoneChange() {
-        if (mRedstone == oRedstone && mTickTimer != 10) {
-            return;
-        }
-        oRedstone = mRedstone;
-        issueBlockUpdate();
     }
 
     /**
@@ -652,42 +643,68 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
     }
 
     @Override
-    protected void sendClientData() {
-        if (mSendClientData) {
-            oldTextureData = (byte) ((mFacing.ordinal() & 7) | (mActive ? 8 : 0)
-                | (mRedstone ? 16 : 0)
-                | (mLockUpgrade ? 32 : 0)
-                | (mWorks ? 64 : 0)
-                | (mMuffler ? 128 : 0));
-
-            oldUpdateData = hasValidMetaTileEntity() ? mMetaTileEntity.getUpdateData() : 0;
-
-            oldRedstoneData = getSidedRedstoneMask();
-
-            oldColor = mColor;
-
-            NW.sendPacketToAllPlayersInRange(
-                worldObj,
-                new GTPacketTileEntity(
-                    xCoord,
-                    (short) yCoord,
-                    zCoord,
-                    mID,
-                    getCoverAtSide(ForgeDirection.DOWN).getCoverID(),
-                    getCoverAtSide(ForgeDirection.UP).getCoverID(),
-                    getCoverAtSide(ForgeDirection.NORTH).getCoverID(),
-                    getCoverAtSide(ForgeDirection.SOUTH).getCoverID(),
-                    getCoverAtSide(ForgeDirection.WEST).getCoverID(),
-                    getCoverAtSide(ForgeDirection.EAST).getCoverID(),
-                    oldTextureData,
-                    oldUpdateData,
-                    oldRedstoneData,
-                    oldColor),
-                xCoord,
-                zCoord);
-            mSendClientData = false;
+    public void scheduleTexturePacket() {
+        if (isClientSide()) return;
+        mTexturePacketScheduled = true;
+        if (mTickDisabled) {
+            maybeSendTextureData();
         }
-        sendCoverDataIfNeeded();
+    }
+
+    @Override
+    public void setGenericRedstoneOutput(boolean aOnOff) {
+        mRedstone = aOnOff;
+        scheduleTexturePacket();
+        if (isServerSide()) {
+            issueBlockUpdate();
+        }
+    }
+
+    private byte getTextureData() {
+        return (byte) ((mFacing.ordinal() & 7) | (mActive ? 8 : 0)
+            | (mRedstone ? 16 : 0)
+            | (mLockUpgrade ? 32 : 0)
+            | (mWorks ? 64 : 0)
+            | (mMuffler ? 128 : 0));
+    }
+
+    private byte getUpdateData() {
+        IMetaTileEntity mte = getMetaTileEntity();
+        return mte == null ? 0 : mte.getUpdateData();
+    }
+
+    @Override
+    public final byte[] getInitialDataForClient() {
+        return ByteBuffer.allocate(2 + 24 + 4)
+            .putShort(mID)
+            .putInt(getCoverAtSide(ForgeDirection.DOWN).getCoverID())
+            .putInt(getCoverAtSide(ForgeDirection.UP).getCoverID())
+            .putInt(getCoverAtSide(ForgeDirection.NORTH).getCoverID())
+            .putInt(getCoverAtSide(ForgeDirection.SOUTH).getCoverID())
+            .putInt(getCoverAtSide(ForgeDirection.WEST).getCoverID())
+            .putInt(getCoverAtSide(ForgeDirection.EAST).getCoverID())
+            .put(getTextureData())
+            .put(getUpdateData())
+            .put(getSidedRedstoneMask())
+            .put(getColorRaw())
+            .array();
+    }
+
+    @Override
+    public final void receiveInitialDataOnClient(byte[] data) {
+        ByteBuffer buffer = ByteBuffer.wrap(data);
+        receiveMetaTileEntityData(
+            buffer.getShort(),
+            buffer.getInt(),
+            buffer.getInt(),
+            buffer.getInt(),
+            buffer.getInt(),
+            buffer.getInt(),
+            buffer.getInt(),
+            buffer.get(),
+            buffer.get(),
+            buffer.get(),
+            buffer.get());
     }
 
     public final void receiveMetaTileEntityData(short aID, int aCover0, int aCover1, int aCover2, int aCover3,
@@ -738,7 +755,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
                 }
                 case GregTechTileClientEvents.CHANGE_COLOR -> {
                     if (aValue > 16 || aValue < 0) aValue = 0;
-                    mColor = (byte) aValue;
+                    setColorRaw((byte) aValue);
                 }
                 case GregTechTileClientEvents.CHANGE_REDSTONE_OUTPUT -> setRedstoneOutput(aValue);
                 case GregTechTileClientEvents.DO_SOUND -> {
@@ -764,36 +781,36 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
         final ArrayList<String> tList = new ArrayList<>();
         if (aLogLevel > 2) {
             tList.add(
-                "Meta-ID: " + EnumChatFormatting.BLUE
-                    + mID
-                    + EnumChatFormatting.RESET
-                    + (canAccessData() ? EnumChatFormatting.GREEN + " valid" + EnumChatFormatting.RESET
-                        : EnumChatFormatting.RED + " invalid" + EnumChatFormatting.RESET)
+                GTUtility.translate(
+                    "GT5U.scanner.debug.meta_id",
+                    mID,
+                    canAccessData() ? GTUtility.translate("GT5U.multiblock.scanner.valid")
+                        : GTUtility.translate("GT5U.multiblock.scanner.invalid"))
                     + (mMetaTileEntity == null
                         ? EnumChatFormatting.RED + " MetaTileEntity == null!" + EnumChatFormatting.RESET
-                        : " "));
+                        : ""));
         }
         if (aLogLevel > 1 && mMetaTileEntity != null) {
             addProfilingInformation(tList);
             tList.add(
-                "Is" + (mMetaTileEntity.isAccessAllowed(aPlayer) ? " "
-                    : EnumChatFormatting.RED + " not " + EnumChatFormatting.RESET) + "accessible for you");
+                GTUtility.translate(
+                    mMetaTileEntity.isAccessAllowed(aPlayer) ? "GT5U.scanner.debug.accessible"
+                        : "GT5U.scanner.debug.not_accessible"));
             tList.add(
-                "Recorded " + formatNumber(mMetaTileEntity.mSoundRequests)
-                    + " sound requests in "
-                    + formatNumber(mTickTimer - mLastCheckTick)
-                    + " ticks.");
+                GTUtility.translate(
+                    "GT5U.scanner.debug.sound_requests",
+                    formatNumber(mMetaTileEntity.mSoundRequests),
+                    formatNumber(mTickTimer - mLastCheckTick)));
             mLastCheckTick = mTickTimer;
             mMetaTileEntity.mSoundRequests = 0;
         }
         if (aLogLevel > 0) {
             tList.add(
-                "Machine is " + (mActive ? EnumChatFormatting.GREEN + "active" + EnumChatFormatting.RESET
-                    : EnumChatFormatting.RED + "inactive" + EnumChatFormatting.RESET));
-            if (!mHasEnoughEnergy) tList
-                .add(EnumChatFormatting.RED + "ATTENTION: This Device needs more power." + EnumChatFormatting.RESET);
+                GTUtility
+                    .translate(mActive ? "GT5U.scanner.debug.machine_active" : "GT5U.scanner.debug.machine_inactive"));
+            if (!mHasEnoughEnergy) tList.add(GTUtility.translate("GT5U.scanner.debug.needs_power"));
         }
-        if (joinedIc2Enet) tList.add("Joined IC2 ENet");
+        if (joinedIc2Enet) tList.add(GTUtility.translate("GT5U.scanner.debug.ic2_enet"));
         return mMetaTileEntity.getSpecialDebugInfo(this, aPlayer, aLogLevel, tList);
     }
 
@@ -833,7 +850,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
     public void setFrontFacing(ForgeDirection aFacing) {
         if (isValidFacing(aFacing)) {
             mFacing = aFacing;
-            issueClientUpdate();
+            scheduleTexturePacket();
             mMetaTileEntity.onFacingChange();
 
             doEnetUpdate();
@@ -989,8 +1006,9 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
     public void enableWorking() {
         if (!mWorks) mWorkUpdate = true;
         mWorks = true;
-        issueClientUpdate();
+        scheduleTexturePacket();
         setShutdownStatus(false);
+        setShutDownReason(ShutDownReasonRegistry.NONE);
         if (hasValidMetaTileEntity()) {
             mMetaTileEntity.onEnableWorking();
         }
@@ -999,7 +1017,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
     @Override
     public void disableWorking() {
         mWorks = false;
-        issueClientUpdate();
+        scheduleTexturePacket();
         if (hasValidMetaTileEntity()) {
             mMetaTileEntity.onDisableWorking();
         }
@@ -1042,22 +1060,20 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
     @Override
     public void setActive(boolean aActive) {
         mActive = aActive;
+        scheduleTexturePacket();
         if (hasValidMetaTileEntity()) {
             mMetaTileEntity.onSetActive(aActive);
-            maybeSendTextureData();
         }
     }
 
     private void maybeSendTextureData() {
-        byte textureData = (byte) ((mFacing.ordinal() & 7) | (mActive ? 8 : 0)
-            | (mRedstone ? 16 : 0)
-            | (mLockUpgrade ? 32 : 0)
-            | (mWorks ? 64 : 0)
-            | (mMuffler ? 128 : 0));
-
-        if (textureData != oldTextureData) {
-            oldTextureData = textureData;
-            sendBlockEvent(GregTechTileClientEvents.CHANGE_COMMON_DATA, oldTextureData);
+        if (mTexturePacketScheduled) {
+            byte textureData = getTextureData();
+            if (textureData != oldTextureData) {
+                oldTextureData = textureData;
+                sendBlockEvent(GregTechTileClientEvents.CHANGE_COMMON_DATA, oldTextureData);
+            }
+            mTexturePacketScheduled = false;
         }
     }
 
@@ -1221,7 +1237,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
         final ITexture coverTexture = getCoverTexture(side);
         final ITexture[] textureUncovered = hasValidMetaTileEntity()
             ? mMetaTileEntity
-                .getTexture(this, side, mFacing, (byte) (mColor - 1), mActive, getOutputRedstoneSignal(side) > 0)
+                .getTexture(this, side, mFacing, getColorization(), mActive, getOutputRedstoneSignal(side) > 0)
             : Textures.BlockIcons.ERROR_RENDERING;
         final ITexture[] textureCovered;
         if (coverTexture != null) {
@@ -1390,7 +1406,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
         final ItemStack rStack = new ItemStack(GregTechAPI.sBlockMachines, 1, mID);
         final NBTTagCompound tNBT = new NBTTagCompound();
         if (mLockUpgrade) tNBT.setBoolean("mLockUpgrade", true);
-        if (mColor > 0) tNBT.setByte("mColor", mColor);
+        if (getColorRaw() > 0) tNBT.setByte("mColor", getColorRaw());
         if (mOtherUpgrades > 0) tNBT.setByte("mOtherUpgrades", mOtherUpgrades);
 
         writeCoverNBT(tNBT, true);
@@ -1479,7 +1495,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
                                 sendSoundToPlayers(SoundResource.GTCEU_LOOP_FORGE_HAMMER, 1.0F, 1);
                             } else {
                                 mMuffler = !mMuffler;
-                                issueClientUpdate();
+                                scheduleTexturePacket();
                                 GTUtility.sendChatTrans(
                                     aPlayer,
                                     mMuffler ? "GT5U.machines.muffled.on" : "GT5U.machines.muffled.off");
@@ -1502,7 +1518,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
 
                             if (shouldEnable) {
                                 if (!mWorks) {
-                                    if (this.getLastShutDownReason() == ShutDownReasonRegistry.POWER_LOSS) {
+                                    if (isServerSide()) {
                                         GTMod.proxy.powerfailTracker.removePowerfailEvents(this);
                                     }
                                     enableWorking();
@@ -1572,7 +1588,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
 
                                 if (!aPlayer.capabilities.isCreativeMode) tCurrentItem.stackSize--;
                                 sendSoundToPlayers(SoundResource.GTCEU_OP_WRENCH, 1.0F, 1);
-                                sendClientData();
+                                issueTileUpdate();
                             }
                             return true;
                         }
@@ -1616,7 +1632,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
                     if (ItemList.Upgrade_Lock.isStackEqual(aPlayer.inventory.getCurrentItem())) {
                         if (isUpgradable() && !mLockUpgrade) {
                             mLockUpgrade = true;
-                            issueClientUpdate();
+                            scheduleTexturePacket();
                             setOwnerName(aPlayer.getDisplayName());
                             setOwnerUuid(aPlayer.getUniqueID());
                             sendSoundToPlayers(SoundResource.GTCEU_OP_CLICK, 1.0F, 1);
@@ -1741,7 +1757,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
     public boolean addMufflerUpgrade() {
         if (isMufflerUpgradable()) {
             mMuffler = true;
-            issueClientUpdate();
+            scheduleTexturePacket();
             return true;
         }
         return false;
@@ -1750,7 +1766,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
     @Override
     public void setMuffler(boolean value) {
         mMuffler = value;
-        issueClientUpdate();
+        scheduleTexturePacket();
     }
 
     @Override
@@ -2069,16 +2085,15 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
 
     @Override
     public byte getColorization() {
-        return (byte) (mColor - 1);
+        return (byte) (getColorRaw() - 1);
     }
 
     @Override
     public byte setColorization(byte aColor) {
         if (aColor > 15 || aColor < -1) aColor = -1;
-        mColor = (byte) (aColor + 1);
-        issueClientUpdate();
-        if (canAccessData()) mMetaTileEntity.onColorChangeServer(aColor);
-        return mColor;
+        byte colorRaw = (byte) (aColor + 1);
+        setColorRaw(colorRaw);
+        return colorRaw;
     }
 
     @Override

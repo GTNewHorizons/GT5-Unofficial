@@ -3,6 +3,9 @@ package gregtech.common.gui.modularui.singleblock.base;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static net.minecraft.util.StatCollector.translateToLocal;
 
+import java.util.function.Predicate;
+
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidTank;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
@@ -49,13 +52,13 @@ public class MTEMachineWithFluidScreenBaseGui<T extends MTETieredMachineBlock> e
         textColumn.child(
             IKey.lang("GT5U.machines.basic_tank.liquid_amount")
                 .asWidget()
-                .widgetTheme(GTWidgetThemes.DISPLAY_TEXT));
+                .widgetTheme(GTWidgetThemes.DISPLAY_TEXT_WHITE));
 
         // liquid amount
         textColumn.child(
             IKey.dynamic(() -> formatNumber(fluidTank.getFluidAmount()))
                 .asWidget()
-                .widgetTheme(GTWidgetThemes.DISPLAY_TEXT));
+                .widgetTheme(GTWidgetThemes.DISPLAY_TEXT_WHITE));
 
         screen.child(textColumn);
 
@@ -65,23 +68,38 @@ public class MTEMachineWithFluidScreenBaseGui<T extends MTETieredMachineBlock> e
     }
 
     protected FluidSlot createFluidSlot(ModularPanel panel, PanelSyncManager syncManager, IFluidTank fluidTank) {
-        return new FluidSlot().syncHandler(new FluidSlotSyncHandler(fluidTank))
+        return new FluidSlot().syncHandler(new FluidSlotSyncHandler(fluidTank).filter(getFluidSlotFilter()))
             .bottomRel(0)
             .rightRel(0)
             .background(GTGuiTextures.SLOT_FLUID_TANK);
+    }
+
+    protected Predicate<FluidStack> getFluidSlotFilter() {
+        return _ -> true;
     }
 
     protected boolean supportsFluidIOColumn() {
         return true;
     }
 
-    protected Flow createIO(ModularPanel panel, PanelSyncManager syncManager, int inputSlot, int outputSlot) {
+    protected Flow createIO(ModularPanel panel, PanelSyncManager syncManager, int inputSlot, int outputSlot,
+        IFluidTank fluidTank) {
         Flow ioColumn = Flow.column()
             .coverChildrenWidth()
             .fullHeight()
             .mainAxisAlignment(Alignment.MainAxis.SPACE_BETWEEN);
 
         ioColumn.child(createInputSlot(panel, syncManager, inputSlot));
+        ioColumn.child(
+            new FluidSlot().size(16)
+                .syncHandler(
+                    new FluidSlotSyncHandler(fluidTank).controlsAmount(false)
+                        .canDrainSlot(false)
+                        .canFillSlot(false))
+                .alwaysShowFull(false)
+                .background()
+                .hoverBackground()
+                .overlay(GTGuiTextures.PICTURE_GAUGE));
         ioColumn.child(createOutputSlot(panel, syncManager, outputSlot));
 
         return ioColumn;
@@ -117,7 +135,7 @@ public class MTEMachineWithFluidScreenBaseGui<T extends MTETieredMachineBlock> e
         textColumn.child(
             IKey.lang("GT5U.machines.digitaltank.lockfluid.label")
                 .asWidget()
-                .widgetTheme(GTWidgetThemes.DISPLAY_TEXT));
+                .widgetTheme(GTWidgetThemes.DISPLAY_TEXT_WHITE));
 
         // fluid name
         textColumn.child(IKey.dynamic(() -> {
@@ -128,7 +146,7 @@ public class MTEMachineWithFluidScreenBaseGui<T extends MTETieredMachineBlock> e
             return translateToLocal("GT5U.machines.digitaltank.lockfluid.empty");
         })
             .asWidget()
-            .widgetTheme(GTWidgetThemes.DISPLAY_TEXT));
+            .widgetTheme(GTWidgetThemes.DISPLAY_TEXT_WHITE));
 
         screen.child(textColumn);
 

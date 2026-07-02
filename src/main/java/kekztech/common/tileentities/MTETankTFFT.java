@@ -26,7 +26,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -51,6 +50,7 @@ import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
@@ -224,15 +224,15 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
 
     private static final String[] description = new String[] {
         translateToLocal("tile.kekztech_tfftstoragefield_block.hint.1"), // Casing
-        translateToLocal("tile.kekztech_tfftstoragefield_block.hint.2"), // Casing, Maintenance Hatch, T.F.F.T Multi
+        translateToLocal("tile.kekztech_tfftstoragefield_block.hint.2"), // Casing, Maintenance Hatch, TFFT Multi
                                                                          // I/O Hatch, Input/Output Hatch, Energy
                                                                          // Hatch
-        translateToLocal("tile.kekztech_tfftstoragefield_block.hint.3"), // Glass, T.F.F.T Multi I/O Hatch,
+        translateToLocal("tile.kekztech_tfftstoragefield_block.hint.3"), // Glass, TFFT Multi I/O Hatch,
                                                                          // Input/Output Hatch
         translateToLocal("tile.kekztech_tfftstoragefield_block.hint.4"), // Glass
     };
 
-    // height channel for height
+    // length channel for length
     // field channel for field
     private static final IStructureDefinition<MTETankTFFT> STRUCTURE_DEFINITION = IStructureDefinition
         .<MTETankTFFT>builder()
@@ -353,14 +353,14 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
             .addInfo("The index of a stored fluid can be obtained through the Tricorder")
             .beginVariableStructureBlock(5, 5, 5, 15, 5, 5, false)
             .addController("Front center")
-            .addCasingInfoMin("T.F.F.T Casing", MIN_CASING_AMOUNT, false)
+            .addCasingInfoMin("TFFT Casing", MIN_CASING_AMOUNT, false)
             .addCasingInfoRange("Storage Field Block", 7, 117, true)
             .addStructureInfo("Energy hatch is not required when running cost is 0")
             .addCasingInfoRange("Any Tiered Glass (EV+)", 48, 208, false)
-            .addMaintenanceHatch("Any top or bottom Casing")
-            .addEnergyHatch("Any top or bottom Casing")
-            .addInputHatch("Instead of any casing or glass, has to touch Storage Field Block")
-            .addOutputHatch("Instead of any casing or glass, has to touch Storage Field Block")
+            .addMaintenanceHatch("Any top or bottom Casing", 1, 2)
+            .addEnergyHatch("Any top or bottom Casing", 1, 2)
+            .addInputHatch("Instead of any casing or glass, has to touch Storage Field Block", 2, 3)
+            .addOutputHatch("Instead of any casing or glass, has to touch Storage Field Block", 2, 3)
             .addStructureInfo("You can have a bunch of hatches")
             .addOtherStructurePart(
                 "1x Multi I/O Hatch",
@@ -368,14 +368,14 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
             .addStructureInfo("Use MIOH with conduits or fluid storage buses to see all fluids at once.")
             .addSubChannelUsage(GTStructureChannels.BOROGLASS)
             .addSubChannelUsage(GTStructureChannels.TFFT_FIELD)
-            .addSubChannelUsage(GTStructureChannels.STRUCTURE_HEIGHT)
+            .addSubChannelUsage(GTStructureChannels.STRUCTURE_LENGTH)
             .toolTipFinisher();
         return tt;
     }
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        int layer = GTStructureChannels.STRUCTURE_HEIGHT
+        int layer = GTStructureChannels.STRUCTURE_LENGTH
             .getValueClamped(stackSize, DEFAULT_LAYER_AMOUNT, MAX_LAYER_AMOUNT);
         buildPiece(STRUCTURE_PIECE_TOP, stackSize, hintsOnly, 2, 2, 0);
         for (int i = 1; i <= layer; i++) {
@@ -389,7 +389,7 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
         if (mMachine) return -1;
         int build = survivalBuildPiece(STRUCTURE_PIECE_TOP, stackSize, 2, 2, 0, elementBudget, env, false, true);
         if (build >= 0) return build;
-        int layer = GTStructureChannels.STRUCTURE_HEIGHT
+        int layer = GTStructureChannels.STRUCTURE_LENGTH
             .getValueClamped(stackSize, DEFAULT_LAYER_AMOUNT, MAX_LAYER_AMOUNT);
         for (int i = 1; i <= layer; i++) {
             build = survivalBuildPiece(STRUCTURE_PIECE_MID, stackSize, 2, 2, -i, elementBudget, env, false, true);
@@ -428,7 +428,7 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
             return;
         }
         if (layer - 1 < DEFAULT_LAYER_AMOUNT) {
-            errors.add(StructureErrorRegistry.TOO_SHORT_HEIGHT);
+            errors.add(StructureErrorRegistry.TOO_SHORT_LENGTH);
             return;
         }
         if (!checkPiece(STRUCTURE_PIECE_BOTTOM, 2, 2, -layer, errors)) return;
@@ -563,10 +563,7 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
         ArrayList<String> ll = new ArrayList<>();
         NumberFormat nf = NumberFormat.getNumberInstance();
 
-        ll.add(
-            EnumChatFormatting.YELLOW
-                + StatCollector.translateToLocalFormatted("kekztech.infodata.tank.tfft.stored_fluids")
-                + EnumChatFormatting.RESET);
+        ll.add(IGregTechDeviceInformation.encode("kekztech.infodata.tank.tfft.stored_fluids"));
         for (int i = 0; i < MAX_DISTINCT_FLUIDS; i++) {
             GTFluidTank tank = STORE[i];
             if (tank.isEmpty()) {
@@ -574,43 +571,32 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
                     MessageFormat.format(
                         "{0} - {1}: {2}L ({3}%)",
                         i,
-                        StatCollector.translateToLocal("kekztech.infodata.tank.tfft.stored_fluids.null"),
+                        GTUtility.translate("kekztech.infodata.tank.tfft.stored_fluids.null"),
                         0,
                         0));
             } else {
-                String localizedName = STORE[i].get()
-                    .getLocalizedName();
-                String amount = nf.format(STORE[i].amount());
-                String percentage = capacityPerFluid > 0 ? String.valueOf(STORE[i].amount() * 100 / capacityPerFluid)
-                    : "";
-
-                ll.add(MessageFormat.format("{0} - {1}: {2}L ({3}%)", i, localizedName, amount, percentage));
+                ll.add(
+                    MessageFormat.format(
+                        "{0} - {1}: {2}L ({3}%)",
+                        i,
+                        STORE[i].get()
+                            .getLocalizedName(),
+                        nf.format(STORE[i].amount()),
+                        capacityPerFluid > 0 ? STORE[i].amount() * 100 / capacityPerFluid : 0));
             }
         }
+        ll.add(IGregTechDeviceInformation.encode("kekztech.infodata.operational_data"));
+        ll.add(IGregTechDeviceInformation.encode("kekztech.infodata.tank.tfft.used", nf.format(getStoredAmount())));
+        ll.add(IGregTechDeviceInformation.encode("kekztech.infodata.tank.tfft.total", nf.format(capacity)));
         ll.add(
-            EnumChatFormatting.YELLOW + StatCollector.translateToLocal("kekztech.infodata.operational_data")
-                + EnumChatFormatting.RESET);
+            IGregTechDeviceInformation
+                .encode("kekztech.infodata.tank.tfft.per_fluid_capacity", nf.format(capacityPerFluid)));
+        ll.add(IGregTechDeviceInformation.encode("kekztech.infodata.tank.tfft.running_cost", getActualEnergyUsage()));
+        ll.add(IGregTechDeviceInformation.encode("kekztech.infodata.tank.tfft.auto_voiding", doVoidExcess));
         ll.add(
-            StatCollector.translateToLocalFormatted("kekztech.infodata.tank.tfft.used", nf.format(getStoredAmount())));
-        ll.add(StatCollector.translateToLocalFormatted("kekztech.infodata.tank.tfft.total", nf.format(capacity)));
-        ll.add(
-            StatCollector.translateToLocalFormatted(
-                "kekztech.infodata.tank.tfft.per_fluid_capacity",
-                nf.format(capacityPerFluid)));
-        ll.add(
-            StatCollector
-                .translateToLocalFormatted("kekztech.infodata.tank.tfft.running_cost", getActualEnergyUsage()));
-        ll.add(StatCollector.translateToLocalFormatted("kekztech.infodata.tank.tfft.auto_voiding", doVoidExcess));
-        ll.add(
-            StatCollector.translateToLocalFormatted(
-                "kekztech.infodata.multi.maintenance_status",
-                ((getRepairStatus() == getIdealStatus())
-                    ? EnumChatFormatting.GREEN
-                        + StatCollector.translateToLocal("kekztech.infodata.multi.maintenance_status.ok")
-                        + EnumChatFormatting.RESET
-                    : EnumChatFormatting.RED
-                        + StatCollector.translateToLocal("kekztech.infodata.multi.maintenance_status.bad")
-                        + EnumChatFormatting.RESET)));
+            IGregTechDeviceInformation.encode(
+                getRepairStatus() == getIdealStatus() ? "kekztech.infodata.multi.maintenance_status.ok"
+                    : "kekztech.infodata.multi.maintenance_status.bad"));
         ll.add(EnumChatFormatting.STRIKETHROUGH + "---------------------------------------------");
 
         return ll.toArray(new String[0]);

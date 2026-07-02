@@ -8,12 +8,10 @@ import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BEAMCRAFTER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BEAMCRAFTER_ACTIVE;
-import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 import static gregtech.api.recipe.RecipeMaps.BEAMCRAFTER_METADATA;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -35,6 +33,7 @@ import gregtech.api.enums.GTAuthors;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -43,7 +42,8 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.extensions.ArrayExt;
+import gregtech.api.util.OverclockCalculator;
+import gregtech.api.util.ParallelHelper;
 import gregtech.common.gui.modularui.multiblock.MTEBeamCrafterGui;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.loaders.postload.recipes.beamcrafter.BeamCrafterMetadata;
@@ -69,8 +69,6 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
     private int currentRecipeMaxAmountB = 0;
     private int currentRecipeParticleIDA;
     private int currentRecipeParticleIDB;
-
-    private int activeParallel = 1;
 
     public Int2IntOpenHashMap bufferMap = new Int2IntOpenHashMap();
     private boolean bufferMapInitialized = false;
@@ -363,7 +361,7 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 8, 2, 6, errors)) return;
         checkHasAnyEnergy(errors);
         checkHasAnyInput(errors);
-        checkHasOutputBus(errors);
+        checkHasAnyOutput(errors);
     }
 
     @Override
@@ -380,139 +378,95 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
                 .setContents(null);
         }
 
-        contributeToProgress(this.currentRecipeParticleIDA, this.currentRecipeParticleIDB);
+        contributeToProgress();
         if (mProgresstime >= mMaxProgresstime) {
             currentRecipeCurrentAmountA = 0;
             currentRecipeCurrentAmountB = 0;
         }
     }
 
-    private void contributeToProgress(int recipeParticleIDA, int recipeParticleIDB) {
-        int availableA = bufferMap.getOrDefault(recipeParticleIDA, 0);
-        int availableB = bufferMap.getOrDefault(recipeParticleIDB, 0);
-
+    private void contributeToProgress() {
+        int availableA = bufferMap.getOrDefault(currentRecipeParticleIDA, 0);
         int neededA = currentRecipeMaxAmountA - currentRecipeCurrentAmountA;
+        int consumeA = Math.min(availableA, neededA);
+        bufferMap.put(currentRecipeParticleIDA, availableA - consumeA);
+
+        int availableB = bufferMap.getOrDefault(currentRecipeParticleIDB, 0);
         int neededB = currentRecipeMaxAmountB - currentRecipeCurrentAmountB;
+        int consumeB = Math.min(availableB, neededB);
+        bufferMap.put(currentRecipeParticleIDB, availableB - consumeB);
 
-        int availAfterCurrentA = availableA - neededA;
-        int availAfterCurrentB = availableB - neededB;
-
-        int consumedA = 0;
-        int consumedB = 0;
-
-        if (this.activeParallel == 1) {
-            consumedA = Math.min(availableA, neededA);
-            consumedB = Math.min(availableB, neededB);
-        } else {
-            consumedA = Math.min(availableA, neededA + ((this.activeParallel - 1) * currentRecipeMaxAmountA));
-            consumedB = Math.min(availableB, neededB + ((this.activeParallel - 1) * currentRecipeMaxAmountB));
-        }
-
-        bufferMap.put(recipeParticleIDA, availableA - consumedA);
-        bufferMap.put(recipeParticleIDB, availableB - consumedB);
-
-        currentRecipeCurrentAmountA += consumedA;
-        currentRecipeCurrentAmountB += consumedB;
-
-        mProgresstime += consumedA + consumedB;
-
+        currentRecipeCurrentAmountA += consumeA;
+        currentRecipeCurrentAmountB += consumeB;
+        mProgresstime += consumeA + consumeB;
     }
 
     @Override
-    public boolean supportsCraftingMEBuffer() {
-        return false;
-    }
+    protected ProcessingLogic createProcessingLogic() {
+        return new ProcessingLogic() {
 
-    @Override
-    public @NotNull CheckRecipeResult checkProcessing() {
-        this.currentRecipeMaxAmountA = 0;
-        this.currentRecipeMaxAmountB = 0;
-        this.activeParallel = 1;
-
-        ArrayList<ItemStack> tItems = this.getStoredInputs();
-        ItemStack[] inputItems = tItems.toArray(new ItemStack[0]);
-        ArrayList<FluidStack> tFluids = this.getStoredFluids();
-        FluidStack[] inputFluids = tFluids.toArray(new FluidStack[0]);
-
-        long voltage = this.getAverageInputVoltage();
-        long amps = this.getMaxInputAmps();
-        long tVoltageActual = voltage * amps;
-
-        GTRecipe tRecipe = RecipeMaps.beamcrafterRecipes.findRecipeQuery()
-            .items(inputItems)
-            .fluids(inputFluids)
-            .voltage(tVoltageActual)
-            .filter((GTRecipe recipe) -> (recipe.getMetadata(BEAMCRAFTER_METADATA) != null))
-            .find();
-        if (tRecipe == null) return CheckRecipeResultRegistry.NO_RECIPE;
-
-        BeamCrafterMetadata metadata = tRecipe.getMetadata(BEAMCRAFTER_METADATA);
-        if (metadata == null) return CheckRecipeResultRegistry.NO_RECIPE;
-
-        this.currentRecipeParticleIDA = metadata.particleID_A;
-        this.currentRecipeParticleIDB = metadata.particleID_B;
-
-        this.currentRecipeMaxAmountA = metadata.amount_A;
-        this.currentRecipeMaxAmountB = metadata.amount_B;
-
-        // total time to finish recipe in ticks is the sum of the required Amounts
-        this.mMaxProgresstime = this.currentRecipeMaxAmountA + this.currentRecipeMaxAmountB;
-
-        if (this.mMaxProgresstime == Integer.MAX_VALUE - 1 && this.mEUt == Integer.MAX_VALUE - 1)
-            return CheckRecipeResultRegistry.NO_RECIPE;
-
-        if (!tRecipe.equals(this.lastRecipe)) this.lastRecipe = tRecipe;
-
-        // --- parallels ---
-        // limit number of parallels based on availability of items, fluids, and beams.
-        int parallel = MAX_PARALLEL;
-
-        parallel = (int) (tRecipe.maxParallelCalculatedByInputs(parallel, inputFluids, inputItems));
-
-        int availableA = bufferMap.getOrDefault(this.currentRecipeParticleIDA, 0);
-        int availableB = bufferMap.getOrDefault(this.currentRecipeParticleIDB, 0);
-
-        int availAfterCurrentA = availableA - (this.currentRecipeMaxAmountA - this.currentRecipeCurrentAmountA);
-        int availAfterCurrentB = availableB - (this.currentRecipeMaxAmountB - this.currentRecipeCurrentAmountB);
-
-        if (availAfterCurrentA <= 0 || availAfterCurrentB <= 0) parallel = 1;
-        else {
-            parallel = Math.min(parallel, (availAfterCurrentA / this.currentRecipeMaxAmountA) + 1);
-            parallel = Math.min(parallel, (availAfterCurrentB / this.currentRecipeMaxAmountB) + 1);
-        }
-
-        parallel = Math.max(1, parallel); // so it can't be 0
-        this.activeParallel = parallel;
-
-        tRecipe.consumeInput(this.activeParallel, inputFluids, inputItems);
-
-        if (tRecipe.mOutputs != null) {
-            this.mOutputItems = new ItemStack[tRecipe.mOutputs.length];
-            if (tRecipe.mOutputChances != null) {
-                for (int i = 0; i < tRecipe.mOutputChances.length; i++) {
-                    if (XSTR_INSTANCE.nextInt(10000) < tRecipe.mOutputChances[i]) {
-                        this.mOutputItems[i] = tRecipe.mOutputs[i].copy();
-                    }
+            @Override
+            protected @NotNull CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
+                if (availableAmperage * availableVoltage < recipe.mEUt) {
+                    return CheckRecipeResultRegistry.insufficientPower(recipe.mEUt);
                 }
-            } else {
-                this.mOutputItems = ArrayExt.copyItemsIfNonEmpty(tRecipe.mOutputs);
+                return super.validateRecipe(recipe);
             }
 
-            for (ItemStack mOutputItem : this.mOutputItems) {
-                if (mOutputItem != null) {
-                    mOutputItem.stackSize *= this.activeParallel;
-                }
+            @Override
+            protected @NotNull OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
+                return super.createOverclockCalculator(recipe).setNoOverclock(true);
             }
 
-        }
+            @Override
+            protected @NotNull ParallelHelper createParallelHelper(@NotNull GTRecipe recipe1) {
+                return super.createParallelHelper(recipe1).setMaxParallelCalculator(
+                    (GTRecipe recipe, int maxParallel, FluidStack[] fluids, ItemStack[] items) -> {
+                        BeamCrafterMetadata metadata = recipe.getMetadata(BEAMCRAFTER_METADATA);
+                        if (metadata == null) return 0;
+                        double parallel = recipe.maxParallelCalculatedByInputs(maxParallel, fluids, items);
+                        if (parallel < 1) return parallel;
 
-        this.mEfficiency = (10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000);
-        this.mEfficiencyIncrease = 10000;
+                        if (metadata.particleID_A == metadata.particleID_B) {
+                            double available = bufferMap.getOrDefault(metadata.particleID_A, 0);
+                            parallel = Math.min(parallel, available / (metadata.amount_A + metadata.amount_B));
+                        } else {
+                            double availableA = bufferMap.getOrDefault(metadata.particleID_A, 0);
+                            double availableB = bufferMap.getOrDefault(metadata.particleID_B, 0);
+                            parallel = Math.min(parallel, availableA / metadata.amount_A);
+                            parallel = Math.min(parallel, availableB / metadata.amount_B);
+                        }
 
-        lEUt = -tRecipe.mEUt;
+                        parallel = Math.max(1, parallel); // allow starting when item and fluid are enough but beam is
+                                                          // not
+                        return parallel;
+                    });
+            }
 
-        this.updateSlots();
-        return CheckRecipeResultRegistry.SUCCESSFUL;
+            @Override
+            protected @NotNull CheckRecipeResult applyRecipe(@NotNull GTRecipe recipe, @NotNull ParallelHelper helper,
+                @NotNull OverclockCalculator calculator, @NotNull CheckRecipeResult result) {
+                BeamCrafterMetadata metadata = recipe.getMetadata(BEAMCRAFTER_METADATA);
+                if (metadata == null) {
+                    return CheckRecipeResultRegistry.NO_RECIPE;
+                }
+                result = super.applyRecipe(recipe, helper, calculator, result);
+                if (result.wasSuccessful()) {
+                    currentRecipeParticleIDA = metadata.particleID_A;
+                    currentRecipeParticleIDB = metadata.particleID_B;
+                    currentRecipeCurrentAmountA = 0;
+                    currentRecipeCurrentAmountB = 0;
+                    int activeParallel = helper.getCurrentParallel();
+                    currentRecipeMaxAmountA = metadata.amount_A * activeParallel;
+                    currentRecipeMaxAmountB = metadata.amount_B * activeParallel;
+                    duration = currentRecipeMaxAmountA + currentRecipeMaxAmountB;
+                    calculatedEut = recipe.mEUt; // Set the real eu/t usage or else it will not consume power
+                }
+                return result;
+            }
+        }.setEuModifier(0) // Set eu/t to 0 for parallel calculation
+            .setMaxParallel(MAX_PARALLEL)
+            .setUnlimitedTierSkips();
     }
 
     @Override
@@ -544,6 +498,16 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
 
     public int getCurrentRecipeParticleIDB() {
         return currentRecipeParticleIDB;
+    }
+
+    @Override
+    public boolean supportsInputSeparation() {
+        return true;
+    }
+
+    @Override
+    public boolean supportsVoidProtection() {
+        return true;
     }
 
 }

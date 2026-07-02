@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.multi;
 
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.isAir;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
@@ -24,7 +25,6 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -341,8 +341,8 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
         .addElement('Q', ofBlock(GregTechAPI.sBlockCasings13, 9))
         .addElement(
             'V',
-            buildHatchAdder(MTENanoForge.class).atLeast(
-                ImmutableMap.of(InputHatch, 1, OutputBus, 1, InputBus, 1, Maintenance, 0, Energy.or(ExoticEnergy), 1))
+            buildHatchAdder(MTENanoForge.class)
+                .atLeast(ImmutableMap.of(InputHatch, 1, OutputBus, 1, InputBus, 1, Energy.or(ExoticEnergy), 1))
                 .hint(1)
                 .casingIndex(((BlockCasings13) GregTechAPI.sBlockCasings13).getTextureIndex(6))
                 .buildAndChain(onElementPass(MTENanoForge::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings13, 6))))
@@ -350,7 +350,7 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
         .addElement('W', ofBlock(GregTechAPI.nanoForgeRender, 0))
         .addElement('X', ofBlock(GregTechAPI.sBlockCasings8, 7))
         .addElement('Y', ofBlock(GregTechAPI.sBlockCasings8, 10))
-        .addElement('Z', ofBlock(Blocks.air, 0))
+        .addElement('Z', isAir())
         .build();
     private byte mSpecialTier = 0;
     private boolean renderActive = false;
@@ -621,7 +621,7 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
             // tier 4
             casingAmount = 0;
             if (!checkPiece(STRUCTURE_PIECE_TIER4_BASE, 20, 33, 0, errors)) return;
-            checkCasingMin(errors, casingAmount, 2784);
+            checkCasingMin(errors, casingAmount, 2780);
             if (renderActive) {
                 if (checkPiece(STRUCTURE_PIECE_TIER4_AIR_RENDER, 20, 50, 0, errors)) {
                     mSpecialTier = 4;
@@ -652,12 +652,13 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
             }
 
             if (!errors.isEmpty()) return;
+            checkHasMaintenanceHatch(errors);
         }
         if (mSpecialTier == 0) {
             errors.add(StructureErrorRegistry.UNKNOWN_TIER);
             return;
         }
-        checkHasMaintenanceHatch(errors);
+
         checkExoticAndNormalEnergyHatches(errors);
         checkHasAnyInput(errors);
         checkHasOutputBus(errors);

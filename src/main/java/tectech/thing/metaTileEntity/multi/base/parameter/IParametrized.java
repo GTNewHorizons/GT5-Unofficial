@@ -10,5 +10,5 @@ public interface IParametrized {
 
     void loadLegacyParameters(NBTTagCompound nbt);
 
-    List<Parameter<?>> getParameters();
+    List<Parameter<?, ?>> getParameters();
 }

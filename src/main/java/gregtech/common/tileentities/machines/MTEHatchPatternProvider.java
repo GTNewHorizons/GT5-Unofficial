@@ -4,7 +4,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_HATCH_PATTERN_PROVI
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.cleanroommc.modularui.factory.PosGuiData;
@@ -19,27 +18,25 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.render.TextureFactory;
-import gregtech.client.GTTooltipHandler;
+import gregtech.api.util.GTSplit;
 import gregtech.common.gui.modularui.hatch.MTEHatchPatternProviderGui;
 
 public class MTEHatchPatternProvider extends MTEHatchInputBus {
 
-    public MTEHatchPatternProvider(int id, String name, String nameRegional) {
-        super(
-            id,
-            name,
-            nameRegional,
-            GTTooltipHandler.Tier.IV.ordinal(),
-            getSlots(),
-            new String[] { StatCollector.translateToLocal("GT5U.gui.tooltip.hatch.crafting_pattern_provider.1"),
-                StatCollector
-                    .translateToLocalFormatted("GT5U.gui.tooltip.hatch.crafting_pattern_provider.2", getSlots()) });
+    public MTEHatchPatternProvider(int id, String name, String nameRegional, int tier) {
+        super(id, name, nameRegional, tier, getSlots(tier), null);
         this.disableSort = true;
     }
 
-    public MTEHatchPatternProvider(String name, int slots, String[] description, ITexture[][][] textures) {
-        super(name, GTTooltipHandler.Tier.IV.ordinal(), slots, description, textures);
+    public MTEHatchPatternProvider(String name, int tier, String[] description, ITexture[][][] textures) {
+        super(name, tier, getSlots(tier), description, textures);
         this.disableSort = true;
+    }
+
+    @Override
+    public String[] getDescription() {
+        return GTSplit
+            .splitLocalizedFormatted("GT5U.gui.tooltip.hatch.crafting_pattern_provider", this.mInventory.length);
     }
 
     @Override
@@ -54,12 +51,7 @@ public class MTEHatchPatternProvider extends MTEHatchInputBus {
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTEHatchPatternProvider(this.mName, getSlots(), this.mDescriptionArray, this.mTextures);
-    }
-
-    @Override
-    public int getSizeInventory() {
-        return getSlots();
+        return new MTEHatchPatternProvider(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
     }
 
     @Override
@@ -101,7 +93,15 @@ public class MTEHatchPatternProvider extends MTEHatchInputBus {
         return new MTEHatchPatternProviderGui(this).build(data, syncManager, uiSettings);
     }
 
-    private static int getSlots() {
-        return 9 * 11;
+    public static int getSlots(int tier) {
+        // should be a multiple of 9 to show properly
+        return switch (tier) {
+            case 5 -> 36; // IV (36)
+            case 6 -> 45; // LuV (49->45)
+            case 7 -> 63; // ZPM (64->63)
+            case 8 -> 81; // UV (81)
+            case 9 -> 99; // UHV (100->99)
+            default -> 9; // should be unreachable
+        };
     }
 }

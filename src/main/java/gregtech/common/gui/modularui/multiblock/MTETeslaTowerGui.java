@@ -47,6 +47,7 @@ import com.mojang.realmsclient.util.Pair;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.gui.ItemDisplayKey;
 import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.api.modularui2.GTGuis;
 import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.common.gui.modularui.multiblock.base.TTMultiblockBaseGui;
 import gregtech.common.gui.modularui.synchandler.TeslaNodeData;
@@ -85,7 +86,7 @@ public class MTETeslaTowerGui extends TTMultiblockBaseGui<MTETeslaTower> {
                     () -> " " + voltageSyncer.getValue()
                         .toString())
                     .asWidget()
-                    .widgetTheme(GTWidgetThemes.DISPLAY_TEXT)
+                    .widgetTheme(GTWidgetThemes.DISPLAY_TEXT_WHITE)
                     // Minecraft &a equivalent
                     .color(0x55FF55));
     }
@@ -111,6 +112,16 @@ public class MTETeslaTowerGui extends TTMultiblockBaseGui<MTETeslaTower> {
     protected Flow createLeftPanelGapRow(ModularPanel parent, PanelSyncManager syncManager) {
         return super.createLeftPanelGapRow(parent, syncManager).child(createChartButton(syncManager, parent))
             .child(createHeatMapButton(syncManager, parent));
+    }
+
+    @Override
+    protected IWidget createPowerPassButton() {
+        return new ButtonWidget<>()
+            .overlay(
+                new DynamicDrawable(
+                    () -> multiblock.ePowerPass ? GTGuiTextures.OVERLAY_BUTTON_POWER_PASS_ON
+                        : GTGuiTextures.OVERLAY_BUTTON_POWER_PASS_OFF))
+            .tooltip(t -> t.addLine(IKey.lang("gt.blockmachines.multimachine.tm.teslaCoil.powerPassAutomatic")));
     }
 
     @Override
@@ -151,15 +162,11 @@ public class MTETeslaTowerGui extends TTMultiblockBaseGui<MTETeslaTower> {
     }
 
     private @NotNull ModularPanel openChartPanel(PanelSyncManager syncManager, ModularPanel parent) {
-        return new ModularPanel("chart") {
-
-            @Override
-            public boolean isDraggable() {
-                return false;
-            }
-        }.size(this.getBasePanelWidth(), this.getBasePanelHeight())
+        return GTGuis.createPopUpPanel("chart", false, true)
+            .size(this.getBasePanelWidth(), this.getBasePanelHeight())
             .relative(parent)
-            .leftRel(0, 0, 0)
+            .topRel(0)
+            .leftRel(1, 0, 0)
             .padding(4)
             .child(
                 Flow.column()
@@ -257,13 +264,8 @@ public class MTETeslaTowerGui extends TTMultiblockBaseGui<MTETeslaTower> {
 
     private @NotNull ModularPanel openHeatMapPanel(PanelSyncManager syncManager, ModularPanel parent) {
         int borderRadius = 4;
-        return new ModularPanel("heatMap") {
-
-            @Override
-            public boolean isDraggable() {
-                return false;
-            }
-        }.relative(parent)
+        return GTGuis.createPopUpPanel("heatMap", false, true)
+            .relative(parent)
             .topRel(0)
             .rightRel(1, 0, 0)
             .size(gridSquareSize * gridChunkSize + borderRadius * 2)

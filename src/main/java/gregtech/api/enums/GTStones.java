@@ -387,6 +387,8 @@ public enum GTStones {
 
     public final StoneBuilder stone;
 
+    public static final GTStones[] VALUES = values();
+
     GTStones(StoneBuilder stone) {
         this.stone = stone;
     }
