@@ -24,7 +24,6 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
@@ -68,17 +67,6 @@ public class MTEMicrowave extends TTMultiblockBase implements ISurvivalConstruct
     // endregion
 
     // region structure
-    // use multi A energy inputs, use less power the longer it runs
-    private static final String[] description = new String[] {
-        EnumChatFormatting.AQUA + translateToLocal("tt.keyphrase.Hint_Details") + ":",
-        translateToLocal("gt.blockmachines.multimachine.tm.microwave.hint.0"), // 1 - Classic Hatches or Clean
-                                                                               // Stainless Steel
-        // Casing
-        translateToLocal("gt.blockmachines.multimachine.tm.microwave.hint.1"), // Also acts like a hopper so give it
-                                                                               // an Output
-        // Bus
-    };
-
     private static final IStructureDefinition<MTEMicrowave> STRUCTURE_DEFINITION = IStructureDefinition
         .<MTEMicrowave>builder()
         .addShape(
@@ -324,11 +312,6 @@ public class MTEMicrowave extends TTMultiblockBase implements ISurvivalConstruct
     @Override
     public IStructureDefinition<MTEMicrowave> getStructure_EM() {
         return STRUCTURE_DEFINITION;
-    }
-
-    @Override
-    public String[] getStructureDescription(ItemStack stackSize) {
-        return description;
     }
 
     @Override

@@ -622,8 +622,6 @@ gt.blockmachines.multimachine.em.transformer.desc.1=Can transform to and from an
 gt.blockmachines.multimachine.em.transformer.desc.2=Only 0.004% power loss, HAYO!
 
 gt.blockmachines.multimachine.tm.microwave.name=Microwave Grinder
-gt.blockmachines.multimachine.tm.microwave.hint.0=1 - Classic Hatches or Clean Stainless Steel Casing
-gt.blockmachines.multimachine.tm.microwave.hint.1=Also acts like a hopper so give it an Output Bus
 gt.blockmachines.multimachine.tm.microwave.desc.0=Controller block of the Microwave Grinder
 gt.blockmachines.multimachine.tm.microwave.desc.1=Starts a timer when enabled
 gt.blockmachines.multimachine.tm.microwave.desc.2=While the timer is running anything inside the machine will take damage
@@ -636,7 +634,6 @@ gt.blockmachines.multimachine.tm.microwave.cfgo.0=Timer value
 gt.blockmachines.multimachine.tm.microwave.cfgo.1=Timer remaining
 
 gt.blockmachines.multimachine.tm.teslaCoil.name=Tesla Tower
-gt.blockmachines.multimachine.tm.teslaCoil.hint.0=Hint 1 dot: Capacitor Hatch, Energy Hatch, Maintenance Hatch, Input Hatch
 gt.blockmachines.multimachine.tm.teslaCoil.desc.0=Controller block of the Tesla Tower
 gt.blockmachines.multimachine.tm.teslaCoil.desc.1=Used to transmit power to Tesla Coil Covers and Tesla Transceivers
 gt.blockmachines.multimachine.tm.teslaCoil.desc.2=Can be fed with Helium/Nitrogen/Radon Plasma to increase the range
@@ -685,8 +682,6 @@ gt.blockmachines.multimachine.em.switch.adv.desc.5=For weighted computation dist
 
 gt.blockmachines.multimachine.em.computer.name=Quantum Computer
 gt.blockmachines.multimachine.em.computer.machinetype=Quantum Computer, QC
-gt.blockmachines.multimachine.em.computer.hint.0=1 - Classic/Data Hatches or Computer Casing
-gt.blockmachines.multimachine.em.computer.hint.1=2 - Rack Hatches or Advanced Computer Casing
 gt.blockmachines.multimachine.em.computer.desc=You need it to process the number above
 gt.blockmachines.multimachine.em.computer.cfgi.0=Overclock ratio
 gt.blockmachines.multimachine.em.computer.cfgi.1=Overvoltage ratio
@@ -748,9 +743,6 @@ gt.blockmachines.multimachine.em.scanner.hint.3=4 - Elemental Overflow Hatches o
 gt.blockmachines.multimachine.em.scanner.desc.0=Controller block of the Elemental Scanner
 
 gt.blockmachines.multimachine.em.research.type=Research Station, Scanner
-gt.blockmachines.multimachine.em.research.hint.0=1 - Classic/Data Hatches or Computer Casing
-gt.blockmachines.multimachine.em.research.hint.1=2 - Holder Hatch
-gt.blockmachines.multimachine.em.research.hint.2=3 - Output Bus, Input Hatch, or Advanced Computer Casing
 gt.blockmachines.multimachine.em.research.desc.1=Used to scan Data Sticks for Assembly Line Recipes
 gt.blockmachines.multimachine.em.research.desc.2=Needs to be fed with computation to work
 gt.blockmachines.multimachine.em.research.desc.3=Does not consume the item until the Data Stick is written
@@ -778,7 +770,6 @@ gt.blockmachines.multimachine.em.collider.mode.3=Currently Slaves...
 gt.blockmachines.multimachine.em.collider.Structure.AdditionalCollider=Needs another Matter Collider that is mirrored to this one
 
 gt.blockmachines.multimachine.em.infuser.name=Energy Infuser
-gt.blockmachines.multimachine.em.infuser.hint=1 - Classic Hatches or High Power Casing
 gt.blockmachines.multimachine.em.infuser.desc.0=Controller block of the Energy Infuser
 gt.blockmachines.multimachine.em.infuser.desc.1=Can be used to charge items (lossless)
 gt.blockmachines.multimachine.em.infuser.desc.2=Can be fed with UU-Matter to repair items
@@ -786,7 +777,6 @@ gt.blockmachines.multimachine.em.infuser.desc.3=Stocking Bus is not supported
 gt.blockmachines.multimachine.em.infuser.Structure.HighPowerCasing=Layer 1 and 5
 gt.blockmachines.multimachine.em.infuser.Structure.MolecularCoil=Layer 2 and 4
 gt.blockmachines.multimachine.em.infuser.Structure.MolecularCasing=Layer 3
-
 
 gt.blockmachines.multimachine.em.processing.name=Quantum Processing Machine
 gt.blockmachines.multimachine.em.processing.hint.0=1 - Classic Hatches or High Power Casing
@@ -804,8 +794,6 @@ gt.blockmachines.multimachine.em.stabilizer.hint.1=2 - Elemental Hatches or Mole
 gt.blockmachines.multimachine.em.stabilizer.desc.0=Controller block of the Elemental Stabilizer
 
 gt.blockmachines.multimachine.em.wormhole.name=Wormhole
-gt.blockmachines.multimachine.em.wormhole.hint.0=1 - Classic Hatches or High Power Casing
-gt.blockmachines.multimachine.em.wormhole.hint.1=2 - Elemental Hatches or Molecular Casing
 gt.blockmachines.multimachine.em.wormhole.desc.0=Controller block of the Wormhole
 
 gt.blockmachines.multimachine.em.decay.name=Decay Generator

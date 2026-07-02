@@ -32,7 +32,6 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -143,11 +142,6 @@ public class MTETeslaTower extends TTMultiblockBase
     // endregion
 
     // region structure
-    private static final String[] description = new String[] {
-        EnumChatFormatting.AQUA + translateToLocal("tt.keyphrase.Hint_Details") + ":",
-        translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.hint.0") // Capacitor Hatch, Energy Hatch,
-                                                                              // Maintenance Hatch, Input Hatch
-    };
 
     private static final IStructureDefinition<MTETeslaTower> STRUCTURE_DEFINITION = IStructureDefinition
         .<MTETeslaTower>builder()
@@ -904,11 +898,6 @@ public class MTETeslaTower extends TTMultiblockBase
     public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
         if (mMachine) return -1;
         return survivalBuildPiece("main", stackSize, 3, 16, 0, elementBudget, source, actor, false, true);
-    }
-
-    @Override
-    public String[] getStructureDescription(ItemStack stackSize) {
-        return description;
     }
 
     @Override
