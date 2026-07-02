@@ -269,6 +269,10 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
                 else updateDetectorHatches(0, 0);
             }
         }
+        checkHasAnyEnergy(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasAnyInput(errors);
+        checkHasAnyOutput(errors);
     }
 
     @Override
@@ -403,19 +407,26 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
                     + " ticks, startup ends immediately")
             .addInfo("Outputs molten metals")
             .addInfo("Right-click with Screwdriver to change mode")
-            .beginStructureBlock(17, 11, 19, false)
-            .addController("Front center")
-            .addCasingInfoMin("Solid Steel Machine Casing", 10, false)
-            .addInputBus("Any Casing", 1)
-            .addOutputBus("Any Casing", 1)
-            .addInputHatch("Any Casing", 1)
-            .addOutputHatch("Any Casing", 1)
-            .addEnergyHatch("Any Casing", 1)
-            .addMultiAmpHatchInfo()
-            .addMaintenanceHatch("Any Casing", 1)
-            .addOtherStructurePart("Electrode Hatch", "Any Casing", 1)
-            .addOtherStructurePart("Electrode Sensor Hatch", "Any Casing", 1)
-            .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
+            .addSupportMultiAmp()
+            .beginStructureBlock(19, 17, 11, true)
+            .addController("Front center, 4th layer")
+            .addCasing("175", "Steel Frame Box", false)
+            .addCasing("10-172", "Solid Steel Machine Casing", false)
+            .addCasing("101", "Steel Pipe Casing", false)
+            .addCasing("72", "Bolted Naquadah Casing", false)
+            .addCasing("30", "Heating Coil", false)
+            .addCasing("17", "Blast Smelter Heat Containment Coil", false)
+            .addCasing("15", "Refined Graphite Block", false)
+            .addCasing("12", "Insulated Fluid Pipe Casing", false)
+            .addCasing("12", "Heat Proof Coke Oven Casing", false)
+            .addMiscHatch("1", "Electrode Hatch", "Any steel machine casing", 1)
+            .addMiscHatch("0+", "Electrode Detector Hatch", "Any steel machine casing", 1)
+            .addEnergyHatch("1+", "Any steel machine casing", 1)
+            .addMaintenanceHatch("1", "Any steel machine casing", 1)
+            .addInputAny("1+", "Any steel machine casing", 1)
+            .addOutputAny("1+", "Any steel machine casing", 1)
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
         return tt;
     }
@@ -843,10 +854,13 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
 
     @Override
     public boolean onRunningTick(ItemStack aStack) {
-        if (phase == ArcFurnacePhase.ArcIgnition && lEUt < 0 && !drainEnergyInput(getActualEnergyUsage())) {
-            checkRecipeResult = insufficientStartupPowerWithAmperageEstimate();
-            stopMachine(ShutDownReasonRegistry.POWER_LOSS);
-            return false;
+        if (phase == ArcFurnacePhase.ArcIgnition) {
+            if (lEUt < 0 && !drainEnergyInput(getActualEnergyUsage())) {
+                checkRecipeResult = insufficientStartupPowerWithAmperageEstimate();
+                stopMachine(ShutDownReasonRegistry.POWER_LOSS);
+                return false;
+            }
+            return true;
         }
         return super.onRunningTick(aStack);
     }
@@ -923,8 +937,7 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
             @Override
             protected @NotNull CheckRecipeResult applyRecipe(@NotNull GTRecipe recipe, @NotNull ParallelHelper helper,
                 @NotNull OverclockCalculator calculator, @NotNull CheckRecipeResult result) {
-                if (phase == ArcFurnacePhase.ArcIgnition
-                    && this.availableVoltage * this.availableAmperage < startupRequiredPower) {
+                if (phase == ArcFurnacePhase.ArcIgnition && getMaxInputEu() < startupRequiredPower) {
                     return insufficientStartupPowerWithAmperageEstimate();
                 }
 
@@ -959,11 +972,7 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
                 applySpecialEffect(afterRecipe);
                 this.calculatedEut = afterRecipe.eut;
                 if (phase == ArcFurnacePhase.ArcIgnition) {
-                    this.calculatedEut = (long) (getAverageInputVoltage() * 30d
-                        / 32d
-                        * this.maxParallel
-                        * (electrode.startupSurge + 1d)
-                        * electrode.amperagePerParallel);
+                    this.calculatedEut = startupRequiredPower;
                     sendSound(START_ARC_SOUND_INDEX);
                     return SimpleCheckRecipeResult.ofSuccess("arc_ignition");
                 }
@@ -986,7 +995,8 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
                 if (phase == ArcFurnacePhase.ArcIgnition || (mode == ArcFurnaceMode.Ore && recipe == fakeRecipe())) {
                     return super.createOverclockCalculator(fakeRecipe()).setNoOverclock(true)
                         .setAmperage(1)
-                        .setEUt(this.availableVoltage * this.availableAmperage)
+                        .setEUt(getMaxInputEu())
+                        .setEUtDiscount(1)
                         .setDurationModifier(1);
                 }
                 OverclockCalculator calculator = super.createOverclockCalculator(recipe)
@@ -1014,7 +1024,6 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
                     // we set here to generate insufficient power error
                     ignitionRecipe.mEUt = (int) Math.min(use, Integer.MAX_VALUE);
                     ignitionRecipe.mDuration = STARTUP_DURATION_TICKS;
-                    startupRequiredPower = ignitionRecipe.mEUt;
                     ArcFurnaceProcessingEvent.EventStartIgnition event = new ArcFurnaceProcessingEvent.EventStartIgnition(
                         MTEIndustrialArcFurnace.this,
                         ignitionRecipe.mDuration,
@@ -1022,7 +1031,10 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
                     applySpecialEffect(event);
                     ignitionRecipe.mEUt = event.eut;
                     ignitionRecipe.mDuration = event.duration;
-                    return super.createParallelHelper(ignitionRecipe).setConsumption(false)
+                    startupRequiredPower = ignitionRecipe.mEUt;
+                    return super.createParallelHelper(ignitionRecipe).setAvailableEUt(getMaxInputEu())
+                        .setEUtModifier(1)
+                        .setConsumption(false)
                         .setMaxParallel(1);
                 }
                 if (phase == ArcFurnacePhase.Processing && mode == ArcFurnaceMode.Ore && recipe == fakeRecipe()) {

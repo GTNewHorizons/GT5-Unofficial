@@ -334,9 +334,9 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
             }
         }
 
-        checkOneMaintenanceHatch(errors);
-        checkHasEnergyHatch(errors);
         checkCasingMin(errors, mCasing, 70);
+        checkHasEnergyHatch(errors);
+        checkOneMaintenanceHatch(errors);
         checkHasAnyInput(errors);
         checkHasOutputBus(errors);
 
@@ -402,20 +402,20 @@ public class MTEExtremeIndustrialGreenhouse extends KubaTechGTMultiBlockBase<MTE
             .addInfo("[IC2] You need to also input block that is required under the crop")
             .addInfo("Output mode: machine will take planted seeds and output them");
         EIGModes.addTooltipInfo(tt);
-        tt.beginStructureBlock(7, 7, 9, false)
+        tt.beginStructureBlock(9, 7, 7, true)
             .addController("Front bottom center")
-            .addCasingInfoMin("Sterile Farm Casing", 70, false)
-            .addStructureInfo("Tiered Glass")
-            .addStructureInfo("The glass tier limits the Energy Input tier")
-            .addStructureInfo("The dirt is from RandomThings, must be tilled")
-            .addStructureInfo("Regular water and IC2 Distilled Water are accepted")
-            .addStructureInfo("Purple lamps are from ProjectRedIllumination. They can be powered and/or inverted")
-            .addMaintenanceHatch("Any Casing", 1)
-            .addInputBus("Any Casing", 1)
-            .addOutputBus("Any Casing", 1)
-            .addInputHatch("Any Casing", 1)
-            .addEnergyHatch("Any Casing", 1)
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .addCasing("102", "Any Tiered Glass", true)
+            .addCasing("70-86", "Sterile Farm Casing", false)
+            .addCasing("33", "Tunstensteel Frame Box", false)
+            .addCasing("21", "Fertilized Dirt (RandomThings)", false)
+            .addCasing("3", "Purple Lamp (ProjectRed Illumination, regular or inverted)", false)
+            .addEnergyHatch("1+", "Any casing", 1)
+            .addMaintenanceHatch("1", "Any casing", 1)
+            .addInputAny("1+", "Any casing", 1)
+            .addOutputBus("1+", "Any casing", 1)
+            .addStructureInfo("")
+            .addStructureFooter("The dirt is tilled and the water is spawned for free once formed")
+            .addSubChannel(GTStructureChannels.BOROGLASS)
             .addAuthors(GTAuthors.AuthorKuba)
             .addStructureAuthors("HydroCN")
             .toolTipFinisher();

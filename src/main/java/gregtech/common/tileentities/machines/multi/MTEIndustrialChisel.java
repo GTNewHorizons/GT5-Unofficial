@@ -94,21 +94,22 @@ public class MTEIndustrialChisel extends MTEExtendedPowerMultiBlockBase<MTEIndus
             .addInfo("Regular Bus: Use a programmed circuit to select a variant (see NEI)")
             .addInfo("Also supports ArchitectureCraft shapes as target blocks")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(7, 5, 5, false)
+            .beginStructureBlock(5, 7, 5, false)
             .addController("Front left, 3rd layer")
-            .addCasingInfoMin("Sturdy Printer Casing", 40, false)
-            .addCasingInfoExactly("Steel Frame Box", 37, false)
-            .addCasingInfoExactly("Any Tiered Glass", 18, false)
-            .addCasingInfoExactly("Steel Pipe Casing", 12, false)
-            .addCasingInfoExactly("Steel Gear Box", 6, false)
-            .addCasingInfoExactly("Iron Fence", 1, false)
-            .addCasingInfoExactly("Cupronickel Coil Block", 1, false)
-            .addInputBus("Any Sturdy Printer Casing", 1)
-            .addOutputBus("Any Sturdy Printer Casing", 1)
-            .addEnergyHatch("Any Sturdy Printer Casing", 1)
-            .addMaintenanceHatch("Any Sturdy Printer Casing", 1)
-            .addMufflerHatch("Any Sturdy Printer Casing", 1)
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .addCasing("40-48", "Sturdy Printer Casing", false)
+            .addCasing("37", "Steel Frame Box", false)
+            .addCasing("18", "Any Tiered Glass", false)
+            .addCasing("12", "Steel Pipe Casing", false)
+            .addCasing("6", "Steel Gear Box Casing", false)
+            .addCasing("1", "Iron Fence", false)
+            .addCasing("1", "Cupronickel Coil Block", false)
+            .addEnergyHatch("1+", "Any printer casing", 1)
+            .addMaintenanceHatch("1", "Any printer casing", 1)
+            .addMufflerHatch("1", "Any printer casing", 1)
+            .addMiscHatch("1+", "Input/Chisel Bus", "Any printer casing", 1)
+            .addOutputBus("1+", "Any printer casing", 1)
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.BOROGLASS)
             .addStructureAuthors(EnumChatFormatting.GOLD + "IX")
             .toolTipFinisher();
         return tt;
@@ -169,10 +170,10 @@ public class MTEIndustrialChisel extends MTEExtendedPowerMultiBlockBase<MTEIndus
         if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z, errors)) return;
         checkCasingMin(errors, casingAmount, 40);
         checkHasEnergyHatch(errors);
-        checkHasInputBus(errors);
-        checkHasOutputBus(errors);
         checkHasMaintenanceHatch(errors);
         checkHasMufflerHatch(errors);
+        checkHasInputBus(errors);
+        checkHasOutputBus(errors);
     }
 
     @Override

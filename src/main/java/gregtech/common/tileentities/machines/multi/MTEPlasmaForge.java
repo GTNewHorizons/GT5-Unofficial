@@ -9,7 +9,6 @@ import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.ExoticEnergy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
-import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_DTPF_OFF;
@@ -545,9 +544,9 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
             'b',
             ofChain(
                 buildHatchAdder(MTEPlasmaForge.class)
-                    .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Energy, ExoticEnergy, Maintenance)
+                    .atLeast(InputHatch, OutputHatch, InputBus, OutputBus, Energy, ExoticEnergy)
                     .casingIndex(DIM_INJECTION_CASING)
-                    .hint(3)
+                    .hint(1)
                     .build(),
                 onElementPass(
                     MTEPlasmaForge::onCasingFound,
@@ -613,38 +612,18 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
                     + ",")
             .addInfo("but the extra power cost is instead added in form of increased catalyst amounts")
             .addUnlimitedTierSkips()
-            .beginStructureBlock(33, 24, 33, false)
+            .addSupportAny()
+            .beginStructureBlock(33, 33, 24, false)
             .addController("Middle of the structure, 3rd layer")
-            .addStructureInfo(EnumChatFormatting.GOLD + "2,112" + EnumChatFormatting.GRAY + " Heating coils required")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "120" + EnumChatFormatting.GRAY + " Dimensional bridge blocks required.")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "1,250" + EnumChatFormatting.GRAY + " Dimensional injection casings required")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "2,121"
-                    + EnumChatFormatting.GRAY
-                    + " Dimensionally transcendent casings required")
+            .addCasing("2121", "Dimensionally Transcendent Casing", false)
+            .addCasing("2112", "Heating Coil", true)
+            .addCasing("1250-1270", "Dimensional Injection Casing", false)
+            .addCasing("120", "Dimensional Bridge", false)
+            .addEnergyHatch("1-2", "Any injection casing", 1)
+            .addInputAny("1+", "Any injection casing", 1)
+            .addOutputAny("1+", "Any injection casing", 1)
             .addStructureInfo("")
-            .addStructureInfo(
-                "Requires " + EnumChatFormatting.GOLD
-                    + "1"
-                    + EnumChatFormatting.GRAY
-                    + "-"
-                    + EnumChatFormatting.GOLD
-                    + "2"
-                    + EnumChatFormatting.GRAY
-                    + " energy hatches or "
-                    + EnumChatFormatting.GOLD
-                    + "1"
-                    + EnumChatFormatting.GRAY
-                    + " TT energy hatch")
-            .addInputHatch("Any Casing", 3)
-            .addOutputHatch("Any Casing", 3)
-            .addInputBus("Any Casing", 3)
-            .addOutputBus("Any Casing", 3)
-            .addStructureInfo("")
-            .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
-            .addTecTechHatchInfo()
+            .addSubChannel(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher(AuthorColen);
         return tt;
     }
@@ -837,13 +816,11 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
                 }
             }
         }
-        if (mEnergyHatches.isEmpty() && mExoticEnergyHatches.isEmpty()) {
-            checkHasEnergyHatch(errors);
-        }
-        // Maintenance hatch not required but left for compatibility.
-        checkHatchMax(errors, Maintenance, 1);
         // max 1273 - 2 - 7 - 6 - 1 - 1 = 1256
         checkCasingMin(errors, mCasing, 1250);
+        checkHasAnyEnergy(errors);
+        checkHasAnyInput(errors);
+        checkHasAnyOutput(errors);
         if (errors.isEmpty()) {
             mHeatingCapacity = (int) getCoilLevel().getHeat();
         }

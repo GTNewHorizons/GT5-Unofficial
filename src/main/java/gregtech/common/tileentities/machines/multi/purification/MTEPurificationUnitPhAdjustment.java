@@ -396,52 +396,22 @@ public class MTEPurificationUnitPhAdjustment extends MTEPurificationUnitBase<MTE
                 EnumChatFormatting.AQUA + ""
                     + EnumChatFormatting.ITALIC
                     + "materials. This necessitates the use of the corresponding neutralizing agents to pH balance the water.")
-            .beginStructureBlock(15, 6, 5, false)
+            .beginStructureBlock(5, 15, 6, true)
             .addController("Front center")
-            .addCasingInfoExactlyColored(
-                "Stabilized Naquadah Water Plant Casing",
-                EnumChatFormatting.GRAY,
-                16,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored(
-                "Chemical Grade Glass",
-                EnumChatFormatting.GRAY,
-                18,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored(
-                "Naquadah Alloy Frame Box",
-                EnumChatFormatting.GRAY,
-                48,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored(
-                "Inert Neutralization Water Plant Casing",
-                EnumChatFormatting.GRAY,
-                67 * 2,
-                EnumChatFormatting.GOLD,
-                false)
-            .addOtherStructurePart(
-                StatCollector.translateToLocal("GT5U.tooltip.structure.input_hatch_water"),
-                EnumChatFormatting.GOLD + "1+",
-                1)
-            .addOtherStructurePart(
-                StatCollector.translateToLocal("GT5U.tooltip.structure.output_hatch"),
-                EnumChatFormatting.GOLD + "1",
-                1)
-            .addOtherStructurePart(
+            .addCasing("134", "Inert Neutralization Water Plant Casing", false)
+            .addCasing("48", "Naquadah Alloy Frame Box", false)
+            .addCasing("18", "Chemical Grade Glass", false)
+            .addCasing("12-17", "Stabilized Naquadah Water Plant Casing", false)
+            .addMiscHatch(
+                "0-2",
                 StatCollector.translateToLocal("GT5U.tooltip.structure.ph_sensor_hatch"),
-                EnumChatFormatting.GOLD + "1-2",
+                "Below controller",
                 2)
-            .addOtherStructurePart(
-                StatCollector.translateToLocal("GT5U.tooltip.structure.input_bus_sodium_hydroxide"),
-                EnumChatFormatting.GOLD + "1",
-                3)
-            .addOtherStructurePart(
-                StatCollector.translateToLocal("GT5U.tooltip.structure.input_hatch_hydrochloric_acid"),
-                EnumChatFormatting.GOLD + "1",
-                4)
+            .addInputBus("1", "Top of left chamber (sodium hydroxide)", 3)
+            .addInputHatch("2+", "Top of right chamber (hydrochloric acid), behind controller (water)", 1, 4)
+            .addOutputHatch("1+", "Behind controller", 1)
+            .addStructureInfo("")
+            .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.DataStick.Waterline"))
             .toolTipFinisher();
         return tt;
     }

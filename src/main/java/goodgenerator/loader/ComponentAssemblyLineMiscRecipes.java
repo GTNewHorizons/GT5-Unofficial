@@ -9,9 +9,7 @@ import static goodgenerator.util.ItemRefer.Compassline_Casing_MV;
 import static goodgenerator.util.ItemRefer.Compassline_Casing_UEV;
 import static goodgenerator.util.ItemRefer.Compassline_Casing_UHV;
 import static goodgenerator.util.ItemRefer.Compassline_Casing_UIV;
-import static goodgenerator.util.ItemRefer.Compassline_Casing_UMV;
 import static goodgenerator.util.ItemRefer.Compassline_Casing_UV;
-import static goodgenerator.util.ItemRefer.Compassline_Casing_UXV;
 import static goodgenerator.util.ItemRefer.Compassline_Casing_ZPM;
 import static goodgenerator.util.ItemRefer.Component_Assembly_Line;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
@@ -360,62 +358,6 @@ public class ComponentAssemblyLineMiscRecipes {
             Compassline_Casing_UIV.get(1),
             50 * SECONDS,
             (int) TierEU.RECIPE_UEV);
-        // umv 12
-        t++;
-        TTRecipeAdder.addResearchableAssemblylineRecipe(
-            Compassline_Casing_UIV.get(1),
-            375 << (t - 2),
-            1 << (t - 3),
-            (int) TierEU.RECIPE_UIV,
-            1,
-            new Object[] { GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.SpaceTime, 1),
-                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.SpaceTime, 1),
-                ComponentType.Robot_Arm.getComponent(t)
-                    .get(8),
-                ComponentType.Electric_Piston.getComponent(t)
-                    .get(10),
-                ComponentType.Electric_Motor.getComponent(t)
-                    .get(16),
-                GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.SpaceTime, 4),
-                GTOreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.SpaceTime, 16),
-                GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials.Quantium, 8), getALCircuit(t, 8),
-                getALCircuit(t - 1, 16) },
-            new FluidStack[] { MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(t * 4 * INGOTS),
-                MaterialsElements.STANDALONE.HYPOGEN.getFluidStack(t * 2 * INGOTS),
-                StackUtils.getTieredFluid(t, t * INGOTS),
-                Materials.DimensionallyShiftedSuperfluid.getFluid(1000 * (t - 2)) },
-            Compassline_Casing_UMV.get(1),
-            50 * 20,
-            (int) TierEU.RECIPE_UIV);
-        // uxv 13
-        t++;
-        TTRecipeAdder.addResearchableAssemblylineRecipe(
-            Compassline_Casing_UMV.get(1),
-            375 << (t - 2),
-            1 << (t - 3),
-            (int) TierEU.RECIPE_UMV,
-            1,
-            new Object[] { GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.MHDCSM, 1),
-                GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.MHDCSM, 3),
-                GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.MagMatter, 3),
-                ComponentType.Robot_Arm.getComponent(t)
-                    .get(8),
-                ComponentType.Electric_Piston.getComponent(t)
-                    .get(10),
-                ComponentType.Electric_Motor.getComponent(t)
-                    .get(16),
-                GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.MHDCSM, 2),
-                GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.MagMatter, 2),
-                GTOreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.MHDCSM, 8),
-                GTOreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.MagMatter, 8),
-                GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.SpaceTime, 8), getALCircuit(t, 8),
-                getALCircuit(t - 1, 16) },
-            new FluidStack[] { MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(t * 4 * INGOTS),
-                Materials.BlackDwarfMatter.getMolten(t * 2 * INGOTS), Materials.Eternity.getMolten(t * INGOTS),
-                Materials.DimensionallyShiftedSuperfluid.getFluid(1000 * (t - 2)) },
-            Compassline_Casing_UXV.get(1),
-            50 * SECONDS,
-            (int) TierEU.RECIPE_UMV);
     }
 
     private static void generateWrapRecipes() {
