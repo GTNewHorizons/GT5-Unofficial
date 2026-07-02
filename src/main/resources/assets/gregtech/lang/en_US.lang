@@ -2049,6 +2049,9 @@ gt.recipe.large_hadron_collider=Large Hadron Collider
 gt.recipe.foundry_modules=Foundry Module Components
 gt.recipe.create-condensate=Condensate Entanglement
 gt.recipe.assemble-condensate=Condensate Assembling
+# TODO: Remove in 2.10
+gt.recipe.macerator.conversion=Macerator Conversion
+gt.macerator.upgraded=Has Maceration Upgrade Chip
 
 # Recipe categories
 gt.recipe.category.arc_furnace_recycling=Arc Furnace Recycling
@@ -4475,7 +4478,7 @@ gt.item.electric_pump.uiv.name=Electric Pump (UIV)
 gt.item.electric_pump.umv.name=Electric Pump (UMV)
 gt.item.electric_pump.uxv.name=Electric Pump (UXV)
 gt.item.electric_pump.max.name=Electric Pump (MAX)
-gt.item.electric_pump.tooltip=%s L/t %s L
+gt.item.electric_pump.tooltip=%s L/t (%s L/s)
 
 ## Other items
 gt.item.electronics_lump.name=Lump of Electronics
