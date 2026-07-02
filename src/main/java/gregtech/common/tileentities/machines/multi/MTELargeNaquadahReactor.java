@@ -41,13 +41,13 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.ErrorType;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrors;
@@ -60,7 +60,8 @@ import gtPlusPlus.xmod.thermalfoundation.fluid.TFFluids;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoMulti;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 
-public class MTELargeNaquadahReactor extends TTMultiblockBase implements ISurvivalConstructable {
+public class MTELargeNaquadahReactor extends TTMultiblockBase
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     private static final int OFFSET_X = 3;
     private static final int OFFSET_Y = 10;
@@ -425,25 +426,22 @@ public class MTELargeNaquadahReactor extends TTMultiblockBase implements ISurviv
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-        int colorIndex, boolean aActive, boolean aRedstone) {
-        if (side == facing) {
-            if (aActive) return new ITexture[] { Casings.NaquadahReactorCasing.getCasingTexture(),
-                TextureFactory.builder()
-                    .addIcon(Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_FRONT_ACTIVE)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_FRONT_ACTIVE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { Casings.NaquadahReactorCasing.getCasingTexture(), TextureFactory.builder()
-                .addIcon(Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_FRONT)
-                .extFacing()
-                .build() };
-        }
-        return new ITexture[] { Casings.NaquadahReactorCasing.getCasingTexture() };
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_FRONT,
+            Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_FRONT_GLOW,
+            Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_FRONT_ACTIVE,
+            Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_FRONT_ACTIVE_GLOW);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Casings.NaquadahReactorCasing.getCasingTexture();
     }
 
     @Override

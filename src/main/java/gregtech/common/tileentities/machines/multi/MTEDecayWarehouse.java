@@ -48,6 +48,7 @@ import gregtech.api.enums.VoidingMode;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
@@ -55,7 +56,6 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.IStructureInstance;
 import gregtech.api.structure.IStructureProvider;
 import gregtech.api.structure.ISuperChestAcceptor;
@@ -72,8 +72,8 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.storage.MTEDigitalChestBase;
 
-public class MTEDecayWarehouse extends MTEExtendedPowerMultiBlockBase<MTEDecayWarehouse>
-    implements ISurvivalConstructable, IStructureProvider<MTEDecayWarehouse>, ISuperChestAcceptor {
+public class MTEDecayWarehouse extends MTEExtendedPowerMultiBlockBase<MTEDecayWarehouse> implements
+    ISurvivalConstructable, IStructureProvider<MTEDecayWarehouse>, ISuperChestAcceptor, ICasingTextureProvider {
 
     private static final int MODE_NORMAL = 0, MODE_EXPORT = 1;
     public static final double EPSILON = 0.00001;
@@ -257,30 +257,22 @@ public class MTEDecayWarehouse extends MTEExtendedPowerMultiBlockBase<MTEDecayWa
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity igte, ForgeDirection side, ForgeDirection facing, int colorIndex,
-        boolean active, boolean redstoneLevel) {
-        List<ITexture> textures = new ArrayList<>();
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            Textures.BlockIcons.DECAY_WAREHOUSE_BACKGROUND,
+            Textures.BlockIcons.VOID,
+            Textures.BlockIcons.DECAY_WAREHOUSE_BACKGROUND,
+            Textures.BlockIcons.DECAY_WAREHOUSE_GLOW);
+    }
 
-        textures.add(RadiationProofMachineCasing.getCasingTexture());
-
-        if (side == facing) {
-            textures.add(
-                TextureFactory.builder()
-                    .addIcon(Textures.BlockIcons.DECAY_WAREHOUSE_BACKGROUND)
-                    .extFacing()
-                    .build());
-
-            if (active) {
-                textures.add(
-                    TextureFactory.builder()
-                        .addIcon(Textures.BlockIcons.DECAY_WAREHOUSE_GLOW)
-                        .extFacing()
-                        .glow()
-                        .build());
-            }
-        }
-
-        return textures.toArray(new ITexture[0]);
+    @Override
+    public ITexture getCasingTexture() {
+        return RadiationProofMachineCasing.getCasingTexture();
     }
 
     @Override
