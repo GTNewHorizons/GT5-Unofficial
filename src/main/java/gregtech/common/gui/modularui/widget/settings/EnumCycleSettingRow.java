@@ -2,7 +2,6 @@ package gregtech.common.gui.modularui.widget.settings;
 
 import java.util.Arrays;
 
-import com.cleanroommc.modularui.network.NetworkUtils;
 import net.minecraft.client.gui.FontRenderer;
 
 import org.jetbrains.annotations.NotNull;
@@ -10,6 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.value.IIntValue;
 import com.cleanroommc.modularui.drawable.text.TextRenderer;
+import com.cleanroommc.modularui.network.NetworkUtils;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.github.bsideup.jabel.Desugar;
