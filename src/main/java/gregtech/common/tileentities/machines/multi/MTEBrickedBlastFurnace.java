@@ -43,9 +43,8 @@ import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.HarvestTool;
 import gregtech.api.enums.ParticleFX;
 import gregtech.api.enums.SoundResource;
-import gregtech.api.enums.SteamVariant;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.modularui.GUITextureSet;
+import gregtech.api.enums.TieredVariant;
 import gregtech.api.interfaces.ISecondaryDescribable;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.modularui.IGetTitleColor;
@@ -573,7 +572,7 @@ public class MTEBrickedBlastFurnace extends MetaTileEntity implements IAlignment
 
     @Override
     protected GTGuiTheme getGuiTheme() {
-        return GTGuiThemes.PRIMITIVE;
+        return GTGuiThemes.TIERED_VARIANTS.get(getTieredVariant());
     }
 
     @Override
@@ -582,13 +581,8 @@ public class MTEBrickedBlastFurnace extends MetaTileEntity implements IAlignment
     }
 
     @Override
-    public SteamVariant getSteamVariant() {
-        return SteamVariant.PRIMITIVE;
-    }
-
-    @Override
-    public GUITextureSet getGUITextureSet() {
-        return GUITextureSet.STEAM.apply(getSteamVariant());
+    public TieredVariant getTieredVariant() {
+        return TieredVariant.PRIMITIVE;
     }
 
     @Override

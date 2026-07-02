@@ -348,7 +348,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             Flow columns = Flow.column()
                 .coverChildrenHeight(0)
                 .crossAxisAlignment(Alignment.CrossAxis.START)
-                .childPadding(1);
+                .childPadding(2);
 
             for (StructureError error : errors.getValue()) {
                 // For now just skip these errors, they will be present in most multiblock and will cause confusion.
@@ -570,9 +570,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             .asWidget()
             .marginBottom(2)
             .fullWidth()
-            .setEnabledIf(
-                widget -> Predicates.isNonEmptyList(syncManager.getSyncHandlerFromMapKey("itemOutput:0"))
-                    || Predicates.isNonEmptyList(syncManager.getSyncHandlerFromMapKey("fluidOutput:0")));
+            .setEnabledIf(_ -> Predicates.isPositive(syncManager.getSyncHandlerFromMapKey("maxProgressTime:0")));
     }
 
     private ItemDisplayWidget createItemDrawable(ItemDisplayKey key) {

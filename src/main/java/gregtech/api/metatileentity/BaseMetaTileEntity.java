@@ -1008,6 +1008,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
         mWorks = true;
         scheduleTexturePacket();
         setShutdownStatus(false);
+        setShutDownReason(ShutDownReasonRegistry.NONE);
         if (hasValidMetaTileEntity()) {
             mMetaTileEntity.onEnableWorking();
         }
@@ -1517,7 +1518,9 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
 
                             if (shouldEnable) {
                                 if (!mWorks) {
-                                    GTMod.proxy.powerfailTracker.removePowerfailEvents(this);
+                                    if (isServerSide()) {
+                                        GTMod.proxy.powerfailTracker.removePowerfailEvents(this);
+                                    }
                                     enableWorking();
                                 }
                             } else if (mWorks) {

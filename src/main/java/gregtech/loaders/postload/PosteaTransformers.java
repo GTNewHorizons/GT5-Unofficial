@@ -49,7 +49,10 @@ public class PosteaTransformers implements Runnable {
         // These are used to convert ic2 blocks to their new counterparts.
         // I.e. Reinforced glass, iron fences, etc.
 
-        ItemStackReplacementManager.addSimpleReplacement("IC2:blockFenceIron", ItemList.FenceIron.get(1L));
+        BlockReplacementManager.addSimpleReplacement("IC2:blockAlloyGlass", GregTechAPI.sBlockGlass1, 10);
+        BlockReplacementManager.addSimpleReplacement("IC2:blockRubber", ItemList.PadBouncy.getBlock(), 0);
+        BlockReplacementManager
+            .addSimpleReplacement("IC2:blockAlloy", ItemList.Block_ReinforcedConcrete.getBlock(), 13);
         BlockReplacementManager.addSimpleReplacement("IC2:blockFenceIron", Casings.IronFence.getBlock(), 0);
     }
 

@@ -88,6 +88,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.ParallelHelper;
 import gregtech.api.util.shutdown.ShutDownReason;
+import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.api.util.shutdown.SimpleShutDownReason;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.misc.GTStructureChannels;
@@ -164,6 +165,8 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
 
     private int didOres = 0;
     private int didOCs = 0;
+    private int startupRequiredPower = 1;
+    private long lastCompletedStartupTick = -1;
     private final Map<Fluid, Long> oreOutputs = new Object2LongOpenHashMap<>();
     private HeatingCoilLevel coilTier; // unused
 
@@ -308,6 +311,8 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
         super.loadNBTData(aNBT);
         mode = ArcFurnaceMode.modes[aNBT.getInteger("mode")];
         phase = ArcFurnacePhase.values[aNBT.getInteger("phase")];
+        lastCompletedStartupTick = aNBT.hasKey("lastCompletedStartupTick") ? aNBT.getLong("lastCompletedStartupTick")
+            : -1;
         int electrodeOrdinal = aNBT.getInteger("electrode");
         electrode = ArcFurnaceElectrode.getById(electrodeOrdinal);
         electrodeDamagePercentage = aNBT.getDouble("electrodeDamagePercentage");
@@ -332,6 +337,7 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
         super.saveNBTData(aNBT);
         aNBT.setInteger("mode", mode.ordinal());
         aNBT.setInteger("phase", phase.ordinal());
+        aNBT.setLong("lastCompletedStartupTick", lastCompletedStartupTick);
         aNBT.setInteger("electrode", electrode == null ? -1 : electrode.ordinal());
         aNBT.setDouble("electrodeDamagePercentage", electrodeDamagePercentage);
         aNBT.setInteger("durabilityCostThisRun", durabilityCostThisRun);
@@ -793,6 +799,7 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
     protected void outputAfterRecipe() {
         super.outputAfterRecipe();
         if (phase == ArcFurnacePhase.ArcIgnition) {
+            lastCompletedStartupTick = mTotalRunTime;
             phase = ArcFurnacePhase.Processing;
         } else if (phase == ArcFurnacePhase.ArcShutdown) {
             phase = ArcFurnacePhase.Standby;
@@ -828,13 +835,37 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
     }
 
     @Override
+    public boolean onRunningTick(ItemStack aStack) {
+        if (phase == ArcFurnacePhase.ArcIgnition) {
+            if (lEUt < 0 && !drainEnergyInput(getActualEnergyUsage())) {
+                checkRecipeResult = insufficientStartupPowerWithAmperageEstimate();
+                stopMachine(ShutDownReasonRegistry.POWER_LOSS);
+                return false;
+            }
+            return true;
+        }
+        return super.onRunningTick(aStack);
+    }
+
+    @Override
+    public long getLastCompletedStartupTick() {
+        return lastCompletedStartupTick;
+    }
+
+    @Override
     protected @NotNull CheckRecipeResult postCheckRecipe(@NotNull CheckRecipeResult result,
         @NotNull ProcessingLogic processingLogic) {
         result = super.postCheckRecipe(result, processingLogic);
         if (!result.wasSuccessful() && phase == ArcFurnacePhase.ArcIgnition) {
             phase = ArcFurnacePhase.Standby;
+            result = insufficientStartupPowerWithAmperageEstimate();
         }
         return result;
+    }
+
+    private CheckRecipeResult insufficientStartupPowerWithAmperageEstimate() {
+        return CheckRecipeResultRegistry
+            .insufficientStartupPower(startupRequiredPower, GTUtility.getTier(getAverageInputVoltage()));
     }
 
     private GTRecipe fakeRecipe() {
@@ -888,6 +919,10 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
             @Override
             protected @NotNull CheckRecipeResult applyRecipe(@NotNull GTRecipe recipe, @NotNull ParallelHelper helper,
                 @NotNull OverclockCalculator calculator, @NotNull CheckRecipeResult result) {
+                if (phase == ArcFurnacePhase.ArcIgnition && getMaxInputEu() < startupRequiredPower) {
+                    return insufficientStartupPowerWithAmperageEstimate();
+                }
+
                 CheckRecipeResult ret = super.applyRecipe(recipe, helper, calculator, result);
                 if (result.wasSuccessful() && phase == ArcFurnacePhase.Processing) {
                     double batchedRecipes = (double) helper.getCurrentParallel()
@@ -919,11 +954,7 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
                 applySpecialEffect(afterRecipe);
                 this.calculatedEut = afterRecipe.eut;
                 if (phase == ArcFurnacePhase.ArcIgnition) {
-                    this.calculatedEut = (long) (getAverageInputVoltage() * 30d
-                        / 32d
-                        * this.maxParallel
-                        * (electrode.startupSurge + 1d)
-                        * electrode.amperagePerParallel);
+                    this.calculatedEut = startupRequiredPower;
                     sendSound(START_ARC_SOUND_INDEX);
                     return SimpleCheckRecipeResult.ofSuccess("arc_ignition");
                 }
@@ -946,7 +977,8 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
                 if (phase == ArcFurnacePhase.ArcIgnition || (mode == ArcFurnaceMode.Ore && recipe == fakeRecipe())) {
                     return super.createOverclockCalculator(fakeRecipe()).setNoOverclock(true)
                         .setAmperage(1)
-                        .setEUt(this.availableVoltage * this.availableAmperage)
+                        .setEUt(getMaxInputEu())
+                        .setEUtDiscount(1)
                         .setDurationModifier(1);
                 }
                 OverclockCalculator calculator = super.createOverclockCalculator(recipe)
@@ -969,7 +1001,8 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
                     final long use = (long) (getAverageInputVoltage() * 30d
                         / 32d
                         * this.maxParallel
-                        * (electrode.startupSurge + 1d));
+                        * (electrode.startupSurge + 1d)
+                        * electrode.amperagePerParallel);
                     // we set here to generate insufficient power error
                     ignitionRecipe.mEUt = (int) Math.min(use, Integer.MAX_VALUE);
                     ignitionRecipe.mDuration = STARTUP_DURATION_TICKS;
@@ -980,7 +1013,10 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
                     applySpecialEffect(event);
                     ignitionRecipe.mEUt = event.eut;
                     ignitionRecipe.mDuration = event.duration;
-                    return super.createParallelHelper(ignitionRecipe).setConsumption(false)
+                    startupRequiredPower = ignitionRecipe.mEUt;
+                    return super.createParallelHelper(ignitionRecipe).setAvailableEUt(getMaxInputEu())
+                        .setEUtModifier(1)
+                        .setConsumption(false)
                         .setMaxParallel(1);
                 }
                 if (phase == ArcFurnacePhase.Processing && mode == ArcFurnaceMode.Ore && recipe == fakeRecipe()) {
