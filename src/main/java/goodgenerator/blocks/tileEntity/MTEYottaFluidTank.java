@@ -445,7 +445,7 @@ public class MTEYottaFluidTank extends TTMultiblockBase implements ISurvivalCons
             .addInfo("The max height of the cell blocks is 15")
             .beginVariableStructureBlock(5, 5, 5, 5, 5, 19, false)
             .addController("Front center, 2nd layer")
-            .addMiscHatch("0-1", "YOTHatch", "Any bottom center casing", 2)
+            .addMiscHatch("0-1", "YOTHatch", "Any bottom center casing (replaces other hatches)", 2)
             .addInputHatch("1+", "Any top center casing", 1)
             .addOutputHatch("1+", "Any bottom center casing", 2)
             .addStructureInfo("")

@@ -495,7 +495,7 @@ public class MultiblockTooltipBuilder {
 
     /**
      * Add a line of information about the structure:<br>
-     * (indent)1 Controller: info
+     * (indent)Controller: info
      *
      * @param info Location description
      * @return Instance this method was called on.
