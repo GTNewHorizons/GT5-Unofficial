@@ -2,13 +2,13 @@ package gtPlusPlus.xmod.gregtech.loaders;
 
 import static gregtech.api.enums.GTValues.RA;
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
+import static gregtech.api.recipe.RecipeMaps.chemicalBathRecipes;
 import static gregtech.api.recipe.RecipeMaps.electrolyzerRecipes;
 import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
 import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.recipe.RecipeMaps.oreWasherRecipes;
 import static gregtech.api.recipe.RecipeMaps.thermalCentrifugeRecipes;
-import static gregtech.api.util.GTRecipeBuilder.SECONDS;
-import static gregtech.api.util.GTRecipeBuilder.TICKS;
+import static gregtech.api.util.GTRecipeBuilder.*;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
 
 import java.util.ArrayList;
@@ -30,6 +30,7 @@ import gregtech.api.util.GTModHandler;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialGenerator;
 import gtPlusPlus.core.material.MaterialStack;
+import gtPlusPlus.core.material.nuclear.MaterialsFluorides;
 import gtPlusPlus.core.material.state.MaterialState;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
@@ -147,10 +148,12 @@ public class RecipeGenOre extends RecipeGenBase {
         /**
          * Macerate
          */
+
         // Macerate ore to Crushed
         GTValues.RA.stdBuilder()
             .itemInputs(material.getOre(1))
-            .itemOutputs(material.getCrushed(2))
+            .itemOutputs(material.getCrushed(2), matDustA, dustStone)
+            .outputChances(100_00, 10_00, 50_00)
             .duration(20 * SECONDS)
             .eut(tVoltageMultiplier / 2)
             .addTo(maceratorRecipes);
@@ -158,7 +161,8 @@ public class RecipeGenOre extends RecipeGenBase {
         // Macerate raw ore to Crushed
         GTValues.RA.stdBuilder()
             .itemInputs(material.getRawOre(1))
-            .itemOutputs(material.getCrushed(2))
+            .itemOutputs(material.getCrushed(2), matDustA, dustStone)
+            .outputChances(100_00, 5_00, 50_00)
             .duration(20 * SECONDS)
             .eut(tVoltageMultiplier / 2)
             .addTo(maceratorRecipes);
@@ -208,6 +212,18 @@ public class RecipeGenOre extends RecipeGenBase {
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(oreWasherRecipes);
+
+        // Fluorite Hydrogen Chemical Bath
+        if (material == MaterialsFluorides.FLUORITE) {
+            GTValues.RA.stdBuilder()
+                .itemInputs(material.getCrushed(1))
+                .itemOutputs(material.getCrushedPurified(4), material.getDustImpure(2), material.getDustPurified(1))
+                .outputChances(100_00, 50_00, 10_00)
+                .fluidInputs(Materials.Hydrogen.getGas(1_000))
+                .duration(15 * SECONDS)
+                .eut(TierEU.RECIPE_HV / 2)
+                .addTo(chemicalBathRecipes);
+        }
 
         // Thermal Centrifuge
 
