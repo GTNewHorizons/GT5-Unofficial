@@ -293,14 +293,12 @@ public abstract class MTEBaseModule extends TTMultiblockBase implements ISurviva
 
     @Override
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
-
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 3, 3, 0, errors)) return;
 
         if (this instanceof MTEExoticModule) {
             checkHasOutputBus(errors);
             checkHasOutputHatch(errors);
         }
-
     }
 
     @Override

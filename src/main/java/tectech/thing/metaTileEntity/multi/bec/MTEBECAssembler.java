@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Objects;
 
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.Fluid;
 
 import org.jetbrains.annotations.NotNull;
@@ -137,14 +138,36 @@ public class MTEBECAssembler extends MTEBECMultiblockBase<MTEBECAssembler> {
         StructureWrapperTooltipBuilder<MTEBECAssembler> tt = new StructureWrapperTooltipBuilder<>(structure);
 
         tt.addMachineType("BEC Assembler, Observation Array")
-            .addMarkdown(new ResourceLocation("gregtech", "bec-assembler"));
+            .addMarkdown(new ResourceLocation("gregtech", "bec-assembler"))
+            .addSupportAny();
 
-        tt.beginStructureBlock();
-        tt.addHatchNameOverride(BECHatches.Hatch, CustomItemList.Hatch_BEC_Connector.get(1));
-        tt.addAllCasingInfo();
-
-        tt.toolTipFinisher(GTAuthors.AuthorPineapple);
-
+        tt.beginStructureBlock(31, 61, 31, true)
+            .addController(StatCollector.translateToLocal("GT5U.tooltip.bec-assembler.controller-pos"))
+            .addCasing("1700", FineStructureConstantManipulator.getLocalizedName(), false)
+            .addCasing("1515", SuperconductivePlasmaEnergyConduit.getLocalizedName(), false)
+            .addCasing("0-1458", ElectromagneticallyIsolatedCasing.getLocalizedName(), false)
+            .addCasing("838", ConflictInducementCasing.getLocalizedName(), false)
+            .addCasing("790", PeaceEnforcementCasing.getLocalizedName(), false)
+            .addCasing("664", ElectromagneticWaveguide.getLocalizedName(), false)
+            .addCasing("560", CondensateTransformativeCoil.getLocalizedName(), false)
+            .addCasing("464", CondensateGuidanceCoil.getLocalizedName(), false)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("GT5U.tooltip.bec-assembler.hatch-pos"), 1)
+            .addMiscHatch(
+                "1+",
+                "Nanite Containment Bus",
+                StatCollector.translateToLocal("GT5U.tooltip.bec-assembler.hatch-pos"),
+                1)
+            .addMiscHatch(
+                "1+",
+                "Line-of-Sight Connector Hatch",
+                StatCollector.translateToLocal("GT5U.tooltip.bec-assembler.los-hatch-pos"),
+                3)
+            .addMiscHatch(
+                "1-2",
+                "Bose-Einstein Condensate Hatch",
+                StatCollector.translateToLocal("GT5U.tooltip.bec-assembler.bec-hatch-pos"),
+                2)
+            .toolTipFinisher(GTAuthors.AuthorPineapple);
         return tt;
     }
 
