@@ -1,7 +1,6 @@
 package gregtech.common.tileentities.machines.multi;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
-import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
@@ -105,16 +104,15 @@ public abstract class MTEConcreteBackfillerBase extends MTEDrillerBase {
             .addInfo(
                 "Base cycle time: " + (baseCycleTime < 20 ? formatNumber(baseCycleTime) + " ticks"
                     : formatNumber(baseCycleTime / 20.0) + " seconds"))
-            .beginStructureBlock(3, 7, 3, false)
+            .beginStructureBlock(3, 3, 7, false)
             .addController("Front bottom center")
-            .addOtherStructurePart(casings, "form the 3x1x3 Base")
-            .addOtherStructurePart(casings, "1x3x1 pillar above the center of the base (2 minimum total)")
-            .addOtherStructurePart(getFrameMaterial().mName + " Frame Box", "Each pillar's side and 1x3x1 on top")
-            .addEnergyHatch("1x " + VN[getMinTier()] + "+, any base Casing", 1)
-            .addMaintenanceHatch("Any base Casing", 1)
-            .addInputBus("Mining Pipes, optional, any base Casing", 1)
-            .addInputHatch("GT Concrete, any base Casing", 1)
-            .addOutputBus("Mining Pipes, optional, any base Casing", 1)
+            .addCasing("15", getFrameMaterial().mName + " Frame Box", false)
+            .addCasing("3-8", casings, false)
+            .addEnergyHatch("1+", "Any bottom casing", 1)
+            .addMaintenanceHatch("1", "Any bottom casing", 1)
+            .addInputBus("0+", "Any bottom casing", 1)
+            .addInputHatch("1+", "Any bottom casing", 1)
+            .addOutputBus("0+", "Any bottom casing", 1)
             .toolTipFinisher();
         return tt;
     }
@@ -123,9 +121,9 @@ public abstract class MTEConcreteBackfillerBase extends MTEDrillerBase {
 
     @Override
     protected void checkHatches(List<StructureError> errors) {
-        checkHasInputHatch(errors);
-        checkHasMaintenanceHatch(errors);
         checkOneEnergyHatch(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasInputHatch(errors);
     }
 
     @Override

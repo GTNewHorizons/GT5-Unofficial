@@ -9,13 +9,13 @@ import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.OutputBus;
+import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_GLOW;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gtnhlanth.api.recipe.LanthanidesRecipeMaps.SOURCE_CHAMBER_METADATA;
-import static gtnhlanth.util.DescTextLocalization.addHintNumber;
 
 import java.util.List;
 
@@ -95,7 +95,7 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
                     .build())
             .addElement(
                 'o',
-                buildHatchAdder(MTESourceChamber.class).atLeast(OutputBus)
+                buildHatchAdder(MTESourceChamber.class).atLeast(OutputBus, OutputHatch)
                     .casingIndex(ShieldedAccCasingTextureID)
                     .hint(2)
                     .build())
@@ -152,18 +152,17 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
             .addSeparator()
             .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.sc.info10"))
             .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.sc.info11"))
-            .beginStructureBlock(5, 5, 6, true)
+            .beginStructureBlock(6, 5, 5, true)
             .addController("Front bottom center")
-            .addCasingInfoExactly(Casings.ShieldedAcceleratorCasing.getLocalizedName(), 56, false)
-            .addCasingInfoExactly(LanthItemList.SHIELDED_ACCELERATOR_GLASS.getLocalizedName(), 52, false)
-            .addCasingInfoExactly(LanthItemList.ELECTRODE_CASING.getLocalizedName(), 16, false)
-            .addOtherStructurePart(StatCollector.translateToLocal("gtnhlanth.tt.hatch.beamoutput"), addHintNumber(4))
-            .addEnergyHatch(addHintNumber(3))
-            .addMaintenanceHatch(addHintNumber(3))
-            .addInputBus(addHintNumber(1))
-            .addInputHatch(addHintNumber(1))
-            .addOutputBus(addHintNumber(2))
-            .addStructureInfo(StatCollector.translateToLocal("gtnhlanth.tt.sc.input"))
+            .addCasing("56", Casings.ShieldedAcceleratorCasing.getLocalizedName(), false)
+            .addCasing("52", LanthItemList.SHIELDED_ACCELERATOR_GLASS.getLocalizedName(), false)
+            .addCasing("16", LanthItemList.ELECTRODE_CASING.getLocalizedName(), false)
+            .addMiscHatch("1", StatCollector.translateToLocal("gtnhlanth.tt.hatch.beamoutput"), "Back center casing", 4)
+            .addEnergyHatch("1", "Any front bottom casing", 3)
+            .addMaintenanceHatch("1", "Any front bottom casing", 3)
+            .addInputAny("1", "Front center casing", 1)
+            .addOutputAny("1", "Behind controller", 2)
+            .addAir("Interior of the structure")
             .toolTipFinisher();
         return tt;
     }
@@ -225,11 +224,6 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
 
         outputPacketAfterRecipe();
         return CheckRecipeResultRegistry.SUCCESSFUL;
-    }
-
-    @Override
-    public String[] getStructureDescription(ItemStack arg0) {
-        return DescTextLocalization.addText("SourceChamber.hint", 7);
     }
 
     private void outputPacketAfterRecipe() {
@@ -311,10 +305,10 @@ public class MTESourceChamber extends MTEEnhancedMultiBlockBase<MTESourceChamber
     @Override
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         if (!checkPiece("sc", 2, 4, 0, errors)) return;
+        checkOneEnergyHatch(errors);
         checkOneMaintenanceHatch(errors);
         checkHasAnyInput(errors);
-        checkHatchExact(errors, OutputBus, 1);
-        checkOneEnergyHatch(errors);
+        checkHasAnyOutput(errors);
     }
 
     @Override

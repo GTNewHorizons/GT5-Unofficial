@@ -324,20 +324,13 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
             .addInfo("-Double the number of Jobs finished at once")
             .beginStructureBlock(5, 5, 5, true)
             .addController("Front bottom center")
-            .addCasingInfoMin("Robust Tungstensteel Machine Casing", MIN_CASING_COUNT, false)
-            .addCasingInfoExactly(
-                AEApi.instance()
-                    .definitions()
-                    .blocks()
-                    .quartzVibrantGlass()
-                    .maybeBlock()
-                    .get()
-                    .getLocalizedName(),
-                54,
-                false)
-            .addInputBus("Any Casing", 1)
-            .addEnergyHatch("Any Casing", 1)
-            .addMaintenanceHatch("Any Casing", 1)
+            .addCasing("54", "Vibrant Quartz Glass", false)
+            .addCasing(MIN_CASING_COUNT + "-40", "Robust Tungstensteel Machine Casing", false)
+            .addEnergyHatch("1+", "Any casing", 1)
+            .addMaintenanceHatch("1", "Any casing", 1)
+            .addMiscHatch("1+", "Input Bus or Crafting Pattern Provider", "Any casing", 1)
+            .addStructureInfo("")
+            .addStructureFooter("Place a data orb inside the controller and connect it to an AE2 network")
             .toolTipFinisher();
     }
 
@@ -351,10 +344,10 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
             STRUCTURE_DEPTH_OFFSET,
             errors)) return;
 
-        checkOneMaintenanceHatch(errors);
-        checkHasEnergyHatch(errors);
-        checkHasInputBus(errors);
         checkCasingMin(errors, casing, MIN_CASING_COUNT);
+        checkHasEnergyHatch(errors);
+        checkOneMaintenanceHatch(errors);
+        checkHasInputBus(errors);
     }
 
     @Override

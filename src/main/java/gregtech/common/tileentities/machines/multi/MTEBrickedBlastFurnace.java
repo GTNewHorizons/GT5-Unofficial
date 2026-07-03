@@ -129,14 +129,15 @@ public class MTEBrickedBlastFurnace extends MetaTileEntity implements IAlignment
             tooltipBuilder = new MultiblockTooltipBuilder();
             tooltipBuilder.addMachineType("Blast Furnace, BBF")
                 .addInfo("Usable for Steel and general Pyrometallurgy")
-                .addInfo("Has a useful interface, unlike other gregtech multis")
+                .addInfo("All input/output is done manually through the controller")
                 .addPollutionAmount(GTMod.proxy.mPollutionPrimitveBlastFurnacePerSecond)
-                .beginStructureBlock(3, 4, 3, true)
+                .beginStructureBlock(3, 3, 4, true)
                 .addController("Front center")
-                .addOtherStructurePart("Firebricks", "Everything except the controller")
-                .addStructureInfo("The top block is also empty")
-                .addStructureInfo("You can share the walls of GT multis, so")
-                .addStructureInfo("each additional one costs less, up to 4")
+                .addCasing("32", "Firebricks", false)
+                .addAir("Interior and top center of the structure")
+                .addStructureInfo("")
+                .addStructureFooter("GregTech multiblocks may wallshare each of their sides")
+                .addStructureFooter("to save on blocks, casings, glass, buses/hatches, etc.")
                 .toolTipFinisher();
         }
         return tooltipBuilder;

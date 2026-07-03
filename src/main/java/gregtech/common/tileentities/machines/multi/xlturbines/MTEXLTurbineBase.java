@@ -48,9 +48,7 @@ import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBas
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.structure.error.ErrorType;
 import gregtech.api.structure.error.StructureError;
-import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.TurbineStatCalculator;
 import gregtech.api.util.shutdown.ShutDownReason;
@@ -185,14 +183,6 @@ public abstract class MTEXLTurbineBase extends MTEExtendedPowerMultiBlockBase<MT
         super(aName);
     }
 
-    public boolean requiresOutputHatch() {
-        return false;
-    }
-
-    public boolean requiresMufflerHatch() {
-        return false;
-    }
-
     protected List<IHatchElement<? super MTEXLTurbineBase>> getAllowedHatches() {
         List<IHatchElement<? super MTEXLTurbineBase>> hatches = new ArrayList<>();
         hatches.add(InputBus);
@@ -200,7 +190,7 @@ public abstract class MTEXLTurbineBase extends MTEExtendedPowerMultiBlockBase<MT
         hatches.add(Maintenance);
         hatches.add(Dynamo.or(ExoticDynamo));
         if (requiresOutputHatch()) hatches.add(OutputHatch);
-        if (requiresMufflerHatch()) {
+        if (getPollutionPerSecond(null) != 0) {
             hatches.add(Muffler);
             hatches.add(Muffler);
             hatches.add(Muffler);
@@ -219,12 +209,12 @@ public abstract class MTEXLTurbineBase extends MTEExtendedPowerMultiBlockBase<MT
         return STRUCTURE_DEFINITION.get(getClass());
     }
 
-    private boolean requiresMufflers() {
-        return getPollutionPerSecond(null) > 0;
-    }
-
     public int minCasingAmount() {
         return 372;
+    }
+
+    public boolean requiresOutputHatch() {
+        return true;
     }
 
     @Override
@@ -236,18 +226,16 @@ public abstract class MTEXLTurbineBase extends MTEExtendedPowerMultiBlockBase<MT
             getStructureOffsetY(),
             getStructureOffsetZ(),
             errors)) return;
-        checkOneMaintenanceHatch(errors);
-        if (mDynamoHatches.isEmpty() && mExoticDynamoHatches.isEmpty()) {
-            errors.add(StructureErrors.hatchCount(ErrorType.TOO_FEW, HatchElement.Dynamo, 0, 1));
-        }
-        if (requiresMufflers()) {
+        checkCasingMin(errors, casingAmount, minCasingAmount());
+        checkHasAnyDynamo(errors);
+        checkHasMaintenanceHatch(errors);
+        if (getPollutionPerSecond(null) != 0) {
             checkHatchExact(errors, HatchElement.Muffler, 4);
         }
         checkHasInputHatch(errors);
         if (requiresOutputHatch()) {
             checkHasOutputHatch(errors);
         }
-        checkCasingMin(errors, casingAmount, minCasingAmount());
     }
 
     @Override
