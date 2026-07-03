@@ -315,8 +315,8 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
                     .fluids(fluidInput)
                     .find();
                 if (foundRecipe != null && isFuelValid(fluidInput)) {
-                    fluidInput.amount = 1000;
-                    if (depleteInput(fluidInput)) {
+                    FluidStack toDeplete = new FluidStack(fluidInput.getFluid(), 1000);
+                    if (depleteInput(toDeplete)) {
                         setupBoilerRecipe(foundRecipe.mDuration, getEfficiencyIncrease(), true);
                         return CheckRecipeResultRegistry.SUCCESSFUL;
                     }
@@ -368,12 +368,11 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
         rawBurnTime = runtimeBoost(rawBurnTime);
         int safeBurnTime = Math.max(1, rawBurnTime);
         this.mMaxProgresstime = 1;
+        int adjustedTime = adjustBurnTimeForConfig(safeBurnTime) * 2;
         if (isFluid) {
-            this.fluidBurnTime = adjustBurnTimeForConfig(safeBurnTime) * 2;
-            this.maxFluidBurnTime = adjustBurnTimeForConfig(safeBurnTime) * 2;
+            this.fluidBurnTime = this.maxFluidBurnTime = adjustedTime;
         } else {
-            this.solidBurnTime = adjustBurnTimeForConfig(safeBurnTime) * 2;
-            this.maxSolidBurnTime = adjustBurnTimeForConfig(safeBurnTime) * 2;
+            this.solidBurnTime = this.maxSolidBurnTime = adjustedTime;
         }
         this.efficiencyChangePerTick = getEfficiencyChangePerTick(safeBurnTime, changePerTick);
         this.mEfficiencyIncrease = 1;
