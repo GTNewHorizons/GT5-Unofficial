@@ -117,13 +117,13 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
         setElectricityStats();
 
         if (!canVoidMine) {
-            // Dimension is flagged as non-void-mineable or couldn't be resolved to a known dimension.
-            return SimpleCheckRecipeResult.ofFailure("void_miner_wrong_dim");
+            this.stopMachine(ShutDownReasonRegistry.NONE);
+            return SimpleCheckRecipeResult.ofFailurePersistOnShutdown("void_miner_wrong_dim");
         }
 
         if (this.totalWeight == 0.f) {
             this.stopMachine(ShutDownReasonRegistry.NONE);
-            return SimpleCheckRecipeResult.ofFailure("void_miner_no_ores");
+            return SimpleCheckRecipeResult.ofFailurePersistOnShutdown("void_miner_no_ores");
         }
 
         this.handleFluidConsumption();
