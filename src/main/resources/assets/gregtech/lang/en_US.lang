@@ -2376,10 +2376,10 @@ GT5U.machines.large_boiler.info.tooltip.3=Has an added formula for long time bur
 GT5U.machines.large_boiler.info.tooltip.4=A programmed circuit in the main block throttles the boiler (-1000L/s per config)
 GT5U.machines.large_boiler.info.tooltip.5=Allows burning solid and fluid fuels at the same time, giving 25% speed boost
 GT5U.machines.large_boiler.info.tooltip.6=Takes %s seconds to heat up
-GT5U.machines.large_boiler.gui.production=Produces §7%s§r: §7%s §rL/t
-GT5U.machines.large_boiler.gui.consumption=Consumes §9%s§r: §9%s §rL/t
-GT5U.machines.large_boiler.gui.solid_burn=Solid fuel burns for: §9%s§r seconds
-GT5U.machines.large_boiler.gui.fluid_burn=Fluid fuel burns for: §9%s§r seconds
+GT5U.machines.large_boiler.gui.consumption_fluid=Fluid consumption
+GT5U.machines.large_boiler.gui.consumption_solid=Item consumption
+GT5U.machines.large_boiler.gui.solid_burn=Solid fuel burns for: §9%s§rs/§9%s§rs
+GT5U.machines.large_boiler.gui.fluid_burn=Fluid fuel burns for: §9%s§rs/§9%s§rs
 
 GT5U.recipe_filter.empty_representation_slot.tooltip=§7Click with a machine to set filter
 GT5U.recipe_filter.representation_slot.tooltip=§7Click to clear
