@@ -215,21 +215,18 @@ public class MTESmeltingModule extends MTEBaseModule {
             .addInfo("thermal processing, namely smelting materials identically to a furnace or blast furnace")
             .addInfo("The desired method of processing can be selected in the gui")
             .addInfo("This module is specialized towards speed and high heat levels")
-            .beginStructureBlock(7, 7, 13, false)
+            .beginStructureBlock(13, 7, 7, false)
             .addController("Front center")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "20"
-                    + EnumChatFormatting.GRAY
-                    + " Singularity Reinforced Stellar Shielding Casing")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "20"
-                    + EnumChatFormatting.GRAY
-                    + " Boundless Gravitationally Severed Structure Casing")
-            .addStructureInfo(EnumChatFormatting.GOLD + "5" + EnumChatFormatting.GRAY + " Hypogen Coil Block")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "5" + EnumChatFormatting.GRAY + " Celestial Matter Guidance Casing")
-            .addStructureInfo(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Stellar Energy Siphon Casing")
-            .toolTipFinisher(EnumChatFormatting.AQUA, 74);
+            .addCasing("0-20", "Singularity Reinforced Stellar Shielding Casing", false)
+            .addCasing("20", "Boundless Gravitationally Severed Structure Casing", false)
+            .addCasing("5", "Celestial Matter Guidance Casing", false)
+            .addCasing("5", "Hypogen Coil Block", false)
+            .addCasing("1", "Stellar Energy Siphon Casing", false)
+            .addInputBus("0+", "Any front shielding casing", 1)
+            .addInputHatch("0+", "Any front shielding casing", 1)
+            .addOutputBus("0+", "Any front shielding casing", 1)
+            .addOutputHatch("0+", "Any front shielding casing", 1)
+            .toolTipFinisher();
         return tt;
     }
 

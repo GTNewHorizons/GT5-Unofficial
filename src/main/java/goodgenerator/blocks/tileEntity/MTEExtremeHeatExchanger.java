@@ -32,7 +32,6 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import goodgenerator.api.recipe.ExtremeHeatExchangerRecipe;
 import goodgenerator.api.recipe.GoodGeneratorRecipeMaps;
 import goodgenerator.loader.Loaders;
-import goodgenerator.util.DescTextLocalization;
 import gregtech.api.GregTechAPI;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
@@ -49,7 +48,6 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
@@ -221,59 +219,47 @@ public class MTEExtremeHeatExchanger extends TTMultiblockBase implements ISurviv
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Heat Exchanger, EHE")
-            .addInfo(GTUtility.translate("gt.multiblock.ExtremeHeatExchanger.desc1"))
-            .addInfo(GTUtility.translate("gt.multiblock.ExtremeHeatExchanger.desc2"))
-            .addInfo(GTUtility.translate("gt.multiblock.ExtremeHeatExchanger.desc3"))
-            .addInfo(GTUtility.translate("gt.multiblock.ExtremeHeatExchanger.desc4"))
-            .addInfo(GTUtility.translate("gt.multiblock.ExtremeHeatExchanger.desc5"))
+            .addInfo(StatCollector.translateToLocal("gt.multiblock.ExtremeHeatExchanger.desc1"))
+            .addInfo(StatCollector.translateToLocal("gt.multiblock.ExtremeHeatExchanger.desc2"))
+            .addInfo(StatCollector.translateToLocal("gt.multiblock.ExtremeHeatExchanger.desc3"))
+            .addInfo(StatCollector.translateToLocal("gt.multiblock.ExtremeHeatExchanger.desc4"))
+            .addInfo(StatCollector.translateToLocal("gt.multiblock.ExtremeHeatExchanger.desc5"))
             .addSeparator()
             .addInfo(
-                GTUtility.translate(
+                StatCollector.translateToLocalFormatted(
                     "gt.multiblock.ExtremeHeatExchanger.lava",
                     getFluidUnit(),
                     getFluidUnit(),
                     getFluidUnit()))
             .addInfo(
-                GTUtility.translate(
+                StatCollector.translateToLocalFormatted(
                     "gt.multiblock.ExtremeHeatExchanger.hotcoolant",
                     getFluidUnit(),
                     getFluidUnit(),
                     getFluidUnit()))
             .addInfo(
-                GTUtility.translate(
+                StatCollector.translateToLocalFormatted(
                     "gt.multiblock.ExtremeHeatExchanger.hotsolarsalt",
                     getFluidUnit(),
                     getFluidUnit(),
                     getFluidUnit()))
             .addSeparator()
-            .addInfo(GTUtility.translate("gt.multiblock.ExtremeHeatExchanger.plasma1"))
-            .addInfo(GTUtility.translate("gt.multiblock.ExtremeHeatExchanger.plasma2"))
+            .addInfo(StatCollector.translateToLocal("gt.multiblock.ExtremeHeatExchanger.plasma1"))
+            .addInfo(StatCollector.translateToLocal("gt.multiblock.ExtremeHeatExchanger.plasma2"))
             .addSeparator()
-            .addInfo(GTUtility.translate("gt.multiblock.ExtremeHeatExchanger.throttle1"))
-            .addInfo(GTUtility.translate("gt.multiblock.ExtremeHeatExchanger.throttle2"))
+            .addInfo(StatCollector.translateToLocal("gt.multiblock.ExtremeHeatExchanger.throttle1"))
+            .addInfo(StatCollector.translateToLocal("gt.multiblock.ExtremeHeatExchanger.throttle2"))
+            .beginStructureBlock(11, 5, 6, false)
             .addController("Front bottom center")
-            .addCasingInfoRange("Robust Tungstensteel Machine Casing", 25, 120, false)
-            .addCasingInfoExactly("Tiered Glass (EV+)", 72, false)
-            .addCasingInfoExactly("Pressure Resistant Wall", 48, false)
-            .addCasingInfoExactly("Tungstensteel Pipe Casing", 60, false)
-            .addOtherStructurePart(
-                StatCollector.translateToLocal("gg.structure.tooltip.input_hatch"),
-                "Hot fluid, front center Casing",
-                3)
-            .addOtherStructurePart(
-                StatCollector.translateToLocal("gg.structure.tooltip.input_hatch"),
-                "Distilled water, any bottom layer Casing",
-                1)
-            .addOtherStructurePart(
-                StatCollector.translateToLocal("gg.structure.tooltip.output_hatch"),
-                "Cold fluid, back center Casing",
-                4)
-            .addOtherStructurePart(
-                StatCollector.translateToLocal("gg.structure.tooltip.output_hatch"),
-                "SH Steam/SC Steam, any top layer Casing",
-                2)
-            .addMaintenanceHatch("Any Casing", 1, 2, 5)
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .addCasing("25-120", "Robust Tungstensteel Machine Casing", false)
+            .addCasing("72", "EV+ Tiered Glass", false)
+            .addCasing("60", "Tungstensteel Pipe Casing", false)
+            .addCasing("48", "Pressure Resistant Wall", false)
+            .addMaintenanceHatch("1", "Any casing", 1, 2, 5)
+            .addInputHatch("2+", "Front center casing (hot fluid), any bottom casing (distilled water)", 1, 3)
+            .addOutputHatch("2+", "Back center casing (cool fluid), any top casing (steam)", 2, 4)
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         return tt;
     }
@@ -368,11 +354,6 @@ public class MTEExtremeHeatExchanger extends TTMultiblockBase implements ISurviv
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         buildPiece(mName, stackSize, hintsOnly, 2, 5, 0);
-    }
-
-    @Override
-    public String[] getStructureDescription(ItemStack stackSize) {
-        return DescTextLocalization.addText("ExtremeHeatExchanger.hint", 6);
     }
 
     @Override

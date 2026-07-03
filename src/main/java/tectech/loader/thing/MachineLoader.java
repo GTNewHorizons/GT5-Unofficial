@@ -2292,7 +2292,8 @@ public class MachineLoader implements Runnable {
 
         Pipe_BEC_Block.set(new MTEPipeBECBlock(BoseEinsteinCondensatePipeBlock.ID, "pipe.bec.block").getStackForm(1L));
 
-        Hatch_BEC_Connector.set(new MTEHatchBEC(BoseEinsteinCondensateHatch.ID, "hatch.bec", 10).getStackForm(1L));
+        Hatch_BEC_Connector
+            .set(new MTEHatchBEC(BoseEinsteinCondensateHatch.ID, "hatch.bec", VoltageIndex.UIV).getStackForm(1L));
         Hatch_BEC_Nanites
             .set(new MTEHatchNaniteDetector(HatchNaniteDetector.ID, "hatch.nanite-detector").getStackForm(1L));
         Hatch_BEC_IOController
@@ -2300,7 +2301,7 @@ public class MachineLoader implements Runnable {
         Hatch_BEC_CondensateDetector.set(
             new MTEHatchCondensateDetector(HatchCondensateDetector.ID, "hatch.condensate-detector").getStackForm(1L));
         Hatch_LineOfSight_Connector.set(
-            new MTEHatchLoS(LineOfSightConnectorHatch.ID, "hatch.line-of-sight-connector", VoltageIndex.UEV)
+            new MTEHatchLoS(LineOfSightConnectorHatch.ID, "hatch.line-of-sight-connector", VoltageIndex.UIV)
                 .getStackForm(1));
 
         Machine_Multi_BECGenerator
