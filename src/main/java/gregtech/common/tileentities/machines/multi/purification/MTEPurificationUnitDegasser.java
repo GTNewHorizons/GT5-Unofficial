@@ -450,33 +450,20 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
                 EnumChatFormatting.AQUA + ""
                     + EnumChatFormatting.ITALIC
                     + "detects in the water, it will request various materials to complete the processes listed above.")
-            .beginStructureBlock(17, 25, 17, false)
+            .beginStructureBlock(17, 17, 25, true)
             .addController("Front center, 2nd layer")
-            .addCasingInfoRangeColored(
-                "Heat-Resistant Trinium Plated Casing",
-                EnumChatFormatting.GRAY,
-                MIN_CASING,
-                803,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored(
-                "Omni-Purpose Infinity Fused Glass",
-                EnumChatFormatting.GRAY,
-                622,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored(
-                "Bedrockium Frame Box",
-                EnumChatFormatting.GRAY,
-                124,
-                EnumChatFormatting.GOLD,
-                false)
-            .addOutputHatch(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+, Any Trinium Casing", 1)
-            .addInputHatch(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+, Any Trinium Casing", 1)
-            .addOtherStructurePart(
+            .addCasing(MIN_CASING + "-800", "Heat-Resistant Trinium Plated Casing", false)
+            .addCasing("622", "Omni-Purpose Infinity Fused Glass", false)
+            .addCasing("124", "Bedrockium Frame Box", false)
+            .addMiscHatch(
+                "1",
                 StatCollector.translateToLocal("GT5U.tooltip.structure.degasser_control_hatch"),
-                EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + ", Any Trinium Casing",
+                "Any casing",
                 1)
+            .addInputHatch("1+", "Any casing", 1)
+            .addOutputHatch("1+", "Any casing", 1)
+            .addStructureInfo("")
+            .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.DataStick.Waterline"))
             .toolTipFinisher();
         return tt;
     }

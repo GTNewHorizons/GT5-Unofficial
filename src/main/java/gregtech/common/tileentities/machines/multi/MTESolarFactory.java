@@ -25,6 +25,7 @@ import javax.annotation.Nonnull;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -247,10 +248,10 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
         }
         getBaseMetaTileEntity().sendBlockEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, getUpdateData());
         checkHasAnyEnergy(errors);
-        checkHasInputBus(errors);
-        checkHasOutputBus(errors);
-        checkHasInputHatch(errors);
         checkHasMaintenanceHatch(errors);
+        checkHasInputBus(errors);
+        checkHasInputHatch(errors);
+        checkHasOutputBus(errors);
     }
 
     @Override
@@ -418,32 +419,35 @@ public class MTESolarFactory extends MTEExtendedPowerMultiBlockBase<MTESolarFact
             .addInfo(GREEN + "  Supports Laser energy hatches")
             .addInfo("  ZPM-UV Solar Panels can be made without the previous panel, but at a higher cost")
             .addInfo("  Bonus per increased wafer tier is raised to 50%")
-            .beginStructureBlock(7, 10, 9, false)
+            .beginStructureBlock(8, 9, 10, false)
             .addController("Front bottom center")
-            .addStructureInfo(WHITE + "" + BOLD + "Tier " + AQUA + BOLD + "1:")
-            .addCasingInfoRange("Clean Stainless Steel Machine Casing", 15, 41, false)
-            .addCasingInfoExactly("Any Tiered Glass", 24, false)
-            .addCasingInfoExactly("Damascus Steel Frame Box", 20, false)
-            .addStructureInfo(WHITE + "" + BOLD + "Tier " + AQUA + BOLD + "2:")
-            .addCasingInfoRange("Tungstensteel Machine Casing", 35, 101, false)
-            .addCasingInfoExactly("Any Tiered Glass", 74, false)
-            .addCasingInfoExactly("Tungsten Frame Box", 75, false)
-            .addCasingInfoExactly("Precise Electronic Unit Casing", 20, true)
-            .addStructureInfo(WHITE + "" + BOLD + "Tier " + AQUA + BOLD + "3:")
-            .addCasingInfoRange("Advanced Iridium Machine Casing", 50, 140, false)
-            .addCasingInfoExactly("Any Tiered Glass", 67, false)
-            .addCasingInfoExactly("Tungsten Frame Box", 24, false)
-            .addCasingInfoExactly("Precise Electronic Unit Casing", 26, true)
-            .addCasingInfoExactly("Black Plutonium Item Pipe", 6, false)
-            .addStructureInfo(WHITE + "" + BOLD + "All Tiers: ")
-            .addStructureInfo(WHITE + "Imprecise Unit Casing cannot be used")
-            .addInputHatch("Any Machine Casing", 1)
-            .addInputBus("Any Machine Casing", 1)
-            .addOutputBus("Any Machine Casing", 1)
-            .addEnergyHatch("Any Machine Casing", 1)
-            .addMaintenanceHatch("Any Machine Casing", 1)
-            .addSubChannelUsage(GTStructureChannels.PRASS_UNIT_CASING)
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .addEnergyHatch("1+", "Any machine casing", 1)
+            .addMaintenanceHatch("1+", "Any machine casing", 1)
+            .addInputBus("1+", "Any machine casing", 1)
+            .addInputHatch("1+", "Any machine casing", 1)
+            .addOutputBus("1+", "Any machine casing", 1)
+            .addStructureInfo("")
+            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Tiers.One"))
+            .addCasing("15-36", "Clean Stainless Steel Machine Casing", false)
+            .addCasing("24", "Any Tiered Glass", false)
+            .addCasing("20", "Damascus Steel Frame Box", false)
+            .addStructureInfo("")
+            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Tiers.Two"))
+            .addCasing("35-96", "Tungstensteel Machine Casing", false)
+            .addCasing("75", "Tungsten Frame Box", false)
+            .addCasing("74", "Any Tiered Glass", false)
+            .addCasing("20", "Precise Electronic Unit Casing", true)
+            .addStructureInfo("")
+            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Tiers.Three"))
+            .addCasing("50-134", "Advanced Iridium Machine Casing", false)
+            .addCasing("67", "Any Tiered Glass", false)
+            .addCasing("26", "Precise Electronic Unit Casing", true)
+            .addCasing("24", "Tungsten Frame Box", false)
+            .addCasing("6", "Black Plutonium Item Pipe", false)
+            .addStructureInfo("")
+            .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.structuretier"))
+            .addSubChannel(GTStructureChannels.BOROGLASS)
+            .addSubChannel(GTStructureChannels.PRASS_UNIT_CASING)
             .toolTipFinisher(GTAuthors.AuthorPureBluez);
         return tt;
     }

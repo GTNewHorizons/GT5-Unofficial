@@ -61,7 +61,6 @@ import gregtech.api.structure.IStructureProvider;
 import gregtech.api.structure.ISuperChestAcceptor;
 import gregtech.api.structure.StructureWrapper;
 import gregtech.api.structure.StructureWrapperInstanceInfo;
-import gregtech.api.structure.StructureWrapperTooltipBuilder;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeConstants;
@@ -198,15 +197,14 @@ public class MTEDecayWarehouse extends MTEExtendedPowerMultiBlockBase<MTEDecayWa
         if (!structure.checkStructure(this, errors)) return;
         structureInstanceInfo.validate(errors);
         checkHasEnergyHatch(errors);
+        checkHasMaintenanceHatch(errors);
         checkHasInputBus(errors);
         checkHasOutputBus(errors);
-        checkHasMaintenanceHatch(errors);
     }
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        StructureWrapperTooltipBuilder<MTEDecayWarehouse> tt = new StructureWrapperTooltipBuilder<>(structure);
-
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Decay Warehouse")
             .addInfo("Stores a single type of radioactive isotope and allows it to decay over time")
             .addInfo("Decay speed is dependent on the isotopes' half-lives (lower is faster)")
@@ -223,16 +221,21 @@ public class MTEDecayWarehouse extends MTEExtendedPowerMultiBlockBase<MTEDecayWa
             .addInfo("Right click the controller with a screwdriver to dump stored isotopes into the output bus")
             .addInfo("Right click the controller with a plunger to empty it")
             .addInfo(
-                "The warehouse's contents are " + RED + UNDERLINE + "voided" + GRAY + " when the controller is broken");
-
-        tt.addSubChannelUsage(GTStructureChannels.SUPER_CHEST);
-
-        tt.beginStructureBlock(true);
-        tt.addController("Front center");
-        tt.addAllCasingInfo();
-
-        tt.toolTipFinisher();
-
+                "The warehouse's contents are " + RED + UNDERLINE + "voided" + GRAY + " when the controller is broken")
+            .beginStructureBlock(5, 5, 3, true)
+            .addController("Front center, 2nd layer")
+            .addCasing("48-52", "Radiation Proof Machine Casing", false)
+            .addCasing("17", "Water", false)
+            .addCasing("1", "Super/Quantum Chest", true)
+            .addEnergyHatch("1", "Any casing", 1)
+            .addMaintenanceHatch("1", "Any casing", 1)
+            .addInputBus("1", "Any casing", 1)
+            .addOutputBus("1", "Any casing", 1)
+            .addStructureInfo("")
+            .addStructureFooter("The water is a one-time-cost to prime the machine, place manually")
+            .addStructureFooter("Do not insert isotopes into the super/quantum chest")
+            .addSubChannel(GTStructureChannels.SUPER_CHEST)
+            .toolTipFinisher();
         return tt;
     }
 

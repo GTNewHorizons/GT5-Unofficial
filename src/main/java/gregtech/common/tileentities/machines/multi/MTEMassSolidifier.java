@@ -179,21 +179,21 @@ public class MTEMassSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMassSol
                     + EnumChatFormatting.GRAY
                     + " to hold fluids and molds in the same hatch")
             .addInfo(EnumChatFormatting.BLUE + "Pretty Ⱄⱁⰾⰻⰴ, isn't it")
-            .beginStructureBlock(5, 6, 9, false)
+            .beginStructureBlock(9, 5, 6, false)
             .addController("Front bottom center")
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
-            .addCasingInfoMin("Solidifier Casing", MIN_CASINGS, false)
-            .addCasingInfoExactly("Solidifier Radiator", 34, false)
-            .addCasingInfoExactly("Heat Proof Machine Casing", 13, false)
-            .addCasingInfoExactly("Clean Stainless Steel Machine Casing", 7, false)
-            .addCasingInfoExactly("Steel Pipe Casing", 3, false)
-            .addCasingInfoExactly("Any Tiered Glass", 42, true)
-            .addInputBus("Any Solidifier Casing", 1)
-            .addOutputBus("Any Solidifier Casing", 1)
-            .addInputHatch("Any Solidifier Casing", 1)
-            .addEnergyHatch("Any Solidifier Casing", 1)
-            .addMaintenanceHatch("Any Solidifier Casing", 1)
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .addCasing(MIN_CASINGS + "-73", "Solidifier Casing", false)
+            .addCasing("42", "Any Tiered Glass", true)
+            .addCasing("34", "Solidifier Radiator", false)
+            .addCasing("13", "Heat Proof Machine Casing", false)
+            .addCasing("7", "Clean Stainless Steel Machine Casing", false)
+            .addCasing("3", "Steel Pipe Casing", false)
+            .addEnergyHatch("1+", "Any solidifier casing", 1)
+            .addMaintenanceHatch("1", "Any solidifier casing", 1)
+            .addInputBus("0+", "Any solidifier casing", 1)
+            .addMiscHatch("1+", "Input/Solidifier Hatch", "Any solidifier casing", 1)
+            .addOutputBus("1+", "Any solidifier casing", 1)
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher(AuthorOmdaCZ);
         return tt;
     }
@@ -269,10 +269,10 @@ public class MTEMassSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMassSol
             }
         }
         checkCasingMin(errors, casingAmount, MIN_CASINGS);
-        checkHasMaintenanceHatch(errors);
         checkHasEnergyHatch(errors);
-        checkHasOutputBus(errors);
+        checkHasMaintenanceHatch(errors);
         checkHasInputHatch(errors);
+        checkHasOutputBus(errors);
     }
 
     @Override

@@ -16,6 +16,7 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -992,37 +993,40 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
         @Override
         protected MultiblockTooltipBuilder createTooltip() {
             final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-            tt.addMachineType(GTUtility.translate("gt.blockmachines.module.name"))
-                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.miner.desc0")) // Module
-                                                                                                      // that
+            tt.addMachineType(StatCollector.translateToLocal("gt.blockmachines.module.name"))
+                .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.miner.desc0")) // Module
+                // that
                 // adds Space
                 // Mining
                 // Operations to the
                 .addInfo(
                     EnumChatFormatting.LIGHT_PURPLE.toString() + EnumChatFormatting.BOLD
-                        + GTUtility.translate("gt.blockmachines.multimachine.project.ig.miner.t1.desc1")) // Does
+                        + StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.miner.t1.desc1")) // Does
                 // this
                 // violate
                 // drone rights?
-                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.desc2"))
-                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.miner.desc3"))
-                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.miner.desc4"))
-                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.miner.desc5"))
-                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.miner.desc5.1"))
-                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.miner.desc5.2"))
-                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.miner.t1.desc5"))
-                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.motorT1"))
-                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.miner.desc6"))
-                .beginStructureBlock(1, 5, 2, false)
-                .addController("Front, 4th layer")
-                .addCasingInfoRange(GTUtility.translate("gt.blockcasings.ig.0.name"), 0, 9, false)
-                .addInputBus(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWithHintNumber1"), 1)
-                .addOutputBus(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWithHintNumber1"), 1)
-                .addInputHatch(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWithHintNumber1"), 1)
-                .addOtherStructurePart(
-                    GTUtility.translate("ig.elevator.structure.OpticalConnector"),
-                    GTUtility.translate("ig.elevator.structure.AnyBaseCasingWithHintNumber1"),
+                .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.desc2"))
+                .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.miner.desc3"))
+                .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.miner.desc4"))
+                .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.miner.desc5"))
+                .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.miner.desc5.1"))
+                .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.miner.desc5.2"))
+                .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.miner.t1.desc5"))
+                .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.motorT1"))
+                .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.miner.desc6"))
+                .beginStructureBlock(2, 1, 5, false)
+                .addController("Front center, 4th layer")
+                .addCasing("0-7", StatCollector.translateToLocal("gt.blockcasings.ig.0.name"), false)
+                .addMiscHatch(
+                    "0+",
+                    StatCollector.translateToLocal("ig.elevator.structure.DataInputHatch"),
+                    "Any casing",
                     1)
+                .addInputBus("1+", "Any casing", 1)
+                .addInputHatch("0+", "Any casing", 1)
+                .addOutputBus("1+", "Any casing", 1)
+                .addStructureInfo("")
+                .addStructureFooter(StatCollector.translateToLocal("ig.elevator.structure.SharedResources"))
                 .toolTipFinisher();
             return tt;
         }
@@ -1093,36 +1097,40 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
         @Override
         protected MultiblockTooltipBuilder createTooltip() {
             final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-            tt.addMachineType(GTUtility.translate("gt.blockmachines.module.name"))
-                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.miner.desc0")) // Module
-                                                                                                      // that
+            tt.addMachineType(StatCollector.translateToLocal("gt.blockmachines.module.name"))
+                .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.miner.desc0")) // Module
+                // that
                 // adds Space
                 // Mining
                 // Operations to the
                 .addInfo(
                     EnumChatFormatting.LIGHT_PURPLE.toString() + EnumChatFormatting.BOLD
-                        + GTUtility.translate("gt.blockmachines.multimachine.project.ig.miner.t2.desc1")) // This
+                        + StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.miner.t2.desc1")) // This
                 // definitely
                 // violates
                 // drone rights.
-                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.desc2"))
-                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.miner.desc3"))
-                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.miner.desc4"))
-                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.miner.desc5"))
-                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.miner.desc5.1"))
-                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.miner.desc5.2"))
-                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.miner.t2.desc5"))
-                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.motorT2"))
-                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.miner.desc6"))
-                .beginStructureBlock(1, 5, 2, false)
-                .addCasingInfoRange(GTUtility.translate("gt.blockcasings.ig.0.name"), 0, 9, false)
-                .addInputBus(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWithHintNumber1"), 1)
-                .addOutputBus(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWithHintNumber1"), 1)
-                .addInputHatch(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWithHintNumber1"), 1)
-                .addOtherStructurePart(
-                    GTUtility.translate("ig.elevator.structure.OpticalConnector"),
-                    GTUtility.translate("ig.elevator.structure.AnyBaseCasingWithHintNumber1"),
+                .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.desc2"))
+                .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.miner.desc3"))
+                .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.miner.desc4"))
+                .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.miner.desc5"))
+                .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.miner.desc5.1"))
+                .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.miner.desc5.2"))
+                .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.miner.t2.desc5"))
+                .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.motorT2"))
+                .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.miner.desc6"))
+                .beginStructureBlock(2, 1, 5, false)
+                .addController("Front center, 4th layer")
+                .addCasing("0-7", StatCollector.translateToLocal("gt.blockcasings.ig.0.name"), false)
+                .addMiscHatch(
+                    "0+",
+                    StatCollector.translateToLocal("ig.elevator.structure.DataInputHatch"),
+                    "Any casing",
                     1)
+                .addInputBus("1+", "Any casing", 1)
+                .addInputHatch("0+", "Any casing", 1)
+                .addOutputBus("1+", "Any casing", 1)
+                .addStructureInfo("")
+                .addStructureFooter(StatCollector.translateToLocal("ig.elevator.structure.SharedResources"))
                 .toolTipFinisher();
             return tt;
         }
@@ -1193,36 +1201,40 @@ public abstract class TileEntityModuleMiner extends TileEntityModuleBase
         @Override
         protected MultiblockTooltipBuilder createTooltip() {
             final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-            tt.addMachineType(GTUtility.translate("gt.blockmachines.module.name"))
-                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.miner.desc0")) // Module
-                                                                                                      // that
+            tt.addMachineType(StatCollector.translateToLocal("gt.blockmachines.module.name"))
+                .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.miner.desc0")) // Module
+                // that
                 // adds Space
                 // Mining
                 // Operations to the
                 .addInfo(
                     EnumChatFormatting.LIGHT_PURPLE.toString() + EnumChatFormatting.BOLD
-                        + GTUtility.translate("gt.blockmachines.multimachine.project.ig.miner.t3.desc1")) // Great
+                        + StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.miner.t3.desc1")) // Great
                 // treasures
                 // beyond
                 // your imagination await!
-                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.desc2"))
-                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.miner.desc3"))
-                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.miner.desc4"))
-                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.miner.desc5"))
-                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.miner.desc5.1"))
-                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.miner.desc5.2"))
-                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.miner.t3.desc5"))
-                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.motorT3"))
-                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.miner.desc6"))
-                .beginStructureBlock(1, 5, 2, false)
-                .addCasingInfoRange(GTUtility.translate("gt.blockcasings.ig.0.name"), 0, 9, false)
-                .addInputBus(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWithHintNumber1"), 1)
-                .addOutputBus(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWithHintNumber1"), 1)
-                .addInputHatch(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWithHintNumber1"), 1)
-                .addOtherStructurePart(
-                    GTUtility.translate("ig.elevator.structure.OpticalConnector"),
-                    GTUtility.translate("ig.elevator.structure.AnyBaseCasingWithHintNumber1"),
+                .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.desc2"))
+                .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.miner.desc3"))
+                .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.miner.desc4"))
+                .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.miner.desc5"))
+                .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.miner.desc5.1"))
+                .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.miner.desc5.2"))
+                .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.miner.t3.desc5"))
+                .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.motorT3"))
+                .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.miner.desc6"))
+                .beginStructureBlock(2, 1, 5, false)
+                .addController("Front center, 4th layer")
+                .addCasing("0-7", StatCollector.translateToLocal("gt.blockcasings.ig.0.name"), false)
+                .addMiscHatch(
+                    "0+",
+                    StatCollector.translateToLocal("ig.elevator.structure.DataInputHatch"),
+                    "Any casing",
                     1)
+                .addInputBus("1+", "Any casing", 1)
+                .addInputHatch("0+", "Any casing", 1)
+                .addOutputBus("1+", "Any casing", 1)
+                .addStructureInfo("")
+                .addStructureFooter(StatCollector.translateToLocal("ig.elevator.structure.SharedResources"))
                 .toolTipFinisher();
             return tt;
         }

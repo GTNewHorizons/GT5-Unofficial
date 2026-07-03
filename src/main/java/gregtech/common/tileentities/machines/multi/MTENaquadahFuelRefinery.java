@@ -19,6 +19,7 @@ import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.tuple.Pair;
@@ -32,7 +33,6 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import goodgenerator.api.recipe.GoodGeneratorRecipeMaps;
 import goodgenerator.loader.Loaders;
-import goodgenerator.util.DescTextLocalization;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -209,20 +209,21 @@ public class MTENaquadahFuelRefinery extends TTMultiblockBase implements ISurviv
                 "Gains " + TooltipHelper.parallelText(4) + " Parallels per " + EnumChatFormatting.WHITE + "Coil Tier")
             .addInfo("Needs field restriction coils to control the fatal radiation")
             .addInfo("Use higher tier coils to unlock more fuel types and perform more perfect overclocks")
-            .addTecTechHatchInfo()
+            .addSupportAny()
             .addUnlimitedTierSkips()
             .beginStructureBlock(5, 27, 27, false)
             .addController("Front center")
-            .addCasingInfoMin("Naquadah Fuel Refinery Casing", MIN_CASINGS, false)
-            .addCasingInfoExactly("Field Restriction Coil", 72, true)
-            .addCasingInfoExactly("Field Restriction Glass", 192, false)
-            .addCasingInfoExactly("Radiation Proof Steel Frame Box", 64, false)
-            .addCasingInfoExactly("Europium Reinforced Radiation Proof Machine Casing", 124, false)
-            .addInputHatch("Any Naquadah Fuel Refinery Casing", 1)
-            .addInputBus("Any Naquadah Fuel Refinery Casing", 1)
-            .addOutputHatch("Any Naquadah Fuel Refinery Casing", 1)
-            .addEnergyHatch("Any Naquadah Fuel Refinery Casing", 1)
-            .addDynamoHatch("Any Naquadah Fuel Refinery Casing", 1)
+            .addCasing("470-483", "Naquadah Fuel Refinery Casing", false)
+            .addCasing("192", "Field Restriction Glass", false)
+            .addCasing("124", "Europium Reinforced Radiation Proof Machine Casing", false)
+            .addCasing("72", "Field Restriction Coil", true)
+            .addCasing("64", "Radiation Proof Steel Frame Box", false)
+            .addEnergyHatch("1+", "Any refinery casing", 1)
+            .addInputBus("1+", "Any refinery casing", 1)
+            .addInputHatch("1+", "Any refinery casing", 1)
+            .addOutputHatch("1+", "Any refinery casing", 1)
+            .addStructureInfo("")
+            .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.coiltier"))
             .addStructureAuthors("GregTech Odyssey")
             .toolTipFinisher();
         return tt;
@@ -241,19 +242,14 @@ public class MTENaquadahFuelRefinery extends TTMultiblockBase implements ISurviv
     }
 
     @Override
-    public String[] getStructureDescription(ItemStack itemStack) {
-        return DescTextLocalization.addText("NaquadahFuelRefinery.hint", 8);
-    }
-
-    @Override
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         tier = -1;
         casingAmount = 0;
         checkPiece(mName, OFFSET_X, OFFSET_Y, OFFSET_Z, errors);
         checkCasingMin(errors, casingAmount, MIN_CASINGS);
         checkHasAnyEnergy(errors);
-        checkHasInputHatch(errors);
         checkHasInputBus(errors);
+        checkHasInputHatch(errors);
         checkHasOutputHatch(errors);
     }
 

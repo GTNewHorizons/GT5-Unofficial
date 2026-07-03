@@ -747,7 +747,7 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements ISurvivalConstr
         .addElement('D', ofBlock(TTCasingsContainer.sBlockCasingsBA0, 10))
         .addElement(
             'H',
-            buildHatchAdder(MTEEyeOfHarmony.class).atLeast(InputHatch, OutputHatch, InputBus, OutputBus)
+            buildHatchAdder(MTEEyeOfHarmony.class).atLeast(InputBus, InputHatch, InputHatch, OutputBus, OutputHatch)
                 .casingIndex(Casings.InfiniteSpacetimeEnergyBoundaryCasing.getTextureId())
                 .hint(1)
                 .buildAndChain(Casings.InfiniteSpacetimeEnergyBoundaryCasing.asElement()))
@@ -875,11 +875,10 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements ISurvivalConstr
             errors.add(StructureErrors.of("GT5U.gui.text.structure_error.crib_not_allowed"));
         }
 
-        // Check if there are output buses
-        checkHasOutputBus(errors);
-
-        // Check if there is 1 output hatch
-        checkOneOutputHatch(errors);
+        // Make sure there are no energy hatches.
+        if (!mEnergyHatches.isEmpty() || !mExoticEnergyHatches.isEmpty()) {
+            errors.add(StructureErrorRegistry.NO_ENERGY_HATCH_NEEDED);
+        }
 
         // Check there is 1 input bus, and it is not a stocking input bus.
         {
@@ -889,14 +888,9 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements ISurvivalConstr
                 errors.add(StructureErrors.of("GT5U.gui.text.structure_error.stocking_input_bus_not_allowed"));
             }
         }
-
-        // Make sure there are no energy hatches.
-        if (!mEnergyHatches.isEmpty() || !mExoticEnergyHatches.isEmpty()) {
-            errors.add(StructureErrorRegistry.NO_ENERGY_HATCH_NEEDED);
-        }
-
-        // Make sure there are 2 input hatches.
         checkHatchExact(errors, InputHatch, 2);
+        checkOneOutputBus(errors);
+        checkOneOutputHatch(errors);
     }
 
     private boolean animationsEnabled = true;
@@ -1081,29 +1075,21 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements ISurvivalConstr
             .addInfo("Animations can be disabled by using a screwdriver on the multiblock")
             .addInfo("Planet block can be inserted directly by right-clicking the controller with planet block")
             .beginStructureBlock(33, 33, 33, false)
-            .addController("Front center")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "896" + EnumChatFormatting.GRAY + " Reinforced Spatial Structure Casing.")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "534" + EnumChatFormatting.GRAY + " Reinforced Temporal Structure Casing.")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "31"
-                    + EnumChatFormatting.GRAY
-                    + " Infinite SpaceTime Energy Boundary Casing.")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "168" + EnumChatFormatting.GRAY + " Time Dilation Field Generator.")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "48" + EnumChatFormatting.GRAY + " Stabilisation Field Generator.")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "138" + EnumChatFormatting.GRAY + " Spacetime Compression Field Generator.")
-            .addStructureInfoSeparator()
-            .addStructureInfo("Requires " + EnumChatFormatting.GOLD + 2 + EnumChatFormatting.GRAY + " input hatches.")
-            .addStructureInfo("Requires " + EnumChatFormatting.GOLD + 1 + EnumChatFormatting.GRAY + " ME output hatch.")
-            .addStructureInfo("Requires " + EnumChatFormatting.GOLD + 1 + EnumChatFormatting.GRAY + " input bus.")
-            .addStructureInfo("Requires " + EnumChatFormatting.GOLD + 1 + EnumChatFormatting.GRAY + " ME output bus.")
-            .addSubChannelUsage(GTStructureChannels.EOH_STABILISATION)
-            .addSubChannelUsage(GTStructureChannels.EOH_DILATION)
-            .addSubChannelUsage(GTStructureChannels.EOH_COMPRESSION)
+            .addController("Front center, 17th layer")
+            .addCasing("896", "Reinforced Spatial Structure Casing", false)
+            .addCasing("534", "Reinforced Temporal Structure Casing", false)
+            .addCasing("168", "Time Dilation Field Generator", true)
+            .addCasing("138", "Spacetime Compression Field Generator", true)
+            .addCasing("48", "Stabilisation Field Generator", true)
+            .addCasing("31", "Infinite Spacetime Energy Boundary Casing", false)
+            .addInputBus("1", "Any boundary casing (no stocking bus)", 1)
+            .addInputHatch("2", "Any boundary casing (no stocking hatch)", 1)
+            .addOutputBus("1", "Any boundary casing", 1)
+            .addOutputHatch("1", "Any boundary casing", 1)
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.EOH_STABILISATION)
+            .addSubChannel(GTStructureChannels.EOH_DILATION)
+            .addSubChannel(GTStructureChannels.EOH_COMPRESSION)
             .toolTipFinisher(EnumChatFormatting.GOLD, 87, GTAuthors.AuthorColen);
         return tt;
     }

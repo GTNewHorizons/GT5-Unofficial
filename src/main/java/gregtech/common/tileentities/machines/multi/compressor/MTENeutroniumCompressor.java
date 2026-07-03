@@ -153,17 +153,17 @@ public class MTENeutroniumCompressor extends MTEExtendedPowerMultiBlockBase<MTEN
             .addInfo("More advanced singularities will require even stronger compression...")
             .beginStructureBlock(11, 11, 11, true)
             .addController("Front center, 2nd layer")
-            .addCasingInfoMin("Neutronium Casing", 220, false)
-            .addCasingInfoExactly("Active Neutronium Casing", 63, false)
-            .addCasingInfoExactly("Any Tiered Glass", 25, false)
-            .addCasingInfoExactly("Naquadah Alloy Frame Box", 108, false)
-            .addCasingInfoExactly("Neutronium Stabilization Casing", 67, false)
-            .addInputBus("Any Neutronium Casing", 1)
-            .addOutputBus("Any Neutronium Casing", 1)
-            .addInputHatch("Any Neutronium Casing", 1)
-            .addEnergyHatch("Any Neutronium Casing", 1)
-            .addMaintenanceHatch("Any Neutronium Casing", 1)
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .addCasing("220-242", "Neutronium Casing", false)
+            .addCasing("108", "Naquadah Alloy Frame Box", false)
+            .addCasing("67", "Neutronium Stabilization Casing", false)
+            .addCasing("63", "Active Neutronium Casing", false)
+            .addCasing("25", "Any Tiered Glass", false)
+            .addEnergyHatch("1+", "Any neutronium casing", 1)
+            .addMaintenanceHatch("1", "Any neutronium casing", 1)
+            .addInputAny("1+", "Any neutronium casing", 1)
+            .addOutputBus("1+", "Any neutronium casing", 1)
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher(Ollie);
         return tt;
     }
@@ -190,8 +190,8 @@ public class MTENeutroniumCompressor extends MTEExtendedPowerMultiBlockBase<MTEN
         mCasingAmount = 0;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 5, 9, 1, errors)) return;
         checkCasingMin(errors, mCasingAmount, 220);
-        checkHasMaintenanceHatch(errors);
         checkHasEnergyHatch(errors);
+        checkHasMaintenanceHatch(errors);
         checkHasAnyInput(errors);
         checkHasOutputBus(errors);
     }
