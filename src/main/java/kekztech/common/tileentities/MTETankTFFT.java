@@ -51,13 +51,13 @@ import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.structure.error.StructureErrors;
@@ -68,7 +68,8 @@ import gregtech.common.items.ItemIntegratedCircuit;
 import gregtech.common.misc.GTStructureChannels;
 import kekztech.common.Blocks;
 
-public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implements ISurvivalConstructable {
+public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT>
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     public enum Field {
 
@@ -197,6 +198,7 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
     }
 
     private static final IIconContainer TEXTURE_TFFT = Textures.BlockIcons.custom("iconsets/TFFT");
+    private static final IIconContainer TEXTURE_TFFT_GLOW = Textures.BlockIcons.customOptional("iconsets/TFFT_GLOW");
     private static final IIconContainer TEXTURE_TFFT_ACTIVE = Textures.BlockIcons.custom("iconsets/TFFT_ACTIVE");
     private static final IIconContainer TEXTURE_TFFT_ACTIVE_GLOW = Textures.BlockIcons
         .customOptional("iconsets/TFFT_ACTIVE_GLOW");
@@ -317,26 +319,22 @@ public class MTETankTFFT extends MTEEnhancedMultiBlockBase<MTETankTFFT> implemen
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-        int colorIndex, boolean aActive, boolean aRedstone) {
-        if (side == facing) {
-            if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_TEXTURE_ID_1),
-                TextureFactory.builder()
-                    .addIcon(TEXTURE_TFFT_ACTIVE)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(TEXTURE_TFFT_ACTIVE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_TEXTURE_ID_1),
-                TextureFactory.builder()
-                    .addIcon(TEXTURE_TFFT)
-                    .extFacing()
-                    .build() };
-        }
-        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_TEXTURE_ID_1) };
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            TEXTURE_TFFT,
+            TEXTURE_TFFT_GLOW,
+            TEXTURE_TFFT_ACTIVE,
+            TEXTURE_TFFT_ACTIVE_GLOW);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Textures.BlockIcons.getCasingTextureForId(CASING_TEXTURE_ID_1);
     }
 
     @Override

@@ -70,10 +70,12 @@ import ggfab.ConfigurationHandler;
 import ggfab.mui.ClickableTextWidget;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoidingMode;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatch;
@@ -85,7 +87,6 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.AssemblyLineUtils;
@@ -108,7 +109,8 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 /*
  * Dev note: 1. This multi will be an assline but with greater throughput. it will take one input every 2.
  */
-public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine> implements ISurvivalConstructable {
+public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     public static final double LASER_OVERCLOCK_PENALTY_FACTOR = ConfigurationHandler.laserOCPenaltyFactor;
     private static final String STRUCTURE_PIECE_FIRST = "first";
@@ -292,40 +294,22 @@ public class MTEAdvAssLine extends MTEExtendedPowerMultiBlockBase<MTEAdvAssLine>
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-        int colorIndex, boolean aActive, boolean aRedstone) {
-        if (side == facing) {
-            if (stuck) {
-                return new ITexture[] { casingTexturePages[0][16], TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_ADV_ASSLINE_STUCK)
-                    .extFacing()
-                    .build(),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_ADV_ASSLINE_STUCK_GLOW)
-                        .extFacing()
-                        .glow()
-                        .build() };
-            }
-            if (aActive) return new ITexture[] { casingTexturePages[0][16], TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_ADV_ASSLINE_ACTIVE)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_ADV_ASSLINE_ACTIVE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { casingTexturePages[0][16], TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_ADV_ASSLINE)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_ADV_ASSLINE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-        }
-        return new ITexture[] { casingTexturePages[0][16] };
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive || stuck,
+            OVERLAY_FRONT_ADV_ASSLINE,
+            OVERLAY_FRONT_ADV_ASSLINE_GLOW,
+            stuck ? OVERLAY_FRONT_ADV_ASSLINE_STUCK : OVERLAY_FRONT_ADV_ASSLINE_ACTIVE,
+            stuck ? OVERLAY_FRONT_ADV_ASSLINE_STUCK_GLOW : OVERLAY_FRONT_ADV_ASSLINE_ACTIVE_GLOW);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return casingTexturePages[0][16];
     }
 
     @Override

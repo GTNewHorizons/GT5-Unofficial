@@ -36,8 +36,10 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.HeatingCoilLevel;
+import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
@@ -45,7 +47,6 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.util.GTModHandler;
@@ -56,7 +57,8 @@ import gregtech.api.util.OverclockCalculator;
 import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.misc.GTStructureChannels;
 
-public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> implements ISurvivalConstructable {
+public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace>
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     private int mLevel = 0;
 
@@ -125,27 +127,22 @@ public class MTEMultiFurnace extends MTEAbstractMultiFurnace<MTEMultiFurnace> im
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection,
-        ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
-        if (sideDirection != facingDirection) return new ITexture[] { casingTexturePages[0][CASING_INDEX] };
-        if (active) return new ITexture[] { casingTexturePages[0][CASING_INDEX], TextureFactory.builder()
-            .addIcon(OVERLAY_FRONT_MULTI_SMELTER_ACTIVE)
-            .extFacing()
-            .build(),
-            TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_MULTI_SMELTER_ACTIVE_GLOW)
-                .extFacing()
-                .glow()
-                .build() };
-        return new ITexture[] { casingTexturePages[0][CASING_INDEX], TextureFactory.builder()
-            .addIcon(OVERLAY_FRONT_MULTI_SMELTER)
-            .extFacing()
-            .build(),
-            TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_MULTI_SMELTER_GLOW)
-                .extFacing()
-                .glow()
-                .build() };
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            OVERLAY_FRONT_MULTI_SMELTER,
+            OVERLAY_FRONT_MULTI_SMELTER_GLOW,
+            OVERLAY_FRONT_MULTI_SMELTER_ACTIVE,
+            OVERLAY_FRONT_MULTI_SMELTER_ACTIVE_GLOW);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return casingTexturePages[0][CASING_INDEX];
     }
 
     /*
