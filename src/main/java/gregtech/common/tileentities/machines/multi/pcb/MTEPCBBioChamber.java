@@ -26,15 +26,15 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.INEIPreviewModifier;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
 
 public class MTEPCBBioChamber extends MTEPCBUpgradeBase<MTEPCBBioChamber>
-    implements ISurvivalConstructable, INEIPreviewModifier {
+    implements ISurvivalConstructable, INEIPreviewModifier, ICasingTextureProvider {
 
     private static final String STRUCTURE_PIECE_BIO_CHAMBER = "bioUpgrade";
     private static final String[][] structure = new String[][] {
@@ -127,36 +127,23 @@ public class MTEPCBBioChamber extends MTEPCBUpgradeBase<MTEPCBBioChamber>
 
     // TODO use a different texture, though idk how that works
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-        int colorIndex, boolean active, boolean redstoneLevel) {
-        if (side == facing) {
-            if (active) return new ITexture[] {
-                Textures.BlockIcons
-                    .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings4, 1)),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_PURIFICATION_PLANT_ACTIVE)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_PURIFICATION_PLANT_ACTIVE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] {
-                Textures.BlockIcons
-                    .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings4, 1)),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_PURIFICATION_PLANT)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_PURIFICATION_PLANT_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-        }
-        return new ITexture[] {
-            Textures.BlockIcons.getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings4, 1)) };
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            OVERLAY_FRONT_PURIFICATION_PLANT,
+            OVERLAY_FRONT_PURIFICATION_PLANT_GLOW,
+            OVERLAY_FRONT_PURIFICATION_PLANT_ACTIVE,
+            OVERLAY_FRONT_PURIFICATION_PLANT_ACTIVE_GLOW);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Textures.BlockIcons
+            .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings4, 1));
     }
 
     @Override
