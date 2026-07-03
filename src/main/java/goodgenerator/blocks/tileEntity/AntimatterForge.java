@@ -316,18 +316,19 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                     + "^(1/3) L of fluid per cycle)")
             .addInfo("1. Depleted Naquadah Fuel Mk V = " + EnumChatFormatting.AQUA + "0.05" + EnumChatFormatting.GRAY)
             .addInfo("2. Depleted Naquadah Fuel Mk VI = " + EnumChatFormatting.AQUA + "0.10" + EnumChatFormatting.GRAY)
-            .beginStructureBlock(53, 53, 47, false)
+            .beginStructureBlock(47, 53, 53, false)
             .addController("Front center")
-            .addCasingInfoMin("Antimatter Containment Casing", 512, false)
-            .addCasingInfoMin("Magnetic Flux Casing", 2274, false)
-            .addCasingInfoMin("Gravity Stabilization Casing", 623, false)
-            .addCasingInfoMin("Protomatter Activation Coil", 126, false)
-            .addInputHatch("1-6, Hint block number 1", 1)
-            .addEnergyHatch("1-9, Hint block number 2", 2)
-            .addOtherStructurePart(
+            .addCasing("2274", "Magnetic Flux Casing", false)
+            .addCasing("624-637", "Gravity Stabilization Casing", false)
+            .addCasing("514", "Antimatter Containment Casing", false)
+            .addCasing("126", "Protomatter Activation Coil", false)
+            .addMiscHatch(
+                "16",
                 StatCollector.translateToLocal("gg.structure.tooltip.antimatter_hatch"),
-                "16, Hint block number 3",
+                "Around the inner ring",
                 3)
+            .addEnergyHatch("1+", "Back, left, or right side of the structure", 2)
+            .addInputHatch("1+", "Top or bottom side of the structure", 1)
             .toolTipFinisher();
         return tt;
     }
@@ -379,11 +380,11 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
     @Override
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         if (!checkPiece(MAIN_NAME, 26, 26, 4, errors)) return;
+        checkHatchMin(errors, HatchElement.ExoticEnergy, 1);
         checkHasInputHatch(errors);
         if (amOutputHatches.isEmpty()) {
             errors.add(StructureErrors.missingHatch(Loaders.AMHatch));
         }
-        checkHatchMin(errors, HatchElement.ExoticEnergy, 1);
     }
 
     @Override
