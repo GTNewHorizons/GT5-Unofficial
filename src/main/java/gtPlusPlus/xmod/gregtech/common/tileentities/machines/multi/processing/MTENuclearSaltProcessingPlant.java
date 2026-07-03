@@ -86,17 +86,17 @@ public class MTENuclearSaltProcessingPlant extends GTPPMultiBlockBase<MTENuclear
             .addInfo("Maintenance Hatch goes on the back, opposite of the controller block")
             .addInfo("Inputs go on the left side of the multi, outputs on the right side")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(3, 3, 3, true)
-            .addController("Front center")
-            .addCasingInfoMin("IV Machine Casing", 58, false)
-            .addCasingInfoMin("Thermally Insulated Casing", 1, false)
-            .addInputBus("Left Half", 2)
-            .addInputHatch("Left Half", 2)
-            .addOutputBus("Right Half", 3)
-            .addOutputHatch("Right Half", 3)
-            .addMufflerHatch("Top Side, 2 Required", 4)
-            .addEnergyHatch("Bottom Side, 2 Required", 5)
-            .addMaintenanceHatch("Back Side, Opposite of Controller", 6)
+            .beginStructureBlock(3, 9, 5, true)
+            .addController("Front center, 3rd layer")
+            .addCasing("58", "IV Machine Casing", false)
+            .addCasing("0-32", "Thermally Insulated Casing", false)
+            .addEnergyHatch("2", "Bottom insulated casings", 5)
+            .addMaintenanceHatch("1", "Casing behind controller", 1)
+            .addMufflerHatch("2", "Top insulated casings", 4)
+            .addInputBus("0+", "Left side insulated casings", 2)
+            .addInputHatch("0+", "Left side insulated casings", 2)
+            .addOutputBus("0+", "Right side insulated casings", 3)
+            .addOutputHatch("0+", "Right side insulated casings", 3)
             .toolTipFinisher();
         return tt;
     }
@@ -165,7 +165,7 @@ public class MTENuclearSaltProcessingPlant extends GTPPMultiBlockBase<MTENuclear
                     'F', // This is the only position maintenance is allowed, and we force a maintenance hatch here
                     buildHatchAdder(MTENuclearSaltProcessingPlant.class).atLeast(Maintenance)
                         .casingIndex(TAE.getIndexFromPage(0, 10))
-                        .hint(6)
+                        .hint(1)
                         .build())
                 .build();
         }
@@ -187,16 +187,11 @@ public class MTENuclearSaltProcessingPlant extends GTPPMultiBlockBase<MTENuclear
     public void checkMachine(IGregTechTileEntity baseMetaTileEntity, ItemStack itemStack, List<StructureError> errors) {
         casing = 0;
         if (!checkPiece(mName, 4, 2, 0, errors)) return;
-        checkHatch(errors);
         checkCasingMin(errors, casing, 1);
-        checkHasOutputHatch(errors);
-        checkHasInputHatch(errors);
-    }
-
-    @Override
-    public void checkHatch(List<StructureError> errors) {
         checkHatchExact(errors, Energy, 2);
         checkHatchExact(errors, Muffler, 2);
+        checkHasInputHatch(errors);
+        checkHasOutputHatch(errors);
     }
 
     @Override

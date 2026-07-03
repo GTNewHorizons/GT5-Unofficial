@@ -146,18 +146,18 @@ public class MTEElectricBlastFurnace extends MTEAbstractMultiFurnace<MTEElectric
                     + "Perfect Overclock")
             .addInfo("That means the EBF will reduce recipe time by a factor 4 instead of 2 (giving 100% efficiency)")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(3, 4, 3, true)
+            .beginStructureBlock(3, 3, 4, true)
             .addController("Front bottom center")
-            .addCasingInfoRange("Heat Proof Machine Casing", 0, 15, false)
-            .addCasingInfoExactly("Heating Coil", 16, true)
-            .addEnergyHatch("Any bottom layer Casing", 1)
-            .addMaintenanceHatch("Any bottom layer Casing", 1)
-            .addMufflerHatch("Top middle", 2)
-            .addInputBus("Any bottom layer Casing", 1)
-            .addInputHatch("Any bottom layer Casing", 1)
-            .addOutputBus("Any bottom layer Casing", 1)
-            .addOutputHatch("Any Heat Proof Machine Casing", 1, 3)
-            .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
+            .addCasing("16", "Heating Coil", true)
+            .addCasing("0-12", "Heat Proof Machine Casing", false)
+            .addEnergyHatch("1+", "Any bottom casing", 1)
+            .addMaintenanceHatch("1", "Any bottom casing", 1)
+            .addMufflerHatch("1", "Top center casing", 2)
+            .addInputAny("1+", "Any bottom casing", 1)
+            .addOutputAny("1+", "Any bottom casing for solids/liquids, any top casing for gases", 1)
+            .addAir("Interior of the structure")
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
         return tt;
     }
@@ -229,10 +229,10 @@ public class MTEElectricBlastFurnace extends MTEAbstractMultiFurnace<MTEElectric
             errors.add(StructureErrorRegistry.COIL_LEVEL_NOT_ENOUGH);
         }
 
+        checkHasEnergyHatch(errors);
         checkHasMaintenanceHatch(errors);
         checkHasAnyInput(errors);
         checkHasAnyOutput(errors);
-        checkHasEnergyHatch(errors);
 
         this.mHeatingCapacity = (int) getCoilLevel().getHeat() + 100 * (GTUtility.getTier(getMaxInputVoltage()) - 2);
     }

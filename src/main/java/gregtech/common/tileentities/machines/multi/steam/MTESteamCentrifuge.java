@@ -315,28 +315,23 @@ public class MTESteamCentrifuge extends MTESteamMultiBlockBase<MTESteamCentrifug
             .addInfo(HIGH_PRESSURE_TOOLTIP_NOTICE)
             .beginStructureBlock(5, 5, 5, false)
             .addController("Front center, 2nd layer")
-            .addSteamInputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any Casing", 1)
-            .addSteamOutputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any Casing", 1)
-            .addOutputHatch(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any Casing", 1)
-            .addStructureInfo(
-                EnumChatFormatting.WHITE + "Steam Input Hatch "
-                    + EnumChatFormatting.GOLD
-                    + "1"
-                    + EnumChatFormatting.GRAY
-                    + " Any Casing")
+            .addSteamHatch("1", "Any normal casing", 1)
+            .addSteamInputBus("1+", "Any normal casing", 1)
+            .addMiscHatch("1+", "Steam Output Bus or Regular Output Hatch", "Any normal casing", 1)
             .addStructureInfo("")
-            .addStructureInfo(EnumChatFormatting.BLUE + "Basic " + EnumChatFormatting.DARK_PURPLE + "Tier")
-            .addStructureInfo(EnumChatFormatting.GOLD + "60-65x" + EnumChatFormatting.GRAY + " Bronze Plated Bricks")
-            .addStructureInfo(EnumChatFormatting.GOLD + "8x" + EnumChatFormatting.GRAY + " Bronze Gear Box Casing")
-            .addStructureInfo(EnumChatFormatting.GOLD + "3x" + EnumChatFormatting.GRAY + " Bronze Firebox Casing")
-            .addStructureInfo(EnumChatFormatting.GOLD + "4x" + EnumChatFormatting.GRAY + " Bronze Pipe Casing")
+            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Tiers.Basic"))
+            .addCasing("60-65", "Bronze Plated Bricks", false)
+            .addCasing("8", "Bronze Gear Box Casing", false)
+            .addCasing("4", "Bronze Pipe Casing", false)
+            .addCasing("3", "Bronze Firebox Casing", false)
             .addStructureInfo("")
-            .addStructureInfo(EnumChatFormatting.BLUE + "High Pressure " + EnumChatFormatting.DARK_PURPLE + "Tier")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "60-65x" + EnumChatFormatting.GRAY + " Solid Steel Machine Casing")
-            .addStructureInfo(EnumChatFormatting.GOLD + "8x" + EnumChatFormatting.GRAY + " Steel Gear Box Casing")
-            .addStructureInfo(EnumChatFormatting.GOLD + "3x" + EnumChatFormatting.GRAY + " Steel Firebox Casing")
-            .addStructureInfo(EnumChatFormatting.GOLD + "4x" + EnumChatFormatting.GRAY + " Steel Pipe Casing")
+            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Tiers.HighPressure"))
+            .addCasing("60-65", "Solid Steel Machine Casing", false)
+            .addCasing("8", "Steel Gear Box Casing", false)
+            .addCasing("4", "Steel Pipe Casing", false)
+            .addCasing("3", "Steel Firebox Casing", false)
+            .addStructureInfo("")
+            .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.structuretier"))
             .toolTipFinisher(GTAuthors.AuthorEvgenWarGold);
         return tt;
     }

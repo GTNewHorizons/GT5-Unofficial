@@ -36,11 +36,6 @@ public class MTEXLTurbineSCSteam extends MTEXLTurbineBase {
     }
 
     @Override
-    public boolean requiresOutputHatch() {
-        return true;
-    }
-
-    @Override
     protected Casings getCasing() {
         return Casings.ReinforcedSCTurbineCasing;
     }
@@ -59,27 +54,28 @@ public class MTEXLTurbineSCSteam extends MTEXLTurbineBase {
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Steam Turbine, XLST-SC")
-            .addInfo("Runs as fast as 16 Large Turbines of the same type")
-            .addInfo("Right-click with screwdriver to enable loose fit")
-            .addInfo("Optimal flow will increase or decrease depending on fitting")
+            .addInfo("Same throughput as 16 LST-SC with only 12 turbines")
+            .addInfo("Generates power from regular or dense Supercritical (SC) Steam based on the turbine and fitting")
+            .addInfo("Outputs 1L of Superheated (SH) Steam for every 1L of Supercritical Steam")
+            .addInfo("Use a screwdriver to adjust the fitting of the turbines")
             .addInfo("Loose fit increases flow in exchange for efficiency")
             .addInfo("Dense types of steam are so energy packed, they only require 1/1000th of the original flow")
-            .addTecTechHatchInfo()
-            .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(9, 9, 29, false)
+            .addSupportAny()
+            .beginStructureBlock(29, 9, 9, true)
             .addController("Front center")
-            .addCasingInfoMin("Reinforced SC Turbine Casing", 430, false)
-            .addCasingInfoExactly("Black Plutonium Item Pipe Casing", 100, false)
-            .addCasingInfoExactly("Any Tiered Glass", 36, false)
-            .addCasingInfoExactly("Naquadah Frame Box", 34, false)
-            .addCasingInfoExactly("MV Solenoid Superconductor Coil", 20, false)
-            .addCasingInfoExactly("Turbine Shaft", 16, false)
-            .addInputBus("Any Turbine Casing", 1)
-            .addInputHatch("Any Turbine Casing (Min 1)", 1)
-            .addOutputHatch("Any Turbine Casing (Min 1)", 1)
-            .addDynamoHatch("Any Turbine Casing (Min 1)", 1)
-            .addMaintenanceHatch("Any Turbine Casing (Min 1)", 1)
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .addCasing(minCasingAmount() + "-440", "Reinforced SC Turbine Casing", false)
+            .addCasing("100", "Black Plutonium Item Pipe Casing", false)
+            .addCasing("36", "Any Tiered Glass", false)
+            .addCasing("34", "Naquadah Frame Box", false)
+            .addCasing("20", "MV Solenoid Superconductor Coil", false)
+            .addCasing("16", "Turbine Shaft", false)
+            .addDynamoHatch("1+", "Any turbine casing", 1)
+            .addMaintenanceHatch("1", "Any turbine casing", 1)
+            .addInputBus("0+", "Any turbine casing", 1)
+            .addInputHatch("1+", "Any turbine casing", 1)
+            .addOutputHatch("1+", "Any turbine casing", 1)
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.BOROGLASS)
             .addStructureAuthors(EnumChatFormatting.GOLD + "VorTex")
             .toolTipFinisher();
         return tt;

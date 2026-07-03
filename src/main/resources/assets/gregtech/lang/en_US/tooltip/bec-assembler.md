@@ -1,6 +1,5 @@
 Supplies nanites, power, and condensate to {gold:{item:gregtech:gt.blockmachines:15757}s}.
 Nanites must be stored in a {gold:{item:gregtech:gt.blockmachines:9415}}.
-Left-click the observation array controller with a data stick to save its connection info.
 Different types of nanites can be mixed, but the effective tier will be the {underline:lowest} of all provided nanites.
 {dark_gray:{hr}}
 {gold:{item:gregtech:gt.blockmachines:15757}s} will stall if they request more power than the observation array can provide.

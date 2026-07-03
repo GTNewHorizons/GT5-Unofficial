@@ -20,6 +20,7 @@ import java.util.List;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -77,7 +78,7 @@ public class MTELargeCombustionEngine extends MTEExtendedPowerMultiBlockBase<MTE
                 'B',
                 buildHatchAdder(MTELargeCombustionEngine.class).atLeast(Maintenance, Muffler)
                     .casingIndex(Casings.StableTitaniumMachineCasing.textureId)
-                    .hint(1)
+                    .hint(2)
                     .buildAndChain(
                         onElementPass(x -> ++x.casingAmount, Casings.StableTitaniumMachineCasing.asElement())))
             .addElement('C', Casings.EngineIntakeCasing.asElement())
@@ -85,17 +86,12 @@ public class MTELargeCombustionEngine extends MTEExtendedPowerMultiBlockBase<MTE
             .addElement('E', ofFrame(Materials.Polytetrafluoroethylene))
             .addElement(
                 'F',
-                buildHatchAdder(MTELargeCombustionEngine.class).atLeast(InputHatch, InputHatch, InputHatch)
+                buildHatchAdder(MTELargeCombustionEngine.class).atLeast(InputHatch)
                     .casingIndex(Casings.StableTitaniumMachineCasing.textureId)
-                    .hint(2)
+                    .hint(1)
                     .buildAndChain(
                         onElementPass(x -> ++x.casingAmount, Casings.StableTitaniumMachineCasing.asElement())))
-            .addElement(
-                'G',
-                buildHatchAdder(MTELargeCombustionEngine.class).atLeast(Dynamo)
-                    .casingIndex(Casings.ChemicallyInertMachineCasing.textureId)
-                    .hint(3)
-                    .buildAndChain(Casings.ChemicallyInertMachineCasing.asElement()))
+            .addElement('G', Dynamo.newAny(Casings.ChemicallyInertMachineCasing.textureId, 3))
             .build();
     }
 
@@ -132,19 +128,20 @@ public class MTELargeCombustionEngine extends MTEExtendedPowerMultiBlockBase<MTE
             .addInfo(GTUtility.translate("gt.multiblock.DieselEngine.wait_power", waitPower))
             .addInfo(GTUtility.translate("gt.multiblock.DieselEngine.intake_warning"))
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(8, 3, 3, false)
+            .beginStructureBlock(3, 8, 3, false)
             .addController("Front left, 2nd layer")
-            .addCasingInfoMin(GTUtility.translate("gt.blockcasings4.2.name"), 10, false)
-            .addCasingInfoExactly(GTUtility.translate("gt.blockcasings2.4.name"), 4, false)
-            .addCasingInfoExactly(GTUtility.translate("gt.blockcasings4.13.name"), 8, false)
-            .addCasingInfoExactly("PTFE Frame Box", 21, false)
-            .addCasingInfoExactly("Chemically Inert Machine Casing", 19, false)
-            .addDynamoHatch(GTUtility.translate("gt.mbtt.structure.back_center"), 3)
-            .addMaintenanceHatch("Any Stable Titanium Machine Casing NOT touching a gearbox", 1)
-            .addMufflerHatch("Any Stable Titanium Machine Casing NOT touching a gearbox", 1)
-            .addInputHatch(GTUtility.translate("gt.multiblock.DieselEngine.diesel_fuel"), 2)
-            .addInputHatch(GTUtility.translate("gt.multiblock.DieselEngine.lubricant"), 2)
-            .addInputHatch(GTUtility.translate("gt.multiblock.DieselEngine.oxygen_optional"), 2)
+            .addCasing("21", "PTFE Frame Box", false)
+            .addCasing("19", "Chemically Inert Machine Casing", false)
+            .addCasing("10-15", StatCollector.translateToLocal("gt.blockcasings4.2.name"), false)
+            .addCasing("8", StatCollector.translateToLocal("gt.blockcasings4.13.name"), false)
+            .addCasing("4", StatCollector.translateToLocal("gt.blockcasings2.4.name"), false)
+            .addDynamoHatch("1", "Right center casing", 3)
+            .addMaintenanceHatch("1", "Any titanium machine casing NOT next to a gearbox", 2)
+            .addMufflerHatch("1", "Any titanium machine casing NOT next to a gearbox", 2)
+            .addInputHatch("1+", "Any titanium machine casing next to a gearbox", 1)
+            .addAir("4x2 area in front of the engine intake casings")
+            .addStructureInfo("")
+            .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.DynamoLimit"))
             .addStructureAuthors(EnumChatFormatting.GOLD + "N7Paddy")
             .toolTipFinisher();
         return tt;
@@ -300,10 +297,9 @@ public class MTELargeCombustionEngine extends MTEExtendedPowerMultiBlockBase<MTE
         casingAmount = 0;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z, errors)) return;
         checkCasingMin(errors, casingAmount, 10);
+        checkHasMaintenanceHatch(errors);
         checkHasMufflerHatch(errors);
         checkHasInputHatch(errors);
-        checkHasMaintenanceHatch(errors);
-        checkHatchMin(errors, Dynamo, 1);
     }
 
     @Override
