@@ -100,7 +100,11 @@ public class CoverMetricsTransmitter extends Cover {
             if (baseMTE.getMetaTileEntity() instanceof final IMetricsExporter metricsExporter) {
                 payload = metricsExporter.reportMetrics();
             } else {
-                payload = ImmutableList.copyOf(baseMTE.getInfoData());
+                final ImmutableList.Builder<String> builder = ImmutableList.builder();
+                for (String info : baseMTE.getInfoData()) {
+                    builder.add(IGregTechDeviceInformation.decode(info));
+                }
+                payload = builder.build();
             }
 
             MinecraftForge.EVENT_BUS.post(new MetricsCoverDataEvent(
