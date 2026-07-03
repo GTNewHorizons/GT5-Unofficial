@@ -21,20 +21,12 @@ import net.minecraftforge.common.MinecraftForge;
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import gregtech.api.util.ColorUtils;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.Localized;
 import gregtech.common.tools.ItemNetworkAnalyzer;
 
 public class WorldOverlayRenderer {
-
-    private static final int[] COLOR_INPUT = new int[] { 241, 143, 1 };
-    private static final int[] COLOR_OUTPUT = new int[] { 102, 204, 255 };
-    private static final int[] COLOR_FORK = new int[] { 0, 255, 0 };
-
-    private static final int[] COLOR_SUCCESS = new int[] { 0, 255, 0 };
-    private static final int[] COLOR_WARNING = new int[] { 233, 196, 106 };
-    private static final int[] COLOR_ALERT = new int[] { 214, 40, 40 };
-    private static final int[] COLOR_NONE = new int[] { 125, 125, 125 };
 
     private static final float NONE_SIZE = 0.10f;
     private static final float FORK_SIZE = 0.15f;
@@ -48,9 +40,9 @@ public class WorldOverlayRenderer {
 
         public int[] baseColor() {
             return switch (this) {
-                case INPUT -> COLOR_INPUT;
-                case OUTPUT -> COLOR_OUTPUT;
-                case FORK -> COLOR_FORK;
+                case INPUT -> unpackRGB(ColorUtils.networkAnalyzerNodeInput.getColor());
+                case OUTPUT -> unpackRGB(ColorUtils.networkAnalyzerNodeOutput.getColor());
+                case FORK -> unpackRGB(ColorUtils.networkAnalyzerNodeFork.getColor());
             };
         }
 
@@ -68,10 +60,10 @@ public class WorldOverlayRenderer {
 
         public int[] color() {
             return switch (this) {
-                case NONE -> COLOR_NONE;
-                case SUCCESS -> COLOR_SUCCESS;
-                case WARNING -> COLOR_WARNING;
-                case ALERT -> COLOR_ALERT;
+                case NONE -> unpackRGB(ColorUtils.networkAnalyzerSeverityNone.getColor());
+                case SUCCESS -> unpackRGB(ColorUtils.networkAnalyzerSeveritySuccess.getColor());
+                case WARNING -> unpackRGB(ColorUtils.networkAnalyzerSeverityWarning.getColor());
+                case ALERT -> unpackRGB(ColorUtils.networkAnalyzerSeverityAlert.getColor());
             };
         }
     }
@@ -110,6 +102,10 @@ public class WorldOverlayRenderer {
 
         public int[] color() {
             return level == SeverityLevel.SUCCESS && state != null ? state.baseColor() : level.color();
+        }
+
+        public boolean isTerminal() {
+            return level != SeverityLevel.NONE && state != null && state != GraphNodeState.FORK;
         }
     }
 
@@ -234,7 +230,7 @@ public class WorldOverlayRenderer {
                 && node.x == position.blockX
                 && node.y == position.blockY
                 && node.z == position.blockZ) {
-                renderFloatingText(translate(node.tooltip), node.x + 0.5d, node.y + 0.5d, node.z + 0.5d, 0xFFFFFF);
+                renderFloatingText(translate(node.tooltip), nx, ny, nz, 0xFFFFFF);
             } else if (node.label != null && node.label.length > 0
                 && distSq(nx, ny, nz, viewX, viewY, viewZ) <= MAX_LABEL_DISTANCE_SQ) {
                     renderFloatingText(translate(node.label), nx, ny, nz, 0xFFFFFF);
@@ -257,6 +253,18 @@ public class WorldOverlayRenderer {
         final double dz = z1 - z2;
 
         return dx * dx + dy * dy + dz * dz;
+    }
+
+    private static int[] unpackRGB(int rgb) {
+        return new int[] { (rgb >> 16) & 0xFF, (rgb >> 8) & 0xFF, rgb & 0xFF };
+    }
+
+    private static void setColorRGBA_F(Tessellator tessellator, int argb) {
+        tessellator.setColorRGBA_F(
+            ((argb >> 16) & 0xFF) / 255f,
+            ((argb >> 8) & 0xFF) / 255f,
+            (argb & 0xFF) / 255f,
+            ((argb >> 24) & 0xFF) / 255f);
     }
 
     private static void renderFloatingText(String text, double x, double y, double z, int color) {
@@ -291,7 +299,7 @@ public class WorldOverlayRenderer {
 
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         tessellator.startDrawingQuads();
-        tessellator.setColorRGBA_F(0.0f, 0.0f, 0.0f, 0.5f);
+        setColorRGBA_F(tessellator, ColorUtils.networkAnalyzerLabelBackground.getColor());
         tessellator.addVertex(-halfWidth - 1, yOffset - 1, 0.0d);
         tessellator.addVertex(-halfWidth - 1, yOffset + totalHeight, 0.0d);
         tessellator.addVertex(halfWidth + 1, yOffset + totalHeight, 0.0d);
@@ -322,45 +330,47 @@ public class WorldOverlayRenderer {
         tess.startDrawing(GL11.GL_QUADS);
 
         for (OverlayNode node : nodes) {
-            final float size = node.size();
-
-            if (size != TERMINAL_SIZE && distSq(node.x, node.y, node.z, viewX, viewY, viewZ) > MAX_NODE_DISTANCE_SQ) {
+            if (!node.isTerminal() && distSq(node.x, node.y, node.z, viewX, viewY, viewZ) > MAX_NODE_DISTANCE_SQ) {
                 continue;
             }
 
+            final float size = node.size();
+            final double nx = node.x + 0.5d;
+            final double ny = node.y + 0.5d;
+            final double nz = node.z + 0.5d;
             final int[] color = node.color();
 
             tess.setColorRGBA(color[0], color[1], color[2], 255); // +Y
-            tess.addVertex(node.x + 0.5d - size, node.y + 0.5d + size, node.z + 0.5d + size);
-            tess.addVertex(node.x + 0.5d + size, node.y + 0.5d + size, node.z + 0.5d + size);
-            tess.addVertex(node.x + 0.5d + size, node.y + 0.5d + size, node.z + 0.5d - size);
-            tess.addVertex(node.x + 0.5d - size, node.y + 0.5d + size, node.z + 0.5d - size);
+            tess.addVertex(nx - size, ny + size, nz + size);
+            tess.addVertex(nx + size, ny + size, nz + size);
+            tess.addVertex(nx + size, ny + size, nz - size);
+            tess.addVertex(nx - size, ny + size, nz - size);
 
             tess.setColorRGBA(color[0] / 2, color[1] / 2, color[2] / 2, 255); // -Y
-            tess.addVertex(node.x + 0.5d + size, node.y + 0.5d - size, node.z + 0.5d - size);
-            tess.addVertex(node.x + 0.5d + size, node.y + 0.5d - size, node.z + 0.5d + size);
-            tess.addVertex(node.x + 0.5d - size, node.y + 0.5d - size, node.z + 0.5d + size);
-            tess.addVertex(node.x + 0.5d - size, node.y + 0.5d - size, node.z + 0.5d - size);
+            tess.addVertex(nx + size, ny - size, nz - size);
+            tess.addVertex(nx + size, ny - size, nz + size);
+            tess.addVertex(nx - size, ny - size, nz + size);
+            tess.addVertex(nx - size, ny - size, nz - size);
 
             tess.setColorRGBA(color[0] * 8 / 10, color[1] * 8 / 10, color[2] * 8 / 10, 255); // +/- Z
-            tess.addVertex(node.x + 0.5d + size, node.y + 0.5d - size, node.z + 0.5d + size);
-            tess.addVertex(node.x + 0.5d + size, node.y + 0.5d + size, node.z + 0.5d + size);
-            tess.addVertex(node.x + 0.5d - size, node.y + 0.5d + size, node.z + 0.5d + size);
-            tess.addVertex(node.x + 0.5d - size, node.y + 0.5d - size, node.z + 0.5d + size);
-            tess.addVertex(node.x + 0.5d - size, node.y + 0.5d + size, node.z + 0.5d - size);
-            tess.addVertex(node.x + 0.5d + size, node.y + 0.5d + size, node.z + 0.5d - size);
-            tess.addVertex(node.x + 0.5d + size, node.y + 0.5d - size, node.z + 0.5d - size);
-            tess.addVertex(node.x + 0.5d - size, node.y + 0.5d - size, node.z + 0.5d - size);
+            tess.addVertex(nx + size, ny - size, nz + size);
+            tess.addVertex(nx + size, ny + size, nz + size);
+            tess.addVertex(nx - size, ny + size, nz + size);
+            tess.addVertex(nx - size, ny - size, nz + size);
+            tess.addVertex(nx - size, ny + size, nz - size);
+            tess.addVertex(nx + size, ny + size, nz - size);
+            tess.addVertex(nx + size, ny - size, nz - size);
+            tess.addVertex(nx - size, ny - size, nz - size);
 
             tess.setColorRGBA(color[0] * 6 / 10, color[1] * 6 / 10, color[2] * 6 / 10, 255); // +/- X
-            tess.addVertex(node.x + 0.5d + size, node.y + 0.5d + size, node.z + 0.5d - size);
-            tess.addVertex(node.x + 0.5d + size, node.y + 0.5d + size, node.z + 0.5d + size);
-            tess.addVertex(node.x + 0.5d + size, node.y + 0.5d - size, node.z + 0.5d + size);
-            tess.addVertex(node.x + 0.5d + size, node.y + 0.5d - size, node.z + 0.5d - size);
-            tess.addVertex(node.x + 0.5d - size, node.y + 0.5d - size, node.z + 0.5d + size);
-            tess.addVertex(node.x + 0.5d - size, node.y + 0.5d + size, node.z + 0.5d + size);
-            tess.addVertex(node.x + 0.5d - size, node.y + 0.5d + size, node.z + 0.5d - size);
-            tess.addVertex(node.x + 0.5d - size, node.y + 0.5d - size, node.z + 0.5d - size);
+            tess.addVertex(nx + size, ny + size, nz - size);
+            tess.addVertex(nx + size, ny + size, nz + size);
+            tess.addVertex(nx + size, ny - size, nz + size);
+            tess.addVertex(nx + size, ny - size, nz - size);
+            tess.addVertex(nx - size, ny - size, nz + size);
+            tess.addVertex(nx - size, ny + size, nz + size);
+            tess.addVertex(nx - size, ny + size, nz - size);
+            tess.addVertex(nx - size, ny - size, nz - size);
         }
 
         tess.draw();
