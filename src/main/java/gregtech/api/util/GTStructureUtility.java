@@ -944,7 +944,7 @@ public class GTStructureUtility {
             @Override
             public BlocksToPlace getBlocksToPlace(T t, World world, int x, int y, int z, ItemStack trigger,
                 AutoPlaceEnvironment env) {
-                return backing.getBlocksToPlace(t, world, x, y, z, trigger, env);
+                return backing.getBlocksToPlace(t, world, x, y, z, transform.apply(trigger), env);
             }
 
             @Deprecated
