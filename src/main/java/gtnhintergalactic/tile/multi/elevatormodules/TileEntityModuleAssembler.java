@@ -9,6 +9,7 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
@@ -124,6 +125,11 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase
     protected abstract int getMaxParallels();
 
     /**
+     * @return Speed bonus that this module possesses
+     */
+    protected abstract float getSpeedBonus();
+
+    /**
      * @return Power object used for displaying in NEI
      */
     @Override
@@ -177,7 +183,8 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase
                 return CheckRecipeResultRegistry.SUCCESSFUL;
             }
         }.setAmperageOC(false)
-            .setMaxParallelSupplier(() -> Math.min(getMaxParallels(), parallelParameter.getValue()));
+            .setMaxParallelSupplier(() -> Math.min(getMaxParallels(), parallelParameter.getValue()))
+            .setSpeedBonus(getSpeedBonus());
     }
 
     /**
@@ -269,6 +276,8 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase
         protected static final int MINIMUM_MOTOR_TIER = 1;
         /** Maximum parallels which this module can handle */
         protected static final int MAX_PARALLELS = 4;
+        /** Speed Bonus which this module possesses */
+        protected static final float SPEED_BONUS = 1.0F;
 
         /**
          * Create a new T1 assembler module controller
@@ -301,12 +310,14 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase
             return new TileEntityModuleAssemblerT1(mName);
         }
 
-        /**
-         * @return Maximum parallels that this module allows
-         */
         @Override
         protected int getMaxParallels() {
             return MAX_PARALLELS;
+        }
+
+        @Override
+        protected float getSpeedBonus() {
+            return 1.0F / SPEED_BONUS;
         }
 
         /**
@@ -315,19 +326,20 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase
         @Override
         protected MultiblockTooltipBuilder createTooltip() {
             final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-            tt.addMachineType(GTUtility.translate("gt.blockmachines.module.name"))
-                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.assembler.desc0"))
+            tt.addMachineType(StatCollector.translateToLocal("gt.blockmachines.module.name"))
+                .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.assembler.desc0"))
                 .addInfo(
                     EnumChatFormatting.LIGHT_PURPLE.toString() + EnumChatFormatting.BOLD
-                        + GTUtility.translate("gt.blockmachines.multimachine.project.ig.assembler.t1.desc1"))
-                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.assembler.t1.desc2"))
-                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.motorT1"))
-                .beginStructureBlock(1, 5, 2, false)
-                .addController("Front, 4th layer")
-                .addCasingInfoMin(GTUtility.translate("gt.blockcasings.ig.0.name"), 0, false)
-                .addInputBus(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWithHintNumber1"), 1)
-                .addOutputBus(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWithHintNumber1"), 1)
-                .addInputHatch(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWithHintNumber1"), 1)
+                        + StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.assembler.t1.desc1"))
+                .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.assembler.t1.desc2"))
+                .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.motorT1"))
+                .beginStructureBlock(2, 1, 5, false)
+                .addController("Front center, 4th layer")
+                .addCasing("0-7", StatCollector.translateToLocal("gt.blockcasings.ig.0.name"), false)
+                .addInputAny("1+", "Any casing", 1)
+                .addOutputBus("1+", "Any casing", 1)
+                .addStructureInfo("")
+                .addStructureFooter(StatCollector.translateToLocal("ig.elevator.structure.SharedPower"))
                 .toolTipFinisher();
             return tt;
         }
@@ -348,6 +360,8 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase
         protected static final int MINIMUM_MOTOR_TIER = 3;
         /** Maximum parallels which this module can handle */
         protected static final int MAX_PARALLELS = 16;
+        /** Speed Bonus which this module possesses */
+        protected static final float SPEED_BONUS = 1.5F;
 
         /**
          * Create a new T2 assembler module controller
@@ -380,12 +394,14 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase
             return new TileEntityModuleAssemblerT2(mName);
         }
 
-        /**
-         * @return Maximum parallels that this module allows
-         */
         @Override
         protected int getMaxParallels() {
             return MAX_PARALLELS;
+        }
+
+        @Override
+        protected float getSpeedBonus() {
+            return 1.0F / SPEED_BONUS;
         }
 
         /**
@@ -394,18 +410,20 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase
         @Override
         protected MultiblockTooltipBuilder createTooltip() {
             final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-            tt.addMachineType(GTUtility.translate("gt.blockmachines.module.name"))
-                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.assembler.desc0"))
+            tt.addMachineType(StatCollector.translateToLocal("gt.blockmachines.module.name"))
+                .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.assembler.desc0"))
                 .addInfo(
                     EnumChatFormatting.LIGHT_PURPLE.toString() + EnumChatFormatting.BOLD
-                        + GTUtility.translate("gt.blockmachines.multimachine.project.ig.assembler.t2.desc1"))
-                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.assembler.t2.desc2"))
-                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.motorT3"))
-                .beginStructureBlock(1, 5, 2, false)
-                .addCasingInfoRange(GTUtility.translate("gt.blockcasings.ig.0.name"), 0, 9, false)
-                .addInputBus(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWithHintNumber1"), 1)
-                .addOutputBus(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWithHintNumber1"), 1)
-                .addInputHatch(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWithHintNumber1"), 1)
+                        + StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.assembler.t2.desc1"))
+                .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.assembler.t2.desc2"))
+                .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.motorT3"))
+                .beginStructureBlock(2, 1, 5, false)
+                .addController("Front center, 4th layer")
+                .addCasing("0-7", StatCollector.translateToLocal("gt.blockcasings.ig.0.name"), false)
+                .addInputAny("1+", "Any casing", 1)
+                .addOutputBus("1+", "Any casing", 1)
+                .addStructureInfo("")
+                .addStructureFooter(StatCollector.translateToLocal("ig.elevator.structure.SharedPower"))
                 .toolTipFinisher();
             return tt;
         }
@@ -426,6 +444,8 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase
         protected static final int MINIMUM_MOTOR_TIER = 5;
         /** Maximum parallels which this module can handle */
         protected static final int MAX_PARALLELS = 64;
+        /** Speed Bonus which this module possesses */
+        protected static final float SPEED_BONUS = 2.0F;
 
         /**
          * Create a new T3 assembler module controller
@@ -458,12 +478,14 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase
             return new TileEntityModuleAssemblerT3(mName);
         }
 
-        /**
-         * @return Maximum parallels that this module allows
-         */
         @Override
         protected int getMaxParallels() {
             return MAX_PARALLELS;
+        }
+
+        @Override
+        protected float getSpeedBonus() {
+            return 1.0F / SPEED_BONUS;
         }
 
         /**
@@ -472,18 +494,20 @@ public abstract class TileEntityModuleAssembler extends TileEntityModuleBase
         @Override
         protected MultiblockTooltipBuilder createTooltip() {
             final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-            tt.addMachineType(GTUtility.translate("gt.blockmachines.module.name"))
-                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.assembler.desc0"))
+            tt.addMachineType(StatCollector.translateToLocal("gt.blockmachines.module.name"))
+                .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.assembler.desc0"))
                 .addInfo(
                     EnumChatFormatting.LIGHT_PURPLE.toString() + EnumChatFormatting.BOLD
-                        + GTUtility.translate("gt.blockmachines.multimachine.project.ig.assembler.t3.desc1"))
-                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.assembler.t3.desc2"))
-                .addInfo(GTUtility.translate("gt.blockmachines.multimachine.project.ig.motorT5"))
-                .beginStructureBlock(1, 5, 2, false)
-                .addCasingInfoMin(GTUtility.translate("gt.blockcasings.ig.0.name"), 0, false)
-                .addInputBus(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWithHintNumber1"), 1)
-                .addOutputBus(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWithHintNumber1"), 1)
-                .addInputHatch(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWithHintNumber1"), 1)
+                        + StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.assembler.t3.desc1"))
+                .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.assembler.t3.desc2"))
+                .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.project.ig.motorT5"))
+                .beginStructureBlock(2, 1, 5, false)
+                .addController("Front center, 4th layer")
+                .addCasing("0-7", StatCollector.translateToLocal("gt.blockcasings.ig.0.name"), false)
+                .addInputAny("1+", "Any casing", 1)
+                .addOutputBus("1+", "Any casing", 1)
+                .addStructureInfo("")
+                .addStructureFooter(StatCollector.translateToLocal("ig.elevator.structure.SharedPower"))
                 .toolTipFinisher();
             return tt;
         }

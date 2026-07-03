@@ -42,16 +42,17 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
+import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.INEIPreviewModifier;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -66,8 +67,9 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class MTEIndustrialMacerator extends MTEExtendedPowerMultiBlockBase<MTEIndustrialMacerator>
-    implements ISurvivalConstructable, INEIPreviewModifier {
+    implements ISurvivalConstructable, INEIPreviewModifier, ICasingTextureProvider {
 
+    public static final String TIER = "mTier";
     private int controllerTier = 1;
     private int structureTier;
     private int casingAmount;
@@ -110,24 +112,26 @@ public class MTEIndustrialMacerator extends MTEExtendedPowerMultiBlockBase<MTEIn
             .addInfo("Tier 1: " + EnumChatFormatting.GREEN + "160% speed")
             .addInfo("Tier 2: " + EnumChatFormatting.GREEN + "640% speed")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(5, 7, 5, false)
+            .beginStructureBlock(5, 5, 7, false)
             .addController("Front bottom center")
-            .addInputBus("Any Stable Titanium/Maceration Stack Casing", 1)
-            .addOutputBus("Any Stable Titanium/Maceration Stack Casing", 1)
-            .addEnergyHatch("Any Stable Titanium/Maceration Stack Casing", 1)
-            .addMaintenanceHatch("Any Stable Titanium/Maceration Stack Casing", 1)
-            .addMufflerHatch("Any Stable Titanium/Maceration Stack Casing", 1)
-            .addStructureInfo(
-                EnumChatFormatting.BLUE + "Tier " + EnumChatFormatting.DARK_PURPLE + 1 + EnumChatFormatting.BLUE + ":")
-            .addCasingInfoMin("Stable Titanium Casing", 26, false)
-            .addStructureInfo(
-                EnumChatFormatting.BLUE + "Tier " + EnumChatFormatting.DARK_PURPLE + 2 + EnumChatFormatting.BLUE + ":")
-            .addCasingInfoMin("Maceration Stack Casing", 69, false)
-            .addCasingInfoExactly("Grate Machine Casing", 6, false)
-            .addCasingInfoExactly("Steel Gear Box", 18, false)
-            .addCasingInfoExactly("HSS-G Frame Box", 20, false)
-            .addCasingInfoExactly("Any Tiered Glass", 8, false)
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .addEnergyHatch("1+", "Any casing", 1)
+            .addMaintenanceHatch("1", "Any casing", 1)
+            .addMufflerHatch("1", "Any casing", 1)
+            .addInputBus("1+", "Any casing", 1)
+            .addOutputBus("1+", "Any casing", 1)
+            .addStructureInfo("")
+            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Tiers.One"))
+            .addCasing("26-44", "Stable Titanium MAchine Casing", false)
+            .addStructureInfo("")
+            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Tiers.Two"))
+            .addCasing("69-87", "Maceration Stack Casing", false)
+            .addCasing("20", "HSS-G Frame Box", false)
+            .addCasing("18", "Steel Gear Box Casing", false)
+            .addCasing("8", "Any Tiered Glass", false)
+            .addCasing("6", "Grate Machine Casing", false)
+            .addStructureInfo("")
+            .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.structuretier"))
+            .addSubChannel(GTStructureChannels.BOROGLASS)
             .addStructureAuthors(EnumChatFormatting.GOLD + "VorTex")
             .toolTipFinisher();
         return tt;
@@ -237,34 +241,21 @@ public class MTEIndustrialMacerator extends MTEExtendedPowerMultiBlockBase<MTEIn
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
-        if (side == aFacing) {
-            if (aActive) return new ITexture[] {
-                structureTier == 2 ? Casings.MacerationStackCasing.getCasingTexture()
-                    : Casings.StableTitaniumMachineCasing.getCasingTexture(),
-                TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.Overlay_MatterFab_Active)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.Overlay_MatterFab_Active_Glow)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] {
-                structureTier == 2 ? Casings.MacerationStackCasing.getCasingTexture()
-                    : Casings.StableTitaniumMachineCasing.getCasingTexture(),
-                TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.Overlay_MatterFab)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.Overlay_MatterFab_Glow)
-                    .extFacing()
-                    .glow()
-                    .build() };
-        }
-        return new ITexture[] { structureTier == 2 ? Casings.MacerationStackCasing.getCasingTexture()
-            : Casings.StableTitaniumMachineCasing.getCasingTexture() };
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            TexturesGtBlock.Overlay_MatterFab,
+            TexturesGtBlock.Overlay_MatterFab_Glow,
+            TexturesGtBlock.Overlay_MatterFab_Active,
+            TexturesGtBlock.Overlay_MatterFab_Active_Glow);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return structureTier == 2 ? Casings.MacerationStackCasing.getCasingTexture()
+            : Casings.StableTitaniumMachineCasing.getCasingTexture();
     }
 
     @Override
@@ -360,18 +351,18 @@ public class MTEIndustrialMacerator extends MTEExtendedPowerMultiBlockBase<MTEIn
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        aNBT.setByte("mTier", (byte) controllerTier);
+        aNBT.setByte(TIER, (byte) controllerTier);
         aNBT.setByte("structureTier", (byte) structureTier);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        if (!aNBT.hasKey("mTier", NBT.TAG_BYTE))
+        if (!aNBT.hasKey(TIER, NBT.TAG_BYTE))
             // we assume old macerators are all T2 variants, as they were made before price reduction and shouldn't need
             // to worry about upgrading
             controllerTier = 2;
-        else controllerTier = aNBT.getByte("mTier");
+        else controllerTier = aNBT.getByte(TIER);
 
         structureTier = aNBT.getByte("structureTier");
     }
@@ -379,17 +370,17 @@ public class MTEIndustrialMacerator extends MTEExtendedPowerMultiBlockBase<MTEIn
     @Override
     public void initDefaultModes(NBTTagCompound aNBT) {
         super.initDefaultModes(aNBT);
-        if (aNBT == null || !aNBT.hasKey("mTier")) {
+        if (aNBT == null || !aNBT.hasKey(TIER)) {
             controllerTier = 1;
         } else {
-            controllerTier = aNBT.getByte("mTier");
+            controllerTier = aNBT.getByte(TIER);
         }
     }
 
     @Override
     public void setItemNBT(NBTTagCompound aNBT) {
         super.setItemNBT(aNBT);
-        if (controllerTier > 1) aNBT.setByte("mTier", (byte) controllerTier);
+        if (controllerTier > 1) aNBT.setByte(TIER, (byte) controllerTier);
     }
 
     @Override

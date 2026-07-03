@@ -244,35 +244,33 @@ public class MTEExothermicHearth extends MTEExtendedPowerMultiBlockBase<MTEExoth
                     + EnumChatFormatting.GRAY
                     + " with the parallel multiplier")
             .addSeparator()
-            .addTecTechHatchInfo()
+            .addSupportAny()
             .addMinGlassForLaser(VoltageIndex.UV)
             .addGlassEnergyLimitInfo()
             .addUnlimitedTierSkips()
             .addPollutionAmount(getPollutionPerSecond(null))
             .addSeparator()
             .addInfo(EnumChatFormatting.ITALIC + "" + EnumChatFormatting.DARK_RED + "Never one...")
-            .beginStructureBlock(23, 43, 23, true)
+            .beginStructureBlock(23, 23, 43, true)
             .addController("Front center, 4th layer")
-            .addCasingInfoMin("Hearth Casing", 1800, false)
-            .addCasingInfoExactly("Heat Proof Machine Casing", 925, false)
-            .addCasingInfoExactly("Heating Coil", 864, true)
-            .addCasingInfoExactly("Thermal Containment Casing", 780, false)
-            .addCasingInfoExactly("Radiant Naquadah Alloy Casing", 426, false)
-            .addCasingInfoExactly("Any Tiered Glass", 332, true)
-            .addCasingInfoExactly("Black Plutonium Item Pipe Casing", 308, false)
-            .addCasingInfoExactly("Blast Smelter Heat Containment Coil", 208, false)
-            .addCasingInfoExactly("Tungstensteel Pipe Casing", 131, false)
-            .addCasingInfoExactly("Prismatic Naquadah Frame Box", 56, false)
-            .addStructureInfo("The glass tier limits the Energy Input tier")
-            .addEnergyHatch("Any Hearth Casing", 1)
-            .addMaintenanceHatch("Any Hearth Casing", 1)
-            .addInputBus("Any Hearth Casing", 1)
-            .addInputHatch("Any Hearth Casing", 1)
-            .addMufflerHatch("Top middle", 2)
-            .addOutputBus("Any Hearth Casing", 1)
-            .addOutputHatch("Any Hearth Casing", 1)
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
-            .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
+            .addCasing("1800-1918", "Hearth Casing", false)
+            .addCasing("925", "Heat Proof Machine Casing", false)
+            .addCasing("860", "Heating Coil", true)
+            .addCasing("780", "Thermal Containment Casing", false)
+            .addCasing("426", "Radiant Naquadah Alloy Casing", false)
+            .addCasing("332", "Any Tiered Glass", true)
+            .addCasing("308", "Black Plutonium Item Pipe Casing", false)
+            .addCasing("280", "Blast Smelter Heat Containment Coil", false)
+            .addCasing("131", "Tungstensteel Pipe Casing", false)
+            .addCasing("56", "Prismatic Naquadah Frame Box", false)
+            .addEnergyHatch("1+", "Any hearth casing", 1)
+            .addMaintenanceHatch("1", "Any hearth casing", 1)
+            .addMufflerHatch("1", "Any hearth casing", 1)
+            .addInputAny("1+", "Any hearth casing", 1)
+            .addOutputAny("1+", "Any hearth casing", 1)
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.HEATING_COIL)
+            .addSubChannel(GTStructureChannels.BOROGLASS)
             .addStructureAuthors("GregTech Odyssey")
             .toolTipFinisher();
         return tt;
@@ -506,8 +504,8 @@ public class MTEExothermicHearth extends MTEExtendedPowerMultiBlockBase<MTEExoth
             errors.add(StructureErrorRegistry.COIL_LEVEL_NOT_ENOUGH);
         }
         checkCasingMin(errors, casingAmount, 1800);
-        checkHasMaintenanceHatch(errors);
         checkHasAnyEnergy(errors);
+        checkHasMaintenanceHatch(errors);
         checkHasMufflerHatch(errors);
         checkHasAnyInput(errors);
         checkHasAnyOutput(errors);

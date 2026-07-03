@@ -41,6 +41,7 @@ import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IHeatProducer;
 import gregtech.api.logic.ProcessingLogic;
@@ -49,7 +50,6 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
@@ -62,7 +62,7 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompressor>
-    implements ISurvivalConstructable, IHeatProducer {
+    implements ISurvivalConstructable, IHeatProducer, ICasingTextureProvider {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<MTEHIPCompressor> STRUCTURE_DEFINITION = StructureDefinition
@@ -145,55 +145,23 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
-        ITexture[] rTexture;
-        if (side == aFacing) {
-            if (overheated) {
-                rTexture = new ITexture[] {
-                    Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 4)),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_COMPRESSOR_COOLING)
-                        .extFacing()
-                        .build(),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_COMPRESSOR_COOLING_GLOW)
-                        .extFacing()
-                        .glow()
-                        .build() };
-            } else if (aActive) {
-                rTexture = new ITexture[] {
-                    Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 4)),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_COMPRESSOR_ACTIVE)
-                        .extFacing()
-                        .build(),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_COMPRESSOR_ACTIVE_GLOW)
-                        .extFacing()
-                        .glow()
-                        .build() };
-            } else {
-                rTexture = new ITexture[] {
-                    Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 4)),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_COMPRESSOR)
-                        .extFacing()
-                        .build(),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_COMPRESSOR_GLOW)
-                        .extFacing()
-                        .glow()
-                        .build() };
-            }
-        } else {
-            rTexture = new ITexture[] { Textures.BlockIcons
-                .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 4)) };
-        }
-        return rTexture;
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive || overheated,
+            OVERLAY_FRONT_MULTI_COMPRESSOR,
+            OVERLAY_FRONT_MULTI_COMPRESSOR_GLOW,
+            overheated ? OVERLAY_FRONT_MULTI_COMPRESSOR_COOLING : OVERLAY_FRONT_MULTI_COMPRESSOR_ACTIVE,
+            overheated ? OVERLAY_FRONT_MULTI_COMPRESSOR_COOLING_GLOW : OVERLAY_FRONT_MULTI_COMPRESSOR_ACTIVE_GLOW);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Textures.BlockIcons
+            .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 4));
     }
 
     @Override
@@ -269,25 +237,27 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
                     + "1"
                     + EnumChatFormatting.GRAY
                     + " parallels per voltage tier")
-            .beginStructureBlock(15, 10, 7, false)
+            .beginStructureBlock(7, 15, 10, true)
             .addController("Front bottom center")
-            .addCasingInfoMin("Electric Compressor Casing", 95, false)
-            .addCasingInfoMin("Compressor Pipe Casing", 60, false)
-            .addCasingInfoExactly("Coolant Duct", 12, false)
-            .addCasingInfoExactly("Heating Duct", 12, false)
-            .addCasingInfoExactly("Any Tiered Glass", 22, false)
-            .addCasingInfoExactly("Coil", 30, true)
-            .addOtherStructurePart(
+            .addCasing("95-124", "Electric Compressor Casing", false)
+            .addCasing("60-61", "Compression Pipe Casing", false)
+            .addCasing("30", "Heating Coil", true)
+            .addCasing("22", "Any Tiered Glass", false)
+            .addCasing("12", "Coolant Duct", false)
+            .addCasing("12", "Heating Duct", false)
+            .addMiscHatch(
+                "0+",
                 StatCollector.translateToLocal("GT5U.tooltip.structure.heat_sensor_hatch"),
-                "Any Electric Compressor Casing",
+                "Any electric compressor casing",
                 1)
-            .addInputBus("Pipe Casing on Side", 2)
-            .addInputHatch("Pipe Casing on Side", 2)
-            .addOutputBus("Pipe Casing on Side", 2)
-            .addEnergyHatch("Any Electric Compressor Casing", 1)
-            .addMaintenanceHatch("Any Electric Compressor Casing", 1)
-            .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .addEnergyHatch("1+", "Any electric compressor casing", 1)
+            .addMaintenanceHatch("1", "Any electric compressor casing", 1)
+            .addInputBus("1+", "Any side pipe casing", 2)
+            .addInputHatch("0+", "Any side pipe casing", 2)
+            .addOutputBus("1+", "Any side pipe casing", 2)
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.HEATING_COIL)
+            .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher(Ollie);
         return tt;
     }
