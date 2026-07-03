@@ -38,15 +38,16 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
@@ -59,7 +60,7 @@ import gregtech.common.misc.GTStructureChannels;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELargeFluidExtractor>
-    implements ISurvivalConstructable {
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final int CASING_INDEX = 48; // Robust Tungstensteel Machine Casing
@@ -240,32 +241,22 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-        int colorIndex, boolean active, boolean redstoneLevel) {
-        if (side == facing) {
-            if (active) {
-                return new ITexture[] { getCasingTextureForId(CASING_INDEX), TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.oMCALargeFluidExtractorActive)
-                    .extFacing()
-                    .build(),
-                    TextureFactory.builder()
-                        .addIcon(TexturesGtBlock.oMCALargeFluidExtractorActiveGlow)
-                        .extFacing()
-                        .glow()
-                        .build() };
-            } else {
-                return new ITexture[] { getCasingTextureForId(CASING_INDEX), TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.oMCALargeFluidExtractor)
-                    .extFacing()
-                    .build(),
-                    TextureFactory.builder()
-                        .addIcon(TexturesGtBlock.oMCALargeFluidExtractorGlow)
-                        .extFacing()
-                        .glow()
-                        .build() };
-            }
-        }
-        return new ITexture[] { getCasingTextureForId(CASING_INDEX) };
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            TexturesGtBlock.oMCALargeFluidExtractor,
+            TexturesGtBlock.oMCALargeFluidExtractorGlow,
+            TexturesGtBlock.oMCALargeFluidExtractorActive,
+            TexturesGtBlock.oMCALargeFluidExtractorActiveGlow);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return getCasingTextureForId(CASING_INDEX);
     }
 
     @Override

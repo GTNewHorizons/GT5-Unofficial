@@ -11,7 +11,6 @@ import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -30,6 +29,7 @@ import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
@@ -50,7 +50,7 @@ import gregtech.common.misc.GTStructureChannels;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class MTEEntropicProcessor extends MTEExtendedPowerMultiBlockBase<MTEEntropicProcessor>
-    implements ISurvivalConstructable, IStructureProvider<MTEEntropicProcessor> {
+    implements ISurvivalConstructable, IStructureProvider<MTEEntropicProcessor>, ICasingTextureProvider {
 
     protected final StructureWrapper<MTEEntropicProcessor> structure;
     protected final StructureWrapperInstanceInfo<MTEEntropicProcessor> structureInstanceInfo;
@@ -316,41 +316,31 @@ public class MTEEntropicProcessor extends MTEExtendedPowerMultiBlockBase<MTEEntr
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity igte, ForgeDirection side, ForgeDirection facing, int colorIndex,
-        boolean active, boolean redstoneLevel) {
-        List<ITexture> textures = new ArrayList<>();
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            TexturesGtBlock.Overlay_Machine_Controller_Advanced,
+            Textures.BlockIcons.VOID,
+            TexturesGtBlock.Overlay_Machine_Controller_Advanced_Active,
+            Textures.BlockIcons.VOID);
+    }
 
-        switch (getCasingTier()) {
-            case 0 -> textures.add(
-                TextureFactory.builder()
-                    .addIcon(Textures.BlockIcons.MACHINE_CASING_THAUMIUM)
-                    .build());
-            case 1 -> textures.add(
-                TextureFactory.builder()
-                    .addIcon(Textures.BlockIcons.MACHINE_CASING_VOID)
-                    .build());
-            case 2 -> textures.add(
-                TextureFactory.builder()
-                    .addIcon(Textures.BlockIcons.MACHINE_CASING_ICHORIUM)
-                    .build());
-        }
-
-        if (side == facing) {
-            if (active) {
-                textures.add(
-                    TextureFactory.builder()
-                        .addIcon(TexturesGtBlock.Overlay_Machine_Controller_Advanced_Active)
-                        .extFacing()
-                        .build());
-            } else {
-                textures.add(
-                    TextureFactory.builder()
-                        .addIcon(TexturesGtBlock.Overlay_Machine_Controller_Advanced)
-                        .extFacing()
-                        .build());
-            }
-        }
-
-        return textures.toArray(new ITexture[0]);
+    @Override
+    public ITexture getCasingTexture() {
+        return switch (getCasingTier()) {
+            case 1 -> TextureFactory.builder()
+                .addIcon(Textures.BlockIcons.MACHINE_CASING_VOID)
+                .build();
+            case 2 -> TextureFactory.builder()
+                .addIcon(Textures.BlockIcons.MACHINE_CASING_ICHORIUM)
+                .build();
+            default -> TextureFactory.builder()
+                .addIcon(Textures.BlockIcons.MACHINE_CASING_THAUMIUM)
+                .build();
+        };
     }
 }

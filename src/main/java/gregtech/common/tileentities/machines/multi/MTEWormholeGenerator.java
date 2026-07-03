@@ -55,10 +55,12 @@ import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.SoundResource;
+import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
@@ -68,7 +70,6 @@ import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.ResultMissingItem;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.util.GTUtility;
@@ -83,7 +84,7 @@ import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoMulti;
 import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyMulti;
 
 public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeGenerator>
-    implements ISurvivalConstructable {
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     /**
      * Number of seconds to average the wormhole energy over. (controls the weights in a weighted average)
@@ -189,22 +190,22 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-        int colorIndex, boolean active, boolean redstoneLevel) {
-        if (side == facing) {
-            if (active) {
-                return new ITexture[] { getCasingTextureForId(TT_CASING_INDEX), TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.Overlay_Machine_Controller_Advanced_Active)
-                    .extFacing()
-                    .build() };
-            } else {
-                return new ITexture[] { getCasingTextureForId(TT_CASING_INDEX), TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.Overlay_Machine_Controller_Advanced)
-                    .extFacing()
-                    .build() };
-            }
-        }
-        return new ITexture[] { getCasingTextureForId(TT_CASING_INDEX) };
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            TexturesGtBlock.Overlay_Machine_Controller_Advanced,
+            TexturesGtBlock.Overlay_Machine_Controller_Advanced_Glow,
+            TexturesGtBlock.Overlay_Machine_Controller_Advanced_Active,
+            TexturesGtBlock.Overlay_Machine_Controller_Advanced_Active_Glow);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return getCasingTextureForId(TT_CASING_INDEX);
     }
 
     // #region Structure

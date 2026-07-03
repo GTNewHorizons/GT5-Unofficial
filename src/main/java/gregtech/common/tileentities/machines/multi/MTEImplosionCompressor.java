@@ -26,19 +26,20 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.GTMod;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.SoundResource;
+import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.MultiblockTooltipBuilder;
 
 public class MTEImplosionCompressor extends MTEExtendedPowerMultiBlockBase<MTEImplosionCompressor>
-    implements ISurvivalConstructable {
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     private static IStructureDefinition<MTEImplosionCompressor> STRUCTURE_DEFINITION = null;
     private int mCasing;
@@ -127,28 +128,20 @@ public class MTEImplosionCompressor extends MTEExtendedPowerMultiBlockBase<MTEIm
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
-        if (side == aFacing) {
-            if (aActive) return new ITexture[] { Casings.SolidSteelMachineCasing.getCasingTexture(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_IMPLOSION_COMPRESSOR_ACTIVE)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_IMPLOSION_COMPRESSOR_ACTIVE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { Casings.SolidSteelMachineCasing.getCasingTexture(), TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_IMPLOSION_COMPRESSOR)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_IMPLOSION_COMPRESSOR_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-        }
-        return new ITexture[] { Casings.SolidSteelMachineCasing.getCasingTexture() };
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            OVERLAY_FRONT_IMPLOSION_COMPRESSOR,
+            OVERLAY_FRONT_IMPLOSION_COMPRESSOR_GLOW,
+            OVERLAY_FRONT_IMPLOSION_COMPRESSOR_ACTIVE,
+            OVERLAY_FRONT_IMPLOSION_COMPRESSOR_ACTIVE_GLOW);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Casings.SolidSteelMachineCasing.getCasingTexture();
     }
 
     @Override

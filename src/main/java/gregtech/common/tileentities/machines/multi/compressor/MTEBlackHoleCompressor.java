@@ -63,6 +63,7 @@ import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
@@ -72,7 +73,6 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.util.GTRecipe;
@@ -88,7 +88,7 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 import tectech.thing.metaTileEntity.multi.base.SoundLoopAnyBlock;
 
 public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBlackHoleCompressor>
-    implements ISurvivalConstructable {
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<MTEBlackHoleCompressor> STRUCTURE_DEFINITION = StructureDefinition
@@ -312,43 +312,38 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
     @Override
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
-        ITexture[] rTexture;
-        if (side == aFacing) {
-            IIconContainer MAIN_OVERLAY;
-            IIconContainer GLOW_OVERLAY;
-            switch (blackHoleStatus) {
-                default -> {
-                    MAIN_OVERLAY = OVERLAY_MULTI_BLACKHOLE;
-                    GLOW_OVERLAY = OVERLAY_MULTI_BLACKHOLE_GLOW;
-                }
-                case 2, 4 -> {
-                    MAIN_OVERLAY = OVERLAY_MULTI_BLACKHOLE_ACTIVE;
-                    GLOW_OVERLAY = OVERLAY_MULTI_BLACKHOLE_ACTIVE_GLOW;
-                }
-                case 3 -> {
-                    MAIN_OVERLAY = OVERLAY_MULTI_BLACKHOLE_UNSTABLE;
-                    GLOW_OVERLAY = OVERLAY_MULTI_BLACKHOLE_UNSTABLE_GLOW;
-                }
+        IIconContainer MAIN_OVERLAY;
+        IIconContainer GLOW_OVERLAY;
+        switch (blackHoleStatus) {
+            default -> {
+                MAIN_OVERLAY = OVERLAY_MULTI_BLACKHOLE;
+                GLOW_OVERLAY = OVERLAY_MULTI_BLACKHOLE_GLOW;
             }
-
-            rTexture = new ITexture[] {
-                Textures.BlockIcons
-                    .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 11)),
-                TextureFactory.builder()
-                    .addIcon(MAIN_OVERLAY)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(GLOW_OVERLAY)
-                    .extFacing()
-                    .glow()
-                    .build() };
-
-        } else {
-            rTexture = new ITexture[] { Textures.BlockIcons
-                .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 11)) };
+            case 2, 4 -> {
+                MAIN_OVERLAY = OVERLAY_MULTI_BLACKHOLE_ACTIVE;
+                GLOW_OVERLAY = OVERLAY_MULTI_BLACKHOLE_ACTIVE_GLOW;
+            }
+            case 3 -> {
+                MAIN_OVERLAY = OVERLAY_MULTI_BLACKHOLE_UNSTABLE;
+                GLOW_OVERLAY = OVERLAY_MULTI_BLACKHOLE_UNSTABLE_GLOW;
+            }
         }
-        return rTexture;
+
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            MAIN_OVERLAY,
+            GLOW_OVERLAY,
+            MAIN_OVERLAY,
+            GLOW_OVERLAY);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Textures.BlockIcons
+            .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 11));
     }
 
     @Override
