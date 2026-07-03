@@ -26,6 +26,7 @@ import java.util.List;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -231,15 +232,14 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
                 'W');
             return;
         }
-
+        checkCasingMin(errors, casingCount, MIN_CASING);
         checkHasInputHatch(errors);
         // At most three input hatches allowed
         checkHatchMax(errors, InputHatch, 3);
-
         checkHasOutputHatch(errors);
         // At most three output hatches allowed
         checkHatchMax(errors, OutputHatch, 3);
-        checkCasingMin(errors, casingCount, MIN_CASING);
+
         if (!errors.isEmpty()) return;
         needsWaterFill = true;
     }
@@ -326,52 +326,20 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
                 EnumChatFormatting.AQUA + ""
                     + EnumChatFormatting.ITALIC
                     + "of aggregating dispersed suspended particles from a solution into larger clumps for further filtration.")
-            .beginStructureBlock(9, 5, 8, false)
+            .beginStructureBlock(8, 9, 5, false)
             .addController("Front center")
-            .addCasingInfoRangeColored(
-                "Slick Sterile Flocculation Casing",
-                EnumChatFormatting.GRAY,
-                MIN_CASING,
-                65,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored(
-                "Sterile Water Plant Casing",
-                EnumChatFormatting.GRAY,
-                30,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored(
-                "Reinforced Sterile Water Plant Casing",
-                EnumChatFormatting.GRAY,
-                16,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored(
-                "Tinted Industrial Glass",
-                EnumChatFormatting.GRAY,
-                6,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored(
-                "Adamantium Frame Box",
-                EnumChatFormatting.GRAY,
-                12,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored(
-                "Filter Machine Casing",
-                EnumChatFormatting.GRAY,
-                9,
-                EnumChatFormatting.GOLD,
-                false)
-            .addOutputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
-            .addInputHatch(
-                EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "-" + EnumChatFormatting.GOLD + "3",
-                1)
-            .addOutputHatch(
-                EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "-" + EnumChatFormatting.GOLD + "3",
-                1)
+            .addCasing(MIN_CASING + "-63", "Slick Sterile Flocculation Casing", false)
+            .addCasing("30", "Sterile Water Plant Casing", false)
+            .addCasing("16", "Reinforced Sterile Water Plant Casing", false)
+            .addCasing("12", "Adamantium Frame Box", false)
+            .addCasing("9", "Filter Machine Casing", false)
+            .addCasing("6", "Tinted Industrial Glass (any color)", false)
+            .addInputHatch("1-3", "Any flocculation casing", 1)
+            .addOutputBus("0+", "Any flocculation casing", 1)
+            .addOutputHatch("1-3", "Any flocculation casing", 1)
+            .addStructureInfo("")
+            .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.WaterFree"))
+            .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.DataStick.Waterline"))
             .toolTipFinisher();
         return tt;
     }

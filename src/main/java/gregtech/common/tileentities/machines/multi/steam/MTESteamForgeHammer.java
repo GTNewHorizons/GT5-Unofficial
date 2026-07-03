@@ -316,32 +316,23 @@ public class MTESteamForgeHammer extends MTESteamMultiBlockBase<MTESteamForgeHam
         tt.addMachineType(getMachineType())
             .addSteamBulkMachineInfo(8, 1.25f, 0.625f)
             .addInfo(HIGH_PRESSURE_TOOLTIP_NOTICE)
-            .beginStructureBlock(6, 5, 5, false)
+            .beginStructureBlock(5, 5, 7, false)
             .addController("Front center, 2nd layer")
-            .addSteamInputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any Casing", 1)
-            .addSteamOutputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any Casing", 1)
-            .addStructureInfo(
-                EnumChatFormatting.WHITE + "Steam Input Hatch "
-                    + EnumChatFormatting.GOLD
-                    + "1"
-                    + EnumChatFormatting.GRAY
-                    + " Any Casing")
+            .addSteamHatch("1", "Any normal casing", 1)
+            .addSteamInputBus("1+", "Any normal casing", 1)
+            .addSteamOutputBus("1+", "Any normal casing", 1)
             .addStructureInfo("")
-            .addStructureInfo(EnumChatFormatting.BLUE + "Basic " + EnumChatFormatting.DARK_PURPLE + "Tier")
-            .addStructureInfo(EnumChatFormatting.GOLD + "35-39x" + EnumChatFormatting.GRAY + " Bronze Plated Bricks")
-            .addStructureInfo(EnumChatFormatting.GOLD + "2x" + EnumChatFormatting.GRAY + " Bronze Pipe Casing")
-            .addStructureInfo(EnumChatFormatting.GOLD + "2x" + EnumChatFormatting.GRAY + " Iron Block")
+            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Tiers.Basic"))
+            .addCasing("35-39", "Bronze Plated Bricks", false)
+            .addCasing("2", "Bronze Pipe Casing", false)
+            .addCasing("2", "Block of Iron", false)
             .addStructureInfo("")
-            .addStructureInfo(EnumChatFormatting.BLUE + "High Pressure " + EnumChatFormatting.DARK_PURPLE + "Tier")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "35-39x" + EnumChatFormatting.GRAY + " Solid Steel Machine Casing")
-            .addStructureInfo(EnumChatFormatting.GOLD + "2x" + EnumChatFormatting.GRAY + " Steel Pipe Casing")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "2x"
-                    + EnumChatFormatting.GRAY
-                    + " Steel Block"
-                    + EnumChatFormatting.RED
-                    + " from GregTech")
+            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Tiers.HighPressure"))
+            .addCasing("35-39", "Solid Steel Machine Casing", false)
+            .addCasing("2", "Steel Pipe Casing", false)
+            .addCasing("2", "Block of Steel", false)
+            .addStructureInfo("")
+            .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.structuretier"))
             .toolTipFinisher(GTAuthors.AuthorEvgenWarGold);
         return tt;
     }

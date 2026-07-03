@@ -26,7 +26,6 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IChatComponent;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -108,22 +107,19 @@ public class MTELargeChemicalReactor extends MTEEnhancedMultiBlockBase<MTELargeC
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Chemical Reactor, LCR")
             .addInfo("Accepts fluids instead of fluid cells")
+            .addInfo("Can perform several direct recipes that skip intermediate compounds")
             .addPerfectOCInfo()
             .beginStructureBlock(3, 3, 3, false)
             .addController("Front center")
-            .addCasingInfoRange("Chemically Inert Machine Casing", 8, 22, false)
-            .addOtherStructurePart("PTFE Pipe Machine Casing", "Center")
-            .addOtherStructurePart(
-                StatCollector.translateToLocal("GT5U.tooltip.structure.heating_coil"),
-                "Adjacent to the PTFE Pipe Machine Casing",
-                1)
-            .addEnergyHatch("Any Casing", 1)
-            .addMaintenanceHatch("Any Casing", 1)
-            .addInputBus("Any Casing", 1)
-            .addInputHatch("Any Casing", 1)
-            .addOutputBus("Any Casing", 1)
-            .addOutputHatch("Any Casing", 1)
-            .addStructureInfo("You can have multiple hatches/buses")
+            .addCasing("8-22", "Chemically Inert Machine Casing", false)
+            .addCasing("1", "PTFE Pipe Casing", false)
+            .addCasing("1", "Heating Coil", false)
+            .addEnergyHatch("1+", "Any casing", 1)
+            .addMaintenanceHatch("1", "Any casing", 1)
+            .addInputAny("1+", "Any casing", 1)
+            .addOutputAny("1+", "Any casing", 1)
+            .addStructureInfo("")
+            .addStructureFooter("Heating Coil can be any tier and on any side")
             .toolTipFinisher();
         return tt;
     }
