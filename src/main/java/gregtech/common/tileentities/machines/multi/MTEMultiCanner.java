@@ -120,16 +120,14 @@ public class MTEMultiCanner extends MTEExtendedPowerMultiBlockBase<MTEMultiCanne
         tt.addMachineType("Canner, TCP")
             .addBulkMachineInfo(8, 2f, 1)
             .addInfo(EnumChatFormatting.BLUE + "It's uncanny!")
-            .beginStructureBlock(7, 5, 7, true)
+            .beginStructureBlock(7, 7, 5, true)
             .addController("Front center")
-            .addCasingInfoMin("Solid Steel Machine Casing", 85, false)
-            .addCasingInfoExactly("Steel Pipe Casing", 24, false)
-            .addInputBus("Any Solid Steel Casing", 1)
-            .addOutputBus("Any Solid Steel Casing", 1)
-            .addInputHatch("Any Solid Steel Casing", 1)
-            .addOutputHatch("Any Solid Steel Casing", 1)
-            .addEnergyHatch("Any Solid Steel Casing", 1)
-            .addMaintenanceHatch("Any Solid Steel Casing", 1)
+            .addCasing("85-93", "Solid Steel Machine Casing", false)
+            .addCasing("24", "Steel Pipe Casing", false)
+            .addEnergyHatch("1+", "Any machine casing", 1)
+            .addMaintenanceHatch("1", "Any machine casing", 1)
+            .addInputAny("1+", "Any machine casing", 1)
+            .addOutputAny("1+", "Any machine casing", 1)
             .toolTipFinisher();
         return tt;
     }

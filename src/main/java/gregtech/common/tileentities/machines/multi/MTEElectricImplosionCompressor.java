@@ -136,23 +136,22 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
             .addInfo(createParallelText(EnumChatFormatting.LIGHT_PURPLE, "Spacetime", 64))
             .addInfo(createParallelText(EnumChatFormatting.DARK_AQUA, "Universium", 256))
             .addMaxTierSkips(1)
-            .addTecTechHatchInfo()
-            .beginStructureBlock(15, 7, 7, false)
-            .addController("Front bottom center")
-            .addCasingInfoMin("Naquadah Reinforced Block", 230, false)
-            .addCasingInfoExactly("Naquadah Frame Box", 2, false)
-            .addCasingInfoExactly("PTFE Pipe Casing", 20, false)
-            .addCasingInfoExactly("Any Tiered Glass", 22, false)
-            .addCasingInfoExactly("Robust Tungstensteel Machine Casing", 36, false)
-            .addCasingInfoExactly("Containment Block", 24, true)
-            .addMaintenanceHatch("Any Naquadah Reinforced Block", 1)
-            .addInputBus("Any Naquadah Reinforced Block", 1)
-            .addInputHatch("Any Naquadah Reinforced Block", 1)
-            .addOutputBus("Any Naquadah Reinforced Block", 1)
-            .addOutputHatch("Any Naquadah Reinforced Block", 1)
-            .addEnergyHatch("Any Naquadah Reinforced Block", 1)
-            .addSubChannelUsage(GTStructureChannels.EIC_PISTON)
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .addSupportAny()
+            .beginStructureBlock(7, 15, 7, true)
+            .addController("Front bottom center, 2nd layer")
+            .addCasing("230-247", "Naquadah Reinforced Block", false)
+            .addCasing("36", "Robust Tungstensteel Machine Casing", false)
+            .addCasing("24", "Containment Block", true)
+            .addCasing("22", "Any Tiered Glass", true)
+            .addCasing("10", "PTFE Pipe Casing", false)
+            .addCasing("2", "Naquadah Frame Box", false)
+            .addEnergyHatch("1+", "Any reinforced block", 1)
+            .addMaintenanceHatch("1", "Any reinforced block", 1)
+            .addInputAny("1+", "Any reinforced block", 1)
+            .addOutputAny("1+", "Any reinforced block", 1)
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.EIC_PISTON)
+            .addSubChannel(GTStructureChannels.BOROGLASS)
             .addStructureAuthors(EnumChatFormatting.GOLD + "Pix3lated")
             .toolTipFinisher();
         return tt;
@@ -234,13 +233,13 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
         for (MTEHatch hatch : energyHatches) {
             mMaxHatchTier = Math.max(mMaxHatchTier, hatch.mTier);
         }
+        checkCasingMin(errors, casingAmount, 230);
         if (energyHatches.isEmpty()) {
             errors.add(StructureErrors.hatchCount(ErrorType.TOO_FEW, Energy, 0, 1));
         }
-        checkCasingMin(errors, casingAmount, 230);
+        checkHasMaintenanceHatch(errors);
         checkHasAnyInput(errors);
         checkHasAnyOutput(errors);
-        checkHasMaintenanceHatch(errors);
     }
 
     @Override

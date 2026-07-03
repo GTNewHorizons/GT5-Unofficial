@@ -98,18 +98,18 @@ public class MTEAdvImplosionCompressor extends MTEExtendedPowerMultiBlockBase<MT
             .addStaticSpeedInfo(2f)
             .addStaticEuEffInfo(1f)
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(7, 9, 7, true)
+            .beginStructureBlock(7, 7, 9, true)
             .addController("Front center")
-            .addCasingInfoMin("Robust Tungstensteel Machine Casing", 50, false)
-            .addCasingInfoExactly("Refined Graphite Block", 80, false)
-            .addCasingInfoExactly("Gold Frame Box", 4, false)
-            .addCasingInfoExactly("Gold Sheetmetal", 4, false)
-            .addCasingInfoExactly("Tungstensteel Frame Box", 24, false)
-            .addInputBus("Any Robust Tungstensteel Machine Casing", 1)
-            .addOutputBus("Any Robust Tungstensteel Machine Casing", 1)
-            .addEnergyHatch("Any Robust Tungstensteel Machine Casing", 1)
-            .addMaintenanceHatch("Any Robust Tungstensteel Machine Casing", 1)
-            .addMufflerHatch("Any Robust Tungstensteel Machine Casing", 1)
+            .addCasing("80", "Refined Graphite Block", false)
+            .addCasing("50-60", "Robust Tungstensteel Machine Casing", false)
+            .addCasing("24", "Tungstensteel Frame Box", false)
+            .addCasing("4", "Gold Sheetmetal", false)
+            .addCasing("4", "Gold Frame Box", false)
+            .addEnergyHatch("1+", "Any casing", 1)
+            .addMaintenanceHatch("1", "Any casing", 1)
+            .addMufflerHatch("1", "Any casing", 1)
+            .addInputBus("1+", "Any casing", 1)
+            .addOutputBus("1+", "Any casing", 1)
             .addStructureAuthors(EnumChatFormatting.GOLD + "omegacubed")
             .toolTipFinisher();
         return tt;
@@ -145,11 +145,11 @@ public class MTEAdvImplosionCompressor extends MTEExtendedPowerMultiBlockBase<MT
         casingAmount = 0;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z, errors)) return;
         checkCasingMin(errors, casingAmount, 50);
-        checkHasMufflerHatch(errors);
         checkHasEnergyHatch(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasMufflerHatch(errors);
         checkHasInputBus(errors);
         checkHasOutputBus(errors);
-        checkHasMaintenanceHatch(errors);
     }
 
     @Override
