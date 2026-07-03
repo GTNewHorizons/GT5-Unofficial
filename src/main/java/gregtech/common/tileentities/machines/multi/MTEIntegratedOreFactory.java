@@ -46,8 +46,10 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
@@ -57,7 +59,6 @@ import gregtech.api.objects.XSTR;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipe;
@@ -70,7 +71,7 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEIntegratedOreFactory>
-    implements ISurvivalConstructable {
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     private static final long RECIPE_EUT = 30;
     private static final String STRUCTURE_PIECE_MAIN = "main";
@@ -200,8 +201,8 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
         // other order makes nei preview go crazy
         if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z, errors)) return;
         checkHatchMax(errors, ExoticEnergy, 1);
-        checkHasMufflerHatch(errors);
         checkHasMaintenanceHatch(errors);
+        checkHasMufflerHatch(errors);
         checkHasInputBus(errors);
         checkHasInputHatch(errors);
         checkHasOutputBus(errors);
@@ -637,29 +638,30 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
             .addInfo("Processing time is dependent on mode")
             .addInfo("Use a screwdriver to switch mode")
             .addInfo("Sneak click with screwdriver to void the stone dust")
-            .addTecTechHatchInfo()
+            .addSupportAny()
             .addPollutionAmount(getPollutionPerSecond(null))
             .addSeparator()
             .addInfo(EnumChatFormatting.GREEN + "OP stands for Ore Processor ;)")
-            .beginStructureBlock(15, 9, 13, false)
+            .beginStructureBlock(13, 15, 9, false)
             .addController("Front center")
-            .addCasingInfoExactly("Awakened Draconium Coil Block", 7, false)
-            .addCasingInfoExactly("Centrifuge Casing", 7, false)
-            .addCasingInfoExactly("Grate Machine Casing", 7, false)
-            .addCasingInfoExactly("Large Sieve Grate", 7, false)
-            .addCasingInfoExactly("Titanium Gear Box Casing", 7, false)
-            .addCasingInfoExactly("Any Tiered Glass", 90, false)
-            .addCasingInfoExactly("Stainless Steel Frame Box", 23, false)
-            .addCasingInfoExactly("Clean Stainless Steel Machine Casing", 169, false)
-            .addCasingInfoExactly("Iridium Sheetmetal", 98, false)
-            .addCasingInfoExactly("Advanced Iridium Plated Machine Casing", 462, false)
-            .addEnergyHatch("Any Stainless Steel Casing", 1)
-            .addMaintenanceHatch("Any Stainless Steel Casing", 1)
-            .addInputBus("Any Stainless Steel Casing", 1)
-            .addInputHatch("Any Stainless Steel Casing", 1)
-            .addMufflerHatch("Any Stainless Steel Casing", 1)
-            .addOutputBus("Any Stainless Steel Casing", 1)
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .addCasing("462", "Advanced Iridium Plated Machine Casing", false)
+            .addCasing("0-163", "Clean Stainless Steel Machine Casing", false)
+            .addCasing("96", "Iridium Sheetmetal", false)
+            .addCasing("90", "Any Tiered Glass", false)
+            .addCasing("23", "Stainless Steel Frame Box", false)
+            .addCasing("7", "Awakened Draconium Coil Block", false)
+            .addCasing("7", "Titanium Gear Box Casing", false)
+            .addCasing("7", "Large Sieve Grate", false)
+            .addCasing("7", "Grate Machine Casing", false)
+            .addCasing("7", "Centrifuge Casing", false)
+            .addEnergyHatch("1+", "Any stainless steel casing", 1)
+            .addMaintenanceHatch("1", "Any stainless steel casing", 1)
+            .addMufflerHatch("1", "Any stainless steel casing", 1)
+            .addInputBus("1+", "Any stainless steel casing", 1)
+            .addInputHatch("1+", "Any stainless steel casing", 1)
+            .addOutputBus("1+", "Any stainless steel casing", 1)
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.BOROGLASS)
             .addStructureAuthors(EnumChatFormatting.GOLD + "Bavib")
             .toolTipFinisher();
         return tt;
@@ -744,30 +746,20 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
-        if (side != aFacing) {
-            return new ITexture[] { Casings.CleanStainlessSteelMachineCasing.getCasingTexture() };
-        }
-        if (aActive) {
-            return new ITexture[] { Casings.CleanStainlessSteelMachineCasing.getCasingTexture(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_ORE_FACTORY_ACTIVE)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_ORE_FACTORY_ACTIVE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-        }
-        return new ITexture[] { Casings.CleanStainlessSteelMachineCasing.getCasingTexture(), TextureFactory.builder()
-            .addIcon(OVERLAY_FRONT_ORE_FACTORY)
-            .extFacing()
-            .build(),
-            TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_ORE_FACTORY_GLOW)
-                .extFacing()
-                .glow()
-                .build() };
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            OVERLAY_FRONT_ORE_FACTORY,
+            OVERLAY_FRONT_ORE_FACTORY_GLOW,
+            OVERLAY_FRONT_ORE_FACTORY_ACTIVE,
+            OVERLAY_FRONT_ORE_FACTORY_ACTIVE_GLOW);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Casings.CleanStainlessSteelMachineCasing.getCasingTexture();
     }
 
     @Override

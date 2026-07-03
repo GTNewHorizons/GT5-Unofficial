@@ -264,18 +264,20 @@ public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex>
                     + TooltipHelper.coloredText("Multi-Amp & Laser Energy Hatches", GREEN))
             .addSeparator()
             .addInfo(DARK_AQUA + "Make sure to cover up!")
-            .beginStructureBlock(5, 8, 5, false)
+            .beginStructureBlock(5, 5, 8, false)
             .addController("Front bottom center")
-            .addCasingInfoMin("Chemically Inert Machine Casing", 14, false)
-            .addCasingInfoExactly("Any Tiered Glass", 24, false)
-            .addCasingInfoExactly("Polyvinyl Chloride Frame Box", 16, false)
-            .addInputBus("Any Casing", 1)
-            .addOutputBus("Any Casing", 1)
-            .addInputHatch("Any Casing", 1)
-            .addEnergyHatch("Any Casing", 1)
-            .addMaintenanceHatch("Any Casing", 1)
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
-            .addSubChannelUsage(GTStructureChannels.ITEM_PIPE_CASING)
+            .addCasing("14-36", "Chemically Inert Casing", false)
+            .addCasing("32", "Any Tiered Glass", false)
+            .addCasing("16", "Polyvinyl Chloride Frame Box", false)
+            .addCasing("6", "Item Pipe Casing", true)
+            .addEnergyHatch("1+", "Any casing", 1)
+            .addMaintenanceHatch("1", "Any casing", 1)
+            .addInputBus("1+", "Any casing", 1)
+            .addInputHatch("1+", "Any casing", 1)
+            .addOutputBus("1+", "Any casing", 1)
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.BOROGLASS)
+            .addSubChannel(GTStructureChannels.ITEM_PIPE_CASING)
             .toolTipFinisher();
         return tt;
     }
@@ -308,11 +310,11 @@ public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex>
             UniversalSingularities.isModLoaded()
                 ? getModItem(UniversalSingularities.ID, "universal.rubber.singularity", 1L, 5)
                 : ItemList.Tool_DataStick.get(1));
+        checkHasAnyEnergy(errors);
         checkHasMaintenanceHatch(errors);
         checkHasInputBus(errors);
         checkHasInputHatch(errors);
         checkHasOutputBus(errors);
-        checkHasAnyEnergy(errors);
         if (!mExoticEnergyHatches.isEmpty() && !singularityPresent) {
             errors.add(StructureErrors.of("GT5U.gui.text.structure_error.latex_singularity"));
         }
