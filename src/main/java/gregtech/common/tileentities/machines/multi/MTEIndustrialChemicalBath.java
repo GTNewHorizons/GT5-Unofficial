@@ -19,6 +19,7 @@ import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.alignment.IAlignmentLimits;
@@ -89,18 +90,20 @@ public class MTEIndustrialChemicalBath extends MTEExtendedPowerMultiBlockBase<MT
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 4, 5, false)
             .addController("Front center")
-            .addCasingInfoMin("Wash Plant Casing", 30, false)
-            .addCasingInfoExactly("Watertight Steel Frame Box", 20, false)
-            .addCasingInfoExactly("Block of Zinc", 2, false)
-            .addCasingInfoExactly("Block of Copper", 2, false)
-            .addCasingInfoExactly("Chemically Inert Machine Casing", 4, false)
-            .addInputBus("Any Wash Plant Casing", 1)
-            .addOutputBus("Any Wash Plant Casing", 1)
-            .addInputHatch("Any Wash Plant Casing", 1)
-            .addOutputHatch("Any Wash Plant Casing", 1)
-            .addEnergyHatch("Any Wash Plant Casing", 1)
-            .addMaintenanceHatch("Any Wash Plant Casing", 1)
-            .addMufflerHatch("Any Wash Plant Casing", 1)
+            .addCasing("30-39", "Wash Plant Casing", false)
+            .addCasing("20", "Watertight Steel Frame Box", false)
+            .addCasing("14", "Water", false)
+            .addCasing("4", "Chemically Inert Machine Casing", false)
+            .addCasing("2", "Block of Zinc", false)
+            .addCasing("2", "Block of Copper", false)
+            .addEnergyHatch("1+", "Any wash plant casing", 1)
+            .addMaintenanceHatch("1", "Any wash plant casing", 1)
+            .addMufflerHatch("1", "Any wash plant casing", 1)
+            .addInputBus("0+", "Any wash plant casing", 1)
+            .addInputHatch("1+", "Any wash plant casing", 1)
+            .addOutputAny("1+", "Any wash plant casing", 1)
+            .addStructureInfo("")
+            .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.WaterCost"))
             .addStructureAuthors(EnumChatFormatting.GOLD + "PCGMatt")
             .toolTipFinisher();
         return tt;

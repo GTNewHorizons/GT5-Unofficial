@@ -145,19 +145,18 @@ public class MTETreeFarm extends MTEExtendedPowerMultiBlockBase<MTETreeFarm>
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(7, 7, 7, true)
             .addController("Front bottom center")
-            .addCasingInfoMin("Sterile Farm Casing", 45, false)
-            .addCasingInfoExactly("Steel Frame Box", 60, false)
-            .addCasingInfoExactly("Any Tiered Glass", 57, false)
-            .addCasingInfoExactly("Dirt/Grass", 25, false)
-            .addStructureInfo("Oak Wood and Leaves can be placed manually. If not, they will be placed automatically.")
-            .addInputBus("Any Sterile Farm Casing", 1)
-            .addStructureInfo(
-                EnumChatFormatting.YELLOW + "Stocking Input Buses and Crafting Input Buses/Buffers are not allowed!")
-            .addOutputBus("Any Sterile Farm Casing", 1)
-            .addEnergyHatch("Any Sterile Farm Casing", 1)
-            .addMaintenanceHatch("Any Sterile Farm Casing", 1)
-            .addMufflerHatch("Any Sterile Farm Casing", 1)
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .addCasing("60", "Steel Frame Box", false)
+            .addCasing("57", "Any Tiered Glass", false)
+            .addCasing("45-55", "Sterile Farm Casing", false)
+            .addCasing("25", "Dirt or Grass", false)
+            .addEnergyHatch("1+", "Any casing", 1)
+            .addMaintenanceHatch("1", "Any casing", 1)
+            .addMufflerHatch("1", "Any casing", 1)
+            .addInputBus("0+", "Any casing", 1)
+            .addOutputBus("0+", "Any casing", 1)
+            .addAir("Interior center column")
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.BOROGLASS)
             .addStructureAuthors(EnumChatFormatting.GOLD + "EvgenWarGold")
             .toolTipFinisher();
         return tt;
@@ -187,11 +186,11 @@ public class MTETreeFarm extends MTEExtendedPowerMultiBlockBase<MTETreeFarm>
         casingAmount = 0;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z, errors)) return;
         checkCasingMin(errors, casingAmount, 8);
-        checkHasMufflerHatch(errors);
         checkHasEnergyHatch(errors);
         checkHasMaintenanceHatch(errors);
-        checkHasOutputBus(errors);
+        checkHasMufflerHatch(errors);
         checkHasInputBus(errors);
+        checkHasOutputBus(errors);
     }
 
     @Override

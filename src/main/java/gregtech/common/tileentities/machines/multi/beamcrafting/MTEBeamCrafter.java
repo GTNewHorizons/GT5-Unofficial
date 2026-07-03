@@ -305,42 +305,29 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
                     "gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip8",
                     MAX_PARALLEL))
             .addSeparator()
-            .beginStructureBlock(17, 5, 11, false)
-            .addController(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttcontroller"))
-            .addCasingInfoMin(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttcasing"),
-                224,
+            .addSupportAny()
+            .beginStructureBlock(11, 17, 5, true)
+            .addController("Front center")
+            .addCasing(
+                "224-227",
+                StatCollector.translateToLocal("gt.blockmachines.multimachine.beamcrafting.ttcasing"),
                 false)
-            .addCasingInfoExactly(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttanyglass"),
-                26,
+            .addCasing("26", "Any Tiered Glass", false)
+            .addCasing(
+                "16",
+                StatCollector.translateToLocal("gt.blockmachines.multimachine.beamcrafting.ttgratecasing"),
                 false)
-            .addCasingInfoExactly(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttgratecasing"),
-                16,
-                false)
-            .addCasingInfoExactly(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttbeaminhatch"),
-                2,
-                false)
-            .addInputBus(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttanycasing"),
-                1)
-            .addOutputBus(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttanycasing"),
-                1)
-            .addInputHatch(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttanycasing"),
-                1)
-            .addOutputHatch(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttanycasing"),
-                1)
-            .addEnergyHatch(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttanycasing"),
-                1)
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
-            .addTecTechHatchInfo()
+            .addMiscHatch(
+                "2",
+                StatCollector.translateToLocal("gtnhlanth.tt.hatch.beaminput"),
+                "Center of both ends of the structure",
+                2)
+            .addEnergyHatch("1+", "Any accelerator casing", 1)
+            .addInputAny("1+", "Any accelerator casing", 1)
+            .addOutputBus("1+", "Any accelerator casing", 1)
+            .addOutputHatch("0+", "Any accelerator casing", 1)
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher(GTAuthors.AuthorHamCorp);
         return tt;
     }
@@ -361,7 +348,7 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 8, 2, 6, errors)) return;
         checkHasAnyEnergy(errors);
         checkHasAnyInput(errors);
-        checkHasOutputBus(errors);
+        checkHasAnyOutput(errors);
     }
 
     @Override
@@ -406,8 +393,16 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
         return new ProcessingLogic() {
 
             @Override
+            protected @NotNull CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
+                if (availableAmperage * availableVoltage < recipe.mEUt) {
+                    return CheckRecipeResultRegistry.insufficientPower(recipe.mEUt);
+                }
+                return super.validateRecipe(recipe);
+            }
+
+            @Override
             protected @NotNull OverclockCalculator createOverclockCalculator(@NotNull GTRecipe recipe) {
-                return OverclockCalculator.ofNoOverclock(recipe);
+                return super.createOverclockCalculator(recipe).setNoOverclock(true);
             }
 
             @Override
@@ -452,10 +447,13 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
                     currentRecipeMaxAmountA = metadata.amount_A * activeParallel;
                     currentRecipeMaxAmountB = metadata.amount_B * activeParallel;
                     duration = currentRecipeMaxAmountA + currentRecipeMaxAmountB;
+                    calculatedEut = recipe.mEUt; // Set the real eu/t usage or else it will not consume power
                 }
                 return result;
             }
-        }.setMaxParallel(MAX_PARALLEL);
+        }.setEuModifier(0) // Set eu/t to 0 for parallel calculation
+            .setMaxParallel(MAX_PARALLEL)
+            .setUnlimitedTierSkips();
     }
 
     @Override
@@ -487,6 +485,16 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
 
     public int getCurrentRecipeParticleIDB() {
         return currentRecipeParticleIDB;
+    }
+
+    @Override
+    public boolean supportsInputSeparation() {
+        return true;
+    }
+
+    @Override
+    public boolean supportsVoidProtection() {
+        return true;
     }
 
 }

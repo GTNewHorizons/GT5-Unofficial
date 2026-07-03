@@ -67,17 +67,16 @@ public class MTEIndustrialFluidHeater extends GTPPMultiBlockBase<MTEIndustrialFl
         tt.addMachineType(getMachineType())
             .addBulkMachineInfo(8, 2.2f, 0.9f)
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(5, 6, 5, true)
+            .beginStructureBlock(5, 5, 6, true)
             .addController("Front center, 2nd layer")
-            .addCasingInfoMin("Top/Bottom layer: Multi-use Casing", 34, false)
-            .addCasingInfoMin("Middle layers: Thermal Containment Casing", 47, false)
-            .addInputBus("Bottom Layer (optional)", 1)
-            .addInputHatch("Bottom Layer", 1)
-            .addOutputBus("Top Layer (optional)", 1)
-            .addOutputHatch("Top Layer", 1)
-            .addEnergyHatch("Any Multi-use Casing", 1)
-            .addMaintenanceHatch("Any Multi-use Casing", 1)
-            .addMufflerHatch("Any Multi-use Casing", 1)
+            .addCasing("47", "Thermal Containment Casing", false)
+            .addCasing("34-37", "Multi-Use Casing", false)
+            .addEnergyHatch("1+", "Any top or bottom casing", 1, 2)
+            .addMaintenanceHatch("1", "Any top or bottom casing", 1, 2)
+            .addMufflerHatch("1", "Any top or bottom casing", 1, 2)
+            .addInputAny("1+", "Any bottom casing", 1)
+            .addOutputAny("1+", "Any top casing", 2)
+            .addAir("Interior of the structure")
             .toolTipFinisher();
         return tt;
     }
@@ -108,7 +107,7 @@ public class MTEIndustrialFluidHeater extends GTPPMultiBlockBase<MTEIndustrialFl
                     buildHatchAdder(MTEIndustrialFluidHeater.class)
                         .atLeast(OutputBus, OutputHatch, Maintenance, Energy, Muffler)
                         .casingIndex(getCasingTextureIndex())
-                        .hint(1)
+                        .hint(2)
                         .buildAndChain(onElementPass(x -> ++x.mCasing1, ofBlock(getCasingBlock2(), getCasingMeta2()))))
                 .build();
         }
@@ -131,10 +130,11 @@ public class MTEIndustrialFluidHeater extends GTPPMultiBlockBase<MTEIndustrialFl
         mCasing1 = 0;
         if (!checkPiece(mName, 2, 4, 0, errors)) return;
         checkCasingMin(errors, mCasing1, 34);
-        checkHatch(errors);
+        checkHasEnergyHatch(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasMufflerHatch(errors);
         checkHasAnyInput(errors);
         checkHasAnyOutput(errors);
-        checkHasEnergyHatch(errors);
     }
 
     @Override

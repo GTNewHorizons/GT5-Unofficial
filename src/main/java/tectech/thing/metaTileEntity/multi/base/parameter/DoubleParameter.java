@@ -1,10 +1,16 @@
 package tectech.thing.metaTileEntity.multi.base.parameter;
 
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 import net.minecraft.nbt.NBTTagCompound;
 
+import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
+import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
+
+import gregtech.common.gui.modularui.widget.WidgetConfigurator;
+import gregtech.common.gui.modularui.widget.settings.SettingsPanelBuilder;
 
 public class DoubleParameter extends NumericParameter<Double, DoubleSyncValue> {
 
@@ -39,6 +45,17 @@ public class DoubleParameter extends NumericParameter<Double, DoubleSyncValue> {
     @Override
     protected DoubleSyncValue createSyncHandler() {
         return new DoubleSyncValue(this::getValue, this::setValue).allowC2S();
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public void addToSettingsPanel(SettingsPanelBuilder builder, IKey label, WidgetConfigurator<?> configure,
+        String prefix, Function<Parameter<?, ?>, WidgetConfigurator<?>> configurator) {
+        builder.addDoubleEditor(
+            label,
+            this.getSyncHandler(),
+            this::validate,
+            (WidgetConfigurator<TextFieldWidget>) configure);
     }
 
     @Override

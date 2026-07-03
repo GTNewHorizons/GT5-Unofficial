@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -136,20 +137,22 @@ public class MTELargeTurbineSCSteam extends MTELargeTurbineBase {
     protected MultiblockTooltipBuilder createTooltip() {
         return new MultiblockTooltipBuilder().addMachineType("Steam Turbine, LST-SC")
             .addInfo("Needs a Turbine, place inside controller")
-            .addInfo("Use Supercritical Steam to generate power")
-            .addInfo("Outputs 1L of SH Steam per 1L of SC Steam as well as producing power")
-            .addInfo("Power output depends on turbine and fitting")
-            .addInfo("Use screwdriver to adjust fitting of turbine")
-            .beginStructureBlock(3, 3, 6, false)
+            .addInfo("Generates power from Supercritical (SC) Steam based on the turbine and fitting")
+            .addInfo("Outputs 1L of Superheated (SH) Steam for every 1L of Supercritical Steam")
+            .addInfo("Use a screwdriver to adjust the fitting of the turbine")
+            .addInfo("Loose fit increases flow in exchange for efficiency")
+            .beginStructureBlock(6, 3, 3, false)
             .addController("Front center")
-            .addCasingInfoRange("SC Turbine Casing", 8, 16, false)
-            .addCasingInfoExactly("PBI Frame Box", 14, false)
-            .addCasingInfoExactly("PBI Pipe Casing", 12, false)
-            .addDynamoHatch("Back center", 1)
-            .addMaintenanceHatch("Any SC Turbine Casing except the front 8", 2)
-            .addInputHatch("Any SC Turbine Casing except the front 8", 2)
-            .addOutputHatch("Any SC Turbine Casing except the front 8", 2)
-            .addOtherStructurePart("Air", "3x3 area in front of controller")
+            .addCasing("14", "PBI Frame Box", false)
+            .addCasing("8-14", "SC Turbine Casing", false)
+            .addCasing("12", "PBI Pipe Casing", false)
+            .addDynamoHatch("1", "Back center turbine casing", 2)
+            .addMaintenanceHatch("1", "Any back turbine casing", 1)
+            .addInputHatch("1+", "Any back turbine casing", 1)
+            .addOutputHatch("0+", "Any back turbine casing", 1)
+            .addAir("3x3 area in front of controller")
+            .addStructureInfo("")
+            .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.DynamoLimit"))
             .addStructureAuthors(EnumChatFormatting.GOLD + "hugetrust")
             .toolTipFinisher();
     }
