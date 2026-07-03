@@ -675,7 +675,7 @@ public class WerkstoffLoader {
     // No Ingredients
     );
     public static final Werkstoff Californium = new Werkstoff(
-        new short[] { 0xAA, 0xAA, 0xAA, 0 },
+        new short[] { 165, 176, 181, 0 },
         "Californium",
         "Cf",
         new Werkstoff.Stats().setProtons(98)
