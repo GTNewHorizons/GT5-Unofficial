@@ -1836,11 +1836,6 @@ public class MTERecipeLoader implements Runnable {
         GTModHandler
             .addShapelessCraftingRecipe(ItemList.PlasmaTurbine.get(1), new Object[] { ItemList.LargePlasmaTurbine });
 
-        // Maceration Stack conversion Recipe
-        GTModHandler.addShapelessCraftingRecipe(
-            ItemList.MacerationStack.get(1),
-            new Object[] { GregtechItemList.Industrial_MacerationStack });
-
         // Mega Chemical Reactor Conversion Recipe
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.MegaChemicalReactor.get(1),
@@ -2332,7 +2327,7 @@ public class MTERecipeLoader implements Runnable {
             GTModHandler.RecipeBits.BITS,
             new Object[] { "ASA", "AFA", "APA", 'S', GTModHandler.getModItem(BuildCraftFactory.ID, "tankBlock", 1L, 0),
                 'F', ItemList.Hull_ULV.get(1L), 'A', OrePrefixes.plate.get(Materials.Rubber), 'P',
-                OrePrefixes.gear.get(Materials.Rubber) });
+                OrePrefixes.plate.get(Materials.Rubber) });
         GTModHandler.addCraftingRecipe(
             ItemList.Casing_Firebox_Steel.get(1L),
             GTModHandler.RecipeBits.BITS,

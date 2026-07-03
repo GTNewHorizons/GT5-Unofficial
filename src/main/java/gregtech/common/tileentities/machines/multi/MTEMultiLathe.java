@@ -196,18 +196,19 @@ public class MTEMultiLathe extends MTEExtendedPowerMultiBlockBase<MTEMultiLathe>
             .addDynamicParallelInfo(8, TooltipTier.PIPE_CASING)
             .addStaticSpeedInfo(4f)
             .addStaticEuEffInfo(0.8f)
-            .beginStructureBlock(7, 5, 5, true)
+            .beginStructureBlock(5, 7, 5, true)
             .addController("Front bottom center")
-            .addCasingInfoMin("Solid Steel Machine Casing", 42, false)
-            .addCasingInfoExactly("Grate Machine Casing", 9, false)
-            .addCasingInfoExactly("Any Tiered Glass", 32, false)
-            .addCasingInfoExactly("Item Pipe Casing", 4, true)
-            .addInputBus("Any Solid Steel Casing", 1)
-            .addOutputBus("Any Solid Steel Casing", 1)
-            .addEnergyHatch("Any Solid Steel Casing", 1)
-            .addMaintenanceHatch("Any Solid Steel Casing", 1)
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
-            .addSubChannelUsage(GTStructureChannels.ITEM_PIPE_CASING)
+            .addCasing("42-55", "Solid Steel Machine Casing", false)
+            .addCasing("32", "Any Tiered Glass", false)
+            .addCasing("9", "Grate Machine Casing", false)
+            .addCasing("4", "Item Pipe Casing", true)
+            .addEnergyHatch("1+", "Any steel machine casing", 1)
+            .addMaintenanceHatch("1", "Any steel machine casing", 1)
+            .addInputBus("1+", "Any steel machine casing", 1)
+            .addOutputBus("1+", "Any steel machine casing", 1)
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.BOROGLASS)
+            .addSubChannel(GTStructureChannels.ITEM_PIPE_CASING)
             .toolTipFinisher(AuthorVolence);
         return tt;
     }
@@ -260,12 +261,12 @@ public class MTEMultiLathe extends MTEExtendedPowerMultiBlockBase<MTEMultiLathe>
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 3, 4, 0, errors)) return;
         getBaseMetaTileEntity().sendBlockEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, getUpdateData());
         if (!checkBodyPiece(errors)) return;
-        checkHasMaintenanceHatch(errors);
         if (pipeTier <= 0) {
             errors.add(StructureErrors.of("GT5U.gui.text.structure_error.missing_pipe_casing"));
         }
-        checkHasEnergyHatch(errors);
         checkCasingMin(errors, mCasingAmount, 42);
+        checkHasEnergyHatch(errors);
+        checkHasMaintenanceHatch(errors);
         checkHasInputBus(errors);
         checkHasOutputBus(errors);
     }

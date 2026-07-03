@@ -212,7 +212,6 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-
         tt.addMachineType("Boiler");
         if (isSuperheated()) {
             tt.addInfo(
@@ -237,21 +236,21 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
                     "GT5U.machines.large_boiler.info.tooltip.6",
                     formatNumber(500.0 / getEfficiencyIncrease())))
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(5, 6, 3, false)
+            .beginStructureBlock(3, 5, 6, false)
             .addController("Front center, 2nd layer")
-            .addCasingInfoMin(getCasingMaterial() + " " + getCasingBlockType(), 20, false)
-            .addOtherStructurePart(getCasingMaterial() + " Firebox Casing", "Bottom layer, 5 minimum")
-            .addOtherStructurePart(getCasingMaterial() + " Pipe Casing", "Inner 3 blocks")
-            .addMaintenanceHatch("Any Casing or Firebox Casing", 1)
-            .addMufflerHatch("Any Casing or Firebox Casing", 1)
-            .addInputBus("Solid fuel, any Casing or Firebox Casing", 1)
-            .addInputHatch("Liquid fuel, any Casing or Firebox Casing", 1)
-            .addStructureInfo("You can use either, or both")
-            .addInputHatch("Water, any Casing or Firebox Casing", 1)
-            .addOutputHatch("Steam, any Casing or Firebox Casing", 1)
+            .addCasing("20-28", getCasingMaterial() + " " + getCasingBlockType(), false)
+            .addCasing("5-15", getCasingMaterial() + " Firebox Casing", false)
+            .addCasing("4", getCasingMaterial() + " Pipe Casing", false)
+            .addMaintenanceHatch("1", "Any machine or firebox casing", 1)
+            .addMufflerHatch("1", "Any machine or firebox casing", 1)
+            .addInputBus("0+", "Any machine or firebox casing", 1)
+            .addInputHatch("0+", "Any machine or firebox casing", 1)
+            .addOutputHatch("0+", "Any machine or firebox casing", 1)
+            .addStructureInfo("")
+            .addStructureFooter("Use solid fuel, liquid fuel, or both")
+            .addStructureFooter("Use regular or distilled water")
             .addStructureAuthors(EnumChatFormatting.GOLD + "PCGMatt")
             .toolTipFinisher();
-
         return tt;
     }
 
@@ -535,8 +534,8 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
         if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z, errors)) return;
         checkCasingMin(errors, casingAmount, 20);
         checkCasingMin(errors, fireboxAmount, 5);
-        checkHasMufflerHatch(errors);
         checkHasMaintenanceHatch(errors);
+        checkHasMufflerHatch(errors);
     }
 
     private int adjustEUtForConfig(int rawEUt) {

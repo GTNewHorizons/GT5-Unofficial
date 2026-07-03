@@ -21,6 +21,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -198,38 +199,20 @@ public class MTEPurificationUnitClarifier extends MTEPurificationUnitBase<MTEPur
                 EnumChatFormatting.AQUA + ""
                     + EnumChatFormatting.ITALIC
                     + "decreases so continual replacements must be supplied to maintain full function of the Clarifier.")
-            .beginStructureBlock(11, 4, 11, false)
-            .addController("Front center")
-            .addCasingInfoRangeColored(
-                "Reinforced Sterile Water Plant Casing",
-                EnumChatFormatting.GRAY,
-                123,
-                131,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored(
-                "Filter Machine Casing",
-                EnumChatFormatting.GRAY,
-                21,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored(
-                "Iridium Frame Box",
-                EnumChatFormatting.GRAY,
-                12,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored(
-                "Damascus Steel Frame Box",
-                EnumChatFormatting.GRAY,
-                12,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored("PTFE Pipe Casing", EnumChatFormatting.GRAY, 3, EnumChatFormatting.GOLD, false)
-            .addInputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
-            .addOutputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
-            .addInputHatch(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
-            .addOutputHatch(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
+            .beginStructureBlock(11, 11, 4, false)
+            .addController("Front center, 2nd layer")
+            .addCasing("123-128", "Reinforced Sterile Water Plant Casing", false)
+            .addCasing("21", "Filter Machine Casing", false)
+            .addCasing("12", "Iridium Frame Box", false)
+            .addCasing("12", "Damascus Steel Frame Box", false)
+            .addCasing("3", "PTFE Pipe Casing", false)
+            .addInputBus("1+", "Any center side casing", 1)
+            .addInputHatch("1+", "Any center side casing", 1)
+            .addOutputBus("0+", "Any center side casing", 1)
+            .addOutputHatch("1+", "Any center side casing", 1)
+            .addStructureInfo("")
+            .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.WaterFree"))
+            .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.DataStick.Waterline"))
             .toolTipFinisher();
         return tt;
     }
@@ -302,9 +285,9 @@ public class MTEPurificationUnitClarifier extends MTEPurificationUnitBase<MTEPur
                 'W');
             return;
         }
+        checkHasInputBus(errors);
         checkHasInputHatch(errors);
         checkHasOutputHatch(errors);
-        checkHasInputBus(errors);
         if (!errors.isEmpty()) return;
         needsWaterFill = true;
     }

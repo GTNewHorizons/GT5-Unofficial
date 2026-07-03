@@ -22,6 +22,7 @@ import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -138,35 +139,31 @@ public class MTECleanroom extends MTETooltipMultiBlockBase implements IConstruct
             .addInfo("Below 100% efficiency machines inside have a chance to void outputs!")
             .addInfo("Each maintenance issue reduces maximum efficiency by 10%")
             .addInfo("Generating any pollution inside causes the cleanroom to shut down")
-            .beginVariableStructureBlock(3, MAX_WIDTH, 4, MAX_HEIGHT, 3, MAX_WIDTH, true)
+            .beginVariableStructureBlock(3, MAX_WIDTH, 3, MAX_WIDTH, 4, MAX_HEIGHT, true)
             .addController("Top center")
-            .addStructureInfo("If width or length is even, it can be in either of the two middle positions")
-            .addOtherStructurePart("Filter Machine Casing", "Top layer, except for edges")
-            .addOtherStructurePart(
-                "Plascrete Blocks",
-                "Edges of top layer, all walls and floor. Minimum " + EnumChatFormatting.GOLD
-                    + MachineStats.cleanroom.minCasingCount
-                    + EnumChatFormatting.GRAY
-                    + ".")
-            .addEnergyHatch("Any Plascrete Block. Exactly one")
-            .addMaintenanceHatch("Any Plascrete Block. Exactly one")
+            .addCasing(MachineStats.cleanroom.minCasingCount + "-1007", "Plascrete Block", false)
+            .addCasing("0-168", "Filter Machine Casing", false)
+            .addEnergyHatch("1", "Any plascrete block", 1)
+            .addMaintenanceHatch("1", "Any plascrete block", 1)
             .addStructureInfo("")
-            .addStructureInfo(
+            .addStructureFooter(
+                "If the width or length is even, the controller can be in either of the two middle positions")
+            .addStructureFooter(
                 "Up to " + EnumChatFormatting.GOLD
                     + MachineStats.cleanroom.maxReplacementPercentage
                     + "%"
                     + EnumChatFormatting.GRAY
-                    + " of plascrete blocks can be replaced by other valid blocks")
-            .addStructureInfo("Try some of the following:")
-            .addStructureInfo("- Any " + EnumChatFormatting.DARK_GRAY + "EV+" + EnumChatFormatting.GRAY + " tier glass")
-            .addStructureInfo("- Machine hulls or diodes for item and power transfer")
-            .addStructureInfo(
+                    + " of the plascrete blocks can be replaced by other valid blocks:")
+            .addStructureFooter(
+                "- Any " + EnumChatFormatting.DARK_GRAY + "EV+" + EnumChatFormatting.GRAY + " Tiered Glass")
+            .addStructureFooter("- Machine Hulls or Diodes for item or power transfer, respectively")
+            .addStructureFooter(
                 "- Reinforced Doors (" + EnumChatFormatting.ITALIC
                     + "IC2"
                     + EnumChatFormatting.RESET
                     + EnumChatFormatting.GRAY
                     + "). Keep closed, no gaps allowed or efficiency will drop!")
-            .addStructureInfo(
+            .addStructureFooter(
                 "- Elevators (" + EnumChatFormatting.ITALIC
                     + "OpenBlocks"
                     + EnumChatFormatting.RESET
@@ -177,14 +174,14 @@ public class MTECleanroom extends MTETooltipMultiBlockBase implements IConstruct
                     + EnumChatFormatting.RESET
                     + EnumChatFormatting.GRAY
                     + ")")
-            .addStructureInfo(
+            .addStructureFooter(
                 "See " + EnumChatFormatting.DARK_GRAY
                     + "config/GregTech/MachineStats.cfg"
                     + EnumChatFormatting.GRAY
                     + " for more valid blocks")
-            .addStructureInfo(
-                EnumChatFormatting.YELLOW
-                    + "All non-plascrete blocks now share the same limit. Feel free to mix and match!")
+            .addStructureFooter("Use Wireless Connectors for transferring AE2 channels")
+            .addStructureInfo("")
+            .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.size"))
             .toolTipFinisher();
         return tt;
     }
@@ -648,13 +645,13 @@ public class MTECleanroom extends MTETooltipMultiBlockBase implements IConstruct
             "Cleanroom: Structure complete. Found " + casingCount + " casings, " + otherCount + " other blocks.");
 
         // Validate structure.
+        if (this.mEnergyHatches.size() != 1) {
+            errors.add(StructureErrors.hatchCount(ErrorType.NOT_MATCH, Energy, this.mEnergyHatches.size(), 1));
+        }
 
         if (this.mMaintenanceHatches.size() != 1) {
             errors
                 .add(StructureErrors.hatchCount(ErrorType.NOT_MATCH, Maintenance, this.mMaintenanceHatches.size(), 1));
-        }
-        if (this.mEnergyHatches.size() != 1) {
-            errors.add(StructureErrors.hatchCount(ErrorType.NOT_MATCH, Energy, this.mEnergyHatches.size(), 1));
         }
 
         if (casingCount < MachineStats.cleanroom.minCasingCount) {

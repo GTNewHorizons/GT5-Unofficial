@@ -1,5 +1,6 @@
 package gregtech.common.tileentities.machines.multi;
 
+import static com.gtnewhorizon.structurelib.structure.StructureUtility.isAir;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
@@ -24,12 +25,12 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -350,7 +351,7 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
         .addElement('W', ofBlock(GregTechAPI.nanoForgeRender, 0))
         .addElement('X', ofBlock(GregTechAPI.sBlockCasings8, 7))
         .addElement('Y', ofBlock(GregTechAPI.sBlockCasings8, 10))
-        .addElement('Z', ofBlock(Blocks.air, 0))
+        .addElement('Z', isAir())
         .build();
     private byte mSpecialTier = 0;
     private boolean renderActive = false;
@@ -767,76 +768,54 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
             .addInfo("Machine tier depends on Nanite in controller slot")
             .addInfo("Tier 4 has additional mechanics, check the controller")
             .addSeparator()
-            .addInfo("Requires a Carbon Nanite to use tier " + EnumChatFormatting.DARK_PURPLE + 1)
-            .addInfo("Requires a Neutronium Nanite to use tier " + EnumChatFormatting.DARK_BLUE + 2)
-            .addInfo("Requires a Transcendent Metal Nanite to use tier " + EnumChatFormatting.DARK_AQUA + 3)
-            .addInfo("Requires an Eternity Nanite to use tier " + EnumChatFormatting.DARK_GREEN + 4)
-            .addSeparator()
             .addInfo(
                 "Performs " + EnumChatFormatting.LIGHT_PURPLE
                     + "perfect overclocks"
                     + EnumChatFormatting.GRAY
                     + " on lower-tier recipes")
-            .addTecTechHatchInfo()
+            .addSupportAny()
             .addUnlimitedTierSkips()
-            .beginStructureBlock(30, 38, 13, false)
+            .beginStructureBlock(41, 41, 52, false)
             .addController("Front bottom center")
-            .addStructureInfo("Total blocks needed for the structure at tier " + getTieredText("1", "2", "3"))
-            .addStructureInfo(getTieredText("522", "670", "898") + "Radiant Naquadah Alloy Casing")
-            .addStructureInfo(getTieredText("170", "170", "254") + "Stellar Alloy Frame Box")
-            .addStructureInfo(getTieredText("0", "16", "32") + "Assembly Line Casing")
-            .addStructureInfoSeparator()
-            .addStructureInfo(
-                "Tier " + EnumChatFormatting.DARK_GREEN
-                    + "4 "
-                    + EnumChatFormatting.GRAY
-                    + "requires a whole new set of blocks")
-            .addStructureInfo("Check the NEI preview for specifics")
-            .addStructureInfo("Maintenance hatch is not required for tier " + EnumChatFormatting.DARK_GREEN + "4")
-            .addStructureInfoSeparator()
-            .addStructureInfo(
-                "Requires " + EnumChatFormatting.GOLD
-                    + "1"
-                    + EnumChatFormatting.GRAY
-                    + "-"
-                    + EnumChatFormatting.GOLD
-                    + "2"
-                    + EnumChatFormatting.GRAY
-                    + " energy hatches or "
-                    + EnumChatFormatting.GOLD
-                    + "1"
-                    + EnumChatFormatting.GRAY
-                    + " TT energy hatch")
-            .addStructureInfo(
-                "Requires " + EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " maintenance hatch")
-            .addStructureInfo(
-                "Requires " + EnumChatFormatting.GOLD
-                    + 1
-                    + EnumChatFormatting.GRAY
-                    + "+"
-                    + EnumChatFormatting.GRAY
-                    + " input hatches")
-            .addStructureInfo(
-                "Requires " + EnumChatFormatting.GOLD
-                    + 0
-                    + EnumChatFormatting.GRAY
-                    + "+"
-                    + EnumChatFormatting.GRAY
-                    + " output hatches")
-            .addStructureInfo(
-                "Requires " + EnumChatFormatting.GOLD
-                    + 1
-                    + EnumChatFormatting.GRAY
-                    + "+"
-                    + EnumChatFormatting.GRAY
-                    + " input buses")
-            .addStructureInfo(
-                "Requires " + EnumChatFormatting.GOLD
-                    + 1
-                    + EnumChatFormatting.GRAY
-                    + "+"
-                    + EnumChatFormatting.GRAY
-                    + " output buses")
+            .addEnergyHatch("1-2", "Any bottom casing", 1)
+            .addMaintenanceHatch("1", "Any bottom casing", 1)
+            .addInputAny("1+", "Any bottom casing", 1)
+            .addOutputBus("1+", "Any bottom casing", 1)
+            .addStructureInfo("")
+            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Tiers.One"))
+            .addStructureInfo(EnumChatFormatting.ITALIC + "Requires a Carbon Nanite in Controller")
+            .addCasing("468-523", "Radiant Naquadah Alloy Casing", false)
+            .addCasing("170", "Stellar Alloy Frame Box", false)
+            .addStructureInfo("")
+            .addStructureInfo(EnumChatFormatting.AQUA + "Tier 2 " + EnumChatFormatting.BLUE + "(Adds to T1)")
+            .addStructureInfo(EnumChatFormatting.ITALIC + "Requires a Neutronium Nanite in Controller")
+            .addCasing("148", "Radiant Naquadah Alloy Casing", false)
+            .addCasing("16", "Assembly Line Casing", false)
+            .addStructureInfo("")
+            .addStructureInfo(EnumChatFormatting.AQUA + "Tier 3 " + EnumChatFormatting.BLUE + "(Adds to T2)")
+            .addStructureInfo(EnumChatFormatting.ITALIC + "Requires a Transcendent Metal Nanite in Controller")
+            .addCasing("228", "Radiant Naquadah Alloy Casing", false)
+            .addCasing("84", "Stellar Alloy Frame Box", false)
+            .addCasing("16", "Assembly Line Casing", false)
+            .addStructureInfo("")
+            .addStructureInfo(EnumChatFormatting.AQUA + "Tier 4 " + EnumChatFormatting.BLUE + "(New Structure)")
+            .addStructureInfo(EnumChatFormatting.ITALIC + "Requires an Eternity Nanite in Controller")
+            .addCasing("3208", "Nanite Shielding Glass", false)
+            .addCasing("2780-2792", "Magnetic Anchor Casing", false)
+            .addCasing("1452", "Precision Field Sync Casing", false)
+            .addCasing("943", "Field Energy Absorber Casing", false)
+            .addCasing("871", "Loadbearing Distribution Casing", false)
+            .addCasing("582", "Magmatter Frame Box", false)
+            .addCasing("349", "Radiant Naquadah Alloy Casing", false)
+            .addCasing("171", "Nanite Replication Framework", false)
+            .addCasing("170", "Europium Reinforced Radiation Proof Machine Casing", false)
+            .addCasing("166", "White Dwarf Matter Frame Box", false)
+            .addCasing("147", "Black Dwarf Matter Frame Box", false)
+            .addEnergyHatch("1-2", "Any anchor casing", 1)
+            .addInputAny("1+", "Any anchor casing", 1)
+            .addOutputBus("1+", "Any anchor casing", 1)
+            .addStructureInfo("")
+            .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.structuretier"))
             .toolTipFinisher(AuthorBlueWeabo);
         return tt;
     }

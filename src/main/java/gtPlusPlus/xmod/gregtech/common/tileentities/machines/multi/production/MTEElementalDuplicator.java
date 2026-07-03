@@ -92,25 +92,25 @@ public class MTEElementalDuplicator extends GTPPMultiBlockBase<MTEElementalDupli
             .addInfo("The programmed circuit selects which Data Orb to use (1-16)")
             .addPerfectOCInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(9, 6, 9, true)
+            .beginStructureBlock(9, 9, 6, true)
             .addController("Top center")
-            .addCasingInfoMin("Elemental Confinement Shell", 120, false)
-            .addCasingInfoMin("Matter Fabricator Casing", 24, false)
-            .addCasingInfoMin("Particle Containment Casing", 24, false)
-            .addCasingInfoMin("Matter Generation Coil", 24, false)
-            .addCasingInfoMin("High Voltage Current Capacitor", 20, false)
-            .addCasingInfoMin("Resonance Chamber III", 24, false)
-            .addCasingInfoMin("Modulator III", 16, false)
-            .addOtherStructurePart(
+            .addCasing("120-139", "Elemental Confinement Shell", false)
+            .addCasing("24", "Particle Containment Casing", false)
+            .addCasing("24", "Matter Fabricator Casing", false)
+            .addCasing("24", "Matter Generation Coil", false)
+            .addCasing("24", "Resonance Chamber III", false)
+            .addCasing("20", "High Voltage Current Capacitor", false)
+            .addCasing("16", "Modulator III", false)
+            .addMiscHatch(
+                "1",
                 StatCollector.translateToLocal("GTPP.tooltip.structure.data_orb_repository"),
-                "Hint block number 1 (x1)",
+                "Any confinement shell",
                 1)
-            .addInputHatch("Hint block number 1", 1)
-            .addOutputBus("Hint block number 1", 1)
-            .addOutputHatch("Hint block number 1", 1)
-            .addEnergyHatch("Hint block number 1", 1)
-            .addMaintenanceHatch("Hint block number 1", 1)
-            .addMufflerHatch("Hint block number 1", 1)
+            .addEnergyHatch("1+", "Any confinement shell", 1)
+            .addMaintenanceHatch("1", "Any confinement shell", 1)
+            .addMufflerHatch("1", "Any confinement shell", 1)
+            .addInputHatch("1+", "Any confinement shell", 1)
+            .addOutputAny("1+", "Any confinement shell", 1)
             .toolTipFinisher();
         return tt;
     }
@@ -197,10 +197,11 @@ public class MTEElementalDuplicator extends GTPPMultiBlockBase<MTEElementalDupli
                     1));
         }
         checkCasingMin(errors, mCasing, 120);
-        checkHatch(errors);
+        checkHasEnergyHatch(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasMufflerHatch(errors);
         checkHasInputHatch(errors);
         checkHasAnyOutput(errors);
-        checkHasEnergyHatch(errors);
     }
 
     @Override
