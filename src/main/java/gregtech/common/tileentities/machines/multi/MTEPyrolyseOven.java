@@ -106,21 +106,22 @@ public class MTEPyrolyseOven extends MTEExtendedPowerMultiBlockBase<MTEPyrolyseO
             .addDynamicSpeedInfo(0.5f, TooltipTier.COIL)
             .addInfo("EU/t is not affected by Coil tier")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(7, 6, 5, false)
-            .addController("Front center")
-            .addCasingInfoMin("Pyrolyse Oven Casing", 60, false)
-            .addCasingInfoExactly("Heating Coil", 12, true)
-            .addCasingInfoExactly("Steel Frame Box", 2, false)
-            .addCasingInfoExactly("Steel Pipe Casing", 8, false)
-            .addCasingInfoExactly("Steel Firebox Casing", 4, false)
-            .addEnergyHatch("Any bottom layer Casing", 1)
-            .addMaintenanceHatch("Any bottom layer Casing", 1)
-            .addMufflerHatch("Any top layer Casing", 2)
-            .addInputBus("Any top layer Casing", 2)
-            .addInputHatch("Any top layer Casing", 2)
-            .addOutputBus("Any bottom layer Casing", 1)
-            .addOutputHatch("Any bottom layer Casing", 1)
-            .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
+            .beginStructureBlock(5, 7, 6, true)
+            .addController("Front center, 2nd layer")
+            .addCasing("60-68", "Pyrolyse Oven Casing", false)
+            .addCasing("12", "Heating Coil", true)
+            .addCasing("8", "Steel Pipe Casing", false)
+            .addCasing("4", "Steel Firebox Casing", false)
+            .addCasing("2", "Steel Frame Box", false)
+            .addEnergyHatch("1+", "Any bottom casing", 1)
+            .addMaintenanceHatch("1", "Any bottom casing", 1)
+            .addMufflerHatch("1", "Any top casing", 2)
+            .addInputBus("0+", "Any top casing", 2)
+            .addInputHatch("0+", "Any top casing", 2)
+            .addOutputBus("0+", "Any bottom casing", 1)
+            .addOutputHatch("0+", "Any bottom casing", 1)
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.HEATING_COIL)
             .addStructureAuthors(EnumChatFormatting.GOLD + "Ya9yu")
             .toolTipFinisher();
         return tt;
@@ -182,11 +183,11 @@ public class MTEPyrolyseOven extends MTEExtendedPowerMultiBlockBase<MTEPyrolyseO
         casingAmount = 0;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z, errors)) return;
         checkCasingMin(errors, casingAmount, 60);
+        checkHasEnergyHatch(errors);
+        checkHasMaintenanceHatch(errors);
         checkHasMufflerHatch(errors);
         checkHasAnyInput(errors);
-        checkHasEnergyHatch(errors);
         checkHasAnyOutput(errors);
-        checkHasMaintenanceHatch(errors);
     }
 
     @Override

@@ -12,6 +12,7 @@ import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -106,28 +107,15 @@ public class MTEPCBBioChamber extends MTEPCBUpgradeBase<MTEPCBBioChamber>
             .addInfo(EnumChatFormatting.GRAY + "Left click the PCB Factory controller with a data stick,")
             .addInfo(EnumChatFormatting.GRAY + "then right click this controller to link.")
             .addInfo(EnumChatFormatting.GRAY + "Can connect to many PCB Factories!")
-            .beginStructureBlock(5, 7, 12, false)
+            .beginStructureBlock(12, 5, 7, true)
             .addController("Front bottom center")
-            .addCasingInfoExactlyColored(
-                "Clean Stainless Steel Machine Casing",
-                EnumChatFormatting.GRAY,
-                68,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored(
-                "Damascus Steel Frame Box",
-                EnumChatFormatting.GRAY,
-                40,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored(
-                "Any Tiered Glass",
-                EnumChatFormatting.GRAY,
-                72,
-                EnumChatFormatting.GOLD,
-                false)
-            .addStructureInfo(EnumChatFormatting.GRAY + "Does not require maintenance or power.")
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .addCasing("72", "Any Tiered Glass", false)
+            .addCasing("67", "Clean Stainless Steel Machine Casing", false)
+            .addCasing("40", "Damascus Steel Frame Box", false)
+            .addStructureInfo("")
+            .addStructureFooter("Does not require maintenance or power")
+            .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.DataStick.PCB"))
+            .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher(AuthorBlueWeabo, Authorguid118);
         return tt;
     }

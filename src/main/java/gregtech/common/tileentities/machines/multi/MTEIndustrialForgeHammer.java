@@ -76,20 +76,21 @@ public class MTEIndustrialForgeHammer extends MTEExtendedPowerMultiBlockBase<MTE
             .addStaticSpeedInfo(2f)
             .addStaticEuEffInfo(1f)
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(5, 9, 5, false)
+            .beginStructureBlock(5, 5, 9, false)
             .addController("Front center, 2nd layer")
-            .addCasingInfoMin("Forge Casing", 10, false)
-            .addCasingInfoExactly("Refined Graphite Block", 2, false)
-            .addCasingInfoExactly("Rebolted Black Steel Casing", 20, false)
-            .addCasingInfoExactly("Solenoid Superconducting Coil", 3, true)
-            .addInputBus("Any Forge Casing", 1)
-            .addOutputBus("Any Forge Casing", 1)
-            .addInputHatch("Any Forge Casing", 1)
-            .addOutputHatch("Any Forge Casing", 1)
-            .addEnergyHatch("Any Forge Casing", 1)
-            .addMaintenanceHatch("Any Forge Casing", 1)
-            .addMufflerHatch("Any Forge Casing", 1)
-            .addSubChannelUsage(GTStructureChannels.SOLENOID)
+            .addCasing("10-29", "Forge Casing", false)
+            .addCasing("20", "Rebolted Black Steel Casing", false)
+            .addCasing("3", "Solenoid Superconductor Coil", true)
+            .addCasing("2", "Refined Graphite Block", false)
+            .addEnergyHatch("1+", "Any base forge casing", 1)
+            .addMaintenanceHatch("1", "Any base forge casing", 1)
+            .addMufflerHatch("1", "Any base forge casing", 1)
+            .addInputBus("1+", "Any base forge casing", 1)
+            .addInputHatch("0+", "Any base forge casing", 1)
+            .addOutputBus("1+", "Any base forge casing", 1)
+            .addOutputHatch("0+", "Any base forge casing", 1)
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.SOLENOID)
             .addStructureAuthors(EnumChatFormatting.GOLD + "PCGMatt")
             .toolTipFinisher();
         return tt;
@@ -154,11 +155,11 @@ public class MTEIndustrialForgeHammer extends MTEExtendedPowerMultiBlockBase<MTE
         solenoidLevel = null;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z, errors)) return;
         checkCasingMin(errors, casingAmount, 10);
-        checkHasMufflerHatch(errors);
+        checkHasEnergyHatch(errors);
         checkHasMaintenanceHatch(errors);
+        checkHasMufflerHatch(errors);
         checkHasInputBus(errors);
         checkHasOutputBus(errors);
-        checkHasEnergyHatch(errors);
     }
 
     @Override

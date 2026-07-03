@@ -83,18 +83,16 @@ public class MTECryogenicFreezer extends MTEExtendedPowerMultiBlockBase<MTECryog
             .addStaticEuEffInfo(0.9f)
             .addInfo("Consumes 10L of Gelid Cryotheum per second during operation")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(5, 4, 7, true)
-            .addController("Front center")
-            .addCasingInfoMin("Advanced Cryogenic Casing", 46, false)
-            .addCasingInfoExactly("Grisium Frame Box", 24, false)
-            .addInputBus("Any Casing", 1)
-            .addOutputBus("Any Casing", 1)
-            .addInputHatch("Any Casing", 1)
-            .addOutputHatch("Any Casing", 1)
-            .addEnergyHatch("Any Casing", 1)
-            .addMufflerHatch("Any Casing", 1)
-            .addMaintenanceHatch("Any Casing", 1)
-            .addOtherStructurePart("Cryotheum Cooling Hatch", "Any Casing", 1)
+            .beginStructureBlock(7, 5, 4, true)
+            .addController("Front center, 2nd layer")
+            .addCasing("46-56", "Advanced Cryogenic Casing", false)
+            .addCasing("24", "Grisium Frame Box", false)
+            .addMiscHatch("1", "Cryotheum Cooling Hatch", "Any casing", 1)
+            .addEnergyHatch("1+", "Any casing", 1)
+            .addMaintenanceHatch("1", "Any casing", 1)
+            .addMufflerHatch("1", "Any casing", 1)
+            .addInputAny("1+", "Any casing", 1)
+            .addOutputAny("1+", "Any casing", 1)
             .addStructureAuthors(EnumChatFormatting.GOLD + "REDR")
             .toolTipFinisher();
         return tt;
@@ -158,12 +156,12 @@ public class MTECryogenicFreezer extends MTEExtendedPowerMultiBlockBase<MTECryog
         casingAmount = 0;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z, errors)) return;
         checkCasingMin(errors, casingAmount, 46);
-        checkHasMufflerHatch(errors);
-        checkHasMaintenanceHatch(errors);
+        checkHatchMin(errors, CryotheumHatch, 1);
         checkHasAnyEnergy(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasMufflerHatch(errors);
         checkHasAnyInput(errors);
         checkHasAnyOutput(errors);
-        checkHatchMin(errors, CryotheumHatch, 1);
     }
 
     @Override

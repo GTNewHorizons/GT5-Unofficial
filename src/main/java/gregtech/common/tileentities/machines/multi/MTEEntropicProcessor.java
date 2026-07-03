@@ -40,7 +40,6 @@ import gregtech.api.structure.IStructureInstance;
 import gregtech.api.structure.IStructureProvider;
 import gregtech.api.structure.StructureWrapper;
 import gregtech.api.structure.StructureWrapperInstanceInfo;
-import gregtech.api.structure.StructureWrapperTooltipBuilder;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
@@ -182,16 +181,15 @@ public class MTEEntropicProcessor extends MTEExtendedPowerMultiBlockBase<MTEEntr
 
         base.issueTileUpdate();
         structureInstanceInfo.onPostCheck(this);
-        checkHasAnyInput(errors);
-        checkHasAnyOutput(errors);
         checkHasEnergyHatch(errors);
         checkHasMaintenanceHatch(errors);
+        checkHasAnyInput(errors);
+        checkHasAnyOutput(errors);
     }
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        StructureWrapperTooltipBuilder<MTEEntropicProcessor> tt = new StructureWrapperTooltipBuilder<>(structure);
-
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Entropic Processor")
             .addInfo("Processes substances by increasing or decreasing their entropy")
             .addSeparator()
@@ -203,17 +201,12 @@ public class MTEEntropicProcessor extends MTEExtendedPowerMultiBlockBase<MTEEntr
             .addInfo("Mixes fluids or solids with a magical catalyst")
             .addInfo("Catalyst is consumed by the recipe, then returned upon completion")
             .addSeparator()
-            .addInfo("Performs one perfect overclock per casing tier (Thaumium = 1 perfect OC)");
-
-        tt.beginStructureBlock(true);
-        tt.addController("Front center");
-        tt.addAllCasingInfo();
-
-        tt.addSubChannelUsage(GTStructureChannels.ALCHEMICAL_CASING);
-        tt.addSubChannelUsage(GTStructureChannels.ALCHEMICAL_CONSTRUCT);
-
-        tt.toolTipFinisher();
-
+            .addInfo("Performs one perfect overclock per casing tier (Thaumium = 1 perfect OC)")
+            .beginStructureBlock(7, 7, 5, true)
+            .addController("Front center")
+            .addSubChannel(GTStructureChannels.ALCHEMICAL_CASING)
+            .addSubChannel(GTStructureChannels.ALCHEMICAL_CONSTRUCT)
+            .toolTipFinisher();
         return tt;
     }
 

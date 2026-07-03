@@ -18,7 +18,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_G
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTUtility.max;
-import static gtnhlanth.util.DescTextLocalization.addHintNumber;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -462,7 +461,7 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
                 .addElement('k', Casings.SuperconductingCoilBlock.asElement())
                 .addElement('d', ofBlock(LanthItemList.COOLANT_DELIVERY_CASING, 0))
                 // Adder overriden due to ExoticEnergy originally calling its own adder, giving false positives
-                .addElement('e', buildHatchAdder(MTESynchrotron.class).atLeast(ImmutableMap.of(Energy.or(ExoticEnergy), 4)).adder(MTESynchrotron::addEnergyInputToMachineList).hint(6).casingIndex(ShieldedAccCasingTextureID).build())
+                .addElement('e', buildHatchAdder(MTESynchrotron.class).atLeast(ImmutableMap.of(Energy.or(ExoticEnergy), 4)).adder(MTESynchrotron::addEnergyInputToMachineList).hint(4).casingIndex(ShieldedAccCasingTextureID).build())
                 .addElement('n', ofBlock(LanthItemList.NIOBIUM_CAVITY_CASING, 0))
                 .addElement('a', GTStructureChannels.SYNCHROTRON_ANTENNA.use(StructureUtility.ofBlocksTiered(
                 		MTESynchrotron::getAntennaBlockTier,
@@ -470,15 +469,15 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
                 				Pair.of(LanthItemList.ANTENNA_CASING_T1, 0),
                 				Pair.of(LanthItemList.ANTENNA_CASING_T2, 0)),
                 		-1, MTESynchrotron::setAntennaTier, MTESynchrotron::getAntennaTier)))
-                .addElement('i', buildHatchAdder(MTESynchrotron.class).atLeast(ImmutableMap.of(InputHatch, 2)).hint(4).casingIndex(ShieldedAccCasingTextureID).build())
-                .addElement('o', buildHatchAdder(MTESynchrotron.class).atLeast(ImmutableMap.of(OutputHatch, 2)).hint(5).casingIndex(ShieldedAccCasingTextureID).build())
+                .addElement('i', buildHatchAdder(MTESynchrotron.class).atLeast(ImmutableMap.of(InputHatch, 2)).hint(2).casingIndex(ShieldedAccCasingTextureID).build())
+                .addElement('o', buildHatchAdder(MTESynchrotron.class).atLeast(ImmutableMap.of(OutputHatch, 2)).hint(3).casingIndex(ShieldedAccCasingTextureID).build())
                 .addElement('v', buildHatchAdder(MTESynchrotron.class).atLeast(BeamlineInput).casingIndex(ShieldedAccCasingTextureID)
                         .hint(1).build())
                 .addElement('b', buildHatchAdder(MTESynchrotron.class).atLeast(BeamlineOutput).casingIndex(ShieldedAccCasingTextureID)
-                        .hint(2).build())
+                        .hint(6).build())
                 .addElement('g', chainAllGlasses(-1, (te, t) -> te.glassTier = t, te -> te.glassTier))
                 .addElement('j',
-                		buildHatchAdder(MTESynchrotron.class).atLeast(Maintenance).hint(3).casingIndex(ShieldedAccCasingTextureID)
+                		buildHatchAdder(MTESynchrotron.class).atLeast(Maintenance).hint(5).casingIndex(ShieldedAccCasingTextureID)
                 		.buildAndChain(Casings.ShieldedAcceleratorCasing.asElement()))
                 .build();
     }
@@ -525,23 +524,29 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
             .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.synch.info13"))
             .addSeparator()
             .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.synch.info14"))
-            .addTecTechHatchInfo()
-            .beginStructureBlock(36, 7, 34, true)
+            .addSupportAny()
+            .beginStructureBlock(34, 36, 7, true)
             .addController("Front center")
-            .addCasingInfoExactly(Casings.ShieldedAcceleratorCasing.getLocalizedName(), 676, false)
-            .addCasingInfoExactly(Casings.SuperdenseCastingBasinCasing.getLocalizedName(), 90, false)
-            .addCasingInfoExactly(LanthItemList.NIOBIUM_CAVITY_CASING.getLocalizedName(), 64, false)
-            .addCasingInfoExactly(LanthItemList.COOLANT_DELIVERY_CASING.getLocalizedName(), 28, false)
-            .addCasingInfoExactly("Any Tiered Glass (LuV+)", 16, false)
-            .addCasingInfoExactly("Antenna Casing (must match)", 4, true)
-            .addOtherStructurePart(StatCollector.translateToLocal("gtnhlanth.tt.hatch.beaminput"), addHintNumber(1))
-            .addOtherStructurePart(StatCollector.translateToLocal("gtnhlanth.tt.hatch.beamoutput"), addHintNumber(2))
-            .addMaintenanceHatch(addHintNumber(3))
-            .addInputHatch(addHintNumber(4))
-            .addOutputHatch(addHintNumber(5))
-            .addEnergyHatch(addHintNumber(6))
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
-            .addSubChannelUsage(GTStructureChannels.SYNCHROTRON_ANTENNA)
+            .addCasing("1690", Casings.ShieldedAcceleratorCasing.getLocalizedName(), false)
+            .addCasing("90", "Superconducting Coil Block", false)
+            .addCasing("64", LanthItemList.NIOBIUM_CAVITY_CASING.getLocalizedName(), false)
+            .addCasing("28", LanthItemList.COOLANT_DELIVERY_CASING.getLocalizedName(), false)
+            .addCasing("16", "LuV+ Tiered Glass", false)
+            .addCasing("4", "Antenna Casing", true)
+            .addMiscHatch("1", StatCollector.translateToLocal("gtnhlanth.tt.hatch.beaminput"), "Left of controller", 1)
+            .addMiscHatch(
+                "1",
+                StatCollector.translateToLocal("gtnhlanth.tt.hatch.beamoutput"),
+                "Right and back of controller",
+                6)
+            .addEnergyHatch("4", "Above each antenna casings", 4)
+            .addMaintenanceHatch("1", "Around controller", 5)
+            .addInputHatch("2", "Between the energy hatches", 2)
+            .addOutputHatch("2", "Opposite the input hatches", 3)
+            .addAir("Interior of the structure")
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.BOROGLASS)
+            .addSubChannel(GTStructureChannels.SYNCHROTRON_ANTENNA)
             .toolTipFinisher();
         return tt;
     }
@@ -761,9 +766,9 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
                     max(this.mEnergyHatches.size(), this.mExoticEnergyHatches.size()),
                     4));
         }
+        checkHasMaintenanceHatch(errors);
         checkHatchMin(errors, InputHatch, 2);
         checkHatchMin(errors, OutputHatch, 2);
-        checkHasMaintenanceHatch(errors);
         if (glassTier < VoltageIndex.LuV) {
             errors.add(StructureErrors.glassTierNotEnough(VoltageIndex.LuV));
         }
@@ -803,11 +808,6 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
     @Override
     public ITexture getCasingTexture() {
         return Casings.ShieldedAcceleratorCasing.getCasingTexture();
-    }
-
-    @Override
-    public String[] getStructureDescription(ItemStack arg0) {
-        return DescTextLocalization.addText("Synchrotron.hint", 12);
     }
 
     @Override

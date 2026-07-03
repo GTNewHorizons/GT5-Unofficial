@@ -120,17 +120,19 @@ public class MTEFrothFlotationCell extends MTEExtendedPowerMultiBlockBase<MTEFro
             .addInfo("You can only ever process one type of material per controller")
             .addPerfectOCInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(11, 5, 11, false)
+            .beginStructureBlock(11, 11, 5, false)
             .addController("Front center, 2nd layer")
-            .addCasingInfoMin("Inconel Reinforced Casing", 118, false)
-            .addCasingInfoExactly("Flotation Cell Casing", 31, false)
-            .addCasingInfoExactly("Staballoy Frame Box", 20, false)
-            .addCasingInfoExactly("Inconel-690 Frame Box", 8, false)
-            .addInputBus("Bottom Casing", 1)
-            .addInputHatch("Bottom Casing", 1)
-            .addOutputHatch("Bottom Casing", 1)
-            .addEnergyHatch("Bottom Casing", 1)
-            .addMaintenanceHatch("Bottom Casing", 1)
+            .addCasing("90-120", "Inconel Reinforced Casing", false)
+            .addCasing("31", "Flotation Cell Casing", false)
+            .addCasing("20", "Staballoy Frame Box", false)
+            .addCasing("8", "Inconel-690 Frame Box", false)
+            .addEnergyHatch("1+", "Any bottom casing", 1)
+            .addMaintenanceHatch("1", "Any bottom casing", 1)
+            .addInputBus("1+", "Any bottom casing", 1)
+            .addInputHatch("1+", "Any bottom casing", 1)
+            .addOutputHatch("1+", "Any bottom casing", 1)
+            .addStructureInfo("")
+            .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.WaterFree"))
             .toolTipFinisher(GTAuthors.AuthorNoc.get());
         return tt;
     }
@@ -207,9 +209,9 @@ public class MTEFrothFlotationCell extends MTEExtendedPowerMultiBlockBase<MTEFro
         checkCasingMin(errors, casingAmount, 90);
         checkHasEnergyHatch(errors);
         checkHasMaintenanceHatch(errors);
-        checkHasOutputHatch(errors);
-        checkHasInputHatch(errors);
         checkHasInputBus(errors);
+        checkHasInputHatch(errors);
+        checkHasOutputHatch(errors);
         if (!errors.isEmpty()) return;
         needsWaterFill = true;
     }

@@ -237,25 +237,27 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
                     + "1"
                     + EnumChatFormatting.GRAY
                     + " parallels per voltage tier")
-            .beginStructureBlock(15, 10, 7, false)
+            .beginStructureBlock(7, 15, 10, true)
             .addController("Front bottom center")
-            .addCasingInfoMin("Electric Compressor Casing", 95, false)
-            .addCasingInfoMin("Compressor Pipe Casing", 60, false)
-            .addCasingInfoExactly("Coolant Duct", 12, false)
-            .addCasingInfoExactly("Heating Duct", 12, false)
-            .addCasingInfoExactly("Any Tiered Glass", 22, false)
-            .addCasingInfoExactly("Coil", 30, true)
-            .addOtherStructurePart(
+            .addCasing("95-124", "Electric Compressor Casing", false)
+            .addCasing("60-61", "Compression Pipe Casing", false)
+            .addCasing("30", "Heating Coil", true)
+            .addCasing("22", "Any Tiered Glass", false)
+            .addCasing("12", "Coolant Duct", false)
+            .addCasing("12", "Heating Duct", false)
+            .addMiscHatch(
+                "0+",
                 StatCollector.translateToLocal("GT5U.tooltip.structure.heat_sensor_hatch"),
-                "Any Electric Compressor Casing",
+                "Any electric compressor casing",
                 1)
-            .addInputBus("Pipe Casing on Side", 2)
-            .addInputHatch("Pipe Casing on Side", 2)
-            .addOutputBus("Pipe Casing on Side", 2)
-            .addEnergyHatch("Any Electric Compressor Casing", 1)
-            .addMaintenanceHatch("Any Electric Compressor Casing", 1)
-            .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .addEnergyHatch("1+", "Any electric compressor casing", 1)
+            .addMaintenanceHatch("1", "Any electric compressor casing", 1)
+            .addInputBus("1+", "Any side pipe casing", 2)
+            .addInputHatch("0+", "Any side pipe casing", 2)
+            .addOutputBus("1+", "Any side pipe casing", 2)
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.HEATING_COIL)
+            .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher(Ollie);
         return tt;
     }

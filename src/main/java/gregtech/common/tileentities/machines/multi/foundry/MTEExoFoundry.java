@@ -488,62 +488,26 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
                     + EnumChatFormatting.GRAY
                     + " stats are shown in NEI and the Controller")
             .addInfo("Toggle Render with Screwdriver")
-            .addTecTechHatchInfo()
+            .addSupportAny()
             .addSeparator()
             .addInfo(EnumChatFormatting.RED + "Glorious Evolution!")
-            .beginStructureBlock(15, 55, 15, true)
+            .beginStructureBlock(15, 15, 55, true)
             .addController("Front center, 2nd layer")
-            .addCasingInfoMinColored(
-                "Primary Exo-Foundry Casing",
-                EnumChatFormatting.GRAY,
-                MIN_CASINGS,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored(
-                "Exo-Foundry Containment Glass",
-                EnumChatFormatting.GRAY,
-                548,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored(
-                "Inner Foundry Siphon Casing",
-                EnumChatFormatting.GRAY,
-                282,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored(
-                "Central Magnetic Chassis",
-                EnumChatFormatting.GRAY,
-                260,
-                EnumChatFormatting.GOLD,
-                true)
-            .addCasingInfoExactlyColored(
-                "Netherite Frame Box",
-                EnumChatFormatting.GRAY,
-                224,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored(
-                "Central Exo-Foundry Regulation Casing",
-                EnumChatFormatting.GRAY,
-                196,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored(
-                "Black Plutonium Item Pipe Casing",
-                EnumChatFormatting.GRAY,
-                173,
-                EnumChatFormatting.GOLD,
-                false)
-            .addInputBus("Any Foundry Casing", 1)
-            .addOutputBus("Any Foundry Casing", 1)
-            .addInputHatch("Any Foundry Casing", 1)
-            .addEnergyHatch("Any Foundry Casing", 1)
-            .addSubChannelUsage(GTStructureChannels.MAGNETIC_CHASSIS)
-            .addStructureInfoSeparator()
-            .addStructureInfo("Check NEI for Module structure costs");
-
-        tt.toolTipFinisher();
+            .addCasing("548", "Exo-Foundry Containment Glass", false)
+            .addCasing(MIN_CASINGS + "-485", "Primary Exo-Foundry Casing", false)
+            .addCasing("282", "Inner Exo-Foundry Siphon Casing", false)
+            .addCasing("260", "Magnetic Chassis", true)
+            .addCasing("224", "Netherite Frame Box", false)
+            .addCasing("196", "Central Exo-Foundry Regulation Casing", false)
+            .addCasing("173", "Black Plutonium Item Pipe Casing", false)
+            .addEnergyHatch("1+", "Any primary casing", 1)
+            .addInputBus("0+", "Any primary casing", 1)
+            .addInputHatch("1+", "Any primary casing", 1)
+            .addOutputBus("1+", "Any primary casing", 1)
+            .addStructureInfo("")
+            .addStructureFooter("Check NEI for module costs")
+            .addSubChannel(GTStructureChannels.MAGNETIC_CHASSIS)
+            .toolTipFinisher();
         return tt;
     }
 
@@ -632,9 +596,9 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
             checkModules(errors);
             int requiredCasings = MIN_CASINGS + (foundryData.universalCollapserPresent ? 15 : 0);
             checkCasingMin(errors, casingAmount, requiredCasings);
+            checkHasAnyEnergy(errors);
             checkHasInputHatch(errors);
             checkHasOutputBus(errors);
-            checkHasAnyEnergy(errors);
         } else {
             getBaseMetaTileEntity().issueTileUpdate(); // update for the tier variable
         }

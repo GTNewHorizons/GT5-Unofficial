@@ -23,6 +23,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -43,8 +44,6 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.structure.error.StructureError;
-import gregtech.api.structure.error.StructureErrors;
-import gregtech.api.structure.error.TranslatableText;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -115,16 +114,17 @@ public class MTESOFuelCellMK1 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK1
             .addInfo("Steam production requires the SOFC to heat up completely first")
             .addInfo("Outputs " + EU_PER_TICK + "EU/t and " + STEAM_PER_SEC + "L/s Steam")
             .addInfo("Additionally, requires " + OXYGEN_PER_SEC + "L/s Oxygen gas")
-            .beginStructureBlock(3, 3, 5, false)
+            .beginStructureBlock(5, 3, 3, false)
             .addController("Front center")
-            .addCasingInfoMin("Clean Stainless Steel Casing", 12, false)
-            .addOtherStructurePart("YSZ Ceramic Electrolyte Unit", "3x, Center 1x1x3")
-            .addOtherStructurePart("Reinforced Glass", "6x, touching the electrolyte units on the horizontal sides")
-            .addDynamoHatch("Back center", 2)
-            .addMaintenanceHatch("Any Casing", 1)
-            .addInputHatch("Fuel, any Casing", 1)
-            .addInputHatch("Oxygen, any Casing", 1)
-            .addOutputHatch("Steam, any Casing", 1)
+            .addCasing("12-31", "Clean Stainless Steel Machine Casing", false)
+            .addCasing("6", "Reinforced Glass", false)
+            .addCasing("3", "YSZ Ceramic Electrolyte Unit", false)
+            .addDynamoHatch("1", "Back center casing", 2)
+            .addMaintenanceHatch("1", "Any casing", 1)
+            .addInputHatch("1+", "Any casing", 1)
+            .addOutputHatch("1+", "Any casing", 1)
+            .addStructureInfo("")
+            .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.DynamoLimit"))
             .toolTipFinisher();
         return tt;
     }
@@ -193,12 +193,7 @@ public class MTESOFuelCellMK1 extends MTEEnhancedMultiBlockBase<MTESOFuelCellMK1
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 1, 1, 0, errors)) return;
         checkCasingMin(errors, this.mCasing, 12);
         checkHasMaintenanceHatch(errors);
-        if (mInputHatches.size() < 2) {
-            errors.add(
-                StructureErrors.of(
-                    "GT5U.gui.text.structure_error.sofc_missing_input_hatches",
-                    TranslatableText.literal(mInputHatches.size())));
-        }
+        checkHasInputHatch(errors);
         checkHasOutputHatch(errors);
     }
 

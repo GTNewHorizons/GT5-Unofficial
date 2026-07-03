@@ -103,17 +103,20 @@ public class MTEIndustrialFishingPond extends MTEExtendedPowerMultiBlockBase<MTE
             .addInfo("Circuit " + JUNK_MODE + " for Junk")
             .addInfo("Circuit " + TREASURE_MODE + " for Treasure")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(11, 4, 11, false)
+            .beginStructureBlock(11, 11, 4, false)
             .addController("Front center")
-            .addCasingInfoMin("Aquatic Casing", 160, false)
-            .addCasingInfoExactly("Stainless Steel Frame Box", 12, false)
-            .addCasingInfoExactly("Stainless Steel Sheetmetal", 12, false)
-            .addInputBus("Any Aquatic Casing", 1)
-            .addOutputBus("Any Aquatic Casing", 1)
-            .addInputHatch("Any Aquatic Casing", 1)
-            .addEnergyHatch("Any Aquatic Casing", 1)
-            .addMaintenanceHatch("Any Aquatic Casing", 1)
-            .addMufflerHatch("Any Aquatic Casing", 1)
+            .addCasing("160-167", "Aquatic Casing", false)
+            .addCasing("40", "Water", false)
+            .addCasing("12", "Stainless Steel Sheetmetal", false)
+            .addCasing("12", "Stainless Steel Frame Box", false)
+            .addEnergyHatch("1+", "Any casing", 1)
+            .addMaintenanceHatch("1", "Any casing", 1)
+            .addMufflerHatch("1", "Any casing", 1)
+            .addInputBus("0+", "Any casing", 1)
+            .addInputHatch("0+", "Any casing", 1)
+            .addOutputBus("1+", "Any casing", 1)
+            .addStructureInfo("")
+            .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.WaterCost"))
             .addStructureAuthors(EnumChatFormatting.GOLD + "VorTex")
             .toolTipFinisher();
         return tt;
@@ -180,8 +183,8 @@ public class MTEIndustrialFishingPond extends MTEExtendedPowerMultiBlockBase<MTE
         checkCasingMin(errors, casingAmount, 160);
         checkHasEnergyHatch(errors);
         checkHasMaintenanceHatch(errors);
-        checkHasOutputBus(errors);
         checkHasMufflerHatch(errors);
+        checkHasOutputBus(errors);
         if (!errors.isEmpty()) return;
         needsWaterFill = true;
     }

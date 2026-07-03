@@ -7,7 +7,6 @@ import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.ExoticEnergy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
-import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTOreDictUnificator.getAssociation;
@@ -155,20 +154,15 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
         .addElement(
             'H',
             buildHatchAdder(MTEQuantumForceTransformer.class)
-                .atLeast(
-                    InputBus,
-                    InputHatch,
-                    Maintenance,
-                    Energy.or(ExoticEnergy),
-                    SpecialHatchElement.CatalystHousing)
+                .atLeast(InputBus, InputHatch, Energy.or(ExoticEnergy), SpecialHatchElement.CatalystHousing)
                 .casingIndex(TAE.getIndexFromPage(0, 10))
-                .hint(4)
+                .hint(1)
                 .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings2Misc, 12))))
         .addElement(
             'T',
-            buildHatchAdder(MTEQuantumForceTransformer.class).atLeast(OutputBus, OutputHatch, Maintenance)
+            buildHatchAdder(MTEQuantumForceTransformer.class).atLeast(OutputBus, OutputHatch)
                 .casingIndex(TAE.getIndexFromPage(0, 10))
-                .hint(5)
+                .hint(2)
                 .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings2Misc, 12))))
         .build();
 
@@ -209,23 +203,22 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
             .addInfo("Sneak + screwdriver to disable animations")
             .addInfo("Fluid mode turns all possible outputs into their fluid variant, if avaliable")
             .addUnlimitedTierSkips()
-            .addTecTechHatchInfo()
+            .addSupportAny()
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(15, 21, 15, true)
+            .beginStructureBlock(15, 15, 21, true)
             .addController("Front bottom center")
-            .addCasingInfoMin("Bulk Production Frame", 80, false)
-            .addCasingInfoMin("Quantum Force Conductor", 177, false)
-            .addCasingInfoMin("Force Field Glass", 224, false)
-            .addCasingInfoMin("Pulse Manipulator", 236, true)
-            .addCasingInfoMin("Shielding Core", 142, true)
-            .addInputBus(EnumChatFormatting.BLUE + "Bottom" + EnumChatFormatting.GRAY + " Layer", 4)
-            .addInputHatch(EnumChatFormatting.BLUE + "Bottom" + EnumChatFormatting.GRAY + " Layer", 4)
-            .addOutputHatch(EnumChatFormatting.AQUA + "Top" + EnumChatFormatting.GRAY + " Layer", 5)
-            .addOutputBus(EnumChatFormatting.AQUA + "Top" + EnumChatFormatting.GRAY + " Layer", 5)
-            .addEnergyHatch(EnumChatFormatting.BLUE + "Bottom" + EnumChatFormatting.GRAY + " Layer", 4)
-            .addStructureInfo(EnumChatFormatting.WHITE + "Bulk Catalyst Housing: " + EnumChatFormatting.BLUE + "Bottom" + EnumChatFormatting.GRAY + " Layer")
-            .addSubChannelUsage(GTStructureChannels.QFT_SHIELDING)
-            .addSubChannelUsage(GTStructureChannels.QFT_MANIPULATOR)
+            .addCasing("236", "Pulse Manipulator Casing", true)
+            .addCasing("224", "Force Field Glass", false)
+            .addCasing("177", "Quantum Force Conductor", false)
+            .addCasing("80-149", "Bulk Production Frame", false)
+            .addCasing("142", "Shielding Core Casing", true)
+            .addMiscHatch("1+", "Bulk Catalyst Housing", "Any bottom casing", 1)
+            .addEnergyHatch("1+", "Any bottom casing", 1)
+            .addInputAny("1+", "Any bottom casing", 1)
+            .addOutputAny("1+", "Any top casing", 2)
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.QFT_MANIPULATOR)
+            .addSubChannel(GTStructureChannels.QFT_SHIELDING)
             .toolTipFinisher(GTAuthors.AuthorBlueWeabo, EnumChatFormatting.GREEN + "Steelux");
         return tt;
         //spotless:on
@@ -243,9 +236,6 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
         this.mFocusingTier = 0;
         catalystHousings.clear();
         if (!checkPiece(MAIN_PIECE, 7, 20, 4, errors)) return;
-        // Maintenance hatch not required but left for compatibility.
-        // Don't allow more than 1, no free casing spam!
-        checkHatchMax(errors, Maintenance, 1);
         checkHasAnyEnergy(errors);
         checkHasAnyInput(errors);
         checkHasAnyOutput(errors);
