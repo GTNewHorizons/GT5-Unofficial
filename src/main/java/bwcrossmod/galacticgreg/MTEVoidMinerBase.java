@@ -115,13 +115,21 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
     @NotNull
     public CheckRecipeResult checkProcessing() {
         setElectricityStats();
-        if (working()) {
-            // Multiblock base already includes 1 parallel
-            recipesDone += batchMultiplier - 1;
-            return SimpleCheckRecipeResult.ofSuccess("drill_extracting_ores");
-        } else {
-            return SimpleCheckRecipeResult.ofFailure("drill_extracting_ores_failed");
+
+        if (!canVoidMine) {
+            // Dimension is flagged as non-void-mineable or couldn't be resolved to a known dimension.
+            return SimpleCheckRecipeResult.ofFailure("void_miner_wrong_dim");
         }
+
+        if (this.totalWeight == 0.f) {
+            this.stopMachine(ShutDownReasonRegistry.NONE);
+            return SimpleCheckRecipeResult.ofFailure("void_miner_no_ores");
+        }
+
+        this.handleFluidConsumption();
+        // Multiblock base already includes 1 parallel
+        recipesDone += batchMultiplier - 1;
+        return SimpleCheckRecipeResult.ofSuccess("drill_extracting_ores");
     }
 
     protected int getMinTier() {
@@ -139,20 +147,6 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
         this.mEfficiency = this.getCurrentEfficiency(null);
         this.mEfficiencyIncrease = 10000;
         this.mEUt = this.mEUt > 0 ? -this.mEUt : this.mEUt;
-    }
-
-    protected boolean working() {
-        if (!canVoidMine) {
-            return false;
-        }
-
-        if (this.totalWeight != 0.f) {
-            this.handleFluidConsumption();
-            return true;
-        } else {
-            this.stopMachine(ShutDownReasonRegistry.NONE);
-            return false;
-        }
     }
 
     @Override
