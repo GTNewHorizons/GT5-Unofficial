@@ -438,20 +438,10 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (aBaseMetaTileEntity.isServerSide()) {
-            FluidStack[] antimatterStored = new FluidStack[16];
-            long totalAntimatterAmount = 0;
-            for (int i = 0; i < amOutputHatches.size(); i++) {
-                if (amOutputHatches.get(i) == null || !amOutputHatches.get(i)
-                    .isValid()
-                    || amOutputHatches.get(i)
-                        .getFluid() == null)
-                    continue;
-                antimatterStored[i] = amOutputHatches.get(i)
-                    .getFluid()
-                    .copy();
-                totalAntimatterAmount += antimatterStored[i].amount;
-            }
+            long totalAntimatterAmount = calculateContainedAntimatter();
+
             drainEnergyInput(calculateEnergyContainmentCost(totalAntimatterAmount));
+            this.guiAntimatterAmount = totalAntimatterAmount;
 
             if ((this.mProgresstime >= this.mMaxProgresstime) && (!isAllowedToWork())) {
                 setProtoRender(false);
@@ -573,7 +563,6 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         }
 
         this.guiAntimatterChange = ratioLosses + antimatterChange;
-        this.guiAntimatterAmount = calculateContainedAntimatter();
 
         if (this.canRender) {
             updateAntimatterSize(this.guiAntimatterAmount);
