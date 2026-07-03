@@ -35,7 +35,6 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import goodgenerator.api.recipe.GoodGeneratorRecipeMaps;
 import goodgenerator.items.GGMaterial;
 import goodgenerator.util.CrackRecipeAdder;
-import goodgenerator.util.DescTextLocalization;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
@@ -135,11 +134,6 @@ public class MTELargeNaquadahReactor extends TTMultiblockBase implements ISurviv
     @Override
     public void construct(ItemStack itemStack, boolean hintsOnly) {
         buildPiece(STRUCTURE_PIECE_MAIN, itemStack, hintsOnly, OFFSET_X, OFFSET_Y, OFFSET_Z);
-    }
-
-    @Override
-    public String[] getStructureDescription(ItemStack itemStack) {
-        return DescTextLocalization.addText("LargeNaquadahReactor.hint", 7);
     }
 
     @Override
@@ -343,15 +337,15 @@ public class MTELargeNaquadahReactor extends TTMultiblockBase implements ISurviv
         casingAmount = 0;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z, errors)) return;
         checkCasingMin(errors, casingAmount, 130);
-        checkOneMaintenanceHatch(errors);
-        checkHasInputHatch(errors);
-        checkHasOutputHatch(errors);
         int dynamoCount = mDynamoHatches.size() + eDynamoMulti.size();
         if (dynamoCount == 0) {
             errors.add(StructureErrors.hatchCount(ErrorType.TOO_FEW, Dynamo, 0, 1));
         } else if (dynamoCount > 1) {
             errors.add(StructureErrors.hatchCount(ErrorType.TOO_MANY, Dynamo, dynamoCount, 1));
         }
+        checkOneMaintenanceHatch(errors);
+        checkHasInputHatch(errors);
+        checkHasOutputHatch(errors);
     }
 
     @Override
@@ -409,16 +403,16 @@ public class MTELargeNaquadahReactor extends TTMultiblockBase implements ISurviv
             .addInfo(getExcitedTextFormatted("Molten Naquadah", "20", ExcitedLiquidCoe[2]))
             .addInfo(getExcitedTextFormatted("Molten Atomic Separation Catalyst", "20", ExcitedLiquidCoe[1]))
             .addInfo(getExcitedTextFormatted("Spatially Enlarged Fluid", "20", ExcitedLiquidCoe[0]))
-            .addTecTechHatchInfo()
-            .beginStructureBlock(7, 11, 7, false)
+            .addSupportAny()
+            .beginStructureBlock(7, 7, 11, false)
             .addController("Front bottom center")
-            .addCasingInfoMin("Naquadah Reactor Casing", 130, false)
-            .addCasingInfoExactly("Field Restriction Casing", 81, false)
-            .addCasingInfoExactly("Radiation Proof Steel Frame Box", 32, false)
-            .addDynamoHatch("Any Naquadah Reactor Casing, only accepts ONE!", 1)
-            .addInputHatch("Any Naquadah Reactor Casing", 1)
-            .addOutputHatch("Any Naquadah Reactor Casing", 1)
-            .addMaintenanceHatch("Any Naquadah Reactor Casing", 1)
+            .addCasing("130-141", "Naquadah Reactor Casing", false)
+            .addCasing("81", "Field Restriction Casing", false)
+            .addCasing("32", "Radiation Proof Steel Frame Box", false)
+            .addDynamoHatch("1", "Any reactor casing", 1)
+            .addMaintenanceHatch("1", "Any reactor casing", 1)
+            .addInputHatch("1+", "Any reactor casing", 1)
+            .addOutputHatch("1+", "Any reactor casing", 1)
             .addStructureAuthors(EnumChatFormatting.GOLD + "N7Paddy")
             .toolTipFinisher();
         return tt;

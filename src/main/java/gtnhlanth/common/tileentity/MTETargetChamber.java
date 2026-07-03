@@ -16,7 +16,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_A
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_GLOW;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gtnhlanth.api.recipe.LanthanidesRecipeMaps.TARGET_CHAMBER_METADATA;
-import static gtnhlanth.util.DescTextLocalization.addHintNumber;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -90,13 +89,13 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
     			.addElement(
     					'f',
     					buildHatchAdder(MTETargetChamber.class).atLeast(Maintenance, Energy)
-    					.casingIndex(GrateMachineCasingTextureID).hint(2).buildAndChain(Casings.GrateMachineCasing.asElement()))
+    					.casingIndex(GrateMachineCasingTextureID).hint(4).buildAndChain(Casings.GrateMachineCasing.asElement()))
 
     			.addElement('j', ofBlockAdder(MTETargetChamber::addGlass, ItemRegistry.bw_glasses[0], 1))
-    			.addElement('b', buildHatchAdder(MTETargetChamber.class).atLeast(BeamlineInput).casingIndex(ShieldedAccCasingTextureID).hint(5).build())
+    			.addElement('b', buildHatchAdder(MTETargetChamber.class).atLeast(BeamlineInput).casingIndex(ShieldedAccCasingTextureID).hint(1).build())
     			.addElement('c', Casings.ShieldedAcceleratorCasing.asElement())
 
-    			.addElement('l', buildHatchAdder(MTETargetChamber.class).atLeast(FocusInput).casingIndex(ShieldedAccCasingTextureID).hint(1).build())
+    			.addElement('l', buildHatchAdder(MTETargetChamber.class).atLeast(FocusInput).casingIndex(ShieldedAccCasingTextureID).hint(2).build())
 
     			.addElement('t', buildHatchAdder(MTETargetChamber.class).atLeast(InputBus).casingIndex(ShieldedAccCasingTextureID).hint(3).build())
     			.addElement('s', ofBlock(LanthItemList.SHIELDED_ACCELERATOR_GLASS, 0))
@@ -104,7 +103,7 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
     			.addElement('h', ofBlock(LanthItemList.FOCUS_HOLDER, 0))
     			.addElement('u', ofBlock(LanthItemList.TARGET_RECEPTACLE_CASING, 0))
     			.addElement('i', ofBlock(LanthItemList.TARGET_HOLDER, 0))
-    			.addElement('o', buildHatchAdder(MTETargetChamber.class).atLeast(OutputBus).casingIndex(ShieldedAccCasingTextureID).hint(4).build())
+    			.addElement('o', buildHatchAdder(MTETargetChamber.class).atLeast(OutputBus).casingIndex(ShieldedAccCasingTextureID).hint(5).build())
     			.build();
     }
     //spotless:on
@@ -174,23 +173,29 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
             .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.tc.info5"))
             .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.tc.info6"))
             .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.tc.info7"))
-            .beginStructureBlock(5, 5, 6, true)
+            .beginStructureBlock(6, 5, 5, true)
             .addController("Front bottom center")
-            .addCasingInfoExactly(Casings.GrateMachineCasing.getLocalizedName(), 29, false)
-            .addCasingInfoExactly(Casings.ShieldedAcceleratorCasing.getLocalizedName(), 28, false)
-            .addCasingInfoExactly("Any Tiered Glass", 16, false)
-            .addCasingInfoExactly(LanthItemList.SHIELDED_ACCELERATOR_GLASS.getLocalizedName(), 34, false)
-            .addCasingInfoExactly(LanthItemList.TARGET_RECEPTACLE_CASING.getLocalizedName(), 4, false)
-            .addCasingInfoExactly(LanthItemList.FOCUS_MANIPULATION_CASING.getLocalizedName(), 4, false)
-            .addCasingInfoExactly(LanthItemList.FOCUS_HOLDER.getLocalizedName(), 1, false)
-            .addCasingInfoExactly(LanthItemList.TARGET_HOLDER.getLocalizedName(), 1, false)
-            .addOtherStructurePart(StatCollector.translateToLocal("gtnhlanth.tt.hatch.focus"), addHintNumber(1))
-            .addMaintenanceHatch(addHintNumber(2))
-            .addEnergyHatch(addHintNumber(2))
-            .addInputBus(addHintNumber(3))
-            .addOutputBus(addHintNumber(4))
-            .addOtherStructurePart(StatCollector.translateToLocal("gtnhlanth.tt.hatch.beaminput"), addHintNumber(5))
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .addCasing("34", LanthItemList.SHIELDED_ACCELERATOR_GLASS.getLocalizedName(), false)
+            .addCasing("27-29", Casings.GrateMachineCasing.getLocalizedName(), false)
+            .addCasing("28", Casings.ShieldedAcceleratorCasing.getLocalizedName(), false)
+            .addCasing("16", "LuV+ Tiered Glass", false)
+            .addCasing("4", LanthItemList.TARGET_RECEPTACLE_CASING.getLocalizedName(), false)
+            .addCasing("4", LanthItemList.FOCUS_MANIPULATION_CASING.getLocalizedName(), false)
+            .addCasing("1", LanthItemList.TARGET_HOLDER.getLocalizedName(), false)
+            .addCasing("1", LanthItemList.FOCUS_HOLDER.getLocalizedName(), false)
+            .addMiscHatch("1", StatCollector.translateToLocal("gtnhlanth.tt.hatch.beaminput"), "Front center casing", 1)
+            .addMiscHatch(
+                "1",
+                StatCollector.translateToLocal("gtnhlanth.tt.hatch.focus"),
+                "Top center casing 2nd block from front",
+                2)
+            .addEnergyHatch("1+", "Any front bottom casing", 4)
+            .addMaintenanceHatch("1", "Any front bottom casing", 4)
+            .addInputBus("1", "Top center casing 2nd block from back", 3)
+            .addOutputBus("1", "Back center casing", 5)
+            .addAir("Interior of the structure")
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         return tt;
     }
@@ -371,18 +376,13 @@ public class MTETargetChamber extends MTEEnhancedMultiBlockBase<MTETargetChamber
     public void checkMachine(IGregTechTileEntity arg0, ItemStack arg1, List<StructureError> errors) {
         this.lastRecipe = null;
         if (!checkPiece("base", 2, 4, 0, errors)) return;
-        checkOneMaintenanceHatch(errors);
         checkHasEnergyHatch(errors);
+        checkOneMaintenanceHatch(errors);
         checkHatchExact(errors, InputBus, 1);
-        checkHatchExact(errors, OutputBus, 1);
         if (this.mFocusInputBuses.size() != 1) {
             errors.add(StructureErrors.of("GT5U.gui.text.structure_error.need_exactly_one_focus_input"));
         }
-    }
-
-    @Override
-    public String[] getStructureDescription(ItemStack arg0) {
-        return DescTextLocalization.addText("TargetChamber.hint", 13);
+        checkHatchExact(errors, OutputBus, 1);
     }
 
     @Override

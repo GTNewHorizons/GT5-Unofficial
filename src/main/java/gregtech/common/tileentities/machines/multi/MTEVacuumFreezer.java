@@ -63,9 +63,9 @@ public class MTEVacuumFreezer extends MTEExtendedPowerMultiBlockBase<MTEVacuumFr
         mCasing = 0;
         if (!checkPiece(mName, 1, 1, 0, errors)) return;
         checkCasingMin(errors, mCasing, 16);
+        checkHasEnergyHatch(errors);
         checkHasMaintenanceHatch(errors);
         checkHasAnyInput(errors);
-        checkHasEnergyHatch(errors);
         checkHasAnyOutput(errors);
     }
 
@@ -107,13 +107,12 @@ public class MTEVacuumFreezer extends MTEExtendedPowerMultiBlockBase<MTEVacuumFr
             .addInfo("Cools hot ingots and cells")
             .beginStructureBlock(3, 3, 3, true)
             .addController("Front center")
-            .addCasingInfoRange("Frost Proof Machine Casing", 16, 24, false)
-            .addEnergyHatch("Any Casing", 1)
-            .addMaintenanceHatch("Any Casing", 1)
-            .addInputHatch("Any Casing", 1)
-            .addOutputHatch("Any Casing", 1)
-            .addInputBus("Any Casing", 1)
-            .addOutputBus("Any Casing", 1)
+            .addCasing("16-21", "Frost Proof Machine Casing", false)
+            .addEnergyHatch("1+", "Any casing", 1)
+            .addMaintenanceHatch("1", "Any casing", 1)
+            .addInputAny("1+", "Any casing", 1)
+            .addOutputAny("1+", "Any casing", 1)
+            .addAir("Interior of the structure")
             .toolTipFinisher();
         return tt;
     }

@@ -228,15 +228,14 @@ public class MTECharcoalPit extends MTETooltipMultiBlockBase {
             .addInfo("Converts Logs into Brittle Charcoal blocks")
             .addInfo("Automatically starts when formed")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginVariableStructureBlock(3, 13, 3, 7, 3, 13, false)
-            .addController("Top layer, directly touching a wood log")
-            .addStructureInfo("Can be up to 13x7x13 in size, including the dirt; shape doesn't matter")
-            .addOtherStructurePart("Dirt/Grass", "Top and middle layers, covering wood logs")
-            .addOtherStructurePart("Bricks", "Bottom layer, under all wood logs")
-            .addOtherStructurePart("Wood Logs", "Up to 5 layers, inside the previously mentioned blocks")
-            .addStructureInfo("No air between logs allowed.")
-            .addStructureInfo(
-                "All logs must be within 6 x/z of the controller, so it must be dead-center for a full 11x11 square of wood.")
+            .beginVariableStructureBlock(3, 13, 3, 13, 3, 7, false)
+            .addController("Top layer, centered and touching a log")
+            .addCasing("1-605", "Any log", false)
+            .addCasing("4-431", "Dirt or grass covering the logs", false)
+            .addCasing("1-121", "Bricks underneath the logs", false)
+            .addStructureInfo("")
+            .addStructureFooter("Can be anywhere up to 13x13x7 in size (including the dirt) but all logs")
+            .addStructureFooter("must be within 6 x/z of the controller and there cannot be any air gaps.")
             .toolTipFinisher();
         return tt;
     }
