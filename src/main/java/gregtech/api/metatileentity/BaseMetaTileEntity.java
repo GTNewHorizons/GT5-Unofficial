@@ -710,7 +710,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
     public final void receiveMetaTileEntityData(short aID, int aCover0, int aCover1, int aCover2, int aCover3,
         int aCover4, int aCover5, byte aTextureData, byte aUpdateData, byte aRedstoneData, byte aColorData) {
         issueTextureUpdate();
-        if (mID != aID && aID > 0) {
+        if (aID > 0 && (mID != aID || !hasValidMetaTileEntity())) {
             mID = aID;
             createNewMetatileEntity(mID);
         }
