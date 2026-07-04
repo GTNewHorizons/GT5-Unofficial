@@ -598,7 +598,7 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>> {
         checkMode = aNBT.getBoolean("checkMode");
         myPriority = aNBT.getInteger("myPriority");
         this.isCached = false;
-        getProxy().readFromNBT(aNBT);
+        if (aNBT.hasKey("proxy")) getProxy().readFromNBT(aNBT);
         oldCellStack = env.getCellStack();
         updateState();
         updateAE2ProxyColor();

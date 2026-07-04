@@ -107,7 +107,7 @@ public class MTEYOTTAHatch extends MTEHatch
         this.priority = aNBT.getInteger("mAEPriority");
         this.readMode = AEModes[aNBT.getInteger("mAEMode")];
         this.isSticky = aNBT.getBoolean("mAESticky");
-        getProxy().readFromNBT(aNBT);
+        if (aNBT.hasKey("proxy")) getProxy().readFromNBT(aNBT);
     }
 
     @Override

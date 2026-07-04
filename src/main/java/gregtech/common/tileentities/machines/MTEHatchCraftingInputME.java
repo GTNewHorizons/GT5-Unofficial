@@ -837,7 +837,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
         disablePatternOptimization = aNBT.getBoolean("disablePatternOptimization");
         if (aNBT.hasKey("showPattern")) showPattern = aNBT.getBoolean("showPattern");
 
-        getProxy().readFromNBT(aNBT);
+        if (aNBT.hasKey("proxy")) getProxy().readFromNBT(aNBT);
         updateAE2ProxyColor();
 
         // Sync inventories to ensure that the real inventory matches what AE2 is seeing.

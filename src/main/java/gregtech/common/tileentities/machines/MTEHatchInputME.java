@@ -797,7 +797,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
         if (aNBT.hasKey("refreshTime")) {
             autoPullRefreshTime = aNBT.getInteger("refreshTime");
         }
-        getProxy().readFromNBT(aNBT);
+        if (aNBT.hasKey("proxy")) getProxy().readFromNBT(aNBT);
         updateAE2ProxyColor();
 
         switch (aNBT.getInteger("version")) {

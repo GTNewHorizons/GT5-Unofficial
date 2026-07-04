@@ -390,7 +390,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
         if (aNBT.hasKey("refreshTime")) {
             autoPullRefreshTime = aNBT.getInteger("refreshTime");
         }
-        getProxy().readFromNBT(aNBT);
+        if (aNBT.hasKey("proxy")) getProxy().readFromNBT(aNBT);
         updateAE2ProxyColor();
 
         clearSlotConfigs();
