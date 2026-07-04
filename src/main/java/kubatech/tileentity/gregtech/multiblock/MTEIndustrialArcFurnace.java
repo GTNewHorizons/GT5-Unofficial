@@ -61,9 +61,11 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
+import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.modularui2.GTGuiTextures;
@@ -72,7 +74,6 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.ErrorType;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrorRegistry;
@@ -100,7 +101,7 @@ import kubatech.tileentity.gregtech.hatch.MTEElectrodeDetectorHatch;
 import kubatech.tileentity.gregtech.hatch.MTEElectrodeHatch;
 
 public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustrialArcFurnace>
-    implements ISurvivalConstructable, ArcFurnaceContext {
+    implements ISurvivalConstructable, ArcFurnaceContext, ICasingTextureProvider {
 
     private static final int STARTUP_DURATION_TICKS = 20 * 6;
     private static final int SHUTDOWN_DURATION_TICKS = 20 * 6;
@@ -269,6 +270,10 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
                 else updateDetectorHatches(0, 0);
             }
         }
+        checkHasAnyEnergy(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasAnyInput(errors);
+        checkHasAnyOutput(errors);
     }
 
     @Override
@@ -403,48 +408,47 @@ public class MTEIndustrialArcFurnace extends KubaTechGTMultiBlockBase<MTEIndustr
                     + " ticks, startup ends immediately")
             .addInfo("Outputs molten metals")
             .addInfo("Right-click with Screwdriver to change mode")
-            .beginStructureBlock(17, 11, 19, false)
-            .addController("Front center")
-            .addCasingInfoMin("Solid Steel Machine Casing", 10, false)
-            .addInputBus("Any Casing", 1)
-            .addOutputBus("Any Casing", 1)
-            .addInputHatch("Any Casing", 1)
-            .addOutputHatch("Any Casing", 1)
-            .addEnergyHatch("Any Casing", 1)
-            .addMultiAmpHatchInfo()
-            .addMaintenanceHatch("Any Casing", 1)
-            .addOtherStructurePart("Electrode Hatch", "Any Casing", 1)
-            .addOtherStructurePart("Electrode Sensor Hatch", "Any Casing", 1)
-            .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
+            .addSupportMultiAmp()
+            .beginStructureBlock(19, 17, 11, true)
+            .addController("Front center, 4th layer")
+            .addCasing("175", "Steel Frame Box", false)
+            .addCasing("10-172", "Solid Steel Machine Casing", false)
+            .addCasing("101", "Steel Pipe Casing", false)
+            .addCasing("72", "Bolted Naquadah Casing", false)
+            .addCasing("30", "Heating Coil", false)
+            .addCasing("17", "Blast Smelter Heat Containment Coil", false)
+            .addCasing("15", "Refined Graphite Block", false)
+            .addCasing("12", "Insulated Fluid Pipe Casing", false)
+            .addCasing("12", "Heat Proof Coke Oven Casing", false)
+            .addMiscHatch("1", "Electrode Hatch", "Any steel machine casing", 1)
+            .addMiscHatch("0+", "Electrode Detector Hatch", "Any steel machine casing", 1)
+            .addEnergyHatch("1+", "Any steel machine casing", 1)
+            .addMaintenanceHatch("1", "Any steel machine casing", 1)
+            .addInputAny("1+", "Any steel machine casing", 1)
+            .addOutputAny("1+", "Any steel machine casing", 1)
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
         return tt;
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-        int colorIndex, boolean active, boolean redstoneLevel) {
-        final ITexture casingTexture = Casings.SolidSteelMachineCasing.getCasingTexture();
-        if (side == facing) {
-            if (active) return new ITexture[] { casingTexture, TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { casingTexture, TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_DISTILLATION_TOWER_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-        }
-        return new ITexture[] { casingTexture };
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            OVERLAY_FRONT_DISTILLATION_TOWER,
+            OVERLAY_FRONT_DISTILLATION_TOWER_GLOW,
+            OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE,
+            OVERLAY_FRONT_DISTILLATION_TOWER_ACTIVE_GLOW);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Casings.SolidSteelMachineCasing.getCasingTexture();
     }
 
     @Override

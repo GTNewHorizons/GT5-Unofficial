@@ -9,7 +9,6 @@ import static gregtech.api.enums.Mods.Avaritia;
 import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTUtility.filterValidMTEs;
-import static net.minecraft.util.StatCollector.translateToLocal;
 import static tectech.thing.casing.TTCasingsContainer.GodforgeCasings;
 import static tectech.thing.casing.TTCasingsContainer.forgeOfGodsRenderBlock;
 import static tectech.thing.metaTileEntity.multi.godforge.upgrade.ForgeOfGodsUpgrade.*;
@@ -43,6 +42,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -287,8 +287,17 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
         if (data.getInternalBattery() != 0 && !data.isRenderActive() && !data.isRendererDisabled()) {
             createRenderer();
         }
-        // Check there is 1 input bus
+
+        // Make sure there are no energy hatches
+        {
+            if (!mEnergyHatches.isEmpty()) {
+                errors.add(StructureErrorRegistry.NO_ENERGY_HATCH_NEEDED);
+            } else if (!mExoticEnergyHatches.isEmpty()) {
+                errors.add(StructureErrorRegistry.NO_ENERGY_HATCH_NEEDED);
+            }
+        }
         checkHatchExact(errors, InputBus, 1);
+        checkHatchExact(errors, InputHatch, 1);
 
         // Check there is 1 me output bus
         {
@@ -298,17 +307,6 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
                 errors.add(StructureErrors.missingHatch(ItemList.Hatch_Output_Bus_ME.get(1)));
             }
         }
-        // Make sure there are no energy hatches
-        {
-            if (!mEnergyHatches.isEmpty()) {
-                errors.add(StructureErrorRegistry.NO_ENERGY_HATCH_NEEDED);
-            } else if (!mExoticEnergyHatches.isEmpty()) {
-                errors.add(StructureErrorRegistry.NO_ENERGY_HATCH_NEEDED);
-            }
-        }
-
-        // Make sure there is 1 input hatch
-        checkHatchExact(errors, InputHatch, 1);
 
         if (!errors.isEmpty()) return;
 
@@ -836,25 +834,41 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
                     + EnumChatFormatting.GRAY
                     + ",")
             .addInfo("explaining everything there is to know about this multiblock")
-            .beginStructureBlock(127, 29, 186, false)
-            .addController("Front center")
-            .addStructureInfo("Total blocks needed for the structure with " + getRingText("1", "2", "3") + "rings:")
+            .beginStructureBlock(186, 127, 29, true)
+            .addController("Front center, 15th layer")
+            .addInputHatch("1", "Around controller", 1)
+            .addInputBus("1", "Around controller", 1)
+            .addOutputBus("1", "Around controller (ME only)", 1)
+            .addStructureInfo("")
             .addStructureInfo(
-                getRingText("3943", "7279", "11005") + "Transcendentally Amplified Magnetic Confinement Casing")
-            .addStructureInfo(getRingText("2818", "4831", "6567") + "Singularity Reinforced Stellar Shielding Casing")
-            .addStructureInfo(getRingText("272", "512", "824") + "Celestial Matter Guidance Casing")
-            .addStructureInfo(getRingText("130", "144", "158") + "Boundless Gravitationally Severed Structure Casing")
-            .addStructureInfo(getRingText("9", "54", "155") + "Spatially Transcendent Gravitational Lens Block")
-            .addStructureInfo(
-                getRingText("345", "357", "397") + getRingText("Remote", "Medial", "Central")
-                    + "Graviton Flow Modulator")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "36" + EnumChatFormatting.GRAY + " Stellar Energy Siphon Casing")
-            .addStructureInfoSeparator()
-            .addStructureInfo("Requires " + EnumChatFormatting.GOLD + 1 + EnumChatFormatting.GRAY + " Input Hatch")
-            .addStructureInfo("Requires " + EnumChatFormatting.GOLD + 1 + EnumChatFormatting.GRAY + " Output Bus (ME)")
-            .addStructureInfo("Requires " + EnumChatFormatting.GOLD + 1 + EnumChatFormatting.GRAY + " Input Bus")
-            .toolTipFinisher(EnumChatFormatting.AQUA, 73);
+                StatCollector.translateToLocal("GT5U.MBTT.Structure.Base") + EnumChatFormatting.AQUA + " (T1)")
+            .addCasing("3949", "Transcendentally Amplified Magnetic Confinement Casing", false)
+            .addCasing("2779-2815", "Singularity Reinforced Stellar Shielding Casing", false)
+            .addCasing("345", "Remote Graviton Flow Modulator", false)
+            .addCasing("272", "Celestial Matter Guidance Casing", false)
+            .addCasing("130", "Boundless Gravitationally Severed Structure Casing", false)
+            .addCasing("36", "Stellar Energy Casing", false)
+            .addCasing("9", "Spatially Transcendent Gravitational Lens Block", false)
+            .addMiscHatch("0-16", "Forge of the Gods Module", "Any side center shielding casing", 2)
+            .addStructureInfo("")
+            .addStructureInfo(EnumChatFormatting.BLUE + "Second Ring" + EnumChatFormatting.AQUA + " (T2)")
+            .addCasing("3336", "Transcendentally Amplified Magnetic Confinement Casing", false)
+            .addCasing("2012", "Singularity Reinforced Stellar Shielding Casing", false)
+            .addCasing("357", "Medial Graviton Flow Modulator", false)
+            .addCasing("240", "Celestial Matter Guidance Casing", false)
+            .addCasing("45", "Spatially Transcendent Gravitational Lens Block", false)
+            .addCasing("14", "Boundless Gravitationally Severed Structure Casing", false)
+            .addStructureInfo("")
+            .addStructureInfo(EnumChatFormatting.BLUE + "Third Ring" + EnumChatFormatting.AQUA + " (T3)")
+            .addCasing("3728", "Transcendentally Amplified Magnetic Confinement Casing", false)
+            .addCasing("1736", "Singularity Reinforced Stellar Shielding Casing", false)
+            .addCasing("397", "Central Graviton Flow Modulator", false)
+            .addCasing("312", "Celestial Matter Guidance Casing", false)
+            .addCasing("101", "Spatially Transcendent Gravitational Lens Block", false)
+            .addCasing("14", "Boundless Gravitationally Severed Structure Casing", false)
+            .addStructureInfo("")
+            .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.rings"))
+            .toolTipFinisher();
         return tt;
     }
 
@@ -875,13 +889,6 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
     @Override
     public boolean energyFlowOnRunningTick(ItemStack aStack, boolean allowProduction) {
         return true;
-    }
-
-    @Override
-    public String[] getStructureDescription(ItemStack stackSize) {
-        return new String[] { EnumChatFormatting.AQUA + translateToLocal("tt.keyphrase.Hint_Details") + ":",
-            translateToLocal("gt.blockmachines.multimachine.FOG.hint.0"),
-            translateToLocal("gt.blockmachines.multimachine.FOG.hint.1") };
     }
 
     public ForgeOfGodsData getData() {
