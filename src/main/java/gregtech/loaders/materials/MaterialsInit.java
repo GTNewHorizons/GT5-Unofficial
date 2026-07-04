@@ -8,6 +8,7 @@ import gregtech.api.enchants.EnchantmentRadioactivity;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Element;
 import gregtech.api.enums.MaterialBuilder;
+import gregtech.api.enums.MaterialIconRegistry;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
@@ -500,7 +501,12 @@ public class MaterialsInit {
         return new MaterialBuilder().setName("Copper")
             .setDefaultLocalName("Copper")
             .setElement(Element.Cu)
-            .setIconSet(TextureSet.SET_DULL)
+            .setIconSet(
+                TextureSet.SET_DULL.withCustomTextures(
+                    "copper",
+                    MaterialIconRegistry.IconType.ORE,
+                    MaterialIconRegistry.IconType.ORE_SMALL,
+                    MaterialIconRegistry.IconType.ORE_RAW))
             .setColor(Dyes.dyeOrange)
             .setARGB(0x00ff6400)
             .setMiningLevel(1)
@@ -720,7 +726,12 @@ public class MaterialsInit {
         return new MaterialBuilder().setName("Gold")
             .setDefaultLocalName("Gold")
             .setElement(Element.Au)
-            .setIconSet(TextureSet.SET_SHINY)
+            .setIconSet(
+                TextureSet.SET_SHINY.withCustomTextures(
+                    "gold",
+                    MaterialIconRegistry.IconType.ORE,
+                    MaterialIconRegistry.IconType.ORE_SMALL,
+                    MaterialIconRegistry.IconType.ORE_RAW))
             .setColor(Dyes.dyeYellow)
             .setARGB(0x00ffff1e)
             .setTool(64, 2, 12.0f)
@@ -855,7 +866,12 @@ public class MaterialsInit {
         return new MaterialBuilder().setName("Iron")
             .setDefaultLocalName("Iron")
             .setElement(Element.Fe)
-            .setIconSet(TextureSet.SET_METALLIC)
+            .setIconSet(
+                TextureSet.SET_METALLIC.withCustomTextures(
+                    "iron",
+                    MaterialIconRegistry.IconType.ORE,
+                    MaterialIconRegistry.IconType.ORE_SMALL,
+                    MaterialIconRegistry.IconType.ORE_RAW))
             .setColor(Dyes.dyeLightGray)
             .setARGB(0x00c8c8c8)
             .setTool(256, 2, 6.0f)
@@ -5147,7 +5163,6 @@ public class MaterialsInit {
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeLime)
             .setARGB(0x00c4ff00)
-            .setFuel(MaterialBuilder.FuelType.SemiFluid, 2)
             .addCell()
             .addAspect(TCAspects.GRANUM, 2)
             .addSubTag(SubTag.FOOD)
@@ -5160,7 +5175,6 @@ public class MaterialsInit {
             .setIconSet(TextureSet.SET_FLUID)
             .setColor(Dyes.dyeLime)
             .setARGB(0x00c4ff00)
-            .setFuel(MaterialBuilder.FuelType.SemiFluid, 2)
             .addCell()
             .addAspect(TCAspects.GRANUM, 2)
             .addSubTag(SubTag.FOOD)
@@ -5614,7 +5628,6 @@ public class MaterialsInit {
             .setARGB(0x003f3480)
             .setOreMultiplier(4)
             .addCell()
-            .addGas()
             .addMaterial(Materials.Nitrogen, 1)
             .addMaterial(Materials.Hydrogen, 3)
             .addElectrolyzerRecipe()
@@ -5941,7 +5954,6 @@ public class MaterialsInit {
             .setARGB(0xf0a9d0f5)
             .setOreMultiplier(4)
             .addCell()
-            .addGas()
             .setMeltingPoint(25)
             .setBlastFurnaceTemp(1)
             .addMaterial(Materials.Carbon, 1)
@@ -6257,7 +6269,11 @@ public class MaterialsInit {
     private static Materials loadDiamond() {
         return new MaterialBuilder().setName("Diamond")
             .setDefaultLocalName("Diamond")
-            .setIconSet(TextureSet.SET_DIAMOND)
+            .setIconSet(
+                TextureSet.SET_DIAMOND.withCustomTextures(
+                    "diamond",
+                    MaterialIconRegistry.IconType.ORE,
+                    MaterialIconRegistry.IconType.ORE_SMALL))
             .setColor(Dyes.dyeWhite)
             .setARGB(0x7fc8ffff)
             .setTool(1_280, 4, 8.0f)
@@ -6321,7 +6337,11 @@ public class MaterialsInit {
     private static Materials loadEmerald() {
         return new MaterialBuilder().setName("Emerald")
             .setDefaultLocalName("Emerald")
-            .setIconSet(TextureSet.SET_EMERALD)
+            .setIconSet(
+                TextureSet.SET_EMERALD.withCustomTextures(
+                    "emerald",
+                    MaterialIconRegistry.IconType.ORE,
+                    MaterialIconRegistry.IconType.ORE_SMALL))
             .setColor(Dyes.dyeGreen)
             .setARGB(0x7f50ff50)
             .setTool(256, 4, 7.0f)

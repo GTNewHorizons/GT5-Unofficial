@@ -348,7 +348,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             Flow columns = Flow.column()
                 .coverChildrenHeight(0)
                 .crossAxisAlignment(Alignment.CrossAxis.START)
-                .childPadding(1);
+                .childPadding(2);
 
             for (StructureError error : errors.getValue()) {
                 // For now just skip these errors, they will be present in most multiblock and will cause confusion.
@@ -434,14 +434,14 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
         })
             .allowC2S();
 
-        itemOutputSyncer
-            .setChangeListener(() -> notifyRecipeHandler(recipeHandler, itemOutputSyncer, fluidOutputSyncer));
-        fluidOutputSyncer
-            .setChangeListener(() -> notifyRecipeHandler(recipeHandler, itemOutputSyncer, fluidOutputSyncer));
+        Runnable listener = () -> notifyRecipeHandler(recipeHandler, itemOutputSyncer, fluidOutputSyncer);
+        maxProgressTimeSyncer.setChangeListener(listener);
+        itemOutputSyncer.setChangeListener(listener);
+        fluidOutputSyncer.setChangeListener(listener);
+
         return new DynamicSyncedWidget<>().widthRel(0.85f)
             .coverChildrenHeight(0)
             .syncHandler(recipeHandler);
-
     }
 
     private void notifyRecipeHandler(DynamicSyncHandler recipeHandler,

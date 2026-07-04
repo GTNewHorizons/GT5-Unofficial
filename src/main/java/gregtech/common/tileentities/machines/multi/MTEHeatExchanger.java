@@ -143,15 +143,13 @@ public class MTEHeatExchanger extends MTEEnhancedMultiBlockBase<MTEHeatExchanger
             .addSeparator()
             .addInfo(GTUtility.translate("gt.multiblock.HeatExchanger.throttle1"))
             .addInfo(GTUtility.translate("gt.multiblock.HeatExchanger.throttle2"))
-            .beginStructureBlock(3, 4, 3, false)
+            .beginStructureBlock(3, 3, 4, false)
             .addController("Front bottom center")
-            .addCasingInfoRange("Stable Titanium Machine Casing", 20, 28, false)
-            .addOtherStructurePart("Titanium Pipe Casing", "Center 2 blocks")
-            .addMaintenanceHatch("Any Casing", 1)
-            .addInputHatch("Hot Fluid, bottom center Casing", 2)
-            .addInputHatch("Distilled Water, any Casing", 1)
-            .addOutputHatch("Cold Fluid, top center Casing", 3)
-            .addOutputHatch("Steam/SH Steam, any Casing", 1)
+            .addCasing("20-28", "Stable Titanium Machine Casing", false)
+            .addCasing("2", "Titanium Pipe Casing", false)
+            .addMaintenanceHatch("1", "Any machine casing", 1)
+            .addInputHatch("2+", "Bottom center casing (hot fluid), any machine casing (distilled water)", 1, 2)
+            .addOutputHatch("2+", "Top center casing (cool fluid), any machine casing (steam)", 1, 3)
             .toolTipFinisher();
         return tt;
     }

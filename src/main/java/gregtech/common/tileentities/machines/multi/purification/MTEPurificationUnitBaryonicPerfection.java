@@ -340,41 +340,18 @@ public class MTEPurificationUnitBaryonicPerfection
                     + EnumChatFormatting.ITALIC
                     + "This ultimately creates both Stabilised Baryonic Matter and, most importantly, absolutely perfectly purified water.")
             .beginStructureBlock(17, 17, 17, false)
-            .addController("Front center")
-            .addCasingInfoMinColored(
-                "Quark Exclusion Casing",
-                EnumChatFormatting.GRAY,
-                MIN_CASINGS,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored(
-                "Femtometer-Calibrated Particle Beam Casing",
-                EnumChatFormatting.GRAY,
-                96,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored(
-                "Particle Beam Guidance Pipe Casing",
-                EnumChatFormatting.GRAY,
-                37,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored(
-                "Non-Photonic Matter Exclusion Glass",
-                EnumChatFormatting.GRAY,
-                240,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored(
-                "Bedrockium Frame Box",
-                EnumChatFormatting.GRAY,
-                108,
-                EnumChatFormatting.GOLD,
-                false)
-            .addInputBus("Any Quark Exclusion Casing. Stocking bus is blacklisted.", 1)
-            .addInputHatch("Any Quark Exclusion Casing", 1)
-            .addOutputBus("Any Quark Exclusion Casing", 1)
-            .addOutputHatch("Any Quark Exclusion Casing", 1)
+            .addController("Front center, 9th layer")
+            .addCasing(MIN_CASINGS + "-339", "Quark Exclusion Casing", false)
+            .addCasing("240", "Non-Photonic Matter Exclusion Glass", false)
+            .addCasing("108", "Bedrockium Frame Box", false)
+            .addCasing("96", "Femtometer-Calibrated Particle Beam Casing", false)
+            .addCasing("37", "Particle Beam Guidance Pipe Casing", false)
+            .addInputBus("1+", "Any quark exclusion casing (no stocking bus)", 1)
+            .addInputHatch("1+", "Any quark exclusion casing", 1)
+            .addOutputBus("1+", "Any quark exclusion casing", 1)
+            .addOutputHatch("1+", "Any quark exclusion casing", 1)
+            .addStructureInfo("")
+            .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.DataStick.Waterline"))
             .toolTipFinisher();
         return tt;
     }

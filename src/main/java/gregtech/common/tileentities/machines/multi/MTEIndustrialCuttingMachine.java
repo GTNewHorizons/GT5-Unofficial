@@ -45,9 +45,11 @@ import gregtech.api.casing.Casings;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
+import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
@@ -56,7 +58,6 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.util.GTUtility;
@@ -68,7 +69,7 @@ import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<MTEIndustrialCuttingMachine>
-    implements ISurvivalConstructable, IMTERenderer {
+    implements ISurvivalConstructable, IMTERenderer, ICasingTextureProvider {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final int OFFSET_X = 2;
@@ -80,8 +81,8 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
     private static final double BLADE_WIDTH = 3.0D;
     private static final double BLADE_HEIGHT = 3.0D;
     private static final double BLADE_PADDING = 0.25D;
-    private static final float BLADE_ROTATION_SPEED = 64.0F;
-    private static final int BLADE_SPINUP_TICKS = 20;
+    private static final float BLADE_ROTATION_SPEED = 64.72132F;
+    private static final int BLADE_SPINUP_TICKS = 30;
     private static final double BLADE_CLIP_BOTTOM = 1.0D;
     @SideOnly(Side.CLIENT)
     private static DoubleBuffer CLIP_PLANE_BUFFER;
@@ -93,8 +94,10 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
     private int casingAmount;
     private boolean stopAllRendering;
     private int renderSawbladeTier = -1;
-    private long activeTicks;
+    private int activeTicks;
     private double bladeRotation;
+    private double bladeSpeedOffset;
+    private boolean wasActive = false;
     private ExtendedFacing cachedBladeRenderFacing;
     private final BladeRenderContext bladeRenderContext = new BladeRenderContext();
 
@@ -173,19 +176,20 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
                     + ", one multi-amp hatch is allowed")
             .addInfo("Use screwdriver to disable sawblade rendering")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(9, 4, 3, false)
+            .beginStructureBlock(3, 9, 4, false)
             .addController("Front left, 2nd layer")
-            .addCasingInfoMin("Cutting Factory Frame", 10, false)
-            .addCasingInfoExactly("Tantalum Carbide Frame Box", 18, false)
-            .addCasingInfoExactly("Any Tiered Glass", 16, false)
-            .addCasingInfoExactly("Black Steel Sheetmetal", 13, false)
-            .addInputBus("Any Casing", 1)
-            .addOutputBus("Any Casing", 1)
-            .addInputHatch("Any Casing", 1)
-            .addEnergyHatch("Any Casing", 1)
-            .addMaintenanceHatch("Any Casing", 1)
-            .addMufflerHatch("Any Casing", 1)
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .addCasing("10-29", "Cutting Factory Frame", false)
+            .addCasing("18", "Tantalum Carbide Frame Box", false)
+            .addCasing("16", "Any Tiered Glass", false)
+            .addCasing("13", "Black Steel Sheetmetal", false)
+            .addEnergyHatch("1+", "Any cutting factory frame", 1)
+            .addMaintenanceHatch("1", "Any cutting factory frame", 1)
+            .addMufflerHatch("1", "Any cutting factory frame", 1)
+            .addInputBus("1+", "Any cutting factory frame", 1)
+            .addInputHatch("1+", "Any cutting factory frame", 1)
+            .addOutputBus("1+", "Any cutting factory frame", 1)
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.BOROGLASS)
             .addStructureAuthors(EnumChatFormatting.LIGHT_PURPLE + "Auynonymous")
             .toolTipFinisher();
         return tt;
@@ -240,44 +244,36 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
         casingAmount = 0;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z, errors)) return;
         checkCasingMin(errors, casingAmount, 10);
-        checkHasInputBus(errors);
-        checkHasInputHatch(errors);
-        checkHasOutputBus(errors);
-        checkHasMaintenanceHatch(errors);
-        checkHasMufflerHatch(errors);
         if (!mExoticEnergyHatches.isEmpty()) {
             if (!mEnergyHatches.isEmpty()) errors.add(StructureErrorRegistry.ONE_ENERGY_HATCH_ON_MULTI_OR_LASER);
             if (mExoticEnergyHatches.size() != 1) errors.add(StructureErrorRegistry.ONE_ENERGY_HATCH_ON_MULTI_OR_LASER);
         } else {
             checkHasEnergyHatch(errors);
         }
+        checkHasMaintenanceHatch(errors);
+        checkHasMufflerHatch(errors);
+        checkHasInputBus(errors);
+        checkHasInputHatch(errors);
+        checkHasOutputBus(errors);
     }
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
-        if (side == aFacing) {
-            if (aActive) return new ITexture[] { Casings.CuttingFactoryFrame.getCasingTexture(),
-                TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.oMCDIndustrialCuttingMachineActive)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.oMCDIndustrialCuttingMachineActiveGlow)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { Casings.CuttingFactoryFrame.getCasingTexture(), TextureFactory.builder()
-                .addIcon(TexturesGtBlock.oMCDIndustrialCuttingMachine)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.oMCDIndustrialCuttingMachineGlow)
-                    .extFacing()
-                    .glow()
-                    .build() };
-        }
-        return new ITexture[] { Casings.CuttingFactoryFrame.getCasingTexture() };
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            TexturesGtBlock.oMCDIndustrialCuttingMachine,
+            TexturesGtBlock.oMCDIndustrialCuttingMachineGlow,
+            TexturesGtBlock.oMCDIndustrialCuttingMachineActive,
+            TexturesGtBlock.oMCDIndustrialCuttingMachineActiveGlow);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Casings.CuttingFactoryFrame.getCasingTexture();
     }
 
     @Override
@@ -394,8 +390,33 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
                 boolean active = base.isActive();
                 activeTicks += active ? 1 : -1;
                 activeTicks = Math.clamp(0, BLADE_SPINUP_TICKS, activeTicks);
-                bladeRotation += Math.lerp(0, BLADE_ROTATION_SPEED, activeTicks / (double) BLADE_SPINUP_TICKS);
-                bladeRotation %= 360;
+
+                // Attempts to have the blade finish at a 90-degree angle
+                if (active != wasActive) {
+                    wasActive = active;
+                    bladeSpeedOffset = 0;
+                    if (!active && activeTicks > 0) {
+                        double finalRotation = bladeRotation;
+                        for (int i = 1; i <= activeTicks; i++) {
+                            finalRotation += Math.lerp(0, BLADE_ROTATION_SPEED, i / (double) BLADE_SPINUP_TICKS);
+                        }
+                        finalRotation %= 90;
+                        finalRotation = 90 - finalRotation;
+                        bladeSpeedOffset = finalRotation / activeTicks;
+
+                        // The blade will not be able to smoothly finish at a 90-degree angle so give up
+                        // Only a possibility if the blade wasn't already at full speed
+                        if (Math.abs(bladeSpeedOffset) > 5.0) {
+                            bladeSpeedOffset = 0;
+                        }
+                    }
+                }
+
+                if (activeTicks > 0) {
+                    bladeRotation += Math.lerp(0, BLADE_ROTATION_SPEED, activeTicks / (double) BLADE_SPINUP_TICKS)
+                        + bladeSpeedOffset;
+                    bladeRotation %= 360;
+                }
             }
             return;
         }
@@ -521,9 +542,10 @@ public class MTEIndustrialCuttingMachine extends MTEExtendedPowerMultiBlockBase<
     }
 
     private double getRenderBladeRotation(float timeSinceLastTick) {
+        if (activeTicks == 0) return bladeRotation;
         double offset = Math.lerp(0, BLADE_ROTATION_SPEED, activeTicks / (double) BLADE_SPINUP_TICKS)
-            * timeSinceLastTick;
-        return bladeRotation + offset;
+            + bladeSpeedOffset;
+        return bladeRotation + (offset * timeSinceLastTick);
     }
 
     @Override
