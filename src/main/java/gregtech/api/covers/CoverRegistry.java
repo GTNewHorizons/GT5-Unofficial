@@ -1,15 +1,17 @@
 package gregtech.api.covers;
 
+import static gregtech.GTMod.GT_FML_LOGGER;
+
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import gregtech.GTMod;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
 
+import gregtech.GTMod;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.GUIColorOverride;
 import gregtech.api.interfaces.ITexture;
@@ -19,8 +21,6 @@ import gregtech.api.util.GTUtility;
 import gregtech.common.covers.Cover;
 import gregtech.common.covers.CoverDecorative;
 import gregtech.common.covers.CoverNone;
-
-import static gregtech.GTMod.GT_FML_LOGGER;
 
 public final class CoverRegistry {
 
