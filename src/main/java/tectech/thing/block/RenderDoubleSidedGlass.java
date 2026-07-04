@@ -89,7 +89,7 @@ public class RenderDoubleSidedGlass implements ISimpleBlockRenderingHandler {
             renderer.renderFaceZNeg(block, x, y, z, side);
             renderer.renderMinZ = 0;
         }
-        // West
+        // East
         if (shouldRenderSide(block, world, x, y, z, ForgeDirection.EAST)) {
             IIcon side = getWorldIcon(ForgeDirection.EAST, world, x, y, z, block);
             renderer.renderMinX = OFFSET_HI;
