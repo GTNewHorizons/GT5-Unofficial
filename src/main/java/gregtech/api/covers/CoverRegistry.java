@@ -121,6 +121,7 @@ public final class CoverRegistry {
         } catch (Exception e) {
             GT_FML_LOGGER.error("Encountered Exception while loading cover.");
             GTMod.logStackTrace(e);
+            cover = NO_COVER;
         }
         return cover;
     }
