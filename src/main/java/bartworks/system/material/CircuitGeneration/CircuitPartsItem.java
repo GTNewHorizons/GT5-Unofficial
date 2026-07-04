@@ -45,6 +45,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTOreDictUnificator;
+import gtPlusPlus.core.material.MaterialMisc;
 
 /**
  * This class is used for all items to circuit generation. Such as: Circuit Imprints, Sliced Circuits and the wraps.
@@ -83,6 +84,15 @@ public class CircuitPartsItem extends Item {
             .fluidInputs(Materials.SolderingAlloy.getMolten(4 * INGOTS))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_EV)
+            .requiresCleanRoom()
+            .addTo(autoclaveRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(ItemList.RawImprintBoard.get(1))
+            .itemOutputs(ItemList.ImprintBoard.get(1))
+            .fluidInputs(MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(4 * INGOTS))
+            .duration(15 * SECONDS)
+            .eut(TierEU.RECIPE_UEV)
             .requiresCleanRoom()
             .addTo(autoclaveRecipes);
 
