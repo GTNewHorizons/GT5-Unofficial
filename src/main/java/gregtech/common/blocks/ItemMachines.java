@@ -74,7 +74,7 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
     public static IMetaTileEntity getMetaTileEntity(ItemStack aStack) {
         if (GTUtility.isStackInvalid(aStack)) return null;
         if (!(aStack.getItem() instanceof ItemMachines)) return null;
-        if (aStack.getItemDamage() < 0 || aStack.getItemDamage() > GregTechAPI.METATILEENTITIES.length) return null;
+        if (aStack.getItemDamage() < 0 || aStack.getItemDamage() >= GregTechAPI.METATILEENTITIES.length) return null;
         return GregTechAPI.METATILEENTITIES[aStack.getItemDamage()];
     }
 
@@ -223,8 +223,9 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
     public String getItemStackDisplayName(ItemStack aStack) {
         String aName = super.getItemStackDisplayName(aStack);
         final short aDamage = (short) getDamage(aStack);
-        final IMetaTileEntity metaTE = GregTechAPI.METATILEENTITIES[aDamage];
-        if (aDamage >= 0 && aDamage < GregTechAPI.METATILEENTITIES.length && metaTE != null) {
+        if (aDamage >= 0 && aDamage < GregTechAPI.METATILEENTITIES.length) {
+            final IMetaTileEntity metaTE = GregTechAPI.METATILEENTITIES[aDamage];
+            if (metaTE == null) return aName;
             if (metaTE instanceof ILocalizedMetaPipeEntity localMetaTE) {
                 return localMetaTE.getLocalizedName();
             }
@@ -236,8 +237,8 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
     public void onCreated(ItemStack aStack, World aWorld, EntityPlayer aPlayer) {
         super.onCreated(aStack, aWorld, aPlayer);
         final short tDamage = (short) getDamage(aStack);
-        if ((tDamage < 0)
-            || ((tDamage >= GregTechAPI.METATILEENTITIES.length) && (GregTechAPI.METATILEENTITIES[tDamage] != null))) {
+        if (tDamage >= 0 && tDamage < GregTechAPI.METATILEENTITIES.length
+            && GregTechAPI.METATILEENTITIES[tDamage] != null) {
             GregTechAPI.METATILEENTITIES[tDamage].onCreated(aStack, aWorld, aPlayer);
         }
     }
