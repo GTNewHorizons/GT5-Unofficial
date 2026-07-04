@@ -20,6 +20,7 @@ import java.util.List;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -33,8 +34,10 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.GTMod;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
@@ -45,7 +48,6 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.recipe.maps.FuelBackend;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.ErrorType;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrors;
@@ -55,7 +57,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.tooltip.TooltipHelper;
 
 public class MTEExtremeCombustionEngine extends MTEExtendedPowerMultiBlockBase<MTEExtremeCombustionEngine>
-    implements ISurvivalConstructable {
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     protected int casingAmount;
     protected int turbineCasingAmount;
@@ -91,26 +93,21 @@ public class MTEExtremeCombustionEngine extends MTEExtendedPowerMultiBlockBase<M
             'C',
             buildHatchAdder(MTEExtremeCombustionEngine.class).atLeast(Muffler, Maintenance)
                 .casingIndex(Casings.RobustTungstenSteelMachineCasing.textureId)
-                .hint(1)
+                .hint(2)
                 .buildAndChain(
                     onElementPass(x -> ++x.casingAmount, Casings.RobustTungstenSteelMachineCasing.asElement())))
         .addElement(
             'D',
-            buildHatchAdder(MTEExtremeCombustionEngine.class).atLeast(InputHatch, InputHatch, InputHatch)
+            buildHatchAdder(MTEExtremeCombustionEngine.class).atLeast(InputHatch)
                 .casingIndex(Casings.TungstensteelTurbineCasing.textureId)
-                .hint(2)
+                .hint(1)
                 .buildAndChain(
                     onElementPass(x -> ++x.turbineCasingAmount, Casings.TungstensteelTurbineCasing.asElement())))
         .addElement('E', Casings.ChemicallyInertMachineCasing.asElement())
         .addElement('F', Casings.PTFEPipeCasing.asElement())
         .addElement('G', Casings.ExtremeEngineIntakeCasing.asElement())
         .addElement('H', ofFrame(Materials.Polytetrafluoroethylene))
-        .addElement(
-            'I',
-            buildHatchAdder(MTEExtremeCombustionEngine.class).atLeast(Dynamo)
-                .casingIndex(Casings.RobustTungstenSteelMachineCasing.textureId)
-                .hint(3)
-                .buildAndChain(Casings.RobustTungstenSteelMachineCasing.asElement()))
+        .addElement('I', Dynamo.newAny(Casings.RobustTungstenSteelMachineCasing.textureId, 3))
         .build();
 
     @Override
@@ -126,29 +123,38 @@ public class MTEExtremeCombustionEngine extends MTEExtendedPowerMultiBlockBase<M
         String waitPower = TooltipHelper.effText(3.0f);
 
         tt.addMachineType("Combustion Generator, ECE")
-            .addInfo(GTUtility.translate("gt.multiblock.DieselEngine.desc1_1", lubricantRate))
-            .addInfo(GTUtility.translate("gt.multiblock.DieselEngine.desc2_1", oxygenRate))
-            .addInfo(GTUtility.translate("gt.multiblock.DieselEngine.default_output", defaultOutput, defaultEfficiency))
-            .addInfo(GTUtility.translate("gt.multiblock.DieselEngine.boosted_output", boostedOutput, boostedEfficiency))
-            .addInfo(GTUtility.translate("gt.multiblock.DieselEngine.wait_power", waitPower))
-            .addInfo(GTUtility.translate("gt.multiblock.DieselEngine.intake_warning2"))
+            .addInfo(StatCollector.translateToLocalFormatted("gt.multiblock.DieselEngine.desc1_1", lubricantRate))
+            .addInfo(StatCollector.translateToLocalFormatted("gt.multiblock.DieselEngine.desc2_1", oxygenRate))
+            .addInfo(
+                StatCollector.translateToLocalFormatted(
+                    "gt.multiblock.DieselEngine.default_output",
+                    defaultOutput,
+                    defaultEfficiency))
+            .addInfo(
+                StatCollector.translateToLocalFormatted(
+                    "gt.multiblock.DieselEngine.boosted_output",
+                    boostedOutput,
+                    boostedEfficiency))
+            .addInfo(StatCollector.translateToLocalFormatted("gt.multiblock.DieselEngine.wait_power", waitPower))
+            .addInfo(StatCollector.translateToLocalFormatted("gt.multiblock.DieselEngine.intake_warning2"))
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(10, 5, 5, false)
+            .beginStructureBlock(5, 10, 5, false)
             .addController("Front left, 2nd layer")
-            .addCasingInfoMin("Robust Tungstensteel Machine Casing", 30, false)
-            .addCasingInfoExactly("Steel Gear Box Casing", 6, false)
-            .addCasingInfoExactly("Extreme Engine Intake Casing", 12, false)
-            .addCasingInfoExactly("PTFE Frame Box", 32, false)
-            .addCasingInfoExactly("PTFE Pipe Casing", 10, false)
-            .addCasingInfoMin("Tungstensteel Turbine Casing", 4, false)
-            .addCasingInfoExactly("Tungstensteel Firebox Casing", 12, false)
-            .addCasingInfoExactly("Chemically Inert Machine Casing", 30, false)
-            .addDynamoHatch("Back center", 3)
-            .addMaintenanceHatch("Any Robust Tungstensteel Machine Casing NOT touching a gearbox", 1)
-            .addMufflerHatch("Any Robust Tungstensteel Machine Casing NOT touching a gearbox", 1)
-            .addInputHatch("High Rating Fuel, next to a Gear Box", 2)
-            .addInputHatch("Lubricant, next to a Gear Box", 2)
-            .addInputHatch("Liquid Oxygen, optional, next to a Gear Box", 2)
+            .addCasing("30-33", "Robust Tungstensteel Machine Casing", false)
+            .addCasing("32", "PTFE Frame Box", false)
+            .addCasing("30", "Chemically Inert Machine Casing", false)
+            .addCasing("20", "PTFE Pipe Casing", false)
+            .addCasing("12", "Tungstensteel Firebox Casing", false)
+            .addCasing("12", "Extreme Engine Intake Casing", false)
+            .addCasing("4-7", "Tungstensteel Turbine Casing", false)
+            .addCasing("6", "Steel Gear Box Casing", false)
+            .addDynamoHatch("1", "Right center casing", 3)
+            .addMaintenanceHatch("1", "Any tungstensteel machine casing NOT next to a gearbox", 2)
+            .addMufflerHatch("1", "Any tungstensteel machine casing NOT next to a gearbox", 2)
+            .addInputHatch("1+", "Any tungstensteel machine casing next to a gearbox", 1)
+            .addAir("3x4 area above the extreme engine intake casings")
+            .addStructureInfo("")
+            .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.DynamoLimit"))
             .addStructureAuthors(EnumChatFormatting.GOLD + "N7Paddy")
             .toolTipFinisher();
         return tt;
@@ -167,29 +173,20 @@ public class MTEExtremeCombustionEngine extends MTEExtendedPowerMultiBlockBase<M
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
-        if (side == aFacing) {
-            if (aActive) return new ITexture[] { Casings.RobustTungstenSteelMachineCasing.getCasingTexture(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_EXTREME_DIESEL_ENGINE_ACTIVE)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_EXTREME_DIESEL_ENGINE_ACTIVE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { Casings.RobustTungstenSteelMachineCasing.getCasingTexture(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_EXTREME_DIESEL_ENGINE)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_EXTREME_DIESEL_ENGINE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-        }
-        return new ITexture[] { Casings.RobustTungstenSteelMachineCasing.getCasingTexture() };
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            OVERLAY_FRONT_EXTREME_DIESEL_ENGINE,
+            OVERLAY_FRONT_EXTREME_DIESEL_ENGINE_GLOW,
+            OVERLAY_FRONT_EXTREME_DIESEL_ENGINE_ACTIVE,
+            OVERLAY_FRONT_EXTREME_DIESEL_ENGINE_ACTIVE_GLOW);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Casings.RobustTungstenSteelMachineCasing.getCasingTexture();
     }
 
     @Override
@@ -262,8 +259,6 @@ public class MTEExtremeCombustionEngine extends MTEExtendedPowerMultiBlockBase<M
         casingAmount = 0;
         turbineCasingAmount = 0;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z, errors)) return;
-        checkHasMufflerHatch(errors);
-        checkHasMaintenanceHatch(errors);
         checkCasingMin(errors, casingAmount, 30);
         if (turbineCasingAmount < 4) {
             errors.add(
@@ -273,8 +268,9 @@ public class MTEExtremeCombustionEngine extends MTEExtendedPowerMultiBlockBase<M
                     turbineCasingAmount,
                     4));
         }
+        checkHasMaintenanceHatch(errors);
+        checkHasMufflerHatch(errors);
         checkHasInputHatch(errors);
-        checkHatchMin(errors, Dynamo, 1);
     }
 
     @Override

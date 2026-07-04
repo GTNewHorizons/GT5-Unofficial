@@ -108,29 +108,31 @@ public class MTEWireTracerModule extends MTENanochipAssemblyModuleBase<MTEWireTr
             .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.wire_tracer.action", TOOLTIP_CCs))
             .addSeparator()
             .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.wire_tracer.flavor.1")))
-            .beginStructureBlock(7, 8, 7, false)
+            .beginStructureBlock(7, 7, 8, false)
             .addController(translateToLocal("GT5U.tooltip.nac.interface.structure.module_controller"))
             // Nanochip Reinforcement Casing
-            .addCasingInfoExactly(translateToLocal("gt.blockcasings12.2.name"), 46, false)
+            .addCasing("46", translateToLocal("gt.blockcasings12.2.name"), false)
             // Nanochip Mesh Interface Casing
-            .addCasingInfoExactly(translateToLocal("gt.blockcasings12.1.name"), 28, false)
+            .addCasing("28", translateToLocal("gt.blockcasings12.1.name"), false)
             // Nanochip Complex Glass
-            .addCasingInfoExactly(translateToLocal("gt.blockglass1.8.name"), 25, false)
+            .addCasing("25", translateToLocal("gt.blockglass1.8.name"), false)
             // Superconductor Base UHV Frame Box
-            .addCasingInfoExactly(
-                translateToLocal("gt.blockframes.10.name")
-                    .replace("%material", Materials.SuperconductorUHVBase.getLocalizedName()),
-                20,
-                false)
+            .addCasing("20", "Superconductor Base UHV Frame Box", false)
             // Superconductor Base UEV Sheetmetal
-            .addCasingInfoExactly(
-                OrePrefixes.sheetmetal.getDefaultLocalNameForItem(Materials.SuperconductorUEVBase),
-                1,
-                false)
-            .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCI)
-            .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCO)
-            .addStructureInfoSeparator()
-            .addStructureInfo(translateToLocal("GT5U.tooltip.nac.interface.structure.module_description"))
+            .addCasing("1", OrePrefixes.sheetmetal.getDefaultLocalNameForItem(Materials.SuperconductorUEVBase), false)
+            .addMiscHatch(
+                "0+",
+                TOOLTIP_VCI_LONG,
+                translateToLocal("GT5U.tooltip.nac.interface.structure.module_hatches"),
+                3)
+            .addMiscHatch(
+                "0+",
+                TOOLTIP_VCO_LONG,
+                translateToLocal("GT5U.tooltip.nac.interface.structure.module_hatches"),
+                3)
+            .addStructureInfo("")
+            .addStructureFooter(translateToLocal("GT5U.tooltip.nac.interface.structure.module_cost"))
+            .addStructureFooter(translateToLocal("GT5U.tooltip.nac.interface.structure.module_power"))
             .toolTipFinisher();
     }
 

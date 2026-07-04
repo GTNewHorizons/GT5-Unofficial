@@ -58,8 +58,8 @@ import gregtech.api.metatileentity.CoverableTileEntity;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
 import gregtech.common.covers.Cover;
-import gregtech.common.render.GTCopiedBlockTextureRender;
 import gregtech.common.render.GTRendererBlock;
+import gregtech.common.render.IIconTexture;
 import gregtech.common.tileentities.storage.MTEQuantumChest;
 import gtPlusPlus.xmod.gregtech.common.tileentities.redstone.MTERedstoneLamp;
 
@@ -261,8 +261,8 @@ public class BlockMachines extends GTGenericBlock implements IDebugableBlock, IT
         final TileEntity tTileEntity = blockAccess.getTileEntity(x, y, z);
         if (tTileEntity instanceof BaseMetaTileEntity tile) {
             if (tile.getMetaTileEntity() instanceof ICasingTextureProvider textureProvider) {
-                if (textureProvider.getCasingTexture() instanceof GTCopiedBlockTextureRender tex) {
-                    return tex.getIcon(ordinalSide, null);
+                if (textureProvider.getCasingTexture() instanceof IIconTexture texture) {
+                    return texture.getIcon(ordinalSide, null);
                 }
             }
         }

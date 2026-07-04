@@ -351,7 +351,7 @@ ig.nei.siphon.planet=Planet
 ig.nei.siphon.depth=Depth
 
 # Structure and Tooltip
-ig.siphon.structure.ControllerPos=Front center of the middle structure
+ig.siphon.structure.ControllerPos=Front center of the main body
 ig.siphon.structure.ControllerPos2=Front bottom center
 ig.siphon.structure.HatchRequirement=Must have exactly §61§7 of each hatch!
 ig.siphon.structure.AnySiphonCasing=Any Planetary Siphon Casing
@@ -365,11 +365,12 @@ ig.elevator.structure.ProjectModule=Project Modules
 ig.elevator.structure.Motor=Space Elevator Motor
 ig.elevator.structure.FrameNeutronium=Neutronium Frame Box
 ig.elevator.structure.Parametrizer=Parametrizer
-ig.elevator.structure.DataInputHatch=Data Input Hatch
-ig.elevator.structure.OpticalConnector=Optical Connector
+ig.elevator.structure.DataInputHatch=Optical Reception Connector
 ig.elevator.structure.AnyBaseCasingWithHintNumber1=Any Space Elevator Base Casing With Hint Number 1
 ig.elevator.structure.AnyBaseCasingWithHintNumber2=Any Space Elevator Base Casing With Hint Number 2
 ig.elevator.structure.AnyBaseCasingWithHintNumber3=Any Space Elevator Base Casing With Hint Number 3
+ig.elevator.structure.SharedPower=Receives power from the base structure
+ig.elevator.structure.SharedResources=Receives power, plasma, and computation from the base structure
 ig.structure.contributors=Contributors
 ig.structure.programming=Programming
 ig.structure.design=Design

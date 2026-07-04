@@ -1,8 +1,16 @@
 package tectech.thing.metaTileEntity.multi.base.parameter;
 
+import java.util.function.Function;
+
 import net.minecraft.nbt.NBTTagCompound;
 
+import com.cleanroommc.modularui.api.drawable.IKey;
+import com.cleanroommc.modularui.api.value.IIntValue;
 import com.cleanroommc.modularui.value.sync.EnumSyncValue;
+
+import gregtech.common.gui.modularui.widget.EnumCycleButtonWidget;
+import gregtech.common.gui.modularui.widget.WidgetConfigurator;
+import gregtech.common.gui.modularui.widget.settings.SettingsPanelBuilder;
 
 public class EnumParameter<T extends Enum<T>> extends Parameter<T, EnumSyncValue<T, ?>> {
 
@@ -49,5 +57,17 @@ public class EnumParameter<T extends Enum<T>> extends Parameter<T, EnumSyncValue
     @Override
     protected EnumSyncValue<T, ?> createSyncHandler() {
         return new EnumSyncValue<>(enumClass, this::getValue, this::setValue).allowC2S();
+    }
+
+    @Override
+    public void addToSettingsPanel(SettingsPanelBuilder builder, IKey label, WidgetConfigurator<?> configure,
+        String prefix, Function<Parameter<?, ?>, WidgetConfigurator<?>> configurator) {
+        addEnumCycleButtonWithCast(builder, label, this.getEnumClass(), this.getSyncHandler(), configure);
+    }
+
+    @SuppressWarnings("unchecked")
+    private static <E extends Enum<E>> void addEnumCycleButtonWithCast(SettingsPanelBuilder builder, IKey label,
+        Class<E> clazz, IIntValue<?> value, WidgetConfigurator<?> configure) {
+        builder.addEnumCycleButton(label, clazz, value, (WidgetConfigurator<EnumCycleButtonWidget<E>>) configure);
     }
 }

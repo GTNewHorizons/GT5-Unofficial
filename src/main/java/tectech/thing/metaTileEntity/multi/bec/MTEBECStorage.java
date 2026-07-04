@@ -22,6 +22,7 @@ import javax.annotation.Nonnull;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidRegistry;
 
 import org.jetbrains.annotations.NotNull;
@@ -43,7 +44,6 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.StructureWrapperTooltipBuilder;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.IntFraction;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -142,25 +142,31 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
         StructureWrapperTooltipBuilder<MTEBECStorage> tt = new StructureWrapperTooltipBuilder<>(structure);
 
         tt.addMachineType("BEC Storage, Entangled Condensate Storage")
-            .addMarkdown(new ResourceLocation("gregtech", "bec-storage"));
+            .addMarkdown(new ResourceLocation("gregtech", "bec-storage"))
+            .addSupportAny();
 
-        tt.beginStructureBlock();
-        tt.addController(GTUtility.translate("GT5U.chat.bec-storage-controller-pos"));
-        tt.addHatchNameOverride(BECHatches.Hatch, CustomItemList.Hatch_BEC_Connector.get(1));
-        tt.addAllCasingInfo(
-            Arrays.asList(
-                SuperconductivePlasmaEnergyConduit,
-                ElectromagneticallyIsolatedCasing,
-                FineStructureConstantManipulator,
-                ConflictInducementCasing,
-                PeaceEnforcementCasing,
-                CondensateTransformativeCoil,
-                CondensateGuidanceCoil,
-                ElectromagneticWaveguide),
-            null);
-
-        tt.toolTipFinisher(GTAuthors.AuthorPineapple);
-
+        tt.beginStructureBlock(45, 45, 17, true)
+            .addController(StatCollector.translateToLocal("GT5U.tooltip.bec-storage.controller-pos"))
+            .addCasing("1045", SuperconductivePlasmaEnergyConduit.getLocalizedName(), false)
+            .addCasing("1236", ElectromagneticWaveguide.getLocalizedName(), false)
+            .addCasing("896", ConflictInducementCasing.getLocalizedName(), false)
+            .addCasing("568", PeaceEnforcementCasing.getLocalizedName(), false)
+            .addCasing("508", CondensateGuidanceCoil.getLocalizedName(), false)
+            .addCasing("439-442", FineStructureConstantManipulator.getLocalizedName(), false)
+            .addCasing("0-343", ElectromagneticallyIsolatedCasing.getLocalizedName(), false)
+            .addCasing("292", CondensateTransformativeCoil.getLocalizedName(), false)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("GT5U.tooltip.bec-storage.hatch-pos"), 1)
+            .addMiscHatch(
+                "1-4",
+                "Bose-Einstein Condensate Hatch",
+                StatCollector.translateToLocal("GT5U.tooltip.bec-storage.bec-hatch-pos"),
+                2)
+            .addMiscHatch(
+                "0+",
+                "Bose-Einstein Condensate Detector Hatch",
+                StatCollector.translateToLocal("GT5U.tooltip.bec-storage.hatch-pos"),
+                1)
+            .toolTipFinisher(GTAuthors.AuthorPineapple);
         return tt;
     }
 
@@ -215,6 +221,7 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
     @Override
     public void stopMachine(@Nonnull ShutDownReason reason) {
         super.stopMachine(reason);
+        contentsChanged = true;
         storedCondensate.clear();
     }
 
@@ -237,6 +244,7 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
     public void addCondensate(IAEFluidStack stack) {
         if (mMaxProgresstime <= 0) {
             // Should be cleared by stopMachine, but just to be sure let's do it again here
+            contentsChanged = true;
             storedCondensate.clear();
             return;
         }
@@ -251,6 +259,7 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
     public boolean removeCondensate(IAEFluidStack stack) {
         if (mMaxProgresstime <= 0) {
             // Should be cleared by stopMachine, but just to be sure let's do it again here
+            contentsChanged = true;
             storedCondensate.clear();
             return false;
         }

@@ -172,16 +172,15 @@ public class MTEThoriumHighTempReactor extends MTEEnhancedMultiBlockBase<MTEThor
                     + " of coolant multiplied by efficiency")
             .addInfo("Uses " + formatNumber(powerUsage) + " EU/t")
             .addInfo("One Operation takes 9 hours")
-            .beginStructureBlock(11, 12, 11, true)
+            .beginStructureBlock(11, 11, 12, true)
             .addController("Front bottom center")
-            .addCasingInfoMin("Radiation Proof Casing", 500, false)
-            .addStructureInfo("Corners and the 2 touching blocks are air (cylindric)")
-            .addInputBus("Any top layer Casing", 2)
-            .addInputHatch("Any top layer Casing", 2)
-            .addOutputBus("Any bottom layer Casing", 1)
-            .addOutputHatch("Any bottom layer Casing", 1)
-            .addEnergyHatch("Any bottom layer Casing", 1)
-            .addMaintenanceHatch("Any bottom layer Casing", 1)
+            .addCasing("500-531", "Radiation Proof Machine Casing", false)
+            .addEnergyHatch("1+", "Any bottom casing", 1)
+            .addMaintenanceHatch("1", "Any bottom casing", 1)
+            .addInputBus("1+", "Any top casing", 2)
+            .addInputHatch("1+", "Any top casing", 2)
+            .addOutputBus("1+", "Any bottom casing", 1)
+            .addOutputHatch("1+", "Any bottom casing", 1)
             .toolTipFinisher();
         return tt;
     }
@@ -207,12 +206,12 @@ public class MTEThoriumHighTempReactor extends MTEEnhancedMultiBlockBase<MTEThor
         this.mCasingAmount = 0;
         if (!this.checkPiece(STRUCTURE_PIECE_MAIN, 5, 11, 0, errors)) return;
         checkCasingMin(errors, this.mCasingAmount, 500);
-        checkHasMaintenanceHatch(errors);
-        checkHasInputHatch(errors);
-        checkHasOutputHatch(errors);
-        checkHasInputBus(errors);
-        checkHasOutputBus(errors);
         checkHasEnergyHatch(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasInputBus(errors);
+        checkHasInputHatch(errors);
+        checkHasOutputBus(errors);
+        checkHasOutputHatch(errors);
     }
 
     @Override

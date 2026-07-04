@@ -305,42 +305,29 @@ public class MTEBeamCrafter extends MTEBeamMultiBase<MTEBeamCrafter> implements 
                     "gt.blockmachines.multimachine.beamcrafting.beamcrafter.tooltip8",
                     MAX_PARALLEL))
             .addSeparator()
-            .beginStructureBlock(17, 5, 11, false)
-            .addController(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttcontroller"))
-            .addCasingInfoMin(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttcasing"),
-                224,
+            .addSupportAny()
+            .beginStructureBlock(11, 17, 5, true)
+            .addController("Front center")
+            .addCasing(
+                "224-227",
+                StatCollector.translateToLocal("gt.blockmachines.multimachine.beamcrafting.ttcasing"),
                 false)
-            .addCasingInfoExactly(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttanyglass"),
-                26,
+            .addCasing("26", "Any Tiered Glass", false)
+            .addCasing(
+                "16",
+                StatCollector.translateToLocal("gt.blockmachines.multimachine.beamcrafting.ttgratecasing"),
                 false)
-            .addCasingInfoExactly(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttgratecasing"),
-                16,
-                false)
-            .addCasingInfoExactly(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttbeaminhatch"),
-                2,
-                false)
-            .addInputBus(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttanycasing"),
-                1)
-            .addOutputBus(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttanycasing"),
-                1)
-            .addInputHatch(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttanycasing"),
-                1)
-            .addOutputHatch(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttanycasing"),
-                1)
-            .addEnergyHatch(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttanycasing"),
-                1)
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
-            .addTecTechHatchInfo()
+            .addMiscHatch(
+                "2",
+                StatCollector.translateToLocal("gtnhlanth.tt.hatch.beaminput"),
+                "Center of both ends of the structure",
+                2)
+            .addEnergyHatch("1+", "Any accelerator casing", 1)
+            .addInputAny("1+", "Any accelerator casing", 1)
+            .addOutputBus("1+", "Any accelerator casing", 1)
+            .addOutputHatch("0+", "Any accelerator casing", 1)
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher(GTAuthors.AuthorHamCorp);
         return tt;
     }
