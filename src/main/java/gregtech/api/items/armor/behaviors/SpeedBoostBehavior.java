@@ -87,7 +87,7 @@ public class SpeedBoostBehavior implements IArmorBehavior {
         if (speed <= 0) return;
 
         if (player.capabilities.isFlying) {
-            speed *= 0.75F;
+            speed *= 0.85F;
         }
         if (player.isInWater()) {
             speed *= 0.25F;
@@ -101,8 +101,9 @@ public class SpeedBoostBehavior implements IArmorBehavior {
 
         if (!context.isRemote()) return;
 
+        float dampening = 0.39F - (Math.min(speed, 1.2F) * 0.22F);
         float currentSpeed = (player.onGround || player.capabilities.isFlying || player.isOnLadder()) ? speed
-            : speed * 0.285F;
+            : speed * dampening;
 
         if (player.moveForward > 0F) {
             player.moveFlying(0F, 1F, currentSpeed);

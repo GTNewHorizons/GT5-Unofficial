@@ -55,20 +55,8 @@ public class JetpackBehavior implements IArmorBehavior {
     private void performFlying(@NotNull ArmorContext context) {
         EntityPlayer player = context.getPlayer();
 
-        float groundSpeedBoost = context.getArmorState().speedBoostMulti;
-        if (groundSpeedBoost < 1.0F) groundSpeedBoost = 1.0F;
-
-        final float AIR_EFFICIENCY = 0.25F;
-        float jetpackMultiplier = 1.0F + ((groundSpeedBoost - 1.0F) * AIR_EFFICIENCY);
-
         double currentAccel = jetpackStats.getVerticalAcceleration() * (player.motionY < 0.3D ? 2.5D : 1.0D);
         double currentSpeedVertical = jetpackStats.getVerticalSpeed() * (player.isInWater() ? 0.4D : 1.0D);
-
-        float speedSideways = (float) ((player.isSneaking() ? jetpackStats.getSidewaysSpeed() * 0.5f
-            : jetpackStats.getSidewaysSpeed()) * jetpackMultiplier);
-        float speedForward = (float) (player.isSprinting() ? speedSideways * jetpackStats.getSprintSpeedModifier()
-            : speedSideways);
-
         boolean ascend = ArmorKeybinds.VANILLA_JUMP.isKeyDown(player);
         boolean descend = ArmorKeybinds.VANILLA_SNEAK.isKeyDown(player);
         boolean isHovering = context.isBehaviorActive(BehaviorName.JetpackHover);
@@ -93,17 +81,36 @@ public class JetpackBehavior implements IArmorBehavior {
                         context.hasBehavior(BehaviorName.JetpackPerfectHover) ? 0
                             : -jetpackStats.getVerticalHoverSlowSpeed());
                 }
+                float speedSideways = (float) (player.isSneaking() ? jetpackStats.getSidewaysSpeed() * 0.5f
+                    : jetpackStats.getSidewaysSpeed());
+                float speedForward = (float) (player.isSprinting()
+                    ? speedSideways * jetpackStats.getSprintSpeedModifier()
+                    : speedSideways);
+
+                float speedMulti = Math.max(context.getArmorState().speedBoostMulti, 1.0F);
+
+                float forceMultiplier = 1.0F + (6.0F * (speedMulti - 1.0F) / speedMulti);
+
+                float finalMulti = (float) Math.sqrt(forceMultiplier);
+
+                float currentForward = speedForward * finalMulti;
+                float currentSideways = speedSideways * finalMulti;
 
                 if (!isGuiOpen) {
-                    if (ArmorKeybinds.VANILLA_FORWARD.isKeyDown(player)) player.moveFlying(0F, 1F, speedForward);
-                    if (ArmorKeybinds.VANILLA_BACK.isKeyDown(player)) player.moveFlying(0F, -1F, speedSideways * 0.8f);
-                    if (ArmorKeybinds.VANILLA_LEFT.isKeyDown(player)) player.moveFlying(1F, 0F, speedSideways);
-                    if (ArmorKeybinds.VANILLA_RIGHT.isKeyDown(player)) player.moveFlying(-1F, 0F, speedSideways);
+                    if (ArmorKeybinds.VANILLA_FORWARD.isKeyDown(player))
+                        player.moveFlying(0, currentForward, currentForward);
+                    if (ArmorKeybinds.VANILLA_BACK.isKeyDown(player))
+                        player.moveFlying(0, -currentSideways, currentSideways * 0.8f);
+                    if (ArmorKeybinds.VANILLA_LEFT.isKeyDown(player))
+                        player.moveFlying(currentSideways, 0, currentSideways);
+                    if (ArmorKeybinds.VANILLA_RIGHT.isKeyDown(player))
+                        player.moveFlying(-currentSideways, 0, currentSideways);
                 }
 
                 if (!player.getEntityWorld().isRemote) {
                     player.fallDistance = 0;
                 }
+                // spawnParticle(player.getEntityWorld(), player, jetpackStats.getParticle());
             }
         }
     }
