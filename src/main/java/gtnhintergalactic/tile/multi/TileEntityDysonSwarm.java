@@ -8,7 +8,6 @@ import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTUtility.filterValidMTEs;
-import static gregtech.api.util.GTUtility.translate;
 import static net.minecraft.util.EnumChatFormatting.*;
 import static tectech.thing.metaTileEntity.multi.base.TTMultiblockBase.HatchElement.DynamoMulti;
 import static tectech.thing.metaTileEntity.multi.base.TTMultiblockBase.HatchElement.InputData;
@@ -25,6 +24,7 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.WorldProvider;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -180,7 +180,7 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
             buildHatchAdder(TileEntityDysonSwarm.class)
                 .atLeast(InputData)
                 .casingIndex(IGTextures.CASING_INDEX_COMMAND)
-                .hint(4)
+                .hint(3)
                 .buildAndChain(ofBlock(GregTechAPI.sBlockCasingsDyson, 5))) // Command Center Base Casing
         .addElement('p', ofBlock(GregTechAPI.sBlockCasingsDyson, 6)) // Command Center Primary Windings
         .addElement('s', ofBlock(GregTechAPI.sBlockCasingsDyson, 7)) // Command Center Secondary Windings
@@ -236,14 +236,14 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
     @Override
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 10, 18, 3, errors)) return;
-        checkHasInputBus(errors);
-        checkHasInputHatch(errors);
         if (eInputData.isEmpty()) {
             errors.add(StructureErrorRegistry.MISSING_DATA_HATCH);
         }
         if (mDynamoHatches.isEmpty() && eDynamoMulti.isEmpty()) {
             errors.add(StructureErrors.hatchCount(ErrorType.TOO_FEW, Dynamo, 0, 1));
         }
+        checkHasInputBus(errors);
+        checkHasInputHatch(errors);
     }
 
     @Override
@@ -435,50 +435,56 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
         tt.addMachineType(translate("gt.blockmachines.multimachine.ig.dyson.type"));
         if (TooltipUtil.dysonLoreText != null) tt.addInfo(ITALIC + addFormattedString(TooltipUtil.dysonLoreText));
 
-        tt.addInfo(translate("gt.blockmachines.multimachine.ig.dyson.desc1"))
+        tt.addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.ig.dyson.desc1"))
             .addInfo(
-                translate(
+                StatCollector.translateToLocalFormatted(
                     "gt.blockmachines.multimachine.ig.dyson.desc2",
                     getDecimalFormat().format(IGConfig.dysonSwarm.euPerModule)))
             .addInfo(
-                translate(
+                StatCollector.translateToLocalFormatted(
                     "gt.blockmachines.multimachine.ig.dyson.desc3",
                     getDecimalFormat().format(IGConfig.dysonSwarm.destroyModuleChance),
                     getDecimalFormat().format(IGConfig.dysonSwarm.destroyModuleA),
                     getDecimalFormat().format(IGConfig.dysonSwarm.destroyModuleB)))
-            .addInfo(translate("gt.blockmachines.multimachine.ig.dyson.desc4"))
+            .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.ig.dyson.desc4"))
             .addInfo(
-                translate(
+                StatCollector.translateToLocalFormatted(
                     "gt.blockmachines.multimachine.ig.dyson.desc5",
                     getDecimalFormat().format(IGConfig.dysonSwarm.coolantConsumption),
                     IGConfig.dysonSwarm.getCoolantStack()
                         .getLocalizedName()))
-            .addInfo(translate("gt.blockmachines.multimachine.ig.dyson.desc6"))
-            .addInfo(translate("gt.blockmachines.multimachine.ig.dyson.desc7"))
-            .addTecTechHatchInfo()
-            .beginStructureBlock(16, 20, 16, false)
-            .addController("Front bottom center of the Dyson Swarm Energy Receiver Base")
-            .addDynamoHatch(translate("ig.dyson.structure.dynamo"), 1)
-            .addInputBus("1 - 11", 2)
-            .addInputHatch("1 - 11", 2)
-            .addOtherStructurePart(translate("ig.dyson.structure.optical"), "1 - 24", 4)
-            .addStructureInfo("")
-            .addStructureInfo(ITALIC + translate("ig.dyson.structure.additionally"))
-            .addCasingInfoRange(translate("ig.dyson.structure.receiver.base"), 53, 64, false)
-            .addCasingInfoExactly(translate("ig.dyson.structure.receiver.dish"), 81, false)
-            .addCasingInfoRange(translate("ig.dyson.structure.deployment.base"), 62, 72, false)
-            .addCasingInfoExactly(translate("ig.dyson.structure.deployment.core"), 1, false)
-            .addCasingInfoExactly(translate("ig.dyson.structure.deployment.magnet"), 32, false)
-            .addCasingInfoRange(translate("ig.dyson.structure.control.base"), 115, 138, false)
-            .addCasingInfoExactly(translate("ig.dyson.structure.control.primary"), 20, false)
-            .addCasingInfoExactly(translate("ig.dyson.structure.control.secondary"), 12, false)
-            .addCasingInfoExactly(translate("ig.dyson.structure.control.toroid"), 128, false)
-            .addCasingInfoExactly(translate("ig.dyson.structure.base.floor"), 256, false)
-            .addCasingInfoExactly(translate("ig.dyson.structure.base.coil"), 9, false)
-            .addCasingInfoExactly(translate("ig.dyson.structure.base.hermetic"), 1, false)
-            .addCasingInfoExactly(translate("ig.dyson.structure.base.frameTitanium"), 16, false)
-            .addCasingInfoExactly(translate("ig.dyson.structure.base.frameHSSS"), 23, false)
-            .addCasingInfoExactly(translate("ig.dyson.structure.base.frameUHVBase"), 64, false)
+            .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.ig.dyson.desc6"))
+            .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.ig.dyson.desc7"))
+            .addSupportAny()
+            .beginStructureBlock(16, 16, 20, false)
+            .addController("Front bottom center of the receiver")
+            .addCasing("256", StatCollector.translateToLocal("ig.dyson.structure.base.floor"), false)
+            .addCasing("115-138", StatCollector.translateToLocal("ig.dyson.structure.control.base"), false)
+            .addCasing("128", StatCollector.translateToLocal("ig.dyson.structure.control.toroid"), false)
+            .addCasing("81", StatCollector.translateToLocal("ig.dyson.structure.receiver.dish"), false)
+            .addCasing("62-72", StatCollector.translateToLocal("ig.dyson.structure.deployment.base"), false)
+            .addCasing("64", StatCollector.translateToLocal("ig.dyson.structure.base.frameUHVBase"), false)
+            .addCasing("53-64", StatCollector.translateToLocal("ig.dyson.structure.receiver.base"), false)
+            .addCasing("32", StatCollector.translateToLocal("ig.dyson.structure.deployment.magnet"), false)
+            .addCasing("23", StatCollector.translateToLocal("ig.dyson.structure.base.frameHSSS"), false)
+            .addCasing("20", StatCollector.translateToLocal("ig.dyson.structure.control.primary"), false)
+            .addCasing("16", StatCollector.translateToLocal("ig.dyson.structure.base.frameTitanium"), false)
+            .addCasing("12", StatCollector.translateToLocal("ig.dyson.structure.control.secondary"), false)
+            .addCasing("9", StatCollector.translateToLocal("ig.dyson.structure.base.coil"), false)
+            .addCasing("1", StatCollector.translateToLocal("ig.dyson.structure.deployment.core"), false)
+            .addCasing("1", StatCollector.translateToLocal("ig.dyson.structure.base.hermetic"), false)
+            .addMiscHatch(
+                "1+",
+                StatCollector.translateToLocal("gt.blockmachines.hatch.datain.tier.07.name"),
+                "Any center side control center casing",
+                3)
+            .addMiscHatch(
+                "1+",
+                StatCollector.translateToLocal("GT5U.tooltip.structure.laser_source_hatch"),
+                "Any center side receiver casing",
+                1)
+            .addInputBus("1+", "Any center side deployment unit casing", 2)
+            .addInputHatch("1+", "Any center side deployment unit casing", 2)
             .toolTipFinisher();
         return tt;
     }
