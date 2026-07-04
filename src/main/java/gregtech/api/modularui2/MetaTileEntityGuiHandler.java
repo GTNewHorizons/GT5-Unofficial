@@ -16,7 +16,6 @@ import com.cleanroommc.modularui.network.NetworkUtils;
 
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.BaseMetaTileEntity;
 
 public final class MetaTileEntityGuiHandler extends AbstractUIFactory<PosGuiData> {
 
@@ -55,12 +54,9 @@ public final class MetaTileEntityGuiHandler extends AbstractUIFactory<PosGuiData
                 return guiHolder;
             }
             if (NetworkUtils.isClient() && baseTE.getMetaTileID() > 0) {
-                BaseMetaTileEntity fakeBase = new BaseMetaTileEntity();
-                fakeBase.xCoord = data.getX();
-                fakeBase.yCoord = data.getY();
-                fakeBase.zCoord = data.getZ();
-                fakeBase.setInitialValuesAsNBT(null, (short) baseTE.getMetaTileID());
-                guiHolder = castGuiHolder(fakeBase.getMetaTileEntity());
+                // Client desynced: mID is set but the MetaTileEntity is invalid. Recreate it in place.
+                baseTE.setInitialValuesAsNBT(null, (short) baseTE.getMetaTileID());
+                guiHolder = castGuiHolder(baseTE.getMetaTileEntity());
                 if (guiHolder != null) {
                     return guiHolder;
                 }
