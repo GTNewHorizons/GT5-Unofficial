@@ -94,14 +94,15 @@ public class SpeedBoostBehavior implements IArmorBehavior {
         }
 
         boolean isJumping = ArmorKeybinds.VANILLA_JUMP.isKeyDown(player);
-        boolean isMoving = player.moveForward != 0 || player.moveStrafing != 0 ||
-            (player.capabilities.isFlying && (player.isSneaking() || isJumping));
+        boolean isMoving = player.moveForward != 0 || player.moveStrafing != 0
+            || (player.capabilities.isFlying && (player.isSneaking() || isJumping));
 
         if (!isMoving || !context.drainEnergy(1)) return;
 
         if (!context.isRemote()) return;
 
-        float currentSpeed = (player.onGround || player.capabilities.isFlying || player.isOnLadder()) ? speed : speed * 0.280F;
+        float currentSpeed = (player.onGround || player.capabilities.isFlying || player.isOnLadder()) ? speed
+            : speed * 0.285F;
 
         if (player.moveForward > 0F) {
             player.moveFlying(0F, 1F, currentSpeed);

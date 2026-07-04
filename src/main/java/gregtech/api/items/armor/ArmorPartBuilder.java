@@ -6,6 +6,7 @@ import java.util.Collections;
 
 import net.minecraft.util.StatCollector;
 
+import gregtech.api.enums.ItemList;
 import gregtech.api.items.armor.MechArmorAugmentRegistries.ArmorType;
 import gregtech.api.items.armor.behaviors.BehaviorName;
 import gregtech.api.items.armor.behaviors.IArmorBehavior;
@@ -28,6 +29,8 @@ public abstract class ArmorPartBuilder<Self extends ArmorPartBuilder<Self>> {
     private Collection<BehaviorName> incompatibleBehaviors = Collections.emptyList();
     /// The armor types this part can fit into
     private Collection<ArmorType> allowedArmorTypes = Arrays.asList(ArmorType.values());
+    /// The augments that prevent this part from being installed
+    private Collection<ItemList> incompatibleAugments = Collections.emptyList();
 
     protected void onMutated() {
         if (finished) {
@@ -88,6 +91,10 @@ public abstract class ArmorPartBuilder<Self extends ArmorPartBuilder<Self>> {
         return incompatibleBehaviors;
     }
 
+    public Collection<ItemList> getIncompatibleAugments() {
+        return incompatibleAugments;
+    }
+
     public Self providesBehaviors(Collection<IArmorBehavior> behaviors) {
         onMutated();
         this.providedBehaviors = Collections.unmodifiableCollection(behaviors);
@@ -106,6 +113,12 @@ public abstract class ArmorPartBuilder<Self extends ArmorPartBuilder<Self>> {
         return (Self) this;
     }
 
+    public Self incompatibleAugments(Collection<ItemList> augments) {
+        onMutated();
+        this.incompatibleAugments = Collections.unmodifiableCollection(augments);
+        return (Self) this;
+    }
+
     public Self providesBehaviors(IArmorBehavior... behaviors) {
         onMutated();
         this.providedBehaviors = Collections.unmodifiableCollection(Arrays.asList(behaviors));
@@ -121,6 +134,12 @@ public abstract class ArmorPartBuilder<Self extends ArmorPartBuilder<Self>> {
     public Self incompatibleBehaviors(BehaviorName... behaviors) {
         onMutated();
         this.incompatibleBehaviors = Collections.unmodifiableCollection(Arrays.asList(behaviors));
+        return (Self) this;
+    }
+
+    public Self incompatibleAugments(ItemList... augments) {
+        onMutated();
+        this.incompatibleAugments = Collections.unmodifiableCollection(Arrays.asList(augments));
         return (Self) this;
     }
 

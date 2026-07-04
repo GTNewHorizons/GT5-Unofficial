@@ -3651,6 +3651,7 @@ GT5U.armor.message.disabled=%s Disabled
 GT5U.armor.message.installed=%s Installed
 GT5U.armor.message.systems_online=Armor Systems Online... Active keybindings:
 GT5U.armor.message.speed_set=New speed: %sx
+GT5U.armor.message.jump_boost_set=New jump boost: %sx
 
 GT5U.armor.tooltip.hold_shift=Hold Shift for more info
 GT5U.armor.tooltip.armorframe=Armor Frame: %s
@@ -6948,6 +6949,8 @@ key.gt.toggle_inertiacanceling=Toggle Inertia Canceling
 key.gt.toggle_omnimovement=Toggle Omni Movement
 key.gt.speed_increase=Increase Speed
 key.gt.speed_decrease=Decrease Speed
+key.gt.jump_increase=Increase Jump Boost
+key.gt.jump_decrease=Decrease Jump Boost
 key.gt.force_field=Toggle Force Field
 
 # Tooltips for GT Tools

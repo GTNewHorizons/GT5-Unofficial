@@ -239,6 +239,11 @@ public class MechArmorAugmentRegistries {
             return this.builder.getIncompatibleBehaviors();
         }
 
+        @Override
+        public Collection<ItemList> getIncompatibleAugments() {
+            return this.builder.getIncompatibleAugments();
+        }
+
         public int getProtectionSlots() {
             return this.builder.getProtectionSlots();
         }
@@ -368,6 +373,11 @@ public class MechArmorAugmentRegistries {
             return this.builder.getIncompatibleBehaviors();
         }
 
+        @Override
+        public Collection<ItemList> getIncompatibleAugments() {
+            return this.builder.getIncompatibleAugments();
+        }
+
         public int getTier() {
             return builder.getTier();
         }
@@ -445,16 +455,17 @@ public class MechArmorAugmentRegistries {
             .setMinimumCoreTier(1)
             .setMaxStack(2)
         ),
-        ApprenticeStriders(ItemList.ApprenticeStriders, new AugmentBuilder()
+        ApprenticeStriders(ItemList.Augment_ApprenticeStriders, new AugmentBuilder()
             .setId("ApprenticeStriders")
             .setItemId("augmentapprenticestriders")
             .fitsInto(ArmorType.Boots)
             .providesBehaviors(
                 new SpeedBoostBehavior(3.0F),
-                new JumpBoostBehavior(2.0F),
+                new JumpBoostBehavior(3.0F),
                 StepAssistBehavior.INSTANCE,
                 new VisDiscountBehavior(4)
             )
+            .incompatibleAugments(ItemList.Augment_ArchmageStriders, ItemList.Augment_EldritchStriders)
             .setMinimumCoreTier(1)
             .setCategory(AugmentCategory.Movement)
         ),
@@ -543,6 +554,7 @@ public class MechArmorAugmentRegistries {
             .fitsInto(ArmorType.Boots)
             .providesBehaviors(SpeedBoostBehavior.MECH_ARMOR_INSTANCE)
             .setMinimumCoreTier(2)
+            .incompatibleAugments(ItemList.Augment_EldritchStriders)
             .setMaxStack(2)
             .setCategory(AugmentCategory.Movement)
         ),
@@ -564,16 +576,17 @@ public class MechArmorAugmentRegistries {
             .setMinimumCoreTier(2)
             .setCategory(AugmentCategory.Movement)
         ),
-        ArchmageStriders(ItemList.ArchmageStriders, new AugmentBuilder()
+        ArchmageStriders(ItemList.Augment_ArchmageStriders, new AugmentBuilder()
             .setId("ArchmageStriders")
             .setItemId("augmentarchmagestriders")
             .fitsInto(ArmorType.Boots)
             .providesBehaviors(
                 new SpeedBoostBehavior(5.0F),
-                new JumpBoostBehavior(3.0F),
+                new JumpBoostBehavior(4.0F),
                 StepAssistBehavior.INSTANCE,
                 new VisDiscountBehavior(5)
             )
+            .incompatibleAugments(ItemList.Augment_ApprenticeStriders, ItemList.Augment_EldritchStriders)
             .setMinimumCoreTier(2)
             .setCategory(AugmentCategory.Movement)
         ),
@@ -619,17 +632,17 @@ public class MechArmorAugmentRegistries {
             .setMinimumCoreTier(3)
             .setCategory(AugmentCategory.Movement)
         ),
-        // TODO: add speed as an incompatible augment
         EldritchStriders(ItemList.Augment_EldritchStriders, new AugmentBuilder()
             .setId("EldritchStriders")
             .setItemId("augmenteldritchstriders")
             .fitsInto(ArmorType.Boots)
             .providesBehaviors(
                 new SpeedBoostBehavior(10.0F),
-                new JumpBoostBehavior(4.0F),
+                new JumpBoostBehavior(5.0F),
                 StepAssistBehavior.INSTANCE,
                 new VisDiscountBehavior(10)
             )
+            .incompatibleAugments(ItemList.Augment_ApprenticeStriders, ItemList.Augment_ArchmageStriders, ItemList.Augment_SpeedBoost)
             .setMinimumCoreTier(3)
             .setCategory(AugmentCategory.Movement)
         );
@@ -654,6 +667,10 @@ public class MechArmorAugmentRegistries {
         @Override
         public ItemStack getItem(int amount) {
             return item.get(amount);
+        }
+
+        public ItemList getListItem() {
+            return item;
         }
 
         @Override
@@ -699,6 +716,11 @@ public class MechArmorAugmentRegistries {
         @Override
         public Collection<BehaviorName> getIncompatibleBehaviors() {
             return this.builder.getIncompatibleBehaviors();
+        }
+
+        @Override
+        public Collection<ItemList> getIncompatibleAugments() {
+            return this.builder.getIncompatibleAugments();
         }
 
         public IIcon getTexture(ArmorType armorType) {

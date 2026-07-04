@@ -1,19 +1,49 @@
 package gregtech.api.items.armor.behaviors;
 
+import java.util.Set;
+
 import net.minecraft.nbt.NBTTagCompound;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.google.common.collect.ImmutableSet;
+import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
+
+import bartworks.util.MathUtils;
 import gregtech.api.items.armor.ArmorContext;
+import gregtech.api.items.armor.ArmorKeybinds;
+import gregtech.api.items.armor.ArmorState;
+import gregtech.api.util.GTUtility;
 
 public class JumpBoostBehavior implements IArmorBehavior {
 
-    public static final JumpBoostBehavior MECH_ARMOR_INSTANCE = new JumpBoostBehavior(1.0F);
+    public static final JumpBoostBehavior MECH_ARMOR_INSTANCE = new JumpBoostBehavior(2.0F);
 
-    private final float boost;
+    private final float jumpMaxMulti;
+
+    private final float JUMP_INCREMENT = 0.25f;
 
     public JumpBoostBehavior(float boost) {
-        this.boost = boost;
+        this.jumpMaxMulti = boost;
+    }
+
+    @Override
+    public void onKeyPressed(@NotNull ArmorContext context, SyncedKeybind keyPressed, boolean isDown) {
+        if (!isDown) return;
+
+        ArmorState state = context.getArmorState();
+
+        if (keyPressed == ArmorKeybinds.JUMP_INCREASE_KEYBIND) {
+            state.jumpBoostLevel += JUMP_INCREMENT;
+        } else if (keyPressed == ArmorKeybinds.JUMP_DECREASE_KEYBIND) {
+            state.jumpBoostLevel -= JUMP_INCREMENT;
+        }
+
+        state.jumpBoostLevel = MathUtils.clamp(state.jumpBoostLevel, 1, jumpMaxMulti);
+
+        GTUtility.sendChatToPlayer(
+            context.getPlayer(),
+            GTUtility.translate("GT5U.armor.message.jump_boost_set", state.jumpBoostLevel));
     }
 
     @Override
@@ -23,13 +53,24 @@ public class JumpBoostBehavior implements IArmorBehavior {
 
     @Override
     public void configureArmorState(@NotNull ArmorContext context, @NotNull NBTTagCompound stackTag) {
-        context.getArmorState().jumpBoostLevel = boost;
+        float savedBoost = stackTag.getFloat("jumpBoostLevel");
+        context.getArmorState().jumpBoostLevel = Math.max(savedBoost, 1.0F);
+    }
+
+    @Override
+    public void saveArmorState(@NotNull ArmorContext context, @NotNull NBTTagCompound stackTag) {
+        stackTag.setFloat("jumpBoostLevel", context.getArmorState().jumpBoostLevel);
     }
 
     @Override
     public @NotNull IArmorBehavior merge(@NotNull IArmorBehavior other) {
         if (!(other instanceof JumpBoostBehavior jumpBoost)) return this;
 
-        return new JumpBoostBehavior(this.boost + jumpBoost.boost);
+        return new JumpBoostBehavior(this.jumpMaxMulti + jumpBoost.jumpMaxMulti - 1.0f);
+    }
+
+    @Override
+    public Set<SyncedKeybind> getListenedKeys(@NotNull ArmorContext context) {
+        return ImmutableSet.of(ArmorKeybinds.JUMP_INCREASE_KEYBIND, ArmorKeybinds.JUMP_DECREASE_KEYBIND);
     }
 }

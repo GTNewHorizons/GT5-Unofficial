@@ -28,6 +28,10 @@ public class ArmorKeybinds {
         .createConfigurable("key.gt.force_field", "Gregtech Armor", Keyboard.KEY_K);
     public static final SyncedKeybind HOLO_INVENTORY_KEYBIND = SyncedKeybind
         .createConfigurable("key.gt.toggle_holo_inventory", "Gregtech Armor", Keyboard.KEY_H);
+    public static final SyncedKeybind JUMP_INCREASE_KEYBIND = SyncedKeybind
+        .createConfigurable("key.gt.jump_increase", "Gregtech Armor", Keyboard.KEY_NUMPAD0);
+    public static final SyncedKeybind JUMP_DECREASE_KEYBIND = SyncedKeybind
+        .createConfigurable("key.gt.jump_decrease", "Gregtech Armor", Keyboard.KEY_NUMPAD1);
 
     public static final SyncedKeybind VANILLA_JUMP = SyncedKeybind
         .createFromMC(() -> () -> Minecraft.getMinecraft().gameSettings.keyBindJump);
