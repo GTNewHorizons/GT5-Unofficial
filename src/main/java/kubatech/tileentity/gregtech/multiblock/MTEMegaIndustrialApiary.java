@@ -365,21 +365,28 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
             .addInfo("  - Base processing time: 1 minute")
             .addInfo("  - Uses 1 amp " + voltageTooltipFormatted(5))
             .addInfo("  - Can overclock")
-            .beginStructureBlock(15, 17, 15, false)
+            .beginStructureBlock(15, 15, 17, true)
             .addController("Front center")
-            .addCasingInfoMin("Bronze Plated Bricks", 190, false)
-            .addCasingInfoExactly("Any Tiered Glass", 121, false)
-            .addStructureInfo("The glass tier limits the Energy Input tier")
-            .addStructureInfo("Regular water and IC2 Distilled Water are accepted")
-            .addOtherStructurePart(
-                StatCollector.translateToLocal("kubatech.tooltip.structure.flowers"),
-                "On dirt/grass",
-                2)
-            .addInputBus("Any Casing", 1)
-            .addOutputBus("Any Casing", 1)
-            .addEnergyHatch(GTValues.VN[VoltageIndex.LuV] + "+, any Casing", 1)
-            .addMaintenanceHatch("Any Casing", 1)
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .addCasing("455", "Dirt or Grass", false)
+            .addCasing("190-200", "Bronze Plated Bricks", false)
+            .addCasing("185", "Wood Plank", false)
+            .addCasing("121", "Any Tiered Glass", true)
+            .addCasing("34", "Water", false)
+            .addCasing("24", "Alveary Fan", false)
+            .addCasing("20", "Alveary Heater", false)
+            .addCasing("20", "Alveary Hygroregulator", false)
+            .addCasing("18", "Alveary", false)
+            .addCasing("12", "Alveary Stabiliser", false)
+            .addCasing("9", "Apiary", false)
+            .addCasing("9", "Wood Slab", false)
+            .addCasing("0+", "Flower (depends on bee)", false)
+            .addEnergyHatch("1+", "Any casing (LuV+)", 1)
+            .addMaintenanceHatch("1", "Any casing", 1)
+            .addInputBus("0+", "Any casing", 1)
+            .addOutputBus("1+", "Any casing", 1)
+            .addStructureInfo("")
+            .addStructureFooter("Use regular or distilled water, place manually")
+            .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher(GTAuthors.AuthorKuba, "Runakai");
         return tt;
     }
@@ -674,9 +681,6 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
                 break;
             }
         }
-        checkHasMaintenanceHatch(errors);
-        checkHasEnergyHatch(errors);
-        checkHasOutputBus(errors);
         checkCasingMin(errors, this.mCasing, 190);
         for (MTEHatchEnergy hatchEnergy : this.mEnergyHatches) {
             if (hatchEnergy.mTier < VoltageIndex.LuV) {
@@ -684,6 +688,9 @@ public class MTEMegaIndustrialApiary extends KubaTechGTMultiBlockBase<MTEMegaInd
                 break;
             }
         }
+        checkHasEnergyHatch(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasOutputBus(errors);
         if (errors.isEmpty()) {
             updateMaxSlots();
             needsWaterFill = true;

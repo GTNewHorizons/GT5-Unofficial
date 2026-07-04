@@ -21,7 +21,6 @@ import java.util.Set;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -69,7 +68,7 @@ public class MTESplitterModule extends MTENanochipAssemblyModuleBase<MTESplitter
         // Nanochip Mesh Interface Casing
         .addElement(
             'A',
-            buildHatchAdder(MTESplitterModule.class).hint(2)
+            buildHatchAdder(MTESplitterModule.class).hint(4)
                 .casingIndex(Casings.NanochipMeshInterfaceCasing.getTextureId())
                 .atLeast(SpecialHatchElement.redstoneHatch)
                 .buildAndChain(Casings.NanochipMeshInterfaceCasing.asElement()))
@@ -156,26 +155,32 @@ public class MTESplitterModule extends MTENanochipAssemblyModuleBase<MTESplitter
             .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.module.splitter.body.4", TOOLTIP_CCs))
             .addSeparator()
             .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.splitter.flavor.1")))
-            .beginStructureBlock(7, 5, 7, false)
+            .beginStructureBlock(7, 7, 5, false)
             .addController(translateToLocal("GT5U.tooltip.nac.interface.structure.module_controller"))
             // Nanochip Reinforcement Casing
-            .addCasingInfoExactly(translateToLocal("gt.blockcasings12.2.name"), 37, false)
+            .addCasing("37", translateToLocal("gt.blockcasings12.2.name"), false)
             // Nanochip Mesh Interface Casing
-            .addCasingInfoExactly(translateToLocal("gt.blockcasings12.1.name"), 18, false)
+            .addCasing("18", translateToLocal("gt.blockcasings12.1.name"), false)
             // Kevlar Frame Box
-            .addCasingInfoExactly(
-                translateToLocal("gt.blockframes.10.name").replace("%material", Materials.Kevlar.getLocalizedName()),
-                10,
-                false)
-            .addStructureInfo(
-                EnumChatFormatting.WHITE + translateToLocal("gt.blockmachines.hatch.splitter.redstone.name")
-                    + ": "
-                    + EnumChatFormatting.GRAY
-                    + translateToLocal("GT5U.tooltip.nac.module.splitter.redstone_hatch"))
-            .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCI)
-            .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCO)
-            .addStructureInfoSeparator()
-            .addStructureInfo(translateToLocal("GT5U.tooltip.nac.interface.structure.module_description"))
+            .addCasing("10", "Kevlar Frame Box", false)
+            .addMiscHatch(
+                "0+",
+                translateToLocal("gt.blockmachines.hatch.splitter.redstone.name"),
+                translateToLocal("GT5U.tooltip.nac.module.splitter.redstone_hatch"),
+                4)
+            .addMiscHatch(
+                "0+",
+                TOOLTIP_VCI_LONG,
+                translateToLocal("GT5U.tooltip.nac.interface.structure.module_hatches"),
+                3)
+            .addMiscHatch(
+                "0+",
+                TOOLTIP_VCO_LONG,
+                translateToLocal("GT5U.tooltip.nac.interface.structure.module_hatches"),
+                3)
+            .addStructureInfo("")
+            .addStructureFooter(translateToLocal("GT5U.tooltip.nac.interface.structure.module_cost"))
+            .addStructureFooter(translateToLocal("GT5U.tooltip.nac.interface.structure.module_power"))
             .toolTipFinisher();
     }
 

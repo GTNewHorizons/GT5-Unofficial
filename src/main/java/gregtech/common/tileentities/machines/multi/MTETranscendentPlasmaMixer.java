@@ -5,7 +5,6 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static gregtech.api.enums.GTAuthors.AuthorColen;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
-import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_DTPF_OFF;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_DTPF_ON;
@@ -76,7 +75,7 @@ public class MTETranscendentPlasmaMixer extends MTEEnhancedMultiBlockBase<MTETra
         .addElement(
             'B',
             buildHatchAdder(MTETranscendentPlasmaMixer.class)
-                .atLeast(ImmutableMap.of(InputHatch, 2, OutputHatch, 1, InputBus, 1, Maintenance, 0))
+                .atLeast(ImmutableMap.of(InputHatch, 2, OutputHatch, 1, InputBus, 1))
                 .casingIndex(DIM_INJECTION_CASING)
                 .hint(1)
                 .buildAndChain(GregTechAPI.sBlockCasings1, DIM_INJECTION_CASING))
@@ -109,23 +108,17 @@ public class MTETranscendentPlasmaMixer extends MTEEnhancedMultiBlockBase<MTETra
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Transcendent Mixer, TPM")
             .addInfo("Assisting in all your DTPF needs!")
-            .addInfo("This multiblock will run in parallel according to the amount set in the parallel menu")
-            .addInfo("All inputs will scale, except time...")
-            .addInfo("All EU is deducted from wireless EU networks only")
-            .beginStructureBlock(5, 7, 5, false)
+            .addInfo("Set the amount of parallels in the controller menu")
+            .addInfo("All inputs scale, except time...")
+            .addInfo("Power is only pulled from wireless networks")
+            .beginStructureBlock(5, 5, 7, true)
             .addController("Front center")
-            .addCasingInfoExactly("Dimensionally Transcendent Casing", 48, false)
-            .addCasingInfoExactly("Dimensional Bridge", 16, false)
-            .addCasingInfoRangeColored(
-                "Dimensional Injection Casing",
-                EnumChatFormatting.GRAY,
-                0,
-                33,
-                EnumChatFormatting.GOLD,
-                false)
-            .addInputBus("Any Dimensional Injection Casing", 1)
-            .addInputHatch("Any Dimensional Injection Casing", 1)
-            .addOutputHatch("Any Dimensional Injection Casing", 1)
+            .addCasing("48", "Dimensionally Transcendent Casing", false)
+            .addCasing("0-35", "Dimensional Injection Casing", false)
+            .addCasing("16", "Dimensional Bridge", false)
+            .addInputBus("0+", "Any injection casing", 1)
+            .addInputHatch("1+", "Any injection casing", 1)
+            .addOutputHatch("1+", "Any injection casing", 1)
             .toolTipFinisher(AuthorColen);
         return tt;
     }
@@ -258,9 +251,6 @@ public class MTETranscendentPlasmaMixer extends MTEEnhancedMultiBlockBase<MTETra
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         // Check the main structure
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFFSET, VERTICAL_OFFSET, DEPTH_OFFSET, errors)) return;
-        // Maintenance hatch not required but left for compatibility.
-        // Don't allow more than 1, no free casing spam!
-        checkHatchMax(errors, Maintenance, 1);
         checkHasInputHatch(errors);
         checkHasOutputHatch(errors);
     }

@@ -176,30 +176,36 @@ public class MTEXLTurbineGas extends MTEXLTurbineBase {
     }
 
     @Override
+    public boolean requiresOutputHatch() {
+        return false;
+    }
+
+    @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Gas Turbine, XLGT")
-            .addInfo("Runs as fast as 16 Large Turbines of the same type")
-            .addInfo("Right-click with screwdriver to enable loose fit")
-            .addInfo("Optimal flow will increase or decrease depending on fitting")
+            .addInfo("Same throughput as 16 LGT with only 12 turbines")
+            .addInfo("Generates power from Gas based on the turbine and fitting")
+            .addInfo("Use a screwdriver to adjust the fitting of the turbines")
             .addInfo("Loose fit increases flow in exchange for efficiency")
-            .addTecTechHatchInfo()
+            .addSupportAny()
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(9, 9, 26, false)
+            .beginStructureBlock(26, 9, 9, true)
             .addController("Front center")
-            .addCasingInfoMin("Reinforced Gas Turbine Casing", 340, false)
-            .addCasingInfoExactly("Any Tiered Glass", 104, false)
-            .addCasingInfoExactly("Stainless Steel Frame Box", 80, false)
-            .addCasingInfoExactly("Steel Pipe Casing", 76, false)
-            .addCasingInfoExactly("MV Solenoid Superconductor Coil", 20, false)
-            .addCasingInfoExactly("Turbine Shaft", 16, false)
-            .addCasingInfoExactly("Steel Gear Box", 7, false)
-            .addInputBus("Any Turbine Casing", 1)
-            .addInputHatch("Any Turbine Casing (Min 1)", 1)
-            .addDynamoHatch("Any Turbine Casing (Min 1)", 1)
-            .addMaintenanceHatch("Any Turbine Casing (Min 1)", 1)
-            .addMufflerHatch("Any Turbine Casing (x4)", 1)
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .addCasing(minCasingAmount() + "-346", "Reinforced Gas Turbine Casing", false)
+            .addCasing("104", "Any Tiered Glass", false)
+            .addCasing("80", "Stainless Steel Frame Box", false)
+            .addCasing("76", "Steel Pipe Casing", false)
+            .addCasing("20", "MV Solenoid Superconductor Coil", false)
+            .addCasing("16", "Turbine Shaft", false)
+            .addCasing("7", "Steel Gear Box Casing", false)
+            .addDynamoHatch("1+", "Any turbine casing", 1)
+            .addMaintenanceHatch("1", "Any turbine casing", 1)
+            .addMufflerHatch("4", "Any turbine casing", 1)
+            .addInputBus("0+", "Any turbine casing", 1)
+            .addInputHatch("1+", "Any turbine casing", 1)
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.BOROGLASS)
             .addStructureAuthors(EnumChatFormatting.GOLD + "VorTex")
             .toolTipFinisher();
         return tt;
@@ -208,11 +214,6 @@ public class MTEXLTurbineGas extends MTEXLTurbineBase {
     @Override
     public int minCasingAmount() {
         return 340;
-    }
-
-    @Override
-    public boolean requiresMufflerHatch() {
-        return true;
     }
 
     @Override

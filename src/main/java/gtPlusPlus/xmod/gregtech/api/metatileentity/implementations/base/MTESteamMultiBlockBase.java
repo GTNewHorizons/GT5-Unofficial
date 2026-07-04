@@ -74,7 +74,7 @@ public abstract class MTESteamMultiBlockBase<T extends MTESteamMultiBlockBase<T>
     public static final Casings bronzeCasing = Casings.BronzePlatedBricks;
     public static final Casings steelCasing = Casings.SolidSteelMachineCasing;
 
-    protected static final String HIGH_PRESSURE_TOOLTIP_NOTICE = "High Pressure Doubles " + EnumChatFormatting.GREEN
+    protected static final String HIGH_PRESSURE_TOOLTIP_NOTICE = "High-Pressure Doubles " + EnumChatFormatting.GREEN
         + "Speed"
         + EnumChatFormatting.GRAY
         + " and "

@@ -2,7 +2,6 @@ package gregtech.common.tileentities.machines.multi;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
-import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.Maintenance;
@@ -16,6 +15,7 @@ import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
@@ -112,20 +112,22 @@ public class MTEOilDrillInfinite extends MTEOilDrillBase {
                 "Base cycle time: "
                     + (baseCycleTime < 20 ? formatNumber(baseCycleTime) + (baseCycleTime == 1 ? " tick" : " ticks")
                         : formatNumber(baseCycleTime / 20.0) + " seconds"))
-            .beginStructureBlock(9, 14, 9, false)
+            .beginStructureBlock(9, 9, 14, false)
             .addController("Front bottom center")
-            .addCasingInfoMin("Mining Neutronium Casing", 90, false)
-            .addCasingInfoExactly("Any Tiered Glass", 20, false)
-            .addCasingInfoExactly("PBI Pipe Casing", 9, false)
-            .addCasingInfoExactly("Advanced Iridium Plated Machine Casing", 12, false)
-            .addCasingInfoExactly("Advanced Computer Casing", 12, false)
-            .addCasingInfoExactly("Neutronium Frame Box", 38, false)
-            .addCasingInfoExactly("Infinity Sheetmetal", 8, false)
-            .addEnergyHatch("1x " + VN[getMinTier()] + "+, Any Mining Neutronium Casing", 1)
-            .addMaintenanceHatch("Any Mining Neutronium Casing", 1)
-            .addInputBus("Programmed Circuits, optional, any Mining Neutronium Casing", 1)
-            .addOutputHatch("Any Mining Neutronium Casing", 1)
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .addCasing("90-103", "Mining Neutronium Casing", false)
+            .addCasing("38", "Neutronium Frame Box", false)
+            .addCasing("20", "Any Tiered Glass", false)
+            .addCasing("12", "Advanced Iridium Plated Machine Casing", false)
+            .addCasing("12", "Advanced Computer Casing", false)
+            .addCasing("9", "PBI Pipe Casing", false)
+            .addCasing("8", "Infinity Sheetmetal", false)
+            .addEnergyHatch("1", "Any mining casing (UHV+)", 1)
+            .addMaintenanceHatch("1", "Any mining casing", 1)
+            .addInputBus("0-1", "Any mining casing", 1)
+            .addOutputHatch("1", "Any mining casing", 1)
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.BOROGLASS)
+            .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.Rain"))
             .addStructureAuthors(EnumChatFormatting.GOLD + "Pix3lated")
             .toolTipFinisher();
         return tt;
@@ -136,13 +138,13 @@ public class MTEOilDrillInfinite extends MTEOilDrillBase {
         updateCoordinates();
         casingAmount = 0;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z, errors)) return;
+        checkCasingMin(errors, casingAmount, 90);
         checkHatches(errors);
         if (!mEnergyHatches.isEmpty()) {
             if (GTUtility.getTier(getMaxInputVoltage()) < getMinTier()) {
                 errors.add(StructureErrors.energyHatchTierTooLow(getMinTier()));
             }
         }
-        checkCasingMin(errors, casingAmount, 90);
     }
 
     @Override
