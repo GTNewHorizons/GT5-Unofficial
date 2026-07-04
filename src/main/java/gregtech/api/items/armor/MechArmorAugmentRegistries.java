@@ -465,7 +465,11 @@ public class MechArmorAugmentRegistries {
                 StepAssistBehavior.INSTANCE,
                 new VisDiscountBehavior(4)
             )
-            .incompatibleAugments(ItemList.Augment_ArchmageStriders, ItemList.Augment_EldritchStriders)
+            .incompatibleAugments(
+                ItemList.Augment_ArchmageStriders,
+                ItemList.Augment_EldritchStriders,
+                ItemList.Augment_StepAssist
+            )
             .setMinimumCoreTier(1)
             .setCategory(AugmentCategory.Movement)
         ),
@@ -545,6 +549,11 @@ public class MechArmorAugmentRegistries {
             .setItemId("augmentstepassist")
             .fitsInto(ArmorType.Boots)
             .providesBehaviors(StepAssistBehavior.INSTANCE)
+            .incompatibleAugments(
+                ItemList.Augment_ArchmageStriders,
+                ItemList.Augment_ApprenticeStriders,
+                ItemList.Augment_EldritchStriders
+            )
             .setMinimumCoreTier(2)
             .setCategory(AugmentCategory.Movement)
         ),
@@ -553,8 +562,8 @@ public class MechArmorAugmentRegistries {
             .setItemId("augmentspeedboost")
             .fitsInto(ArmorType.Boots)
             .providesBehaviors(SpeedBoostBehavior.MECH_ARMOR_INSTANCE)
-            .setMinimumCoreTier(2)
             .incompatibleAugments(ItemList.Augment_EldritchStriders)
+            .setMinimumCoreTier(2)
             .setMaxStack(2)
             .setCategory(AugmentCategory.Movement)
         ),
@@ -563,6 +572,7 @@ public class MechArmorAugmentRegistries {
             .setItemId("augmentjumpboost")
             .fitsInto(ArmorType.Boots)
             .providesBehaviors(JumpBoostBehavior.MECH_ARMOR_INSTANCE)
+            .incompatibleAugments(ItemList.Augment_EldritchStriders)
             .setMinimumCoreTier(2)
             .setMaxStack(2)
             .setCategory(AugmentCategory.Movement)
@@ -586,7 +596,11 @@ public class MechArmorAugmentRegistries {
                 StepAssistBehavior.INSTANCE,
                 new VisDiscountBehavior(5)
             )
-            .incompatibleAugments(ItemList.Augment_ApprenticeStriders, ItemList.Augment_EldritchStriders)
+            .incompatibleAugments(
+                ItemList.Augment_ApprenticeStriders,
+                ItemList.Augment_EldritchStriders,
+                ItemList.Augment_StepAssist
+            )
             .setMinimumCoreTier(2)
             .setCategory(AugmentCategory.Movement)
         ),
@@ -642,7 +656,13 @@ public class MechArmorAugmentRegistries {
                 StepAssistBehavior.INSTANCE,
                 new VisDiscountBehavior(10)
             )
-            .incompatibleAugments(ItemList.Augment_ApprenticeStriders, ItemList.Augment_ArchmageStriders, ItemList.Augment_SpeedBoost)
+            .incompatibleAugments(
+                ItemList.Augment_ApprenticeStriders,
+                ItemList.Augment_ArchmageStriders,
+                ItemList.Augment_SpeedBoost,
+                ItemList.Augment_JumpBoost,
+                ItemList.Augment_StepAssist
+            )
             .setMinimumCoreTier(3)
             .setCategory(AugmentCategory.Movement)
         );

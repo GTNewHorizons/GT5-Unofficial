@@ -34,16 +34,16 @@ public class JumpBoostBehavior implements IArmorBehavior {
         ArmorState state = context.getArmorState();
 
         if (keyPressed == ArmorKeybinds.JUMP_INCREASE_KEYBIND) {
-            state.jumpBoostLevel += JUMP_INCREMENT;
+            state.jumpBoostMulti += JUMP_INCREMENT;
         } else if (keyPressed == ArmorKeybinds.JUMP_DECREASE_KEYBIND) {
-            state.jumpBoostLevel -= JUMP_INCREMENT;
+            state.jumpBoostMulti -= JUMP_INCREMENT;
         }
 
-        state.jumpBoostLevel = MathUtils.clamp(state.jumpBoostLevel, 1, jumpMaxMulti);
+        state.jumpBoostMulti = MathUtils.clamp(state.jumpBoostMulti, 1, jumpMaxMulti);
 
         GTUtility.sendChatToPlayer(
             context.getPlayer(),
-            GTUtility.translate("GT5U.armor.message.jump_boost_set", state.jumpBoostLevel));
+            GTUtility.translate("GT5U.armor.message.jump_boost_set", state.jumpBoostMulti));
     }
 
     @Override
@@ -53,13 +53,13 @@ public class JumpBoostBehavior implements IArmorBehavior {
 
     @Override
     public void configureArmorState(@NotNull ArmorContext context, @NotNull NBTTagCompound stackTag) {
-        float savedBoost = stackTag.getFloat("jumpBoostLevel");
-        context.getArmorState().jumpBoostLevel = Math.max(savedBoost, 1.0F);
+        float savedBoost = stackTag.getFloat("jumpBoostMulti");
+        context.getArmorState().jumpBoostMulti = Math.max(savedBoost, 1.0F);
     }
 
     @Override
     public void saveArmorState(@NotNull ArmorContext context, @NotNull NBTTagCompound stackTag) {
-        stackTag.setFloat("jumpBoostLevel", context.getArmorState().jumpBoostLevel);
+        stackTag.setFloat("jumpBoostMulti", context.getArmorState().jumpBoostMulti);
     }
 
     @Override

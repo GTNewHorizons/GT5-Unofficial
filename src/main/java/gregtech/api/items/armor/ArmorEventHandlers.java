@@ -137,7 +137,7 @@ public class ArmorEventHandlers {
 
             ArmorContext context = MechArmorBase.load(player, boots);
 
-            float displayLevel = context.getArmorState().jumpBoostLevel;
+            float displayLevel = context.getArmorState().jumpBoostMulti;
 
             float effectiveLevel = displayLevel - 1.0f;
             float jumpBoost = 0.0f;
