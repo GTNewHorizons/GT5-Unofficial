@@ -25,6 +25,8 @@ import static gregtech.api.enums.Textures.BlockIcons.casingTexturePages;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 
+import java.util.List;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -44,10 +46,12 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEHatch;
-import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.tooltip.TooltipHelper;
@@ -82,7 +86,7 @@ public class MTEMegaChemicalReactorLegacy extends MegaMultiBlockBase<MTEMegaChem
             .addStaticParallelInfo(Configuration.Multiblocks.megaMachinesMax)
             .addPerfectOCInfo()
             .addSeparator()
-            .addTecTechHatchInfo()
+            .addSupportAny()
             .addMinGlassForLaser(VoltageIndex.UV)
             .addGlassEnergyLimitInfo()
             .addUnlimitedTierSkips()
@@ -98,7 +102,7 @@ public class MTEMegaChemicalReactorLegacy extends MegaMultiBlockBase<MTEMegaChem
             .addInputBus("Hint block ", 1)
             .addOutputBus("Hint block ", 1)
             .addOutputHatch("Hint block ", 1)
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         return tt;
     }
@@ -181,28 +185,25 @@ public class MTEMegaChemicalReactorLegacy extends MegaMultiBlockBase<MTEMegaChem
     // -------------- TEC TECH COMPAT ----------------
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         this.glassTier = -1;
-
-        if (!this.checkPiece(STRUCTURE_PIECE_MAIN, 2, 2, 0) || this.mMaintenanceHatches.size() != 1) return false;
-
+        if (!this.checkPiece(STRUCTURE_PIECE_MAIN, 2, 2, 0, errors)) return;
+        checkOneMaintenanceHatch(errors);
+        checkHasAnyEnergy(errors);
         if (this.glassTier < VoltageIndex.UV) {
             for (MTEHatch hatch : this.mExoticEnergyHatches) {
                 if (hatch.getConnectionType() == MTEHatch.ConnectionType.LASER) {
-                    return false;
-                }
-                if (this.glassTier < hatch.mTier) {
-                    return false;
-                }
-            }
-            for (MTEHatchEnergy mEnergyHatch : this.mEnergyHatches) {
-                if (this.glassTier < mEnergyHatch.mTier) {
-                    return false;
+                    errors.add(StructureErrors.glassTierNotEnough(VoltageIndex.UV));
+                    return;
                 }
             }
         }
-
-        return true;
+        for (MTEHatch mEnergyHatch : this.getExoticAndNormalEnergyHatchList()) {
+            if (this.glassTier < mEnergyHatch.getTierForStructure()) {
+                errors.add(StructureErrorRegistry.ENERGY_TIER_EXCEED_GLASS);
+                break;
+            }
+        }
     }
 
     private static final int CASING_INDEX = 176;

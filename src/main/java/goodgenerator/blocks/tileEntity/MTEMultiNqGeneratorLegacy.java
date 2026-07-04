@@ -3,6 +3,7 @@ package goodgenerator.blocks.tileEntity;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static goodgenerator.main.GGConfigLoader.*;
+import static gregtech.api.enums.HatchElement.Dynamo;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 
 import java.util.ArrayList;
@@ -12,7 +13,6 @@ import java.util.List;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -35,12 +35,16 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.ErrorType;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
@@ -79,7 +83,7 @@ public class MTEMultiNqGeneratorLegacy extends TTMultiblockBase implements ISurv
 
     @Override
     public void construct(ItemStack itemStack, boolean hintsOnly) {
-        structureBuild_EM(mName, 3, 7, 0, itemStack, hintsOnly);
+        buildPiece(mName, itemStack, hintsOnly, 3, 7, 0);
     }
 
     @Override
@@ -109,7 +113,7 @@ public class MTEMultiNqGeneratorLegacy extends TTMultiblockBase implements ISurv
                         buildHatchAdder(MTEMultiNqGeneratorLegacy.class)
                             .atLeast(
                                 tectech.thing.metaTileEntity.multi.base.TTMultiblockBase.HatchElement.DynamoMulti
-                                    .or(gregtech.api.enums.HatchElement.Dynamo),
+                                    .or(Dynamo),
                                 tectech.thing.metaTileEntity.multi.base.TTMultiblockBase.HatchElement.EnergyMulti
                                     .or(gregtech.api.enums.HatchElement.Energy),
                                 gregtech.api.enums.HatchElement.InputHatch,
@@ -242,20 +246,13 @@ public class MTEMultiNqGeneratorLegacy extends TTMultiblockBase implements ISurv
     @Override
     public String[] getInfoData() {
         String[] info = super.getInfoData();
-        info[4] = StatCollector.translateToLocalFormatted(
+        info[4] = IGregTechDeviceInformation.encode(
             "gg.scanner.info.generator.generates",
             EnumChatFormatting.RED + formatNumber(Math.abs(this.trueOutput)) + EnumChatFormatting.RESET);
-        info[6] = StatCollector.translateToLocal("gg.scanner.info.generator.problems") + " "
-            + EnumChatFormatting.RED
-            + (this.getIdealStatus() - this.getRepairStatus())
-            + EnumChatFormatting.RESET
-            + " "
-            + StatCollector.translateToLocal("gg.scanner.info.generator.efficiency")
-            + " "
-            + EnumChatFormatting.YELLOW
-            + trueEff
-            + EnumChatFormatting.RESET
-            + " %";
+        info[6] = IGregTechDeviceInformation.encode(
+            "gg.infodata.generator.problems_efficiency",
+            this.getIdealStatus() - this.getRepairStatus(),
+            trueEff);
         return info;
     }
 
@@ -330,9 +327,15 @@ public class MTEMultiNqGeneratorLegacy extends TTMultiblockBase implements ISurv
     }
 
     @Override
-    public boolean checkMachine_EM(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        return structureCheck_EM(mName, 3, 7, 0) && mMaintenanceHatches.size() == 1
-            && mDynamoHatches.size() + eDynamoMulti.size() == 1;
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
+        if (!checkPiece(mName, 3, 7, 0, errors)) return;
+        checkHasMaintenanceHatch(errors);
+        int dynamoCount = mDynamoHatches.size() + eDynamoMulti.size();
+        if (dynamoCount != 1) {
+            errors.add(StructureErrors.hatchCount(ErrorType.NOT_MATCH, Dynamo, dynamoCount, 1));
+        }
+        checkHasInputHatch(errors);
+        checkHasOutputHatch(errors);
     }
 
     @Override
@@ -396,17 +399,17 @@ public class MTEMultiNqGeneratorLegacy extends TTMultiblockBase implements ISurv
             .addInfo(getExcitedTextFormatted("Molten Naquadah", "20", ExcitedLiquidCoe[2]))
             .addInfo(getExcitedTextFormatted("Molten Atomic Separation Catalyst", "20", ExcitedLiquidCoe[1]))
             .addInfo(getExcitedTextFormatted("Spatially Enlarged Fluid", "20", ExcitedLiquidCoe[0]))
-            .addTecTechHatchInfo()
+            .addSupportAny()
             .beginStructureBlock(7, 8, 7, true)
             .addController("Front bottom center")
             .addCasingInfoExactly("Field Restriction Casing", 48, false)
             .addCasingInfoExactly("Radiation Proof Steel Frame Box", 36, false)
             .addCasingInfoExactly("Tungstensteel Pipe Casing", 6, false)
             .addCasingInfoExactly("Radiation Proof Machine Casing", 121, false)
-            .addDynamoHatch("Any bottom layer casing, only accept ONE!")
-            .addInputHatch("Any bottom layer casing")
-            .addOutputHatch("Any bottom layer casing")
-            .addMaintenanceHatch("Any bottom layer casing")
+            .addDynamoHatch("Any bottom layer Casing, only accept ONE!", 1)
+            .addInputHatch("Any bottom layer Casing", 1)
+            .addOutputHatch("Any bottom layer Casing", 1)
+            .addMaintenanceHatch("Any bottom layer Casing", 1)
             .toolTipFinisher();
         return tt;
     }

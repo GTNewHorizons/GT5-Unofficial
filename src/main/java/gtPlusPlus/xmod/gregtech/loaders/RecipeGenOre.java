@@ -2,13 +2,13 @@ package gtPlusPlus.xmod.gregtech.loaders;
 
 import static gregtech.api.enums.GTValues.RA;
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
+import static gregtech.api.recipe.RecipeMaps.chemicalBathRecipes;
 import static gregtech.api.recipe.RecipeMaps.electrolyzerRecipes;
 import static gregtech.api.recipe.RecipeMaps.hammerRecipes;
 import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.recipe.RecipeMaps.oreWasherRecipes;
 import static gregtech.api.recipe.RecipeMaps.thermalCentrifugeRecipes;
-import static gregtech.api.util.GTRecipeBuilder.SECONDS;
-import static gregtech.api.util.GTRecipeBuilder.TICKS;
+import static gregtech.api.util.GTRecipeBuilder.*;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
 
 import java.util.ArrayList;
@@ -30,6 +30,7 @@ import gregtech.api.util.GTModHandler;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialGenerator;
 import gtPlusPlus.core.material.MaterialStack;
+import gtPlusPlus.core.material.nuclear.MaterialsFluorides;
 import gtPlusPlus.core.material.state.MaterialState;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.core.util.minecraft.MaterialUtils;
@@ -72,19 +73,6 @@ public class RecipeGenOre extends RecipeGenBase {
         Material bonusA = null; // Ni
         Material bonusB = null; // Tin
 
-        if (!material.getComposites()
-            .isEmpty()
-            && material.getComposites()
-                .get(0) != null) {
-            bonusA = material.getComposites()
-                .get(0)
-                .getStackMaterial();
-        } else {
-            bonusA = material;
-        }
-
-        boolean allFailed = false;
-
         // Setup Bonuses
         ArrayList<Material> aMatComp = new ArrayList<>(MaterialUtils.getCompoundMaterialsRecursively(material));
 
@@ -94,58 +82,36 @@ public class RecipeGenOre extends RecipeGenBase {
             }
         }
 
-        ArrayList<Material> amJ = new ArrayList<>();
+        final ArrayList<Material> amJ = new ArrayList<>();
         for (Material g : aMatComp) {
             if (g.hasSolidForm()) {
-                if (getDust(g) != null && getTinyDust(g) != null) {
-                    amJ.add(g);
-                }
+                amJ.add(g);
+                if (amJ.size() >= 2) break;
             }
         }
 
+        boolean allFailed = false;
+        final ArrayList<MaterialStack> composites = material.getComposites();
         if (amJ.size() < 2) {
-            if (material.getComposites()
-                .size() >= 2
-                && material.getComposites()
-                    .get(1) != null) {
-                bonusB = material.getComposites()
-                    .get(1)
+            allFailed = true;
+            if (!composites.isEmpty() && composites.get(0) != null) {
+                bonusA = composites.get(0)
                     .getStackMaterial();
-                // If Secondary Output has no solid output, try the third (If it exists)
-                if (!bonusB.hasSolidForm() && material.getComposites()
-                    .size() >= 3
-                    && material.getComposites()
-                        .get(2) != null) {
-                    bonusB = material.getComposites()
-                        .get(2)
-                        .getStackMaterial();
-                    // If Third Output has no solid output, try the Fourth (If it exists)
-                    if (!bonusB.hasSolidForm() && material.getComposites()
-                        .size() >= 4
-                        && material.getComposites()
-                            .get(3) != null) {
-                        bonusB = material.getComposites()
-                            .get(3)
-                            .getStackMaterial();
-                        // If Fourth Output has no solid output, try the Fifth (If it exists)
-                        if (!bonusB.hasSolidForm() && material.getComposites()
-                            .size() >= 5
-                            && material.getComposites()
-                                .get(4) != null) {
-                            bonusB = material.getComposites()
-                                .get(4)
-                                .getStackMaterial();
-                            // If Fifth Output has no solid output, default out to Stone dust.
-                            if (!bonusB.hasSolidForm()) {
-                                allFailed = true;
-                                bonusB = mStone;
-                            }
-                        }
-                    }
-                }
             } else {
-                allFailed = true;
+                bonusA = material;
             }
+
+            // If Secondary Output has no solid output, try the third (If it exists), then the fourth/fifth
+            for (byte i = 1; i < Math.min(composites.size(), 5); i++) {
+                if (composites.get(i) == null) break;
+                bonusB = composites.get(i)
+                    .getStackMaterial();
+                if (bonusB != null && bonusB.hasSolidForm()) {
+                    allFailed = false;
+                    break;
+                }
+            }
+            // If Fifth Output has no solid output, default {see if(allFailed...)}
         } else {
             bonusA = amJ.get(0);
             bonusB = amJ.get(1);
@@ -161,26 +127,18 @@ public class RecipeGenOre extends RecipeGenBase {
         }
 
         ArrayList<Pair<Integer, Material>> componentMap = new ArrayList<>();
-        for (MaterialStack r : material.getComposites()) {
+        for (MaterialStack r : composites) {
             if (r != null) {
                 componentMap.add(Pair.of(r.getPartsPerOneHundred(), r.getStackMaterial()));
             }
         }
 
         // Need two valid outputs
-        if (bonusA == null || bonusB == null || !bonusA.hasSolidForm() || !bonusB.hasSolidForm()) {
-            if (bonusA == null) {
-                bonusA = mStone;
-            }
-            if (bonusB == null) {
-                bonusB = mStone;
-            }
-            if (!bonusA.hasSolidForm()) {
-                bonusA = mStone;
-            }
-            if (!bonusB.hasSolidForm()) {
-                bonusB = mStone;
-            }
+        if (bonusA == null || !bonusA.hasSolidForm()) {
+            bonusA = mStone;
+        }
+        if (bonusB == null || !bonusB.hasSolidForm()) {
+            bonusB = mStone;
         }
 
         ItemStack matDust = getDust(material);
@@ -190,10 +148,12 @@ public class RecipeGenOre extends RecipeGenBase {
         /**
          * Macerate
          */
+
         // Macerate ore to Crushed
         GTValues.RA.stdBuilder()
             .itemInputs(material.getOre(1))
-            .itemOutputs(material.getCrushed(2))
+            .itemOutputs(material.getCrushed(2), matDustA, dustStone)
+            .outputChances(100_00, 10_00, 50_00)
             .duration(20 * SECONDS)
             .eut(tVoltageMultiplier / 2)
             .addTo(maceratorRecipes);
@@ -201,7 +161,8 @@ public class RecipeGenOre extends RecipeGenBase {
         // Macerate raw ore to Crushed
         GTValues.RA.stdBuilder()
             .itemInputs(material.getRawOre(1))
-            .itemOutputs(material.getCrushed(2))
+            .itemOutputs(material.getCrushed(2), matDustA, dustStone)
+            .outputChances(100_00, 5_00, 50_00)
             .duration(20 * SECONDS)
             .eut(tVoltageMultiplier / 2)
             .addTo(maceratorRecipes);
@@ -251,6 +212,18 @@ public class RecipeGenOre extends RecipeGenBase {
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(oreWasherRecipes);
+
+        // Fluorite Hydrogen Chemical Bath
+        if (material == MaterialsFluorides.FLUORITE) {
+            GTValues.RA.stdBuilder()
+                .itemInputs(material.getCrushed(1))
+                .itemOutputs(material.getCrushedPurified(4), material.getDustImpure(2), material.getDustPurified(1))
+                .outputChances(100_00, 50_00, 10_00)
+                .fluidInputs(Materials.Hydrogen.getGas(1_000))
+                .duration(15 * SECONDS)
+                .eut(TierEU.RECIPE_HV / 2)
+                .addTo(chemicalBathRecipes);
+        }
 
         // Thermal Centrifuge
 

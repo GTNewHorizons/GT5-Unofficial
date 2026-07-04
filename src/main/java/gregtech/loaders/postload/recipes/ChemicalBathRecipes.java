@@ -62,7 +62,7 @@ public class ChemicalBathRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Steel, 1))
-            .itemOutputs(GTModHandler.getIC2Item("reinforcedStone", 1))
+            .itemOutputs(ItemList.Block_ReinforcedConcrete.get(1L))
             .fluidInputs(Materials.Concrete.getMolten(1 * INGOTS))
             .duration(10 * SECONDS)
             .eut(4)
@@ -362,7 +362,7 @@ public class ChemicalBathRecipes implements Runnable {
             .outputChances(10000, 3000, 4000)
             .fluidInputs(Materials.SodiumPersulfate.getFluid(100))
             .duration(40 * SECONDS)
-            .eut(8)
+            .eut(TierEU.RECIPE_ULV)
             .addTo(chemicalBathRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.crushed, Materials.Pyrolusite, 1))
@@ -373,7 +373,7 @@ public class ChemicalBathRecipes implements Runnable {
             .outputChances(10000, 7000, 4000)
             .fluidInputs(Materials.SodiumPersulfate.getFluid(100))
             .duration(40 * SECONDS)
-            .eut(8)
+            .eut(TierEU.RECIPE_ULV)
             .addTo(chemicalBathRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.crushed, Materials.Quartzite, 1))
@@ -384,7 +384,7 @@ public class ChemicalBathRecipes implements Runnable {
             .outputChances(10000, 3000, 4000)
             .fluidInputs(Materials.SodiumPersulfate.getFluid(100))
             .duration(40 * SECONDS)
-            .eut(8)
+            .eut(TierEU.RECIPE_ULV)
             .addTo(chemicalBathRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.crushed, Materials.CertusQuartz, 1))
@@ -395,7 +395,7 @@ public class ChemicalBathRecipes implements Runnable {
             .outputChances(10000, 7000, 4000)
             .fluidInputs(Materials.SodiumPersulfate.getFluid(100))
             .duration(40 * SECONDS)
-            .eut(8)
+            .eut(TierEU.RECIPE_ULV)
             .addTo(chemicalBathRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.crushed, Materials.Bauxite, 1))
@@ -406,7 +406,7 @@ public class ChemicalBathRecipes implements Runnable {
             .outputChances(10000, 5000, 4000)
             .fluidInputs(Materials.SodiumPersulfate.getFluid(100))
             .duration(40 * SECONDS)
-            .eut(8)
+            .eut(TierEU.RECIPE_ULV)
             .addTo(chemicalBathRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.crushed, Materials.Thorium, 1))
@@ -417,7 +417,7 @@ public class ChemicalBathRecipes implements Runnable {
             .outputChances(10000, 3000, 4000)
             .fluidInputs(Materials.SodiumPersulfate.getFluid(100))
             .duration(40 * SECONDS)
-            .eut(8)
+            .eut(TierEU.RECIPE_ULV)
             .addTo(chemicalBathRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.crushed, Materials.Stibnite, 1))
@@ -428,7 +428,7 @@ public class ChemicalBathRecipes implements Runnable {
             .outputChances(10000, 5000, 4000)
             .fluidInputs(Materials.SodiumPersulfate.getFluid(100))
             .duration(40 * SECONDS)
-            .eut(8)
+            .eut(TierEU.RECIPE_ULV)
             .addTo(chemicalBathRecipes);
 
         this.protoHalkoniteRecipes();

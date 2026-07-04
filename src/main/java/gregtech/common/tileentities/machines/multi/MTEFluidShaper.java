@@ -39,9 +39,9 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Textures;
-import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
@@ -52,7 +52,8 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -68,7 +69,8 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
  * DEPRECATED! Will be removed after 2.9 is released. see
  * {@link gregtech.common.tileentities.machines.multi.MTEMassSolidifier} instead
  */
-public class MTEFluidShaper extends MTEExtendedPowerMultiBlockBase<MTEFluidShaper> implements ISurvivalConstructable {
+public class MTEFluidShaper extends MTEExtendedPowerMultiBlockBase<MTEFluidShaper>
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     private static final String MS_LEFT_MID = "leftmid";
     private static final String MS_RIGHT_MID = "rightmid";
@@ -137,42 +139,23 @@ public class MTEFluidShaper extends MTEExtendedPowerMultiBlockBase<MTEFluidShape
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
-        ITexture[] rTexture;
-        if (side == aFacing) {
-            if (aActive) {
-                rTexture = new ITexture[] {
-                    Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 13)),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_CANNER_ACTIVE)
-                        .extFacing()
-                        .build(),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_CANNER_ACTIVE_GLOW)
-                        .extFacing()
-                        .glow()
-                        .build() };
-            } else {
-                rTexture = new ITexture[] {
-                    Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 13)),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_CANNER)
-                        .extFacing()
-                        .build(),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_CANNER_GLOW)
-                        .extFacing()
-                        .glow()
-                        .build() };
-            }
-        } else {
-            rTexture = new ITexture[] { Textures.BlockIcons
-                .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 13)) };
-        }
-        return rTexture;
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            OVERLAY_FRONT_MULTI_CANNER,
+            OVERLAY_FRONT_MULTI_CANNER_GLOW,
+            OVERLAY_FRONT_MULTI_CANNER_ACTIVE,
+            OVERLAY_FRONT_MULTI_CANNER_ACTIVE_GLOW);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Textures.BlockIcons
+            .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 13));
     }
 
     @Override
@@ -196,7 +179,7 @@ public class MTEFluidShaper extends MTEExtendedPowerMultiBlockBase<MTEFluidShape
             .addInfo("Speeds up to a maximum of " + TooltipHelper.speedText(3f))
             .addInfo("Decays at double the rate that it speeds up at")
             .addStaticEuEffInfo(0.8f)
-            .addGlassEnergyLimitInfo(VoltageIndex.UMV)
+            .addGlassEnergyLimitInfo()
             .addInfo(EnumChatFormatting.BLUE + "Pretty Ⱄⱁⰾⰻⰴ, isn't it")
             .beginVariableStructureBlock(9, 33, 5, 5, 5, 5, true)
             .addController("Front bottom center")
@@ -210,7 +193,7 @@ public class MTEFluidShaper extends MTEExtendedPowerMultiBlockBase<MTEFluidShape
             .addInputHatch("Any Casing", 1)
             .addEnergyHatch("Any Casing", 1)
             .addMaintenanceHatch("Any Casing", 1)
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher(AuthorOmdaCZ);
         return tt;
     }
@@ -256,29 +239,35 @@ public class MTEFluidShaper extends MTEExtendedPowerMultiBlockBase<MTEFluidShape
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         width = 0;
         casingAmount = 0;
         glassTier = -1;
 
-        if (checkPiece(STRUCTURE_PIECE_MAIN, 3, 4, 0)) {
-            while (width < (6)) {
-                if (checkPiece(MS_LEFT_MID, 5 + 2 * width, 4, 0) && checkPiece(MS_RIGHT_MID, -4 - 2 * width, 4, 0)) {
-                    width++;
-                } else break;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 3, 4, 0, errors)) return;
+        while (width < 6) {
+            if (checkPiece(MS_LEFT_MID, 5 + 2 * width, 4, 0, errors)
+                && checkPiece(MS_RIGHT_MID, -4 - 2 * width, 4, 0, errors)) {
+                width++;
+            } else {
+                errors.clear();
+                break;
             }
-        } else return false;
-        if (!checkPiece(MS_END, -4 - 2 * width, 4, 0) || !checkPiece(MS_END, 4 + 2 * width, 4, 0)) {
-            return false;
+        }
+        if (!checkPiece(MS_END, -4 - 2 * width, 4, 0, errors) || !checkPiece(MS_END, 4 + 2 * width, 4, 0, errors)) {
+            return;
         }
 
         for (MTEHatchEnergy mEnergyHatch : this.mEnergyHatches) {
-            if (glassTier < VoltageIndex.UMV & mEnergyHatch.mTier > glassTier) {
-                return false;
+            if (mEnergyHatch.mTier > glassTier) {
+                errors.add(StructureErrors.glassTierNotEnough(mEnergyHatch.mTier));
             }
         }
 
-        return casingAmount >= (91 + width * 20);
+        checkCasingMin(errors, casingAmount, 91 + width * 20);
+        checkHasInputHatch(errors);
+        checkHasOutputBus(errors);
+        checkHasMaintenanceHatch(errors);
     }
 
     @Override

@@ -4,16 +4,17 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.onElementPass;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.HatchElement.Dynamo;
-import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTUtility.validMTEList;
+import static gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList.Hatch_Air_Intake;
 import static gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase.GTPPHatchElement.AirIntake;
 import static gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase.GTPPHatchElement.TTDynamo;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
@@ -40,6 +41,8 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
@@ -112,17 +115,16 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
             .addInfo("- 50% of max fuel efficiency at 69k or 207k EU/t output energy")
             .addInfo("- 25% of max fuel efficiency at 98k or 294k EU/t output energy")
             .addInfo("formula: x = input of energy (30000^(1/3)/ x^(1/3)) * (80000^(1/3)/ x^(1/3))")
-            .addTecTechHatchInfo()
-            .beginStructureBlock(3, 3, 10, false)
+            .addSupportAny()
+            .beginStructureBlock(10, 3, 3, false)
             .addController("Front center")
-            .addCasingInfoMin(mCasingName, 64, false)
-            .addCasingInfoMin(mGearboxName, 8, false)
-            .addStructureHint("item.GTPP.air_intake_hatch.name", 1)
-            .addInputBus("Side center line", 1)
-            .addInputHatch("Side center line", 1)
-            .addMaintenanceHatch("Any Block Touching Inconel Reinforced Casing", 1)
-            .addDynamoHatch("Top center line", 2)
-            .addMufflerHatch("Back Center", 3)
+            .addCasing("62-76", "Turbodyne Casing", false)
+            .addCasing("8", "Inconel Reinforced Casing", false)
+            .addMiscHatch("1+", "Air Intake Hatch", "Any center casing", 1, 2)
+            .addDynamoHatch("1+", "Any top center casing", 2)
+            .addMaintenanceHatch("1", "Any center casing", 1, 2)
+            .addMufflerHatch("1", "Back center casing", 3)
+            .addInputHatch("1+", "Any side or bottom center casing", 1)
             .toolTipFinisher();
         return tt;
     }
@@ -143,7 +145,7 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
                 .addElement(
                     'S',
                     buildHatchAdder(MTELargeRocketEngine.class)
-                        .atLeast(ImmutableMap.of(AirIntake, 8, InputBus, 1, InputHatch, 3, Maintenance, 1))
+                        .atLeast(ImmutableMap.of(AirIntake, 8, InputHatch, 1, Maintenance, 1))
                         .casingIndex(getCasingTextureIndex())
                         .hint(1)
                         .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(getCasingBlock(), getCasingMeta()))))
@@ -151,7 +153,7 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
                 .addElement(
                     'T',
                     buildHatchAdder(MTELargeRocketEngine.class)
-                        .atLeast(ImmutableMap.of(AirIntake, 8, Dynamo.or(TTDynamo), 1, Maintenance, 1))
+                        .atLeast(ImmutableMap.of(AirIntake, 1, Dynamo.or(TTDynamo), 1, Maintenance, 1))
                         .casingIndex(getCasingTextureIndex())
                         .hint(2)
                         .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(getCasingBlock(), getCasingMeta()))))
@@ -173,14 +175,19 @@ public class MTELargeRocketEngine extends GTPPMultiBlockBase<MTELargeRocketEngin
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         this.mCasing = 0;
         this.mTecTechDynamoHatches.clear();
         this.mAllDynamoHatches.clear();
         this.mAirIntakes.clear();
-        return checkPiece(this.mName, 1, 1, 0) && this.mCasing >= 64 - 48
-            && !this.mAirIntakes.isEmpty()
-            && checkHatch();
+        if (!checkPiece(this.mName, 1, 1, 0, errors)) return;
+        checkCasingMin(errors, mCasing, 16);
+        if (mAirIntakes.isEmpty()) {
+            errors.add(StructureErrors.missingHatch(Hatch_Air_Intake.get(1)));
+        }
+        checkHasAnyDynamo(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasInputHatch(errors);
     }
 
     @Override

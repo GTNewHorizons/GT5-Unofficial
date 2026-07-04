@@ -27,7 +27,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_GLOW;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
-import static gregtech.api.util.GTUtility.getColoredTierNameFromTier;
 import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.ArrayList;
@@ -69,6 +68,8 @@ import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
@@ -80,7 +81,8 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
-import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -89,7 +91,7 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuitAssemblyLine>
-    implements ISurvivalConstructable {
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     private static final int CASING_INDEX = 16;
     private static final int MACHINEMODE_CAL = 0;
@@ -133,7 +135,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
             'G',
             buildHatchAdder(MTECircuitAssemblyLine.class).atLeast(Energy)
                 .casingIndex(CASING_INDEX)
-                .hint(1)
+                .hint(3)
                 .buildAndChain(GregTechAPI.sBlockCasings3, 10))
         .addElement('g', chainAllGlasses(-1, (te, t) -> te.glassTier = t, te -> te.glassTier))
         .addElement('l', ofBlock(GregTechAPI.sBlockCasings2, 5)) // assembly line casings
@@ -141,13 +143,13 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
             'b',
             buildHatchAdder(MTECircuitAssemblyLine.class).atLeast(InputHatch, Maintenance)
                 .casingIndex(CASING_INDEX)
-                .hint(2)
+                .hint(1)
                 .disallowOnly(ForgeDirection.EAST, ForgeDirection.WEST)
                 .buildAndChain(GregTechAPI.sBlockCasings2, 0))
         .addElement('i', InputBus.newAny(CASING_INDEX, 3, ForgeDirection.DOWN))
         .addElement(
             'I',
-            buildHatchAdder(MTECircuitAssemblyLine.class).atLeast(InputHatch, InputBus, OutputBus)
+            buildHatchAdder(MTECircuitAssemblyLine.class).atLeast(InputBus, OutputBus)
                 .casingIndex(CASING_INDEX)
                 .hint(2)
                 .disallowOnly(ForgeDirection.EAST, ForgeDirection.WEST)
@@ -179,32 +181,37 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
                     + EnumChatFormatting.GRAY)
             .addInfo("Recipe tier in Circuit Assembler mode is at most Energy Hatch tier - 1")
             .addInfo("This mode supports Crafting Input Buffer/Bus and allows bus separation")
-            .beginVariableStructureBlock(2, 7, 3, 3, 3, 3, false)
-            .addStructureInfo("From Bottom to Top, Left to Right")
+            .beginVariableStructureBlock(3, 3, 2, 7, 3, 3, false)
+            .addController("First slice, 3rd layer")
+            .addEnergyHatch("1", "Any layer 3 casing", 3)
+            .addMaintenanceHatch("1", "Any layer 1 side casing", 1)
+            .addInputBus("1-6", "Bottom center of each slice", 2)
+            .addInputHatch("1", "Any layer 1 side casing", 1)
+            .addOutputBus("1", "Bottom center of last slice", 2)
+            .addStructureInfo("")
+            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Base"))
+            .addCasing("4", "Grate Machine Casing", false)
+            .addCasing("4", "EV+ Tiered Glass", false)
+            .addCasing("2", "Solid Steel Machine Casing", false)
+            .addCasing("2", "Assembly Line Casing", false)
+            .addStructureInfo("")
+            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Slice"))
             .addStructureInfo(
-                "Layer 1 - Solid Steel Machine Casing, Input bus (Last Output bus), Solid Steel Machine Casing")
+                EnumChatFormatting.WHITE + "Layer 3: "
+                    + EnumChatFormatting.GRAY
+                    + "Grate Machine Casing, Grate Machine Casing, Grate Machine Casing")
             .addStructureInfo(
-                "Layer 2 - " + getColoredTierNameFromTier((byte) 4)
-                    + "+ Tier Glass, Assembly Line Casing, "
-                    + getColoredTierNameFromTier((byte) 4)
-                    + "+ Tier Glass")
-            .addStructureInfo("Layer 3 - Grate Machine Casing")
-            .addStructureInfo("Up to 7 repeating slices, last is Output Bus")
-            .addController("Layer 3 first slice front")
-            .addOtherStructurePart(
-                "1x " + StatCollector.translateToLocal("GT5U.MBTT.EnergyHatch"),
-                "Any layer 3 casing",
-                1)
-            .addInputHatch("Any layer 1 casing", 2)
-            .addInputBus("As specified on layer 1", 3, 4)
-            .addOutputBus("As specified in final slice on layer 1", 4)
-            .addOtherStructurePart(
-                StatCollector
-                    .translateToLocalFormatted("tooltip.bw.structure.tier_glass", getColoredTierNameFromTier((byte) 4)),
-                "As specified on layer 2",
-                5)
-            .addMaintenanceHatch("Any layer 1 casing", 2)
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+                EnumChatFormatting.WHITE + "Layer 2: "
+                    + EnumChatFormatting.GRAY
+                    + "EV+ Tiered Glass, Assembly Line Casing, EV+ Tiered Glass")
+            .addStructureInfo(
+                EnumChatFormatting.WHITE + "Layer 1: "
+                    + EnumChatFormatting.GRAY
+                    + "Solid Steel Machine Casing, Input Bus, Solid Steel Machine Casing")
+            .addStructureInfo("")
+            .addStructureFooter("Up to 7 total slices, each one allows for 1 more item in recipes")
+            .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.length"))
+            .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         return tt;
     }
@@ -463,63 +470,72 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
         String[] oldInfo = super.getInfoData();
         this.infoDataBuffer = new String[oldInfo.length + 1];
         System.arraycopy(oldInfo, 0, this.infoDataBuffer, 0, oldInfo.length);
-        this.infoDataBuffer[oldInfo.length] = StatCollector.translateToLocalFormatted(
-            "tooltip.cal.imprintedWith",
-            EnumChatFormatting.YELLOW + this.getTypeForDisplay());
+        this.infoDataBuffer[oldInfo.length] = IGregTechDeviceInformation
+            .encode("tooltip.cal.imprintedWith", EnumChatFormatting.YELLOW + this.getTypeForDisplay());
         return this.infoDataBuffer;
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-        int aColorIndex, boolean aActive, boolean aRedstone) {
-        if (side == facing) {
-            if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX), TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_ASSEMBLY_LINE)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_ASSEMBLY_LINE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-        }
-        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX) };
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            OVERLAY_FRONT_ASSEMBLY_LINE,
+            OVERLAY_FRONT_ASSEMBLY_LINE_GLOW,
+            OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE,
+            OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE_GLOW);
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        this.glassTier = -1;
-        if (!this.checkPiece(STRUCTURE_PIECE_FIRST, 0, 0, 0)) {
-            return false;
-        }
-        if (this.glassTier < VoltageIndex.EV) return false;
-        return this.checkMachine(true) || this.checkMachine(false);
+    public ITexture getCasingTexture() {
+        return Textures.BlockIcons.getCasingTextureForId(CASING_INDEX);
     }
 
-    private boolean checkMachine(boolean leftToRight) {
+    @Override
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
+        this.glassTier = -1;
+        if (!checkPiece(STRUCTURE_PIECE_FIRST, 0, 0, 0, errors)) return;
+        if (this.glassTier < VoltageIndex.EV) {
+            errors.add(StructureErrors.glassTierNotEnough(VoltageIndex.EV));
+        }
+        int recognizedLayers = checkMachine(true, errors);
+        // If the l2r structure is already formed, we early exit
+        if (errors.isEmpty()) return;
 
-        for (int i = 1; i < 7; ++i) {
-            if (!this.checkPiece(STRUCTURE_PIECE_NEXT, leftToRight ? -i : i, 0, 0)) {
-                return false;
-            }
-            length = i + 1;
-
-            if (!this.mOutputBusses.isEmpty()) {
-                return this.mEnergyHatches.size() == 1 && this.mMaintenanceHatches.size() == 1;
-            }
+        // Otherwise, we create a new list to hold the error for the r2l structure
+        List<StructureError> errors2 = new ArrayList<>();
+        int recognizedLayers2 = checkMachine(false, errors2);
+        if (errors2.isEmpty()) {
+            // Make sure we remove all error from l2r structure from the real list
+            errors.clear();
+            return;
         }
 
-        return false;
+        // Both failed, we want to emit diagnostic for whoever have more recognized layers
+        if (recognizedLayers < recognizedLayers2) {
+            // Move all diagnostic to the real error list.
+            errors.clear();
+            errors.addAll(errors2);
+        }
+    }
+
+    private int checkMachine(boolean leftToRight, List<StructureError> errors) {
+        for (int i = 1; i < 7; i++) {
+            if (!checkPiece(STRUCTURE_PIECE_NEXT, leftToRight ? -i : i, 0, 0, errors)) return i;
+            length = i + 1;
+            if (!mOutputBusses.isEmpty()) {
+                // Output layer found. Check machine requirements
+                checkOneEnergyHatch(errors);
+                checkHasMaintenanceHatch(errors);
+                checkHasAnyInput(errors);
+                return i;
+            }
+        }
+        errors.add(StructureErrors.of("GT5U.gui.text.structure_error.al_missing_output_bus"));
+        return 16;
     }
 
     @Override

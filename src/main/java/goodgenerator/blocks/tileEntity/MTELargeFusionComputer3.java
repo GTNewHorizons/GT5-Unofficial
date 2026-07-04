@@ -5,13 +5,11 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FUSION3;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FUSION3_GLOW;
 
 import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 
 import bartworks.common.loaders.ItemRegistry;
 import goodgenerator.blocks.tileEntity.base.MTELargeFusionComputer;
 import goodgenerator.loader.Loaders;
-import goodgenerator.util.DescTextLocalization;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ITexture;
@@ -63,20 +61,17 @@ public class MTELargeFusionComputer3 extends MTELargeFusionComputer {
                     + EnumChatFormatting.GRAY
                     + " , you can't do it either")
             .addInfo(createParallelText())
-            .addTecTechHatchInfo()
-            .beginStructureBlock(47, 7, 47, false)
-            .addCasingInfoMin("Fusion Machine Casing MK II", 1664, false)
-            .addCasingInfoMin("Advanced Compact Fusion Coil", 560, false)
-            .addCasingInfoMin("Neutronium Frame Box", 128, false)
-            .addCasingInfoMin("Osmium Reinforced Borosilicate Glass Block", 63, false)
-            .addEnergyHatch("1-32, Hint Block Number 2", 2)
-            .addInputHatch("1-16, Hint Block Number 1", 1)
-            .addOutputHatch("1-16, Hint Block Number 1", 1)
-            .addStructureInfo("Supports Crafting Input Buffer")
-            .addStructureInfo(
-                "Energy Hatches must be " + GTUtility.getColoredTierNameFromTier((byte) energyHatchTier())
-                    + EnumChatFormatting.GRAY
-                    + " or better")
+            .addSupportAny()
+            .beginStructureBlock(47, 47, 7, false)
+            .addCasing("1662-1695", "Fusion Machine Casing Mk-II", false)
+            .addCasing("560", "Advanced Compact Fusion Coil", false)
+            .addCasing("128", "Neutronium Frame Box", false)
+            .addCasing("63-93", "Osmium Reinforced Borosilicate Glass Block", false)
+            .addEnergyHatch("1-32", "Specified casings (UV+)", 2)
+            .addInputHatch("1+", "Specified casings", 1)
+            .addOutputHatch("1+", "Specified casings", 1)
+            .addStructureInfo("")
+            .addStructureFooter("Supports crafting input buffers")
             .toolTipFinisher();
         return tt;
     }
@@ -144,11 +139,6 @@ public class MTELargeFusionComputer3 extends MTELargeFusionComputer {
     @Override
     public ITexture getTextureOverlay() {
         return textureOverlay;
-    }
-
-    @Override
-    public String[] getStructureDescription(ItemStack stackSize) {
-        return DescTextLocalization.addText("LargeFusion3.hint", 9);
     }
 
     @Override

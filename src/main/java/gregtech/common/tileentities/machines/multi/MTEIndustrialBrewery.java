@@ -16,6 +16,8 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 
+import java.util.List;
+
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -29,19 +31,20 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.blocks.BlockCasings10;
 import gregtech.common.misc.GTStructureChannels;
 
 public class MTEIndustrialBrewery extends MTEExtendedPowerMultiBlockBase<MTEIndustrialBrewery>
-    implements ISurvivalConstructable {
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<MTEIndustrialBrewery> STRUCTURE_DEFINITION = StructureDefinition
@@ -100,42 +103,23 @@ public class MTEIndustrialBrewery extends MTEExtendedPowerMultiBlockBase<MTEIndu
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
-        ITexture[] rTexture;
-        if (side == aFacing) {
-            if (aActive) {
-                rTexture = new ITexture[] {
-                    Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 15)),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_BREWERY_ACTIVE)
-                        .extFacing()
-                        .build(),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_BREWERY_ACTIVE_GLOW)
-                        .extFacing()
-                        .glow()
-                        .build() };
-            } else {
-                rTexture = new ITexture[] {
-                    Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 15)),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_BREWERY)
-                        .extFacing()
-                        .build(),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_BREWERY_GLOW)
-                        .extFacing()
-                        .glow()
-                        .build() };
-            }
-        } else {
-            rTexture = new ITexture[] { Textures.BlockIcons
-                .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 15)) };
-        }
-        return rTexture;
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            OVERLAY_FRONT_MULTI_BREWERY,
+            OVERLAY_FRONT_MULTI_BREWERY_GLOW,
+            OVERLAY_FRONT_MULTI_BREWERY_ACTIVE,
+            OVERLAY_FRONT_MULTI_BREWERY_ACTIVE_GLOW);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Textures.BlockIcons
+            .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 15));
     }
 
     @Override
@@ -143,18 +127,18 @@ public class MTEIndustrialBrewery extends MTEExtendedPowerMultiBlockBase<MTEIndu
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Brewery, BBB")
             .addBulkMachineInfo(4, 1.5F, 1F)
-            .beginStructureBlock(3, 5, 3, true)
-            .addController("Front center")
-            .addCasingInfoMin("Reinforced Wooden Casing", 14, false)
-            .addCasingInfoExactly("Any Tiered Glass", 6, false)
-            .addCasingInfoExactly("Steel Frame Box", 4, false)
-            .addInputBus("Any Wooden Casing", 1)
-            .addOutputBus("Any Wooden Casing", 1)
-            .addInputHatch("Any Wooden Casing", 1)
-            .addOutputHatch("Any Wooden Casing", 1)
-            .addEnergyHatch("Any Wooden Casing", 1)
-            .addMaintenanceHatch("Any Wooden Casing", 1)
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .beginStructureBlock(3, 3, 5, true)
+            .addController("Front center, 3rd layer")
+            .addCasing("14-22", "Reinforced Wooden Casing", false)
+            .addCasing("6", "Any Tiered Glass", false)
+            .addCasing("4", "Steel Frame Box", false)
+            .addEnergyHatch("1+", "Any casing", 1)
+            .addMaintenanceHatch("1", "Any casing", 1)
+            .addInputBus("1+", "Any casing", 1)
+            .addInputHatch("1+", "Any casing", 1)
+            .addOutputHatch("1+", "Any casing", 1)
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         return tt;
     }
@@ -177,9 +161,15 @@ public class MTEIndustrialBrewery extends MTEExtendedPowerMultiBlockBase<MTEIndu
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         mCasingAmount = 0;
-        return checkPiece(STRUCTURE_PIECE_MAIN, 1, 2, 0) && mCasingAmount >= 14;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 1, 2, 0, errors)) return;
+        checkCasingMin(errors, mCasingAmount, 14);
+        checkHasEnergyHatch(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasInputBus(errors);
+        checkHasInputHatch(errors);
+        checkHasOutputHatch(errors);
     }
 
     @Override

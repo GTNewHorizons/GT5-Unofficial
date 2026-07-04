@@ -53,6 +53,8 @@ import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
@@ -191,6 +193,16 @@ public class MTESteamMixer extends MTESteamMultiBlockBase<MTESteamMixer> impleme
     }
 
     @Override
+    protected IIconContainer getInactiveGlowOverlay() {
+        return Textures.BlockIcons.OVERLAY_FRONT_STEAM_CENTRIFUGE_GLOW;
+    }
+
+    @Override
+    protected IIconContainer getActiveGlowOverlay() {
+        return Textures.BlockIcons.OVERLAY_FRONT_STEAM_CENTRIFUGE_ACTIVE_GLOW;
+    }
+
+    @Override
     public IStructureDefinition<MTESteamMixer> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
 
@@ -304,35 +316,29 @@ public class MTESteamMixer extends MTESteamMultiBlockBase<MTESteamMixer> impleme
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         tierGearBoxCasing = -1;
         tierPipeCasing = -1;
         tierFrame = -1;
         tierMachineCasing = -1;
         tCountCasing = 0;
-        if (!(revision >= 1 ? checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFFSET, VERTICAL_OFFSET, DEPTH_OFFSET)
-            : checkPiece(STRUCTURE_PIECE_OLD, HORIZONTAL_OFFSET_OLD, VERTICAL_OFFSET_OLD, DEPTH_OFFSET_OLD)))
-            return false;
-        boolean casingCountValid = revision >= 1 ? tCountCasing >= 25 : tCountCasing >= 90;
-        if (tierGearBoxCasing == 1 && tierPipeCasing == 1
-            && tierFrame == 1
-            && tierMachineCasing == 1
-            && casingCountValid
-            && !mSteamInputFluids.isEmpty()) {
+        if (!(revision >= 1 ? checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFFSET, VERTICAL_OFFSET, DEPTH_OFFSET, errors)
+            : checkPiece(STRUCTURE_PIECE_OLD, HORIZONTAL_OFFSET_OLD, VERTICAL_OFFSET_OLD, DEPTH_OFFSET_OLD, errors)))
+            return;
+        if (tierMachineCasing >= 1 && tierMachineCasing == tierGearBoxCasing
+            && tierMachineCasing == tierPipeCasing
+            && tierMachineCasing == tierFrame) {
+            tierMachine = tierMachineCasing;
             updateHatchTexture();
-            tierMachine = 1;
-            return true;
+        } else {
+            errors.add(StructureErrorRegistry.UNKNOWN_TIER);
+            return;
         }
-        if (tierGearBoxCasing == 2 && tierPipeCasing == 2
-            && tierFrame == 2
-            && tierMachineCasing == 2
-            && casingCountValid
-            && !mSteamInputFluids.isEmpty()) {
-            updateHatchTexture();
-            tierMachine = 2;
-            return true;
-        }
-        return false;
+        int casingMin = revision >= 1 ? 25 : 90;
+        checkCasingMin(errors, tCountCasing, casingMin);
+        checkHasSteamInput(errors);
+        checkHasAnyInput(errors);
+        checkHasAnyOutput(errors);
     }
 
     @Override
@@ -379,31 +385,25 @@ public class MTESteamMixer extends MTESteamMultiBlockBase<MTESteamMixer> impleme
         tt.addMachineType(getMachineType())
             .addSteamBulkMachineInfo(8, 1.25f, 0.625f)
             .addInfo(HIGH_PRESSURE_TOOLTIP_NOTICE)
-            .beginStructureBlock(5, 4, 5, false)
+            .beginStructureBlock(5, 5, 4, false)
             .addController("Front center")
-            .addSteamInputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
-            .addInputHatch(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
-            .addSteamOutputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
-            .addOutputHatch(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
-            .addStructureInfo(
-                EnumChatFormatting.WHITE + "Steam Input Hatch "
-                    + EnumChatFormatting.GOLD
-                    + "1"
-                    + EnumChatFormatting.GRAY
-                    + " Any casing")
+            .addSteamHatch("1", "Any normal casing", 1)
+            .addMiscHatch("1+", "Steam Input Bus or Regular Input Hatch", "Any normal casing", 1)
+            .addMiscHatch("1+", "Steam Output Bus or Regular Output Hatch", "Any normal casing", 1)
             .addStructureInfo("")
-            .addStructureInfo(EnumChatFormatting.BLUE + "Basic " + EnumChatFormatting.DARK_PURPLE + "Tier")
-            .addStructureInfo(EnumChatFormatting.GOLD + "25-35x" + EnumChatFormatting.GRAY + " Bronze Plated Bricks")
-            .addStructureInfo(EnumChatFormatting.GOLD + "2x" + EnumChatFormatting.GRAY + " Bronze Gear Box Casing")
-            .addStructureInfo(EnumChatFormatting.GOLD + "1x" + EnumChatFormatting.GRAY + " Bronze Pipe Casing")
-            .addStructureInfo(EnumChatFormatting.GOLD + "4x" + EnumChatFormatting.GRAY + " Bronze Frame Box")
+            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Tiers.Basic"))
+            .addCasing("25-37", "Bronze Plated Bricks", false)
+            .addCasing("4", "Bronze Frame Box", false)
+            .addCasing("2", "Bronze Gear Box Casing", false)
+            .addCasing("1", "Bronze Pipe Casing", false)
             .addStructureInfo("")
-            .addStructureInfo(EnumChatFormatting.BLUE + "High Pressure " + EnumChatFormatting.DARK_PURPLE + "Tier")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "25-35x" + EnumChatFormatting.GRAY + " Solid Steel Machine Casing")
-            .addStructureInfo(EnumChatFormatting.GOLD + "2x" + EnumChatFormatting.GRAY + " Steel Gear Box Casing")
-            .addStructureInfo(EnumChatFormatting.GOLD + "1x" + EnumChatFormatting.GRAY + " Steel Pipe Casing")
-            .addStructureInfo(EnumChatFormatting.GOLD + "4x" + EnumChatFormatting.GRAY + " Steel Frame Box")
+            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Tiers.HighPressure"))
+            .addCasing("25-37", "Solid Steel Machine Casing", false)
+            .addCasing("4", "Steel Frame Box", false)
+            .addCasing("2", "Steel Gear Box Casing", false)
+            .addCasing("1", "Steel Pipe Casing", false)
+            .addStructureInfo("")
+            .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.structuretier"))
             .addStructureAuthors(GTAuthors.AuthorJL2210)
             .toolTipFinisher(GTAuthors.AuthorEvgenWarGold);
         return tt;
@@ -468,11 +468,6 @@ public class MTESteamMixer extends MTESteamMultiBlockBase<MTESteamMixer> impleme
     @Override
     protected SoundResource getActivitySoundLoop() {
         return SoundResource.GT_MACHINES_STEAM_CENTRIFUGE_LOOP;
-    }
-
-    @Override
-    public int getThemeTier() {
-        return tierMachineCasing;
     }
 
 }

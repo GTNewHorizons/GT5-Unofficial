@@ -59,6 +59,7 @@ import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
@@ -114,13 +115,21 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
     @NotNull
     public CheckRecipeResult checkProcessing() {
         setElectricityStats();
-        if (working()) {
-            // Multiblock base already includes 1 parallel
-            recipesDone += batchMultiplier - 1;
-            return SimpleCheckRecipeResult.ofSuccess("drill_extracting_ores");
-        } else {
-            return SimpleCheckRecipeResult.ofFailure("drill_extracting_ores_failed");
+
+        if (!canVoidMine) {
+            this.stopMachine(ShutDownReasonRegistry.NONE);
+            return SimpleCheckRecipeResult.ofFailurePersistOnShutdown("void_miner_wrong_dim");
         }
+
+        if (this.totalWeight == 0.f) {
+            this.stopMachine(ShutDownReasonRegistry.NONE);
+            return SimpleCheckRecipeResult.ofFailurePersistOnShutdown("void_miner_no_ores");
+        }
+
+        this.handleFluidConsumption();
+        // Multiblock base already includes 1 parallel
+        recipesDone += batchMultiplier - 1;
+        return SimpleCheckRecipeResult.ofSuccess("drill_extracting_ores");
     }
 
     protected int getMinTier() {
@@ -138,20 +147,6 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
         this.mEfficiency = this.getCurrentEfficiency(null);
         this.mEfficiencyIncrease = 10000;
         this.mEUt = this.mEUt > 0 ? -this.mEUt : this.mEUt;
-    }
-
-    protected boolean working() {
-        if (!canVoidMine) {
-            return false;
-        }
-
-        if (this.totalWeight != 0.f) {
-            this.handleFluidConsumption();
-            return true;
-        } else {
-            this.stopMachine(ShutDownReasonRegistry.NONE);
-            return false;
-        }
     }
 
     @Override
@@ -427,8 +422,10 @@ public abstract class MTEVoidMinerBase<T extends MTEVoidMinerBase<T>> extends MT
         return new ITexture[] { getCasingTextureForId(casingTextureIndex) };
     }
 
-    protected boolean checkHatches() {
-        return !mMaintenanceHatches.isEmpty() && !mOutputBusses.isEmpty() && !mEnergyHatches.isEmpty();
+    protected void checkHatches(List<StructureError> errors) {
+        checkHasEnergyHatch(errors);
+        checkOneMaintenanceHatch(errors);
+        checkHasOutputBus(errors);
     }
 
     @Override

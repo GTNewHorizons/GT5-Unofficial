@@ -7,18 +7,15 @@ import static gregtech.api.GregTechAPI.sBlockCasings1;
 import static gregtech.api.enums.HatchElement.Dynamo;
 import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
-import static net.minecraft.util.StatCollector.translateToLocal;
 
-import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
@@ -31,11 +28,14 @@ import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.gui.modularui.multiblock.MTEActiveTransformerGui;
@@ -50,7 +50,7 @@ import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTe
 /**
  * Created by danie_000 on 17.12.2016.
  */
-public class MTEActiveTransformer extends TTMultiblockBase implements ISurvivalConstructable {
+public class MTEActiveTransformer extends TTMultiblockBase implements ISurvivalConstructable, ICasingTextureProvider {
 
     // Gives a one-chance grace period for deforming the multi. This is to allow you to hotswap hatches without
     // powerfailing due to an unlucky tick timing - this grace period is already a part of base TecTech but the
@@ -72,16 +72,20 @@ public class MTEActiveTransformer extends TTMultiblockBase implements ISurvivalC
     private static final double INV_60SECS = 1d / 60d;
 
     @Override
-    public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
+    public void checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack,
+        List<StructureError> errors) {
         casingCount = 0;
-        if (structureCheck_EM("main", 1, 1, 0) && casingCount >= 5) {
+        checkPiece("main", 1, 1, 0, errors);
+
+        checkCasingMin(errors, casingCount, 5);
+        checkHasAnyEnergy(errors);
+
+        if (errors.isEmpty()) {
             grace = true;
-            return true;
         } else if (grace) {
             grace = false;
-            return true;
+            errors.clear();
         }
-        return false;
     }
 
     @Override
@@ -91,12 +95,6 @@ public class MTEActiveTransformer extends TTMultiblockBase implements ISurvivalC
         }
     }
 
-    // region structure
-    private static final String[] description = new String[] {
-        EnumChatFormatting.AQUA + translateToLocal("tt.keyphrase.Hint_Details") + ":",
-        translateToLocal("gt.blockmachines.multimachine.em.transformer.hint"), // 1 - Energy IO Hatches or High
-                                                                               // Power Casing
-    };
     private static final IStructureDefinition<MTEActiveTransformer> STRUCTURE_DEFINITION = IStructureDefinition
         .<MTEActiveTransformer>builder()
         .addShape(
@@ -171,25 +169,16 @@ public class MTEActiveTransformer extends TTMultiblockBase implements ISurvivalC
     @Override
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.em.transformer.machinetype")) // Machine Type:
-            // Transformer
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.transformer.desc.1")) // Can transform to
-                                                                                              // and from any
-                                                                                              // voltage
-            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.transformer.desc.2")) // Only 0.004% power
-                                                                                              // loss, HAYO!
-            .addTecTechHatchInfo()
+        tt.addMachineType(StatCollector.translateToLocal("gt.blockmachines.multimachine.em.transformer.machinetype"))
+            .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.em.transformer.desc.1"))
+            .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.em.transformer.desc.2"))
+            .addSupportAny()
             .beginStructureBlock(3, 3, 3, false)
-            .addController(translateToLocal("tt.keyword.Structure.FrontCenter")) // Controller: Front center
-            .addCasingInfoMin(translateToLocal("gt.blockcasingsTT.0.name"), 5, false) // 5x High Power Casing
-                                                                                      // (minimum)
-            .addOtherStructurePart(
-                translateToLocal("tt.keyword.Structure.SuperconductingCoilBlock"),
-                translateToLocal("tt.keyword.Structure.Center")) // SuperconductingCoilBlock: Center
-            .addEnergyHatch(translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"), 1) // Energy Hatch: Any
-                                                                                            // High Power Casing
-            .addDynamoHatch(translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"), 1) // Dynamo Hatch: Any
-                                                                                            // High Power Casing
+            .addController("Front center, 2nd layer")
+            .addCasing("5-24", StatCollector.translateToLocal("gt.blockcasingsTT.0.name"), false)
+            .addCasing("1", StatCollector.translateToLocal("tt.keyword.Structure.SuperconductingCoilBlock"), false)
+            .addEnergyHatch("1+", "Any casing", 1)
+            .addDynamoHatch("0+", "Any casing", 1)
             .toolTipFinisher();
         return tt;
     }
@@ -198,10 +187,15 @@ public class MTEActiveTransformer extends TTMultiblockBase implements ISurvivalC
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
         int colorIndex, boolean aActive, boolean aRedstone) {
         if (side == facing) {
-            return new ITexture[] { Textures.BlockIcons.casingTexturePages[BlockGTCasingsTT.texturePage][0],
+            return new ITexture[] { getCasingTexture(),
                 new TTRenderedExtendedFacingTexture(aActive ? TTMultiblockBase.ScreenON : TTMultiblockBase.ScreenOFF) };
         }
-        return new ITexture[] { Textures.BlockIcons.casingTexturePages[BlockGTCasingsTT.texturePage][0] };
+        return new ITexture[] { getCasingTexture() };
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Textures.BlockIcons.casingTexturePages[BlockGTCasingsTT.texturePage][0];
     }
 
     @Override
@@ -350,15 +344,12 @@ public class MTEActiveTransformer extends TTMultiblockBase implements ISurvivalC
     }
 
     @Override
-    public String[] getInfoData() {
-        ArrayList<String> lines = new ArrayList<>(Arrays.asList(super.getInfoData()));
-
-        lines.add(MessageFormat.format("Min hatch tier: {0}", calculateHatchTier()));
-        lines.add(MessageFormat.format("Last 5 seconds: {0} EU/t", transferredLast5Secs));
-        lines.add(MessageFormat.format("Last 30 seconds: {0} EU/t", transferredLast30Secs));
-        lines.add(MessageFormat.format("Last minute: {0} EU/t", transferredLast1Min));
-
-        return lines.toArray(new String[0]);
+    public void getExtraInfoData(List<String> info) {
+        info.add(
+            IGregTechDeviceInformation.encode("tt.infodata.active_transformer.min_hatch_tier", calculateHatchTier()));
+        info.add(IGregTechDeviceInformation.encode("tt.infodata.active_transformer.last_5s", transferredLast5Secs));
+        info.add(IGregTechDeviceInformation.encode("tt.infodata.active_transformer.last_30s", transferredLast30Secs));
+        info.add(IGregTechDeviceInformation.encode("tt.infodata.active_transformer.last_1min", transferredLast1Min));
     }
 
     @Override
@@ -375,18 +366,13 @@ public class MTEActiveTransformer extends TTMultiblockBase implements ISurvivalC
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        structureBuild_EM("main", 1, 1, 0, stackSize, hintsOnly);
+        buildPiece("main", stackSize, hintsOnly, 1, 1, 0);
     }
 
     @Override
     public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
         if (mMachine) return -1;
         return survivalBuildPiece("main", stackSize, 1, 1, 0, elementBudget, source, actor, false, true);
-    }
-
-    @Override
-    public String[] getStructureDescription(ItemStack stackSize) {
-        return description;
     }
 
     @Override

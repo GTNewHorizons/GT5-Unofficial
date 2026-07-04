@@ -69,7 +69,6 @@ public class LoaderGTOreDictionary implements Runnable {
         GTOreDictUnificator.set(OrePrefixes.ingot, Materials.Lead, GTModHandler.getIC2Item("leadIngot", 1L));
         GTOreDictUnificator.set(OrePrefixes.ingot, Materials.Bronze, GTModHandler.getIC2Item("bronzeIngot", 1L));
         GTOreDictUnificator.set(OrePrefixes.ingot, Materials.Silver, GTModHandler.getIC2Item("silverIngot", 1L));
-        GTOreDictUnificator.set(OrePrefixes.gem, Materials.Iridium, GTModHandler.getIC2Item("iridiumOre", 1L));
         GTOreDictUnificator.set(OrePrefixes.gem, Materials.Lapis, new ItemStack(Items.dye, 1, 4));
         GTOreDictUnificator.set(OrePrefixes.gem, Materials.EnderEye, new ItemStack(Items.ender_eye, 1));
         GTOreDictUnificator.set(OrePrefixes.gem, Materials.EnderPearl, new ItemStack(Items.ender_pearl, 1));
@@ -108,8 +107,6 @@ public class LoaderGTOreDictionary implements Runnable {
             .registerOre(OreDictNames.craftingAnvil, GTModHandler.getModItem(Railcraft.ID, "anvil", 1L, 0));
         GTOreDictUnificator
             .registerOre(OreDictNames.craftingIndustrialDiamond, ItemList.IC2_Industrial_Diamond.get(1L));
-        GTOreDictUnificator
-            .registerOre(OrePrefixes.glass, Materials.Reinforced, GTModHandler.getIC2Item("reinforcedGlass", 1L));
 
         GTOreDictUnificator
             .registerOre(OrePrefixes.stone, Materials.Basalt, GTModHandler.getModItem(Railcraft.ID, "cube", 1L, 6));
@@ -125,7 +122,7 @@ public class LoaderGTOreDictionary implements Runnable {
             GTModHandler.getModItem(Railcraft.ID, "brick.quarried", 1L, 32767));
         GTOreDictUnificator
             .registerOre(OrePrefixes.stone, Materials.Obsidian, new ItemStack(Blocks.obsidian, 1, 32767));
-        GTOreDictUnificator.registerOre(OrePrefixes.stone, Materials.Stone, new ItemStack(Blocks.stone, 1, 32767));
+        GTOreDictUnificator.registerOre(OrePrefixes.stone, Materials.Stone, new ItemStack(Blocks.stone, 1, 0));
         GTOreDictUnificator.registerOre(OrePrefixes.stoneMossy, new ItemStack(Blocks.mossy_cobblestone, 1, 32767));
         GTOreDictUnificator.registerOre(OrePrefixes.stoneCobble, new ItemStack(Blocks.mossy_cobblestone, 1, 32767));
         GTOreDictUnificator.registerOre(OrePrefixes.stoneCobble, new ItemStack(Blocks.cobblestone, 1, 32767));

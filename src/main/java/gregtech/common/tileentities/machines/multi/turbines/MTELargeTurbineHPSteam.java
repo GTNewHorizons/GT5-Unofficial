@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -78,19 +79,22 @@ public class MTELargeTurbineHPSteam extends MTELargeTurbineBase {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Steam Turbine, LST-HP")
             .addInfo("Needs a Turbine, place inside controller")
-            .addInfo("Outputs Steam as well as producing power")
-            .addInfo("Power output depends on turbine and fitting")
-            .addInfo("Use screwdriver to adjust fitting of turbine")
-            .beginStructureBlock(3, 3, 6, false)
+            .addInfo("Generates power from Superheated (SH) Steam based on the turbine and fitting")
+            .addInfo("Outputs 1L of Steam for every 1L of Superheated Steam")
+            .addInfo("Use a screwdriver to adjust the fitting of the turbine")
+            .addInfo("Loose fit increases flow in exchange for efficiency")
+            .beginStructureBlock(6, 3, 3, false)
             .addController("Front center")
-            .addCasingInfoRange("Titanium Turbine Casing", 8, 16, false)
-            .addCasingInfoExactly("Titanium Frame Box", 14, false)
-            .addCasingInfoExactly("Titanium Pipe Casing", 12, false)
-            .addDynamoHatch("Back center", 1)
-            .addMaintenanceHatch("Any Titanium Turbine Casing except the front 8", 2)
-            .addInputHatch("Superheated Steam, Any Titanium Turbine Casing except the front 8", 2)
-            .addOutputHatch("Steam, Any Titanium Turbine Casing except the front 8", 2)
-            .addOtherStructurePart("Air", "3x3 area in front of controller")
+            .addCasing("14", "Titanium Frame Box", false)
+            .addCasing("8-14", "Titanium Turbine Casing", false)
+            .addCasing("12", "Titanium Pipe Casing", false)
+            .addDynamoHatch("1", "Back center turbine casing", 2)
+            .addMaintenanceHatch("1", "Any back turbine casing", 1)
+            .addInputHatch("1+", "Any back turbine casing", 1)
+            .addOutputHatch("0+", "Any back turbine casing", 1)
+            .addAir("3x3 area in front of controller")
+            .addStructureInfo("")
+            .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.DynamoLimit"))
             .addStructureAuthors(EnumChatFormatting.GOLD + "hugetrust")
             .toolTipFinisher();
         return tt;
@@ -137,7 +141,7 @@ public class MTELargeTurbineHPSteam extends MTELargeTurbineBase {
 
         tEU = totalFlow;
         // HP steam outputs regular steam instead of distilled water
-        addOutput(Materials.Steam.getGas(totalFlow));
+        addOutputPartial(Materials.Steam.getGas(totalFlow));
 
         if (totalFlow == GTUtility.safeInt((long) realOptFlow)) {
             tEU = GTUtility

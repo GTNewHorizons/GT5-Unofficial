@@ -12,6 +12,7 @@ import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
+import static gregtech.api.structure.error.StructureErrorRegistry.UNKNOWN_TIER;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
@@ -29,6 +30,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -53,6 +55,7 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.IToolStats;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.logic.ProcessingLogic;
@@ -63,7 +66,7 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.recipe.metadata.CentrifugeRecipeKey;
-import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
@@ -85,7 +88,8 @@ import gtPlusPlus.core.fluids.GTPPFluids;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchTurbine;
 
-public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron> implements ISurvivalConstructable {
+public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     public boolean tier2Fluid = false;
     public double mode = 1.0; // i think it has to be a double cuz slider. 0 = speed, 1 = normal, 2 = heavy
@@ -105,6 +109,8 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
     private static final String STRUCTURE_TIER_3 = "t3";
     private static final String STRUCTURE_TIER_4 = "t4";
     private static final IIconContainer TEXTURE_CONTROLLER = Textures.BlockIcons.custom("iconsets/TFFT");
+    private static final IIconContainer TEXTURE_CONTROLLER_GLOW = Textures.BlockIcons
+        .customOptional("iconsets/TFFT_GLOW");
     private static final IIconContainer TEXTURE_CONTROLLER_ACTIVE = Textures.BlockIcons.custom("iconsets/TFFT_ACTIVE");
     private static final IIconContainer TEXTURE_CONTROLLER_ACTIVE_GLOW = Textures.BlockIcons
         .customOptional("iconsets/TFFT_ACTIVE_GLOW");
@@ -348,37 +354,23 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
-        ITexture[] rTexture;
-        if (side == aFacing) {
-            if (aActive) {
-                rTexture = new ITexture[] {
-                    Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings12, 9)),
-                    TextureFactory.builder()
-                        .addIcon(TEXTURE_CONTROLLER_ACTIVE)
-                        .extFacing()
-                        .build(),
-                    TextureFactory.builder()
-                        .addIcon(TEXTURE_CONTROLLER_ACTIVE_GLOW)
-                        .extFacing()
-                        .glow()
-                        .build() };
-            } else {
-                rTexture = new ITexture[] {
-                    Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings12, 9)),
-                    TextureFactory.builder()
-                        .addIcon(TEXTURE_CONTROLLER)
-                        .extFacing()
-                        .build() };
-            }
-        } else {
-            rTexture = new ITexture[] { Textures.BlockIcons
-                .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings12, 9)) };
-        }
-        return rTexture;
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            TEXTURE_CONTROLLER,
+            TEXTURE_CONTROLLER_GLOW,
+            TEXTURE_CONTROLLER_ACTIVE,
+            TEXTURE_CONTROLLER_ACTIVE_GLOW);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Textures.BlockIcons
+            .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings12, 9));
     }
 
     @Override
@@ -398,7 +390,7 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
                     + "Heavy")
 
             .addInfo("Overclocks limited to " + EnumChatFormatting.WHITE + "Hatch Tier + 1")
-            .addTecTechHatchInfo()
+            .addSupportAny()
             .addUnlimitedTierSkips()
             .addSeparator()
             .addInfo(
@@ -459,25 +451,35 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
             .addInfo(EnumChatFormatting.ITALIC + "" + EnumChatFormatting.DARK_RED + "Maahes guides the way...")
             .beginStructureBlock(17, 17, 17, false)
             .addController("Front center")
-            .addCasingInfoExactly("Any Tiered Glass", 81, true)
-            .addCasingInfoMin("Vibration-Safe Casing", 550, false)
-            .addCasingInfoExactly("Chamber Grate", 144, false)
-            .addCasingInfoExactly("Central Frame Blocks", 9, true)
-            .addCasingInfoExactly("Central Rotor Blocks", 56, true)
-            .addCasingInfoExactly("IsaMill Gearbox Casing", 54, false)
-            .addCasingInfoExactly("PBI Pipe Casing", 160, false)
-            .addCasingInfoExactly("Turbine Shaft", 24, false)
-            .addCasingInfoExactly("Rotor Assembly", 8, false)
-            .addCasingInfoExactly("SC Turbine Casing", 264, false)
-            .addInputBus("Any Vibration-Safe Casing", 1)
-            .addOutputBus("Any Vibration-Safe Casing", 1)
-            .addInputHatch("Any Vibration-Safe Casing", 1)
-            .addOutputHatch("Any Vibration-Safe Casing", 1)
-            .addEnergyHatch("Any Vibration-Safe Casing", 1)
-            .addMaintenanceHatch("Any Vibration-Safe Casing", 1)
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .addCasing("550-712", "Vibration Safe Casing", false)
+            .addCasing("264", "SC Turbine Casing", false)
+            .addCasing("160", "PBI Pipe Casing", false)
+            .addCasing("144", "Chamber Grate", false)
+            .addCasing("81", "Any Tiered Glass", false)
+            .addCasing("54", "IsaMill Gearbox", false)
+            .addCasing("24", "Turbine Shaft", false)
+            .addCasing("8", "Rotor Assembly", false)
+            .addEnergyHatch("1+", "Any vibration safe casing", 1)
+            .addMaintenanceHatch("1", "Any vibration safe casing", 1)
+            .addInputAny("1+", "Any vibration safe casing", 1)
+            .addOutputAny("1+", "Any vibration safe casing", 1)
+            .addStructureInfo("")
+            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Tiers.One"))
+            .addCasing("56", "Block of Naquadah Alloy", false)
+            .addCasing("9", "Pikyonium 64B Frame Box", false)
+            .addStructureInfo("")
+            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Tiers.Two"))
+            .addCasing("56", "Cosmic Neutronium Block", false)
+            .addCasing("9", "Neutronium Frame Box", false)
+            .addStructureInfo("")
+            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Tiers.Three"))
+            .addCasing("56", "Infinity Block", false)
+            .addCasing("9", "Infinity Frame Box", false)
+            .addStructureInfo("")
+            .addStructureFooter("Rotors go in the controller, not the rotor assemblies")
+            .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.structuretier"))
+            .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
-
         return tt;
     }
 
@@ -563,21 +565,26 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         tier = 0;
         if (lastCheckedTierIndex != 0) Collections.swap(tierCheckOrderList, 0, lastCheckedTierIndex);
         for (int i = 0; i < tierCheckOrderList.size(); i++) {
             StructureData piece = tierCheckOrderList.get(i);
             resetParameters();
-            if (checkPiece(piece.structurePiece, horizontalOffset, verticalOffset, depthOffset)) {
+            errors.clear();
+            if (checkPiece(piece.structurePiece, horizontalOffset, verticalOffset, depthOffset, errors)) {
                 tier = piece.machineTier;
                 lastCheckedTierIndex = i;
                 rotateTurbines();
-                return casingAmount >= 550;
+                checkCasingMin(errors, casingAmount, 550);
+                checkHasAnyEnergy(errors);
+                checkHasMaintenanceHatch(errors);
+                checkHasAnyInput(errors);
+                checkHasAnyOutput(errors);
+                return;
             }
         }
-
-        return false;
+        errors.add(UNKNOWN_TIER);
     }
 
     private void resetParameters() {

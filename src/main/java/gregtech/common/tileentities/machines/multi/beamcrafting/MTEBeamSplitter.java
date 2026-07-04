@@ -2,8 +2,9 @@ package gregtech.common.tileentities.machines.multi.beamcrafting;
 
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BEAM_SPLITTER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_BEAM_SPLITTER_ACTIVE;
-import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
+
+import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
@@ -25,12 +26,12 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
 import gtnhlanth.common.beamline.BeamInformation;
 import gtnhlanth.common.beamline.BeamLinePacket;
 import gtnhlanth.common.beamline.Particle;
-import gtnhlanth.common.hatch.MTEHatchInputBeamline;
 
 public class MTEBeamSplitter extends MTEBeamMultiBase<MTEBeamSplitter> implements ISurvivalConstructable {
 
@@ -84,22 +85,14 @@ public class MTEBeamSplitter extends MTEBeamMultiBase<MTEBeamSplitter> implement
         //spotless:on
         .addElement('B', Casings.ShieldedAcceleratorCasing.asElement())
         .addElement('A', chainAllGlasses())
-        .addElement(
-            'C',
-            buildHatchAdder(MTEBeamSplitter.class).hatchClass(MTEHatchInputBeamline.class)
-                .casingIndex(ShieldedAccCasingTextureID)
-                .hint(2)
-                .adder(MTEBeamSplitter::addBeamLineInputHatch)
-                .build()) // beamline input hatch
+        .addElement('C', buildBeamlineInputHatch(MTEBeamSplitter.class, ShieldedAccCasingTextureID, 2))
         .addElement(
             'D',
-            buildHatchAdder(MTEBeamSplitter.class).hatchClass(MTEHatchAdvancedOutputBeamline.class)
-                .casingIndex(ShieldedAccCasingTextureID)
-                .hint(3)
-                .adder(
-                    (splitter, te, casingIndex) -> splitter
-                        .addAdvancedBeamlineOutputHatch(te, casingIndex, FundamentalForce.All))
-                .build()) // adv beamline output hatch
+            buildAdvancedBeamlineOutputHatch(
+                MTEBeamSplitter.class,
+                ShieldedAccCasingTextureID,
+                3,
+                FundamentalForce.All))
         .addElement('E', Casings.GrateMachineCasing.asElement())
         .build();
 
@@ -163,28 +156,25 @@ public class MTEBeamSplitter extends MTEBeamMultiBase<MTEBeamSplitter> implement
             .addInfo(
                 StatCollector
                     .translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamsplitter.tooltip2"))
-            .beginStructureBlock(9, 3, 9, false)
-            .addController(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttcontroller"))
-            .addCasingInfoExactly(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttcasing"),
-                68,
+            .beginStructureBlock(9, 9, 3, false)
+            .addController("Front bottom center")
+            .addCasing(
+                "42",
+                StatCollector.translateToLocal("gt.blockmachines.multimachine.beamcrafting.ttshieldacccasing"),
                 false)
-            .addCasingInfoExactly(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttanyglass"),
-                9,
-                true)
-            .addCasingInfoExactly(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttbeaminhatch"),
-                1,
+            .addCasing(
+                "27",
+                StatCollector.translateToLocal("gt.blockmachines.multimachine.beamcrafting.ttgratecasing"),
                 false)
-            .addCasingInfoExactly(
-                StatCollector
-                    .translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttbeamouthatchfiltered"),
-                4,
-                false)
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
-            .addTecTechHatchInfo()
+            .addCasing("9", "Any Tiered Glass", false)
+            .addMiscHatch("1", StatCollector.translateToLocal("gtnhlanth.tt.hatch.beaminput"), "Above controller", 1)
+            .addMiscHatch(
+                "4",
+                StatCollector.translateToLocal("gtnhlanth.tt.hatch.beamoutputfiltered"),
+                "Opposite controller",
+                2)
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher(GTAuthors.AuthorHamCorp);
         return tt;
     }
@@ -201,10 +191,8 @@ public class MTEBeamSplitter extends MTEBeamMultiBase<MTEBeamSplitter> implement
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        mInputBeamline.clear();
-        mAdvancedOutputBeamline.clear();
-        return checkPiece(STRUCTURE_PIECE_MAIN, 4, 2, 0);
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 4, 2, 0, errors)) return;
     }
 
     @Override
@@ -234,8 +222,7 @@ public class MTEBeamSplitter extends MTEBeamMultiBase<MTEBeamSplitter> implement
                             inputInfo.getRate() / numValidOutputs,
                             inputInfo.getParticleId(),
                             inputInfo.getFocus());
-                        BeamLinePacket packet = new BeamLinePacket(outputInfo);
-                        o.dataPacket = packet;
+                        o.dataPacket = new BeamLinePacket(outputInfo);
                     }
                 }
             }

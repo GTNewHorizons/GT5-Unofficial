@@ -48,6 +48,8 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
@@ -162,6 +164,16 @@ public class MTESteamForgeHammer extends MTESteamMultiBlockBase<MTESteamForgeHam
     }
 
     @Override
+    protected IIconContainer getInactiveGlowOverlay() {
+        return Textures.BlockIcons.OVERLAY_FRONT_STEAM_FORGE_HAMMER_GLOW;
+    }
+
+    @Override
+    protected IIconContainer getActiveGlowOverlay() {
+        return Textures.BlockIcons.OVERLAY_FRONT_STEAM_FORGE_HAMMER_ACTIVE_GLOW;
+    }
+
+    @Override
     public IStructureDefinition<MTESteamForgeHammer> getStructureDefinition() {
         if (STRUCTURE_DEFINITION == null) {
 
@@ -234,36 +246,23 @@ public class MTESteamForgeHammer extends MTESteamMultiBlockBase<MTESteamForgeHam
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         tierPipeCasing = -1;
         tierMachineCasing = -1;
         tierSimpleBlock = -1;
         tCountCasing = 0;
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET)) return false;
-        if (tierPipeCasing == 1 && tierMachineCasing == 1
-            && tierSimpleBlock == 1
-            && tCountCasing >= 35
-            && checkHatches()) {
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFF_SET, VERTICAL_OFF_SET, DEPTH_OFF_SET, errors)) return;
+        if (tierMachineCasing >= 1 && tierMachineCasing == tierPipeCasing && tierMachineCasing == tierSimpleBlock) {
+            tierMachine = tierMachineCasing;
             updateHatchTexture();
-            tierMachine = 1;
-            return true;
+        } else {
+            errors.add(StructureErrorRegistry.UNKNOWN_TIER);
+            return;
         }
-        if (tierPipeCasing == 2 && tierMachineCasing == 2
-            && tierSimpleBlock == 2
-            && tCountCasing >= 35
-            && checkHatches()) {
-            updateHatchTexture();
-            tierMachine = 2;
-            return true;
-        }
-        return false;
-    }
-
-    private boolean checkHatches() {
-        return !mSteamInputFluids.isEmpty() && !mSteamInputs.isEmpty()
-            && !mSteamOutputs.isEmpty()
-            && mOutputHatches.isEmpty()
-            && mInputHatches.isEmpty();
+        checkCasingMin(errors, tCountCasing, 35);
+        checkHasSteamInput(errors);
+        checkHasSteamInputBus(errors);
+        checkHasSteamOutputBus(errors);
     }
 
     @Override
@@ -317,32 +316,23 @@ public class MTESteamForgeHammer extends MTESteamMultiBlockBase<MTESteamForgeHam
         tt.addMachineType(getMachineType())
             .addSteamBulkMachineInfo(8, 1.25f, 0.625f)
             .addInfo(HIGH_PRESSURE_TOOLTIP_NOTICE)
-            .beginStructureBlock(6, 5, 5, false)
+            .beginStructureBlock(5, 5, 7, false)
             .addController("Front center, 2nd layer")
-            .addSteamInputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
-            .addSteamOutputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Any casing", 1)
-            .addStructureInfo(
-                EnumChatFormatting.WHITE + "Steam Input Hatch "
-                    + EnumChatFormatting.GOLD
-                    + "1"
-                    + EnumChatFormatting.GRAY
-                    + " Any casing")
+            .addSteamHatch("1", "Any normal casing", 1)
+            .addSteamInputBus("1+", "Any normal casing", 1)
+            .addSteamOutputBus("1+", "Any normal casing", 1)
             .addStructureInfo("")
-            .addStructureInfo(EnumChatFormatting.BLUE + "Basic " + EnumChatFormatting.DARK_PURPLE + "Tier")
-            .addStructureInfo(EnumChatFormatting.GOLD + "35-39x" + EnumChatFormatting.GRAY + " Bronze Plated Bricks")
-            .addStructureInfo(EnumChatFormatting.GOLD + "2x" + EnumChatFormatting.GRAY + " Bronze Pipe Casing")
-            .addStructureInfo(EnumChatFormatting.GOLD + "2x" + EnumChatFormatting.GRAY + " Iron Block")
+            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Tiers.Basic"))
+            .addCasing("35-39", "Bronze Plated Bricks", false)
+            .addCasing("2", "Bronze Pipe Casing", false)
+            .addCasing("2", "Block of Iron", false)
             .addStructureInfo("")
-            .addStructureInfo(EnumChatFormatting.BLUE + "High Pressure " + EnumChatFormatting.DARK_PURPLE + "Tier")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "35-39x" + EnumChatFormatting.GRAY + " Solid Steel Machine Casing")
-            .addStructureInfo(EnumChatFormatting.GOLD + "2x" + EnumChatFormatting.GRAY + " Steel Pipe Casing")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "2x"
-                    + EnumChatFormatting.GRAY
-                    + " Steel Block"
-                    + EnumChatFormatting.RED
-                    + " from GregTech")
+            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Tiers.HighPressure"))
+            .addCasing("35-39", "Solid Steel Machine Casing", false)
+            .addCasing("2", "Steel Pipe Casing", false)
+            .addCasing("2", "Block of Steel", false)
+            .addStructureInfo("")
+            .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.structuretier"))
             .toolTipFinisher(GTAuthors.AuthorEvgenWarGold);
         return tt;
     }
@@ -398,11 +388,6 @@ public class MTESteamForgeHammer extends MTESteamMultiBlockBase<MTESteamForgeHam
         super.loadNBTData(aNBT);
         tierMachine = aNBT.getInteger("tierMachine");
         tierMachineCasing = aNBT.getInteger("tierMachineCasing");
-    }
-
-    @Override
-    public int getThemeTier() {
-        return tierMachineCasing;
     }
 
 }

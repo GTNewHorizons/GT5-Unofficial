@@ -6,19 +6,30 @@ import net.minecraft.network.PacketBuffer;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.IWidget;
+import com.cleanroommc.modularui.utils.Alignment;
 import com.github.bsideup.jabel.Desugar;
 
 import gregtech.api.enums.StructureErrorId;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 
 @Desugar
-public record SingletonStructureError(StructureErrorId id, Supplier<IWidget> widgetSupplier) implements StructureError {
+public record SingletonStructureError(StructureErrorId id, String langKey, Supplier<IWidget> widgetSupplier)
+    implements StructureError {
 
-    SingletonStructureError(StructureErrorId id, String lang_key) {
+    private static final int TEXT_COLOR = 0xFFE0E0E0;
+
+    SingletonStructureError(StructureErrorId id, String langKey) {
         this(
             id,
-            () -> IKey.lang(lang_key)
+            langKey,
+            () -> IKey.lang(langKey)
+                .color(TEXT_COLOR)
+                .alignment(Alignment.CenterLeft)
                 .asWidget());
+    }
+
+    SingletonStructureError(StructureErrorId id, Supplier<IWidget> widgetSupplier) {
+        this(id, null, widgetSupplier);
     }
 
     @Override
@@ -39,6 +50,14 @@ public record SingletonStructureError(StructureErrorId id, Supplier<IWidget> wid
     @Override
     public IWidget createWidget(MTEMultiBlockBaseGui<?> gui) {
         return widgetSupplier.get();
+    }
+
+    @Override
+    public String getDisplayString() {
+        if (langKey != null) {
+            return net.minecraft.util.StatCollector.translateToLocal(langKey);
+        }
+        return id.name();
     }
 
     @Override

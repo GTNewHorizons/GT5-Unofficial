@@ -21,7 +21,6 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
@@ -40,6 +39,8 @@ import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchDataAccess;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe.RecipeAssemblyLine;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
@@ -64,16 +65,6 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
     private boolean wirelessModeEnabled = false;
     // endregion
 
-    // region structure
-    private static final String[] description = new String[] {
-        EnumChatFormatting.AQUA + translateToLocal("tt.keyphrase.Hint_Details") + ":",
-        translateToLocal("gt.blockmachines.multimachine.em.databank.hint.0"), // 1 - Classic Hatches or high power
-                                                                              // casing
-        translateToLocal("gt.blockmachines.multimachine.em.databank.hint.1"), // 2 - Data Access/Data Bank Master
-                                                                              // Hatches or
-        // computer casing
-    };
-
     private static final IStructureDefinition<MTEDataBank> STRUCTURE_DEFINITION = IStructureDefinition
         .<MTEDataBank>builder()
         .addShape(
@@ -88,7 +79,7 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
             buildHatchAdder(MTEDataBank.class).atLeast(Maintenance, Energy, EnergyMulti, Dynamo, DynamoMulti)
                 .casingIndex(BlockGTCasingsTT.textureOffset)
                 .hint(1)
-                .buildAndChain(TTCasingsContainer.sBlockCasingsTT, 0))
+                .buildAndChain(ofBlock(TTCasingsContainer.sBlockCasingsTT, 0)))
         .addElement(
             'D',
             buildHatchAdder(MTEDataBank.class)
@@ -134,36 +125,45 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
             .addInfo(translateToLocal("gt.blockmachines.multimachine.em.databank.desc.3")) // Use screwdriver to
                                                                                            // toggle
                                                                                            // wireless mode
-            .addTecTechHatchInfo()
-            .beginStructureBlock(5, 3, 3, false)
-            .addController("Front center")
-            .addCasingInfoExactly("Computer Heat Vent", 18, false)
-            .addCasingInfoExactly("High Power Casing", 7, false)
-            .addCasingInfoMin("Computer Casing", 3, false)
-            .addOtherStructurePart(
-                translateToLocal("tt.keyword.Structure.DataAccessHatch"),
-                translateToLocal("tt.keyword.Structure.AnyComputerCasing"),
-                2) // Data Access Hatch: Any Computer Casing
-            .addOtherStructurePart(
+            .addSupportAny()
+            .beginStructureBlock(3, 5, 3, false)
+            .addController("Front center, 2nd layer")
+            .addCasing("18", "Computer Heat Vent", false)
+            .addCasing("3-16", "Computer Casing", false)
+            .addCasing("0-6", "High Power Casing", false)
+            .addMiscHatch("1+", translateToLocal("tt.keyword.Structure.DataAccessHatch"), "Any computer casing", 2)
+            .addMiscHatch(
+                "1+",
                 translateToLocal("gt.blockmachines.hatch.dataoutass.tier.07.name"),
-                translateToLocal("tt.keyword.Structure.AnyComputerCasing"),
-                2) // Data Bank Master Connector: Any Computer Casing
-            .addEnergyHatch(translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"), 1) // Energy Hatch: Any
-                                                                                            // High Power Casing
-            .addMaintenanceHatch(translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"), 1) // Maintenance
-                                                                                                 // Hatch: Any High
-                                                                                                 // Power Casing
+                "Any computer casing",
+                2)
+            .addMiscHatch(
+                "0+",
+                translateToLocal("gt.blockmachines.hatch.datainass.tier.07.name"),
+                "Any computer casing",
+                2)
+            .addEnergyHatch("1+", "Any high power casing", 1)
+            .addMaintenanceHatch("1", "Any high power casing", 1)
             .toolTipFinisher();
         return tt;
     }
 
     @Override
-    public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
+    public void checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack,
+        List<StructureError> errors) {
         eDataAccessHatches.clear();
         eStacksDataOutputs.clear();
         eWirelessStacksDataOutputs.clear();
         slave = false;
-        return structureCheck_EM("main", 2, 1, 0);
+        if (!checkPiece("main", 2, 1, 0, errors)) return;
+        if (eDataAccessHatches.isEmpty()) {
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.databank_missing_data_access"));
+        }
+        if (eStacksDataOutputs.isEmpty() && eWirelessStacksDataOutputs.isEmpty()) {
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.databank_missing_data_output"));
+        }
+        checkHasAnyEnergy(errors);
+        checkHasMaintenanceHatch(errors);
     }
 
     @Override
@@ -294,7 +294,7 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        structureBuild_EM("main", 2, 1, 0, stackSize, hintsOnly);
+        buildPiece("main", stackSize, hintsOnly, 2, 1, 0);
     }
 
     @Override
@@ -306,11 +306,6 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
     @Override
     public IStructureDefinition<MTEDataBank> getStructure_EM() {
         return STRUCTURE_DEFINITION;
-    }
-
-    @Override
-    public String[] getStructureDescription(ItemStack stackSize) {
-        return description;
     }
 
     private enum DataBankHatches implements IHatchElement<MTEDataBank> {

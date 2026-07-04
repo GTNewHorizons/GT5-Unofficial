@@ -29,9 +29,9 @@ public class ItemBlockMeta extends ItemBlockWithMetadata {
         // }
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
-    public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
+    public void addInformation(final ItemStack stack, final EntityPlayer player, final List<String> list,
+        final boolean adv) {
         Block aThis = Block.getBlockFromItem(stack.getItem());
         if (aThis != null) {
             if (!aTooltips.isEmpty()) {
@@ -41,7 +41,7 @@ public class ItemBlockMeta extends ItemBlockWithMetadata {
                 }
             }
         }
-        super.addInformation(stack, aPlayer, list, bool);
+        super.addInformation(stack, player, list, adv);
     }
 
     /**

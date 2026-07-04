@@ -21,7 +21,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.util.GTUtility;
-import gregtech.common.gui.modularui.hatch.base.MTETurbineHousingGui;
+import gregtech.common.gui.modularui.hatch.MTETurbineHousingGui;
 import gregtech.common.tileentities.machines.multi.MTELargeTurbineLegacy;
 import gregtech.common.tileentities.machines.multi.turbines.MTELargeTurbineBase;
 import gtPlusPlus.core.util.Utils;
@@ -113,7 +113,7 @@ public class MTEHatchTurbineProvider extends MTEHatchInputBus {
     }
 
     public boolean isItemStackTurbine(ItemStack aStack) {
-        if (aStack.getItem() instanceof MetaGeneratedTool) {
+        if (aStack != null && aStack.getItem() instanceof MetaGeneratedTool) {
             return aStack.getItemDamage() >= 170 && aStack.getItemDamage() <= 176;
         }
         return false;
@@ -207,4 +207,8 @@ public class MTEHatchTurbineProvider extends MTEHatchInputBus {
         return false;
     }
 
+    @Override
+    public boolean isItemValidForSlot(int index, ItemStack itemStack) {
+        return isItemStackTurbine(itemStack) && super.isItemValidForSlot(index, itemStack);
+    }
 }

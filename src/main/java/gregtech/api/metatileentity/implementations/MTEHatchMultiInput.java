@@ -237,6 +237,11 @@ public class MTEHatchMultiInput extends MTEHatchInput {
 
     @Override
     public FluidStack drain(ForgeDirection from, FluidStack aFluid, boolean doDrain) {
+        return drain(from, aFluid, aFluid == null ? 0 : aFluid.amount, doDrain);
+    }
+
+    @Override
+    public FluidStack drain(ForgeDirection from, FluidStack aFluid, int amount, boolean doDrain) {
         if (aFluid == null || !hasFluid(aFluid)) return null;
         FluidStack tStored = mStoredFluid[getFluidSlot(aFluid)];
         if (tStored.amount <= 0 && isFluidChangingAllowed()) {
@@ -245,7 +250,7 @@ public class MTEHatchMultiInput extends MTEHatchInput {
             return null;
         }
         FluidStack tRemove = tStored.copy();
-        tRemove.amount = Math.min(aFluid.amount, tRemove.amount);
+        tRemove.amount = Math.min(amount, tRemove.amount);
         if (doDrain) {
             tStored.amount -= tRemove.amount;
             getBaseMetaTileEntity().markDirty();
@@ -290,11 +295,6 @@ public class MTEHatchMultiInput extends MTEHatchInput {
             "gt.blockmachines.input_hatch_multislot.desc",
             formatNumber(getCapacityPerTank(mTier, slots)),
             slots);
-    }
-
-    @Override
-    protected boolean useMui2() {
-        return true;
     }
 
     @Override

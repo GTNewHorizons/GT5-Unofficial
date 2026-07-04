@@ -24,7 +24,7 @@ public enum GTStructureChannels implements IStructureChannels {
     // Order of enum constants does not matter
     QFT_MANIPULATOR("manipulator", "Manipulator Tier"),
     QFT_SHIELDING("shielding", "Shielding Tier"),
-    HEATING_COIL("coil", "Heating Coils Tier"),
+    HEATING_COIL("coil", "Heating Coil Tier"),
     BOROGLASS("glass", "Glass Tier"),
     PRASS_UNIT_CASING("unit_casing", "Precise Electronic Unit Casing Tier"),
     METAL_MACHINE_CASING("casing", "Metal Machine Casing Tier"),
@@ -44,7 +44,7 @@ public enum GTStructureChannels implements IStructureChannels {
     EOH_DILATION("time_dilation", "Time Dilation Field Generator Tier"),
     HATCH("gt_hatch", "Hatch placement"),
     TFFT_FIELD("field", "Storage Field Tier"),
-    EIC_PISTON("piston_block", "Metal Block Tier"),
+    EIC_PISTON("piston_block", "Containment Block Tier"),
     ALCHEMICAL_CASING("casing", "Alchemical Casing Tier"),
     ALCHEMICAL_CONSTRUCT("construct", "Alchemical Construct Tier"),
     SUPER_CHEST("super_chest", "Super Chest Tier"),

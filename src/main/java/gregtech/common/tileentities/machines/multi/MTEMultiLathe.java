@@ -17,6 +17,7 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nullable;
@@ -46,13 +47,15 @@ import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.GregTechTileClientEvents;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.tooltip.TooltipTier;
@@ -61,7 +64,8 @@ import gregtech.common.misc.GTStructureChannels;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public class MTEMultiLathe extends MTEExtendedPowerMultiBlockBase<MTEMultiLathe> implements ISurvivalConstructable {
+public class MTEMultiLathe extends MTEExtendedPowerMultiBlockBase<MTEMultiLathe>
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     public MTEMultiLathe(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -148,42 +152,23 @@ public class MTEMultiLathe extends MTEExtendedPowerMultiBlockBase<MTEMultiLathe>
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
-        ITexture[] rTexture;
-        if (side == aFacing) {
-            if (aActive) {
-                rTexture = new ITexture[] {
-                    Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings2, 0)),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_LATHE_ACTIVE)
-                        .extFacing()
-                        .build(),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_LATHE_ACTIVE_GLOW)
-                        .extFacing()
-                        .glow()
-                        .build() };
-            } else {
-                rTexture = new ITexture[] {
-                    Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings2, 0)),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_LATHE)
-                        .extFacing()
-                        .build(),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_LATHE_GLOW)
-                        .extFacing()
-                        .glow()
-                        .build() };
-            }
-        } else {
-            rTexture = new ITexture[] { Textures.BlockIcons
-                .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings2, 0)) };
-        }
-        return rTexture;
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            OVERLAY_FRONT_MULTI_LATHE,
+            OVERLAY_FRONT_MULTI_LATHE_GLOW,
+            OVERLAY_FRONT_MULTI_LATHE_ACTIVE,
+            OVERLAY_FRONT_MULTI_LATHE_ACTIVE_GLOW);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Textures.BlockIcons
+            .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings2, 0));
     }
 
     @Override
@@ -193,21 +178,19 @@ public class MTEMultiLathe extends MTEExtendedPowerMultiBlockBase<MTEMultiLathe>
             .addDynamicParallelInfo(8, TooltipTier.PIPE_CASING)
             .addStaticSpeedInfo(4f)
             .addStaticEuEffInfo(0.8f)
-            .beginStructureBlock(7, 5, 5, true)
+            .beginStructureBlock(5, 7, 5, true)
             .addController("Front bottom center")
-            .addCasingInfoMin("Solid Steel Machine Casing", 42, false)
-            .addCasingInfoExactly("Grate Machine Casing", 9, false)
-            .addCasingInfoExactly("Any Tiered Glass", 32, false)
-            .addInputBus("Any Solid Steel Casing", 1)
-            .addOutputBus("Any Solid Steel Casing", 1)
-            .addEnergyHatch("Any Solid Steel Casing", 1)
-            .addMaintenanceHatch("Any Solid Steel Casing", 1)
-            .addOtherStructurePart(
-                StatCollector.translateToLocal("GT5U.tooltip.structure.four_item_pipe_casings"),
-                "Center of the glass",
-                4)
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
-            .addSubChannelUsage(GTStructureChannels.ITEM_PIPE_CASING)
+            .addCasing("42-55", "Solid Steel Machine Casing", false)
+            .addCasing("32", "Any Tiered Glass", false)
+            .addCasing("9", "Grate Machine Casing", false)
+            .addCasing("4", "Item Pipe Casing", true)
+            .addEnergyHatch("1+", "Any steel machine casing", 1)
+            .addMaintenanceHatch("1", "Any steel machine casing", 1)
+            .addInputBus("1+", "Any steel machine casing", 1)
+            .addOutputBus("1+", "Any steel machine casing", 1)
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.BOROGLASS)
+            .addSubChannel(GTStructureChannels.ITEM_PIPE_CASING)
             .toolTipFinisher(AuthorVolence);
         return tt;
     }
@@ -241,16 +224,33 @@ public class MTEMultiLathe extends MTEExtendedPowerMultiBlockBase<MTEMultiLathe>
         mCasingAmount++;
     }
 
-    @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    private void resetStructureState() {
         pipeTier = -1;
-        mEnergyHatches.clear();
         mCasingAmount = 0;
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, 3, 4, 0)) return false;
+        clearHatches();
+    }
+
+    private boolean checkBodyPiece(List<StructureError> errors) {
+        if (checkPiece(STRUCTURE_PIECE_BODY, 3, 4, -1, new ArrayList<>())) return true;
+        resetStructureState();
+        checkPiece(STRUCTURE_PIECE_MAIN, 3, 4, 0, new ArrayList<>());
+        return checkPiece(STRUCTURE_PIECE_BODY_ALT, 3, 4, -1, errors);
+    }
+
+    @Override
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
+        resetStructureState();
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 3, 4, 0, errors)) return;
         getBaseMetaTileEntity().sendBlockEvent(GregTechTileClientEvents.CHANGE_CUSTOM_DATA, getUpdateData());
-        if (!checkPiece(STRUCTURE_PIECE_BODY, 3, 4, -1) && !checkPiece(STRUCTURE_PIECE_BODY_ALT, 3, 4, -1))
-            return false;
-        return this.mMaintenanceHatches.size() == 1 && pipeTier > 0 && !mEnergyHatches.isEmpty() && mCasingAmount >= 42;
+        if (!checkBodyPiece(errors)) return;
+        if (pipeTier <= 0) {
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.missing_pipe_casing"));
+        }
+        checkCasingMin(errors, mCasingAmount, 42);
+        checkHasEnergyHatch(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasInputBus(errors);
+        checkHasOutputBus(errors);
     }
 
     @Override

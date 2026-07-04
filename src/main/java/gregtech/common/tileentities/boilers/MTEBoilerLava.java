@@ -38,12 +38,10 @@ import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.ParticleFX;
 import gregtech.api.enums.SoundResource;
-import gregtech.api.enums.SteamVariant;
+import gregtech.api.enums.TieredVariant;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.modularui2.GTGuiTheme;
-import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
@@ -402,7 +400,7 @@ public class MTEBoilerLava extends MTEBoiler {
             .setWorld(getBaseMetaTileEntity().getWorld())
             // Particles emitted with a 1 block/s velocity toward rear
             .setMotion(rearDirection.offsetX / 20D, 0D, rearDirection.offsetZ / 20D)
-            .<ParticleEventBuilder>times(
+            .times(
                 8,
                 // Particles emitted from center of rear face (Steam Output)
                 x -> x.setPosition(aX + rearDirection.offsetX / 2D, aY, aZ + rearDirection.offsetZ / 2D)
@@ -417,12 +415,12 @@ public class MTEBoilerLava extends MTEBoiler {
         final FluidStack drainedLava = lavaTank.drain(amountToDrain, false);
         if (drainedLava == null || drainedLava.amount == 0) return;
         lavaTank.drain(amountToDrain, true);
-        this.mProcessingEnergy += drainedLava.amount * ENERGY_PER_LAVA;
+        addProcessingEnergy(drainedLava.amount * ENERGY_PER_LAVA);
     }
 
     @Override
-    public SteamVariant getSteamVariant() {
-        return SteamVariant.STEEL;
+    public TieredVariant getTieredVariant() {
+        return TieredVariant.STEEL;
     }
 
     @Override
@@ -437,11 +435,6 @@ public class MTEBoilerLava extends MTEBoiler {
         return new FluidTankInfo[] { super.getTankInfo(side)[0],
             new FluidTankInfo(this.lavaTank.getFluid(), this.lavaTank.getCapacity()),
             new FluidTankInfo(getDrainableStack(), getSteamCapacity()) };
-    }
-
-    @Override
-    protected GTGuiTheme getGuiTheme() {
-        return GTGuiThemes.STEEL;
     }
 
     @Override

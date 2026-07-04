@@ -5,6 +5,7 @@ import static gregtech.api.enums.Textures.BlockIcons.COVER_WOOD_PLATE;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ACTIVITYDETECTOR;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ACTIVITYDETECTOR_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ADVANCED_WIRELESS_CONTROLLER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ARM;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_CONTROLLER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_CONVEYOR;
@@ -134,6 +135,7 @@ import static gregtech.common.items.IDMetaItem01.Conveyor_Module_UV;
 import static gregtech.common.items.IDMetaItem01.Conveyor_Module_UXV;
 import static gregtech.common.items.IDMetaItem01.Conveyor_Module_ZPM;
 import static gregtech.common.items.IDMetaItem01.Cover_ActivityDetector;
+import static gregtech.common.items.IDMetaItem01.Cover_AdvancedWirelessController;
 import static gregtech.common.items.IDMetaItem01.Cover_Chest_Advanced;
 import static gregtech.common.items.IDMetaItem01.Cover_Chest_Basic;
 import static gregtech.common.items.IDMetaItem01.Cover_Chest_Good;
@@ -440,6 +442,10 @@ import static gregtech.common.items.IDMetaItem01.Steam_Valve_IV;
 import static gregtech.common.items.IDMetaItem01.Steam_Valve_LV;
 import static gregtech.common.items.IDMetaItem01.Steam_Valve_MV;
 import static gregtech.common.items.IDMetaItem01.SuperconductorComposite;
+import static gregtech.common.items.IDMetaItem01.T1Sawblade;
+import static gregtech.common.items.IDMetaItem01.T2Sawblade;
+import static gregtech.common.items.IDMetaItem01.T3Sawblade;
+import static gregtech.common.items.IDMetaItem01.T4Sawblade;
 import static gregtech.common.items.IDMetaItem01.Tesseract;
 import static gregtech.common.items.IDMetaItem01.Thermos_Can_Empty;
 import static gregtech.common.items.IDMetaItem01.Tool_Cheat;
@@ -507,6 +513,7 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.common.config.Other;
+import gregtech.common.covers.CoverAdvancedWirelessController;
 import gregtech.common.covers.CoverArm;
 import gregtech.common.covers.CoverChest;
 import gregtech.common.covers.CoverControlsWork;
@@ -550,6 +557,7 @@ import gregtech.common.render.items.CosmicNeutroniumMetaItemRenderer;
 import gregtech.common.render.items.InfinityMetaItemRenderer;
 import gregtech.common.render.items.TranscendentalMetaItemRenderer;
 import gregtech.common.render.items.WireFrameTesseractRenderer;
+import gregtech.common.tileentities.machines.multi.MTEIndustrialCuttingMachine.SawbladeTiers;
 import gregtech.common.tileentities.machines.multi.MTEIndustrialElectromagneticSeparator.MagnetTiers;
 import mods.railcraft.common.items.firestone.IItemFirestoneBurning;
 
@@ -1272,10 +1280,10 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 new TCAspects.TC_AspectStack(TCAspects.MOTUS, 1L)));
 
         ItemList.Spray_Color_Infinite.set(
-            addItemWithLocalizationKeys(
+            addItem(
                 Spray_Color_Infinite.ID,
-                "gt.item.spray_can.infinite.name",
-                "gt.item.spray_can.infinite.tooltip",
+                BehaviourSprayColorInfinite::getNameWithColor,
+                $ -> GTUtility.translate("gt.item.spray_can.infinite.tooltip"),
                 new TCAspects.TC_AspectStack(TCAspects.NEBRISUM, 16),
                 new TCAspects.TC_AspectStack(TCAspects.SENSUS, 8),
                 new TCAspects.TC_AspectStack(TCAspects.COGNITIO, 8),
@@ -3248,6 +3256,38 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.VITREUS, 4L),
                 OreDictNames.craftingDiamondBlade));
+        ItemList.T1Sawblade.set(
+            addItem(
+                T1Sawblade.ID,
+                $ -> GTUtility.translate("gt.item.t1sawblade.name"),
+                $ -> SawbladeTiers.buildSawbladeTooltip(SawbladeTiers.TungstenTitaniumCarbide),
+                new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 2L),
+                new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 2L)));
+        ItemList.T2Sawblade.set(
+            addItem(
+                T2Sawblade.ID,
+                $ -> GTUtility.translate("gt.item.t2sawblade.name"),
+                $ -> SawbladeTiers.buildSawbladeTooltip(SawbladeTiers.MysteriousCrystal),
+                new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 3L),
+                new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 3L)));
+        ItemList.T3Sawblade
+            .set(
+                addItem(
+                    T3Sawblade.ID,
+                    $ -> GTUtility.translate("gt.item.t3sawblade.name"),
+                    $ -> SawbladeTiers.buildSawbladeTooltip(SawbladeTiers.Neutronium),
+                    new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 4L),
+                    new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 4L)))
+            .setRender(new InfinityMetaItemRenderer());
+        ItemList.T4Sawblade
+            .set(
+                addItem(
+                    T4Sawblade.ID,
+                    $ -> GTUtility.translate("gt.item.t4sawblade.name"),
+                    $ -> SawbladeTiers.buildSawbladeTooltip(SawbladeTiers.TranscendentMetal),
+                    new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 5L),
+                    new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 5L)))
+            .setRender(new TranscendentalMetaItemRenderer());
         ItemList.Component_Grinder_Diamond.set(
             addItemWithLocalizationKeys(
                 Component_Grinder_Diamond.ID,
@@ -3558,6 +3598,13 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 "gt.item.cover.wireless_controller.tooltip",
                 new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 1L)));
+        ItemList.Cover_AdvancedWirelessController.set(
+            addItemWithLocalizationKeys(
+                Cover_AdvancedWirelessController.ID,
+                "gt.item.cover.advanced_wireless_controller.name",
+                "gt.item.cover.advanced_wireless_controller.tooltip",
+                new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L),
+                new TCAspects.TC_AspectStack(TCAspects.MACHINA, 1L)));
 
         ItemList.Cover_NeedsMaintainance.set(
             addItemWithLocalizationKeys(
@@ -3625,32 +3672,32 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Electromagnet_Iron.set(
             addItem(
                 Electromagnet_Iron.ID,
-                () -> GTUtility.translate("gt.item.electromagnet.iron.name"),
-                () -> MagnetTiers.buildMagnetTooltip(MagnetTiers.Iron),
+                $ -> GTUtility.translate("gt.item.electromagnet.iron.name"),
+                $ -> MagnetTiers.buildMagnetTooltip(MagnetTiers.Iron),
                 new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 8)));
         ItemList.Electromagnet_Steel.set(
             addItem(
                 Electromagnet_Steel.ID,
-                () -> GTUtility.translate("gt.item.electromagnet.steel.name"),
-                () -> MagnetTiers.buildMagnetTooltip(MagnetTiers.Steel),
+                $ -> GTUtility.translate("gt.item.electromagnet.steel.name"),
+                $ -> MagnetTiers.buildMagnetTooltip(MagnetTiers.Steel),
                 new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 16)));
         ItemList.Electromagnet_Neodymium.set(
             addItem(
                 Electromagnet_Neodymium.ID,
-                () -> GTUtility.translate("gt.item.electromagnet.neodymium.name"),
-                () -> MagnetTiers.buildMagnetTooltip(MagnetTiers.Neodymium),
+                $ -> GTUtility.translate("gt.item.electromagnet.neodymium.name"),
+                $ -> MagnetTiers.buildMagnetTooltip(MagnetTiers.Neodymium),
                 new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 24)));
         ItemList.Electromagnet_Samarium.set(
             addItem(
                 Electromagnet_Samarium.ID,
-                () -> GTUtility.translate("gt.item.electromagnet.samarium.name"),
-                () -> MagnetTiers.buildMagnetTooltip(MagnetTiers.Samarium),
+                $ -> GTUtility.translate("gt.item.electromagnet.samarium.name"),
+                $ -> MagnetTiers.buildMagnetTooltip(MagnetTiers.Samarium),
                 new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 32)));
         ItemList.Electromagnet_Tengam.set(
             addItem(
                 Electromagnet_Tengam.ID,
-                () -> GTUtility.translate("gt.item.electromagnet.tengam.name"),
-                () -> MagnetTiers.buildMagnetTooltip(MagnetTiers.Tengam),
+                $ -> GTUtility.translate("gt.item.electromagnet.tengam.name"),
+                $ -> MagnetTiers.buildMagnetTooltip(MagnetTiers.Tengam),
                 new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 40)));
 
         ItemList.Black_Hole_Opener.set(
@@ -4500,6 +4547,13 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             ItemList.Cover_WirelessController.get(1L),
             TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_WIRELESS_CONTROLLER)),
             context -> new CoverWirelessController(context, TextureFactory.of(OVERLAY_WIRELESS_CONTROLLER)),
+            CoverRegistry.INTERCEPTS_RIGHT_CLICK_COVER_PLACER);
+        CoverRegistry.registerCover(
+            ItemList.Cover_AdvancedWirelessController.get(1L),
+            TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_ADVANCED_WIRELESS_CONTROLLER)),
+            context -> new CoverAdvancedWirelessController(
+                context,
+                TextureFactory.of(OVERLAY_ADVANCED_WIRELESS_CONTROLLER)),
             CoverRegistry.INTERCEPTS_RIGHT_CLICK_COVER_PLACER);
 
         CoverRegistry.registerCover(

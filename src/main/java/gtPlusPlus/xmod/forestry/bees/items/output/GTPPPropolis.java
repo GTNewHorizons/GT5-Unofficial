@@ -40,7 +40,7 @@ public class GTPPPropolis extends Item {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubItems(Item item, CreativeTabs tabs, List list) {
+    public void getSubItems(Item item, CreativeTabs tabs, List<ItemStack> list) {
         for (GTPPPropolisType type : GTPPPropolisType.values()) {
             if (type.mShowInList) {
                 list.add(this.getStackForType(type));

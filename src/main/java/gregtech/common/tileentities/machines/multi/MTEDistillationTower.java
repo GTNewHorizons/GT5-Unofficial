@@ -36,9 +36,10 @@ import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.Textures.BlockIcons;
 import gregtech.api.interfaces.IHatchElement;
+import gregtech.api.interfaces.IOutputHatch;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.fluid.IFluidStore;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
@@ -46,12 +47,15 @@ import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
+import gregtech.api.structure.error.StructureErrors;
+import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
-import gregtech.common.tileentities.machines.outputme.MTEHatchOutputME;
 
 public class MTEDistillationTower extends MTEEnhancedMultiBlockBase<MTEDistillationTower>
-    implements ISurvivalConstructable {
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     protected static final int CASING_INDEX = 49;
     protected static final String STRUCTURE_PIECE_BASE = "base";
@@ -133,18 +137,22 @@ public class MTEDistillationTower extends MTEEnhancedMultiBlockBase<MTEDistillat
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Distillery, DT")
-            .addInfo("Fluids are only put out at the correct height")
-            .addInfo("The correct height equals the slot number in the NEI recipe")
-            .beginVariableStructureBlock(3, 3, 3, 12, 3, 3, true)
+        tt.addMachineType("DT")
+            .addInfo("Fluids are outputted one per layer based on the slot number in NEI")
+            .addInfo("Increase the height to output more fluid types")
+            .beginVariableStructureBlock(3, 3, 3, 3, 3, 12, true)
             .addController("Front bottom center")
-            .addOtherStructurePart("Clean Stainless Steel Machine Casing", "7 x h - 5 (minimum)")
-            .addEnergyHatch("Any casing except top centre", 1, 2)
-            .addMaintenanceHatch("Any casing", 1, 2, 3)
-            .addInputHatch("Any bottom layer casing", 1)
-            .addOutputBus("Any bottom layer casing", 1)
-            .addOutputHatch("2-11x Output Hatches (At least one per layer except bottom layer)", 2, 3)
-            .addSubChannelUsage(GTStructureChannels.STRUCTURE_HEIGHT)
+            .addCasing("16-79", "Clean Stainless Steel Machine Casing", false)
+            .addEnergyHatch("1+", "Any casing", 1, 2)
+            .addMaintenanceHatch("1", "Any casing", 1, 2)
+            .addInputBus("0+", "Any bottom casing", 1)
+            .addInputHatch("1+", "Any bottom casing", 1)
+            .addOutputBus("0+", "Any bottom casing", 1)
+            .addOutputHatch("2-11", "One per layer, except the bottom layer", 2)
+            .addAir("Interior of the structure")
+            .addStructureInfo("")
+            .addStructureFooter("Minimum casings increases with height (7 x h - 5)")
+            .addSubChannel(GTStructureChannels.STRUCTURE_HEIGHT)
             .toolTipFinisher();
         return tt;
     }
@@ -173,6 +181,11 @@ public class MTEDistillationTower extends MTEEnhancedMultiBlockBase<MTEDistillat
                     .build() };
         }
         return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX) };
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Textures.BlockIcons.getCasingTextureForId(CASING_INDEX);
     }
 
     @Override
@@ -210,8 +223,8 @@ public class MTEDistillationTower extends MTEEnhancedMultiBlockBase<MTEDistillat
     }
 
     @Override
-    public List<? extends IFluidStore> getFluidOutputSlots(FluidStack[] toOutput) {
-        return getFluidOutputSlotsByLayer(toOutput, mOutputHatchesByLayer);
+    public List<IOutputHatch> getOutputHatches(FluidStack[] toOutput) {
+        return getOutputHatchesByLayers(toOutput, mOutputHatchesByLayer);
     }
 
     @Override
@@ -232,7 +245,7 @@ public class MTEDistillationTower extends MTEEnhancedMultiBlockBase<MTEDistillat
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         // reset
         mOutputHatchesByLayer.forEach(List::clear);
         mHeight = 1;
@@ -240,17 +253,17 @@ public class MTEDistillationTower extends MTEEnhancedMultiBlockBase<MTEDistillat
         mCasing = 0;
 
         // check base
-        if (!checkPiece(STRUCTURE_PIECE_BASE, 1, 0, 0)) return false;
+        if (!checkPiece(STRUCTURE_PIECE_BASE, 1, 0, 0, errors)) return;
+
+        List<Integer> missingLayers = new ArrayList<>();
 
         // check each layer
         while (mHeight < 12) {
-            if (!checkPiece(STRUCTURE_PIECE_LAYER, 1, mHeight, 0)) {
-                return false;
-            }
+            if (!checkPiece(STRUCTURE_PIECE_LAYER, 1, mHeight, 0, errors)) return;
             if (mOutputHatchesByLayer.size() < mHeight || mOutputHatchesByLayer.get(mHeight - 1)
-                .isEmpty())
-                // layer without output hatch
-                return false;
+                .isEmpty()) {
+                missingLayers.add(mHeight + 1);
+            }
             if (mTopLayerFound) {
                 break;
             }
@@ -258,30 +271,41 @@ public class MTEDistillationTower extends MTEEnhancedMultiBlockBase<MTEDistillat
             mHeight++;
         }
 
+        if (!missingLayers.isEmpty()) {
+            errors.add(StructureErrors.missingOutputHatchDT(missingLayers));
+        }
+
         // validate final invariants... (actual height is mHeight+1)
-        return mCasing >= 7 * (mHeight + 1) - 5 && mHeight + 1 >= 3
-            && mTopLayerFound
-            && mMaintenanceHatches.size() == 1;
+        if (mHeight + 1 < 3) {
+            errors.add(StructureErrorRegistry.TOO_SHORT_HEIGHT);
+            return;
+        }
+        if (!mTopLayerFound) {
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.missing_top"));
+            return;
+        }
+        checkCasingMin(errors, mCasing, 7 * (mHeight + 1) - 5);
+        checkHasEnergyHatch(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasInputHatch(errors);
     }
 
     @Override
-    protected void addFluidOutputs(FluidStack[] outputFluids) {
+    protected boolean addFluidOutputs(FluidStack[] outputFluids) {
+        boolean succeed = true;
         for (int i = 0; i < outputFluids.length && i < mOutputHatchesByLayer.size(); i++) {
             final FluidStack fluidStack = outputFluids[i];
             if (fluidStack == null) continue;
-            FluidStack tStack = fluidStack.copy();
-            if (!dumpFluid(mOutputHatchesByLayer.get(i), tStack, true))
-                dumpFluid(mOutputHatchesByLayer.get(i), tStack, false);
+            FluidStack stack = fluidStack.copy();
+            addOutputPartial(stack, mOutputHatchesByLayer.get(i));
+            if (stack.amount > 0) succeed = false;
         }
+        return succeed;
     }
 
     @Override
-    public boolean canDumpFluidToME() {
-        // All fluids can be dumped to ME only if each layer contains a ME Output Hatch.
-        return this.mOutputHatchesByLayer.stream()
-            .allMatch(
-                tLayerOutputHatches -> tLayerOutputHatches.stream()
-                    .anyMatch(tHatch -> (tHatch instanceof MTEHatchOutputME tMEHatch) && (tMEHatch.canAcceptFluid())));
+    public boolean canDumpFluidToME(List<GTUtility.FluidId> outputs) {
+        return canDumpFluidToMEByLayer(outputs, mOutputHatchesByLayer);
     }
 
     @Override

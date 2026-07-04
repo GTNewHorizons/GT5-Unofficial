@@ -5,6 +5,8 @@ import static gregtech.api.enums.Textures.BlockIcons.*;
 import static gregtech.api.util.GTStructureUtility.*;
 import static gregtech.api.util.GTUtility.validMTEList;
 
+import java.util.List;
+
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -16,7 +18,6 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import goodgenerator.util.DescTextLocalization;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ITexture;
@@ -27,6 +28,7 @@ import gregtech.api.metatileentity.implementations.MTEHatchMultiInput;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -96,8 +98,10 @@ public class MTECoolantTower extends TTMultiblockBase implements ISurvivalConstr
     }
 
     @Override
-    public boolean checkMachine_EM(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        return structureCheck_EM(mName, 5, 11, 0);
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
+        if (!checkPiece(mName, 5, 11, 0, errors)) return;
+        checkHasInputHatch(errors);
+        checkHasOutputHatch(errors);
     }
 
     @Override
@@ -105,24 +109,19 @@ public class MTECoolantTower extends TTMultiblockBase implements ISurvivalConstr
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Coolant Tower")
             .addInfo("Turn Steam back to Distilled Water")
-            .beginStructureBlock(11, 13, 11, true)
+            .beginStructureBlock(11, 11, 13, true)
             .addController("Front center, 2nd layer")
-            .addCasingInfoExactly("Light Concrete", 277, false)
-            .addCasingInfoExactly("Tungstencarbide Frame Box", 28, false)
-            .addInputHatch("Any Light Concrete of the second layer", 1)
-            .addOutputHatch("Any Light Concrete of the second layer", 1)
+            .addCasing("252-277", "Light Concrete", false)
+            .addCasing("28", "Tungstencarbide Frame Box", false)
+            .addInputHatch("1+", "Any bottom edge concrete", 1)
+            .addOutputHatch("1+", "Any bottom edge concrete", 1)
             .toolTipFinisher();
         return tt;
     }
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        structureBuild_EM(mName, 5, 11, 0, stackSize, hintsOnly);
-    }
-
-    @Override
-    public String[] getStructureDescription(ItemStack stackSize) {
-        return DescTextLocalization.addText("CoolantTower.hint", 3);
+        buildPiece(mName, stackSize, hintsOnly, 5, 11, 0);
     }
 
     @Override
@@ -143,7 +142,7 @@ public class MTECoolantTower extends TTMultiblockBase implements ISurvivalConstr
         for (MTEHatchInput tHatch : validMTEList(mInputHatches)) {
             steam += maybeDrainHatch(tHatch);
         }
-        addOutput(GTModHandler.getDistilledWater(steam / 160));
+        addOutputPartial(GTModHandler.getDistilledWater(steam / 160));
         return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 

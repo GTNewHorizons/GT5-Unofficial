@@ -11,6 +11,7 @@ import net.minecraft.util.StatCollector;
 
 import com.gtnewhorizons.modularui.api.math.Pos2d;
 
+import codechicken.nei.PositionedStack;
 import gregtech.api.recipe.BasicUIPropertiesBuilder;
 import gregtech.api.recipe.NEIRecipePropertiesBuilder;
 import gregtech.api.recipe.RecipeMapFrontend;
@@ -48,11 +49,27 @@ public class CauldronFrontend extends RecipeMapFrontend {
     }
 
     @Override
+    public void drawNEIOverlays(GTNEIDefaultHandler.CachedDefaultRecipe neiCachedRecipe) {
+        int stackSize = (GTNEIDefaultHandler.getDrawTicks() / 20) % 2 == 0 ? 1 : 64;
+        for (PositionedStack stack : neiCachedRecipe.mInputs) {
+            if (!(stack.item.getItem() instanceof ItemFluidDisplay)) {
+                stack.item.stackSize = stackSize;
+            }
+        }
+        for (PositionedStack stack : neiCachedRecipe.mOutputs) {
+            stack.item.stackSize = stackSize;
+        }
+        super.drawNEIOverlays(neiCachedRecipe);
+    }
+
+    @Override
     public List<String> handleNEIItemTooltip(ItemStack stack, List<String> currentTip,
         GTNEIDefaultHandler.CachedDefaultRecipe neiCachedRecipe) {
 
         if (stack.getItem() instanceof ItemFluidDisplay) {
             currentTip.add(EnumChatFormatting.RED + StatCollector.translateToLocal("GT5U.nei.cauldron.consumed"));
+        } else {
+            currentTip.add(EnumChatFormatting.GRAY + StatCollector.translateToLocal("GT5U.nei.cauldron.anystack"));
         }
 
         return super.handleNEIItemTooltip(stack, currentTip, neiCachedRecipe);

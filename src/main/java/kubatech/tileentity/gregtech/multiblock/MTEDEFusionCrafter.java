@@ -27,6 +27,7 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.tuple.Pair;
@@ -47,6 +48,8 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.OverclockCalculator;
@@ -126,14 +129,19 @@ public class MTEDEFusionCrafter extends KubaTechGTMultiBlockBase<MTEDEFusionCraf
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         mCasing = 0;
         mTierCasing = -1;
         mFusionTierCasing = -1;
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 9, 0)) return false;
-        if (mCasing < 19) return false;
-        if (mTierCasing > 3 && mFusionTierCasing < 2) return false;
-        return mMaintenanceHatches.size() == 1;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 9, 0, errors)) return;
+        checkCasingMin(errors, mCasing, 19);
+        if (mTierCasing > 3 && mFusionTierCasing < 2) {
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.defc_fusion_machine_casing"));
+        }
+        checkHasEnergyHatch(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasAnyInput(errors);
+        checkHasAnyOutput(errors);
     }
 
     @Override
@@ -146,20 +154,19 @@ public class MTEDEFusionCrafter extends KubaTechGTMultiBlockBase<MTEDEFusionCraf
                     + EnumChatFormatting.GRAY
                     + " per casing tier above recipe")
             .addInfo("Normal EU OC still applies !")
-            .beginStructureBlock(5, 10, 5, false)
+            .beginStructureBlock(5, 5, 10, false)
             .addController("Front bottom center")
-            .addCasingInfoMin("Naquadah Alloy Fusion Casing", 19, false)
-            .addOtherStructurePart("Fusion Coil Block", "Center pillar")
-            .addOtherStructurePart("Fusion Machine Casing", "Touching Fusion Coil Block at every side")
-            .addOtherStructurePart("Tiered Fusion Casing", "Rings (5x5 hollow) at layer 4 and 7")
-            .addStructureInfo("Bloody Ichorium for tier 1, Draconium for tier 2, etc")
-            .addStructureInfo("To use tier 3 + you have to use fusion casing MK II")
-            .addInputBus("Any bottom casing", 1)
-            .addInputHatch("Any bottom casing", 1)
-            .addOutputBus("Any bottom casing", 1)
-            .addOutputHatch("Any bottom casing", 1)
-            .addEnergyHatch("Any bottom casing", 1)
-            .addMaintenanceHatch("Any bottom casing", 1)
+            .addCasing("19-45", "Naquadah Alloy Fusion Casing", false)
+            .addCasing("32", "Fusion Casing", true)
+            .addCasing("32", "Fusion Machine Casing", true)
+            .addCasing("8", "Fusion Coil Block", false)
+            .addEnergyHatch("1+", "Any bottom casing", 1)
+            .addMaintenanceHatch("1", "Any bottom casing", 1)
+            .addInputAny("1+", "Any bottom casing", 1)
+            .addOutputAny("1+", "Any bottom casing", 1)
+            .addStructureInfo("")
+            .addStructureFooter(EnumChatFormatting.RED + "The primordial pearl is consumed in the controller recipe!")
+            .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.casingtier"))
             .toolTipFinisher(GTAuthors.AuthorKuba, "Prometheus0000");
         return tt;
     }

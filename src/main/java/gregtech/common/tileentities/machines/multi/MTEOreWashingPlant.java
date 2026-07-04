@@ -9,27 +9,23 @@ import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.enums.HatchElement.OutputBus;
-import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofAnyWater;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -39,28 +35,25 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import cofh.asmhooks.block.BlockTickingWater;
-import cofh.asmhooks.block.BlockWater;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
+import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.recipe.check.CheckRecipeResult;
-import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.GTRecipe;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
@@ -68,20 +61,18 @@ import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.api.recipe.GTPPRecipeMaps;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-import ic2.core.init.BlocksItems;
-import ic2.core.init.InternalName;
 
 public class MTEOreWashingPlant extends MTEExtendedPowerMultiBlockBase<MTEOreWashingPlant>
-    implements ISurvivalConstructable {
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     private int casingAmount;
+    private boolean needsWaterFill = false;
     private static final int OFFSET_X = 2;
     private static final int OFFSET_Y = 2;
     private static final int OFFSET_Z = 0;
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final int MACHINEMODE_OREWASH = 0;
     private static final int MACHINEMODE_SIMPLEWASH = 1;
-    private static final Block DISTILLED_WATER_BLOCK = BlocksItems.getFluidBlock(InternalName.fluidDistilledWater);
     private static final String[][] structure = new String[][] { { "     ", " CCC ", " C~C ", " CCC " },
         { "   B ", "CDADC", "CBDDC", "CCCCC" }, { "  B  ", "CDADC", "CDBDC", "CCCCC" },
         { " B   ", "CDADC", "CDDBC", "CCCCC" }, { "C   C", "CBABC", "CDBDC", "CCCCC" },
@@ -96,11 +87,11 @@ public class MTEOreWashingPlant extends MTEExtendedPowerMultiBlockBase<MTEOreWas
         .addElement(
             'C',
             buildHatchAdder(MTEOreWashingPlant.class)
-                .atLeast(InputBus, InputHatch, OutputHatch, OutputBus, Maintenance, Energy, Muffler)
+                .atLeast(InputBus, InputHatch, OutputBus, Maintenance, Energy, Muffler)
                 .casingIndex(114) // WashPlantCasing
                 .hint(1)
                 .buildAndChain(onElementPass(x -> ++x.casingAmount, Casings.WashPlantCasing.asElement())))
-        .addElement('D', ofChain(isAir(), ofAnyWater(false)))
+        .addElement('D', ofChain(ofAnyWater(false), isAir()))
         .build();
 
     public MTEOreWashingPlant(final int aID, final String aName, final String aNameRegional) {
@@ -119,25 +110,21 @@ public class MTEOreWashingPlant extends MTEExtendedPowerMultiBlockBase<MTEOreWas
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Ore Washer, Simple Washer")
+        tt.addMachineType("Ore Washer, Simple Washer, OWP")
             .addBulkMachineInfo(4, 5f, 1f)
             .addInfo("Can be configured with a screwdriver to also be used as Simple Washer")
-            .addInfo("Always requires an Input Hatch full of water to refill structure")
-            .addInfo("Need to be filled with water")
-            .addInfo("Will automatically fill water from Input Hatch")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(5, 4, 9, false)
+            .beginStructureBlock(9, 5, 4, false)
             .addController("Front center")
-            .addCasingInfoMin("Wash Plant Casing", 70, false)
-            .addCasingInfoExactly("Steel Gear Box Casing", 7, false)
-            .addCasingInfoExactly("Steel Frame Box", 15, false)
-            .addInputBus("Any Wash Plant Casing", 1)
-            .addOutputBus("Any Wash Plant Casing", 1)
-            .addInputHatch("Any Wash Plant Casing", 1)
-            .addOutputHatch("Any Wash Plant Casing", 1)
-            .addEnergyHatch("Any Wash Plant Casing", 1)
-            .addMaintenanceHatch("Any Wash Plant Casing", 1)
-            .addMufflerHatch("Any Wash Plant Casing", 1)
+            .addCasing("70-85", "Wash Plant Casing", false)
+            .addCasing("15", "Steel Frame Box", false)
+            .addCasing("7", "Steel Gear Box Casing", false)
+            .addEnergyHatch("1+", "Any wash plant casing", 1)
+            .addMaintenanceHatch("1", "Any wash plant casing", 1)
+            .addMufflerHatch("1", "Any wash plant casing", 1)
+            .addInputBus("1+", "Any wash plant casing", 1)
+            .addInputHatch("1+", "Any wash plant casing", 1)
+            .addOutputBus("1+", "Any wash plant casing", 1)
             .addStructureAuthors(EnumChatFormatting.GOLD + "ya9yu")
             .toolTipFinisher();
         return tt;
@@ -169,13 +156,30 @@ public class MTEOreWashingPlant extends MTEExtendedPowerMultiBlockBase<MTEOreWas
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
+        needsWaterFill = false;
         casingAmount = 0;
-        return checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z) && casingAmount >= 70 && checkHatch();
-    }
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z, errors)) {
+            needsWaterFill = GTStructureUtility.hasWaterAtStructurePosition(
+                aBaseMetaTileEntity,
+                getExtendedFacing(),
+                structure,
+                OFFSET_X,
+                OFFSET_Y,
+                OFFSET_Z,
+                'D');
+            return;
+        }
+        checkCasingMin(errors, casingAmount, 70);
+        checkHasEnergyHatch(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasMufflerHatch(errors);
+        checkHasInputBus(errors);
+        checkHasInputHatch(errors);
+        checkHasOutputBus(errors);
 
-    public boolean checkHatch() {
-        return !mMufflerHatches.isEmpty() && !mInputHatches.isEmpty();
+        if (!errors.isEmpty()) return;
+        needsWaterFill = true;
     }
 
     @Override
@@ -185,30 +189,22 @@ public class MTEOreWashingPlant extends MTEExtendedPowerMultiBlockBase<MTEOreWas
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection,
-        ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
-        if (sideDirection == facingDirection) {
-            if (active) return new ITexture[] { TextureFactory.of(ModBlocks.blockCasings2Misc, 4),
-                TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.oMCDIndustrialWashPlantActive)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.oMCDIndustrialWashPlantActiveGlow)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { TextureFactory.of(ModBlocks.blockCasings2Misc, 4), TextureFactory.builder()
-                .addIcon(TexturesGtBlock.oMCDIndustrialWashPlant)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.oMCDIndustrialWashPlantGlow)
-                    .extFacing()
-                    .glow()
-                    .build() };
-        }
-        return new ITexture[] { TextureFactory.of(ModBlocks.blockCasings2Misc, 4) };
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            TexturesGtBlock.oMCDIndustrialWashPlant,
+            TexturesGtBlock.oMCDIndustrialWashPlantGlow,
+            TexturesGtBlock.oMCDIndustrialWashPlantActive,
+            TexturesGtBlock.oMCDIndustrialWashPlantActiveGlow);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return TextureFactory.of(ModBlocks.blockCasings2Misc, 4);
     }
 
     @Override
@@ -236,17 +232,7 @@ public class MTEOreWashingPlant extends MTEExtendedPowerMultiBlockBase<MTEOreWas
 
     @Override
     protected ProcessingLogic createProcessingLogic() {
-        return new ProcessingLogic() {
-
-            @NotNull
-            @Override
-            protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
-                if (checkForWater()) {
-                    return CheckRecipeResultRegistry.SUCCESSFUL;
-                }
-                return SimpleCheckRecipeResult.ofFailure("no_water");
-            }
-        }.noRecipeCaching()
+        return new ProcessingLogic().noRecipeCaching()
             .setSpeedBonus(1F / 5F)
             .setMaxParallelSupplier(this::getTrueParallel);
     }
@@ -261,81 +247,21 @@ public class MTEOreWashingPlant extends MTEExtendedPowerMultiBlockBase<MTEOreWas
         return PollutionConfig.pollutionPerSecondMultiIndustrialWashPlant_ModeWasher;
     }
 
-    public boolean checkForWater() {
-        IGregTechTileEntity base = this.getBaseMetaTileEntity();
-        boolean allFilled = true;
-
-        for (int localZ = 0; localZ < structure.length; localZ++) {
-            String[] rows = structure[localZ];
-            for (int localY = 0; localY < rows.length; localY++) {
-                String row = rows[localY];
-                for (int localX = 0; localX < row.length(); localX++) {
-
-                    if (row.charAt(localX) != 'D') continue;
-
-                    int[] abc = new int[] { localX - OFFSET_X, localY - OFFSET_Y, localZ - OFFSET_Z };
-
-                    int[] xyz = new int[] { 0, 0, 0 };
-
-                    this.getExtendedFacing()
-                        .getWorldOffset(abc, xyz);
-
-                    int worldX = base.getXCoord() + xyz[0];
-                    int worldY = base.getYCoord() + xyz[1];
-                    int worldZ = base.getZCoord() + xyz[2];
-
-                    Block block = base.getWorld()
-                        .getBlock(worldX, worldY, worldZ);
-
-                    if (block == DISTILLED_WATER_BLOCK) {
-                        continue;
-                    }
-
-                    allFilled = false;
-
-                    boolean isAir = block == Blocks.air || block == Blocks.flowing_water;
-                    boolean isCOFHWater = Mods.COFHCore.isModLoaded()
-                        && (block instanceof BlockWater || block instanceof BlockTickingWater);
-                    boolean isWater = block == Blocks.water || isCOFHWater;
-
-                    if (!isAir && !isWater) {
-                        return false;
-                    }
-
-                    ArrayList<FluidStack> stored = this.getStoredFluids();
-                    if (stored == null) {
-                        return false;
-                    }
-
-                    boolean processed = false;
-
-                    for (FluidStack fs : stored) {
-
-                        if (!fs.isFluidEqual(Materials.Water.getFluid(1))) {
-                            continue;
-                        }
-
-                        if (fs.amount < 1000) {
-                            continue;
-                        }
-
-                        fs.amount -= 1000;
-
-                        base.getWorld()
-                            .setBlock(worldX, worldY, worldZ, isAir ? Blocks.water : DISTILLED_WATER_BLOCK);
-
-                        processed = true;
-                        break;
-                    }
-
-                    if (!processed) {
-                        allFilled = false;
-                        continue;
-                    }
-                }
+    @Override
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        super.onPostTick(aBaseMetaTileEntity, aTick);
+        if (aBaseMetaTileEntity.isServerSide() && needsWaterFill && aTick % 20 == 0) {
+            if (GTStructureUtility.fillStructureWithWater(
+                aBaseMetaTileEntity,
+                getExtendedFacing(),
+                structure,
+                OFFSET_X,
+                OFFSET_Y,
+                OFFSET_Z,
+                'D')) {
+                needsWaterFill = false;
             }
         }
-        return allFilled;
     }
 
     @Override
@@ -402,8 +328,8 @@ public class MTEOreWashingPlant extends MTEExtendedPowerMultiBlockBase<MTEOreWas
     }
 
     @Override
-    protected @NotNull MTEMultiBlockBaseGui getGui() {
-        return new MTEMultiBlockBaseGui(this).withMachineModeIcons(
+    protected @NotNull MTEMultiBlockBaseGui<?> getGui() {
+        return new MTEMultiBlockBaseGui<>(this).withMachineModeIcons(
             GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_WASHPLANT,
             GTGuiTextures.OVERLAY_BUTTON_MACHINEMODE_SIMPLEWASHER);
     }

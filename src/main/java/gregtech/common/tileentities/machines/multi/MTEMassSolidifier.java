@@ -39,9 +39,9 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Textures;
-import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
@@ -52,7 +52,8 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -65,7 +66,7 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class MTEMassSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMassSolidifier>
-    implements ISurvivalConstructable {
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final double DECAY_RATE = 0.025;
@@ -125,42 +126,23 @@ public class MTEMassSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMassSol
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
-        ITexture[] rTexture;
-        if (side == aFacing) {
-            if (aActive) {
-                rTexture = new ITexture[] {
-                    Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 13)),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MASS_SOLIDIFIER_ACTIVE)
-                        .extFacing()
-                        .build(),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MASS_SOLIDIFIER_ACTIVE_GLOW)
-                        .extFacing()
-                        .glow()
-                        .build() };
-            } else {
-                rTexture = new ITexture[] {
-                    Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 13)),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MASS_SOLIDIFIER)
-                        .extFacing()
-                        .build(),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MASS_SOLIDIFIER_GLOW)
-                        .extFacing()
-                        .glow()
-                        .build() };
-            }
-        } else {
-            rTexture = new ITexture[] { Textures.BlockIcons
-                .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 13)) };
-        }
-        return rTexture;
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            OVERLAY_FRONT_MASS_SOLIDIFIER,
+            OVERLAY_FRONT_MASS_SOLIDIFIER_GLOW,
+            OVERLAY_FRONT_MASS_SOLIDIFIER_ACTIVE,
+            OVERLAY_FRONT_MASS_SOLIDIFIER_ACTIVE_GLOW);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Textures.BlockIcons
+            .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 13));
     }
 
     @Override
@@ -171,28 +153,28 @@ public class MTEMassSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMassSol
             .addInfo("Speeds up to a maximum of " + TooltipHelper.speedText(3f))
             .addInfo("Decays at double the rate that it speeds up at")
             .addStaticEuEffInfo(0.8f)
-            .addGlassEnergyLimitInfo(VoltageIndex.UEV)
+            .addGlassEnergyLimitInfo()
             .addInfo(
                 "Can use " + EnumChatFormatting.YELLOW
                     + "Solidifier Hatches"
                     + EnumChatFormatting.GRAY
                     + " to hold fluids and molds in the same hatch")
             .addInfo(EnumChatFormatting.BLUE + "Pretty Ⱄⱁⰾⰻⰴ, isn't it")
-            .beginStructureBlock(5, 6, 9, false)
+            .beginStructureBlock(9, 5, 6, false)
             .addController("Front bottom center")
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
-            .addCasingInfoMin("Solidifier Casing", MIN_CASINGS, false)
-            .addCasingInfoExactly("Solidifier Radiator", 34, false)
-            .addCasingInfoExactly("Heat Proof Machine Casing", 13, false)
-            .addCasingInfoExactly("Clean Stainless Steel Machine Casing", 7, false)
-            .addCasingInfoExactly("Steel Pipe Casing", 3, false)
-            .addCasingInfoExactly("Any Tiered Glass", 42, true)
-            .addInputBus("Any Solidifier Casing", 1)
-            .addOutputBus("Any Solidifier Casing", 1)
-            .addInputHatch("Any Solidifier Casing", 1)
-            .addEnergyHatch("Any Solidifier Casing", 1)
-            .addMaintenanceHatch("Any Solidifier Casing", 1)
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .addCasing(MIN_CASINGS + "-73", "Solidifier Casing", false)
+            .addCasing("42", "Any Tiered Glass", true)
+            .addCasing("34", "Solidifier Radiator", false)
+            .addCasing("13", "Heat Proof Machine Casing", false)
+            .addCasing("7", "Clean Stainless Steel Machine Casing", false)
+            .addCasing("3", "Steel Pipe Casing", false)
+            .addEnergyHatch("1+", "Any solidifier casing", 1)
+            .addMaintenanceHatch("1", "Any solidifier casing", 1)
+            .addInputBus("0+", "Any solidifier casing", 1)
+            .addMiscHatch("1+", "Input/Solidifier Hatch", "Any solidifier casing", 1)
+            .addOutputBus("1+", "Any solidifier casing", 1)
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher(AuthorOmdaCZ);
         return tt;
     }
@@ -257,19 +239,21 @@ public class MTEMassSolidifier extends MTEExtendedPowerMultiBlockBase<MTEMassSol
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         casingAmount = 0;
         glassTier = -1;
-
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFFSET, VERTICAL_OFFSET, DEPTH_OFFSET)) {
-            return false;
-        }
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFFSET, VERTICAL_OFFSET, DEPTH_OFFSET, errors)) return;
         for (MTEHatchEnergy mEnergyHatch : this.mEnergyHatches) {
-            if (glassTier < VoltageIndex.UEV & mEnergyHatch.mTier > glassTier) {
-                return false;
+            if (mEnergyHatch.mTier > glassTier) {
+                errors.add(StructureErrorRegistry.ENERGY_TIER_EXCEED_GLASS);
+                break;
             }
         }
-        return casingAmount >= MIN_CASINGS;
+        checkCasingMin(errors, casingAmount, MIN_CASINGS);
+        checkHasEnergyHatch(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasInputHatch(errors);
+        checkHasOutputBus(errors);
     }
 
     @Override

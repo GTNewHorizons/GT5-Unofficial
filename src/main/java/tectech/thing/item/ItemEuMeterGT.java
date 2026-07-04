@@ -12,6 +12,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.IChatComponent;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.FakePlayer;
@@ -142,10 +143,10 @@ public class ItemEuMeterGT extends Item {
                 return true;
             } else if (tTileEntity instanceof BaseMetaPipeEntity) {
                 if (((BaseMetaPipeEntity) tTileEntity).getMetaTileEntity() instanceof MTECable) {
-                    List<String> list = new ArrayList<>();
-                    ScannerHelper.scan(list, aPlayer, aWorld, 1, aX, aY, aZ, side, hitX, hitY, hitZ);
-                    for (String str : list) {
-                        GTUtility.sendChatToPlayer(aPlayer, str);
+                    List<IChatComponent> list = new ArrayList<>();
+                    ScannerHelper.scanComponents(list, aPlayer, aWorld, 1, aX, aY, aZ, side, hitX, hitY, hitZ);
+                    for (IChatComponent comp : list) {
+                        aPlayer.addChatComponentMessage(comp);
                     }
                 }
                 return true;

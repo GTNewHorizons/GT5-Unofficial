@@ -15,6 +15,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_MULTI_BLACKHOLE_ACT
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_MULTI_BLACKHOLE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_MULTI_BLACKHOLE_UNSTABLE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_MULTI_BLACKHOLE_UNSTABLE_GLOW;
+import static gregtech.api.util.GTRecipeConstants.COMPRESSION_TIER;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTUtility.filterValidMTEs;
@@ -62,6 +63,7 @@ import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
@@ -71,7 +73,8 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
@@ -85,7 +88,7 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 import tectech.thing.metaTileEntity.multi.base.SoundLoopAnyBlock;
 
 public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBlackHoleCompressor>
-    implements ISurvivalConstructable {
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<MTEBlackHoleCompressor> STRUCTURE_DEFINITION = StructureDefinition
@@ -149,6 +152,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                 .buildAndChain(ofBlock(GregTechAPI.sBlockCasings10, 11)))
         .build();
 
+    private boolean isNotBlackHoleRecipe;
     private int catalyzingCounter = 0;
     private float blackHoleStability = 100;
     private final ArrayList<MTEHatchInput> spacetimeHatches = new ArrayList<>();
@@ -308,43 +312,38 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
     @Override
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
-        ITexture[] rTexture;
-        if (side == aFacing) {
-            IIconContainer MAIN_OVERLAY;
-            IIconContainer GLOW_OVERLAY;
-            switch (blackHoleStatus) {
-                default -> {
-                    MAIN_OVERLAY = OVERLAY_MULTI_BLACKHOLE;
-                    GLOW_OVERLAY = OVERLAY_MULTI_BLACKHOLE_GLOW;
-                }
-                case 2, 4 -> {
-                    MAIN_OVERLAY = OVERLAY_MULTI_BLACKHOLE_ACTIVE;
-                    GLOW_OVERLAY = OVERLAY_MULTI_BLACKHOLE_ACTIVE_GLOW;
-                }
-                case 3 -> {
-                    MAIN_OVERLAY = OVERLAY_MULTI_BLACKHOLE_UNSTABLE;
-                    GLOW_OVERLAY = OVERLAY_MULTI_BLACKHOLE_UNSTABLE_GLOW;
-                }
+        IIconContainer MAIN_OVERLAY;
+        IIconContainer GLOW_OVERLAY;
+        switch (blackHoleStatus) {
+            default -> {
+                MAIN_OVERLAY = OVERLAY_MULTI_BLACKHOLE;
+                GLOW_OVERLAY = OVERLAY_MULTI_BLACKHOLE_GLOW;
             }
-
-            rTexture = new ITexture[] {
-                Textures.BlockIcons
-                    .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 11)),
-                TextureFactory.builder()
-                    .addIcon(MAIN_OVERLAY)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(GLOW_OVERLAY)
-                    .extFacing()
-                    .glow()
-                    .build() };
-
-        } else {
-            rTexture = new ITexture[] { Textures.BlockIcons
-                .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 11)) };
+            case 2, 4 -> {
+                MAIN_OVERLAY = OVERLAY_MULTI_BLACKHOLE_ACTIVE;
+                GLOW_OVERLAY = OVERLAY_MULTI_BLACKHOLE_ACTIVE_GLOW;
+            }
+            case 3 -> {
+                MAIN_OVERLAY = OVERLAY_MULTI_BLACKHOLE_UNSTABLE;
+                GLOW_OVERLAY = OVERLAY_MULTI_BLACKHOLE_UNSTABLE_GLOW;
+            }
         }
-        return rTexture;
+
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            MAIN_OVERLAY,
+            GLOW_OVERLAY,
+            MAIN_OVERLAY,
+            GLOW_OVERLAY);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Textures.BlockIcons
+            .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 11));
     }
 
     @Override
@@ -405,21 +404,29 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                     + " parallels when stability is BELOW "
                     + EnumChatFormatting.RED
                     + "50/20")
-            .addTecTechHatchInfo()
+            .addInfo(
+                "Below " + EnumChatFormatting.RED
+                    + "20"
+                    + EnumChatFormatting.GRAY
+                    + " stability, parallels are "
+                    + EnumChatFormatting.RED
+                    + "uncapped"
+                    + EnumChatFormatting.GRAY
+                    + " for recipes that do not require a black hole.")
+            .addSupportAny()
             .addInfo(
                 EnumChatFormatting.RED
                     + "Recipe tier is limited to hatch tier + 1. Will not perform overclocks above the hatch tier")
             .addInfo(EnumChatFormatting.RED + "Limited to one energy hatch if using a Multi-Amp or Laser hatch")
-            .beginStructureBlock(35, 33, 35, false)
-            .addCasingInfoMin("Background Radiation Absorbent Casing", 950, false)
-            .addCasingInfoExactly("Extreme Density Space-Bending Casing", 3667, false)
-            .addCasingInfoExactly("Hawking Radiation Realignment Focus", 64, false)
-            .addCasingInfoExactly("Naquadah Alloy Frame Box", 144, false)
-            .addInputHatch("Spacetime Insertion, Behind Laser", 2)
-            .addInputBus("Any Radiation Absorbent Casing", 1)
-            .addOutputBus("Any Radiation Absorbent Casing", 1)
-            .addInputHatch("Any Radiation Absorbent Casing", 1)
-            .addEnergyHatch("Any Radiation Absorbent Casing", 1)
+            .beginStructureBlock(35, 33, 35, true)
+            .addController("Center of structure, 6th layer")
+            .addCasing("3667-3671", "Extreme Density Space-Bending Casing", false)
+            .addCasing("950-985", "Background Radiation Absorbent Casing", false)
+            .addCasing("144", "Naquadah Alloy Frame Box", false)
+            .addCasing("64", "Hawking Radiation Realignment Focus", false)
+            .addMiscHatch("0+", "Black Hole Utility Hatch", "Any absorbent casing", 1)
+            .addInputAny("1+", "Any absorbent casing (inputs), the casing behind each laser (spacetime)", 1, 2)
+            .addOutputBus("1+", "Any absorbent casing", 1)
             .toolTipFinisher(Ollie, "BucketBrigade");
         return tt;
     }
@@ -443,19 +450,23 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         mCasingAmount = 0;
         mEnergyHatches.clear();
         mExoticEnergyHatches.clear();
         spacetimeHatches.clear();
 
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, 17, 27, 10)) return false;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 17, 27, 10, errors)) return;
+        checkCasingMin(errors, mCasingAmount, 950);
+        checkHasAnyEnergy(errors);
         // Allow only 1 energy hatch if laser/multiamp
         if (!mExoticEnergyHatches.isEmpty()) {
-            if (!mEnergyHatches.isEmpty()) return false;
-            if (mExoticEnergyHatches.size() > 1) return false;
+            if (!mEnergyHatches.isEmpty() || mExoticEnergyHatches.size() > 1) {
+                errors.add(StructureErrorRegistry.ONE_ENERGY_HATCH_ON_MULTI_OR_LASER);
+            }
         }
-        return mCasingAmount >= 950;
+        checkHasAnyInput(errors);
+        checkHasOutputBus(errors);
     }
 
     @Override
@@ -580,6 +591,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
             @NotNull
             @Override
             protected Stream<GTRecipe> findRecipeMatches(@Nullable RecipeMap<?> map) {
+                isNotBlackHoleRecipe = false;
                 int mode = getModeFromCircuit(inputItems);
 
                 if (mode == -1) {
@@ -613,8 +625,15 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
             @NotNull
             @Override
             protected CheckRecipeResult validateRecipe(@NotNull GTRecipe recipe) {
+                isNotBlackHoleRecipe = false;
                 if (blackHoleStatus == 1) return CheckRecipeResultRegistry.NO_BLACK_HOLE;
-                return super.validateRecipe(recipe);
+                CheckRecipeResult result = super.validateRecipe(recipe);
+                if (result != CheckRecipeResultRegistry.SUCCESSFUL) return result;
+                int comp_tier = recipe.getMetadataOrDefault(COMPRESSION_TIER, 0);
+                isNotBlackHoleRecipe = comp_tier < 2;
+                // Forces a recalculation of the parallels right after the attribute is set
+                maxParallel = maxParallelSupplier.get();
+                return result;
             }
         }.noRecipeCaching()
             .setMaxParallelSupplier(this::getTrueParallel)
@@ -682,7 +701,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
         boolean didDrain = false;
 
         // Only do loss reductions if the black hole is stable - unstable black hole can't be frozen
-        if (blackHoleStability >= 0) {
+        if (blackHoleStability > 0) {
 
             // Search all hatches for catalyst fluid
             // If found enough, drain it and reduce stability loss to 0
@@ -703,7 +722,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                     break;
                 }
             }
-        } else blackHoleStatus = 3;
+        }
 
         if (shouldRender) {
             if (rendererTileEntity != null || createRenderBlock()) {
@@ -713,6 +732,8 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
         }
 
         blackHoleStability -= stabilityDecrease;
+
+        if (blackHoleStability <= 0) blackHoleStatus = 3;
 
         // Close black hole and reset if it has been unstable for 15 minutes or more
         if (blackHoleStability <= -900) closeBlackHole();
@@ -733,10 +754,15 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
     @Override
     public int getMaxParallelRecipes() {
         int parallels = (8 * GTUtility.getTierExtended(this.getMaxInputEu()));
-        if (blackHoleStatus == 4) parallels *= 4;
-        else if (blackHoleStability < 50) {
+        if (blackHoleStatus == 4) {
+            if (isNotBlackHoleRecipe) return Integer.MAX_VALUE;
+            parallels *= 4;
+        } else if (blackHoleStability < 50) {
             parallels *= 2;
-            if (blackHoleStability < 20) parallels *= 2;
+            if (blackHoleStability < 20) {
+                if (isNotBlackHoleRecipe) return Integer.MAX_VALUE;
+                parallels *= 2;
+            }
         }
         return parallels;
     }

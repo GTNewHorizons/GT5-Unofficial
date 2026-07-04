@@ -10,14 +10,14 @@ import net.minecraft.util.EnumChatFormatting;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.cleanroommc.modularui.api.GuiAxis;
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.drawable.Rectangle;
 import com.cleanroommc.modularui.utils.Color;
 import com.cleanroommc.modularui.widget.sizer.Area;
 import com.cleanroommc.modularui.widgets.ToggleButton;
-import com.cleanroommc.modularui.widgets.layout.Column;
-import com.cleanroommc.modularui.widgets.layout.Row;
+import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.google.common.collect.ImmutableList;
 
 import gregtech.api.enums.Dyes;
@@ -26,7 +26,7 @@ import gregtech.api.enums.Dyes;
  * A Grid containing 16 ToggleButtons arranged in a 4x4 pattern. Each button represents a different minecraft dye
  * color
  */
-public class ColorGridWidget extends Column {
+public class ColorGridWidget extends Flow {
 
     public List<Byte> selected = new ArrayList<>();
     public Consumer<List<Byte>> onToggle;
@@ -36,7 +36,7 @@ public class ColorGridWidget extends Column {
     public int borderSize = 1;
 
     public ColorGridWidget() {
-        super();
+        super(GuiAxis.Y);
         this.coverChildren();
     }
 
@@ -124,7 +124,7 @@ public class ColorGridWidget extends Column {
 
     public void createButtonRows() {
         for (int i = 0; i < 4; i++) {
-            Row row = new Row();
+            Flow row = Flow.row();
             for (int j = 0; j < 4; j++) {
                 Dyes dye = Dyes.VALUES[(i * 4) + j];
                 short[] colors = dye.getRGBA();

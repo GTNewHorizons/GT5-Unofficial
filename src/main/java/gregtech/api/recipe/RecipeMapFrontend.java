@@ -26,8 +26,10 @@ import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.ProgressBar;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
+import codechicken.nei.NEIClientUtils;
 import codechicken.nei.PositionedStack;
-import gregtech.api.enums.SteamVariant;
+import codechicken.nei.recipe.GuiRecipe;
+import gregtech.api.enums.TieredVariant;
 import gregtech.api.gui.GUIColorOverride;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.recipe.metadata.IRecipeMetadataStorage;
@@ -35,6 +37,7 @@ import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MethodsReturnNonnullByDefault;
 import gregtech.common.gui.modularui.UIHelper;
 import gregtech.nei.GTNEIDefaultHandler;
+import gregtech.nei.GTNEIDefaultHandler.FixedPositionedStack;
 import gregtech.nei.RecipeDisplayInfo;
 
 /**
@@ -67,7 +70,11 @@ public class RecipeMapFrontend {
             .fluidInputPositionsGetter(this::getFluidInputPositions)
             .fluidOutputPositionsGetter(this::getFluidOutputPositions)
             .build();
-        this.neiProperties = neiPropertiesBuilder.build();
+        this.neiProperties = modifyNEIProperties(neiPropertiesBuilder).build();
+    }
+
+    protected NEIRecipePropertiesBuilder modifyNEIProperties(NEIRecipePropertiesBuilder neiPropertiesBuilder) {
+        return neiPropertiesBuilder;
     }
 
     /**
@@ -130,7 +137,7 @@ public class RecipeMapFrontend {
             uiProperties.maxItemOutputs,
             uiProperties.maxFluidInputs,
             uiProperties.maxFluidOutputs,
-            SteamVariant.NONE,
+            TieredVariant.STANDARD,
             ctx.windowOffset);
 
         addGregTechLogo(builder, ctx.windowOffset);
@@ -277,23 +284,31 @@ public class RecipeMapFrontend {
 
     public List<String> handleNEIItemTooltip(ItemStack stack, List<String> currentTip,
         GTNEIDefaultHandler.CachedDefaultRecipe neiCachedRecipe) {
-        for (PositionedStack pStack : neiCachedRecipe.mInputs) {
-            if (stack == pStack.item) {
-                if (pStack instanceof GTNEIDefaultHandler.FixedPositionedStack fixed) {
-                    currentTip = handleNEIItemInputTooltip(currentTip, fixed);
-                }
-                break;
-            }
-        }
-        for (PositionedStack pStack : neiCachedRecipe.mOutputs) {
-            if (stack == pStack.item) {
-                if (pStack instanceof GTNEIDefaultHandler.FixedPositionedStack fixed) {
-                    currentTip = handleNEIItemOutputTooltip(currentTip, fixed);
-                }
-                break;
-            }
-        }
+        GuiRecipe<?> gui = NEIClientUtils.getGuiContainer() instanceof GuiRecipe<?>g ? g : null;
+
+        FixedPositionedStack input = pickHoveredStack(gui, neiCachedRecipe.mInputs, stack);
+        if (input != null) currentTip = handleNEIItemInputTooltip(currentTip, input);
+
+        FixedPositionedStack output = pickHoveredStack(gui, neiCachedRecipe.mOutputs, stack);
+        if (output != null) currentTip = handleNEIItemOutputTooltip(currentTip, output);
+
         return currentTip;
+    }
+
+    /**
+     * Prefer the slot the mouse is actually over so duplicate items in different slots resolve to the correct
+     * slot (e.g. BEC per-slot nanite tiers); fall back to the first match when no slot is under the mouse. The
+     * `0` passed to {@link GuiRecipe#isMouseOver} is its unused `refIndex` argument.
+     */
+    private static FixedPositionedStack pickHoveredStack(GuiRecipe<?> gui, List<PositionedStack> stacks,
+        ItemStack stack) {
+        FixedPositionedStack firstMatch = null;
+        for (PositionedStack pStack : stacks) {
+            if (!(pStack instanceof FixedPositionedStack fixed) || !fixed.containsWithNBT(stack)) continue;
+            if (gui != null && gui.isMouseOver(fixed, 0)) return fixed;
+            if (firstMatch == null) firstMatch = fixed;
+        }
+        return firstMatch;
     }
 
     protected List<String> handleNEIItemInputTooltip(List<String> currentTip,

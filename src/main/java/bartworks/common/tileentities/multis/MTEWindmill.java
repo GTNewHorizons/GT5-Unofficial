@@ -37,7 +37,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityDispenser;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -76,6 +75,7 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.modularui.IGetTitleColor;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
 import gregtech.api.objects.ItemData;
@@ -83,6 +83,8 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
@@ -236,17 +238,19 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType("Windmill")
+        tt.addMachineType("Macerator")
             .addInfo("A primitive Grinder powered by Kinetic energy")
             .addInfo("Speed and output will be affected by wind speed, recipe and rotor")
             .addInfo("Please use the Primitive Rotor")
             .addInfo("Macerates 16 items at a time")
-            .beginStructureBlock(7, 12, 7, false)
+            .beginStructureBlock(7, 7, 12, true)
             .addController("Front bottom center")
-            .addCasingInfoMin("Hardened Clay block", 40, false)
-            .addOtherStructurePart("Dispenser", "Any Hardened Clay block")
-            .addOtherStructurePart("0-1 Wooden door", "Any Hardened Clay block")
-            .addStructureHint("tile.BWRotorBlock.0.name", 1)
+            .addCasing("100", "Wood Planks (any type)", false)
+            .addCasing("40-47", "Terracotta (plain)", false)
+            .addCasing("44", "Bricks", false)
+            .addMiscHatch("1", "Primitive Kinetic Shaftbox", "Front center", 1)
+            .addMiscHatch("1+", "Dispenser", "Any terracotta", 2)
+            .addMiscHatch("0-1", "Oak Door", "Any terracotta", 2)
             .toolTipFinisher();
         return tt;
     }
@@ -429,15 +433,19 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack itemStack) {
-
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack itemStack,
+        List<StructureError> errors) {
         this.tileEntityDispensers.clear();
         this.mDoor = 0;
         this.mHardenedClay = 0;
-
-        return this.checkPiece(STRUCTURE_PIECE_MAIN, 3, 11, 0) && !this.tileEntityDispensers.isEmpty()
-            && this.mDoor <= 2
-            && this.mHardenedClay >= 40;
+        if (!this.checkPiece(STRUCTURE_PIECE_MAIN, 3, 11, 0, errors)) return;
+        if (this.tileEntityDispensers.isEmpty()) {
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.missing_dispenser"));
+        }
+        if (this.mDoor > 2) {
+            errors.add(StructureErrors.of("GT5U.gui.text.structure_error.too_many_doors"));
+        }
+        checkCasingMin(errors, this.mHardenedClay, 40);
     }
 
     @Override
@@ -460,10 +468,9 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
     @Override
     public String[] getInfoData() {
         return new String[] {
-            StatCollector
-                .translateToLocalFormatted("BW.infoData.wind_mill.progress", this.mProgresstime, this.mMaxProgresstime),
-            StatCollector
-                .translateToLocalFormatted("BW.infoData.wind_mill.grind_power", this.rotorBlock.getGrindPower()) };
+            IGregTechDeviceInformation
+                .encode("BW.infoData.wind_mill.progress", this.mProgresstime, this.mMaxProgresstime),
+            IGregTechDeviceInformation.encode("BW.infoData.wind_mill.grind_power", this.rotorBlock.getGrindPower()) };
     }
 
     @SideOnly(Side.CLIENT)

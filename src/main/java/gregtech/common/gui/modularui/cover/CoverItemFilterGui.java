@@ -1,5 +1,6 @@
 package gregtech.common.gui.modularui.cover;
 
+import com.cleanroommc.modularui.api.GuiAxis;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.EnumSyncValue;
@@ -13,7 +14,7 @@ import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.common.covers.CoverItemFilter;
 import gregtech.common.covers.modes.FilterType;
 import gregtech.common.gui.modularui.cover.base.CoverBaseGui;
-import gregtech.common.modularui2.widget.builder.EnumRowBuilder;
+import gregtech.common.modularui2.widget.builder.EnumSeriesBuilder;
 
 public class CoverItemFilterGui extends CoverBaseGui<CoverItemFilter> {
 
@@ -28,10 +29,10 @@ public class CoverItemFilterGui extends CoverBaseGui<CoverItemFilter> {
 
     @Override
     public void addUIWidgets(PanelSyncManager syncManager, Flow column, CoverGuiData data) {
-        EnumSyncValue<FilterType> filterTypeSyncValue = new EnumSyncValue<>(
+        EnumSyncValue<FilterType, ?> filterTypeSyncValue = new EnumSyncValue<>(
             FilterType.class,
             cover::getFilterType,
-            cover::setFilterType);
+            cover::setFilterType).allowC2S();
         syncManager.syncValue("filter_type", filterTypeSyncValue);
 
         column.child(
@@ -44,9 +45,9 @@ public class CoverItemFilterGui extends CoverBaseGui<CoverItemFilter> {
                         .coverChildren()
                         .childPadding(WIDGET_MARGIN)
                         .child(
-                            new EnumRowBuilder<>(FilterType.class).value(filterTypeSyncValue)
+                            new EnumSeriesBuilder<>(FilterType.class).value(filterTypeSyncValue)
                                 .overlay(GTGuiTextures.OVERLAY_BUTTON_WHITELIST, GTGuiTextures.OVERLAY_BUTTON_BLACKLIST)
-                                .build())
+                                .build(GuiAxis.X))
                         .child(
                             IKey.lang("gt.interact.desc.Item_Filter.CheckMode")
                                 .asWidget()))

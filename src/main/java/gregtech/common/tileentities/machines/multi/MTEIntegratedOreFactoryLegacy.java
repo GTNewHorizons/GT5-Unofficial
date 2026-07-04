@@ -50,12 +50,14 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
@@ -66,7 +68,7 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class MTEIntegratedOreFactoryLegacy extends MTEExtendedPowerMultiBlockBase<MTEIntegratedOreFactoryLegacy>
-    implements ISurvivalConstructable {
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     private static final int CASING_INDEX1 = 183;
     private static final int CASING_INDEX2 = 49;
@@ -213,7 +215,7 @@ public class MTEIntegratedOreFactoryLegacy extends MTEExtendedPowerMultiBlockBas
             .addSeparator()
             .addInfo(EnumChatFormatting.GREEN + "OP stands for Ore Processor ;)")
             .beginStructureBlock(6, 12, 11, false)
-            .addController("The third layer")
+            .addController("Front center, 3rd layer")
             .addCasingInfoExactly("Advanced Iridium Plated Machine Casing", 128, false)
             .addCasingInfoExactly("Clean Stainless Steel Machine Casing", 105, false)
             .addCasingInfoExactly("Any Tiered Glass", 48, false)
@@ -735,9 +737,10 @@ public class MTEIntegratedOreFactoryLegacy extends MTEExtendedPowerMultiBlockBas
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        return checkPiece(STRUCTURE_PIECE_MAIN, 8, 9, 1) && mMaintenanceHatches.size() <= 1
-            && !mMufflerHatches.isEmpty();
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 8, 9, 1, errors)) return;
+        checkOneMaintenanceHatch(errors);
+        checkHasMufflerHatch(errors);
     }
 
     @Override
@@ -761,12 +764,10 @@ public class MTEIntegratedOreFactoryLegacy extends MTEExtendedPowerMultiBlockBas
     @Override
     public String[] getInfoData() {
         List<String> informationData = new ArrayList<>(Arrays.asList(super.getInfoData()));
-        String parallelism = StatCollector.translateToLocal("GT5U.multiblock.parallelism") + ": "
-            + EnumChatFormatting.BLUE
-            + getCurrentParallelism()
-            + EnumChatFormatting.RESET;
-        informationData.add(parallelism);
-        informationData.add(StatCollector.translateToLocalFormatted("GT5U.machines.oreprocessor.void", sVoidStone));
+        informationData.add(
+            IGregTechDeviceInformation
+                .encode("GT5U.infodata.integrated_ore_factory.parallelism", getCurrentParallelism()));
+        informationData.add(IGregTechDeviceInformation.encode("GT5U.machines.oreprocessor.void", sVoidStone));
         informationData.addAll(getDisplayMode(sMode));
         return informationData.toArray(new String[0]);
     }
@@ -774,28 +775,20 @@ public class MTEIntegratedOreFactoryLegacy extends MTEExtendedPowerMultiBlockBas
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
-        if (side == aFacing) {
-            if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX2),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_ORE_FACTORY_ACTIVE)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_ORE_FACTORY_ACTIVE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX2), TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_ORE_FACTORY)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_ORE_FACTORY_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-        }
-        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX2) };
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            OVERLAY_FRONT_ORE_FACTORY,
+            OVERLAY_FRONT_ORE_FACTORY_GLOW,
+            OVERLAY_FRONT_ORE_FACTORY_ACTIVE,
+            OVERLAY_FRONT_ORE_FACTORY_ACTIVE_GLOW);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Textures.BlockIcons.getCasingTextureForId(CASING_INDEX2);
     }
 
     private static List<String> getDisplayMode(int mode) {

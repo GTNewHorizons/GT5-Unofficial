@@ -1,0 +1,6 @@
+{
+  "ThermalCont1": {
+    "texture-set": "BEC1",
+    "palette": "./palettes/ThermalCont1.png"
+  }
+}

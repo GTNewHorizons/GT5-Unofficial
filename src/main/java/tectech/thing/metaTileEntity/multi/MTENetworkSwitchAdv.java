@@ -14,7 +14,6 @@ import static tectech.thing.metaTileEntity.multi.base.TTMultiblockBase.HatchElem
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
@@ -118,10 +117,10 @@ public class MTENetworkSwitchAdv extends TTMultiblockBase
     @Override
     public IStructureDefinition<MTENetworkSwitchAdv> compile(String[][] definition) {
         structure.addCasing('A', Casings.ComputerCasing)
-            .withUnlimitedHatches(1, Arrays.asList(Energy, EnergyMulti, Dynamo, DynamoMulti, OutputData));
+            .withUnlimitedHatches(2, Arrays.asList(Energy, EnergyMulti, Dynamo, DynamoMulti, OutputData));
         structure.addCasing('B', Casings.AdvancedComputerCasing);
         structure.addCasing('C', Casings.AdvancedComputerCasing)
-            .withUnlimitedHatches(2, Arrays.asList(InputData, OutputData));
+            .withUnlimitedHatches(1, Arrays.asList(Energy, EnergyMulti, Dynamo, DynamoMulti, InputData, OutputData));
 
         var shapes = Arrays.asList(
             Pair.of(STRUCTURE_SHAPE_FIRST, new String[][] { FIRST }),
@@ -133,7 +132,7 @@ public class MTENetworkSwitchAdv extends TTMultiblockBase
     }
 
     @Override
-    public IStructureInstance getStructureInstance() {
+    public IStructureInstance<MTENetworkSwitchAdv> getStructureInstance() {
         return structureInstanceInfo;
     }
 
@@ -216,10 +215,10 @@ public class MTENetworkSwitchAdv extends TTMultiblockBase
     }
 
     @Override
-    protected void clearHatches_EM() {
+    public void clearHatches() {
         resetDataHatches();
 
-        super.clearHatches_EM();
+        super.clearHatches();
 
         this.length = 0;
 
@@ -227,20 +226,24 @@ public class MTENetworkSwitchAdv extends TTMultiblockBase
     }
 
     @Override
-    public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
+    public void checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack,
+        List<StructureError> errors) {
         Vec3Impl offset = new Vec3Impl(0, 0, 0);
         Vec3Impl inc = new Vec3Impl(0, 0, -1);
 
-        if (!structure.checkStructure(this, STRUCTURE_SHAPE_FIRST, offset)) return false;
+        if (!structure.checkStructure(this, STRUCTURE_SHAPE_FIRST, offset, errors)) return;
 
         offset = offset.add(inc);
 
-        while (length < MAX_LENGTH && structure.checkStructure(this, STRUCTURE_SHAPE_MIDDLE, offset)) {
+        while (length < MAX_LENGTH && structure.checkStructure(this, STRUCTURE_SHAPE_MIDDLE, offset, errors)) {
             length++;
             offset = offset.add(inc);
         }
 
-        if (!structure.checkStructure(this, STRUCTURE_SHAPE_LAST, offset)) return false;
+        // This structure check is such a hack and should probably be rewritten in the style of assembly lines.
+        errors.clear();
+
+        if (!structure.checkStructure(this, STRUCTURE_SHAPE_LAST, offset, errors)) return;
 
         for (MTEHatchDataOutput output : validMTEList(eOutputData)) {
             output.allowComputationConfiguring = true;
@@ -257,14 +260,10 @@ public class MTENetworkSwitchAdv extends TTMultiblockBase
         GTDataUtils.dedupList(eInputData);
         GTDataUtils.dedupList(eOutputData);
 
-        return true;
-    }
-
-    @Override
-    protected void validateStructure(Collection<StructureError> errors) {
-        super.validateStructure(errors);
-
         structureInstanceInfo.validate(errors);
+        checkHasDataInput(errors);
+        checkHasDataOutput(errors);
+        checkHasAnyEnergy(errors);
     }
 
     @Override
@@ -284,16 +283,23 @@ public class MTENetworkSwitchAdv extends TTMultiblockBase
                     "gt.blockmachines.multimachine.em.switch.adv.desc.5",
                     Machine_Multi_Switch.get(1)
                         .getDisplayName()))
-            .addSeparator();
-
-        tt.beginStructureBlock();
-        tt.addController("Front center");
-        tt.addAllCasingInfo();
-
-        tt.addSubChannelUsage(GTStructureChannels.STRUCTURE_LENGTH, "middle slice count");
-
-        tt.toolTipFinisher();
-
+            .addSeparator()
+            .beginVariableStructureBlock(3, 18, 3, 3, 3, 3, false)
+            .addController(translateToLocal("tt.keyword.Structure.FrontCenter"))
+            .addMiscHatch("1+", "Optical Reception Connector", "Any advanced computer casing", 1)
+            .addMiscHatch("1+", "Optical Transmission Connector", "Any casing", 1, 2)
+            .addEnergyHatch("1+", "Any casing", 1, 2)
+            .addStructureInfo("")
+            .addStructureInfo(translateToLocal("GT5U.MBTT.Structure.Base"))
+            .addCasing("0-18", "Computer Casing", false)
+            .addCasing("0-5", "Advanced Computer Casing", false)
+            .addStructureInfo("")
+            .addStructureInfo(translateToLocal("GT5U.MBTT.Structure.Slice"))
+            .addCasing("0-5", "Advanced Computer Casing", false)
+            .addCasing("0-4", "Computer Casing", false)
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.STRUCTURE_LENGTH)
+            .toolTipFinisher();
         return tt;
     }
 

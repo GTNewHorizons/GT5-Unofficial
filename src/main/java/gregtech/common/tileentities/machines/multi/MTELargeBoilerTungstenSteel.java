@@ -7,7 +7,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 
 public class MTELargeBoilerTungstenSteel extends MTELargeBoilerBase {
 
-    public static final int EUT_GENERATED = 16000;
+    public static final int EUT_GENERATED = 19200;
     public static final int EFFICIENCY_INCREASE = 4;
     public static final boolean SUPERHEATED = true;
 
@@ -49,11 +49,11 @@ public class MTELargeBoilerTungstenSteel extends MTELargeBoilerBase {
 
     @Override
     public String getCasingBlockType() {
-        return "Machine Casings";
+        return "Machine Casing";
     }
 
     @Override
     int runtimeBoost(int mTime) {
-        return mTime * 120 / 750;
+        return mTime * 15 / 100;
     }
 }

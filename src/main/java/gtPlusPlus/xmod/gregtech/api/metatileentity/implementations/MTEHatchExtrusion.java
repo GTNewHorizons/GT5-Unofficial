@@ -16,10 +16,8 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.hatch.MTEHatchExtrusionGui;
-import gregtech.common.items.ItemIntegratedCircuit;
 
 public class MTEHatchExtrusion extends MTEHatchInputBus {
 
@@ -46,8 +44,6 @@ public class MTEHatchExtrusion extends MTEHatchInputBus {
         ItemList.Shape_Extruder_Bottle.get(1), ItemList.Shape_Extruder_Casing.get(1),
         ItemList.Shape_Extruder_Cell.get(1) };
 
-    public boolean oneStackLimit = false;
-
     public MTEHatchExtrusion(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier);
     }
@@ -57,7 +53,7 @@ public class MTEHatchExtrusion extends MTEHatchInputBus {
     }
 
     public static int getSlots(int aTier) {
-        return (aTier - 4) * 18 + 9;
+        return MTEHatchInputBus.getSlots(aTier);
     }
 
     @Override
@@ -90,9 +86,6 @@ public class MTEHatchExtrusion extends MTEHatchInputBus {
     @Override
     public boolean isItemValidForSlot(int aIndex, ItemStack aStack) {
         if (aIndex == shapeSlot) return findMatchingShape(aStack) != null;
-        if (aIndex == circuitSlot) return GTUtility.isStackValid(aStack) && aStack.stackSize == 1
-            && (aStack.getItem() instanceof ItemIntegratedCircuit
-                || GTUtility.areStacksEqual(aStack, ItemList.Circuit_Integrated.get(1), true));
         return super.isItemValidForSlot(aIndex, aStack);
     }
 
@@ -128,58 +121,30 @@ public class MTEHatchExtrusion extends MTEHatchInputBus {
 
     @Override
     public boolean isValidSlot(int aIndex) {
-        return aIndex != shapeSlot && aIndex != circuitSlot && super.isValidSlot(aIndex);
+        return aIndex != shapeSlot && super.isValidSlot(aIndex);
     }
 
     @Override
-    public void updateSlots() {
-        for (int i = 0; i < mInventory.length; i++) {
-            if (i != shapeSlot && i != circuitSlot && mInventory[i] != null && mInventory[i].stackSize <= 0) {
-                mInventory[i] = null;
-            }
-        }
-        if (!disableSort) fillStacksIntoFirstSlots();
-        if (oneStackLimit) {
-            for (ItemStack itemStack : mInventory) {
-                if (itemStack != null) {
-                    itemStack.stackSize = Math.min(1, itemStack.stackSize);
-                }
-            }
-        }
+    protected void fillStacksIntoFirstSlots() {
+        // don't sort the ghost shape slot
+        GTUtility.compactInventory(this, 0, mInventory.length - 2);
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
-        return aIndex != shapeSlot && aIndex != circuitSlot
-            && super.allowPutStack(aBaseMetaTileEntity, aIndex, side, aStack);
+        return aIndex != shapeSlot && super.allowPutStack(aBaseMetaTileEntity, aIndex, side, aStack);
     }
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
         ItemStack aStack) {
-        return aIndex != shapeSlot && aIndex != circuitSlot
-            && super.allowPullStack(aBaseMetaTileEntity, aIndex, side, aStack);
-    }
-
-    @Override
-    protected boolean limitedAllowPutStack(int aIndex, ItemStack aStack) {
-        for (int i = 0; i < getSizeInventory(); i++) {
-            if (isValidSlot(i) && GTUtility.areStacksEqual(GTOreDictUnificator.get_nocopy(aStack), mInventory[i])) {
-                return i == aIndex;
-            }
-        }
-        return mInventory[aIndex] == null;
+        return aIndex != shapeSlot && super.allowPullStack(aBaseMetaTileEntity, aIndex, side, aStack);
     }
 
     @Override
     public int getCircuitSlot() {
         return circuitSlot;
-    }
-
-    @Override
-    protected boolean forceUseMui2() {
-        return true;
     }
 
     @Override

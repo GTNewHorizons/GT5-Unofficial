@@ -35,6 +35,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.recipe.RecipeMap;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.pollution.PollutionConfig;
@@ -85,17 +86,17 @@ public class MTENuclearSaltProcessingPlant extends GTPPMultiBlockBase<MTENuclear
             .addInfo("Maintenance Hatch goes on the back, opposite of the controller block")
             .addInfo("Inputs go on the left side of the multi, outputs on the right side")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(3, 3, 3, true)
-            .addController("Front center")
-            .addCasingInfoMin("IV Machine Casing", 58, false)
-            .addCasingInfoMin("Thermally Insulated Casing", 1, false)
-            .addInputBus("Left Half", 2)
-            .addInputHatch("Left Half", 2)
-            .addOutputBus("Right Half", 3)
-            .addOutputHatch("Right Half", 3)
-            .addMufflerHatch("Top Side, 2 Required", 4)
-            .addEnergyHatch("Bottom Side, 2 Required", 5)
-            .addMaintenanceHatch("Back Side, Opposite of Controller", 6)
+            .beginStructureBlock(3, 9, 5, true)
+            .addController("Front center, 3rd layer")
+            .addCasing("58", "IV Machine Casing", false)
+            .addCasing("0-32", "Thermally Insulated Casing", false)
+            .addEnergyHatch("2", "Bottom insulated casings", 5)
+            .addMaintenanceHatch("1", "Casing behind controller", 1)
+            .addMufflerHatch("2", "Top insulated casings", 4)
+            .addInputBus("0+", "Left side insulated casings", 2)
+            .addInputHatch("0+", "Left side insulated casings", 2)
+            .addOutputBus("0+", "Right side insulated casings", 3)
+            .addOutputHatch("0+", "Right side insulated casings", 3)
             .toolTipFinisher();
         return tt;
     }
@@ -161,11 +162,11 @@ public class MTENuclearSaltProcessingPlant extends GTPPMultiBlockBase<MTENuclear
                         .hint(5)
                         .buildAndChain(onElementPass(x -> ++x.casing, ofBlock(ModBlocks.blockSpecialMultiCasings, 8))))
                 .addElement(
-                    'F',
+                    'F', // This is the only position maintenance is allowed, and we force a maintenance hatch here
                     buildHatchAdder(MTENuclearSaltProcessingPlant.class).atLeast(Maintenance)
                         .casingIndex(TAE.getIndexFromPage(0, 10))
-                        .hint(6)
-                        .buildAndChain(onElementPass(x -> ++x.casing, ofBlock(ModBlocks.blockSpecialMultiCasings, 8))))
+                        .hint(1)
+                        .build())
                 .build();
         }
         return STRUCTURE_DEFINITION;
@@ -183,14 +184,14 @@ public class MTENuclearSaltProcessingPlant extends GTPPMultiBlockBase<MTENuclear
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity baseMetaTileEntity, ItemStack itemStack) {
+    public void checkMachine(IGregTechTileEntity baseMetaTileEntity, ItemStack itemStack, List<StructureError> errors) {
         casing = 0;
-        return checkPiece(mName, 4, 2, 0) && checkHatch();
-    }
-
-    @Override
-    public boolean checkHatch() {
-        return mEnergyHatches.size() == 2 && mMufflerHatches.size() == 2 && super.checkHatch();
+        if (!checkPiece(mName, 4, 2, 0, errors)) return;
+        checkCasingMin(errors, casing, 1);
+        checkHatchExact(errors, Energy, 2);
+        checkHatchExact(errors, Muffler, 2);
+        checkHasInputHatch(errors);
+        checkHasOutputHatch(errors);
     }
 
     @Override

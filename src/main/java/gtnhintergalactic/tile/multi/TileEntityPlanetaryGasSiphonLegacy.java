@@ -5,6 +5,7 @@ import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.OutputHatch;
+import static gtnhintergalactic.recipe.GasSiphonRecipes.calculateEUt;
 import static net.minecraft.util.EnumChatFormatting.BLUE;
 import static net.minecraft.util.EnumChatFormatting.GREEN;
 import static net.minecraft.util.EnumChatFormatting.ITALIC;
@@ -13,6 +14,7 @@ import static net.minecraft.util.EnumChatFormatting.RED;
 import static net.minecraft.util.EnumChatFormatting.RESET;
 import static net.minecraft.util.EnumChatFormatting.YELLOW;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -50,6 +52,7 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GTUtility;
@@ -83,7 +86,8 @@ public class TileEntityPlanetaryGasSiphonLegacy extends MTEEnhancedMultiBlockBas
         .addElement('f', GTStructureUtility.ofFrame(Materials.TungstenSteel))
         .addElement(
             'c',
-            StructureUtility.ofBlock(WerkstoffLoader.BWBlockCasingsAdvanced, WerkstoffLoader.LuVTierMaterial.getmID()))
+            StructureUtility
+                .ofBlock(WerkstoffLoader.BWBlockCasingsAdvanced, WerkstoffLoader.RhodiumPlatedPalladium.getmID()))
         .addElement(
             'b',
             GTStructureUtility.buildHatchAdder(TileEntityPlanetaryGasSiphonLegacy.class)
@@ -272,7 +276,7 @@ public class TileEntityPlanetaryGasSiphonLegacy extends MTEEnhancedMultiBlockBas
             return SimpleCheckRecipeResult.ofFailure("no_space_station");
         }
 
-        Map<Integer, FluidStack> planetRecipes = GasSiphonRecipes.RECIPES.get(provider.getPlanetToOrbit());
+        Map<Integer, FluidStack> planetRecipes = GasSiphonRecipes.RECIPES.get(provider.getPlanetToOrbit()).depths;
 
         // return early if there are no recipes for the planet the station is orbiting
         if (planetRecipes == null) {
@@ -344,8 +348,10 @@ public class TileEntityPlanetaryGasSiphonLegacy extends MTEEnhancedMultiBlockBas
         }
 
         // calculate overclockedness
-        int recipeEUt = depth * (4 << (2 * provider.getCelestialBody()
-            .getTierRequirement() + 2));
+        int recipeEUt = calculateEUt(
+            depth,
+            provider.getCelestialBody()
+                .getTierRequirement());
         int ocLevel = MathHelper
             .floor_double(Math.log10((double) this.getMaxInputVoltage() / (double) recipeEUt) / LOG4);
 
@@ -382,13 +388,12 @@ public class TileEntityPlanetaryGasSiphonLegacy extends MTEEnhancedMultiBlockBas
      * @return True if machine is valid, else false
      */
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack stack) {
-        return checkPiece(STRUCTURE_PIECE_MAIN, 1, 6, 0) && mMaintenanceHatches.size() == 1
-            && mInputBusses.size() == 1
-            && mOutputHatches.size() == 1
-            && mEnergyHatches.size() == 1
-            && mInputHatches.isEmpty()
-            && mOutputBusses.isEmpty();
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack stack, List<StructureError> errors) {
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 1, 6, 0, errors)) return;
+        checkOneMaintenanceHatch(errors);
+        checkHatchExact(errors, InputBus, 1);
+        checkHatchExact(errors, OutputHatch, 1);
+        checkHatchExact(errors, Energy, 1);
     }
 
     /**

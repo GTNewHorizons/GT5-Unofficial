@@ -14,6 +14,7 @@ import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
 import javax.annotation.Nonnull;
 
@@ -23,7 +24,6 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
@@ -38,10 +38,12 @@ import gregtech.api.enums.Textures;
 import gregtech.api.hazards.HazardProtection;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
@@ -58,7 +60,7 @@ import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTe
 /**
  * Created by danie_000 on 17.12.2016.
  */
-public class MTEMicrowave extends TTMultiblockBase implements ISurvivalConstructable {
+public class MTEMicrowave extends TTMultiblockBase implements ISurvivalConstructable, ICasingTextureProvider {
 
     private static final int CASING_INDEX = 49;
     // region variables
@@ -66,17 +68,6 @@ public class MTEMicrowave extends TTMultiblockBase implements ISurvivalConstruct
     // endregion
 
     // region structure
-    // use multi A energy inputs, use less power the longer it runs
-    private static final String[] description = new String[] {
-        EnumChatFormatting.AQUA + translateToLocal("tt.keyphrase.Hint_Details") + ":",
-        translateToLocal("gt.blockmachines.multimachine.tm.microwave.hint.0"), // 1 - Classic Hatches or Clean
-                                                                               // Stainless Steel
-        // Casing
-        translateToLocal("gt.blockmachines.multimachine.tm.microwave.hint.1"), // Also acts like a hopper so give it
-                                                                               // an Output
-        // Bus
-    };
-
     private static final IStructureDefinition<MTEMicrowave> STRUCTURE_DEFINITION = IStructureDefinition
         .<MTEMicrowave>builder()
         .addShape(
@@ -92,7 +83,7 @@ public class MTEMicrowave extends TTMultiblockBase implements ISurvivalConstruct
                 buildHatchAdder(MTEMicrowave.class).atLeast(Maintenance, Energy, OutputBus)
                     .hint(1)
                     .casingIndex(CASING_INDEX)
-                    .buildAndChain(sBlockCasings4, 1),
+                    .buildAndChain(ofBlock(sBlockCasings4, 1)),
                 ofHatchAdderOptional(MTEMicrowave::addClassicToMachineList, CASING_INDEX, 1, sBlockCasings4, 1)))
         .build();
     // endregion
@@ -135,8 +126,12 @@ public class MTEMicrowave extends TTMultiblockBase implements ISurvivalConstruct
     }
 
     @Override
-    public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
-        return structureCheck_EM("main", 2, 2, 0);
+    public void checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack,
+        List<StructureError> errors) {
+        if (!checkPiece("main", 2, 2, 0, errors)) return;
+        checkHasEnergyHatch(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasOutputBus(errors);
     }
 
     @Override
@@ -247,26 +242,13 @@ public class MTEMicrowave extends TTMultiblockBase implements ISurvivalConstruct
                                                                                             // with a Parametrizer
             .addInfo(translateToLocal("gt.blockmachines.multimachine.tm.microwave.desc.5")) // (Do not insert a
                                                                                             // Wither)
-            .beginStructureBlock(5, 4, 5, true)
-            .addController(translateToLocal("tt.keyword.Structure.FrontCenter")) // Controller:
-                                                                                 // Front
-                                                                                 // center
-            .addCasingInfoMin(translateToLocal("tt.keyword.Structure.StainlessSteelCasing"), 60, false) // 60x
-                                                                                                        // Stainless
-                                                                                                        // Steel
-            // Casing (minimum)
-            .addOtherStructurePart(
-                translateToLocal("tt.keyword.Structure.DataConnector"),
-                translateToLocal("tt.keyword.Structure.AnyOuterCasingOnBottom"),
-                2) // Output Bus: Any outer casing on the bottom layer
-            .addEnergyHatch(translateToLocal("tt.keyword.Structure.AnyOuterCasingOnBottom"), 1) // Energy Hatch: Any
-                                                                                                // outer casing on
-                                                                                                // the bottom layer
-            .addMaintenanceHatch(translateToLocal("tt.keyword.Structure.AnyOuterCasingOnBottom"), 1) // Maintenance
-                                                                                                     // Hatch: Any
-                                                                                                     // outer casing
-                                                                                                     // on the
-                                                                                                     // bottom layer
+            .beginStructureBlock(5, 5, 4, true)
+            .addController("Front center")
+            .addCasing("60-69", "Clean Stainless Steel Machine Casing", false)
+            .addEnergyHatch("1+", "Any bottom edge casing", 1)
+            .addMaintenanceHatch("1", "Any bottom edge casing", 1)
+            .addOutputBus("1+", "Any bottom edge casing", 1)
+            .addAir("Interior and top center of the structure")
             .toolTipFinisher();
         return tt;
     }
@@ -275,16 +257,20 @@ public class MTEMicrowave extends TTMultiblockBase implements ISurvivalConstruct
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
         int colorIndex, boolean aActive, boolean aRedstone) {
         if (side == facing) {
-            return new ITexture[] { Textures.BlockIcons.casingTexturePages[0][49],
+            return new ITexture[] { getCasingTexture(),
                 new TTRenderedExtendedFacingTexture(
                     aActive ? Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE
                         : Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE) };
         } else if (side == facing.getOpposite()) {
-            return new ITexture[] { Textures.BlockIcons.casingTexturePages[0][49],
-                aActive ? Textures.BlockIcons.casingTexturePages[0][52]
-                    : Textures.BlockIcons.casingTexturePages[0][53] };
+            return new ITexture[] { getCasingTexture(), aActive ? Textures.BlockIcons.casingTexturePages[0][52]
+                : Textures.BlockIcons.casingTexturePages[0][53] };
         }
-        return new ITexture[] { Textures.BlockIcons.casingTexturePages[0][49] };
+        return new ITexture[] { getCasingTexture() };
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Textures.BlockIcons.casingTexturePages[0][49];
     }
 
     @Override
@@ -319,7 +305,7 @@ public class MTEMicrowave extends TTMultiblockBase implements ISurvivalConstruct
 
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
-        structureBuild_EM("main", 2, 2, 0, stackSize, hintsOnly);
+        buildPiece("main", stackSize, hintsOnly, 2, 2, 0);
     }
 
     @Override
@@ -331,11 +317,6 @@ public class MTEMicrowave extends TTMultiblockBase implements ISurvivalConstruct
     @Override
     public IStructureDefinition<MTEMicrowave> getStructure_EM() {
         return STRUCTURE_DEFINITION;
-    }
-
-    @Override
-    public String[] getStructureDescription(ItemStack stackSize) {
-        return description;
     }
 
     @Override

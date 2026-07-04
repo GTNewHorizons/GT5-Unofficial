@@ -34,6 +34,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
+import gregtech.api.enums.MetaTileEntityIDs;
 import gregtech.api.enums.TAE;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -41,10 +42,14 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.structure.error.ErrorType;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.core.block.ModBlocks;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.MTEHatchElementalDataOrbHolder;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
@@ -87,25 +92,25 @@ public class MTEElementalDuplicator extends GTPPMultiBlockBase<MTEElementalDupli
             .addInfo("The programmed circuit selects which Data Orb to use (1-16)")
             .addPerfectOCInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(9, 6, 9, true)
+            .beginStructureBlock(9, 9, 6, true)
             .addController("Top center")
-            .addCasingInfoMin("Elemental Confinement Shell", 120, false)
-            .addCasingInfoMin("Matter Fabricator Casing", 24, false)
-            .addCasingInfoMin("Particle Containment Casing", 24, false)
-            .addCasingInfoMin("Matter Generation Coil", 24, false)
-            .addCasingInfoMin("High Voltage Current Capacitor", 20, false)
-            .addCasingInfoMin("Resonance Chamber III", 24, false)
-            .addCasingInfoMin("Modulator III", 16, false)
-            .addOtherStructurePart(
+            .addCasing("120-139", "Elemental Confinement Shell", false)
+            .addCasing("24", "Particle Containment Casing", false)
+            .addCasing("24", "Matter Fabricator Casing", false)
+            .addCasing("24", "Matter Generation Coil", false)
+            .addCasing("24", "Resonance Chamber III", false)
+            .addCasing("20", "High Voltage Current Capacitor", false)
+            .addCasing("16", "Modulator III", false)
+            .addMiscHatch(
+                "1",
                 StatCollector.translateToLocal("GTPP.tooltip.structure.data_orb_repository"),
-                "Hint Block Number 1 (x1)",
+                "Any confinement shell",
                 1)
-            .addInputHatch("Hint Block Number 1", 1)
-            .addOutputBus("Hint Block Number 1", 1)
-            .addOutputHatch("Hint Block Number 1", 1)
-            .addEnergyHatch("Hint Block Number 1", 1)
-            .addMaintenanceHatch("Hint Block Number 1", 1)
-            .addMufflerHatch("Hint Block Number 1", 1)
+            .addEnergyHatch("1+", "Any confinement shell", 1)
+            .addMaintenanceHatch("1", "Any confinement shell", 1)
+            .addMufflerHatch("1", "Any confinement shell", 1)
+            .addInputHatch("1+", "Any confinement shell", 1)
+            .addOutputAny("1+", "Any confinement shell", 1)
             .toolTipFinisher();
         return tt;
     }
@@ -161,7 +166,7 @@ public class MTEElementalDuplicator extends GTPPMultiBlockBase<MTEElementalDupli
                                 .hint(1)
                                 .build(),
                             buildHatchAdder(MTEElementalDuplicator.class)
-                                .hatchClass(MTEHatchElementalDataOrbHolder.class)
+                                .hatchId(MetaTileEntityIDs.Hatch_Input_Elemental_Duplicator.ID)
                                 .shouldReject(x -> !x.mReplicatorDataOrbHatches.isEmpty())
                                 .adder(MTEElementalDuplicator::addDataOrbHatch)
                                 .casingIndex(getCasingTextureIndex())
@@ -179,13 +184,24 @@ public class MTEElementalDuplicator extends GTPPMultiBlockBase<MTEElementalDupli
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         mCasing = 0;
-        boolean aDidBuild = checkPiece(STRUCTURE_PIECE_MAIN, 4, 4, 0);
-        if (this.mReplicatorDataOrbHatches.size() != 1) {
-            return false;
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 4, 4, 0, errors)) return;
+        int hatchCount = this.mReplicatorDataOrbHatches.size();
+        if (hatchCount != 1) {
+            errors.add(
+                StructureErrors.hatchCount(
+                    ErrorType.NOT_MATCH,
+                    GregtechItemList.Hatch_Input_Elemental_Duplicator.get(1),
+                    hatchCount,
+                    1));
         }
-        return aDidBuild && mCasing >= 120 && checkHatch();
+        checkCasingMin(errors, mCasing, 120);
+        checkHasEnergyHatch(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasMufflerHatch(errors);
+        checkHasInputHatch(errors);
+        checkHasAnyOutput(errors);
     }
 
     @Override
@@ -250,9 +266,9 @@ public class MTEElementalDuplicator extends GTPPMultiBlockBase<MTEElementalDupli
             if (aMetaTileEntity == null) {
                 return false;
             }
-            if (aMetaTileEntity instanceof MTEHatchElementalDataOrbHolder) {
+            if (aMetaTileEntity instanceof MTEHatchElementalDataOrbHolder hatch) {
                 try {
-                    return addToMachineListInternal(mReplicatorDataOrbHatches, aMetaTileEntity, aBaseCasingIndex);
+                    return addToMachineListInternal(mReplicatorDataOrbHatches, hatch, aBaseCasingIndex);
                 } catch (Exception t) {
                     t.printStackTrace();
                 }

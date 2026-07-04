@@ -20,12 +20,12 @@ import static net.minecraft.util.EnumChatFormatting.YELLOW;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import javax.annotation.Nullable;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
@@ -38,15 +38,18 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.VoltageIndex;
+import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
+import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.tooltip.TooltipHelper;
@@ -57,7 +60,7 @@ import gregtech.common.misc.GTStructureChannels;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELargeFluidExtractor>
-    implements ISurvivalConstructable {
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final int CASING_INDEX = 48; // Robust Tungstensteel Machine Casing
@@ -173,27 +176,24 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 8, 0)) {
-            return false;
-        }
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, 2, 8, 0, errors)) return;
 
-        if (casingAmount < (BASE_CASING_COUNT - MAX_HATCHES_ALLOWED)) {
-            structureBadCasingCount = true;
-        }
-
+        checkCasingMin(errors, casingAmount, BASE_CASING_COUNT - MAX_HATCHES_ALLOWED);
+        checkHasEnergyHatch(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasInputBus(errors);
+        checkHasOutputHatch(errors);
         for (var energyHatch : mEnergyHatches) {
             if (energyHatch.getBaseMetaTileEntity() == null) {
                 continue;
             }
 
-            if (glassTier < VoltageIndex.UEV && energyHatch.getTierForStructure() > glassTier) {
-                structureBadGlassTier = true;
-                break;
+            if (energyHatch.getTierForStructure() > glassTier) {
+                errors.add(StructureErrors.glassTierNotEnough(energyHatch.getTierForStructure()));
+                return;
             }
         }
-
-        return !structureBadGlassTier && !structureBadCasingCount;
     }
 
     @Override
@@ -241,74 +241,61 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-        int colorIndex, boolean active, boolean redstoneLevel) {
-        if (side == facing) {
-            if (active) {
-                return new ITexture[] { getCasingTextureForId(CASING_INDEX), TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.oMCALargeFluidExtractorActive)
-                    .extFacing()
-                    .build(),
-                    TextureFactory.builder()
-                        .addIcon(TexturesGtBlock.oMCALargeFluidExtractorActiveGlow)
-                        .extFacing()
-                        .glow()
-                        .build() };
-            } else {
-                return new ITexture[] { getCasingTextureForId(CASING_INDEX), TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.oMCALargeFluidExtractor)
-                    .extFacing()
-                    .build(),
-                    TextureFactory.builder()
-                        .addIcon(TexturesGtBlock.oMCALargeFluidExtractorGlow)
-                        .extFacing()
-                        .glow()
-                        .build() };
-            }
-        }
-        return new ITexture[] { getCasingTextureForId(CASING_INDEX) };
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            TexturesGtBlock.oMCALargeFluidExtractor,
+            TexturesGtBlock.oMCALargeFluidExtractorGlow,
+            TexturesGtBlock.oMCALargeFluidExtractorActive,
+            TexturesGtBlock.oMCALargeFluidExtractorActiveGlow);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return getCasingTextureForId(CASING_INDEX);
     }
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-
-        // spotless:off
         tt.addMachineType("Fluid Extractor, LFE")
             .addDynamicParallelInfo(PARALLELS_PER_SOLENOID, TooltipTier.SOLENOID)
             .addStaticSpeedInfo((float) BASE_SPEED_BONUS)
             .addStaticEuEffInfo((float) BASE_EU_MULTIPLIER)
-            .addInfo(String.format(
-                "Every coil tier gives a %s speed bonus and a %s EU/t discount (multiplicative)",
-                TooltipHelper.speedText("+") + TooltipHelper.speedText((float) SPEED_PER_COIL),
-                TooltipHelper.effText((float) (1-HEATING_COIL_EU_MULTIPLIER))
-            ))
-            .addInfo(String.format(
-                "The EU multiplier is %s%.2f * (%.2f ^ Heating Coil Tier)%s, prior to overclocks",
-                EnumChatFormatting.ITALIC,
-                BASE_EU_MULTIPLIER,
-                HEATING_COIL_EU_MULTIPLIER,
-                EnumChatFormatting.GRAY
-            ))
-            .addInfo("The energy hatch tier is limited by the glass tier. UEV glass unlocks all tiers")
-            .beginStructureBlock(5, 9, 5, false)
+            .addInfo(
+                String.format(
+                    "Every coil tier gives a %s speed bonus and a %s EU/t discount (multiplicative)",
+                    TooltipHelper.speedText("+") + TooltipHelper.speedText((float) SPEED_PER_COIL),
+                    TooltipHelper.effText((float) (1 - HEATING_COIL_EU_MULTIPLIER))))
+            .addInfo(
+                String.format(
+                    "The EU multiplier is %s%.2f * (%.2f ^ Heating Coil Tier)%s, prior to overclocks",
+                    EnumChatFormatting.ITALIC,
+                    BASE_EU_MULTIPLIER,
+                    HEATING_COIL_EU_MULTIPLIER,
+                    EnumChatFormatting.GRAY))
+            .addGlassEnergyLimitInfo()
+            .beginStructureBlock(5, 5, 9, false)
             .addController("Front bottom center")
-            .addCasingInfoMin("Robust Tungstensteel Machine Casing", BASE_CASING_COUNT - MAX_HATCHES_ALLOWED, false)
-            .addCasingInfoExactly("Any Tiered Glass", 9 * 4, true)
-            .addCasingInfoExactly("Solenoid Superconducting Coil", 7, true)
-            .addCasingInfoExactly("Heating Coils", 8 * 3, true)
-            .addCasingInfoExactly("Black Steel Frame Box", 3 * 8, false)
-            .addInputBus("Any Robust Tungstensteel Machine Casing", 1)
-            .addOutputBus("Any Robust Tungstensteel Machine Casing", 1)
-            .addOutputHatch("Any Robust Tungstensteel Machine Casing", 1)
-            .addEnergyHatch("Any Robust Tungstensteel Machine Casing", 1)
-            .addMaintenanceHatch("Any Robust Tungstensteel Machine Casing", 1)
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
-            .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
-            .addSubChannelUsage(GTStructureChannels.SOLENOID)
+            .addCasing(BASE_CASING_COUNT - MAX_HATCHES_ALLOWED + "-53", "Robust Tungstensteel Machine Casing", false)
+            .addCasing("36", "Any Tiered Glass", true)
+            .addCasing("24", "Heating Coil", true)
+            .addCasing("24", "Black Steel Frame Box", false)
+            .addCasing("7", "Solenoid Superconductor Coil", true)
+            .addEnergyHatch("1+", "Any casing", 1)
+            .addMaintenanceHatch("1", "Any casing", 1)
+            .addInputBus("1+", "Any casing", 1)
+            .addOutputBus("0+", "Any casing", 1)
+            .addOutputHatch("1+", "Any casing", 1)
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.BOROGLASS)
+            .addSubChannel(GTStructureChannels.HEATING_COIL)
+            .addSubChannel(GTStructureChannels.SOLENOID)
             .toolTipFinisher();
-        // spotless:on
-
         return tt;
     }
 
@@ -347,22 +334,23 @@ public class MTELargeFluidExtractor extends MTEExtendedPowerMultiBlockBase<MTELa
         ArrayList<String> data = new ArrayList<>(Arrays.asList(super.getInfoData()));
 
         data.add(
-            StatCollector.translateToLocalFormatted("Max Parallels: %s%d%s", YELLOW, getMaxParallelRecipes(), RESET));
+            IGregTechDeviceInformation
+                .encode("GT5U.infodata.large_fluid_extractor.max_parallels", YELLOW, getMaxParallelRecipes(), RESET));
         data.add(
-            StatCollector.translateToLocalFormatted(
-                "Heating Coil Speed Bonus: +%s%.0f%s %%",
+            IGregTechDeviceInformation.encode(
+                "GT5U.infodata.large_fluid_extractor.heating_coil_speed_bonus",
                 YELLOW,
                 getCoilSpeedBonus() * 100,
                 RESET));
         data.add(
-            StatCollector.translateToLocalFormatted(
-                "Total Speed Multiplier: %s%.0f%s %%",
+            IGregTechDeviceInformation.encode(
+                "GT5U.infodata.large_fluid_extractor.total_speed_multiplier",
                 YELLOW,
                 (BASE_SPEED_BONUS + getCoilSpeedBonus()) * 100,
                 RESET));
         data.add(
-            StatCollector.translateToLocalFormatted(
-                "Total EU/t Multiplier: %s%.0f%s %%",
+            IGregTechDeviceInformation.encode(
+                "GT5U.infodata.large_fluid_extractor.total_eu_multiplier",
                 YELLOW,
                 getEUMultiplier() * 100,
                 RESET));

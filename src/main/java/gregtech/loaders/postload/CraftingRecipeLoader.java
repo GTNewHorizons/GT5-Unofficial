@@ -99,7 +99,7 @@ public class CraftingRecipeLoader implements Runnable {
         }
 
         GTModHandler.addCraftingRecipe(
-            GTModHandler.getIC2Item("ironFence", 6L),
+            ItemList.FenceIron.get(6L),
             bits_no_remove_buffered | GTModHandler.RecipeBits.REVERSIBLE,
             new Object[] { aTextIron2, aTextIron2, " w ", 'X', OrePrefixes.stick.get(Materials.AnyIron), 'S',
                 OrePrefixes.stick.get(Materials.Wood), 'I', OrePrefixes.ingot.get(Materials.AnyIron) });
@@ -1232,6 +1232,11 @@ public class CraftingRecipeLoader implements Runnable {
 
         GTLog.out.println("GTMod: Beginning to add regular Crafting Recipes.");
         GTModHandler.addCraftingRecipe(
+            GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Wood, 2L),
+            bits_no_remove_buffered,
+            new Object[] { "sLf", 'L', OrePrefixes.log.get(Materials.Wood) });
+
+        GTModHandler.addCraftingRecipe(
             GTModHandler.getIC2Item("scaffold", 4L),
             bits_no_remove_buffered,
             new Object[] { "WWW", " S ", "S S", 'W', OrePrefixes.plank.get(Materials.Wood), 'S',
@@ -1827,13 +1832,13 @@ public class CraftingRecipeLoader implements Runnable {
             GTModHandler.getIC2Item("ironrotor", 1L),
             bits_no_remove_buffered,
             new Object[] { "dBS", "BTB", "SBw", 'B', GTModHandler.getIC2Item("ironrotorblade", 1), 'S',
-                OrePrefixes.screw.get(Materials.WroughtIron), 'T', ItemList.IC2_ShaftIron.get(1) });
+                OrePrefixes.screw.get(Materials.CastIron), 'T', ItemList.IC2_ShaftIron.get(1) });
         GTModHandler.removeRecipeByOutputDelayed(GTModHandler.getIC2Item("woodrotor", 1L));
         GTModHandler.addCraftingRecipe(
             GTModHandler.getIC2Item("woodrotor", 1L),
             bits_no_remove_buffered,
             new Object[] { "dBS", "BTB", "SBw", 'B', GTModHandler.getIC2Item("woodrotorblade", 1), 'S',
-                OrePrefixes.screw.get(Materials.WroughtIron), 'T', OrePrefixes.stickLong.get(Materials.WroughtIron) });
+                OrePrefixes.screw.get(Materials.CastIron), 'T', OrePrefixes.stickLong.get(Materials.CastIron) });
 
         if (GTOreDictUnificator.get(OrePrefixes.gear, Materials.Diamond, 1L) != null) {
             tStack = GTModHandler.getRecipeOutput(

@@ -3,9 +3,8 @@ package goodgenerator.blocks.tileEntity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
-
-import com.gtnewhorizons.modularui.common.widget.FluidSlotWidget;
 
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ITexture;
@@ -27,17 +26,12 @@ public class AntimatterOutputHatch extends MTEHatchOutput {
 
     public AntimatterOutputHatch(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
-        super.setLockedFluidName(
-            Materials.Antimatter.getFluid(1)
-                .getFluid()
-                .getName());
+        super.setLockedFluid(ANTIMATTER.getFluid());
     }
 
     @Override
-    public void setLockedFluidName(String lockedFluidName) {
-        this.lockedFluidName = Materials.Antimatter.getFluid(1)
-            .getFluid()
-            .getName();
+    public void setLockedFluid(Fluid lockedFluid) {
+        this.lockedFluid = ANTIMATTER.getFluid();
         markDirty();
     }
 
@@ -90,7 +84,7 @@ public class AntimatterOutputHatch extends MTEHatchOutput {
     }
 
     @Override
-    protected FluidSlotWidget createFluidSlot() {
-        return super.createFluidSlot().setFilter(f -> f == Materials.Antimatter.mFluid);
+    public boolean isFluidInputAllowed(FluidStack aFluid) {
+        return aFluid.isFluidEqual(ANTIMATTER);
     }
 }

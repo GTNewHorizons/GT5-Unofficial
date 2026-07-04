@@ -8,13 +8,14 @@ import static gregtech.api.enums.HatchElement.InputHatch;
 import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.Muffler;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
-import static gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase.GTPPHatchElement.TTDynamo;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.NotNull;
@@ -33,6 +34,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.pollution.PollutionConfig;
@@ -68,15 +70,17 @@ public class MTELargeSemifluidGenerator extends GTPPMultiBlockBase<MTELargeSemif
             .addInfo("Boosted: Produces 6144EU/t at 150% efficiency")
             .addInfo("Engine Intake Casings must not be obstructed in front (only air blocks)")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(3, 3, 4, false)
+            .beginStructureBlock(4, 3, 3, false)
             .addController("Front center")
-            .addCasingInfoMin("Stable Titanium Machine Casing", 16, false)
-            .addCasingInfoMin("Steel Gear Box Machine Casing", 2, false)
-            .addCasingInfoMin("Engine Intake Machine Casing", 8, false)
-            .addInputHatch("Any Casing", 1)
-            .addMaintenanceHatch("Any Casing", 1)
-            .addMufflerHatch("Any Casing", 1)
-            .addDynamoHatch("Back Center", 2)
+            .addCasing("16-21", "Stable Titanium Machine Casing", false)
+            .addCasing("8", "Engine Intake Casing", false)
+            .addCasing("2", "Steel Gear Box Casing", false)
+            .addDynamoHatch("1", "Back center casing", 2)
+            .addMaintenanceHatch("1", "Any machine casing", 1)
+            .addMufflerHatch("1", "Any machine casing", 1)
+            .addInputHatch("1+", "Any machine casing", 1)
+            .addStructureInfo("")
+            .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.DynamoLimit"))
             .toolTipFinisher();
         return tt;
     }
@@ -196,10 +200,7 @@ public class MTELargeSemifluidGenerator extends GTPPMultiBlockBase<MTELargeSemif
                         .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(getCasingBlock(), getCasingMeta()))))
                 .addElement('G', ofBlock(getGearboxBlock(), getGearboxMeta()))
                 .addElement('I', ofBlock(getIntakeBlock(), getIntakeMeta()))
-                .addElement(
-                    'M',
-                    Dynamo.or(TTDynamo)
-                        .newAny(getCasingTextureIndex(), 2))
+                .addElement('M', Dynamo.newAny(getCasingTextureIndex(), 2))
                 .build();
         }
         return STRUCTURE_DEFINITION;
@@ -217,10 +218,14 @@ public class MTELargeSemifluidGenerator extends GTPPMultiBlockBase<MTELargeSemif
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         mCasing = 0;
         mDynamoHatches.clear();
-        return checkPiece(mName, 1, 1, 0) && mCasing >= 16 && checkHatch();
+        if (!checkPiece(mName, 1, 1, 0, errors)) return;
+        checkCasingMin(errors, mCasing, 16);
+        checkHasMaintenanceHatch(errors);
+        checkHasMufflerHatch(errors);
+        checkHasInputHatch(errors);
     }
 
     public Block getCasingBlock() {

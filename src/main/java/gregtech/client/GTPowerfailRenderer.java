@@ -12,11 +12,11 @@ import net.minecraftforge.event.world.WorldEvent;
 import org.joml.Vector3d;
 import org.lwjgl.opengl.GL11;
 
-import com.github.bsideup.jabel.Desugar;
-
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import gregtech.api.enums.Mods;
 import gregtech.api.util.GTUtility;
+import gregtech.client.renderer.BillboardRenderHelper;
+import gregtech.client.renderer.BillboardRenderHelper.Plane;
 import gregtech.common.config.Client;
 import gregtech.common.data.GTPowerfailTracker;
 import gregtech.common.data.GTPowerfailTracker.Powerfail;
@@ -76,13 +76,14 @@ public class GTPowerfailRenderer {
         GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
 
         GL11.glDisable(GL11.GL_DEPTH_TEST);
-        GL11.glEnable(GL11.GL_ALPHA);
+        GL11.glEnable(GL11.GL_ALPHA_TEST);
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
         Tessellator tessellator = Tessellator.instance;
 
         tessellator.startDrawingQuads();
+        tessellator.setColorOpaque_I(0xFFFFFF);
 
         tessellator.setTranslation(0, 0, 0);
 
@@ -113,49 +114,11 @@ public class GTPowerfailRenderer {
             }
 
             Plane plane = Plane.lookingAt(temp.set(x, y, z), pos);
-
-            plane.get(0.5 * size, 0.5 * size, temp);
-            tessellator.addVertexWithUV(temp.x, temp.y, temp.z, powerfailIcon.getMaxU(), powerfailIcon.getMaxV());
-
-            plane.get(0.5 * size, -0.5 * size, temp);
-            tessellator.addVertexWithUV(temp.x, temp.y, temp.z, powerfailIcon.getMaxU(), powerfailIcon.getMinV());
-
-            plane.get(-0.5 * size, -0.5 * size, temp);
-            tessellator.addVertexWithUV(temp.x, temp.y, temp.z, powerfailIcon.getMinU(), powerfailIcon.getMinV());
-
-            plane.get(-0.5 * size, 0.5 * size, temp);
-            tessellator.addVertexWithUV(temp.x, temp.y, temp.z, powerfailIcon.getMinU(), powerfailIcon.getMaxV());
+            BillboardRenderHelper.addTexturedQuad(tessellator, plane, powerfailIcon, 0.5 * size, temp);
         }
 
         tessellator.draw();
 
         GL11.glPopAttrib();
-    }
-
-    @Desugar
-    private record Plane(Vector3d centre, Vector3d s, Vector3d t) {
-
-        public static Plane lookingAt(Vector3d centre, Vector3d pos) {
-            Vector3d normal = new Vector3d();
-            Vector3d relCentre = new Vector3d();
-
-            relCentre.set(centre)
-                .sub(pos);
-            relCentre.normalize(normal);
-
-            double radians = Math.atan2(normal.x, normal.z) + Math.PI / 2;
-
-            Vector3d s = new Vector3d(0, 0, -1).rotateY(radians);
-
-            Vector3d t = normal.cross(s, new Vector3d());
-
-            return new Plane(relCentre, s, t);
-        }
-
-        public void get(double sk, double tk, Vector3d dest) {
-            dest.x = centre.x + s.x * sk + t.x * tk;
-            dest.y = centre.y + s.y * sk + t.y * tk;
-            dest.z = centre.z + s.z * sk + t.z * tk;
-        }
     }
 }

@@ -16,7 +16,6 @@ import static gregtech.api.util.GTUtility.areStacksEqual;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -49,6 +48,7 @@ import gregtech.api.enums.VoidingMode;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
@@ -56,13 +56,11 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.IStructureInstance;
 import gregtech.api.structure.IStructureProvider;
 import gregtech.api.structure.ISuperChestAcceptor;
 import gregtech.api.structure.StructureWrapper;
 import gregtech.api.structure.StructureWrapperInstanceInfo;
-import gregtech.api.structure.StructureWrapperTooltipBuilder;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeConstants;
@@ -73,8 +71,8 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.tileentities.storage.MTEDigitalChestBase;
 
-public class MTEDecayWarehouse extends MTEExtendedPowerMultiBlockBase<MTEDecayWarehouse>
-    implements ISurvivalConstructable, IStructureProvider<MTEDecayWarehouse>, ISuperChestAcceptor {
+public class MTEDecayWarehouse extends MTEExtendedPowerMultiBlockBase<MTEDecayWarehouse> implements
+    ISurvivalConstructable, IStructureProvider<MTEDecayWarehouse>, ISuperChestAcceptor, ICasingTextureProvider {
 
     private static final int MODE_NORMAL = 0, MODE_EXPORT = 1;
     public static final double EPSILON = 0.00001;
@@ -160,13 +158,6 @@ public class MTEDecayWarehouse extends MTEExtendedPowerMultiBlockBase<MTEDecayWa
     }
 
     @Override
-    protected void validateStructure(Collection<StructureError> errors) {
-        super.validateStructure(errors);
-
-        structureInstanceInfo.validate(errors);
-    }
-
-    @Override
     public IStructureInstance<MTEDecayWarehouse> getStructureInstance() {
         return structureInstanceInfo;
     }
@@ -201,14 +192,19 @@ public class MTEDecayWarehouse extends MTEExtendedPowerMultiBlockBase<MTEDecayWa
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
-        return structure.checkStructure(this);
+    public void checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack,
+        List<StructureError> errors) {
+        if (!structure.checkStructure(this, errors)) return;
+        structureInstanceInfo.validate(errors);
+        checkHasEnergyHatch(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasInputBus(errors);
+        checkHasOutputBus(errors);
     }
 
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
-        StructureWrapperTooltipBuilder<MTEDecayWarehouse> tt = new StructureWrapperTooltipBuilder<>(structure);
-
+        MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Decay Warehouse")
             .addInfo("Stores a single type of radioactive isotope and allows it to decay over time")
             .addInfo("Decay speed is dependent on the isotopes' half-lives (lower is faster)")
@@ -225,16 +221,21 @@ public class MTEDecayWarehouse extends MTEExtendedPowerMultiBlockBase<MTEDecayWa
             .addInfo("Right click the controller with a screwdriver to dump stored isotopes into the output bus")
             .addInfo("Right click the controller with a plunger to empty it")
             .addInfo(
-                "The warehouse's contents are " + RED + UNDERLINE + "voided" + GRAY + " when the controller is broken");
-
-        tt.addSubChannelUsage(GTStructureChannels.SUPER_CHEST);
-
-        tt.beginStructureBlock(true);
-        tt.addController("Front center");
-        tt.addAllCasingInfo();
-
-        tt.toolTipFinisher();
-
+                "The warehouse's contents are " + RED + UNDERLINE + "voided" + GRAY + " when the controller is broken")
+            .beginStructureBlock(5, 5, 3, true)
+            .addController("Front center, 2nd layer")
+            .addCasing("48-52", "Radiation Proof Machine Casing", false)
+            .addCasing("17", "Water", false)
+            .addCasing("1", "Super/Quantum Chest", true)
+            .addEnergyHatch("1", "Any casing", 1)
+            .addMaintenanceHatch("1", "Any casing", 1)
+            .addInputBus("1", "Any casing", 1)
+            .addOutputBus("1", "Any casing", 1)
+            .addStructureInfo("")
+            .addStructureFooter("The water is a one-time-cost to prime the machine, place manually")
+            .addStructureFooter("Do not insert isotopes into the super/quantum chest")
+            .addSubChannel(GTStructureChannels.SUPER_CHEST)
+            .toolTipFinisher();
         return tt;
     }
 
@@ -259,30 +260,22 @@ public class MTEDecayWarehouse extends MTEExtendedPowerMultiBlockBase<MTEDecayWa
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity igte, ForgeDirection side, ForgeDirection facing, int colorIndex,
-        boolean active, boolean redstoneLevel) {
-        List<ITexture> textures = new ArrayList<>();
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            Textures.BlockIcons.DECAY_WAREHOUSE_BACKGROUND,
+            Textures.BlockIcons.VOID,
+            Textures.BlockIcons.DECAY_WAREHOUSE_BACKGROUND,
+            Textures.BlockIcons.DECAY_WAREHOUSE_GLOW);
+    }
 
-        textures.add(RadiationProofMachineCasing.getCasingTexture());
-
-        if (side == facing) {
-            textures.add(
-                TextureFactory.builder()
-                    .addIcon(Textures.BlockIcons.DECAY_WAREHOUSE_BACKGROUND)
-                    .extFacing()
-                    .build());
-
-            if (active) {
-                textures.add(
-                    TextureFactory.builder()
-                        .addIcon(Textures.BlockIcons.DECAY_WAREHOUSE_GLOW)
-                        .extFacing()
-                        .glow()
-                        .build());
-            }
-        }
-
-        return textures.toArray(new ITexture[0]);
+    @Override
+    public ITexture getCasingTexture() {
+        return RadiationProofMachineCasing.getCasingTexture();
     }
 
     @Override

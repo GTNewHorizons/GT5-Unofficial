@@ -17,6 +17,8 @@ import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofCoil;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 
+import java.util.List;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -33,19 +35,22 @@ import gregtech.api.casing.Casings;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
+import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.render.TextureFactory;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.misc.GTStructureChannels;
 
-public class MTEPyrolyseOven extends MTEExtendedPowerMultiBlockBase<MTEPyrolyseOven> implements ISurvivalConstructable {
+public class MTEPyrolyseOven extends MTEExtendedPowerMultiBlockBase<MTEPyrolyseOven>
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final int OFFSET_X = 3;
@@ -101,50 +106,44 @@ public class MTEPyrolyseOven extends MTEExtendedPowerMultiBlockBase<MTEPyrolyseO
             .addDynamicSpeedInfo(0.5f, TooltipTier.COIL)
             .addInfo("EU/t is not affected by Coil tier")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(7, 6, 5, false)
-            .addController("Front center")
-            .addCasingInfoMin("Pyrolyse Oven Casing", 60, false)
-            .addCasingInfoExactly("Heating Coils", 12, true)
-            .addCasingInfoExactly("Steel Frame Box", 2, false)
-            .addCasingInfoExactly("Steel Pipe Casing", 8, false)
-            .addCasingInfoExactly("Steel Firebox Casing", 4, false)
-            .addEnergyHatch("Any bottom layer casing", 1)
-            .addMaintenanceHatch("Any bottom layer casing", 1)
-            .addMufflerHatch("Any top layer casing", 2)
-            .addInputBus("Any top layer casing", 2)
-            .addInputHatch("Any top layer casing", 2)
-            .addOutputBus("Any bottom layer casing", 1)
-            .addOutputHatch("Any bottom layer casing", 1)
-            .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
+            .beginStructureBlock(5, 7, 6, true)
+            .addController("Front center, 2nd layer")
+            .addCasing("60-68", "Pyrolyse Oven Casing", false)
+            .addCasing("12", "Heating Coil", true)
+            .addCasing("8", "Steel Pipe Casing", false)
+            .addCasing("4", "Steel Firebox Casing", false)
+            .addCasing("2", "Steel Frame Box", false)
+            .addEnergyHatch("1+", "Any bottom casing", 1)
+            .addMaintenanceHatch("1", "Any bottom casing", 1)
+            .addMufflerHatch("1", "Any top casing", 2)
+            .addInputBus("0+", "Any top casing", 2)
+            .addInputHatch("0+", "Any top casing", 2)
+            .addOutputBus("0+", "Any bottom casing", 1)
+            .addOutputHatch("0+", "Any bottom casing", 1)
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.HEATING_COIL)
             .addStructureAuthors(EnumChatFormatting.GOLD + "Ya9yu")
             .toolTipFinisher();
         return tt;
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection,
-        ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
-        if (sideDirection == facingDirection) {
-            if (active) return new ITexture[] { Casings.PyrolyseOvenCasing.getCasingTexture(), TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_PYROLYSE_OVEN_ACTIVE)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_PYROLYSE_OVEN_ACTIVE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { Casings.PyrolyseOvenCasing.getCasingTexture(), TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_PYROLYSE_OVEN)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_PYROLYSE_OVEN_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-        }
-        return new ITexture[] { Casings.PyrolyseOvenCasing.getCasingTexture() };
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            OVERLAY_FRONT_PYROLYSE_OVEN,
+            OVERLAY_FRONT_PYROLYSE_OVEN_GLOW,
+            OVERLAY_FRONT_PYROLYSE_OVEN_ACTIVE,
+            OVERLAY_FRONT_PYROLYSE_OVEN_ACTIVE_GLOW);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Casings.PyrolyseOvenCasing.getCasingTexture();
     }
 
     @Override
@@ -179,11 +178,16 @@ public class MTEPyrolyseOven extends MTEExtendedPowerMultiBlockBase<MTEPyrolyseO
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         coilHeat = HeatingCoilLevel.None;
         casingAmount = 0;
-        return checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z) && casingAmount >= 60
-            && !mMufflerHatches.isEmpty();
+        if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z, errors)) return;
+        checkCasingMin(errors, casingAmount, 60);
+        checkHasEnergyHatch(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasMufflerHatch(errors);
+        checkHasAnyInput(errors);
+        checkHasAnyOutput(errors);
     }
 
     @Override

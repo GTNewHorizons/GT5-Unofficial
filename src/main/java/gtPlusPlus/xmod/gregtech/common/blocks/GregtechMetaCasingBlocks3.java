@@ -9,9 +9,13 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.Facing;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
+import net.minecraft.world.IBlockAccess;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
 import gregtech.api.render.TextureFactory;
@@ -30,16 +34,16 @@ public class GregtechMetaCasingBlocks3 extends GregtechMetaCasingBlocksAbstract 
         }
 
         @Override
-        public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List aList, boolean aF3_H) {
-            int meta = aStack.getItemDamage();
+        public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean aF3_H) {
+            int meta = stack.getItemDamage();
             int tier = MTEPowerSubStation.getCellTier(field_150939_a, meta);
             if (tier > 0) {
                 long capacity = MTEPowerSubStation.getCapacityFromCellTier(tier);
-                aList.add(
+                tooltip.add(
                     StatCollector
                         .translateToLocalFormatted("gtpp.tooltip.meta_casing.energy_storage", formatNumber(capacity)));
             }
-            super.addInformation(aStack, aPlayer, aList, aF3_H);
+            super.addInformation(stack, player, tooltip, aF3_H);
         }
     }
 
@@ -76,7 +80,7 @@ public class GregtechMetaCasingBlocks3 extends GregtechMetaCasingBlocksAbstract 
 
     // exclude meta 14 to not create "Unnamed" casing
     @Override
-    public void getSubBlocks(Item item, CreativeTabs tab, List list) {
+    public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {
         for (int i = 0; i < 16; i++) {
             if (i == 14) continue;
             list.add(new ItemStack(item, 1, i));
@@ -132,5 +136,24 @@ public class GregtechMetaCasingBlocks3 extends GregtechMetaCasingBlocksAbstract 
             };
         }
         return Textures.GlobalIcons.RENDERING_ERROR.getIcon();
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public boolean shouldSideBeRendered(IBlockAccess worldIn, int x, int y, int z, int side) {
+        Block block = worldIn.getBlock(x, y, z);
+
+        if (worldIn.getBlockMetadata(x, y, z) != worldIn.getBlockMetadata(
+            x - Facing.offsetsXForSide[side],
+            y - Facing.offsetsYForSide[side],
+            z - Facing.offsetsZForSide[side])) {
+            return true;
+        }
+
+        if (block == this) {
+            return false;
+        }
+
+        return super.shouldSideBeRendered(worldIn, x, y, z, side);
     }
 }
