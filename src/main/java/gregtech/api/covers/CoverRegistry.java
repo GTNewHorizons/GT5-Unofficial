@@ -3,6 +3,7 @@ package gregtech.api.covers;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import gregtech.GTMod;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -18,6 +19,8 @@ import gregtech.api.util.GTUtility;
 import gregtech.common.covers.Cover;
 import gregtech.common.covers.CoverDecorative;
 import gregtech.common.covers.CoverNone;
+
+import static gregtech.GTMod.GT_FML_LOGGER;
 
 public final class CoverRegistry {
 
@@ -113,7 +116,12 @@ public final class CoverRegistry {
         CoverRegistration registration = getRegistration(coverItem);
         Cover cover = registration.getFactory()
             .buildCover(new CoverContext(coverItem, side, coverable));
-        cover.readFromNbt(nbt);
+        try {
+            cover.readFromNbt(nbt);
+        } catch (Exception e) {
+            GT_FML_LOGGER.error("Encountered Exception while loading cover.");
+            GTMod.logStackTrace(e);
+        }
         return cover;
     }
 
