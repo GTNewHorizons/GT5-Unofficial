@@ -41,6 +41,8 @@ public class ProspectingPacket extends DetravPacket {
     public final Long2ShortOpenHashMap map = new Long2ShortOpenHashMap();
     /** {object id: (object name, object rgba)} */
     public final Short2ObjectOpenHashMap<ObjectIntPair<String>> objects = new Short2ObjectOpenHashMap<>();
+    /** {object id: ore material internal name}, used to render the ore icon on scanner markers. */
+    public final Short2ObjectOpenHashMap<String> oreMaterialNames = new Short2ObjectOpenHashMap<>();
     /** {object name: object id} */
     private final Object2ShortOpenHashMap<String> nameLookup = new Object2ShortOpenHashMap<>();
 
@@ -74,8 +76,10 @@ public class ProspectingPacket extends DetravPacket {
             short objectId = aData.readShort();
             String name = aData.readUTF();
             int rgba = aData.readInt();
+            String oreMaterialName = aData.readUTF();
 
             packet.objects.put(objectId, ObjectIntPair.of(name, rgba));
+            packet.oreMaterialNames.put(objectId, oreMaterialName);
         }
 
         int instanceCount = aData.readInt();
@@ -116,6 +120,7 @@ public class ProspectingPacket extends DetravPacket {
             tOut.writeInt(
                 obj.getValue()
                     .rightInt());
+            tOut.writeUTF(oreMaterialNames.getOrDefault(obj.getShortKey(), ""));
         }
 
         tOut.writeInt(map.size());
@@ -157,6 +162,7 @@ public class ProspectingPacket extends DetravPacket {
 
             nameLookup.put(stackName, objectId);
             objects.put(objectId, ObjectIntPair.of(stackName, rgba(rgba)));
+            oreMaterialNames.put(objectId, mat == null ? "" : mat.getInternalName());
         }
 
         map.put(CoordinatePacker.pack(aX, y, aZ), objectId);
