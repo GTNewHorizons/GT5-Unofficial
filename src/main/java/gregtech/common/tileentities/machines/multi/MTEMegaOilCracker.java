@@ -47,18 +47,17 @@ import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatch;
-import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchMultiInput;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.maps.OilCrackerBackend;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.structure.error.StructureErrors;
@@ -70,7 +69,7 @@ import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
 import gregtech.common.tileentities.machines.MTEHatchInputME;
 
 public class MTEMegaOilCracker extends MTEExtendedPowerMultiBlockBase<MTEMegaOilCracker>
-    implements ISurvivalConstructable {
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final int VERTICAL_OFFSET = 7;
@@ -164,42 +163,22 @@ public class MTEMegaOilCracker extends MTEExtendedPowerMultiBlockBase<MTEMegaOil
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
-        ITexture[] rTexture;
-        if (side == aFacing) {
-            if (aActive) {
-                rTexture = new ITexture[] {
-                    Textures.BlockIcons
-                        .getCasingTextureForId(Casings.NaquadahReinforcedDistillationCasing.getTextureId()),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MEGA_OIL_CRACKER_ACTIVE)
-                        .extFacing()
-                        .build(),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MEGA_OIL_CRACKER_ACTIVE_GLOW)
-                        .extFacing()
-                        .glow()
-                        .build() };
-            } else {
-                rTexture = new ITexture[] {
-                    Textures.BlockIcons
-                        .getCasingTextureForId(Casings.NaquadahReinforcedDistillationCasing.getTextureId()),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MEGA_OIL_CRACKER)
-                        .extFacing()
-                        .build(),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MEGA_OIL_CRACKER_GLOW)
-                        .extFacing()
-                        .glow()
-                        .build() };
-            }
-        } else {
-            rTexture = new ITexture[] { Textures.BlockIcons
-                .getCasingTextureForId(Casings.NaquadahReinforcedDistillationCasing.getTextureId()) };
-        }
-        return rTexture;
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            OVERLAY_FRONT_MEGA_OIL_CRACKER,
+            OVERLAY_FRONT_MEGA_OIL_CRACKER_GLOW,
+            OVERLAY_FRONT_MEGA_OIL_CRACKER_ACTIVE,
+            OVERLAY_FRONT_MEGA_OIL_CRACKER_ACTIVE_GLOW);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Casings.NaquadahReinforcedDistillationCasing.getCasingTexture();
     }
 
     @Override
@@ -224,25 +203,27 @@ public class MTEMegaOilCracker extends MTEExtendedPowerMultiBlockBase<MTEMegaOil
                     + " more cracked fluid")
             .addInfo(TooltipHelper.italicText("In comparison to a chemical reactor"))
             .addSeparator()
-            .addTecTechHatchInfo()
+            .addSupportAny()
             .addMinGlassForLaser(VoltageIndex.UV)
             .addGlassEnergyLimitInfo()
             .addUnlimitedTierSkips()
-            .beginStructureBlock(13, 8, 9, true)
+            .beginStructureBlock(9, 13, 8, true)
             .addController("Front bottom center")
-            .addCasingInfoMin("Naquadah Reinforced Distillation Machine Casing", 145, false)
-            .addCasingInfoExactly("Clean Stainless Steel Machine Casing", 84, false)
-            .addCasingInfoExactly("Heating Coil", 77, true)
-            .addCasingInfoExactly("Any Tiered Glass", 162, true)
-            .addCasingInfoExactly("Steel Pipe Casing", 9, false)
-            .addInputBus("Any Base Naquadah Reinforced Distillation Machine Casing, for Programmed Circuits", 1)
-            .addEnergyHatch("Any Base Naquadah Reinforced Distillation Machine Casing", 1)
-            .addMaintenanceHatch("Any Base Naquadah Reinforced Distillation Machine Casing", 1)
-            .addInputHatch("Left Side Section, Uncracked Fluid Only", 2)
-            .addInputHatch("Top Side Section, Steam/Hydrogen Only", 3)
-            .addOutputHatch("Right Side Section", 4)
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
-            .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
+            .addCasing("162", "Any Tiered Glass", true)
+            .addCasing("145-151", "Naquadah Reinforced Distillation Casing", false)
+            .addCasing("84", "Clean Stainless Steel Machine Casing", false)
+            .addCasing("77", "Heating Coil", true)
+            .addCasing("14", "Naquadah Sheetmetal", false)
+            .addCasing("9", "Steel Pipe Casing", false)
+            .addEnergyHatch("1+", "Any reinforced distillation casing", 1)
+            .addMaintenanceHatch("1", "Any reinforced distillation casing", 1)
+            .addInputBus("0+", "Any reinforced distillation casing", 1)
+            .addInputHatch("2", "Any middle casing (cracking fluid), any side casing (hydrocarbon)", 2, 3, 4)
+            .addOutputHatch("1", "Any side casing", 2, 4)
+            .addStructureInfo("")
+            .addStructureFooter("The input hatch with the hydrocarbon and the output hatch must be on opposite sides!")
+            .addSubChannel(GTStructureChannels.BOROGLASS)
+            .addSubChannel(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
         return tt;
     }
@@ -291,9 +272,9 @@ public class MTEMegaOilCracker extends MTEExtendedPowerMultiBlockBase<MTEMegaOil
         this.mOutputOnSide = -1;
         this.mMiddleInputHatches.clear();
         if (!this.checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFFSET, VERTICAL_OFFSET, DEPTH_OFFSET, errors)) return;
-        checkOneMaintenanceHatch(errors);
-        checkHasAnyEnergy(errors);
         checkCasingMin(errors, casingAmount, 145);
+        checkHasAnyEnergy(errors);
+        checkOneMaintenanceHatch(errors);
         checkHasInputHatch(errors);
         checkHasOutputHatch(errors);
         if (this.glassTier < VoltageIndex.UV) {
@@ -302,16 +283,12 @@ public class MTEMegaOilCracker extends MTEExtendedPowerMultiBlockBase<MTEMegaOil
                     errors.add(StructureErrors.glassTierNotEnough(VoltageIndex.UV));
                     return;
                 }
-                if (this.glassTier < hatch.mTier) {
-                    errors.add(StructureErrorRegistry.ENERGY_TIER_EXCEED_GLASS);
-                    break;
-                }
             }
-            for (MTEHatchEnergy mEnergyHatch : this.mEnergyHatches) {
-                if (this.glassTier < mEnergyHatch.mTier) {
-                    errors.add(StructureErrorRegistry.ENERGY_TIER_EXCEED_GLASS);
-                    break;
-                }
+        }
+        for (MTEHatch mEnergyHatch : this.getExoticAndNormalEnergyHatchList()) {
+            if (this.glassTier < mEnergyHatch.getTierForStructure()) {
+                errors.add(StructureErrorRegistry.ENERGY_TIER_EXCEED_GLASS);
+                break;
             }
         }
     }

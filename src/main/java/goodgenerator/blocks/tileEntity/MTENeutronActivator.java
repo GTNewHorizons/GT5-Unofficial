@@ -15,7 +15,6 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -36,7 +35,6 @@ import goodgenerator.api.recipe.GoodGeneratorRecipeMaps;
 import goodgenerator.blocks.tileEntity.GTMetaTileEntity.MTENeutronAccelerator;
 import goodgenerator.blocks.tileEntity.GTMetaTileEntity.MTENeutronSensor;
 import goodgenerator.loader.Loaders;
-import goodgenerator.util.DescTextLocalization;
 import goodgenerator.util.ItemRefer;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
@@ -45,13 +43,14 @@ import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.objects.XSTR;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.structure.error.StructureErrors;
@@ -67,7 +66,7 @@ import tectech.thing.metaTileEntity.multi.base.LedStatus;
 import tectech.thing.metaTileEntity.multi.base.Parameters;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 
-public class MTENeutronActivator extends TTMultiblockBase implements ISurvivalConstructable {
+public class MTENeutronActivator extends TTMultiblockBase implements ISurvivalConstructable, ICasingTextureProvider {
 
     public Parameters.Group.ParameterIn batchSetting;
 
@@ -198,26 +197,29 @@ public class MTENeutronActivator extends TTMultiblockBase implements ISurvivalCo
             .addInfo("It will output correct products with Specific Neutron Kinetic Energy")
             .addInfo("Otherwise it will output trash")
             .addInfo("The Neutron Kinetic Energy will decrease 72KeV/s when no Neutron Accelerator is running")
-            .addInfo(
-                "It will explode when the Neutron Kinetic Energy is over" + EnumChatFormatting.RED
-                    + " 1200MeV"
-                    + EnumChatFormatting.GRAY
-                    + ".")
             .addInfo("Inputting Graphite/Beryllium dust can reduce 10MeV per dust immediately.")
+            .beginVariableStructureBlock(5, 5, 5, 5, 6, 256, false)
             .addController("Front bottom center")
-            .addCasingInfoRange("Clean Stainless Steel Machine Casing", 7, 31, false)
-            .addCasingInfoExactly("Processor Machine Casing", 18, false)
-            .addCasingInfoMin("Steel Frame Box", 16, false)
-            .addCasingInfoMin("Speeding Pipe Casing", 4, false)
-            .addCasingInfoMin("Any Tiered Glass", 32, false)
-            .addInputHatch("Hint block number 1")
-            .addInputBus("Hint block number 1")
-            .addOutputHatch("Hint block number 2")
-            .addOutputBus("Hint block number 2")
-            .addMaintenanceHatch("Hint block number 2")
-            .addOtherStructurePart("Neutron Accelerator", "Hint block number 2")
-            .addOtherStructurePart("Neutron Sensor", "Hint block number 2")
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .addMiscHatch("1+", "Neutron Accelerator", "Any bottom edge casing", 2)
+            .addMiscHatch("0+", "Neutron Sensor", "Any bottom edge casing", 2)
+            .addMaintenanceHatch("1", "Any bottom edge casing", 2)
+            .addInputAny("1+", "Any top edge casing", 1)
+            .addOutputAny("1+", "Any bottom edge casing", 2)
+            .addStructureInfo("")
+            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Base"))
+            .addCasing("32", "Any Tiered Glass", false)
+            .addCasing("7-27", "Clean Stainless Steel Machine Casing", false)
+            .addCasing("18", "Processor Machine Casing", false)
+            .addCasing("16", "Steel Frame Box", false)
+            .addCasing("4", "Speeding Pipe Casing", false)
+            .addStructureInfo("")
+            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Layer"))
+            .addCasing("8", "Any Tiered Glass", false)
+            .addCasing("4", "Steel Frame Box", false)
+            .addCasing("1", "Speeding Pipe Casing", false)
+            .addStructureInfo("")
+            .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.height"))
+            .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         return tt;
     }
@@ -294,12 +296,12 @@ public class MTENeutronActivator extends TTMultiblockBase implements ISurvivalCo
         }
         if (!checkPiece(NA_TOP, 2, height + 1, 0, errors)) return;
         checkCasingMin(errors, casingAmount, 7);
-        checkHasAnyInput(errors);
-        checkHasAnyOutput(errors);
-        checkHasMaintenanceHatch(errors);
         if (mNeutronAccelerator.isEmpty()) {
             errors.add(StructureErrors.of("GT5U.gui.text.structure_error.missing_neutron_accelerator"));
         }
+        checkHasMaintenanceHatch(errors);
+        checkHasAnyInput(errors);
+        checkHasAnyOutput(errors);
     }
 
     public final boolean addAcceleratorAndSensor(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
@@ -417,11 +419,6 @@ public class MTENeutronActivator extends TTMultiblockBase implements ISurvivalCo
     }
 
     @Override
-    public String[] getStructureDescription(ItemStack itemStack) {
-        return DescTextLocalization.addText("NeutronActivator.hint", 7);
-    }
-
-    @Override
     public String[] getInfoData() {
         int currentNKEInput = 0;
         boolean anyWorking = false;
@@ -435,45 +432,33 @@ public class MTENeutronActivator extends TTMultiblockBase implements ISurvivalCo
         }
         if (!anyWorking) currentNKEInput = -72000;
         return new String[] {
-            StatCollector.translateToLocalFormatted(
+            IGregTechDeviceInformation.encode(
                 "gg.scanner.info.neutron_activator.progress",
-                EnumChatFormatting.GREEN + Integer.toString(this.mProgresstime / 20) + EnumChatFormatting.RESET,
-                EnumChatFormatting.YELLOW + Integer.toString(this.mMaxProgresstime / 20) + EnumChatFormatting.RESET),
-            StatCollector.translateToLocalFormatted(
-                "gg.scanner.info.neutron_activator.input",
-                EnumChatFormatting.GREEN + formatNumber(currentNKEInput) + EnumChatFormatting.RESET),
-            StatCollector.translateToLocal("scanner.info.NA") + " "
-                + EnumChatFormatting.LIGHT_PURPLE
-                + formatNumber(getCurrentNeutronKineticEnergy())
-                + EnumChatFormatting.RESET
-                + "eV",
-            GTUtility.translate("GT5U.multiblock.recipesDone", formatNumber(recipesDone)) };
+                Integer.toString(this.mProgresstime / 20),
+                Integer.toString(this.mMaxProgresstime / 20)),
+            IGregTechDeviceInformation.encode("gg.scanner.info.neutron_activator.input", formatNumber(currentNKEInput)),
+            IGregTechDeviceInformation
+                .encode("gg.infodata.neutron_activator.nke", formatNumber(getCurrentNeutronKineticEnergy())),
+            IGregTechDeviceInformation.encode("GT5U.multiblock.recipesDone.fmt", formatNumber(recipesDone)) };
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-        int colorIndex, boolean aActive, boolean aRedstone) {
-        if (side == facing) {
-            if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(49), TextureFactory.builder()
-                .addIcon(textureFontOn)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(textureFontOn_Glow)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            else return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(49), TextureFactory.builder()
-                .addIcon(textureFontOff)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(textureFontOff_Glow)
-                    .extFacing()
-                    .glow()
-                    .build() };
-        }
-        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(49) };
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            textureFontOff,
+            textureFontOff_Glow,
+            textureFontOn,
+            textureFontOn_Glow);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Textures.BlockIcons.getCasingTextureForId(49);
     }
 
     @Override

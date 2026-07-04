@@ -2,8 +2,8 @@ package gregtech.common.tools;
 
 import net.minecraft.item.ItemStack;
 
+import gregtech.api.enums.MaterialIconRegistry;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedTool;
@@ -28,7 +28,9 @@ public class ToolWireCutterLV extends ToolWireCutter {
     @Override
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
         return aIsToolHead
-            ? MetaGeneratedTool.getPrimaryMaterial(aStack).mIconSet.mTextures[TextureSet.INDEX_electricSnips]
+            ? MetaGeneratedTool
+                .getPrimaryMaterial(aStack).mIconSet.mTextures[MaterialIconRegistry.IconType.TOOL_HEAD_ELECTRIC_SNIPS
+                    .ordinal()]
             : Textures.ItemIcons.POWER_UNIT_LV;
     }
 

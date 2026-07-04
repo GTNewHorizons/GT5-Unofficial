@@ -61,6 +61,7 @@ import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
+import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
@@ -73,7 +74,6 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipe;
@@ -145,19 +145,18 @@ public class MTETreeFarm extends MTEExtendedPowerMultiBlockBase<MTETreeFarm>
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(7, 7, 7, true)
             .addController("Front bottom center")
-            .addCasingInfoMin("Sterile Farm Casing", 45, false)
-            .addCasingInfoExactly("Steel Frame Box", 60, false)
-            .addCasingInfoExactly("Any Tiered Glass", 57, false)
-            .addCasingInfoExactly("Dirt/Grass", 25, false)
-            .addStructureInfo("Oak Wood and Leaves can be placed manually. If not, they will be placed automatically.")
-            .addInputBus("Any Sterile Farm Casing", 1)
-            .addStructureInfo(
-                EnumChatFormatting.YELLOW + "Stocking Input Buses and Crafting Input Buses/Buffers are not allowed!")
-            .addOutputBus("Any Sterile Farm Casing", 1)
-            .addEnergyHatch("Any Sterile Farm Casing", 1)
-            .addMaintenanceHatch("Any Sterile Farm Casing", 1)
-            .addMufflerHatch("Any Sterile Farm Casing", 1)
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .addCasing("60", "Steel Frame Box", false)
+            .addCasing("57", "Any Tiered Glass", false)
+            .addCasing("45-55", "Sterile Farm Casing", false)
+            .addCasing("25", "Dirt or Grass", false)
+            .addEnergyHatch("1+", "Any casing", 1)
+            .addMaintenanceHatch("1", "Any casing", 1)
+            .addMufflerHatch("1", "Any casing", 1)
+            .addInputBus("0+", "Any casing", 1)
+            .addOutputBus("0+", "Any casing", 1)
+            .addAir("Interior center column")
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.BOROGLASS)
             .addStructureAuthors(EnumChatFormatting.GOLD + "EvgenWarGold")
             .toolTipFinisher();
         return tt;
@@ -166,28 +165,15 @@ public class MTETreeFarm extends MTEExtendedPowerMultiBlockBase<MTETreeFarm>
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
-        if (side == aFacing) {
-            if (aActive) return new ITexture[] { getCasingTexture(), TextureFactory.builder()
-                .addIcon(TexturesGtBlock.oMCATreeFarmActive)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.oMCATreeFarmActive)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { getCasingTexture(), TextureFactory.builder()
-                .addIcon(TexturesGtBlock.oMCATreeFarm)
-                .extFacing()
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.oMCATreeFarm)
-                    .extFacing()
-                    .glow()
-                    .build() };
-        }
-        return new ITexture[] { getCasingTexture() };
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            TexturesGtBlock.oMCATreeFarm,
+            TexturesGtBlock.oMCATreeFarmGlow,
+            TexturesGtBlock.oMCATreeFarmActive,
+            TexturesGtBlock.oMCATreeFarmActiveGlow);
     }
 
     @Override
@@ -200,11 +186,11 @@ public class MTETreeFarm extends MTEExtendedPowerMultiBlockBase<MTETreeFarm>
         casingAmount = 0;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z, errors)) return;
         checkCasingMin(errors, casingAmount, 8);
-        checkHasMufflerHatch(errors);
         checkHasEnergyHatch(errors);
         checkHasMaintenanceHatch(errors);
-        checkHasOutputBus(errors);
+        checkHasMufflerHatch(errors);
         checkHasInputBus(errors);
+        checkHasOutputBus(errors);
     }
 
     @Override

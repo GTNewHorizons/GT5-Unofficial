@@ -46,7 +46,6 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.client.GTSoundLoop;
 import gregtech.client.volumetric.ISoundPosition;
-import gregtech.common.tileentities.machines.IDualInputHatch;
 
 /**
  * Enhanced multiblock base class, featuring following improvement over {@link MTEMultiBlockBase}
@@ -616,34 +615,6 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
         }
     }
 
-    protected final void checkHasInputBus(List<StructureError> errors) {
-        checkHatchMin(errors, HatchElement.InputBus, 1);
-    }
-
-    protected final void checkHasOutputBus(List<StructureError> errors) {
-        checkHatchMin(errors, HatchElement.OutputBus, 1);
-    }
-
-    // NOTE: Despite the name, this also allow crafting inputs, if they support fluids
-    // Most of the time it's what you want. If you don't want such inputs,
-    // you can omit InputBus in your structure or roll your own checks
-    protected final void checkHasInputHatch(List<StructureError> errors) {
-        long count = mInputHatches.size() + mDualInputHatches.stream()
-            .filter(IDualInputHatch::supportsFluids)
-            .count();
-        if (count == 0) {
-            errors.add(StructureErrors.hatchCount(ErrorType.TOO_FEW, HatchElement.InputHatch, 0, 1));
-        }
-    }
-
-    protected final void checkHasOutputHatch(List<StructureError> errors) {
-        checkHatchMin(errors, HatchElement.OutputHatch, 1);
-    }
-
-    protected final void checkOneOutputHatch(List<StructureError> errors) {
-        checkHatchExact(errors, HatchElement.OutputHatch, 1);
-    }
-
     protected final void checkHasEnergyHatch(List<StructureError> errors) {
         checkHatchMin(errors, HatchElement.Energy, 1);
     }
@@ -652,12 +623,8 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
         checkHatchExact(errors, HatchElement.Energy, 1);
     }
 
-    protected final void checkHasMufflerHatch(List<StructureError> errors) {
-        checkHatchMin(errors, HatchElement.Muffler, 1);
-    }
-
-    protected final void checkOneMufflerHatch(List<StructureError> errors) {
-        checkHatchExact(errors, HatchElement.Muffler, 1);
+    protected final void checkHasDynamoHatch(List<StructureError> errors) {
+        checkHatchMin(errors, HatchElement.Dynamo, 1);
     }
 
     protected final void checkHasMaintenanceHatch(List<StructureError> errors) {
@@ -668,10 +635,52 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
         checkHatchExact(errors, HatchElement.Maintenance, 1);
     }
 
+    protected final void checkOneDynamoHatch(List<StructureError> errors) {
+        checkHatchExact(errors, HatchElement.Dynamo, 1);
+    }
+
+    protected final void checkHasMufflerHatch(List<StructureError> errors) {
+        checkHatchMin(errors, HatchElement.Muffler, 1);
+    }
+
+    protected final void checkOneMufflerHatch(List<StructureError> errors) {
+        checkHatchExact(errors, HatchElement.Muffler, 1);
+    }
+
+    protected final void checkHasInputBus(List<StructureError> errors) {
+        checkHatchMin(errors, HatchElement.InputBus, 1);
+    }
+
+    protected final void checkOneInputBus(List<StructureError> errors) {
+        checkHatchExact(errors, HatchElement.InputBus, 1);
+    }
+
+    protected final void checkHasInputHatch(List<StructureError> errors) {
+        checkHatchMin(errors, HatchElement.InputHatch, 1);
+    }
+
+    protected final void checkOneInputHatch(List<StructureError> errors) {
+        checkHatchExact(errors, HatchElement.InputHatch, 1);
+    }
+
+    protected final void checkHasOutputBus(List<StructureError> errors) {
+        checkHatchMin(errors, HatchElement.OutputBus, 1);
+    }
+
+    protected final void checkOneOutputBus(List<StructureError> errors) {
+        checkHatchExact(errors, HatchElement.OutputBus, 1);
+    }
+
+    protected final void checkHasOutputHatch(List<StructureError> errors) {
+        checkHatchMin(errors, HatchElement.OutputHatch, 1);
+    }
+
+    protected final void checkOneOutputHatch(List<StructureError> errors) {
+        checkHatchExact(errors, HatchElement.OutputHatch, 1);
+    }
+
     protected void checkHasAnyInput(List<StructureError> errors) {
-        if (mInputBusses.isEmpty() && mInputHatches.isEmpty()
-            && mDualInputHatches.isEmpty()
-            && mSmartInputHatches.isEmpty()) {
+        if (mInputBusses.isEmpty() && mInputHatches.isEmpty() && mDualInputHatches.isEmpty()) {
             errors.add(StructureErrors.of("GT5U.gui.text.structure_error.missing_any_input"));
         }
     }
@@ -685,6 +694,12 @@ public abstract class MTEEnhancedMultiBlockBase<T extends MTEEnhancedMultiBlockB
     protected void checkHasAnyEnergy(List<StructureError> errors) {
         if (mEnergyHatches.isEmpty() && mExoticEnergyHatches.isEmpty()) {
             errors.add(StructureErrors.hatchCount(ErrorType.TOO_FEW, HatchElement.Energy, 0, 1));
+        }
+    }
+
+    protected void checkHasAnyDynamo(List<StructureError> errors) {
+        if (mDynamoHatches.isEmpty() && mExoticDynamoHatches.isEmpty()) {
+            errors.add(StructureErrors.hatchCount(ErrorType.TOO_FEW, HatchElement.Dynamo, 0, 1));
         }
     }
 

@@ -99,7 +99,7 @@ public class CraftingRecipeLoader implements Runnable {
         }
 
         GTModHandler.addCraftingRecipe(
-            GTModHandler.getIC2Item("ironFence", 6L),
+            ItemList.FenceIron.get(6L),
             bits_no_remove_buffered | GTModHandler.RecipeBits.REVERSIBLE,
             new Object[] { aTextIron2, aTextIron2, " w ", 'X', OrePrefixes.stick.get(Materials.AnyIron), 'S',
                 OrePrefixes.stick.get(Materials.Wood), 'I', OrePrefixes.ingot.get(Materials.AnyIron) });

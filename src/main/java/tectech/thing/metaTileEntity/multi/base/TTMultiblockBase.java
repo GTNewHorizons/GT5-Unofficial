@@ -67,6 +67,7 @@ import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseTileEntity;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
@@ -324,16 +325,14 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         ArrayList<String> info = new ArrayList<>(Arrays.asList(super.getInfoData()));
 
         info.add(
-            StatCollector.translateToLocalFormatted(
-                "tt.infodata.multi.computation",
-                formatNumber(eAvailableData),
-                formatNumber(eRequiredData)));
+            IGregTechDeviceInformation
+                .encode("tt.infodata.multi.computation", formatNumber(eAvailableData), formatNumber(eRequiredData)));
 
-        info.add(StatCollector.translateToLocalFormatted("tt.keyphrase.Amp_Rating", formatNumber(eMaxAmpereFlow)));
+        info.add(IGregTechDeviceInformation.encode("tt.keyphrase.Amp_Rating", formatNumber(eMaxAmpereFlow)));
 
-        info.add(StatCollector.translateToLocalFormatted("tt.keyword.PowerPass", ePowerPass));
+        info.add(IGregTechDeviceInformation.encode("tt.keyword.PowerPass", ePowerPass));
 
-        info.add(StatCollector.translateToLocalFormatted("tt.keyword.SafeVoid", eSafeVoid));
+        info.add(IGregTechDeviceInformation.encode("tt.keyword.SafeVoid", eSafeVoid));
 
         return info.toArray(new String[0]);
     }
@@ -616,7 +615,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         if (this instanceof IParametrized parametrized) {
             NBTTagCompound parameterTag = new NBTTagCompound();
 
-            for (Parameter<?> parameter : parametrized.getParameters()) parameter.saveNBT(parameterTag);
+            for (Parameter<?, ?> parameter : parametrized.getParameters()) parameter.saveNBT(parameterTag);
 
             aNBT.setTag("parameters", parameterTag);
         }
@@ -707,7 +706,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
 
             NBTTagCompound parameterTag = aNBT.getCompoundTag("parameters");
 
-            for (Parameter<?> parameter : parametrized.getParameters()) parameter.loadNBT(parameterTag);
+            for (Parameter<?, ?> parameter : parametrized.getParameters()) parameter.loadNBT(parameterTag);
         }
     }
 
@@ -1518,6 +1517,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
             hatch.updateTexture(aBaseCasingIndex);
             hatch.updateCraftingIcon(this.getMachineCraftingIcon());
         }
+        addIfSmartInput(aMetaTileEntity);
         if (aMetaTileEntity instanceof IDualInputHatch) {
             return mDualInputHatches.add((IDualInputHatch) aMetaTileEntity);
         }
@@ -1617,6 +1617,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         if (aMetaTileEntity == null) {
             return false;
         }
+        addIfSmartInput(aMetaTileEntity);
         if (aMetaTileEntity instanceof IDualInputHatch hatch) {
             hatch.updateTexture(aBaseCasingIndex);
             hatch.updateCraftingIcon(this.getMachineCraftingIcon());

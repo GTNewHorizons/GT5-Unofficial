@@ -60,7 +60,7 @@ public class MTEHatchTFFT extends MTEHatch implements IMEMonitor<IAEFluidStack> 
     private MTETankTFFT controller;
 
     public MTEHatchTFFT(int aID, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional, 3, 0, "All-in-one access for the T.F.F.T");
+        super(aID, aName, aNameRegional, 3, 0, "All-in-one access for the TFFT");
     }
 
     public MTEHatchTFFT(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
