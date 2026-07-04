@@ -43,6 +43,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoidingMode;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IOverclockDescriptionProvider;
@@ -72,7 +73,7 @@ import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.tileentities.machines.multi.drone.MTEHatchDroneDownLink;
 
 public abstract class MTEFusionComputer extends MTEEnhancedMultiBlockBase<MTEFusionComputer>
-    implements ISurvivalConstructable, IOverclockDescriptionProvider {
+    implements ISurvivalConstructable, IOverclockDescriptionProvider, ICasingTextureProvider {
 
     private final OverclockDescriber overclockDescriber;
 
@@ -249,15 +250,17 @@ public abstract class MTEFusionComputer extends MTEEnhancedMultiBlockBase<MTEFus
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
-        if (side == aFacing) return new ITexture[] { TextureFactory.builder()
-            .addIcon(MACHINE_CASING_FUSION_GLASS)
-            .extFacing()
-            .build(), getTextureOverlay() };
+        if (side == aFacing) return new ITexture[] { getCasingTexture(), getTextureOverlay() };
         if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(52) };
-        return new ITexture[] { TextureFactory.builder()
+        return new ITexture[] { getCasingTexture() };
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return TextureFactory.builder()
             .addIcon(MACHINE_CASING_FUSION_GLASS)
             .extFacing()
-            .build() };
+            .build();
     }
 
     /**

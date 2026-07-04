@@ -221,6 +221,7 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
     @Override
     public void stopMachine(@Nonnull ShutDownReason reason) {
         super.stopMachine(reason);
+        contentsChanged = true;
         storedCondensate.clear();
     }
 
@@ -243,6 +244,7 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
     public void addCondensate(IAEFluidStack stack) {
         if (mMaxProgresstime <= 0) {
             // Should be cleared by stopMachine, but just to be sure let's do it again here
+            contentsChanged = true;
             storedCondensate.clear();
             return;
         }
@@ -257,6 +259,7 @@ public class MTEBECStorage extends MTEBECMultiblockBase<MTEBECStorage> implement
     public boolean removeCondensate(IAEFluidStack stack) {
         if (mMaxProgresstime <= 0) {
             // Should be cleared by stopMachine, but just to be sure let's do it again here
+            contentsChanged = true;
             storedCondensate.clear();
             return false;
         }

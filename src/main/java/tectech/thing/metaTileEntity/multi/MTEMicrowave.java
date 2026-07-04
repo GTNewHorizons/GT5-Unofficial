@@ -38,6 +38,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.hazards.HazardProtection;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -59,7 +60,7 @@ import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTe
 /**
  * Created by danie_000 on 17.12.2016.
  */
-public class MTEMicrowave extends TTMultiblockBase implements ISurvivalConstructable {
+public class MTEMicrowave extends TTMultiblockBase implements ISurvivalConstructable, ICasingTextureProvider {
 
     private static final int CASING_INDEX = 49;
     // region variables
@@ -256,16 +257,20 @@ public class MTEMicrowave extends TTMultiblockBase implements ISurvivalConstruct
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
         int colorIndex, boolean aActive, boolean aRedstone) {
         if (side == facing) {
-            return new ITexture[] { Textures.BlockIcons.casingTexturePages[0][49],
+            return new ITexture[] { getCasingTexture(),
                 new TTRenderedExtendedFacingTexture(
                     aActive ? Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE
                         : Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE) };
         } else if (side == facing.getOpposite()) {
-            return new ITexture[] { Textures.BlockIcons.casingTexturePages[0][49],
-                aActive ? Textures.BlockIcons.casingTexturePages[0][52]
-                    : Textures.BlockIcons.casingTexturePages[0][53] };
+            return new ITexture[] { getCasingTexture(), aActive ? Textures.BlockIcons.casingTexturePages[0][52]
+                : Textures.BlockIcons.casingTexturePages[0][53] };
         }
-        return new ITexture[] { Textures.BlockIcons.casingTexturePages[0][49] };
+        return new ITexture[] { getCasingTexture() };
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Textures.BlockIcons.casingTexturePages[0][49];
     }
 
     @Override
