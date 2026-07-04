@@ -12,9 +12,11 @@ import com.cleanroommc.modularui.api.IGuiHolder;
 import com.cleanroommc.modularui.factory.AbstractUIFactory;
 import com.cleanroommc.modularui.factory.GuiManager;
 import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.network.NetworkUtils;
 
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.BaseMetaTileEntity;
 
 public final class MetaTileEntityGuiHandler extends AbstractUIFactory<PosGuiData> {
 
@@ -51,6 +53,17 @@ public final class MetaTileEntityGuiHandler extends AbstractUIFactory<PosGuiData
             IGuiHolder<PosGuiData> guiHolder = castGuiHolder(baseTE.getMetaTileEntity());
             if (guiHolder != null) {
                 return guiHolder;
+            }
+            if (NetworkUtils.isClient() && baseTE.getMetaTileID() > 0) {
+                BaseMetaTileEntity fakeBase = new BaseMetaTileEntity();
+                fakeBase.xCoord = data.getX();
+                fakeBase.yCoord = data.getY();
+                fakeBase.zCoord = data.getZ();
+                fakeBase.setInitialValuesAsNBT(null, (short) baseTE.getMetaTileID());
+                guiHolder = castGuiHolder(fakeBase.getMetaTileEntity());
+                if (guiHolder != null) {
+                    return guiHolder;
+                }
             }
         }
         throw new IllegalStateException(
