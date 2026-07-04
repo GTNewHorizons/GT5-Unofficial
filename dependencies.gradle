@@ -104,7 +104,7 @@ dependencies {
     compileOnly('com.github.GTNewHorizons:SC2:2.3.14:dev') {transitive=false}
     compileOnly('com.github.GTNewHorizons:Binnie:2.6.34:dev') {transitive = false}
     compileOnly('curse.maven:PlayerAPI-228969:2248928') {transitive=false}
-    devOnlyNonPublishable('com.github.GTNewHorizons:BlockRenderer6343:1.4.15:dev'){transitive=false}
+    devOnlyNonPublishable('com.github.GTNewHorizons:BlockRenderer6343:1.4.16:dev'){transitive=false}
     // for waila integration testing
     // devOnlyNonPublishable('com.github.GTNewHorizons:WAILAPlugins:0.7.2:dev')
 
