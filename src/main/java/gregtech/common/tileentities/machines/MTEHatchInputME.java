@@ -546,11 +546,6 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
                     true);
                 gridProxy.setFlags(GridFlags.REQUIRE_CHANNEL);
                 updateValidGridProxySides();
-                if (base.getWorld() != null && base.getOwnerUuid() != null) {
-                    gridProxy.setOwner(
-                        base.getWorld()
-                            .func_152378_a(base.getOwnerUuid()));
-                }
             }
         }
         return this.gridProxy;
@@ -802,7 +797,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
         if (aNBT.hasKey("refreshTime")) {
             autoPullRefreshTime = aNBT.getInteger("refreshTime");
         }
-        getProxy().readFromNBT(aNBT);
+        if (aNBT.hasKey("proxy")) getProxy().readFromNBT(aNBT);
         updateAE2ProxyColor();
 
         switch (aNBT.getInteger("version")) {

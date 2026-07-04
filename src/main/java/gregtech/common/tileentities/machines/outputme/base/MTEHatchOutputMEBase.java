@@ -134,10 +134,6 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>> {
             proxy.setFlags(GridFlags.REQUIRE_CHANNEL);
             proxy.setValidSides(EnumSet.noneOf(ForgeDirection.class));
             updateValidGridProxySides();
-            var bmte = env.getBaseMetaTileEntity();
-            if (bmte != null && bmte.getWorld() != null) proxy.setOwner(
-                bmte.getWorld()
-                    .getPlayerEntityByName(bmte.getOwnerName()));
         }
         return proxy;
     }
@@ -602,7 +598,7 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>> {
         checkMode = aNBT.getBoolean("checkMode");
         myPriority = aNBT.getInteger("myPriority");
         this.isCached = false;
-        getProxy().readFromNBT(aNBT);
+        if (aNBT.hasKey("proxy")) getProxy().readFromNBT(aNBT);
         oldCellStack = env.getCellStack();
         updateState();
         updateAE2ProxyColor();
