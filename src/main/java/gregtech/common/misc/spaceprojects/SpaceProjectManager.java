@@ -22,7 +22,9 @@ import gregtech.common.misc.spaceprojects.interfaces.ISpaceProject;
 
 /**
  * @author BlueWeabo
+ * @see com.gtnewhorizon.gtnhlib.teams.TeamManager
  */
+@Deprecated
 public class SpaceProjectManager {
 
     /**
