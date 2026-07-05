@@ -371,9 +371,9 @@ public class StructureWrapperTooltipBuilder<MTE extends MTEEnhancedMultiBlockBas
             addHatch(hatch.left(), hatch.right(), hintNumbers.toIntArray());
         }
 
-        // add the tectech multi amp hatch info line if it should be added
+        // add the supoort multi amp and laser hatch info line if it should be added
         if (printMultiampSupport && hasExoticHatches) {
-            addTecTechHatchInfo();
+            addSupportAny();
         }
 
         if (printMultiampSupport && hasMultiAmpHatches) {

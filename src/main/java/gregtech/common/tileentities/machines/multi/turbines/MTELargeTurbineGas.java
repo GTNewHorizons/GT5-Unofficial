@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -57,6 +58,11 @@ public class MTELargeTurbineGas extends MTELargeTurbineBase {
     }
 
     @Override
+    public boolean requiresOutputHatch() {
+        return false;
+    }
+
+    @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
         return new ITexture[] { MACHINE_CASINGS[1][colorIndex + 1],
@@ -77,17 +83,23 @@ public class MTELargeTurbineGas extends MTELargeTurbineBase {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Gas Turbine, LGT")
             .addInfo("Needs a Turbine, place inside controller")
+            .addInfo("Generates power from Gas based on the turbine and fitting")
+            .addInfo("Use a screwdriver to adjust the fitting of the turbine")
+            .addInfo("Loose fit increases flow in exchange for efficiency")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(3, 3, 6, false)
+            .beginStructureBlock(6, 3, 3, false)
             .addController("Front center")
-            .addCasingInfoRange("Stainless Steel Turbine Casing", 8, 16, false)
-            .addCasingInfoExactly("Stainless Steel Frame Box", 14, false)
-            .addCasingInfoExactly("Tin Item Pipe Casing", 12, false)
-            .addDynamoHatch("Back center", 1)
-            .addMaintenanceHatch("Any Stainless Steel Turbine Casing except the front 8", 2)
-            .addMufflerHatch("Stainless Steel Turbine Casing except the front 8", 2)
-            .addInputHatch("Gas Fuel, Stainless Steel Turbine Casing except the front 8", 2)
-            .addOtherStructurePart("Air", "3x3 area in front of controller")
+            .addCasing("14", "Stainless Steel Frame Box", false)
+            .addCasing("8-13", "Stainless Steel Turbine Casing", false)
+            .addCasing("12", "Tin Item Pipe Casing", false)
+            .addDynamoHatch("1", "Back center turbine casing", 2)
+            .addMaintenanceHatch("1", "Any back turbine casing", 1)
+            .addMufflerHatch("1", "Any back turbine casing", 1)
+            .addInputHatch("1+", "Any back turbine casing", 1)
+            .addOutputHatch("0+", "Any back turbine casing", 1)
+            .addAir("3x3 area in front of controller")
+            .addStructureInfo("")
+            .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.DynamoLimit"))
             .addStructureAuthors(EnumChatFormatting.GOLD + "hugetrust")
             .toolTipFinisher();
         return tt;

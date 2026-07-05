@@ -8,7 +8,6 @@ import net.minecraftforge.fluids.FluidRegistry;
 import org.jetbrains.annotations.Nullable;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
-import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
@@ -23,7 +22,8 @@ import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.api.modularui2.GTGuiTheme;
+import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.render.TextureFactory;
 import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
 import gregtech.common.gui.modularui.widget.settings.SettingsPanel;
@@ -37,7 +37,7 @@ public class MTEHatchCondensateDetector extends MTEHatchConfigurableBase {
     private Comparison comparison = Comparison.EQ;
 
     public MTEHatchCondensateDetector(int aID, String aName) {
-        super(aID, aName, VoltageIndex.UEV, null);
+        super(aID, aName, VoltageIndex.UIV, null);
     }
 
     protected MTEHatchCondensateDetector(MTEHatchCondensateDetector prototype) {
@@ -116,6 +116,11 @@ public class MTEHatchCondensateDetector extends MTEHatchConfigurableBase {
         return new Gui().build(data, syncManager, uiSettings);
     }
 
+    @Override
+    protected GTGuiTheme getGuiTheme() {
+        return GTGuiThemes.TECTECH_STANDARD;
+    }
+
     private class Gui extends MTEHatchBaseGui<MTEHatchCondensateDetector> {
 
         public Gui() {
@@ -133,16 +138,10 @@ public class MTEHatchCondensateDetector extends MTEHatchConfigurableBase {
         }
 
         @Override
-        protected UITexture getLogoTexture() {
-            return GTGuiTextures.TT_PICTURE_TECTECH_LOGO;
-        }
-
-        @Override
         protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
             // spotless:off
             return super.createContentSection(panel, syncManager)
                 .child(SettingsPanel.builder()
-                    .setDividerPosition(60)
                     .addPhantomFluidSlot(
                         IKey.lang("GT5U.gui.text.bec-filter"),
                         () -> condensateFilter,
@@ -156,17 +155,14 @@ public class MTEHatchCondensateDetector extends MTEHatchConfigurableBase {
                     .addLongEditor(
                         IKey.lang("GT5U.gui.text.bec-threshold"),
                         () -> requestedAmount,
-                        l -> requestedAmount = (long) l,
-                        (panel1, syncManager1, widget) -> {
-                            widget.numbersLong(() -> 1L, () -> Long.MAX_VALUE);
-                        })
+                        l -> requestedAmount = l,
+                        l -> Math.clamp(l, 1L, Long.MAX_VALUE))
                     .addReadout(
                         IKey.lang("GT5U.gui.text.bec-current"),
                         new LongSyncValue(() -> actualAmount),
                         amount -> IKey.str(NumberFormatUtil.formatFluid(amount)))
-                    .build(panel, syncManager)
-                    .widthRel(1)
-                    .height(getContentHolderHeight()));
+                    .build(panel, syncManager, getContentHolderHeight())
+                    .horizontalCenter());
             // spotless:on
         }
     }

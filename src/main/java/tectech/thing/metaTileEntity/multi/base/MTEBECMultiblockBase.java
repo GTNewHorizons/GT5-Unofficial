@@ -13,11 +13,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
@@ -40,8 +36,6 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.IGTHatchAdder;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import it.unimi.dsi.fastutil.objects.ObjectIntPair;
-import mcp.mobius.waila.api.IWailaConfigHandler;
-import mcp.mobius.waila.api.IWailaDataAccessor;
 import tectech.mechanics.boseEinsteinCondensate.BECFactoryElement;
 import tectech.mechanics.boseEinsteinCondensate.BECFactoryGrid;
 import tectech.mechanics.boseEinsteinCondensate.BECFactoryNetwork;
@@ -167,22 +161,6 @@ public abstract class MTEBECMultiblockBase<TSelf extends MTEBECMultiblockBase<TS
     }
 
     @Override
-    public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
-        int z) {
-        super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        tag.setString("network", network == null ? "None" : String.valueOf(network.id));
-    }
-
-    @Override
-    public void getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor,
-        IWailaConfigHandler config) {
-        super.getWailaBody(itemStack, currenttip, accessor, config);
-        currenttip.add(
-            "Network: " + accessor.getNBTData()
-                .getString("network"));
-    }
-
-    @Override
     public void getNeighbours(Collection<BECFactoryElement> neighbours) {
         IGregTechTileEntity base = getBaseMetaTileEntity();
 
@@ -247,11 +225,15 @@ public abstract class MTEBECMultiblockBase<TSelf extends MTEBECMultiblockBase<TS
         return ConnectionType.NONE;
     }
 
+    protected boolean connectsToNetwork() {
+        return true;
+    }
+
     @Override
     public void onFirstTick_EM(IGregTechTileEntity aBaseMetaTileEntity) {
         super.onFirstTick_EM(aBaseMetaTileEntity);
 
-        if (GTUtility.isServer()) {
+        if (GTUtility.isServer() && connectsToNetwork()) {
             BECFactoryGrid.INSTANCE.updateElement(this);
         }
     }
@@ -260,7 +242,7 @@ public abstract class MTEBECMultiblockBase<TSelf extends MTEBECMultiblockBase<TS
     public void onRemoval() {
         super.onRemoval();
 
-        if (GTUtility.isServer()) {
+        if (GTUtility.isServer() && connectsToNetwork()) {
             BECFactoryGrid.INSTANCE.removeElement(this);
         }
     }
@@ -290,7 +272,7 @@ public abstract class MTEBECMultiblockBase<TSelf extends MTEBECMultiblockBase<TS
         @Override
         public String getDisplayName() {
             return switch (this) {
-                case Hatch -> GTUtility.translate("gt.machine.bec.hatch.bec");
+                case Hatch -> GTUtility.translate("gt.blockmachines.hatch.bec.name");
             };
         }
 

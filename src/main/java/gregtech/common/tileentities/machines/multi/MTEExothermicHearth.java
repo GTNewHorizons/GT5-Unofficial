@@ -55,17 +55,16 @@ import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatch;
-import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.structure.error.StructureErrors;
@@ -83,7 +82,7 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class MTEExothermicHearth extends MTEExtendedPowerMultiBlockBase<MTEExothermicHearth>
-    implements ISurvivalConstructable {
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final int VERTICAL_OFFSET = 39;
@@ -245,35 +244,33 @@ public class MTEExothermicHearth extends MTEExtendedPowerMultiBlockBase<MTEExoth
                     + EnumChatFormatting.GRAY
                     + " with the parallel multiplier")
             .addSeparator()
-            .addTecTechHatchInfo()
+            .addSupportAny()
             .addMinGlassForLaser(VoltageIndex.UV)
-            .addGlassEnergyLimitInfo(VoltageIndex.UMV)
+            .addGlassEnergyLimitInfo()
             .addUnlimitedTierSkips()
             .addPollutionAmount(getPollutionPerSecond(null))
             .addSeparator()
             .addInfo(EnumChatFormatting.ITALIC + "" + EnumChatFormatting.DARK_RED + "Never one...")
-            .beginStructureBlock(23, 43, 23, true)
+            .beginStructureBlock(23, 23, 43, true)
             .addController("Front center, 4th layer")
-            .addCasingInfoMin("Hearth Casing", 1800, false)
-            .addCasingInfoExactly("Heat Proof Machine Casing", 925, false)
-            .addCasingInfoExactly("Heating Coil", 864, true)
-            .addCasingInfoExactly("Thermal Containment Casing", 780, false)
-            .addCasingInfoExactly("Radiant Naquadah Alloy Casing", 426, false)
-            .addCasingInfoExactly("Any Tiered Glass", 332, true)
-            .addCasingInfoExactly("Black Plutonium Item Pipe Casing", 308, false)
-            .addCasingInfoExactly("Blast Smelter Heat Containment Coil", 208, false)
-            .addCasingInfoExactly("Tungstensteel Pipe Casing", 131, false)
-            .addCasingInfoExactly("Prismatic Naquadah Frame Box", 56, false)
-            .addStructureInfo("The glass tier limits the Energy Input tier")
-            .addEnergyHatch("Any Hearth Casing")
-            .addMaintenanceHatch("Any Hearth Casing")
-            .addInputBus("Any Hearth Casing")
-            .addInputHatch("Any Hearth Casing")
-            .addMufflerHatch("Top middle")
-            .addOutputBus("Any Hearth Casing")
-            .addOutputHatch("Any Hearth Casing")
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
-            .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
+            .addCasing("1800-1918", "Hearth Casing", false)
+            .addCasing("925", "Heat Proof Machine Casing", false)
+            .addCasing("860", "Heating Coil", true)
+            .addCasing("780", "Thermal Containment Casing", false)
+            .addCasing("426", "Radiant Naquadah Alloy Casing", false)
+            .addCasing("332", "Any Tiered Glass", true)
+            .addCasing("308", "Black Plutonium Item Pipe Casing", false)
+            .addCasing("280", "Blast Smelter Heat Containment Coil", false)
+            .addCasing("131", "Tungstensteel Pipe Casing", false)
+            .addCasing("56", "Prismatic Naquadah Frame Box", false)
+            .addEnergyHatch("1+", "Any hearth casing", 1)
+            .addMaintenanceHatch("1", "Any hearth casing", 1)
+            .addMufflerHatch("1", "Any hearth casing", 1)
+            .addInputAny("1+", "Any hearth casing", 1)
+            .addOutputAny("1+", "Any hearth casing", 1)
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.HEATING_COIL)
+            .addSubChannel(GTStructureChannels.BOROGLASS)
             .addStructureAuthors("GregTech Odyssey")
             .toolTipFinisher();
         return tt;
@@ -302,6 +299,13 @@ public class MTEExothermicHearth extends MTEExtendedPowerMultiBlockBase<MTEExoth
     private boolean checkFluid(int amount) {
         final FluidStack fluidToDrain = new FluidStack(TFFluids.fluidPyrotheum, amount);
         return this.depleteInput(fluidToDrain, true);
+    }
+
+    @Override
+    protected void setProcessingLogicPower(ProcessingLogic logic) {
+        logic.setAvailableVoltage(this.getMaxInputEu());
+        logic.setAvailableAmperage(1);
+        logic.setUnlimitedTierSkips();
     }
 
     @Override
@@ -377,6 +381,7 @@ public class MTEExothermicHearth extends MTEExtendedPowerMultiBlockBase<MTEExoth
         tag.setBoolean("pyrotheum", isPyroSupplied);
         tag.setInteger("drain", (int) Math.floor(parallelModifier * PYROTHEUM_DRAIN_BASE));
         tag.setFloat("parallelModifier", parallelModifier);
+        tag.setInteger("heatingCapacity", heatingCapacity);
 
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
     }
@@ -393,7 +398,9 @@ public class MTEExothermicHearth extends MTEExtendedPowerMultiBlockBase<MTEExoth
             currentTip
                 .add(translateToLocalFormatted("GT5U.waila.mebf.pyrotheum", formatFluid(tag.getInteger("drain"))));
         }
-
+        currentTip.add(
+            StatCollector
+                .translateToLocalFormatted("GT5U.multiblock.heat", formatNumber(tag.getInteger("heatingCapacity"))));
     }
 
     @Override
@@ -431,40 +438,22 @@ public class MTEExothermicHearth extends MTEExtendedPowerMultiBlockBase<MTEExoth
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
-        ITexture[] rTexture;
-        if (side == aFacing) {
-            if (aActive) {
-                rTexture = new ITexture[] {
-                    Textures.BlockIcons.getCasingTextureForId(Casings.HearthCasing.getTextureId()),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_HEARTH_ACTIVE)
-                        .extFacing()
-                        .build(),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_HEARTH_ACTIVE_GLOW)
-                        .extFacing()
-                        .glow()
-                        .build() };
-            } else {
-                rTexture = new ITexture[] {
-                    Textures.BlockIcons.getCasingTextureForId(Casings.HearthCasing.getTextureId()),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_HEARTH)
-                        .extFacing()
-                        .build(),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_HEARTH_GLOW)
-                        .extFacing()
-                        .glow()
-                        .build() };
-            }
-        } else {
-            rTexture = new ITexture[] {
-                Textures.BlockIcons.getCasingTextureForId(Casings.HearthCasing.getTextureId()) };
-        }
-        return rTexture;
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            OVERLAY_FRONT_HEARTH,
+            OVERLAY_FRONT_HEARTH_GLOW,
+            OVERLAY_FRONT_HEARTH_ACTIVE,
+            OVERLAY_FRONT_HEARTH_ACTIVE_GLOW);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Textures.BlockIcons.getCasingTextureForId(Casings.HearthCasing.getTextureId());
     }
 
     int casingAmount = 0;
@@ -515,8 +504,8 @@ public class MTEExothermicHearth extends MTEExtendedPowerMultiBlockBase<MTEExoth
             errors.add(StructureErrorRegistry.COIL_LEVEL_NOT_ENOUGH);
         }
         checkCasingMin(errors, casingAmount, 1800);
-        checkHasMaintenanceHatch(errors);
         checkHasAnyEnergy(errors);
+        checkHasMaintenanceHatch(errors);
         checkHasMufflerHatch(errors);
         checkHasAnyInput(errors);
         checkHasAnyOutput(errors);
@@ -528,18 +517,10 @@ public class MTEExothermicHearth extends MTEExtendedPowerMultiBlockBase<MTEExoth
                 }
             }
         }
-        if (this.glassTier < VoltageIndex.UMV) {
-            for (MTEHatch mEnergyHatch : this.mExoticEnergyHatches) {
-                if (this.glassTier < mEnergyHatch.mTier) {
-                    errors.add(StructureErrorRegistry.ENERGY_TIER_EXCEED_GLASS);
-                    break;
-                }
-            }
-            for (MTEHatchEnergy mEnergyHatch : this.mEnergyHatches) {
-                if (this.glassTier < mEnergyHatch.mTier) {
-                    errors.add(StructureErrorRegistry.ENERGY_TIER_EXCEED_GLASS);
-                    break;
-                }
+        for (MTEHatch mEnergyHatch : this.getExoticAndNormalEnergyHatchList()) {
+            if (this.glassTier < mEnergyHatch.getTierForStructure()) {
+                errors.add(StructureErrorRegistry.ENERGY_TIER_EXCEED_GLASS);
+                break;
             }
         }
         if (errors.isEmpty()) {

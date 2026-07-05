@@ -1,74 +1,12 @@
 package gregtech.api.enums;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 import gregtech.api.interfaces.IIconContainer;
 
 public class TextureSet {
-
-    private static final String aTextVoidDir = "/void";
-
-    private static final TextureType[] IS_BLOCK_TEXTURE = new TextureType[] { TextureType.ITEM, TextureType.ITEM,
-        TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM,
-        TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM,
-        TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM,
-        TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM,
-        TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM,
-        TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM,
-        TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM,
-        TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM,
-        TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM,
-        TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM,
-        TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.BLOCK, TextureType.BLOCK, TextureType.BLOCK,
-        TextureType.BLOCK, TextureType.BLOCK, TextureType.BLOCK, TextureType.BLOCK, TextureType.BLOCK,
-        TextureType.BLOCK, TextureType.BLOCK, TextureType.BLOCK, TextureType.BLOCK, TextureType.BLOCK,
-        TextureType.BLOCK, TextureType.BLOCK, TextureType.BLOCK, TextureType.BLOCK, TextureType.BLOCK,
-        TextureType.BLOCK, TextureType.BLOCK, TextureType.BLOCK, TextureType.BLOCK, TextureType.BLOCK,
-        TextureType.BLOCK, TextureType.BLOCK, TextureType.BLOCK, TextureType.BLOCK, TextureType.BLOCK,
-        TextureType.BLOCK, TextureType.BLOCK, TextureType.BLOCK, TextureType.BLOCK, TextureType.ITEM, TextureType.ITEM,
-        TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM,
-        TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM,
-        TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM,
-        TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM,
-        TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM,
-        TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM,
-        TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM,
-        TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM,
-        TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM,
-        TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM,
-        TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM,
-        TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM,
-        TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM,
-        TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM,
-        TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM, TextureType.ITEM,
-        TextureType.ITEM, TextureType.ITEM, TextureType.ITEM };
-    private static final String[] SUFFIXES = new String[] { "/dustTiny", "/dustSmall", "/dust", "/dustImpure",
-        "/dustPure", "/crushed", "/crushedPurified", "/crushedCentrifuged", "/gem", "/nugget", "/casingSmall", "/ingot",
-        "/ingotHot", aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, "/plate", "/plateDouble", "/plateTriple",
-        "/plateQuadruple", "/plateQuintuple", "/plateDense", "/stick", "/lens", "/round", "/bolt", "/screw", "/ring",
-        "/foil", "/cell", "/cellPlasma", aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir,
-        "/toolHeadHammer", "/toolHeadFile", "/toolHeadSaw", "/toolHeadDrill", "/toolHeadChainsaw", "/toolHeadWrench",
-        aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, "/toolHeadScrewdriver", "/toolHeadBuzzSaw",
-        "/toolHeadSoldering", "/nanites", "/wireFine", "/gearGtSmall", "/rotor", "/stickLong", "/springSmall",
-        "/spring", "/arrowGtWood", "/arrowGtPlastic", "/gemChipped", "/gemFlawed", "/gemFlawless", "/gemExquisite",
-        "/gearGt", "/oreRaw", aTextVoidDir, aTextVoidDir, "/oreSmall", "/ore", "/wire", "/foil", "/block1", "/block2",
-        "/block3", "/block4", "/block5", "/block6", "/pipeSide", "/pipeTiny", "/pipeSmall", "/pipeMedium", "/pipeLarge",
-        "/pipeHuge", "/frameGt", "/pipeQuadruple", "/pipeNonuple", "/sheetmetal", aTextVoidDir, aTextVoidDir,
-        aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir,
-        "/crateGtDust", "/crateGtIngot", "/crateGtGem", "/crateGtPlate", "/turbineBlade", aTextVoidDir, aTextVoidDir,
-        aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir,
-        aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir,
-        aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, "/plateSuperdense",
-        "/handleMallet", "/toolHeadMallet", "/toolTurbine", "/toolWrench", "/toolCrowbar", "/toolWireCutter",
-        "/toolScoop", "/toolBranchCutter", "/toolKnife", "/toolKnifeButchery", "/toolPlunger", "/toolJackHammer",
-        "/pocketMultiToolClosed", "/pocketMultiToolKnife", "/pocketMultiToolSaw", "/pocketMultiToolFile",
-        "/pocketMultiToolScrewdriver", "/pocketMultiToolWireCutter", "/pocketMultiToolBranchCutter", "/toolTrowel",
-        "/toolHeadAngleGrinder", "/toolHeadElectricSnips", "/handleFile", "/handleTrowel", "/handleSaw",
-        "/handleScrewdriver", "/toolHeadMallet", "/toolProspector", "/toolProspectorElectricLuV",
-        "/toolProspectorElectricZPM", "/toolProspectorElectricUV", "/toolProspectorElectricUHV", aTextVoidDir,
-        aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir,
-        aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir,
-        aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir,
-        aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir, aTextVoidDir,
-        aTextVoidDir };
 
     public boolean is_custom = false;
 
@@ -123,40 +61,29 @@ public class TextureSet {
         SET_HOT_EXOHALKONITE = new TextureSet("hotexohalkonite", true),
         SET_EXOHALKONITE = new TextureSet("exohalkonite", true),
         SET_SG_CRYSTAL_SLURRY = new TextureSet("sgcrystalfluid", true), SET_RHUGNOR = new TextureSet("rhugnor", true),
-        SET_HYPOGEN = new TextureSet("hypogen", false), SET_FLUXED = new TextureSet("fluxed", true);
+        SET_HYPOGEN = new TextureSet("hypogen", false), SET_FLUXED = new TextureSet("fluxed", true),
+        SET_CHROMATIC_GLASS = new TextureSet("chromaticglass", true),
+        SET_ASTRAL_TITANIUM = new TextureSet("astraltitanium", true),
+        SET_CELESTIAL_TUNGSTEN = new TextureSet("celestialtungsten", true);
 
-    /**
-     * For the Indices of OrePrefixes you need to look into the OrePrefix Enum.
-     */
-    public static final short INDEX_wire = 69, INDEX_foil = 70, INDEX_block1 = 71, INDEX_block2 = 72, INDEX_block3 = 73,
-        INDEX_block4 = 74, INDEX_block5 = 75, INDEX_block6 = 76;
-
-    /**
-     * For Tools that don't have a prefix associated with them
-     */
-    public static final short INDEX_turbine = 128, INDEX_wrench = 129, INDEX_crowbar = 130, INDEX_wireCutter = 131,
-        INDEX_scoop = 132, INDEX_branchCutter = 133, INDEX_knife = 134, INDEX_butcheryKnife = 135, INDEX_plunger = 136,
-        INDEX_jackHammer = 137, INDEX_pocketMultiToolClosed = 138, INDEX_pocketMultiToolKnife = 139,
-        INDEX_pocketMultiToolSaw = 140, INDEX_pocketMultiToolFile = 141, INDEX_pocketMultiToolScrewdriver = 142,
-        INDEX_pocketMultiToolWireCutter = 143, INDEX_pocketMultiToolBranchCutter = 144, INDEX_trowel = 145,
-        INDEX_angleGrinder = 146, INDEX_electricSnips = 147, INDEX_handleFile = 148, INDEX_handleTrowel = 149,
-        INDEX_handleSaw = 150, INDEX_handleScrewdriver = 151, INDEX_prospector = 153, INDEX_prospectorElectricLuV = 154,
-        INDEX_prospectorElectricZPM = 155, INDEX_prospectorElectricUV = 156, INDEX_prospectorElectricUHV = 157;
-
-    public final IIconContainer[] mTextures = new IIconContainer[192];
+    public final IIconContainer[] mTextures = new IIconContainer[MaterialIconRegistry.IconType.values().length];
     public final String mSetName;
 
     public TextureSet(String aSetName) {
         mSetName = aSetName;
-        for (int i = 0; i < 192; i++) {
-            if (IS_BLOCK_TEXTURE[i] == TextureType.BLOCK) {
-                switch (SUFFIXES[i]) {
-                    case "/ore", "/oreSmall" -> mTextures[i] = Textures.BlockIcons
-                        .customAlpha(Textures.TextureMaterialIconDirectory + aSetName + SUFFIXES[i]);
-                    default -> mTextures[i] = Textures.BlockIcons.textureSet(aSetName, SUFFIXES[i]);
-                }
-            } else {
-                mTextures[i] = Textures.ItemIcons.textureSet(aSetName, SUFFIXES[i]);
+        for (MaterialIconRegistry.IconType type : MaterialIconRegistry.IconType.values()) {
+            switch (type.texture) {
+                case BLOCK:
+                    mTextures[type.ordinal()] = Textures.BlockIcons.textureSet(aSetName, type.suffix);
+                    break;
+                case BLOCK_WITH_ALPHA:
+                    mTextures[type.ordinal()] = Textures.BlockIcons
+                        .customAlpha(Textures.TextureMaterialIconDirectory + aSetName + type.suffix);
+                    break;
+                case ITEM:
+                default:
+                    mTextures[type.ordinal()] = Textures.ItemIcons.textureSet(aSetName, type.suffix);
+                    break;
             }
         }
     }
@@ -172,33 +99,63 @@ public class TextureSet {
      * <p>
      * This assumes you want to construct a custom texture set.
      */
-    private TextureSet(String aSetName, TextureSet origin, boolean overrideBlock, boolean overrideItem) {
-        mSetName = "CUSTOM/" + aSetName;
+    private TextureSet(String newSetName, TextureSet origin, Set<MaterialIconRegistry.IconType> overrides) {
+        this.mSetName = "CUSTOM/" + newSetName;
         this.is_custom = true;
 
-        for (int i = 0; i < 192; i++) {
-            if (IS_BLOCK_TEXTURE[i] == TextureType.BLOCK) {
-                if (overrideBlock) {
-                    mTextures[i] = Textures.BlockIcons.textureSet(mSetName, SUFFIXES[i]);
-                } else {
-                    mTextures[i] = origin.mTextures[i];
+        for (MaterialIconRegistry.IconType type : MaterialIconRegistry.IconType.values()) {
+            if (overrides.contains(type)) {
+                // Override this specific icon
+                switch (type.texture) {
+                    case BLOCK:
+                        mTextures[type.ordinal()] = Textures.BlockIcons.textureSet(mSetName, type.suffix);
+                        break;
+                    case BLOCK_WITH_ALPHA:
+                        mTextures[type.ordinal()] = Textures.BlockIcons
+                            .customAlpha(Textures.TextureMaterialIconDirectory + mSetName + type.suffix);
+                        break;
+                    case ITEM:
+                    default:
+                        mTextures[type.ordinal()] = Textures.ItemIcons.textureSet(mSetName, type.suffix);
+                        break;
                 }
             } else {
-                if (overrideItem) {
-                    mTextures[i] = Textures.ItemIcons.textureSet(aSetName, SUFFIXES[i]);
-                } else {
-                    mTextures[i] = origin.mTextures[i];
-                }
+                // Use origin texture
+                mTextures[type.ordinal()] = origin.mTextures[type.ordinal()];
             }
         }
     }
 
-    public TextureSet withBlockTextures(String aNewSetName) {
-        return new TextureSet(aNewSetName, this, true, false);
-    }
-
-    private enum TextureType {
-        BLOCK,
-        ITEM,
+    /**
+     * Creates a new TextureSet that overrides only the specific material icons provided.
+     *
+     * <p>
+     * This method is the flexible, per-icon replacement for the old boolean-based
+     * block/item override system. Instead of overriding all block or all item textures,
+     * you explicitly list the MaterialIconRegistry.IconType entries you want to replace.
+     *
+     * <p>
+     * <strong>Example icon set for Materials.Copper:</strong>
+     *
+     * <pre>
+     *     .setIconSet(
+     *         TextureSet.SET_DULL.withCustomTextures(
+     *             "copper",
+     *             MaterialIconRegistry.IconType.ORE_RAW,
+     *             MaterialIconRegistry.IconType.ORE,
+     *             MaterialIconRegistry.IconType.ORE_SMALL))
+     * </pre>
+     *
+     * In this example, only the raw ore, ore, and small ore icons are replaced with
+     * textures from {@code CUSTOM/copper/}, while all other icons (dust, ingot, plate,
+     * etc.) remain unchanged.
+     *
+     * @param newSetName the name of the custom texture folder under CUSTOM/
+     * @param types      the specific icon types to override with custom textures
+     * @return a new TextureSet with the requested icons overridden
+     */
+    public TextureSet withCustomTextures(String newSetName, MaterialIconRegistry.IconType... types) {
+        Set<MaterialIconRegistry.IconType> overrideSet = new HashSet<>(Arrays.asList(types));
+        return new TextureSet(newSetName, this, overrideSet);
     }
 }

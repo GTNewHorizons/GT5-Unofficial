@@ -18,7 +18,6 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
-import goodgenerator.util.DescTextLocalization;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ITexture;
@@ -110,12 +109,12 @@ public class MTECoolantTower extends TTMultiblockBase implements ISurvivalConstr
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Coolant Tower")
             .addInfo("Turn Steam back to Distilled Water")
-            .beginStructureBlock(11, 13, 11, true)
+            .beginStructureBlock(11, 11, 13, true)
             .addController("Front center, 2nd layer")
-            .addCasingInfoExactly("Light Concrete", 277, false)
-            .addCasingInfoExactly("Tungstencarbide Frame Box", 28, false)
-            .addInputHatch("Any Light Concrete of the second layer", 1)
-            .addOutputHatch("Any Light Concrete of the second layer", 1)
+            .addCasing("252-277", "Light Concrete", false)
+            .addCasing("28", "Tungstencarbide Frame Box", false)
+            .addInputHatch("1+", "Any bottom edge concrete", 1)
+            .addOutputHatch("1+", "Any bottom edge concrete", 1)
             .toolTipFinisher();
         return tt;
     }
@@ -123,11 +122,6 @@ public class MTECoolantTower extends TTMultiblockBase implements ISurvivalConstr
     @Override
     public void construct(ItemStack stackSize, boolean hintsOnly) {
         buildPiece(mName, stackSize, hintsOnly, 5, 11, 0);
-    }
-
-    @Override
-    public String[] getStructureDescription(ItemStack stackSize) {
-        return DescTextLocalization.addText("CoolantTower.hint", 3);
     }
 
     @Override
@@ -148,7 +142,7 @@ public class MTECoolantTower extends TTMultiblockBase implements ISurvivalConstr
         for (MTEHatchInput tHatch : validMTEList(mInputHatches)) {
             steam += maybeDrainHatch(tHatch);
         }
-        addOutput(GTModHandler.getDistilledWater(steam / 160));
+        addOutputPartial(GTModHandler.getDistilledWater(steam / 160));
         return CheckRecipeResultRegistry.SUCCESSFUL;
     }
 

@@ -74,7 +74,7 @@ public class TecTechRecipeMaps {
         .progressBarPos(78, 24 + 2)
         .logoPos(10, 10)
         .neiHandlerInfo(
-            builder -> builder.setHeight(314)
+            builder -> builder.setHeight(326)
                 .setMultipleWidgetsAllowed(false))
         .frontend(EyeOfHarmonyFrontend::new)
         .build();
@@ -156,7 +156,12 @@ public class TecTechRecipeMaps {
                 NaniteTier[] tiers = recipe.getMetadata(GTRecipeConstants.NANITE_TIERS);
 
                 if (tiers != null && tiers.length != recipe.mInputs.length) {
-                    throw new IllegalArgumentException("nanite tiers length must match item input length");
+                    throw new IllegalArgumentException(
+                        "Nanite tiers length " + tiers.length
+                            + " must match item input length "
+                            + recipe.mInputs.length
+                            + " in recipe starting with "
+                            + recipe.mInputs[0].getDisplayName());
                 }
 
                 recipe.getMetadataStorage()

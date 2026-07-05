@@ -36,13 +36,17 @@ public class MTEHatchOutputGui extends MTEHatchBaseGui<MTEHatchOutput> {
     protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
         Flow mainRow = Flow.row()
             .coverChildren()
-            .childPadding(1)
-            .crossAxisAlignment(Alignment.CrossAxis.START);
+            .childPadding(1);
 
         mainRow.childIf(supportsFluidScreen(), () -> createScreen(panel, syncManager, machine.getFluidTank()));
         mainRow.childIf(
             supportsFluidIOColumn(),
-            () -> createIO(panel, syncManager, machine.getInputSlot(), machine.getOutputSlot()));
+            () -> createIO(
+                panel,
+                syncManager,
+                machine.getInputSlot(),
+                machine.getOutputSlot(),
+                machine.getFluidTank()));
         mainRow.childIf(supportsFluidFilterScreen(), () -> createFilterScreen(panel, syncManager));
 
         return super.createContentSection(panel, syncManager).child(mainRow);
@@ -52,16 +56,14 @@ public class MTEHatchOutputGui extends MTEHatchBaseGui<MTEHatchOutput> {
     protected FluidSlot createFluidSlot(ModularPanel panel, PanelSyncManager syncManager, IFluidTank fluidTank) {
         ByteSyncValue modeSyncer = syncManager.findSyncHandler("mode", ByteSyncValue.class);
 
-        FluidSlotSyncHandler fluidSlotSH = new FluidSlotSyncHandler(machine.getFluidTank());
+        FluidSlotSyncHandler fluidSlotSH = new FluidSlotSyncHandler(machine.getFluidTank())
+            .filter(getFluidSlotFilter());
         fluidSlotSH.setChangeListener(() -> {
             byte mode = modeSyncer.getValue();
             machine.lockFluid(mode == 8 || mode == 9);
         });
 
-        return new FluidSlot().syncHandler(fluidSlotSH)
-            .bottomRel(0)
-            .rightRel(0)
-            .background(GTGuiTextures.SLOT_FLUID_TANK);
+        return super.createFluidSlot(panel, syncManager, fluidTank).syncHandler(fluidSlotSH);
     }
 
     @Override
@@ -78,7 +80,7 @@ public class MTEHatchOutputGui extends MTEHatchBaseGui<MTEHatchOutput> {
         textColumn.child(
             IKey.lang("GT5U.machines.hatch_output.lockfluid.label")
                 .asWidget()
-                .widgetTheme(GTWidgetThemes.DISPLAY_TEXT));
+                .widgetTheme(GTWidgetThemes.DISPLAY_TEXT_WHITE));
 
         // fluid name
         IKey lockKey = IKey.dynamic(() -> {
@@ -100,7 +102,7 @@ public class MTEHatchOutputGui extends MTEHatchBaseGui<MTEHatchOutput> {
                 1,
                 (float) FILTER_TEXT_MAX_SCALE_LENGTH / lockKey.getFormatted()
                     .length()))
-            .widgetTheme(GTWidgetThemes.DISPLAY_TEXT));
+            .widgetTheme(GTWidgetThemes.DISPLAY_TEXT_WHITE));
 
         screen.child(textColumn);
 

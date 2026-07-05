@@ -30,6 +30,8 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.modularui2.GTGuiTheme;
+import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.render.TextureFactory;
@@ -293,14 +295,12 @@ public abstract class MTEBaseModule extends TTMultiblockBase implements ISurviva
 
     @Override
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
-
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 3, 3, 0, errors)) return;
 
         if (this instanceof MTEExoticModule) {
             checkHasOutputBus(errors);
             checkHasOutputHatch(errors);
         }
-
     }
 
     @Override
@@ -435,5 +435,10 @@ public abstract class MTEBaseModule extends TTMultiblockBase implements ISurviva
     @Override
     public boolean getDefaultHasMaintenanceChecks() {
         return false;
+    }
+
+    @Override
+    protected GTGuiTheme getGuiTheme() {
+        return GTGuiThemes.GORGE;
     }
 }

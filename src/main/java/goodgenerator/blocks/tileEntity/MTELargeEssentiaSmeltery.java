@@ -46,12 +46,12 @@ import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
 
 import goodgenerator.loader.Loaders;
-import goodgenerator.util.DescTextLocalization;
 import gregtech.GTMod;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchMuffler;
 import gregtech.api.objects.XSTR;
@@ -163,13 +163,13 @@ public class MTELargeEssentiaSmeltery extends TTMultiblockBase implements ISurvi
         }
         if (!checkPiece(STRUCTURE_PIECE_LAST, 2, 2, -len - 1, errors)) return;
         checkCasingMin(errors, mCasing, 24);
+        checkHasAnyEnergy(errors);
         checkHasMaintenanceHatch(errors);
         checkHasAnyInput(errors);
-        checkHasAnyEnergy(errors);
         if (mEssentiaOutputHatches.isEmpty()) {
             errors.add(StructureErrors.of("GT5U.gui.text.structure_error.missing_essentia_output_hatch"));
         }
-        if (errors.isEmpty()) return;
+        if (!errors.isEmpty()) return;
         this.mParallel = (len + 1) * GTUtility.powInt(2, this.pTier);
     }
 
@@ -237,54 +237,36 @@ public class MTELargeEssentiaSmeltery extends TTMultiblockBase implements ISurvi
             .addInfo("Diffusion Cell Tiers start from 0, Length is full multi length")
             .addInfo("Energy Hatch tier: HV+")
             .addInfo("You can find more information about this machine in the Thaumonomicon")
-            .addTecTechHatchInfo()
+            .addSupportAny()
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginVariableStructureBlock(5, 5, 5, 5, 5, 8, true)
-            .addController("Front center")
-            .addCasingInfoMin("Magic Casing", 24, false)
-            .addMaintenanceHatch("Hint block number 1")
-            .addInputBus("Hint block number 1")
-            .addInputHatch("Hint block number 1")
-            .addEnergyHatch("Hint block number 1")
-            .addOtherStructurePart("Essentia Output Hatch", "Hint block number 1")
-            .addMufflerHatch("Hint block number 2")
+            .beginVariableStructureBlock(5, 9, 5, 5, 5, 5, true)
+            .addController("Front center, 3rd layer")
+            .addCasing("24-84", "Magic Casing", false)
+            .addCasing("12-28", "Essentia Diffusion Cell", true)
+            .addCasing("6-14", "Warded Glass", false)
+            .addCasing("3-7", "Thaumium Alchemical Furnace", false)
+            .addCasing("3-7", "Essentia Filter Casing", false)
+            .addEnergyHatch("1+", "Any magic casing", 1)
+            .addMaintenanceHatch("1", "Any magic casing", 1)
+            .addMufflerHatch("3-7", "Top center casings", 2)
+            .addInputAny("1+", "Any magic casing", 1)
+            .addMiscHatch("1+", "Essentia Output Hatch", "Any magic casing", 1)
+            .addAir("Interior of the structure")
+            .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.length"))
             .toolTipFinisher();
         return tt;
-    }
-
-    @Override
-    public String[] getStructureDescription(ItemStack itemStack) {
-        return DescTextLocalization.addText("LargeEssentiaSmeltery.hint", 8);
     }
 
     @Override
     public String[] getInfoData() {
         String[] origData = super.getInfoData();
         String[] info = Arrays.copyOf(origData, origData.length + 1);
-        info[origData.length] = StatCollector.translateToLocal("gg.scanner.info.les.parallel") + " "
-            + EnumChatFormatting.YELLOW
-            + Math.round(this.mParallel)
-            + EnumChatFormatting.RESET
-            + " "
-            + StatCollector.translateToLocal("gg.scanner.info.les.node_power")
-            + " "
-            + EnumChatFormatting.RED
-            + this.nodePower
-            + EnumChatFormatting.RESET
-            + " "
-            + StatCollector.translateToLocal("gg.scanner.info.les.purification_efficiency")
-            + " "
-            + EnumChatFormatting.AQUA
-            + this.nodePurificationEfficiency
-            + "%"
-            + EnumChatFormatting.RESET
-            + " "
-            + StatCollector.translateToLocal("gg.scanner.info.les.speed_up")
-            + " "
-            + EnumChatFormatting.GRAY
-            + this.nodeIncrease
-            + "%"
-            + EnumChatFormatting.RESET;
+        info[origData.length] = IGregTechDeviceInformation.encode(
+            "gg.infodata.les.stats",
+            Math.round(this.mParallel),
+            this.nodePower,
+            this.nodePurificationEfficiency,
+            this.nodeIncrease);
         return info;
     }
 

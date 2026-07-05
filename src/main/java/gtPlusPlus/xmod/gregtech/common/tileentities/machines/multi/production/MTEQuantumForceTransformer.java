@@ -7,7 +7,6 @@ import static gregtech.api.enums.HatchElement.Energy;
 import static gregtech.api.enums.HatchElement.ExoticEnergy;
 import static gregtech.api.enums.HatchElement.InputBus;
 import static gregtech.api.enums.HatchElement.InputHatch;
-import static gregtech.api.enums.HatchElement.Maintenance;
 import static gregtech.api.enums.HatchElement.OutputBus;
 import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.util.GTOreDictUnificator.getAssociation;
@@ -56,6 +55,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
@@ -66,7 +66,6 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.ISBRWorldContext;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeConstants;
@@ -83,13 +82,14 @@ import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 @SuppressWarnings("SpellCheckingInspection")
 public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<MTEQuantumForceTransformer>
-    implements ISurvivalConstructable {
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     private int mCasing;
     protected int mCraftingTier = 0;
     protected int mFocusingTier = 0;
     protected int mMaxParallel = 0;
     private boolean mFluidMode = false, doFermium = false, doNeptunium = false;
+    private boolean renderDisabled = false;
     private static final Fluid mNeptunium = MaterialsElements.getInstance().NEPTUNIUM.getPlasma();
     private static final Fluid mFermium = MaterialsElements.getInstance().FERMIUM.getPlasma();
     private static final String MAIN_PIECE = "main";
@@ -154,20 +154,15 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
         .addElement(
             'H',
             buildHatchAdder(MTEQuantumForceTransformer.class)
-                .atLeast(
-                    InputBus,
-                    InputHatch,
-                    Maintenance,
-                    Energy.or(ExoticEnergy),
-                    SpecialHatchElement.CatalystHousing)
+                .atLeast(InputBus, InputHatch, Energy.or(ExoticEnergy), SpecialHatchElement.CatalystHousing)
                 .casingIndex(TAE.getIndexFromPage(0, 10))
-                .hint(4)
+                .hint(1)
                 .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings2Misc, 12))))
         .addElement(
             'T',
-            buildHatchAdder(MTEQuantumForceTransformer.class).atLeast(OutputBus, OutputHatch, Maintenance)
+            buildHatchAdder(MTEQuantumForceTransformer.class).atLeast(OutputBus, OutputHatch)
                 .casingIndex(TAE.getIndexFromPage(0, 10))
-                .hint(5)
+                .hint(2)
                 .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasings2Misc, 12))))
         .build();
 
@@ -205,25 +200,25 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
             .addInfo("Consumes 4 * " + focusText("Focus Tier") + " * sqrt(" + TooltipHelper.parallelText("parallels") + ") L " + EnumChatFormatting.DARK_GREEN + "Fermium Plasma" + EnumChatFormatting.GRAY + " to " + EnumChatFormatting.DARK_GREEN + "boost all outputs")
             .addSeparator()
             .addInfo("Use a screwdriver to enable "+EnumChatFormatting.BLUE+"Fluid mode")
+            .addInfo("Sneak + screwdriver to disable animations")
             .addInfo("Fluid mode turns all possible outputs into their fluid variant, if avaliable")
             .addUnlimitedTierSkips()
-            .addTecTechHatchInfo()
+            .addSupportAny()
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(15, 21, 15, true)
+            .beginStructureBlock(15, 15, 21, true)
             .addController("Front bottom center")
-            .addCasingInfoMin("Bulk Production Frame", 80, false)
-            .addCasingInfoMin("Quantum Force Conductor", 177, false)
-            .addCasingInfoMin("Force Field Glass", 224, false)
-            .addCasingInfoMin("Pulse Manipulator", 236, true)
-            .addCasingInfoMin("Shielding Core", 142, true)
-            .addInputBus(EnumChatFormatting.BLUE + "Bottom" + EnumChatFormatting.GRAY + " Layer", 4)
-            .addInputHatch(EnumChatFormatting.BLUE + "Bottom" + EnumChatFormatting.GRAY + " Layer", 4)
-            .addOutputHatch(EnumChatFormatting.AQUA + "Top" + EnumChatFormatting.GRAY + " Layer", 5)
-            .addOutputBus(EnumChatFormatting.AQUA + "Top" + EnumChatFormatting.GRAY + " Layer", 5)
-            .addEnergyHatch(EnumChatFormatting.BLUE + "Bottom" + EnumChatFormatting.GRAY + " Layer", 4)
-            .addStructureInfo(EnumChatFormatting.WHITE + "Bulk Catalyst Housing: " + EnumChatFormatting.BLUE + "Bottom" + EnumChatFormatting.GRAY + " Layer")
-            .addSubChannelUsage(GTStructureChannels.QFT_SHIELDING)
-            .addSubChannelUsage(GTStructureChannels.QFT_MANIPULATOR)
+            .addCasing("236", "Pulse Manipulator Casing", true)
+            .addCasing("224", "Force Field Glass", false)
+            .addCasing("177", "Quantum Force Conductor", false)
+            .addCasing("80-149", "Bulk Production Frame", false)
+            .addCasing("142", "Shielding Core Casing", true)
+            .addMiscHatch("1+", "Bulk Catalyst Housing", "Any bottom casing", 1)
+            .addEnergyHatch("1+", "Any bottom casing", 1)
+            .addInputAny("1+", "Any bottom casing", 1)
+            .addOutputAny("1+", "Any top casing", 2)
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.QFT_MANIPULATOR)
+            .addSubChannel(GTStructureChannels.QFT_SHIELDING)
             .toolTipFinisher(GTAuthors.AuthorBlueWeabo, EnumChatFormatting.GREEN + "Steelux");
         return tt;
         //spotless:on
@@ -241,9 +236,6 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
         this.mFocusingTier = 0;
         catalystHousings.clear();
         if (!checkPiece(MAIN_PIECE, 7, 20, 4, errors)) return;
-        // Maintenance hatch not required but left for compatibility.
-        // Don't allow more than 1, no free casing spam!
-        checkHatchMax(errors, Maintenance, 1);
         checkHasAnyEnergy(errors);
         checkHasAnyInput(errors);
         checkHasAnyOutput(errors);
@@ -637,6 +629,12 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
     @Override
     public void onScrewdriverRightClick(ForgeDirection side, EntityPlayer aPlayer, float aX, float aY, float aZ,
         ItemStack aTool) {
+        if (aPlayer.isSneaking()) {
+            renderDisabled = !renderDisabled;
+            getBaseMetaTileEntity().issueTileUpdate();
+            GTUtility.sendChatTrans(aPlayer, "GT5U.machines.animations." + (renderDisabled ? "disabled" : "enabled"));
+            return;
+        }
         mFluidMode = !mFluidMode;
         GTUtility.sendChatToPlayer(
             aPlayer,
@@ -697,6 +695,7 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         aNBT.setBoolean("mFluidMode", mFluidMode);
+        aNBT.setBoolean("renderDisabled", renderDisabled);
         aNBT.setBoolean("doFermium", doFermium);
         aNBT.setBoolean("doNeptunium", doNeptunium);
         aNBT.setInteger("mMaxParallel", mMaxParallel);
@@ -713,40 +712,42 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
             batchMode = aNBT.getBoolean("mBatchMode");
         }
         mFluidMode = aNBT.getBoolean("mFluidMode");
+        renderDisabled = aNBT.getBoolean("renderDisabled");
         doFermium = aNBT.getBoolean("doFermium");
         doNeptunium = aNBT.getBoolean("doNeptunium");
         mMaxParallel = aNBT.getInteger("mMaxParallel");
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-        int aColorIndex, boolean aActive, boolean aRedstone) {
-        if (side == facing) {
-            if (aActive) {
-                return new ITexture[] { getCasingTexture(), TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.oMCAQFTActive)
-                    .extFacing()
-                    .build(),
-                    TextureFactory.builder()
-                        .addIcon(TexturesGtBlock.oMCAQFTActiveGlow)
-                        .extFacing()
-                        .glow()
-                        .build() };
-            }
-            return new ITexture[] { getCasingTexture(), TextureFactory.builder()
-                .addIcon(TexturesGtBlock.oMCAQFT)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.oMCAQFTGlow)
-                    .extFacing()
-                    .glow()
-                    .build() };
-        }
-        return new ITexture[] { getCasingTexture() };
+    public NBTTagCompound getDescriptionData() {
+        NBTTagCompound data = super.getDescriptionData();
+        if (data == null) data = new NBTTagCompound();
+        data.setBoolean("renderDisabled", renderDisabled);
+        return data;
     }
 
-    private ITexture getCasingTexture() {
+    @Override
+    public void onDescriptionPacket(NBTTagCompound data) {
+        super.onDescriptionPacket(data);
+        renderDisabled = data.getBoolean("renderDisabled");
+    }
+
+    @Override
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            TexturesGtBlock.oMCAQFT,
+            TexturesGtBlock.oMCAQFTGlow,
+            TexturesGtBlock.oMCAQFTActive,
+            TexturesGtBlock.oMCAQFTActiveGlow);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
         return Textures.BlockIcons.getCasingTextureForId(getCasingTextureId());
     }
 
@@ -785,7 +786,7 @@ public class MTEQuantumForceTransformer extends MTEExtendedPowerMultiBlockBase<M
     public boolean renderInWorld(ISBRWorldContext ctx) {
         Tessellator tes = Tessellator.instance;
         IIcon forceField = Textures.BlockIcons.ForceField.getIcon();
-        if (getBaseMetaTileEntity().isActive()) {
+        if (getBaseMetaTileEntity().isActive() && !renderDisabled) {
             double minU = forceField.getMinU();
             double maxU = forceField.getMaxU();
             double minV = forceField.getMinV();

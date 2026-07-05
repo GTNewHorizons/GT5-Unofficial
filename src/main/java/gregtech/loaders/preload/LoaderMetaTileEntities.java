@@ -111,6 +111,7 @@ import gregtech.common.tileentities.machines.MTEHatchCraftingInputSlave;
 import gregtech.common.tileentities.machines.MTEHatchInputBusME;
 import gregtech.common.tileentities.machines.MTEHatchInputME;
 import gregtech.common.tileentities.machines.MTEHatchPatternProvider;
+import gregtech.common.tileentities.machines.MTEHeatSensor;
 import gregtech.common.tileentities.machines.basic.MTEAdvSeismicProspector;
 import gregtech.common.tileentities.machines.basic.MTEBasicMachineWithRecipeBuilder;
 import gregtech.common.tileentities.machines.basic.MTEBetterJukebox;
@@ -212,6 +213,7 @@ import gregtech.common.tileentities.machines.multi.MTELatex;
 import gregtech.common.tileentities.machines.multi.MTEMassSolidifier;
 import gregtech.common.tileentities.machines.multi.MTEMegaChemicalReactor;
 import gregtech.common.tileentities.machines.multi.MTEMegaDistillationTower;
+import gregtech.common.tileentities.machines.multi.MTEMegaOilCracker;
 import gregtech.common.tileentities.machines.multi.MTEMultiAutoclave;
 import gregtech.common.tileentities.machines.multi.MTEMultiCanner;
 import gregtech.common.tileentities.machines.multi.MTEMultiFurnace;
@@ -252,7 +254,6 @@ import gregtech.common.tileentities.machines.multi.beamcrafting.MTELargeHadronCo
 import gregtech.common.tileentities.machines.multi.compressor.MTEBlackHoleCompressor;
 import gregtech.common.tileentities.machines.multi.compressor.MTEBlackHoleUtility;
 import gregtech.common.tileentities.machines.multi.compressor.MTEHIPCompressor;
-import gregtech.common.tileentities.machines.multi.compressor.MTEHeatSensor;
 import gregtech.common.tileentities.machines.multi.compressor.MTEIndustrialCompressor;
 import gregtech.common.tileentities.machines.multi.compressor.MTENeutroniumCompressor;
 import gregtech.common.tileentities.machines.multi.drone.MTEDroneCentre;
@@ -1098,6 +1099,10 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 MegaDistillationTower.ID,
                 "multimachine.mega_distillation_tower",
                 "Mega Distillation Tower").getStackForm(1));
+
+        ItemList.MegaOilCracker.set(
+            new MTEMegaOilCracker(MegaOilCracker.ID, "multimachine.mega_oil_cracker", "Mega Oil Cracker")
+                .getStackForm(1));
     }
 
     private static void registerSteamMachines() {
@@ -7456,6 +7461,8 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
                 .setOverlays("ARC_FURNACE")
                 .setFluidSlots(true, true)
+                .setMachineAmperage(3)
+                .setMachineEUtMultiplier(3)
                 .build()
                 .getStackForm(1L));
 
@@ -7469,6 +7476,8 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
                 .setOverlays("ARC_FURNACE")
                 .setFluidSlots(true, true)
+                .setMachineAmperage(3)
+                .setMachineEUtMultiplier(3)
                 .build()
                 .getStackForm(1L));
 
@@ -7482,6 +7491,8 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
                 .setOverlays("ARC_FURNACE")
                 .setFluidSlots(true, true)
+                .setMachineAmperage(3)
+                .setMachineEUtMultiplier(3)
                 .build()
                 .getStackForm(1L));
 
@@ -7495,6 +7506,8 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
                 .setOverlays("ARC_FURNACE")
                 .setFluidSlots(true, true)
+                .setMachineAmperage(3)
+                .setMachineEUtMultiplier(3)
                 .build()
                 .getStackForm(1L));
 
@@ -7508,6 +7521,8 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
                 .setOverlays("ARC_FURNACE")
                 .setFluidSlots(true, true)
+                .setMachineAmperage(3)
+                .setMachineEUtMultiplier(3)
                 .build()
                 .getStackForm(1L));
 
@@ -7521,6 +7536,8 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
                 .setOverlays("ARC_FURNACE")
                 .setFluidSlots(true, true)
+                .setMachineAmperage(3)
+                .setMachineEUtMultiplier(3)
                 .build()
                 .getStackForm(1L));
 
@@ -7534,6 +7551,8 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
                 .setOverlays("ARC_FURNACE")
                 .setFluidSlots(true, true)
+                .setMachineAmperage(3)
+                .setMachineEUtMultiplier(3)
                 .build()
                 .getStackForm(1L));
 
@@ -7547,6 +7566,8 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
                 .setOverlays("ARC_FURNACE")
                 .setFluidSlots(true, true)
+                .setMachineAmperage(3)
+                .setMachineEUtMultiplier(3)
                 .build()
                 .getStackForm(1L));
 
@@ -7560,6 +7581,8 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
                 .setOverlays("ARC_FURNACE")
                 .setFluidSlots(true, true)
+                .setMachineAmperage(3)
+                .setMachineEUtMultiplier(3)
                 .build()
                 .getStackForm(1L));
 
@@ -7573,6 +7596,8 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
                 .setOverlays("ARC_FURNACE")
                 .setFluidSlots(true, true)
+                .setMachineAmperage(3)
+                .setMachineEUtMultiplier(3)
                 .build()
                 .getStackForm(1L));
 
@@ -7586,6 +7611,8 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
                 .setOverlays("ARC_FURNACE")
                 .setFluidSlots(true, true)
+                .setMachineAmperage(3)
+                .setMachineEUtMultiplier(3)
                 .build()
                 .getStackForm(1L));
 
@@ -7599,6 +7626,8 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 .setSound(SoundResource.GTCEU_LOOP_ARC)
                 .setOverlays("ARC_FURNACE")
                 .setFluidSlots(true, true)
+                .setMachineAmperage(3)
+                .setMachineEUtMultiplier(3)
                 .build()
                 .getStackForm(1L));
 
@@ -8554,11 +8583,36 @@ public class LoaderMetaTileEntities implements Runnable { // TODO CHECK CIRCUIT 
                 CRAFTING_INPUT_SLAVE.ID,
                 "hatch.crafting_input.proxy",
                 "Crafting Input Proxy").getStackForm(1L));
-        ItemList.Hatch_PatternProvider_Crafting.set(
+        ItemList.Hatch_PatternProvider_Crafting_IV.set(
             new MTEHatchPatternProvider(
-                INPUT_BUS_PATTERN_PROVIDER.ID,
-                "hatch.pattern_provider.crafting",
-                "Crafting Pattern Provider").getStackForm(1L));
+                INPUT_BUS_PATTERN_PROVIDER_IV.ID,
+                "hatch.pattern_provider.crafting.tier.05",
+                "Crafting Pattern Provider (IV)",
+                5).getStackForm(1L));
+        ItemList.Hatch_PatternProvider_Crafting_LuV.set(
+            new MTEHatchPatternProvider(
+                INPUT_BUS_PATTERN_PROVIDER_LuV.ID,
+                "hatch.pattern_provider.crafting.tier.06",
+                "Crafting Pattern Provider (LuV)",
+                6).getStackForm(1L));
+        ItemList.Hatch_PatternProvider_Crafting_ZPM.set(
+            new MTEHatchPatternProvider(
+                INPUT_BUS_PATTERN_PROVIDER_ZPM.ID,
+                "hatch.pattern_provider.crafting.tier.07",
+                "Crafting Pattern Provider (ZPM)",
+                7).getStackForm(1L));
+        ItemList.Hatch_PatternProvider_Crafting_UV.set(
+            new MTEHatchPatternProvider(
+                INPUT_BUS_PATTERN_PROVIDER_UV.ID,
+                "hatch.pattern_provider.crafting.tier.08",
+                "Crafting Pattern Provider (UV)",
+                8).getStackForm(1L));
+        ItemList.Hatch_PatternProvider_Crafting_UHV.set(
+            new MTEHatchPatternProvider(
+                INPUT_BUS_PATTERN_PROVIDER_UHV.ID,
+                "hatch.pattern_provider.crafting.tier.09",
+                "Crafting Pattern Provider (UHV)",
+                9).getStackForm(1L));
     }
 
     private static void registerMagHatch() {

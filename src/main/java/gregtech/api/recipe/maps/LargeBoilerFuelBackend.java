@@ -1,5 +1,7 @@
 package gregtech.api.recipe.maps;
 
+import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -9,10 +11,12 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
+import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.recipe.RecipeMapBackend;
 import gregtech.api.recipe.RecipeMapBackendPropertiesBuilder;
+import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
@@ -26,42 +30,65 @@ import gregtech.common.tileentities.machines.multi.MTELargeBoilerSteel;
 public class LargeBoilerFuelBackend extends RecipeMapBackend {
 
     private static boolean addedGeneralDesc = false;
+    // 500 represents mSpecialValue of the fuel, which is energy density of 1L of fuel, or in this case,
+    // 500k EU per 1000L
+    private static final int HIGH_TIER_FLUID_THRESHOLD = 500;
 
-    private static final List<String> ALLOWED_SOLID_FUELS = Arrays
-        .asList("gregtech:gt.blockreinforced:6", "gregtech:gt.blockreinforced:7");
+    private static final List<String> ALLOWED_FUELS = Arrays.asList(
+        "gregtech:gt.blockreinforced:6",
+        "gregtech:gt.blockreinforced:7",
+        "ether",
+        "gasoline",
+        "nitrofuel",
+        "ethanol gasoline",
+        "jet fuel no.3",
+        "jet fuel a",
+        "highoctanegasoline");
 
     public LargeBoilerFuelBackend(RecipeMapBackendPropertiesBuilder propertiesBuilder) {
         super(propertiesBuilder);
     }
 
-    public static boolean isAllowedSolidFuel(ItemStack stack) {
-        return isAllowedSolidFuel(Item.itemRegistry.getNameForObject(stack.getItem()), stack.getItemDamage());
+    public static boolean isAllowedFuel(ItemStack stack) {
+        return isAllowedFuel(Item.itemRegistry.getNameForObject(stack.getItem()), stack.getItemDamage());
     }
 
-    public static boolean isAllowedSolidFuel(String itemRegistryName, int meta) {
-        return ALLOWED_SOLID_FUELS.contains(itemRegistryName + ":" + meta);
+    public static boolean isAllowedFuel(String itemRegistryName, int meta) {
+        return ALLOWED_FUELS.contains(itemRegistryName + ":" + meta);
     }
 
-    public static boolean addAllowedSolidFuel(ItemStack stack) {
-        return addAllowedSolidFuel(Item.itemRegistry.getNameForObject(stack.getItem()), stack.getItemDamage());
-    }
-
-    public static boolean addAllowedSolidFuel(String itemregistryName, int meta) {
-        return ALLOWED_SOLID_FUELS.add(itemregistryName + ":" + meta);
+    public static boolean isAllowedFuel(FluidStack stack) {
+        return ALLOWED_FUELS.contains(
+            stack.getFluid()
+                .getName());
     }
 
     public GTRecipe addDenseLiquidRecipe(GTRecipe recipe) {
-        return addRecipe(recipe, ((double) recipe.mSpecialValue) / 10, true, false);
+        return addRecipe(
+            recipe,
+            ((double) recipe.mSpecialValue) / 10,
+            true,
+            (recipe.mSpecialValue > HIGH_TIER_FLUID_THRESHOLD));
     }
 
-    public GTRecipe addDieselRecipe(GTRecipe recipe) {
-        return addRecipe(recipe, ((double) recipe.mSpecialValue) / 40, true, false);
+    public GTRecipe addDieselGasRecipe(GTRecipe recipe) {
+        return addRecipe(
+            recipe,
+            ((double) recipe.mSpecialValue) / 20,
+            true,
+            (recipe.mSpecialValue > HIGH_TIER_FLUID_THRESHOLD));
     }
 
     public void addSolidRecipes(ItemStack... itemStacks) {
         for (ItemStack itemStack : itemStacks) {
             addSolidRecipe(itemStack);
         }
+    }
+
+    @Override
+    public boolean containsInput(ItemStack itemInput) {
+        // Function for recipe collision in RecipeMaps when the same fluid is used in different generators
+        return RecipeMaps.largeBoilerFakeFuels.containsInput(GTUtility.getFluidForFilledItem(itemInput, true));
     }
 
     @Nullable
@@ -86,6 +113,7 @@ public class LargeBoilerFuelBackend extends RecipeMapBackend {
                             "GT5U.nei.large_boiler.solid",
                             MTELargeBoilerBronze.EUT_GENERATED,
                             MTELargeBoilerSteel.EUT_GENERATED)))
+                .fake()
                 .build()
                 .map(this::compileRecipe);
             addedGeneralDesc = true;
@@ -94,7 +122,7 @@ public class LargeBoilerFuelBackend extends RecipeMapBackend {
         boolean isAllowedInSteelBoiler = GTModHandler.getFuelValue(fuelItemStack) >= MTELargeBoilerSteel.EUT_GENERATED;
 
         String registryName = Item.itemRegistry.getNameForObject(fuelItemStack.getItem());
-        boolean isHighTierAllowed = ALLOWED_SOLID_FUELS.contains(registryName + ":" + fuelItemStack.getItemDamage());
+        boolean isHighTierAllowed = ALLOWED_FUELS.contains(registryName + ":" + fuelItemStack.getItemDamage());
         return GTValues.RA.stdBuilder()
             .itemInputs(fuelItemStack)
             .duration(1)
@@ -110,32 +138,48 @@ public class LargeBoilerFuelBackend extends RecipeMapBackend {
             .orElse(null);
     }
 
+    public static double getBurntimeRatio(double fuelValue) {
+        // 10 in this formula is 10 seconds of burn time in steel boiler, or 16000 Burn Time value
+        return fuelValue * Math.max(1, 1 + Math.log(fuelValue / 10) * 0.025);
+    }
+
     private GTRecipe addRecipe(GTRecipe recipe, double baseBurnTime, boolean isAllowedInSteelBoiler,
         boolean isHighTierAllowed) {
         // Some recipes will have a burn time like 15.9999999 and % always rounds down
         double floatErrorCorrection = 0.0001;
 
-        double bronzeBurnTime = baseBurnTime * 2 + floatErrorCorrection;
+        double bronzeBurnTime = getBurntimeRatio(baseBurnTime) * 2 + floatErrorCorrection;
         bronzeBurnTime -= bronzeBurnTime % 0.05;
-        double steelBurnTime = baseBurnTime + floatErrorCorrection;
+        double steelBurnTime = getBurntimeRatio(baseBurnTime) + floatErrorCorrection;
         steelBurnTime -= steelBurnTime % 0.05;
-        double titaniumBurnTime = baseBurnTime * 0.3 + floatErrorCorrection;
+        double titaniumBurnTime = getBurntimeRatio(baseBurnTime) * 0.3 + floatErrorCorrection;
         titaniumBurnTime -= titaniumBurnTime % 0.05;
-        double tungstensteelBurnTime = baseBurnTime * 0.15 + floatErrorCorrection;
+        double tungstensteelBurnTime = getBurntimeRatio(baseBurnTime) * 0.15 + floatErrorCorrection;
         tungstensteelBurnTime -= tungstensteelBurnTime % 0.05;
 
+        FluidStack foundFluid = GTUtility.getFluidForFilledItem(recipe.getRepresentativeInput(0), true);
+        if (foundFluid != null) {
+            // Removes item, adds fluid for NEI and sets mDuration in ticks for usage in LargeBoilerBase
+            recipe.setFluidInputs(foundFluid);
+            recipe.mInputs = new ItemStack[0];
+            recipe.mDuration = (int) (steelBurnTime * 20);
+        }
         recipe.setNeiDesc(
             StatCollector.translateToLocal("GT5U.nei.large_boiler.burn_time"),
-            StatCollector.translateToLocalFormatted("GT5U.nei.large_boiler.bronze_boiler", bronzeBurnTime),
+            StatCollector
+                .translateToLocalFormatted("GT5U.nei.large_boiler.bronze_boiler", formatNumber(bronzeBurnTime)),
             isAllowedInSteelBoiler
-                ? StatCollector.translateToLocalFormatted("GT5U.nei.large_boiler.steel_boiler", steelBurnTime)
+                ? StatCollector
+                    .translateToLocalFormatted("GT5U.nei.large_boiler.steel_boiler", formatNumber(steelBurnTime))
                 : StatCollector.translateToLocal("GT5U.nei.large_boiler.steel_boiler.ban"),
             isHighTierAllowed
-                ? StatCollector.translateToLocalFormatted("GT5U.nei.large_boiler.titanium_boiler", titaniumBurnTime)
+                ? StatCollector
+                    .translateToLocalFormatted("GT5U.nei.large_boiler.titanium_boiler", formatNumber(titaniumBurnTime))
                 : StatCollector.translateToLocal("GT5U.nei.large_boiler.titanium_boiler.ban"),
             isHighTierAllowed
-                ? StatCollector
-                    .translateToLocalFormatted("GT5U.nei.large_boiler.tungstensteel_boiler", tungstensteelBurnTime)
+                ? StatCollector.translateToLocalFormatted(
+                    "GT5U.nei.large_boiler.tungstensteel_boiler",
+                    formatNumber(tungstensteelBurnTime))
                 : StatCollector.translateToLocal("GT5U.nei.large_boiler.tungstensteel_boiler.ban"));
 
         return compileRecipe(recipe);

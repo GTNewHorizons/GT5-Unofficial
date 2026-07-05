@@ -19,7 +19,6 @@ import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
@@ -75,12 +74,12 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.net.GTPacketLMACraftingFX;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
@@ -92,8 +91,8 @@ import gregtech.common.tileentities.machines.MTEHatchCraftingInputME;
 import gregtech.common.tileentities.machines.MTEHatchPatternProvider;
 import gregtech.crossmod.ae2.InputBusInventoryProxy;
 
-public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<MTELargeMolecularAssembler>
-    implements ICraftingProvider, IActionHost, IGridProxyable, IInterfaceViewable, ISurvivalConstructable {
+public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<MTELargeMolecularAssembler> implements
+    ICraftingProvider, IActionHost, IGridProxyable, IInterfaceViewable, ISurvivalConstructable, ICasingTextureProvider {
 
     private static final String DATA_ORB_JOBS_KEY = "MX-CraftingJobs";
     private static final String DATA_ORB_JOBS_JOB_KEY = "Job";
@@ -181,15 +180,22 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-        int colorIndex, boolean active, boolean redstoneLevel) {
-        if (side == facing) {
-            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX), TextureFactory.builder()
-                .addIcon(Textures.BlockIcons.OVERLAY_ME_HATCH)
-                .extFacing()
-                .build() };
-        }
-        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX) };
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            Textures.BlockIcons.OVERLAY_ME_HATCH,
+            Textures.BlockIcons.OVERLAY_ME_HATCH_GLOW,
+            Textures.BlockIcons.OVERLAY_ME_HATCH_ACTIVE,
+            Textures.BlockIcons.OVERLAY_ME_HATCH_ACTIVE_GLOW);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Textures.BlockIcons.getCasingTextureForId(CASING_INDEX);
     }
 
     @Override
@@ -288,6 +294,11 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
         return new MultiblockTooltipBuilder().addMachineType(MACHINE_TYPE)
             .addInfo("Needs a Data Orb to be placed in the controller")
             .addInfo(
+                "Uses " + EnumChatFormatting.YELLOW
+                    + "Crafting Pattern Providers"
+                    + EnumChatFormatting.RESET
+                    + " to store patterns")
+            .addInfo(
                 "Basic: " + EnumChatFormatting.GREEN
                     + EU_PER_TICK_BASIC
                     + EnumChatFormatting.GRAY
@@ -319,20 +330,13 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
             .addInfo("-Double the number of Jobs finished at once")
             .beginStructureBlock(5, 5, 5, true)
             .addController("Front bottom center")
-            .addCasingInfoMin("Robust Tungstensteel Machine Casing", MIN_CASING_COUNT, false)
-            .addCasingInfoExactly(
-                AEApi.instance()
-                    .definitions()
-                    .blocks()
-                    .quartzVibrantGlass()
-                    .maybeBlock()
-                    .get()
-                    .getLocalizedName(),
-                54,
-                false)
-            .addInputBus("Any Casing", 1)
-            .addEnergyHatch("Any Casing", 1)
-            .addMaintenanceHatch("Any Casing", 1)
+            .addCasing("54", "Vibrant Quartz Glass", false)
+            .addCasing(MIN_CASING_COUNT + "-40", "Robust Tungstensteel Machine Casing", false)
+            .addEnergyHatch("1+", "Any casing", 1)
+            .addMaintenanceHatch("1", "Any casing", 1)
+            .addMiscHatch("1+", "Input Bus or Crafting Pattern Provider", "Any casing", 1)
+            .addStructureInfo("")
+            .addStructureFooter("Place a data orb inside the controller and connect it to an AE2 network")
             .toolTipFinisher();
     }
 
@@ -346,10 +350,10 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
             STRUCTURE_DEPTH_OFFSET,
             errors)) return;
 
-        checkOneMaintenanceHatch(errors);
-        checkHasEnergyHatch(errors);
-        checkHasInputBus(errors);
         checkCasingMin(errors, casing, MIN_CASING_COUNT);
+        checkHasEnergyHatch(errors);
+        checkOneMaintenanceHatch(errors);
+        checkHasInputBus(errors);
     }
 
     @Override
@@ -696,11 +700,6 @@ public class MTELargeMolecularAssembler extends MTEExtendedPowerMultiBlockBase<M
         if (gridProxy == null) {
             gridProxy = new AENetworkProxy(this, "proxy", getStackForm(1), true);
             gridProxy.setFlags(GridFlags.REQUIRE_CHANNEL);
-            if (getBaseMetaTileEntity().getWorld() != null) {
-                EntityPlayer player = getBaseMetaTileEntity().getWorld()
-                    .getPlayerEntityByName(getBaseMetaTileEntity().getOwnerName());
-                gridProxy.setOwner(player);
-            }
         }
         return gridProxy;
     }
