@@ -392,7 +392,7 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
                 // If HIP required, check for overheat and potentially crash
                 if (recipe.getMetadataOrDefault(COMPRESSION_TIER, 0) == 1) {
                     if (overheated) {
-                        stopMachine(ShutDownReasonRegistry.OVERHEATED);
+                        stopMachine(ShutDownReasonRegistry.OVERHEAT_FAIL);
                         return CheckRecipeResultRegistry.NO_RECIPE;
                     }
                 }

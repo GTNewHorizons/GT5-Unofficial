@@ -29,7 +29,7 @@ import gregtech.common.gui.modularui.hatch.MTEHeatSensorGui;
 public class MTEHeatSensor extends MTEHatch {
 
     protected static final IIconContainer TEXTURE_FRONT = Textures.BlockIcons.OVERLAY_HATCH_HEAT_SENSOR;
-    protected static final IIconContainer textureFont_Glow = Textures.BlockIcons.OVERLAY_HATCH_HEAT_SENSOR_GLOW;
+    protected static final IIconContainer TEXTURE_FRONT_GLOW = Textures.BlockIcons.OVERLAY_HATCH_HEAT_SENSOR_GLOW;
 
     protected double threshold = 0;
     protected boolean inverted = false;
@@ -130,7 +130,7 @@ public class MTEHeatSensor extends MTEHatch {
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
         return new ITexture[] { aBaseTexture, TextureFactory.of(TEXTURE_FRONT), TextureFactory.builder()
-            .addIcon(textureFont_Glow)
+            .addIcon(TEXTURE_FRONT_GLOW)
             .glow()
             .build() };
     }
