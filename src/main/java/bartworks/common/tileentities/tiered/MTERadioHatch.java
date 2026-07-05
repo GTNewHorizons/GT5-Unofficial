@@ -39,6 +39,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.RecipeMapWorkable;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
@@ -70,9 +71,9 @@ public class MTERadioHatch extends MTEHatch implements RecipeMapWorkable {
             aNameRegional,
             aTier,
             1,
-            new String[]{StatCollector.translateToLocal("tooltip.tile.radhatch.0.name"),
+            new String[] { StatCollector.translateToLocal("tooltip.tile.radhatch.0.name"),
                 StatCollector.translateToLocal("tooltip.tile.radhatch.1.name"),
-                BWTooltipReference.ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS.get(),});
+                BWTooltipReference.ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS.get(), });
     }
 
     public MTERadioHatch(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -80,7 +81,7 @@ public class MTERadioHatch extends MTEHatch implements RecipeMapWorkable {
     }
 
     private static short[] getEmptyColor() {
-        return new short[]{0x37, 0x37, 0x37};
+        return new short[] { 0x37, 0x37, 0x37 };
     }
 
     public int getSievert() {
@@ -123,12 +124,12 @@ public class MTERadioHatch extends MTEHatch implements RecipeMapWorkable {
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[]{aBaseTexture, TextureFactory.of(Textures.BlockIcons.OVERLAY_PIPE_IN)};
+        return new ITexture[] { aBaseTexture, TextureFactory.of(Textures.BlockIcons.OVERLAY_PIPE_IN) };
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[]{aBaseTexture, TextureFactory.of(Textures.BlockIcons.OVERLAY_PIPE_IN)};
+        return new ITexture[] { aBaseTexture, TextureFactory.of(Textures.BlockIcons.OVERLAY_PIPE_IN) };
     }
 
     @Override
@@ -168,8 +169,7 @@ public class MTERadioHatch extends MTEHatch implements RecipeMapWorkable {
             }
         }
 
-        if (myMetaTileEntity.mTickTimer > myMetaTileEntity.mLastSoundTick + ticksBetweenSounds
-            && this.sievert > 0) {
+        if (myMetaTileEntity.mTickTimer > myMetaTileEntity.mLastSoundTick + ticksBetweenSounds && this.sievert > 0) {
             this.sendLoopStart((byte) 1);
             myMetaTileEntity.mLastSoundTick = myMetaTileEntity.mTickTimer;
         }
@@ -177,9 +177,7 @@ public class MTERadioHatch extends MTEHatch implements RecipeMapWorkable {
         if (this.mass == 0) {
             ItemStack lStack = this.mInventory[0];
 
-            if (lStack == null
-                || this.lastFail && GTUtility.areStacksEqual(this.lastUsedItem, lStack, true)
-            ) {
+            if (lStack == null || this.lastFail && GTUtility.areStacksEqual(this.lastUsedItem, lStack, true)) {
                 return;
             }
 
@@ -199,7 +197,7 @@ public class MTERadioHatch extends MTEHatch implements RecipeMapWorkable {
                         ItemData itemData = GTOreDictUnificator.getAssociation(lStack);
                         if (itemData != null) {
                             Materials mat = itemData.mMaterial.mMaterial;
-                            this.colorForGUI = new short[]{mat.getRGBA()[0], mat.getRGBA()[1], mat.getRGBA()[2]};
+                            this.colorForGUI = new short[] { mat.getRGBA()[0], mat.getRGBA()[1], mat.getRGBA()[2] };
                         } else {
                             this.colorForGUI = getEmptyColor();
                         }
@@ -232,7 +230,7 @@ public class MTERadioHatch extends MTEHatch implements RecipeMapWorkable {
                     ItemData itemData = GTOreDictUnificator.getAssociation(lStack);
                     if (itemData != null) {
                         Materials mat = itemData.mMaterial.mMaterial;
-                        this.colorForGUI = new short[]{mat.getRGBA()[0], mat.getRGBA()[1], mat.getRGBA()[2]};
+                        this.colorForGUI = new short[] { mat.getRGBA()[0], mat.getRGBA()[1], mat.getRGBA()[2] };
                     } else {
                         this.colorForGUI = getEmptyColor();
                     }
@@ -250,28 +248,19 @@ public class MTERadioHatch extends MTEHatch implements RecipeMapWorkable {
 
     @Override
     public String[] getInfoData() {
-        if (this.sievert != 0) return new String[]{
-            StatCollector.translateToLocal("tooltip.tile.radhatch.2.name") + " "
-                + StatCollector.translateToLocal(this.material),
-            StatCollector.translateToLocal("tooltip.tile.radhatch.3.name") + " " + this.sievert,
-            StatCollector.translateToLocal("tooltip.tile.radhatch.4.name") + " " + this.mass,
-            StatCollector.translateToLocal("tooltip.tile.radhatch.5.name") + " "
-                + (this.decayTime - this.timer % (this.decayTime * 60))
-                + StatCollector.translateToLocal("tooltip.tile.radhatch.6.name")
-                + "/"
-                + (this.decayTime - this.timer % this.decayTime) / 20
-                + StatCollector.translateToLocal("tooltip.tile.radhatch.7.name")
-                + "/"
-                + (this.decayTime - this.timer % this.decayTime) / 20 / 60
-                + StatCollector.translateToLocal("tooltip.tile.radhatch.8.name")
-                + "/"
-                + (this.decayTime - this.timer % this.decayTime) / 20 / 60 / 60
-                + StatCollector.translateToLocal("tooltip.tile.radhatch.9.name")};
-        return new String[]{
-            StatCollector.translateToLocal("tooltip.tile.radhatch.2.name") + " "
-                + StatCollector.translateToLocal("tooltip.bw.empty.name"),
-            StatCollector.translateToLocal("tooltip.tile.radhatch.3.name") + " " + "0",
-            StatCollector.translateToLocal("tooltip.tile.radhatch.4.name") + " " + "0"};
+        if (this.sievert != 0)
+            return new String[] { IGregTechDeviceInformation.encode("tooltip.tile.radhatch.2.fmt", this.material),
+                IGregTechDeviceInformation.encode("tooltip.tile.radhatch.3.fmt", this.sievert),
+                IGregTechDeviceInformation.encode("tooltip.tile.radhatch.4.fmt", this.mass),
+                IGregTechDeviceInformation.encode(
+                    "tooltip.tile.radhatch.5.fmt",
+                    this.decayTime - this.timer % (this.decayTime * 60),
+                    (this.decayTime - this.timer % this.decayTime) / 20,
+                    (this.decayTime - this.timer % this.decayTime) / 20 / 60,
+                    (this.decayTime - this.timer % this.decayTime) / 20 / 60 / 60) };
+        return new String[] { "tooltip.tile.radhatch.2.empty",
+            IGregTechDeviceInformation.encode("tooltip.tile.radhatch.3.fmt", "0"),
+            IGregTechDeviceInformation.encode("tooltip.tile.radhatch.4.fmt", "0") };
     }
 
     @Override
@@ -286,13 +275,13 @@ public class MTERadioHatch extends MTEHatch implements RecipeMapWorkable {
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-                                  ItemStack aStack) {
+        ItemStack aStack) {
         return false;
     }
 
     @Override
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, ForgeDirection side,
-                                 ItemStack aStack) {
+        ItemStack aStack) {
         return side == this.getBaseMetaTileEntity()
             .getFrontFacing() && BartWorksRecipeMaps.radioHatchFakeRecipes.containsInput(aStack);
     }
