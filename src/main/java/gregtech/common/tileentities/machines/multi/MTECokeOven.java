@@ -4,7 +4,10 @@ import static com.gtnewhorizon.structurelib.structure.StructureUtility.ofBlock;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.transpose;
 import static gregtech.api.enums.GTAuthors.AuthorJulia;
 import static gregtech.api.enums.Textures.BlockIcons.COKE_OVEN_OVERLAY_ACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.COKE_OVEN_OVERLAY_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.COKE_OVEN_OVERLAY_INACTIVE;
+import static gregtech.api.enums.Textures.BlockIcons.COKE_OVEN_OVERLAY_INACTIVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.getCasingTextureForId;
 import static gregtech.api.objects.XSTR.XSTR_INSTANCE;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static net.minecraftforge.fluids.FluidContainerRegistry.fillFluidContainer;
@@ -18,7 +21,6 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidContainerRegistry;
@@ -43,6 +45,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchCokeOven;
@@ -50,7 +53,6 @@ import gregtech.api.modularui2.GTGuiTheme;
 import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
@@ -60,7 +62,8 @@ import gregtech.api.util.WorldSpawnedEventBuilder;
 import gregtech.common.gui.modularui.multiblock.MTECokeOvenGui;
 import gregtech.common.pollution.Pollution;
 
-public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven> implements ISurvivalConstructable {
+public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven>
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     public final static int INPUT_SLOT = 0;
     public final static int OUTPUT_SLOT = 1;
@@ -81,15 +84,15 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven> implemen
     protected MultiblockTooltipBuilder createTooltip() {
         return new MultiblockTooltipBuilder().addMachineType("Coke Oven")
             .addInfo("Turns coal into coke and produces creosote oil")
+            .addPollutionAmount(GTMod.proxy.mPollutionCokeOvenPerSecond)
             .beginStructureBlock(3, 3, 3, true)
             .addController("Front center")
-            .addCasingInfoRange("Coke Oven Casing", 0, 26, false)
-            .addStructureInfo(
-                EnumChatFormatting.WHITE + StatCollector.translateToLocal("GT5U.MBTT.CokeOvenHatch")
-                    + ": "
-                    + EnumChatFormatting.GRAY
-                    + "Any Coke Oven Casing")
-            .addPollutionAmount(GTMod.proxy.mPollutionCokeOvenPerSecond)
+            .addCasing("0-26", "Coke Oven Casing", false)
+            .addMiscHatch("0+", StatCollector.translateToLocal("GT5U.MBTT.CokeOvenHatch"), "Any casing", 1)
+            .addAir("Interior of the structure")
+            .addStructureInfo("")
+            .addStructureFooter("GregTech multiblocks may wallshare each of their sides")
+            .addStructureFooter("to save on blocks, casings, glass, buses/hatches, etc.")
             .toolTipFinisher(AuthorJulia);
     }
 
@@ -196,32 +199,23 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven> implemen
         return new MTECokeOven(mName);
     }
 
-    private static final ITexture[] TEXTURE_CASING = {
-        Textures.BlockIcons.getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings12, 0)) };
-
-    private static final ITexture[] TEXTURE_CONTROLLER_INACTIVE = {
-        Textures.BlockIcons.getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings12, 0)),
-        TextureFactory.builder()
-            .addIcon(COKE_OVEN_OVERLAY_INACTIVE)
-            .extFacing()
-            .build() };
-
-    private static final ITexture[] TEXTURE_CONTROLLER_ACTIVE = {
-        Textures.BlockIcons.getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings12, 0)),
-        TextureFactory.builder()
-            .addIcon(COKE_OVEN_OVERLAY_ACTIVE)
-            .extFacing()
-            .build() };
+    @Override
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            COKE_OVEN_OVERLAY_INACTIVE,
+            COKE_OVEN_OVERLAY_INACTIVE_GLOW,
+            COKE_OVEN_OVERLAY_ACTIVE,
+            COKE_OVEN_OVERLAY_ACTIVE_GLOW);
+    }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-        int colorIndex, boolean active, boolean redstoneLevel) {
-
-        if (side == facing) {
-            return active ? TEXTURE_CONTROLLER_ACTIVE : TEXTURE_CONTROLLER_INACTIVE;
-        } else {
-            return TEXTURE_CASING;
-        }
+    public ITexture getCasingTexture() {
+        return getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings12, 0));
     }
 
     @Override

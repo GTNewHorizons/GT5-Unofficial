@@ -143,6 +143,7 @@ import gregtech.common.tileentities.machines.IHatchWatcher;
 import gregtech.common.tileentities.machines.IRecipeProcessingAwareHatch;
 import gregtech.common.tileentities.machines.ISmartInputHatch;
 import gregtech.common.tileentities.machines.MTEHatchCraftingInputME;
+import gregtech.common.tileentities.machines.MTEHatchCraftingInputSlave;
 import gregtech.common.tileentities.machines.MTEHatchInputBusME;
 import gregtech.common.tileentities.machines.MTEHatchInputME;
 import gregtech.common.tileentities.machines.multi.MTELargeTurbineLegacy;
@@ -773,14 +774,10 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                                     pdr.addRecord(((long) mMaxProgresstime) * mEUt, mOutputItems, mOutputFluids);
                             }
                         }
-                        if (mOutputItems != null) {
-                            addItemOutputs(mOutputItems);
-                            mOutputItems = null;
-                        }
-                        if (mOutputFluids != null) {
-                            addFluidOutputs(mOutputFluids);
-                            mOutputFluids = null;
-                        }
+                        boolean isOutputAllItems = mOutputItems == null || addItemOutputs(mOutputItems);
+                        boolean isOutputAllFluids = mOutputFluids == null || addFluidOutputs(mOutputFluids);
+                        mOutputItems = null;
+                        mOutputFluids = null;
                         outputAfterRecipe();
                         mEfficiency = Math.max(
                             0,
@@ -798,7 +795,11 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                         }
                         mEfficiencyIncrease = 0;
                         mLastWorkingTick = mTotalRunTime;
-                        if (aBaseMetaTileEntity.isAllowedToWork()) {
+                        if (!isOutputAllItems && protectsExcessItem()) {
+                            stopMachine(ShutDownReasonRegistry.ITEM_OUTPUT_FAILED);
+                        } else if (!isOutputAllFluids && protectsExcessFluid()) {
+                            stopMachine(ShutDownReasonRegistry.FLUID_OUTPUT_FAILED);
+                        } else if (aBaseMetaTileEntity.isAllowedToWork()) {
                             checkRecipe();
                         }
                     }
@@ -1630,7 +1631,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     public boolean drainEnergyInput(long aEU) {
         if (aEU <= 0) return true;
 
-        for (MTEHatchEnergy tHatch : validMTEList(mEnergyHatches)) {
+        for (MTEHatchEnergy tHatch : mEnergyHatches) {
+            if (!tHatch.isValid()) continue;
             long tDrain = Math.min(
                 tHatch.getBaseMetaTileEntity()
                     .getStoredEU(),
@@ -1700,18 +1702,20 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         ejectionHelper.commit();
     }
 
-    protected boolean addFluidOutputs(FluidStack[] outputFluids) {
+    protected boolean addFluidOutputs(@NotNull FluidStack[] outputFluids) {
         return addFluidOutputs(outputFluids, getOutputHatches(outputFluids), protectsExcessFluid());
     }
 
-    protected boolean addFluidOutputs(FluidStack[] outputFluids, List<? extends IOutputHatch> hatches) {
+    protected boolean addFluidOutputs(@NotNull FluidStack[] outputFluids, List<? extends IOutputHatch> hatches) {
         return addFluidOutputs(outputFluids, hatches, protectsExcessFluid());
     }
 
-    protected boolean addFluidOutputs(FluidStack[] outputFluids, List<? extends IOutputHatch> hatches,
+    protected boolean addFluidOutputs(@NotNull FluidStack[] outputFluids, List<? extends IOutputHatch> hatches,
         boolean protectFluids) {
+        List<FluidStack> outputs = Arrays.asList(outputFluids);
+        if (outputs.isEmpty()) return true;
         FluidEjectionHelper ejectionHelper = new FluidEjectionHelper(hatches, protectFluids);
-        int ejected = ejectionHelper.ejectFluids(Arrays.asList(outputFluids), 1);
+        int ejected = ejectionHelper.ejectFluids(outputs, 1);
         ejectionHelper.commit();
 
         return ejected == 1;
@@ -1794,9 +1798,11 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
      * @param outputItems The items to eject. Not modified.
      * @return True when all items were ejected, false otherwise.
      */
-    public boolean addItemOutputs(ItemStack[] outputItems) {
+    public boolean addItemOutputs(@NotNull ItemStack[] outputItems) {
+        List<ItemStack> outputs = Arrays.asList(outputItems);
+        if (outputs.isEmpty()) return true;
         ItemEjectionHelper ejectionHelper = new ItemEjectionHelper(this);
-        int ejected = ejectionHelper.ejectItems(Arrays.asList(outputItems), 1);
+        int ejected = ejectionHelper.ejectItems(outputs, 1);
         ejectionHelper.commit();
 
         return ejected == 1;
@@ -1886,7 +1892,10 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
     }
 
     /**
-     * Drains fluid from the given hatch, including {@link IDualInputHatch}. Should never be used during recipe check!
+     * Drains fluid from the given hatch, including {@link IDualInputHatch}.
+     * Note that you should not modify any hatch content during recipe check as it will
+     * lead to possible failed extraction when the recipe processing tries to extract
+     * the recipe from the hatch. Doing simulate check is fine, however.
      *
      * @param doDrain If false, fluid will not actually be consumed
      * @return Whether the hatch contains enough fluid to drain
@@ -1908,15 +1917,8 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         }
 
         if (hatch instanceof MTEHatchInput tHatch && tHatch.isValid()) {
-            if (tHatch instanceof MTEHatchInputME meHatch) {
-                meHatch.startRecipeProcessing();
-                FluidStack tFluid = meHatch.drain(ForgeDirection.UNKNOWN, fluid, doDrain);
-                meHatch.endRecipeProcessing(this);
-                return tFluid != null && tFluid.amount >= fluid.amount;
-            } else {
-                FluidStack tFluid = tHatch.drain(ForgeDirection.UNKNOWN, fluid, doDrain);
-                return tFluid != null && tFluid.amount >= fluid.amount;
-            }
+            FluidStack tFluid = tHatch.drain(ForgeDirection.UNKNOWN, fluid, doDrain);
+            return tFluid != null && tFluid.amount >= fluid.amount;
         }
 
         return false;
@@ -2341,6 +2343,15 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
         addIfSmartInput(aMetaTileEntity);
+        if (aMetaTileEntity instanceof IDualInputHatch hatch
+            && (hatch.supportsFluids() || aMetaTileEntity instanceof MTEHatchCraftingInputSlave)) {
+            hatch.updateTexture(aBaseCasingIndex);
+            hatch.updateCraftingIcon(this.getMachineCraftingIcon());
+            if (!mDualInputHatches.contains(hatch)) {
+                mDualInputHatches.add(hatch);
+            }
+            return true;
+        }
         if (aMetaTileEntity instanceof MTEHatchInput hatch) {
             hatch.updateTexture(aBaseCasingIndex);
             hatch.updateCraftingIcon(this.getMachineCraftingIcon());
@@ -2746,7 +2757,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
         IGregTechTileEntity igte = getBaseMetaTileEntity();
 
-        if (igte != null && igte.getLastShutDownReason() == ShutDownReasonRegistry.POWER_LOSS) {
+        if (igte != null && igte.isServerSide()) {
             GTMod.proxy.powerfailTracker.removePowerfailEvents(igte);
         }
     }
@@ -2759,7 +2770,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
         IGregTechTileEntity igte = getBaseMetaTileEntity();
 
-        if (igte != null && igte.getLastShutDownReason() == ShutDownReasonRegistry.POWER_LOSS) {
+        if (igte != null && igte.isServerSide()) {
             GTMod.proxy.powerfailTracker.removePowerfailEvents(igte);
         }
 
@@ -3044,7 +3055,11 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
 
     protected boolean canDumpFluidToMEByLayer(List<GTUtility.FluidId> outputs,
         List<List<MTEHatchOutput>> hatchesByLayer) {
-        for (int i = 0; i < hatchesByLayer.size(); i++) {
+        for (int i = 0; i < outputs.size(); i++) {
+            if (i >= hatchesByLayer.size()) {
+                // Less layer than recipe size
+                return false;
+            }
             List<MTEHatchOutputME> hatches = GTUtility.getMTEsOfType(hatchesByLayer.get(i), MTEHatchOutputME.class);
             GTUtility.FluidId output = outputs.get(i);
             boolean handled = false;

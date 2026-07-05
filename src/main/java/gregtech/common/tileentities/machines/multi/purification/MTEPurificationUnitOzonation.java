@@ -43,7 +43,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GTUtility;
@@ -126,27 +125,15 @@ public class MTEPurificationUnitOzonation extends MTEPurificationUnitBase<MTEPur
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
-        if (side == aFacing) {
-            if (aActive) return new ITexture[] { getCasingTexture(), TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { getCasingTexture(), TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-        }
-        return new ITexture[] { getCasingTexture() };
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR,
+            OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_GLOW,
+            OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE,
+            OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE_GLOW);
     }
 
     @Override
@@ -216,41 +203,18 @@ public class MTEPurificationUnitOzonation extends MTEPurificationUnitBase<MTEPur
                 EnumChatFormatting.AQUA + ""
                     + EnumChatFormatting.ITALIC
                     + "sulfur, iron and manganese, creating insoluble oxide compounds which are then filtered out.")
-            .beginStructureBlock(9, 10, 5, false)
+            .beginStructureBlock(5, 9, 10, true)
             .addController("Front bottom center")
-            .addCasingInfoRangeColored(
-                "Inert Filtration Casing",
-                EnumChatFormatting.GRAY,
-                MIN_CASING,
-                102,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored(
-                "Reactive Gas Containment Casing",
-                EnumChatFormatting.GRAY,
-                28,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored(
-                "Any Tinted Industrial Glass",
-                EnumChatFormatting.GRAY,
-                9,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored(
-                "Tungstensteel Frame Box",
-                EnumChatFormatting.GRAY,
-                6,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored("PTFE Pipe Casing", EnumChatFormatting.GRAY, 3, EnumChatFormatting.GOLD, false)
-            .addOutputBus(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
-            .addInputHatch(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
-            .addOutputHatch(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+", 1)
-            .addOtherStructurePart(
-                StatCollector.translateToLocal("GT5U.tooltip.structure.input_hatch_ozone"),
-                EnumChatFormatting.GOLD + "1",
-                2)
+            .addCasing(MIN_CASING + "-99", "Inert Filtration Casing", false)
+            .addCasing("27", "Reactive Gas Containment Casing", false)
+            .addCasing("9", "Tinted Industrial Glass (any color)", false)
+            .addCasing("6", "Tungstensteel Frame Box", false)
+            .addCasing("3", "PTFE Pipe Casing", false)
+            .addInputHatch("2+", "End of reactive gas chamber (ozone), any filtration casing (water)", 1, 2)
+            .addOutputBus("0+", "Any filtration Casing", 1)
+            .addOutputHatch("1+", "Any filtration casing", 1)
+            .addStructureInfo("")
+            .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.DataStick.Waterline"))
             .toolTipFinisher();
         return tt;
     }

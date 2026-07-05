@@ -46,13 +46,13 @@ import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchMultiInput;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTStructureUtility;
@@ -227,29 +227,17 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-        int colorIndex, boolean active, boolean redstoneLevel) {
-        if (side == facing) {
-            if (active) return new ITexture[] { getCasingTexture(), TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { getCasingTexture(), TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-        }
-        return new ITexture[] { getCasingTexture() };
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR,
+            OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_GLOW,
+            OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE,
+            OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE_GLOW);
     }
 
     @Override
@@ -462,33 +450,20 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
                 EnumChatFormatting.AQUA + ""
                     + EnumChatFormatting.ITALIC
                     + "detects in the water, it will request various materials to complete the processes listed above.")
-            .beginStructureBlock(17, 25, 17, false)
+            .beginStructureBlock(17, 17, 25, true)
             .addController("Front center, 2nd layer")
-            .addCasingInfoRangeColored(
-                "Heat-Resistant Trinium Plated Casing",
-                EnumChatFormatting.GRAY,
-                MIN_CASING,
-                803,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored(
-                "Omni-Purpose Infinity Fused Glass",
-                EnumChatFormatting.GRAY,
-                622,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored(
-                "Bedrockium Frame Box",
-                EnumChatFormatting.GRAY,
-                124,
-                EnumChatFormatting.GOLD,
-                false)
-            .addOutputHatch(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+, Any Trinium Casing", 1)
-            .addInputHatch(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + "+, Any Trinium Casing", 1)
-            .addOtherStructurePart(
+            .addCasing(MIN_CASING + "-800", "Heat-Resistant Trinium Plated Casing", false)
+            .addCasing("622", "Omni-Purpose Infinity Fused Glass", false)
+            .addCasing("124", "Bedrockium Frame Box", false)
+            .addMiscHatch(
+                "1",
                 StatCollector.translateToLocal("GT5U.tooltip.structure.degasser_control_hatch"),
-                EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + ", Any Trinium Casing",
+                "Any casing",
                 1)
+            .addInputHatch("1+", "Any casing", 1)
+            .addOutputHatch("1+", "Any casing", 1)
+            .addStructureInfo("")
+            .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.DataStick.Waterline"))
             .toolTipFinisher();
         return tt;
     }
@@ -777,16 +752,16 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
     public String[] getInfoData() {
         ArrayList<String> info = new ArrayList<>(Arrays.asList(super.getInfoData()));
         info.add(
-            StatCollector.translateToLocalFormatted(
+            IGregTechDeviceInformation.encode(
                 "GT5U.infodata.purification_unit_degasser.control_signal",
                 EnumChatFormatting.YELLOW + controlSignal.toString()));
         info.add(
-            StatCollector.translateToLocalFormatted(
+            IGregTechDeviceInformation.encode(
                 "GT5U.infodata.purification_unit_degasser.output_multiplier",
                 "" + EnumChatFormatting.YELLOW + outputMultiplier));
         for (FluidStack stack : insertedStuffThisCycle.values()) {
             info.add(
-                StatCollector.translateToLocalFormatted(
+                IGregTechDeviceInformation.encode(
                     "GT5U.infodata.purification_unit_degasser.fluid_inserted",
                     "" + EnumChatFormatting.YELLOW + stack.amount,
                     stack.getLocalizedName()));

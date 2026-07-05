@@ -24,8 +24,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -44,6 +42,7 @@ import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
@@ -87,15 +86,6 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
     private static IIconContainer ScreenOFF;
     private static IIconContainer ScreenON;
     // endregion
-
-    // region structure
-    private static final String[] description = new String[] {
-        EnumChatFormatting.AQUA + translateToLocal("tt.keyphrase.Hint_Details") + ":",
-        translateToLocal("gt.blockmachines.multimachine.em.computer.hint.0"), // 1 - Classic/Data Hatches or
-                                                                              // Computer casing
-        translateToLocal("gt.blockmachines.multimachine.em.computer.hint.1"), // 2 - Rack Hatches or Advanced
-                                                                              // computer casing
-    };
 
     private static final IStructureDefinition<MTEQuantumComputer> STRUCTURE_DEFINITION = IStructureDefinition
         .<MTEQuantumComputer>builder()
@@ -212,9 +202,9 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
         if (!checkPiece("cap", 1, 2, ++offset, errors)) return;
         if (!checkPiece("back", 1, 2, --offset, errors)) return;
         checkOneUncertaintyHatch(errors);
+        checkHasDataOutput(errors);
         checkHasAnyEnergy(errors);
         checkHasMaintenanceHatch(errors);
-        checkHasDataOutput(errors);
         if (!errors.isEmpty()) return;
         eCertainMode = (byte) Math.min(totalLen / 3, 5);
         for (MTEHatchRack rack : validMTEList(eRacks)) {
@@ -379,37 +369,49 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
             .addInfo(translateToLocal("gt.blockmachines.multimachine.em.computer.desc.2")) // Use screwdriver to
                                                                                            // toggle
                                                                                            // wireless mode
-            .addTecTechHatchInfo()
-            .beginVariableStructureBlock(2, 2, 4, 4, 5, 16, false)
+            .addSupportAny()
+            .beginVariableStructureBlock(5, 16, 2, 2, 4, 4, false)
             .addController("Front left, 2nd layer")
-            .addOtherStructurePart(
+            .addMiscHatch(
+                "1",
                 translateToLocal("gt.blockmachines.hatch.certain.tier.07.name"),
                 translateToLocal("tt.keyword.Structure.AnyComputerCasingFirstOrLastSlice"),
-                1) // Uncertainty Resolver: Any Computer Casing on first or last slice
-            .addOtherStructurePart(
-                translateToLocal("tt.keyword.Structure.DataConnector"),
+                1)
+            .addMiscHatch(
+                "1+",
+                "Optical Transmission Connector",
                 translateToLocal("tt.keyword.Structure.AnyComputerCasingFirstOrLastSlice"),
-                1) // Optical Connector: Any Computer Casing on first or last slice
-            .addOtherStructurePart(
+                1)
+            .addMiscHatch(
+                "0+",
+                "Optical Reception Connector",
+                translateToLocal("tt.keyword.Structure.AnyComputerCasingFirstOrLastSlice"),
+                1)
+            .addEnergyHatch("1+", translateToLocal("tt.keyword.Structure.AnyComputerCasingFirstOrLastSlice"), 1)
+            .addMaintenanceHatch("1", translateToLocal("tt.keyword.Structure.AnyComputerCasingFirstOrLastSlice"), 1)
+            .addStructureInfo("")
+            .addStructureInfo(translateToLocal("GT5U.MBTT.Structure.Base"))
+            .addCasing("6-17", "Computer Casing", false)
+            .addCasing("10", "Advanced Computer Casing", false)
+            .addCasing("6", "Computer Heat Vent", false)
+            .addMiscHatch(
+                "2",
                 translateToLocal("gt.blockmachines.hatch.rack.tier.08.name"),
                 translateToLocal("tt.keyword.Structure.AnyAdvComputerCasingExceptOuter"),
-                2) // Computer Rack: Any Advanced Computer Casing, except the outer ones
-            .addEnergyHatch(translateToLocal("tt.keyword.Structure.AnyComputerCasingFirstOrLastSlice"), 1) // Energy
-                                                                                                           // Hatch:
-                                                                                                           // Any
-                                                                                                           // Computer
-                                                                                                           // Casing
-                                                                                                           // on
-                                                                                                           // first
-                                                                                                           // or
-                                                                                                           // last
-                                                                                                           // slice
-            .addMaintenanceHatch(translateToLocal("tt.keyword.Structure.AnyComputerCasingFirstOrLastSlice"), 1) // Maintenance
-                                                                                                                // Hatch
-            .addOtherStructurePart(
-                "Cloud Computation Server Hatch",
-                translateToLocal("tt.keyword.Structure.AnyComputerCasingFirstOrLastSlice"),
-                1) // Wireless Computation Output: Any Computer Casing on first or last slice
+                2)
+            .addStructureInfo("")
+            .addStructureInfo(translateToLocal("GT5U.MBTT.Structure.Slice"))
+            .addCasing("2", "Computer Casing", false)
+            .addCasing("2", "Advanced Computer Casing", false)
+            .addCasing("2", "Computer Heat Vent", false)
+            .addMiscHatch(
+                "2",
+                translateToLocal("gt.blockmachines.hatch.rack.tier.08.name"),
+                translateToLocal("tt.keyword.Structure.AnyAdvComputerCasingExceptOuter"),
+                2)
+            .addStructureInfo("")
+            .addStructureFooter("Use an optical reception connector to daisy-chain machines")
+            .addMasterChannel(translateToLocal("channels.gregtech.master.length"))
             .toolTipFinisher();
         return tt;
     }
@@ -550,19 +552,14 @@ public class MTEQuantumComputer extends TTMultiblockBase implements ISurvivalCon
     }
 
     @Override
-    public String[] getStructureDescription(ItemStack stackSize) {
-        return description;
-    }
-
-    @Override
     public String[] getInfoData() {
         ArrayList<String> data = new ArrayList<>(Arrays.asList(super.getInfoData()));
         WirelessComputationPacket wirelessComputationPacket = WirelessComputationPacket
             .getPacketByUserId(getBaseMetaTileEntity().getOwnerUuid());
         data.add(
-            StatCollector.translateToLocalFormatted(
+            IGregTechDeviceInformation.encode(
                 "tt.infodata.qc.total_wireless_computation",
-                "" + EnumChatFormatting.YELLOW + wirelessComputationPacket.getAvailableComputationStored()));
+                wirelessComputationPacket.getAvailableComputationStored()));
         return data.toArray(new String[] {});
     }
 

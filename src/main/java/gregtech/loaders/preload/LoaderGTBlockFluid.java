@@ -6,6 +6,7 @@ import static gregtech.api.enums.FluidState.MOLTEN;
 import static gregtech.api.enums.FluidState.PLASMA;
 import static gregtech.api.enums.FluidState.SLURRY;
 import static gregtech.api.enums.Mods.AppliedEnergistics2;
+import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.api.enums.Mods.PamsHarvestCraft;
 import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.enums.Mods.Thaumcraft;
@@ -22,6 +23,7 @@ import java.util.Locale;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 
@@ -71,6 +73,7 @@ import gregtech.common.blocks.BlockCasingsNH;
 import gregtech.common.blocks.BlockConcretes;
 import gregtech.common.blocks.BlockCyclotronCoils;
 import gregtech.common.blocks.BlockDecorativeFrame;
+import gregtech.common.blocks.BlockFenceMetal;
 import gregtech.common.blocks.BlockFrameBox;
 import gregtech.common.blocks.BlockGlass1;
 import gregtech.common.blocks.BlockGranites;
@@ -78,6 +81,7 @@ import gregtech.common.blocks.BlockLaser;
 import gregtech.common.blocks.BlockMachines;
 import gregtech.common.blocks.BlockMetal;
 import gregtech.common.blocks.BlockOresLegacy;
+import gregtech.common.blocks.BlockPad;
 import gregtech.common.blocks.BlockReinforced;
 import gregtech.common.blocks.BlockRenderer;
 import gregtech.common.blocks.BlockSheetMetal;
@@ -103,7 +107,6 @@ import gregtech.common.items.MetaGeneratedTool01;
 import gregtech.common.items.armor.MechArmorLoader;
 import gregtech.common.ores.GTOreAdapter;
 import gregtech.common.tileentities.render.RenderingTileEntityBlackhole;
-import gregtech.common.tileentities.render.RenderingTileEntityDrone;
 import gregtech.common.tileentities.render.RenderingTileEntityLaser;
 import gregtech.common.tileentities.render.RenderingTileEntityNanoForge;
 import gregtech.common.tileentities.render.RenderingTileEntityWormhole;
@@ -750,12 +753,13 @@ public class LoaderGTBlockFluid implements Runnable {
         GregTechAPI.sBlockConcretes = new BlockConcretes();
         GregTechAPI.sBlockStones = new BlockStones();
         GregTechAPI.sBlockOres1 = new BlockOresLegacy();
+        GregTechAPI.sBlockPad = new BlockPad();
+        GregTechAPI.sBlockFenceMetal = new BlockFenceMetal();
         GregTechAPI.sBlockFrames = new BlockFrameBox();
         GregTechAPI.sBlockGlass1 = new BlockGlass1();
         GregTechAPI.sBlockTintedGlass = new BlockTintedIndustrialGlass();
         GregTechAPI.sLaserRender = new BlockLaser();
         GTLog.out.println("GTMod: Adding Renderer Blocks.");
-        GregTechAPI.sDroneRender = new BlockRenderer<>("dronerenderer", RenderingTileEntityDrone::new);
         GregTechAPI.sWormholeRender = new BlockRenderer<>("wormholerenderer", RenderingTileEntityWormhole::new);
         GregTechAPI.sBlackholeRender = new BlockRenderer<>("blackholerenderer", RenderingTileEntityBlackhole::new);
         GregTechAPI.nanoForgeRender = new BlockRenderer<>("nanoforgerenderer", RenderingTileEntityNanoForge::new);
@@ -905,9 +909,6 @@ public class LoaderGTBlockFluid implements Runnable {
             "whitelist-spatial",
             tBaseMetaTileEntity.getClass()
                 .getName());
-
-        GTLog.out.println("GTMod: Registering the DroneRender.");
-        GameRegistry.registerTileEntity(RenderingTileEntityDrone.class, "DroneRender");
 
         GTLog.out.println("GTMod: Registering the LaserRender.");
         GameRegistry.registerTileEntity(RenderingTileEntityLaser.class, "LaserRenderer");
@@ -1061,6 +1062,7 @@ public class LoaderGTBlockFluid implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.Helium3, 1L),
                 ItemList.Cell_Empty.get(1L));
         GTFluidFactory.builder("Methane")
+            .withTextureName("methane")
             .withDefaultLocalName("Methane")
             .withStateAndTemperature(GAS, 295)
             .buildAndRegister()
@@ -1744,6 +1746,16 @@ public class LoaderGTBlockFluid implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.BoundlessCosmicSolder, 1L),
                 ItemList.Cell_Empty.get(1L));
 
+        GTFluidFactory.builder("ComputationBase")
+            .withDefaultLocalName(Materials.ComputationBase.mDefaultLocalName)
+            .withStateAndTemperature(MOLTEN, 100_000_000)
+            .buildAndRegister()
+            .configureMaterials(Materials.ComputationBase)
+            .addLocalizedName(Materials.ComputationBase)
+            .registerBContainers(
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials.ComputationBase, 1L),
+                ItemList.Cell_Empty.get(1L));
+
         GTFluidFactory.builder("fieryblood")
             .withDefaultLocalName("Fiery Blood")
             .withStateAndTemperature(LIQUID, 6400)
@@ -1916,6 +1928,31 @@ public class LoaderGTBlockFluid implements Runnable {
             .addLocalizedName(Materials.ActivatedNetherite)
             .registerBContainers(
                 GTOreDictUnificator.get(OrePrefixes.cell, Materials.ActivatedNetherite, 1L),
+                ItemList.Cell_Empty.get(1L));
+
+        GTFluidFactory.builder(Materials.CarbonDioxide.mName.toLowerCase(Locale.ENGLISH))
+            .withDefaultLocalName(Materials.CarbonDioxide.mDefaultLocalName)
+            .withTextureName("carbondioxide")
+            .withStateAndTemperature(GAS, Materials.CarbonDioxide.getGasTemperature())
+            .buildAndRegister()
+            .configureMaterials(Materials.CarbonDioxide)
+            .addLocalizedName(Materials.CarbonDioxide)
+            .registerBContainers(
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials.CarbonDioxide, 1L),
+                ItemList.Cell_Empty.get(1L));
+
+        ResourceLocation stillTexture = new ResourceLocation(GregTech.ID, "fluids/fluid.ammonia.still");
+        ResourceLocation flowTexture = new ResourceLocation(GregTech.ID, "fluids/fluid.ammonia.flow");
+
+        GTFluidFactory.builder(Materials.Ammonia.mName.toLowerCase(Locale.ENGLISH))
+            .withDefaultLocalName(Materials.Ammonia.mDefaultLocalName)
+            .withTextures(stillTexture, flowTexture)
+            .withStateAndTemperature(GAS, Materials.Ammonia.getGasTemperature())
+            .buildAndRegister()
+            .configureMaterials(Materials.Ammonia)
+            .addLocalizedName(Materials.Ammonia)
+            .registerBContainers(
+                GTOreDictUnificator.get(OrePrefixes.cell, Materials.Ammonia, 1L),
                 ItemList.Cell_Empty.get(1L));
 
         for (Materials tMaterial : Materials.values()) {
@@ -2656,8 +2693,6 @@ public class LoaderGTBlockFluid implements Runnable {
             OrePrefixes.dust,
             Materials.Cocoa,
             GTModHandler.getModItem(PamsHarvestCraft.ID, "cocoapowderItem", 1L, 0));
-
-        GregTechAPI.registerMachineBlock(GTUtility.getBlockFromStack(GTModHandler.getIC2Item("reinforcedGlass", 0)), 0);
 
         GregTechAPI.sSolenoidCoilCasings = new BlockCyclotronCoils();
         ItemList.TierdDrone0
