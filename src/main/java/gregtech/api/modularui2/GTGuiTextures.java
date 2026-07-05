@@ -1827,7 +1827,7 @@ public final class GTGuiTextures {
         .build();
     public static final UITexture PICTURE_GODFORGE_LOGO = UITexture.fullImage(MODID, "gui/picture/gorge_logo");
     public static final UITexture PICTURE_BARTWORKS_LOGO_STANDARD = UITexture.builder()
-        .location(MainMod.MOD_ID, "GUI/picture/bw_logo_47x21")
+        .location(MainMod.MOD_ID, "GUI/picture/bw_logo_47x20")
         .fullImage()
         .canApplyTheme()
         .name(GTTextureIds.PICTURE_BW_LOGO_STANDARD)

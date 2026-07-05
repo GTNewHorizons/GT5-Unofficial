@@ -36,7 +36,7 @@ public class MTEBioLabGui extends MTEBasicMachineBaseGui<MTEBioLab> {
 
     @Override
     protected Widget<? extends Widget<?>> makeLogoWidget() {
-        return super.makeLogoWidget().size(47, 21);
+        return super.makeLogoWidget().size(47, 20);
     }
 
     @Override

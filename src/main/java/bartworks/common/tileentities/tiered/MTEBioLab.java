@@ -47,7 +47,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicMachine;
 import gregtech.api.modularui2.GTGuiTheme;
 import gregtech.api.modularui2.GTGuiThemes;
-import gregtech.api.objects.XSTR;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
@@ -302,7 +301,7 @@ public class MTEBioLab extends MTEBasicMachine {
     public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
         return new MTEBioLabGui(this, getUIProperties()).build(guiData, syncManager, uiSettings);
     }
-      
+
     /**
      * Safety checks like {@link GTUtility#isStackValid(ItemStack)} will be performed and may not be part of the
      * predicates.
