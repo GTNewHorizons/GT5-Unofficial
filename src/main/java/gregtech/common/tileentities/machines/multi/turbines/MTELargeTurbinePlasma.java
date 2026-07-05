@@ -8,6 +8,7 @@ import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
 import java.util.ArrayList;
 
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -80,17 +81,22 @@ public class MTELargeTurbinePlasma extends MTELargeTurbineBase {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Plasma Turbine, LPT")
             .addInfo("Needs a Turbine, place inside controller")
-            .addInfo("Use your Fusion Reactor to produce the Plasma")
-            .beginStructureBlock(3, 3, 6, false)
+            .addInfo("Generates power from Plasma based on the turbine and fitting")
+            .addInfo("Outputs 1L of fluid for every 1L of Plasma")
+            .addInfo("Use a screwdriver to adjust the fitting of the turbine")
+            .addInfo("Loose fit increases flow in exchange for efficiency")
+            .beginStructureBlock(6, 3, 3, false)
             .addController("Front center")
-            .addCasingInfoRange("Tungstensteel Turbine Casing", 8, 16, false)
-            .addCasingInfoExactly("Tungstensteel Frame Box", 14, false)
-            .addCasingInfoExactly("Tungstensteel Pipe Casing", 12, false)
-            .addDynamoHatch("Back center", 1)
-            .addMaintenanceHatch("Any Tungstensteel Turbine Casing except the front 8", 2)
-            .addInputHatch("Plasma Fluid, Any Tungstensteel Turbine Casing except the front 8", 2)
-            .addOutputHatch("Molten Fluid, optional, Any Tungstensteel Turbine Casing except the front 8", 2)
-            .addOtherStructurePart("Air", "3x3 area in front of controller")
+            .addCasing("14", "Tungstensteel Frame Box", false)
+            .addCasing("8-14", "Tungstensteel Turbine Casing", false)
+            .addCasing("12", "Tungstensteel Pipe Casing", false)
+            .addDynamoHatch("1", "Back center turbine casing", 2)
+            .addMaintenanceHatch("1", "Any back turbine casing", 1)
+            .addInputHatch("1+", "Any back turbine casing", 1)
+            .addOutputHatch("0+", "Any back turbine casing", 1)
+            .addAir("3x3 area in front of controller")
+            .addStructureInfo("")
+            .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.DynamoLimit"))
             .addStructureAuthors(EnumChatFormatting.GOLD + "hugetrust")
             .toolTipFinisher();
         return tt;

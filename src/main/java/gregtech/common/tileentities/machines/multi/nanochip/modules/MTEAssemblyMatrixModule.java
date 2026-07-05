@@ -7,7 +7,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_MATR
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_MATRIX_GLOW;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTStructureUtility.ofSheetMetal;
-import static gregtech.common.tileentities.machines.multi.nanochip.MTENanochipAssemblyComplex.CASING_INDEX_WHITE;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
@@ -33,7 +32,6 @@ import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -42,7 +40,6 @@ import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.metadata.NanochipAssemblyMatrixTierKey;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -118,33 +115,14 @@ public class MTEAssemblyMatrixModule extends MTENanochipAssemblyModuleBase<MTEAs
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
-        if (side == aFacing) {
-            if (aActive) return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_WHITE),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_ASSEMBLY_MATRIX)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_ASSEMBLY_MATRIX_ACTIVE)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_ASSEMBLY_MATRIX_ACTIVE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_WHITE),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_ASSEMBLY_MATRIX)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_ASSEMBLY_MATRIX_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-        }
-        return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX_WHITE) };
+        return createNanochipModuleTextures(
+            side,
+            aFacing,
+            aActive,
+            OVERLAY_FRONT_ASSEMBLY_MATRIX,
+            OVERLAY_FRONT_ASSEMBLY_MATRIX_GLOW,
+            OVERLAY_FRONT_ASSEMBLY_MATRIX_ACTIVE,
+            OVERLAY_FRONT_ASSEMBLY_MATRIX_ACTIVE_GLOW);
     }
 
     /**
@@ -210,27 +188,32 @@ public class MTEAssemblyMatrixModule extends MTENanochipAssemblyModuleBase<MTEAs
             .beginStructureBlock(7, 7, 7, false)
             .addController(translateToLocal("GT5U.tooltip.nac.interface.structure.module_controller"))
             // Nanochip Reinforcement Casing
-            .addCasingInfoExactly(translateToLocal("gt.blockcasings12.2.name"), 25, false)
+            .addCasing("25", translateToLocal("gt.blockcasings12.2.name"), false)
             // Nanochip Complex Glass
-            .addCasingInfoExactly(translateToLocal("gt.blockglass1.8.name"), 24, false)
+            .addCasing("24", translateToLocal("gt.blockglass1.8.name"), false)
             // Component Assembly Line Casing
-            .addCasingInfoExactly(translateToLocal("componentAssemblyLineCasing.name"), 20, true)
+            .addCasing("20", translateToLocal("componentAssemblyLineCasing.name"), true)
             // Naquadah Alloy Frame Box
-            .addCasingInfoExactly(
-                translateToLocal("gt.blockframes.10.name")
-                    .replace("%material", Materials.NaquadahAlloy.getLocalizedName()),
-                12,
-                false)
+            .addCasing("12", "Naquadah Alloy Frame Box", false)
             // Nanochip Mesh Interface Casing
-            .addCasingInfoExactly(translateToLocal("gt.blockcasings12.1.name"), 8, false)
+            .addCasing("8", translateToLocal("gt.blockcasings12.1.name"), false)
             // Naquadah Alloy Sheetmetal
-            .addCasingInfoExactly(OrePrefixes.sheetmetal.getDefaultLocalNameForItem(Materials.NaquadahAlloy), 3, false)
-            .addInputHatch(TOOLTIP_STRUCTURE_BASE_CASING)
-            .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCI)
-            .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCO)
-            .addSubChannelUsage(GTStructureChannels.COMPONENT_ASSEMBLYLINE_CASING)
-            .addStructureInfoSeparator()
-            .addStructureInfo(translateToLocal("GT5U.tooltip.nac.interface.structure.module_description"))
+            .addCasing("3", OrePrefixes.sheetmetal.getDefaultLocalNameForItem(Materials.NaquadahAlloy), false)
+            .addInputHatch("1+", translateToLocal("GT5U.tooltip.nac.interface.structure.module_hatches"), 3)
+            .addMiscHatch(
+                "0+",
+                TOOLTIP_VCI_LONG,
+                translateToLocal("GT5U.tooltip.nac.interface.structure.module_hatches"),
+                3)
+            .addMiscHatch(
+                "0+",
+                TOOLTIP_VCO_LONG,
+                translateToLocal("GT5U.tooltip.nac.interface.structure.module_hatches"),
+                3)
+            .addStructureInfo("")
+            .addStructureFooter(translateToLocal("GT5U.tooltip.nac.interface.structure.module_cost"))
+            .addStructureFooter(translateToLocal("GT5U.tooltip.nac.interface.structure.module_power"))
+            .addSubChannel(GTStructureChannels.COMPONENT_ASSEMBLYLINE_CASING)
             .toolTipFinisher();
     }
 

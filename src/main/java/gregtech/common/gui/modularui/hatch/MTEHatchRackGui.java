@@ -79,9 +79,7 @@ public class MTEHatchRackGui extends MTEHatchBaseGui<MTEHatchRack> {
         parent.child(
             new ItemSlotGridBuilder(machine.inventoryHandler, syncManager).size(2)
                 .itemSlotSupplier(() -> new ItemSlot().backgroundOverlay(GTGuiTextures.TT_OVERLAY_SLOT_RACK))
-                .filter(
-                    itemStack -> machine.isValidItem(itemStack) && !isActiveSyncer.getBoolValue()
-                        && heatSyncer.getIntValue() <= 0)
+                .filter(_ -> !isActiveSyncer.getBoolValue() && heatSyncer.getIntValue() <= 0)
                 .modularSlotSupplier(
                     LimitedExtractionSlot
                         .supplier(() -> !isActiveSyncer.getBoolValue() && heatSyncer.getIntValue() <= 0))

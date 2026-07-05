@@ -18,7 +18,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_G
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTUtility.max;
-import static gtnhlanth.util.DescTextLocalization.addHintNumber;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,17 +46,19 @@ import com.gtnewhorizon.structurelib.structure.StructureUtility;
 
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.Textures;
 import gregtech.api.enums.TickTime;
 import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.ErrorType;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrors;
@@ -78,7 +79,8 @@ import gtnhlanth.common.tileentity.recipe.beamline.BeamlineRecipeLoader;
 import gtnhlanth.util.DescTextLocalization;
 import gtnhlanth.util.Util;
 
-public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotron> implements ISurvivalConstructable {
+public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotron>
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     private static final IStructureDefinition<MTESynchrotron> STRUCTURE_DEFINITION;
 
@@ -459,7 +461,7 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
                 .addElement('k', Casings.SuperconductingCoilBlock.asElement())
                 .addElement('d', ofBlock(LanthItemList.COOLANT_DELIVERY_CASING, 0))
                 // Adder overriden due to ExoticEnergy originally calling its own adder, giving false positives
-                .addElement('e', buildHatchAdder(MTESynchrotron.class).atLeast(ImmutableMap.of(Energy.or(ExoticEnergy), 4)).adder(MTESynchrotron::addEnergyInputToMachineList).hint(6).casingIndex(ShieldedAccCasingTextureID).build())
+                .addElement('e', buildHatchAdder(MTESynchrotron.class).atLeast(ImmutableMap.of(Energy.or(ExoticEnergy), 4)).adder(MTESynchrotron::addEnergyInputToMachineList).hint(4).casingIndex(ShieldedAccCasingTextureID).build())
                 .addElement('n', ofBlock(LanthItemList.NIOBIUM_CAVITY_CASING, 0))
                 .addElement('a', GTStructureChannels.SYNCHROTRON_ANTENNA.use(StructureUtility.ofBlocksTiered(
                 		MTESynchrotron::getAntennaBlockTier,
@@ -467,15 +469,15 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
                 				Pair.of(LanthItemList.ANTENNA_CASING_T1, 0),
                 				Pair.of(LanthItemList.ANTENNA_CASING_T2, 0)),
                 		-1, MTESynchrotron::setAntennaTier, MTESynchrotron::getAntennaTier)))
-                .addElement('i', buildHatchAdder(MTESynchrotron.class).atLeast(ImmutableMap.of(InputHatch, 2)).hint(4).casingIndex(ShieldedAccCasingTextureID).build())
-                .addElement('o', buildHatchAdder(MTESynchrotron.class).atLeast(ImmutableMap.of(OutputHatch, 2)).hint(5).casingIndex(ShieldedAccCasingTextureID).build())
+                .addElement('i', buildHatchAdder(MTESynchrotron.class).atLeast(ImmutableMap.of(InputHatch, 2)).hint(2).casingIndex(ShieldedAccCasingTextureID).build())
+                .addElement('o', buildHatchAdder(MTESynchrotron.class).atLeast(ImmutableMap.of(OutputHatch, 2)).hint(3).casingIndex(ShieldedAccCasingTextureID).build())
                 .addElement('v', buildHatchAdder(MTESynchrotron.class).atLeast(BeamlineInput).casingIndex(ShieldedAccCasingTextureID)
                         .hint(1).build())
                 .addElement('b', buildHatchAdder(MTESynchrotron.class).atLeast(BeamlineOutput).casingIndex(ShieldedAccCasingTextureID)
-                        .hint(2).build())
+                        .hint(6).build())
                 .addElement('g', chainAllGlasses(-1, (te, t) -> te.glassTier = t, te -> te.glassTier))
                 .addElement('j',
-                		buildHatchAdder(MTESynchrotron.class).atLeast(Maintenance).hint(3).casingIndex(ShieldedAccCasingTextureID)
+                		buildHatchAdder(MTESynchrotron.class).atLeast(Maintenance).hint(5).casingIndex(ShieldedAccCasingTextureID)
                 		.buildAndChain(Casings.ShieldedAcceleratorCasing.asElement()))
                 .build();
     }
@@ -522,23 +524,29 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
             .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.synch.info13"))
             .addSeparator()
             .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.synch.info14"))
-            .addTecTechHatchInfo()
-            .beginStructureBlock(36, 7, 34, true)
+            .addSupportAny()
+            .beginStructureBlock(34, 36, 7, true)
             .addController("Front center")
-            .addCasingInfoExactly(Casings.ShieldedAcceleratorCasing.getLocalizedName(), 676, false)
-            .addCasingInfoExactly(Casings.SuperdenseCastingBasinCasing.getLocalizedName(), 90, false)
-            .addCasingInfoExactly(LanthItemList.NIOBIUM_CAVITY_CASING.getLocalizedName(), 64, false)
-            .addCasingInfoExactly(LanthItemList.COOLANT_DELIVERY_CASING.getLocalizedName(), 28, false)
-            .addCasingInfoExactly("Any Tiered Glass (LuV+)", 16, false)
-            .addCasingInfoExactly("Antenna Casing (must match)", 4, true)
-            .addOtherStructurePart(StatCollector.translateToLocal("gtnhlanth.tt.hatch.beaminput"), addHintNumber(1))
-            .addOtherStructurePart(StatCollector.translateToLocal("gtnhlanth.tt.hatch.beamoutput"), addHintNumber(2))
-            .addMaintenanceHatch(addHintNumber(3))
-            .addInputHatch(addHintNumber(4))
-            .addOutputHatch(addHintNumber(5))
-            .addEnergyHatch(addHintNumber(6))
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
-            .addSubChannelUsage(GTStructureChannels.SYNCHROTRON_ANTENNA)
+            .addCasing("1690", Casings.ShieldedAcceleratorCasing.getLocalizedName(), false)
+            .addCasing("90", "Superconducting Coil Block", false)
+            .addCasing("64", LanthItemList.NIOBIUM_CAVITY_CASING.getLocalizedName(), false)
+            .addCasing("28", LanthItemList.COOLANT_DELIVERY_CASING.getLocalizedName(), false)
+            .addCasing("16", "LuV+ Tiered Glass", false)
+            .addCasing("4", "Antenna Casing", true)
+            .addMiscHatch("1", StatCollector.translateToLocal("gtnhlanth.tt.hatch.beaminput"), "Left of controller", 1)
+            .addMiscHatch(
+                "1",
+                StatCollector.translateToLocal("gtnhlanth.tt.hatch.beamoutput"),
+                "Right and back of controller",
+                6)
+            .addEnergyHatch("4", "Above each antenna casings", 4)
+            .addMaintenanceHatch("1", "Around controller", 5)
+            .addInputHatch("2", "Between the energy hatches", 2)
+            .addOutputHatch("2", "Opposite the input hatches", 3)
+            .addAir("Interior of the structure")
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.BOROGLASS)
+            .addSubChannel(GTStructureChannels.SYNCHROTRON_ANTENNA)
             .toolTipFinisher();
         return tt;
     }
@@ -758,9 +766,9 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
                     max(this.mEnergyHatches.size(), this.mExoticEnergyHatches.size()),
                     4));
         }
+        checkHasMaintenanceHatch(errors);
         checkHatchMin(errors, InputHatch, 2);
         checkHatchMin(errors, OutputHatch, 2);
-        checkHasMaintenanceHatch(errors);
         if (glassTier < VoltageIndex.LuV) {
             errors.add(StructureErrors.glassTierNotEnough(VoltageIndex.LuV));
         }
@@ -784,36 +792,22 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-        int aColorIndex, boolean active, boolean aRedstone) {
-        // Placeholder
-        if (side == facing) {
-            if (active) return new ITexture[] { Casings.ShieldedAcceleratorCasing.getCasingTexture(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_OIL_CRACKER_ACTIVE)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_OIL_CRACKER_ACTIVE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { Casings.ShieldedAcceleratorCasing.getCasingTexture(), TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_OIL_CRACKER)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_OIL_CRACKER_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-        }
-        return new ITexture[] { Casings.ShieldedAcceleratorCasing.getCasingTexture() };
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            OVERLAY_FRONT_OIL_CRACKER,
+            OVERLAY_FRONT_OIL_CRACKER_GLOW,
+            OVERLAY_FRONT_OIL_CRACKER_ACTIVE,
+            OVERLAY_FRONT_OIL_CRACKER_ACTIVE_GLOW);
     }
 
     @Override
-    public String[] getStructureDescription(ItemStack arg0) {
-        return DescTextLocalization.addText("Synchrotron.hint", 12);
+    public ITexture getCasingTexture() {
+        return Casings.ShieldedAcceleratorCasing.getCasingTexture();
     }
 
     @Override
@@ -834,118 +828,39 @@ public class MTESynchrotron extends MTEExtendedPowerMultiBlockBase<MTESynchrotro
 
         return new String[] {
             // from super()
-            /* 1 */ StatCollector.translateToLocal("GT5U.multiblock.Progress") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(mProgresstime / 20)
-                + EnumChatFormatting.RESET
-                + " s / "
-                + EnumChatFormatting.YELLOW
-                + formatNumber(mMaxProgresstime / 20)
-                + EnumChatFormatting.RESET
-                + " s",
-            /* 2 */ StatCollector.translateToLocal("GT5U.multiblock.energy") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(storedEnergy)
-                + EnumChatFormatting.RESET
-                + " EU / "
-                + EnumChatFormatting.YELLOW
-                + formatNumber(maxEnergy)
-                + EnumChatFormatting.RESET
-                + " EU",
-            /* 3 */ StatCollector.translateToLocal("GT5U.multiblock.usage") + ": "
-                + EnumChatFormatting.RED
-                + formatNumber(getActualEnergyUsage())
-                + EnumChatFormatting.RESET
-                + " EU/t",
-            /* 4 */ StatCollector.translateToLocal("GT5U.multiblock.mei") + ": "
-                + EnumChatFormatting.YELLOW
-                + formatNumber(getAverageInputVoltage())
-                + EnumChatFormatting.RESET
-                + " EU/t(*"
-                + getMaxInputAmps()
-                + "A)"
-                + StatCollector.translateToLocal("GT5U.machines.tier")
-                + ": "
-                + EnumChatFormatting.YELLOW
-                + VN[GTUtility.getTier(getAverageInputVoltage())]
-                + EnumChatFormatting.RESET,
-            /* 5 */ StatCollector.translateToLocal("GT5U.multiblock.problems") + ": "
-                + EnumChatFormatting.RED
-                + (getIdealStatus() - getRepairStatus())
-                + EnumChatFormatting.RESET
-                + " "
-                + StatCollector.translateToLocal("GT5U.multiblock.efficiency")
-                + ": "
-                + EnumChatFormatting.YELLOW
-                + mEfficiency / 100.0F
-                + EnumChatFormatting.RESET
-                + " %",
+            /* 1 */ IGregTechDeviceInformation.encode(
+                "GT5U.multiblock.Progress.fmt.s",
+                formatNumber(mProgresstime / 20),
+                formatNumber(mMaxProgresstime / 20)),
+            /* 2 */ IGregTechDeviceInformation
+                .encode("GT5U.multiblock.energy.fmt", formatNumber(storedEnergy), formatNumber(maxEnergy)),
+            /* 3 */ IGregTechDeviceInformation
+                .encode("GT5U.multiblock.usage.fmt", formatNumber(getActualEnergyUsage())),
+            /* 4 */ IGregTechDeviceInformation.encode(
+                "GT5U.multiblock.mei.fmt.xA",
+                formatNumber(getAverageInputVoltage()),
+                getMaxInputAmps(),
+                VN[GTUtility.getTier(getAverageInputVoltage())]),
+            /* 5 */ IGregTechDeviceInformation.encode(
+                "GT5U.multiblock.problems.efficiency.fmt",
+                getIdealStatus() - getRepairStatus(),
+                mEfficiency / 100.0F + " %"),
             /* 6 Pollution not included */
-            /* 7 */ GTUtility.translate("GT5U.multiblock.recipesDone", formatNumber(recipesDone)),
+            /* 7 */ IGregTechDeviceInformation.encode("GT5U.multiblock.recipesDone.fmt", formatNumber(recipesDone)),
             // Beamline-specific
-            EnumChatFormatting.BOLD + StatCollector.translateToLocal("beamline.info") + ": " + EnumChatFormatting.RESET,
-            StatCollector.translateToLocal("beamline.focus") + ": " // Machine Focus:
-                + EnumChatFormatting.BLUE
-                + machineFocus
-                + " "
-                + EnumChatFormatting.RESET,
-            StatCollector.translateToLocal("beamline.temperature") + ": " // Temperature:
-                + EnumChatFormatting.DARK_RED
-                + machineTemp
-                + EnumChatFormatting.RESET
-                + " K", // e.g. "137 K"
-            StatCollector.translateToLocal("beamline.coolusage") + ": " // Coolant Usage:
-                + EnumChatFormatting.AQUA
-                + 32
-                + EnumChatFormatting.RESET
-                + " kL/s", // 32 kL/s
-
-            EnumChatFormatting.BOLD + StatCollector.translateToLocal("beamline.in_pre")
-                + ": "
-                + EnumChatFormatting.RESET,
-            StatCollector.translateToLocal("beamline.particle") + ": " // "Multiblock Beamline Input:"
-                + EnumChatFormatting.GOLD
-                + Particle.getParticleFromId(information.getParticleId())
-                    .getLocalisedName() // e.g. "Electron
-                                        // (e-)"
-                + " "
-                + EnumChatFormatting.RESET,
-            StatCollector.translateToLocal("beamline.energy") + ": " // "Energy:"
-                + EnumChatFormatting.DARK_RED
-                + information.getEnergy()
-                + EnumChatFormatting.RESET
-                + " keV", // e.g. "10240 keV"
-            StatCollector.translateToLocal("beamline.focus") + ": " // "Focus:"
-                + EnumChatFormatting.BLUE
-                + information.getFocus()
-                + " "
-                + EnumChatFormatting.RESET,
-            StatCollector.translateToLocal("beamline.amount") + ": " // "Amount:"
-                + EnumChatFormatting.LIGHT_PURPLE
-                + information.getRate(),
-
-            EnumChatFormatting.BOLD + StatCollector.translateToLocal("beamline.out_pre")
-                + ": "
-                + EnumChatFormatting.RESET,
-            StatCollector.translateToLocal("beamline.particle") + ": " // "Multiblock Beamline Output:"
-                + EnumChatFormatting.GOLD
-                + Particle.getParticleFromId(this.outputParticleID)
-                    .getLocalisedName()
-                + " "
-                + EnumChatFormatting.RESET,
-            StatCollector.translateToLocal("beamline.energy") + ": " // "Energy:"
-                + EnumChatFormatting.DARK_RED
-                + this.outputEnergy * 1000
-                + EnumChatFormatting.RESET
-                + " eV",
-            StatCollector.translateToLocal("beamline.focus") + ": " // "Focus:"
-                + EnumChatFormatting.BLUE
-                + this.outputFocus
-                + " "
-                + EnumChatFormatting.RESET,
-            StatCollector.translateToLocal("beamline.amount") + ": " // "Amount:"
-                + EnumChatFormatting.LIGHT_PURPLE
-                + this.outputRate };
+            "beamline.info.hdr", IGregTechDeviceInformation.encode("beamline.focus.fmt", machineFocus),
+            IGregTechDeviceInformation.encode("beamline.temperature.fmt", machineTemp),
+            IGregTechDeviceInformation.encode("beamline.coolusage.fmt", 32), "beamline.in_pre.hdr",
+            Particle.getParticleFromId(information.getParticleId())
+                .encodeInfoData(),
+            IGregTechDeviceInformation.encode("beamline.energy.keV.fmt", information.getEnergy()),
+            IGregTechDeviceInformation.encode("beamline.focus.fmt", information.getFocus()),
+            IGregTechDeviceInformation.encode("beamline.amount.fmt", information.getRate()), "beamline.out_pre.hdr",
+            Particle.getParticleFromId(this.outputParticleID)
+                .encodeInfoData(),
+            IGregTechDeviceInformation.encode("beamline.energy.eV.fmt", this.outputEnergy * 1000),
+            IGregTechDeviceInformation.encode("beamline.focus.fmt", this.outputFocus),
+            IGregTechDeviceInformation.encode("beamline.amount.fmt", this.outputRate) };
     }
 
     @Override

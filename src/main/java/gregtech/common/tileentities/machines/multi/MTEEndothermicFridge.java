@@ -66,7 +66,6 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -218,49 +217,34 @@ public class MTEEndothermicFridge extends MTEExtendedPowerMultiBlockBase<MTEEndo
             .addInfo(getCoolantTextFormatted("Molten Spacetime", 2))
             .addInfo(getCoolantTextFormatted("Molten Eternity", 3))
             .addSeparator()
-            .addTecTechHatchInfo()
+            .addSupportAny()
             .addUnlimitedTierSkips()
             .addSeparator()
             .addInfo(EnumChatFormatting.ITALIC + "" + EnumChatFormatting.AQUA + "... without the other!")
-            .beginStructureBlock(23, 16, 23, false)
+            .beginStructureBlock(23, 23, 16, true)
             .addController("Front center, 4th layer")
-            .addCasingInfoMin("Fridge Casing", 750, false)
-            .addCasingInfoExactly("Tungstensteel Reinforced Block", 148, false)
-            .addCasingInfoExactly("Tungstensteel Pipe Casing", 148, false)
-            .addCasingInfoExactly("Callisto Ice Frame Box", 146, false)
-            .addCasingInfoExactly("Robust Tungstensteel Machine Casing", 135, false)
-            .addCasingInfoExactly("Coolant Duct", 51, false)
-            .addCasingInfoExactly("Ledox Sheetmetal", 40, false)
-            .addCasingInfoExactly("Any Tiered Glass", 18, false)
-            .addStructureInfo(EnumChatFormatting.BLUE + "Tier 1 Structure:")
-            .addCasingInfoExactlyColored(
-                "Frost Proof Machine Casing",
-                EnumChatFormatting.GRAY,
-                351,
-                EnumChatFormatting.GOLD,
-                false)
-            .addStructureInfo(EnumChatFormatting.BLUE + "Tier 2 Structure:")
-            .addStructureInfo(EnumChatFormatting.GRAY + "Replace Frost Proof Machine Casing on")
-            .addStructureInfo("layers 1-3 with Infinity Cooled Casing")
-            .addCasingInfoExactlyColored(
-                "Frost Proof Machine Casing",
-                EnumChatFormatting.GRAY,
-                143,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored(
-                "Infinity Cooled Casing",
-                EnumChatFormatting.GRAY,
-                208,
-                EnumChatFormatting.GOLD,
-                false)
-            .addInputBus("Any Fridge Casing", 1)
-            .addOutputBus("Any Fridge Casing", 1)
-            .addInputHatch("Any Fridge Casing", 1)
-            .addOutputHatch("Any Fridge Casing", 1)
-            .addEnergyHatch("Any Fridge Casing", 1)
-            .addMaintenanceHatch("Any Fridge Casing", 1)
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .addCasing("750-773", "Fridge Casing", false)
+            .addCasing("148", "Tungstensteel Reinforced Block", false)
+            .addCasing("148", "Tungstensteel Pipe Casing", false)
+            .addCasing("146", "Callisto Ice Frame Box", false)
+            .addCasing("135", "Robust Tungstensteel Machine Casing", false)
+            .addCasing("51", "Coolant Duct", false)
+            .addCasing("40", "Ledox Sheetmetal", false)
+            .addCasing("18", "Any Tiered Glass", false)
+            .addEnergyHatch("1+", "Any fridge casing", 1)
+            .addMaintenanceHatch("1", "Any fridge casing", 1)
+            .addInputAny("1+", "Any fridge casing", 1)
+            .addOutputAny("1+", "Any fridge casing", 1)
+            .addStructureInfo("")
+            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Tiers.One"))
+            .addCasing("351", "Frost Proof Machine Casing", false)
+            .addStructureInfo("")
+            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Tiers.Two"))
+            .addCasing("208", "Infinity Cooled Casing", false)
+            .addCasing("143", "Frost Proof Machine Casing", false)
+            .addStructureInfo("")
+            .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.structuretier"))
+            .addSubChannel(GTStructureChannels.BOROGLASS)
             .addStructureAuthors("Pix3lated")
             .toolTipFinisher();
         return tt;
@@ -381,10 +365,10 @@ public class MTEEndothermicFridge extends MTEExtendedPowerMultiBlockBase<MTEEndo
         machineTier = -1;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, HORIZONTAL_OFFSET, VERTICAL_OFFSET, DEPTH_OFFSET, errors)) return;
         checkCasingMin(errors, casingAmount, 750);
+        checkHasAnyEnergy(errors);
+        checkHasMaintenanceHatch(errors);
         checkHasAnyInput(errors);
         checkHasAnyOutput(errors);
-        checkHasMaintenanceHatch(errors);
-        checkHasAnyEnergy(errors);
     }
 
     public BoosterFluid findBoosterFluid() {
@@ -549,35 +533,17 @@ public class MTEEndothermicFridge extends MTEExtendedPowerMultiBlockBase<MTEEndo
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
-        ITexture[] rTexture;
-        if (side == aFacing) {
-            if (aActive) {
-                rTexture = new ITexture[] { getCasingTexture(), TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_FRIDGE_ACTIVE)
-                    .extFacing()
-                    .build(),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_FRIDGE_ACTIVE_GLOW)
-                        .extFacing()
-                        .glow()
-                        .build() };
-            } else {
-                rTexture = new ITexture[] { getCasingTexture(), TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_FRIDGE)
-                    .extFacing()
-                    .build(),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_FRIDGE_GLOW)
-                        .extFacing()
-                        .glow()
-                        .build() };
-            }
-        } else {
-            rTexture = new ITexture[] { getCasingTexture() };
-        }
-        return rTexture;
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            OVERLAY_FRONT_FRIDGE,
+            OVERLAY_FRONT_FRIDGE_GLOW,
+            OVERLAY_FRONT_FRIDGE_ACTIVE,
+            OVERLAY_FRONT_FRIDGE_ACTIVE_GLOW);
     }
 
     @Override

@@ -26,6 +26,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
@@ -39,7 +40,7 @@ import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class MTEIndustrialFormingPress extends MTEExtendedPowerMultiBlockBase<MTEIndustrialFormingPress>
-    implements ISurvivalConstructable {
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     private int casingAmount;
     private static final int OFFSET_X = 2;
@@ -85,19 +86,19 @@ public class MTEIndustrialFormingPress extends MTEExtendedPowerMultiBlockBase<MT
         tt.addMachineType("Forming Press, IFP")
             .addBulkMachineInfo(6, 6f, 1f)
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(5, 5, 3, false)
+            .beginStructureBlock(3, 5, 5, false)
             .addController("Front bottom center")
-            .addCasingInfoMin("Metalworking Machine Casing", 5, false)
-            .addCasingInfoExactly("Titanium Frame Box", 6, false)
-            .addCasingInfoExactly("Steel Pipe Casing", 6, false)
-            .addCasingInfoExactly("Forming Core", 5, false)
-            .addCasingInfoExactly("Titanium Gear Box Casing", 1, false)
-            .addInputHatch("Metalworking Machine Casing", 1)
-            .addInputBus("Metalworking Machine Casing", 1)
-            .addOutputBus("Metalworking Machine Casing", 1)
-            .addEnergyHatch("Metalworking Machine Casing", 1)
-            .addMaintenanceHatch("Metalworking Machine Casing", 1)
-            .addMufflerHatch("Metalworking Machine Casing", 1)
+            .addCasing("5-20", "Metalworking Machine Casing", false)
+            .addCasing("6", "Titanium Frame Box", false)
+            .addCasing("6", "Steel Pipe Casing", false)
+            .addCasing("5", "Forming Core", false)
+            .addCasing("1", "Titanium Gear Box Casing", false)
+            .addEnergyHatch("1+", "Any machine casing", 1)
+            .addMaintenanceHatch("1", "Any machine casing", 1)
+            .addMufflerHatch("1", "Any machine casing", 1)
+            .addInputBus("1+", "Any machine casing", 1)
+            .addInputHatch("0+", "Any machine casing", 1)
+            .addOutputBus("1+", "Any machine casing", 1)
             .addStructureAuthors(EnumChatFormatting.GOLD + "barnac")
             .toolTipFinisher();
         return tt;
@@ -170,6 +171,11 @@ public class MTEIndustrialFormingPress extends MTEExtendedPowerMultiBlockBase<MT
                     .build() };
         }
         return new ITexture[] { Casings.MaterialPressCasing.getCasingTexture() };
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Casings.MaterialPressCasing.getCasingTexture();
     }
 
     @Override

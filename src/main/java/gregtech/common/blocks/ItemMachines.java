@@ -25,6 +25,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
@@ -36,6 +37,7 @@ import net.minecraftforge.fluids.IFluidContainerItem;
 
 import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 
+import appeng.me.helpers.AENetworkProxy;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
@@ -50,6 +52,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.ILocalizedMetaPipeEntity;
 import gregtech.api.metatileentity.BaseTileEntity;
 import gregtech.api.metatileentity.CoverableTileEntity;
+import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEFluidPipe;
 import gregtech.api.util.GTItsNotMyFaultException;
 import gregtech.api.util.GTLanguageManager;
@@ -269,6 +272,12 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
                     tTileEntity.setOwnerName(aPlayer.getDisplayName());
                     tTileEntity.setOwnerUuid(aPlayer.getUniqueID());
                 }
+                if (tTileEntity.getMetaTileEntity() instanceof MetaTileEntity mte) {
+                    AENetworkProxy proxy = mte.getProxy();
+                    if (proxy != null) {
+                        proxy.setOwner(aPlayer);
+                    }
+                }
                 tTileEntity.setFrontFacing(
                     BaseTileEntity.getSideForPlayerPlacing(aPlayer, ForgeDirection.UP, tTileEntity.getValidFacings()));
                 final ForgeDirection oppositeSide = side.getOpposite();
@@ -303,9 +312,10 @@ public class ItemMachines extends ItemBlock implements IFluidContainerItem {
         if ((GTUtility.isStackInList(offHand, GregTechAPI.sWrenchList))) {
             ForgeDirection oppositeSide = side.getOpposite();
             if (player.isSneaking()) {
-                IGregTechTileEntity adjTile = (IGregTechTileEntity) pipe.getBaseMetaTileEntity()
+                TileEntity adjTile = pipe.getBaseMetaTileEntity()
                     .getTileEntityAtSide(oppositeSide);
-                if (adjTile.getMetaTileEntity() instanceof MTEFluidPipe adjPipe) {
+                if (adjTile instanceof IGregTechTileEntity adjGTile
+                    && adjGTile.getMetaTileEntity() instanceof MTEFluidPipe adjPipe) {
                     adjPipe.mDisableInput |= (byte) side.flag;
                 }
             } else {

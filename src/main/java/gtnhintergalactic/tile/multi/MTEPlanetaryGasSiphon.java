@@ -12,6 +12,7 @@ import static gregtech.api.util.GTStructureUtility.activeCoils;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.ofCoil;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
+import static gtnhintergalactic.recipe.GasSiphonRecipes.calculateEUt;
 
 import java.util.List;
 import java.util.Map;
@@ -49,6 +50,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IChunkLoader;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
@@ -219,7 +221,7 @@ public class MTEPlanetaryGasSiphon extends MTEExtendedPowerMultiBlockBase<MTEPla
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(GTUtility.translate("gt.blockmachines.multimachine.ig.siphon.type"));
+        tt.addMachineType(StatCollector.translateToLocal("gt.blockmachines.multimachine.ig.siphon.type"));
         if (TooltipUtil.siphonLoreText != null) {
             tt.addInfo(EnumChatFormatting.ITALIC + TooltipUtil.siphonLoreText);
         }
@@ -230,22 +232,23 @@ public class MTEPlanetaryGasSiphon extends MTEExtendedPowerMultiBlockBase<MTEPla
                 + "%"
                 + EnumChatFormatting.GRAY
                 + " speed bonus per coil tier");
-        tt.addInfo(GTUtility.translate("gt.blockmachines.multimachine.ig.siphon.desc1"))
-            .addInfo(GTUtility.translate("gt.blockmachines.multimachine.ig.siphon.desc2"))
-            .addInfo(GTUtility.translate("gt.blockmachines.multimachine.ig.siphon.desc3"))
-            .addInfo(GTUtility.translate("gt.blockmachines.multimachine.ig.siphon.desc4"))
-            .addInfo(GTUtility.translate("gt.blockmachines.multimachine.ig.siphon.desc5"))
-            .beginStructureBlock(13, 23, 13, false)
-            .addController(GTUtility.translate("ig.siphon.structure.ControllerPos"))
-            .addCasingInfoMin(GTUtility.translate("ig.siphon.structure.SiphonCasing"), 175, false)
-            .addCasingInfoExactly(GTUtility.translate("ig.siphon.structure.ReboltedRhodiumPalladiumCasing"), 6, false)
-            .addCasingInfoExactly(GTUtility.translate("ig.siphon.structure.FrameTungstensteel"), 93, false)
-            .addCasingInfoExactly("Heating Coil", 12, true)
-            .addEnergyHatch(GTUtility.translate("ig.siphon.structure.AnySiphonCasing"), 1)
-            .addMaintenanceHatch(GTUtility.translate("ig.siphon.structure.AnySiphonCasing"), 1)
-            .addInputBus(GTUtility.translate("ig.siphon.structure.AnySiphonCasing"), 1)
-            .addOutputHatch(GTUtility.translate("ig.siphon.structure.AnySiphonCasing"), 1)
-            .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
+        tt.addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.ig.siphon.desc1"))
+            .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.ig.siphon.desc2"))
+            .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.ig.siphon.desc3"))
+            .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.ig.siphon.desc4"))
+            .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.ig.siphon.desc5"))
+            .beginStructureBlock(13, 13, 23, false)
+            .addController(StatCollector.translateToLocal("ig.siphon.structure.ControllerPos"))
+            .addCasing("184", StatCollector.translateToLocal("ig.siphon.structure.SiphonCasing"), false)
+            .addCasing("93", StatCollector.translateToLocal("ig.siphon.structure.FrameTungstensteel"), false)
+            .addCasing("12", "Heating Coil", true)
+            .addCasing("6", StatCollector.translateToLocal("ig.siphon.structure.ReboltedRhodiumPalladiumCasing"), false)
+            .addEnergyHatch("1", StatCollector.translateToLocal("ig.siphon.structure.AnySiphonCasing"), 1)
+            .addMaintenanceHatch("1", StatCollector.translateToLocal("ig.siphon.structure.AnySiphonCasing"), 1)
+            .addInputBus("1", StatCollector.translateToLocal("ig.siphon.structure.AnySiphonCasing"), 1)
+            .addOutputHatch("1", StatCollector.translateToLocal("ig.siphon.structure.AnySiphonCasing"), 1)
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.HEATING_COIL)
             .addStructureAuthors(EnumChatFormatting.GOLD + "hugetrust")
             .toolTipFinisher();
         return tt;
@@ -305,7 +308,7 @@ public class MTEPlanetaryGasSiphon extends MTEExtendedPowerMultiBlockBase<MTEPla
             return SimpleCheckRecipeResult.ofFailure("no_space_station");
         }
 
-        Map<Integer, FluidStack> planetRecipes = GasSiphonRecipes.RECIPES.get(provider.getPlanetToOrbit());
+        Map<Integer, FluidStack> planetRecipes = GasSiphonRecipes.RECIPES.get(provider.getPlanetToOrbit()).depths;
         if (planetRecipes == null) {
             resetMachine();
             return CheckRecipeResultRegistry.NO_RECIPE;
@@ -366,8 +369,10 @@ public class MTEPlanetaryGasSiphon extends MTEExtendedPowerMultiBlockBase<MTEPla
             return CheckRecipeResultRegistry.FLUID_OUTPUT_FULL;
         }
 
-        int recipeEUt = depth * (4 << (2 * provider.getCelestialBody()
-            .getTierRequirement() + 2));
+        int recipeEUt = calculateEUt(
+            depth,
+            provider.getCelestialBody()
+                .getTierRequirement());
         int ocLevel = MathHelper.floor_double(Math.log10((double) this.getMaxInputVoltage() / recipeEUt) / LOG4);
 
         if (ocLevel < 0) {
@@ -475,19 +480,14 @@ public class MTEPlanetaryGasSiphon extends MTEExtendedPowerMultiBlockBase<MTEPla
 
     @Override
     public String[] getInfoData() {
-        return new String[] { EnumChatFormatting.LIGHT_PURPLE + "Operational Data:" + EnumChatFormatting.RESET,
-            "Depth: " + EnumChatFormatting.YELLOW + depth + EnumChatFormatting.RESET,
-            "Fluid: " + EnumChatFormatting.YELLOW
-                + fluid.amount
-                + EnumChatFormatting.RESET
-                + "L/s "
-                + EnumChatFormatting.BLUE
-                + fluid.getLocalizedName()
-                + EnumChatFormatting.RESET,
-            "EU/t required: " + EnumChatFormatting.YELLOW + formatNumber(-lEUt) + EnumChatFormatting.RESET + " EU/t",
-            "Maintenance Status: " + (getRepairStatus() == getIdealStatus()
-                ? EnumChatFormatting.GREEN + "Working perfectly" + EnumChatFormatting.RESET
-                : EnumChatFormatting.RED + "Has problems" + EnumChatFormatting.RESET),
+        return new String[] { "ig.infodata.hdr.operational_data",
+            IGregTechDeviceInformation.encode("ig.infodata.gas_siphon.depth.fmt", depth),
+            IGregTechDeviceInformation.encode(
+                "ig.infodata.gas_siphon.fluid.fmt",
+                fluid.amount,
+                IGregTechDeviceInformation.translatable(fluid.getUnlocalizedName())),
+            IGregTechDeviceInformation.encode("ig.infodata.gas_siphon.eu_required.fmt", formatNumber(-lEUt)),
+            getRepairStatus() == getIdealStatus() ? "ig.infodata.maintenance.ok" : "ig.infodata.maintenance.problems",
             "---------------------------------------------" };
     }
 

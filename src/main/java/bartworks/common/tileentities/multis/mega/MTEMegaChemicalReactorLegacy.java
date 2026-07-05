@@ -86,7 +86,7 @@ public class MTEMegaChemicalReactorLegacy extends MegaMultiBlockBase<MTEMegaChem
             .addStaticParallelInfo(Configuration.Multiblocks.megaMachinesMax)
             .addPerfectOCInfo()
             .addSeparator()
-            .addTecTechHatchInfo()
+            .addSupportAny()
             .addMinGlassForLaser(VoltageIndex.UV)
             .addGlassEnergyLimitInfo()
             .addUnlimitedTierSkips()
@@ -102,7 +102,7 @@ public class MTEMegaChemicalReactorLegacy extends MegaMultiBlockBase<MTEMegaChem
             .addInputBus("Hint block ", 1)
             .addOutputBus("Hint block ", 1)
             .addOutputHatch("Hint block ", 1)
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         return tt;
     }
@@ -199,7 +199,7 @@ public class MTEMegaChemicalReactorLegacy extends MegaMultiBlockBase<MTEMegaChem
             }
         }
         for (MTEHatch mEnergyHatch : this.getExoticAndNormalEnergyHatchList()) {
-            if (this.glassTier < mEnergyHatch.mTier) {
+            if (this.glassTier < mEnergyHatch.getTierForStructure()) {
                 errors.add(StructureErrorRegistry.ENERGY_TIER_EXCEED_GLASS);
                 break;
             }

@@ -23,12 +23,11 @@ public class MTEHatchSolidifierGui extends MTEHatchBaseGui<MTEHatchSolidifier> {
             .childPadding(1);
 
         mainRow.child(createScreen(panel, syncManager, machine.getFluidTank()));
-        mainRow.child(createIO(panel, syncManager, machine.getInputSlot(), machine.getOutputSlot()));
+        mainRow.child(
+            createIO(panel, syncManager, machine.getInputSlot(), machine.getOutputSlot(), machine.getFluidTank()));
         mainRow.child(
             new GhostMoldSlotWidget(machine, syncManager)
-                .slot(
-                    new ModularSlot(machine.inventoryHandler, MTEHatchSolidifier.moldSlot)
-                        .filter(itemStack -> machine.findMatchingMoldIndex(itemStack) != -1))
+                .slot(new ModularSlot(machine.inventoryHandler, MTEHatchSolidifier.moldSlot))
                 .marginLeft(SLOT_SIZE * 3 / 2));
 
         return super.createContentSection(panel, syncManager).child(mainRow);

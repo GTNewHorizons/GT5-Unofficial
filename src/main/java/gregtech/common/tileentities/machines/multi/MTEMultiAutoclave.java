@@ -15,6 +15,7 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_AUTOCLA
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_AUTOCLAVE_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_AUTOCLAVE_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_MULTI_AUTOCLAVE_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.getCasingTextureForId;
 import static gregtech.api.util.GTStructureUtility.activeCoils;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
@@ -54,13 +55,13 @@ import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -71,7 +72,7 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAutoclave>
-    implements ISurvivalConstructable {
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     public MTEMultiAutoclave(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -208,24 +209,23 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
             .addDynamicParallelInfo(12, TooltipTier.ITEM_PIPE_CASING)
             .addDynamicSpeedBonusInfo(0.25f, TooltipTier.COIL)
             .addDynamicEuEffInfo(0.0833f, TooltipTier.PIPE_CASING)
-            .beginStructureBlock(7, 7, 9, true)
+            .beginStructureBlock(9, 7, 7, true)
             .addController("Front bottom center")
-            .addCasingInfoMin("Pressure Containment Casing", 128, false)
-            .addCasingInfoExactly("Any Tiered Glass", 42, false)
-            .addCasingInfoExactly("Item Pipe Casing", 7, true)
-            .addCasingInfoExactly("Pipe Casing", 14, true)
-            .addCasingInfoExactly("Heating Coil", 7, true)
-            .addCasingInfoExactly("PTFE Frame", 42, false)
-            .addInputBus("Any Pressure Containment Casing", 1)
-            .addOutputBus("Any Pressure Containment Casing", 1)
-            .addInputHatch("Any Pressure Containment Casing", 1)
-            .addOutputHatch("Any Pressure Containment Casing", 1)
-            .addEnergyHatch("Any Pressure Containment Casing", 1)
-            .addMaintenanceHatch("Any Pressure Containment Casing", 1)
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
-            .addSubChannelUsage(GTStructureChannels.ITEM_PIPE_CASING)
-            .addSubChannelUsage(GTStructureChannels.PIPE_CASING)
-            .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
+            .addCasing("128-148", "Pressure Containment Casing", false)
+            .addCasing("42", "PTFE Frame Box", false)
+            .addCasing("42", "Any Tiered Glass", false)
+            .addCasing("14", "Pipe Casing", true)
+            .addCasing("7", "Item Pipe Casing", true)
+            .addCasing("7", "Heating Coil", true)
+            .addEnergyHatch("1+", "Any containment casing", 1)
+            .addMaintenanceHatch("1", "Any containment casing", 1)
+            .addInputAny("1+", "Any containment casing", 1)
+            .addOutputAny("1+", "Any containment casing", 1)
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.BOROGLASS)
+            .addSubChannel(GTStructureChannels.PIPE_CASING)
+            .addSubChannel(GTStructureChannels.ITEM_PIPE_CASING)
+            .addSubChannel(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher(AuthorVolence);
         return tt;
     }
@@ -252,42 +252,22 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
-        ITexture[] rTexture;
-        if (side == aFacing) {
-            if (aActive) {
-                rTexture = new ITexture[] {
-                    Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 3)),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_AUTOCLAVE_ACTIVE)
-                        .extFacing()
-                        .build(),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_AUTOCLAVE_ACTIVE_GLOW)
-                        .extFacing()
-                        .glow()
-                        .build() };
-            } else {
-                rTexture = new ITexture[] {
-                    Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 3)),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_AUTOCLAVE)
-                        .extFacing()
-                        .build(),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_AUTOCLAVE_GLOW)
-                        .extFacing()
-                        .glow()
-                        .build() };
-            }
-        } else {
-            rTexture = new ITexture[] { Textures.BlockIcons
-                .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 3)) };
-        }
-        return rTexture;
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            OVERLAY_FRONT_MULTI_AUTOCLAVE,
+            OVERLAY_FRONT_MULTI_AUTOCLAVE_GLOW,
+            OVERLAY_FRONT_MULTI_AUTOCLAVE_ACTIVE,
+            OVERLAY_FRONT_MULTI_AUTOCLAVE_ACTIVE_GLOW);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings10, 3));
     }
 
     @Override

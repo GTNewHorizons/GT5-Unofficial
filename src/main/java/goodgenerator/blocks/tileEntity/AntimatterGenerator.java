@@ -37,6 +37,7 @@ import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatch;
@@ -375,20 +376,21 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase<Antimatt
             .addInfo("Switch the power destination to your wireless network with a screwdriver")
             .addInfo("Wireless mode requires Superconductor Base UMV to work")
             .addInfo("Wireless mode is still limited by hatch capacity")
-            .beginStructureBlock(35, 43, 35, false)
-            .addController("Front center, 2nd layer")
-            .addCasingInfoMin("Transcendentally Reinforced Borosilicate Glass", 1008, false)
-            .addCasingInfoMin("Magnetic Flux Casing", 4122, false)
-            .addCasingInfoMin("Gravity Stabilization Casing", 2418, false)
-            .addCasingInfoMin("Protomatter Activation Coil", 32, false)
-            .addCasingInfoMin("Antimatter Annihilation Matrix", 600, false)
-            .addCasingInfoMin("Naquadria Frame Box", 293, false)
-            .addCasingInfoMin("Advanced Filter Casing", 209, false)
-            .addInputHatch("2, Hint block number 1", 1)
-            .addOtherStructurePart(
-                StatCollector.translateToLocal("gg.structure.tooltip.laser_source_hatch"),
-                "1-64, Hint block number 2",
+            .beginStructureBlock(35, 35, 43, true)
+            .addController("Front bottom center, 2nd layer")
+            .addCasing("4127-4128", "Magnetic Flux Casing", false)
+            .addCasing("2481-2544", "Gravity Stabilization Casing", false)
+            .addCasing("1008", "Transcendentally Reinforced Borosilicate Glass Block", false)
+            .addCasing("600", "Antimatter Annihilation Matrix", false)
+            .addCasing("292", "Naquadria Frame Box", false)
+            .addCasing("209", "Advanced Filter Casing", false)
+            .addCasing("32", "Protomatter Activation Coil", false)
+            .addMiscHatch(
+                "1-64",
+                StatCollector.translateToLocal("GT5U.tooltip.structure.laser_source_hatch"),
+                "Any bottom leg casing",
                 2)
+            .addInputHatch("1-2", "Center side casings", 1)
             .toolTipFinisher();
         return tt;
     }
@@ -399,19 +401,18 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase<Antimatt
 
     @Override
     public void getExtraInfoData(List<String> info) {
+        info.add("gg.infodata.antimatter_generator.header");
         info.add(
-            StatCollector.translateToLocalFormatted("gui.AntimatterGenerator.0.s", formatNumber(this.euLastCycle)));
-
+            IGregTechDeviceInformation
+                .encode("gg.infodata.antimatter_generator.eu_produced", formatNumber(this.euLastCycle)));
         info.add(
-            StatCollector.translateToLocalFormatted(
-                "gui.AntimatterGenerator.1.s",
+            IGregTechDeviceInformation.encode(
+                "gg.infodata.antimatter_generator.efficiency",
                 formatNumber(Math.ceil(this.annihilationEfficiency * 100))));
-
         info.add(
-            StatCollector.translateToLocalFormatted(
-                "gui.AntimatterGenerator.2.s",
+            IGregTechDeviceInformation.encode(
+                "gg.infodata.antimatter_generator.efficiency.avg",
                 formatNumber(Math.ceil(this.avgEffCache * 100))));
-
     }
 
     public long getEnergyProduced() {

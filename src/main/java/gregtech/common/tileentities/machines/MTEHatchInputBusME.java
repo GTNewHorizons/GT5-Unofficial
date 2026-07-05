@@ -6,6 +6,7 @@ import static gregtech.api.enums.GTValues.VN;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_INPUT_HATCH;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ME_INPUT_HATCH_ACTIVE;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.Iterator;
@@ -66,6 +67,7 @@ import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.IMEConnectable;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
@@ -99,6 +101,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
     protected boolean additionalConnection = false;
     protected boolean justHadNewItems = false;
     protected boolean expediteRecipeCheck = false;
+    private final List<IHatchWatcher> watchers = new ArrayList<>();
     /**
      * The cached activity for this bus. Only valid while processing a recipe. This avoids several expensive operations.
      */
@@ -137,6 +140,12 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
         if (aBaseMetaTileEntity.isServerSide()) {
             if (aTimer % autoPullRefreshTime == 0 && autoPullItemList) {
                 refreshItemList();
+                if (justHadNewItems && expediteRecipeCheck) {
+                    for (var multi : watchers) {
+                        multi.scheduleRecipeCheckImmediate();
+                    }
+                    justHadNewItems = false;
+                }
             }
             if (aTimer % 20 == 0) {
                 aBaseMetaTileEntity.setActive(isActive());
@@ -259,11 +268,6 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
                     true);
                 gridProxy.setFlags(GridFlags.REQUIRE_CHANNEL);
                 updateValidGridProxySides();
-                if (base.getWorld() != null && base.getOwnerUuid() != null) {
-                    gridProxy.setOwner(
-                        base.getWorld()
-                            .func_152378_a(base.getOwnerUuid()));
-                }
             }
         }
         return this.gridProxy;
@@ -360,7 +364,6 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
         }
     }
 
-    @Override
     public boolean doFastRecipeCheck() {
         return expediteRecipeCheck;
     }
@@ -387,7 +390,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
         if (aNBT.hasKey("refreshTime")) {
             autoPullRefreshTime = aNBT.getInteger("refreshTime");
         }
-        getProxy().readFromNBT(aNBT);
+        if (aNBT.hasKey("proxy")) getProxy().readFromNBT(aNBT);
         updateAE2ProxyColor();
 
         clearSlotConfigs();
@@ -447,11 +450,9 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
 
     @Override
     public String[] getInfoData() {
-        return new String[] {
-            getProxy().isActive() ? StatCollector.translateToLocal("GT5U.infodata.hatch.crafting_input_me.bus.online")
-                : StatCollector.translateToLocalFormatted(
-                    "GT5U.infodata.hatch.crafting_input_me.bus.offline",
-                    getAEDiagnostics()) };
+        return new String[] { getProxy().isActive() ? "GT5U.infodata.hatch.crafting_input_me.bus.online"
+            : IGregTechDeviceInformation
+                .encode("GT5U.infodata.hatch.crafting_input_me.bus.offline", getAEDiagnostics()) };
     }
 
     @Override
@@ -617,13 +618,13 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
     }
 
     @Override
-    public boolean justUpdated() {
-        if (expediteRecipeCheck && isAllowedToWork()) {
-            boolean ret = justHadNewItems;
-            justHadNewItems = false;
-            return ret;
-        }
-        return false;
+    public void addWatcher(IHatchWatcher watcher) {
+        watchers.add(watcher);
+    }
+
+    @Override
+    public void removeWatcher(IHatchWatcher watcher) {
+        watchers.remove(watcher);
     }
 
     @Override
