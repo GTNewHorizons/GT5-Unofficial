@@ -174,9 +174,8 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
 
         if (igte == null || !igte.isAllowedToWork()) return false;
 
-        AENetworkProxy proxy = getProxy();
-
-        if (!proxy.isActive()) return false;
+        this.proxyCheckup();
+        if (!getProxy().isActive()) return false;
 
         return true;
     }
@@ -325,7 +324,6 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
             IMEMonitor<IAEFluidStack> sg;
 
             try {
-                this.proxyCheckup();
                 sg = getProxy().getStorage()
                     .getFluidInventory();
             } catch (GridAccessException e) {
