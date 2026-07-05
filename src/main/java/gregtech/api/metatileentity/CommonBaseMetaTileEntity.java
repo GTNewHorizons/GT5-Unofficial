@@ -45,8 +45,7 @@ public abstract class CommonBaseMetaTileEntity extends CoverableTileEntity
 
     // mNeedsUpdate: Client only, mark the block for rerender
     // mNeedsTileUpdate: Server only, mark the block for sync using `S35PacketUpdateTileEntity`
-    // mInventoryChanged: whether the inventory had changed in the previous tick,
-    // does not record direct modification to mInventory
+    // mInventoryChanged: whether the inventory had changed in the previous tick, currently not all code set this
     // mTickDisabled: whether this block is currently or pending to be unregistered from loaded tile entity list.
     protected boolean mNeedsUpdate = true, mNeedsTileUpdate = false, mInventoryChanged = false, mTickDisabled = false;
 

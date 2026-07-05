@@ -76,7 +76,8 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
 
     // Whether block update is needed because of redstone changes.
     protected boolean mNeedsBlockUpdate = true;
-    // The actual redstone signal per side
+    // The actual redstone signal per side, direct modifiers of this are required to issue block update for change.
+    // Use `setOutputRedstoneSignal` to modify the redstone output and issue block update on the server if changed.
     protected final byte[] mSidedRedstone = new byte[] { 0, 0, 0, 0, 0, 0 };
     // Use `setStrongRedstone` to automatically send block update on change
     private byte mStrongRedstone = 0;
@@ -335,6 +336,9 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
         }
     }
 
+    /**
+     * Used on client side, no need to issue block update
+     */
     protected void setRedstoneOutput(int packedRedstoneValue) {
         mSidedRedstone[0] = (byte) ((packedRedstoneValue & 1) == 1 ? 15 : 0);
         mSidedRedstone[1] = (byte) ((packedRedstoneValue & 2) == 2 ? 15 : 0);
@@ -371,7 +375,7 @@ public abstract class CoverableTileEntity extends BaseTileEntity implements ICov
 
     /**
      * Toggles the specified side for strong redstone
-     * 
+     *
      * @return whether the side is emitting strong redstone
      */
     public final boolean toggleStrongRedstone(ForgeDirection side) {
