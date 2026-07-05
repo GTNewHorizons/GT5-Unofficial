@@ -44,8 +44,8 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.objects.OreDictItemStack;
+import gregtech.api.util.GTOreDictUnificator;
 
 /**
  * This class is used for all items to circuit generation. Such as: Circuit Imprints, Sliced Circuits and the wraps.
