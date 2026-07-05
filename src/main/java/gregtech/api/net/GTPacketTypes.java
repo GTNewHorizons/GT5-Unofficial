@@ -55,6 +55,7 @@ public enum GTPacketTypes {
     TOOLBOX_EVENT(43, new GTPacketToolboxEvent()),
     NETWORK_ANALYZER(44, new GTPacketNetworkAnalyzer()),
     NETWORK_ANALYZER_MODE(45, new GTPacketNetworkAnalyzerMode()),
+    SYNC_TILE_RENDER_DATA_TO_CLIENT(46, new GTPacketClientMTERendererData()),
 
     // merge conflict prevention comment, keep a trailing comma above
     ;
