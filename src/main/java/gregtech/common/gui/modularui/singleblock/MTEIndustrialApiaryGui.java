@@ -226,10 +226,12 @@ public class MTEIndustrialApiaryGui extends MTEBasicMachineBaseGui<MTEIndustrial
                     .reverseLayout()
                     .child(
                         createAutoOutputButton(
+                            properties.maxFluidOutputs > 0,
                             syncManager,
                             "fluidAutoOutput",
                             GTGuiTextures.OVERLAY_BUTTON_AUTOOUTPUT_FLUID,
-                            BaseTileEntity.FLUID_TRANSFER_TOOLTIP))
+                            BaseTileEntity.FLUID_TRANSFER_TOOLTIP,
+                            "GT5U.gui.button.forbidden.reason.fluid"))
                     .child(
                         new ToggleButton()
                             .value(new BooleanSyncValue(machine::isAutoQueen, machine::setAutoQueen).allowC2S())
@@ -246,10 +248,12 @@ public class MTEIndustrialApiaryGui extends MTEBasicMachineBaseGui<MTEIndustrial
                     .tooltipShowUpTimer(TOOLTIP_DELAY))
             .child(
                 createAutoOutputButton(
+                    properties.maxItemOutputs > 0,
                     syncManager,
                     "itemAutoOutput",
                     GTGuiTextures.OVERLAY_BUTTON_AUTOOUTPUT_ITEM,
-                    BaseTileEntity.ITEM_TRANSFER_TOOLTIP))
+                    BaseTileEntity.ITEM_TRANSFER_TOOLTIP,
+                    "GT5U.gui.button.forbidden.reason.item"))
             .child(speedButton.onMousePressed(mouseButton -> {
                 int maxSpeed = maxSpeedSyncer.getIntValue();
                 if (Interactable.hasShiftDown()) {
