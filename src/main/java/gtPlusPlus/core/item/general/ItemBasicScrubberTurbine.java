@@ -111,7 +111,7 @@ public class ItemBasicScrubberTurbine extends Item {
         return false;
     }
 
-    public static int getMaxDurability(ItemStack aStack) {
+    public int getMaxDurability(ItemStack aStack) {
         if (aStack != null) {
             int aMeta = aStack.getItemDamage();
             if (aMeta == 0) {

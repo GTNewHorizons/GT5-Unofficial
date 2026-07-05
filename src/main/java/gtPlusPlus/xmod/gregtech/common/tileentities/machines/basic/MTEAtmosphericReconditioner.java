@@ -376,9 +376,9 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
             ItemStack rotorStack = this.mInventory[SLOT_ROTOR];
             if (rotorStack == null) {
                 return false;
-            } else if (rotorStack.getItem() instanceof ItemBasicScrubberTurbine) {
+            } else if (rotorStack.getItem() instanceof ItemBasicScrubberTurbine turbine) {
                 long currentUse = ItemBasicScrubberTurbine.getRotorDamage(rotorStack);
-                int maxDurability = ItemBasicScrubberTurbine.getMaxDurability(rotorStack);
+                int maxDurability = turbine.getMaxDurability(rotorStack);
 
                 if (currentUse >= maxDurability - 10) {
                     // Delete broken rotor if in HE mode
