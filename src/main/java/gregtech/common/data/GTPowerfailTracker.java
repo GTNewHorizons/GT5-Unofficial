@@ -14,6 +14,8 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import com.gtnewhorizon.gtnhlib.teams.Team;
+import com.gtnewhorizon.gtnhlib.teams.TeamManager;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
@@ -108,6 +110,8 @@ public class GTPowerfailTracker {
 
         @Override
         public Set<UUID> getPlayers() {
+            Team team = TeamManager.getTeamById(leader);
+            if (team != null) return team.getMembers();
             return SpaceProjectManager.getTeamMembers(leader);
         }
 
@@ -229,8 +233,10 @@ public class GTPowerfailTracker {
     }
 
     private static MachineOwner getMachineOwner(UUID player) {
-        UUID leader = SpaceProjectManager.getLeader(player);
+        Team team = TeamManager.getTeamByPlayer(player);
+        if (team != null) return new TeamOwner(team.getTeamId());
 
+        UUID leader = SpaceProjectManager.getLeader(player);
         if (leader == null) return new PlayerOwner(player);
 
         return new TeamOwner(leader);
