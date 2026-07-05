@@ -109,23 +109,22 @@ public class MTEMegaChemicalReactor extends MTEExtendedPowerMultiBlockBase<MTEMe
             .addStaticParallelInfo(PARALLELS)
             .addPerfectOCInfo()
             .addSeparator()
-            .addTecTechHatchInfo()
+            .addSupportAny()
             .addMinGlassForLaser(VoltageIndex.UV)
             .addGlassEnergyLimitInfo()
             .addUnlimitedTierSkips()
-            .beginStructureBlock(5, 5, 9, false)
+            .beginStructureBlock(9, 5, 5, false)
             .addController("Front center")
-            .addCasingInfoRange("Chemically Inert Machine Casing", 0, 79, false)
-            .addCasingInfoExactly("Fusion Coil Block", 7, false)
-            .addCasingInfoExactly("PTFE Pipe Casing", 28, false)
-            .addCasingInfoExactly("Any Tiered Glass", 64, true)
-            .addEnergyHatch("Hint block ", 1)
-            .addMaintenanceHatch("Hint block ", 1)
-            .addInputHatch("Hint block ", 1)
-            .addInputBus("Hint block ", 1)
-            .addOutputBus("Hint block ", 1)
-            .addOutputHatch("Hint block ", 1)
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .addCasing("0-79", "Chemically Inert Machine Casing", false)
+            .addCasing("64", "Any Tiered Glass", true)
+            .addCasing("28", "PTFE Pipe Casing", false)
+            .addCasing("7", "Fusion Coil Block or Eternal Heating Coil", false)
+            .addEnergyHatch("1+", "Any casing", 1)
+            .addMaintenanceHatch("1", "Any casing", 1)
+            .addInputAny("1+", "Any casing", 1)
+            .addOutputAny("1+", "Any casing", 1)
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         return tt;
     }
@@ -205,10 +204,10 @@ public class MTEMegaChemicalReactor extends MTEExtendedPowerMultiBlockBase<MTEMe
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         this.glassTier = -1;
         if (!this.checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z, errors)) return;
-        checkHasMaintenanceHatch(errors);
         checkHasAnyEnergy(errors);
-        checkHasAnyOutput(errors);
+        checkHasMaintenanceHatch(errors);
         checkHasAnyInput(errors);
+        checkHasAnyOutput(errors);
         if (this.glassTier < VoltageIndex.UV) {
             for (MTEHatch hatch : this.mExoticEnergyHatches) {
                 if (hatch.getConnectionType() == MTEHatch.ConnectionType.LASER) {

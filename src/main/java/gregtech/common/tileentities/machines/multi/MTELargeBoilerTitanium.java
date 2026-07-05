@@ -54,6 +54,6 @@ public class MTELargeBoilerTitanium extends MTELargeBoilerBase {
 
     @Override
     int runtimeBoost(int mTime) {
-        return mTime * 130 / 400;
+        return mTime * 3 / 10;
     }
 }

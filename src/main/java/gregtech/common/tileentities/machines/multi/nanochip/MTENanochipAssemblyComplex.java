@@ -249,35 +249,35 @@ public class MTENanochipAssemblyComplex extends MTEExtendedPowerMultiBlockBase<M
             .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.main.body.7", TOOLTIP_CCs))
             .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.main.body.8", TOOLTIP_COLORED))
             .addInfo(translateToLocalFormatted("GT5U.tooltip.nac.main.body.9", TOOLTIP_COLORED))
-            .addTecTechHatchInfo()
+            .addSupportAny()
             .addSeparator()
             .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.main.flavor.1")))
             .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.main.flavor.2")))
             .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.main.flavor.3")))
-            .beginStructureBlock(63, 49, 63, false)
-            .addOtherStructurePart(
-                translateToLocal("GT5U.tooltip.nac.interface.nac_module"),
-                translateToLocal("GT5U.tooltip.nac.interface.structure_outer_ring_base_casing"))
+            .beginStructureBlock(63, 63, 49, false)
+            .addController("Middle of structure, 9th layer")
             // Nanochip Reinforcement Casing
-            .addCasingInfoExactly(translateToLocal("gt.blockcasings12.2.name"), 3956, false)
+            .addCasing("3956", translateToLocal("gt.blockcasings12.2.name"), false)
             // Nanochip Complex Glass
-            .addCasingInfoExactly(translateToLocal("gt.blockglass1.8.name"), 2226, false)
+            .addCasing("2226", translateToLocal("gt.blockglass1.8.name"), false)
             // Nanochip Mesh Interface Casing
-            .addCasingInfoExactly(translateToLocal("gt.blockcasings12.1.name"), 1720, false)
+            .addCasing("1124-1719", translateToLocal("gt.blockcasings12.1.name"), false)
             // Nanochip Computational Matrix Casing
-            .addCasingInfoExactly(translateToLocal("gt.blockcasings12.3.name"), 721, false)
+            .addCasing("721", translateToLocal("gt.blockcasings12.3.name"), false)
             // Naquadah Frame Box
-            .addCasingInfoExactly(
-                translateToLocal("gt.blockframes.10.name").replace("%material", Materials.Naquadah.getLocalizedName()),
-                53,
-                false)
+            .addCasing("53", "Naquadah Frame Box", false)
             // Nanochip Firewall Projection Casing
-            .addCasingInfoExactly(translateToLocal("gt.blockcasings12.4.name"), 32, false)
-            .addStructureInfo(TOOLTIP_VCI_LONG + " " + TOOLTIP_STRUCTURE_CONTROL_ROOM_BASE_CASING)
-            .addStructureInfo(TOOLTIP_VCO_LONG + " " + TOOLTIP_STRUCTURE_CONTROL_ROOM_BASE_CASING)
-            .addInputBus(TOOLTIP_STRUCTURE_CONTROL_ROOM_BASE_CASING)
-            .addOutputBus(TOOLTIP_STRUCTURE_CONTROL_ROOM_BASE_CASING)
-            .addEnergyHatch(TOOLTIP_STRUCTURE_CONTROL_ROOM_BASE_CASING)
+            .addCasing("32", translateToLocal("gt.blockcasings12.4.name"), false)
+            .addMiscHatch(
+                "0-12",
+                translateToLocal("GT5U.tooltip.nac.interface.nac_module"),
+                translateToLocal("GT5U.tooltip.nac.interface.structure.module_controller"),
+                1)
+            .addEnergyHatch("1", TOOLTIP_STRUCTURE_CONTROL_ROOM_BASE_CASING, 2)
+            .addInputBus("1+", TOOLTIP_STRUCTURE_CONTROL_ROOM_BASE_CASING, 2)
+            .addOutputBus("1+", TOOLTIP_STRUCTURE_CONTROL_ROOM_BASE_CASING, 2)
+            .addMiscHatch("0+", TOOLTIP_VCI_LONG, TOOLTIP_STRUCTURE_CONTROL_ROOM_BASE_CASING, 2, 3)
+            .addMiscHatch("0+", TOOLTIP_VCO_LONG, TOOLTIP_STRUCTURE_CONTROL_ROOM_BASE_CASING, 2, 3)
             .toolTipFinisher();
     }
 

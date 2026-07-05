@@ -5,18 +5,21 @@ import static gregtech.common.gui.modularui.widget.SteamGaugeWidget.GAUGE_NEEDLE
 import static gregtech.common.gui.modularui.widget.SteamGaugeWidget.GAUGE_NEEDLE_WIDTH;
 import static gregtech.common.gui.modularui.widget.SteamGaugeWidget.GAUGE_SIZE;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+
 import com.cleanroommc.modularui.api.IThemeApi;
-import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.drawable.DrawableStack;
 import com.cleanroommc.modularui.drawable.GuiTextures;
 import com.cleanroommc.modularui.drawable.Rectangle;
+import com.cleanroommc.modularui.theme.SelectableTheme;
 import com.cleanroommc.modularui.theme.SlotTheme;
 import com.cleanroommc.modularui.theme.WidgetTheme;
 import com.cleanroommc.modularui.theme.WidgetThemeKey;
 import com.cleanroommc.modularui.theme.WidgetThemeParser;
 import com.cleanroommc.modularui.utils.Color;
-import com.cleanroommc.modularui.utils.JsonHelper;
 import com.cleanroommc.modularui.widget.Widget;
+import com.google.gson.JsonObject;
 
 import gregtech.common.modularui2.theme.ProgressbarWidgetTheme;
 
@@ -122,7 +125,7 @@ public final class GTWidgetThemes {
         .defaultTheme(
             new WidgetTheme(GAUGE_NEEDLE_WIDTH, GAUGE_NEEDLE_HEIGHT, null, Color.BROWN.main, 0xFF404040, false, 0))
         .defaultHoverTheme(null)
-        .parser(noInheritanceParser())
+        .parser(noInheritanceParser(WidgetTheme.class))
         .register();
 
     public static WidgetThemeKey<WidgetTheme> BUTTON_COVER_TAB_ENABLED = registerThemedButton("buttonCoverTabEnabled");
@@ -133,6 +136,41 @@ public final class GTWidgetThemes {
         .widgetThemeKeyBuilder("buttonBlack", WidgetTheme.class)
         .defaultTheme(new WidgetTheme(0, 0, GuiTextures.MC_BUTTON, 0x333333, 0xFAFAFA, false, 0))
         .defaultHoverTheme(null)
+        .register();
+
+    public static WidgetThemeKey<SelectableTheme> TOGGLE_BUTTON_DISABLED = themeApi
+        .widgetThemeKeyBuilder("toggleButtonDisabled", SelectableTheme.class)
+        .defaultTheme(
+            new SelectableTheme(
+                18,
+                18,
+                GTGuiTextures.TOGGLE_BUTTON_STANDARD_DISABLED.getSubArea(0, 0, 1, 0.5f),
+                Color.argb(1f, 1f, 1f, 0.5f),
+                0xFAFAFA,
+                false,
+                0,
+                GTGuiTextures.TOGGLE_BUTTON_STANDARD_DISABLED.getSubArea(0, 0.5f, 1, 1),
+                Color.argb(1f, 1f, 1f, 0.5f),
+                0xFAFAFA,
+                false,
+                0))
+        .defaultHoverTheme(null)
+        .parser(noInheritanceParser(SelectableTheme.class))
+        .register();
+
+    public static WidgetThemeKey<WidgetTheme> BUTTON_DISABLED = themeApi
+        .widgetThemeKeyBuilder("buttonDisabled", WidgetTheme.class)
+        .defaultTheme(
+            new WidgetTheme(
+                18,
+                18,
+                GTGuiTextures.BUTTON_STANDARD_DISABLED,
+                Color.argb(1f, 1f, 1f, 0.5f),
+                0xFAFAFA,
+                false,
+                0))
+        .defaultHoverTheme(null)
+        .parser(noInheritanceParser(WidgetTheme.class))
         .register();
 
     public static WidgetThemeKey<WidgetTheme> PICTURE_CANISTER = registerThemedTexture("pictureCanister");
@@ -151,7 +189,7 @@ public final class GTWidgetThemes {
                 false,
                 0))
         .defaultHoverTheme(null)
-        .parser(noInheritanceParser())
+        .parser(noInheritanceParser(WidgetTheme.class))
         .register();
 
     public static WidgetThemeKey<WidgetTheme> TESLA_TOWER_CHART_SPECIAL = themeApi
@@ -168,7 +206,7 @@ public final class GTWidgetThemes {
                 false,
                 0))
         .defaultHoverTheme(null)
-        .parser(noInheritanceParser())
+        .parser(noInheritanceParser(WidgetTheme.class))
         .register();
 
     private static WidgetThemeKey<WidgetTheme> registerThemedTexture(String textureThemeId) {
@@ -200,20 +238,22 @@ public final class GTWidgetThemes {
     }
 
     // Needed because by default it will inherit the global color
-    private static WidgetThemeParser<WidgetTheme> noInheritanceParser() {
-        return (parent, json, fallback) -> {
-            int defaultWidth = JsonHelper.getInt(json, parent.getDefaultWidth(), "w", "width");
-            int defaultHeight = JsonHelper.getInt(json, parent.getDefaultHeight(), "h", "height");
-            IDrawable background = JsonHelper
-                .deserialize(json, IDrawable.class, parent.getBackground(), IThemeApi.BACKGROUND, "bg");
-            int color = JsonHelper.getColorWithFallback(json, null, parent.getColor(), IThemeApi.COLOR);
-            int textColor = JsonHelper.getColorWithFallback(json, null, parent.getTextColor(), IThemeApi.TEXT_COLOR);
-            textColor = textColor == 0 ? color : textColor;
-            boolean textShadow = JsonHelper
-                .getBoolWithFallback(json, null, parent.getTextShadow(), IThemeApi.TEXT_SHADOW);
-            int iconColor = JsonHelper.getColorWithFallback(json, null, parent.getIconColor(), IThemeApi.ICON_COLOR);
-            iconColor = iconColor == 0 ? color : iconColor;
-            return new WidgetTheme(defaultWidth, defaultHeight, background, color, textColor, textShadow, iconColor);
-        };
+    private static <T extends WidgetTheme> WidgetThemeParser<T> noInheritanceParser(Class<T> type) {
+        try {
+            Constructor<T> ctor = type.getConstructor(type, JsonObject.class, JsonObject.class);
+            return (parent, json, _) -> {
+                try {
+                    return ctor.newInstance(parent, json, null);
+                } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
+                    throw new RuntimeException("Failed to instantiate widget theme of type " + type.getSimpleName(), e);
+                }
+            };
+        } catch (NoSuchMethodException e) {
+            throw new RuntimeException(
+                String.format(
+                    "No constructor with signature '%s(%s parent, JsonObject json, JsonObject fallback)' found",
+                    type.getSimpleName(),
+                    type.getSimpleName()));
+        }
     }
 }

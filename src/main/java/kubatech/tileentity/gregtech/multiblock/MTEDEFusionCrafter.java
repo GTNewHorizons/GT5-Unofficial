@@ -27,6 +27,7 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.tuple.Pair;
@@ -137,8 +138,8 @@ public class MTEDEFusionCrafter extends KubaTechGTMultiBlockBase<MTEDEFusionCraf
         if (mTierCasing > 3 && mFusionTierCasing < 2) {
             errors.add(StructureErrors.of("GT5U.gui.text.structure_error.defc_fusion_machine_casing"));
         }
-        checkHasMaintenanceHatch(errors);
         checkHasEnergyHatch(errors);
+        checkHasMaintenanceHatch(errors);
         checkHasAnyInput(errors);
         checkHasAnyOutput(errors);
     }
@@ -153,20 +154,19 @@ public class MTEDEFusionCrafter extends KubaTechGTMultiBlockBase<MTEDEFusionCraf
                     + EnumChatFormatting.GRAY
                     + " per casing tier above recipe")
             .addInfo("Normal EU OC still applies !")
-            .beginStructureBlock(5, 10, 5, false)
+            .beginStructureBlock(5, 5, 10, false)
             .addController("Front bottom center")
-            .addCasingInfoMin("Naquadah Alloy Fusion Casing", 19, false)
-            .addOtherStructurePart("Fusion Coil Block", "Center pillar")
-            .addOtherStructurePart("Fusion Machine Casing", "Touching Fusion Coil Block at every side")
-            .addOtherStructurePart("Tiered Fusion Casing", "Rings (5x5 hollow) at layer 4 and 7")
-            .addStructureInfo("Bloody Ichorium for tier 1, Draconium for tier 2, etc")
-            .addStructureInfo("To use tier 3 + you have to use Fusion Casing MK II")
-            .addInputBus("Any bottom Casing", 1)
-            .addInputHatch("Any bottom Casing", 1)
-            .addOutputBus("Any bottom Casing", 1)
-            .addOutputHatch("Any bottom Casing", 1)
-            .addEnergyHatch("Any bottom Casing", 1)
-            .addMaintenanceHatch("Any bottom Casing", 1)
+            .addCasing("19-45", "Naquadah Alloy Fusion Casing", false)
+            .addCasing("32", "Fusion Casing", true)
+            .addCasing("32", "Fusion Machine Casing", true)
+            .addCasing("8", "Fusion Coil Block", false)
+            .addEnergyHatch("1+", "Any bottom casing", 1)
+            .addMaintenanceHatch("1", "Any bottom casing", 1)
+            .addInputAny("1+", "Any bottom casing", 1)
+            .addOutputAny("1+", "Any bottom casing", 1)
+            .addStructureInfo("")
+            .addStructureFooter(EnumChatFormatting.RED + "The primordial pearl is consumed in the controller recipe!")
+            .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.casingtier"))
             .toolTipFinisher(GTAuthors.AuthorKuba, "Prometheus0000");
         return tt;
     }

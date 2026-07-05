@@ -1,6 +1,5 @@
 package gregtech.api.enums;
 
-import static bartworks.util.BWTooltipReference.TT;
 import static com.gtnewhorizon.gtnhlib.util.AnimatedTooltipHandler.*;
 
 import java.math.BigInteger;
@@ -455,7 +454,7 @@ public class GTValues {
     public static boolean DEVENV = Launch.blackboard == null ? true
         : (boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
 
-    public static final String TecTechHatches = "Supports " + TT + " laser and multi-amp hatches";
+    public static final String TecTechHatches = "Supports multi-amp and laser hatches";
 
     // a list specifically for random selection of formatting codes.
     public static final String[] formattingCodes = new String[] { DARK_GREEN, DARK_AQUA, DARK_PURPLE, GOLD, BLUE, GREEN,
