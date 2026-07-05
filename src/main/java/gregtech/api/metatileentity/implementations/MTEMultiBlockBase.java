@@ -4006,6 +4006,10 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
         return true;
     }
 
+    public boolean isDebugEnergyPresent() {
+        return debugEnergyPresent;
+    }
+
     public List<MTEHatch> getExoticAndNormalEnergyHatchList() {
         List<MTEHatch> tHatches = new ArrayList<>();
         tHatches.addAll(filterValidMTEs(mExoticEnergyHatches));
