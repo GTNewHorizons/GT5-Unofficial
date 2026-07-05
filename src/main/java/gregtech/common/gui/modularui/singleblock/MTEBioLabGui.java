@@ -1,8 +1,6 @@
 package gregtech.common.gui.modularui.singleblock;
 
-import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
-import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.Widget;
@@ -17,21 +15,6 @@ public class MTEBioLabGui extends MTEBasicMachineBaseGui<MTEBioLab> {
 
     public MTEBioLabGui(MTEBioLab machine, BasicUIProperties properties) {
         super(machine, properties);
-    }
-
-    @Override
-    public ModularPanel build(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
-        registerSyncValues(syncManager);
-
-        ModularPanel panel = this.getBasePanel(guiData, syncManager, uiSettings);
-
-        return panel.child(
-            Flow.column()
-                .full()
-                .padding(borderRadius)
-                .childIf(this.supportsTopRightCornerFlow(), this::createTopRightCornerFlow)
-                .child(createContentHolder(panel, syncManager))
-                .childIf(machine.supportsInventoryRow(), () -> createInventoryRow(panel, syncManager)));
     }
 
     @Override
@@ -55,6 +38,7 @@ public class MTEBioLabGui extends MTEBasicMachineBaseGui<MTEBioLab> {
 
     @Override
     protected Flow createTopRightCornerFlow() {
+        // this is needed to properly position the logo to the left of the power and muffler buttons
         return Flow.row()
             .coverChildren()
             .crossAxisAlignment(Alignment.CrossAxis.START)
