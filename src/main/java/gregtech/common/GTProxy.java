@@ -40,7 +40,6 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import javax.annotation.Nullable;
 
-import com.gtnewhorizon.gtnhlib.teams.TeamDataRegistry;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
@@ -87,6 +86,7 @@ import org.lwjgl.input.Keyboard;
 
 import com.google.common.collect.ImmutableSet;
 import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
+import com.gtnewhorizon.gtnhlib.teams.TeamDataRegistry;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.IFuelHandler;
