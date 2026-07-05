@@ -55,10 +55,12 @@ import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.SoundResource;
+import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
@@ -68,7 +70,6 @@ import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.ResultMissingItem;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.util.GTUtility;
@@ -83,7 +84,7 @@ import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoMulti;
 import tectech.thing.metaTileEntity.hatch.MTEHatchEnergyMulti;
 
 public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeGenerator>
-    implements ISurvivalConstructable {
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     /**
      * Number of seconds to average the wormhole energy over. (controls the weights in a weighted average)
@@ -189,22 +190,22 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-        int colorIndex, boolean active, boolean redstoneLevel) {
-        if (side == facing) {
-            if (active) {
-                return new ITexture[] { getCasingTextureForId(TT_CASING_INDEX), TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.Overlay_Machine_Controller_Advanced_Active)
-                    .extFacing()
-                    .build() };
-            } else {
-                return new ITexture[] { getCasingTextureForId(TT_CASING_INDEX), TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.Overlay_Machine_Controller_Advanced)
-                    .extFacing()
-                    .build() };
-            }
-        }
-        return new ITexture[] { getCasingTextureForId(TT_CASING_INDEX) };
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            TexturesGtBlock.Overlay_Machine_Controller_Advanced,
+            TexturesGtBlock.Overlay_Machine_Controller_Advanced_Glow,
+            TexturesGtBlock.Overlay_Machine_Controller_Advanced_Active,
+            TexturesGtBlock.Overlay_Machine_Controller_Advanced_Active_Glow);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return getCasingTextureForId(TT_CASING_INDEX);
     }
 
     // #region Structure
@@ -979,19 +980,23 @@ public class MTEWormholeGenerator extends MTEEnhancedMultiBlockBase<MTEWormholeG
             .addInfo("Consumes an AE2 Singularity from an input bus each time the wormhole is kick-started")
             .addInfo("Right click the controller with a screwdriver to disable overclocking")
             .addGlassEnergyLimitInfo()
-            .addTecTechHatchInfo()
-            .beginStructureBlock(7, 9, 7, false)
-            .addController("Front center")
-            .addCasingInfoExactly("Molecular Casing", 2 * 12, false)
-            .addCasingInfoExactly("Europium Reinforced Radiation Proof Machine Casing", 4, false)
-            .addCasingInfoExactly("Fusion Coil Block", 3 * 4 + 5 * 2, false)
-            .addCasingInfoRange("High Power Casing", 8 * 6 + 1, 8 * 6 + 1 + 4, false)
-            .addCasingInfoExactly("Any Tiered Glass", 9 * 4, true)
-            .addMaintenanceHatch("§61§r (Hint block number 1)")
-            .addInputBus("§61§r (Hint block number 1)")
-            .addDynamoHatch("§60§r - §64§r (Laser Only, Hint block number 2)")
-            .addEnergyHatch("§60§r - §64§r (Laser Only, Hint block number 2)")
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .addSupportAny()
+            .beginStructureBlock(7, 7, 7, true)
+            .addController("Front center, 4th layer")
+            .addCasing("0-51", "High Power Casing", false)
+            .addCasing("36", "Any Tiered Glass", true)
+            .addCasing("24", "Molecular Casing", false)
+            .addCasing("22", "Fusion Coil Block", false)
+            .addCasing("8", "Europium Reinforced Radiation Proof Machine Casing", false)
+            .addMiscHatch("0-4", "Laser Target Hatch", "Any center side casing", 2)
+            .addMiscHatch("0-4", "Laser Source Hatch", "Any center side casing", 2)
+            .addMaintenanceHatch("1", "Any high power casing", 1)
+            .addInputBus("1+", "Any high power casing", 1)
+            .addStructureInfo("")
+            .addStructureFooter("Insert an entangled singularity into the controller to link it with another one")
+            .addStructureFooter("Each laser target hatch must have a corresponding laser source hatch")
+            .addStructureFooter("on the other linked generator on the opposite side")
+            .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher(GTAuthors.AuthorPineapple + EnumChatFormatting.GRAY + ", Rendering by: " + EnumChatFormatting.WHITE + "BucketBrigade");
         // spotless:on
 

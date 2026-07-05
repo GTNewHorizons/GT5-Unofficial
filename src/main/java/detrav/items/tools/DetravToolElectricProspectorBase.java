@@ -19,8 +19,8 @@ import net.minecraftforge.event.world.BlockEvent;
 import detrav.items.behaviours.BehaviourDetravToolElectricProspector;
 import gregtech.api.damagesources.GTDamageSources;
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.MaterialIconRegistry;
 import gregtech.api.enums.SoundResource;
-import gregtech.api.enums.TextureSet;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.IToolStats;
 import gregtech.api.items.MetaGeneratedTool;
@@ -30,9 +30,12 @@ import gregtech.api.items.MetaGeneratedTool;
  */
 public class DetravToolElectricProspectorBase implements IToolStats {
 
-    public static final short[] mProspectorTextures = new short[] { TextureSet.INDEX_prospector,
-        TextureSet.INDEX_prospectorElectricLuV, TextureSet.INDEX_prospectorElectricZPM,
-        TextureSet.INDEX_prospectorElectricUV, TextureSet.INDEX_prospectorElectricUHV };
+    public static final short[] mProspectorTextures = new short[] {
+        (short) MaterialIconRegistry.IconType.TOOL_PROSPECTOR.ordinal(),
+        (short) MaterialIconRegistry.IconType.TOOL_PROSPECTOR_LUV.ordinal(),
+        (short) MaterialIconRegistry.IconType.TOOL_PROSPECTOR_ZPM.ordinal(),
+        (short) MaterialIconRegistry.IconType.TOOL_PROSPECTOR_UV.ordinal(),
+        (short) MaterialIconRegistry.IconType.TOOL_PROSPECTOR_UHV.ordinal() };
 
     @Override
     public int getToolDamagePerBlockBreak() {

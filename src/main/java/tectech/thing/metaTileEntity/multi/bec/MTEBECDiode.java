@@ -17,6 +17,7 @@ import java.util.List;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.Fluid;
 
 import org.jetbrains.annotations.NotNull;
@@ -41,7 +42,6 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReason;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import tectech.mechanics.boseEinsteinCondensate.BECFactoryElement;
-import tectech.thing.CustomItemList;
 import tectech.thing.gui.bec.MTEBECDiodeGui;
 import tectech.thing.metaTileEntity.hatch.bec.MTEHatchBEC;
 import tectech.thing.metaTileEntity.multi.base.MTEBECMultiblockBase;
@@ -144,14 +144,27 @@ public class MTEBECDiode extends MTEBECMultiblockBase<MTEBECDiode> implements IP
         StructureWrapperTooltipBuilder<MTEBECDiode> tt = new StructureWrapperTooltipBuilder<>(structure);
 
         tt.addMachineType("BEC Diode, Storage Bus")
-            .addMarkdown(new ResourceLocation("gregtech", "bec-diode"));
+            .addMarkdown(new ResourceLocation("gregtech", "bec-diode"))
+            .addSupportAny();
 
-        tt.beginStructureBlock();
-        tt.addHatchNameOverride(BECHatches.Hatch, CustomItemList.Hatch_BEC_Connector.get(1));
-        tt.addAllCasingInfo();
-
-        tt.toolTipFinisher(GTAuthors.AuthorPineapple);
-
+        tt.beginStructureBlock(11, 17, 11, true)
+            .addController(StatCollector.translateToLocal("GT5U.tooltip.bec-diode.controller-pos"))
+            .addCasing("148", SuperconductivePlasmaEnergyConduit.getLocalizedName(), false)
+            .addCasing("92", ConflictInducementCasing.getLocalizedName(), false)
+            .addCasing("0-90", ElectromagneticallyIsolatedCasing.getLocalizedName(), false)
+            .addCasing("84", FineStructureConstantManipulator.getLocalizedName(), false)
+            .addCasing("70", ElectromagneticWaveguide.getLocalizedName(), false)
+            .addCasing("68", PeaceEnforcementCasing.getLocalizedName(), false)
+            .addCasing("40", CondensateTransformativeCoil.getLocalizedName(), false)
+            .addCasing("24", CondensateGuidanceCoil.getLocalizedName(), false)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("GT5U.tooltip.bec-diode.hatch-pos"), 1)
+            .addMiscHatch(
+                "2",
+                "Bose-Einstein Condensate Hatch",
+                StatCollector.translateToLocal("GT5U.tooltip.bec-diode.bec-hatch-pos"),
+                2,
+                3)
+            .toolTipFinisher(GTAuthors.AuthorPineapple);
         return tt;
     }
 

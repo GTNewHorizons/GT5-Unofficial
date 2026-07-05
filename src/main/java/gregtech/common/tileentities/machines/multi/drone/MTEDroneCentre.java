@@ -55,6 +55,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
@@ -78,7 +79,7 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentre>
-    implements ISurvivalConstructable, IMTERenderer {
+    implements ISurvivalConstructable, IMTERenderer, ICasingTextureProvider {
 
     private static final IIconContainer ACTIVE = Textures.BlockIcons.custom("iconsets/DRONE_CENTRE_ACTIVE");
     private static final IIconContainer FACE = Textures.BlockIcons.custom("iconsets/DRONE_CENTRE_FACE");
@@ -137,24 +138,29 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
         if (side == aFacing) {
-            if (getBaseMetaTileEntity() != null && getBaseMetaTileEntity().isActive()) {
-                return new ITexture[] { Casings.SolidSteelMachineCasing.getCasingTexture(), TextureFactory.builder()
+            if (aActive) {
+                return new ITexture[] { getCasingTexture(), TextureFactory.builder()
                     .addIcon(ACTIVE)
                     .extFacing()
                     .build() };
             } else {
-                return new ITexture[] { Casings.SolidSteelMachineCasing.getCasingTexture(), TextureFactory.builder()
+                return new ITexture[] { getCasingTexture(), TextureFactory.builder()
                     .addIcon(INACTIVE)
                     .extFacing()
                     .build() };
             }
         } else if (side == aFacing.getOpposite()) {
-            return new ITexture[] { Casings.SolidSteelMachineCasing.getCasingTexture(), TextureFactory.builder()
+            return new ITexture[] { getCasingTexture(), TextureFactory.builder()
                 .addIcon(FACE)
                 .extFacing()
                 .build() };
         }
-        return new ITexture[] { Casings.SolidSteelMachineCasing.getCasingTexture() };
+        return new ITexture[] { getCasingTexture() };
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Casings.SolidSteelMachineCasing.getCasingTexture();
     }
 
     @Override
@@ -238,15 +244,14 @@ public class MTEDroneCentre extends MTEExtendedPowerMultiBlockBase<MTEDroneCentr
             .addInfo("Automatically upgrade based on the drone level in the input bus")
             .addInfo("There is a chance per second that the drone will crash")
             .addInfo("Chance is determined by drone tier: T1: 1/28800, T2: 1/172800, T3 & T4: 0")
-            .beginStructureBlock(11, 4, 11, false)
+            .beginStructureBlock(11, 11, 4, false)
             .addController("Front bottom center")
-            .addCasingInfoMin("Solid Steel Machine Casing", CASINGS_MIN, false)
-            .addCasingInfoExactly("Iron Frame Box", 28, false)
-            .addCasingInfoExactly("Steel Frame Box", 48, false)
-            .addCasingInfoExactly("Steel Pipe Casing", 61, false)
-            .addCasingInfoExactly("Hempcrete", 29, false)
-            .addInputBus("Any Solid Steel Machine Casing", 1)
-            .addStructureInfo("No maintenance hatch needed")
+            .addCasing("61", "Steel Pipe Casing", false)
+            .addCasing("47", "Steel Frame Box", false)
+            .addCasing("29", "Hempcrete (any color)", false)
+            .addCasing("28", "Iron Frame Box", false)
+            .addCasing(CASINGS_MIN + "-26", "Solid Steel Machine Casing", false)
+            .addInputBus("1+", "Any machine casing", 1)
             .addStructureAuthors(EnumChatFormatting.GOLD + "omegacubed")
             .toolTipFinisher(AuthorSilverMoon);
         return tt;
