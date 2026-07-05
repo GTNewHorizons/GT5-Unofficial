@@ -9,6 +9,7 @@ import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.enums.TickTime.TICK;
 import static gregtech.api.util.GTModHandler.getModItem;
+import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeConstants.ADDITIVE_AMOUNT;
 import static gregtech.api.util.GTRecipeConstants.COMPRESSION_TIER;
 import static gregtech.api.util.GTRecipeConstants.FUEL_VALUE;
@@ -199,6 +200,12 @@ public final class RecipeMaps {
     public static final RecipeMap<RecipeMapBackend> neutroniumCompressorRecipes = RecipeMapBuilder
         .of("gt.recipe.neutroniumcompressor")
         .maxIO(1, 1, 1, 0)
+        .recipeTransformer(recipe -> {
+            if (recipe.mDuration > (4500 * SECONDS) && recipe.getMetadataOrDefault(COMPRESSION_TIER, 0) == 2) {
+                throw new IllegalArgumentException(
+                    "Attempted to add Black Hole recipe with time greater than 4500s - this is not allowed due to the exponential nature of spacetime scaling and the BHC's hidden consumption cap.");
+            }
+        })
         .slotOverlays(
             (index, isFluid, isOutput, isSpecial) -> !isFluid && !isOutput ? GTUITextures.OVERLAY_SLOT_COMPRESSOR
                 : null)
