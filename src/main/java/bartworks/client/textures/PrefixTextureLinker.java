@@ -21,6 +21,7 @@ import java.util.stream.Stream;
 import bartworks.system.material.Werkstoff;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.MaterialIconRegistry;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.Textures;
@@ -34,7 +35,7 @@ public class PrefixTextureLinker implements Runnable {
     public static Map<TextureSet, Short> blockTexMap = new HashMap<>();
 
     private static void fillBlockTexMap() {
-        blockTexMap.put(TextureSet.SET_QUARTZ, TextureSet.INDEX_block4);
+        blockTexMap.put(TextureSet.SET_QUARTZ, (short) MaterialIconRegistry.IconType.BLOCK4.ordinal());
         Stream.of(OrePrefixes.blockCasing, OrePrefixes.blockCasingAdvanced)
             .forEach(prefixes -> {
                 HashMap<TextureSet, IIconContainer> curr = new HashMap<>();

@@ -24,6 +24,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.extensions.ArrayExt;
@@ -77,6 +78,13 @@ public class MTEBiologicalCoordinationModule extends MTENanochipAssemblyModuleBa
     }
 
     @Override
+    public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
+        super.checkMachine(aBaseMetaTileEntity, aStack, errors);
+        if (!errors.isEmpty()) return;
+        checkHasInputHatch(errors);
+    }
+
+    @Override
     public int structureOffsetX() {
         return BIO_OFFSET_X;
     }
@@ -120,23 +128,30 @@ public class MTEBiologicalCoordinationModule extends MTENanochipAssemblyModuleBa
             .addSeparator()
             .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.biological_coordinator.flavor.1")))
             .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.biological_coordinator.flavor.2")))
-            .beginStructureBlock(7, 8, 7, false)
+            .beginStructureBlock(7, 7, 8, false)
             .addController(translateToLocal("GT5U.tooltip.nac.interface.structure.module_controller"))
             // Nanochip Mesh Interface Casing
-            .addCasingInfoExactly(translateToLocal("gt.blockcasings12.1.name"), 37, false)
+            .addCasing("37", translateToLocal("gt.blockcasings12.1.name"), false)
             // Nanochip Reinforcement Casing
-            .addCasingInfoExactly(translateToLocal("gt.blockcasings12.2.name"), 36, false)
+            .addCasing("36", translateToLocal("gt.blockcasings12.2.name"), false)
             // Tritanium Frame Box
-            .addCasingInfoExactly(
-                translateToLocal("gt.blockframes.10.name").replace("%material", Materials.Tritanium.getLocalizedName()),
-                36,
-                false)
+            .addCasing("36", "Tritanium Frame Box", false)
             // Nanochip Complex Glass
-            .addCasingInfoExactly(translateToLocal("gt.blockglass1.8.name"), 20, false)
-            .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCI)
-            .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCO)
-            .addStructureInfoSeparator()
-            .addStructureInfo(translateToLocal("GT5U.tooltip.nac.interface.structure.module_description"))
+            .addCasing("20", translateToLocal("gt.blockglass1.8.name"), false)
+            .addInputHatch("1+", translateToLocal("GT5U.tooltip.nac.interface.structure.module_hatches"), 3)
+            .addMiscHatch(
+                "0+",
+                TOOLTIP_VCI_LONG,
+                translateToLocal("GT5U.tooltip.nac.interface.structure.module_hatches"),
+                3)
+            .addMiscHatch(
+                "0+",
+                TOOLTIP_VCO_LONG,
+                translateToLocal("GT5U.tooltip.nac.interface.structure.module_hatches"),
+                3)
+            .addStructureInfo("")
+            .addStructureFooter(translateToLocal("GT5U.tooltip.nac.interface.structure.module_cost"))
+            .addStructureFooter(translateToLocal("GT5U.tooltip.nac.interface.structure.module_power"))
             .toolTipFinisher();
     }
 

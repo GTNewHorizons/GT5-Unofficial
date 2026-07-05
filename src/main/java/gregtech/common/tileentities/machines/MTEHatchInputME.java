@@ -416,7 +416,13 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
                 return null;
             }
 
-            IAEFluidStack result = Platform.poweredExtraction(energy, sg, request, getRequestSource());
+            IAEFluidStack result;
+            if (doDrain) {
+                result = Platform.poweredExtraction(energy, sg, request, getRequestSource());
+                updateAllInformationSlots();
+            } else {
+                result = sg.extractItems(request, Actionable.SIMULATE, getRequestSource());
+            }
 
             return result == null ? null : result.getFluidStack();
         }
@@ -540,11 +546,6 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
                     true);
                 gridProxy.setFlags(GridFlags.REQUIRE_CHANNEL);
                 updateValidGridProxySides();
-                if (base.getWorld() != null && base.getOwnerUuid() != null) {
-                    gridProxy.setOwner(
-                        base.getWorld()
-                            .func_152378_a(base.getOwnerUuid()));
-                }
             }
         }
         return this.gridProxy;
@@ -796,7 +797,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
         if (aNBT.hasKey("refreshTime")) {
             autoPullRefreshTime = aNBT.getInteger("refreshTime");
         }
-        getProxy().readFromNBT(aNBT);
+        if (aNBT.hasKey("proxy")) getProxy().readFromNBT(aNBT);
         updateAE2ProxyColor();
 
         switch (aNBT.getInteger("version")) {
@@ -1040,11 +1041,6 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
 
             return slot;
         }
-    }
-
-    @Override
-    protected boolean useMui2() {
-        return true;
     }
 
     @Override

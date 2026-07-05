@@ -41,13 +41,14 @@ import gregtech.api.casing.Casings;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
+import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -61,7 +62,7 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class MTEIndustrialCokeOven extends MTEExtendedPowerMultiBlockBase<MTEIndustrialCokeOven>
-    implements ISurvivalConstructable {
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     private int tier = 0;
     private int width = 0;
@@ -122,30 +123,30 @@ public class MTEIndustrialCokeOven extends MTEExtendedPowerMultiBlockBase<MTEInd
             .addInfo("Infinity Coils and higher allow for single multi-amp energy hatch")
             .addMultiAmpHatchInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(7, 7, 5, false)
+            .beginVariableStructureBlock(5, 5, 6, 36, 7, 7, false)
             .addController("Front left center")
-            .addStructureInfo(EnumChatFormatting.BLUE + "Base Structure:")
-            .addCasingInfoMin("Structural Coke Oven Casing", 35, false)
-            .addCasingInfoExactly("Heat Resistant/Proof Coke Oven Casing", 8, true)
-            .addCasingInfoExactly("Heating Coil", 8, true)
-            .addCasingInfoExactly("Steel Pipe Casing", 7, false)
-            .addCasingInfoExactly("Steel Frame Box", 10, false)
-            .addStructureInfo(EnumChatFormatting.BLUE + "Each additional slice:")
-            .addCasingInfoExactly("Structural Coke Oven Casing", 19, false)
-            .addCasingInfoExactly("Heat Resistant/Proof Coke Oven Casing", 5, true)
-            .addCasingInfoExactly("Heating Coil", 8, true)
-            .addCasingInfoExactly("Steel Pipe Casing", 3, false)
-            .addCasingInfoExactly("Steel Frame Box", 10, false)
-            .addInputBus("Any Structural Coke Oven Casing of the base structure", 1)
-            .addOutputBus("Any Structural Coke Oven Casing of the base structure", 1)
-            .addInputHatch("Any Structural Coke Oven Casing of the base structure", 1)
-            .addOutputHatch("Any Structural Coke Oven Casing of the base structure", 1)
-            .addEnergyHatch("Any Structural Coke Oven Casing of the base structure", 1)
-            .addMaintenanceHatch("Any Structural Coke Oven Casing of the base structure", 1)
-            .addMufflerHatch("Any Structural Coke Oven Casing of the base structure", 1)
-            .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
-            .addSubChannelUsage(GTStructureChannels.COKE_OVEN_CASING)
-            .addSubChannelUsage(GTStructureChannels.STRUCTURE_LENGTH)
+            .addEnergyHatch("1+", "Any structural casing on base structure", 1)
+            .addMaintenanceHatch("1", "Any structural casing on base structure", 1)
+            .addMufflerHatch("1", "Any structural casing on base structure", 1)
+            .addInputAny("1+", "Any structural casing on base structure", 1)
+            .addOutputAny("1+", "Any structural casing on base structure", 1)
+            .addStructureInfo("")
+            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Base"))
+            .addCasing("35-48", "Structural Coke Oven Casing", false)
+            .addCasing("10", "Steel Frame Box", false)
+            .addCasing("8", "Heating Coil", true)
+            .addCasing("8", "Heat Resistant/Proof Coke Oven Casing", true)
+            .addStructureInfo("")
+            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Slice"))
+            .addCasing("19", "Structural Coke Oven Casing", false)
+            .addCasing("10", "Steel Frame Box", false)
+            .addCasing("8", "Heating Coil", true)
+            .addCasing("5", "Heat Resistant/Proof Coke Oven Casing", true)
+            .addCasing("3", "Steel Pipe Casing", false)
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.STRUCTURE_LENGTH)
+            .addSubChannel(GTStructureChannels.HEATING_COIL)
+            .addSubChannel(GTStructureChannels.COKE_OVEN_CASING)
             .addStructureAuthors(EnumChatFormatting.GOLD + "Nicouuuuu")
             .toolTipFinisher();
         return tt;
@@ -328,30 +329,22 @@ public class MTEIndustrialCokeOven extends MTEExtendedPowerMultiBlockBase<MTEInd
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-        int colorIndex, boolean active, boolean redstone) {
-        if (side == facing) {
-            if (active) return new ITexture[] { Casings.StructuralCokeOvenCasing.getCasingTexture(),
-                TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.oMCACokeOvenActive)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.oMCACokeOvenActiveGlow)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { Casings.StructuralCokeOvenCasing.getCasingTexture(), TextureFactory.builder()
-                .addIcon(TexturesGtBlock.oMCACokeOven)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.oMCACokeOvenGlow)
-                    .extFacing()
-                    .glow()
-                    .build() };
-        }
-        return new ITexture[] { Casings.StructuralCokeOvenCasing.getCasingTexture() };
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            TexturesGtBlock.oMCACokeOven,
+            TexturesGtBlock.oMCACokeOvenGlow,
+            TexturesGtBlock.oMCACokeOvenActive,
+            TexturesGtBlock.oMCACokeOvenActiveGlow);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Casings.StructuralCokeOvenCasing.getCasingTexture();
     }
 
     @Override

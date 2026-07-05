@@ -5,14 +5,23 @@ import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.fo
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.GuiTextField;
+import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
 
+import detrav.client.DetravOreMarker;
+import detrav.client.DetravOreMarkerRenderer;
 import detrav.gui.textures.DetravMapTexture;
 import detrav.items.DetravMetaGeneratedTool01;
 import gregtech.api.util.GTUtility;
@@ -24,14 +33,33 @@ public class DetravScannerGUI extends GuiScreen {
 
     public static final int GUI_ID = 20;
     private static DetravMapTexture map = null;
-    OresList oresList = null;
+    private OresList oresList = null;
+    private GuiTextField searchField = null;
 
     private final static int minHeight = 128;
     private final static int minWidth = 128;
-    private int prevW;
-    private int prevH;
+    private final static int searchHeight = 14; // height of the search box
+    private final static int hintHeight = 5; // height of the hint line below ore list
+    private final static int scrollbar = 4; // thickness of the map scrollbars
+
+    // layout, recomputed in initGui()
+    private int aX, aY;
+    private int mapW, mapH;
+    private int listX, listW;
+    private int viewW, viewH; // visible area of the (full-scale) map
+    private int mvX, mvY; // top-left of the map viewport
+    // scroll offset into the full-scale map
+    private int panX, panY;
+    private int maxPanX, maxPanY;
+    private boolean panInit = false;
+    private int dragMode = 0; // 0 = none, 1 = grab-pan, 2 = horizontal bar, 3 = vertical bar
+    private int dragLastX, dragLastY;
+    private boolean wasMouseDown = false;
+    private int frameTexW, frameTexH; // real pixel size of the frame texture
+    private String searchText = "";
 
     private static final ResourceLocation back = new ResourceLocation("gregtech:textures/gui/propick.png");
+    private static final ResourceLocation CLICK_SOUND = new ResourceLocation("gui.button.press");
 
     public DetravScannerGUI() {
 
@@ -47,57 +75,321 @@ public class DetravScannerGUI extends GuiScreen {
     }
 
     @Override
-    public void drawScreen(int x, int y, float f) {
-        this.drawDefaultBackground();
+    public void initGui() {
+        Keyboard.enableRepeatEvents(true);
         if (map == null) return;
-        int currentWidth = Math.max(map.width, minWidth);
-        int currentHeight = Math.max(map.height, minHeight);
-        int aX = (this.width - currentWidth - 100) / 2;
-        int aY = (this.height - currentHeight) / 2;
 
-        if (oresList == null || (prevW != width || prevH != height)) {
-            oresList = new OresList(
-                this,
-                100,
-                currentHeight,
-                aY,
-                aY + currentHeight,
-                aX + currentWidth,
-                10,
-                map.packet,
-                ((name, invert) -> { if (map != null) map.loadTexture(null, name, invert); }));
-            prevW = width;
-            prevH = height;
+        // size the list column to the longest entry, clamped to keep the GUI sane
+        int names = 100;
+        for (var e : map.packet.objects.short2ObjectEntrySet()) {
+            names = Math.max(
+                names,
+                mc.fontRenderer.getStringWidth(
+                    e.getValue()
+                        .left())
+                    + 24);
+        }
+        listW = Math.min(names, 220);
+
+        // the map is drawn at full 1:1 scale inside a viewport; when the scan is larger than the
+        // window (big range and/or high GUI scale) the viewport scrolls instead of shrinking.
+        viewW = Math.min(map.width, Math.max(minWidth, this.width - listW - 12));
+        viewH = Math.min(map.height, Math.max(minHeight, this.height - 12));
+        maxPanX = Math.max(0, map.width - viewW);
+        maxPanY = Math.max(0, map.height - viewH);
+
+        mapW = Math.max(viewW, minWidth);
+        mapH = Math.max(viewH, minHeight);
+
+        aX = (this.width - mapW - listW) / 2;
+        aY = (this.height - mapH) / 2;
+        listX = aX + mapW;
+
+        mvX = aX + (mapW - viewW) / 2;
+        mvY = aY + (mapH - viewH) / 2;
+
+        if (!panInit) {
+            // start centred on the player marker
+            panX = map.packet.posX - (map.packet.chunkX - map.packet.size) * 16 - 1 - viewW / 2;
+            panY = map.packet.posZ - (map.packet.chunkZ - map.packet.size) * 16 - 1 - viewH / 2;
+            panInit = true;
+        }
+        panX = clamp(panX, 0, maxPanX);
+        panY = clamp(panY, 0, maxPanY);
+
+        searchField = new GuiTextField(mc.fontRenderer, listX + 1, aY, listW - 2, searchHeight);
+        searchField.setMaxStringLength(64);
+        searchField.setText(searchText);
+
+        int listTop = aY + searchHeight + 1;
+        int listBottom = aY + mapH - hintHeight;
+
+        oresList = new OresList(
+            this,
+            listW,
+            listBottom - listTop,
+            listTop,
+            listBottom,
+            listX,
+            10,
+            map.packet,
+            ((name, invert) -> { if (map != null) map.loadTexture(null, name, invert); }));
+        oresList.setFilter(searchText);
+    }
+
+    @Override
+    public void onGuiClosed() {
+        Keyboard.enableRepeatEvents(false);
+    }
+
+    @Override
+    public void updateScreen() {
+        if (searchField != null) searchField.updateCursorCounter();
+    }
+
+    @Override
+    protected void mouseClicked(int mx, int my, int btn) {
+        super.mouseClicked(mx, my, btn);
+        if (searchField != null) searchField.mouseClicked(mx, my, btn);
+    }
+
+    private boolean wasRightDown = false;
+
+    private void pollMarkerClick(int x, int y) {
+        boolean down = Mouse.isButtonDown(1);
+        if (down && !wasRightDown) tryToggleMarker(x, y);
+        wasRightDown = down;
+    }
+
+    // how far (in blocks/pixels) around the cursor to look for an ore
+    private static final int ORE_SEARCH_RADIUS = 5;
+    private int nearestOreX, nearestOreZ;
+
+    private boolean findNearestOre(int mx, int my) {
+        if (map == null) return false;
+
+        int bx = mx - mvX + panX;
+        int bz = my - mvY + panY;
+
+        int bestDist = Integer.MAX_VALUE;
+        boolean found = false;
+        for (int dz = -ORE_SEARCH_RADIUS; dz <= ORE_SEARCH_RADIUS; dz++) {
+            for (int dx = -ORE_SEARCH_RADIUS; dx <= ORE_SEARCH_RADIUS; dx++) {
+                int cx = bx + dx, cz = bz + dz;
+                if (map.getTopOreName(cx, cz) == null) continue;
+                int d = dx * dx + dz * dz;
+                if (d < bestDist) {
+                    bestDist = d;
+                    nearestOreX = cx;
+                    nearestOreZ = cz;
+                    found = true;
+                }
+            }
+        }
+        return found;
+    }
+
+    /**
+     * Right-click on an ore in the map drops a temporary in-world marker at that ore's location.
+     * Right-clicking the same ore again removes it.
+     */
+    private void tryToggleMarker(int mx, int my) {
+        if (map == null || !inViewport(mx, my)) return;
+        if (map.packet.ptype != DetravMetaGeneratedTool01.MODE_BIG_ORES
+            && map.packet.ptype != DetravMetaGeneratedTool01.MODE_ALL_ORES) return;
+        if (!findNearestOre(mx, my)) return;
+
+        int worldX = nearestOreX + (map.packet.chunkX - map.packet.size) * 16;
+        int worldZ = nearestOreZ + (map.packet.chunkZ - map.packet.size) * 16;
+
+        DetravOreMarkerRenderer.toggleMarker(
+            mc.thePlayer.dimension,
+            worldX,
+            map.getTopOreY(nearestOreX, nearestOreZ),
+            worldZ,
+            map.getTopOreName(nearestOreX, nearestOreZ),
+            map.getTopOreColor(nearestOreX, nearestOreZ),
+            map.getTopOreMaterialName(nearestOreX, nearestOreZ));
+
+        mc.getSoundHandler()
+            .playSound(PositionedSoundRecord.func_147674_a(CLICK_SOUND, 1.0F));
+    }
+
+    /** Polls the mouse to pan the map or drag its scrollbars. */
+    private void updateMapDrag(int x, int y) {
+        boolean down = Mouse.isButtonDown(0);
+
+        if (down && !wasMouseDown) {
+            if (overVScrollbar(x, y)) {
+                dragMode = 3;
+            } else if (overHScrollbar(x, y)) {
+                dragMode = 2;
+            } else if (inViewport(x, y) && (maxPanX > 0 || maxPanY > 0)) {
+                dragMode = 1;
+                dragLastX = x;
+                dragLastY = y;
+            }
         }
 
-        // draw back for ores
-        drawRect(aX, aY, aX + currentWidth + 100, aY + currentHeight, 0xFFC6C6C6);
+        if (dragMode != 0) {
+            if (!down) {
+                dragMode = 0;
+            } else if (dragMode == 1) {
+                panX = clamp(panX - (x - dragLastX), 0, maxPanX);
+                panY = clamp(panY - (y - dragLastY), 0, maxPanY);
+                dragLastX = x;
+                dragLastY = y;
+            } else if (dragMode == 2) {
+                dragToHBar(x);
+            } else {
+                dragToVBar(y);
+            }
+        }
+
+        wasMouseDown = down;
+    }
+
+    /** Centres the horizontal view on the cursor position along the bottom scrollbar. */
+    private void dragToHBar(int mx) {
+        panX = clamp(Math.round((mx - mvX) / (float) viewW * map.width - viewW / 2f), 0, maxPanX);
+    }
+
+    /** Centres the vertical view on the cursor position along the right scrollbar. */
+    private void dragToVBar(int my) {
+        panY = clamp(Math.round((my - mvY) / (float) viewH * map.height - viewH / 2f), 0, maxPanY);
+    }
+
+    private boolean overVScrollbar(int x, int y) {
+        return maxPanY > 0 && x >= mvX + viewW - scrollbar && x < mvX + viewW && y >= mvY && y < mvY + viewH;
+    }
+
+    private boolean overHScrollbar(int x, int y) {
+        return maxPanX > 0 && y >= mvY + viewH - scrollbar && y < mvY + viewH && x >= mvX && x < mvX + viewW;
+    }
+
+    private static int clamp(int v, int min, int max) {
+        return v < min ? min : Math.min(v, max);
+    }
+
+    @Override
+    protected void keyTyped(char c, int key) {
+        if (searchField != null && searchField.isFocused() && key != Keyboard.KEY_ESCAPE) {
+            if (searchField.textboxKeyTyped(c, key)) {
+                searchText = searchField.getText();
+                if (oresList != null) oresList.setFilter(searchText);
+            }
+            return;
+        }
+        super.keyTyped(c, key);
+    }
+
+    @Override
+    public void drawScreen(int x, int y, float f) {
+        this.drawDefaultBackground();
+        if (map == null || oresList == null) return;
+
+        updateMapDrag(x, y);
+        pollMarkerClick(x, y);
+
+        // grey panel behind the map and the list
+        drawRect(aX, aY, aX + mapW + listW, aY + mapH, 0xFFC6C6C6);
+
+        // full-scale map, clipped to its viewport and scrolled by (panX, panY)
+        ScaledResolution res = new ScaledResolution(mc, mc.displayWidth, mc.displayHeight);
+        int sf = res.getScaleFactor();
+        GL11.glEnable(GL11.GL_SCISSOR_TEST);
+        GL11.glScissor(mvX * sf, mc.displayHeight - (mvY + viewH) * sf, viewW * sf, viewH * sf);
+
         map.glBindTexture();
-        map.draw(aX, aY);
-        oresList.drawScreen(x, y, f);
+        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
+        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
+        map.draw(mvX - panX, mvY - panY);
+        drawPlayerDirectionMarker();
+        drawMarkerOverlays();
+
+        GL11.glDisable(GL11.GL_SCISSOR_TEST);
+
+        // "North" label pinned to the top of the viewport
+        mc.fontRenderer.drawStringWithShadow("N", mvX + viewW / 2 - 2, mvY + 1, 0xFFFFFFFF);
+
+        drawMapScrollbars();
+
+        searchField.drawTextBox();
+        if (searchField.getText()
+            .isEmpty() && !searchField.isFocused()) {
+            mc.fontRenderer.drawString(
+                StatCollector.translateToLocal("gui.detrav.scanner.search.hint"),
+                listX + 4,
+                aY + 3,
+                0xFF808080);
+        }
+
+        // feed an out-of-bounds Y while dragging the map so the list does not latch and scroll too
+        oresList.drawScreen(x, dragMode != 0 ? -1 : y, f);
+
+        // colour inversion hint under list
+        GL11.glPushMatrix();
+        GL11.glScalef(0.5F, 0.5F, 1F);
+        String hint = mc.fontRenderer.trimStringToWidth(
+            EnumChatFormatting.ITALIC + StatCollector.translateToLocal("gui.detrav.scanner.hint.invert"),
+            (listW - 4) * 2);
+        int hintX = (listX + listW - 2) * 2 - mc.fontRenderer.getStringWidth(hint);
+        int hintY = (aY + mapH - hintHeight) * 2 + (hintHeight * 2 - 8) / 2;
+        mc.fontRenderer.drawString(hint, hintX, hintY, 0xFF5e5e5e);
+        GL11.glPopMatrix();
+
         mc.getTextureManager()
             .bindTexture(back);
-        GL11.glColor4f(0xFF, 0xFF, 0xFF, 0xFF);
+        GL11.glColor4f(1F, 1F, 1F, 1F);
+
+        if (frameTexW <= 0) {
+            frameTexW = GL11.glGetTexLevelParameteri(GL11.GL_TEXTURE_2D, 0, GL11.GL_TEXTURE_WIDTH);
+            frameTexH = GL11.glGetTexLevelParameteri(GL11.GL_TEXTURE_2D, 0, GL11.GL_TEXTURE_HEIGHT);
+        }
 
         // draw corners
-        drawTexturedModalRect(aX - 5, aY - 5, 0, 0, 5, 5);// leftTop
-        drawTexturedModalRect(aX + currentWidth + 100, aY - 5, 171, 0, 5, 5);// RightTop
-        drawTexturedModalRect(aX - 5, aY + currentHeight, 0, 161, 5, 5);// leftDown
-        drawTexturedModalRect(aX + currentWidth + 100, aY + currentHeight, 171, 161, 5, 5);// RightDown
+        drawFramePiece(aX - 5, aY - 5, 0, 0, 5, 5); // leftTop
+        drawFramePiece(aX + mapW + listW, aY - 5, 171, 0, 5, 5); // RightTop
+        drawFramePiece(aX - 5, aY + mapH, 0, 161, 5, 5); // leftDown
+        drawFramePiece(aX + mapW + listW, aY + mapH, 171, 161, 5, 5); // RightDown
 
         // draw edges
-        for (int i = aX; i < aX + currentWidth + 100; i += 128)
-            drawTexturedModalRect(i, aY - 5, 5, 0, Math.min(128, aX + currentWidth + 100 - i), 5); // top
-        for (int i = aX; i < aX + currentWidth + 100; i += 128)
-            drawTexturedModalRect(i, aY + currentHeight, 5, 161, Math.min(128, aX + currentWidth + 100 - i), 5); // down
-        for (int i = aY; i < aY + currentHeight; i += 128)
-            drawTexturedModalRect(aX - 5, i, 0, 5, 5, Math.min(128, aY + currentHeight - i)); // left
-        for (int i = aY; i < aY + currentHeight; i += 128)
-            drawTexturedModalRect(aX + currentWidth + 100, i, 171, 5, 5, Math.min(128, aY + currentHeight - i)); // right
+        for (int i = aX; i < aX + mapW + listW; i += 128)
+            drawFramePiece(i, aY - 5, 5, 0, Math.min(128, aX + mapW + listW - i), 5); // top
+        for (int i = aX; i < aX + mapW + listW; i += 128)
+            drawFramePiece(i, aY + mapH, 5, 161, Math.min(128, aX + mapW + listW - i), 5); // down
+        for (int i = aY; i < aY + mapH; i += 128) drawFramePiece(aX - 5, i, 0, 5, 5, Math.min(128, aY + mapH - i)); // left
+        for (int i = aY; i < aY + mapH; i += 128)
+            drawFramePiece(aX + mapW + listW, i, 171, 5, 5, Math.min(128, aY + mapH - i)); // right
 
-        if (map.packet.ptype == DetravMetaGeneratedTool01.MODE_FLUIDS) {
-            int cX = (x - aX) / 16;
-            int cZ = (y - aY) / 16;
+        drawHoverTooltip(x, y);
+    }
+
+    /** Tooltip for the map cell under the cursor: ore name + coords, fluid amount, or pollution. */
+    private void drawHoverTooltip(int x, int y) {
+        if (!inViewport(x, y)) return;
+
+        if (map.packet.ptype == DetravMetaGeneratedTool01.MODE_BIG_ORES
+            || map.packet.ptype == DetravMetaGeneratedTool01.MODE_ALL_ORES) {
+            if (findNearestOre(x, y)) {
+                int bx = nearestOreX, bz = nearestOreZ;
+                List<String> info = new ArrayList<>();
+                int worldX = bx + (map.packet.chunkX - map.packet.size) * 16;
+                int worldZ = bz + (map.packet.chunkZ - map.packet.size) * 16;
+
+                info.add(map.getTopOreName(bx, bz));
+                info.add(StatCollector.translateToLocalFormatted("gui.detrav.scanner.tooltip.ore_pos", worldX, worldZ));
+                info.add(
+                    StatCollector
+                        .translateToLocalFormatted("gui.detrav.scanner.tooltip.ore_depth", map.getTopOreY(bx, bz)));
+                info.add(
+                    EnumChatFormatting.DARK_GRAY
+                        + StatCollector.translateToLocal("gui.detrav.scanner.tooltip.mark_hint"));
+                func_146283_a(info, x, y);
+            }
+        } else if (map.packet.ptype == DetravMetaGeneratedTool01.MODE_FLUIDS) {
+            int cX = (x - mvX + panX) / 16;
+            int cZ = (y - mvY + panY) / 16;
 
             if (cX >= 0 && cZ >= 0 && cX < map.packet.size * 2 + 1 && cZ < map.packet.size * 2 + 1) {
                 List<String> info = new ArrayList<>();
@@ -108,20 +400,21 @@ public class DetravScannerGUI extends GuiScreen {
                 if (objectId != -1 && amount > 0) {
                     var object = map.packet.objects.get(objectId);
 
-                    info.add(StatCollector.translateToLocal("gui.detrav.scanner.tooltip.fluid_name") + object.left());
                     info.add(
-                        StatCollector.translateToLocal("gui.detrav.scanner.tooltip.fluid_amount") + formatNumber(amount)
-                            + " L");
+                        StatCollector
+                            .translateToLocalFormatted("gui.detrav.scanner.tooltip.fluid_name", object.left()));
+                    info.add(
+                        StatCollector.translateToLocalFormatted(
+                            "gui.detrav.scanner.tooltip.fluid_amount",
+                            formatNumber(amount)));
                 } else {
                     info.add(StatCollector.translateToLocal("gui.detrav.scanner.tooltip.no_fluid"));
                 }
                 func_146283_a(info, x, y);
             }
-        }
-
-        if (map.packet.ptype == DetravMetaGeneratedTool01.MODE_POLLUTION) {
-            int cX = (x - aX) / 16;
-            int cZ = (y - aY) / 16;
+        } else if (map.packet.ptype == DetravMetaGeneratedTool01.MODE_POLLUTION) {
+            int cX = (x - mvX + panX) / 16;
+            int cZ = (y - mvY + panY) / 16;
 
             if (cX >= 0 && cZ >= 0 && cX < map.packet.size * 2 + 1 && cZ < map.packet.size * 2 + 1) {
                 List<String> info = new ArrayList<>();
@@ -138,5 +431,140 @@ public class DetravScannerGUI extends GuiScreen {
                 func_146283_a(info, x, y);
             }
         }
+    }
+
+    private boolean inViewport(int x, int y) {
+        return x >= mvX && x < mvX + viewW && y >= mvY && y < mvY + viewH;
+    }
+
+    /** Overlay scrollbars on the bottom/right edges of the map viewport when it is larger than the window. */
+    private void drawMapScrollbars() {
+        if (maxPanX > 0 && maxPanY > 0) {
+            // fill the gap in the corner where the two scrollbars meet
+            drawRect(mvX + viewW - scrollbar, mvY + viewH - scrollbar, mvX + viewW, mvY + viewH, 0x80000000);
+        }
+        if (maxPanX > 0) {
+            int trackW = viewW - (maxPanY > 0 ? scrollbar : 0);
+            int top = mvY + viewH - scrollbar;
+            drawRect(mvX, top, mvX + trackW, top + scrollbar, 0x80000000);
+            int thumbW = Math.max(12, (int) ((long) trackW * viewW / map.width));
+            int thumbX = mvX + (int) ((long) (trackW - thumbW) * panX / maxPanX);
+            drawRect(thumbX, top, thumbX + thumbW, top + scrollbar, 0xFFB0B0B0);
+        }
+        if (maxPanY > 0) {
+            int trackH = viewH - (maxPanX > 0 ? scrollbar : 0);
+            int left = mvX + viewW - scrollbar;
+            drawRect(left, mvY, left + scrollbar, mvY + trackH, 0x80000000);
+            int thumbH = Math.max(12, (int) ((long) trackH * viewH / map.height));
+            int thumbY = mvY + (int) ((long) (trackH - thumbH) * panY / maxPanY);
+            drawRect(left, thumbY, left + scrollbar, thumbY + thumbH, 0xFFB0B0B0);
+        }
+    }
+
+    private void drawPlayerDirectionMarker() {
+        if (mc.thePlayer == null) return;
+
+        int playerI = map.packet.posX - (map.packet.chunkX - map.packet.size) * 16 - 1;
+        int playerJ = map.packet.posZ - (map.packet.chunkZ - map.packet.size) * 16 - 1;
+
+        if (playerI < 0 || playerJ < 0 || playerI >= map.width || playerJ >= map.height) return;
+
+        drawPlayerHeading(mvX - panX + playerI, mvY - panY + playerJ, mc.thePlayer.rotationYaw);
+    }
+
+    /** Outlines the ores that currently have a temporary marker. */
+    private void drawMarkerOverlays() {
+        if (map.packet.ptype != DetravMetaGeneratedTool01.MODE_BIG_ORES
+            && map.packet.ptype != DetravMetaGeneratedTool01.MODE_ALL_ORES) return;
+
+        int dim = mc.thePlayer.dimension;
+        int originX = (map.packet.chunkX - map.packet.size) * 16;
+        int originZ = (map.packet.chunkZ - map.packet.size) * 16;
+
+        for (DetravOreMarker m : DetravOreMarkerRenderer.getMarkers()) {
+            if (m.dim != dim) continue;
+
+            int cellX = m.x - originX;
+            int cellZ = m.z - originZ;
+            if (cellX < 0 || cellZ < 0 || cellX >= map.width || cellZ >= map.height) continue;
+
+            int sx = mvX - panX + cellX;
+            int sy = mvY - panY + cellZ;
+
+            drawHollowRect(sx - 2, sy - 2, 5, 0xFF000000);
+            drawHollowRect(sx - 1, sy - 1, 3, 0xFFFFD700);
+        }
+    }
+
+    private void drawHollowRect(int x, int y, int side, int color) {
+        drawRect(x, y, x + side, y + 1, color); // top
+        drawRect(x, y + side - 1, x + side, y + side, color); // bottom
+        drawRect(x, y + 1, x + 1, y + side - 1, color); // left
+        drawRect(x + side - 1, y + 1, x + side, y + side - 1, color); // right
+    }
+
+    private void drawFramePiece(int x, int y, int u, int v, int w, int h) {
+        float fw = 1F / (frameTexW > 0 ? frameTexW : 256);
+        float fh = 1F / (frameTexH > 0 ? frameTexH : 256);
+        Tessellator t = Tessellator.instance;
+        t.startDrawingQuads();
+        t.addVertexWithUV(x, y + h, this.zLevel, u * fw, (v + h) * fh);
+        t.addVertexWithUV(x + w, y + h, this.zLevel, (u + w) * fw, (v + h) * fh);
+        t.addVertexWithUV(x + w, y, this.zLevel, (u + w) * fw, v * fh);
+        t.addVertexWithUV(x, y, this.zLevel, u * fw, v * fh);
+        t.draw();
+    }
+
+    private void drawPlayerHeading(int cx, int cy, float yaw) {
+        GL11.glPushAttrib(GL11.GL_ENABLE_BIT | GL11.GL_LINE_BIT | GL11.GL_COLOR_BUFFER_BIT);
+        GL11.glPushMatrix();
+        GL11.glDisable(GL11.GL_TEXTURE_2D);
+        GL11.glDisable(GL11.GL_CULL_FACE);
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        GL11.glTranslatef(cx + 0.5F, cy + 0.5F, 0F);
+        GL11.glRotatef(yaw + 180F, 0F, 0F, 1F);
+
+        Tessellator t = Tessellator.instance;
+
+        // Teardrop perimeter: round bottom, sharp tip at top (0,-14). Center ~(0,2).
+        float[][] body = { { 6.06F, -1.5F }, { 7F, 2F }, { 6F, 5F }, { 3F, 8F }, { 0F, 9F }, { -3F, 8F }, { -6F, 5F },
+            { -7F, 2F }, { -6.06F, -1.5F }, { 0F, -14F } };
+        float ccx = 0F, ccy = 2F;
+
+        fanShape(t, body, ccx, ccy, 0.9F, 0xEDD8FF); // Outline
+        fanShape(t, body, ccx, ccy, 0.75F, 0xC071FF); // fill
+
+        // Anti-aliased rim over the silhouette.
+        GL11.glEnable(GL11.GL_LINE_SMOOTH);
+        GL11.glHint(GL11.GL_LINE_SMOOTH_HINT, GL11.GL_NICEST);
+        GL11.glLineWidth(1.5F);
+        strokeShape(t, body, ccx, ccy, 0.9F, 0xEDD8FF);
+
+        GL11.glPopMatrix();
+        GL11.glPopAttrib();
+        GL11.glColor4f(1F, 1F, 1F, 1F);
+    }
+
+    // Fills a closed polygon as a fan, scaled about (cx,cy). Scale > 1 = the outline pass.
+    private void fanShape(Tessellator t, float[][] pts, float cx, float cy, float scale, int color) {
+        t.startDrawing(GL11.GL_TRIANGLE_FAN);
+        t.setColorOpaque_I(color);
+        t.addVertex(cx, cy, 0); // fan hub
+        for (int i = 0; i <= pts.length; i++) {
+            float[] p = pts[i % pts.length]; // repeat first vertex to close
+            t.addVertex(cx + (p[0] - cx) * scale, cy + (p[1] - cy) * scale, 0);
+        }
+        t.draw();
+    }
+
+    // Traces the polygon perimeter as an anti-aliased line loop, scaled about (cx,cy).
+    private void strokeShape(Tessellator t, float[][] pts, float cx, float cy, float scale, int color) {
+        t.startDrawing(GL11.GL_LINE_LOOP);
+        t.setColorOpaque_I(color);
+        for (float[] p : pts) {
+            t.addVertex(cx + (p[0] - cx) * scale, cy + (p[1] - cy) * scale, 0);
+        }
+        t.draw();
     }
 }
