@@ -79,7 +79,7 @@ public class RecipeGenDustGeneration extends RecipeGenBase {
         final ItemStack[] inputStacks = material.getMaterialComposites();
         final ItemStack outputStacks = material.getDust(material.smallestStackSizeWhenProcessing);
 
-        if (smallDust != null && tinyDust != null) {
+        if (smallDust != null) {
             generatePackagerRecipes(material);
         }
 
@@ -259,7 +259,7 @@ public class RecipeGenDustGeneration extends RecipeGenBase {
     }
 
     public static boolean generatePackagerRecipes(Material aMatInfo) {
-        // Small Dust
+        // Small Dust → Normal Dust
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(4, aMatInfo.getSmallDust(4)), ItemList.Schematic_Dust.get(0))
             .itemOutputs(aMatInfo.getDust(1))
@@ -267,21 +267,34 @@ public class RecipeGenDustGeneration extends RecipeGenBase {
             .eut(4)
             .addTo(packagerRecipes);
 
-        // Tiny Dust
-        GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.copyAmount(9, aMatInfo.getTinyDust(9)), ItemList.Schematic_Dust.get(0))
-            .itemOutputs(aMatInfo.getDust(1))
-            .duration(5 * SECONDS)
-            .eut(4)
-            .addTo(packagerRecipes);
+        // Tiny Dust → Normal Dust
+        if (aMatInfo.getTinyDust(1) != null) {
+            GTValues.RA.stdBuilder()
+                .itemInputs(GTUtility.copyAmount(9, aMatInfo.getTinyDust(9)), ItemList.Schematic_Dust.get(0))
+                .itemOutputs(aMatInfo.getDust(1))
+                .duration(5 * SECONDS)
+                .eut(4)
+                .addTo(packagerRecipes);
+        }
 
-        // Normal Dust
+        // Normal Dust → Small Dust
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(1, aMatInfo.getDust(1)), ItemList.Schematic_Dust_Small.get(0))
             .itemOutputs(aMatInfo.getSmallDust(4))
             .duration(5 * SECONDS)
             .eut(4)
             .addTo(packagerRecipes);
+
+        // Normal Dust → Tiny Dust
+        if (aMatInfo.getTinyDust(1) != null) {
+            GTValues.RA.stdBuilder()
+                .itemInputs(GTUtility.copyAmount(1, aMatInfo.getDust(1)), ItemList.Schematic_Dust.get(0))
+                .itemOutputs(aMatInfo.getTinyDust(9))
+                .duration(5 * SECONDS)
+                .eut(4)
+                .addTo(packagerRecipes);
+        }
+
         return true;
     }
 

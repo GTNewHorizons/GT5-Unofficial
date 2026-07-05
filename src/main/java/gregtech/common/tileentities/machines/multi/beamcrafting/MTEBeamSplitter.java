@@ -156,31 +156,25 @@ public class MTEBeamSplitter extends MTEBeamMultiBase<MTEBeamSplitter> implement
             .addInfo(
                 StatCollector
                     .translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.beamsplitter.tooltip2"))
-            .beginStructureBlock(9, 3, 9, false)
-            .addController(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttcontroller"))
-            .addCasingInfoExactly(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttcasing"),
-                68,
+            .beginStructureBlock(9, 9, 3, false)
+            .addController("Front bottom center")
+            .addCasing(
+                "42",
+                StatCollector.translateToLocal("gt.blockmachines.multimachine.beamcrafting.ttshieldacccasing"),
                 false)
-            .addCasingInfoExactly(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttanyglass"),
-                9,
-                true)
-            .addCasingInfoExactly(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttgratecasing"),
-                27,
+            .addCasing(
+                "27",
+                StatCollector.translateToLocal("gt.blockmachines.multimachine.beamcrafting.ttgratecasing"),
                 false)
-            .addCasingInfoExactly(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttbeaminhatch"),
-                1,
-                false)
-            .addCasingInfoExactly(
-                StatCollector
-                    .translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttbeamouthatchfiltered"),
-                4,
-                false)
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .addCasing("9", "Any Tiered Glass", false)
+            .addMiscHatch("1", StatCollector.translateToLocal("gtnhlanth.tt.hatch.beaminput"), "Above controller", 1)
+            .addMiscHatch(
+                "4",
+                StatCollector.translateToLocal("gtnhlanth.tt.hatch.beamoutputfiltered"),
+                "Opposite controller",
+                2)
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher(GTAuthors.AuthorHamCorp);
         return tt;
     }

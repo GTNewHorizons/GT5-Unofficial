@@ -7,7 +7,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ENGRAVER_ACTI
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ENGRAVER_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ENGRAVER_GLOW;
 import static gregtech.api.util.GTStructureUtility.*;
-import static gregtech.api.util.GTUtility.min;
 
 import java.util.HashMap;
 import java.util.List;
@@ -92,7 +91,7 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
             buildHatchAdder(MTEIndustrialLaserEngraver.class).anyOf(LaserSource)
                 .adder(MTEIndustrialLaserEngraver::addLaserSource)
                 .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(1))
-                .hint(3)
+                .hint(2)
                 .build())
         .build();
 
@@ -227,29 +226,34 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
             .addInfo("Laser source hatch determines maximum recipe tier and parallels")
             .addInfo("Recipe tier and overclocks limited to laser source tier + 1")
             .addInfo(
-                "When using a UEV+ laser source, one multi-amp energy hatch is allowed instead of regular energy hatches")
-            .addInfo("Parallels equal to the cube root of laser source amperage input")
-            .addInfo("Glass tier determines maximum laser source tier")
-            .addInfo(
-                GTValues.TIER_COLORS[VoltageIndex.UMV] + GTValues.VN[VoltageIndex.UMV]
+                "When using a " + GTValues.TIER_COLORS[VoltageIndex.UEV]
+                    + GTValues.VN[VoltageIndex.UEV]
                     + EnumChatFormatting.GRAY
-                    + "-tier glass accepts all laser source hatches")
+                    + "+ laser source, one multi-amp energy hatch is allowed instead of regular energy hatches")
+            .addInfo("Parallels equal to the cube root of laser source amperage input")
+            .addInfo(
+                EnumChatFormatting.WHITE + "Glass "
+                    + EnumChatFormatting.GRAY
+                    + "tier determines maximum laser source tier")
             .addInfo("Use screwdriver to disable laser rendering")
             .addInfo("Use wire cutter to toggle realism mode if you hate angled lasers")
             .beginStructureBlock(5, 5, 5, false)
             .addController("Front bottom center")
-            .addCasingInfoMin("Laser Containment Casing", 35, false)
-            .addCasingInfoExactly("Tungstensteel Frame Box", 9, false)
-            .addCasingInfoExactly("Any Tiered Glass", 3, true)
-            .addOtherStructurePart("Laser Resistant Plate", "x1")
-            .addOtherStructurePart(StatCollector.translateToLocal("GT5U.tooltip.structure.laser_source_hatch"), "x1", 3)
-            .addInputBus("Any Casing", 1)
-            .addInputHatch("Any Casing", 1)
-            .addOutputBus("Any Casing", 1)
-            .addOutputHatch("Any Casing", 1)
-            .addEnergyHatch("Any Casing", 1)
-            .addMaintenanceHatch("Any Casing", 1)
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .addCasing("35-58", "Laser Containment Casing", false)
+            .addCasing("9", "Tungstensteel Frame Box", false)
+            .addCasing("3", "Any Tiered Glass", true)
+            .addCasing("1", "Laser Resistant Plate", false)
+            .addMiscHatch(
+                "1",
+                StatCollector.translateToLocal("GT5U.tooltip.structure.laser_source_hatch"),
+                "Casing above glass",
+                2)
+            .addEnergyHatch("1+", "Any casing", 1)
+            .addMaintenanceHatch("1", "Any casing", 1)
+            .addInputAny("1+", "Any casing", 1)
+            .addOutputAny("1+", "Any casing", 1)
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         return tt;
     }
@@ -305,12 +309,11 @@ public class MTEIndustrialLaserEngraver extends MTEExtendedPowerMultiBlockBase<M
             checkHasEnergyHatch(errors);
         }
         checkHasMaintenanceHatch(errors);
-        checkHasAnyOutput(errors);
         checkHasAnyInput(errors);
+        checkHasAnyOutput(errors);
 
-        int requiredGlassTier = min(VoltageIndex.UMV, laserSource.mTier);
-        if (glassTier < requiredGlassTier) {
-            errors.add(StructureErrors.glassTierNotEnough(requiredGlassTier));
+        if (glassTier < laserSource.mTier) {
+            errors.add(StructureErrors.glassTierNotEnough(laserSource.mTier));
         }
         if (!errors.isEmpty()) return;
         findLaserRenderer(base.getWorld(), base.getXCoord(), base.getYCoord(), base.getZCoord());

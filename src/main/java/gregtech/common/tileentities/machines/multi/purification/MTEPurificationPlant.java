@@ -18,7 +18,6 @@ import static gregtech.api.util.GTStructureUtility.ofAnyWater;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.common.tileentities.machines.multi.purification.MTEPurificationUnitBase.WATER_BOOST_BONUS_CHANCE;
 import static gregtech.common.tileentities.machines.multi.purification.MTEPurificationUnitBase.WATER_BOOST_NEEDED_FLUID;
-import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +28,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
@@ -47,9 +47,9 @@ import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTStructureUtility;
 import gregtech.api.util.GTUtility;
@@ -67,7 +67,7 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
      * Maximum distance in each axis between the purification plant main controller and the controller blocks of the
      * purification plant units.
      */
-    public static final int MAX_UNIT_DISTANCE = 32;
+    public static final int MAX_UNIT_DISTANCE = 64;
 
     /**
      * Time in ticks for a full processing cycle to complete.
@@ -158,7 +158,7 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
                     + " blocks along each axis")
             .addInfo("Left click this controller with a data stick, then right click a purification unit to link")
             .addInfo("Supplies power to linked purification units")
-            .addTecTechHatchInfo()
+            .addSupportAny()
             .addSeparator()
             .addInfo(
                 "Works in fixed time processing cycles of " + EnumChatFormatting.RED
@@ -208,42 +208,17 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
                 EnumChatFormatting.AQUA + ""
                     + EnumChatFormatting.ITALIC
                     + "purification processes, and this multiblock is the heart of the operation")
-            .beginStructureBlock(7, 9, 8, false)
-            .addController("Front center")
-            .addCasingInfoExactlyColored(
-                "Superplasticizer-Treated High Strength Concrete",
-                EnumChatFormatting.GRAY,
-                56,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoRangeColored(
-                "Sterile Water Plant Casing",
-                EnumChatFormatting.GRAY,
-                71,
-                72,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored(
-                "Reinforced Sterile Water Plant Casing",
-                EnumChatFormatting.GRAY,
-                77,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored(
-                "Tungsten Frame Box",
-                EnumChatFormatting.GRAY,
-                30,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored(
-                "Tinted Industrial Glass",
-                EnumChatFormatting.GRAY,
-                6,
-                EnumChatFormatting.GOLD,
-                false)
-            .addEnergyHatch(EnumChatFormatting.GOLD + "1", 1)
-            .addMaintenanceHatch(EnumChatFormatting.GOLD + "1", 1)
-            .addStructureInfo("Requires water to be placed in the tank.")
+            .beginStructureBlock(8, 7, 9, true)
+            .addController("Front center, 3rd layer")
+            .addCasing("77", "Reinforced Sterile Water Plant Casing", false)
+            .addCasing("71-72", "Sterile Water Plant Casing", false)
+            .addCasing("56", "Superplasticizer-Treated High Strength Concrete", false)
+            .addCasing("30", "Tungsten Frame Box", false)
+            .addCasing("6", "Tinted Industrial Glass (any color)", false)
+            .addEnergyHatch("1-2", "Adjacent to controller", 1)
+            .addMaintenanceHatch("1", "Adjacent to controller", 1)
+            .addStructureInfo("")
+            .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.WaterFree"))
             .toolTipFinisher();
         return tt;
     }
@@ -254,29 +229,17 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-        int colorIndex, boolean active, boolean redstoneLevel) {
-        if (side == facing) {
-            if (active) return new ITexture[] { getCasingTexture(), TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_PURIFICATION_PLANT_ACTIVE)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_PURIFICATION_PLANT_ACTIVE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { getCasingTexture(), TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_PURIFICATION_PLANT)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_PURIFICATION_PLANT_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-        }
-        return new ITexture[] { getCasingTexture() };
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            OVERLAY_FRONT_PURIFICATION_PLANT,
+            OVERLAY_FRONT_PURIFICATION_PLANT_GLOW,
+            OVERLAY_FRONT_PURIFICATION_PLANT_ACTIVE,
+            OVERLAY_FRONT_PURIFICATION_PLANT_ACTIVE_GLOW);
     }
 
     @Override
@@ -304,8 +267,8 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
             return;
         }
 
-        checkOneMaintenanceHatch(errors);
-        checkExoticAndNormalEnergyHatches(errors);
+        checkHasAnyEnergy(errors);
+        checkHasMaintenanceHatch(errors);
         if (!errors.isEmpty()) return;
         needsWaterFill = true;
     }
@@ -494,12 +457,11 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
     public String[] getInfoData() {
         var ret = new ArrayList<String>();
         ret.add(
-            translateToLocal("GT5U.multiblock.recipesDone") + ": "
-                + EnumChatFormatting.GREEN
-                + formatNumber(recipesDone)
-                + EnumChatFormatting.RESET);
+            IGregTechDeviceInformation.encode(
+                "GT5U.infodata.multiblock.recipes_done",
+                EnumChatFormatting.GREEN + formatNumber(recipesDone) + EnumChatFormatting.RESET));
         // Show linked purification units and their status
-        ret.add(translateToLocal("GT5U.infodata.purification_plant.linked_units"));
+        ret.add("GT5U.infodata.purification_plant.linked_units");
         for (LinkedPurificationUnit unit : this.linkedUnits) {
             String text = EnumChatFormatting.AQUA + unit.metaTileEntity()
                 .getLocalName() + ": ";
@@ -508,19 +470,23 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
             switch (status) {
                 case ACTIVE -> {
                     text = text + EnumChatFormatting.GREEN
-                        + translateToLocal("GT5U.infodata.purification_plant.linked_units.status.active");
+                        + IGregTechDeviceInformation
+                            .decode("GT5U.infodata.purification_plant.linked_units.status.active");
                 }
                 case IDLE -> {
                     text = text + EnumChatFormatting.GREEN
-                        + translateToLocal("GT5U.infodata.purification_plant.linked_units.status.idle");
+                        + IGregTechDeviceInformation
+                            .decode("GT5U.infodata.purification_plant.linked_units.status.idle");
                 }
                 case DISABLED -> {
                     text = text + EnumChatFormatting.YELLOW
-                        + translateToLocal("GT5U.infodata.purification_plant.linked_units.status.disabled");
+                        + IGregTechDeviceInformation
+                            .decode("GT5U.infodata.purification_plant.linked_units.status.disabled");
                 }
                 case INCOMPLETE_STRUCTURE -> {
                     text = text + EnumChatFormatting.RED
-                        + translateToLocal("GT5U.infodata.purification_plant.linked_units.status.incomplete");
+                        + IGregTechDeviceInformation
+                            .decode("GT5U.infodata.purification_plant.linked_units.status.incomplete");
                 }
             }
             ret.add(text);

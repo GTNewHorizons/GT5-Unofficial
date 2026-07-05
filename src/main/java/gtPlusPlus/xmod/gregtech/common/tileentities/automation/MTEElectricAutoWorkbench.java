@@ -40,6 +40,13 @@ public class MTEElectricAutoWorkbench extends MTEBasicTank {
     public static final int MAX_MODES = 10;
     public static final int MAX_THROUGHPUT = 4;
 
+    public static final int INPUT_SLOT_OFFSET = 0;
+    public static final int INPUT_SLOT_COUNT = 9;
+    public static final int OUTPUT_SLOT_OFFSET = INPUT_SLOT_OFFSET + INPUT_SLOT_COUNT;
+    public static final int OUTPUT_SLOT_COUNT = 9;
+    public static final int PHANTOM_SLOT_OFFSET = OUTPUT_SLOT_OFFSET + OUTPUT_SLOT_COUNT + 1;
+    public static final int PHANTOM_SLOT_COUNT = 9;
+
     public MTEElectricAutoWorkbench(final int aID, final int aTier, final String aDescription) {
         super(
             aID,
@@ -57,7 +64,7 @@ public class MTEElectricAutoWorkbench extends MTEBasicTank {
 
     @Override
     public boolean isValidSlot(int aIndex) {
-        return aIndex < 19;
+        return aIndex < PHANTOM_SLOT_OFFSET;
     }
 
     @Override
@@ -223,21 +230,16 @@ public class MTEElectricAutoWorkbench extends MTEBasicTank {
                     }
                     switch (mMode) {
                         case 0 -> {
-                            if (mInventory[mCurrentSlot] != null
-                                && !isItemTypeOrItsEmptyLiquidContainerInCraftingGrid(mInventory[mCurrentSlot])) {
-                                if (mInventory[18] == null && mThroughPut < 2 && mCurrentSlot < 8) {
-                                    mInventory[18] = mInventory[mCurrentSlot];
-                                    mInventory[mCurrentSlot] = null;
-                                    mTicksUntilNextUpdate = 1;
-                                }
-                                break;
-                            }
-                            for (int i = 0; i < 9; i++) {
-                                tRecipe[i] = mInventory[i + 19];
-                                if (tRecipe[i] != null) {
-                                    tRecipe[i] = GTUtility.copy(tRecipe[i]);
-                                    tRecipe[i].stackSize = 1;
-                                }
+                            System.arraycopy(
+                                buildModeZeroRecipe(mInventory, mCurrentSlot, mThroughPut),
+                                0,
+                                tRecipe,
+                                0,
+                                9);
+                            if (isStrayBeingEjectedInModeZero(mInventory, mCurrentSlot, mThroughPut)) {
+                                mInventory[18] = mInventory[mCurrentSlot];
+                                mInventory[mCurrentSlot] = null;
+                                mTicksUntilNextUpdate = 1;
                             }
                         }
                         case 1 -> {
@@ -479,35 +481,14 @@ public class MTEElectricAutoWorkbench extends MTEBasicTank {
                                 }
                             }
                         }
-                        case 9 -> {
-                            if (isItemTypeOrItsEmptyLiquidContainerInCraftingGrid(mInventory[mCurrentSlot])) {
-                                if (mInventory[18] == null && mThroughPut < 2) {
-                                    mInventory[18] = mInventory[mCurrentSlot];
-                                    mInventory[mCurrentSlot] = null;
-                                    mTicksUntilNextUpdate = 1;
-                                }
-                                break;
-                            }
-                            for (byte i = 0, j = 0; i < 18 && j < 9
-                                && (j < 2
-                                    || GTModHandler.getAllRecipeOutput(getBaseMetaTileEntity().getWorld(), tRecipe)
-                                        == null); i++) {
-                                tRecipe[j] = mInventory[(mCurrentSlot + i) % 18];
-                                if (tRecipe[j] != null) {
-                                    tRecipe[j] = GTUtility.copy(tRecipe[j]);
-                                    tRecipe[j].stackSize = 1;
-                                    j++;
-                                }
-                            }
-                            if (tRecipe[1] == null) tRecipe[0] = null;
-                        }
+                        case 9 -> System.arraycopy(buildCircleRecipe(mInventory), 0, tRecipe, 0, 9);
                     }
                 }
 
                 if (tOutput == null)
                     tOutput = GTModHandler.getAllRecipeOutput(getBaseMetaTileEntity().getWorld(), tRecipe);
 
-                if (tOutput != null || mMode == 0) mInventory[28] = tOutput;
+                updateRecipePreview(mInventory, tOutput);
 
                 if (tOutput == null) {
                     mLastCraftSuccessful = false;
@@ -607,6 +588,10 @@ public class MTEElectricAutoWorkbench extends MTEBasicTank {
     }
 
     private boolean isItemTypeOrItsEmptyLiquidContainerInCraftingGrid(ItemStack aStack) {
+        return isItemTypeOrItsEmptyLiquidContainerInCraftingGrid(mInventory, aStack);
+    }
+
+    static boolean isItemTypeOrItsEmptyLiquidContainerInCraftingGrid(ItemStack[] mInventory, ItemStack aStack) {
         if (aStack == null) return true;
         for (byte i = 19; i < 28; i++) {
             if (mInventory[i] != null) {
@@ -616,6 +601,67 @@ public class MTEElectricAutoWorkbench extends MTEBasicTank {
             }
         }
         return false;
+    }
+
+    /**
+     * In mode 0 a stray (non-template) item sitting in the input grid is moved to the output slot. This
+     * is only possible when the output is free, throughput allows ejecting, and the item is in the input
+     * grid (slots 0-7).
+     */
+    static boolean isStrayBeingEjectedInModeZero(ItemStack[] mInventory, int currentSlot, int throughPut) {
+        return mInventory[currentSlot] != null
+            && !isItemTypeOrItsEmptyLiquidContainerInCraftingGrid(mInventory, mInventory[currentSlot])
+            && mInventory[18] == null
+            && throughPut < 2
+            && currentSlot < 8;
+    }
+
+    /**
+     * Builds the mode 0 (Normal Crafting Table) recipe grid from the phantom template (slots 19-27). The
+     * grid - and therefore the recipe preview in slot 28 - must reflect the template even when a stray
+     * item is present in the input buffer. The only exception is the single tick on which a stray item is
+     * ejected: the grid is left empty so the machine does not craft over the item just moved to the
+     * output slot.
+     */
+    static ItemStack[] buildModeZeroRecipe(ItemStack[] mInventory, int currentSlot, int throughPut) {
+        ItemStack[] tRecipe = new ItemStack[9];
+        if (isStrayBeingEjectedInModeZero(mInventory, currentSlot, throughPut)) {
+            return tRecipe;
+        }
+        for (int i = 0; i < 9; i++) {
+            tRecipe[i] = mInventory[i + 19];
+            if (tRecipe[i] != null) {
+                tRecipe[i] = GTUtility.copy(tRecipe[i]);
+                tRecipe[i].stackSize = 1;
+            }
+        }
+        return tRecipe;
+    }
+
+    /**
+     * Builds the Circle mode (mode 9) recipe grid directly from the live input grid (slots 0-8),
+     * preserving slot positions (empty slots stay null). Reading positionally - rather than compacting
+     * non-null items toward the front - is what lets shaped recipes match.
+     */
+    static ItemStack[] buildCircleRecipe(ItemStack[] mInventory) {
+        ItemStack[] tRecipe = new ItemStack[9];
+        for (int i = 0; i < 9; i++) {
+            tRecipe[i] = null;
+            if (mInventory[i] != null) {
+                tRecipe[i] = GTUtility.copy(mInventory[i]);
+                tRecipe[i].stackSize = 1;
+            }
+        }
+        return tRecipe;
+    }
+
+    /**
+     * Writes the current recipe output into the preview slot (28). Done unconditionally for every mode
+     * so the preview always reflects the current grid and is cleared (set to null) as soon as no recipe
+     * matches.
+     */
+    static void updateRecipePreview(ItemStack[] mInventory, ItemStack tOutput) {
+        mInventory[28] = tOutput;
     }
 
     private ArrayList<ItemStack> recipeContent(ItemStack[] tRecipe) {
@@ -637,12 +683,16 @@ public class MTEElectricAutoWorkbench extends MTEBasicTank {
     }
 
     private ArrayList<ItemStack> benchContent() {
+        return benchContent(mInventory);
+    }
+
+    static ArrayList<ItemStack> benchContent(ItemStack[] mInventory) {
         ArrayList<ItemStack> tList = new ArrayList<>();
         for (byte i = 0; i < 18; i++) {
             if (mInventory[i] != null) {
                 boolean temp = false;
                 for (byte j = 0; j < tList.size(); j++) {
-                    if (GTUtility.areStacksEqual(mInventory[i], mInventory[j])) {
+                    if (GTUtility.areStacksEqual(mInventory[i], tList.get(j))) {
                         tList.get(j).stackSize += mInventory[i].stackSize;
                         temp = true;
                         break;
@@ -740,5 +790,19 @@ public class MTEElectricAutoWorkbench extends MTEBasicTank {
     @Override
     public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
         return new MTEElectricAutoWorkbenchGui(this).buildUI(data, syncManager, uiSettings);
+    }
+
+    @Override
+    public boolean isItemValidForPhantomSlot(int index, ItemStack itemStack) {
+        return isPhantomSlot(index);
+    }
+
+    @Override
+    public int getSlotLimit(int slot) {
+        return isPhantomSlot(slot) ? 1 : super.getSlotLimit(slot);
+    }
+
+    private boolean isPhantomSlot(int index) {
+        return PHANTOM_SLOT_OFFSET <= index && index < PHANTOM_SLOT_OFFSET + PHANTOM_SLOT_COUNT;
     }
 }

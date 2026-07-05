@@ -4,7 +4,9 @@ import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import net.minecraftforge.common.util.ForgeDirection;
@@ -13,6 +15,7 @@ import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.drawable.DynamicDrawable;
+import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
@@ -21,6 +24,7 @@ import com.cleanroommc.modularui.value.sync.FluidSlotSyncHandler;
 import com.cleanroommc.modularui.value.sync.InteractionSyncHandler;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
+import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.ProgressWidget;
 import com.cleanroommc.modularui.widgets.layout.Flow;
@@ -29,12 +33,14 @@ import com.cleanroommc.modularui.widgets.slot.FluidSlot;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.gtnewhorizons.modularui.api.widget.Interactable;
 
-import gregtech.api.enums.GTValues;
+import gregtech.api.enums.TieredVariant;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicMachine;
 import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.api.recipe.BasicUIProperties;
+import gregtech.api.util.GTTooltipDataCache;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.util.MachineModularSlot;
 import gregtech.common.modularui2.widget.GTProgressWidget;
@@ -44,14 +50,24 @@ import tectech.thing.metaTileEntity.pipe.MTEPipeLaser;
 
 public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> extends MTETieredMachineBlockBaseGui<T> {
 
-    protected BasicUIProperties properties;
-    protected BasicUIProperties.SlotOverlayGetter<IDrawable> slotOverlayFunction;
+    protected final BasicUIProperties properties;
+    protected final BasicUIProperties.SlotOverlayGetter<IDrawable> slotOverlayFunction;
+    protected final UITexture progressBarTexture;
     protected boolean mAddGregTechLogo = false;
+
+    protected final Map<BooleanSyncValue, GTTooltipDataCache.TooltipData> errorMap = new HashMap<>();
 
     public MTEBasicMachineBaseGui(T machine, BasicUIProperties properties) {
         super(machine);
         this.properties = properties;
-        this.slotOverlayFunction = properties.slotOverlaysMUI2;
+
+        TieredVariant tieredVariant = machine.getTieredVariant();
+        this.slotOverlayFunction = tieredVariant == TieredVariant.STANDARD ? properties.slotOverlaysMUI2
+            : (index, isFluid, isOutput, isSpecial) -> properties.slotOverlaysSteamMUI2
+                .apply(index, isFluid, isOutput, isSpecial)
+                .get(tieredVariant);
+        this.progressBarTexture = tieredVariant == TieredVariant.STANDARD ? properties.progressBarMUI2
+            : properties.progressBarTextureSteamMUI2.get(tieredVariant);
     }
 
     public MTEBasicMachineBaseGui<T> useGregTechLogo(boolean addLogo) {
@@ -72,6 +88,21 @@ public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> extends MTETiered
         syncManager.syncValue("fluidAutoOutput", fluidSync);
 
         syncManager.registerSlotGroup("item_inv", 1 + ((properties.maxItemInputs - 1) / 3));
+
+        initErrors(syncManager);
+    }
+
+    /**
+     * Subclasses can add their own errors to the error map in this method.
+     */
+    protected void initErrors(PanelSyncManager syncManager) {
+        BooleanSyncValue powerfailSyncer = new BooleanSyncValue(machine::isStuttering);
+        syncManager.syncValue("powerfail", powerfailSyncer);
+        errorMap.put(
+            powerfailSyncer,
+            machine.mTooltipCache.getData(
+                "GT5U.machines.stalled_stuttering.tooltip",
+                GTUtility.translate("GT5U.machines.powersource.power")));
     }
 
     @Override
@@ -213,15 +244,27 @@ public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> extends MTETiered
         return super.createBottomRightCornerFlow(panel, syncManager)
             .childIf(this.doesAddSpecialSlot(), this::createSpecialSlot)
             .childIf(properties.maxFluidOutputs > 0, this::createFluidOutputSlot);
-        // the fluid output slot is positioned under the first item output slot, which is 0.5 slots over in the gui.
+    }
+
+    protected boolean supportsChargerSlot() {
+        return true;
     }
 
     @Override
     protected ParentWidget<?> createBottomSection(ModularPanel panel, PanelSyncManager syncManager) {
-        return super.createBottomSection(panel, syncManager).child(createChargerSlot().horizontalCenter());
+        return super.createBottomSection(panel, syncManager).child(
+            Flow.column()
+                .coverChildren()
+                .decoration()
+                .bottomRel(0)
+                .horizontalCenter()
+                .child(createErrorWidget(panel, syncManager))
+                .childIf(supportsChargerSlot(), this::createChargerSlot));
     }
 
-    @Override
+    /**
+     * Typically, this is used for the 'special slot' on singleblocks
+     */
     protected ItemSlot createSpecialSlot() {
         String[] tooltipKeys = new String[2];
         if (properties.useSpecialSlot) {
@@ -243,9 +286,9 @@ public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> extends MTETiered
 
     protected ProgressWidget createProgressBar(ModularPanel panel, PanelSyncManager syncManager) {
         return new GTProgressWidget()
-            .neiTransferRect(properties.neiTransferRectId, GTValues.emptyObjectArray, createTooltipForProgressBar())
+            .neiTransferRect(properties.neiTransferRectId, new Object[] { machine }, createTooltipForProgressBar())
             .value(new DoubleSyncValue(() -> (double) machine.mProgresstime / machine.mMaxProgresstime))
-            .texture(properties.progressBarMUI2, properties.progressBarWidthMUI2)
+            .texture(progressBarTexture, properties.progressBarWidthMUI2)
             .size(properties.progressBarWidthMUI2, properties.progressBarHeightMUI2 / 2)
             .direction(properties.progressBarDirectionMUI2)
             .tooltipShowUpTimer(TOOLTIP_DELAY);
@@ -255,6 +298,31 @@ public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> extends MTETiered
         final byte machineTier = machine.mTier;
         String tierName = GTUtility.getColoredTierNameFromTier(machineTier);
         return GTUtility.translate("GT5U.machines.nei_transfer.voltage.tooltip", tierName);
+    }
+
+    protected Widget<?> createErrorWidget(ModularPanel panel, PanelSyncManager syncManager) {
+        BooleanSyncValue hasErrorSyncer = new BooleanSyncValue(
+            () -> errorMap.keySet()
+                .stream()
+                .anyMatch(BooleanSyncValue::getBoolValue));
+        syncManager.syncValue("hasError", hasErrorSyncer);
+
+        IDrawable.DrawableWidget widget = new IDrawable.DrawableWidget(IDrawable.EMPTY);
+        hasErrorSyncer.changeListener(widget::markTooltipDirty);
+
+        return widget.size(SLOT_SIZE)
+            .widgetTheme(GTWidgetThemes.PICTURE_ERROR)
+            .setEnabledIf(_ -> hasErrorSyncer.getBoolValue())
+            .tooltipShowUpTimer(TOOLTIP_DELAY)
+            .tooltipBuilder(t -> {
+                if (hasErrorSyncer.getBoolValue()) addTooltipDataToRichTooltip(
+                    () -> errorMap.get(
+                        errorMap.keySet()
+                            .stream()
+                            .filter(BooleanSyncValue::getBoolValue)
+                            .findFirst()
+                            .get())).accept(t);
+            });
     }
 
     protected ParentWidget<?> createItemInputSlots(ModularPanel panel, PanelSyncManager syncManager) {

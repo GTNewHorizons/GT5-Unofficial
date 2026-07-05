@@ -50,12 +50,12 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
@@ -66,7 +66,8 @@ import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.api.util.tooltip.TooltipTier;
 import gregtech.common.misc.GTStructureChannels;
 
-public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex> implements ISurvivalConstructable {
+public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex>
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final int CASING_INDEX = 176;
@@ -225,42 +226,23 @@ public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex> implement
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
-        ITexture[] rTexture;
-        if (side == aFacing) {
-            if (aActive) {
-                rTexture = new ITexture[] {
-                    Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings8, 0)),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_LATEX_ACTIVE)
-                        .extFacing()
-                        .build(),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_LATEX_ACTIVE_GLOW)
-                        .extFacing()
-                        .glow()
-                        .build() };
-            } else {
-                rTexture = new ITexture[] {
-                    Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings8, 0)),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_LATEX)
-                        .extFacing()
-                        .build(),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_MULTI_LATEX_GLOW)
-                        .extFacing()
-                        .glow()
-                        .build() };
-            }
-        } else {
-            rTexture = new ITexture[] { Textures.BlockIcons
-                .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings8, 0)) };
-        }
-        return rTexture;
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            OVERLAY_FRONT_MULTI_LATEX,
+            OVERLAY_FRONT_MULTI_LATEX_GLOW,
+            OVERLAY_FRONT_MULTI_LATEX_ACTIVE,
+            OVERLAY_FRONT_MULTI_LATEX_ACTIVE_GLOW);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Textures.BlockIcons
+            .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasings8, 0));
     }
 
     @Override
@@ -282,18 +264,20 @@ public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex> implement
                     + TooltipHelper.coloredText("Multi-Amp & Laser Energy Hatches", GREEN))
             .addSeparator()
             .addInfo(DARK_AQUA + "Make sure to cover up!")
-            .beginStructureBlock(5, 8, 5, false)
+            .beginStructureBlock(5, 5, 8, false)
             .addController("Front bottom center")
-            .addCasingInfoMin("Chemically Inert Machine Casing", 14, false)
-            .addCasingInfoExactly("Any Tiered Glass", 24, false)
-            .addCasingInfoExactly("Polyvinyl Chloride Frame Box", 16, false)
-            .addInputBus("Any Casing", 1)
-            .addOutputBus("Any Casing", 1)
-            .addInputHatch("Any Casing", 1)
-            .addEnergyHatch("Any Casing", 1)
-            .addMaintenanceHatch("Any Casing", 1)
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
-            .addSubChannelUsage(GTStructureChannels.ITEM_PIPE_CASING)
+            .addCasing("14-36", "Chemically Inert Casing", false)
+            .addCasing("32", "Any Tiered Glass", false)
+            .addCasing("16", "Polyvinyl Chloride Frame Box", false)
+            .addCasing("6", "Item Pipe Casing", true)
+            .addEnergyHatch("1+", "Any casing", 1)
+            .addMaintenanceHatch("1", "Any casing", 1)
+            .addInputBus("1+", "Any casing", 1)
+            .addInputHatch("1+", "Any casing", 1)
+            .addOutputBus("1+", "Any casing", 1)
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.BOROGLASS)
+            .addSubChannel(GTStructureChannels.ITEM_PIPE_CASING)
             .toolTipFinisher();
         return tt;
     }
@@ -326,11 +310,11 @@ public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex> implement
             UniversalSingularities.isModLoaded()
                 ? getModItem(UniversalSingularities.ID, "universal.rubber.singularity", 1L, 5)
                 : ItemList.Tool_DataStick.get(1));
+        checkHasAnyEnergy(errors);
         checkHasMaintenanceHatch(errors);
         checkHasInputBus(errors);
         checkHasInputHatch(errors);
         checkHasOutputBus(errors);
-        checkHasAnyEnergy(errors);
         if (!mExoticEnergyHatches.isEmpty() && !singularityPresent) {
             errors.add(StructureErrors.of("GT5U.gui.text.structure_error.latex_singularity"));
         }
