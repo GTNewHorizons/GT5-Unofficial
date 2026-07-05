@@ -48,7 +48,7 @@ public class GTPacketNetworkAnalyzerMode extends GTPacket {
 
     @Override
     public GTPacket decode(ByteArrayDataInput aData) {
-        final AnalyzerModes mode = GTDataUtils.getIndexSafe(AnalyzerModes.values(), aData.readInt());
+        final AnalyzerModes mode = GTDataUtils.getIndexSafe(AnalyzerModes.VALUES, aData.readInt());
         return new GTPacketNetworkAnalyzerMode(mode);
     }
 

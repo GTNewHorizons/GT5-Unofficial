@@ -38,6 +38,8 @@ public class WorldOverlayRenderer {
         OUTPUT,
         FORK;
 
+        public static final GraphNodeState[] VALUES = values();
+
         public int[] baseColor() {
             return switch (this) {
                 case INPUT -> unpackRGB(ColorUtils.networkAnalyzerNodeInput.getColor());
@@ -57,6 +59,8 @@ public class WorldOverlayRenderer {
         SUCCESS,
         WARNING,
         ALERT;
+
+        public static final SeverityLevel[] VALUES = values();
 
         public int[] color() {
             return switch (this) {
@@ -377,6 +381,7 @@ public class WorldOverlayRenderer {
     }
 
     private static void renderEdges(List<OverlayEdge> edges, float width) {
+        final float previousLineWidth = GL11.glGetFloat(GL11.GL_LINE_WIDTH);
         final Tessellator tess = Tessellator.instance;
 
         GL11.glLineWidth(width);
@@ -390,6 +395,7 @@ public class WorldOverlayRenderer {
         }
 
         tess.draw();
+        GL11.glLineWidth(previousLineWidth);
     }
 
 }

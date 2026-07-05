@@ -700,22 +700,17 @@ public class PowerNetworkBuilder {
                                 totalAmperage += outputAmperage;
                                 maxVoltage = Math.max(maxVoltage, outputVoltage);
                             }
-                        } else if (sideEntity instanceof IReactorChamber chamber
-                            && chamber.getReactor() instanceof IEnergySource emitter) {
-                                if (countedEmitters.add(emitter)) {
-                                    final long amps = Math
-                                        .max(1L, (long) (emitter.getOfferedEnergy() / cable.mVoltage));
-                                    totalAmperage += amps;
-                                    maxVoltage = cable.mVoltage;
-                                }
-                            } else if (sideEntity instanceof IEnergySource emitter) {
-                                if (countedEmitters.add(emitter)) {
-                                    final long amps = Math
-                                        .max(1L, (long) (emitter.getOfferedEnergy() / cable.mVoltage));
-                                    totalAmperage += amps;
-                                    maxVoltage = cable.mVoltage;
-                                }
+                        } else {
+                            final IEnergySource emitter = sideEntity instanceof IReactorChamber chamber
+                                && chamber.getReactor() instanceof IEnergySource reactorEmitter ? reactorEmitter
+                                    : sideEntity instanceof IEnergySource sideEmitter ? sideEmitter : null;
+
+                            if (emitter != null && countedEmitters.add(emitter)) {
+                                final long amps = Math.max(1L, (long) (emitter.getOfferedEnergy() / cable.mVoltage));
+                                totalAmperage += amps;
+                                maxVoltage = cable.mVoltage;
                             }
+                        }
 
                     }
                 }

@@ -48,7 +48,7 @@ public class ItemNetworkAnalyzer extends ItemTool {
 
     public static AnalyzerModes getMode(ItemStack stack) {
         final int id = ItemStackNBT.getByte(stack, "mode") & 0xFF;
-        final AnalyzerModes[] values = AnalyzerModes.values();
+        final AnalyzerModes[] values = AnalyzerModes.VALUES;
         return id < values.length ? values[id] : AnalyzerModes.TOPOLOGY;
     }
 
@@ -114,7 +114,7 @@ public class ItemNetworkAnalyzer extends ItemTool {
 
         if (worldIn.isRemote && p.isSneaking() && stack.getItem() instanceof ItemNetworkAnalyzer) {
             final AnalyzerModes newMode = nextInMode(
-                Arrays.asList(AnalyzerModes.values()),
+                Arrays.asList(AnalyzerModes.VALUES),
                 ItemNetworkAnalyzer.getMode(stack));
 
             ItemNetworkAnalyzer.setMode(stack, newMode);

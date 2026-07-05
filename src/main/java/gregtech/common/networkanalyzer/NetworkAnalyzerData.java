@@ -16,12 +16,15 @@ import io.netty.buffer.ByteBuf;
 public class NetworkAnalyzerData {
 
     public enum AnalyzerModes {
+
         TOPOLOGY,
         CRITICAL,
         ACTIVE,
 
         AMPERAGE,
-        VOLTAGE,
+        VOLTAGE;
+
+        public static final AnalyzerModes[] VALUES = values();
     }
 
     public final List<OverlayNode> nodes = new ArrayList<>();
@@ -43,8 +46,8 @@ public class NetworkAnalyzerData {
             final int x = in.readInt();
             final int y = in.readInt();
             final int z = in.readInt();
-            final GraphNodeState state = GTDataUtils.getIndexSafe(GraphNodeState.values(), in.readByte());
-            final SeverityLevel level = GTDataUtils.getIndexSafe(SeverityLevel.values(), in.readByte());
+            final GraphNodeState state = GTDataUtils.getIndexSafe(GraphNodeState.VALUES, in.readByte());
+            final SeverityLevel level = GTDataUtils.getIndexSafe(SeverityLevel.VALUES, in.readByte());
             final Localized[] label = readLocalizedArray(in);
             final Localized[] tooltip = readLocalizedArray(in);
 
@@ -60,7 +63,7 @@ public class NetworkAnalyzerData {
             final int y2 = in.readInt();
             final int z2 = in.readInt();
 
-            final SeverityLevel level = GTDataUtils.getIndexSafe(SeverityLevel.values(), in.readByte());
+            final SeverityLevel level = GTDataUtils.getIndexSafe(SeverityLevel.VALUES, in.readByte());
 
             this.edges.add(new OverlayEdge(x1, y1, z1, x2, y2, z2, level));
         }
