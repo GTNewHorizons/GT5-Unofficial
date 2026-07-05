@@ -36,7 +36,9 @@ public class TTRenderGTProgressBar implements IWailaVariableWidthTooltipRenderer
             -1);
         int progresstime = Integer.parseInt(params[0]);
         int maxProgresstime = Integer.parseInt(params[1]);
-        int progress = (int) ((maxStringW - 1) * ((double) progresstime / maxProgresstime));
+        double ratio = maxProgresstime != 0 ? (double) progresstime / maxProgresstime : 0.0;
+        ratio = Math.max(0.0, Math.min(ratio, 1.0));
+        int progress = (int) ((maxStringW - 1) * ratio);
         for (int xx = 1; xx < progress; xx++) {
             int color = (xx & 1) == 0 ? GTMod.proxy.wailaProgressBarColor1 : GTMod.proxy.wailaProgressBarColor2;
             drawVerticalLine(xx, 1, 12 - 1, color);
@@ -46,7 +48,7 @@ public class TTRenderGTProgressBar implements IWailaVariableWidthTooltipRenderer
                 "GT5U.waila.machine.in_progress",
                 (double) progresstime / 20,
                 (double) maxProgresstime / 20,
-                (Math.round((double) progresstime / maxProgresstime * 1000) / 10.0)),
+                (Math.round(ratio * 1000) / 10.0)),
             2,
             2,
             OverlayConfig.fontcolor,
