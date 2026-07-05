@@ -145,23 +145,28 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
             .beginStructureBlock(7, 7, 7, false)
             .addController(translateToLocal("GT5U.tooltip.nac.interface.structure.module_controller"))
             // Nanochip Complex Glass
-            .addCasingInfoExactly(translateToLocal("gt.blockglass1.8.name"), 52, false)
+            .addCasing("52", translateToLocal("gt.blockglass1.8.name"), false)
             // Nanochip Reinforcement Casing
-            .addCasingInfoExactly(translateToLocal("gt.blockcasings12.2.name"), 27, false)
+            .addCasing("27", translateToLocal("gt.blockcasings12.2.name"), false)
             // Octiron Frame Box
-            .addCasingInfoExactly(
-                translateToLocal("gt.blockframes.10.name")
-                    .replace("%material", MaterialsAlloy.OCTIRON.getLocalizedName()),
-                19,
-                false)
+            .addCasing("19", "Octiron Frame Box", false)
             // Nanochip Mesh Interface Casing
-            .addCasingInfoExactly(translateToLocal("gt.blockcasings12.1.name"), 10, false)
-            .addInputHatch(TOOLTIP_STRUCTURE_BASE_CASING)
-            .addOutputHatch(TOOLTIP_STRUCTURE_BASE_CASING)
-            .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCI)
-            .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCO)
-            .addStructureInfoSeparator()
-            .addStructureInfo(translateToLocal("GT5U.tooltip.nac.interface.structure.module_description"))
+            .addCasing("10", translateToLocal("gt.blockcasings12.1.name"), false)
+            .addInputHatch("1+", translateToLocal("GT5U.tooltip.nac.interface.structure.module_hatches"), 3)
+            .addOutputHatch("1+", translateToLocal("GT5U.tooltip.nac.interface.structure.module_hatches"), 3)
+            .addMiscHatch(
+                "0+",
+                TOOLTIP_VCI_LONG,
+                translateToLocal("GT5U.tooltip.nac.interface.structure.module_hatches"),
+                3)
+            .addMiscHatch(
+                "0+",
+                TOOLTIP_VCO_LONG,
+                translateToLocal("GT5U.tooltip.nac.interface.structure.module_hatches"),
+                3)
+            .addStructureInfo("")
+            .addStructureFooter(translateToLocal("GT5U.tooltip.nac.interface.structure.module_cost"))
+            .addStructureFooter(translateToLocal("GT5U.tooltip.nac.interface.structure.module_power"))
             .toolTipFinisher();
     }
 

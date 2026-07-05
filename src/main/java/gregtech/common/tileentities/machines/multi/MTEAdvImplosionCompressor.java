@@ -25,14 +25,15 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
+import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -41,7 +42,7 @@ import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class MTEAdvImplosionCompressor extends MTEExtendedPowerMultiBlockBase<MTEAdvImplosionCompressor>
-    implements ISurvivalConstructable {
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final int OFFSET_X = 3;
@@ -98,18 +99,18 @@ public class MTEAdvImplosionCompressor extends MTEExtendedPowerMultiBlockBase<MT
             .addStaticSpeedInfo(2f)
             .addStaticEuEffInfo(1f)
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(7, 9, 7, true)
+            .beginStructureBlock(7, 7, 9, true)
             .addController("Front center")
-            .addCasingInfoMin("Robust Tungstensteel Machine Casing", 50, false)
-            .addCasingInfoExactly("Refined Graphite Block", 80, false)
-            .addCasingInfoExactly("Gold Frame Box", 4, false)
-            .addCasingInfoExactly("Gold Sheetmetal", 4, false)
-            .addCasingInfoExactly("Tungstensteel Frame Box", 24, false)
-            .addInputBus("Any Robust Tungstensteel Machine Casing", 1)
-            .addOutputBus("Any Robust Tungstensteel Machine Casing", 1)
-            .addEnergyHatch("Any Robust Tungstensteel Machine Casing", 1)
-            .addMaintenanceHatch("Any Robust Tungstensteel Machine Casing", 1)
-            .addMufflerHatch("Any Robust Tungstensteel Machine Casing", 1)
+            .addCasing("80", "Refined Graphite Block", false)
+            .addCasing("50-60", "Robust Tungstensteel Machine Casing", false)
+            .addCasing("24", "Tungstensteel Frame Box", false)
+            .addCasing("4", "Gold Sheetmetal", false)
+            .addCasing("4", "Gold Frame Box", false)
+            .addEnergyHatch("1+", "Any casing", 1)
+            .addMaintenanceHatch("1", "Any casing", 1)
+            .addMufflerHatch("1", "Any casing", 1)
+            .addInputBus("1+", "Any casing", 1)
+            .addOutputBus("1+", "Any casing", 1)
             .addStructureAuthors(EnumChatFormatting.GOLD + "omegacubed")
             .toolTipFinisher();
         return tt;
@@ -145,39 +146,30 @@ public class MTEAdvImplosionCompressor extends MTEExtendedPowerMultiBlockBase<MT
         casingAmount = 0;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z, errors)) return;
         checkCasingMin(errors, casingAmount, 50);
-        checkHasMufflerHatch(errors);
         checkHasEnergyHatch(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasMufflerHatch(errors);
         checkHasInputBus(errors);
         checkHasOutputBus(errors);
-        checkHasMaintenanceHatch(errors);
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection,
-        ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
-        if (sideDirection == facingDirection) {
-            if (active) return new ITexture[] { Casings.RobustTungstenSteelMachineCasing.getCasingTexture(),
-                TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.oMCAAdvancedImplosionActive)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.oMCAAdvancedImplosionActiveGlow)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { Casings.RobustTungstenSteelMachineCasing.getCasingTexture(),
-                TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.oMCAAdvancedImplosion)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.oMCAAdvancedImplosionGlow)
-                    .extFacing()
-                    .glow()
-                    .build() };
-        }
-        return new ITexture[] { Casings.RobustTungstenSteelMachineCasing.getCasingTexture() };
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            TexturesGtBlock.oMCAAdvancedImplosion,
+            TexturesGtBlock.oMCAAdvancedImplosionGlow,
+            TexturesGtBlock.oMCAAdvancedImplosionActive,
+            TexturesGtBlock.oMCAAdvancedImplosionActiveGlow);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Casings.RobustTungstenSteelMachineCasing.getCasingTexture();
     }
 
     @Override
