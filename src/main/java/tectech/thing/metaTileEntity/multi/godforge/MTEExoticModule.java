@@ -24,7 +24,6 @@ import java.util.stream.Stream;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -40,6 +39,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.RecipeMap;
@@ -510,24 +510,18 @@ public class MTEExoticModule extends MTEBaseModule {
             .addInfo("can be manufactured right away, but production of Magnetic Monopole Matter (Magmatter)")
             .addInfo("requires a fully upgraded Godforge")
             .addInfo("This module is specialized towards acquisition of unique materials")
-            .beginStructureBlock(7, 7, 13, false)
+            .beginStructureBlock(13, 7, 7, false)
             .addController("Front center")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "20"
-                    + EnumChatFormatting.GRAY
-                    + " Singularity Reinforced Stellar Shielding Casing")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "20"
-                    + EnumChatFormatting.GRAY
-                    + " Boundless Gravitationally Severed Structure Casing")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "5" + EnumChatFormatting.GRAY + " Harmonic Phonon Transmission Conduit")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "5" + EnumChatFormatting.GRAY + " Celestial Matter Guidance Casing")
-            .addStructureInfo(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Stellar Energy Siphon Casing")
-            .addStructureInfo("Requires " + EnumChatFormatting.GOLD + 1 + EnumChatFormatting.GRAY + " Output Hatch")
-            .addStructureInfo("Requires " + EnumChatFormatting.GOLD + 1 + EnumChatFormatting.GRAY + " Output Bus")
-            .toolTipFinisher(EnumChatFormatting.AQUA, 75);
+            .addCasing("0-20", "Singularity Reinforced Stellar Shielding Casing", false)
+            .addCasing("20", "Boundless Gravitationally Severed Structure Casing", false)
+            .addCasing("5", "Celestial Matter Guidance Casing", false)
+            .addCasing("5", "Harmonic Phonon Transmission Conduit", false)
+            .addCasing("1", "Stellar Energy Siphon Casing", false)
+            .addInputBus("0+", "Any front shielding casing", 1)
+            .addInputHatch("0+", "Any front shielding casing", 1)
+            .addOutputBus("1+", "Any front shielding casing", 1)
+            .addOutputHatch("1+", "Any front shielding casing", 1)
+            .toolTipFinisher();
         return tt;
     }
 
@@ -535,34 +529,31 @@ public class MTEExoticModule extends MTEBaseModule {
     public String[] getInfoData() {
         ArrayList<String> str = new ArrayList<>();
         str.add(
-            StatCollector.translateToLocalFormatted(
+            IGregTechDeviceInformation.encode(
                 "GT5U.infodata.progress",
                 GREEN + formatNumber(mProgresstime / 20) + RESET,
                 YELLOW + formatNumber(mMaxProgresstime / 20) + RESET));
         str.add(
-            StatCollector.translateToLocalFormatted(
+            IGregTechDeviceInformation.encode(
                 "tt.infodata.multi.currently_using",
                 RED + (getBaseMetaTileEntity().isActive() ? formatNumber(EUt * actualParallel) : "0") + RESET));
         str.add(
-            YELLOW + StatCollector.translateToLocalFormatted(
-                "tt.infodata.multi.max_parallel",
-                RESET + formatNumber(getActualParallel())));
+            IGregTechDeviceInformation
+                .encode("tt.infodata.multi.max_parallel", YELLOW + formatNumber(getActualParallel()) + RESET));
         str.add(
-            YELLOW + StatCollector.translateToLocalFormatted(
+            IGregTechDeviceInformation.encode(
                 "GT5U.infodata.parallel.current",
-                RESET + (getBaseMetaTileEntity().isActive() ? formatNumber(getActualParallel()) : "0")));
+                YELLOW + (getBaseMetaTileEntity().isActive() ? formatNumber(getActualParallel()) : "0") + RESET));
         str.add(
-            YELLOW + StatCollector.translateToLocalFormatted(
-                "tt.infodata.multi.multiplier.recipe_time",
-                RESET + formatNumber(getSpeedBonus())));
+            IGregTechDeviceInformation
+                .encode("tt.infodata.multi.multiplier.recipe_time", YELLOW + formatNumber(getSpeedBonus()) + RESET));
         str.add(
-            YELLOW + StatCollector.translateToLocalFormatted(
-                "tt.infodata.multi.multiplier.energy",
-                RESET + formatNumber(getEnergyDiscount())));
+            IGregTechDeviceInformation
+                .encode("tt.infodata.multi.multiplier.energy", YELLOW + formatNumber(getEnergyDiscount()) + RESET));
         str.add(
-            YELLOW + StatCollector.translateToLocalFormatted(
+            IGregTechDeviceInformation.encode(
                 "tt.infodata.multi.divisor.recipe_time.non_perfect_oc",
-                RESET + formatNumber(getOverclockTimeFactor())));
+                YELLOW + formatNumber(getOverclockTimeFactor()) + RESET));
         return str.toArray(new String[0]);
     }
 

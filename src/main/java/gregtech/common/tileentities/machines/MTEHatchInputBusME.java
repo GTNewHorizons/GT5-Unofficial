@@ -67,6 +67,7 @@ import gregtech.api.interfaces.IDataCopyable;
 import gregtech.api.interfaces.IMEConnectable;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
@@ -267,11 +268,6 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
                     true);
                 gridProxy.setFlags(GridFlags.REQUIRE_CHANNEL);
                 updateValidGridProxySides();
-                if (base.getWorld() != null && base.getOwnerUuid() != null) {
-                    gridProxy.setOwner(
-                        base.getWorld()
-                            .func_152378_a(base.getOwnerUuid()));
-                }
             }
         }
         return this.gridProxy;
@@ -394,7 +390,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
         if (aNBT.hasKey("refreshTime")) {
             autoPullRefreshTime = aNBT.getInteger("refreshTime");
         }
-        getProxy().readFromNBT(aNBT);
+        if (aNBT.hasKey("proxy")) getProxy().readFromNBT(aNBT);
         updateAE2ProxyColor();
 
         clearSlotConfigs();
@@ -454,11 +450,9 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
 
     @Override
     public String[] getInfoData() {
-        return new String[] {
-            getProxy().isActive() ? StatCollector.translateToLocal("GT5U.infodata.hatch.crafting_input_me.bus.online")
-                : StatCollector.translateToLocalFormatted(
-                    "GT5U.infodata.hatch.crafting_input_me.bus.offline",
-                    getAEDiagnostics()) };
+        return new String[] { getProxy().isActive() ? "GT5U.infodata.hatch.crafting_input_me.bus.online"
+            : IGregTechDeviceInformation
+                .encode("GT5U.infodata.hatch.crafting_input_me.bus.offline", getAEDiagnostics()) };
     }
 
     @Override

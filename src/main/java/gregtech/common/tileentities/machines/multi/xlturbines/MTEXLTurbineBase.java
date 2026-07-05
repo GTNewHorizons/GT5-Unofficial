@@ -37,19 +37,18 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.IToolStats;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.render.TextureFactory;
-import gregtech.api.structure.error.ErrorType;
 import gregtech.api.structure.error.StructureError;
-import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.TurbineStatCalculator;
 import gregtech.api.util.shutdown.ShutDownReason;
@@ -65,7 +64,7 @@ import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public abstract class MTEXLTurbineBase extends MTEExtendedPowerMultiBlockBase<MTEXLTurbineBase>
-    implements ISurvivalConstructable {
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final int OFFSET_X = 4;
@@ -184,14 +183,6 @@ public abstract class MTEXLTurbineBase extends MTEExtendedPowerMultiBlockBase<MT
         super(aName);
     }
 
-    public boolean requiresOutputHatch() {
-        return false;
-    }
-
-    public boolean requiresMufflerHatch() {
-        return false;
-    }
-
     protected List<IHatchElement<? super MTEXLTurbineBase>> getAllowedHatches() {
         List<IHatchElement<? super MTEXLTurbineBase>> hatches = new ArrayList<>();
         hatches.add(InputBus);
@@ -199,7 +190,7 @@ public abstract class MTEXLTurbineBase extends MTEExtendedPowerMultiBlockBase<MT
         hatches.add(Maintenance);
         hatches.add(Dynamo.or(ExoticDynamo));
         if (requiresOutputHatch()) hatches.add(OutputHatch);
-        if (requiresMufflerHatch()) {
+        if (getPollutionPerSecond(null) != 0) {
             hatches.add(Muffler);
             hatches.add(Muffler);
             hatches.add(Muffler);
@@ -218,12 +209,12 @@ public abstract class MTEXLTurbineBase extends MTEExtendedPowerMultiBlockBase<MT
         return STRUCTURE_DEFINITION.get(getClass());
     }
 
-    private boolean requiresMufflers() {
-        return getPollutionPerSecond(null) > 0;
-    }
-
     public int minCasingAmount() {
         return 372;
+    }
+
+    public boolean requiresOutputHatch() {
+        return true;
     }
 
     @Override
@@ -235,18 +226,16 @@ public abstract class MTEXLTurbineBase extends MTEExtendedPowerMultiBlockBase<MT
             getStructureOffsetY(),
             getStructureOffsetZ(),
             errors)) return;
-        checkOneMaintenanceHatch(errors);
-        if (mDynamoHatches.isEmpty() && mExoticDynamoHatches.isEmpty()) {
-            errors.add(StructureErrors.hatchCount(ErrorType.TOO_FEW, HatchElement.Dynamo, 0, 1));
-        }
-        if (requiresMufflers()) {
+        checkCasingMin(errors, casingAmount, minCasingAmount());
+        checkHasAnyDynamo(errors);
+        checkHasMaintenanceHatch(errors);
+        if (getPollutionPerSecond(null) != 0) {
             checkHatchExact(errors, HatchElement.Muffler, 4);
         }
         checkHasInputHatch(errors);
         if (requiresOutputHatch()) {
             checkHasOutputHatch(errors);
         }
-        checkCasingMin(errors, casingAmount, minCasingAmount());
     }
 
     @Override
@@ -632,23 +621,22 @@ public abstract class MTEXLTurbineBase extends MTEExtendedPowerMultiBlockBase<MT
     }
 
     @Override
-    public final ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side,
-        ForgeDirection facing, int aColorIndex, boolean aActive, boolean aRedstone) {
-        return new ITexture[] { getCasing().getCasingTexture(),
-            facing == side ? getFrontFacingTurbineTexture(aActive) : getCasing().getCasingTexture() };
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            TexturesGtBlock.Overlay_Machine_Controller_Advanced,
+            TexturesGtBlock.Overlay_Machine_Controller_Advanced_Glow,
+            TexturesGtBlock.Overlay_Machine_Controller_Advanced_Active,
+            TexturesGtBlock.Overlay_Machine_Controller_Advanced_Active_Glow);
     }
 
-    protected ITexture getFrontFacingTurbineTexture(boolean isActive) {
-        if (isActive) {
-            return TextureFactory.builder()
-                .addIcon(TexturesGtBlock.Overlay_Machine_Controller_Advanced_Active)
-                .extFacing()
-                .build();
-        }
-        return TextureFactory.builder()
-            .addIcon(TexturesGtBlock.Overlay_Machine_Controller_Advanced)
-            .extFacing()
-            .build();
+    @Override
+    public ITexture getCasingTexture() {
+        return getCasing().getCasingTexture();
     }
 
     @Override

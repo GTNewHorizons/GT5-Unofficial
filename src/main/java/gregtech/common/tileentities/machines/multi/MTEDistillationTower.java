@@ -39,6 +39,7 @@ import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IOutputHatch;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
@@ -54,7 +55,7 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
 
 public class MTEDistillationTower extends MTEEnhancedMultiBlockBase<MTEDistillationTower>
-    implements ISurvivalConstructable {
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     protected static final int CASING_INDEX = 49;
     protected static final String STRUCTURE_PIECE_BASE = "base";
@@ -137,17 +138,21 @@ public class MTEDistillationTower extends MTEEnhancedMultiBlockBase<MTEDistillat
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("DT")
-            .addInfo("Fluids are only put out at the correct height")
-            .addInfo("The correct height equals the slot number in the NEI recipe")
-            .beginVariableStructureBlock(3, 3, 3, 12, 3, 3, true)
+            .addInfo("Fluids are outputted one per layer based on the slot number in NEI")
+            .addInfo("Increase the height to output more fluid types")
+            .beginVariableStructureBlock(3, 3, 3, 3, 3, 12, true)
             .addController("Front bottom center")
-            .addOtherStructurePart("Clean Stainless Steel Machine Casing", "7 x h - 5 (minimum)")
-            .addEnergyHatch("Any Casing except top centre", 1, 2)
-            .addMaintenanceHatch("Any Casing", 1, 2, 3)
-            .addInputHatch("Any bottom layer Casing", 1)
-            .addOutputBus("Any bottom layer Casing", 1)
-            .addOutputHatch("2-11x Output Hatches (At least one per layer except bottom layer)", 2, 3)
-            .addSubChannelUsage(GTStructureChannels.STRUCTURE_HEIGHT)
+            .addCasing("16-79", "Clean Stainless Steel Machine Casing", false)
+            .addEnergyHatch("1+", "Any casing", 1, 2)
+            .addMaintenanceHatch("1", "Any casing", 1, 2)
+            .addInputBus("0+", "Any bottom casing", 1)
+            .addInputHatch("1+", "Any bottom casing", 1)
+            .addOutputBus("0+", "Any bottom casing", 1)
+            .addOutputHatch("2-11", "One per layer, except the bottom layer", 2)
+            .addAir("Interior of the structure")
+            .addStructureInfo("")
+            .addStructureFooter("Minimum casings increases with height (7 x h - 5)")
+            .addSubChannel(GTStructureChannels.STRUCTURE_HEIGHT)
             .toolTipFinisher();
         return tt;
     }
@@ -176,6 +181,11 @@ public class MTEDistillationTower extends MTEEnhancedMultiBlockBase<MTEDistillat
                     .build() };
         }
         return new ITexture[] { Textures.BlockIcons.getCasingTextureForId(CASING_INDEX) };
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Textures.BlockIcons.getCasingTextureForId(CASING_INDEX);
     }
 
     @Override
@@ -275,8 +285,8 @@ public class MTEDistillationTower extends MTEEnhancedMultiBlockBase<MTEDistillat
             return;
         }
         checkCasingMin(errors, mCasing, 7 * (mHeight + 1) - 5);
-        checkHasMaintenanceHatch(errors);
         checkHasEnergyHatch(errors);
+        checkHasMaintenanceHatch(errors);
         checkHasInputHatch(errors);
     }
 

@@ -172,6 +172,7 @@ import gregtech.common.pollution.Pollution;
 import gregtech.common.powergoggles.PowerGogglesWorldSavedData;
 import gregtech.common.powergoggles.handlers.PowerGogglesEventHandler;
 import gregtech.common.recipes.CALImprintRecipe;
+import gregtech.common.recipes.MacerationStackConversionRecipe;
 import gregtech.common.tileentities.machines.multi.drone.MTEDroneCentre;
 import gregtech.common.worldgen.HEEIslandScanner;
 import gregtech.nei.GTNEIDefaultHandler;
@@ -1195,6 +1196,7 @@ public class GTProxy implements IFuelHandler {
         // MUI2, but for the time being it stays here. -- miozune
         CoverRegistry.reloadCoverColorOverrides();
         CALImprintRecipe.register();
+        MacerationStackConversionRecipe.register();
     }
 
     public void onLoadComplete(FMLLoadCompleteEvent event) {}
@@ -2482,12 +2484,6 @@ public class GTProxy implements IFuelHandler {
                     aEvent);
             }
         }
-    }
-
-    @SubscribeEvent
-    public void onBlockEvent(BlockEvent event) {
-        if (event.block.getUnlocalizedName()
-            .equals("blockAlloyGlass")) GregTechAPI.causeMachineUpdate(event.world, event.x, event.y, event.z);
     }
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)

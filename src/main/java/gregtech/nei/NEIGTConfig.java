@@ -1,5 +1,6 @@
 package gregtech.nei;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Map;
@@ -50,6 +51,7 @@ import gregtech.nei.dumper.MetaTileEntityDumper;
 import gregtech.nei.dumper.RecipeLockingSupportDumper;
 import gregtech.nei.dumper.VoidProtectionSupportDumper;
 import gregtech.nei.searchprovider.ChemicalFormulaFilter;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public class NEIGTConfig implements IConfigureNEI {
 
@@ -71,7 +73,8 @@ public class NEIGTConfig implements IConfigureNEI {
 
     private static ListMultimap<RecipeCategory, RecipeMapWorkable> RECIPE_CATALYST_INDEX;
 
-    private static GTNEIImprintHandler CAL_IMPRINT_HANDLER = new GTNEIImprintHandler();
+    private static final GTNEIImprintHandler CAL_IMPRINT_HANDLER = new GTNEIImprintHandler();
+    private static final GTNEIMacerationStackConversion MACERATOR_UPGRADE_HANDLER = new GTNEIMacerationStackConversion();
 
     public static boolean sIsAdded = true;
 
@@ -110,6 +113,9 @@ public class NEIGTConfig implements IConfigureNEI {
 
         GuiCraftingRecipe.craftinghandlers.add(CAL_IMPRINT_HANDLER);
         GuiUsageRecipe.usagehandlers.add(CAL_IMPRINT_HANDLER);
+
+        GuiCraftingRecipe.craftinghandlers.add(MACERATOR_UPGRADE_HANDLER);
+        GuiUsageRecipe.usagehandlers.add(MACERATOR_UPGRADE_HANDLER);
     }
 
     private void registerCatalysts() {
@@ -127,6 +133,27 @@ public class NEIGTConfig implements IConfigureNEI {
             RecipeMaps.ic2NuclearFakeRecipes.unlocalizedName);
 
         API.addRecipeCatalyst(new ItemStack(Items.cauldron), RecipeMaps.cauldronRecipe.unlocalizedName);
+
+        for (ItemList item : Arrays.asList(
+            ItemList.Machine_LV_Cutter,
+            ItemList.Machine_MV_Cutter,
+            ItemList.Machine_HV_Cutter,
+            ItemList.Machine_EV_Cutter,
+            ItemList.Machine_IV_Cutter,
+            ItemList.CuttingMachineLuV,
+            ItemList.CuttingMachineZPM,
+            ItemList.CuttingMachineUV,
+            ItemList.CuttingMachineUHV,
+            ItemList.CuttingMachineUEV,
+            ItemList.CuttingMachineUIV,
+            ItemList.CuttingMachineUMV)) {
+            API.addRecipeCatalyst(item.get(1), RecipeMaps.cutterFakeRecipes.unlocalizedName);
+        }
+
+        API.addRecipeCatalyst(
+            GregtechItemList.Industrial_CuttingFactoryController.get(1),
+            RecipeMaps.cutterFakeRecipes.unlocalizedName);
+        API.addRecipeCatalyst(ItemList.IndustrialCuttingMachine.get(1), RecipeMaps.cutterFakeRecipes.unlocalizedName);
     }
 
     private void registerItemEntries() {
@@ -207,6 +234,12 @@ public class NEIGTConfig implements IConfigureNEI {
                 .setDisplayStack(
                     CircuitPartsItem.getCircuitParts()
                         .getStack(0))
+                .build());
+
+        event.registerHandlerInfo(
+            new HandlerInfo.Builder(MACERATOR_UPGRADE_HANDLER.getOverlayIdentifier(), "GregTech", Mods.ModIDs.GREG_TECH)
+                .setMultipleWidgetsAllowed(true)
+                .setDisplayStack(ItemList.MacerationStack.get(1))
                 .build());
     }
 

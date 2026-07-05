@@ -13,8 +13,6 @@ import static gregtech.api.util.GTStructureUtility.filterByMTEClass;
 import static java.lang.Math.min;
 import static kekztech.util.Util.toPercentageFrom;
 import static kekztech.util.Util.toStandardForm;
-import static net.minecraft.util.StatCollector.translateToLocal;
-import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.math.BigInteger;
 import java.text.NumberFormat;
@@ -33,6 +31,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -55,6 +54,7 @@ import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatch;
@@ -410,7 +410,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
             .addInfo("Passive loss is multiplied by the number of maintenance issues present")
             .addSeparator()
             .addInfo("Glass shell has to be Tier - 3 of the highest capacitor tier")
-            .addTecTechHatchInfo()
+            .addSupportAny()
             .addMinGlassForLaser(VoltageIndex.UV)
             .addInfo("Add more or better capacitors to increase capacity")
             .addSeparator()
@@ -451,46 +451,25 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
                     + EnumChatFormatting.GRAY
                     + "-fold"
                     + " for every capacitor tier above")
-            .beginVariableStructureBlock(5, 5, 4, 50, 5, 5, false)
-            .addStructureInfo("Modular height of 4-50 blocks.")
+            .beginVariableStructureBlock(5, 5, 5, 5, 4, 50, false)
             .addController("Front bottom center")
-            .addOtherStructurePart("Lapotronic Super Capacitor Casing", "5x2x5 base (at least 17x)")
-            .addOtherStructurePart(
-                "Lapotronic Capacitor (" + GTValues.TIER_COLORS[4]
-                    + GTValues.VN[4]
-                    + EnumChatFormatting.GRAY
-                    + "-"
-                    + GTValues.TIER_COLORS[8]
-                    + GTValues.VN[8]
-                    + EnumChatFormatting.GRAY
-                    + "), Ultimate Capacitor ("
-                    + GTValues.TIER_COLORS[9]
-                    + GTValues.VN[9]
-                    + EnumChatFormatting.GRAY
-                    + "-"
-                    + GTValues.TIER_COLORS[12]
-                    + GTValues.VN[12]
-                    + EnumChatFormatting.GRAY
-                    + ")",
-                "Center 3x(1-47)x3 above base (9-423 blocks)")
-            .addStructureInfo(
-                "You can also use the Empty Capacitor to save materials if you use it for less than half the blocks")
-            .addCasingInfoRange("Any Tiered Glass", 41, 777, true)
-            .addEnergyHatch("Any Casing")
-            .addDynamoHatch("Any Casing")
-            .addOtherStructurePart(
-                "Laser Target/Source Hatches",
-                "Any Casing, must be using " + GTValues.TIER_COLORS[8]
-                    + GTValues.VN[8]
-                    + EnumChatFormatting.GRAY
-                    + "-tier glass")
-            .addStructureInfo("You can have several I/O Hatches")
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
-            .addSubChannelUsage(
-                GTStructureChannels.LSC_CAPACITOR,
-                "Capacitor Tier if specified. Otherwise pick any acceptable capacitor.")
-            .addSubChannelUsage(GTStructureChannels.STRUCTURE_HEIGHT)
-            .addMaintenanceHatch("Any Casing")
+            .addEnergyHatch("0+", "Any casing", 1)
+            .addDynamoHatch("0+", "Any casing", 1)
+            .addMaintenanceHatch("1", "Any casing", 1)
+            .addStructureInfo("")
+            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Base"))
+            .addCasing("17-48", "Lapotronic Supercapacitor Casing", false)
+            .addCasing("41", "Any Tiered Glass", true)
+            .addCasing("9", "Lapotronic Capacitor", true)
+            .addStructureInfo("")
+            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Layer"))
+            .addCasing("16", "Any Tiered Glass", true)
+            .addCasing("9", "Lapotronic Capacitor", true)
+            .addStructureInfo("")
+            .addStructureFooter("Only 50% or more of the capacitors need to be non-empty")
+            .addSubChannel(GTStructureChannels.STRUCTURE_HEIGHT)
+            .addSubChannel(GTStructureChannels.BOROGLASS)
+            .addSubChannel(GTStructureChannels.LSC_CAPACITOR)
             .toolTipFinisher();
         return tt;
     }
@@ -870,17 +849,15 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
             // Calculate time to full if charging
             if (avgIn - passLoss > 0) {
                 double timeToFull = (cap - sto) / (avgIn - (passLoss + avgOut)) / 20;
-                return translateToLocalFormatted(
-                    "kekztech.infodata.lapotronic_super_capacitor.time_to.full",
-                    formatTime(timeToFull, true));
+                return IGregTechDeviceInformation
+                    .encode("kekztech.infodata.lapotronic_super_capacitor.time_to.full", formatTime(timeToFull, true));
             }
-            return translateToLocal("kekztech.infodata.lapotronic_super_capacitor.time_to.sth");
+            return "kekztech.infodata.lapotronic_super_capacitor.time_to.sth";
         } else {
             // Calculate time to empty if discharging
             double timeToEmpty = sto / ((avgOut + passLoss) - avgIn) / 20;
-            return translateToLocalFormatted(
-                "kekztech.infodata.lapotronic_super_capacitor.time_to.empty",
-                formatTime(timeToEmpty, false));
+            return IGregTechDeviceInformation
+                .encode("kekztech.infodata.lapotronic_super_capacitor.time_to.empty", formatTime(timeToEmpty, false));
         }
     }
 
@@ -906,111 +883,96 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
         int secInterval = DURATION_AVERAGE_TICKS / 20;
 
         final ArrayList<String> ll = new ArrayList<>();
+        ll.add(IGregTechDeviceInformation.encode("kekztech.infodata.operational_data"));
         ll.add(
-            EnumChatFormatting.YELLOW + translateToLocal("kekztech.infodata.operational_data")
-                + EnumChatFormatting.RESET);
-        ll.add(translateToLocalFormatted("kekztech.infodata.lapotronic_super_capacitor.eu_stored", nf.format(stored)));
+            IGregTechDeviceInformation
+                .encode("kekztech.infodata.lapotronic_super_capacitor.eu_stored", nf.format(stored)));
         ll.add(
-            translateToLocalFormatted(
-                "kekztech.infodata.lapotronic_super_capacitor.eu_stored",
-                toStandardForm(stored)));
+            IGregTechDeviceInformation
+                .encode("kekztech.infodata.lapotronic_super_capacitor.eu_stored", toStandardForm(stored)));
         ll.add(
-            translateToLocalFormatted(
+            IGregTechDeviceInformation.encode(
                 "kekztech.infodata.lapotronic_super_capacitor.used_capacity",
                 toPercentageFrom(stored, capacity)));
         ll.add(
-            translateToLocalFormatted(
-                "kekztech.infodata.lapotronic_super_capacitor.total_capacity",
-                nf.format(capacity)));
+            IGregTechDeviceInformation
+                .encode("kekztech.infodata.lapotronic_super_capacitor.total_capacity", nf.format(capacity)));
         ll.add(
-            translateToLocalFormatted(
-                "kekztech.infodata.lapotronic_super_capacitor.total_capacity",
-                toStandardForm(capacity)));
+            IGregTechDeviceInformation
+                .encode("kekztech.infodata.lapotronic_super_capacitor.total_capacity", toStandardForm(capacity)));
         ll.add(
-            translateToLocalFormatted(
+            IGregTechDeviceInformation.encode(
                 "kekztech.infodata.lapotronic_super_capacitor.passive_loss",
                 nf.format(passiveDischargeAmount)));
         ll.add(
-            translateToLocalFormatted(
-                "kekztech.infodata.lapotronic_super_capacitor.eu_in",
-                formatNumber(inputLastTick)));
+            IGregTechDeviceInformation
+                .encode("kekztech.infodata.lapotronic_super_capacitor.eu_in", formatNumber(inputLastTick)));
         ll.add(
-            translateToLocalFormatted(
-                "kekztech.infodata.lapotronic_super_capacitor.eu_out",
-                formatNumber(outputLastTick)));
+            IGregTechDeviceInformation
+                .encode("kekztech.infodata.lapotronic_super_capacitor.eu_out", formatNumber(outputLastTick)));
         ll.add(
-            translateToLocalFormatted(
+            IGregTechDeviceInformation.encode(
                 "kekztech.infodata.lapotronic_super_capacitor.avg_eu_in.sec",
                 nf.format(energyInputValues.avgLong()),
                 secInterval));
         ll.add(
-            translateToLocalFormatted(
+            IGregTechDeviceInformation.encode(
                 "kekztech.infodata.lapotronic_super_capacitor.avg_eu_out.sec",
                 nf.format(energyOutputValues.avgLong()),
                 secInterval));
         ll.add(
-            translateToLocalFormatted(
+            IGregTechDeviceInformation.encode(
                 "kekztech.infodata.lapotronic_super_capacitor.avg_eu_in.min5",
                 nf.format(energyInputValues5m.avgLong())));
         ll.add(
-            translateToLocalFormatted(
+            IGregTechDeviceInformation.encode(
                 "kekztech.infodata.lapotronic_super_capacitor.avg_eu_out.min5",
                 nf.format(energyOutputValues5m.avgLong())));
         ll.add(
-            translateToLocalFormatted(
+            IGregTechDeviceInformation.encode(
                 "kekztech.infodata.lapotronic_super_capacitor.avg_eu_in.hour1",
                 nf.format(energyInputValues1h.avgLong())));
         ll.add(
-            translateToLocalFormatted(
+            IGregTechDeviceInformation.encode(
                 "kekztech.infodata.lapotronic_super_capacitor.avg_eu_out.hour1",
                 nf.format(energyOutputValues1h.avgLong())));
 
         ll.add(getTimeTo());
 
         ll.add(
-            translateToLocalFormatted(
-                "kekztech.infodata.multi.maintenance_status",
-                ((super.getRepairStatus() == super.getIdealStatus())
-                    ? EnumChatFormatting.GREEN + translateToLocal("kekztech.infodata.multi.maintenance_status.ok")
-                        + EnumChatFormatting.RESET
-                    : EnumChatFormatting.RED + translateToLocal("kekztech.infodata.multi.maintenance_status.bad")
-                        + EnumChatFormatting.RESET)));
+            IGregTechDeviceInformation.encode(
+                super.getRepairStatus() == super.getIdealStatus() ? "kekztech.infodata.multi.maintenance_status.ok"
+                    : "kekztech.infodata.multi.maintenance_status.bad"));
         ll.add(
-            translateToLocalFormatted(
-                "kekztech.infodata.lapotronic_super_capacitor.wireless_mode",
-                (wireless_mode
-                    ? EnumChatFormatting.GREEN
-                        + translateToLocal("kekztech.infodata.lapotronic_super_capacitor.wireless_mode.enabled")
-                        + EnumChatFormatting.RESET
-                    : EnumChatFormatting.RED
-                        + translateToLocal("kekztech.infodata.lapotronic_super_capacitor.wireless_mode.disabled")
-                        + EnumChatFormatting.RESET)));
+            IGregTechDeviceInformation.encode(
+                wireless_mode ? "kekztech.infodata.lapotronic_super_capacitor.wireless_mode.enabled"
+                    : "kekztech.infodata.lapotronic_super_capacitor.wireless_mode.disabled"));
         ll.add(
-            translateToLocalFormatted(
+            IGregTechDeviceInformation.encode(
                 "kekztech.infodata.lapotronic_super_capacitor.capacitors",
                 GTValues.TIER_COLORS[9] + GTValues.VN[9] + EnumChatFormatting.RESET,
                 getUHVCapacitorCount()));
         ll.add(
-            translateToLocalFormatted(
+            IGregTechDeviceInformation.encode(
                 "kekztech.infodata.lapotronic_super_capacitor.capacitors",
                 GTValues.TIER_COLORS[10] + GTValues.VN[10] + EnumChatFormatting.RESET,
                 getUEVCapacitorCount()));
         ll.add(
-            translateToLocalFormatted(
+            IGregTechDeviceInformation.encode(
                 "kekztech.infodata.lapotronic_super_capacitor.capacitors",
                 GTValues.TIER_COLORS[11] + GTValues.VN[11] + EnumChatFormatting.RESET,
                 getUIVCapacitorCount()));
         ll.add(
-            translateToLocalFormatted(
+            IGregTechDeviceInformation.encode(
                 "kekztech.infodata.lapotronic_super_capacitor.capacitors",
                 GTValues.TIER_COLORS[12] + GTValues.VN[12] + EnumChatFormatting.RESET,
                 getUMVCapacitorCount()));
         ll.add(
-            translateToLocalFormatted(
+            IGregTechDeviceInformation.encode(
                 "kekztech.infodata.lapotronic_super_capacitor.wireless_eu",
                 EnumChatFormatting.RED + nf.format(WirelessNetworkManager.getUserEU(global_energy_user_uuid))));
         ll.add(
-            translateToLocalFormatted(
+            IGregTechDeviceInformation.encode(
                 "kekztech.infodata.lapotronic_super_capacitor.wireless_eu",
                 EnumChatFormatting.RED + toStandardForm(WirelessNetworkManager.getUserEU(global_energy_user_uuid))));
 

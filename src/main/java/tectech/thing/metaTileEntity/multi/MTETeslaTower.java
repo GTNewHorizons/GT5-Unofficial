@@ -15,7 +15,6 @@ import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.api.util.GTUtility.validMTEList;
 import static java.lang.Math.min;
 import static net.minecraft.util.StatCollector.translateToLocal;
-import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,7 +32,6 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -56,6 +54,7 @@ import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
@@ -143,13 +142,6 @@ public class MTETeslaTower extends TTMultiblockBase
     // endregion
 
     // region structure
-    private static final String[] description = new String[] {
-        EnumChatFormatting.AQUA + translateToLocal("tt.keyphrase.Hint_Details") + ":",
-        translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.hint.0"), // 1 - Classic Hatches, Capacitor
-                                                                               // Hatches or Tesla
-        // Base Casing
-        translateToLocal("gt.blockmachines.multimachine.tm.teslaCoil.hint.1"), // 2 - ""Titanium frames""
-    };
 
     private static final IStructureDefinition<MTETeslaTower> STRUCTURE_DEFINITION = IStructureDefinition
         .<MTETeslaTower>builder()
@@ -466,8 +458,8 @@ public class MTETeslaTower extends TTMultiblockBase
             cap.getBaseMetaTileEntity()
                 .setActive(iGregTechTileEntity.isActive());
         }
-        checkHasMaintenanceHatch(errors);
         checkHasAnyEnergy(errors);
+        checkHasMaintenanceHatch(errors);
 
         // Only recalculate offsets on orientation or rotation change
         if (oldRotation != getExtendedFacing().ordinal() || oldOrientation != iGregTechTileEntity.getFrontFacing()) {
@@ -573,29 +565,18 @@ public class MTETeslaTower extends TTMultiblockBase
                                                                                             // Windings need to
             // be at least the same tier as
             // the Tesla Capacitor
-            .addTecTechHatchInfo()
-            .beginStructureBlock(7, 17, 7, false)
+            .addSupportAny()
+            .beginStructureBlock(7, 7, 17, false)
             .addController("Front bottom center")
-            .addOtherStructurePart(
-                translateToLocal("gt.blockmachines.hatch.capacitor.tier.03.name"),
-                translateToLocal("tt.keyword.Structure.AnyTeslaBaseCasingOuter"),
-                1) // Capacitor Hatch: Any outer Tesla Base Casing
-            .addEnergyHatch(translateToLocal("tt.keyword.Structure.AnyTeslaBaseCasingOuter"), 1) // Energy Hatch:
-                                                                                                 // Any outer Tesla
-                                                                                                 // Base Casing
-            .addMaintenanceHatch(translateToLocal("tt.keyword.Structure.AnyTeslaBaseCasingOuter"), 1) // Maintenance
-                                                                                                      // Hatch: Any
-                                                                                                      // outer Tesla
-                                                                                                      // Base Casing
-            .addInputHatch(translateToLocal("tt.keyword.Structure.AnyTeslaBaseCasingOuter"), 1) // Input Hatch: Any
-                                                                                                // outer Tesla Base
-                                                                                                // Casing
-            .addOutputHatch(translateToLocal("tt.keyword.Structure.AnyTeslaBaseCasingOuter"), 1) // Output Hatch: Any
-                                                                                                 // outer Tesla Base
-                                                                                                 // Casing
-            .addDynamoHatch(translateToLocal("tt.keyword.Structure.AnyTeslaBaseCasingOuter"), 1) // Dynamo Hatch: Any
-                                                                                                 // outer Tesla Base
-                                                                                                 // Casing
+            .addCasing("128", "Tesla Toroid Casing", false)
+            .addCasing("17-33", "Tesla Base Casing", false)
+            .addCasing("20", "Primary Tesla Windings", true)
+            .addCasing("16", "Titanium Frame Box", false)
+            .addCasing("12", "Secondary Tesla Windings", false)
+            .addMiscHatch("1+", "Capacitor Hatch", translateToLocal("tt.keyword.Structure.AnyTeslaBaseCasingOuter"), 1)
+            .addEnergyHatch("1+", translateToLocal("tt.keyword.Structure.AnyTeslaBaseCasingOuter"), 1)
+            .addMaintenanceHatch("1", translateToLocal("tt.keyword.Structure.AnyTeslaBaseCasingOuter"), 1)
+            .addInputHatch("0+", translateToLocal("tt.keyword.Structure.AnyTeslaBaseCasingOuter"), 1)
             .toolTipFinisher();
         return tt;
     }
@@ -775,8 +756,8 @@ public class MTETeslaTower extends TTMultiblockBase
     }
 
     @Override
-    public List<Parameter<?>> getParameters() {
-        List<Parameter<?>> parameters = new ArrayList<>();
+    public List<Parameter<?, ?>> getParameters() {
+        List<Parameter<?, ?>> parameters = new ArrayList<>();
 
         parameters.add(hysteresisLowParameter);
         parameters.add(hysteresisHighParameter);
@@ -917,11 +898,6 @@ public class MTETeslaTower extends TTMultiblockBase
     public int survivalConstruct(ItemStack stackSize, int elementBudget, IItemSource source, EntityPlayerMP actor) {
         if (mMachine) return -1;
         return survivalBuildPiece("main", stackSize, 3, 16, 0, elementBudget, source, actor, false, true);
-    }
-
-    @Override
-    public String[] getStructureDescription(ItemStack stackSize) {
-        return description;
     }
 
     @Override
@@ -1076,15 +1052,15 @@ public class MTETeslaTower extends TTMultiblockBase
         List<String> data = new ArrayList<>(Arrays.asList(super.getInfoData()));
 
         data.add(
-            translateToLocalFormatted(
+            IGregTechDeviceInformation.encode(
                 "tt.infodata.multi.energy_hatches",
-                EnumChatFormatting.GREEN + formatNumber(getTeslaStoredEnergy()) + EnumChatFormatting.RESET,
-                EnumChatFormatting.YELLOW + formatNumber(energyCapacity) + EnumChatFormatting.RESET));
+                formatNumber(getTeslaStoredEnergy()),
+                formatNumber(energyCapacity)));
         data.add(
-            translateToLocalFormatted(
+            IGregTechDeviceInformation.encode(
                 "tt.infodata.multi.current_output",
-                EnumChatFormatting.GREEN + formatNumber(getTeslaOutputCurrent()) + EnumChatFormatting.RESET,
-                EnumChatFormatting.YELLOW + formatNumber(outputCurrentMax) + EnumChatFormatting.RESET));
+                formatNumber(getTeslaOutputCurrent()),
+                formatNumber(outputCurrentMax)));
 
         return data.toArray(new String[0]);
     }

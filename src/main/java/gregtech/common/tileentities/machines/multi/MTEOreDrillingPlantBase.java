@@ -19,7 +19,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
@@ -40,6 +39,7 @@ import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.SubTag;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.metatileentity.IMetricsExporter;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GTChunkManager;
 import gregtech.api.objects.ItemData;
@@ -250,17 +250,8 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
     @Override
     public String[] getInfoData() {
         final String diameter = formatNumber(chunkRadiusConfig * 2L);
-        return new String[] {
-            EnumChatFormatting.BLUE + StatCollector.translateToLocal("GT5U.machines.minermulti")
-                + EnumChatFormatting.RESET,
-            StatCollector.translateToLocal("GT5U.machines.workarea") + ": "
-                + EnumChatFormatting.GREEN
-                + diameter
-                + "x"
-                + diameter
-                + EnumChatFormatting.RESET
-                + " "
-                + StatCollector.translateToLocal("GT5U.machines.chunks") };
+        return new String[] { "GT5U.infodata.ore_drill.title",
+            IGregTechDeviceInformation.encode("GT5U.infodata.ore_drill.work_area", diameter, diameter) };
     }
 
     @Override
@@ -526,16 +517,17 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
             .addInfo(
                 "Base cycle time: " + (baseCycleTime < 20 ? formatNumber(baseCycleTime) + " ticks"
                     : formatNumber(baseCycleTime / 20.0) + " seconds"))
-            .beginStructureBlock(3, 7, 3, false)
+            .beginStructureBlock(3, 3, 7, false)
             .addController("Front bottom center")
-            .addOtherStructurePart(casings, "form the 3x1x3 Base")
-            .addOtherStructurePart(casings, "1x3x1 pillar above the center of the base (2 minimum total)")
-            .addOtherStructurePart(getFrameMaterial().mName + " Frame Box", "Each pillar's side and 1x3x1 on top")
-            .addEnergyHatch(VN[getMinTier()] + "+, any base Casing", 1)
-            .addMaintenanceHatch("Any base Casing", 1)
-            .addInputBus("Mining Pipes, optional, any base Casing", 1)
-            .addInputHatch("Drilling Fluid, any base Casing", 1)
-            .addOutputBus("Any base Casing", 1)
+            .addCasing("15", getFrameMaterial().mName + " Frame Box", false)
+            .addCasing("5-7", casings, false)
+            .addEnergyHatch("1-2", "Any bottom casing (" + VN[getMinTier()] + "+)", 1)
+            .addMaintenanceHatch("1", "Any bottom casing", 1)
+            .addInputBus("0-1", "Any bottom casing", 1)
+            .addInputHatch("1", "Any bottom casing", 1)
+            .addOutputBus("1", "Any bottom casing", 1)
+            .addStructureInfo("")
+            .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.Rain"))
             .toolTipFinisher();
         return tt;
     }
@@ -943,10 +935,10 @@ public abstract class MTEOreDrillingPlantBase extends MTEDrillerBase implements 
 
     @Override
     protected void checkHatches(List<StructureError> errors) {
+        checkHasEnergyHatch(errors);
+        checkHasMaintenanceHatch(errors);
         checkHasInputHatch(errors);
         checkHasOutputBus(errors);
-        checkHasMaintenanceHatch(errors);
-        checkHasEnergyHatch(errors);
     }
 
     private boolean doUseMaceratorRecipe(ItemStack currentItem) {

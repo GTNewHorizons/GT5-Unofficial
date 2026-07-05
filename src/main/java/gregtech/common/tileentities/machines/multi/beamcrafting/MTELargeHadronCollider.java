@@ -44,6 +44,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.enums.TickTime;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
@@ -77,7 +78,7 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
     public static final float MAXIMUM_PARTICLE_ENERGY_keV = 2_000_000_000; // 2TeV max
     public static final double keV_EU_RATIO = 0.1 / 1000; // 1 EU = 0.1 eV, so 1 EU = 0.1/1000 keV
     public static final float RATE_SCALE_FACTOR = 1.3F;
-    public static final int RATE_NERF_CUTOFF = 2000;
+    public static final int RATE_NERF_CUTOFF = 5000;
     public static final float RATE_NERF_POWER = 0.5F;
     public static final float MASSLESS_PARTICLE_THRESHOLD = 0.5F;
 
@@ -374,34 +375,113 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
             .addInfo(
                 StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.LHC.tooltip32"))
             .addSeparator()
-            .beginStructureBlock(109, 13, 122, false)
-            .addController(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttcontroller"))
-            .addCasingInfoExactly(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttcasing"),
-                6034,
+            .addSupportAny()
+            .beginStructureBlock(122, 109, 13, true)
+            .addController("Front center of accelerator ring")
+            .addCasing(
+                "5664",
+                StatCollector.translateToLocal("gt.blockmachines.multimachine.beamcrafting.ttcasing"),
                 false)
-            .addCasingInfoExactly(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttehatch"),
-                1,
+            .addCasing(
+                "73",
+                StatCollector.translateToLocal("gt.blockmachines.multimachine.beamcrafting.ttanyneonite"),
                 false)
-            .addCasingInfoExactly(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttshieldacccasing"),
-                16,
+            .addCasing(
+                "20",
+                StatCollector.translateToLocal("gt.blockmachines.multimachine.beamcrafting.ttshieldaccglass"),
                 false)
-            .addCasingInfoExactly(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttshieldaccglass"),
-                20,
+            .addCasing(
+                "16",
+                StatCollector.translateToLocal("gt.blockmachines.multimachine.beamcrafting.ttshieldacccasing"),
                 false)
-            .addCasingInfoExactly(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttbeaminhatch"),
-                1,
+            .addMiscHatch(
+                "1",
+                StatCollector.translateToLocal("gtnhlanth.tt.hatch.beaminput"),
+                "Entrance to accelerator ring",
+                2)
+            .addEnergyHatch("1+", "Any casing", 1)
+            .addStructureInfo("")
+            .addStructureInfo(EnumChatFormatting.AQUA + "CMS Module " + EnumChatFormatting.BLUE + "(E)")
+            .addCasing(
+                "523",
+                StatCollector.translateToLocal("gt.blockmachines.multimachine.beamcrafting.ttcasing"),
                 false)
-            .addCasingInfoExactly(
-                StatCollector.translateToLocalFormatted("gt.blockmachines.multimachine.beamcrafting.ttanyneonite"),
-                73,
+            .addCasing("148", "Charged Matter Sensor Casing", false)
+            .addCasing(
+                "126",
+                StatCollector.translateToLocal("gt.blockmachines.multimachine.beamcrafting.ttshieldaccglass"),
                 false)
-            .addTecTechHatchInfo()
+            .addCasing(
+                "11",
+                StatCollector.translateToLocal("gt.blockmachines.multimachine.beamcrafting.ttanyneonite"),
+                false)
+            .addMiscHatch(
+                "2",
+                StatCollector.translateToLocal("gtnhlanth.tt.hatch.beamoutputfiltered"),
+                "Inner side of module",
+                3)
+            .addStructureInfo("")
+            .addStructureInfo(EnumChatFormatting.AQUA + "ATLAS Module " + EnumChatFormatting.BLUE + "(W)")
+            .addCasing(
+                "515",
+                StatCollector.translateToLocal("gt.blockmachines.multimachine.beamcrafting.ttcasing"),
+                false)
+            .addCasing("160", "Advanced Total Lepton Assimilation Snare Casing", false)
+            .addCasing(
+                "126",
+                StatCollector.translateToLocal("gt.blockmachines.multimachine.beamcrafting.ttshieldaccglass"),
+                false)
+            .addCasing(
+                "13",
+                StatCollector.translateToLocal("gt.blockmachines.multimachine.beamcrafting.ttanyneonite"),
+                false)
+            .addMiscHatch(
+                "2",
+                StatCollector.translateToLocal("gtnhlanth.tt.hatch.beamoutputfiltered"),
+                "Inner side of module",
+                4)
+            .addStructureInfo("")
+            .addStructureInfo(EnumChatFormatting.AQUA + "ALICE Module " + EnumChatFormatting.BLUE + "(S)")
+            .addCasing(
+                "517",
+                StatCollector.translateToLocal("gt.blockmachines.multimachine.beamcrafting.ttcasing"),
+                false)
+            .addCasing("158", "Absolute Lattice Integrated Chromodynamic Encapsulator Casing", false)
+            .addCasing(
+                "140",
+                StatCollector.translateToLocal("gt.blockmachines.multimachine.beamcrafting.ttshieldaccglass"),
+                false)
+            .addCasing(
+                "11",
+                StatCollector.translateToLocal("gt.blockmachines.multimachine.beamcrafting.ttanyneonite"),
+                false)
+            .addMiscHatch(
+                "2",
+                StatCollector.translateToLocal("gtnhlanth.tt.hatch.beamoutputfiltered"),
+                "Inner side of module",
+                5)
+            .addStructureInfo("")
+            .addStructureInfo(EnumChatFormatting.AQUA + "LHCb Module " + EnumChatFormatting.BLUE + "(G)")
+            .addCasing(
+                "511",
+                StatCollector.translateToLocal("gt.blockmachines.multimachine.beamcrafting.ttcasing"),
+                false)
+            .addCasing("144", "Localized Horizon Curvature Binder Casing", false)
+            .addCasing(
+                "126",
+                StatCollector.translateToLocal("gt.blockmachines.multimachine.beamcrafting.ttshieldaccglass"),
+                false)
+            .addCasing(
+                "17",
+                StatCollector.translateToLocal("gt.blockmachines.multimachine.beamcrafting.ttanyneonite"),
+                false)
+            .addMiscHatch(
+                "2",
+                StatCollector.translateToLocal("gtnhlanth.tt.hatch.beamoutputfiltered"),
+                "Inner side of module",
+                6)
+            .addStructureInfo("")
+            .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.modules"))
             .toolTipFinisher(GTAuthors.AuthorHamCorp);
         return tt;
     }
@@ -470,12 +550,8 @@ public class MTELargeHadronCollider extends MTEBeamMultiBase<MTELargeHadronColli
         BeamLinePacket dataPacket = new BeamLinePacket(cachedOutputParticle);
 
         return new String[] {
-            StatCollector.translateToLocalFormatted("tt.keyword.Content") + ": "
-                + EnumChatFormatting.AQUA
-                + dataPacket.getContentString(),
-            StatCollector.translateToLocalFormatted("tt.keyword.PacketHistory") + ": "
-                + EnumChatFormatting.RED
-                + dataPacket.getTraceSize(), };
+            IGregTechDeviceInformation.encode("tt.keyword.Content.fmt", dataPacket.getContentString()),
+            IGregTechDeviceInformation.encode("tt.keyword.PacketHistory.fmt", dataPacket.getTraceSize()), };
     }
 
     public double getCachedBeamEnergy() {
