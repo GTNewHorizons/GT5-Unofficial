@@ -118,17 +118,18 @@ public class MTEIndustrialDehydrator extends GTPPMultiBlockBase<MTEIndustrialDeh
                     + EnumChatFormatting.LIGHT_PURPLE
                     + "Perfect Overclock")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(3, 5, 3, true)
+            .beginStructureBlock(3, 3, 5, true)
             .addController("Front bottom center")
-            .addCasingInfoMin(mCasingName, 4, false)
-            .addInputBus("Any Casing", 1)
-            .addOutputBus("Any Casing", 1)
-            .addInputHatch("Any Casing", 1)
-            .addOutputHatch("Any Casing", 1)
-            .addEnergyHatch("Any Casing", 1)
-            .addMaintenanceHatch("Any Casing", 1)
-            .addMufflerHatch("Any Casing", 1)
-            .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
+            .addCasing("5-12", mCasingName, false)
+            .addCasing("24", "Heating Coil", true)
+            .addEnergyHatch("1+", "Any casing", 1)
+            .addMaintenanceHatch("1", "Any casing", 1)
+            .addMufflerHatch("1", "Any casing", 1)
+            .addInputAny("1+", "Any casing", 1)
+            .addOutputAny("1+", "Any casing", 1)
+            .addAir("Interior of the structure")
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
         return tt;
     }

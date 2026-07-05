@@ -110,18 +110,18 @@ public class MTEMassFabricator extends GTPPMultiBlockBase<MTEMassFabricator> imp
                     + " Tier in recycler mode")
             .addPerfectOCInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(5, 4, 5, true)
+            .beginStructureBlock(5, 5, 4, true)
             .addController("Front bottom center")
-            .addCasingInfoMin(mCasingName3, 9, false)
-            .addCasingInfoMin(mCasingName2, 24, false)
-            .addCasingInfoMin(mCasingName1, 35, false)
-            .addInputBus("Any Casing", 1)
-            .addOutputBus("Any Casing", 1)
-            .addInputHatch("Any Casing", 1)
-            .addOutputHatch("Any Casing", 1)
-            .addEnergyHatch("Any Casing", 1)
-            .addMaintenanceHatch("Any Casing", 1)
-            .addMufflerHatch("Any Casing", 1)
+            .addCasing("35-44", mCasingName1, false)
+            .addCasing("24", mCasingName2, false)
+            .addCasing("9", mCasingName3, false)
+            .addEnergyHatch("1+", "Any fabricator casing", 1)
+            .addMaintenanceHatch("1", "Any fabricator casing", 1)
+            .addMufflerHatch("1", "Any fabricator casing", 1)
+            .addInputBus("0+", "Any fabricator casing", 1)
+            .addInputHatch("0+", "Any fabricator casing", 1)
+            .addOutputAny("1+", "Any fabricator casing", 1)
+            .addAir("Interior of the structure")
             .toolTipFinisher();
         return tt;
     }
@@ -192,8 +192,10 @@ public class MTEMassFabricator extends GTPPMultiBlockBase<MTEMassFabricator> imp
         mCasing = 0;
         if (!checkPiece(mName, 2, 3, 0, errors)) return;
         checkCasingMin(errors, mCasing, 35);
-        checkHatch(errors);
         checkHasEnergyHatch(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasMufflerHatch(errors);
+
         if (machineMode == MODE_SCRAP) {
             checkHasOutputBus(errors);
         } else {

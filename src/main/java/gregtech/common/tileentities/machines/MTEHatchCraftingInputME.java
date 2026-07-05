@@ -350,20 +350,21 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
                     world.spawnEntityInWorld(entityItem);
                 }
             }
+
+            // Delete zero size stacks
+            this.isEmpty();
         }
 
         private void insertItem(IAEItemStack inserted) {
             final List<ItemStack> temp = new ArrayList<>();
+            final ItemStack compareStack = inserted.getItemStack();
             for (ItemStack itemStack : itemInventory) {
-                if (GTUtility.areStacksEqual(inserted.getItemStack(), itemStack)) {
-                    if (itemStack.stackSize > Integer.MAX_VALUE - inserted.getStackSize()) {
+                if (itemStack.stackSize == Integer.MAX_VALUE) continue;
+                if (GTUtility.areStacksEqual(compareStack, itemStack)) {
+                    if (inserted.getStackSize() > Integer.MAX_VALUE
+                        || itemStack.stackSize > Integer.MAX_VALUE - inserted.getStackSize()) {
                         inserted.decStackSize(Integer.MAX_VALUE - itemStack.stackSize);
                         itemStack.stackSize = Integer.MAX_VALUE;
-
-                        if (inserted.getStackSize() > Integer.MAX_VALUE) {
-                            inserted.decStackSize(Integer.MAX_VALUE);
-                            temp.add(itemStack.copy());
-                        }
                     } else {
                         itemStack.stackSize += (int) inserted.getStackSize();
                         return;
@@ -385,16 +386,14 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
 
         private void insertFluid(IAEFluidStack inserted) {
             final List<FluidStack> temp = new ArrayList<>();
+            final FluidStack compareStack = inserted.getFluidStack();
             for (FluidStack fluidStack : fluidInventory) {
-                if (GTUtility.areFluidsEqual(inserted.getFluidStack(), fluidStack)) {
-                    if (fluidStack.amount > Integer.MAX_VALUE - inserted.getStackSize()) {
+                if (fluidStack.amount == Integer.MAX_VALUE) continue;
+                if (GTUtility.areFluidsEqual(compareStack, fluidStack)) {
+                    if (inserted.getStackSize() > Integer.MAX_VALUE
+                        || fluidStack.amount > Integer.MAX_VALUE - inserted.getStackSize()) {
                         inserted.decStackSize(Integer.MAX_VALUE - fluidStack.amount);
                         fluidStack.amount = Integer.MAX_VALUE;
-
-                        if (inserted.getStackSize() > Integer.MAX_VALUE) {
-                            inserted.decStackSize(Integer.MAX_VALUE);
-                            temp.add(fluidStack.copy());
-                        }
                     } else {
                         fluidStack.amount += (int) inserted.getStackSize();
                         return;
@@ -644,9 +643,6 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
             gridProxy = new AENetworkProxy(this, "proxy", ItemList.Hatch_CraftingInput_Bus_ME.get(1), true);
             gridProxy.setFlags(GridFlags.REQUIRE_CHANNEL);
             updateValidGridProxySides();
-            if (getBaseMetaTileEntity().getWorld() != null) gridProxy.setOwner(
-                getBaseMetaTileEntity().getWorld()
-                    .getPlayerEntityByName(getBaseMetaTileEntity().getOwnerName()));
         }
 
         return this.gridProxy;
@@ -841,7 +837,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
         disablePatternOptimization = aNBT.getBoolean("disablePatternOptimization");
         if (aNBT.hasKey("showPattern")) showPattern = aNBT.getBoolean("showPattern");
 
-        getProxy().readFromNBT(aNBT);
+        if (aNBT.hasKey("proxy")) getProxy().readFromNBT(aNBT);
         updateAE2ProxyColor();
 
         // Sync inventories to ensure that the real inventory matches what AE2 is seeing.

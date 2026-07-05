@@ -72,18 +72,16 @@ public class MTEIndustrialSifter extends MTEExtendedPowerMultiBlockBase<MTEIndus
         tt.addMachineType("Sifter")
             .addBulkMachineInfo(4, 5f, 0.75f)
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(5, 6, 5, false)
+            .beginStructureBlock(5, 5, 6, false)
             .addController("Front center, 2nd layer")
-            .addCasingInfoMin("Industrial Sieve Casing", 45, false)
-            .addCasingInfoExactly("Large Sieve Grate", 19, false)
-            .addCasingInfoExactly("Steel Frame Box", 16, false)
-            .addInputBus("Any Sieve Casing", 1)
-            .addOutputBus("Any Sieve Casing", 1)
-            .addInputHatch("Any Sieve Casing", 1)
-            .addOutputHatch("Any Sieve Casing", 1)
-            .addEnergyHatch("Any Sieve Casing", 1)
-            .addMaintenanceHatch("Any Sieve Casing", 1)
-            .addMufflerHatch("Any Sieve Casing", 1)
+            .addCasing("45-49", "Industrial Sieve Casing", false)
+            .addCasing("19", "Large Sieve Grate", false)
+            .addCasing("16", "Steel Frame Box", false)
+            .addEnergyHatch("1+", "Any casing", 1)
+            .addMaintenanceHatch("1", "Any casing", 1)
+            .addMufflerHatch("1", "Any casing", 1)
+            .addInputAny("1+", "Any casing", 1)
+            .addOutputAny("1+", "Any casing", 1)
             .addStructureAuthors(EnumChatFormatting.GOLD + "VorTex")
             .toolTipFinisher();
         return tt;
@@ -139,11 +137,11 @@ public class MTEIndustrialSifter extends MTEExtendedPowerMultiBlockBase<MTEIndus
         casingAmount = 0;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z, errors)) return;
         checkCasingMin(errors, casingAmount, 45);
-        checkHasMufflerHatch(errors);
+        checkHasEnergyHatch(errors);
         checkHasMaintenanceHatch(errors);
+        checkHasMufflerHatch(errors);
         checkHasAnyInput(errors);
         checkHasAnyOutput(errors);
-        checkHasEnergyHatch(errors);
     }
 
     @Override

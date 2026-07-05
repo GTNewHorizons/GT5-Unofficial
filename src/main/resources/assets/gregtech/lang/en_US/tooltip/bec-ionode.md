@@ -1,7 +1,7 @@
 Teleports items into and out of the {gold:{item:gregtech:gt.blockmachines:15756}}.
 Recipe logic is the same as all other multiblocks.
 Condensate does not have to be present for a recipe to start.
-Right-click the controller with a programmed data stick to link it to the observation array.
+Link it to {gold:{item:gregtech:gt.blockmachines:15756}} using {gold:{item:gregtech:gt.blockmachines:15481}}.
 {dark_gray:{hr}}
 Each item slot in a recipe has an associated nanite tier.
 For the teleportation node to progress through an item slot, it must receive a nanite with the same or higher tier.

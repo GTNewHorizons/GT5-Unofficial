@@ -337,55 +337,23 @@ public class MTEPurificationUnitPlasmaHeater extends MTEPurificationUnitBase<MTE
                 EnumChatFormatting.AQUA + ""
                     + EnumChatFormatting.ITALIC
                     + "supercritical while evaporating any remaining contaminants, ready for filtration")
-            .beginStructureBlock(23, 15, 15, false)
+            .beginStructureBlock(15, 23, 15, false)
             .addController("Front bottom center")
-            .addCasingInfoExactlyColored(
-                "Reinforced Sterile Water Plant Casing",
-                EnumChatFormatting.GRAY,
-                669,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored(
-                "Heat-Resistant Trinium Plated Casing",
-                EnumChatFormatting.GRAY,
-                54,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored(
-                "Any Tinted Industrial Glass",
-                EnumChatFormatting.GRAY,
-                64,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored(
-                "Superconductor Base ZPM Frame Box",
-                EnumChatFormatting.GRAY,
-                40,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored("Any Neonite", EnumChatFormatting.GRAY, 8, EnumChatFormatting.GOLD, false)
-            .addCasingInfoExactlyColored(
-                "Superconducting Coil Block",
-                EnumChatFormatting.GRAY,
-                9,
-                EnumChatFormatting.GOLD,
-                false)
-            .addOtherStructurePart(
-                StatCollector.translateToLocal("GT5U.tooltip.structure.input_hatch_water"),
-                EnumChatFormatting.GOLD + "1+",
-                1)
-            .addOtherStructurePart(
-                StatCollector.translateToLocal("GT5U.tooltip.structure.output_hatch"),
-                EnumChatFormatting.GOLD + "1",
-                1)
-            .addOtherStructurePart(
-                StatCollector.translateToLocal("GT5U.tooltip.structure.input_hatch_coolant"),
-                EnumChatFormatting.GOLD + "1",
-                2)
-            .addOtherStructurePart(
-                StatCollector.translateToLocal("GT5U.tooltip.structure.input_hatch_plasma"),
-                EnumChatFormatting.GOLD + "1",
+            .addCasing("672", "Reinforced Sterile Water Plant Casing", false)
+            .addCasing("64", "Tinted Industrial Glass (any color)", false)
+            .addCasing(MIN_CASING + "-53", "Heat-Resistant Trinium Plated Casing", false)
+            .addCasing("40", "Superconductor Base ZPM Frame Box", false)
+            .addCasing("9", "Superconducting Coil Block", false)
+            .addCasing("8", "Neonite (any color)", false)
+            .addInputHatch(
+                "3+",
+                "Bottom left of chamber (plasma), front bottom center of tower (coolant), any trinium casing (water)",
+                1,
+                2,
                 3)
+            .addOutputHatch("1+", "Any trinium casing", 1)
+            .addStructureInfo("")
+            .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.DataStick.Waterline"))
             .toolTipFinisher();
         return tt;
     }

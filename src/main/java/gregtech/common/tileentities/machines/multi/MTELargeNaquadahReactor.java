@@ -35,19 +35,18 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import goodgenerator.api.recipe.GoodGeneratorRecipeMaps;
 import goodgenerator.items.GGMaterial;
 import goodgenerator.util.CrackRecipeAdder;
-import goodgenerator.util.DescTextLocalization;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.ErrorType;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrors;
@@ -60,7 +59,8 @@ import gtPlusPlus.xmod.thermalfoundation.fluid.TFFluids;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDynamoMulti;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 
-public class MTELargeNaquadahReactor extends TTMultiblockBase implements ISurvivalConstructable {
+public class MTELargeNaquadahReactor extends TTMultiblockBase
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     private static final int OFFSET_X = 3;
     private static final int OFFSET_Y = 10;
@@ -135,11 +135,6 @@ public class MTELargeNaquadahReactor extends TTMultiblockBase implements ISurviv
     @Override
     public void construct(ItemStack itemStack, boolean hintsOnly) {
         buildPiece(STRUCTURE_PIECE_MAIN, itemStack, hintsOnly, OFFSET_X, OFFSET_Y, OFFSET_Z);
-    }
-
-    @Override
-    public String[] getStructureDescription(ItemStack itemStack) {
-        return DescTextLocalization.addText("LargeNaquadahReactor.hint", 7);
     }
 
     @Override
@@ -343,15 +338,15 @@ public class MTELargeNaquadahReactor extends TTMultiblockBase implements ISurviv
         casingAmount = 0;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z, errors)) return;
         checkCasingMin(errors, casingAmount, 130);
-        checkOneMaintenanceHatch(errors);
-        checkHasInputHatch(errors);
-        checkHasOutputHatch(errors);
         int dynamoCount = mDynamoHatches.size() + eDynamoMulti.size();
         if (dynamoCount == 0) {
             errors.add(StructureErrors.hatchCount(ErrorType.TOO_FEW, Dynamo, 0, 1));
         } else if (dynamoCount > 1) {
             errors.add(StructureErrors.hatchCount(ErrorType.TOO_MANY, Dynamo, dynamoCount, 1));
         }
+        checkOneMaintenanceHatch(errors);
+        checkHasInputHatch(errors);
+        checkHasOutputHatch(errors);
     }
 
     @Override
@@ -379,11 +374,6 @@ public class MTELargeNaquadahReactor extends TTMultiblockBase implements ISurviv
                     EnumChatFormatting.AQUA,
                     LiquidAirConsumptionPerSecond,
                     EnumChatFormatting.GRAY))
-            .addInfo(
-                "The reactor will explode when there is more than" + EnumChatFormatting.RED
-                    + " ONE"
-                    + EnumChatFormatting.GRAY
-                    + " type of fuel in hatches!")
             .addInfo("Input liquid nuclear fuel or liquid naquadah fuel")
             .addSeparator()
             .addInfo(
@@ -414,41 +404,38 @@ public class MTELargeNaquadahReactor extends TTMultiblockBase implements ISurviv
             .addInfo(getExcitedTextFormatted("Molten Naquadah", "20", ExcitedLiquidCoe[2]))
             .addInfo(getExcitedTextFormatted("Molten Atomic Separation Catalyst", "20", ExcitedLiquidCoe[1]))
             .addInfo(getExcitedTextFormatted("Spatially Enlarged Fluid", "20", ExcitedLiquidCoe[0]))
-            .addTecTechHatchInfo()
-            .beginStructureBlock(7, 11, 7, false)
+            .addSupportAny()
+            .beginStructureBlock(7, 7, 11, false)
             .addController("Front bottom center")
-            .addCasingInfoMin("Naquadah Reactor Casing", 130, false)
-            .addCasingInfoExactly("Field Restriction Casing", 81, false)
-            .addCasingInfoExactly("Radiation Proof Steel Frame Box", 32, false)
-            .addDynamoHatch("Any Naquadah Reactor Casing, only accepts ONE!", 1)
-            .addInputHatch("Any Naquadah Reactor Casing", 1)
-            .addOutputHatch("Any Naquadah Reactor Casing", 1)
-            .addMaintenanceHatch("Any Naquadah Reactor Casing", 1)
+            .addCasing("130-141", "Naquadah Reactor Casing", false)
+            .addCasing("81", "Field Restriction Casing", false)
+            .addCasing("32", "Radiation Proof Steel Frame Box", false)
+            .addDynamoHatch("1", "Any reactor casing", 1)
+            .addMaintenanceHatch("1", "Any reactor casing", 1)
+            .addInputHatch("1+", "Any reactor casing", 1)
+            .addOutputHatch("1+", "Any reactor casing", 1)
             .addStructureAuthors(EnumChatFormatting.GOLD + "N7Paddy")
             .toolTipFinisher();
         return tt;
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-        int colorIndex, boolean aActive, boolean aRedstone) {
-        if (side == facing) {
-            if (aActive) return new ITexture[] { Casings.NaquadahReactorCasing.getCasingTexture(),
-                TextureFactory.builder()
-                    .addIcon(Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_FRONT_ACTIVE)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_FRONT_ACTIVE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { Casings.NaquadahReactorCasing.getCasingTexture(), TextureFactory.builder()
-                .addIcon(Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_FRONT)
-                .extFacing()
-                .build() };
-        }
-        return new ITexture[] { Casings.NaquadahReactorCasing.getCasingTexture() };
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_FRONT,
+            Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_FRONT_GLOW,
+            Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_FRONT_ACTIVE,
+            Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_FRONT_ACTIVE_GLOW);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Casings.NaquadahReactorCasing.getCasingTexture();
     }
 
     @Override

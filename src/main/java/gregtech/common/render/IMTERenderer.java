@@ -24,7 +24,7 @@ public interface IMTERenderer {
     }
 
     /**
-     * Encore render data used by the client (Server side)
+     * Encodes render data used by the client (Server side)
      * 
      * @param buffer
      */
