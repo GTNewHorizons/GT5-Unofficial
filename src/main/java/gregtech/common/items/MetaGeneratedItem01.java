@@ -5,6 +5,7 @@ import static gregtech.api.enums.Textures.BlockIcons.COVER_WOOD_PLATE;
 import static gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ACTIVITYDETECTOR;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ACTIVITYDETECTOR_GLOW;
+import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ADVANCED_WIRELESS_CONTROLLER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_ARM;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_CONTROLLER;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_CONVEYOR;
@@ -134,6 +135,7 @@ import static gregtech.common.items.IDMetaItem01.Conveyor_Module_UV;
 import static gregtech.common.items.IDMetaItem01.Conveyor_Module_UXV;
 import static gregtech.common.items.IDMetaItem01.Conveyor_Module_ZPM;
 import static gregtech.common.items.IDMetaItem01.Cover_ActivityDetector;
+import static gregtech.common.items.IDMetaItem01.Cover_AdvancedWirelessController;
 import static gregtech.common.items.IDMetaItem01.Cover_Chest_Advanced;
 import static gregtech.common.items.IDMetaItem01.Cover_Chest_Basic;
 import static gregtech.common.items.IDMetaItem01.Cover_Chest_Good;
@@ -511,6 +513,7 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.common.config.Other;
+import gregtech.common.covers.CoverAdvancedWirelessController;
 import gregtech.common.covers.CoverArm;
 import gregtech.common.covers.CoverChest;
 import gregtech.common.covers.CoverControlsWork;
@@ -3595,6 +3598,13 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 "gt.item.cover.wireless_controller.tooltip",
                 new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 1L)));
+        ItemList.Cover_AdvancedWirelessController.set(
+            addItemWithLocalizationKeys(
+                Cover_AdvancedWirelessController.ID,
+                "gt.item.cover.advanced_wireless_controller.name",
+                "gt.item.cover.advanced_wireless_controller.tooltip",
+                new TCAspects.TC_AspectStack(TCAspects.ORDO, 2L),
+                new TCAspects.TC_AspectStack(TCAspects.MACHINA, 1L)));
 
         ItemList.Cover_NeedsMaintainance.set(
             addItemWithLocalizationKeys(
@@ -4537,6 +4547,13 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             ItemList.Cover_WirelessController.get(1L),
             TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_WIRELESS_CONTROLLER)),
             context -> new CoverWirelessController(context, TextureFactory.of(OVERLAY_WIRELESS_CONTROLLER)),
+            CoverRegistry.INTERCEPTS_RIGHT_CLICK_COVER_PLACER);
+        CoverRegistry.registerCover(
+            ItemList.Cover_AdvancedWirelessController.get(1L),
+            TextureFactory.of(MACHINE_CASINGS[2][0], TextureFactory.of(OVERLAY_ADVANCED_WIRELESS_CONTROLLER)),
+            context -> new CoverAdvancedWirelessController(
+                context,
+                TextureFactory.of(OVERLAY_ADVANCED_WIRELESS_CONTROLLER)),
             CoverRegistry.INTERCEPTS_RIGHT_CLICK_COVER_PLACER);
 
         CoverRegistry.registerCover(

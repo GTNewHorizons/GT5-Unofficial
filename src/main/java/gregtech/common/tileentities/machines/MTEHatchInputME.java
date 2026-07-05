@@ -174,9 +174,8 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
 
         if (igte == null || !igte.isAllowedToWork()) return false;
 
-        AENetworkProxy proxy = getProxy();
-
-        if (!proxy.isActive()) return false;
+        this.proxyCheckup();
+        if (!getProxy().isActive()) return false;
 
         return true;
     }
@@ -416,7 +415,13 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
                 return null;
             }
 
-            IAEFluidStack result = Platform.poweredExtraction(energy, sg, request, getRequestSource());
+            IAEFluidStack result;
+            if (doDrain) {
+                result = Platform.poweredExtraction(energy, sg, request, getRequestSource());
+                updateAllInformationSlots();
+            } else {
+                result = sg.extractItems(request, Actionable.SIMULATE, getRequestSource());
+            }
 
             return result == null ? null : result.getFluidStack();
         }
@@ -430,6 +435,12 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
         updateAllInformationSlots();
     }
 
+    // Sometimes onFirstTick() going too late
+    private void proxyCheckup() {
+        final AENetworkProxy proxy = getProxy();
+        if (!proxy.isReady()) proxy.onReady();
+    }
+
     @Override
     public CheckRecipeResult endRecipeProcessing(MTEMultiBlockBase controller) {
         CheckRecipeResult checkRecipeResult = CheckRecipeResultRegistry.SUCCESSFUL;
@@ -438,12 +449,11 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
         IEnergyGrid energy;
 
         try {
-            AENetworkProxy proxy = getProxy();
-
             // on some setup endRecipeProcessing() somehow runs before onFirstTick();
             // test world
             // https://discord.com/channels/181078474394566657/522098956491030558/1441490828760449124
-            if (!proxy.isReady()) proxy.onReady();
+            this.proxyCheckup();
+            AENetworkProxy proxy = getProxy();
 
             sg = proxy.getStorage()
                 .getFluidInventory();
@@ -540,11 +550,6 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
                     true);
                 gridProxy.setFlags(GridFlags.REQUIRE_CHANNEL);
                 updateValidGridProxySides();
-                if (base.getWorld() != null && base.getOwnerUuid() != null) {
-                    gridProxy.setOwner(
-                        base.getWorld()
-                            .func_152378_a(base.getOwnerUuid()));
-                }
             }
         }
         return this.gridProxy;
@@ -796,7 +801,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
         if (aNBT.hasKey("refreshTime")) {
             autoPullRefreshTime = aNBT.getInteger("refreshTime");
         }
-        getProxy().readFromNBT(aNBT);
+        if (aNBT.hasKey("proxy")) getProxy().readFromNBT(aNBT);
         updateAE2ProxyColor();
 
         switch (aNBT.getInteger("version")) {

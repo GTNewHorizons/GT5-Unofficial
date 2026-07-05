@@ -243,12 +243,14 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
             .addInfo("Speed and output will be affected by wind speed, recipe and rotor")
             .addInfo("Please use the Primitive Rotor")
             .addInfo("Macerates 16 items at a time")
-            .beginStructureBlock(7, 12, 7, false)
+            .beginStructureBlock(7, 7, 12, true)
             .addController("Front bottom center")
-            .addCasingInfoMin("Hardened Clay Block", 40, false)
-            .addOtherStructurePart("Dispenser", "Any Hardened Clay Block")
-            .addOtherStructurePart("0-1 Wooden door", "Any Hardened Clay Block")
-            .addStructureHint("tile.BWRotorBlock.0.name", 1)
+            .addCasing("100", "Wood Planks (any type)", false)
+            .addCasing("40-47", "Terracotta (plain)", false)
+            .addCasing("44", "Bricks", false)
+            .addMiscHatch("1", "Primitive Kinetic Shaftbox", "Front center", 1)
+            .addMiscHatch("1+", "Dispenser", "Any terracotta", 2)
+            .addMiscHatch("0-1", "Oak Door", "Any terracotta", 2)
             .toolTipFinisher();
         return tt;
     }

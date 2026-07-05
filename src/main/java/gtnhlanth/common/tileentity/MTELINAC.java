@@ -16,7 +16,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_A
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_OIL_CRACKER_GLOW;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
-import static gtnhlanth.util.DescTextLocalization.addHintNumber;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,17 +40,18 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.Textures;
 import gregtech.api.enums.TickTime;
 import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
@@ -69,7 +69,8 @@ import gtnhlanth.common.tileentity.recipe.beamline.BeamlineRecipeLoader;
 import gtnhlanth.util.DescTextLocalization;
 import gtnhlanth.util.Util;
 
-public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISurvivalConstructable {
+public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC>
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     private static final IStructureDefinition<MTELINAC> STRUCTURE_DEFINITION;
 
@@ -127,7 +128,7 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
                 'i',
                 buildHatchAdder(MTELINAC.class).atLeast(BeamlineInput)
                     .casingIndex(ShieldedAccCasingTextureID)
-                    .hint(3)
+                    .hint(1)
                     .build())
             .addElement(
                 'o',
@@ -149,7 +150,7 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
                 'j',
                 buildHatchAdder(MTELINAC.class).atLeast(Maintenance, Energy)
                     .casingIndex(ShieldedAccCasingTextureID)
-                    .hint(1)
+                    .hint(3)
                     .buildAndChain(Casings.ShieldedAcceleratorCasing.asElement()))
             .build();
     }
@@ -191,22 +192,25 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
             .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.linac.info9"))
             .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.linac.info10"))
             .addInfo(StatCollector.translateToLocal("gtnhlanth.tt.linac.info11"))
-            .beginVariableStructureBlock(7, 7, 7, 7, 19, 83, false)
+            .beginVariableStructureBlock(19, 83, 7, 7, 7, 7, false)
             .addController("Front bottom center")
-            .addCasingInfoRange(Casings.ShieldedAcceleratorCasing.getLocalizedName(), 325, 1285, false)
-            .addCasingInfoRange(LanthItemList.COOLANT_DELIVERY_CASING.getLocalizedName(), 148, 852, false)
-            .addCasingInfoRange(LanthItemList.SHIELDED_ACCELERATOR_GLASS.getLocalizedName(), 127, 703, false)
-            .addCasingInfoRange(Casings.SuperconductingCoilBlock.getLocalizedName(), 56, 312, false)
-            .addCasingInfoRange(LanthItemList.ELECTRODE_CASING.getLocalizedName(), 156, 732, false)
-            .addCasingInfoExactly(Casings.GrateMachineCasing.getLocalizedName(), 47, false)
-            .addCasingInfoExactly("Any Tiered Glass (LuV+)", 48, false)
-            .addEnergyHatch(addHintNumber(1))
-            .addMaintenanceHatch(addHintNumber(1))
-            .addInputHatch(addHintNumber(2))
-            .addOutputHatch(addHintNumber(2))
-            .addOtherStructurePart(StatCollector.translateToLocal("gtnhlanth.tt.hatch.beaminput"), addHintNumber(3))
-            .addOtherStructurePart(StatCollector.translateToLocal("gtnhlanth.tt.hatch.beamoutput"), addHintNumber(4))
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .addCasing("325-1285", Casings.ShieldedAcceleratorCasing.getLocalizedName(), false)
+            .addCasing("148-852", LanthItemList.COOLANT_DELIVERY_CASING.getLocalizedName(), false)
+            .addCasing("156-732", LanthItemList.ELECTRODE_CASING.getLocalizedName(), false)
+            .addCasing("127-703", LanthItemList.SHIELDED_ACCELERATOR_GLASS.getLocalizedName(), false)
+            .addCasing("56-312", "Superconducting Coil Block", false)
+            .addCasing("48", "LuV+ Tiered Glass", false)
+            .addCasing("47", Casings.GrateMachineCasing.getLocalizedName(), false)
+            .addMiscHatch("1", StatCollector.translateToLocal("gtnhlanth.tt.hatch.beaminput"), "Front center casing", 1)
+            .addMiscHatch("1", StatCollector.translateToLocal("gtnhlanth.tt.hatch.beamoutput"), "Back center casing", 4)
+            .addEnergyHatch("1-2", "Any bottom edge casing 3-8 blocks from front", 3)
+            .addMaintenanceHatch("1", "Any bottom edge casing 3-8 blocks from front", 3)
+            .addInputHatch("1", "Top casing 8th block from front", 2)
+            .addOutputHatch("1", "Top casing 8th block from back", 2)
+            .addAir("Interior of the structure")
+            .addStructureInfo("")
+            .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.length"))
+            .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         return tt;
     }
@@ -398,38 +402,22 @@ public class MTELINAC extends MTEEnhancedMultiBlockBase<MTELINAC> implements ISu
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-        int aColorIndex, boolean active, boolean aRedstone) {
-
-        // Placeholder
-        if (side == facing) {
-            if (active) return new ITexture[] { Casings.RobustTungstenSteelMachineCasing.getCasingTexture(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_OIL_CRACKER_ACTIVE)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_OIL_CRACKER_ACTIVE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { Casings.RobustTungstenSteelMachineCasing.getCasingTexture(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_OIL_CRACKER)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_OIL_CRACKER_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-        }
-        return new ITexture[] { Casings.RobustTungstenSteelMachineCasing.getCasingTexture() };
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            OVERLAY_FRONT_OIL_CRACKER,
+            OVERLAY_FRONT_OIL_CRACKER_GLOW,
+            OVERLAY_FRONT_OIL_CRACKER_ACTIVE,
+            OVERLAY_FRONT_OIL_CRACKER_ACTIVE_GLOW);
     }
 
     @Override
-    public String[] getStructureDescription(ItemStack arg0) {
-        return DescTextLocalization.addText("LINAC.hint", 11);
+    public ITexture getCasingTexture() {
+        return Casings.RobustTungstenSteelMachineCasing.getCasingTexture();
     }
 
     @Override
