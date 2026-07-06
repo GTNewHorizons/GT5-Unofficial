@@ -260,7 +260,6 @@ public enum Mods implements IMod {
     CompactKineticGenerators(ModIDs.COMPACT_KINETIC_GENERATORS),
     CraftPresence(ModIDs.CRAFT_PRESENCE),
     ExtraUtilities(ModIDs.EXTRA_UTILITIES),
-    UtilitiesInExcess(ModIDs.UTILITIES_IN_EXCESS),
     GraviSuite(ModIDs.GRAVI_SUITE),
     HungerOverhaul(ModIDs.HUNGER_OVERHAUL),
     IndustrialCraft2(ModIDs.INDUSTRIAL_CRAFT2),
@@ -274,6 +273,7 @@ public enum Mods implements IMod {
     TinkersGregworks(ModIDs.TINKERS_GREGWORKS),
     UniLib(ModIDs.UNI_LIB),
     UniMixins(ModIDs.UNI_MIXINS),
+    UtilitiesInExcess(ModIDs.UTILITIES_IN_EXCESS),
     Witchery(ModIDs.WITCHERY),
     ZTones(ModIDs.Z_TONES),
 
@@ -604,7 +604,6 @@ public enum Mods implements IMod {
         public static final String COMPACT_KINETIC_GENERATORS = "compactkineticgenerators";
         public static final String CRAFT_PRESENCE = "craftpresence";
         public static final String EXTRA_UTILITIES = "ExtraUtilities";
-        public static final String UTILITIES_IN_EXCESS = "utilitiesinexcess";
         public static final String GRAVI_SUITE = "GraviSuite";
         // "Healer" - Don't know what this is or where it comes from but it's in the list
         public static final String HUNGER_OVERHAUL = "HungerOverhaul";
@@ -620,6 +619,7 @@ public enum Mods implements IMod {
         public static final String TINKERS_GREGWORKS = "TGregworks";
         public static final String UNI_LIB = "unilib";
         public static final String UNI_MIXINS = "unimixins";
+        public static final String UTILITIES_IN_EXCESS = "utilitiesinexcess";
         public static final String WITCHERY = "witchery";
         public static final String Z_TONES = "Ztones";
 
