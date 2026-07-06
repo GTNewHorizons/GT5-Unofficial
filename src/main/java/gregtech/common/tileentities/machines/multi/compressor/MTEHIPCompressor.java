@@ -16,7 +16,6 @@ import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
 import static gregtech.api.util.GTStructureUtility.ofCoil;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -40,11 +39,11 @@ import bartworks.util.MathUtils;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.Textures;
-import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.interfaces.tileentity.IHeatProducer;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
@@ -54,16 +53,16 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.IGTHatchAdder;
 import gregtech.api.util.MultiblockTooltipBuilder;
-import gregtech.api.util.shutdown.SimpleShutDownReason;
+import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.blocks.BlockCasings10;
 import gregtech.common.misc.GTStructureChannels;
+import gregtech.common.tileentities.machines.MTEHeatSensor;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
 public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompressor>
-    implements ISurvivalConstructable, ICasingTextureProvider {
+    implements ISurvivalConstructable, IHeatProducer, ICasingTextureProvider {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final IStructureDefinition<MTEHIPCompressor> STRUCTURE_DEFINITION = StructureDefinition
@@ -87,7 +86,8 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
         .addElement('A', chainAllGlasses())
         .addElement(
             'B',
-            buildHatchAdder(MTEHIPCompressor.class).atLeast(Maintenance, Energy, SpecialHatchElement.HeatSensor)
+            buildHatchAdder(MTEHIPCompressor.class)
+                .atLeast(Maintenance, Energy, MTEHeatSensor.HeatSensorHatchElement.HeatSensor)
                 .casingIndex(((BlockCasings10) GregTechAPI.sBlockCasings10).getTextureIndex(4))
                 .hint(1)
                 .buildAndChain(onElementPass(MTEHIPCompressor::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings10, 4))))
@@ -283,6 +283,7 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
         setCoilLevel(HeatingCoilLevel.None);
         mCasingAmount = 0;
+        sensorHatches.clear();
         if (!checkPiece(STRUCTURE_PIECE_MAIN, 7, 9, 0, errors)) return;
         checkCasingMin(errors, mCasingAmount, 95);
         checkHasEnergyHatch(errors);
@@ -361,7 +362,7 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
                 // If HIP required, check for overheat and potentially crash
                 if (recipe.getMetadataOrDefault(COMPRESSION_TIER, 0) == 1) {
                     if (overheated) {
-                        stopMachine(SimpleShutDownReason.ofCritical("overheated"));
+                        stopMachine(ShutDownReasonRegistry.OVERHEAT_FAIL);
                         return CheckRecipeResultRegistry.NO_RECIPE;
                     }
                 }
@@ -404,7 +405,7 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
 
         // Update all the sensors
         for (MTEHeatSensor hatch : sensorHatches) {
-            hatch.updateRedstoneOutput(heat);
+            hatch.setHeatValue(heat);
         }
 
     }
@@ -444,43 +445,17 @@ public class MTEHIPCompressor extends MTEExtendedPowerMultiBlockBase<MTEHIPCompr
         coilTier = aCoilLevel.getTier();
     }
 
-    public boolean addSensorHatchToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
-        if (aTileEntity == null) return false;
-        IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-        if (aMetaTileEntity instanceof MTEHeatSensor sensor) {
-            sensor.updateTexture(aBaseCasingIndex);
-            return this.sensorHatches.add(sensor);
-        }
-        return false;
+    @Override
+    public List<MTEHeatSensor> getHeatSensorHatches() {
+        return Collections.unmodifiableList(sensorHatches);
     }
 
-    private enum SpecialHatchElement implements IHatchElement<MTEHIPCompressor> {
-
-        HeatSensor(MTEHIPCompressor::addSensorHatchToMachineList, MTEHeatSensor.class) {
-
-            @Override
-            public long count(MTEHIPCompressor gtMetaTileEntityHIPCompressor) {
-                return gtMetaTileEntityHIPCompressor.sensorHatches.size();
-            }
-        };
-
-        private final List<Class<? extends IMetaTileEntity>> mteClasses;
-        private final IGTHatchAdder<MTEHIPCompressor> adder;
-
-        @SafeVarargs
-        SpecialHatchElement(IGTHatchAdder<MTEHIPCompressor> adder, Class<? extends IMetaTileEntity>... mteClasses) {
-            this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
-            this.adder = adder;
+    @Override
+    public boolean addHeatSensorHatchToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+        if (aTileEntity != null && aTileEntity.getMetaTileEntity() instanceof MTEHeatSensor sensor) {
+            sensor.updateTexture(aBaseCasingIndex);
+            return sensorHatches.add(sensor);
         }
-
-        @Override
-        public List<? extends Class<? extends IMetaTileEntity>> mteClasses() {
-            return mteClasses;
-        }
-
-        @Override
-        public IGTHatchAdder<? super MTEHIPCompressor> adder() {
-            return adder;
-        }
+        return false;
     }
 }

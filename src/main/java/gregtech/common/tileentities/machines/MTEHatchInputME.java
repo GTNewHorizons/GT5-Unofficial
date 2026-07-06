@@ -174,9 +174,8 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
 
         if (igte == null || !igte.isAllowedToWork()) return false;
 
-        AENetworkProxy proxy = getProxy();
-
-        if (!proxy.isActive()) return false;
+        this.proxyCheckup();
+        if (!getProxy().isActive()) return false;
 
         return true;
     }
@@ -436,6 +435,12 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
         updateAllInformationSlots();
     }
 
+    // Sometimes onFirstTick() going too late
+    private void proxyCheckup() {
+        final AENetworkProxy proxy = getProxy();
+        if (!proxy.isReady()) proxy.onReady();
+    }
+
     @Override
     public CheckRecipeResult endRecipeProcessing(MTEMultiBlockBase controller) {
         CheckRecipeResult checkRecipeResult = CheckRecipeResultRegistry.SUCCESSFUL;
@@ -444,12 +449,11 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
         IEnergyGrid energy;
 
         try {
-            AENetworkProxy proxy = getProxy();
-
             // on some setup endRecipeProcessing() somehow runs before onFirstTick();
             // test world
             // https://discord.com/channels/181078474394566657/522098956491030558/1441490828760449124
-            if (!proxy.isReady()) proxy.onReady();
+            this.proxyCheckup();
+            AENetworkProxy proxy = getProxy();
 
             sg = proxy.getStorage()
                 .getFluidInventory();
