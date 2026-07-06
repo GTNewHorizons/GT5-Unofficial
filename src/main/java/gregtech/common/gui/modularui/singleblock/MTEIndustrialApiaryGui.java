@@ -10,6 +10,7 @@ import net.minecraft.item.ItemStack;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.Interactable;
+import com.cleanroommc.modularui.drawable.GuiTextures;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.utils.Color;
@@ -41,6 +42,7 @@ import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.recipe.BasicUIProperties;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.singleblock.base.MTEBasicMachineBaseGui;
+import gregtech.common.gui.modularui.util.IApiaryUpgradeModularSlot;
 import gregtech.common.gui.modularui.util.MachineModularSlot;
 import gregtech.common.modularui2.widget.builder.ItemSlotGridBuilder;
 import gregtech.common.tileentities.machines.basic.MTEIndustrialApiary;
@@ -95,7 +97,7 @@ public class MTEIndustrialApiaryGui extends MTEBasicMachineBaseGui<MTEIndustrial
                                     GTUtility.translate("GT5U.machines.industrialapiary.upgradeslot.tooltip"))
                                 .tooltipShowUpTimer(TOOLTIP_DELAY))
                         .indexOffset(UPGRADE_SLOT_OFFSET)
-                        .modularSlotSupplier(MachineModularSlot.supplier(baseMetaTileEntity))
+                        .modularSlotSupplier(IApiaryUpgradeModularSlot.supplier(machine))
                         .build()));
 
         // output slots
@@ -231,11 +233,11 @@ public class MTEIndustrialApiaryGui extends MTEBasicMachineBaseGui<MTEIndustrial
                             "fluidAutoOutput",
                             GTGuiTextures.OVERLAY_BUTTON_AUTOOUTPUT_FLUID,
                             BaseTileEntity.FLUID_TRANSFER_TOOLTIP,
-                            "GT5U.gui.button.forbidden.reason.fluid"))
+                            "GT5U.gui.button.forbidden.reason.fluid").marginTop(2))
                     .child(
                         new ToggleButton()
                             .value(new BooleanSyncValue(machine::isAutoQueen, machine::setAutoQueen).allowC2S())
-                            .backgroundOverlay(GTGuiTextures.OVERLAY_SLOT_BEE_QUEEN)
+                            .backgroundOverlay(GTGuiTextures.OVERLAY_SLOT_BEE_QUEEN, GuiTextures.REFRESH)
                             .addTooltipStringLines(
                                 machine.mTooltipCache.getData("GT5U.machines.industrialapiary.autoqueen.tooltip").text)
                             .tooltipShowUpTimer(TOOLTIP_DELAY))
@@ -244,8 +246,8 @@ public class MTEIndustrialApiaryGui extends MTEBasicMachineBaseGui<MTEIndustrial
                             .syncHandler(new InteractionSyncHandler().setOnMousePressed(_ -> machine.cancelProcess()))
                             .overlay(GTGuiTextures.OVERLAY_BUTTON_CROSS)
                             .addTooltipStringLines(
-                                machine.mTooltipCache.getData("GT5U.machines.industrialapiary.cancel.tooltip").text))
-                    .tooltipShowUpTimer(TOOLTIP_DELAY))
+                                machine.mTooltipCache.getData("GT5U.machines.industrialapiary.cancel.tooltip").text)
+                            .tooltipShowUpTimer(TOOLTIP_DELAY)))
             .child(
                 createAutoOutputButton(
                     properties.maxItemOutputs > 0,
