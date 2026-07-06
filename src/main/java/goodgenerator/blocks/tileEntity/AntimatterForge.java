@@ -794,6 +794,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         aNBT.setBoolean("canRender", this.canRender);
         aNBT.setLong("rollingCost", this.rollingCost);
         aNBT.setFloat("currentMagneticModifier", this.modifiers[MAGNETIC_ID]);
+        aNBT.setLong("guiAntimatterAmount", this.guiAntimatterAmount);
     }
 
     @Override
@@ -807,6 +808,9 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         }
         if (aNBT.hasKey("currentMagneticModifier")) {
             this.modifiers[MAGNETIC_ID] = aNBT.getFloat("currentMagneticModifier");
+        }
+        if (aNBT.hasKey("guiAntimatterAmount")) {
+            this.guiAntimatterAmount = aNBT.getLong("guiAntimatterAmount");
         }
     }
 
