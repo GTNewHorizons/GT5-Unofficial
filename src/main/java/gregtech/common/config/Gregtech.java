@@ -482,7 +482,8 @@ public class Gregtech {
             "gtPlusPlus.core.tileentities.general.TileEntityDecayablesChest",
             "net.bdew.gendustry.machines.apiary.TileApiary", "goodgenerator.blocks.tileEntity.EssentiaHatch",
             "magicbees.tileentity.TileEntityApimancersDrainerCommon",
-            "magicbees.tileentity.TileEntityApimancersDrainerGT" })
+            "magicbees.tileentity.TileEntityApimancersDrainerGT",
+            "com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityVoidQuarry" })
         @Config.RequiresMcRestart
         public String[] blacklistedTileEntiyClassNamesForWA;
 
