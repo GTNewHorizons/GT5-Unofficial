@@ -1028,6 +1028,23 @@ public final class GTGuiTextures {
     public static final UITexture OVERLAY_TOOLBOX_BATTERY = UITexture.builder()
         .location(GregTech.ID, "gui/overlay_slot/toolbox_slot_battery")
         .build();
+
+    public static final UITexture OVERLAY_SLOT_MODULE = UITexture.builder()
+        .location(MainMod.MOD_ID, "GUI/overlay_slot/module")
+        .fullImage()
+        .canApplyTheme()
+        .build();
+    public static final UITexture OVERLAY_SLOT_DISH = UITexture.builder()
+        .location(MainMod.MOD_ID, "GUI/overlay_slot/dish")
+        .fullImage()
+        .canApplyTheme()
+        .build();
+    public static final UITexture OVERLAY_SLOT_DNA_FLASK = UITexture.builder()
+        .location(MainMod.MOD_ID, "GUI/overlay_slot/dna_flask")
+        .fullImage()
+        .canApplyTheme()
+        .build();
+
     // endregion slot overlay
 
     // region progressbar
@@ -1810,8 +1827,10 @@ public final class GTGuiTextures {
         .build();
     public static final UITexture PICTURE_GODFORGE_LOGO = UITexture.fullImage(MODID, "gui/picture/gorge_logo");
     public static final UITexture PICTURE_BARTWORKS_LOGO_STANDARD = UITexture.builder()
-        .location(MainMod.MOD_ID, "GUI/picture/bw_logo_47x21")
+        .location(MainMod.MOD_ID, "GUI/picture/bw_logo_47x20")
         .fullImage()
+        .canApplyTheme()
+        .name(GTTextureIds.PICTURE_BW_LOGO_STANDARD)
         .build();
     public static final UITexture PICTURE_EXOFOUNDRY_LOGO = UITexture.builder()
         .location(GregTech.ID, "gui/picture/exofoundry_logo")
