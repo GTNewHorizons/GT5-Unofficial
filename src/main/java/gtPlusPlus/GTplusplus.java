@@ -55,7 +55,7 @@ import gtPlusPlus.xmod.thaumcraft.commands.CommandDumpAspects;
         + " after:Railcraft;"
         + " after:CompactWindmills;"
         + " after:ForbiddenMagic;"
-        + " after:ExtraUtilities;"
+        + " after:UtilitiesInExcess;"
         + " after:Thaumcraft;"
         + " after:EnderIO;"
         + " after:tectech;"
