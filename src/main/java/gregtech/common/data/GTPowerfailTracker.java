@@ -10,7 +10,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
 import java.util.OptionalInt;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -73,6 +72,7 @@ public class GTPowerfailTracker {
         public int mteId;
         public int count;
         public Date lastOccurrence;
+        public UUID ownerId;
 
         public Powerfail copy() {
             Powerfail copy = new Powerfail();
@@ -83,6 +83,7 @@ public class GTPowerfailTracker {
             copy.mteId = mteId;
             copy.count = count;
             copy.lastOccurrence = (Date) lastOccurrence.clone();
+            copy.ownerId = ownerId;
             return copy;
         }
 
@@ -108,6 +109,8 @@ public class GTPowerfailTracker {
             this.mteId = igte.getMetaTileID();
             this.count++;
             this.lastOccurrence = new Date();
+            this.ownerId = igte.getOwnerUuid();
+            System.out.println(ownerId.toString());
         }
 
         public @Nullable IMetaTileEntity getMTE() {
@@ -216,9 +219,9 @@ public class GTPowerfailTracker {
         long coord = CoordinatePacker.pack(x, y, z);
         Powerfail p = dimensionInfo.byCoord.remove(coord);
         owner.markDirty();
-        GTPacket packet = new GTPacketClearPowerfail(p);
 
         if (p != null) {
+            GTPacket packet = new GTPacketClearPowerfail(p);
             TeamManager.forEachOnlineTeamMember(owner, player -> GTValues.NW.sendToPlayer(packet, player));
         }
     }
@@ -377,11 +380,7 @@ public class GTPowerfailTracker {
             });
 
             pendingUpdates.remove(consumed.getTeamId());
-            TeamManager.forEachOnlineTeamMember(
-                consumed,
-                player -> pendingUpdates.add(
-                    player.getGameProfile()
-                        .getId()));
+            pendingUpdates.add(surviving.getTeamId());
         }
 
         @Override
@@ -393,9 +392,7 @@ public class GTPowerfailTracker {
                 DimensionInfo dimensionInfo = byWorld.computeIfAbsent(dimId, _ -> new DimensionInfo());
                 LongList coords = new LongArrayList(16);
                 oldDimInfo.byCoord.forEach((packedCoord, powerfail) -> {
-                    if (Objects.requireNonNull(powerfail.getMTE())
-                        .getBaseMetaTileEntity()
-                        .getOwnerUuid() == playerId) {
+                    if (powerfail.ownerId.equals(playerId)) {
                         coords.add(packedCoord);
                         dimensionInfo.byCoord.computeIfAbsent(packedCoord, _ -> powerfail);
                     }
@@ -404,6 +401,7 @@ public class GTPowerfailTracker {
                 coords.forEach(coord -> oldDimInfo.byCoord.remove(coord));
             });
 
+            pendingUpdates.add(prevTeam.getTeamId());
             pendingUpdates.add(newTeam.getTeamId());
         }
 
@@ -424,11 +422,14 @@ public class GTPowerfailTracker {
                     for (Long2ObjectMap.Entry<Powerfail> coordEntrySet : dimInfo.byCoord.long2ObjectEntrySet()) {
                         long coord = coordEntrySet.getLongKey();
                         Powerfail powerfail = coordEntrySet.getValue();
+                        String uuid = powerfail.ownerId.toString();
 
                         out.writeLong(coord);
                         out.writeLong(powerfail.lastOccurrence.getTime());
                         out.writeInt(powerfail.count);
                         out.writeInt(powerfail.mteId);
+                        out.writeInt(uuid.length());
+                        out.write(uuid.getBytes());
                     }
                 }
             } catch (IOException e) {
@@ -454,6 +455,8 @@ public class GTPowerfailTracker {
                         long last = in.readLong();
                         int count = in.readInt();
                         int mteId = in.readInt();
+                        int uuidLen = in.readInt();
+                        String uuid = new String(in.readNBytes(uuidLen));
 
                         DimensionInfo dimInfo = byWorld.computeIfAbsent(dimId, _ -> new DimensionInfo());
                         Powerfail powerfail = dimInfo.byCoord.computeIfAbsent(coord, _ -> new Powerfail());
@@ -461,6 +464,7 @@ public class GTPowerfailTracker {
                         powerfail.lastOccurrence = new Date(last);
                         powerfail.count = count;
                         powerfail.mteId = mteId;
+                        powerfail.ownerId = UUID.fromString(uuid);
                         powerfail.setCoord(coord);
                         // inferred from the outer dimension read
                         powerfail.dim = dimId;
