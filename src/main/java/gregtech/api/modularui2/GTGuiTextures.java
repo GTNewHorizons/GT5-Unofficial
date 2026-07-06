@@ -1034,13 +1034,13 @@ public final class GTGuiTextures {
         .fullImage()
         .canApplyTheme()
         .build();
-  
+
     public static final UITexture OVERLAY_SLOT_MODULE = UITexture.builder()
         .location(MainMod.MOD_ID, "GUI/overlay_slot/module")
         .fullImage()
         .canApplyTheme()
         .build();
-  
+
     public static final UITexture OVERLAY_SLOT_DISH = UITexture.builder()
         .location(MainMod.MOD_ID, "GUI/overlay_slot/dish")
         .fullImage()
