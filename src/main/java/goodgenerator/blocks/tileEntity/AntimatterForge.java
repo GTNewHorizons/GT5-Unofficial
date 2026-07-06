@@ -445,6 +445,10 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
                 drainEnergyInput(calculateEnergyContainmentCost(totalAntimatterAmount));
             }
 
+            if (!aBaseMetaTileEntity.isActive()) {
+                this.guiAntimatterAmount = totalAntimatterAmount;
+            }
+
             if ((this.mProgresstime >= this.mMaxProgresstime) && (!isAllowedToWork())) {
                 setProtoRender(false);
             }
