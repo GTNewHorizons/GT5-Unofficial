@@ -533,18 +533,6 @@ public class Material implements IOreMaterial {
                     pendingRegistration.add(this);
                 }
             }
-            StringBuilder ratio = new StringBuilder();
-            if (this.vSmallestRatio != null) {
-                for (long l : this.vSmallestRatio) {
-                    if (ratio.toString()
-                        .isEmpty()) {
-                        ratio = new StringBuilder(String.valueOf(l));
-                    } else {
-                        ratio.append(":")
-                            .append(l);
-                    }
-                }
-            }
 
             sChemicalFormula.put(materialDefaultLocalName.toLowerCase(), this.vChemicalFormula);
         } catch (Throwable t) {
