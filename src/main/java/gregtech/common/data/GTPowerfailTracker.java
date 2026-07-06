@@ -188,8 +188,8 @@ public class GTPowerfailTracker {
 
         powerfail.update(igte);
         owner.markDirty();
-        GTPacket packet = new GTPacketOnPowerfail(powerfail);
 
+        GTPacket packet = new GTPacketOnPowerfail(powerfail);
         TeamManager.forEachOnlineTeamMember(owner, player -> GTValues.NW.sendToPlayer(packet, player));
 
     }
@@ -210,15 +210,11 @@ public class GTPowerfailTracker {
         if (data == null) return;
 
         var dimensionInfo = data.byWorld.get(worldId);
-
         if (dimensionInfo == null) return;
 
         long coord = CoordinatePacker.pack(x, y, z);
-
         Powerfail p = dimensionInfo.byCoord.remove(coord);
-
         owner.markDirty();
-
         GTPacket packet = new GTPacketClearPowerfail(p);
 
         if (p != null) {
@@ -275,7 +271,6 @@ public class GTPowerfailTracker {
             OptionalInt.of(player.dimension));
 
         GTPacketUpdatePowerfails packet = new GTPacketUpdatePowerfails(player.dimension, powerfails);
-
         GTValues.NW.sendToPlayer(packet, player);
     }
 
