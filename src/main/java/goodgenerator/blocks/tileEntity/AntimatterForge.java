@@ -444,7 +444,6 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
             if (!amOutputHatches.isEmpty()) {
                 drainEnergyInput(calculateEnergyContainmentCost(totalAntimatterAmount));
             }
-            this.guiAntimatterAmount = totalAntimatterAmount;
 
             if ((this.mProgresstime >= this.mMaxProgresstime) && (!isAllowedToWork())) {
                 setProtoRender(false);
@@ -566,6 +565,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
         }
 
         this.guiAntimatterChange = ratioLosses + antimatterChange;
+        this.guiAntimatterAmount = totalAntimatterAmount;
 
         if (this.canRender) {
             updateAntimatterSize(this.guiAntimatterAmount);
