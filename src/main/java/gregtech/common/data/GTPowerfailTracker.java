@@ -421,14 +421,13 @@ public class GTPowerfailTracker {
                     for (Long2ObjectMap.Entry<Powerfail> coordEntrySet : dimInfo.byCoord.long2ObjectEntrySet()) {
                         long coord = coordEntrySet.getLongKey();
                         Powerfail powerfail = coordEntrySet.getValue();
-                        String uuid = powerfail.ownerId.toString();
 
                         out.writeLong(coord);
                         out.writeLong(powerfail.lastOccurrence.getTime());
+                        out.writeLong(powerfail.ownerId.getMostSignificantBits());
+                        out.writeLong(powerfail.ownerId.getLeastSignificantBits());
                         out.writeInt(powerfail.count);
                         out.writeInt(powerfail.mteId);
-                        out.writeInt(uuid.length());
-                        out.write(uuid.getBytes());
                     }
                 }
             } catch (IOException e) {
@@ -452,10 +451,9 @@ public class GTPowerfailTracker {
                     for (int j = 0; j < dimEntries; j++) {
                         long coord = in.readLong();
                         long last = in.readLong();
+                        UUID ownerId = new UUID(in.readLong(), in.readLong());
                         int count = in.readInt();
                         int mteId = in.readInt();
-                        int uuidLen = in.readInt();
-                        String uuid = new String(in.readNBytes(uuidLen));
 
                         DimensionInfo dimInfo = byWorld.computeIfAbsent(dimId, _ -> new DimensionInfo());
                         Powerfail powerfail = dimInfo.byCoord.computeIfAbsent(coord, _ -> new Powerfail());
@@ -463,7 +461,7 @@ public class GTPowerfailTracker {
                         powerfail.lastOccurrence = new Date(last);
                         powerfail.count = count;
                         powerfail.mteId = mteId;
-                        powerfail.ownerId = UUID.fromString(uuid);
+                        powerfail.ownerId = ownerId;
                         powerfail.setCoord(coord);
                         // inferred from the outer dimension read
                         powerfail.dim = dimId;
