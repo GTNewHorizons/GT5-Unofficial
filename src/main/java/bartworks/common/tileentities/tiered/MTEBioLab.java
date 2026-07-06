@@ -25,6 +25,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.cleanroommc.modularui.factory.PosGuiData;
+import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.screen.UISettings;
+import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+
 import bartworks.API.enums.BioCultureEnum;
 import bartworks.API.enums.BioDataEnum;
 import bartworks.API.recipe.BartWorksRecipeMaps;
@@ -40,10 +45,13 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicMachine;
+import gregtech.api.modularui2.GTGuiTheme;
+import gregtech.api.modularui2.GTGuiThemes;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
+import gregtech.common.gui.modularui.singleblock.MTEBioLabGui;
 import gregtech.common.items.MetaGeneratedItem98;
 import gregtech.common.items.behaviors.BehaviourDataOrb;
 
@@ -277,6 +285,21 @@ public class MTEBioLab extends MTEBasicMachine {
     public String[] getDescription() {
         return new String[] { StatCollector.translateToLocal("tooltip.tile.biolab.0.name"),
             BWTooltipReference.ADDED_BY_BARTIMAEUSNEK_VIA_BARTWORKS.get() };
+    }
+
+    @Override
+    protected GTGuiTheme getGuiTheme() {
+        return GTGuiThemes.BARTWORKS;
+    }
+
+    @Override
+    protected boolean useMui2() {
+        return true;
+    }
+
+    @Override
+    public ModularPanel buildUI(PosGuiData guiData, PanelSyncManager syncManager, UISettings uiSettings) {
+        return new MTEBioLabGui(this, getUIProperties()).build(guiData, syncManager, uiSettings);
     }
 
     /**
