@@ -566,9 +566,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
             aNBT.setInteger("mOutputItemsLength", mOutputItems.length);
             for (int i = 0; i < mOutputItems.length; i++) {
                 if (mOutputItems[i] != null) {
-                    NBTTagCompound tNBT = new NBTTagCompound();
-                    mOutputItems[i].writeToNBT(tNBT);
-                    aNBT.setTag("mOutputItem" + i, tNBT);
+                    GTUtility.saveItem(aNBT, "mOutputItem" + i, mOutputItems[i]);
                 }
             }
         }
