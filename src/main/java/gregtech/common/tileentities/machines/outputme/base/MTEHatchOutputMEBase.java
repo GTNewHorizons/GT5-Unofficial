@@ -108,8 +108,11 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>> {
 
         void dispatchMarkDirty();
 
-        /** Called when this output's free space grew, so a recipe blocked on output-full can be re-checked. */
-        void notifyOutputSpaceFreed();
+        /**
+         * Called when what this output can accept changed - free space grew, or the storage cell was swapped or
+         * repartitioned - so a recipe blocked on output-full can be re-checked.
+         */
+        void notifyOutputSpaceChanged();
 
         MTEHatchOutputMEBase<T> getProvider();
 
@@ -358,6 +361,8 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>> {
         }
 
         oldCellStack = upgradeItemStack;
+        // A swapped or repartitioned cell changes what this output accepts, which can unblock a recipe.
+        env.notifyOutputSpaceChanged();
         env.dispatchMarkDirty();
     }
 
@@ -458,7 +463,7 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>> {
             // hasAvailableSpace() stays true even as the remaining space jumps from e.g. 1 to 1000.
             long availableSpace = getAvailableSpace();
             if (availableSpace > lastAvailableSpace) {
-                env.notifyOutputSpaceFreed();
+                env.notifyOutputSpaceChanged();
             }
             lastAvailableSpace = availableSpace;
         }

@@ -138,8 +138,10 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
             if (aTimer % autoPullRefreshTime == 0 && autoPullItemList) {
                 refreshItemList();
                 if (justHadNewItems) {
+                    // Auto-pull only exists on advanced stocking inputs and is already rate-limited by
+                    // autoPullRefreshTime, so a refresh that found new items warrants an immediate check.
                     for (var multi : watchers) {
-                        multi.scheduleRecipeCheck(RecipeCheckReason.THROTTLED);
+                        multi.scheduleRecipeCheckImmediate();
                     }
                     justHadNewItems = false;
                 }

@@ -666,10 +666,9 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
         BigInteger euToFull = euBufferSize.subtract(currentEU);
         BigInteger increasedEU = euToFull.min(maximumIncrease);
         currentEU = currentEU.add(increasedEU);
-        // Modules buffer power in currentEU rather than energy hatches, so the controller's stored-energy poll can't
-        // see it. When a recipe was blocked on NAC_WAITING_FOR_POWER, re-check only once the buffer has actually
-        // reached the amount that recipe needed - re-checking every tick as power trickles in would just fail until
-        // then. Throttled so a heavily loaded base can defer it further.
+        // When a recipe was blocked on NAC_WAITING_FOR_POWER, re-check only once the buffer has actually reached the
+        // amount that recipe needed - re-checking every tick as power trickles in would just fail until then.
+        // Throttled so a heavily loaded base can defer it further.
         if (pendingPowerRequirement != null && mMaxProgresstime <= 0
             && currentEU.compareTo(pendingPowerRequirement) >= 0) {
             pendingPowerRequirement = null;

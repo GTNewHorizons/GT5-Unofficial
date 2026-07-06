@@ -149,8 +149,10 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
             if (aTimer % autoPullRefreshTime == 0 && autoPullFluidList) {
                 refreshFluidList();
                 if (justHadNewFluids) {
+                    // Auto-pull only exists on advanced stocking inputs and is already rate-limited by
+                    // autoPullRefreshTime, so a refresh that found new fluids warrants an immediate check.
                     for (var multi : watchers) {
-                        multi.scheduleRecipeCheck(RecipeCheckReason.THROTTLED);
+                        multi.scheduleRecipeCheckImmediate();
                     }
                     justHadNewFluids = false;
                 }
