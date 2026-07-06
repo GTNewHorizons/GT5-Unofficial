@@ -87,7 +87,7 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven>
             .addPollutionAmount(GTMod.proxy.mPollutionCokeOvenPerSecond)
             .beginStructureBlock(3, 3, 3, true)
             .addController("Front center")
-            .addCasing("0-26", "Coke Oven Casing", false)
+            .addCasing("0-26", "Coke Oven Bricks", false)
             .addMiscHatch("0+", StatCollector.translateToLocal("GT5U.MBTT.CokeOvenHatch"), "Any casing", 1)
             .addAir("Interior of the structure")
             .addStructureInfo("")
