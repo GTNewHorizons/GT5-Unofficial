@@ -6,7 +6,6 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
@@ -19,10 +18,6 @@ import java.util.stream.Collectors;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
-import cpw.mods.fml.common.eventhandler.EventPriority;
-import gregtech.api.net.GTPacket;
-import it.unimi.dsi.fastutil.longs.LongArrayList;
-import it.unimi.dsi.fastutil.longs.LongList;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
@@ -37,6 +32,7 @@ import com.gtnewhorizon.gtnhlib.teams.TeamDataTransferReason;
 import com.gtnewhorizon.gtnhlib.teams.TeamManager;
 import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
 
+import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
@@ -46,6 +42,7 @@ import gregtech.api.enums.ChatMessage;
 import gregtech.api.enums.GTValues;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.net.GTPacket;
 import gregtech.api.net.GTPacketClearPowerfail;
 import gregtech.api.net.GTPacketOnPowerfail;
 import gregtech.api.net.GTPacketUpdatePowerfails;
@@ -55,6 +52,8 @@ import gregtech.api.util.Localized;
 import gregtech.common.config.Gregtech;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.longs.LongArrayList;
+import it.unimi.dsi.fastutil.longs.LongList;
 
 public class GTPowerfailTracker {
 
@@ -190,9 +189,7 @@ public class GTPowerfailTracker {
         powerfail.update(igte);
         GTPacket packet = new GTPacketOnPowerfail(powerfail);
 
-        TeamManager.forEachOnlineTeamMember(
-            owner,
-            player -> GTValues.NW.sendToPlayer(packet, player));
+        TeamManager.forEachOnlineTeamMember(owner, player -> GTValues.NW.sendToPlayer(packet, player));
 
     }
 
@@ -224,9 +221,7 @@ public class GTPowerfailTracker {
         GTPacket packet = new GTPacketClearPowerfail(p);
 
         if (p != null) {
-            TeamManager.forEachOnlineTeamMember(
-                owner,
-                player -> GTValues.NW.sendToPlayer(packet, player));
+            TeamManager.forEachOnlineTeamMember(owner, player -> GTValues.NW.sendToPlayer(packet, player));
         }
     }
 
