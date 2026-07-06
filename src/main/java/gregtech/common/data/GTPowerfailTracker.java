@@ -187,6 +187,7 @@ public class GTPowerfailTracker {
         Powerfail powerfail = dimensionInfo.byCoord.computeIfAbsent(coord, _ -> new Powerfail());
 
         powerfail.update(igte);
+        owner.markDirty();
         GTPacket packet = new GTPacketOnPowerfail(powerfail);
 
         TeamManager.forEachOnlineTeamMember(owner, player -> GTValues.NW.sendToPlayer(packet, player));
