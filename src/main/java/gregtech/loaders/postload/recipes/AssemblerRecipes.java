@@ -3,7 +3,6 @@ package gregtech.loaders.postload.recipes;
 import static gregtech.api.enums.Mods.AppliedEnergistics2;
 import static gregtech.api.enums.Mods.AvaritiaAddons;
 import static gregtech.api.enums.Mods.BuildCraftFactory;
-import static gregtech.api.enums.Mods.ExtraUtilities;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.GalacticraftCore;
 import static gregtech.api.enums.Mods.GalacticraftMars;
@@ -14,6 +13,7 @@ import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.enums.Mods.OpenComputers;
 import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.enums.Mods.TwilightForest;
+import static gregtech.api.enums.Mods.UtilitiesInExcess;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.EIGHTH_INGOTS;
@@ -3888,14 +3888,16 @@ public class AssemblerRecipes implements Runnable {
                 .addTo(assemblerRecipes);
         }
 
-        if (!ExtraUtilities.isModLoaded()) {
+        if (!UtilitiesInExcess.isModLoaded()) {
             return;
         }
 
         // Void bus
         {
             GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.Hatch_Output_Bus_LV.get(1), getModItem(ExtraUtilities.ID, "trashcan", 1L, 0))
+                .itemInputs(
+                    ItemList.Hatch_Output_Bus_LV.get(1),
+                    getModItem(UtilitiesInExcess.ID, "trash_can_item", 1L, 0))
                 .itemOutputs(ItemList.Hatch_Void_Bus.get(1))
                 .duration(20 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
@@ -4412,14 +4414,14 @@ public class AssemblerRecipes implements Runnable {
                 .addTo(assemblerRecipes);
         }
 
-        if (!ExtraUtilities.isModLoaded()) {
+        if (!UtilitiesInExcess.isModLoaded()) {
             return;
         }
 
         // Void hatch
         {
             GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.Hatch_Output_LV.get(1), getModItem(ExtraUtilities.ID, "trashcan", 1L, 1))
+                .itemInputs(ItemList.Hatch_Output_LV.get(1), getModItem(UtilitiesInExcess.ID, "trash_can_fluid", 1L, 1))
                 .itemOutputs(ItemList.Hatch_Void.get(1))
                 .duration(20 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
@@ -6256,7 +6258,7 @@ public class AssemblerRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                getModItem(ExtraUtilities.ID, "trashcan", 1L, 0),
+                getModItem(UtilitiesInExcess.ID, "trash_can_item", 1L, 0),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Obsidian, 4))
             .circuit(1)
             .itemOutputs(getModItem(Railcraft.ID, "machine.beta", 1L, 11))
