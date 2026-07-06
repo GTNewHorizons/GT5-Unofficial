@@ -599,8 +599,8 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
     @Override
     public void addGregTechLogo(ModularWindow.Builder builder) {
         builder.widget(
-            new DrawableWidget().setDrawable(BWUITextures.PICTURE_BW_LOGO_47X21)
-                .setSize(47, 21)
+            new DrawableWidget().setDrawable(BWUITextures.PICTURE_BW_LOGO_47X20)
+                .setSize(47, 20)
                 .setPos(123, 59));
     }
 
