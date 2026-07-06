@@ -29,7 +29,7 @@ public class MTEHatchDebugDataAccess extends MTEHatchDataAccess {
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new MTEHatchDebugDataAccess(this.mName, this.mTier, mDescriptionArray, this.mTextures);
+        return new MTEHatchDebugDataAccess(this.mName, this.mTier, getDescription(), this.mTextures);
     }
 
     @Override
