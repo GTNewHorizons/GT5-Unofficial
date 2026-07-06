@@ -88,7 +88,7 @@ public class MTECokeOven extends MTEEnhancedMultiBlockBase<MTECokeOven>
             .beginStructureBlock(3, 3, 3, true)
             .addController("Front center")
             .addCasing("0-26", "Coke Oven Bricks", false)
-            .addMiscHatch("0+", StatCollector.translateToLocal("GT5U.MBTT.CokeOvenHatch"), "Any casing", 1)
+            .addMiscHatch("0+", StatCollector.translateToLocal("GT5U.MBTT.CokeOvenHatch"), "Any coke oven brick", 1)
             .addAir("Interior of the structure")
             .addStructureInfo("")
             .addStructureFooter("GregTech multiblocks may wallshare each of their sides")
