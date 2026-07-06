@@ -19,6 +19,10 @@ import java.util.stream.Collectors;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
+import cpw.mods.fml.common.eventhandler.EventPriority;
+import gregtech.api.net.GTPacket;
+import it.unimi.dsi.fastutil.longs.LongArrayList;
+import it.unimi.dsi.fastutil.longs.LongList;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
@@ -184,10 +188,11 @@ public class GTPowerfailTracker {
         Powerfail powerfail = dimensionInfo.byCoord.computeIfAbsent(coord, _ -> new Powerfail());
 
         powerfail.update(igte);
+        GTPacket packet = new GTPacketOnPowerfail(powerfail);
 
         TeamManager.forEachOnlineTeamMember(
             owner,
-            player -> GTValues.NW.sendToPlayer(new GTPacketOnPowerfail(powerfail), player));
+            player -> GTValues.NW.sendToPlayer(packet, player));
 
     }
 
@@ -214,10 +219,14 @@ public class GTPowerfailTracker {
 
         Powerfail p = dimensionInfo.byCoord.remove(coord);
 
+        owner.markDirty();
+
+        GTPacket packet = new GTPacketClearPowerfail(p);
+
         if (p != null) {
             TeamManager.forEachOnlineTeamMember(
                 owner,
-                player -> GTValues.NW.sendToPlayer(new GTPacketClearPowerfail(p), player));
+                player -> GTValues.NW.sendToPlayer(packet, player));
         }
     }
 
@@ -258,6 +267,8 @@ public class GTPowerfailTracker {
             data.byWorld.clear();
         }
 
+        owner.markDirty();
+
         pendingUpdates.add(owner.getTeamId());
     }
 
@@ -272,7 +283,7 @@ public class GTPowerfailTracker {
         GTValues.NW.sendToPlayer(packet, player);
     }
 
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.LOWEST)
     public void onPlayerJoined(PlayerEvent.PlayerLoggedInEvent event) {
         if (!(event.player instanceof EntityPlayerMP playerMP)) return;
 
@@ -310,8 +321,9 @@ public class GTPowerfailTracker {
         if (event.phase != TickEvent.Phase.END) return;
 
         for (UUID uuid : pendingUpdates) {
-            if (TeamManager.getTeamById(uuid) != null) {
-                TeamManager.forEachOnlineTeamMember(TeamManager.getTeamById(uuid), this::sendPlayerPowerfailStatus);
+            Team teamById = TeamManager.getTeamById(uuid);
+            if (teamById != null) {
+                TeamManager.forEachOnlineTeamMember(teamById, this::sendPlayerPowerfailStatus);
             } else {
                 sendPlayerPowerfailStatus(getPlayer(uuid));
             }
@@ -324,7 +336,7 @@ public class GTPowerfailTracker {
         return GTMod.proxy.getPlayerMP(id);
     }
 
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.LOWEST)
     public void onWorldLoad(WorldEvent.Load event) {
         if (!event.world.isRemote && event.world.provider.dimensionId == 0) {
             pendingUpdates.clear();
@@ -387,7 +399,7 @@ public class GTPowerfailTracker {
 
             pfData.byWorld.forEach((dimId, oldDimInfo) -> {
                 DimensionInfo dimensionInfo = byWorld.computeIfAbsent(dimId, _ -> new DimensionInfo());
-                List<Long> coords = new ArrayList<>(25);
+                LongList coords = new LongArrayList(16);
                 oldDimInfo.byCoord.forEach((packedCoord, powerfail) -> {
                     if (Objects.requireNonNull(powerfail.getMTE())
                         .getBaseMetaTileEntity()
