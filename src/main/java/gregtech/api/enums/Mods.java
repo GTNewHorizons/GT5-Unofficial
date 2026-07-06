@@ -260,7 +260,6 @@ public enum Mods implements IMod {
     CompactKineticGenerators(ModIDs.COMPACT_KINETIC_GENERATORS),
     CraftPresence(ModIDs.CRAFT_PRESENCE),
     ExtraUtilities(ModIDs.EXTRA_UTILITIES),
-    UtilitiesInExcess(ModIDs.UTILITIES_IN_EXCESS),
     GraviSuite(ModIDs.GRAVI_SUITE),
     HungerOverhaul(ModIDs.HUNGER_OVERHAUL),
     IndustrialCraft2(ModIDs.INDUSTRIAL_CRAFT2),
@@ -274,6 +273,7 @@ public enum Mods implements IMod {
     TinkersGregworks(ModIDs.TINKERS_GREGWORKS),
     UniLib(ModIDs.UNI_LIB),
     UniMixins(ModIDs.UNI_MIXINS),
+    UtilitiesInExcess(ModIDs.UTILITIES_IN_EXCESS),
     Witchery(ModIDs.WITCHERY),
     ZTones(ModIDs.Z_TONES),
 
