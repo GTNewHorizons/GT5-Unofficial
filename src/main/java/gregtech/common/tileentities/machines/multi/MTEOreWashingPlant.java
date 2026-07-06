@@ -40,9 +40,11 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
+import gregtech.api.enums.Textures;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
@@ -61,7 +63,7 @@ import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class MTEOreWashingPlant extends MTEExtendedPowerMultiBlockBase<MTEOreWashingPlant>
-    implements ISurvivalConstructable {
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     private int casingAmount;
     private boolean needsWaterFill = false;
@@ -112,17 +114,17 @@ public class MTEOreWashingPlant extends MTEExtendedPowerMultiBlockBase<MTEOreWas
             .addBulkMachineInfo(4, 5f, 1f)
             .addInfo("Can be configured with a screwdriver to also be used as Simple Washer")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(5, 4, 9, false)
+            .beginStructureBlock(9, 5, 4, false)
             .addController("Front center")
-            .addCasingInfoMin("Wash Plant Casing", 70, false)
-            .addCasingInfoExactly("Steel Gear Box Casing", 7, false)
-            .addCasingInfoExactly("Steel Frame Box", 15, false)
-            .addInputBus("Any Wash Plant Casing", 1)
-            .addOutputBus("Any Wash Plant Casing", 1)
-            .addInputHatch("Any Wash Plant Casing", 1)
-            .addEnergyHatch("Any Wash Plant Casing", 1)
-            .addMaintenanceHatch("Any Wash Plant Casing", 1)
-            .addMufflerHatch("Any Wash Plant Casing", 1)
+            .addCasing("70-85", "Wash Plant Casing", false)
+            .addCasing("15", "Steel Frame Box", false)
+            .addCasing("7", "Steel Gear Box Casing", false)
+            .addEnergyHatch("1+", "Any wash plant casing", 1)
+            .addMaintenanceHatch("1", "Any wash plant casing", 1)
+            .addMufflerHatch("1", "Any wash plant casing", 1)
+            .addInputBus("1+", "Any wash plant casing", 1)
+            .addInputHatch("1+", "Any wash plant casing", 1)
+            .addOutputBus("1+", "Any wash plant casing", 1)
             .addStructureAuthors(EnumChatFormatting.GOLD + "ya9yu")
             .toolTipFinisher();
         return tt;
@@ -169,12 +171,13 @@ public class MTEOreWashingPlant extends MTEExtendedPowerMultiBlockBase<MTEOreWas
             return;
         }
         checkCasingMin(errors, casingAmount, 70);
-        checkHasMufflerHatch(errors);
-        checkHasInputHatch(errors);
-        checkHasOutputBus(errors);
-        checkHasInputBus(errors);
         checkHasEnergyHatch(errors);
         checkHasMaintenanceHatch(errors);
+        checkHasMufflerHatch(errors);
+        checkHasInputBus(errors);
+        checkHasInputHatch(errors);
+        checkHasOutputBus(errors);
+
         if (!errors.isEmpty()) return;
         needsWaterFill = true;
     }
@@ -186,30 +189,22 @@ public class MTEOreWashingPlant extends MTEExtendedPowerMultiBlockBase<MTEOreWas
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection sideDirection,
-        ForgeDirection facingDirection, int colorIndex, boolean active, boolean redstoneLevel) {
-        if (sideDirection == facingDirection) {
-            if (active) return new ITexture[] { TextureFactory.of(ModBlocks.blockCasings2Misc, 4),
-                TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.oMCDIndustrialWashPlantActive)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.oMCDIndustrialWashPlantActiveGlow)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { TextureFactory.of(ModBlocks.blockCasings2Misc, 4), TextureFactory.builder()
-                .addIcon(TexturesGtBlock.oMCDIndustrialWashPlant)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.oMCDIndustrialWashPlantGlow)
-                    .extFacing()
-                    .glow()
-                    .build() };
-        }
-        return new ITexture[] { TextureFactory.of(ModBlocks.blockCasings2Misc, 4) };
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            TexturesGtBlock.oMCDIndustrialWashPlant,
+            TexturesGtBlock.oMCDIndustrialWashPlantGlow,
+            TexturesGtBlock.oMCDIndustrialWashPlantActive,
+            TexturesGtBlock.oMCDIndustrialWashPlantActiveGlow);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return TextureFactory.of(ModBlocks.blockCasings2Misc, 4);
     }
 
     @Override

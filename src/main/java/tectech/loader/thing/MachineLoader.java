@@ -79,6 +79,7 @@ import static gregtech.api.enums.MetaTileEntityIDs.LaserVacuumPipe;
 import static gregtech.api.enums.MetaTileEntityIDs.LaserVacuumPipeCasing;
 import static gregtech.api.enums.MetaTileEntityIDs.LegendaryLaserSourceHatch;
 import static gregtech.api.enums.MetaTileEntityIDs.LegendaryLaserTargetHatch;
+import static gregtech.api.enums.MetaTileEntityIDs.LineOfSightConnectorHatch;
 import static gregtech.api.enums.MetaTileEntityIDs.LuV1024AtLaserSourceHatch;
 import static gregtech.api.enums.MetaTileEntityIDs.LuV1024AtLaserTargetHatch;
 import static gregtech.api.enums.MetaTileEntityIDs.LuV16ADynamoHatch;
@@ -282,6 +283,7 @@ import static tectech.thing.CustomItemList.Hatch_BEC_CondensateDetector;
 import static tectech.thing.CustomItemList.Hatch_BEC_Connector;
 import static tectech.thing.CustomItemList.Hatch_BEC_IOController;
 import static tectech.thing.CustomItemList.Hatch_BEC_Nanites;
+import static tectech.thing.CustomItemList.Hatch_LineOfSight_Connector;
 import static tectech.thing.CustomItemList.LASERpipe;
 import static tectech.thing.CustomItemList.LASERpipeBlock;
 import static tectech.thing.CustomItemList.LASERpipeSmart;
@@ -594,6 +596,7 @@ import tectech.thing.metaTileEntity.hatch.MTEHatchWirelessMulti;
 import tectech.thing.metaTileEntity.hatch.bec.MTEHatchBEC;
 import tectech.thing.metaTileEntity.hatch.bec.MTEHatchCondensateDetector;
 import tectech.thing.metaTileEntity.hatch.bec.MTEHatchIONodeController;
+import tectech.thing.metaTileEntity.hatch.bec.MTEHatchLoS;
 import tectech.thing.metaTileEntity.hatch.bec.MTEHatchNaniteDetector;
 import tectech.thing.metaTileEntity.multi.MTEActiveTransformer;
 import tectech.thing.metaTileEntity.multi.MTEDataBank;
@@ -2289,13 +2292,17 @@ public class MachineLoader implements Runnable {
 
         Pipe_BEC_Block.set(new MTEPipeBECBlock(BoseEinsteinCondensatePipeBlock.ID, "pipe.bec.block").getStackForm(1L));
 
-        Hatch_BEC_Connector.set(new MTEHatchBEC(BoseEinsteinCondensateHatch.ID, "hatch.bec", 10).getStackForm(1L));
+        Hatch_BEC_Connector
+            .set(new MTEHatchBEC(BoseEinsteinCondensateHatch.ID, "hatch.bec", VoltageIndex.UIV).getStackForm(1L));
         Hatch_BEC_Nanites
             .set(new MTEHatchNaniteDetector(HatchNaniteDetector.ID, "hatch.nanite-detector").getStackForm(1L));
         Hatch_BEC_IOController
             .set(new MTEHatchIONodeController(HatchIOController.ID, "hatch.io-node-controller").getStackForm(1L));
         Hatch_BEC_CondensateDetector.set(
             new MTEHatchCondensateDetector(HatchCondensateDetector.ID, "hatch.condensate-detector").getStackForm(1L));
+        Hatch_LineOfSight_Connector.set(
+            new MTEHatchLoS(LineOfSightConnectorHatch.ID, "hatch.line-of-sight-connector", VoltageIndex.UIV)
+                .getStackForm(1));
 
         Machine_Multi_BECGenerator
             .set(new MTEBECGenerator(BoseEinsteinCondensateGenerator.ID, "multi.bec.generator").getStackForm(1L));

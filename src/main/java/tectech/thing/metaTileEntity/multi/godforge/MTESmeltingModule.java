@@ -15,11 +15,11 @@ import java.util.Collection;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 
 import org.jetbrains.annotations.NotNull;
 
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.RecipeMap;
@@ -169,41 +169,37 @@ public class MTESmeltingModule extends MTEBaseModule {
     public String[] getInfoData() {
         ArrayList<String> str = new ArrayList<>();
         str.add(
-            StatCollector.translateToLocalFormatted(
+            IGregTechDeviceInformation.encode(
                 "GT5U.infodata.progress",
                 GREEN + formatNumber(mProgresstime / 20) + RESET,
                 YELLOW + formatNumber(mMaxProgresstime / 20) + RESET));
         str.add(
-            StatCollector.translateToLocalFormatted(
+            IGregTechDeviceInformation.encode(
                 "tt.infodata.multi.currently_using",
                 RED + (getBaseMetaTileEntity().isActive() ? formatNumber(EUt) : "0") + RESET));
         str.add(
-            YELLOW + StatCollector.translateToLocalFormatted(
-                "tt.infodata.multi.max_parallel",
-                RESET + formatNumber(getActualParallel())));
+            IGregTechDeviceInformation
+                .encode("tt.infodata.multi.max_parallel", YELLOW + formatNumber(getActualParallel()) + RESET));
         str.add(
-            YELLOW + StatCollector.translateToLocalFormatted(
+            IGregTechDeviceInformation.encode(
                 "GT5U.infodata.parallel.current",
-                RESET + (getBaseMetaTileEntity().isActive() ? formatNumber(currentParallel) : "0")));
+                YELLOW + (getBaseMetaTileEntity().isActive() ? formatNumber(currentParallel) : "0") + RESET));
         str.add(
-            YELLOW + StatCollector
-                .translateToLocalFormatted("tt.infodata.multi.capacity.heat", RESET + formatNumber(getHeat())));
+            IGregTechDeviceInformation
+                .encode("tt.infodata.multi.capacity.heat", YELLOW + formatNumber(getHeat()) + RESET));
         str.add(
-            YELLOW + StatCollector.translateToLocalFormatted(
-                "tt.infodata.multi.capacity.heat.effective",
-                RESET + formatNumber(getHeatForOC())));
+            IGregTechDeviceInformation
+                .encode("tt.infodata.multi.capacity.heat.effective", YELLOW + formatNumber(getHeatForOC()) + RESET));
         str.add(
-            YELLOW + StatCollector.translateToLocalFormatted(
-                "tt.infodata.multi.multiplier.recipe_time",
-                RESET + formatNumber(getSpeedBonus())));
+            IGregTechDeviceInformation
+                .encode("tt.infodata.multi.multiplier.recipe_time", YELLOW + formatNumber(getSpeedBonus()) + RESET));
         str.add(
-            YELLOW + StatCollector.translateToLocalFormatted(
-                "tt.infodata.multi.multiplier.energy",
-                RESET + formatNumber(getEnergyDiscount())));
+            IGregTechDeviceInformation
+                .encode("tt.infodata.multi.multiplier.energy", YELLOW + formatNumber(getEnergyDiscount()) + RESET));
         str.add(
-            YELLOW + StatCollector.translateToLocalFormatted(
+            IGregTechDeviceInformation.encode(
                 "tt.infodata.multi.divisor.recipe_time.non_perfect_oc",
-                RESET + formatNumber(getOverclockTimeFactor())));
+                YELLOW + formatNumber(getOverclockTimeFactor()) + RESET));
         return str.toArray(new String[0]);
     }
 
@@ -219,21 +215,18 @@ public class MTESmeltingModule extends MTEBaseModule {
             .addInfo("thermal processing, namely smelting materials identically to a furnace or blast furnace")
             .addInfo("The desired method of processing can be selected in the gui")
             .addInfo("This module is specialized towards speed and high heat levels")
-            .beginStructureBlock(7, 7, 13, false)
+            .beginStructureBlock(13, 7, 7, false)
             .addController("Front center")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "20"
-                    + EnumChatFormatting.GRAY
-                    + " Singularity Reinforced Stellar Shielding Casing")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "20"
-                    + EnumChatFormatting.GRAY
-                    + " Boundless Gravitationally Severed Structure Casing")
-            .addStructureInfo(EnumChatFormatting.GOLD + "5" + EnumChatFormatting.GRAY + " Hypogen Coil Block")
-            .addStructureInfo(
-                EnumChatFormatting.GOLD + "5" + EnumChatFormatting.GRAY + " Celestial Matter Guidance Casing")
-            .addStructureInfo(EnumChatFormatting.GOLD + "1" + EnumChatFormatting.GRAY + " Stellar Energy Siphon Casing")
-            .toolTipFinisher(EnumChatFormatting.AQUA, 74);
+            .addCasing("0-20", "Singularity Reinforced Stellar Shielding Casing", false)
+            .addCasing("20", "Boundless Gravitationally Severed Structure Casing", false)
+            .addCasing("5", "Celestial Matter Guidance Casing", false)
+            .addCasing("5", "Hypogen Coil Block", false)
+            .addCasing("1", "Stellar Energy Siphon Casing", false)
+            .addInputBus("0+", "Any front shielding casing", 1)
+            .addInputHatch("0+", "Any front shielding casing", 1)
+            .addOutputBus("0+", "Any front shielding casing", 1)
+            .addOutputHatch("0+", "Any front shielding casing", 1)
+            .toolTipFinisher();
         return tt;
     }
 

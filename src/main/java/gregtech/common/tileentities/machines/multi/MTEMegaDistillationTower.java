@@ -28,6 +28,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -44,8 +45,8 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHatchElement;
+import gregtech.api.interfaces.IOutputHatch;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.fluid.IFluidStore;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -54,7 +55,6 @@ import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBas
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
@@ -62,7 +62,6 @@ import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.misc.GTStructureChannels;
-import gregtech.common.tileentities.machines.outputme.MTEHatchOutputME;
 
 public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTEMegaDistillationTower>
     implements ISurvivalConstructable, ICasingTextureProvider {
@@ -184,14 +183,14 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
                 '5',
                 buildHatchAdder(MTEMegaDistillationTower.class).atLeast(topLayeredOutputHatch)
                     .casingIndex(Casings.BronzePipeCasing.textureId)
-                    .hint(5)
+                    .hint(4)
                     .buildAndChain(Casings.BronzePipeCasing.asElement()))
             // top slice hatch
             .addElement(
                 '6',
                 buildHatchAdder(MTEMegaDistillationTower.class).atLeast(finalLayeredOutputHatch)
                     .casingIndex(Casings.BronzePipeCasing.textureId)
-                    .hint(6)
+                    .hint(4)
                     .buildAndChain(Casings.BronzePipeCasing.asElement()))
             .build();
     }
@@ -271,10 +270,9 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
         }
 
         checkCasingMin(errors, casingAmount, 150);
-        checkOneMaintenanceHatch(errors);
         checkHasAnyEnergy(errors);
+        checkOneMaintenanceHatch(errors);
         checkHasInputHatch(errors);
-
     }
 
     @Override
@@ -418,43 +416,24 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
     }
 
     @Override
-    public boolean canDumpFluidToME() {
-
-        // All fluids can be dumped to ME only if each layer contains a ME Output Hatch.
-        for (List<MTEHatchOutput> tLayerOutputHatches : this.outputHatchesPerLayer) {
-
-            boolean foundMEHatch = false;
-
-            for (IFluidStore tHatch : tLayerOutputHatches) {
-                if (tHatch instanceof MTEHatchOutputME tMEHatch) {
-                    if (tMEHatch.canAcceptFluid()) {
-                        foundMEHatch = true;
-                        break;
-                    }
-                }
-            }
-
-            // Exit if we didn't find a valid hatch on this layer.
-            if (!foundMEHatch) {
-                return false;
-            }
-        }
-
-        return true;
+    public boolean canDumpFluidToME(List<GTUtility.FluidId> outputs) {
+        return canDumpFluidToMEByLayer(outputs, outputHatchesPerLayer);
     }
 
     @Override
-    protected void addFluidOutputs(FluidStack[] outputFluids) {
+    protected boolean addFluidOutputs(FluidStack[] outputFluids) {
+        boolean succeed = true;
         for (int i = 0; i < outputFluids.length && i < this.outputHatchesPerLayer.size(); i++) {
-            FluidStack tStack = outputFluids[i].copy();
-            if (!dumpFluid(this.outputHatchesPerLayer.get(i), tStack, true))
-                dumpFluid(this.outputHatchesPerLayer.get(i), tStack, false);
+            FluidStack stack = outputFluids[i].copy();
+            addOutputPartial(stack, outputHatchesPerLayer.get(i));
+            if (stack.amount > 0) succeed = false;
         }
+        return succeed;
     }
 
     @Override
-    public List<? extends IFluidStore> getFluidOutputSlots(FluidStack[] toOutput) {
-        return this.getFluidOutputSlotsByLayer(toOutput, this.outputHatchesPerLayer);
+    public List<IOutputHatch> getOutputHatches(FluidStack[] toOutput) {
+        return this.getOutputHatchesByLayers(toOutput, this.outputHatchesPerLayer);
     }
 
     @Override
@@ -572,50 +551,53 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
             .addInfo("Has up to 5 middle slices and 1 top slice, the amount of middle slices is the 'Tower Height'")
             .addInfo("Each middle slice adds 2 output hatches, the top slice adds one output hatch")
             .addSeparator()
-            .addInfo("Distillery Mode")
+            .addInfo(EnumChatFormatting.WHITE + "Distillery Mode")
+            .addInfo("Outputs only one fluid in the first hatch")
             .addInfo(
                 TooltipHelper.parallelText(Configuration.Multiblocks.megaMachinesMax + " * (1 + Tower Height/2)")
                     + " Parallels")
             .addStaticSpeedInfo(DISTILLERY_SPEED)
             .addStaticEuEffInfo(DISTILLERY_EU_EFFICIENCY)
-            .addInfo("Fluids output to the first hatch only")
             .addSeparator()
-            .addInfo("Distillation Tower Mode")
+            .addInfo(EnumChatFormatting.WHITE + "Distillation Tower Mode")
+            .addInfo("Fluids are outputted one per layer based on the slot number in NEI")
+            .addInfo("Increase the height to output more fluid types")
             .addStaticParallelInfo(Configuration.Multiblocks.megaMachinesMax)
             .addStaticSpeedInfo(TOWER_SPEED)
             .addStaticEuEffInfo(TOWER_EU_EFFICIENCY)
-            .addInfo("Fluids output to their corresponding layer only")
             .addSeparator()
-            .addTecTechHatchInfo()
+            .addSupportAny()
             .addUnlimitedTierSkips()
-            .addSeparator()
             .addInfo(EnumChatFormatting.GOLD + "Big Oil will be pleased with this!")
-            .beginVariableStructureBlock(15, 15, 30, 54, 9, 9, true)
-            .addController("Front off-center, 3rd Layer")
-            .addStructureInfo(EnumChatFormatting.BLUE + "Base Structure. 1 Middle Slice:")
-            .addCasingInfoMin("Naquadah Reinforced Distillation Machine Casing", 100, false)
-            .addCasingInfoExactly("Naquadah Sheetmetal", 179, false)
-            .addCasingInfoExactly("Clean Stainless Steel Machine Casing", 360, false)
-            .addCasingInfoExactly("Stainless Steel Framebox", 99, false)
-            .addCasingInfoExactly("Bronze Pipe Casing", 84, false)
-            .addCasingInfoExactly("Strong Bronze Machine Casing", 215, false)
-            .addCasingInfoExactly("Steel Pipe Casing", 44, false)
-            .addCasingInfoExactly("Solid Steel Machine Casing", 41, false)
-            .addStructureInfo(EnumChatFormatting.BLUE + "Additional Middle Slices:")
-            .addCasingInfoExactly("Naquadah Reinforced Distillation Machine Casing", 16, false)
-            .addCasingInfoExactly("Naquadah Sheetmetal", 32, false)
-            .addCasingInfoExactly("Clean Stainless Steel Machine Casing", 48, false)
-            .addCasingInfoExactly("Stainless Steel Framebox", 27, false)
-            .addCasingInfoExactly("Bronze Pipe Casing", 16, false)
-            .addCasingInfoExactly("Strong Bronze Machine Casing", 57, false)
-            .addCasingInfoExactly("Steel Pipe Casing", 6, false)
-            .addInputBus("Any Naquadah Distillation Casing in the first 5 layers", 1)
-            .addEnergyHatch("Any Naquadah Distillation Casing in the first 5 layers", 1)
-            .addMaintenanceHatch("Any Naquadah Distillation Casing in the first 5 layers", 1)
-            .addOutputBus("Bottom Slice, Steel Pipe Casing, 8th layer, furthest right", 2)
-            .addInputHatch("Bottom Slice, Bronze Pipe Casing, 8th layer, furthest left", 3)
-            .addOutputHatch("Middle Slices & Top Slice, Bronze Pipe Casing, furthest right", 4, 5, 6)
-            .addSubChannelUsage(GTStructureChannels.STRUCTURE_HEIGHT)
+            .beginVariableStructureBlock(9, 9, 15, 15, 30, 54, true)
+            .addController("Front center, 3rd Layer")
+            .addEnergyHatch("1+", "Any base reinforced distillation casing", 1)
+            .addMaintenanceHatch("1+", "Any base reinforced distillation casing", 1)
+            .addInputBus("0+", "Any base reinforced distillation casing", 1)
+            .addInputHatch("1+", "Bronze pipe casing on base structure", 3)
+            .addOutputBus("0+", "Steel pipe casing on base structure", 2)
+            .addOutputHatch("3-11", "Two per middle layer, one on top layer", 4)
+            .addStructureInfo("")
+            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Base"))
+            .addCasing("361", "Clean Stainless Steel Machine Casing", false)
+            .addCasing("215", "Strong Bronze Machine Casing", false)
+            .addCasing("179", "Naquadah Sheetmetal", false)
+            .addCasing("150-165", "Naquadah Reinforced Distillation Casing", false)
+            .addCasing("99", "Stainless Steel Frame Box", false)
+            .addCasing("80", "Bronze Pipe Casing", false)
+            .addCasing("43-44", "Steel Pipe Casing", false)
+            .addCasing("41", "Solid Steel Machine Casing", false)
+            .addStructureInfo("")
+            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Layer"))
+            .addCasing("48", "Clean Stainless Steel Machine Casing", false)
+            .addCasing("57", "Strong Bronze Machine Casing", false)
+            .addCasing("32", "Naquadah Sheetmetal", false)
+            .addCasing("16", "Naquadah Reinforced Distillation Casing", false)
+            .addCasing("27", "Stainless Steel Frame Box", false)
+            .addCasing("14", "Bronze Pipe Casing", false)
+            .addCasing("6", "Steel Pipe Casing", false)
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.STRUCTURE_HEIGHT)
             .addStructureAuthors(EnumChatFormatting.GOLD + "Mallady")
             .toolTipFinisher();
         return tt;
@@ -624,27 +606,15 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
         int aColorIndex, boolean aActive, boolean aRedstone) {
-        if (side == facing) {
-            if (aActive) return new ITexture[] { getCasingTexture(), TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_MEGA_DISTILLATION_TOWER_ACTIVE)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_MEGA_DISTILLATION_TOWER_ACTIVE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { getCasingTexture(), TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_MEGA_DISTILLATION_TOWER)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_MEGA_DISTILLATION_TOWER_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-        }
-        return new ITexture[] { getCasingTexture() };
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            facing,
+            aActive,
+            OVERLAY_FRONT_MEGA_DISTILLATION_TOWER,
+            OVERLAY_FRONT_MEGA_DISTILLATION_TOWER_GLOW,
+            OVERLAY_FRONT_MEGA_DISTILLATION_TOWER_ACTIVE,
+            OVERLAY_FRONT_MEGA_DISTILLATION_TOWER_ACTIVE_GLOW);
     }
 
     @Override

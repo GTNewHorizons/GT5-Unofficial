@@ -40,25 +40,24 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
-import gregtech.api.enums.VoltageIndex;
+import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.recipe.RecipeMap;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.ErrorType;
 import gregtech.api.structure.error.StructureError;
-import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
 
 public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBase<MTEElectricImplosionCompressor>
-    implements ISurvivalConstructable {
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     private int pistonTier = 0;
     private int casingAmount;
@@ -137,27 +136,23 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
             .addInfo(createParallelText(EnumChatFormatting.DARK_GRAY, "Transcendent Metal", 16))
             .addInfo(createParallelText(EnumChatFormatting.LIGHT_PURPLE, "Spacetime", 64))
             .addInfo(createParallelText(EnumChatFormatting.DARK_AQUA, "Universium", 256))
-            .addInfo("Energy Hatch Tier is limited by Glass Tier")
-            .addInfo(
-                GTUtility.getColoredTierNameFromTier((byte) 12) + EnumChatFormatting.GRAY
-                    + "-glass unlocks all above energy tiers")
             .addMaxTierSkips(1)
-            .addTecTechHatchInfo()
-            .beginStructureBlock(15, 7, 7, false)
-            .addController("Front bottom center")
-            .addCasingInfoMin("Naquadah Reinforced Block", 230, false)
-            .addCasingInfoExactly("Naquadah Frame Box", 2, false)
-            .addCasingInfoExactly("PTFE Pipe Casing", 20, false)
-            .addCasingInfoExactly("Any Tiered Glass", 22, true)
-            .addCasingInfoExactly("Robust Tungstensteel Machine Casing", 36, false)
-            .addCasingInfoExactly("Containment Block", 24, true)
-            .addMaintenanceHatch("Any Naquadah Reinforced Block", 1)
-            .addInputBus("Any Naquadah Reinforced Block", 1)
-            .addInputHatch("Any Naquadah Reinforced Block", 1)
-            .addOutputBus("Any Naquadah Reinforced Block", 1)
-            .addEnergyHatch("Any Naquadah Reinforced Block", 1)
-            .addSubChannelUsage(GTStructureChannels.EIC_PISTON)
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .addSupportAny()
+            .beginStructureBlock(7, 15, 7, true)
+            .addController("Front bottom center, 2nd layer")
+            .addCasing("230-247", "Naquadah Reinforced Block", false)
+            .addCasing("36", "Robust Tungstensteel Machine Casing", false)
+            .addCasing("24", "Containment Block", true)
+            .addCasing("22", "Any Tiered Glass", true)
+            .addCasing("10", "PTFE Pipe Casing", false)
+            .addCasing("2", "Naquadah Frame Box", false)
+            .addEnergyHatch("1+", "Any reinforced block", 1)
+            .addMaintenanceHatch("1", "Any reinforced block", 1)
+            .addInputAny("1+", "Any reinforced block", 1)
+            .addOutputAny("1+", "Any reinforced block", 1)
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.EIC_PISTON)
+            .addSubChannel(GTStructureChannels.BOROGLASS)
             .addStructureAuthors(EnumChatFormatting.GOLD + "Pix3lated")
             .toolTipFinisher();
         return tt;
@@ -237,46 +232,34 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
 
         List<MTEHatch> energyHatches = getExoticAndNormalEnergyHatchList();
         for (MTEHatch hatch : energyHatches) {
-            if (glassTier < VoltageIndex.UMV && hatch.mTier > glassTier) {
-                errors.add(StructureErrorRegistry.ENERGY_TIER_EXCEED_GLASS);
-                break;
-            }
             mMaxHatchTier = Math.max(mMaxHatchTier, hatch.mTier);
         }
+        checkCasingMin(errors, casingAmount, 230);
         if (energyHatches.isEmpty()) {
             errors.add(StructureErrors.hatchCount(ErrorType.TOO_FEW, Energy, 0, 1));
         }
-        checkCasingMin(errors, casingAmount, 230);
+        checkHasMaintenanceHatch(errors);
         checkHasAnyInput(errors);
         checkHasAnyOutput(errors);
-        checkHasMaintenanceHatch(errors);
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
-        int aColorIndex, boolean aActive, boolean aRedstone) {
-        if (side == facing) {
-            if (aActive) return new ITexture[] { Casings.NaquadahReinforcedBlock.getCasingTexture(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_IMPLOSION_COMPRESSOR_ACTIVE)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_IMPLOSION_COMPRESSOR_ACTIVE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { Casings.NaquadahReinforcedBlock.getCasingTexture(), TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_IMPLOSION_COMPRESSOR)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_IMPLOSION_COMPRESSOR_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-        }
-        return new ITexture[] { Casings.NaquadahReinforcedBlock.getCasingTexture() };
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+        int colorIndex, boolean aActive, boolean redstoneLevel) {
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            OVERLAY_FRONT_IMPLOSION_COMPRESSOR,
+            OVERLAY_FRONT_IMPLOSION_COMPRESSOR_GLOW,
+            OVERLAY_FRONT_IMPLOSION_COMPRESSOR_ACTIVE,
+            OVERLAY_FRONT_IMPLOSION_COMPRESSOR_ACTIVE_GLOW);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Casings.NaquadahReinforcedBlock.getCasingTexture();
     }
 
     @Override

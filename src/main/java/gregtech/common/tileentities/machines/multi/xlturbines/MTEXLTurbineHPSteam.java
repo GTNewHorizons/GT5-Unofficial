@@ -36,11 +36,6 @@ public class MTEXLTurbineHPSteam extends MTEXLTurbineBase {
     }
 
     @Override
-    public boolean requiresOutputHatch() {
-        return true;
-    }
-
-    @Override
     protected Casings getCasing() {
         return Casings.ReinforcedHPSteamTurbineCasing;
     }
@@ -59,27 +54,28 @@ public class MTEXLTurbineHPSteam extends MTEXLTurbineBase {
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Steam Turbine, XLST-HP")
-            .addInfo("Runs as fast as 16 Large Turbines of the same type")
-            .addInfo("Right-click with screwdriver to enable loose fit")
-            .addInfo("Optimal flow will increase or decrease depending on fitting")
+            .addInfo("Same throughput as 16 LST-HP with only 12 turbines")
+            .addInfo("Generates power from regular or dense Superheated (SH) Steam based on the turbine and fitting")
+            .addInfo("Outputs 1L of Steam for every 1L of Superheated Steam")
+            .addInfo("Use a screwdriver to adjust the fitting of the turbines")
             .addInfo("Loose fit increases flow in exchange for efficiency")
             .addInfo("Dense types of steam are so energy packed, they only require 1/1000th of the original flow")
-            .addTecTechHatchInfo()
-            .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(9, 9, 29, false)
+            .addSupportAny()
+            .beginStructureBlock(29, 9, 9, true)
             .addController("Front center")
-            .addCasingInfoMin("Reinforced HP Steam Turbine Casing", 430, false)
-            .addCasingInfoExactly("Titanium Pipe Casing", 100, false)
-            .addCasingInfoExactly("Any Tiered Glass", 36, false)
-            .addCasingInfoExactly("Titanium Frame Box", 34, false)
-            .addCasingInfoExactly("MV Solenoid Superconductor Coil", 20, false)
-            .addCasingInfoExactly("Turbine Shaft", 16, false)
-            .addInputBus("Any Turbine Casing", 1)
-            .addInputHatch("Any Turbine Casing (Min 1)", 1)
-            .addOutputHatch("Any Turbine Casing (Min 1)", 1)
-            .addDynamoHatch("Any Turbine Casing (Min 1)", 1)
-            .addMaintenanceHatch("Any Turbine Casing (Min 1)", 1)
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .addCasing(minCasingAmount() + "-440", "Reinforced HP Steam Turbine Casing", false)
+            .addCasing("100", "Titanium Pipe Casing", false)
+            .addCasing("36", "Any Tiered Glass", false)
+            .addCasing("34", "Titanium Frame Box", false)
+            .addCasing("20", "MV Solenoid Superconductor Coil", false)
+            .addCasing("16", "Turbine Shaft", false)
+            .addDynamoHatch("1+", "Any turbine casing", 1)
+            .addMaintenanceHatch("1", "Any turbine casing", 1)
+            .addInputBus("0+", "Any turbine casing", 1)
+            .addInputHatch("1+", "Any turbine casing", 1)
+            .addOutputHatch("1+", "Any turbine casing", 1)
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.BOROGLASS)
             .addStructureAuthors(EnumChatFormatting.GOLD + "VorTex")
             .toolTipFinisher();
         return tt;
@@ -152,9 +148,9 @@ public class MTEXLTurbineHPSteam extends MTEXLTurbineBase {
         if (totalFlow <= 0) return 0;
         tEU = totalFlow;
         if (isUsingDenseSteam) {
-            addOutput(Materials.DenseSteam.getGas((long) steamFlowForNextSteam));
+            addOutputPartial(Materials.DenseSteam.getGas((long) steamFlowForNextSteam));
         } else {
-            addOutput(Materials.Steam.getGas(totalFlow));
+            addOutputPartial(Materials.Steam.getGas(totalFlow));
         }
         if (totalFlow != realOptFlow) {
             float efficiency = 1.0f - Math.abs((totalFlow - (float) realOptFlow) / (float) realOptFlow);

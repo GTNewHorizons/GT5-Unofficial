@@ -155,11 +155,6 @@ public class MTEXLTurbinePlasma extends MTEXLTurbineBase {
     }
 
     @Override
-    public boolean requiresOutputHatch() {
-        return true;
-    }
-
-    @Override
     protected Casings getCasing() {
         return Casings.ReinforcedPlasmaTurbineCasing;
     }
@@ -178,29 +173,30 @@ public class MTEXLTurbinePlasma extends MTEXLTurbineBase {
     protected MultiblockTooltipBuilder createTooltip() {
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType("Plasma Turbine, XLPT")
-            .addInfo("Runs as fast as 16 Large Turbines of the same type")
-            .addInfo("Right-click with screwdriver to enable loose fit")
-            .addInfo("Optimal flow will increase or decrease depending on fitting")
+            .addInfo("Same throughput as 16 LPT with only 12 turbines")
+            .addInfo("Generates power from Plasma based on the turbine and fitting")
+            .addInfo("Outputs 1L of fluid for every 1L of Plasma")
+            .addInfo("Use a screwdriver to adjust the fitting of the turbines")
             .addInfo("Loose fit increases flow in exchange for efficiency")
             .addInfo("Plasma fuel efficiency is lower for high tier turbines when using low-grade plasmas")
             .addInfo("Efficiency = ((FuelValue / 200,000)^2) / (EU per Turbine)")
-            .addTecTechHatchInfo()
-            .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(9, 9, 26, false)
+            .addSupportAny()
+            .beginStructureBlock(26, 9, 9, true)
             .addController("Front center")
-            .addCasingInfoMin("Reinforced Plasma Turbine Casing", 330, false)
-            .addCasingInfoExactly("Naquadah Coil Block", 100, false)
-            .addCasingInfoExactly("Tungstensteel Pipe Casing", 72, false)
-            .addCasingInfoExactly("Any Tiered Glass", 36, false)
-            .addCasingInfoExactly("Tungstensteel Frame Box", 32, false)
-            .addCasingInfoExactly("Turbine Shaft", 16, false)
-            .addCasingInfoExactly("Steel Gear Box Casing", 7, false)
-            .addInputBus("Any Turbine Casing", 1)
-            .addInputHatch("Any Turbine Casing (Min 1)", 1)
-            .addOutputHatch("Any Turbine Casing (Min 1)", 1)
-            .addDynamoHatch("Any Turbine Casing (Min 1)", 1)
-            .addMaintenanceHatch("Any Turbine Casing (Min 1)", 1)
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .addCasing(minCasingAmount() + "-352", "Reinforced Plasma Turbine Casing", false)
+            .addCasing("100", "Naquadah Coil Block", false)
+            .addCasing("72", "Tungstensteel Pipe Casing", false)
+            .addCasing("36", "Any Tiered Glass", false)
+            .addCasing("32", "Tungstensteel Frame Box", false)
+            .addCasing("16", "Turbine Shaft", false)
+            .addCasing("7", "Steel Gear Box Casing", false)
+            .addDynamoHatch("1+", "Any turbine casing", 1)
+            .addMaintenanceHatch("1", "Any turbine casing", 1)
+            .addInputBus("0+", "Any turbine casing", 1)
+            .addInputHatch("1+", "Any turbine casing", 1)
+            .addOutputHatch("1+", "Any turbine casing", 1)
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.BOROGLASS)
             .addStructureAuthors(EnumChatFormatting.GOLD + "VorTex")
             .toolTipFinisher();
         return tt;
@@ -364,7 +360,7 @@ public class MTEXLTurbinePlasma extends MTEXLTurbineBase {
                     output = FluidRegistry.getFluidStack("molten." + outputName, totalFlow);
                 }
                 if (output != null) {
-                    addOutput(output);
+                    addOutputPartial(output);
                 }
             }
             if (totalFlow <= 0) return 0;

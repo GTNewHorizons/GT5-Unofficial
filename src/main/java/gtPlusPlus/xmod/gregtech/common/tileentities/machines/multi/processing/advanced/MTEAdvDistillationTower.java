@@ -28,6 +28,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -44,7 +45,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.interfaces.fluid.IFluidStore;
+import gregtech.api.interfaces.IOutputHatch;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
@@ -61,7 +62,6 @@ import gregtech.api.util.tooltip.TooltipHelper;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.pollution.PollutionConfig;
-import gregtech.common.tileentities.machines.outputme.MTEHatchOutputME;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GTPPMultiBlockBase;
 
 public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillationTower>
@@ -187,29 +187,33 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
         MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
         tt.addMachineType(getMachineType())
             .addInfo("Stats dictated by tower mode")
-            .addInfo("Right click the controller with screwdriver to change mode.")
+            .addInfo("Right click the controller with screwdriver to change mode")
             .addSeparator()
-            .addInfo("Distillery Mode")
+            .addInfo(EnumChatFormatting.WHITE + "Distillery Mode")
+            .addInfo("Outputs only one fluid and requires max height tower")
             .addInfo(TooltipHelper.parallelText("(2 * floor(Height / 3)) * Voltage Tier") + " Parallels")
             .addStaticSpeedInfo(2f)
             .addStaticEuEffInfo(0.15f)
             .addSeparator()
-            .addInfo("Distillation Tower Mode")
+            .addInfo(EnumChatFormatting.WHITE + "Distillation Tower Mode")
+            .addInfo("Fluids are outputted one per layer based on the slot number in NEI")
+            .addInfo("Increase the height to output more fluid types")
             .addStaticParallelInfo(DT_MODE_MAX_PARALLELS)
             .addStaticSpeedInfo(3.5f)
             .addStaticEuEffInfo(1f)
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginVariableStructureBlock(3, 3, 3, 12, 3, 3, true)
+            .beginVariableStructureBlock(3, 3, 3, 3, 3, 12, true)
             .addController("Front bottom center")
-            .addCasingInfoMin("Clean Stainless Steel Machine Casing", 7, false)
-            .addInputBus("Bottom Casing", 1)
-            .addOutputBus("Bottom Casing", 1)
-            .addInputHatch("Bottom Casing", 1)
-            .addMaintenanceHatch("Any Casing", 1)
-            .addEnergyHatch("Any Casing", 1)
-            .addOutputHatch("One per layer except bottom", 2)
-            .addMufflerHatch("Top Casing", 3)
-            .addSubChannelUsage(GTStructureChannels.STRUCTURE_HEIGHT)
+            .addCasing("7-82", "Clean Stainless Steel Machine Casing", false)
+            .addEnergyHatch("1+", "Any casing", 1, 2)
+            .addMaintenanceHatch("1", "Any casing", 1, 2)
+            .addMufflerHatch("1", "Any top casing", 2)
+            .addInputBus("0+", "Any bottom casing", 1)
+            .addInputHatch("1+", "Any bottom casing", 1)
+            .addOutputBus("0+", "Any bottom casing", 1)
+            .addOutputHatch("2-11", "One per layer, except the bottom layer", 2)
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.STRUCTURE_HEIGHT)
             .toolTipFinisher();
         return tt;
     }
@@ -288,10 +292,10 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
             errors.add(StructureErrorRegistry.TOO_SHORT_HEIGHT);
         }
         checkCasingMin(errors, mCasing, 7);
-        checkHatch(errors);
         checkHasEnergyHatch(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasMufflerHatch(errors);
         checkHasInputHatch(errors);
-        checkHasOutputHatch(errors);
         if (!errors.isEmpty()) return;
         // check success
     }
@@ -339,36 +343,40 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
     @Override
     public boolean addOutput(FluidStack aLiquid) {
         if (aLiquid == null) return false;
-        FluidStack copiedFluidStack = aLiquid.copy();
+        FluidStack stack = aLiquid.copy();
         for (List<MTEHatchOutput> hatches : mOutputHatchesByLayer) {
-            if (dumpFluid(hatches, copiedFluidStack, true)) return true;
-        }
-        for (List<MTEHatchOutput> hatches : mOutputHatchesByLayer) {
-            if (dumpFluid(hatches, copiedFluidStack, false)) return true;
+            addOutputPartial(stack, hatches);
+            if (stack.amount == 0) return true;
         }
         return false;
     }
 
     @Override
-    protected void addFluidOutputs(FluidStack[] outputFluids) {
+    protected boolean addFluidOutputs(FluidStack[] outputFluids) {
+        boolean succeed = true;
         if (machineMode == MACHINEMODE_TOWER) {
             // dt mode
             for (int i = 0; i < outputFluids.length && i < mOutputHatchesByLayer.size(); i++) {
                 FluidStack tStack = outputFluids[i].copy();
-                if (!dumpFluid(mOutputHatchesByLayer.get(i), tStack, true))
-                    dumpFluid(mOutputHatchesByLayer.get(i), tStack, false);
+                addOutputPartial(tStack, mOutputHatchesByLayer.get(i));
+                if (tStack.amount > 0) {
+                    succeed = false;
+                }
             }
         } else {
             // distillery mode
             for (FluidStack outputFluidStack : outputFluids) {
-                addOutput(outputFluidStack);
+                if (!addOutput(outputFluidStack)) {
+                    succeed = false;
+                }
             }
         }
+        return succeed;
     }
 
     @Override
-    public List<? extends IFluidStore> getFluidOutputSlots(FluidStack[] toOutput) {
-        return getFluidOutputSlotsByLayer(toOutput, mOutputHatchesByLayer);
+    public List<IOutputHatch> getOutputHatches(FluidStack[] toOutput) {
+        return getOutputHatchesByLayers(toOutput, mOutputHatchesByLayer);
     }
 
     @Override
@@ -420,12 +428,8 @@ public class MTEAdvDistillationTower extends GTPPMultiBlockBase<MTEAdvDistillati
     }
 
     @Override
-    public boolean canDumpFluidToME() {
-        // All fluids can be dumped to ME only if each layer contains a ME Output Hatch.
-        return this.mOutputHatchesByLayer.stream()
-            .allMatch(
-                tLayerOutputHatches -> tLayerOutputHatches.stream()
-                    .anyMatch(tHatch -> (tHatch instanceof MTEHatchOutputME tMEHatch) && (tMEHatch.canAcceptFluid())));
+    public boolean canDumpFluidToME(List<GTUtility.FluidId> outputs) {
+        return canDumpFluidToMEByLayer(outputs, mOutputHatchesByLayer);
     }
 
     @Override

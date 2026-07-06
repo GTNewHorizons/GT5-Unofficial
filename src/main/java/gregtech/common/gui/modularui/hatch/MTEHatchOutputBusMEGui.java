@@ -1,8 +1,5 @@
 package gregtech.common.gui.modularui.hatch;
 
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-
 import com.cleanroommc.modularui.drawable.GuiTextures;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
@@ -14,17 +11,13 @@ import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
 import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget;
-import com.glodblock.github.common.item.ItemFluidVoidStorageCell;
 
 import appeng.api.storage.data.IAEItemStack;
 import appeng.core.localization.GuiText;
-import appeng.items.storage.ItemBasicStorageCell;
-import appeng.items.storage.ItemVoidStorageCell;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.hatch.base.MTEHatchBaseGui;
 import gregtech.common.tileentities.machines.outputme.MTEHatchOutputBusME;
 import gregtech.common.tileentities.machines.outputme.base.MTEHatchOutputMEBase;
-import gregtech.common.tileentities.machines.outputme.filter.MEFilterItem;
 
 public class MTEHatchOutputBusMEGui extends MTEHatchBaseGui<MTEHatchOutputBusME> {
 
@@ -34,26 +27,18 @@ public class MTEHatchOutputBusMEGui extends MTEHatchBaseGui<MTEHatchOutputBusME>
 
     @Override
     protected ParentWidget<?> createContentSection(ModularPanel panel, PanelSyncManager syncManager) {
-        MTEHatchOutputMEBase<IAEItemStack, MEFilterItem, ItemStack> provider = machine.getProvider();
+        MTEHatchOutputMEBase<IAEItemStack> provider = machine.getProvider();
         IntSyncValue prioritySyncer = new IntSyncValue(provider::getPriority, provider::setPriority).allowC2S();
         BooleanSyncValue isCaching = new BooleanSyncValue(provider::getCacheMode, provider::setCacheMode).allowC2S();
         BooleanSyncValue isChecking = new BooleanSyncValue(provider::getCheckMode, provider::setCheckMode).allowC2S();
 
         Flow mainRow = Flow.row()
             .coverChildren()
-            .verticalCenter();
+            .verticalCenter()
+            .collapseDisabledChild();
 
         // drive slot
-        mainRow.child(
-            new ItemSlot().slot(
-                new ModularSlot(machine.inventoryHandler, 0).singletonSlotGroup()
-                    .filter(this::isItemCell)));
-
-        // check mode toggle
-        mainRow.child(
-            new ToggleButton().value(isChecking)
-                .overlay(GuiTextures.SEARCH)
-                .addTooltipLine(GTUtility.translate("GT5U.hatch.outputme.toggle_checking")));
+        mainRow.child(new ItemSlot().slot(new ModularSlot(machine.inventoryHandler, 0).singletonSlotGroup()));
 
         // caching mode toggle
         mainRow.child(
@@ -72,13 +57,14 @@ public class MTEHatchOutputBusMEGui extends MTEHatchBaseGui<MTEHatchOutputBusME>
                 .setEnabledIf(t -> isCaching.getBoolValue())
                 .marginLeft(5));
 
-        return super.createContentSection(panel, syncManager).child(mainRow);
-    }
+        // check mode toggle
+        mainRow.child(
+            new ToggleButton().value(isChecking)
+                .overlay(GuiTextures.SEARCH)
+                .addTooltipLine(GTUtility.translate("GT5U.hatch.outputme.toggle_checking"))
+                .setEnabledIf(t -> isCaching.getBoolValue()));
 
-    private boolean isItemCell(ItemStack itemStack) {
-        Item item = itemStack.getItem();
-        return item instanceof ItemBasicStorageCell
-            || item instanceof ItemVoidStorageCell && !(item instanceof ItemFluidVoidStorageCell);
+        return super.createContentSection(panel, syncManager).child(mainRow);
     }
 
     @Override

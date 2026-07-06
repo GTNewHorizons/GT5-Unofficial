@@ -79,7 +79,7 @@ public class MTEAdvHeatExchanger extends GTPPMultiBlockBase<MTEAdvHeatExchanger>
             'C',
             ofChain(
                 buildHatchAdder(MTEAdvHeatExchanger.class).atLeast(AdvHEHatches.ColdOutputHatch)
-                    .hint(2)
+                    .hint(3)
                     .casingIndex(CASING_INDEX)
                     .build(),
                 onElementPass(MTEAdvHeatExchanger::onCasingAdded, ofBlock(ModBlocks.blockSpecialMultiCasings, 14))))
@@ -87,7 +87,7 @@ public class MTEAdvHeatExchanger extends GTPPMultiBlockBase<MTEAdvHeatExchanger>
             'H',
             ofChain(
                 buildHatchAdder(MTEAdvHeatExchanger.class).atLeast(AdvHEHatches.HotInputHatch)
-                    .hint(3)
+                    .hint(2)
                     .casingIndex(CASING_INDEX)
                     .build(),
                 onElementPass(MTEAdvHeatExchanger::onCasingAdded, ofBlock(ModBlocks.blockSpecialMultiCasings, 14))))
@@ -149,15 +149,14 @@ public class MTEAdvHeatExchanger extends GTPPMultiBlockBase<MTEAdvHeatExchanger>
             .addSeparator()
             .addInfo(GTUtility.translate("gt.multiblock.AdvHeatExchanger.throttle1"))
             .addInfo(GTUtility.translate("gt.multiblock.AdvHeatExchanger.throttle2"))
-            .beginStructureBlock(5, 9, 5, false)
+            .beginStructureBlock(5, 5, 9, false)
             .addController("Front center, 4th layer")
-            .addCasingInfoMin("Reinforced Heat Exchanger Casing", 90, false)
-            .addOtherStructurePart("Tungstensteel Pipe Casing", "Center 3x5x3 (45 blocks)")
-            .addMaintenanceHatch("Any Casing", 1)
-            .addInputHatch("Hot fluid, bottom center Casing", 2)
-            .addInputHatch("Distilled water, any bottom layer Casing", 1)
-            .addOutputHatch("Cold fluid, top center Casing", 3)
-            .addOutputHatch("Steam/SH Steam, any bottom layer Casing", 1)
+            .addCasing("90-96", "Reinforced Heat Exchanger Casing", false)
+            .addCasing("45", "Tungstensteel Pipe Casing", false)
+            .addCasing("16", "Talonite Frame Box", false)
+            .addMaintenanceHatch("1", "Any bottom edge casing", 1)
+            .addInputHatch("2+", "Any bottom center casing (hot fluid), any bottom edge casing (distilled water)", 1, 2)
+            .addOutputHatch("2+", "Any top center casing (cool fluid), any bottom edge casing (steam)", 1, 3)
             .toolTipFinisher();
         return tt;
     }
@@ -297,11 +296,11 @@ public class MTEAdvHeatExchanger extends GTPPMultiBlockBase<MTEAdvHeatExchanger>
                 if (depleteInput(distilledStack)) // Consume the distilled water
                 {
                     if (superheated) {
-                        addOutput(FluidRegistry.getFluidStack("ic2superheatedsteam", tGeneratedEU)); // Generate
-                                                                                                     // superheated
-                                                                                                     // steam
+                        addOutputPartial(FluidRegistry.getFluidStack("ic2superheatedsteam", tGeneratedEU)); // Generate
+                        // superheated
+                        // steam
                     } else {
-                        addOutput(Materials.Steam.getGas(tGeneratedEU)); // Generate regular steam
+                        addOutputPartial(Materials.Steam.getGas(tGeneratedEU)); // Generate regular steam
                     }
                 } else {
                     GTLog.writeExplosionLog(this, "had no more Distilled water!");

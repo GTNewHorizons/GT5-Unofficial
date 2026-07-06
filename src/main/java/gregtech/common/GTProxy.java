@@ -168,10 +168,12 @@ import gregtech.common.misc.GlobalEnergyWorldSavedData;
 import gregtech.common.misc.GlobalMetricsCoverDatabase;
 import gregtech.common.misc.WirelessChargerManager;
 import gregtech.common.misc.spaceprojects.SpaceProjectWorldSavedData;
+import gregtech.common.networkanalyzer.events.NetworkAnalyzerPlayerTracker;
 import gregtech.common.pollution.Pollution;
 import gregtech.common.powergoggles.PowerGogglesWorldSavedData;
 import gregtech.common.powergoggles.handlers.PowerGogglesEventHandler;
 import gregtech.common.recipes.CALImprintRecipe;
+import gregtech.common.recipes.MacerationStackConversionRecipe;
 import gregtech.common.tileentities.machines.multi.drone.MTEDroneCentre;
 import gregtech.common.worldgen.HEEIslandScanner;
 import gregtech.nei.GTNEIDefaultHandler;
@@ -548,7 +550,6 @@ public class GTProxy implements IFuelHandler {
     public boolean mSurvivalIntoAdventure = false;
     public boolean mNerfedWoodPlank = true;
     public boolean mChangeWoodenVanillaTools = true;
-    public boolean mHungerEffect = true;
     public boolean mIgnoreTcon = true;
     public boolean mAchievements = true;
     private boolean mOreDictActivated = false;
@@ -1081,6 +1082,7 @@ public class GTProxy implements IFuelHandler {
             .register(PowerGogglesEventHandler.getInstance());
         MinecraftForge.EVENT_BUS.register(PowerGogglesEventHandler.getInstance());
         MinecraftForge.EVENT_BUS.register(new OffhandToolFunctionalityHandler());
+        NetworkAnalyzerPlayerTracker.init();
         TOOL_MODE_SWITCH_KEYBIND = SyncedKeybind
             .createConfigurable("key.gt.tool_mode_switch", "Gregtech", Keyboard.KEY_PERIOD)
             .registerGlobalListener(MetaGeneratedTool::switchCurrentToolMode)
@@ -1196,6 +1198,7 @@ public class GTProxy implements IFuelHandler {
         // MUI2, but for the time being it stays here. -- miozune
         CoverRegistry.reloadCoverColorOverrides();
         CALImprintRecipe.register();
+        MacerationStackConversionRecipe.register();
     }
 
     public void onLoadComplete(FMLLoadCompleteEvent event) {}
@@ -2077,64 +2080,37 @@ public class GTProxy implements IFuelHandler {
     }
 
     @SubscribeEvent
-    public void onPlayerTickEventServer(TickEvent.PlayerTickEvent aEvent) {
-        if ((!aEvent.side.isServer()) || (aEvent.phase == TickEvent.Phase.END) || (aEvent.player.isDead)) {
+    public void onPlayerTickEventServer(TickEvent.PlayerTickEvent event) {
+        final EntityPlayer player = event.player;
+        if (!event.side.isServer() || event.phase == TickEvent.Phase.END
+            || player.isDead
+            || player.ticksExisted % 120 != 0) {
             return;
         }
 
-        final boolean tHungerEffect = (this.mHungerEffect) && (aEvent.player.ticksExisted % 2400 == 1200);
-
-        if (aEvent.player.ticksExisted % 120 != 0) {
-            return;
-        }
-
-        int tCount = 64;
-        final ItemStack[] mainInventory = aEvent.player.inventory.mainInventory;
-        for (ItemStack tStack : mainInventory) {
-            if (tStack == null) {
-                continue;
-            }
-            if (!aEvent.player.capabilities.isCreativeMode) {
-                GTUtility.applyRadioactivity(aEvent.player, GTUtility.getRadioactivityLevel(tStack), tStack.stackSize);
-                final float tHeat = GTUtility.getHeatDamageFromItem(tStack);
-                if (tHeat != 0.0F) {
-                    if (tHeat > 0.0F) {
-                        GTUtility.applyHeatDamageFromItem(aEvent.player, tHeat, tStack);
-                    } else {
-                        GTUtility.applyFrostDamage(aEvent.player, -tHeat);
-                    }
-                }
-            }
-            if (tHungerEffect) {
-                tCount += tStack.stackSize * 64 / Math.max(1, tStack.getMaxStackSize());
-            }
+        final ItemStack[] mainInventory = player.inventory.mainInventory;
+        for (ItemStack stack : mainInventory) {
+            applyItemEffects(player, stack);
             if (this.mInventoryUnification) {
-                GTOreDictUnificator.setStack(true, tStack);
+                GTOreDictUnificator.setStack(true, stack);
             }
+        }
+        final ItemStack[] armorInventory = player.inventory.armorInventory;
+        for (final ItemStack stack : armorInventory) {
+            applyItemEffects(player, stack);
+        }
+    }
 
+    private static void applyItemEffects(EntityPlayer player, ItemStack stack) {
+        if (stack == null || player.capabilities.isCreativeMode) {
+            return;
         }
-        final ItemStack[] armorInventory = aEvent.player.inventory.armorInventory;
-        for (final ItemStack tStack : armorInventory) {
-            if (tStack == null) {
-                continue;
-            }
-            if (!aEvent.player.capabilities.isCreativeMode) {
-                GTUtility.applyRadioactivity(aEvent.player, GTUtility.getRadioactivityLevel(tStack), tStack.stackSize);
-                final float tHeat = GTUtility.getHeatDamageFromItem(tStack);
-                if (tHeat != 0.0F) {
-                    if (tHeat > 0.0F) {
-                        GTUtility.applyHeatDamageFromItem(aEvent.player, tHeat, tStack);
-                    } else {
-                        GTUtility.applyFrostDamage(aEvent.player, -tHeat);
-                    }
-                }
-            }
-            if (tHungerEffect) {
-                tCount += 256;
-            }
-        }
-        if (tHungerEffect) {
-            aEvent.player.addExhaustion(Math.max(1.0F, tCount / 666.6F));
+        GTUtility.applyRadioactivity(player, GTUtility.getRadioactivityLevel(stack), stack.stackSize);
+        final float heat = GTUtility.getHeatDamageFromItem(stack);
+        if (heat > 0.0F) {
+            GTUtility.applyHeatDamageFromItem(player, heat, stack);
+        } else if (heat < 0.0F) {
+            GTUtility.applyFrostDamage(player, -heat);
         }
     }
 
@@ -2510,12 +2486,6 @@ public class GTProxy implements IFuelHandler {
                     aEvent);
             }
         }
-    }
-
-    @SubscribeEvent
-    public void onBlockEvent(BlockEvent event) {
-        if (event.block.getUnlocalizedName()
-            .equals("blockAlloyGlass")) GregTechAPI.causeMachineUpdate(event.world, event.x, event.y, event.z);
     }
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)

@@ -9,9 +9,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -19,6 +16,7 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModContainer;
@@ -27,6 +25,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInput;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.metatileentity.implementations.MTEHatchMultiInput;
@@ -72,7 +71,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
     @NotNull
     public FluidStack[] mFluidInputs, mFluidOutputs;
 
-    public FluidStack[][] mAltFluidInputs;
+    public @NotNull FluidStack @Nullable [] @Nullable [] mAltFluidInputs;
     /**
      * These arrays define the chance behavior for each respective input or output.
      * Values range from 1 to 10000 (10000 = 100%).
@@ -90,8 +89,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
      * - mFluidOutputChances -> Maps to mFluidOutputs
      * (Chance for each fluid output to be produced.)
      */
-    @Nullable
-    public int[] mInputChances, mOutputChances, mFluidInputChances, mFluidOutputChances;
+    public int @Nullable [] mInputChances, mOutputChances, mFluidInputChances, mFluidOutputChances;
     /**
      * An Item that needs to be inside the Special Slot, like for example the Copy Slot inside the Printer. This is only
      * useful for Fake Recipes in NEI, since findRecipe() and containsInput() don't give a shit about this Field. Lists
@@ -134,7 +132,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
     /**
      * Holds a set of metadata for this recipe.
      */
-    @Nonnull
+    @NotNull
     private final IRecipeMetadataStorage metadataStorage;
     /**
      * Category this recipe belongs to. Recipes belonging to recipemap are forced to have non-null category when added,
@@ -277,7 +275,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
                 case 0 -> {
                     RecipeMaps.dieselFuels.addRecipe(this);
                     RecipeMaps.largeBoilerFakeFuels.getBackend()
-                        .addDieselRecipe(this);
+                        .addDieselGasRecipe(this);
                 }
                 // Gas Turbine
                 case 1 -> RecipeMaps.gasTurbineFuels.addRecipe(this);
@@ -353,6 +351,18 @@ public class GTRecipe implements Comparable<GTRecipe> {
         if (mOutputChances == null) return 10000;
         if (aIndex < 0 || aIndex >= mOutputChances.length) return 10000;
         return mOutputChances[aIndex];
+    }
+
+    public ItemStack rollOutput(IGregTechTileEntity te, int aIndex) {
+        if (te == null) return null;
+        return rollOutput(te.getRandomNumber(10000), aIndex);
+    }
+
+    public ItemStack rollOutput(int rng, int aIndex) {
+        if (rng < getOutputChance(aIndex)) {
+            return getOutput(aIndex);
+        }
+        return null;
     }
 
     public FluidStack getRepresentativeFluidInput(int aIndex) {
@@ -810,7 +820,7 @@ public class GTRecipe implements Comparable<GTRecipe> {
         return key.cast(metadataStorage.getMetadataOrDefault(key, defaultValue));
     }
 
-    @Nonnull
+    @NotNull
     public IRecipeMetadataStorage getMetadataStorage() {
         return metadataStorage;
     }
@@ -1410,11 +1420,11 @@ public class GTRecipe implements Comparable<GTRecipe> {
 
     public static class GTRecipe_WithAlt extends GTRecipe {
 
-        public ItemStack[][] mOreDictAlt;
+        public @NotNull ItemStack @Nullable [] @Nullable [] mOreDictAlt;
         /**
          * OreDict IDs parallel to mOreDictAlt/mInputs; -1 means not an oredict slot. May be null for legacy recipes.
          */
-        public int[] mOreDictIds;
+        public int @Nullable [] mOreDictIds;
 
         /**
          * Only for {@link GTRecipeBuilder}.

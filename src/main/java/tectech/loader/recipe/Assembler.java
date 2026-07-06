@@ -47,7 +47,7 @@ public class Assembler implements Runnable {
 
         // Quantum Glass
         GTValues.RA.stdBuilder()
-            .itemInputs(CustomItemList.eM_Containment.get(1), GTModHandler.getIC2Item("reinforcedGlass", 1L))
+            .itemInputs(CustomItemList.eM_Containment.get(1), ItemList.ReinforcedGlass.get(1L))
             .itemOutputs(new ItemStack(BlockQuantumGlass.INSTANCE, 1))
             .fluidInputs(
                 BaseRecipeLoader.getOrDefault("Trinium", Materials.Osmium)
@@ -1182,7 +1182,7 @@ public class Assembler implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UHV, 2),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Neutronium, 2),
                 GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.ElectrumFlux, 4),
-                new ItemStack(bw_realglas, 4, 5))
+                new ItemStack(bw_realglas, 2, 6))
             .itemOutputs(CustomItemList.Machine_BuckConverter_UHV.get(1))
             .fluidInputs(Materials.Neutronium.getMolten(2 * INGOTS))
             .duration(5 * SECONDS)
@@ -1197,7 +1197,7 @@ public class Assembler implements Runnable {
                 GTOreDictUnificator
                     .get(OrePrefixes.plate, BaseRecipeLoader.getOrDefault("Bedrockium", Materials.Neutronium), 2),
                 GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.Bedrockium, 4),
-                new ItemStack(bw_realglas, 8, 5))
+                new ItemStack(bw_realglas, 2, 7))
             .itemOutputs(CustomItemList.Machine_BuckConverter_UEV.get(1))
             .fluidInputs(
                 BaseRecipeLoader.getOrDefault("Bedrockium", Materials.Neutronium)
@@ -1214,7 +1214,7 @@ public class Assembler implements Runnable {
                 GTOreDictUnificator
                     .get(OrePrefixes.plate, BaseRecipeLoader.getOrDefault("BlackPlutonium", Materials.Neutronium), 2),
                 GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.Draconium, 4),
-                new ItemStack(bw_realglas, 16, 5))
+                new ItemStack(bw_realglas, 2, 8))
             .itemOutputs(CustomItemList.Machine_BuckConverter_UIV.get(1))
             .fluidInputs(
                 BaseRecipeLoader.getOrDefault("BlackPlutonium", Materials.Neutronium)
@@ -2692,7 +2692,7 @@ public class Assembler implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 CustomItemList.DATApipe.get(1),
-                GTModHandler.getIC2Item("reinforcedGlass", 1L),
+                ItemList.ReinforcedGlass.get(1L),
                 GTOreDictUnificator.get(OrePrefixes.foil, Materials.Osmiridium, 2))
             .itemOutputs(CustomItemList.LASERpipe.get(1))
             .requiresCleanRoom()

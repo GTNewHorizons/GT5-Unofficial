@@ -72,6 +72,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
@@ -82,7 +83,6 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTRecipe;
@@ -100,7 +100,7 @@ import tectech.thing.block.BlockGodforgeGlass;
 import tectech.thing.casing.TTCasingsContainer;
 
 public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
-    implements ISurvivalConstructable, IMTERenderer, I3DGeometryRenderer {
+    implements ISurvivalConstructable, IMTERenderer, I3DGeometryRenderer, ICasingTextureProvider {
 
     private static final List<CoolingFluid> COOLING_FLUIDS = ImmutableList.of(
         new CoolingFluid(Materials.SuperCoolant, 1, 100),
@@ -423,42 +423,23 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
     }
 
     @Override
-    public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
-        ITexture[] rTexture;
-        if (side == aFacing) {
-            if (aActive) {
-                rTexture = new ITexture[] {
-                    Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasingsFoundry, 0)),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_EXOFOUNDRY_ACTIVE)
-                        .extFacing()
-                        .build(),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_EXOFOUNDRY_ACTIVE_GLOW)
-                        .extFacing()
-                        .glow()
-                        .build() };
-            } else {
-                rTexture = new ITexture[] {
-                    Textures.BlockIcons
-                        .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasingsFoundry, 0)),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_EXOFOUNDRY)
-                        .extFacing()
-                        .build(),
-                    TextureFactory.builder()
-                        .addIcon(OVERLAY_FRONT_EXOFOUNDRY_GLOW)
-                        .extFacing()
-                        .glow()
-                        .build() };
-            }
-        } else {
-            rTexture = new ITexture[] { Textures.BlockIcons
-                .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasingsFoundry, 0)) };
-        }
-        return rTexture;
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            OVERLAY_FRONT_EXOFOUNDRY,
+            OVERLAY_FRONT_EXOFOUNDRY_GLOW,
+            OVERLAY_FRONT_EXOFOUNDRY_ACTIVE,
+            OVERLAY_FRONT_EXOFOUNDRY_ACTIVE_GLOW);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Textures.BlockIcons
+            .getCasingTextureForId(GTUtility.getCasingTextureIndex(GregTechAPI.sBlockCasingsFoundry, 0));
     }
 
     @Override
@@ -507,62 +488,26 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
                     + EnumChatFormatting.GRAY
                     + " stats are shown in NEI and the Controller")
             .addInfo("Toggle Render with Screwdriver")
-            .addTecTechHatchInfo()
+            .addSupportAny()
             .addSeparator()
             .addInfo(EnumChatFormatting.RED + "Glorious Evolution!")
-            .beginStructureBlock(15, 55, 15, true)
+            .beginStructureBlock(15, 15, 55, true)
             .addController("Front center, 2nd layer")
-            .addCasingInfoMinColored(
-                "Primary Exo-Foundry Casing",
-                EnumChatFormatting.GRAY,
-                MIN_CASINGS,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored(
-                "Exo-Foundry Containment Glass",
-                EnumChatFormatting.GRAY,
-                548,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored(
-                "Inner Foundry Siphon Casing",
-                EnumChatFormatting.GRAY,
-                282,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored(
-                "Central Magnetic Chassis",
-                EnumChatFormatting.GRAY,
-                260,
-                EnumChatFormatting.GOLD,
-                true)
-            .addCasingInfoExactlyColored(
-                "Netherite Frame Box",
-                EnumChatFormatting.GRAY,
-                224,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored(
-                "Central Exo-Foundry Regulation Casing",
-                EnumChatFormatting.GRAY,
-                196,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored(
-                "Black Plutonium Item Pipe Casing",
-                EnumChatFormatting.GRAY,
-                173,
-                EnumChatFormatting.GOLD,
-                false)
-            .addInputBus("Any Foundry Casing", 1)
-            .addOutputBus("Any Foundry Casing", 1)
-            .addInputHatch("Any Foundry Casing", 1)
-            .addEnergyHatch("Any Foundry Casing", 1)
-            .addSubChannelUsage(GTStructureChannels.MAGNETIC_CHASSIS)
-            .addStructureInfoSeparator()
-            .addStructureInfo("Check NEI for Module structure costs");
-
-        tt.toolTipFinisher();
+            .addCasing("548", "Exo-Foundry Containment Glass", false)
+            .addCasing(MIN_CASINGS + "-485", "Primary Exo-Foundry Casing", false)
+            .addCasing("282", "Inner Exo-Foundry Siphon Casing", false)
+            .addCasing("260", "Magnetic Chassis", true)
+            .addCasing("224", "Netherite Frame Box", false)
+            .addCasing("196", "Central Exo-Foundry Regulation Casing", false)
+            .addCasing("173", "Black Plutonium Item Pipe Casing", false)
+            .addEnergyHatch("1+", "Any primary casing", 1)
+            .addInputBus("0+", "Any primary casing", 1)
+            .addInputHatch("1+", "Any primary casing", 1)
+            .addOutputBus("1+", "Any primary casing", 1)
+            .addStructureInfo("")
+            .addStructureFooter("Check NEI for module costs")
+            .addSubChannel(GTStructureChannels.MAGNETIC_CHASSIS)
+            .toolTipFinisher();
         return tt;
     }
 
@@ -643,17 +588,17 @@ public class MTEExoFoundry extends MTEExtendedPowerMultiBlockBase<MTEExoFoundry>
         casingAmount = 0;
         foundryData.tier = -1;
         coolantHatches.clear();
-        // limit hatch space to about 25 hatches without modules. T.D.S removes 20 for balance, and casters adds 36 by
+        // limit hatch space to about 25 hatches without modules. U.C removes 15 for balance, and casters adds 36 by
         // proxy.
         if (checkPiece(STRUCTURE_PIECE_MAIN, horizontalOffset, verticalOffset, depthOffset, errors)) {
             getBaseMetaTileEntity().issueTileUpdate(); // update for the tier variable
             foundryData.checkSolidifierModules(); // recalculate module flags with current tier
             checkModules(errors);
-            int requiredCasings = MIN_CASINGS + (foundryData.tdsPresent ? 20 : 0);
+            int requiredCasings = MIN_CASINGS + (foundryData.universalCollapserPresent ? 15 : 0);
             checkCasingMin(errors, casingAmount, requiredCasings);
+            checkHasAnyEnergy(errors);
             checkHasInputHatch(errors);
             checkHasOutputBus(errors);
-            checkHasAnyEnergy(errors);
         } else {
             getBaseMetaTileEntity().issueTileUpdate(); // update for the tier variable
         }

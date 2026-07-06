@@ -186,7 +186,7 @@ public class MachineStats {
         public int maxReplacementPercentage;
 
         @Config.Comment("List of other blocks allowed as a part of the cleanroom. Format: <block name> or <block name>:<meta>.")
-        @Config.DefaultStringList({ "BW_GlasBlocks", // All Bart glass (including HV tier)
+        @Config.DefaultStringList({ "BW_TieredGlass", "BW_ExtraGlass", // All Bart glass (including HV tier)
             "tile.openblocks.elevator", "tile.openblocks.elevator_rotating", // OpenBlocks elevators
             "tile.blockTravelAnchor", // EnderIO travel anchors
             "tile.blockCosmeticOpaque:2", // TC Warded glass (usually HV tier)

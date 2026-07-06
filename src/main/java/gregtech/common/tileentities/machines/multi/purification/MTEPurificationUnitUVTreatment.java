@@ -43,12 +43,12 @@ import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.GTStructureUtility;
@@ -164,27 +164,15 @@ public class MTEPurificationUnitUVTreatment extends MTEPurificationUnitBase<MTEP
     @Override
     public ITexture[] getTexture(IGregTechTileEntity baseMetaTileEntity, ForgeDirection side, ForgeDirection facing,
         int colorIndex, boolean active, boolean redstoneLevel) {
-        if (side == facing) {
-            if (active) return new ITexture[] { getCasingTexture(), TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { getCasingTexture(), TextureFactory.builder()
-                .addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_GLOW)
-                    .extFacing()
-                    .glow()
-                    .build() };
-        }
-        return new ITexture[] { getCasingTexture() };
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            facing,
+            active,
+            OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR,
+            OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_GLOW,
+            OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE,
+            OVERLAY_FRONT_LARGE_CHEMICAL_REACTOR_ACTIVE_GLOW);
     }
 
     @Override
@@ -272,45 +260,26 @@ public class MTEPurificationUnitUVTreatment extends MTEPurificationUnitBase<MTEP
                 EnumChatFormatting.AQUA + ""
                     + EnumChatFormatting.ITALIC
                     + "atoms themselves and pass through the walls of the tank, ensuring the water is perfectly electrically polar.")
-            .beginStructureBlock(13, 9, 9, true)
+            .beginStructureBlock(9, 13, 9, true)
             .addController("Front bottom center")
-            .addCasingInfoRangeColored(
-                "Naquadria-Reinforced Water Plant Casing",
-                EnumChatFormatting.GRAY,
-                147,
-                155,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored(
-                "Electron-Permeable Neutronium Coated Glass",
-                EnumChatFormatting.GRAY,
-                144,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored(
-                "High Energy Ultraviolet Emitter Casing",
-                EnumChatFormatting.GRAY,
-                29,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored(
-                "Stellar Alloy Frame Box",
-                EnumChatFormatting.GRAY,
-                56,
-                EnumChatFormatting.GOLD,
-                false)
-            .addOtherStructurePart(
-                StatCollector.translateToLocal("GT5U.tooltip.structure.input_hatch_output_hatch"),
-                EnumChatFormatting.GOLD + "1+",
-                1)
-            .addOtherStructurePart(
+            .addCasing("144-153", "Naquadria-Reinforced Water Plant Casing", false)
+            .addCasing("144", "Electron-Permeable Neutronium Coated Glass", false)
+            .addCasing("56", "Stellar Alloy Frame Box", false)
+            .addCasing("29", "High Energy Ultraviolet Emitter Casing", false)
+            .addMiscHatch(
+                "1",
                 StatCollector.translateToLocal("GT5U.tooltip.structure.lens_housing"),
-                EnumChatFormatting.GOLD + "1",
+                "Top center casing",
                 2)
-            .addOtherStructurePart(
+            .addMiscHatch(
+                "1",
                 StatCollector.translateToLocal("GT5U.tooltip.structure.lens_indicator"),
-                EnumChatFormatting.GOLD + "1",
+                "Top back casing",
                 3)
+            .addInputHatch("1+", "Any bottom side casing", 1)
+            .addOutputHatch("1+", "Any bottom side casing", 1)
+            .addStructureInfo("")
+            .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.DataStick.Waterline"))
             .toolTipFinisher();
         return tt;
     }
@@ -421,17 +390,16 @@ public class MTEPurificationUnitUVTreatment extends MTEPurificationUnitBase<MTEP
         ArrayList<String> infoData = new ArrayList<>(Arrays.asList(super.getInfoData()));
         if (this.lensCycle != null) {
             infoData.add(
-                StatCollector.translateToLocalFormatted(
+                IGregTechDeviceInformation.encode(
                     "GT5U.infodata.purification_unit_uv_treatment.lens_swaps",
                     "" + EnumChatFormatting.YELLOW + numSwapsPerformed));
             infoData.add(
-                StatCollector.translateToLocalFormatted(
+                IGregTechDeviceInformation.encode(
                     "GT5U.infodata.purification_unit_uv_treatment.lens_requested",
                     EnumChatFormatting.GREEN + lensCycle.current()
                         .getDisplayName()));
             if (removedTooEarly) {
-                infoData.add(
-                    StatCollector.translateToLocal("GT5U.infodata.purification_unit_uv_treatment.removed_too_early"));
+                infoData.add("GT5U.infodata.purification_unit_uv_treatment.removed_too_early");
             }
         }
         return infoData.toArray(new String[] {});

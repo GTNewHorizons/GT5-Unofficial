@@ -11,7 +11,6 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.tuple.Pair;
@@ -29,6 +28,7 @@ import goodgenerator.util.DescTextLocalization;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.RecipeMap;
@@ -155,14 +155,15 @@ public class MTEFuelRefineFactoryLegacy extends TTMultiblockBase implements ISur
             .addInfo("Produces naquadah fuels")
             .addInfo("Needs field restriction coils to control the fatal radiation")
             .addInfo("Use higher tier coils to unlock more fuel types and perform more perfect overclocks")
-            .addTecTechHatchInfo()
+            .addSupportAny()
             .addUnlimitedTierSkips()
             .beginStructureBlock(3, 15, 15, false)
             .addController("Middle of the 3rd layer")
             .addCasingInfoExactly("Naquadah Fuel Refinery Casing", 114, false)
             .addCasingInfoExactly("Field Restriction Coil", 32, true)
             .addCasingInfoExactly("Field Restriction Glass", 8, false)
-            .addInputHatch("Any Casing adjacent to Field Restriction Glass.")
+            .addMaintenanceHatch("Any Casing adjacent to Field Restriction Glass.", 1)
+            .addInputHatch("Any Casing adjacent to Field Restriction Glass.", 1)
             .addInputBus("Any Casing adjacent to Field Restriction Glass.", 1)
             .addOutputHatch("Any Casing adjacent to Field Restriction Glass.", 1)
             .addEnergyHatch("Any Casing adjacent to Field Restriction Glass.", 1)
@@ -235,7 +236,7 @@ public class MTEFuelRefineFactoryLegacy extends TTMultiblockBase implements ISur
     public String[] getInfoData() {
         String[] infoData = new String[super.getInfoData().length + 1];
         System.arraycopy(super.getInfoData(), 0, infoData, 0, super.getInfoData().length);
-        infoData[super.getInfoData().length] = StatCollector.translateToLocal("scanner.info.FRF") + " " + this.tier;
+        infoData[super.getInfoData().length] = IGregTechDeviceInformation.encode("gg.infodata.frf.tier", this.tier);
         return infoData;
     }
 

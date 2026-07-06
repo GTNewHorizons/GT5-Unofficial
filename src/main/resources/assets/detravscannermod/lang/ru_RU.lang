@@ -18,7 +18,7 @@ detrav.scanner.found.texts.2= §7маленький образец§r.
 detrav.scanner.found.texts.3= §2средний образец§r.
 detrav.scanner.found.texts.4= §eбольшой образец§r.
 detrav.scanner.found.texts.5= §dочень большой образец§r.
-detrav.scanner.found.texts.6=Найден 
+detrav.scanner.found.texts.6=Найден %s
 
 # Don't translate "%badluck"
 detrav.scanner.success=Все чанки успешно просканированы!
@@ -40,6 +40,11 @@ tooltip.detrav.scanner.distance.1=на среднем расстоянии (3-5)
 gui.detrav.scanner.pollution=Загрязнение
 gui.detrav.scanner.unknown_fluid=Неизвестное название жидкости!
 
-gui.detrav.scanner.tooltip.fluid_name=Название жидкости: 
-gui.detrav.scanner.tooltip.fluid_amount=Количество жидкости: 
+gui.detrav.scanner.tooltip.fluid_name=Название жидкости: %s
+gui.detrav.scanner.tooltip.fluid_amount=Количество жидкости: %s L
 gui.detrav.scanner.tooltip.no_fluid=Пусто
+gui.detrav.scanner.tooltip.ore_pos=X: %d, Z: %d
+gui.detrav.scanner.tooltip.ore_depth=Y: %d
+gui.detrav.scanner.tooltip.mark_hint=ПКМ, чтобы отметить
+gui.detrav.scanner.search.hint=Поиск...
+gui.detrav.scanner.hint.invert=Двойной клик для инверсии фона

@@ -33,7 +33,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.interfaces.fluid.IFluidStore;
+import gregtech.api.interfaces.IOutputHatch;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
@@ -129,15 +129,15 @@ public class MTESpargeTower extends GTPPMultiBlockBase<MTESpargeTower> implement
         tt.addMachineType("Gas Sparge Tower")
             .addInfo("Runs gases through depleted molten salts to extract precious fluids")
             .addInfo("Works the same way as the Distillation Tower, but with a fixed height of 8")
-            .addInfo("Fluids are only put out at the correct height")
-            .addInfo("The correct height equals the slot number in the NEI recipe")
-            .beginStructureBlock(3, 8, 3, true)
+            .addInfo("Fluids are outputted one per layer based on the slot number in NEI")
+            .beginStructureBlock(3, 3, 8, true)
             .addController("Front bottom center")
-            .addOtherStructurePart("Sparge Tower Exterior Casing", "45 (minimum)")
-            .addEnergyHatch("Any Casing", 1, 2)
-            .addMaintenanceHatch("Any Casing", 1, 2, 3)
-            .addInputHatch("2x Input Hatches, any bottom layer Casing", 1)
-            .addOutputHatch("Output Hatches on any layer except bottom (each hatch enables that layer's output)", 2, 3)
+            .addCasing("45-56", "Sparge Tower Exterior Casing", false)
+            .addEnergyHatch("1+", "Any casing", 1, 2)
+            .addMaintenanceHatch("1", "Any casing", 1, 2)
+            .addInputHatch("1+", "Any bottom casing", 1)
+            .addOutputHatch("7", "One per layer, except the bottom layer", 2)
+            .addAir("Interior of the structure")
             .toolTipFinisher();
         return tt;
     }
@@ -239,8 +239,8 @@ public class MTESpargeTower extends GTPPMultiBlockBase<MTESpargeTower> implement
     }
 
     @Override
-    public List<? extends IFluidStore> getFluidOutputSlots(FluidStack[] toOutput) {
-        return getFluidOutputSlotsByLayer(toOutput, mOutputHatchesByLayer);
+    public List<IOutputHatch> getOutputHatches(FluidStack[] toOutput) {
+        return getOutputHatchesByLayers(toOutput, mOutputHatchesByLayer);
     }
 
     @Override
@@ -278,23 +278,27 @@ public class MTESpargeTower extends GTPPMultiBlockBase<MTESpargeTower> implement
         if (!mTopLayerFound) {
             errors.add(StructureErrors.of("GT5U.gui.text.structure_error.missing_top"));
         }
-        checkHasMaintenanceHatch(errors);
+        if (mOutputHatchesByLayer.isEmpty() || mOutputHatchesByLayer.get(0)
+            .isEmpty()) {
+            errors.add(StructureErrors.missingOutputHatchDT(List.of(2)));
+        }
         checkHasEnergyHatch(errors);
+        checkHasMaintenanceHatch(errors);
         checkHasInputHatch(errors);
-        checkHasOutputHatch(errors);
     }
 
     @Override
-    protected void addFluidOutputs(FluidStack[] outputFluids) {
+    protected boolean addFluidOutputs(FluidStack[] outputFluids) {
+        boolean succeed = true;
         for (int i = 0; i < outputFluids.length && i < mOutputHatchesByLayer.size(); i++) {
-            FluidStack tStack = outputFluids[i] != null ? outputFluids[i].copy() : null;
-            if (tStack == null) {
+            FluidStack stack = outputFluids[i] != null ? outputFluids[i].copy() : null;
+            if (stack == null) {
                 continue;
             }
-            if (!dumpFluid(mOutputHatchesByLayer.get(i), tStack, true)) {
-                dumpFluid(mOutputHatchesByLayer.get(i), tStack, false);
-            }
+            addOutputPartial(stack, mOutputHatchesByLayer.get(i));
+            if (stack.amount > 0) succeed = false;
         }
+        return succeed;
     }
 
     @Override

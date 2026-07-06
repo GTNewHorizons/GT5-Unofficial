@@ -9,6 +9,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
+import java.lang.invoke.MethodHandles;
+import java.lang.invoke.VarHandle;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.nio.file.Files;
@@ -1015,7 +1017,8 @@ class RecipeMapBackendLookupTest {
     private static void setMetadataStorage(GTRecipe recipe, IRecipeMetadataStorage metadataStorage) {
         try {
             Field field = GTRecipe.class.getDeclaredField("metadataStorage");
-            UNSAFE.putObject(recipe, UNSAFE.objectFieldOffset(field), metadataStorage);
+            field.setAccessible(true);
+            field.set(recipe, metadataStorage);
         } catch (ReflectiveOperationException e) {
             throw new AssertionError(e);
         }
@@ -1055,9 +1058,11 @@ class RecipeMapBackendLookupTest {
         }
         try {
             Field field = Items.class.getDeclaredField("feather");
-            Object base = UNSAFE.staticFieldBase(field);
-            long offset = UNSAFE.staticFieldOffset(field);
-            UNSAFE.putObject(base, offset, new Item());
+
+            VarHandle handle = MethodHandles.privateLookupIn(Items.class, MethodHandles.lookup())
+                .unreflectVarHandle(field);
+
+            handle.set(new Item());
         } catch (ReflectiveOperationException e) {
             throw new AssertionError(e);
         }
@@ -1076,9 +1081,10 @@ class RecipeMapBackendLookupTest {
             FluidStack stack = (FluidStack) UNSAFE.allocateInstance(FluidStack.class);
             Field fluidField = FluidStack.class.getDeclaredField("fluid");
             Field fluidDelegateField = FluidStack.class.getDeclaredField("fluidDelegate");
-            Field amountField = FluidStack.class.getDeclaredField("amount");
-            UNSAFE.putObject(stack, UNSAFE.objectFieldOffset(fluidField), fluid);
-            UNSAFE.putObject(stack, UNSAFE.objectFieldOffset(fluidDelegateField), new RegistryDelegate<Fluid>() {
+            fluidField.setAccessible(true);
+            fluidField.set(stack, fluid);
+            fluidDelegateField.setAccessible(true);
+            fluidDelegateField.set(stack, new RegistryDelegate<Fluid>() {
 
                 @Override
                 public Fluid get() {
@@ -1095,7 +1101,7 @@ class RecipeMapBackendLookupTest {
                     return Fluid.class;
                 }
             });
-            UNSAFE.putInt(stack, UNSAFE.objectFieldOffset(amountField), amount);
+            stack.amount = amount;
             return stack;
         } catch (ReflectiveOperationException e) {
             throw new AssertionError(e);
@@ -1144,7 +1150,7 @@ class RecipeMapBackendLookupTest {
         }
 
         @Override
-        protected boolean filterFindRecipe(@NotNull GTRecipe recipe, @Nullable ItemStack @NotNull [] items,
+        protected boolean filterFindRecipe(GTRecipe recipe, @Nullable ItemStack @NotNull [] items,
             @Nullable FluidStack @NotNull [] fluids, @Nullable ItemStack specialSlot, boolean dontCheckStackSizes) {
             return true;
         }
@@ -1165,7 +1171,7 @@ class RecipeMapBackendLookupTest {
         }
 
         @Override
-        protected boolean filterFindRecipe(@NotNull GTRecipe recipe, @Nullable ItemStack @NotNull [] items,
+        protected boolean filterFindRecipe(GTRecipe recipe, @Nullable ItemStack @NotNull [] items,
             @Nullable FluidStack @NotNull [] fluids, @Nullable ItemStack specialSlot, boolean dontCheckStackSizes) {
             return true;
         }
@@ -1194,7 +1200,7 @@ class RecipeMapBackendLookupTest {
         }
 
         @Override
-        protected boolean filterFindRecipe(@NotNull GTRecipe recipe, @Nullable ItemStack @NotNull [] items,
+        protected boolean filterFindRecipe(GTRecipe recipe, @Nullable ItemStack @NotNull [] items,
             @Nullable FluidStack @NotNull [] fluids, @Nullable ItemStack specialSlot, boolean dontCheckStackSizes) {
             return true;
         }
@@ -1225,7 +1231,7 @@ class RecipeMapBackendLookupTest {
         }
 
         @Override
-        protected boolean filterFindRecipe(@NotNull GTRecipe recipe, @Nullable ItemStack @NotNull [] items,
+        protected boolean filterFindRecipe(GTRecipe recipe, @Nullable ItemStack @NotNull [] items,
             @Nullable FluidStack @NotNull [] fluids, @Nullable ItemStack specialSlot, boolean dontCheckStackSizes) {
             return true;
         }
@@ -1312,7 +1318,7 @@ class RecipeMapBackendLookupTest {
         }
 
         @Override
-        protected boolean filterFindRecipe(@NotNull GTRecipe recipe, @Nullable ItemStack @NotNull [] items,
+        protected boolean filterFindRecipe(GTRecipe recipe, @Nullable ItemStack @NotNull [] items,
             @Nullable FluidStack @NotNull [] fluids, @Nullable ItemStack specialSlot, boolean dontCheckStackSizes) {
             return true;
         }
@@ -1341,7 +1347,7 @@ class RecipeMapBackendLookupTest {
         }
 
         @Override
-        protected boolean filterFindRecipe(@NotNull GTRecipe recipe, @Nullable ItemStack @NotNull [] items,
+        protected boolean filterFindRecipe(GTRecipe recipe, @Nullable ItemStack @NotNull [] items,
             @Nullable FluidStack @NotNull [] fluids, @Nullable ItemStack specialSlot, boolean dontCheckStackSizes) {
             return false;
         }

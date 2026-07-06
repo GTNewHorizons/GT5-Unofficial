@@ -20,7 +20,6 @@ import com.cleanroommc.modularui.api.widget.IWidget;
 import com.cleanroommc.modularui.drawable.DynamicDrawable;
 import com.cleanroommc.modularui.drawable.GuiTextures;
 import com.cleanroommc.modularui.drawable.ItemDrawable;
-import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.utils.Color;
@@ -95,7 +94,8 @@ public class MTEHatchVacuumConveyorGui extends MTEHatchBaseGui<MTEHatchVacuumCon
             .equals(
                 (a, b) -> a.getComponents()
                     .equals(b.getComponents()))
-            .build();
+            .build()
+            .allowC2S();
         syncManager.syncValue("contents", contentsSyncHandler);
         syncManager.registerSyncedAction("dumpCCs", Side.SERVER, p -> {
             GenericSyncValue<CircuitComponentPacket, ?> syncContents = syncManager
@@ -128,11 +128,6 @@ public class MTEHatchVacuumConveyorGui extends MTEHatchBaseGui<MTEHatchVacuumCon
             }
             machine.contents = new CircuitComponentPacket(leftovers);
         });
-    }
-
-    @Override
-    protected UITexture getLogoTexture() {
-        return GTGuiTextures.PICTURE_NANOCHIP_LOGO;
     }
 
     private IWidget createCCSlotGroup(ModularPanel panel, PanelSyncManager syncManager) {
