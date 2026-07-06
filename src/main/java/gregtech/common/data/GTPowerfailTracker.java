@@ -110,7 +110,6 @@ public class GTPowerfailTracker {
             this.count++;
             this.lastOccurrence = new Date();
             this.ownerId = igte.getOwnerUuid();
-            System.out.println(ownerId.toString());
         }
 
         public @Nullable IMetaTileEntity getMTE() {
