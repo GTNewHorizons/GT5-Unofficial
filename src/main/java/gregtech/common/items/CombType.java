@@ -50,7 +50,7 @@ public enum CombType {
     ASTRALSILVER(28, "astral_silver", true, Materials.AstralSilver, 70, 0xAFEEEE, 0xE6E6FF, ItemComb.Voltage.HV),
     THAUMINITE(29, "thauminite", true, Materials._NULL, 50, 0x2E2D79, 0x7581E0, ItemComb.Voltage.HV),
     SHADOWMETAL(30, "shadow_metal", true, Materials.Shadow, 50, 0x100322, 0x100342, ItemComb.Voltage.HV),
-    DIVIDED(31, "divided", true, Materials.Unstable, 40, 0xF0F0F0, 0xDCDCDC, ItemComb.Voltage.HV),
+    INVERTED(31, "inverted", true, Materials.Unstable, 40, 0xF0F0F0, 0xDCDCDC, ItemComb.Voltage.HV),
     SPARKLING(32, "nether_star", true, Materials.NetherStar, 40, 0x7A007A, 0xFFFFFF, ItemComb.Voltage.EV),
 
     // Gem Line
@@ -201,9 +201,9 @@ public enum CombType {
     BEDROCKIUM(151, "bedrockium", true, Materials.Bedrockium, 100, 0xC6C6C6, 0x0C0C0C, ItemComb.Voltage.EV),
     NETHERSHARD(152, "nether_shard", true, Materials.Netherrack, 100, 0x350211, 0xBE0135, ItemComb.Voltage.HV),
     ENDERSHARD(153, "ender_shard", true, Materials.EnderEye, 100, 0x232129, 0x2E2E41, ItemComb.Voltage.HV),
-    CAELESTISRED(154, "caelestis_red", true, Materials._NULL, 100, 0xFF0000, 0xFF00FF, ItemComb.Voltage.LV),
-    CAELESTISGREEN(155, "caelestis_green", true, Materials._NULL, 100, 0x00FF00, 0xB233FF, ItemComb.Voltage.LV),
-    CAELESTISBLUE(156, "caelestis_blue", true, Materials._NULL, 100, 0x0000FF, 0xFF99A5, ItemComb.Voltage.LV),
+    AETHERIUSRED(154, "aetherius_red", true, Materials._NULL, 100, 0xFF0000, 0xFF00FF, ItemComb.Voltage.LV),
+    AETHERIUSGREEN(155, "aetherius_green", true, Materials._NULL, 100, 0x00FF00, 0xB233FF, ItemComb.Voltage.LV),
+    AETHERIUSBLUE(156, "aetherius_blue", true, Materials._NULL, 100, 0x0000FF, 0xFF99A5, ItemComb.Voltage.LV),
     UNKNOWNLIQUID(157, "unknown_liquid", true, Materials._NULL, 100, 0x36ABFF, 0x4333A5, ItemComb.Voltage.ZPM),
     // ESSENTIA gets a use soon. Dont remove.
     ESSENTIA(158, "essentia", true, Materials._NULL, 100, 0xED3601, 0xFF6D50, ItemComb.Voltage.MV),

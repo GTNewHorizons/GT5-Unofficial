@@ -6,7 +6,6 @@ import static gregtech.api.enums.GTValues.V;
 import static gregtech.api.enums.Mods.AE2FluidCraft;
 import static gregtech.api.enums.Mods.Botania;
 import static gregtech.api.enums.Mods.ExtraBees;
-import static gregtech.api.enums.Mods.ExtraUtilities;
 import static gregtech.api.enums.Mods.Forestry;
 import static gregtech.api.enums.Mods.GalaxySpace;
 import static gregtech.api.enums.Mods.GregTech;
@@ -14,6 +13,7 @@ import static gregtech.api.enums.Mods.MagicBees;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.enums.Mods.ThaumicBases;
+import static gregtech.api.enums.Mods.UtilitiesInExcess;
 import static gregtech.api.recipe.RecipeMaps.autoclaveRecipes;
 import static gregtech.api.recipe.RecipeMaps.centrifugeRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidExtractionRecipes;
@@ -413,11 +413,11 @@ public class ItemComb extends Item implements IGT_ItemWithMaterialRenderer, IIte
             Voltage.HV,
             GTModHandler.getModItem(MagicBees.ID, "wax", 1, 0),
             50 * 100);
-        addProcessGT(CombType.DIVIDED, new Materials[] { Materials.Diamond }, Voltage.HV);
+        addProcessGT(CombType.INVERTED, new Materials[] { Materials.Diamond }, Voltage.HV);
         addCentrifugeToItemStack(
-            CombType.DIVIDED,
+            CombType.INVERTED,
             new ItemStack[] { GTModHandler.getModItem(MagicBees.ID, "wax", 1, 0),
-                GTModHandler.getModItem(ExtraUtilities.ID, "unstableingot", 1, 1),
+                GTModHandler.getModItem(UtilitiesInExcess.ID, "inverted_ingot", 1, 1),
                 GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Iron, 1),
                 GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Diamond, 1) },
             new int[] { 50 * 100, 20 * 100, 10 * 100, 5 * 100 },
