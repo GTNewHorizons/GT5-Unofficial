@@ -404,8 +404,8 @@ public class GTValues {
         "com.supsolpans.tiles.TilePhotonicSolarPanel", "gtPlusPlus.core.tileentities.general.TileEntityFishTrap",
         "gtPlusPlus.core.tileentities.general.TileEntityDecayablesChest",
         "net.bdew.gendustry.machines.apiary.TileApiary", "goodgenerator.blocks.tileEntity.EssentiaHatch",
-        "magicbees.tileentity.TileEntityApimancersDrainerCommon",
-        "magicbees.tileentity.TileEntityApimancersDrainerGT" };
+        "magicbees.tileentity.TileEntityApimancersDrainerCommon", "magicbees.tileentity.TileEntityApimancersDrainerGT",
+        "com.fouristhenumber.utilitiesinexcess.common.tileentities.TileEntityVoidQuarry" };
     /**
      * This will set the percentage how much ReinforcedGlass is Allowed in Cleanroom Walls.
      */
