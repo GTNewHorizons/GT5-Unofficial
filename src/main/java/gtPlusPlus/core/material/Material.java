@@ -1137,23 +1137,11 @@ public class Material implements IOreMaterial {
                 final long[] smallestRatio = MathUtils.simplifyNumbersToSmallestForm(tempRatio);
 
                 if (smallestRatio.length > 0) {
-                    StringBuilder tempRatioStringThing1 = new StringBuilder();
-                    for (long value : tempRatio) {
-                        tempRatioStringThing1.append(value)
-                            .append(" : ");
-                    }
-                    StringBuilder tempRatioStringThing = new StringBuilder();
-                    int tempSmallestCraftingUseSize = 0;
-                    for (long l : smallestRatio) {
-                        tempRatioStringThing.append(l)
-                            .append(" : ");
-                        tempSmallestCraftingUseSize = (int) (tempSmallestCraftingUseSize + l);
-                    }
-                    // this.smallestStackSizeWhenProcessing = tempSmallestCraftingUseSize;
                     return smallestRatio;
                 }
             }
         }
+
         return new long[] {};
     }
 
