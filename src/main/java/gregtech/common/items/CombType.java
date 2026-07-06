@@ -50,7 +50,7 @@ public enum CombType {
     ASTRALSILVER(28, "astral_silver", true, Materials.AstralSilver, 70, 0xAFEEEE, 0xE6E6FF, ItemComb.Voltage.HV),
     THAUMINITE(29, "thauminite", true, Materials._NULL, 50, 0x2E2D79, 0x7581E0, ItemComb.Voltage.HV),
     SHADOWMETAL(30, "shadow_metal", true, Materials.Shadow, 50, 0x100322, 0x100342, ItemComb.Voltage.HV),
-    INVERTED(31, "inverted", true, Materials.Unstable, 40, 0xF0F0F0, 0xDCDCDC, ItemComb.Voltage.HV),
+    INVERTED(31, "inverted", true, Materials.Inverted, 40, 0xF0F0F0, 0xDCDCDC, ItemComb.Voltage.HV),
     SPARKLING(32, "nether_star", true, Materials.NetherStar, 40, 0x7A007A, 0xFFFFFF, ItemComb.Voltage.EV),
 
     // Gem Line

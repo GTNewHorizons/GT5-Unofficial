@@ -1653,7 +1653,7 @@ public class MixerRecipes implements Runnable {
                 Materials.NetherStar.getDust(8),
                 Materials.Terbium.getDust(7),
                 MaterialsElements.getInstance().TECHNETIUM.getDust(4),
-                Materials.Unstable.getDust(4),
+                Materials.Inverted.getDust(4),
                 Materials.Flerovium.getDust(3),
                 Materials.InfinityCatalyst.getDust(1))
             .circuit(6)

@@ -387,8 +387,7 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     public static Materials SeedOilLin;
     public static Materials Stone;
     public static Materials TNT;
-    public static Materials Unstable;
-    public static Materials UnstableIngot;
+    public static Materials Inverted;
     public static Materials Vinegar;
     public static Materials WeedEX9000;
     public static Materials Wheat;
