@@ -3928,6 +3928,15 @@ public class ChemicalRecipes implements Runnable {
                 .duration(18 * TICKS)
                 .eut(TierEU.RECIPE_UEV)
                 .addTo(UniversalChemical);
+
+            // Indium comb processing
+            GTValues.RA.stdBuilder()
+                .itemInputs(GTBees.combs.getStackForType(CombType.INDIUM, 4))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Indium, 4))
+                .fluidInputs(Materials.UUMatter.getFluid(293))
+                .duration(80)
+                .eut(TierEU.RECIPE_UHV)
+                .addTo(UniversalChemical);
         }
     }
 
