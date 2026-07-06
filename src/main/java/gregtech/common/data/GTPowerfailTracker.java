@@ -10,7 +10,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.OptionalInt;
 import java.util.UUID;
@@ -50,7 +49,9 @@ import gregtech.api.util.GTDataUtils;
 import gregtech.api.util.GTTextBuilder;
 import gregtech.api.util.Localized;
 import gregtech.common.config.Gregtech;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.longs.LongArrayList;
 import it.unimi.dsi.fastutil.longs.LongList;
@@ -413,15 +414,15 @@ public class GTPowerfailTracker {
             try (GZIPOutputStream gz = new GZIPOutputStream(bos); DataOutputStream out = new DataOutputStream(gz)) {
 
                 out.writeInt(byWorld.size());
-                for (Map.Entry<Integer, DimensionInfo> dimEntrySet : byWorld.entrySet()) {
-                    int dimId = dimEntrySet.getKey();
+                for (Int2ObjectMap.Entry<DimensionInfo> dimEntrySet : byWorld.int2ObjectEntrySet()) {
+                    int dimId = dimEntrySet.getIntKey();
                     DimensionInfo dimInfo = dimEntrySet.getValue();
 
                     out.writeInt(dimId);
 
                     out.writeInt(dimInfo.byCoord.size());
-                    for (Map.Entry<Long, Powerfail> coordEntrySet : dimInfo.byCoord.entrySet()) {
-                        long coord = coordEntrySet.getKey();
+                    for (Long2ObjectMap.Entry<Powerfail> coordEntrySet : dimInfo.byCoord.long2ObjectEntrySet()) {
+                        long coord = coordEntrySet.getLongKey();
                         Powerfail powerfail = coordEntrySet.getValue();
 
                         out.writeLong(coord);
