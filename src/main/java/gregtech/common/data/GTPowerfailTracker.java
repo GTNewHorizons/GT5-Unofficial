@@ -6,6 +6,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.util.Base64;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
@@ -360,13 +361,16 @@ public class GTPowerfailTracker {
         @Override
         public void readFromNBT(NBTTagCompound tag) {
             byWorld.clear();
-            byte[] bytes = tag.getByteArray("blob");
+            byte[] bytes = Base64.getDecoder()
+                .decode(tag.getString("blob"));
             fromBytes(bytes);
         }
 
         @Override
         public void writeToNBT(NBTTagCompound tag) {
-            tag.setByteArray("blob", asBytes());
+            String asBase64 = Base64.getEncoder()
+                .encodeToString(asBytes());
+            tag.setString("blob", asBase64);
         }
 
         @Override
