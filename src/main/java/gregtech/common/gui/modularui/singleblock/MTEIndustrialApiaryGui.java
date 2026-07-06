@@ -57,6 +57,7 @@ public class MTEIndustrialApiaryGui extends MTEBasicMachineBaseGui<MTEIndustrial
 
     public MTEIndustrialApiaryGui(MTEIndustrialApiary machine, BasicUIProperties properties) {
         super(machine, properties);
+        mAddGregTechLogo = true;
     }
 
     @Override
@@ -64,8 +65,26 @@ public class MTEIndustrialApiaryGui extends MTEBasicMachineBaseGui<MTEIndustrial
         Flow mainRow = Flow.row()
             .coverChildren()
             .crossAxisAlignment(Alignment.CrossAxis.START)
-            .childPadding(SLOT_SIZE / 2)
-            .marginLeft(SLOT_SIZE * 3 / 2);
+            .childPadding(SLOT_SIZE / 2);
+
+        // buttons
+        mainRow.child(
+            Flow.column()
+                .coverChildren()
+                .child(
+                    new ToggleButton()
+                        .value(new BooleanSyncValue(machine::isAutoQueen, machine::setAutoQueen).allowC2S())
+                        .backgroundOverlay(GTGuiTextures.OVERLAY_SLOT_BEE_QUEEN, GuiTextures.REFRESH)
+                        .addTooltipStringLines(
+                            machine.mTooltipCache.getData("GT5U.machines.industrialapiary.autoqueen.tooltip").text)
+                        .tooltipShowUpTimer(TOOLTIP_DELAY))
+                .child(
+                    new ButtonWidget<>()
+                        .syncHandler(new InteractionSyncHandler().setOnMousePressed(_ -> machine.cancelProcess()))
+                        .overlay(GTGuiTextures.OVERLAY_BUTTON_CROSS)
+                        .addTooltipStringLines(
+                            machine.mTooltipCache.getData("GT5U.machines.industrialapiary.cancel.tooltip").text)
+                        .tooltipShowUpTimer(TOOLTIP_DELAY)));
 
         // input slots
         mainRow.child(
@@ -217,96 +236,57 @@ public class MTEIndustrialApiaryGui extends MTEBasicMachineBaseGui<MTEIndustrial
         speedSyncer.changeListener(speedButton::markTooltipDirty);
         speedLockedSyncer.changeListener(speedButton::markTooltipDirty);
 
-        return Flow.row()
-            .coverChildren()
-            .verticalCenter()
-            .crossAxisAlignment(Alignment.CrossAxis.END)
-            .leftRel(0)
+        return super.createBottomLeftCornerFlow(panel, syncManager).child(speedButton.onMousePressed(mouseButton -> {
+            int maxSpeed = maxSpeedSyncer.getIntValue();
+            if (Interactable.hasShiftDown()) {
+                // toggle lock
+                speedLockedSyncer.setBoolValue(!speedLockedSyncer.getBoolValue());
+
+                // if lock is enabled, set speed to max
+                if (speedLockedSyncer.getBoolValue()) speedSyncer.setIntValue(maxSpeed);
+            } else {
+                // if locked, do nothing
+                if (speedLockedSyncer.getBoolValue()) return true;
+
+                int speed = speedSyncer.getIntValue();
+                if (mouseButton == 0) {
+                    speed++;
+                    if (speed > maxSpeed) speed = 0;
+                }
+                if (mouseButton == 1) {
+                    speed--;
+                    if (speed < 0) speed = maxSpeed;
+                }
+                speedSyncer.setIntValue(speed);
+            }
+            return true;
+        })
+            .tooltipDynamic(
+                t -> t.addStringLines(
+                    machine.mTooltipCache.getUncachedTooltipData(
+                        speedLockedSyncer.getBoolValue() ? "GT5U.machines.industrialapiary.speedlocked.tooltip"
+                            : "GT5U.machines.industrialapiary.speed.tooltip",
+                        machine.getAcceleration(),
+                        formatNumber(machine.getAdditionalEnergyUsage())).text))
+            .tooltipShowUpTimer(TOOLTIP_DELAY)
             .child(
                 Flow.column()
+                    .horizontalCenter()
                     .coverChildren()
-                    .reverseLayout()
                     .child(
-                        createAutoOutputButton(
-                            properties.maxFluidOutputs > 0,
-                            syncManager,
-                            "fluidAutoOutput",
-                            GTGuiTextures.OVERLAY_BUTTON_AUTOOUTPUT_FLUID,
-                            BaseTileEntity.FLUID_TRANSFER_TOOLTIP,
-                            "GT5U.gui.button.forbidden.reason.fluid").marginTop(2))
+                        IKey.str("x")
+                            .color(Color.GREY.darker(2))
+                            .alignment(Alignment.CENTER)
+                            .asWidget()
+                            .width(18)
+                            .scale(0.9f))
                     .child(
-                        new ToggleButton()
-                            .value(new BooleanSyncValue(machine::isAutoQueen, machine::setAutoQueen).allowC2S())
-                            .backgroundOverlay(GTGuiTextures.OVERLAY_SLOT_BEE_QUEEN, GuiTextures.REFRESH)
-                            .addTooltipStringLines(
-                                machine.mTooltipCache.getData("GT5U.machines.industrialapiary.autoqueen.tooltip").text)
-                            .tooltipShowUpTimer(TOOLTIP_DELAY))
-                    .child(
-                        new ButtonWidget<>()
-                            .syncHandler(new InteractionSyncHandler().setOnMousePressed(_ -> machine.cancelProcess()))
-                            .overlay(GTGuiTextures.OVERLAY_BUTTON_CROSS)
-                            .addTooltipStringLines(
-                                machine.mTooltipCache.getData("GT5U.machines.industrialapiary.cancel.tooltip").text)
-                            .tooltipShowUpTimer(TOOLTIP_DELAY)))
-            .child(
-                createAutoOutputButton(
-                    properties.maxItemOutputs > 0,
-                    syncManager,
-                    "itemAutoOutput",
-                    GTGuiTextures.OVERLAY_BUTTON_AUTOOUTPUT_ITEM,
-                    BaseTileEntity.ITEM_TRANSFER_TOOLTIP,
-                    "GT5U.gui.button.forbidden.reason.item"))
-            .child(speedButton.onMousePressed(mouseButton -> {
-                int maxSpeed = maxSpeedSyncer.getIntValue();
-                if (Interactable.hasShiftDown()) {
-                    // toggle lock
-                    speedLockedSyncer.setBoolValue(!speedLockedSyncer.getBoolValue());
-
-                    // if lock is enabled, set speed to max
-                    if (speedLockedSyncer.getBoolValue()) speedSyncer.setIntValue(maxSpeed);
-                } else {
-                    // if locked, do nothing
-                    if (speedLockedSyncer.getBoolValue()) return true;
-
-                    int speed = speedSyncer.getIntValue();
-                    if (mouseButton == 0) {
-                        speed++;
-                        if (speed > maxSpeed) speed = 0;
-                    }
-                    if (mouseButton == 1) {
-                        speed--;
-                        if (speed < 0) speed = maxSpeed;
-                    }
-                    speedSyncer.setIntValue(speed);
-                }
-                return true;
-            })
-                .tooltipDynamic(
-                    t -> t.addStringLines(
-                        machine.mTooltipCache.getUncachedTooltipData(
-                            speedLockedSyncer.getBoolValue() ? "GT5U.machines.industrialapiary.speedlocked.tooltip"
-                                : "GT5U.machines.industrialapiary.speed.tooltip",
-                            machine.getAcceleration(),
-                            formatNumber(machine.getAdditionalEnergyUsage())).text))
-                .tooltipShowUpTimer(TOOLTIP_DELAY)
-                .child(
-                    Flow.column()
-                        .horizontalCenter()
-                        .coverChildren()
-                        .child(
-                            IKey.str("x")
-                                .color(Color.GREY.darker(2))
-                                .alignment(Alignment.CENTER)
-                                .asWidget()
-                                .width(18)
-                                .scale(0.9f))
-                        .child(
-                            IKey.dynamic(() -> String.valueOf(machine.getAcceleration()))
-                                .color(Color.GREY.darker(2))
-                                .alignment(Alignment.CENTER)
-                                .asWidget()
-                                .width(18)
-                                .scale(0.9f))));
+                        IKey.dynamic(() -> String.valueOf(machine.getAcceleration()))
+                            .color(Color.GREY.darker(2))
+                            .alignment(Alignment.CENTER)
+                            .asWidget()
+                            .width(18)
+                            .scale(0.9f))));
     }
 
     @Override
@@ -316,13 +296,13 @@ public class MTEIndustrialApiaryGui extends MTEBasicMachineBaseGui<MTEIndustrial
 
     @Override
     protected Flow createBottomRightCornerFlow(ModularPanel panel, PanelSyncManager syncManager) {
-        return Flow.row()
-            .coverChildren()
+        Flow parent = super.createBottomRightCornerFlow(panel, syncManager);
+        parent.resizer().resetPosition();
+
+        return parent
             .bottomRel(0)
             .rightRel(0)
-            .child(createErrorWidget(panel, syncManager).marginRight(SLOT_SIZE / 2))
-            .child(createSpecialSlot())
-            .child(makeLogoWidget());
+            .child(createErrorWidget(panel, syncManager).marginRight(SLOT_SIZE / 2));
     }
 
     @Override
