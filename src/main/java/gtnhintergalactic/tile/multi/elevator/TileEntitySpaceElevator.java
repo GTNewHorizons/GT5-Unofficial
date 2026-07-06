@@ -1,11 +1,7 @@
 package gtnhintergalactic.tile.multi.elevator;
 
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
-import static net.minecraft.util.EnumChatFormatting.GREEN;
 import static net.minecraft.util.EnumChatFormatting.ITALIC;
-import static net.minecraft.util.EnumChatFormatting.LIGHT_PURPLE;
-import static net.minecraft.util.EnumChatFormatting.RED;
-import static net.minecraft.util.EnumChatFormatting.RESET;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -733,35 +729,44 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        tt.addMachineType(GTUtility.translate("gt.blockmachines.multimachine.ig.elevator.name"));
+        tt.addMachineType(StatCollector.translateToLocal("gt.blockmachines.multimachine.ig.elevator.name"));
         if (TooltipUtil.elevatorLoreText != null) tt.addInfo(ITALIC + addFormattedString(TooltipUtil.elevatorLoreText));
-        tt.addInfo(GTUtility.translate("gt.blockmachines.multimachine.ig.elevator.desc2"))
-            .addInfo(GTUtility.translate("gt.blockmachines.multimachine.ig.elevator.desc3"))
-            .addInfo(GTUtility.translate("gt.blockmachines.multimachine.ig.elevator.desc4"))
-            .addInfo(GTUtility.translate("gt.blockmachines.multimachine.ig.elevator.desc5"))
-            .addInfo(GTUtility.translate("gt.blockmachines.multimachine.ig.elevator.desc6"))
-            .addInfo(GTUtility.translate("gt.blockmachines.multimachine.ig.elevator.desc7"))
-            .addInfo(GTUtility.translate("gt.blockmachines.multimachine.ig.elevator.desc8"))
-            .addTecTechHatchInfo()
-            .beginStructureBlock(35, 43, 35, false)
-            .addController("Front center of the middle structure piece")
-            .addOtherStructurePart(
-                GTUtility.translate("ig.elevator.structure.ProjectModule"),
-                GTUtility.translate("ig.elevator.structure.AnyBaseCasingWithHintNumber2"),
-                2)
-            .addCasingInfoExactly(GTUtility.translate("tile.DysonSwarmFloor.name"), 800, false)
-            .addCasingInfoRange(GTUtility.translate("gt.blockcasings.ig.0.name"), 593, 785, false)
-            .addCasingInfoExactly(GTUtility.translate("gt.blockcasings.ig.1.name"), 620, false)
-            .addCasingInfoExactly(GTUtility.translate("gt.blockcasings.ig.2.name"), 360, false)
-            .addCasingInfoExactly(GTUtility.translate("gt.blockcasings.ig.cable.name"), 1, false)
-            .addCasingInfoExactly(GTUtility.translate("ig.elevator.structure.FrameNeutronium"), 56, false)
-            .addCasingInfoExactly(GTUtility.translate("ig.elevator.structure.Motor"), 88, true)
-            .addEnergyHatch(GTUtility.translate("ig.elevator.structure.AnyBaseCasingWithHintNumber1"), 1)
-            .addOtherStructurePart(
-                GTUtility.translate("ig.elevator.structure.DataInputHatch"),
-                GTUtility.translate("ig.elevator.structure.AnyBaseCasingWithHintNumber1"),
+        tt.addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.ig.elevator.desc2"))
+            .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.ig.elevator.desc3"))
+            .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.ig.elevator.desc4"))
+            .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.ig.elevator.desc5"))
+            .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.ig.elevator.desc6"))
+            .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.ig.elevator.desc7"))
+            .addInfo(StatCollector.translateToLocal("gt.blockmachines.multimachine.ig.elevator.desc8"))
+            .addSupportAny()
+            .beginVariableStructureBlock(35, 47, 35, 47, 48, 48, false)
+            .addController("Front center of the base structure")
+            .addCasing("620", StatCollector.translateToLocal("gt.blockcasings.ig.1.name"), false)
+            .addCasing("88", StatCollector.translateToLocal("ig.elevator.structure.Motor"), true)
+            .addCasing("56", StatCollector.translateToLocal("ig.elevator.structure.FrameNeutronium"), false)
+            .addCasing("1", StatCollector.translateToLocal("gt.blockcasings.ig.cable.name"), false)
+            .addMiscHatch(
+                "0+",
+                StatCollector.translateToLocal("ig.elevator.structure.DataInputHatch"),
+                "Any bottom center casing",
                 1)
-            .addSubChannelUsage(GTStructureChannels.SE_MOTOR)
+            .addEnergyHatch("1+", "Any bottom center casing", 1)
+            .addInputHatch("0+", "Any bottom center casing", 1)
+            .addStructureInfo("")
+            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Base"))
+            .addCasing("800", StatCollector.translateToLocal("tile.DysonSwarmFloor.name"), false)
+            .addCasing("593-783", StatCollector.translateToLocal("gt.blockcasings.ig.0.name"), false)
+            .addCasing("360", StatCollector.translateToLocal("gt.blockcasings.ig.2.name"), false)
+            .addMiscHatch("0-12", "Space Elevator Module", "Surrounding base structure", 2)
+            .addStructureInfo("")
+            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Tiers.Extended"))
+            .addCasing("1232", StatCollector.translateToLocal("tile.DysonSwarmFloor.name"), false)
+            .addCasing("593-903", StatCollector.translateToLocal("gt.blockcasings.ig.0.name"), false)
+            .addCasing("548", StatCollector.translateToLocal("gt.blockcasings.ig.2.name"), false)
+            .addMiscHatch("0-24", "Space Elevator Module", "Surrounding base structure", 2)
+            .addStructureInfo("")
+            .addStructureFooter("Switch to extended in the controller")
+            .addSubChannel(GTStructureChannels.SE_MOTOR)
             .toolTipFinisher(GTAuthors.Authorminecraft7771);
         return tt;
     }
@@ -797,9 +802,8 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
      */
     @Override
     public String[] getInfoData() {
-        return new String[] { LIGHT_PURPLE + "Operational Data:" + RESET,
-            "Maintenance Status: " + (getRepairStatus() == getIdealStatus() ? GREEN + "Working perfectly" + RESET
-                : RED + "Has problems" + RESET),
+        return new String[] { "ig.infodata.hdr.operational_data",
+            getRepairStatus() == getIdealStatus() ? "ig.infodata.maintenance.ok" : "ig.infodata.maintenance.problems",
             "---------------------------------------------" };
     }
 
@@ -976,7 +980,7 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
             })
             .setPos(174, doesBindPlayerInventory() ? 132 : 156)
             .setSize(16, 16)
-            .addTooltip(GTUtility.translate("ig.button.travel"))
+            .addTooltip(StatCollector.translateToLocal("ig.button.travel"))
             .setTooltipShowUpDelay(TOOLTIP_DELAY));
     }
 

@@ -27,7 +27,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_GLOW;
 import static gregtech.api.util.GTStructureUtility.buildHatchAdder;
 import static gregtech.api.util.GTStructureUtility.chainAllGlasses;
-import static gregtech.api.util.GTUtility.getColoredTierNameFromTier;
 import static gregtech.api.util.GTUtility.validMTEList;
 
 import java.util.ArrayList;
@@ -70,6 +69,7 @@ import gregtech.api.enums.VoltageIndex;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEEnhancedMultiBlockBase;
@@ -135,7 +135,7 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
             'G',
             buildHatchAdder(MTECircuitAssemblyLine.class).atLeast(Energy)
                 .casingIndex(CASING_INDEX)
-                .hint(1)
+                .hint(3)
                 .buildAndChain(GregTechAPI.sBlockCasings3, 10))
         .addElement('g', chainAllGlasses(-1, (te, t) -> te.glassTier = t, te -> te.glassTier))
         .addElement('l', ofBlock(GregTechAPI.sBlockCasings2, 5)) // assembly line casings
@@ -143,13 +143,13 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
             'b',
             buildHatchAdder(MTECircuitAssemblyLine.class).atLeast(InputHatch, Maintenance)
                 .casingIndex(CASING_INDEX)
-                .hint(2)
+                .hint(1)
                 .disallowOnly(ForgeDirection.EAST, ForgeDirection.WEST)
                 .buildAndChain(GregTechAPI.sBlockCasings2, 0))
         .addElement('i', InputBus.newAny(CASING_INDEX, 3, ForgeDirection.DOWN))
         .addElement(
             'I',
-            buildHatchAdder(MTECircuitAssemblyLine.class).atLeast(InputHatch, InputBus, OutputBus)
+            buildHatchAdder(MTECircuitAssemblyLine.class).atLeast(InputBus, OutputBus)
                 .casingIndex(CASING_INDEX)
                 .hint(2)
                 .disallowOnly(ForgeDirection.EAST, ForgeDirection.WEST)
@@ -181,32 +181,37 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
                     + EnumChatFormatting.GRAY)
             .addInfo("Recipe tier in Circuit Assembler mode is at most Energy Hatch tier - 1")
             .addInfo("This mode supports Crafting Input Buffer/Bus and allows bus separation")
-            .beginVariableStructureBlock(2, 7, 3, 3, 3, 3, false)
-            .addStructureInfo("From Bottom to Top, Left to Right")
+            .beginVariableStructureBlock(3, 3, 2, 7, 3, 3, false)
+            .addController("First slice, 3rd layer")
+            .addEnergyHatch("1", "Any layer 3 casing", 3)
+            .addMaintenanceHatch("1", "Any layer 1 side casing", 1)
+            .addInputBus("1-6", "Bottom center of each slice", 2)
+            .addInputHatch("1", "Any layer 1 side casing", 1)
+            .addOutputBus("1", "Bottom center of last slice", 2)
+            .addStructureInfo("")
+            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Base"))
+            .addCasing("4", "Grate Machine Casing", false)
+            .addCasing("4", "EV+ Tiered Glass", false)
+            .addCasing("2", "Solid Steel Machine Casing", false)
+            .addCasing("2", "Assembly Line Casing", false)
+            .addStructureInfo("")
+            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Slice"))
             .addStructureInfo(
-                "Layer 1 - Solid Steel Machine Casing, Input bus (Last Output bus), Solid Steel Machine Casing")
+                EnumChatFormatting.WHITE + "Layer 3: "
+                    + EnumChatFormatting.GRAY
+                    + "Grate Machine Casing, Grate Machine Casing, Grate Machine Casing")
             .addStructureInfo(
-                "Layer 2 - " + getColoredTierNameFromTier((byte) 4)
-                    + "+ Tier Glass, Assembly Line Casing, "
-                    + getColoredTierNameFromTier((byte) 4)
-                    + "+ Tier Glass")
-            .addStructureInfo("Layer 3 - Grate Machine Casing")
-            .addStructureInfo("Up to 7 repeating slices, last is Output Bus")
-            .addController("Front of the first slice, 3rd layer")
-            .addOtherStructurePart(
-                "1x " + StatCollector.translateToLocal("GT5U.MBTT.EnergyHatch"),
-                "Any layer 3 casing",
-                1)
-            .addInputHatch("Any layer 1 casing", 2)
-            .addInputBus("As specified on layer 1", 2, 3)
-            .addOutputBus("As specified in final slice on layer 1", 2)
-            .addOtherStructurePart(
-                StatCollector
-                    .translateToLocalFormatted("tooltip.bw.structure.tier_glass", getColoredTierNameFromTier((byte) 4)),
-                "As specified on layer 2",
-                5)
-            .addMaintenanceHatch("Any layer 1 casing", 2)
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+                EnumChatFormatting.WHITE + "Layer 2: "
+                    + EnumChatFormatting.GRAY
+                    + "EV+ Tiered Glass, Assembly Line Casing, EV+ Tiered Glass")
+            .addStructureInfo(
+                EnumChatFormatting.WHITE + "Layer 1: "
+                    + EnumChatFormatting.GRAY
+                    + "Solid Steel Machine Casing, Input Bus, Solid Steel Machine Casing")
+            .addStructureInfo("")
+            .addStructureFooter("Up to 7 total slices, each one allows for 1 more item in recipes")
+            .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.length"))
+            .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         return tt;
     }
@@ -465,9 +470,8 @@ public class MTECircuitAssemblyLine extends MTEEnhancedMultiBlockBase<MTECircuit
         String[] oldInfo = super.getInfoData();
         this.infoDataBuffer = new String[oldInfo.length + 1];
         System.arraycopy(oldInfo, 0, this.infoDataBuffer, 0, oldInfo.length);
-        this.infoDataBuffer[oldInfo.length] = StatCollector.translateToLocalFormatted(
-            "tooltip.cal.imprintedWith",
-            EnumChatFormatting.YELLOW + this.getTypeForDisplay());
+        this.infoDataBuffer[oldInfo.length] = IGregTechDeviceInformation
+            .encode("tooltip.cal.imprintedWith", EnumChatFormatting.YELLOW + this.getTypeForDisplay());
         return this.infoDataBuffer;
     }
 

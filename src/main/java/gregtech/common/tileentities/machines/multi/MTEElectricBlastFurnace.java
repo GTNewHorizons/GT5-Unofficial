@@ -47,6 +47,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.recipe.RecipeMap;
@@ -145,18 +146,18 @@ public class MTEElectricBlastFurnace extends MTEAbstractMultiFurnace<MTEElectric
                     + "Perfect Overclock")
             .addInfo("That means the EBF will reduce recipe time by a factor 4 instead of 2 (giving 100% efficiency)")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(3, 4, 3, true)
+            .beginStructureBlock(3, 3, 4, true)
             .addController("Front bottom center")
-            .addCasingInfoRange("Heat Proof Machine Casing", 0, 15, false)
-            .addCasingInfoExactly("Heating Coil", 16, true)
-            .addEnergyHatch("Any bottom layer Casing", 1)
-            .addMaintenanceHatch("Any bottom layer Casing", 1)
-            .addMufflerHatch("Top middle", 2)
-            .addInputBus("Any bottom layer Casing", 1)
-            .addInputHatch("Any bottom layer Casing", 1)
-            .addOutputBus("Any bottom layer Casing", 1)
-            .addOutputHatch("Any Heat Proof Machine Casing", 3)
-            .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
+            .addCasing("16", "Heating Coil", true)
+            .addCasing("0-12", "Heat Proof Machine Casing", false)
+            .addEnergyHatch("1+", "Any bottom casing", 1)
+            .addMaintenanceHatch("1", "Any bottom casing", 1)
+            .addMufflerHatch("1", "Top center casing", 2)
+            .addInputAny("1+", "Any bottom casing", 1)
+            .addOutputAny("1+", "Any bottom casing for solids/liquids, any top casing for gases", 1)
+            .addAir("Interior of the structure")
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
         return tt;
     }
@@ -228,17 +229,17 @@ public class MTEElectricBlastFurnace extends MTEAbstractMultiFurnace<MTEElectric
             errors.add(StructureErrorRegistry.COIL_LEVEL_NOT_ENOUGH);
         }
 
+        checkHasEnergyHatch(errors);
         checkHasMaintenanceHatch(errors);
         checkHasAnyInput(errors);
         checkHasAnyOutput(errors);
-        checkHasEnergyHatch(errors);
 
         this.mHeatingCapacity = (int) getCoilLevel().getHeat() + 100 * (GTUtility.getTier(getMaxInputVoltage()) - 2);
     }
 
     @Override
     public void getExtraInfoData(List<String> info) {
-        info.add(StatCollector.translateToLocalFormatted("GT5U.EBF.heat.s", formatNumber(mHeatingCapacity)));
+        info.add(IGregTechDeviceInformation.encode("GT5U.EBF.heat.s", formatNumber(mHeatingCapacity)));
     }
 
     @Override

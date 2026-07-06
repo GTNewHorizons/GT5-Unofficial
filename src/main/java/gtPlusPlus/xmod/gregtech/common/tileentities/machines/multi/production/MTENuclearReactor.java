@@ -114,18 +114,18 @@ public class MTENuclearReactor extends GTPPMultiBlockBase<MTENuclearReactor> imp
             .addInfo("Outputs U233 every 10 seconds, on average, while the reactor is running")
             .addInfo("Check NEI to see the other 3 outputs - they differ between fuels")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(7, 4, 7, true)
+            .beginStructureBlock(7, 7, 4, true)
             .addController("Front bottom center")
-            .addCasingInfoMin("Hastelloy-N Reactor Casing", 27, false)
-            .addCasingInfoMin("Reactor Shield Casing", 26, false)
-            .addInputHatch("Top or bottom layer edges", 1)
-            .addOutputHatch("Top or bottom layer edges", 1)
-            .addDynamoHatch("Top or bottom layer edges", 1)
-            .addMufflerHatch("Top 3x3", 1)
-            .addStructureInfo("All dynamos must be between EV and LuV tier.")
-            .addStructureInfo("All other hatches must be IV+ tier.")
-            .addStructureInfo("4x Output Hatches or 1x Output Hatch (ME), 1+ Input Hatches")
-            .addStructureInfo("4x Dynamo Hatches, 4x Mufflers")
+            .addCasing("27-86", "Hastelloy-N Reactor Casing", false)
+            .addCasing("26", "Reactor Shield Casing", false)
+            .addDynamoHatch("4", "Any edge casing (EV-LuV)", 1)
+            .addMaintenanceHatch("1", "Any edge casing", 1)
+            .addMufflerHatch("4", "Any top 3x3 center casing (IV+)", 2)
+            .addInputHatch("1+", "Any edge casing (IV+)", 1)
+            .addOutputHatch("4+", "Any edge casing (IV+)", 1)
+            .addAir("Interior of the structure")
+            .addStructureInfo("")
+            .addStructureFooter("One ME output hatch can replace the four regular output hatches")
             .toolTipFinisher();
         return tt;
     }
@@ -221,7 +221,7 @@ public class MTENuclearReactor extends GTPPMultiBlockBase<MTENuclearReactor> imp
                     buildHatchAdder(MTENuclearReactor.class).atLeast(Muffler)
                         .adder(MTENuclearReactor::addNuclearReactorTopList)
                         .casingIndex(TAE.GTPP_INDEX(12))
-                        .hint(1)
+                        .hint(2)
                         .buildAndChain(onElementPass(x -> ++x.mCasing, ofBlock(ModBlocks.blockCasingsMisc, 12))))
                 .addElement('O', ofBlock(ModBlocks.blockCasingsMisc, 12))
                 .addElement('G', ofBlock(ModBlocks.blockCasingsMisc, 13))
@@ -248,14 +248,16 @@ public class MTENuclearReactor extends GTPPMultiBlockBase<MTENuclearReactor> imp
         checkCasingMin(errors, mCasing, 27);
         boolean hasNoMEOutputHatch = GTUtility.getMTEsOfType(mOutputHatches, MTEHatchOutputME.class)
             .isEmpty();
+        checkHatchExact(errors, Dynamo, 4);
+        checkHasMaintenanceHatch(errors);
+        checkHatchExact(errors, Muffler, 4);
+        checkHasInputHatch(errors);
+
         if (mOutputHatches.size() < 4 && hasNoMEOutputHatch) {
             errors
                 .add(StructureErrors.hatchCount(ErrorType.TOO_FEW, HatchElement.OutputHatch, mOutputHatches.size(), 4));
         }
-        checkHasInputHatch(errors);
-        checkHatchExact(errors, Dynamo, 4);
-        checkHatchExact(errors, Muffler, 4);
-        checkHasMaintenanceHatch(errors);
+
         for (MTEHatchMuffler hatch : mMufflerHatches) {
             if (hatch.getTierForStructure() < 5) {
                 errors.add(
@@ -308,18 +310,6 @@ public class MTENuclearReactor extends GTPPMultiBlockBase<MTENuclearReactor> imp
             this.turnCasingActive(false);
         }
     }
-
-    // Alk's Life Lessons from Greg.
-    /*
-     * [23:41:15] <GregoriusTechneticies> xdir and zdir are x2 and not x3 [23:41:26] <GregoriusTechneticies> thats you
-     * issue [23:44:33] <Alkalus> mmm? [23:44:49] <Alkalus> Should they be x3? [23:44:50] <GregoriusTechneticies> you
-     * just do a x2, what is for a 5x5 multiblock [23:45:01] <GregoriusTechneticies> x3 is for a 7x7 one [23:45:06]
-     * <Alkalus> I have no idea what that value does, tbh.. [23:45:15] <GregoriusTechneticies> its the offset [23:45:23]
-     * <Alkalus> Debugging checkMachine has been a pain and I usually trash designs that don't work straight up..
-     * [23:45:28] <GregoriusTechneticies> it determines the horizontal middle of the multiblock [23:45:47]
-     * <GregoriusTechneticies> which is in your case THREE blocks away from the controller [23:45:51] <Alkalus> Ahh
-     * [23:45:57] <GregoriusTechneticies> and not 2 [23:46:06] <Alkalus> Noted, thanks :D
-     */
 
     @Override
     public int getPollutionPerSecond(ItemStack aStack) {

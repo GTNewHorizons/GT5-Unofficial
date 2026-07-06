@@ -138,7 +138,7 @@ public abstract class MTENanochipAssemblyModuleBase<T extends MTEExtendedPowerMu
                 HatchElementBuilder.<B>builder()
                     .atLeast(ModuleHatchElement.VacuumConveyorHatch, InputBus, InputHatch, OutputHatch)
                     .casingIndex(CASING_INDEX_WHITE)
-                    .hint(2)
+                    .hint(3)
                     .buildAndChain(Casings.NanochipMeshInterfaceCasing.asElement()))
             .addElement('P', Casings.NanochipMeshInterfaceCasing.asElement())
             .addElement('Z', Casings.NanochipReinforcementCasing.asElement());

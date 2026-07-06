@@ -132,18 +132,19 @@ public class MTEAdvEBF extends GTPPMultiBlockBase<MTEAdvEBF> implements ISurviva
                     + EnumChatFormatting.LIGHT_PURPLE
                     + "Perfect Overclock")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(3, 4, 3, true)
+            .beginStructureBlock(3, 3, 4, true)
             .addController("Front bottom center")
-            .addCasingInfoMin(mCasingName, 6, false)
-            .addInputHatch("Any Casing", 1)
-            .addInputBus("Any Casing", 1)
-            .addOutputBus("Any Casing", 1)
-            .addOutputHatch("Any Casing", 1)
-            .addEnergyHatch("Any Casing", 1)
-            .addMufflerHatch("Any Casing", 1)
-            .addMaintenanceHatch("Any Casing", 1)
-            .addOtherStructurePart(mHatchName, "Any Casing", 1)
-            .addSubChannelUsage(GTStructureChannels.HEATING_COIL)
+            .addCasing("16", "Heating Coil", true)
+            .addCasing("6-13", mCasingName, false)
+            .addMiscHatch("1", mHatchName, "Any casing", 1)
+            .addEnergyHatch("1+", "Any casing", 1)
+            .addMaintenanceHatch("1", "Any casing", 1)
+            .addMufflerHatch("1", "Any casing", 1)
+            .addInputAny("1+", "Any casing", 1)
+            .addOutputAny("1+", "Any casing", 1)
+            .addAir("Interior of the structure")
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.HEATING_COIL)
             .toolTipFinisher();
         return tt;
     }
@@ -203,18 +204,16 @@ public class MTEAdvEBF extends GTPPMultiBlockBase<MTEAdvEBF> implements ISurviva
         if (getCoilLevel() == HeatingCoilLevel.None) {
             errors.add(StructureErrorRegistry.COIL_LEVEL_NOT_ENOUGH);
         }
-        checkHatch(errors);
-        checkHasEnergyHatch(errors);
-        checkHasAnyInput(errors);
-        checkHasAnyOutput(errors);
-    }
 
-    @Override
-    public void checkHatch(List<StructureError> errors) {
-        super.checkHatch(errors);
         if (mPyrotheumHatches.isEmpty()) {
             errors.add(StructureErrors.missingHatch(GregtechItemList.Hatch_Input_Pyrotheum.get(1)));
         }
+
+        checkHasEnergyHatch(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasMufflerHatch(errors);
+        checkHasAnyInput(errors);
+        checkHasAnyOutput(errors);
     }
 
     private boolean addPyrotheumHatch(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {

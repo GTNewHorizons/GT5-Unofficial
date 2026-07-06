@@ -64,20 +64,17 @@ public class MTERefinery extends GTPPMultiBlockBase<MTERefinery> implements ISur
             .addInfo("Only one Energy Hatch is allowed per Processing Unit")
             .addInfo("All recipe times in this multi are very long, watch out!")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(3, 9, 3, false)
+            .beginStructureBlock(3, 3, 9, false)
             .addController("Front bottom center")
-            .addCasingInfoMin("Hastelloy-X Structural Block", 7, false)
-            .addCasingInfoMin("Incoloy-DS Fluid Containment Block", 5, false)
-            .addCasingInfoMin("Reactor Shield Casing", 4, false)
-            .addCasingInfoMin("Hastelloy-N Sealant Block", 17, false)
-            .addInputHatch("Base platform", 1)
-            .addOutputHatch("Base platform", 1)
-            .addMufflerHatch("Base platform", 1)
-            .addMaintenanceHatch("Base platform", 1)
-            .addEnergyHatch("Base platform", 1)
-            .addStructureInfo("Muffler's Tier must be IV+")
-            .addStructureInfo("2+ Input Hatches, 1+ Output Hatches")
-            .addStructureInfo("1 Muffler Hatch, 1 Maintenance Hatch, 1 Energy Hatch")
+            .addCasing("17", "Hastelloy-N Sealant Block", false)
+            .addCasing("7-11", "Hastelloy-X Sealant Block", false)
+            .addCasing("5", "Incoloy-DS Fluid Containment Block", false)
+            .addCasing("4", "Reactor Shield Casing", false)
+            .addEnergyHatch("1", "Any hastelloy-X casing", 1)
+            .addMaintenanceHatch("1", "Any hastelloy-X casing", 1)
+            .addMufflerHatch("1", "Any hastelloy-X casing", 1)
+            .addInputHatch("2+", "Any hastelloy-X casing", 1)
+            .addOutputHatch("1+", "Any hastelloy-X casing", 1)
             .toolTipFinisher();
         return tt;
     }
@@ -179,13 +176,14 @@ public class MTERefinery extends GTPPMultiBlockBase<MTERefinery> implements ISur
         mCasing = 0;
         if (!checkPiece(mName, 1, 7, 0, errors)) return;
         checkCasingMin(errors, mCasing, 7);
+        checkOneEnergyHatch(errors);
+        checkOneMaintenanceHatch(errors);
+        checkOneMufflerHatch(errors);
         checkHatchMin(errors, InputHatch, 2);
         checkHatchMax(errors, InputHatch, 4);
         checkHasOutputHatch(errors);
         checkHatchMax(errors, OutputHatch, 2);
-        checkOneMufflerHatch(errors);
-        checkOneMaintenanceHatch(errors);
-        checkOneEnergyHatch(errors);
+
         if (errors.isEmpty()) {
             this.resetRecipeMapForAllInputHatches(this.getRecipeMap());
         }

@@ -161,6 +161,8 @@ public abstract class BaseTileEntity extends TileEntity implements IHasWorldObje
         return zCoord + side.offsetZ * multiplier;
     }
 
+    abstract boolean isTickDisabled();
+
     @Override
     public final boolean isServerSide() {
         if (worldObj == null) {

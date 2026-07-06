@@ -141,6 +141,8 @@ public class Textures {
 
             HIDDEN_FACE = create("HIDDEN_FACE"),
 
+            REINFORCED_GLASS = create("REINFORCED_GLASS"),
+
             MACHINE_CASING_TANK_1 = create("MACHINE_CASING_TANK_1"),
             MACHINE_CASING_TANK_2 = create("MACHINE_CASING_TANK_2"),
             MACHINE_CASING_TANK_3 = create("MACHINE_CASING_TANK_3"),
@@ -682,10 +684,19 @@ public class Textures {
             BLOCK_NAQUADAHPREIN = create("BLOCK_NAQUADAHPREIN"),
             BLOCK_NEUTRONIUMPREIN = create("BLOCK_NEUTRONIUMPREIN"),
             BLOCK_DEEP_DARK_RAW = create("BLOCK_DEEP_DARK_RAW"),
+            BLOCK_REINFORCED_CONCRETE = create("BLOCK_REINFORCED_CONCRETE"),
             BLOCK_IRREIN = create("BLOCK_IRREIN"),
             BLOCK_PLASCRETE = create("BLOCK_PLASCRETE"),
             BLOCK_TSREIN = create("BLOCK_TSREIN"),
             BLOCK_POWDER = create("BLOCK_POWDER"),
+
+            // IC2 Replacements
+            BLOCK_BOUNCE_PAD_SIDE = create("BLOCK_BOUNCE_PAD_SIDE"),
+            BLOCK_BOUNCE_PAD_TOP = create("BLOCK_BOUNCE_PAD_TOP"),
+            BLOCK_STICKY_PAD_TOP = create("BLOCK_STICKY_PAD_TOP"),
+            BLOCK_STICKY_PAD_SIDE = create("BLOCK_STICKY_PAD_SIDE"),
+            BLOCK_STICKY_PAD_BOTTOM = create("BLOCK_STICKY_PAD_BOTTOM"),
+            BLOCK_IRON_FENCE = create("BLOCK_IRON_FENCE"),
 
             OVERLAY_LOCKER = createOptional("OVERLAY_LOCKER"),
             OVERLAY_LOCKER_000 = createOptional("OVERLAY_LOCKER_000"),
@@ -781,6 +792,7 @@ public class Textures {
             OVERLAY_WIRELESS_MAINTENANCE_DETECTOR = create("OVERLAY_WIRELESS_MAINTENANCE_DETECTOR"),
             OVERLAY_WIRELESS_ACTIVITYDETECTOR = create("OVERLAY_WIRELESS_ACTIVITYDETECTOR"),
             OVERLAY_WIRELESS_CONTROLLER = create("OVERLAY_WIRELESS_CONTROLLER"),
+            OVERLAY_ADVANCED_WIRELESS_CONTROLLER = create("OVERLAY_ADVANCED_WIRELESS_CONTROLLER"),
             OVERLAY_METRICS_TRANSMITTER = create("OVERLAY_METRICS_TRANSMITTER"),
 
             OVERLAY_FLUID_STORAGE_MONITOR0 = create("OVERLAY_FLUID_STORAGE_MONITOR0"),
@@ -800,6 +812,7 @@ public class Textures {
             OVERLAY_FLUID_STORAGE_MONITOR14 = create("OVERLAY_FLUID_STORAGE_MONITOR14"),
 
             OVERLAY_DTPF_OFF = createOptional("OVERLAY_DTPF_OFF"),
+            OVERLAY_DTPF_OFF_GLOW = createOptional("OVERLAY_DTPF_OFF_GLOW"),
             OVERLAY_DTPF_ON = createOptional("OVERLAY_DTPF_ON"),
             OVERLAY_FUSION1 = createOptional("OVERLAY_FUSION1"),
             OVERLAY_FUSION1_GLOW = createOptional("OVERLAY_FUSION1_GLOW"),
@@ -1444,6 +1457,7 @@ public class Textures {
             OVERLAY_SIDE_RTG = createOptional("OVERLAY_SIDE_RTG"),
 
             OVERLAY_CHARCOAL_PIT = createOptional("OVERLAY_CHARCOAL_PIT"),
+            OVERLAY_CHARCOAL_PIT_GLOW = createOptional("OVERLAY_CHARCOAL_PIT_GLOW"),
             OVERLAY_CHARCOAL_PIT_ACTIVE = createOptional("OVERLAY_CHARCOAL_PIT_ACTIVE"),
             OVERLAY_CHARCOAL_PIT_ACTIVE_GLOW = createOptional("OVERLAY_CHARCOAL_PIT_ACTIVE_GLOW"),
 
@@ -1946,7 +1960,9 @@ public class Textures {
             PIPE_RESTRICTOR_LR = create("PIPE_RESTRICTOR_LR"),
 
             OVERLAY_ME_HATCH = createOptional("OVERLAY_ME_HATCH"),
+            OVERLAY_ME_HATCH_GLOW = createOptional("OVERLAY_ME_HATCH_GLOW"),
             OVERLAY_ME_HATCH_ACTIVE = createOptional("OVERLAY_ME_HATCH_ACTIVE"),
+            OVERLAY_ME_HATCH_ACTIVE_GLOW = createOptional("OVERLAY_ME_HATCH_ACTIVE_GLOW"),
             OVERLAY_ME_INPUT_HATCH = createOptional("OVERLAY_ME_INPUT_HATCH"),
             OVERLAY_ME_INPUT_HATCH_ACTIVE = createOptional("OVERLAY_ME_INPUT_HATCH_ACTIVE"),
             OVERLAY_ME_INPUT_FLUID_HATCH = createOptional("OVERLAY_ME_INPUT_FLUID_HATCH"),
