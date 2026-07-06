@@ -54,7 +54,7 @@ public class TTMultiblockBaseGui<T extends TTMultiblockBase> extends MTEMultiBlo
             .childIf(multiblock.doesBindPlayerInventory(), this::createControllerSlot);
     }
 
-    private IWidget createControllerSlot() {
+    protected ItemSlot createControllerSlot() {
         return new ItemSlot()
             .slot(
                 new ModularSlot(multiblock.inventoryHandler, multiblock.getControllerSlotIndex()).singletonSlotGroup())

@@ -2441,6 +2441,9 @@ GT5U.gui.button.feature_enabled=Enabled
 GT5U.gui.button.feature_disabled=Disabled
 GT5U.gui.button.forbidden=§4Cannot change mode for this machine
 GT5U.gui.button.forbidden_while_running=§4Cannot change mode while running
+GT5U.gui.button.forbidden.reason=(No %s output slots)
+GT5U.gui.button.forbidden.reason.fluid=fluid
+GT5U.gui.button.forbidden.reason.item=item
 GT5U.gui.button.chunk_loading=Chunk Loading
 GT5U.gui.button.finite_mode=Finite Mode
 GT5U.gui.button.finite_mode_toggle=Toggle Finite Mode
@@ -2549,7 +2552,6 @@ GT5U.gui.text.backfiller_finished=§aWork complete
 GT5U.gui.text.recipe_result.backfiller_working=§aPouring concrete
 GT5U.gui.text.recipe_result.backfiller_no_concrete=§7No liquid concrete
 GT5U.gui.text.backfiller_current_area=§7Filling at y-level: §a%s
-GT5U.gui.text.shutdown_reason.overheated=§7HIP Unit overheated!
 GT5U.gui.text.pump_fluid_type=Fluid: §a%s
 GT5U.gui.text.pump_rate.1=Pumping rate: %s§r
 GT5U.gui.text.pump_rate.2= L/t
@@ -2783,6 +2785,7 @@ GT5U.gui.text.amperage=Amperage
 GT5U.gui.text.voltage=Voltage
 GT5U.gui.text.voltagetier=Voltage Tier
 GT5U.gui.text.ticks_between_refill=Ticks Between Refills
+GT5U.gui.text.shutdown_reason.overheat_fail=Shut down due to §coverheat
 GT5U.gui.text.recipe_result.no_bec_assembler=Condensate Observation Array Offline
 GT5U.gui.text.not_enough_parallels=Insufficient Parallels (Min Parallels Too High)
 GT5U.gui.text.shutdown_reason.bec_clogged=More Than 3 Condensates Present
@@ -7034,6 +7037,28 @@ gt.softmallet.mode.2=Deactivation Mode
 gt.vajra.tooltip.flavor=Your friendly instant block breaker
 gt.vajra.tooltip.charge=Can be charged in any %s machine
 gt.vajra.tooltip.silk_touch=Shift right click air to toggle silk touch
+
+# Network Analyzer
+gt.NetworkAnalyzer.name=Network Analyzer
+gt.NetworkAnalyzer.bound=§aVisualising network at %s %s %s
+gt.NetworkAnalyzer.target_lost=§cNetwork Analyzer target block not found, binding cleared
+gt.NetworkAnalyzer.set=Mode changed to §e%s
+gt.NetworkAnalyzer.mode=Mode: §e%s
+gt.NetworkAnalyzer.mode.topology=Topology
+gt.NetworkAnalyzer.mode.critical=Critical
+gt.NetworkAnalyzer.mode.active=Active
+gt.NetworkAnalyzer.mode.amperage=Amperage
+gt.NetworkAnalyzer.mode.voltage=Voltage
+gt.NetworkAnalyzer.amperage.short=%s A / %s A
+gt.NetworkAnalyzer.amperage.input=↑%s A / %s A
+gt.NetworkAnalyzer.amperage.output=↓%s A / %s A
+gt.NetworkAnalyzer.amperage.full=↑%s A ↓%s A / %s A
+gt.NetworkAnalyzer.loss.short=%s%% loss
+gt.NetworkAnalyzer.loss.full=%s%% loss (%s V)
+gt.NetworkAnalyzer.voltage.burn=§cBurns
+gt.NetworkAnalyzer.voltage.burn.full=§cWire burns: %s V / %s V
+gt.NetworkAnalyzer.voltage.explosion=§cExplodes
+gt.NetworkAnalyzer.voltage.explosion.full=§cMachine explodes: %s V / %s V
 
 # GT++
 

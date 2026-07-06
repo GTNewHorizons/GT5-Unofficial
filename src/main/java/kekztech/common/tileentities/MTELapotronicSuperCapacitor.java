@@ -1080,6 +1080,16 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
         return true;
     }
 
+    @Override
+    public List<MTEHatch> getExoticEnergyHatches() {
+        return new ArrayList<>(mEnergyHatchesTT);
+    }
+
+    @Override
+    public List<MTEHatch> getExoticDynamoHatches() {
+        return new ArrayList<>(mDynamoHatchesTT);
+    }
+
     public boolean canUseWireless() {
         return wirelessCapableCapacitors() != 0;
     }

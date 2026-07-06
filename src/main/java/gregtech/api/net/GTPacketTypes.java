@@ -10,6 +10,8 @@ import bartworks.common.net.PacketServerJoined;
 import gregtech.api.net.cape.GTPacketBroadcastCapes;
 import gregtech.api.net.cape.GTPacketListCapes;
 import gregtech.api.net.cape.GTPacketSetCape;
+import gregtech.common.networkanalyzer.net.GTPacketNetworkAnalyzer;
+import gregtech.common.networkanalyzer.net.GTPacketNetworkAnalyzerMode;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 
 /**
@@ -51,8 +53,11 @@ public enum GTPacketTypes {
     LIST_CAPES(41, new GTPacketListCapes()),
     SET_CAPE(42, new GTPacketSetCape()),
     TOOLBOX_EVENT(43, new GTPacketToolboxEvent()),
-    OBSERVE_MACHINE(44, new PacketObserveMachine()),
-    OPEN_REMOTE_MTE_GUI(45, new PacketOpenRemoteMteGui()),
+    NETWORK_ANALYZER(44, new GTPacketNetworkAnalyzer()),
+    NETWORK_ANALYZER_MODE(45, new GTPacketNetworkAnalyzerMode()),
+    SYNC_TILE_RENDER_DATA_TO_CLIENT(46, new GTPacketClientMTERendererData()),
+    OBSERVE_MACHINE(47, new PacketObserveMachine()),
+    OPEN_REMOTE_MTE_GUI(48, new PacketOpenRemoteMteGui()),
 
     // merge conflict prevention comment, keep a trailing comma above
     ;
