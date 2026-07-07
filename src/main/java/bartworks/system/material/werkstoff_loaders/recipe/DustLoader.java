@@ -38,6 +38,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import gregtech.api.enums.TierEU;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -308,23 +309,24 @@ public class DustLoader implements IWerkstoffRunnable {
                             + "' (dust) removed due to no contents in material definition.");
                 }
             }
-
-            GTModHandler.addCraftingRecipe(
-                werkstoff.get(dust),
-                GTModHandler.RecipeBits.BUFFERED,
-                new Object[] { "TTT", "TTT", "TTT", 'T', werkstoff.get(dustTiny) });
-            GTModHandler.addCraftingRecipe(
-                werkstoff.get(dust),
-                GTModHandler.RecipeBits.BUFFERED,
-                new Object[] { "TT ", "TT ", 'T', WerkstoffLoader.getCorrespondingItemStack(dustSmall, werkstoff) });
-            GTModHandler.addCraftingRecipe(
-                WerkstoffLoader.getCorrespondingItemStack(dustSmall, werkstoff, 4),
-                GTModHandler.RecipeBits.BUFFERED,
-                new Object[] { " T ", 'T', werkstoff.get(dust) });
-            GTModHandler.addCraftingRecipe(
-                WerkstoffLoader.getCorrespondingItemStack(dustTiny, werkstoff, 9),
-                GTModHandler.RecipeBits.BUFFERED,
-                new Object[] { "T  ", 'T', werkstoff.get(dust) });
+            if (BWUtil.calculateRecipeEU(werkstoff, 16) > TierEU.RECIPE_IV) {
+                GTModHandler.addCraftingRecipe(
+                    werkstoff.get(dust),
+                    GTModHandler.RecipeBits.BUFFERED,
+                    new Object[]{"TTT", "TTT", "TTT", 'T', werkstoff.get(dustTiny)});
+                GTModHandler.addCraftingRecipe(
+                    werkstoff.get(dust),
+                    GTModHandler.RecipeBits.BUFFERED,
+                    new Object[]{"TT ", "TT ", 'T', WerkstoffLoader.getCorrespondingItemStack(dustSmall, werkstoff)});
+                GTModHandler.addCraftingRecipe(
+                    WerkstoffLoader.getCorrespondingItemStack(dustSmall, werkstoff, 4),
+                    GTModHandler.RecipeBits.BUFFERED,
+                    new Object[]{" T ", 'T', werkstoff.get(dust)});
+                GTModHandler.addCraftingRecipe(
+                    WerkstoffLoader.getCorrespondingItemStack(dustTiny, werkstoff, 9),
+                    GTModHandler.RecipeBits.BUFFERED,
+                    new Object[]{"T  ", 'T', werkstoff.get(dust)});
+            }
 
             GTValues.RA.stdBuilder()
                 .itemInputs(werkstoff.get(dustTiny, 9), ItemList.Schematic_Dust.get(0L))

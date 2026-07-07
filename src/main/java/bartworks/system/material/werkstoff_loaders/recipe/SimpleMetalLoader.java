@@ -36,6 +36,7 @@ import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.TextureSet;
+import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
@@ -58,14 +59,16 @@ public class SimpleMetalLoader implements IWerkstoffRunnable {
                     .eut(BWUtil.calculateRecipeEU(werkstoff, 16))
                     .addTo(latheRecipes);
 
-                GTModHandler.addCraftingRecipe(
-                    werkstoff.get(stick, 2),
-                    GTModHandler.RecipeBits.BITS_STD,
-                    new Object[] { "s", "X", 'X', werkstoff.get(stickLong) });
-                GTModHandler.addCraftingRecipe(
-                    werkstoff.get(stick),
-                    GTModHandler.RecipeBits.BITS_STD,
-                    new Object[] { "f ", " X", 'X', werkstoff.get(gem) });
+                if (BWUtil.calculateRecipeEU(werkstoff, 16) > TierEU.RECIPE_IV) {
+                    GTModHandler.addCraftingRecipe(
+                        werkstoff.get(stick, 2),
+                        GTModHandler.RecipeBits.BITS_STD,
+                        new Object[]{"s", "X", 'X', werkstoff.get(stickLong)});
+                    GTModHandler.addCraftingRecipe(
+                        werkstoff.get(stick),
+                        GTModHandler.RecipeBits.BITS_STD,
+                        new Object[]{"f ", " X", 'X', werkstoff.get(gem)});
+                }
 
                 GTValues.RA.stdBuilder()
                     .itemInputs(werkstoff.get(stick, 2))
@@ -90,22 +93,24 @@ public class SimpleMetalLoader implements IWerkstoffRunnable {
                 return;
             }
 
-            GTModHandler.addCraftingRecipe(
-                werkstoff.get(stick, 2),
-                GTModHandler.RecipeBits.BITS_STD,
-                new Object[] { "s", "X", 'X', werkstoff.get(stickLong) });
-            GTModHandler.addCraftingRecipe(
-                werkstoff.get(stick),
-                GTModHandler.RecipeBits.BITS_STD,
-                new Object[] { "f ", " X", 'X', werkstoff.get(ingot) });
-            GTModHandler.addCraftingRecipe(
-                werkstoff.get(plate),
-                GTModHandler.RecipeBits.BITS_STD,
-                new Object[] { "h", "X", "X", 'X', werkstoff.get(ingot) });
-            GTModHandler.addCraftingRecipe(
-                werkstoff.get(foil, 2),
-                GTModHandler.RecipeBits.BITS_STD,
-                new Object[] { "hX", 'X', werkstoff.get(plate) });
+            if (BWUtil.calculateRecipeEU(werkstoff, 16) > TierEU.RECIPE_IV) {
+                GTModHandler.addCraftingRecipe(
+                    werkstoff.get(stick, 2),
+                    GTModHandler.RecipeBits.BITS_STD,
+                    new Object[]{"s", "X", 'X', werkstoff.get(stickLong)});
+                GTModHandler.addCraftingRecipe(
+                    werkstoff.get(stick),
+                    GTModHandler.RecipeBits.BITS_STD,
+                    new Object[]{"f ", " X", 'X', werkstoff.get(ingot)});
+                GTModHandler.addCraftingRecipe(
+                    werkstoff.get(plate),
+                    GTModHandler.RecipeBits.BITS_STD,
+                    new Object[]{"h", "X", "X", 'X', werkstoff.get(ingot)});
+                GTModHandler.addCraftingRecipe(
+                    werkstoff.get(foil, 2),
+                    GTModHandler.RecipeBits.BITS_STD,
+                    new Object[]{"hX", 'X', werkstoff.get(plate)});
+            }
 
             GTValues.RA.stdBuilder()
                 .itemInputs(werkstoff.get(ingot))

@@ -36,6 +36,7 @@ import bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
 import bartworks.util.BWUtil;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
+import gregtech.api.enums.TierEU;
 import gregtech.api.objects.SubstituteFluidStack;
 import gregtech.api.util.GTModHandler;
 
@@ -86,10 +87,12 @@ public class CraftingMaterialLoader implements IWerkstoffRunnable {
                 .eut(BWUtil.calculateRecipeEU(werkstoff, 4))
                 .addTo(latheRecipes);
 
-            GTModHandler.addCraftingRecipe(
-                werkstoff.get(screw),
-                GTModHandler.RecipeBits.BITS_STD,
-                new Object[] { "fX", "X ", 'X', werkstoff.get(bolt) });
+            if (BWUtil.calculateRecipeEU(werkstoff, 16) > TierEU.RECIPE_IV) {
+                GTModHandler.addCraftingRecipe(
+                    werkstoff.get(screw),
+                    GTModHandler.RecipeBits.BITS_STD,
+                    new Object[]{"fX", "X ", 'X', werkstoff.get(bolt)});
+            }
 
             if (werkstoff.hasItemType(gem)) return;
 
@@ -106,16 +109,18 @@ public class CraftingMaterialLoader implements IWerkstoffRunnable {
                 .eut(BWUtil.calculateRecipeEU(werkstoff, 6 * tVoltageMultiplier))
                 .addTo(extruderRecipes);
 
-            GTModHandler.addCraftingRecipe(
-                werkstoff.get(ring),
-                GTModHandler.RecipeBits.BITS_STD,
-                new Object[] { "h ", "fX", 'X', werkstoff.get(stick) });
+            if (BWUtil.calculateRecipeEU(werkstoff, 16) > TierEU.RECIPE_IV) {
+                GTModHandler.addCraftingRecipe(
+                    werkstoff.get(ring),
+                    GTModHandler.RecipeBits.BITS_STD,
+                    new Object[]{"h ", "fX", 'X', werkstoff.get(stick)});
 
-            // Gear
-            GTModHandler.addCraftingRecipe(
-                werkstoff.get(gearGt),
-                GTModHandler.RecipeBits.BITS_STD,
-                new Object[] { "SPS", "PwP", "SPS", 'P', werkstoff.get(plate), 'S', werkstoff.get(stick) });
+                // Gear
+                GTModHandler.addCraftingRecipe(
+                    werkstoff.get(gearGt),
+                    GTModHandler.RecipeBits.BITS_STD,
+                    new Object[]{"SPS", "PwP", "SPS", 'P', werkstoff.get(plate), 'S', werkstoff.get(stick)});
+            }
 
             GTValues.RA.stdBuilder()
                 .itemInputs(werkstoff.get(ingot, 4), ItemList.Shape_Extruder_Gear.get(0L))
@@ -174,17 +179,20 @@ public class CraftingMaterialLoader implements IWerkstoffRunnable {
                 .eut(BWUtil.calculateRecipeEU(werkstoff, 8 * tVoltageMultiplier))
                 .addTo(extruderRecipes);
 
-            GTModHandler.addCraftingRecipe(
-                werkstoff.get(gearGtSmall),
-                GTModHandler.RecipeBits.BITS_STD,
-                new Object[] { " S ", "hPx", " S ", 'S', werkstoff.get(stick), 'P', werkstoff.get(plate) });
+            if (BWUtil.calculateRecipeEU(werkstoff, 16) > TierEU.RECIPE_IV) {
+                GTModHandler.addCraftingRecipe(
+                    werkstoff.get(gearGtSmall),
+                    GTModHandler.RecipeBits.BITS_STD,
+                    new Object[]{" S ", "hPx", " S ", 'S', werkstoff.get(stick), 'P', werkstoff.get(plate)});
 
-            // Rotor
-            GTModHandler.addCraftingRecipe(
-                werkstoff.get(rotor),
-                GTModHandler.RecipeBits.BITS_STD,
-                new Object[] { "PhP", "SRf", "PdP", 'P', werkstoff.get(plate), 'R', werkstoff.get(ring), 'S',
-                    werkstoff.get(screw) });
+                // Rotor
+                GTModHandler.addCraftingRecipe(
+                    werkstoff.get(rotor),
+                    GTModHandler.RecipeBits.BITS_STD,
+                    new Object[]{"PhP", "SRf", "PdP", 'P', werkstoff.get(plate), 'R', werkstoff.get(ring), 'S',
+                        werkstoff.get(screw)});
+            }
+
             GTValues.RA.stdBuilder()
                 .itemInputs(werkstoff.get(plate, 4), werkstoff.get(ring))
                 .itemOutputs(werkstoff.get(rotor))
