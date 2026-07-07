@@ -88,7 +88,6 @@ item.DNASampleFlask.name=DNA Sample Flask
 item.PlasmidCell.name=Plasmid Sample Flask
 item.DetergentPowder.name=Detergent Powder
 item.Agarose.name=Agarose
-item.IncubationModule.name=Incubation Module
 item.Cells.name=Bacterial Cells
 item.PlasmaMembrane.name=Plasma Membrane
 labModule.item.DNAExtractionModule.name=DNA Extraction Module
@@ -96,6 +95,8 @@ labModule.item.PCRThermoclyclingModule.name=PCR Thermocycle Module
 labModule.item.PlasmidSynthesisModule.name=Plasmid Synthesis Module
 labModule.item.TransformationModule.name=Transformation Module
 labModule.item.ClonalCellularSynthesisModule.name=Clonal Cellular Synthesis Module
+labModule.item.IncubationModule.name=Incubation Module
+
 BW_TieredGlass.name=Borosilicate Glass Block
 BW_TieredGlass.0.name=Borosilicate Glass Block
 BW_TieredGlass.1.name=Titanium Reinforced Borosilicate Glass Block
@@ -234,8 +235,8 @@ item.BurnedOutTRISOPellet.name=Burned Out TRISO pebble
 
 item.CircuitParts.Imprint.name=Circuit Imprint
 item.CircuitParts.Sliced.name=Sliced Circuit
-item.CircuitParts.RawImprintBoard.name=Raw Imprint supporting Board
-item.CircuitParts.ImprintBoard.name=Imprint supporting Board
+item.CircuitParts.RawImprintBoard.name=Raw Imprint Supporting Board
+item.CircuitParts.ImprintBoard.name=Imprint Supporting Board
 item.CircuitParts.Wrap.name=Wrap of %s
 
 itemGroup.bartworksMetaMaterials=BartWorks' Meta Materials
@@ -312,3 +313,29 @@ bw.bioname.pseudomonas_veronii.latin=Pseudomonas veronii
 bw.bioname.pseudomonas_veronii=Anaerobic Oil Bacteria
 bw.bioname.saccharomyces_escherichia.latin=Saccharomyces escherichia
 bw.bioname.saccharomyces_escherichia=General Purpose Fermenting Bacteria
+# This literally means something like barnad'ric tree trimmer
+bw.bioname.barnadafis_arboriatoris.latin=Barnadafis arboriatoris
+bw.bioname.barnadafis_arboriatoris=Barnadric Tree Cutter
+# how do we call this algae from the north sea on another planet? i like "TCetie's serrated water fruit"
+bw.bioname.tcetieis_fucus_serratus.latin=TCetieis fucus serratus
+bw.bioname.tcetieis_fucus_serratus=TCetie's serrated tang
+# this should mean its sludge of corynebacterium from mars but correct me if i'm wrong
+bw.bioname.corynebacterium_sludge_marsensis.latin=Limus corynebacterii marsensis
+bw.bioname.corynebacterium_sludge_marsensis=Martian corynebacterium sludge
+# this means something like "foreign guest's foreign act"
+bw.bioname.xenoxene_xenoxsis.latin=Xenoxene xenoxsis
+bw.bioname.xenoxene_xenoxsis=Xenoxene xenoxsis
+bw.bioname.ova_evolutionis.latin=Ova evolutionis
+bw.bioname.ova_evolutionis=Eggs of evolution
+bw.bioname.derivantur_cellula_evolutionis.latin=Derivantur cellula evolutionis
+bw.bioname.derivantur_cellula_evolutionis=Derived cells of evolution
+bw.bioname.cellula_biologicum_evolutione.latin=Cellula biologicum evolutione
+bw.bioname.cellula_biologicum_evolutione=Evolved cells of biology
+bw.bioname.binni_growth_medium.latin=Binni augeorus medium
+bw.bioname.binni_growth_medium=Binni growth medium
+bw.bioname.binni_bacteria.latin=Binni bacteria
+bw.bioname.binni_bacteria=Binni bacteria
+bw.bioname.mutagen_bacteria_a_spatio.latin=Mutagen bacteria a spatio
+bw.bioname.mutagen_bacteria_a_spatio=Mutagen bacteria from space
+bw.bioname.null.latin=Cimex remotum
+bw.bioname.null=Debug

@@ -345,6 +345,12 @@ public class MTEHatchOutputBusME extends MTEHatchOutputBus implements IPowerChan
     }
 
     @Override
+    public void notifyOutputSpaceChanged() {
+        // The provider detected its free space grew or its cell was swapped/repartitioned; re-check a blocked recipe.
+        notifyWatchers();
+    }
+
+    @Override
     public void onColorChangeServer(byte aColor) {
         provider.updateAE2ProxyColor();
     }
