@@ -309,7 +309,7 @@ public class DustLoader implements IWerkstoffRunnable {
                             + "' (dust) removed due to no contents in material definition.");
                 }
             }
-            if (BWUtil.calculateRecipeEU(werkstoff, 16) > TierEU.RECIPE_IV) {
+            if (werkstoff.getStats().getProcessingMaterialTierEU() < TierEU.RECIPE_IV) {
                 GTModHandler.addCraftingRecipe(
                     werkstoff.get(dust),
                     GTModHandler.RecipeBits.BUFFERED,

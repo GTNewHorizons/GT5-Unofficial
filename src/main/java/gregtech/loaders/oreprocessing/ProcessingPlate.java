@@ -123,16 +123,18 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 .addTo(fluidSolidifierRecipes);
         }
 
-        GTModHandler.addCraftingRecipe(
-            GTOreDictUnificator.get(OrePrefixes.foil, aMaterial, 2L),
-            BITS_STD,
-            new Object[] { "hX", 'X', OrePrefixes.plate.get(aMaterial) });
-
-        if (aMaterial == Materials.Paper) {
+        if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
             GTModHandler.addCraftingRecipe(
-                GTUtility.copyAmount(2, aStack),
-                BUFFERED,
-                new Object[] { "XXX", 'X', new ItemStack(Items.reeds, 1, WILDCARD) });
+                GTOreDictUnificator.get(OrePrefixes.foil, aMaterial, 2L),
+                BITS_STD,
+                new Object[]{"hX", 'X', OrePrefixes.plate.get(aMaterial)});
+
+            if (aMaterial == Materials.Paper) {
+                GTModHandler.addCraftingRecipe(
+                    GTUtility.copyAmount(2, aStack),
+                    BUFFERED,
+                    new Object[]{"XXX", 'X', new ItemStack(Items.reeds, 1, WILDCARD)});
+            }
         }
 
         if (aMaterial.mUnifiable && aMaterial.mMaterialInto == aMaterial) {

@@ -27,7 +27,7 @@ public class RecipeGenShapedCrafting extends RecipeGenBase {
     }
 
     private void generateRecipes(final Material material) {
-        if (material.vVoltageMultiplier > TierEU.RECIPE_IV) {
+        if (material.vVoltageMultiplier >= TierEU.IV) {
             return;
         }
         // Single Plate Shaped/Shapeless

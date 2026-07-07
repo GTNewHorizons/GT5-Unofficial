@@ -69,7 +69,7 @@ public class CrushedLoader implements IWerkstoffRunnable {
             GTModHandler.addSmeltingRecipe(werkstoff.get(dust), werkstoff.get(ingot));
         }
 
-        if (BWUtil.calculateRecipeEU(werkstoff, 16) > TierEU.RECIPE_IV) {
+        if (werkstoff.getStats().getProcessingMaterialTierEU() < TierEU.RECIPE_IV) {
             GTModHandler.addCraftingRecipe(
                 werkstoff.get(dustImpure),
                 GTModHandler.RecipeBits.BUFFERED,
