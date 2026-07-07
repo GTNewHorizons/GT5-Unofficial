@@ -396,7 +396,7 @@ public class RecipeGenOre extends RecipeGenBase {
 
                 ItemStack emptyCell = null;
                 if (mCellCount > 0) {
-                    emptyCell = ItemList.Cell_Empty.get(mCellCount);;
+                    emptyCell = ItemList.Cell_Empty.get(mCellCount);
                 }
 
                 ItemStack mainDust = material.getDust(material.smallestStackSizeWhenProcessing);
