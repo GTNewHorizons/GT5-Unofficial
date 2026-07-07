@@ -162,7 +162,9 @@ public class MTEIndustrialApiaryGui extends MTEBasicMachineBaseGui<MTEIndustrial
                     return theme.getWidgetTheme(GTWidgetThemes.TOGGLE_BUTTON_DISABLED);
                 return super.getWidgetThemeInternal(theme);
             }
-        }.value(new BooleanSyncValue(() -> machine.isAutoQueen() || machine.isAutomated(), machine::setAutoQueen).allowC2S())
+        }.value(
+            new BooleanSyncValue(() -> machine.isAutoQueen() || machine.isAutomated(), machine::setAutoQueen)
+                .allowC2S())
             .backgroundOverlay(GTGuiTextures.OVERLAY_SLOT_BEE_QUEEN, GuiTextures.REFRESH)
             .addTooltipStringLines(
                 machine.mTooltipCache.getData("GT5U.machines.industrialapiary.autoqueen.tooltip").text)
