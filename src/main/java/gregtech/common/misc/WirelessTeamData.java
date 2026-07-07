@@ -119,7 +119,12 @@ public class WirelessTeamData implements ITeamData {
                 wirelessDataStricks.put(entry.getLongKey(), entry.getValue());
             }
         }
-
+        prevWirelessTeamData.registeredDataOutputs -= toRemove.size();
+        prevWirelessTeamData.downloadCounter = 0;
+        prevWirelessTeamData.dirtySticks = true;
+        this.registeredDataOutputs += toRemove.size();
+        this.downloadCounter = 0;
+        this.dirtySticks = true;
         toRemove.forEach(wirelessDataStricks::remove);
     }
 
