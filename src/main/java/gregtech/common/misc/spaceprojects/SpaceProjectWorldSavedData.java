@@ -53,10 +53,18 @@ import gregtech.common.misc.spaceprojects.interfaces.ISpaceProject.ISP_Upgrade;
 
 /**
  * This class is used so that I can write and read to a json file before the world is opened. On server starting is too
- * late for this as the data stored in the files is needed before entities load their nbt data
+ * late for this as the data stored in the files is needed before entities load their nbt data.<br />
+ * Related to {@link SpaceProjectManager}
  *
  * @author BlueWeabo
+ *
+ * @see com.gtnewhorizon.gtnhlib.teams.ITeamData ITeamData
+ * @see com.gtnewhorizon.gtnhlib.teams.Team Team
+ * @see com.gtnewhorizon.gtnhlib.teams.TeamManager TeamManager
+ *
+ * @deprecated This kind of team and data management should be migrated to {@link com.gtnewhorizon.gtnhlib.teams.Team#getData(String) Team#getData(String)}.
  */
+@Deprecated
 public class SpaceProjectWorldSavedData extends WorldSavedData {
 
     public static SpaceProjectWorldSavedData INSTANCE;
