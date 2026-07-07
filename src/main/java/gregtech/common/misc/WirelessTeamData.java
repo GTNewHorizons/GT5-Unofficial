@@ -23,16 +23,18 @@ public class WirelessTeamData implements ITeamData {
     BigInteger wirelessEnergy = BigInteger.ZERO;
 
     /**
-     *  This data is volatile on purpose and should not be saved to disk,
-     *  as it's technically already stored within each providing databank & wireless databank connector hatch.
-     *  It's supposed to be loaded {@value DOWNLOAD_TICK_OFFSET} ticks after the first tick of the loaded databanks after the world was loaded.
-     *  Structure: {@literal <long packedHatchCoord, Set<AsslineRecipe>>}
+     * This data is volatile on purpose and should not be saved to disk,
+     * as it's technically already stored within each providing databank & wireless databank connector hatch.
+     * It's supposed to be loaded {@value DOWNLOAD_TICK_OFFSET} ticks after the first tick of the loaded databanks after
+     * the world was loaded.
+     * Structure: {@literal <long packedHatchCoord, Set<AsslineRecipe>>}
      */
     private final Long2ObjectOpenHashMap<ObjectOpenHashSet<GTRecipe.RecipeAssemblyLine>> wirelessDataStricks = new Long2ObjectOpenHashMap<>(
         8,
         0.9f);
     /**
-     * Indicator for each wireless assembly line connector hatch that it may update at the next checking interval of ticks % {@value IO_TICK_RATE} = {@value DOWNLOAD_TICK_OFFSET}.
+     * Indicator for each wireless assembly line connector hatch that it may update at the next checking interval of
+     * ticks % {@value IO_TICK_RATE} = {@value DOWNLOAD_TICK_OFFSET}.
      * Accessed via {@link #hasDirtySticks()} by the assembly lines.
      */
     private boolean dirtySticks = false;

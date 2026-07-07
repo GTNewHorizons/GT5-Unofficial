@@ -30,7 +30,6 @@ import tectech.util.CommonValues;
 
 public class MTEHatchWirelessDataItemsInput extends MTEHatchDataAccess {
 
-
     private ObjectOpenHashSet<RecipeAssemblyLine> recipes = null;
     private boolean forceUpdate = false;
 
