@@ -21,8 +21,6 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
@@ -57,7 +55,6 @@ import tectech.thing.metaTileEntity.hatch.MTEHatchWirelessDataItemsOutput;
 import tectech.thing.metaTileEntity.multi.base.TTMultiblockBase;
 import tectech.thing.metaTileEntity.multi.base.render.TTRenderedExtendedFacingTexture;
 
-@IMetaTileEntity.SkipGenerateDescription
 public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructable {
 
     // region variables
@@ -65,6 +62,7 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
     private final ArrayList<MTEHatchWirelessDataItemsOutput> eWirelessStacksDataOutputs = new ArrayList<>();
     private final ArrayList<MTEHatchDataAccess> eDataAccessHatches = new ArrayList<>();
     private boolean slave = false;
+    private boolean dirty = false;
     private boolean wirelessModeEnabled = false;
     // endregion
 
@@ -114,33 +112,46 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
     @Override
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        // spotless:off
-        tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.em.databank.type"))
-            .addMarkdown(new ResourceLocation("gregtech", "data-bank"))
+        tt.addMachineType(translateToLocal("gt.blockmachines.multimachine.em.databank.type")) // Machine Type: Data
+                                                                                              // Bank, DB
+            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.databank.desc.0")) // Controller block of
+                                                                                           // the Data Bank
+            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.databank.desc.1")) // Used to supply
+                                                                                           // Assembling Lines
+            // with more Data Sticks
+            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.databank.desc.2")) // and give multiple
+                                                                                           // Assembling Lines
+                                                                                           // access to
+                                                                                           // the same Data
+            .addInfo(translateToLocal("gt.blockmachines.multimachine.em.databank.desc.3")) // Use screwdriver to
+                                                                                           // toggle
+                                                                                           // wireless mode
             .addSupportAny()
-            .beginStructureBlock(5, 3, 3, false)
-            .addController(translateToLocal("gt.mbtt.structure.front_center_2nd_layer"))
-            .addCasing("18", translateToLocal("gt.blockcasingsTT.2.name"), false)
-            .addCasing("3-16", translateToLocal("gt.blockcasingsTT.1.name"), false)
-            .addCasing("0-6", translateToLocal("gt.blockcasingsTT.0.name"), false)
-            .addEnergyHatch("1+", translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"), 1)
-            .addMaintenanceHatch("1", translateToLocal("tt.keyword.Structure.AnyHighPowerCasing"), 1)
-            .addMiscHatch("1+", translateToLocal("tt.keyword.Structure.DataAccessHatch"), translateToLocal("tt.keyword.Structure.AnyComputerCasing"), 2)
-            .addMiscHatch("1+", translateToLocal("gt.blockmachines.hatch.dataoutass.tier.07.name"), translateToLocal("tt.keyword.Structure.AnyComputerCasing"), 2)
-            .addMiscHatch("0+", translateToLocal("gt.blockmachines.hatch.datainass.tier.07.name"), translateToLocal("tt.keyword.Structure.AnyComputerCasing"), 2)
-            .addStructureInfo("")
-            .addStructureFooter(translateToLocal("tt.keyword.Structure.DaisyChainAssemblyLine"))
+            .beginStructureBlock(3, 5, 3, false)
+            .addController("Front center, 2nd layer")
+            .addCasing("18", "Computer Heat Vent", false)
+            .addCasing("3-16", "Computer Casing", false)
+            .addCasing("0-6", "High Power Casing", false)
+            .addMiscHatch("1+", translateToLocal("tt.keyword.Structure.DataAccessHatch"), "Any computer casing", 2)
+            .addMiscHatch(
+                "1+",
+                translateToLocal("gt.blockmachines.hatch.dataoutass.tier.07.name"),
+                "Any computer casing",
+                2)
+            .addMiscHatch(
+                "0+",
+                translateToLocal("gt.blockmachines.hatch.datainass.tier.07.name"),
+                "Any computer casing",
+                2)
+            .addEnergyHatch("1+", "Any high power casing", 1)
+            .addMaintenanceHatch("1", "Any high power casing", 1)
             .toolTipFinisher();
-        // spotless:on
         return tt;
     }
 
     @Override
     public void checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack,
         List<StructureError> errors) {
-        eDataAccessHatches.clear();
-        eStacksDataOutputs.clear();
-        eWirelessStacksDataOutputs.clear();
         slave = false;
         if (!checkPiece("main", 2, 1, 0, errors)) return;
         if (eDataAccessHatches.isEmpty()) {
@@ -154,6 +165,18 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
     }
 
     @Override
+    public void clearHatches() {
+        super.clearHatches();
+        // avoid duplicate calls to addWatcher resulting in duplicate notifyWatchers calls
+        for (MTEHatchDataAccess dataAccess : eDataAccessHatches) {
+            dataAccess.removeWatcher(this);
+        }
+        eDataAccessHatches.clear();
+        eStacksDataOutputs.clear();
+        eWirelessStacksDataOutputs.clear();
+    }
+
+    @Override
     @NotNull
     protected CheckRecipeResult checkProcessing_EM() {
         if (!eDataAccessHatches.isEmpty() && (!eStacksDataOutputs.isEmpty() || !eWirelessStacksDataOutputs.isEmpty())) {
@@ -162,7 +185,6 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
                 + (long) (eStacksDataOutputs.size() + eWirelessStacksDataOutputs.size()) * eDataAccessHatches.size();
             mMaxProgresstime = 20;
             mEfficiencyIncrease = 10000;
-            this.lEUt = this.mEUt;
             return SimpleCheckRecipeResult.ofSuccess("providing_data");
         }
         return SimpleCheckRecipeResult.ofFailure("no_data");
@@ -170,6 +192,8 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
 
     @Override
     public void outputAfterRecipe_EM() {
+        if (!this.dirty) return;
+
         HashSet<RecipeAssemblyLine> availableRecipes = new HashSet<>();
 
         for (MTEHatchDataAccess dataAccess : validMTEList(eDataAccessHatches)) {
@@ -186,6 +210,7 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
             if (wirelessModeEnabled) {
                 for (MTEHatchWirelessDataItemsOutput hatch : validMTEList(eWirelessStacksDataOutputs)) {
                     hatch.dataPacket = new ALRecipeDataPacket(recipeArray);
+                    hatch.dirty = true;
                 }
             }
         } else {
@@ -195,8 +220,11 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
 
             for (MTEHatchWirelessDataItemsOutput hatch : validMTEList(eWirelessStacksDataOutputs)) {
                 hatch.dataPacket = null;
+                hatch.dirty = true;
             }
         }
+
+        this.dirty = false;
     }
 
     @Override
@@ -214,35 +242,54 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
         return SoundResource.TECTECH_MACHINES_FX_HIGH_FREQ;
     }
 
+    // called by the hatches' notifyWatchers
+    @Override
+    public void scheduleRecipeCheckImmediate() {
+        this.dirty = true;
+    }
+
+    // be dirty on first tick, so that the cache gets primed
+    @Override
+    public void onFirstTick_EM(IGregTechTileEntity bmTE) {
+        super.onFirstTick_EM(bmTE);
+
+        if (!bmTE.isServerSide()) return;
+
+        this.dirty = true;
+    }
+
     public final boolean addDataBankHatchToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
         if (aTileEntity == null) {
             return false;
         }
 
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-        switch (aMetaTileEntity) {
-            case null -> {
-                return false;
-            }
-            case MTEHatchWirelessDataItemsOutput mteHatchWirelessDataItemsOutput -> {
-                mteHatchWirelessDataItemsOutput.updateTexture(aBaseCasingIndex);
-                return eWirelessStacksDataOutputs.add(mteHatchWirelessDataItemsOutput);
-            }
-            case MTEHatchDataItemsOutput mteHatchDataItemsOutput -> {
-                ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-                return eStacksDataOutputs.add(mteHatchDataItemsOutput);
-            }
-            case MTEHatchDataAccess hatch when !(aMetaTileEntity instanceof MTEHatchDataItemsInput) -> {
-                ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-                return eDataAccessHatches.add(hatch);
-            }
-            case MTEHatchDataItemsInput hatch -> {
-                ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-                slave = true;
-                return eDataAccessHatches.add(hatch);
-            }
-            default -> {
-            }
+        if (aMetaTileEntity == null) {
+            return false;
+        }
+
+        if (aMetaTileEntity instanceof MTEHatchWirelessDataItemsOutput) {
+            ((MTEHatchWirelessDataItemsOutput) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            return eWirelessStacksDataOutputs.add((MTEHatchWirelessDataItemsOutput) aMetaTileEntity);
+        }
+
+        if (aMetaTileEntity instanceof MTEHatchDataItemsOutput) {
+            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            return eStacksDataOutputs.add((MTEHatchDataItemsOutput) aMetaTileEntity);
+        }
+
+        if (aMetaTileEntity instanceof MTEHatchDataAccess hatch
+            && !(aMetaTileEntity instanceof MTEHatchDataItemsInput)) {
+            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            hatch.addWatcher(this);
+            return eDataAccessHatches.add(hatch);
+        }
+
+        if (aMetaTileEntity instanceof MTEHatchDataItemsInput hatch) {
+            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            slave = true;
+            hatch.addWatcher(this);
+            return eDataAccessHatches.add(hatch);
         }
 
         return false;
@@ -253,6 +300,7 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
         ItemStack aTool) {
         if (getBaseMetaTileEntity().isServerSide()) {
             wirelessModeEnabled = !wirelessModeEnabled;
+            this.dirty = true;
             if (wirelessModeEnabled) {
                 GTUtility.sendChatToPlayer(aPlayer, "Wireless mode enabled");
                 WirelessComputationPacket.enableWirelessNetWork(getBaseMetaTileEntity());
@@ -297,28 +345,28 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
 
     private enum DataBankHatches implements IHatchElement<MTEDataBank> {
 
-        DataStick("GT5U.MBTT.DataAccessHatch", MTEHatchDataAccess.class) {
+        DataStick(MTEHatchDataAccess.class) {
 
             @Override
             public long count(MTEDataBank t) {
                 return t.eDataAccessHatches.size();
             }
         },
-        OutboundConnector("GT5U.MBTT.DataBankTransmission", MTEHatchDataItemsOutput.class) {
+        OutboundConnector(MTEHatchDataItemsOutput.class) {
 
             @Override
             public long count(MTEDataBank t) {
                 return t.eStacksDataOutputs.size();
             }
         },
-        InboundConnector("GT5U.MBTT.AssemblyLineReception", MTEHatchDataItemsInput.class) {
+        InboundConnector(MTEHatchDataItemsInput.class) {
 
             @Override
             public long count(MTEDataBank t) {
                 return t.eDataAccessHatches.size();
             }
         },
-        WirelessOutboundConnector("GT5U.MBTT.WirelessDataBankOutput", MTEHatchWirelessDataItemsOutput.class) {
+        WirelessOutboundConnector(MTEHatchWirelessDataItemsOutput.class) {
 
             @Override
             public long count(MTEDataBank t) {
@@ -326,12 +374,10 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
             }
         };
 
-        private final String name;
         private final List<? extends Class<? extends IMetaTileEntity>> mteClasses;
 
         @SafeVarargs
-        DataBankHatches(String name, Class<? extends IMetaTileEntity>... mteClasses) {
-            this.name = name;
+        DataBankHatches(Class<? extends IMetaTileEntity>... mteClasses) {
             this.mteClasses = Collections.unmodifiableList(Arrays.asList(mteClasses));
         }
 
@@ -343,16 +389,6 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
         @Override
         public IGTHatchAdder<? super MTEDataBank> adder() {
             return MTEDataBank::addDataBankHatchToMachineList;
-        }
-
-        @Override
-        public String getDisplayName() {
-            return StatCollector.translateToLocal(name);
-        }
-
-        @Override
-        public String getDescriptionLangKey() {
-            return name;
         }
     }
 

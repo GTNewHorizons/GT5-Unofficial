@@ -19,7 +19,7 @@ import com.gtnewhorizon.gtnhlib.teams.Team;
 import com.gtnewhorizon.gtnhlib.teams.TeamDataRegistry;
 import com.gtnewhorizon.gtnhlib.teams.TeamManager;
 
-import gregtech.common.misc.WirelessEnergyTeamData;
+import gregtech.common.misc.WirelessTeamData;
 
 class IGlobalWirelessEnergy_UnitTest {
 
@@ -27,7 +27,7 @@ class IGlobalWirelessEnergy_UnitTest {
 
     @BeforeAll
     static void registerWirelessTeamData() {
-        TeamDataRegistry.register(WirelessEnergyTeamData.DATA_KEY, WirelessEnergyTeamData::new);
+        TeamDataRegistry.register(WirelessTeamData.DATA_KEY, WirelessTeamData::new);
     }
 
     @AfterEach

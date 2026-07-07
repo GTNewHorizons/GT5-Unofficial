@@ -6,10 +6,7 @@ import static tectech.thing.metaTileEntity.hatch.MTEHatchDataConnector.EM_D_ACTI
 import static tectech.thing.metaTileEntity.hatch.MTEHatchDataConnector.EM_D_CONN;
 import static tectech.thing.metaTileEntity.hatch.MTEHatchDataConnector.EM_D_SIDES;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.LinkedHashSet;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -20,22 +17,21 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import gregtech.api.enums.Dyes;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchDataAccess;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.AssemblyLineUtils;
 import gregtech.api.util.GTRecipe.RecipeAssemblyLine;
+import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import tectech.mechanics.dataTransport.ALRecipeDataPacket;
 import tectech.mechanics.pipe.IConnectsToDataPipe;
 import tectech.util.CommonValues;
 
-@IMetaTileEntity.SkipGenerateDescription
 public class MTEHatchDataItemsInput extends MTEHatchDataAccess implements IConnectsToDataPipe {
 
     public boolean delDelay = true;
-    private List<RecipeAssemblyLine> recipes;
+    private ObjectOpenHashSet<RecipeAssemblyLine> recipes;
 
     public MTEHatchDataItemsInput(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier);
@@ -118,12 +114,12 @@ public class MTEHatchDataItemsInput extends MTEHatchDataAccess implements IConne
     }
 
     public void setContents(ALRecipeDataPacket iIn) {
-        List<RecipeAssemblyLine> oldRecipes = recipes;
+        ObjectOpenHashSet<RecipeAssemblyLine> oldRecipes = recipes;
         if (iIn == null) {
             recipes = null;
         } else {
             if (iIn.getContent().length > 0) {
-                recipes = new ArrayList<>(Arrays.asList(iIn.getContent()));
+                recipes = new ObjectOpenHashSet<>(iIn.getContent());
                 delDelay = true;
             } else {
                 recipes = null;
@@ -138,7 +134,8 @@ public class MTEHatchDataItemsInput extends MTEHatchDataAccess implements IConne
     public List<RecipeAssemblyLine> getAssemblyLineRecipes() {
         if (recipes == null) return Collections.emptyList();
 
-        return recipes;
+        return recipes.stream()
+            .toList();
     }
 
     @Override
@@ -160,13 +157,13 @@ public class MTEHatchDataItemsInput extends MTEHatchDataAccess implements IConne
         NBTTagCompound stacksTag = aNBT.getCompoundTag("data_stacks");
         int count = stacksTag.getInteger("count");
         if (count > 0) {
-            LinkedHashSet<RecipeAssemblyLine> loaded = new LinkedHashSet<>();
+            recipes = new ObjectOpenHashSet<>();
 
             for (int i = 0; i < count; i++) {
-                loaded.addAll(AssemblyLineUtils.loadRecipe(stacksTag.getCompoundTag(Integer.toString(i))));
+                recipes.addAll(AssemblyLineUtils.loadRecipe(stacksTag.getCompoundTag(Integer.toString(i))));
             }
 
-            recipes = loaded.isEmpty() ? null : new ArrayList<>(loaded);
+            if (recipes.isEmpty()) recipes = null;
         }
     }
 
@@ -189,7 +186,7 @@ public class MTEHatchDataItemsInput extends MTEHatchDataAccess implements IConne
 
     @Override
     public String[] getDescription() {
-        return new String[] { translateToLocal("gt.blockmachines.hatch.datainass.desc.0"),
+        return new String[] { CommonValues.TEC_MARK_EM, translateToLocal("gt.blockmachines.hatch.datainass.desc.0"),
             translateToLocal("gt.blockmachines.hatch.datainass.desc.1"),
             EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.hatch.datainass.desc.2") };
     }
