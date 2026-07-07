@@ -29,6 +29,7 @@ public class ArmorRadialMenuSession {
     private final EntityPlayer player;
     private final PanelSyncManager syncManager;
     private final NBTTagCompound nbt;
+    private List<ArmorContext.ArmorContextImpl> cachedContexts = null;
 
     private final Set<String> visibleSet = new HashSet<>();
     private final List<String> currentOrder = new ArrayList<>();
@@ -90,55 +91,51 @@ public class ArmorRadialMenuSession {
 
     public boolean getActionToggleState(String actionId) {
         ArmorAction action = ArmorActionManager.getAction(actionId);
-        if (action == null) return false;
+        if (action == null || action.getBehaviorName() == null) return false;
 
-        for (int i = 0; i < ARMOR_SLOTS_COUNT; i++) {
-            ItemStack armorPiece = player.getCurrentArmor(i);
-
-            if (armorPiece == null) continue;
-            if (!(armorPiece.getItem() instanceof MechArmorBase)) continue;
-
-            ArmorState state = new ArmorState();
-            ArmorContext.ArmorContextImpl context = new ArmorContext.ArmorContextImpl(player, armorPiece, state);
-            ArmorState.load(context);
-
-            if (action.getBehaviorName() != null) {
-                if (context.hasBehavior(action.getBehaviorName())) {
-                    return context.isBehaviorActive(action.getBehaviorName());
-                }
+        for (ArmorContext.ArmorContextImpl context : getLoadedArmorContexts()) {
+            if (context.hasBehavior(action.getBehaviorName())) {
+                return context.isBehaviorActive(action.getBehaviorName());
             }
         }
-
         return false;
     }
 
+    private List<ArmorContext.ArmorContextImpl> getLoadedArmorContexts() {
+        if (this.cachedContexts != null) {
+            return this.cachedContexts;
+        }
+
+        this.cachedContexts = new ArrayList<>();
+        for (int i = 0; i < ARMOR_SLOTS_COUNT; i++) {
+            ItemStack armorPiece = player.getCurrentArmor(i);
+
+            if (armorPiece != null && armorPiece.getItem() instanceof MechArmorBase) {
+                ArmorState state = new ArmorState();
+                ArmorContext.ArmorContextImpl context = new ArmorContext.ArmorContextImpl(player, armorPiece, state);
+                ArmorState.load(context);
+                this.cachedContexts.add(context);
+            }
+        }
+        return this.cachedContexts;
+    }
+
     private void triggerUiUpdate() {
+        this.cachedContexts = null;
         if (onMenuUpdateCallback != null) {
             onMenuUpdateCallback.run();
         }
     }
 
     private void executeArmorAction(String clickedActionId) {
-        if (player.getEntityWorld().isRemote) {
-            return;
-        }
-
-        if (clickedActionId == null || clickedActionId.isEmpty()) return;
+        if (player.getEntityWorld().isRemote || clickedActionId == null || clickedActionId.isEmpty()) return;
 
         ArmorAction action = ArmorActionManager.getAction(clickedActionId);
         if (action == null) return;
 
-        ArmorState state = new ArmorState();
+        boolean uiNeedsUpdate = false;
 
-        for (int i = 0; i < ARMOR_SLOTS_COUNT; i++) {
-            ItemStack armorPiece = player.getCurrentArmor(i);
-
-            if (armorPiece == null) continue;
-            if (!(armorPiece.getItem() instanceof MechArmorBase)) continue;
-
-            ArmorContext.ArmorContextImpl context = new ArmorContext.ArmorContextImpl(player, armorPiece, state);
-            state = ArmorState.load(context);
-
+        for (ArmorContext.ArmorContextImpl context : getLoadedArmorContexts()) {
             boolean stateChanged = false;
 
             if (action.isToggle() && action.getBehaviorName() != null) {
@@ -147,7 +144,7 @@ public class ArmorRadialMenuSession {
                     stateChanged = true;
                 }
             } else if (!action.isToggle() && action.getKeybind() != null) {
-                for (IArmorBehavior behavior : state.behaviors.values()) {
+                for (IArmorBehavior behavior : context.getArmorState().behaviors.values()) {
                     if (behavior.getListenedKeys(context)
                         .contains(action.getKeybind())) {
                         behavior.onKeyPressed(context, action.getKeybind(), true);
@@ -158,8 +155,15 @@ public class ArmorRadialMenuSession {
 
             if (stateChanged || context.isDirty()) {
                 context.save();
+                uiNeedsUpdate = true;
             }
         }
+
+        if (uiNeedsUpdate) {
+            triggerUiUpdate();
+        }
+
+        this.actionTriggerSync.setStringValue("");
     }
 
     private StringSyncValue createActionSync() {
@@ -182,11 +186,8 @@ public class ArmorRadialMenuSession {
 
     private Set<BehaviorName> getActiveArmorBehaviors() {
         Set<BehaviorName> activeBehaviors = new HashSet<>();
-        for (int i = 0; i < ARMOR_SLOTS_COUNT; i++) {
-            ItemStack armorPiece = this.player.getCurrentArmor(i);
-            if (armorPiece != null) {
-                activeBehaviors.addAll(ArmorState.load(armorPiece).behaviors.keySet());
-            }
+        for (ArmorContext.ArmorContextImpl context : getLoadedArmorContexts()) {
+            activeBehaviors.addAll(context.getArmorState().behaviors.keySet());
         }
         return activeBehaviors;
     }

@@ -1,8 +1,9 @@
 package gregtech.api.items.armor;
 
+import org.jetbrains.annotations.Nullable;
+
 import com.cleanroommc.modularui.drawable.Icon;
 import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
-import com.gtnewhorizons.angelica.shadow.javax.annotation.Nullable;
 
 import gregtech.api.items.armor.behaviors.BehaviorName;
 

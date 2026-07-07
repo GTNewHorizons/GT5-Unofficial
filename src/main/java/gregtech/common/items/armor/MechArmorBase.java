@@ -142,16 +142,18 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISp
     public void onArmorUnequip(@NotNull World world, @NotNull EntityPlayer player, @NotNull ItemStack stack) {
         ArmorContext context = load(world, player, stack);
 
-        for (IArmorBehavior behavior : context.getArmorState().behaviors.values()) {
-            if (player instanceof EntityPlayerMP playerMP) {
-                ArmorActionManager.getKeybind("open_radial_menu")
-                    .removePlayerListener(playerMP, this);
-
+        if (player instanceof EntityPlayerMP playerMP) {
+            for (IArmorBehavior behavior : context.getArmorState().behaviors.values()) {
                 for (SyncedKeybind keyBind : behavior.getListenedKeys(context)) {
                     keyBind.removePlayerListener(playerMP, this);
                 }
             }
 
+            ArmorActionManager.getKeybind("open_radial_menu")
+                .removePlayerListener(playerMP, this);
+        }
+
+        for (IArmorBehavior behavior : context.getArmorState().behaviors.values()) {
             behavior.onArmorUnequip(context);
         }
     }

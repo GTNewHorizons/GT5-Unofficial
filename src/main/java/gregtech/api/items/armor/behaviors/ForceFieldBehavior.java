@@ -1,6 +1,5 @@
 package gregtech.api.items.armor.behaviors;
 
-import java.util.Collections;
 import java.util.Set;
 
 import org.jetbrains.annotations.NotNull;
@@ -13,10 +12,6 @@ import gregtech.api.items.armor.ArmorContext;
 public class ForceFieldBehavior implements IArmorBehavior {
 
     public static final ForceFieldBehavior INSTANCE = new ForceFieldBehavior();
-
-    private static final Set<SyncedKeybind> LISTENED_KEYS = Collections.singleton(
-        ArmorActionManager.getAction("force_field")
-            .getKeybind());
 
     @Override
     public BehaviorName getName() {
@@ -32,6 +27,6 @@ public class ForceFieldBehavior implements IArmorBehavior {
 
     @Override
     public Set<SyncedKeybind> getListenedKeys(@NotNull ArmorContext context) {
-        return LISTENED_KEYS;
+        return ArmorActionManager.getKeybindsForBehavior(getName());
     }
 }

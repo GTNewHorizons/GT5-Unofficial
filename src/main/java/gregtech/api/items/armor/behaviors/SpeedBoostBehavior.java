@@ -8,7 +8,6 @@ import net.minecraft.nbt.NBTTagCompound;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.google.common.collect.ImmutableSet;
 import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
 
 import bartworks.util.MathUtils;
@@ -76,11 +75,7 @@ public class SpeedBoostBehavior implements IArmorBehavior {
 
     @Override
     public Set<SyncedKeybind> getListenedKeys(@NotNull ArmorContext context) {
-        return ImmutableSet.of(
-            ArmorActionManager.getAction("speed_increase")
-                .getKeybind(),
-            ArmorActionManager.getAction("speed_decrease")
-                .getKeybind());
+        return ArmorActionManager.getKeybindsForBehavior(getName());
     }
 
     @Override

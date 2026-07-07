@@ -1,6 +1,5 @@
 package gregtech.api.items.armor.behaviors;
 
-import java.util.Collections;
 import java.util.Set;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -15,9 +14,6 @@ import gregtech.api.items.armor.ArmorContext;
 public class InertiaCancelingBehavior implements IArmorBehavior {
 
     public static final InertiaCancelingBehavior INSTANCE = new InertiaCancelingBehavior();
-    private static final Set<SyncedKeybind> LISTENED_KEYS = Collections.singleton(
-        ArmorActionManager.getAction("inertia_canceling")
-            .getKeybind());
 
     @Override
     public void onKeyPressed(@NotNull ArmorContext context, SyncedKeybind keyPressed, boolean isDown) {
@@ -33,7 +29,7 @@ public class InertiaCancelingBehavior implements IArmorBehavior {
 
     @Override
     public Set<SyncedKeybind> getListenedKeys(@NotNull ArmorContext context) {
-        return LISTENED_KEYS;
+        return ArmorActionManager.getKeybindsForBehavior(getName());
     }
 
     @Override

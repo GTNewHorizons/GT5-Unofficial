@@ -3,8 +3,12 @@ package gregtech.api.items.armor;
 import static gregtech.api.enums.Mods.GregTech;
 
 import java.util.Collection;
+import java.util.Collections;
+import java.util.EnumMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Set;
 
 import net.minecraft.client.Minecraft;
 
@@ -20,6 +24,7 @@ public class ArmorActionManager {
 
     private static final Map<String, ArmorAction> REGISTRY = new LinkedHashMap<>();
     private static final Map<String, SyncedKeybind> KEYBIND_REGISTRY = new LinkedHashMap<>();
+    private static final Map<BehaviorName, Set<SyncedKeybind>> BEHAVIOR_KEYS = new EnumMap<>(BehaviorName.class);
 
     public static void init() {
         register(
@@ -147,12 +152,22 @@ public class ArmorActionManager {
 
     }
 
+    public static Set<SyncedKeybind> getKeybindsForBehavior(BehaviorName name) {
+        if (name == null) return Collections.emptySet();
+        return Collections.unmodifiableSet(BEHAVIOR_KEYS.getOrDefault(name, Collections.emptySet()));
+    }
+
     private static void register(String id, SyncedKeybind keybind) {
         KEYBIND_REGISTRY.put(id, keybind);
     }
 
     private static void register(ArmorAction action) {
         REGISTRY.put(action.getId(), action);
+
+        if (action.getBehaviorName() != null && action.getKeybind() != null) {
+            BEHAVIOR_KEYS.computeIfAbsent(action.getBehaviorName(), name -> new HashSet<>())
+                .add(action.getKeybind());
+        }
     }
 
     private static Icon createActionIcon(String actionName) {

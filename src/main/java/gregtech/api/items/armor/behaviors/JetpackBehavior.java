@@ -1,6 +1,5 @@
 package gregtech.api.items.armor.behaviors;
 
-import java.util.Collections;
 import java.util.Set;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -44,9 +43,7 @@ public class JetpackBehavior implements IArmorBehavior {
 
     @Override
     public Set<SyncedKeybind> getListenedKeys(@NotNull ArmorContext context) {
-        return Collections.singleton(
-            ArmorActionManager.getAction("jetpack")
-                .getKeybind());
+        return ArmorActionManager.getKeybindsForBehavior(getName());
     }
 
     /*
