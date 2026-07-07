@@ -1038,6 +1038,7 @@ public final class GTGuiTextures {
         .location(GregTech.ID, "gui/overlay_slot/bee_queen")
         .canApplyTheme()
         .fullImage()
+        .nonOpaque()
         .build();
     public static final UITexture OVERLAY_SLOT_APIARY_UPGRADE = UITexture.builder()
         .location(GregTech.ID, "gui/overlay_slot/slot_upgrade")

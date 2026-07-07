@@ -207,6 +207,10 @@ public class MTEIndustrialApiary extends MTEBasicMachine
         this.mSpeed = speed;
     }
 
+    public boolean isAutomated() {
+        return isAutomated;
+    }
+
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTEIndustrialApiary(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);

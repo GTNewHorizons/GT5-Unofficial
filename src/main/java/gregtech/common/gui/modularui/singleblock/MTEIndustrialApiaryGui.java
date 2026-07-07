@@ -13,10 +13,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
+import org.jetbrains.annotations.NotNull;
+
+import com.cleanroommc.modularui.api.ITheme;
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.Interactable;
 import com.cleanroommc.modularui.drawable.GuiTextures;
 import com.cleanroommc.modularui.screen.ModularPanel;
+import com.cleanroommc.modularui.theme.WidgetThemeEntry;
 import com.cleanroommc.modularui.utils.Alignment;
 import com.cleanroommc.modularui.utils.Color;
 import com.cleanroommc.modularui.utils.serialization.ByteBufAdapters;
@@ -47,6 +51,7 @@ import forestry.api.core.ForestryAPI;
 import forestry.api.core.IErrorState;
 import forestry.api.genetics.AlleleManager;
 import gregtech.api.modularui2.GTGuiTextures;
+import gregtech.api.modularui2.GTWidgetThemes;
 import gregtech.api.recipe.BasicUIProperties;
 import gregtech.api.util.GTTooltipDataCache;
 import gregtech.api.util.GTUtility;
@@ -84,13 +89,7 @@ public class MTEIndustrialApiaryGui extends MTEBasicMachineBaseGui<MTEIndustrial
         mainRow.child(
             Flow.column()
                 .coverChildren()
-                .child(
-                    new ToggleButton()
-                        .value(new BooleanSyncValue(machine::isAutoQueen, machine::setAutoQueen).allowC2S())
-                        .backgroundOverlay(GTGuiTextures.OVERLAY_SLOT_BEE_QUEEN, GuiTextures.REFRESH)
-                        .addTooltipStringLines(
-                            machine.mTooltipCache.getData("GT5U.machines.industrialapiary.autoqueen.tooltip").text)
-                        .tooltipShowUpTimer(TOOLTIP_DELAY))
+                .child(createAutoQueenToggleButton(syncManager))
                 .child(
                     new ButtonWidget<>()
                         .syncHandler(new InteractionSyncHandler().setOnMousePressed(_ -> machine.cancelProcess()))
@@ -142,6 +141,32 @@ public class MTEIndustrialApiaryGui extends MTEBasicMachineBaseGui<MTEIndustrial
                 .build());
 
         return getEmptyContent().child(mainRow);
+    }
+
+    private ToggleButton createAutoQueenToggleButton(PanelSyncManager syncManager) {
+        BooleanSyncValue isAutomatedSyncer = new BooleanSyncValue(machine::isAutomated);
+        syncManager.syncValue("isAutomated", isAutomatedSyncer);
+
+        return new ToggleButton() {
+
+            @Override
+            public @NotNull Result onMousePressed(int mouseButton) {
+                // if there is automation upgrade, disable this with true value
+                if (isAutomatedSyncer.getBoolValue()) return Result.IGNORE;
+                return super.onMousePressed(mouseButton);
+            }
+
+            @Override
+            public WidgetThemeEntry<?> getWidgetThemeInternal(ITheme theme) {
+                if (isAutomatedSyncer.getBoolValue())
+                    return theme.getWidgetTheme(GTWidgetThemes.TOGGLE_BUTTON_DISABLED);
+                return super.getWidgetThemeInternal(theme);
+            }
+        }.value(new BooleanSyncValue(() -> machine.isAutoQueen() || machine.isAutomated(), machine::setAutoQueen).allowC2S())
+            .backgroundOverlay(GTGuiTextures.OVERLAY_SLOT_BEE_QUEEN, GuiTextures.REFRESH)
+            .addTooltipStringLines(
+                machine.mTooltipCache.getData("GT5U.machines.industrialapiary.autoqueen.tooltip").text)
+            .tooltipShowUpTimer(TOOLTIP_DELAY);
     }
 
     @Override
