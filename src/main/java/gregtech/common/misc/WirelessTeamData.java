@@ -104,7 +104,13 @@ public class WirelessTeamData implements ITeamData {
 
     @Override
     public void mergeData(Team consumed, Team surviving, ITeamData oldTeamData) {
-        // do nothing for now
+        if (!(oldTeamData instanceof WirelessTeamData oldWirelessTeamData)) return;
+
+        this.wirelessEnergy = this.wirelessEnergy.add(oldWirelessTeamData.wirelessEnergy);
+        this.wirelessDataStricks.putAll(oldWirelessTeamData.wirelessDataStricks);
+        this.registeredDataOutputs += oldWirelessTeamData.registeredDataOutputs;
+        this.downloadCounter = 0;
+        this.dirtySticks = true;
     }
 
     @Override
@@ -119,6 +125,7 @@ public class WirelessTeamData implements ITeamData {
                 wirelessDataStricks.put(entry.getLongKey(), entry.getValue());
             }
         }
+
         prevWirelessTeamData.registeredDataOutputs -= toRemove.size();
         prevWirelessTeamData.downloadCounter = 0;
         prevWirelessTeamData.dirtySticks = true;
