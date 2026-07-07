@@ -269,7 +269,11 @@ public abstract class MTESteamMultiBlockBase<T extends MTESteamMultiBlockBase<T>
 
         if (aList.contains(aTileEntity)) return false;
 
-        return aList.add(aTileEntity);
+        if (!aList.add(aTileEntity)) return false;
+        // Register input hatches as watchers so added items/fluids push an immediate recipe check. The base's standard
+        // addToMachineList normally does this via addIfSmartInput, but our custom steam hatch lists bypass it.
+        if (aTileEntity instanceof IMetaTileEntity mte) addIfSmartInput(mte);
+        return true;
     }
 
     // This function should be deprecated at some point, completely unnecessary and easy to mess up
