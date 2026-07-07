@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import net.minecraftforge.common.util.ForgeDirection;
@@ -58,7 +59,7 @@ public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> extends MTETiered
     protected final UITexture progressBarTexture;
     protected boolean mAddGregTechLogo = false;
 
-    protected final Map<BooleanSyncValue, GTTooltipDataCache.TooltipData> errorMap = new HashMap<>();
+    protected final Map<BooleanSyncValue, Supplier<GTTooltipDataCache.TooltipData>> errorMap = new HashMap<>();
 
     public MTEBasicMachineBaseGui(T machine, BasicUIProperties properties) {
         super(machine);
@@ -103,7 +104,7 @@ public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> extends MTETiered
         syncManager.syncValue("powerfail", powerfailSyncer);
         errorMap.put(
             powerfailSyncer,
-            machine.mTooltipCache.getData(
+            () -> machine.mTooltipCache.getData(
                 "GT5U.machines.stalled_stuttering.tooltip",
                 GTUtility.translate("GT5U.machines.powersource.power")));
     }
@@ -330,12 +331,13 @@ public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> extends MTETiered
             .tooltipShowUpTimer(TOOLTIP_DELAY)
             .tooltipBuilder(t -> {
                 if (hasErrorSyncer.getBoolValue()) addTooltipDataToRichTooltip(
-                    () -> errorMap.get(
+                    errorMap.get(
                         errorMap.keySet()
                             .stream()
                             .filter(BooleanSyncValue::getBoolValue)
                             .findFirst()
-                            .get())).accept(t);
+                            .orElseThrow())).accept(t);
+                t.titleMargin();
             });
     }
 

@@ -10,12 +10,12 @@ import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.LongSyncValue;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widgets.slot.ItemSlot;
-import com.cleanroommc.modularui.widgets.slot.ModularSlot;
 
 import gregtech.api.metatileentity.implementations.MTEBasicMachineBronze;
 import gregtech.api.recipe.BasicUIProperties;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.singleblock.base.MTEBasicMachineBaseGui;
+import gregtech.common.gui.modularui.util.MachineModularSlot;
 import gregtech.common.gui.modularui.widget.SteamGaugeWidget;
 
 public class MTEBasicMachineBronzeGui extends MTEBasicMachineBaseGui<MTEBasicMachineBronze> {
@@ -42,9 +42,7 @@ public class MTEBasicMachineBronzeGui extends MTEBasicMachineBaseGui<MTEBasicMac
         }
         return new ItemSlot()
             .slot(
-                new ModularSlot(machine.inventoryHandler, machine.rechargerSlotStartIndex()).changeListener(
-                    (_, _, client, init) -> { if (!client && !init) baseMetaTileEntity.markInventoryBeenModified(); })
-                    .singletonSlotGroup(1000))
+                new MachineModularSlot(machine.inventoryHandler, machine.rechargerSlotStartIndex(), baseMetaTileEntity))
             .backgroundOverlay(
                 properties.useSpecialSlot ? slotOverlayFunction.apply(0, false, false, true) : IDrawable.NONE)
             .tooltip(
@@ -72,12 +70,12 @@ public class MTEBasicMachineBronzeGui extends MTEBasicMachineBaseGui<MTEBasicMac
         syncManager.syncValue("powerfail", powerfailSyncer);
         errorMap.put(
             powerfailSyncer,
-            machine.mTooltipCache.getData(
+            () -> machine.mTooltipCache.getData(
                 "GT5U.machines.stalled_stuttering.tooltip",
                 GTUtility.translate("GT5U.machines.powersource.steam")));
 
         BooleanSyncValue ventingSyncer = new BooleanSyncValue(machine::needsSteamVenting);
         syncManager.syncValue("venting", ventingSyncer);
-        errorMap.put(ventingSyncer, machine.mTooltipCache.getData("GT5U.machines.stalled_vent.tooltip"));
+        errorMap.put(ventingSyncer, () -> machine.mTooltipCache.getData("GT5U.machines.stalled_vent.tooltip"));
     }
 }

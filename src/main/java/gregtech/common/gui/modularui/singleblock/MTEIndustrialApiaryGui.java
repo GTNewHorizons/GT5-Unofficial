@@ -5,8 +5,13 @@ import static forestry.api.apiculture.BeeManager.beeRoot;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Stream;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 
 import com.cleanroommc.modularui.api.drawable.IKey;
 import com.cleanroommc.modularui.api.widget.Interactable;
@@ -19,11 +24,13 @@ import com.cleanroommc.modularui.value.sync.BooleanSyncValue;
 import com.cleanroommc.modularui.value.sync.DoubleSyncValue;
 import com.cleanroommc.modularui.value.sync.EnumSyncValue;
 import com.cleanroommc.modularui.value.sync.FloatSyncValue;
+import com.cleanroommc.modularui.value.sync.GenericListSyncHandler;
 import com.cleanroommc.modularui.value.sync.GenericSyncValue;
 import com.cleanroommc.modularui.value.sync.IntSyncValue;
 import com.cleanroommc.modularui.value.sync.InteractionSyncHandler;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.cleanroommc.modularui.widget.ParentWidget;
+import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.ProgressWidget;
 import com.cleanroommc.modularui.widgets.ToggleButton;
@@ -36,14 +43,16 @@ import forestry.api.apiculture.IBeeGenome;
 import forestry.api.apiculture.IBeeModifier;
 import forestry.api.core.EnumHumidity;
 import forestry.api.core.EnumTemperature;
+import forestry.api.core.ForestryAPI;
+import forestry.api.core.IErrorState;
 import forestry.api.genetics.AlleleManager;
-import gregtech.api.metatileentity.BaseTileEntity;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.recipe.BasicUIProperties;
+import gregtech.api.util.GTTooltipDataCache;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.singleblock.base.MTEBasicMachineBaseGui;
-import gregtech.common.gui.modularui.util.IApiaryUpgradeModularSlot;
 import gregtech.common.gui.modularui.util.MachineModularSlot;
+import gregtech.common.gui.modularui.util.UpgradeModularSlot;
 import gregtech.common.modularui2.widget.builder.ItemSlotGridBuilder;
 import gregtech.common.tileentities.machines.basic.MTEIndustrialApiary;
 
@@ -54,6 +63,8 @@ public class MTEIndustrialApiaryGui extends MTEBasicMachineBaseGui<MTEIndustrial
     private final int QUEEN_SLOT_OFFSET = machine.getInputSlot();
     private final int DRONE_SLOT_OFFSET = QUEEN_SLOT_OFFSET + 1;
     private final int UPGRADE_SLOT_OFFSET = DRONE_SLOT_OFFSET + 1;
+
+    private Widget<?> errorWidget;
 
     public MTEIndustrialApiaryGui(MTEIndustrialApiary machine, BasicUIProperties properties) {
         super(machine, properties);
@@ -66,6 +77,8 @@ public class MTEIndustrialApiaryGui extends MTEBasicMachineBaseGui<MTEIndustrial
             .coverChildren()
             .crossAxisAlignment(Alignment.CrossAxis.START)
             .childPadding(SLOT_SIZE / 2);
+
+        errorWidget = createErrorWidget(panel, syncManager).marginRight(SLOT_SIZE / 2);
 
         // buttons
         mainRow.child(
@@ -116,7 +129,7 @@ public class MTEIndustrialApiaryGui extends MTEBasicMachineBaseGui<MTEIndustrial
                                     GTUtility.translate("GT5U.machines.industrialapiary.upgradeslot.tooltip"))
                                 .tooltipShowUpTimer(TOOLTIP_DELAY))
                         .indexOffset(UPGRADE_SLOT_OFFSET)
-                        .modularSlotSupplier(IApiaryUpgradeModularSlot.supplier(machine))
+                        .modularSlotSupplier(UpgradeModularSlot.supplier(machine))
                         .build()));
 
         // output slots
@@ -125,6 +138,7 @@ public class MTEIndustrialApiaryGui extends MTEBasicMachineBaseGui<MTEIndustrial
                 .indexOffset(machine.getOutputSlot())
                 .modularSlotSupplier(MachineModularSlot.supplier(baseMetaTileEntity))
                 .canPut(false)
+                .hasSlotGroup(false)
                 .build());
 
         return getEmptyContent().child(mainRow);
@@ -290,24 +304,49 @@ public class MTEIndustrialApiaryGui extends MTEBasicMachineBaseGui<MTEIndustrial
     }
 
     @Override
-    protected ItemSlot createChargerSlot() {
-        return super.createChargerSlot().bottomRel(0);
-    }
-
-    @Override
     protected Flow createBottomRightCornerFlow(ModularPanel panel, PanelSyncManager syncManager) {
-        Flow parent = super.createBottomRightCornerFlow(panel, syncManager);
-        parent.resizer().resetPosition();
-
-        return parent
-            .bottomRel(0)
-            .rightRel(0)
-            .child(createErrorWidget(panel, syncManager).marginRight(SLOT_SIZE / 2));
+        return super.createBottomRightCornerFlow(panel, syncManager).child(errorWidget);
     }
 
     @Override
     protected void initErrors(PanelSyncManager syncManager) {
         super.initErrors(syncManager);
 
+        GenericListSyncHandler<IErrorState> errorStateSyncer = new GenericListSyncHandler.Builder<IErrorState>()
+            .getter(
+                () -> machine.mErrorStates.stream()
+                    .toList())
+            .deserializer(buffer -> ForestryAPI.errorStateRegistry.getErrorState(buffer.readShort()))
+            .serializer((buffer, val) -> buffer.writeShort(val.getID()))
+            .build()
+            .changeListener(() -> errorWidget.markTooltipDirty());
+
+        syncManager.syncValue("errorStates", errorStateSyncer);
+        BooleanSyncValue apiaryErrorSyncer = new BooleanSyncValue(
+            () -> !errorStateSyncer.getValue()
+                .isEmpty());
+        syncManager.syncValue("apiaryError", apiaryErrorSyncer);
+
+        errorMap.put(apiaryErrorSyncer, () -> {
+            List<IErrorState> errors = errorStateSyncer.getValue();
+            return new GTTooltipDataCache.TooltipData(
+                errors.stream()
+                    .flatMap(
+                        errorState -> Stream.of(
+                            EnumChatFormatting.RED
+                                + StatCollector.translateToLocal("for." + errorState.getDescription()),
+                            EnumChatFormatting.GRAY + StatCollector.translateToLocal("for." + errorState.getHelp())))
+                    .toList(),
+                Collections.emptyList());
+        });
+    }
+
+    @Override
+    protected ParentWidget<?> createBottomSection(ModularPanel panel, PanelSyncManager syncManager) {
+        return new ParentWidget<>().fullWidth()
+            .coverChildrenHeight()
+            .child(createBottomLeftCornerFlow(panel, syncManager))
+            .child(createChargerSlot().horizontalCenter())
+            .child(createBottomRightCornerFlow(panel, syncManager));
     }
 }
