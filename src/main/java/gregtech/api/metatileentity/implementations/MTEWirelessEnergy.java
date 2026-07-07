@@ -106,6 +106,14 @@ public class MTEWirelessEnergy extends MTEHatchEnergy {
         }
     }
 
+    /**
+     * For consistency, the explosion is explicitly disabled. Disable ticking will disable explosion as well.
+     */
+    @Override
+    public boolean willExplodeInRain() {
+        return false;
+    }
+
     public final void tryFetchingEnergy() {
         long currentEU = getBaseMetaTileEntity().getStoredEU();
         long maxEU = maxEUStore();
