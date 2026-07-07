@@ -62,6 +62,7 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
     private final ArrayList<MTEHatchWirelessDataItemsOutput> eWirelessStacksDataOutputs = new ArrayList<>();
     private final ArrayList<MTEHatchDataAccess> eDataAccessHatches = new ArrayList<>();
     private boolean slave = false;
+    private boolean dirty = false;
     private boolean wirelessModeEnabled = false;
     // endregion
 
@@ -151,9 +152,6 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
     @Override
     public void checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack,
         List<StructureError> errors) {
-        eDataAccessHatches.clear();
-        eStacksDataOutputs.clear();
-        eWirelessStacksDataOutputs.clear();
         slave = false;
         if (!checkPiece("main", 2, 1, 0, errors)) return;
         if (eDataAccessHatches.isEmpty()) {
@@ -164,6 +162,18 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
         }
         checkHasAnyEnergy(errors);
         checkHasMaintenanceHatch(errors);
+    }
+
+    @Override
+    public void clearHatches() {
+        super.clearHatches();
+        // avoid duplicate calls to addWatcher resulting in duplicate notifyWatchers calls
+        for (MTEHatchDataAccess dataAccess : eDataAccessHatches) {
+            dataAccess.removeWatcher(this);
+        }
+        eDataAccessHatches.clear();
+        eStacksDataOutputs.clear();
+        eWirelessStacksDataOutputs.clear();
     }
 
     @Override
@@ -182,6 +192,8 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
 
     @Override
     public void outputAfterRecipe_EM() {
+        if (!this.dirty) return;
+
         HashSet<RecipeAssemblyLine> availableRecipes = new HashSet<>();
 
         for (MTEHatchDataAccess dataAccess : validMTEList(eDataAccessHatches)) {
@@ -198,6 +210,7 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
             if (wirelessModeEnabled) {
                 for (MTEHatchWirelessDataItemsOutput hatch : validMTEList(eWirelessStacksDataOutputs)) {
                     hatch.dataPacket = new ALRecipeDataPacket(recipeArray);
+                    hatch.dirty = true;
                 }
             }
         } else {
@@ -207,8 +220,11 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
 
             for (MTEHatchWirelessDataItemsOutput hatch : validMTEList(eWirelessStacksDataOutputs)) {
                 hatch.dataPacket = null;
+                hatch.dirty = true;
             }
         }
+
+        this.dirty = false;
     }
 
     @Override
@@ -224,6 +240,22 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
     @Override
     protected SoundResource getActivitySoundLoop() {
         return SoundResource.TECTECH_MACHINES_FX_HIGH_FREQ;
+    }
+
+    // called by the hatches' notifyWatchers
+    @Override
+    public void scheduleRecipeCheckImmediate() {
+        this.dirty = true;
+    }
+
+    // be dirty on first tick, so that the cache gets primed
+    @Override
+    public void onFirstTick_EM(IGregTechTileEntity bmTE) {
+        super.onFirstTick_EM(bmTE);
+
+        if (!bmTE.isServerSide()) return;
+
+        this.dirty = true;
     }
 
     public final boolean addDataBankHatchToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
@@ -249,12 +281,14 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
         if (aMetaTileEntity instanceof MTEHatchDataAccess hatch
             && !(aMetaTileEntity instanceof MTEHatchDataItemsInput)) {
             ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+            hatch.addWatcher(this);
             return eDataAccessHatches.add(hatch);
         }
 
         if (aMetaTileEntity instanceof MTEHatchDataItemsInput hatch) {
             ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             slave = true;
+            hatch.addWatcher(this);
             return eDataAccessHatches.add(hatch);
         }
 
@@ -266,6 +300,7 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
         ItemStack aTool) {
         if (getBaseMetaTileEntity().isServerSide()) {
             wirelessModeEnabled = !wirelessModeEnabled;
+            this.dirty = true;
             if (wirelessModeEnabled) {
                 GTUtility.sendChatToPlayer(aPlayer, "Wireless mode enabled");
                 WirelessComputationPacket.enableWirelessNetWork(getBaseMetaTileEntity());

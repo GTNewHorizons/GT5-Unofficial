@@ -16,7 +16,7 @@ public class WirelessNetworkManager {
         // a player always is in a team, and a teams' data always is initialized if registered.
         Team team = TeamManager.getTeamByPlayer(user_uuid);
         assert team != null;
-        assert team.getData(WirelessEnergyTeamData.DATA_KEY) != null;
+        assert team.getData(WirelessTeamData.DATA_KEY) != null;
     }
 
     // ------------------------------------------------------------------------------------
@@ -30,7 +30,7 @@ public class WirelessNetworkManager {
         // LSC is a "bitch" and tries to access global energy with a null UUID.
         if (user_uuid == null) return false;
         Team team = TeamManager.getTeamByPlayer(user_uuid);
-        var data = (WirelessEnergyTeamData) team.getData(WirelessEnergyTeamData.DATA_KEY);
+        var data = (WirelessTeamData) team.getData(WirelessTeamData.DATA_KEY);
         // this should never happen unless the data is unregistered!
         if (data == null) return false;
 
@@ -77,7 +77,7 @@ public class WirelessNetworkManager {
         // LSC is a "bitch" and tries to access global energy with a null UUID.
         if (user_uuid == null) return BigInteger.ZERO;
         Team team = TeamManager.getTeamByPlayer(user_uuid);
-        var data = (WirelessEnergyTeamData) team.getData(WirelessEnergyTeamData.DATA_KEY);
+        var data = (WirelessTeamData) team.getData(WirelessTeamData.DATA_KEY);
         // this should never happen unless the data is unregistered!
         if (data == null) return BigInteger.ZERO;
         return data.wirelessEnergy;
@@ -91,7 +91,7 @@ public class WirelessNetworkManager {
         // LSC is a "bitch" and tries to access global energy with a null UUID.
         if (user_uuid == null) return;
         Team team = TeamManager.getTeamByPlayer(user_uuid);
-        var data = (WirelessEnergyTeamData) team.getData(WirelessEnergyTeamData.DATA_KEY);
+        var data = (WirelessTeamData) team.getData(WirelessTeamData.DATA_KEY);
         // this should never happen unless the data is unregistered!
         if (data == null) return;
         data.wirelessEnergy = EU;
@@ -104,7 +104,7 @@ public class WirelessNetworkManager {
     public static void clearGlobalEnergyInformationMaps() {
         TeamManager.getTeamMap()
             .forEach((_teamUuid, team) -> {
-                var data = (WirelessEnergyTeamData) team.getData(WirelessEnergyTeamData.DATA_KEY);
+                var data = (WirelessTeamData) team.getData(WirelessTeamData.DATA_KEY);
                 data.wirelessEnergy = BigInteger.ZERO;
                 team.markDirty();
             });

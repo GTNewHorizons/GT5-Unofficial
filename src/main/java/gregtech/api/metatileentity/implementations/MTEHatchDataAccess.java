@@ -3,7 +3,6 @@ package gregtech.api.metatileentity.implementations;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_DATA_ACCESS;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -28,6 +27,7 @@ import gregtech.api.util.AssemblyLineUtils;
 import gregtech.api.util.GTRecipe.RecipeAssemblyLine;
 import gregtech.common.gui.modularui.hatch.MTEHatchDataAccessGui;
 import gregtech.common.tileentities.machines.ISmartInputHatch;
+import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
@@ -35,7 +35,7 @@ public class MTEHatchDataAccess extends MTEHatch implements ISmartInputHatch {
 
     private int timeout = 4;
 
-    private List<RecipeAssemblyLine> cachedRecipes = null;
+    private ObjectOpenHashSet<RecipeAssemblyLine> cachedRecipes = null;
 
     public MTEHatchDataAccess(int aID, String aName, String aNameRegional, int aTier) {
         super(
@@ -126,26 +126,28 @@ public class MTEHatchDataAccess extends MTEHatch implements ISmartInputHatch {
 
     public List<RecipeAssemblyLine> getAssemblyLineRecipes() {
         if (cachedRecipes == null) {
-            cachedRecipes = new ArrayList<>();
+            cachedRecipes = new ObjectOpenHashSet<>();
 
             for (int i = 0; i < getSizeInventory(); i++) {
                 cachedRecipes.addAll(AssemblyLineUtils.findALRecipeFromDataStick(getStackInSlot(i)));
             }
         }
 
-        return cachedRecipes;
+        return cachedRecipes.stream()
+            .toList();
     }
 
     /**
      * @return whether the available recipe set changed between two snapshots, compared by content rather than count so
      *         a same-size data-stick swap is still detected. Data input hatches call this to decide when to notify.
      */
-    protected static boolean recipesChanged(List<RecipeAssemblyLine> a, List<RecipeAssemblyLine> b) {
+    protected static boolean recipesChanged(ObjectOpenHashSet<RecipeAssemblyLine> a,
+        ObjectOpenHashSet<RecipeAssemblyLine> b) {
         int aSize = a == null ? 0 : a.size();
         int bSize = b == null ? 0 : b.size();
         if (aSize != bSize) return true;
         if (aSize == 0) return false;
-        return !new HashSet<>(a).equals(new HashSet<>(b));
+        return !a.equals(b);
     }
 
     @Override
