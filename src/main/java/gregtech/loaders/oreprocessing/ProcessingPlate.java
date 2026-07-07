@@ -127,13 +127,13 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
             GTModHandler.addCraftingRecipe(
                 GTOreDictUnificator.get(OrePrefixes.foil, aMaterial, 2L),
                 BITS_STD,
-                new Object[]{"hX", 'X', OrePrefixes.plate.get(aMaterial)});
+                new Object[] { "hX", 'X', OrePrefixes.plate.get(aMaterial) });
 
             if (aMaterial == Materials.Paper) {
                 GTModHandler.addCraftingRecipe(
                     GTUtility.copyAmount(2, aStack),
                     BUFFERED,
-                    new Object[]{"XXX", 'X', new ItemStack(Items.reeds, 1, WILDCARD)});
+                    new Object[] { "XXX", 'X', new ItemStack(Items.reeds, 1, WILDCARD) });
             }
         }
 

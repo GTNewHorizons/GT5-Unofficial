@@ -69,19 +69,20 @@ public class CrushedLoader implements IWerkstoffRunnable {
             GTModHandler.addSmeltingRecipe(werkstoff.get(dust), werkstoff.get(ingot));
         }
 
-        if (werkstoff.getStats().getProcessingMaterialTierEU() < TierEU.RECIPE_IV) {
+        if (werkstoff.getStats()
+            .getProcessingMaterialTierEU() < TierEU.RECIPE_IV) {
             GTModHandler.addCraftingRecipe(
                 werkstoff.get(dustImpure),
                 GTModHandler.RecipeBits.BUFFERED,
-                new Object[]{"h  ", "W  ", 'W', werkstoff.get(crushed)});
+                new Object[] { "h  ", "W  ", 'W', werkstoff.get(crushed) });
             GTModHandler.addCraftingRecipe(
                 werkstoff.get(dustPure),
                 GTModHandler.RecipeBits.BUFFERED,
-                new Object[]{"h  ", "W  ", 'W', werkstoff.get(crushedPurified)});
+                new Object[] { "h  ", "W  ", 'W', werkstoff.get(crushedPurified) });
             GTModHandler.addCraftingRecipe(
                 werkstoff.get(dust),
                 GTModHandler.RecipeBits.BUFFERED,
-                new Object[]{"h  ", "W  ", 'W', werkstoff.get(crushedCentrifuged)});
+                new Object[] { "h  ", "W  ", 'W', werkstoff.get(crushedCentrifuged) });
         }
 
         GTValues.RA.stdBuilder()

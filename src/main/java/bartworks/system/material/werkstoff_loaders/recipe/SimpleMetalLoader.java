@@ -59,15 +59,16 @@ public class SimpleMetalLoader implements IWerkstoffRunnable {
                     .eut(BWUtil.calculateRecipeEU(werkstoff, 16))
                     .addTo(latheRecipes);
 
-                if (werkstoff.getStats().getProcessingMaterialTierEU() < TierEU.RECIPE_IV) {
+                if (werkstoff.getStats()
+                    .getProcessingMaterialTierEU() < TierEU.RECIPE_IV) {
                     GTModHandler.addCraftingRecipe(
                         werkstoff.get(stick, 2),
                         GTModHandler.RecipeBits.BITS_STD,
-                        new Object[]{"s", "X", 'X', werkstoff.get(stickLong)});
+                        new Object[] { "s", "X", 'X', werkstoff.get(stickLong) });
                     GTModHandler.addCraftingRecipe(
                         werkstoff.get(stick),
                         GTModHandler.RecipeBits.BITS_STD,
-                        new Object[]{"f ", " X", 'X', werkstoff.get(gem)});
+                        new Object[] { "f ", " X", 'X', werkstoff.get(gem) });
                 }
 
                 GTValues.RA.stdBuilder()
@@ -93,23 +94,24 @@ public class SimpleMetalLoader implements IWerkstoffRunnable {
                 return;
             }
 
-            if (werkstoff.getStats().getProcessingMaterialTierEU() < TierEU.RECIPE_IV) {
+            if (werkstoff.getStats()
+                .getProcessingMaterialTierEU() < TierEU.RECIPE_IV) {
                 GTModHandler.addCraftingRecipe(
                     werkstoff.get(stick, 2),
                     GTModHandler.RecipeBits.BITS_STD,
-                    new Object[]{"s", "X", 'X', werkstoff.get(stickLong)});
+                    new Object[] { "s", "X", 'X', werkstoff.get(stickLong) });
                 GTModHandler.addCraftingRecipe(
                     werkstoff.get(stick),
                     GTModHandler.RecipeBits.BITS_STD,
-                    new Object[]{"f ", " X", 'X', werkstoff.get(ingot)});
+                    new Object[] { "f ", " X", 'X', werkstoff.get(ingot) });
                 GTModHandler.addCraftingRecipe(
                     werkstoff.get(plate),
                     GTModHandler.RecipeBits.BITS_STD,
-                    new Object[]{"h", "X", "X", 'X', werkstoff.get(ingot)});
+                    new Object[] { "h", "X", "X", 'X', werkstoff.get(ingot) });
                 GTModHandler.addCraftingRecipe(
                     werkstoff.get(foil, 2),
                     GTModHandler.RecipeBits.BITS_STD,
-                    new Object[]{"hX", 'X', werkstoff.get(plate)});
+                    new Object[] { "hX", 'X', werkstoff.get(plate) });
             }
 
             GTValues.RA.stdBuilder()

@@ -85,23 +85,24 @@ public class GemLoader implements IWerkstoffRunnable {
                     .addTo(sifterRecipes);
 
             }
-            if (werkstoff.getStats().getProcessingMaterialTierEU() < TierEU.RECIPE_IV) {
+            if (werkstoff.getStats()
+                .getProcessingMaterialTierEU() < TierEU.RECIPE_IV) {
                 GTModHandler.addCraftingRecipe(
                     werkstoff.get(gemFlawless, 2),
                     GTModHandler.RecipeBits.BUFFERED,
-                    new Object[]{"h  ", "W  ", 'W', werkstoff.get(gemExquisite)});
+                    new Object[] { "h  ", "W  ", 'W', werkstoff.get(gemExquisite) });
                 GTModHandler.addCraftingRecipe(
                     werkstoff.get(gem, 2),
                     GTModHandler.RecipeBits.BUFFERED,
-                    new Object[]{"h  ", "W  ", 'W', werkstoff.get(gemFlawless)});
+                    new Object[] { "h  ", "W  ", 'W', werkstoff.get(gemFlawless) });
                 GTModHandler.addCraftingRecipe(
                     werkstoff.get(gemFlawed, 2),
                     GTModHandler.RecipeBits.BUFFERED,
-                    new Object[]{"h  ", "W  ", 'W', werkstoff.get(gem)});
+                    new Object[] { "h  ", "W  ", 'W', werkstoff.get(gem) });
                 GTModHandler.addCraftingRecipe(
                     werkstoff.get(gemChipped, 2),
                     GTModHandler.RecipeBits.BUFFERED,
-                    new Object[]{"h  ", "W  ", 'W', werkstoff.get(gemFlawed)});
+                    new Object[] { "h  ", "W  ", 'W', werkstoff.get(gemFlawed) });
             }
 
             GTValues.RA.stdBuilder()

@@ -87,11 +87,12 @@ public class CraftingMaterialLoader implements IWerkstoffRunnable {
                 .eut(BWUtil.calculateRecipeEU(werkstoff, 4))
                 .addTo(latheRecipes);
 
-            if (werkstoff.getStats().getProcessingMaterialTierEU() < TierEU.RECIPE_IV) {
+            if (werkstoff.getStats()
+                .getProcessingMaterialTierEU() < TierEU.RECIPE_IV) {
                 GTModHandler.addCraftingRecipe(
                     werkstoff.get(screw),
                     GTModHandler.RecipeBits.BITS_STD,
-                    new Object[]{"fX", "X ", 'X', werkstoff.get(bolt)});
+                    new Object[] { "fX", "X ", 'X', werkstoff.get(bolt) });
             }
 
             if (werkstoff.hasItemType(gem)) return;
@@ -109,17 +110,18 @@ public class CraftingMaterialLoader implements IWerkstoffRunnable {
                 .eut(BWUtil.calculateRecipeEU(werkstoff, 6 * tVoltageMultiplier))
                 .addTo(extruderRecipes);
 
-            if (werkstoff.getStats().getProcessingMaterialTierEU() < TierEU.RECIPE_IV) {
+            if (werkstoff.getStats()
+                .getProcessingMaterialTierEU() < TierEU.RECIPE_IV) {
                 GTModHandler.addCraftingRecipe(
                     werkstoff.get(ring),
                     GTModHandler.RecipeBits.BITS_STD,
-                    new Object[]{"h ", "fX", 'X', werkstoff.get(stick)});
+                    new Object[] { "h ", "fX", 'X', werkstoff.get(stick) });
 
                 // Gear
                 GTModHandler.addCraftingRecipe(
                     werkstoff.get(gearGt),
                     GTModHandler.RecipeBits.BITS_STD,
-                    new Object[]{"SPS", "PwP", "SPS", 'P', werkstoff.get(plate), 'S', werkstoff.get(stick)});
+                    new Object[] { "SPS", "PwP", "SPS", 'P', werkstoff.get(plate), 'S', werkstoff.get(stick) });
             }
 
             GTValues.RA.stdBuilder()
@@ -179,18 +181,19 @@ public class CraftingMaterialLoader implements IWerkstoffRunnable {
                 .eut(BWUtil.calculateRecipeEU(werkstoff, 8 * tVoltageMultiplier))
                 .addTo(extruderRecipes);
 
-            if (werkstoff.getStats().getProcessingMaterialTierEU() < TierEU.RECIPE_IV) {
+            if (werkstoff.getStats()
+                .getProcessingMaterialTierEU() < TierEU.RECIPE_IV) {
                 GTModHandler.addCraftingRecipe(
                     werkstoff.get(gearGtSmall),
                     GTModHandler.RecipeBits.BITS_STD,
-                    new Object[]{" S ", "hPx", " S ", 'S', werkstoff.get(stick), 'P', werkstoff.get(plate)});
+                    new Object[] { " S ", "hPx", " S ", 'S', werkstoff.get(stick), 'P', werkstoff.get(plate) });
 
                 // Rotor
                 GTModHandler.addCraftingRecipe(
                     werkstoff.get(rotor),
                     GTModHandler.RecipeBits.BITS_STD,
-                    new Object[]{"PhP", "SRf", "PdP", 'P', werkstoff.get(plate), 'R', werkstoff.get(ring), 'S',
-                        werkstoff.get(screw)});
+                    new Object[] { "PhP", "SRf", "PdP", 'P', werkstoff.get(plate), 'R', werkstoff.get(ring), 'S',
+                        werkstoff.get(screw) });
             }
 
             GTValues.RA.stdBuilder()
