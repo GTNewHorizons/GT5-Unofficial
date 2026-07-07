@@ -1,6 +1,5 @@
 package gregtech.common.tileentities.machines.basic;
 
-import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static forestry.api.apiculture.BeeManager.beeRoot;
 import static gregtech.api.enums.GTAuthors.AuthorKuba;
 import static gregtech.api.enums.GTValues.V;
@@ -20,8 +19,6 @@ import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_INDUSTRIAL_APIA
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_INDUSTRIAL_APIARY_ACTIVE;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_INDUSTRIAL_APIARY_ACTIVE_GLOW;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_TOP_INDUSTRIAL_APIARY_GLOW;
-import static gregtech.api.metatileentity.BaseTileEntity.STALLED_STUTTERING_TOOLTIP;
-import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -32,12 +29,9 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -56,23 +50,6 @@ import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.google.common.collect.ImmutableSet;
-import com.gtnewhorizons.modularui.api.drawable.FallbackableUITexture;
-import com.gtnewhorizons.modularui.api.drawable.IDrawable;
-import com.gtnewhorizons.modularui.api.forge.IItemHandlerModifiable;
-import com.gtnewhorizons.modularui.api.math.Pos2d;
-import com.gtnewhorizons.modularui.api.screen.ModularUIContext;
-import com.gtnewhorizons.modularui.api.screen.ModularWindow;
-import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
-import com.gtnewhorizons.modularui.common.builder.UIInfo;
-import com.gtnewhorizons.modularui.common.internal.wrapper.BaseSlot;
-import com.gtnewhorizons.modularui.common.internal.wrapper.ModularUIContainer;
-import com.gtnewhorizons.modularui.common.widget.ButtonWidget;
-import com.gtnewhorizons.modularui.common.widget.CycleButtonWidget;
-import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
-import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
-import com.gtnewhorizons.modularui.common.widget.SlotGroup;
-import com.gtnewhorizons.modularui.common.widget.SlotWidget;
-import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import com.mojang.authlib.GameProfile;
 
 import forestry.api.apiculture.EnumBeeChromosome;
@@ -97,7 +74,6 @@ import forestry.api.core.EnumTemperature;
 import forestry.api.core.ForestryAPI;
 import forestry.api.core.IErrorLogic;
 import forestry.api.core.IErrorState;
-import forestry.api.genetics.AlleleManager;
 import forestry.api.genetics.IEffectData;
 import forestry.api.genetics.IIndividual;
 import forestry.apiculture.genetics.Bee;
@@ -106,13 +82,10 @@ import forestry.core.errors.EnumErrorCode;
 import forestry.plugins.PluginApiculture;
 import gregtech.GTMod;
 import gregtech.api.enums.GTAuthors;
-import gregtech.api.gui.modularui.GTUIInfos;
-import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicMachine;
-import gregtech.api.recipe.BasicUIProperties;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTApiaryModifier;
 import gregtech.api.util.GTApiaryUpgrade;
@@ -237,34 +210,6 @@ public class MTEIndustrialApiary extends MTEBasicMachine
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new MTEIndustrialApiary(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
-    }
-
-    @Override
-    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        // TODO remove mui1 code
-        if (aBaseMetaTileEntity.isClientSide()) return true;
-        if (useMui2()) return super.onRightclick(aBaseMetaTileEntity, aPlayer);
-        if (!GTMod.proxy.mForceFreeFace) {
-            openGUI(aBaseMetaTileEntity, aPlayer);
-            return true;
-        }
-        for (final ForgeDirection side : ForgeDirection.VALID_DIRECTIONS) {
-            if (aBaseMetaTileEntity.getAirAtSide(side)) {
-                openGUI(aBaseMetaTileEntity, aPlayer);
-                return true;
-            }
-        }
-        GTUtility.sendChatTrans(aPlayer, "GT5U.chat.machine.no_free_side");
-        return true;
-    }
-
-    private void openGUI(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        IndustrialApiaryUI.open(
-            aPlayer,
-            aBaseMetaTileEntity.getWorld(),
-            aBaseMetaTileEntity.getXCoord(),
-            aBaseMetaTileEntity.getYCoord(),
-            aBaseMetaTileEntity.getZCoord());
     }
 
     @Override
@@ -742,11 +687,6 @@ public class MTEIndustrialApiary extends MTEBasicMachine
         super.setInventorySlotContents(aIndex, aStack);
     }
 
-    // Gets called on slot click //
-    public void onInventoryUpdate(int aIndex) {
-        if (aIndex > drone && aIndex < getOutputSlot()) updateModifiers();
-    }
-
     public ItemStack getUsedQueen() {
         return usedQueen;
     }
@@ -1043,57 +983,6 @@ public class MTEIndustrialApiary extends MTEBasicMachine
         else mSpeed = Math.min(mSpeed, maxspeed);
     }
 
-    /** Tries to move as much of [stack] into a possible upgrade slot */
-    public void addUpgrade(ItemStack stack) {
-        if (stack == null || !GTApiaryUpgrade.isUpgrade(stack)) return;
-
-        int amount = stack.stackSize;
-        for (int i = upgradeSlot; i < upgradeSlot + upgradeSlotCount; i++) {
-            if (!isItemValidForSlot(i, stack)) continue;
-
-            int maxStackSize = GTApiaryUpgrade.getUpgrade(stack)
-                .getMaxNumber();
-            ItemStack stackInSlot = getStackInSlot(i);
-
-            // Push into empty slot
-            if (stackInSlot == null) {
-                amount = Math.min(amount, maxStackSize);
-                setInventorySlotContents(i, stack.splitStack(amount));
-                return;
-            }
-
-            if (!GTUtility.areStacksEqual(stack, stackInSlot)) continue;
-            amount = Math.max(Math.min(amount, maxStackSize - stackInSlot.stackSize), 0);
-            if (amount == 0) return;
-            stackInSlot.stackSize += amount;
-            stack.stackSize -= amount;
-            return;
-        }
-    }
-
-    /** Returns installed upgrade in slot 0 <= [index] < getMaxUpgradeCount() */
-    public ItemStack getUpgrade(int index) {
-        if (index < 0 || index >= upgradeSlotCount) return null;
-        return getStackInSlot(upgradeSlot + index);
-    }
-
-    /** Tries to remove [amount] or less of the upgrade installed in slot [index]. Returns the removed ItemStack */
-    public ItemStack removeUpgrade(int index, int amount) {
-        if (index < 0 || index >= upgradeSlotCount || amount <= 0) return null;
-
-        ItemStack stackInSlot = getUpgrade(index);
-        if (stackInSlot == null) return null;
-
-        amount = Math.min(amount, stackInSlot.stackSize);
-        ItemStack result = stackInSlot.splitStack(amount);
-        if (stackInSlot.stackSize <= 0) setInventorySlotContents(upgradeSlot + index, null);
-        return result;
-    }
-
-    public static int getMaxUpgradeCount() {
-        return upgradeSlotCount;
-    }
-
     @Override
     public float getTerritoryModifier(IBeeGenome iBeeGenome, float v) {
         return Math.min(5, terrorityMod);
@@ -1210,230 +1099,6 @@ public class MTEIndustrialApiary extends MTEBasicMachine
         public void writeToNBT(NBTTagCompound nbtTagCompound) {}
     };
 
-    private static final String POWER_SOURCE_POWER = "GT5U.machines.powersource.power",
-        CANCEL_PROCESS_TOOLTIP = "GT5U.machines.industrialapiary.cancel.tooltip",
-        SPEED_TOOLTIP = "GT5U.machines.industrialapiary.speed.tooltip",
-        SPEED_LOCKED_TOOLTIP = "GT5U.machines.industrialapiary.speedlocked.tooltip",
-        INFO_TOOLTIP = "GT5U.machines.industrialapiary.info.tooltip",
-        INFO_WITH_BEE_TOOLTIP = "GT5U.machines.industrialapiary.infoextended.tooltip",
-        UPGRADE_TOOLTIP = "GT5U.machines.industrialapiary.upgradeslot.tooltip",
-        AUTOQUEEN_TOOLTIP = "GT5U.machines.industrialapiary.autoqueen.tooltip";
-
-    @Override
-    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
-        builder
-            .widget(
-                new SlotWidget(new ApiarySlot(inventoryHandler, queen))
-                    .setBackground(getGUITextureSet().getItemSlot(), GTUITextures.OVERLAY_SLOT_BEE_QUEEN)
-                    .setPos(36, 21))
-            .widget(
-                new SlotWidget(new ApiarySlot(inventoryHandler, drone))
-                    .setBackground(getGUITextureSet().getItemSlot(), GTUITextures.OVERLAY_SLOT_BEE_DRONE)
-                    .setPos(36, 41))
-            .widget(
-                SlotGroup.ofItemHandler(inventoryHandler, 2)
-                    .startFromSlot(7)
-                    .endAtSlot(10)
-                    .slotCreator(i -> new ApiarySlot(inventoryHandler, i))
-                    .applyForWidget(
-                        widget -> widget.setGTTooltip(() -> mTooltipCache.getData(UPGRADE_TOOLTIP))
-                            .setTooltipShowUpDelay(TOOLTIP_DELAY))
-                    .build()
-                    .setPos(61, 23));
-
-        super.addUIWidgets(builder, buildContext);
-
-        builder.widget(
-            new CycleButtonWidget().setToggle(
-                () -> this.getBaseMetaTileEntity()
-                    .isAllowedToWork(),
-                x -> {
-                    final IGregTechTileEntity te = this.getBaseMetaTileEntity();
-                    if (x) te.enableWorking();
-                    else te.disableWorking();
-                })
-                .setTextureGetter(
-                    i -> i == 0 ? GTUITextures.OVERLAY_BUTTON_POWER_SWITCH_OFF
-                        : GTUITextures.OVERLAY_BUTTON_POWER_SWITCH_ON)
-                .setVariableBackgroundGetter(
-                    i -> i == 0 ? new IDrawable[] { GTUITextures.BUTTON_STANDARD }
-                        : new IDrawable[] { GTUITextures.BUTTON_STANDARD_PRESSED })
-                .setGTTooltip(() -> mTooltipCache.getData("GT5U.gui.button.power_switch"))
-                .setTooltipShowUpDelay(TOOLTIP_DELAY)
-                .setPos(7, 8)
-                .setSize(18, 18))
-            .widget(
-                new ButtonWidget().setOnClick((clickData, widget) -> cancelProcess())
-                    .setBackground(GTUITextures.BUTTON_STANDARD, GTUITextures.OVERLAY_BUTTON_CROSS)
-                    .setGTTooltip(() -> mTooltipCache.getData(CANCEL_PROCESS_TOOLTIP))
-                    .setTooltipShowUpDelay(TOOLTIP_DELAY)
-                    .setPos(7, 26)
-                    .setSize(18, 18))
-
-            .widget(
-                new CycleButtonWidget().setToggle(() -> mAutoQueen, x -> mAutoQueen = x)
-                    .setTextureGetter(
-                        i -> i == 0 ? GTUITextures.OVERLAY_BUTTON_CROSS : GTUITextures.OVERLAY_BUTTON_CHECKMARK)
-                    .setGTTooltip(() -> mTooltipCache.getData(AUTOQUEEN_TOOLTIP))
-                    .setTooltipShowUpDelay(TOOLTIP_DELAY)
-                    .setPos(7, 44)
-                    .setSize(18, 18)
-                    .setBackground(GTUITextures.BUTTON_STANDARD, GTUITextures.OVERLAY_SLOT_BEE_QUEEN))
-            .widget(
-                new DrawableWidget().setDrawable(GTUITextures.PICTURE_INFORMATION)
-                    .setGTTooltip(() -> {
-                        final String energyreq = formatNumber(
-                            (int) ((float) MTEIndustrialApiary.baseEUtUsage * getEnergyModifier() * getAcceleration())
-                                + getAdditionalEnergyUsage());
-                        // The localization in Forestry is written like this.
-                        final String Temp = AlleleManager.climateHelper.toDisplay(getTemperature());
-                        final String Hum = AlleleManager.climateHelper.toDisplay(getHumidity());
-                        if (getUsedQueen() != null && beeRoot.isMember(getUsedQueen(), EnumBeeType.QUEEN.ordinal())) {
-                            final IBee bee = beeRoot.getMember(getUsedQueen());
-                            if (bee.isAnalyzed()) {
-                                final IBeeGenome genome = bee.getGenome();
-                                final IBeeModifier mod = beeRoot.getBeekeepingMode(getWorld())
-                                    .getBeeModifier();
-                                final float tmod = getTerritoryModifier(null, 1f) * mod.getTerritoryModifier(null, 1f);
-                                final int[] t = Arrays.stream(genome.getTerritory())
-                                    .map(i -> (int) ((float) i * tmod))
-                                    .toArray();
-                                return mTooltipCache.getUncachedTooltipData(
-                                    INFO_WITH_BEE_TOOLTIP,
-                                    energyreq,
-                                    Temp,
-                                    Hum,
-                                    genome.getSpeed(),
-                                    getProductionModifier(null, 0f) + mod.getProductionModifier(null, 0f),
-                                    Math.round(
-                                        getFloweringModifier(null, 1f) * genome.getFlowering()
-                                            * mod.getFloweringModifier(null, 1f)),
-                                    Math.round(
-                                        getLifespanModifier(null, null, 1f) * genome.getLifespan()
-                                            * mod.getLifespanModifier(null, null, 1f)),
-                                    t[0],
-                                    t[1],
-                                    t[2]);
-                            }
-                        }
-                        return mTooltipCache.getUncachedTooltipData(INFO_TOOLTIP, energyreq, Temp, Hum);
-                    })
-                    .attachSyncer(
-                        new FakeSyncWidget.ItemStackSyncer(() -> usedQueen, val -> usedQueen = val),
-                        builder,
-                        (widget, val) -> widget.notifyTooltipChange())
-                    .setPos(163, 19)
-                    .setSize(7, 18))
-            .widget(new ButtonWidget().setOnClick((clickData, widget) -> {
-                if (clickData.mouseButton == 0) {
-                    if (mLockedSpeed) return;
-                    if (!clickData.shift) {
-                        mSpeed++;
-                        if (mSpeed > getMaxSpeed()) mSpeed = 0;
-                    } else {
-                        mSpeed--;
-                        if (mSpeed < 0) mSpeed = getMaxSpeed();
-                    }
-                } else if (clickData.mouseButton == 1) {
-                    mLockedSpeed = !mLockedSpeed;
-                    if (mLockedSpeed) mSpeed = getMaxSpeed();
-                }
-            })
-                .setGTTooltip(
-                    () -> mTooltipCache.getUncachedTooltipData(
-                        mLockedSpeed ? SPEED_LOCKED_TOOLTIP : SPEED_TOOLTIP,
-                        getAcceleration(),
-                        formatNumber(getAdditionalEnergyUsage())))
-                .attachSyncer(
-                    new FakeSyncWidget.IntegerSyncer(() -> mSpeed, val -> mSpeed = val),
-                    builder,
-                    (widget, val) -> widget.notifyTooltipChange())
-                .attachSyncer(
-                    new FakeSyncWidget.BooleanSyncer(() -> mLockedSpeed, val -> mLockedSpeed = val),
-                    builder,
-                    (widget, val) -> widget.notifyTooltipChange())
-                .setTooltipShowUpDelay(TOOLTIP_DELAY)
-                .setBackground(GTUITextures.PICTURE_SQUARE_LIGHT_GRAY)
-                .setPos(25, 62)
-                .setSize(18, 18))
-            .widget(
-                new TextWidget("x").setDefaultColor(COLOR_TEXT_GRAY.get())
-                    .setPos(30, 63))
-            .widget(
-                TextWidget.dynamicString(() -> String.valueOf(1 << mSpeed))
-                    // mSpeed is already synced
-                    .setSynced(false)
-                    .setDefaultColor(COLOR_TEXT_GRAY.get())
-                    .setPos(26, 72));
-    }
-
-    private static final FallbackableUITexture progressBarTexture = GTUITextures
-        .fallbackableProgressbar("iapiary", GTUITextures.PROGRESSBAR_ARROW);
-
-    @Override
-    protected BasicUIProperties getUIProperties() {
-        return super.getUIProperties().toBuilder()
-            .progressBarTexture(progressBarTexture)
-            .progressBarPos(new Pos2d(70, 3))
-            .build();
-    }
-
-    @Override
-    protected SlotWidget createItemInputSlot(int index, IDrawable[] backgrounds, Pos2d pos) {
-        // we have custom input slots
-        return null;
-    }
-
-    @Override
-    protected CycleButtonWidget createItemAutoOutputButton() {
-        return (CycleButtonWidget) super.createItemAutoOutputButton().setPos(7, 62);
-    }
-
-    @Override
-    protected CycleButtonWidget createFluidAutoOutputButton() {
-        return null;
-    }
-
-    @Override
-    protected SlotWidget createChargerSlot(int x, int y, String tooltipKey, Object[] tooltipArgs) {
-        return (SlotWidget) super.createChargerSlot(x, y, tooltipKey, tooltipArgs).setPos(79, 62);
-    }
-
-    @Override
-    protected DrawableWidget createErrorStatusArea(ModularWindow.Builder builder, IDrawable picture) {
-        return (DrawableWidget) super.createErrorStatusArea(builder, picture).setPos(100, 62)
-            .attachSyncer(
-                new FakeSyncWidget.ListSyncer<>(() -> Arrays.asList(mErrorStates.toArray(new IErrorState[0])), val -> {
-                    mErrorStates.clear();
-                    mErrorStates.addAll(new HashSet<>(val));
-                },
-                    (buffer, val) -> buffer.writeShort(val.getID()),
-                    buffer -> ForestryAPI.errorStateRegistry.getErrorState(buffer.readShort())),
-                builder,
-                (widget, val) -> widget.notifyTooltipChange());
-    }
-
-    @Override
-    protected List<String> getErrorDescriptions() {
-        if (!mErrorStates.isEmpty()) {
-            return mErrorStates.stream()
-                .map(state -> EnumChatFormatting.RED + StatCollector.translateToLocal("for." + state.getDescription()))
-                .collect(Collectors.toList());
-        } else if (mStuttering) {
-            return mTooltipCache
-                .getData(STALLED_STUTTERING_TOOLTIP, StatCollector.translateToLocal(POWER_SOURCE_POWER)).text;
-        } else {
-            return Collections.emptyList();
-        }
-    }
-
-    @Override
-    protected List<String> getErrorDescriptionsShift() {
-        // Don't show shift tooltip of "Progress was lost"
-        // as this machine does not lose progress
-        return getErrorDescriptions();
-    }
-
     public int getAcceleration() {
         return 1 << mSpeed;
     }
@@ -1444,98 +1109,6 @@ public class MTEIndustrialApiary extends MTEBasicMachine
         if (accelerated == 2) energyusage = 32;
         else if (accelerated > 2) energyusage = 32 * accelerated << (mSpeed - 2);
         return energyusage;
-    }
-
-    private class ApiarySlot extends BaseSlot {
-
-        public ApiarySlot(IItemHandlerModifiable inventory, int index) {
-            super(inventory, index);
-        }
-
-        @Override
-        public boolean isItemValidPhantom(ItemStack stack) {
-            return super.isItemValidPhantom(stack) && getBaseMetaTileEntity().isItemValidForSlot(getSlotIndex(), stack);
-        }
-
-        @Override
-        public void onSlotChanged() {
-            super.onSlotChanged();
-            onInventoryUpdate(getSlotIndex());
-        }
-    }
-
-    private static final UIInfo<?, ?> IndustrialApiaryUI = GTUIInfos.GTTileEntityUIFactory
-        .apply(GTModularUIContainer_IndustrialApiary::new);
-
-    private static class GTModularUIContainer_IndustrialApiary extends ModularUIContainer {
-
-        public GTModularUIContainer_IndustrialApiary(ModularUIContext context, ModularWindow mainWindow) {
-            super(context, mainWindow);
-        }
-
-        private final int playerInventorySlot = 36;
-
-        @Override
-        public ItemStack slotClick(int aSlotNumber, int aMouseclick, int aShifthold, EntityPlayer aPlayer) {
-            if (!(aSlotNumber >= playerInventorySlot + 2 && aSlotNumber < playerInventorySlot + 2 + 4))
-                return super.slotClick(aSlotNumber, aMouseclick, aShifthold, aPlayer);
-            if (aShifthold == 5) return null;
-            if (aShifthold != 0) return super.slotClick(aSlotNumber, aMouseclick, aShifthold, aPlayer);
-            if (aMouseclick > 1) return super.slotClick(aSlotNumber, aMouseclick, aShifthold, aPlayer);
-            final ItemStack s = aPlayer.inventory.getItemStack();
-            if (s == null) return super.slotClick(aSlotNumber, aMouseclick, aShifthold, aPlayer);
-            final Slot slot = getSlot(aSlotNumber);
-            final ItemStack slotStack = slot.getStack();
-            if (slotStack != null && !GTUtility.areStacksEqual(slotStack, s)) return null; // super would replace item
-            if (slotStack == null && !slot.isItemValid(s))
-                return super.slotClick(aSlotNumber, aMouseclick, aShifthold, aPlayer);
-            if (!GTApiaryUpgrade.isUpgrade(s)) return super.slotClick(aSlotNumber, aMouseclick, aShifthold, aPlayer);
-            int max = GTApiaryUpgrade.getUpgrade(s)
-                .getMaxNumber();
-            if (slotStack != null) max = Math.max(0, max - slotStack.stackSize);
-            max = Math.min(max, s.stackSize);
-            if (max == 0) return null;
-            if (aMouseclick == 1) max = 1;
-            if (max == s.stackSize) return super.slotClick(aSlotNumber, aMouseclick, aShifthold, aPlayer);
-            final ItemStack newStack = s.splitStack(s.stackSize - max);
-            final ItemStack result = super.slotClick(aSlotNumber, aMouseclick, aShifthold, aPlayer);
-            aPlayer.inventory.setItemStack(newStack);
-            return result;
-        }
-
-        @Override
-        public ItemStack transferStackInSlot(EntityPlayer aPlayer, int aSlotIndex) {
-            final Slot s = getSlot(aSlotIndex);
-            if (s instanceof ApiarySlot) return super.transferStackInSlot(aPlayer, aSlotIndex);
-            final ItemStack aStack = s.getStack();
-            if (!GTApiaryUpgrade.isUpgrade(aStack)) return super.transferStackInSlot(aPlayer, aSlotIndex);
-            for (int i = playerInventorySlot + 2; i < playerInventorySlot + 2 + 4; i++) {
-                final Slot iSlot = getSlot(i);
-                final ItemStack iStack = iSlot.getStack();
-                if (iStack == null) {
-                    if (!iSlot.isItemValid(aStack)) continue;
-                } else {
-                    if (!GTUtility.areStacksEqual(aStack, iStack)) continue;
-                }
-                int max = GTApiaryUpgrade.getUpgrade(aStack)
-                    .getMaxNumber();
-                if (iStack == null) {
-                    max = Math.min(max, aStack.stackSize);
-                    final ItemStack newstack = aStack.splitStack(max);
-                    iSlot.putStack(newstack);
-                } else {
-                    max = Math.max(0, max - iStack.stackSize);
-                    max = Math.min(max, aStack.stackSize);
-                    iStack.stackSize += max;
-                    aStack.stackSize -= max;
-                    iSlot.onSlotChanged();
-                }
-                if (aStack.stackSize == 0) s.putStack(null);
-                else s.onSlotChanged();
-                break;
-            }
-            return null;
-        }
     }
 
     @Override
