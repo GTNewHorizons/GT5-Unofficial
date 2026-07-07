@@ -678,6 +678,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
             hatch.updateTexture(aBaseCasingIndex);
             hatch.updateCraftingIcon(this.getMachineCraftingIcon());
         }
+        addIfSmartInput(aMetaTileEntity);
         if (aMetaTileEntity instanceof MTEHatchInput tInput) {
             tInput.mRecipeMap = getRecipeMap();
             return mInputHatches.add(tInput);
@@ -702,6 +703,7 @@ public class AntimatterForge extends MTEExtendedPowerMultiBlockBase<AntimatterFo
             hatch.updateTexture(aBaseCasingIndex);
             hatch.updateCraftingIcon(this.getMachineCraftingIcon());
         }
+        addIfSmartInput(aMetaTileEntity);
         if (aMetaTileEntity instanceof AntimatterOutputHatch tAntimatter) {
             return amOutputHatches.add(tAntimatter);
         }
