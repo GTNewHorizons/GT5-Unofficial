@@ -9,6 +9,7 @@ import static java.lang.Long.min;
 import java.math.BigInteger;
 import java.util.UUID;
 
+import gregtech.GTMod;
 import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -89,6 +90,8 @@ public class MTEWirelessEnergy extends MTEHatchEnergy {
         SpaceProjectManager.checkOrCreateTeam(owner_uuid);
 
         tryFetchingEnergy();
+
+        GTMod.proxy.wirelessEnergyHatchManager.addHatch(this);
     }
 
     @Override
@@ -97,18 +100,13 @@ public class MTEWirelessEnergy extends MTEHatchEnergy {
         super.onPreTick(aBaseMetaTileEntity, aTick);
 
         if (aBaseMetaTileEntity.isServerSide()) {
-            // This is set up in a way to be as optimised as possible. If a user has a relatively plentiful energy
-            // network
-            // it should make no difference to them. Minimising the number of operations on BigInteger is essential.
-
-            // Every ticks_between_energy_addition add eu_transferred_per_operation to internal EU storage from network.
-            if (aTick % ticks_between_energy_addition == 0L) {
-                tryFetchingEnergy();
+            if (aTick % 20 == 0L) {
+                aBaseMetaTileEntity.tryDisableTicking();
             }
         }
     }
 
-    private void tryFetchingEnergy() {
+    public final void tryFetchingEnergy() {
         long currentEU = getBaseMetaTileEntity().getStoredEU();
         long maxEU = maxEUStore();
         long euToTransfer = min(maxEU - currentEU, eu_transferred_per_operation_long);
