@@ -76,7 +76,6 @@ import gregtech.common.gui.modularui.multiblock.MTELapotronicSuperCapacitorGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.misc.GTStructureChannels;
 import gregtech.common.misc.WirelessNetworkManager;
-import gregtech.common.misc.spaceprojects.SpaceProjectManager;
 import gregtech.common.tileentities.machines.multi.drone.MTEHatchDroneDownLink;
 import kekztech.common.Blocks;
 import kekztech.common.itemBlocks.ItemBlockLapotronicEnergyUnit;
@@ -499,8 +498,7 @@ public class MTELapotronicSuperCapacitor extends MTEEnhancedMultiBlockBase<MTELa
 
         if (!tileEntity.isServerSide()) return;
 
-        global_energy_user_uuid = tileEntity.getOwnerUuid();
-        SpaceProjectManager.checkOrCreateTeam(global_energy_user_uuid);
+        global_energy_user_uuid = WirelessNetworkManager.processInitialSettings(tileEntity);
     }
 
     @Override

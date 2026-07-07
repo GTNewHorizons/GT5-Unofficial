@@ -11,6 +11,7 @@ public abstract class GlobalVariableStorage {
     // --------------------- NEVER access these maps! Use the methods provided! ---------------------
 
     // Global EU map.
+    @Deprecated
     public static HashMap<UUID, BigInteger> GlobalEnergy = new HashMap<>(100, 0.9f);
 
     // Global Wireless Data map

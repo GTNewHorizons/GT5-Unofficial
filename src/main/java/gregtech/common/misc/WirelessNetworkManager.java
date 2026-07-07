@@ -1,49 +1,47 @@
 package gregtech.common.misc;
 
-import static gregtech.common.misc.GlobalVariableStorage.GlobalEnergy;
-
 import java.math.BigInteger;
 import java.util.UUID;
 
+import com.gtnewhorizon.gtnhlib.teams.Team;
+import com.gtnewhorizon.gtnhlib.teams.TeamManager;
+
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.common.misc.spaceprojects.SpaceProjectManager;
 
 public class WirelessNetworkManager {
 
     private WirelessNetworkManager() {}
 
     public static void strongCheckOrAddUser(UUID user_uuid) {
-        SpaceProjectManager.checkOrCreateTeam(user_uuid);
-        user_uuid = SpaceProjectManager.getLeader(user_uuid);
-        if (!GlobalEnergy.containsKey(user_uuid)) {
-            GlobalEnergy.put(user_uuid, BigInteger.ZERO);
-        }
+        // a player always is in a team, and a teams' data always is initialized if registered.
+        Team team = TeamManager.getTeamByPlayer(user_uuid);
+        assert team != null;
+        assert team.getData(WirelessEnergyTeamData.DATA_KEY) != null;
     }
 
     // ------------------------------------------------------------------------------------
-    // Add EU to the users global energy. You can enter a negative number to subtract it.
-    // If the value goes below 0 it will return false and not perform the operation.
-    // BigIntegers have much slower operations than longs/ints. You should call these methods
-    // as infrequently as possible and bulk store values to add to the global map.
+    /**
+     * Add EU to a user's team global energy. Enter a negative number to subtract from it.
+     * If the value goes below {@code 0} it will return {@code false} and not perform the operation.
+     * {@link BigInteger BigIntegers} have much slower operations than longs/ints.
+     * You should call these methods as infrequently as possible and bulk store values to add to the global map.
+     */
     public static boolean addEUToGlobalEnergyMap(UUID user_uuid, BigInteger EU) {
-        // Mark the data as dirty and in need of saving.
-        try {
-            GlobalEnergyWorldSavedData.INSTANCE.markDirty();
-        } catch (Exception exception) {
-            System.out.println("COULD NOT MARK GLOBAL ENERGY AS DIRTY IN ADD EU");
-            exception.printStackTrace();
-        }
+        // LSC is a "bitch" and tries to access global energy with a null UUID.
+        if (user_uuid == null) return false;
+        Team team = TeamManager.getTeamByPlayer(user_uuid);
+        var data = (WirelessEnergyTeamData) team.getData(WirelessEnergyTeamData.DATA_KEY);
+        // this should never happen unless the data is unregistered!
+        if (data == null) return false;
 
-        // Get the team UUID. Users are by default in a team with a UUID equal to their player UUID.
-        UUID teamUUID = SpaceProjectManager.getLeader(user_uuid);
-
-        // Get the teams total energy stored. If they are not in the map, return 0 EU.
-        BigInteger totalEU = GlobalEnergy.getOrDefault(teamUUID, BigInteger.ZERO);
+        // Get the teams' total energy stored. If they have none, the default team data's value 0 is returned.
+        BigInteger totalEU = data.wirelessEnergy;
         totalEU = totalEU.add(EU);
 
         // If there is sufficient EU then complete the operation and return true.
         if (totalEU.signum() >= 0) {
-            GlobalEnergy.put(teamUUID, totalEU);
+            data.wirelessEnergy = totalEU;
+            team.markDirty();
             return true;
         }
 
@@ -72,34 +70,52 @@ public class WirelessNetworkManager {
 
     // ------------------------------------------------------------------------------------
 
+    /**
+     * Get the EU of a team, any member UUID can be used. Will fetch the team for you.
+     */
     public static BigInteger getUserEU(UUID user_uuid) {
-        return GlobalEnergy.getOrDefault(SpaceProjectManager.getLeader(user_uuid), BigInteger.ZERO);
+        // LSC is a "bitch" and tries to access global energy with a null UUID.
+        if (user_uuid == null) return BigInteger.ZERO;
+        Team team = TeamManager.getTeamByPlayer(user_uuid);
+        var data = (WirelessEnergyTeamData) team.getData(WirelessEnergyTeamData.DATA_KEY);
+        // this should never happen unless the data is unregistered!
+        if (data == null) return BigInteger.ZERO;
+        return data.wirelessEnergy;
     }
 
-    // This overwrites the EU in the network. Only use this if you are absolutely sure you know what you are doing.
+    /**
+     * This overwrites the EU in the network. Only use this if you are absolutely sure you know what you are doing.
+     * Any member UUID can be used, will fetch the team for you.
+     */
     public static void setUserEU(UUID user_uuid, BigInteger EU) {
-        // Mark the data as dirty and in need of saving.
-        try {
-            GlobalEnergyWorldSavedData.INSTANCE.markDirty();
-        } catch (Exception exception) {
-            System.out.println("COULD NOT MARK GLOBAL ENERGY AS DIRTY IN SET EU");
-            exception.printStackTrace();
-        }
-
-        GlobalEnergy.put(SpaceProjectManager.getLeader(user_uuid), EU);
+        // LSC is a "bitch" and tries to access global energy with a null UUID.
+        if (user_uuid == null) return;
+        Team team = TeamManager.getTeamByPlayer(user_uuid);
+        var data = (WirelessEnergyTeamData) team.getData(WirelessEnergyTeamData.DATA_KEY);
+        // this should never happen unless the data is unregistered!
+        if (data == null) return;
+        data.wirelessEnergy = EU;
+        team.markDirty();
     }
 
+    /**
+     * Do not use this unless you are 100% certain you know what you are doing.
+     */
     public static void clearGlobalEnergyInformationMaps() {
-        // Do not use this unless you are 100% certain you know what you are doing.
-        GlobalEnergy.clear();
+        TeamManager.getTeamMap()
+            .forEach((_teamUuid, team) -> {
+                var data = (WirelessEnergyTeamData) team.getData(WirelessEnergyTeamData.DATA_KEY);
+                data.wirelessEnergy = BigInteger.ZERO;
+                team.markDirty();
+            });
     }
 
     public static UUID processInitialSettings(final IGregTechTileEntity machine) {
-
         // UUID and username of the owner.
         final UUID UUID = machine.getOwnerUuid();
 
-        SpaceProjectManager.checkOrCreateTeam(UUID);
+        // a player always is in a team, assert has no effect unless assertions are enabled.
+        assert null != TeamManager.getTeamByPlayer(UUID);
         return UUID;
     }
 }
