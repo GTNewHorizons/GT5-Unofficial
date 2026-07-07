@@ -105,13 +105,9 @@ class IGlobalWirelessEnergy_UnitTest {
         assertEquals(getUserEU(user_uuid_1), BigInteger.ZERO, message);
         assertEquals(getUserEU(user_uuid_2), BigInteger.ZERO, message);
 
-        // SpaceProjectManager.putInTeam(user_uuid_0, user_uuid_1);
-        // SpaceProjectManager.putInTeam(user_uuid_2, user_uuid_1);
         TeamManager.mergeTeams(unit_team_1, unit_team_0);
         TeamManager.mergeTeams(unit_team_1, unit_team_2);
 
-        // assertEquals(SpaceProjectManager.getLeader(user_uuid_0), user_uuid_1, message);
-        // assertEquals(SpaceProjectManager.getLeader(user_uuid_2), user_uuid_1, message);
         assertEquals(TeamManager.getTeamByPlayer(user_uuid_0), unit_team_1, message);
         assertEquals(TeamManager.getTeamByPlayer(user_uuid_2), unit_team_1, message);
 
@@ -133,9 +129,6 @@ class IGlobalWirelessEnergy_UnitTest {
         assertEquals(getUserEU(user_uuid_0), BigInteger.ONE, message);
         assertEquals(getUserEU(user_uuid_1), BigInteger.ONE, message);
         assertEquals(getUserEU(user_uuid_2), BigInteger.ONE, message);
-
-        // SpaceProjectManager.putInTeam(user_uuid_0, user_uuid_0);
-        // SpaceProjectManager.putInTeam(user_uuid_2, user_uuid_2);
 
         // recreating this step of the unit test would probably void the team & it's data
         // SpaceProjectManager.putInTeam(user_uuid_1, user_uuid_1);
