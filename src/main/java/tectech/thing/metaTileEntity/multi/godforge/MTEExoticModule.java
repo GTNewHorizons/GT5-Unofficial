@@ -16,6 +16,7 @@ import static tectech.loader.recipe.Godforge.exoticModulePlasmaItemMap;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -340,7 +341,13 @@ public class MTEExoticModule extends MTEBaseModule {
         List<FluidStack> plasmas = new ArrayList<>();
 
         for (ItemStack itemStack : items) {
-            String dict = OreDictionary.getOreName(OreDictionary.getOreIDs(itemStack)[0]);
+            int[] oreIDs = OreDictionary.getOreIDs(itemStack);
+            List<String> dicts = Arrays.stream(oreIDs)
+                .mapToObj(OreDictionary::getOreName)
+                .sorted(Comparator.comparingInt(String::length))
+                .toList();
+            String dict = dicts.getFirst();
+
             // substring 4 because dust is 4 characters long and there is no other possible oreDict
             String strippedOreDict = dict.substring(4);
             plasmas.add(
