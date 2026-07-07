@@ -62,7 +62,8 @@ import gregtech.common.misc.spaceprojects.interfaces.ISpaceProject.ISP_Upgrade;
  * @see com.gtnewhorizon.gtnhlib.teams.Team Team
  * @see com.gtnewhorizon.gtnhlib.teams.TeamManager TeamManager
  *
- * @deprecated This kind of team and data management should be migrated to {@link com.gtnewhorizon.gtnhlib.teams.Team#getData(String) Team#getData(String)}.
+ * @deprecated This kind of team and data management should be migrated to
+ *             {@link com.gtnewhorizon.gtnhlib.teams.Team#getData(String) Team#getData(String)}.
  */
 @Deprecated
 public class SpaceProjectWorldSavedData extends WorldSavedData {
