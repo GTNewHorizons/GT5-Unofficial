@@ -106,19 +106,11 @@ public class MTEHatchWirelessDataItemsOutput extends MTEHatch {
     @Override
     public void onPostTick(IGregTechTileEntity baseMetaTE, long aTick) {
         if (baseMetaTE.isServerSide() && (this.dirty)) {
-            // WirelessDataStore wirelessDataStore = WirelessDataStore
-            // .getWirelessDataSticks(getBaseMetaTileEntity().getOwnerUuid());
-            // wirelessDataStore.uploadData(Arrays.asList(dataPacket.getContent()), aTick);
             Team team = TeamManager.getTeamByPlayer(baseMetaTE.getOwnerUuid());
             var data = (WirelessTeamData) team.getData(WirelessTeamData.DATA_KEY);
             long coord = CoordinatePacker.pack(baseMetaTE.getXCoord(), baseMetaTE.getYCoord(), baseMetaTE.getZCoord());
-            if (dataPacket == null) {
-                data.uploadDatastick(coord, null);
-            } else {
-                for (RecipeAssemblyLine recipeAssemblyLine : dataPacket.getContent()) {
-                    data.uploadDatastick(coord, recipeAssemblyLine);
-                }
-            }
+
+            data.uploadDatastick(coord, dataPacket, baseMetaTE.getOwnerUuid());
             this.dirty = false;
         }
     }
