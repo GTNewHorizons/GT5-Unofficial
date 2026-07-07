@@ -4373,10 +4373,10 @@ gt.blockpad.1.name=Sticky Pad
 # IC2 items replacements
 gt.item.mixed_alloy_ingot.name=Mixed Metal Ingot
 gt.item.mixed_alloy_plate.name=Advanced Alloy Plate
-gt.item.carbon_fibre.name=Raw Carbon Fibre
-gt.item.carbon_mesh.name=Raw Carbon Mesh
-gt.item.carbon_plate.name=Carbon Plate
-gt.item.iridium_reinforced_plate.name=Iridium Reinforced Plate
+gt.item.reinforced_iridium_alloy_plate.name=Reinforced Iridium Alloy Plate
+gt.item.carbon_fiber_bundle.name=Carbon Fiber Bundle
+gt.item.carbon_fiber_mesh.name=Carbon Fiber Mesh
+gt.item.carbon_fiber_sheet.name=Carbon Fiber Sheet
 
 ## Book
 gt.item.book.written.01.name=Book
