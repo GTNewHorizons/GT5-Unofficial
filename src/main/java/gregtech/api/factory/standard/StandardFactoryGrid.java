@@ -74,6 +74,24 @@ public abstract class StandardFactoryGrid<TSelf extends StandardFactoryGrid<TSel
 
     @Override
     public void removeElement(TElement element) {
+        if (edges.get(element)
+            .isEmpty()) {
+            // If there are no edges, removeEdge never gets called, preventing the network lifecycle methods from
+            // running
+            // Call them manually here
+            TNetwork network = element.getNetwork();
+            if (network != null) {
+                network.removeElement(element);
+                element.setNetwork(null);
+                if (network.getElements()
+                    .isEmpty()) {
+                    network.onNetworkRemoved();
+                    networks.remove(network);
+                }
+            }
+            return;
+        }
+
         for (TElement adj : new HashSet<>(edges.get(element))) {
             removeEdge(element, adj, true);
         }
