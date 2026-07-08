@@ -1,7 +1,5 @@
 package gregtech.api.items.armor;
 
-import static gregtech.api.enums.Mods.GregTech;
-
 import java.util.Collection;
 import java.util.Collections;
 import java.util.EnumMap;
@@ -11,14 +9,16 @@ import java.util.Map;
 import java.util.Set;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 
 import org.lwjgl.input.Keyboard;
 
-import com.cleanroommc.modularui.drawable.Icon;
-import com.cleanroommc.modularui.drawable.UITexture;
 import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
 
 import gregtech.api.items.armor.behaviors.BehaviorName;
+import gregtech.common.items.armor.MechArmorBase;
 
 public class ArmorActionManager {
 
@@ -31,7 +31,6 @@ public class ArmorActionManager {
             new ArmorAction(
                 "nightvision",
                 "Nightvision",
-                createActionIcon("nightvision"),
                 true,
                 SyncedKeybind.createConfigurable("key.gt.toggle_night_vision", "Gregtech Armor", Keyboard.KEY_R),
                 BehaviorName.NightVision));
@@ -40,7 +39,6 @@ public class ArmorActionManager {
             new ArmorAction(
                 "jetpack_hover",
                 "Jetpack Hover",
-                createActionIcon("jetpack_hover"),
                 true,
                 SyncedKeybind.createConfigurable("key.gt.toggle_jetpack_hover", "Gregtech Armor", Keyboard.KEY_G),
                 BehaviorName.JetpackHover));
@@ -49,7 +47,6 @@ public class ArmorActionManager {
             new ArmorAction(
                 "jetpack",
                 "Jetpack",
-                createActionIcon("jetpack"),
                 true,
                 SyncedKeybind.createConfigurable("key.gt.toggle_jetpack", "Gregtech Armor", Keyboard.KEY_F),
                 BehaviorName.Jetpack
@@ -60,7 +57,6 @@ public class ArmorActionManager {
             new ArmorAction(
                 "goggles_of_revealing",
                 "Goggles of Revealing",
-                createActionIcon("goggles_of_revealing"),
                 true,
                 SyncedKeybind
                     .createConfigurable("key.gt.toggle_goggles_of_revealing", "Gregtech Armor", Keyboard.KEY_T),
@@ -70,7 +66,6 @@ public class ArmorActionManager {
             new ArmorAction(
                 "inertia_canceling",
                 "Inertia Canceling",
-                createActionIcon("inertia_canceling"),
                 true,
                 SyncedKeybind.createConfigurable("key.gt.toggle_inertiacanceling", "Gregtech Armor", Keyboard.KEY_J),
                 BehaviorName.InertiaCanceling));
@@ -79,7 +74,6 @@ public class ArmorActionManager {
             new ArmorAction(
                 "omni_movement",
                 "Omni Movement",
-                createActionIcon("omni_movement"),
                 true,
                 SyncedKeybind.createConfigurable("key.gt.toggle_omnimovement", "Gregtech Armor", Keyboard.KEY_V),
                 BehaviorName.OmniMovement));
@@ -88,7 +82,6 @@ public class ArmorActionManager {
             new ArmorAction(
                 "speed_increase",
                 "Speed Increase",
-                createActionIcon("speed_increase"),
                 false,
                 SyncedKeybind.createConfigurable("key.gt.speed_increase", "Gregtech Armor", Keyboard.KEY_EQUALS),
                 BehaviorName.SpeedBoost));
@@ -97,7 +90,6 @@ public class ArmorActionManager {
             new ArmorAction(
                 "speed_decrease",
                 "Speed Decrease",
-                createActionIcon("speed_decrease"),
                 false,
                 SyncedKeybind.createConfigurable("key.gt.speed_decrease", "Gregtech Armor", Keyboard.KEY_MINUS),
                 BehaviorName.SpeedBoost));
@@ -106,7 +98,6 @@ public class ArmorActionManager {
             new ArmorAction(
                 "force_field",
                 "Force Field",
-                createActionIcon("force_field"),
                 true,
                 SyncedKeybind.createConfigurable("key.gt.force_field", "Gregtech Armor", Keyboard.KEY_K),
                 BehaviorName.ForceField));
@@ -115,7 +106,6 @@ public class ArmorActionManager {
             new ArmorAction(
                 "holo_inventory",
                 "Holo Inventory",
-                createActionIcon("holo_inventory"),
                 true,
                 SyncedKeybind.createConfigurable("key.gt.toggle_holo_inventory", "Gregtech Armor", Keyboard.KEY_H),
                 BehaviorName.HoloInventory));
@@ -170,14 +160,6 @@ public class ArmorActionManager {
         }
     }
 
-    private static Icon createActionIcon(String actionName) {
-        return UITexture.builder()
-            .location(GregTech.ID, "textures/items/mech_armor/radial_ui_actions/" + actionName + ".png")
-            .imageSize(16, 16)
-            .build()
-            .asIcon();
-    }
-
     public static ArmorAction getAction(String id) {
         return REGISTRY.get(id);
     }
@@ -188,5 +170,19 @@ public class ArmorActionManager {
 
     public static Collection<ArmorAction> getAllActions() {
         return REGISTRY.values();
+    }
+
+    /*
+     * Checks if the given armor piece is the first (lowest-slot) MechArmor piece equipped. Used to prevent calling code
+     * multiple times due to multiple armor pieces.
+     */
+    public static boolean isPrimaryArmorPiece(EntityPlayer player, Item itemToCheck) {
+        for (int i = 0; i < 4; i++) {
+            ItemStack piece = player.getCurrentArmor(i);
+            if (piece != null && piece.getItem() instanceof MechArmorBase) {
+                return piece.getItem() == itemToCheck;
+            }
+        }
+        return false;
     }
 }

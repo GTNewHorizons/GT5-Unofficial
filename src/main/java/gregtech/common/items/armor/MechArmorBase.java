@@ -212,7 +212,7 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISp
         ArmorContext context = load(player.getEntityWorld(), player, stack);
 
         if (keyPressed == ArmorActionManager.getKeybind("open_radial_menu")) {
-            if (isDown) {
+            if (isDown && ArmorActionManager.isPrimaryArmorPiece(player, this)) {
                 ArmorRadialMenu.INSTANCE.open(player);
             }
             return;

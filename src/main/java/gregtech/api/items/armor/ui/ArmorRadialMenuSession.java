@@ -1,6 +1,7 @@
 package gregtech.api.items.armor.ui;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -8,6 +9,9 @@ import java.util.Set;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTTagString;
+import net.minecraftforge.common.util.Constants;
 
 import com.cleanroommc.modularui.factory.GuiData;
 import com.cleanroommc.modularui.screen.UISettings;
@@ -206,18 +210,18 @@ public class ArmorRadialMenuSession {
         String defaultString = String.join(",", validActionIds) + ",";
 
         this.syncedOrder = new StringSyncValue(
-            () -> this.nbt.hasKey("RadialOrder") ? this.nbt.getString("RadialOrder") : defaultString,
-            (newOrder) -> this.nbt.setString("RadialOrder", newOrder)).allowC2S();
+            () -> loadListFromNBT("RadialOrder", defaultString),
+            (newOrder) -> saveListToNBT("RadialOrder", newOrder)).allowC2S();
 
         this.syncedVisible = new StringSyncValue(
-            () -> this.nbt.hasKey("RadialVisible") ? this.nbt.getString("RadialVisible") : defaultString,
-            (newVisible) -> this.nbt.setString("RadialVisible", newVisible)).allowC2S();
+            () -> loadListFromNBT("RadialVisible", defaultString),
+            (newVisible) -> saveListToNBT("RadialVisible", newVisible)).allowC2S();
 
         this.syncManager.syncValue("orderSync", this.syncedOrder);
         this.syncManager.syncValue("visibleSync", this.syncedVisible);
 
         parseCurrentOrder(validActionIds);
-        parseVisibleSet();
+        parseVisibleSet(validActionIds);
 
         this.syncedOrder.changeListener(() -> {
             parseCurrentOrder(validActionIds);
@@ -225,7 +229,7 @@ public class ArmorRadialMenuSession {
         });
 
         this.syncedVisible.changeListener(() -> {
-            parseVisibleSet();
+            parseVisibleSet(validActionIds);
             triggerUiUpdate();
         });
     }
@@ -245,7 +249,7 @@ public class ArmorRadialMenuSession {
         }
     }
 
-    private void parseVisibleSet() {
+    private void parseVisibleSet(List<String> validActionIds) {
         this.visibleSet.clear();
         for (String s : this.syncedVisible.getStringValue()
             .split(",")) {
@@ -253,5 +257,41 @@ public class ArmorRadialMenuSession {
                 this.visibleSet.add(s);
             }
         }
+
+        List<String> savedOrderList = Arrays.asList(
+            this.syncedOrder.getStringValue()
+                .split(","));
+
+        for (String action : validActionIds) {
+            if (!savedOrderList.contains(action)) {
+                this.visibleSet.add(action);
+            }
+        }
+    }
+
+    private void saveListToNBT(String key, String csvString) {
+        NBTTagList tagList = new NBTTagList();
+        if (csvString != null && !csvString.isEmpty()) {
+            for (String s : csvString.split(",")) {
+                if (!s.isEmpty()) {
+                    tagList.appendTag(new NBTTagString(s));
+                }
+            }
+        }
+        this.nbt.setTag(key, tagList);
+    }
+
+    private String loadListFromNBT(String key, String defaultString) {
+        if (this.nbt.hasKey(key, Constants.NBT.TAG_LIST)) {
+            NBTTagList tagList = this.nbt.getTagList(key, Constants.NBT.TAG_STRING);
+            List<String> loadedList = new ArrayList<>();
+            for (int i = 0; i < tagList.tagCount(); i++) {
+                loadedList.add(tagList.getStringTagAt(i));
+            }
+
+            return String.join(",", loadedList) + ",";
+        }
+
+        return defaultString;
     }
 }
