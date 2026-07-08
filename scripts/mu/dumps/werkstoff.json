@@ -6359,7 +6359,9 @@
         "amount": 1
       }
     ],
-    "oreByProducts": [],
+    "oreByProducts": [
+      "Carbon"
+    ],
     "generatedPrefixes": [
       "blockCasing",
       "blockCasingAdvanced"
@@ -6539,7 +6541,9 @@
         "amount": 1
       }
     ],
-    "oreByProducts": [],
+    "oreByProducts": [
+      "NaquadahAlloy"
+    ],
     "generatedPrefixes": [
       "blockCasing",
       "blockCasingAdvanced"
@@ -6582,7 +6586,9 @@
         "amount": 1
       }
     ],
-    "oreByProducts": [],
+    "oreByProducts": [
+      "Osmiridium"
+    ],
     "generatedPrefixes": [
       "blockCasing",
       "blockCasingAdvanced"
@@ -6625,7 +6631,9 @@
         "amount": 1
       }
     ],
-    "oreByProducts": [],
+    "oreByProducts": [
+      "BlackSteel"
+    ],
     "generatedPrefixes": [
       "blockCasing",
       "blockCasingAdvanced"
@@ -6668,7 +6676,9 @@
         "amount": 1
       }
     ],
-    "oreByProducts": [],
+    "oreByProducts": [
+      "Wood"
+    ],
     "generatedPrefixes": [
       "blockCasing",
       "blockCasingAdvanced"
@@ -6711,7 +6721,9 @@
         "amount": 1
       }
     ],
-    "oreByProducts": [],
+    "oreByProducts": [
+      "Magnesia"
+    ],
     "generatedPrefixes": [
       "ingotHot",
       "ingot",
