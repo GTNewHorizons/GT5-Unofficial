@@ -386,6 +386,7 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
         int hatchLayer = (height * 2) - 2;
         while (outputHatchesPerLayer.size() <= hatchLayer) outputHatchesPerLayer.add(new ArrayList<>());
         tHatch.updateTexture(aBaseCasingIndex);
+        addIfSmartInput(tHatch);
         return outputHatchesPerLayer.get(hatchLayer)
             .add(tHatch);
     }
@@ -396,6 +397,7 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
         int hatchLayer = (height * 2) - 1;
         while (outputHatchesPerLayer.size() <= hatchLayer) outputHatchesPerLayer.add(new ArrayList<>());
         tHatch.updateTexture(aBaseCasingIndex);
+        addIfSmartInput(tHatch);
         return outputHatchesPerLayer.get(hatchLayer)
             .add(tHatch);
     }
@@ -406,6 +408,7 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
         int hatchLayer = height * 2;
         while (outputHatchesPerLayer.size() <= hatchLayer) outputHatchesPerLayer.add(new ArrayList<>());
         tHatch.updateTexture(aBaseCasingIndex);
+        addIfSmartInput(tHatch);
         return outputHatchesPerLayer.get(hatchLayer)
             .add(tHatch);
     }
