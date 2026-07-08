@@ -463,9 +463,9 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
         });
     }
 
-    private static final int DISPLAY_ROW_OUTPUT_HEIGHT = 8;
+    private static final int DISPLAY_ROW_PRODUCT_HEIGHT = 8;
     private static final int DISPLAY_ROW_RATE_HEIGHT = 6;
-    private static final int DISPLAY_ROW_HEIGHT = DISPLAY_ROW_OUTPUT_HEIGHT + DISPLAY_ROW_RATE_HEIGHT + 1;
+    private static final int DISPLAY_ROW_HEIGHT = DISPLAY_ROW_PRODUCT_HEIGHT + DISPLAY_ROW_RATE_HEIGHT + 1;
 
     private IWidget createItemRecipeInfo(PacketBuffer packet, PanelSyncManager syncManager) {
         int size = packet.readInt();
@@ -602,7 +602,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             .crossAxisAlignment(Alignment.CrossAxis.START)
             .child(
                 new TextWidget<>(IKey.dynamic(() -> EnumChatFormatting.AQUA + itemName))
-                    .height(DISPLAY_ROW_OUTPUT_HEIGHT)
+                    .height(DISPLAY_ROW_PRODUCT_HEIGHT)
                     .scale(0.75f))
             .child(
                 new TextWidget<>(IKey.dynamic(() -> getItemAmountTextLine(amount, maxProgressTimeSyncer)))
@@ -646,7 +646,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
             .crossAxisAlignment(Alignment.CrossAxis.START)
             .child(
                 new TextWidget<>(IKey.dynamic(() -> EnumChatFormatting.AQUA + fluidName))
-                    .height(DISPLAY_ROW_OUTPUT_HEIGHT)
+                    .height(DISPLAY_ROW_PRODUCT_HEIGHT)
                     .scale(0.75f)
                     .textAlign(Alignment.CenterLeft))
             .child(
@@ -1047,7 +1047,7 @@ public class MTEMultiBlockBaseGui<T extends MTEMultiBlockBase> {
                 case 0 -> {
                     return GTGuiTextures.OVERLAY_NO_MAINTENANCE_ISSUES;
                 }
-                case DISPLAY_ROW_RATE_HEIGHT -> {
+                case 6 -> {
                     return GTGuiTextures.OVERLAY_ALL_MAINTENANCE_ISSUES;
                 }
                 default -> {
