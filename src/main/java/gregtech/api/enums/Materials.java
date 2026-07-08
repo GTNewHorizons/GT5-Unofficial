@@ -1132,6 +1132,19 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     public static Materials Amalgatite;
     // endregion
 
+    // GTPP STANDALONE
+    public static Materials CelestialTungsten;
+    public static Materials AstralTitanium;
+    public static Materials ChromaticGlass;
+    public static Materials AdvancedNitinol;
+    public static Materials Hypogen;
+    public static Materials Rhugnor;
+    public static Materials ForceGTPP;
+    public static Materials BlackMetal;
+    public static Materials AncientGranite;
+    public static Materials Runite;
+    public static Materials Dragonblood;
+
     public static final List<IMaterialHandler> mMaterialHandlers = new ArrayList<>();
     public static final Map<Fluid, Materials> FLUID_MAP = new LinkedHashMap<>();
     /** @deprecated This is for keeping compatibility with addons mods (Such as TinkersGregworks etc.) */

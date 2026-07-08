@@ -1,6 +1,8 @@
 package gtnhintergalactic.recipe;
 
 import static gregtech.api.enums.GTValues.RA;
+import static gregtech.api.enums.Materials.CelestialTungsten;
+import static gregtech.api.enums.Materials.Hypogen;
 import static gregtech.api.enums.Mods.GalacticraftAmunRa;
 import static gregtech.api.enums.Mods.GalacticraftCore;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
@@ -11,7 +13,6 @@ import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.STACKS;
 
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -28,7 +29,6 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.material.MaterialMisc;
 import gtPlusPlus.core.material.MaterialsAlloy;
-import gtPlusPlus.core.material.MaterialsElements;
 import micdoodle8.mods.galacticraft.core.items.GCItems;
 import micdoodle8.mods.galacticraft.core.util.RecipeUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
@@ -44,11 +44,6 @@ public class MachineRecipes implements Runnable {
 
         // exit early if not in pack
         if (!NewHorizonsCoreMod.isModLoaded() || !GalacticraftCore.isModLoaded()) return;
-
-        ItemStack hypogenFrameBox_8 = MaterialsElements.STANDALONE.HYPOGEN.getFrameBox(8);
-        ItemStack hypogenScrew_32 = MaterialsElements.STANDALONE.HYPOGEN.getScrew(32);
-        Fluid hypogenFluid = MaterialsElements.STANDALONE.HYPOGEN.getFluid();
-        Fluid celestialTungstenFluid = MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getFluid();
 
         ItemStack preciseAssembler_1 = ItemRefer.Precise_Assembler.get(1);
         ItemStack highComputationStationT3_32 = ItemRefer.HiC_T3.get(32);
@@ -387,7 +382,9 @@ public class MachineRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.TranscendentMetal, 8),
                 GTOreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.ProtoHalkonite, 16),
                 ItemList.Robot_Arm_UIV.get(8), ItemList.Conveyor_Module_UIV.get(16), highComputationStationT4_32,
-                new Object[] { OrePrefixes.circuit.get(Materials.UIV), 16 }, hypogenFrameBox_8, hypogenScrew_32 },
+                new Object[] { OrePrefixes.circuit.get(Materials.UIV), 16 },
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Hypogen, 8),
+                GTOreDictUnificator.get(OrePrefixes.screw, Materials.Hypogen, 32) },
             new FluidStack[] { MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(9 * INGOTS),
                 Materials.Infinity.getMolten(9 * INGOTS), Materials.UUMatter.getFluid(16_000) },
             ItemList.SpaceElevatorModuleAssemblerT2.get(1),
@@ -733,8 +730,14 @@ public class MachineRecipes implements Runnable {
                 GTUtility.copyAmount(64, t9Plate),
                 GTModHandler.getModItem(NewHorizonsCoreMod.ID, "HeavyDutyRocketEngineTier4", 32),
                 ItemList.Sensor_UMV.get(8) },
-            new FluidStack[] { new FluidStack(hypogenFluid, 4 * INGOTS),
-                new FluidStack(celestialTungstenFluid, 4 * INGOTS),
+            new FluidStack[] { new FluidStack(
+                Hypogen.getMolten(0)
+                    .getFluid(),
+                4 * INGOTS),
+                new FluidStack(
+                    CelestialTungsten.getMolten(0)
+                        .getFluid(),
+                    4 * INGOTS),
                 new FluidStack(FluidRegistry.getFluid("liquid_drillingfluid"), 512_000) },
             ItemList.MiningDroneUMV.get(1),
             1 * MINUTE,

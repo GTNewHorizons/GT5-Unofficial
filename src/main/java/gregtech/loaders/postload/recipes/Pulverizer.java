@@ -1,5 +1,6 @@
 package gregtech.loaders.postload.recipes;
 
+import static gregtech.api.enums.Materials.Hypogen;
 import static gregtech.api.enums.Mods.AppliedEnergistics2;
 import static gregtech.api.enums.Mods.BiomesOPlenty;
 import static gregtech.api.enums.Mods.ProjectRedExploration;
@@ -25,7 +26,6 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.util.GTOreDictUnificator;
-import gtPlusPlus.core.material.MaterialsElements;
 import gtnhlanth.common.register.WerkstoffMaterialPool;
 
 @SuppressWarnings({ "PointlessArithmeticExpression" })
@@ -291,7 +291,7 @@ public class Pulverizer implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Casing_Coil_Hypogen.get(1))
             .itemOutputs(
-                MaterialsElements.STANDALONE.HYPOGEN.getDust(9),
+                Hypogen.getDust(9),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Infinity, 4L),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.PrismaticNaquadah, 64),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Netherite, 4))
@@ -304,7 +304,7 @@ public class Pulverizer implements Runnable {
             .itemInputs(ItemList.Casing_Coil_Eternal.get(1))
             .itemOutputs(
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.SpaceTime, 9L),
-                MaterialsElements.STANDALONE.HYPOGEN.getDust(4),
+                Hypogen.getDust(4),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.PrismaticNaquadah, 64),
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.Netherite, 8))
             .duration(20 * SECONDS)

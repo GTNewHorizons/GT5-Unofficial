@@ -3,6 +3,7 @@ package goodgenerator.loader;
 import static goodgenerator.api.recipe.GoodGeneratorRecipeMaps.neutronActivatorRecipes;
 import static goodgenerator.api.recipe.GoodGeneratorRecipeMaps.preciseAssemblerRecipes;
 import static goodgenerator.util.MyRecipeAdder.computeRangeNKE;
+import static gregtech.api.enums.Materials.Rhugnor;
 import static gregtech.api.enums.Mods.AppliedEnergistics2;
 import static gregtech.api.enums.Mods.GalacticraftMars;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
@@ -1409,12 +1410,11 @@ public class RecipeLoader2 {
             256,
             new Object[] { GregtechItemList.FusionComputer_UV3.get(48),
                 new Object[] { OrePrefixes.circuit.get(Materials.UEV), 4 }, ItemList.Circuit_Wafer_QPIC.get(64),
-                ItemList.UEV_Coil.get(16), MaterialsElements.STANDALONE.HYPOGEN.getPlateDense(8),
+                ItemList.UEV_Coil.get(16), GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Hypogen, 8),
                 ItemRefer.HiC_T5.get(8), ItemList.Field_Generator_UEV.get(8),
                 GGMaterial.metastableOganesson.get(OrePrefixes.gearGtSmall, 64) },
             new FluidStack[] { GGMaterial.tairitsu.getMolten(16 * INGOTS),
-                MaterialsAlloy.OCTIRON.getFluidStack(8 * INGOTS),
-                MaterialsElements.STANDALONE.RHUGNOR.getFluidStack(288) },
+                MaterialsAlloy.OCTIRON.getFluidStack(8 * INGOTS), Rhugnor.getMolten(288) },
             ItemRefer.Compact_Fusion_MK5.get(1),
             6000,
             (int) TierEU.RECIPE_UHV);

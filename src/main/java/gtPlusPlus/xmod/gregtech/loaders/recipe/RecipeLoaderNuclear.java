@@ -481,7 +481,7 @@ public class RecipeLoaderNuclear {
             .fluidInputs(
                 new FluidStack(MaterialsElements.getInstance().NEON.getPlasma(), 1 * INGOTS),
                 new FluidStack(MaterialsAlloy.ARCANITE.getFluid(), 2))
-            .fluidOutputs(new FluidStack(MaterialsElements.STANDALONE.FORCE.getPlasma(), 1_000))
+            .fluidOutputs(Materials.ForceGTPP.getPlasma(1_000))
             .duration(1 * SECONDS + 12 * TICKS)
             .eut(TierEU.RECIPE_LuV)
             .metadata(FUSION_THRESHOLD, 100_000_000L)
@@ -499,8 +499,8 @@ public class RecipeLoaderNuclear {
         GTValues.RA.stdBuilder()
             .fluidInputs(
                 new FluidStack(MaterialsElements.getInstance().KRYPTON.getPlasma(), 1 * INGOTS),
-                new FluidStack(MaterialsElements.STANDALONE.FORCE.getPlasma(), 1_000))
-            .fluidOutputs(new FluidStack(MaterialsElements.STANDALONE.ASTRAL_TITANIUM.getPlasma(), 1_000))
+                Materials.ForceGTPP.getPlasma(1_000))
+            .fluidOutputs(Materials.AstralTitanium.getPlasma(1_000))
             .duration(32 * TICKS)
             .eut(TierEU.RECIPE_ZPM)
             .metadata(FUSION_THRESHOLD, 300_000_000L)
@@ -508,9 +508,9 @@ public class RecipeLoaderNuclear {
 
         GTValues.RA.stdBuilder()
             .fluidInputs(
-                new FluidStack(MaterialsElements.STANDALONE.ASTRAL_TITANIUM.getPlasma(), 1 * INGOTS),
+                Materials.AstralTitanium.getPlasma(1 * INGOTS),
                 new FluidStack(MaterialsAlloy.TITANSTEEL.getFluid(), 2))
-            .fluidOutputs(new FluidStack(MaterialsElements.STANDALONE.RUNITE.getPlasma(), 1_000))
+            .fluidOutputs(Materials.Runite.getPlasma(1_000))
             .duration(32 * TICKS)
             .eut(TierEU.RECIPE_ZPM)
             .metadata(FUSION_THRESHOLD, 300_000_000L)
@@ -530,18 +530,16 @@ public class RecipeLoaderNuclear {
         GTValues.RA.stdBuilder()
             .fluidInputs(
                 new FluidStack(MaterialsElements.getInstance().XENON.getPlasma(), 1 * INGOTS),
-                new FluidStack(MaterialsElements.STANDALONE.RUNITE.getPlasma(), 1_000))
-            .fluidOutputs(new FluidStack(MaterialsElements.STANDALONE.ADVANCED_NITINOL.getPlasma(), 1_000))
+                Materials.Runite.getPlasma(1_000))
+            .fluidOutputs(Materials.AdvancedNitinol.getPlasma(1_000))
             .duration(16 * TICKS)
             .eut(TierEU.RECIPE_UV)
             .metadata(FUSION_THRESHOLD, 500_000_000L)
             .addTo(fusionRecipes);
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(
-                new FluidStack(MaterialsElements.STANDALONE.ADVANCED_NITINOL.getPlasma(), 72),
-                Materials.Tartarite.getMolten(2))
-            .fluidOutputs(new FluidStack(MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getPlasma(), 1_000))
+            .fluidInputs(Materials.AdvancedNitinol.getPlasma(72), Materials.Tartarite.getMolten(2))
+            .fluidOutputs(Materials.CelestialTungsten.getPlasma(1_000))
             .duration(8 * TICKS)
             .eut(TierEU.RECIPE_UV)
             .metadata(FUSION_THRESHOLD, 500_000_000L)

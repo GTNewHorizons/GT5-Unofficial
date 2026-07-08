@@ -1,5 +1,9 @@
 package gregtech.loaders.postload.recipes;
 
+import static gregtech.api.enums.Materials.ChromaticGlass;
+import static gregtech.api.enums.Materials.Dragonblood;
+import static gregtech.api.enums.Materials.Hypogen;
+import static gregtech.api.enums.Materials.Rhugnor;
 import static gregtech.api.recipe.RecipeMaps.transcendentPlasmaMixerRecipes;
 
 import net.minecraftforge.fluids.FluidStack;
@@ -143,7 +147,7 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
             .fluidInputs(
                 new FluidStack(MaterialsElements.getInstance().FERMIUM.getPlasma(), 1_000),
                 Materials.Thorium.getPlasma(1_000),
-                new FluidStack(MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getPlasma(), 1_000),
+                Materials.CelestialTungsten.getPlasma(1_000),
                 Materials.Calcium.getPlasma(1_000),
                 Materials.DTR.getFluid(1_000))
             .fluidOutputs(Materials.Creon.getPlasma(5_000))
@@ -170,13 +174,13 @@ public class TranscendentPlasmaMixerRecipes implements Runnable {
                 Materials.Infinity.getPlasma(1_000),
                 Materials.Neutronium.getPlasma(1_000),
                 Materials.Flerovium.getPlasma(1_000),
-                new FluidStack(MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getPlasma(), 1_000),
-                new FluidStack(MaterialsElements.STANDALONE.HYPOGEN.getPlasma(), 1_000),
+                ChromaticGlass.getPlasma(1_000),
+                Hypogen.getPlasma(1_000),
                 Materials.Ichorium.getPlasma(1_000),
                 Materials.SixPhasedCopper.getPlasma(1_000),
                 Materials.DraconiumAwakened.getPlasma(1_000),
-                new FluidStack(MaterialsElements.STANDALONE.DRAGON_METAL.getPlasma(), 1_000),
-                new FluidStack(MaterialsElements.STANDALONE.RHUGNOR.getPlasma(), 1_000),
+                Dragonblood.getPlasma(1_000),
+                Rhugnor.getPlasma(1_000),
                 Materials.Draconium.getPlasma(1_000),
                 Materials.Creon.getPlasma(1_000),
                 Materials.Tritanium.getPlasma(1_000),

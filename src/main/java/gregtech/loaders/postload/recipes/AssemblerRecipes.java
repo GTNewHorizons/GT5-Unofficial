@@ -1,5 +1,6 @@
 package gregtech.loaders.postload.recipes;
 
+import static gregtech.api.enums.Materials.ChromaticGlass;
 import static gregtech.api.enums.Mods.AppliedEnergistics2;
 import static gregtech.api.enums.Mods.AvaritiaAddons;
 import static gregtech.api.enums.Mods.BuildCraftFactory;
@@ -52,7 +53,6 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.material.MaterialsAlloy;
-import gtPlusPlus.core.material.MaterialsElements;
 import tectech.thing.CustomItemList;
 
 @SuppressWarnings({ "PointlessArithmeticExpression" })
@@ -2274,7 +2274,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.stick, Materials.TengamAttuned, 1),
-                MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getFineWire(16))
+                GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.CelestialTungsten, 16))
             .circuit(1)
             .itemOutputs(ItemList.UEV_Coil.get(1))
             .duration(10 * SECONDS)
@@ -2284,7 +2284,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.stick, Materials.TengamAttuned, 1),
-                MaterialsElements.STANDALONE.RHUGNOR.getFineWire(16))
+                GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Rhugnor, 16))
             .circuit(1)
             .itemOutputs(ItemList.UIV_Coil.get(1))
             .duration(10 * SECONDS)
@@ -2294,7 +2294,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.stick, Materials.TengamAttuned, 1),
-                MaterialsElements.STANDALONE.DRAGON_METAL.getFineWire(16))
+                GTOreDictUnificator.get(OrePrefixes.wireFine, Materials.Dragonblood, 16))
             .circuit(1)
             .itemOutputs(ItemList.UMV_Coil.get(1))
             .duration(10 * SECONDS)
@@ -4599,7 +4599,7 @@ public class AssemblerRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(CustomItemList.LASERpipe.get(1), ItemList.Naquarite_Universal_Insulator_Foil.get(4))
             .itemOutputs(CustomItemList.Pipe_BEC.get(1))
-            .fluidInputs(MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getFluidStack(INGOTS))
+            .fluidInputs(ChromaticGlass.getMolten(INGOTS))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_UEV)
             .addTo(assemblerRecipes);

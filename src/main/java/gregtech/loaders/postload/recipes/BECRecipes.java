@@ -35,7 +35,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.core.material.MaterialsAlloy;
-import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import kekztech.common.Blocks;
 import kekztech.common.TileEntities;
@@ -139,7 +138,7 @@ public class BECRecipes implements Runnable {
                 WerkstoffLoader.MagnetoResonaticDust.get(OrePrefixes.block, 16),
                 GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.TengamAttuned, 32),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.Creon, 16),
-                MaterialsElements.STANDALONE.HYPOGEN.getScrew(8),
+                GTOreDictUnificator.get(OrePrefixes.screw, Materials.Hypogen, 8),
                 GTOreDictUnificator.get(OrePrefixes.screw, Materials.SixPhasedCopper, 8),
                 ItemList.SuperconductorComposite.get(1), ItemList.Emitter_UIV.get(2),
                 ItemList.Electromagnet_Tengam.get(1) },
@@ -156,7 +155,7 @@ public class BECRecipes implements Runnable {
                 new ItemStack[] { GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Mellion, 24),
                     GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.SixPhasedCopper, 24),
                     GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.TranscendentMetal, 12),
-                    MaterialsElements.STANDALONE.ASTRAL_TITANIUM.getFrameBox(12),
+                    GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.AstralTitanium, 12),
                     GTOreDictUnificator.get(OrePrefixes.plate, Materials.Creon, 9),
                     ItemList.StableBosonContainmentUnit.get(2), ItemList.Field_Generator_UEV.get(3),
                     // Artificial Gravity Generator
@@ -191,11 +190,11 @@ public class BECRecipes implements Runnable {
                 getModItem(NewHorizonsCoreMod.ID, "ChromaticLens", 9),
                 getModItem(NewHorizonsCoreMod.ID, "MysteriousCrystalLens", 9),
                 WerkstoffLoader.MagnetoResonaticDust.get(OrePrefixes.lens, 9),
-                MaterialsElements.STANDALONE.RHUGNOR.getPlate(24),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Rhugnor, 24),
                 GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Creon, 33),
                 GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Mellion, 9),
                 GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.SixPhasedCopper, 9),
-                MaterialsElements.STANDALONE.ADVANCED_NITINOL.getPlateSuperdense(24) },
+                GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.AdvancedNitinol, 24) },
             nanites(3, 3, 2, 4, 1, 1, 1, 1, 1, 1, 1, 1, 2),
             new FluidStack[] { CondensateType.ChromaticGlass.getEntangled(243 * INGOTS) },
             300 * SECONDS,
@@ -318,7 +317,8 @@ public class BECRecipes implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Shijima, 8),
                 ItemList.MetaMaterial_Shielding1.get(8),
                 GTOreDictUnificator.get(OrePrefixes.bolt, Materials.SixPhasedCopper, 32),
-                GGMaterial.tairitsu.get(OrePrefixes.ring, 16), MaterialsElements.STANDALONE.HYPOGEN.getScrew(32),
+                GGMaterial.tairitsu.get(OrePrefixes.ring, 16),
+                GTOreDictUnificator.get(OrePrefixes.screw, Materials.Hypogen, 32),
                 ItemList.Field_Generator_UEV.get(1) },
             nanites(4, 1, 1, 1, 3, 1, 2, 1, 2),
             new FluidStack[] { CondensateType.ChromaticGlass.getEntangled(512 * INGOTS),
@@ -335,7 +335,7 @@ public class BECRecipes implements Runnable {
                 ItemList.Electromagnet_Tengam.get(8), ItemList.MetaMaterial_EnergyConduit1.get(8),
                 GTOreDictUnificator.get(OrePrefixes.rotor, Materials.SixPhasedCopper, 1),
                 GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Churitsu, 4),
-                MaterialsElements.STANDALONE.HYPOGEN.getRotor(1), ItemList.Electric_Pump_UIV.get(2) },
+                GTOreDictUnificator.get(OrePrefixes.rotor, Materials.Hypogen, 1), ItemList.Electric_Pump_UIV.get(2) },
             nanites(2, 4, 1, 2, 1, 1, 1, 1, 3),
             new FluidStack[] { CondensateType.ChromaticGlass.getEntangled(256 * INGOTS),
                 CondensateType.Infinity.getEntangled(32 * INGOTS),
@@ -350,9 +350,9 @@ public class BECRecipes implements Runnable {
                 ItemList.ElectromagneticallyIsolatedCasing.get(1),
                 GTOreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.SixPhasedCopper, 2),
                 GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.Shijima, 1),
-                MaterialsElements.STANDALONE.HYPOGEN.getGearSmall(2), ItemList.MetaMaterial_Waveguide1.get(4),
-                ItemList.MetaMaterial_ElectrograviticValve1.get(4), ItemList.Sensor_UIV.get(1),
-                ItemList.Emitter_UIV.get(1) },
+                GTOreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.Hypogen, 2),
+                ItemList.MetaMaterial_Waveguide1.get(4), ItemList.MetaMaterial_ElectrograviticValve1.get(4),
+                ItemList.Sensor_UIV.get(1), ItemList.Emitter_UIV.get(1) },
             nanites(3, 4, 1, 1, 1, 1, 1, 3, 2),
             new FluidStack[] { CondensateType.ChromaticGlass.getEntangled(256 * INGOTS),
                 CondensateType.Infinity.getEntangled(32 * INGOTS),

@@ -6,6 +6,7 @@ import static forestry.api.apiculture.EnumBeeChromosome.LIFESPAN;
 import static forestry.api.apiculture.EnumBeeChromosome.SPECIES;
 import static forestry.api.apiculture.EnumBeeChromosome.TEMPERATURE_TOLERANCE;
 import static forestry.api.core.EnumHumidity.ARID;
+import static gregtech.api.enums.Materials.Dragonblood;
 import static gregtech.api.enums.Mods.Forestry;
 
 import java.util.Arrays;
@@ -32,20 +33,20 @@ import forestry.apiculture.genetics.alleles.AlleleEffect;
 import forestry.core.genetics.alleles.AlleleHelper;
 import forestry.core.genetics.alleles.EnumAllele.Lifespan;
 import forestry.core.genetics.alleles.EnumAllele.Tolerance;
+import gregtech.api.enums.Materials;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTModHandler;
 import gregtech.common.items.CombType;
 import gregtech.loaders.misc.GTBeeDefinition;
 import gregtech.loaders.misc.GTBees;
 import gtPlusPlus.core.material.Material;
-import gtPlusPlus.core.material.MaterialsElements.STANDALONE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.forestry.bees.handler.GTPPCombType;
 
 public enum GTPP_BeeDefinition implements IBeeDefinition {
 
-    DRAGONBLOOD(GTPP_BranchDefinition.LEGENDARY, "Dragon Blood", STANDALONE.DRAGON_METAL, true,
-        Utils.rgbtoHexValue(220, 20, 20), Utils.rgbtoHexValue(20, 20, 20), beeSpecies -> {
+    DRAGONBLOOD(GTPP_BranchDefinition.LEGENDARY, "Dragon Blood", Dragonblood, true, Utils.rgbtoHexValue(220, 20, 20),
+        Utils.rgbtoHexValue(20, 20, 20), beeSpecies -> {
             beeSpecies.addProduct(GTModHandler.getModItem(Forestry.ID, "beeCombs", 1, 8), 0.30f);
             beeSpecies.addSpecialty(GTPP_Bees.combs.getStackForType(GTPPCombType.DRAGONBLOOD), 0.10f);
             beeSpecies.setHumidity(ARID);
@@ -63,10 +64,10 @@ public enum GTPP_BeeDefinition implements IBeeDefinition {
                 2,
                 1f);
             tMutation.restrictHumidity(ARID);
-            tMutation.requireResource(STANDALONE.DRAGON_METAL.getBlock(), 1);
+            tMutation.requireResource(Dragonblood.getBlock(), 1);
             tMutation.addMutationCondition(new GTBees.DimensionMutationCondition(1, "End")); // End Dim
         }),
-    FORCE(GTPP_BranchDefinition.LEGENDARY, "Force", STANDALONE.FORCE, true, Utils.rgbtoHexValue(250, 250, 20),
+    FORCE(GTPP_BranchDefinition.LEGENDARY, "Force", Materials.ForceGTPP, true, Utils.rgbtoHexValue(250, 250, 20),
         Utils.rgbtoHexValue(200, 200, 5), beeSpecies -> {
             beeSpecies.addProduct(GTBees.combs.getStackForType(CombType.STONE), 0.30f);
             beeSpecies.addProduct(GTBees.combs.getStackForType(CombType.SALT), 0.15f);

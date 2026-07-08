@@ -5,9 +5,7 @@ import static gregtech.api.enums.Mods.GregTech;
 import static gregtech.client.GTTooltipHandler.registerTieredTooltip;
 import static gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes.FINEWIRE;
 import static gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes.FOIL;
-import static gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes.GEAR;
 import static gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes.PLATESUPERDENSE;
-import static gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes.SMALLGEAR;
 import static gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes.SMALLSPRING;
 import static gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes.SPRING;
 
@@ -365,7 +363,6 @@ public final class ModItems {
         new BaseItemPlateDouble(MaterialsOther.CLAY);
 
         // Springs
-        MaterialUtils.generateComponentAndAssignToAMaterial(SPRING, MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN);
         MaterialUtils.generateComponentAndAssignToAMaterial(SPRING, MaterialsAlloy.NITINOL_60);
         MaterialUtils.generateComponentAndAssignToAMaterial(SPRING, MaterialsAlloy.AQUATIC_STEEL);
         MaterialUtils.generateComponentAndAssignToAMaterial(SPRING, MaterialsAlloy.EGLIN_STEEL);
@@ -382,11 +379,6 @@ public final class ModItems {
         MaterialUtils.generateComponentAndAssignToAMaterial(FINEWIRE, MaterialsAlloy.KOBOLDITE);
         MaterialUtils.generateComponentAndAssignToAMaterial(FINEWIRE, MaterialsAlloy.HG1223);
         MaterialUtils.generateComponentAndAssignToAMaterial(FINEWIRE, MaterialsAlloy.QUANTUM);
-        MaterialUtils.generateComponentAndAssignToAMaterial(FINEWIRE, MaterialsElements.STANDALONE.HYPOGEN);
-        MaterialUtils.generateComponentAndAssignToAMaterial(FINEWIRE, MaterialsElements.STANDALONE.CHRONOMATIC_GLASS);
-        MaterialUtils.generateComponentAndAssignToAMaterial(FINEWIRE, MaterialsElements.STANDALONE.DRAGON_METAL);
-        MaterialUtils.generateComponentAndAssignToAMaterial(FINEWIRE, MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN);
-        MaterialUtils.generateComponentAndAssignToAMaterial(FINEWIRE, MaterialsElements.STANDALONE.RHUGNOR);
 
         // Foil
         MaterialUtils.generateComponentAndAssignToAMaterial(FOIL, MaterialsAlloy.BLACK_TITANIUM);
@@ -395,39 +387,16 @@ public final class ModItems {
         MaterialUtils.generateComponentAndAssignToAMaterial(FOIL, MaterialsAlloy.NITINOL_60);
         MaterialUtils.generateComponentAndAssignToAMaterial(FOIL, MaterialsAlloy.QUANTUM);
         MaterialUtils.generateComponentAndAssignToAMaterial(FOIL, MaterialsAlloy.LAURENIUM);
-        MaterialUtils.generateComponentAndAssignToAMaterial(FOIL, MaterialsElements.STANDALONE.HYPOGEN);
-        MaterialUtils.generateComponentAndAssignToAMaterial(FOIL, MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN);
-        MaterialUtils.generateComponentAndAssignToAMaterial(FOIL, MaterialsElements.STANDALONE.ASTRAL_TITANIUM);
-        MaterialUtils.generateComponentAndAssignToAMaterial(FOIL, MaterialsElements.STANDALONE.RHUGNOR);
-        MaterialUtils.generateComponentAndAssignToAMaterial(FOIL, MaterialsElements.STANDALONE.ADVANCED_NITINOL);
         MaterialUtils.generateComponentAndAssignToAMaterial(FOIL, MaterialsAlloy.PIKYONIUM);
         MaterialUtils.generateComponentAndAssignToAMaterial(FOIL, MaterialsAlloy.CINOBITE);
         MaterialUtils.generateComponentAndAssignToAMaterial(FOIL, MaterialsAlloy.LAFIUM);
         MaterialUtils.generateComponentAndAssignToAMaterial(FOIL, MaterialsAlloy.TRINIUM_REINFORCED_STEEL);
-        MaterialUtils.generateComponentAndAssignToAMaterial(FOIL, MaterialsElements.STANDALONE.CHRONOMATIC_GLASS);
 
         // Superdense Plate
         MaterialUtils.generateComponentAndAssignToAMaterial(PLATESUPERDENSE, MaterialsAlloy.BOTMIUM);
         MaterialUtils.generateComponentAndAssignToAMaterial(PLATESUPERDENSE, MaterialsAlloy.QUANTUM);
         MaterialUtils.generateComponentAndAssignToAMaterial(PLATESUPERDENSE, MaterialsAlloy.LAURENIUM);
         MaterialUtils.generateComponentAndAssignToAMaterial(PLATESUPERDENSE, MaterialsAlloy.ABYSSAL);
-        MaterialUtils.generateComponentAndAssignToAMaterial(PLATESUPERDENSE, MaterialsElements.STANDALONE.HYPOGEN);
-        MaterialUtils
-            .generateComponentAndAssignToAMaterial(PLATESUPERDENSE, MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN);
-        MaterialUtils
-            .generateComponentAndAssignToAMaterial(PLATESUPERDENSE, MaterialsElements.STANDALONE.ASTRAL_TITANIUM);
-        MaterialUtils.generateComponentAndAssignToAMaterial(PLATESUPERDENSE, MaterialsElements.STANDALONE.RHUGNOR);
-        MaterialUtils
-            .generateComponentAndAssignToAMaterial(PLATESUPERDENSE, MaterialsElements.STANDALONE.ADVANCED_NITINOL);
-        MaterialUtils
-            .generateComponentAndAssignToAMaterial(PLATESUPERDENSE, MaterialsElements.STANDALONE.CHRONOMATIC_GLASS);
-        MaterialUtils.generateComponentAndAssignToAMaterial(PLATESUPERDENSE, MaterialsElements.STANDALONE.DRAGON_METAL);
-
-        // Gear
-        MaterialUtils.generateComponentAndAssignToAMaterial(GEAR, MaterialsElements.STANDALONE.RHUGNOR);
-
-        // Small Gear
-        MaterialUtils.generateComponentAndAssignToAMaterial(SMALLGEAR, MaterialsElements.STANDALONE.HYPOGEN);
 
         // Special Sillyness
         new BaseItemPlate(MaterialsElements.getInstance().SODIUM);
@@ -463,19 +432,6 @@ public final class ModItems {
         MaterialGenerator.generate(MaterialsElements.getInstance().URANIUM232);
         MaterialGenerator.generate(MaterialsElements.getInstance().URANIUM233);
         MaterialGenerator.generateNuclearMaterial(MaterialsElements.getInstance().PLUTONIUM238, false);
-
-        // Custom Materials that will have standalone refinery processes
-        MaterialGenerator.generate(MaterialsElements.STANDALONE.ADVANCED_NITINOL, false);
-        MaterialGenerator.generate(MaterialsElements.STANDALONE.ASTRAL_TITANIUM);
-        MaterialGenerator.generate(MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN);
-        MaterialGenerator.generate(MaterialsElements.STANDALONE.HYPOGEN);
-        MaterialGenerator.generate(MaterialsElements.STANDALONE.CHRONOMATIC_GLASS);
-
-        // Custom Materials that are from Runescape
-        MaterialGenerator.generate(MaterialsElements.STANDALONE.BLACK_METAL);
-        MaterialGenerator.generateOreMaterialWithAllExcessComponents(MaterialsElements.STANDALONE.GRANITE);
-        MaterialGenerator.generateOreMaterialWithAllExcessComponents(MaterialsElements.STANDALONE.RUNITE);
-        MaterialGenerator.generate(MaterialsElements.STANDALONE.DRAGON_METAL);
 
         MaterialMisc.run();
 
@@ -578,9 +534,6 @@ public final class ModItems {
         MaterialGenerator.generate(MaterialsAlloy.BABBIT_ALLOY, false);
         MaterialGenerator.generate(MaterialsAlloy.BLACK_TITANIUM, false);
         MaterialGenerator.generate(MaterialsAlloy.INDALLOY_140, false, false);
-
-        // High Level Bioplastic
-        MaterialGenerator.generate(MaterialsElements.STANDALONE.RHUGNOR, false, false);
 
         // Must be the final Alloy to Generate
         MaterialGenerator.generate(MaterialsAlloy.QUANTUM);

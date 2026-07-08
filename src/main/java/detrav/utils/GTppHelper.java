@@ -1,5 +1,8 @@
 package detrav.utils;
 
+import static gregtech.api.enums.Materials.AncientGranite;
+import static gregtech.api.enums.Materials.Runite;
+
 import java.lang.reflect.Field;
 import java.util.HashMap;
 
@@ -10,7 +13,6 @@ import gtPlusPlus.core.block.base.BlockBaseOre;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialMisc;
 import gtPlusPlus.core.material.MaterialsAlloy;
-import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.core.material.MaterialsOres;
 import gtPlusPlus.core.material.nuclear.MaterialsFluorides;
 
@@ -51,11 +53,11 @@ public class GTppHelper {
         decodeoresGTpp.put((short) (++n + 1), MaterialsAlloy.KOBOLDITE);
         encodeoresGTpp.put(MaterialsAlloy.KOBOLDITE, (short) (n + 1));
         // Runite
-        decodeoresGTpp.put((short) (++n + 1), MaterialsElements.STANDALONE.RUNITE);
-        encodeoresGTpp.put(MaterialsElements.STANDALONE.RUNITE, (short) (n + 1));
+        decodeoresGTpp.put((short) (++n + 1), Runite);
+        encodeoresGTpp.put(Runite, (short) (n + 1));
         // Ancient granite
-        decodeoresGTpp.put((short) (++n + 1), MaterialsElements.STANDALONE.GRANITE);
-        encodeoresGTpp.put(MaterialsElements.STANDALONE.GRANITE, (short) (n + 1));
+        decodeoresGTpp.put((short) (++n + 1), AncientGranite);
+        encodeoresGTpp.put(AncientGranite, (short) (n + 1));
     }
 
     public static short getMetaFromBlock(Block block) {

@@ -44,6 +44,7 @@ import static galacticgreg.api.enums.DimensionDef.Triton;
 import static galacticgreg.api.enums.DimensionDef.TwilightForest;
 import static galacticgreg.api.enums.DimensionDef.VegaB;
 import static galacticgreg.api.enums.DimensionDef.Venus;
+import static gregtech.api.enums.Materials.Runite;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -60,7 +61,6 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.common.OreMixBuilder;
 import gregtech.common.WorldgenGTOreLayer;
-import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.core.material.MaterialsOres;
 import gtPlusPlus.core.material.nuclear.MaterialsFluorides;
 import gtneioreplugin.util.DimensionHelper;
@@ -1343,10 +1343,10 @@ public enum OreMixes {
         .density(1)
         .size(16)
         .enableInDim(EVERGLADES)
-        .primary(MaterialsElements.STANDALONE.RUNITE)
-        .secondary(MaterialsElements.STANDALONE.RUNITE)
-        .inBetween(MaterialsElements.STANDALONE.RUNITE)
-        .sporadic(MaterialsElements.STANDALONE.RUNITE)),
+        .primary(Runite)
+        .secondary(Runite)
+        .inBetween(Runite)
+        .sporadic(Runite)),
 
     Thorianit(new OreMixBuilder().name("ore.mix.ross128.Thorianit")
         .heightRange(30, 60)

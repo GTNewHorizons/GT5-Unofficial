@@ -56,7 +56,6 @@ import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.recipe.Scanning;
 import gtPlusPlus.core.fluids.GTPPFluids;
 import gtPlusPlus.core.material.MaterialsAlloy;
-import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.core.material.nuclear.MaterialsFluorides;
 import gtPlusPlus.xmod.thermalfoundation.fluid.TFFluids;
 
@@ -1280,7 +1279,7 @@ public class RecipeLoader {
                 ItemRefer.Inverter.get(32),
                 ItemList.Hull_UIV.get(1L),
                 GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUIV, 4),
-                MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getPlate(8),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.ChromaticGlass, 8),
                 GTOreDictUnificator.get(OrePrefixes.plateDouble, Materials.RadoxPolymer, 16),
                 ItemList.UEV_Coil.get(8),
                 ItemList.Tesseract.get(8),
@@ -1304,7 +1303,7 @@ public class RecipeLoader {
                 ItemRefer.Inverter.get(64),
                 ItemList.Hull_UMV.get(1L),
                 GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.SuperconductorUMV, 4),
-                MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getPlate(32),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.ChromaticGlass, 32),
                 GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.RadoxPolymer, 1),
                 ItemList.UIV_Coil.get(8),
                 ItemList.EnergisedTesseract.get(12),

@@ -14,7 +14,6 @@ import gregtech.api.util.Lazy;
 import gregtech.common.fluid.GTFluid;
 import gregtech.common.items.GTItemCell;
 import gtPlusPlus.core.material.Material;
-import gtPlusPlus.core.material.MaterialsElements;
 import tectech.recipe.TecTechRecipeMaps;
 
 /// Each of these entries maps to a type of condensate used by the BEC multis. Condensate itself is just a fluid, but
@@ -45,14 +44,14 @@ public enum CondensateType {
         () -> Materials.Bedrockium.getMolten(144), 20, TierEU.RECIPE_UEV),
     ChromaticGlass(
         "chromaticglass",
-        () -> MaterialsElements.STANDALONE.CHRONOMATIC_GLASS,
+        () -> Materials.ChromaticGlass,
         144,
-        () -> MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getFluidStack(144), 20, TierEU.RECIPE_UEV),
+        () -> Materials.ChromaticGlass.getMolten(144), 20, TierEU.RECIPE_UEV),
     CelestialTungsten(
         "celestialtungsten",
-        () -> MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN,
+        () -> Materials.CelestialTungsten,
         144,
-        () -> MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getFluidStack(144), 20, TierEU.RECIPE_UEV),
+        () -> Materials.CelestialTungsten.getMolten(144), 20, TierEU.RECIPE_UEV),
     Infinity(
         "infinity",
         () -> Materials.Infinity,
@@ -60,9 +59,9 @@ public enum CondensateType {
         () -> Materials.Infinity.getMolten(144), 20, TierEU.RECIPE_UEV),
     Hypogen(
         "hypogen",
-        () -> MaterialsElements.STANDALONE.HYPOGEN,
+        () -> Materials.Hypogen,
         144,
-        () -> MaterialsElements.STANDALONE.HYPOGEN.getFluidStack(144), 40, TierEU.RECIPE_UIV),
+        () -> Materials.Hypogen.getMolten(144), 40, TierEU.RECIPE_UIV),
     TranscendentMetal(
         "transcendentmetal",
         () -> Materials.TranscendentMetal,

@@ -12,6 +12,8 @@ import static goodgenerator.util.ItemRefer.Compassline_Casing_UIV;
 import static goodgenerator.util.ItemRefer.Compassline_Casing_UV;
 import static goodgenerator.util.ItemRefer.Compassline_Casing_ZPM;
 import static goodgenerator.util.ItemRefer.Component_Assembly_Line;
+import static gregtech.api.enums.Materials.AdvancedNitinol;
+import static gregtech.api.enums.Materials.Hypogen;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.util.GTRecipeBuilder.HALF_INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
@@ -39,7 +41,6 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.recipe.Scanning;
 import gtPlusPlus.core.material.MaterialMisc;
 import gtPlusPlus.core.material.MaterialsAlloy;
-import gtPlusPlus.core.material.MaterialsElements;
 import tectech.recipe.TTRecipeAdder;
 
 public class ComponentAssemblyLineMiscRecipes {
@@ -272,7 +273,7 @@ public class ComponentAssemblyLineMiscRecipes {
                 getALCircuit(t - 1, 16))
             .fluidInputs(
                 MaterialsAlloy.INDALLOY_140.getFluidStack(t * 4 * INGOTS),
-                MaterialsElements.STANDALONE.ADVANCED_NITINOL.getFluidStack(t * 2 * INGOTS),
+                AdvancedNitinol.getMolten(t * 2 * INGOTS),
                 StackUtils.getTieredFluid(t, t * INGOTS),
                 Materials.Lubricant.getFluid(1000 * (t - 2)))
             .itemOutputs(Compassline_Casing_UV.get(1))
@@ -352,8 +353,7 @@ public class ComponentAssemblyLineMiscRecipes {
                 GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials.NetherStar, 8), getALCircuit(t, 8),
                 getALCircuit(t - 1, 16) },
             new FluidStack[] { MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(t * 4 * INGOTS),
-                MaterialsElements.STANDALONE.HYPOGEN.getFluidStack(t * 2 * INGOTS),
-                StackUtils.getTieredFluid(t, t * INGOTS),
+                Hypogen.getMolten(t * 2 * INGOTS), StackUtils.getTieredFluid(t, t * INGOTS),
                 Materials.DimensionallyShiftedSuperfluid.getFluid(1000 * (t - 2)) },
             Compassline_Casing_UIV.get(1),
             50 * SECONDS,

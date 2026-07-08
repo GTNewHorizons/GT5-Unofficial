@@ -1,5 +1,6 @@
 package gtPlusPlus.core.handler;
 
+import static gregtech.api.enums.Materials.Hypogen;
 import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.GregTech;
 
@@ -22,7 +23,6 @@ import gregtech.api.enums.Materials;
 import gregtech.api.util.GTLog;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.material.MaterialsAlloy;
-import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechTools;
@@ -73,13 +73,7 @@ public class AchievementHandler {
         this.registerAchievement("dust.eglin", 0, 4, MaterialsAlloy.EGLIN_STEEL.getDust(1), "dust.potin", false);
         this.registerAchievement("dust.staballoy", 0, 6, MaterialsAlloy.STABALLOY.getDust(1), "dust.eglin", false);
         this.registerAchievement("dust.quantum", 0, 8, MaterialsAlloy.QUANTUM.getDust(1), "dust.staballoy", true);
-        this.registerAchievement(
-            "dust.hypogen",
-            0,
-            10,
-            MaterialsElements.STANDALONE.HYPOGEN.getDust(1),
-            "dust.quantum",
-            true);
+        this.registerAchievement("dust.hypogen", 0, 10, Hypogen.getDust(1), "dust.quantum", true);
 
         // Blocks
         this.registerAchievement("block.fishtrap", -2, 2, GregtechItemList.FishTrap.get(1), "dust.potin", false);

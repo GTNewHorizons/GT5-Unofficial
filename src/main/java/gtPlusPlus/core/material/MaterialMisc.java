@@ -1,5 +1,9 @@
 package gtPlusPlus.core.material;
 
+import static gregtech.api.enums.Materials.AncientGranite;
+import static gregtech.api.enums.Materials.BlackMetal;
+import static gregtech.api.enums.Materials.Runite;
+
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TextureSet;
 import gtPlusPlus.core.material.state.MaterialState;
@@ -194,9 +198,8 @@ public final class MaterialMisc {
         new MaterialStack[] { new MaterialStack(MaterialsOres.LANTHANITE_ND, 1),
             new MaterialStack(MaterialsOres.AGARDITE_ND, 1), new MaterialStack(MaterialsOres.YTTRIAITE, 1),
             new MaterialStack(MaterialsOres.CROCROITE, 1), new MaterialStack(MaterialsOres.NICHROMITE, 1),
-            new MaterialStack(MaterialsOres.ZIRCON, 1), new MaterialStack(MaterialsElements.STANDALONE.GRANITE, 1),
-            new MaterialStack(MaterialsElements.STANDALONE.BLACK_METAL, 1),
-            new MaterialStack(MaterialsElements.STANDALONE.RUNITE, 1) });
+            new MaterialStack(MaterialsOres.ZIRCON, 1), new MaterialStack(AncientGranite, 1),
+            new MaterialStack(BlackMetal, 1), new MaterialStack(Runite, 1) });
 
     public static final Material RARE_EARTH_HIGH = new Material(
         "Rare Earth (III)", // Material Name

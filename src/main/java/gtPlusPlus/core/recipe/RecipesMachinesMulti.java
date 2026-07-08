@@ -1,5 +1,6 @@
 package gtPlusPlus.core.recipe;
 
+import static gregtech.api.enums.Materials.AdvancedNitinol;
 import static gregtech.api.enums.Mods.EtFuturumRequiem;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.laserEngraverRecipes;
@@ -544,8 +545,8 @@ public class RecipesMachinesMulti {
         GTModHandler.addCraftingRecipe(
             GregtechItemList.Industrial_MassFab.get(1),
             GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { "PCP", "WHW", "PCP", 'P', MaterialsElements.STANDALONE.ADVANCED_NITINOL.getPlate(1), 'C',
-                "circuitSuperconductor", 'W', OrePrefixes.cableGt04.get(Materials.NaquadahAlloy), 'H',
+            new Object[] { "PCP", "WHW", "PCP", 'P', GTOreDictUnificator.get(OrePrefixes.plate, AdvancedNitinol, 1),
+                'C', "circuitSuperconductor", 'W', OrePrefixes.cableGt04.get(Materials.NaquadahAlloy), 'H',
                 ItemList.Casing_UV });
 
         // Matter Fabricator Casing

@@ -467,163 +467,163 @@ public final class MaterialsElements {
         return INSTANCE;
     }
 
-    public static class STANDALONE {
-
-        public static final Material CELESTIAL_TUNGSTEN = new Material(
-            "Celestial Tungsten",
-            MaterialState.SOLID,
-            TextureSet.SET_CELESTIAL_TUNGSTEN,
-            new short[] { 50, 50, 50, 2 },
-            INSTANCE.TUNGSTEN.getMeltingPointC() + 5200,
-            INSTANCE.TUNGSTEN.getBoilingPointC() + 7500,
-            160,
-            101,
-            true,
-            "✦◆✦",
-            0); // Not a GT Inherited Material
-        public static final Material ASTRAL_TITANIUM = new Material(
-            "Astral Titanium",
-            MaterialState.SOLID,
-            TextureSet.SET_ASTRAL_TITANIUM,
-            new short[] { 220, 160, 240, 2 },
-            INSTANCE.TITANIUM.getMeltingPointC() + 7500,
-            INSTANCE.TITANIUM.getBoilingPointC() + 7500,
-            145,
-            133,
-            true,
-            "✧◇✧",
-            0); // Not a GT Inherited Material
-        public static final Material CHRONOMATIC_GLASS = new Material(
-            "Chromatic Glass",
-            MaterialState.SOLID,
-            TextureSet.SET_CHROMATIC_GLASS,
-            new short[] { 255, 255, 255, 3 },
-            9200,
-            17550,
-            40,
-            51,
-            false,
-            "⌘☯𓍰 𓍱 𓍲 𓍳 𓍴 𓍵 𓍶 𓍷 𓍸 ☯⌘ ",
-            0); // Not a GT Inherited Material
-        public static final Material ADVANCED_NITINOL = new Material(
-            "Advanced Nitinol",
-            MaterialState.SOLID,
-            TextureSet.SET_FIERY,
-            MaterialsAlloy.NITINOL_60.getRGB(),
-            8400,
-            14377,
-            40,
-            51,
-            true,
-            StringUtils.subscript("⚷⚙⚷ Ni4Ti6"),
-            0); // Not a GT Inherited Material
-        public static final Material HYPOGEN = new Material(
-            "Hypogen",
-            MaterialState.SOLID,
-            TextureSet.SET_HYPOGEN,
-            new short[] { 255, 255, 255 },
-            10255,
-            19377,
-            240,
-            251,
-            true,
-            "Hy⚶",
-            0); // Not a GT Inherited Material
-        public static final Material RHUGNOR = new Material(
-            "Rhugnor",
-            MaterialState.SOLID,
-            TextureSet.SET_RHUGNOR,
-            new short[] { 190, 0, 255, 0 },
-            8750,
-            14757,
-            184,
-            142,
-            true,
-            "Fs⚶",
-            0); // Not a GT Inherited Material //funeris
-        public static final Material FORCE = new Material(
-            "Force",
-            MaterialState.SOLID,
-            TextureSet.SET_FIERY,
-            new short[] { 250, 250, 20, 0 },
-            4550,
-            6830,
-            63,
-            81,
-            true,
-            "Fc⚙",
-            0); // Not a GT Inherited Material
-
-        // Runescape materials
-        public static final Material BLACK_METAL = new Material(
-            "Black Metal",
-            MaterialState.SOLID,
-            TextureSet.SET_METALLIC,
-            new short[] { 5, 5, 5 },
-            2350,
-            4650,
-            24,
-            17,
-            false,
-            "҈",
-            0,
-            new MaterialStack(getInstance().LEAD, 15),
-            new MaterialStack(getInstance().MANGANESE, 25),
-            new MaterialStack(getInstance().CARBON, 60)); // Not
-                                                          // a
-                                                          // GT
-                                                          // Inherited
-                                                          // Material
-
-        public static final Material GRANITE = new Material(
-            "Ancient Granite",
-            MaterialState.SOLID,
-            TextureSet.SET_SAND,
-            new short[] { 107, 107, 107 },
-            500,
-            2000,
-            16,
-            12,
-            false,
-            "«»",
-            0,
-            false,
-            new MaterialStack(getInstance().OXYGEN, 16),
-            new MaterialStack(getInstance().IRON, 10),
-            new MaterialStack(getInstance().SILICONDIOXIDE, 10),
-            new MaterialStack(getInstance().ALUMINIUMOXIDE, 6),
-            new MaterialStack(getInstance().POTASSIUM, 6),
-            new MaterialStack(getInstance().CALCIUM, 4),
-            new MaterialStack(getInstance().SODIUM, 4),
-            new MaterialStack(getInstance().YTTERBIUM, 2)); // Not
-                                                            // a
-                                                            // GT
-                                                            // Inherited
-                                                            // Material
-
-        public static final Material RUNITE = new Material(
-            "Runite",
-            MaterialState.SOLID,
-            TextureSet.SET_FINE,
-            new short[] { 60, 200, 190 },
-            6750,
-            11550,
-            73,
-            87,
-            true,
-            "Rt*",
-            0); // Not a GT Inherited Material
-        public static final Material DRAGON_METAL = new Material(
-            "Dragonblood",
-            MaterialState.SOLID,
-            TextureSet.SET_HYPOGEN,
-            new short[] { 220, 40, 20 },
-            10160,
-            17850,
-            96,
-            105,
-            true,
-            "۞",
-            0); // Not a GT Inherited Material
-    }
+    // public static class STANDALONE {
+    //
+    // public static final Material CELESTIAL_TUNGSTEN = new Material(
+    // "Celestial Tungsten",
+    // MaterialState.SOLID,
+    // TextureSet.SET_CELESTIAL_TUNGSTEN,
+    // new short[] { 50, 50, 50, 2 },
+    // INSTANCE.TUNGSTEN.getMeltingPointC() + 5200,
+    // INSTANCE.TUNGSTEN.getBoilingPointC() + 7500,
+    // 160,
+    // 101,
+    // true,
+    // "✦◆✦",
+    // 0); // Not a GT Inherited Material
+    // public static final Material ASTRAL_TITANIUM = new Material(
+    // "Astral Titanium",
+    // MaterialState.SOLID,
+    // TextureSet.SET_ASTRAL_TITANIUM,
+    // new short[] { 220, 160, 240, 2 },
+    // INSTANCE.TITANIUM.getMeltingPointC() + 7500,
+    // INSTANCE.TITANIUM.getBoilingPointC() + 7500,
+    // 145,
+    // 133,
+    // true,
+    // "✧◇✧",
+    // 0); // Not a GT Inherited Material
+    // public static final Material CHRONOMATIC_GLASS = new Material(
+    // "Chromatic Glass",
+    // MaterialState.SOLID,
+    // TextureSet.SET_CHROMATIC_GLASS,
+    // new short[] { 255, 255, 255, 3 },
+    // 9200,
+    // 17550,
+    // 40,
+    // 51,
+    // false,
+    // "⌘☯𓍰 𓍱 𓍲 𓍳 𓍴 𓍵 𓍶 𓍷 𓍸 ☯⌘ ",
+    // 0); // Not a GT Inherited Material
+    // public static final Material ADVANCED_NITINOL = new Material(
+    // "Advanced Nitinol",
+    // MaterialState.SOLID,
+    // TextureSet.SET_FIERY,
+    // MaterialsAlloy.NITINOL_60.getRGB(),
+    // 8400,
+    // 14377,
+    // 40,
+    // 51,
+    // true,
+    // StringUtils.subscript("⚷⚙⚷ Ni4Ti6"),
+    // 0); // Not a GT Inherited Material
+    // public static final Material HYPOGEN = new Material(
+    // "Hypogen",
+    // MaterialState.SOLID,
+    // TextureSet.SET_HYPOGEN,
+    // new short[] { 255, 255, 255 },
+    // 10255,
+    // 19377,
+    // 240,
+    // 251,
+    // true,
+    // "Hy⚶",
+    // 0); // Not a GT Inherited Material
+    // public static final Material RHUGNOR = new Material(
+    // "Rhugnor",
+    // MaterialState.SOLID,
+    // TextureSet.SET_RHUGNOR,
+    // new short[] { 190, 0, 255, 0 },
+    // 8750,
+    // 14757,
+    // 184,
+    // 142,
+    // true,
+    // "Fs⚶",
+    // 0); // Not a GT Inherited Material //funeris
+    // public static final Material FORCE = new Material(
+    // "Force",
+    // MaterialState.SOLID,
+    // TextureSet.SET_FIERY,
+    // new short[] { 250, 250, 20, 0 },
+    // 4550,
+    // 6830,
+    // 63,
+    // 81,
+    // true,
+    // "Fc⚙",
+    // 0); // Not a GT Inherited Material
+    //
+    // // Runescape materials
+    // public static final Material BLACK_METAL = new Material(
+    // "Black Metal",
+    // MaterialState.SOLID,
+    // TextureSet.SET_METALLIC,
+    // new short[] { 5, 5, 5 },
+    // 2350,
+    // 4650,
+    // 24,
+    // 17,
+    // false,
+    // "҈",
+    // 0,
+    // new MaterialStack(getInstance().LEAD, 15),
+    // new MaterialStack(getInstance().MANGANESE, 25),
+    // new MaterialStack(getInstance().CARBON, 60)); // Not
+    // // a
+    // // GT
+    // // Inherited
+    // // Material
+    //
+    // public static final Material GRANITE = new Material(
+    // "Ancient Granite",
+    // MaterialState.SOLID,
+    // TextureSet.SET_SAND,
+    // new short[] { 107, 107, 107 },
+    // 500,
+    // 2000,
+    // 16,
+    // 12,
+    // false,
+    // "«»",
+    // 0,
+    // false,
+    // new MaterialStack(getInstance().OXYGEN, 16),
+    // new MaterialStack(getInstance().IRON, 10),
+    // new MaterialStack(getInstance().SILICONDIOXIDE, 10),
+    // new MaterialStack(getInstance().ALUMINIUMOXIDE, 6),
+    // new MaterialStack(getInstance().POTASSIUM, 6),
+    // new MaterialStack(getInstance().CALCIUM, 4),
+    // new MaterialStack(getInstance().SODIUM, 4),
+    // new MaterialStack(getInstance().YTTERBIUM, 2)); // Not
+    // // a
+    // // GT
+    // // Inherited
+    // // Material
+    //
+    // public static final Material RUNITE = new Material(
+    // "Runite",
+    // MaterialState.SOLID,
+    // TextureSet.SET_FINE,
+    // new short[] { 60, 200, 190 },
+    // 6750,
+    // 11550,
+    // 73,
+    // 87,
+    // true,
+    // "Rt*",
+    // 0); // Not a GT Inherited Material
+    // public static final Material DRAGON_METAL = new Material(
+    // "Dragonblood",
+    // MaterialState.SOLID,
+    // TextureSet.SET_HYPOGEN,
+    // new short[] { 220, 40, 20 },
+    // 10160,
+    // 17850,
+    // 96,
+    // 105,
+    // true,
+    // "۞",
+    // 0); // Not a GT Inherited Material
+    // }
 }

@@ -1,5 +1,6 @@
 package gregtech.loaders.postload.recipes;
 
+import static gregtech.api.enums.Materials.Hypogen;
 import static gregtech.api.enums.Mods.EternalSingularity;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.util.GTModHandler.getModItem;
@@ -27,7 +28,6 @@ import gregtech.api.util.recipe.Scanning;
 import gtPlusPlus.core.fluids.GTPPFluids;
 import gtPlusPlus.core.material.MaterialMisc;
 import gtPlusPlus.core.material.MaterialsAlloy;
-import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.thermalfoundation.fluid.TFFluids;
 import tectech.thing.CustomItemList;
@@ -914,7 +914,7 @@ public class AssemblyLineRecipes implements Runnable {
             .metadata(RESEARCH_ITEM, ItemList.DroneRemoteInterface.get(1))
             .metadata(SCANNING, new Scanning(1 * MINUTES + 30 * SECONDS, TierEU.RECIPE_UEV))
             .itemInputs(
-                MaterialsElements.STANDALONE.HYPOGEN.getIngot(1),
+                Hypogen.getIngots(1),
                 getModItem(EternalSingularity.ID, "eternal_singularity", 1L),
                 new Object[] { OrePrefixes.circuit.get(Materials.UEV), 4 },
                 ItemList.Field_Generator_UHV.get(16),

@@ -66,6 +66,7 @@ public class MaterialsInit {
         loadGTNHMaterials();
         loadLabGrownGems();
         loadChimeraGems();
+        loadGTPPStandalone();
     }
 
     private static void loadElements() {
@@ -16732,5 +16733,191 @@ public class MaterialsInit {
             .addOrePrefix(OrePrefixes.gemExquisite)
             .constructMaterial()
             .setProcessingMaterialTierEU(TierEU.RECIPE_MAX);
+    }
+
+    private static void loadGTPPStandalone() {
+        Materials.CelestialTungsten = loadCelestialTungsten();
+        Materials.AstralTitanium = loadAstralTitanium();
+        Materials.ChromaticGlass = loadChromaticGlass();
+        Materials.AdvancedNitinol = loadAdvancedNitinol();
+        Materials.Hypogen = loadHypogen();
+        Materials.Rhugnor = loadRhugnor();
+        Materials.ForceGTPP = loadForceGTPP();
+    }
+
+    private static Materials loadCelestialTungsten() {
+        return new MaterialBuilder().setName("Celestial Tungsten")
+            .setDefaultLocalName("Celestial Tungsten")
+            .setChemicalFormula("✦◆✦")
+            .setIconSet(TextureSet.SET_CELESTIAL_TUNGSTEN)
+            .setARGB(0xff323232)
+            .addDustItems()
+            .addMetalItems()
+            .addPlasma()
+            .addToolHeadItems()
+            .addGearItems()
+            .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.MULTI_PLATE)
+            .constructMaterial();
+    }
+
+    private static Materials loadAstralTitanium() {
+        return new MaterialBuilder().setName("Astral Titanium")
+            .setDefaultLocalName("Astral Titanium")
+            .setChemicalFormula("✧◇✧")
+            .setIconSet(TextureSet.SET_ASTRAL_TITANIUM)
+            .setARGB(0xffdca0f0)
+            .addDustItems()
+            .addMetalItems()
+            .addPlasma()
+            .addToolHeadItems()
+            .addGearItems()
+            .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.MULTI_PLATE)
+            .constructMaterial();
+    }
+
+    private static Materials loadChromaticGlass() {
+        return new MaterialBuilder().setName("Chromatic Glass")
+            .setDefaultLocalName("Chromatic Glass")
+            .setChemicalFormula("⌘☯𓍰 𓍱 𓍲 𓍳 𓍴 𓍵 𓍶 𓍷 𓍸 ☯⌘ ")
+            .setIconSet(TextureSet.SET_CHROMATIC_GLASS)
+            .setARGB(0xffffffff)
+            .addDustItems()
+            .addMetalItems()
+            .addPlasma()
+            .addGearItems()
+            .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.MULTI_PLATE)
+            .constructMaterial();
+    }
+
+    private static Materials loadAdvancedNitinol() {
+        return new MaterialBuilder().setName("Advanced Nitinol")
+            .setDefaultLocalName("Advanced Nitinol")
+            .setChemicalFormula("⚷⚙⚷ Ni4Ti6")
+            .setIconSet(TextureSet.SET_FIERY)
+            .setARGB(0xffffffff)
+            .addDustItems()
+            .addMetalItems()
+            .addPlasma()
+            .addToolHeadItems()
+            .addGearItems()
+            .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.MULTI_PLATE)
+            .constructMaterial();
+    }
+
+    private static Materials loadHypogen() {
+        return new MaterialBuilder().setName("Hypogen")
+            .setDefaultLocalName("Hypogen")
+            .setChemicalFormula("Hy⚶")
+            .setIconSet(TextureSet.SET_HYPOGEN)
+            .setARGB(0xffffffff)
+            .addDustItems()
+            .addMetalItems()
+            .addPlasma()
+            .addGearItems()
+            .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.MULTI_PLATE)
+            .constructMaterial();
+    }
+
+    private static Materials loadRhugnor() {
+        return new MaterialBuilder().setName("Rhugnor")
+            .setDefaultLocalName("Rhugnor")
+            .setChemicalFormula("Fs⚶")
+            .setIconSet(TextureSet.SET_RHUGNOR)
+            .setARGB(0xffbe00ff)
+            .addDustItems()
+            .addMetalItems()
+            .addPlasma()
+            .addToolHeadItems()
+            .addGearItems()
+            .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.MULTI_PLATE)
+            .constructMaterial();
+    }
+
+    private static Materials loadForceGTPP() {
+        return new MaterialBuilder().setName("Force GTPP")
+            .setDefaultLocalName("Force GTPP")
+            .setChemicalFormula("Fc⚙")
+            .setIconSet(TextureSet.SET_FIERY)
+            .setARGB(0xfffafa14)
+            .addDustItems()
+            .addMetalItems()
+            .addPlasma()
+            .addToolHeadItems()
+            .addGearItems()
+            .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.MULTI_PLATE)
+            .constructMaterial();
+    }
+
+    private static Materials loadBlackMetal() {
+        return new MaterialBuilder().setName("Black Metal")
+            .setDefaultLocalName("Black Metal")
+            .setChemicalFormula("҈")
+            .setIconSet(TextureSet.SET_FIERY)
+            .setARGB(0xfffafa14)
+            .addDustItems()
+            .addMetalItems()
+            .addPlasma()
+            .addToolHeadItems()
+            .addGearItems()
+            .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.MULTI_PLATE)
+            .constructMaterial();
+    }
+
+    private static Materials loadAncientGranite() {
+        return new MaterialBuilder().setName("Ancient Granite")
+            .setDefaultLocalName("Ancient Granite")
+            .setChemicalFormula("Fc⚙")
+            .setIconSet(TextureSet.SET_FIERY)
+            .setARGB(0xfffafa14)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addPlasma()
+            .addToolHeadItems()
+            .addGearItems()
+            .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.MULTI_PLATE)
+            .constructMaterial();
+    }
+
+    private static Materials loadRunite() {
+        return new MaterialBuilder().setName("Runite")
+            .setDefaultLocalName("Runite")
+            .setChemicalFormula("Fc⚙")
+            .setIconSet(TextureSet.SET_FIERY)
+            .setARGB(0xfffafa14)
+            .addDustItems()
+            .addMetalItems()
+            .addOreItems()
+            .addPlasma()
+            .addToolHeadItems()
+            .addGearItems()
+            .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.MULTI_PLATE)
+            .constructMaterial();
+    }
+
+    private static Materials loadDragonblood() {
+        return new MaterialBuilder().setName("Dragon Blood")
+            .setDefaultLocalName("Dragon Blood")
+            .setChemicalFormula("Fc⚙")
+            .setIconSet(TextureSet.SET_FIERY)
+            .setARGB(0xfffafa14)
+            .addDustItems()
+            .addMetalItems()
+            .addPlasma()
+            .addToolHeadItems()
+            .addGearItems()
+            .addSubTag(SubTag.METAL)
+            .addSubTag(SubTag.MULTI_PLATE)
+            .constructMaterial();
     }
 }

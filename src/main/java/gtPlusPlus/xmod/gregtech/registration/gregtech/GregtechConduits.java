@@ -1,5 +1,6 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
+import static gregtech.api.enums.Materials.Hypogen;
 import static gregtech.api.enums.Mods.EnderIO;
 import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.recipe.RecipeMaps.*;
@@ -26,7 +27,6 @@ import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.StringUtils;
 import gtPlusPlus.core.material.Material;
-import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GTPPMTECable;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GTPPMTEFluidPipe;
@@ -81,7 +81,7 @@ public class GregtechConduits {
     private static void run1() {
         wireFactory("RedstoneAlloy", 32, BaseWireID + 45, 0, 2, 1, new short[] { 178, 34, 34, 0 });
         // need to go back id because fluid pipes already occupy
-        makeCustomWires(MaterialsElements.STANDALONE.HYPOGEN, BaseWireID - 15, 0, 0, 8, GTValues.V[11], false, true);
+        makeCustomWires(Hypogen, BaseWireID - 15, 0, 0, 8, GTValues.V[11], false, true);
     }
 
     private static void run2() {

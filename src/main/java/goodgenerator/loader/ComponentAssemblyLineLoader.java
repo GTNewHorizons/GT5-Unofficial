@@ -32,9 +32,6 @@ import static gtPlusPlus.core.material.MaterialsAlloy.PIKYONIUM;
 import static gtPlusPlus.core.material.MaterialsAlloy.QUANTUM;
 import static gtPlusPlus.core.material.MaterialsAlloy.TITANSTEEL;
 import static gtPlusPlus.core.material.MaterialsAlloy.TRINIUM_REINFORCED_STEEL;
-import static gtPlusPlus.core.material.MaterialsElements.STANDALONE.ASTRAL_TITANIUM;
-import static gtPlusPlus.core.material.MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN;
-import static gtPlusPlus.core.material.MaterialsElements.STANDALONE.HYPOGEN;
 
 import net.minecraft.item.ItemStack;
 
@@ -1521,7 +1518,7 @@ public class ComponentAssemblyLineLoader {
                 Infinity.getMolten(48 * STACKS),
                 TranscendentMetal.getMolten(16 * STACKS + 10 * INGOTS + 6 * NUGGETS),
                 TengamPurified.getMolten(12 * STACKS),
-                CELESTIAL_TUNGSTEN.getFluidStack(3 * STACKS))
+                CelestialTungsten.getMolten(3 * STACKS))
             .duration(40 * MINUTES)
             .eut(RECIPE_UEV)
             .metadata(COAL_CASING_TIER, COAL_UIV)
@@ -1540,7 +1537,7 @@ public class ComponentAssemblyLineLoader {
                 Mellion.getMolten(24 * STACKS),
                 TranscendentMetal.getMolten(16 * STACKS + 10 * INGOTS + 6 * NUGGETS),
                 TengamPurified.getMolten(12 * STACKS),
-                CELESTIAL_TUNGSTEN.getFluidStack(3 * STACKS))
+                CelestialTungsten.getMolten(3 * STACKS))
             .duration(40 * MINUTES)
             .eut(RECIPE_UEV)
             .metadata(COAL_CASING_TIER, COAL_UIV)
@@ -1558,7 +1555,7 @@ public class ComponentAssemblyLineLoader {
                 MUTATED_LIVING_SOLDER.getFluidStack(13 * STACKS + 32 * INGOTS),
                 DimensionallyShiftedSuperfluid.getFluid(192_000),
                 TranscendentMetal.getMolten(18 * STACKS + 53 * INGOTS + 3 * NUGGETS),
-                CELESTIAL_TUNGSTEN.getFluidStack(3 * STACKS))
+                CelestialTungsten.getMolten(3 * STACKS))
             .duration(40 * MINUTES)
             .eut(RECIPE_UEV)
             .metadata(COAL_CASING_TIER, COAL_UIV)
@@ -1579,7 +1576,7 @@ public class ComponentAssemblyLineLoader {
                 MUTATED_LIVING_SOLDER.getFluidStack(13 * STACKS + 32 * INGOTS),
                 DimensionallyShiftedSuperfluid.getFluid(192_000),
                 TranscendentMetal.getMolten(16 * STACKS + 32 * INGOTS),
-                CELESTIAL_TUNGSTEN.getFluidStack(3 * STACKS))
+                CelestialTungsten.getMolten(3 * STACKS))
             .duration(40 * MINUTES)
             .eut(RECIPE_UEV)
             .metadata(COAL_CASING_TIER, COAL_UIV)
@@ -1600,7 +1597,7 @@ public class ComponentAssemblyLineLoader {
                     TranscendentMetal.getMolten(14 * STACKS + 5 * INGOTS + 3 * NUGGETS),
                     rubber.getMolten(12 * STACKS),
                     DraconiumAwakened.getMolten(9 * STACKS),
-                    CELESTIAL_TUNGSTEN.getFluidStack(3 * STACKS))
+                    CelestialTungsten.getMolten(3 * STACKS))
                 .duration(40 * MINUTES)
                 .eut(RECIPE_UEV)
                 .metadata(COAL_CASING_TIER, COAL_UIV)
@@ -1619,7 +1616,7 @@ public class ComponentAssemblyLineLoader {
                     DimensionallyShiftedSuperfluid.getFluid(192_000),
                     rubber.getMolten(59 * STACKS + 58 * INGOTS),
                     TranscendentMetal.getMolten(6 * STACKS + 53 * INGOTS + 3 * NUGGETS),
-                    CELESTIAL_TUNGSTEN.getFluidStack(3 * STACKS))
+                    CelestialTungsten.getMolten(3 * STACKS))
                 .duration(40 * MINUTES)
                 .eut(RECIPE_UEV)
                 .metadata(COAL_CASING_TIER, COAL_UIV)
@@ -1643,7 +1640,7 @@ public class ComponentAssemblyLineLoader {
                 LAFIUM.getFluidStack(12 * STACKS),
                 CINOBITE.getFluidStack(12 * STACKS),
                 PIKYONIUM.getFluidStack(12 * STACKS),
-                CELESTIAL_TUNGSTEN.getFluidStack(3 * STACKS))
+                CelestialTungsten.getMolten(3 * STACKS))
             .duration(40 * MINUTES)
             .eut(RECIPE_UEV)
             .metadata(COAL_CASING_TIER, COAL_UIV)
@@ -1666,7 +1663,7 @@ public class ComponentAssemblyLineLoader {
                 CINOBITE.getFluidStack(12 * STACKS),
                 PIKYONIUM.getFluidStack(12 * STACKS),
                 TranscendentMetal.getMolten(6 * STACKS),
-                CELESTIAL_TUNGSTEN.getFluidStack(3 * STACKS))
+                CelestialTungsten.getMolten(3 * STACKS))
             .duration(40 * MINUTES)
             .eut(RECIPE_UEV)
             .metadata(COAL_CASING_TIER, COAL_UIV)
@@ -1688,7 +1685,7 @@ public class ComponentAssemblyLineLoader {
                 DimensionallyShiftedSuperfluid.getFluid(12 * STACKS),
                 MoltenProtoHalkoniteBase.getFluid(48 * STACKS),
                 Infinity.getMolten(48 * STACKS),
-                CELESTIAL_TUNGSTEN.getFluidStack(3 * STACKS))
+                CelestialTungsten.getMolten(3 * STACKS))
             .duration(40 * MINUTES)
             .eut(RECIPE_UEV)
             .metadata(COAL_CASING_TIER, COAL_UIV)
@@ -1710,7 +1707,7 @@ public class ComponentAssemblyLineLoader {
                 MoltenProtoHalkoniteBase.getFluid(24 * STACKS),
                 Creon.getMolten(24 * STACKS),
                 Mellion.getMolten(24 * STACKS),
-                CELESTIAL_TUNGSTEN.getFluidStack(3 * STACKS))
+                CelestialTungsten.getMolten(3 * STACKS))
             .duration(40 * MINUTES)
             .eut(RECIPE_UEV)
             .metadata(COAL_CASING_TIER, COAL_UIV)
@@ -1727,10 +1724,10 @@ public class ComponentAssemblyLineLoader {
             .fluidInputs(
                 MUTATED_LIVING_SOLDER.getFluidStack(13 * STACKS + 32 * INGOTS),
                 DimensionallyShiftedSuperfluid.getFluid(192_000),
-                HYPOGEN.getFluidStack(51 * STACKS),
+                Hypogen.getMolten(51 * STACKS),
                 TengamPurified.getMolten(24 * STACKS),
                 SpaceTime.getMolten(16 * STACKS + 10 * INGOTS + 6 * NUGGETS),
-                CELESTIAL_TUNGSTEN.getFluidStack(3 * STACKS))
+                CelestialTungsten.getMolten(3 * STACKS))
             .duration(40 * MINUTES)
             .eut(RECIPE_UIV)
             .metadata(COAL_CASING_TIER, COAL_UMV)
@@ -1748,8 +1745,8 @@ public class ComponentAssemblyLineLoader {
                 MUTATED_LIVING_SOLDER.getFluidStack(13 * STACKS + 32 * INGOTS),
                 DimensionallyShiftedSuperfluid.getFluid(192_000),
                 SpaceTime.getMolten(18 * STACKS + 53 * INGOTS + 3 * NUGGETS),
-                HYPOGEN.getFluidStack(3 * STACKS),
-                CELESTIAL_TUNGSTEN.getFluidStack(3 * STACKS))
+                Hypogen.getMolten(3 * STACKS),
+                CelestialTungsten.getMolten(3 * STACKS))
             .duration(40 * MINUTES)
             .eut(RECIPE_UIV)
             .metadata(COAL_CASING_TIER, COAL_UMV)
@@ -1770,8 +1767,8 @@ public class ComponentAssemblyLineLoader {
                 DimensionallyShiftedSuperfluid.getFluid(192_000),
                 SpaceTime.getMolten(16 * STACKS + 32 * INGOTS),
                 Quantium.getMolten(9 * STACKS),
-                HYPOGEN.getFluidStack(3 * STACKS),
-                CELESTIAL_TUNGSTEN.getFluidStack(3 * STACKS))
+                Hypogen.getMolten(3 * STACKS),
+                CelestialTungsten.getMolten(3 * STACKS))
             .duration(40 * MINUTES)
             .eut(RECIPE_UIV)
             .metadata(COAL_CASING_TIER, COAL_UMV)
@@ -1792,8 +1789,8 @@ public class ComponentAssemblyLineLoader {
                     SpaceTime.getMolten(14 * STACKS + 5 * INGOTS + 3 * NUGGETS),
                     rubber.getMolten(12 * STACKS),
                     Infinity.getMolten(9 * STACKS),
-                    HYPOGEN.getFluidStack(3 * STACKS),
-                    CELESTIAL_TUNGSTEN.getFluidStack(3 * STACKS))
+                    Hypogen.getMolten(3 * STACKS),
+                    CelestialTungsten.getMolten(3 * STACKS))
                 .duration(40 * MINUTES)
                 .eut(RECIPE_UIV)
                 .metadata(COAL_CASING_TIER, COAL_UMV)
@@ -1812,8 +1809,8 @@ public class ComponentAssemblyLineLoader {
                     DimensionallyShiftedSuperfluid.getFluid(192_000),
                     rubber.getMolten(59 * STACKS + 58 * INGOTS),
                     SpaceTime.getMolten(6 * STACKS + 53 * INGOTS + 3 * NUGGETS),
-                    HYPOGEN.getFluidStack(3 * STACKS),
-                    CELESTIAL_TUNGSTEN.getFluidStack(3 * STACKS))
+                    Hypogen.getMolten(3 * STACKS),
+                    CelestialTungsten.getMolten(3 * STACKS))
                 .duration(40 * MINUTES)
                 .eut(RECIPE_UIV)
                 .metadata(COAL_CASING_TIER, COAL_UMV)
@@ -1832,12 +1829,12 @@ public class ComponentAssemblyLineLoader {
             .circuit(SENSOR_CIRCUIT)
             .fluidInputs(
                 MUTATED_LIVING_SOLDER.getFluidStack(13 * STACKS + 32 * INGOTS),
-                CELESTIAL_TUNGSTEN.getFluidStack(15 * STACKS),
+                CelestialTungsten.getMolten(15 * STACKS),
                 QUANTUM.getFluidStack(12 * STACKS),
-                ASTRAL_TITANIUM.getFluidStack(12 * STACKS),
+                AstralTitanium.getMolten(12 * STACKS),
                 TITANSTEEL.getFluidStack(12 * STACKS),
                 Quantium.getMolten(10 * STACKS + 32 * INGOTS),
-                HYPOGEN.getFluidStack(3 * STACKS))
+                Hypogen.getMolten(3 * STACKS))
             .duration(40 * MINUTES)
             .eut(RECIPE_UIV)
             .metadata(COAL_CASING_TIER, COAL_UMV)
@@ -1854,13 +1851,13 @@ public class ComponentAssemblyLineLoader {
             .circuit(EMITTER_CIRCUIT)
             .fluidInputs(
                 MUTATED_LIVING_SOLDER.getFluidStack(13 * STACKS + 32 * INGOTS),
-                CELESTIAL_TUNGSTEN.getFluidStack(15 * STACKS),
+                CelestialTungsten.getMolten(15 * STACKS),
                 QUANTUM.getFluidStack(12 * STACKS),
-                ASTRAL_TITANIUM.getFluidStack(12 * STACKS),
+                AstralTitanium.getMolten(12 * STACKS),
                 TITANSTEEL.getFluidStack(12 * STACKS),
                 Quantium.getMolten(10 * STACKS + 32 * INGOTS),
                 SpaceTime.getMolten(6 * STACKS),
-                HYPOGEN.getFluidStack(3 * STACKS))
+                Hypogen.getMolten(3 * STACKS))
             .duration(40 * MINUTES)
             .eut(RECIPE_UIV)
             .metadata(COAL_CASING_TIER, COAL_UMV)
@@ -1878,9 +1875,9 @@ public class ComponentAssemblyLineLoader {
             .circuit(FIELD_GENERATOR_CIRCUIT)
             .fluidInputs(
                 MUTATED_LIVING_SOLDER.getFluidStack(13 * STACKS + 32 * INGOTS),
-                HYPOGEN.getFluidStack(51 * STACKS),
+                Hypogen.getMolten(51 * STACKS),
                 Quantium.getMolten(12 * STACKS),
-                CELESTIAL_TUNGSTEN.getFluidStack(3 * STACKS))
+                CelestialTungsten.getMolten(3 * STACKS))
             .duration(40 * MINUTES)
             .eut(RECIPE_UIV)
             .metadata(COAL_CASING_TIER, COAL_UMV)

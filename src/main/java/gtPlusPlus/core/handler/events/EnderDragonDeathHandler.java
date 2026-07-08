@@ -1,5 +1,7 @@
 package gtPlusPlus.core.handler.events;
 
+import static gregtech.api.enums.Materials.Dragonblood;
+
 import java.util.ArrayList;
 
 import net.minecraft.entity.boss.EntityDragon;
@@ -17,7 +19,6 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import gregtech.api.enums.Mods;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.ReflectionUtil;
-import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.core.util.math.MathUtils;
 
 @Optional.Interface(iface = "com.kuba6000.mobsinfo.api.IMobExtraInfoProvider", modid = Mods.ModIDs.MOBS_INFO)
@@ -34,25 +35,19 @@ public class EnderDragonDeathHandler implements IMobExtraInfoProvider {
         if (mHardcoreDragonClass != null && mHardcoreDragonClass.isInstance(event.entityLiving)) {
             for (int y = 0; y < MathUtils.randInt(100, 250); y++) {
                 int aAmount = MathUtils.randInt(5, 25);
-                event.entityLiving.entityDropItem(
-                    MaterialsElements.STANDALONE.DRAGON_METAL.getNugget(aAmount),
-                    MathUtils.randFloat(0, 1));
+                event.entityLiving.entityDropItem(Dragonblood.getNuggets(aAmount), MathUtils.randFloat(0, 1));
                 aCountTotal = aAmount;
             }
         } else if (mChaoseDragonClass != null && mChaoseDragonClass.isInstance(event.entityLiving)) {
             for (int y = 0; y < MathUtils.randInt(100, 200); y++) {
                 int aAmount = MathUtils.randInt(1, 5);
-                event.entityLiving.entityDropItem(
-                    MaterialsElements.STANDALONE.DRAGON_METAL.getIngot(aAmount),
-                    MathUtils.randFloat(0, 1));
+                event.entityLiving.entityDropItem(Dragonblood.getIngots(aAmount), MathUtils.randFloat(0, 1));
                 aCountTotal = aAmount;
             }
         } else if (event.entityLiving instanceof EntityDragon) {
             for (int y = 0; y < MathUtils.randInt(25, 50); y++) {
                 int aAmount = MathUtils.randInt(1, 10);
-                event.entityLiving.entityDropItem(
-                    MaterialsElements.STANDALONE.DRAGON_METAL.getNugget(aAmount),
-                    MathUtils.randFloat(0, 1));
+                event.entityLiving.entityDropItem(Dragonblood.getNuggets(aAmount), MathUtils.randFloat(0, 1));
                 aCountTotal = aAmount;
             }
         }
@@ -74,7 +69,7 @@ public class EnderDragonDeathHandler implements IMobExtraInfoProvider {
         @NotNull MobRecipe recipe) {
         if (mHardcoreDragonClass != null && mHardcoreDragonClass.isInstance(recipe.entity)) {
             MobDrop drop = new MobDrop(
-                MaterialsElements.STANDALONE.DRAGON_METAL.getNugget(1),
+                Dragonblood.getNuggets(1),
                 MobDrop.DropType.Normal,
                 (int) (MobDrop.getChanceBasedOnFromTo(100, 250) * MobDrop.getChanceBasedOnFromTo(5, 25) * 10000d),
                 null,
@@ -87,7 +82,7 @@ public class EnderDragonDeathHandler implements IMobExtraInfoProvider {
             drops.add(drop);
         } else if (mChaoseDragonClass != null && mChaoseDragonClass.isInstance(recipe.entity)) {
             MobDrop drop = new MobDrop(
-                MaterialsElements.STANDALONE.DRAGON_METAL.getIngot(1),
+                Dragonblood.getIngots(1),
                 MobDrop.DropType.Normal,
                 (int) (MobDrop.getChanceBasedOnFromTo(100, 200) * MobDrop.getChanceBasedOnFromTo(1, 5) * 10000d),
                 null,
@@ -100,7 +95,7 @@ public class EnderDragonDeathHandler implements IMobExtraInfoProvider {
             drops.add(drop);
         } else if (recipe.entity instanceof EntityDragon) {
             MobDrop drop = new MobDrop(
-                MaterialsElements.STANDALONE.DRAGON_METAL.getNugget(1),
+                Dragonblood.getNuggets(1),
                 MobDrop.DropType.Normal,
                 (int) (MobDrop.getChanceBasedOnFromTo(25, 50) * MobDrop.getChanceBasedOnFromTo(1, 10) * 10000d),
                 null,

@@ -1,6 +1,11 @@
 package gtPlusPlus.core.recipe;
 
+import static gregtech.api.enums.Materials.CelestialTungsten;
+import static gregtech.api.enums.Materials.ChromaticGlass;
+import static gregtech.api.enums.Materials.Dragonblood;
+import static gregtech.api.enums.Materials.Hypogen;
 import static gregtech.api.enums.Materials.Obsidian;
+import static gregtech.api.enums.Materials.Rhugnor;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidSolidifierRecipes;
@@ -142,7 +147,7 @@ public class RecipesGeneral {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Tesseract.get(1))
             .itemOutputs(GregtechItemList.KLEIN_BOTTLE.get(1))
-            .fluidInputs(MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getFluidStack(16 * INGOTS))
+            .fluidInputs(ChromaticGlass.getMolten(16 * INGOTS))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_UHV)
             .addTo(fluidSolidifierRecipes);
@@ -322,11 +327,11 @@ public class RecipesGeneral {
         generateWireRecipes(MaterialsAlloy.HG1223);
         generateWireRecipes(MaterialsAlloy.LEAGRISIUM);
         generateWireRecipes(MaterialsAlloy.TRINIUM_TITANIUM);
-        generateWireRecipes(MaterialsElements.STANDALONE.HYPOGEN);
-        generateWireRecipes(MaterialsElements.STANDALONE.CHRONOMATIC_GLASS);
-        generateWireRecipes(MaterialsElements.STANDALONE.DRAGON_METAL);
-        generateWireRecipes(MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN);
-        generateWireRecipes(MaterialsElements.STANDALONE.RHUGNOR);
+        generateWireRecipes(Hypogen);
+        generateWireRecipes(ChromaticGlass);
+        generateWireRecipes(Dragonblood);
+        generateWireRecipes(CelestialTungsten);
+        generateWireRecipes(Rhugnor);
 
         generatePipeRecipes(MaterialsAlloy.STABALLOY);
         generatePipeRecipes(MaterialsAlloy.TANTALLOY_60);

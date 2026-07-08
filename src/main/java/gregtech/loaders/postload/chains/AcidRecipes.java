@@ -29,7 +29,6 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.core.fluids.GTPPFluids;
 import gtPlusPlus.core.material.MaterialMisc;
-import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.core.material.MaterialsOres;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtnhlanth.common.register.BotWerkstoffMaterialPool;
@@ -155,7 +154,7 @@ public class AcidRecipes {
             .duration(20 * SECONDS)
             .addTo(UniversalChemical);
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialsElements.STANDALONE.RUNITE.getCrushed(4))
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.crushed, Materials.Runite, 4))
             .fluidInputs(Materials.ToxicSlurry.getFluid(3000L))
             .fluidOutputs(Materials.DestabilizationSlurry.getFluid(3000L))
             .eut(TierEU.RECIPE_IV)

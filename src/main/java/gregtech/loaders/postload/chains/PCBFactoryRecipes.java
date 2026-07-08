@@ -10,8 +10,6 @@ import static gregtech.api.util.GTRecipeConstants.PCB_NANITE_MATERIAL;
 import static gregtech.api.util.GTRecipeConstants.RESEARCH_ITEM;
 import static gregtech.api.util.GTRecipeConstants.SCANNING;
 import static gtPlusPlus.core.material.MaterialsAlloy.QUANTUM;
-import static gtPlusPlus.core.material.MaterialsElements.STANDALONE.CHRONOMATIC_GLASS;
-import static gtPlusPlus.core.material.MaterialsElements.STANDALONE.HYPOGEN;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +30,6 @@ import gregtech.api.util.GTUtility;
 import gregtech.api.util.PCBFactoryManager;
 import gregtech.api.util.recipe.Scanning;
 import gtPlusPlus.core.material.MaterialsAlloy;
-import gtPlusPlus.core.material.MaterialsElements;
 
 @SuppressWarnings("SpellCheckingInspection")
 public class PCBFactoryRecipes {
@@ -77,7 +74,7 @@ public class PCBFactoryRecipes {
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
-                MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getFrameBox(1),
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.CelestialTungsten, 1),
                 QUANTUM.getPlate(6),
                 ItemList.Radiation_Proof_Prismatic_Naquadah_Composite_Sheet.get(24))
             .itemOutputs(ItemList.RadiationProofPhotolithographicFrameworkCasing.get(1))
@@ -86,7 +83,7 @@ public class PCBFactoryRecipes {
             .addTo(assemblerRecipes);
         GTValues.RA.stdBuilder()
             .itemInputs(
-                HYPOGEN.getFrameBox(1),
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Hypogen, 1),
                 GTOreDictUnificator.get(OrePrefixes.rotor, Materials.Infinity, 2),
                 Materials.Thulium.getPlates(6))
             .itemOutputs(ItemList.InfinityCooledCasing.get(1))
@@ -602,7 +599,8 @@ public class PCBFactoryRecipes {
                         10106),
                     GTOreDictUnificator
                         .get(OrePrefixes.foil, Materials.InfinityCatalyst, (long) (16 * (Math.sqrt(tier - 6)))),
-                    CHRONOMATIC_GLASS.getFoil((int) (16 * (Math.sqrt(tier - 6)))))
+                    GTOreDictUnificator
+                        .get(OrePrefixes.foil, Materials.ChromaticGlass, (int) (16 * (Math.sqrt(tier - 6)))))
                 .circuit(1)
                 .fluidInputs(
                     Materials.SulfuricAcid.getFluid((long) (500 * (Math.sqrt(tier - 6)))),
@@ -632,7 +630,8 @@ public class PCBFactoryRecipes {
                         10106),
                     GTOreDictUnificator
                         .get(OrePrefixes.foil, Materials.InfinityCatalyst, (long) (16 * (Math.sqrt(tier - 6)))),
-                    CHRONOMATIC_GLASS.getFoil((int) (16 * (Math.sqrt(tier - 6)))))
+                    GTOreDictUnificator
+                        .get(OrePrefixes.foil, Materials.ChromaticGlass, (int) (16 * (Math.sqrt(tier - 6)))))
                 .circuit(2)
                 .fluidInputs(
                     Materials.SulfuricAcid.getFluid((long) (500 * (Math.sqrt(tier - 6)))),
@@ -663,7 +662,8 @@ public class PCBFactoryRecipes {
                         10106),
                     GTOreDictUnificator
                         .get(OrePrefixes.foil, Materials.InfinityCatalyst, (long) (16 * (Math.sqrt(tier - 6)))),
-                    CHRONOMATIC_GLASS.getFoil((int) (16 * (Math.sqrt(tier - 6)))))
+                    GTOreDictUnificator
+                        .get(OrePrefixes.foil, Materials.ChromaticGlass, (int) (16 * (Math.sqrt(tier - 6)))))
                 .circuit(3)
                 .fluidInputs(
                     Materials.SulfuricAcid.getFluid((long) (500 * (Math.sqrt(tier - 6)))),

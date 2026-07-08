@@ -342,7 +342,7 @@ public class RecipesMachinesCustom {
                 GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.Aluminium, 4),
                 GTOreDictUnificator.get(OrePrefixes.plate, Materials.AnnealedCopper, 16),
                 GTOreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Polyethylene, 4),
-                MaterialsElements.STANDALONE.BLACK_METAL.getFrameBox(4))
+                GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.BlackMetal, 4))
             .circuit(19)
             .itemOutputs(GregtechItemList.ChemicalPlant_Controller.get(1))
             .fluidInputs(MaterialsAlloy.STEEL_BLACK.getFluidStack(8 * INGOTS))

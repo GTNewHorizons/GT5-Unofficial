@@ -1,6 +1,9 @@
 package gtPlusPlus.xmod.gregtech.loaders.recipe;
 
 import static goodgenerator.loader.Loaders.advancedRadiationProtectionPlate;
+import static gregtech.api.enums.Materials.CelestialTungsten;
+import static gregtech.api.enums.Materials.ChromaticGlass;
+import static gregtech.api.enums.Materials.Hypogen;
 import static gregtech.api.enums.Mods.EtFuturumRequiem;
 import static gregtech.api.enums.Mods.GalaxySpace;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
@@ -434,9 +437,7 @@ public class RecipeLoaderChemicalSkips {
             .addTo(fusionRecipes);
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(
-                new FluidStack(MaterialsElements.STANDALONE.FORCE.getPlasma(), 4 * INGOTS),
-                Materials.Rubidium.getMolten(4 * INGOTS))
+            .fluidInputs(Materials.ForceGTPP.getPlasma(4 * INGOTS), Materials.Rubidium.getMolten(4 * INGOTS))
             .fluidOutputs(new FluidStack(MaterialsElements.getInstance().FERMIUM.getPlasma(), 4 * INGOTS))
             .duration(1 * SECONDS + 12 * TICKS)
             .eut(TierEU.RECIPE_UEV)
@@ -453,7 +454,7 @@ public class RecipeLoaderChemicalSkips {
                 Materials.Carbon.getNanite(64))
             .circuit(10)
             .itemOutputs(GregtechItemList.PlatinumGroupCatalyst.get(1))
-            .fluidInputs(MaterialsElements.STANDALONE.HYPOGEN.getFluidStack(2 * INGOTS + 1 * HALF_INGOTS))
+            .fluidInputs(Hypogen.getMolten(2 * INGOTS + 1 * HALF_INGOTS))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_UEV)
             .addTo(assemblerRecipes);
@@ -465,7 +466,7 @@ public class RecipeLoaderChemicalSkips {
                 Materials.Carbon.getNanite(64))
             .circuit(10)
             .itemOutputs(GregtechItemList.PlasticPolymerCatalyst.get(1))
-            .fluidInputs(MaterialsElements.STANDALONE.HYPOGEN.getFluidStack(2 * INGOTS + 1 * HALF_INGOTS))
+            .fluidInputs(Hypogen.getMolten(2 * INGOTS + 1 * HALF_INGOTS))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_UEV)
             .addTo(assemblerRecipes);
@@ -477,7 +478,7 @@ public class RecipeLoaderChemicalSkips {
                 Materials.Carbon.getNanite(64))
             .circuit(10)
             .itemOutputs(GregtechItemList.RubberPolymerCatalyst.get(1))
-            .fluidInputs(MaterialsElements.STANDALONE.HYPOGEN.getFluidStack(2 * INGOTS + 1 * HALF_INGOTS))
+            .fluidInputs(Hypogen.getMolten(2 * INGOTS + 1 * HALF_INGOTS))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_UEV)
             .addTo(assemblerRecipes);
@@ -489,7 +490,7 @@ public class RecipeLoaderChemicalSkips {
                 Materials.Carbon.getNanite(64))
             .circuit(10)
             .itemOutputs(GregtechItemList.AdhesionPromoterCatalyst.get(1))
-            .fluidInputs(MaterialsElements.STANDALONE.HYPOGEN.getFluidStack(2 * INGOTS + 1 * HALF_INGOTS))
+            .fluidInputs(Hypogen.getMolten(2 * INGOTS + 1 * HALF_INGOTS))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_UHV)
             .addTo(assemblerRecipes);
@@ -501,7 +502,7 @@ public class RecipeLoaderChemicalSkips {
                 Materials.Carbon.getNanite(64))
             .circuit(10)
             .itemOutputs(GregtechItemList.TitaTungstenIndiumCatalyst.get(1))
-            .fluidInputs(MaterialsElements.STANDALONE.HYPOGEN.getFluidStack(2 * INGOTS + 1 * HALF_INGOTS))
+            .fluidInputs(Hypogen.getMolten(2 * INGOTS + 1 * HALF_INGOTS))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_UHV)
             .addTo(assemblerRecipes);
@@ -513,7 +514,7 @@ public class RecipeLoaderChemicalSkips {
                 Materials.Carbon.getNanite(64))
             .circuit(10)
             .itemOutputs(GregtechItemList.RadioactivityCatalyst.get(1))
-            .fluidInputs(MaterialsElements.STANDALONE.HYPOGEN.getFluidStack(2 * INGOTS + 1 * HALF_INGOTS))
+            .fluidInputs(Hypogen.getMolten(2 * INGOTS + 1 * HALF_INGOTS))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_UHV)
             .addTo(assemblerRecipes);
@@ -525,7 +526,7 @@ public class RecipeLoaderChemicalSkips {
                 Materials.Silver.getNanite(1))
             .circuit(10)
             .itemOutputs(GregtechItemList.RareEarthGroupCatalyst.get(1))
-            .fluidInputs(MaterialsElements.STANDALONE.HYPOGEN.getFluidStack(1 * STACKS))
+            .fluidInputs(Hypogen.getMolten(1 * STACKS))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_UEV)
             .addTo(assemblerRecipes);
@@ -537,7 +538,7 @@ public class RecipeLoaderChemicalSkips {
                 Materials.Silver.getNanite(1))
             .circuit(10)
             .itemOutputs(GregtechItemList.SimpleNaquadahCatalyst.get(1))
-            .fluidInputs(MaterialsElements.STANDALONE.HYPOGEN.getFluidStack(1 * STACKS))
+            .fluidInputs(Hypogen.getMolten(1 * STACKS))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_UEV)
             .addTo(assemblerRecipes);
@@ -551,7 +552,7 @@ public class RecipeLoaderChemicalSkips {
                     Materials.Silver.getNanite(1))
                 .circuit(10)
                 .itemOutputs(GregtechItemList.HellishForceCatalyst.get(1))
-                .fluidInputs(MaterialsElements.STANDALONE.HYPOGEN.getFluidStack(1 * STACKS))
+                .fluidInputs(Hypogen.getMolten(1 * STACKS))
                 .duration(60 * SECONDS)
                 .eut(TierEU.RECIPE_UEV)
                 .addTo(assemblerRecipes);
@@ -564,7 +565,7 @@ public class RecipeLoaderChemicalSkips {
                 Materials.Silver.getNanite(1))
             .circuit(10)
             .itemOutputs(GregtechItemList.CrystalColorizationCatalyst.get(1))
-            .fluidInputs(MaterialsElements.STANDALONE.HYPOGEN.getFluidStack(1 * STACKS))
+            .fluidInputs(Hypogen.getMolten(1 * STACKS))
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_UEV)
             .addTo(assemblerRecipes);
@@ -720,7 +721,7 @@ public class RecipeLoaderChemicalSkips {
             new ItemStack[] { MaterialsAlloy.QUANTUM.getFrameBox(1),
                 GTOreDictUnificator.get("plateDensePreciousMetalsAlloy", 4),
                 GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Netherite, 2),
-                ItemList.Field_Generator_UV.get(1), MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getScrew(16) },
+                ItemList.Field_Generator_UV.get(1), GTOreDictUnificator.get(OrePrefixes.screw, ChromaticGlass, 16) },
             new FluidStack[] { MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(10 * INGOTS), },
             GregtechItemList.NeutronShieldingCore.get(1),
             60 * 20,
@@ -751,7 +752,7 @@ public class RecipeLoaderChemicalSkips {
             (int) TierEU.RECIPE_UHV,
             32,
             new ItemStack[] { MaterialsAlloy.QUANTUM.getFrameBox(4),
-                MaterialsElements.STANDALONE.HYPOGEN.getPlateDense(4),
+                GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Hypogen, 4),
                 GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.ProtoHalkonite, 2),
                 ItemList.Field_Generator_UIV.get(1), GTOreDictUnificator.get("screwMetastableOganesson", 16),
                 ItemList.SuperconductorComposite.get(4) },
@@ -780,9 +781,9 @@ public class RecipeLoaderChemicalSkips {
             .itemInputs(
                 new ItemStack(BlockQuantumGlass.INSTANCE, 1),
                 ItemList.Field_Generator_ZPM.get(1),
-                MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getLongRod(4),
+                GTOreDictUnificator.get(OrePrefixes.stickLong, CelestialTungsten, 4),
                 GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Netherite, 4),
-                MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getPlate(6))
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.ChromaticGlass, 6))
             .itemOutputs(GregtechItemList.ForceFieldGlass.get(1))
             .fluidInputs(MaterialsAlloy.QUANTUM.getFluidStack(6 * INGOTS))
             .duration(10 * SECONDS)

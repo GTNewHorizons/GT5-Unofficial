@@ -11,7 +11,6 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeConstants.AssemblyLine;
 import static gregtech.api.util.GTRecipeConstants.RESEARCH_ITEM;
 import static gregtech.api.util.GTRecipeConstants.SCANNING;
-import static gtPlusPlus.core.material.MaterialsElements.STANDALONE.HYPOGEN;
 
 import net.minecraft.item.ItemStack;
 
@@ -106,7 +105,7 @@ public class AssemblyLine implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.ProtoHalkonite, 6),
                 GTOreDictUnificator.get(OrePrefixes.pipeNonuple, Materials.Infinity, 3),
                 ItemList.EnergisedTesseract.get(1),
-                HYPOGEN.getRotor(6),
+                GTOreDictUnificator.get(OrePrefixes.rotor, Materials.Hypogen, 6),
                 ItemList.Field_Generator_UHV.get(16),
                 ItemList.Field_Generator_UEV.get(4),
                 new ItemStack(huiCircuit, 4, 3),

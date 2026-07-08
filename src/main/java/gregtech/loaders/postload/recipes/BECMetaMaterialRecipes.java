@@ -1,5 +1,7 @@
 package gregtech.loaders.postload.recipes;
 
+import static gregtech.api.enums.Materials.ChromaticGlass;
+import static gregtech.api.enums.Materials.Hypogen;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
@@ -25,7 +27,6 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.recipe.Scanning;
-import gtPlusPlus.core.material.MaterialsElements;
 import tectech.recipe.TecTechRecipeMaps;
 
 /// BEC Meta Material recipes
@@ -49,8 +50,8 @@ public class BECMetaMaterialRecipes implements Runnable {
     private static final Materials[] white3Tier = { Materials.Shijima, Materials.WhiteDwarfMatter,
         Materials.MagMatter };
 
-    private static final Object[] black4Tier = { GGMaterial.tairitsu, MaterialsElements.STANDALONE.HYPOGEN,
-        GGMaterial.shirabon, Materials.SpaceTime };
+    private static final Object[] black4Tier = { GGMaterial.tairitsu, Hypogen, GGMaterial.shirabon,
+        Materials.SpaceTime };
     private static final Materials[] gray4Tier = { Materials.Churitsu, Materials.WhiteDwarfMatter,
         Materials.BlackDwarfMatter, Materials.MHDCSM };
     private static final Materials[] white4Tier = { Materials.Shijima, Materials.ProtoHalkonite, Materials.Hexanite,
@@ -96,8 +97,7 @@ public class BECMetaMaterialRecipes implements Runnable {
             CondensateType[] becCondensates = { CondensateType.ChromaticGlass, CondensateType.TranscendentMetal };
             int[] becAmounts = { condensateAmounts[t], condensateAmounts[t] };
             if (t == 0) {
-                FluidStack[] aalFluids = {
-                    MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getFluidStack(condensateAmounts[t] * INGOTS),
+                FluidStack[] aalFluids = { ChromaticGlass.getMolten(condensateAmounts[t] * INGOTS),
                     Materials.TranscendentMetal.getMolten(condensateAmounts[t] * INGOTS) };
                 addBecAndAal(
                     outputs[t].get(1),
@@ -133,8 +133,7 @@ public class BECMetaMaterialRecipes implements Runnable {
             if (t == 0) {
                 CondensateType[] becCondensates = new CondensateType[] { CondensateType.ChromaticGlass };
                 int[] becAmounts = new int[] { chromaticAmts[t] };
-                FluidStack[] aalFluids = {
-                    MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getFluidStack(chromaticAmts[t] * INGOTS) };
+                FluidStack[] aalFluids = { ChromaticGlass.getMolten(chromaticAmts[t] * INGOTS) };
                 addBecAndAal(
                     outputs[t].get(1),
                     inputs,
@@ -174,8 +173,7 @@ public class BECMetaMaterialRecipes implements Runnable {
             if (t == 0) {
                 CondensateType[] becCondensates = new CondensateType[] { CondensateType.ChromaticGlass };
                 int[] becAmounts = new int[] { chromaticAmts[t] };
-                FluidStack[] aalFluids = {
-                    MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getFluidStack(chromaticAmts[t] * INGOTS) };
+                FluidStack[] aalFluids = { ChromaticGlass.getMolten(chromaticAmts[t] * INGOTS) };
                 addBecAndAal(
                     outputs[t].get(1),
                     inputs,
@@ -214,8 +212,7 @@ public class BECMetaMaterialRecipes implements Runnable {
                 CondensateType.DimensionallyShiftedSuperfluid };
             int[] becAmounts = { chromaticAmts[t], dimShiftedAmts[t] };
             if (t == 0) {
-                FluidStack[] aalFluids = {
-                    MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getFluidStack(chromaticAmts[t] * INGOTS),
+                FluidStack[] aalFluids = { ChromaticGlass.getMolten(chromaticAmts[t] * INGOTS),
                     Materials.DimensionallyShiftedSuperfluid.getFluid(dimShiftedAmts[t] * 1_000) };
                 addBecAndAal(
                     outputs[t].get(1),
@@ -248,8 +245,7 @@ public class BECMetaMaterialRecipes implements Runnable {
                 CondensateType[] becCondensates = { CondensateType.ChromaticGlass, CondensateType.Infinity,
                     CondensateType.TranscendentMetal };
                 int[] becAmounts = { chromatic4TierAmts[t], infinity4TierAmts[t], 1 };
-                FluidStack[] aalFluids = {
-                    MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getFluidStack(chromatic4TierAmts[t] * INGOTS),
+                FluidStack[] aalFluids = { ChromaticGlass.getMolten(chromatic4TierAmts[t] * INGOTS),
                     Materials.Infinity.getMolten(infinity4TierAmts[t] * INGOTS),
                     Materials.TranscendentMetal.getMolten(INGOTS) };
                 addBecAndAal(
@@ -285,8 +281,7 @@ public class BECMetaMaterialRecipes implements Runnable {
                 CondensateType[] becCondensates = { CondensateType.ChromaticGlass, CondensateType.Infinity,
                     CondensateType.TranscendentMetal };
                 int[] becAmounts = { chromatic4TierAmts[t], infinity4TierAmts[t], 1 };
-                FluidStack[] aalFluids = {
-                    MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getFluidStack(chromatic4TierAmts[t] * INGOTS),
+                FluidStack[] aalFluids = { ChromaticGlass.getMolten(chromatic4TierAmts[t] * INGOTS),
                     Materials.Infinity.getMolten(infinity4TierAmts[t] * INGOTS),
                     Materials.TranscendentMetal.getMolten(INGOTS) };
                 addBecAndAal(
@@ -324,8 +319,7 @@ public class BECMetaMaterialRecipes implements Runnable {
                 CondensateType[] becCondensates = { CondensateType.ChromaticGlass, CondensateType.Infinity,
                     CondensateType.TranscendentMetal };
                 int[] becAmounts = { chromatic4TierAmts[t], infinity4TierAmts[t], 1 };
-                FluidStack[] aalFluids = {
-                    MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getFluidStack(chromatic4TierAmts[t] * INGOTS),
+                FluidStack[] aalFluids = { ChromaticGlass.getMolten(chromatic4TierAmts[t] * INGOTS),
                     Materials.Infinity.getMolten(infinity4TierAmts[t] * INGOTS),
                     Materials.TranscendentMetal.getMolten(INGOTS) };
                 addBecAndAal(
@@ -367,8 +361,7 @@ public class BECMetaMaterialRecipes implements Runnable {
                 CondensateType[] becCondensates = { CondensateType.ChromaticGlass, CondensateType.Infinity,
                     CondensateType.TranscendentMetal };
                 int[] becAmounts = { chromatic4TierAmts[t], infinity4TierAmts[t], 1 };
-                FluidStack[] aalFluids = {
-                    MaterialsElements.STANDALONE.CHRONOMATIC_GLASS.getFluidStack(chromatic4TierAmts[t] * INGOTS),
+                FluidStack[] aalFluids = { ChromaticGlass.getMolten(chromatic4TierAmts[t] * INGOTS),
                     Materials.Infinity.getMolten(infinity4TierAmts[t] * INGOTS),
                     Materials.TranscendentMetal.getMolten(INGOTS) };
                 addBecAndAal(

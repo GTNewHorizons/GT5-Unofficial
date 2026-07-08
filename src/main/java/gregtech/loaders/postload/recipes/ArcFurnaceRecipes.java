@@ -1,5 +1,6 @@
 package gregtech.loaders.postload.recipes;
 
+import static gregtech.api.enums.Materials.Hypogen;
 import static gregtech.api.enums.Mods.Railcraft;
 import static gregtech.api.recipe.RecipeMaps.arcFurnaceRecipes;
 import static gregtech.api.util.GTModHandler.getModItem;
@@ -15,7 +16,6 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.util.GTOreDictUnificator;
-import gtPlusPlus.core.material.MaterialsElements;
 
 public class ArcFurnaceRecipes implements Runnable {
 
@@ -489,7 +489,7 @@ public class ArcFurnaceRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Casing_Coil_Hypogen.get(1))
             .itemOutputs(
-                MaterialsElements.STANDALONE.HYPOGEN.getIngot(9),
+                Hypogen.getIngots(9),
                 GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Infinity, 4L),
                 ItemList.Naquarite_Universal_Insulator_Foil.get(32))
             .duration(20 * SECONDS)
@@ -501,7 +501,7 @@ public class ArcFurnaceRecipes implements Runnable {
             .itemInputs(ItemList.Casing_Coil_Eternal.get(1))
             .itemOutputs(
                 GTOreDictUnificator.get(OrePrefixes.ingot, Materials.SpaceTime, 9L),
-                MaterialsElements.STANDALONE.HYPOGEN.getIngot(4),
+                Hypogen.getIngots(4),
                 ItemList.Naquarite_Universal_Insulator_Foil.get(64))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_UIV)

@@ -1,5 +1,10 @@
 package gtPlusPlus.core.handler.events;
 
+import static gregtech.api.enums.Materials.AstralTitanium;
+import static gregtech.api.enums.Materials.CelestialTungsten;
+import static gregtech.api.enums.Materials.ChromaticGlass;
+import static gregtech.api.enums.Materials.Hypogen;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +22,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.core.block.base.BasicBlock.BlockTypes;
 import gtPlusPlus.core.block.base.BlockBaseModular;
 import gtPlusPlus.core.material.Material;
-import gtPlusPlus.core.material.MaterialsElements;
 
 /// Angelica prevents animated blocks from cycling unless they are actively on-screen. This is desirable most of the
 /// time, but not when different blocks need to be synchronized or when blocks should synchronize to items.
@@ -50,9 +54,7 @@ public class AnimatedBlockTextureHandler implements IResourceManagerReloadListen
 
     private static IIcon[] resolveIcons() {
         List<IIcon> resolved = new ArrayList<>();
-        Material[] animated = { MaterialsElements.STANDALONE.CHRONOMATIC_GLASS,
-            MaterialsElements.STANDALONE.ASTRAL_TITANIUM, MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN,
-            MaterialsElements.STANDALONE.HYPOGEN };
+        Material[] animated = { ChromaticGlass, AstralTitanium, CelestialTungsten, Hypogen };
         for (Material material : animated) {
             for (BlockTypes type : new BlockTypes[] { BlockTypes.STANDARD, BlockTypes.FRAME }) {
                 Block block = BlockBaseModular.getMaterialBlock(material, type);

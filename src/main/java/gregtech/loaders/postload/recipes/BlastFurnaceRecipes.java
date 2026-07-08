@@ -1,5 +1,6 @@
 package gregtech.loaders.postload.recipes;
 
+import static gregtech.api.enums.Materials.CelestialTungsten;
 import static gregtech.api.recipe.RecipeMaps.blastFurnaceRecipes;
 import static gregtech.api.recipe.RecipeMaps.primitiveBlastRecipes;
 import static gregtech.api.util.GTRecipeBuilder.HALF_INGOTS;
@@ -23,7 +24,6 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTOreDictUnificator;
-import gtPlusPlus.core.material.MaterialsElements;
 
 @SuppressWarnings({ "PointlessArithmeticExpression" })
 public class BlastFurnaceRecipes implements Runnable {
@@ -614,7 +614,7 @@ public class BlastFurnaceRecipes implements Runnable {
             .circuit(1)
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingotHot, Materials.TranscendentMetal, 1))
             .fluidInputs(Materials.Tungsten.getMolten(1 * INGOTS))
-            .fluidOutputs(MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN.getFluidStack(1 * HALF_INGOTS))
+            .fluidOutputs(CelestialTungsten.getMolten(1 * HALF_INGOTS))
             .duration(3 * MINUTES)
             .eut(TierEU.RECIPE_UIV)
             .metadata(COIL_HEAT, 11701)
