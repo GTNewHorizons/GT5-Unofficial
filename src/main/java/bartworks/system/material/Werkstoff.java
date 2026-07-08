@@ -1052,6 +1052,14 @@ public class Werkstoff implements IColorModulationContainer, IOreMaterial {
             return this.protons;
         }
 
+        public long getNeutrons() {
+            return this.neutrons;
+        }
+
+        public boolean isProxy() {
+            return this.isProxy;
+        }
+
         public int getMeltingPoint() {
             return this.meltingPoint == -1 ? 1123 : this.meltingPoint;
         }
