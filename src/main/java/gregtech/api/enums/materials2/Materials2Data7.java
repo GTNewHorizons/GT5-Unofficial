@@ -2986,8 +2986,6 @@ public class Materials2Data7 {
             .setProperty(GTMaterialProperties.HANDLE_MATERIAL, new MaterialRef("Wood"))
             .setProperty(GTMaterialProperties.ORE_BYPRODUCTS, List.of(new MaterialRefStack(new MaterialRef("AquaRegia"), 1L), new MaterialRefStack(new MaterialRef("AquaRegia"), 1L), new MaterialRefStack(new MaterialRef("AquaRegia"), 1L)))
             .setProperty(GTMaterialProperties.FLAGS, EnumSet.of(GTMaterialFlag.HAS_COLOR))
-            .setProperty(GTMaterialProperties.HAS_CORRESPONDING_FLUID, true)
-            .setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)
             .setProperty(GTMaterialProperties.LEGACY_FLUIDS, new FluidNames(null, new FluidRef("aqua regia", 300), new FluidRef("aqua regia", 300), null, null))
             .build();
         Materials2Materials.Zirconium = MaterialLibAPI.newMaterial("gregtech", "Zirconium", TextureSet.of("gregtech", "METALLIC"))

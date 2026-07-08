@@ -71,6 +71,16 @@ SUBTAG_FLAG_OVERRIDES = {
     "NobleGas": "NOBLE_GAS",
 }
 
+# (hasCorrespondingFluid, hasCorrespondingGas) as MaterialsInit declared them, where the dump disagrees: the
+# dump captured bartworks' BridgeMaterialsLoader setting both flags on cell-bearing werkstoff bridge
+# materials AFTER LoaderGTBlockFluid's generation loop had already run with them false. Baking the dumped
+# value makes that loop register a liquid and a gas fluid under one name, orphaning one of them in Forge's
+# fluid registry (a load-complete "fluid registry is corrupted" FATAL). Verified against MaterialsInit source
+# before stage 04 deleted it: AquaRegia was the only ported MaterialsInit-declared material affected.
+CORRESPONDING_FLAG_OVERRIDES = {
+    "AquaRegia": (False, False),
+}
+
 BLOCK_TEXTURE_INDEX_MIN = 65
 BLOCK_TEXTURE_INDEX_MAX = 95
 
@@ -398,9 +408,11 @@ def build_property_lines(material, ml_names):
         gen_flags = ", ".join("GTMaterialGenerationFlag." + f for f in material["generationFlags"])
         lines.append(f".setProperty(GTMaterialProperties.GENERATION_FLAGS, EnumSet.of({gen_flags}))")
 
-    if material["hasCorrespondingFluid"]:
+    has_fluid, has_gas = CORRESPONDING_FLAG_OVERRIDES.get(
+        material["name"], (material["hasCorrespondingFluid"], material["hasCorrespondingGas"]))
+    if has_fluid:
         lines.append(".setProperty(GTMaterialProperties.HAS_CORRESPONDING_FLUID, true)")
-    if material["hasCorrespondingGas"]:
+    if has_gas:
         lines.append(".setProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS, true)")
     if material["hasElectrolyzerRecipe"]:
         lines.append(".setProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE, true)")
@@ -580,9 +592,9 @@ LEGACY_SETNAME_RE = re.compile(r'setName\(\s*"((?:[^"\\]|\\.)*)"')
 def load_legacy_field_names():
     """Maps every legacy `Materials` static field name assigned by `MaterialsInit.load()` to the `mName`
     passed to that material's `setName(...)` call, so the ml-name-keyed ported set can be matched back to the
-    Java field it must be assigned to. Only meaningful while `MaterialsInit.java` still exists; the
-    MaterialsLegacyBridge/LegacyMaterials split it drives is a one-time port, not re-run after stage 04
-    deletes that file."""
+    Java field it must be assigned to. Only meaningful while `MaterialsInit.java` still existed; the
+    MaterialsLegacyBridge/LegacyMaterials split it drove was a one-time port, so once stage 04 deleted that
+    file the committed bridge is left untouched (see `write_legacy_bridge_file`)."""
     text = LEGACY_MATERIALS_INIT.read_text(encoding="utf-8")
     method_bodies = {m.group(1): m.group(2) for m in LEGACY_METHOD_RE.finditer(text)}
 
@@ -656,6 +668,12 @@ def order_by_composition(bridge_fields, materials_by_name, field_to_mname, field
 
 
 def write_legacy_bridge_file(ported_names, field_names, materials_by_name):
+    if not LEGACY_MATERIALS_INIT.exists():
+        print(
+            "gen_materials.py: MaterialsInit.java no longer exists (deleted by stage 04); leaving the "
+            "committed MaterialsLegacyBridge.java untouched")
+        return None, None
+
     field_to_mname = load_legacy_field_names()
 
     bridge_fields = []
@@ -788,9 +806,10 @@ def main():
     print(f"gen_materials.py: {len(materials)} dump entries, {len(ported)} ported, {len(skipped)} skipped")
     print(f"  wrote {len(data_class_names)} data files + {MATERIALS_OUTPUT.relative_to(REPO_ROOT)}")
     print(f"  wrote {LANG_OUTPUT.relative_to(REPO_ROOT)}")
-    print(
-        f"  wrote {LEGACY_BRIDGE_OUTPUT.relative_to(REPO_ROOT)}: {bridge_count} bridged fields, "
-        f"{len(retained_fields)} retained as markers (see LegacyMarkerMaterials.loadMarkers)")
+    if bridge_count is not None:
+        print(
+            f"  wrote {LEGACY_BRIDGE_OUTPUT.relative_to(REPO_ROOT)}: {bridge_count} bridged fields, "
+            f"{len(retained_fields)} retained as markers (see LegacyMarkerMaterials.loadMarkers)")
 
 
 if __name__ == "__main__":
