@@ -35,7 +35,6 @@ import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchDataAccess;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
@@ -200,27 +199,27 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
             availableRecipes.addAll(dataAccess.getAssemblyLineRecipes());
         }
 
+        ALRecipeDataPacket dataPacket = null;
         if (!availableRecipes.isEmpty()) {
             RecipeAssemblyLine[] recipeArray = availableRecipes.toArray(new RecipeAssemblyLine[0]);
+            dataPacket = new ALRecipeDataPacket(recipeArray);
+        }
 
-            for (MTEHatchDataItemsOutput hatch : validMTEList(eStacksDataOutputs)) {
-                hatch.q = new ALRecipeDataPacket(recipeArray);
-            }
+        for (MTEHatchDataItemsOutput hatch : validMTEList(eStacksDataOutputs)) {
+            hatch.q = dataPacket;
+            // somehow the hatches posttick doesn't wanna happen, so let's trigger the update manually
+            hatch.moveAround(hatch.getBaseMetaTileEntity());
+        }
 
-            if (wirelessModeEnabled) {
-                for (MTEHatchWirelessDataItemsOutput hatch : validMTEList(eWirelessStacksDataOutputs)) {
-                    hatch.dataPacket = new ALRecipeDataPacket(recipeArray);
-                    hatch.dirty = true;
-                }
+        if (wirelessModeEnabled) {
+            for (MTEHatchWirelessDataItemsOutput hatch : validMTEList(eWirelessStacksDataOutputs)) {
+                hatch.dataPacket = dataPacket;
+                hatch.dirty = true;
             }
         } else {
-            for (MTEHatchDataItemsOutput hatch : validMTEList(eStacksDataOutputs)) {
-                hatch.q = null;
-            }
-
             for (MTEHatchWirelessDataItemsOutput hatch : validMTEList(eWirelessStacksDataOutputs)) {
+                hatch.dirty = hatch.dataPacket != null;
                 hatch.dataPacket = null;
-                hatch.dirty = true;
             }
         }
 
@@ -245,6 +244,7 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
     // called by the hatches' notifyWatchers
     @Override
     public void scheduleRecipeCheckImmediate() {
+        super.scheduleRecipeCheckImmediate();
         this.dirty = true;
     }
 
