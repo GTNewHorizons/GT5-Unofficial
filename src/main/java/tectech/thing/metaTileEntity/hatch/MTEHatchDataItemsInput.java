@@ -11,7 +11,6 @@ import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -21,7 +20,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchDataAccess;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.AssemblyLineUtils;
 import gregtech.api.util.GTRecipe.RecipeAssemblyLine;
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import tectech.mechanics.dataTransport.ALRecipeDataPacket;
@@ -138,48 +136,10 @@ public class MTEHatchDataItemsInput extends MTEHatchDataAccess implements IConne
     }
 
     @Override
-    public void saveNBTData(NBTTagCompound aNBT) {
-        super.saveNBTData(aNBT);
-        NBTTagCompound stacksTag = new NBTTagCompound();
-        if (cachedRecipes != null) {
-            stacksTag.setInteger("count", cachedRecipes.size());
-            for (int i = 0; i < cachedRecipes.size(); i++) {
-                stacksTag.setTag(Integer.toString(i), AssemblyLineUtils.saveRecipe(cachedRecipes.get(i)));
-            }
-        }
-        aNBT.setTag("data_stacks", stacksTag);
-    }
-
-    @Override
-    public void loadNBTData(NBTTagCompound aNBT) {
-        super.loadNBTData(aNBT);
-        NBTTagCompound stacksTag = aNBT.getCompoundTag("data_stacks");
-        int count = stacksTag.getInteger("count");
-        if (count > 0) {
-            cachedRecipes = new ObjectOpenHashSet<>();
-
-            for (int i = 0; i < count; i++) {
-                cachedRecipes.addAll(AssemblyLineUtils.loadRecipe(stacksTag.getCompoundTag(Integer.toString(i))));
-            }
-
-            if (cachedRecipes.isEmpty()) cachedRecipes = null;
-        }
-    }
-
-    @Override
     public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPreTick(aBaseMetaTileEntity, aTick);
         if (CommonValues.MOVE_AT == aTick % 20) {
-            if (cachedRecipes == null) {
-                getBaseMetaTileEntity().setActive(false);
-            } else {
-                getBaseMetaTileEntity().setActive(true);
-                if (delDelay) {
-                    delDelay = false;
-                } else {
-                    setContents(null);
-                }
-            }
+            getBaseMetaTileEntity().setActive(cachedRecipes != null);
         }
     }
 
