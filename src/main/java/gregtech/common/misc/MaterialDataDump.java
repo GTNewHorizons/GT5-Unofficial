@@ -7,6 +7,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.EnumSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -20,6 +21,10 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.ruling_0.materiallib.api.Family;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+import com.ruling_0.materiallib.api.Shape;
+import com.ruling_0.materiallib.api.StandardProperties;
 
 import bartworks.system.material.Werkstoff;
 import gregtech.api.GregTechAPI;
@@ -29,12 +34,20 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TCAspects;
 import gregtech.api.interfaces.ISubTagContainer;
+import gregtech.api.material.AspectRefStack;
+import gregtech.api.material.FluidNames;
+import gregtech.api.material.FluidRef;
+import gregtech.api.material.GTMaterialFlag;
+import gregtech.api.material.GTMaterialProperties;
+import gregtech.api.material.MaterialRef;
+import gregtech.api.material.MaterialRefStack;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.GTLog;
 import gtPlusPlus.core.material.Material;
 
 /// Dumps the four legacy material systems -- GregTech `Materials`, `OrePrefixes`, bartworks `Werkstoff`, and
-/// gtPlusPlus `Material` -- to JSON, for consumption by the material unification tooling.
+/// gtPlusPlus `Material` -- plus the resolved MaterialLib registry view of the stage-03 `Materials2` port, to
+/// JSON, for consumption by the material unification tooling.
 ///
 /// Triggered from `GTMod`'s `FMLLoadCompleteEvent` handler when the `gt.dumpMaterialData` system property is
 /// set, so a headless server run can produce the dumps non-interactively.
@@ -54,6 +67,7 @@ public final class MaterialDataDump {
         write(new File(directory, "oreprefixes.json"), dumpOrePrefixes());
         write(new File(directory, "werkstoff.json"), dumpWerkstoff());
         write(new File(directory, "gtpp-materials.json"), dumpGtppMaterials());
+        write(new File(directory, "ml-materials.json"), dumpMlMaterials());
     }
 
     private static void write(File file, Object data) {
@@ -420,6 +434,140 @@ public final class MaterialDataDump {
             "plasma",
             material.getPlasma() != null ? material.getPlasma()
                 .getName() : null);
+        return json;
+    }
+
+    // endregion
+
+    // region ml-materials.json
+
+    private static List<Map<String, Object>> dumpMlMaterials() {
+        List<Map<String, Object>> out = new ArrayList<>();
+        for (com.ruling_0.materiallib.api.Material material : MaterialLibAPI.getMaterials()) {
+            if (!"gregtech".equals(material.getModId())) continue;
+            out.add(dumpMlMaterial(material));
+        }
+        return out;
+    }
+
+    private static Map<String, Object> dumpMlMaterial(com.ruling_0.materiallib.api.Material material) {
+        Map<String, Object> json = new LinkedHashMap<>();
+        json.put("name", material.getName());
+        json.put("tint", material.getProperty(StandardProperties.TINT));
+        json.put(
+            "textureSet",
+            material.getProperty(StandardProperties.TEXTURE_SET)
+                .getName());
+        json.put("shapes", dumpMlShapes(material));
+        json.put("families", dumpMlFamilies(material));
+        json.put("localName", material.getProperty(GTMaterialProperties.LOCAL_NAME));
+        json.put("meltingPoint", material.getProperty(GTMaterialProperties.MELTING_POINT));
+        json.put("blastTemp", material.getProperty(GTMaterialProperties.BLAST_TEMP));
+        json.put("blastRequired", material.getProperty(GTMaterialProperties.BLAST_REQUIRED));
+        json.put("gasTemp", material.getProperty(GTMaterialProperties.GAS_TEMP));
+        json.put("fuelPower", material.getProperty(GTMaterialProperties.FUEL_POWER));
+        json.put("fuelType", material.getProperty(GTMaterialProperties.FUEL_TYPE));
+        json.put("heatDamage", material.getProperty(GTMaterialProperties.HEAT_DAMAGE));
+        json.put("toolSpeed", material.getProperty(GTMaterialProperties.TOOL_SPEED));
+        json.put("toolDurability", material.getProperty(GTMaterialProperties.DURABILITY));
+        json.put("toolQuality", material.getProperty(GTMaterialProperties.TOOL_QUALITY));
+        json.put("subId", material.getProperty(GTMaterialProperties.OLD_SUB_ID));
+        json.put("moltenTint", material.getProperty(GTMaterialProperties.MOLTEN_TINT));
+        json.put("element", material.getProperty(GTMaterialProperties.ELEMENT));
+        json.put("composition", dumpMlMaterialRefStacks(material.getProperty(GTMaterialProperties.COMPOSITION)));
+        json.put("smeltInto", dumpMlMaterialRef(material.getProperty(GTMaterialProperties.SMELT_INTO)));
+        json.put("macerateInto", dumpMlMaterialRef(material.getProperty(GTMaterialProperties.MACERATE_INTO)));
+        json.put("arcSmeltInto", dumpMlMaterialRef(material.getProperty(GTMaterialProperties.ARC_SMELT_INTO)));
+        json.put("directSmelting", dumpMlMaterialRef(material.getProperty(GTMaterialProperties.DIRECT_SMELTING)));
+        json.put("handleMaterial", dumpMlMaterialRef(material.getProperty(GTMaterialProperties.HANDLE_MATERIAL)));
+        json.put("materialInto", dumpMlMaterialRef(material.getProperty(GTMaterialProperties.MATERIAL_INTO)));
+        json.put("oreByProducts", dumpMlMaterialRefNames(material.getProperty(GTMaterialProperties.ORE_BYPRODUCTS)));
+        json.put("oreMultiplier", material.getProperty(GTMaterialProperties.ORE_MULTIPLIER));
+        json.put("byProductMultiplier", material.getProperty(GTMaterialProperties.BYPRODUCT_MULTIPLIER));
+        json.put("smeltingMultiplier", material.getProperty(GTMaterialProperties.SMELTING_MULTIPLIER));
+        json.put("flags", dumpMlFlags(material.getProperty(GTMaterialProperties.FLAGS)));
+        json.put("aspects", dumpMlAspects(material.getProperty(GTMaterialProperties.ASPECTS)));
+        json.put("fluids", dumpMlFluids(material.getProperty(GTMaterialProperties.LEGACY_FLUIDS)));
+        return json;
+    }
+
+    private static List<String> dumpMlShapes(com.ruling_0.materiallib.api.Material material) {
+        List<String> out = new ArrayList<>();
+        for (Shape shape : material.getShapes()) out.add(shape.getName());
+        Collections.sort(out);
+        return out;
+    }
+
+    private static List<String> dumpMlFamilies(com.ruling_0.materiallib.api.Material material) {
+        List<String> out = new ArrayList<>();
+        for (Family family : material.getFamilies()) out.add(family.getName());
+        Collections.sort(out);
+        return out;
+    }
+
+    private static List<Map<String, Object>> dumpMlMaterialRefStacks(List<MaterialRefStack> stacks) {
+        List<Map<String, Object>> out = new ArrayList<>();
+        if (stacks == null) return out;
+        for (MaterialRefStack stack : stacks) {
+            Map<String, Object> json = new LinkedHashMap<>();
+            json.put(
+                "material",
+                stack.material()
+                    .name());
+            json.put("amount", stack.amount());
+            out.add(json);
+        }
+        return out;
+    }
+
+    private static String dumpMlMaterialRef(MaterialRef ref) {
+        return ref != null ? ref.name() : null;
+    }
+
+    private static List<String> dumpMlMaterialRefNames(List<MaterialRefStack> stacks) {
+        List<String> out = new ArrayList<>();
+        if (stacks == null) return out;
+        for (MaterialRefStack stack : stacks) out.add(
+            stack.material()
+                .name());
+        return out;
+    }
+
+    private static List<String> dumpMlFlags(EnumSet<GTMaterialFlag> flags) {
+        List<String> out = new ArrayList<>();
+        if (flags == null) return out;
+        for (GTMaterialFlag flag : flags) out.add(flag.name());
+        Collections.sort(out);
+        return out;
+    }
+
+    private static List<Map<String, Object>> dumpMlAspects(List<AspectRefStack> aspects) {
+        List<Map<String, Object>> out = new ArrayList<>();
+        if (aspects == null) return out;
+        for (AspectRefStack aspect : aspects) {
+            Map<String, Object> json = new LinkedHashMap<>();
+            json.put("name", aspect.name());
+            json.put("amount", aspect.amount());
+            out.add(json);
+        }
+        return out;
+    }
+
+    private static Map<String, Object> dumpMlFluids(FluidNames fluids) {
+        Map<String, Object> json = new LinkedHashMap<>();
+        json.put("solid", dumpMlFluidRef(fluids != null ? fluids.solid() : null));
+        json.put("fluid", dumpMlFluidRef(fluids != null ? fluids.fluid() : null));
+        json.put("gas", dumpMlFluidRef(fluids != null ? fluids.gas() : null));
+        json.put("plasma", dumpMlFluidRef(fluids != null ? fluids.plasma() : null));
+        json.put("molten", dumpMlFluidRef(fluids != null ? fluids.molten() : null));
+        return json;
+    }
+
+    private static Map<String, Object> dumpMlFluidRef(FluidRef ref) {
+        if (ref == null) return null;
+        Map<String, Object> json = new LinkedHashMap<>();
+        json.put("name", ref.name());
+        json.put("temperature", ref.temperature());
         return json;
     }
 
