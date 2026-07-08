@@ -41,6 +41,7 @@ import gregtech.api.material.FluidRef;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialGenerationFlag;
 import gregtech.api.material.GTMaterialProperties;
+import gregtech.api.material.MU;
 import gregtech.api.material.MaterialRef;
 import gregtech.api.material.MaterialRefStack;
 import gregtech.api.objects.MaterialStack;
@@ -151,7 +152,35 @@ public final class MaterialDataDump {
         json.put("generatedPrefixes", dumpGeneratedPrefixes(material));
         json.put("addedPrefixes", dumpAddedPrefixes(material));
         json.put("removedPrefixes", dumpRemovedPrefixes(material));
+        json.put("prefixLocalNameOverrides", dumpPrefixLocalNameOverrides(material));
         return json;
+    }
+
+    /// Cutover shapes (see [MU]) whose legacy display name differs from what MaterialLib's plain `%s`
+    /// substitution would produce, so `gen_lang.py` can emit a lang override to keep display names identical
+    /// after the item cutover. The legacy name goes through [OrePrefixes#getLocalizedNameForItem], which,
+    /// unlike MaterialLib's default substitution, can apply an exact per-material lang override or an
+    /// inflection (`.phrase`) key. Where the `gt.oreprefix.*` format key is absent from the lang files
+    /// loaded in this environment (the translate call falls back to the raw key), the intended English
+    /// default is computed from [OrePrefixes#getDefaultLocalNameForItem]'s pure-Java format instead.
+    private static List<Map<String, Object>> dumpPrefixLocalNameOverrides(Materials material) {
+        List<Map<String, Object>> out = new ArrayList<>();
+        for (OrePrefixes prefix : OrePrefixes.VALUES) {
+            if (MU.shape(prefix) == null || !prefix.doGenerateItem(material)) continue;
+            String legacyName = prefix.getLocalizedNameForItem(material);
+            if (legacyName.startsWith("gt.oreprefix.")) {
+                legacyName = prefix.getDefaultLocalNameForItem(material);
+            }
+            String mlDefaultName = String
+                .format(prefix.getMaterialPrefix() + "%s" + prefix.getMaterialPostfix(), material.mDefaultLocalName);
+            if (legacyName.equals(mlDefaultName)) continue;
+            Map<String, Object> json = new LinkedHashMap<>();
+            json.put("prefix", prefix.getName());
+            json.put("legacyName", legacyName);
+            json.put("mlDefaultName", mlDefaultName);
+            out.add(json);
+        }
+        return out;
     }
 
     /// `MaterialBuilder#addOrePrefix` exceptions: prefixes this material generates regardless of its
