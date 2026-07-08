@@ -268,26 +268,25 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
             return false;
         }
 
-        if (aMetaTileEntity instanceof MTEHatchWirelessDataItemsOutput) {
-            ((MTEHatchWirelessDataItemsOutput) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return eWirelessStacksDataOutputs.add((MTEHatchWirelessDataItemsOutput) aMetaTileEntity);
+        if (aMetaTileEntity instanceof MTEHatchWirelessDataItemsOutput mteHatchWirelessDataItemsOutput) {
+            mteHatchWirelessDataItemsOutput.updateTexture(aBaseCasingIndex);
+            return eWirelessStacksDataOutputs.add(mteHatchWirelessDataItemsOutput);
         }
 
-        if (aMetaTileEntity instanceof MTEHatchDataItemsOutput) {
+        if (aMetaTileEntity instanceof MTEHatchDataItemsOutput mteHatchDataItemsOutput) {
             ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return eStacksDataOutputs.add((MTEHatchDataItemsOutput) aMetaTileEntity);
-        }
-
-        if (aMetaTileEntity instanceof MTEHatchDataAccess hatch
-            && !(aMetaTileEntity instanceof MTEHatchDataItemsInput)) {
-            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            hatch.addWatcher(this);
-            return eDataAccessHatches.add(hatch);
+            return eStacksDataOutputs.add(mteHatchDataItemsOutput);
         }
 
         if (aMetaTileEntity instanceof MTEHatchDataItemsInput hatch) {
             ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             slave = true;
+            hatch.addWatcher(this);
+            return eDataAccessHatches.add(hatch);
+        }
+
+        if (aMetaTileEntity instanceof MTEHatchDataAccess hatch) {
+            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             hatch.addWatcher(this);
             return eDataAccessHatches.add(hatch);
         }
