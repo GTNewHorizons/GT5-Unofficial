@@ -23,6 +23,7 @@ import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraftforge.common.ChestGenHooks;
+import net.minecraftforge.common.MinecraftForge;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -31,11 +32,13 @@ import com.falsepattern.chunk.api.DataRegistry;
 import com.google.common.base.Stopwatch;
 import com.gtnewhorizon.gtnhlib.config.ConfigException;
 import com.gtnewhorizon.gtnhlib.config.ConfigurationManager;
+import com.ruling_0.materiallib.api.MaterialRegistrationEvent;
 
 import bwcrossmod.galacticgreg.VoidMinerLoader;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
+import cpw.mods.fml.common.event.FMLConstructionEvent;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import cpw.mods.fml.common.event.FMLMissingMappingsEvent;
@@ -59,6 +62,7 @@ import gregtech.api.enums.CondensateType;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Materials2;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.StoneType;
@@ -147,6 +151,7 @@ import ic2.api.recipe.RecipeOutput;
         + "required-after:gtnhlib@[0.6.35,);"
         + "required-after:modularui@[1.1.12,);"
         + "required-after:appliedenergistics2@[rv3-beta-258,);"
+        + "required-after:materiallib;"
         + "after:dreamcraft;"
         + "after:Forestry;"
         + "after:PFAAGeologica;"
@@ -269,6 +274,16 @@ public class GTMod {
 
     public static int calculateTotalGTVersion(int majorVersion, int minorVersion, int patchVersion) {
         return majorVersion * 1000000 + minorVersion * 1000 + patchVersion;
+    }
+
+    @Mod.EventHandler
+    public void construct(FMLConstructionEvent event) {
+        MinecraftForge.EVENT_BUS.register(this);
+    }
+
+    @SubscribeEvent
+    public void materialRegistration(MaterialRegistrationEvent event) {
+        Materials2.init();
     }
 
     @Mod.EventHandler
