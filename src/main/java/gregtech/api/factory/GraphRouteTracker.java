@@ -99,43 +99,4 @@ public class GraphRouteTracker<TElement extends IFactoryElement<TElement, TNetwo
             }
         }
     }
-
-    public FactoryRoutes<TNotable, TRouteInfo> dijkstra(TNotable start) {
-        return dijkstra(start, null);
-    }
-
-    public FactoryRoutes<TNotable, TRouteInfo> dijkstra(TNotable start,
-        Predicate<RoutedNode<TNotable, TRouteInfo>> filter) {
-        ArrayDeque<Pair<TNotable, TRouteInfo>> queue = new ArrayDeque<>();
-        HashSet<TNotable> visited = new HashSet<>();
-        HashMap<TNotable, From<TNotable, TRouteInfo>> result = new HashMap<>();
-
-        queue.add(Pair.of(start, null));
-        result.put(start, new From<>(start, zero.copy()));
-
-        while (!queue.isEmpty()) {
-            var c = queue.pop();
-            TNotable current = c.left();
-            TRouteInfo route = c.right();
-
-            if (!visited.add(current)) continue;
-
-            for (var edge : edges.getOrDefault(current, emptyNodeArray())) {
-                if (filter != null && !filter.test(edge)) continue;
-
-                var totalRoute = route == null ? edge.routeInfo() : route.merge(edge.routeInfo());
-
-                From<TNotable, TRouteInfo> existing = result.get(edge.element());
-
-                if (existing != null) {
-                    if (existing.routeInfo.compareTo(totalRoute) <= 0) continue;
-                }
-
-                result.put(edge.element(), new From<>(current, totalRoute));
-                queue.add(Pair.of(edge.element(), totalRoute));
-            }
-        }
-
-        return new FactoryRoutes<>(start, result);
-    }
 }
