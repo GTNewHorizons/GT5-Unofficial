@@ -60,17 +60,17 @@ public class EyeOfHarmonyRecipe {
 
         @Override
         public int computeHashCode(ItemStack stack) {
-            // Not really sure how this works or if it is "unique enough".
             int result = stack.getItem()
                 .hashCode();
             result = 31 * result + stack.getItemDamage();
             return result;
         }
 
+        // Compares the same fields the hash uses: unlocalized-name comparison broke the hashCode/equals
+        // contract for MaterialLib shape items, whose unlocalized name is not damage-specific.
         @Override
         public boolean equals(ItemStack item1, ItemStack item2) {
-            return item1.getUnlocalizedName()
-                .equals(item2.getUnlocalizedName());
+            return item1.getItem() == item2.getItem() && item1.getItemDamage() == item2.getItemDamage();
         }
     };
 
