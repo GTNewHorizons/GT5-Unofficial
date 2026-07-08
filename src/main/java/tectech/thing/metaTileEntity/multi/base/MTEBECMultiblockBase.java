@@ -10,7 +10,6 @@ import java.util.Collections;
 import java.util.Deque;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 
 import net.minecraft.item.ItemStack;
@@ -158,7 +157,7 @@ public abstract class MTEBECMultiblockBase<TSelf extends MTEBECMultiblockBase<TS
         structureInstanceInfo.validate(errors);
         structureInstanceInfo.onPostCheck((TSelf) this);
 
-        if (!Objects.equals(mPreviousBECHatches, mBECHatches)) {
+        if (!new HashSet<>(mPreviousBECHatches).equals(new HashSet<>(mBECHatches))) {
             BECFactoryGrid.INSTANCE.updateElement(this);
         }
     }
