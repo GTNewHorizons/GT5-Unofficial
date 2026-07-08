@@ -1,5 +1,6 @@
 package gregtech.api.enums;
 
+import gregtech.api.enums.materials2.Materials2Families;
 import gregtech.api.enums.materials2.Materials2Shapes;
 
 /// Holds the MaterialLib-backed shapes, families, and materials for GregTech.
@@ -14,5 +15,6 @@ public class Materials2 {
 
     public static void init() {
         Materials2Shapes.init();
+        Materials2Families.init();
     }
 }
