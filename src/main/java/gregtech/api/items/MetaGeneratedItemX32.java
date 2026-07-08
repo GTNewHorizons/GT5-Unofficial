@@ -19,6 +19,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.IIconContainer;
+import gregtech.api.material.MU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -57,6 +58,7 @@ public abstract class MetaGeneratedItemX32 extends MetaGeneratedItem {
             OrePrefixes tPrefix = mGeneratedPrefixList[i / 1000];
             if (tPrefix == null) continue;
             if (tPrefix == OrePrefixes.___placeholder___) continue;
+            if (MU.shape(tPrefix) != null) continue;
             Materials tMaterial = GregTechAPI.sGeneratedMaterials[i % 1000];
             if (tMaterial == null) continue;
             if (doesMaterialAllowGeneration(tPrefix, tMaterial)) {
@@ -173,7 +175,7 @@ public abstract class MetaGeneratedItemX32 extends MetaGeneratedItem {
         for (int i = 0; i < 32000; i++) {
             OrePrefixes aPrefix = getOrePrefix(i);
             Materials aMaterial = getMaterial(i);
-            if (aPrefix != null && aMaterial != null) {
+            if (aPrefix != null && aMaterial != null && MU.shape(aPrefix) == null) {
                 if (doesMaterialAllowGeneration(aPrefix, aMaterial)
                     && doesShowInCreative(aPrefix, aMaterial, GregTechAPI.sDoShowAllItemsInCreative)) {
                     ItemStack tStack = new ItemStack(this, 1, i);
