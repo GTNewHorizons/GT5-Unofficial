@@ -168,6 +168,7 @@ public abstract class StandardFactoryGrid<TSelf extends StandardFactoryGrid<TSel
                 }
 
                 TNetwork newNetwork = createNetwork();
+                networks.add(newNetwork);
 
                 for (TElement e : smallerClump) {
                     e.setNetwork(newNetwork);
