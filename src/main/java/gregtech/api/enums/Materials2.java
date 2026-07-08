@@ -1,5 +1,7 @@
 package gregtech.api.enums;
 
+import gregtech.api.enums.materials2.Materials2Shapes;
+
 /// Holds the MaterialLib-backed shapes, families, and materials for GregTech.
 ///
 /// Populated from [#init()], which runs inside `GTMod`'s handler for
@@ -10,5 +12,7 @@ public class Materials2 {
 
     // spotless:on
 
-    public static void init() {}
+    public static void init() {
+        Materials2Shapes.init();
+    }
 }
