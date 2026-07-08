@@ -264,31 +264,31 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
         }
 
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-        if (aMetaTileEntity == null) {
-            return false;
-        }
-
-        if (aMetaTileEntity instanceof MTEHatchWirelessDataItemsOutput mteHatchWirelessDataItemsOutput) {
-            mteHatchWirelessDataItemsOutput.updateTexture(aBaseCasingIndex);
-            return eWirelessStacksDataOutputs.add(mteHatchWirelessDataItemsOutput);
-        }
-
-        if (aMetaTileEntity instanceof MTEHatchDataItemsOutput mteHatchDataItemsOutput) {
-            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            return eStacksDataOutputs.add(mteHatchDataItemsOutput);
-        }
-
-        if (aMetaTileEntity instanceof MTEHatchDataItemsInput hatch) {
-            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            slave = true;
-            hatch.addWatcher(this);
-            return eDataAccessHatches.add(hatch);
-        }
-
-        if (aMetaTileEntity instanceof MTEHatchDataAccess hatch) {
-            ((MTEHatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
-            hatch.addWatcher(this);
-            return eDataAccessHatches.add(hatch);
+        switch (aMetaTileEntity) {
+            case null -> {
+                return false;
+            }
+            case MTEHatchWirelessDataItemsOutput mteHatchWirelessDataItemsOutput -> {
+                mteHatchWirelessDataItemsOutput.updateTexture(aBaseCasingIndex);
+                return eWirelessStacksDataOutputs.add(mteHatchWirelessDataItemsOutput);
+            }
+            case MTEHatchDataItemsOutput mteHatchDataItemsOutput -> {
+                mteHatchDataItemsOutput.updateTexture(aBaseCasingIndex);
+                return eStacksDataOutputs.add(mteHatchDataItemsOutput);
+            }
+            case MTEHatchDataItemsInput mteDataItemInput -> {
+                mteDataItemInput.updateTexture(aBaseCasingIndex);
+                slave = true;
+                mteDataItemInput.addWatcher(this);
+                return eDataAccessHatches.add(mteDataItemInput);
+            }
+            case MTEHatchDataAccess mteDatastickHatch -> {
+                mteDatastickHatch.updateTexture(aBaseCasingIndex);
+                mteDatastickHatch.addWatcher(this);
+                return eDataAccessHatches.add(mteDatastickHatch);
+            }
+            default -> {
+            }
         }
 
         return false;
