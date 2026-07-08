@@ -28,6 +28,7 @@ import gregtech.GTMod;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.ParticleFX;
+import gregtech.api.enums.TieredVariant;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -249,5 +250,10 @@ public class MTEBoilerBronze extends MTEBoiler {
     @Override
     protected boolean isItemValidFuel(@NotNull ItemStack stack) {
         return getCombustionPotential(stack, TileEntityFurnace.getItemBurnTime(stack)).isPresent();
+    }
+
+    @Override
+    public TieredVariant getTieredVariant() {
+        return TieredVariant.BRONZE;
     }
 }

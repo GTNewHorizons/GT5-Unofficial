@@ -1222,6 +1222,7 @@ public class GTProxy implements IFuelHandler {
         MinecraftForge.EVENT_BUS.register(spawnEventHandler);
         FMLCommonHandler.instance().bus().register(powerfailTracker);
         MinecraftForge.EVENT_BUS.register(powerfailTracker);
+        TeamDataRegistry.register(GTPowerfailTracker.DATA_NAME, GTPowerfailTracker.PowerfailData::new);
         FMLCommonHandler.instance().bus().register(tetherManager);
         MinecraftForge.EVENT_BUS.register(tetherManager);
         // spotless:off
