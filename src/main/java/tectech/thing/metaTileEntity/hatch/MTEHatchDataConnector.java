@@ -3,6 +3,7 @@ package tectech.thing.metaTileEntity.hatch;
 import static gregtech.api.enums.Dyes.MACHINE_METAL;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
@@ -12,16 +13,20 @@ import net.minecraftforge.fluids.FluidStack;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Dyes;
-import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.render.TextureFactory;
+import gregtech.mixin.interfaces.accessors.EntityPlayerMPAccessor;
+import tectech.mechanics.dataTransport.ALRecipeDataPacket;
 import tectech.mechanics.dataTransport.DataPacket;
+import tectech.mechanics.dataTransport.QuantumDataPacket;
 import tectech.mechanics.pipe.IConnectsToDataPipe;
+import tectech.thing.metaTileEntity.pipe.MTEPipeData;
 import tectech.util.CommonValues;
 
 /**
@@ -32,6 +37,8 @@ public abstract class MTEHatchDataConnector<T extends DataPacket<?>> extends MTE
     public static IIconContainer EM_D_SIDES;
     public static IIconContainer EM_D_ACTIVE;
     public static IIconContainer EM_D_CONN;
+
+    private String clientLocale = "en_US";
 
     public T q;
 
@@ -49,9 +56,9 @@ public abstract class MTEHatchDataConnector<T extends DataPacket<?>> extends MTE
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
         super.registerIcons(aBlockIconRegister);
-        EM_D_ACTIVE = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/OVERLAY_EM_D_ACTIVE");
-        EM_D_SIDES = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/OVERLAY_EM_D_SIDES");
-        EM_D_CONN = Textures.BlockIcons.custom(Mods.GregTech.resourceDomain, "iconsets/EM_DATA_CONN");
+        EM_D_ACTIVE = Textures.BlockIcons.custom("iconsets/OVERLAY_EM_D_ACTIVE");
+        EM_D_SIDES = Textures.BlockIcons.custom("iconsets/OVERLAY_EM_D_SIDES");
+        EM_D_CONN = Textures.BlockIcons.custom("iconsets/EM_DATA_CONN");
     }
 
     @Override
@@ -106,10 +113,36 @@ public abstract class MTEHatchDataConnector<T extends DataPacket<?>> extends MTE
         }
     }
 
-    public abstract void moveAround(IGregTechTileEntity aBaseMetaTileEntity);
+    public void moveAround(IGregTechTileEntity aBaseMetaTileEntity) {
+        IConnectsToDataPipe current = this, source = this, next;
+        int range = 0;
+        while ((next = current.getNext(source)) != null && range++ < 1000) {
+            if (next instanceof MTEHatchDataItemsInput dataItemsInput) {
+                dataItemsInput.setContents((ALRecipeDataPacket) q);
+                break;
+            } else if (next instanceof MTEHatchDataInput dataInput) {
+                dataInput.setContents(((QuantumDataPacket) q));
+                break;
+            }
+
+            source = current;
+            current = next;
+        }
+    }
 
     protected void resetHistory() {
 
+    }
+
+    @Override
+    public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+        if (aBaseMetaTileEntity.isClientSide()) {
+            return true;
+        }
+        if (aPlayer instanceof EntityPlayerMPAccessor) {
+            clientLocale = ((EntityPlayerMPAccessor) aPlayer).gt5u$getTranslator();
+        }
+        return true;
     }
 
     @Override
@@ -164,5 +197,29 @@ public abstract class MTEHatchDataConnector<T extends DataPacket<?>> extends MTE
     @Override
     public byte getColorization() {
         return getBaseMetaTileEntity().getColorization();
+    }
+
+    @Override
+    public IConnectsToDataPipe getNext(IConnectsToDataPipe source /* ==this */) {
+        IGregTechTileEntity base = getBaseMetaTileEntity();
+        byte color = base.getColorization();
+        if (color < 0) {
+            return null;
+        }
+        IGregTechTileEntity next = base.getIGregTechTileEntityAtSide(base.getFrontFacing());
+        if (next == null) {
+            return null;
+        }
+        IMetaTileEntity meta = next.getMetaTileEntity();
+        if (meta instanceof MTEPipeData) {
+            ((MTEPipeData) meta).markUsed();
+            return (IConnectsToDataPipe) meta;
+        } else if (meta instanceof MTEHatchDataInput hatchDataInput && hatchDataInput.getColorization() == color
+            && hatchDataInput.canConnectData(
+                base.getFrontFacing()
+                    .getOpposite())) {
+                        return (IConnectsToDataPipe) meta;
+                    }
+        return null;
     }
 }
