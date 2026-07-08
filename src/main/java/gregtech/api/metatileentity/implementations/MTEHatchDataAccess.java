@@ -26,12 +26,11 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.AssemblyLineUtils;
 import gregtech.api.util.GTRecipe.RecipeAssemblyLine;
 import gregtech.common.gui.modularui.hatch.MTEHatchDataAccessGui;
-import gregtech.common.tileentities.machines.ISmartInputHatch;
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public class MTEHatchDataAccess extends MTEHatch implements ISmartInputHatch {
+public class MTEHatchDataAccess extends MTEHatch {
 
     private int timeout = 4;
 
