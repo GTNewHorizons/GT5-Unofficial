@@ -151,7 +151,10 @@ public abstract class MTEBECMultiblockBase<TSelf extends MTEBECMultiblockBase<TS
     @Override
     @SuppressWarnings("unchecked")
     public void checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack, List<StructureError> errors) {
-        if (!structure.checkStructure((TSelf) this, errors)) return;
+        if (!structure.checkStructure((TSelf) this, errors)) {
+            if (connectsToNetwork()) BECFactoryGrid.INSTANCE.updateElement(this);
+            return;
+        }
         structureInstanceInfo.validate(errors);
         structureInstanceInfo.onPostCheck((TSelf) this);
 
