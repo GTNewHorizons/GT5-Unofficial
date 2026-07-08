@@ -141,6 +141,7 @@ import gregtech.loaders.preload.LoaderCircuitBehaviors;
 import gregtech.loaders.preload.LoaderGTBlockFluid;
 import gregtech.loaders.preload.LoaderGTItemData;
 import gregtech.loaders.preload.LoaderGTOreDictionary;
+import gregtech.loaders.preload.LoaderMaterialLibCutover;
 import gregtech.loaders.preload.LoaderMetaPipeEntities;
 import gregtech.loaders.preload.LoaderMetaTileEntities;
 import gregtech.loaders.preload.LoaderOreProcessing;
@@ -379,6 +380,7 @@ public class GTMod {
         new LoaderGTOreDictionary().run();
         new LoaderGTItemData().run();
         new LoaderGTBlockFluid().run();
+        new LoaderMaterialLibCutover().run();
         new LoaderMetaTileEntities().run();
         new LoaderMetaPipeEntities().run();
 
