@@ -194,7 +194,7 @@ public class ScannerHelper {
     // endregion
 
     // region Text
-    private static IChatComponent addTitleComp(String name) {
+    public static IChatComponent addTitleComp(String name) {
         String dashes = "-".repeat(15);
         // Set AQUA style explicitly on the translation sibling so it inherits the title color.
         // Without this, the §r reset in the root text would leave the sibling unstyled (white).

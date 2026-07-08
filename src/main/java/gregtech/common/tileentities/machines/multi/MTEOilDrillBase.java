@@ -177,9 +177,9 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
 
     @Override
     protected void checkHatches(List<StructureError> errors) {
-        checkHasOutputHatch(errors);
-        checkHasMaintenanceHatch(errors);
         checkOneEnergyHatch(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasOutputHatch(errors);
     }
 
     @Override
@@ -304,15 +304,16 @@ public abstract class MTEOilDrillBase extends MTEDrillerBase implements IMetrics
                 "Base cycle time: "
                     + (baseCycleTime < 20 ? formatNumber(baseCycleTime) + (baseCycleTime == 1 ? " tick" : " ticks")
                         : formatNumber(baseCycleTime / 20.0) + " seconds"))
-            .beginStructureBlock(3, 7, 3, false)
+            .beginStructureBlock(3, 3, 7, false)
             .addController("Front bottom center")
-            .addOtherStructurePart(casings, "form the 3x1x3 Base")
-            .addOtherStructurePart(casings, "1x3x1 pillar above the center of the base")
-            .addOtherStructurePart(getFrameMaterial().mName + " Frame Box", "Each pillar's side and 1x3x1 on top")
-            .addEnergyHatch("1x " + VN[getMinTier()] + "+, any base Casing", 1)
-            .addMaintenanceHatch("Any base Casing", 1)
-            .addInputBus("Mining Pipes or Circuits, optional, any base Casing", 1)
-            .addOutputHatch("Any base Casing", 1)
+            .addCasing("15", getFrameMaterial().mName + " Frame Box", false)
+            .addCasing("7-8", casings, false)
+            .addEnergyHatch("1", "Any bottom casing (" + VN[getMinTier()] + "+)", 1)
+            .addMaintenanceHatch("1", "Any bottom casing", 1)
+            .addInputBus("0-1", "Any bottom casing", 1)
+            .addOutputHatch("1", "Any bottom casing", 1)
+            .addStructureInfo("")
+            .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.Rain"))
             .toolTipFinisher();
         return tt;
     }

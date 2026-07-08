@@ -28,6 +28,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -182,14 +183,14 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
                 '5',
                 buildHatchAdder(MTEMegaDistillationTower.class).atLeast(topLayeredOutputHatch)
                     .casingIndex(Casings.BronzePipeCasing.textureId)
-                    .hint(5)
+                    .hint(4)
                     .buildAndChain(Casings.BronzePipeCasing.asElement()))
             // top slice hatch
             .addElement(
                 '6',
                 buildHatchAdder(MTEMegaDistillationTower.class).atLeast(finalLayeredOutputHatch)
                     .casingIndex(Casings.BronzePipeCasing.textureId)
-                    .hint(6)
+                    .hint(4)
                     .buildAndChain(Casings.BronzePipeCasing.asElement()))
             .build();
     }
@@ -269,10 +270,9 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
         }
 
         checkCasingMin(errors, casingAmount, 150);
-        checkOneMaintenanceHatch(errors);
         checkHasAnyEnergy(errors);
+        checkOneMaintenanceHatch(errors);
         checkHasInputHatch(errors);
-
     }
 
     @Override
@@ -386,6 +386,7 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
         int hatchLayer = (height * 2) - 2;
         while (outputHatchesPerLayer.size() <= hatchLayer) outputHatchesPerLayer.add(new ArrayList<>());
         tHatch.updateTexture(aBaseCasingIndex);
+        addIfSmartInput(tHatch);
         return outputHatchesPerLayer.get(hatchLayer)
             .add(tHatch);
     }
@@ -396,6 +397,7 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
         int hatchLayer = (height * 2) - 1;
         while (outputHatchesPerLayer.size() <= hatchLayer) outputHatchesPerLayer.add(new ArrayList<>());
         tHatch.updateTexture(aBaseCasingIndex);
+        addIfSmartInput(tHatch);
         return outputHatchesPerLayer.get(hatchLayer)
             .add(tHatch);
     }
@@ -406,6 +408,7 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
         int hatchLayer = height * 2;
         while (outputHatchesPerLayer.size() <= hatchLayer) outputHatchesPerLayer.add(new ArrayList<>());
         tHatch.updateTexture(aBaseCasingIndex);
+        addIfSmartInput(tHatch);
         return outputHatchesPerLayer.get(hatchLayer)
             .add(tHatch);
     }
@@ -551,50 +554,53 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
             .addInfo("Has up to 5 middle slices and 1 top slice, the amount of middle slices is the 'Tower Height'")
             .addInfo("Each middle slice adds 2 output hatches, the top slice adds one output hatch")
             .addSeparator()
-            .addInfo("Distillery Mode")
+            .addInfo(EnumChatFormatting.WHITE + "Distillery Mode")
+            .addInfo("Outputs only one fluid in the first hatch")
             .addInfo(
                 TooltipHelper.parallelText(Configuration.Multiblocks.megaMachinesMax + " * (1 + Tower Height/2)")
                     + " Parallels")
             .addStaticSpeedInfo(DISTILLERY_SPEED)
             .addStaticEuEffInfo(DISTILLERY_EU_EFFICIENCY)
-            .addInfo("Fluids output to the first hatch only")
             .addSeparator()
-            .addInfo("Distillation Tower Mode")
+            .addInfo(EnumChatFormatting.WHITE + "Distillation Tower Mode")
+            .addInfo("Fluids are outputted one per layer based on the slot number in NEI")
+            .addInfo("Increase the height to output more fluid types")
             .addStaticParallelInfo(Configuration.Multiblocks.megaMachinesMax)
             .addStaticSpeedInfo(TOWER_SPEED)
             .addStaticEuEffInfo(TOWER_EU_EFFICIENCY)
-            .addInfo("Fluids output to their corresponding layer only")
             .addSeparator()
-            .addTecTechHatchInfo()
+            .addSupportAny()
             .addUnlimitedTierSkips()
-            .addSeparator()
             .addInfo(EnumChatFormatting.GOLD + "Big Oil will be pleased with this!")
-            .beginVariableStructureBlock(15, 15, 30, 54, 9, 9, true)
-            .addController("Front off-center, 3rd Layer")
-            .addStructureInfo(EnumChatFormatting.BLUE + "Base Structure. 1 Middle Slice:")
-            .addCasingInfoMin("Naquadah Reinforced Distillation Machine Casing", 100, false)
-            .addCasingInfoExactly("Naquadah Sheetmetal", 179, false)
-            .addCasingInfoExactly("Clean Stainless Steel Machine Casing", 360, false)
-            .addCasingInfoExactly("Stainless Steel Framebox", 99, false)
-            .addCasingInfoExactly("Bronze Pipe Casing", 84, false)
-            .addCasingInfoExactly("Strong Bronze Machine Casing", 215, false)
-            .addCasingInfoExactly("Steel Pipe Casing", 44, false)
-            .addCasingInfoExactly("Solid Steel Machine Casing", 41, false)
-            .addStructureInfo(EnumChatFormatting.BLUE + "Additional Middle Slices:")
-            .addCasingInfoExactly("Naquadah Reinforced Distillation Machine Casing", 16, false)
-            .addCasingInfoExactly("Naquadah Sheetmetal", 32, false)
-            .addCasingInfoExactly("Clean Stainless Steel Machine Casing", 48, false)
-            .addCasingInfoExactly("Stainless Steel Framebox", 27, false)
-            .addCasingInfoExactly("Bronze Pipe Casing", 16, false)
-            .addCasingInfoExactly("Strong Bronze Machine Casing", 57, false)
-            .addCasingInfoExactly("Steel Pipe Casing", 6, false)
-            .addInputBus("Any Naquadah Distillation Casing in the first 5 layers", 1)
-            .addEnergyHatch("Any Naquadah Distillation Casing in the first 5 layers", 1)
-            .addMaintenanceHatch("Any Naquadah Distillation Casing in the first 5 layers", 1)
-            .addOutputBus("Bottom Slice, Steel Pipe Casing, 8th layer, furthest right", 2)
-            .addInputHatch("Bottom Slice, Bronze Pipe Casing, 8th layer, furthest left", 3)
-            .addOutputHatch("Middle Slices & Top Slice, Bronze Pipe Casing, furthest right", 4, 5, 6)
-            .addSubChannelUsage(GTStructureChannels.STRUCTURE_HEIGHT)
+            .beginVariableStructureBlock(9, 9, 15, 15, 30, 54, true)
+            .addController("Front center, 3rd Layer")
+            .addEnergyHatch("1+", "Any base reinforced distillation casing", 1)
+            .addMaintenanceHatch("1+", "Any base reinforced distillation casing", 1)
+            .addInputBus("0+", "Any base reinforced distillation casing", 1)
+            .addInputHatch("1+", "Bronze pipe casing on base structure", 3)
+            .addOutputBus("0+", "Steel pipe casing on base structure", 2)
+            .addOutputHatch("3-11", "Two per middle layer, one on top layer", 4)
+            .addStructureInfo("")
+            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Base"))
+            .addCasing("361", "Clean Stainless Steel Machine Casing", false)
+            .addCasing("215", "Strong Bronze Machine Casing", false)
+            .addCasing("179", "Naquadah Sheetmetal", false)
+            .addCasing("150-165", "Naquadah Reinforced Distillation Casing", false)
+            .addCasing("99", "Stainless Steel Frame Box", false)
+            .addCasing("80", "Bronze Pipe Casing", false)
+            .addCasing("43-44", "Steel Pipe Casing", false)
+            .addCasing("41", "Solid Steel Machine Casing", false)
+            .addStructureInfo("")
+            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Layer"))
+            .addCasing("48", "Clean Stainless Steel Machine Casing", false)
+            .addCasing("57", "Strong Bronze Machine Casing", false)
+            .addCasing("32", "Naquadah Sheetmetal", false)
+            .addCasing("16", "Naquadah Reinforced Distillation Casing", false)
+            .addCasing("27", "Stainless Steel Frame Box", false)
+            .addCasing("14", "Bronze Pipe Casing", false)
+            .addCasing("6", "Steel Pipe Casing", false)
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.STRUCTURE_HEIGHT)
             .addStructureAuthors(EnumChatFormatting.GOLD + "Mallady")
             .toolTipFinisher();
         return tt;

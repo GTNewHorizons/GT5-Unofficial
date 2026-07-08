@@ -33,7 +33,7 @@ import cpw.mods.fml.common.Optional.Interface;
 import cpw.mods.fml.common.Optional.InterfaceList;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import forestry.api.apiculture.IArmorApiarist;
+import forestry.api.apiculture.IArmorApiaristMulti;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Mods.ModIDs;
 import gregtech.api.hazards.Hazard;
@@ -59,7 +59,7 @@ import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.nodes.IRevealer;
 
 @InterfaceList(
-    value = { @Interface(iface = "forestry.api.apiculture.IArmorApiarist", modid = ModIDs.FORESTRY),
+    value = { @Interface(iface = "forestry.api.apiculture.IArmorApiaristMulti", modid = ModIDs.FORESTRY),
         @Interface(iface = "thaumcraft.api.IVisDiscountGear", modid = ModIDs.THAUMCRAFT),
         @Interface(iface = "thaumcraft.api.IGoggles", modid = ModIDs.THAUMCRAFT),
         @Interface(iface = "thaumcraft.api.nodes.IRevealer", modid = ModIDs.THAUMCRAFT),
@@ -67,7 +67,7 @@ import thaumcraft.api.nodes.IRevealer;
         @Interface(iface = "vazkii.botania.api.mana.IManaDiscountArmor", modid = ModIDs.BOTANIA) })
 
 public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISpecialArmor, ISpecialElectricItem,
-    IGoggles, IRevealer, IVisDiscountGear, IArmorApiarist, IHazardProtector, ICustomDamageItem,
+    IGoggles, IRevealer, IVisDiscountGear, IArmorApiaristMulti, IHazardProtector, ICustomDamageItem,
     net.dries007.holoInventory.api.IHoloGlasses, vazkii.botania.api.mana.IManaDiscountArmor {
 
     protected IIcon coreIcon;

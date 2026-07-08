@@ -49,15 +49,13 @@ public class MTEAdvFusionMk5 extends MTEFusionComputer {
             .addInfo("If the recipe has a startup cost greater than the")
             .addInfo("number of energy hatches * cap, you can't do it")
             .addInfo("Performs 4/4 overclocks")
-            .beginStructureBlock(15, 3, 15, false)
+            .beginStructureBlock(15, 15, 3, false)
             .addController("See diagram when placed")
-            .addCasingInfoMin("Fusion Machine Casing MK IV", 79, false)
-            .addStructureInfo("Cover the coils with casing")
-            .addOtherStructurePart("Advanced Fusion Coil II", "Center part of the ring")
-            .addEnergyHatch("1-16, Specified Casing", 2)
-            .addInputHatch("2-16, Specified Casing", 1)
-            .addOutputHatch("1-16, Specified Casing", 3)
-            .addStructureInfo("ALL Hatches must be UEV or better")
+            .addCasing("79-123", "Fusion Machine Casing Mk-IV", false)
+            .addCasing("32", "Advanced Fusion Coil II", false)
+            .addEnergyHatch("1-16", "Specified casings (UEV+)", 2)
+            .addInputHatch("1+", "Specified casings", 1)
+            .addOutputHatch("1+", "Specified casings", 3)
             .toolTipFinisher();
         return tt;
     }

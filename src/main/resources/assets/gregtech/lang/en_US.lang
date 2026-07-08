@@ -218,8 +218,8 @@ gt.blockmachines.input_hatch_generator.desc=Fluid Input for Multiblocks\nCapacit
 gt.blockmachines.input_hatch_generator.airintake.desc=§cDO NOT OBSTRUCT THE INPUT!\nDraws in Air from the surrounding environment\nCreates %s of Air every %s ticks
 gt.blockmachines.input_hatch_generator.atmosphere.desc=§cDO NOT OBSTRUCT THE INPUT!\nDraws in Air from the surrounding environment\nCompletely fills up every %s ticks
 gt.blockmachines.input_hatch_generator.reservoir.desc=Infinite water supply hatch\nFills to max capacity every 5 seconds
-gt.blockmachines.input_hatch_me.desc=Machine Type: §eSIH§r\nAdvanced fluid input for Multiblocks\nHatch Tier: %s\nRetrieves directly from ME\nKeeps 16 fluid types in stock\nChange ME connection behavior by right-clicking with wire cutter.\nConfiguration data can be copy/pasted using a data stick.
-gt.blockmachines.input_hatch_me.autopull.desc=Machine Type: §eASIH§r\nNext-gen fluid input for Multiblocks\nHatch Tier: %s\nRetrieves directly from ME\nKeeps 16 fluid types in stock\nAuto-Pull from ME mode will automatically stock the first\n16 fluid in the ME system, updated every 5 seconds.\nToggle by right-clicking with screwdriver, or use the GUI.\nUse the GUI to limit the minimum stack size for Auto-Pulling,\nadjust the slot refresh timer and enable fast recipe checks.\nWARNING: Fast recipe checks can be laggy. Use with caution.\nChange ME connection behavior by right-clicking with wire cutter.\nConfiguration data can be copy/pasted using a data stick.
+gt.blockmachines.input_hatch_me.desc=Machine Type: §eSIH§r\nNext-gen fluid input for Multiblocks\nHatch Tier: %s\nRetrieves directly from ME\nKeeps 16 fluid types in stock\nChange ME connection behavior by right-clicking with wire cutter.\nConfiguration data can be copy/pasted using a data stick.
+gt.blockmachines.input_hatch_me.autopull.desc=Machine Type: §eASIH§r\nAdvanced fluid input for Multiblocks\nHatch Tier: %s\nRetrieves directly from ME\nKeeps 16 fluid types in stock\nAuto-Pull from ME mode will automatically stock the first\n16 fluid in the ME system, updated every 5 seconds.\nToggle by right-clicking with screwdriver, or use the GUI.\nUse the GUI to limit the minimum stack size for Auto-Pulling,\nadjust the slot refresh timer and enable fast recipe checks.\nWARNING: Fast recipe checks can be laggy. Use with caution.\nChange ME connection behavior by right-clicking with wire cutter.\nConfiguration data can be copy/pasted using a data stick.
 gt.blockmachines.input_hatch_solidifier.desc=Fluid Input with Mold for §eFluid Shaper§r\nCapacity: %s L
 gt.blockmachines.input_hatch_debug.desc=§7Stocks Fluids internally\n§7Configure Fluids in the UI\n§7Configured Fluids will not be consumed in processing\n§oWho knew it was this easy???
 gt.blockmachines.output_hatch.desc=Fluid Output for Multiblocks\nCapacity: %s L\nRight click with screwdriver to restrict output\nCan be restricted to put out Items and/or Steam/No Steam/1 specific Fluid\nRestricted Output Hatches are given priority for Multiblock Fluid output
@@ -1599,10 +1599,8 @@ GT5U.MBTT.Dimensions=Dimensions
 GT5U.MBTT.Hollow=(Hollow)
 GT5U.MBTT.Structure=Structure
 GT5U.MBTT.Controller=Controller
-GT5U.MBTT.Minimum=(minimum)
-GT5U.MBTT.Tiered=(tiered)
-GT5U.MBTT.MaintenanceHatch=Maintenance Hatch
-GT5U.MBTT.MufflerHatch=Muffler Hatch
+GT5U.MBTT.Minimum=(Minimum)
+GT5U.MBTT.Tiered=§b(Tiered)
 GT5U.MBTT.EnergyHatch=Energy Hatch
 GT5U.MBTT.DynamoHatch=Dynamo Hatch
 GT5U.MBTT.MultiampEnergyHatch=Multi-Amp Energy Hatch
@@ -1614,12 +1612,17 @@ GT5U.MBTT.BeamlineOutputHatch=Beam Output Hatch
 GT5U.MBTT.FocusInputBus=Focus Input Bus
 GT5U.MBTT.ExoticEnergyHatch=Laser/Multi-Amp Energy Hatch
 GT5U.MBTT.ExoticEnergyDynamo=Laser/Multi-Amp Dynamo Hatch
+GT5U.MBTT.MaintenanceHatch=Maintenance Hatch
+GT5U.MBTT.MufflerHatch=Muffler Hatch
 GT5U.MBTT.InputBus=Input Bus
 GT5U.MBTT.InputHatch=Input Hatch
+GT5U.MBTT.InputAny=Input Bus/Hatch
 GT5U.MBTT.OutputBus=Output Bus
 GT5U.MBTT.OutputHatch=Output Hatch
-GT5U.MBTT.TecTechMultiAmp=Supports TecTech Multi-Amp Hatches!
-GT5U.MBTT.TecTechHatch=Supports TecTech Multi-Amp and Laser Hatches!
+GT5U.MBTT.OutputAny=Output Bus/Hatch
+GT5U.MBTT.SupportMultiAmp=Supports Multi-Amp Hatches!
+GT5U.MBTT.SupportLaser=Supports Laser Hatches!
+GT5U.MBTT.SupportAny=Supports Multi-Amp and Laser Hatches!
 GT5U.MBTT.Param=Parametrizer Hatch
 GT5U.MBTT.Uncertainty=Uncertainty Hatch
 GT5U.MBTT.InputData=Data Reception Connector
@@ -1659,6 +1662,14 @@ GT5U.MBTT.Speed.Absolute=Speed is %s times %s Tier
 GT5U.MBTT.EuDiscount.Base=%s EU Usage
 GT5U.MBTT.EuDiscount.Additional=%s EU Usage per %s Tier
 GT5U.MBTT.SteamDiscount.Base=%s Steam Usage
+GT5U.MBTT.Tiers.Basic=§9Basic §b(T1)
+GT5U.MBTT.Tiers.HighPressure=§9High-Pressure §b(T2)
+GT5U.MBTT.Tiers.Extended=§9Extended Structure
+GT5U.MBTT.Tiers.One=§bTier 1
+GT5U.MBTT.Tiers.Two=§bTier 2
+GT5U.MBTT.Tiers.Three=§bTier 3
+GT5U.MBTT.Tiers.Four=§bTier 4
+GT5U.MBTT.Tiers.Five=§bTier 5
 GT5U.MBTT.Tiers.Voltage=Voltage
 GT5U.MBTT.Tiers.Machine=Machine
 GT5U.MBTT.Tiers.Coil=Heating Coil
@@ -1672,14 +1683,22 @@ GT5U.MBTT.Tiers.Glass=Glass
 GT5U.MBTT.Tiers.ComponentAssemblyLineCasing=Component Assembly Line Casing
 GT5U.MBTT.Steam.Speed=%s faster than using single block steam machines of the same pressure
 GT5U.MBTT.Steam.Eff=Only consumes steam at %s of the steam flowrate normally required
-GT5U.MBTT.Structure.SeeStructure1=To see the structure, use a
-GT5U.MBTT.Structure.SeeStructure2=Hologram Projector on the Controller!
-GT5U.MBTT.Structure.MinGlassForLaser=-tier §fGlass§7 required for §9Tec§1Tech§7 Laser Hatches
+GT5U.MBTT.Structure.Base=§9Base Structure
+GT5U.MBTT.Structure.Slice=§9Each Additional §bSlice
+GT5U.MBTT.Structure.Layer=§9Each Additional §bLayer
+GT5U.MBTT.Structure.Projector=§fUse the Multiblock Structure §9Hologram §1Projector§f to visualize/build the structure!
+GT5U.MBTT.Structure.MinGlassForLaser=-tier §fGlass§7 required for Laser Hatches
 GT5U.MBTT.Structure.GlassEnergyLimit=Energy Hatch limited by §fGlass§7 Tier
 GT5U.MBTT.Structure.GlassEnergyLimitTier=-tier unlocks all
+GT5U.MBTT.Structure.DynamoLimit=§cDynamo cannot be greater than 4A
+GT5U.MBTT.Structure.Rain=§cDon't forget to protect the machine from rain and/or meteors!
+GT5U.MBTT.Structure.WaterCost=The water is a one-time-cost to prime the machine, insert with a hatch
+GT5U.MBTT.Structure.WaterFree=The water is spawned for free once formed
 GT5U.MBTT.Structure.NoTierSkips=This machine can only run recipes matching its average energy hatch tier
 GT5U.MBTT.Structure.MaxTierSkips=This machine can run recipes at most %d tiers above its average energy hatch tier
 GT5U.MBTT.Structure.UnlimitedTierSkips=This machine can run recipes regardless of tier, if given enough energy
+GT5U.MBTT.Structure.DataStick.Waterline=Link to the §bWater Purification Plant§7 with a §aData Stick
+GT5U.MBTT.Structure.DataStick.PCB=Link to the §bPCB Factory§7 with a §aData Stick
 gt.mbtt.structure.front_center=Front center
 gt.mbtt.structure.back_center=Back center
 GT5U.MBTT.HatchInfo=Any %s
@@ -1796,7 +1815,8 @@ gt.multiblock.NeutralizationEngine.decay_boost.4=Every §fminute§7, §dRobot Ar
 gt.multiblock.NeutralizationEngine.structure_tiers=Structure has §f3 Tiers§7, §fTier §7determines §9Base Decay §7and §3Capacity§7:
 gt.multiblock.NeutralizationEngine.tier_info=§fT%d§7 : §f%s§7 : §9%d§7 : §3%s
 
-GT5U.MBTT.subchannel=Uses sub channel §6%s§r§7 for §6%s
+GT5U.MBTT.masterchannel=Projector stack size determines §b%s
+GT5U.MBTT.subchannel=Subchannel §b%s§7 determines §b%s
 
 GT5U.MBTT.CokeOvenHatch=Coke Oven Hatch
 GT5U.MBTT.CryotheumHatch=Cryotheum Cooling Hatch
@@ -2049,6 +2069,9 @@ gt.recipe.large_hadron_collider=Large Hadron Collider
 gt.recipe.foundry_modules=Foundry Module Components
 gt.recipe.create-condensate=Condensate Entanglement
 gt.recipe.assemble-condensate=Condensate Assembling
+# TODO: Remove in 2.10
+gt.recipe.macerator.conversion=Macerator Conversion
+gt.macerator.upgraded=Has Maceration Upgrade Chip
 
 # Recipe categories
 gt.recipe.category.arc_furnace_recycling=Arc Furnace Recycling
@@ -2353,10 +2376,10 @@ GT5U.machines.large_boiler.info.tooltip.3=Has an added formula for long time bur
 GT5U.machines.large_boiler.info.tooltip.4=A programmed circuit in the main block throttles the boiler (-1000L/s per config)
 GT5U.machines.large_boiler.info.tooltip.5=Allows burning solid and fluid fuels at the same time, giving 25% speed boost
 GT5U.machines.large_boiler.info.tooltip.6=Takes %s seconds to heat up
-GT5U.machines.large_boiler.gui.production=Produces §7%s§r: §7%s §rL/t
-GT5U.machines.large_boiler.gui.consumption=Consumes §9%s§r: §9%s §rL/t
-GT5U.machines.large_boiler.gui.solid_burn=Solid fuel burns for: §9%s§r seconds
-GT5U.machines.large_boiler.gui.fluid_burn=Fluid fuel burns for: §9%s§r seconds
+GT5U.machines.large_boiler.gui.consumption_fluid=Fluid consumption
+GT5U.machines.large_boiler.gui.consumption_solid=Item consumption
+GT5U.machines.large_boiler.gui.solid_burn=Solid fuel burns for: §9%s§rs/§9%s§rs
+GT5U.machines.large_boiler.gui.fluid_burn=Fluid fuel burns for: §9%s§rs/§9%s§rs
 
 GT5U.recipe_filter.empty_representation_slot.tooltip=§7Click with a machine to set filter
 GT5U.recipe_filter.representation_slot.tooltip=§7Click to clear
@@ -2386,6 +2409,17 @@ channels.gregtech.time_dilation=Decides the tier of Time Dilation Field Generato
 channels.gregtech.gt_hatch=Enables automatic hatch placement
 channels.gregtech.field=Decides the tier of TFFT Storage Field.
 channels.gregtech.component_casing=Decides the tier of Component Assembly Line Casing. Starts at §6LV§r at value 1 and ends at §6MAX§r at value 14.
+channels.gregtech.super_chest=Decides the tier of Super/Quantum Chest. Starts at §6Super Chest I§r at value 1 and ends at §6Quantum Chest V§r at value 10.
+
+channels.gregtech.master.structuretier=Structure Tier
+channels.gregtech.master.casingtier=Casing Tier
+channels.gregtech.master.coiltier=Coil Tier
+channels.gregtech.master.windingtier=Primary Winding Tier
+channels.gregtech.master.size=Total Size
+channels.gregtech.master.length=Length
+channels.gregtech.master.height=Height
+channels.gregtech.master.modules=Number of Modules
+channels.gregtech.master.rings=Number of Rings
 
 GT5U.gui.select.current=§8Current:
 GT5U.gui.button.liquid_filling=Liquid Filling
@@ -2407,6 +2441,9 @@ GT5U.gui.button.feature_enabled=Enabled
 GT5U.gui.button.feature_disabled=Disabled
 GT5U.gui.button.forbidden=§4Cannot change mode for this machine
 GT5U.gui.button.forbidden_while_running=§4Cannot change mode while running
+GT5U.gui.button.forbidden.reason=(No %s output slots)
+GT5U.gui.button.forbidden.reason.fluid=fluid
+GT5U.gui.button.forbidden.reason.item=item
 GT5U.gui.button.chunk_loading=Chunk Loading
 GT5U.gui.button.finite_mode=Finite Mode
 GT5U.gui.button.finite_mode_toggle=Toggle Finite Mode
@@ -2513,7 +2550,6 @@ GT5U.gui.text.backfiller_finished=§aWork complete
 GT5U.gui.text.recipe_result.backfiller_working=§aPouring concrete
 GT5U.gui.text.recipe_result.backfiller_no_concrete=§7No liquid concrete
 GT5U.gui.text.backfiller_current_area=§7Filling at y-level: §a%s
-GT5U.gui.text.shutdown_reason.overheated=§7HIP Unit overheated!
 GT5U.gui.text.pump_fluid_type=Fluid: §a%s
 GT5U.gui.text.pump_rate.1=Pumping rate: %s§r
 GT5U.gui.text.pump_rate.2= L/t
@@ -2537,6 +2573,8 @@ GT5U.gui.text.drill_offline_reason=Drill Offline: %s
 GT5U.gui.text.drill_offline_generic=Drill Offline
 GT5U.gui.text.recipe_result.drill_extracting_ores=Extracting Ores
 GT5U.gui.text.recipe_result.drill_extracting_ores_failed=Extraction Failed
+GT5U.gui.text.recipe_result.void_miner_wrong_dim=§4This dimension cannot be void mined
+GT5U.gui.text.recipe_result.void_miner_no_ores=§4No ores available to mine in this dimension
 GT5U.gui.text.recipe_result.stocking_bus_fail_extraction=§4Failed to extract expected amount of items from stocking bus. This can be caused by attaching multiple storage buses to the same inventory.
 GT5U.gui.text.recipe_result.stocking_hatch_fail_extraction=§4Failed to extract expected amount of fluids from stocking hatch. This can be caused by attaching multiple storage fluid buses to the same tank.
 GT5U.gui.text.recipe_result.drone_noDrone=§4Can't find any drone in Input Buses!
@@ -2606,7 +2644,7 @@ GT5U.gui.text.structure_error.energy_hatch_tier_too_low=Energy hatch tier too lo
 GT5U.gui.text.structure_error.hatch_tier_too_low=%s tier too low (minimum: %s)
 GT5U.gui.text.structure_error.hatch_tier_too_high=%s tier too high (maximum: %s)
 GT5U.gui.text.structure_error.energy_hatch_exceed_glass=Energy hatch tier cannot exceed glass tier
-GT5U.gui.text.structure_error.one_tt_or_two_energy=Either 1 TecTech energy hatch or 2 normal energy hatches are allowed.
+GT5U.gui.text.structure_error.one_tt_or_two_energy=Either 1 exotic energy hatch or 2 normal energy hatches are allowed.
 GT5U.gui.text.structure_error.pss_dynamo=Bad dynamo hatch tier
 GT5U.gui.text.structure_error.pss_energy=Bad energy hatch tier
 GT5U.gui.text.structure_error.pss_cell=Cell tier must match
@@ -2633,7 +2671,6 @@ GT5U.gui.text.structure_error.manual_transformer_dynamo=Dynamo hatches must be o
 GT5U.gui.text.structure_error.solar_factory_precise=Casing not precise enough
 GT5U.gui.text.structure_error.synchrotron_antenna=Antenna tier not detected
 GT5U.gui.text.structure_error.tfft_too_many_hatch=Too many hatches
-GT5U.gui.text.structure_error.sofc_missing_input_hatches=Missing Input Hatches: requires 1 for Fuel and 1 for Oxygen, found %s
 GT5U.gui.text.structure_error.htgr_missing_helium_hatch=Missing Input Hatch for Helium
 GT5U.gui.text.pulse_mode=Pulse Mode
 GT5U.gui.text.recipe_result.no_wafer=No wafer was found
@@ -2715,6 +2752,7 @@ GT5U.gui.text.amperage=Amperage
 GT5U.gui.text.voltage=Voltage
 GT5U.gui.text.voltagetier=Voltage Tier
 GT5U.gui.text.ticks_between_refill=Ticks Between Refills
+GT5U.gui.text.shutdown_reason.overheat_fail=Shut down due to §coverheat
 GT5U.gui.text.recipe_result.no_bec_assembler=Condensate Observation Array Offline
 GT5U.gui.text.not_enough_parallels=Insufficient Parallels (Min Parallels Too High)
 GT5U.gui.text.shutdown_reason.bec_clogged=More Than 3 Condensates Present
@@ -2817,10 +2855,10 @@ GT5U.tooltip.nac.interface.nac_module=NAC Module
 GT5U.tooltip.nac.interface.cc=§eCC§7
 GT5U.tooltip.nac.interface.ccs=§eCCs§7
 GT5U.tooltip.nac.interface.vci=§eVCI§7
-GT5U.tooltip.nac.interface.vci_long=§fVacuum Conveyor Input:§7
+GT5U.tooltip.nac.interface.vci_long=Vacuum Conveyor Input
 GT5U.tooltip.nac.interface.vcis=§eVCIs§7
 GT5U.tooltip.nac.interface.vco=§eVCO§7
-GT5U.tooltip.nac.interface.vco_long=§fVacuum Conveyor Output:§7
+GT5U.tooltip.nac.interface.vco_long=Vacuum Conveyor Output
 GT5U.tooltip.nac.interface.vcos=§eVCOs§7
 GT5U.tooltip.nac.interface.vc_hatches=§fVacuum Conveyor Hatches§7
 GT5U.tooltip.nac.interface.color=§cc§eo§al§bo§dr§7
@@ -2832,12 +2870,13 @@ GT5U.tooltip.nac.interface.module_description=Module of the §aNanochip Assembly
 GT5U.tooltip.nac.interface.structure_base_vci=§fVacuum Conveyor Input:§7 %s
 GT5U.tooltip.nac.interface.structure_base_vco=§fVacuum Conveyor Output:§7 %s
 GT5U.tooltip.nac.interface.structure_base_casing=Any base Casing
-GT5U.tooltip.nac.interface.structure_control_room_base_casing=Any control room Mesh Interface Casing
-GT5U.tooltip.nac.interface.structure_outer_ring_base_casing=Any Mesh Interface platform on outer ring
-GT5U.tooltip.nac.interface.structure.module_controller=Middle of the Mesh Interface Platform
-GT5U.tooltip.nac.interface.structure.module_description=§fMaterial Count§r §c§lNOT§r §fIncluding Mesh Interface Platform§r
+GT5U.tooltip.nac.interface.structure_control_room_base_casing=Any side mesh casing in control room
+GT5U.tooltip.nac.interface.structure.module_controller=Any top center edge mesh casing on platform
+GT5U.tooltip.nac.interface.structure.module_hatches=Any base mesh casing
+GT5U.tooltip.nac.interface.structure.module_cost=Base mesh casing count not included
+GT5U.tooltip.nac.interface.structure.module_power=Receives power from the NAC control room
 
-GT5U.tooltip.nac.main.machine_type=NAC, Nanochip-Assembly-Complex
+GT5U.tooltip.nac.main.machine_type=NAC, Nanochip Assembly Complex
 GT5U.tooltip.nac.main.action=Uses Circuit Components (%s) to create circuits at unimaginable speeds
 GT5U.tooltip.nac.main.logo=Click the Logo Icon in the GUI for more information
 GT5U.tooltip.nac.main.flavor.1=Home of the Gestalt Rapidly Evolving Genesis Optimization System (GREGOS),
@@ -2911,7 +2950,7 @@ GT5U.tooltip.nac.module.splitter.body.1=By default, splits same %s inputs evenly
 GT5U.tooltip.nac.module.splitter.body.2=Behavior can be overwritten by creating §2'Rules'§7 to follow in the GUI
 GT5U.tooltip.nac.module.splitter.body.3=§2Rules§7 can be set by input %s(§5s§7), output %s(§5s§7), supplied redstone signal, and item filters
 GT5U.tooltip.nac.module.splitter.body.4=%s will be transferred after all conditions of a §2Rule§7 are met
-GT5U.tooltip.nac.module.splitter.redstone_hatch= Any top Mesh Interface Casing
+GT5U.tooltip.nac.module.splitter.redstone_hatch= Any top mesh interface casing
 GT5U.tooltip.nac.module.superconductor_splitter.name=Superconductor Splitter
 GT5U.tooltip.nac.module.superconductor_splitter.flavor.1=Where there are superconductors, there is coolant!
 GT5U.tooltip.nac.module.superconductor_splitter.action=Splits your Superconductor %s
@@ -3328,7 +3367,7 @@ gt.blockmachines.multimachine.beamcrafting.ttshieldaccglass=Shielded Accelerator
 gt.blockmachines.multimachine.beamcrafting.ttanyglass=Any Tiered Glass
 gt.blockmachines.multimachine.beamcrafting.ttanycasing=Any Collider Casing
 gt.blockmachines.multimachine.beamcrafting.ttgratecasing=Grate Machine Casing
-gt.blockmachines.multimachine.beamcrafting.ttanyneonite=Neonite (Any, optional)
+gt.blockmachines.multimachine.beamcrafting.ttanyneonite=Neonite (any color)
 gt.blockmachines.multimachine.beamcrafting.ttbeaminhatch=Beam Input Hatch
 gt.blockmachines.multimachine.beamcrafting.ttbeamouthatch=Beam Output Hatch
 gt.blockmachines.multimachine.beamcrafting.ttbeamouthatchfiltered=Filtered Beam Output Hatch
@@ -4475,7 +4514,7 @@ gt.item.electric_pump.uiv.name=Electric Pump (UIV)
 gt.item.electric_pump.umv.name=Electric Pump (UMV)
 gt.item.electric_pump.uxv.name=Electric Pump (UXV)
 gt.item.electric_pump.max.name=Electric Pump (MAX)
-gt.item.electric_pump.tooltip=%s L/t %s L
+gt.item.electric_pump.tooltip=%s L/t (%s L/s)
 
 ## Other items
 gt.item.electronics_lump.name=Lump of Electronics
@@ -4773,7 +4812,9 @@ gt.item.cover.redstone_transmitter_internal.tooltip=Transfers Redstone signals w
 gt.item.cover.redstone_receiver.name=Redstone Receiver
 gt.item.cover.redstone_receiver.tooltip=Transfers Redstone signals wireless
 gt.item.cover.wireless_controller.name=Wireless Machine Controller Cover
-gt.item.cover.wireless_controller.tooltip=Turns Machines ON/OFF wirelessly\nCan only connect with advanced wireless covers
+gt.item.cover.wireless_controller.tooltip=Turns Machines ON/OFF wirelessly\nDoes NOT include Logic Gates, will only accept a single signal source!\nCan only connect with advanced wireless covers
+gt.item.cover.advanced_wireless_controller.name=Advanced Wireless Machine Controller Cover
+gt.item.cover.advanced_wireless_controller.tooltip=Turns Machines ON/OFF wirelessly\nIncludes Logic Gates\nCan only connect with advanced wireless covers
 
 ### Maintenance Cover
 gt.item.cover.needs_maintenance.name=Needs Maintenance Cover
@@ -6963,6 +7004,28 @@ gt.vajra.tooltip.flavor=Your friendly instant block breaker
 gt.vajra.tooltip.charge=Can be charged in any %s machine
 gt.vajra.tooltip.silk_touch=Shift right click air to toggle silk touch
 
+# Network Analyzer
+gt.NetworkAnalyzer.name=Network Analyzer
+gt.NetworkAnalyzer.bound=§aVisualising network at %s %s %s
+gt.NetworkAnalyzer.target_lost=§cNetwork Analyzer target block not found, binding cleared
+gt.NetworkAnalyzer.set=Mode changed to §e%s
+gt.NetworkAnalyzer.mode=Mode: §e%s
+gt.NetworkAnalyzer.mode.topology=Topology
+gt.NetworkAnalyzer.mode.critical=Critical
+gt.NetworkAnalyzer.mode.active=Active
+gt.NetworkAnalyzer.mode.amperage=Amperage
+gt.NetworkAnalyzer.mode.voltage=Voltage
+gt.NetworkAnalyzer.amperage.short=%s A / %s A
+gt.NetworkAnalyzer.amperage.input=↑%s A / %s A
+gt.NetworkAnalyzer.amperage.output=↓%s A / %s A
+gt.NetworkAnalyzer.amperage.full=↑%s A ↓%s A / %s A
+gt.NetworkAnalyzer.loss.short=%s%% loss
+gt.NetworkAnalyzer.loss.full=%s%% loss (%s V)
+gt.NetworkAnalyzer.voltage.burn=§cBurns
+gt.NetworkAnalyzer.voltage.burn.full=§cWire burns: %s V / %s V
+gt.NetworkAnalyzer.voltage.explosion=§cExplodes
+gt.NetworkAnalyzer.voltage.explosion.full=§cMachine explodes: %s V / %s V
+
 # GT++
 
 GT5U.gui.text.recipe_result.no_water=§7Missing water
@@ -7084,8 +7147,8 @@ GTPP.time.months=Months
 
 # Steam MultiBlock Tooltips
 GTPP.MBTT.SteamHatch=Steam Hatch
-GTPP.MBTT.SteamInputBus=Input Bus (Steam)
-GTPP.MBTT.SteamOutputBus=Output Bus (Steam)
+GTPP.MBTT.SteamInputBus=Steam Input Bus
+GTPP.MBTT.SteamOutputBus=Steam Output Bus
 
 # Item Tooltips
 GTPP.tooltip.hold_ctrl=Hold Ctrl to show additional info.
@@ -8784,6 +8847,8 @@ gt.item.gravitational_lens.tooltip=Portable gravitational well
 gt.item.planck_manifold.name=Planck-Scale Manifold
 gt.item.planck_manifold.tooltip=The smallest there can be
 
+gt.loading.progress.post_init.loading_gt=Post Initialization: loading GregTech
+
 # BEC Meta Materials
 gt.item.meta_material.energy_conduit.perfected.name=Perfected Energy Conduit
 gt.item.meta_material.energy_conduit.primitive.name=Primitive Energy Conduit
@@ -8855,9 +8920,31 @@ GT5U.gui.text.providing-nanites=Providing Nanites:
 GT5U.gui.text.available-condensate=Available Condensate:
 GT5U.gui.text.bec-stored-condensate=Stored Condensate:
 
-# BEC Structure Hints
-GT5U.gui.text.bec-generator-input-hatch-pos=Any %s in the first slice
-GT5U.gui.text.bec-generator-bec-hatch-pos=The center Casing in the last slice
+# BEC I/O Node Structure Hints
+GT5U.tooltip.bec-ionode.controller-pos=Front center, 12th layer
+GT5U.tooltip.bec-ionode.hatch-pos=Any electromagnetically-isolated casing
+GT5U.tooltip.bec-ionode.los-hatch-pos=Back center casing
+
+# BEC Generator Structure Hints
+GT5U.tooltip.bec-generator.controller-pos=Front center, 10th layer
+GT5U.tooltip.bec-generator.hatch-pos=Any electromagnetically-isolated casing around controller
+GT5U.tooltip.bec-generator.bec-hatch-pos=Back center casing
+
+# BEC Storage Structure Hints
+GT5U.tooltip.bec-storage.controller-pos=Bottom front of central pillar, 3rd layer
+GT5U.tooltip.bec-storage.hatch-pos=Any electromagnetically-isolated casing
+GT5U.tooltip.bec-storage.bec-hatch-pos=Any center side casing
+
+# BEC Diode Structure Hints
+GT5U.tooltip.bec-diode.controller-pos=Front center, 6th layer
+GT5U.tooltip.bec-diode.hatch-pos=Any electromagnetically-isolated casing
+GT5U.tooltip.bec-diode.bec-hatch-pos=Center left casing (input), center right casing (output)
+
+# BEC Assembler Structure Hints
+GT5U.tooltip.bec-assembler.controller-pos=Front center, 16th layer
+GT5U.tooltip.bec-assembler.hatch-pos=Any electromagnetically-isolated casing
+GT5U.tooltip.bec-assembler.bec-hatch-pos=Center left or right casing
+GT5U.tooltip.bec-assembler.los-hatch-pos=Center side casing of each ring
 
 # BEC Settings
 GT5U.gui.text.bec-filter=Filter
@@ -8885,9 +8972,6 @@ GT5U.chat.bec-no-connect-assembler=Could not connect to the Observation Array
 # BEC Waila
 GT5U.chat.bec-processing-speed=Processing Speed: x%s
 GT5U.chat.bec-slowdowns=Slowdowns: %s
-
-# BEC Structure
-GT5U.chat.bec-storage-controller-pos=Outer wall of center pillar, second layer from the bottom
 
 # Test Factory Machines
 gt.blockmachines.pipe.test.name=Test Factory Pipe
