@@ -6,6 +6,7 @@ import java.util.Arrays;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
 import com.gtnewhorizons.postea.api.BlockReplacementManager;
@@ -14,13 +15,17 @@ import com.gtnewhorizons.postea.api.ItemStackReplacementManager;
 import com.gtnewhorizons.postea.api.TileEntityReplacementManager;
 import com.gtnewhorizons.postea.utility.BlockInfo;
 
+import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.items.MetaGeneratedItemX32;
+import gregtech.api.material.MU;
 import gregtech.common.blocks.BlockFrameBox;
+import vexatos.tgregworks.reference.Mods;
 
 public class PosteaTransformers implements Runnable {
 
@@ -37,7 +42,32 @@ public class PosteaTransformers implements Runnable {
         registerPTMEGTransformers();
         registerBorosilicateGlassTransformers();
         registerIC2BlocksTransformer();
-        registerBartworksLabPartTransformer();
+        registerMaterialLibCutoverTransformers();
+    }
+
+    /// Migrates saved [MetaGeneratedItemX32] stacks (`gt.metaitem.01/02/03`, damage < 32000) whose prefix
+    /// cut over to a MaterialLib shape (see [MU]) into the equivalent MaterialLib stack. Hand-listed custom
+    /// parts (damage >= 32000) and prefixes that did not cut over (e.g. `cell`, `cellPlasma`) pass through
+    /// unchanged.
+    private void registerMaterialLibCutoverTransformers() {
+        registerMetaItemCutoverTransformer("gt.metaitem.01");
+        registerMetaItemCutoverTransformer("gt.metaitem.02");
+        registerMetaItemCutoverTransformer("gt.metaitem.03");
+    }
+
+    private static void registerMetaItemCutoverTransformer(String itemName) {
+        MetaGeneratedItemX32 item = (MetaGeneratedItemX32) GameRegistry.findItem("gregtech", itemName);
+        ItemStackReplacementManager.addTransformationHandler("gregtech:" + itemName, (originalId, tag) -> {
+            int damage = tag.getInteger("Damage");
+            if (damage >= 32000) return false;
+            OrePrefixes prefix = item.getOrePrefix(damage);
+            Materials material = item.getMaterial(damage);
+            ItemStack cutover = MU.stack(prefix, material, 1);
+            if (cutover == null) return false;
+            IDExtenderCompat.setItemStackID(tag, Item.getIdFromItem(cutover.getItem()));
+            tag.setShort("Damage", (short) cutover.getItemDamage());
+            return true;
+        });
     }
 
     private static NBTTagCompound passthrough(NBTTagCompound tag) {
@@ -100,7 +130,7 @@ public class PosteaTransformers implements Runnable {
             if (!GregTechAPI.sGeneratedMaterials[indexInMaterialList].hasMetalItems()) {
                 return false;
             }
-            Item frameItem = Item.getItemFromBlock(GregTechAPI.sBlockFrames);
+            Item frameItem = GameRegistry.findItem(Mods.GregTech, "gt.blockframes");
             int itemId = Item.getIdFromItem(frameItem);
             // Change this item into the correct frame item (make sure to keep amount)
             tag.setInteger("id", itemId);
@@ -111,10 +141,14 @@ public class PosteaTransformers implements Runnable {
 
     // TODO: Remove this and bio and breakthrough circuits once 2.8 is released.
     private void registerProgrammedCircuitTransformers() {
-        ItemStackReplacementManager
-            .addSimpleReplacement("miscutils:item.BioRecipeSelector", ItemList.Circuit_Integrated.getItem(), true);
-        ItemStackReplacementManager
-            .addSimpleReplacement("miscutils:item.T3RecipeSelector", ItemList.Circuit_Integrated.getItem(), true);
+        ItemStackReplacementManager.addSimpleReplacement(
+            "miscutils:item.BioRecipeSelector",
+            GameRegistry.findItem(Mods.GregTech, "gt.integrated_circuit"),
+            true);
+        ItemStackReplacementManager.addSimpleReplacement(
+            "miscutils:item.T3RecipeSelector",
+            GameRegistry.findItem(Mods.GregTech, "gt.integrated_circuit"),
+            true);
     }
 
     private void registerPotassiumHydroxideTransformer() {
@@ -277,21 +311,5 @@ public class PosteaTransformers implements Runnable {
             }
             return false;
         });
-    }
-
-    private static void registerBartworksLabPartTransformer() {
-        ItemStackReplacementManager.addTransformationHandler("bartworks:BioLabParts", (name, nbt) -> {
-            // ensure it has the extra tag
-            if (nbt.hasKey("tag")) {
-                var tag = nbt.getCompoundTag("tag");
-                // skip special NEI recipe item for BioLab Clonal Cellular Synthesis
-                if (tag.hasKey("NEI")) return false;
-                for (String key : tag.func_150296_c()) {
-                    if (!key.equals("Name")) tag.removeTag(key);
-                }
-            }
-            return true;
-        });
-
     }
 }
