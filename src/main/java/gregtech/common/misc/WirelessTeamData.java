@@ -53,14 +53,21 @@ public class WirelessTeamData implements ITeamData {
         if (++downloadCounter >= registeredDataOutputs) {
             dirtySticks = false;
             downloadCounter = 0;
+            if (cached.isEmpty()) {
+                updateCache();
+            }
         } else {
             // cache the flattening after first "download" to avoid re-flattening per downloading assline.
-            cached = wirelessDataStricks.long2ObjectEntrySet()
-                .stream()
-                .flatMap((entry) -> entry.getValue().set.stream())
-                .collect(ObjectOpenHashSet::new, ObjectOpenHashSet::add, ObjectOpenHashSet::addAll);
+            updateCache();
         }
         return cached;
+    }
+
+    private void updateCache() {
+        cached = wirelessDataStricks.long2ObjectEntrySet()
+            .stream()
+            .flatMap((entry) -> entry.getValue().set.stream())
+            .collect(ObjectOpenHashSet::new, ObjectOpenHashSet::add, ObjectOpenHashSet::addAll);
     }
 
     /**
