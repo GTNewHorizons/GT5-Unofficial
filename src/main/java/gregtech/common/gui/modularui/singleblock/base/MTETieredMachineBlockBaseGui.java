@@ -70,7 +70,7 @@ public class MTETieredMachineBlockBaseGui<T extends MTETieredMachineBlock> {
                 .full()
                 .padding(borderRadius)
                 .child(createContentHolder(panel, syncManager))
-                .childIf(this.supportsTopRightCornerFlow(), this::createTopRightCornerFlow)
+                .childIf(this.supportsTopRightCornerFlow(), () -> createTopRightCornerFlow(panel, syncManager))
                 .childIf(machine.supportsInventoryRow(), () -> createInventoryRow(panel, syncManager)));
     }
 
@@ -241,7 +241,7 @@ public class MTETieredMachineBlockBaseGui<T extends MTETieredMachineBlock> {
         return true;
     }
 
-    protected Flow createTopRightCornerFlow() {
+    protected Flow createTopRightCornerFlow(ModularPanel panel, PanelSyncManager syncManager) {
         return Flow.column()
             .coverChildren()
             .topRel(0)

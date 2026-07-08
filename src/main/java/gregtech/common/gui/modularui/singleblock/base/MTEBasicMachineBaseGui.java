@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import net.minecraftforge.common.util.ForgeDirection;
@@ -58,7 +59,7 @@ public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> extends MTETiered
     protected final UITexture progressBarTexture;
     protected boolean mAddGregTechLogo = false;
 
-    protected final Map<BooleanSyncValue, GTTooltipDataCache.TooltipData> errorMap = new HashMap<>();
+    protected final Map<BooleanSyncValue, Supplier<GTTooltipDataCache.TooltipData>> errorMap = new HashMap<>();
 
     public MTEBasicMachineBaseGui(T machine, BasicUIProperties properties) {
         super(machine);
@@ -103,7 +104,7 @@ public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> extends MTETiered
         syncManager.syncValue("powerfail", powerfailSyncer);
         errorMap.put(
             powerfailSyncer,
-            machine.mTooltipCache.getData(
+            () -> machine.mTooltipCache.getData(
                 "GT5U.machines.stalled_stuttering.tooltip",
                 GTUtility.translate("GT5U.machines.powersource.power")));
     }
@@ -150,7 +151,7 @@ public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> extends MTETiered
             .childIf(properties.maxFluidInputs > 0, () -> createFluidInputSlot().marginLeft(SLOT_SIZE / 2));
     }
 
-    private Widget<?> createAutoOutputButton(boolean isEnabled, PanelSyncManager syncManager, String syncKey,
+    protected Widget<?> createAutoOutputButton(boolean isEnabled, PanelSyncManager syncManager, String syncKey,
         UITexture overlay, String tooltipKey, String disabledTooltipKey) {
         // needed to make the IPanelBuilder lambda and ToggleButton override work
         ToggleButton[] button = new ToggleButton[1];
@@ -233,16 +234,15 @@ public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> extends MTETiered
     }
 
     private IWidget createSideSelectionButton(ModularPanel panel, ForgeDirection direction, IDrawable texture) {
-        InteractionSyncHandler sideSelectionHandler = new InteractionSyncHandler().setOnMousePressed(mouseButton -> {
+        InteractionSyncHandler sideSelectionHandler = new InteractionSyncHandler().setOnMousePressed(_ -> {
             // This is copied 1:1 from MetaTileEntity code because i didn't want to hook into onWrenchRightClick
-            final IGregTechTileEntity meta = this.machine.getBaseMetaTileEntity();
-            if (!meta.isValidFacing(direction)) {
+            if (!baseMetaTileEntity.isValidFacing(direction)) {
                 return;
             }
-            meta.setFrontFacing(direction);
+            baseMetaTileEntity.setFrontFacing(direction);
 
             for (final ForgeDirection s : ForgeDirection.VALID_DIRECTIONS) {
-                final IGregTechTileEntity iGregTechTileEntity = meta.getIGregTechTileEntityAtSide(s);
+                final IGregTechTileEntity iGregTechTileEntity = baseMetaTileEntity.getIGregTechTileEntityAtSide(s);
                 if (iGregTechTileEntity != null) {
                     if (iGregTechTileEntity.getMetaTileEntity() instanceof MTEPipeLaser pipe) pipe.updateNetwork(true);
                     if (iGregTechTileEntity.getMetaTileEntity() instanceof MTEPipeData pipe) pipe.updateNetwork(true);
@@ -331,12 +331,13 @@ public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> extends MTETiered
             .tooltipShowUpTimer(TOOLTIP_DELAY)
             .tooltipBuilder(t -> {
                 if (hasErrorSyncer.getBoolValue()) addTooltipDataToRichTooltip(
-                    () -> errorMap.get(
+                    errorMap.get(
                         errorMap.keySet()
                             .stream()
                             .filter(BooleanSyncValue::getBoolValue)
                             .findFirst()
-                            .get())).accept(t);
+                            .orElseThrow())).accept(t);
+                t.titleMargin();
             });
     }
 
