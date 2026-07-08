@@ -56,6 +56,17 @@ public class UnificationOreAdapter implements IOreAdapter<Materials> {
         MinecraftForge.EVENT_BUS.register(new EventHandler());
     }
 
+    /// Runs the {@link #init()} full-oredict scan directly, for ores registered before
+    /// {@link GTMod#sMaterialsReady} was set (when {@link #onOreRegistered} ignored their event because
+    /// touching {@link Materials} was not yet safe). Called once from GT's preInit, right after that flag
+    /// flips; a no-op if {@link #onOreRegistered} already ran {@link #init()} for a later event by then.
+    public static void catchUp() {
+        if (!initialized) {
+            initialized = true;
+            init();
+        }
+    }
+
     private UnificationOreAdapter() {
 
     }
@@ -69,6 +80,7 @@ public class UnificationOreAdapter implements IOreAdapter<Materials> {
     }
 
     public static void onOreRegistered(OreRegisterEvent event) {
+        if (!GTMod.sMaterialsReady) return;
         if (!initialized) {
             initialized = true;
             init();

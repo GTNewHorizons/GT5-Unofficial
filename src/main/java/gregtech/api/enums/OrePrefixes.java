@@ -2610,7 +2610,13 @@ public class OrePrefixes {
         cellSteamCracked2,
         cellSteamCracked3);
 
-    static {
+    /// The subset of {@link OrePrefixes} static setup that references {@link Materials} constants. Split out
+    /// of a `static {}` block and called explicitly from GT's preInit, immediately after
+    /// {@link Materials#init()}, because {@code OrePrefixes} loads earlier than that: {@code GTMod}'s own
+    /// constructor touches {@link gregtech.common.ores.UnificationOreAdapter}, whose static initializer reads
+    /// {@link #VALUES}, forcing this class to load before any mod's preInit runs -- well before the
+    /// MaterialLib-backed {@code Materials} static initializer can resolve `Materials2Materials` data.
+    public static void lateStaticInit() {
         ingotHot.mHeatDamage = 3.0F;
         cellMolten.mHeatDamage = 3;
         cellPlasma.mHeatDamage = 6.0F;
