@@ -166,6 +166,17 @@ public enum GTBranchDefinition {
         AlleleHelper.instance.set(alleles, LIFESPAN, Lifespan.SHORTEST);
         AlleleHelper.instance.set(alleles, SPEED, Speed.FASTEST);
         AlleleHelper.instance.set(alleles, TERRITORY, Territory.LARGEST);
+    }),
+    LEGENDARY("Summa Potestas", alleles -> {
+        AlleleHelper.instance.set(alleles, TEMPERATURE_TOLERANCE, Tolerance.BOTH_2);
+        AlleleHelper.instance.set(alleles, HUMIDITY_TOLERANCE, Tolerance.BOTH_2);
+        AlleleHelper.instance.set(alleles, TOLERANT_FLYER, true);
+        AlleleHelper.instance.set(alleles, NOCTURNAL, true);
+        AlleleHelper.instance.set(alleles, FLOWER_PROVIDER, Flowers.END);
+        AlleleHelper.instance.set(alleles, LIFESPAN, Lifespan.SHORT);
+        AlleleHelper.instance.set(alleles, FLOWERING, Flowering.SLOW);
+        AlleleHelper.instance.set(alleles, SPEED, Speed.FASTEST);
+        AlleleHelper.instance.set(alleles, TERRITORY, Territory.LARGER);
     });
 
     private static IAllele[] defaultTemplate;

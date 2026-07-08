@@ -8,7 +8,6 @@ import gregtech.api.enums.Mods;
 import gregtech.api.util.GTModHandler;
 import gregtech.common.tileentities.machines.multi.MTETreeFarm;
 import gtPlusPlus.xmod.bop.blocks.BOPBlockRegistrator;
-import gtPlusPlus.xmod.forestry.ForestryTreeHandler;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.MTETreeFarmLegacy;
 

@@ -105,6 +105,7 @@ import gregtech.common.items.DropType;
 import gregtech.common.items.PropolisType;
 import gregtech.loaders.misc.bees.GTAlleleEffect;
 import gregtech.loaders.misc.bees.GTFlowers;
+import gtPlusPlus.core.util.Utils;
 import gtnhlanth.common.register.WerkstoffMaterialPool;
 
 /**
@@ -2729,6 +2730,66 @@ public enum GTBeeDefinition implements IBeeDefinition {
             tMutation.requireResource(GregTechAPI.sBlockMachines, 4684);
             tMutation.addMutationCondition(new GTBees.DimensionMutationCondition(100, "Deep Dark")); // Deep Dark
                                                                                                      // dim
+        }),
+
+    // GTPP STANDALONE Materials
+    DRAGONBLOOD(GTBranchDefinition.LEGENDARY, "Dragon Blood", Materials.Dragonblood, true,
+        Utils.rgbtoHexValue(220, 20, 20), Utils.rgbtoHexValue(20, 20, 20), beeSpecies -> {
+            beeSpecies.addProduct(GTModHandler.getModItem(Forestry.ID, "beeCombs", 1, 8), 0.30f);
+            beeSpecies.addSpecialty(GTBees.combs.getStackForType(CombType.DRAGONBLOOD), 0.10f);
+            beeSpecies.setHumidity(ARID);
+            beeSpecies.setTemperature(EnumTemperature.NORMAL);
+            beeSpecies.setHasEffect();
+        }, template -> {
+            AlleleHelper.instance.set(template, LIFESPAN, Lifespan.LONGER);
+            AlleleHelper.instance.set(template, EFFECT, AlleleEffect.effectAggressive);
+            AlleleHelper.instance.set(template, TEMPERATURE_TOLERANCE, Tolerance.BOTH_3);
+            AlleleHelper.instance.set(template, HUMIDITY_TOLERANCE, Tolerance.BOTH_3);
+        }, dis -> {
+            IBeeMutationCustom tMutation = dis.registerMutation(
+                GTBeeDefinition.DRAGONESSENCE.getSpecies(),
+                GTBeeDefinition.NEUTRONIUM.getSpecies(),
+                2,
+                1f);
+            tMutation.restrictHumidity(ARID);
+            tMutation.requireResource(Dragonblood.getBlock(), 1);
+            tMutation.addMutationCondition(new GTBees.DimensionMutationCondition(1, "End")); // End Dim
+        }),
+
+    DRAGONBLOOD(GTBranchDefinition.LEGENDARY, "Dragon Blood", false, new Color(0xFFFFFF), new Color(0xFFFFFF),
+        beeSpecies -> {
+            beeSpecies.addSpecialty(GTBees.combs.getStackForType(CombType.DRAGONBLOOD), 0.015f);
+            beeSpecies.setHumidity(EnumHumidity.ARID);
+            beeSpecies.setTemperature(NORMAL);
+            beeSpecies.setNocturnal();
+            beeSpecies.setHasEffect();
+            // Makes it only work in the Mega Apiary NOTE: COMB MUST BE SPECIALITY COMB
+            beeSpecies.setJubilanceProvider(JubilanceMegaApiary.instance);
+        }, template -> AlleleHelper.instance.set(template, LIFESPAN, Lifespan.SHORTEST), dis -> {
+            IBeeMutationCustom tMutation = dis.registerMutation(INFINITYCATALYST, COSMICNEUTRONIUM, 1, 10);
+            if (AvaritiaAddons.isModLoaded()) {
+                tMutation.requireResource(GameRegistry.findBlock(AvaritiaAddons.ID, "InfinityChest"), 0);
+            }
+        }),
+
+    FORCE(GTBranchDefinition.LEGENDARY, "Force", Materials.ForceGTPP, true, Utils.rgbtoHexValue(250, 250, 20),
+        Utils.rgbtoHexValue(200, 200, 5), beeSpecies -> {
+            beeSpecies.addProduct(GTBees.combs.getStackForType(CombType.STONE), 0.30f);
+            beeSpecies.addProduct(GTBees.combs.getStackForType(CombType.SALT), 0.15f);
+            beeSpecies.addSpecialty(GTBees.combs.getStackForType(CombType.DRAGONBLOOD), 0.10f);
+            beeSpecies.setHumidity(EnumHumidity.NORMAL);
+            beeSpecies.setTemperature(EnumTemperature.HOT);
+            beeSpecies.setHasEffect();
+        }, template -> {
+            AlleleHelper.instance.set(template, LIFESPAN, Lifespan.NORMAL);
+            AlleleHelper.instance.set(template, EFFECT, AlleleEffect.effectAggressive);
+            AlleleHelper.instance.set(template, TEMPERATURE_TOLERANCE, Tolerance.BOTH_1);
+            AlleleHelper.instance.set(template, HUMIDITY_TOLERANCE, Tolerance.BOTH_1);
+        }, dis -> {
+            IBeeMutationCustom tMutation = dis
+                .registerMutation(GTBeeDefinition.STEEL.getSpecies(), GTBeeDefinition.GOLD.getSpecies(), 10, 1f);
+            tMutation.restrictHumidity(ARID);
+            tMutation.restrictBiomeType(BiomeDictionary.Type.HOT);
         });
 
     private final GTBranchDefinition branch;

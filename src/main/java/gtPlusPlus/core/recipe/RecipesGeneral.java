@@ -1,11 +1,7 @@
 package gtPlusPlus.core.recipe;
 
-import static gregtech.api.enums.Materials.CelestialTungsten;
 import static gregtech.api.enums.Materials.ChromaticGlass;
-import static gregtech.api.enums.Materials.Dragonblood;
-import static gregtech.api.enums.Materials.Hypogen;
 import static gregtech.api.enums.Materials.Obsidian;
-import static gregtech.api.enums.Materials.Rhugnor;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.compressorRecipes;
 import static gregtech.api.recipe.RecipeMaps.fluidSolidifierRecipes;
@@ -327,12 +323,6 @@ public class RecipesGeneral {
         generateWireRecipes(MaterialsAlloy.HG1223);
         generateWireRecipes(MaterialsAlloy.LEAGRISIUM);
         generateWireRecipes(MaterialsAlloy.TRINIUM_TITANIUM);
-        generateWireRecipes(Hypogen);
-        generateWireRecipes(ChromaticGlass);
-        generateWireRecipes(Dragonblood);
-        generateWireRecipes(CelestialTungsten);
-        generateWireRecipes(Rhugnor);
-
         generatePipeRecipes(MaterialsAlloy.STABALLOY);
         generatePipeRecipes(MaterialsAlloy.TANTALLOY_60);
         generatePipeRecipes(MaterialsAlloy.TANTALLOY_61);
