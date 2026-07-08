@@ -105,7 +105,7 @@ public class MTEHatchWirelessDataItemsOutput extends MTEHatch {
 
     @Override
     public void onPostTick(IGregTechTileEntity baseMetaTE, long aTick) {
-        if (baseMetaTE.isServerSide() && (this.dirty)) {
+        if (baseMetaTE.isServerSide() && this.dirty) {
             Team team = TeamManager.getTeamByPlayer(baseMetaTE.getOwnerUuid());
             var data = (WirelessTeamData) team.getData(WirelessTeamData.DATA_KEY);
             long coord = CoordinatePacker.pack(baseMetaTE.getXCoord(), baseMetaTE.getYCoord(), baseMetaTE.getZCoord());

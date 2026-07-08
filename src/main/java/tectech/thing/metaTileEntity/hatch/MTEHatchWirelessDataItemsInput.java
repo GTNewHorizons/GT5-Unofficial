@@ -30,7 +30,6 @@ import tectech.util.CommonValues;
 
 public class MTEHatchWirelessDataItemsInput extends MTEHatchDataAccess {
 
-    private ObjectOpenHashSet<RecipeAssemblyLine> recipes = null;
     private boolean forceUpdate = false;
 
     public MTEHatchWirelessDataItemsInput(int aID, String aName, String aNameRegional, int aTier) {
@@ -123,20 +122,20 @@ public class MTEHatchWirelessDataItemsInput extends MTEHatchDataAccess {
                     forceUpdate = false;
                 }
 
-                ObjectOpenHashSet<RecipeAssemblyLine> oldRecipes = recipes;
-                this.recipes = data.downloadDatasticks();
+                ObjectOpenHashSet<RecipeAssemblyLine> oldRecipes = cachedRecipes;
+                this.cachedRecipes = data.downloadDatasticks();
                 // Only notify when the available recipe set changed (by content, not count, so a same-size swap of
                 // wireless data sticks still fires), to avoid re-checking every download cycle.
-                if (recipesChanged(oldRecipes, recipes)) notifyWatchers();
+                if (recipesChanged(oldRecipes, cachedRecipes)) notifyWatchers();
             }
         }
     }
 
     @Override
     public List<RecipeAssemblyLine> getAssemblyLineRecipes() {
-        if (recipes == null) return Collections.emptyList();
+        if (cachedRecipes == null) return Collections.emptyList();
 
-        return recipes.stream()
+        return cachedRecipes.stream()
             .toList();
     }
 
