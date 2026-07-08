@@ -1029,11 +1029,18 @@ public final class GTGuiTextures {
         .location(GregTech.ID, "gui/overlay_slot/toolbox_slot_battery")
         .build();
 
+    public static final UITexture OVERLAY_SLOT_TURBINE = UITexture.builder()
+        .location(GTPlusPlus.ID, "gui/overlay_slot/turbine")
+        .fullImage()
+        .canApplyTheme()
+        .build();
+
     public static final UITexture OVERLAY_SLOT_MODULE = UITexture.builder()
         .location(MainMod.MOD_ID, "GUI/overlay_slot/module")
         .fullImage()
         .canApplyTheme()
         .build();
+
     public static final UITexture OVERLAY_SLOT_DISH = UITexture.builder()
         .location(MainMod.MOD_ID, "GUI/overlay_slot/dish")
         .fullImage()
