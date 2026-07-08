@@ -36,7 +36,7 @@ import tectech.util.CommonValues;
  */
 public class MTEHatchDataOutput extends MTEHatchDataConnector<QuantumDataPacket> {
 
-    private long history;
+    private long computation;
 
     public long requestedComputation;
     public boolean allowComputationConfiguring;
@@ -103,21 +103,20 @@ public class MTEHatchDataOutput extends MTEHatchDataConnector<QuantumDataPacket>
     public void moveAround(IGregTechTileEntity aBaseMetaTileEntity) {
         super.moveAround(aBaseMetaTileEntity);
 
-        history = q == null ? 0 : q.getContent();
-
+        computation = q == null ? 0 : q.getContent();
         q = null;
     }
 
     @Override
     protected void resetHistory() {
-        history = 0;
+        computation = 0;
     }
 
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        tag.setLong("computation", history);
+        tag.setLong("computation", computation);
     }
 
     @Override
