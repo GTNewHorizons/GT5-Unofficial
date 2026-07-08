@@ -249,6 +249,17 @@ public abstract class MTEBECMultiblockBase<TSelf extends MTEBECMultiblockBase<TS
         }
     }
 
+    @Override
+    public String[] getInfoData() {
+        List<String> data = new ArrayList<>(Arrays.asList(super.getInfoData()));
+
+        if (connectsToNetwork()) {
+            data.add("BEC Network: " + (network == null ? "None" : network.id));
+        }
+
+        return data.toArray(new String[0]);
+    }
+
     public enum BECHatches implements IHatchElement<MTEBECMultiblockBase<?>> {
 
         Hatch(MTEHatchBEC.class) {
