@@ -229,6 +229,16 @@ public class GTMod {
     public static GTProxy gregtechproxy;
     public static final boolean DEBUG = Boolean.getBoolean("gt.debug");
 
+    /// Set once {@link gregtech.api.enums.Materials#init()} has resolved every legacy `Materials` field from
+    /// the MaterialLib-backed {@link gregtech.loaders.materials.MaterialsLegacyBridge}. `OreRegisterEvent`
+    /// listeners registered during mod construction ({@link gregtech.common.GTProxy#registerOre} and
+    /// {@link gregtech.common.ores.UnificationOreAdapter#onOreRegistered}) can otherwise fire -- from another
+    /// mod registering ores during its own construction or preInit, with no ordering guarantee relative to
+    /// GT's own preInit -- before `Materials2Materials` is populated, and must check this flag and skip
+    /// instead of touching `Materials`; the explicit catch-up calls in {@link #onPreInitialization} process
+    /// whatever was skipped once this flips true.
+    public static volatile boolean sMaterialsReady = false;
+
     public static GTAchievements achievements;
     public static final Logger GT_FML_LOGGER = LogManager.getLogger("GregTech GTNH");
 
@@ -325,6 +335,10 @@ public class GTMod {
         new EnchantmentRadioactivity();
 
         Materials.init();
+        OrePrefixes.lateStaticInit();
+        sMaterialsReady = true;
+        proxy.catchUpPreExistingOreDictEntries();
+        UnificationOreAdapter.catchUp();
 
         GTPreLoad.initLocalization(
             event.getModConfigurationDirectory()

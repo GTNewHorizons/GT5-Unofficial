@@ -28,6 +28,7 @@ import com.ruling_0.materiallib.api.StandardProperties;
 
 import bartworks.system.material.Werkstoff;
 import gregtech.api.GregTechAPI;
+import gregtech.api.enums.Dyes;
 import gregtech.api.enums.MaterialIconRegistry;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -38,6 +39,7 @@ import gregtech.api.material.AspectRefStack;
 import gregtech.api.material.FluidNames;
 import gregtech.api.material.FluidRef;
 import gregtech.api.material.GTMaterialFlag;
+import gregtech.api.material.GTMaterialGenerationFlag;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MaterialRef;
 import gregtech.api.material.MaterialRefStack;
@@ -101,6 +103,7 @@ public final class MaterialDataDump {
         json.put("rgba", toIntArray(material.mRGBa));
         json.put("moltenRgba", toIntArray(material.mMoltenRGBa));
         json.put("iconSet", material.mIconSet != null ? material.mIconSet.mSetName : null);
+        json.put("color", material.mColor != null && material.mColor != Dyes._NULL ? material.mColor.name() : null);
         json.put("element", material.mElement != null ? material.mElement.name() : null);
         json.put("meltingPoint", material.mMeltingPoint);
         json.put("blastTemp", (int) material.mBlastFurnaceTemp);
@@ -115,6 +118,20 @@ public final class MaterialDataDump {
         json.put("toolSpeed", material.mToolSpeed);
         json.put("toolDurability", material.mDurability);
         json.put("toolQuality", material.mToolQuality);
+        json.put("unifiable", material.mUnifiable);
+        json.put("densityMultiplier", material.mDensityMultiplier);
+        json.put("densityDivider", material.mDensityDivider);
+        json.put("steamMultiplier", material.mSteamMultiplier);
+        json.put("gasMultiplier", material.mGasMultiplier);
+        json.put("plasmaMultiplier", material.mPlasmaMultiplier);
+        json.put("generationFlags", dumpGenerationFlags(material));
+        json.put("hasCorrespondingFluid", material.hasCorrespondingFluid());
+        json.put("hasCorrespondingGas", material.hasCorrespondingGas());
+        json.put("hasElectrolyzerRecipe", (material.mExtraData & 1) != 0);
+        json.put("hasCentrifugeRecipe", (material.mExtraData & 2) != 0);
+        json.put("canBeCracked", material.canBeCracked());
+        json.put("hasGlowingOre", material.hasGlowingOre());
+        json.put("processingMaterialTierEU", material.getProcessingMaterialTierEU());
         json.put("enchants", dumpEnchants(material));
         json.put("subTags", dumpSubTags(material));
         json.put("composition", dumpComposition(material.mMaterialList));
@@ -132,7 +149,29 @@ public final class MaterialDataDump {
         json.put("fluids", dumpFluids(material));
         json.put("hasGas", material.mHasGas);
         json.put("generatedPrefixes", dumpGeneratedPrefixes(material));
+        json.put("addedPrefixes", dumpAddedPrefixes(material));
+        json.put("removedPrefixes", dumpRemovedPrefixes(material));
         return json;
+    }
+
+    /// `MaterialBuilder#addOrePrefix` exceptions: prefixes this material generates regardless of its
+    /// {@link #dumpGenerationFlags generation flags}, e.g. Iron's `nanite`.
+    private static List<String> dumpAddedPrefixes(Materials material) {
+        List<String> out = new ArrayList<>();
+        for (OrePrefixes prefix : OrePrefixes.VALUES) {
+            if (prefix.mGeneratedItems.contains(material)) out.add(prefix.getName());
+        }
+        return out;
+    }
+
+    /// `MaterialBuilder#removeOrePrefix` exceptions: prefixes this material never generates despite its
+    /// {@link #dumpGenerationFlags generation flags}, e.g. Iron's `ingot` (vanilla already supplies one).
+    private static List<String> dumpRemovedPrefixes(Materials material) {
+        List<String> out = new ArrayList<>();
+        for (OrePrefixes prefix : OrePrefixes.VALUES) {
+            if (prefix.mNotGeneratedItems.contains(material)) out.add(prefix.getName());
+        }
+        return out;
     }
 
     private static String selfOrNull(Materials owner, Materials value) {
@@ -152,6 +191,20 @@ public final class MaterialDataDump {
         json.put("name", enchantment.getName());
         json.put("level", level);
         return json;
+    }
+
+    private static List<String> dumpGenerationFlags(Materials material) {
+        List<String> flags = new ArrayList<>();
+        if (material.hasDustItems()) flags.add("DUST");
+        if (material.hasMetalItems()) flags.add("METAL");
+        if (material.hasGemItems()) flags.add("GEM");
+        if (material.hasOresItems()) flags.add("ORE");
+        if (material.hasCell()) flags.add("CELL");
+        if (material.hasPlasma()) flags.add("PLASMA");
+        if (material.hasToolHeadItems()) flags.add("TOOL_HEAD");
+        if (material.hasGearItems()) flags.add("GEAR");
+        if (material.hasEmpty()) flags.add("EMPTY");
+        return flags;
     }
 
     private static List<String> dumpSubTags(Materials material) {
@@ -453,7 +506,10 @@ public final class MaterialDataDump {
     private static Map<String, Object> dumpMlMaterial(com.ruling_0.materiallib.api.Material material) {
         Map<String, Object> json = new LinkedHashMap<>();
         json.put("name", material.getName());
+        json.put("legacyName", material.getProperty(GTMaterialProperties.LEGACY_NAME));
         json.put("tint", material.getProperty(StandardProperties.TINT));
+        json.put("argb", material.getProperty(GTMaterialProperties.ARGB));
+        json.put("moltenArgb", material.getProperty(GTMaterialProperties.MOLTEN_ARGB));
         json.put(
             "textureSet",
             material.getProperty(StandardProperties.TEXTURE_SET)
@@ -488,7 +544,39 @@ public final class MaterialDataDump {
         json.put("flags", dumpMlFlags(material.getProperty(GTMaterialProperties.FLAGS)));
         json.put("aspects", dumpMlAspects(material.getProperty(GTMaterialProperties.ASPECTS)));
         json.put("fluids", dumpMlFluids(material.getProperty(GTMaterialProperties.LEGACY_FLUIDS)));
+        json.put("color", material.getProperty(GTMaterialProperties.DYE));
+        json.put("autoBlast", material.getProperty(GTMaterialProperties.AUTO_BLAST_FURNACE_RECIPES));
+        json.put("autoVacuum", material.getProperty(GTMaterialProperties.AUTO_VACUUM_FREEZER_RECIPES));
+        json.put("autoRecycle", material.getProperty(GTMaterialProperties.AUTO_RECYCLE_RECIPES));
+        json.put("toolEnchantment", material.getProperty(GTMaterialProperties.TOOL_ENCHANTMENT));
+        json.put("toolEnchantmentLevel", material.getProperty(GTMaterialProperties.TOOL_ENCHANTMENT_LEVEL));
+        json.put("armorEnchantment", material.getProperty(GTMaterialProperties.ARMOR_ENCHANTMENT));
+        json.put("armorEnchantmentLevel", material.getProperty(GTMaterialProperties.ARMOR_ENCHANTMENT_LEVEL));
+        json.put("unifiable", material.getProperty(GTMaterialProperties.UNIFIABLE));
+        json.put("densityMultiplier", material.getProperty(GTMaterialProperties.DENSITY_MULTIPLIER));
+        json.put("densityDivider", material.getProperty(GTMaterialProperties.DENSITY_DIVIDER));
+        json.put("steamMultiplier", material.getProperty(GTMaterialProperties.STEAM_MULTIPLIER));
+        json.put("gasMultiplier", material.getProperty(GTMaterialProperties.GAS_MULTIPLIER));
+        json.put("plasmaMultiplier", material.getProperty(GTMaterialProperties.PLASMA_MULTIPLIER));
+        json.put("generationFlags", dumpMlGenerationFlags(material.getProperty(GTMaterialProperties.GENERATION_FLAGS)));
+        json.put("hasCorrespondingFluid", material.getProperty(GTMaterialProperties.HAS_CORRESPONDING_FLUID));
+        json.put("hasCorrespondingGas", material.getProperty(GTMaterialProperties.HAS_CORRESPONDING_GAS));
+        json.put("hasElectrolyzerRecipe", material.getProperty(GTMaterialProperties.HAS_ELECTROLYZER_RECIPE));
+        json.put("hasCentrifugeRecipe", material.getProperty(GTMaterialProperties.HAS_CENTRIFUGE_RECIPE));
+        json.put("canBeCracked", material.getProperty(GTMaterialProperties.CAN_BE_CRACKED));
+        json.put("hasGlowingOre", material.getProperty(GTMaterialProperties.HAS_GLOWING_ORE));
+        json.put("processingMaterialTierEU", material.getProperty(GTMaterialProperties.PROCESSING_MATERIAL_TIER_EU));
+        json.put("addedPrefixes", material.getProperty(GTMaterialProperties.ADDED_PREFIXES));
+        json.put("removedPrefixes", material.getProperty(GTMaterialProperties.REMOVED_PREFIXES));
         return json;
+    }
+
+    private static List<String> dumpMlGenerationFlags(EnumSet<GTMaterialGenerationFlag> flags) {
+        List<String> out = new ArrayList<>();
+        if (flags == null) return out;
+        for (GTMaterialGenerationFlag flag : flags) out.add(flag.name());
+        Collections.sort(out);
+        return out;
     }
 
     private static List<String> dumpMlShapes(com.ruling_0.materiallib.api.Material material) {

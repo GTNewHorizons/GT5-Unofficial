@@ -804,7 +804,14 @@ public class GTProxy implements IFuelHandler {
             .getRegisteredFluidContainerData()) {
             onFluidContainerRegistration(new FluidContainerRegistry.FluidContainerRegisterEvent(tData));
         }
-        // Register previously registered oredict entries (from Forge) with the GT oredict handler.
+    }
+
+    /// Registers oredict entries other mods (or Forge itself) already registered before this proxy was
+    /// constructed. Split out of the constructor and called explicitly from GT's preInit, after
+    /// {@link gregtech.api.enums.Materials#init()}: {@link #registerOre} reads {@link Materials} constants,
+    /// and the proxy is constructed during FML's mod-construction phase, before the MaterialLib-backed
+    /// `Materials` static initializer can resolve `Materials2Materials` data.
+    public void catchUpPreExistingOreDictEntries() {
         for (String tOreName : OreDictionary.getOreNames()) {
             for (ItemStack itemStack : OreDictionary.getOres(tOreName)) {
                 registerOre(new OreDictionary.OreRegisterEvent(tOreName, itemStack));
@@ -1516,6 +1523,7 @@ public class GTProxy implements IFuelHandler {
 
     @SubscribeEvent
     public void registerOre(OreDictionary.OreRegisterEvent aEvent) {
+        if (!GTMod.sMaterialsReady) return;
         ModContainer tContainer = Loader.instance()
             .activeModContainer();
         String aMod = tContainer == null ? "UNKNOWN" : tContainer.getModId();

@@ -50,7 +50,7 @@ import gregtech.common.render.items.TranscendentMetalRenderer;
 import gregtech.common.render.items.UniversiumRenderer;
 import gregtech.loaders.materialprocessing.ProcessingConfig;
 import gregtech.loaders.materialprocessing.ProcessingModSupport;
-import gregtech.loaders.materials.MaterialsInit;
+import gregtech.loaders.materials.MaterialsLegacyBridge;
 
 @SuppressWarnings("unused") // API Legitimately has unused Members and Methods
 public class Materials implements IColorModulationContainer, IOreMaterial {
@@ -1142,7 +1142,7 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     private static Materials[] MATERIALS_ARRAY = new Materials[] {};
 
     static {
-        MaterialsInit.load();
+        MaterialsLegacyBridge.load();
 
         setOreByproducts();
         setSmeltingInto();
