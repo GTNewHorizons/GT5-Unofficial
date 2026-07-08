@@ -108,23 +108,29 @@ public class MTEEncasementWrapperModule extends MTENanochipAssemblyModuleBase<MT
                     TOOLTIP_CCs))
             .addSeparator()
             .addInfo(tooltipFlavorText(translateToLocal("GT5U.tooltip.nac.module.encasement_wrapper.flavor.1")))
-            .beginStructureBlock(7, 9, 7, false)
+            .beginStructureBlock(7, 7, 9, false)
             .addController(translateToLocal("GT5U.tooltip.nac.interface.structure.module_controller"))
             // Nanochip Mesh Interface Casing
-            .addCasingInfoExactly(translateToLocal("gt.blockcasings12.1.name"), 47, false)
+            .addCasing("47", translateToLocal("gt.blockcasings12.1.name"), false)
             // Nanochip Complex Glass
-            .addCasingInfoExactly(translateToLocal("gt.blockglass1.8.name"), 40, false)
+            .addCasing("40", translateToLocal("gt.blockglass1.8.name"), false)
             // Nanochip Reinforcement Casing
-            .addCasingInfoExactly(translateToLocal("gt.blockcasings12.2.name"), 32, false)
+            .addCasing("32", translateToLocal("gt.blockcasings12.2.name"), false)
             // Quantium Frame Box
-            .addCasingInfoExactly(
-                translateToLocal("gt.blockframes.10.name").replace("%material", Materials.Quantium.getLocalizedName()),
-                32,
-                false)
-            .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCI)
-            .addStructureInfo(TOOLTIP_STRUCTURE_BASE_VCO)
-            .addStructureInfoSeparator()
-            .addStructureInfo(translateToLocal("GT5U.tooltip.nac.interface.structure.module_description"))
+            .addCasing("32", "Quantium Frame Box", false)
+            .addMiscHatch(
+                "0+",
+                TOOLTIP_VCI_LONG,
+                translateToLocal("GT5U.tooltip.nac.interface.structure.module_hatches"),
+                3)
+            .addMiscHatch(
+                "0+",
+                TOOLTIP_VCO_LONG,
+                translateToLocal("GT5U.tooltip.nac.interface.structure.module_hatches"),
+                3)
+            .addStructureInfo("")
+            .addStructureFooter(translateToLocal("GT5U.tooltip.nac.interface.structure.module_cost"))
+            .addStructureFooter(translateToLocal("GT5U.tooltip.nac.interface.structure.module_power"))
             .toolTipFinisher();
     }
 

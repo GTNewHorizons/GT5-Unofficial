@@ -115,6 +115,7 @@ public class MTEHatchDataItemsInput extends MTEHatchDataAccess implements IConne
     }
 
     public void setContents(ALRecipeDataPacket iIn) {
+        List<RecipeAssemblyLine> oldRecipes = recipes;
         if (iIn == null) {
             recipes = null;
         } else {
@@ -125,6 +126,9 @@ public class MTEHatchDataItemsInput extends MTEHatchDataAccess implements IConne
                 recipes = null;
             }
         }
+        // The upstream re-pushes the packet every cycle as a keep-alive, so only notify when the available recipe set
+        // actually changed - compared by content (not just count) so a same-size data-stick swap still fires.
+        if (recipesChanged(oldRecipes, recipes)) notifyWatchers();
     }
 
     @Override

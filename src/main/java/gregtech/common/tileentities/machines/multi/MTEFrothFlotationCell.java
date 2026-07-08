@@ -39,8 +39,10 @@ import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
+import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
@@ -48,7 +50,6 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTStructureUtility;
@@ -59,7 +60,7 @@ import gtPlusPlus.core.material.MaterialsAlloy;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class MTEFrothFlotationCell extends MTEExtendedPowerMultiBlockBase<MTEFrothFlotationCell>
-    implements ISurvivalConstructable {
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     private static final String STRUCTURE_PIECE_MAIN = "main";
     private static final int OFFSET_X = 5;
@@ -119,17 +120,19 @@ public class MTEFrothFlotationCell extends MTEExtendedPowerMultiBlockBase<MTEFro
             .addInfo("You can only ever process one type of material per controller")
             .addPerfectOCInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(11, 5, 11, false)
+            .beginStructureBlock(11, 11, 5, false)
             .addController("Front center, 2nd layer")
-            .addCasingInfoMin("Inconel Reinforced Casing", 118, false)
-            .addCasingInfoExactly("Flotation Cell Casing", 31, false)
-            .addCasingInfoExactly("Staballoy Frame Box", 20, false)
-            .addCasingInfoExactly("Inconel-690 Frame Box", 8, false)
-            .addInputBus("Bottom Casing", 1)
-            .addInputHatch("Bottom Casing", 1)
-            .addOutputHatch("Bottom Casing", 1)
-            .addEnergyHatch("Bottom Casing", 1)
-            .addMaintenanceHatch("Bottom Casing", 1)
+            .addCasing("90-120", "Inconel Reinforced Casing", false)
+            .addCasing("31", "Flotation Cell Casing", false)
+            .addCasing("20", "Staballoy Frame Box", false)
+            .addCasing("8", "Inconel-690 Frame Box", false)
+            .addEnergyHatch("1+", "Any bottom casing", 1)
+            .addMaintenanceHatch("1", "Any bottom casing", 1)
+            .addInputBus("1+", "Any bottom casing", 1)
+            .addInputHatch("1+", "Any bottom casing", 1)
+            .addOutputHatch("1+", "Any bottom casing", 1)
+            .addStructureInfo("")
+            .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.WaterFree"))
             .toolTipFinisher(GTAuthors.AuthorNoc.get());
         return tt;
     }
@@ -152,28 +155,20 @@ public class MTEFrothFlotationCell extends MTEExtendedPowerMultiBlockBase<MTEFro
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
-        if (side == aFacing) {
-            if (aActive) return new ITexture[] { Casings.InconelReinforcedCasing.getCasingTexture(),
-                TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.oMCDFrothFlotationCellActive)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.oMCDFrothFlotationCellActiveGlow)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { Casings.InconelReinforcedCasing.getCasingTexture(), TextureFactory.builder()
-                .addIcon(TexturesGtBlock.oMCDFrothFlotationCell)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.oMCDFrothFlotationCellGlow)
-                    .extFacing()
-                    .glow()
-                    .build() };
-        }
-        return new ITexture[] { Casings.InconelReinforcedCasing.getCasingTexture() };
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            TexturesGtBlock.oMCDFrothFlotationCell,
+            TexturesGtBlock.oMCDFrothFlotationCellGlow,
+            TexturesGtBlock.oMCDFrothFlotationCellActive,
+            TexturesGtBlock.oMCDFrothFlotationCellActiveGlow);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Casings.InconelReinforcedCasing.getCasingTexture();
     }
 
     @Override
@@ -214,9 +209,9 @@ public class MTEFrothFlotationCell extends MTEExtendedPowerMultiBlockBase<MTEFro
         checkCasingMin(errors, casingAmount, 90);
         checkHasEnergyHatch(errors);
         checkHasMaintenanceHatch(errors);
-        checkHasOutputHatch(errors);
-        checkHasInputHatch(errors);
         checkHasInputBus(errors);
+        checkHasInputHatch(errors);
+        checkHasOutputHatch(errors);
         if (!errors.isEmpty()) return;
         needsWaterFill = true;
     }

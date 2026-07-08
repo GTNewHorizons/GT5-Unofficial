@@ -30,15 +30,16 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.SoundResource;
+import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
@@ -49,7 +50,7 @@ import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.thermalfoundation.fluid.TFFluids;
 
 public class MTECryogenicFreezer extends MTEExtendedPowerMultiBlockBase<MTECryogenicFreezer>
-    implements ISurvivalConstructable {
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     private static final int OFFSET_X = 2;
     private static final int OFFSET_Y = 2;
@@ -82,18 +83,16 @@ public class MTECryogenicFreezer extends MTEExtendedPowerMultiBlockBase<MTECryog
             .addStaticEuEffInfo(0.9f)
             .addInfo("Consumes 10L of Gelid Cryotheum per second during operation")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(5, 4, 7, true)
-            .addController("Front center")
-            .addCasingInfoMin("Advanced Cryogenic Casing", 46, false)
-            .addCasingInfoExactly("Grisium Frame Box", 24, false)
-            .addInputBus("Any Casing", 1)
-            .addOutputBus("Any Casing", 1)
-            .addInputHatch("Any Casing", 1)
-            .addOutputHatch("Any Casing", 1)
-            .addEnergyHatch("Any Casing", 1)
-            .addMufflerHatch("Any Casing", 1)
-            .addMaintenanceHatch("Any Casing", 1)
-            .addOtherStructurePart("Cryotheum Cooling Hatch", "Any Casing", 1)
+            .beginStructureBlock(7, 5, 4, true)
+            .addController("Front center, 2nd layer")
+            .addCasing("46-56", "Advanced Cryogenic Casing", false)
+            .addCasing("24", "Grisium Frame Box", false)
+            .addMiscHatch("1", "Cryotheum Cooling Hatch", "Any casing", 1)
+            .addEnergyHatch("1+", "Any casing", 1)
+            .addMaintenanceHatch("1", "Any casing", 1)
+            .addMufflerHatch("1", "Any casing", 1)
+            .addInputAny("1+", "Any casing", 1)
+            .addOutputAny("1+", "Any casing", 1)
             .addStructureAuthors(EnumChatFormatting.GOLD + "REDR")
             .toolTipFinisher();
         return tt;
@@ -157,40 +156,31 @@ public class MTECryogenicFreezer extends MTEExtendedPowerMultiBlockBase<MTECryog
         casingAmount = 0;
         if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z, errors)) return;
         checkCasingMin(errors, casingAmount, 46);
-        checkHasMufflerHatch(errors);
-        checkHasMaintenanceHatch(errors);
+        checkHatchMin(errors, CryotheumHatch, 1);
         checkHasAnyEnergy(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasMufflerHatch(errors);
         checkHasAnyInput(errors);
         checkHasAnyOutput(errors);
-        checkHatchMin(errors, CryotheumHatch, 1);
     }
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
-        if (side == aFacing) {
-            if (aActive) return new ITexture[] { Casings.AdvancedCryogenicCasing.getCasingTexture(),
-                TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.oMCAIndustrialVacuumFreezerActive)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.oMCAIndustrialVacuumFreezerActiveGlow)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { Casings.AdvancedCryogenicCasing.getCasingTexture(), TextureFactory.builder()
-                .addIcon(TexturesGtBlock.oMCAIndustrialVacuumFreezer)
-                .extFacing()
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.oMCAIndustrialVacuumFreezerGlow)
-                    .extFacing()
-                    .glow()
-                    .build() };
-        }
-        return new ITexture[] { Casings.AdvancedCryogenicCasing.getCasingTexture() };
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            TexturesGtBlock.oMCAIndustrialVacuumFreezer,
+            TexturesGtBlock.oMCAIndustrialVacuumFreezerGlow,
+            TexturesGtBlock.oMCAIndustrialVacuumFreezerActive,
+            TexturesGtBlock.oMCAIndustrialVacuumFreezerActiveGlow);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Casings.AdvancedCryogenicCasing.getCasingTexture();
     }
 
     @Override
