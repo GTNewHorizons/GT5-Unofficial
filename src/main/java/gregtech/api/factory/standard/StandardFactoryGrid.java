@@ -56,7 +56,7 @@ public abstract class StandardFactoryGrid<TSelf extends StandardFactoryGrid<TSel
             addEdge(element, adj);
 
             element.onEdgeAdded(adj);
-            adj.onEdgeRemoved(element);
+            adj.onEdgeAdded(element);
         }
 
         if (element.getNetwork() == null) {
