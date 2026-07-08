@@ -16,13 +16,17 @@ import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.render.TextureFactory;
 import gregtech.mixin.interfaces.accessors.EntityPlayerMPAccessor;
+import tectech.mechanics.dataTransport.ALRecipeDataPacket;
 import tectech.mechanics.dataTransport.DataPacket;
+import tectech.mechanics.dataTransport.QuantumDataPacket;
 import tectech.mechanics.pipe.IConnectsToDataPipe;
+import tectech.thing.metaTileEntity.pipe.MTEPipeData;
 import tectech.util.CommonValues;
 
 /**
@@ -109,7 +113,22 @@ public abstract class MTEHatchDataConnector<T extends DataPacket<?>> extends MTE
         }
     }
 
-    public abstract void moveAround(IGregTechTileEntity aBaseMetaTileEntity);
+    public void moveAround(IGregTechTileEntity aBaseMetaTileEntity) {
+        IConnectsToDataPipe current = this, source = this, next;
+        int range = 0;
+        while ((next = current.getNext(source)) != null && range++ < 1000) {
+            if (next instanceof MTEHatchDataItemsInput dataItemsInput) {
+                dataItemsInput.setContents((ALRecipeDataPacket) q);
+                break;
+            } else if (next instanceof MTEHatchDataInput dataInput) {
+                dataInput.setContents(((QuantumDataPacket) q));
+                break;
+            }
+
+            source = current;
+            current = next;
+        }
+    }
 
     protected void resetHistory() {
 
@@ -178,5 +197,29 @@ public abstract class MTEHatchDataConnector<T extends DataPacket<?>> extends MTE
     @Override
     public byte getColorization() {
         return getBaseMetaTileEntity().getColorization();
+    }
+
+    @Override
+    public IConnectsToDataPipe getNext(IConnectsToDataPipe source /* ==this */) {
+        IGregTechTileEntity base = getBaseMetaTileEntity();
+        byte color = base.getColorization();
+        if (color < 0) {
+            return null;
+        }
+        IGregTechTileEntity next = base.getIGregTechTileEntityAtSide(base.getFrontFacing());
+        if (next == null) {
+            return null;
+        }
+        IMetaTileEntity meta = next.getMetaTileEntity();
+        if (meta instanceof MTEPipeData) {
+            ((MTEPipeData) meta).markUsed();
+            return (IConnectsToDataPipe) meta;
+        } else if (meta instanceof MTEHatchDataInput hatchDataInput && hatchDataInput.getColorization() == color
+            && hatchDataInput.canConnectData(
+                base.getFrontFacing()
+                    .getOpposite())) {
+                        return (IConnectsToDataPipe) meta;
+                    }
+        return null;
     }
 }
