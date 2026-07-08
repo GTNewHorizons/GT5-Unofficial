@@ -31,7 +31,6 @@ import tectech.util.CommonValues;
 public class MTEHatchDataItemsInput extends MTEHatchDataAccess implements IConnectsToDataPipe {
 
     public boolean delDelay = true;
-    private ObjectOpenHashSet<RecipeAssemblyLine> recipes;
 
     public MTEHatchDataItemsInput(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier);
@@ -114,27 +113,27 @@ public class MTEHatchDataItemsInput extends MTEHatchDataAccess implements IConne
     }
 
     public void setContents(ALRecipeDataPacket iIn) {
-        ObjectOpenHashSet<RecipeAssemblyLine> oldRecipes = recipes;
+        ObjectOpenHashSet<RecipeAssemblyLine> oldRecipes = cachedRecipes;
         if (iIn == null) {
-            recipes = null;
+            cachedRecipes = null;
         } else {
             if (iIn.getContent().length > 0) {
-                recipes = new ObjectOpenHashSet<>(iIn.getContent());
+                cachedRecipes = new ObjectOpenHashSet<>(iIn.getContent());
                 delDelay = true;
             } else {
-                recipes = null;
+                cachedRecipes = null;
             }
         }
         // The upstream re-pushes the packet every cycle as a keep-alive, so only notify when the available recipe set
         // actually changed - compared by content (not just count) so a same-size data-stick swap still fires.
-        if (recipesChanged(oldRecipes, recipes)) notifyWatchers();
+        if (recipesChanged(oldRecipes, cachedRecipes)) notifyWatchers();
     }
 
     @Override
     public List<RecipeAssemblyLine> getAssemblyLineRecipes() {
-        if (recipes == null) return Collections.emptyList();
+        if (cachedRecipes == null) return Collections.emptyList();
 
-        return recipes.stream()
+        return cachedRecipes.stream()
             .toList();
     }
 
@@ -142,10 +141,10 @@ public class MTEHatchDataItemsInput extends MTEHatchDataAccess implements IConne
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         NBTTagCompound stacksTag = new NBTTagCompound();
-        if (recipes != null) {
-            stacksTag.setInteger("count", recipes.size());
-            for (int i = 0; i < recipes.size(); i++) {
-                stacksTag.setTag(Integer.toString(i), AssemblyLineUtils.saveRecipe(recipes.get(i)));
+        if (cachedRecipes != null) {
+            stacksTag.setInteger("count", cachedRecipes.size());
+            for (int i = 0; i < cachedRecipes.size(); i++) {
+                stacksTag.setTag(Integer.toString(i), AssemblyLineUtils.saveRecipe(cachedRecipes.get(i)));
             }
         }
         aNBT.setTag("data_stacks", stacksTag);
@@ -157,13 +156,13 @@ public class MTEHatchDataItemsInput extends MTEHatchDataAccess implements IConne
         NBTTagCompound stacksTag = aNBT.getCompoundTag("data_stacks");
         int count = stacksTag.getInteger("count");
         if (count > 0) {
-            recipes = new ObjectOpenHashSet<>();
+            cachedRecipes = new ObjectOpenHashSet<>();
 
             for (int i = 0; i < count; i++) {
-                recipes.addAll(AssemblyLineUtils.loadRecipe(stacksTag.getCompoundTag(Integer.toString(i))));
+                cachedRecipes.addAll(AssemblyLineUtils.loadRecipe(stacksTag.getCompoundTag(Integer.toString(i))));
             }
 
-            if (recipes.isEmpty()) recipes = null;
+            if (cachedRecipes.isEmpty()) cachedRecipes = null;
         }
     }
 
@@ -171,7 +170,7 @@ public class MTEHatchDataItemsInput extends MTEHatchDataAccess implements IConne
     public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         super.onPreTick(aBaseMetaTileEntity, aTick);
         if (CommonValues.MOVE_AT == aTick % 20) {
-            if (recipes == null) {
+            if (cachedRecipes == null) {
                 getBaseMetaTileEntity().setActive(false);
             } else {
                 getBaseMetaTileEntity().setActive(true);

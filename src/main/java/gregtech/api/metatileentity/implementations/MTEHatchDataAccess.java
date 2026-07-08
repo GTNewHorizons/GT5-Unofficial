@@ -35,7 +35,7 @@ public class MTEHatchDataAccess extends MTEHatch implements ISmartInputHatch {
 
     private int timeout = 4;
 
-    private ObjectOpenHashSet<RecipeAssemblyLine> cachedRecipes = null;
+    protected ObjectOpenHashSet<RecipeAssemblyLine> cachedRecipes = null;
 
     public MTEHatchDataAccess(int aID, String aName, String aNameRegional, int aTier) {
         super(
