@@ -15,7 +15,15 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.CraftingManager;
+import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.item.crafting.ShapedRecipes;
+import net.minecraft.item.crafting.ShapelessRecipes;
 import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.oredict.ShapedOreRecipe;
+import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -24,9 +32,12 @@ import com.google.gson.GsonBuilder;
 import com.ruling_0.materiallib.api.Family;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 import com.ruling_0.materiallib.api.Shape;
+import com.ruling_0.materiallib.api.ShapeItem;
 import com.ruling_0.materiallib.api.StandardProperties;
 
 import bartworks.system.material.Werkstoff;
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.common.registry.GameRegistry.UniqueIdentifier;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.MaterialIconRegistry;
@@ -46,7 +57,9 @@ import gregtech.api.material.MU;
 import gregtech.api.material.MaterialRef;
 import gregtech.api.material.MaterialRefStack;
 import gregtech.api.objects.MaterialStack;
+import gregtech.api.recipe.RecipeMap;
 import gregtech.api.util.GTLog;
+import gregtech.api.util.GTRecipe;
 import gregtech.client.iconContainers.blocks.GTBlockIconContainer;
 import gregtech.common.blocks.BlockMetal;
 import gregtech.common.fluid.GTFluid;
@@ -66,6 +79,13 @@ public final class MaterialDataDump {
         .serializeSpecialFloatingPointValues()
         .create();
 
+    /// Used only for `recipe-census.json`: pretty-printing tens of thousands of recipe digests inflates the file
+    /// without aiding the tooling that consumes it (a straight text diff), so this instance omits it.
+    private static final Gson COMPACT_GSON = new GsonBuilder().disableHtmlEscaping()
+        .serializeNulls()
+        .serializeSpecialFloatingPointValues()
+        .create();
+
     private MaterialDataDump() {}
 
     public static void writeAll(File directory) {
@@ -78,11 +98,16 @@ public final class MaterialDataDump {
         write(new File(directory, "legacy-variants.json"), dumpLegacyVariants());
         write(new File(directory, "fluid-textures.json"), dumpFluidTextures());
         write(new File(directory, "legacy-blocks.json"), dumpLegacyBlocks());
+        write(new File(directory, "recipe-census.json"), dumpRecipeCensus(), COMPACT_GSON);
     }
 
     private static void write(File file, Object data) {
+        write(file, data, GSON);
+    }
+
+    private static void write(File file, Object data, Gson gson) {
         try (Writer writer = Files.newBufferedWriter(file.toPath(), StandardCharsets.UTF_8)) {
-            GSON.toJson(data, writer);
+            gson.toJson(data, writer);
         } catch (IOException e) {
             throw new RuntimeException("Failed to write material dump " + file, e);
         }
@@ -809,6 +834,121 @@ public final class MaterialDataDump {
                 metal.mBlockIcons[meta] instanceof GTBlockIconContainer gtIcon ? gtIcon.getIconName() : null);
             out.add(json);
         }
+    }
+
+    // endregion
+
+    // region recipe-census.json
+
+    /// Per-[RecipeMap] recipe count plus a stable digest of every recipe's item/fluid inputs and outputs, and
+    /// the number of vanilla crafting-table recipes with a MaterialLib [ShapeItem] among their ingredients --
+    /// ground truth for stage 09's before/after parity check on the `Processing*` -> `ShapeConsumer` recipe
+    /// generation port. Every recipe map's digest list is written pre-sorted lexicographically, which is what
+    /// makes this deterministic across runs regardless of a given [RecipeMapBackend]'s internal (possibly
+    /// hash-based) iteration order: only the multiset of digests is ground truth, never their order.
+    private static Map<String, Object> dumpRecipeCensus() {
+        List<Map<String, Object>> recipeMaps = new ArrayList<>();
+        List<String> mapNames = new ArrayList<>(RecipeMap.ALL_RECIPE_MAPS.keySet());
+        Collections.sort(mapNames);
+        for (String name : mapNames) {
+            RecipeMap<?> recipeMap = RecipeMap.ALL_RECIPE_MAPS.get(name);
+            List<String> digests = new ArrayList<>();
+            for (GTRecipe recipe : recipeMap.getAllRecipes()) digests.add(digestRecipe(recipe));
+            Collections.sort(digests);
+
+            Map<String, Object> json = new LinkedHashMap<>();
+            json.put("name", name);
+            json.put("count", digests.size());
+            json.put("digests", digests);
+            recipeMaps.add(json);
+        }
+
+        Map<String, Object> root = new LinkedHashMap<>();
+        root.put("recipeMaps", recipeMaps);
+        root.put("craftingTableMlRecipes", dumpCraftingTableMlRecipeCount());
+        return root;
+    }
+
+    private static String digestRecipe(GTRecipe recipe) {
+        return "in=" + digestItems(recipe.mInputs)
+            + "|out="
+            + digestItems(recipe.mOutputs)
+            + "|fin="
+            + digestFluids(recipe.mFluidInputs)
+            + "|fout="
+            + digestFluids(recipe.mFluidOutputs);
+    }
+
+    private static String digestItems(ItemStack[] stacks) {
+        if (stacks == null) return "";
+        List<String> parts = new ArrayList<>();
+        for (ItemStack stack : stacks) {
+            if (stack == null) continue;
+            UniqueIdentifier id = GameRegistry.findUniqueIdentifierFor(stack.getItem());
+            parts.add(
+                (id != null ? id.toString() : "UNKNOWN") + ":"
+                    + stack.getItemDamage()
+                    + ":"
+                    + stack.stackSize
+                    + ":"
+                    + stack.hasTagCompound());
+        }
+        Collections.sort(parts);
+        return String.join(",", parts);
+    }
+
+    private static String digestFluids(FluidStack[] fluids) {
+        if (fluids == null) return "";
+        List<String> parts = new ArrayList<>();
+        for (FluidStack fluid : fluids) {
+            if (fluid == null) continue;
+            parts.add(
+                fluid.getFluid()
+                    .getName() + ":"
+                    + fluid.amount);
+        }
+        Collections.sort(parts);
+        return String.join(",", parts);
+    }
+
+    /// Vanilla crafting-table recipes (the four common [IRecipe] implementations Forge and vanilla register:
+    /// [ShapedOreRecipe], [ShapelessOreRecipe], [ShapedRecipes], [ShapelessRecipes]) that consume at least one
+    /// MaterialLib [ShapeItem] -- a coarse parity signal, not a digest, since crafting-table recipes are not
+    /// keyed by material the way [RecipeMap] recipes are.
+    private static int dumpCraftingTableMlRecipeCount() {
+        int count = 0;
+        for (Object entry : CraftingManager.getInstance()
+            .getRecipeList()) {
+            if (entry instanceof IRecipe recipe && involvesMlItem(recipe)) count++;
+        }
+        return count;
+    }
+
+    private static boolean involvesMlItem(IRecipe recipe) {
+        if (recipe instanceof ShapedOreRecipe shapedOre) {
+            for (Object ingredient : shapedOre.getInput()) if (involvesMlItem(ingredient)) return true;
+        } else if (recipe instanceof ShapelessOreRecipe shapelessOre) {
+            for (Object ingredient : shapelessOre.getInput()) if (involvesMlItem(ingredient)) return true;
+        } else if (recipe instanceof ShapedRecipes shaped) {
+            for (ItemStack stack : shaped.recipeItems) if (isMlStack(stack)) return true;
+        } else if (recipe instanceof ShapelessRecipes shapeless) {
+            for (ItemStack stack : shapeless.recipeItems) if (isMlStack(stack)) return true;
+        }
+        return false;
+    }
+
+    private static boolean involvesMlItem(Object ingredient) {
+        if (ingredient instanceof ItemStack stack) return isMlStack(stack);
+        if (ingredient instanceof List<?>alternatives) {
+            for (Object alternative : alternatives) {
+                if (alternative instanceof ItemStack stack && isMlStack(stack)) return true;
+            }
+        }
+        return false;
+    }
+
+    private static boolean isMlStack(ItemStack stack) {
+        return stack != null && stack.getItem() instanceof ShapeItem;
     }
 
     // endregion
