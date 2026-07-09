@@ -3,6 +3,7 @@ package gregtech.loaders.postload;
 import static gregtech.api.enums.OrePrefixes.___placeholder___;
 
 import java.util.Arrays;
+import java.util.Map;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -16,7 +17,11 @@ import com.gtnewhorizons.postea.api.ItemStackReplacementManager;
 import com.gtnewhorizons.postea.api.TileEntityReplacementManager;
 import com.gtnewhorizons.postea.utility.BlockInfo;
 
+import bartworks.system.material.BWMetaGeneratedItems;
+import bartworks.system.material.Werkstoff;
+import bartworks.system.material.WerkstoffLoader;
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.common.registry.GameRegistry.UniqueIdentifier;
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
@@ -25,6 +30,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.items.MetaGeneratedItemX32;
 import gregtech.api.material.MU;
+import gregtech.api.util.GTLog;
 import gregtech.common.blocks.BlockFrameBox;
 import gregtech.common.blocks.BlockMetal;
 import gregtech.common.items.MetaGeneratedItem99;
@@ -58,6 +64,33 @@ public class PosteaTransformers implements Runnable {
         registerMetaItemCutoverTransformer("gt.metaitem.03");
         registerMetaItem99CutoverTransformer();
         registerStorageBlockCutoverTransformers();
+        registerWerkstoffItemCutoverTransformers();
+    }
+
+    /// Migrates saved bartworks werkstoff item stacks (`bartworks:gt.bwMetaGenerated<prefix>`, damage =
+    /// werkstoff id) into the equivalent MaterialLib stack, resolved through the werkstoff's bridge material
+    /// exactly like the live item path (`WerkstoffLoader#getCorrespondingItemStackUnsafe`). Damages of
+    /// werkstoffe unknown to MaterialLib (a third-party WerkstoffAdder's) pass through unchanged; the
+    /// bartworks block-kind slots (storage blocks, casings, ores) are not migrated -- they stay
+    /// legacy-canonical for now.
+    private static void registerWerkstoffItemCutoverTransformers() {
+        int count = 0;
+        for (Map.Entry<OrePrefixes, BWMetaGeneratedItems> entry : WerkstoffLoader.items.entrySet()) {
+            OrePrefixes prefix = entry.getKey();
+            UniqueIdentifier id = GameRegistry.findUniqueIdentifierFor(entry.getValue());
+            ItemStackReplacementManager.addTransformationHandler(id.modId + ":" + id.name, (originalId, tag) -> {
+                int damage = tag.getInteger("Damage");
+                Werkstoff werkstoff = Werkstoff.werkstoffHashMap.get((short) damage);
+                if (werkstoff == null) return false;
+                ItemStack cutover = MU.stack(prefix, werkstoff.getBridgeMaterial(), 1);
+                if (cutover == null) return false;
+                IDExtenderCompat.setItemStackID(tag, Item.getIdFromItem(cutover.getItem()));
+                tag.setShort("Damage", (short) cutover.getItemDamage());
+                return true;
+            });
+            count++;
+        }
+        GTLog.out.println("PosteaTransformers: registered werkstoff item transformers for " + count + " legacy items");
     }
 
     /// Migrates saved placed blocks and item stacks of a cut-over material's legacy storage-block slot (see
