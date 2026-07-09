@@ -2,6 +2,7 @@ package gregtech.api.enums;
 
 import java.util.function.Supplier;
 
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -164,6 +165,14 @@ public enum CondensateType {
 
     public int getUnit() {
         return unit;
+    }
+
+    public FluidStack getSourceFluid() {
+        return source.get();
+    }
+
+    public ItemStack getEntangledCellStack() {
+        return new ItemStack(entangledCell, 1);
     }
 
     public String getAbbrevName() {
