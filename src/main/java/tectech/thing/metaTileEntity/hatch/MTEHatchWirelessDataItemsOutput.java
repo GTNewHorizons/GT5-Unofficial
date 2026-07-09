@@ -15,8 +15,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.gtnewhorizon.gtnhlib.teams.Team;
-import com.gtnewhorizon.gtnhlib.teams.TeamManager;
 import com.gtnewhorizon.gtnhlib.util.CoordinatePacker;
 
 import gregtech.api.enums.Dyes;
@@ -28,7 +26,7 @@ import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe.RecipeAssemblyLine;
 import gregtech.api.util.GTUtility;
-import gregtech.common.misc.WirelessTeamData;
+import gregtech.common.misc.WirelessNetworkManager;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import tectech.mechanics.dataTransport.ALRecipeDataPacket;
@@ -106,11 +104,9 @@ public class MTEHatchWirelessDataItemsOutput extends MTEHatch {
     @Override
     public void onPostTick(IGregTechTileEntity baseMetaTE, long aTick) {
         if (baseMetaTE.isServerSide() && this.dirty) {
-            Team team = TeamManager.getTeamByPlayer(baseMetaTE.getOwnerUuid());
-            var data = (WirelessTeamData) team.getData(WirelessTeamData.DATA_KEY);
             long coord = CoordinatePacker.pack(baseMetaTE.getXCoord(), baseMetaTE.getYCoord(), baseMetaTE.getZCoord());
 
-            data.uploadDatastick(coord, dataPacket, baseMetaTE.getOwnerUuid());
+            WirelessNetworkManager.uploadDataSticks(coord, dataPacket, baseMetaTE.getOwnerUuid());
             this.dirty = false;
         }
     }
