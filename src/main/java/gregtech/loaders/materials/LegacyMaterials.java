@@ -53,11 +53,12 @@ import gregtech.api.material.MaterialRefStack;
 ///
 /// Known gaps, none of which are represented in MaterialLib's stage-03 data and are small enough in scope to
 /// document rather than port: `mChemicalFormula` overrides and flavor text (tooltip-only, not read anywhere
-/// else); `Copper`'s gas-conditional arc-smelting recipe (`setArcSmeltingIntoWithGas`, 2 legacy usages, the
-/// other being a retained marker); a handful of materials whose dumped `oreByProducts` self-reference
-/// duplicates (`addOreByproduct` called on the same material more than once) collapse to one entry here,
-/// since `Materials#setOreByproducts`'s own `.distinct()` step means the duplicate count was never
-/// observable (`Materials.mOreByProducts` iteration order/content is identical either way).
+/// else); a handful of materials whose dumped `oreByProducts` self-reference duplicates (`addOreByproduct`
+/// called on the same material more than once) collapse to one entry here, since
+/// `Materials#setOreByproducts`'s own `.distinct()` step means the duplicate count was never observable
+/// (`Materials.mOreByProducts` iteration order/content is identical either way). `Copper`'s gas-conditional
+/// arc-smelting recipe (`setArcSmeltingIntoWithGas`) is special-cased below rather than left as a gap, since
+/// it has no MaterialLib data-level representation at all.
 public class LegacyMaterials {
 
     private LegacyMaterials() {}
@@ -265,6 +266,13 @@ public class LegacyMaterials {
             String refName = stack.material()
                 .name();
             builder.addOreByproduct(() -> Materials.get(refName));
+        }
+
+        // Copper's gas-conditional arc-smelting recipe (arc-smelts to AnnealedCopper only when Oxygen gas is
+        // present): MaterialLib's stage-03 port has no data-level representation for a gas-conditional
+        // arc-smelt target, so it is reproduced here verbatim from the deleted MaterialsInit's declaration.
+        if ("Copper".equals(legacyName != null ? legacyName : ml.getName())) {
+            builder.setArcSmeltingIntoWithGas(() -> Materials.Oxygen, () -> Materials.AnnealedCopper);
         }
 
         Materials material = builder.constructMaterial();
