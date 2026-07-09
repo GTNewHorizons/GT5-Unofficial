@@ -657,6 +657,22 @@ def container_shape_lines(material, legacy_variants_by_material):
     return lines
 
 
+def ore_shape_lines(material):
+    """`generateShape(...)` lines for `Materials2OreShapes`, driven directly by the dumped `generatedPrefixes`
+    ground truth: `ore`/`oreSmall` are block-kind (see `gen_shapes.py`'s `is_block_kind`), so unlike every other
+    prefix carrying the `ORE` generation bit they never appear in `Materials2Shapes`'s per-item pipeline
+    (`is_included_shape` excludes block-kind prefixes outright) and so need their own hand-written membership
+    line here, the same way `block_shape_lines`/`container_shape_lines` do for their own block-kind/container
+    shapes."""
+    prefixes = material["generatedPrefixes"]
+    lines = []
+    if "ore" in prefixes:
+        lines.append("            .generateShape(Materials2OreShapes.shapeOre)")
+    if "oreSmall" in prefixes:
+        lines.append("            .generateShape(Materials2OreShapes.shapeOreSmall)")
+    return lines
+
+
 def build_material_block(
         material, families, ml_names, field_names, included_names, family_shape_members,
         legacy_variants_by_material, used_fluid_names, fluid_textures, legacy_block_materials):
@@ -680,6 +696,7 @@ def build_material_block(
     lines.extend(fluid_shape_lines(material, used_fluid_names))
     lines.extend(container_shape_lines(material, legacy_variants_by_material))
     lines.extend(block_shape_lines(material, legacy_block_materials))
+    lines.extend(ore_shape_lines(material))
 
     for property_line in build_property_lines(material, ml_names, fluid_textures):
         lines.append("            " + property_line)

@@ -19,6 +19,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.Materials2BlockShapes;
 import gregtech.api.enums.materials2.Materials2CellShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials2OreShapes;
 import gregtech.api.enums.materials2.Materials2Shapes;
 
 /// Bridges legacy [OrePrefixes]/[Materials] pairs to their stage-05/06/07 cutover MaterialLib [Shape]/[Material]
@@ -98,6 +99,7 @@ public class MU {
             collectShapes(map, Materials2Shapes.class);
             collectShapes(map, Materials2CellShapes.class);
             collectShapes(map, Materials2BlockShapes.class);
+            collectShapes(map, Materials2OreShapes.class);
             // cellPlasmaLight is a second candidate shape for the cellPlasma prefix, not a prefix of its own
             // (see Materials2CellShapes); its field name deliberately does not match an OrePrefixes name, so
             // fold it into "cellPlasma"'s candidate list instead of collecting it under its own key.

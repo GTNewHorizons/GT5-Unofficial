@@ -111,9 +111,12 @@ public class UnificationOreAdapter implements IOreAdapter<Materials> {
     }
 
     /// Checks if the ore block is a GT block, which means that it should be supported by another adapter. These blocks
-    /// will not be indexed when their ore dictionary names are added.
+    /// will not be indexed when their ore dictionary names are added. `GTOreAdapter.INSTANCE.supports` recognizes
+    /// both the legacy `GTBlockOre` series (kept registered for pre-migration saves, see that adapter's javadoc)
+    /// and its MaterialLib ore/small-ore blocks.
     private static boolean isGTOre(Block block) {
         if (block instanceof GTBlockOre) return true;
+        if (GTOreAdapter.INSTANCE.supports(block, 0)) return true;
         if (block instanceof BWMetaGeneratedOres) return true;
         return block instanceof BlockBaseOre;
     }

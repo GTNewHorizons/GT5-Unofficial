@@ -16,9 +16,15 @@ import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.gtnhlib.util.data.BlockMeta;
 import com.gtnewhorizon.gtnhlib.util.data.ImmutableBlockMeta;
+import com.gtnewhorizons.postea.api.BlockReplacementManager;
+import com.gtnewhorizons.postea.api.IDExtenderCompat;
 import com.gtnewhorizons.postea.api.ItemStackReplacementManager;
 import com.gtnewhorizons.postea.api.TileEntityReplacementManager;
 import com.gtnewhorizons.postea.utility.BlockInfo;
+import com.ruling_0.materiallib.api.BlockMaterialInfo;
+import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+import com.ruling_0.materiallib.api.Shape;
 
 import codechicken.nei.api.API;
 import gregtech.GTMod;
@@ -27,7 +33,9 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.StoneCategory;
 import gregtech.api.enums.StoneType;
+import gregtech.api.enums.materials2.Materials2OreShapes;
 import gregtech.api.interfaces.IStoneType;
+import gregtech.api.material.MU;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTUtility.ItemId;
@@ -35,6 +43,18 @@ import gregtech.common.GTProxy.OreDropSystem;
 import gregtech.common.blocks.GTBlockOre;
 import it.unimi.dsi.fastutil.objects.ObjectLinkedOpenHashSet;
 
+/// The `Materials`-based [IOreAdapter]: worldgen, mining, prospecting, and the void miner place and read
+/// [Materials2OreShapes] blocks through this singleton (via [OreManager], never `Materials2OreShapes` or
+/// MaterialLib directly), preserving the same public surface the legacy `GTBlockOre`-backed adapter had.
+///
+/// [#init] still constructs the six legacy [GTBlockOre] instances (`gt.blockores2`..`gt.blockores7`) exactly as
+/// before -- their oredict registration loop (in [GTBlockOre]'s constructor) now resolves through this class's
+/// [#getBlock]/[#supports], so it registers the MaterialLib stack as the canonical association without any
+/// change to [GTBlockOre] itself, the same "construct, then get overwritten by the MaterialLib association"
+/// pattern stage 07 established for `BlockMetal`. The instances stay registered (never removed) purely so
+/// pre-migration saves have somewhere for their placed blocks to resolve to; [#registerCurrentGenTransformers]
+/// actively converts any of those placed blocks to the MaterialLib equivalent as their chunk loads, so in
+/// practice a fully-loaded world never has a live `GTBlockOre` block a player can interact with.
 public final class GTOreAdapter implements IOreAdapter<Materials> {
 
     public static GTOreAdapter INSTANCE = new GTOreAdapter();
@@ -120,26 +140,83 @@ public final class GTOreAdapter implements IOreAdapter<Materials> {
             int meta = tag.getInteger("m");
             boolean natural = tag.getBoolean("n");
 
-            ImmutableBlockMeta bm = transform(meta, natural);
+            ImmutableBlockMeta bm = resolveLegacyMeta(meta, natural);
 
             return new BlockInfo(bm.getBlock(), bm.getBlockMeta());
         });
 
-        ItemStackReplacementManager.addSimpleReplacement("gregtech:gt.blockores", Item.getItemFromBlock(ores1), true);
+        ItemStackReplacementManager.addTransformationHandler("gregtech:gt.blockores", (originalId, tag) -> {
+            int meta = tag.getInteger("Damage");
+            ImmutableBlockMeta bm = resolveLegacyMeta(meta, false);
+            if (bm.getBlock() == Blocks.air) return false;
+
+            IDExtenderCompat.setItemStackID(tag, Item.getIdFromItem(Item.getItemFromBlock(bm.getBlock())));
+            tag.setShort("Damage", (short) bm.getBlockMeta());
+            return true;
+        });
+
+        registerCurrentGenTransformers();
     }
 
-    public ImmutableBlockMeta transform(int meta, boolean natural) {
+    /// Decodes the pre-`GTBlockOre` era's 7-stone packing (see [#LEGACY_STONES]) and resolves it to the
+    /// MaterialLib block/meta -- shared by the `GT_TileEntity_Ores` tile-entity transformer and the single
+    /// `gregtech:gt.blockores` item transformer, both of which used this exact packing.
+    private ImmutableBlockMeta resolveLegacyMeta(int meta, boolean natural) {
         try (OreInfo<Materials> info = OreInfo.getNewInfo()) {
             info.stoneType = GTUtility.getIndexSafe(LEGACY_STONES, (meta % 16000) / 1000);
             info.material = GregTechAPI.sGeneratedMaterials[meta % 1000];
             info.isSmall = meta >= 16000;
-            info.isNatural = natural;
+            info.isNatural = true;
 
             if (!this.supports(info)) {
                 return new BlockMeta(Blocks.air, 0);
             } else {
-                return this.getBlock(info);
+                ImmutableBlockMeta bm = this.getBlock(info);
+                return bm == null ? new BlockMeta(Blocks.air, 0) : bm;
             }
+        }
+    }
+
+    /// Actively converts placed/inventory `gt.blockores2`..`gt.blockores7` (see [#init]'s `ores` array) into
+    /// the MaterialLib equivalent as a chunk/item loads, decoding each block's own `stoneTypes` list the same
+    /// way [GTBlockOre#getStoneIndex]/[GTBlockOre#getMaterialIndex] do. Mirrors stage 07's
+    /// `registerStorageBlockCutoverTransformer`, except the meta space here is too large (up to ~24000 per
+    /// block) to enumerate per-meta, so this decodes computationally instead.
+    private void registerCurrentGenTransformers() {
+        for (int i = 0; i < ores.length; i++) {
+            GTBlockOre oreBlock = ores[i];
+            String originalId = "gregtech:gt.blockores" + (i + 2);
+
+            BlockReplacementManager.addTransformationHandler(originalId, info -> {
+                ImmutableBlockMeta bm = resolveCurrentGenMeta(oreBlock, info.metadata);
+                if (bm == null) return false;
+                info.blockID = Block.getIdFromBlock(bm.getBlock());
+                info.metadata = bm.getBlockMeta();
+                return true;
+            });
+
+            ItemStackReplacementManager.addTransformationHandler(originalId, (originalId2, tag) -> {
+                ImmutableBlockMeta bm = resolveCurrentGenMeta(oreBlock, tag.getInteger("Damage"));
+                if (bm == null) return false;
+                IDExtenderCompat.setItemStackID(tag, Item.getIdFromItem(Item.getItemFromBlock(bm.getBlock())));
+                tag.setShort("Damage", (short) bm.getBlockMeta());
+                return true;
+            });
+        }
+    }
+
+    private ImmutableBlockMeta resolveCurrentGenMeta(GTBlockOre oreBlock, int meta) {
+        Materials mat = oreBlock.getMaterial(meta);
+        StoneType stoneType = oreBlock.getStoneType(meta);
+        if (mat == null || stoneType == null) return null;
+
+        try (OreInfo<Materials> info = OreInfo.getNewInfo()) {
+            info.material = mat;
+            info.stoneType = stoneType;
+            info.isSmall = oreBlock.isSmallOre(meta);
+            info.isNatural = true;
+
+            return this.getBlock(info);
         }
     }
 
@@ -153,57 +230,63 @@ public final class GTOreAdapter implements IOreAdapter<Materials> {
         }
     }
 
+    /// Materials2OreShapes' 4 config-gated stone types (see legacy `GTOreAdapter#init`'s array literals) are
+    /// declared unconditionally as MaterialLib variants -- their availability is a runtime toggle, not a
+    /// save-identity concern -- so this config gate moved here instead, alongside [StoneType#isEnabled]'s
+    /// mod-loaded gate.
+    private static boolean isStoneConfigEnabled(StoneType stoneType) {
+        return switch (stoneType) {
+            case BlackGranite -> GTMod.proxy.enableBlackGraniteOres;
+            case RedGranite -> GTMod.proxy.enableRedGraniteOres;
+            case Marble -> GTMod.proxy.enableMarbleOres;
+            case Basalt -> GTMod.proxy.enableBasaltOres;
+            default -> true;
+        };
+    }
+
     @Override
     public boolean supports(Block block, int meta) {
-        return GTUtility.contains(ores, block);
+        BlockMaterialInfo info = MaterialLibAPI.lookupBlock(block, meta);
+        return info != null && isOreShape(info.shape());
+    }
+
+    private static boolean isOreShape(Shape shape) {
+        return shape == Materials2OreShapes.shapeOre || shape == Materials2OreShapes.shapeOreSmall;
     }
 
     @Override
     public boolean supports(OreInfo<?> info) {
         if (!(info.material instanceof Materials gtMat)) return false;
-        if (!OrePrefixes.ore.doGenerateItem(gtMat)) return false;
 
         IStoneType stoneType = info.stoneType == null ? gtMat.getValidStones()
             .get(0) : info.stoneType;
 
         if (!(stoneType instanceof StoneType stoneType2)) return false;
-        if (!oreBlocksByStoneType.containsKey(stoneType2)) return false;
-        if (!stoneType2.isEnabled()) return false;
+        if (!stoneType2.isEnabled() || !isStoneConfigEnabled(stoneType2)) return false;
         if (!gtMat.isValidForStone(stoneType2)) return false;
         if (stoneType2.getCategory() == StoneCategory.Ice && info.isSmall) return false;
 
-        return true;
-    }
+        Material mlMat = MU.material(gtMat);
+        if (mlMat == null) return false;
 
-    public static final int SMALL_ORE_META_OFFSET = 16000;
-    public static final int NATURAL_ORE_META_OFFSET = 8000;
+        return mlMat.hasShape(info.isSmall ? Materials2OreShapes.shapeOreSmall : Materials2OreShapes.shapeOre);
+    }
 
     @Override
     public OreInfo<Materials> getOreInfo(Block block, int meta) {
-        if (!(block instanceof GTBlockOre oreBlock)) return null;
+        BlockMaterialInfo blockInfo = MaterialLibAPI.lookupBlock(block, meta);
+        if (blockInfo == null || !isOreShape(blockInfo.shape()) || blockInfo.material() == null) return null;
 
-        if (meta < 0) throw new IllegalArgumentException(
-            "illegal metadata: " + meta + "; a tool may be casting an int to a byte, which is incompatible with NEID");
-
-        int matId = meta % 1000;
-        int stoneId = ((meta % SMALL_ORE_META_OFFSET) % NATURAL_ORE_META_OFFSET) / 1000;
-        boolean small = meta >= SMALL_ORE_META_OFFSET;
-        boolean natural = (meta % SMALL_ORE_META_OFFSET) >= NATURAL_ORE_META_OFFSET;
-
-        Materials mat = GregTechAPI.sGeneratedMaterials[matId];
-
-        if (!OrePrefixes.ore.doGenerateItem(mat)) return null;
-
-        StoneType stoneType = GTUtility.getIndexSafe(oreBlock.stoneTypes, stoneId);
-        if (stoneType == null || !stoneType.isEnabled()) return null;
-        if (stoneType.getCategory() == StoneCategory.Ice && small) return null;
+        Materials mat = MU.materialOf(blockInfo.material());
+        StoneType stoneType = Materials2OreShapes.stoneTypeOf(blockInfo.variant());
+        if (mat == null || stoneType == null) return null;
 
         OreInfo<Materials> info = OreInfo.getNewInfo();
 
         info.material = mat;
         info.stoneType = stoneType;
-        info.isSmall = small;
-        info.isNatural = natural;
+        info.isSmall = blockInfo.shape() == Materials2OreShapes.shapeOreSmall;
+        info.isNatural = true;
 
         return info;
     }
@@ -213,24 +296,52 @@ public final class GTOreAdapter implements IOreAdapter<Materials> {
         if (info.stoneType == null) info.stoneType = StoneType.Stone;
 
         if (!(info.material instanceof Materials gtMat)) return null;
-        if (!OrePrefixes.ore.doGenerateItem(gtMat)) return null;
-
         if (!(info.stoneType instanceof StoneType stoneType)) return null;
-        if (!stoneType.isEnabled()) return null;
+        if (!stoneType.isEnabled() || !isStoneConfigEnabled(stoneType)) return null;
         if (stoneType.getCategory() == StoneCategory.Ice && info.isSmall) return null;
+        if (!gtMat.isValidForStone(stoneType)) return null;
 
-        GTBlockOre oreBlock = oreBlocksByStoneType.get(stoneType);
+        Material mlMat = MU.material(gtMat);
+        if (mlMat == null) return null;
 
-        if (oreBlock == null) return null;
-        int stoneIndex = oreBlock.stoneTypes.indexOf(stoneType);
-        if (stoneIndex == -1) return null;
+        Shape shape = info.isSmall ? Materials2OreShapes.shapeOreSmall : Materials2OreShapes.shapeOre;
+        if (!mlMat.hasShape(shape)) return null;
 
-        int meta = gtMat.mMetaItemSubID;
-        meta += stoneIndex * 1000;
-        if (info.isSmall) meta += SMALL_ORE_META_OFFSET;
-        if (info.isNatural) meta += NATURAL_ORE_META_OFFSET;
+        ItemStack stack = MaterialLibAPI.getStack(mlMat, shape, Materials2OreShapes.variantOf(stoneType.name()), 1);
+        if (stack == null) return null;
 
-        return new BlockMeta(oreBlock, meta);
+        return new BlockMeta(Block.getBlockFromItem(stack.getItem()), stack.getItemDamage());
+    }
+
+    /// The harvest level for a MaterialLib ore/small-ore material, porting legacy `GTBlockOre#getHarvestLevel`'s
+    /// formula. `bonus` is the small-ore harvest-level discount (`-1`, matching legacy) or `0` for big ore.
+    public int harvestLevel(Material mlMaterial, int bonus) {
+        Materials mat = MU.materialOf(mlMaterial);
+        if (mat == null) return 0;
+
+        int harvestLevel = GTMod.proxy.mChangeHarvestLevels ? GTMod.proxy.mHarvestLevel[mat.mMetaItemSubID]
+            : mat.mToolQuality;
+
+        return GTUtility.clamp(harvestLevel + bonus, 0, GTMod.proxy.mMaxHarvestLevel);
+    }
+
+    /// The drops for one MaterialLib ore/small-ore block, called from [Materials2OreShapes]' drop hooks. `variant`
+    /// resolves back to a [StoneType] via [Materials2OreShapes#stoneTypeOf]; `material` back to a legacy
+    /// [Materials] via [MU#materialOf]. See [#getOreDrops] for the shared drop-policy implementation.
+    public List<ItemStack> shapeDrops(Material mlMaterial, String variant, int fortune, boolean isSilkTouch,
+        boolean isSmall) {
+        Materials mat = MU.materialOf(mlMaterial);
+        StoneType stoneType = Materials2OreShapes.stoneTypeOf(variant);
+        if (mat == null || stoneType == null) return List.of();
+
+        try (OreInfo<Materials> info = OreInfo.getNewInfo()) {
+            info.material = mat;
+            info.stoneType = stoneType;
+            info.isSmall = isSmall;
+            info.isNatural = true;
+
+            return getOreDrops(ThreadLocalRandom.current(), info, isSilkTouch, fortune);
+        }
     }
 
     @Override
@@ -241,13 +352,6 @@ public final class GTOreAdapter implements IOreAdapter<Materials> {
         OreInfo<Materials> info = (OreInfo<Materials>) info2;
 
         if (info.stoneType == null) info.stoneType = StoneType.Stone;
-
-        @SuppressWarnings("SuspiciousMethodCalls")
-        GTBlockOre oreBlock = oreBlocksByStoneType.get(info.stoneType);
-
-        if (oreBlock == null) return new ArrayList<>();
-
-        if (!info.isNatural) fortune = 0;
 
         if (info.isSmall) {
             return getSmallOreDrops(random, info, fortune);
@@ -341,8 +445,6 @@ public final class GTOreAdapter implements IOreAdapter<Materials> {
             }
             case UnifiedBlock -> {
                 try (OreInfo<Materials> info2 = info.clone()) {
-                    info2.isNatural = false;
-
                     for (int i = 0; i < (info2.stoneType.isRich() ? 2 : 1); i++) {
                         info2.stoneType = StoneType.Stone;
                         drops.add(getStack(info2, 1));
@@ -351,8 +453,6 @@ public final class GTOreAdapter implements IOreAdapter<Materials> {
             }
             case PerDimBlock -> {
                 try (OreInfo<Materials> info2 = info.clone()) {
-                    info2.isNatural = false;
-
                     if (!info2.stoneType.isDimensionSpecific()) {
                         info2.stoneType = StoneType.Stone;
                     }
@@ -362,8 +462,6 @@ public final class GTOreAdapter implements IOreAdapter<Materials> {
             }
             case Block -> {
                 try (OreInfo<Materials> info2 = info.clone()) {
-                    info2.isNatural = false;
-
                     drops.add(getStack(info2, 1));
                 }
             }

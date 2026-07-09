@@ -252,6 +252,13 @@ def check_material(gt, ml, included_names, legacy_variants_by_material, used_flu
     dumped_shapes |= expected_fluid_and_cell_shapes(gt, legacy_variants_by_material, used_fluid_names)
     if name in legacy_block_materials and name not in BLOCK_CUTOVER_EXCLUDED:
         dumped_shapes.add("block")
+    # ore/oreSmall are block-kind (excluded from `included_names`) but carry a real ORE generation bit, so
+    # unlike `block` their membership is the dumped `generatedPrefixes` ground truth directly -- see
+    # gen_materials.py's `ore_shape_lines`.
+    if "ore" in gt["generatedPrefixes"]:
+        dumped_shapes.add("ore")
+    if "oreSmall" in gt["generatedPrefixes"]:
+        dumped_shapes.add("oreSmall")
     actual_shapes = set(ml["shapes"])
     if dumped_shapes != actual_shapes:
         missing = dumped_shapes - actual_shapes
