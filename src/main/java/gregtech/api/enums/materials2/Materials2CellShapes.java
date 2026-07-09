@@ -19,6 +19,18 @@ public class Materials2CellShapes {
 
     private static final String EMPTY_CELL = "IC2:itemCellEmpty";
 
+    /// Untinted container base for [#shapeCell] and the six cracked-cell shapes, converted from the legacy
+    /// `cell_OVERLAY.png` shared by 61 of 66 material icon sets (see `scripts/mu/convert_textures.py`); the
+    /// legacy `cellHydroCracked*`/`cellSteamCracked*` `OrePrefixes` all render through the same `CELL` texture
+    /// slot as plain `cell` (see `dumps/oreprefixes.json`'s `textureIndex`).
+    private static final String CELL_BASE = "gregtech:materials/cell_base";
+
+    /// Untinted container base for [#shapeCellPlasma]/[#shapeCellPlasmaLight]/[#shapeCellMolten], converted from
+    /// the legacy `cellPlasma_OVERLAY.png` shared by 13 of 16 sets that have plasma-cell art. `cellMolten`
+    /// renders through the same `CELL_PLASMA` texture slot as `cellPlasma` (see `dumps/oreprefixes.json`'s
+    /// `textureIndex`), not a slot of its own -- there is no separate legacy `cellMolten` art.
+    private static final String CELL_PLASMA_BASE = "gregtech:materials/cell_plasma_base";
+
     // spotless:off
     public static Shape shapeCell;
     public static Shape shapeCellPlasma;
@@ -38,6 +50,7 @@ public class Materials2CellShapes {
             .fluid(Materials2FluidShapes.shapeFluidLiquid, Materials2FluidShapes.shapeFluidGas)
             .emptyContainer(EMPTY_CELL, 0)
             .volume(1000)
+            .emptyIcon(CELL_BASE)
             .build();
 
         shapeCellPlasma = MaterialLibAPI.newFluidInContainerShape("gregtech", "cellPlasma")
@@ -45,6 +58,7 @@ public class Materials2CellShapes {
             .fluid(Materials2FluidShapes.shapeFluidPlasma)
             .emptyContainer(EMPTY_CELL, 0)
             .volume(INGOTS)
+            .emptyIcon(CELL_PLASMA_BASE)
             .build();
         shapeCellPlasmaLight = MaterialLibAPI.newFluidInContainerShape("gregtech", "cellPlasmaLight")
             .displayName("%s Plasma Cell")
@@ -52,6 +66,7 @@ public class Materials2CellShapes {
             .emptyContainer(EMPTY_CELL, 0)
             .volume(1000)
             .oreDict("cellPlasma")
+            .emptyIcon(CELL_PLASMA_BASE)
             .build();
 
         shapeCellMolten = MaterialLibAPI.newFluidInContainerShape("gregtech", "cellMolten")
@@ -59,6 +74,7 @@ public class Materials2CellShapes {
             .fluid(Materials2FluidShapes.shapeFluidMolten)
             .emptyContainer(EMPTY_CELL, 0)
             .volume(INGOTS)
+            .emptyIcon(CELL_PLASMA_BASE)
             .build();
 
         shapeCellHydroCracked1 = crackedCellShape(
@@ -93,6 +109,7 @@ public class Materials2CellShapes {
             .fluid(fluidShape)
             .emptyContainer(EMPTY_CELL, 0)
             .volume(1000)
+            .emptyIcon(CELL_BASE)
             .build();
     }
 
