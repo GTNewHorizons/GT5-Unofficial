@@ -57,6 +57,12 @@ BLOCK_MATERIALS_DEST_ROOT = ASSETS_BLOCKS / "materials" / "blocks"
 
 PRIORITY_SET = "NONE"
 
+# The ore/small-ore block shapes (Materials2OreShapes), excluded from gen_shapes.py's item-shape filter like
+# `block`; looked up here directly by OrePrefixes name. Their material-overlay art lives in the blocks-tree
+# materialicons source (textures/blocks/materialicons/<SET>/ore(Small).png), not the items tree -- legacy ore
+# rendering is block-atlas-backed even though it reuses the same per-material icon-set slot numbering as items.
+ORE_PREFIX_NAMES = ["ore", "oreSmall"]
+
 # Cell shapes are fluid-in-container shapes (Materials2CellShapes), excluded from gen_shapes.py's item-shape
 # filter, so their slot is looked up here directly by OrePrefixes name instead of via load_included_prefixes.
 # shapeCellPlasmaLight is a second MaterialLib shape sharing shapeCellPlasma's oredict prefix (see
@@ -227,12 +233,50 @@ def convert_per_material_blocks():
     return materials_converted, materials_missing_art, files_written
 
 
-def convert_set(set_name, source_dir, shape_slot, skip_overlay_shapes=frozenset()):
+def load_ore_slot_suffixes():
+    """As `load_block_slot_suffix`, for the ore/small-ore block shapes (see `ORE_PREFIX_NAMES`) -- both are
+    block-kind, excluded from `load_included_prefixes`, so looked up by `OrePrefixes` name directly, the same
+    way `load_cell_slot_suffixes` does for containers."""
+    with open(DUMP_PATH, encoding="utf-8") as f:
+        dump = json.load(f)
+    texture_slots = dump["textureSlots"]
+    prefixes_by_name = {p["name"]: p for p in dump["prefixes"]}
+
+    shape_slot = {}
+    for name in ORE_PREFIX_NAMES:
+        suffix = texture_slots[str(prefixes_by_name[name]["textureIndex"])]
+        shape_slot[name] = suffix.lstrip("/")
+    return shape_slot
+
+
+def convert_ore_blocks():
+    """Converts the `ore`/`oreSmall` shapes' material-overlay textures from every set under
+    `textures/blocks/materialicons/` that has one, into `textures/blocks/materials/<SET>/ore.png` /
+    `oreSmall.png` (see `ASSETS_BLOCKS`) -- the same blocks-tree destination `convert_blocks` uses for the
+    `block` shape, since [gregtech.api.enums.materials2.Materials2OreShapes]'s variant blocks register their
+    icons through the block icon atlas, not the item one. This art is shared across every stone-type variant
+    (legacy `GTBlockOre#getTextures` draws the same per-material-set `ore`/`oreSmall` slot regardless of stone
+    type; the stone-specific background comes from `variantBase`, a fixed set of vanilla/GT texture paths hand-
+    declared in `Materials2OreShapes`, not converted art), so this reuses `convert_set`'s per-shape-name/overlay
+    loop wholesale rather than the material-keyed logic `convert_per_material_blocks` needed for storage blocks."""
+    shape_slot = load_ore_slot_suffixes()
+    texture_sets = find_texture_sets(BLOCK_SOURCE_ROOT)
+    total_files = 0
+    shapes_with_any_texture = set()
+    for set_name, source_dir in texture_sets.items():
+        files_written, shapes_with_texture = convert_set(set_name, source_dir, shape_slot, dest_root=BLOCK_DEST_ROOT)
+        total_files += files_written
+        shapes_with_any_texture |= shapes_with_texture
+    return len(texture_sets), total_files, shapes_with_any_texture
+
+
+def convert_set(set_name, source_dir, shape_slot, skip_overlay_shapes=frozenset(), dest_root=None):
     """Converts `shape_slot`'s shapes for one texture set. `skip_overlay_shapes` names shapes that never render
     an `_OVERLAY` file even when the source slot has one: `ShapeFluidInContainer` (see `Materials2CellShapes`)
     never calls `ShapeIcons#getOverlay`, since its own base/fill layering already covers both render passes, so
-    converting an `_OVERLAY` file for a cell shape would only be dead weight."""
-    dest_dir = DEST_ROOT / set_name
+    converting an `_OVERLAY` file for a cell shape would only be dead weight. `dest_root` defaults to the items
+    tree (`DEST_ROOT`); `convert_ore_blocks` passes the blocks tree instead."""
+    dest_dir = (dest_root if dest_root is not None else DEST_ROOT) / set_name
     files_written = 0
     shapes_with_texture = set()
     for shape_name, slot in shape_slot.items():
@@ -290,6 +334,9 @@ def main():
     per_material_converted, per_material_missing, per_material_files_written = convert_per_material_blocks()
     total_files += per_material_files_written
 
+    ore_sets, ore_files_written, ore_shapes_with_texture = convert_ore_blocks()
+    total_files += ore_files_written
+
     shapes_never_textured = sorted(
         (set(shape_slot) | set(shapes_without_index)) - shapes_with_any_texture
     )
@@ -309,6 +356,9 @@ def main():
         print(f"  materials with no legacy per-material art: {len(per_material_missing)}")
         for name in sorted(per_material_missing):
             print(f"    {name}")
+    print(
+        f"ore/oreSmall shape (blocks tree): {len(ore_shapes_with_texture)}/{len(ORE_PREFIX_NAMES)} shapes have "
+        f"art in at least one of {ore_sets} sets, {ore_files_written} files written")
     print(f"shapes with no texture index or slot (no source in any set): {len(shapes_without_index)}")
     for name in sorted(shapes_without_index):
         print(f"  {name}")
