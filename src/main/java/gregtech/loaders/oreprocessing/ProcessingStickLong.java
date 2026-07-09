@@ -19,7 +19,10 @@ import gregtech.api.util.GTUtility;
 
 public class ProcessingStickLong implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
+    public static ProcessingStickLong INSTANCE;
+
     public ProcessingStickLong() {
+        INSTANCE = this;
         OrePrefixes.stickLong.add(this);
     }
 

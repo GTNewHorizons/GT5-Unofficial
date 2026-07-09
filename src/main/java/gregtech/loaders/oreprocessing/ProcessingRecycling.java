@@ -15,7 +15,10 @@ import gregtech.api.util.GTUtility;
 
 public class ProcessingRecycling implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
+    public static ProcessingRecycling INSTANCE;
+
     public ProcessingRecycling() {
+        INSTANCE = this;
         for (OrePrefixes tPrefix : OrePrefixes.VALUES)
             if ((tPrefix.isMaterialBased()) && (tPrefix.getMaterialAmount() > 0L) && (tPrefix.isContainer()))
                 tPrefix.add(this);

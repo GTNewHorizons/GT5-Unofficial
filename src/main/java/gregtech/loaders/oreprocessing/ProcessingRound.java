@@ -17,7 +17,10 @@ import gregtech.api.util.GTUtility;
 
 public class ProcessingRound implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
+    public static ProcessingRound INSTANCE;
+
     public ProcessingRound() {
+        INSTANCE = this;
         OrePrefixes.round.add(this);
     }
 

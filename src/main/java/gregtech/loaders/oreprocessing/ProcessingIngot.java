@@ -28,7 +28,10 @@ import gregtech.api.util.GTUtility;
 
 public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
+    public static ProcessingIngot INSTANCE;
+
     public ProcessingIngot() {
+        INSTANCE = this;
         OrePrefixes.ingot.add(this);
         OrePrefixes.ingotHot.add(this);
     }

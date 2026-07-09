@@ -29,7 +29,10 @@ public class ProcessingOre implements IOreRecipeRegistrator {
 
     private final ArrayList<Materials> mAlreadyListedOres = new ArrayList<>(1000);
 
+    public static ProcessingOre INSTANCE;
+
     public ProcessingOre() {
+        INSTANCE = this;
         for (OrePrefixes prefix : OrePrefixes.VALUES) {
             final String name = prefix.getName();
             if (!name.startsWith("ore")) continue;

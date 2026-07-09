@@ -39,7 +39,10 @@ import gregtech.api.util.GTUtility;
 
 public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
+    public static ProcessingDust INSTANCE;
+
     public ProcessingDust() {
+        INSTANCE = this;
         OrePrefixes.dust.add(this);
         OrePrefixes.dustPure.add(this);
         OrePrefixes.dustImpure.add(this);

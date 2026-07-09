@@ -28,7 +28,10 @@ import gregtech.api.util.GTUtility;
 
 public class ProcessingCell implements IOreRecipeRegistrator {
 
+    public static ProcessingCell INSTANCE;
+
     public ProcessingCell() {
+        INSTANCE = this;
         OrePrefixes.cell.add(this);
         OrePrefixes.cellPlasma.add(this);
     }

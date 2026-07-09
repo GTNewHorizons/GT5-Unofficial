@@ -21,7 +21,10 @@ import gregtech.api.util.GTUtility;
 
 public class ProcessingDirty implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
+    public static ProcessingDirty INSTANCE;
+
     public ProcessingDirty() {
+        INSTANCE = this;
         OrePrefixes.clump.add(this);
         OrePrefixes.shard.add(this);
         OrePrefixes.crushed.add(this);

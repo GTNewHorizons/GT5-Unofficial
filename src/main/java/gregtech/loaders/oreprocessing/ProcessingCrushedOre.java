@@ -19,7 +19,10 @@ import gregtech.api.util.GTUtility;
 
 public class ProcessingCrushedOre implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
+    public static ProcessingCrushedOre INSTANCE;
+
     public ProcessingCrushedOre() {
+        INSTANCE = this;
         OrePrefixes.crushedCentrifuged.add(this);
         OrePrefixes.crushedPurified.add(this);
     }

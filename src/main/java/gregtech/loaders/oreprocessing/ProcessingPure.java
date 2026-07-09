@@ -16,7 +16,10 @@ import gregtech.api.util.GTUtility;
 
 public class ProcessingPure implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
+    public static ProcessingPure INSTANCE;
+
     public ProcessingPure() {
+        INSTANCE = this;
         OrePrefixes.crushedPurified.add(this);
         OrePrefixes.cleanGravel.add(this);
         OrePrefixes.reduced.add(this);

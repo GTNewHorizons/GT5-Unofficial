@@ -30,7 +30,10 @@ import gregtech.api.util.GTUtility;
 public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistrator { // TODO COMPARE WITH GEM???
                                                                                       // generators
 
+    public static ProcessingGem INSTANCE;
+
     public ProcessingGem() {
+        INSTANCE = this;
         OrePrefixes.gem.add(this);
         OrePrefixes.gemChipped.add(this);
         OrePrefixes.gemExquisite.add(this);

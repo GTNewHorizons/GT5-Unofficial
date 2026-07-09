@@ -14,7 +14,10 @@ import gregtech.common.items.MetaGeneratedTool01;
 
 public class ProcessingToolOther implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
+    public static ProcessingToolOther INSTANCE;
+
     public ProcessingToolOther() {
+        INSTANCE = this;
         OrePrefixes.toolHeadHammer.add(this);
     }
 

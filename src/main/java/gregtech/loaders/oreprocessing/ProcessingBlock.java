@@ -22,7 +22,10 @@ import gregtech.api.util.GTUtility;
 
 public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
+    public static ProcessingBlock INSTANCE;
+
     public ProcessingBlock() {
+        INSTANCE = this;
         OrePrefixes.block.add(this);
     }
 

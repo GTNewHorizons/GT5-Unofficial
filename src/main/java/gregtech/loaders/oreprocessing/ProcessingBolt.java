@@ -11,7 +11,10 @@ import gregtech.api.util.GTUtility;
 
 public class ProcessingBolt implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
+    public static ProcessingBolt INSTANCE;
+
     public ProcessingBolt() {
+        INSTANCE = this;
         OrePrefixes.bolt.add(this);
     }
 
