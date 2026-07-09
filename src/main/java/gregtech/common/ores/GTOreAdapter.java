@@ -35,6 +35,7 @@ import gregtech.api.enums.StoneCategory;
 import gregtech.api.enums.StoneType;
 import gregtech.api.enums.materials2.Materials2OreShapes;
 import gregtech.api.interfaces.IStoneType;
+import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.MU;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -312,6 +313,11 @@ public final class GTOreAdapter implements IOreAdapter<Materials> {
     public OreInfo<Materials> getOreInfo(Block block, int meta) {
         BlockMaterialInfo blockInfo = MaterialLibAPI.lookupBlock(block, meta);
         if (blockInfo == null || !isOreShape(blockInfo.shape()) || blockInfo.material() == null) return null;
+        // A werkstoff's bridge Materials instance (see BridgeMaterialsLoader) would otherwise also resolve here
+        // via MU#materialOf, since it shares the legacy-name index with every other Materials constant; defer
+        // to BWOreAdapter, which owns werkstoff ore behavior (see Materials2OreShapes#isWerkstoff).
+        if (blockInfo.material()
+            .getProperty(GTMaterialProperties.WERKSTOFF) != null) return null;
 
         Materials mat = MU.materialOf(blockInfo.material());
         StoneType stoneType = Materials2OreShapes.stoneTypeOf(blockInfo.variant());
