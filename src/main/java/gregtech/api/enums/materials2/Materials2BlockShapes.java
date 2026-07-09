@@ -3,6 +3,7 @@ package gregtech.api.enums.materials2;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 import com.ruling_0.materiallib.api.Shape;
 
+import gregtech.common.blocks.GTCasingShapeBlock;
 import gregtech.common.blocks.GTStorageShapeBlock;
 
 /// Hand-maintained block [Shape] declaration for GT's compressed storage blocks (unlike [Materials2Shapes], not
@@ -15,10 +16,19 @@ import gregtech.common.blocks.GTStorageShapeBlock;
 public class Materials2BlockShapes {
 
     public static Shape shapeBlock;
+    public static Shape shapeBlockCasing;
+    public static Shape shapeBlockCasingAdvanced;
 
     public static void init() {
         shapeBlock = MaterialLibAPI
             .registerBlockShape(new GTStorageShapeBlock("gregtech", "block", "Block of %s", "block"));
+        // Bartworks' werkstoff casings (see GTCasingShapeBlock); display formats match the legacy
+        // blockCasing/blockCasingAdvanced OrePrefixes entries. This shape/variant identity is fixed permanently
+        // once shipped, same as shapeBlock's.
+        shapeBlockCasing = MaterialLibAPI
+            .registerBlockShape(new GTCasingShapeBlock("gregtech", "blockCasing", "Bolted %s Casing", "blockCasing"));
+        shapeBlockCasingAdvanced = MaterialLibAPI.registerBlockShape(
+            new GTCasingShapeBlock("gregtech", "blockCasingAdvanced", "Rebolted %s Casing", "blockCasingAdvanced"));
     }
 
     private Materials2BlockShapes() {}
