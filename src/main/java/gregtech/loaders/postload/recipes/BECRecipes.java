@@ -5,12 +5,14 @@ import static goodgenerator.util.ItemRefer.Compassline_Casing_UXV;
 import static gregtech.api.enums.Mods.AE2FluidCraft;
 import static gregtech.api.enums.Mods.AppliedEnergistics2;
 import static gregtech.api.enums.Mods.Avaritia;
+import static gregtech.api.enums.Mods.EtFuturumRequiem;
 import static gregtech.api.enums.Mods.EternalSingularity;
 import static gregtech.api.enums.Mods.ExtraUtilities;
 import static gregtech.api.enums.Mods.GalacticraftAmunRa;
 import static gregtech.api.enums.Mods.GraviSuite;
 import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.enums.Mods.SuperSolarPanels;
+import static gregtech.api.enums.Mods.UniversalSingularities;
 import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
@@ -20,6 +22,8 @@ import static kekztech.common.Blocks.lscLapotronicEnergyUnit;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
+
+import com.kuba6000.mobsinfo.loader.extras.ExtraUtilities;
 
 import bartworks.common.loaders.ItemRegistry;
 import bartworks.system.material.WerkstoffLoader;
@@ -39,6 +43,7 @@ import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import kekztech.common.Blocks;
 import kekztech.common.TileEntities;
+import li.cil.oc.common.tileentity.traits.power.AppliedEnergistics2;
 import tectech.recipe.TecTechRecipeMaps;
 import tectech.thing.CustomItemList;
 import tectech.thing.block.BlockGodforgeGlass;
@@ -65,6 +70,8 @@ public class BECRecipes implements Runnable {
     public void run() {
         addBECCasingRecipes();
         if (NewHorizonsCoreMod.isModLoaded()) addGodforgeRecipes();
+        addCompressorRecipes();
+        addOtherStuffRecipes();
         if (Avaritia.isModLoaded() && ExtraUtilities.isModLoaded() && AE2FluidCraft.isModLoaded()) {
             addEyeOfHarmonyRecipes();
         }
@@ -128,6 +135,66 @@ public class BECRecipes implements Runnable {
                 CondensateType.MHDCSM.getEntangled(8 * INGOTS), CondensateType.Eternity.getEntangled(13 * INGOTS),
                 CondensateType.DimensionallyShiftedSuperfluid.getEntangled(11_000) },
             600 * SECONDS,
+            TierEU.RECIPE_UMV);
+    }
+
+    private void addCompressorRecipes() {
+        // black hole
+        if (UniversalSingularities.isModLoaded()) {
+            addBec(
+                ItemList.Machine_Multi_BlackHoleCompressor.get(1),
+                new ItemStack[] { ItemList.Machine_Multi_HIPCompressor.get(1),
+                    ItemList.Machine_Multi_NeutroniumCompressor.get(1), ItemList.AdvancedImplosionCompressor.get(16),
+                    ItemList.CompressorUIV.get(8L), ItemList.ElectricImplosionCompressor.get(4),
+                    ItemList.Field_Generator_UEV.get(4), ItemList.ZPM3.get(2),
+                    GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UIV, 4),
+                    GregtechItemList.Laser_Lens_Special.get(64),
+                    GTOreDictUnificator.get(OrePrefixes.ring, Materials.ProtoHalkonite, 32),
+                    GTOreDictUnificator.get(OrePrefixes.rotor, Materials.ProtoHalkonite, 16),
+                    GTOreDictUnificator.get(OrePrefixes.gear, Materials.ProtoHalkonite, 8),
+                    GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Naquadria, 16),
+                    GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Kevlar, 4),
+                    GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.SuperconductorUIVBase, 4),
+                    GGMaterial.metastableOganesson.get(OrePrefixes.gearGtSmall, 4) },
+                nanites(1, 1, 2, 2, 3, 1, 1, 3, 4, 3, 3, 3, 1, 2, 4, 6),
+                new FluidStack[] { CondensateType.SpaceTime.getEntangled(10 * INGOTS),
+                    CondensateType.Infinity.getEntangled(100 * INGOTS),
+                    CondensateType.Neutronium.getEntangled(1024 * INGOTS),
+                    CondensateType.CosmicNeutronium.getEntangled(512 * INGOTS) },
+                600 * SECONDS,
+                TierEU.RECIPE_UMV);
+        }
+
+        // HIP
+        if (EtFuturumRequiem.isModLoaded()) {
+            addBec(
+                ItemList.Machine_Multi_HIPCompressor.get(1),
+                new ItemStack[] { ItemList.Machine_Multi_IndustrialCompressor.get(4),
+                    ItemList.Heating_Duct_Casing.get(4L), ItemList.Coolant_Duct_Casing.get(4L),
+                    getModItem(EtFuturumRequiem.ID, "netherite_block", 4), ItemList.Electric_Piston_ZPM.get(16),
+                    ItemList.Robot_Arm_ZPM.get(4), ItemList.Electric_Pump_ZPM.get(4),
+                    GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UV, 4),
+                    GGMaterial.incoloy903.get(OrePrefixes.gearGt, 64),
+                    GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Naquadria, 1) },
+                nanites(1, 1, 2, 2, 3, 1, 1, 2, 4, 5),
+                new FluidStack[] { CondensateType.DimensionallyShiftedSuperfluid.getEntangled(1_000) },
+                30 * SECONDS,
+                TierEU.RECIPE_UMV);
+        }
+
+        // EIC
+        addBec(
+            ItemList.ElectricImplosionCompressor.get(1),
+            new ItemStack[] { ItemList.Machine_Multi_ImplosionCompressor.get(1),
+                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Neutronium, 1),
+                GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Osmium, 64),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Osmium, 26),
+                GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUHV, 64),
+                ItemList.Electric_Piston_UV.get(64) },
+            nanites(1, 1, 2, 3, 4, 5),
+            new FluidStack[] { CondensateType.ChromaticGlass.getEntangled(1 * INGOTS),
+                CondensateType.Neutronium.getEntangled(10 * INGOTS) },
+            30 * SECONDS,
             TierEU.RECIPE_UMV);
     }
 
@@ -198,6 +265,32 @@ public class BECRecipes implements Runnable {
                 MaterialsElements.STANDALONE.ADVANCED_NITINOL.getPlateSuperdense(24) },
             nanites(3, 3, 2, 4, 1, 1, 1, 1, 1, 1, 1, 1, 2),
             new FluidStack[] { CondensateType.ChromaticGlass.getEntangled(243 * INGOTS) },
+            300 * SECONDS,
+            TierEU.RECIPE_UIV);
+
+        // Graviton Anomaly since it's important ingrediant to gorge
+        addBec(
+            GregtechItemList.Battery_Casing_Gem_4.get(3),
+            new ItemStack[] { MaterialsElements.STANDALONE.ADVANCED_NITINOL.getPlate(32),
+                GTOreDictUnificator.get(OrePrefixes.wireGt12, Materials.SuperconductorUHV, 64),
+                MaterialsAlloy.TITANSTEEL.getGear(8), GregtechItemList.DehydratorCoilWireZPM.get(64),
+                GregtechItemList.DehydratorCoilWireZPM.get(64), MaterialsAlloy.ABYSSAL.getPlate(16),
+                MaterialsAlloy.TRINIUM_REINFORCED_STEEL.getPlate(32), MaterialsAlloy.OCTIRON.getPlate(32) },
+            nanites(3, 3, 4, 1, 1, 1, 1, 2),
+            new FluidStack[] { CondensateType.Neutronium.getEntangled(64 * INGOTS) },
+            300 * SECONDS,
+            TierEU.RECIPE_UIV);
+
+        addBec(
+            GregtechItemList.Battery_Gem_4.get(3),
+            new ItemStack[] { GregtechItemList.Battery_Casing_Gem_4.get(2), ItemList.StableBosonContainmentUnit.get(4),
+                MaterialsAlloy.ABYSSAL.getPlate(64), GTOreDictUnificator.get(OrePrefixes.circuit, Materials.UHV, 16),
+                GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUHV, 64),
+                MaterialsElements.STANDALONE.ASTRAL_TITANIUM.getBolt(16), MaterialsAlloy.TITANSTEEL.getScrew(16),
+                MaterialsAlloy.TRINIUM_REINFORCED_STEEL.getPlate(64), MaterialsAlloy.OCTIRON.getPlate(32),
+                MaterialsAlloy.TITANSTEEL.getPlate(32) },
+            nanites(3, 3, 2, 4, 1, 1, 1, 1, 1, 1, 2),
+            new FluidStack[] { CondensateType.Neutronium.getEntangled(64 * INGOTS) },
             300 * SECONDS,
             TierEU.RECIPE_UIV);
 
@@ -277,6 +370,83 @@ public class BECRecipes implements Runnable {
                 CondensateType.CelestialTungsten.getEntangled(16 * INGOTS), },
             300 * SECONDS,
             TierEU.RECIPE_UXV);
+    }
+
+    private void addOtherStuffRecipes() {
+        // UHV+ solenoids
+        addBec(
+            ItemList.Superconducting_Magnet_Solenoid_UHV.get(1),
+            new ItemStack[] { GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorUHV, 16),
+                GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials.Bedrockium, 2),
+                GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Neutronium, 1),
+                GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Naquadria, 8),
+                GTOreDictUnificator.get(OrePrefixes.plateDouble, Materials.CosmicNeutronium, 2),
+                ItemList.Large_Fluid_Cell_Iridium.get(1), ItemList.Electric_Pump_UHV.get(1),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.CallistoIce, 32),
+                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Ledox, 32) },
+            nanites(1, 1, 2, 3, 4, 3, 2, 1, 1),
+            new FluidStack[] { CondensateType.ChromaticGlass.getEntangled(8 * INGOTS) },
+            100 * SECONDS,
+            TierEU.RECIPE_UEV);
+
+        addBec(
+            ItemList.Superconducting_Magnet_Solenoid_UEV.get(1),
+            new ItemStack[] { GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorUEV, 16),
+                GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials.Draconium, 2),
+                GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.NetherStar, 1),
+                GGMaterial.metastableOganesson.get(OrePrefixes.stickLong, 8),
+                GTOreDictUnificator.get(OrePrefixes.plateDouble, Materials.Infinity, 2),
+                ItemList.Large_Fluid_Cell_Iridium.get(1), ItemList.Electric_Pump_UEV.get(1),
+                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.CallistoIce, 2),
+                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Ledox, 2) },
+            nanites(1, 1, 2, 3, 4, 3, 2, 1, 1),
+            new FluidStack[] { CondensateType.CelestialTungsten.getEntangled(8 * INGOTS) },
+            100 * SECONDS,
+            TierEU.RECIPE_UIV);
+
+        addBec(
+            ItemList.Superconducting_Magnet_Solenoid_UIV.get(1),
+            new ItemStack[] { GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorUIV, 16),
+                GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials.NetherStar, 2),
+                GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.DraconiumAwakened, 1),
+                GGMaterial.metastableOganesson.get(OrePrefixes.stickLong, 8),
+                GTOreDictUnificator.get(OrePrefixes.plateDouble, Materials.TranscendentMetal, 2),
+                ItemList.Large_Fluid_Cell_Neutronium.get(1), ItemList.Electric_Pump_UIV.get(1) },
+            nanites(2, 2, 3, 4, 5, 4, 3),
+            new FluidStack[] { CondensateType.TranscendentMetal.getEntangled(32 * INGOTS),
+                CondensateType.CelestialTungsten.getEntangled(32 * INGOTS) },
+            100 * SECONDS,
+            TierEU.RECIPE_UMV);
+
+        addBec(
+            ItemList.Superconducting_Magnet_Solenoid_UMV.get(1),
+            new ItemStack[] { GTOreDictUnificator.get(OrePrefixes.wireGt02, Materials.SuperconductorUMV, 16),
+                GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials.Quantium, 2),
+                GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Infinity, 1),
+                GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Infinity, 8),
+                GTOreDictUnificator.get(OrePrefixes.plateDouble, Materials.SpaceTime, 2),
+                ItemList.Large_Fluid_Cell_Neutronium.get(1), ItemList.Electric_Pump_UMV.get(1) },
+            nanites(3, 3, 4, 5, 6, 5, 4),
+            new FluidStack[] { CondensateType.SpaceTime.getEntangled(16 * INGOTS),
+                CondensateType.BoundlessCosmicSolder.getEntangled(1_000) },
+            200 * SECONDS,
+            TierEU.RECIPE_UMV);
+
+        // T4 QFT Manipulator, 1.5x cheaper recipe
+        addBec(
+            GregtechItemList.SpaceTimeContinuumRipper.get(3),
+            new ItemStack[] { GregtechItemList.ForceFieldGlass.get(16),
+                GTOreDictUnificator.get(OrePrefixes.nanite, Materials.Carbon, 64), ItemList.Emitter_UMV.get(8),
+                GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUMV, 16),
+                GregtechItemList.Laser_Lens_Special.get(2), // Quantum Anormaly
+                ItemRefer.Advanced_Radiation_Protection_Plate.get(32), ItemList.NaquadriaSupersolid.get(8),
+                GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Thulium, 40),
+                MaterialsElements.getInstance().NEPTUNIUM.getBlock(32),
+                MaterialsElements.getInstance().FERMIUM.getBlock(32) },
+            nanites(6, 4, 6, 6, 4, 3, 2, 6, 5, 6),
+            new FluidStack[] { CondensateType.Infinity.getEntangled(16 * INGOTS) },
+            1000 * SECONDS,
+            TierEU.RECIPE_UMV);
     }
 
     public void runLateRecipes() {
