@@ -1,0 +1,276 @@
+package bartworks.system.material;
+
+import static net.minecraft.util.EnumChatFormatting.GREEN;
+
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.lang3.tuple.Pair;
+
+import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.SubTag;
+import gregtech.api.interfaces.ISubTagContainer;
+import gregtech.api.material.GTMaterialProperties;
+import gregtech.api.material.GTWerkstoffFlag;
+import gregtech.api.material.WerkstoffData;
+import gregtech.api.material.WerkstoffRefStack;
+import gregtech.loaders.materials.LegacyMaterials;
+
+/// Rebuilds every legacy `Werkstoff` from MaterialLib data (the stage-10 mirror of the stage-04
+/// `MaterialsLegacyBridge` flip): the pool declaration lists (`WerkstoffLoader`, `GGMaterial`,
+/// `WerkstoffMaterialPool`, `BotWerkstoffMaterialPool`) now initialize each field via [#byId], and the first
+/// lookup builds ALL werkstoff-backed materials in ascending-first-id order (matching declaration-order
+/// dependencies -- every werkstoff-to-werkstoff contents reference points at a lower id, validated at build).
+///
+/// Reconstruction inputs are the composite `GTMaterialProperties#WERKSTOFF` property (bartworks-side data,
+/// pool scalars preserved even where the gregtech dump won the shared keys) plus the shared
+/// `ARGB`/`LOCAL_NAME`/`TEXTURE_SET`/`PROCESSING_MATERIAL_TIER_EU` values. Contents/byproduct references
+/// resolve against the registry the legacy declaration used (see `WerkstoffRefStack#werkstoff`); a
+/// werkstoff-kind byproduct naming this material itself resolves to the instance under construction
+/// (byproduct self-padding). `bridgeMaterial` stays null here -- `BridgeMaterialsLoader` assigns it at
+/// bartworks' init exactly as before.
+///
+/// [#applyGenerationBits] must run after `Werkstoff.GenerationFeatures.initPrefixLogic()` (see
+/// `WerkstoffLoader#setUp`): construction encodes the prefix ground truth purely as explicit per-prefix
+/// enables (the prefix-logic bitmasks are not initialized yet at class-load time), and the second pass then
+/// fills the `toGenerate` bitmask (consulted by `WerkstoffLoader#addItemsForGeneration`'s aggregation) while
+/// explicitly disabling every bitmask-covered prefix the ground truth omits, so `hasItemType` keeps returning
+/// exactly the dumped set.
+public final class WerkstoffReconstruction {
+
+    private static Map<Integer, Werkstoff> byId;
+
+    private WerkstoffReconstruction() {}
+
+    public static Werkstoff byId(int id) {
+        ensureBuilt();
+        Werkstoff werkstoff = byId.get(id);
+        if (werkstoff == null) throw new IllegalStateException("No werkstoff-backed MaterialLib material for id " + id);
+        return werkstoff;
+    }
+
+    /// Whether `werkstoff` was rebuilt from MaterialLib data (false for the `BWGTMaterialReference` proxies
+    /// and any third-party WerkstoffAdder's werkstoff).
+    public static boolean isReconstructed(Werkstoff werkstoff) {
+        ensureBuilt();
+        return byId.get((int) werkstoff.getmID()) == werkstoff;
+    }
+
+    /// See the class javadoc; called from `WerkstoffLoader#setUp` after `initPrefixLogic`.
+    public static void applyGenerationBits() {
+        ensureBuilt();
+        for (Werkstoff werkstoff : new LinkedHashSet<>(byId.values())) {
+            Werkstoff.GenerationFeatures features = werkstoff.getGenerationFeatures();
+            for (OrePrefixes prefix : OrePrefixes.VALUES) {
+                int bits = Werkstoff.GenerationFeatures.getPrefixDataRaw(prefix);
+                if (bits == 0) continue;
+                if (features.isExplicitlyEnabled(prefix)) {
+                    features.toGenerate |= bits;
+                } else {
+                    features.removePrefix(prefix);
+                }
+            }
+        }
+    }
+
+    private static synchronized void ensureBuilt() {
+        if (byId != null) return;
+        List<Material> werkstoffMaterials = new ArrayList<>();
+        Map<String, Material> pending = new HashMap<>();
+        for (Material material : MaterialLibAPI.getMaterials()) {
+            if (!"gregtech".equals(material.getModId())) continue;
+            if (material.getProperty(GTMaterialProperties.WERKSTOFF) != null) {
+                werkstoffMaterials.add(material);
+                pending.put(material.getName(), material);
+            }
+        }
+        // Ascending first id approximates declaration order; a forward contents reference (the pools declare
+        // one: AtomicSeparationCatalyst 10022 -> Orundum 10023) recurses through resolveRef instead.
+        werkstoffMaterials.sort(
+            Comparator.comparingInt(
+                material -> material.getProperty(GTMaterialProperties.WERKSTOFF)
+                    .ids()
+                    .get(0)));
+        Map<Integer, Werkstoff> built = new HashMap<>();
+        Map<String, Werkstoff> byName = new HashMap<>();
+        LinkedHashSet<String> inProgress = new LinkedHashSet<>();
+        for (Material material : werkstoffMaterials) {
+            build(material, built, byName, pending, inProgress);
+        }
+        byId = built;
+    }
+
+    private static void build(Material ml, Map<Integer, Werkstoff> built, Map<String, Werkstoff> byName,
+        Map<String, Material> pending, LinkedHashSet<String> inProgress) {
+        if (byName.containsKey(ml.getName())) return;
+        if (!inProgress.add(ml.getName())) {
+            throw new IllegalStateException("Werkstoff contents reference cycle: " + inProgress);
+        }
+        WerkstoffData data = ml.getProperty(GTMaterialProperties.WERKSTOFF);
+
+        int argb = ml.getProperty(GTMaterialProperties.ARGB);
+        short[] rgba = { (short) (argb >> 16 & 0xFF), (short) (argb >> 8 & 0xFF), (short) (argb & 0xFF), 0 };
+
+        Werkstoff.Stats stats = new Werkstoff.Stats().setMeltingPoint(data.meltingPoint())
+            .setBoilingPoint(data.boilingPoint())
+            .setProtons(data.protons())
+            .setNeutrons(data.neutrons())
+            .setMass(data.mass())
+            .setMeltingVoltage(data.meltingVoltage())
+            .setDurOverride(data.durabilityOverride())
+            .setSpeedOverride(data.speedOverride())
+            .setQualityOverride((byte) data.qualityOverride())
+            .setEnchantmentlvl((byte) data.enchantmentLevel())
+            .setEbfGasRecipeTimeMultiplier(data.ebfGasTimeMultiplier())
+            .setEbfGasRecipeConsumedAmountMultiplier(data.ebfGasAmountMultiplier())
+            .setSublimation(
+                data.flags()
+                    .contains(GTWerkstoffFlag.SUBLIMATION))
+            .setToxic(
+                data.flags()
+                    .contains(GTWerkstoffFlag.TOXIC))
+            .setRadioactive(
+                data.flags()
+                    .contains(GTWerkstoffFlag.RADIOACTIVE))
+            .setBlastFurnace(
+                data.flags()
+                    .contains(GTWerkstoffFlag.BLAST_FURNACE))
+            .setElektrolysis(
+                data.flags()
+                    .contains(GTWerkstoffFlag.ELECTROLYSIS))
+            .setCentrifuge(
+                data.flags()
+                    .contains(GTWerkstoffFlag.CENTRIFUGE))
+            .setGas(
+                data.flags()
+                    .contains(GTWerkstoffFlag.GAS));
+        stats.setDurMod(data.durabilityModifier());
+        Integer tierEU = ml.getProperty(GTMaterialProperties.PROCESSING_MATERIAL_TIER_EU);
+        if (tierEU != null) stats.setProcessingMaterialTierEU(tierEU);
+        if (data.flags()
+            .contains(GTWerkstoffFlag.NO_AUTO_BLAST_FURNACE_RECIPES)) stats.disableAutoGeneratedBlastFurnaceRecipes();
+        if (data.flags()
+            .contains(GTWerkstoffFlag.NO_AUTO_VACUUM_FREEZER_RECIPES)) stats.disableAutoGeneratedVacuumFreezerRecipes();
+
+        Werkstoff.GenerationFeatures features = new Werkstoff.GenerationFeatures().disable();
+        for (String prefixName : data.prefixes()) {
+            features.addPrefix(OrePrefixes.getPrefix(prefixName));
+        }
+        if (data.flags()
+            .contains(GTWerkstoffFlag.ENFORCE_UNIFICATION)) features.enforceUnification();
+        if (data.flags()
+            .contains(GTWerkstoffFlag.CHEMICAL_SYNTHESIS)) features.addChemicalRecipes();
+        if (data.flags()
+            .contains(GTWerkstoffFlag.METAL_CRAFTING_SOLIDIFICATION)) features.addMetalCraftingSolidifierRecipes();
+        if (data.flags()
+            .contains(GTWerkstoffFlag.METAL_SOLIDIFICATION)) features.addMetaSolidifierRecipes();
+        if (data.flags()
+            .contains(GTWerkstoffFlag.SIFTING)) features.addSifterRecipes();
+        if (data.flags()
+            .contains(GTWerkstoffFlag.MIXING)) {
+            if (data.mixCircuit() >= 1) features.addMixerRecipes((short) data.mixCircuit());
+            else features.addMixerRecipes();
+        }
+
+        LinkedHashSet<Pair<ISubTagContainer, Integer>> contents = new LinkedHashSet<>();
+        for (WerkstoffRefStack stack : data.contents()) {
+            contents.add(
+                Pair.of(
+                    resolveRef(stack, ml.getName(), null, built, byName, pending, inProgress),
+                    (int) stack.amount()));
+        }
+        // Mirrors the public constructors' extension rule: a single Materials content of amount 1 marks the
+        // werkstoff as an extension of that material.
+        if (contents.size() == 1) {
+            Pair<ISubTagContainer, Integer> first = contents.iterator()
+                .next();
+            if (first.getValue() == 1 && first.getKey() instanceof Materials) features.setExtension();
+        }
+
+        List<SubTag> subTags = new ArrayList<>();
+        for (String tagName : data.subTags()) {
+            subTags.add(SubTag.getNewSubTag(tagName));
+        }
+
+        Werkstoff werkstoff = new Werkstoff(
+            rgba,
+            ml.getProperty(GTMaterialProperties.LOCAL_NAME),
+            data.formula(),
+            data.flags()
+                .contains(GTWerkstoffFlag.LOCALIZED_FORMULA),
+            stats,
+            Werkstoff.Types.valueOf(data.type()),
+            features,
+            data.ids()
+                .get(0),
+            LegacyMaterials.iconSetOf(ml),
+            new ArrayList<>(),
+            contents,
+            subTags,
+            data.additionalOreDict(),
+            ownerOf(data.pool()));
+
+        // Byproducts may self-reference (padding), so they resolve after construction.
+        List<ISubTagContainer> byProducts = werkstoff.getRawOreByProducts();
+        for (WerkstoffRefStack stack : data.oreByProducts()) {
+            byProducts.add(resolveRef(stack, ml.getName(), werkstoff, built, byName, pending, inProgress));
+        }
+
+        byName.put(ml.getName(), werkstoff);
+        inProgress.remove(ml.getName());
+        for (int id : data.ids()) {
+            if (id == werkstoff.getmID()) built.put(id, werkstoff);
+            else {
+                Werkstoff.registerAdditionalId(werkstoff, id);
+                built.put(id, werkstoff);
+            }
+        }
+    }
+
+    private static ISubTagContainer resolveRef(WerkstoffRefStack stack, String ownName, Werkstoff self,
+        Map<Integer, Werkstoff> built, Map<String, Werkstoff> byName, Map<String, Material> pending,
+        LinkedHashSet<String> inProgress) {
+        String name = stack.material()
+            .name();
+        if (stack.werkstoff()) {
+            if (name.equals(ownName)) {
+                if (self == null) throw new IllegalStateException(
+                    "Werkstoff " + ownName + " has a self-referencing contents entry, which no declaration produced");
+                return self;
+            }
+            Werkstoff resolved = byName.get(name);
+            if (resolved == null) {
+                Material dependency = pending.get(name);
+                if (dependency == null)
+                    throw new IllegalStateException("Werkstoff " + ownName + " references unknown werkstoff " + name);
+                build(dependency, built, byName, pending, inProgress);
+                resolved = byName.get(name);
+            }
+            return resolved;
+        }
+        Materials material = Materials.get(name);
+        if (material == null || material == Materials._NULL) {
+            throw new IllegalStateException("Werkstoff " + ownName + " references unknown legacy material " + name);
+        }
+        return material;
+    }
+
+    /// The legacy `Werkstoff#getOwner` value ("added by" attribution): the declaring mod's display name, or
+    /// null for bartworks' own pools -- reconstruction runs during bartworks' preInit, so
+    /// `Loader#activeModContainer` can no longer distinguish the pools.
+    private static String ownerOf(String pool) {
+        return switch (pool) {
+            case "goodgenerator" -> GREEN + "Good Generator";
+            case "gtnhlanth", "gtnhlanth-bot" -> GREEN + "GTNH: Lanthanides";
+            default -> null;
+        };
+    }
+}

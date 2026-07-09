@@ -107,6 +107,13 @@ public class LegacyMaterials {
         };
     }
 
+    /// Public form of [#resolveIconSet] for the stage-10 werkstoff reconstruction
+    /// (`bartworks.system.material.WerkstoffReconstruction`), which needs the same
+    /// TEXTURE_SET-name-to-legacy-TextureSet resolution.
+    public static TextureSet iconSetOf(Material ml) {
+        return resolveIconSet(ml);
+    }
+
     private static TextureSet resolveIconSet(Material ml) {
         TextureSet custom = customIconSet(ml.getName());
         if (custom != null) return custom;

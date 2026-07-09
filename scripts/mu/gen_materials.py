@@ -324,8 +324,9 @@ LEGACY_BRIDGE_SOURCES = [
 
 
 def load_legacy_constant_names():
-    """The legacy `Materials` static-field names (bridge + marker assignments) -- the set of names a
-    declaration-time `Materials.X` reference could possibly have used. Needed to recover a byproduct
+    """The legacy declaration-time material mNames (bridge stub literals + marker setName literals) -- the
+    set of names a declaration-time `Materials.X` reference could have carried (byproducts dump mNames, which
+    differ from field names, e.g. `Materials.Aluminiumoxide` has mName "Alumina"). Needed to recover a byproduct
     reference's kind: the werkstoff dump records byproducts as bare names, and a name like "Calcium" is both a
     werkstoff and a `Materials` constant."""
     names = set()
@@ -333,7 +334,9 @@ def load_legacy_constant_names():
         path = REPO_ROOT / rel
         if not path.exists():
             continue
-        names.update(re.findall(r"Materials\.(\w+) = ", path.read_text(encoding="utf-8")))
+        text = path.read_text(encoding="utf-8")
+        names.update(re.findall(r'LegacyMaterials\.stub\("([^"]+)"\)', text))
+        names.update(re.findall(r'setName\("([^"]+)"\)', text))
     return names
 
 
