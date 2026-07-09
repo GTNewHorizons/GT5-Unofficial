@@ -1899,7 +1899,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             } else if (tHatch instanceof MTEHatchInputDebug debugHatch) {
                 for (FluidStack fluid : debugHatch.getFluidList()) {
                     if (fluid != null) {
-                        rList.add(GTUtility.copyAmount(Integer.MAX_VALUE, fluid));
+                        rList.add(GTUtility.copyAmount(Long.MAX_VALUE, fluid));
                     }
                 }
             } else {
