@@ -11,7 +11,10 @@ import gregtech.api.util.GTUtility;
 
 public class ProcessingFineWire implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
+    public static ProcessingFineWire INSTANCE;
+
     public ProcessingFineWire() {
+        INSTANCE = this;
         OrePrefixes.wireFine.add(this);
     }
 

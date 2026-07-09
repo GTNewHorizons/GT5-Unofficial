@@ -48,7 +48,10 @@ import gregtech.api.util.GTUtility;
 
 public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
+    public static ProcessingPlate INSTANCE;
+
     public ProcessingPlate() {
+        INSTANCE = this;
         OrePrefixes.plate.add(this);
         OrePrefixes.plateDouble.add(this);
         OrePrefixes.plateTriple.add(this);

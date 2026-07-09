@@ -17,7 +17,10 @@ import gregtech.api.util.GTUtility;
 
 public class ProcessingScrew implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
+    public static ProcessingScrew INSTANCE;
+
     public ProcessingScrew() {
+        INSTANCE = this;
         OrePrefixes.screw.add(this);
     }
 

@@ -23,7 +23,10 @@ import gregtech.api.util.GTUtility;
 
 public class ProcessingNugget implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
+    public static ProcessingNugget INSTANCE;
+
     public ProcessingNugget() {
+        INSTANCE = this;
         OrePrefixes.nugget.add(this);
     }
 

@@ -17,7 +17,10 @@ import gregtech.api.util.GTUtility;
 
 public class ProcessingOrePoor implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
+    public static ProcessingOrePoor INSTANCE;
+
     public ProcessingOrePoor() {
+        INSTANCE = this;
         OrePrefixes.orePoor.add(this);
         OrePrefixes.oreSmall.add(this);
         OrePrefixes.oreNormal.add(this);

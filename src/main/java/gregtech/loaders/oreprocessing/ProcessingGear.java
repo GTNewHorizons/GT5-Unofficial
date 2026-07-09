@@ -21,7 +21,10 @@ import gregtech.api.util.GTUtility;
 
 public class ProcessingGear implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
+    public static ProcessingGear INSTANCE;
+
     public ProcessingGear() {
+        INSTANCE = this;
         OrePrefixes.gearGt.add(this);
         OrePrefixes.gearGtSmall.add(this);
     }

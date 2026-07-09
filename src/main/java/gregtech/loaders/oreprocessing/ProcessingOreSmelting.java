@@ -27,7 +27,10 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
         OrePrefixes.crushedCentrifuged, OrePrefixes.dust, OrePrefixes.dustImpure, OrePrefixes.dustPure,
         OrePrefixes.dustRefined };
 
+    public static ProcessingOreSmelting INSTANCE;
+
     public ProcessingOreSmelting() {
+        INSTANCE = this;
         for (OrePrefixes tPrefix : this.mSmeltingPrefixes) tPrefix.add(this);
     }
 

@@ -21,7 +21,10 @@ import gregtech.api.util.GTUtility;
 
 public class ProcessingStick implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
+    public static ProcessingStick INSTANCE;
+
     public ProcessingStick() {
+        INSTANCE = this;
         OrePrefixes.stick.add(this);
     }
 

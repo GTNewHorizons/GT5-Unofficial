@@ -15,7 +15,10 @@ import gregtech.api.util.GTUtility;
 
 public class ProcessingIceOre implements IOreRecipeRegistrator {
 
+    public static ProcessingIceOre INSTANCE;
+
     public ProcessingIceOre() {
+        INSTANCE = this;
         OrePrefixes.ore.add(this);
         OrePrefixes.rawOre.add(this);
     }

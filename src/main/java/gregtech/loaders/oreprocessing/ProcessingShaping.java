@@ -30,7 +30,10 @@ import gregtech.api.util.GTUtility;
 @SuppressWarnings("RedundantLabeledSwitchRuleCodeBlock")
 public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
+    public static ProcessingShaping INSTANCE;
+
     public ProcessingShaping() {
+        INSTANCE = this;
         OrePrefixes.ingot.add(this);
         OrePrefixes.dust.add(this);
     }

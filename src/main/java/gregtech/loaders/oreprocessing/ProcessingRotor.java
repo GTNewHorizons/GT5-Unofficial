@@ -22,7 +22,10 @@ import gregtech.api.util.GTUtility;
 
 public class ProcessingRotor implements gregtech.api.interfaces.IOreRecipeRegistrator {
 
+    public static ProcessingRotor INSTANCE;
+
     public ProcessingRotor() {
+        INSTANCE = this;
         OrePrefixes.rotor.add(this);
     }
 

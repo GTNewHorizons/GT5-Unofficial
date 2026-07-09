@@ -25,7 +25,10 @@ import gregtech.common.items.MetaGeneratedTool01;
 public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeRegistrator { // TODO COMPARE WITH OLD TOOL
                                                                                            // HEAD??? generator
 
+    public static ProcessingToolHead INSTANCE;
+
     public ProcessingToolHead() {
+        INSTANCE = this;
         OrePrefixes.toolHeadBuzzSaw.add(this);
         OrePrefixes.toolHeadChainsaw.add(this);
         OrePrefixes.toolHeadDrill.add(this);

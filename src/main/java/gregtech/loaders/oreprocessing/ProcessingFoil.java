@@ -16,7 +16,10 @@ import gregtech.api.util.GTUtility;
 
 public class ProcessingFoil implements IOreRecipeRegistrator {
 
+    public static ProcessingFoil INSTANCE;
+
     public ProcessingFoil() {
+        INSTANCE = this;
         OrePrefixes.foil.add(this);
     }
 
