@@ -1,12 +1,9 @@
 package gregtech;
 
-import static gregtech.GTLoggers.GT_FML_LOGGER;
-import static gregtech.GTLoggers.GT_ORE_DICT_LOGGER;
 import static gregtech.GT_Version.VERSION_MAJOR;
 import static gregtech.GT_Version.VERSION_MINOR;
 import static gregtech.GT_Version.VERSION_PATCH;
 import static gregtech.api.enums.Mods.Forestry;
-import static gregtech.api.enums.Mods.NewHorizonsCoreMod;
 import static gregtech.api.util.GTRecipe.setItemStacks;
 
 import java.io.File;
@@ -29,6 +26,7 @@ import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraftforge.common.ChestGenHooks;
 import net.minecraftforge.common.MinecraftForge;
 
+import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.falsepattern.chunk.api.DataRegistry;
@@ -56,7 +54,7 @@ import cpw.mods.fml.common.event.FMLServerStoppingEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import galacticgreg.SpaceDimRegisterer;
-import goodgenerator.util.NaquadahRecipePatches;
+import goodgenerator.loader.NaquadahReworkRecipeLoader;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enchants.EnchantmentEnderDamage;
 import gregtech.api.enchants.EnchantmentHazmat;
@@ -101,7 +99,6 @@ import gregtech.common.config.MachineStats;
 import gregtech.common.config.OPStuff;
 import gregtech.common.config.Other;
 import gregtech.common.config.Worldgen;
-import gregtech.common.misc.GTDebugCommand;
 import gregtech.common.misc.GTMiscCommand;
 import gregtech.common.misc.GTPowerfailCommand;
 import gregtech.common.misc.GTStructureChannels;
@@ -145,12 +142,12 @@ import gregtech.loaders.preload.LoaderMaterialLibCutover;
 import gregtech.loaders.preload.LoaderMetaPipeEntities;
 import gregtech.loaders.preload.LoaderMetaTileEntities;
 import gregtech.loaders.preload.LoaderOreProcessing;
-import gtnhlanth.loader.RecipeLoader;
+import gregtech.loaders.shapeconsumers.LoaderShapeConsumers;
 import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeOutput;
 
 @Mod(
-    modid = Mods.ModIDs.GREG_TECH,
+    modid = "gregtech",
     name = "GregTech",
     version = GT_Version.VERSION,
     guiFactory = "gregtech.client.GTGuiFactory",
@@ -193,8 +190,7 @@ import ic2.api.recipe.RecipeOutput;
         + "after:UndergroundBiomes;"
         + "after:TConstruct;"
         + "after:Translocator;"
-        + "after:gendustry;"
-        + "before:computronics;")
+        + "after:gendustry;")
 public class GTMod {
 
     static {
@@ -220,39 +216,14 @@ public class GTMod {
         } catch (ConfigException e) {
             throw new RuntimeException(e);
         }
-
-        File minecraftHome = Launch.minecraftHome == null ? new File(".") : Launch.minecraftHome;
-        try {
-            GTLog.configureExplosionLogger(minecraftHome);
-        } catch (RuntimeException e) {
-            GT_FML_LOGGER.error("Failed to configure explosion logger", e);
-        }
-        try {
-            GTLog.configureOreDictLogger(minecraftHome);
-        } catch (RuntimeException e) {
-            GT_FML_LOGGER.error("Failed to configure ore dictionary logger", e);
-        }
-        try {
-            GTLog.configureIconLogger(minecraftHome);
-        } catch (RuntimeException e) {
-            GT_FML_LOGGER.error("Failed to configure icon logger", e);
-        }
-        try {
-            GTLog.configureRecipeRemovalLogger(minecraftHome);
-        } catch (RuntimeException e) {
-            GT_FML_LOGGER.error("Failed to configure recipe removal logger", e);
-        }
     }
 
     public static final int NBT_VERSION = calculateTotalGTVersion(VERSION_MAJOR, VERSION_MINOR, VERSION_PATCH);
 
-    @Mod.Instance(Mods.ModIDs.GREG_TECH)
+    @Mod.Instance("gregtech")
     public static GTMod GT;
 
-    @SidedProxy(
-        modId = Mods.ModIDs.GREG_TECH,
-        clientSide = "gregtech.common.GTClient",
-        serverSide = "gregtech.common.GTProxy")
+    @SidedProxy(modId = "gregtech", clientSide = "gregtech.common.GTClient", serverSide = "gregtech.common.GTProxy")
     public static GTProxy proxy;
     /** Field renamed, reference {@link gregtech.GTMod#proxy} instead */
     @SuppressWarnings("DeprecatedIsStillUsed")
@@ -271,6 +242,7 @@ public class GTMod {
     public static volatile boolean sMaterialsReady = false;
 
     public static GTAchievements achievements;
+    public static final Logger GT_FML_LOGGER = LogManager.getLogger("GregTech GTNH");
 
     public GTMod() {
         GTValues.DW = new GTDummyWorld();
@@ -326,6 +298,7 @@ public class GTMod {
     @SubscribeEvent
     public void materialRegistration(MaterialRegistrationEvent event) {
         Materials2.init();
+        LoaderShapeConsumers.register();
     }
 
     @Mod.EventHandler
@@ -340,12 +313,15 @@ public class GTMod {
         }
 
         GTPreLoad.getConfiguration(event.getModConfigurationDirectory());
+        GTPreLoad.createLogFiles(
+            event.getModConfigurationDirectory()
+                .getParentFile());
 
         PowerGogglesConfigHandler.init(new File(event.getModConfigurationDirectory() + "/GregTech/Goggles.cfg"));
 
         proxy.onPreInitialization(event);
 
-        GT_FML_LOGGER.debug("GTMod: Setting Configs");
+        GTLog.out.println("GTMod: Setting Configs");
 
         GTPreLoad.loadConfig();
 
@@ -391,8 +367,8 @@ public class GTMod {
 
         GTPreLoad.sortToTheEnd();
         GregTechAPI.sPreloadFinished = true;
-        GT_FML_LOGGER.debug("GTMod: Preload-Phase finished!");
-        GT_ORE_DICT_LOGGER.info("GTMod: Preload-Phase finished!");
+        GTLog.out.println("GTMod: Preload-Phase finished!");
+        GTLog.ore.println("GTMod: Preload-Phase finished!");
 
         GTUIInfos.init();
 
@@ -455,8 +431,8 @@ public class GTMod {
         CondensateType.registerRecipes();
 
         GregTechAPI.sLoadFinished = true;
-        GT_FML_LOGGER.debug("GTMod: Load-Phase finished!");
-        GT_ORE_DICT_LOGGER.info("GTMod: Load-Phase finished!");
+        GTLog.out.println("GTMod: Load-Phase finished!");
+        GTLog.ore.println("GTMod: Load-Phase finished!");
 
         for (Runnable tRunnable : GregTechAPI.sAfterGTLoad) {
             tRunnable.run();
@@ -481,7 +457,7 @@ public class GTMod {
             final int bound = GregTechAPI.METATILEENTITIES.length;
             for (int i1 = 1; i1 < bound; i1++) {
                 if (GregTechAPI.METATILEENTITIES[i1] != null) {
-                    GT_FML_LOGGER.debug("META {} {}", i1, GregTechAPI.METATILEENTITIES[i1].getMetaName());
+                    GTLog.out.printf("META %d %s\n", i1, GregTechAPI.METATILEENTITIES[i1].getMetaName());
                 }
             }
         }
@@ -540,7 +516,7 @@ public class GTMod {
         Map<IRecipeInput, RecipeOutput> aOreWashingRecipeList = GTModHandler.getOreWashingRecipeList();
         Map<IRecipeInput, RecipeOutput> aThermalCentrifugeRecipeList = GTModHandler.getThermalCentrifugeRecipeList();
 
-        GT_FML_LOGGER.debug(
+        GTLog.out.println(
             "GTMod: Activating OreDictionary Handler, this can take some time, as it scans the whole OreDictionary");
         GT_FML_LOGGER.info(
             "If your Log stops here, you were too impatient. Wait a bit more next time, before killing Minecraft with the Task Manager.");
@@ -556,9 +532,8 @@ public class GTMod {
 
         if (GTValues.D1) {
             GTModHandler.sSingleNonBlockDamagableRecipeList.forEach(
-                iRecipe -> GT_FML_LOGGER.debug(
-                    "=> {}",
-                    iRecipe.getRecipeOutput()
+                iRecipe -> GTLog.out.println(
+                    "=> " + iRecipe.getRecipeOutput()
                         .getDisplayName()));
         }
         new CraftingRecipeLoader().run();
@@ -567,8 +542,7 @@ public class GTMod {
         GTModHandler.addCraftingRecipe(
             GTModHandler.getIC2Item("machine", 1L),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE
-                | GTModHandler.RecipeBits.REVERSIBLE
-                | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+                | GTModHandler.RecipeBits.REVERSIBLE,
             new Object[] { "RRR", "RwR", "RRR", 'R', OrePrefixes.plate.get(Materials.Iron) });
 
         GTPostLoad.registerFluidCannerRecipes();
@@ -601,20 +575,17 @@ public class GTMod {
 
         @SuppressWarnings("UnstableApiUsage") // Stable enough for this project
         Stopwatch stopwatch = Stopwatch.createStarted();
-        GT_FML_LOGGER.debug("GTMod: Adding buffered Recipes.");
+        GTLog.out.println("GTMod: Adding buffered Recipes.");
         GTModHandler.stopBufferingCraftingRecipes();
         // noinspection UnstableApiUsage// Stable enough for this project
-        GT_FML_LOGGER.info("Executed delayed Crafting Recipes ({}). Have a Cake.", stopwatch.stop());
+        GT_FML_LOGGER.info("Executed delayed Crafting Recipes (" + stopwatch.stop() + "). Have a Cake.");
 
-        GT_FML_LOGGER.debug("restarting recipe removal buffering for NHCore...");
-        GTModHandler.restartBufferingCraftingRecipe();
-
-        GT_FML_LOGGER.debug("GTMod: Saving Lang File.");
+        GTLog.out.println("GTMod: Saving Lang File.");
         new MachineTooltipsLoader().run();
         GTLanguageManager.sEnglishFile.save();
         GregTechAPI.sPostloadFinished = true;
-        GT_FML_LOGGER.debug("GTMod: PostLoad-Phase finished!");
-        GT_ORE_DICT_LOGGER.info("GTMod: PostLoad-Phase finished!");
+        GTLog.out.println("GTMod: PostLoad-Phase finished!");
+        GTLog.ore.println("GTMod: PostLoad-Phase finished!");
         for (Runnable tRunnable : GregTechAPI.sAfterGTPostload) {
             tRunnable.run();
         }
@@ -630,8 +601,7 @@ public class GTMod {
         }
 
         GTPostLoad.addSolidFakeLargeBoilerFuels();
-        NaquadahRecipePatches.patchCropsNhRecipes();
-        RecipeLoader.registerCauldronRemaps();
+        NaquadahReworkRecipeLoader.Remover();
         GTPostLoad.addCauldronRecipe();
         GTPostLoad.identifyAnySteam();
         GTPostLoad.processToolboxBans();
@@ -641,7 +611,7 @@ public class GTMod {
         achievements = new GTAchievements();
 
         GTRecipe.GTppRecipeHelper = true;
-        GT_FML_LOGGER.debug("GTMod: Loading finished, de-allocating temporary Init Variables.");
+        GTLog.out.println("GTMod: Loading finished, de-allocating temporary Init Variables.");
         GregTechAPI.sBeforeGTPreload = null;
         GregTechAPI.sAfterGTPreload = null;
         GregTechAPI.sBeforeGTLoad = null;
@@ -657,17 +627,6 @@ public class GTMod {
         for (Runnable tRunnable : GregTechAPI.sGTCompleteLoad) {
             tRunnable.run();
         }
-
-        if (!NewHorizonsCoreMod.isModLoaded()) {
-            GT_FML_LOGGER.debug("stopping second buffering pass, likely a dev env.");
-            @SuppressWarnings("UnstableApiUsage") // Stable enough for this project
-            Stopwatch stopwatch = Stopwatch.createStarted();
-            GT_FML_LOGGER.debug("GTMod: Adding 2nd pass of buffered Recipes.");
-            GTModHandler.stopBufferingCraftingRecipes();
-            // noinspection UnstableApiUsage// Stable enough for this project
-            GT_FML_LOGGER
-                .info("Executed 2nd pass of delayed Crafting Recipes ({}). Have another Cake.", stopwatch.stop());
-        }
         GregTechAPI.sGTCompleteLoad = null;
         GregTechAPI.sFullLoadFinished = true;
 
@@ -679,7 +638,6 @@ public class GTMod {
     @Mod.EventHandler
     public void onServerAboutToStart(FMLServerAboutToStartEvent event) {
         proxy.onServerAboutToStart(event);
-        GTDebugCommand.register();
     }
 
     @Mod.EventHandler
@@ -691,9 +649,9 @@ public class GTMod {
 
         proxy.onServerStarting(event);
         GTModHandler.removeAllIC2Recipes();
-        GT_FML_LOGGER.debug("GTMod: Unificating outputs of all known Recipe Types.");
+        GTLog.out.println("GTMod: Unificating outputs of all known Recipe Types.");
         ArrayList<ItemStack> tStacks = new ArrayList<>(10000);
-        GT_FML_LOGGER.debug("GTMod: IC2 Machines");
+        GTLog.out.println("GTMod: IC2 Machines");
 
         ic2.api.recipe.Recipes.cannerBottle.getRecipes()
             .values()
@@ -746,7 +704,7 @@ public class GTMod {
             .map(t -> t.items)
             .forEach(tStacks::addAll);
 
-        GT_FML_LOGGER.debug("GTMod: Dungeon Loot");
+        GTLog.out.println("GTMod: Dungeon Loot");
         for (WeightedRandomChestContent tContent : ChestGenHooks.getInfo("dungeonChest")
             .getItems(new XSTR())) {
             tStacks.add(tContent.theItemId);
@@ -787,7 +745,7 @@ public class GTMod {
             .getItems(new XSTR())) {
             tStacks.add(tContent.theItemId);
         }
-        GT_FML_LOGGER.debug("GTMod: Smelting");
+        GTLog.out.println("GTMod: Smelting");
 
         // Deal with legacy Minecraft raw types
         tStacks.addAll(
@@ -796,7 +754,7 @@ public class GTMod {
                 .values());
 
         if (proxy.mCraftingUnification) {
-            GT_FML_LOGGER.debug("GTMod: Crafting Recipes");
+            GTLog.out.println("GTMod: Crafting Recipes");
             for (IRecipe tRecipe : CraftingManager.getInstance()
                 .getRecipeList()) {
                 if ((tRecipe instanceof IRecipe)) {
@@ -813,8 +771,8 @@ public class GTMod {
             }
         }
         GregTechAPI.mServerStarted = true;
-        GT_FML_LOGGER.debug("GTMod: ServerStarting-Phase finished!");
-        GT_ORE_DICT_LOGGER.info("GTMod: ServerStarting-Phase finished!");
+        GTLog.out.println("GTMod: ServerStarting-Phase finished!");
+        GTLog.ore.println("GTMod: ServerStarting-Phase finished!");
 
         for (Runnable tRunnable : GregTechAPI.sAfterGTServerstart) {
             tRunnable.run();
