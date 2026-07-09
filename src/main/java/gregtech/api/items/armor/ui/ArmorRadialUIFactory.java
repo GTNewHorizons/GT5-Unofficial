@@ -2,7 +2,6 @@ package gregtech.api.items.armor.ui;
 
 import static gregtech.api.modularui2.GTGuiTextures.OVERLAY_BUTTON_WHITELIST;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.util.EnumChatFormatting;
 
 import com.cleanroommc.modularui.api.GuiAxis;
@@ -79,10 +78,9 @@ public class ArmorRadialUIFactory {
             if (session.isVisible(actionId)) {
                 builder.option()
                     .label(displayName)
-                    .onClicked(() -> {
-                        if (Minecraft.getMinecraft().thePlayer.getEntityWorld().isRemote) session.getActionTriggerSync()
-                            .setStringValue(action.getId());
-                    })
+                    .onClicked(
+                        () -> session.getActionTriggerSync()
+                            .setStringValue(action.getId()))
                     .done();
             }
         }
