@@ -1,0 +1,1972 @@
+[
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "Bismutite",
+    "id": 1
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "Bismuthinit",
+    "id": 2
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "Zirconium",
+    "id": 3
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "CubicZirconia",
+    "id": 4
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "FluorBuergerit",
+    "id": 5
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "YttriumOxide",
+    "id": 6
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "ChromoAluminoPovondrait",
+    "id": 7
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "VanadioOxyDravit",
+    "id": 8
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "Olenit",
+    "id": 9
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "Arsenopyrite",
+    "id": 10
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "Ferberite",
+    "id": 11
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "Loellingit",
+    "id": 12
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "Roquesit",
+    "id": 13
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "Bornite",
+    "id": 14
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "Wittichenit",
+    "id": 15
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "Djurleit",
+    "id": 16
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "Huebnerit",
+    "id": 17
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "Thorianit",
+    "id": 18
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "RedZircon",
+    "id": 19
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "Salt",
+    "id": 20
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "Spodumen",
+    "id": 21
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "RockSalt",
+    "id": 22
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "Fayalit",
+    "id": 23
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "Forsterit",
+    "id": 24
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "Hedenbergit",
+    "id": 25
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "DescloiziteZNVO4",
+    "id": 26
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "DescloiziteCUVO4",
+    "id": 27
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "FuchsitAL",
+    "id": 28
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "FuchsitCR",
+    "id": 29
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "Thorium232",
+    "id": 30
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "BismuthTellurite",
+    "id": 31
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "Tellurium",
+    "id": 32
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "BismuthHydroBorat",
+    "id": 33
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "ArInGaPhoBiBoTe",
+    "id": 34
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "Prasiolite",
+    "id": 35
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "MagnetoResonaticDust",
+    "id": 36
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "Xenon",
+    "id": 37
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "Oganesson",
+    "id": 38
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "Californium",
+    "id": 39
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "Calcium",
+    "id": 40
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "Neon",
+    "id": 41
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "Krypton",
+    "id": 42
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "BArTiMaEuSNeK",
+    "id": 43
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "PTConcentrate",
+    "id": 44
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "PTSaltCrude",
+    "id": 45
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "PTSaltRefined",
+    "id": 46
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "PTMetallicPowder",
+    "id": 47
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "AquaRegia",
+    "id": 48
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "PTResidue",
+    "id": 49
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "AmmoniumChloride",
+    "id": 50
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "PTRawPowder",
+    "id": 51
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "PDAmmonia",
+    "id": 52
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "PDMetallicPowder",
+    "id": 53
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "PDRawPowder",
+    "id": 54
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "PDSalt",
+    "id": 55
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "Sodiumformate",
+    "id": 56
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "Sodiumsulfate",
+    "id": 57
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "FormicAcid",
+    "id": 58
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "PotassiumDisulfate",
+    "id": 59
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "LeachResidue",
+    "id": 60
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "RHSulfate",
+    "id": 61
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "RHSulfateSolution",
+    "id": 62
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "CalciumChloride",
+    "id": 63
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "Ruthenium",
+    "id": 64
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "SodiumRuthenate",
+    "id": 65
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "RutheniumTetroxide",
+    "id": 66
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "HotRutheniumTetroxideSollution",
+    "id": 67
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "RutheniumTetroxideSollution",
+    "id": 68
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "IrOsLeachResidue",
+    "id": 69
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "IrLeachResidue",
+    "id": 70
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "PGSDResidue",
+    "id": 71
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "AcidicOsmiumSolution",
+    "id": 72
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "IridiumDioxide",
+    "id": 73
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "OsmiumSolution",
+    "id": 74
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "AcidicIridiumSolution",
+    "id": 75
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "IridiumChloride",
+    "id": 76
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "PGSDResidue2",
+    "id": 77
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "Rhodium",
+    "id": 78
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "CrudeRhMetall",
+    "id": 79
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "RHSalt",
+    "id": 80
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "RHSaltSolution",
+    "id": 81
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "SodiumNitrate",
+    "id": 82
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "RHNitrate",
+    "id": 83
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "ZincSulfate",
+    "id": 84
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "RhFilterCake",
+    "id": 85
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "RHFilterCakeSolution",
+    "id": 86
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "ReRh",
+    "id": 87
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "RhodiumPlatedPalladium",
+    "id": 88
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "Tiberium",
+    "id": 89
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "Ruridit",
+    "id": 90
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "Fluorspar",
+    "id": 91
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "HDCS",
+    "id": 92
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "Atheneite",
+    "id": 93
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "Temagamite",
+    "id": 94
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "Terlinguaite",
+    "id": 95
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "AdemicSteel",
+    "id": 96
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "RawAdemicSteel",
+    "id": 97
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "HexafluorosilicicAcid",
+    "id": 98
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "Potassiumfluorosilicate",
+    "id": 99
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "Alumina",
+    "id": 100
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "PotassiumCarbonate",
+    "id": 101
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "RawFluorophlogopite",
+    "id": 102
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "HotFluorophlogopite",
+    "id": 103
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "Fluorophlogopite",
+    "id": 104
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "LiquidHelium",
+    "id": 11500
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "HafniumCarbide",
+    "id": 11501
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "TantalumCarbideHafniumCarbideMixture",
+    "id": 11502
+  },
+  {
+    "class": "bartworks.system.material.WerkstoffLoader",
+    "field": "TantalumHafniumCarbide",
+    "id": 11503
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "graphiteUraniumMixture",
+    "id": 10001
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "uraniumBasedLiquidFuel",
+    "id": 10002
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "uraniumBasedLiquidFuelExcited",
+    "id": 10003
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "uraniumBasedLiquidFuelDepleted",
+    "id": 10004
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "uraniumCarbideThoriumMixture",
+    "id": 10005
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "thoriumBasedLiquidFuel",
+    "id": 10006
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "thoriumBasedLiquidFuelExcited",
+    "id": 10007
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "thoriumBasedLiquidFuelDepleted",
+    "id": 10008
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "plutoniumOxideUraniumMixture",
+    "id": 10009
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "plutoniumBasedLiquidFuel",
+    "id": 10010
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "plutoniumBasedLiquidFuelExcited",
+    "id": 10011
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "plutoniumBasedLiquidFuelDepleted",
+    "id": 10012
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "oxalate",
+    "id": 10013
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "vanadiumPentoxide",
+    "id": 10014
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "thoriumNitrate",
+    "id": 10015
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "thoriumOxalate",
+    "id": 10016
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "thoriumHydroxide",
+    "id": 10017
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "sodiumOxalate",
+    "id": 10018
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "thoriumTetrachloride",
+    "id": 10019
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "thoriumTetrafluoride",
+    "id": 10020
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "thorium232Tetrafluoride",
+    "id": 10021
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "orundum",
+    "id": 10023
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "atomicSeparationCatalyst",
+    "id": 10022
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "extremelyUnstableNaquadah",
+    "id": 10024
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "lightNaquadahFuel",
+    "id": 10025
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "heavyNaquadahFuel",
+    "id": 10026
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "naquadahGas",
+    "id": 10027
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "naquadahAsphalt",
+    "id": 10028
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "ether",
+    "id": 10029
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "antimonyTrichloride",
+    "id": 10030
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "antimonyPentachlorideSolution",
+    "id": 10031
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "antimonyPentachloride",
+    "id": 10032
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "antimonyPentafluoride",
+    "id": 10033
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "fluoroantimonicAcid",
+    "id": 10034
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "radioactiveSludge",
+    "id": 10035
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "acidNaquadahEmulsion",
+    "id": 10036
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "naquadahEmulsion",
+    "id": 10037
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "naquadahSolution",
+    "id": 10038
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "naquadahBasedFuelMkI",
+    "id": 10039
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "naquadahBasedFuelMkIDepleted",
+    "id": 10040
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "naquadahBasedFuelMkII",
+    "id": 10041
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "naquadahBasedFuelMkIIDepleted",
+    "id": 10042
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "naquadahBasedFuelMkIII",
+    "id": 10046
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "naquadahBasedFuelMkIIIDepleted",
+    "id": 10047
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "naquadahBasedFuelMkIV",
+    "id": 10048
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "naquadahBasedFuelMkIVDepleted",
+    "id": 10049
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "naquadahBasedFuelMkV",
+    "id": 10050
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "naquadahBasedFuelMkVDepleted",
+    "id": 10051
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "naquadahBasedFuelMkVI",
+    "id": 10116
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "naquadahBasedFuelMkVIDepleted",
+    "id": 10117
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "zincChloride",
+    "id": 10052
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "zincThoriumAlloy",
+    "id": 10053
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "naquadahEarth",
+    "id": 10054
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "titaniumTrifluoride",
+    "id": 10055
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "lowQualityNaquadahEmulsion",
+    "id": 10056
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "galliumHydroxide",
+    "id": 10057
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "lowQualityNaquadahSolution",
+    "id": 10058
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "towEthyl1Hexanol",
+    "id": 10059
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "P507",
+    "id": 10060
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "naquadahAdamantiumSolution",
+    "id": 10061
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "naquadahRichSolution",
+    "id": 10062
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "naquadahine",
+    "id": 10063
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "fluorineRichWasteLiquid",
+    "id": 10064
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "wasteLiquid",
+    "id": 10065
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "adamantine",
+    "id": 10066
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "enrichedNaquadahEarth",
+    "id": 10067
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "triniumSulphate",
+    "id": 10068
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "enrichedNaquadahRichSolution",
+    "id": 10069
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "concentratedEnrichedNaquadahSludge",
+    "id": 10070
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "enrichedNaquadahSulphate",
+    "id": 10071
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "naquadriaEarth",
+    "id": 10072
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "indiumPhosphate",
+    "id": 10073
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "lowQualityNaquadriaPhosphate",
+    "id": 10074
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "naquadriaRichSolution",
+    "id": 10075
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "lowQualityNaquadriaSulphate",
+    "id": 10076
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "lowQualityNaquadriaSolution",
+    "id": 10077
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "naquadriaSulphate",
+    "id": 10078
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "naquadahGoo",
+    "id": 10079
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "enrichedNaquadahGoo",
+    "id": 10080
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "naquadriaGoo",
+    "id": 10081
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "zircaloy4",
+    "id": 10082
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "zircaloy2",
+    "id": 10083
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "incoloy903",
+    "id": 10084
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "adamantiumAlloy",
+    "id": 10085
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "ethanolGasoline",
+    "id": 10086
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "cyclopentadiene",
+    "id": 10087
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "ferrousChloride",
+    "id": 10088
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "diethylamine",
+    "id": 10089
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "impureFerroceneMixture",
+    "id": 10090
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "ferroceneSolution",
+    "id": 10091
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "ferroceneWaste",
+    "id": 10092
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "ferrocene",
+    "id": 10093
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "ironedKerosene",
+    "id": 10094
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "ironedFuel",
+    "id": 10095
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "marM200",
+    "id": 10096
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "marCeM200",
+    "id": 10097
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "lithiumChloride",
+    "id": 10098
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "signalium",
+    "id": 10099
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "lumiinessence",
+    "id": 10100
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "lumiium",
+    "id": 10101
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "artheriumSn",
+    "id": 10102
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "titaniumBetaC",
+    "id": 10103
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "dalisenite",
+    "id": 10104
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "hikarium",
+    "id": 10105
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "tairitsu",
+    "id": 10106
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "antimonyPentafluorideSolution",
+    "id": 10107
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "magnesiumSulphate",
+    "id": 10108
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "preciousMetalAlloy",
+    "id": 10109
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "enrichedNaquadahAlloy",
+    "id": 10110
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "metastableOganesson",
+    "id": 10111
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "shirabon",
+    "id": 10112
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "inertNaquadah",
+    "id": 10113
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "inertEnrichedNaquadah",
+    "id": 10114
+  },
+  {
+    "class": "goodgenerator.items.GGMaterial",
+    "field": "inertNaquadria",
+    "id": 10115
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "Hafnium",
+    "id": 11000
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "LowPurityHafnium",
+    "id": 11001
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "Hafnia",
+    "id": 11002
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "HafniumTetrachloride",
+    "id": 11003
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "HafniumTetrachlorideSolution",
+    "id": 11004
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "HafniumIodide",
+    "id": 11005
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "HafniumRunoff",
+    "id": 11006
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "Zirconia",
+    "id": 11008
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "ZirconiumTetrachloride",
+    "id": 11009
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "ZirconiumTetrachlorideSolution",
+    "id": 11010
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "HafniaZirconiaBlend",
+    "id": 11011
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "Iodine",
+    "id": 11012
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "MuddyRareEarthMonaziteSolution",
+    "id": 11014
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "DilutedRareEarthMonaziteMud",
+    "id": 11015
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "DilutedMonaziteSulfate",
+    "id": 11016
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "NitratedRareEarthMonaziteConcentrate",
+    "id": 11017
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "NitricMonaziteLeachedConcentrate",
+    "id": 11018
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "MonaziteSulfate",
+    "id": 11019
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "AcidicMonazitePowder",
+    "id": 11020
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "MonaziteRareEarthFiltrate",
+    "id": 11021
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "NeutralizedMonaziteRareEarthFiltrate",
+    "id": 11022
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "MonaziteRareEarthHydroxideConcentrate",
+    "id": 11023
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "DriedMonaziteRareEarthConcentrate",
+    "id": 11024
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "CeriumDioxide",
+    "id": 11025
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "CeriumChloride",
+    "id": 11026
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "CeriumOxalate",
+    "id": 11027
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "CeriumIIIOxide",
+    "id": 11028
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "CeriumRichMixture",
+    "id": 11029
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "CooledMonaziteRareEarthConcentrate",
+    "id": 11030
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "MonaziteRarerEarthSediment",
+    "id": 11031
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "MonaziteHeterogenousHalogenicRareEarthMixture",
+    "id": 11032
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "SaturatedMonaziteRareEarthMixture",
+    "id": 11033
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "SamaricResidue",
+    "id": 11034
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "AmmoniumNitrate",
+    "id": 11036
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "ThoriumPhosphateCake",
+    "id": 11037
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "ThoriumPhosphateConcentrate",
+    "id": 11038
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "UraniumFiltrate",
+    "id": 11039
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "NeutralizedUraniumFiltrate",
+    "id": 11040
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "SeaweedAsh",
+    "id": 11041
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "SeaweedConcentrate",
+    "id": 11042
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "PotassiumPermanganate",
+    "id": 11043
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "PotassiumPermanganateSolution",
+    "id": 11044
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "SeaweedByproducts",
+    "id": 11045
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "NitricLeachedMonaziteMixture",
+    "id": 11046
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "EuropiumOxide",
+    "id": 11047
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "EuropiumSulfide",
+    "id": 11048
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "UnknownBlend",
+    "id": 11049
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "EuropiumIIIOxide",
+    "id": 11050
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "MuddyRareEarthBastnasiteSolution",
+    "id": 11100
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "SodiumFluorosilicate",
+    "id": 11102
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "SteamCrackedBasnasiteSolution",
+    "id": 11103
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "ConditionedBastnasiteMud",
+    "id": 11104
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "DiltedRareEarthBastnasiteMud",
+    "id": 11105
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "FilteredBastnasiteMud",
+    "id": 11106
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "BastnasiteRareEarthOxidePowder",
+    "id": 11107
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "LeachedBastnasiteRareEarthOxides",
+    "id": 11108
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "Gangue",
+    "id": 11109
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "RoastedRareEarthOxides",
+    "id": 11110
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "WetRareEarthOxides",
+    "id": 11111
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "CeriumOxidisedRareEarthOxides",
+    "id": 11112
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "BastnasiteRarerEarthOxides",
+    "id": 11113
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "NitratedBastnasiteRarerEarthOxides",
+    "id": 11114
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "SaturatedBastnasiteRarerEarthOxides",
+    "id": 11115
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "SamaricRareEarthConcentrate",
+    "id": 11116
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "NeodymicRareEarthConcentrate",
+    "id": 11117
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "LanthaniumChloride",
+    "id": 11121
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "NeodymiumOxide",
+    "id": 11122
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "FluorinatedSamaricConcentrate",
+    "id": 11123
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "CalciumFluoride",
+    "id": 11124
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "SamariumTerbiumMixture",
+    "id": 11125
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "NitratedSamariumTerbiumMixture",
+    "id": 11126
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "TerbiumNitrate",
+    "id": 11127
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "SamariumOreConcentrate",
+    "id": 11128
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "DephosphatedSamariumConcentrate",
+    "id": 11129
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "Butanediol",
+    "id": 11301
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "MoTeOCatalyst",
+    "id": 11303
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "TelluriumIVOxide",
+    "id": 11304
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "MolybdenumIVOxide",
+    "id": 11305
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "Dinitrotoluene",
+    "id": 11309
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "Diaminotoluene",
+    "id": 11310
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "PotassiumChlorate",
+    "id": 11314
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "DilutedAcetone",
+    "id": 11316
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "MolybdenumTrioxide",
+    "id": 11317
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "MuddySamariumRareEarthSolution",
+    "id": 11461
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "SamariumRareEarthMud",
+    "id": 11462
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "DilutedSamariumRareEarthSolution",
+    "id": 11463
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "SamariumOxalate",
+    "id": 11464
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "SamariumChloride",
+    "id": 11465
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "SamariumChlorideSodiumChlorideBlend",
+    "id": 11466
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "ImpureLanthanumChloride",
+    "id": 11467
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "SamariumOxide",
+    "id": 11468
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "ChlorinatedRareEarthConcentrate",
+    "id": 11469
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "ChlorinatedRareEarthEnrichedSolution",
+    "id": 11470
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "ChlorinatedRareEarthDilutedSolution",
+    "id": 11471
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "RarestEarthResidue",
+    "id": 11472
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "LanthanumExtractingNanoResin",
+    "id": 11401
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "FilledLanthanumExtractingNanoResin",
+    "id": 11402
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "PraseodymiumExtractingNanoResin",
+    "id": 11403
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "FilledPraseodymiumExtractingNanoResin",
+    "id": 11404
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "CeriumExtractingNanoResin",
+    "id": 11405
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "FilledCeriumExtractingNanoResin",
+    "id": 11406
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "NeodymiumExtractingNanoResin",
+    "id": 11407
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "FilledNeodymiumExtractingNanoResin",
+    "id": 11408
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "SamariumExtractingNanoResin",
+    "id": 11411
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "FilledSamariumExtractingNanoResin",
+    "id": 11412
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "EuropiumExtractingNanoResin",
+    "id": 11413
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "FilledEuropiumExtractingNanoResin",
+    "id": 11414
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "GadoliniumExtractingNanoResin",
+    "id": 11415
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "FilledGadoliniumExtractingNanoResin",
+    "id": 11416
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "TerbiumExtractingNanoResin",
+    "id": 11417
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "FilledTerbiumExtractingNanoResin",
+    "id": 11418
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "DysprosiumExtractingNanoResin",
+    "id": 11419
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "FilledDysprosiumExtractingNanoResin",
+    "id": 11420
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "HolmiumExtractingNanoResin",
+    "id": 11421
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "FilledHolmiumExtractingNanoResin",
+    "id": 11422
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "ErbiumExtractingNanoResin",
+    "id": 11423
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "FilledErbiumExtractingNanoResin",
+    "id": 11424
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "ThuliumExtractingNanoResin",
+    "id": 11425
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "FilledThuliumExtractingNanoResin",
+    "id": 11426
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "YtterbiumExtractingNanoResin",
+    "id": 11427
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "FilledYtterbiumExtractingNanoResin",
+    "id": 11428
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "LutetiumExtractingNanoResin",
+    "id": 11429
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "FilledLutetiumExtractingNanoResin",
+    "id": 11430
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "LanthanumChlorideConcentrate",
+    "id": 11431
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "PraseodymiumChlorideConcentrate",
+    "id": 11432
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "CeriumChlorideConcentrate",
+    "id": 11433
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "NeodymiumChlorideConcentrate",
+    "id": 11434
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "PromethiumChlorideConcentrate",
+    "id": 11435
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "SamariumChlorideConcentrate",
+    "id": 11436
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "EuropiumChlorideConcentrate",
+    "id": 11437
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "GadoliniumChlorideConcentrate",
+    "id": 11438
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "TerbiumChlorideConcentrate",
+    "id": 11439
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "DysprosiumChlorideConcentrate",
+    "id": 11440
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "HolmiumChlorideConcentrate",
+    "id": 11441
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "ErbiumChlorideConcentrate",
+    "id": 11442
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "ThuliumChlorideConcentrate",
+    "id": 11443
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "YtterbiumChlorideConcentrate",
+    "id": 11444
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "LutetiumChlorideConcentrate",
+    "id": 11445
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "LanthanumOreConcentrate",
+    "id": 11446
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "PraseodymiumOreConcentrate",
+    "id": 11447
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "CeriumOreConcentrate",
+    "id": 11029
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "NeodymiumOreConcentrate",
+    "id": 11449
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "PromethiumOreConcentrate",
+    "id": 11450
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "EuropiumOreConcentrate",
+    "id": 11451
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "GadoliniumOreConcentrate",
+    "id": 11452
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "TerbiumOreConcentrate",
+    "id": 11453
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "DysprosiumOreConcentrate",
+    "id": 11454
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "HolmiumOreConcentrate",
+    "id": 11455
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "ErbiumOreConcentrate",
+    "id": 11456
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "ThuliumOreConcentrate",
+    "id": 11457
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "YtterbiumOreConcentrate",
+    "id": 11458
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "LutetiumOreConcentrate",
+    "id": 11459
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "CeriumDopedLutetiumAluminiumOxygenBlend",
+    "id": 11498
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "CeriumDopedLutetiumAluminiumGarnet",
+    "id": 11499
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "Permalloy",
+    "id": 11350
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "MuMetal",
+    "id": 11351
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "Thorium234",
+    "id": 11352
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "SiliconNitride",
+    "id": 11353
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "Fluoroform",
+    "id": 11354
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "FluoroformOxygenMix",
+    "id": 11355
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "BoronTrioxide",
+    "id": 11356
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "BoronTrichloride",
+    "id": 11357
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "LanthanumHexaboride",
+    "id": 11358
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "LanthanumOxide",
+    "id": 11359
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "NitrogenPlasmaSilaneMix",
+    "id": 11360
+  },
+  {
+    "class": "gtnhlanth.common.register.WerkstoffMaterialPool",
+    "field": "HotSuperCoolant",
+    "id": 11361
+  },
+  {
+    "class": "gtnhlanth.common.register.BotWerkstoffMaterialPool",
+    "field": "TungsticAcid",
+    "id": 29900
+  },
+  {
+    "class": "gtnhlanth.common.register.BotWerkstoffMaterialPool",
+    "field": "TungstenTrioxide",
+    "id": 29901
+  },
+  {
+    "class": "gtnhlanth.common.register.BotWerkstoffMaterialPool",
+    "field": "AmmoniumNitrate",
+    "id": 29903
+  },
+  {
+    "class": "gtnhlanth.common.register.BotWerkstoffMaterialPool",
+    "field": "SodiumTungstate",
+    "id": 29904
+  },
+  {
+    "class": "gtnhlanth.common.register.BotWerkstoffMaterialPool",
+    "field": "Phosgene",
+    "id": 29905
+  },
+  {
+    "class": "gtnhlanth.common.register.BotWerkstoffMaterialPool",
+    "field": "Nitromethane",
+    "id": 29914
+  }
+]

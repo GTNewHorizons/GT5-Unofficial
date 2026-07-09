@@ -317,6 +317,44 @@ def werkstoff_ref_name(ref_name, kind, display_to_var):
     return ref_name
 
 
+LEGACY_BRIDGE_SOURCES = [
+    "src/main/java/gregtech/loaders/materials/MaterialsLegacyBridge.java",
+    "src/main/java/gregtech/loaders/materials/LegacyMarkerMaterials.java",
+]
+
+
+def load_legacy_constant_names():
+    """The legacy `Materials` static-field names (bridge + marker assignments) -- the set of names a
+    declaration-time `Materials.X` reference could possibly have used. Needed to recover a byproduct
+    reference's kind: the werkstoff dump records byproducts as bare names, and a name like "Calcium" is both a
+    werkstoff and a `Materials` constant."""
+    names = set()
+    for rel in LEGACY_BRIDGE_SOURCES:
+        path = REPO_ROOT / rel
+        if not path.exists():
+            continue
+        names.update(re.findall(r"Materials\.(\w+) = ", path.read_text(encoding="utf-8")))
+    return names
+
+
+def werkstoff_byproduct_kind(entry, byproduct_name, display_to_var, legacy_constants):
+    """Recovers a dumped byproduct reference's kind. A self reference (padding) is always the werkstoff;
+    otherwise a name that is a `Materials` constant is a `Materials` reference, and a werkstoff-only display
+    name is a werkstoff one. The sole ambiguous name in the dump (Calcium, from Hedenbergite/CalciumFluoride)
+    was verified against the declaration source to be a `Materials` reference, which the constant-set
+    precedence below resolves correctly; a new ambiguous werkstoff-kind byproduct would need the dump to
+    record kinds the way `contents` already does."""
+    if byproduct_name == entry["name"]:
+        return "werkstoff"
+    if byproduct_name in legacy_constants:
+        return "material"
+    if byproduct_name in display_to_var:
+        return "werkstoff"
+    raise SystemExit(
+        f"gen_materials.py: byproduct {byproduct_name!r} of {entry['varName']!r} is neither a legacy "
+        f"Materials constant nor a werkstoff display name")
+
+
 def compute_werkstoff_referenced_names(werkstoff_by_name, display_to_var):
     referenced = set()
     for info in werkstoff_by_name.values():
@@ -351,7 +389,7 @@ def werkstoff_flag_names(entries):
     return flags
 
 
-def werkstoff_property_line(info, ml_names, display_to_var):
+def werkstoff_property_line(info, ml_names, display_to_var, legacy_constants):
     """The composite `GTMaterialProperties.WERKSTOFF` literal -- see `WerkstoffData`'s javadoc for why the
     bartworks-side values live here instead of the shared keys (the gregtech dump wins those). Scalars come
     from the first (lowest-id) entry; prefixes/flags/subTags/additionalOredict union across a same-name fold;
@@ -367,14 +405,20 @@ def werkstoff_property_line(info, ml_names, display_to_var):
         else "EnumSet.noneOf(GTWerkstoffFlag.class)"
     prefixes_literal = "List.of(" + ", ".join(java_string_literal(p) for p in info["prefixes"]) + ")"
 
-    contents = next((e["contents"] for e in entries if e["contents"]), [])
-    content_stacks = ", ".join(
-        f"new MaterialRefStack(new MaterialRef({java_string_literal(ml_names[werkstoff_ref_name(c['name'], c['kind'], display_to_var)])}), {c['amount']}L)"
-        for c in contents)
+    def ref_stack(name, kind, amount):
+        mapped = ml_names[werkstoff_ref_name(name, kind, display_to_var)]
+        is_werkstoff = "true" if kind == "werkstoff" else "false"
+        return f"new WerkstoffRefStack(new MaterialRef({java_string_literal(mapped)}), {amount}L, {is_werkstoff})"
 
-    byproducts = next((e["oreByProducts"] for e in entries if e["oreByProducts"]), [])
+    contents_entry = next((e for e in entries if e["contents"]), None)
+    content_stacks = ", ".join(
+        ref_stack(c["name"], c["kind"], c["amount"])
+        for c in contents_entry["contents"]) if contents_entry else ""
+
+    byproducts_entry = next((e for e in entries if e["oreByProducts"]), None)
     byproduct_refs = ", ".join(
-        f"new MaterialRef({java_string_literal(ml_names[display_to_var.get(b, b)])})" for b in byproducts)
+        ref_stack(b, werkstoff_byproduct_kind(byproducts_entry, b, display_to_var, legacy_constants), 1)
+        for b in byproducts_entry["oreByProducts"]) if byproducts_entry else ""
 
     sub_tags = []
     additional_oredict = []
@@ -893,7 +937,7 @@ def werkstoff_special_shape_lines(material, werkstoff_prefixes):
 def build_material_block(
         material, families, ml_names, field_names, included_names, family_shape_members,
         legacy_variants_by_material, used_fluid_names, fluid_textures, legacy_block_materials,
-        werkstoff_info, display_to_var):
+        werkstoff_info, display_to_var, legacy_constants):
     field = field_names[material["name"]]
     name_literal = java_string_literal(ml_names[material["name"]])
     icon_set_literal = java_string_literal(material["iconSet"])
@@ -928,7 +972,7 @@ def build_material_block(
     for property_line in build_property_lines(material, ml_names, fluid_textures):
         lines.append("            " + property_line)
     if werkstoff_info:
-        werkstoff_line = werkstoff_property_line(werkstoff_info, ml_names, display_to_var)
+        werkstoff_line = werkstoff_property_line(werkstoff_info, ml_names, display_to_var, legacy_constants)
         if werkstoff_line:
             lines.append("            " + werkstoff_line)
 
@@ -950,7 +994,7 @@ def chunk(items, size):
 
 def write_data_file(index, materials, families_by_name, ml_names, field_names, included_names,
                      family_shape_members, legacy_variants_by_material, used_fluid_names, fluid_textures,
-                     legacy_block_materials, werkstoff_by_name, display_to_var):
+                     legacy_block_materials, werkstoff_by_name, display_to_var, legacy_constants):
     class_name = f"Materials2Data{index}"
     lines = []
     lines.append("package gregtech.api.enums.materials2;")
@@ -971,6 +1015,7 @@ def write_data_file(index, materials, families_by_name, ml_names, field_names, i
     lines.append("import gregtech.api.material.MaterialRef;")
     lines.append("import gregtech.api.material.MaterialRefStack;")
     lines.append("import gregtech.api.material.WerkstoffData;")
+    lines.append("import gregtech.api.material.WerkstoffRefStack;")
     lines.append("")
     first = (index - 1) * MATERIALS_PER_FILE + 1
     last = (index - 1) * MATERIALS_PER_FILE + len(materials)
@@ -986,7 +1031,7 @@ def write_data_file(index, materials, families_by_name, ml_names, field_names, i
             build_material_block(
                 material, families, ml_names, field_names, included_names, family_shape_members,
                 legacy_variants_by_material, used_fluid_names, fluid_textures, legacy_block_materials,
-                werkstoff_by_name.get(material["name"]), display_to_var))
+                werkstoff_by_name.get(material["name"]), display_to_var, legacy_constants))
     lines.append("        // spotless:on")
     lines.append("    }")
     lines.append("")
@@ -1302,6 +1347,7 @@ def main():
                 family_shape_members[family].append(prefix["name"])
 
     werkstoff_by_name, display_to_var = group_werkstoffs(werkstoffs)
+    legacy_constants = load_legacy_constant_names()
     validate_werkstoff_prefixes(werkstoff_by_name, included_names)
     werkstoff_referenced = compute_werkstoff_referenced_names(werkstoff_by_name, display_to_var)
     werkstoff_names = {name for name, info in werkstoff_by_name.items() if info["entries"]}
@@ -1334,7 +1380,7 @@ def main():
             write_data_file(
                 i, batch, families_by_name, ml_names, field_names, included_names, family_shape_members,
                 legacy_variants_by_material, used_fluid_names, fluid_textures, legacy_block_materials,
-                werkstoff_by_name, display_to_var))
+                werkstoff_by_name, display_to_var, legacy_constants))
 
     write_materials_file(ported, field_names, data_class_names)
     write_lang_file(ported, ml_names)
