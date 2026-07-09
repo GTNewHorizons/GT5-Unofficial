@@ -82,6 +82,8 @@ public class GTMaterialProperties {
     public static final Property<Integer> TOOL_QUALITY = Property.of("gregtech", "toolQuality");
     public static final Property<Float> TOOL_SPEED = Property.of("gregtech", "toolSpeed");
     public static final Property<Boolean> UNIFIABLE = Property.of("gregtech", "unifiable");
+    /// The bartworks-side data of a material that was (or merged with) a `Werkstoff` -- see [WerkstoffData].
+    public static final Property<WerkstoffData> WERKSTOFF = Property.of("gregtech", "werkstoff");
 
     private GTMaterialProperties() {}
 }
