@@ -1,7 +1,9 @@
 package gregtech.api.material;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import net.minecraft.item.ItemStack;
@@ -14,29 +16,33 @@ import com.ruling_0.materiallib.api.Shape;
 
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.materials2.Materials2CellShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 
-/// Bridges legacy [OrePrefixes]/[Materials] pairs to their stage-05 cutover MaterialLib [Shape]/[Material]
+/// Bridges legacy [OrePrefixes]/[Materials] pairs to their stage-05/06 cutover MaterialLib [Shape]/[Material]
 /// equivalents.
 ///
-/// The prefix-to-shape map reflects [Materials2Shapes]'s `shape<PrefixName>` fields instead of hand-listing
-/// the cutover prefixes, so it always matches whatever `gen_shapes.py` emits. The material lookup is keyed by
-/// legacy name (`Materials#mName`), preferring [GTMaterialProperties#LEGACY_NAME] over
-/// [Material#getName] because MaterialLib sanitizes registration names that contain characters
-/// `Names#validate` rejects.
+/// The prefix-to-shape map reflects [Materials2Shapes]'s and [Materials2CellShapes]'s `shape<PrefixName>`
+/// fields instead of hand-listing the cutover prefixes, so it always matches whatever those declare. A prefix
+/// normally maps to exactly one shape; `cellPlasma` is the one exception (see [Materials2CellShapes]), mapping
+/// to an ordered candidate list that [#stack] resolves per material. The material lookup is keyed by legacy
+/// name (`Materials#mName`), preferring [GTMaterialProperties#LEGACY_NAME] over [Material#getName] because
+/// MaterialLib sanitizes registration names that contain characters `Names#validate` rejects.
 public class MU {
 
-    private static Map<String, Shape> prefixToShape;
+    private static Map<String, List<Shape>> prefixToShapes;
     private static Map<String, Material> legacyNameToMaterial;
 
     private MU() {}
 
     /// The MaterialLib shape a legacy item [OrePrefixes] cuts over to, or null if that prefix is not part of
-    /// the stage-05 cutover (e.g. block-kind, container, or complex tool/armor prefixes).
+    /// the cutover (e.g. block-kind, or a not-yet-cut-over container prefix). For `cellPlasma`, the shape a
+    /// specific material actually generates may differ -- see [#stack].
     public static @Nullable Shape shape(OrePrefixes prefix) {
         if (prefix == null) return null;
-        return prefixShapes().get(prefix.name());
+        List<Shape> shapes = prefixShapes().get(prefix.name());
+        return shapes == null ? null : shapes.get(0);
     }
 
     /// The MaterialLib material a legacy [Materials] cuts over to, or null if it has none (materials without
@@ -47,21 +53,29 @@ public class MU {
     }
 
     /// The cutover MaterialLib stack for a legacy (prefix, material) pair, or null when either side has no
-    /// cutover mapping.
+    /// cutover mapping. When a prefix maps to more than one candidate shape (`cellPlasma`), the first one
+    /// `material` actually generates is used.
     public static @Nullable ItemStack stack(OrePrefixes prefix, Materials material, long amount) {
-        Shape shape = shape(prefix);
+        if (prefix == null) return null;
+        List<Shape> shapes = prefixShapes().get(prefix.name());
         Material mat = material(material);
-        if (shape == null || mat == null) return null;
-        return MaterialLibAPI.getStack(mat, shape, (int) amount);
+        if (shapes == null || mat == null) return null;
+        for (Shape shape : shapes) {
+            if (mat.hasShape(shape)) return MaterialLibAPI.getStack(mat, shape, (int) amount);
+        }
+        return null;
     }
 
-    /// Whether a legacy (prefix, material) pair has a MaterialLib equivalent, i.e. `material` actually
-    /// generates the shape `prefix` cut over to (not merely that some other material did). Legacy construction
-    /// code should skip a (prefix, material) pair exactly when this is true.
+    /// Whether a legacy (prefix, material) pair has a MaterialLib equivalent (see [#stack]). Unlike [#shape],
+    /// which answers whether a prefix has cut over at all, this answers per material -- needed because a
+    /// fluid-in-container shape's membership does not always mirror every material with a real legacy slot: a
+    /// material can hold a legacy `cell` item generated purely from its `CELL` capability flag while never
+    /// having a fluid to put in it (MaterialLib's container contract requires a material to also generate one
+    /// of the container's fluid shapes, so such a material is left off `shapeCell`'s membership and keeps its
+    /// legacy item instead). Legacy construction code should skip a (prefix, material) pair exactly when this
+    /// is true, not merely when [#shape] is non-null.
     public static boolean isCutOver(OrePrefixes prefix, Materials material) {
-        Shape shape = shape(prefix);
-        Material mat = material(material);
-        return shape != null && mat != null && mat.hasShape(shape);
+        return stack(prefix, material, 1) != null;
     }
 
     /// The legacy [Materials] a MaterialLib material was ported from, or null if it has none.
@@ -76,24 +90,37 @@ public class MU {
         return legacyName != null ? legacyName : material.getName();
     }
 
-    private static Map<String, Shape> prefixShapes() {
-        if (prefixToShape == null) {
-            Map<String, Shape> map = new HashMap<>();
-            for (Field field : Materials2Shapes.class.getFields()) {
-                if (field.getType() != Shape.class || !field.getName()
-                    .startsWith("shape")) continue;
-                Shape shape = readStatic(field);
-                if (shape != null) map.put(
-                    Character.toLowerCase(
-                        field.getName()
-                            .charAt(5))
-                        + field.getName()
-                            .substring(6),
-                    shape);
+    private static Map<String, List<Shape>> prefixShapes() {
+        if (prefixToShapes == null) {
+            Map<String, List<Shape>> map = new HashMap<>();
+            collectShapes(map, Materials2Shapes.class);
+            collectShapes(map, Materials2CellShapes.class);
+            // cellPlasmaLight is a second candidate shape for the cellPlasma prefix, not a prefix of its own
+            // (see Materials2CellShapes); its field name deliberately does not match an OrePrefixes name, so
+            // fold it into "cellPlasma"'s candidate list instead of collecting it under its own key.
+            if (Materials2CellShapes.shapeCellPlasmaLight != null) {
+                map.get("cellPlasma")
+                    .add(Materials2CellShapes.shapeCellPlasmaLight);
             }
-            prefixToShape = map;
+            prefixToShapes = map;
         }
-        return prefixToShape;
+        return prefixToShapes;
+    }
+
+    private static void collectShapes(Map<String, List<Shape>> map, Class<?> shapesClass) {
+        for (Field field : shapesClass.getFields()) {
+            if (field.getType() != Shape.class || !field.getName()
+                .startsWith("shape")) continue;
+            Shape shape = readStatic(field);
+            if (shape == null) continue;
+            String prefixName = Character.toLowerCase(
+                field.getName()
+                    .charAt(5))
+                + field.getName()
+                    .substring(6);
+            map.computeIfAbsent(prefixName, k -> new ArrayList<>())
+                .add(shape);
+        }
     }
 
     private static Map<String, Material> legacyNamedMaterials() {

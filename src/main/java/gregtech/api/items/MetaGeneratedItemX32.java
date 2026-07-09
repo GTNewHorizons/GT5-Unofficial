@@ -79,9 +79,9 @@ public abstract class MetaGeneratedItemX32 extends MetaGeneratedItem {
             OrePrefixes tPrefix = mGeneratedPrefixList[i / 1000];
             if (tPrefix == null) continue;
             if (tPrefix == OrePrefixes.___placeholder___) continue;
-            if (!DUMP_MODE && MU.shape(tPrefix) != null) continue;
             Materials tMaterial = GregTechAPI.sGeneratedMaterials[i % 1000];
             if (tMaterial == null) continue;
+            if (!DUMP_MODE && MU.isCutOver(tPrefix, tMaterial)) continue;
             if (doesMaterialAllowGeneration(tPrefix, tMaterial)) {
                 if (DUMP_MODE) {
                     DUMP_VARIANTS.add(new LegacyVariant(aUnlocalized, tPrefix.getName(), tMaterial.mName, i));
@@ -199,7 +199,7 @@ public abstract class MetaGeneratedItemX32 extends MetaGeneratedItem {
         for (int i = 0; i < 32000; i++) {
             OrePrefixes aPrefix = getOrePrefix(i);
             Materials aMaterial = getMaterial(i);
-            if (aPrefix != null && aMaterial != null && MU.shape(aPrefix) == null) {
+            if (aPrefix != null && aMaterial != null && !MU.isCutOver(aPrefix, aMaterial)) {
                 if (doesMaterialAllowGeneration(aPrefix, aMaterial)
                     && doesShowInCreative(aPrefix, aMaterial, GregTechAPI.sDoShowAllItemsInCreative)) {
                     ItemStack tStack = new ItemStack(this, 1, i);

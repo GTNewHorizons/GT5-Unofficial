@@ -23,6 +23,8 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedItem;
+import gregtech.api.items.MetaGeneratedItemX32;
+import gregtech.api.material.MU;
 import gregtech.api.util.GTOreDictUnificator;
 
 public class MetaGeneratedItem99 extends MetaGeneratedItem {
@@ -85,6 +87,12 @@ public class MetaGeneratedItem99 extends MetaGeneratedItem {
     }
 
     private void registerMolten(Materials tMaterial, int i) {
+        if (MetaGeneratedItemX32.DUMP_MODE) {
+            MetaGeneratedItemX32.DUMP_VARIANTS
+                .add(new MetaGeneratedItemX32.LegacyVariant("metaitem.99", cellMolten.getName(), tMaterial.mName, i));
+        }
+        if (!MetaGeneratedItemX32.DUMP_MODE && MU.isCutOver(cellMolten, tMaterial)) return;
+
         ItemStack tStack = new ItemStack(this, 1, i);
         enabled.set(i);
 
@@ -98,13 +106,23 @@ public class MetaGeneratedItem99 extends MetaGeneratedItem {
     private void registerCracked(Materials tMaterial, int i) {
         int offset = 10_000;
         for (OrePrefixes prefix : CRACKED_CELL_TYPES) {
-            ItemStack tStack = new ItemStack(this, 1, offset + i);
-            enabled.set(offset + i);
+            if (MetaGeneratedItemX32.DUMP_MODE) {
+                MetaGeneratedItemX32.DUMP_VARIANTS.add(
+                    new MetaGeneratedItemX32.LegacyVariant(
+                        "metaitem.99",
+                        prefix.getName(),
+                        tMaterial.mName,
+                        offset + i));
+            }
+            if (MetaGeneratedItemX32.DUMP_MODE || !MU.isCutOver(prefix, tMaterial)) {
+                ItemStack tStack = new ItemStack(this, 1, offset + i);
+                enabled.set(offset + i);
 
-            if (prefix.isUnifiable()) {
-                GTOreDictUnificator.set(prefix, tMaterial, tStack);
-            } else {
-                GTOreDictUnificator.registerOre(prefix.get(tMaterial), tStack);
+                if (prefix.isUnifiable()) {
+                    GTOreDictUnificator.set(prefix, tMaterial, tStack);
+                } else {
+                    GTOreDictUnificator.registerOre(prefix.get(tMaterial), tStack);
+                }
             }
 
             offset += 1_000;
@@ -112,7 +130,7 @@ public class MetaGeneratedItem99 extends MetaGeneratedItem {
     }
 
     /** Returns null for item damage out of bounds. */
-    private OrePrefixes getOrePrefix(int damage) {
+    public OrePrefixes getOrePrefix(int damage) {
         if (damage < 0) {
             return null;
         } else if (damage < 1_000) {
