@@ -387,7 +387,23 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
         }
 
         private void insertFluid(IAEFluidStack inserted) {
-            fluidInventory.add(new FluidStackLong(inserted.getFluid(), inserted.getStackSize()));
+            final FluidStack compareStack = new FluidStackLong(inserted.getFluidStack(), inserted.getStackSize());
+
+            // BigInt fluid mayhaps:tm:
+            for (FluidStack fluidStack : fluidInventory) {
+                if (GTUtility.getFluidAmount(fluidStack) == Long.MAX_VALUE) continue;
+                if (GTUtility.areFluidsEqual(compareStack, fluidStack)) {
+                    long maxInsertAmount = Long.MAX_VALUE - GTUtility.getFluidAmount(fluidStack);
+                    long insertAmount = Math.min(maxInsertAmount, inserted.getStackSize());
+
+                    GTUtility.setFluidAmount(fluidStack, GTUtility.getFluidAmount(fluidStack) + insertAmount);
+                    inserted.decStackSize(insertAmount);
+                }
+            }
+
+            if (inserted.getStackSize() > 0) {
+                fluidInventory.add(new FluidStackLong(inserted.getFluid(), inserted.getStackSize()));
+            }
         }
 
         public boolean insertItemsAndFluids(MEInventoryCrafting inventoryCrafting) {
