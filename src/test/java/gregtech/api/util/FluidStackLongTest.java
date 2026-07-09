@@ -15,7 +15,7 @@ public class FluidStackLongTest {
     @ParameterizedTest
     @MethodSource("provideParameters")
     public void testAmountLong(long amount) {
-        FluidStackLong stack = Mockito.mock(FluidStackLong.class, Answers.CALLS_REAL_METHODS);
+        LongFluidStack stack = Mockito.mock(LongFluidStack.class, Answers.CALLS_REAL_METHODS);
 
         stack.setAmountLong(amount);
         assertEquals(amount, stack.getAmountLong());
@@ -24,7 +24,7 @@ public class FluidStackLongTest {
     @ParameterizedTest
     @MethodSource("provideParameters")
     public void testAmountInt(long amount, int amountInt) {
-        FluidStackLong stack = Mockito.mock(FluidStackLong.class, Answers.CALLS_REAL_METHODS);
+        LongFluidStack stack = Mockito.mock(LongFluidStack.class, Answers.CALLS_REAL_METHODS);
 
         stack.setAmountLong(amount);
         assertEquals(amountInt, stack.amount);
@@ -33,7 +33,7 @@ public class FluidStackLongTest {
     @ParameterizedTest
     @MethodSource("provideParameters")
     public void testAmountIntSync(long amount) {
-        FluidStackLong stack = Mockito.mock(FluidStackLong.class, Answers.CALLS_REAL_METHODS);
+        LongFluidStack stack = Mockito.mock(LongFluidStack.class, Answers.CALLS_REAL_METHODS);
 
         stack.setAmountLong(amount);
         stack.amount -= 1000;

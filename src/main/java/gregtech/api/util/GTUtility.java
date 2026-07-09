@@ -2112,7 +2112,7 @@ public class GTUtility {
     public static FluidStack copyAmount(long aAmount, FluidStack aStack) {
         if (aStack == null) return null;
 
-        FluidStack rStack = new FluidStackLong(aStack, aAmount);
+        FluidStack rStack = new LongFluidStack(aStack, aAmount);
         return rStack;
     }
 
@@ -2274,7 +2274,7 @@ public class GTUtility {
     public static FluidStack loadFluid(NBTTagCompound aNBT) {
         if (aNBT == null) return null;
         if (aNBT.hasKey("amountLong")) {
-            return FluidStackLong.loadFluidStackFromNBT(aNBT);
+            return LongFluidStack.loadFluidStackFromNBT(aNBT);
         }
         return FluidStack.loadFluidStackFromNBT(aNBT);
     }
@@ -4111,7 +4111,7 @@ public class GTUtility {
         @Nonnull
         public FluidStack getFluidStack(long amount) {
             NBTTagCompound nbt = nbt();
-            return new FluidStackLong(fluid(), amount, nbt != null ? (NBTTagCompound) nbt.copy() : null);
+            return new LongFluidStack(fluid(), amount, nbt != null ? (NBTTagCompound) nbt.copy() : null);
         }
 
         @Nonnull
@@ -4409,7 +4409,7 @@ public class GTUtility {
     }
 
     public static long getFluidAmount(FluidStack fluidStack) {
-        if (fluidStack instanceof FluidStackLong stack) {
+        if (fluidStack instanceof LongFluidStack stack) {
             return stack.getAmountLong();
         }
 
@@ -4417,7 +4417,7 @@ public class GTUtility {
     }
 
     public static void setFluidAmount(FluidStack fluidStack, long amount) {
-        if (fluidStack instanceof FluidStackLong stack) {
+        if (fluidStack instanceof LongFluidStack stack) {
             stack.setAmountLong(amount);
         } else {
             fluidStack.amount = longToInt(amount);

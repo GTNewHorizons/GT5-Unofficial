@@ -35,10 +35,10 @@ import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.interfaces.IStoneType;
 import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.objects.MaterialStack;
-import gregtech.api.util.FluidStackLong;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.LongFluidStack;
 import gregtech.common.config.Client;
 import gregtech.common.config.Gregtech;
 import gregtech.common.render.items.CosmicNeutroniumRenderer;
@@ -2042,27 +2042,27 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
 
     public FluidStack getSolid(long aAmount) {
         if (mSolid == null) return null;
-        return new FluidStackLong(mSolid, aAmount);
+        return new LongFluidStack(mSolid, aAmount);
     }
 
     public FluidStack getFluid(long aAmount) {
         if (mFluid == null) return null;
-        return new FluidStackLong(mFluid, aAmount);
+        return new LongFluidStack(mFluid, aAmount);
     }
 
     public FluidStack getGas(long aAmount) {
         if (mGas == null) return null;
-        return new FluidStackLong(mGas, aAmount);
+        return new LongFluidStack(mGas, aAmount);
     }
 
     public FluidStack getPlasma(long aAmount) {
         if (mPlasma == null) return null;
-        return new FluidStackLong(mPlasma, aAmount);
+        return new LongFluidStack(mPlasma, aAmount);
     }
 
     public FluidStack getMolten(long aAmount) {
         if (mStandardMoltenFluid == null) return null;
-        return new FluidStackLong(mStandardMoltenFluid, aAmount);
+        return new LongFluidStack(mStandardMoltenFluid, aAmount);
     }
 
     @Override
@@ -2233,21 +2233,21 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
         if (hydroCrackedFluids[0] == null) {
             return null;
         }
-        return new FluidStackLong(hydroCrackedFluids[0], amount);
+        return new LongFluidStack(hydroCrackedFluids[0], amount);
     }
 
     public FluidStack getModeratelyHydroCracked(int amount) {
         if (hydroCrackedFluids[0] == null) {
             return null;
         }
-        return new FluidStackLong(hydroCrackedFluids[1], amount);
+        return new LongFluidStack(hydroCrackedFluids[1], amount);
     }
 
     public FluidStack getSeverelyHydroCracked(int amount) {
         if (hydroCrackedFluids[0] == null) {
             return null;
         }
-        return new FluidStackLong(hydroCrackedFluids[2], amount);
+        return new LongFluidStack(hydroCrackedFluids[2], amount);
     }
 
     public Materials setSteamCrackedFluids(Fluid[] steamCrackedFluids) {
@@ -2259,21 +2259,21 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
         if (hydroCrackedFluids[0] == null) {
             return null;
         }
-        return new FluidStackLong(steamCrackedFluids[0], amount);
+        return new LongFluidStack(steamCrackedFluids[0], amount);
     }
 
     public FluidStack getModeratelySteamCracked(int amount) {
         if (hydroCrackedFluids[0] == null) {
             return null;
         }
-        return new FluidStackLong(steamCrackedFluids[1], amount);
+        return new LongFluidStack(steamCrackedFluids[1], amount);
     }
 
     public FluidStack getSeverelySteamCracked(int amount) {
         if (hydroCrackedFluids[0] == null) {
             return null;
         }
-        return new FluidStackLong(steamCrackedFluids[2], amount);
+        return new LongFluidStack(steamCrackedFluids[2], amount);
     }
 
     /**

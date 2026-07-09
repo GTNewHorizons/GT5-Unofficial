@@ -77,10 +77,10 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
-import gregtech.api.util.FluidStackLong;
 import gregtech.api.util.GTDataUtils;
 import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.LongFluidStack;
 import gregtech.api.util.shutdown.ShutDownReasonRegistry;
 import gregtech.common.gui.modularui.hatch.MTEHatchInputMEGui;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
@@ -249,7 +249,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
             Slot newSlot = slots[index];
             FluidStack newStack = null;
             if (newSlot != null) {
-                newSlot.extracted = newStack = new FluidStackLong(curr.getFluidStack(), curr.getStackSize());
+                newSlot.extracted = newStack = new LongFluidStack(curr.getFluidStack(), curr.getStackSize());
                 newSlot.extractedAmount = GTUtility.getFluidAmount(newSlot.extracted);
             }
             boolean sametype = GTUtility.areFluidsEqual(oldStack, newStack);
@@ -416,7 +416,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
                 result = sg.extractItems(request, Actionable.SIMULATE, getRequestSource());
             }
 
-            return result == null ? null : new FluidStackLong(result.getFluidStack());
+            return result == null ? null : new LongFluidStack(result.getFluidStack());
         }
     }
 
@@ -648,7 +648,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
 
         IAEFluidStack result = sg.extractItems(request, Actionable.SIMULATE, getRequestSource());
 
-        slot.extracted = result != null ? new FluidStackLong(result.getFluid(), result.getStackSize()) : null;
+        slot.extracted = result != null ? new LongFluidStack(result.getFluid(), result.getStackSize()) : null;
         slot.extractedAmount = slot.extracted == null ? 0 : GTUtility.getFluidAmount(slot.extracted);
 
     }

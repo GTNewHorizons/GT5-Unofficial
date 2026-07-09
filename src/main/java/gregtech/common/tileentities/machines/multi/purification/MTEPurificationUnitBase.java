@@ -40,10 +40,10 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.metadata.PurificationPlantBaseChanceKey;
-import gregtech.api.util.FluidStackLong;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.LongFluidStack;
 import gregtech.common.blocks.BlockCasingsAbstract;
 import gregtech.common.gui.modularui.multiblock.MTEPurificationUnitBaseGui;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
@@ -295,7 +295,7 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
         FluidStack outputWater = recipe.mFluidOutputs[0];
         long outputWaterAmount = GTUtility.getFluidAmount(outputWater);
         long amount = Math.round(outputWaterAmount * WATER_BOOST_NEEDED_FLUID * this.effectiveParallel);
-        return new FluidStackLong(outputWater.getFluid(), amount);
+        return new LongFluidStack(outputWater.getFluid(), amount);
     }
 
     /**
@@ -318,7 +318,7 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
         for (int i = 0; i < this.currentRecipe.mFluidInputs.length; ++i) {
             FluidStack input = this.currentRecipe.mFluidInputs[i];
             long inputAmount = GTUtility.getFluidAmount(input);
-            FluidStack copyWithParallel = new FluidStackLong(input.getFluid(), inputAmount);
+            FluidStack copyWithParallel = new LongFluidStack(input.getFluid(), inputAmount);
             if (i == 0) {
                 long waterAmount = (long) effectiveParallel * GTUtility.getFluidAmount(input);
                 GTUtility.setFluidAmount(copyWithParallel, (long) waterAmount);
@@ -459,8 +459,8 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
                 // For tier 1, this is distilled water, so we cannot use the helper function!
                 if (waterTier == 1) {
                     FluidStack waterStack = GTModHandler.getDistilledWater(amount);
-                    if (!(waterStack instanceof FluidStackLong)) {
-                        waterStack = new FluidStackLong(waterStack);
+                    if (!(waterStack instanceof LongFluidStack)) {
+                        waterStack = new LongFluidStack(waterStack);
                         GTUtility.setFluidAmount(waterStack, amount);
                     }
 

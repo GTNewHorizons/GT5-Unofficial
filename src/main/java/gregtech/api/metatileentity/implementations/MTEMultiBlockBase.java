@@ -114,7 +114,6 @@ import gregtech.api.structure.error.StructureErrorRegistry;
 import gregtech.api.structure.error.StructureErrors;
 import gregtech.api.util.ExoticEnergyInputHelper;
 import gregtech.api.util.FluidEjectionHelper;
-import gregtech.api.util.FluidStackLong;
 import gregtech.api.util.GTClientPreference;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTRecipe;
@@ -122,6 +121,7 @@ import gregtech.api.util.GTUtil;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTWaila;
 import gregtech.api.util.ItemEjectionHelper;
+import gregtech.api.util.LongFluidStack;
 import gregtech.api.util.OutputHatchWrapper;
 import gregtech.api.util.ParallelHelper;
 import gregtech.api.util.VoidProtectionHelper;
@@ -3830,7 +3830,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                     () -> mOutputFluids != null ? Arrays.stream(mOutputFluids)
                         .map(fluidStack -> {
                             if (fluidStack == null) return null;
-                            return new FluidStackLong(fluidStack.getFluid(), GTUtility.getFluidAmount(fluidStack)) {
+                            return new LongFluidStack(fluidStack.getFluid(), GTUtility.getFluidAmount(fluidStack)) {
 
                                 @Override
                                 public boolean isFluidEqual(FluidStack other) {

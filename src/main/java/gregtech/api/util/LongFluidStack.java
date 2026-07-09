@@ -5,31 +5,31 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
 // FluidStack that can store more than INTMAX
-public class FluidStackLong extends FluidStack {
+public class LongFluidStack extends FluidStack {
 
     private long amountLong;
 
-    public FluidStackLong(FluidStack stack) {
+    public LongFluidStack(FluidStack stack) {
         this(stack, GTUtility.getFluidAmount(stack));
     }
 
-    public FluidStackLong(FluidStack stack, long amount) {
+    public LongFluidStack(FluidStack stack, long amount) {
         this(stack.getFluid(), amount);
     }
 
-    public FluidStackLong(Fluid fluid, int amount) {
+    public LongFluidStack(Fluid fluid, int amount) {
         this(fluid, amount, null);
     }
 
-    public FluidStackLong(Fluid fluid, long amount) {
+    public LongFluidStack(Fluid fluid, long amount) {
         this(fluid, amount, null);
     }
 
-    public FluidStackLong(Fluid fluid, int amount, NBTTagCompound nbt) {
+    public LongFluidStack(Fluid fluid, int amount, NBTTagCompound nbt) {
         this(fluid, (long) amount, nbt);
     }
 
-    public FluidStackLong(Fluid fluid, long amount, NBTTagCompound nbt) {
+    public LongFluidStack(Fluid fluid, long amount, NBTTagCompound nbt) {
         super(fluid, GTUtility.longToInt(amount), nbt);
         amountLong = amount;
     }
@@ -59,8 +59,8 @@ public class FluidStackLong extends FluidStack {
         this.amount = GTUtility.longToInt(amount);
     }
 
-    public FluidStackLong copy() {
-        return new FluidStackLong(getFluid(), amountLong);
+    public LongFluidStack copy() {
+        return new LongFluidStack(getFluid(), amountLong);
     }
 
     @Override
@@ -71,10 +71,10 @@ public class FluidStackLong extends FluidStack {
         return nbt;
     }
 
-    public static FluidStackLong loadFluidStackFromNBT(NBTTagCompound nbt) {
+    public static LongFluidStack loadFluidStackFromNBT(NBTTagCompound nbt) {
         FluidStack stack = FluidStack.loadFluidStackFromNBT(nbt);
         long amountLong = nbt.getLong("amountLong");
 
-        return stack == null ? null : new FluidStackLong(stack.getFluid(), amountLong);
+        return stack == null ? null : new LongFluidStack(stack.getFluid(), amountLong);
     }
 }
