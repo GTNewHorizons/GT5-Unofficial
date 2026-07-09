@@ -42,15 +42,13 @@ public class FluidStackLong extends FluidStack {
             if (amountLong < Integer.MAX_VALUE) {
                 if (this.amount < amountLong) {
                     amountLong = this.amount;
-                } else {
-                    this.amount = GTUtility.longToInt(amountLong);
                 }
             } else {
                 long diff = Integer.MAX_VALUE - this.amount;
-
                 amountLong -= diff;
-                this.amount = Integer.MAX_VALUE;
             }
+
+            this.amount = GTUtility.longToInt(amountLong);
         }
 
         return amountLong;
