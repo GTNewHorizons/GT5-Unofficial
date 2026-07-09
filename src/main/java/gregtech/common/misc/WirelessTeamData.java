@@ -34,40 +34,42 @@ public class WirelessTeamData implements ITeamData {
      * the world was loaded.
      * Structure: {@literal <long packedHatchCoord, Set<AsslineRecipe>>}
      */
-    private final Long2ObjectOpenHashMap<OwnedSet> wirelessDataStricks = new Long2ObjectOpenHashMap<>(8, 0.9f);
+    final Long2ObjectOpenHashMap<OwnedSet> wirelessDataSticks = new Long2ObjectOpenHashMap<>(8, 0.9f);
     /**
      * Indicator for each wireless assembly line connector hatch that it may update at the next checking interval of
      * ticks % {@value IO_TICK_RATE} = {@value DOWNLOAD_TICK_OFFSET}.
-     * Accessed via {@link #hasDirtySticks()} by the assembly lines.
+     * Accessed via {@link WirelessNetworkManager#hasDirtyDataSticks(UUID)} by the assembly lines.
      */
-    private boolean dirtySticks = false;
+    boolean dirtySticks = false;
 
-    private int registeredDataOutputs = 0;
-    private int downloadCounter = 0;
-    private ObjectOpenHashSet<GTRecipe.RecipeAssemblyLine> cached = new ObjectOpenHashSet<>(100, 0.9f);
+    // internal trackers for when to reset the dirty state
+    int registeredDataOutputs = 0;
+    int downloadCounter = 0;
+    ObjectOpenHashSet<GTRecipe.RecipeAssemblyLine> cached = new ObjectOpenHashSet<>(100, 0.9f);
 
     /**
      * If as many registered outputs "download" the cache, it's marked as clean.
      */
     public ObjectOpenHashSet<GTRecipe.RecipeAssemblyLine> downloadDatasticks() {
-        if (++downloadCounter >= registeredDataOutputs) {
+        if (++downloadCounter % registeredDataOutputs == 0) {
             dirtySticks = false;
             downloadCounter = 0;
-            if (cached.isEmpty()) {
-                updateCache();
-            }
+            var copy = new ObjectOpenHashSet<>(updateCache());
+            cached = null;
+            return copy;
         } else {
             // cache the flattening after first "download" to avoid re-flattening per downloading assline.
-            updateCache();
+            return updateCache();
         }
-        return cached;
     }
 
-    private void updateCache() {
-        cached = wirelessDataStricks.long2ObjectEntrySet()
+    ObjectOpenHashSet<GTRecipe.RecipeAssemblyLine> updateCache() {
+        if (cached != null) return cached;
+        cached = wirelessDataSticks.long2ObjectEntrySet()
             .stream()
             .flatMap((entry) -> entry.getValue().set.stream())
             .collect(ObjectOpenHashSet::new, ObjectOpenHashSet::add, ObjectOpenHashSet::addAll);
+        return cached;
     }
 
     /**
@@ -76,7 +78,7 @@ public class WirelessTeamData implements ITeamData {
      * @param dataPacket null only resets the cache, non-null also adds the dataPacket to the cache
      */
     public void uploadDatastick(long coord, ALRecipeDataPacket dataPacket, UUID ownerUUID) {
-        OwnedSet atHatch = this.wirelessDataStricks
+        OwnedSet atHatch = this.wirelessDataSticks
             .computeIfAbsent(coord, _ -> new OwnedSet(new ObjectOpenHashSet<>(100, 0.9f), ownerUUID));
         if (!dirtySticks) {
             atHatch.set.clear();
@@ -85,18 +87,6 @@ public class WirelessTeamData implements ITeamData {
         if (dataPacket != null) {
             atHatch.set.addAll(Arrays.asList(dataPacket.getContent()));
         }
-    }
-
-    public boolean hasDirtySticks() {
-        return dirtySticks;
-    }
-
-    public void registerDataOutput() {
-        registeredDataOutputs = registeredDataOutputs + 1;
-    }
-
-    public void unregisterDataOutput() {
-        registeredDataOutputs = Math.max(0, registeredDataOutputs - 1);
     }
 
     @Override
@@ -114,7 +104,7 @@ public class WirelessTeamData implements ITeamData {
         if (!(oldTeamData instanceof WirelessTeamData oldWirelessTeamData)) return;
 
         this.wirelessEnergy = this.wirelessEnergy.add(oldWirelessTeamData.wirelessEnergy);
-        this.wirelessDataStricks.putAll(oldWirelessTeamData.wirelessDataStricks);
+        this.wirelessDataSticks.putAll(oldWirelessTeamData.wirelessDataSticks);
         this.registeredDataOutputs += oldWirelessTeamData.registeredDataOutputs;
         this.downloadCounter = 0;
         this.dirtySticks = true;
@@ -126,10 +116,10 @@ public class WirelessTeamData implements ITeamData {
         if (!(prevTeamData instanceof WirelessTeamData prevWirelessTeamData)) return;
 
         LongList toRemove = new LongArrayList(8);
-        for (Long2ObjectMap.Entry<OwnedSet> entry : prevWirelessTeamData.wirelessDataStricks.long2ObjectEntrySet()) {
+        for (Long2ObjectMap.Entry<OwnedSet> entry : prevWirelessTeamData.wirelessDataSticks.long2ObjectEntrySet()) {
             if (entry.getValue().owner.equals(playerId)) {
                 toRemove.add(entry.getLongKey());
-                wirelessDataStricks.put(entry.getLongKey(), entry.getValue());
+                wirelessDataSticks.put(entry.getLongKey(), entry.getValue());
             }
         }
 
@@ -139,7 +129,7 @@ public class WirelessTeamData implements ITeamData {
         this.registeredDataOutputs += toRemove.size();
         this.downloadCounter = 0;
         this.dirtySticks = true;
-        toRemove.forEach(wirelessDataStricks::remove);
+        toRemove.forEach(wirelessDataSticks::remove);
     }
 
     private record OwnedSet(ObjectOpenHashSet<GTRecipe.RecipeAssemblyLine> set, UUID owner) {}

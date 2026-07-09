@@ -8,14 +8,12 @@ import static tectech.thing.metaTileEntity.hatch.MTEHatchDataConnector.EM_D_SIDE
 
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.common.util.ForgeDirection;
-
-import com.gtnewhorizon.gtnhlib.teams.Team;
-import com.gtnewhorizon.gtnhlib.teams.TeamManager;
 
 import gregtech.api.enums.Dyes;
 import gregtech.api.interfaces.ITexture;
@@ -24,6 +22,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchDataAccess;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTRecipe.RecipeAssemblyLine;
+import gregtech.common.misc.WirelessNetworkManager;
 import gregtech.common.misc.WirelessTeamData;
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import tectech.util.CommonValues;
@@ -113,17 +112,15 @@ public class MTEHatchWirelessDataItemsInput extends MTEHatchDataAccess {
                 .getTickCounter();
             if (aTick % WirelessTeamData.IO_TICK_RATE == WirelessTeamData.DOWNLOAD_TICK_OFFSET) {
 
-                Team team = TeamManager.getTeamByPlayer(getBaseMetaTileEntity().getOwnerUuid());
-                var data = (WirelessTeamData) team.getData(WirelessTeamData.DATA_KEY);
-
-                if (!data.hasDirtySticks() && !forceUpdate) return;
+                UUID ownerUuid = aBaseMetaTileEntity.getOwnerUuid();
+                if (!WirelessNetworkManager.hasDirtyDataSticks(ownerUuid) && !forceUpdate) return;
 
                 if (forceUpdate) {
                     forceUpdate = false;
                 }
 
                 ObjectOpenHashSet<RecipeAssemblyLine> oldRecipes = cachedRecipes;
-                this.cachedRecipes = data.downloadDatasticks();
+                this.cachedRecipes = WirelessNetworkManager.downloadDataSticks(ownerUuid);
                 // Only notify when the available recipe set changed (by content, not count, so a same-size swap of
                 // wireless data sticks still fires), to avoid re-checking every download cycle.
                 if (recipesChanged(oldRecipes, cachedRecipes)) notifyWatchers();
@@ -150,9 +147,7 @@ public class MTEHatchWirelessDataItemsInput extends MTEHatchDataAccess {
 
         if (!bmte.isServerSide()) return;
 
-        Team team = TeamManager.getTeamByPlayer(bmte.getOwnerUuid());
-        var data = (WirelessTeamData) team.getData(WirelessTeamData.DATA_KEY);
-        data.registerDataOutput();
+        WirelessNetworkManager.registerDataOutput(bmte.getOwnerUuid());
         forceUpdate = true;
     }
 
@@ -162,8 +157,6 @@ public class MTEHatchWirelessDataItemsInput extends MTEHatchDataAccess {
 
         if (!getBaseMetaTileEntity().isServerSide()) return;
 
-        Team team = TeamManager.getTeamByPlayer(getBaseMetaTileEntity().getOwnerUuid());
-        var data = (WirelessTeamData) team.getData(WirelessTeamData.DATA_KEY);
-        data.unregisterDataOutput();
+        WirelessNetworkManager.unregisterDataOutput(getBaseMetaTileEntity().getOwnerUuid());
     }
 }
