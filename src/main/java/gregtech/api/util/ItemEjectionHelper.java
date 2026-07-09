@@ -142,19 +142,13 @@ public class ItemEjectionHelper {
                     continue;
                 }
 
-                boolean insertAnything = false;
-                while (output.remainingAmount > 0) {
-                    int amount = GTUtility.longToInt(output.remainingAmount);
-                    ItemStack tmp = output.id.getItemStack(amount);
-                    transaction.storePartial(output.id, tmp);
-                    long actuallyInsert = amount - tmp.stackSize;
-                    output.remainingAmount -= actuallyInsert;
-                    if (actuallyInsert > 0) insertAnything = true;
-                    if (tmp.stackSize > 0) break;
-                }
+                int amount = GTUtility.longToInt(output.remainingAmount);
+                ItemStack tmp = output.id.getItemStack(amount);
+                boolean stored = transaction.storePartial(output.id, tmp);
+                output.remainingAmount -= amount - tmp.stackSize;
 
                 // Fill at most one slot with the remaining items
-                if (insertAnything) {
+                if (stored) {
                     break;
                 } else {
                     // If we couldn't insert anything into the bus, go to the next one
