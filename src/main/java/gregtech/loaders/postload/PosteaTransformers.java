@@ -25,6 +25,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.items.MetaGeneratedItemX32;
 import gregtech.api.material.MU;
 import gregtech.common.blocks.BlockFrameBox;
+import gregtech.common.items.MetaGeneratedItem99;
 import vexatos.tgregworks.reference.Mods;
 
 public class PosteaTransformers implements Runnable {
@@ -45,14 +46,15 @@ public class PosteaTransformers implements Runnable {
         registerMaterialLibCutoverTransformers();
     }
 
-    /// Migrates saved [MetaGeneratedItemX32] stacks (`gt.metaitem.01/02/03`, damage < 32000) whose prefix
-    /// cut over to a MaterialLib shape (see [MU]) into the equivalent MaterialLib stack. Hand-listed custom
-    /// parts (damage >= 32000) and prefixes that did not cut over (e.g. `cell`, `cellPlasma`) pass through
-    /// unchanged.
+    /// Migrates saved [MetaGeneratedItemX32] stacks (`gt.metaitem.01/02/03`, damage < 32000) and
+    /// [MetaGeneratedItem99] stacks (`gt.metaitem.99`, cell molten/cracked prefixes) whose prefix cut over to
+    /// a MaterialLib shape (see [MU]) into the equivalent MaterialLib stack. Hand-listed custom parts
+    /// (damage >= 32000 on `metaitem.01/02/03`) and prefixes that have not cut over pass through unchanged.
     private void registerMaterialLibCutoverTransformers() {
         registerMetaItemCutoverTransformer("gt.metaitem.01");
         registerMetaItemCutoverTransformer("gt.metaitem.02");
         registerMetaItemCutoverTransformer("gt.metaitem.03");
+        registerMetaItem99CutoverTransformer();
     }
 
     private static void registerMetaItemCutoverTransformer(String itemName) {
@@ -60,6 +62,20 @@ public class PosteaTransformers implements Runnable {
         ItemStackReplacementManager.addTransformationHandler("gregtech:" + itemName, (originalId, tag) -> {
             int damage = tag.getInteger("Damage");
             if (damage >= 32000) return false;
+            OrePrefixes prefix = item.getOrePrefix(damage);
+            Materials material = item.getMaterial(damage);
+            ItemStack cutover = MU.stack(prefix, material, 1);
+            if (cutover == null) return false;
+            IDExtenderCompat.setItemStackID(tag, Item.getIdFromItem(cutover.getItem()));
+            tag.setShort("Damage", (short) cutover.getItemDamage());
+            return true;
+        });
+    }
+
+    private static void registerMetaItem99CutoverTransformer() {
+        MetaGeneratedItem99 item = (MetaGeneratedItem99) GameRegistry.findItem("gregtech", "gt.metaitem.99");
+        ItemStackReplacementManager.addTransformationHandler("gregtech:gt.metaitem.99", (originalId, tag) -> {
+            int damage = tag.getInteger("Damage");
             OrePrefixes prefix = item.getOrePrefix(damage);
             Materials material = item.getMaterial(damage);
             ItemStack cutover = MU.stack(prefix, material, 1);

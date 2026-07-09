@@ -524,6 +524,20 @@ CRACKED_FLUID_SHAPE_FIELDS = {
     "hydroCracked": ["shapeFluidHydroCracked1", "shapeFluidHydroCracked2", "shapeFluidHydroCracked3"],
     "steamCracked": ["shapeFluidSteamCracked1", "shapeFluidSteamCracked2", "shapeFluidSteamCracked3"],
 }
+# legacy-variants.json prefix -> (Materials2CellShapes field, dump key whose presence the shape's fluid
+# requires -- MaterialLib's container contract needs a material to generate at least one of the container's
+# fluid shapes too, which not every material with a real legacy item slot satisfies (e.g. a metal's plain
+# `cell` slot exists from its CELL capability flag alone, with no base liquid/gas ever put in it; its molten
+# and plasma go into cellMolten/cellPlasma instead). Missing the required fluid leaves the legacy item
+# uncut -- see MU#isCutOver.
+CELL_SHAPE_FIELDS = {
+    "cellHydroCracked1": ("shapeCellHydroCracked1", "hydroCracked"),
+    "cellHydroCracked2": ("shapeCellHydroCracked2", "hydroCracked"),
+    "cellHydroCracked3": ("shapeCellHydroCracked3", "hydroCracked"),
+    "cellSteamCracked1": ("shapeCellSteamCracked1", "steamCracked"),
+    "cellSteamCracked2": ("shapeCellSteamCracked2", "steamCracked"),
+    "cellSteamCracked3": ("shapeCellSteamCracked3", "steamCracked"),
+}
 
 
 def fluid_shape_lines(material, used_fluid_names):
@@ -562,6 +576,32 @@ def fluid_shape_lines(material, used_fluid_names):
     return lines
 
 
+def container_shape_lines(material, legacy_variants_by_material):
+    """`generateShape(...)` lines for `Materials2CellShapes`, driven by legacy-variants.json (the same ground
+    truth item shapes use): `cellMolten`/cracked-cell prefixes live on `MetaGeneratedItem99`, which is not a
+    `MetaGeneratedItemX32` subclass and so needed its own legacy-variants capture (see that class). `cellPlasma`
+    picks one of two candidate shapes per material depending on whether it also has a molten fluid (see
+    `Materials2CellShapes`). A material's legacy variant only becomes a MaterialLib shape when the fluid it
+    requires is also present (see `CELL_SHAPE_FIELDS`); materials that fall short keep their legacy item."""
+    if material["name"] in FLUID_CUTOVER_EXCLUDED:
+        return []
+    variants = legacy_variants_by_material.get(material["name"], set())
+    fluids = material["fluids"]
+    cracked = material.get("crackedFluids") or {}
+    lines = []
+    if "cell" in variants and (fluids.get("fluid") or fluids.get("gas")):
+        lines.append("            .generateShape(Materials2CellShapes.shapeCell)")
+    if "cellMolten" in variants and fluids.get("molten"):
+        lines.append("            .generateShape(Materials2CellShapes.shapeCellMolten)")
+    if "cellPlasma" in variants and fluids.get("plasma"):
+        field = "shapeCellPlasma" if fluids.get("molten") else "shapeCellPlasmaLight"
+        lines.append(f"            .generateShape(Materials2CellShapes.{field})")
+    for prefix_name, (field, cracked_key) in CELL_SHAPE_FIELDS.items():
+        if prefix_name in variants and cracked.get(cracked_key):
+            lines.append(f"            .generateShape(Materials2CellShapes.{field})")
+    return lines
+
+
 def build_material_block(
         material, families, ml_names, field_names, included_names, family_shape_members,
         legacy_variants_by_material, used_fluid_names):
@@ -583,6 +623,7 @@ def build_material_block(
     for prefix_name in missing:
         lines.append(f"            .generateShape(Materials2Shapes.{shape_field_name(prefix_name)})")
     lines.extend(fluid_shape_lines(material, used_fluid_names))
+    lines.extend(container_shape_lines(material, legacy_variants_by_material))
 
     for property_line in build_property_lines(material, ml_names):
         lines.append("            " + property_line)

@@ -27,6 +27,62 @@ FLOAT_TOLERANCE = 1e-6
 
 FLUID_STATES = ["solid", "fluid", "gas", "plasma", "molten"]
 
+# Mirrors gen_materials.py's stage-06 fluid/cell shape codegen (FLUID_CUTOVER_EXCLUDED, FLUID_SHAPE_FIELDS,
+# CRACKED_FLUID_SHAPE_FIELDS, CELL_SHAPE_FIELDS) so this script's expected shape set includes them too --
+# otherwise every fluid- or cell-generating material would show a spurious "extra" shapes mismatch.
+FLUID_CUTOVER_EXCLUDED = {"Water", "Ice", "Lava", "ConstructionFoam", "UUMatter"}
+FLUID_SHAPE_NAMES = {
+    "solid": "fluidSolid",
+    "fluid": "fluidLiquid",
+    "gas": "fluidGas",
+    "plasma": "fluidPlasma",
+    "molten": "fluidMolten",
+}
+CRACKED_FLUID_SHAPE_NAMES = {
+    "hydroCracked": ["fluidHydroCracked1", "fluidHydroCracked2", "fluidHydroCracked3"],
+    "steamCracked": ["fluidSteamCracked1", "fluidSteamCracked2", "fluidSteamCracked3"],
+}
+CRACKED_CELL_SHAPE_NAMES = {
+    "cellHydroCracked1": "hydroCracked",
+    "cellHydroCracked2": "hydroCracked",
+    "cellHydroCracked3": "hydroCracked",
+    "cellSteamCracked1": "steamCracked",
+    "cellSteamCracked2": "steamCracked",
+    "cellSteamCracked3": "steamCracked",
+}
+
+
+def expected_fluid_and_cell_shapes(material, legacy_variants_by_material, used_fluid_names):
+    if material["name"] in FLUID_CUTOVER_EXCLUDED:
+        return set()
+    names = set()
+    fluids = material["fluids"]
+    for state, shape_name in FLUID_SHAPE_NAMES.items():
+        ref = fluids.get(state)
+        if ref and ref["name"] not in used_fluid_names:
+            used_fluid_names.add(ref["name"])
+            names.add(shape_name)
+    cracked = material.get("crackedFluids") or {}
+    for key, shape_names in CRACKED_FLUID_SHAPE_NAMES.items():
+        refs = cracked.get(key)
+        if refs:
+            for ref, shape_name in zip(refs, shape_names):
+                if ref and ref["name"] not in used_fluid_names:
+                    used_fluid_names.add(ref["name"])
+                    names.add(shape_name)
+
+    variants = legacy_variants_by_material.get(material["name"], set())
+    if "cell" in variants and (fluids.get("fluid") or fluids.get("gas")):
+        names.add("cell")
+    if "cellMolten" in variants and fluids.get("molten"):
+        names.add("cellMolten")
+    if "cellPlasma" in variants and fluids.get("plasma"):
+        names.add("cellPlasma" if fluids.get("molten") else "cellPlasmaLight")
+    for prefix_name, cracked_key in CRACKED_CELL_SHAPE_NAMES.items():
+        if prefix_name in variants and cracked.get(cracked_key):
+            names.add(prefix_name)
+    return names
+
 # Mirrors gen_materials.py's SUBTAG_FLAG_OVERRIDES / ml_name -- kept duplicated rather than imported since
 # this script must also run standalone against a checked-out dump pair.
 SUBTAG_FLAG_OVERRIDES = {
@@ -161,7 +217,7 @@ def check_ref_field(errors, name, field, gt_value, ml_value):
         errors.append(f"{name}: {field} expected {expected!r}, got {ml_value!r}")
 
 
-def check_material(gt, ml, included_names, legacy_variants_by_material):
+def check_material(gt, ml, included_names, legacy_variants_by_material, used_fluid_names):
     errors = []
     name = gt["name"]
 
@@ -175,6 +231,7 @@ def check_material(gt, ml, included_names, legacy_variants_by_material):
 
     actual_variants = legacy_variants_by_material.get(name, set())
     dumped_shapes = set(p for p in actual_variants if p in included_names)
+    dumped_shapes |= expected_fluid_and_cell_shapes(gt, legacy_variants_by_material, used_fluid_names)
     actual_shapes = set(ml["shapes"])
     if dumped_shapes != actual_shapes:
         missing = dumped_shapes - actual_shapes
@@ -258,15 +315,19 @@ def check_material(gt, ml, included_names, legacy_variants_by_material):
     if expected_aspects != actual_aspects:
         errors.append(f"{name}: aspects expected {expected_aspects!r}, got {actual_aspects!r}")
 
-    for state in FLUID_STATES:
-        expected_fluid = gt["fluids"].get(state)
-        actual_fluid = ml["fluids"].get(state)
-        if bool(expected_fluid) != bool(actual_fluid):
-            errors.append(f"{name}: fluids.{state} expected {expected_fluid!r}, got {actual_fluid!r}")
-        elif expected_fluid and actual_fluid:
-            if expected_fluid["name"] != actual_fluid["name"] or expected_fluid["temperature"] != actual_fluid[
-                    "temperature"]:
+    # FLUID_CUTOVER_EXCLUDED materials keep their fluid fields hand-wired in LoaderGTBlockFluid rather than
+    # through GTMaterialProperties.LEGACY_FLUIDS (see gen_materials.py), so ml["fluids"] is intentionally empty
+    # for them.
+    if name not in FLUID_CUTOVER_EXCLUDED:
+        for state in FLUID_STATES:
+            expected_fluid = gt["fluids"].get(state)
+            actual_fluid = ml["fluids"].get(state)
+            if bool(expected_fluid) != bool(actual_fluid):
                 errors.append(f"{name}: fluids.{state} expected {expected_fluid!r}, got {actual_fluid!r}")
+            elif expected_fluid and actual_fluid:
+                if expected_fluid["name"] != actual_fluid["name"] or expected_fluid["temperature"] != actual_fluid[
+                        "temperature"]:
+                    errors.append(f"{name}: fluids.{state} expected {expected_fluid!r}, got {actual_fluid!r}")
 
     return errors
 
@@ -292,13 +353,15 @@ def main():
     ml_by_key = {m["name"]: m for m in ml_materials}
 
     errors = []
+    used_fluid_names = set()
     for material in ported:
         key = ml_name(material["name"])
         ml = ml_by_key.get(key)
         if ml is None:
             errors.append(f"{material['name']}: missing from ml-materials.json (expected key {key!r})")
             continue
-        errors.extend(check_material(material, ml, included_names, legacy_variants_by_material))
+        errors.extend(
+            check_material(material, ml, included_names, legacy_variants_by_material, used_fluid_names))
 
     expected_keys = set(ml_name(m["name"]) for m in ported)
     extra = set(ml_by_key) - expected_keys
