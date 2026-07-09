@@ -47,6 +47,7 @@ import gregtech.api.material.MaterialRef;
 import gregtech.api.material.MaterialRefStack;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.GTLog;
+import gregtech.common.fluid.GTFluid;
 import gtPlusPlus.core.material.Material;
 
 /// Dumps the four legacy material systems -- GregTech `Materials`, `OrePrefixes`, bartworks `Werkstoff`, and
@@ -73,6 +74,7 @@ public final class MaterialDataDump {
         write(new File(directory, "gtpp-materials.json"), dumpGtppMaterials());
         write(new File(directory, "ml-materials.json"), dumpMlMaterials());
         write(new File(directory, "legacy-variants.json"), dumpLegacyVariants());
+        write(new File(directory, "fluid-textures.json"), dumpFluidTextures());
     }
 
     private static void write(File file, Object data) {
@@ -720,6 +722,18 @@ public final class MaterialDataDump {
         json.put("name", ref.name());
         json.put("temperature", ref.temperature());
         return json;
+    }
+
+    // endregion
+
+    // region fluid-textures.json
+
+    /// The still-icon texture path each legacy fluid name registered, captured while `gt.dumpMaterialData`
+    /// made every material's legacy fluid builder actually construct (see [GTFluid#DUMP_TEXTURES] and its
+    /// `GTProxy`/`LoaderGTBlockFluid` dump-mode bypasses of the skip-when-already-wired checks) -- ground
+    /// truth for [Materials2FluidShapes]'s per-material icon path override.
+    private static Map<String, String> dumpFluidTextures() {
+        return new TreeMap<>(GTFluid.DUMP_TEXTURES);
     }
 
     // endregion
