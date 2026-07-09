@@ -360,7 +360,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
 
     @Override
     public FluidStack drain(ForgeDirection side, FluidStack fluid, boolean doDrain) {
-        return drain(side, fluid, fluid == null ? 0 : fluid.amount, doDrain);
+        return drain(side, fluid, fluid == null ? 0 : GTUtility.getFluidAmount(fluid), doDrain);
     }
 
     @Override
