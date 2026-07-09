@@ -301,16 +301,14 @@ public class WerkstoffLoader {
     }
 
     public static ItemStack getCorrespondingItemStackUnsafe(OrePrefixes orePrefixes, Werkstoff werkstoff, int amount) {
-        // Stage-10 item/ore/block cutover: a werkstoff's item prefixes resolve to the MaterialLib stack (via
-        // the bridge material, which maps proxies and reconstructed werkstoffe alike; a third-party
-        // werkstoff's bridge is unknown to MU and falls through to the legacy paths). `ore`/`oreSmall`/`block`
-        // now resolve through MU too (Materials2OreShapes/Materials2BlockShapes). `blockCasing`/
-        // `blockCasingAdvanced`/`sheetmetal`/`frameGt` stay legacy-canonical for now: multiblock structure
-        // matchers reference the legacy casing blocks by identity, so their cutover is a coordinated
-        // block+structure flip, not a stack swap.
-        if (orePrefixes != OrePrefixes.blockCasing && orePrefixes != OrePrefixes.blockCasingAdvanced
-            && orePrefixes != OrePrefixes.sheetmetal
-            && orePrefixes != OrePrefixes.frameGt) {
+        // Stage-10 item/ore/block/casing cutover: a werkstoff's item prefixes resolve to the MaterialLib stack
+        // (via the bridge material, which maps proxies and reconstructed werkstoffe alike; a third-party
+        // werkstoff's bridge is unknown to MU and falls through to the legacy paths). `ore`/`oreSmall`/`block`/
+        // `blockCasing`/`blockCasingAdvanced` now resolve through MU too (Materials2OreShapes/
+        // Materials2BlockShapes; the multiblock structure matchers referencing the casing blocks by identity
+        // resolve dynamically now too, see Casings#bwCasing). `sheetmetal`/`frameGt` stay legacy-canonical --
+        // out of scope for the stage-10 block cutover.
+        if (orePrefixes != OrePrefixes.sheetmetal && orePrefixes != OrePrefixes.frameGt) {
             ItemStack mlStack = MU.stack(orePrefixes, werkstoff.getBridgeMaterial(), amount);
             if (mlStack != null) return mlStack;
         }
@@ -645,6 +643,8 @@ public class WerkstoffLoader {
             if (w == null) continue;
 
             hideBlockSlot(w, block, WerkstoffLoader.BWBlocks);
+            hideBlockSlot(w, OrePrefixes.blockCasing, WerkstoffLoader.BWBlockCasings);
+            hideBlockSlot(w, OrePrefixes.blockCasingAdvanced, WerkstoffLoader.BWBlockCasingsAdvanced);
         }
     }
 

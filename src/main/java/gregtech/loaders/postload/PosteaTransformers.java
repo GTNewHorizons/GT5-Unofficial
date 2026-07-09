@@ -119,6 +119,14 @@ public class PosteaTransformers implements Runnable {
             "bw.werkstoffblockTE",
             "bartworks:bw.werkstoffblocks.01",
             OrePrefixes.block);
+        registerWerkstoffBlockCutoverTransformer(
+            "bw.werkstoffblockcasingTE",
+            "bartworks:bw.werkstoffblockscasing.01",
+            OrePrefixes.blockCasing);
+        registerWerkstoffBlockCutoverTransformer(
+            "bw.werkstoffblockscasingadvancedTE",
+            "bartworks:bw.werkstoffblockscasingadvanced.01",
+            OrePrefixes.blockCasingAdvanced);
     }
 
     /// Migrates saved placed (TE-based) and inventory bartworks werkstoff storage-block stacks (`m`/`Damage` =
