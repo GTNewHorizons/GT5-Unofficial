@@ -403,6 +403,52 @@ public class Werkstoff implements IColorModulationContainer, IOreMaterial {
         this.owner = this.getMaterialOwner();
     }
 
+    /// Reconstruction constructor (see [WerkstoffReconstruction]): rebuilds a werkstoff verbatim from
+    /// MaterialLib data. Every derived value the public constructors compute (proton/mass derivation,
+    /// formula-tooltip generation, byproduct padding, melting-point/voltage defaults) arrives pre-computed --
+    /// the dump captured the post-derivation state -- so this constructor only registers and assigns.
+    Werkstoff(short[] rgba, String defaultName, String toolTip, boolean formulaLocalized, Werkstoff.Stats stats,
+        Werkstoff.Types type, Werkstoff.GenerationFeatures generationFeatures, int mID, TextureSet texSet,
+        List<? extends ISubTagContainer> oreByProducts, Collection<Pair<ISubTagContainer, Integer>> contents,
+        Collection<SubTag> subTags, Collection<String> additionalOredictNames, String owner) {
+        if (Werkstoff.idHashSet.contains((short) mID))
+            throw new UnsupportedOperationException("ID (" + mID + ") is already in use!");
+        Werkstoff.idHashSet.add((short) mID);
+        this.mID = (short) mID;
+        this.defaultName = defaultName;
+        GregTechAPI.sAfterGTPreload
+            .add(() -> GTLanguageManager.addStringLocalization(getLocalizedNameKey(), this.defaultName));
+        this.stats = stats;
+        this.type = type;
+        this.generationFeatures = generationFeatures;
+        this.setRgb(BWColorUtil.correctCorlorArray(rgba));
+        this.CONTENTS.addAll(contents);
+        this.toolTip = toolTip;
+        this.isFormulaNeededLocalized = formulaLocalized;
+        if (formulaLocalized) {
+            GTLanguageManager.addStringLocalization(getLocalizedNameKey() + ".ChemicalFormula", toolTip);
+        }
+        this.texSet = texSet;
+        this.mOreByProducts.addAll(oreByProducts);
+        this.SUBTAGS.addAll(subTags);
+        this.additionalOredict.addAll(additionalOredictNames);
+        Werkstoff.werkstoffHashSet.add(this);
+        Werkstoff.werkstoffHashMap.put(this.mID, this);
+        Werkstoff.werkstoffNameHashMap.put(this.defaultName, this);
+        Werkstoff.werkstoffVarNameHashMap.put(this.getVarName(), this);
+        this.owner = owner;
+    }
+
+    /// Registers an additional legacy id resolving to `werkstoff` -- used when two same-name werkstoffe
+    /// folded into one MaterialLib declaration (see `WerkstoffData#ids`); item damage lookups on either id
+    /// find the one reconstructed instance.
+    static void registerAdditionalId(Werkstoff werkstoff, int id) {
+        if (Werkstoff.idHashSet.contains((short) id))
+            throw new UnsupportedOperationException("ID (" + id + ") is already in use!");
+        Werkstoff.idHashSet.add((short) id);
+        Werkstoff.werkstoffHashMap.put((short) id, werkstoff);
+    }
+
     private static String getFormula(Materials material) {
         return material.getChemicalFormula()
             .isEmpty() ? "?" : material.getChemicalFormula();
@@ -494,6 +540,12 @@ public class Werkstoff implements IColorModulationContainer, IOreMaterial {
 
     public int getNoOfByProducts() {
         return this.mOreByProducts.size();
+    }
+
+    /// The mutable byproduct list, for [WerkstoffReconstruction] only: byproducts may self-reference
+    /// (padding), so reconstruction fills them after construction.
+    List<ISubTagContainer> getRawOreByProducts() {
+        return this.mOreByProducts;
     }
 
     public ISubTagContainer getOreByProductRaw(int aNumber) {
@@ -901,6 +953,12 @@ public class Werkstoff implements IColorModulationContainer, IOreMaterial {
             return this;
         }
 
+        /// Whether `p` was explicitly enabled via [#addPrefix] -- consulted by the stage-10 reconstruction's
+        /// generation-bit pass (see [WerkstoffReconstruction#applyGenerationBits]).
+        boolean isExplicitlyEnabled(OrePrefixes p) {
+            return this.enablePrefixes.contains(p);
+        }
+
         public Werkstoff.GenerationFeatures enforceUnification() {
             this.enforceUnification = true;
             return this;
@@ -1240,6 +1298,11 @@ public class Werkstoff implements IColorModulationContainer, IOreMaterial {
 
         public Werkstoff.Stats setProtons(long protons) {
             this.protons = protons;
+            return this;
+        }
+
+        public Werkstoff.Stats setNeutrons(long neutrons) {
+            this.neutrons = neutrons;
             return this;
         }
 

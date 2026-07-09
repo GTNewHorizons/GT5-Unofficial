@@ -7,10 +7,15 @@ dump, which can drift from it. Werkstoff-backed materials (stage 10) additionall
 union (`werkstoff.json` `generatedPrefixes`) and the composite `WERKSTOFF` property round-trip.
 
 Regenerate the dumps first (`runServer` with `-Dgt.dumpMaterialData=true`, then copy
-`run/server/material-dump/*.json` over `dumps/*.json`) before running this. EXCEPTION: `werkstoff.json` is a
-PINNED pre-stage-10 capture -- never overwrite it from a post-fold boot (see
-`MaterialDataDump#dumpWerkstoffGeneratedPrefixes`; bartworks' reroute loop shrinks `generatedPrefixes` toward
-whatever MaterialLib already serves, destroying the legacy-conditions ground truth).
+`run/server/material-dump/*.json` over `dumps/*.json`) before running this. EXCEPTIONS -- pinned pre-stage-10
+captures, never overwrite from a post-stage-10 boot:
+- `werkstoff.json`: bartworks' reroute loop shrinks `generatedPrefixes` toward whatever MaterialLib already
+  serves (see `MaterialDataDump#dumpWerkstoffGeneratedPrefixes`), and the reconstruction flip changed merged
+  werkstoffe's contested scalars to the gregtech-won values.
+- `fluid-textures.json`: werkstoff fluid texture capture happened at legacy `GTFluid` construction, which the
+  flip removed (reconstructed werkstoffe resolve MaterialLib's already-registered fluids instead).
+- `gt-materials.json`: post-flip dumps are semantically identical but reordered (bridge mirrors are created in
+  `werkstoffHashSet` iteration order, which the flip changed to ascending-id).
 
 Usage: python scripts/mu/check_parity.py
 Exit status is nonzero if any mismatch is found.
@@ -154,7 +159,9 @@ def load_legacy_constant_names():
         path = REPO_ROOT / rel
         if not path.exists():
             continue
-        names.update(_re.findall(r"Materials" + chr(92) + r".(" + chr(92) + r"w+) = ", path.read_text(encoding="utf-8")))
+        text = path.read_text(encoding="utf-8")
+        names.update(_re.findall(r'LegacyMaterials' + chr(92) + r'.stub' + chr(92) + r'("([^"]+)"' + chr(92) + r')', text))
+        names.update(_re.findall(r'setName' + chr(92) + r'("([^"]+)"' + chr(92) + r')', text))
     return names
 
 

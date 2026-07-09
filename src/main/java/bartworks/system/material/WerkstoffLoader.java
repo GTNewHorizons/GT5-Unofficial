@@ -13,8 +13,6 @@
 
 package bartworks.system.material;
 
-import static bartworks.util.BWUtil.subscriptNumbers;
-import static bartworks.util.BWUtil.superscriptNumbers;
 import static gregtech.api.enums.Mods.BetterLoadingScreen;
 import static gregtech.api.enums.OrePrefixes.block;
 import static gregtech.api.enums.OrePrefixes.bolt;
@@ -64,8 +62,6 @@ import static gregtech.api.enums.OrePrefixes.turbineBlade;
 import static gregtech.api.enums.OrePrefixes.wireFine;
 
 import java.lang.reflect.Field;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -78,7 +74,6 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 
-import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.Level;
 
 import com.google.common.collect.HashBiMap;
@@ -112,13 +107,10 @@ import bwcrossmod.cls.CLSCompat;
 import cpw.mods.fml.common.ProgressManager;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.Element;
 import gregtech.api.enums.FluidState;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
-import gregtech.api.enums.TextureSet;
-import gregtech.api.enums.TierEU;
 import gregtech.api.fluid.GTFluidFactory;
 import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.util.GTOreDictUnificator;
@@ -145,6 +137,7 @@ public class WerkstoffLoader {
 
     public static void setUp() {
         Werkstoff.GenerationFeatures.initPrefixLogic();
+        WerkstoffReconstruction.applyGenerationBits();
         BWGTMaterialReference.init();
     }
 
@@ -157,1461 +150,130 @@ public class WerkstoffLoader {
     // bot reserved range 29_899-29_999
     // Tec & basdxz reserved range 30_000-31_000
     // GT Material range reserved on 31_767-32_767
-    public static final Werkstoff Bismutite = new Werkstoff(
-        new short[] { 255, 233, 0, 0 },
-        "Bismutite",
-        Werkstoff.Types.COMPOUND,
-        new Werkstoff.GenerationFeatures().addGems(),
-        1,
-        TextureSet.SET_FLINT,
-        Collections.singletonList(Materials.Bismuth),
-        Pair.of(Materials.Bismuth, 2),
-        Pair.of(Materials.Oxygen, 2),
-        Pair.of(Materials.CarbonDioxide, 2));
-    public static final Werkstoff Bismuthinit = new Werkstoff(
-        new short[] { 192, 192, 192, 0 },
-        "Bismuthinite",
-        Werkstoff.Types.COMPOUND,
-        new Werkstoff.GenerationFeatures(),
-        2,
-        TextureSet.SET_METALLIC,
-        Arrays.asList(Materials.Bismuth, Materials.Sulfur),
-        Pair.of(Materials.Bismuth, 2),
-        Pair.of(Materials.Sulfur, 3));
-    public static final Werkstoff Zirconium = new Werkstoff(
-        new short[] { 175, 175, 175, 0 },
-        "Zirconium",
-        "Zr",
-        new Werkstoff.Stats().setProtons(40)
-            .setBlastFurnace(true)
-            .setMeltingPoint(2130)
-            .setMeltingVoltage(480),
-        Werkstoff.Types.ELEMENT,
-        new Werkstoff.GenerationFeatures().disable()
-            .onlyDust()
-            .addMetalItems()
-            .enforceUnification(),
-        3,
-        TextureSet.SET_METALLIC
-    // No Byproducts
-    );
-    public static final Werkstoff CubicZirconia = new Werkstoff(
-        new short[] { 255, 255, 255, 0 },
-        "Cubic Zirconia",
-        Werkstoff.Types.COMPOUND,
-        3273,
-        new Werkstoff.GenerationFeatures().onlyDust()
-            .addGems()
-            .enforceUnification(),
-        4,
-        TextureSet.SET_DIAMOND,
-        Collections.singletonList(WerkstoffLoader.Zirconium),
-        Pair.of(WerkstoffLoader.Zirconium, 1),
-        Pair.of(Materials.Oxygen, 2));
-    public static final Werkstoff FluorBuergerit = new Werkstoff(
-        new short[] { 0x20, 0x20, 0x20, 0 },
-        "Fluor-Buergerite",
-        subscriptNumbers("NaFe3Al6(Si6O18)(BO3)3O3F"),
-        new Werkstoff.Stats().setElektrolysis(false),
-        Werkstoff.Types.COMPOUND,
-        new Werkstoff.GenerationFeatures().addGems(),
-        5,
-        TextureSet.SET_RUBY,
-        Arrays.asList(Materials.Sodium, Materials.Boron, Materials.SiliconDioxide),
-        Pair.of(Materials.Sodium, 1),
-        Pair.of(Materials.Iron, 3),
-        Pair.of(Materials.Aluminium, 6),
-        Pair.of(Materials.Silicon, 6),
-        Pair.of(Materials.Boron, 3),
-        Pair.of(Materials.Oxygen, 30),
-        Pair.of(Materials.Fluorine, 1));
-    public static final Werkstoff YttriumOxide = new Werkstoff(
-        new short[] { 255, 255, 255, 0 },
-        "Yttrium Oxide",
-        Werkstoff.Types.COMPOUND,
-        new Werkstoff.GenerationFeatures().onlyDust()
-            .enforceUnification(), // No autoadd here to gate this material
-        // by hand
-        6,
-        TextureSet.SET_DULL,
-        Pair.of(Materials.Yttrium, 2),
-        Pair.of(Materials.Oxygen, 3));
-    public static final Werkstoff ChromoAluminoPovondrait = new Werkstoff(
-        new short[] { 0, 0x79, 0x6A, 0 },
-        "Chromo-Alumino-Povondraite",
-        subscriptNumbers("NaCr3(Al4Mg2)(Si6O18)(BO3)3(OH)3O"),
-        Werkstoff.Types.getDefaultStatForType(Werkstoff.Types.COMPOUND)
-            .setElektrolysis(false),
-        Werkstoff.Types.COMPOUND,
-        new Werkstoff.GenerationFeatures().addGems(),
-        7,
-        TextureSet.SET_RUBY,
-        Arrays.asList(Materials.Sodium, Materials.Boron, Materials.SiliconDioxide),
-        Pair.of(Materials.Sodium, 1),
-        Pair.of(Materials.Chrome, 3),
-        Pair.of(Materials.Magnalium, 6),
-        Pair.of(Materials.Silicon, 6),
-        Pair.of(Materials.Boron, 3),
-        Pair.of(Materials.Oxygen, 31),
-        Pair.of(Materials.Hydrogen, 3));
-    public static final Werkstoff VanadioOxyDravit = new Werkstoff(
-        new short[] { 0x60, 0xA0, 0xA0, 0 },
-        "Vanadio-Oxy-Dravite",
-        subscriptNumbers("NaV3(Al4Mg2)(Si6O18)(BO3)3(OH)3O"),
-        Werkstoff.Types.getDefaultStatForType(Werkstoff.Types.COMPOUND)
-            .setElektrolysis(false),
-        Werkstoff.Types.COMPOUND,
-        new Werkstoff.GenerationFeatures().addGems(),
-        8,
-        TextureSet.SET_RUBY,
-        Arrays.asList(Materials.Sodium, Materials.Boron, Materials.SiliconDioxide),
-        Pair.of(Materials.Sodium, 1),
-        Pair.of(Materials.Vanadium, 3),
-        Pair.of(Materials.Magnalium, 6),
-        Pair.of(Materials.Silicon, 6),
-        Pair.of(Materials.Boron, 3),
-        Pair.of(Materials.Oxygen, 31),
-        Pair.of(Materials.Hydrogen, 3));
-    public static final Werkstoff Olenit = new Werkstoff(
-        new short[] { 210, 210, 210, 0 },
-        "Olenite",
-        subscriptNumbers("NaAl3Al6(Si6O18)(BO3)3O3OH"),
-        Werkstoff.Types.getDefaultStatForType(Werkstoff.Types.COMPOUND)
-            .setElektrolysis(false),
-        Werkstoff.Types.COMPOUND,
-        new Werkstoff.GenerationFeatures().addGems(),
-        9,
-        TextureSet.SET_RUBY,
-        Arrays.asList(Materials.Sodium, Materials.Boron, Materials.SiliconDioxide),
-        Pair.of(Materials.Sodium, 1),
-        Pair.of(Materials.Aluminium, 9),
-        Pair.of(Materials.Silicon, 6),
-        Pair.of(Materials.Boron, 3),
-        Pair.of(Materials.Oxygen, 31),
-        Pair.of(Materials.Hydrogen, 1));
-    public static final Werkstoff Arsenopyrite = new Werkstoff(
-        new short[] { 0xB0, 0xB0, 0xB0, 0 },
-        "Arsenopyrite",
-        Werkstoff.Types.COMPOUND,
-        new Werkstoff.GenerationFeatures(),
-        10,
-        TextureSet.SET_METALLIC,
-        Arrays.asList(Materials.Sulfur, Materials.Arsenic, Materials.Iron),
-        Pair.of(Materials.Iron, 1),
-        Pair.of(Materials.Arsenic, 1),
-        Pair.of(Materials.Sulfur, 1));
-    public static final Werkstoff Ferberite = new Werkstoff(
-        new short[] { 0xB0, 0xB0, 0xB0, 0 },
-        "Ferberite",
-        Werkstoff.Types.getDefaultStatForType(Werkstoff.Types.COMPOUND)
-            .setElektrolysis(false),
-        Werkstoff.Types.COMPOUND,
-        new Werkstoff.GenerationFeatures(),
-        11,
-        TextureSet.SET_METALLIC,
-        Arrays.asList(Materials.Iron, Materials.Tungsten),
-        Pair.of(Materials.Iron, 1),
-        Pair.of(Materials.Tungsten, 1),
-        Pair.of(Materials.Oxygen, 3));
-    public static final Werkstoff Loellingit = new Werkstoff(
-        new short[] { 0xD0, 0xD0, 0xD0, 0 },
-        "Loellingite",
-        Werkstoff.Types.COMPOUND,
-        new Werkstoff.GenerationFeatures(),
-        12,
-        TextureSet.SET_METALLIC,
-        Arrays.asList(Materials.Iron, Materials.Arsenic),
-        Pair.of(Materials.Iron, 1),
-        Pair.of(Materials.Arsenic, 2));
-    public static final Werkstoff Roquesit = new Werkstoff(
-        new short[] { 0xA0, 0xA0, 0xA0, 0 },
-        "Roquesite",
-        Werkstoff.Types.COMPOUND,
-        new Werkstoff.GenerationFeatures(),
-        13,
-        TextureSet.SET_METALLIC,
-        Arrays.asList(Materials.Copper, Materials.Sulfur),
-        Pair.of(Materials.Copper, 1),
-        Pair.of(Materials.Indium, 1),
-        Pair.of(Materials.Sulfur, 2));
-    public static final Werkstoff Bornite = new Werkstoff(
-        new short[] { 0x97, 0x66, 0x2B, 0 },
-        "Bornite",
-        Werkstoff.Types.COMPOUND,
-        new Werkstoff.GenerationFeatures(),
-        14,
-        TextureSet.SET_METALLIC,
-        Arrays.asList(Materials.Copper, Materials.Iron, Materials.Sulfur),
-        Pair.of(Materials.Copper, 5),
-        Pair.of(Materials.Iron, 1),
-        Pair.of(Materials.Sulfur, 4));
-    public static final Werkstoff Wittichenit = new Werkstoff(
-        Materials.Copper.mRGBa,
-        "Wittichenite",
-        Werkstoff.Types.COMPOUND,
-        new Werkstoff.GenerationFeatures(),
-        15,
-        TextureSet.SET_METALLIC,
-        Arrays.asList(Materials.Copper, Materials.Bismuth, Materials.Sulfur),
-        Pair.of(Materials.Copper, 5),
-        Pair.of(Materials.Bismuth, 1),
-        Pair.of(Materials.Sulfur, 4));
-    public static final Werkstoff Djurleit = new Werkstoff(
-        new short[] { 0x60, 0x60, 0x60, 0 },
-        "Djurleite",
-        Werkstoff.Types.COMPOUND,
-        new Werkstoff.GenerationFeatures(),
-        16,
-        TextureSet.SET_METALLIC,
-        Arrays.asList(Materials.Copper, Materials.Copper, Materials.Sulfur),
-        Pair.of(Materials.Copper, 31),
-        Pair.of(Materials.Sulfur, 16));
-    public static final Werkstoff Huebnerit = new Werkstoff(
-        new short[] { 0x80, 0x60, 0x60, 0 },
-        "Huebnerite",
-        Werkstoff.Types.getDefaultStatForType(Werkstoff.Types.COMPOUND)
-            .setElektrolysis(false),
-        Werkstoff.Types.COMPOUND,
-        new Werkstoff.GenerationFeatures(),
-        17,
-        TextureSet.SET_METALLIC,
-        Arrays.asList(Materials.Manganese, Materials.Tungsten),
-        Pair.of(Materials.Manganese, 1),
-        Pair.of(Materials.Tungsten, 1),
-        Pair.of(Materials.Oxygen, 3));
-    public static final Werkstoff Thorianit = new Werkstoff(
-        new short[] { 0x30, 0x30, 0x30, 0 },
-        "Thorianite",
-        new Werkstoff.Stats().setElektrolysis(true),
-        Werkstoff.Types.COMPOUND,
-        new Werkstoff.GenerationFeatures(),
-        18,
-        TextureSet.SET_METALLIC,
-        Collections.singletonList(Materials.Thorium),
-        Pair.of(Materials.Thorium, 1),
-        Pair.of(Materials.Oxygen, 2));
-    public static final Werkstoff RedZircon = new Werkstoff(
-        new short[] { 195, 19, 19, 0 },
-        "Red Zircon",
-        new Werkstoff.Stats().setElektrolysis(false)
-            .setMeltingPoint(2130),
-        Werkstoff.Types.COMPOUND,
-        new Werkstoff.GenerationFeatures().addGems(),
-        19,
-        TextureSet.SET_GEM_VERTICAL,
-        Arrays.asList(WerkstoffLoader.Zirconium, Materials.SiliconDioxide),
-        Pair.of(WerkstoffLoader.Zirconium, 1),
-        Pair.of(Materials.Silicon, 1),
-        Pair.of(Materials.Oxygen, 4));
+    public static final Werkstoff Bismutite = WerkstoffReconstruction.byId(1);
+    public static final Werkstoff Bismuthinit = WerkstoffReconstruction.byId(2);
+    public static final Werkstoff Zirconium = WerkstoffReconstruction.byId(3);
+    public static final Werkstoff CubicZirconia = WerkstoffReconstruction.byId(4);
+    public static final Werkstoff FluorBuergerit = WerkstoffReconstruction.byId(5);
+    public static final Werkstoff YttriumOxide = WerkstoffReconstruction.byId(6);
+    public static final Werkstoff ChromoAluminoPovondrait = WerkstoffReconstruction.byId(7);
+    public static final Werkstoff VanadioOxyDravit = WerkstoffReconstruction.byId(8);
+    public static final Werkstoff Olenit = WerkstoffReconstruction.byId(9);
+    public static final Werkstoff Arsenopyrite = WerkstoffReconstruction.byId(10);
+    public static final Werkstoff Ferberite = WerkstoffReconstruction.byId(11);
+    public static final Werkstoff Loellingit = WerkstoffReconstruction.byId(12);
+    public static final Werkstoff Roquesit = WerkstoffReconstruction.byId(13);
+    public static final Werkstoff Bornite = WerkstoffReconstruction.byId(14);
+    public static final Werkstoff Wittichenit = WerkstoffReconstruction.byId(15);
+    public static final Werkstoff Djurleit = WerkstoffReconstruction.byId(16);
+    public static final Werkstoff Huebnerit = WerkstoffReconstruction.byId(17);
+    public static final Werkstoff Thorianit = WerkstoffReconstruction.byId(18);
+    public static final Werkstoff RedZircon = WerkstoffReconstruction.byId(19);
 
     // GT Enhancements
-    public static final Werkstoff Salt = new Werkstoff(
-        Materials.Salt.mRGBa,
-        "Salt",
-        new Werkstoff.Stats(),
-        Werkstoff.Types.COMPOUND,
-        new Werkstoff.GenerationFeatures().disable()
-            .addGems()
-            .addSifterRecipes(),
-        20,
-        TextureSet.SET_FLINT,
-        Arrays.asList(Materials.RockSalt, Materials.Borax),
-        Pair.of(Materials.Salt, 1));
-    public static final Werkstoff Spodumen = new Werkstoff(
-        Materials.Spodumene.mRGBa,
-        "Spodumene",
-        new Werkstoff.Stats(),
-        Werkstoff.Types.COMPOUND,
-        new Werkstoff.GenerationFeatures().disable()
-            .addGems()
-            .addSifterRecipes(),
-        21,
-        TextureSet.SET_FLINT,
-        Collections.singletonList(Materials.Spodumene),
-        Pair.of(Materials.Spodumene, 1));
-    public static final Werkstoff RockSalt = new Werkstoff(
-        Materials.RockSalt.mRGBa,
-        "Rock Salt",
-        new Werkstoff.Stats(),
-        Werkstoff.Types.COMPOUND,
-        new Werkstoff.GenerationFeatures().disable()
-            .addGems()
-            .addSifterRecipes(),
-        22,
-        TextureSet.SET_FLINT,
-        Arrays.asList(Materials.RockSalt, Materials.Borax),
-        Pair.of(Materials.RockSalt, 1));
+    public static final Werkstoff Salt = WerkstoffReconstruction.byId(20);
+    public static final Werkstoff Spodumen = WerkstoffReconstruction.byId(21);
+    public static final Werkstoff RockSalt = WerkstoffReconstruction.byId(22);
 
     // More NonGT Stuff
-    public static final Werkstoff Fayalit = new Werkstoff(
-        new short[] { 50, 50, 50, 0 },
-        "Fayalite",
-        new Werkstoff.Stats().setElektrolysis(false),
-        Werkstoff.Types.COMPOUND,
-        new Werkstoff.GenerationFeatures().addGems(),
-        23,
-        TextureSet.SET_QUARTZ,
-        Arrays.asList(Materials.Iron, Materials.SiliconDioxide),
-        Pair.of(Materials.Iron, 2),
-        Pair.of(Materials.Silicon, 1),
-        Pair.of(Materials.Oxygen, 4));
-    public static final Werkstoff Forsterit = new Werkstoff(
-        new short[] { 255, 255, 255, 0 },
-        "Forsterite",
-        new Werkstoff.Stats().setElektrolysis(false),
-        Werkstoff.Types.COMPOUND,
-        new Werkstoff.GenerationFeatures().addGems(),
-        24,
-        TextureSet.SET_QUARTZ,
-        Arrays.asList(Materials.Magnesium, Materials.SiliconDioxide),
-        Pair.of(Materials.Magnesium, 2),
-        Pair.of(Materials.Silicon, 1),
-        Pair.of(Materials.Oxygen, 4));
-    public static final Werkstoff Hedenbergit = new Werkstoff(
-        new short[] { 100, 150, 100, 0 },
-        "Hedenbergite",
-        new Werkstoff.Stats().setElektrolysis(false),
-        Werkstoff.Types.COMPOUND,
-        new Werkstoff.GenerationFeatures().addGems(),
-        25,
-        TextureSet.SET_QUARTZ,
-        Arrays.asList(Materials.Iron, Materials.Calcium, Materials.SiliconDioxide),
-        Pair.of(Materials.Calcium, 1),
-        Pair.of(Materials.Iron, 1),
-        Pair.of(Materials.Silicon, 2),
-        Pair.of(Materials.Oxygen, 6));
-    public static final Werkstoff DescloiziteZNVO4 = new Werkstoff(
-        new short[] { 0xBF, 0x18, 0x0F, 0 },
-        "Red Descloizite", // Pb(Zn,Cu)[OH|VO4
-        new Werkstoff.Stats().setElektrolysis(true),
-        Werkstoff.Types.COMPOUND,
-        new Werkstoff.GenerationFeatures(),
-        26,
-        TextureSet.SET_QUARTZ,
-        Arrays.asList(Materials.Lead, Materials.Copper, Materials.Vanadium),
-        Pair.of(Materials.Lead, 1),
-        Pair.of(Materials.Zinc, 1),
-        Pair.of(Materials.Vanadium, 1),
-        Pair.of(Materials.Oxygen, 4));
-    public static final Werkstoff DescloiziteCUVO4 = new Werkstoff(
-        new short[] { 0xf9, 0x6d, 0x18, 0 },
-        "Orange Descloizite", // Pb(Zn,Cu)[OH|VO4
-        new Werkstoff.Stats().setElektrolysis(true),
-        Werkstoff.Types.COMPOUND,
-        new Werkstoff.GenerationFeatures(),
-        27,
-        TextureSet.SET_QUARTZ,
-        Arrays.asList(Materials.Lead, Materials.Zinc, Materials.Vanadium),
-        Pair.of(Materials.Lead, 1),
-        Pair.of(Materials.Copper, 1),
-        Pair.of(Materials.Vanadium, 1),
-        Pair.of(Materials.Oxygen, 4));
-    public static final Werkstoff FuchsitAL = new Werkstoff(
-        new short[] { 0x4D, 0x7F, 0x64, 0 },
-        "Green Fuchsite",
-        subscriptNumbers("KAl3Si3O10(OH)2"),
-        new Werkstoff.Stats().setElektrolysis(false),
-        Werkstoff.Types.COMPOUND,
-        new Werkstoff.GenerationFeatures(),
-        28,
-        TextureSet.SET_METALLIC,
-        Arrays.asList(Materials.Potassium, Materials.Aluminiumoxide, Materials.SiliconDioxide),
-        Pair.of(Materials.Potassium, 1),
-        Pair.of(Materials.Aluminium, 3),
-        Pair.of(Materials.Silicon, 3),
-        Pair.of(Materials.Oxygen, 12),
-        Pair.of(Materials.Hydrogen, 2));
+    public static final Werkstoff Fayalit = WerkstoffReconstruction.byId(23);
+    public static final Werkstoff Forsterit = WerkstoffReconstruction.byId(24);
+    public static final Werkstoff Hedenbergit = WerkstoffReconstruction.byId(25);
+    public static final Werkstoff DescloiziteZNVO4 = WerkstoffReconstruction.byId(26);
+    public static final Werkstoff DescloiziteCUVO4 = WerkstoffReconstruction.byId(27);
+    public static final Werkstoff FuchsitAL = WerkstoffReconstruction.byId(28);
 
-    public static final Werkstoff FuchsitCR = new Werkstoff(
-        new short[] { 128, 0, 0, 0 },
-        "Red Fuchsite",
-        subscriptNumbers("KCr3Si3O10(OH)2"),
-        new Werkstoff.Stats().setElektrolysis(false),
-        Werkstoff.Types.COMPOUND,
-        new Werkstoff.GenerationFeatures(),
-        29,
-        TextureSet.SET_METALLIC,
-        Arrays.asList(Materials.Potassium, Materials.Chrome, Materials.SiliconDioxide),
-        Pair.of(Materials.Potassium, 1),
-        Pair.of(Materials.Chrome, 3),
-        Pair.of(Materials.Silicon, 3),
-        Pair.of(Materials.Oxygen, 12),
-        Pair.of(Materials.Hydrogen, 2));
+    public static final Werkstoff FuchsitCR = WerkstoffReconstruction.byId(29);
 
-    public static final Werkstoff Thorium232 = new Werkstoff(
-        new short[] { 0, 64, 0, 0 },
-        "Thorium 232",
-        superscriptNumbers("232Th"),
-        new Werkstoff.Stats().setRadioactive(true)
-            .setBlastFurnace(true)
-            .setMass(232)
-            .setProtons(Element.Th.mProtons),
-        Werkstoff.Types.ISOTOPE,
-        new Werkstoff.GenerationFeatures().disable()
-            .onlyDust()
-            .addMetalItems()
-            .enforceUnification(),
-        30,
-        TextureSet.SET_METALLIC
-    // No Byproducts
-    );
-    public static final Werkstoff BismuthTellurite = new Werkstoff(
-        new short[] { 32, 72, 32, 0 },
-        // Telluride is correct, tellurite is not.
-        // Only the display name gets renamed to avoid problems in other mods
-        "Bismuth Telluride",
-        new Werkstoff.Stats().setElektrolysis(true),
-        Werkstoff.Types.COMPOUND,
-        new Werkstoff.GenerationFeatures().disable()
-            .onlyDust()
-            .addChemicalRecipes(),
-        31,
-        TextureSet.SET_METALLIC,
-        // No Byproducts
-        Pair.of(Materials.Bismuth, 2),
-        Pair.of(Materials.Tellurium, 3));
-    public static final Werkstoff Tellurium = new Werkstoff(
-        new short[] { 0xff, 0xff, 0xff, 0 },
-        "Tellurium",
-        new Werkstoff.Stats(),
-        Werkstoff.Types.ELEMENT,
-        new Werkstoff.GenerationFeatures().addMetalItems()
-            .removePrefix(ore),
-        32,
-        TextureSet.SET_METALLIC,
-        // No Byproducts
-        Pair.of(Materials.Tellurium, 1));
-    public static final Werkstoff BismuthHydroBorat = new Werkstoff(
-        new short[] { 72, 144, 72, 0 },
-        "Dibismuthhydroborat",
-        new Werkstoff.Stats().setElektrolysis(true),
-        Werkstoff.Types.COMPOUND,
-        new Werkstoff.GenerationFeatures().disable()
-            .onlyDust()
-            .addChemicalRecipes(),
-        33,
-        TextureSet.SET_METALLIC,
-        // No Byproducts
-        Pair.of(Materials.Bismuth, 2),
-        Pair.of(Materials.Boron, 1),
-        Pair.of(Materials.Hydrogen, 1));
-    public static final Werkstoff ArInGaPhoBiBoTe = new Werkstoff(
-        new short[] { 36, 36, 36, 0 },
-        "Circuit Compound MK3",
-        new Werkstoff.Stats().setCentrifuge(true),
-        Werkstoff.Types.COMPOUND,
-        new Werkstoff.GenerationFeatures().disable()
-            .onlyDust()
-            .addMixerRecipes(),
-        34,
-        TextureSet.SET_METALLIC,
-        // No Byproducts
-        Pair.of(Materials.IndiumGalliumPhosphide, 1),
-        Pair.of(WerkstoffLoader.BismuthHydroBorat, 3),
-        Pair.of(WerkstoffLoader.BismuthTellurite, 2));
+    public static final Werkstoff Thorium232 = WerkstoffReconstruction.byId(30);
+    public static final Werkstoff BismuthTellurite = WerkstoffReconstruction.byId(31);
+    public static final Werkstoff Tellurium = WerkstoffReconstruction.byId(32);
+    public static final Werkstoff BismuthHydroBorat = WerkstoffReconstruction.byId(33);
+    public static final Werkstoff ArInGaPhoBiBoTe = WerkstoffReconstruction.byId(34);
 
-    public static final Werkstoff Prasiolite = new Werkstoff(
-        new short[] { 0xD0, 0xDD, 0x95, 0 },
-        "Prasiolite",
-        new Werkstoff.Stats().setElektrolysis(false)
-            .setMeltingPoint(1923),
-        Werkstoff.Types.COMPOUND,
-        new Werkstoff.GenerationFeatures().addGems(),
-        35,
-        TextureSet.SET_QUARTZ,
-        // No Byproducts
-        Pair.of(Materials.Silicon, 5),
-        Pair.of(Materials.Oxygen, 10),
-        Pair.of(Materials.Iron, 1));
+    public static final Werkstoff Prasiolite = WerkstoffReconstruction.byId(35);
 
-    public static final Werkstoff MagnetoResonaticDust = new Werkstoff(
-        new short[] { 0xDD, 0x77, 0xDD, 0 },
-        "Magneto Resonatic",
-        new Werkstoff.Stats().setElektrolysis(true),
-        Werkstoff.Types.COMPOUND,
-        new Werkstoff.GenerationFeatures().onlyDust()
-            .addMixerRecipes()
-            .addGems(),
-        36,
-        TextureSet.SET_MAGNETIC,
-        // No Byproducts
-        Pair.of(WerkstoffLoader.Prasiolite, 3),
-        Pair.of(WerkstoffLoader.BismuthTellurite, 4),
-        Pair.of(WerkstoffLoader.CubicZirconia, 1),
-        Pair.of(Materials.SteelMagnetic, 1));
-    public static final Werkstoff Xenon = new Werkstoff(
-        new short[] { 0x14, 0x39, 0x7F, 0 },
-        "Xenon",
-        "Xe",
-        new Werkstoff.Stats().setProtons(54)
-            .setMass(131)
-            .setGas(true)
-            .setEbfGasRecipeTimeMultiplier(0.4d)
-            .setEbfGasRecipeConsumedAmountMultiplier(0.25d),
-        Werkstoff.Types.ELEMENT,
-        new Werkstoff.GenerationFeatures().disable()
-            .addCells()
-            .enforceUnification(),
-        37,
-        TextureSet.SET_FLUID
-    // No Byproducts
-    // No Ingredients
-    );
-    public static final Werkstoff Oganesson = new Werkstoff(
-        new short[] { 0x14, 0x39, 0x7F, 0 },
-        "Oganesson",
-        "Og",
-        new Werkstoff.Stats().setProtons(118)
-            .setMass(294)
-            .setGas(true)
-            .setEbfGasRecipeTimeMultiplier(0.3d)
-            .setEbfGasRecipeConsumedAmountMultiplier(0.1d),
-        Werkstoff.Types.ELEMENT,
-        new Werkstoff.GenerationFeatures().disable()
-            .addCells(),
-        38,
-        TextureSet.SET_FLUID
-    // No Byproducts
-    // No Ingredients
-    );
-    public static final Werkstoff Californium = new Werkstoff(
-        new short[] { 0xAA, 0xAA, 0xAA, 0 },
-        "Californium",
-        "Cf",
-        new Werkstoff.Stats().setProtons(98)
-            .setMass(251)
-            .setBlastFurnace(true)
-            .setMeltingPoint(900),
-        Werkstoff.Types.ELEMENT,
-        new Werkstoff.GenerationFeatures().disable()
-            .onlyDust()
-            .addMetalItems()
-            .addMolten()
-            .addMetalCraftingSolidifierRecipes()
-            .enforceUnification(),
-        39,
-        TextureSet.SET_METALLIC
-    // No Byproducts
-    // No Ingredients
-    );
-    public static final Werkstoff Calcium = new Werkstoff(
-        Materials.Calcium.mRGBa,
-        "Calcium",
-        "Ca",
-        new Werkstoff.Stats().setProtons(Element.Ca.mProtons)
-            .setMass(Element.Ca.getMass())
-            .setBlastFurnace(true)
-            .setMeltingPoint(1115)
-            .setBoilingPoint(1757),
-        Werkstoff.Types.ELEMENT,
-        new Werkstoff.GenerationFeatures().disable()
-            .onlyDust()
-            .addMetalItems()
-            .addMolten(),
-        40,
-        Materials.Calcium.mIconSet,
-        // No Byproducts
-        Pair.of(Materials.Calcium, 1));
-    public static final Werkstoff Neon = new Werkstoff(
-        new short[] { 0xff, 0x07, 0x3a },
-        "Neon",
-        "Ne",
-        new Werkstoff.Stats().setProtons(Element.Ne.mProtons)
-            .setMass(Element.Ne.getMass())
-            .setGas(true)
-            .setEbfGasRecipeTimeMultiplier(0.6d)
-            .setEbfGasRecipeConsumedAmountMultiplier(0.55d),
-        Werkstoff.Types.ELEMENT,
-        new Werkstoff.GenerationFeatures().disable()
-            .addCells()
-            .enforceUnification(),
-        41,
-        TextureSet.SET_FLUID
-    // No Byproducts
-    // No Ingredients
-    );
-    public static final Werkstoff Krypton = new Werkstoff(
-        new short[] { 0xb1, 0xff, 0x32 },
-        "Krypton",
-        "Kr",
-        new Werkstoff.Stats().setProtons(Element.Kr.mProtons)
-            .setMass(Element.Kr.getMass())
-            .setGas(true)
-            .setEbfGasRecipeTimeMultiplier(0.5d)
-            .setEbfGasRecipeConsumedAmountMultiplier(0.4d),
-        Werkstoff.Types.ELEMENT,
-        new Werkstoff.GenerationFeatures().disable()
-            .addCells()
-            .enforceUnification(),
-        42,
-        TextureSet.SET_FLUID
-    // No Byproducts
-    // No Ingredients
-    );
-    public static final Werkstoff BArTiMaEuSNeK = new Werkstoff(
-        new short[] { 0x00, 0xff, 0x00 },
-        "BArTiMaEuSNeK",
-        "Are you serious?",
-        new Werkstoff.Stats().setMeltingPoint(9001)
-            .setCentrifuge(true)
-            .setBlastFurnace(true)
-            .setMeltingVoltage(1920),
-        Werkstoff.Types.COMPOUND,
-        new Werkstoff.GenerationFeatures().addGems()
-            .addMetalItems()
-            .addMolten(),
-        43,
-        TextureSet.SET_DIAMOND,
-        Arrays.asList(Materials.Boron, Materials.Titanium, Materials.Europium),
-        Pair.of(Materials.Boron, 1),
-        Pair.of(Materials.Argon, 1),
-        Pair.of(Materials.Titanium, 1),
-        Pair.of(Materials.Magic, 1),
-        Pair.of(Materials.Europium, 1),
-        Pair.of(Materials.Sulfur, 1),
-        Pair.of(WerkstoffLoader.Neon, 1),
-        Pair.of(Materials.Potassium, 1));
-    public static final Werkstoff PTConcentrate = new Werkstoff(
-        Materials.Platinum.getRGBA(),
-        "Platinum Concentrate",
-        subscriptNumbers("Pt?Pd?") + "??",
-        new Werkstoff.Stats(),
-        Werkstoff.Types.MIXTURE,
-        new Werkstoff.GenerationFeatures().disable()
-            .addCells(),
-        44,
-        TextureSet.SET_FLUID
-    // No Byproducts
-    // No Ingredients
-    );
-    public static final Werkstoff PTSaltCrude = new Werkstoff(
-        Materials.Platinum.getRGBA(),
-        "Platinum Salt",
-        subscriptNumbers("Pt?") + "??",
-        new Werkstoff.Stats(),
-        Werkstoff.Types.MIXTURE,
-        new Werkstoff.GenerationFeatures().disable()
-            .onlyDust(),
-        45,
-        TextureSet.SET_DULL
-    // No Byproducts
-    // No Ingredients
-    );
-    public static final Werkstoff PTSaltRefined = new Werkstoff(
-        Materials.Platinum.getRGBA(),
-        "Refined Platinum Salt",
-        subscriptNumbers("Pt?") + "??",
-        new Werkstoff.Stats(),
-        Werkstoff.Types.MIXTURE,
-        new Werkstoff.GenerationFeatures().disable()
-            .onlyDust(),
-        46,
-        TextureSet.SET_METALLIC
-    // No Byproducts
-    // No Ingredients
-    );
-    public static final Werkstoff PTMetallicPowder = new Werkstoff(
-        Materials.Platinum.getRGBA(),
-        "Platinum Metallic Powder",
-        subscriptNumbers("Pt?Pd?Ir?Os?Rh?Ru?") + "??",
-        new Werkstoff.Stats(),
-        Werkstoff.Types.MIXTURE,
-        new Werkstoff.GenerationFeatures(),
-        47,
-        TextureSet.SET_METALLIC,
-        // No Byproducts
-        Pair.of(Materials.Platinum, 1),
-        Pair.of(Materials.Stone, 2));
+    public static final Werkstoff MagnetoResonaticDust = WerkstoffReconstruction.byId(36);
+    public static final Werkstoff Xenon = WerkstoffReconstruction.byId(37);
+    public static final Werkstoff Oganesson = WerkstoffReconstruction.byId(38);
+    public static final Werkstoff Californium = WerkstoffReconstruction.byId(39);
+    public static final Werkstoff Calcium = WerkstoffReconstruction.byId(40);
+    public static final Werkstoff Neon = WerkstoffReconstruction.byId(41);
+    public static final Werkstoff Krypton = WerkstoffReconstruction.byId(42);
+    public static final Werkstoff BArTiMaEuSNeK = WerkstoffReconstruction.byId(43);
+    public static final Werkstoff PTConcentrate = WerkstoffReconstruction.byId(44);
+    public static final Werkstoff PTSaltCrude = WerkstoffReconstruction.byId(45);
+    public static final Werkstoff PTSaltRefined = WerkstoffReconstruction.byId(46);
+    public static final Werkstoff PTMetallicPowder = WerkstoffReconstruction.byId(47);
     // TODO: If there is a moment where we are happy with breaking everyone's platline, change Aqua Regia recipes to
     // satisfy Chem
     // TODO: Balance with formula (HCl)3(HNO3) and then add the correct formula to the material
-    public static final Werkstoff AquaRegia = new Werkstoff(
-        new short[] { 0xff, 0xb1, 0x32 },
-        "Aqua Regia",
-        new Werkstoff.Stats(),
-        Werkstoff.Types.MIXTURE,
-        new Werkstoff.GenerationFeatures().disable()
-            .addCells(),
-        48,
-        TextureSet.SET_FLUID);
-    public static final Werkstoff PTResidue = new Werkstoff(
-        new short[] { 0x64, 0x63, 0x2E },
-        "Platinum Residue",
-        subscriptNumbers("Ir?Os?Rh?Ru?") + "??",
-        new Werkstoff.Stats(),
-        Werkstoff.Types.MIXTURE,
-        new Werkstoff.GenerationFeatures().disable()
-            .onlyDust(),
-        49,
-        TextureSet.SET_ROUGH
-    // No Byproducts
-    );
-    public static final Werkstoff AmmoniumChloride = new Werkstoff(
-        new short[] { 0xff, 0xff, 0xff },
-        "Ammonium Chloride",
-        subscriptNumbers("NH4Cl"),
-        new Werkstoff.Stats(),
-        Werkstoff.Types.COMPOUND,
-        new Werkstoff.GenerationFeatures().disable()
-            .addCells(),
-        50,
-        TextureSet.SET_FLUID,
-        // No Byproducts
-        Pair.of(Materials.Ammonium, 1),
-        Pair.of(Materials.HydrochloricAcid, 1));
-    public static final Werkstoff PTRawPowder = new Werkstoff(
-        Materials.Platinum.getRGBA(),
-        "Reprecipitated Platinum",
-        "PtCl",
-        new Werkstoff.Stats(),
-        Werkstoff.Types.MIXTURE,
-        new Werkstoff.GenerationFeatures().disable()
-            .onlyDust(),
-        51,
-        TextureSet.SET_METALLIC
-    // No Byproducts
-    );
-    public static final Werkstoff PDAmmonia = new Werkstoff(
-        Materials.Palladium.getRGBA(),
-        "Palladium Enriched Ammonia",
-        subscriptNumbers("Pd?") + "??",
-        new Werkstoff.Stats(),
-        Werkstoff.Types.MIXTURE,
-        new Werkstoff.GenerationFeatures().disable()
-            .addCells(),
-        52,
-        TextureSet.SET_FLUID,
-        // No Byproducts
-        Pair.of(Materials.Ammonium, 1),
-        Pair.of(Materials.Palladium, 1));
-    public static final Werkstoff PDMetallicPowder = new Werkstoff(
-        Materials.Palladium.getRGBA(),
-        "Palladium Metallic Powder",
-        subscriptNumbers("Pd?") + "??",
-        new Werkstoff.Stats(),
-        Werkstoff.Types.MIXTURE,
-        new Werkstoff.GenerationFeatures(),
-        53,
-        TextureSet.SET_METALLIC,
-        // No Byproducts
-        Pair.of(Materials.Palladium, 1),
-        Pair.of(Materials.Stone, 2));
-    public static final Werkstoff PDRawPowder = new Werkstoff(
-        Materials.Palladium.getRGBA(),
-        "Reprecipitated Palladium",
-        subscriptNumbers("Pd?") + "??",
-        new Werkstoff.Stats(),
-        Werkstoff.Types.MIXTURE,
-        new Werkstoff.GenerationFeatures().disable()
-            .onlyDust(),
-        54,
-        TextureSet.SET_METALLIC
-    // No Byproducts
-    // No Ingredients
-    );
-    public static final Werkstoff PDSalt = new Werkstoff(
-        Materials.Palladium.getRGBA(),
-        "Palladium Salt",
-        subscriptNumbers("Pd?") + "??",
-        new Werkstoff.Stats(),
-        Werkstoff.Types.MIXTURE,
-        new Werkstoff.GenerationFeatures().disable()
-            .onlyDust(),
-        55,
-        TextureSet.SET_METALLIC
-    // No Byproducts
-    // No Ingredients
-    );
-    public static final Werkstoff Sodiumformate = new Werkstoff(
-        new short[] { 0xff, 0xaa, 0xaa },
-        "Sodium Formate",
-        "HCOONa",
-        new Werkstoff.Stats(),
-        Werkstoff.Types.COMPOUND,
-        new Werkstoff.GenerationFeatures().disable()
-            .addCells(),
-        56,
-        TextureSet.SET_FLUID,
-        // No Byproducts
-        Pair.of(Materials.SodiumHydroxide, 1),
-        Pair.of(Materials.CarbonMonoxide, 1));
-    public static final Werkstoff Sodiumsulfate = new Werkstoff(
-        new short[] { 0xff, 0xff, 0xff },
-        "Sodium Sulfate",
-        new Werkstoff.Stats().setElektrolysis(true),
-        Werkstoff.Types.COMPOUND,
-        new Werkstoff.GenerationFeatures().disable()
-            .onlyDust(),
-        57,
-        TextureSet.SET_FLUID,
-        // No Byproducts
-        Pair.of(Materials.Sodium, 2),
-        Pair.of(Materials.Sulfur, 1),
-        Pair.of(Materials.Oxygen, 4));
-    public static final Werkstoff FormicAcid = new Werkstoff(
-        new short[] { 0xff, 0xaa, 0x77 },
-        "Formic Acid",
-        subscriptNumbers("CH2O2"),
-        new Werkstoff.Stats().setElektrolysis(false),
-        Werkstoff.Types.COMPOUND,
-        new Werkstoff.GenerationFeatures().disable()
-            .addCells(),
-        58,
-        TextureSet.SET_FLUID,
-        // No Byproducts
-        Pair.of(Materials.Carbon, 1),
-        Pair.of(Materials.Hydrogen, 2),
-        Pair.of(Materials.Oxygen, 2));
-    public static final Werkstoff PotassiumDisulfate = new Werkstoff(
-        new short[] { 0xfb, 0xbb, 0x66 },
-        "Potassium Disulfate",
-        new Werkstoff.Stats().setElektrolysis(true),
-        Werkstoff.Types.COMPOUND,
-        new Werkstoff.GenerationFeatures().disable()
-            .onlyDust()
-            .addMolten()
-            .addChemicalRecipes(),
-        59,
-        TextureSet.SET_DULL,
-        // No Byproducts
-        Pair.of(Materials.Potassium, 2),
-        Pair.of(Materials.Sulfur, 2),
-        Pair.of(Materials.Oxygen, 7));
-    public static final Werkstoff LeachResidue = new Werkstoff(
-        new short[] { 0x64, 0x46, 0x29 },
-        "Leach Residue",
-        subscriptNumbers("Is?Os?Ru?") + "??",
-        new Werkstoff.Stats(),
-        Werkstoff.Types.MIXTURE,
-        new Werkstoff.GenerationFeatures(),
-        60,
-        TextureSet.SET_ROUGH
-    // No Byproducts
-    );
-    public static final Werkstoff RHSulfate = new Werkstoff(
-        new short[] { 0xee, 0xaa, 0x55 },
-        "Rhodium Sulfate",
-        subscriptNumbers("Rh?K?S?O?") + "??",
-        new Werkstoff.Stats().setGas(true),
-        Werkstoff.Types.COMPOUND,
-        new Werkstoff.GenerationFeatures().disable()
-            .addCells(),
-        61,
-        TextureSet.SET_FLUID
-    // No Byproducts
-    );
-    public static final Werkstoff RHSulfateSolution = new Werkstoff(
-        new short[] { 0xff, 0xbb, 0x66 },
-        "Rhodium Sulfate Solution",
-        subscriptNumbers("Rh?S?O?") + "??",
-        new Werkstoff.Stats(),
-        Werkstoff.Types.MIXTURE,
-        new Werkstoff.GenerationFeatures().disable()
-            .addCells(),
-        62,
-        TextureSet.SET_FLUID
-    // No Byproducts
-    );
-    public static final Werkstoff CalciumChloride = new Werkstoff(
-        new short[] { 0xff, 0xff, 0xff },
-        "Calcium Chloride",
-        new Werkstoff.Stats().setElektrolysis(true),
-        Werkstoff.Types.COMPOUND,
-        new Werkstoff.GenerationFeatures().disable()
-            .onlyDust()
-            .addCells(),
-        63,
-        TextureSet.SET_DULL,
-        Pair.of(Materials.Calcium, 1),
-        Pair.of(Materials.Chlorine, 2)
-    // No Byproducts
-    );
-    public static final Werkstoff Ruthenium = new Werkstoff(
-        new short[] { 0x64, 0x64, 0x64 },
-        "Ruthenium",
-        "Ru",
-        new Werkstoff.Stats().setBlastFurnace(true)
-            .setMeltingPoint(2607)
-            .setMass(Element.Ru.getMass())
-            .setProtons(Element.Ru.mProtons)
-            .setProcessingMaterialTierEU(TierEU.RECIPE_EV),
-        Werkstoff.Types.ELEMENT,
-        new Werkstoff.GenerationFeatures().onlyDust()
-            .addMolten()
-            .addMetalItems()
-            .addCraftingMetalWorkingItems()
-            .addMetaSolidifierRecipes()
-            .addMetalCraftingSolidifierRecipes()
-            .enforceUnification(),
-        64,
-        TextureSet.SET_METALLIC
-    // No Byproducts
-    );
-    public static final Werkstoff SodiumRuthenate = new Werkstoff(
-        new short[] { 0x3a, 0x40, 0xcb },
-        "Sodium Ruthenate",
-        subscriptNumbers("Na?Ru?") + "??",
-        new Werkstoff.Stats(),
-        Werkstoff.Types.COMPOUND,
-        new Werkstoff.GenerationFeatures().disable()
-            .onlyDust(),
-        65,
-        TextureSet.SET_SHINY
-    // No Byproducts
-    );
-    public static final Werkstoff RutheniumTetroxide = new Werkstoff(
-        new short[] { 0xc7, 0xc7, 0xc7 },
-        "Ruthenium Tetroxide",
-        subscriptNumbers("Ru?O?") + "??",
-        new Werkstoff.Stats().setMeltingPoint(313),
-        Werkstoff.Types.COMPOUND,
-        new Werkstoff.GenerationFeatures().disable()
-            .onlyDust()
-            .addCells(),
-        66,
-        TextureSet.SET_DULL
-    // No Byproducts
-    );
-    public static final Werkstoff HotRutheniumTetroxideSollution = new Werkstoff(
-        new short[] { 0xc7, 0xc7, 0xc7 },
-        "Hot Ruthenium Tetroxide Solution",
-        subscriptNumbers("Ru?O?") + "??",
-        new Werkstoff.Stats().setMeltingPoint(700),
-        Werkstoff.Types.COMPOUND,
-        new Werkstoff.GenerationFeatures().disable()
-            .addCells(),
-        67,
-        TextureSet.SET_FLUID
-    // No Byproducts
-    );
-    public static final Werkstoff RutheniumTetroxideSollution = new Werkstoff(
-        new short[] { 0xc7, 0xc7, 0xc7 },
-        "Ruthenium Tetroxide Solution",
-        subscriptNumbers("Ru?O?") + "??",
-        new Werkstoff.Stats().setMeltingPoint(313),
-        Werkstoff.Types.COMPOUND,
-        new Werkstoff.GenerationFeatures().disable()
-            .addCells(),
-        68,
-        TextureSet.SET_FLUID
-    // No Byproducts
-    );
-    public static final Werkstoff IrOsLeachResidue = new Werkstoff(
-        new short[] { 0x64, 0x46, 0x29 },
-        "Rarest Metal Residue",
-        subscriptNumbers("Os?Ir?") + "??",
-        new Werkstoff.Stats(),
-        Werkstoff.Types.MIXTURE,
-        new Werkstoff.GenerationFeatures(),
-        69,
-        TextureSet.SET_ROUGH,
-        // No Byproducts
-        Pair.of(Materials.Osmiridium, 1),
-        Pair.of(Materials.Stone, 2));
-    public static final Werkstoff IrLeachResidue = new Werkstoff(
-        new short[] { 0x84, 0x66, 0x49 },
-        "Iridium Metal Residue",
-        subscriptNumbers("Ir?") + "??",
-        new Werkstoff.Stats(),
-        Werkstoff.Types.MIXTURE,
-        new Werkstoff.GenerationFeatures(),
-        70,
-        TextureSet.SET_ROUGH,
-        Pair.of(Materials.Iridium, 1),
-        Pair.of(Materials.Stone, 2)
-    // No Byproducts
-    );
-    public static final Werkstoff PGSDResidue = new Werkstoff(
-        new short[] { 0x84, 0x66, 0x49 },
-        "Sludge Dust Residue",
-        new Werkstoff.Stats().setCentrifuge(true),
-        Werkstoff.Types.MIXTURE,
-        new Werkstoff.GenerationFeatures().disable()
-            .onlyDust(),
-        71,
-        TextureSet.SET_DULL,
-        Pair.of(Materials.SiliconDioxide, 3),
-        Pair.of(Materials.Gold, 2));
-    public static final Werkstoff AcidicOsmiumSolution = new Werkstoff(
-        new short[] { 0x84, 0x66, 0x49 },
-        "Acidic Osmium Solution",
-        subscriptNumbers("Os?H?Cl?") + "??",
-        new Werkstoff.Stats(),
-        Werkstoff.Types.MIXTURE,
-        new Werkstoff.GenerationFeatures().disable()
-            .addCells(),
-        72,
-        TextureSet.SET_FLUID);
-    public static final Werkstoff IridiumDioxide = new Werkstoff(
-        new short[] { 0x84, 0x66, 0x49 },
-        "Iridium Dioxide",
-        subscriptNumbers("Ir?O?") + "??",
-        new Werkstoff.Stats(),
-        Werkstoff.Types.MIXTURE,
-        new Werkstoff.GenerationFeatures().disable()
-            .onlyDust(),
-        73,
-        TextureSet.SET_FLUID);
-    public static final Werkstoff OsmiumSolution = new Werkstoff(
-        new short[] { 0x84, 0x66, 0x49 },
-        "Osmium Solution",
-        subscriptNumbers("Os?Cl?") + "??",
-        new Werkstoff.Stats(),
-        Werkstoff.Types.MIXTURE,
-        new Werkstoff.GenerationFeatures().disable()
-            .addCells(),
-        74,
-        TextureSet.SET_FLUID);
-    public static final Werkstoff AcidicIridiumSolution = new Werkstoff(
-        new short[] { 0x84, 0x66, 0x49 },
-        "Acidic Iridium Solution",
-        subscriptNumbers("Ir?Cl?") + "??",
-        new Werkstoff.Stats(),
-        Werkstoff.Types.MIXTURE,
-        new Werkstoff.GenerationFeatures().disable()
-            .addCells(),
-        75,
-        TextureSet.SET_FLUID);
-    public static final Werkstoff IridiumChloride = new Werkstoff(
-        new short[] { 0x84, 0x66, 0x49 },
-        "Iridium Chloride",
-        subscriptNumbers("Ir?Cl?") + "??",
-        new Werkstoff.Stats(),
-        Werkstoff.Types.MIXTURE,
-        new Werkstoff.GenerationFeatures().disable()
-            .onlyDust(),
-        76,
-        TextureSet.SET_LAPIS);
-    public static final Werkstoff PGSDResidue2 = new Werkstoff(
-        new short[] { 0x84, 0x66, 0x49 },
-        "Metallic Sludge Dust Residue",
-        new Werkstoff.Stats().setCentrifuge(true),
-        Werkstoff.Types.MIXTURE,
-        new Werkstoff.GenerationFeatures().disable()
-            .onlyDust(),
-        77,
-        TextureSet.SET_DULL,
-        Pair.of(Materials.Nickel, 1),
-        Pair.of(Materials.Copper, 1));
-    public static final Werkstoff Rhodium = new Werkstoff(
-        new short[] { 0xF4, 0xF4, 0xF4 },
-        "Rhodium",
-        "Rh",
-        new Werkstoff.Stats().setProtons(Element.Rh.mProtons)
-            .setMass(Element.Rh.getMass())
-            .setBlastFurnace(true)
-            .setMeltingPoint(2237)
-            .setProcessingMaterialTierEU(TierEU.RECIPE_EV),
-        Werkstoff.Types.ELEMENT,
-        new Werkstoff.GenerationFeatures().disable()
-            .onlyDust()
-            .addMetalItems()
-            .addMolten()
-            .addCraftingMetalWorkingItems()
-            .addMetaSolidifierRecipes()
-            .addMetalCraftingSolidifierRecipes()
-            .enforceUnification(),
-        78,
-        TextureSet.SET_METALLIC);
-    public static final Werkstoff CrudeRhMetall = new Werkstoff(
-        new short[] { 0x66, 0x66, 0x66 },
-        "Crude Rhodium Metal",
-        subscriptNumbers("Rh?") + "??",
-        new Werkstoff.Stats(),
-        Werkstoff.Types.MIXTURE,
-        new Werkstoff.GenerationFeatures(),
-        79,
-        TextureSet.SET_DULL,
-        Pair.of(Rhodium, 1),
-        Pair.of(Materials.Stone, 1));
-    public static final Werkstoff RHSalt = new Werkstoff(
-        new short[] { 0x84, 0x84, 0x84 },
-        "Rhodium Salt",
-        subscriptNumbers("Rh?Na?Cl?") + "??",
-        new Werkstoff.Stats(),
-        Werkstoff.Types.MIXTURE,
-        new Werkstoff.GenerationFeatures().disable()
-            .onlyDust(),
-        80,
-        TextureSet.SET_GEM_VERTICAL);
-    public static final Werkstoff RHSaltSolution = new Werkstoff(
-        new short[] { 0x66, 0x77, 0x88 },
-        "Rhodium Salt Solution",
-        subscriptNumbers("Rh?Na?Cl?") + "??",
-        new Werkstoff.Stats(),
-        Werkstoff.Types.MIXTURE,
-        new Werkstoff.GenerationFeatures().disable()
-            .addCells(),
-        81,
-        TextureSet.SET_FLUID);
-    public static final Werkstoff SodiumNitrate = new Werkstoff(
-        new short[] { 0x84, 0x66, 0x84 },
-        "Sodium Nitrate",
-        subscriptNumbers("NaNO3"),
-        new Werkstoff.Stats(),
-        Werkstoff.Types.MIXTURE,
-        new Werkstoff.GenerationFeatures().disable()
-            .onlyDust(),
-        82,
-        TextureSet.SET_ROUGH,
-        Pair.of(Materials.Sodium, 1),
-        Pair.of(Materials.Nitrogen, 1),
-        Pair.of(Materials.Oxygen, 3));
-    public static final Werkstoff RHNitrate = new Werkstoff(
-        new short[] { 0x77, 0x66, 0x49 },
-        "Rhodium Nitrate",
-        subscriptNumbers("Rh?N?O?") + "??",
-        new Werkstoff.Stats(),
-        Werkstoff.Types.MIXTURE,
-        new Werkstoff.GenerationFeatures().disable()
-            .onlyDust(),
-        83,
-        TextureSet.SET_QUARTZ);
-    public static final Werkstoff ZincSulfate = new Werkstoff(
-        new short[] { 0x84, 0x66, 0x49 },
-        "Zinc Sulfate",
-        new Werkstoff.Stats().setElektrolysis(true),
-        Werkstoff.Types.MIXTURE,
-        new Werkstoff.GenerationFeatures().disable()
-            .onlyDust(),
-        84,
-        TextureSet.SET_QUARTZ,
-        Pair.of(Materials.Zinc, 1),
-        Pair.of(Materials.Sulfur, 1),
-        Pair.of(Materials.Oxygen, 4));
-    public static final Werkstoff RhFilterCake = new Werkstoff(
-        new short[] { 0x77, 0x66, 0x49 },
-        "Rhodium Filter Cake",
-        subscriptNumbers("Rh?N?O?") + "??",
-        new Werkstoff.Stats(),
-        Werkstoff.Types.MIXTURE,
-        new Werkstoff.GenerationFeatures().disable()
-            .onlyDust(),
-        85,
-        TextureSet.SET_QUARTZ);
-    public static final Werkstoff RHFilterCakeSolution = new Werkstoff(
-        new short[] { 0x66, 0x77, 0x88 },
-        "Rhodium Filter Cake Solution",
-        subscriptNumbers("Rh?N?") + "??",
-        new Werkstoff.Stats(),
-        Werkstoff.Types.MIXTURE,
-        new Werkstoff.GenerationFeatures().disable()
-            .addCells(),
-        86,
-        TextureSet.SET_FLUID);
-    public static final Werkstoff ReRh = new Werkstoff(
-        new short[] { 0x77, 0x66, 0x49 },
-        "Reprecipitated Rhodium",
-        subscriptNumbers("Rh?N?H?") + "??",
-        new Werkstoff.Stats(),
-        Werkstoff.Types.MIXTURE,
-        new Werkstoff.GenerationFeatures().disable()
-            .onlyDust(),
-        87,
-        TextureSet.SET_QUARTZ);
-    public static final Werkstoff RhodiumPlatedPalladium = new Werkstoff(
-        Materials.Chrome.getRGBA(),
-        "Rhodium-Plated Palladium",
-        new Werkstoff.Stats().setCentrifuge(true)
-            .setBlastFurnace(true)
-            .setMeltingPoint(4500)
-            .setMeltingVoltage(480)
-            .setProcessingMaterialTierEU(TierEU.RECIPE_EV),
-        Werkstoff.Types.COMPOUND,
-        new Werkstoff.GenerationFeatures().disable()
-            .onlyDust()
-            .addMolten()
-            .addMetalItems()
-            .addMixerRecipes((short) 1)
-            .addSimpleMetalWorkingItems()
-            .addCraftingMetalWorkingItems()
-            .addDoubleAndDensePlates()
-            .addMetaSolidifierRecipes()
-            .addMetalCraftingSolidifierRecipes(),
-        88,
-        TextureSet.SET_METALLIC,
-        Pair.of(Materials.Palladium, 3),
-        Pair.of(WerkstoffLoader.Rhodium, 1));
-    public static final Werkstoff Tiberium = new Werkstoff(
-        new short[] { 0x22, 0xEE, 0x22 },
-        "Tiberium",
-        "Tr",
-        new Werkstoff.Stats().setProtons(Element.Tr.mProtons)
-            .setMass(Element.Tr.getMass())
-            .setBlastFurnace(true)
-            .setMeltingPoint(1800)
-            .setRadioactive(true)
-            .setToxic(true),
-        Werkstoff.Types.ELEMENT,
-        new Werkstoff.GenerationFeatures().addGems()
-            .addCraftingMetalWorkingItems()
-            .addSimpleMetalWorkingItems(),
-        89,
-        TextureSet.SET_DIAMOND);
-    public static final Werkstoff Ruridit = new Werkstoff(
-        new short[] { 0xA4, 0xA4, 0xA4 },
-        "Ruridit",
-        new Werkstoff.Stats().setCentrifuge(true)
-            .setBlastFurnace(true)
-            .setMeltingPoint(4500)
-            .setMeltingVoltage(480)
-            .setProcessingMaterialTierEU(TierEU.RECIPE_EV),
-        Werkstoff.Types.COMPOUND,
-        new Werkstoff.GenerationFeatures().disable()
-            .onlyDust()
-            .addMolten()
-            .addMetalItems()
-            .addMixerRecipes((short) 1)
-            .addSimpleMetalWorkingItems()
-            .addCraftingMetalWorkingItems()
-            .addDoubleAndDensePlates()
-            .addMetaSolidifierRecipes()
-            .addMetalCraftingSolidifierRecipes(),
-        90,
-        TextureSet.SET_METALLIC,
-        Pair.of(WerkstoffLoader.Ruthenium, 2),
-        Pair.of(Materials.Iridium, 1));
-    public static final Werkstoff Fluorspar = new Werkstoff(
-        new short[] { 185, 69, 251 },
-        "Fluorspar",
-        new Werkstoff.Stats().setElektrolysis(true),
-        Werkstoff.Types.COMPOUND,
-        new Werkstoff.GenerationFeatures().addGems(),
-        91,
-        TextureSet.SET_GEM_VERTICAL,
-        Pair.of(Materials.Calcium, 1),
-        Pair.of(Materials.Fluorine, 2));
-    public static final Werkstoff HDCS = new Werkstoff(
-        new short[] { 0x33, 0x44, 0x33 },
-        "High Durability Compound Steel",
-        new Werkstoff.Stats().setCentrifuge(true)
-            .setBlastFurnace(true)
-            .setMeltingPoint(9000)
-            .setMeltingVoltage(7680)
-            .setProcessingMaterialTierEU(TierEU.RECIPE_LuV),
-        Werkstoff.Types.MIXTURE,
-        new Werkstoff.GenerationFeatures().disable()
-            .onlyDust()
-            .addMolten()
-            .addMetalItems()
-            .addMixerRecipes()
-            .addSimpleMetalWorkingItems()
-            .addCraftingMetalWorkingItems()
-            .addDoubleAndDensePlates()
-            .addMetaSolidifierRecipes()
-            .addMetalCraftingSolidifierRecipes(),
-        92,
-        TextureSet.SET_SHINY,
-        Pair.of(Materials.TungstenSteel, 12),
-        Pair.of(Materials.HSSE, 9),
-        Pair.of(Materials.HSSG, 6),
-        Pair.of(WerkstoffLoader.Ruridit, 3),
-        Pair.of(WerkstoffLoader.MagnetoResonaticDust, 2),
-        Pair.of(Materials.Plutonium, 1));
-    public static final Werkstoff Atheneite = new Werkstoff(
-        new short[] { 175, 175, 175 },
-        "Atheneite",
-        subscriptNumbers("(Pd,Hg)3As"),
-        new Werkstoff.Stats().setElektrolysis(true),
-        Werkstoff.Types.COMPOUND,
-        new Werkstoff.GenerationFeatures(),
-        93,
-        TextureSet.SET_SHINY,
-        Pair.of(WerkstoffLoader.PDMetallicPowder, 3),
-        Pair.of(Materials.Mercury, 3),
-        Pair.of(Materials.Arsenic, 1));
-    public static final Werkstoff Temagamite = new Werkstoff(
-        new short[] { 245, 245, 245 },
-        "Temagamite",
-        subscriptNumbers("Pd3HgTe"),
-        new Werkstoff.Stats().setElektrolysis(true),
-        Werkstoff.Types.COMPOUND,
-        new Werkstoff.GenerationFeatures(),
-        94,
-        TextureSet.SET_ROUGH,
-        Pair.of(WerkstoffLoader.PDMetallicPowder, 3),
-        Pair.of(Materials.Mercury, 1),
-        Pair.of(Materials.Tellurium, 1));
-    public static final Werkstoff Terlinguaite = new Werkstoff(
-        new short[] { 245, 245, 245 },
-        "Terlinguaite",
-        new Werkstoff.Stats().setElektrolysis(true),
-        Werkstoff.Types.COMPOUND,
-        new Werkstoff.GenerationFeatures(),
-        95,
-        TextureSet.SET_GEM_HORIZONTAL,
-        Pair.of(Materials.Mercury, 2),
-        Pair.of(Materials.Chlorine, 1),
-        Pair.of(Materials.Oxygen, 1));
-    public static final Werkstoff AdemicSteel = new Werkstoff(
-        new short[] { 0xcc, 0xcc, 0xcc },
-        "Ademic Steel",
-        "The break in the line",
-        new Werkstoff.Stats().setCentrifuge(true)
-            .setBlastFurnace(true)
-            .setDurOverride(6144)
-            .setMeltingPoint(1800)
-            .setSpeedOverride(12)
-            .setQualityOverride((byte) 4)
-            .setMeltingVoltage(1920)
-            .setProcessingMaterialTierEU(TierEU.RECIPE_IV),
-        Werkstoff.Types.MIXTURE,
-        new Werkstoff.GenerationFeatures().onlyDust()
-            .addMetalItems()
-            .addCraftingMetalWorkingItems()
-            .addMolten()
-            .addSimpleMetalWorkingItems()
-            .addDoubleAndDensePlates()
-            .addMetaSolidifierRecipes()
-            .addMetalCraftingSolidifierRecipes(),
-        96,
-        TextureSet.SET_METALLIC,
-        Pair.of(Materials.Steel, 2),
-        Pair.of(Materials.VanadiumSteel, 1),
-        Pair.of(Materials.DamascusSteel, 1),
-        Pair.of(Materials.Carbon, 4));
-    public static final Werkstoff RawAdemicSteel = new Werkstoff(
-        new short[] { 0xed, 0xed, 0xed },
-        "Raw Ademic Steel",
-        new Werkstoff.Stats().setCentrifuge(true),
-        Werkstoff.Types.MIXTURE,
-        new Werkstoff.GenerationFeatures().onlyDust()
-            .addMixerRecipes(),
-        97,
-        TextureSet.SET_ROUGH,
-        Pair.of(Materials.Steel, 2),
-        Pair.of(Materials.VanadiumSteel, 1),
-        Pair.of(Materials.DamascusSteel, 1));
-    public static final Werkstoff HexafluorosilicicAcid = new Werkstoff(
-        new short[] { 0x2c, 0x70, 0xb5 },
-        "Hexafluorosilicic Acid",
-        subscriptNumbers("H2SiF6"),
-        new Werkstoff.Stats().setElektrolysis(true),
-        Werkstoff.Types.COMPOUND,
-        new Werkstoff.GenerationFeatures().disable()
-            .addCells(),
-        98,
-        TextureSet.SET_FLUID,
-        Pair.of(Materials.Hydrogen, 2),
-        Pair.of(Materials.Silicon, 1),
-        Pair.of(Materials.Fluorine, 6));
-    public static final Werkstoff Potassiumfluorosilicate = new Werkstoff(
-        new short[] { 0x2e, 0x97, 0xb2 },
-        "Potassiumfluorosilicate",
-        subscriptNumbers("K2SiF6"),
-        new Werkstoff.Stats().setElektrolysis(true),
-        Werkstoff.Types.COMPOUND,
-        new Werkstoff.GenerationFeatures().disable()
-            .onlyDust(),
-        99,
-        TextureSet.SET_SHINY,
-        Pair.of(Materials.Potassium, 2),
-        Pair.of(Materials.Silicon, 1),
-        Pair.of(Materials.Fluorine, 6));
-    public static final Werkstoff Alumina = new Werkstoff(
-        new short[] { 0xa0, 0xad, 0xb1 },
-        "Alumina",
-        subscriptNumbers("Al2O3"),
-        new Werkstoff.Stats(),
-        Werkstoff.Types.COMPOUND,
-        new Werkstoff.GenerationFeatures().disable()
-            .onlyDust(),
-        100,
-        TextureSet.SET_DULL);
-    public static final Werkstoff PotassiumCarbonate = new Werkstoff(
-        new short[] { 0x7b, 0x96, 0x4f },
-        "Potassium Carbonate",
-        subscriptNumbers("K2CO3"),
-        new Werkstoff.Stats().setElektrolysis(true),
-        Werkstoff.Types.COMPOUND,
-        new Werkstoff.GenerationFeatures().disable()
-            .onlyDust(),
-        101,
-        TextureSet.SET_DULL,
-        Pair.of(Materials.Potassium, 2),
-        Pair.of(Materials.Carbon, 1),
-        Pair.of(Materials.Oxygen, 3));
-    public static final Werkstoff RawFluorophlogopite = new Werkstoff(
-        new short[] { 0x36, 0x51, 0x0b },
-        "Raw Fluorophlogopite",
-        subscriptNumbers("K4Al2(SiO2)F6"),
-        new Werkstoff.Stats(),
-        Werkstoff.Types.MIXTURE,
-        new Werkstoff.GenerationFeatures().disable()
-            .onlyDust(),
-        102,
-        TextureSet.SET_DULL);
-    public static final Werkstoff HotFluorophlogopite = new Werkstoff(
-        new short[] { 0xbf, 0xd3, 0x55 },
-        "Unformed Fluorophlogopite",
-        subscriptNumbers("KMg3(Si3Al)O10F2"),
-        new Werkstoff.Stats(),
-        Werkstoff.Types.MIXTURE,
-        new Werkstoff.GenerationFeatures().disable()
-            .addCells(),
-        103,
-        TextureSet.SET_FLUID);
-    public static final Werkstoff Fluorophlogopite = new Werkstoff(
-        new short[] { 0xbf, 0xd3, 0x55 },
-        "Fluorophlogopite",
-        subscriptNumbers("KMg3(Si3Al)O10F2"),
-        new Werkstoff.Stats(),
-        Werkstoff.Types.MIXTURE,
-        new Werkstoff.GenerationFeatures().disable()
-            .onlyDust()
-            .addMetalItems(),
-        104,
-        TextureSet.SET_SHINY);
+    public static final Werkstoff AquaRegia = WerkstoffReconstruction.byId(48);
+    public static final Werkstoff PTResidue = WerkstoffReconstruction.byId(49);
+    public static final Werkstoff AmmoniumChloride = WerkstoffReconstruction.byId(50);
+    public static final Werkstoff PTRawPowder = WerkstoffReconstruction.byId(51);
+    public static final Werkstoff PDAmmonia = WerkstoffReconstruction.byId(52);
+    public static final Werkstoff PDMetallicPowder = WerkstoffReconstruction.byId(53);
+    public static final Werkstoff PDRawPowder = WerkstoffReconstruction.byId(54);
+    public static final Werkstoff PDSalt = WerkstoffReconstruction.byId(55);
+    public static final Werkstoff Sodiumformate = WerkstoffReconstruction.byId(56);
+    public static final Werkstoff Sodiumsulfate = WerkstoffReconstruction.byId(57);
+    public static final Werkstoff FormicAcid = WerkstoffReconstruction.byId(58);
+    public static final Werkstoff PotassiumDisulfate = WerkstoffReconstruction.byId(59);
+    public static final Werkstoff LeachResidue = WerkstoffReconstruction.byId(60);
+    public static final Werkstoff RHSulfate = WerkstoffReconstruction.byId(61);
+    public static final Werkstoff RHSulfateSolution = WerkstoffReconstruction.byId(62);
+    public static final Werkstoff CalciumChloride = WerkstoffReconstruction.byId(63);
+    public static final Werkstoff Ruthenium = WerkstoffReconstruction.byId(64);
+    public static final Werkstoff SodiumRuthenate = WerkstoffReconstruction.byId(65);
+    public static final Werkstoff RutheniumTetroxide = WerkstoffReconstruction.byId(66);
+    public static final Werkstoff HotRutheniumTetroxideSollution = WerkstoffReconstruction.byId(67);
+    public static final Werkstoff RutheniumTetroxideSollution = WerkstoffReconstruction.byId(68);
+    public static final Werkstoff IrOsLeachResidue = WerkstoffReconstruction.byId(69);
+    public static final Werkstoff IrLeachResidue = WerkstoffReconstruction.byId(70);
+    public static final Werkstoff PGSDResidue = WerkstoffReconstruction.byId(71);
+    public static final Werkstoff AcidicOsmiumSolution = WerkstoffReconstruction.byId(72);
+    public static final Werkstoff IridiumDioxide = WerkstoffReconstruction.byId(73);
+    public static final Werkstoff OsmiumSolution = WerkstoffReconstruction.byId(74);
+    public static final Werkstoff AcidicIridiumSolution = WerkstoffReconstruction.byId(75);
+    public static final Werkstoff IridiumChloride = WerkstoffReconstruction.byId(76);
+    public static final Werkstoff PGSDResidue2 = WerkstoffReconstruction.byId(77);
+    public static final Werkstoff Rhodium = WerkstoffReconstruction.byId(78);
+    public static final Werkstoff CrudeRhMetall = WerkstoffReconstruction.byId(79);
+    public static final Werkstoff RHSalt = WerkstoffReconstruction.byId(80);
+    public static final Werkstoff RHSaltSolution = WerkstoffReconstruction.byId(81);
+    public static final Werkstoff SodiumNitrate = WerkstoffReconstruction.byId(82);
+    public static final Werkstoff RHNitrate = WerkstoffReconstruction.byId(83);
+    public static final Werkstoff ZincSulfate = WerkstoffReconstruction.byId(84);
+    public static final Werkstoff RhFilterCake = WerkstoffReconstruction.byId(85);
+    public static final Werkstoff RHFilterCakeSolution = WerkstoffReconstruction.byId(86);
+    public static final Werkstoff ReRh = WerkstoffReconstruction.byId(87);
+    public static final Werkstoff RhodiumPlatedPalladium = WerkstoffReconstruction.byId(88);
+    public static final Werkstoff Tiberium = WerkstoffReconstruction.byId(89);
+    public static final Werkstoff Ruridit = WerkstoffReconstruction.byId(90);
+    public static final Werkstoff Fluorspar = WerkstoffReconstruction.byId(91);
+    public static final Werkstoff HDCS = WerkstoffReconstruction.byId(92);
+    public static final Werkstoff Atheneite = WerkstoffReconstruction.byId(93);
+    public static final Werkstoff Temagamite = WerkstoffReconstruction.byId(94);
+    public static final Werkstoff Terlinguaite = WerkstoffReconstruction.byId(95);
+    public static final Werkstoff AdemicSteel = WerkstoffReconstruction.byId(96);
+    public static final Werkstoff RawAdemicSteel = WerkstoffReconstruction.byId(97);
+    public static final Werkstoff HexafluorosilicicAcid = WerkstoffReconstruction.byId(98);
+    public static final Werkstoff Potassiumfluorosilicate = WerkstoffReconstruction.byId(99);
+    public static final Werkstoff Alumina = WerkstoffReconstruction.byId(100);
+    public static final Werkstoff PotassiumCarbonate = WerkstoffReconstruction.byId(101);
+    public static final Werkstoff RawFluorophlogopite = WerkstoffReconstruction.byId(102);
+    public static final Werkstoff HotFluorophlogopite = WerkstoffReconstruction.byId(103);
+    public static final Werkstoff Fluorophlogopite = WerkstoffReconstruction.byId(104);
 
     // Extracted from GalaxySpace
-    public static final Werkstoff LiquidHelium = new Werkstoff(
-        new short[] { 210, 230, 250 },
-        "Liquid Helium",
-        "He",
-        new Werkstoff.Stats().setBoilingPoint(4)
-            .setGas(false)
-            .setMeltingPoint(1),
-        Werkstoff.Types.MATERIAL,
-        new Werkstoff.GenerationFeatures().disable()
-            .addCells(),
-        11500,
-        TextureSet.SET_FLUID);
+    public static final Werkstoff LiquidHelium = WerkstoffReconstruction.byId(11500);
 
-    public static final Werkstoff HafniumCarbide = new Werkstoff(
-        new short[] { 125, 135, 125 },
-        "Hafnium Carbide",
-        "HfC",
-        new Werkstoff.Stats().setMass(192),
-        Werkstoff.Types.COMPOUND,
-        new Werkstoff.GenerationFeatures().onlyDust(),
-        11501,
-        TextureSet.SET_METALLIC);
+    public static final Werkstoff HafniumCarbide = WerkstoffReconstruction.byId(11501);
 
-    public static final Werkstoff TantalumCarbideHafniumCarbideMixture = new Werkstoff(
-        new short[] { 75, 85, 75 },
-        "Tantalum Carbide / Hafnium Carbide Mixture",
-        subscriptNumbers("(TaC)4HfC"),
-        new Werkstoff.Stats(),
-        Werkstoff.Types.COMPOUND,
-        new Werkstoff.GenerationFeatures().onlyDust(),
-        11502,
-        TextureSet.SET_METALLIC);
+    public static final Werkstoff TantalumCarbideHafniumCarbideMixture = WerkstoffReconstruction.byId(11502);
 
-    public static final Werkstoff TantalumHafniumCarbide = new Werkstoff(
-        new short[] { 80, 90, 80 },
-        "Tantalum Hafnium Carbide",
-        subscriptNumbers("Ta4HfC5"),
-        new Werkstoff.Stats().setMass(962)
-            .setMeltingPoint(4263)
-            .setDurOverride(4608)
-            .setSpeedOverride(12)
-            .setQualityOverride((byte) 7),
-        Werkstoff.Types.COMPOUND,
-        new Werkstoff.GenerationFeatures().onlyDust()
-            .addMetalItems()
-            .addMolten(),
-        11503,
-        TextureSet.SET_METALLIC);
+    public static final Werkstoff TantalumHafniumCarbide = WerkstoffReconstruction.byId(11503);
 
     public static HashMap<OrePrefixes, BWMetaGeneratedItems> items = new HashMap<>();
     public static HashBiMap<Werkstoff, Fluid> fluids = HashBiMap.create();
@@ -1701,7 +363,6 @@ public class WerkstoffLoader {
         MainMod.LOGGER.info("Making Meta Items for BW Materials");
         long timepre = System.nanoTime();
         WerkstoffAdderRegistry.run();
-        addSubTags();
         addItemsForGeneration();
         addBridgeSubTags();
         runAdditionalOreDict();
@@ -1780,77 +441,8 @@ public class WerkstoffLoader {
         }
     }
 
-    @SuppressWarnings("unchecked")
-    private static void addSubTags() {
-        WerkstoffLoader.CubicZirconia.getStats()
-            .setDurOverride(Materials.Diamond.mDurability);
-        WerkstoffLoader.HDCS.getStats()
-            .setSpeedOverride(Materials.HSSS.mToolSpeed);
-        WerkstoffLoader.HDCS.getStats()
-            .setDurMod(10f);
-        Materials.Helium.add(WerkstoffLoader.NOBLE_GAS);
-        WerkstoffLoader.Neon.add(WerkstoffLoader.NOBLE_GAS);
-        Materials.Argon.add(WerkstoffLoader.NOBLE_GAS);
-        WerkstoffLoader.Krypton.add(WerkstoffLoader.NOBLE_GAS);
-        WerkstoffLoader.Xenon.add(WerkstoffLoader.NOBLE_GAS, WerkstoffLoader.ANAEROBE_GAS);
-        Materials.Radon.add(WerkstoffLoader.NOBLE_GAS);
-        WerkstoffLoader.Oganesson.add(WerkstoffLoader.NOBLE_GAS, WerkstoffLoader.ANAEROBE_GAS);
-
-        Materials.Nitrogen.add(WerkstoffLoader.ANAEROBE_GAS);
-
-        WerkstoffLoader.Calcium.add(WerkstoffLoader.ANAEROBE_SMELTING);
-
-        WerkstoffLoader.RhodiumPlatedPalladium.add(WerkstoffLoader.NOBLE_GAS_SMELTING);
-        WerkstoffLoader.Ruridit.add(WerkstoffLoader.NOBLE_GAS_SMELTING);
-        WerkstoffLoader.AdemicSteel.add(WerkstoffLoader.NOBLE_GAS_SMELTING);
-
-        WerkstoffLoader.MagnetoResonaticDust.add(WerkstoffLoader.NO_BLAST);
-
-        // Calcium Smelting block
-        Materials.Calcium.mBlastFurnaceRequired = true;
-
-        Materials.Salt.mDurability = WerkstoffLoader.Salt.getDurability();
-        Materials.Spodumene.mDurability = WerkstoffLoader.Spodumen.getDurability();
-        Materials.RockSalt.mDurability = WerkstoffLoader.RockSalt.getDurability();
-        Materials.Calcium.mDurability = WerkstoffLoader.Calcium.getDurability();
-
-        Materials.Salt.mToolSpeed = WerkstoffLoader.Salt.getToolSpeed();
-        Materials.Spodumene.mToolSpeed = WerkstoffLoader.Spodumen.getToolSpeed();
-        Materials.RockSalt.mToolSpeed = WerkstoffLoader.RockSalt.getToolSpeed();
-        Materials.Calcium.mToolSpeed = WerkstoffLoader.Calcium.getToolSpeed();
-
-        Materials.Salt.mToolQuality = WerkstoffLoader.Salt.getToolQuality();
-        Materials.Spodumene.mToolQuality = WerkstoffLoader.Spodumen.getToolQuality();
-        Materials.RockSalt.mToolQuality = WerkstoffLoader.RockSalt.getToolQuality();
-        Materials.Calcium.mToolQuality = WerkstoffLoader.Calcium.getToolQuality();
-
-        for (Werkstoff W : Werkstoff.werkstoffHashSet) {
-            for (Pair<ISubTagContainer, Integer> pair : W.getContents()
-                .getValue()
-                .toArray(new Pair[0])) {
-
-                if (pair.getKey() instanceof Materials && pair.getKey() == Materials.Neodymium) {
-                    W.add(SubTag.ELECTROMAGNETIC_SEPERATION_NEODYMIUM);
-                    break;
-                }
-                if (pair.getKey() instanceof Materials && pair.getKey() == Materials.Iron) {
-                    W.add(SubTag.ELECTROMAGNETIC_SEPERATION_IRON);
-                    break;
-                } else if (pair.getKey() instanceof Materials && pair.getKey() == Materials.Gold) {
-                    W.add(SubTag.ELECTROMAGNETIC_SEPERATION_GOLD);
-                    break;
-                }
-            }
-            if (W.hasItemType(gem)) {
-                W.add(SubTag.CRYSTAL);
-                W.add(SubTag.CRYSTALLISABLE);
-            }
-        }
-    }
-
     private static void addBridgeSubTags() {
         // add specific GT materials subtags to various werkstoff bridgematerials
-
         SubTag.METAL.addTo(RhodiumPlatedPalladium.getBridgeMaterial());
     }
 
@@ -1858,8 +450,15 @@ public class WerkstoffLoader {
 
     private static void addItemsForGeneration() {
         for (Werkstoff werkstoff : Werkstoff.werkstoffHashSet) {
+            // Reconstructed werkstoffe resolve their fluids from the registry: MaterialLib registered every
+            // werkstoff fluid at its own preInit (each bridge mirror's stage-06 LEGACY_FLUIDS capture), and
+            // rebuilding through GTFluidFactory would re-configure the live fluid from reconstructed stats
+            // (whose dump-masked melting point turns legacy "unset" into 1123 K). Only a third-party
+            // WerkstoffAdder's werkstoff, unknown to MaterialLib, still builds its fluid here.
             if (werkstoff.hasItemType(cell)) {
-                if (!FluidRegistry.isFluidRegistered(werkstoff.getDefaultName())) {
+                if (WerkstoffReconstruction.isReconstructed(werkstoff)) {
+                    WerkstoffLoader.fluids.put(werkstoff, resolveMaterialLibFluid(werkstoff, ""));
+                } else if (!FluidRegistry.isFluidRegistered(werkstoff.getDefaultName())) {
                     DebugLog.log("Adding new Fluid: " + werkstoff.getDefaultName());
                     Fluid fluid = GTFluidFactory.builder(werkstoff.getDefaultName())
                         .withDefaultLocalName(werkstoff.getDefaultName())
@@ -1878,7 +477,9 @@ public class WerkstoffLoader {
                 }
             }
             if (werkstoff.hasItemType(OrePrefixes.cellMolten)) {
-                if (!FluidRegistry.isFluidRegistered("molten." + werkstoff.getDefaultName())) {
+                if (WerkstoffReconstruction.isReconstructed(werkstoff)) {
+                    WerkstoffLoader.molten.put(werkstoff, resolveMaterialLibFluid(werkstoff, "molten."));
+                } else if (!FluidRegistry.isFluidRegistered("molten." + werkstoff.getDefaultName())) {
                     DebugLog.log("Adding new Molten: " + werkstoff.getDefaultName());
                     Fluid fluid = GTFluidFactory.builder("molten." + werkstoff.getDefaultName())
                         .withDefaultLocalName("Molten " + werkstoff.getDefaultName())
@@ -2077,6 +678,18 @@ public class WerkstoffLoader {
 
         GTOreDictUnificator.registerOre("craftingIndustrialDiamond", WerkstoffLoader.CubicZirconia.get(gemExquisite));
         BWOreAdapter.INSTANCE.registerOredict();
+    }
+
+    /// Resolves a reconstructed werkstoff's MaterialLib-registered fluid, fail-loud (mirrors
+    /// `LegacyMaterials#wireFluids`): the registered name is the Forge-lowercased default name with the given
+    /// prefix, exactly what the stage-06 fluid shapes registered.
+    private static Fluid resolveMaterialLibFluid(Werkstoff werkstoff, String prefix) {
+        String name = prefix + werkstoff.getDefaultName()
+            .toLowerCase(java.util.Locale.ENGLISH);
+        Fluid fluid = FluidRegistry.getFluid(name);
+        if (fluid == null) throw new IllegalStateException(
+            "MaterialLib did not register fluid " + name + " for werkstoff " + werkstoff.getDefaultName());
+        return fluid;
     }
 
     private static int getFluidTemperature(Werkstoff werkstoff) {

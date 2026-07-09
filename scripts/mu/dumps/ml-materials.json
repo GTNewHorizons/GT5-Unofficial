@@ -97378,7 +97378,7 @@
         {
           "material": "Alumina",
           "amount": 1,
-          "werkstoff": true
+          "werkstoff": false
         },
         {
           "material": "SiliconDioxide",
