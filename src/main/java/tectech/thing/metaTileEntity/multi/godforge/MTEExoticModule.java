@@ -26,7 +26,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.oredict.OreDictionary;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.NotNull;
@@ -42,10 +41,13 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
+import gregtech.api.util.GTLog;
+import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTStreamUtil;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -336,17 +338,18 @@ public class MTEExoticModule extends MTEBaseModule {
 
     }
 
+    /// Resolves each dust `ItemStack` back to its unified material via [GTOreDictUnificator#getAssociation]
+    /// rather than parsing an OreDictionary name, matching [tectech.loader.recipe.Godforge#convertToFluid].
     private FluidStack[] convertItemToPlasma(ItemStack[] items, long multiplier) {
         List<FluidStack> plasmas = new ArrayList<>();
 
         for (ItemStack itemStack : items) {
-            String dict = OreDictionary.getOreName(OreDictionary.getOreIDs(itemStack)[0]);
-            // substring 4 because dust is 4 characters long and there is no other possible oreDict
-            String strippedOreDict = dict.substring(4);
-            plasmas.add(
-                FluidRegistry.getFluidStack(
-                    "plasma." + strippedOreDict.toLowerCase(),
-                    (int) (INGOTS * multiplier * itemStack.stackSize)));
+            ItemData association = GTOreDictUnificator.getAssociation(itemStack);
+            if (association == null || association.mMaterial == null || association.mMaterial.mMaterial == null) {
+                GTLog.err.println("MTEExoticModule.convertItemToPlasma: no unification data for " + itemStack);
+                continue;
+            }
+            plasmas.add(association.mMaterial.mMaterial.getPlasma((int) (INGOTS * multiplier * itemStack.stackSize)));
         }
 
         return plasmas.toArray(new FluidStack[0]);
