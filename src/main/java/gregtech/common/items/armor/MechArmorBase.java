@@ -29,6 +29,7 @@ import org.lwjgl.input.Keyboard;
 import com.gtnewhorizon.gtnhlib.keybind.IKeyPressedListener;
 import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
 
+import codechicken.nei.api.API;
 import cpw.mods.fml.common.Optional.Interface;
 import cpw.mods.fml.common.Optional.InterfaceList;
 import cpw.mods.fml.relauncher.Side;
@@ -89,6 +90,7 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISp
         this.type = type;
         this.setMaxDamage(0);
         this.setHasSubtypes(false);
+        API.setAliases(new ItemStack(this), "gt.alias.mechanical_armor");
     }
 
     @Override
