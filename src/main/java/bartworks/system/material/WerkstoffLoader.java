@@ -104,6 +104,7 @@ import bartworks.system.oredict.OreDictHandler;
 import bartworks.util.BWColorUtil;
 import bartworks.util.log.DebugLog;
 import bwcrossmod.cls.CLSCompat;
+import codechicken.nei.api.API;
 import cpw.mods.fml.common.ProgressManager;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTechAPI;
@@ -300,15 +301,14 @@ public class WerkstoffLoader {
     }
 
     public static ItemStack getCorrespondingItemStackUnsafe(OrePrefixes orePrefixes, Werkstoff werkstoff, int amount) {
-        // Stage-10 item/ore cutover: a werkstoff's item prefixes resolve to the MaterialLib stack (via the
-        // bridge material, which maps proxies and reconstructed werkstoffe alike; a third-party werkstoff's
-        // bridge is unknown to MU and falls through to the legacy paths). `ore`/`oreSmall` now resolve through
-        // MU too (Materials2OreShapes; see BWOreAdapter, which still owns the legacy fallback below for
-        // third-party werkstoffe). `block`/`blockCasing`/`blockCasingAdvanced`/`sheetmetal`/`frameGt` stay
-        // legacy-canonical for now: multiblock structure matchers reference the legacy casing blocks by
-        // identity, so their cutover is a coordinated block+structure flip, not a stack swap.
-        if (orePrefixes != block && orePrefixes != OrePrefixes.blockCasing
-            && orePrefixes != OrePrefixes.blockCasingAdvanced
+        // Stage-10 item/ore/block cutover: a werkstoff's item prefixes resolve to the MaterialLib stack (via
+        // the bridge material, which maps proxies and reconstructed werkstoffe alike; a third-party
+        // werkstoff's bridge is unknown to MU and falls through to the legacy paths). `ore`/`oreSmall`/`block`
+        // now resolve through MU too (Materials2OreShapes/Materials2BlockShapes). `blockCasing`/
+        // `blockCasingAdvanced`/`sheetmetal`/`frameGt` stay legacy-canonical for now: multiblock structure
+        // matchers reference the legacy casing blocks by identity, so their cutover is a coordinated
+        // block+structure flip, not a stack swap.
+        if (orePrefixes != OrePrefixes.blockCasing && orePrefixes != OrePrefixes.blockCasingAdvanced
             && orePrefixes != OrePrefixes.sheetmetal
             && orePrefixes != OrePrefixes.frameGt) {
             ItemStack mlStack = MU.stack(orePrefixes, werkstoff.getBridgeMaterial(), amount);
@@ -634,6 +634,25 @@ public class WerkstoffLoader {
             WerkstoffLoader.BWBlockCasingsAdvanced,
             BWItemMetaGeneratedBlock.class,
             "bw.werkstoffblockscasingadvanced.01");
+    }
+
+    /// Hides the legacy storage/casing block slot of every werkstoff whose prefix now resolves to a MaterialLib
+    /// block (see [MU]), mirroring [gregtech.common.ores.GTOreAdapter#hideOres]'s NEI-hiding precedent. A slot
+    /// that stays legacy-canonical (a third-party werkstoff, or a prefix that has not cut over) remains visible.
+    /// Called late, from NEI's own config loading, well after every werkstoff's bridge material is assigned.
+    public static void hideBlocks() {
+        for (Werkstoff w : Werkstoff.werkstoffHashSet) {
+            if (w == null) continue;
+
+            hideBlockSlot(w, block, WerkstoffLoader.BWBlocks);
+        }
+    }
+
+    private static void hideBlockSlot(Werkstoff w, OrePrefixes prefix, Block legacyBlock) {
+        if (!w.hasItemType(prefix)) return;
+        if (MU.stack(prefix, w.getBridgeMaterial(), 1) == null) return;
+
+        API.hideItem(new ItemStack(legacyBlock, 1, w.getmID()));
     }
 
     private static void runGTItemDataRegistrator() {
