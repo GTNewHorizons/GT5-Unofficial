@@ -1004,7 +1004,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
         public Slot copy() {
             Slot copy = new Slot(this.config.copy());
 
-            copy.extracted = this.extracted.copy();
+            copy.extracted = extracted == null ? null : this.extracted.copy();
             copy.extractedAmount = this.extractedAmount;
 
             return copy;
