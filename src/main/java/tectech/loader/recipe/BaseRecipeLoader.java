@@ -57,17 +57,28 @@ public class BaseRecipeLoader {
     public void run() {
         // todo: Move those recipes in NHCore
         if (NewHorizonsCoreMod.isModLoaded()) {
-            new Assembler().run();
-            new AssemblyLine().run();
-            new CircuitAssembler().run();
-            new Crafting().run();
-            new Extractor().run();
-            new ResearchStationAssemblyLine().run();
-            new Godforge().run();
+            runSafely("Assembler", new Assembler()::run);
+            runSafely("AssemblyLine", new AssemblyLine()::run);
+            runSafely("CircuitAssembler", new CircuitAssembler()::run);
+            runSafely("Crafting", new Crafting()::run);
+            runSafely("Extractor", new Extractor()::run);
+            runSafely("ResearchStationAssemblyLine", new ResearchStationAssemblyLine()::run);
+            runSafely("Godforge", new Godforge()::run);
         } else {
             Godforge.runDevEnvironmentRecipes();
         }
-        Godforge.addFakeUpgradeCostRecipes();
-        FoundryFakeModuleCostLoader.load();
+        runSafely("Godforge.addFakeUpgradeCostRecipes", Godforge::addFakeUpgradeCostRecipes);
+        runSafely("FoundryFakeModuleCostLoader", FoundryFakeModuleCostLoader::load);
+    }
+
+    /// Runs one recipe loader in isolation: a thrown exception is logged with its full stack trace instead of
+    /// silently aborting every loader still queued after it in [#run], since these loaders register unrelated
+    /// recipe sets and a bug in one (e.g. a broken material lookup) should not take the others down with it.
+    private static void runSafely(String name, Runnable loader) {
+        try {
+            loader.run();
+        } catch (Throwable t) {
+            TecTech.LOGGER.error("Recipe loader " + name + " failed, remaining loaders will still run", t);
+        }
     }
 }
