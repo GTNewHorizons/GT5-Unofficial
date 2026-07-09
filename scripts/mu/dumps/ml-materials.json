@@ -107,6 +107,7 @@
       "cellPlasmaLight",
       "fluidGas",
       "fluidPlasma",
+      "ore",
       "rawOre"
     ],
     "families": [
@@ -620,6 +621,8 @@
       "ingot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -756,6 +759,8 @@
       "ingot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -1008,6 +1013,8 @@
       "ingot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -1146,6 +1153,7 @@
       "cellPlasmaLight",
       "fluidGas",
       "fluidPlasma",
+      "ore",
       "rawOre"
     ],
     "families": [
@@ -1253,6 +1261,7 @@
       "cellPlasmaLight",
       "fluidGas",
       "fluidPlasma",
+      "ore",
       "rawOre"
     ],
     "families": [
@@ -1582,6 +1591,8 @@
       "ingot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -1727,6 +1738,8 @@
       "ingotHot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -1883,6 +1896,8 @@
       "ingotHot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -2113,6 +2128,8 @@
       "dustSmall",
       "dustTiny",
       "fluidPlasma",
+      "ore",
+      "oreSmall",
       "rawOre"
     ],
     "families": [
@@ -2665,6 +2682,8 @@
       "ingotHot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -2802,6 +2821,8 @@
       "ingotHot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -2958,6 +2979,8 @@
       "ingotHot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -3095,6 +3118,8 @@
       "ingot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -3247,6 +3272,8 @@
       "ingot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -3394,6 +3421,8 @@
       "gearGtSmall",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -3555,6 +3584,8 @@
       "ingot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -3713,6 +3744,8 @@
       "ingot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -3874,6 +3907,8 @@
       "ingot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -4023,6 +4058,8 @@
       "ingot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -4163,6 +4200,8 @@
       "ingot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -4299,6 +4338,8 @@
       "ingot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -4432,6 +4473,8 @@
       "ingot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -4569,6 +4612,8 @@
       "ingot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -4707,6 +4752,8 @@
       "ingotHot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -4843,6 +4890,8 @@
       "ingotHot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -4978,6 +5027,8 @@
       "ingot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -5128,6 +5179,8 @@
       "ingotHot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -5275,6 +5328,8 @@
       "ingot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -5427,6 +5482,8 @@
       "dustSmall",
       "dustTiny",
       "fluidPlasma",
+      "ore",
+      "oreSmall",
       "rawOre"
     ],
     "families": [
@@ -5547,6 +5604,8 @@
       "ingot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -5684,6 +5743,8 @@
       "ingot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -5832,6 +5893,8 @@
       "ingot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -5972,6 +6035,8 @@
       "ingot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -6109,6 +6174,8 @@
       "ingot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -6244,6 +6311,8 @@
       "ingot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -6373,6 +6442,8 @@
       "ingot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -6508,6 +6579,8 @@
       "ingot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -6643,6 +6716,8 @@
       "ingot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -6780,6 +6855,8 @@
       "ingot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -6933,6 +7010,8 @@
       "ingot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -7068,6 +7147,8 @@
       "ingot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -7207,6 +7288,8 @@
       "ingot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -7346,6 +7429,8 @@
       "ingot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -7481,6 +7566,8 @@
       "ingot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -7616,6 +7703,8 @@
       "ingot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -7747,6 +7836,8 @@
       "ingot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -7883,6 +7974,8 @@
       "ingotHot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -8019,6 +8112,8 @@
       "ingotHot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -8154,6 +8249,8 @@
       "ingot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -8290,6 +8387,8 @@
       "ingotHot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -8426,6 +8525,8 @@
       "ingotHot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -8565,6 +8666,8 @@
       "ingotHot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -8723,6 +8826,8 @@
       "ingotHot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -8883,6 +8988,8 @@
       "ingotHot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -9038,6 +9145,8 @@
       "ingot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -9192,6 +9301,8 @@
       "gearGt",
       "gearGtSmall",
       "itemCasing",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -9466,6 +9577,8 @@
       "ingot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -9627,6 +9740,8 @@
       "ingot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -9982,6 +10097,8 @@
       "ingot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -10131,6 +10248,8 @@
       "ingot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -10277,6 +10396,8 @@
       "ingot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -10426,6 +10547,8 @@
       "ingot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -10577,6 +10700,8 @@
       "ingot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -10723,6 +10848,8 @@
       "ingot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -11023,6 +11150,8 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
+      "oreSmall",
       "rawOre"
     ],
     "families": [
@@ -12628,6 +12757,8 @@
       "ingotHot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -21276,6 +21407,8 @@
       "ingot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -21856,6 +21989,8 @@
       "ingot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -23440,6 +23575,8 @@
       "ingotHot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -23579,6 +23716,8 @@
       "ingotHot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -23864,6 +24003,8 @@
       "ingot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -24002,6 +24143,8 @@
       "ingotHot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -24296,6 +24439,8 @@
       "ingotHot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -24444,6 +24589,8 @@
       "ingotHot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -24723,6 +24870,8 @@
       "ingotHot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -25018,6 +25167,8 @@
       "ingotHot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -25580,6 +25731,8 @@
       "ingotHot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -26147,6 +26300,8 @@
       "ingot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -26446,6 +26601,8 @@
       "ingot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -27129,6 +27286,8 @@
       "gem",
       "itemCasing",
       "lens",
+      "ore",
+      "oreSmall",
       "plate",
       "rawOre",
       "screw",
@@ -29985,6 +30144,8 @@
       "ingotHot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -30971,6 +31132,8 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
+      "oreSmall",
       "rawOre"
     ],
     "families": [
@@ -31840,6 +32003,8 @@
       "ingot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -32355,6 +32520,8 @@
       "ingotHot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -32503,6 +32670,8 @@
       "ingotHot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -32643,6 +32812,8 @@
       "ingotHot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -32780,6 +32951,8 @@
       "ingot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -32916,6 +33089,8 @@
       "ingot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -33053,6 +33228,8 @@
       "ingotHot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -33190,6 +33367,8 @@
       "ingot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -33346,6 +33525,8 @@
       "ingotHot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -33501,6 +33682,8 @@
       "ingotHot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -33639,6 +33822,8 @@
       "ingotHot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -34006,6 +34191,8 @@
       "ingotHot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -37081,6 +37268,8 @@
       "ingotHot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -37214,6 +37403,8 @@
       "ingot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -37350,6 +37541,8 @@
       "ingotHot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -37856,6 +38049,7 @@
     "shapes": [
       "cell",
       "fluidGas",
+      "ore",
       "rawOre"
     ],
     "families": [
@@ -37973,6 +38167,8 @@
       "gemFlawless",
       "itemCasing",
       "lens",
+      "ore",
+      "oreSmall",
       "plate",
       "rawOre",
       "screw",
@@ -38106,6 +38302,8 @@
       "gemFlawless",
       "itemCasing",
       "lens",
+      "ore",
+      "oreSmall",
       "plate",
       "rawOre",
       "screw",
@@ -38251,6 +38449,8 @@
       "gemFlawless",
       "itemCasing",
       "lens",
+      "ore",
+      "oreSmall",
       "plate",
       "rawOre",
       "screw",
@@ -38389,6 +38589,8 @@
       "gemFlawless",
       "itemCasing",
       "lens",
+      "ore",
+      "oreSmall",
       "plate",
       "rawOre",
       "screw",
@@ -38523,6 +38725,8 @@
       "gemFlawless",
       "itemCasing",
       "lens",
+      "ore",
+      "oreSmall",
       "plate",
       "rawOre",
       "screw",
@@ -38657,6 +38861,8 @@
       "gemFlawless",
       "itemCasing",
       "lens",
+      "ore",
+      "oreSmall",
       "plate",
       "rawOre",
       "screw",
@@ -38790,6 +38996,8 @@
       "dustTiny",
       "itemCasing",
       "lens",
+      "ore",
+      "oreSmall",
       "plate",
       "rawOre",
       "screw",
@@ -38906,6 +39114,8 @@
       "gemFlawless",
       "itemCasing",
       "lens",
+      "ore",
+      "oreSmall",
       "plate",
       "rawOre",
       "screw",
@@ -39051,6 +39261,8 @@
       "gemFlawless",
       "itemCasing",
       "lens",
+      "ore",
+      "oreSmall",
       "plate",
       "rawOre",
       "screw",
@@ -39196,6 +39408,8 @@
       "gemFlawless",
       "itemCasing",
       "lens",
+      "ore",
+      "oreSmall",
       "plate",
       "rawOre",
       "screw",
@@ -39329,6 +39543,8 @@
       "gemFlawless",
       "itemCasing",
       "lens",
+      "ore",
+      "oreSmall",
       "plate",
       "rawOre",
       "screw",
@@ -39458,6 +39674,8 @@
       "gemFlawless",
       "itemCasing",
       "lens",
+      "ore",
+      "oreSmall",
       "plate",
       "rawOre",
       "screw",
@@ -39585,6 +39803,8 @@
       "gemFlawless",
       "itemCasing",
       "lens",
+      "ore",
+      "oreSmall",
       "plate",
       "rawOre",
       "screw",
@@ -39718,6 +39938,8 @@
       "gemFlawless",
       "itemCasing",
       "lens",
+      "ore",
+      "oreSmall",
       "plate",
       "rawOre",
       "screw",
@@ -39863,6 +40085,8 @@
       "gemFlawless",
       "itemCasing",
       "lens",
+      "ore",
+      "oreSmall",
       "plate",
       "rawOre",
       "screw",
@@ -39996,6 +40220,8 @@
       "gem",
       "itemCasing",
       "lens",
+      "ore",
+      "oreSmall",
       "plate",
       "rawOre",
       "screw",
@@ -40107,6 +40333,8 @@
       "dustTiny",
       "gem",
       "itemCasing",
+      "ore",
+      "oreSmall",
       "plate",
       "rawOre",
       "screw",
@@ -40225,6 +40453,8 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
+      "oreSmall",
       "rawOre"
     ],
     "families": [
@@ -40344,6 +40574,8 @@
       "gem",
       "itemCasing",
       "lens",
+      "ore",
+      "oreSmall",
       "plate",
       "rawOre",
       "screw",
@@ -40463,6 +40695,8 @@
       "gem",
       "itemCasing",
       "lens",
+      "ore",
+      "oreSmall",
       "plate",
       "rawOre",
       "screw",
@@ -40581,6 +40815,8 @@
       "dustTiny",
       "gem",
       "itemCasing",
+      "ore",
+      "oreSmall",
       "plate",
       "rawOre",
       "screw",
@@ -40709,6 +40945,8 @@
       "itemCasing",
       "lens",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -40845,6 +41083,8 @@
       "dustSmall",
       "dustTiny",
       "itemCasing",
+      "ore",
+      "oreSmall",
       "plate",
       "rawOre",
       "screw",
@@ -40968,6 +41208,8 @@
       "dustTiny",
       "gem",
       "itemCasing",
+      "ore",
+      "oreSmall",
       "plate",
       "rawOre",
       "screw",
@@ -41083,6 +41325,8 @@
       "dustTiny",
       "gem",
       "itemCasing",
+      "ore",
+      "oreSmall",
       "plate",
       "rawOre",
       "screw",
@@ -41209,6 +41453,8 @@
       "dustTiny",
       "gem",
       "itemCasing",
+      "ore",
+      "oreSmall",
       "plate",
       "rawOre",
       "screw",
@@ -41333,6 +41579,8 @@
       "dustSmall",
       "dustTiny",
       "itemCasing",
+      "ore",
+      "oreSmall",
       "plate",
       "rawOre",
       "screw",
@@ -41472,6 +41720,8 @@
       "gemFlawless",
       "itemCasing",
       "lens",
+      "ore",
+      "oreSmall",
       "plate",
       "rawOre",
       "screw",
@@ -41607,6 +41857,8 @@
       "gemFlawless",
       "itemCasing",
       "lens",
+      "ore",
+      "oreSmall",
       "plate",
       "rawOre",
       "screw",
@@ -41745,6 +41997,8 @@
       "ingot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -41891,6 +42145,8 @@
       "dustTiny",
       "gem",
       "itemCasing",
+      "ore",
+      "oreSmall",
       "plate",
       "rawOre",
       "screw",
@@ -42019,6 +42275,8 @@
       "dustTiny",
       "gem",
       "itemCasing",
+      "ore",
+      "oreSmall",
       "plate",
       "rawOre",
       "screw",
@@ -42391,6 +42649,8 @@
       "dustTiny",
       "gem",
       "itemCasing",
+      "ore",
+      "oreSmall",
       "plate",
       "rawOre",
       "screw",
@@ -42512,6 +42772,8 @@
       "dustSmall",
       "dustTiny",
       "itemCasing",
+      "ore",
+      "oreSmall",
       "plate",
       "rawOre",
       "screw",
@@ -42749,6 +43011,8 @@
       "dustTiny",
       "gem",
       "itemCasing",
+      "ore",
+      "oreSmall",
       "plate",
       "rawOre",
       "screw",
@@ -42888,6 +43152,8 @@
       "dustTiny",
       "gem",
       "itemCasing",
+      "ore",
+      "oreSmall",
       "plate",
       "rawOre",
       "screw",
@@ -43008,6 +43274,8 @@
       "gem",
       "itemCasing",
       "lens",
+      "ore",
+      "oreSmall",
       "plate",
       "rawOre",
       "screw",
@@ -43132,6 +43400,8 @@
       "gem",
       "itemCasing",
       "lens",
+      "ore",
+      "oreSmall",
       "plate",
       "rawOre",
       "screw",
@@ -43256,6 +43526,8 @@
       "gem",
       "itemCasing",
       "lens",
+      "ore",
+      "oreSmall",
       "plate",
       "rawOre",
       "screw",
@@ -43380,6 +43652,8 @@
       "gem",
       "itemCasing",
       "lens",
+      "ore",
+      "oreSmall",
       "plate",
       "rawOre",
       "screw",
@@ -43504,6 +43778,8 @@
       "gem",
       "itemCasing",
       "lens",
+      "ore",
+      "oreSmall",
       "plate",
       "rawOre",
       "screw",
@@ -43628,6 +43904,8 @@
       "gem",
       "itemCasing",
       "lens",
+      "ore",
+      "oreSmall",
       "plate",
       "rawOre",
       "screw",
@@ -43913,6 +44191,8 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
+      "oreSmall",
       "rawOre"
     ],
     "families": [
@@ -44004,6 +44284,8 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
+      "oreSmall",
       "rawOre"
     ],
     "families": [
@@ -48709,6 +48991,8 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
+      "oreSmall",
       "rawOre"
     ],
     "families": [
@@ -53346,6 +53630,7 @@
     "shapes": [
       "cell",
       "fluidGas",
+      "ore",
       "rawOre"
     ],
     "families": [
@@ -54121,6 +54406,7 @@
     "shapes": [
       "cell",
       "fluidGas",
+      "ore",
       "rawOre"
     ],
     "families": [
@@ -57989,6 +58275,8 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
+      "oreSmall",
       "rawOre"
     ],
     "families": [
@@ -59361,6 +59649,7 @@
     "shapes": [
       "cell",
       "fluidGas",
+      "ore",
       "rawOre"
     ],
     "families": [
@@ -64596,6 +64885,8 @@
       "ingot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -67381,6 +67672,8 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
+      "oreSmall",
       "rawOre"
     ],
     "families": [
@@ -68815,6 +69108,8 @@
       "dustTiny",
       "fluidMolten",
       "fluidPlasma",
+      "ore",
+      "oreSmall",
       "plate",
       "rawOre"
     ],
@@ -69073,6 +69368,8 @@
       "dustSmall",
       "dustTiny",
       "fluidMolten",
+      "ore",
+      "oreSmall",
       "plate",
       "rawOre"
     ],
@@ -69564,6 +69861,8 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
+      "oreSmall",
       "rawOre"
     ],
     "families": [
@@ -69872,6 +70171,8 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
+      "oreSmall",
       "rawOre"
     ],
     "families": [
@@ -69983,6 +70284,8 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
+      "oreSmall",
       "rawOre"
     ],
     "families": [
@@ -70094,6 +70397,8 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
+      "oreSmall",
       "rawOre"
     ],
     "families": [
@@ -70206,6 +70511,8 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
+      "oreSmall",
       "rawOre"
     ],
     "families": [
@@ -70313,6 +70620,8 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
+      "oreSmall",
       "rawOre"
     ],
     "families": [
@@ -70415,6 +70724,8 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
+      "oreSmall",
       "rawOre"
     ],
     "families": [
@@ -70523,6 +70834,8 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
+      "oreSmall",
       "rawOre"
     ],
     "families": [
@@ -70629,6 +70942,8 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
+      "oreSmall",
       "rawOre"
     ],
     "families": [
@@ -70736,6 +71051,8 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
+      "oreSmall",
       "rawOre"
     ],
     "families": [
@@ -70859,6 +71176,8 @@
       "ingotHot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -70998,6 +71317,8 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
+      "oreSmall",
       "rawOre"
     ],
     "families": [
@@ -71102,6 +71423,8 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
+      "oreSmall",
       "rawOre"
     ],
     "families": [
@@ -71325,6 +71648,8 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
+      "oreSmall",
       "rawOre"
     ],
     "families": [
@@ -71435,6 +71760,8 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
+      "oreSmall",
       "rawOre"
     ],
     "families": [
@@ -71542,6 +71869,8 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
+      "oreSmall",
       "rawOre"
     ],
     "families": [
@@ -71653,6 +71982,8 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
+      "oreSmall",
       "rawOre"
     ],
     "families": [
@@ -71862,6 +72193,8 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
+      "oreSmall",
       "rawOre"
     ],
     "families": [
@@ -71973,6 +72306,8 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
+      "oreSmall",
       "rawOre"
     ],
     "families": [
@@ -72079,6 +72414,8 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
+      "oreSmall",
       "rawOre"
     ],
     "families": [
@@ -72193,6 +72530,8 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
+      "oreSmall",
       "rawOre"
     ],
     "families": [
@@ -72301,6 +72640,8 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
+      "oreSmall",
       "rawOre"
     ],
     "families": [
@@ -73605,6 +73946,8 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
+      "oreSmall",
       "rawOre"
     ],
     "families": [
@@ -73725,6 +74068,8 @@
       "ingotHot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -73930,6 +74275,8 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
+      "oreSmall",
       "rawOre"
     ],
     "families": [
@@ -74126,6 +74473,8 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
+      "oreSmall",
       "rawOre",
       "toolHeadHammer"
     ],
@@ -74337,6 +74686,8 @@
       "ingotHot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -74465,6 +74816,8 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
+      "oreSmall",
       "rawOre"
     ],
     "families": [
@@ -74579,6 +74932,8 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
+      "oreSmall",
       "rawOre"
     ],
     "families": [
@@ -74776,6 +75131,8 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
+      "oreSmall",
       "rawOre"
     ],
     "families": [
@@ -75102,6 +75459,8 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
+      "oreSmall",
       "rawOre"
     ],
     "families": [
@@ -75210,6 +75569,8 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
+      "oreSmall",
       "rawOre"
     ],
     "families": [
@@ -75633,6 +75994,8 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
+      "oreSmall",
       "rawOre"
     ],
     "families": [
@@ -75737,6 +76100,8 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
+      "oreSmall",
       "rawOre"
     ],
     "families": [
@@ -75854,6 +76219,8 @@
       "ingotHot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -76867,6 +77234,8 @@
       "dustSmall",
       "dustTiny",
       "fluidMolten",
+      "ore",
+      "oreSmall",
       "rawOre"
     ],
     "families": [
@@ -77431,6 +77800,8 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
+      "oreSmall",
       "rawOre"
     ],
     "families": [
@@ -77539,6 +77910,8 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
+      "oreSmall",
       "rawOre"
     ],
     "families": [
@@ -77651,6 +78024,8 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
+      "oreSmall",
       "rawOre"
     ],
     "families": [
@@ -77759,6 +78134,8 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
+      "oreSmall",
       "rawOre"
     ],
     "families": [
@@ -77871,6 +78248,8 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
+      "oreSmall",
       "rawOre"
     ],
     "families": [
@@ -77975,6 +78354,8 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
+      "oreSmall",
       "rawOre"
     ],
     "families": [
@@ -78087,6 +78468,8 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
+      "oreSmall",
       "rawOre"
     ],
     "families": [
@@ -78190,6 +78573,8 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
+      "oreSmall",
       "rawOre"
     ],
     "families": [
@@ -78305,6 +78690,8 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
+      "oreSmall",
       "rawOre"
     ],
     "families": [
@@ -78411,6 +78798,8 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
+      "oreSmall",
       "rawOre"
     ],
     "families": [
@@ -78517,6 +78906,8 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
+      "oreSmall",
       "rawOre"
     ],
     "families": [
@@ -78625,6 +79016,8 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
+      "oreSmall",
       "rawOre"
     ],
     "families": [
@@ -78747,6 +79140,8 @@
       "ingotHot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -78889,6 +79284,8 @@
       "ingot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -79023,6 +79420,8 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
+      "oreSmall",
       "rawOre"
     ],
     "families": [
@@ -79131,6 +79530,8 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
+      "oreSmall",
       "rawOre"
     ],
     "families": [
@@ -79235,6 +79636,8 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
+      "oreSmall",
       "rawOre"
     ],
     "families": [
@@ -79347,6 +79750,8 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
+      "oreSmall",
       "rawOre"
     ],
     "families": [
@@ -79448,6 +79853,8 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
+      "oreSmall",
       "rawOre"
     ],
     "families": [
@@ -79556,6 +79963,8 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
+      "oreSmall",
       "rawOre"
     ],
     "families": [
@@ -79672,6 +80081,8 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
+      "oreSmall",
       "rawOre"
     ],
     "families": [
@@ -79783,6 +80194,8 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
+      "oreSmall",
       "rawOre"
     ],
     "families": [
@@ -79891,6 +80304,8 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
+      "oreSmall",
       "rawOre"
     ],
     "families": [
@@ -79995,6 +80410,8 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
+      "oreSmall",
       "rawOre"
     ],
     "families": [
@@ -80108,6 +80525,8 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
+      "oreSmall",
       "rawOre"
     ],
     "families": [
@@ -80212,6 +80631,8 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
+      "oreSmall",
       "rawOre"
     ],
     "families": [
@@ -80312,6 +80733,8 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
+      "oreSmall",
       "rawOre"
     ],
     "families": [
@@ -80408,6 +80831,8 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
+      "oreSmall",
       "rawOre"
     ],
     "families": [
@@ -80528,6 +80953,8 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
+      "oreSmall",
       "rawOre"
     ],
     "families": [
@@ -80644,6 +81071,8 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
+      "oreSmall",
       "rawOre"
     ],
     "families": [
@@ -80752,6 +81181,8 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
+      "oreSmall",
       "rawOre"
     ],
     "families": [
@@ -80861,6 +81292,8 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
+      "oreSmall",
       "rawOre"
     ],
     "families": [
@@ -80972,6 +81405,8 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
+      "oreSmall",
       "rawOre"
     ],
     "families": [
@@ -81093,6 +81528,8 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
+      "oreSmall",
       "rawOre"
     ],
     "families": [
@@ -81210,6 +81647,8 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
+      "oreSmall",
       "rawOre"
     ],
     "families": [
@@ -81318,6 +81757,8 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
+      "oreSmall",
       "rawOre"
     ],
     "families": [
@@ -81433,6 +81874,8 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
+      "oreSmall",
       "rawOre"
     ],
     "families": [
@@ -81548,6 +81991,8 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
+      "oreSmall",
       "rawOre"
     ],
     "families": [
@@ -81650,6 +82095,8 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
+      "oreSmall",
       "rawOre"
     ],
     "families": [
@@ -81753,6 +82200,8 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
+      "oreSmall",
       "rawOre"
     ],
     "families": [
@@ -81954,6 +82403,8 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
+      "oreSmall",
       "rawOre"
     ],
     "families": [
@@ -82062,6 +82513,8 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
+      "oreSmall",
       "rawOre"
     ],
     "families": [
@@ -82165,6 +82618,8 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
+      "oreSmall",
       "rawOre"
     ],
     "families": [
@@ -82270,6 +82725,8 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
+      "oreSmall",
       "rawOre"
     ],
     "families": [
@@ -82375,6 +82832,8 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
+      "oreSmall",
       "rawOre"
     ],
     "families": [
@@ -82477,6 +82936,8 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
+      "oreSmall",
       "rawOre"
     ],
     "families": [
@@ -82695,6 +83156,8 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
+      "oreSmall",
       "rawOre"
     ],
     "families": [
@@ -82802,6 +83265,8 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
+      "oreSmall",
       "rawOre"
     ],
     "families": [
@@ -82927,6 +83392,8 @@
       "ingotHot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -83058,6 +83525,8 @@
       "ingotHot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -83190,6 +83659,8 @@
       "ingotHot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -83310,6 +83781,8 @@
       "ingotHot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -83641,6 +84114,8 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
+      "oreSmall",
       "rawOre"
     ],
     "families": [
@@ -83883,6 +84358,8 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
+      "oreSmall",
       "rawOre"
     ],
     "families": [
@@ -84326,6 +84803,8 @@
       "ingotHot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -84470,6 +84949,8 @@
       "ingotHot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -84750,6 +85231,8 @@
       "ingotHot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -85287,6 +85770,8 @@
       "ingotHot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",
@@ -85532,6 +86017,8 @@
       "ingot",
       "itemCasing",
       "nugget",
+      "ore",
+      "oreSmall",
       "plate",
       "plateDense",
       "plateDouble",

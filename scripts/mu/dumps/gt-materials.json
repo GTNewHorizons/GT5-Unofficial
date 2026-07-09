@@ -213,6 +213,11 @@
     "removedPrefixes": [],
     "prefixLocalNameOverrides": [
       {
+        "prefix": "ore",
+        "legacyName": "Hydrogen Ice",
+        "mlDefaultName": "Hydrogen Ore"
+      },
+      {
         "prefix": "rawOre",
         "legacyName": "Raw Hydrogen Ice",
         "mlDefaultName": "Raw Hydrogen Ore"
@@ -1499,6 +1504,11 @@
     "removedPrefixes": [],
     "prefixLocalNameOverrides": [
       {
+        "prefix": "ore",
+        "legacyName": "Nitrogen Ice",
+        "mlDefaultName": "Nitrogen Ore"
+      },
+      {
         "prefix": "rawOre",
         "legacyName": "Raw Nitrogen Ice",
         "mlDefaultName": "Raw Nitrogen Ore"
@@ -1615,6 +1625,11 @@
     ],
     "removedPrefixes": [],
     "prefixLocalNameOverrides": [
+      {
+        "prefix": "ore",
+        "legacyName": "Oxygen Ice",
+        "mlDefaultName": "Oxygen Ore"
+      },
       {
         "prefix": "rawOre",
         "legacyName": "Raw Oxygen Ice",
@@ -47650,6 +47665,11 @@
     "removedPrefixes": [],
     "prefixLocalNameOverrides": [
       {
+        "prefix": "ore",
+        "legacyName": "Carbon Dioxide Ice",
+        "mlDefaultName": "Carbon Dioxide Ore"
+      },
+      {
         "prefix": "rawOre",
         "legacyName": "Raw Carbon Dioxide Ice",
         "mlDefaultName": "Raw Carbon Dioxide Ore"
@@ -55537,6 +55557,11 @@
     "removedPrefixes": [],
     "prefixLocalNameOverrides": [
       {
+        "prefix": "ore",
+        "legacyName": "Aer Infused Stone",
+        "mlDefaultName": "Aer Ore"
+      },
+      {
         "prefix": "crushedCentrifuged",
         "legacyName": "Centrifuged Aer Crystals",
         "mlDefaultName": "Centrifuged Aer Ore"
@@ -55795,6 +55820,11 @@
     "addedPrefixes": [],
     "removedPrefixes": [],
     "prefixLocalNameOverrides": [
+      {
+        "prefix": "ore",
+        "legacyName": "Ignis Infused Stone",
+        "mlDefaultName": "Ignis Ore"
+      },
       {
         "prefix": "crushedCentrifuged",
         "legacyName": "Centrifuged Ignis Crystals",
@@ -56055,6 +56085,11 @@
     "removedPrefixes": [],
     "prefixLocalNameOverrides": [
       {
+        "prefix": "ore",
+        "legacyName": "Terra Infused Stone",
+        "mlDefaultName": "Terra Ore"
+      },
+      {
         "prefix": "crushedCentrifuged",
         "legacyName": "Centrifuged Terra Crystals",
         "mlDefaultName": "Centrifuged Terra Ore"
@@ -56313,6 +56348,11 @@
     "addedPrefixes": [],
     "removedPrefixes": [],
     "prefixLocalNameOverrides": [
+      {
+        "prefix": "ore",
+        "legacyName": "Aqua Infused Stone",
+        "mlDefaultName": "Aqua Ore"
+      },
       {
         "prefix": "crushedCentrifuged",
         "legacyName": "Centrifuged Aqua Crystals",
@@ -56573,6 +56613,11 @@
     "removedPrefixes": [],
     "prefixLocalNameOverrides": [
       {
+        "prefix": "ore",
+        "legacyName": "Perditio Infused Stone",
+        "mlDefaultName": "Perditio Ore"
+      },
+      {
         "prefix": "crushedCentrifuged",
         "legacyName": "Centrifuged Perditio Crystals",
         "mlDefaultName": "Centrifuged Perditio Ore"
@@ -56831,6 +56876,11 @@
     "addedPrefixes": [],
     "removedPrefixes": [],
     "prefixLocalNameOverrides": [
+      {
+        "prefix": "ore",
+        "legacyName": "Ordo Infused Stone",
+        "mlDefaultName": "Ordo Ore"
+      },
       {
         "prefix": "crushedCentrifuged",
         "legacyName": "Centrifuged Ordo Crystals",
@@ -67839,6 +67889,11 @@
     "removedPrefixes": [],
     "prefixLocalNameOverrides": [
       {
+        "prefix": "ore",
+        "legacyName": "Sulfur Dioxide Ice",
+        "mlDefaultName": "Sulfur Dioxide Ore"
+      },
+      {
         "prefix": "rawOre",
         "legacyName": "Raw Sulfur Dioxide Ice",
         "mlDefaultName": "Raw Sulfur Dioxide Ore"
@@ -68683,6 +68738,11 @@
     ],
     "removedPrefixes": [],
     "prefixLocalNameOverrides": [
+      {
+        "prefix": "ore",
+        "legacyName": "Ammonia Ice",
+        "mlDefaultName": "Ammonia Ore"
+      },
       {
         "prefix": "rawOre",
         "legacyName": "Raw Ammonia Ice",
@@ -74402,6 +74462,11 @@
     ],
     "removedPrefixes": [],
     "prefixLocalNameOverrides": [
+      {
+        "prefix": "ore",
+        "legacyName": "Methane Ice",
+        "mlDefaultName": "Methane Ore"
+      },
       {
         "prefix": "rawOre",
         "legacyName": "Raw Methane Ice",
@@ -92861,6 +92926,11 @@
     "removedPrefixes": [],
     "prefixLocalNameOverrides": [
       {
+        "prefix": "ore",
+        "legacyName": "Pitchblende",
+        "mlDefaultName": "Pitchblende Ore"
+      },
+      {
         "prefix": "crushedCentrifuged",
         "legacyName": "Centrifuged Pitchblende",
         "mlDefaultName": "Centrifuged Pitchblende Ore"
@@ -96848,6 +96918,11 @@
     "addedPrefixes": [],
     "removedPrefixes": [],
     "prefixLocalNameOverrides": [
+      {
+        "prefix": "ore",
+        "legacyName": "Talc",
+        "mlDefaultName": "Talc Ore"
+      },
       {
         "prefix": "crushedCentrifuged",
         "legacyName": "Centrifuged Talc",
@@ -101195,6 +101270,11 @@
     "removedPrefixes": [],
     "prefixLocalNameOverrides": [
       {
+        "prefix": "ore",
+        "legacyName": "Bentonite",
+        "mlDefaultName": "Bentonite Ore"
+      },
+      {
         "prefix": "crushedCentrifuged",
         "legacyName": "Centrifuged Bentonite",
         "mlDefaultName": "Centrifuged Bentonite Ore"
@@ -101412,6 +101492,11 @@
     "removedPrefixes": [],
     "prefixLocalNameOverrides": [
       {
+        "prefix": "ore",
+        "legacyName": "Fullers Earth",
+        "mlDefaultName": "Fullers Earth Ore"
+      },
+      {
         "prefix": "crushedCentrifuged",
         "legacyName": "Centrifuged Fullers Earth",
         "mlDefaultName": "Centrifuged Fullers Earth Ore"
@@ -101620,6 +101705,11 @@
     "addedPrefixes": [],
     "removedPrefixes": [],
     "prefixLocalNameOverrides": [
+      {
+        "prefix": "ore",
+        "legacyName": "Kaolinite",
+        "mlDefaultName": "Kaolinite Ore"
+      },
       {
         "prefix": "crushedCentrifuged",
         "legacyName": "Centrifuged Kaolinite",
@@ -102183,6 +102273,11 @@
     "removedPrefixes": [],
     "prefixLocalNameOverrides": [
       {
+        "prefix": "ore",
+        "legacyName": "Vermiculite",
+        "mlDefaultName": "Vermiculite Ore"
+      },
+      {
         "prefix": "crushedCentrifuged",
         "legacyName": "Centrifuged Vermiculite",
         "mlDefaultName": "Centrifuged Vermiculite Ore"
@@ -102744,6 +102839,11 @@
     "removedPrefixes": [],
     "prefixLocalNameOverrides": [
       {
+        "prefix": "ore",
+        "legacyName": "Basaltic Mineral Sand",
+        "mlDefaultName": "Basaltic Mineral Sand Ore"
+      },
+      {
         "prefix": "crushedCentrifuged",
         "legacyName": "Centrifuged Basaltic Mineral Sand",
         "mlDefaultName": "Centrifuged Basaltic Mineral Sand Ore"
@@ -102960,6 +103060,11 @@
     "removedPrefixes": [],
     "prefixLocalNameOverrides": [
       {
+        "prefix": "ore",
+        "legacyName": "Granitic Mineral Sand",
+        "mlDefaultName": "Granitic Mineral Sand Ore"
+      },
+      {
         "prefix": "crushedCentrifuged",
         "legacyName": "Centrifuged Granitic Mineral Sand",
         "mlDefaultName": "Centrifuged Granitic Mineral Sand Ore"
@@ -103162,6 +103267,11 @@
     "addedPrefixes": [],
     "removedPrefixes": [],
     "prefixLocalNameOverrides": [
+      {
+        "prefix": "ore",
+        "legacyName": "Cassiterite Sand",
+        "mlDefaultName": "Cassiterite Sand Ore"
+      },
       {
         "prefix": "crushedCentrifuged",
         "legacyName": "Centrifuged Cassiterite Sand",
@@ -103367,6 +103477,11 @@
     "removedPrefixes": [],
     "prefixLocalNameOverrides": [
       {
+        "prefix": "ore",
+        "legacyName": "Garnet Sand",
+        "mlDefaultName": "Garnet Sand Ore"
+      },
+      {
         "prefix": "crushedCentrifuged",
         "legacyName": "Centrifuged Garnet Sand",
         "mlDefaultName": "Centrifuged Garnet Sand Ore"
@@ -103571,6 +103686,11 @@
     "addedPrefixes": [],
     "removedPrefixes": [],
     "prefixLocalNameOverrides": [
+      {
+        "prefix": "ore",
+        "legacyName": "Quartz Sand",
+        "mlDefaultName": "Quartz Sand Ore"
+      },
       {
         "prefix": "crushedCentrifuged",
         "legacyName": "Centrifuged Quartz Sand",
@@ -105201,6 +105321,11 @@
     "addedPrefixes": [],
     "removedPrefixes": [],
     "prefixLocalNameOverrides": [
+      {
+        "prefix": "ore",
+        "legacyName": "Glauconite Sand",
+        "mlDefaultName": "Glauconite Sand Ore"
+      },
       {
         "prefix": "crushedCentrifuged",
         "legacyName": "Centrifuged Glauconite Sand",
