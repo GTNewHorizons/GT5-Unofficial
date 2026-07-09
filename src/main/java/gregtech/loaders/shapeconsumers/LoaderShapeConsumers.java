@@ -30,5 +30,13 @@ public final class LoaderShapeConsumers {
         ConsumerBolt.register();
         ConsumerStick.register();
         ConsumerStickLong.register();
+
+        ConsumerFoil.register();
+        ConsumerFineWire.register();
+        ConsumerNugget.register();
+        ConsumerLens.register();
+        ConsumerGem.register();
+        ConsumerToolHead.register();
+        ConsumerToolOther.register();
     }
 }
