@@ -26,7 +26,6 @@ import java.util.stream.IntStream;
 
 import javax.annotation.Nullable;
 
-import gregtech.api.util.FluidStackLong;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -119,6 +118,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
 import gregtech.api.objects.GTDualInputPattern;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.FluidStackLong;
 import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.extensions.ArrayExt;

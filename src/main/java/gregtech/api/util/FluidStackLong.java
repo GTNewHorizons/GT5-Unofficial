@@ -7,7 +7,7 @@ import net.minecraftforge.fluids.FluidStack;
 // FluidStack that can store more than INTMAX
 public class FluidStackLong extends FluidStack {
 
-    private long amountLong = 0;
+    private long amountLong;
 
     public FluidStackLong(FluidStack stack) {
         this(stack, GTUtility.getFluidAmount(stack));

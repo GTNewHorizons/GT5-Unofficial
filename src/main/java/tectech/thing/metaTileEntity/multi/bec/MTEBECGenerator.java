@@ -23,8 +23,8 @@ import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 
-import appeng.util.item.AEFluidStack;
 import appeng.api.storage.data.IAEFluidStack;
+import appeng.util.item.AEFluidStack;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GTAuthors;
@@ -223,9 +223,12 @@ public class MTEBECGenerator extends MTEBECMultiblockBase<MTEBECGenerator> {
             return;
         }
 
-        euQuota.subtract(GTUtility.getFluidAmount(toDrain) / GTUtility.getFluidAmount(recipe.mFluidInputs[0]) * (long) recipe.mEUt);
+        euQuota.subtract(
+            GTUtility.getFluidAmount(toDrain) / GTUtility.getFluidAmount(recipe.mFluidInputs[0]) * (long) recipe.mEUt);
 
-        outputs.addTo(recipe.mFluidOutputs[0].getFluid(), GTUtility.getFluidAmount(recipe.mFluidInputs[0]) * (long) parallels);
+        outputs.addTo(
+            recipe.mFluidOutputs[0].getFluid(),
+            GTUtility.getFluidAmount(recipe.mFluidInputs[0]) * (long) parallels);
 
         this.mMaxProgresstime = Math.max(this.mMaxProgresstime, recipe.mDuration);
     }

@@ -98,8 +98,7 @@ public class ItemEjectionHelper {
             GTUtility.ItemId id = e.getKey();
             long amount = e.getLongValue();
 
-            ItemParallelData parallelData = new ItemParallelData(
-                id, amount * startingParallels, amount);
+            ItemParallelData parallelData = new ItemParallelData(id, amount * startingParallels, amount);
 
             outputParallels.add(parallelData);
 

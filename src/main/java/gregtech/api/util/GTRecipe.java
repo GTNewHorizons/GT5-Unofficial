@@ -706,7 +706,8 @@ public class GTRecipe implements Comparable<GTRecipe> {
 
                 // Consume from the chosen alternatives fluid pool
                 if (selectedAlt != null) {
-                    long consumed = (long) (GTUtility.getFluidAmount(selectedAlt) * Math.min(currentParallel, bestParallelForSlot));
+                    long consumed = (long) (GTUtility.getFluidAmount(selectedAlt)
+                        * Math.min(currentParallel, bestParallelForSlot));
                     fluidMap.mergeLong(selectedAlt.getFluid(), -consumed, Long::sum);
                 }
 
@@ -1337,7 +1338,8 @@ public class GTRecipe implements Comparable<GTRecipe> {
                     FluidStack fluid = meHatch.getFirstValidStack(true);
                     if (fluid == null) return 0;
                     if (!GTUtility.areFluidsEqual(fluid, fluidConsumptions[i])) return 0;
-                    fluidConsumptionsFromME.merge(fluid.getFluid(), (long) GTUtility.getFluidAmount(fluidConsumptions[i]), Long::sum);
+                    fluidConsumptionsFromME
+                        .merge(fluid.getFluid(), (long) GTUtility.getFluidAmount(fluidConsumptions[i]), Long::sum);
                 }
             }
             // Calculate parallel from ME input hatches
@@ -1345,7 +1347,8 @@ public class GTRecipe implements Comparable<GTRecipe> {
                 Fluid fluid = entry.getKey();
                 if (!fluidsFromME.containsKey(fluid)) return 0;
                 long consume = entry.getValue();
-                currentParallel = Math.min(currentParallel, (double) GTUtility.getFluidAmount(fluidsFromME.get(fluid)) / consume);
+                currentParallel = Math
+                    .min(currentParallel, (double) GTUtility.getFluidAmount(fluidsFromME.get(fluid)) / consume);
                 if (currentParallel <= 0) return 0;
             }
 
@@ -1363,7 +1366,8 @@ public class GTRecipe implements Comparable<GTRecipe> {
                 }
                 if (fluid == null) return 0;
                 if (!GTUtility.areFluidsEqual(fluid, fluidConsumptions[i])) return 0;
-                currentParallel = Math.min(currentParallel, (double) GTUtility.getFluidAmount(fluid) / fluidConsumptions[i].amount);
+                currentParallel = Math
+                    .min(currentParallel, (double) GTUtility.getFluidAmount(fluid) / fluidConsumptions[i].amount);
                 if (currentParallel <= 0) return 0;
             }
             return currentParallel;

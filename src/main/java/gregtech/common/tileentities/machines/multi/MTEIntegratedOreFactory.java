@@ -275,7 +275,8 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
             if (!depleteInput(GTModHandler.getDistilledWater(tryDrain))) {
                 long maxHatch = 0;
                 for (FluidStack sf : getStoredFluids()) {
-                    if (sf != null && sf.isFluidEqual(GTModHandler.getDistilledWater(1L)) && GTUtility.getFluidAmount(sf) > maxHatch) {
+                    if (sf != null && sf.isFluidEqual(GTModHandler.getDistilledWater(1L))
+                        && GTUtility.getFluidAmount(sf) > maxHatch) {
                         maxHatch = GTUtility.getFluidAmount(sf);
                     }
                 }
@@ -292,7 +293,8 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
             if (!depleteInput(Materials.Lubricant.getFluid(tryDrain))) {
                 long maxHatch = 0;
                 for (FluidStack sf : getStoredFluids()) {
-                    if (sf != null && sf.isFluidEqual(Materials.Lubricant.getFluid(1L)) && GTUtility.getFluidAmount(sf) > maxHatch) {
+                    if (sf != null && sf.isFluidEqual(Materials.Lubricant.getFluid(1L))
+                        && GTUtility.getFluidAmount(sf) > maxHatch) {
                         maxHatch = GTUtility.getFluidAmount(sf);
                     }
                 }
@@ -519,7 +521,8 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
                     if (!depleteInput(new FluidStackLong(requiredFluid.getFluid(), tryDrain))) {
                         long maxHatch = 0;
                         for (FluidStack sf : getStoredFluids()) {
-                            if (sf != null && sf.isFluidEqual(requiredFluid) && GTUtility.getFluidAmount(sf) > maxHatch) {
+                            if (sf != null && sf.isFluidEqual(requiredFluid)
+                                && GTUtility.getFluidAmount(sf) > maxHatch) {
                                 maxHatch = GTUtility.getFluidAmount(sf);
                             }
                         }

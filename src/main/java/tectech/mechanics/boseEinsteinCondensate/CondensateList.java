@@ -82,9 +82,7 @@ public class CondensateList extends Object2LongOpenHashMap<Fluid> {
     public List<FluidStack> toFluidStacks() {
         ArrayList<FluidStack> out = new ArrayList<>();
 
-        Object2LongMaps.fastForEach(this, e -> {
-            out.add(new FluidStackLong(e.getKey(), e.getLongValue()));
-        });
+        Object2LongMaps.fastForEach(this, e -> { out.add(new FluidStackLong(e.getKey(), e.getLongValue())); });
 
         return out;
     }
