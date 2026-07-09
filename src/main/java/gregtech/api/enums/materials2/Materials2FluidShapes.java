@@ -118,6 +118,7 @@ public class Materials2FluidShapes {
                 fluid.setTemperature(fluidRef.temperature());
                 attrs.accept(fluid, fluidRef.temperature());
             })
+            .iconPath((shape, material) -> requireRef(ref, shape, material).texture())
             .build();
     }
 

@@ -721,6 +721,7 @@ public final class MaterialDataDump {
         Map<String, Object> json = new LinkedHashMap<>();
         json.put("name", ref.name());
         json.put("temperature", ref.temperature());
+        json.put("texture", ref.texture());
         return json;
     }
 
