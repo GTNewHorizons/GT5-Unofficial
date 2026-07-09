@@ -70,9 +70,11 @@ public class PosteaTransformers implements Runnable {
     /// Migrates saved bartworks werkstoff item stacks (`bartworks:gt.bwMetaGenerated<prefix>`, damage =
     /// werkstoff id) into the equivalent MaterialLib stack, resolved through the werkstoff's bridge material
     /// exactly like the live item path (`WerkstoffLoader#getCorrespondingItemStackUnsafe`). Damages of
-    /// werkstoffe unknown to MaterialLib (a third-party WerkstoffAdder's) pass through unchanged; the
-    /// bartworks block-kind slots (storage blocks, casings, ores) are not migrated -- they stay
-    /// legacy-canonical for now.
+    /// werkstoffe unknown to MaterialLib (a third-party WerkstoffAdder's) pass through unchanged. Ore/small ore
+    /// migrate through [BWOreAdapter] instead (block-kind, no `bw.bwMetaGenerated<prefix>` item exists for
+    /// them); storage blocks migrate through [#registerWerkstoffBlockCutoverTransformer]. The casing slots
+    /// (`blockCasing`/`blockCasingAdvanced`) stay legacy-canonical for now: multiblock structure matchers
+    /// reference the legacy casing blocks by identity, so their cutover is a coordinated block+structure flip.
     private static void registerWerkstoffItemCutoverTransformers() {
         int count = 0;
         for (Map.Entry<OrePrefixes, BWMetaGeneratedItems> entry : WerkstoffLoader.items.entrySet()) {
@@ -113,6 +115,36 @@ public class PosteaTransformers implements Runnable {
         registerStorageBlockCutoverTransformer("gregtech:gt.blockgem1", GregTechAPI.sBlockGem1);
         registerStorageBlockCutoverTransformer("gregtech:gt.blockgem2", GregTechAPI.sBlockGem2);
         registerStorageBlockCutoverTransformer("gregtech:gt.blockgem3", GregTechAPI.sBlockGem3);
+        registerWerkstoffBlockCutoverTransformer(
+            "bw.werkstoffblockTE",
+            "bartworks:bw.werkstoffblocks.01",
+            OrePrefixes.block);
+    }
+
+    /// Migrates saved placed (TE-based) and inventory bartworks werkstoff storage-block stacks (`m`/`Damage` =
+    /// werkstoff id) into the equivalent MaterialLib block stack, resolved through the werkstoff's bridge
+    /// material exactly like the live item path (`WerkstoffLoader#getCorrespondingItemStackUnsafe`). Third-party
+    /// werkstoffe unknown to MaterialLib pass through unchanged, leaving the legacy slot canonical for them.
+    /// `bw.werkstoffblockTE` already has a handler registered by [#removeWerkstoffTileEntities]; Postea tries
+    /// each registered handler in turn until one returns non-null, so the two coexist without conflict.
+    private static void registerWerkstoffBlockCutoverTransformer(String teId, String itemId, OrePrefixes prefix) {
+        TileEntityReplacementManager.tileEntityTransformer(teId, (tag, world, chunk) -> {
+            Werkstoff werkstoff = Werkstoff.werkstoffHashMap.get(tag.getShort("m"));
+            if (werkstoff == null) return null;
+            ItemStack cutover = MU.stack(prefix, werkstoff.getBridgeMaterial(), 1);
+            if (cutover == null) return null;
+            return new BlockInfo(Block.getBlockFromItem(cutover.getItem()), cutover.getItemDamage());
+        });
+
+        ItemStackReplacementManager.addTransformationHandler(itemId, (originalId, tag) -> {
+            Werkstoff werkstoff = Werkstoff.werkstoffHashMap.get((short) tag.getInteger("Damage"));
+            if (werkstoff == null) return false;
+            ItemStack cutover = MU.stack(prefix, werkstoff.getBridgeMaterial(), 1);
+            if (cutover == null) return false;
+            IDExtenderCompat.setItemStackID(tag, Item.getIdFromItem(cutover.getItem()));
+            tag.setShort("Damage", (short) cutover.getItemDamage());
+            return true;
+        });
     }
 
     private static void registerStorageBlockCutoverTransformer(String originalId, Block legacyBlock) {
