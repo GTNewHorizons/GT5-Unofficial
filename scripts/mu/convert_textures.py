@@ -33,6 +33,17 @@ ASSETS_ITEMS = REPO_ROOT / "src/main/resources/assets/gregtech/textures/items"
 SOURCE_ROOT = ASSETS_ITEMS / "materialicons"
 DEST_ROOT = ASSETS_ITEMS / "materials"
 
+# The `block` shape (Materials2BlockShapes) is a MaterialLib block, not an item: ShapeIcons resolves its icon
+# through the block texture atlas, so its converted files live under `textures/blocks/materials/<SET>/`, a
+# separate root from every other (item) shape converted above -- see `convert_blocks`.
+ASSETS_BLOCKS = REPO_ROOT / "src/main/resources/assets/gregtech/textures/blocks"
+BLOCK_SOURCE_ROOT = ASSETS_BLOCKS / "materialicons"
+BLOCK_DEST_ROOT = ASSETS_BLOCKS / "materials"
+# oreprefixes.json's textureIndex for "block" (see dumps/oreprefixes.json), resolved to its textureSlots suffix
+# ("block1") once in main(); block is excluded from load_included_prefixes (block-kind), so its slot is looked
+# up by OrePrefixes name directly, the same way load_cell_slot_suffixes does for containers.
+BLOCK_PREFIX_NAME = "block"
+
 PRIORITY_SET = "NONE"
 
 # Cell shapes are fluid-in-container shapes (Materials2CellShapes), excluded from gen_shapes.py's item-shape
@@ -113,22 +124,59 @@ def convert_cell_bases():
     return written
 
 
-def find_texture_sets():
-    """Every directory under `materialicons/` that directly contains at least one `.png` file, keyed by its
-    path relative to `materialicons/` with forward slashes (e.g. `NONE`, `RUBY`, `CUSTOM/bedrockium`)."""
+def find_texture_sets(source_root):
+    """Every directory under `source_root` that directly contains at least one `.png` file, keyed by its path
+    relative to `source_root` with forward slashes (e.g. `NONE`, `RUBY`, `CUSTOM/bedrockium`)."""
     sets = {}
-    for path in sorted(SOURCE_ROOT.rglob("*")):
+    for path in sorted(source_root.rglob("*")):
         if not path.is_dir():
             continue
         if not any(child.suffix == ".png" for child in path.iterdir() if child.is_file()):
             continue
-        rel = path.relative_to(SOURCE_ROOT).as_posix()
+        rel = path.relative_to(source_root).as_posix()
         sets[rel] = path
     ordered = {}
     if PRIORITY_SET in sets:
         ordered[PRIORITY_SET] = sets.pop(PRIORITY_SET)
     ordered.update(sets)
     return ordered
+
+
+def load_block_slot_suffix():
+    """The `textureSlots` suffix (leading '/' stripped) `block`'s `textureIndex` resolves to -- `block` is
+    block-kind, excluded from `load_included_prefixes`, so this looks it up by `OrePrefixes` name directly, the
+    same way `load_cell_slot_suffixes` does for containers."""
+    with open(DUMP_PATH, encoding="utf-8") as f:
+        dump = json.load(f)
+    texture_slots = dump["textureSlots"]
+    prefixes_by_name = {p["name"]: p for p in dump["prefixes"]}
+    return texture_slots[str(prefixes_by_name[BLOCK_PREFIX_NAME]["textureIndex"])].lstrip("/")
+
+
+def convert_blocks():
+    """Converts the `block` shape's texture from every set under `textures/blocks/materialicons/` that has one,
+    into `textures/blocks/materials/<SET>/block.png` (see `ASSETS_BLOCKS`). Unlike every other (item) shape,
+    `block` has no per-shape slot table of its own to iterate -- it is the only MaterialLib block shape this
+    stage adds -- so this converts its single slot directly instead of going through `convert_set`'s
+    per-shape-name loop."""
+    slot = load_block_slot_suffix()
+    texture_sets = find_texture_sets(BLOCK_SOURCE_ROOT)
+    files_written = 0
+    sets_with_texture = 0
+    for set_name, source_dir in texture_sets.items():
+        base = source_dir / f"{slot}.png"
+        if not base.is_file():
+            continue
+        dest_dir = BLOCK_DEST_ROOT / set_name
+        dest_dir.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(base, dest_dir / "block.png")
+        files_written += 1
+        sets_with_texture += 1
+        base_mcmeta = source_dir / f"{slot}.png.mcmeta"
+        if base_mcmeta.is_file():
+            shutil.copyfile(base_mcmeta, dest_dir / "block.png.mcmeta")
+            files_written += 1
+    return len(texture_sets), sets_with_texture, files_written
 
 
 def convert_set(set_name, source_dir, shape_slot, skip_overlay_shapes=frozenset()):
@@ -174,7 +222,7 @@ def main():
     cell_slot = load_cell_slot_suffixes()
     shape_slot.update(cell_slot)
     skip_overlay_shapes = frozenset(cell_slot)
-    texture_sets = find_texture_sets()
+    texture_sets = find_texture_sets(SOURCE_ROOT)
 
     total_files = 0
     shapes_with_any_texture = set()
@@ -188,6 +236,9 @@ def main():
     base_files_written = convert_cell_bases()
     total_files += base_files_written
 
+    block_sets, block_sets_with_texture, block_files_written = convert_blocks()
+    total_files += block_files_written
+
     shapes_never_textured = sorted(
         (set(shape_slot) | set(shapes_without_index)) - shapes_with_any_texture
     )
@@ -196,6 +247,9 @@ def main():
     for set_name in texture_sets:
         print(f"  {set_name}: {per_set_files[set_name]} files")
     print(f"cell container base textures: {base_files_written} files (cell_base.png, cell_plasma_base.png)")
+    print(
+        f"block shape (blocks tree): {block_sets_with_texture}/{block_sets} texture sets have art, "
+        f"{block_files_written} files written")
     print(f"shapes with no texture index or slot (no source in any set): {len(shapes_without_index)}")
     for name in sorted(shapes_without_index):
         print(f"  {name}")

@@ -551,6 +551,49 @@ CELL_SHAPE_FIELDS = {
     "cellSteamCracked3": ("shapeCellSteamCracked3", "steamCracked"),
 }
 
+LEGACY_BLOCKS_DUMP_PATH = SCRIPT_DIR / "dumps" / "legacy-blocks.json"
+
+# Materials whose legacy storage block is hard-referenced by identity (`GregTechAPI.sBlockMetalN == ...`) from
+# multiblock casing matchers, a machine-block-update listener, or a client-side piston-tier icon fallback,
+# rather than through GTOreDictUnificator -- see stage-07's structural-reference sweep. Cutting these over would
+# leave the referencing code comparing against a Block no consumer still points at (the legacy BlockMetal
+# instance stays registered and playable for every material, cut over or not -- see gen_materials.py's
+# `block_shape_lines` javadoc -- but only the canonical oredict association moves for cut-over materials, and
+# these call sites bypass the oredict entirely). Steel/Osmiridium/Neutronium/NaquadahAlloy/WhiteDwarfMatter/
+# BlackDwarfMatter/MagnetohydrodynamicallyConstrainedStarMatter: MTESteamForgeHammer, MTESteamCompressor,
+# MTEExoFoundry, MTESpinmatron casing tiers. SpaceTime/TranscendentMetal/Universium/Neutronium:
+# MTEElectricImplosionCompressor(Legacy) piston tiers, bartworks ItemRegistry's registerMachineBlock
+# machine-block-update listener, EICPistonVisualizer's client-side icon fallback. Copper/Zinc:
+# MTEIndustrialChemicalBath casing. Osmiridium alone: MTEMicrowaveEnergyTransmitter's teleport-unlock world
+# scan.
+BLOCK_CUTOVER_EXCLUDED = {
+    "Steel", "Osmiridium", "Neutronium", "NaquadahAlloy", "WhiteDwarfMatter", "BlackDwarfMatter",
+    "MagnetohydrodynamicallyConstrainedStarMatter", "SpaceTime", "TranscendentMetal", "Universium", "Copper",
+    "Zinc"
+}
+
+
+def load_legacy_block_materials():
+    """Every material name with a real legacy storage-block slot (union of the 13 `BlockMetal` instances'
+    `Materials[]` arrays), from `legacy-blocks.json` -- see `MaterialDataDump#dumpLegacyBlocks`."""
+    if not LEGACY_BLOCKS_DUMP_PATH.exists():
+        return set()
+    with open(LEGACY_BLOCKS_DUMP_PATH, encoding="utf-8") as f:
+        entries = json.load(f)
+    return {e["material"] for e in entries}
+
+
+def block_shape_lines(material, legacy_block_materials):
+    """`generateShape(...)` line for `Materials2BlockShapes`, driven by `legacy-blocks.json` ground truth (see
+    `load_legacy_block_materials`) rather than the family/delta machinery every other item shape uses: `block`'s
+    dumped `generationBits` is `0` (see `gen_shapes.py`'s `is_block_kind`), so it never appears in any
+    material's `generatedPrefixes` and cannot participate in that pipeline at all. `BLOCK_CUTOVER_EXCLUDED`
+    materials keep their legacy storage block canonical despite having a real legacy slot -- see its
+    docstring."""
+    if material["name"] not in legacy_block_materials or material["name"] in BLOCK_CUTOVER_EXCLUDED:
+        return []
+    return ["            .generateShape(Materials2BlockShapes.shapeBlock)"]
+
 
 def fluid_shape_lines(material, used_fluid_names):
     """`generateShape(...)` lines for `Materials2FluidShapes`, driven directly by which legacy fluid slots the
@@ -616,7 +659,7 @@ def container_shape_lines(material, legacy_variants_by_material):
 
 def build_material_block(
         material, families, ml_names, field_names, included_names, family_shape_members,
-        legacy_variants_by_material, used_fluid_names, fluid_textures):
+        legacy_variants_by_material, used_fluid_names, fluid_textures, legacy_block_materials):
     field = field_names[material["name"]]
     name_literal = java_string_literal(ml_names[material["name"]])
     icon_set_literal = java_string_literal(material["iconSet"])
@@ -636,6 +679,7 @@ def build_material_block(
         lines.append(f"            .generateShape(Materials2Shapes.{shape_field_name(prefix_name)})")
     lines.extend(fluid_shape_lines(material, used_fluid_names))
     lines.extend(container_shape_lines(material, legacy_variants_by_material))
+    lines.extend(block_shape_lines(material, legacy_block_materials))
 
     for property_line in build_property_lines(material, ml_names, fluid_textures):
         lines.append("            " + property_line)
@@ -657,7 +701,8 @@ def chunk(items, size):
 
 
 def write_data_file(index, materials, families_by_name, ml_names, field_names, included_names,
-                     family_shape_members, legacy_variants_by_material, used_fluid_names, fluid_textures):
+                     family_shape_members, legacy_variants_by_material, used_fluid_names, fluid_textures,
+                     legacy_block_materials):
     class_name = f"Materials2Data{index}"
     lines = []
     lines.append("package gregtech.api.enums.materials2;")
@@ -690,7 +735,7 @@ def write_data_file(index, materials, families_by_name, ml_names, field_names, i
         lines.extend(
             build_material_block(
                 material, families, ml_names, field_names, included_names, family_shape_members,
-                legacy_variants_by_material, used_fluid_names, fluid_textures))
+                legacy_variants_by_material, used_fluid_names, fluid_textures, legacy_block_materials))
     lines.append("        // spotless:on")
     lines.append("    }")
     lines.append("")
@@ -929,6 +974,7 @@ def main():
     legacy_variant_prefixes = load_legacy_variant_prefixes(legacy_variants)
     legacy_variants_by_material = load_legacy_variants_by_material(legacy_variants)
     fluid_textures = load_fluid_textures()
+    legacy_block_materials = load_legacy_block_materials()
 
     prefix_bits = {p["name"]: p["generationBits"] for p in prefixes}
     included_prefixes = [p for p in prefixes if is_included_shape(p, legacy_variant_prefixes)]
@@ -953,7 +999,7 @@ def main():
         data_class_names.append(
             write_data_file(
                 i, batch, families_by_name, ml_names, field_names, included_names, family_shape_members,
-                legacy_variants_by_material, used_fluid_names, fluid_textures))
+                legacy_variants_by_material, used_fluid_names, fluid_textures, legacy_block_materials))
 
     write_materials_file(ported, field_names, data_class_names)
     write_lang_file(ported, ml_names)
@@ -976,6 +1022,13 @@ def main():
         print(
             f"  wrote {LEGACY_BRIDGE_OUTPUT.relative_to(REPO_ROOT)}: {bridge_count} bridged fields, "
             f"{len(retained_fields)} retained as markers (see LegacyMarkerMaterials.loadMarkers)")
+    block_cutover = sorted(
+        m["name"] for m in ported if m["name"] in legacy_block_materials and m["name"] not in BLOCK_CUTOVER_EXCLUDED)
+    block_excluded = sorted(legacy_block_materials & BLOCK_CUTOVER_EXCLUDED)
+    print(
+        f"  block shape: {len(legacy_block_materials)} legacy storage-block materials, "
+        f"{len(block_cutover)} cut over, {len(block_excluded)} excluded (structural references): "
+        f"{', '.join(block_excluded)}")
 
 
 if __name__ == "__main__":

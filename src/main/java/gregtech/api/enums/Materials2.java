@@ -1,5 +1,6 @@
 package gregtech.api.enums;
 
+import gregtech.api.enums.materials2.Materials2BlockShapes;
 import gregtech.api.enums.materials2.Materials2CellShapes;
 import gregtech.api.enums.materials2.Materials2Families;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
@@ -19,6 +20,7 @@ public class Materials2 {
     public static void init() {
         Materials2FluidShapes.init();
         Materials2CellShapes.init();
+        Materials2BlockShapes.init();
         Materials2Shapes.init();
         Materials2Families.init();
         Materials2Materials.init();
