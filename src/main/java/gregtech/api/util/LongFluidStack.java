@@ -60,7 +60,7 @@ public class LongFluidStack extends FluidStack {
     }
 
     public LongFluidStack copy() {
-        return new LongFluidStack(getFluid(), amountLong);
+        return new LongFluidStack(getFluid(), amountLong, tag == null ? null : (NBTTagCompound) tag.copy());
     }
 
     @Override
