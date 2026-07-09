@@ -60,20 +60,20 @@ public class LongFluidStack extends FluidStack {
     }
 
     public LongFluidStack copy() {
-        return new LongFluidStack(getFluid(), amountLong, tag == null ? null : (NBTTagCompound) tag.copy());
+        return new LongFluidStack(getFluid(), getAmountLong(), tag == null ? null : (NBTTagCompound) tag.copy());
     }
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
         super.writeToNBT(nbt);
-        nbt.setLong("amountLong", amountLong);
+        nbt.setLong("amountLong", getAmountLong());
 
         return nbt;
     }
 
     public static LongFluidStack loadFluidStackFromNBT(NBTTagCompound nbt) {
         FluidStack stack = FluidStack.loadFluidStackFromNBT(nbt);
-        long amountLong = nbt.getLong("amountLong");
+        long amountLong = nbt.hasKey("amountLong") ? nbt.getLong("amountLong") : stack.amount;
 
         return stack == null ? null : new LongFluidStack(stack.getFluid(), amountLong);
     }
