@@ -65,6 +65,9 @@ public final class GTOreAdapter implements IOreAdapter<Materials> {
 
     private GTBlockOre[] ores;
 
+    /// Used to iterate both `isSmall`/`isNatural` axes of a legacy ore meta in [#hideOres].
+    private static final boolean[] BOOLEANS = { false, true };
+
     // spotless:off
     private static final StoneType[] LEGACY_STONES = {
         StoneType.Stone,
@@ -224,9 +227,42 @@ public final class GTOreAdapter implements IOreAdapter<Materials> {
         oreBlocksByStoneType.put(stoneType, oreBlock);
     }
 
+    /// Hides every `gt.blockores2`..`gt.blockores7` slot from NEI, mirroring stage 07's `BlockMetal` precedent:
+    /// the legacy block/item stays fully functional (old saves still resolve through it via the transformers
+    /// [#init] registers), only its NEI visibility is suppressed. Meta 0 of each block is always hidden --
+    /// [GTBlockOre#getSubBlocks]'s doc explains why it always exists as a dummy entry -- and every other meta is
+    /// hidden exactly when its (material, stone, small-ore) combination now resolves to a MaterialLib block (see
+    /// [#supports(OreInfo)]), leaving any combination that has not cut over (e.g. a material with no MaterialLib
+    /// counterpart yet) visible and canonical, same as [GTBlockOre#getSubBlocks] itself already does.
     public void hideOres() {
         for (GTBlockOre ore : ores) {
             API.hideItem(new ItemStack(ore, 1, 0));
+
+            for (int matId = 0; matId < 1000; matId++) {
+                Materials material = ore.getMaterial(matId);
+                if (material == null) continue;
+
+                for (int stoneIndex = 0; stoneIndex < ore.stoneTypes.size(); stoneIndex++) {
+                    StoneType stoneType = ore.stoneTypes.get(stoneIndex);
+                    if (stoneType == null) continue;
+
+                    for (boolean isSmall : BOOLEANS) {
+                        try (OreInfo<Materials> info = OreInfo.getNewInfo()) {
+                            info.material = material;
+                            info.stoneType = stoneType;
+                            info.isSmall = isSmall;
+
+                            if (!supports(info)) continue;
+                        }
+
+                        int baseMeta = matId + stoneIndex * 1000 + (isSmall ? GTBlockOre.SMALL_ORE_META_OFFSET : 0);
+                        for (boolean natural : BOOLEANS) {
+                            int meta = baseMeta + (natural ? GTBlockOre.NATURAL_ORE_META_OFFSET : 0);
+                            API.hideItem(new ItemStack(ore, 1, meta));
+                        }
+                    }
+                }
+            }
         }
     }
 
