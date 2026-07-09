@@ -205,6 +205,12 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
             dataPacket = new ALRecipeDataPacket(recipeArray);
         }
 
+        updateDataOutputs(dataPacket);
+
+        this.dirty = false;
+    }
+
+    private void updateDataOutputs(ALRecipeDataPacket dataPacket) {
         for (MTEHatchDataItemsOutput hatch : validMTEList(eStacksDataOutputs)) {
             hatch.q = dataPacket;
             // somehow the hatches posttick doesn't wanna happen, so let's trigger the update manually
@@ -222,8 +228,6 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
                 hatch.dataPacket = null;
             }
         }
-
-        this.dirty = false;
     }
 
     @Override
@@ -308,6 +312,19 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
                 WirelessComputationPacket.disableWirelessNetWork(getBaseMetaTileEntity());
             }
         }
+    }
+
+    @Override
+    public void onEnableWorking() {
+        super.onEnableWorking();
+        this.dirty = true;
+    }
+
+    @Override
+    public void onDisableWorking() {
+        super.onDisableWorking();
+        // force outputs to drop packets
+        updateDataOutputs(null);
     }
 
     @Override
