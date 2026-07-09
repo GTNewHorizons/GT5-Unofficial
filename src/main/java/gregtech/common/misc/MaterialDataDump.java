@@ -13,6 +13,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.stream.Collectors;
 
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.ItemStack;
@@ -450,6 +451,36 @@ public final class MaterialDataDump {
         json.put("contents", dumpWerkstoffContents(werkstoff));
         json.put("oreByProducts", dumpWerkstoffOreByProducts(werkstoff));
         json.put("generatedPrefixes", dumpWerkstoffGeneratedPrefixes(werkstoff));
+
+        Werkstoff.GenerationFeatures features = werkstoff.getGenerationFeatures();
+        json.put("enforceUnification", features.enforceUnification);
+        json.put("chemicalRecipes", features.hasChemicalRecipes());
+        json.put("metalCraftingSolidifierRecipes", features.hasMetalCraftingSolidifierRecipes());
+        json.put("metalSolidifierRecipes", features.hasMetaSolidifierRecipes());
+        json.put("mixerRecipes", features.hasMixerRecipes());
+        json.put("sifterRecipes", features.hasSifterRecipes());
+        json.put("mixCircuit", features.mixCircuit);
+        json.put("ebfGasTimeMultiplier", stats.getEbfGasRecipeTimeMultiplier());
+        json.put("ebfGasAmountMultiplier", stats.getEbfGasRecipeConsumedAmountMultiplier());
+        json.put("durabilityModifier", stats.getDurMod());
+        json.put("enchantmentLevel", stats.getEnchantmentlvl());
+        json.put("autoBlastFurnaceRecipes", stats.autoGenerateBlastFurnaceRecipes());
+        json.put("autoVacuumFreezerRecipes", stats.autoGenerateVacuumFreezerRecipes());
+        json.put(
+            "additionalOredict",
+            werkstoff.getAdditionalOredict()
+                .stream()
+                .sorted()
+                .collect(Collectors.toList()));
+        json.put(
+            "subTags",
+            werkstoff.getExplicitSubTags()
+                .stream()
+                .map(tag -> tag.mName)
+                .sorted()
+                .collect(Collectors.toList()));
+        json.put("formula", werkstoff.getFormulaTooltip());
+        json.put("formulaLocalized", werkstoff.isFormulaNeededLocalized());
         return json;
     }
 

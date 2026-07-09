@@ -554,6 +554,12 @@ public class Werkstoff implements IColorModulationContainer, IOreMaterial {
         return this.stats;
     }
 
+    /// The explicitly-added `SubTag`s only (what [#add] recorded); [#contains] additionally consults the
+    /// contents transitively.
+    public Set<SubTag> getExplicitSubTags() {
+        return this.SUBTAGS;
+    }
+
     public short getmID() {
         return this.mID;
     }
