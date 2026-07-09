@@ -54,9 +54,11 @@ import gregtech.api.material.FluidRef;
 import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialGenerationFlag;
 import gregtech.api.material.GTMaterialProperties;
+import gregtech.api.material.GTWerkstoffFlag;
 import gregtech.api.material.MU;
 import gregtech.api.material.MaterialRef;
 import gregtech.api.material.MaterialRefStack;
+import gregtech.api.material.WerkstoffData;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.util.GTLog;
@@ -529,6 +531,12 @@ public final class MaterialDataDump {
         return out;
     }
 
+    /// PINNED-CAPTURE TRAP: the committed `scripts/mu/dumps/werkstoff.json` is a pre-stage-10 capture and
+    /// must not be refreshed from a post-fold boot. `hasItemType` reflects `addItemsForGeneration`'s reroute
+    /// loop, which removes any prefix whose item the oredict already provides -- on a post-fold tree that
+    /// includes MaterialLib's own unified shapes (generated FROM this dump), so a refresh would shrink the
+    /// ground truth toward whatever is already ported. The pinned capture is the reroute result under
+    /// legacy-only conditions, i.e. what bartworks actually generated.
     private static List<String> dumpWerkstoffGeneratedPrefixes(Werkstoff werkstoff) {
         List<String> out = new ArrayList<>();
         for (OrePrefixes prefix : OrePrefixes.VALUES) {
@@ -685,6 +693,42 @@ public final class MaterialDataDump {
         json.put("processingMaterialTierEU", material.getProperty(GTMaterialProperties.PROCESSING_MATERIAL_TIER_EU));
         json.put("addedPrefixes", material.getProperty(GTMaterialProperties.ADDED_PREFIXES));
         json.put("removedPrefixes", material.getProperty(GTMaterialProperties.REMOVED_PREFIXES));
+        json.put("werkstoff", dumpMlWerkstoff(material.getProperty(GTMaterialProperties.WERKSTOFF)));
+        return json;
+    }
+
+    private static Map<String, Object> dumpMlWerkstoff(WerkstoffData data) {
+        if (data == null) return null;
+        Map<String, Object> json = new LinkedHashMap<>();
+        json.put("ids", data.ids());
+        json.put("type", data.type());
+        json.put("pool", data.pool());
+        json.put("meltingPoint", data.meltingPoint());
+        json.put("boilingPoint", data.boilingPoint());
+        json.put("protons", data.protons());
+        json.put("neutrons", data.neutrons());
+        json.put("mass", data.mass());
+        json.put("meltingVoltage", data.meltingVoltage());
+        json.put("durabilityOverride", data.durabilityOverride());
+        json.put("speedOverride", data.speedOverride());
+        json.put("qualityOverride", data.qualityOverride());
+        json.put("durabilityModifier", data.durabilityModifier());
+        json.put("enchantmentLevel", data.enchantmentLevel());
+        json.put("ebfGasTimeMultiplier", data.ebfGasTimeMultiplier());
+        json.put("ebfGasAmountMultiplier", data.ebfGasAmountMultiplier());
+        json.put("mixCircuit", data.mixCircuit());
+        List<String> flags = new ArrayList<>();
+        for (GTWerkstoffFlag flag : data.flags()) flags.add(flag.name());
+        Collections.sort(flags);
+        json.put("flags", flags);
+        json.put("prefixes", data.prefixes());
+        json.put("contents", dumpMlMaterialRefStacks(data.contents()));
+        List<String> byProducts = new ArrayList<>();
+        for (MaterialRef ref : data.oreByProducts()) byProducts.add(ref.name());
+        json.put("oreByProducts", byProducts);
+        json.put("subTags", data.subTags());
+        json.put("additionalOreDict", data.additionalOreDict());
+        json.put("formula", data.formula());
         return json;
     }
 

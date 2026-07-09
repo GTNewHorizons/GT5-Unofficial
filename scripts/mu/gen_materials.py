@@ -5,7 +5,8 @@
 the same name (each has one -- bartworks' BridgeMaterialsLoader created a bridge `Materials` mirror per
 werkstoff at runtime, which the gregtech dump captured), adding the werkstoff shape set and a composite
 `WERKSTOFF` property while the gregtech dump keeps winning every shared scalar. Every fold is written to
-`merge-report.txt` for review.
+`merge-report.txt` for review. `werkstoff.json` is a PINNED pre-stage-10 capture -- never refresh it from
+a post-fold boot (see `MaterialDataDump#dumpWerkstoffGeneratedPrefixes`).
 
 Run from anywhere; paths are resolved relative to this script's location. Requires only the Python 3
 standard library.
