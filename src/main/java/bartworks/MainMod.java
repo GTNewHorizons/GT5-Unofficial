@@ -49,6 +49,7 @@ import bartworks.server.EventHandler.ServerEventHandler;
 import bartworks.system.material.CircuitGeneration.CircuitImprintLoader;
 import bartworks.system.material.CircuitGeneration.CircuitWraps;
 import bartworks.system.material.Werkstoff;
+import bartworks.system.material.WerkstoffHazardHandler;
 import bartworks.system.material.WerkstoffLoader;
 import bartworks.system.material.gtenhancement.PlatinumSludgeRecipes;
 import bartworks.system.oredict.OreDictHandler;
@@ -169,6 +170,9 @@ public final class MainMod {
             .isClient() && Configuration.tooltip.addGlassTierInTooltips) {
             MinecraftForge.EVENT_BUS.register(new GlassTier.GlassTooltipHandler());
         }
+        FMLCommonHandler.instance()
+            .bus()
+            .register(new WerkstoffHazardHandler());
         ServerEventHandler serverEventHandler = new ServerEventHandler();
         if (event.getSide()
             .isServer()) {
