@@ -20,5 +20,15 @@ public final class LoaderShapeConsumers {
         ConsumerDirty.register();
         ConsumerDust.register();
         ConsumerOreSmelting.register();
+
+        ConsumerIngot.register();
+        ConsumerPlate.register();
+        ConsumerGear.register();
+        ConsumerRotor.register();
+        ConsumerRound.register();
+        ConsumerScrew.register();
+        ConsumerBolt.register();
+        ConsumerStick.register();
+        ConsumerStickLong.register();
     }
 }
