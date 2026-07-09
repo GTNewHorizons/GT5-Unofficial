@@ -19,9 +19,11 @@ import com.github.bsideup.jabel.Desugar;
 /// including the prefixes that stay on legacy blocks (`sheetmetal`, `frameGt`) and so have no MaterialLib
 /// shape.
 /// - `contents`: the werkstoff `CONTENTS` list (chemical make-up), distinct from the gregtech
-/// `GTMaterialProperties#COMPOSITION` so a merge never alters the legacy `Materials` reconstruction.
-/// - `oreByProducts`: the werkstoff byproduct list, self-padded to three entries exactly as the `Werkstoff`
-/// constructor left it.
+/// `GTMaterialProperties#COMPOSITION` so a merge never alters the legacy `Materials` reconstruction. Each
+/// entry records which legacy registry it referenced -- see [WerkstoffRefStack].
+/// - `oreByProducts`: the werkstoff byproduct list exactly as the `Werkstoff` constructor left it (three
+/// self entries -- werkstoff-kind references to this material's own name -- when the declaration passed no
+/// list, else the declared list verbatim); amounts are always 1.
 /// - `subTags`: the explicitly-added `SubTag` names (contents-derived tags stay dynamic).
 /// - `durabilityOverride`/`speedOverride`/`qualityOverride`: the raw tool-stat overrides; `0` means the legacy
 /// formula computes the value from protons/melting point/mass/contents.
@@ -32,5 +34,5 @@ public record WerkstoffData(List<Integer> ids, String type, String pool, int mel
     long protons, long neutrons, long mass, int meltingVoltage, int durabilityOverride, float speedOverride,
     int qualityOverride, float durabilityModifier, int enchantmentLevel, double ebfGasTimeMultiplier,
     double ebfGasAmountMultiplier, int mixCircuit, EnumSet<GTWerkstoffFlag> flags, List<String> prefixes,
-    List<MaterialRefStack> contents, List<MaterialRef> oreByProducts, List<String> subTags,
+    List<WerkstoffRefStack> contents, List<WerkstoffRefStack> oreByProducts, List<String> subTags,
     List<String> additionalOreDict, String formula) {}

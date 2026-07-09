@@ -59,6 +59,7 @@ import gregtech.api.material.MU;
 import gregtech.api.material.MaterialRef;
 import gregtech.api.material.MaterialRefStack;
 import gregtech.api.material.WerkstoffData;
+import gregtech.api.material.WerkstoffRefStack;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.util.GTLog;
@@ -101,7 +102,36 @@ public final class MaterialDataDump {
         write(new File(directory, "legacy-variants.json"), dumpLegacyVariants());
         write(new File(directory, "fluid-textures.json"), dumpFluidTextures());
         write(new File(directory, "legacy-blocks.json"), dumpLegacyBlocks());
+        write(new File(directory, "werkstoff-fields.json"), dumpWerkstoffFields());
         write(new File(directory, "recipe-census.json"), dumpRecipeCensus(), COMPACT_GSON);
+    }
+
+    /// Maps every public static `Werkstoff` field of the pool declaration classes to its werkstoff id, so the
+    /// stage-10 reconstruction flip can rewrite each field to a `byId(...)` lookup without parsing the
+    /// declaration source (field names do not reliably match werkstoff names, e.g. `Bismuthinit` vs
+    /// "Bismuthinite").
+    private static List<Map<String, Object>> dumpWerkstoffFields() {
+        List<Map<String, Object>> out = new ArrayList<>();
+        Class<?>[] pools = { bartworks.system.material.WerkstoffLoader.class, goodgenerator.items.GGMaterial.class,
+            gtnhlanth.common.register.WerkstoffMaterialPool.class,
+            gtnhlanth.common.register.BotWerkstoffMaterialPool.class };
+        for (Class<?> pool : pools) {
+            for (java.lang.reflect.Field field : pool.getFields()) {
+                if (field.getType() != Werkstoff.class) continue;
+                if (!java.lang.reflect.Modifier.isStatic(field.getModifiers())) continue;
+                try {
+                    Werkstoff werkstoff = (Werkstoff) field.get(null);
+                    Map<String, Object> json = new LinkedHashMap<>();
+                    json.put("class", pool.getName());
+                    json.put("field", field.getName());
+                    json.put("id", werkstoff != null ? (int) werkstoff.getmID() : null);
+                    out.add(json);
+                } catch (IllegalAccessException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+        return out;
     }
 
     private static void write(File file, Object data) {
@@ -722,14 +752,28 @@ public final class MaterialDataDump {
         Collections.sort(flags);
         json.put("flags", flags);
         json.put("prefixes", data.prefixes());
-        json.put("contents", dumpMlMaterialRefStacks(data.contents()));
-        List<String> byProducts = new ArrayList<>();
-        for (MaterialRef ref : data.oreByProducts()) byProducts.add(ref.name());
-        json.put("oreByProducts", byProducts);
+        json.put("contents", dumpMlWerkstoffRefStacks(data.contents()));
+        json.put("oreByProducts", dumpMlWerkstoffRefStacks(data.oreByProducts()));
         json.put("subTags", data.subTags());
         json.put("additionalOreDict", data.additionalOreDict());
         json.put("formula", data.formula());
         return json;
+    }
+
+    private static List<Map<String, Object>> dumpMlWerkstoffRefStacks(List<WerkstoffRefStack> stacks) {
+        List<Map<String, Object>> out = new ArrayList<>();
+        if (stacks == null) return out;
+        for (WerkstoffRefStack stack : stacks) {
+            Map<String, Object> json = new LinkedHashMap<>();
+            json.put(
+                "material",
+                stack.material()
+                    .name());
+            json.put("amount", stack.amount());
+            json.put("werkstoff", stack.werkstoff());
+            out.add(json);
+        }
+        return out;
     }
 
     private static List<String> dumpMlGenerationFlags(EnumSet<GTMaterialGenerationFlag> flags) {

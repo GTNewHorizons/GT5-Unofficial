@@ -139,6 +139,33 @@ def load_werkstoffs():
         return json.load(f)
 
 
+REPO_ROOT = SCRIPT_DIR.parent.parent
+LEGACY_BRIDGE_SOURCES = [
+    "src/main/java/gregtech/loaders/materials/MaterialsLegacyBridge.java",
+    "src/main/java/gregtech/loaders/materials/LegacyMarkerMaterials.java",
+]
+
+
+def load_legacy_constant_names():
+    """Mirrors gen_materials.py's load_legacy_constant_names (byproduct reference-kind recovery)."""
+    import re as _re
+    names = set()
+    for rel in LEGACY_BRIDGE_SOURCES:
+        path = REPO_ROOT / rel
+        if not path.exists():
+            continue
+        names.update(_re.findall(r"Materials" + chr(92) + r".(" + chr(92) + r"w+) = ", path.read_text(encoding="utf-8")))
+    return names
+
+
+def werkstoff_byproduct_kind(entry, byproduct_name, display_to_var, legacy_constants):
+    if byproduct_name == entry["name"]:
+        return "werkstoff"
+    if byproduct_name in legacy_constants:
+        return "material"
+    return "werkstoff"
+
+
 def group_werkstoffs(werkstoffs):
     by_name = {}
     display_to_var = {}
@@ -208,7 +235,7 @@ def werkstoff_flag_names(entries):
     return flags
 
 
-def check_werkstoff(errors, name, info, ml, display_to_var):
+def check_werkstoff(errors, name, info, ml, display_to_var, legacy_constants):
     actual = ml.get("werkstoff")
     entries = info["entries"] if info else []
     if not entries:
@@ -249,19 +276,26 @@ def check_werkstoff(errors, name, info, ml, display_to_var):
     check("prefixes", info["prefixes"])
     expected_contents = next((e["contents"] for e in entries if e["contents"]), [])
     actual_contents = actual.get("contents") or []
-    expected_pairs = [
-        (ml_name(werkstoff_ref_name(c["name"], c["kind"], display_to_var)), c["amount"])
+    expected_triples = [
+        (ml_name(werkstoff_ref_name(c["name"], c["kind"], display_to_var)), c["amount"],
+         c["kind"] == "werkstoff")
         for c in expected_contents]
-    actual_pairs = [(c["material"], c["amount"]) for c in actual_contents]
-    if expected_pairs != actual_pairs:
-        errors.append(f"{name}: werkstoff.contents expected {expected_pairs!r}, got {actual_pairs!r}")
-    expected_byproducts = [
-        ml_name(display_to_var.get(b, b))
-        for b in next((e["oreByProducts"] for e in entries if e["oreByProducts"]), [])]
-    if expected_byproducts != (actual.get("oreByProducts") or []):
+    actual_triples = [(c["material"], c["amount"], c["werkstoff"]) for c in actual_contents]
+    if expected_triples != actual_triples:
+        errors.append(f"{name}: werkstoff.contents expected {expected_triples!r}, got {actual_triples!r}")
+    byproducts_entry = next((e for e in entries if e["oreByProducts"]), None)
+    expected_byproducts = []
+    if byproducts_entry:
+        for b in byproducts_entry["oreByProducts"]:
+            kind = werkstoff_byproduct_kind(byproducts_entry, b, display_to_var, legacy_constants)
+            expected_byproducts.append(
+                (ml_name(werkstoff_ref_name(b, kind, display_to_var) if kind == "werkstoff" else b), 1,
+                 kind == "werkstoff"))
+    actual_byproducts = [(b["material"], b["amount"], b["werkstoff"]) for b in (actual.get("oreByProducts") or [])]
+    if expected_byproducts != actual_byproducts:
         errors.append(
             f"{name}: werkstoff.oreByProducts expected {expected_byproducts!r}, "
-            f"got {actual.get('oreByProducts')!r}")
+            f"got {actual_byproducts!r}")
     sub_tags = []
     additional_oredict = []
     for entry in entries:
@@ -404,7 +438,7 @@ def check_ref_field(errors, name, field, gt_value, ml_value):
 
 
 def check_material(gt, ml, included_names, legacy_variants_by_material, used_fluid_names, fluid_textures,
-                    legacy_block_materials, werkstoff_info, display_to_var):
+                    legacy_block_materials, werkstoff_info, display_to_var, legacy_constants):
     errors = []
     name = gt["name"]
 
@@ -540,7 +574,7 @@ def check_material(gt, ml, included_names, legacy_variants_by_material, used_flu
                 check_fluid_texture(
                     errors, name, f"{ml_key}[{i}]", expected_ref["name"], actual_refs[i], fluid_textures)
 
-    check_werkstoff(errors, name, werkstoff_info, ml, display_to_var)
+    check_werkstoff(errors, name, werkstoff_info, ml, display_to_var, legacy_constants)
 
     return errors
 
@@ -576,6 +610,7 @@ def main():
     included_names = set(p["name"] for p in prefixes if is_included_shape(p, legacy_variant_prefixes))
     werkstoffs = load_werkstoffs()
     werkstoff_by_name, display_to_var = group_werkstoffs(werkstoffs)
+    legacy_constants = load_legacy_constant_names()
     werkstoff_referenced = compute_werkstoff_referenced_names(werkstoff_by_name, display_to_var)
     werkstoff_names = {name for name, info in werkstoff_by_name.items() if info["entries"]}
     ported = compute_ported(gt_materials, werkstoff_referenced, werkstoff_names)
@@ -592,7 +627,8 @@ def main():
         errors.extend(
             check_material(
                 material, ml, included_names, legacy_variants_by_material, used_fluid_names, fluid_textures,
-                legacy_block_materials, werkstoff_by_name.get(material["name"]), display_to_var))
+                legacy_block_materials, werkstoff_by_name.get(material["name"]), display_to_var,
+                legacy_constants))
 
     expected_keys = set(ml_name(m["name"]) for m in ported)
     extra = set(ml_by_key) - expected_keys
