@@ -14,6 +14,7 @@ from pathlib import Path
 SCRIPT_DIR = Path(__file__).resolve().parent
 REPO_ROOT = SCRIPT_DIR.parent.parent
 DUMP_PATH = SCRIPT_DIR / "dumps" / "oreprefixes.json"
+LEGACY_VARIANTS_PATH = SCRIPT_DIR / "dumps" / "legacy-variants.json"
 
 SHAPES_OUTPUT = REPO_ROOT / "src/main/java/gregtech/api/enums/materials2/Materials2Shapes.java"
 FAMILIES_OUTPUT = REPO_ROOT / "src/main/java/gregtech/api/enums/materials2/Materials2Families.java"
@@ -78,7 +79,10 @@ def is_complex_tool_or_armor(prefix):
     return False
 
 
-def is_included(prefix):
+def is_included_by_capability_bits(prefix):
+    """Historical stage-02 filter, kept as a necessary (but not sufficient, see `is_included`) condition: a
+    prefix with zero generation bits, non-material-based, a container, block-kind, or a complex tool/armor
+    shape was never a valid MaterialLib item shape regardless of what legacy items existed for it."""
     if prefix["generationBits"] == 0:
         return False
     if not prefix["isMaterialBased"]:
@@ -92,12 +96,49 @@ def is_included(prefix):
     return True
 
 
+def load_legacy_variant_prefixes():
+    """Prefix names that `MetaGeneratedItemX32.DUMP_VARIANTS` actually constructed a legacy item for (see
+    `MaterialDataDump.dumpLegacyVariants`) -- ground truth for which prefixes held a real constructor slot,
+    as opposed to `doGenerateItem` capability bits alone."""
+    with open(LEGACY_VARIANTS_PATH, encoding="utf-8") as f:
+        variants = json.load(f)
+    return {v["prefix"] for v in variants}
+
+
+def is_included(prefix, legacy_variant_prefixes):
+    if not is_included_by_capability_bits(prefix):
+        return False
+    # Bugfix: the capability-bit filter above overcounts -- 15 prefixes (bullets, cleanGravel, clump,
+    # crystal, crystalline, dirtyGravel, dustRefined, handleMallet, milled, reduced, shard, toolHeadMallet,
+    # toolHeadScrewdriver) pass it but never held a slot in MetaGeneratedItem01/02/03's constructor, so no
+    # legacy item for them ever existed; cutting them over produced bogus MaterialLib items with no texture.
+    # Intersect with legacy-variants.json rather than replace the filter, so this bugfix can only SHRINK the
+    # shape set, never grow it: legacy-variants.json legitimately contains prefixes the filter above already
+    # excludes for other reasons (e.g. nanite has a constructor slot and real legacy variants, but is
+    # intentionally not a cutover shape -- it stays a legacy item).
+    return prefix["name"] in legacy_variant_prefixes
+
+
 def load_included_prefixes():
     with open(DUMP_PATH, encoding="utf-8") as f:
         dump = json.load(f)
-    prefixes = [p for p in dump["prefixes"] if is_included(p)]
+    legacy_variant_prefixes = load_legacy_variant_prefixes()
+    prefixes = [p for p in dump["prefixes"] if is_included(p, legacy_variant_prefixes)]
     prefixes.sort(key=lambda p: p["name"])
     return prefixes
+
+
+def load_dropped_prefixes():
+    """Prefixes the old capability-bit filter alone would have included, that the legacy-variants
+    intersection now excludes -- for reporting, not consumed by codegen."""
+    with open(DUMP_PATH, encoding="utf-8") as f:
+        dump = json.load(f)
+    legacy_variant_prefixes = load_legacy_variant_prefixes()
+    return sorted(
+        p["name"]
+        for p in dump["prefixes"]
+        if is_included_by_capability_bits(p) and p["name"] not in legacy_variant_prefixes
+    )
 
 
 def shape_field_name(prefix_name):
@@ -319,6 +360,17 @@ def main():
     print(f"  wrote {SHAPES_OUTPUT.relative_to(REPO_ROOT)}")
     print(f"  wrote {FAMILIES_OUTPUT.relative_to(REPO_ROOT)}")
     print(f"  wrote {SHAPE_DATA_OUTPUT.relative_to(REPO_ROOT)}")
+
+    dropped = load_dropped_prefixes()
+    print(f"  dropped {len(dropped)} prefixes with no real legacy item: {', '.join(dropped)}")
+
+    legacy_variant_prefixes = load_legacy_variant_prefixes()
+    included_names = {p["name"] for p in prefixes}
+    variants_not_cutover = sorted(legacy_variant_prefixes - included_names)
+    print(
+        f"  {len(variants_not_cutover)} prefixes have real legacy variants but are not cutover shapes "
+        f"(follow-up decision, e.g. nanite): {', '.join(variants_not_cutover)}"
+    )
 
 
 if __name__ == "__main__":

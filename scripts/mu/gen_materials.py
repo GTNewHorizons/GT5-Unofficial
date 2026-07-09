@@ -16,6 +16,7 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 REPO_ROOT = SCRIPT_DIR.parent.parent
 MATERIALS_DUMP_PATH = SCRIPT_DIR / "dumps" / "gt-materials.json"
 PREFIXES_DUMP_PATH = SCRIPT_DIR / "dumps" / "oreprefixes.json"
+LEGACY_VARIANTS_DUMP_PATH = SCRIPT_DIR / "dumps" / "legacy-variants.json"
 
 MATERIALS2_DIR = REPO_ROOT / "src/main/java/gregtech/api/enums/materials2"
 MATERIALS_OUTPUT = MATERIALS2_DIR / "Materials2Materials.java"
@@ -111,7 +112,7 @@ def is_complex_tool_or_armor(prefix):
     return False
 
 
-def is_included_shape(prefix):
+def is_included_shape(prefix, legacy_variant_prefixes):
     if prefix["generationBits"] == 0:
         return False
     if not prefix["isMaterialBased"]:
@@ -122,7 +123,10 @@ def is_included_shape(prefix):
         return False
     if is_complex_tool_or_armor(prefix):
         return False
-    return True
+    # Bugfix (group A, mirrors gen_shapes.py): intersect with legacy-variants.json ground truth so a
+    # capability-bit-only prefix (no real constructor slot, e.g. crystal/milled/shard) is not treated as an
+    # included shape here either -- keeps this file's shape set identical to Materials2Shapes.
+    return prefix["name"] in legacy_variant_prefixes
 
 
 def shape_field_name(prefix_name):
@@ -202,6 +206,26 @@ def load_prefixes():
         return json.load(f)["prefixes"]
 
 
+def load_legacy_variants():
+    with open(LEGACY_VARIANTS_DUMP_PATH, encoding="utf-8") as f:
+        return json.load(f)
+
+
+def load_legacy_variant_prefixes(variants):
+    return {v["prefix"] for v in variants}
+
+
+def load_legacy_variants_by_material(variants):
+    """Ground-truth per-material shape membership: which prefixes `MetaGeneratedItemX32` actually built a
+    legacy item for, keyed by legacy material name. Used instead of a material's dumped `generatedPrefixes`
+    (capability bits alone), which can drift from construction-time truth -- see `MaterialDataDump`'s
+    `dumpGeneratedPrefixes` javadoc for the MHDCSM/plateDouble example this fixes."""
+    by_material = {}
+    for v in variants:
+        by_material.setdefault(v["material"], set()).add(v["prefix"])
+    return by_material
+
+
 def has_fluids(material):
     fluids = material["fluids"]
     return any(fluids.get(state) for state in FLUID_STATES)
@@ -273,8 +297,9 @@ def joined_families(material, prefix_bits):
     return [family for family, bit in FAMILY_BITS if bits & bit]
 
 
-def shape_delta(material, families, included_names, family_shape_members):
-    dumped_items = set(p for p in material["generatedPrefixes"] if p in included_names)
+def shape_delta(material, families, included_names, family_shape_members, legacy_variants_by_material):
+    actual_variants = legacy_variants_by_material.get(material["name"], set())
+    dumped_items = set(p for p in actual_variants if p in included_names)
     implied = set()
     for family in families:
         implied.update(family_shape_members[family])
@@ -467,7 +492,9 @@ def build_property_lines(material, ml_names):
     return lines
 
 
-def build_material_block(material, families, ml_names, field_names, included_names, family_shape_members):
+def build_material_block(
+        material, families, ml_names, field_names, included_names, family_shape_members,
+        legacy_variants_by_material):
     field = field_names[material["name"]]
     name_literal = java_string_literal(ml_names[material["name"]])
     icon_set_literal = java_string_literal(material["iconSet"])
@@ -481,7 +508,8 @@ def build_material_block(material, families, ml_names, field_names, included_nam
     for family in families:
         lines.append(f"            .addToFamily(Materials2Families.{family})")
 
-    missing, excess = shape_delta(material, families, included_names, family_shape_members)
+    missing, excess = shape_delta(
+        material, families, included_names, family_shape_members, legacy_variants_by_material)
     for prefix_name in missing:
         lines.append(f"            .generateShape(Materials2Shapes.{shape_field_name(prefix_name)})")
 
@@ -505,7 +533,7 @@ def chunk(items, size):
 
 
 def write_data_file(index, materials, families_by_name, ml_names, field_names, included_names,
-                     family_shape_members):
+                     family_shape_members, legacy_variants_by_material):
     class_name = f"Materials2Data{index}"
     lines = []
     lines.append("package gregtech.api.enums.materials2;")
@@ -537,7 +565,8 @@ def write_data_file(index, materials, families_by_name, ml_names, field_names, i
         families = families_by_name[material["name"]]
         lines.extend(
             build_material_block(
-                material, families, ml_names, field_names, included_names, family_shape_members))
+                material, families, ml_names, field_names, included_names, family_shape_members,
+                legacy_variants_by_material))
     lines.append("        // spotless:on")
     lines.append("    }")
     lines.append("")
@@ -772,9 +801,12 @@ def write_lang_file(ported, ml_names):
 def main():
     materials = load_materials()
     prefixes = load_prefixes()
+    legacy_variants = load_legacy_variants()
+    legacy_variant_prefixes = load_legacy_variant_prefixes(legacy_variants)
+    legacy_variants_by_material = load_legacy_variants_by_material(legacy_variants)
 
     prefix_bits = {p["name"]: p["generationBits"] for p in prefixes}
-    included_prefixes = [p for p in prefixes if is_included_shape(p)]
+    included_prefixes = [p for p in prefixes if is_included_shape(p, legacy_variant_prefixes)]
     included_names = set(p["name"] for p in included_prefixes)
 
     family_shape_members = {family: [] for family, _ in FAMILY_BITS}
@@ -794,7 +826,8 @@ def main():
     for i, batch in enumerate(batches, start=1):
         data_class_names.append(
             write_data_file(
-                i, batch, families_by_name, ml_names, field_names, included_names, family_shape_members))
+                i, batch, families_by_name, ml_names, field_names, included_names, family_shape_members,
+                legacy_variants_by_material))
 
     write_materials_file(ported, field_names, data_class_names)
     write_lang_file(ported, ml_names)
