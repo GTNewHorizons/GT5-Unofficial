@@ -14,8 +14,8 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.relauncher.Side;
+import com.cleanroommc.modularui.network.NetworkUtils;
+
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.util.GTUtil;
@@ -88,8 +88,7 @@ public class DroneConnection {
         this.shutdownReason = aNBT.getString("shutdownReason");
         this.isSelected = aNBT.getBoolean("isSelected");
         this.group = aNBT.getInteger("group");
-        if (FMLCommonHandler.instance()
-            .getEffectiveSide() == Side.CLIENT) {
+        if (NetworkUtils.isClient()) {
             this.cachedCentre = null;
             this.cachedMachine = null;
         } else {
