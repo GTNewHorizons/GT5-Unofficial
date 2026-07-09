@@ -14,6 +14,8 @@ import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.ruling_0.materiallib.api.ShapeItem;
+
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.FluidState;
 import gregtech.api.enums.GTValues;
@@ -125,6 +127,11 @@ public class GTFluid extends Fluid implements IGTFluid, IGTRegisteredFluid, Runn
     @Override
     public IGTRegisteredFluid registerContainers(final ItemStack fullContainer, final ItemStack emptyContainer,
         final int containerSize) {
+        // A MaterialLib-shaped filled container (a cut-over cell prefix resolved through GTOreDictUnificator,
+        // see MU) registers its own FluidContainerRegistry mapping at MaterialLib's init -- registering it
+        // again here first, during GT's earlier preInit, would make that later registration a rejected
+        // duplicate (FluidContainerRegistry is a flat map keyed by the filled item).
+        if (fullContainer != null && fullContainer.getItem() instanceof ShapeItem) return this;
         if (fullContainer != null && emptyContainer != null) {
             final FluidStack fluidStack = new FluidStack(registeredFluid, containerSize);
             if (!FluidContainerRegistry.registerFluidContainer(fluidStack, fullContainer, emptyContainer)) {

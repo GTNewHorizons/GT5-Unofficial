@@ -55,6 +55,15 @@ public class MU {
         return MaterialLibAPI.getStack(mat, shape, (int) amount);
     }
 
+    /// Whether a legacy (prefix, material) pair has a MaterialLib equivalent, i.e. `material` actually
+    /// generates the shape `prefix` cut over to (not merely that some other material did). Legacy construction
+    /// code should skip a (prefix, material) pair exactly when this is true.
+    public static boolean isCutOver(OrePrefixes prefix, Materials material) {
+        Shape shape = shape(prefix);
+        Material mat = material(material);
+        return shape != null && mat != null && mat.hasShape(shape);
+    }
+
     /// The legacy [Materials] a MaterialLib material was ported from, or null if it has none.
     public static @Nullable Materials materialOf(Material material) {
         if (material == null) return null;
