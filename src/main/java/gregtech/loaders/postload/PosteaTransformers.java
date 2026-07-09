@@ -4,6 +4,7 @@ import static gregtech.api.enums.OrePrefixes.___placeholder___;
 
 import java.util.Arrays;
 
+import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -25,6 +26,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.items.MetaGeneratedItemX32;
 import gregtech.api.material.MU;
 import gregtech.common.blocks.BlockFrameBox;
+import gregtech.common.blocks.BlockMetal;
 import gregtech.common.items.MetaGeneratedItem99;
 import vexatos.tgregworks.reference.Mods;
 
@@ -55,6 +57,39 @@ public class PosteaTransformers implements Runnable {
         registerMetaItemCutoverTransformer("gt.metaitem.02");
         registerMetaItemCutoverTransformer("gt.metaitem.03");
         registerMetaItem99CutoverTransformer();
+        registerStorageBlockCutoverTransformers();
+    }
+
+    /// Migrates saved placed blocks and item stacks of a cut-over material's legacy storage-block slot (see
+    /// [BlockMetal], [MU]) into the equivalent MaterialLib block stack. `addSimpleReplacement`'s block+meta
+    /// overload registers a matching item replacement automatically, so no separate item-side call is needed.
+    /// Materials that did not cut over (see `gen_materials.py`'s `BLOCK_CUTOVER_EXCLUDED`) are skipped: their
+    /// slot stays legacy, and the legacy block instance itself is never removed (see [BlockMetal]'s javadoc), so
+    /// nothing needs migrating for them.
+    private static void registerStorageBlockCutoverTransformers() {
+        registerStorageBlockCutoverTransformer("gregtech:gt.blockmetal1", GregTechAPI.sBlockMetal1);
+        registerStorageBlockCutoverTransformer("gregtech:gt.blockmetal2", GregTechAPI.sBlockMetal2);
+        registerStorageBlockCutoverTransformer("gregtech:gt.blockmetal3", GregTechAPI.sBlockMetal3);
+        registerStorageBlockCutoverTransformer("gregtech:gt.blockmetal4", GregTechAPI.sBlockMetal4);
+        registerStorageBlockCutoverTransformer("gregtech:gt.blockmetal5", GregTechAPI.sBlockMetal5);
+        registerStorageBlockCutoverTransformer("gregtech:gt.blockmetal6", GregTechAPI.sBlockMetal6);
+        registerStorageBlockCutoverTransformer("gregtech:gt.blockmetal7", GregTechAPI.sBlockMetal7);
+        registerStorageBlockCutoverTransformer("gregtech:gt.blockmetal8", GregTechAPI.sBlockMetal8);
+        registerStorageBlockCutoverTransformer("gregtech:gt.blockmetal9", GregTechAPI.sBlockMetal9);
+        registerStorageBlockCutoverTransformer("gregtech:gt.blockmetal10", GregTechAPI.sBlockMetal10);
+        registerStorageBlockCutoverTransformer("gregtech:gt.blockgem1", GregTechAPI.sBlockGem1);
+        registerStorageBlockCutoverTransformer("gregtech:gt.blockgem2", GregTechAPI.sBlockGem2);
+        registerStorageBlockCutoverTransformer("gregtech:gt.blockgem3", GregTechAPI.sBlockGem3);
+    }
+
+    private static void registerStorageBlockCutoverTransformer(String originalId, Block legacyBlock) {
+        BlockMetal metal = (BlockMetal) legacyBlock;
+        for (int meta = 0; meta < metal.mMats.length; meta++) {
+            ItemStack cutover = MU.stack(OrePrefixes.block, metal.mMats[meta], 1);
+            if (cutover == null) continue;
+            Block mlBlock = Block.getBlockFromItem(cutover.getItem());
+            BlockReplacementManager.addSimpleReplacement(originalId, meta, mlBlock, cutover.getItemDamage());
+        }
     }
 
     private static void registerMetaItemCutoverTransformer(String itemName) {
