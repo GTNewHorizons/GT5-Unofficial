@@ -10,6 +10,6 @@ public final class ConsumerStick {
     private ConsumerStick() {}
 
     static void register() {
-        ShapeConsumerSupport.delegate(Materials2Shapes.shapeStick, OrePrefixes.stick, ProcessingStick.INSTANCE);
+        ShapeConsumerSupport.delegate(Materials2Shapes.shapeStick, OrePrefixes.stick, () -> ProcessingStick.INSTANCE);
     }
 }

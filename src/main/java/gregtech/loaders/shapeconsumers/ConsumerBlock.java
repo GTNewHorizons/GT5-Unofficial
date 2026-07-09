@@ -11,6 +11,7 @@ public final class ConsumerBlock {
     private ConsumerBlock() {}
 
     static void register() {
-        ShapeConsumerSupport.delegate(Materials2BlockShapes.shapeBlock, OrePrefixes.block, ProcessingBlock.INSTANCE);
+        ShapeConsumerSupport
+            .delegate(Materials2BlockShapes.shapeBlock, OrePrefixes.block, () -> ProcessingBlock.INSTANCE);
     }
 }

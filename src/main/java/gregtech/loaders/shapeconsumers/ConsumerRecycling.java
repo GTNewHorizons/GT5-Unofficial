@@ -21,9 +21,11 @@ public final class ConsumerRecycling {
     static void register() {
         for (OrePrefixes prefix : OrePrefixes.VALUES) {
             if (!prefix.isMaterialBased() || prefix.getMaterialAmount() <= 0 || !prefix.isContainer()) continue;
-            ShapeConsumerSupport.delegate(MU.shape(prefix), prefix, ProcessingRecycling.INSTANCE);
+            ShapeConsumerSupport.delegate(MU.shape(prefix), prefix, () -> ProcessingRecycling.INSTANCE);
         }
-        ShapeConsumerSupport
-            .delegate(Materials2CellShapes.shapeCellPlasmaLight, OrePrefixes.cellPlasma, ProcessingRecycling.INSTANCE);
+        ShapeConsumerSupport.delegate(
+            Materials2CellShapes.shapeCellPlasmaLight,
+            OrePrefixes.cellPlasma,
+            () -> ProcessingRecycling.INSTANCE);
     }
 }

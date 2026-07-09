@@ -12,11 +12,14 @@ public final class ConsumerDust {
     private ConsumerDust() {}
 
     static void register() {
-        ShapeConsumerSupport.delegate(Materials2Shapes.shapeDust, OrePrefixes.dust, ProcessingDust.INSTANCE);
-        ShapeConsumerSupport.delegate(Materials2Shapes.shapeDustPure, OrePrefixes.dustPure, ProcessingDust.INSTANCE);
+        ShapeConsumerSupport.delegate(Materials2Shapes.shapeDust, OrePrefixes.dust, () -> ProcessingDust.INSTANCE);
         ShapeConsumerSupport
-            .delegate(Materials2Shapes.shapeDustImpure, OrePrefixes.dustImpure, ProcessingDust.INSTANCE);
-        ShapeConsumerSupport.delegate(Materials2Shapes.shapeDustSmall, OrePrefixes.dustSmall, ProcessingDust.INSTANCE);
-        ShapeConsumerSupport.delegate(Materials2Shapes.shapeDustTiny, OrePrefixes.dustTiny, ProcessingDust.INSTANCE);
+            .delegate(Materials2Shapes.shapeDustPure, OrePrefixes.dustPure, () -> ProcessingDust.INSTANCE);
+        ShapeConsumerSupport
+            .delegate(Materials2Shapes.shapeDustImpure, OrePrefixes.dustImpure, () -> ProcessingDust.INSTANCE);
+        ShapeConsumerSupport
+            .delegate(Materials2Shapes.shapeDustSmall, OrePrefixes.dustSmall, () -> ProcessingDust.INSTANCE);
+        ShapeConsumerSupport
+            .delegate(Materials2Shapes.shapeDustTiny, OrePrefixes.dustTiny, () -> ProcessingDust.INSTANCE);
     }
 }

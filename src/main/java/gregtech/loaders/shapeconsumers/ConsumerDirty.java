@@ -14,6 +14,7 @@ public final class ConsumerDirty {
     private ConsumerDirty() {}
 
     static void register() {
-        ShapeConsumerSupport.delegate(Materials2Shapes.shapeCrushed, OrePrefixes.crushed, ProcessingDirty.INSTANCE);
+        ShapeConsumerSupport
+            .delegate(Materials2Shapes.shapeCrushed, OrePrefixes.crushed, () -> ProcessingDirty.INSTANCE);
     }
 }

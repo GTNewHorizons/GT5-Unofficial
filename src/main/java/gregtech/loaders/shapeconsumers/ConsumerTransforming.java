@@ -18,7 +18,7 @@ public final class ConsumerTransforming {
     static void register() {
         for (OrePrefixes prefix : OrePrefixes.VALUES) {
             if (prefix.getMaterialAmount() <= 0 || prefix.isContainer() || prefix.isEnchantable()) continue;
-            ShapeConsumerSupport.delegate(MU.shape(prefix), prefix, ProcessingTransforming.INSTANCE);
+            ShapeConsumerSupport.delegate(MU.shape(prefix), prefix, () -> ProcessingTransforming.INSTANCE);
         }
     }
 }

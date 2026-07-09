@@ -11,23 +11,31 @@ public final class ConsumerToolHead {
     private ConsumerToolHead() {}
 
     static void register() {
-        ShapeConsumerSupport
-            .delegate(Materials2Shapes.shapeToolHeadBuzzSaw, OrePrefixes.toolHeadBuzzSaw, ProcessingToolHead.INSTANCE);
+        ShapeConsumerSupport.delegate(
+            Materials2Shapes.shapeToolHeadBuzzSaw,
+            OrePrefixes.toolHeadBuzzSaw,
+            () -> ProcessingToolHead.INSTANCE);
         ShapeConsumerSupport.delegate(
             Materials2Shapes.shapeToolHeadChainsaw,
             OrePrefixes.toolHeadChainsaw,
-            ProcessingToolHead.INSTANCE);
+            () -> ProcessingToolHead.INSTANCE);
+        ShapeConsumerSupport.delegate(
+            Materials2Shapes.shapeToolHeadDrill,
+            OrePrefixes.toolHeadDrill,
+            () -> ProcessingToolHead.INSTANCE);
         ShapeConsumerSupport
-            .delegate(Materials2Shapes.shapeToolHeadDrill, OrePrefixes.toolHeadDrill, ProcessingToolHead.INSTANCE);
+            .delegate(Materials2Shapes.shapeToolHeadFile, OrePrefixes.toolHeadFile, () -> ProcessingToolHead.INSTANCE);
         ShapeConsumerSupport
-            .delegate(Materials2Shapes.shapeToolHeadFile, OrePrefixes.toolHeadFile, ProcessingToolHead.INSTANCE);
+            .delegate(Materials2Shapes.shapeToolHeadSaw, OrePrefixes.toolHeadSaw, () -> ProcessingToolHead.INSTANCE);
+        ShapeConsumerSupport.delegate(
+            Materials2Shapes.shapeToolHeadWrench,
+            OrePrefixes.toolHeadWrench,
+            () -> ProcessingToolHead.INSTANCE);
+        ShapeConsumerSupport.delegate(
+            Materials2Shapes.shapeToolHeadHammer,
+            OrePrefixes.toolHeadHammer,
+            () -> ProcessingToolHead.INSTANCE);
         ShapeConsumerSupport
-            .delegate(Materials2Shapes.shapeToolHeadSaw, OrePrefixes.toolHeadSaw, ProcessingToolHead.INSTANCE);
-        ShapeConsumerSupport
-            .delegate(Materials2Shapes.shapeToolHeadWrench, OrePrefixes.toolHeadWrench, ProcessingToolHead.INSTANCE);
-        ShapeConsumerSupport
-            .delegate(Materials2Shapes.shapeToolHeadHammer, OrePrefixes.toolHeadHammer, ProcessingToolHead.INSTANCE);
-        ShapeConsumerSupport
-            .delegate(Materials2Shapes.shapeTurbineBlade, OrePrefixes.turbineBlade, ProcessingToolHead.INSTANCE);
+            .delegate(Materials2Shapes.shapeTurbineBlade, OrePrefixes.turbineBlade, () -> ProcessingToolHead.INSTANCE);
     }
 }
