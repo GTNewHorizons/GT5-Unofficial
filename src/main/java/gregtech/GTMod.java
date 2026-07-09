@@ -142,6 +142,7 @@ import gregtech.loaders.preload.LoaderMaterialLibCutover;
 import gregtech.loaders.preload.LoaderMetaPipeEntities;
 import gregtech.loaders.preload.LoaderMetaTileEntities;
 import gregtech.loaders.preload.LoaderOreProcessing;
+import gregtech.loaders.shapeconsumers.LoaderShapeConsumers;
 import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.RecipeOutput;
 
@@ -297,6 +298,7 @@ public class GTMod {
     @SubscribeEvent
     public void materialRegistration(MaterialRegistrationEvent event) {
         Materials2.init();
+        LoaderShapeConsumers.register();
     }
 
     @Mod.EventHandler
