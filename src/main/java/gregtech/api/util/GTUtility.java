@@ -4383,6 +4383,18 @@ public class GTUtility {
         return isWater(block) && !isFlowingWater(block, world, x, y, z);
     }
 
+    public static ItemStack[] splitItemStack(ItemStack item, long quantity) {
+        int size = (int) ((quantity + Integer.MAX_VALUE - 1) / Integer.MAX_VALUE);
+        ItemStack[] result = new ItemStack[size];
+        for (int i = 0; i < size; i++) {
+            int a = (int) Math.min(quantity, Integer.MAX_VALUE);
+            ItemStack tmp = copyAmountUnsafe(a, item);
+            result[i] = tmp;
+            quantity -= a;
+        }
+        return result;
+    }
+
     public static FluidStack[] splitFluidStack(FluidStack fluid, long amount) {
         int size = (int) ((amount + Integer.MAX_VALUE - 1) / Integer.MAX_VALUE);
         FluidStack[] result = new FluidStack[size];
