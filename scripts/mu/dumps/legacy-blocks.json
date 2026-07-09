@@ -2,916 +2,1099 @@
   {
     "blockField": "sBlockMetal1",
     "meta": 0,
-    "material": "Adamantium"
+    "material": "Adamantium",
+    "iconName": "gregtech:iconsets/BLOCK_ADAMANTIUM"
   },
   {
     "blockField": "sBlockMetal1",
     "meta": 1,
-    "material": "Aluminium"
+    "material": "Aluminium",
+    "iconName": "gregtech:iconsets/BLOCK_ALUMINIUM"
   },
   {
     "blockField": "sBlockMetal1",
     "meta": 2,
-    "material": "Americium"
+    "material": "Americium",
+    "iconName": "gregtech:iconsets/BLOCK_AMERICIUM"
   },
   {
     "blockField": "sBlockMetal1",
     "meta": 3,
-    "material": "AnnealedCopper"
+    "material": "AnnealedCopper",
+    "iconName": "gregtech:iconsets/BLOCK_ANNEALEDCOPPER"
   },
   {
     "blockField": "sBlockMetal1",
     "meta": 4,
-    "material": "Antimony"
+    "material": "Antimony",
+    "iconName": "gregtech:iconsets/BLOCK_ANTIMONY"
   },
   {
     "blockField": "sBlockMetal1",
     "meta": 5,
-    "material": "Arsenic"
+    "material": "Arsenic",
+    "iconName": "gregtech:iconsets/BLOCK_ARSENIC"
   },
   {
     "blockField": "sBlockMetal1",
     "meta": 6,
-    "material": "AstralSilver"
+    "material": "AstralSilver",
+    "iconName": "gregtech:iconsets/BLOCK_ASTRALSILVER"
   },
   {
     "blockField": "sBlockMetal1",
     "meta": 7,
-    "material": "BatteryAlloy"
+    "material": "BatteryAlloy",
+    "iconName": "gregtech:iconsets/BLOCK_BATTERYALLOY"
   },
   {
     "blockField": "sBlockMetal1",
     "meta": 8,
-    "material": "Beryllium"
+    "material": "Beryllium",
+    "iconName": "gregtech:iconsets/BLOCK_BERYLLIUM"
   },
   {
     "blockField": "sBlockMetal1",
     "meta": 9,
-    "material": "Bismuth"
+    "material": "Bismuth",
+    "iconName": "gregtech:iconsets/BLOCK_BISMUTH"
   },
   {
     "blockField": "sBlockMetal1",
     "meta": 10,
-    "material": "BismuthBronze"
+    "material": "BismuthBronze",
+    "iconName": "gregtech:iconsets/BLOCK_BISMUTHBRONZE"
   },
   {
     "blockField": "sBlockMetal1",
     "meta": 11,
-    "material": "BlackBronze"
+    "material": "BlackBronze",
+    "iconName": "gregtech:iconsets/BLOCK_BLACKBRONZE"
   },
   {
     "blockField": "sBlockMetal1",
     "meta": 12,
-    "material": "BlackSteel"
+    "material": "BlackSteel",
+    "iconName": "gregtech:iconsets/BLOCK_BLACKSTEEL"
   },
   {
     "blockField": "sBlockMetal1",
     "meta": 13,
-    "material": "BlueAlloy"
+    "material": "BlueAlloy",
+    "iconName": "gregtech:iconsets/BLOCK_BLUEALLOY"
   },
   {
     "blockField": "sBlockMetal1",
     "meta": 14,
-    "material": "BlueSteel"
+    "material": "BlueSteel",
+    "iconName": "gregtech:iconsets/BLOCK_BLUESTEEL"
   },
   {
     "blockField": "sBlockMetal1",
     "meta": 15,
-    "material": "Brass"
+    "material": "Brass",
+    "iconName": "gregtech:iconsets/BLOCK_BRASS"
   },
   {
     "blockField": "sBlockMetal2",
     "meta": 0,
-    "material": "Bronze"
+    "material": "Bronze",
+    "iconName": "gregtech:iconsets/BLOCK_BRONZE"
   },
   {
     "blockField": "sBlockMetal2",
     "meta": 1,
-    "material": "Caesium"
+    "material": "Caesium",
+    "iconName": "gregtech:iconsets/BLOCK_CAESIUM"
   },
   {
     "blockField": "sBlockMetal2",
     "meta": 2,
-    "material": "Cerium"
+    "material": "Cerium",
+    "iconName": "gregtech:iconsets/BLOCK_CERIUM"
   },
   {
     "blockField": "sBlockMetal2",
     "meta": 3,
-    "material": "Chrome"
+    "material": "Chrome",
+    "iconName": "gregtech:iconsets/BLOCK_CHROME"
   },
   {
     "blockField": "sBlockMetal2",
     "meta": 4,
-    "material": "ChromiumDioxide"
+    "material": "ChromiumDioxide",
+    "iconName": "gregtech:iconsets/BLOCK_CHROMIUMDIOXIDE"
   },
   {
     "blockField": "sBlockMetal2",
     "meta": 5,
-    "material": "Cobalt"
+    "material": "Cobalt",
+    "iconName": "gregtech:iconsets/BLOCK_COBALT"
   },
   {
     "blockField": "sBlockMetal2",
     "meta": 6,
-    "material": "CobaltBrass"
+    "material": "CobaltBrass",
+    "iconName": "gregtech:iconsets/BLOCK_COBALTBRASS"
   },
   {
     "blockField": "sBlockMetal2",
     "meta": 7,
-    "material": "Copper"
+    "material": "Copper",
+    "iconName": "gregtech:iconsets/BLOCK_COPPER"
   },
   {
     "blockField": "sBlockMetal2",
     "meta": 8,
-    "material": "Cupronickel"
+    "material": "Cupronickel",
+    "iconName": "gregtech:iconsets/BLOCK_CUPRONICKEL"
   },
   {
     "blockField": "sBlockMetal2",
     "meta": 9,
-    "material": "DamascusSteel"
+    "material": "DamascusSteel",
+    "iconName": "gregtech:iconsets/BLOCK_DAMASCUSSTEEL"
   },
   {
     "blockField": "sBlockMetal2",
     "meta": 10,
-    "material": "DarkIron"
+    "material": "DarkIron",
+    "iconName": "gregtech:iconsets/BLOCK_DARKIRON"
   },
   {
     "blockField": "sBlockMetal2",
     "meta": 11,
-    "material": "DeepIron"
+    "material": "DeepIron",
+    "iconName": "gregtech:iconsets/BLOCK_DEEPIRON"
   },
   {
     "blockField": "sBlockMetal2",
     "meta": 12,
-    "material": "Desh"
+    "material": "Desh",
+    "iconName": "gregtech:iconsets/BLOCK_DESH"
   },
   {
     "blockField": "sBlockMetal2",
     "meta": 13,
-    "material": "Duranium"
+    "material": "Duranium",
+    "iconName": "gregtech:iconsets/BLOCK_DURANIUM"
   },
   {
     "blockField": "sBlockMetal2",
     "meta": 14,
-    "material": "Dysprosium"
+    "material": "Dysprosium",
+    "iconName": "gregtech:iconsets/BLOCK_DYSPROSIUM"
   },
   {
     "blockField": "sBlockMetal2",
     "meta": 15,
-    "material": "Electrum"
+    "material": "Electrum",
+    "iconName": "gregtech:iconsets/BLOCK_ELECTRUM"
   },
   {
     "blockField": "sBlockMetal3",
     "meta": 0,
-    "material": "ElectrumFlux"
+    "material": "ElectrumFlux",
+    "iconName": "gregtech:iconsets/BLOCK_ELECTRUMFLUX"
   },
   {
     "blockField": "sBlockMetal3",
     "meta": 1,
-    "material": "Enderium"
+    "material": "Enderium",
+    "iconName": "gregtech:iconsets/BLOCK_ENDERIUM"
   },
   {
     "blockField": "sBlockMetal3",
     "meta": 2,
-    "material": "Erbium"
+    "material": "Erbium",
+    "iconName": "gregtech:iconsets/BLOCK_ERBIUM"
   },
   {
     "blockField": "sBlockMetal3",
     "meta": 3,
-    "material": "Europium"
+    "material": "Europium",
+    "iconName": "gregtech:iconsets/BLOCK_EUROPIUM"
   },
   {
     "blockField": "sBlockMetal3",
     "meta": 4,
-    "material": "FierySteel"
+    "material": "FierySteel",
+    "iconName": "gregtech:iconsets/BLOCK_FIERYSTEEL"
   },
   {
     "blockField": "sBlockMetal3",
     "meta": 5,
-    "material": "Gadolinium"
+    "material": "Gadolinium",
+    "iconName": "gregtech:iconsets/BLOCK_GADOLINIUM"
   },
   {
     "blockField": "sBlockMetal3",
     "meta": 6,
-    "material": "Gallium"
+    "material": "Gallium",
+    "iconName": "gregtech:iconsets/BLOCK_GALLIUM"
   },
   {
     "blockField": "sBlockMetal3",
     "meta": 7,
-    "material": "Holmium"
+    "material": "Holmium",
+    "iconName": "gregtech:iconsets/BLOCK_HOLMIUM"
   },
   {
     "blockField": "sBlockMetal3",
     "meta": 8,
-    "material": "HSLA"
+    "material": "HSLA",
+    "iconName": "gregtech:iconsets/BLOCK_HSLA"
   },
   {
     "blockField": "sBlockMetal3",
     "meta": 9,
-    "material": "Indium"
+    "material": "Indium",
+    "iconName": "gregtech:iconsets/BLOCK_INDIUM"
   },
   {
     "blockField": "sBlockMetal3",
     "meta": 10,
-    "material": "InfusedGold"
+    "material": "InfusedGold",
+    "iconName": "gregtech:iconsets/BLOCK_INFUSEDGOLD"
   },
   {
     "blockField": "sBlockMetal3",
     "meta": 11,
-    "material": "Invar"
+    "material": "Invar",
+    "iconName": "gregtech:iconsets/BLOCK_INVAR"
   },
   {
     "blockField": "sBlockMetal3",
     "meta": 12,
-    "material": "Iridium"
+    "material": "Iridium",
+    "iconName": "gregtech:iconsets/BLOCK_IRIDIUM"
   },
   {
     "blockField": "sBlockMetal3",
     "meta": 13,
-    "material": "IronMagnetic"
+    "material": "IronMagnetic",
+    "iconName": "gregtech:iconsets/BLOCK_IRONMAGNETIC"
   },
   {
     "blockField": "sBlockMetal3",
     "meta": 14,
-    "material": "IronWood"
+    "material": "IronWood",
+    "iconName": "gregtech:iconsets/BLOCK_IRONWOOD"
   },
   {
     "blockField": "sBlockMetal3",
     "meta": 15,
-    "material": "Kanthal"
+    "material": "Kanthal",
+    "iconName": "gregtech:iconsets/BLOCK_KANTHAL"
   },
   {
     "blockField": "sBlockMetal4",
     "meta": 0,
-    "material": "Knightmetal"
+    "material": "Knightmetal",
+    "iconName": "gregtech:iconsets/BLOCK_KNIGHTMETAL"
   },
   {
     "blockField": "sBlockMetal4",
     "meta": 1,
-    "material": "Lanthanum"
+    "material": "Lanthanum",
+    "iconName": "gregtech:iconsets/BLOCK_LANTHANUM"
   },
   {
     "blockField": "sBlockMetal4",
     "meta": 2,
-    "material": "Lead"
+    "material": "Lead",
+    "iconName": "gregtech:iconsets/BLOCK_LEAD"
   },
   {
     "blockField": "sBlockMetal4",
     "meta": 3,
-    "material": "Lutetium"
+    "material": "Lutetium",
+    "iconName": "gregtech:iconsets/BLOCK_LUTETIUM"
   },
   {
     "blockField": "sBlockMetal4",
     "meta": 4,
-    "material": "Magnalium"
+    "material": "Magnalium",
+    "iconName": "gregtech:iconsets/BLOCK_MAGNALIUM"
   },
   {
     "blockField": "sBlockMetal4",
     "meta": 5,
-    "material": "Magnesium"
+    "material": "Magnesium",
+    "iconName": "gregtech:iconsets/BLOCK_MAGNESIUM"
   },
   {
     "blockField": "sBlockMetal4",
     "meta": 6,
-    "material": "Manganese"
+    "material": "Manganese",
+    "iconName": "gregtech:iconsets/BLOCK_MANGANESE"
   },
   {
     "blockField": "sBlockMetal4",
     "meta": 7,
-    "material": "MeteoricIron"
+    "material": "MeteoricIron",
+    "iconName": "gregtech:iconsets/BLOCK_METEORICIRON"
   },
   {
     "blockField": "sBlockMetal4",
     "meta": 8,
-    "material": "MeteoricSteel"
+    "material": "MeteoricSteel",
+    "iconName": "gregtech:iconsets/BLOCK_METEORICSTEEL"
   },
   {
     "blockField": "sBlockMetal4",
     "meta": 9,
-    "material": "Trinium"
+    "material": "Trinium",
+    "iconName": "gregtech:iconsets/BLOCK_TRINIUM"
   },
   {
     "blockField": "sBlockMetal4",
     "meta": 10,
-    "material": "Mithril"
+    "material": "Mithril",
+    "iconName": "gregtech:iconsets/BLOCK_MITHRIL"
   },
   {
     "blockField": "sBlockMetal4",
     "meta": 11,
-    "material": "Molybdenum"
+    "material": "Molybdenum",
+    "iconName": "gregtech:iconsets/BLOCK_MOLYBDENUM"
   },
   {
     "blockField": "sBlockMetal4",
     "meta": 12,
-    "material": "Naquadah"
+    "material": "Naquadah",
+    "iconName": "gregtech:iconsets/BLOCK_NAQUADAH"
   },
   {
     "blockField": "sBlockMetal4",
     "meta": 13,
-    "material": "NaquadahAlloy"
+    "material": "NaquadahAlloy",
+    "iconName": "gregtech:iconsets/BLOCK_NAQUADAHALLOY"
   },
   {
     "blockField": "sBlockMetal4",
     "meta": 14,
-    "material": "NaquadahEnriched"
+    "material": "NaquadahEnriched",
+    "iconName": "gregtech:iconsets/BLOCK_NAQUADAHENRICHED"
   },
   {
     "blockField": "sBlockMetal4",
     "meta": 15,
-    "material": "Naquadria"
+    "material": "Naquadria",
+    "iconName": "gregtech:iconsets/BLOCK_NAQUADRIA"
   },
   {
     "blockField": "sBlockMetal5",
     "meta": 0,
-    "material": "Neodymium"
+    "material": "Neodymium",
+    "iconName": "gregtech:iconsets/BLOCK_NEODYMIUM"
   },
   {
     "blockField": "sBlockMetal5",
     "meta": 1,
-    "material": "NeodymiumMagnetic"
+    "material": "NeodymiumMagnetic",
+    "iconName": "gregtech:iconsets/BLOCK_NEODYMIUMMAGNETIC"
   },
   {
     "blockField": "sBlockMetal5",
     "meta": 2,
-    "material": "Neutronium"
+    "material": "Neutronium",
+    "iconName": "gregtech:iconsets/BLOCK_NEUTRONIUM"
   },
   {
     "blockField": "sBlockMetal5",
     "meta": 3,
-    "material": "Nichrome"
+    "material": "Nichrome",
+    "iconName": "gregtech:iconsets/BLOCK_NICHROME"
   },
   {
     "blockField": "sBlockMetal5",
     "meta": 4,
-    "material": "Nickel"
+    "material": "Nickel",
+    "iconName": "gregtech:iconsets/BLOCK_NICKEL"
   },
   {
     "blockField": "sBlockMetal5",
     "meta": 5,
-    "material": "Niobium"
+    "material": "Niobium",
+    "iconName": "gregtech:iconsets/BLOCK_NIOBIUM"
   },
   {
     "blockField": "sBlockMetal5",
     "meta": 6,
-    "material": "NiobiumNitride"
+    "material": "NiobiumNitride",
+    "iconName": "gregtech:iconsets/BLOCK_NIOBIUMNITRIDE"
   },
   {
     "blockField": "sBlockMetal5",
     "meta": 7,
-    "material": "NiobiumTitanium"
+    "material": "NiobiumTitanium",
+    "iconName": "gregtech:iconsets/BLOCK_NIOBIUMTITANIUM"
   },
   {
     "blockField": "sBlockMetal5",
     "meta": 8,
-    "material": "Osmiridium"
+    "material": "Osmiridium",
+    "iconName": "gregtech:iconsets/BLOCK_OSMIRIDIUM"
   },
   {
     "blockField": "sBlockMetal5",
     "meta": 9,
-    "material": "Osmium"
+    "material": "Osmium",
+    "iconName": "gregtech:iconsets/BLOCK_OSMIUM"
   },
   {
     "blockField": "sBlockMetal5",
     "meta": 10,
-    "material": "Palladium"
+    "material": "Palladium",
+    "iconName": "gregtech:iconsets/BLOCK_PALLADIUM"
   },
   {
     "blockField": "sBlockMetal5",
     "meta": 11,
-    "material": "PigIron"
+    "material": "PigIron",
+    "iconName": "gregtech:iconsets/BLOCK_PIGIRON"
   },
   {
     "blockField": "sBlockMetal5",
     "meta": 12,
-    "material": "Platinum"
+    "material": "Platinum",
+    "iconName": "gregtech:iconsets/BLOCK_PLATINUM"
   },
   {
     "blockField": "sBlockMetal5",
     "meta": 13,
-    "material": "Plutonium"
+    "material": "Plutonium",
+    "iconName": "gregtech:iconsets/BLOCK_PLUTONIUM"
   },
   {
     "blockField": "sBlockMetal5",
     "meta": 14,
-    "material": "Plutonium241"
+    "material": "Plutonium241",
+    "iconName": "gregtech:iconsets/BLOCK_PLUTONIUM241"
   },
   {
     "blockField": "sBlockMetal5",
     "meta": 15,
-    "material": "Praseodymium"
+    "material": "Praseodymium",
+    "iconName": "gregtech:iconsets/BLOCK_PRASEODYMIUM"
   },
   {
     "blockField": "sBlockMetal6",
     "meta": 0,
-    "material": "Promethium"
+    "material": "Promethium",
+    "iconName": "gregtech:iconsets/BLOCK_PROMETHIUM"
   },
   {
     "blockField": "sBlockMetal6",
     "meta": 1,
-    "material": "RedAlloy"
+    "material": "RedAlloy",
+    "iconName": "gregtech:iconsets/BLOCK_REDALLOY"
   },
   {
     "blockField": "sBlockMetal6",
     "meta": 2,
-    "material": "RedSteel"
+    "material": "RedSteel",
+    "iconName": "gregtech:iconsets/BLOCK_REDSTEEL"
   },
   {
     "blockField": "sBlockMetal6",
     "meta": 3,
-    "material": "RoseGold"
+    "material": "RoseGold",
+    "iconName": "gregtech:iconsets/BLOCK_ROSEGOLD"
   },
   {
     "blockField": "sBlockMetal6",
     "meta": 4,
-    "material": "Rubidium"
+    "material": "Rubidium",
+    "iconName": "gregtech:iconsets/BLOCK_RUBIDIUM"
   },
   {
     "blockField": "sBlockMetal6",
     "meta": 5,
-    "material": "Samarium"
+    "material": "Samarium",
+    "iconName": "gregtech:iconsets/BLOCK_SAMARIUM"
   },
   {
     "blockField": "sBlockMetal6",
     "meta": 6,
-    "material": "Scandium"
+    "material": "Scandium",
+    "iconName": "gregtech:iconsets/BLOCK_SCANDIUM"
   },
   {
     "blockField": "sBlockMetal6",
     "meta": 7,
-    "material": "ShadowIron"
+    "material": "ShadowIron",
+    "iconName": "gregtech:iconsets/BLOCK_SHADOWIRON"
   },
   {
     "blockField": "sBlockMetal6",
     "meta": 8,
-    "material": "ShadowSteel"
+    "material": "ShadowSteel",
+    "iconName": "gregtech:iconsets/BLOCK_SHADOWSTEEL"
   },
   {
     "blockField": "sBlockMetal6",
     "meta": 9,
-    "material": "Silicon"
+    "material": "Silicon",
+    "iconName": "gregtech:iconsets/BLOCK_SILICON"
   },
   {
     "blockField": "sBlockMetal6",
     "meta": 10,
-    "material": "Silver"
+    "material": "Silver",
+    "iconName": "gregtech:iconsets/BLOCK_SILVER"
   },
   {
     "blockField": "sBlockMetal6",
     "meta": 11,
-    "material": "SolderingAlloy"
+    "material": "SolderingAlloy",
+    "iconName": "gregtech:iconsets/BLOCK_SOLDERINGALLOY"
   },
   {
     "blockField": "sBlockMetal6",
     "meta": 12,
-    "material": "StainlessSteel"
+    "material": "StainlessSteel",
+    "iconName": "gregtech:iconsets/BLOCK_STAINLESSSTEEL"
   },
   {
     "blockField": "sBlockMetal6",
     "meta": 13,
-    "material": "Steel"
+    "material": "Steel",
+    "iconName": "gregtech:iconsets/BLOCK_STEEL"
   },
   {
     "blockField": "sBlockMetal6",
     "meta": 14,
-    "material": "SteelMagnetic"
+    "material": "SteelMagnetic",
+    "iconName": "gregtech:iconsets/BLOCK_STEELMAGNETIC"
   },
   {
     "blockField": "sBlockMetal6",
     "meta": 15,
-    "material": "SterlingSilver"
+    "material": "SterlingSilver",
+    "iconName": "gregtech:iconsets/BLOCK_STERLINGSILVER"
   },
   {
     "blockField": "sBlockMetal7",
     "meta": 0,
-    "material": "Sunnarium"
+    "material": "Sunnarium",
+    "iconName": "gregtech:iconsets/BLOCK_SUNNARIUM"
   },
   {
     "blockField": "sBlockMetal7",
     "meta": 1,
-    "material": "Tantalum"
+    "material": "Tantalum",
+    "iconName": "gregtech:iconsets/BLOCK_TANTALUM"
   },
   {
     "blockField": "sBlockMetal7",
     "meta": 2,
-    "material": "Tellurium"
+    "material": "Tellurium",
+    "iconName": "gregtech:iconsets/BLOCK_TELLURIUM"
   },
   {
     "blockField": "sBlockMetal7",
     "meta": 3,
-    "material": "Terbium"
+    "material": "Terbium",
+    "iconName": "gregtech:iconsets/BLOCK_TERBIUM"
   },
   {
     "blockField": "sBlockMetal7",
     "meta": 4,
-    "material": "Thaumium"
+    "material": "Thaumium",
+    "iconName": "gregtech:iconsets/BLOCK_THAUMIUM"
   },
   {
     "blockField": "sBlockMetal7",
     "meta": 5,
-    "material": "Thorium"
+    "material": "Thorium",
+    "iconName": "gregtech:iconsets/BLOCK_THORIUM"
   },
   {
     "blockField": "sBlockMetal7",
     "meta": 6,
-    "material": "Thulium"
+    "material": "Thulium",
+    "iconName": "gregtech:iconsets/BLOCK_THULIUM"
   },
   {
     "blockField": "sBlockMetal7",
     "meta": 7,
-    "material": "Tin"
+    "material": "Tin",
+    "iconName": "gregtech:iconsets/BLOCK_TIN"
   },
   {
     "blockField": "sBlockMetal7",
     "meta": 8,
-    "material": "TinAlloy"
+    "material": "TinAlloy",
+    "iconName": "gregtech:iconsets/BLOCK_TINALLOY"
   },
   {
     "blockField": "sBlockMetal7",
     "meta": 9,
-    "material": "Titanium"
+    "material": "Titanium",
+    "iconName": "gregtech:iconsets/BLOCK_TITANIUM"
   },
   {
     "blockField": "sBlockMetal7",
     "meta": 10,
-    "material": "Tritanium"
+    "material": "Tritanium",
+    "iconName": "gregtech:iconsets/BLOCK_TRITANIUM"
   },
   {
     "blockField": "sBlockMetal7",
     "meta": 11,
-    "material": "Tungsten"
+    "material": "Tungsten",
+    "iconName": "gregtech:iconsets/BLOCK_TUNGSTEN"
   },
   {
     "blockField": "sBlockMetal7",
     "meta": 12,
-    "material": "TungstenSteel"
+    "material": "TungstenSteel",
+    "iconName": "gregtech:iconsets/BLOCK_TUNGSTENSTEEL"
   },
   {
     "blockField": "sBlockMetal7",
     "meta": 13,
-    "material": "Ultimet"
+    "material": "Ultimet",
+    "iconName": "gregtech:iconsets/BLOCK_ULTIMET"
   },
   {
     "blockField": "sBlockMetal7",
     "meta": 14,
-    "material": "Uranium"
+    "material": "Uranium",
+    "iconName": "gregtech:iconsets/BLOCK_URANIUM"
   },
   {
     "blockField": "sBlockMetal7",
     "meta": 15,
-    "material": "Uranium235"
+    "material": "Uranium235",
+    "iconName": "gregtech:iconsets/BLOCK_URANIUM235"
   },
   {
     "blockField": "sBlockMetal8",
     "meta": 0,
-    "material": "Vanadium"
+    "material": "Vanadium",
+    "iconName": "gregtech:iconsets/BLOCK_VANADIUM"
   },
   {
     "blockField": "sBlockMetal8",
     "meta": 1,
-    "material": "VanadiumGallium"
+    "material": "VanadiumGallium",
+    "iconName": "gregtech:iconsets/BLOCK_VANADIUMGALLIUM"
   },
   {
     "blockField": "sBlockMetal8",
     "meta": 2,
-    "material": "CastIron"
+    "material": "CastIron",
+    "iconName": "gregtech:iconsets/BLOCK_CASTIRON"
   },
   {
     "blockField": "sBlockMetal8",
     "meta": 3,
-    "material": "Ytterbium"
+    "material": "Ytterbium",
+    "iconName": "gregtech:iconsets/BLOCK_YTTRBIUM"
   },
   {
     "blockField": "sBlockMetal8",
     "meta": 4,
-    "material": "Yttrium"
+    "material": "Yttrium",
+    "iconName": "gregtech:iconsets/BLOCK_YTTRIUM"
   },
   {
     "blockField": "sBlockMetal8",
     "meta": 5,
-    "material": "YttriumBariumCuprate"
+    "material": "YttriumBariumCuprate",
+    "iconName": "gregtech:iconsets/BLOCK_YTTRIUMBARIUMCUPRATE"
   },
   {
     "blockField": "sBlockMetal8",
     "meta": 6,
-    "material": "Zinc"
+    "material": "Zinc",
+    "iconName": "gregtech:iconsets/BLOCK_ZINC"
   },
   {
     "blockField": "sBlockMetal8",
     "meta": 7,
-    "material": "TungstenCarbide"
+    "material": "TungstenCarbide",
+    "iconName": "gregtech:iconsets/BLOCK_TUNGSTENCARBIDE"
   },
   {
     "blockField": "sBlockMetal8",
     "meta": 8,
-    "material": "VanadiumSteel"
+    "material": "VanadiumSteel",
+    "iconName": "gregtech:iconsets/BLOCK_VANADIUMSTEEL"
   },
   {
     "blockField": "sBlockMetal8",
     "meta": 9,
-    "material": "HSSG"
+    "material": "HSSG",
+    "iconName": "gregtech:iconsets/BLOCK_HSSG"
   },
   {
     "blockField": "sBlockMetal8",
     "meta": 10,
-    "material": "HSSE"
+    "material": "HSSE",
+    "iconName": "gregtech:iconsets/BLOCK_HSSE"
   },
   {
     "blockField": "sBlockMetal8",
     "meta": 11,
-    "material": "HSSS"
+    "material": "HSSS",
+    "iconName": "gregtech:iconsets/BLOCK_HSSS"
   },
   {
     "blockField": "sBlockMetal8",
     "meta": 12,
-    "material": "Steeleaf"
+    "material": "Steeleaf",
+    "iconName": "gregtech:iconsets/BLOCK_STEELEAF"
   },
   {
     "blockField": "sBlockMetal8",
     "meta": 13,
-    "material": "Ichorium"
+    "material": "Ichorium",
+    "iconName": "gregtech:iconsets/BLOCK_ICHORIUM"
   },
   {
     "blockField": "sBlockMetal8",
     "meta": 14,
-    "material": "Firestone"
+    "material": "Firestone",
+    "iconName": "gregtech:iconsets/BLOCK_FIRESTONE"
   },
   {
     "blockField": "sBlockMetal8",
     "meta": 15,
-    "material": "Shadow"
+    "material": "Shadow",
+    "iconName": "gregtech:iconsets/BLOCK_SHADOW"
   },
   {
     "blockField": "sBlockMetal9",
     "meta": 0,
-    "material": "Cryolite"
+    "material": "Cryolite",
+    "iconName": "gregtech:iconsets/BLOCK_CRYOLITE"
   },
   {
     "blockField": "sBlockMetal9",
     "meta": 1,
-    "material": "SiliconSolarGrade"
+    "material": "SiliconSolarGrade",
+    "iconName": "gregtech:iconsets/BLOCK_SILICONSG"
   },
   {
     "blockField": "sBlockMetal9",
     "meta": 2,
-    "material": "NickelAluminide"
+    "material": "NickelAluminide",
+    "iconName": "gregtech:iconsets/BLOCK_NICKELALUMINIUM"
   },
   {
     "blockField": "sBlockMetal9",
     "meta": 3,
-    "material": "SpaceTime"
+    "material": "SpaceTime",
+    "iconName": "gregtech:iconsets/BLOCK_SPACETIME"
   },
   {
     "blockField": "sBlockMetal9",
     "meta": 4,
-    "material": "TranscendentMetal"
+    "material": "TranscendentMetal",
+    "iconName": "gregtech:iconsets/BLOCK_TRANSCENDENTMETAL"
   },
   {
     "blockField": "sBlockMetal9",
     "meta": 5,
-    "material": "Oriharukon"
+    "material": "Oriharukon",
+    "iconName": "gregtech:iconsets/BLOCK_ORIHARUKON"
   },
   {
     "blockField": "sBlockMetal9",
     "meta": 6,
-    "material": "WhiteDwarfMatter"
+    "material": "WhiteDwarfMatter",
+    "iconName": "gregtech:iconsets/BLOCK_WHITEDWARFMATTER"
   },
   {
     "blockField": "sBlockMetal9",
     "meta": 7,
-    "material": "BlackDwarfMatter"
+    "material": "BlackDwarfMatter",
+    "iconName": "gregtech:iconsets/BLOCK_BLACKDWARFMATTER"
   },
   {
     "blockField": "sBlockMetal9",
     "meta": 8,
-    "material": "Universium"
+    "material": "Universium",
+    "iconName": "gregtech:iconsets/BLOCK_UNIVERSIUM"
   },
   {
     "blockField": "sBlockMetal9",
     "meta": 9,
-    "material": "Eternity"
+    "material": "Eternity",
+    "iconName": "gregtech:iconsets/BLOCK_ETERNITY"
   },
   {
     "blockField": "sBlockMetal9",
     "meta": 10,
-    "material": "Magmatter"
+    "material": "Magmatter",
+    "iconName": "gregtech:iconsets/BLOCK_MAGMATTER"
   },
   {
     "blockField": "sBlockMetal9",
     "meta": 11,
-    "material": "SixPhasedCopper"
+    "material": "SixPhasedCopper",
+    "iconName": "gregtech:iconsets/BLOCK_SIXPHASEDCOPPER"
   },
   {
     "blockField": "sBlockMetal9",
     "meta": 12,
-    "material": "HellishMetal"
+    "material": "HellishMetal",
+    "iconName": "gregtech:iconsets/BLOCK_HELLISHMETAL"
   },
   {
     "blockField": "sBlockMetal9",
     "meta": 13,
-    "material": "MagnetohydrodynamicallyConstrainedStarMatter"
+    "material": "MagnetohydrodynamicallyConstrainedStarMatter",
+    "iconName": "gregtech:iconsets/BLOCK_MAGNETOHYDRODYNAMICALLYCONSTRAINEDSTARMATTER"
   },
   {
     "blockField": "sBlockMetal9",
     "meta": 14,
-    "material": "Hexanite"
+    "material": "Hexanite",
+    "iconName": "gregtech:iconsets/BLOCK_HEXANITE"
   },
   {
     "blockField": "sBlockMetal10",
     "meta": 0,
-    "material": "Shijima"
+    "material": "Shijima",
+    "iconName": "gregtech:iconsets/BLOCK_SHIJIMA"
   },
   {
     "blockField": "sBlockMetal10",
     "meta": 1,
-    "material": "Churitsu"
+    "material": "Churitsu",
+    "iconName": "gregtech:iconsets/BLOCK_CHURITSU"
   },
   {
     "blockField": "sBlockGem1",
     "meta": 0,
-    "material": "InfusedAir"
+    "material": "InfusedAir",
+    "iconName": "gregtech:iconsets/BLOCK_AERCRYSTAL"
   },
   {
     "blockField": "sBlockGem1",
     "meta": 1,
-    "material": "Amber"
+    "material": "Amber",
+    "iconName": "gregtech:iconsets/BLOCK_AMBER"
   },
   {
     "blockField": "sBlockGem1",
     "meta": 2,
-    "material": "Amethyst"
+    "material": "Amethyst",
+    "iconName": "gregtech:iconsets/BLOCK_AMETHYST"
   },
   {
     "blockField": "sBlockGem1",
     "meta": 3,
-    "material": "InfusedWater"
+    "material": "InfusedWater",
+    "iconName": "gregtech:iconsets/BLOCK_AQUACRYSTAL"
   },
   {
     "blockField": "sBlockGem1",
     "meta": 4,
-    "material": "BlueTopaz"
+    "material": "BlueTopaz",
+    "iconName": "gregtech:iconsets/BLOCK_BLUETOPAZ"
   },
   {
     "blockField": "sBlockGem1",
     "meta": 5,
-    "material": "CertusQuartz"
+    "material": "CertusQuartz",
+    "iconName": "gregtech:iconsets/BLOCK_CERTUSQUARTZ"
   },
   {
     "blockField": "sBlockGem1",
     "meta": 6,
-    "material": "Dilithium"
+    "material": "Dilithium",
+    "iconName": "gregtech:iconsets/BLOCK_DILITHIUM"
   },
   {
     "blockField": "sBlockGem1",
     "meta": 7,
-    "material": "EnderEye"
+    "material": "EnderEye",
+    "iconName": "gregtech:iconsets/BLOCK_ENDEREYE"
   },
   {
     "blockField": "sBlockGem1",
     "meta": 8,
-    "material": "EnderPearl"
+    "material": "EnderPearl",
+    "iconName": "gregtech:iconsets/BLOCK_ENDERPEARL"
   },
   {
     "blockField": "sBlockGem1",
     "meta": 9,
-    "material": "FoolsRuby"
+    "material": "FoolsRuby",
+    "iconName": "gregtech:iconsets/BLOCK_FOOLSRUBY"
   },
   {
     "blockField": "sBlockGem1",
     "meta": 10,
-    "material": "Force"
+    "material": "Force",
+    "iconName": "gregtech:iconsets/BLOCK_FORCE"
   },
   {
     "blockField": "sBlockGem1",
     "meta": 11,
-    "material": "Forcicium"
+    "material": "Forcicium",
+    "iconName": "gregtech:iconsets/BLOCK_FORCICIUM"
   },
   {
     "blockField": "sBlockGem1",
     "meta": 12,
-    "material": "Forcillium"
+    "material": "Forcillium",
+    "iconName": "gregtech:iconsets/BLOCK_FORCILLIUM"
   },
   {
     "blockField": "sBlockGem1",
     "meta": 13,
-    "material": "GreenSapphire"
+    "material": "GreenSapphire",
+    "iconName": "gregtech:iconsets/BLOCK_GREENSAPPHIRE"
   },
   {
     "blockField": "sBlockGem1",
     "meta": 14,
-    "material": "InfusedFire"
+    "material": "InfusedFire",
+    "iconName": "gregtech:iconsets/BLOCK_IGNISCRYSTAL"
   },
   {
     "blockField": "sBlockGem1",
     "meta": 15,
-    "material": "Jasper"
+    "material": "Jasper",
+    "iconName": "gregtech:iconsets/BLOCK_JASPER"
   },
   {
     "blockField": "sBlockGem2",
     "meta": 0,
-    "material": "Lazurite"
+    "material": "Lazurite",
+    "iconName": "gregtech:iconsets/BLOCK_LAZURITE"
   },
   {
     "blockField": "sBlockGem2",
     "meta": 1,
-    "material": "Lignite"
+    "material": "Lignite",
+    "iconName": "gregtech:iconsets/BLOCK_LIGNITE"
   },
   {
     "blockField": "sBlockGem2",
     "meta": 2,
-    "material": "Monazite"
+    "material": "Monazite",
+    "iconName": "gregtech:iconsets/BLOCK_MONAZITE"
   },
   {
     "blockField": "sBlockGem2",
     "meta": 3,
-    "material": "Niter"
+    "material": "Niter",
+    "iconName": "gregtech:iconsets/BLOCK_NITER"
   },
   {
     "blockField": "sBlockGem2",
     "meta": 4,
-    "material": "Olivine"
+    "material": "Olivine",
+    "iconName": "gregtech:iconsets/BLOCK_OLIVINE"
   },
   {
     "blockField": "sBlockGem2",
     "meta": 5,
-    "material": "Opal"
+    "material": "Opal",
+    "iconName": "gregtech:iconsets/BLOCK_OPAL"
   },
   {
     "blockField": "sBlockGem2",
     "meta": 6,
-    "material": "InfusedOrder"
+    "material": "InfusedOrder",
+    "iconName": "gregtech:iconsets/BLOCK_ORDOCRYSTAL"
   },
   {
     "blockField": "sBlockGem2",
     "meta": 7,
-    "material": "InfusedEntropy"
+    "material": "InfusedEntropy",
+    "iconName": "gregtech:iconsets/BLOCK_PERDITIOCRYSTAL"
   },
   {
     "blockField": "sBlockGem2",
     "meta": 8,
-    "material": "TricalciumPhosphate"
+    "material": "TricalciumPhosphate",
+    "iconName": "gregtech:iconsets/BLOCK_PHOSPHORUS"
   },
   {
     "blockField": "sBlockGem2",
     "meta": 9,
-    "material": "Quartzite"
+    "material": "Quartzite",
+    "iconName": "gregtech:iconsets/BLOCK_QUARTZITE"
   },
   {
     "blockField": "sBlockGem2",
     "meta": 10,
-    "material": "GarnetRed"
+    "material": "GarnetRed",
+    "iconName": "gregtech:iconsets/BLOCK_REDGARNET"
   },
   {
     "blockField": "sBlockGem2",
     "meta": 11,
-    "material": "Ruby"
+    "material": "Ruby",
+    "iconName": "gregtech:iconsets/BLOCK_RUBY"
   },
   {
     "blockField": "sBlockGem2",
     "meta": 12,
-    "material": "Sapphire"
+    "material": "Sapphire",
+    "iconName": "gregtech:iconsets/BLOCK_SAPPHIRE"
   },
   {
     "blockField": "sBlockGem2",
     "meta": 13,
-    "material": "Sodalite"
+    "material": "Sodalite",
+    "iconName": "gregtech:iconsets/BLOCK_SODALITE"
   },
   {
     "blockField": "sBlockGem2",
     "meta": 14,
-    "material": "Tanzanite"
+    "material": "Tanzanite",
+    "iconName": "gregtech:iconsets/BLOCK_TANZANITE"
   },
   {
     "blockField": "sBlockGem2",
     "meta": 15,
-    "material": "InfusedEarth"
+    "material": "InfusedEarth",
+    "iconName": "gregtech:iconsets/BLOCK_TERRACRYSTAL"
   },
   {
     "blockField": "sBlockGem3",
     "meta": 0,
-    "material": "Topaz"
+    "material": "Topaz",
+    "iconName": "gregtech:iconsets/BLOCK_TOPAZ"
   },
   {
     "blockField": "sBlockGem3",
     "meta": 1,
-    "material": "Vinteum"
+    "material": "Vinteum",
+    "iconName": "gregtech:iconsets/BLOCK_VINTEUM"
   },
   {
     "blockField": "sBlockGem3",
     "meta": 2,
-    "material": "GarnetYellow"
+    "material": "GarnetYellow",
+    "iconName": "gregtech:iconsets/BLOCK_YELLOWGARNET"
   },
   {
     "blockField": "sBlockGem3",
     "meta": 3,
-    "material": "NetherStar"
+    "material": "NetherStar",
+    "iconName": "gregtech:iconsets/BLOCK_NETHERSTAR"
   },
   {
     "blockField": "sBlockGem3",
     "meta": 4,
-    "material": "Charcoal"
+    "material": "Charcoal",
+    "iconName": "gregtech:iconsets/BLOCK_CHARCOAL"
   },
   {
     "blockField": "sBlockGem3",
     "meta": 5,
-    "material": "Blaze"
+    "material": "Blaze",
+    "iconName": "gregtech:iconsets/BLOCK_BLAZE"
   }
 ]

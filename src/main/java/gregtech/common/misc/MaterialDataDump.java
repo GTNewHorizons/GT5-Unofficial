@@ -47,6 +47,7 @@ import gregtech.api.material.MaterialRef;
 import gregtech.api.material.MaterialRefStack;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.GTLog;
+import gregtech.client.iconContainers.blocks.GTBlockIconContainer;
 import gregtech.common.blocks.BlockMetal;
 import gregtech.common.fluid.GTFluid;
 import gtPlusPlus.core.material.Material;
@@ -765,13 +766,18 @@ public final class MaterialDataDump {
 
     // region legacy-blocks.json
 
-    /// Every (blockField, meta, materialName) entry the legacy `gregtech.common.blocks.BlockMetal` storage-block
-    /// instances hold, read directly off their `mMats` arrays -- ground truth for `block` `OrePrefixes`
-    /// membership, since (unlike every other prefix) `block` generates through this hand-curated per-instance
-    /// array rather than the generic capability-bit pipeline (its dumped `generationBits` is `0`, so it is
-    /// absent from every material's `generatedPrefixes`). Read directly off live fields rather than a
-    /// dump-mode capture: the arrays are static source-code literals with no construction-time drift to guard
-    /// against, unlike [MetaGeneratedItemX32]'s capability-bit-driven item shapes.
+    /// Every (blockField, meta, materialName, iconName) entry the legacy `gregtech.common.blocks.BlockMetal`
+    /// storage-block instances hold, read directly off their `mMats`/`mBlockIcons` arrays -- ground truth for
+    /// `block` `OrePrefixes` membership, since (unlike every other prefix) `block` generates through this
+    /// hand-curated per-instance array rather than the generic capability-bit pipeline (its dumped
+    /// `generationBits` is `0`, so it is absent from every material's `generatedPrefixes`). Read directly off
+    /// live fields rather than a dump-mode capture: the arrays are static source-code literals with no
+    /// construction-time drift to guard against, unlike [MetaGeneratedItemX32]'s capability-bit-driven item
+    /// shapes. `iconName` is each material's legacy per-material art (e.g. `gregtech:iconsets/BLOCK_ADAMANTIUM`),
+    /// captured positionally off the same `mBlockIcons` array `BlockMetal#getIcon` reads rather than derived from
+    /// `material` by a naming rule, because the two hand-curated arrays (`Materials[]` in `LoaderGTBlockFluid`,
+    /// `IIconContainer[]` in `Textures.BlockIcons`) drift out of alphabetical/token sync in dozens of entries
+    /// (e.g. `Spinel` renders `BLOCK_FOOLSRUBY`, `GarnetRed` renders `BLOCK_REDGARNET`).
     private static List<Map<String, Object>> dumpLegacyBlocks() {
         List<Map<String, Object>> out = new ArrayList<>();
         dumpLegacyBlock(out, "sBlockMetal1", GregTechAPI.sBlockMetal1);
@@ -798,6 +804,9 @@ public final class MaterialDataDump {
             json.put("blockField", blockField);
             json.put("meta", meta);
             json.put("material", metal.mMats[meta].mName);
+            json.put(
+                "iconName",
+                metal.mBlockIcons[meta] instanceof GTBlockIconContainer gtIcon ? gtIcon.getIconName() : null);
             out.add(json);
         }
     }
