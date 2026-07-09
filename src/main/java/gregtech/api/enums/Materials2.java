@@ -1,6 +1,7 @@
 package gregtech.api.enums;
 
 import gregtech.api.enums.materials2.Materials2Families;
+import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 
@@ -15,6 +16,7 @@ public class Materials2 {
     // spotless:on
 
     public static void init() {
+        Materials2FluidShapes.init();
         Materials2Shapes.init();
         Materials2Families.init();
         Materials2Materials.init();
