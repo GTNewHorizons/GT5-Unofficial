@@ -28,6 +28,11 @@ public class GTMaterialProperties {
     public static final Property<Integer> BYPRODUCT_MULTIPLIER = Property.of("gregtech", "byProductMultiplier");
     public static final Property<Boolean> CAN_BE_CRACKED = Property.of("gregtech", "canBeCracked");
     public static final Property<List<MaterialRefStack>> COMPOSITION = Property.of("gregtech", "composition");
+    /// The three hydro-cracked fluids (light/moderate/severe), present only when the dump captured a legacy
+    /// hydro-cracked fluid for this material (see [#CAN_BE_CRACKED]).
+    public static final Property<List<FluidRef>> CRACKED_HYDRO_FLUIDS = Property.of("gregtech", "crackedHydroFluids");
+    /// As [#CRACKED_HYDRO_FLUIDS], for the steam-cracked fluids.
+    public static final Property<List<FluidRef>> CRACKED_STEAM_FLUIDS = Property.of("gregtech", "crackedSteamFluids");
     public static final Property<Integer> DENSITY_DIVIDER = Property.of("gregtech", "densityDivider");
     public static final Property<Integer> DENSITY_MULTIPLIER = Property.of("gregtech", "densityMultiplier");
     public static final Property<MaterialRef> DIRECT_SMELTING = Property.of("gregtech", "directSmelting");

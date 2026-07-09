@@ -60610,5 +60610,1907 @@
     "prefix": "plateSuperdense",
     "material": "Tetranaquadahdiindiumhexaplatiumosminid",
     "damage": 6992
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Lithium",
+    "damage": 6
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Beryllium",
+    "damage": 8
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Boron",
+    "damage": 9
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Magnesium",
+    "damage": 18
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Aluminium",
+    "damage": 19
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Silicon",
+    "damage": 20
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Potassium",
+    "damage": 25
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Scandium",
+    "damage": 27
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Titanium",
+    "damage": 28
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Vanadium",
+    "damage": 29
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Chrome",
+    "damage": 30
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Manganese",
+    "damage": 31
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Iron",
+    "damage": 32
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Cobalt",
+    "damage": 33
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Nickel",
+    "damage": 34
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Copper",
+    "damage": 35
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Zinc",
+    "damage": 36
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Gallium",
+    "damage": 37
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Arsenic",
+    "damage": 39
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Rubidium",
+    "damage": 43
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Strontium",
+    "damage": 44
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Yttrium",
+    "damage": 45
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Niobium",
+    "damage": 47
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Molybdenum",
+    "damage": 48
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Palladium",
+    "damage": 52
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Silver",
+    "damage": 54
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Indium",
+    "damage": 56
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Tin",
+    "damage": 57
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Antimony",
+    "damage": 58
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Tellurium",
+    "damage": 59
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Caesium",
+    "damage": 62
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Barium",
+    "damage": 63
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Lanthanum",
+    "damage": 64
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Cerium",
+    "damage": 65
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Praseodymium",
+    "damage": 66
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Neodymium",
+    "damage": 67
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Promethium",
+    "damage": 68
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Samarium",
+    "damage": 69
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Europium",
+    "damage": 70
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Gadolinium",
+    "damage": 71
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Terbium",
+    "damage": 72
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Dysprosium",
+    "damage": 73
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Holmium",
+    "damage": 74
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Erbium",
+    "damage": 75
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Thulium",
+    "damage": 76
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Ytterbium",
+    "damage": 77
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Lutetium",
+    "damage": 78
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Tantalum",
+    "damage": 80
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Tungsten",
+    "damage": 81
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Osmium",
+    "damage": 83
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Iridium",
+    "damage": 84
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Platinum",
+    "damage": 85
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Gold",
+    "damage": 86
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Lead",
+    "damage": 89
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Bismuth",
+    "damage": 90
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Thorium",
+    "damage": 96
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Uranium235",
+    "damage": 97
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Uranium",
+    "damage": 98
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Plutonium",
+    "damage": 100
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Plutonium241",
+    "damage": 101
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Americium",
+    "damage": 103
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "TengamPurified",
+    "damage": 111
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "TengamAttuned",
+    "damage": 112
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "TengamPurified",
+    "damage": 111
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "HellishMetal",
+    "damage": 125
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Neutronium",
+    "damage": 129
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "SuperconductorUIVBase",
+    "damage": 131
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "SuperconductorUMVBase",
+    "damage": 134
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Universium",
+    "damage": 139
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Eternity",
+    "damage": 141
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Magmatter",
+    "damage": 143
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "SixPhasedCopper",
+    "damage": 147
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Mellion",
+    "damage": 148
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Creon",
+    "damage": 149
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "prismaticnaquadah",
+    "damage": 163
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Shijima",
+    "damage": 189
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Churitsu",
+    "damage": 190
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Manasteel",
+    "damage": 201
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Terrasteel",
+    "damage": 202
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "ElvenElementium",
+    "damage": 203
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "GaiaSpirit",
+    "damage": 205
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Bronze",
+    "damage": 300
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Brass",
+    "damage": 301
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Invar",
+    "damage": 302
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Electrum",
+    "damage": 303
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "CastIron",
+    "damage": 304
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Steel",
+    "damage": 305
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "StainlessSteel",
+    "damage": 306
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "PigIron",
+    "damage": 307
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Iron",
+    "damage": 32
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "RedAlloy",
+    "damage": 308
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "BlueAlloy",
+    "damage": 309
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Cupronickel",
+    "damage": 310
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Nichrome",
+    "damage": 311
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Kanthal",
+    "damage": 312
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Magnalium",
+    "damage": 313
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "SolderingAlloy",
+    "damage": 314
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "BatteryAlloy",
+    "damage": 315
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "TungstenSteel",
+    "damage": 316
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Osmiridium",
+    "damage": 317
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Sunnarium",
+    "damage": 318
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Adamantium",
+    "damage": 319
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "ElectrumFlux",
+    "damage": 320
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Enderium",
+    "damage": 321
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "InfusedGold",
+    "damage": 323
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Naquadah",
+    "damage": 324
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "NaquadahAlloy",
+    "damage": 325
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "NaquadahEnriched",
+    "damage": 326
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Naquadria",
+    "damage": 327
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Duranium",
+    "damage": 328
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Tritanium",
+    "damage": 329
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Thaumium",
+    "damage": 330
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Mithril",
+    "damage": 331
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "AstralSilver",
+    "damage": 333
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "BlackSteel",
+    "damage": 334
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "DamascusSteel",
+    "damage": 335
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "ShadowIron",
+    "damage": 336
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "ShadowSteel",
+    "damage": 337
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "IronWood",
+    "damage": 338
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "MeteoricIron",
+    "damage": 340
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "MeteoricSteel",
+    "damage": 341
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "DarkIron",
+    "damage": 342
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "CobaltBrass",
+    "damage": 343
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Ultimet",
+    "damage": 344
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "AnnealedCopper",
+    "damage": 345
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "FierySteel",
+    "damage": 346
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "RedSteel",
+    "damage": 348
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "BlueSteel",
+    "damage": 349
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "SterlingSilver",
+    "damage": 350
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "RoseGold",
+    "damage": 351
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "BlackBronze",
+    "damage": 352
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "BismuthBronze",
+    "damage": 353
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Iron",
+    "damage": 32
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Steel",
+    "damage": 305
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Neodymium",
+    "damage": 67
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "VanadiumGallium",
+    "damage": 357
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "YttriumBariumCuprate",
+    "damage": 358
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "NiobiumNitride",
+    "damage": 359
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "NiobiumTitanium",
+    "damage": 360
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "ChromiumDioxide",
+    "damage": 361
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Knightmetal",
+    "damage": 362
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "TinAlloy",
+    "damage": 363
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "DarkSteel",
+    "damage": 364
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "ElectricalSteel",
+    "damage": 365
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "EnergeticAlloy",
+    "damage": 366
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "VibrantAlloy",
+    "damage": 367
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Shadow",
+    "damage": 368
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "ConductiveIron",
+    "damage": 369
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "TungstenCarbide",
+    "damage": 370
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "VanadiumSteel",
+    "damage": 371
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "HSSG",
+    "damage": 372
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "HSSE",
+    "damage": 373
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "HSSS",
+    "damage": 374
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "PulsatingIron",
+    "damage": 378
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Soularium",
+    "damage": 379
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "EnderiumBase",
+    "damage": 380
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "RedstoneAlloy",
+    "damage": 381
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Ardite",
+    "damage": 382
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Reinforced",
+    "damage": 383
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Galgadorian",
+    "damage": 384
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "EnhancedGalgadorian",
+    "damage": 385
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Manyullyn",
+    "damage": 386
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Mytryl",
+    "damage": 387
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "BlackPlutonium",
+    "damage": 388
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "CallistoIce",
+    "damage": 389
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Ledox",
+    "damage": 390
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Quantium",
+    "damage": 391
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Duralumin",
+    "damage": 392
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Oriharukon",
+    "damage": 393
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "InfinityCatalyst",
+    "damage": 394
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Bedrockium",
+    "damage": 395
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Infinity",
+    "damage": 397
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "MysteriousCrystal",
+    "damage": 398
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Samarium",
+    "damage": 69
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Alumite",
+    "damage": 400
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "EndSteel",
+    "damage": 401
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "CrudeSteel",
+    "damage": 402
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "CrystallineAlloy",
+    "damage": 403
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "MelodicAlloy",
+    "damage": 404
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "StellarAlloy",
+    "damage": 405
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "CrystallinePinkSlime",
+    "damage": 406
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "EnergeticSilver",
+    "damage": 407
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "VividAlloy",
+    "damage": 408
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Epoxid",
+    "damage": 470
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Silicone",
+    "damage": 471
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Polycaprolactam",
+    "damage": 472
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Polytetrafluoroethylene",
+    "damage": 473
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Alduorite",
+    "damage": 485
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Rubracium",
+    "damage": 488
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Vulcanite",
+    "damage": 489
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Force",
+    "damage": 521
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Vinteum",
+    "damage": 529
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "TPVAlloy",
+    "damage": 576
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "TranscendentMetal",
+    "damage": 581
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "EnrichedHolmium",
+    "damage": 582
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "MagnetohydrodynamicallyConstrainedStarMatter",
+    "damage": 583
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "WhiteDwarfMatter",
+    "damage": 585
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "BlackDwarfMatter",
+    "damage": 586
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "SpaceTime",
+    "damage": 588
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Polybenzimidazole",
+    "damage": 599
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "ReinforcedGlass",
+    "damage": 602
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "EpoxidFiberReinforced",
+    "damage": 610
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "BorosilicateGlass",
+    "damage": 611
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "NickelZincFerrite",
+    "damage": 613
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "PolyphenyleneSulfide",
+    "damage": 631
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "StyreneButadieneRubber",
+    "damage": 635
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Polystyrene",
+    "damage": 636
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellHydroCracked1",
+    "material": "Ethane",
+    "damage": 10642
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellHydroCracked2",
+    "material": "Ethane",
+    "damage": 11642
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellHydroCracked3",
+    "material": "Ethane",
+    "damage": 12642
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellSteamCracked1",
+    "material": "Ethane",
+    "damage": 13642
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellSteamCracked2",
+    "material": "Ethane",
+    "damage": 14642
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellSteamCracked3",
+    "material": "Ethane",
+    "damage": 15642
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellHydroCracked1",
+    "material": "Propane",
+    "damage": 10643
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellHydroCracked2",
+    "material": "Propane",
+    "damage": 11643
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellHydroCracked3",
+    "material": "Propane",
+    "damage": 12643
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellSteamCracked1",
+    "material": "Propane",
+    "damage": 13643
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellSteamCracked2",
+    "material": "Propane",
+    "damage": 14643
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellSteamCracked3",
+    "material": "Propane",
+    "damage": 15643
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellHydroCracked1",
+    "material": "Butane",
+    "damage": 10644
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellHydroCracked2",
+    "material": "Butane",
+    "damage": 11644
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellHydroCracked3",
+    "material": "Butane",
+    "damage": 12644
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellSteamCracked1",
+    "material": "Butane",
+    "damage": 13644
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellSteamCracked2",
+    "material": "Butane",
+    "damage": 14644
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellSteamCracked3",
+    "material": "Butane",
+    "damage": 15644
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellHydroCracked1",
+    "material": "Butene",
+    "damage": 10645
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellHydroCracked2",
+    "material": "Butene",
+    "damage": 11645
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellHydroCracked3",
+    "material": "Butene",
+    "damage": 12645
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellSteamCracked1",
+    "material": "Butene",
+    "damage": 13645
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellSteamCracked2",
+    "material": "Butene",
+    "damage": 14645
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellSteamCracked3",
+    "material": "Butene",
+    "damage": 15645
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellHydroCracked1",
+    "material": "Butadiene",
+    "damage": 10646
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellHydroCracked2",
+    "material": "Butadiene",
+    "damage": 11646
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellHydroCracked3",
+    "material": "Butadiene",
+    "damage": 12646
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellSteamCracked1",
+    "material": "Butadiene",
+    "damage": 13646
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellSteamCracked2",
+    "material": "Butadiene",
+    "damage": 14646
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellSteamCracked3",
+    "material": "Butadiene",
+    "damage": 15646
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "PolyvinylChloride",
+    "damage": 649
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellHydroCracked1",
+    "material": "Ethylene",
+    "damage": 10677
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellHydroCracked2",
+    "material": "Ethylene",
+    "damage": 11677
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellHydroCracked3",
+    "material": "Ethylene",
+    "damage": 12677
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellSteamCracked1",
+    "material": "Ethylene",
+    "damage": 13677
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellSteamCracked2",
+    "material": "Ethylene",
+    "damage": 14677
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellSteamCracked3",
+    "material": "Ethylene",
+    "damage": 15677
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellHydroCracked1",
+    "material": "Propene",
+    "damage": 10678
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellHydroCracked2",
+    "material": "Propene",
+    "damage": 11678
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellHydroCracked3",
+    "material": "Propene",
+    "damage": 12678
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellSteamCracked1",
+    "material": "Propene",
+    "damage": 13678
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellSteamCracked2",
+    "material": "Propene",
+    "damage": 14678
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellSteamCracked3",
+    "material": "Propene",
+    "damage": 15678
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellHydroCracked1",
+    "material": "Gas",
+    "damage": 10735
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellHydroCracked2",
+    "material": "Gas",
+    "damage": 11735
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellHydroCracked3",
+    "material": "Gas",
+    "damage": 12735
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellSteamCracked1",
+    "material": "Gas",
+    "damage": 13735
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellSteamCracked2",
+    "material": "Gas",
+    "damage": 14735
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellSteamCracked3",
+    "material": "Gas",
+    "damage": 15735
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellHydroCracked1",
+    "material": "Naphtha",
+    "damage": 10739
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellHydroCracked2",
+    "material": "Naphtha",
+    "damage": 11739
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellHydroCracked3",
+    "material": "Naphtha",
+    "damage": 12739
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellSteamCracked1",
+    "material": "Naphtha",
+    "damage": 13739
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellSteamCracked2",
+    "material": "Naphtha",
+    "damage": 14739
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellSteamCracked3",
+    "material": "Naphtha",
+    "damage": 15739
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellHydroCracked1",
+    "material": "LightFuel",
+    "damage": 10740
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellHydroCracked2",
+    "material": "LightFuel",
+    "damage": 11740
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellHydroCracked3",
+    "material": "LightFuel",
+    "damage": 12740
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellSteamCracked1",
+    "material": "LightFuel",
+    "damage": 13740
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellSteamCracked2",
+    "material": "LightFuel",
+    "damage": 14740
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellSteamCracked3",
+    "material": "LightFuel",
+    "damage": 15740
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellHydroCracked1",
+    "material": "HeavyFuel",
+    "damage": 10741
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellHydroCracked2",
+    "material": "HeavyFuel",
+    "damage": 11741
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellHydroCracked3",
+    "material": "HeavyFuel",
+    "damage": 12741
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellSteamCracked1",
+    "material": "HeavyFuel",
+    "damage": 13741
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellSteamCracked2",
+    "material": "HeavyFuel",
+    "damage": 14741
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellSteamCracked3",
+    "material": "HeavyFuel",
+    "damage": 15741
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Kevlar",
+    "damage": 765
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "HeeEndium",
+    "damage": 770
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "NickelAluminide",
+    "damage": 772
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Blaze",
+    "damage": 801
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Sugar",
+    "damage": 803
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Obsidian",
+    "damage": 804
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Redstone",
+    "damage": 810
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Glowstone",
+    "damage": 811
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Electrotine",
+    "damage": 812
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "DeepIron",
+    "damage": 829
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "SiliconSolarGrade",
+    "damage": 856
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Trinium",
+    "damage": 868
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Plastic",
+    "damage": 874
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Rubber",
+    "damage": 880
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Desh",
+    "damage": 884
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Glass",
+    "damage": 890
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Cheese",
+    "damage": 894
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Chrysotile",
+    "damage": 912
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Realgar",
+    "damage": 913
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Concrete",
+    "damage": 947
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Vyroxeres",
+    "damage": 951
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Ceruclase",
+    "damage": 952
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Tartarite",
+    "damage": 956
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Orichalcum",
+    "damage": 966
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Void",
+    "damage": 970
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "SuperconductorUEVBase",
+    "damage": 974
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Draconium",
+    "damage": 975
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "DraconiumAwakened",
+    "damage": 976
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "BloodInfusedIron",
+    "damage": 977
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Ichorium",
+    "damage": 978
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "RadoxPoly",
+    "damage": 979
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "GalliumArsenide",
+    "damage": 980
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "IndiumGalliumPhosphide",
+    "damage": 981
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "CosmicNeutronium",
+    "damage": 982
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Flerovium_GT5U",
+    "damage": 984
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Longasssuperconductornameforuhvwire",
+    "damage": 985
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Longasssuperconductornameforuvwire",
+    "damage": 986
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Pentacadmiummagnesiumhexaoxid",
+    "damage": 987
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Titaniumonabariumdecacoppereikosaoxid",
+    "damage": 988
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Uraniumtriplatinid",
+    "damage": 989
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Vanadiumtriindinid",
+    "damage": 990
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Tetraindiumditindibariumtitaniumheptacoppertetrakaidekaoxid",
+    "damage": 991
+  },
+  {
+    "metaItem": "metaitem.99",
+    "prefix": "cellMolten",
+    "material": "Tetranaquadahdiindiumhexaplatiumosminid",
+    "damage": 992
   }
 ]

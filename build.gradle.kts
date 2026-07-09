@@ -79,6 +79,9 @@ tasks.assemble.configure {
 tasks.named<RunMinecraftTask>("runServer").configure {
     dependsOn(functionalTest.jarTaskName)
     classpath(configurations.named(functionalTest.runtimeClasspathConfigurationName), tasks.named(functionalTest.jarTaskName))
+    if (System.getProperty("gt.dumpMaterialData") != null) {
+        jvmArgs("-Dgt.dumpMaterialData=true")
+    }
 }
 
 tasks.named<RunMinecraftTask>("runClient").configure {

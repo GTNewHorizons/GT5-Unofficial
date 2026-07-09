@@ -2228,6 +2228,12 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
         return this;
     }
 
+    /// The three hydro-cracked fluids (light/moderate/severe), or an all-null array if this material was never
+    /// cracked.
+    public Fluid[] getHydroCrackedFluids() {
+        return hydroCrackedFluids;
+    }
+
     public FluidStack getLightlyHydroCracked(int amount) {
         if (hydroCrackedFluids[0] == null) {
             return null;
@@ -2252,6 +2258,12 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     public Materials setSteamCrackedFluids(Fluid[] steamCrackedFluids) {
         this.steamCrackedFluids = steamCrackedFluids;
         return this;
+    }
+
+    /// The three steam-cracked fluids (light/moderate/severe), or an all-null array if this material was never
+    /// cracked.
+    public Fluid[] getSteamCrackedFluids() {
+        return steamCrackedFluids;
     }
 
     public FluidStack getLightlySteamCracked(int amount) {
