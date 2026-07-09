@@ -1359,6 +1359,7 @@ public final class RecipeMaps {
         })
         .progressBar(GTUITextures.PROGRESSBAR_CUT)
         .progressBarMUI2(GTGuiTextures.PROGRESSBAR_CUT)
+        .neiTransferRectId("gt.recipe.fakecuttingsaw")
         .recipeEmitter(b -> {
             b.validateInputCount(1, 2)
                 .validateOutputCount(1, 4)
