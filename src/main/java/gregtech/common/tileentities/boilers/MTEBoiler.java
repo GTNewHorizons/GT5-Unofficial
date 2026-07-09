@@ -506,11 +506,6 @@ public abstract class MTEBoiler extends MTEBasicTank implements IGetTitleColor {
             .widgetTheme(GTWidgetThemes.OVERLAY_ITEM_SLOT_DUST);
     }
 
-    @Override
-    public TieredVariant getTieredVariant() {
-        return TieredVariant.BRONZE;
-    }
-
     public boolean isValidFluidInputSlotItem(@NotNull ItemStack stack) {
         return GTUtility.fillFluidContainer(Materials.Steam.getGas(getSteamCapacity()), stack, false, true) != null
             || isFluidInputAllowed(GTUtility.getFluidForFilledItem(stack, true));

@@ -105,20 +105,15 @@ public class MTELargeNaquadahReactor extends TTMultiblockBase
         .addShape(
             STRUCTURE_PIECE_MAIN,
             new String[][] {
-                { "  AAA  ", "   A   ", "   C   ", "   C   ", "   A   ", "  AAA  ", "   A   ", "   C   ", "   C   ",
-                    "   A   ", "  A~A  " },
-                { " AAAAA ", "  ACA  ", "       ", "   A   ", "  BBB  ", " ABBBA ", "  BBB  ", "   A   ", "       ",
-                    "  ACA  ", " AAAAA " },
-                { "AAAAAAA", " ACACA ", "   A   ", "  BBB  ", " BBBBB ", "ABBBBBA", " BBBBB ", "  BBB  ", "   A   ",
-                    " ACACA ", "AAAAAAA" },
-                { "AAAAAAA", "ACAAACA", "C A A C", "CABBBAC", "ABBBBBA", "ABBBBBA", "ABBBBBA", "CABBBAC", "C A A C",
-                    "ACA ACA", "AAAAAAA" },
-                { "AAAAAAA", " ACACA ", "   A   ", "  BBB  ", " BBBBB ", "ABBBBBA", " BBBBB ", "  BBB  ", "   A   ",
-                    " ACACA ", "AAAAAAA" },
-                { " AAAAA ", "  ACA  ", "       ", "   A   ", "  BBB  ", " ABBBA ", "  BBB  ", "       ", "       ",
-                    "  ACA  ", " AAAAA " },
-                { "  AAA  ", "   A   ", "   C   ", "   C   ", "   A   ", "  AAA  ", "   A   ", "   C   ", "   C   ",
-                    "   A   ", "  AAA  " } })
+                // spotless:off
+                { "  AAA  ", "   A   ", "   C   ", "   C   ", "   A   ", "  AAA  ", "   A   ", "   C   ", "   C   ", "   A   ", "  A~A  " },
+                { " AAAAA ", "  ACA  ", "       ", "   A   ", "  BBB  ", " ABBBA ", "  BBB  ", "   A   ", "       ", "  ACA  ", " AAAAA " },
+                { "AAAAAAA", " ACACA ", "   A   ", "  BBB  ", " BBBBB ", "ABBBBBA", " BBBBB ", "  BBB  ", "   A   ", " ACACA ", "AAAAAAA" },
+                { "AAAAAAA", "ACAAACA", "C A A C", "CABBBAC", "ABBBBBA", "ABBBBBA", "ABBBBBA", "CABBBAC", "C A A C", "ACA ACA", "AAAAAAA" },
+                { "AAAAAAA", " ACACA ", "   A   ", "  BBB  ", " BBBBB ", "ABBBBBA", " BBBBB ", "  BBB  ", "   A   ", " ACACA ", "AAAAAAA" },
+                { " AAAAA ", "  ACA  ", "       ", "   A   ", "  BBB  ", " ABBBA ", "  BBB  ", "   A   ", "       ", "  ACA  ", " AAAAA " },
+                { "  AAA  ", "   A   ", "   C   ", "   C   ", "   A   ", "  AAA  ", "   A   ", "   C   ", "   C   ", "   A   ", "  AAA  " } })
+                // spotless:on
         .addElement(
             'A',
             ofChain(
