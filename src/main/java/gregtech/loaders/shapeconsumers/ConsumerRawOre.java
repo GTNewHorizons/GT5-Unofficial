@@ -10,6 +10,7 @@ public final class ConsumerRawOre {
     private ConsumerRawOre() {}
 
     static void register() {
-        ShapeConsumerSupport.delegate(Materials2Shapes.shapeRawOre, OrePrefixes.rawOre, ProcessingRawOre.INSTANCE);
+        ShapeConsumerSupport
+            .delegate(Materials2Shapes.shapeRawOre, OrePrefixes.rawOre, () -> ProcessingRawOre.INSTANCE);
     }
 }

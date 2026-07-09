@@ -10,6 +10,6 @@ public final class ConsumerBolt {
     private ConsumerBolt() {}
 
     static void register() {
-        ShapeConsumerSupport.delegate(Materials2Shapes.shapeBolt, OrePrefixes.bolt, ProcessingBolt.INSTANCE);
+        ShapeConsumerSupport.delegate(Materials2Shapes.shapeBolt, OrePrefixes.bolt, () -> ProcessingBolt.INSTANCE);
     }
 }

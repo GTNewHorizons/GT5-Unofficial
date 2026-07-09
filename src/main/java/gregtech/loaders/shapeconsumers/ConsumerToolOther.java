@@ -12,7 +12,9 @@ public final class ConsumerToolOther {
     private ConsumerToolOther() {}
 
     static void register() {
-        ShapeConsumerSupport
-            .delegate(Materials2Shapes.shapeToolHeadHammer, OrePrefixes.toolHeadHammer, ProcessingToolOther.INSTANCE);
+        ShapeConsumerSupport.delegate(
+            Materials2Shapes.shapeToolHeadHammer,
+            OrePrefixes.toolHeadHammer,
+            () -> ProcessingToolOther.INSTANCE);
     }
 }

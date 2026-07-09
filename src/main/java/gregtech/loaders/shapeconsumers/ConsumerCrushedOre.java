@@ -14,10 +14,10 @@ public final class ConsumerCrushedOre {
         ShapeConsumerSupport.delegate(
             Materials2Shapes.shapeCrushedCentrifuged,
             OrePrefixes.crushedCentrifuged,
-            ProcessingCrushedOre.INSTANCE);
+            () -> ProcessingCrushedOre.INSTANCE);
         ShapeConsumerSupport.delegate(
             Materials2Shapes.shapeCrushedPurified,
             OrePrefixes.crushedPurified,
-            ProcessingCrushedOre.INSTANCE);
+            () -> ProcessingCrushedOre.INSTANCE);
     }
 }

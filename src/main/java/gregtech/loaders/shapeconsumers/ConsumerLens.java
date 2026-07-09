@@ -10,6 +10,6 @@ public final class ConsumerLens {
     private ConsumerLens() {}
 
     static void register() {
-        ShapeConsumerSupport.delegate(Materials2Shapes.shapeLens, OrePrefixes.lens, ProcessingLens.INSTANCE);
+        ShapeConsumerSupport.delegate(Materials2Shapes.shapeLens, OrePrefixes.lens, () -> ProcessingLens.INSTANCE);
     }
 }
