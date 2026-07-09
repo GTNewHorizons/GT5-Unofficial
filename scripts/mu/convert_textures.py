@@ -23,11 +23,13 @@ import json
 import shutil
 from pathlib import Path
 
+from gen_materials import BLOCK_CUTOVER_EXCLUDED
 from gen_shapes import load_included_prefixes
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 REPO_ROOT = SCRIPT_DIR.parent.parent
 DUMP_PATH = SCRIPT_DIR / "dumps" / "oreprefixes.json"
+LEGACY_BLOCKS_DUMP_PATH = SCRIPT_DIR / "dumps" / "legacy-blocks.json"
 
 ASSETS_ITEMS = REPO_ROOT / "src/main/resources/assets/gregtech/textures/items"
 SOURCE_ROOT = ASSETS_ITEMS / "materialicons"
@@ -43,6 +45,15 @@ BLOCK_DEST_ROOT = ASSETS_BLOCKS / "materials"
 # ("block1") once in main(); block is excluded from load_included_prefixes (block-kind), so its slot is looked
 # up by OrePrefixes name directly, the same way load_cell_slot_suffixes does for containers.
 BLOCK_PREFIX_NAME = "block"
+
+# The `block` shape's legacy art is per-MATERIAL, not per-texture-set (`textures/blocks/iconsets/BLOCK_<X>.png`,
+# one file per legacy `Materials` constant, positionally bound off `BlockMetal#mBlockIcons` -- see
+# `legacy-blocks.json`'s `iconName` field and `MaterialDataDump#dumpLegacyBlocks`). GTStorageShapeBlock#
+# iconPathFor resolves this at runtime from a material's legacy name, so the destination is keyed by material
+# name rather than by set: `textures/blocks/materials/blocks/<legacy name lowercased>.png`, a `blocks/`
+# subfolder standing in for `TextureSet`'s usual per-set folder, since this art has no texture set of its own.
+BLOCK_MATERIALS_ICONSETS_DIR = ASSETS_BLOCKS / "iconsets"
+BLOCK_MATERIALS_DEST_ROOT = ASSETS_BLOCKS / "materials" / "blocks"
 
 PRIORITY_SET = "NONE"
 
@@ -179,6 +190,43 @@ def convert_blocks():
     return len(texture_sets), sets_with_texture, files_written
 
 
+def convert_per_material_blocks():
+    """Converts every cut-over material's legacy per-material storage-block art (see
+    `BLOCK_MATERIALS_ICONSETS_DIR`/`BLOCK_MATERIALS_DEST_ROOT`) from `legacy-blocks.json`'s `iconName` field,
+    which names the source file positionally rather than by the material's own name (see that field's
+    docstring in `MaterialDataDump#dumpLegacyBlocks`) -- so, unlike `convert_set`, the destination name here is
+    the material's legacy name, not the source file's. `BLOCK_CUTOVER_EXCLUDED` materials are skipped since
+    they never resolve through the MaterialLib block shape (see `gen_materials.py`)."""
+    with open(LEGACY_BLOCKS_DUMP_PATH, encoding="utf-8") as f:
+        entries = json.load(f)
+
+    files_written = 0
+    materials_converted = []
+    materials_missing_art = []
+    for entry in entries:
+        material = entry["material"]
+        if material in BLOCK_CUTOVER_EXCLUDED:
+            continue
+        icon_name = entry.get("iconName")
+        source = BLOCK_MATERIALS_ICONSETS_DIR / f"{icon_name.rsplit('/', 1)[-1]}.png" if icon_name else None
+        if source is None or not source.is_file():
+            materials_missing_art.append(material)
+            continue
+
+        BLOCK_MATERIALS_DEST_ROOT.mkdir(parents=True, exist_ok=True)
+        dest = BLOCK_MATERIALS_DEST_ROOT / f"{material.lower()}.png"
+        shutil.copyfile(source, dest)
+        files_written += 1
+        materials_converted.append(material)
+
+        source_mcmeta = source.with_name(source.name + ".mcmeta")
+        if source_mcmeta.is_file():
+            shutil.copyfile(source_mcmeta, dest.with_name(dest.name + ".mcmeta"))
+            files_written += 1
+
+    return materials_converted, materials_missing_art, files_written
+
+
 def convert_set(set_name, source_dir, shape_slot, skip_overlay_shapes=frozenset()):
     """Converts `shape_slot`'s shapes for one texture set. `skip_overlay_shapes` names shapes that never render
     an `_OVERLAY` file even when the source slot has one: `ShapeFluidInContainer` (see `Materials2CellShapes`)
@@ -239,6 +287,9 @@ def main():
     block_sets, block_sets_with_texture, block_files_written = convert_blocks()
     total_files += block_files_written
 
+    per_material_converted, per_material_missing, per_material_files_written = convert_per_material_blocks()
+    total_files += per_material_files_written
+
     shapes_never_textured = sorted(
         (set(shape_slot) | set(shapes_without_index)) - shapes_with_any_texture
     )
@@ -250,6 +301,14 @@ def main():
     print(
         f"block shape (blocks tree): {block_sets_with_texture}/{block_sets} texture sets have art, "
         f"{block_files_written} files written")
+    print(
+        f"block shape per-material art: {len(per_material_converted)}/"
+        f"{len(per_material_converted) + len(per_material_missing)} cut-over materials converted, "
+        f"{per_material_files_written} files written")
+    if per_material_missing:
+        print(f"  materials with no legacy per-material art: {len(per_material_missing)}")
+        for name in sorted(per_material_missing):
+            print(f"    {name}")
     print(f"shapes with no texture index or slot (no source in any set): {len(shapes_without_index)}")
     for name in sorted(shapes_without_index):
         print(f"  {name}")
