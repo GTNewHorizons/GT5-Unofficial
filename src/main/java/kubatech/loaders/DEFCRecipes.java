@@ -8,6 +8,7 @@ import static gregtech.api.enums.Mods.SuperSolarPanels;
 import static gregtech.api.enums.Mods.Witchery;
 import static gregtech.api.recipe.RecipeMaps.assemblerRecipes;
 import static gregtech.api.recipe.RecipeMaps.mixerRecipes;
+import static gregtech.api.util.GTRecipeBuilder.HALF_INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.STACKS;
@@ -19,8 +20,6 @@ import java.util.Arrays;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.GTValues;
@@ -59,7 +58,7 @@ public class DEFCRecipes {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.DraconiumAwakened, 64L))
             .fluidInputs(Materials.Radon.getPlasma(1 * INGOTS))
             .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Ash, 8L))
-            .fluidOutputs(new FluidStack(FluidRegistry.getFluid("molten.dragonblood"), 288))
+            .fluidOutputs(Materials.Dragonblood.getMolten(2 * INGOTS))
             .eut(TierEU.RECIPE_UHV)
             .duration(14_000)
             .addTo(mixerRecipes);
@@ -280,7 +279,7 @@ public class DEFCRecipes {
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.DraconiumAwakened, 64))
             .circuit(1)
             .fluidInputs(Materials.Radon.getPlasma(1 * INGOTS))
-            .fluidOutputs(new FluidStack(FluidRegistry.getFluid("molten.dragonblood"), 288))
+            .fluidOutputs(Materials.Dragonblood.getMolten(2 * INGOTS))
             .eut(TierEU.RECIPE_UHV)
             .duration(4200)
             .metadata(DEFC_CASING_TIER, 3)
@@ -293,37 +292,39 @@ public class DEFCRecipes {
                     GTOreDictUnificator.get(OrePrefixes.dust, Materials.DraconiumAwakened, 64))
                 .circuit(1)
                 .fluidInputs(Materials.Radon.getPlasma(72))
-                .fluidOutputs(new FluidStack(FluidRegistry.getFluid("molten.dragonblood"), 432))
+                .fluidOutputs(Materials.Dragonblood.getMolten(3 * INGOTS))
                 .eut(TierEU.RECIPE_UHV)
                 .duration(3600)
                 .metadata(DEFC_CASING_TIER, 3)
                 .addTo(fusionCraftingRecipes);
         }
 
-        GTValues.RA.stdBuilder()
-            .itemInputs(
-                new ItemStack(Blocks.dragon_egg, 0),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.DraconiumAwakened, 64),
-                GTBees.combs.getStackForType(CombType.DRAGONBLOOD, 1))
-            .fluidInputs(Materials.Radon.getPlasma(216))
-            .fluidOutputs(new FluidStack(FluidRegistry.getFluid("molten.dragonblood"), 432))
-            .eut(TierEU.RECIPE_UHV)
-            .duration(2800)
-            .metadata(DEFC_CASING_TIER, 3)
-            .addTo(fusionCraftingRecipes);
-
-        if (Witchery.isModLoaded()) {
+        if (Mods.Forestry.isModLoaded()) {
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    GTModHandler.getModItem(Witchery.ID, "infinityegg", 0),
+                    new ItemStack(Blocks.dragon_egg, 0),
                     GTOreDictUnificator.get(OrePrefixes.dust, Materials.DraconiumAwakened, 64),
                     GTBees.combs.getStackForType(CombType.DRAGONBLOOD, 1))
-                .fluidInputs(Materials.Radon.getPlasma(108))
-                .fluidOutputs(new FluidStack(FluidRegistry.getFluid("molten.dragonblood"), 648))
+                .fluidInputs(Materials.Radon.getPlasma(216))
+                .fluidOutputs(Materials.Dragonblood.getMolten(3 * INGOTS))
                 .eut(TierEU.RECIPE_UHV)
-                .duration(2400)
+                .duration(2800)
                 .metadata(DEFC_CASING_TIER, 3)
                 .addTo(fusionCraftingRecipes);
+
+            if (Witchery.isModLoaded()) {
+                GTValues.RA.stdBuilder()
+                    .itemInputs(
+                        GTModHandler.getModItem(Witchery.ID, "infinityegg", 0),
+                        GTOreDictUnificator.get(OrePrefixes.dust, Materials.DraconiumAwakened, 64),
+                        GTBees.combs.getStackForType(CombType.DRAGONBLOOD, 1))
+                    .fluidInputs(Materials.Radon.getPlasma(108))
+                    .fluidOutputs(Materials.Dragonblood.getMolten(4 * INGOTS + 1 * HALF_INGOTS))
+                    .eut(TierEU.RECIPE_UHV)
+                    .duration(2400)
+                    .metadata(DEFC_CASING_TIER, 3)
+                    .addTo(fusionCraftingRecipes);
+            }
         }
     }
 }

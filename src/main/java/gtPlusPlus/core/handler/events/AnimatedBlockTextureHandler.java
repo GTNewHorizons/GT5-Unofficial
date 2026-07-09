@@ -1,10 +1,5 @@
 package gtPlusPlus.core.handler.events;
 
-import static gregtech.api.enums.Materials.AstralTitanium;
-import static gregtech.api.enums.Materials.CelestialTungsten;
-import static gregtech.api.enums.Materials.ChromaticGlass;
-import static gregtech.api.enums.Materials.Hypogen;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,7 +49,7 @@ public class AnimatedBlockTextureHandler implements IResourceManagerReloadListen
 
     private static IIcon[] resolveIcons() {
         List<IIcon> resolved = new ArrayList<>();
-        Material[] animated = { ChromaticGlass, AstralTitanium, CelestialTungsten, Hypogen };
+        Material[] animated = {};
         for (Material material : animated) {
             for (BlockTypes type : new BlockTypes[] { BlockTypes.STANDARD, BlockTypes.FRAME }) {
                 Block block = BlockBaseModular.getMaterialBlock(material, type);

@@ -196,11 +196,6 @@ public class RecipeLoader {
         // Vanilla should always be loaded
         MTEExtremeIndustrialGreenhouse.addFertilizerItem(new ItemStack(Items.dye, 1, 15));
 
-        if (DraconicEvolution.isModLoaded()) {
-            // Controller recipe added in TecTech
-            DEFCRecipes.addRecipes();
-        }
-
         GTModHandler.addCraftingRecipe(
             HighTemperatureGasCooledReactor.get(1),
             GTModHandler.RecipeBits.BITS,
@@ -215,6 +210,12 @@ public class RecipeLoader {
     public static void addRecipesLate() {
         // Runs on server start
         if (lateRecipesInitialized) return;
+
+        if (DraconicEvolution.isModLoaded()) {
+            // Controller recipe added in TecTech
+            DEFCRecipes.addRecipes();
+        }
+
         lateRecipesInitialized = true;
     }
 

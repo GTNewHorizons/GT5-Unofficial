@@ -187,6 +187,19 @@ public class MaterialsIDMap extends Int2ObjectOpenHashMap<Materials> {
         r(242, Materials.WeedEX9000);
         r(243, Materials.PotassiumHydroxide);
         r(244, Materials.CaesiumHydroxide);
+
+        r(245, Materials.CelestialTungsten);
+        r(246, Materials.AstralTitanium);
+        r(247, Materials.ChromaticGlass);
+        r(248, Materials.AdvancedNitinol);
+        r(249, Materials.Hypogen);
+        r(250, Materials.Rhugnor);
+        r(251, Materials.ForceGTPP);
+        r(252, Materials.BlackMetal);
+        r(253, Materials.AncientGranite);
+        r(254, Materials.Runite);
+        r(255, Materials.Dragonblood);
+
         r(299, Materials.Stone);
         r(300, Materials.Bronze);
         r(301, Materials.Brass);

@@ -16743,6 +16743,10 @@ public class MaterialsInit {
         Materials.Hypogen = loadHypogen();
         Materials.Rhugnor = loadRhugnor();
         Materials.ForceGTPP = loadForceGTPP();
+        Materials.BlackMetal = loadBlackMetal();
+        Materials.AncientGranite = loadAncientGranite();
+        Materials.Runite = loadRunite();
+        Materials.Dragonblood = loadDragonblood();
     }
 
     private static Materials loadCelestialTungsten() {

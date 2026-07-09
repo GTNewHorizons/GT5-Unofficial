@@ -36,12 +36,6 @@ public class RecipeLoaderTreeFarm {
         if (Mods.PamsHarvestTheNether.isModLoaded()) generatePamsNetherTrees();
         if (Mods.Fether.isModLoaded()) generateFetherTrees();
         if (Mods.EtFuturumRequiem.isModLoaded()) generateEtFuturumRequiemTrees();
-
-        if (Mods.Forestry.isModLoaded()) {
-            ForestryTreeHandler.generateForestryTrees();
-        }
-
-        if (Mods.Forestry.isModLoaded() && Mods.ExtraTrees.isModLoaded()) ForestryTreeHandler.generateExtraTreesTrees();
     }
 
     private static void registerTreeProducts(ItemStack sapling, ItemStack log, ItemStack leaves, ItemStack fruit) {

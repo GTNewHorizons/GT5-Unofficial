@@ -881,6 +881,14 @@ public class LoaderGTBlockFluid implements Runnable {
             OrePrefixes.block,
             gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKS13);
 
+        GregTechAPI.sBlockMetalGTPP = new BlockMetal(
+            "gt.blockmetalgtpp",
+            new Materials[] { Materials.CelestialTungsten, Materials.AstralTitanium, Materials.ChromaticGlass,
+                Materials.AdvancedNitinol, Materials.Hypogen, Materials.Rhugnor, Materials.ForceGTPP,
+                Materials.BlackMetal, Materials.AncientGranite, Materials.Runite, Materials.Dragonblood },
+            OrePrefixes.block,
+            gregtech.api.enums.Textures.BlockIcons.STORAGE_BLOCKSGTPP);
+
         GregTechAPI.sBlockReinforced = new BlockReinforced("gt.blockreinforced");
 
         GregTechAPI.sBlockSheetmetalGT = new BlockSheetMetal(

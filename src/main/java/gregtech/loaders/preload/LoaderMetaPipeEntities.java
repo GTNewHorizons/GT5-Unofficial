@@ -566,6 +566,15 @@ public final class LoaderMetaPipeEntities implements Runnable {
             .disableCable()
             .disableElectricDamage()
             .build();
+        WireCableBuilder.builder()
+            .material(Materials.Hypogen)
+            .startId(2612)
+            .lossWire(0)
+            .amperage(8)
+            .voltage(TierEU.UIV)
+            .disableCable()
+            .disableElectricDamage()
+            .build();
     }
 
     private static void registerFluidPipes() {
@@ -851,6 +860,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
             .startId(5730)
             .invSlotsForHugePipe(512)
             .build();
+
     }
 
     private static class WireCableBuilder {

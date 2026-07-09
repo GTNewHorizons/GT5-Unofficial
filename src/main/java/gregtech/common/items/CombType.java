@@ -232,8 +232,8 @@ public enum CombType {
     TERRASTEEL(176, "terrasteel", true, Materials.Terrasteel, 50, 0x51BA00, 0xAEFF6B, ItemComb.Voltage.IV),
     GAIASPIRIT(177, "gaia_spirit", true, Materials.GaiaSpirit, 50, 0x758997, 0xB7D6EB, ItemComb.Voltage.LuV),
     // GTPP
-    DRAGONBLOOD(178, "Dragonblood", true, Materials.Dragonblood, 10, 0xdc1414, 0x141414, ItemComb.Voltage.UEV),
-    FORCE(179, "Force", true, Materials.ForceGTPP, 10, 0xfafa14, 0xc8c805, ItemComb.Voltage.EV),
+    DRAGONBLOOD(178, "dragonblood", true, Materials.Dragonblood, 10, 0xdc1414, 0x141414, ItemComb.Voltage.UEV),
+    FORCE(179, "force", true, Materials.ForceGTPP, 10, 0xfafa14, 0xc8c805, ItemComb.Voltage.EV),
 
     // ALWAYS KEEP _NULL AT THE BOTTOM
     _NULL(-1, "INVALIDCOMB", false, Materials._NULL, 0, 0, 0);

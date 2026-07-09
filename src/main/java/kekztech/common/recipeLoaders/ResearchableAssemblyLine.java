@@ -4,7 +4,6 @@ import static gregtech.api.util.GTRecipeBuilder.INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.STACKS;
 
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.ItemList;
@@ -102,8 +101,8 @@ public class ResearchableAssemblyLine implements Runnable {
                 ItemList.Circuit_Parts_DiodeXSMD.get(64), ItemList.Circuit_Parts_InductorXSMD.get(64),
                 GTOreDictUnificator.get(OrePrefixes.wireGt16, Materials.SuperconductorUMV, 64) },
             new FluidStack[] { MaterialMisc.MUTATED_LIVING_SOLDER.getFluidStack(4 * STACKS),
-                new FluidStack(FluidRegistry.getFluid("molten.astraltitanium"), 4 * STACKS),
-                Materials.CelestialTungsten.getMolten(4 * STACKS), Materials.SuperCoolant.getFluid(256_000) },
+                Materials.AstralTitanium.getMolten(4 * STACKS), Materials.CelestialTungsten.getMolten(4 * STACKS),
+                Materials.SuperCoolant.getFluid(256_000) },
             new ItemStack(Blocks.lscLapotronicEnergyUnit, 1, 10),
             360 * 20,
             (int) TierEU.RECIPE_UMV);
