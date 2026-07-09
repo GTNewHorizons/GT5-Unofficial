@@ -35,6 +35,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMaps;
+import gregtech.api.util.GTLog;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTRecipeBuilder;
@@ -62,15 +63,20 @@ public class Godforge implements Runnable {
     public static final List<ItemStack> magmatterSpaceFluidItemsForNEI = new ArrayList<>();
     public static final List<ItemStack> magmatterItemsForNEI = new ArrayList<>();
 
+    /// Resolves each dust `ItemStack` back to its unified material via [GTOreDictUnificator#getAssociation]
+    /// rather than parsing an OreDictionary name (`"dustIron"` -> `"Iron"`), so this does not depend on the
+    /// item having exactly one registered OreDictionary id in a particular order -- true for both legacy and
+    /// MaterialLib-cutover dust items, since both go through `addAssociation` on unification.
     private FluidStack[] convertToFluid(ItemStack[] items) {
         List<FluidStack> molten = new ArrayList<>();
 
         for (ItemStack itemStack : items) {
-            String dict = OreDictionary.getOreName(OreDictionary.getOreIDs(itemStack)[0]);
-            // substring 4 because dust is 4 characters long and there is no other possible oreDict
-            String strippedOreDict = dict.substring(4);
-            molten.add(FluidRegistry.getFluidStack("molten." + strippedOreDict.toLowerCase(), 1 * INGOTS));
-
+            ItemData association = GTOreDictUnificator.getAssociation(itemStack);
+            if (association == null || association.mMaterial == null || association.mMaterial.mMaterial == null) {
+                GTLog.err.println("Godforge.convertToFluid: no unification data for " + itemStack + ", skipping");
+                continue;
+            }
+            molten.add(association.mMaterial.mMaterial.getMolten(1 * INGOTS));
         }
 
         return molten.toArray(new FluidStack[0]);

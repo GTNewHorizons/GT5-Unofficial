@@ -23,17 +23,16 @@ import java.util.stream.Stream;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.oredict.OreDictionary;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import com.cleanroommc.modularui.utils.fluid.FluidStackTank;
+import com.cleanroommc.modularui.utils.fluid.FluidTanksHandler;
+import com.cleanroommc.modularui.utils.fluid.IFluidTanksHandler;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
@@ -42,10 +41,13 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
+import gregtech.api.util.GTLog;
+import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTStreamUtil;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -53,10 +55,8 @@ import gregtech.api.util.OverclockCalculator;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.gui.modularui.multiblock.godforge.MTEExoticModuleGui;
 import tectech.recipe.TecTechRecipeMaps;
-import tectech.thing.CustomItemList;
 import tectech.thing.metaTileEntity.multi.godforge.util.GodforgeMath;
 
-@IMetaTileEntity.SkipGenerateDescription
 public class MTEExoticModule extends MTEBaseModule {
 
     public static final int RECIPE_REFRESH_LIMIT = 60 * SECONDS;
@@ -73,25 +73,15 @@ public class MTEExoticModule extends MTEBaseModule {
     private FluidStack[] randomizedFluidInput = GTValues.emptyFluidStackArray;
     private ItemStack[] randomizedItemInput = GTValues.emptyItemStackArray;
     private GTRecipe plasmaRecipe = null;
-    private final FluidStack[] fluidStacks = new FluidStack[NUMBER_OF_INPUTS];
-    public final FluidStackTank[] fluidTanks = new FluidStackTank[NUMBER_OF_INPUTS];
+    public final IFluidTanksHandler tankHandler = new FluidTanksHandler(NUMBER_OF_INPUTS, 128000);
     private BigInteger powerForRecipe = BigInteger.ZERO;
 
     public MTEExoticModule(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
-        initialize();
     }
 
     public MTEExoticModule(String aName) {
         super(aName);
-        initialize();
-    }
-
-    private void initialize() {
-        for (int i = 0; i < fluidTanks.length; i++) {
-            final int ii = i;
-            fluidTanks[i] = new FluidStackTank(() -> fluidStacks[ii], val -> fluidStacks[ii] = val, 128000);
-        }
     }
 
     @Override
@@ -268,15 +258,15 @@ public class MTEExoticModule extends MTEBaseModule {
 
         for (int i = 0; i < NUMBER_OF_INPUTS; i++) {
             if (plasmaRecipe == null) {
-                fluidStacks[i] = null;
+                tankHandler.setFluidInTank(i, null, 0);
                 continue;
             }
 
             if (i < plasmaRecipe.mFluidInputs.length) {
                 FluidStack plasma = plasmaRecipe.mFluidInputs[i];
-                fluidStacks[i] = new FluidStack(plasma.getFluid(), plasma.amount);
+                tankHandler.setFluidInTank(i, plasma.getFluid(), plasma.amount);
             } else {
-                fluidStacks[i] = null;
+                tankHandler.setFluidInTank(i, null, 0);
             }
         }
     }
@@ -348,26 +338,18 @@ public class MTEExoticModule extends MTEBaseModule {
 
     }
 
+    /// Resolves each dust `ItemStack` back to its unified material via [GTOreDictUnificator#getAssociation]
+    /// rather than parsing an OreDictionary name, matching [tectech.loader.recipe.Godforge#convertToFluid].
     private FluidStack[] convertItemToPlasma(ItemStack[] items, long multiplier) {
         List<FluidStack> plasmas = new ArrayList<>();
 
         for (ItemStack itemStack : items) {
-            int[] oreIDs = OreDictionary.getOreIDs(itemStack);
-
-            // Retry until it finds a falid vluid
-            for (int oreID : oreIDs) {
-                String oreDict = OreDictionary.getOreName(oreID);
-                // substring 4 because dust is 4 characters long and there is no other possible oreDict
-                String strippedOreDict = oreDict.substring(4);
-                FluidStack plasma = FluidRegistry.getFluidStack(
-                    "plasma." + strippedOreDict.toLowerCase(),
-                    (int) (INGOTS * multiplier * itemStack.stackSize));
-
-                if (plasma != null) {
-                    plasmas.add(plasma);
-                    break;
-                }
+            ItemData association = GTOreDictUnificator.getAssociation(itemStack);
+            if (association == null || association.mMaterial == null || association.mMaterial.mMaterial == null) {
+                GTLog.err.println("MTEExoticModule.convertItemToPlasma: no unification data for " + itemStack);
+                continue;
             }
+            plasmas.add(association.mMaterial.mMaterial.getPlasma((int) (INGOTS * multiplier * itemStack.stackSize)));
         }
 
         return plasmas.toArray(new FluidStack[0]);
@@ -521,22 +503,28 @@ public class MTEExoticModule extends MTEBaseModule {
     @Override
     public MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-        // spotless:off
-        tt.addMachineType(StatCollector.translateToLocal("gt.mbtt.machine_type.exotic_matter_producer"))
-            .addMarkdown(new ResourceLocation("gregtech", "godforge-exotic-module"))
-            .beginStructureBlock(7, 7, 13, false)
-            .addController(StatCollector.translateToLocal("gt.mbtt.structure.front_center_4th_layer"))
-            .addCasing("0-20", CustomItemList.Godforge_SingularityShieldingCasing.get(1).getDisplayName(), false)
-            .addCasing("20", CustomItemList.Godforge_BoundlessStructureCasing.get(1).getDisplayName(), false)
-            .addCasing("5", CustomItemList.Godforge_GuidanceCasing.get(1).getDisplayName(), false)
-            .addCasing("5", CustomItemList.Godforge_HarmonicPhononTransmissionConduit.get(1).getDisplayName(), false)
-            .addCasing("1", CustomItemList.Godforge_StellarEnergySiphonCasing.get(1).getDisplayName(), false)
-            .addInputBus("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_front_shielding_casing"), 1)
-            .addInputHatch("0+", StatCollector.translateToLocal("gt.mbtt.structure.any_front_shielding_casing"), 1)
-            .addOutputBus("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_front_shielding_casing"), 1)
-            .addOutputHatch("1+", StatCollector.translateToLocal("gt.mbtt.structure.any_front_shielding_casing"), 1)
+        tt.addMachineType("Exotic Matter Producer")
+            .addInfo("This is a module of the Godforge")
+            .addInfo("Must be part of a Godforge to function")
+            .addInfo("Used for ultra high temperature matter degeneration")
+            .addSeparator(EnumChatFormatting.AQUA, 75)
+            .addInfo("The fourth and final module of the Godforge, this module breaks apart the very")
+            .addInfo("building blocks of matter, producing exotic mixtures in the process. Quark-Gluon Plasma")
+            .addInfo("can be manufactured right away, but production of Magnetic Monopole Matter (Magmatter)")
+            .addInfo("requires a fully upgraded Godforge")
+            .addInfo("This module is specialized towards acquisition of unique materials")
+            .beginStructureBlock(13, 7, 7, false)
+            .addController("Front center")
+            .addCasing("0-20", "Singularity Reinforced Stellar Shielding Casing", false)
+            .addCasing("20", "Boundless Gravitationally Severed Structure Casing", false)
+            .addCasing("5", "Celestial Matter Guidance Casing", false)
+            .addCasing("5", "Harmonic Phonon Transmission Conduit", false)
+            .addCasing("1", "Stellar Energy Siphon Casing", false)
+            .addInputBus("0+", "Any front shielding casing", 1)
+            .addInputHatch("0+", "Any front shielding casing", 1)
+            .addOutputBus("1+", "Any front shielding casing", 1)
+            .addOutputHatch("1+", "Any front shielding casing", 1)
             .toolTipFinisher();
-        // spotless:on
         return tt;
     }
 
