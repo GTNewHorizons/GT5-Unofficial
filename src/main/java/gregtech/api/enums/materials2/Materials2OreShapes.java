@@ -57,31 +57,57 @@ public class Materials2OreShapes {
     private static final String[] SMALL_ORE_EXCLUDED = { "PackedIce", "BlueIce" };
     // spotless:on
 
-    /// Untinted per-variant background textures MaterialLib is confident are correct without a live-game check:
-    /// vanilla Minecraft stone/netherrack/end stone/hardened clay, and GT's own granite/marble/basalt block art
-    /// (`textures/blocks/iconsets/<NAME>.png`, converted the same way as every other GT block icon). The
-    /// remaining 33 variants (GalaxySpace/Galacticraft planets and moons, Horus, AnubisAndMaahes, the two Ice
-    /// stones, SethIce, Deepslate, Tuff) back onto cross-mod textures this migration could not verify a resource
-    /// path for without a live client; those variants render as a single tinted layer (no base) until a
-    /// follow-up in-client pass adds them -- see [com.ruling_0.materiallib.api.BlockShapeBuilder#variantBase]'s
-    /// contract: a variant with no base texture renders fine, just without the stone-background art.
-    private static final Map<String, String> KNOWN_VARIANT_BASES = Map.of(
-        "Stone",
-        "minecraft:blocks/stone",
-        "Netherrack",
-        "minecraft:blocks/netherrack",
-        "Endstone",
-        "minecraft:blocks/end_stone",
-        "BlackGranite",
-        "gregtech:iconsets/GRANITE_BLACK_STONE",
-        "RedGranite",
-        "gregtech:iconsets/GRANITE_RED_STONE",
-        "Marble",
-        "gregtech:iconsets/MARBLE_STONE",
-        "Basalt",
-        "gregtech:iconsets/BASALT_STONE",
-        "SethClay",
-        "minecraft:blocks/hardened_clay");
+    /// Untinted per-variant background textures, one per [StoneType], each a `"<domain>:<path>"` icon name
+    /// resolved on the block atlas (basePath `textures/blocks/`, per
+    /// [com.ruling_0.materiallib.api.BlockShapeBuilder#variantBase]'s contract) -- vanilla Minecraft blocks, GT's
+    /// own granite/marble/basalt block art (`textures/blocks/iconsets/<NAME>.png`, converted the same way as
+    /// every other GT block icon), and cross-mod stone/terrain textures (GalaxySpace, Galacticraft, AmunRa,
+    /// EtFuturumRequiem). Every path here was confirmed against the actual dependency jar's block icon
+    /// registration bytecode and on-disk texture file, not guessed: a wrong path renders as `missingno` in
+    /// world, since [com.ruling_0.materiallib.api.BlockShapeBuilder#variantBase] registers it unconditionally,
+    /// with no existence check.
+    private static final Map<String, String> KNOWN_VARIANT_BASES = Map.ofEntries(
+        Map.entry("Stone", "minecraft:stone"),
+        Map.entry("Netherrack", "minecraft:netherrack"),
+        Map.entry("Endstone", "minecraft:end_stone"),
+        Map.entry("BlackGranite", "gregtech:iconsets/GRANITE_BLACK_STONE"),
+        Map.entry("RedGranite", "gregtech:iconsets/GRANITE_RED_STONE"),
+        Map.entry("Marble", "gregtech:iconsets/MARBLE_STONE"),
+        Map.entry("Basalt", "gregtech:iconsets/BASALT_STONE"),
+        Map.entry("Moon", "galacticraftmoon:bottom"),
+        Map.entry("Mars", "galacticraftmars:bottom"),
+        Map.entry("Asteroid", "galacticraftasteroids:asteroid1"),
+        Map.entry("Phobos", "galaxyspace:phobos/phobosstone"),
+        Map.entry("Deimos", "galaxyspace:deimos/deimossubgrunt"),
+        Map.entry("Ceres", "galaxyspace:ceres/ceressubgrunt"),
+        Map.entry("Io", "galaxyspace:io/iostone"),
+        Map.entry("Europa", "galaxyspace:europa/europaice"),
+        Map.entry("Ganymede", "galaxyspace:ganymede/ganymedesubgrunt"),
+        Map.entry("Callisto", "galaxyspace:callisto/callistosubgrunt"),
+        Map.entry("Enceladus", "galaxyspace:enceladus/enceladusgrunt"),
+        Map.entry("Titan", "galaxyspace:titan/titanstone"),
+        Map.entry("Miranda", "galaxyspace:miranda/mirandastone"),
+        Map.entry("Oberon", "galaxyspace:oberon/oberonstone"),
+        Map.entry("Proteus", "galaxyspace:proteus/proteusstone"),
+        Map.entry("Triton", "galaxyspace:triton/tritonstone"),
+        Map.entry("Pluto", "galaxyspace:pluto/plutostone"),
+        Map.entry("Haumea", "galaxyspace:haumea/haumeagrunt"),
+        Map.entry("MakeMake", "galaxyspace:makemake/makemakesubgrunt"),
+        Map.entry("Venus", "galaxyspace:venus/venussubgrunt"),
+        Map.entry("Mercury", "galaxyspace:mercury/mercurymetalcore"),
+        Map.entry("AlphaCentauri", "galaxyspace:acentauribb/acentauribbsubgrunt"),
+        Map.entry("TCetiE", "galaxyspace:tcetie/tcetiestone"),
+        Map.entry("VegaB", "galaxyspace:vegaB/vegaBsubgrunt"),
+        Map.entry("BarnardaE", "galaxyspace:barnardaE/barnardaEsubgrunt"),
+        Map.entry("BarnardaF", "galaxyspace:barnardaF/barnardaFsubgrunt"),
+        Map.entry("Horus", "minecraft:obsidian"),
+        Map.entry("AnubisAndMaahes", "amunra:basalt"),
+        Map.entry("PackedIce", "minecraft:ice_packed"),
+        Map.entry("SethIce", "minecraft:ice_packed"),
+        Map.entry("SethClay", "minecraft:hardened_clay"),
+        Map.entry("Deepslate", "minecraft:deepslate"),
+        Map.entry("Tuff", "minecraft:tuff"),
+        Map.entry("BlueIce", "minecraft:blue_ice"));
 
     public static void init() {
         String[] oreVariants = new String[STONE_TYPE_NAMES.length];
