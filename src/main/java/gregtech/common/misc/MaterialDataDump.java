@@ -47,6 +47,7 @@ import gregtech.api.material.MaterialRef;
 import gregtech.api.material.MaterialRefStack;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.GTLog;
+import gregtech.common.blocks.BlockMetal;
 import gregtech.common.fluid.GTFluid;
 import gtPlusPlus.core.material.Material;
 
@@ -75,6 +76,7 @@ public final class MaterialDataDump {
         write(new File(directory, "ml-materials.json"), dumpMlMaterials());
         write(new File(directory, "legacy-variants.json"), dumpLegacyVariants());
         write(new File(directory, "fluid-textures.json"), dumpFluidTextures());
+        write(new File(directory, "legacy-blocks.json"), dumpLegacyBlocks());
     }
 
     private static void write(File file, Object data) {
@@ -757,6 +759,47 @@ public final class MaterialDataDump {
             out.add(json);
         }
         return out;
+    }
+
+    // endregion
+
+    // region legacy-blocks.json
+
+    /// Every (blockField, meta, materialName) entry the legacy `gregtech.common.blocks.BlockMetal` storage-block
+    /// instances hold, read directly off their `mMats` arrays -- ground truth for `block` `OrePrefixes`
+    /// membership, since (unlike every other prefix) `block` generates through this hand-curated per-instance
+    /// array rather than the generic capability-bit pipeline (its dumped `generationBits` is `0`, so it is
+    /// absent from every material's `generatedPrefixes`). Read directly off live fields rather than a
+    /// dump-mode capture: the arrays are static source-code literals with no construction-time drift to guard
+    /// against, unlike [MetaGeneratedItemX32]'s capability-bit-driven item shapes.
+    private static List<Map<String, Object>> dumpLegacyBlocks() {
+        List<Map<String, Object>> out = new ArrayList<>();
+        dumpLegacyBlock(out, "sBlockMetal1", GregTechAPI.sBlockMetal1);
+        dumpLegacyBlock(out, "sBlockMetal2", GregTechAPI.sBlockMetal2);
+        dumpLegacyBlock(out, "sBlockMetal3", GregTechAPI.sBlockMetal3);
+        dumpLegacyBlock(out, "sBlockMetal4", GregTechAPI.sBlockMetal4);
+        dumpLegacyBlock(out, "sBlockMetal5", GregTechAPI.sBlockMetal5);
+        dumpLegacyBlock(out, "sBlockMetal6", GregTechAPI.sBlockMetal6);
+        dumpLegacyBlock(out, "sBlockMetal7", GregTechAPI.sBlockMetal7);
+        dumpLegacyBlock(out, "sBlockMetal8", GregTechAPI.sBlockMetal8);
+        dumpLegacyBlock(out, "sBlockMetal9", GregTechAPI.sBlockMetal9);
+        dumpLegacyBlock(out, "sBlockMetal10", GregTechAPI.sBlockMetal10);
+        dumpLegacyBlock(out, "sBlockGem1", GregTechAPI.sBlockGem1);
+        dumpLegacyBlock(out, "sBlockGem2", GregTechAPI.sBlockGem2);
+        dumpLegacyBlock(out, "sBlockGem3", GregTechAPI.sBlockGem3);
+        return out;
+    }
+
+    private static void dumpLegacyBlock(List<Map<String, Object>> out, String blockField,
+        net.minecraft.block.Block block) {
+        BlockMetal metal = (BlockMetal) block;
+        for (int meta = 0; meta < metal.mMats.length; meta++) {
+            Map<String, Object> json = new LinkedHashMap<>();
+            json.put("blockField", blockField);
+            json.put("meta", meta);
+            json.put("material", metal.mMats[meta].mName);
+            out.add(json);
+        }
     }
 
     // endregion

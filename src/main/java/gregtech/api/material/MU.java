@@ -16,15 +16,17 @@ import com.ruling_0.materiallib.api.Shape;
 
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.materials2.Materials2BlockShapes;
 import gregtech.api.enums.materials2.Materials2CellShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 
-/// Bridges legacy [OrePrefixes]/[Materials] pairs to their stage-05/06 cutover MaterialLib [Shape]/[Material]
+/// Bridges legacy [OrePrefixes]/[Materials] pairs to their stage-05/06/07 cutover MaterialLib [Shape]/[Material]
 /// equivalents.
 ///
-/// The prefix-to-shape map reflects [Materials2Shapes]'s and [Materials2CellShapes]'s `shape<PrefixName>`
-/// fields instead of hand-listing the cutover prefixes, so it always matches whatever those declare. A prefix
+/// The prefix-to-shape map reflects [Materials2Shapes]'s, [Materials2CellShapes]'s, and [Materials2BlockShapes]'s
+/// `shape<PrefixName>` fields instead of hand-listing the cutover prefixes, so it always matches whatever those
+/// declare. A prefix
 /// normally maps to exactly one shape; `cellPlasma` is the one exception (see [Materials2CellShapes]), mapping
 /// to an ordered candidate list that [#stack] resolves per material. The material lookup is keyed by legacy
 /// name (`Materials#mName`), preferring [GTMaterialProperties#LEGACY_NAME] over [Material#getName] because
@@ -95,6 +97,7 @@ public class MU {
             Map<String, List<Shape>> map = new HashMap<>();
             collectShapes(map, Materials2Shapes.class);
             collectShapes(map, Materials2CellShapes.class);
+            collectShapes(map, Materials2BlockShapes.class);
             // cellPlasmaLight is a second candidate shape for the cellPlasma prefix, not a prefix of its own
             // (see Materials2CellShapes); its field name deliberately does not match an OrePrefixes name, so
             // fold it into "cellPlasma"'s candidate list instead of collecting it under its own key.

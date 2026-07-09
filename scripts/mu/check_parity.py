@@ -23,6 +23,7 @@ ML_PATH = DUMPS_DIR / "ml-materials.json"
 PREFIXES_PATH = DUMPS_DIR / "oreprefixes.json"
 LEGACY_VARIANTS_PATH = DUMPS_DIR / "legacy-variants.json"
 FLUID_TEXTURES_PATH = DUMPS_DIR / "fluid-textures.json"
+LEGACY_BLOCKS_PATH = DUMPS_DIR / "legacy-blocks.json"
 
 FLOAT_TOLERANCE = 1e-6
 
@@ -51,6 +52,21 @@ CRACKED_CELL_SHAPE_NAMES = {
     "cellSteamCracked2": "steamCracked",
     "cellSteamCracked3": "steamCracked",
 }
+
+# Mirrors gen_materials.py's BLOCK_CUTOVER_EXCLUDED (structural block-identity references -- see its docstring).
+BLOCK_CUTOVER_EXCLUDED = {
+    "Steel", "Osmiridium", "Neutronium", "NaquadahAlloy", "WhiteDwarfMatter", "BlackDwarfMatter",
+    "MagnetohydrodynamicallyConstrainedStarMatter", "SpaceTime", "TranscendentMetal", "Universium", "Copper",
+    "Zinc"
+}
+
+
+def load_legacy_block_materials():
+    if not LEGACY_BLOCKS_PATH.exists():
+        return set()
+    with open(LEGACY_BLOCKS_PATH, encoding="utf-8") as f:
+        entries = json.load(f)
+    return {e["material"] for e in entries}
 
 
 def expected_fluid_and_cell_shapes(material, legacy_variants_by_material, used_fluid_names):
@@ -218,7 +234,8 @@ def check_ref_field(errors, name, field, gt_value, ml_value):
         errors.append(f"{name}: {field} expected {expected!r}, got {ml_value!r}")
 
 
-def check_material(gt, ml, included_names, legacy_variants_by_material, used_fluid_names, fluid_textures):
+def check_material(gt, ml, included_names, legacy_variants_by_material, used_fluid_names, fluid_textures,
+                    legacy_block_materials):
     errors = []
     name = gt["name"]
 
@@ -233,6 +250,8 @@ def check_material(gt, ml, included_names, legacy_variants_by_material, used_flu
     actual_variants = legacy_variants_by_material.get(name, set())
     dumped_shapes = set(p for p in actual_variants if p in included_names)
     dumped_shapes |= expected_fluid_and_cell_shapes(gt, legacy_variants_by_material, used_fluid_names)
+    if name in legacy_block_materials and name not in BLOCK_CUTOVER_EXCLUDED:
+        dumped_shapes.add("block")
     actual_shapes = set(ml["shapes"])
     if dumped_shapes != actual_shapes:
         missing = dumped_shapes - actual_shapes
@@ -372,6 +391,7 @@ def main():
     legacy_variant_prefixes = load_legacy_variant_prefixes(legacy_variants)
     legacy_variants_by_material = load_legacy_variants_by_material(legacy_variants)
     fluid_textures = load(FLUID_TEXTURES_PATH)
+    legacy_block_materials = load_legacy_block_materials()
 
     included_names = set(p["name"] for p in prefixes if is_included_shape(p, legacy_variant_prefixes))
     ported = compute_ported(gt_materials)
@@ -387,7 +407,8 @@ def main():
             continue
         errors.extend(
             check_material(
-                material, ml, included_names, legacy_variants_by_material, used_fluid_names, fluid_textures))
+                material, ml, included_names, legacy_variants_by_material, used_fluid_names, fluid_textures,
+                legacy_block_materials))
 
     expected_keys = set(ml_name(m["name"]) for m in ported)
     extra = set(ml_by_key) - expected_keys

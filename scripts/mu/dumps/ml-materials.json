@@ -738,6 +738,7 @@
     "moltenArgb": null,
     "textureSet": "METALLIC",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "cellPlasma",
@@ -1563,6 +1564,7 @@
     "moltenArgb": null,
     "textureSet": "METALLIC",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "cellPlasma",
@@ -1704,6 +1706,7 @@
     "moltenArgb": null,
     "textureSet": "DULL",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "cellPlasma",
@@ -1861,6 +1864,7 @@
     "moltenArgb": null,
     "textureSet": "METALLIC",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "cellPlasma",
@@ -2643,6 +2647,7 @@
     "moltenArgb": null,
     "textureSet": "METALLIC",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "crushed",
@@ -2776,6 +2781,7 @@
     "moltenArgb": null,
     "textureSet": "METALLIC",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "cellPlasma",
@@ -2933,6 +2939,7 @@
     "moltenArgb": null,
     "textureSet": "METALLIC",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "cellPlasma",
@@ -3069,6 +3076,7 @@
     "moltenArgb": null,
     "textureSet": "SHINY",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "crushed",
@@ -3221,6 +3229,7 @@
     "moltenArgb": null,
     "textureSet": "DULL",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "cellPlasma",
@@ -3526,6 +3535,7 @@
     "moltenArgb": null,
     "textureSet": "METALLIC",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "cellPlasma",
@@ -3683,6 +3693,7 @@
     "moltenArgb": null,
     "textureSet": "METALLIC",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "cellPlasma",
@@ -4134,6 +4145,7 @@
     "moltenArgb": null,
     "textureSet": "SHINY",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "cellPlasma",
@@ -4269,6 +4281,7 @@
     "moltenArgb": null,
     "textureSet": "DULL",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "cellPlasma",
@@ -4401,6 +4414,7 @@
     "moltenArgb": null,
     "textureSet": "METALLIC",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "cellPlasma",
@@ -4674,6 +4688,7 @@
     "moltenArgb": null,
     "textureSet": "METALLIC",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "cellPlasma",
@@ -4809,6 +4824,7 @@
     "moltenArgb": null,
     "textureSet": "METALLIC",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "cellPlasma",
@@ -4944,6 +4960,7 @@
     "moltenArgb": null,
     "textureSet": "SHINY",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "cellPlasma",
@@ -5090,6 +5107,7 @@
     "moltenArgb": null,
     "textureSet": "SHINY",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "cellPlasma",
@@ -5237,6 +5255,7 @@
     "moltenArgb": null,
     "textureSet": "SHINY",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "cellPlasma",
@@ -5510,6 +5529,7 @@
     "moltenArgb": null,
     "textureSet": "METALLIC",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "cellPlasma",
@@ -5644,6 +5664,7 @@
     "moltenArgb": null,
     "textureSet": "DULL",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "cellPlasma",
@@ -5793,6 +5814,7 @@
     "moltenArgb": null,
     "textureSet": "SHINY",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "cellPlasma",
@@ -5932,6 +5954,7 @@
     "moltenArgb": null,
     "textureSet": "DULL",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "cellPlasma",
@@ -6068,6 +6091,7 @@
     "moltenArgb": null,
     "textureSet": "METALLIC",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "cellPlasma",
@@ -6331,6 +6355,7 @@
     "moltenArgb": null,
     "textureSet": "METALLIC",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "cellPlasma",
@@ -6465,6 +6490,7 @@
     "moltenArgb": null,
     "textureSet": "METALLIC",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "cellPlasma",
@@ -6599,6 +6625,7 @@
     "moltenArgb": null,
     "textureSet": "DULL",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "cellPlasma",
@@ -6733,6 +6760,7 @@
     "moltenArgb": null,
     "textureSet": "METALLIC",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "cellPlasma",
@@ -6887,6 +6915,7 @@
     "moltenArgb": null,
     "textureSet": "SHINY",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "cellPlasma",
@@ -7021,6 +7050,7 @@
     "moltenArgb": null,
     "textureSet": "METALLIC",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "cellPlasma",
@@ -7159,6 +7189,7 @@
     "moltenArgb": null,
     "textureSet": "SHINY",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "cellPlasma",
@@ -7297,6 +7328,7 @@
     "moltenArgb": null,
     "textureSet": "METALLIC",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "cellPlasma",
@@ -7431,6 +7463,7 @@
     "moltenArgb": null,
     "textureSet": "METALLIC",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "cellPlasma",
@@ -7565,6 +7598,7 @@
     "moltenArgb": null,
     "textureSet": "METALLIC",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "cellPlasma",
@@ -7695,6 +7729,7 @@
     "moltenArgb": null,
     "textureSet": "SHINY",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "cellPlasma",
@@ -7829,6 +7864,7 @@
     "moltenArgb": null,
     "textureSet": "SHINY",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "cellPlasma",
@@ -7964,6 +8000,7 @@
     "moltenArgb": null,
     "textureSet": "SHINY",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "cellPlasma",
@@ -8099,6 +8136,7 @@
     "moltenArgb": null,
     "textureSet": "SHINY",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "cellPlasma",
@@ -8233,6 +8271,7 @@
     "moltenArgb": null,
     "textureSet": "SHINY",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "cellPlasma",
@@ -8368,6 +8407,7 @@
     "moltenArgb": null,
     "textureSet": "SHINY",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "cellPlasma",
@@ -8504,6 +8544,7 @@
     "moltenArgb": null,
     "textureSet": "METALLIC",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "cellPlasma",
@@ -8662,6 +8703,7 @@
     "moltenArgb": null,
     "textureSet": "METALLIC",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "crushed",
@@ -8821,6 +8863,7 @@
     "moltenArgb": null,
     "textureSet": "DULL",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "crushed",
@@ -8976,6 +9019,7 @@
     "moltenArgb": null,
     "textureSet": "SHINY",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "crushed",
@@ -9402,6 +9446,7 @@
     "moltenArgb": null,
     "textureSet": "DULL",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "cellPlasma",
@@ -9562,6 +9607,7 @@
     "moltenArgb": null,
     "textureSet": "METALLIC",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "cellPlasma",
@@ -9918,6 +9964,7 @@
     "moltenArgb": null,
     "textureSet": "SHINY",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "cellPlasma",
@@ -10066,6 +10113,7 @@
     "moltenArgb": null,
     "textureSet": "SHINY",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "cellPlasma",
@@ -10211,6 +10259,7 @@
     "moltenArgb": null,
     "textureSet": "METALLIC",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "cellPlasma",
@@ -10360,6 +10409,7 @@
     "moltenArgb": null,
     "textureSet": "METALLIC",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "crushed",
@@ -10509,6 +10559,7 @@
     "moltenArgb": null,
     "textureSet": "SHINY",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "cellPlasma",
@@ -10654,6 +10705,7 @@
     "moltenArgb": null,
     "textureSet": "METALLIC",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "cellPlasma",
@@ -12273,6 +12325,7 @@
     "moltenArgb": null,
     "textureSet": "FIERY",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "dust",
@@ -13792,6 +13845,7 @@
     "moltenArgb": null,
     "textureSet": "CUSTOM/eternity",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "dust",
@@ -14014,6 +14068,7 @@
     "moltenArgb": null,
     "textureSet": "CUSTOM/magmatter",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "dust",
@@ -14408,6 +14463,7 @@
     "moltenArgb": null,
     "textureSet": "SHINY",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "cellPlasma",
@@ -17174,6 +17230,7 @@
     "moltenArgb": null,
     "textureSet": "NUCLEAR",
     "shapes": [
+      "block",
       "bolt",
       "foil",
       "gearGt",
@@ -18515,6 +18572,7 @@
     "moltenArgb": null,
     "textureSet": "SHINY",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "dust",
@@ -18635,6 +18693,7 @@
     "moltenArgb": null,
     "textureSet": "SHINY",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "dust",
@@ -20751,6 +20810,7 @@
     "moltenArgb": null,
     "textureSet": "METALLIC",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "dust",
@@ -20903,6 +20963,7 @@
     "moltenArgb": null,
     "textureSet": "METALLIC",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "dust",
@@ -21051,6 +21112,7 @@
     "moltenArgb": null,
     "textureSet": "METALLIC",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "dust",
@@ -21196,6 +21258,7 @@
     "moltenArgb": null,
     "textureSet": "SHINY",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "crushed",
@@ -21342,6 +21405,7 @@
     "moltenArgb": null,
     "textureSet": "METALLIC",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "dust",
@@ -21627,6 +21691,7 @@
     "moltenArgb": null,
     "textureSet": "SHINY",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "dust",
@@ -21775,6 +21840,7 @@
     "moltenArgb": null,
     "textureSet": "METALLIC",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "crushed",
@@ -21912,6 +21978,7 @@
     "moltenArgb": null,
     "textureSet": "DULL",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "dust",
@@ -22036,6 +22103,7 @@
     "moltenArgb": null,
     "textureSet": "DULL",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "dust",
@@ -22160,6 +22228,7 @@
     "moltenArgb": null,
     "textureSet": "METALLIC",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "dust",
@@ -22290,6 +22359,7 @@
     "moltenArgb": null,
     "textureSet": "METALLIC",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "dust",
@@ -22421,6 +22491,7 @@
     "moltenArgb": null,
     "textureSet": "METALLIC",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "dust",
@@ -22556,6 +22627,7 @@
     "moltenArgb": null,
     "textureSet": "DULL",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "dust",
@@ -22691,6 +22763,7 @@
     "moltenArgb": null,
     "textureSet": "DULL",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "dust",
@@ -22813,6 +22886,7 @@
     "moltenArgb": null,
     "textureSet": "DULL",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "dust",
@@ -22932,6 +23006,7 @@
     "moltenArgb": null,
     "textureSet": "METALLIC",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "dust",
@@ -23214,6 +23289,7 @@
     "moltenArgb": null,
     "textureSet": "SHINY",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "dust",
@@ -23345,6 +23421,7 @@
     "moltenArgb": null,
     "textureSet": "SHINY",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "crushed",
@@ -23483,6 +23560,7 @@
     "moltenArgb": null,
     "textureSet": "CUSTOM/fluxed",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "crushed",
@@ -23617,6 +23695,7 @@
     "moltenArgb": null,
     "textureSet": "DULL",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "dust",
@@ -23767,6 +23846,7 @@
     "moltenArgb": null,
     "textureSet": "SHINY",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "crushed",
@@ -23902,6 +23982,7 @@
     "moltenArgb": 65280,
     "textureSet": "METALLIC",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "crushed",
@@ -24198,6 +24279,7 @@
     "moltenArgb": 4259648,
     "textureSet": "METALLIC",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "crushed",
@@ -24343,6 +24425,7 @@
     "moltenArgb": 8454016,
     "textureSet": "SHINY",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "cellPlasma",
@@ -24499,6 +24582,7 @@
     "moltenArgb": null,
     "textureSet": "METALLIC",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "dust",
@@ -24620,6 +24704,7 @@
     "moltenArgb": null,
     "textureSet": "METALLIC",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "cellPlasma",
@@ -24766,6 +24851,7 @@
     "moltenArgb": null,
     "textureSet": "METALLIC",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "dust",
@@ -24915,6 +25001,7 @@
     "moltenArgb": null,
     "textureSet": "SHINY",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "crushed",
@@ -25062,6 +25149,7 @@
     "moltenArgb": null,
     "textureSet": "SHINY",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "dust",
@@ -25196,6 +25284,7 @@
     "moltenArgb": null,
     "textureSet": "METALLIC",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "dust",
@@ -25341,6 +25430,7 @@
     "moltenArgb": null,
     "textureSet": "METALLIC",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "dust",
@@ -25473,6 +25563,7 @@
     "moltenArgb": null,
     "textureSet": "METALLIC",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "crushed",
@@ -25615,6 +25706,7 @@
     "moltenArgb": null,
     "textureSet": "METALLIC",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "dust",
@@ -25745,6 +25837,7 @@
     "moltenArgb": null,
     "textureSet": "WOOD",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "dust",
@@ -25888,6 +25981,7 @@
     "moltenArgb": null,
     "textureSet": "LEAF",
     "shapes": [
+      "block",
       "bolt",
       "dust",
       "dustSmall",
@@ -26035,6 +26129,7 @@
     "moltenArgb": null,
     "textureSet": "METALLIC",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "cellPlasma",
@@ -26191,6 +26286,7 @@
     "moltenArgb": null,
     "textureSet": "METALLIC",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "dust",
@@ -26334,6 +26430,7 @@
     "moltenArgb": null,
     "textureSet": "DULL",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "crushed",
@@ -26464,6 +26561,7 @@
     "moltenArgb": null,
     "textureSet": "METALLIC",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "dust",
@@ -26603,6 +26701,7 @@
     "moltenArgb": null,
     "textureSet": "SHINY",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "dust",
@@ -26747,6 +26846,7 @@
     "moltenArgb": null,
     "textureSet": "SHINY",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "dust",
@@ -26868,6 +26968,7 @@
     "moltenArgb": null,
     "textureSet": "FIERY",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "dust",
@@ -27015,6 +27116,7 @@
     "moltenArgb": null,
     "textureSet": "QUARTZ",
     "shapes": [
+      "block",
       "bolt",
       "crushed",
       "crushedCentrifuged",
@@ -27127,6 +27229,7 @@
     "moltenArgb": null,
     "textureSet": "METALLIC",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "dust",
@@ -27271,6 +27374,7 @@
     "moltenArgb": null,
     "textureSet": "METALLIC",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "dust",
@@ -27415,6 +27519,7 @@
     "moltenArgb": null,
     "textureSet": "SHINY",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "dust",
@@ -27550,6 +27655,7 @@
     "moltenArgb": null,
     "textureSet": "SHINY",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "dust",
@@ -27685,6 +27791,7 @@
     "moltenArgb": null,
     "textureSet": "DULL",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "dust",
@@ -27825,6 +27932,7 @@
     "moltenArgb": null,
     "textureSet": "DULL",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "dust",
@@ -27964,6 +28072,7 @@
     "moltenArgb": null,
     "textureSet": "MAGNETIC",
     "shapes": [
+      "block",
       "bolt",
       "dust",
       "dustSmall",
@@ -28101,6 +28210,7 @@
     "moltenArgb": null,
     "textureSet": "MAGNETIC",
     "shapes": [
+      "block",
       "bolt",
       "dust",
       "dustSmall",
@@ -28242,6 +28352,7 @@
     "moltenArgb": null,
     "textureSet": "MAGNETIC",
     "shapes": [
+      "block",
       "bolt",
       "dust",
       "dustSmall",
@@ -28378,6 +28489,7 @@
     "moltenArgb": null,
     "textureSet": "SHINY",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "dust",
@@ -28503,6 +28615,7 @@
     "moltenArgb": null,
     "textureSet": "METALLIC",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "dust",
@@ -28631,6 +28744,7 @@
     "moltenArgb": null,
     "textureSet": "DULL",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "dust",
@@ -28751,6 +28865,7 @@
     "moltenArgb": null,
     "textureSet": "DULL",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "dust",
@@ -28871,6 +28986,7 @@
     "moltenArgb": null,
     "textureSet": "DULL",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "dust",
@@ -28999,6 +29115,7 @@
     "moltenArgb": null,
     "textureSet": "METALLIC",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "dust",
@@ -29143,6 +29260,7 @@
     "moltenArgb": null,
     "textureSet": "METALLIC",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "dust",
@@ -29848,6 +29966,7 @@
     "moltenArgb": null,
     "textureSet": "METALLIC",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "crushed",
@@ -30127,6 +30246,7 @@
     "moltenArgb": null,
     "textureSet": "METALLIC",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "dust",
@@ -30263,6 +30383,7 @@
     "moltenArgb": null,
     "textureSet": "METALLIC",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "dust",
@@ -30403,6 +30524,7 @@
     "moltenArgb": null,
     "textureSet": "METALLIC",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "dust",
@@ -30551,6 +30673,7 @@
     "moltenArgb": null,
     "textureSet": "METALLIC",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "dust",
@@ -30695,6 +30818,7 @@
     "moltenArgb": null,
     "textureSet": "METALLIC",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "dust",
@@ -33201,6 +33325,7 @@
     "moltenArgb": null,
     "textureSet": "SHINY",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "cellPlasma",
@@ -38109,6 +38234,7 @@
     "moltenArgb": null,
     "textureSet": "RUBY",
     "shapes": [
+      "block",
       "bolt",
       "crushed",
       "crushedCentrifuged",
@@ -38246,6 +38372,7 @@
     "moltenArgb": null,
     "textureSet": "GEM_VERTICAL",
     "shapes": [
+      "block",
       "bolt",
       "crushed",
       "crushedCentrifuged",
@@ -38379,6 +38506,7 @@
     "moltenArgb": null,
     "textureSet": "GEM_HORIZONTAL",
     "shapes": [
+      "block",
       "bolt",
       "crushed",
       "crushedCentrifuged",
@@ -38512,6 +38640,7 @@
     "moltenArgb": null,
     "textureSet": "RUBY",
     "shapes": [
+      "block",
       "bolt",
       "crushed",
       "crushedCentrifuged",
@@ -38649,6 +38778,7 @@
     "moltenArgb": null,
     "textureSet": "NETHERSTAR",
     "shapes": [
+      "block",
       "bolt",
       "crushed",
       "crushedCentrifuged",
@@ -38759,6 +38889,7 @@
     "moltenArgb": null,
     "textureSet": "GEM_HORIZONTAL",
     "shapes": [
+      "block",
       "bolt",
       "crushed",
       "crushedCentrifuged",
@@ -38903,6 +39034,7 @@
     "moltenArgb": null,
     "textureSet": "GEM_VERTICAL",
     "shapes": [
+      "block",
       "bolt",
       "crushed",
       "crushedCentrifuged",
@@ -39047,6 +39179,7 @@
     "moltenArgb": null,
     "textureSet": "FLINT",
     "shapes": [
+      "block",
       "bolt",
       "crushed",
       "crushedCentrifuged",
@@ -39179,6 +39312,7 @@
     "moltenArgb": null,
     "textureSet": "OPAL",
     "shapes": [
+      "block",
       "bolt",
       "crushed",
       "crushedCentrifuged",
@@ -39307,6 +39441,7 @@
     "moltenArgb": null,
     "textureSet": "EMERALD",
     "shapes": [
+      "block",
       "bolt",
       "crushed",
       "crushedCentrifuged",
@@ -39433,6 +39568,7 @@
     "moltenArgb": null,
     "textureSet": "RUBY",
     "shapes": [
+      "block",
       "bolt",
       "crushed",
       "crushedCentrifuged",
@@ -39565,6 +39701,7 @@
     "moltenArgb": null,
     "textureSet": "GEM_HORIZONTAL",
     "shapes": [
+      "block",
       "bolt",
       "crushed",
       "crushedCentrifuged",
@@ -39709,6 +39846,7 @@
     "moltenArgb": null,
     "textureSet": "RUBY",
     "shapes": [
+      "block",
       "bolt",
       "crushed",
       "crushedCentrifuged",
@@ -39845,6 +39983,7 @@
     "moltenArgb": null,
     "textureSet": "DIAMOND",
     "shapes": [
+      "block",
       "bolt",
       "crushed",
       "crushedCentrifuged",
@@ -39956,6 +40095,7 @@
     "moltenArgb": null,
     "textureSet": "QUARTZ",
     "shapes": [
+      "block",
       "bolt",
       "crushed",
       "crushedCentrifuged",
@@ -40191,6 +40331,7 @@
     "moltenArgb": null,
     "textureSet": "DIAMOND",
     "shapes": [
+      "block",
       "bolt",
       "crushed",
       "crushedCentrifuged",
@@ -40309,6 +40450,7 @@
     "moltenArgb": null,
     "textureSet": "DIAMOND",
     "shapes": [
+      "block",
       "bolt",
       "crushed",
       "crushedCentrifuged",
@@ -40427,6 +40569,7 @@
     "moltenArgb": null,
     "textureSet": "DIAMOND",
     "shapes": [
+      "block",
       "bolt",
       "crushed",
       "crushedCentrifuged",
@@ -40546,6 +40689,7 @@
     "moltenArgb": null,
     "textureSet": "DIAMOND",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "crushed",
@@ -40812,6 +40956,7 @@
     "moltenArgb": null,
     "textureSet": "QUARTZ",
     "shapes": [
+      "block",
       "bolt",
       "crushed",
       "crushedCentrifuged",
@@ -40926,6 +41071,7 @@
     "moltenArgb": null,
     "textureSet": "LAPIS",
     "shapes": [
+      "block",
       "bolt",
       "crushed",
       "crushedCentrifuged",
@@ -41051,6 +41197,7 @@
     "moltenArgb": null,
     "textureSet": "LAPIS",
     "shapes": [
+      "block",
       "bolt",
       "crushed",
       "crushedCentrifuged",
@@ -41308,6 +41455,7 @@
     "moltenArgb": null,
     "textureSet": "RUBY",
     "shapes": [
+      "block",
       "bolt",
       "crushed",
       "crushedCentrifuged",
@@ -41442,6 +41590,7 @@
     "moltenArgb": null,
     "textureSet": "RUBY",
     "shapes": [
+      "block",
       "bolt",
       "crushed",
       "crushedCentrifuged",
@@ -41577,6 +41726,7 @@
     "moltenArgb": null,
     "textureSet": "METALLIC",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "crushed",
@@ -41857,6 +42007,7 @@
     "moltenArgb": null,
     "textureSet": "FLINT",
     "shapes": [
+      "block",
       "bolt",
       "crushed",
       "crushedCentrifuged",
@@ -41968,6 +42119,7 @@
     "moltenArgb": null,
     "textureSet": "SHINY",
     "shapes": [
+      "block",
       "bolt",
       "dust",
       "dustSmall",
@@ -42097,6 +42249,7 @@
     "moltenArgb": null,
     "textureSet": "SHINY",
     "shapes": [
+      "block",
       "bolt",
       "dust",
       "dustSmall",
@@ -42226,6 +42379,7 @@
     "moltenArgb": null,
     "textureSet": "FLINT",
     "shapes": [
+      "block",
       "bolt",
       "crushed",
       "crushedCentrifuged",
@@ -42471,6 +42625,7 @@
     "moltenArgb": null,
     "textureSet": "FINE",
     "shapes": [
+      "block",
       "bolt",
       "dust",
       "dustSmall",
@@ -42721,6 +42876,7 @@
     "moltenArgb": null,
     "textureSet": "LIGNITE",
     "shapes": [
+      "block",
       "bolt",
       "crushed",
       "crushedCentrifuged",
@@ -42837,6 +42993,7 @@
     "moltenArgb": null,
     "textureSet": "SHARDS",
     "shapes": [
+      "block",
       "bolt",
       "crushed",
       "crushedCentrifuged",
@@ -42960,6 +43117,7 @@
     "moltenArgb": null,
     "textureSet": "SHARDS",
     "shapes": [
+      "block",
       "bolt",
       "crushed",
       "crushedCentrifuged",
@@ -43083,6 +43241,7 @@
     "moltenArgb": null,
     "textureSet": "SHARDS",
     "shapes": [
+      "block",
       "bolt",
       "crushed",
       "crushedCentrifuged",
@@ -43206,6 +43365,7 @@
     "moltenArgb": null,
     "textureSet": "SHARDS",
     "shapes": [
+      "block",
       "bolt",
       "crushed",
       "crushedCentrifuged",
@@ -43329,6 +43489,7 @@
     "moltenArgb": null,
     "textureSet": "SHARDS",
     "shapes": [
+      "block",
       "bolt",
       "crushed",
       "crushedCentrifuged",
@@ -43452,6 +43613,7 @@
     "moltenArgb": null,
     "textureSet": "SHARDS",
     "shapes": [
+      "block",
       "bolt",
       "crushed",
       "crushedCentrifuged",
@@ -57818,6 +57980,7 @@
     "moltenArgb": null,
     "textureSet": "QUARTZ",
     "shapes": [
+      "block",
       "crushed",
       "crushedCentrifuged",
       "crushedPurified",
@@ -64642,6 +64805,7 @@
     "moltenArgb": null,
     "textureSet": "METALLIC",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "dust",
@@ -67623,6 +67787,7 @@
     "moltenArgb": null,
     "textureSet": "CUSTOM/blaze",
     "shapes": [
+      "block",
       "cellMolten",
       "dustSmall",
       "dustTiny",
@@ -70677,6 +70842,7 @@
     "moltenArgb": null,
     "textureSet": "METALLIC",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "crushed",
@@ -73542,6 +73708,7 @@
     "moltenArgb": null,
     "textureSet": "METALLIC",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "crushed",
@@ -74151,6 +74318,7 @@
     "moltenArgb": null,
     "textureSet": "SHINY",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "crushed",
@@ -75665,6 +75833,7 @@
     "moltenArgb": null,
     "textureSet": "DULL",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "cellPlasma",
@@ -84560,6 +84729,7 @@
     "moltenArgb": null,
     "textureSet": "CUSTOM/ichorium",
     "shapes": [
+      "block",
       "bolt",
       "cellMolten",
       "cellPlasma",
@@ -88358,6 +88528,7 @@
     "moltenArgb": null,
     "textureSet": "METALLIC",
     "shapes": [
+      "block",
       "fluidMolten"
     ],
     "families": [

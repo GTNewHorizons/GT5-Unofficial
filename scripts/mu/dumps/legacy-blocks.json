@@ -1,0 +1,917 @@
+[
+  {
+    "blockField": "sBlockMetal1",
+    "meta": 0,
+    "material": "Adamantium"
+  },
+  {
+    "blockField": "sBlockMetal1",
+    "meta": 1,
+    "material": "Aluminium"
+  },
+  {
+    "blockField": "sBlockMetal1",
+    "meta": 2,
+    "material": "Americium"
+  },
+  {
+    "blockField": "sBlockMetal1",
+    "meta": 3,
+    "material": "AnnealedCopper"
+  },
+  {
+    "blockField": "sBlockMetal1",
+    "meta": 4,
+    "material": "Antimony"
+  },
+  {
+    "blockField": "sBlockMetal1",
+    "meta": 5,
+    "material": "Arsenic"
+  },
+  {
+    "blockField": "sBlockMetal1",
+    "meta": 6,
+    "material": "AstralSilver"
+  },
+  {
+    "blockField": "sBlockMetal1",
+    "meta": 7,
+    "material": "BatteryAlloy"
+  },
+  {
+    "blockField": "sBlockMetal1",
+    "meta": 8,
+    "material": "Beryllium"
+  },
+  {
+    "blockField": "sBlockMetal1",
+    "meta": 9,
+    "material": "Bismuth"
+  },
+  {
+    "blockField": "sBlockMetal1",
+    "meta": 10,
+    "material": "BismuthBronze"
+  },
+  {
+    "blockField": "sBlockMetal1",
+    "meta": 11,
+    "material": "BlackBronze"
+  },
+  {
+    "blockField": "sBlockMetal1",
+    "meta": 12,
+    "material": "BlackSteel"
+  },
+  {
+    "blockField": "sBlockMetal1",
+    "meta": 13,
+    "material": "BlueAlloy"
+  },
+  {
+    "blockField": "sBlockMetal1",
+    "meta": 14,
+    "material": "BlueSteel"
+  },
+  {
+    "blockField": "sBlockMetal1",
+    "meta": 15,
+    "material": "Brass"
+  },
+  {
+    "blockField": "sBlockMetal2",
+    "meta": 0,
+    "material": "Bronze"
+  },
+  {
+    "blockField": "sBlockMetal2",
+    "meta": 1,
+    "material": "Caesium"
+  },
+  {
+    "blockField": "sBlockMetal2",
+    "meta": 2,
+    "material": "Cerium"
+  },
+  {
+    "blockField": "sBlockMetal2",
+    "meta": 3,
+    "material": "Chrome"
+  },
+  {
+    "blockField": "sBlockMetal2",
+    "meta": 4,
+    "material": "ChromiumDioxide"
+  },
+  {
+    "blockField": "sBlockMetal2",
+    "meta": 5,
+    "material": "Cobalt"
+  },
+  {
+    "blockField": "sBlockMetal2",
+    "meta": 6,
+    "material": "CobaltBrass"
+  },
+  {
+    "blockField": "sBlockMetal2",
+    "meta": 7,
+    "material": "Copper"
+  },
+  {
+    "blockField": "sBlockMetal2",
+    "meta": 8,
+    "material": "Cupronickel"
+  },
+  {
+    "blockField": "sBlockMetal2",
+    "meta": 9,
+    "material": "DamascusSteel"
+  },
+  {
+    "blockField": "sBlockMetal2",
+    "meta": 10,
+    "material": "DarkIron"
+  },
+  {
+    "blockField": "sBlockMetal2",
+    "meta": 11,
+    "material": "DeepIron"
+  },
+  {
+    "blockField": "sBlockMetal2",
+    "meta": 12,
+    "material": "Desh"
+  },
+  {
+    "blockField": "sBlockMetal2",
+    "meta": 13,
+    "material": "Duranium"
+  },
+  {
+    "blockField": "sBlockMetal2",
+    "meta": 14,
+    "material": "Dysprosium"
+  },
+  {
+    "blockField": "sBlockMetal2",
+    "meta": 15,
+    "material": "Electrum"
+  },
+  {
+    "blockField": "sBlockMetal3",
+    "meta": 0,
+    "material": "ElectrumFlux"
+  },
+  {
+    "blockField": "sBlockMetal3",
+    "meta": 1,
+    "material": "Enderium"
+  },
+  {
+    "blockField": "sBlockMetal3",
+    "meta": 2,
+    "material": "Erbium"
+  },
+  {
+    "blockField": "sBlockMetal3",
+    "meta": 3,
+    "material": "Europium"
+  },
+  {
+    "blockField": "sBlockMetal3",
+    "meta": 4,
+    "material": "FierySteel"
+  },
+  {
+    "blockField": "sBlockMetal3",
+    "meta": 5,
+    "material": "Gadolinium"
+  },
+  {
+    "blockField": "sBlockMetal3",
+    "meta": 6,
+    "material": "Gallium"
+  },
+  {
+    "blockField": "sBlockMetal3",
+    "meta": 7,
+    "material": "Holmium"
+  },
+  {
+    "blockField": "sBlockMetal3",
+    "meta": 8,
+    "material": "HSLA"
+  },
+  {
+    "blockField": "sBlockMetal3",
+    "meta": 9,
+    "material": "Indium"
+  },
+  {
+    "blockField": "sBlockMetal3",
+    "meta": 10,
+    "material": "InfusedGold"
+  },
+  {
+    "blockField": "sBlockMetal3",
+    "meta": 11,
+    "material": "Invar"
+  },
+  {
+    "blockField": "sBlockMetal3",
+    "meta": 12,
+    "material": "Iridium"
+  },
+  {
+    "blockField": "sBlockMetal3",
+    "meta": 13,
+    "material": "IronMagnetic"
+  },
+  {
+    "blockField": "sBlockMetal3",
+    "meta": 14,
+    "material": "IronWood"
+  },
+  {
+    "blockField": "sBlockMetal3",
+    "meta": 15,
+    "material": "Kanthal"
+  },
+  {
+    "blockField": "sBlockMetal4",
+    "meta": 0,
+    "material": "Knightmetal"
+  },
+  {
+    "blockField": "sBlockMetal4",
+    "meta": 1,
+    "material": "Lanthanum"
+  },
+  {
+    "blockField": "sBlockMetal4",
+    "meta": 2,
+    "material": "Lead"
+  },
+  {
+    "blockField": "sBlockMetal4",
+    "meta": 3,
+    "material": "Lutetium"
+  },
+  {
+    "blockField": "sBlockMetal4",
+    "meta": 4,
+    "material": "Magnalium"
+  },
+  {
+    "blockField": "sBlockMetal4",
+    "meta": 5,
+    "material": "Magnesium"
+  },
+  {
+    "blockField": "sBlockMetal4",
+    "meta": 6,
+    "material": "Manganese"
+  },
+  {
+    "blockField": "sBlockMetal4",
+    "meta": 7,
+    "material": "MeteoricIron"
+  },
+  {
+    "blockField": "sBlockMetal4",
+    "meta": 8,
+    "material": "MeteoricSteel"
+  },
+  {
+    "blockField": "sBlockMetal4",
+    "meta": 9,
+    "material": "Trinium"
+  },
+  {
+    "blockField": "sBlockMetal4",
+    "meta": 10,
+    "material": "Mithril"
+  },
+  {
+    "blockField": "sBlockMetal4",
+    "meta": 11,
+    "material": "Molybdenum"
+  },
+  {
+    "blockField": "sBlockMetal4",
+    "meta": 12,
+    "material": "Naquadah"
+  },
+  {
+    "blockField": "sBlockMetal4",
+    "meta": 13,
+    "material": "NaquadahAlloy"
+  },
+  {
+    "blockField": "sBlockMetal4",
+    "meta": 14,
+    "material": "NaquadahEnriched"
+  },
+  {
+    "blockField": "sBlockMetal4",
+    "meta": 15,
+    "material": "Naquadria"
+  },
+  {
+    "blockField": "sBlockMetal5",
+    "meta": 0,
+    "material": "Neodymium"
+  },
+  {
+    "blockField": "sBlockMetal5",
+    "meta": 1,
+    "material": "NeodymiumMagnetic"
+  },
+  {
+    "blockField": "sBlockMetal5",
+    "meta": 2,
+    "material": "Neutronium"
+  },
+  {
+    "blockField": "sBlockMetal5",
+    "meta": 3,
+    "material": "Nichrome"
+  },
+  {
+    "blockField": "sBlockMetal5",
+    "meta": 4,
+    "material": "Nickel"
+  },
+  {
+    "blockField": "sBlockMetal5",
+    "meta": 5,
+    "material": "Niobium"
+  },
+  {
+    "blockField": "sBlockMetal5",
+    "meta": 6,
+    "material": "NiobiumNitride"
+  },
+  {
+    "blockField": "sBlockMetal5",
+    "meta": 7,
+    "material": "NiobiumTitanium"
+  },
+  {
+    "blockField": "sBlockMetal5",
+    "meta": 8,
+    "material": "Osmiridium"
+  },
+  {
+    "blockField": "sBlockMetal5",
+    "meta": 9,
+    "material": "Osmium"
+  },
+  {
+    "blockField": "sBlockMetal5",
+    "meta": 10,
+    "material": "Palladium"
+  },
+  {
+    "blockField": "sBlockMetal5",
+    "meta": 11,
+    "material": "PigIron"
+  },
+  {
+    "blockField": "sBlockMetal5",
+    "meta": 12,
+    "material": "Platinum"
+  },
+  {
+    "blockField": "sBlockMetal5",
+    "meta": 13,
+    "material": "Plutonium"
+  },
+  {
+    "blockField": "sBlockMetal5",
+    "meta": 14,
+    "material": "Plutonium241"
+  },
+  {
+    "blockField": "sBlockMetal5",
+    "meta": 15,
+    "material": "Praseodymium"
+  },
+  {
+    "blockField": "sBlockMetal6",
+    "meta": 0,
+    "material": "Promethium"
+  },
+  {
+    "blockField": "sBlockMetal6",
+    "meta": 1,
+    "material": "RedAlloy"
+  },
+  {
+    "blockField": "sBlockMetal6",
+    "meta": 2,
+    "material": "RedSteel"
+  },
+  {
+    "blockField": "sBlockMetal6",
+    "meta": 3,
+    "material": "RoseGold"
+  },
+  {
+    "blockField": "sBlockMetal6",
+    "meta": 4,
+    "material": "Rubidium"
+  },
+  {
+    "blockField": "sBlockMetal6",
+    "meta": 5,
+    "material": "Samarium"
+  },
+  {
+    "blockField": "sBlockMetal6",
+    "meta": 6,
+    "material": "Scandium"
+  },
+  {
+    "blockField": "sBlockMetal6",
+    "meta": 7,
+    "material": "ShadowIron"
+  },
+  {
+    "blockField": "sBlockMetal6",
+    "meta": 8,
+    "material": "ShadowSteel"
+  },
+  {
+    "blockField": "sBlockMetal6",
+    "meta": 9,
+    "material": "Silicon"
+  },
+  {
+    "blockField": "sBlockMetal6",
+    "meta": 10,
+    "material": "Silver"
+  },
+  {
+    "blockField": "sBlockMetal6",
+    "meta": 11,
+    "material": "SolderingAlloy"
+  },
+  {
+    "blockField": "sBlockMetal6",
+    "meta": 12,
+    "material": "StainlessSteel"
+  },
+  {
+    "blockField": "sBlockMetal6",
+    "meta": 13,
+    "material": "Steel"
+  },
+  {
+    "blockField": "sBlockMetal6",
+    "meta": 14,
+    "material": "SteelMagnetic"
+  },
+  {
+    "blockField": "sBlockMetal6",
+    "meta": 15,
+    "material": "SterlingSilver"
+  },
+  {
+    "blockField": "sBlockMetal7",
+    "meta": 0,
+    "material": "Sunnarium"
+  },
+  {
+    "blockField": "sBlockMetal7",
+    "meta": 1,
+    "material": "Tantalum"
+  },
+  {
+    "blockField": "sBlockMetal7",
+    "meta": 2,
+    "material": "Tellurium"
+  },
+  {
+    "blockField": "sBlockMetal7",
+    "meta": 3,
+    "material": "Terbium"
+  },
+  {
+    "blockField": "sBlockMetal7",
+    "meta": 4,
+    "material": "Thaumium"
+  },
+  {
+    "blockField": "sBlockMetal7",
+    "meta": 5,
+    "material": "Thorium"
+  },
+  {
+    "blockField": "sBlockMetal7",
+    "meta": 6,
+    "material": "Thulium"
+  },
+  {
+    "blockField": "sBlockMetal7",
+    "meta": 7,
+    "material": "Tin"
+  },
+  {
+    "blockField": "sBlockMetal7",
+    "meta": 8,
+    "material": "TinAlloy"
+  },
+  {
+    "blockField": "sBlockMetal7",
+    "meta": 9,
+    "material": "Titanium"
+  },
+  {
+    "blockField": "sBlockMetal7",
+    "meta": 10,
+    "material": "Tritanium"
+  },
+  {
+    "blockField": "sBlockMetal7",
+    "meta": 11,
+    "material": "Tungsten"
+  },
+  {
+    "blockField": "sBlockMetal7",
+    "meta": 12,
+    "material": "TungstenSteel"
+  },
+  {
+    "blockField": "sBlockMetal7",
+    "meta": 13,
+    "material": "Ultimet"
+  },
+  {
+    "blockField": "sBlockMetal7",
+    "meta": 14,
+    "material": "Uranium"
+  },
+  {
+    "blockField": "sBlockMetal7",
+    "meta": 15,
+    "material": "Uranium235"
+  },
+  {
+    "blockField": "sBlockMetal8",
+    "meta": 0,
+    "material": "Vanadium"
+  },
+  {
+    "blockField": "sBlockMetal8",
+    "meta": 1,
+    "material": "VanadiumGallium"
+  },
+  {
+    "blockField": "sBlockMetal8",
+    "meta": 2,
+    "material": "CastIron"
+  },
+  {
+    "blockField": "sBlockMetal8",
+    "meta": 3,
+    "material": "Ytterbium"
+  },
+  {
+    "blockField": "sBlockMetal8",
+    "meta": 4,
+    "material": "Yttrium"
+  },
+  {
+    "blockField": "sBlockMetal8",
+    "meta": 5,
+    "material": "YttriumBariumCuprate"
+  },
+  {
+    "blockField": "sBlockMetal8",
+    "meta": 6,
+    "material": "Zinc"
+  },
+  {
+    "blockField": "sBlockMetal8",
+    "meta": 7,
+    "material": "TungstenCarbide"
+  },
+  {
+    "blockField": "sBlockMetal8",
+    "meta": 8,
+    "material": "VanadiumSteel"
+  },
+  {
+    "blockField": "sBlockMetal8",
+    "meta": 9,
+    "material": "HSSG"
+  },
+  {
+    "blockField": "sBlockMetal8",
+    "meta": 10,
+    "material": "HSSE"
+  },
+  {
+    "blockField": "sBlockMetal8",
+    "meta": 11,
+    "material": "HSSS"
+  },
+  {
+    "blockField": "sBlockMetal8",
+    "meta": 12,
+    "material": "Steeleaf"
+  },
+  {
+    "blockField": "sBlockMetal8",
+    "meta": 13,
+    "material": "Ichorium"
+  },
+  {
+    "blockField": "sBlockMetal8",
+    "meta": 14,
+    "material": "Firestone"
+  },
+  {
+    "blockField": "sBlockMetal8",
+    "meta": 15,
+    "material": "Shadow"
+  },
+  {
+    "blockField": "sBlockMetal9",
+    "meta": 0,
+    "material": "Cryolite"
+  },
+  {
+    "blockField": "sBlockMetal9",
+    "meta": 1,
+    "material": "SiliconSolarGrade"
+  },
+  {
+    "blockField": "sBlockMetal9",
+    "meta": 2,
+    "material": "NickelAluminide"
+  },
+  {
+    "blockField": "sBlockMetal9",
+    "meta": 3,
+    "material": "SpaceTime"
+  },
+  {
+    "blockField": "sBlockMetal9",
+    "meta": 4,
+    "material": "TranscendentMetal"
+  },
+  {
+    "blockField": "sBlockMetal9",
+    "meta": 5,
+    "material": "Oriharukon"
+  },
+  {
+    "blockField": "sBlockMetal9",
+    "meta": 6,
+    "material": "WhiteDwarfMatter"
+  },
+  {
+    "blockField": "sBlockMetal9",
+    "meta": 7,
+    "material": "BlackDwarfMatter"
+  },
+  {
+    "blockField": "sBlockMetal9",
+    "meta": 8,
+    "material": "Universium"
+  },
+  {
+    "blockField": "sBlockMetal9",
+    "meta": 9,
+    "material": "Eternity"
+  },
+  {
+    "blockField": "sBlockMetal9",
+    "meta": 10,
+    "material": "Magmatter"
+  },
+  {
+    "blockField": "sBlockMetal9",
+    "meta": 11,
+    "material": "SixPhasedCopper"
+  },
+  {
+    "blockField": "sBlockMetal9",
+    "meta": 12,
+    "material": "HellishMetal"
+  },
+  {
+    "blockField": "sBlockMetal9",
+    "meta": 13,
+    "material": "MagnetohydrodynamicallyConstrainedStarMatter"
+  },
+  {
+    "blockField": "sBlockMetal9",
+    "meta": 14,
+    "material": "Hexanite"
+  },
+  {
+    "blockField": "sBlockMetal10",
+    "meta": 0,
+    "material": "Shijima"
+  },
+  {
+    "blockField": "sBlockMetal10",
+    "meta": 1,
+    "material": "Churitsu"
+  },
+  {
+    "blockField": "sBlockGem1",
+    "meta": 0,
+    "material": "InfusedAir"
+  },
+  {
+    "blockField": "sBlockGem1",
+    "meta": 1,
+    "material": "Amber"
+  },
+  {
+    "blockField": "sBlockGem1",
+    "meta": 2,
+    "material": "Amethyst"
+  },
+  {
+    "blockField": "sBlockGem1",
+    "meta": 3,
+    "material": "InfusedWater"
+  },
+  {
+    "blockField": "sBlockGem1",
+    "meta": 4,
+    "material": "BlueTopaz"
+  },
+  {
+    "blockField": "sBlockGem1",
+    "meta": 5,
+    "material": "CertusQuartz"
+  },
+  {
+    "blockField": "sBlockGem1",
+    "meta": 6,
+    "material": "Dilithium"
+  },
+  {
+    "blockField": "sBlockGem1",
+    "meta": 7,
+    "material": "EnderEye"
+  },
+  {
+    "blockField": "sBlockGem1",
+    "meta": 8,
+    "material": "EnderPearl"
+  },
+  {
+    "blockField": "sBlockGem1",
+    "meta": 9,
+    "material": "FoolsRuby"
+  },
+  {
+    "blockField": "sBlockGem1",
+    "meta": 10,
+    "material": "Force"
+  },
+  {
+    "blockField": "sBlockGem1",
+    "meta": 11,
+    "material": "Forcicium"
+  },
+  {
+    "blockField": "sBlockGem1",
+    "meta": 12,
+    "material": "Forcillium"
+  },
+  {
+    "blockField": "sBlockGem1",
+    "meta": 13,
+    "material": "GreenSapphire"
+  },
+  {
+    "blockField": "sBlockGem1",
+    "meta": 14,
+    "material": "InfusedFire"
+  },
+  {
+    "blockField": "sBlockGem1",
+    "meta": 15,
+    "material": "Jasper"
+  },
+  {
+    "blockField": "sBlockGem2",
+    "meta": 0,
+    "material": "Lazurite"
+  },
+  {
+    "blockField": "sBlockGem2",
+    "meta": 1,
+    "material": "Lignite"
+  },
+  {
+    "blockField": "sBlockGem2",
+    "meta": 2,
+    "material": "Monazite"
+  },
+  {
+    "blockField": "sBlockGem2",
+    "meta": 3,
+    "material": "Niter"
+  },
+  {
+    "blockField": "sBlockGem2",
+    "meta": 4,
+    "material": "Olivine"
+  },
+  {
+    "blockField": "sBlockGem2",
+    "meta": 5,
+    "material": "Opal"
+  },
+  {
+    "blockField": "sBlockGem2",
+    "meta": 6,
+    "material": "InfusedOrder"
+  },
+  {
+    "blockField": "sBlockGem2",
+    "meta": 7,
+    "material": "InfusedEntropy"
+  },
+  {
+    "blockField": "sBlockGem2",
+    "meta": 8,
+    "material": "TricalciumPhosphate"
+  },
+  {
+    "blockField": "sBlockGem2",
+    "meta": 9,
+    "material": "Quartzite"
+  },
+  {
+    "blockField": "sBlockGem2",
+    "meta": 10,
+    "material": "GarnetRed"
+  },
+  {
+    "blockField": "sBlockGem2",
+    "meta": 11,
+    "material": "Ruby"
+  },
+  {
+    "blockField": "sBlockGem2",
+    "meta": 12,
+    "material": "Sapphire"
+  },
+  {
+    "blockField": "sBlockGem2",
+    "meta": 13,
+    "material": "Sodalite"
+  },
+  {
+    "blockField": "sBlockGem2",
+    "meta": 14,
+    "material": "Tanzanite"
+  },
+  {
+    "blockField": "sBlockGem2",
+    "meta": 15,
+    "material": "InfusedEarth"
+  },
+  {
+    "blockField": "sBlockGem3",
+    "meta": 0,
+    "material": "Topaz"
+  },
+  {
+    "blockField": "sBlockGem3",
+    "meta": 1,
+    "material": "Vinteum"
+  },
+  {
+    "blockField": "sBlockGem3",
+    "meta": 2,
+    "material": "GarnetYellow"
+  },
+  {
+    "blockField": "sBlockGem3",
+    "meta": 3,
+    "material": "NetherStar"
+  },
+  {
+    "blockField": "sBlockGem3",
+    "meta": 4,
+    "material": "Charcoal"
+  },
+  {
+    "blockField": "sBlockGem3",
+    "meta": 5,
+    "material": "Blaze"
+  }
+]
