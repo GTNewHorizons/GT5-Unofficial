@@ -137,6 +137,7 @@ public class ElectricImplosionCompressorRecipes implements Runnable {
     }
 
     private void addMagnetohydrodynamicallyConstrainedStarMatterPartRecipes() {
+        if (!SuperSolarPanels.isModLoaded() || !OpenComputers.isModLoaded()) return;
 
         this.addWhiteDwarfMagnetoEICRecipe(OrePrefixes.frameGt, 1, 1);
         this.addWhiteDwarfMagnetoEICRecipe(OrePrefixes.nugget, 9, 1);
