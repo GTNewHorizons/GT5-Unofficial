@@ -2112,8 +2112,7 @@ public class GTUtility {
     public static FluidStack copyAmount(long aAmount, FluidStack aStack) {
         if (aStack == null) return null;
 
-        FluidStack rStack = new LongFluidStack(aStack, aAmount);
-        return rStack;
+        return new LongFluidStack(aStack, aAmount).copy();
     }
 
     /**
