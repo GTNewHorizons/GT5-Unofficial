@@ -118,7 +118,6 @@ public class RadialMenu extends Widget<RadialMenu> implements Interactable {
 
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glDisable(GL11.GL_TEXTURE_2D);
 
         // draw the options
@@ -171,7 +170,6 @@ public class RadialMenu extends Widget<RadialMenu> implements Interactable {
             option.label.draw(context, x, y, 0, 0, WidgetTheme.whiteTextShadow(18, 18, null));
         }
 
-        GL11.glEnable(GL11.GL_LIGHTING);
         GL11.glEnable(GL11.GL_BLEND);
 
         Minecraft.getMinecraft().mcProfiler.endSection();

@@ -625,6 +625,9 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
 
     public void setSlotConfig(int index, FluidStack config) {
         slots[index] = config == null ? null : new Slot(config.copy());
+        // Keep the AE stack watcher in sync, or a hatch configured after joining the grid never gets onStackChange for
+        // the new fluid and a machine idling on it never wakes when the network restocks.
+        configureWatchers();
     }
 
     /**
@@ -655,6 +658,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
 
     protected void clearSlotConfigs() {
         Arrays.fill(slots, null);
+        configureWatchers();
     }
 
     protected void clearExtractedStacks() {
@@ -863,6 +867,8 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
                 if (fs == null) continue;
                 slots[i] = new Slot(fs);
             }
+            // The writes above bypass setSlotConfig, so re-sync the AE stack watcher with the pasted config.
+            configureWatchers();
         }
 
         updateValidGridProxySides();
