@@ -54148,11 +54148,6 @@
         "mlDefaultName": "Crushed Aer Ore"
       },
       {
-        "prefix": "crystalline",
-        "legacyName": "Shard of Aer",
-        "mlDefaultName": "Aer"
-      },
-      {
         "prefix": "gem",
         "legacyName": "Shard of Aer",
         "mlDefaultName": "Aer"
@@ -54173,11 +54168,6 @@
         "mlDefaultName": "Impure Pile of Aer Dust"
       },
       {
-        "prefix": "dustRefined",
-        "legacyName": "Refined Pile of Aer Crystal Powder",
-        "mlDefaultName": "Refined Pile of Aer Dust"
-      },
-      {
         "prefix": "dustPure",
         "legacyName": "Purified Pile of Aer Crystal Powder",
         "mlDefaultName": "Purified Pile of Aer Dust"
@@ -54191,11 +54181,6 @@
         "prefix": "plate",
         "legacyName": "Aer Crystal Plate",
         "mlDefaultName": "Aer Plate"
-      },
-      {
-        "prefix": "crystal",
-        "legacyName": "Shard of Aer",
-        "mlDefaultName": "Aer Crystal"
       }
     ]
   },
@@ -54418,11 +54403,6 @@
         "mlDefaultName": "Crushed Ignis Ore"
       },
       {
-        "prefix": "crystalline",
-        "legacyName": "Shard of Ignis",
-        "mlDefaultName": "Ignis"
-      },
-      {
         "prefix": "gem",
         "legacyName": "Shard of Ignis",
         "mlDefaultName": "Ignis"
@@ -54443,11 +54423,6 @@
         "mlDefaultName": "Impure Pile of Ignis Dust"
       },
       {
-        "prefix": "dustRefined",
-        "legacyName": "Refined Pile of Ignis Crystal Powder",
-        "mlDefaultName": "Refined Pile of Ignis Dust"
-      },
-      {
         "prefix": "dustPure",
         "legacyName": "Purified Pile of Ignis Crystal Powder",
         "mlDefaultName": "Purified Pile of Ignis Dust"
@@ -54461,11 +54436,6 @@
         "prefix": "plate",
         "legacyName": "Ignis Crystal Plate",
         "mlDefaultName": "Ignis Plate"
-      },
-      {
-        "prefix": "crystal",
-        "legacyName": "Shard of Ignis",
-        "mlDefaultName": "Ignis Crystal"
       }
     ]
   },
@@ -54688,11 +54658,6 @@
         "mlDefaultName": "Crushed Terra Ore"
       },
       {
-        "prefix": "crystalline",
-        "legacyName": "Shard of Terra",
-        "mlDefaultName": "Terra"
-      },
-      {
         "prefix": "gem",
         "legacyName": "Shard of Terra",
         "mlDefaultName": "Terra"
@@ -54713,11 +54678,6 @@
         "mlDefaultName": "Impure Pile of Terra Dust"
       },
       {
-        "prefix": "dustRefined",
-        "legacyName": "Refined Pile of Terra Crystal Powder",
-        "mlDefaultName": "Refined Pile of Terra Dust"
-      },
-      {
         "prefix": "dustPure",
         "legacyName": "Purified Pile of Terra Crystal Powder",
         "mlDefaultName": "Purified Pile of Terra Dust"
@@ -54731,11 +54691,6 @@
         "prefix": "plate",
         "legacyName": "Terra Crystal Plate",
         "mlDefaultName": "Terra Plate"
-      },
-      {
-        "prefix": "crystal",
-        "legacyName": "Shard of Terra",
-        "mlDefaultName": "Terra Crystal"
       }
     ]
   },
@@ -54958,11 +54913,6 @@
         "mlDefaultName": "Crushed Aqua Ore"
       },
       {
-        "prefix": "crystalline",
-        "legacyName": "Shard of Aqua",
-        "mlDefaultName": "Aqua"
-      },
-      {
         "prefix": "gem",
         "legacyName": "Shard of Aqua",
         "mlDefaultName": "Aqua"
@@ -54983,11 +54933,6 @@
         "mlDefaultName": "Impure Pile of Aqua Dust"
       },
       {
-        "prefix": "dustRefined",
-        "legacyName": "Refined Pile of Aqua Crystal Powder",
-        "mlDefaultName": "Refined Pile of Aqua Dust"
-      },
-      {
         "prefix": "dustPure",
         "legacyName": "Purified Pile of Aqua Crystal Powder",
         "mlDefaultName": "Purified Pile of Aqua Dust"
@@ -55001,11 +54946,6 @@
         "prefix": "plate",
         "legacyName": "Aqua Crystal Plate",
         "mlDefaultName": "Aqua Plate"
-      },
-      {
-        "prefix": "crystal",
-        "legacyName": "Shard of Aqua",
-        "mlDefaultName": "Aqua Crystal"
       }
     ]
   },
@@ -55228,11 +55168,6 @@
         "mlDefaultName": "Crushed Perditio Ore"
       },
       {
-        "prefix": "crystalline",
-        "legacyName": "Shard of Perditio",
-        "mlDefaultName": "Perditio"
-      },
-      {
         "prefix": "gem",
         "legacyName": "Shard of Perditio",
         "mlDefaultName": "Perditio"
@@ -55253,11 +55188,6 @@
         "mlDefaultName": "Impure Pile of Perditio Dust"
       },
       {
-        "prefix": "dustRefined",
-        "legacyName": "Refined Pile of Perditio Crystal Powder",
-        "mlDefaultName": "Refined Pile of Perditio Dust"
-      },
-      {
         "prefix": "dustPure",
         "legacyName": "Purified Pile of Perditio Crystal Powder",
         "mlDefaultName": "Purified Pile of Perditio Dust"
@@ -55271,11 +55201,6 @@
         "prefix": "plate",
         "legacyName": "Perditio Crystal Plate",
         "mlDefaultName": "Perditio Plate"
-      },
-      {
-        "prefix": "crystal",
-        "legacyName": "Shard of Perditio",
-        "mlDefaultName": "Perditio Crystal"
       }
     ]
   },
@@ -55498,11 +55423,6 @@
         "mlDefaultName": "Crushed Ordo Ore"
       },
       {
-        "prefix": "crystalline",
-        "legacyName": "Shard of Ordo",
-        "mlDefaultName": "Ordo"
-      },
-      {
         "prefix": "gem",
         "legacyName": "Shard of Ordo",
         "mlDefaultName": "Ordo"
@@ -55523,11 +55443,6 @@
         "mlDefaultName": "Impure Pile of Ordo Dust"
       },
       {
-        "prefix": "dustRefined",
-        "legacyName": "Refined Pile of Ordo Crystal Powder",
-        "mlDefaultName": "Refined Pile of Ordo Dust"
-      },
-      {
         "prefix": "dustPure",
         "legacyName": "Purified Pile of Ordo Crystal Powder",
         "mlDefaultName": "Purified Pile of Ordo Dust"
@@ -55541,11 +55456,6 @@
         "prefix": "plate",
         "legacyName": "Ordo Crystal Plate",
         "mlDefaultName": "Ordo Plate"
-      },
-      {
-        "prefix": "crystal",
-        "legacyName": "Shard of Ordo",
-        "mlDefaultName": "Ordo Crystal"
       }
     ]
   },
@@ -82994,11 +82904,6 @@
         "mlDefaultName": "Impure Pile of Salt Dust"
       },
       {
-        "prefix": "dustRefined",
-        "legacyName": "Refined Pile of Salt",
-        "mlDefaultName": "Refined Pile of Salt Dust"
-      },
-      {
         "prefix": "dustPure",
         "legacyName": "Purified Pile of Salt",
         "mlDefaultName": "Purified Pile of Salt Dust"
@@ -90040,11 +89945,6 @@
         "mlDefaultName": "Impure Pile of Pitchblende Dust"
       },
       {
-        "prefix": "dustRefined",
-        "legacyName": "Refined Pile of Pitchblende",
-        "mlDefaultName": "Refined Pile of Pitchblende Dust"
-      },
-      {
         "prefix": "dustPure",
         "legacyName": "Purified Pile of Pitchblende",
         "mlDefaultName": "Purified Pile of Pitchblende Dust"
@@ -92893,11 +92793,6 @@
         "mlDefaultName": "Impure Pile of Cheese Dust"
       },
       {
-        "prefix": "dustRefined",
-        "legacyName": "Refined Pile of Cheese Powder",
-        "mlDefaultName": "Refined Pile of Cheese Dust"
-      },
-      {
         "prefix": "dustPure",
         "legacyName": "Purified Pile of Cheese Powder",
         "mlDefaultName": "Purified Pile of Cheese Dust"
@@ -93924,11 +93819,6 @@
         "prefix": "dustImpure",
         "legacyName": "Impure Pile of Talc",
         "mlDefaultName": "Impure Pile of Talc Dust"
-      },
-      {
-        "prefix": "dustRefined",
-        "legacyName": "Refined Pile of Talc",
-        "mlDefaultName": "Refined Pile of Talc Dust"
       },
       {
         "prefix": "dustPure",
@@ -98177,11 +98067,6 @@
         "mlDefaultName": "Impure Pile of Bentonite Dust"
       },
       {
-        "prefix": "dustRefined",
-        "legacyName": "Refined Pile of Bentonite",
-        "mlDefaultName": "Refined Pile of Bentonite Dust"
-      },
-      {
         "prefix": "dustPure",
         "legacyName": "Purified Pile of Bentonite",
         "mlDefaultName": "Purified Pile of Bentonite Dust"
@@ -98395,11 +98280,6 @@
         "mlDefaultName": "Impure Pile of Fullers Earth Dust"
       },
       {
-        "prefix": "dustRefined",
-        "legacyName": "Refined Pile of Fullers Earth",
-        "mlDefaultName": "Refined Pile of Fullers Earth Dust"
-      },
-      {
         "prefix": "dustPure",
         "legacyName": "Purified Pile of Fullers Earth",
         "mlDefaultName": "Purified Pile of Fullers Earth Dust"
@@ -98603,11 +98483,6 @@
         "prefix": "dustImpure",
         "legacyName": "Impure Pile of Kaolinite",
         "mlDefaultName": "Impure Pile of Kaolinite Dust"
-      },
-      {
-        "prefix": "dustRefined",
-        "legacyName": "Refined Pile of Kaolinite",
-        "mlDefaultName": "Refined Pile of Kaolinite Dust"
       },
       {
         "prefix": "dustPure",
@@ -99160,11 +99035,6 @@
         "mlDefaultName": "Impure Pile of Vermiculite Dust"
       },
       {
-        "prefix": "dustRefined",
-        "legacyName": "Refined Pile of Vermiculite",
-        "mlDefaultName": "Refined Pile of Vermiculite Dust"
-      },
-      {
         "prefix": "dustPure",
         "legacyName": "Purified Pile of Vermiculite",
         "mlDefaultName": "Purified Pile of Vermiculite Dust"
@@ -99714,11 +99584,6 @@
         "mlDefaultName": "Impure Pile of Basaltic Mineral Sand Dust"
       },
       {
-        "prefix": "dustRefined",
-        "legacyName": "Refined Pile of Basaltic Mineral Sand",
-        "mlDefaultName": "Refined Pile of Basaltic Mineral Sand Dust"
-      },
-      {
         "prefix": "dustPure",
         "legacyName": "Purified Pile of Basaltic Mineral Sand",
         "mlDefaultName": "Purified Pile of Basaltic Mineral Sand Dust"
@@ -99931,11 +99796,6 @@
         "mlDefaultName": "Impure Pile of Granitic Mineral Sand Dust"
       },
       {
-        "prefix": "dustRefined",
-        "legacyName": "Refined Pile of Granitic Mineral Sand",
-        "mlDefaultName": "Refined Pile of Granitic Mineral Sand Dust"
-      },
-      {
         "prefix": "dustPure",
         "legacyName": "Purified Pile of Granitic Mineral Sand",
         "mlDefaultName": "Purified Pile of Granitic Mineral Sand Dust"
@@ -100133,11 +99993,6 @@
         "prefix": "dustImpure",
         "legacyName": "Impure Pile of Cassiterite Sand",
         "mlDefaultName": "Impure Pile of Cassiterite Sand Dust"
-      },
-      {
-        "prefix": "dustRefined",
-        "legacyName": "Refined Pile of Cassiterite Sand",
-        "mlDefaultName": "Refined Pile of Cassiterite Sand Dust"
       },
       {
         "prefix": "dustPure",
@@ -100340,11 +100195,6 @@
         "mlDefaultName": "Impure Pile of Garnet Sand Dust"
       },
       {
-        "prefix": "dustRefined",
-        "legacyName": "Refined Pile of Garnet Sand",
-        "mlDefaultName": "Refined Pile of Garnet Sand Dust"
-      },
-      {
         "prefix": "dustPure",
         "legacyName": "Purified Pile of Garnet Sand",
         "mlDefaultName": "Purified Pile of Garnet Sand Dust"
@@ -100544,11 +100394,6 @@
         "prefix": "dustImpure",
         "legacyName": "Impure Pile of Quartz Sand",
         "mlDefaultName": "Impure Pile of Quartz Sand Dust"
-      },
-      {
-        "prefix": "dustRefined",
-        "legacyName": "Refined Pile of Quartz Sand",
-        "mlDefaultName": "Refined Pile of Quartz Sand Dust"
       },
       {
         "prefix": "dustPure",
@@ -101333,11 +101178,6 @@
         "prefix": "dustImpure",
         "legacyName": "Impure Pile of Rock Salt",
         "mlDefaultName": "Impure Pile of Rock Salt Dust"
-      },
-      {
-        "prefix": "dustRefined",
-        "legacyName": "Refined Pile of Rock Salt",
-        "mlDefaultName": "Refined Pile of Rock Salt Dust"
       },
       {
         "prefix": "dustPure",
@@ -102144,11 +101984,6 @@
         "prefix": "dustImpure",
         "legacyName": "Impure Pile of Glauconite Sand",
         "mlDefaultName": "Impure Pile of Glauconite Sand Dust"
-      },
-      {
-        "prefix": "dustRefined",
-        "legacyName": "Refined Pile of Glauconite Sand",
-        "mlDefaultName": "Refined Pile of Glauconite Sand Dust"
       },
       {
         "prefix": "dustPure",

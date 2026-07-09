@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 """Checks `dumps/ml-materials.json` (the resolved MaterialLib registry) against `dumps/gt-materials.json`
 (the legacy `Materials` dump) for every material `gen_materials.py` was supposed to port: existence, tint,
-shape set, and every mapped `GTMaterialProperties` value.
+shape set, and every mapped `GTMaterialProperties` value. Per-material shape sets are verified against
+`dumps/legacy-variants.json` (construction-time ground truth), not the `generatedPrefixes` capability-bit
+dump, which can drift from it.
 
 Regenerate the dumps first (`runServer` with `-Dgt.dumpMaterialData=true`, then copy
 `run/server/material-dump/*.json` over `dumps/*.json`) before running this.
@@ -19,6 +21,7 @@ DUMPS_DIR = SCRIPT_DIR / "dumps"
 GT_PATH = DUMPS_DIR / "gt-materials.json"
 ML_PATH = DUMPS_DIR / "ml-materials.json"
 PREFIXES_PATH = DUMPS_DIR / "oreprefixes.json"
+LEGACY_VARIANTS_PATH = DUMPS_DIR / "legacy-variants.json"
 
 FLOAT_TOLERANCE = 1e-6
 
@@ -62,7 +65,7 @@ def is_complex_tool_or_armor(prefix):
     return False
 
 
-def is_included_shape(prefix):
+def is_included_shape(prefix, legacy_variant_prefixes):
     if prefix["generationBits"] == 0:
         return False
     if not prefix["isMaterialBased"]:
@@ -73,7 +76,26 @@ def is_included_shape(prefix):
         return False
     if is_complex_tool_or_armor(prefix):
         return False
-    return True
+    # Mirrors gen_shapes.py/gen_materials.py: a prefix only ever had a real legacy item if it also held a
+    # constructor slot, which legacy-variants.json (ground truth) records and the capability-bit dump alone
+    # does not.
+    return prefix["name"] in legacy_variant_prefixes
+
+
+def load_legacy_variants():
+    with open(LEGACY_VARIANTS_PATH, encoding="utf-8") as f:
+        return json.load(f)
+
+
+def load_legacy_variant_prefixes(variants):
+    return {v["prefix"] for v in variants}
+
+
+def load_legacy_variants_by_material(variants):
+    by_material = {}
+    for v in variants:
+        by_material.setdefault(v["material"], set()).add(v["prefix"])
+    return by_material
 
 
 def has_fluids(material):
@@ -139,7 +161,7 @@ def check_ref_field(errors, name, field, gt_value, ml_value):
         errors.append(f"{name}: {field} expected {expected!r}, got {ml_value!r}")
 
 
-def check_material(gt, ml, included_names):
+def check_material(gt, ml, included_names, legacy_variants_by_material):
     errors = []
     name = gt["name"]
 
@@ -151,7 +173,8 @@ def check_material(gt, ml, included_names):
     if ml["textureSet"] != gt["iconSet"]:
         errors.append(f"{name}: textureSet expected {gt['iconSet']!r}, got {ml['textureSet']!r}")
 
-    dumped_shapes = set(p for p in gt["generatedPrefixes"] if p in included_names)
+    actual_variants = legacy_variants_by_material.get(name, set())
+    dumped_shapes = set(p for p in actual_variants if p in included_names)
     actual_shapes = set(ml["shapes"])
     if dumped_shapes != actual_shapes:
         missing = dumped_shapes - actual_shapes
@@ -260,8 +283,11 @@ def main():
     gt_materials = load(GT_PATH)
     ml_materials = load(ML_PATH)
     prefixes = load(PREFIXES_PATH)["prefixes"]
+    legacy_variants = load_legacy_variants()
+    legacy_variant_prefixes = load_legacy_variant_prefixes(legacy_variants)
+    legacy_variants_by_material = load_legacy_variants_by_material(legacy_variants)
 
-    included_names = set(p["name"] for p in prefixes if is_included_shape(p))
+    included_names = set(p["name"] for p in prefixes if is_included_shape(p, legacy_variant_prefixes))
     ported = compute_ported(gt_materials)
     ml_by_key = {m["name"]: m for m in ml_materials}
 
@@ -272,7 +298,7 @@ def main():
         if ml is None:
             errors.append(f"{material['name']}: missing from ml-materials.json (expected key {key!r})")
             continue
-        errors.extend(check_material(material, ml, included_names))
+        errors.extend(check_material(material, ml, included_names, legacy_variants_by_material))
 
     expected_keys = set(ml_name(m["name"]) for m in ported)
     extra = set(ml_by_key) - expected_keys
