@@ -70,6 +70,10 @@ public class BWMetaGeneratedItems extends MetaGeneratedItem implements IRadMater
         for (Werkstoff w : Werkstoff.werkstoffHashSet) {
             ItemStack tStack = new ItemStack(this, 1, w.getmID());
             if (!w.hasItemType(this.orePrefixes)) continue;
+            // Cut-over werkstoffe are served by their MaterialLib shape items; the legacy item stays
+            // registered (so saved stacks resolve for the Postea migration) but empty -- no oredict entry
+            // and no creative/NEI listing (see getSubItems).
+            if (WerkstoffReconstruction.isReconstructed(w)) continue;
             GTOreDictUnificator.registerOre(this.orePrefixes.getName() + w.getVarName(), tStack);
         }
     }
@@ -156,7 +160,8 @@ public class BWMetaGeneratedItems extends MetaGeneratedItem implements IRadMater
     @SideOnly(Side.CLIENT)
     public void getSubItems(Item var1, CreativeTabs aCreativeTab, List<ItemStack> aList) {
         for (Werkstoff werkstoff : Werkstoff.werkstoffHashSet) {
-            if (werkstoff != null && werkstoff.hasItemType(this.orePrefixes)) {
+            if (werkstoff != null && werkstoff.hasItemType(this.orePrefixes)
+                && !WerkstoffReconstruction.isReconstructed(werkstoff)) {
                 ItemStack tStack = new ItemStack(this, 1, werkstoff.getmID());
                 aList.add(tStack);
             }

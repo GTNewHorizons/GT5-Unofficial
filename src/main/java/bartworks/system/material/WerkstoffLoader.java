@@ -113,6 +113,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.fluid.GTFluidFactory;
 import gregtech.api.interfaces.ISubTagContainer;
+import gregtech.api.material.MU;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.common.ores.BWOreAdapter;
 import gregtech.common.ores.OreInfo;
@@ -299,6 +300,21 @@ public class WerkstoffLoader {
     }
 
     public static ItemStack getCorrespondingItemStackUnsafe(OrePrefixes orePrefixes, Werkstoff werkstoff, int amount) {
+        // Stage-10 item cutover: a werkstoff's item prefixes resolve to the MaterialLib stack (via the bridge
+        // material, which maps proxies and reconstructed werkstoffe alike; a third-party werkstoff's bridge
+        // is unknown to MU and falls through to the legacy paths). Block-kind prefixes (storage block,
+        // casings, ores, sheetmetal, frames) deliberately stay legacy-canonical for now: multiblock structure
+        // matchers reference the legacy casing blocks by identity, so their cutover is a coordinated
+        // block+structure flip, not a stack swap.
+        if (orePrefixes != ore && orePrefixes != oreSmall
+            && orePrefixes != block
+            && orePrefixes != OrePrefixes.blockCasing
+            && orePrefixes != OrePrefixes.blockCasingAdvanced
+            && orePrefixes != OrePrefixes.sheetmetal
+            && orePrefixes != OrePrefixes.frameGt) {
+            ItemStack mlStack = MU.stack(orePrefixes, werkstoff.getBridgeMaterial(), amount);
+            if (mlStack != null) return mlStack;
+        }
         if (!werkstoff.getGenerationFeatures().enforceUnification) {
             ItemStack ret = GTOreDictUnificator.get(orePrefixes, werkstoff.getBridgeMaterial(), amount);
             if (ret != null) return ret;
