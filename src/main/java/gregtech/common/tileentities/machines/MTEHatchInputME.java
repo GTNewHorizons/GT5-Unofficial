@@ -77,6 +77,7 @@ import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.recipe.check.SimpleCheckRecipeResult;
 import gregtech.api.render.TextureFactory;
+import gregtech.api.util.FluidStackLong;
 import gregtech.api.util.GTDataUtils;
 import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
@@ -248,14 +249,14 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
             Slot newSlot = slots[index];
             FluidStack newStack = null;
             if (newSlot != null) {
-                newSlot.extracted = newStack = curr.getFluidStack();
-                newSlot.extractedAmount = newSlot.extracted.amount;
+                newSlot.extracted = newStack = new FluidStackLong(curr.getFluidStack(), curr.getStackSize());
+                newSlot.extractedAmount = GTUtility.getFluidAmount(newSlot.extracted);
             }
             boolean sametype = GTUtility.areFluidsEqual(oldStack, newStack);
             if (newStack != null) {
                 // lower amount/disappearance is not considered 'new fluids'
                 if (sametype) {
-                    if (newStack.amount > oldStack.amount) {
+                    if (GTUtility.getFluidAmount(newStack) > GTUtility.getFluidAmount(oldStack)) {
                         justHadNewFluids = true; // same type, higher amount
                     }
                 } else {
@@ -364,6 +365,11 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
 
     @Override
     public FluidStack drain(ForgeDirection side, FluidStack fluid, int amount, boolean doDrain) {
+        return drain(side, fluid, (long) amount, doDrain);
+    }
+
+    @Override
+    public FluidStack drain(ForgeDirection side, FluidStack fluid, long amount, boolean doDrain) {
         // this is an ME input hatch. allowing draining via logistics would be very wrong (and against
         // canTankBeEmptied()) but we do need to support draining from controller, which uses the UNKNOWN direction.
         if (side != ForgeDirection.UNKNOWN) return null;
@@ -373,12 +379,12 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
             Slot slot = getMatchingSlot(fluid, true);
             if (slot == null) return null;
 
-            int toDrain = Math.min(slot.extracted.amount, amount);
+            long toDrain = Math.min(GTUtility.getFluidAmount(slot.extracted), amount);
 
             FluidStack drained = GTUtility.copyAmount(toDrain, slot.extracted);
 
             if (doDrain) {
-                slot.extracted.amount -= toDrain;
+                GTUtility.decFluidAmount(slot.extracted, toDrain);
             }
 
             return drained;
@@ -410,7 +416,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
                 result = sg.extractItems(request, Actionable.SIMULATE, getRequestSource());
             }
 
-            return result == null ? null : result.getFluidStack();
+            return result == null ? null : new FluidStackLong(result.getFluidStack());
         }
     }
 
@@ -455,13 +461,13 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
 
             if (slot == null || slot.extracted == null || slot.extractedAmount == 0) continue;
 
-            int toExtract = slot.extractedAmount - slot.extracted.amount;
+            long toExtract = slot.extractedAmount - GTUtility.getFluidAmount(slot.extracted);
 
             if (toExtract <= 0) continue;
 
             // Reset the extracted amount to prevent double endRecipeProcessing calls from extracting twice, but keep
             // the extracted stack intact so that it looks nice.
-            slot.extractedAmount = slot.extracted.amount;
+            slot.extractedAmount = GTUtility.getFluidAmount(slot.extracted);
 
             IAEFluidStack request = AEFluidStack.create(slot.extracted);
             request.setStackSize(toExtract);
@@ -638,12 +644,12 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
             .getFluidInventory();
 
         IAEFluidStack request = AEFluidStack.create(slot.config);
-        request.setStackSize(Integer.MAX_VALUE);
+        request.setStackSize(Long.MAX_VALUE);
 
         IAEFluidStack result = sg.extractItems(request, Actionable.SIMULATE, getRequestSource());
 
-        slot.extracted = result != null ? result.getFluidStack() : null;
-        slot.extractedAmount = slot.extracted == null ? 0 : slot.extracted.amount;
+        slot.extracted = result != null ? new FluidStackLong(result.getFluid(), result.getStackSize()) : null;
+        slot.extractedAmount = slot.extracted == null ? 0 : GTUtility.getFluidAmount(slot.extracted);
 
     }
 
@@ -965,7 +971,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
         public final FluidStack config;
 
         /** The amount of stuff initially in the ME system when the recipe check started. */
-        public int extractedAmount;
+        public long extractedAmount;
         /**
          * The extracted stack (almost certainly equal to config). This is shared as a reference to the multiblock,
          * which decrements the stored amount as it gets consumed. After the recipe check has finished, the amount in
@@ -998,7 +1004,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
         public Slot copy() {
             Slot copy = new Slot(this.config.copy());
 
-            copy.extracted = this.extracted;
+            copy.extracted = this.extracted.copy();
             copy.extractedAmount = this.extractedAmount;
 
             return copy;
@@ -1008,7 +1014,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
             tag.setTag("config", config.writeToNBT(new NBTTagCompound()));
             if (extracted != null) {
                 tag.setTag("extracted", extracted.writeToNBT(new NBTTagCompound()));
-                tag.setInteger("extractedAmount", extractedAmount);
+                tag.setLong("extractedAmount", extractedAmount);
             }
         }
 
@@ -1018,8 +1024,8 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
             if (slot.config == null) return null;
 
             if (tag.hasKey("extracted")) {
-                slot.extracted = FluidStack.loadFluidStackFromNBT(tag.getCompoundTag("extracted"));
-                slot.extractedAmount = tag.getInteger("extractedAmount");
+                slot.extracted = GTUtility.loadFluid(tag, "extracted");
+                slot.extractedAmount = tag.getLong("extractedAmount");
             }
 
             return slot;

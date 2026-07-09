@@ -1219,7 +1219,7 @@ public class GTUtility {
         }
         ItemStack rStack = ItemList.Display_Fluid.getWithDamage(1, tmp);
         NBTTagCompound tNBT = new NBTTagCompound();
-        tNBT.setLong("mFluidDisplayAmount", aUseStackSize ? aFluid.amount : 0);
+        tNBT.setLong("mFluidDisplayAmount", aUseStackSize ? getFluidAmount(aFluid) : 0);
         tNBT.setLong(
             "mFluidDisplayHeat",
             aFluid.getFluid()
@@ -1342,7 +1342,7 @@ public class GTUtility {
 
         for (FluidStack stack : stacks) {
             if (stack == null || stack.getFluid() == null) continue;
-            histogram.addTo(FluidId.create(stack), stack.amount);
+            histogram.addTo(FluidId.create(stack), getFluidAmount(stack));
         }
 
         return histogram;
@@ -2106,9 +2106,13 @@ public class GTUtility {
     }
 
     public static FluidStack copyAmount(int aAmount, FluidStack aStack) {
+        return copyAmount((long) aAmount, aStack);
+    }
+
+    public static FluidStack copyAmount(long aAmount, FluidStack aStack) {
         if (aStack == null) return null;
-        FluidStack rStack = aStack.copy();
-        rStack.amount = aAmount;
+
+        FluidStack rStack = new FluidStackLong(aStack, aAmount);
         return rStack;
     }
 
@@ -2269,6 +2273,9 @@ public class GTUtility {
      */
     public static FluidStack loadFluid(NBTTagCompound aNBT) {
         if (aNBT == null) return null;
+        if (aNBT.hasKey("amountLong")) {
+            return FluidStackLong.loadFluidStackFromNBT(aNBT);
+        }
         return FluidStack.loadFluidStackFromNBT(aNBT);
     }
 
@@ -2803,7 +2810,7 @@ public class GTUtility {
         Map<Fluid, Long> result = new Reference2LongOpenHashMap<>();
         for (FluidStack fluidStack : fluidStacks) {
             if (fluidStack != null && fluidStack.amount > 0) {
-                result.merge(fluidStack.getFluid(), (long) fluidStack.amount, Long::sum);
+                result.merge(fluidStack.getFluid(), getFluidAmount(fluidStack), Long::sum);
             }
         }
         return result;
@@ -4049,15 +4056,15 @@ public class GTUtility {
             return new AutoValue_GTUtility_FluidId(
                 FluidRegistry.getFluid(tag.getString("FluidName")),
                 tag.hasKey("Tag", NBT.TAG_COMPOUND) ? tag.getCompoundTag("Tag") : null,
-                tag.hasKey("Amount", NBT.TAG_INT) ? tag.getInteger("Amount") : null);
+                tag.hasKey("Amount", NBT.TAG_LONG) ? tag.getLong("Amount") : null);
         }
 
         public NBTTagCompound writeToNBT() {
             NBTTagCompound tag = new NBTTagCompound();
             tag.setString("FluidName", fluid().getName());
             if (nbt() != null) tag.setTag("Tag", nbt());
-            Integer amount = amount();
-            if (amount != null) tag.setInteger("Amount", amount);
+            Long amount = amount();
+            if (amount != null) tag.setLong("Amount", amount);
             return tag;
         }
 
@@ -4066,14 +4073,14 @@ public class GTUtility {
         }
 
         public static FluidId createWithAmount(FluidStack fluidStack) {
-            return createWithCopy(fluidStack.getFluid(), fluidStack.amount, fluidStack.tag);
+            return createWithCopy(fluidStack.getFluid(), getFluidAmount(fluidStack), fluidStack.tag);
         }
 
         public static FluidId create(Fluid fluid) {
             return createNoCopy(fluid, null, null);
         }
 
-        public static FluidId createWithCopy(Fluid fluid, Integer amount, @Nullable NBTTagCompound nbt) {
+        public static FluidId createWithCopy(Fluid fluid, Long amount, @Nullable NBTTagCompound nbt) {
             if (nbt != null) {
                 nbt = (NBTTagCompound) nbt.copy();
             }
@@ -4083,7 +4090,7 @@ public class GTUtility {
         /**
          * This method does not copy the NBT tag.
          */
-        public static FluidId createNoCopy(Fluid fluid, Integer amount, @Nullable NBTTagCompound nbt) {
+        public static FluidId createNoCopy(Fluid fluid, Long amount, @Nullable NBTTagCompound nbt) {
             return new AutoValue_GTUtility_FluidId(fluid, nbt, amount);
         }
 
@@ -4093,7 +4100,7 @@ public class GTUtility {
         protected abstract NBTTagCompound nbt();
 
         @Nullable
-        protected abstract Integer amount();
+        protected abstract Long amount();
 
         @Nonnull
         public FluidStack getFluidStack() {
@@ -4102,9 +4109,14 @@ public class GTUtility {
         }
 
         @Nonnull
-        public FluidStack getFluidStack(int amount) {
+        public FluidStack getFluidStack(long amount) {
             NBTTagCompound nbt = nbt();
-            return new FluidStack(fluid(), amount, nbt != null ? (NBTTagCompound) nbt.copy() : null);
+            return new FluidStackLong(fluid(), amount, nbt != null ? (NBTTagCompound) nbt.copy() : null);
+        }
+
+        @Nonnull
+        public FluidStack getFluidStack(int amount) {
+            return getFluidStack((long) amount);
         }
 
         public boolean matches(FluidStack stack) {
@@ -4382,5 +4394,26 @@ public class GTUtility {
             amount -= a;
         }
         return result;
+    }
+
+    public static long getFluidAmount(FluidStack fluidStack) {
+        if (fluidStack instanceof FluidStackLong stack) {
+            return stack.getAmountLong();
+        }
+
+        return fluidStack.amount;
+    }
+
+    public static void setFluidAmount(FluidStack fluidStack, long amount) {
+        if (fluidStack instanceof FluidStackLong stack) {
+            stack.setAmountLong(amount);
+        } else {
+            fluidStack.amount = longToInt(amount);
+        }
+    }
+
+    public static void decFluidAmount(FluidStack fluidStack, long decAmount) {
+        long amount = getFluidAmount(fluidStack);
+        setFluidAmount(fluidStack, amount - decAmount);
     }
 }

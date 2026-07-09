@@ -295,6 +295,10 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
         return 0;
     }
 
+    public long fillLong(FluidStack resource, boolean doFill) {
+        return fill(resource, doFill);
+    }
+
     /**
      * Tries to empty this tank.
      */
@@ -487,7 +491,7 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
 
     @Override
     public FluidStack drain(ForgeDirection side, FluidStack fluidStack, boolean doDrain) {
-        return drain(side, fluidStack, fluidStack == null ? 0 : fluidStack.amount, doDrain);
+        return drain(side, fluidStack, fluidStack == null ? 0 : GTUtility.getFluidAmount(fluidStack), doDrain);
     }
 
     /**
@@ -499,6 +503,10 @@ public abstract class CommonMetaTileEntity implements IMetaTileEntity {
             return drain(amount, doDrain);
         }
         return null;
+    }
+
+    public FluidStack drain(ForgeDirection side, FluidStack fluidStack, long amount, boolean doDrain) {
+        return drain(side, fluidStack, GTUtility.longToInt(amount), doDrain);
     }
 
     @Override

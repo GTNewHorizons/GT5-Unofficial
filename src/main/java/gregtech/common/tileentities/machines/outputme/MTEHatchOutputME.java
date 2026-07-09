@@ -131,14 +131,23 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
 
     @Override
     public int fill(FluidStack aFluid, boolean doFill) {
+        return GTUtility.longToInt(fillLong(aFluid, doFill));
+    }
+
+    @Override
+    public long fillLong(FluidStack aFluid, boolean doFill) {
         IAEFluidStack input = AEFluidStack.create(aFluid);
+        long fluidAmount = GTUtility.getFluidAmount(aFluid);
+        input.setStackSize(fluidAmount);
         provider.storePartial(input, !doFill);
-        return aFluid.amount - (int) input.getStackSize();
+        return fluidAmount - input.getStackSize();
     }
 
     @Override
     public boolean canStoreFluid(@NotNull FluidStack fluidStack) {
-        return provider.canStore(AEFluidStack.create(fluidStack));
+        return provider.canStore(
+            AEFluidStack.create(fluidStack)
+                .setStackSize(GTUtility.getFluidAmount(fluidStack)));
     }
 
     @Override
@@ -563,17 +572,18 @@ public class MTEHatchOutputME extends MTEHatchOutput implements IPowerChannelSta
 
             if (isRecipeCheck && provider.shouldCheck()) {
                 IAEFluidStack input = AEFluidStack.create(stack);
+                input.setStackSize(GTUtility.getFluidAmount(stack));
                 IAEFluidStack rejected = cell.injectItems(input, Actionable.MODULATE, getActionSource());
-                int inserted = (int) (stack.amount - (rejected == null ? 0 : rejected.getStackSize()));
+                long inserted = GTUtility.getFluidAmount(stack) - (rejected == null ? 0 : rejected.getStackSize());
                 cache.insert(id, inserted);
-                stack.amount -= inserted;
+                GTUtility.decFluidAmount(stack, inserted);
                 return stack.amount == 0;
             }
             if (!hasAvailableSpace() || !isFilteredToFluid(id)) {
                 return false;
             }
-            cache.insert(id, stack.amount);
-            stack.amount = 0;
+            cache.insert(id, GTUtility.getFluidAmount(stack));
+            GTUtility.setFluidAmount(stack, 0);
             return true;
         }
 
