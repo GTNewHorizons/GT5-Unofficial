@@ -143,8 +143,20 @@ public class WirelessNetworkManager {
         Team team = TeamManager.getTeamByPlayer(user_uuid);
         var data = (WirelessTeamData) team.getData(WirelessTeamData.DATA_KEY);
         if (data == null) return null;
-        data.updateCache();
-        return data.cached;
+        return data.forceCacheUpdate();
+    }
+
+    /**
+     * Updates the user's team dirtySticks state. This method should never be called unless you are absolutely sure you
+     * know
+     * what you are doing.
+     */
+    public static void forceSetDirtySticks(boolean newState, UUID user_uuid) {
+        if (user_uuid == null) return;
+        Team team = TeamManager.getTeamByPlayer(user_uuid);
+        var data = (WirelessTeamData) team.getData(WirelessTeamData.DATA_KEY);
+        if (data == null) return;
+        data.dirtySticks = newState;
     }
 
     public static void uploadDataSticks(long coord, ALRecipeDataPacket dataPacket, UUID ownerUUID) {
@@ -177,6 +189,10 @@ public class WirelessNetworkManager {
         var data = (WirelessTeamData) team.getData(WirelessTeamData.DATA_KEY);
         if (data == null) return;
         data.wirelessDataSticks.clear();
+        data.dirtySticks = false;
+        data.registeredDataOutputs = 0;
+        data.downloadCounter = 0;
+        data.cached = null;
     }
 
     public static void clearWirelessDataSticks() {
@@ -185,6 +201,10 @@ public class WirelessNetworkManager {
                 var data = (WirelessTeamData) team.getData(WirelessTeamData.DATA_KEY);
                 if (data == null) return;
                 data.wirelessDataSticks.clear();
+                data.dirtySticks = false;
+                data.registeredDataOutputs = 0;
+                data.downloadCounter = 0;
+                data.cached = null;
             }));
     }
 

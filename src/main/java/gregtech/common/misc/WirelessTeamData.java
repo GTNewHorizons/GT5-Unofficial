@@ -73,6 +73,15 @@ public class WirelessTeamData implements ITeamData {
     }
 
     /**
+     * Only used for testing. This method should never be called unless you are absolutely sure you know
+     * what you are doing.
+     */
+    ObjectOpenHashSet<GTRecipe.RecipeAssemblyLine> forceCacheUpdate() {
+        cached = null;
+        return updateCache();
+    }
+
+    /**
      * Marks the datastick cache as dirty and adds the dataPacket to the cached set.
      *
      * @param dataPacket null only resets the cache, non-null also adds the dataPacket to the cache
@@ -84,7 +93,7 @@ public class WirelessTeamData implements ITeamData {
             atHatch.set.clear();
             dirtySticks = true;
         }
-        if (dataPacket != null) {
+        if (dataPacket != null && atHatch.set.isEmpty()) {
             atHatch.set.addAll(Arrays.asList(dataPacket.getContent()));
         }
     }
@@ -103,6 +112,7 @@ public class WirelessTeamData implements ITeamData {
     public void mergeData(Team consumed, Team surviving, ITeamData oldTeamData) {
         if (!(oldTeamData instanceof WirelessTeamData oldWirelessTeamData)) return;
 
+        // TODO: decide if energy should be merged or not
         this.wirelessEnergy = this.wirelessEnergy.add(oldWirelessTeamData.wirelessEnergy);
         this.wirelessDataSticks.putAll(oldWirelessTeamData.wirelessDataSticks);
         this.registeredDataOutputs += oldWirelessTeamData.registeredDataOutputs;
@@ -129,7 +139,7 @@ public class WirelessTeamData implements ITeamData {
         this.registeredDataOutputs += toRemove.size();
         this.downloadCounter = 0;
         this.dirtySticks = true;
-        toRemove.forEach(wirelessDataSticks::remove);
+        toRemove.forEach(prevWirelessTeamData.wirelessDataSticks::remove);
     }
 
     private record OwnedSet(ObjectOpenHashSet<GTRecipe.RecipeAssemblyLine> set, UUID owner) {}
