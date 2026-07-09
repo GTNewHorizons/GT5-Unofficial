@@ -3,10 +3,14 @@
 (the legacy `Materials` dump) for every material `gen_materials.py` was supposed to port: existence, tint,
 shape set, and every mapped `GTMaterialProperties` value. Per-material shape sets are verified against
 `dumps/legacy-variants.json` (construction-time ground truth), not the `generatedPrefixes` capability-bit
-dump, which can drift from it.
+dump, which can drift from it. Werkstoff-backed materials (stage 10) additionally verify the merged shape
+union (`werkstoff.json` `generatedPrefixes`) and the composite `WERKSTOFF` property round-trip.
 
 Regenerate the dumps first (`runServer` with `-Dgt.dumpMaterialData=true`, then copy
-`run/server/material-dump/*.json` over `dumps/*.json`) before running this.
+`run/server/material-dump/*.json` over `dumps/*.json`) before running this. EXCEPTION: `werkstoff.json` is a
+PINNED pre-stage-10 capture -- never overwrite it from a post-fold boot (see
+`MaterialDataDump#dumpWerkstoffGeneratedPrefixes`; bartworks' reroute loop shrinks `generatedPrefixes` toward
+whatever MaterialLib already serves, destroying the legacy-conditions ground truth).
 
 Usage: python scripts/mu/check_parity.py
 Exit status is nonzero if any mismatch is found.
@@ -107,6 +111,170 @@ SUBTAG_FLAG_OVERRIDES = {
     "NobleGas": "NOBLE_GAS",
 }
 
+WERKSTOFF_PATH = DUMPS_DIR / "werkstoff.json"
+
+# Mirrors gen_materials.py's stage-10 werkstoff fold (WERKSTOFF_LEGACY_ONLY_PREFIXES,
+# werkstoff_special_shape_lines, group_werkstoffs, werkstoff_flag_names).
+WERKSTOFF_LEGACY_ONLY_PREFIXES = {"sheetmetal", "frameGt"}
+WERKSTOFF_FLAG_FIELDS = [
+    ("sublimation", "SUBLIMATION"),
+    ("toxic", "TOXIC"),
+    ("radioactive", "RADIOACTIVE"),
+    ("blastFurnace", "BLAST_FURNACE"),
+    ("elektrolysis", "ELECTROLYSIS"),
+    ("centrifuge", "CENTRIFUGE"),
+    ("gas", "GAS"),
+    ("enforceUnification", "ENFORCE_UNIFICATION"),
+    ("chemicalRecipes", "CHEMICAL_SYNTHESIS"),
+    ("metalCraftingSolidifierRecipes", "METAL_CRAFTING_SOLIDIFICATION"),
+    ("metalSolidifierRecipes", "METAL_SOLIDIFICATION"),
+    ("mixerRecipes", "MIXING"),
+    ("sifterRecipes", "SIFTING"),
+    ("formulaLocalized", "LOCALIZED_FORMULA"),
+]
+
+
+def load_werkstoffs():
+    with open(WERKSTOFF_PATH, encoding="utf-8") as f:
+        return json.load(f)
+
+
+def group_werkstoffs(werkstoffs):
+    by_name = {}
+    display_to_var = {}
+    for entry in werkstoffs:
+        if entry["pool"] == "unknown":
+            continue
+        if not entry["isProxy"]:
+            display_to_var[entry["name"]] = entry["varName"]
+    for entry in sorted(werkstoffs, key=lambda e: e["id"]):
+        if entry["pool"] == "unknown":
+            continue
+        name = entry["bridgeMaterial"] if entry["isProxy"] else entry["varName"]
+        info = by_name.setdefault(name, {"entries": [], "prefixes": []})
+        if not entry["isProxy"]:
+            info["entries"].append(entry)
+        for prefix in entry["generatedPrefixes"]:
+            if prefix not in info["prefixes"]:
+                info["prefixes"].append(prefix)
+    return by_name, display_to_var
+
+
+def werkstoff_ref_name(ref_name, kind, display_to_var):
+    if kind == "werkstoff":
+        return display_to_var[ref_name]
+    return ref_name
+
+
+def compute_werkstoff_referenced_names(werkstoff_by_name, display_to_var):
+    referenced = set()
+    for info in werkstoff_by_name.values():
+        for entry in info["entries"]:
+            for content in entry["contents"]:
+                referenced.add(werkstoff_ref_name(content["name"], content["kind"], display_to_var))
+            for byproduct in entry["oreByProducts"]:
+                referenced.add(display_to_var.get(byproduct, byproduct))
+    return referenced
+
+
+def expected_werkstoff_shapes(werkstoff_prefixes, included_names):
+    names = set(p for p in werkstoff_prefixes if p in included_names)
+    if "cell" in werkstoff_prefixes:
+        names.add("cell")
+    if "cellMolten" in werkstoff_prefixes:
+        names.add("cellMolten")
+    if "block" in werkstoff_prefixes:
+        names.add("block")
+    if "ore" in werkstoff_prefixes:
+        names.add("ore")
+        names.add("oreSmall")
+    if "blockCasing" in werkstoff_prefixes:
+        names.add("blockCasing")
+    if "blockCasingAdvanced" in werkstoff_prefixes:
+        names.add("blockCasingAdvanced")
+    return names
+
+
+def werkstoff_flag_names(entries):
+    flags = set()
+    for entry in entries:
+        for field, flag in WERKSTOFF_FLAG_FIELDS:
+            if entry[field]:
+                flags.add(flag)
+        if not entry["autoBlastFurnaceRecipes"]:
+            flags.add("NO_AUTO_BLAST_FURNACE_RECIPES")
+        if not entry["autoVacuumFreezerRecipes"]:
+            flags.add("NO_AUTO_VACUUM_FREEZER_RECIPES")
+    return flags
+
+
+def check_werkstoff(errors, name, info, ml, display_to_var):
+    actual = ml.get("werkstoff")
+    entries = info["entries"] if info else []
+    if not entries:
+        if actual is not None:
+            errors.append(f"{name}: unexpected werkstoff property {actual!r}")
+        return
+    if actual is None:
+        errors.append(f"{name}: missing werkstoff property")
+        return
+    first = entries[0]
+
+    def check(field, expected):
+        if actual.get(field) != expected:
+            errors.append(f"{name}: werkstoff.{field} expected {expected!r}, got {actual.get(field)!r}")
+
+    check("ids", [e["id"] for e in entries])
+    check("type", first["type"])
+    check("pool", first["pool"])
+    check("meltingPoint", first["meltingPoint"])
+    check("boilingPoint", first["boilingPoint"])
+    check("protons", first["protons"])
+    check("neutrons", first["neutrons"])
+    check("mass", first["mass"])
+    check("meltingVoltage", first["meltingVoltage"])
+    check("durabilityOverride", first["durability"])
+    check("qualityOverride", first["quality"])
+    check("enchantmentLevel", first["enchantmentLevel"])
+    check("mixCircuit", first["mixCircuit"])
+    if not floats_equal(actual.get("speedOverride"), first["speed"]):
+        errors.append(f"{name}: werkstoff.speedOverride expected {first['speed']!r}")
+    if not floats_equal(actual.get("durabilityModifier"), first["durabilityModifier"]):
+        errors.append(f"{name}: werkstoff.durabilityModifier expected {first['durabilityModifier']!r}")
+    if not floats_equal(actual.get("ebfGasTimeMultiplier"), first["ebfGasTimeMultiplier"]):
+        errors.append(f"{name}: werkstoff.ebfGasTimeMultiplier expected {first['ebfGasTimeMultiplier']!r}")
+    if not floats_equal(actual.get("ebfGasAmountMultiplier"), first["ebfGasAmountMultiplier"]):
+        errors.append(f"{name}: werkstoff.ebfGasAmountMultiplier expected {first['ebfGasAmountMultiplier']!r}")
+    check("flags", sorted(werkstoff_flag_names(entries)))
+    check("prefixes", info["prefixes"])
+    expected_contents = next((e["contents"] for e in entries if e["contents"]), [])
+    actual_contents = actual.get("contents") or []
+    expected_pairs = [
+        (ml_name(werkstoff_ref_name(c["name"], c["kind"], display_to_var)), c["amount"])
+        for c in expected_contents]
+    actual_pairs = [(c["material"], c["amount"]) for c in actual_contents]
+    if expected_pairs != actual_pairs:
+        errors.append(f"{name}: werkstoff.contents expected {expected_pairs!r}, got {actual_pairs!r}")
+    expected_byproducts = [
+        ml_name(display_to_var.get(b, b))
+        for b in next((e["oreByProducts"] for e in entries if e["oreByProducts"]), [])]
+    if expected_byproducts != (actual.get("oreByProducts") or []):
+        errors.append(
+            f"{name}: werkstoff.oreByProducts expected {expected_byproducts!r}, "
+            f"got {actual.get('oreByProducts')!r}")
+    sub_tags = []
+    additional_oredict = []
+    for entry in entries:
+        for tag in entry["subTags"]:
+            if tag not in sub_tags:
+                sub_tags.append(tag)
+        for oredict in entry["additionalOredict"]:
+            if oredict not in additional_oredict:
+                additional_oredict.append(oredict)
+    check("subTags", sub_tags)
+    check("additionalOreDict", additional_oredict)
+    check("formula", next((e["formula"] for e in entries if e["formula"]), ""))
+
 BLOCK_TEXTURE_INDEX_MIN = 65
 BLOCK_TEXTURE_INDEX_MAX = 95
 
@@ -196,13 +364,14 @@ def compute_referenced_names(materials):
     return referenced
 
 
-def compute_ported(materials):
-    referenced = compute_referenced_names(materials)
+def compute_ported(materials, werkstoff_referenced=(), werkstoff_names=()):
+    referenced = compute_referenced_names(materials) | set(werkstoff_referenced)
+    forced = set(werkstoff_names)
     ported = []
     for material in materials:
         is_marker = not material["generatedPrefixes"] and not has_fluids(material) and not material[
             "composition"]
-        if is_marker and material["name"] not in referenced:
+        if is_marker and material["name"] not in referenced and material["name"] not in forced:
             continue
         ported.append(material)
     return ported
@@ -235,7 +404,7 @@ def check_ref_field(errors, name, field, gt_value, ml_value):
 
 
 def check_material(gt, ml, included_names, legacy_variants_by_material, used_fluid_names, fluid_textures,
-                    legacy_block_materials):
+                    legacy_block_materials, werkstoff_info, display_to_var):
     errors = []
     name = gt["name"]
 
@@ -259,6 +428,8 @@ def check_material(gt, ml, included_names, legacy_variants_by_material, used_flu
         dumped_shapes.add("ore")
     if "oreSmall" in gt["generatedPrefixes"]:
         dumped_shapes.add("oreSmall")
+    if werkstoff_info:
+        dumped_shapes |= expected_werkstoff_shapes(werkstoff_info["prefixes"], included_names)
     actual_shapes = set(ml["shapes"])
     if dumped_shapes != actual_shapes:
         missing = dumped_shapes - actual_shapes
@@ -369,6 +540,8 @@ def check_material(gt, ml, included_names, legacy_variants_by_material, used_flu
                 check_fluid_texture(
                     errors, name, f"{ml_key}[{i}]", expected_ref["name"], actual_refs[i], fluid_textures)
 
+    check_werkstoff(errors, name, werkstoff_info, ml, display_to_var)
+
     return errors
 
 
@@ -401,7 +574,11 @@ def main():
     legacy_block_materials = load_legacy_block_materials()
 
     included_names = set(p["name"] for p in prefixes if is_included_shape(p, legacy_variant_prefixes))
-    ported = compute_ported(gt_materials)
+    werkstoffs = load_werkstoffs()
+    werkstoff_by_name, display_to_var = group_werkstoffs(werkstoffs)
+    werkstoff_referenced = compute_werkstoff_referenced_names(werkstoff_by_name, display_to_var)
+    werkstoff_names = {name for name, info in werkstoff_by_name.items() if info["entries"]}
+    ported = compute_ported(gt_materials, werkstoff_referenced, werkstoff_names)
     ml_by_key = {m["name"]: m for m in ml_materials}
 
     errors = []
@@ -415,7 +592,7 @@ def main():
         errors.extend(
             check_material(
                 material, ml, included_names, legacy_variants_by_material, used_fluid_names, fluid_textures,
-                legacy_block_materials))
+                legacy_block_materials, werkstoff_by_name.get(material["name"]), display_to_var))
 
     expected_keys = set(ml_name(m["name"]) for m in ported)
     extra = set(ml_by_key) - expected_keys

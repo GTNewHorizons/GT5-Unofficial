@@ -82,6 +82,11 @@ tasks.named<RunMinecraftTask>("runServer").configure {
     if (System.getProperty("gt.dumpMaterialData") != null) {
         jvmArgs("-Dgt.dumpMaterialData=true")
     }
+    // Forwarded for headless verification boots on a dev world whose FML registry misses items removed by
+    // material unification (RunMinecraftTask does not copy arbitrary -D flags from the Gradle JVM).
+    System.getProperty("fml.queryResult")?.let {
+        jvmArgs("-Dfml.queryResult=$it")
+    }
 }
 
 tasks.named<RunMinecraftTask>("runClient").configure {
