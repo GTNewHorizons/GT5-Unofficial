@@ -60,6 +60,8 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
     private final ArrayList<MTEHatchDataItemsOutput> eStacksDataOutputs = new ArrayList<>();
     private final ArrayList<MTEHatchWirelessDataItemsOutput> eWirelessStacksDataOutputs = new ArrayList<>();
     private final ArrayList<MTEHatchDataAccess> eDataAccessHatches = new ArrayList<>();
+    private ALRecipeDataPacket lastRecipeDataPacket = null;
+    private int lastOutputHatchCount = 0;
     private boolean slave = false;
     private boolean dirty = false;
     private boolean wirelessModeEnabled = false;
@@ -165,6 +167,7 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
 
     @Override
     public void clearHatches() {
+        lastOutputHatchCount = calcOutputHatchCount();
         super.clearHatches();
         // avoid duplicate calls to addWatcher resulting in duplicate notifyWatchers calls
         for (MTEHatchDataAccess dataAccess : eDataAccessHatches) {
@@ -206,12 +209,24 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
         }
 
         updateDataOutputs(dataPacket);
+        lastRecipeDataPacket = dataPacket;
 
         this.dirty = false;
     }
 
+    /**
+     * Updates the data outputs of the machine using the provided {@code ALRecipeDataPacket}.
+     * This method adjusts the state of (wireless) data output hatches if the provided packet differs from their last
+     * cached packet.
+     * If wireless mode is enabled, it ensures the wireless hatches are updated and marked dirty as needed.
+     *
+     * @param dataPacket the {@link ALRecipeDataPacket} containing the data to be used for updating
+     *                   the outputs. This includes information propagated to the output hatches.
+     */
     private void updateDataOutputs(ALRecipeDataPacket dataPacket) {
         for (MTEHatchDataItemsOutput hatch : validMTEList(eStacksDataOutputs)) {
+            // only update the hatch if it's different packet than the last one
+            if (hatch.previousPacket == dataPacket) continue;
             hatch.q = dataPacket;
             // somehow the hatches posttick doesn't wanna happen, so let's trigger the update manually
             hatch.moveAround(hatch.getBaseMetaTileEntity());
@@ -219,6 +234,7 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
 
         if (wirelessModeEnabled) {
             for (MTEHatchWirelessDataItemsOutput hatch : validMTEList(eWirelessStacksDataOutputs)) {
+                if (hatch.dataPacket == dataPacket) continue;
                 hatch.dataPacket = dataPacket;
                 hatch.dirty = true;
             }
@@ -328,6 +344,15 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
     }
 
     @Override
+    protected void onStructureCheckFinished(IGregTechTileEntity igte) {
+        super.onStructureCheckFinished(igte);
+        // output hatches were modified, so let's update the outputs
+        if (lastOutputHatchCount != calcOutputHatchCount()) {
+            updateDataOutputs(lastRecipeDataPacket);
+        }
+    }
+
+    @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setBoolean("wirelessModeEnabled", wirelessModeEnabled);
@@ -416,5 +441,9 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
     @Override
     public boolean supportsSingleRecipeLocking() {
         return false;
+    }
+
+    private int calcOutputHatchCount() {
+        return ((eStacksDataOutputs.size() & 0xFF) << 8) + (eWirelessStacksDataOutputs.size() & 0xFF);
     }
 }

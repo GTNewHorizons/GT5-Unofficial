@@ -24,7 +24,7 @@ import tectech.util.CommonValues;
 
 public class MTEHatchDataItemsOutput extends MTEHatchDataConnector<ALRecipeDataPacket> {
 
-    private ALRecipeDataPacket previousPacket;
+    public ALRecipeDataPacket previousPacket;
 
     public MTEHatchDataItemsOutput(int aID, String aName, String aNameRegional, int aTier) {
         super(
