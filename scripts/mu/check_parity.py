@@ -22,6 +22,7 @@ GT_PATH = DUMPS_DIR / "gt-materials.json"
 ML_PATH = DUMPS_DIR / "ml-materials.json"
 PREFIXES_PATH = DUMPS_DIR / "oreprefixes.json"
 LEGACY_VARIANTS_PATH = DUMPS_DIR / "legacy-variants.json"
+FLUID_TEXTURES_PATH = DUMPS_DIR / "fluid-textures.json"
 
 FLOAT_TOLERANCE = 1e-6
 
@@ -217,7 +218,7 @@ def check_ref_field(errors, name, field, gt_value, ml_value):
         errors.append(f"{name}: {field} expected {expected!r}, got {ml_value!r}")
 
 
-def check_material(gt, ml, included_names, legacy_variants_by_material, used_fluid_names):
+def check_material(gt, ml, included_names, legacy_variants_by_material, used_fluid_names, fluid_textures):
     errors = []
     name = gt["name"]
 
@@ -328,8 +329,31 @@ def check_material(gt, ml, included_names, legacy_variants_by_material, used_flu
                 if expected_fluid["name"] != actual_fluid["name"] or expected_fluid["temperature"] != actual_fluid[
                         "temperature"]:
                     errors.append(f"{name}: fluids.{state} expected {expected_fluid!r}, got {actual_fluid!r}")
+                else:
+                    check_fluid_texture(errors, name, f"fluids.{state}", expected_fluid["name"], actual_fluid,
+                                         fluid_textures)
+
+        cracked = gt.get("crackedFluids") or {}
+        for dump_key, ml_key in (("hydroCracked", "crackedHydroFluids"), ("steamCracked", "crackedSteamFluids")):
+            expected_refs = cracked.get(dump_key) or []
+            actual_refs = ml.get(ml_key) or []
+            for i, expected_ref in enumerate(expected_refs):
+                if not expected_ref or i >= len(actual_refs) or not actual_refs[i]:
+                    continue
+                check_fluid_texture(
+                    errors, name, f"{ml_key}[{i}]", expected_ref["name"], actual_refs[i], fluid_textures)
 
     return errors
+
+
+def check_fluid_texture(errors, material_name, field, fluid_name, actual_fluid, fluid_textures):
+    """Cross-checks a generated `FluidRef`'s `texture` against `fluid-textures.json`'s capture for the same
+    fluid name -- an out-of-sync texture usually means `gen_materials.py` was regenerated from a dump older or
+    newer than the `fluid-textures.json` snapshot it was regenerated alongside."""
+    expected_texture = fluid_textures.get(fluid_name)
+    actual_texture = actual_fluid.get("texture")
+    if expected_texture != actual_texture:
+        errors.append(f"{material_name}: {field}.texture expected {expected_texture!r}, got {actual_texture!r}")
 
 
 def load(path):
@@ -347,6 +371,7 @@ def main():
     legacy_variants = load_legacy_variants()
     legacy_variant_prefixes = load_legacy_variant_prefixes(legacy_variants)
     legacy_variants_by_material = load_legacy_variants_by_material(legacy_variants)
+    fluid_textures = load(FLUID_TEXTURES_PATH)
 
     included_names = set(p["name"] for p in prefixes if is_included_shape(p, legacy_variant_prefixes))
     ported = compute_ported(gt_materials)
@@ -361,7 +386,8 @@ def main():
             errors.append(f"{material['name']}: missing from ml-materials.json (expected key {key!r})")
             continue
         errors.extend(
-            check_material(material, ml, included_names, legacy_variants_by_material, used_fluid_names))
+            check_material(
+                material, ml, included_names, legacy_variants_by_material, used_fluid_names, fluid_textures))
 
     expected_keys = set(ml_name(m["name"]) for m in ported)
     extra = set(ml_by_key) - expected_keys

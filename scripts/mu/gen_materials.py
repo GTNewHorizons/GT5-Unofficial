@@ -17,6 +17,7 @@ REPO_ROOT = SCRIPT_DIR.parent.parent
 MATERIALS_DUMP_PATH = SCRIPT_DIR / "dumps" / "gt-materials.json"
 PREFIXES_DUMP_PATH = SCRIPT_DIR / "dumps" / "oreprefixes.json"
 LEGACY_VARIANTS_DUMP_PATH = SCRIPT_DIR / "dumps" / "legacy-variants.json"
+FLUID_TEXTURES_DUMP_PATH = SCRIPT_DIR / "dumps" / "fluid-textures.json"
 
 MATERIALS2_DIR = REPO_ROOT / "src/main/java/gregtech/api/enums/materials2"
 MATERIALS_OUTPUT = MATERIALS2_DIR / "Materials2Materials.java"
@@ -211,6 +212,15 @@ def load_legacy_variants():
         return json.load(f)
 
 
+def load_fluid_textures():
+    """Empty (every `FluidRef.texture` null) until the first dump run produces `fluid-textures.json` -- this
+    script must be able to bootstrap a build that can run that dump in the first place."""
+    if not FLUID_TEXTURES_DUMP_PATH.exists():
+        return {}
+    with open(FLUID_TEXTURES_DUMP_PATH, encoding="utf-8") as f:
+        return json.load(f)
+
+
 def load_legacy_variant_prefixes(variants):
     return {v["prefix"] for v in variants}
 
@@ -327,13 +337,15 @@ def material_ref_stack_list_from_names(names, ml_names):
     return "List.of(" + ", ".join(entries) + ")"
 
 
-def fluid_ref_literal(fluid):
+def fluid_ref_literal(fluid, fluid_textures):
     if fluid is None:
         return "null"
-    return f"new FluidRef({java_string_literal(fluid['name'])}, {fluid['temperature']})"
+    texture = fluid_textures.get(fluid["name"])
+    texture_literal = java_string_literal(texture) if texture is not None else "null"
+    return f"new FluidRef({java_string_literal(fluid['name'])}, {fluid['temperature']}, {texture_literal})"
 
 
-def build_property_lines(material, ml_names):
+def build_property_lines(material, ml_names, fluid_textures):
     lines = []
 
     local_name = material.get("localName")
@@ -486,17 +498,17 @@ def build_property_lines(material, ml_names):
 
     fluids = material["fluids"]
     if has_fluids(material) and material["name"] not in FLUID_CUTOVER_EXCLUDED:
-        fluid_args = ", ".join(fluid_ref_literal(fluids[state]) for state in FLUID_STATES)
+        fluid_args = ", ".join(fluid_ref_literal(fluids[state], fluid_textures) for state in FLUID_STATES)
         lines.append(f".setProperty(GTMaterialProperties.LEGACY_FLUIDS, new FluidNames({fluid_args}))")
 
     cracked = material.get("crackedFluids") or {}
     hydro_cracked = cracked.get("hydroCracked")
     if hydro_cracked:
-        entries = ", ".join(fluid_ref_literal(f) for f in hydro_cracked)
+        entries = ", ".join(fluid_ref_literal(f, fluid_textures) for f in hydro_cracked)
         lines.append(f".setProperty(GTMaterialProperties.CRACKED_HYDRO_FLUIDS, List.of({entries}))")
     steam_cracked = cracked.get("steamCracked")
     if steam_cracked:
-        entries = ", ".join(fluid_ref_literal(f) for f in steam_cracked)
+        entries = ", ".join(fluid_ref_literal(f, fluid_textures) for f in steam_cracked)
         lines.append(f".setProperty(GTMaterialProperties.CRACKED_STEAM_FLUIDS, List.of({entries}))")
 
     return lines
@@ -604,7 +616,7 @@ def container_shape_lines(material, legacy_variants_by_material):
 
 def build_material_block(
         material, families, ml_names, field_names, included_names, family_shape_members,
-        legacy_variants_by_material, used_fluid_names):
+        legacy_variants_by_material, used_fluid_names, fluid_textures):
     field = field_names[material["name"]]
     name_literal = java_string_literal(ml_names[material["name"]])
     icon_set_literal = java_string_literal(material["iconSet"])
@@ -625,7 +637,7 @@ def build_material_block(
     lines.extend(fluid_shape_lines(material, used_fluid_names))
     lines.extend(container_shape_lines(material, legacy_variants_by_material))
 
-    for property_line in build_property_lines(material, ml_names):
+    for property_line in build_property_lines(material, ml_names, fluid_textures):
         lines.append("            " + property_line)
 
     lines.append("            .build();")
@@ -645,7 +657,7 @@ def chunk(items, size):
 
 
 def write_data_file(index, materials, families_by_name, ml_names, field_names, included_names,
-                     family_shape_members, legacy_variants_by_material, used_fluid_names):
+                     family_shape_members, legacy_variants_by_material, used_fluid_names, fluid_textures):
     class_name = f"Materials2Data{index}"
     lines = []
     lines.append("package gregtech.api.enums.materials2;")
@@ -678,7 +690,7 @@ def write_data_file(index, materials, families_by_name, ml_names, field_names, i
         lines.extend(
             build_material_block(
                 material, families, ml_names, field_names, included_names, family_shape_members,
-                legacy_variants_by_material, used_fluid_names))
+                legacy_variants_by_material, used_fluid_names, fluid_textures))
     lines.append("        // spotless:on")
     lines.append("    }")
     lines.append("")
@@ -916,6 +928,7 @@ def main():
     legacy_variants = load_legacy_variants()
     legacy_variant_prefixes = load_legacy_variant_prefixes(legacy_variants)
     legacy_variants_by_material = load_legacy_variants_by_material(legacy_variants)
+    fluid_textures = load_fluid_textures()
 
     prefix_bits = {p["name"]: p["generationBits"] for p in prefixes}
     included_prefixes = [p for p in prefixes if is_included_shape(p, legacy_variant_prefixes)]
@@ -940,7 +953,7 @@ def main():
         data_class_names.append(
             write_data_file(
                 i, batch, families_by_name, ml_names, field_names, included_names, family_shape_members,
-                legacy_variants_by_material, used_fluid_names))
+                legacy_variants_by_material, used_fluid_names, fluid_textures))
 
     write_materials_file(ported, field_names, data_class_names)
     write_lang_file(ported, ml_names)
@@ -952,6 +965,13 @@ def main():
     print(f"gen_materials.py: {len(materials)} dump entries, {len(ported)} ported, {len(skipped)} skipped")
     print(f"  wrote {len(data_class_names)} data files + {MATERIALS_OUTPUT.relative_to(REPO_ROOT)}")
     print(f"  wrote {LANG_OUTPUT.relative_to(REPO_ROOT)}")
+    captured = sum(1 for name in used_fluid_names if fluid_textures.get(name))
+    print(
+        f"  fluid textures: {captured}/{len(used_fluid_names)} generated fluid shapes captured a texture "
+        f"({len(used_fluid_names) - captured} fall back to texture-set lookup)")
+    uncaptured = sorted(name for name in used_fluid_names if not fluid_textures.get(name))
+    if uncaptured:
+        print(f"  fluids with no captured texture: {', '.join(uncaptured)}")
     if bridge_count is not None:
         print(
             f"  wrote {LEGACY_BRIDGE_OUTPUT.relative_to(REPO_ROOT)}: {bridge_count} bridged fields, "
