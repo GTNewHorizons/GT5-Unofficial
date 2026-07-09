@@ -300,15 +300,14 @@ public class WerkstoffLoader {
     }
 
     public static ItemStack getCorrespondingItemStackUnsafe(OrePrefixes orePrefixes, Werkstoff werkstoff, int amount) {
-        // Stage-10 item cutover: a werkstoff's item prefixes resolve to the MaterialLib stack (via the bridge
-        // material, which maps proxies and reconstructed werkstoffe alike; a third-party werkstoff's bridge
-        // is unknown to MU and falls through to the legacy paths). Block-kind prefixes (storage block,
-        // casings, ores, sheetmetal, frames) deliberately stay legacy-canonical for now: multiblock structure
-        // matchers reference the legacy casing blocks by identity, so their cutover is a coordinated
-        // block+structure flip, not a stack swap.
-        if (orePrefixes != ore && orePrefixes != oreSmall
-            && orePrefixes != block
-            && orePrefixes != OrePrefixes.blockCasing
+        // Stage-10 item/ore cutover: a werkstoff's item prefixes resolve to the MaterialLib stack (via the
+        // bridge material, which maps proxies and reconstructed werkstoffe alike; a third-party werkstoff's
+        // bridge is unknown to MU and falls through to the legacy paths). `ore`/`oreSmall` now resolve through
+        // MU too (Materials2OreShapes; see BWOreAdapter, which still owns the legacy fallback below for
+        // third-party werkstoffe). `block`/`blockCasing`/`blockCasingAdvanced`/`sheetmetal`/`frameGt` stay
+        // legacy-canonical for now: multiblock structure matchers reference the legacy casing blocks by
+        // identity, so their cutover is a coordinated block+structure flip, not a stack swap.
+        if (orePrefixes != block && orePrefixes != OrePrefixes.blockCasing
             && orePrefixes != OrePrefixes.blockCasingAdvanced
             && orePrefixes != OrePrefixes.sheetmetal
             && orePrefixes != OrePrefixes.frameGt) {

@@ -41,6 +41,7 @@ import gregtech.api.util.GTModHandler;
 import gregtech.common.items.MetaGeneratedItem01;
 import gregtech.common.items.MetaGeneratedItem02;
 import gregtech.common.items.MetaGeneratedItem03;
+import gregtech.common.ores.BWOreAdapter;
 import gregtech.common.ores.GTOreAdapter;
 import gregtech.common.tileentities.machines.multi.nanochip.util.CCNEIRepresentation;
 import gregtech.nei.dumper.BatchModeSupportDumper;
@@ -209,6 +210,7 @@ public class NEIGTConfig implements IConfigureNEI {
 
     private void hideItems() {
         GTOreAdapter.INSTANCE.hideOres();
+        BWOreAdapter.INSTANCE.hideOres();
     }
 
     @SubscribeEvent
