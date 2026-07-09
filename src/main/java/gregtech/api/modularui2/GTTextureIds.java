@@ -97,4 +97,6 @@ public final class GTTextureIds {
 
     public static final String PICTURE_ERROR = "gregtech:picture_error";
     public static final String PICTURE_ERROR_STEAM = "gregtech:picture_error_steam";
+
+    public static final String PICTURE_BW_LOGO_STANDARD = "bartworks:picture_bw_logo";
 }
