@@ -131,19 +131,11 @@ public class FluidEjectionHelper {
                     continue;
                 }
 
-                boolean insertAnything = false;
-                while (output.remainingAmount > 0) {
-                    int amount = (int) Math.min(output.remainingAmount, Integer.MAX_VALUE);
-                    FluidStack tmp = output.id.getFluidStack(amount);
-                    transaction.storePartial(output.id, tmp);
-                    long actuallyInsert = amount - tmp.amount;
-                    output.remainingAmount -= actuallyInsert;
-                    if (actuallyInsert > 0) insertAnything = true;
-                    if (tmp.amount > 0) break;
-                }
+                int amount = (int) Math.min(output.remainingAmount, Integer.MAX_VALUE);
+                FluidStack tmp = output.id.getFluidStack(amount);
 
                 // Fill at most one slot with the remaining fluids
-                if (insertAnything) {
+                if (transaction.storePartial(output.id, tmp)) {
                     break;
                 } else {
                     // If we couldn't insert anything into the hatch, go to the next one
