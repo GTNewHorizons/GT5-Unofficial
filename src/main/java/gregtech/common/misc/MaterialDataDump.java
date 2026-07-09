@@ -35,6 +35,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TCAspects;
 import gregtech.api.interfaces.ISubTagContainer;
+import gregtech.api.items.MetaGeneratedItemX32;
 import gregtech.api.material.AspectRefStack;
 import gregtech.api.material.FluidNames;
 import gregtech.api.material.FluidRef;
@@ -71,6 +72,7 @@ public final class MaterialDataDump {
         write(new File(directory, "werkstoff.json"), dumpWerkstoff());
         write(new File(directory, "gtpp-materials.json"), dumpGtppMaterials());
         write(new File(directory, "ml-materials.json"), dumpMlMaterials());
+        write(new File(directory, "legacy-variants.json"), dumpLegacyVariants());
     }
 
     private static void write(File file, Object data) {
@@ -686,6 +688,28 @@ public final class MaterialDataDump {
         json.put("name", ref.name());
         json.put("temperature", ref.temperature());
         return json;
+    }
+
+    // endregion
+
+    // region legacy-variants.json
+
+    /// Every (metaItemName, prefixName, materialName, damage) tuple a [MetaGeneratedItemX32] constructor
+    /// actually created, captured while `gt.dumpMaterialData` bypassed the stage-05 cutover skip. Ground
+    /// truth for which shapes had a real legacy item, since [#dumpGeneratedPrefixes] alone overcounts:
+    /// capability bits (`doGenerateItem`) can be set for a prefix that never held a constructor slot, and can
+    /// drift between construction time and this dump.
+    private static List<Map<String, Object>> dumpLegacyVariants() {
+        List<Map<String, Object>> out = new ArrayList<>();
+        for (MetaGeneratedItemX32.LegacyVariant variant : MetaGeneratedItemX32.DUMP_VARIANTS) {
+            Map<String, Object> json = new LinkedHashMap<>();
+            json.put("metaItem", variant.metaItemName());
+            json.put("prefix", variant.prefixName());
+            json.put("material", variant.materialName());
+            json.put("damage", variant.damage());
+            out.add(json);
+        }
+        return out;
     }
 
     // endregion
