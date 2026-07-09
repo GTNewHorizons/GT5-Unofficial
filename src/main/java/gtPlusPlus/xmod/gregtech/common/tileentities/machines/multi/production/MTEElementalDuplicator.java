@@ -278,11 +278,6 @@ public class MTEElementalDuplicator extends GTPPMultiBlockBase<MTEElementalDupli
     }
 
     @Override
-    protected IAlignmentLimits getInitialAlignmentLimits() {
-        return (d, r, f) -> d == ForgeDirection.UP;
-    }
-
-    @Override
     protected IIconContainer getActiveOverlay() {
         return TexturesGtBlock.oMCAElementalDuplicatorActive;
     }
