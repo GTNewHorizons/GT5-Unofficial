@@ -6668,7 +6668,7 @@ entity.gregtech.GTDrone.name=Drone
 
 # Fluids
 fluid.aniline=Aniline
-fluid.bioethanol=Bio Ethanol
+fluid.bioethanol=Ethanol
 fluid.biomass=Biomass
 fluid.boricacid=Boric Acid
 fluid.butanol=Butanol
