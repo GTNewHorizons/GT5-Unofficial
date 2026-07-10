@@ -634,7 +634,7 @@ def build_gtpp_merge_block(entry, ml_names):
     return lines
 
 
-def build_gtpp_new_block(entry, field, ml_names, prefix_bits):
+def build_gtpp_new_block(entry, field, ml_names, prefix_bits, included_names, family_shape_members):
     name = entry["unlocalizedName"]
     name_literal = java_string_literal(ml_names[name])
     texture_set_literal = java_string_literal(entry["textureSet"])
@@ -642,6 +642,18 @@ def build_gtpp_new_block(entry, field, ml_names, prefix_bits):
 
     part_prefixes = [p["prefix"] for p in entry["generatedParts"]]
     families = joined_families(part_prefixes, prefix_bits)
+
+    # Mirrors build_material_block's shape_delta: addToFamily alone implies every included-shape member of
+    # the joined families (see FAMILY_BITS), so a gtpp part set narrower than its families' defaults needs an
+    # explicit removeShape for the excess -- without it a gtpp-only material would over-generate shapes gtpp
+    # itself never produced (e.g. a metal joining familyGems for its GEM-bit dust would spuriously gain gem/
+    # lens/etc.). `dumped_items` only covers included-shape prefixes (block/milled are family-independent,
+    # always generated explicitly below regardless of this delta).
+    dumped_items = set(p for p in part_prefixes if p in included_names)
+    implied = set()
+    for family in families:
+        implied.update(family_shape_members[family])
+    excess = sorted(implied - dumped_items)
 
     lines = []
     lines.append(
@@ -668,10 +680,18 @@ def build_gtpp_new_block(entry, field, ml_names, prefix_bits):
             f"{material_ref_stack_list_literal([{'material': c['name'], 'amount': c['amount']} for c in entry['composition']], ml_names)})")
     lines.append(f"            .setProperty(GTMaterialProperties.GTPP, {gtpp_data_literal(entry)})")
     lines.append("            .build();")
+
+    if excess:
+        lines.append(f"        MaterialLibAPI.editMaterial(\"gregtech\", {name_literal})")
+        for prefix_name in excess:
+            lines.append(f"            .removeShape(Materials2Shapes.{shape_field_name(prefix_name)})")
+        lines[-1] += ";"
+
     return lines
 
 
-def write_gtpp_data_file(index, merge_entries, new_entries, ml_names, field_names, prefix_bits):
+def write_gtpp_data_file(index, merge_entries, new_entries, ml_names, field_names, prefix_bits, included_names,
+                          family_shape_members):
     class_name = f"Materials2GtppData{index}"
     lines = []
     lines.append("package gregtech.api.enums.materials2;")
@@ -715,7 +735,9 @@ def write_gtpp_data_file(index, merge_entries, new_entries, ml_names, field_name
         lines.extend(build_gtpp_merge_block(entry, ml_names))
     for entry in new_entries:
         field = field_names[entry["unlocalizedName"]]
-        lines.extend(build_gtpp_new_block(entry, field, ml_names, prefix_bits))
+        lines.extend(
+            build_gtpp_new_block(
+                entry, field, ml_names, prefix_bits, included_names, family_shape_members))
     lines.append("        // spotless:on")
     lines.append("    }")
     lines.append("")
@@ -1781,7 +1803,9 @@ def main():
         batch_merges = [e for e in batch if id(e) in gtpp_merge_set]
         batch_new = [e for e in batch if id(e) not in gtpp_merge_set]
         gtpp_data_class_names.append(
-            write_gtpp_data_file(i, batch_merges, batch_new, gtpp_ml_names, gtpp_field_names, prefix_bits))
+            write_gtpp_data_file(
+                i, batch_merges, batch_new, gtpp_ml_names, gtpp_field_names, prefix_bits, included_names,
+                family_shape_members))
     write_gtpp_materials_file(gtpp_new, gtpp_field_names, gtpp_data_class_names)
     write_gtpp_merge_report(gtpp_merges, gtpp_new, gtpp_false_merges, gtpp_skipped, gt_by_name)
 
