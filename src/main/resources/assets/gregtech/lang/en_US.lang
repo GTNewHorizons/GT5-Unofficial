@@ -7021,6 +7021,7 @@ key.gt.toggle_omnimovement=Toggle Omni Movement
 key.gt.speed_increase=Increase Speed
 key.gt.speed_decrease=Decrease Speed
 key.gt.force_field=Toggle Force Field
+key.gt.open_radial_menu=Open Radial Menu
 
 # Tooltips for GT Tools
 gt.softmallet.tooltip=Activates and Deactivates Machines
