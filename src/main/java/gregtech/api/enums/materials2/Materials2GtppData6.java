@@ -61,7 +61,7 @@ public class Materials2GtppData6 {
             .setProperty(GTMaterialProperties.BOILING_POINT, 2473)
             .setProperty(GTMaterialProperties.BLAST_REQUIRED, true)
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("TungstenCarbide"), 70L), new MaterialRefStack(new MaterialRef("Titanium"), 30L)))
-            .setProperty(GTMaterialProperties.GTPP, new GTppData(4, 1920L, 4695, 2473, 290000, true, false, 0, false, "(CW)₇Ti₃"))
+            .setProperty(GTMaterialProperties.GTPP, new GTppData(4, 1920L, 4695, 2473, 290000, true, false, 0, false, "(CW)₇Ti₃", 31L, 41L, "SOLID", true, true, List.of(new MaterialRefStack(new MaterialRef("TungstenCarbide"), 70L), new MaterialRefStack(new MaterialRef("Titanium"), 30L))))
             .build();
         MaterialLibAPI.editMaterial("gregtech", "TungstenTitaniumCarbide")
             .removeShape(Materials2Shapes.shapeCrushed)
@@ -110,7 +110,7 @@ public class Materials2GtppData6 {
             .setProperty(GTMaterialProperties.ARGB, 5823591)
             .setProperty(GTMaterialProperties.MELTING_POINT, 1405)
             .setProperty(GTMaterialProperties.BOILING_POINT, 4404)
-            .setProperty(GTMaterialProperties.GTPP, new GTppData(1, 30L, 1405, 4404, 51200, false, true, 4, false, "U"))
+            .setProperty(GTMaterialProperties.GTPP, new GTppData(1, 30L, 1405, 4404, 51200, false, true, 4, false, "U", 92L, 140L, "SOLID", true, true, List.of()))
             .build();
         MaterialLibAPI.editMaterial("gregtech", "Uranium232")
             .removeShape(Materials2Shapes.shapeBolt)
@@ -164,7 +164,7 @@ public class Materials2GtppData6 {
             .setProperty(GTMaterialProperties.ARGB, 4840531)
             .setProperty(GTMaterialProperties.MELTING_POINT, 1405)
             .setProperty(GTMaterialProperties.BOILING_POINT, 4404)
-            .setProperty(GTMaterialProperties.GTPP, new GTppData(1, 30L, 1405, 4404, 51200, false, true, 2, false, "U"))
+            .setProperty(GTMaterialProperties.GTPP, new GTppData(1, 30L, 1405, 4404, 51200, false, true, 2, false, "U", 92L, 141L, "SOLID", true, true, List.of()))
             .build();
         MaterialLibAPI.editMaterial("gregtech", "Uranium233")
             .removeShape(Materials2Shapes.shapeBolt)
@@ -205,7 +205,7 @@ public class Materials2GtppData6 {
             .setProperty(GTMaterialProperties.MELTING_POINT, 1077)
             .setProperty(GTMaterialProperties.BOILING_POINT, 2882)
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("LithiumFluoride"), 1L), new MaterialRefStack(new MaterialRef("BerylliumFluoride"), 1L), new MaterialRefStack(new MaterialRef("UraniumTetrafluoride"), 1L), new MaterialRefStack(new MaterialRef("Protactinium"), 1L)))
-            .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 1077, 2882, 762000, false, false, 0, false, "LiFBeF₂UF₄FP"))
+            .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 1077, 2882, 762000, false, false, 0, false, "LiFBeF₂UF₄FP", 38L, 57L, "PURE_LIQUID", true, true, List.of(new MaterialRefStack(new MaterialRef("LithiumFluoride"), 1L), new MaterialRefStack(new MaterialRef("BerylliumFluoride"), 1L), new MaterialRefStack(new MaterialRef("UraniumTetrafluoride"), 1L), new MaterialRefStack(new MaterialRef("Protactinium"), 1L))))
             .build();
         Materials2GtppMaterials.GtppUraniumHexafluoride = MaterialLibAPI.newMaterial("gregtech", "UraniumHexafluoride", TextureSet.of("miscutils", "SHINY"))
             .setTint(0xFFA4EDA9)
@@ -226,7 +226,7 @@ public class Materials2GtppData6 {
             .setProperty(GTMaterialProperties.MELTING_POINT, 595)
             .setProperty(GTMaterialProperties.BOILING_POINT, 1464)
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("UraniumTetrafluoride"), 1L), new MaterialRefStack(new MaterialRef("Fluorine"), 2L)))
-            .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 595, 1464, 286000, false, false, 0, false, "((U)F₄)F₂"))
+            .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 595, 1464, 286000, false, false, 0, false, "((U)F₄)F₂", 29L, 42L, "LIQUID", true, true, List.of(new MaterialRefStack(new MaterialRef("UraniumTetrafluoride"), 1L), new MaterialRefStack(new MaterialRef("Fluorine"), 2L))))
             .build();
         MaterialLibAPI.editMaterial("gregtech", "UraniumHexafluoride")
             .removeShape(Materials2Shapes.shapeBolt)
@@ -279,7 +279,7 @@ public class Materials2GtppData6 {
             .setProperty(GTMaterialProperties.MELTING_POINT, 865)
             .setProperty(GTMaterialProperties.BOILING_POINT, 2444)
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Uranium233"), 1L), new MaterialRefStack(new MaterialRef("Fluorine"), 4L)))
-            .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 865, 2444, 502000, false, true, 1, false, "(U)F₄"))
+            .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 865, 2444, 502000, false, true, 1, false, "(U)F₄", 50L, 75L, "LIQUID", true, true, List.of(new MaterialRefStack(new MaterialRef("Uranium233"), 1L), new MaterialRefStack(new MaterialRef("Fluorine"), 4L))))
             .build();
         MaterialLibAPI.editMaterial("gregtech", "UraniumTetrafluoride")
             .removeShape(Materials2Shapes.shapeBolt)
@@ -347,7 +347,7 @@ public class Materials2GtppData6 {
             .setProperty(GTMaterialProperties.BOILING_POINT, 5108)
             .setProperty(GTMaterialProperties.BLAST_REQUIRED, true)
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Steel"), 60L), new MaterialRefStack(new MaterialRef("Carbon"), 10L), new MaterialRefStack(new MaterialRef("Manganese"), 5L), new MaterialRefStack(new MaterialRef("Silicon"), 10L), new MaterialRefStack(new MaterialRef("Phosphorus"), 5L), new MaterialRefStack(new MaterialRef("Sulfur"), 5L), new MaterialRefStack(new MaterialRef("Aluminium"), 5L)))
-            .setProperty(GTMaterialProperties.GTPP, new GTppData(2, 120L, 2946, 5108, 478000, true, false, 0, false, "(Fe₅C)₁₂C₂MnSi₂PSAl"))
+            .setProperty(GTMaterialProperties.GTPP, new GTppData(2, 120L, 2946, 5108, 478000, true, false, 0, false, "(Fe₅C)₁₂C₂MnSi₂PSAl", 16L, -1L, "SOLID", true, true, List.of(new MaterialRefStack(new MaterialRef("Steel"), 60L), new MaterialRefStack(new MaterialRef("Carbon"), 10L), new MaterialRefStack(new MaterialRef("Manganese"), 5L), new MaterialRefStack(new MaterialRef("Silicon"), 10L), new MaterialRefStack(new MaterialRef("Phosphorus"), 5L), new MaterialRefStack(new MaterialRef("Sulfur"), 5L), new MaterialRefStack(new MaterialRef("Aluminium"), 5L))))
             .build();
         MaterialLibAPI.editMaterial("gregtech", "WatertightSteel")
             .removeShape(Materials2Shapes.shapeCrushed)
@@ -387,7 +387,7 @@ public class Materials2GtppData6 {
             .setProperty(GTMaterialProperties.MELTING_POINT, 1615)
             .setProperty(GTMaterialProperties.BOILING_POINT, 3939)
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Silicon"), 40L), new MaterialRefStack(new MaterialRef("Barium"), 30L), new MaterialRefStack(new MaterialRef("Sodium"), 20L), new MaterialRefStack(new MaterialRef("Nickel"), 10L)))
-            .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 1615, 3939, 490000, false, false, 0, false, "Si4Ba3Na2Ni"))
+            .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 1615, 3939, 490000, false, false, 0, false, "Si4Ba3Na2Ni", 27L, 34L, "SOLID", true, false, List.of(new MaterialRefStack(new MaterialRef("Silicon"), 40L), new MaterialRefStack(new MaterialRef("Barium"), 30L), new MaterialRefStack(new MaterialRef("Sodium"), 20L), new MaterialRefStack(new MaterialRef("Nickel"), 10L))))
             .build();
         MaterialLibAPI.editMaterial("gregtech", "Wood'sGlass")
             .removeShape(Materials2Shapes.shapeBolt)
@@ -444,7 +444,7 @@ public class Materials2GtppData6 {
             .setProperty(GTMaterialProperties.MELTING_POINT, 1301)
             .setProperty(GTMaterialProperties.BOILING_POINT, 1486)
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Yttrium"), 2L), new MaterialRefStack(new MaterialRef("Ytterbium"), 2L), new MaterialRefStack(new MaterialRef("Erbium"), 2L), new MaterialRefStack(new MaterialRef("Europium"), 1L), new MaterialRefStack(new MaterialRef("Phosphorus"), 2L), new MaterialRefStack(new MaterialRef("Oxygen"), 8L)))
-            .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 1301, 1486, 1252000, false, false, 0, true, "Y₂Yb₂Er₂EuP₂O₈"))
+            .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 1301, 1486, 1252000, false, false, 0, true, "Y₂Yb₂Er₂EuP₂O₈", 43L, 60L, "ORE", false, false, List.of(new MaterialRefStack(new MaterialRef("Yttrium"), 2L), new MaterialRefStack(new MaterialRef("Ytterbium"), 2L), new MaterialRefStack(new MaterialRef("Erbium"), 2L), new MaterialRefStack(new MaterialRef("Europium"), 1L), new MaterialRefStack(new MaterialRef("Phosphorus"), 2L), new MaterialRefStack(new MaterialRef("Oxygen"), 8L))))
             .build();
         MaterialLibAPI.editMaterial("gregtech", "Xenotime")
             .removeShape(Materials2Shapes.shapeBolt)
@@ -495,7 +495,7 @@ public class Materials2GtppData6 {
             .setProperty(GTMaterialProperties.MELTING_POINT, 1119)
             .setProperty(GTMaterialProperties.BOILING_POINT, 2276)
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Yttrium"), 1L), new MaterialRefStack(new MaterialRef("Oxygen"), 3L), new MaterialRefStack(new MaterialRef("Iron"), 4L), new MaterialRefStack(new MaterialRef("Tin"), 1L), new MaterialRefStack(new MaterialRef("Nitrogen"), 2L)))
-            .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 1119, 2276, 586000, false, false, 0, true, "YO₃Fe₄SnN₂"))
+            .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 1119, 2276, 586000, false, false, 0, true, "YO₃Fe₄SnN₂", 26L, 32L, "ORE", false, false, List.of(new MaterialRefStack(new MaterialRef("Yttrium"), 1L), new MaterialRefStack(new MaterialRef("Oxygen"), 3L), new MaterialRefStack(new MaterialRef("Iron"), 4L), new MaterialRefStack(new MaterialRef("Tin"), 1L), new MaterialRefStack(new MaterialRef("Nitrogen"), 2L))))
             .build();
         MaterialLibAPI.editMaterial("gregtech", "Yttriaite")
             .removeShape(Materials2Shapes.shapeBolt)
@@ -546,7 +546,7 @@ public class Materials2GtppData6 {
             .setProperty(GTMaterialProperties.MELTING_POINT, 1833)
             .setProperty(GTMaterialProperties.BOILING_POINT, 3460)
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Yttrium"), 2L), new MaterialRefStack(new MaterialRef("Thorium"), 2L), new MaterialRefStack(new MaterialRef("Silicon"), 2L), new MaterialRefStack(new MaterialRef("Oxygen"), 7L)))
-            .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 1833, 3460, 730000, false, false, 0, true, "Y₂Th₂Si₂O₇"))
+            .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 1833, 3460, 730000, false, false, 0, true, "Y₂Th₂Si₂O₇", 37L, 53L, "ORE", false, false, List.of(new MaterialRefStack(new MaterialRef("Yttrium"), 2L), new MaterialRefStack(new MaterialRef("Thorium"), 2L), new MaterialRefStack(new MaterialRef("Silicon"), 2L), new MaterialRefStack(new MaterialRef("Oxygen"), 7L))))
             .build();
         MaterialLibAPI.editMaterial("gregtech", "Yttrialite")
             .removeShape(Materials2Shapes.shapeBolt)
@@ -597,7 +597,7 @@ public class Materials2GtppData6 {
             .setProperty(GTMaterialProperties.MELTING_POINT, 1281)
             .setProperty(GTMaterialProperties.BOILING_POINT, 1321)
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Cerium"), 1L), new MaterialRefStack(new MaterialRef("Calcium"), 1L), new MaterialRefStack(new MaterialRef("Fluorine"), 5L), new MaterialRefStack(new MaterialRef("Yttrium"), 1L)))
-            .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 1281, 1321, 574000, false, false, 0, true, "CeCaF₅Y"))
+            .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 1281, 1321, 574000, false, false, 0, true, "CeCaF₅Y", 31L, 40L, "ORE", false, false, List.of(new MaterialRefStack(new MaterialRef("Cerium"), 1L), new MaterialRefStack(new MaterialRef("Calcium"), 1L), new MaterialRefStack(new MaterialRef("Fluorine"), 5L), new MaterialRefStack(new MaterialRef("Yttrium"), 1L))))
             .build();
         MaterialLibAPI.editMaterial("gregtech", "Yttrocerite")
             .removeShape(Materials2Shapes.shapeBolt)
@@ -660,7 +660,7 @@ public class Materials2GtppData6 {
             .setProperty(GTMaterialProperties.BOILING_POINT, 10058)
             .setProperty(GTMaterialProperties.BLAST_REQUIRED, true)
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Chrome"), 26L), new MaterialRefStack(new MaterialRef("Nickel"), 6L), new MaterialRefStack(new MaterialRef("Molybdenum"), 4L), new MaterialRefStack(new MaterialRef("Copper"), 20L), new MaterialRefStack(new MaterialRef("Tungsten"), 4L), new MaterialRefStack(new MaterialRef("Steel"), 40L)))
-            .setProperty(GTMaterialProperties.GTPP, new GTppData(6, 30720L, 6373, 10058, 1014000, true, false, 0, false, "Cr₁₃Ni₃Mo₂Cu₁W₂(Fe₅C)₂"))
+            .setProperty(GTMaterialProperties.GTPP, new GTppData(6, 30720L, 6373, 10058, 1014000, true, false, 0, false, "Cr₁₃Ni₃Mo₂Cu₁W₂(Fe₅C)₂", 37L, -1L, "SOLID", true, true, List.of(new MaterialRefStack(new MaterialRef("Chrome"), 26L), new MaterialRefStack(new MaterialRef("Nickel"), 6L), new MaterialRefStack(new MaterialRef("Molybdenum"), 4L), new MaterialRefStack(new MaterialRef("Copper"), 20L), new MaterialRefStack(new MaterialRef("Tungsten"), 4L), new MaterialRefStack(new MaterialRef("Steel"), 40L))))
             .build();
         MaterialLibAPI.editMaterial("gregtech", "Zeron100")
             .removeShape(Materials2Shapes.shapeCrushed)
@@ -707,7 +707,7 @@ public class Materials2GtppData6 {
             .setProperty(GTMaterialProperties.MELTING_POINT, 1670)
             .setProperty(GTMaterialProperties.BOILING_POINT, 2449)
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Calcium"), 2L), new MaterialRefStack(new MaterialRef("Potassium"), 2L), new MaterialRefStack(new MaterialRef("Lead"), 1L), new MaterialRefStack(new MaterialRef("Arsenic"), 4L), new MaterialRefStack(new MaterialRef("Niobium"), 4L), new MaterialRefStack(new MaterialRef("Tantalum"), 4L), new MaterialRefStack(new MaterialRef("Titanium"), 4L), new MaterialRefStack(new MaterialRef("Oxygen"), 18L)))
-            .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 1670, 2449, 1398000, false, false, 0, true, "Ca₂K₂PbAs₄Nb₄Ta₄Ti₄O₁₈"))
+            .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 1670, 2449, 1398000, false, false, 0, true, "Ca₂K₂PbAs₄Nb₄Ta₄Ti₄O₁₈", 37L, 50L, "ORE", false, false, List.of(new MaterialRefStack(new MaterialRef("Calcium"), 2L), new MaterialRefStack(new MaterialRef("Potassium"), 2L), new MaterialRefStack(new MaterialRef("Lead"), 1L), new MaterialRefStack(new MaterialRef("Arsenic"), 4L), new MaterialRefStack(new MaterialRef("Niobium"), 4L), new MaterialRefStack(new MaterialRef("Tantalum"), 4L), new MaterialRefStack(new MaterialRef("Titanium"), 4L), new MaterialRefStack(new MaterialRef("Oxygen"), 18L))))
             .build();
         MaterialLibAPI.editMaterial("gregtech", "Zimbabweite")
             .removeShape(Materials2Shapes.shapeBolt)
@@ -758,7 +758,7 @@ public class Materials2GtppData6 {
             .setProperty(GTMaterialProperties.MELTING_POINT, 1667)
             .setProperty(GTMaterialProperties.BOILING_POINT, 2561)
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Zirconium"), 1L), new MaterialRefStack(new MaterialRef("Silicon"), 1L), new MaterialRefStack(new MaterialRef("Oxygen"), 4L)))
-            .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 1667, 2561, 270000, false, false, 0, true, "ZrSiO₄"))
+            .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 1667, 2561, 270000, false, false, 0, true, "ZrSiO₄", 20L, 24L, "ORE", false, false, List.of(new MaterialRefStack(new MaterialRef("Zirconium"), 1L), new MaterialRefStack(new MaterialRef("Silicon"), 1L), new MaterialRefStack(new MaterialRef("Oxygen"), 4L))))
             .build();
         MaterialLibAPI.editMaterial("gregtech", "Zircon")
             .removeShape(Materials2Shapes.shapeBolt)
@@ -819,7 +819,7 @@ public class Materials2GtppData6 {
             .setProperty(GTMaterialProperties.MELTING_POINT, 1828)
             .setProperty(GTMaterialProperties.BOILING_POINT, 10061)
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Zirconium"), 50L), new MaterialRefStack(new MaterialRef("Carbon"), 50L)))
-            .setProperty(GTMaterialProperties.GTPP, new GTppData(1, 30L, 1828, 10061, 206000, false, false, 0, false, "ZrC"))
+            .setProperty(GTMaterialProperties.GTPP, new GTppData(1, 30L, 1828, 10061, 206000, false, false, 0, false, "ZrC", 23L, 28L, "SOLID", true, true, List.of(new MaterialRefStack(new MaterialRef("Zirconium"), 50L), new MaterialRefStack(new MaterialRef("Carbon"), 50L))))
             .build();
         MaterialLibAPI.editMaterial("gregtech", "ZirconiumCarbide")
             .removeShape(Materials2Shapes.shapeCrushed)
@@ -865,7 +865,7 @@ public class Materials2GtppData6 {
             .setProperty(GTMaterialProperties.MELTING_POINT, 1227)
             .setProperty(GTMaterialProperties.BOILING_POINT, 2567)
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Zirconium"), 1L), new MaterialRefStack(new MaterialRef("Fluorine"), 4L)))
-            .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 1227, 2567, 218000, false, false, 0, false, "ZrF₄"))
+            .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 1227, 2567, 218000, false, false, 0, false, "ZrF₄", 24L, 30L, "LIQUID", false, true, List.of(new MaterialRefStack(new MaterialRef("Zirconium"), 1L), new MaterialRefStack(new MaterialRef("Fluorine"), 4L))))
             .build();
         MaterialLibAPI.editMaterial("gregtech", "ZirconiumTetrafluoride")
             .removeShape(Materials2Shapes.shapeBolt)
@@ -920,7 +920,7 @@ public class Materials2GtppData6 {
             .setProperty(GTMaterialProperties.MELTING_POINT, 1479)
             .setProperty(GTMaterialProperties.BOILING_POINT, 2016)
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Calcium"), 2L), new MaterialRefStack(new MaterialRef("Zirconium"), 2L), new MaterialRefStack(new MaterialRef("Titanium"), 4L), new MaterialRefStack(new MaterialRef("Cerium"), 1L), new MaterialRefStack(new MaterialRef("Oxygen"), 14L)))
-            .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 1479, 2016, 670000, false, false, 0, true, "Ca₂Zr₂Ti₄CeO₁₄"))
+            .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 1479, 2016, 670000, false, false, 0, true, "Ca₂Zr₂Ti₄CeO₁₄", 29L, 37L, "ORE", false, false, List.of(new MaterialRefStack(new MaterialRef("Calcium"), 2L), new MaterialRefStack(new MaterialRef("Zirconium"), 2L), new MaterialRefStack(new MaterialRef("Titanium"), 4L), new MaterialRefStack(new MaterialRef("Cerium"), 1L), new MaterialRefStack(new MaterialRef("Oxygen"), 14L))))
             .build();
         MaterialLibAPI.editMaterial("gregtech", "Zirconolite")
             .removeShape(Materials2Shapes.shapeBolt)
@@ -971,7 +971,7 @@ public class Materials2GtppData6 {
             .setProperty(GTMaterialProperties.MELTING_POINT, 1569)
             .setProperty(GTMaterialProperties.BOILING_POINT, 3064)
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Potassium"), 3L), new MaterialRefStack(new MaterialRef("Sodium"), 3L), new MaterialRefStack(new MaterialRef("Manganese"), 7L), new MaterialRefStack(new MaterialRef("Iron"), 7L), new MaterialRefStack(new MaterialRef("Zirconium"), 2L), new MaterialRefStack(new MaterialRef("Titanium"), 2L), new MaterialRefStack(new MaterialRef("Niobium"), 2L), new MaterialRefStack(new MaterialRef("Silicon"), 8L), new MaterialRefStack(new MaterialRef("Oxygen"), 13L), new MaterialRefStack(new MaterialRef("Fluorine"), 7L)))
-            .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 1569, 3064, 934000, false, false, 0, true, "K₃Na₃Mn₇Fe₇Zr₂Ti₂Nb₂Si₈O₁₃F₇"))
+            .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 1569, 3064, 934000, false, false, 0, true, "K₃Na₃Mn₇Fe₇Zr₂Ti₂Nb₂Si₈O₁₃F₇", 21L, 25L, "ORE", false, false, List.of(new MaterialRefStack(new MaterialRef("Potassium"), 3L), new MaterialRefStack(new MaterialRef("Sodium"), 3L), new MaterialRefStack(new MaterialRef("Manganese"), 7L), new MaterialRefStack(new MaterialRef("Iron"), 7L), new MaterialRefStack(new MaterialRef("Zirconium"), 2L), new MaterialRefStack(new MaterialRef("Titanium"), 2L), new MaterialRefStack(new MaterialRef("Niobium"), 2L), new MaterialRefStack(new MaterialRef("Silicon"), 8L), new MaterialRefStack(new MaterialRef("Oxygen"), 13L), new MaterialRefStack(new MaterialRef("Fluorine"), 7L))))
             .build();
         MaterialLibAPI.editMaterial("gregtech", "Zircophyllite")
             .removeShape(Materials2Shapes.shapeBolt)
@@ -1022,7 +1022,7 @@ public class Materials2GtppData6 {
             .setProperty(GTMaterialProperties.MELTING_POINT, 1829)
             .setProperty(GTMaterialProperties.BOILING_POINT, 3119)
             .setProperty(GTMaterialProperties.COMPOSITION, List.of(new MaterialRefStack(new MaterialRef("Calcium"), 1L), new MaterialRefStack(new MaterialRef("Thorium"), 1L), new MaterialRefStack(new MaterialRef("Cerium"), 1L), new MaterialRefStack(new MaterialRef("Zirconium"), 1L), new MaterialRefStack(new MaterialRef("Titanium"), 2L), new MaterialRefStack(new MaterialRef("Niobium"), 2L), new MaterialRefStack(new MaterialRef("Oxygen"), 7L)))
-            .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 1829, 3119, 1322000, false, false, 0, true, "CaThCeZrTi₂Nb₂O₇"))
+            .setProperty(GTMaterialProperties.GTPP, new GTppData(0, 16L, 1829, 3119, 1322000, false, false, 0, true, "CaThCeZrTi₂Nb₂O₇", 39L, 54L, "ORE", false, false, List.of(new MaterialRefStack(new MaterialRef("Calcium"), 1L), new MaterialRefStack(new MaterialRef("Thorium"), 1L), new MaterialRefStack(new MaterialRef("Cerium"), 1L), new MaterialRefStack(new MaterialRef("Zirconium"), 1L), new MaterialRefStack(new MaterialRef("Titanium"), 2L), new MaterialRefStack(new MaterialRef("Niobium"), 2L), new MaterialRefStack(new MaterialRef("Oxygen"), 7L))))
             .build();
         MaterialLibAPI.editMaterial("gregtech", "Zirkelite")
             .removeShape(Materials2Shapes.shapeBolt)

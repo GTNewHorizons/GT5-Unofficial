@@ -30,6 +30,7 @@ import gregtech.api.enums.TextureSet;
 import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.interfaces.IStoneType;
 import gregtech.api.interfaces.ISubTagContainer;
+import gregtech.api.material.GTppData;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.StringUtils;
 import gregtech.common.config.Client;
@@ -550,6 +551,87 @@ public class Material implements IOreMaterial {
         } catch (Throwable t) {
             t.printStackTrace();
         }
+    }
+
+    /// Rebuilds a material from MaterialLib data (`MaterialReconstruction`'s counterpart to the public
+    /// constructors above): every scalar `data` carries is already the value the legacy constructor's
+    /// heuristics (composite-average color/melting/boiling/radiation, texture-set voting, hash-based grey
+    /// fallback) would have computed, captured by the stage-11 dump after those heuristics ran. Assigning them
+    /// directly instead of replaying the heuristics matters because several of them are registration-order
+    /// sensitive (`setTextureSet`'s composition vote varied run-to-run for 15 legacy materials -- see
+    /// `MaterialDataDump`'s gtpp-materials.json capture note) and would not reliably reproduce the pinned
+    /// result if re-run against a differently-ordered reconstruction pass.
+    ///
+    /// Fluid/cell registration is the one legacy side effect still replayed rather than pinned: gtpp fluids
+    /// are not MaterialLib-owned yet (that is a later stage), so `performFluidAndCellRegistration` -- itself a
+    /// deterministic oredict/registry lookup, not a heuristic -- runs exactly when the dump shows it did
+    /// (`data.generatesFluid()`), reproducing the same registered fluid/cell either way.
+    Material(String unlocalizedName, String defaultLocalName, MaterialState defaultState, TextureSet textureSet,
+        short[] rgba, GTppData data, MaterialStack... composites) {
+        mMaterialMap.add(this);
+
+        this.unlocalizedName = StringUtils.sanitizeString(unlocalizedName);
+        this.defaultLocalName = defaultLocalName;
+        MaterialUtils.generateMaterialLocalizedName(this.unlocalizedName, this.defaultLocalName);
+        mMaterialCache.put(getDefaultLocalName().toLowerCase(), this);
+        mMaterialsByName.put(this.unlocalizedName, this);
+        this.materialState = defaultState;
+        this.vGenerateCells = data.generatesCells();
+
+        this.vMaterialInput = new ArrayList<>();
+        if (composites != null) {
+            for (MaterialStack stack : composites) {
+                if (stack != null) this.vMaterialInput.add(stack);
+            }
+        }
+
+        this.RGBA = rgba;
+
+        this.meltingPointK = data.meltingPointK();
+        this.boilingPointK = data.boilingPointK();
+        // celsiusToKelvin(c) = round(c + 273.15); the dump's source Celsius value is always an integer, so
+        // subtracting 273 recovers it exactly: round(c + 273.15) == c + round(273.15) == c + 273.
+        this.meltingPointC = data.meltingPointK() - 273;
+        this.boilingPointC = data.boilingPointK() - 273;
+
+        this.vProtons = data.protons();
+        this.vNeutrons = data.neutrons();
+
+        this.vDurability = data.durability();
+
+        this.isRadioactive = data.isRadioactive();
+        this.vRadiationLevel = (byte) data.radiationLevel();
+
+        this.vTier = data.tier();
+        this.usesBlastFurnace = data.usesBlastFurnace();
+        this.vVoltageMultiplier = (int) data.voltageMultiplier();
+
+        this.vComponentCount = this.getComponentCount(composites);
+        this.vSmallestRatio = this.getSmallestRatio(this.vMaterialInput);
+        int tempSmallestSize = 0;
+        for (long l : this.vSmallestRatio) {
+            tempSmallestSize = (int) (tempSmallestSize + l);
+        }
+        this.smallestStackSizeWhenProcessing = tempSmallestSize;
+
+        // Composites carry an explicit chemical symbol in legacy declarations; elements' pinned formula
+        // already equals it, and alloys/compounds always passed "" (their formula computed dynamically
+        // instead) -- see `Material#getToolTip`.
+        this.vChemicalSymbol = this.vMaterialInput.isEmpty() ? data.chemicalFormula() : "";
+        this.vChemicalFormula = data.chemicalFormula();
+
+        this.textureSet = textureSet;
+
+        this.shouldGenerateFluid = data.generatesFluid();
+        if (data.generatesFluid()) {
+            if (registrationGateOpen) {
+                performFluidAndCellRegistration();
+            } else {
+                pendingRegistration.add(this);
+            }
+        }
+
+        sChemicalFormula.put(defaultLocalName.toLowerCase(), this.vChemicalFormula);
     }
 
     private static void checkForCellAndGenerate(Material material) {

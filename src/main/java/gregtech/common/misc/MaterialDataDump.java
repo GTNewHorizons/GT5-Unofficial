@@ -782,6 +782,12 @@ public final class MaterialDataDump {
         json.put("radiationLevel", data.radiationLevel());
         json.put("hasOre", data.hasOre());
         json.put("chemicalFormula", data.chemicalFormula());
+        json.put("protons", data.protons());
+        json.put("neutrons", data.neutrons());
+        json.put("state", data.state());
+        json.put("generatesFluid", data.generatesFluid());
+        json.put("generatesCells", data.generatesCells());
+        json.put("composition", dumpMlMaterialRefStacks(data.composition()));
         return json;
     }
 

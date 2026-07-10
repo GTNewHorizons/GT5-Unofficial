@@ -32,6 +32,14 @@ public class MaterialUtils {
 
     private static final Map<String, Material> mGeneratedMaterialMap = new HashMap<>();
 
+    /// Registers `generated` as [#generateMaterialFromGtENUM]'s result for `material`, so a later call with the
+    /// same argument returns it instead of constructing a second, separate `Material`. `MaterialReconstruction`
+    /// calls this for every reconstructed material with a live gregtech equivalent, since reconstruction builds
+    /// those materials directly rather than through `generateMaterialFromGtENUM` itself.
+    public static void seedGeneratedMaterial(Materials material, Material generated) {
+        mGeneratedMaterialMap.put(getMaterialName(material).toLowerCase(), generated);
+    }
+
     public static Material generateMaterialFromGtENUM(final Materials material) {
         return generateMaterialFromGtENUM(material, null, null);
     }

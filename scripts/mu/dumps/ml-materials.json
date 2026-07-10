@@ -214,7 +214,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "H"
+      "chemicalFormula": "H",
+      "protons": 1,
+      "neutrons": 0,
+      "state": "GAS",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": []
     }
   },
   {
@@ -529,7 +535,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "He"
+      "chemicalFormula": "He",
+      "protons": 2,
+      "neutrons": 2,
+      "state": "GAS",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": []
     }
   },
   {
@@ -777,7 +789,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Li"
+      "chemicalFormula": "Li",
+      "protons": 3,
+      "neutrons": 4,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -941,7 +959,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Be"
+      "chemicalFormula": "Be",
+      "protons": 4,
+      "neutrons": 5,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -1058,7 +1082,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "B"
+      "chemicalFormula": "B",
+      "protons": 5,
+      "neutrons": 5,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -1226,7 +1256,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "C"
+      "chemicalFormula": "C",
+      "protons": 6,
+      "neutrons": 6,
+      "state": "SOLID",
+      "generatesFluid": false,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -1347,7 +1383,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "N"
+      "chemicalFormula": "N",
+      "protons": 7,
+      "neutrons": 7,
+      "state": "GAS",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": []
     }
   },
   {
@@ -1467,7 +1509,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "O"
+      "chemicalFormula": "O",
+      "protons": 8,
+      "neutrons": 8,
+      "state": "GAS",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": []
     }
   },
   {
@@ -1579,7 +1627,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "F"
+      "chemicalFormula": "F",
+      "protons": 9,
+      "neutrons": 9,
+      "state": "GAS",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": []
     }
   },
   {
@@ -1703,7 +1757,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Na"
+      "chemicalFormula": "Na",
+      "protons": 11,
+      "neutrons": 11,
+      "state": "LIQUID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": []
     }
   },
   {
@@ -1860,7 +1920,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Mg"
+      "chemicalFormula": "Mg",
+      "protons": 12,
+      "neutrons": 12,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -2033,7 +2099,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Al"
+      "chemicalFormula": "Al",
+      "protons": 13,
+      "neutrons": 13,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -2184,7 +2256,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Si"
+      "chemicalFormula": "Si",
+      "protons": 14,
+      "neutrons": 14,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -2300,7 +2378,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "P"
+      "chemicalFormula": "P",
+      "protons": 15,
+      "neutrons": 15,
+      "state": "SOLID",
+      "generatesFluid": false,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -2424,7 +2508,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "S"
+      "chemicalFormula": "S",
+      "protons": 16,
+      "neutrons": 16,
+      "state": "SOLID",
+      "generatesFluid": false,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -2539,7 +2629,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Cl"
+      "chemicalFormula": "Cl",
+      "protons": 17,
+      "neutrons": 18,
+      "state": "GAS",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": []
     }
   },
   {
@@ -2652,7 +2748,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Ar"
+      "chemicalFormula": "Ar",
+      "protons": 18,
+      "neutrons": 22,
+      "state": "GAS",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": []
     }
   },
   {
@@ -2790,7 +2892,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "K"
+      "chemicalFormula": "K",
+      "protons": 19,
+      "neutrons": 20,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -2997,7 +3105,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Ca"
+      "chemicalFormula": "Ca",
+      "protons": 20,
+      "neutrons": 20,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -3146,7 +3260,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Sc"
+      "chemicalFormula": "Sc",
+      "protons": 21,
+      "neutrons": 24,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -3319,7 +3439,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Ti"
+      "chemicalFormula": "Ti",
+      "protons": 22,
+      "neutrons": 26,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -3471,7 +3597,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "V"
+      "chemicalFormula": "V",
+      "protons": 23,
+      "neutrons": 28,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -3639,7 +3771,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Cr"
+      "chemicalFormula": "Cr",
+      "protons": 24,
+      "neutrons": 28,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -3801,7 +3939,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Mn"
+      "chemicalFormula": "Mn",
+      "protons": 25,
+      "neutrons": 30,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -3976,7 +4120,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Fe"
+      "chemicalFormula": "Fe",
+      "protons": 26,
+      "neutrons": 30,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -4149,7 +4299,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Co"
+      "chemicalFormula": "Co",
+      "protons": 27,
+      "neutrons": 32,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -4327,7 +4483,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Ni"
+      "chemicalFormula": "Ni",
+      "protons": 28,
+      "neutrons": 30,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -4494,7 +4656,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Cu"
+      "chemicalFormula": "Cu",
+      "protons": 29,
+      "neutrons": 34,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -4648,7 +4816,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Zn"
+      "chemicalFormula": "Zn",
+      "protons": 30,
+      "neutrons": 35,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -4799,7 +4973,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Ga"
+      "chemicalFormula": "Ga",
+      "protons": 31,
+      "neutrons": 39,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -4947,7 +5127,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "As"
+      "chemicalFormula": "As",
+      "protons": 33,
+      "neutrons": 42,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -5098,7 +5284,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Rb"
+      "chemicalFormula": "Rb",
+      "protons": 37,
+      "neutrons": 48,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -5251,7 +5443,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Sr"
+      "chemicalFormula": "Sr",
+      "protons": 38,
+      "neutrons": 49,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -5402,7 +5600,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Y"
+      "chemicalFormula": "Y",
+      "protons": 39,
+      "neutrons": 50,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -5553,7 +5757,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Nb"
+      "chemicalFormula": "Nb",
+      "protons": 41,
+      "neutrons": 53,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -5715,7 +5925,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Mo"
+      "chemicalFormula": "Mo",
+      "protons": 42,
+      "neutrons": 53,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -5878,7 +6094,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Pd"
+      "chemicalFormula": "Pd",
+      "protons": 46,
+      "neutrons": 60,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -6057,7 +6279,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Ag"
+      "chemicalFormula": "Ag",
+      "protons": 47,
+      "neutrons": 60,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -6184,7 +6412,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Cd"
+      "chemicalFormula": "Cd",
+      "protons": 48,
+      "neutrons": 64,
+      "state": "SOLID",
+      "generatesFluid": false,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -6334,7 +6568,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "In"
+      "chemicalFormula": "In",
+      "protons": 49,
+      "neutrons": 65,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -6499,7 +6739,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Sn"
+      "chemicalFormula": "Sn",
+      "protons": 50,
+      "neutrons": 68,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -6654,7 +6900,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Sb"
+      "chemicalFormula": "Sb",
+      "protons": 51,
+      "neutrons": 70,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -6872,7 +7124,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Te"
+      "chemicalFormula": "Te",
+      "protons": 52,
+      "neutrons": 76,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": []
     }
   },
   {
@@ -7023,7 +7281,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Cs"
+      "chemicalFormula": "Cs",
+      "protons": 55,
+      "neutrons": 77,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -7166,7 +7430,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Ba"
+      "chemicalFormula": "Ba",
+      "protons": 56,
+      "neutrons": 81,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -7316,7 +7586,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "La"
+      "chemicalFormula": "La",
+      "protons": 57,
+      "neutrons": 81,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -7466,7 +7742,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Ce"
+      "chemicalFormula": "Ce",
+      "protons": 58,
+      "neutrons": 82,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -7616,7 +7898,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Pr"
+      "chemicalFormula": "Pr",
+      "protons": 59,
+      "neutrons": 81,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -7786,7 +8074,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Nd"
+      "chemicalFormula": "Nd",
+      "protons": 60,
+      "neutrons": 84,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -7936,7 +8230,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Pm"
+      "chemicalFormula": "Pm",
+      "protons": 61,
+      "neutrons": 83,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -8090,7 +8390,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Sm"
+      "chemicalFormula": "Sm",
+      "protons": 62,
+      "neutrons": 88,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -8244,7 +8550,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Eu"
+      "chemicalFormula": "Eu",
+      "protons": 63,
+      "neutrons": 88,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -8394,7 +8706,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Gd"
+      "chemicalFormula": "Gd",
+      "protons": 64,
+      "neutrons": 93,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -8544,7 +8862,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Tb"
+      "chemicalFormula": "Tb",
+      "protons": 65,
+      "neutrons": 93,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -8690,7 +9014,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Dy"
+      "chemicalFormula": "Dy",
+      "protons": 66,
+      "neutrons": 97,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": []
     }
   },
   {
@@ -8840,7 +9170,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Ho"
+      "chemicalFormula": "Ho",
+      "protons": 67,
+      "neutrons": 97,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -8991,7 +9327,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Er"
+      "chemicalFormula": "Er",
+      "protons": 68,
+      "neutrons": 99,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -9142,7 +9484,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Tm"
+      "chemicalFormula": "Tm",
+      "protons": 69,
+      "neutrons": 99,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -9292,7 +9640,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Yb"
+      "chemicalFormula": "Yb",
+      "protons": 70,
+      "neutrons": 103,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -9443,7 +9797,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Lu"
+      "chemicalFormula": "Lu",
+      "protons": 71,
+      "neutrons": 103,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -9595,7 +9955,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Ta"
+      "chemicalFormula": "Ta",
+      "protons": 73,
+      "neutrons": 107,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -9769,7 +10135,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "W"
+      "chemicalFormula": "W",
+      "protons": 74,
+      "neutrons": 109,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -9944,7 +10316,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Os"
+      "chemicalFormula": "Os",
+      "protons": 76,
+      "neutrons": 114,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -10117,7 +10495,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Ir"
+      "chemicalFormula": "Ir",
+      "protons": 77,
+      "neutrons": 115,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -10289,7 +10673,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Pt"
+      "chemicalFormula": "Pt",
+      "protons": 78,
+      "neutrons": 117,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -10468,7 +10858,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Au"
+      "chemicalFormula": "Au",
+      "protons": 79,
+      "neutrons": 117,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -10589,7 +10985,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Hg"
+      "chemicalFormula": "Hg",
+      "protons": 80,
+      "neutrons": 120,
+      "state": "LIQUID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": []
     }
   },
   {
@@ -10765,7 +11167,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Pb"
+      "chemicalFormula": "Pb",
+      "protons": 82,
+      "neutrons": 125,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -10931,7 +11339,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Bi"
+      "chemicalFormula": "Bi",
+      "protons": 83,
+      "neutrons": 125,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -11048,7 +11462,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Rn"
+      "chemicalFormula": "Rn",
+      "protons": 86,
+      "neutrons": 134,
+      "state": "GAS",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": []
     }
   },
   {
@@ -11316,7 +11736,13 @@
       "isRadioactive": true,
       "radiationLevel": 1,
       "hasOre": false,
-      "chemicalFormula": "Th"
+      "chemicalFormula": "Th",
+      "protons": 90,
+      "neutrons": 142,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": []
     }
   },
   {
@@ -11477,7 +11903,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "U₂₃₅"
+      "chemicalFormula": "U₂₃₅",
+      "protons": 92,
+      "neutrons": 143,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -11642,7 +12074,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "U"
+      "chemicalFormula": "U",
+      "protons": 92,
+      "neutrons": 146,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -11957,7 +12395,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Pu₂₄₁"
+      "chemicalFormula": "Pu₂₄₁",
+      "protons": 94,
+      "neutrons": 149,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -12111,7 +12555,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Am"
+      "chemicalFormula": "Am",
+      "protons": 95,
+      "neutrons": 150,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -22292,7 +22742,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "??"
+      "chemicalFormula": "??",
+      "protons": 43,
+      "neutrons": 55,
+      "state": "SOLID",
+      "generatesFluid": false,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -22458,7 +22914,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "SnCu₃"
+      "chemicalFormula": "SnCu₃",
+      "protons": 34,
+      "neutrons": 42,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -22768,7 +23230,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Fe₂Ni"
+      "chemicalFormula": "Fe₂Ni",
+      "protons": 26,
+      "neutrons": 30,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -23066,7 +23534,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Fe"
+      "chemicalFormula": "Fe",
+      "protons": 26,
+      "neutrons": 30,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -23231,7 +23705,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Fe₅C"
+      "chemicalFormula": "Fe₅C",
+      "protons": 26,
+      "neutrons": 30,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -23393,7 +23873,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Fe₆CrMnNi"
+      "chemicalFormula": "Fe₆CrMnNi",
+      "protons": 25,
+      "neutrons": 29,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -24067,7 +24553,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Ni₄Cr"
+      "chemicalFormula": "Ni₄Cr",
+      "protons": 27,
+      "neutrons": 29,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -24216,7 +24708,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "FeAlCr"
+      "chemicalFormula": "FeAlCr",
+      "protons": 21,
+      "neutrons": 23,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -24755,7 +25253,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Fe₅CW"
+      "chemicalFormula": "Fe₅CW",
+      "protons": 50,
+      "neutrons": 69,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -24912,7 +25416,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Ir₃Os"
+      "chemicalFormula": "Ir₃Os",
+      "protons": 76,
+      "neutrons": 114,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -25797,7 +26307,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Nq"
+      "chemicalFormula": "Nq",
+      "protons": 130,
+      "neutrons": 200,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -26100,7 +26616,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "??"
+      "chemicalFormula": "??",
+      "protons": 43,
+      "neutrons": 55,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -26272,7 +26794,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "??"
+      "chemicalFormula": "??",
+      "protons": 43,
+      "neutrons": 55,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -26710,7 +27238,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "FeMa"
+      "chemicalFormula": "FeMa",
+      "protons": 26,
+      "neutrons": 30,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -27160,7 +27694,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "NiAuAgCu₃Fe₅C₃"
+      "chemicalFormula": "NiAuAgCu₃Fe₅C₃",
+      "protons": 29,
+      "neutrons": 35,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -32206,7 +32746,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "WC"
+      "chemicalFormula": "WC",
+      "protons": 40,
+      "neutrons": 57,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -39029,7 +39575,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "C₂F₄"
+      "chemicalFormula": "C₂F₄",
+      "protons": 8,
+      "neutrons": 8,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -42774,7 +43326,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "PO₄"
+      "chemicalFormula": "PO₄",
+      "protons": 26,
+      "neutrons": 32,
+      "state": "SOLID",
+      "generatesFluid": false,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -42935,7 +43493,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Fc⚙"
+      "chemicalFormula": "Fc⚙",
+      "protons": 63,
+      "neutrons": 81,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": []
     }
   },
   {
@@ -43072,7 +43636,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "??"
+      "chemicalFormula": "??",
+      "protons": 43,
+      "neutrons": 55,
+      "state": "SOLID",
+      "generatesFluid": false,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -44414,7 +44984,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "BeK₄N₅Ma₆"
+      "chemicalFormula": "BeK₄N₅Ma₆",
+      "protons": 11,
+      "neutrons": 12,
+      "state": "SOLID",
+      "generatesFluid": false,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -45317,7 +45893,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "??"
+      "chemicalFormula": "??",
+      "protons": 43,
+      "neutrons": 55,
+      "state": "SOLID",
+      "generatesFluid": false,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -45456,7 +46038,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "??"
+      "chemicalFormula": "??",
+      "protons": 43,
+      "neutrons": 55,
+      "state": "SOLID",
+      "generatesFluid": false,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -45595,7 +46183,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "??"
+      "chemicalFormula": "??",
+      "protons": 43,
+      "neutrons": 55,
+      "state": "SOLID",
+      "generatesFluid": false,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -45734,7 +46328,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "??"
+      "chemicalFormula": "??",
+      "protons": 43,
+      "neutrons": 55,
+      "state": "SOLID",
+      "generatesFluid": false,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -45873,7 +46473,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "??"
+      "chemicalFormula": "??",
+      "protons": 43,
+      "neutrons": 55,
+      "state": "SOLID",
+      "generatesFluid": false,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -46012,7 +46618,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "??"
+      "chemicalFormula": "??",
+      "protons": 43,
+      "neutrons": 55,
+      "state": "SOLID",
+      "generatesFluid": false,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -49600,7 +50212,26 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "KNO3"
+      "chemicalFormula": "KNO3",
+      "protons": 11,
+      "neutrons": 11,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": false,
+      "composition": [
+        {
+          "material": "Potassium",
+          "amount": 1
+        },
+        {
+          "material": "Nitrogen",
+          "amount": 1
+        },
+        {
+          "material": "Oxygen",
+          "amount": 3
+        }
+      ]
     }
   },
   {
@@ -56749,7 +57380,22 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "NH₃"
+      "chemicalFormula": "NH₃",
+      "protons": 4,
+      "neutrons": -1,
+      "state": "PURE_LIQUID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "Nitrogen",
+          "amount": 1
+        },
+        {
+          "material": "Hydrogen",
+          "amount": 3
+        }
+      ]
     }
   },
   {
@@ -60011,7 +60657,22 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "(H₂O)₃(NaCl)"
+      "chemicalFormula": "(H₂O)₃(NaCl)",
+      "protons": 9,
+      "neutrons": 9,
+      "state": "PURE_LIQUID",
+      "generatesFluid": false,
+      "generatesCells": false,
+      "composition": [
+        {
+          "material": "Water",
+          "amount": 3
+        },
+        {
+          "material": "SodiumChloride",
+          "amount": 1
+        }
+      ]
     }
   },
   {
@@ -60550,7 +61211,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Al₂O₃"
+      "chemicalFormula": "Al₂O₃",
+      "protons": 10,
+      "neutrons": 10,
+      "state": "SOLID",
+      "generatesFluid": false,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -60963,7 +61630,22 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "H₂O"
+      "chemicalFormula": "H₂O",
+      "protons": 4,
+      "neutrons": 4,
+      "state": "PURE_LIQUID",
+      "generatesFluid": true,
+      "generatesCells": false,
+      "composition": [
+        {
+          "material": "Hydrogen",
+          "amount": 2
+        },
+        {
+          "material": "Oxygen",
+          "amount": 1
+        }
+      ]
     }
   },
   {
@@ -71300,7 +71982,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Na₂LiAl₂Si₂O₇H₂O₂"
+      "chemicalFormula": "Na₂LiAl₂Si₂O₇H₂O₂",
+      "protons": 8,
+      "neutrons": 8,
+      "state": "SOLID",
+      "generatesFluid": false,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -71512,7 +72200,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "??"
+      "chemicalFormula": "??",
+      "protons": 43,
+      "neutrons": 55,
+      "state": "SOLID",
+      "generatesFluid": false,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -71905,7 +72599,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "SiFeS₂₅CrAl₂O₃Hg₃"
+      "chemicalFormula": "SiFeS₂₅CrAl₂O₃Hg₃",
+      "protons": 36,
+      "neutrons": 48,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -72033,7 +72733,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "??"
+      "chemicalFormula": "??",
+      "protons": 43,
+      "neutrons": 55,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -73066,7 +73772,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Al₂Fe₃Si₃O₁₂"
+      "chemicalFormula": "Al₂Fe₃Si₃O₁₂",
+      "protons": 12,
+      "neutrons": 12,
+      "state": "SOLID",
+      "generatesFluid": false,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -74236,7 +74948,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "PbS"
+      "chemicalFormula": "PbS",
+      "protons": 49,
+      "neutrons": 70,
+      "state": "SOLID",
+      "generatesFluid": false,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -74363,7 +75081,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Ca₃Al₂Si₃O₁₂"
+      "chemicalFormula": "Ca₃Al₂Si₃O₁₂",
+      "protons": 11,
+      "neutrons": 11,
+      "state": "SOLID",
+      "generatesFluid": false,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -74829,7 +75553,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Al₂Mg₃Si₃O₁₂"
+      "chemicalFormula": "Al₂Mg₃Si₃O₁₂",
+      "protons": 10,
+      "neutrons": 10,
+      "state": "SOLID",
+      "generatesFluid": false,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -75055,7 +75785,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "SiO₂"
+      "chemicalFormula": "SiO₂",
+      "protons": 10,
+      "neutrons": 10,
+      "state": "SOLID",
+      "generatesFluid": false,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -75182,7 +75918,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Al₂Mn₃Si₃O₁₂"
+      "chemicalFormula": "Al₂Mn₃Si₃O₁₂",
+      "protons": 11,
+      "neutrons": 12,
+      "state": "SOLID",
+      "generatesFluid": false,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -75304,7 +76046,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "ZnS"
+      "chemicalFormula": "ZnS",
+      "protons": 23,
+      "neutrons": 25,
+      "state": "SOLID",
+      "generatesFluid": false,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -76991,7 +77739,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "CuFeS₂"
+      "chemicalFormula": "CuFeS₂",
+      "protons": 21,
+      "neutrons": 24,
+      "state": "SOLID",
+      "generatesFluid": false,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -77773,7 +78527,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "??"
+      "chemicalFormula": "??",
+      "protons": 43,
+      "neutrons": 55,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -78353,7 +79113,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "CH₂"
+      "chemicalFormula": "CH₂",
+      "protons": 2,
+      "neutrons": 2,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -80168,7 +80934,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "??"
+      "chemicalFormula": "??",
+      "protons": 43,
+      "neutrons": 55,
+      "state": "SOLID",
+      "generatesFluid": false,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -81975,7 +82747,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Ni₉S₈"
+      "chemicalFormula": "Ni₉S₈",
+      "protons": 22,
+      "neutrons": 23,
+      "state": "SOLID",
+      "generatesFluid": false,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -91354,7 +92132,22 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "NH₄"
+      "chemicalFormula": "NH₄",
+      "protons": 4,
+      "neutrons": 3,
+      "state": "PURE_LIQUID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "Nitrogen",
+          "amount": 1
+        },
+        {
+          "material": "Hydrogen",
+          "amount": 4
+        }
+      ]
     }
   },
   {
@@ -92064,7 +92857,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Ma"
+      "chemicalFormula": "Ma",
+      "protons": 0,
+      "neutrons": 0,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -94491,7 +95290,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "??"
+      "chemicalFormula": "??",
+      "protons": 43,
+      "neutrons": 55,
+      "state": "SOLID",
+      "generatesFluid": false,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -95625,7 +96430,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Zr"
+      "chemicalFormula": "Zr",
+      "protons": 40,
+      "neutrons": 51,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": []
     }
   },
   {
@@ -100010,7 +100821,13 @@
       "isRadioactive": true,
       "radiationLevel": 1,
       "hasOre": false,
-      "chemicalFormula": "Th"
+      "chemicalFormula": "Th",
+      "protons": 90,
+      "neutrons": 142,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": []
     }
   },
   {
@@ -101026,7 +101843,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Xe"
+      "chemicalFormula": "Xe",
+      "protons": 54,
+      "neutrons": 77,
+      "state": "PURE_GAS",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": []
     }
   },
   {
@@ -101357,7 +102180,13 @@
       "isRadioactive": true,
       "radiationLevel": 4,
       "hasOre": false,
-      "chemicalFormula": "Cf"
+      "chemicalFormula": "Cf",
+      "protons": 98,
+      "neutrons": 153,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": []
     }
   },
   {
@@ -101512,7 +102341,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Ne"
+      "chemicalFormula": "Ne",
+      "protons": 10,
+      "neutrons": 10,
+      "state": "PURE_GAS",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": []
     }
   },
   {
@@ -101667,7 +102502,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Kr"
+      "chemicalFormula": "Kr",
+      "protons": 36,
+      "neutrons": 48,
+      "state": "PURE_GAS",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": []
     }
   },
   {
@@ -104928,7 +105769,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Ru"
+      "chemicalFormula": "Ru",
+      "protons": 44,
+      "neutrons": 57,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": []
     }
   },
   {
@@ -107022,7 +107869,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Rh"
+      "chemicalFormula": "Rh",
+      "protons": 45,
+      "neutrons": 58,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": []
     }
   },
   {
@@ -107626,7 +108479,26 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "NaNO3"
+      "chemicalFormula": "NaNO3",
+      "protons": 8,
+      "neutrons": 8,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": false,
+      "composition": [
+        {
+          "material": "Sodium",
+          "amount": 1
+        },
+        {
+          "material": "Nitrogen",
+          "amount": 1
+        },
+        {
+          "material": "Oxygen",
+          "amount": 3
+        }
+      ]
     }
   },
   {
@@ -114684,7 +115556,22 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "(Th)F₄"
+      "chemicalFormula": "(Th)F₄",
+      "protons": 49,
+      "neutrons": 75,
+      "state": "LIQUID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "Thorium232",
+          "amount": 1
+        },
+        {
+          "material": "Fluorine",
+          "amount": 4
+        }
+      ]
     }
   },
   {
@@ -129848,7 +130735,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Hf"
+      "chemicalFormula": "Hf",
+      "protons": 72,
+      "neutrons": 106,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": []
     }
   },
   {
@@ -131401,7 +132294,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "I"
+      "chemicalFormula": "I",
+      "protons": 53,
+      "neutrons": 74,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": []
     }
   },
   {
@@ -153918,7 +154817,46 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "(Fe₆CrMnNi)₅(WC)₅(Ni₄Cr)₅(SnCu₃)₅(Fe₁₆Al₃Cr₅Y)₅IRnGe"
+      "chemicalFormula": "(Fe₆CrMnNi)₅(WC)₅(Ni₄Cr)₅(SnCu₃)₅(Fe₁₆Al₃Cr₅Y)₅IRnGe",
+      "protons": 40,
+      "neutrons": -1,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "StainlessSteel",
+          "amount": 10
+        },
+        {
+          "material": "TungstenCarbide",
+          "amount": 10
+        },
+        {
+          "material": "Nichrome",
+          "amount": 10
+        },
+        {
+          "material": "Bronze",
+          "amount": 10
+        },
+        {
+          "material": "IncoloyMA956",
+          "amount": 10
+        },
+        {
+          "material": "Iodine",
+          "amount": 2
+        },
+        {
+          "material": "Radon",
+          "amount": 2
+        },
+        {
+          "material": "Germanium",
+          "amount": 2
+        }
+      ]
     }
   },
   {
@@ -154018,7 +154956,26 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "(CH3CO)2O"
+      "chemicalFormula": "(CH3CO)2O",
+      "protons": 5,
+      "neutrons": -1,
+      "state": "PURE_LIQUID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "Carbon",
+          "amount": 4
+        },
+        {
+          "material": "Hydrogen",
+          "amount": 6
+        },
+        {
+          "material": "Oxygen",
+          "amount": 3
+        }
+      ]
     }
   },
   {
@@ -154121,7 +155078,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "⚷⚙⚷ Ni₄Ti₆"
+      "chemicalFormula": "⚷⚙⚷ Ni₄Ti₆",
+      "protons": 40,
+      "neutrons": 51,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": []
     }
   },
   {
@@ -154245,7 +155208,38 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": true,
-      "chemicalFormula": "CdCaCu₇As₄O₂₁H₁₁"
+      "chemicalFormula": "CdCaCu₇As₄O₂₁H₁₁",
+      "protons": 23,
+      "neutrons": 28,
+      "state": "ORE",
+      "generatesFluid": false,
+      "generatesCells": false,
+      "composition": [
+        {
+          "material": "Cadmium",
+          "amount": 1
+        },
+        {
+          "material": "Calcium",
+          "amount": 1
+        },
+        {
+          "material": "Copper",
+          "amount": 7
+        },
+        {
+          "material": "Arsenic",
+          "amount": 4
+        },
+        {
+          "material": "Oxygen",
+          "amount": 21
+        },
+        {
+          "material": "Hydrogen",
+          "amount": 11
+        }
+      ]
     }
   },
   {
@@ -154369,7 +155363,38 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": true,
-      "chemicalFormula": "LaCaCu₅As₂O₁₉H₁"
+      "chemicalFormula": "LaCaCu₅As₂O₁₉H₁",
+      "protons": 24,
+      "neutrons": 30,
+      "state": "ORE",
+      "generatesFluid": false,
+      "generatesCells": false,
+      "composition": [
+        {
+          "material": "Lanthanum",
+          "amount": 1
+        },
+        {
+          "material": "Calcium",
+          "amount": 1
+        },
+        {
+          "material": "Copper",
+          "amount": 5
+        },
+        {
+          "material": "Arsenic",
+          "amount": 2
+        },
+        {
+          "material": "Oxygen",
+          "amount": 19
+        },
+        {
+          "material": "Hydrogen",
+          "amount": 10
+        }
+      ]
     }
   },
   {
@@ -154493,7 +155518,38 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": true,
-      "chemicalFormula": "NdCaCu₆As₆O₂₁H₁₂"
+      "chemicalFormula": "NdCaCu₆As₆O₂₁H₁₂",
+      "protons": 25,
+      "neutrons": 31,
+      "state": "ORE",
+      "generatesFluid": false,
+      "generatesCells": false,
+      "composition": [
+        {
+          "material": "Neodymium",
+          "amount": 1
+        },
+        {
+          "material": "Calcium",
+          "amount": 1
+        },
+        {
+          "material": "Copper",
+          "amount": 6
+        },
+        {
+          "material": "Arsenic",
+          "amount": 6
+        },
+        {
+          "material": "Oxygen",
+          "amount": 21
+        },
+        {
+          "material": "Hydrogen",
+          "amount": 12
+        }
+      ]
     }
   },
   {
@@ -154617,7 +155673,38 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": true,
-      "chemicalFormula": "YCaCu₅As₆O₂₁H₁₂"
+      "chemicalFormula": "YCaCu₅As₆O₂₁H₁₂",
+      "protons": 21,
+      "neutrons": 25,
+      "state": "ORE",
+      "generatesFluid": false,
+      "generatesCells": false,
+      "composition": [
+        {
+          "material": "Yttrium",
+          "amount": 1
+        },
+        {
+          "material": "Calcium",
+          "amount": 1
+        },
+        {
+          "material": "Copper",
+          "amount": 5
+        },
+        {
+          "material": "Arsenic",
+          "amount": 6
+        },
+        {
+          "material": "Oxygen",
+          "amount": 21
+        },
+        {
+          "material": "Hydrogen",
+          "amount": 12
+        }
+      ]
     }
   },
   {
@@ -154733,7 +155820,30 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": true,
-      "chemicalFormula": "Au₈GeTe₂S₄"
+      "chemicalFormula": "Au₈GeTe₂S₄",
+      "protons": 44,
+      "neutrons": 62,
+      "state": "ORE",
+      "generatesFluid": false,
+      "generatesCells": false,
+      "composition": [
+        {
+          "material": "Gold",
+          "amount": 8
+        },
+        {
+          "material": "Germanium",
+          "amount": 1
+        },
+        {
+          "material": "Tellurium",
+          "amount": 2
+        },
+        {
+          "material": "Sulfur",
+          "amount": 4
+        }
+      ]
     }
   },
   {
@@ -154843,7 +155953,26 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "(NH₄)HF₂"
+      "chemicalFormula": "(NH₄)HF₂",
+      "protons": 4,
+      "neutrons": -1,
+      "state": "PURE_LIQUID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "Ammonium",
+          "amount": 1
+        },
+        {
+          "material": "Hydrogen",
+          "amount": 1
+        },
+        {
+          "material": "Fluorine",
+          "amount": 2
+        }
+      ]
     }
   },
   {
@@ -154943,7 +156072,26 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "(NH₄)₂BeF₄"
+      "chemicalFormula": "(NH₄)₂BeF₄",
+      "protons": 5,
+      "neutrons": 5,
+      "state": "PURE_LIQUID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "Ammonium",
+          "amount": 2
+        },
+        {
+          "material": "Beryllium",
+          "amount": 1
+        },
+        {
+          "material": "Fluorine",
+          "amount": 4
+        }
+      ]
     }
   },
   {
@@ -155080,7 +156228,46 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": true,
-      "chemicalFormula": "«»"
+      "chemicalFormula": "«»",
+      "protons": 16,
+      "neutrons": 12,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": false,
+      "composition": [
+        {
+          "material": "Oxygen",
+          "amount": 16
+        },
+        {
+          "material": "Iron",
+          "amount": 10
+        },
+        {
+          "material": "SiliconDioxide",
+          "amount": 10
+        },
+        {
+          "material": "Alumina",
+          "amount": 6
+        },
+        {
+          "material": "Potassium",
+          "amount": 6
+        },
+        {
+          "material": "Calcium",
+          "amount": 4
+        },
+        {
+          "material": "Sodium",
+          "amount": 4
+        },
+        {
+          "material": "Ytterbium",
+          "amount": 2
+        }
+      ]
     }
   },
   {
@@ -155207,7 +156394,30 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "(Th)₄()₄"
+      "chemicalFormula": "(Th)₄()₄",
+      "protons": 66,
+      "neutrons": -1,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "Thorium232",
+          "amount": 40
+        },
+        {
+          "material": "EnergyCrystal",
+          "amount": 40
+        },
+        {
+          "material": "InfusedOrder",
+          "amount": 10
+        },
+        {
+          "material": "InfusedEntropy",
+          "amount": 10
+        }
+      ]
     }
   },
   {
@@ -155339,7 +156549,34 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "₃((Fe₅C)₁₆AlMoNi₄Co₂)₄(Fe₅CW)₂(Ir₃Os)Sr"
+      "chemicalFormula": "₃((Fe₅C)₁₆AlMoNi₄Co₂)₄(Fe₅CW)₂(Ir₃Os)Sr",
+      "protons": 46,
+      "neutrons": -1,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "Trinium",
+          "amount": 30
+        },
+        {
+          "material": "MaragingSteel350",
+          "amount": 40
+        },
+        {
+          "material": "TungstenSteel",
+          "amount": 20
+        },
+        {
+          "material": "Osmiridium",
+          "amount": 10
+        },
+        {
+          "material": "Strontium",
+          "amount": 10
+        }
+      ]
     }
   },
   {
@@ -155452,7 +156689,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "✧◇✧"
+      "chemicalFormula": "✧◇✧",
+      "protons": 145,
+      "neutrons": 133,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": []
     }
   },
   {
@@ -155570,7 +156813,30 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Sn₅Pb₃₆Sb₈As"
+      "chemicalFormula": "Sn₅Pb₃₆Sb₈As",
+      "protons": 54,
+      "neutrons": -1,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "Tin",
+          "amount": 10
+        },
+        {
+          "material": "Lead",
+          "amount": 72
+        },
+        {
+          "material": "Antimony",
+          "amount": 16
+        },
+        {
+          "material": "Arsenic",
+          "amount": 2
+        }
+      ]
     }
   },
   {
@@ -155686,7 +156952,30 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": true,
-      "chemicalFormula": "Ba₃₂RaS₁₆O₁₅"
+      "chemicalFormula": "Ba₃₂RaS₁₆O₁₅",
+      "protons": 42,
+      "neutrons": 60,
+      "state": "ORE",
+      "generatesFluid": false,
+      "generatesCells": false,
+      "composition": [
+        {
+          "material": "Barium",
+          "amount": 32
+        },
+        {
+          "material": "Radium",
+          "amount": 1
+        },
+        {
+          "material": "Sulfur",
+          "amount": 16
+        },
+        {
+          "material": "Oxygen",
+          "amount": 15
+        }
+      ]
     }
   },
   {
@@ -155792,7 +157081,22 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "BeF₂"
+      "chemicalFormula": "BeF₂",
+      "protons": 6,
+      "neutrons": 7,
+      "state": "LIQUID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "Beryllium",
+          "amount": 1
+        },
+        {
+          "material": "Fluorine",
+          "amount": 2
+        }
+      ]
     }
   },
   {
@@ -155902,7 +157206,26 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Be(OH)₂"
+      "chemicalFormula": "Be(OH)₂",
+      "protons": 4,
+      "neutrons": 4,
+      "state": "PURE_LIQUID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "Beryllium",
+          "amount": 1
+        },
+        {
+          "material": "Oxygen",
+          "amount": 2
+        },
+        {
+          "material": "Hydrogen",
+          "amount": 2
+        }
+      ]
     }
   },
   {
@@ -156024,7 +157347,26 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "҈"
+      "chemicalFormula": "҈",
+      "protons": 24,
+      "neutrons": 17,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "Lead",
+          "amount": 15
+        },
+        {
+          "material": "Manganese",
+          "amount": 25
+        },
+        {
+          "material": "Carbon",
+          "amount": 60
+        }
+      ]
     }
   },
   {
@@ -156163,7 +157505,50 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Ti₅₅La₁₂W₈Co₆Mn₄P₄Pd₄Nb₂Ar₅"
+      "chemicalFormula": "Ti₅₅La₁₂W₈Co₆Mn₄P₄Pd₄Nb₂Ar₅",
+      "protons": 36,
+      "neutrons": -1,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "Titanium",
+          "amount": 55
+        },
+        {
+          "material": "Lanthanum",
+          "amount": 12
+        },
+        {
+          "material": "Tungsten",
+          "amount": 8
+        },
+        {
+          "material": "Cobalt",
+          "amount": 6
+        },
+        {
+          "material": "Manganese",
+          "amount": 4
+        },
+        {
+          "material": "Phosphorus",
+          "amount": 4
+        },
+        {
+          "material": "Palladium",
+          "amount": 4
+        },
+        {
+          "material": "Niobium",
+          "amount": 2
+        },
+        {
+          "material": "Argon",
+          "amount": 5
+        }
+      ]
     }
   },
   {
@@ -156281,7 +157666,22 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "(Fe₅C)"
+      "chemicalFormula": "(Fe₅C)",
+      "protons": 100,
+      "neutrons": 100,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "Steel",
+          "amount": 5
+        },
+        {
+          "material": "InfusedFire",
+          "amount": 5
+        }
+      ]
     }
   },
   {
@@ -156410,7 +157810,30 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "(Ni₂Ti₃)Os₆Ru₆Tl₃"
+      "chemicalFormula": "(Ni₂Ti₃)Os₆Ru₆Tl₃",
+      "protons": 56,
+      "neutrons": -1,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "Nitinol60",
+          "amount": 2
+        },
+        {
+          "material": "Osmium",
+          "amount": 12
+        },
+        {
+          "material": "Ruthenium",
+          "amount": 12
+        },
+        {
+          "material": "Thallium",
+          "amount": 6
+        }
+      ]
     }
   },
   {
@@ -156504,7 +157927,22 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "((H₂O)₃(NaCl))(NaCl)₂"
+      "chemicalFormula": "((H₂O)₃(NaCl))(NaCl)₂",
+      "protons": 11,
+      "neutrons": 11,
+      "state": "PURE_LIQUID",
+      "generatesFluid": true,
+      "generatesCells": false,
+      "composition": [
+        {
+          "material": "SaltWater",
+          "amount": 1
+        },
+        {
+          "material": "SodiumChloride",
+          "amount": 2
+        }
+      ]
     }
   },
   {
@@ -156592,7 +158030,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Br"
+      "chemicalFormula": "Br",
+      "protons": 35,
+      "neutrons": 45,
+      "state": "PURE_LIQUID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": []
     }
   },
   {
@@ -156696,7 +158140,30 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "LiBeF₂UF₄FP"
+      "chemicalFormula": "LiBeF₂UF₄FP",
+      "protons": 37,
+      "neutrons": 56,
+      "state": "PURE_LIQUID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "Lithium",
+          "amount": 1
+        },
+        {
+          "material": "BerylliumFluoride",
+          "amount": 1
+        },
+        {
+          "material": "UraniumTetrafluoride",
+          "amount": 1
+        },
+        {
+          "material": "Protactinium",
+          "amount": 1
+        }
+      ]
     }
   },
   {
@@ -156800,7 +158267,30 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "LiBeF₂UF₄FP"
+      "chemicalFormula": "LiBeF₂UF₄FP",
+      "protons": 37,
+      "neutrons": 56,
+      "state": "PURE_LIQUID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "Lithium",
+          "amount": 1
+        },
+        {
+          "material": "BerylliumFluoride",
+          "amount": 1
+        },
+        {
+          "material": "UraniumTetrafluoride",
+          "amount": 1
+        },
+        {
+          "material": "Protactinium",
+          "amount": 1
+        }
+      ]
     }
   },
   {
@@ -156915,7 +158405,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "✦◆✦"
+      "chemicalFormula": "✦◆✦",
+      "protons": 160,
+      "neutrons": 101,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": []
     }
   },
   {
@@ -157047,7 +158543,46 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": true,
-      "chemicalFormula": "Ce₉La₉Ca₉Mg₃Fe₃Si₇O₂H₄"
+      "chemicalFormula": "Ce₉La₉Ca₉Mg₃Fe₃Si₇O₂H₄",
+      "protons": 24,
+      "neutrons": 30,
+      "state": "ORE",
+      "generatesFluid": false,
+      "generatesCells": false,
+      "composition": [
+        {
+          "material": "Cerium",
+          "amount": 9
+        },
+        {
+          "material": "Lanthanum",
+          "amount": 9
+        },
+        {
+          "material": "Calcium",
+          "amount": 9
+        },
+        {
+          "material": "Magnesium",
+          "amount": 3
+        },
+        {
+          "material": "Iron",
+          "amount": 3
+        },
+        {
+          "material": "Silicon",
+          "amount": 7
+        },
+        {
+          "material": "Oxygen",
+          "amount": 20
+        },
+        {
+          "material": "Hydrogen",
+          "amount": 4
+        }
+      ]
     }
   },
   {
@@ -157151,7 +158686,30 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "ClCH2-COOH"
+      "chemicalFormula": "ClCH2-COOH",
+      "protons": 8,
+      "neutrons": -1,
+      "state": "PURE_LIQUID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "Carbon",
+          "amount": 2
+        },
+        {
+          "material": "Hydrogen",
+          "amount": 3
+        },
+        {
+          "material": "Oxygen",
+          "amount": 2
+        },
+        {
+          "material": "Chlorine",
+          "amount": 1
+        }
+      ]
     }
   },
   {
@@ -157255,7 +158813,30 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Cl?H?C-COOH"
+      "chemicalFormula": "Cl?H?C-COOH",
+      "protons": 8,
+      "neutrons": -1,
+      "state": "LIQUID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "Carbon",
+          "amount": 6
+        },
+        {
+          "material": "Hydrogen",
+          "amount": 6
+        },
+        {
+          "material": "Oxygen",
+          "amount": 6
+        },
+        {
+          "material": "Chlorine",
+          "amount": 6
+        }
+      ]
     }
   },
   {
@@ -157368,7 +158949,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "⌘☯𓍰 𓍱 𓍲 𓍳 𓍴 𓍵 𓍶 𓍷 𓍸 ☯⌘ "
+      "chemicalFormula": "⌘☯𓍰 𓍱 𓍲 𓍳 𓍴 𓍵 𓍶 𓍷 𓍸 ☯⌘ ",
+      "protons": 40,
+      "neutrons": 51,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": []
     }
   },
   {
@@ -157512,7 +159099,46 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "(Cr₁₃Ni₃Mo₂Cu₁W₂(Fe₅C)₂)₁₆₇Gd₅Al₃Hg₂Sn₂Ti₁₂(Ir₃Os)₆"
+      "chemicalFormula": "(Cr₁₃Ni₃Mo₂Cu₁W₂(Fe₅C)₂)₁₆₇Gd₅Al₃Hg₂Sn₂Ti₁₂(Ir₃Os)₆",
+      "protons": 48,
+      "neutrons": -1,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "Zeron100",
+          "amount": 16
+        },
+        {
+          "material": "Naquadria",
+          "amount": 7
+        },
+        {
+          "material": "Gadolinium",
+          "amount": 5
+        },
+        {
+          "material": "Aluminium",
+          "amount": 3
+        },
+        {
+          "material": "Mercury",
+          "amount": 2
+        },
+        {
+          "material": "Tin",
+          "amount": 2
+        },
+        {
+          "material": "Titanium",
+          "amount": 12
+        },
+        {
+          "material": "Osmiridium",
+          "amount": 6
+        }
+      ]
     }
   },
   {
@@ -157636,7 +159262,38 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": true,
-      "chemicalFormula": "Hg₁₃N₇H₃O₂Cl₈Br₈"
+      "chemicalFormula": "Hg₁₃N₇H₃O₂Cl₈Br₈",
+      "protons": 24,
+      "neutrons": 33,
+      "state": "ORE",
+      "generatesFluid": false,
+      "generatesCells": false,
+      "composition": [
+        {
+          "material": "Mercury",
+          "amount": 13
+        },
+        {
+          "material": "Nitrogen",
+          "amount": 7
+        },
+        {
+          "material": "Hydrogen",
+          "amount": 3
+        },
+        {
+          "material": "Oxygen",
+          "amount": 2
+        },
+        {
+          "material": "Chlorine",
+          "amount": 8
+        },
+        {
+          "material": "Bromine",
+          "amount": 8
+        }
+      ]
     }
   },
   {
@@ -157742,7 +159399,26 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "CuSO4"
+      "chemicalFormula": "CuSO4",
+      "protons": 17,
+      "neutrons": -1,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": false,
+      "composition": [
+        {
+          "material": "Copper",
+          "amount": 1
+        },
+        {
+          "material": "Sulfur",
+          "amount": 1
+        },
+        {
+          "material": "Oxygen",
+          "amount": 4
+        }
+      ]
     }
   },
   {
@@ -157848,7 +159524,26 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "CuSO4∙(H2O)5"
+      "chemicalFormula": "CuSO4∙(H2O)5",
+      "protons": 17,
+      "neutrons": -1,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": false,
+      "composition": [
+        {
+          "material": "Copper",
+          "amount": 1
+        },
+        {
+          "material": "Sulfur",
+          "amount": 1
+        },
+        {
+          "material": "Oxygen",
+          "amount": 4
+        }
+      ]
     }
   },
   {
@@ -157964,7 +159659,30 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": true,
-      "chemicalFormula": "Pb₂Cr₂O₃Cs"
+      "chemicalFormula": "Pb₂Cr₂O₃Cs",
+      "protons": 42,
+      "neutrons": 59,
+      "state": "ORE",
+      "generatesFluid": false,
+      "generatesCells": false,
+      "composition": [
+        {
+          "material": "Lead",
+          "amount": 2
+        },
+        {
+          "material": "Chrome",
+          "amount": 2
+        },
+        {
+          "material": "Oxygen",
+          "amount": 3
+        },
+        {
+          "material": "Caesium",
+          "amount": 1
+        }
+      ]
     }
   },
   {
@@ -158076,7 +159794,26 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": true,
-      "chemicalFormula": "Na₃AlF₆"
+      "chemicalFormula": "Na₃AlF₆",
+      "protons": 11,
+      "neutrons": 11,
+      "state": "ORE",
+      "generatesFluid": false,
+      "generatesCells": false,
+      "composition": [
+        {
+          "material": "Sodium",
+          "amount": 3
+        },
+        {
+          "material": "Aluminium",
+          "amount": 1
+        },
+        {
+          "material": "Fluorine",
+          "amount": 6
+        }
+      ]
     }
   },
   {
@@ -158177,7 +159914,13 @@
       "isRadioactive": true,
       "radiationLevel": 3,
       "hasOre": false,
-      "chemicalFormula": "Cm"
+      "chemicalFormula": "Cm",
+      "protons": 96,
+      "neutrons": 151,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": []
     }
   },
   {
@@ -158287,7 +160030,30 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "C3H3NO2"
+      "chemicalFormula": "C3H3NO2",
+      "protons": 5,
+      "neutrons": -1,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": false,
+      "composition": [
+        {
+          "material": "Carbon",
+          "amount": 3
+        },
+        {
+          "material": "Hydrogen",
+          "amount": 3
+        },
+        {
+          "material": "Nitrogen",
+          "amount": 1
+        },
+        {
+          "material": "Oxygen",
+          "amount": 2
+        }
+      ]
     }
   },
   {
@@ -158391,7 +160157,30 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "(-C6H7NO2-)n"
+      "chemicalFormula": "(-C6H7NO2-)n",
+      "protons": 8,
+      "neutrons": -1,
+      "state": "LIQUID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "Carbon",
+          "amount": 2
+        },
+        {
+          "material": "Hydrogen",
+          "amount": 1
+        },
+        {
+          "material": "Oxygen",
+          "amount": 2
+        },
+        {
+          "material": "Chlorine",
+          "amount": 3
+        }
+      ]
     }
   },
   {
@@ -158503,7 +160292,26 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": true,
-      "chemicalFormula": "Bi₁₃S₁₁Br"
+      "chemicalFormula": "Bi₁₃S₁₁Br",
+      "protons": 44,
+      "neutrons": 62,
+      "state": "ORE",
+      "generatesFluid": false,
+      "generatesCells": false,
+      "composition": [
+        {
+          "material": "Bismuth",
+          "amount": 13
+        },
+        {
+          "material": "Sulfur",
+          "amount": 11
+        },
+        {
+          "material": "Bromine",
+          "amount": 1
+        }
+      ]
     }
   },
   {
@@ -158607,7 +160415,30 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Cl2CH-COOH"
+      "chemicalFormula": "Cl2CH-COOH",
+      "protons": 8,
+      "neutrons": -1,
+      "state": "PURE_LIQUID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "Carbon",
+          "amount": 2
+        },
+        {
+          "material": "Hydrogen",
+          "amount": 2
+        },
+        {
+          "material": "Oxygen",
+          "amount": 2
+        },
+        {
+          "material": "Chlorine",
+          "amount": 2
+        }
+      ]
     }
   },
   {
@@ -158720,7 +160551,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "۞"
+      "chemicalFormula": "۞",
+      "protons": 96,
+      "neutrons": 105,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": []
     }
   },
   {
@@ -158847,7 +160684,30 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "(Fe₄(FeAlCr)(Fe₂Ni)₅)₁SSi₄C"
+      "chemicalFormula": "(Fe₄(FeAlCr)(Fe₂Ni)₅)₁SSi₄C",
+      "protons": 15,
+      "neutrons": -1,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "EglinSteelBaseCompound",
+          "amount": 10
+        },
+        {
+          "material": "Sulfur",
+          "amount": 1
+        },
+        {
+          "material": "Silicon",
+          "amount": 4
+        },
+        {
+          "material": "Carbon",
+          "amount": 1
+        }
+      ]
     }
   },
   {
@@ -158955,7 +160815,26 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Fe₄(FeAlCr)(Fe₂Ni)₅"
+      "chemicalFormula": "Fe₄(FeAlCr)(Fe₂Ni)₅",
+      "protons": 24,
+      "neutrons": 27,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "Iron",
+          "amount": 12
+        },
+        {
+          "material": "Kanthal",
+          "amount": 3
+        },
+        {
+          "material": "Invar",
+          "amount": 15
+        }
+      ]
     }
   },
   {
@@ -159082,7 +160961,30 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": ""
+      "chemicalFormula": "",
+      "protons": 90,
+      "neutrons": 40,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "InfusedAir",
+          "amount": 25
+        },
+        {
+          "material": "InfusedEarth",
+          "amount": 25
+        },
+        {
+          "material": "InfusedFire",
+          "amount": 25
+        },
+        {
+          "material": "InfusedWater",
+          "amount": 25
+        }
+      ]
     }
   },
   {
@@ -159186,7 +161088,30 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "C5H7NO2"
+      "chemicalFormula": "C5H7NO2",
+      "protons": 8,
+      "neutrons": -1,
+      "state": "PURE_LIQUID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "Carbon",
+          "amount": 2
+        },
+        {
+          "material": "Hydrogen",
+          "amount": 1
+        },
+        {
+          "material": "Oxygen",
+          "amount": 2
+        },
+        {
+          "material": "Chlorine",
+          "amount": 3
+        }
+      ]
     }
   },
   {
@@ -159290,7 +161215,30 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "C6H7NO2"
+      "chemicalFormula": "C6H7NO2",
+      "protons": 8,
+      "neutrons": -1,
+      "state": "PURE_LIQUID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "Carbon",
+          "amount": 2
+        },
+        {
+          "material": "Hydrogen",
+          "amount": 1
+        },
+        {
+          "material": "Oxygen",
+          "amount": 2
+        },
+        {
+          "material": "Chlorine",
+          "amount": 3
+        }
+      ]
     }
   },
   {
@@ -159391,7 +161339,13 @@
       "isRadioactive": true,
       "radiationLevel": 5,
       "hasOre": false,
-      "chemicalFormula": "Fm"
+      "chemicalFormula": "Fm",
+      "protons": 100,
+      "neutrons": 157,
+      "state": "LIQUID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": []
     }
   },
   {
@@ -159511,7 +161465,34 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": true,
-      "chemicalFormula": "SmAl₃PO₁H₆"
+      "chemicalFormula": "SmAl₃PO₁H₆",
+      "protons": 19,
+      "neutrons": 24,
+      "state": "ORE",
+      "generatesFluid": false,
+      "generatesCells": false,
+      "composition": [
+        {
+          "material": "Samarium",
+          "amount": 1
+        },
+        {
+          "material": "Aluminium",
+          "amount": 3
+        },
+        {
+          "material": "Phosphorus",
+          "amount": 1
+        },
+        {
+          "material": "Oxygen",
+          "amount": 10
+        },
+        {
+          "material": "Hydrogen",
+          "amount": 6
+        }
+      ]
     }
   },
   {
@@ -159639,7 +161620,42 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": true,
-      "chemicalFormula": "Ca₅(SrO)₅Ce₅Na₅P₃O₁₂F₆"
+      "chemicalFormula": "Ca₅(SrO)₅Ce₅Na₅P₃O₁₂F₆",
+      "protons": 20,
+      "neutrons": 24,
+      "state": "ORE",
+      "generatesFluid": false,
+      "generatesCells": false,
+      "composition": [
+        {
+          "material": "Calcium",
+          "amount": 5
+        },
+        {
+          "material": "StrontiumOxide",
+          "amount": 5
+        },
+        {
+          "material": "Cerium",
+          "amount": 5
+        },
+        {
+          "material": "Sodium",
+          "amount": 5
+        },
+        {
+          "material": "Phosphorus",
+          "amount": 3
+        },
+        {
+          "material": "Oxygen",
+          "amount": 12
+        },
+        {
+          "material": "Fluorine",
+          "amount": 6
+        }
+      ]
     }
   },
   {
@@ -159735,7 +161751,22 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "UF₆F₂"
+      "chemicalFormula": "UF₆F₂",
+      "protons": 19,
+      "neutrons": 25,
+      "state": "PURE_LIQUID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "UraniumHexafluoride",
+          "amount": 1
+        },
+        {
+          "material": "Fluorine",
+          "amount": 2
+        }
+      ]
     }
   },
   {
@@ -159835,7 +161866,26 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "LiFBeF₂ThF₄"
+      "chemicalFormula": "LiFBeF₂ThF₄",
+      "protons": 20,
+      "neutrons": 29,
+      "state": "PURE_LIQUID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "LithiumFluoride",
+          "amount": 1
+        },
+        {
+          "material": "BerylliumFluoride",
+          "amount": 1
+        },
+        {
+          "material": "ThoriumTetrafluoride",
+          "amount": 1
+        }
+      ]
     }
   },
   {
@@ -159931,7 +161981,22 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "LiFThF₄"
+      "chemicalFormula": "LiFThF₄",
+      "protons": 27,
+      "neutrons": 40,
+      "state": "PURE_LIQUID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "LithiumFluoride",
+          "amount": 1
+        },
+        {
+          "material": "ThoriumTetrafluoride",
+          "amount": 1
+        }
+      ]
     }
   },
   {
@@ -160047,7 +162112,30 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": true,
-      "chemicalFormula": "Ca₈F₁₆Fe₂C"
+      "chemicalFormula": "Ca₈F₁₆Fe₂C",
+      "protons": 15,
+      "neutrons": -1,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": false,
+      "composition": [
+        {
+          "material": "Calcium",
+          "amount": 16
+        },
+        {
+          "material": "Fluorine",
+          "amount": 32
+        },
+        {
+          "material": "Iron",
+          "amount": 4
+        },
+        {
+          "material": "Carbon",
+          "amount": 2
+        }
+      ]
     }
   },
   {
@@ -160183,7 +162271,50 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": true,
-      "chemicalFormula": "Ce₄Er₂La₂Nd₂Y₂GdBe₂Si₇O₁₄"
+      "chemicalFormula": "Ce₄Er₂La₂Nd₂Y₂GdBe₂Si₇O₁₄",
+      "protons": 41,
+      "neutrons": 57,
+      "state": "ORE",
+      "generatesFluid": false,
+      "generatesCells": false,
+      "composition": [
+        {
+          "material": "Cerium",
+          "amount": 4
+        },
+        {
+          "material": "Erbium",
+          "amount": 2
+        },
+        {
+          "material": "Lanthanum",
+          "amount": 2
+        },
+        {
+          "material": "Neodymium",
+          "amount": 2
+        },
+        {
+          "material": "Yttrium",
+          "amount": 2
+        },
+        {
+          "material": "Gadolinium",
+          "amount": 1
+        },
+        {
+          "material": "Beryllium",
+          "amount": 2
+        },
+        {
+          "material": "Silicon",
+          "amount": 7
+        },
+        {
+          "material": "Oxygen",
+          "amount": 14
+        }
+      ]
     }
   },
   {
@@ -160319,7 +162450,50 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": true,
-      "chemicalFormula": "Ce₂Er₂La₂Nd₂Y₄Gd₂Be₃Si₄O₉"
+      "chemicalFormula": "Ce₂Er₂La₂Nd₂Y₄Gd₂Be₃Si₄O₉",
+      "protons": 41,
+      "neutrons": 57,
+      "state": "ORE",
+      "generatesFluid": false,
+      "generatesCells": false,
+      "composition": [
+        {
+          "material": "Cerium",
+          "amount": 2
+        },
+        {
+          "material": "Erbium",
+          "amount": 2
+        },
+        {
+          "material": "Lanthanum",
+          "amount": 2
+        },
+        {
+          "material": "Neodymium",
+          "amount": 2
+        },
+        {
+          "material": "Yttrium",
+          "amount": 4
+        },
+        {
+          "material": "Gadolinium",
+          "amount": 2
+        },
+        {
+          "material": "Beryllium",
+          "amount": 3
+        },
+        {
+          "material": "Silicon",
+          "amount": 4
+        },
+        {
+          "material": "Oxygen",
+          "amount": 9
+        }
+      ]
     }
   },
   {
@@ -160431,7 +162605,26 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": true,
-      "chemicalFormula": "MgTiO₃"
+      "chemicalFormula": "MgTiO₃",
+      "protons": 14,
+      "neutrons": 15,
+      "state": "ORE",
+      "generatesFluid": false,
+      "generatesCells": false,
+      "composition": [
+        {
+          "material": "Magnesium",
+          "amount": 1
+        },
+        {
+          "material": "Titanium",
+          "amount": 1
+        },
+        {
+          "material": "Oxygen",
+          "amount": 3
+        }
+      ]
     }
   },
   {
@@ -160541,7 +162734,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Ge"
+      "chemicalFormula": "Ge",
+      "protons": 32,
+      "neutrons": 41,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": []
     }
   },
   {
@@ -160649,7 +162848,22 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": true,
-      "chemicalFormula": "CdS"
+      "chemicalFormula": "CdS",
+      "protons": 32,
+      "neutrons": 40,
+      "state": "ORE",
+      "generatesFluid": false,
+      "generatesCells": false,
+      "composition": [
+        {
+          "material": "Cadmium",
+          "amount": 1
+        },
+        {
+          "material": "Sulfur",
+          "amount": 1
+        }
+      ]
     }
   },
   {
@@ -160785,7 +162999,38 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Ti₉C₉K₉Li₉S₉H₅"
+      "chemicalFormula": "Ti₉C₉K₉Li₉S₉H₅",
+      "protons": 96,
+      "neutrons": 128,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "Titanium",
+          "amount": 18
+        },
+        {
+          "material": "Carbon",
+          "amount": 18
+        },
+        {
+          "material": "Potassium",
+          "amount": 18
+        },
+        {
+          "material": "Lithium",
+          "amount": 18
+        },
+        {
+          "material": "Sulfur",
+          "amount": 18
+        },
+        {
+          "material": "Hydrogen",
+          "amount": 10
+        }
+      ]
     }
   },
   {
@@ -160906,7 +163151,34 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "HgBa₂Ca₂Cu₃O₈"
+      "chemicalFormula": "HgBa₂Ca₂Cu₃O₈",
+      "protons": 38,
+      "neutrons": -1,
+      "state": "LIQUID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "Mercury",
+          "amount": 1
+        },
+        {
+          "material": "Barium",
+          "amount": 2
+        },
+        {
+          "material": "Calcium",
+          "amount": 2
+        },
+        {
+          "material": "Copper",
+          "amount": 3
+        },
+        {
+          "material": "Oxygen",
+          "amount": 8
+        }
+      ]
     }
   },
   {
@@ -161049,7 +163321,46 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Co₁Hf₁(Co₄Cr₃P₂Mo)₈Re₅(NbC)₅(Fe₉MnSiMo₄Cr₁₁Ni₂₄)₄(Fe₅CW)₄(ZrC)₄"
+      "chemicalFormula": "Co₁Hf₁(Co₄Cr₃P₂Mo)₈Re₅(NbC)₅(Fe₉MnSiMo₄Cr₁₁Ni₂₄)₄(Fe₅CW)₄(ZrC)₄",
+      "protons": 40,
+      "neutrons": -1,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "Cobalt",
+          "amount": 20
+        },
+        {
+          "material": "Hafnium",
+          "amount": 20
+        },
+        {
+          "material": "Talonite",
+          "amount": 16
+        },
+        {
+          "material": "Rhenium",
+          "amount": 10
+        },
+        {
+          "material": "NiobiumCarbide",
+          "amount": 10
+        },
+        {
+          "material": "HastelloyX",
+          "amount": 8
+        },
+        {
+          "material": "TungstenSteel",
+          "amount": 8
+        },
+        {
+          "material": "ZirconiumCarbide",
+          "amount": 8
+        }
+      ]
     }
   },
   {
@@ -161184,7 +163495,38 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "CoMo₈WCuCr₇Ni₃₂"
+      "chemicalFormula": "CoMo₈WCuCr₇Ni₃₂",
+      "protons": 37,
+      "neutrons": -1,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "Cobalt",
+          "amount": 2
+        },
+        {
+          "material": "Molybdenum",
+          "amount": 16
+        },
+        {
+          "material": "Tungsten",
+          "amount": 2
+        },
+        {
+          "material": "Copper",
+          "amount": 2
+        },
+        {
+          "material": "Chrome",
+          "amount": 14
+        },
+        {
+          "material": "Nickel",
+          "amount": 64
+        }
+      ]
     }
   },
   {
@@ -161315,7 +163657,34 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Y₂Mo₄Cr₂Ti₂Ni₁₅"
+      "chemicalFormula": "Y₂Mo₄Cr₂Ti₂Ni₁₅",
+      "protons": 31,
+      "neutrons": -1,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "Yttrium",
+          "amount": 8
+        },
+        {
+          "material": "Molybdenum",
+          "amount": 16
+        },
+        {
+          "material": "Chrome",
+          "amount": 8
+        },
+        {
+          "material": "Titanium",
+          "amount": 8
+        },
+        {
+          "material": "Nickel",
+          "amount": 60
+        }
+      ]
     }
   },
   {
@@ -161446,7 +163815,34 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Fe₃CoMo₁₂Cr₃Ni₃₁"
+      "chemicalFormula": "Fe₃CoMo₁₂Cr₃Ni₃₁",
+      "protons": 29,
+      "neutrons": -1,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "Iron",
+          "amount": 6
+        },
+        {
+          "material": "Cobalt",
+          "amount": 2
+        },
+        {
+          "material": "Molybdenum",
+          "amount": 24
+        },
+        {
+          "material": "Chrome",
+          "amount": 6
+        },
+        {
+          "material": "Nickel",
+          "amount": 62
+        }
+      ]
     }
   },
   {
@@ -161581,7 +163977,38 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Fe₉MnSiMo₄Cr₁₁Ni₂₄"
+      "chemicalFormula": "Fe₉MnSiMo₄Cr₁₁Ni₂₄",
+      "protons": 26,
+      "neutrons": -1,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "Iron",
+          "amount": 18
+        },
+        {
+          "material": "Manganese",
+          "amount": 2
+        },
+        {
+          "material": "Silicon",
+          "amount": 2
+        },
+        {
+          "material": "Molybdenum",
+          "amount": 8
+        },
+        {
+          "material": "Chrome",
+          "amount": 22
+        },
+        {
+          "material": "Nickel",
+          "amount": 48
+        }
+      ]
     }
   },
   {
@@ -161712,7 +164139,34 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "HeLiCoPtEr"
+      "chemicalFormula": "HeLiCoPtEr",
+      "protons": 35,
+      "neutrons": -1,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "Helium",
+          "amount": 20
+        },
+        {
+          "material": "Lithium",
+          "amount": 20
+        },
+        {
+          "material": "Cobalt",
+          "amount": 20
+        },
+        {
+          "material": "Platinum",
+          "amount": 20
+        },
+        {
+          "material": "Erbium",
+          "amount": 20
+        }
+      ]
     }
   },
   {
@@ -161816,7 +164270,30 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "LiFBeF₂UF₄FP"
+      "chemicalFormula": "LiFBeF₂UF₄FP",
+      "protons": 38,
+      "neutrons": 57,
+      "state": "PURE_LIQUID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "LithiumFluoride",
+          "amount": 1
+        },
+        {
+          "material": "BerylliumFluoride",
+          "amount": 1
+        },
+        {
+          "material": "UraniumTetrafluoride",
+          "amount": 1
+        },
+        {
+          "material": "Protactinium",
+          "amount": 1
+        }
+      ]
     }
   },
   {
@@ -161940,7 +164417,38 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": true,
-      "chemicalFormula": "CaCeAl₁₂Ti₁₂Mg₁₂O₁₉"
+      "chemicalFormula": "CaCeAl₁₂Ti₁₂Mg₁₂O₁₉",
+      "protons": 22,
+      "neutrons": 26,
+      "state": "ORE",
+      "generatesFluid": false,
+      "generatesCells": false,
+      "composition": [
+        {
+          "material": "Calcium",
+          "amount": 1
+        },
+        {
+          "material": "Cerium",
+          "amount": 1
+        },
+        {
+          "material": "Aluminium",
+          "amount": 12
+        },
+        {
+          "material": "Titanium",
+          "amount": 12
+        },
+        {
+          "material": "Magnesium",
+          "amount": 12
+        },
+        {
+          "material": "Oxygen",
+          "amount": 19
+        }
+      ]
     }
   },
   {
@@ -162052,7 +164560,26 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": true,
-      "chemicalFormula": "Au₃TlTe₂"
+      "chemicalFormula": "Au₃TlTe₂",
+      "protons": 70,
+      "neutrons": 105,
+      "state": "ORE",
+      "generatesFluid": false,
+      "generatesCells": false,
+      "composition": [
+        {
+          "material": "Gold",
+          "amount": 3
+        },
+        {
+          "material": "Thallium",
+          "amount": 1
+        },
+        {
+          "material": "Tellurium",
+          "amount": 2
+        }
+      ]
     }
   },
   {
@@ -162148,7 +164675,22 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "HCl"
+      "chemicalFormula": "HCl",
+      "protons": 9,
+      "neutrons": 9,
+      "state": "PURE_LIQUID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "Hydrogen",
+          "amount": 1
+        },
+        {
+          "material": "Chlorine",
+          "amount": 1
+        }
+      ]
     }
   },
   {
@@ -162248,7 +164790,26 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "HCN"
+      "chemicalFormula": "HCN",
+      "protons": 4,
+      "neutrons": -1,
+      "state": "PURE_GAS",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "Hydrogen",
+          "amount": 1
+        },
+        {
+          "material": "Carbon",
+          "amount": 1
+        },
+        {
+          "material": "Nitrogen",
+          "amount": 1
+        }
+      ]
     }
   },
   {
@@ -162363,7 +164924,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Hy⚶"
+      "chemicalFormula": "Hy⚶",
+      "protons": 240,
+      "neutrons": 251,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": []
     }
   },
   {
@@ -162490,7 +165057,30 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Fe₁CuCr₅Ni₉"
+      "chemicalFormula": "Fe₁CuCr₅Ni₉",
+      "protons": 26,
+      "neutrons": -1,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "Iron",
+          "amount": 40
+        },
+        {
+          "material": "Copper",
+          "amount": 4
+        },
+        {
+          "material": "Chrome",
+          "amount": 20
+        },
+        {
+          "material": "Nickel",
+          "amount": 36
+        }
+      ]
     }
   },
   {
@@ -162617,7 +165207,30 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Fe₂₃Co₉Cr₉Ni₉"
+      "chemicalFormula": "Fe₂₃Co₉Cr₉Ni₉",
+      "protons": 26,
+      "neutrons": -1,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "Iron",
+          "amount": 46
+        },
+        {
+          "material": "Cobalt",
+          "amount": 18
+        },
+        {
+          "material": "Chrome",
+          "amount": 18
+        },
+        {
+          "material": "Nickel",
+          "amount": 18
+        }
+      ]
     }
   },
   {
@@ -162744,7 +165357,30 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Fe₁₆Al₃Cr₅Y"
+      "chemicalFormula": "Fe₁₆Al₃Cr₅Y",
+      "protons": 25,
+      "neutrons": -1,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "Iron",
+          "amount": 64
+        },
+        {
+          "material": "Aluminium",
+          "amount": 12
+        },
+        {
+          "material": "Chrome",
+          "amount": 20
+        },
+        {
+          "material": "Yttrium",
+          "amount": 4
+        }
+      ]
     }
   },
   {
@@ -162875,7 +165511,34 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Ni₃Cr₇Mo₁(Fe₂Ni)₁(Ni₄Cr)₁₃"
+      "chemicalFormula": "Ni₃Cr₇Mo₁(Fe₂Ni)₁(Ni₄Cr)₁₃",
+      "protons": 29,
+      "neutrons": -1,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "Nickel",
+          "amount": 3
+        },
+        {
+          "material": "Chrome",
+          "amount": 7
+        },
+        {
+          "material": "Molybdenum",
+          "amount": 10
+        },
+        {
+          "material": "Invar",
+          "amount": 10
+        },
+        {
+          "material": "Nichrome",
+          "amount": 13
+        }
+      ]
     }
   },
   {
@@ -163002,7 +165665,30 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "CrNb₂Mo₂(Ni₄Cr)₃"
+      "chemicalFormula": "CrNb₂Mo₂(Ni₄Cr)₃",
+      "protons": 33,
+      "neutrons": -1,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "Chrome",
+          "amount": 5
+        },
+        {
+          "material": "Niobium",
+          "amount": 10
+        },
+        {
+          "material": "Molybdenum",
+          "amount": 10
+        },
+        {
+          "material": "Nichrome",
+          "amount": 15
+        }
+      ]
     }
   },
   {
@@ -163129,7 +165815,30 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Ni₂NbAl₂(Ni₄Cr)"
+      "chemicalFormula": "Ni₂NbAl₂(Ni₄Cr)",
+      "protons": 27,
+      "neutrons": -1,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "Nickel",
+          "amount": 20
+        },
+        {
+          "material": "Niobium",
+          "amount": 10
+        },
+        {
+          "material": "Aluminium",
+          "amount": 20
+        },
+        {
+          "material": "Nichrome",
+          "amount": 10
+        }
+      ]
     }
   },
   {
@@ -163250,7 +165959,34 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Bi₄₇Pb₂₅Sn₁₃Cd₁In₅"
+      "chemicalFormula": "Bi₄₇Pb₂₅Sn₁₃Cd₁In₅",
+      "protons": 62,
+      "neutrons": -1,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "Bismuth",
+          "amount": 47
+        },
+        {
+          "material": "Lead",
+          "amount": 25
+        },
+        {
+          "material": "Tin",
+          "amount": 13
+        },
+        {
+          "material": "Cadmium",
+          "amount": 10
+        },
+        {
+          "material": "Indium",
+          "amount": 5
+        }
+      ]
     }
   },
   {
@@ -163378,7 +166114,42 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": true,
-      "chemicalFormula": "IrRuRhPtAsSO"
+      "chemicalFormula": "IrRuRhPtAsSO",
+      "protons": 43,
+      "neutrons": 59,
+      "state": "ORE",
+      "generatesFluid": false,
+      "generatesCells": false,
+      "composition": [
+        {
+          "material": "Iridium",
+          "amount": 1
+        },
+        {
+          "material": "Ruthenium",
+          "amount": 1
+        },
+        {
+          "material": "Rhodium",
+          "amount": 1
+        },
+        {
+          "material": "Platinum",
+          "amount": 1
+        },
+        {
+          "material": "Arsenic",
+          "amount": 1
+        },
+        {
+          "material": "Sulfur",
+          "amount": 1
+        },
+        {
+          "material": "Oxygen",
+          "amount": 1
+        }
+      ]
     }
   },
   {
@@ -163490,7 +166261,26 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": true,
-      "chemicalFormula": "Ir₂Rh₂S₃"
+      "chemicalFormula": "Ir₂Rh₂S₃",
+      "protons": 46,
+      "neutrons": 63,
+      "state": "ORE",
+      "generatesFluid": false,
+      "generatesCells": false,
+      "composition": [
+        {
+          "material": "Iridium",
+          "amount": 2
+        },
+        {
+          "material": "Rhodium",
+          "amount": 2
+        },
+        {
+          "material": "Sulfur",
+          "amount": 3
+        }
+      ]
     }
   },
   {
@@ -163605,7 +166395,26 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": true,
-      "chemicalFormula": "Ni₇(FeMa)₆Fe₇"
+      "chemicalFormula": "Ni₇(FeMa)₆Fe₇",
+      "protons": 26,
+      "neutrons": 30,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "Nickel",
+          "amount": 35
+        },
+        {
+          "material": "Thaumium",
+          "amount": 30
+        },
+        {
+          "material": "Iron",
+          "amount": 35
+        }
+      ]
     }
   },
   {
@@ -163719,7 +166528,30 @@
       "isRadioactive": true,
       "radiationLevel": 5,
       "hasOre": false,
-      "chemicalFormula": "LiFBeF₂ZrF₄U"
+      "chemicalFormula": "LiFBeF₂ZrF₄U",
+      "protons": 32,
+      "neutrons": -1,
+      "state": "LIQUID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "LithiumFluoride",
+          "amount": 55
+        },
+        {
+          "material": "BerylliumFluoride",
+          "amount": 25
+        },
+        {
+          "material": "ZirconiumTetrafluoride",
+          "amount": 6
+        },
+        {
+          "material": "Uranium235",
+          "amount": 14
+        }
+      ]
     }
   },
   {
@@ -163833,7 +166665,30 @@
       "isRadioactive": true,
       "radiationLevel": 5,
       "hasOre": false,
-      "chemicalFormula": "LiFBeF₂ZrF₄UF₄"
+      "chemicalFormula": "LiFBeF₂ZrF₄UF₄",
+      "protons": 21,
+      "neutrons": -1,
+      "state": "LIQUID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "LithiumFluoride",
+          "amount": 65
+        },
+        {
+          "material": "BerylliumFluoride",
+          "amount": 28
+        },
+        {
+          "material": "ZirconiumTetrafluoride",
+          "amount": 5
+        },
+        {
+          "material": "UraniumTetrafluoride",
+          "amount": 2
+        }
+      ]
     }
   },
   {
@@ -163947,7 +166802,30 @@
       "isRadioactive": true,
       "radiationLevel": 5,
       "hasOre": false,
-      "chemicalFormula": "LiFBeF₂ThF₄UF₄"
+      "chemicalFormula": "LiFBeF₂ThF₄UF₄",
+      "protons": 27,
+      "neutrons": -1,
+      "state": "LIQUID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "LithiumFluoride",
+          "amount": 65
+        },
+        {
+          "material": "BerylliumFluoride",
+          "amount": 28
+        },
+        {
+          "material": "ThoriumTetrafluoride",
+          "amount": 1
+        },
+        {
+          "material": "UraniumTetrafluoride",
+          "amount": 1
+        }
+      ]
     }
   },
   {
@@ -164043,7 +166921,22 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "LiFBeF₂UF₄"
+      "chemicalFormula": "LiFBeF₂UF₄",
+      "protons": 28,
+      "neutrons": 40,
+      "state": "PURE_LIQUID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "StableMoltenSaltBase",
+          "amount": 1
+        },
+        {
+          "material": "UraniumTetrafluoride",
+          "amount": 1
+        }
+      ]
     }
   },
   {
@@ -164187,7 +167080,46 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "(Y₂Mo₄Cr₂Ti₂Ni₁₅)₄Nq₂SmW₂ArAl₃Ni₄C"
+      "chemicalFormula": "(Y₂Mo₄Cr₂Ti₂Ni₁₅)₄Nq₂SmW₂ArAl₃Ni₄C",
+      "protons": 45,
+      "neutrons": -1,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "HastelloyN",
+          "amount": 8
+        },
+        {
+          "material": "Naquadah",
+          "amount": 4
+        },
+        {
+          "material": "Samarium",
+          "amount": 2
+        },
+        {
+          "material": "Tungsten",
+          "amount": 4
+        },
+        {
+          "material": "Argon",
+          "amount": 2
+        },
+        {
+          "material": "Aluminium",
+          "amount": 6
+        },
+        {
+          "material": "Nickel",
+          "amount": 8
+        },
+        {
+          "material": "Carbon",
+          "amount": 2
+        }
+      ]
     }
   },
   {
@@ -164299,7 +167231,26 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": true,
-      "chemicalFormula": "ClBrTl"
+      "chemicalFormula": "ClBrTl",
+      "protons": 44,
+      "neutrons": 62,
+      "state": "ORE",
+      "generatesFluid": false,
+      "generatesCells": false,
+      "composition": [
+        {
+          "material": "Chlorine",
+          "amount": 1
+        },
+        {
+          "material": "Bromine",
+          "amount": 1
+        },
+        {
+          "material": "Thallium",
+          "amount": 1
+        }
+      ]
     }
   },
   {
@@ -164419,7 +167370,34 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": true,
-      "chemicalFormula": "Ce₂O₃Ca₃H₂O"
+      "chemicalFormula": "Ce₂O₃Ca₃H₂O",
+      "protons": 19,
+      "neutrons": 23,
+      "state": "ORE",
+      "generatesFluid": false,
+      "generatesCells": false,
+      "composition": [
+        {
+          "material": "Cerium",
+          "amount": 2
+        },
+        {
+          "material": "Oxygen",
+          "amount": 3
+        },
+        {
+          "material": "Calcium",
+          "amount": 3
+        },
+        {
+          "material": "Hydrogen",
+          "amount": 2
+        },
+        {
+          "material": "Oxygen",
+          "amount": 1
+        }
+      ]
     }
   },
   {
@@ -164539,7 +167517,34 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": true,
-      "chemicalFormula": "La₂O₃Ca₃H₂O"
+      "chemicalFormula": "La₂O₃Ca₃H₂O",
+      "protons": 18,
+      "neutrons": 23,
+      "state": "ORE",
+      "generatesFluid": false,
+      "generatesCells": false,
+      "composition": [
+        {
+          "material": "Lanthanum",
+          "amount": 2
+        },
+        {
+          "material": "Oxygen",
+          "amount": 3
+        },
+        {
+          "material": "Calcium",
+          "amount": 3
+        },
+        {
+          "material": "Hydrogen",
+          "amount": 2
+        },
+        {
+          "material": "Oxygen",
+          "amount": 1
+        }
+      ]
     }
   },
   {
@@ -164659,7 +167664,34 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": true,
-      "chemicalFormula": "Nd₂O₃Ca₃H₂O"
+      "chemicalFormula": "Nd₂O₃Ca₃H₂O",
+      "protons": 19,
+      "neutrons": 24,
+      "state": "ORE",
+      "generatesFluid": false,
+      "generatesCells": false,
+      "composition": [
+        {
+          "material": "Neodymium",
+          "amount": 2
+        },
+        {
+          "material": "Oxygen",
+          "amount": 3
+        },
+        {
+          "material": "Calcium",
+          "amount": 3
+        },
+        {
+          "material": "Hydrogen",
+          "amount": 2
+        },
+        {
+          "material": "Oxygen",
+          "amount": 1
+        }
+      ]
     }
   },
   {
@@ -164792,7 +167824,34 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "((Fe₄(FeAlCr)(Fe₂Ni)₅)₁SSi₄C)₈In₂Cr₄DyRe"
+      "chemicalFormula": "((Fe₄(FeAlCr)(Fe₂Ni)₅)₁SSi₄C)₈In₂Cr₄DyRe",
+      "protons": 45,
+      "neutrons": -1,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "EglinSteel",
+          "amount": 40
+        },
+        {
+          "material": "Indium",
+          "amount": 10
+        },
+        {
+          "material": "Chrome",
+          "amount": 20
+        },
+        {
+          "material": "Dysprosium",
+          "amount": 5
+        },
+        {
+          "material": "Rhenium",
+          "amount": 5
+        }
+      ]
     }
   },
   {
@@ -164904,7 +167963,26 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": true,
-      "chemicalFormula": "CaI₂O₆"
+      "chemicalFormula": "CaI₂O₆",
+      "protons": 27,
+      "neutrons": 34,
+      "state": "ORE",
+      "generatesFluid": false,
+      "generatesCells": false,
+      "composition": [
+        {
+          "material": "Calcium",
+          "amount": 1
+        },
+        {
+          "material": "Iodine",
+          "amount": 2
+        },
+        {
+          "material": "Oxygen",
+          "amount": 6
+        }
+      ]
     }
   },
   {
@@ -165032,7 +168110,42 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": true,
-      "chemicalFormula": "CaYb₃Gd₂Dy₂(U₂₃₅)₂O₂₉H₂₄"
+      "chemicalFormula": "CaYb₃Gd₂Dy₂(U₂₃₅)₂O₂₉H₂₄",
+      "protons": 45,
+      "neutrons": 66,
+      "state": "ORE",
+      "generatesFluid": false,
+      "generatesCells": false,
+      "composition": [
+        {
+          "material": "Calcium",
+          "amount": 1
+        },
+        {
+          "material": "Ytterbium",
+          "amount": 3
+        },
+        {
+          "material": "Gadolinium",
+          "amount": 2
+        },
+        {
+          "material": "Dysprosium",
+          "amount": 2
+        },
+        {
+          "material": "Uranium235",
+          "amount": 2
+        },
+        {
+          "material": "Oxygen",
+          "amount": 29
+        },
+        {
+          "material": "Hydrogen",
+          "amount": 24
+        }
+      ]
     }
   },
   {
@@ -165130,7 +168243,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Li"
+      "chemicalFormula": "Li",
+      "protons": 3,
+      "neutrons": 4,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": false,
+      "composition": []
     }
   },
   {
@@ -165236,7 +168355,22 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "LiF"
+      "chemicalFormula": "LiF",
+      "protons": 6,
+      "neutrons": 6,
+      "state": "LIQUID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "Lithium7",
+          "amount": 1
+        },
+        {
+          "material": "Fluorine",
+          "amount": 1
+        }
+      ]
     }
   },
   {
@@ -165340,7 +168474,22 @@
       "isRadioactive": true,
       "radiationLevel": 4,
       "hasOre": false,
-      "chemicalFormula": "Li₂BeF₄"
+      "chemicalFormula": "Li₂BeF₄",
+      "protons": 6,
+      "neutrons": -1,
+      "state": "LIQUID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "LithiumFluoride",
+          "amount": 2
+        },
+        {
+          "material": "BerylliumFluoride",
+          "amount": 1
+        }
+      ]
     }
   },
   {
@@ -165472,7 +168621,34 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "(Fe₅C)₁₆MoTiNi₄Co₂"
+      "chemicalFormula": "(Fe₅C)₁₆MoTiNi₄Co₂",
+      "protons": 29,
+      "neutrons": -1,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "Steel",
+          "amount": 64
+        },
+        {
+          "material": "Molybdenum",
+          "amount": 4
+        },
+        {
+          "material": "Titanium",
+          "amount": 4
+        },
+        {
+          "material": "Nickel",
+          "amount": 16
+        },
+        {
+          "material": "Cobalt",
+          "amount": 8
+        }
+      ]
     }
   },
   {
@@ -165603,7 +168779,34 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "(Fe₅C)₁₆TiAlNi₄Co₂"
+      "chemicalFormula": "(Fe₅C)₁₆TiAlNi₄Co₂",
+      "protons": 23,
+      "neutrons": -1,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "Steel",
+          "amount": 64
+        },
+        {
+          "material": "Titanium",
+          "amount": 4
+        },
+        {
+          "material": "Aluminium",
+          "amount": 4
+        },
+        {
+          "material": "Nickel",
+          "amount": 16
+        },
+        {
+          "material": "Cobalt",
+          "amount": 8
+        }
+      ]
     }
   },
   {
@@ -165734,7 +168937,34 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "(Fe₅C)₁₆AlMoNi₄Co₂"
+      "chemicalFormula": "(Fe₅C)₁₆AlMoNi₄Co₂",
+      "protons": 27,
+      "neutrons": -1,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "Steel",
+          "amount": 64
+        },
+        {
+          "material": "Aluminium",
+          "amount": 4
+        },
+        {
+          "material": "Molybdenum",
+          "amount": 4
+        },
+        {
+          "material": "Nickel",
+          "amount": 16
+        },
+        {
+          "material": "Cobalt",
+          "amount": 8
+        }
+      ]
     }
   },
   {
@@ -165846,7 +169076,26 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": true,
-      "chemicalFormula": "Pd₁₁Te₂Se₂"
+      "chemicalFormula": "Pd₁₁Te₂Se₂",
+      "protons": 44,
+      "neutrons": 60,
+      "state": "ORE",
+      "generatesFluid": false,
+      "generatesCells": false,
+      "composition": [
+        {
+          "material": "Palladium",
+          "amount": 11
+        },
+        {
+          "material": "Tellurium",
+          "amount": 2
+        },
+        {
+          "material": "Selenium",
+          "amount": 2
+        }
+      ]
     }
   },
   {
@@ -165942,7 +169191,22 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "?Sn?Bi?If?"
+      "chemicalFormula": "?Sn?Bi?If?",
+      "protons": 66,
+      "neutrons": -1,
+      "state": "PURE_LIQUID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "Tin",
+          "amount": 1
+        },
+        {
+          "material": "Bismuth",
+          "amount": 1
+        }
+      ]
     }
   },
   {
@@ -166043,7 +169307,13 @@
       "isRadioactive": true,
       "radiationLevel": 2,
       "hasOre": false,
-      "chemicalFormula": "Np"
+      "chemicalFormula": "Np",
+      "protons": 93,
+      "neutrons": 144,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": []
     }
   },
   {
@@ -166149,7 +169419,22 @@
       "isRadioactive": true,
       "radiationLevel": 1,
       "hasOre": false,
-      "chemicalFormula": "NpF₆"
+      "chemicalFormula": "NpF₆",
+      "protons": 51,
+      "neutrons": 76,
+      "state": "GAS",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "Neptunium",
+          "amount": 1
+        },
+        {
+          "material": "Fluorine",
+          "amount": 6
+        }
+      ]
     }
   },
   {
@@ -166273,7 +169558,38 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": true,
-      "chemicalFormula": "NiCoFe₃Al₂Cr₂O₈"
+      "chemicalFormula": "NiCoFe₃Al₂Cr₂O₈",
+      "protons": 21,
+      "neutrons": 23,
+      "state": "ORE",
+      "generatesFluid": false,
+      "generatesCells": false,
+      "composition": [
+        {
+          "material": "Nickel",
+          "amount": 1
+        },
+        {
+          "material": "Cobalt",
+          "amount": 1
+        },
+        {
+          "material": "Iron",
+          "amount": 3
+        },
+        {
+          "material": "Aluminium",
+          "amount": 2
+        },
+        {
+          "material": "Chrome",
+          "amount": 2
+        },
+        {
+          "material": "Oxygen",
+          "amount": 8
+        }
+      ]
     }
   },
   {
@@ -166392,7 +169708,22 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "NbC"
+      "chemicalFormula": "NbC",
+      "protons": 23,
+      "neutrons": 29,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "Niobium",
+          "amount": 50
+        },
+        {
+          "material": "Carbon",
+          "amount": 50
+        }
+      ]
     }
   },
   {
@@ -166513,7 +169844,22 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Ni₂Ti₃"
+      "chemicalFormula": "Ni₂Ti₃",
+      "protons": 25,
+      "neutrons": -1,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "Nickel",
+          "amount": 40
+        },
+        {
+          "material": "Titanium",
+          "amount": 60
+        }
+      ]
     }
   },
   {
@@ -166644,7 +169990,34 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "((Th)₄()₄)₆(((WC)₇Ti₃)₃)₆()(NiAuAgCu₃Fe₅C₃)₂(FeMa)₅"
+      "chemicalFormula": "((Th)₄()₄)₆(((WC)₇Ti₃)₃)₆()(NiAuAgCu₃Fe₅C₃)₂(FeMa)₅",
+      "protons": 50,
+      "neutrons": -1,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "Arcanite",
+          "amount": 30
+        },
+        {
+          "material": "Titansteel",
+          "amount": 30
+        },
+        {
+          "material": "EnergyCrystal",
+          "amount": 5
+        },
+        {
+          "material": "BlackSteel",
+          "amount": 10
+        },
+        {
+          "material": "Thaumium",
+          "amount": 25
+        }
+      ]
     }
   },
   {
@@ -166768,7 +170141,38 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": true,
-      "chemicalFormula": "S₅Ag₄I₂Hg₅Br₂Cl₂"
+      "chemicalFormula": "S₅Ag₄I₂Hg₅Br₂Cl₂",
+      "protons": 41,
+      "neutrons": 55,
+      "state": "ORE",
+      "generatesFluid": false,
+      "generatesCells": false,
+      "composition": [
+        {
+          "material": "Sulfur",
+          "amount": 5
+        },
+        {
+          "material": "Silver",
+          "amount": 4
+        },
+        {
+          "material": "Iodine",
+          "amount": 2
+        },
+        {
+          "material": "Mercury",
+          "amount": 5
+        },
+        {
+          "material": "Bromine",
+          "amount": 2
+        },
+        {
+          "material": "Chlorine",
+          "amount": 2
+        }
+      ]
     }
   },
   {
@@ -166868,7 +170272,26 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "UF₆F₂FP"
+      "chemicalFormula": "UF₆F₂FP",
+      "protons": 17,
+      "neutrons": 22,
+      "state": "PURE_LIQUID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "UraniumHexafluoride",
+          "amount": 1
+        },
+        {
+          "material": "Fluorine",
+          "amount": 3
+        },
+        {
+          "material": "Phosphorus",
+          "amount": 1
+        }
+      ]
     }
   },
   {
@@ -167012,7 +170435,46 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "(Ni₂NbAl₂(Ni₄Cr))₈((Fe₄(FeAlCr)(Fe₂Ni)₅)₁SSi₄C)₅₄Ce₃Sb₂Pt₂Yb(Fe₅CW)₄"
+      "chemicalFormula": "(Ni₂NbAl₂(Ni₄Cr))₈((Fe₄(FeAlCr)(Fe₂Ni)₅)₁SSi₄C)₅₄Ce₃Sb₂Pt₂Yb(Fe₅CW)₄",
+      "protons": 49,
+      "neutrons": -1,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "Inconel792",
+          "amount": 16
+        },
+        {
+          "material": "EglinSteel",
+          "amount": 10
+        },
+        {
+          "material": "NaquadahEnriched",
+          "amount": 8
+        },
+        {
+          "material": "Cerium",
+          "amount": 6
+        },
+        {
+          "material": "Antimony",
+          "amount": 4
+        },
+        {
+          "material": "Platinum",
+          "amount": 4
+        },
+        {
+          "material": "Ytterbium",
+          "amount": 2
+        },
+        {
+          "material": "TungstenSteel",
+          "amount": 8
+        }
+      ]
     }
   },
   {
@@ -167113,7 +170575,13 @@
       "isRadioactive": true,
       "radiationLevel": 2,
       "hasOre": false,
-      "chemicalFormula": "Pu"
+      "chemicalFormula": "Pu",
+      "protons": 94,
+      "neutrons": 144,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": []
     }
   },
   {
@@ -167214,7 +170682,13 @@
       "isRadioactive": true,
       "radiationLevel": 1,
       "hasOre": false,
-      "chemicalFormula": "Po"
+      "chemicalFormula": "Po",
+      "protons": 84,
+      "neutrons": 125,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": []
     }
   },
   {
@@ -167350,7 +170824,50 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": true,
-      "chemicalFormula": "YCaCe(U₂₃₅)ThTi₂Nb₂Ta₂O₆"
+      "chemicalFormula": "YCaCe(U₂₃₅)ThTi₂Nb₂Ta₂O₆",
+      "protons": 49,
+      "neutrons": 70,
+      "state": "ORE",
+      "generatesFluid": false,
+      "generatesCells": false,
+      "composition": [
+        {
+          "material": "Yttrium",
+          "amount": 1
+        },
+        {
+          "material": "Calcium",
+          "amount": 1
+        },
+        {
+          "material": "Cerium",
+          "amount": 1
+        },
+        {
+          "material": "Uranium235",
+          "amount": 1
+        },
+        {
+          "material": "Thorium",
+          "amount": 1
+        },
+        {
+          "material": "Titanium",
+          "amount": 2
+        },
+        {
+          "material": "Niobium",
+          "amount": 2
+        },
+        {
+          "material": "Tantalum",
+          "amount": 2
+        },
+        {
+          "material": "Oxygen",
+          "amount": 6
+        }
+      ]
     }
   },
   {
@@ -167472,7 +170989,26 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Pb₂(SnCu₃)₂Sn"
+      "chemicalFormula": "Pb₂(SnCu₃)₂Sn",
+      "protons": 55,
+      "neutrons": 78,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "Lead",
+          "amount": 40
+        },
+        {
+          "material": "Bronze",
+          "amount": 40
+        },
+        {
+          "material": "Tin",
+          "amount": 20
+        }
+      ]
     }
   },
   {
@@ -167573,7 +171109,13 @@
       "isRadioactive": true,
       "radiationLevel": 1,
       "hasOre": false,
-      "chemicalFormula": "Pa"
+      "chemicalFormula": "Pa",
+      "protons": 91,
+      "neutrons": 140,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": []
     }
   },
   {
@@ -167719,7 +171261,46 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "(Co₇Cr₇Mn₄Ti₂)₃()(SiC)GaAmPdBiGe"
+      "chemicalFormula": "(Co₇Cr₇Mn₄Ti₂)₃()(SiC)GaAmPdBiGe",
+      "protons": 150,
+      "neutrons": 200,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "Stellite",
+          "amount": 15
+        },
+        {
+          "material": "EnergyCrystal",
+          "amount": 5
+        },
+        {
+          "material": "SiliconCarbide",
+          "amount": 5
+        },
+        {
+          "material": "Gallium",
+          "amount": 5
+        },
+        {
+          "material": "Americium",
+          "amount": 5
+        },
+        {
+          "material": "Palladium",
+          "amount": 5
+        },
+        {
+          "material": "Bismuth",
+          "amount": 5
+        },
+        {
+          "material": "Germanium",
+          "amount": 5
+        }
+      ]
     }
   },
   {
@@ -167857,7 +171438,50 @@
       "isRadioactive": true,
       "radiationLevel": 4,
       "hasOre": true,
-      "chemicalFormula": "Rn₂Ra(U₂₃₅)U₁Th₂₅(Th)₄(Ca₅(SrO)₅Ce₅Na₅P₃O₁₂F₆)₆(Y₂Fe₁(U₂₃₅)₂Th₃Nb₂Ta₃)₈(Ca₂Ti₂Si₂ThO₁)₄"
+      "chemicalFormula": "Rn₂Ra(U₂₃₅)U₁Th₂₅(Th)₄(Ca₅(SrO)₅Ce₅Na₅P₃O₁₂F₆)₆(Y₂Fe₁(U₂₃₅)₂Th₃Nb₂Ta₃)₈(Ca₂Ti₂Si₂ThO₁)₄",
+      "protons": 72,
+      "neutrons": 110,
+      "state": "ORE",
+      "generatesFluid": false,
+      "generatesCells": false,
+      "composition": [
+        {
+          "material": "Radon",
+          "amount": 2
+        },
+        {
+          "material": "Radium",
+          "amount": 1
+        },
+        {
+          "material": "Uranium235",
+          "amount": 1
+        },
+        {
+          "material": "Uranium",
+          "amount": 10
+        },
+        {
+          "material": "Thorium",
+          "amount": 25
+        },
+        {
+          "material": "Thorium232",
+          "amount": 4
+        },
+        {
+          "material": "Fluorcaphite",
+          "amount": 6
+        },
+        {
+          "material": "SamarskiteY",
+          "amount": 8
+        },
+        {
+          "material": "Titanite",
+          "amount": 4
+        }
+      ]
     }
   },
   {
@@ -167958,7 +171582,13 @@
       "isRadioactive": true,
       "radiationLevel": 1,
       "hasOre": false,
-      "chemicalFormula": "Ra"
+      "chemicalFormula": "Ra",
+      "protons": 88,
+      "neutrons": 138,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": []
     }
   },
   {
@@ -168094,7 +171724,50 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": true,
-      "chemicalFormula": "??????"
+      "chemicalFormula": "??????",
+      "protons": 30,
+      "neutrons": -1,
+      "state": "ORE",
+      "generatesFluid": false,
+      "generatesCells": false,
+      "composition": [
+        {
+          "material": "Greenockite",
+          "amount": 1
+        },
+        {
+          "material": "LanthaniteCe",
+          "amount": 1
+        },
+        {
+          "material": "AgarditeCd",
+          "amount": 1
+        },
+        {
+          "material": "Yttrialite",
+          "amount": 1
+        },
+        {
+          "material": "NetherQuartz",
+          "amount": 1
+        },
+        {
+          "material": "Galena",
+          "amount": 1
+        },
+        {
+          "material": "Chalcopyrite",
+          "amount": 1
+        },
+        {
+          "material": "CryoliteF",
+          "amount": 1
+        },
+        {
+          "material": "Yttrium",
+          "amount": 1
+        }
+      ]
     }
   },
   {
@@ -168230,7 +171903,50 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": true,
-      "chemicalFormula": "??????"
+      "chemicalFormula": "??????",
+      "protons": 29,
+      "neutrons": -1,
+      "state": "ORE",
+      "generatesFluid": false,
+      "generatesCells": false,
+      "composition": [
+        {
+          "material": "LanthaniteNd",
+          "amount": 1
+        },
+        {
+          "material": "AgarditeNd",
+          "amount": 1
+        },
+        {
+          "material": "Yttriaite",
+          "amount": 1
+        },
+        {
+          "material": "Crocoite",
+          "amount": 1
+        },
+        {
+          "material": "Nichromite",
+          "amount": 1
+        },
+        {
+          "material": "Zircon",
+          "amount": 1
+        },
+        {
+          "material": "AncientGranite",
+          "amount": 1
+        },
+        {
+          "material": "BlackMetal",
+          "amount": 1
+        },
+        {
+          "material": "Runite",
+          "amount": 1
+        }
+      ]
     }
   },
   {
@@ -168366,7 +172082,50 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": true,
-      "chemicalFormula": "??????"
+      "chemicalFormula": "??????",
+      "protons": 36,
+      "neutrons": -1,
+      "state": "ORE",
+      "generatesFluid": false,
+      "generatesCells": false,
+      "composition": [
+        {
+          "material": "GadoliniteY",
+          "amount": 1
+        },
+        {
+          "material": "Lepersonnite",
+          "amount": 1
+        },
+        {
+          "material": "Florencite",
+          "amount": 1
+        },
+        {
+          "material": "Fluorcaphite",
+          "amount": 1
+        },
+        {
+          "material": "Lautarite",
+          "amount": 1
+        },
+        {
+          "material": "DemicheleiteBr",
+          "amount": 1
+        },
+        {
+          "material": "Alburnite",
+          "amount": 1
+        },
+        {
+          "material": "SamarskiteY",
+          "amount": 1
+        },
+        {
+          "material": "AgarditeLa",
+          "amount": 1
+        }
+      ]
     }
   },
   {
@@ -168476,7 +172235,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Re"
+      "chemicalFormula": "Re",
+      "protons": 75,
+      "neutrons": 111,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": []
     }
   },
   {
@@ -168582,7 +172347,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Fs⚶"
+      "chemicalFormula": "Fs⚶",
+      "protons": 184,
+      "neutrons": 142,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": []
     }
   },
   {
@@ -168689,7 +172460,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": true,
-      "chemicalFormula": "Rt*"
+      "chemicalFormula": "Rt*",
+      "protons": 73,
+      "neutrons": 87,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": []
     }
   },
   {
@@ -168813,7 +172590,38 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": true,
-      "chemicalFormula": "Y₂Fe₁(U₂₃₅)₂Th₃Nb₂Ta₃"
+      "chemicalFormula": "Y₂Fe₁(U₂₃₅)₂Th₃Nb₂Ta₃",
+      "protons": 60,
+      "neutrons": 87,
+      "state": "ORE",
+      "generatesFluid": false,
+      "generatesCells": false,
+      "composition": [
+        {
+          "material": "Yttrium",
+          "amount": 2
+        },
+        {
+          "material": "Iron",
+          "amount": 10
+        },
+        {
+          "material": "Uranium235",
+          "amount": 2
+        },
+        {
+          "material": "Thorium",
+          "amount": 3
+        },
+        {
+          "material": "Niobium",
+          "amount": 2
+        },
+        {
+          "material": "Tantalum",
+          "amount": 3
+        }
+      ]
     }
   },
   {
@@ -168937,7 +172745,38 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": true,
-      "chemicalFormula": "Yb₂Fe₉(U₂₃₅)₃Th₂Nb₃Ta₂"
+      "chemicalFormula": "Yb₂Fe₉(U₂₃₅)₃Th₂Nb₃Ta₂",
+      "protons": 65,
+      "neutrons": 96,
+      "state": "ORE",
+      "generatesFluid": false,
+      "generatesCells": false,
+      "composition": [
+        {
+          "material": "Ytterbium",
+          "amount": 2
+        },
+        {
+          "material": "Iron",
+          "amount": 9
+        },
+        {
+          "material": "Uranium235",
+          "amount": 3
+        },
+        {
+          "material": "Thorium",
+          "amount": 2
+        },
+        {
+          "material": "Niobium",
+          "amount": 3
+        },
+        {
+          "material": "Tantalum",
+          "amount": 2
+        }
+      ]
     }
   },
   {
@@ -169037,7 +172876,26 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "(SeO₂)H₈O₄"
+      "chemicalFormula": "(SeO₂)H₈O₄",
+      "protons": 10,
+      "neutrons": 11,
+      "state": "PURE_LIQUID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "SeleniumDioxide",
+          "amount": 1
+        },
+        {
+          "material": "Hydrogen",
+          "amount": 8
+        },
+        {
+          "material": "Oxygen",
+          "amount": 4
+        }
+      ]
     }
   },
   {
@@ -169147,7 +173005,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Se"
+      "chemicalFormula": "Se",
+      "protons": 34,
+      "neutrons": 45,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": []
     }
   },
   {
@@ -169251,7 +173115,22 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "SeO₂"
+      "chemicalFormula": "SeO₂",
+      "protons": 21,
+      "neutrons": 26,
+      "state": "PURE_LIQUID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "Selenium",
+          "amount": 1
+        },
+        {
+          "material": "Oxygen",
+          "amount": 2
+        }
+      ]
     }
   },
   {
@@ -169357,7 +173236,22 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "SeF₆"
+      "chemicalFormula": "SeF₆",
+      "protons": 21,
+      "neutrons": 27,
+      "state": "GAS",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "Selenium",
+          "amount": 1
+        },
+        {
+          "material": "Fluorine",
+          "amount": 6
+        }
+      ]
     }
   },
   {
@@ -169475,7 +173369,22 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "SiC"
+      "chemicalFormula": "SiC",
+      "protons": 10,
+      "neutrons": 10,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "Silicon",
+          "amount": 50
+        },
+        {
+          "material": "Carbon",
+          "amount": 50
+        }
+      ]
     }
   },
   {
@@ -169569,7 +173478,22 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "NaCl"
+      "chemicalFormula": "NaCl",
+      "protons": 14,
+      "neutrons": 14,
+      "state": "PURE_GAS",
+      "generatesFluid": false,
+      "generatesCells": false,
+      "composition": [
+        {
+          "material": "Sodium",
+          "amount": 1
+        },
+        {
+          "material": "Chlorine",
+          "amount": 1
+        }
+      ]
     }
   },
   {
@@ -169675,7 +173599,26 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "NaCN"
+      "chemicalFormula": "NaCN",
+      "protons": 8,
+      "neutrons": -1,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": false,
+      "composition": [
+        {
+          "material": "Sodium",
+          "amount": 1
+        },
+        {
+          "material": "Carbon",
+          "amount": 1
+        },
+        {
+          "material": "Nitrogen",
+          "amount": 1
+        }
+      ]
     }
   },
   {
@@ -169779,7 +173722,22 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "NaF"
+      "chemicalFormula": "NaF",
+      "protons": 10,
+      "neutrons": 10,
+      "state": "PURE_LIQUID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "Sodium",
+          "amount": 1
+        },
+        {
+          "material": "Fluorine",
+          "amount": 1
+        }
+      ]
     }
   },
   {
@@ -169875,7 +173833,22 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "(KNO₃)₂(NaNO₃)₃"
+      "chemicalFormula": "(KNO₃)₂(NaNO₃)₃",
+      "protons": 9,
+      "neutrons": 9,
+      "state": "PURE_LIQUID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "PotassiumNitrate",
+          "amount": 4
+        },
+        {
+          "material": "SodiumNitrate",
+          "amount": 6
+        }
+      ]
     }
   },
   {
@@ -169971,7 +173944,22 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "(KNO₃)₂(NaNO₃)₃"
+      "chemicalFormula": "(KNO₃)₂(NaNO₃)₃",
+      "protons": 9,
+      "neutrons": -1,
+      "state": "PURE_LIQUID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "PotassiumNitrate",
+          "amount": 4
+        },
+        {
+          "material": "SodiumNitrate",
+          "amount": 6
+        }
+      ]
     }
   },
   {
@@ -170071,7 +174059,26 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "?H2SO4?"
+      "chemicalFormula": "?H2SO4?",
+      "protons": 8,
+      "neutrons": -1,
+      "state": "LIQUID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "Hydrogen",
+          "amount": 2
+        },
+        {
+          "material": "Sulfur",
+          "amount": 1
+        },
+        {
+          "material": "Oxygen",
+          "amount": 4
+        }
+      ]
     }
   },
   {
@@ -170191,7 +174198,22 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "U₉Ti"
+      "chemicalFormula": "U₉Ti",
+      "protons": 57,
+      "neutrons": 86,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "Uranium",
+          "amount": 9
+        },
+        {
+          "material": "Titanium",
+          "amount": 1
+        }
+      ]
     }
   },
   {
@@ -170287,7 +174309,22 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "LiFBeF₂"
+      "chemicalFormula": "LiFBeF₂",
+      "protons": 6,
+      "neutrons": 6,
+      "state": "PURE_LIQUID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "LithiumFluoride",
+          "amount": 1
+        },
+        {
+          "material": "BerylliumFluoride",
+          "amount": 1
+        }
+      ]
     }
   },
   {
@@ -170414,7 +174451,30 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Co₇Cr₇Mn₄Ti₂"
+      "chemicalFormula": "Co₇Cr₇Mn₄Ti₂",
+      "protons": 24,
+      "neutrons": -1,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "Cobalt",
+          "amount": 35
+        },
+        {
+          "material": "Chrome",
+          "amount": 35
+        },
+        {
+          "material": "Manganese",
+          "amount": 20
+        },
+        {
+          "material": "Titanium",
+          "amount": 10
+        }
+      ]
     }
   },
   {
@@ -170520,7 +174580,26 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Sr(OH)₂"
+      "chemicalFormula": "Sr(OH)₂",
+      "protons": 15,
+      "neutrons": 19,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": false,
+      "composition": [
+        {
+          "material": "Strontium",
+          "amount": 1
+        },
+        {
+          "material": "Oxygen",
+          "amount": 2
+        },
+        {
+          "material": "Hydrogen",
+          "amount": 2
+        }
+      ]
     }
   },
   {
@@ -170622,7 +174701,22 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "SrO"
+      "chemicalFormula": "SrO",
+      "protons": 23,
+      "neutrons": 28,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": false,
+      "composition": [
+        {
+          "material": "Strontium",
+          "amount": 1
+        },
+        {
+          "material": "Oxygen",
+          "amount": 1
+        }
+      ]
     }
   },
   {
@@ -170749,7 +174843,30 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Co₄Cr₃P₂Mo"
+      "chemicalFormula": "Co₄Cr₃P₂Mo",
+      "protons": 27,
+      "neutrons": -1,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "Cobalt",
+          "amount": 40
+        },
+        {
+          "material": "Chrome",
+          "amount": 30
+        },
+        {
+          "material": "Phosphorus",
+          "amount": 20
+        },
+        {
+          "material": "Molybdenum",
+          "amount": 10
+        }
+      ]
     }
   },
   {
@@ -170868,7 +174985,22 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "W₂Ta₂₃"
+      "chemicalFormula": "W₂Ta₂₃",
+      "protons": 73,
+      "neutrons": 108,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "Tungsten",
+          "amount": 4
+        },
+        {
+          "material": "Tantalum",
+          "amount": 46
+        }
+      ]
     }
   },
   {
@@ -170991,7 +175123,26 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "(W₂Ta₂₃)Ti₆Y₄"
+      "chemicalFormula": "(W₂Ta₂₃)Ti₆Y₄",
+      "protons": 44,
+      "neutrons": 61,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "Tantalloy60",
+          "amount": 2
+        },
+        {
+          "material": "Titanium",
+          "amount": 12
+        },
+        {
+          "material": "Yttrium",
+          "amount": 8
+        }
+      ]
     }
   },
   {
@@ -171110,7 +175261,22 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "TaC"
+      "chemicalFormula": "TaC",
+      "protons": 39,
+      "neutrons": 56,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "Tantalum",
+          "amount": 50
+        },
+        {
+          "material": "Carbon",
+          "amount": 50
+        }
+      ]
     }
   },
   {
@@ -171212,7 +175378,13 @@
       "isRadioactive": true,
       "radiationLevel": 2,
       "hasOre": false,
-      "chemicalFormula": "Tc"
+      "chemicalFormula": "Tc",
+      "protons": 43,
+      "neutrons": 55,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": []
     }
   },
   {
@@ -171318,7 +175490,22 @@
       "isRadioactive": true,
       "radiationLevel": 1,
       "hasOre": false,
-      "chemicalFormula": "TcF₆"
+      "chemicalFormula": "TcF₆",
+      "protons": 26,
+      "neutrons": 32,
+      "state": "GAS",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "Technetium",
+          "amount": 1
+        },
+        {
+          "material": "Fluorine",
+          "amount": 6
+        }
+      ]
     }
   },
   {
@@ -171428,7 +175615,13 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Tl"
+      "chemicalFormula": "Tl",
+      "protons": 81,
+      "neutrons": 123,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": []
     }
   },
   {
@@ -171528,7 +175721,26 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "LiFBeF₂ThF₄"
+      "chemicalFormula": "LiFBeF₂ThF₄",
+      "protons": 20,
+      "neutrons": 29,
+      "state": "PURE_LIQUID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "LithiumFluoride",
+          "amount": 1
+        },
+        {
+          "material": "BerylliumFluoride",
+          "amount": 1
+        },
+        {
+          "material": "ThoriumTetrafluoride",
+          "amount": 1
+        }
+      ]
     }
   },
   {
@@ -171624,7 +175836,22 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "LiFThF₄"
+      "chemicalFormula": "LiFThF₄",
+      "protons": 27,
+      "neutrons": 40,
+      "state": "PURE_LIQUID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "LithiumFluoride",
+          "amount": 1
+        },
+        {
+          "material": "ThoriumTetrafluoride",
+          "amount": 1
+        }
+      ]
     }
   },
   {
@@ -171734,7 +175961,26 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "(Th)ThF₁₂"
+      "chemicalFormula": "(Th)ThF₁₂",
+      "protons": 63,
+      "neutrons": 97,
+      "state": "LIQUID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "Thorium232",
+          "amount": 1
+        },
+        {
+          "material": "Thorium",
+          "amount": 1
+        },
+        {
+          "material": "Fluorine",
+          "amount": 12
+        }
+      ]
     }
   },
   {
@@ -171854,7 +176100,34 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": true,
-      "chemicalFormula": "Ca₂Ti₂Si₂ThO₁"
+      "chemicalFormula": "Ca₂Ti₂Si₂ThO₁",
+      "protons": 30,
+      "neutrons": 42,
+      "state": "ORE",
+      "generatesFluid": false,
+      "generatesCells": false,
+      "composition": [
+        {
+          "material": "Calcium",
+          "amount": 2
+        },
+        {
+          "material": "Titanium",
+          "amount": 2
+        },
+        {
+          "material": "Silicon",
+          "amount": 2
+        },
+        {
+          "material": "Thorium",
+          "amount": 1
+        },
+        {
+          "material": "Oxygen",
+          "amount": 10
+        }
+      ]
     }
   },
   {
@@ -171982,7 +176255,30 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "((WC)₇Ti₃)₃"
+      "chemicalFormula": "((WC)₇Ti₃)₃",
+      "protons": 40,
+      "neutrons": -1,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "TungstenTitaniumCarbide",
+          "amount": 3
+        },
+        {
+          "material": "InfusedFire",
+          "amount": 1
+        },
+        {
+          "material": "InfusedEarth",
+          "amount": 1
+        },
+        {
+          "material": "InfusedEntropy",
+          "amount": 1
+        }
+      ]
     }
   },
   {
@@ -172086,7 +176382,30 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Cl3C-COOH"
+      "chemicalFormula": "Cl3C-COOH",
+      "protons": 8,
+      "neutrons": -1,
+      "state": "PURE_LIQUID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "Carbon",
+          "amount": 2
+        },
+        {
+          "material": "Hydrogen",
+          "amount": 1
+        },
+        {
+          "material": "Oxygen",
+          "amount": 2
+        },
+        {
+          "material": "Chlorine",
+          "amount": 3
+        }
+      ]
     }
   },
   {
@@ -172195,7 +176514,22 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "₅Nq₉"
+      "chemicalFormula": "₅Nq₉",
+      "protons": 86,
+      "neutrons": -1,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "Trinium",
+          "amount": 5
+        },
+        {
+          "material": "Naquadah",
+          "amount": 9
+        }
+      ]
     }
   },
   {
@@ -172314,7 +176648,22 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "(₅Nq₉)₉C"
+      "chemicalFormula": "(₅Nq₉)₉C",
+      "protons": 46,
+      "neutrons": -1,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "TriniumNaquadahAlloy",
+          "amount": 9
+        },
+        {
+          "material": "Carbon",
+          "amount": 1
+        }
+      ]
     }
   },
   {
@@ -172433,7 +176782,22 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "₃Ti₇"
+      "chemicalFormula": "₃Ti₇",
+      "protons": 32,
+      "neutrons": -1,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "Trinium",
+          "amount": 3
+        },
+        {
+          "material": "Titanium",
+          "amount": 7
+        }
+      ]
     }
   },
   {
@@ -172551,7 +176915,22 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Au₇Cu₃"
+      "chemicalFormula": "Au₇Cu₃",
+      "protons": 54,
+      "neutrons": 75,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "Gold",
+          "amount": 70
+        },
+        {
+          "material": "Copper",
+          "amount": 30
+        }
+      ]
     }
   },
   {
@@ -172670,7 +177049,22 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "(CW)₇Ti₃"
+      "chemicalFormula": "(CW)₇Ti₃",
+      "protons": 31,
+      "neutrons": 41,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "TungstenCarbide",
+          "amount": 70
+        },
+        {
+          "material": "Titanium",
+          "amount": 30
+        }
+      ]
     }
   },
   {
@@ -172772,7 +177166,13 @@
       "isRadioactive": true,
       "radiationLevel": 4,
       "hasOre": false,
-      "chemicalFormula": "U"
+      "chemicalFormula": "U",
+      "protons": 92,
+      "neutrons": 140,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": []
     }
   },
   {
@@ -172874,7 +177274,13 @@
       "isRadioactive": true,
       "radiationLevel": 2,
       "hasOre": false,
-      "chemicalFormula": "U"
+      "chemicalFormula": "U",
+      "protons": 92,
+      "neutrons": 141,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": []
     }
   },
   {
@@ -172978,7 +177384,30 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "LiFBeF₂UF₄FP"
+      "chemicalFormula": "LiFBeF₂UF₄FP",
+      "protons": 38,
+      "neutrons": 57,
+      "state": "PURE_LIQUID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "LithiumFluoride",
+          "amount": 1
+        },
+        {
+          "material": "BerylliumFluoride",
+          "amount": 1
+        },
+        {
+          "material": "UraniumTetrafluoride",
+          "amount": 1
+        },
+        {
+          "material": "Protactinium",
+          "amount": 1
+        }
+      ]
     }
   },
   {
@@ -173084,7 +177513,22 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "((U)F₄)F₂"
+      "chemicalFormula": "((U)F₄)F₂",
+      "protons": 29,
+      "neutrons": 42,
+      "state": "LIQUID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "UraniumTetrafluoride",
+          "amount": 1
+        },
+        {
+          "material": "Fluorine",
+          "amount": 2
+        }
+      ]
     }
   },
   {
@@ -173190,7 +177634,22 @@
       "isRadioactive": true,
       "radiationLevel": 1,
       "hasOre": false,
-      "chemicalFormula": "(U)F₄"
+      "chemicalFormula": "(U)F₄",
+      "protons": 50,
+      "neutrons": 75,
+      "state": "LIQUID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "Uranium233",
+          "amount": 1
+        },
+        {
+          "material": "Fluorine",
+          "amount": 4
+        }
+      ]
     }
   },
   {
@@ -173330,7 +177789,42 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "(Fe₅C)₁₂C₂MnSi₂PSAl"
+      "chemicalFormula": "(Fe₅C)₁₂C₂MnSi₂PSAl",
+      "protons": 16,
+      "neutrons": -1,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "Steel",
+          "amount": 60
+        },
+        {
+          "material": "Carbon",
+          "amount": 10
+        },
+        {
+          "material": "Manganese",
+          "amount": 5
+        },
+        {
+          "material": "Silicon",
+          "amount": 10
+        },
+        {
+          "material": "Phosphorus",
+          "amount": 5
+        },
+        {
+          "material": "Sulfur",
+          "amount": 5
+        },
+        {
+          "material": "Aluminium",
+          "amount": 5
+        }
+      ]
     }
   },
   {
@@ -173440,7 +177934,30 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Si4Ba3Na2Ni"
+      "chemicalFormula": "Si4Ba3Na2Ni",
+      "protons": 27,
+      "neutrons": 34,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": false,
+      "composition": [
+        {
+          "material": "Silicon",
+          "amount": 40
+        },
+        {
+          "material": "Barium",
+          "amount": 30
+        },
+        {
+          "material": "Sodium",
+          "amount": 20
+        },
+        {
+          "material": "Nickel",
+          "amount": 10
+        }
+      ]
     }
   },
   {
@@ -173564,7 +178081,38 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": true,
-      "chemicalFormula": "Y₂Yb₂Er₂EuP₂O₈"
+      "chemicalFormula": "Y₂Yb₂Er₂EuP₂O₈",
+      "protons": 43,
+      "neutrons": 60,
+      "state": "ORE",
+      "generatesFluid": false,
+      "generatesCells": false,
+      "composition": [
+        {
+          "material": "Yttrium",
+          "amount": 2
+        },
+        {
+          "material": "Ytterbium",
+          "amount": 2
+        },
+        {
+          "material": "Erbium",
+          "amount": 2
+        },
+        {
+          "material": "Europium",
+          "amount": 1
+        },
+        {
+          "material": "Phosphorus",
+          "amount": 2
+        },
+        {
+          "material": "Oxygen",
+          "amount": 8
+        }
+      ]
     }
   },
   {
@@ -173684,7 +178232,34 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": true,
-      "chemicalFormula": "YO₃Fe₄SnN₂"
+      "chemicalFormula": "YO₃Fe₄SnN₂",
+      "protons": 26,
+      "neutrons": 32,
+      "state": "ORE",
+      "generatesFluid": false,
+      "generatesCells": false,
+      "composition": [
+        {
+          "material": "Yttrium",
+          "amount": 1
+        },
+        {
+          "material": "Oxygen",
+          "amount": 3
+        },
+        {
+          "material": "Iron",
+          "amount": 4
+        },
+        {
+          "material": "Tin",
+          "amount": 1
+        },
+        {
+          "material": "Nitrogen",
+          "amount": 2
+        }
+      ]
     }
   },
   {
@@ -173800,7 +178375,30 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": true,
-      "chemicalFormula": "Y₂Th₂Si₂O₇"
+      "chemicalFormula": "Y₂Th₂Si₂O₇",
+      "protons": 37,
+      "neutrons": 53,
+      "state": "ORE",
+      "generatesFluid": false,
+      "generatesCells": false,
+      "composition": [
+        {
+          "material": "Yttrium",
+          "amount": 2
+        },
+        {
+          "material": "Thorium",
+          "amount": 2
+        },
+        {
+          "material": "Silicon",
+          "amount": 2
+        },
+        {
+          "material": "Oxygen",
+          "amount": 7
+        }
+      ]
     }
   },
   {
@@ -173916,7 +178514,30 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": true,
-      "chemicalFormula": "CeCaF₅Y"
+      "chemicalFormula": "CeCaF₅Y",
+      "protons": 31,
+      "neutrons": 40,
+      "state": "ORE",
+      "generatesFluid": false,
+      "generatesCells": false,
+      "composition": [
+        {
+          "material": "Cerium",
+          "amount": 1
+        },
+        {
+          "material": "Calcium",
+          "amount": 1
+        },
+        {
+          "material": "Fluorine",
+          "amount": 5
+        },
+        {
+          "material": "Yttrium",
+          "amount": 1
+        }
+      ]
     }
   },
   {
@@ -174051,7 +178672,38 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "Cr₁₃Ni₃Mo₂Cu₁W₂(Fe₅C)₂"
+      "chemicalFormula": "Cr₁₃Ni₃Mo₂Cu₁W₂(Fe₅C)₂",
+      "protons": 37,
+      "neutrons": -1,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "Chrome",
+          "amount": 26
+        },
+        {
+          "material": "Nickel",
+          "amount": 6
+        },
+        {
+          "material": "Molybdenum",
+          "amount": 4
+        },
+        {
+          "material": "Copper",
+          "amount": 20
+        },
+        {
+          "material": "Tungsten",
+          "amount": 4
+        },
+        {
+          "material": "Steel",
+          "amount": 40
+        }
+      ]
     }
   },
   {
@@ -174183,7 +178835,46 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": true,
-      "chemicalFormula": "Ca₂K₂PbAs₄Nb₄Ta₄Ti₄O₁₈"
+      "chemicalFormula": "Ca₂K₂PbAs₄Nb₄Ta₄Ti₄O₁₈",
+      "protons": 37,
+      "neutrons": 50,
+      "state": "ORE",
+      "generatesFluid": false,
+      "generatesCells": false,
+      "composition": [
+        {
+          "material": "Calcium",
+          "amount": 2
+        },
+        {
+          "material": "Potassium",
+          "amount": 2
+        },
+        {
+          "material": "Lead",
+          "amount": 1
+        },
+        {
+          "material": "Arsenic",
+          "amount": 4
+        },
+        {
+          "material": "Niobium",
+          "amount": 4
+        },
+        {
+          "material": "Tantalum",
+          "amount": 4
+        },
+        {
+          "material": "Titanium",
+          "amount": 4
+        },
+        {
+          "material": "Oxygen",
+          "amount": 18
+        }
+      ]
     }
   },
   {
@@ -174295,7 +178986,26 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": true,
-      "chemicalFormula": "ZrSiO₄"
+      "chemicalFormula": "ZrSiO₄",
+      "protons": 20,
+      "neutrons": 24,
+      "state": "ORE",
+      "generatesFluid": false,
+      "generatesCells": false,
+      "composition": [
+        {
+          "material": "Zirconium",
+          "amount": 1
+        },
+        {
+          "material": "Silicon",
+          "amount": 1
+        },
+        {
+          "material": "Oxygen",
+          "amount": 4
+        }
+      ]
     }
   },
   {
@@ -174413,7 +179123,22 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "ZrC"
+      "chemicalFormula": "ZrC",
+      "protons": 23,
+      "neutrons": 28,
+      "state": "SOLID",
+      "generatesFluid": true,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "Zirconium",
+          "amount": 50
+        },
+        {
+          "material": "Carbon",
+          "amount": 50
+        }
+      ]
     }
   },
   {
@@ -174519,7 +179244,22 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": false,
-      "chemicalFormula": "ZrF₄"
+      "chemicalFormula": "ZrF₄",
+      "protons": 24,
+      "neutrons": 30,
+      "state": "LIQUID",
+      "generatesFluid": false,
+      "generatesCells": true,
+      "composition": [
+        {
+          "material": "Zirconium",
+          "amount": 1
+        },
+        {
+          "material": "Fluorine",
+          "amount": 4
+        }
+      ]
     }
   },
   {
@@ -174639,7 +179379,34 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": true,
-      "chemicalFormula": "Ca₂Zr₂Ti₄CeO₁₄"
+      "chemicalFormula": "Ca₂Zr₂Ti₄CeO₁₄",
+      "protons": 29,
+      "neutrons": 37,
+      "state": "ORE",
+      "generatesFluid": false,
+      "generatesCells": false,
+      "composition": [
+        {
+          "material": "Calcium",
+          "amount": 2
+        },
+        {
+          "material": "Zirconium",
+          "amount": 2
+        },
+        {
+          "material": "Titanium",
+          "amount": 4
+        },
+        {
+          "material": "Cerium",
+          "amount": 1
+        },
+        {
+          "material": "Oxygen",
+          "amount": 14
+        }
+      ]
     }
   },
   {
@@ -174779,7 +179546,54 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": true,
-      "chemicalFormula": "K₃Na₃Mn₇Fe₇Zr₂Ti₂Nb₂Si₈O₁₃F₇"
+      "chemicalFormula": "K₃Na₃Mn₇Fe₇Zr₂Ti₂Nb₂Si₈O₁₃F₇",
+      "protons": 21,
+      "neutrons": 25,
+      "state": "ORE",
+      "generatesFluid": false,
+      "generatesCells": false,
+      "composition": [
+        {
+          "material": "Potassium",
+          "amount": 3
+        },
+        {
+          "material": "Sodium",
+          "amount": 3
+        },
+        {
+          "material": "Manganese",
+          "amount": 7
+        },
+        {
+          "material": "Iron",
+          "amount": 7
+        },
+        {
+          "material": "Zirconium",
+          "amount": 2
+        },
+        {
+          "material": "Titanium",
+          "amount": 2
+        },
+        {
+          "material": "Niobium",
+          "amount": 2
+        },
+        {
+          "material": "Silicon",
+          "amount": 8
+        },
+        {
+          "material": "Oxygen",
+          "amount": 13
+        },
+        {
+          "material": "Fluorine",
+          "amount": 7
+        }
+      ]
     }
   },
   {
@@ -174907,7 +179721,42 @@
       "isRadioactive": false,
       "radiationLevel": 0,
       "hasOre": true,
-      "chemicalFormula": "CaThCeZrTi₂Nb₂O₇"
+      "chemicalFormula": "CaThCeZrTi₂Nb₂O₇",
+      "protons": 39,
+      "neutrons": 54,
+      "state": "ORE",
+      "generatesFluid": false,
+      "generatesCells": false,
+      "composition": [
+        {
+          "material": "Calcium",
+          "amount": 1
+        },
+        {
+          "material": "Thorium",
+          "amount": 1
+        },
+        {
+          "material": "Cerium",
+          "amount": 1
+        },
+        {
+          "material": "Zirconium",
+          "amount": 1
+        },
+        {
+          "material": "Titanium",
+          "amount": 2
+        },
+        {
+          "material": "Niobium",
+          "amount": 2
+        },
+        {
+          "material": "Oxygen",
+          "amount": 7
+        }
+      ]
     }
   }
 ]

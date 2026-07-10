@@ -573,14 +573,47 @@ def celsius_to_kelvin(celsius):
     return round(celsius + 273.15)
 
 
-def gtpp_data_literal(entry):
+# Materials whose dumped fluid/cell did NOT come from `Material#performFluidAndCellRegistration` (their
+# legacy declaration passed `generateFluid=false`), so `gtpp_generates_fluid`'s observable-effect derivation
+# would misattribute it:
+# - ZirconiumTetrafluoride: `ModItems#runMaterialGenerator` registers the no-prefix `zirconiumtetrafluoride`
+#   fluid (plus its cell) and hands it over via `Material#setFluid`; letting reconstruction run the
+#   constructor path instead would register a spurious extra `molten.zirconiumtetrafluoride`.
+GTPP_EXTERNAL_FLUID_NAMES = {"ZirconiumTetrafluoride"}
+
+
+def gtpp_generates_fluid(entry):
+    """Whether `Material#performFluidAndCellRegistration` ran for this material at dump time -- see
+    [gregtech.api.material.GTppData]'s javadoc. Not itself dumped, but recoverable from its observable
+    effect (that method is the only in-constructor source of a fluid, a plasma, or a `cell`/`cellPlasma`
+    part), minus the externally-assigned exceptions in `GTPP_EXTERNAL_FLUID_NAMES`."""
+    if entry["unlocalizedName"] in GTPP_EXTERNAL_FLUID_NAMES:
+        return False
+    return gtpp_has_fluid(entry) or any(
+        p["prefix"] in ("cell", "cellPlasma") for p in entry["generatedParts"])
+
+
+def gtpp_generates_cells(entry):
+    """Whether the legacy `vGenerateCells` flag was `true` -- recoverable exactly from a `cell`/`cellPlasma`
+    generated part, since `Material#checkForCellAndGenerate`/`#generateFluid` never register one otherwise."""
+    return any(p["prefix"] in ("cell", "cellPlasma") for p in entry["generatedParts"])
+
+
+def gtpp_data_literal(entry, ml_names):
+    composition_literal = material_ref_stack_list_literal(
+        [{
+            "material": c["name"], "amount": c["amount"]
+        } for c in entry["composition"]], ml_names)
     return (
         "new GTppData("
         f"{entry['tier']}, {entry['voltageMultiplier']}L, "
         f"{celsius_to_kelvin(entry['meltingPointC'])}, {celsius_to_kelvin(entry['boilingPointC'])}, "
         f"{entry['durability']}, {str(bool(entry['usesBlastFurnace'])).lower()}, "
         f"{str(bool(entry['isRadioactive'])).lower()}, {entry['radiationLevel']}, "
-        f"{str(bool(entry['hasOre'])).lower()}, {java_string_literal(entry['chemicalFormula'])})")
+        f"{str(bool(entry['hasOre'])).lower()}, {java_string_literal(entry['chemicalFormula'])}, "
+        f"{entry['protons']}L, {entry['neutrons']}L, "
+        f"{java_string_literal(entry['state'])}, {str(gtpp_generates_fluid(entry)).lower()}, "
+        f"{str(gtpp_generates_cells(entry)).lower()}, {composition_literal})")
 
 
 def gtpp_composition_set(entry):
@@ -630,7 +663,7 @@ def build_gtpp_merge_block(entry, ml_names):
     lines = [f"        MaterialLibAPI.editMaterial(\"gregtech\", {name_literal})"]
     for ref in shape_refs:
         lines.append(f"            .generateShape({ref})")
-    lines.append(f"            .setProperty(GTMaterialProperties.GTPP, {gtpp_data_literal(entry)});")
+    lines.append(f"            .setProperty(GTMaterialProperties.GTPP, {gtpp_data_literal(entry, ml_names)});")
     return lines
 
 
@@ -678,7 +711,7 @@ def build_gtpp_new_block(entry, field, ml_names, prefix_bits, included_names, fa
         lines.append(
             "            .setProperty(GTMaterialProperties.COMPOSITION, "
             f"{material_ref_stack_list_literal([{'material': c['name'], 'amount': c['amount']} for c in entry['composition']], ml_names)})")
-    lines.append(f"            .setProperty(GTMaterialProperties.GTPP, {gtpp_data_literal(entry)})")
+    lines.append(f"            .setProperty(GTMaterialProperties.GTPP, {gtpp_data_literal(entry, ml_names)})")
     lines.append("            .build();")
 
     if excess:
