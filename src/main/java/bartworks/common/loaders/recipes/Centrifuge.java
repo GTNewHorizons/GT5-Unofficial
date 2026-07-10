@@ -9,15 +9,18 @@ import java.util.Arrays;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import bartworks.common.loaders.BioCultureLoader;
 import bartworks.common.loaders.FluidLoader;
 import bartworks.common.tileentities.multis.MTEThoriumHighTempReactor;
 import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.util.GTRecipeBuilder;
 import kubatech.tileentity.gregtech.multiblock.MTEHighTempGasCooledReactor;
 
@@ -27,10 +30,10 @@ public class Centrifuge implements Runnable {
     @Override
     public void run() {
         GTValues.RA.stdBuilder()
-            .itemInputs(Materials.Thorium.getDust(1))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Thorium, Materials2Shapes.shapeDust, (int) (1)))
             .itemOutputs(
-                Materials.Thorium.getDust(1),
-                Materials.Thorium.getDust(1),
+                MaterialLibAPI.getStack(Materials2Materials.Thorium, Materials2Shapes.shapeDust, (int) (1)),
+                MaterialLibAPI.getStack(Materials2Materials.Thorium, Materials2Shapes.shapeDust, (int) (1)),
                 WerkstoffLoader.Thorium232.get(OrePrefixes.dust, 1),
                 WerkstoffLoader.Thorium232.get(OrePrefixes.dust, 1),
                 WerkstoffLoader.Thorium232.get(OrePrefixes.dust, 1))
@@ -60,7 +63,7 @@ public class Centrifuge implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(MTEThoriumHighTempReactor.THTRMaterials.aTHTR_Materials, 1, 6))
-            .itemOutputs(Materials.Lead.getDust(1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Lead, Materials2Shapes.shapeDust, (int) (1)))
             .outputChances(300)
             .duration(60 * SECONDS)
             .eut(TierEU.RECIPE_LV)
