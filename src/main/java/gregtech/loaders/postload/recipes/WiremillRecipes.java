@@ -8,10 +8,14 @@ import static gregtech.api.util.GTRecipeRegistrator.registerWiremillRecipes;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 
@@ -25,7 +29,8 @@ public class WiremillRecipes implements Runnable {
         registerWiremillRecipes(Materials.SpaceTime, 8 * SECONDS + 8 * TICKS, (int) TierEU.RECIPE_LuV);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Polycaprolactam, 1L))
+            .itemInputs(
+                MaterialLibAPI.getStack(Materials2Materials.Polycaprolactam, Materials2Shapes.shapeIngot, (int) (1L)))
             .itemOutputs(new ItemStack(Items.string, 32))
             .duration(4 * SECONDS)
             .eut(48)

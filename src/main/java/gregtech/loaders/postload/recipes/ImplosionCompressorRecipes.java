@@ -6,11 +6,15 @@ import static gregtech.api.recipe.RecipeMaps.implosionRecipes;
 import static gregtech.api.util.GTModHandler.getModItem;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeConstants;
 
@@ -45,7 +49,8 @@ public class ImplosionCompressorRecipes implements Runnable {
                 .itemInputs(ItemList.Ingot_Heavy1.get(1L))
                 .itemOutputs(
                     getModItem(GalacticraftCore.ID, "item.heavyPlating", 1L),
-                    GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.StainlessSteel, 1L))
+                    MaterialLibAPI
+                        .getStack(Materials2Materials.StainlessSteel, Materials2Shapes.shapeDustTiny, (int) (1L)))
                 .metadata(GTRecipeConstants.ADDITIVE_AMOUNT, 8)
                 .duration(1 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
@@ -55,7 +60,8 @@ public class ImplosionCompressorRecipes implements Runnable {
                 .itemInputs(ItemList.Ingot_Heavy2.get(1L))
                 .itemOutputs(
                     getModItem(GalacticraftMars.ID, "item.null", 1L, 3),
-                    GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.TungstenSteel, 2L))
+                    MaterialLibAPI
+                        .getStack(Materials2Materials.TungstenSteel, Materials2Shapes.shapeDustTiny, (int) (2L)))
                 .metadata(GTRecipeConstants.ADDITIVE_AMOUNT, 16)
                 .duration(1 * SECONDS)
                 .eut(TierEU.RECIPE_LV)
@@ -65,7 +71,7 @@ public class ImplosionCompressorRecipes implements Runnable {
                 .itemInputs(ItemList.Ingot_Heavy3.get(1L))
                 .itemOutputs(
                     getModItem(GalacticraftMars.ID, "item.itemBasicAsteroids", 1L),
-                    GTOreDictUnificator.get(OrePrefixes.dustTiny, Materials.Platinum, 3L))
+                    MaterialLibAPI.getStack(Materials2Materials.Platinum, Materials2Shapes.shapeDustTiny, (int) (3L)))
                 .metadata(GTRecipeConstants.ADDITIVE_AMOUNT, 24)
                 .duration(1 * SECONDS)
                 .eut(TierEU.RECIPE_LV)

@@ -8,12 +8,16 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import goodgenerator.items.GGMaterial;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -23,7 +27,8 @@ public class BenderRecipes implements Runnable {
     @Override
     public void run() {
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.stick, Materials.Aluminium, 20L))
+            .itemInputs(
+                MaterialLibAPI.getStack(Materials2Materials.Aluminium, Materials2Shapes.shapeStick, (int) (20L)))
             .circuit(10)
             .itemOutputs(ItemList.RC_Rail_Standard.get(64L))
             .duration(15 * SECONDS)
@@ -31,7 +36,7 @@ public class BenderRecipes implements Runnable {
             .addTo(benderRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.stick, Materials.Iron, 48L))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Iron, Materials2Shapes.shapeStick, (int) (48L)))
             .circuit(10)
             .itemOutputs(ItemList.RC_Rail_Standard.get(64L))
             .duration(15 * SECONDS)
@@ -39,7 +44,7 @@ public class BenderRecipes implements Runnable {
             .addTo(benderRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.stick, Materials.CastIron, 32L))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.CastIron, Materials2Shapes.shapeStick, (int) (32L)))
             .circuit(10)
             .itemOutputs(ItemList.RC_Rail_Standard.get(64L))
             .duration(15 * SECONDS)
@@ -47,7 +52,7 @@ public class BenderRecipes implements Runnable {
             .addTo(benderRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.stick, Materials.Bronze, 32L))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Bronze, Materials2Shapes.shapeStick, (int) (32L)))
             .circuit(10)
             .itemOutputs(ItemList.RC_Rail_Standard.get(64L))
             .duration(15 * SECONDS)
@@ -55,7 +60,7 @@ public class BenderRecipes implements Runnable {
             .addTo(benderRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.stick, Materials.Steel, 24L))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Steel, Materials2Shapes.shapeStick, (int) (24L)))
             .circuit(10)
             .itemOutputs(ItemList.RC_Rail_Standard.get(64L))
             .duration(15 * SECONDS)
@@ -63,7 +68,8 @@ public class BenderRecipes implements Runnable {
             .addTo(benderRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.stick, Materials.StainlessSteel, 16L))
+            .itemInputs(
+                MaterialLibAPI.getStack(Materials2Materials.StainlessSteel, Materials2Shapes.shapeStick, (int) (16L)))
             .circuit(10)
             .itemOutputs(ItemList.RC_Rail_Standard.get(64L))
             .duration(15 * SECONDS)
@@ -71,7 +77,7 @@ public class BenderRecipes implements Runnable {
             .addTo(benderRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.stick, Materials.Titanium, 12L))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Titanium, Materials2Shapes.shapeStick, (int) (12L)))
             .circuit(10)
             .itemOutputs(ItemList.RC_Rail_Standard.get(64L))
             .duration(15 * SECONDS)
@@ -79,7 +85,8 @@ public class BenderRecipes implements Runnable {
             .addTo(benderRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.stick, Materials.TungstenSteel, 9L))
+            .itemInputs(
+                MaterialLibAPI.getStack(Materials2Materials.TungstenSteel, Materials2Shapes.shapeStick, (int) (9L)))
             .circuit(10)
             .itemOutputs(ItemList.RC_Rail_Standard.get(64L))
             .duration(15 * SECONDS)
@@ -87,7 +94,7 @@ public class BenderRecipes implements Runnable {
             .addTo(benderRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.stick, Materials.Iridium, 6L))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Iridium, Materials2Shapes.shapeStick, (int) (6L)))
             .circuit(10)
             .itemOutputs(ItemList.RC_Rail_Standard.get(64L))
             .duration(15 * SECONDS)
@@ -95,7 +102,7 @@ public class BenderRecipes implements Runnable {
             .addTo(benderRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.stick, Materials.Osmium, 3L))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Osmium, Materials2Shapes.shapeStick, (int) (3L)))
             .circuit(10)
             .itemOutputs(ItemList.RC_Rail_Standard.get(64L))
             .duration(15 * SECONDS)
@@ -103,7 +110,8 @@ public class BenderRecipes implements Runnable {
             .addTo(benderRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.stick, Materials.Osmiridium, 2L))
+            .itemInputs(
+                MaterialLibAPI.getStack(Materials2Materials.Osmiridium, Materials2Shapes.shapeStick, (int) (2L)))
             .circuit(10)
             .itemOutputs(ItemList.RC_Rail_Standard.get(64L))
             .duration(15 * SECONDS)
@@ -111,7 +119,7 @@ public class BenderRecipes implements Runnable {
             .addTo(benderRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.stick, Materials.Obsidian, 24L))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Obsidian, Materials2Shapes.shapeStick, (int) (24L)))
             .circuit(11)
             .itemOutputs(ItemList.RC_Rail_Reinforced.get(64L))
             .duration(30 * SECONDS)
@@ -119,7 +127,8 @@ public class BenderRecipes implements Runnable {
             .addTo(benderRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.stick, Materials.StainlessSteel, 12L))
+            .itemInputs(
+                MaterialLibAPI.getStack(Materials2Materials.StainlessSteel, Materials2Shapes.shapeStick, (int) (12L)))
             .circuit(11)
             .itemOutputs(ItemList.RC_Rail_Reinforced.get(64L))
             .duration(30 * SECONDS)
@@ -127,7 +136,8 @@ public class BenderRecipes implements Runnable {
             .addTo(benderRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.stick, Materials.TungstenSteel, 6L))
+            .itemInputs(
+                MaterialLibAPI.getStack(Materials2Materials.TungstenSteel, Materials2Shapes.shapeStick, (int) (6L)))
             .circuit(11)
             .itemOutputs(ItemList.RC_Rail_Reinforced.get(64L))
             .duration(30 * SECONDS)
@@ -135,7 +145,7 @@ public class BenderRecipes implements Runnable {
             .addTo(benderRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.stick, Materials.Iridium, 3L))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Iridium, Materials2Shapes.shapeStick, (int) (3L)))
             .circuit(11)
             .itemOutputs(ItemList.RC_Rail_Reinforced.get(64L))
             .duration(30 * SECONDS)
@@ -143,7 +153,7 @@ public class BenderRecipes implements Runnable {
             .addTo(benderRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.stick, Materials.Osmium, 1L))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Osmium, Materials2Shapes.shapeStick, (int) (1L)))
             .circuit(11)
             .itemOutputs(ItemList.RC_Rail_Reinforced.get(64L))
             .duration(30 * SECONDS)
@@ -151,7 +161,8 @@ public class BenderRecipes implements Runnable {
             .addTo(benderRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.stick, Materials.Aluminium, 20L))
+            .itemInputs(
+                MaterialLibAPI.getStack(Materials2Materials.Aluminium, Materials2Shapes.shapeStick, (int) (20L)))
             .circuit(12)
             .itemOutputs(ItemList.RC_Rebar.get(64L))
             .duration(10 * SECONDS)
@@ -159,7 +170,7 @@ public class BenderRecipes implements Runnable {
             .addTo(benderRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.stick, Materials.Iron, 48L))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Iron, Materials2Shapes.shapeStick, (int) (48L)))
             .circuit(12)
             .itemOutputs(ItemList.RC_Rebar.get(64L))
             .duration(10 * SECONDS)
@@ -167,7 +178,7 @@ public class BenderRecipes implements Runnable {
             .addTo(benderRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.stick, Materials.CastIron, 24L))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.CastIron, Materials2Shapes.shapeStick, (int) (24L)))
             .circuit(12)
             .itemOutputs(ItemList.RC_Rebar.get(64L))
             .duration(10 * SECONDS)
@@ -175,7 +186,7 @@ public class BenderRecipes implements Runnable {
             .addTo(benderRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.stick, Materials.Bronze, 32L))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Bronze, Materials2Shapes.shapeStick, (int) (32L)))
             .circuit(12)
             .itemOutputs(ItemList.RC_Rebar.get(64L))
             .duration(10 * SECONDS)
@@ -183,7 +194,7 @@ public class BenderRecipes implements Runnable {
             .addTo(benderRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.stick, Materials.Steel, 16L))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Steel, Materials2Shapes.shapeStick, (int) (16L)))
             .circuit(12)
             .itemOutputs(ItemList.RC_Rebar.get(64L))
             .duration(10 * SECONDS)
@@ -191,7 +202,8 @@ public class BenderRecipes implements Runnable {
             .addTo(benderRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.stick, Materials.StainlessSteel, 12L))
+            .itemInputs(
+                MaterialLibAPI.getStack(Materials2Materials.StainlessSteel, Materials2Shapes.shapeStick, (int) (12L)))
             .circuit(12)
             .itemOutputs(ItemList.RC_Rebar.get(64L))
             .duration(10 * SECONDS)
@@ -199,7 +211,7 @@ public class BenderRecipes implements Runnable {
             .addTo(benderRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.stick, Materials.Titanium, 8))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Titanium, Materials2Shapes.shapeStick, (int) (8)))
             .circuit(12)
             .itemOutputs(ItemList.RC_Rebar.get(64L))
             .duration(10 * SECONDS)
@@ -207,7 +219,8 @@ public class BenderRecipes implements Runnable {
             .addTo(benderRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.stick, Materials.TungstenSteel, 6L))
+            .itemInputs(
+                MaterialLibAPI.getStack(Materials2Materials.TungstenSteel, Materials2Shapes.shapeStick, (int) (6L)))
             .circuit(12)
             .itemOutputs(ItemList.RC_Rebar.get(64L))
             .duration(10 * SECONDS)
@@ -215,7 +228,7 @@ public class BenderRecipes implements Runnable {
             .addTo(benderRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.stick, Materials.Iridium, 4L))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Iridium, Materials2Shapes.shapeStick, (int) (4L)))
             .circuit(12)
             .itemOutputs(ItemList.RC_Rebar.get(64L))
             .duration(10 * SECONDS)
@@ -223,7 +236,7 @@ public class BenderRecipes implements Runnable {
             .addTo(benderRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.stick, Materials.Osmium, 2L))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Osmium, Materials2Shapes.shapeStick, (int) (2L)))
             .circuit(12)
             .itemOutputs(ItemList.RC_Rebar.get(64L))
             .duration(10 * SECONDS)
@@ -239,7 +252,7 @@ public class BenderRecipes implements Runnable {
             .addTo(benderRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.plate, Materials.Tin, 2L))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Tin, Materials2Shapes.shapePlate, (int) (2L)))
             .circuit(12)
             .itemOutputs(ItemList.Cell_Empty.get(1L))
             .duration(10 * SECONDS)
@@ -247,7 +260,7 @@ public class BenderRecipes implements Runnable {
             .addTo(benderRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.plate, Materials.Steel, 1L))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Steel, Materials2Shapes.shapePlate, (int) (1L)))
             .circuit(12)
             .itemOutputs(ItemList.Cell_Empty.get(1L))
             .duration(5 * SECONDS)
@@ -255,7 +268,9 @@ public class BenderRecipes implements Runnable {
             .addTo(benderRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.plate, Materials.Polytetrafluoroethylene, 1L))
+            .itemInputs(
+                MaterialLibAPI
+                    .getStack(Materials2Materials.Polytetrafluoroethylene, Materials2Shapes.shapePlate, (int) (1L)))
             .circuit(12)
             .itemOutputs(ItemList.Cell_Empty.get(4L))
             .duration(5 * SECONDS)
@@ -263,7 +278,7 @@ public class BenderRecipes implements Runnable {
             .addTo(benderRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 3L))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Iron, Materials2Shapes.shapePlate, (int) (3L)))
             .circuit(12)
             .itemOutputs(new ItemStack(Items.bucket, 1, 0))
             .duration(10 * SECONDS)
@@ -271,7 +286,7 @@ public class BenderRecipes implements Runnable {
             .addTo(benderRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.plate, Materials.CastIron, 3L))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.CastIron, Materials2Shapes.shapePlate, (int) (3L)))
             .circuit(12)
             .itemOutputs(new ItemStack(Items.bucket, 1, 0))
             .duration(10 * SECONDS)
@@ -279,7 +294,7 @@ public class BenderRecipes implements Runnable {
             .addTo(benderRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.Iron, 2L))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Iron, Materials2Shapes.shapeItemCasing, (int) (2L)))
             .circuit(2)
             .itemOutputs(ItemList.IC2_Fuel_Rod_Empty.get(1))
             .duration(5 * SECONDS)
@@ -294,9 +309,10 @@ public class BenderRecipes implements Runnable {
             .eut(TierEU.RECIPE_ZPM)
             .addTo(benderRecipes);
 
-        if (GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.Tin, 1L) != null) {
+        if (MaterialLibAPI.getStack(Materials2Materials.Tin, Materials2Shapes.shapeItemCasing, (int) (1L)) != null) {
             GTValues.RA.stdBuilder()
-                .itemInputs(GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.Tin, 1L))
+                .itemInputs(
+                    MaterialLibAPI.getStack(Materials2Materials.Tin, Materials2Shapes.shapeItemCasing, (int) (1L)))
                 .circuit(1)
                 .itemOutputs(ItemList.IC2_Food_Can_Empty.get(1L))
                 .duration(20 * TICKS)
