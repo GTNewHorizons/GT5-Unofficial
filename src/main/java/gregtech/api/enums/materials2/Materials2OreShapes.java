@@ -11,8 +11,10 @@ import com.ruling_0.materiallib.api.Shape;
 
 import gregtech.api.enums.StoneType;
 import gregtech.api.material.GTMaterialProperties;
+import gregtech.api.material.MU;
 import gregtech.common.ores.BWOreAdapter;
 import gregtech.common.ores.GTOreAdapter;
+import gregtech.common.ores.GTPPOreAdapter;
 
 /// Hand-maintained block [Shape] declarations for GT's ores (unlike [Materials2Shapes], not
 /// `gen_shapes.py`-generated: `ore`/`oreSmall` are block-kind, which that generator excludes -- see
@@ -129,15 +131,19 @@ public class Materials2OreShapes {
             .displayName("%s Ore")
             .oreDict("ore")
             .variants(oreVariants)
-            .drops(
-                (material, variant, fortune, isSilkTouch) -> isWerkstoff(material)
-                    ? BWOreAdapter.INSTANCE.shapeDrops(material, variant, fortune, isSilkTouch, false)
-                    : GTOreAdapter.INSTANCE.shapeDrops(material, variant, fortune, isSilkTouch, false))
+            .drops((material, variant, fortune, isSilkTouch) -> {
+                if (isWerkstoff(material))
+                    return BWOreAdapter.INSTANCE.shapeDrops(material, variant, fortune, isSilkTouch, false);
+                if (isGtpp(material)) return GTPPOreAdapter.INSTANCE.shapeDrops(material, fortune, isSilkTouch);
+                return GTOreAdapter.INSTANCE.shapeDrops(material, variant, fortune, isSilkTouch, false);
+            })
             .hardness((material, variant) -> stoneBlock(variant).blockHardness)
             .resistance((material, variant) -> stoneBlock(variant).getExplosionResistance(null))
-            .harvestLevel(
-                (material, variant) -> isWerkstoff(material) ? BWOreAdapter.INSTANCE.harvestLevel(material, 0)
-                    : GTOreAdapter.INSTANCE.harvestLevel(material, 0));
+            .harvestLevel((material, variant) -> {
+                if (isWerkstoff(material)) return BWOreAdapter.INSTANCE.harvestLevel(material, 0);
+                if (isGtpp(material)) return GTPPOreAdapter.INSTANCE.harvestLevel(material);
+                return GTOreAdapter.INSTANCE.harvestLevel(material, 0);
+            });
         for (var entry : KNOWN_VARIANT_BASES.entrySet()) {
             oreBuilder.variantBase(variantOf(entry.getKey()), entry.getValue());
         }
@@ -179,6 +185,14 @@ public class Materials2OreShapes {
     /// per-material `isValidForStone` gate, unlike GT's).
     private static boolean isWerkstoff(Material material) {
         return material.getProperty(GTMaterialProperties.WERKSTOFF) != null;
+    }
+
+    /// Whether `material` is a *pure* gtpp material with no live [gregtech.api.enums.Materials] counterpart --
+    /// [GTOreAdapter] already owns drop/harvest-level behavior for a gtpp name-merge material (its own dump
+    /// captured real per-material formulas that predate gtpp entirely), so this excludes any material
+    /// [MU#materialOf] can still resolve, mirroring [GTPPOreAdapter#materialOf]'s own discriminator.
+    private static boolean isGtpp(Material material) {
+        return material.getProperty(GTMaterialProperties.GTPP) != null && MU.materialOf(material) == null;
     }
 
     private static Block stoneBlock(String variant) {

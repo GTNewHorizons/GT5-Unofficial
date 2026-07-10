@@ -736,6 +736,20 @@ def gtpp_fluid_and_cell_shape_lines(entry, gt_entry, used_fluid_names, fluid_tex
     return lines
 
 
+def gtpp_ore_shape_lines(entry):
+    """`generateShape(Materials2OreShapes.shapeOre)` when the dumped material generated a legacy `BlockBaseOre`
+    (`entry["hasOre"]` -- not itself a `generatedParts` prefix, so it is handled here rather than in
+    `gtpp_shape_lines`). Emitted unconditionally, same as the fluid/cell shape lines: for a same-name merge
+    this is the only way to grant ore membership when gregtech's own dump never captured it for that material
+    (`generateShape` is idempotent, so re-declaring it for a merge material gregtech's own dump already
+    granted it costs nothing). Every gtpp ore variant is `StoneType.Stone` ("stone") --
+    the legacy `GTPPOreAdapter` hardcoded `StoneType.Stone` unconditionally, gtpp never generated ore on any
+    other stone type."""
+    if entry.get("hasOre"):
+        return ["            .generateShape(Materials2OreShapes.shapeOre)"]
+    return []
+
+
 def gtpp_composition_set(entry):
     return {(c["name"], c["amount"]) for c in entry["composition"] if c.get("name")}
 
@@ -785,6 +799,7 @@ def build_gtpp_merge_block(entry, ml_names, gt_by_name, used_fluid_names, fluid_
         lines.append(f"            .generateShape({ref})")
     gt_entry = gt_by_name.get(entry["unlocalizedName"])
     lines.extend(gtpp_fluid_and_cell_shape_lines(entry, gt_entry, used_fluid_names, fluid_textures))
+    lines.extend(gtpp_ore_shape_lines(entry))
     lines.append(f"            .setProperty(GTMaterialProperties.GTPP, {gtpp_data_literal(entry, ml_names)});")
     return lines
 
@@ -822,6 +837,7 @@ def build_gtpp_new_block(entry, field, ml_names, prefix_bits, included_names, fa
     for ref in shape_refs:
         lines.append(f"            .generateShape({ref})")
     lines.extend(gtpp_fluid_and_cell_shape_lines(entry, None, used_fluid_names, fluid_textures))
+    lines.extend(gtpp_ore_shape_lines(entry))
 
     local_name = entry.get("localName")
     if local_name:
@@ -879,7 +895,8 @@ def write_gtpp_data_file(index, merge_entries, new_entries, ml_names, field_name
         "wireFine->shapeWireFine,")
     lines.append(
         "/// block->Materials2BlockShapes.shapeBlock, milled->Materials2GtppShapes.shapeMilled (new shape, "
-        "no stage-02 equivalent -- see that class). `frameGt` stays legacy (gregtech policy, "
+        "no stage-02 equivalent -- see that class), hasOre->Materials2OreShapes.shapeOre (not a generatedParts "
+        "prefix -- see gtpp_ore_shape_lines). `frameGt` stays legacy (gregtech policy, "
         "GTPP_LEGACY_ONLY_PREFIXES); `cell`/`cellPlasma` map to `Materials2CellShapes.shapeCell`/"
         "`shapeCellMolten`/`shapeCellPlasmaLight` depending on the material's fluid slot (see "
         "`gtpp_fluid_and_cell_shape_lines`); `pipeHuge`/`pipeMedium`/`wireGt01..16` are already gregtech-owned "

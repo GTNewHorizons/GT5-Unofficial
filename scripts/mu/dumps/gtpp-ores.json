@@ -1,0 +1,206 @@
+[
+  {
+    "unlocalizedName": "AgarditeCd",
+    "registryName": "miscutils:oreAgarditeCd"
+  },
+  {
+    "unlocalizedName": "AgarditeLa",
+    "registryName": "miscutils:oreAgarditeLa"
+  },
+  {
+    "unlocalizedName": "AgarditeNd",
+    "registryName": "miscutils:oreAgarditeNd"
+  },
+  {
+    "unlocalizedName": "AgarditeY",
+    "registryName": "miscutils:oreAgarditeY"
+  },
+  {
+    "unlocalizedName": "Alburnite",
+    "registryName": "miscutils:oreAlburnite"
+  },
+  {
+    "unlocalizedName": "AncientGranite",
+    "registryName": "miscutils:oreAncientGranite"
+  },
+  {
+    "unlocalizedName": "BariteRa",
+    "registryName": "miscutils:oreBariteRa"
+  },
+  {
+    "unlocalizedName": "Cerite",
+    "registryName": "miscutils:oreCerite"
+  },
+  {
+    "unlocalizedName": "Comancheite",
+    "registryName": "miscutils:oreComancheite"
+  },
+  {
+    "unlocalizedName": "Crocoite",
+    "registryName": "miscutils:oreCrocoite"
+  },
+  {
+    "unlocalizedName": "CryoliteF",
+    "registryName": "miscutils:oreCryoliteF"
+  },
+  {
+    "unlocalizedName": "DemicheleiteBr",
+    "registryName": "miscutils:oreDemicheleiteBr"
+  },
+  {
+    "unlocalizedName": "Florencite",
+    "registryName": "miscutils:oreFlorencite"
+  },
+  {
+    "unlocalizedName": "Fluorcaphite",
+    "registryName": "miscutils:oreFluorcaphite"
+  },
+  {
+    "unlocalizedName": "FluoriteF",
+    "registryName": "miscutils:oreFluoriteF"
+  },
+  {
+    "unlocalizedName": "GadoliniteCe",
+    "registryName": "miscutils:oreGadoliniteCe"
+  },
+  {
+    "unlocalizedName": "GadoliniteY",
+    "registryName": "miscutils:oreGadoliniteY"
+  },
+  {
+    "unlocalizedName": "Geikielite",
+    "registryName": "miscutils:oreGeikielite"
+  },
+  {
+    "unlocalizedName": "Greenockite",
+    "registryName": "miscutils:oreGreenockite"
+  },
+  {
+    "unlocalizedName": "Hibonite",
+    "registryName": "miscutils:oreHibonite"
+  },
+  {
+    "unlocalizedName": "Honeaite",
+    "registryName": "miscutils:oreHoneaite"
+  },
+  {
+    "unlocalizedName": "Irarsite",
+    "registryName": "miscutils:oreIrarsite"
+  },
+  {
+    "unlocalizedName": "Kashinite",
+    "registryName": "miscutils:oreKashinite"
+  },
+  {
+    "unlocalizedName": "Koboldite",
+    "registryName": "miscutils:oreKoboldite"
+  },
+  {
+    "unlocalizedName": "Lafossaite",
+    "registryName": "miscutils:oreLafossaite"
+  },
+  {
+    "unlocalizedName": "LanthaniteCe",
+    "registryName": "miscutils:oreLanthaniteCe"
+  },
+  {
+    "unlocalizedName": "LanthaniteLa",
+    "registryName": "miscutils:oreLanthaniteLa"
+  },
+  {
+    "unlocalizedName": "LanthaniteNd",
+    "registryName": "miscutils:oreLanthaniteNd"
+  },
+  {
+    "unlocalizedName": "Lautarite",
+    "registryName": "miscutils:oreLautarite"
+  },
+  {
+    "unlocalizedName": "Lepersonnite",
+    "registryName": "miscutils:oreLepersonnite"
+  },
+  {
+    "unlocalizedName": "Miessiite",
+    "registryName": "miscutils:oreMiessiite"
+  },
+  {
+    "unlocalizedName": "Nichromite",
+    "registryName": "miscutils:oreNichromite"
+  },
+  {
+    "unlocalizedName": "Perroudite",
+    "registryName": "miscutils:orePerroudite"
+  },
+  {
+    "unlocalizedName": "Polycrase",
+    "registryName": "miscutils:orePolycrase"
+  },
+  {
+    "unlocalizedName": "RadioactiveMineralMix",
+    "registryName": "miscutils:oreRadioactiveMineralMix"
+  },
+  {
+    "unlocalizedName": "RareEarthI",
+    "registryName": "miscutils:oreRareEarthI"
+  },
+  {
+    "unlocalizedName": "RareEarthII",
+    "registryName": "miscutils:oreRareEarthII"
+  },
+  {
+    "unlocalizedName": "RareEarthIII",
+    "registryName": "miscutils:oreRareEarthIII"
+  },
+  {
+    "unlocalizedName": "Runite",
+    "registryName": "miscutils:oreRunite"
+  },
+  {
+    "unlocalizedName": "SamarskiteY",
+    "registryName": "miscutils:oreSamarskiteY"
+  },
+  {
+    "unlocalizedName": "SamarskiteYb",
+    "registryName": "miscutils:oreSamarskiteYb"
+  },
+  {
+    "unlocalizedName": "Titanite",
+    "registryName": "miscutils:oreTitanite"
+  },
+  {
+    "unlocalizedName": "Xenotime",
+    "registryName": "miscutils:oreXenotime"
+  },
+  {
+    "unlocalizedName": "Yttriaite",
+    "registryName": "miscutils:oreYttriaite"
+  },
+  {
+    "unlocalizedName": "Yttrialite",
+    "registryName": "miscutils:oreYttrialite"
+  },
+  {
+    "unlocalizedName": "Yttrocerite",
+    "registryName": "miscutils:oreYttrocerite"
+  },
+  {
+    "unlocalizedName": "Zimbabweite",
+    "registryName": "miscutils:oreZimbabweite"
+  },
+  {
+    "unlocalizedName": "Zircon",
+    "registryName": "miscutils:oreZircon"
+  },
+  {
+    "unlocalizedName": "Zirconolite",
+    "registryName": "miscutils:oreZirconolite"
+  },
+  {
+    "unlocalizedName": "Zircophyllite",
+    "registryName": "miscutils:oreZircophyllite"
+  },
+  {
+    "unlocalizedName": "Zirkelite",
+    "registryName": "miscutils:oreZirkelite"
+  }
+]
