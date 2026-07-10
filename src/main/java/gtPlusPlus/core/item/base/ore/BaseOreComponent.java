@@ -20,6 +20,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
+import gregtech.api.material.MU;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.StringUtils;
 import gregtech.common.config.Client;
@@ -27,6 +28,7 @@ import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.minecraft.EntityUtils;
+import gtPlusPlus.core.util.minecraft.MaterialUtils;
 
 public class BaseOreComponent extends Item {
 
@@ -52,8 +54,17 @@ public class BaseOreComponent extends Item {
         this.componentColour = material.getRgbAsHex();
         GameRegistry.registerItem(this, this.unlocalName);
         registerComponent();
-        GTOreDictUnificator
-            .registerOre(componentType.getOrePrefix() + material.getUnlocalizedName(), new ItemStack(this, 1));
+        // Materials outside the gtpp reconstruction gate (e.g. a base gregtech Materials enum constant that
+        // gained this part's shape purely from a stage-11 codegen name-merge, such as milled ore for
+        // Sphalerite) never skip this constructor -- unlike MaterialGenerator's own cutOver() gate for
+        // reconstructed materials. Registering this item into the same oredict name MaterialLib already owns
+        // would create a second entry that races the MaterialLib one across launches (see
+        // MaterialReconstruction census nondeterminism, stage 11 commit 4); keep the item itself (legacy
+        // saves/oredict-name lookups still work through MaterialLib), just skip the duplicate association.
+        if (!MU.isCutOver(componentType.getOrePrefixEnum(), MaterialUtils.getMaterial(material.getUnlocalizedName()))) {
+            GTOreDictUnificator
+                .registerOre(componentType.getOrePrefix() + material.getUnlocalizedName(), new ItemStack(this, 1));
+        }
     }
 
     public boolean registerComponent() {
@@ -194,10 +205,12 @@ public class BaseOreComponent extends Item {
         private final String DISPLAY_NAME;
         private final boolean HAS_OVERLAY;
         private final String orePrefix;
+        private final OrePrefixes orePrefixEnum;
 
         ComponentTypes(final String LocalName, final OrePrefixes orePrefix, final String prefix,
             final String DisplayName, final boolean overlay) {
             this.COMPONENT_NAME = LocalName;
+            this.orePrefixEnum = orePrefix;
             this.orePrefix = orePrefix.getName();
             this.PREFIX = prefix;
             this.DISPLAY_NAME = DisplayName;
@@ -212,6 +225,10 @@ public class BaseOreComponent extends Item {
 
         public String getOrePrefix() {
             return orePrefix;
+        }
+
+        public OrePrefixes getOrePrefixEnum() {
+            return orePrefixEnum;
         }
 
         public String getName() {

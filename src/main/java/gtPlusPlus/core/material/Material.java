@@ -899,6 +899,23 @@ public class Material implements IOreMaterial {
             ItemStack mlStack = MU
                 .stack(aPrefix, MaterialReconstruction.materialLibOf(this.unlocalizedName), stacksize);
             if (mlStack != null) return mlStack;
+        } else if (MaterialReconstruction.isPrefixEligibleForCutover(aPrefix)) {
+            // A material backed by a live gregtech `Materials` constant (not gtpp-reconstructed) can still
+            // carry a MaterialLib shape for `aPrefix` from the stage-11 codegen name-merge (e.g. milled ore for
+            // Sphalerite, edited onto the existing gregtech material by Materials2GtppData*). Resolving through
+            // MaterialLib before the `mComponentMap` cache below matters here: that cache is first-write-wins,
+            // populated as a side effect of whichever legacy part item happens to construct first, so leaving
+            // this branch out lets a legacy item that races MaterialLib's own registration win the cache and
+            // stick for the rest of the boot (see MaterialReconstruction census nondeterminism, stage 11
+            // commit 4). Gated to the same prefixes reconstruction itself has cleared for cutover -- block-kind
+            // and cell/cellPlasma prefixes are NOT eligible here either, since a material with a live gregtech
+            // equivalent (e.g. Iodine) can have ITS block cut over upstream (stage 07) while gtpp's own
+            // BlockBaseModular for it still needs the stage-11 identity-reference sweep first.
+            Materials gtEquivalent = MaterialUtils.getMaterial(this.unlocalizedName);
+            if (gtEquivalent != null && !MaterialUtils.isNullGregtechMaterial(gtEquivalent)) {
+                ItemStack mlStack = MU.stack(aPrefix, gtEquivalent, stacksize);
+                if (mlStack != null) return mlStack;
+            }
         }
         String aKey = aPrefix.getName();
         Map<String, ItemStack> g = mComponentMap.get(this.unlocalizedName);
