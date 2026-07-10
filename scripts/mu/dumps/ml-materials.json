@@ -4554,7 +4554,6 @@
     "moltenArgb": null,
     "textureSet": "CUSTOM/copper",
     "shapes": [
-      "block",
       "bolt",
       "cellMolten",
       "cellPlasma",
@@ -155515,6 +155514,7 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
       "rawOre"
     ],
     "families": [
@@ -155672,6 +155672,7 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
       "rawOre"
     ],
     "families": [
@@ -155829,6 +155830,7 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
       "rawOre"
     ],
     "families": [
@@ -155986,6 +155988,7 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
       "rawOre"
     ],
     "families": [
@@ -156143,6 +156146,7 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
       "rawOre"
     ],
     "families": [
@@ -156553,6 +156557,7 @@
       "fluidMolten",
       "ingot",
       "nugget",
+      "ore",
       "plate",
       "plateDouble",
       "rawOre"
@@ -157339,6 +157344,7 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
       "rawOre"
     ],
     "families": [
@@ -159019,6 +159025,7 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
       "rawOre"
     ],
     "families": [
@@ -159788,6 +159795,7 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
       "rawOre"
     ],
     "families": [
@@ -160209,6 +160217,7 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
       "rawOre"
     ],
     "families": [
@@ -160350,6 +160359,7 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
       "rawOre"
     ],
     "families": [
@@ -160880,6 +160890,7 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
       "rawOre"
     ],
     "families": [
@@ -162126,6 +162137,7 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
       "rawOre"
     ],
     "families": [
@@ -162275,6 +162287,7 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
       "rawOre"
     ],
     "families": [
@@ -162809,6 +162822,7 @@
       "dustSmall",
       "dustTiny",
       "fluidMolten",
+      "ore",
       "rawOre"
     ],
     "families": [
@@ -162954,6 +162968,7 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
       "rawOre"
     ],
     "families": [
@@ -163135,6 +163150,7 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
       "rawOre"
     ],
     "families": [
@@ -163316,6 +163332,7 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
       "rawOre"
     ],
     "families": [
@@ -163579,6 +163596,7 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
       "rawOre"
     ],
     "families": [
@@ -165207,6 +165225,7 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
       "rawOre"
     ],
     "families": [
@@ -165364,6 +165383,7 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
       "rawOre"
     ],
     "families": [
@@ -166992,6 +167012,7 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
       "rawOre"
     ],
     "families": [
@@ -167157,6 +167178,7 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
       "rawOre"
     ],
     "families": [
@@ -167292,6 +167314,7 @@
       "dustSmall",
       "dustTiny",
       "fluidMolten",
+      "ore",
       "rawOre",
       "wireFine"
     ],
@@ -168178,6 +168201,7 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
       "rawOre"
     ],
     "families": [
@@ -168311,6 +168335,7 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
       "rawOre"
     ],
     "families": [
@@ -168460,6 +168485,7 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
       "rawOre"
     ],
     "families": [
@@ -168609,6 +168635,7 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
       "rawOre"
     ],
     "families": [
@@ -168926,6 +168953,7 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
       "rawOre"
     ],
     "families": [
@@ -169059,6 +169087,7 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
       "rawOre"
     ],
     "families": [
@@ -170090,6 +170119,7 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
       "rawOre"
     ],
     "families": [
@@ -170593,6 +170623,7 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
       "rawOre"
     ],
     "families": [
@@ -171202,6 +171233,7 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
       "rawOre"
     ],
     "families": [
@@ -171920,6 +171952,7 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
       "rawOre"
     ],
     "families": [
@@ -172564,6 +172597,7 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
       "rawOre",
       "stick",
       "stickLong"
@@ -172868,6 +172902,7 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
       "rawOre"
     ],
     "families": [
@@ -173049,6 +173084,7 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
       "rawOre"
     ],
     "families": [
@@ -173230,6 +173266,7 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
       "rawOre"
     ],
     "families": [
@@ -173674,6 +173711,7 @@
       "fluidPlasma",
       "ingot",
       "nugget",
+      "ore",
       "plate",
       "plateDouble",
       "rawOre"
@@ -173794,6 +173832,7 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
       "rawOre"
     ],
     "families": [
@@ -173951,6 +173990,7 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
       "rawOre"
     ],
     "families": [
@@ -177536,6 +177576,7 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
       "rawOre"
     ],
     "families": [
@@ -179640,6 +179681,7 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
       "rawOre"
     ],
     "families": [
@@ -179797,6 +179839,7 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
       "rawOre"
     ],
     "families": [
@@ -179946,6 +179989,7 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
       "rawOre"
     ],
     "families": [
@@ -180087,6 +180131,7 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
       "rawOre"
     ],
     "families": [
@@ -180402,6 +180447,7 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
       "rawOre"
     ],
     "families": [
@@ -180575,6 +180621,7 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
       "rawOre"
     ],
     "families": [
@@ -180972,6 +181019,7 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
       "rawOre"
     ],
     "families": [
@@ -181121,6 +181169,7 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
       "rawOre"
     ],
     "families": [
@@ -181310,6 +181359,7 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "ore",
       "rawOre"
     ],
     "families": [
