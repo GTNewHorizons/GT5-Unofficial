@@ -4,14 +4,16 @@ package gregtech.loaders.postload;
 import gregtech.api.enums.OrePrefixes;
 
 /// The stage-11 commit-4 gtPlusPlus item-cutover Postea migration table: one row per legacy
-/// `miscutils:item*`-registered gtPlusPlus per-material part item whose prefix has cut over to a
-/// MaterialLib shape, read from the pinned `gtpp-materials.json` dump's `generatedParts`. Block-kind
-/// parts (`block`, `frameGt`) migrate separately; a handful of `cell` rows for materials whose
-/// legacy cell already resolved to a non-`miscutils:` item by dump time are hand-migrated in
+/// `miscutils:item*`/`miscutils:block*`-registered gtPlusPlus per-material part whose prefix has cut
+/// over to a MaterialLib shape, read from the pinned `gtpp-materials.json` dump's `generatedParts`.
+/// `frameGt` migrates separately (deferred); a handful of `cell` rows for materials whose legacy cell
+/// already resolved to a non-`miscutils:` item by dump time are hand-migrated in
 /// [PosteaTransformers] instead, since this table can only see registry names the dump captured.
 /// [PosteaTransformers] migrates each row's legacy stack to `MU.stack(prefix, MaterialLibAPI.getMaterial(
 /// "gregtech", materialName), 1)` (`cell`/`cellPlasma` rows through `MaterialReconstruction#cellStack`
-/// instead) in a single loop -- see `scripts/mu/gen_gtpp_item_transformers.py`.
+/// instead) in a single loop -- see `scripts/mu/gen_gtpp_item_transformers.py`. `block` rows are
+/// additionally gated on `MaterialReconstruction#isBlockCutOver` and get a `BlockReplacementManager`
+/// handler alongside the `ItemStackReplacementManager` one, since a storage block is placeable.
 public final class GtppItemCutoverTable {
 
     public record Entry(OrePrefixes prefix, String materialName, String registryName) {}
@@ -20,6 +22,83 @@ public final class GtppItemCutoverTable {
 
     // spotless:off
     public static final Entry[] ENTRIES = new Entry[] {
+        new Entry(OrePrefixes.block, "AbyssalAlloy", "miscutils:blockBlockAbyssalAlloy"),
+        new Entry(OrePrefixes.block, "AdvancedNitinol", "miscutils:blockBlockAdvancedNitinol"),
+        new Entry(OrePrefixes.block, "AncientGranite", "miscutils:blockBlockAncientGranite"),
+        new Entry(OrePrefixes.block, "Arcanite", "miscutils:blockBlockArcanite"),
+        new Entry(OrePrefixes.block, "ArceusAlloy2B", "miscutils:blockBlockArceusAlloy2B"),
+        new Entry(OrePrefixes.block, "AstralTitanium", "miscutils:blockBlockAstralTitanium"),
+        new Entry(OrePrefixes.block, "BabbitAlloy", "miscutils:blockBlockBabbitAlloy"),
+        new Entry(OrePrefixes.block, "BlackMetal", "miscutils:blockBlockBlackMetal"),
+        new Entry(OrePrefixes.block, "BlackTitanium", "miscutils:blockBlockBlackTitanium"),
+        new Entry(OrePrefixes.block, "BloodSteel", "miscutils:blockBlockBloodSteel"),
+        new Entry(OrePrefixes.block, "Botmium", "miscutils:blockBlockBotmium"),
+        new Entry(OrePrefixes.block, "CelestialTungsten", "miscutils:blockBlockCelestialTungsten"),
+        new Entry(OrePrefixes.block, "ChromaticGlass", "miscutils:blockBlockChromaticGlass"),
+        new Entry(OrePrefixes.block, "CinobiteA243", "miscutils:blockBlockCinobiteA243"),
+        new Entry(OrePrefixes.block, "Curium", "miscutils:blockBlockCurium"),
+        new Entry(OrePrefixes.block, "Dragonblood", "miscutils:blockBlockDragonblood"),
+        new Entry(OrePrefixes.block, "EglinSteel", "miscutils:blockBlockEglinSteel"),
+        new Entry(OrePrefixes.block, "EnergyCrystal", "miscutils:blockBlockEnergyCrystal"),
+        new Entry(OrePrefixes.block, "Fermium", "miscutils:blockBlockFermium"),
+        new Entry(OrePrefixes.block, "Germanium", "miscutils:blockBlockGermanium"),
+        new Entry(OrePrefixes.block, "Grisium", "miscutils:blockBlockGrisium"),
+        new Entry(OrePrefixes.block, "HS188A", "miscutils:blockBlockHS188A"),
+        new Entry(OrePrefixes.block, "HastelloyC276", "miscutils:blockBlockHastelloyC276"),
+        new Entry(OrePrefixes.block, "HastelloyN", "miscutils:blockBlockHastelloyN"),
+        new Entry(OrePrefixes.block, "HastelloyW", "miscutils:blockBlockHastelloyW"),
+        new Entry(OrePrefixes.block, "HastelloyX", "miscutils:blockBlockHastelloyX"),
+        new Entry(OrePrefixes.block, "HeLiCoPtEr", "miscutils:blockBlockHeLiCoPtEr"),
+        new Entry(OrePrefixes.block, "Hypogen", "miscutils:blockBlockHypogen"),
+        new Entry(OrePrefixes.block, "Incoloy020", "miscutils:blockBlockIncoloy020"),
+        new Entry(OrePrefixes.block, "IncoloyDS", "miscutils:blockBlockIncoloyDS"),
+        new Entry(OrePrefixes.block, "IncoloyMA956", "miscutils:blockBlockIncoloyMA956"),
+        new Entry(OrePrefixes.block, "Inconel625", "miscutils:blockBlockInconel625"),
+        new Entry(OrePrefixes.block, "Inconel690", "miscutils:blockBlockInconel690"),
+        new Entry(OrePrefixes.block, "Inconel792", "miscutils:blockBlockInconel792"),
+        new Entry(OrePrefixes.block, "Indalloy140", "miscutils:blockBlockIndalloy140"),
+        new Entry(OrePrefixes.block, "Iodine", "miscutils:blockBlockIodine"),
+        new Entry(OrePrefixes.block, "LafiumCompound", "miscutils:blockBlockLafiumCompound"),
+        new Entry(OrePrefixes.block, "Laurenium", "miscutils:blockBlockLaurenium"),
+        new Entry(OrePrefixes.block, "Lithium7", "miscutils:blockBlockLithium7"),
+        new Entry(OrePrefixes.block, "MaragingSteel250", "miscutils:blockBlockMaragingSteel250"),
+        new Entry(OrePrefixes.block, "MaragingSteel300", "miscutils:blockBlockMaragingSteel300"),
+        new Entry(OrePrefixes.block, "MaragingSteel350", "miscutils:blockBlockMaragingSteel350"),
+        new Entry(OrePrefixes.block, "Neptunium", "miscutils:blockBlockNeptunium"),
+        new Entry(OrePrefixes.block, "NiobiumCarbide", "miscutils:blockBlockNiobiumCarbide"),
+        new Entry(OrePrefixes.block, "Nitinol60", "miscutils:blockBlockNitinol60"),
+        new Entry(OrePrefixes.block, "Octiron", "miscutils:blockBlockOctiron"),
+        new Entry(OrePrefixes.block, "Pikyonium64B", "miscutils:blockBlockPikyonium64B"),
+        new Entry(OrePrefixes.block, "Plutonium238", "miscutils:blockBlockPlutonium238"),
+        new Entry(OrePrefixes.block, "Polonium", "miscutils:blockBlockPolonium"),
+        new Entry(OrePrefixes.block, "Potin", "miscutils:blockBlockPotin"),
+        new Entry(OrePrefixes.block, "Protactinium", "miscutils:blockBlockProtactinium"),
+        new Entry(OrePrefixes.block, "Quantum", "miscutils:blockBlockQuantum"),
+        new Entry(OrePrefixes.block, "Radium", "miscutils:blockBlockRadium"),
+        new Entry(OrePrefixes.block, "Rhenium", "miscutils:blockBlockRhenium"),
+        new Entry(OrePrefixes.block, "Rhugnor", "miscutils:blockBlockRhugnor"),
+        new Entry(OrePrefixes.block, "Runite", "miscutils:blockBlockRunite"),
+        new Entry(OrePrefixes.block, "Selenium", "miscutils:blockBlockSelenium"),
+        new Entry(OrePrefixes.block, "SiliconCarbide", "miscutils:blockBlockSiliconCarbide"),
+        new Entry(OrePrefixes.block, "Staballoy", "miscutils:blockBlockStaballoy"),
+        new Entry(OrePrefixes.block, "Stellite", "miscutils:blockBlockStellite"),
+        new Entry(OrePrefixes.block, "Talonite", "miscutils:blockBlockTalonite"),
+        new Entry(OrePrefixes.block, "Tantalloy60", "miscutils:blockBlockTantalloy60"),
+        new Entry(OrePrefixes.block, "Tantalloy61", "miscutils:blockBlockTantalloy61"),
+        new Entry(OrePrefixes.block, "TantalumCarbide", "miscutils:blockBlockTantalumCarbide"),
+        new Entry(OrePrefixes.block, "Technetium", "miscutils:blockBlockTechnetium"),
+        new Entry(OrePrefixes.block, "Thallium", "miscutils:blockBlockThallium"),
+        new Entry(OrePrefixes.block, "Titansteel", "miscutils:blockBlockTitansteel"),
+        new Entry(OrePrefixes.block, "TriniumNaquadahAlloy", "miscutils:blockBlockTriniumNaquadahAlloy"),
+        new Entry(OrePrefixes.block, "TriniumNaquadahCarbonite", "miscutils:blockBlockTriniumNaquadahCarbonite"),
+        new Entry(OrePrefixes.block, "TriniumTitaniumAlloy", "miscutils:blockBlockTriniumTitaniumAlloy"),
+        new Entry(OrePrefixes.block, "Tumbaga", "miscutils:blockBlockTumbaga"),
+        new Entry(OrePrefixes.block, "TungstenTitaniumCarbide", "miscutils:blockBlockTungstenTitaniumCarbide"),
+        new Entry(OrePrefixes.block, "Uranium232", "miscutils:blockBlockUranium232"),
+        new Entry(OrePrefixes.block, "Uranium233", "miscutils:blockBlockUranium233"),
+        new Entry(OrePrefixes.block, "WatertightSteel", "miscutils:blockBlockWatertightSteel"),
+        new Entry(OrePrefixes.block, "Zeron100", "miscutils:blockBlockZeron100"),
+        new Entry(OrePrefixes.block, "ZirconiumCarbide", "miscutils:blockBlockZirconiumCarbide"),
         new Entry(OrePrefixes.bolt, "AbyssalAlloy", "miscutils:itemBoltAbyssalAlloy"),
         new Entry(OrePrefixes.bolt, "Arcanite", "miscutils:itemBoltArcanite"),
         new Entry(OrePrefixes.bolt, "ArceusAlloy2B", "miscutils:itemBoltArceusAlloy2B"),
