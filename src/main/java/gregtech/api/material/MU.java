@@ -100,11 +100,10 @@ public class MU {
             .get(legacyName(material));
     }
 
-    /// The legacy `mMetaItemSubID` a material was assigned (block-form metadata index, e.g. the
-    /// `OrePrefixes.frameGt`/storage-block variant selector), or -1 if unset -- mirrors legacy
-    /// `Materials#mMetaItemSubID`'s own unset default. Ported byte-identically to
-    /// [GTMaterialProperties#OLD_SUB_ID]; callers reading block-form metadata (frame tiers, worldgen) use this
-    /// instead of the legacy field.
+    /// The legacy `mMetaItemSubID` a material was assigned (block-form metadata index, e.g. the frame and
+    /// storage-block variant selector), or -1 if unset -- mirrors legacy `Materials#mMetaItemSubID`'s own
+    /// unset default. Ported byte-identically to [GTMaterialProperties#OLD_SUB_ID]; callers reading
+    /// block-form metadata (frame tiers, worldgen) use this instead of the legacy field.
     public static int oldSubId(@Nullable Material material) {
         if (material == null) return -1;
         Integer id = material.getProperty(GTMaterialProperties.OLD_SUB_ID);
