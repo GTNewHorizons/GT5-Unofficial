@@ -44,11 +44,14 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
@@ -301,9 +304,11 @@ public class MTEIntegratedOreFactoryLegacy extends MTEExtendedPowerMultiBlockBas
             FluidStack fluid = tInputFluid.get(i);
             if (fluid != null && fluid.equals(GTModHandler.getDistilledWater(1L))) {
                 tWater += fluid.amount;
-            } else if (fluid != null && fluid.equals(Materials.Lubricant.getFluid(1L))) {
-                tLube += fluid.amount;
-            }
+            } else if (fluid != null && fluid.equals(
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.Lubricant, Materials2FluidShapes.shapeFluidLiquid, (int) (1)))) {
+                        tLube += fluid.amount;
+                    }
         }
         currentParallel = Math.min(currentParallel, tLube / 2);
         currentParallel = Math.min(currentParallel, tWater / 200);
@@ -354,7 +359,11 @@ public class MTEIntegratedOreFactoryLegacy extends MTEExtendedPowerMultiBlockBas
 
         // Consume fluids
         depleteInput(GTModHandler.getDistilledWater(finalParallel * 200L));
-        depleteInput(Materials.Lubricant.getFluid(finalParallel * 2L));
+        depleteInput(
+            MaterialLibAPI.getFluidStack(
+                Materials2Materials.Lubricant,
+                Materials2FluidShapes.shapeFluidLiquid,
+                (int) (finalParallel * 2)));
 
         // Consume items and generate outputs
         List<ItemStack> tOres = new ArrayList<>();
@@ -716,7 +725,9 @@ public class MTEIntegratedOreFactoryLegacy extends MTEExtendedPowerMultiBlockBas
         for (ItemStack stack : aList) {
             int tID = GTUtility.stackToInt(stack);
             if (sVoidStone) {
-                if (GTUtility.areStacksEqual(Materials.Stone.getDust(1), stack)) {
+                if (GTUtility.areStacksEqual(
+                    MaterialLibAPI.getStack(Materials2Materials.Stone, Materials2Shapes.shapeDust, (int) (1)),
+                    stack)) {
                     continue;
                 }
             }

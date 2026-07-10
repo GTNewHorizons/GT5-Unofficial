@@ -20,9 +20,11 @@ import net.minecraftforge.fluids.IFluidBlock;
 import org.jetbrains.annotations.NotNull;
 
 import com.google.common.collect.ImmutableList;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.Materials;
+import gregtech.api.enums.materials2.Materials2FluidShapes;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
@@ -211,7 +213,11 @@ public abstract class MTEConcreteBackfillerBase extends MTEDrillerBase {
     }
 
     private boolean tryConsumeFluid() {
-        if (!depleteInput(Materials.Concrete.getMolten(1 * INGOTS))) {
+        if (!depleteInput(
+            MaterialLibAPI.getFluidStack(
+                Materials2Materials.Concrete,
+                Materials2FluidShapes.shapeFluidMolten,
+                (int) (1 * INGOTS)))) {
             mMaxProgresstime = 0;
             return false;
         }

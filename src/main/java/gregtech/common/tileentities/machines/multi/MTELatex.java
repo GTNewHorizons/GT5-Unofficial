@@ -43,11 +43,13 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -154,8 +156,13 @@ public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex>
     private int itemPipeTier = -1;
     private double discount = 0.0625 * itemPipeTier;
     private int base_parallel = 8;
-    private static final FluidStack[] valid_rubbers = { Materials.Rubber.getMolten(1L),
-        Materials.RubberSilicone.getMolten(1L), Materials.StyreneButadieneRubber.getMolten(1L) };
+    private static final FluidStack[] valid_rubbers = {
+        MaterialLibAPI.getFluidStack(Materials2Materials.Rubber, Materials2FluidShapes.shapeFluidMolten, (int) (1)),
+        Materials.RubberSilicone.getMolten(1L),
+        MaterialLibAPI.getFluidStack(
+            Materials2Materials.StyreneButadieneRubber,
+            Materials2FluidShapes.shapeFluidMolten,
+            (int) (1)) };
 
     @Override
     protected ProcessingLogic createProcessingLogic() {

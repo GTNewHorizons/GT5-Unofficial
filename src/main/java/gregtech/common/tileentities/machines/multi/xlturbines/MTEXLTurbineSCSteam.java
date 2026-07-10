@@ -7,8 +7,12 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.materials2.Materials2FluidShapes;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GTUtility;
@@ -135,7 +139,11 @@ public class MTEXLTurbineSCSteam extends MTEXLTurbineBase {
         if (totalFlow <= 0) return 0;
         tEU = totalFlow;
         if (isUsingDenseSteam) {
-            addOutputPartial(Materials.DenseSuperheatedSteam.getGas((long) steamFlowForNextSteam));
+            addOutputPartial(
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.DenseSuperheatedSteam,
+                    Materials2FluidShapes.shapeFluidGas,
+                    (int) ((long) steamFlowForNextSteam)));
         } else {
             addOutputPartial(FluidRegistry.getFluidStack("ic2superheatedsteam", totalFlow));
         }

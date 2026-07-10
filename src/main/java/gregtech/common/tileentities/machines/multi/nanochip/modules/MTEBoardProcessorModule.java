@@ -26,10 +26,13 @@ import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import goodgenerator.items.GGMaterial;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.materials2.Materials2FluidShapes;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -278,13 +281,19 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
             return CheckRecipeResultRegistry.NO_IMMERSION_FLUID;
         }
 
-        if (recipe.getMetadata(BoardProcessingModuleFluidKey.INSTANCE) == 1
-            && !storedFluidStack.isFluidEqual(Materials.IronIIIChloride.getFluid(0))) {
+        if (recipe.getMetadata(BoardProcessingModuleFluidKey.INSTANCE) == 1 && !storedFluidStack.isFluidEqual(
+            MaterialLibAPI.getFluidStack(
+                Materials2Materials.IronIIIChloride,
+                Materials2FluidShapes.shapeFluidLiquid,
+                (int) (0)))) {
             return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
-        if (recipe.getMetadata(BoardProcessingModuleFluidKey.INSTANCE) == 2
-            && !storedFluidStack.isFluidEqual(Materials.GrowthMediumSterilized.getFluid(0))) {
+        if (recipe.getMetadata(BoardProcessingModuleFluidKey.INSTANCE) == 2 && !storedFluidStack.isFluidEqual(
+            MaterialLibAPI.getFluidStack(
+                Materials2Materials.GrowthMediumSterilized,
+                Materials2FluidShapes.shapeFluidLiquid,
+                (int) (0)))) {
             return CheckRecipeResultRegistry.NO_RECIPE;
         }
 
@@ -359,15 +368,30 @@ public class MTEBoardProcessorModule extends MTENanochipAssemblyModuleBase<MTEBo
                 if (storedFluidStack != null) {
                     fluidAmount = storedFluidStack.amount;
                     fillPercentage = (double) fluidAmount / fluidCapacity;
-                    if (storedFluidStack.isFluidEqual(Materials.IronIIIChloride.getFluid(0))) {
+                    if (storedFluidStack.isFluidEqual(
+                        MaterialLibAPI.getFluidStack(
+                            Materials2Materials.IronIIIChloride,
+                            Materials2FluidShapes.shapeFluidLiquid,
+                            (int) (0)))) {
                         impurityFluidStack = GGMaterial.ferrousChloride.getFluidOrGas(0);
-                    } else if (storedFluidStack.isFluidEqual(Materials.GrowthMediumSterilized.getFluid(0))) {
-                        impurityFluidStack = Materials.GrowthMediumRaw.getFluid(0);
-                    } else if (storedFluidStack.isFluidEqual(Materials.BioMediumSterilized.getFluid(0))) {
-                        impurityFluidStack = Materials.BioMediumRaw.getFluid(0);
-                    } else if (storedFluidStack.isFluidEqual(Materials.PrismaticAcid.getFluid(0))) {
-                        impurityFluidStack = Materials.PrismaticGas.getFluid(0);
-                    }
+                    } else if (storedFluidStack.isFluidEqual(
+                        MaterialLibAPI.getFluidStack(
+                            Materials2Materials.GrowthMediumSterilized,
+                            Materials2FluidShapes.shapeFluidLiquid,
+                            (int) (0)))) {
+                                impurityFluidStack = MaterialLibAPI.getFluidStack(
+                                    Materials2Materials.GrowthMediumRaw,
+                                    Materials2FluidShapes.shapeFluidLiquid,
+                                    (int) (0));
+                            } else
+                        if (storedFluidStack.isFluidEqual(Materials.BioMediumSterilized.getFluid(0))) {
+                            impurityFluidStack = MaterialLibAPI.getFluidStack(
+                                Materials2Materials.BioMediumRaw,
+                                Materials2FluidShapes.shapeFluidLiquid,
+                                (int) (0));
+                        } else if (storedFluidStack.isFluidEqual(Materials.PrismaticAcid.getFluid(0))) {
+                            impurityFluidStack = Materials.PrismaticGas.getFluid(0);
+                        }
                 }
             }
         }

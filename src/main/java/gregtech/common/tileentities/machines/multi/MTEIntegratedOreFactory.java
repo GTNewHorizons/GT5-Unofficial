@@ -43,11 +43,14 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
@@ -242,7 +245,10 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
         for (FluidStack fluid : inputFluid) {
             if (fluid == null) continue;
             if (fluid.equals(GTModHandler.getDistilledWater(1L))) waterAmount += fluid.amount;
-            else if (fluid.equals(Materials.Lubricant.getFluid(1L))) lubricantAmount += fluid.amount;
+            else if (fluid.equals(
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.Lubricant, Materials2FluidShapes.shapeFluidLiquid, (int) (1))))
+                lubricantAmount += fluid.amount;
         }
 
         final long parallelFromFluids = Math.min(lubricantAmount / 2, waterAmount / 200);
@@ -288,16 +294,30 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
         long totalLubricantToDrain = (long) effectiveParallel * 2L;
         while (totalLubricantToDrain > 0) {
             int tryDrain = (int) Math.min(totalLubricantToDrain, Integer.MAX_VALUE);
-            if (!depleteInput(Materials.Lubricant.getFluid(tryDrain))) {
+            if (!depleteInput(
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.Lubricant,
+                    Materials2FluidShapes.shapeFluidLiquid,
+                    (int) (tryDrain)))) {
                 int maxHatch = 0;
                 for (FluidStack sf : getStoredFluids()) {
-                    if (sf != null && sf.isFluidEqual(Materials.Lubricant.getFluid(1L)) && sf.amount > maxHatch) {
+                    if (sf != null && sf.isFluidEqual(
+                        MaterialLibAPI.getFluidStack(
+                            Materials2Materials.Lubricant,
+                            Materials2FluidShapes.shapeFluidLiquid,
+                            (int) (1)))
+                        && sf.amount > maxHatch) {
                         maxHatch = sf.amount;
                     }
                 }
                 if (maxHatch <= 0) break;
                 tryDrain = (int) Math.min(totalLubricantToDrain, maxHatch);
-                if (!depleteInput(Materials.Lubricant.getFluid(tryDrain))) break;
+                if (!depleteInput(
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.Lubricant,
+                        Materials2FluidShapes.shapeFluidLiquid,
+                        (int) (tryDrain))))
+                    break;
             }
             totalLubricantToDrain -= tryDrain;
         }
@@ -584,7 +604,9 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
     private void doCompress(List<ItemStack> aList) {
         HashMap<Integer, Integer> merged = new HashMap<>();
         for (ItemStack stack : aList) {
-            if (doesVoidStone && GTUtility.areStacksEqual(Materials.Stone.getDust(1), stack)) continue;
+            if (doesVoidStone && GTUtility.areStacksEqual(
+                MaterialLibAPI.getStack(Materials2Materials.Stone, Materials2Shapes.shapeDust, (int) (1)),
+                stack)) continue;
             int id = GTUtility.stackToInt(stack);
             if (id != 0) {
                 merged.merge(id, stack.stackSize, Integer::sum);

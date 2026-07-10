@@ -195,6 +195,7 @@ import net.minecraft.potion.Potion;
 
 import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.covers.CoverRegistry;
@@ -205,6 +206,8 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TCAspects;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.items.MetaGeneratedItemX32;
 import gregtech.api.objects.ItemData;
 import gregtech.api.render.TextureFactory;
@@ -1511,7 +1514,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                     7,
                     0.5F,
                     EnumAction.eat,
-                    GTOreDictUnificator.get(OrePrefixes.foil, Materials.Aluminium, 1L),
+                    MaterialLibAPI.getStack(Materials2Materials.Aluminium, Materials2Shapes.shapeFoil, (int) (1)),
                     false,
                     true,
                     false),
@@ -1528,7 +1531,7 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
                     7,
                     0.6F,
                     EnumAction.eat,
-                    GTOreDictUnificator.get(OrePrefixes.foil, Materials.Aluminium, 1L),
+                    MaterialLibAPI.getStack(Materials2Materials.Aluminium, Materials2Shapes.shapeFoil, (int) (1)),
                     false,
                     true,
                     false),
@@ -2605,14 +2608,15 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
     public void initMaceratorRecipes() {
         RA.stdBuilder()
             .itemInputs(ItemList.Food_Sliced_Cheese.get(1L))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dustSmall, Materials.Cheese, 1L))
+            .itemOutputs(
+                MaterialLibAPI.getStack(Materials2Materials.Cheese, Materials2Shapes.shapeDustSmall, (int) (1)))
             .duration(20 * SECONDS)
             .eut(2)
             .addTo(maceratorRecipes);
 
         RA.stdBuilder()
             .itemInputs(ItemList.Dye_Cocoa.get(1L))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Cocoa, 1L))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Cocoa, Materials2Shapes.shapeDust, (int) (1)))
             .duration(20 * SECONDS)
             .eut(2)
             .addTo(maceratorRecipes);
@@ -2633,14 +2637,14 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
 
         RA.stdBuilder()
             .itemInputs(GTModHandler.getIC2Item("crop", 1L))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Wood, 1L))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Wood, Materials2Shapes.shapeDust, (int) (1)))
             .duration(20 * SECONDS)
             .eut(2)
             .addTo(maceratorRecipes);
 
         RA.stdBuilder()
             .itemInputs(new ItemStack(Items.stick, 1))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dustSmall, Materials.Wood, 2L))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Wood, Materials2Shapes.shapeDustSmall, (int) (2)))
             .duration(20 * SECONDS)
             .eut(2)
             .addTo(maceratorRecipes);
@@ -2655,7 +2659,8 @@ public class MetaGeneratedItem02 extends MetaGeneratedItemX32 {
 
         RA.stdBuilder()
             .itemInputs(ItemList.Tesseract.get(1))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.TranscendentMetal, 8L))
+            .itemOutputs(
+                MaterialLibAPI.getStack(Materials2Materials.TranscendentMetal, Materials2Shapes.shapeDust, (int) (8)))
             .duration(5 * SECONDS)
             .eut(TierEU.RECIPE_UIV)
             .addTo(maceratorRecipes);

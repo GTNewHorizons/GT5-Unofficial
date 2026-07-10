@@ -33,12 +33,14 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -438,7 +440,10 @@ public class MTEPurificationUnitBaryonicPerfection
                 if (isCatalyst(stack)) {
                     // Try to deplete catalyst cost first
                     int cost = calculateCatalystCost(stack);
-                    FluidStack inputCost = Materials.Infinity.getMolten(cost);
+                    FluidStack inputCost = MaterialLibAPI.getFluidStack(
+                        Materials2Materials.Infinity,
+                        Materials2FluidShapes.shapeFluidMolten,
+                        (int) (cost));
                     // Drain the input cost directly from a hatch since we are not inside
                     // recipe processing
                     boolean drained = false;

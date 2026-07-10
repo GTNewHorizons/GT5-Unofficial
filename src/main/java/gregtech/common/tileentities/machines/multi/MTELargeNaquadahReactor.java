@@ -31,6 +31,7 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import goodgenerator.api.recipe.GoodGeneratorRecipeMaps;
 import goodgenerator.items.GGMaterial;
@@ -38,6 +39,8 @@ import goodgenerator.util.CrackRecipeAdder;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials2.Materials2FluidShapes;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
@@ -82,9 +85,24 @@ public class MTELargeNaquadahReactor extends TTMultiblockBase
             excitedLiquid = Arrays.asList(
                 Pair.of(Materials.Space.getMolten(20L), ExcitedLiquidCoe[0]),
                 Pair.of(GGMaterial.atomicSeparationCatalyst.getMolten(20), ExcitedLiquidCoe[1]),
-                Pair.of(Materials.Naquadah.getMolten(20L), ExcitedLiquidCoe[2]),
-                Pair.of(Materials.Uranium235.getMolten(180L), ExcitedLiquidCoe[3]),
-                Pair.of(Materials.Caesium.getMolten(180L), ExcitedLiquidCoe[4]));
+                Pair.of(
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.Naquadah,
+                        Materials2FluidShapes.shapeFluidMolten,
+                        (int) (20)),
+                    ExcitedLiquidCoe[2]),
+                Pair.of(
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.Uranium235,
+                        Materials2FluidShapes.shapeFluidMolten,
+                        (int) (180)),
+                    ExcitedLiquidCoe[3]),
+                Pair.of(
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.Caesium,
+                        Materials2FluidShapes.shapeFluidMolten,
+                        (int) (180)),
+                    ExcitedLiquidCoe[4]));
         }
         return excitedLiquid;
     }
@@ -94,7 +112,12 @@ public class MTELargeNaquadahReactor extends TTMultiblockBase
             coolant = Arrays.asList(
                 Pair.of(Materials.Time.getMolten(20L), CoolantEfficiency[0]),
                 Pair.of(new FluidStack(TFFluids.fluidCryotheum, 1_000), CoolantEfficiency[1]),
-                Pair.of(Materials.SuperCoolant.getFluid(1_000), CoolantEfficiency[2]),
+                Pair.of(
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.SuperCoolant,
+                        Materials2FluidShapes.shapeFluidLiquid,
+                        (int) (1_000)),
+                    CoolantEfficiency[2]),
                 Pair.of(GTModHandler.getIC2Coolant(1_000), CoolantEfficiency[3]));
         }
         return coolant;
@@ -226,8 +249,12 @@ public class MTELargeNaquadahReactor extends TTMultiblockBase
                 startRecipeProcessing();
                 FluidStack[] input = getStoredFluids().toArray(new FluidStack[0]);
                 int time = 1;
-                if (LiquidAirConsumptionPerSecond != 0
-                    && !consumeFuel(Materials.LiquidAir.getFluid(LiquidAirConsumptionPerSecond), input)) {
+                if (LiquidAirConsumptionPerSecond != 0 && !consumeFuel(
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.LiquidAir,
+                        Materials2FluidShapes.shapeFluidLiquid,
+                        (int) (LiquidAirConsumptionPerSecond)),
+                    input)) {
                     this.mEUt = 0;
                     this.trueEff = 0;
                     this.trueOutput = 0;

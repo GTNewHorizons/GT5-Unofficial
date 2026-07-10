@@ -32,10 +32,13 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.materials2.Materials2FluidShapes;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
@@ -264,8 +267,11 @@ public class MTEDieselEngineLegacy extends MTEEnhancedMultiBlockBase<MTEDieselEn
                 }
 
                 // Deplete Lubricant. 1000L should = 1 hour of runtime (if baseEU = 2048)
-                if ((mRuntime % 72 == 0 || mRuntime == 0)
-                    && !depleteInput(Materials.Lubricant.getFluid((boostEu ? 2L : 1L) * getAdditiveFactor())))
+                if ((mRuntime % 72 == 0 || mRuntime == 0) && !depleteInput(
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.Lubricant,
+                        Materials2FluidShapes.shapeFluidLiquid,
+                        (int) ((boostEu ? 2 : 1) * getAdditiveFactor()))))
                     return SimpleCheckRecipeResult.ofFailure("no_lubricant");
 
                 fuelRemaining = tFluid.amount; // Record available fuel

@@ -10,6 +10,7 @@ import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -18,6 +19,8 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -164,7 +167,7 @@ public class MTEPotionBrewer extends MTEBasicMachine {
                     };
                 }
                 if (GTUtility.areStacksEqual(
-                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.Glowstone, 1L),
+                    MaterialLibAPI.getStack(Materials2Materials.Glowstone, Materials2Shapes.shapeDust, (int) (1)),
                     getInputAt(0))) {
                     if (!tModifier.startsWith("strong")) {
                         return setOutput(
@@ -175,8 +178,9 @@ public class MTEPotionBrewer extends MTEBasicMachine {
                     }
                     return setOutput("potion.thick");
                 }
-                if (GTUtility
-                    .areStacksEqual(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L), getInputAt(0))) {
+                if (GTUtility.areStacksEqual(
+                    MaterialLibAPI.getStack(Materials2Materials.Redstone, Materials2Shapes.shapeDust, (int) (1)),
+                    getInputAt(0))) {
                     if (!tModifier.startsWith("long")) {
                         return setOutput(
                             "potion." + tInputName + ".long" + (tModifier.isEmpty() ? "" : "." + tModifier));

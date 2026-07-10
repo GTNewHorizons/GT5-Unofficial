@@ -485,6 +485,8 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import cpw.mods.fml.common.Optional;
 import gregtech.api.GregTechAPI;
 import gregtech.api.covers.CoverPlacer;
@@ -499,6 +501,8 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TCAspects;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.interfaces.IItemBehaviour;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.items.MetaBaseItem;
@@ -682,7 +686,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                     1,
                     0.1F,
                     EnumAction.eat,
-                    GTOreDictUnificator.get(OrePrefixes.foil, Materials.Gold, 1L),
+                    MaterialLibAPI.getStack(Materials2Materials.Gold, Materials2Shapes.shapeFoil, (int) (1)),
                     true,
                     false,
                     false,
@@ -758,11 +762,15 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 Compressed_Fireclay.ID,
                 "gt.item.compressed_fireclay.name",
                 "gt.item.compressed_fireclay.tooltip"));
-        GTOreDictUnificator.addItemDataFromInputs(ItemList.CompressedFireclay.get(1), Materials.Fireclay.getDust(1));
+        GTOreDictUnificator.addItemDataFromInputs(
+            ItemList.CompressedFireclay.get(1),
+            MaterialLibAPI.getStack(Materials2Materials.Fireclay, Materials2Shapes.shapeDust, (int) (1)));
 
         ItemList.Firebrick
             .set(addItemWithLocalizationKeys(Firebrick.ID, "gt.item.firebrick.name", "gt.item.firebrick.tooltip"));
-        GTOreDictUnificator.addItemDataFromInputs(ItemList.Firebrick.get(1), Materials.Fireclay.getDust(1));
+        GTOreDictUnificator.addItemDataFromInputs(
+            ItemList.Firebrick.get(1),
+            MaterialLibAPI.getStack(Materials2Materials.Fireclay, Materials2Shapes.shapeDust, (int) (1)));
 
         ItemList.Shape_Empty.set(
             addItemWithLocalizationKeys(

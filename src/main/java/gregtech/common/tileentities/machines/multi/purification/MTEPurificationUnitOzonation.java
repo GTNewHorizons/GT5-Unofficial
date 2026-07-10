@@ -30,12 +30,13 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -233,7 +234,9 @@ public class MTEPurificationUnitOzonation extends MTEPurificationUnitBase<MTEPur
         if (!result.wasSuccessful()) return result;
         // Look for ozone, blow up if more than max allowed
         for (FluidStack fluid : this.storedFluids) {
-            if (fluid.isFluidEqual(Materials.Ozone.getGas(1L))) {
+            if (fluid.isFluidEqual(
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.Ozone, Materials2FluidShapes.shapeFluidGas, (int) (1)))) {
                 if (fluid.amount > MAX_OZONE_GAS_FOR_EXPLOSION) {
                     this.explodeMultiblock();
                 }
