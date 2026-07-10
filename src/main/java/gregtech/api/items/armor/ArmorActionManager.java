@@ -126,8 +126,6 @@ public class ArmorActionManager {
                 SyncedKeybind.createConfigurable("key.gt.jump_decrease", "Gregtech Armor", Keyboard.KEY_NONE),
                 BehaviorName.JumpBoost));
 
-
-
         // Keybinds
 
         register(

@@ -32,11 +32,13 @@ public class JumpBoostBehavior implements IArmorBehavior {
 
         ArmorState state = context.getArmorState();
 
-        if (keyPressed == ArmorActionManager.getAction("jump_increase").getKeybind()) {
+        if (keyPressed == ArmorActionManager.getAction("jump_increase")
+            .getKeybind()) {
             state.jumpBoostMulti += JUMP_INCREMENT;
-        } else if (keyPressed == ArmorActionManager.getAction("jump_decrease").getKeybind()) {
-            state.jumpBoostMulti -= JUMP_INCREMENT;
-        }
+        } else if (keyPressed == ArmorActionManager.getAction("jump_decrease")
+            .getKeybind()) {
+                state.jumpBoostMulti -= JUMP_INCREMENT;
+            }
 
         state.jumpBoostMulti = MathUtils.clamp(state.jumpBoostMulti, 1, jumpMaxMulti);
 
