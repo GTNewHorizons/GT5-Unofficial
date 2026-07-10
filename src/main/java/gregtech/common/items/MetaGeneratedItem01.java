@@ -762,15 +762,11 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 Compressed_Fireclay.ID,
                 "gt.item.compressed_fireclay.name",
                 "gt.item.compressed_fireclay.tooltip"));
-        GTOreDictUnificator.addItemDataFromInputs(
-            ItemList.CompressedFireclay.get(1),
-            MaterialLibAPI.getStack(Materials2Materials.Fireclay, Materials2Shapes.shapeDust, (int) (1)));
+        GTOreDictUnificator.addItemDataFromInputs(ItemList.CompressedFireclay.get(1), Materials.Fireclay.getDust(1));
 
         ItemList.Firebrick
             .set(addItemWithLocalizationKeys(Firebrick.ID, "gt.item.firebrick.name", "gt.item.firebrick.tooltip"));
-        GTOreDictUnificator.addItemDataFromInputs(
-            ItemList.Firebrick.get(1),
-            MaterialLibAPI.getStack(Materials2Materials.Fireclay, Materials2Shapes.shapeDust, (int) (1)));
+        GTOreDictUnificator.addItemDataFromInputs(ItemList.Firebrick.get(1), Materials.Fireclay.getDust(1));
 
         ItemList.Shape_Empty.set(
             addItemWithLocalizationKeys(
