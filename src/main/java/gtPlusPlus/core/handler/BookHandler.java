@@ -4,9 +4,12 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
 import com.github.bsideup.jabel.Desugar;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.core.item.ModItems;
@@ -86,7 +89,7 @@ public class BookHandler {
             new ItemStack(ModItems.itemCustomBook, 1, 4),
             GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
             new ItemStack[] { new ItemStack(Items.writable_book),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Uranium, 1) });
+                MaterialLibAPI.getStack(Materials2Materials.Uranium, Materials2Shapes.shapeDust, (int) (1)) });
 
         for (int meta : mBookMap.keySet()) {
             ItemStack bookstack = new ItemStack(ModItems.itemCustomBook, 1, meta);

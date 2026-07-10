@@ -9,6 +9,8 @@ import net.minecraftforge.common.MinecraftForge;
 
 import org.apache.commons.lang3.tuple.Pair;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import cpw.mods.fml.common.IFuelHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
@@ -20,6 +22,8 @@ import galaxyspace.core.entity.mob.EntityEvolvedColdBlaze;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.block.ModBlocks;
@@ -106,14 +110,24 @@ public class CommonProxy implements IFuelHandler {
 
         // Blazes
         if (Mods.COFHCore.isModLoaded()) {
-            EntityUtils.registerDropsForMob(EntityBlaze.class, Materials.Pyrotheum.getDust(1), 1, 10);
-            EntityUtils.registerDropsForMob(EntityBlaze.class, Materials.Pyrotheum.getDust(1), 1, 10);
+            EntityUtils.registerDropsForMob(
+                EntityBlaze.class,
+                MaterialLibAPI.getStack(Materials2Materials.Pyrotheum, Materials2Shapes.shapeDust, (int) (1)),
+                1,
+                10);
+            EntityUtils.registerDropsForMob(
+                EntityBlaze.class,
+                MaterialLibAPI.getStack(Materials2Materials.Pyrotheum, Materials2Shapes.shapeDust, (int) (1)),
+                1,
+                10);
         }
 
         // GalaxySpace Support
         if (Mods.GalaxySpace.isModLoaded()) {
-            ItemStack aBlizz = Materials.Blizz.getDust(1);
-            ItemStack aCryo = Materials.Cryotheum.getDust(1);
+            ItemStack aBlizz = MaterialLibAPI
+                .getStack(Materials2Materials.Blizz, Materials2Shapes.shapeDust, (int) (1));
+            ItemStack aCryo = MaterialLibAPI
+                .getStack(Materials2Materials.Cryotheum, Materials2Shapes.shapeDust, (int) (1));
             EntityUtils.registerDropsForMob(
                 EntityEvolvedColdBlaze.class,
                 GTOreDictUnificator.get(OrePrefixes.stick, Materials.Blizz, 1),

@@ -7,11 +7,15 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 import net.minecraft.item.ItemStack;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -31,7 +35,7 @@ public class RecipesLaserEngraver implements IOreRecipeRegistrator {
         if (aOreDictName.equals(OreDictNames.craftingLensWhite.toString())) {
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.Lithium, 2L),
+                    MaterialLibAPI.getStack(Materials2Materials.Lithium, Materials2Shapes.shapePlate, (int) (2)),
                     GTUtility.copyAmount(0L, aStack))
                 .itemOutputs(MaterialsElements.getInstance().LITHIUM7.getPlateDouble(1))
                 .duration(4 * MINUTES)
@@ -39,7 +43,7 @@ public class RecipesLaserEngraver implements IOreRecipeRegistrator {
                 .addTo(laserEngraverRecipes);
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.Lithium, 3L),
+                    MaterialLibAPI.getStack(Materials2Materials.Lithium, Materials2Shapes.shapeDust, (int) (3)),
                     GTUtility.copyAmount(0L, aStack))
                 .itemOutputs(MaterialsElements.getInstance().LITHIUM7.getDust(1))
                 .duration(2 * MINUTES)
