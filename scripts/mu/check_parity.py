@@ -448,7 +448,7 @@ def check_ref_field(errors, name, field, gt_value, ml_value):
 
 
 def check_material(gt, ml, included_names, legacy_variants_by_material, used_fluid_names, fluid_textures,
-                    legacy_block_materials, werkstoff_info, display_to_var, legacy_constants):
+                    legacy_block_materials, werkstoff_info, display_to_var, legacy_constants, gtpp_info=None):
     errors = []
     name = gt["name"]
 
@@ -474,6 +474,8 @@ def check_material(gt, ml, included_names, legacy_variants_by_material, used_flu
         dumped_shapes.add("oreSmall")
     if werkstoff_info:
         dumped_shapes |= expected_werkstoff_shapes(werkstoff_info["prefixes"], included_names)
+    if gtpp_info:
+        dumped_shapes |= gtpp_expected_shapes(gtpp_info)
     actual_shapes = set(ml["shapes"])
     if dumped_shapes != actual_shapes:
         missing = dumped_shapes - actual_shapes
@@ -585,6 +587,8 @@ def check_material(gt, ml, included_names, legacy_variants_by_material, used_flu
                     errors, name, f"{ml_key}[{i}]", expected_ref["name"], actual_refs[i], fluid_textures)
 
     check_werkstoff(errors, name, werkstoff_info, ml, display_to_var, legacy_constants)
+    if gtpp_info:
+        check_gtpp_data(errors, name, gtpp_info, ml)
 
     return errors
 
@@ -597,6 +601,167 @@ def check_fluid_texture(errors, material_name, field, fluid_name, actual_fluid, 
     actual_texture = actual_fluid.get("texture")
     if expected_texture != actual_texture:
         errors.append(f"{material_name}: {field}.texture expected {expected_texture!r}, got {actual_texture!r}")
+
+
+GTPP_PATH = DUMPS_DIR / "gtpp-materials.json"
+
+# Mirrors gen_materials.py's gtpp-fold region (stage 11): GTPP_LEGACY_ONLY_PREFIXES/GTPP_DEFERRED_PREFIXES/
+# GTPP_UNSUPPORTED_PREFIXES/GTPP_SIMPLE_PREFIXES, gtpp_is_marker/compute_gtpp_ported, gtpp_shape_lines,
+# fold_gtpp_materials/gtpp_composition_mismatch, celsius_to_kelvin. Kept duplicated per this script's
+# standing convention (see the module docstring) rather than imported.
+GTPP_LEGACY_ONLY_PREFIXES = {"frameGt"}
+GTPP_DEFERRED_PREFIXES = {"cell", "cellPlasma"}
+GTPP_UNSUPPORTED_PREFIXES = {
+    "pipeHuge", "pipeMedium", "wireGt01", "wireGt02", "wireGt04", "wireGt08", "wireGt12", "wireGt16"
+}
+GTPP_SIMPLE_PREFIXES = {
+    "bolt", "crushed", "crushedCentrifuged", "crushedPurified", "dust", "dustImpure", "dustPure", "dustSmall",
+    "dustTiny", "foil", "gearGt", "gearGtSmall", "ingot", "ingotHot", "nugget", "plate", "plateDense",
+    "plateDouble", "plateSuperdense", "rawOre", "ring", "rotor", "screw", "spring", "springSmall", "stick",
+    "stickLong", "wireFine"
+}
+
+
+def load_gtpp_materials():
+    return load(GTPP_PATH)
+
+
+def gtpp_has_fluid(entry):
+    fluids = entry["fluids"]
+    return bool(fluids.get("fluid")) or bool(fluids.get("plasma"))
+
+
+def gtpp_is_marker(entry):
+    return not entry["generatedParts"] and not entry["composition"] and not gtpp_has_fluid(entry)
+
+
+def compute_gtpp_referenced(gtpp_materials):
+    referenced = set()
+    for material in gtpp_materials:
+        for stack in material["composition"]:
+            name = stack.get("name")
+            if name and name != material["unlocalizedName"]:
+                referenced.add(name)
+    return referenced
+
+
+def compute_gtpp_ported(gtpp_materials, base_ported_names):
+    referenced = compute_gtpp_referenced(gtpp_materials)
+    ported = []
+    for material in gtpp_materials:
+        name = material["unlocalizedName"]
+        if gtpp_is_marker(material) and name not in referenced and name not in base_ported_names:
+            continue
+        ported.append(material)
+    return ported
+
+
+def gtpp_expected_shapes(entry):
+    """The MaterialLib shape-name set a gtpp material's dumped `generatedParts` translate to -- see
+    gen_materials.py's `gtpp_shape_lines`. Raises on an unmapped prefix (a future gtpp dump refresh with a new
+    part kind must not silently drop items from this check either)."""
+    names = set()
+    for part in entry["generatedParts"]:
+        prefix = part["prefix"]
+        if prefix in GTPP_SIMPLE_PREFIXES:
+            names.add(prefix)
+        elif prefix in ("block", "milled"):
+            names.add(prefix)
+        elif prefix in GTPP_DEFERRED_PREFIXES or prefix in GTPP_LEGACY_ONLY_PREFIXES \
+                or prefix in GTPP_UNSUPPORTED_PREFIXES:
+            continue
+        else:
+            raise SystemExit(
+                f"check_parity.py: gtpp material {entry['unlocalizedName']!r} generates unmapped part "
+                f"prefix {prefix!r}")
+    return names
+
+
+def celsius_to_kelvin(celsius):
+    return round(celsius + 273.15)
+
+
+def gtpp_composition_set(entry):
+    return {(c["name"], c["amount"]) for c in entry["composition"] if c.get("name")}
+
+
+def gt_composition_set_for_gtpp(gt_entry):
+    return {(c["material"], c["amount"]) for c in gt_entry["composition"] if c and c.get("material")}
+
+
+def fold_gtpp_materials(gtpp_ported, gt_by_name, ported_name_set):
+    """Mirrors gen_materials.py's `fold_gtpp_materials`: splits into merges (same-name fold, composition
+    agrees), new declarations (no name collision), and false merges (composition disagrees -- a planning
+    stop, not silently kept; expected empty, per `gtpp-merge-report.txt`)."""
+    merges = []
+    new = []
+    false_merges = []
+    for entry in gtpp_ported:
+        name = entry["unlocalizedName"]
+        if name in ported_name_set:
+            gt_entry = gt_by_name.get(name)
+            gtpp_comp = gtpp_composition_set(entry)
+            gt_comp = gt_composition_set_for_gtpp(gt_entry) if gt_entry else set()
+            if gtpp_comp and gt_comp and gtpp_comp != gt_comp:
+                false_merges.append((entry, gtpp_comp, gt_comp))
+            else:
+                merges.append(entry)
+        else:
+            new.append(entry)
+    return merges, new, false_merges
+
+
+def check_gtpp_data(errors, name, entry, ml):
+    """Verifies `GTMaterialProperties.GTPP` round-trips against the dumped gtpp scalar fields (existence +
+    every mapped [GTppData] field), for both merges and new declarations."""
+    data = ml.get("gtpp")
+    if data is None:
+        errors.append(f"{name}: missing gtpp property")
+        return
+
+    def check(field, expected):
+        if data.get(field) != expected:
+            errors.append(f"{name}: gtpp.{field} expected {expected!r}, got {data.get(field)!r}")
+
+    check("tier", entry["tier"])
+    check("voltageMultiplier", entry["voltageMultiplier"])
+    check("meltingPointK", celsius_to_kelvin(entry["meltingPointC"]))
+    check("boilingPointK", celsius_to_kelvin(entry["boilingPointC"]))
+    check("durability", entry["durability"])
+    check("usesBlastFurnace", bool(entry["usesBlastFurnace"]))
+    check("isRadioactive", bool(entry["isRadioactive"]))
+    check("radiationLevel", entry["radiationLevel"])
+    check("hasOre", bool(entry["hasOre"]))
+    check("chemicalFormula", entry["chemicalFormula"])
+
+
+def check_gtpp_new_material(errors, entry, ml_by_key):
+    """Full existence/tint/textureSet/shape-set/property check for a gtpp-only material (no gregtech/werkstoff
+    counterpart) -- everything about its ml-materials.json entry is gtpp-sourced, so (unlike a merge) the
+    shape set is expected to match `gtpp_expected_shapes` exactly, not merely be a superset of it."""
+    name = entry["unlocalizedName"]
+    key = ml_name(name)
+    ml = ml_by_key.get(key)
+    if ml is None:
+        errors.append(f"{name}: gtpp material missing from ml-materials.json (expected key {key!r})")
+        return
+
+    expected_tint = to_unsigned32(pack_argb(entry["rgba"]))
+    actual_tint = to_unsigned32(ml["tint"]) if ml["tint"] is not None else None
+    if expected_tint != actual_tint:
+        errors.append(f"{name}: gtpp tint expected 0x{expected_tint:08X}, got {ml['tint']!r}")
+
+    if ml["textureSet"] != entry["textureSet"]:
+        errors.append(f"{name}: gtpp textureSet expected {entry['textureSet']!r}, got {ml['textureSet']!r}")
+
+    expected_shapes = gtpp_expected_shapes(entry)
+    actual_shapes = set(ml["shapes"])
+    if expected_shapes != actual_shapes:
+        missing = expected_shapes - actual_shapes
+        extra = actual_shapes - expected_shapes
+        errors.append(f"{name}: gtpp shapes mismatch, missing={sorted(missing)}, extra={sorted(extra)}")
+
+    check_gtpp_data(errors, name, entry, ml)
 
 
 def load(path):
@@ -626,7 +791,20 @@ def main():
     ported = compute_ported(gt_materials, werkstoff_referenced, werkstoff_names)
     ml_by_key = {m["name"]: m for m in ml_materials}
 
+    gt_by_name = {m["name"]: m for m in gt_materials}
+    ported_name_set = set(m["name"] for m in ported)
+    gtpp_materials = load_gtpp_materials()
+    gtpp_ported = compute_gtpp_ported(gtpp_materials, ported_name_set)
+    gtpp_merges, gtpp_new, gtpp_false_merges = fold_gtpp_materials(gtpp_ported, gt_by_name, ported_name_set)
+    gtpp_merges_by_name = {e["unlocalizedName"]: e for e in gtpp_merges}
+
     errors = []
+    if gtpp_false_merges:
+        for entry, gtpp_comp, gt_comp in gtpp_false_merges:
+            errors.append(
+                f"{entry['unlocalizedName']}: gtpp false merge (composition mismatch), needs coordinator "
+                f"review -- gtpp={sorted(gtpp_comp)} gt={sorted(gt_comp)}")
+
     used_fluid_names = set()
     for material in ported:
         key = ml_name(material["name"])
@@ -638,20 +816,24 @@ def main():
             check_material(
                 material, ml, included_names, legacy_variants_by_material, used_fluid_names, fluid_textures,
                 legacy_block_materials, werkstoff_by_name.get(material["name"]), display_to_var,
-                legacy_constants))
+                legacy_constants, gtpp_merges_by_name.get(material["name"])))
 
-    expected_keys = set(ml_name(m["name"]) for m in ported)
+    for entry in gtpp_new:
+        check_gtpp_new_material(errors, entry, ml_by_key)
+
+    expected_keys = set(ml_name(m["name"]) for m in ported) | set(ml_name(e["unlocalizedName"]) for e in gtpp_new)
     extra = set(ml_by_key) - expected_keys
     if extra:
         errors.append(f"unexpected ml-materials.json entries not in the ported set: {sorted(extra)}")
 
+    total = len(ported) + len(gtpp_new)
     if errors:
-        print(f"check_parity.py: {len(errors)} mismatches across {len(ported)} ported materials")
+        print(f"check_parity.py: {len(errors)} mismatches across {total} ported materials")
         for error in errors:
             print(" -", error)
         sys.exit(1)
 
-    print(f"check_parity.py: OK, {len(ported)} materials verified")
+    print(f"check_parity.py: OK, {total} materials verified")
 
 
 if __name__ == "__main__":
