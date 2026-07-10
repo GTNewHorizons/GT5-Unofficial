@@ -2,7 +2,6 @@ package gregtech.loaders.oreprocessing;
 
 import static gregtech.api.recipe.RecipeMaps.cutterRecipes;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
-import static gregtech.loaders.oreprocessing.ProcessingUtils.itemStackKey;
 
 import java.util.HashSet;
 import java.util.List;
@@ -15,13 +14,15 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraftforge.oredict.OreDictionary;
 
 import com.github.bsideup.jabel.Desugar;
-import com.google.common.collect.ImmutableSet;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.GameRegistry.UniqueIdentifier;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.materials2.Materials2FluidShapes;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.items.MetaGeneratedItem;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
@@ -61,14 +62,6 @@ public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegist
         "GalacticraftAmunRa:tile.wood1:2", "GalacticraftAmunRa:tile.wood1:3", "etfuturum:wood_planks" };
     private static final String[] SPECIAL_SLABS = new String[] { "witchery:witchwoodslab",
         "GalacticraftAmunRa:tile.woodSlab:1", "GalacticraftAmunRa:tile.woodSlab:0", "etfuturum:wood_slab" };
-
-    /**
-     * set of keys provided by {@link ProcessingUtils#itemStackKey(ItemStack)} that will cause the recipe removal of
-     * slab recipes to be skipped. The complete blacklist is completed with witchery's witchwood planks, but that has
-     * its own test, see {@link #isSlabRecipeRemovalBlacklisted(ItemStack)}.
-     */
-    private static final ImmutableSet<String> SLAB_RECIPE_REMOVAL_BLACKLIST = ImmutableSet
-        .of("etfuturum:wood_planks@3", "GalacticraftAmunRa:tile.wood1@2", "GalacticraftAmunRa:tile.wood1@3");
 
     private static final HashSet<String> sProcessedPlanks = new HashSet<>();
     private static final HashSet<Item> sGroupedOakSlabItems = new HashSet<>();
@@ -173,22 +166,13 @@ public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegist
             return SlabRecipeResult.OAK_SLAB_FALLBACK;
         }
 
-        if (!isSlabRecipeRemovalBlacklisted(aStack)) {
-            GTModHandler.removeRecipeDelayed(aStack, aStack, aStack);
-        }
+        GTModHandler.removeRecipeDelayed(aStack, aStack, aStack);
         if (tSkipRecipeCreation) {
             return SlabRecipeResult.SKIPPED;
         }
 
         addSlabRecipes(aStack, GTUtility.copyAmount(tOutput.stackSize / 3, tOutput));
         return SlabRecipeResult.CREATED;
-    }
-
-    private static boolean isSlabRecipeRemovalBlacklisted(ItemStack stack) {
-        if ("witchery:witchwood".equals(stack.getItem().delegate.name())) return true;
-        String key = itemStackKey(stack);
-        if (key == null) return true; // invalid items
-        return SLAB_RECIPE_REMOVAL_BLACKLIST.contains(key);
     }
 
     private static boolean isGenericOakSlabFallback(ItemStack plank, ItemStack slab) {
@@ -233,7 +217,9 @@ public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegist
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(1, plankInput))
             .itemOutputs(slabOutput)
-            .fluidInputs(Materials.Lubricant.getFluid(1))
+            .fluidInputs(
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.Lubricant, Materials2FluidShapes.shapeFluidLiquid, (int) (1)))
             .duration(25 * TICKS)
             .eut(4)
             .addTo(cutterRecipes);
@@ -247,7 +233,7 @@ public class ProcessingPlank implements gregtech.api.interfaces.IOreRecipeRegist
 
         GTModHandler.addCraftingRecipe(
             GTUtility.copyOrNull(slabOutput),
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+            GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "sP", 'P', plankInput });
     }
 

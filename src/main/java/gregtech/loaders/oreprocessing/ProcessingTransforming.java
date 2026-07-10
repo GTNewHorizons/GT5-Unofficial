@@ -7,10 +7,14 @@ import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
 import net.minecraft.item.ItemStack;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.Materials2FluidShapes;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -59,8 +63,11 @@ public class ProcessingTransforming implements IOreRecipeRegistrator {
                             .itemInputs(GTUtility.copyAmount(1, aStack))
                             .itemOutputs(GTOreDictUnificator.get(aPrefix, Materials.FierySteel, 1L))
                             .fluidInputs(
-                                Materials.FierySteel.getFluid(
-                                    GTUtility.translateMaterialToAmount(aPrefix.getMaterialAmount(), 250L, true)))
+                                MaterialLibAPI.getFluidStack(
+                                    Materials2Materials.FierySteel,
+                                    Materials2FluidShapes.shapeFluidLiquid,
+                                    (int) (GTUtility
+                                        .translateMaterialToAmount(aPrefix.getMaterialAmount(), 250, true))))
                             .duration(5 * SECONDS)
                             .eut(TierEU.RECIPE_ULV)
                             .addTo(chemicalBathRecipes);
@@ -87,8 +94,11 @@ public class ProcessingTransforming implements IOreRecipeRegistrator {
                             .itemInputs(GTUtility.copyAmount(1, aStack))
                             .itemOutputs(GTOreDictUnificator.get(aPrefix, Materials.FierySteel, 1L))
                             .fluidInputs(
-                                Materials.FierySteel.getFluid(
-                                    GTUtility.translateMaterialToAmount(aPrefix.getMaterialAmount(), 225L, true)))
+                                MaterialLibAPI.getFluidStack(
+                                    Materials2Materials.FierySteel,
+                                    Materials2FluidShapes.shapeFluidLiquid,
+                                    (int) (GTUtility
+                                        .translateMaterialToAmount(aPrefix.getMaterialAmount(), 225, true))))
                             .duration(5 * SECONDS)
                             .eut(TierEU.RECIPE_ULV)
                             .addTo(chemicalBathRecipes);
@@ -115,8 +125,11 @@ public class ProcessingTransforming implements IOreRecipeRegistrator {
                             .itemInputs(GTUtility.copyAmount(1, aStack))
                             .itemOutputs(GTOreDictUnificator.get(aPrefix, Materials.FierySteel, 1L))
                             .fluidInputs(
-                                Materials.FierySteel.getFluid(
-                                    GTUtility.translateMaterialToAmount(aPrefix.getMaterialAmount(), 200L, true)))
+                                MaterialLibAPI.getFluidStack(
+                                    Materials2Materials.FierySteel,
+                                    Materials2FluidShapes.shapeFluidLiquid,
+                                    (int) (GTUtility
+                                        .translateMaterialToAmount(aPrefix.getMaterialAmount(), 200, true))))
                             .duration(5 * SECONDS)
                             .eut(TierEU.RECIPE_ULV)
                             .addTo(chemicalBathRecipes);
