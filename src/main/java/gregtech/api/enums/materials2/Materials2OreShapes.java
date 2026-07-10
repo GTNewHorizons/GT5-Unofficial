@@ -36,7 +36,7 @@ import gregtech.common.ores.GTPPOreAdapter;
 /// class-initializer to run. `Materials`' static initializer rebuilds every legacy field from
 /// `Materials2Materials` (see `MaterialsLegacyBridge`), which is empty until `Materials2Materials#init` runs;
 /// [Materials2.java] calls this class's [#init] earlier than that (block shapes must resolve before
-/// `Materials2DataN#init` references `shapeOre`/`shapeOreSmall`), so an early touch would silently fall back to
+/// `Materials2Materials#init` references `shapeOre`/`shapeOreSmall`), so an early touch would silently fall back to
 /// bare-JUnit stub data (`Materials2Materials.Iron == null`) for every legacy material for the rest of the boot,
 /// not just ore's. [#STONE_TYPE_NAMES]/[#SMALL_ORE_EXCLUDED]/[#KNOWN_VARIANT_BASES] are therefore plain string
 /// data, and [#stoneTypeOf] resolves a variant back to its [StoneType] lazily, called only from behavior hooks
