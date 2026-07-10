@@ -21,6 +21,8 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import com.ruling_0.materiallib.api.Material;
+
 import cofh.api.energy.IEnergyReceiver;
 import gregtech.GTMod;
 import gregtech.api.GregTechAPI;
@@ -44,6 +46,7 @@ import gregtech.api.interfaces.tileentity.IEnergyConnected;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.ILocalizedMetaPipeEntity;
+import gregtech.api.material.MU;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -87,6 +90,23 @@ public class MTECable extends MetaPipeEntity implements IMetaTileEntityCable, IL
         mInsulated = aInsulated;
         mCanShock = aCanShock;
         mCableLossPerMeter = aCableLossPerMeter;
+    }
+
+    /// The Materials-typed constructor for MaterialLib-typed callers; delegates through [MU#materialOf] so
+    /// cable identity is unchanged while call sites migrate off the legacy enum.
+    public MTECable(int aID, String aName, String aPrefixKey, float aThickNess, Material aMaterial,
+        long aCableLossPerMeter, long aAmperage, long aVoltage, boolean aInsulated, boolean aCanShock) {
+        this(
+            aID,
+            aName,
+            aPrefixKey,
+            aThickNess,
+            MU.materialOf(aMaterial),
+            aCableLossPerMeter,
+            aAmperage,
+            aVoltage,
+            aInsulated,
+            aCanShock);
     }
 
     public MTECable(String aName, float aThickNess, Materials aMaterial, long aCableLossPerMeter, long aAmperage,

@@ -39,6 +39,8 @@ import net.minecraftforge.fluids.IFluidHandler;
 
 import org.apache.commons.lang3.tuple.MutableTriple;
 
+import com.ruling_0.materiallib.api.Material;
+
 import cpw.mods.fml.common.Optional;
 import gregtech.GTMod;
 import gregtech.api.enums.Dyes;
@@ -59,6 +61,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.ILocalizedMetaPipeEntity;
 import gregtech.api.items.MetaGeneratedTool;
+import gregtech.api.material.MU;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.render.TextureFactory;
@@ -126,6 +129,28 @@ public class MTEFluidPipe extends MetaPipeEntity implements ILocalizedMetaPipeEn
     public MTEFluidPipe(int aID, String aName, String aPrefixKey, float aThickNess, Materials aMaterial, int aCapacity,
         int aHeatResistance, boolean aGasProof) {
         this(aID, aName, aPrefixKey, aThickNess, aMaterial, aCapacity, aHeatResistance, aGasProof, 1);
+    }
+
+    /// The Materials-typed constructor for MaterialLib-typed callers; delegates through [MU#materialOf] so
+    /// pipe identity is unchanged while call sites migrate off the legacy enum.
+    public MTEFluidPipe(int aID, String aName, String aPrefixKey, float aThickNess, Material aMaterial, int aCapacity,
+        int aHeatResistance, boolean aGasProof) {
+        this(aID, aName, aPrefixKey, aThickNess, MU.materialOf(aMaterial), aCapacity, aHeatResistance, aGasProof, 1);
+    }
+
+    /// See the MaterialLib-typed eight-argument constructor.
+    public MTEFluidPipe(int aID, String aName, String aPrefixKey, float aThickNess, Material aMaterial, int aCapacity,
+        int aHeatResistance, boolean aGasProof, int aFluidTypes) {
+        this(
+            aID,
+            aName,
+            aPrefixKey,
+            aThickNess,
+            MU.materialOf(aMaterial),
+            aCapacity,
+            aHeatResistance,
+            aGasProof,
+            aFluidTypes);
     }
 
     public MTEFluidPipe(int aID, String aName, String aPrefixKey, float aThickNess, Materials aMaterial, int aCapacity,

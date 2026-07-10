@@ -25,7 +25,16 @@ public class GTPPMTEFluidPipe extends MTEFluidPipe {
 
     public GTPPMTEFluidPipe(int aID, String aName, String aPrefixKey, float aThickNess, PipeStats pipeStats,
         int aCapacity, int aHeatResistance, boolean aGasProof, int aFluidTypes) {
-        super(aID, aName, aPrefixKey, aThickNess, null, aCapacity, aHeatResistance, aGasProof, aFluidTypes);
+        super(
+            aID,
+            aName,
+            aPrefixKey,
+            aThickNess,
+            (com.ruling_0.materiallib.api.Material) null,
+            aCapacity,
+            aHeatResistance,
+            aGasProof,
+            aFluidTypes);
         this.mLastReceivedFrom = 0;
         this.oLastReceivedFrom = 0;
         this.pipeStats = pipeStats;
