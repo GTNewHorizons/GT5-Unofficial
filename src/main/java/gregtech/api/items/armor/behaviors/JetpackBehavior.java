@@ -1,6 +1,5 @@
 package gregtech.api.items.armor.behaviors;
 
-import java.util.Collections;
 import java.util.Set;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -9,8 +8,8 @@ import org.jetbrains.annotations.NotNull;
 
 import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
 
+import gregtech.api.items.armor.ArmorActionManager;
 import gregtech.api.items.armor.ArmorContext;
-import gregtech.api.items.armor.ArmorKeybinds;
 import gregtech.api.items.armor.JetpackStats;
 
 public class JetpackBehavior implements IArmorBehavior {
@@ -44,7 +43,7 @@ public class JetpackBehavior implements IArmorBehavior {
 
     @Override
     public Set<SyncedKeybind> getListenedKeys(@NotNull ArmorContext context) {
-        return Collections.singleton(ArmorKeybinds.JETPACK_KEYBIND);
+        return ArmorActionManager.getKeybindsForBehavior(getName());
     }
 
     /*
@@ -57,8 +56,10 @@ public class JetpackBehavior implements IArmorBehavior {
 
         double currentAccel = jetpackStats.getVerticalAcceleration() * (player.motionY < 0.3D ? 2.5D : 1.0D);
         double currentSpeedVertical = jetpackStats.getVerticalSpeed() * (player.isInWater() ? 0.4D : 1.0D);
-        boolean ascend = ArmorKeybinds.VANILLA_JUMP.isKeyDown(player);
-        boolean descend = ArmorKeybinds.VANILLA_SNEAK.isKeyDown(player);
+        boolean ascend = ArmorActionManager.getKeybind("VANILLA_JUMP")
+            .isKeyDown(player);
+        boolean descend = ArmorActionManager.getKeybind("VANILLA_SNEAK")
+            .isKeyDown(player);
         boolean isHovering = context.isBehaviorActive(BehaviorName.JetpackHover);
         boolean isGuiOpen = context.getPlayer().worldObj.isRemote && ClientGuiHelper.isGuiOpen();
 
@@ -97,14 +98,14 @@ public class JetpackBehavior implements IArmorBehavior {
                 float currentSideways = speedSideways * finalMulti;
 
                 if (!isGuiOpen) {
-                    if (ArmorKeybinds.VANILLA_FORWARD.isKeyDown(player))
-                        player.moveFlying(0, currentForward, currentForward);
-                    if (ArmorKeybinds.VANILLA_BACK.isKeyDown(player))
-                        player.moveFlying(0, -currentSideways, currentSideways * 0.8f);
-                    if (ArmorKeybinds.VANILLA_LEFT.isKeyDown(player))
-                        player.moveFlying(currentSideways, 0, currentSideways);
-                    if (ArmorKeybinds.VANILLA_RIGHT.isKeyDown(player))
-                        player.moveFlying(-currentSideways, 0, currentSideways);
+                    if (ArmorActionManager.getKeybind("VANILLA_FORWARD")
+                        .isKeyDown(player)) player.moveFlying(0, currentForward, currentForward);
+                    if (ArmorActionManager.getKeybind("VANILLA_BACKWARD")
+                        .isKeyDown(player)) player.moveFlying(0, -currentSideways, currentSideways * 0.8f);
+                    if (ArmorActionManager.getKeybind("VANILLA_LEFT")
+                        .isKeyDown(player)) player.moveFlying(currentSideways, 0, currentSideways);
+                    if (ArmorActionManager.getKeybind("VANILLA_RIGHT")
+                        .isKeyDown(player)) player.moveFlying(-currentSideways, 0, currentSideways);
                 }
 
                 if (!player.getEntityWorld().isRemote) {

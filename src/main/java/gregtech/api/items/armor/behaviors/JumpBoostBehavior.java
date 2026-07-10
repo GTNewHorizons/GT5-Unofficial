@@ -6,12 +6,11 @@ import net.minecraft.nbt.NBTTagCompound;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.google.common.collect.ImmutableSet;
 import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
 
 import bartworks.util.MathUtils;
+import gregtech.api.items.armor.ArmorActionManager;
 import gregtech.api.items.armor.ArmorContext;
-import gregtech.api.items.armor.ArmorKeybinds;
 import gregtech.api.items.armor.ArmorState;
 import gregtech.api.util.GTUtility;
 
@@ -33,9 +32,9 @@ public class JumpBoostBehavior implements IArmorBehavior {
 
         ArmorState state = context.getArmorState();
 
-        if (keyPressed == ArmorKeybinds.JUMP_INCREASE_KEYBIND) {
+        if (keyPressed == ArmorActionManager.getKeybind("jump_increase")) {
             state.jumpBoostMulti += JUMP_INCREMENT;
-        } else if (keyPressed == ArmorKeybinds.JUMP_DECREASE_KEYBIND) {
+        } else if (keyPressed == ArmorActionManager.getKeybind("jump_decrease")) {
             state.jumpBoostMulti -= JUMP_INCREMENT;
         }
 
@@ -71,6 +70,6 @@ public class JumpBoostBehavior implements IArmorBehavior {
 
     @Override
     public Set<SyncedKeybind> getListenedKeys(@NotNull ArmorContext context) {
-        return ImmutableSet.of(ArmorKeybinds.JUMP_INCREASE_KEYBIND, ArmorKeybinds.JUMP_DECREASE_KEYBIND);
+        return ArmorActionManager.getKeybindsForBehavior(getName());
     }
 }

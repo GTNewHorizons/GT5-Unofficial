@@ -7,12 +7,11 @@ import net.minecraft.nbt.NBTTagCompound;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.google.common.collect.ImmutableSet;
 import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
 
 import bartworks.util.MathUtils;
+import gregtech.api.items.armor.ArmorActionManager;
 import gregtech.api.items.armor.ArmorContext;
-import gregtech.api.items.armor.ArmorKeybinds;
 import gregtech.api.items.armor.ArmorState;
 import gregtech.api.util.GTUtility;
 
@@ -44,11 +43,13 @@ public class SpeedBoostBehavior implements IArmorBehavior {
 
         ArmorState state = context.getArmorState();
 
-        if (keyPressed == ArmorKeybinds.SPEED_INCREASE_KEYBIND) {
+        if (keyPressed == ArmorActionManager.getAction("speed_increase")
+            .getKeybind()) {
             state.speedBoostMulti += SPEED_INCREMENT;
-        } else if (keyPressed == ArmorKeybinds.SPEED_DECREASE_KEYBIND) {
-            state.speedBoostMulti -= SPEED_INCREMENT;
-        }
+        } else if (keyPressed == ArmorActionManager.getAction("speed_decrease")
+            .getKeybind()) {
+                state.speedBoostMulti -= SPEED_INCREMENT;
+            }
 
         state.speedBoostMulti = MathUtils.clamp(state.speedBoostMulti, 1, speedMaxMulti);
 
@@ -76,7 +77,7 @@ public class SpeedBoostBehavior implements IArmorBehavior {
 
     @Override
     public Set<SyncedKeybind> getListenedKeys(@NotNull ArmorContext context) {
-        return ImmutableSet.of(ArmorKeybinds.SPEED_INCREASE_KEYBIND, ArmorKeybinds.SPEED_DECREASE_KEYBIND);
+        return ArmorActionManager.getKeybindsForBehavior(getName());
     }
 
     @Override
@@ -93,7 +94,8 @@ public class SpeedBoostBehavior implements IArmorBehavior {
             speed *= 0.25F;
         }
 
-        boolean isJumping = ArmorKeybinds.VANILLA_JUMP.isKeyDown(player);
+        boolean isJumping = ArmorActionManager.getKeybind("VANILLA_JUMP")
+            .isKeyDown(player);
         boolean isMoving = player.moveForward != 0 || player.moveStrafing != 0
             || (player.capabilities.isFlying && (player.isSneaking() || isJumping));
 
@@ -120,7 +122,8 @@ public class SpeedBoostBehavior implements IArmorBehavior {
                 if (player.isSneaking()) {
                     player.moveEntity(0, -verticalSpeed, 0);
                 }
-                if (ArmorKeybinds.VANILLA_JUMP.isKeyDown(player)) {
+                if (ArmorActionManager.getKeybind("VANILLA_JUMP")
+                    .isKeyDown(player)) {
                     player.moveEntity(0, verticalSpeed, 0);
                 }
             }
