@@ -25,6 +25,10 @@ public class GTMaterialProperties {
         .of("gregtech", "autoVacuumFreezerRecipes");
     public static final Property<Boolean> BLAST_REQUIRED = Property.of("gregtech", "blastRequired");
     public static final Property<Integer> BLAST_TEMP = Property.of("gregtech", "blastTemp");
+    /// The Kelvin boiling point, present only for materials sourced from `gtpp-materials.json` (gtPlusPlus's
+    /// `Material.boilingPointC`, converted -- see [GTppData]). GregTech's own dump never carried a boiling
+    /// point, so unlike [#MELTING_POINT] this has no gt-materials.json-sourced counterpart.
+    public static final Property<Integer> BOILING_POINT = Property.of("gregtech", "boilingPoint");
     public static final Property<Integer> BYPRODUCT_MULTIPLIER = Property.of("gregtech", "byProductMultiplier");
     public static final Property<Boolean> CAN_BE_CRACKED = Property.of("gregtech", "canBeCracked");
     public static final Property<List<MaterialRefStack>> COMPOSITION = Property.of("gregtech", "composition");
@@ -53,6 +57,9 @@ public class GTMaterialProperties {
     public static final Property<Boolean> HAS_ELECTROLYZER_RECIPE = Property.of("gregtech", "hasElectrolyzerRecipe");
     public static final Property<Boolean> HAS_GLOWING_ORE = Property.of("gregtech", "hasGlowingOre");
     public static final Property<Float> HEAT_DAMAGE = Property.of("gregtech", "heatDamage");
+    /// The gtPlusPlus-side data of a material that was (or merged with) a `gtPlusPlus.core.material.Material`
+    /// -- see [GTppData].
+    public static final Property<GTppData> GTPP = Property.of("gregtech", "gtpp");
     public static final Property<FluidNames> LEGACY_FLUIDS = Property.of("gregtech", "legacyFluids");
     public static final Property<String> LOCAL_NAME = Property.of("gregtech", "localName");
     public static final Property<MaterialRef> MACERATE_INTO = Property.of("gregtech", "macerateInto");

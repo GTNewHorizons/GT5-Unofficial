@@ -452,6 +452,361 @@ def werkstoff_property_line(info, ml_names, display_to_var, legacy_constants):
 
 # endregion
 
+# region gtpp fold (stage 11)
+
+GTPP_DUMP_PATH = SCRIPT_DIR / "dumps" / "gtpp-materials.json"
+GTPP_MATERIALS_OUTPUT = MATERIALS2_DIR / "Materials2GtppMaterials.java"
+GTPP_MERGE_REPORT_PATH = SCRIPT_DIR / "gtpp-merge-report.txt"
+GTPP_MATERIALS_PER_FILE = 60
+
+# `frameGt` is block-kind and GT itself never cuts `frameGt` over to a MaterialLib shape (stage 07 scoped
+# `block` only, the same reason `WERKSTOFF_LEGACY_ONLY_PREFIXES` excludes it) -- gtPlusPlus's own
+# `BlockBaseModular` frame blocks stay legacy pending stage 11 commit 4's block/ore cutover.
+GTPP_LEGACY_ONLY_PREFIXES = {"frameGt"}
+
+# `cell`/`cellPlasma` need a registered fluid to generate a container shape onto (see `container_shape_lines`),
+# and stage 11 commit 2 does not cut gtpp fluids over (that is commit 4's "Fluids via ml-2 namers with dumped
+# names") -- deferred here, not generated, until that commit exists to satisfy the requirement.
+GTPP_DEFERRED_PREFIXES = {"cell", "cellPlasma"}
+
+# Appear only on Hypogen (wireGt01..16, gearGtSmall already has a real shape so is not here)/Inconel792
+# (pipeMedium)/Staballoy (pipeHuge), whose dumped `registryName` is `gregtech:gt.blockmachines`/
+# `gregtech:gt.blockframes` -- gtPlusPlus reused GregTech's own `MetaGeneratedItem`/frame block for those
+# slots rather than registering its own, so there is no miscutils-owned item to cut over and no gregtech shape
+# to generate either (those materials are name-collision merges; the underlying legacy items are already
+# whatever gregtech's own cutover decided).
+GTPP_UNSUPPORTED_PREFIXES = {
+    "pipeHuge", "pipeMedium", "wireGt01", "wireGt02", "wireGt04", "wireGt08", "wireGt12", "wireGt16"
+}
+
+# gtpp part prefixes with a 1:1 stage-02 Materials2Shapes field, using the same `shape<Prefix>` naming
+# convention as `shape_field_name`.
+GTPP_SIMPLE_PREFIXES = [
+    "bolt", "crushed", "crushedCentrifuged", "crushedPurified", "dust", "dustImpure", "dustPure", "dustSmall",
+    "dustTiny", "foil", "gearGt", "gearGtSmall", "ingot", "ingotHot", "nugget", "plate", "plateDense",
+    "plateDouble", "plateSuperdense", "rawOre", "ring", "rotor", "screw", "spring", "springSmall", "stick",
+    "stickLong", "wireFine"
+]
+
+GTPP_MARKER_NAMES = ("Brine", "Magic", "SaltWater", "SodiumChloride", "SoulSand", "Water")
+
+
+def load_gtpp_materials():
+    with open(GTPP_DUMP_PATH, encoding="utf-8") as f:
+        return json.load(f)
+
+
+def gtpp_has_fluid(entry):
+    fluids = entry["fluids"]
+    return bool(fluids.get("fluid")) or bool(fluids.get("plasma"))
+
+
+def gtpp_is_marker(entry):
+    return not entry["generatedParts"] and not entry["composition"] and not gtpp_has_fluid(entry)
+
+
+def compute_gtpp_referenced(gtpp_materials):
+    referenced = set()
+    for material in gtpp_materials:
+        for stack in material["composition"]:
+            name = stack.get("name")
+            if name and name != material["unlocalizedName"]:
+                referenced.add(name)
+    return referenced
+
+
+def compute_gtpp_ported(gtpp_materials, base_ported_names):
+    """Stage-03-style marker skip (see `compute_ported`): a part-less, composition-less, fluid-less gtpp
+    entry is skipped unless another gtpp material's composition references it, or it collides by name with an
+    already-ported gregtech/werkstoff material (a merge target is always ported -- its gregtech declaration
+    already exists regardless of what gtpp itself carries)."""
+    referenced = compute_gtpp_referenced(gtpp_materials)
+    ported = []
+    skipped = []
+    for material in gtpp_materials:
+        name = material["unlocalizedName"]
+        if gtpp_is_marker(material) and name not in referenced and name not in base_ported_names:
+            skipped.append(name)
+        else:
+            ported.append(material)
+    return ported, skipped
+
+
+def gtpp_shape_lines(entry, owner_prefix=""):
+    """`generateShape(...)` lines (without the `.generateShape(` wrapper handled by the caller -- returns bare
+    `Owner.field` references) for every dumped gtpp part this stage's codegen can act on, plus the set of
+    prefixes it deliberately left for a later commit (`GTPP_DEFERRED_PREFIXES`/`GTPP_LEGACY_ONLY_PREFIXES`/
+    `GTPP_UNSUPPORTED_PREFIXES`, see their docstrings). Raises if a dumped prefix is not accounted for by any
+    of those sets -- a reference-closure-style fail-loud check mirroring `validate_werkstoff_prefixes`, so a
+    future gtpp dump refresh with a new part kind cannot silently drop items."""
+    refs = []
+    deferred = []
+    for part in entry["generatedParts"]:
+        prefix = part["prefix"]
+        if prefix in GTPP_SIMPLE_PREFIXES:
+            refs.append(f"Materials2Shapes.{shape_field_name(prefix)}")
+        elif prefix == "block":
+            refs.append("Materials2BlockShapes.shapeBlock")
+        elif prefix == "milled":
+            refs.append("Materials2GtppShapes.shapeMilled")
+        elif prefix in GTPP_DEFERRED_PREFIXES:
+            deferred.append(prefix)
+        elif prefix in GTPP_LEGACY_ONLY_PREFIXES or prefix in GTPP_UNSUPPORTED_PREFIXES:
+            pass
+        else:
+            raise SystemExit(
+                f"gen_materials.py: gtpp material {entry['unlocalizedName']!r} generates unmapped part "
+                f"prefix {prefix!r}")
+    seen = set()
+    deduped = []
+    for ref in refs:
+        if ref not in seen:
+            seen.add(ref)
+            deduped.append(ref)
+    return deduped, deferred
+
+
+def celsius_to_kelvin(celsius):
+    """Mirrors `gtPlusPlus.core.util.math.MathUtils#celsiusToKelvin`: `round(celsius + 273.15)`. See
+    [gregtech.api.material.GTppData]'s javadoc for why the dump's `*PointC` fields are not always genuinely
+    Celsius."""
+    return round(celsius + 273.15)
+
+
+def gtpp_data_literal(entry):
+    return (
+        "new GTppData("
+        f"{entry['tier']}, {entry['voltageMultiplier']}L, "
+        f"{celsius_to_kelvin(entry['meltingPointC'])}, {celsius_to_kelvin(entry['boilingPointC'])}, "
+        f"{entry['durability']}, {str(bool(entry['usesBlastFurnace'])).lower()}, "
+        f"{str(bool(entry['isRadioactive'])).lower()}, {entry['radiationLevel']}, "
+        f"{str(bool(entry['hasOre'])).lower()}, {java_string_literal(entry['chemicalFormula'])})")
+
+
+def gtpp_composition_set(entry):
+    return {(c["name"], c["amount"]) for c in entry["composition"] if c.get("name")}
+
+
+def gt_composition_set(gt_entry):
+    return {(c["material"], c["amount"]) for c in gt_entry["composition"] if c and c.get("material")}
+
+
+def gtpp_composition_mismatch(gtpp_entry, gt_entry):
+    """The stage-11 trap check: a same-name fold onto a gregtech/werkstoff declaration is only safe when both
+    sides agree on what the material is made of. Both composition lists are compared as-dumped (name, amount)
+    sets; either side being empty is not itself a conflict (an undumped composition is not evidence of a
+    different substance), only a genuine disagreement between two non-empty lists is."""
+    gtpp_comp = gtpp_composition_set(gtpp_entry)
+    gt_comp = gt_composition_set(gt_entry)
+    if gtpp_comp and gt_comp and gtpp_comp != gt_comp:
+        return gtpp_comp, gt_comp
+    return None
+
+
+def fold_gtpp_materials(gtpp_ported, gt_by_name, ported_name_set):
+    """Splits ported gtpp materials into merges (same-name fold onto an already-ported gregtech/werkstoff
+    declaration -- see `gtpp_composition_mismatch`), new declarations (no name collision -- gtpp owns the
+    whole thing, textured from the miscutils domain), and false merges (a name collision whose compositions
+    disagree -- the stage-11 trap: excluded from both buckets and reported, never guessed at)."""
+    merges = []
+    new = []
+    false_merges = []
+    for entry in gtpp_ported:
+        name = entry["unlocalizedName"]
+        if name in ported_name_set:
+            mismatch = gtpp_composition_mismatch(entry, gt_by_name[name])
+            if mismatch:
+                false_merges.append((entry, mismatch))
+            else:
+                merges.append(entry)
+        else:
+            new.append(entry)
+    return merges, new, false_merges
+
+
+def build_gtpp_merge_block(entry, ml_names):
+    name_literal = java_string_literal(ml_names[entry["unlocalizedName"]])
+    shape_refs, _deferred = gtpp_shape_lines(entry)
+    lines = [f"        MaterialLibAPI.editMaterial(\"gregtech\", {name_literal})"]
+    for ref in shape_refs:
+        lines.append(f"            .generateShape({ref})")
+    lines.append(f"            .setProperty(GTMaterialProperties.GTPP, {gtpp_data_literal(entry)});")
+    return lines
+
+
+def build_gtpp_new_block(entry, field, ml_names, prefix_bits):
+    name = entry["unlocalizedName"]
+    name_literal = java_string_literal(ml_names[name])
+    texture_set_literal = java_string_literal(entry["textureSet"])
+    shape_refs, _deferred = gtpp_shape_lines(entry)
+
+    part_prefixes = [p["prefix"] for p in entry["generatedParts"]]
+    families = joined_families(part_prefixes, prefix_bits)
+
+    lines = []
+    lines.append(
+        f"        Materials2GtppMaterials.{field} = MaterialLibAPI"
+        f".newMaterial(\"gregtech\", {name_literal}, TextureSet.of(\"miscutils\", {texture_set_literal}))")
+    lines.append(f"            .setTint({java_int_literal(pack_argb(entry['rgba']))})")
+    lines.append("            .addToFamily(Materials2Families.familyAll)")
+    for family in families:
+        lines.append(f"            .addToFamily(Materials2Families.{family})")
+    for ref in shape_refs:
+        lines.append(f"            .generateShape({ref})")
+
+    local_name = entry.get("localName")
+    if local_name:
+        lines.append(f"            .setProperty(GTMaterialProperties.LOCAL_NAME, {java_string_literal(local_name)})")
+    lines.append(f"            .setProperty(GTMaterialProperties.ARGB, {java_int_literal(pack_argb_exact(entry['rgba']))})")
+    lines.append(f"            .setProperty(GTMaterialProperties.MELTING_POINT, {celsius_to_kelvin(entry['meltingPointC'])})")
+    lines.append(f"            .setProperty(GTMaterialProperties.BOILING_POINT, {celsius_to_kelvin(entry['boilingPointC'])})")
+    if entry["usesBlastFurnace"]:
+        lines.append("            .setProperty(GTMaterialProperties.BLAST_REQUIRED, true)")
+    if entry["composition"]:
+        lines.append(
+            "            .setProperty(GTMaterialProperties.COMPOSITION, "
+            f"{material_ref_stack_list_literal([{'material': c['name'], 'amount': c['amount']} for c in entry['composition']], ml_names)})")
+    lines.append(f"            .setProperty(GTMaterialProperties.GTPP, {gtpp_data_literal(entry)})")
+    lines.append("            .build();")
+    return lines
+
+
+def write_gtpp_data_file(index, merge_entries, new_entries, ml_names, field_names, prefix_bits):
+    class_name = f"Materials2GtppData{index}"
+    lines = []
+    lines.append("package gregtech.api.enums.materials2;")
+    lines.append("")
+    lines.append("import java.util.List;")
+    lines.append("")
+    lines.append("import com.ruling_0.materiallib.api.MaterialLibAPI;")
+    lines.append("import com.ruling_0.materiallib.api.TextureSet;")
+    lines.append("")
+    lines.append("import gregtech.api.material.GTMaterialProperties;")
+    lines.append("import gregtech.api.material.GTppData;")
+    lines.append("import gregtech.api.material.MaterialRef;")
+    lines.append("import gregtech.api.material.MaterialRefStack;")
+    lines.append("")
+    lines.append(GENERATED_HEADER)
+    lines.append(
+        "/// gtPlusPlus material declarations/merges, see [Materials2GtppMaterials]. Part->shape table (see "
+        "`scripts/mu/gen_materials.py`'s gtpp-fold region for the full mapping and its exceptions):")
+    lines.append(
+        "/// bolt->shapeBolt, crushed(Centrifuged/Purified)->shapeCrushed*, dust(Impure/Pure/Small/Tiny)-"
+        ">shapeDust*, foil->shapeFoil, gearGt(Small)->shapeGearGt*, ingot(Hot)->shapeIngot*, "
+        "nugget->shapeNugget,")
+    lines.append(
+        "/// plate(Dense/Double/Superdense)->shapePlate*, rawOre->shapeRawOre, ring->shapeRing, "
+        "rotor->shapeRotor, screw->shapeScrew, spring(Small)->shapeSpring*, stick(Long)->shapeStick*, "
+        "wireFine->shapeWireFine,")
+    lines.append(
+        "/// block->Materials2BlockShapes.shapeBlock, milled->Materials2GtppShapes.shapeMilled (new shape, "
+        "no stage-02 equivalent -- see that class). `frameGt` stays legacy (gregtech policy, "
+        "GTPP_LEGACY_ONLY_PREFIXES); `cell`/`cellPlasma` are deferred to commit 4 (need a cut-over fluid, "
+        "GTPP_DEFERRED_PREFIXES); `pipeHuge`/`pipeMedium`/`wireGt01..16` are already gregtech-owned items on "
+        "the three materials that carry them (GTPP_UNSUPPORTED_PREFIXES).")
+    lines.append("///")
+    lines.append("/// Melting/boiling points are Celsius in the gtpp dump; converted to Kelvin with "
+        "`celsius_to_kelvin` (`round(c + 273.15)`, matching gtPlusPlus's own `MathUtils#celsiusToKelvin`).")
+    lines.append(f"public class {class_name} {{")
+    lines.append("")
+    lines.append("    public static void init() {")
+    lines.append("        // spotless:off")
+    for entry in merge_entries:
+        lines.extend(build_gtpp_merge_block(entry, ml_names))
+    for entry in new_entries:
+        field = field_names[entry["unlocalizedName"]]
+        lines.extend(build_gtpp_new_block(entry, field, ml_names, prefix_bits))
+    lines.append("        // spotless:on")
+    lines.append("    }")
+    lines.append("")
+    lines.append(f"    private {class_name}() {{}}")
+    lines.append("}")
+    lines.append("")
+    output_path = MATERIALS2_DIR / f"{class_name}.java"
+    output_path.write_text("\n".join(lines), encoding="utf-8")
+    return class_name
+
+
+def write_gtpp_materials_file(new_entries, field_names, data_class_names):
+    lines = []
+    lines.append("package gregtech.api.enums.materials2;")
+    lines.append("")
+    lines.append("import com.ruling_0.materiallib.api.Material;")
+    lines.append("")
+    lines.append(GENERATED_HEADER)
+    lines.append(
+        "/// One [Material] field per gtpp-only material with no name collision against an already-ported "
+        "gregtech/werkstoff declaration (see `Materials2GtppData*`'s merge blocks for the colliding case, "
+        "which reuses the existing [Materials2Materials] field instead).")
+    lines.append("public class Materials2GtppMaterials {")
+    lines.append("")
+    lines.append("    // spotless:off")
+    for entry in new_entries:
+        lines.append(f"    public static Material {field_names[entry['unlocalizedName']]};")
+    lines.append("    // spotless:on")
+    lines.append("")
+    lines.append("    public static void init() {")
+    for class_name in data_class_names:
+        lines.append(f"        {class_name}.init();")
+    lines.append("    }")
+    lines.append("")
+    lines.append("    private Materials2GtppMaterials() {}")
+    lines.append("}")
+    lines.append("")
+    GTPP_MATERIALS_OUTPUT.write_text("\n".join(lines), encoding="utf-8")
+
+
+def gtpp_contested_values(gt_entry, gtpp_entry):
+    contested = []
+
+    def contest(label, gt_value, gtpp_value):
+        if gt_value != gtpp_value:
+            contested.append(f"{label} gt={gt_value!r} gtpp={gtpp_value!r}")
+
+    contest("localName", gt_entry["localName"], gtpp_entry["localName"])
+    contest("rgb", gt_entry["rgba"][:3], gtpp_entry["rgba"][:3])
+    contest("meltingPointK", gt_entry["meltingPoint"], celsius_to_kelvin(gtpp_entry["meltingPointC"]))
+    contest("blastRequired", bool(gt_entry["blastRequired"]), bool(gtpp_entry["usesBlastFurnace"]))
+    return contested
+
+
+def write_gtpp_merge_report(merges, new_entries, false_merges, skipped, gt_by_name):
+    lines = []
+    lines.append(
+        "gtpp merge report -- generated by scripts/mu/gen_materials.py; regenerate, do not edit.")
+    lines.append("")
+    lines.append(
+        f"{len(merges) + len(new_entries)} gtpp materials ported: {len(merges)} merged onto an existing "
+        f"gregtech/werkstoff declaration, {len(new_entries)} new gregtech-owned declarations (textured from "
+        f"the miscutils domain). {len(skipped)} skipped as unreferenced markers "
+        f"({', '.join(sorted(skipped))}). {len(false_merges)} false merges excluded (see below).")
+    lines.append("")
+    if false_merges:
+        lines.append("== FALSE MERGES (composition mismatch -- excluded, not ported; needs coordinator review)")
+        for entry, (gtpp_comp, gt_comp) in false_merges:
+            lines.append(f"   {entry['unlocalizedName']}: gtpp composition {sorted(gtpp_comp)}")
+            lines.append(f"   {entry['unlocalizedName']}: gt composition    {sorted(gt_comp)}")
+        lines.append("")
+    lines.append("== Merges (gregtech dump wins contested scalars)")
+    for entry in sorted(merges, key=lambda e: e["unlocalizedName"]):
+        name = entry["unlocalizedName"]
+        contested = gtpp_contested_values(gt_by_name[name], entry)
+        parts = sorted({p["prefix"] for p in entry["generatedParts"]})
+        line = f"   {name}: parts {parts}"
+        if contested:
+            line += f" | contested (gregtech dump won): {'; '.join(contested)}"
+        lines.append(line)
+    lines.append("")
+    lines.append("== New declarations")
+    for entry in sorted(new_entries, key=lambda e: e["unlocalizedName"]):
+        parts = sorted({p["prefix"] for p in entry["generatedParts"]})
+        lines.append(f"   {entry['unlocalizedName']}: textureSet={entry['textureSet']}, parts {parts}")
+    lines.append("")
+    GTPP_MERGE_REPORT_PATH.write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+
+# endregion
+
 
 def load_legacy_variants_by_material(variants):
     """Ground-truth per-material shape membership: which prefixes `MetaGeneratedItemX32` actually built a
@@ -1306,9 +1661,10 @@ LANG_BEGIN = "# --- BEGIN GENERATED MATERIAL NAMES (scripts/mu/gen_materials.py)
 LANG_END = "# --- END GENERATED MATERIAL NAMES ---"
 
 
-def write_lang_file(ported, ml_names):
+def write_lang_file(ported, ml_names, extra_entries=()):
     entries = sorted(
         (ml_names[material["name"]], material["localName"]) for material in ported if material["localName"])
+    entries = sorted(set(entries) | set(extra_entries))
     block_lines = [LANG_BEGIN]
     for name, local_name in entries:
         block_lines.append(f"material.gregtech.{name}={local_name}")
@@ -1386,7 +1742,6 @@ def main():
                 werkstoff_by_name, display_to_var, legacy_constants))
 
     write_materials_file(ported, field_names, data_class_names)
-    write_lang_file(ported, ml_names)
 
     ported_names = set(ml_names.keys())
     materials_by_name = {m["name"]: m for m in ported}
@@ -1395,6 +1750,44 @@ def main():
     gt_by_name = {m["name"]: m for m in materials}
     merged_count, revived_count, newly_referenced = write_merge_report(
         werkstoff_by_name, gt_by_name, base_ported_names, ported_name_set)
+
+    gtpp_materials = load_gtpp_materials()
+    gtpp_ported, gtpp_skipped = compute_gtpp_ported(gtpp_materials, ported_name_set)
+    gtpp_merges, gtpp_new, gtpp_false_merges = fold_gtpp_materials(gtpp_ported, gt_by_name, ported_name_set)
+
+    gtpp_ml_seen = dict(ml_names)
+    gtpp_field_seen = dict(field_names)
+    gtpp_ml_names = dict(ml_names)
+    gtpp_field_names = {}
+    for entry in gtpp_new:
+        raw = entry["unlocalizedName"]
+        mn = ml_name(raw)
+        fn = "Gtpp" + field_name(raw)
+        if mn in gtpp_ml_seen:
+            raise SystemExit(
+                f"gen_materials.py: gtpp MaterialLib name collision: {raw!r} sanitizes to {mn!r}, already "
+                f"used by {gtpp_ml_seen[mn]!r}")
+        if fn in gtpp_field_seen:
+            raise SystemExit(f"gen_materials.py: gtpp Java field name collision: {fn!r}")
+        gtpp_ml_seen[mn] = raw
+        gtpp_field_seen[fn] = raw
+        gtpp_ml_names[raw] = mn
+        gtpp_field_names[raw] = fn
+
+    gtpp_batches = list(chunk(list(gtpp_merges) + list(gtpp_new), GTPP_MATERIALS_PER_FILE))
+    gtpp_merge_set = {id(e) for e in gtpp_merges}
+    gtpp_data_class_names = []
+    for i, batch in enumerate(gtpp_batches, start=1):
+        batch_merges = [e for e in batch if id(e) in gtpp_merge_set]
+        batch_new = [e for e in batch if id(e) not in gtpp_merge_set]
+        gtpp_data_class_names.append(
+            write_gtpp_data_file(i, batch_merges, batch_new, gtpp_ml_names, gtpp_field_names, prefix_bits))
+    write_gtpp_materials_file(gtpp_new, gtpp_field_names, gtpp_data_class_names)
+    write_gtpp_merge_report(gtpp_merges, gtpp_new, gtpp_false_merges, gtpp_skipped, gt_by_name)
+
+    gtpp_lang_extra = [
+        (gtpp_ml_names[e["unlocalizedName"]], e["localName"]) for e in gtpp_new if e.get("localName")]
+    write_lang_file(ported, ml_names, gtpp_lang_extra)
 
     print(f"gen_materials.py: {len(materials)} dump entries, {len(ported)} ported, {len(skipped)} skipped")
     print(
@@ -1422,6 +1815,17 @@ def main():
         f"  block shape: {len(legacy_block_materials)} legacy storage-block materials, "
         f"{len(block_cutover)} cut over, {len(block_excluded)} excluded (structural references): "
         f"{', '.join(block_excluded)}")
+    print(
+        f"  gtpp fold: {len(gtpp_materials)} dump entries, {len(gtpp_ported)} ported "
+        f"({len(gtpp_merges)} merged, {len(gtpp_new)} new), {len(gtpp_skipped)} skipped markers "
+        f"({', '.join(sorted(gtpp_skipped))}), {len(gtpp_false_merges)} false merges excluded "
+        f"({', '.join(sorted(e['unlocalizedName'] for e, _ in gtpp_false_merges))}); see "
+        f"{GTPP_MERGE_REPORT_PATH.relative_to(REPO_ROOT)}")
+    print(
+        f"  wrote {len(gtpp_data_class_names)} gtpp data files + "
+        f"{GTPP_MATERIALS_OUTPUT.relative_to(REPO_ROOT)}")
+    print(f"  total ported materials: {len(ported)} gregtech/werkstoff + {len(gtpp_new)} gtpp-only = "
+        f"{len(ported) + len(gtpp_new)}")
 
 
 if __name__ == "__main__":

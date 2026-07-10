@@ -582,6 +582,15 @@ public final class MaterialDataDump {
     /// `Material.mMaterialMap` is a `HashSet`, so iteration order is not stable across launches; sort by
     /// unlocalized name to make the dump byte-identical between runs (see the `gtpp-materials.json` ordering
     /// note in the material-unification tooling).
+    ///
+    /// PINNED-CAPTURE TRAP: the committed `scripts/mu/dumps/gtpp-materials.json` is pinned at its stage-11
+    /// commit-1 capture and must not be refreshed from a later boot. `Material#setTextureSet`'s composition
+    /// heuristic is registration-order-sensitive for 15 materials (AceticAnhydride, CopperIISulfate,
+    /// CopperIISulfatePentahydrate, CyanoaceticAcid, EglinSteel, Grisium, HydrogenCyanide, Indalloy140,
+    /// Laurenium, Octiron, PotassiumNitrate, SodiumCyanide, SodiumNitrate, SolidAcidCatalystMixture,
+    /// ThoriumHexafluoride), so a re-dump could capture a different `textureSet` for those than the codegen
+    /// already committed for -- legacy itself varied this run-to-run, so the pinned capture is exactly as
+    /// legacy-faithful as any other.
     private static List<Map<String, Object>> dumpGtppMaterials() {
         List<Material> materials = new ArrayList<>(Material.mMaterialMap);
         materials.sort(java.util.Comparator.comparing(Material::getUnlocalizedName));
