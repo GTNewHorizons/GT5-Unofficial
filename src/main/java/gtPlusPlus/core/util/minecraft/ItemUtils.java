@@ -23,6 +23,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.material.MU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -282,6 +283,15 @@ public class ItemUtils {
             mPrefix = OrePrefixes.stick;
         }
         return GTOreDictUnificator.get(mPrefix, mMat, mAmount);
+    }
+
+    /// The MaterialLib-typed overload for callers migrating off [Materials]; see [MU#stack].
+    public static ItemStack getOrePrefixStack(OrePrefixes mPrefix, com.ruling_0.materiallib.api.Material mMat,
+        int mAmount) {
+        if (mPrefix == OrePrefixes.rod) {
+            mPrefix = OrePrefixes.stick;
+        }
+        return MU.stack(mPrefix, mMat, mAmount);
     }
 
     /**
