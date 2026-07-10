@@ -24,6 +24,7 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.gtnewhorizon.gtnhlib.util.ItemUtil;
+import com.ruling_0.materiallib.api.Material;
 
 import gregtech.GTMod;
 import gregtech.api.enums.Dyes;
@@ -37,6 +38,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntityItemPipe;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.ILocalizedMetaPipeEntity;
+import gregtech.api.material.MU;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.render.TextureFactory;
@@ -76,6 +78,28 @@ public class MTEItemPipe extends MetaPipeEntity implements IMetaTileEntityItemPi
     public MTEItemPipe(int aID, String aName, String aPrefixKey, float aThickNess, Materials aMaterial,
         int aInvSlotCount, int aStepSize, boolean aIsRestrictive) {
         this(aID, aName, aPrefixKey, aThickNess, aMaterial, aInvSlotCount, aStepSize, aIsRestrictive, 20);
+    }
+
+    /// The Materials-typed constructor for MaterialLib-typed callers; delegates through [MU#materialOf] so
+    /// pipe identity is unchanged while call sites migrate off the legacy enum.
+    public MTEItemPipe(int aID, String aName, String aPrefixKey, float aThickNess, Material aMaterial,
+        int aInvSlotCount, int aStepSize, boolean aIsRestrictive, int aTickTime) {
+        this(
+            aID,
+            aName,
+            aPrefixKey,
+            aThickNess,
+            MU.materialOf(aMaterial),
+            aInvSlotCount,
+            aStepSize,
+            aIsRestrictive,
+            aTickTime);
+    }
+
+    /// See the MaterialLib-typed nine-argument constructor.
+    public MTEItemPipe(int aID, String aName, String aPrefixKey, float aThickNess, Material aMaterial,
+        int aInvSlotCount, int aStepSize, boolean aIsRestrictive) {
+        this(aID, aName, aPrefixKey, aThickNess, MU.materialOf(aMaterial), aInvSlotCount, aStepSize, aIsRestrictive);
     }
 
     public MTEItemPipe(String aName, float aThickNess, Materials aMaterial, int aInvSlotCount, int aStepSize,

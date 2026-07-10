@@ -579,7 +579,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
                 "GT_Pipe_Wood_Small",
                 "gt.oreprefix.small_material_fluid_pipe",
                 0.375F,
-                Materials.Wood,
+                Materials2Materials.Wood,
                 10,
                 350,
                 false).renameMaterial("Wooden")
@@ -591,7 +591,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
                 "GT_Pipe_Wood",
                 "gt.oreprefix.material_fluid_pipe",
                 0.5F,
-                Materials.Wood,
+                Materials2Materials.Wood,
                 30,
                 350,
                 false).renameMaterial("Wooden")
@@ -603,7 +603,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
                 "GT_Pipe_Wood_Large",
                 "gt.oreprefix.large_material_fluid_pipe",
                 0.75F,
-                Materials.Wood,
+                Materials2Materials.Wood,
                 60,
                 350,
                 false).renameMaterial("Wooden")
@@ -662,7 +662,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
                 "GT_Pipe_HighPressure_Small",
                 "gt.oreprefix.small_material_fluid_pipe",
                 0.375F,
-                Materials.Redstone,
+                Materials2Materials.Redstone,
                 4800,
                 1500,
                 true).renameMaterial("High Pressure")
@@ -675,7 +675,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
                 "GT_Pipe_HighPressure",
                 "gt.oreprefix.material_fluid_pipe",
                 0.5F,
-                Materials.Redstone,
+                Materials2Materials.Redstone,
                 7200,
                 1500,
                 true).renameMaterial("High Pressure")
@@ -688,7 +688,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
                 "GT_Pipe_HighPressure_Large",
                 "gt.oreprefix.large_material_fluid_pipe",
                 0.75F,
-                Materials.Redstone,
+                Materials2Materials.Redstone,
                 9600,
                 1500,
                 true).renameMaterial("High Pressure")
