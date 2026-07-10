@@ -22,6 +22,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.oredict.OreDictionary;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import bartworks.common.loaders.BioItemList;
 import bartworks.common.loaders.ItemRegistry;
 import bartworks.common.loaders.RecipeLoader;
@@ -36,6 +38,8 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -87,26 +91,30 @@ public class CraftingRecipes implements Runnable {
         GTModHandler.addCraftingRecipe(
             new ItemStack(ItemRegistry.ROCKCUTTER_MV),
             RecipeLoader.BITSD | GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { "DS ", "DP ", "DCB", 'D', GTOreDictUnificator.get(OrePrefixes.dust, Materials.Diamond, 1L),
-                'S', GTOreDictUnificator.get(OrePrefixes.stick, Materials.TungstenSteel, 1L), 'P',
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.TungstenSteel, 1L), 'C', "circuitGood", 'B',
-                GTOreDictUnificator.get(OrePrefixes.battery, Materials.MV, 1L) });
+            new Object[] { "DS ", "DP ", "DCB", 'D',
+                MaterialLibAPI.getStack(Materials2Materials.Diamond, Materials2Shapes.shapeDust, (int) (1L)), 'S',
+                MaterialLibAPI.getStack(Materials2Materials.TungstenSteel, Materials2Shapes.shapeStick, (int) (1L)),
+                'P',
+                MaterialLibAPI.getStack(Materials2Materials.TungstenSteel, Materials2Shapes.shapePlate, (int) (1L)),
+                'C', "circuitGood", 'B', GTOreDictUnificator.get(OrePrefixes.battery, Materials.MV, 1L) });
 
         GTModHandler.addCraftingRecipe(
             new ItemStack(ItemRegistry.ROCKCUTTER_LV),
             RecipeLoader.BITSD | GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { "DS ", "DP ", "DCB", 'D', GTOreDictUnificator.get(OrePrefixes.dust, Materials.Diamond, 1L),
-                'S', GTOreDictUnificator.get(OrePrefixes.stick, Materials.Titanium, 1L), 'P',
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Titanium, 1L), 'C', "circuitBasic", 'B',
-                ItemList.IC2_ReBattery.get(1L) });
+            new Object[] { "DS ", "DP ", "DCB", 'D',
+                MaterialLibAPI.getStack(Materials2Materials.Diamond, Materials2Shapes.shapeDust, (int) (1L)), 'S',
+                MaterialLibAPI.getStack(Materials2Materials.Titanium, Materials2Shapes.shapeStick, (int) (1L)), 'P',
+                MaterialLibAPI.getStack(Materials2Materials.Titanium, Materials2Shapes.shapePlate, (int) (1L)), 'C',
+                "circuitBasic", 'B', ItemList.IC2_ReBattery.get(1L) });
 
         GTModHandler.addCraftingRecipe(
             new ItemStack(ItemRegistry.ROCKCUTTER_HV),
             RecipeLoader.BITSD | GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { "DS ", "DP ", "DCB", 'D', GTOreDictUnificator.get(OrePrefixes.dust, Materials.Diamond, 1L),
-                'S', GTOreDictUnificator.get(OrePrefixes.stick, Materials.Iridium, 1L), 'P',
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Iridium, 1L), 'C', "circuitAdvanced", 'B',
-                GTOreDictUnificator.get(OrePrefixes.battery, Materials.HV, 1L) });
+            new Object[] { "DS ", "DP ", "DCB", 'D',
+                MaterialLibAPI.getStack(Materials2Materials.Diamond, Materials2Shapes.shapeDust, (int) (1L)), 'S',
+                MaterialLibAPI.getStack(Materials2Materials.Iridium, Materials2Shapes.shapeStick, (int) (1L)), 'P',
+                MaterialLibAPI.getStack(Materials2Materials.Iridium, Materials2Shapes.shapePlate, (int) (1L)), 'C',
+                "circuitAdvanced", 'B', GTOreDictUnificator.get(OrePrefixes.battery, Materials.HV, 1L) });
 
         GTModHandler.addCraftingRecipe(
             new ItemStack(ItemRegistry.TESLASTAFF),
@@ -123,15 +131,16 @@ public class CraftingRecipes implements Runnable {
             new ItemStack(ItemRegistry.PUMPPARTS, 1, 1), // motor
             GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "GLP", "LSd", "PfT", 'G',
-                GTOreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.Steel, 1L), 'L',
-                GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Steel, 1L), 'S',
-                GTOreDictUnificator.get(OrePrefixes.screw, Materials.Steel, 1L), 'P', new ItemStack(Blocks.piston), 'T',
-                new ItemStack(ItemRegistry.PUMPPARTS, 1, 0) });
+                MaterialLibAPI.getStack(Materials2Materials.Steel, Materials2Shapes.shapeGearGtSmall, (int) (1L)), 'L',
+                MaterialLibAPI.getStack(Materials2Materials.Steel, Materials2Shapes.shapeStickLong, (int) (1L)), 'S',
+                MaterialLibAPI.getStack(Materials2Materials.Steel, Materials2Shapes.shapeScrew, (int) (1L)), 'P',
+                new ItemStack(Blocks.piston), 'T', new ItemStack(ItemRegistry.PUMPPARTS, 1, 0) });
         GTModHandler.addCraftingRecipe(
             new ItemStack(ItemRegistry.PUMPBLOCK, 1, 0),
             GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { "IPI", "PMP", "ISI", 'I', GTOreDictUnificator.get(OrePrefixes.plate, Materials.Iron, 1L),
-                'P', GTOreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Wood, 1L), 'M',
+            new Object[] { "IPI", "PMP", "ISI", 'I',
+                MaterialLibAPI.getStack(Materials2Materials.Iron, Materials2Shapes.shapePlate, (int) (1L)), 'P',
+                GTOreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Wood, 1L), 'M',
                 new ItemStack(ItemRegistry.PUMPPARTS, 1, 1), 'S', "craftingBlastFurnace" });
 
         GTModHandler.addCraftingRecipe(
@@ -237,16 +246,17 @@ public class CraftingRecipes implements Runnable {
             new MTEManualTrafo(ManualTrafo.ID, "bw.manualtrafo", StatCollector.translateToLocal("tile.manutrafo.name"))
                 .getStackForm(1L),
             RecipeLoader.BITSD | GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { "SCS", "CHC", "ZCZ", 'S', GTOreDictUnificator.get(OrePrefixes.screw, Materials.Titanium, 1L),
-                'C', new ItemStack(ItemRegistry.BW_BLOCKS[2]), 'H', ItemList.Hull_HV.get(1L), 'Z', "circuitAdvanced" });
+            new Object[] { "SCS", "CHC", "ZCZ", 'S',
+                MaterialLibAPI.getStack(Materials2Materials.Titanium, Materials2Shapes.shapeScrew, (int) (1L)), 'C',
+                new ItemStack(ItemRegistry.BW_BLOCKS[2]), 'H', ItemList.Hull_HV.get(1L), 'Z', "circuitAdvanced" });
 
         GTModHandler.addCraftingRecipe(
             new MTEWindmill(Windmill.ID, "bw.windmill", StatCollector.translateToLocal("tile.bw.windmill.name"))
                 .getStackForm(1L),
             RecipeLoader.BITSD | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "BHB", "WGW", "BWB", 'B', new ItemStack(Blocks.brick_block), 'W',
-                GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.Iron, 1L), 'H', new ItemStack(Blocks.hopper), 'G',
-                new ItemStack(ItemRegistry.CRAFTING_PARTS, 1, 2), });
+                MaterialLibAPI.getStack(Materials2Materials.Iron, Materials2Shapes.shapeGearGt, (int) (1L)), 'H',
+                new ItemStack(Blocks.hopper), 'G', new ItemStack(ItemRegistry.CRAFTING_PARTS, 1, 2), });
 
         GTModHandler.addCraftingRecipe(
             new ItemStack(ItemRegistry.CRAFTING_PARTS, 1, 2),
@@ -307,27 +317,29 @@ public class CraftingRecipes implements Runnable {
             new ItemStack(ItemRegistry.LEATHER_ROTOR),
             GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "hPf", "PWP", "sPr", 'P', new ItemStack(ItemRegistry.CRAFTING_PARTS, 1, 3), 'W',
-                GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.Iron, 1L), });
+                MaterialLibAPI.getStack(Materials2Materials.Iron, Materials2Shapes.shapeGearGt, (int) (1L)), });
         GTModHandler.addCraftingRecipe(
             new ItemStack(ItemRegistry.WOOL_ROTOR),
             GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "hPf", "PWP", "sPr", 'P', new ItemStack(ItemRegistry.CRAFTING_PARTS, 1, 4), 'W',
-                GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.Iron, 1L), });
+                MaterialLibAPI.getStack(Materials2Materials.Iron, Materials2Shapes.shapeGearGt, (int) (1L)), });
         GTModHandler.addCraftingRecipe(
             new ItemStack(ItemRegistry.PAPER_ROTOR),
             GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "hPf", "PWP", "sPr", 'P', new ItemStack(ItemRegistry.CRAFTING_PARTS, 1, 5), 'W',
-                GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.Iron, 1L), });
+                MaterialLibAPI.getStack(Materials2Materials.Iron, Materials2Shapes.shapeGearGt, (int) (1L)), });
         GTModHandler.addCraftingRecipe(
             new ItemStack(ItemRegistry.COMBINED_ROTOR),
             GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "hPf", "PWP", "sPr", 'P', new ItemStack(ItemRegistry.CRAFTING_PARTS, 1, 6), 'W',
-                GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.Iron, 1L), });
+                MaterialLibAPI.getStack(Materials2Materials.Iron, Materials2Shapes.shapeGearGt, (int) (1L)), });
         GTModHandler.addCraftingRecipe(
             new ItemStack(ItemRegistry.ROTORBLOCK),
             RecipeLoader.BITSD | GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { "WRW", "RGR", "WRW", 'R', GTOreDictUnificator.get(OrePrefixes.ring, Materials.Iron, 1L), 'W',
-                "plankWood", 'G', GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.Iron, 1L), });
+            new Object[] { "WRW", "RGR", "WRW", 'R',
+                MaterialLibAPI.getStack(Materials2Materials.Iron, Materials2Shapes.shapeRing, (int) (1L)), 'W',
+                "plankWood", 'G',
+                MaterialLibAPI.getStack(Materials2Materials.Iron, Materials2Shapes.shapeGearGt, (int) (1L)), });
 
         GTModHandler.addCraftingRecipe(
             ItemRegistry.THTR,
@@ -339,8 +351,9 @@ public class CraftingRecipes implements Runnable {
         GTModHandler.addCraftingRecipe(
             BioItemList.mBioLabParts[0],
             RecipeLoader.BITSD | GTModHandler.RecipeBits.BUFFERED,
-            new Object[] { "TET", "CFC", "TST", 'T', GTOreDictUnificator.get(OrePrefixes.plate, Materials.Titanium, 1L),
-                'E', ItemList.Emitter_EV.get(1L), 'C',
+            new Object[] { "TET", "CFC", "TST", 'T',
+                MaterialLibAPI.getStack(Materials2Materials.Titanium, Materials2Shapes.shapePlate, (int) (1L)), 'E',
+                ItemList.Emitter_EV.get(1L), 'C',
                 GTOreDictUnificator.get(OrePrefixes.cableGt04, Materials.Aluminium, 1L), 'S',
                 ItemList.Sensor_EV.get(1L), 'F', ItemList.Field_Generator_EV.get(1L) });
 
@@ -360,7 +373,8 @@ public class CraftingRecipes implements Runnable {
             new Object[] { "SFE", "CPC", "NFN", 'N',
                 GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.Nichrome, 1L), 'C', "circuit" + Materials.EV,
                 'F', ItemList.Field_Generator_EV.get(1L), 'E', ItemList.Emitter_EV.get(1L), 'S',
-                ItemList.Sensor_EV.get(1L), 'P', GTOreDictUnificator.get(OrePrefixes.plate, Materials.Titanium, 1L), });
+                ItemList.Sensor_EV.get(1L), 'P',
+                MaterialLibAPI.getStack(Materials2Materials.Titanium, Materials2Shapes.shapePlate, (int) (1L)), });
         // TransformationModule
         GTModHandler.addCraftingRecipe(
             BioItemList.mBioLabParts[3],
@@ -368,7 +382,8 @@ public class CraftingRecipes implements Runnable {
             new Object[] { "SFE", "PCP", "NFN", 'N',
                 GTOreDictUnificator.get(OrePrefixes.wireGt04, Materials.Nichrome, 1L), 'C', "circuit" + Materials.EV,
                 'F', ItemList.Field_Generator_EV.get(1L), 'E', ItemList.Emitter_EV.get(1L), 'S',
-                ItemList.Sensor_EV.get(1L), 'P', GTOreDictUnificator.get(OrePrefixes.plate, Materials.Titanium, 1L), });
+                ItemList.Sensor_EV.get(1L), 'P',
+                MaterialLibAPI.getStack(Materials2Materials.Titanium, Materials2Shapes.shapePlate, (int) (1L)), });
 
         // ClonalCellularSynthesisModule
         GTModHandler.addCraftingRecipe(
@@ -394,9 +409,10 @@ public class CraftingRecipes implements Runnable {
             new Object[] { "PFP", "WCW", "OGO", 'F',
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.StainlessSteel, 1L), 'W',
                 GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.Kanthal, 1L), 'P',
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Polytetrafluoroethylene, 1L), 'O',
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Polystyrene, 1L), 'G', "circuit" + Materials.HV,
-                'C', ItemList.MACHINE_HULLS[3].get(1L) });
+                MaterialLibAPI
+                    .getStack(Materials2Materials.Polytetrafluoroethylene, Materials2Shapes.shapePlate, (int) (1L)),
+                'O', MaterialLibAPI.getStack(Materials2Materials.Polystyrene, Materials2Shapes.shapePlate, (int) (1L)),
+                'G', "circuit" + Materials.HV, 'C', ItemList.MACHINE_HULLS[3].get(1L) });
 
         GTModHandler.addCraftingRecipe(
             new MTEBioLab(BioLab_EV.ID, "bw.biolabEV", StatCollector.translateToLocal("tile.biolab.name"), 4)
@@ -405,9 +421,10 @@ public class CraftingRecipes implements Runnable {
             new Object[] { "PFP", "WCW", "OGO", 'F',
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Titanium, 1L), 'W',
                 GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.Nichrome, 1L), 'P',
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Polytetrafluoroethylene, 1L), 'O',
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Polystyrene, 1L), 'G', "circuit" + Materials.EV,
-                'C', ItemList.MACHINE_HULLS[4].get(1L) });
+                MaterialLibAPI
+                    .getStack(Materials2Materials.Polytetrafluoroethylene, Materials2Shapes.shapePlate, (int) (1L)),
+                'O', MaterialLibAPI.getStack(Materials2Materials.Polystyrene, Materials2Shapes.shapePlate, (int) (1L)),
+                'G', "circuit" + Materials.EV, 'C', ItemList.MACHINE_HULLS[4].get(1L) });
 
         GTModHandler.addCraftingRecipe(
             new MTEBioLab(BioLab_IV.ID, "bw.biolabIV", StatCollector.translateToLocal("tile.biolab.name"), 5)
@@ -416,9 +433,10 @@ public class CraftingRecipes implements Runnable {
             new Object[] { "PFP", "WCW", "OGO", 'F',
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.TungstenSteel, 1L), 'W',
                 GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.TPV, 1L), 'P',
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Polytetrafluoroethylene, 1L), 'O',
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Polystyrene, 1L), 'G', "circuit" + Materials.IV,
-                'C', ItemList.MACHINE_HULLS[5].get(1L) });
+                MaterialLibAPI
+                    .getStack(Materials2Materials.Polytetrafluoroethylene, Materials2Shapes.shapePlate, (int) (1L)),
+                'O', MaterialLibAPI.getStack(Materials2Materials.Polystyrene, Materials2Shapes.shapePlate, (int) (1L)),
+                'G', "circuit" + Materials.IV, 'C', ItemList.MACHINE_HULLS[5].get(1L) });
 
         GTModHandler.addCraftingRecipe(
             new MTEBioLab(BioLab_LuV.ID, "bw.biolabLuV", StatCollector.translateToLocal("tile.biolab.name"), 6)
@@ -426,9 +444,10 @@ public class CraftingRecipes implements Runnable {
             RecipeLoader.BITSD | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PFP", "WCW", "OGO", 'F', GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Chrome, 1L),
                 'W', GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.HSSG, 1L), 'P',
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Polytetrafluoroethylene, 1L), 'O',
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Polystyrene, 1L), 'G', "circuit" + Materials.LuV,
-                'C', ItemList.MACHINE_HULLS[6].get(1L) });
+                MaterialLibAPI
+                    .getStack(Materials2Materials.Polytetrafluoroethylene, Materials2Shapes.shapePlate, (int) (1L)),
+                'O', MaterialLibAPI.getStack(Materials2Materials.Polystyrene, Materials2Shapes.shapePlate, (int) (1L)),
+                'G', "circuit" + Materials.LuV, 'C', ItemList.MACHINE_HULLS[6].get(1L) });
 
         GTModHandler.addCraftingRecipe(
             new MTEBioLab(BioLab_ZPM.ID, "bw.biolabZPM", StatCollector.translateToLocal("tile.biolab.name"), 7)
@@ -437,9 +456,10 @@ public class CraftingRecipes implements Runnable {
             new Object[] { "PFP", "WCW", "OGO", 'F',
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Iridium, 1L), 'W',
                 GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.Naquadah, 1L), 'P',
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Polytetrafluoroethylene, 1L), 'O',
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Polystyrene, 1L), 'G', "circuit" + Materials.ZPM,
-                'C', ItemList.MACHINE_HULLS[7].get(1L) });
+                MaterialLibAPI
+                    .getStack(Materials2Materials.Polytetrafluoroethylene, Materials2Shapes.shapePlate, (int) (1L)),
+                'O', MaterialLibAPI.getStack(Materials2Materials.Polystyrene, Materials2Shapes.shapePlate, (int) (1L)),
+                'G', "circuit" + Materials.ZPM, 'C', ItemList.MACHINE_HULLS[7].get(1L) });
 
         GTModHandler.addCraftingRecipe(
             new MTEBioLab(BioLab_UV.ID, "bw.biolabUV", StatCollector.translateToLocal("tile.biolab.name"), 8)
@@ -447,9 +467,10 @@ public class CraftingRecipes implements Runnable {
             RecipeLoader.BITSD | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "PFP", "WCW", "OGO", 'F', GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Osmium, 1L),
                 'W', GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.NaquadahAlloy, 1L), 'P',
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Polytetrafluoroethylene, 1L), 'O',
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Polystyrene, 1L), 'G', "circuit" + Materials.UV,
-                'C', ItemList.MACHINE_HULLS[8].get(1L) });
+                MaterialLibAPI
+                    .getStack(Materials2Materials.Polytetrafluoroethylene, Materials2Shapes.shapePlate, (int) (1L)),
+                'O', MaterialLibAPI.getStack(Materials2Materials.Polystyrene, Materials2Shapes.shapePlate, (int) (1L)),
+                'G', "circuit" + Materials.UV, 'C', ItemList.MACHINE_HULLS[8].get(1L) });
 
         GTModHandler.addCraftingRecipe(
             new MTEBioLab(BioLab_UHV.ID, "bw.biolabUHV", StatCollector.translateToLocal("tile.biolab.name"), 9)
@@ -458,9 +479,10 @@ public class CraftingRecipes implements Runnable {
             new Object[] { "PFP", "WCW", "OGO", 'F',
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Neutronium, 1L), 'W',
                 GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.ElectrumFlux, 1L), 'P',
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Polytetrafluoroethylene, 1L), 'O',
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Polystyrene, 1L), 'G', "circuit" + Materials.UHV,
-                'C', ItemList.MACHINE_HULLS[9].get(1L) });
+                MaterialLibAPI
+                    .getStack(Materials2Materials.Polytetrafluoroethylene, Materials2Shapes.shapePlate, (int) (1L)),
+                'O', MaterialLibAPI.getStack(Materials2Materials.Polystyrene, Materials2Shapes.shapePlate, (int) (1L)),
+                'G', "circuit" + Materials.UHV, 'C', ItemList.MACHINE_HULLS[9].get(1L) });
 
         GTModHandler.addCraftingRecipe(
             new MTEBioLab(BioLab_UEV.ID, "bw.biolabUEV", StatCollector.translateToLocal("tile.biolab.name"), 10)
@@ -469,9 +491,10 @@ public class CraftingRecipes implements Runnable {
             new Object[] { "PFP", "WCW", "OGO", 'F',
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Bedrockium, 1L), 'W',
                 GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.DraconiumAwakened, 1L), 'P',
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Polytetrafluoroethylene, 1L), 'O',
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Polystyrene, 1L), 'G', "circuit" + Materials.UEV,
-                'C', ItemList.MACHINE_HULLS[10].get(1L) });
+                MaterialLibAPI
+                    .getStack(Materials2Materials.Polytetrafluoroethylene, Materials2Shapes.shapePlate, (int) (1L)),
+                'O', MaterialLibAPI.getStack(Materials2Materials.Polystyrene, Materials2Shapes.shapePlate, (int) (1L)),
+                'G', "circuit" + Materials.UEV, 'C', ItemList.MACHINE_HULLS[10].get(1L) });
 
         GTModHandler.addCraftingRecipe(
             new MTEBioLab(BioLab_UIV.ID, "bw.biolabUIV", StatCollector.translateToLocal("tile.biolab.name"), 11)
@@ -480,9 +503,10 @@ public class CraftingRecipes implements Runnable {
             new Object[] { "PFP", "WCW", "OGO", 'F',
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.TranscendentMetal, 1L), 'W',
                 GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.Infinity, 1L), 'P',
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Polytetrafluoroethylene, 1L), 'O',
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Polystyrene, 1L), 'G', "circuit" + Materials.UIV,
-                'C', ItemList.MACHINE_HULLS[11].get(1L) });
+                MaterialLibAPI
+                    .getStack(Materials2Materials.Polytetrafluoroethylene, Materials2Shapes.shapePlate, (int) (1L)),
+                'O', MaterialLibAPI.getStack(Materials2Materials.Polystyrene, Materials2Shapes.shapePlate, (int) (1L)),
+                'G', "circuit" + Materials.UIV, 'C', ItemList.MACHINE_HULLS[11].get(1L) });
 
         GTModHandler.addCraftingRecipe(
             new MTEBioLab(BioLab_UMV.ID, "bw.biolabUMV", StatCollector.translateToLocal("tile.biolab.name"), 12)
@@ -491,9 +515,10 @@ public class CraftingRecipes implements Runnable {
             new Object[] { "PFP", "WCW", "OGO", 'F',
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.SpaceTime, 1L), 'W',
                 GTOreDictUnificator.get("wireGt01Hypogen", 1L), 'P',
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Polytetrafluoroethylene, 1L), 'O',
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Polystyrene, 1L), 'G', "circuit" + Materials.UMV,
-                'C', ItemList.MACHINE_HULLS[12].get(1L) });
+                MaterialLibAPI
+                    .getStack(Materials2Materials.Polytetrafluoroethylene, Materials2Shapes.shapePlate, (int) (1L)),
+                'O', MaterialLibAPI.getStack(Materials2Materials.Polystyrene, Materials2Shapes.shapePlate, (int) (1L)),
+                'G', "circuit" + Materials.UMV, 'C', ItemList.MACHINE_HULLS[12].get(1L) });
 
         // Radio Hatches
         GTModHandler.addCraftingRecipe(
@@ -504,7 +529,7 @@ public class CraftingRecipes implements Runnable {
                 3).getStackForm(1L),
             RecipeLoader.BITSD | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "DPD", "DCD", "DKD", 'D',
-                GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Lead, 1L), 'C',
+                MaterialLibAPI.getStack(Materials2Materials.Lead, Materials2Shapes.shapePlateDense, (int) (1L)), 'C',
                 ItemList.MACHINE_HULLS[3].get(1L), 'K',
                 GTOreDictUnificator.get(OrePrefixes.cableGt08, Materials.Gold, 1L), 'P',
                 ItemList.Electric_Piston_HV.get(1) });
@@ -513,9 +538,10 @@ public class CraftingRecipes implements Runnable {
             ItemList.Item_Power_Goggles.get(1),
             GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "MPM", "LSL", "PRP", 'M', ItemList.Cover_Screen.get(1), 'P',
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Polytetrafluoroethylene, 1L), 'L',
-                GTOreDictUnificator.get(OrePrefixes.lens, Materials.GarnetYellow, 1L), 'S', ItemList.Sensor_IV.get(1),
-                'R', OrePrefixes.foil.get(Materials.AnySyntheticRubber) });
+                MaterialLibAPI
+                    .getStack(Materials2Materials.Polytetrafluoroethylene, Materials2Shapes.shapePlate, (int) (1L)),
+                'L', MaterialLibAPI.getStack(Materials2Materials.GarnetYellow, Materials2Shapes.shapeLens, (int) (1L)),
+                'S', ItemList.Sensor_IV.get(1), 'R', OrePrefixes.foil.get(Materials.AnySyntheticRubber) });
 
         GTModHandler.addCraftingRecipe(
             ItemList.Item_Redstone_Sniffer.get(1L),
