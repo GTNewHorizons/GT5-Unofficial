@@ -415,7 +415,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
                 result = sg.extractItems(request, Actionable.SIMULATE, getRequestSource());
             }
 
-            return result == null ? null : GTUtility.createFluidStack(result.getFluidStack());
+            return result == null ? null : GTUtility.createFluidStack(result.getFluidStack(), result.getStackSize());
         }
     }
 

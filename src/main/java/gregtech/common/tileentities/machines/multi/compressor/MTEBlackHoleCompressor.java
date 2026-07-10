@@ -167,7 +167,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
     private SoundLoopAnyBlock blackholeSoundLoop;
 
     private final FluidStack blackholeCatalyzingCost = (Materials.SpaceTime).getMolten(1);
-    private int catalyzingCostModifier = 1;
+    private long catalyzingCostModifier = 1;
 
     public MTEBlackHoleCompressor(final int aID, final String aName, final String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -473,7 +473,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         if (aNBT.hasKey("catalyzingCounter")) catalyzingCounter = aNBT.getInteger("catalyzingCounter");
-        if (aNBT.hasKey("catalyzingCostModifier")) catalyzingCostModifier = aNBT.getInteger("catalyzingCostModifier");
+        if (aNBT.hasKey("catalyzingCostModifier")) catalyzingCostModifier = aNBT.getLong("catalyzingCostModifier");
         if (aNBT.hasKey("blackHoleStatus")) blackHoleStatus = aNBT.getByte("blackHoleStatus");
         if (aNBT.hasKey("blackHoleStability")) blackHoleStability = aNBT.getFloat("blackHoleStability");
         if (aNBT.hasKey("shouldRender")) shouldRender = aNBT.getBoolean("shouldRender");
@@ -483,7 +483,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setInteger("catalyzingCounter", catalyzingCounter);
-        aNBT.setInteger("catalyzingCostModifier", catalyzingCostModifier);
+        aNBT.setLong("catalyzingCostModifier", catalyzingCostModifier);
         aNBT.setByte("blackHoleStatus", blackHoleStatus);
         aNBT.setFloat("blackHoleStability", blackHoleStability);
         aNBT.setBoolean("shouldRender", shouldRender);
@@ -706,7 +706,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
             // Search all hatches for catalyst fluid
             // If found enough, drain it and reduce stability loss to 0
             // Every 30 drains, double the cost
-            FluidStack totalCost = new FluidStack(blackholeCatalyzingCost, catalyzingCostModifier);
+            FluidStack totalCost = GTUtility.copyAmount(catalyzingCostModifier, blackholeCatalyzingCost);
 
             for (MTEHatchInput hatch : spacetimeHatches) {
                 if (drain(hatch, totalCost, false)) {
@@ -714,8 +714,8 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                     catalyzingCounter += 1;
                     stabilityDecrease = 0;
                     if (catalyzingCounter >= 30) {
-                        // Hidden cap at 1B per tick so we don't integer overflow
-                        if (catalyzingCostModifier <= 1000000000) catalyzingCostModifier *= 2;
+                        // Hidden cap at LONGMAX/2 per tick so we don't long overflow
+                        if (catalyzingCostModifier <= Long.MAX_VALUE / 2) catalyzingCostModifier *= 2;
                         catalyzingCounter = 0;
                     }
                     didDrain = true;
