@@ -48,9 +48,7 @@ public class FluidHeaterRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .circuit(1)
-            .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Water, Materials2FluidShapes.shapeFluidLiquid, (int) (6)))
+            .fluidInputs(Materials.Water.getFluid(6))
             .fluidOutputs(Materials.Steam.getGas(960))
             .duration(1 * SECONDS + 10 * TICKS)
             .eut(TierEU.RECIPE_LV)
