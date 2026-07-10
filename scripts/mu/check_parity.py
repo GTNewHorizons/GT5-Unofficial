@@ -16,6 +16,9 @@ captures, never overwrite from a post-stage-10 boot:
   flip removed (reconstructed werkstoffe resolve MaterialLib's already-registered fluids instead).
 - `gt-materials.json`: post-flip dumps are semantically identical but reordered (bridge mirrors are created in
   `werkstoffHashSet` iteration order, which the flip changed to ascending-id).
+- `gtpp-materials.json`: pinned at its stage-11 commit-1 capture (see `MaterialDataDump#dumpGtppMaterials`'s
+  javadoc) -- `Material#setTextureSet`'s composition heuristic is registration-order-sensitive for 15
+  materials, so a re-dump could capture a different `textureSet` than the codegen already committed for.
 
 Usage: python scripts/mu/check_parity.py
 Exit status is nonzero if any mismatch is found.
