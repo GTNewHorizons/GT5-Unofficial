@@ -2931,7 +2931,7 @@
     "families": [
       "All",
       "Cells",
-      "Dusts",
+      "Metals",
       "Plasmas",
       "ToolParts"
     ],
@@ -16652,7 +16652,8 @@
       "gem"
     ],
     "families": [
-      "All"
+      "All",
+      "Gems"
     ],
     "localName": "Graviton Shard",
     "meltingPoint": 100000,
@@ -20703,7 +20704,8 @@
       "gemFlawless"
     ],
     "families": [
-      "All"
+      "All",
+      "Gems"
     ],
     "localName": "Amalgatite",
     "meltingPoint": null,
@@ -42867,8 +42869,10 @@
       "All",
       "Cells",
       "Gears",
+      "Gems",
       "Metals",
       "Ores",
+      "Plasmas",
       "ToolParts"
     ],
     "localName": "Force",
@@ -43957,6 +43961,7 @@
       "All",
       "Cells",
       "Gears",
+      "Gems",
       "Metals",
       "Ores",
       "ToolParts"
@@ -52514,7 +52519,7 @@
     "families": [
       "All",
       "Cells",
-      "Dusts",
+      "Metals",
       "ToolParts"
     ],
     "localName": "Magnesia",
@@ -70768,7 +70773,7 @@
     "families": [
       "All",
       "Cells",
-      "Dusts"
+      "Metals"
     ],
     "localName": "Obsidian",
     "meltingPoint": null,
@@ -90617,7 +90622,8 @@
       "fluidMolten"
     ],
     "families": [
-      "All"
+      "All",
+      "Cells"
     ],
     "localName": "Ammonium",
     "meltingPoint": null,
@@ -94854,7 +94860,9 @@
     ],
     "families": [
       "All",
-      "Dusts",
+      "Cells",
+      "Metals",
+      "Plasmas",
       "ToolParts"
     ],
     "localName": "Zirconium",
@@ -99194,7 +99202,9 @@
     ],
     "families": [
       "All",
-      "Dusts",
+      "Cells",
+      "Metals",
+      "Plasmas",
       "ToolParts"
     ],
     "localName": "Thorium 232",
@@ -100220,7 +100230,8 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Cells",
+      "Plasmas"
     ],
     "localName": "Xenon",
     "meltingPoint": 1123,
@@ -100550,7 +100561,8 @@
     "families": [
       "All",
       "Cells",
-      "Dusts",
+      "Metals",
+      "Plasmas",
       "ToolParts"
     ],
     "localName": "Californium",
@@ -100731,7 +100743,8 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Cells",
+      "Plasmas"
     ],
     "localName": "Neon",
     "meltingPoint": 1123,
@@ -100899,7 +100912,8 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Cells",
+      "Plasmas"
     ],
     "localName": "Krypton",
     "meltingPoint": 1123,
@@ -101098,6 +101112,7 @@
       "All",
       "Cells",
       "Gems",
+      "Metals",
       "Ores",
       "ToolParts"
     ],
@@ -104103,6 +104118,7 @@
       "Cells",
       "Gears",
       "Metals",
+      "Plasmas",
       "ToolParts"
     ],
     "localName": "Ruthenium",
@@ -106179,6 +106195,7 @@
       "Cells",
       "Gears",
       "Metals",
+      "Plasmas",
       "ToolParts"
     ],
     "localName": "Rhodium",
@@ -110374,7 +110391,7 @@
     ],
     "families": [
       "All",
-      "Dusts",
+      "Metals",
       "ToolParts"
     ],
     "localName": "Fluorophlogopite",
@@ -110947,7 +110964,7 @@
     "families": [
       "All",
       "Cells",
-      "Dusts",
+      "Metals",
       "ToolParts"
     ],
     "localName": "Tantalum Hafnium Carbide",
@@ -113803,7 +113820,8 @@
     ],
     "families": [
       "All",
-      "Cells"
+      "Cells",
+      "Dusts"
     ],
     "localName": "Thorium Tetrafluoride",
     "meltingPoint": 1123,
@@ -118550,7 +118568,7 @@
     "families": [
       "All",
       "Cells",
-      "Dusts",
+      "Metals",
       "ToolParts"
     ],
     "localName": "Zn-Th Alloy",
@@ -125377,7 +125395,7 @@
     "families": [
       "All",
       "Cells",
-      "Dusts",
+      "Metals",
       "ToolParts"
     ],
     "localName": "Lithium Chloride",
@@ -128816,7 +128834,9 @@
     ],
     "families": [
       "All",
-      "Dusts",
+      "Cells",
+      "Metals",
+      "Plasmas",
       "ToolParts"
     ],
     "localName": "Hafnium",
@@ -130361,7 +130381,9 @@
     "families": [
       "All",
       "Cells",
-      "Dusts"
+      "Gears",
+      "Metals",
+      "Plasmas"
     ],
     "localName": "Iodine",
     "meltingPoint": 1123,
@@ -149862,7 +149884,7 @@
     ],
     "families": [
       "All",
-      "Dusts",
+      "Metals",
       "ToolParts"
     ],
     "localName": "Permalloy",
@@ -150390,7 +150412,7 @@
     ],
     "families": [
       "All",
-      "Dusts",
+      "Metals",
       "ToolParts"
     ],
     "localName": "Silicon Nitride",
@@ -152911,7 +152933,7 @@
     "families": [
       "All",
       "Cells",
-      "Dusts",
+      "Metals",
       "Plasmas"
     ],
     "localName": "Advanced Nitinol",
@@ -154050,6 +154072,7 @@
     ],
     "families": [
       "All",
+      "Metals",
       "Ores"
     ],
     "localName": "Ancient Granite",
@@ -154673,7 +154696,7 @@
     "families": [
       "All",
       "Cells",
-      "Dusts"
+      "Metals"
     ],
     "localName": "Babbit Alloy",
     "meltingPoint": 541,
@@ -155222,8 +155245,8 @@
     "families": [
       "All",
       "Cells",
-      "Dusts",
-      "Gears"
+      "Gears",
+      "Metals"
     ],
     "localName": "Black Metal",
     "meltingPoint": 2623,
@@ -155361,7 +155384,7 @@
     "families": [
       "All",
       "Cells",
-      "Dusts"
+      "Metals"
     ],
     "localName": "Black Titanium",
     "meltingPoint": 8037,
@@ -155553,8 +155576,8 @@
     "families": [
       "All",
       "Cells",
-      "Dusts",
-      "Gears"
+      "Gears",
+      "Metals"
     ],
     "localName": "Blood Steel",
     "meltingPoint": 2773,
@@ -157906,7 +157929,7 @@
     "families": [
       "All",
       "Cells",
-      "Dusts",
+      "Metals",
       "Plasmas"
     ],
     "localName": "Curium",
@@ -159399,7 +159422,7 @@
     "families": [
       "All",
       "Cells",
-      "Dusts",
+      "Metals",
       "Plasmas"
     ],
     "localName": "Fermium",
@@ -160832,8 +160855,8 @@
     "families": [
       "All",
       "Cells",
-      "Dusts",
       "Gears",
+      "Metals",
       "Plasmas"
     ],
     "localName": "Germanium",
@@ -161242,7 +161265,7 @@
     "families": [
       "All",
       "Cells",
-      "Dusts"
+      "Metals"
     ],
     "localName": "HG-1223",
     "meltingPoint": 6630,
@@ -164136,7 +164159,7 @@
     "families": [
       "All",
       "Cells",
-      "Dusts"
+      "Metals"
     ],
     "localName": "Indalloy 140",
     "meltingPoint": 5473,
@@ -166478,7 +166501,7 @@
     ],
     "families": [
       "All",
-      "Dusts"
+      "Metals"
     ],
     "localName": "Lithium 7",
     "meltingPoint": 727,
@@ -167574,7 +167597,7 @@
     "families": [
       "All",
       "Cells",
-      "Dusts",
+      "Metals",
       "Plasmas"
     ],
     "localName": "Neptunium",
@@ -168880,7 +168903,7 @@
     "families": [
       "All",
       "Cells",
-      "Dusts",
+      "Metals",
       "Plasmas"
     ],
     "localName": "Plutonium-238",
@@ -168997,7 +169020,7 @@
     "families": [
       "All",
       "Cells",
-      "Dusts",
+      "Metals",
       "Plasmas"
     ],
     "localName": "Polonium",
@@ -169299,8 +169322,8 @@
     "families": [
       "All",
       "Cells",
-      "Dusts",
-      "Gears"
+      "Gears",
+      "Metals"
     ],
     "localName": "Potin",
     "meltingPoint": 1573,
@@ -169438,7 +169461,7 @@
     "families": [
       "All",
       "Cells",
-      "Dusts",
+      "Metals",
       "Plasmas"
     ],
     "localName": "Protactinium",
@@ -169925,7 +169948,7 @@
     "families": [
       "All",
       "Cells",
-      "Dusts",
+      "Metals",
       "Plasmas"
     ],
     "localName": "Radium",
@@ -170587,8 +170610,8 @@
     "families": [
       "All",
       "Cells",
-      "Dusts",
       "Gears",
+      "Metals",
       "Plasmas"
     ],
     "localName": "Rhenium",
@@ -170709,7 +170732,7 @@
     "families": [
       "All",
       "Cells",
-      "Dusts",
+      "Metals",
       "Plasmas"
     ],
     "localName": "Rhugnor",
@@ -170833,6 +170856,7 @@
     "families": [
       "All",
       "Cells",
+      "Metals",
       "Ores",
       "Plasmas"
     ],
@@ -171395,8 +171419,8 @@
     "families": [
       "All",
       "Cells",
-      "Dusts",
       "Gears",
+      "Metals",
       "Plasmas"
     ],
     "localName": "Selenium",
@@ -171767,8 +171791,8 @@
     "families": [
       "All",
       "Cells",
-      "Dusts",
-      "Gears"
+      "Gears",
+      "Metals"
     ],
     "localName": "Silicon Carbide",
     "meltingPoint": 1687,
@@ -173865,7 +173889,7 @@
     "families": [
       "All",
       "Cells",
-      "Dusts",
+      "Metals",
       "Plasmas"
     ],
     "localName": "Technetium",
@@ -174115,8 +174139,8 @@
     "families": [
       "All",
       "Cells",
-      "Dusts",
       "Gears",
+      "Metals",
       "Plasmas"
     ],
     "localName": "Thallium",
@@ -175047,7 +175071,7 @@
     "families": [
       "All",
       "Cells",
-      "Dusts"
+      "Metals"
     ],
     "localName": "Trinium Naquadah Alloy",
     "meltingPoint": 4473,
@@ -175459,8 +175483,8 @@
     "families": [
       "All",
       "Cells",
-      "Dusts",
-      "Gears"
+      "Gears",
+      "Metals"
     ],
     "localName": "Tumbaga",
     "meltingPoint": 1573,
@@ -175729,7 +175753,7 @@
     "families": [
       "All",
       "Cells",
-      "Dusts",
+      "Metals",
       "Plasmas"
     ],
     "localName": "Uranium 232",
@@ -175847,7 +175871,7 @@
     "families": [
       "All",
       "Cells",
-      "Dusts",
+      "Metals",
       "Plasmas"
     ],
     "localName": "Uranium 233",
@@ -177723,8 +177747,8 @@
     "families": [
       "All",
       "Cells",
-      "Dusts",
-      "Gears"
+      "Gears",
+      "Metals"
     ],
     "localName": "Zirconium Carbide",
     "meltingPoint": 1828,
