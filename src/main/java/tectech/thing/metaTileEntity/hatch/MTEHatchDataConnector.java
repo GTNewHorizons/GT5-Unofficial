@@ -136,24 +136,24 @@ public abstract class MTEHatchDataConnector<T extends DataPacket<?>> extends MTE
         int range = 0;
         while ((next = current.getNext(source)) != null && range++ < 1000) {
             if (next instanceof MTEHatchDataItemsInput dataItemsInput) {
+                connected = dataItemsInput;
                 if (checkState == CheckState.NEW_DATA) {
                     dataItemsInput.setContents((ALRecipeDataPacket) q);
                     result = CheckState.NEW_DATA;
                 } else {
                     result = CheckState.CONNECTED;
-                    dataItemsInput.setContents((ALRecipeDataPacket) q);
+                    if (connected != oldConnected) dataItemsInput.setContents((ALRecipeDataPacket) q);
                 }
-                connected = dataItemsInput;
                 break;
             } else if (next instanceof MTEHatchDataInput dataInput) {
+                connected = dataInput;
                 if (checkState == CheckState.NEW_DATA) {
                     dataInput.setContents(((QuantumDataPacket) q));
                     result = CheckState.NEW_DATA;
                 } else {
                     result = CheckState.CONNECTED;
-                    dataInput.setContents(((QuantumDataPacket) q));
+                    if (connected != oldConnected) dataInput.setContents(((QuantumDataPacket) q));
                 }
-                connected = dataInput;
                 break;
             }
 
