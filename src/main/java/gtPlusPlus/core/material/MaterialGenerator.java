@@ -9,6 +9,7 @@ import java.util.Set;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gtPlusPlus.core.block.base.BasicBlock.BlockTypes;
 import gtPlusPlus.core.block.base.BlockBaseModular;
@@ -57,6 +58,14 @@ public class MaterialGenerator {
 
     public static final ArrayList<Set<Runnable>> mRecipeMapsToGenerate = new ArrayList<>();
 
+    /// Whether `matInfo`'s `prefix` part has cut over to MaterialLib (see
+    /// `MaterialReconstruction#isPartCutOver`) and legacy `Base*` construction for it should therefore be
+    /// skipped. Third-party runtime-constructed materials (unknown to `MaterialReconstruction`) always keep
+    /// the legacy path.
+    private static boolean cutOver(Material matInfo, OrePrefixes prefix) {
+        return MaterialReconstruction.isPartCutOver(matInfo.getUnlocalizedName(), prefix);
+    }
+
     public static void generate(final Material matInfo) {
         generate(matInfo, true);
     }
@@ -82,53 +91,53 @@ public class MaterialGenerator {
                 if (generateEverything) {
                     if (sRadiation >= 1) {
                         new BlockBaseModular(matInfo, BlockTypes.STANDARD);
-                        new BaseItemIngot(matInfo);
+                        if (!cutOver(matInfo, OrePrefixes.ingot)) new BaseItemIngot(matInfo);
 
-                        new BaseItemDust(matInfo);
-                        new BaseItemNugget(matInfo);
-                        new BaseItemPlate(matInfo);
-                        new BaseItemRod(matInfo);
-                        new BaseItemRodLong(matInfo);
+                        if (!cutOver(matInfo, OrePrefixes.dust)) new BaseItemDust(matInfo);
+                        if (!cutOver(matInfo, OrePrefixes.nugget)) new BaseItemNugget(matInfo);
+                        if (!cutOver(matInfo, OrePrefixes.plate)) new BaseItemPlate(matInfo);
+                        if (!cutOver(matInfo, OrePrefixes.stick)) new BaseItemRod(matInfo);
+                        if (!cutOver(matInfo, OrePrefixes.stickLong)) new BaseItemRodLong(matInfo);
                     } else {
                         new BlockBaseModular(matInfo, BlockTypes.STANDARD);
                         new BlockBaseModular(matInfo, BlockTypes.FRAME);
-                        new BaseItemIngot(matInfo);
+                        if (!cutOver(matInfo, OrePrefixes.ingot)) new BaseItemIngot(matInfo);
                         if (hotIngot) {
-                            new BaseItemIngotHot(matInfo);
+                            if (!cutOver(matInfo, OrePrefixes.ingotHot)) new BaseItemIngotHot(matInfo);
                         }
-                        new BaseItemDust(matInfo);
-                        new BaseItemNugget(matInfo);
-                        new BaseItemPlate(matInfo);
-                        new BaseItemPlateDouble(matInfo);
-                        new BaseItemBolt(matInfo);
-                        new BaseItemRod(matInfo);
-                        new BaseItemRodLong(matInfo);
-                        new BaseItemRing(matInfo);
-                        new BaseItemScrew(matInfo);
-                        new BaseItemRotor(matInfo);
-                        new BaseItemGear(matInfo);
-                        new BaseItemPlateDense(matInfo);
+                        if (!cutOver(matInfo, OrePrefixes.dust)) new BaseItemDust(matInfo);
+                        if (!cutOver(matInfo, OrePrefixes.nugget)) new BaseItemNugget(matInfo);
+                        if (!cutOver(matInfo, OrePrefixes.plate)) new BaseItemPlate(matInfo);
+                        if (!cutOver(matInfo, OrePrefixes.plateDouble)) new BaseItemPlateDouble(matInfo);
+                        if (!cutOver(matInfo, OrePrefixes.bolt)) new BaseItemBolt(matInfo);
+                        if (!cutOver(matInfo, OrePrefixes.stick)) new BaseItemRod(matInfo);
+                        if (!cutOver(matInfo, OrePrefixes.stickLong)) new BaseItemRodLong(matInfo);
+                        if (!cutOver(matInfo, OrePrefixes.ring)) new BaseItemRing(matInfo);
+                        if (!cutOver(matInfo, OrePrefixes.screw)) new BaseItemScrew(matInfo);
+                        if (!cutOver(matInfo, OrePrefixes.rotor)) new BaseItemRotor(matInfo);
+                        if (!cutOver(matInfo, OrePrefixes.gearGt)) new BaseItemGear(matInfo);
+                        if (!cutOver(matInfo, OrePrefixes.plateDense)) new BaseItemPlateDense(matInfo);
                     }
                 } else {
                     new BlockBaseModular(matInfo, BlockTypes.STANDARD);
 
-                    new BaseItemIngot(matInfo);
-                    new BaseItemDust(matInfo);
-                    new BaseItemNugget(matInfo);
-                    new BaseItemPlate(matInfo);
-                    new BaseItemPlateDouble(matInfo);
+                    if (!cutOver(matInfo, OrePrefixes.ingot)) new BaseItemIngot(matInfo);
+                    if (!cutOver(matInfo, OrePrefixes.dust)) new BaseItemDust(matInfo);
+                    if (!cutOver(matInfo, OrePrefixes.nugget)) new BaseItemNugget(matInfo);
+                    if (!cutOver(matInfo, OrePrefixes.plate)) new BaseItemPlate(matInfo);
+                    if (!cutOver(matInfo, OrePrefixes.plateDouble)) new BaseItemPlateDouble(matInfo);
                 }
             } else if (matInfo.getState() == MaterialState.LIQUID) {
                 if (generateEverything) {
                     new BlockBaseModular(matInfo, BlockTypes.STANDARD);
                 }
-                new BaseItemIngot(matInfo);
-                new BaseItemDust(matInfo);
-                new BaseItemNugget(matInfo);
-                new BaseItemPlate(matInfo);
-                new BaseItemPlateDouble(matInfo);
+                if (!cutOver(matInfo, OrePrefixes.ingot)) new BaseItemIngot(matInfo);
+                if (!cutOver(matInfo, OrePrefixes.dust)) new BaseItemDust(matInfo);
+                if (!cutOver(matInfo, OrePrefixes.nugget)) new BaseItemNugget(matInfo);
+                if (!cutOver(matInfo, OrePrefixes.plate)) new BaseItemPlate(matInfo);
+                if (!cutOver(matInfo, OrePrefixes.plateDouble)) new BaseItemPlateDouble(matInfo);
             } else if (matInfo.getState() == MaterialState.GAS) {
-                new BaseItemDust(matInfo);
+                if (!cutOver(matInfo, OrePrefixes.dust)) new BaseItemDust(matInfo);
                 FluidUtils.generateGas(unlocalizedName, materialName, matInfo.getMeltingPointK(), C, true);
             } else if (matInfo.getState() == MaterialState.PURE_GAS) {
                 FluidUtils.generateGas(unlocalizedName, materialName, matInfo.getMeltingPointK(), C, true);
@@ -159,7 +168,7 @@ public class MaterialGenerator {
 
     public static void generateDusts(final Material matInfo) {
         if (matInfo.getState() == MaterialState.SOLID) {
-            new BaseItemDust(matInfo);
+            if (!cutOver(matInfo, OrePrefixes.dust)) new BaseItemDust(matInfo);
         }
 
         // Add A jillion Recipes - old code
@@ -203,24 +212,24 @@ public class MaterialGenerator {
                 new BlockBaseModular(matInfo, BlockTypes.STANDARD);
             }
             if (generateDusts) {
-                new BaseItemDust(matInfo);
+                if (!cutOver(matInfo, OrePrefixes.dust)) new BaseItemDust(matInfo);
             }
             if (generateIngot) {
-                new BaseItemIngot(matInfo);
-                new BaseItemNugget(matInfo);
+                if (!cutOver(matInfo, OrePrefixes.ingot)) new BaseItemIngot(matInfo);
+                if (!cutOver(matInfo, OrePrefixes.nugget)) new BaseItemNugget(matInfo);
             }
 
             if (generatePlates) {
-                new BaseItemPlate(matInfo);
-                new BaseItemPlateDouble(matInfo);
+                if (!cutOver(matInfo, OrePrefixes.plate)) new BaseItemPlate(matInfo);
+                if (!cutOver(matInfo, OrePrefixes.plateDouble)) new BaseItemPlateDouble(matInfo);
                 new RecipeGenPlates(matInfo);
                 new RecipeGenExtruder(matInfo);
                 new RecipeGenAssembler(matInfo);
             }
 
             if (generateRods) {
-                new BaseItemRod(matInfo);
-                new BaseItemRodLong(matInfo);
+                if (!cutOver(matInfo, OrePrefixes.stick)) new BaseItemRod(matInfo);
+                if (!cutOver(matInfo, OrePrefixes.stickLong)) new BaseItemRodLong(matInfo);
             }
 
             if (!disableOptionalRecipes) {
@@ -254,22 +263,22 @@ public class MaterialGenerator {
             DustState aState = new DustState(generateDust, generateSmallTinyDusts, generateSmallTinyDusts);
 
             if (!aState.generatesDust()) {
-                if (aState.generatesSmallDust()) {
+                if (aState.generatesSmallDust() && !cutOver(matInfo, OrePrefixes.dustSmall)) {
                     new BaseItemComponent(matInfo, ComponentTypes.DUSTSMALL);
                 }
-                if (aState.generatesTinyDust()) {
+                if (aState.generatesTinyDust() && !cutOver(matInfo, OrePrefixes.dustTiny)) {
                     new BaseItemComponent(matInfo, ComponentTypes.DUSTTINY);
                 }
-            } else {
+            } else if (!cutOver(matInfo, OrePrefixes.dust)) {
                 new BaseItemDust(aState, matInfo);
             }
 
-            new BaseItemCrushedOre(matInfo);
-            new BaseItemCentrifugedCrushedOre(matInfo);
-            new BaseItemPurifiedCrushedOre(matInfo);
-            new BaseItemImpureDust(matInfo);
-            new BaseItemPurifiedDust(matInfo);
-            new BaseItemRawOre(matInfo);
+            if (!cutOver(matInfo, OrePrefixes.crushed)) new BaseItemCrushedOre(matInfo);
+            if (!cutOver(matInfo, OrePrefixes.crushedCentrifuged)) new BaseItemCentrifugedCrushedOre(matInfo);
+            if (!cutOver(matInfo, OrePrefixes.crushedPurified)) new BaseItemPurifiedCrushedOre(matInfo);
+            if (!cutOver(matInfo, OrePrefixes.dustImpure)) new BaseItemImpureDust(matInfo);
+            if (!cutOver(matInfo, OrePrefixes.dustPure)) new BaseItemPurifiedDust(matInfo);
+            if (!cutOver(matInfo, OrePrefixes.rawOre)) new BaseItemRawOre(matInfo);
 
             new RecipeGenOre(matInfo);
 
@@ -306,18 +315,18 @@ public class MaterialGenerator {
             new BlockBaseOre(matInfo, BlockTypes.ORE);
             matInfo.setHasOre();
             new BlockBaseModular(matInfo, BlockTypes.STANDARD);
-            new BaseItemIngot(matInfo);
-            new BaseItemDust(matInfo);
-            new BaseItemNugget(matInfo);
-            new BaseItemPlate(matInfo);
-            new BaseItemPlateDouble(matInfo);
+            if (!cutOver(matInfo, OrePrefixes.ingot)) new BaseItemIngot(matInfo);
+            if (!cutOver(matInfo, OrePrefixes.dust)) new BaseItemDust(matInfo);
+            if (!cutOver(matInfo, OrePrefixes.nugget)) new BaseItemNugget(matInfo);
+            if (!cutOver(matInfo, OrePrefixes.plate)) new BaseItemPlate(matInfo);
+            if (!cutOver(matInfo, OrePrefixes.plateDouble)) new BaseItemPlateDouble(matInfo);
 
-            new BaseItemCrushedOre(matInfo);
-            new BaseItemCentrifugedCrushedOre(matInfo);
-            new BaseItemPurifiedCrushedOre(matInfo);
-            new BaseItemImpureDust(matInfo);
-            new BaseItemPurifiedDust(matInfo);
-            new BaseItemRawOre(matInfo);
+            if (!cutOver(matInfo, OrePrefixes.crushed)) new BaseItemCrushedOre(matInfo);
+            if (!cutOver(matInfo, OrePrefixes.crushedCentrifuged)) new BaseItemCentrifugedCrushedOre(matInfo);
+            if (!cutOver(matInfo, OrePrefixes.crushedPurified)) new BaseItemPurifiedCrushedOre(matInfo);
+            if (!cutOver(matInfo, OrePrefixes.dustImpure)) new BaseItemImpureDust(matInfo);
+            if (!cutOver(matInfo, OrePrefixes.dustPure)) new BaseItemPurifiedDust(matInfo);
+            if (!cutOver(matInfo, OrePrefixes.rawOre)) new BaseItemRawOre(matInfo);
 
             new RecipeGenOre(matInfo, true);
             new RecipeGenAlloySmelter(matInfo);

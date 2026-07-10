@@ -22,6 +22,7 @@ import gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes;
 import gtPlusPlus.core.item.base.foil.BaseItemFoil;
 import gtPlusPlus.core.item.base.wire.BaseItemFineWire;
 import gtPlusPlus.core.material.Material;
+import gtPlusPlus.core.material.MaterialReconstruction;
 import gtPlusPlus.core.material.MaterialStack;
 import gtPlusPlus.core.material.state.MaterialState;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -269,6 +270,9 @@ public class MaterialUtils {
     }
 
     public static void generateComponentAndAssignToAMaterial(ComponentTypes aType, Material aMaterial) {
+        if (MaterialReconstruction.isPartCutOver(aMaterial.getUnlocalizedName(), aType.getGtOrePrefix())) {
+            return;
+        }
         Item aGC;
         if (aType == ComponentTypes.FINEWIRE) {
             aGC = new BaseItemFineWire(aMaterial);

@@ -31,6 +31,7 @@ import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.interfaces.IStoneType;
 import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.material.GTppData;
+import gregtech.api.material.MU;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.StringUtils;
 import gregtech.common.config.Client;
@@ -894,6 +895,11 @@ public class Material implements IOreMaterial {
     }
 
     public final ItemStack getComponentByPrefix(OrePrefixes aPrefix, int stacksize) {
+        if (MaterialReconstruction.isPartCutOver(this.unlocalizedName, aPrefix)) {
+            ItemStack mlStack = MU
+                .stack(aPrefix, MaterialReconstruction.materialLibOf(this.unlocalizedName), stacksize);
+            if (mlStack != null) return mlStack;
+        }
         String aKey = aPrefix.getName();
         Map<String, ItemStack> g = mComponentMap.get(this.unlocalizedName);
         if (g == null) {

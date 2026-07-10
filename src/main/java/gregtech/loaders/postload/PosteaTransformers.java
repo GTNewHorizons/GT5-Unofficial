@@ -16,6 +16,7 @@ import com.gtnewhorizons.postea.api.IDExtenderCompat;
 import com.gtnewhorizons.postea.api.ItemStackReplacementManager;
 import com.gtnewhorizons.postea.api.TileEntityReplacementManager;
 import com.gtnewhorizons.postea.utility.BlockInfo;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import bartworks.system.material.BWMetaGeneratedItems;
 import bartworks.system.material.Werkstoff;
@@ -34,6 +35,7 @@ import gregtech.api.util.GTLog;
 import gregtech.common.blocks.BlockFrameBox;
 import gregtech.common.blocks.BlockMetal;
 import gregtech.common.items.MetaGeneratedItem99;
+import gregtech.loaders.postload.GtppItemCutoverTable.Entry;
 import vexatos.tgregworks.reference.Mods;
 
 public class PosteaTransformers implements Runnable {
@@ -65,6 +67,31 @@ public class PosteaTransformers implements Runnable {
         registerMetaItem99CutoverTransformer();
         registerStorageBlockCutoverTransformers();
         registerWerkstoffItemCutoverTransformers();
+        registerGtppItemCutoverTransformers();
+    }
+
+    /// Migrates saved gtPlusPlus per-material part item stacks (`miscutils:item*`, one distinct registered
+    /// item per (material, prefix), always damage 0) into the equivalent MaterialLib stack, resolved through
+    /// [GtppItemCutoverTable]'s pinned (prefix, material, registry name) rows -- the gtPlusPlus counterpart of
+    /// [#registerWerkstoffItemCutoverTransformers], differing only in that each row is its own registered item
+    /// rather than a damage variant of a shared meta-item, so no damage read/branch is needed. Block-kind parts
+    /// (`block`, `frameGt`) and fluid-tied parts (`cell`, `cellPlasma`) are out of the table and migrate
+    /// separately.
+    private static void registerGtppItemCutoverTransformers() {
+        for (Entry entry : GtppItemCutoverTable.ENTRIES) {
+            ItemStackReplacementManager.addTransformationHandler(entry.registryName(), (originalId, tag) -> {
+                com.ruling_0.materiallib.api.Material material = MaterialLibAPI
+                    .getMaterial("gregtech", entry.materialName());
+                ItemStack cutover = MU.stack(entry.prefix(), material, 1);
+                if (cutover == null) return false;
+                IDExtenderCompat.setItemStackID(tag, Item.getIdFromItem(cutover.getItem()));
+                tag.setShort("Damage", (short) cutover.getItemDamage());
+                return true;
+            });
+        }
+        GTLog.out.println(
+            "PosteaTransformers: registered gtpp item transformers for " + GtppItemCutoverTable.ENTRIES.length
+                + " legacy items");
     }
 
     /// Migrates saved bartworks werkstoff item stacks (`bartworks:gt.bwMetaGenerated<prefix>`, damage =

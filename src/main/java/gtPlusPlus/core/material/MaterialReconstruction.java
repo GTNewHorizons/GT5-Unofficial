@@ -9,6 +9,7 @@ import java.util.Set;
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.GTppData;
@@ -78,6 +79,22 @@ public final class MaterialReconstruction {
         "Zirkelite");
     // spotless:on
 
+    /// Part prefixes cut over from the legacy per-material `Base*` item to the MaterialLib shape so far -- see
+    /// [#isPartCutOver]. Grows commit by commit as each part family's MaterialLib shape membership and Postea
+    /// migration land (block-kind prefixes need a placed-block migration and an identity-reference sweep first;
+    /// `cell`/`cellPlasma` need fluid-in-container shape membership, deferred with fluid cutover); a prefix
+    /// absent here still resolves through the legacy path even for a reconstructed material.
+    // spotless:off
+    private static final Set<OrePrefixes> CUT_OVER_PART_PREFIXES = Set.of(
+        OrePrefixes.dust, OrePrefixes.dustSmall, OrePrefixes.dustTiny, OrePrefixes.ingot, OrePrefixes.ingotHot,
+        OrePrefixes.nugget, OrePrefixes.plate, OrePrefixes.plateDouble, OrePrefixes.plateDense,
+        OrePrefixes.plateSuperdense, OrePrefixes.gearGt, OrePrefixes.gearGtSmall, OrePrefixes.bolt,
+        OrePrefixes.screw, OrePrefixes.ring, OrePrefixes.rotor, OrePrefixes.foil, OrePrefixes.wireFine,
+        OrePrefixes.spring, OrePrefixes.springSmall, OrePrefixes.stick, OrePrefixes.stickLong,
+        OrePrefixes.crushed, OrePrefixes.crushedCentrifuged, OrePrefixes.crushedPurified, OrePrefixes.dustImpure,
+        OrePrefixes.dustPure, OrePrefixes.milled, OrePrefixes.rawOre);
+    // spotless:on
+
     private static final Map<String, Material> built = new HashMap<>();
     private static final LinkedHashSet<String> inProgress = new LinkedHashSet<>();
 
@@ -89,6 +106,30 @@ public final class MaterialReconstruction {
                 "MaterialReconstruction.byName called for a name reconstruction does not own: " + unlocalizedName);
         }
         return resolve(unlocalizedName);
+    }
+
+    /// Whether `name` is a reconstructed gtPlusPlus material -- the item/fluid/block cutover gate: legacy
+    /// per-material item/block construction (`MaterialGenerator`) and part resolution
+    /// (`Material#getComponentByPrefix`) skip their legacy path for these names in favor of MaterialLib, while
+    /// third-party runtime-constructed materials (unknown to this class) keep the legacy path unconditionally.
+    public static boolean isReconstructed(String name) {
+        return RECONSTRUCTED_NAMES.contains(name);
+    }
+
+    /// Whether a reconstructed material's `prefix` part has cut over to MaterialLib -- see
+    /// [#CUT_OVER_PART_PREFIXES]. `MaterialGenerator` skips legacy construction, and
+    /// `Material#getComponentByPrefix` resolves through MaterialLib instead of the legacy path, exactly when
+    /// this is true.
+    public static boolean isPartCutOver(String name, OrePrefixes prefix) {
+        return RECONSTRUCTED_NAMES.contains(name) && CUT_OVER_PART_PREFIXES.contains(prefix);
+    }
+
+    /// The MaterialLib material backing a reconstructed name, or null if `name` is not reconstructed. Callers
+    /// that already know `isReconstructed(name)` is true (e.g. after the [#isReconstructed] gate) can treat a
+    /// null result as "MaterialLib data disappeared after material construction", which should not happen.
+    public static com.ruling_0.materiallib.api.Material materialLibOf(String name) {
+        if (!RECONSTRUCTED_NAMES.contains(name)) return null;
+        return MaterialLibAPI.getMaterial("gregtech", name);
     }
 
     /// Resolves a name to a `Material`, whether or not reconstruction owns it -- the composition-reference
