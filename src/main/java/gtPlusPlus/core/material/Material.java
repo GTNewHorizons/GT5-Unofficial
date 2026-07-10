@@ -15,6 +15,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.jetbrains.annotations.Nullable;
@@ -63,6 +64,14 @@ public class Material implements IOreMaterial {
 
     private Fluid mFluid;
     private Fluid mPlasma;
+
+    /// The exact `FluidRegistry` names MaterialLib registered this reconstructed material's fluid/plasma
+    /// under (from [GTppData#fluidName]/[GTppData#plasmaName]), null for every legacy-constructed material.
+    /// Resolved by [#wireMaterialLibFluids], which -- unlike [#pendingRegistration]'s deferred legacy
+    /// construction -- can run long after the reconstruction constructor returns, so these must be fields
+    /// rather than local state.
+    private String reconstructedFluidName;
+    private String reconstructedPlasmaName;
 
     private boolean vGenerateCells;
     private boolean shouldGenerateFluid;
@@ -624,6 +633,8 @@ public class Material implements IOreMaterial {
         this.textureSet = textureSet;
 
         this.shouldGenerateFluid = data.generatesFluid();
+        this.reconstructedFluidName = data.fluidName();
+        this.reconstructedPlasmaName = data.plasmaName();
         if (data.generatesFluid()) {
             if (registrationGateOpen) {
                 performFluidAndCellRegistration();
@@ -659,6 +670,10 @@ public class Material implements IOreMaterial {
     }
 
     private void performFluidAndCellRegistration() {
+        if (MaterialReconstruction.isReconstructed(this.unlocalizedName)) {
+            wireMaterialLibFluids();
+            return;
+        }
         final Materials aGregtechMaterial = tryFindGregtechMaterialEquivalent();
         FluidStack aTest = FluidUtils.getWildcardFluidStack(defaultLocalName, 1);
         if (aTest != null) {
@@ -680,6 +695,32 @@ public class Material implements IOreMaterial {
             .isEmpty()) {
             this.mPlasma = this.generatePlasma();
         }
+    }
+
+    /// Resolves a reconstructed material's `mFluid`/`mPlasma` directly from the Forge fluids MaterialLib
+    /// already registered under [#reconstructedFluidName]/[#reconstructedPlasmaName], instead of gtpp's
+    /// legacy `generateFluid`/`generatePlasma`/`checkForCellAndGenerate` construction path: those would either
+    /// register a duplicate fluid MaterialLib now owns, or re-configure a live one with reconstruction-era
+    /// values (the stage-10 werkstoff trap this mirrors -- see `WerkstoffLoader#addItemsForGeneration`).
+    /// Resolution is fail-loud: MaterialLib resolves every material fluid before gtPlusPlus's own construction
+    /// runs, so a missing name here is a bug, not a legitimate absence (a material with no fluid at all never
+    /// reaches this method, gated by `data.generatesFluid()` at the call site).
+    private void wireMaterialLibFluids() {
+        if (reconstructedFluidName != null) {
+            this.mFluid = requireMaterialLibFluid(reconstructedFluidName);
+        }
+        if (reconstructedPlasmaName != null) {
+            this.mPlasma = requireMaterialLibFluid(reconstructedPlasmaName);
+        }
+    }
+
+    private Fluid requireMaterialLibFluid(String name) {
+        Fluid fluid = FluidRegistry.getFluid(name);
+        if (fluid == null) {
+            throw new IllegalStateException(
+                "MaterialLib did not register fluid " + name + " for material " + unlocalizedName);
+        }
+        return fluid;
     }
 
     public static void registerAllPending() {
@@ -896,8 +937,9 @@ public class Material implements IOreMaterial {
 
     public final ItemStack getComponentByPrefix(OrePrefixes aPrefix, int stacksize) {
         if (MaterialReconstruction.isPartCutOver(this.unlocalizedName, aPrefix)) {
-            ItemStack mlStack = MU
-                .stack(aPrefix, MaterialReconstruction.materialLibOf(this.unlocalizedName), stacksize);
+            ItemStack mlStack = (aPrefix == OrePrefixes.cell || aPrefix == OrePrefixes.cellPlasma)
+                ? MaterialReconstruction.cellStack(this.unlocalizedName, aPrefix, stacksize)
+                : MU.stack(aPrefix, MaterialReconstruction.materialLibOf(this.unlocalizedName), stacksize);
             if (mlStack != null) return mlStack;
         } else if (MaterialReconstruction.isPrefixEligibleForCutover(aPrefix)) {
             // A material backed by a live gregtech `Materials` constant (not gtpp-reconstructed) can still
@@ -908,9 +950,13 @@ public class Material implements IOreMaterial {
             // this branch out lets a legacy item that races MaterialLib's own registration win the cache and
             // stick for the rest of the boot (see MaterialReconstruction census nondeterminism, stage 11
             // commit 4). Gated to the same prefixes reconstruction itself has cleared for cutover -- block-kind
-            // and cell/cellPlasma prefixes are NOT eligible here either, since a material with a live gregtech
-            // equivalent (e.g. Iodine) can have ITS block cut over upstream (stage 07) while gtpp's own
-            // BlockBaseModular for it still needs the stage-11 identity-reference sweep first.
+            // prefixes are NOT eligible here either, since a material with a live gregtech equivalent (e.g.
+            // Iodine) can have ITS block cut over upstream (stage 07) while gtpp's own BlockBaseModular for it
+            // still needs the stage-11 identity-reference sweep first. cell/cellPlasma are excluded from this
+            // branch specifically because it resolves through plain `MU.stack`, not `cellStack`'s
+            // shapeCell/shapeCellMolten fallback -- a non-reconstructed material sharing a name with a gtpp
+            // material whose cell landed on shapeCellMolten would silently miss it here; none are known to
+            // exist today, but this branch has no reconstruction check to fall back on if one appears.
             Materials gtEquivalent = MaterialUtils.getMaterial(this.unlocalizedName);
             if (gtEquivalent != null && !MaterialUtils.isNullGregtechMaterial(gtEquivalent)) {
                 ItemStack mlStack = MU.stack(aPrefix, gtEquivalent, stacksize);

@@ -788,6 +788,8 @@ public final class MaterialDataDump {
         json.put("generatesFluid", data.generatesFluid());
         json.put("generatesCells", data.generatesCells());
         json.put("composition", dumpMlMaterialRefStacks(data.composition()));
+        json.put("fluidName", data.fluidName());
+        json.put("plasmaName", data.plasmaName());
         return json;
     }
 

@@ -464,9 +464,10 @@ GTPP_MATERIALS_PER_FILE = 60
 # `BlockBaseModular` frame blocks stay legacy pending stage 11 commit 4's block/ore cutover.
 GTPP_LEGACY_ONLY_PREFIXES = {"frameGt"}
 
-# `cell`/`cellPlasma` need a registered fluid to generate a container shape onto (see `container_shape_lines`),
-# and stage 11 commit 2 does not cut gtpp fluids over (that is commit 4's "Fluids via ml-2 namers with dumped
-# names") -- deferred here, not generated, until that commit exists to satisfy the requirement.
+# `cell`/`cellPlasma` are not part of `GTPP_SIMPLE_PREFIXES`'s uniform 1:1 shape mapping: unlike every other
+# part, which shape shape they generate onto depends on which fluid slot the material's fluid claimed (see
+# `gtpp_fluid_and_cell_shape_lines`), so they are handled by that dedicated function instead of
+# `gtpp_shape_lines`.
 GTPP_DEFERRED_PREFIXES = {"cell", "cellPlasma"}
 
 # Appear only on Hypogen (wireGt01..16, gearGtSmall already has a real shape so is not here)/Inconel792
@@ -599,11 +600,18 @@ def gtpp_generates_cells(entry):
     return any(p["prefix"] in ("cell", "cellPlasma") for p in entry["generatedParts"])
 
 
+def java_string_literal_or_null(value):
+    return "null" if value is None else java_string_literal(value)
+
+
 def gtpp_data_literal(entry, ml_names):
     composition_literal = material_ref_stack_list_literal(
         [{
             "material": c["name"], "amount": c["amount"]
         } for c in entry["composition"]], ml_names)
+    generates_fluid = gtpp_generates_fluid(entry)
+    fluid_name = entry["fluids"]["fluid"] if generates_fluid else None
+    plasma_name = entry["fluids"]["plasma"] if generates_fluid else None
     return (
         "new GTppData("
         f"{entry['tier']}, {entry['voltageMultiplier']}L, "
@@ -612,8 +620,120 @@ def gtpp_data_literal(entry, ml_names):
         f"{str(bool(entry['isRadioactive'])).lower()}, {entry['radiationLevel']}, "
         f"{str(bool(entry['hasOre'])).lower()}, {java_string_literal(entry['chemicalFormula'])}, "
         f"{entry['protons']}L, {entry['neutrons']}L, "
-        f"{java_string_literal(entry['state'])}, {str(gtpp_generates_fluid(entry)).lower()}, "
-        f"{str(gtpp_generates_cells(entry)).lower()}, {composition_literal})")
+        f"{java_string_literal(entry['state'])}, {str(generates_fluid).lower()}, "
+        f"{str(gtpp_generates_cells(entry)).lower()}, {composition_literal}, "
+        f"{java_string_literal_or_null(fluid_name)}, {java_string_literal_or_null(plasma_name)})")
+
+
+def gtpp_fluid_ref(name, temperature_k):
+    return None if name is None else {"name": name, "temperature": temperature_k}
+
+
+def gtpp_own_fluid_refs(entry):
+    """gtpp's own per-`FLUID_STATES`-slot ref for `entry`, independent of any gregtech-side data: a gtpp
+    material only ever has one non-plasma fluid, and its dumped name already reveals which slot it belongs
+    in -- a `molten.`-prefixed name is the molten slot (every `SOLID`-state material,
+    `Material#generateFluid`'s `addGTFluidMolten` branch, plus every `LIQUID`/`PURE_LIQUID`-state material,
+    which also routes through `addGTFluidMolten`); a `GAS`/`PURE_GAS`-state material's bare name is the gas
+    slot; any other bare name (an already-registered Forge fluid an early lookup found, e.g. `Ammonia`) is
+    the fluid slot. Plasma is always registered at a fixed 10000 K (`FluidUtils#addGTPlasma`'s hardcoded
+    temperature), independent of the material's own melting point. Empty (no slot populated) unless
+    [#gtpp_generates_fluid] is true for `entry`."""
+    refs = {state: None for state in FLUID_STATES}
+    if not gtpp_generates_fluid(entry):
+        return refs
+    fluids = entry["fluids"]
+    fluid_name = fluids.get("fluid")
+    if fluid_name is not None:
+        if fluid_name.startswith("molten."):
+            slot = "molten"
+        elif entry["state"] in ("GAS", "PURE_GAS"):
+            slot = "gas"
+        else:
+            slot = "fluid"
+        refs[slot] = gtpp_fluid_ref(fluid_name, celsius_to_kelvin(entry["meltingPointC"]))
+    refs["plasma"] = gtpp_fluid_ref(fluids.get("plasma"), 10000)
+    return refs
+
+
+def gtpp_combined_fluid_refs(entry, gt_entry):
+    """The ref governing each `FLUID_STATES` slot after gtpp's fold onto `gt_entry` (`None` for a "new"
+    gtpp-only material): gregtech's own ref wins wherever it has one (a genuine same-name merge -- gtpp never
+    overrides an already-fluid-having gregtech slot with reconstruction-era data, the stage-10 trap this
+    mirrors), gtpp's own [#gtpp_own_fluid_refs] fills any slot gregtech left empty. Distinct from
+    [#gtpp_claimed_states], which of these slots gtpp itself must register (this includes every governing
+    ref regardless of which side registered it, since cell/cellPlasma shape membership needs to know whether
+    the slot ends up populated at all, not who populated it)."""
+    combined = {}
+    own = gtpp_own_fluid_refs(entry)
+    for state in FLUID_STATES:
+        gt_ref = gt_entry["fluids"].get(state) if gt_entry else None
+        combined[state] = gt_ref if gt_ref else own[state]
+    return combined
+
+
+def gtpp_claimed_states(entry, gt_entry):
+    """The `FLUID_STATES` slots gtpp itself must claim: it has a ref there and `gt_entry` (the same-name
+    gregtech/werkstoff declaration, `None` for a "new" material) does not. A same-name merge only needs
+    gtpp's contribution for the slots gregtech's own dump never captured -- a handful of materials are
+    partial (e.g. `Iodine` merges its liquid/gas fluid from gregtech but only gtpp ever generated its plasma;
+    `Hafnium`/`Zirconium` get every slot from gtpp, gregtech captured no fluid for them at all)."""
+    own = gtpp_own_fluid_refs(entry)
+    claimed = set()
+    for state in FLUID_STATES:
+        gt_ref = gt_entry["fluids"].get(state) if gt_entry else None
+        if own[state] and not gt_ref:
+            claimed.add(state)
+    return claimed
+
+
+def gtpp_fluid_and_cell_shape_lines(entry, gt_entry, used_fluid_names, fluid_textures):
+    """`generateShape(...)` lines plus the `LEGACY_FLUIDS` property line for a gtpp material, mirroring
+    gregtech's own `fluid_shape_lines`/`container_shape_lines` but keyed off gtpp's single fluid+plasma pair
+    (see [#gtpp_own_fluid_refs]) instead of gregtech's five-slot `FluidNames` split.
+
+    The `LEGACY_FLUIDS` property is only emitted when [#gtpp_claimed_states] is non-empty (gtpp has at least
+    one slot to contribute), and always carries the full [#gtpp_combined_fluid_refs] -- reproducing
+    gregtech's own already-set slots verbatim -- since `setProperty` overwrites rather than merges, unlike
+    `generateShape`.
+
+    `cell`/`cellPlasma` shape membership, by contrast, is driven by [#gtpp_combined_fluid_refs] directly
+    (not gated on which side claimed the underlying fluid): gtpp's `cell` item always holds whichever single
+    fluid the material ends up with, whoever registered it, so it maps to `shapeCellMolten` for the molten
+    slot or `shapeCell` for fluid/gas; `cellPlasma` always maps to `shapeCellPlasmaLight` (unlike gregtech's
+    own plasma cells, gtpp's `FluidUtils#addGTPlasma` never varied cell volume by whether the material also
+    had a molten fluid -- always the 1000 mB IC2 cell, so the 144 mB `shapeCellPlasma` candidate never
+    applies to a gtpp-owned plasma cell). Re-declaring a shape gregtech's own declaration already generated
+    is harmless (`generateShape` is idempotent -- gregtech merges already rely on this for every other
+    shared part, e.g. a merge material's `dust` line duplicating what its family membership already implies)
+    -- e.g. `Rhodium`/`Californium`/`Ruthenium` have a gregtech-registered molten fluid with no gregtech
+    `cellMolten` container at all (no legacy `cellMolten` item ever existed for them), so gtpp's `cell` part
+    is the only thing that ever claims `shapeCellMolten` for them."""
+    own = gtpp_own_fluid_refs(entry)
+    claimed = gtpp_claimed_states(entry, gt_entry)
+    lines = []
+    if claimed:
+        combined = gtpp_combined_fluid_refs(entry, gt_entry)
+        fluid_args = ", ".join(fluid_ref_literal(combined[state], fluid_textures) for state in FLUID_STATES)
+        lines.append(f"            .setProperty(GTMaterialProperties.LEGACY_FLUIDS, new FluidNames({fluid_args}))")
+        for state in FLUID_STATES:
+            if state not in claimed:
+                continue
+            ref = combined[state]
+            if ref["name"] not in used_fluid_names:
+                used_fluid_names.add(ref["name"])
+                lines.append(f"            .generateShape(Materials2FluidShapes.{FLUID_SHAPE_FIELDS[state]})")
+
+    combined = gtpp_combined_fluid_refs(entry, gt_entry)
+    prim_slot = next((s for s in ("molten", "fluid", "gas") if own[s]), None)
+    part_prefixes = {p["prefix"] for p in entry["generatedParts"]}
+    if "cell" in part_prefixes and prim_slot and combined[prim_slot]:
+        field = "shapeCellMolten" if prim_slot == "molten" else "shapeCell"
+        lines.append(f"            .generateShape(Materials2CellShapes.{field})")
+    if "cellPlasma" in part_prefixes and combined["plasma"]:
+        lines.append("            .generateShape(Materials2CellShapes.shapeCellPlasmaLight)")
+
+    return lines
 
 
 def gtpp_composition_set(entry):
@@ -657,17 +777,20 @@ def fold_gtpp_materials(gtpp_ported, gt_by_name, ported_name_set):
     return merges, new, false_merges
 
 
-def build_gtpp_merge_block(entry, ml_names):
+def build_gtpp_merge_block(entry, ml_names, gt_by_name, used_fluid_names, fluid_textures):
     name_literal = java_string_literal(ml_names[entry["unlocalizedName"]])
     shape_refs, _deferred = gtpp_shape_lines(entry)
     lines = [f"        MaterialLibAPI.editMaterial(\"gregtech\", {name_literal})"]
     for ref in shape_refs:
         lines.append(f"            .generateShape({ref})")
+    gt_entry = gt_by_name.get(entry["unlocalizedName"])
+    lines.extend(gtpp_fluid_and_cell_shape_lines(entry, gt_entry, used_fluid_names, fluid_textures))
     lines.append(f"            .setProperty(GTMaterialProperties.GTPP, {gtpp_data_literal(entry, ml_names)});")
     return lines
 
 
-def build_gtpp_new_block(entry, field, ml_names, prefix_bits, included_names, family_shape_members):
+def build_gtpp_new_block(entry, field, ml_names, prefix_bits, included_names, family_shape_members,
+                          used_fluid_names, fluid_textures):
     name = entry["unlocalizedName"]
     name_literal = java_string_literal(ml_names[name])
     texture_set_literal = java_string_literal(entry["textureSet"])
@@ -698,6 +821,7 @@ def build_gtpp_new_block(entry, field, ml_names, prefix_bits, included_names, fa
         lines.append(f"            .addToFamily(Materials2Families.{family})")
     for ref in shape_refs:
         lines.append(f"            .generateShape({ref})")
+    lines.extend(gtpp_fluid_and_cell_shape_lines(entry, None, used_fluid_names, fluid_textures))
 
     local_name = entry.get("localName")
     if local_name:
@@ -724,7 +848,7 @@ def build_gtpp_new_block(entry, field, ml_names, prefix_bits, included_names, fa
 
 
 def write_gtpp_data_file(index, merge_entries, new_entries, ml_names, field_names, prefix_bits, included_names,
-                          family_shape_members):
+                          family_shape_members, gt_by_name, used_fluid_names, fluid_textures):
     class_name = f"Materials2GtppData{index}"
     lines = []
     lines.append("package gregtech.api.enums.materials2;")
@@ -734,6 +858,8 @@ def write_gtpp_data_file(index, merge_entries, new_entries, ml_names, field_name
     lines.append("import com.ruling_0.materiallib.api.MaterialLibAPI;")
     lines.append("import com.ruling_0.materiallib.api.TextureSet;")
     lines.append("")
+    lines.append("import gregtech.api.material.FluidNames;")
+    lines.append("import gregtech.api.material.FluidRef;")
     lines.append("import gregtech.api.material.GTMaterialProperties;")
     lines.append("import gregtech.api.material.GTppData;")
     lines.append("import gregtech.api.material.MaterialRef;")
@@ -754,9 +880,10 @@ def write_gtpp_data_file(index, merge_entries, new_entries, ml_names, field_name
     lines.append(
         "/// block->Materials2BlockShapes.shapeBlock, milled->Materials2GtppShapes.shapeMilled (new shape, "
         "no stage-02 equivalent -- see that class). `frameGt` stays legacy (gregtech policy, "
-        "GTPP_LEGACY_ONLY_PREFIXES); `cell`/`cellPlasma` are deferred to commit 4 (need a cut-over fluid, "
-        "GTPP_DEFERRED_PREFIXES); `pipeHuge`/`pipeMedium`/`wireGt01..16` are already gregtech-owned items on "
-        "the three materials that carry them (GTPP_UNSUPPORTED_PREFIXES).")
+        "GTPP_LEGACY_ONLY_PREFIXES); `cell`/`cellPlasma` map to `Materials2CellShapes.shapeCell`/"
+        "`shapeCellMolten`/`shapeCellPlasmaLight` depending on the material's fluid slot (see "
+        "`gtpp_fluid_and_cell_shape_lines`); `pipeHuge`/`pipeMedium`/`wireGt01..16` are already gregtech-owned "
+        "items on the three materials that carry them (GTPP_UNSUPPORTED_PREFIXES).")
     lines.append("///")
     lines.append("/// Melting/boiling points are Celsius in the gtpp dump; converted to Kelvin with "
         "`celsius_to_kelvin` (`round(c + 273.15)`, matching gtPlusPlus's own `MathUtils#celsiusToKelvin`).")
@@ -765,12 +892,13 @@ def write_gtpp_data_file(index, merge_entries, new_entries, ml_names, field_name
     lines.append("    public static void init() {")
     lines.append("        // spotless:off")
     for entry in merge_entries:
-        lines.extend(build_gtpp_merge_block(entry, ml_names))
+        lines.extend(build_gtpp_merge_block(entry, ml_names, gt_by_name, used_fluid_names, fluid_textures))
     for entry in new_entries:
         field = field_names[entry["unlocalizedName"]]
         lines.extend(
             build_gtpp_new_block(
-                entry, field, ml_names, prefix_bits, included_names, family_shape_members))
+                entry, field, ml_names, prefix_bits, included_names, family_shape_members, used_fluid_names,
+                fluid_textures))
     lines.append("        // spotless:on")
     lines.append("    }")
     lines.append("")
@@ -1838,7 +1966,7 @@ def main():
         gtpp_data_class_names.append(
             write_gtpp_data_file(
                 i, batch_merges, batch_new, gtpp_ml_names, gtpp_field_names, prefix_bits, included_names,
-                family_shape_members))
+                family_shape_members, gt_by_name, used_fluid_names, fluid_textures))
     write_gtpp_materials_file(gtpp_new, gtpp_field_names, gtpp_data_class_names)
     write_gtpp_merge_report(gtpp_merges, gtpp_new, gtpp_false_merges, gtpp_skipped, gt_by_name)
 

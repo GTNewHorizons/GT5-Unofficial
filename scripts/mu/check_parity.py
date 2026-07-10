@@ -475,7 +475,7 @@ def check_material(gt, ml, included_names, legacy_variants_by_material, used_flu
     if werkstoff_info:
         dumped_shapes |= expected_werkstoff_shapes(werkstoff_info["prefixes"], included_names)
     if gtpp_info:
-        dumped_shapes |= gtpp_expected_shapes(gtpp_info)
+        dumped_shapes |= gtpp_expected_shapes(gtpp_info, gt, used_fluid_names)
     actual_shapes = set(ml["shapes"])
     if dumped_shapes != actual_shapes:
         missing = dumped_shapes - actual_shapes
@@ -562,9 +562,14 @@ def check_material(gt, ml, included_names, legacy_variants_by_material, used_flu
     # FLUID_CUTOVER_EXCLUDED materials keep their fluid fields hand-wired in LoaderGTBlockFluid rather than
     # through GTMaterialProperties.LEGACY_FLUIDS (see gen_materials.py), so ml["fluids"] is intentionally empty
     # for them.
+    #
+    # A same-name gtpp fold may claim a slot gregtech's own dump never captured (gtpp_claimed_states, e.g.
+    # `Iodine`'s plasma, `Hafnium`'s entire fluid) -- gtpp_combined_fluid_refs provides gregtech's own ref
+    # verbatim plus gtpp's contribution for those slots; `gt["fluids"]` alone otherwise.
+    expected_fluids = gtpp_combined_fluid_refs(gtpp_info, gt) if gtpp_info else gt["fluids"]
     if name not in FLUID_CUTOVER_EXCLUDED:
         for state in FLUID_STATES:
-            expected_fluid = gt["fluids"].get(state)
+            expected_fluid = expected_fluids.get(state)
             actual_fluid = ml["fluids"].get(state)
             if bool(expected_fluid) != bool(actual_fluid):
                 errors.append(f"{name}: fluids.{state} expected {expected_fluid!r}, got {actual_fluid!r}")
@@ -610,7 +615,6 @@ GTPP_PATH = DUMPS_DIR / "gtpp-materials.json"
 # fold_gtpp_materials/gtpp_composition_mismatch, celsius_to_kelvin. Kept duplicated per this script's
 # standing convention (see the module docstring) rather than imported.
 GTPP_LEGACY_ONLY_PREFIXES = {"frameGt"}
-GTPP_DEFERRED_PREFIXES = {"cell", "cellPlasma"}
 GTPP_UNSUPPORTED_PREFIXES = {
     "pipeHuge", "pipeMedium", "wireGt01", "wireGt02", "wireGt04", "wireGt08", "wireGt12", "wireGt16"
 }
@@ -671,10 +675,92 @@ def compute_gtpp_ported(gtpp_materials, base_ported_names):
     return ported
 
 
-def gtpp_expected_shapes(entry):
+def has_fluids_dict(fluids):
+    return any(fluids.get(state) for state in FLUID_STATES)
+
+
+def gtpp_fluid_ref(name, temperature_k):
+    return None if name is None else {"name": name, "temperature": temperature_k}
+
+
+def gtpp_own_fluid_refs(entry):
+    """Mirrors gen_materials.py's `gtpp_own_fluid_refs`: gtpp's own per-`FLUID_STATES`-slot ref for `entry`,
+    independent of any gregtech-side data. Empty unless [#gtpp_generates_fluid] is true for `entry`."""
+    refs = {state: None for state in FLUID_STATES}
+    if not gtpp_generates_fluid(entry):
+        return refs
+    fluids = entry["fluids"]
+    fluid_name = fluids.get("fluid")
+    if fluid_name is not None:
+        if fluid_name.startswith("molten."):
+            slot = "molten"
+        elif entry["state"] in ("GAS", "PURE_GAS"):
+            slot = "gas"
+        else:
+            slot = "fluid"
+        refs[slot] = gtpp_fluid_ref(fluid_name, celsius_to_kelvin(entry["meltingPointC"]))
+    refs["plasma"] = gtpp_fluid_ref(fluids.get("plasma"), 10000)
+    return refs
+
+
+def gtpp_combined_fluid_refs(entry, gt_entry):
+    """Mirrors gen_materials.py's `gtpp_combined_fluid_refs`: the ref governing each `FLUID_STATES` slot
+    after gtpp's fold onto `gt_entry` (`None` for a "new" gtpp-only material) -- gregtech's own ref wins
+    wherever it has one, gtpp's own [#gtpp_own_fluid_refs] fills any slot gregtech left empty."""
+    combined = {}
+    own = gtpp_own_fluid_refs(entry)
+    for state in FLUID_STATES:
+        gt_ref = gt_entry["fluids"].get(state) if gt_entry else None
+        combined[state] = gt_ref if gt_ref else own[state]
+    return combined
+
+
+def gtpp_claimed_states(entry, gt_entry):
+    """Mirrors gen_materials.py's `gtpp_claimed_states`: the `FLUID_STATES` slots gtpp itself must claim (it
+    has a ref there and `gt_entry` does not) -- a same-name merge only needs gtpp's contribution for the
+    slots gregtech's own dump never captured (e.g. `Iodine` merges its liquid/gas fluid from gregtech but
+    only gtpp ever generated its plasma)."""
+    own = gtpp_own_fluid_refs(entry)
+    claimed = set()
+    for state in FLUID_STATES:
+        gt_ref = gt_entry["fluids"].get(state) if gt_entry else None
+        if own[state] and not gt_ref:
+            claimed.add(state)
+    return claimed
+
+
+def gtpp_expected_fluid_and_cell_shape_names(entry, gt_entry, used_fluid_names):
+    """Mirrors gen_materials.py's `gtpp_fluid_and_cell_shape_lines`'s shape membership (not the
+    `LEGACY_FLUIDS` property value itself, checked separately in `check_material`/`check_gtpp_new_material`)
+    -- the bare `Materials2FluidShapes`/`Materials2CellShapes` short names a gtpp material claims for the
+    states [#gtpp_claimed_states] says it owns, plus cell/cellPlasma membership driven by
+    [#gtpp_combined_fluid_refs] directly (independent of which side claimed the underlying fluid -- see the
+    codegen function's javadoc for why re-declaring an already-present shape is harmless)."""
+    names = set()
+    own = gtpp_own_fluid_refs(entry)
+    claimed = gtpp_claimed_states(entry, gt_entry)
+    combined = gtpp_combined_fluid_refs(entry, gt_entry)
+    for state in FLUID_STATES:
+        if state not in claimed:
+            continue
+        ref = combined[state]
+        if ref["name"] not in used_fluid_names:
+            used_fluid_names.add(ref["name"])
+            names.add(FLUID_SHAPE_NAMES[state])
+
+    prim_slot = next((s for s in ("molten", "fluid", "gas") if own[s]), None)
+    part_prefixes = {p["prefix"] for p in entry["generatedParts"]}
+    if "cell" in part_prefixes and prim_slot and combined[prim_slot]:
+        names.add("cellMolten" if prim_slot == "molten" else "cell")
+    if "cellPlasma" in part_prefixes and combined["plasma"]:
+        names.add("cellPlasmaLight")
+    return names
+
+
+def gtpp_expected_shapes(entry, gt_entry, used_fluid_names):
     """The MaterialLib shape-name set a gtpp material's dumped `generatedParts` translate to -- see
-    gen_materials.py's `gtpp_shape_lines`. Raises on an unmapped prefix (a future gtpp dump refresh with a new
-    part kind must not silently drop items from this check either)."""
+    gen_materials.py's `gtpp_shape_lines`/`gtpp_fluid_and_cell_shape_lines`. Raises on an unmapped prefix (a
+    future gtpp dump refresh with a new part kind must not silently drop items from this check either)."""
     names = set()
     for part in entry["generatedParts"]:
         prefix = part["prefix"]
@@ -682,13 +768,16 @@ def gtpp_expected_shapes(entry):
             names.add(prefix)
         elif prefix in ("block", "milled"):
             names.add(prefix)
-        elif prefix in GTPP_DEFERRED_PREFIXES or prefix in GTPP_LEGACY_ONLY_PREFIXES \
-                or prefix in GTPP_UNSUPPORTED_PREFIXES:
+        elif prefix in ("cell", "cellPlasma"):
+            continue
+        elif prefix in GTPP_LEGACY_ONLY_PREFIXES or prefix in GTPP_UNSUPPORTED_PREFIXES:
             continue
         else:
             raise SystemExit(
                 f"check_parity.py: gtpp material {entry['unlocalizedName']!r} generates unmapped part "
                 f"prefix {prefix!r}")
+    if gtpp_generates_fluid(entry):
+        names |= gtpp_expected_fluid_and_cell_shape_names(entry, gt_entry, used_fluid_names)
     return names
 
 
@@ -753,6 +842,9 @@ def check_gtpp_data(errors, name, entry, ml):
     check("state", entry["state"])
     check("generatesFluid", gtpp_generates_fluid(entry))
     check("generatesCells", gtpp_generates_cells(entry))
+    generates_fluid = gtpp_generates_fluid(entry)
+    check("fluidName", entry["fluids"]["fluid"] if generates_fluid else None)
+    check("plasmaName", entry["fluids"]["plasma"] if generates_fluid else None)
     expected_composition = [(ml_name(c["name"]), c["amount"]) for c in entry["composition"] if c.get("name")]
     actual_composition = [(c["material"], c["amount"]) for c in data.get("composition", [])]
     if expected_composition != actual_composition:
@@ -760,7 +852,7 @@ def check_gtpp_data(errors, name, entry, ml):
             f"{name}: gtpp.composition expected {expected_composition!r}, got {actual_composition!r}")
 
 
-def check_gtpp_new_material(errors, entry, ml_by_key):
+def check_gtpp_new_material(errors, entry, ml_by_key, used_fluid_names):
     """Full existence/tint/textureSet/shape-set/property check for a gtpp-only material (no gregtech/werkstoff
     counterpart) -- everything about its ml-materials.json entry is gtpp-sourced, so (unlike a merge) the
     shape set is expected to match `gtpp_expected_shapes` exactly, not merely be a superset of it."""
@@ -779,7 +871,7 @@ def check_gtpp_new_material(errors, entry, ml_by_key):
     if ml["textureSet"] != entry["textureSet"]:
         errors.append(f"{name}: gtpp textureSet expected {entry['textureSet']!r}, got {ml['textureSet']!r}")
 
-    expected_shapes = gtpp_expected_shapes(entry)
+    expected_shapes = gtpp_expected_shapes(entry, None, used_fluid_names)
     actual_shapes = set(ml["shapes"])
     if expected_shapes != actual_shapes:
         missing = expected_shapes - actual_shapes
@@ -787,6 +879,17 @@ def check_gtpp_new_material(errors, entry, ml_by_key):
         errors.append(f"{name}: gtpp shapes mismatch, missing={sorted(missing)}, extra={sorted(extra)}")
 
     check_gtpp_data(errors, name, entry, ml)
+
+    if gtpp_generates_fluid(entry):
+        expected_refs = gtpp_own_fluid_refs(entry)
+        for state in FLUID_STATES:
+            expected_ref = expected_refs[state]
+            actual_ref = ml["fluids"].get(state)
+            if bool(expected_ref) != bool(actual_ref):
+                errors.append(f"{name}: gtpp fluids.{state} expected {expected_ref!r}, got {actual_ref!r}")
+            elif expected_ref and actual_ref and (expected_ref["name"] != actual_ref["name"]
+                                                    or expected_ref["temperature"] != actual_ref["temperature"]):
+                errors.append(f"{name}: gtpp fluids.{state} expected {expected_ref!r}, got {actual_ref!r}")
 
 
 def load(path):
@@ -844,7 +947,7 @@ def main():
                 legacy_constants, gtpp_merges_by_name.get(material["name"])))
 
     for entry in gtpp_new:
-        check_gtpp_new_material(errors, entry, ml_by_key)
+        check_gtpp_new_material(errors, entry, ml_by_key, used_fluid_names)
 
     expected_keys = set(ml_name(m["name"]) for m in ported) | set(ml_name(e["unlocalizedName"]) for e in gtpp_new)
     extra = set(ml_by_key) - expected_keys

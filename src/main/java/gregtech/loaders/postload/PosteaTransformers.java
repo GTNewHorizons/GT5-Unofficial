@@ -36,6 +36,7 @@ import gregtech.common.blocks.BlockFrameBox;
 import gregtech.common.blocks.BlockMetal;
 import gregtech.common.items.MetaGeneratedItem99;
 import gregtech.loaders.postload.GtppItemCutoverTable.Entry;
+import gtPlusPlus.core.material.MaterialReconstruction;
 import vexatos.tgregworks.reference.Mods;
 
 public class PosteaTransformers implements Runnable {
@@ -68,21 +69,28 @@ public class PosteaTransformers implements Runnable {
         registerStorageBlockCutoverTransformers();
         registerWerkstoffItemCutoverTransformers();
         registerGtppItemCutoverTransformers();
+        registerGtppCarryoverCellTransformers();
     }
 
     /// Migrates saved gtPlusPlus per-material part item stacks (`miscutils:item*`, one distinct registered
     /// item per (material, prefix), always damage 0) into the equivalent MaterialLib stack, resolved through
     /// [GtppItemCutoverTable]'s pinned (prefix, material, registry name) rows -- the gtPlusPlus counterpart of
     /// [#registerWerkstoffItemCutoverTransformers], differing only in that each row is its own registered item
-    /// rather than a damage variant of a shared meta-item, so no damage read/branch is needed. Block-kind parts
-    /// (`block`, `frameGt`) and fluid-tied parts (`cell`, `cellPlasma`) are out of the table and migrate
-    /// separately.
+    /// rather than a damage variant of a shared meta-item, so no damage read/branch is needed. `cell`/
+    /// `cellPlasma` rows resolve through [MaterialReconstruction#cellStack] instead of plain [MU#stack], since
+    /// a row's material may have claimed `shapeCellMolten` rather than `shapeCell` -- see that method's
+    /// javadoc. Block-kind parts (`block`, `frameGt`) are out of the table and migrate separately.
     private static void registerGtppItemCutoverTransformers() {
         for (Entry entry : GtppItemCutoverTable.ENTRIES) {
             ItemStackReplacementManager.addTransformationHandler(entry.registryName(), (originalId, tag) -> {
-                com.ruling_0.materiallib.api.Material material = MaterialLibAPI
-                    .getMaterial("gregtech", entry.materialName());
-                ItemStack cutover = MU.stack(entry.prefix(), material, 1);
+                ItemStack cutover;
+                if (entry.prefix() == OrePrefixes.cell || entry.prefix() == OrePrefixes.cellPlasma) {
+                    cutover = MaterialReconstruction.cellStack(entry.materialName(), entry.prefix(), 1);
+                } else {
+                    com.ruling_0.materiallib.api.Material material = MaterialLibAPI
+                        .getMaterial("gregtech", entry.materialName());
+                    cutover = MU.stack(entry.prefix(), material, 1);
+                }
                 if (cutover == null) return false;
                 IDExtenderCompat.setItemStackID(tag, Item.getIdFromItem(cutover.getItem()));
                 tag.setShort("Damage", (short) cutover.getItemDamage());
@@ -92,6 +100,30 @@ public class PosteaTransformers implements Runnable {
         GTLog.out.println(
             "PosteaTransformers: registered gtpp item transformers for " + GtppItemCutoverTable.ENTRIES.length
                 + " legacy items");
+    }
+
+    /// The five materials whose legacy `cell` item was `miscutils:itemCell<Name>` (the same naming convention
+    /// as every other gtpp-owned cell -- see `scripts/mu/gen_gtpp_item_transformers.py`) at some point in
+    /// history, but had already resolved to a gregtech-owned `materiallib:cell` stack by the time the stage-11
+    /// dump ran (these five are also plain gregtech elements whose own fluid/cell cutover -- stage 06 -- claims
+    /// the oredict `cell<Name>` slot before gtpp's `Material` construction ever runs, so their dump never
+    /// captured the miscutils registry name at all). [GtppItemCutoverTable] is generated purely from that dump
+    /// and so cannot include a row for them; they are migrated by hand instead, to the same fallback
+    /// [MaterialReconstruction#cellStack] every other gtpp cell resolves through.
+    private static void registerGtppCarryoverCellTransformers() {
+        registerGtppCarryoverCellTransformer("Iodine");
+        registerGtppCarryoverCellTransformer("ThoriumTetrafluoride");
+        registerGtppCarryoverCellTransformer("Xenon");
+        registerGtppCarryoverCellTransformer("Neon");
+        registerGtppCarryoverCellTransformer("Krypton");
+    }
+
+    private static void registerGtppCarryoverCellTransformer(String materialName) {
+        ItemStack cutover = MaterialReconstruction.cellStack(materialName, OrePrefixes.cell, 1);
+        if (cutover == null) {
+            throw new IllegalStateException("No MaterialLib cell stack for carryover material " + materialName);
+        }
+        ItemStackReplacementManager.addSimpleReplacement("miscutils:itemCell" + materialName, cutover);
     }
 
     /// Migrates saved bartworks werkstoff item stacks (`bartworks:gt.bwMetaGenerated<prefix>`, damage =

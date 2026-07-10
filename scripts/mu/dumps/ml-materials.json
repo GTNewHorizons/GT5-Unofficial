@@ -220,7 +220,9 @@
       "state": "GAS",
       "generatesFluid": true,
       "generatesCells": true,
-      "composition": []
+      "composition": [],
+      "fluidName": "hydrogen",
+      "plasmaName": null
     }
   },
   {
@@ -541,7 +543,9 @@
       "state": "GAS",
       "generatesFluid": true,
       "generatesCells": true,
-      "composition": []
+      "composition": [],
+      "fluidName": "helium",
+      "plasmaName": null
     }
   },
   {
@@ -795,7 +799,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.lithium",
+      "plasmaName": null
     }
   },
   {
@@ -965,7 +971,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.beryllium",
+      "plasmaName": null
     }
   },
   {
@@ -1088,7 +1096,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.boron",
+      "plasmaName": null
     }
   },
   {
@@ -1262,7 +1272,9 @@
       "state": "SOLID",
       "generatesFluid": false,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": null,
+      "plasmaName": null
     }
   },
   {
@@ -1389,7 +1401,9 @@
       "state": "GAS",
       "generatesFluid": true,
       "generatesCells": true,
-      "composition": []
+      "composition": [],
+      "fluidName": "nitrogen",
+      "plasmaName": null
     }
   },
   {
@@ -1515,7 +1529,9 @@
       "state": "GAS",
       "generatesFluid": true,
       "generatesCells": true,
-      "composition": []
+      "composition": [],
+      "fluidName": "oxygen",
+      "plasmaName": null
     }
   },
   {
@@ -1633,7 +1649,9 @@
       "state": "GAS",
       "generatesFluid": true,
       "generatesCells": true,
-      "composition": []
+      "composition": [],
+      "fluidName": "fluorine",
+      "plasmaName": null
     }
   },
   {
@@ -1763,7 +1781,9 @@
       "state": "LIQUID",
       "generatesFluid": true,
       "generatesCells": true,
-      "composition": []
+      "composition": [],
+      "fluidName": "liquid_sodium",
+      "plasmaName": null
     }
   },
   {
@@ -1926,7 +1946,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.magnesium",
+      "plasmaName": null
     }
   },
   {
@@ -2105,7 +2127,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.aluminium",
+      "plasmaName": null
     }
   },
   {
@@ -2262,7 +2286,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.silicon",
+      "plasmaName": null
     }
   },
   {
@@ -2384,7 +2410,9 @@
       "state": "SOLID",
       "generatesFluid": false,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": null,
+      "plasmaName": null
     }
   },
   {
@@ -2514,7 +2542,9 @@
       "state": "SOLID",
       "generatesFluid": false,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": null,
+      "plasmaName": null
     }
   },
   {
@@ -2635,7 +2665,9 @@
       "state": "GAS",
       "generatesFluid": true,
       "generatesCells": true,
-      "composition": []
+      "composition": [],
+      "fluidName": "chlorine",
+      "plasmaName": null
     }
   },
   {
@@ -2754,7 +2786,9 @@
       "state": "GAS",
       "generatesFluid": true,
       "generatesCells": true,
-      "composition": []
+      "composition": [],
+      "fluidName": "argon",
+      "plasmaName": null
     }
   },
   {
@@ -2898,7 +2932,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.potassium",
+      "plasmaName": null
     }
   },
   {
@@ -3111,7 +3147,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.calcium",
+      "plasmaName": null
     }
   },
   {
@@ -3266,7 +3304,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.scandium",
+      "plasmaName": null
     }
   },
   {
@@ -3445,7 +3485,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.titanium",
+      "plasmaName": null
     }
   },
   {
@@ -3603,7 +3645,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.vanadium",
+      "plasmaName": null
     }
   },
   {
@@ -3777,7 +3821,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.chrome",
+      "plasmaName": null
     }
   },
   {
@@ -3945,7 +3991,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.manganese",
+      "plasmaName": null
     }
   },
   {
@@ -4126,7 +4174,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.iron",
+      "plasmaName": null
     }
   },
   {
@@ -4305,7 +4355,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.cobalt",
+      "plasmaName": null
     }
   },
   {
@@ -4489,7 +4541,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.nickel",
+      "plasmaName": null
     }
   },
   {
@@ -4662,7 +4716,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.copper",
+      "plasmaName": null
     }
   },
   {
@@ -4822,7 +4878,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.zinc",
+      "plasmaName": null
     }
   },
   {
@@ -4979,7 +5037,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.gallium",
+      "plasmaName": null
     }
   },
   {
@@ -5133,7 +5193,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.arsenic",
+      "plasmaName": null
     }
   },
   {
@@ -5290,7 +5352,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.rubidium",
+      "plasmaName": null
     }
   },
   {
@@ -5449,7 +5513,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.strontium",
+      "plasmaName": null
     }
   },
   {
@@ -5606,7 +5672,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.yttrium",
+      "plasmaName": null
     }
   },
   {
@@ -5763,7 +5831,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.niobium",
+      "plasmaName": null
     }
   },
   {
@@ -5931,7 +6001,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.molybdenum",
+      "plasmaName": null
     }
   },
   {
@@ -6100,7 +6172,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.palladium",
+      "plasmaName": null
     }
   },
   {
@@ -6285,7 +6359,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.silver",
+      "plasmaName": null
     }
   },
   {
@@ -6418,7 +6494,9 @@
       "state": "SOLID",
       "generatesFluid": false,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": null,
+      "plasmaName": null
     }
   },
   {
@@ -6574,7 +6652,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.indium",
+      "plasmaName": null
     }
   },
   {
@@ -6745,7 +6825,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.tin",
+      "plasmaName": null
     }
   },
   {
@@ -6906,7 +6988,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.antimony",
+      "plasmaName": null
     }
   },
   {
@@ -7130,7 +7214,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": true,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.tellurium",
+      "plasmaName": "plasma.tellurium"
     }
   },
   {
@@ -7287,7 +7373,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.caesium",
+      "plasmaName": null
     }
   },
   {
@@ -7436,7 +7524,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.barium",
+      "plasmaName": null
     }
   },
   {
@@ -7592,7 +7682,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.lanthanum",
+      "plasmaName": null
     }
   },
   {
@@ -7748,7 +7840,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.cerium",
+      "plasmaName": null
     }
   },
   {
@@ -7904,7 +7998,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.praseodymium",
+      "plasmaName": null
     }
   },
   {
@@ -8080,7 +8176,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.neodymium",
+      "plasmaName": null
     }
   },
   {
@@ -8236,7 +8334,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.promethium",
+      "plasmaName": null
     }
   },
   {
@@ -8396,7 +8496,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.samarium",
+      "plasmaName": null
     }
   },
   {
@@ -8556,7 +8658,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.europium",
+      "plasmaName": null
     }
   },
   {
@@ -8712,7 +8816,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.gadolinium",
+      "plasmaName": null
     }
   },
   {
@@ -8868,7 +8974,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.terbium",
+      "plasmaName": null
     }
   },
   {
@@ -9020,7 +9128,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": true,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.dysprosium",
+      "plasmaName": "plasma.dysprosium"
     }
   },
   {
@@ -9176,7 +9286,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.holmium",
+      "plasmaName": null
     }
   },
   {
@@ -9333,7 +9445,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.erbium",
+      "plasmaName": null
     }
   },
   {
@@ -9490,7 +9604,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.thulium",
+      "plasmaName": null
     }
   },
   {
@@ -9646,7 +9762,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.ytterbium",
+      "plasmaName": null
     }
   },
   {
@@ -9803,7 +9921,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.lutetium",
+      "plasmaName": null
     }
   },
   {
@@ -9961,7 +10081,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.tantalum",
+      "plasmaName": null
     }
   },
   {
@@ -10141,7 +10263,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.tungsten",
+      "plasmaName": null
     }
   },
   {
@@ -10322,7 +10446,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.osmium",
+      "plasmaName": null
     }
   },
   {
@@ -10501,7 +10627,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.iridium",
+      "plasmaName": null
     }
   },
   {
@@ -10679,7 +10807,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.platinum",
+      "plasmaName": null
     }
   },
   {
@@ -10864,7 +10994,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.gold",
+      "plasmaName": null
     }
   },
   {
@@ -10991,7 +11123,9 @@
       "state": "LIQUID",
       "generatesFluid": true,
       "generatesCells": true,
-      "composition": []
+      "composition": [],
+      "fluidName": "mercury",
+      "plasmaName": null
     }
   },
   {
@@ -11173,7 +11307,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.lead",
+      "plasmaName": null
     }
   },
   {
@@ -11345,7 +11481,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.bismuth",
+      "plasmaName": null
     }
   },
   {
@@ -11468,7 +11606,9 @@
       "state": "GAS",
       "generatesFluid": true,
       "generatesCells": true,
-      "composition": []
+      "composition": [],
+      "fluidName": "radon",
+      "plasmaName": null
     }
   },
   {
@@ -11742,7 +11882,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": true,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.thorium",
+      "plasmaName": "plasma.thorium"
     }
   },
   {
@@ -11909,7 +12051,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.uranium235",
+      "plasmaName": null
     }
   },
   {
@@ -12080,7 +12224,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.uranium",
+      "plasmaName": null
     }
   },
   {
@@ -12401,7 +12547,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.plutonium241",
+      "plasmaName": null
     }
   },
   {
@@ -12561,7 +12709,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.americium",
+      "plasmaName": null
     }
   },
   {
@@ -22748,7 +22898,9 @@
       "state": "SOLID",
       "generatesFluid": false,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": null,
+      "plasmaName": null
     }
   },
   {
@@ -22920,7 +23072,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.bronze",
+      "plasmaName": null
     }
   },
   {
@@ -23236,7 +23390,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.invar",
+      "plasmaName": null
     }
   },
   {
@@ -23540,7 +23696,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.castiron",
+      "plasmaName": null
     }
   },
   {
@@ -23711,7 +23869,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.steel",
+      "plasmaName": null
     }
   },
   {
@@ -23879,7 +24039,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.stainlesssteel",
+      "plasmaName": null
     }
   },
   {
@@ -24559,7 +24721,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.nichrome",
+      "plasmaName": null
     }
   },
   {
@@ -24714,7 +24878,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.kanthal",
+      "plasmaName": null
     }
   },
   {
@@ -25259,7 +25425,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.tungstensteel",
+      "plasmaName": null
     }
   },
   {
@@ -25422,7 +25590,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.osmiridium",
+      "plasmaName": null
     }
   },
   {
@@ -26313,7 +26483,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.naquadah",
+      "plasmaName": null
     }
   },
   {
@@ -26622,7 +26794,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.naquadahenriched",
+      "plasmaName": null
     }
   },
   {
@@ -26800,7 +26974,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.naquadria",
+      "plasmaName": null
     }
   },
   {
@@ -27244,7 +27420,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.thaumium",
+      "plasmaName": null
     }
   },
   {
@@ -27700,7 +27878,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.blacksteel",
+      "plasmaName": null
     }
   },
   {
@@ -32752,7 +32932,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.tungstencarbide",
+      "plasmaName": null
     }
   },
   {
@@ -39581,7 +39763,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.polytetrafluoroethylene",
+      "plasmaName": null
     }
   },
   {
@@ -43332,7 +43516,9 @@
       "state": "SOLID",
       "generatesFluid": false,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": null,
+      "plasmaName": null
     }
   },
   {
@@ -43346,6 +43532,7 @@
       "block",
       "bolt",
       "cellMolten",
+      "cellPlasmaLight",
       "crushed",
       "crushedCentrifuged",
       "crushedPurified",
@@ -43355,6 +43542,7 @@
       "dustSmall",
       "dustTiny",
       "fluidMolten",
+      "fluidPlasma",
       "foil",
       "gearGt",
       "gearGtSmall",
@@ -43442,7 +43630,11 @@
       "solid": null,
       "fluid": null,
       "gas": null,
-      "plasma": null,
+      "plasma": {
+        "name": "plasma.force",
+        "temperature": 10000,
+        "texture": null
+      },
       "molten": {
         "name": "molten.force",
         "temperature": 0,
@@ -43499,7 +43691,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": true,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.force",
+      "plasmaName": "plasma.force"
     }
   },
   {
@@ -43642,7 +43836,9 @@
       "state": "SOLID",
       "generatesFluid": false,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": null,
+      "plasmaName": null
     }
   },
   {
@@ -44990,7 +45186,9 @@
       "state": "SOLID",
       "generatesFluid": false,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": null,
+      "plasmaName": null
     }
   },
   {
@@ -45899,7 +46097,9 @@
       "state": "SOLID",
       "generatesFluid": false,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": null,
+      "plasmaName": null
     }
   },
   {
@@ -46044,7 +46244,9 @@
       "state": "SOLID",
       "generatesFluid": false,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": null,
+      "plasmaName": null
     }
   },
   {
@@ -46189,7 +46391,9 @@
       "state": "SOLID",
       "generatesFluid": false,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": null,
+      "plasmaName": null
     }
   },
   {
@@ -46334,7 +46538,9 @@
       "state": "SOLID",
       "generatesFluid": false,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": null,
+      "plasmaName": null
     }
   },
   {
@@ -46479,7 +46685,9 @@
       "state": "SOLID",
       "generatesFluid": false,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": null,
+      "plasmaName": null
     }
   },
   {
@@ -46624,7 +46832,9 @@
       "state": "SOLID",
       "generatesFluid": false,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": null,
+      "plasmaName": null
     }
   },
   {
@@ -50115,7 +50325,8 @@
     "shapes": [
       "dust",
       "dustSmall",
-      "dustTiny"
+      "dustTiny",
+      "fluidMolten"
     ],
     "families": [
       "All",
@@ -50171,7 +50382,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.potassiumnitrate",
+        "temperature": 424,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -50231,7 +50446,9 @@
           "material": "Oxygen",
           "amount": 3
         }
-      ]
+      ],
+      "fluidName": "molten.potassiumnitrate",
+      "plasmaName": null
     }
   },
   {
@@ -57329,7 +57546,11 @@
     "aspects": [],
     "fluids": {
       "solid": null,
-      "fluid": null,
+      "fluid": {
+        "name": "ammonia",
+        "temperature": 196,
+        "texture": "gregtech:fluids/fluid.ammonia.still"
+      },
       "gas": {
         "name": "ammonia",
         "temperature": 295,
@@ -57395,7 +57616,9 @@
           "material": "Hydrogen",
           "amount": 3
         }
-      ]
+      ],
+      "fluidName": "ammonia",
+      "plasmaName": null
     }
   },
   {
@@ -60672,7 +60895,9 @@
           "material": "SodiumChloride",
           "amount": 1
         }
-      ]
+      ],
+      "fluidName": null,
+      "plasmaName": null
     }
   },
   {
@@ -61217,7 +61442,9 @@
       "state": "SOLID",
       "generatesFluid": false,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": null,
+      "plasmaName": null
     }
   },
   {
@@ -61645,7 +61872,9 @@
           "material": "Oxygen",
           "amount": 1
         }
-      ]
+      ],
+      "fluidName": "water",
+      "plasmaName": null
     }
   },
   {
@@ -71988,7 +72217,9 @@
       "state": "SOLID",
       "generatesFluid": false,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": null,
+      "plasmaName": null
     }
   },
   {
@@ -72206,7 +72437,9 @@
       "state": "SOLID",
       "generatesFluid": false,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": null,
+      "plasmaName": null
     }
   },
   {
@@ -72605,7 +72838,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.redstone",
+      "plasmaName": null
     }
   },
   {
@@ -72739,7 +72974,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.glowstone",
+      "plasmaName": null
     }
   },
   {
@@ -73778,7 +74015,9 @@
       "state": "SOLID",
       "generatesFluid": false,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": null,
+      "plasmaName": null
     }
   },
   {
@@ -74954,7 +75193,9 @@
       "state": "SOLID",
       "generatesFluid": false,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": null,
+      "plasmaName": null
     }
   },
   {
@@ -75087,7 +75328,9 @@
       "state": "SOLID",
       "generatesFluid": false,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": null,
+      "plasmaName": null
     }
   },
   {
@@ -75559,7 +75802,9 @@
       "state": "SOLID",
       "generatesFluid": false,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": null,
+      "plasmaName": null
     }
   },
   {
@@ -75791,7 +76036,9 @@
       "state": "SOLID",
       "generatesFluid": false,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": null,
+      "plasmaName": null
     }
   },
   {
@@ -75924,7 +76171,9 @@
       "state": "SOLID",
       "generatesFluid": false,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": null,
+      "plasmaName": null
     }
   },
   {
@@ -76052,7 +76301,9 @@
       "state": "SOLID",
       "generatesFluid": false,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": null,
+      "plasmaName": null
     }
   },
   {
@@ -77745,7 +77996,9 @@
       "state": "SOLID",
       "generatesFluid": false,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": null,
+      "plasmaName": null
     }
   },
   {
@@ -78533,7 +78786,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.trinium",
+      "plasmaName": null
     }
   },
   {
@@ -79119,7 +79374,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.plastic",
+      "plasmaName": null
     }
   },
   {
@@ -80940,7 +81197,9 @@
       "state": "SOLID",
       "generatesFluid": false,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": null,
+      "plasmaName": null
     }
   },
   {
@@ -82753,7 +83012,9 @@
       "state": "SOLID",
       "generatesFluid": false,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": null,
+      "plasmaName": null
     }
   },
   {
@@ -92053,7 +92314,10 @@
     "argb": 16777215,
     "moltenArgb": null,
     "textureSet": "NONE",
-    "shapes": [],
+    "shapes": [
+      "cellMolten",
+      "fluidMolten"
+    ],
     "families": [
       "All"
     ],
@@ -92091,7 +92355,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.ammonium",
+        "temperature": 311,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -92147,7 +92415,9 @@
           "material": "Hydrogen",
           "amount": 4
         }
-      ]
+      ],
+      "fluidName": "molten.ammonium",
+      "plasmaName": null
     }
   },
   {
@@ -92863,7 +93133,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.magic",
+      "plasmaName": null
     }
   },
   {
@@ -95296,7 +95568,9 @@
       "state": "SOLID",
       "generatesFluid": false,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": null,
+      "plasmaName": null
     }
   },
   {
@@ -96264,9 +96538,13 @@
       "block",
       "blockCasing",
       "blockCasingAdvanced",
+      "cellMolten",
+      "cellPlasmaLight",
       "dust",
       "dustSmall",
       "dustTiny",
+      "fluidMolten",
+      "fluidPlasma",
       "foil",
       "ingot",
       "ingotHot",
@@ -96325,8 +96603,16 @@
       "solid": null,
       "fluid": null,
       "gas": null,
-      "plasma": null,
-      "molten": null
+      "plasma": {
+        "name": "plasma.zirconium",
+        "temperature": 10000,
+        "texture": null
+      },
+      "molten": {
+        "name": "molten.zirconium",
+        "temperature": 2128,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -96436,7 +96722,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": true,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.zirconium",
+      "plasmaName": "plasma.zirconium"
     }
   },
   {
@@ -100655,9 +100943,13 @@
       "block",
       "blockCasing",
       "blockCasingAdvanced",
+      "cellMolten",
+      "cellPlasmaLight",
       "dust",
       "dustSmall",
       "dustTiny",
+      "fluidMolten",
+      "fluidPlasma",
       "foil",
       "ingot",
       "ingotHot",
@@ -100715,8 +101007,16 @@
       "solid": null,
       "fluid": null,
       "gas": null,
-      "plasma": null,
-      "molten": null
+      "plasma": {
+        "name": "plasma.thorium232",
+        "temperature": 10000,
+        "texture": null
+      },
+      "molten": {
+        "name": "molten.thorium232",
+        "temperature": 2388,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -100827,7 +101127,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": true,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.thorium232",
+      "plasmaName": "plasma.thorium232"
     }
   },
   {
@@ -101699,7 +102001,9 @@
     "textureSet": "FLUID",
     "shapes": [
       "cell",
-      "fluidLiquid"
+      "cellPlasmaLight",
+      "fluidLiquid",
+      "fluidPlasma"
     ],
     "families": [
       "All",
@@ -101751,7 +102055,11 @@
         "temperature": 160,
         "texture": "gregtech:fluids/fluid.autogenerated"
       },
-      "plasma": null,
+      "plasma": {
+        "name": "plasma.xenon",
+        "temperature": 10000,
+        "texture": null
+      },
       "molten": null
     },
     "crackedHydroFluids": [],
@@ -101849,7 +102157,9 @@
       "state": "PURE_GAS",
       "generatesFluid": true,
       "generatesCells": true,
-      "composition": []
+      "composition": [],
+      "fluidName": "xenon",
+      "plasmaName": "plasma.xenon"
     }
   },
   {
@@ -102008,10 +102318,12 @@
       "blockCasing",
       "blockCasingAdvanced",
       "cellMolten",
+      "cellPlasmaLight",
       "dust",
       "dustSmall",
       "dustTiny",
       "fluidMolten",
+      "fluidPlasma",
       "foil",
       "ingot",
       "ingotHot",
@@ -102069,7 +102381,11 @@
       "solid": null,
       "fluid": null,
       "gas": null,
-      "plasma": null,
+      "plasma": {
+        "name": "plasma.californium",
+        "temperature": 10000,
+        "texture": null
+      },
       "molten": {
         "name": "molten.californium",
         "temperature": 1170,
@@ -102186,7 +102502,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": true,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.californium",
+      "plasmaName": "plasma.californium"
     }
   },
   {
@@ -102198,7 +102516,9 @@
     "textureSet": "FLUID",
     "shapes": [
       "cell",
-      "fluidLiquid"
+      "cellPlasmaLight",
+      "fluidLiquid",
+      "fluidPlasma"
     ],
     "families": [
       "All",
@@ -102250,7 +102570,11 @@
         "temperature": 25,
         "texture": "gregtech:fluids/fluid.autogenerated"
       },
-      "plasma": null,
+      "plasma": {
+        "name": "plasma.neon",
+        "temperature": 10000,
+        "texture": null
+      },
       "molten": null
     },
     "crackedHydroFluids": [],
@@ -102347,7 +102671,9 @@
       "state": "PURE_GAS",
       "generatesFluid": true,
       "generatesCells": true,
-      "composition": []
+      "composition": [],
+      "fluidName": "neon",
+      "plasmaName": "plasma.neon"
     }
   },
   {
@@ -102359,7 +102685,9 @@
     "textureSet": "FLUID",
     "shapes": [
       "cell",
-      "fluidLiquid"
+      "cellPlasmaLight",
+      "fluidLiquid",
+      "fluidPlasma"
     ],
     "families": [
       "All",
@@ -102411,7 +102739,11 @@
         "temperature": 115,
         "texture": "gregtech:fluids/fluid.autogenerated"
       },
-      "plasma": null,
+      "plasma": {
+        "name": "plasma.krypton",
+        "temperature": 10000,
+        "texture": null
+      },
       "molten": null
     },
     "crackedHydroFluids": [],
@@ -102508,7 +102840,9 @@
       "state": "PURE_GAS",
       "generatesFluid": true,
       "generatesCells": true,
-      "composition": []
+      "composition": [],
+      "fluidName": "krypton",
+      "plasmaName": "plasma.krypton"
     }
   },
   {
@@ -105576,10 +105910,12 @@
       "blockCasingAdvanced",
       "bolt",
       "cellMolten",
+      "cellPlasmaLight",
       "dust",
       "dustSmall",
       "dustTiny",
       "fluidMolten",
+      "fluidPlasma",
       "foil",
       "gearGt",
       "gearGtSmall",
@@ -105646,7 +105982,11 @@
       "solid": null,
       "fluid": null,
       "gas": null,
-      "plasma": null,
+      "plasma": {
+        "name": "plasma.ruthenium",
+        "temperature": 10000,
+        "texture": null
+      },
       "molten": {
         "name": "molten.ruthenium",
         "temperature": 2525,
@@ -105775,7 +106115,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": true,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.ruthenium",
+      "plasmaName": "plasma.ruthenium"
     }
   },
   {
@@ -107676,10 +108018,12 @@
       "blockCasingAdvanced",
       "bolt",
       "cellMolten",
+      "cellPlasmaLight",
       "dust",
       "dustSmall",
       "dustTiny",
       "fluidMolten",
+      "fluidPlasma",
       "foil",
       "gearGt",
       "gearGtSmall",
@@ -107746,7 +108090,11 @@
       "solid": null,
       "fluid": null,
       "gas": null,
-      "plasma": null,
+      "plasma": {
+        "name": "plasma.rhodium",
+        "temperature": 10000,
+        "texture": null
+      },
       "molten": {
         "name": "molten.rhodium",
         "temperature": 2240,
@@ -107875,7 +108223,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": true,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.rhodium",
+      "plasmaName": "plasma.rhodium"
     }
   },
   {
@@ -108328,7 +108678,8 @@
     "shapes": [
       "dust",
       "dustSmall",
-      "dustTiny"
+      "dustTiny",
+      "fluidMolten"
     ],
     "families": [
       "All",
@@ -108375,7 +108726,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.sodiumnitrate",
+        "temperature": 435,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -108498,7 +108853,9 @@
           "material": "Oxygen",
           "amount": 3
         }
-      ]
+      ],
+      "fluidName": "molten.sodiumnitrate",
+      "plasmaName": null
     }
   },
   {
@@ -115571,7 +115928,9 @@
           "material": "Fluorine",
           "amount": 4
         }
-      ]
+      ],
+      "fluidName": "thorium tetrafluoride",
+      "plasmaName": null
     }
   },
   {
@@ -130571,9 +130930,13 @@
       "block",
       "blockCasing",
       "blockCasingAdvanced",
+      "cellMolten",
+      "cellPlasmaLight",
       "dust",
       "dustSmall",
       "dustTiny",
+      "fluidMolten",
+      "fluidPlasma",
       "foil",
       "ingot",
       "ingotHot",
@@ -130631,8 +130994,16 @@
       "solid": null,
       "fluid": null,
       "gas": null,
-      "plasma": null,
-      "molten": null
+      "plasma": {
+        "name": "plasma.hafnium",
+        "temperature": 10000,
+        "texture": null
+      },
+      "molten": {
+        "name": "molten.hafnium",
+        "temperature": 2423,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -130741,7 +131112,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": true,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.hafnium",
+      "plasmaName": "plasma.hafnium"
     }
   },
   {
@@ -132131,10 +132504,12 @@
       "block",
       "bolt",
       "cell",
+      "cellPlasmaLight",
       "dust",
       "dustSmall",
       "dustTiny",
       "fluidLiquid",
+      "fluidPlasma",
       "gearGt",
       "ingot",
       "nugget",
@@ -132201,7 +132576,11 @@
         "temperature": 484,
         "texture": "gregtech:fluids/fluid.autogenerated"
       },
-      "plasma": null,
+      "plasma": {
+        "name": "plasma.iodine",
+        "temperature": 10000,
+        "texture": null
+      },
       "molten": null
     },
     "crackedHydroFluids": [],
@@ -132300,7 +132679,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": true,
-      "composition": []
+      "composition": [],
+      "fluidName": "iodine",
+      "plasmaName": "plasma.iodine"
     }
   },
   {
@@ -154686,9 +155067,11 @@
     "shapes": [
       "block",
       "bolt",
+      "cellMolten",
       "dust",
       "dustSmall",
       "dustTiny",
+      "fluidMolten",
       "gearGt",
       "ingot",
       "ingotHot",
@@ -154778,7 +155161,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.abyssalalloy",
+        "temperature": 9923,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -154856,7 +155243,9 @@
           "material": "Germanium",
           "amount": 2
         }
-      ]
+      ],
+      "fluidName": "molten.abyssalalloy",
+      "plasmaName": null
     }
   },
   {
@@ -154866,7 +155255,10 @@
     "argb": 16445550,
     "moltenArgb": null,
     "textureSet": "METALLIC",
-    "shapes": [],
+    "shapes": [
+      "cellMolten",
+      "fluidMolten"
+    ],
     "families": [
       "All",
       "Cells",
@@ -154917,7 +155309,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.aceticanhydride",
+        "temperature": 200,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -154975,7 +155371,9 @@
           "material": "Oxygen",
           "amount": 3
         }
-      ]
+      ],
+      "fluidName": "molten.aceticanhydride",
+      "plasmaName": null
     }
   },
   {
@@ -154987,9 +155385,13 @@
     "textureSet": "FIERY",
     "shapes": [
       "block",
+      "cellMolten",
+      "cellPlasmaLight",
       "dust",
       "dustSmall",
       "dustTiny",
+      "fluidMolten",
+      "fluidPlasma",
       "foil",
       "ingot",
       "nugget",
@@ -155038,8 +155440,16 @@
       "solid": null,
       "fluid": null,
       "gas": null,
-      "plasma": null,
-      "molten": null
+      "plasma": {
+        "name": "plasma.advancednitinol",
+        "temperature": 10000,
+        "texture": null
+      },
+      "molten": {
+        "name": "molten.advancednitinol",
+        "temperature": 8673,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -155084,7 +155494,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": true,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.advancednitinol",
+      "plasmaName": "plasma.advancednitinol"
     }
   },
   {
@@ -155239,7 +155651,9 @@
           "material": "Hydrogen",
           "amount": 11
         }
-      ]
+      ],
+      "fluidName": null,
+      "plasmaName": null
     }
   },
   {
@@ -155394,7 +155808,9 @@
           "material": "Hydrogen",
           "amount": 10
         }
-      ]
+      ],
+      "fluidName": null,
+      "plasmaName": null
     }
   },
   {
@@ -155549,7 +155965,9 @@
           "material": "Hydrogen",
           "amount": 12
         }
-      ]
+      ],
+      "fluidName": null,
+      "plasmaName": null
     }
   },
   {
@@ -155704,7 +156122,9 @@
           "material": "Hydrogen",
           "amount": 12
         }
-      ]
+      ],
+      "fluidName": null,
+      "plasmaName": null
     }
   },
   {
@@ -155843,7 +156263,9 @@
           "material": "Sulfur",
           "amount": 4
         }
-      ]
+      ],
+      "fluidName": null,
+      "plasmaName": null
     }
   },
   {
@@ -155854,9 +156276,11 @@
     "moltenArgb": null,
     "textureSet": "METALLIC",
     "shapes": [
+      "cellMolten",
       "dust",
       "dustSmall",
       "dustTiny",
+      "fluidMolten",
       "stick",
       "stickLong"
     ],
@@ -155914,7 +156338,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.ammoniumbifluoride",
+        "temperature": 399,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -155972,7 +156400,9 @@
           "material": "Fluorine",
           "amount": 2
         }
-      ]
+      ],
+      "fluidName": "molten.ammoniumbifluoride",
+      "plasmaName": null
     }
   },
   {
@@ -155982,7 +156412,10 @@
     "argb": 5804746,
     "moltenArgb": null,
     "textureSet": "METALLIC",
-    "shapes": [],
+    "shapes": [
+      "cellMolten",
+      "fluidMolten"
+    ],
     "families": [
       "All",
       "Cells",
@@ -156033,7 +156466,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.ammoniumtetrafluoroberyllate",
+        "temperature": 553,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -156091,7 +156528,9 @@
           "material": "Fluorine",
           "amount": 4
         }
-      ]
+      ],
+      "fluidName": "molten.ammoniumtetrafluoroberyllate",
+      "plasmaName": null
     }
   },
   {
@@ -156111,6 +156550,7 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "fluidMolten",
       "ingot",
       "nugget",
       "plate",
@@ -156189,7 +156629,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.ancientgranite",
+        "temperature": 773,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -156267,7 +156711,9 @@
           "material": "Ytterbium",
           "amount": 2
         }
-      ]
+      ],
+      "fluidName": "molten.ancientgranite",
+      "plasmaName": null
     }
   },
   {
@@ -156280,9 +156726,11 @@
     "shapes": [
       "block",
       "bolt",
+      "cellMolten",
       "dust",
       "dustSmall",
       "dustTiny",
+      "fluidMolten",
       "gearGt",
       "ingot",
       "ingotHot",
@@ -156355,7 +156803,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.arcanite",
+        "temperature": 5939,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -156417,7 +156869,9 @@
           "material": "InfusedEntropy",
           "amount": 10
         }
-      ]
+      ],
+      "fluidName": "molten.arcanite",
+      "plasmaName": null
     }
   },
   {
@@ -156430,9 +156884,11 @@
     "shapes": [
       "block",
       "bolt",
+      "cellMolten",
       "dust",
       "dustSmall",
       "dustTiny",
+      "fluidMolten",
       "foil",
       "gearGt",
       "ingot",
@@ -156510,7 +156966,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.arceusalloy2b",
+        "temperature": 7828,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -156576,7 +157036,9 @@
           "material": "Strontium",
           "amount": 10
         }
-      ]
+      ],
+      "fluidName": "molten.arceusalloy2b",
+      "plasmaName": null
     }
   },
   {
@@ -156589,9 +157051,13 @@
     "shapes": [
       "block",
       "bolt",
+      "cellMolten",
+      "cellPlasmaLight",
       "dust",
       "dustSmall",
       "dustTiny",
+      "fluidMolten",
+      "fluidPlasma",
       "foil",
       "gearGt",
       "ingot",
@@ -156649,8 +157115,16 @@
       "solid": null,
       "fluid": null,
       "gas": null,
-      "plasma": null,
-      "molten": null
+      "plasma": {
+        "name": "plasma.astraltitanium",
+        "temperature": 10000,
+        "texture": null
+      },
+      "molten": {
+        "name": "molten.astraltitanium",
+        "temperature": 9714,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -156695,7 +157169,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": true,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.astraltitanium",
+      "plasmaName": "plasma.astraltitanium"
     }
   },
   {
@@ -156707,9 +157183,11 @@
     "textureSet": "DULL",
     "shapes": [
       "block",
+      "cellMolten",
       "dust",
       "dustSmall",
       "dustTiny",
+      "fluidMolten",
       "ingot",
       "nugget",
       "plate",
@@ -156774,7 +157252,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.babbitalloy",
+        "temperature": 541,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -156836,7 +157318,9 @@
           "material": "Arsenic",
           "amount": 2
         }
-      ]
+      ],
+      "fluidName": "molten.babbitalloy",
+      "plasmaName": null
     }
   },
   {
@@ -156975,7 +157459,9 @@
           "material": "Oxygen",
           "amount": 15
         }
-      ]
+      ],
+      "fluidName": null,
+      "plasmaName": null
     }
   },
   {
@@ -156986,9 +157472,11 @@
     "moltenArgb": null,
     "textureSet": "SHINY",
     "shapes": [
+      "cellMolten",
       "dust",
       "dustSmall",
       "dustTiny",
+      "fluidMolten",
       "stick",
       "stickLong"
     ],
@@ -157042,7 +157530,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.berylliumfluoride",
+        "temperature": 1079,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -157096,7 +157588,9 @@
           "material": "Fluorine",
           "amount": 2
         }
-      ]
+      ],
+      "fluidName": "molten.berylliumfluoride",
+      "plasmaName": null
     }
   },
   {
@@ -157107,9 +157601,11 @@
     "moltenArgb": null,
     "textureSet": "METALLIC",
     "shapes": [
+      "cellMolten",
       "dust",
       "dustSmall",
       "dustTiny",
+      "fluidMolten",
       "stick",
       "stickLong"
     ],
@@ -157167,7 +157663,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.berylliumhydroxide",
+        "temperature": 815,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -157225,7 +157725,9 @@
           "material": "Hydrogen",
           "amount": 2
         }
-      ]
+      ],
+      "fluidName": "molten.berylliumhydroxide",
+      "plasmaName": null
     }
   },
   {
@@ -157238,9 +157740,11 @@
     "shapes": [
       "block",
       "bolt",
+      "cellMolten",
       "dust",
       "dustSmall",
       "dustTiny",
+      "fluidMolten",
       "gearGt",
       "ingot",
       "nugget",
@@ -157308,7 +157812,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.blackmetal",
+        "temperature": 2623,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -157366,7 +157874,9 @@
           "material": "Carbon",
           "amount": 60
         }
-      ]
+      ],
+      "fluidName": "molten.blackmetal",
+      "plasmaName": null
     }
   },
   {
@@ -157378,9 +157888,11 @@
     "textureSet": "METALLIC",
     "shapes": [
       "block",
+      "cellMolten",
       "dust",
       "dustSmall",
       "dustTiny",
+      "fluidMolten",
       "foil",
       "ingot",
       "nugget",
@@ -157466,7 +157978,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.blacktitanium",
+        "temperature": 8037,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -157548,7 +158064,9 @@
           "material": "Argon",
           "amount": 5
         }
-      ]
+      ],
+      "fluidName": "molten.blacktitanium",
+      "plasmaName": null
     }
   },
   {
@@ -157561,9 +158079,11 @@
     "shapes": [
       "block",
       "bolt",
+      "cellMolten",
       "dust",
       "dustSmall",
       "dustTiny",
+      "fluidMolten",
       "gearGt",
       "ingot",
       "nugget",
@@ -157627,7 +158147,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.bloodsteel",
+        "temperature": 2773,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -157681,7 +158205,9 @@
           "material": "InfusedFire",
           "amount": 5
         }
-      ]
+      ],
+      "fluidName": "molten.bloodsteel",
+      "plasmaName": null
     }
   },
   {
@@ -157694,9 +158220,11 @@
     "shapes": [
       "block",
       "bolt",
+      "cellMolten",
       "dust",
       "dustSmall",
       "dustTiny",
+      "fluidMolten",
       "foil",
       "gearGt",
       "ingot",
@@ -157771,7 +158299,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.botmium",
+        "temperature": 8493,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -157833,7 +158365,9 @@
           "material": "Thallium",
           "amount": 6
         }
-      ]
+      ],
+      "fluidName": "molten.botmium",
+      "plasmaName": null
     }
   },
   {
@@ -157843,7 +158377,9 @@
     "argb": 4151511,
     "moltenArgb": null,
     "textureSet": "SHINY",
-    "shapes": [],
+    "shapes": [
+      "fluidMolten"
+    ],
     "families": [
       "All"
     ],
@@ -157888,7 +158424,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.brine",
+        "temperature": 484,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -157942,7 +158482,9 @@
           "material": "SodiumChloride",
           "amount": 2
         }
-      ]
+      ],
+      "fluidName": "molten.brine",
+      "plasmaName": null
     }
   },
   {
@@ -157952,7 +158494,12 @@
     "argb": 13113625,
     "moltenArgb": null,
     "textureSet": "GEM_HORIZONTAL",
-    "shapes": [],
+    "shapes": [
+      "cellMolten",
+      "cellPlasmaLight",
+      "fluidMolten",
+      "fluidPlasma"
+    ],
     "families": [
       "All",
       "Cells",
@@ -157990,8 +158537,16 @@
       "solid": null,
       "fluid": null,
       "gas": null,
-      "plasma": null,
-      "molten": null
+      "plasma": {
+        "name": "plasma.bromine",
+        "temperature": 10000,
+        "texture": null
+      },
+      "molten": {
+        "name": "molten.bromine",
+        "temperature": 266,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -158036,7 +158591,9 @@
       "state": "PURE_LIQUID",
       "generatesFluid": true,
       "generatesCells": true,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.bromine",
+      "plasmaName": "plasma.bromine"
     }
   },
   {
@@ -158046,7 +158603,10 @@
     "argb": 11062700,
     "moltenArgb": null,
     "textureSet": "SHINY",
-    "shapes": [],
+    "shapes": [
+      "cellMolten",
+      "fluidMolten"
+    ],
     "families": [
       "All",
       "Cells",
@@ -158101,7 +158661,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.burntreactorfueli",
+        "temperature": 1128,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -158163,7 +158727,9 @@
           "material": "Protactinium",
           "amount": 1
         }
-      ]
+      ],
+      "fluidName": "molten.burntreactorfueli",
+      "plasmaName": null
     }
   },
   {
@@ -158173,7 +158739,10 @@
     "argb": 11062700,
     "moltenArgb": null,
     "textureSet": "SHINY",
-    "shapes": [],
+    "shapes": [
+      "cellMolten",
+      "fluidMolten"
+    ],
     "families": [
       "All",
       "Cells",
@@ -158228,7 +158797,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.burntreactorfuelii",
+        "temperature": 1128,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -158290,7 +158863,9 @@
           "material": "Protactinium",
           "amount": 1
         }
-      ]
+      ],
+      "fluidName": "molten.burntreactorfuelii",
+      "plasmaName": null
     }
   },
   {
@@ -158303,9 +158878,13 @@
     "shapes": [
       "block",
       "bolt",
+      "cellMolten",
+      "cellPlasmaLight",
       "dust",
       "dustSmall",
       "dustTiny",
+      "fluidMolten",
+      "fluidPlasma",
       "foil",
       "gearGt",
       "ingot",
@@ -158365,8 +158944,16 @@
       "solid": null,
       "fluid": null,
       "gas": null,
-      "plasma": null,
-      "molten": null
+      "plasma": {
+        "name": "plasma.celestialtungsten",
+        "temperature": 10000,
+        "texture": null
+      },
+      "molten": {
+        "name": "molten.celestialtungsten",
+        "temperature": 9168,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -158411,7 +158998,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": true,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.celestialtungsten",
+      "plasmaName": "plasma.celestialtungsten"
     }
   },
   {
@@ -158582,7 +159171,9 @@
           "material": "Hydrogen",
           "amount": 4
         }
-      ]
+      ],
+      "fluidName": null,
+      "plasmaName": null
     }
   },
   {
@@ -158592,7 +159183,10 @@
     "argb": 15124570,
     "moltenArgb": null,
     "textureSet": "METALLIC",
-    "shapes": [],
+    "shapes": [
+      "cellMolten",
+      "fluidMolten"
+    ],
     "families": [
       "All",
       "Cells",
@@ -158647,7 +159241,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.chloroaceticacid",
+        "temperature": 336,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -158709,7 +159307,9 @@
           "material": "Chlorine",
           "amount": 1
         }
-      ]
+      ],
+      "fluidName": "molten.chloroaceticacid",
+      "plasmaName": null
     }
   },
   {
@@ -158719,7 +159319,10 @@
     "argb": 13803530,
     "moltenArgb": null,
     "textureSet": "METALLIC",
-    "shapes": [],
+    "shapes": [
+      "cellMolten",
+      "fluidMolten"
+    ],
     "families": [
       "All",
       "Cells",
@@ -158774,7 +159377,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.chloroaceticmixture",
+        "temperature": 313,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -158836,7 +159443,9 @@
           "material": "Chlorine",
           "amount": 6
         }
-      ]
+      ],
+      "fluidName": "molten.chloroaceticmixture",
+      "plasmaName": null
     }
   },
   {
@@ -158849,9 +159458,13 @@
     "shapes": [
       "block",
       "bolt",
+      "cellMolten",
+      "cellPlasmaLight",
       "dust",
       "dustSmall",
       "dustTiny",
+      "fluidMolten",
+      "fluidPlasma",
       "foil",
       "gearGt",
       "ingot",
@@ -158909,8 +159522,16 @@
       "solid": null,
       "fluid": null,
       "gas": null,
-      "plasma": null,
-      "molten": null
+      "plasma": {
+        "name": "plasma.chromaticglass",
+        "temperature": 10000,
+        "texture": null
+      },
+      "molten": {
+        "name": "molten.chromaticglass",
+        "temperature": 9473,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -158955,7 +159576,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": true,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.chromaticglass",
+      "plasmaName": "plasma.chromaticglass"
     }
   },
   {
@@ -158968,9 +159591,11 @@
     "shapes": [
       "block",
       "bolt",
+      "cellMolten",
       "dust",
       "dustSmall",
       "dustTiny",
+      "fluidMolten",
       "foil",
       "gearGt",
       "ingot",
@@ -159060,7 +159685,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.cinobitea243",
+        "temperature": 7623,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -159138,7 +159767,9 @@
           "material": "Osmiridium",
           "amount": 6
         }
-      ]
+      ],
+      "fluidName": "molten.cinobitea243",
+      "plasmaName": null
     }
   },
   {
@@ -159293,7 +159924,9 @@
           "material": "Bromine",
           "amount": 8
         }
-      ]
+      ],
+      "fluidName": null,
+      "plasmaName": null
     }
   },
   {
@@ -159306,7 +159939,8 @@
     "shapes": [
       "dust",
       "dustSmall",
-      "dustTiny"
+      "dustTiny",
+      "fluidMolten"
     ],
     "families": [
       "All",
@@ -159360,7 +159994,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.copperiisulfate",
+        "temperature": 863,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -159418,7 +160056,9 @@
           "material": "Oxygen",
           "amount": 4
         }
-      ]
+      ],
+      "fluidName": "molten.copperiisulfate",
+      "plasmaName": null
     }
   },
   {
@@ -159431,7 +160071,8 @@
     "shapes": [
       "dust",
       "dustSmall",
-      "dustTiny"
+      "dustTiny",
+      "fluidMolten"
     ],
     "families": [
       "All",
@@ -159485,7 +160126,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.copperiisulfatepentahydrate",
+        "temperature": 863,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -159543,7 +160188,9 @@
           "material": "Oxygen",
           "amount": 4
         }
-      ]
+      ],
+      "fluidName": "molten.copperiisulfatepentahydrate",
+      "plasmaName": null
     }
   },
   {
@@ -159682,7 +160329,9 @@
           "material": "Caesium",
           "amount": 1
         }
-      ]
+      ],
+      "fluidName": null,
+      "plasmaName": null
     }
   },
   {
@@ -159813,7 +160462,9 @@
           "material": "Fluorine",
           "amount": 6
         }
-      ]
+      ],
+      "fluidName": null,
+      "plasmaName": null
     }
   },
   {
@@ -159825,9 +160476,13 @@
     "textureSet": "NUCLEAR",
     "shapes": [
       "block",
+      "cellMolten",
+      "cellPlasmaLight",
       "dust",
       "dustSmall",
       "dustTiny",
+      "fluidMolten",
+      "fluidPlasma",
       "ingot",
       "nugget",
       "stick",
@@ -159874,8 +160529,16 @@
       "solid": null,
       "fluid": null,
       "gas": null,
-      "plasma": null,
-      "molten": null
+      "plasma": {
+        "name": "plasma.curium",
+        "temperature": 10000,
+        "texture": null
+      },
+      "molten": {
+        "name": "molten.curium",
+        "temperature": 1613,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -159920,7 +160583,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": true,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.curium",
+      "plasmaName": "plasma.curium"
     }
   },
   {
@@ -159933,7 +160598,8 @@
     "shapes": [
       "dust",
       "dustSmall",
-      "dustTiny"
+      "dustTiny",
+      "fluidMolten"
     ],
     "families": [
       "All",
@@ -159991,7 +160657,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.cyanoaceticacid",
+        "temperature": 339,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -160053,7 +160723,9 @@
           "material": "Oxygen",
           "amount": 2
         }
-      ]
+      ],
+      "fluidName": "molten.cyanoaceticacid",
+      "plasmaName": null
     }
   },
   {
@@ -160063,7 +160735,10 @@
     "argb": 9213600,
     "moltenArgb": null,
     "textureSet": "METALLIC",
-    "shapes": [],
+    "shapes": [
+      "cellMolten",
+      "fluidMolten"
+    ],
     "families": [
       "All",
       "Cells",
@@ -160118,7 +160793,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.cyanoacrylatepolymer",
+        "temperature": 248,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -160180,7 +160859,9 @@
           "material": "Chlorine",
           "amount": 3
         }
-      ]
+      ],
+      "fluidName": "molten.cyanoacrylatepolymer",
+      "plasmaName": null
     }
   },
   {
@@ -160311,7 +160992,9 @@
           "material": "Bromine",
           "amount": 1
         }
-      ]
+      ],
+      "fluidName": null,
+      "plasmaName": null
     }
   },
   {
@@ -160321,7 +161004,10 @@
     "argb": 12492860,
     "moltenArgb": null,
     "textureSet": "METALLIC",
-    "shapes": [],
+    "shapes": [
+      "cellMolten",
+      "fluidMolten"
+    ],
     "families": [
       "All",
       "Cells",
@@ -160376,7 +161062,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.dichloroaceticacid",
+        "temperature": 286,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -160438,7 +161128,9 @@
           "material": "Chlorine",
           "amount": 2
         }
-      ]
+      ],
+      "fluidName": "molten.dichloroaceticacid",
+      "plasmaName": null
     }
   },
   {
@@ -160451,9 +161143,13 @@
     "shapes": [
       "block",
       "bolt",
+      "cellMolten",
+      "cellPlasmaLight",
       "dust",
       "dustSmall",
       "dustTiny",
+      "fluidMolten",
+      "fluidPlasma",
       "gearGt",
       "ingot",
       "ingotHot",
@@ -160511,8 +161207,16 @@
       "solid": null,
       "fluid": null,
       "gas": null,
-      "plasma": null,
-      "molten": null
+      "plasma": {
+        "name": "plasma.dragonblood",
+        "temperature": 10000,
+        "texture": null
+      },
+      "molten": {
+        "name": "molten.dragonblood",
+        "temperature": 10433,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -160557,7 +161261,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": true,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.dragonblood",
+      "plasmaName": "plasma.dragonblood"
     }
   },
   {
@@ -160570,9 +161276,11 @@
     "shapes": [
       "block",
       "bolt",
+      "cellMolten",
       "dust",
       "dustSmall",
       "dustTiny",
+      "fluidMolten",
       "gearGt",
       "ingot",
       "nugget",
@@ -160645,7 +161353,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.eglinsteel",
+        "temperature": 1321,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -160707,7 +161419,9 @@
           "material": "Carbon",
           "amount": 1
         }
-      ]
+      ],
+      "fluidName": "molten.eglinsteel",
+      "plasmaName": null
     }
   },
   {
@@ -160718,9 +161432,11 @@
     "moltenArgb": null,
     "textureSet": "METALLIC",
     "shapes": [
+      "cellMolten",
       "dust",
       "dustSmall",
-      "dustTiny"
+      "dustTiny",
+      "fluidMolten"
     ],
     "families": [
       "All",
@@ -160776,7 +161492,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.eglinsteelbasecompound",
+        "temperature": 1476,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -160834,7 +161554,9 @@
           "material": "Invar",
           "amount": 15
         }
-      ]
+      ],
+      "fluidName": "molten.eglinsteelbasecompound",
+      "plasmaName": null
     }
   },
   {
@@ -160847,9 +161569,11 @@
     "shapes": [
       "block",
       "bolt",
+      "cellMolten",
       "dust",
       "dustSmall",
       "dustTiny",
+      "fluidMolten",
       "gearGt",
       "ingot",
       "ingotHot",
@@ -160922,7 +161646,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.energycrystal",
+        "temperature": 4933,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -160984,7 +161712,9 @@
           "material": "InfusedWater",
           "amount": 25
         }
-      ]
+      ],
+      "fluidName": "molten.energycrystal",
+      "plasmaName": null
     }
   },
   {
@@ -160994,7 +161724,10 @@
     "argb": 19360,
     "moltenArgb": null,
     "textureSet": "METALLIC",
-    "shapes": [],
+    "shapes": [
+      "cellMolten",
+      "fluidMolten"
+    ],
     "families": [
       "All",
       "Cells",
@@ -161049,7 +161782,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.ethylcyanoacetate",
+        "temperature": 251,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -161111,7 +161848,9 @@
           "material": "Chlorine",
           "amount": 3
         }
-      ]
+      ],
+      "fluidName": "molten.ethylcyanoacetate",
+      "plasmaName": null
     }
   },
   {
@@ -161121,7 +161860,10 @@
     "argb": 11189960,
     "moltenArgb": null,
     "textureSet": "METALLIC",
-    "shapes": [],
+    "shapes": [
+      "cellMolten",
+      "fluidMolten"
+    ],
     "families": [
       "All",
       "Cells",
@@ -161176,7 +161918,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.ethylcyanoacrylatesuperglue",
+        "temperature": 248,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -161238,7 +161984,9 @@
           "material": "Chlorine",
           "amount": 3
         }
-      ]
+      ],
+      "fluidName": "molten.ethylcyanoacrylatesuperglue",
+      "plasmaName": null
     }
   },
   {
@@ -161250,9 +161998,13 @@
     "textureSet": "NUCLEAR",
     "shapes": [
       "block",
+      "cellMolten",
+      "cellPlasmaLight",
       "dust",
       "dustSmall",
       "dustTiny",
+      "fluidMolten",
+      "fluidPlasma",
       "ingot",
       "nugget",
       "stick",
@@ -161299,8 +162051,16 @@
       "solid": null,
       "fluid": null,
       "gas": null,
-      "plasma": null,
-      "molten": null
+      "plasma": {
+        "name": "plasma.fermium",
+        "temperature": 10000,
+        "texture": null
+      },
+      "molten": {
+        "name": "molten.fermium",
+        "temperature": 1800,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -161345,7 +162105,9 @@
       "state": "LIQUID",
       "generatesFluid": true,
       "generatesCells": true,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.fermium",
+      "plasmaName": "plasma.fermium"
     }
   },
   {
@@ -161492,7 +162254,9 @@
           "material": "Hydrogen",
           "amount": 6
         }
-      ]
+      ],
+      "fluidName": null,
+      "plasmaName": null
     }
   },
   {
@@ -161655,7 +162419,9 @@
           "material": "Fluorine",
           "amount": 6
         }
-      ]
+      ],
+      "fluidName": null,
+      "plasmaName": null
     }
   },
   {
@@ -161665,7 +162431,10 @@
     "argb": 10808745,
     "moltenArgb": null,
     "textureSet": "SHINY",
-    "shapes": [],
+    "shapes": [
+      "cellMolten",
+      "fluidMolten"
+    ],
     "families": [
       "All",
       "Cells",
@@ -161712,7 +162481,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.fluorinateduraniumhexafluoridefuf6",
+        "temperature": 460,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -161766,7 +162539,9 @@
           "material": "Fluorine",
           "amount": 2
         }
-      ]
+      ],
+      "fluidName": "molten.fluorinateduraniumhexafluoridefuf6",
+      "plasmaName": null
     }
   },
   {
@@ -161776,7 +162551,10 @@
     "argb": 9745052,
     "moltenArgb": null,
     "textureSet": "SHINY",
-    "shapes": [],
+    "shapes": [
+      "cellMolten",
+      "fluidMolten"
+    ],
     "families": [
       "All",
       "Cells",
@@ -161827,7 +162605,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.fluorinespargedtbsalt",
+        "temperature": 987,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -161885,7 +162667,9 @@
           "material": "ThoriumTetrafluoride",
           "amount": 1
         }
-      ]
+      ],
+      "fluidName": "molten.fluorinespargedtbsalt",
+      "plasmaName": null
     }
   },
   {
@@ -161895,7 +162679,10 @@
     "argb": 10859183,
     "moltenArgb": null,
     "textureSet": "SHINY",
-    "shapes": [],
+    "shapes": [
+      "cellMolten",
+      "fluidMolten"
+    ],
     "families": [
       "All",
       "Cells",
@@ -161942,7 +162729,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.fluorinespargedtsalt",
+        "temperature": 941,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -161996,7 +162787,9 @@
           "material": "ThoriumTetrafluoride",
           "amount": 1
         }
-      ]
+      ],
+      "fluidName": "molten.fluorinespargedtsalt",
+      "plasmaName": null
     }
   },
   {
@@ -162015,6 +162808,7 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "fluidMolten",
       "rawOre"
     ],
     "families": [
@@ -162073,7 +162867,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.fluoritef",
+        "temperature": 326,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -162135,7 +162933,9 @@
           "material": "Carbon",
           "amount": 2
         }
-      ]
+      ],
+      "fluidName": "molten.fluoritef",
+      "plasmaName": null
     }
   },
   {
@@ -162314,7 +163114,9 @@
           "material": "Oxygen",
           "amount": 14
         }
-      ]
+      ],
+      "fluidName": null,
+      "plasmaName": null
     }
   },
   {
@@ -162493,7 +163295,9 @@
           "material": "Oxygen",
           "amount": 9
         }
-      ]
+      ],
+      "fluidName": null,
+      "plasmaName": null
     }
   },
   {
@@ -162624,7 +163428,9 @@
           "material": "Oxygen",
           "amount": 3
         }
-      ]
+      ],
+      "fluidName": null,
+      "plasmaName": null
     }
   },
   {
@@ -162637,9 +163443,13 @@
     "shapes": [
       "block",
       "bolt",
+      "cellMolten",
+      "cellPlasmaLight",
       "dust",
       "dustSmall",
       "dustTiny",
+      "fluidMolten",
+      "fluidPlasma",
       "gearGt",
       "ingot",
       "nugget",
@@ -162694,8 +163504,16 @@
       "solid": null,
       "fluid": null,
       "gas": null,
-      "plasma": null,
-      "molten": null
+      "plasma": {
+        "name": "plasma.germanium",
+        "temperature": 10000,
+        "texture": null
+      },
+      "molten": {
+        "name": "molten.germanium",
+        "temperature": 1210,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -162740,7 +163558,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": true,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.germanium",
+      "plasmaName": "plasma.germanium"
     }
   },
   {
@@ -162863,7 +163683,9 @@
           "material": "Sulfur",
           "amount": 1
         }
-      ]
+      ],
+      "fluidName": null,
+      "plasmaName": null
     }
   },
   {
@@ -162876,9 +163698,11 @@
     "shapes": [
       "block",
       "bolt",
+      "cellMolten",
       "dust",
       "dustSmall",
       "dustTiny",
+      "fluidMolten",
       "gearGt",
       "ingot",
       "ingotHot",
@@ -162960,7 +163784,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.grisium",
+        "temperature": 4123,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -163030,7 +163858,9 @@
           "material": "Hydrogen",
           "amount": 10
         }
-      ]
+      ],
+      "fluidName": "molten.grisium",
+      "plasmaName": null
     }
   },
   {
@@ -163041,9 +163871,11 @@
     "moltenArgb": null,
     "textureSet": "SHINY",
     "shapes": [
+      "cellMolten",
       "dust",
       "dustSmall",
       "dustTiny",
+      "fluidMolten",
       "ingot",
       "nugget",
       "plate",
@@ -163112,7 +163944,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.hg1223",
+        "temperature": 6630,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -163178,7 +164014,9 @@
           "material": "Oxygen",
           "amount": 8
         }
-      ]
+      ],
+      "fluidName": "molten.hg1223",
+      "plasmaName": null
     }
   },
   {
@@ -163191,9 +164029,11 @@
     "shapes": [
       "block",
       "bolt",
+      "cellMolten",
       "dust",
       "dustSmall",
       "dustTiny",
+      "fluidMolten",
       "gearGt",
       "ingot",
       "ingotHot",
@@ -163282,7 +164122,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.hs188a",
+        "temperature": 5143,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -163360,7 +164204,9 @@
           "material": "ZirconiumCarbide",
           "amount": 8
         }
-      ]
+      ],
+      "fluidName": "molten.hs188a",
+      "plasmaName": null
     }
   },
   {
@@ -163373,9 +164219,11 @@
     "shapes": [
       "block",
       "bolt",
+      "cellMolten",
       "dust",
       "dustSmall",
       "dustTiny",
+      "fluidMolten",
       "gearGt",
       "ingot",
       "ingotHot",
@@ -163456,7 +164304,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.hastelloyc276",
+        "temperature": 4623,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -163526,7 +164378,9 @@
           "material": "Nickel",
           "amount": 64
         }
-      ]
+      ],
+      "fluidName": "molten.hastelloyc276",
+      "plasmaName": null
     }
   },
   {
@@ -163539,9 +164393,11 @@
     "shapes": [
       "block",
       "bolt",
+      "cellMolten",
       "dust",
       "dustSmall",
       "dustTiny",
+      "fluidMolten",
       "gearGt",
       "ingot",
       "ingotHot",
@@ -163618,7 +164474,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.hastelloyn",
+        "temperature": 4623,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -163684,7 +164544,9 @@
           "material": "Nickel",
           "amount": 60
         }
-      ]
+      ],
+      "fluidName": "molten.hastelloyn",
+      "plasmaName": null
     }
   },
   {
@@ -163697,9 +164559,11 @@
     "shapes": [
       "block",
       "bolt",
+      "cellMolten",
       "dust",
       "dustSmall",
       "dustTiny",
+      "fluidMolten",
       "gearGt",
       "ingot",
       "ingotHot",
@@ -163776,7 +164640,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.hastelloyw",
+        "temperature": 3623,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -163842,7 +164710,9 @@
           "material": "Nickel",
           "amount": 62
         }
-      ]
+      ],
+      "fluidName": "molten.hastelloyw",
+      "plasmaName": null
     }
   },
   {
@@ -163855,9 +164725,11 @@
     "shapes": [
       "block",
       "bolt",
+      "cellMolten",
       "dust",
       "dustSmall",
       "dustTiny",
+      "fluidMolten",
       "gearGt",
       "ingot",
       "ingotHot",
@@ -163938,7 +164810,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.hastelloyx",
+        "temperature": 3623,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -164008,7 +164884,9 @@
           "material": "Nickel",
           "amount": 48
         }
-      ]
+      ],
+      "fluidName": "molten.hastelloyx",
+      "plasmaName": null
     }
   },
   {
@@ -164021,9 +164899,11 @@
     "shapes": [
       "block",
       "bolt",
+      "cellMolten",
       "dust",
       "dustSmall",
       "dustTiny",
+      "fluidMolten",
       "gearGt",
       "ingot",
       "ingotHot",
@@ -164100,7 +164980,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.helicopter",
+        "temperature": 6036,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -164166,7 +165050,9 @@
           "material": "Erbium",
           "amount": 20
         }
-      ]
+      ],
+      "fluidName": "molten.helicopter",
+      "plasmaName": null
     }
   },
   {
@@ -164176,7 +165062,10 @@
     "argb": 11062700,
     "moltenArgb": null,
     "textureSet": "SHINY",
-    "shapes": [],
+    "shapes": [
+      "cellMolten",
+      "fluidMolten"
+    ],
     "families": [
       "All",
       "Cells",
@@ -164231,7 +165120,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.heliumspargedusalt",
+        "temperature": 1077,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -164293,7 +165186,9 @@
           "material": "Protactinium",
           "amount": 1
         }
-      ]
+      ],
+      "fluidName": "molten.heliumspargedusalt",
+      "plasmaName": null
     }
   },
   {
@@ -164448,7 +165343,9 @@
           "material": "Oxygen",
           "amount": 19
         }
-      ]
+      ],
+      "fluidName": null,
+      "plasmaName": null
     }
   },
   {
@@ -164579,7 +165476,9 @@
           "material": "Tellurium",
           "amount": 2
         }
-      ]
+      ],
+      "fluidName": null,
+      "plasmaName": null
     }
   },
   {
@@ -164589,7 +165488,10 @@
     "argb": 8355839,
     "moltenArgb": null,
     "textureSet": "SHINY",
-    "shapes": [],
+    "shapes": [
+      "cellMolten",
+      "fluidMolten"
+    ],
     "families": [
       "All",
       "Cells",
@@ -164636,7 +165538,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.hydrogenchloridemix",
+        "temperature": 365,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -164690,7 +165596,9 @@
           "material": "Chlorine",
           "amount": 1
         }
-      ]
+      ],
+      "fluidName": "molten.hydrogenchloridemix",
+      "plasmaName": null
     }
   },
   {
@@ -164700,7 +165608,10 @@
     "argb": 407710,
     "moltenArgb": null,
     "textureSet": "METALLIC",
-    "shapes": [],
+    "shapes": [
+      "cell",
+      "fluidGas"
+    ],
     "families": [
       "All",
       "Cells",
@@ -164749,7 +165660,11 @@
     "fluids": {
       "solid": null,
       "fluid": null,
-      "gas": null,
+      "gas": {
+        "name": "hydrogencyanide",
+        "temperature": 277,
+        "texture": null
+      },
       "plasma": null,
       "molten": null
     },
@@ -164809,7 +165724,9 @@
           "material": "Nitrogen",
           "amount": 1
         }
-      ]
+      ],
+      "fluidName": "hydrogencyanide",
+      "plasmaName": null
     }
   },
   {
@@ -164822,9 +165739,13 @@
     "shapes": [
       "block",
       "bolt",
+      "cellMolten",
+      "cellPlasmaLight",
       "dust",
       "dustSmall",
       "dustTiny",
+      "fluidMolten",
+      "fluidPlasma",
       "foil",
       "gearGt",
       "gearGtSmall",
@@ -164884,8 +165805,16 @@
       "solid": null,
       "fluid": null,
       "gas": null,
-      "plasma": null,
-      "molten": null
+      "plasma": {
+        "name": "plasma.hypogen",
+        "temperature": 10000,
+        "texture": null
+      },
+      "molten": {
+        "name": "molten.hypogen",
+        "temperature": 10528,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -164930,7 +165859,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": true,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.hypogen",
+      "plasmaName": "plasma.hypogen"
     }
   },
   {
@@ -164943,9 +165874,11 @@
     "shapes": [
       "block",
       "bolt",
+      "cellMolten",
       "dust",
       "dustSmall",
       "dustTiny",
+      "fluidMolten",
       "gearGt",
       "ingot",
       "ingotHot",
@@ -165018,7 +165951,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.incoloy020",
+        "temperature": 3698,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -165080,7 +166017,9 @@
           "material": "Nickel",
           "amount": 36
         }
-      ]
+      ],
+      "fluidName": "molten.incoloy020",
+      "plasmaName": null
     }
   },
   {
@@ -165093,9 +166032,11 @@
     "shapes": [
       "block",
       "bolt",
+      "cellMolten",
       "dust",
       "dustSmall",
       "dustTiny",
+      "fluidMolten",
       "gearGt",
       "ingot",
       "ingotHot",
@@ -165168,7 +166109,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.incoloyds",
+        "temperature": 3698,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -165230,7 +166175,9 @@
           "material": "Nickel",
           "amount": 18
         }
-      ]
+      ],
+      "fluidName": "molten.incoloyds",
+      "plasmaName": null
     }
   },
   {
@@ -165243,9 +166190,11 @@
     "shapes": [
       "block",
       "bolt",
+      "cellMolten",
       "dust",
       "dustSmall",
       "dustTiny",
+      "fluidMolten",
       "gearGt",
       "ingot",
       "ingotHot",
@@ -165318,7 +166267,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.incoloyma956",
+        "temperature": 4698,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -165380,7 +166333,9 @@
           "material": "Yttrium",
           "amount": 4
         }
-      ]
+      ],
+      "fluidName": "molten.incoloyma956",
+      "plasmaName": null
     }
   },
   {
@@ -165393,9 +166348,11 @@
     "shapes": [
       "block",
       "bolt",
+      "cellMolten",
       "dust",
       "dustSmall",
       "dustTiny",
+      "fluidMolten",
       "gearGt",
       "ingot",
       "ingotHot",
@@ -165472,7 +166429,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.inconel625",
+        "temperature": 2698,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -165538,7 +166499,9 @@
           "material": "Nichrome",
           "amount": 13
         }
-      ]
+      ],
+      "fluidName": "molten.inconel625",
+      "plasmaName": null
     }
   },
   {
@@ -165551,9 +166514,11 @@
     "shapes": [
       "block",
       "bolt",
+      "cellMolten",
       "dust",
       "dustSmall",
       "dustTiny",
+      "fluidMolten",
       "gearGt",
       "ingot",
       "ingotHot",
@@ -165626,7 +166591,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.inconel690",
+        "temperature": 3698,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -165688,7 +166657,9 @@
           "material": "Nichrome",
           "amount": 15
         }
-      ]
+      ],
+      "fluidName": "molten.inconel690",
+      "plasmaName": null
     }
   },
   {
@@ -165701,9 +166672,11 @@
     "shapes": [
       "block",
       "bolt",
+      "cellMolten",
       "dust",
       "dustSmall",
       "dustTiny",
+      "fluidMolten",
       "gearGt",
       "ingot",
       "ingotHot",
@@ -165776,7 +166749,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.inconel792",
+        "temperature": 3698,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -165838,7 +166815,9 @@
           "material": "Nichrome",
           "amount": 10
         }
-      ]
+      ],
+      "fluidName": "molten.inconel792",
+      "plasmaName": null
     }
   },
   {
@@ -165850,9 +166829,11 @@
     "textureSet": "METALLIC",
     "shapes": [
       "block",
+      "cellMolten",
       "dust",
       "dustSmall",
       "dustTiny",
+      "fluidMolten",
       "ingot",
       "nugget",
       "plate",
@@ -165920,7 +166901,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.indalloy140",
+        "temperature": 5473,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -165986,7 +166971,9 @@
           "material": "Indium",
           "amount": 5
         }
-      ]
+      ],
+      "fluidName": "molten.indalloy140",
+      "plasmaName": null
     }
   },
   {
@@ -166149,7 +167136,9 @@
           "material": "Oxygen",
           "amount": 1
         }
-      ]
+      ],
+      "fluidName": null,
+      "plasmaName": null
     }
   },
   {
@@ -166280,7 +167269,9 @@
           "material": "Sulfur",
           "amount": 3
         }
-      ]
+      ],
+      "fluidName": null,
+      "plasmaName": null
     }
   },
   {
@@ -166291,6 +167282,7 @@
     "moltenArgb": null,
     "textureSet": "METALLIC",
     "shapes": [
+      "cellMolten",
       "crushed",
       "crushedCentrifuged",
       "crushedPurified",
@@ -166299,6 +167291,7 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "fluidMolten",
       "rawOre",
       "wireFine"
     ],
@@ -166356,7 +167349,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.koboldite",
+        "temperature": 1452,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -166414,7 +167411,9 @@
           "material": "Iron",
           "amount": 35
         }
-      ]
+      ],
+      "fluidName": "molten.koboldite",
+      "plasmaName": null
     }
   },
   {
@@ -166425,9 +167424,11 @@
     "moltenArgb": null,
     "textureSet": "NUCLEAR",
     "shapes": [
+      "cellMolten",
       "dust",
       "dustSmall",
       "dustTiny",
+      "fluidMolten",
       "stick",
       "stickLong"
     ],
@@ -166489,7 +167490,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.lftrfuel1",
+        "temperature": 863,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -166551,7 +167556,9 @@
           "material": "Uranium235",
           "amount": 14
         }
-      ]
+      ],
+      "fluidName": "molten.lftrfuel1",
+      "plasmaName": null
     }
   },
   {
@@ -166562,9 +167569,11 @@
     "moltenArgb": null,
     "textureSet": "NUCLEAR",
     "shapes": [
+      "cellMolten",
       "dust",
       "dustSmall",
       "dustTiny",
+      "fluidMolten",
       "stick",
       "stickLong"
     ],
@@ -166626,7 +167635,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.lftrfuel2",
+        "temperature": 923,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -166688,7 +167701,9 @@
           "material": "UraniumTetrafluoride",
           "amount": 2
         }
-      ]
+      ],
+      "fluidName": "molten.lftrfuel2",
+      "plasmaName": null
     }
   },
   {
@@ -166699,9 +167714,11 @@
     "moltenArgb": null,
     "textureSet": "NUCLEAR",
     "shapes": [
+      "cellMolten",
       "dust",
       "dustSmall",
       "dustTiny",
+      "fluidMolten",
       "stick",
       "stickLong"
     ],
@@ -166763,7 +167780,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.lftrfuel3",
+        "temperature": 839,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -166825,7 +167846,9 @@
           "material": "UraniumTetrafluoride",
           "amount": 1
         }
-      ]
+      ],
+      "fluidName": "molten.lftrfuel3",
+      "plasmaName": null
     }
   },
   {
@@ -166835,7 +167858,10 @@
     "argb": 10738349,
     "moltenArgb": null,
     "textureSet": "SHINY",
-    "shapes": [],
+    "shapes": [
+      "cellMolten",
+      "fluidMolten"
+    ],
     "families": [
       "All",
       "Cells",
@@ -166882,7 +167908,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.lftrfuelbase",
+        "temperature": 833,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -166936,7 +167966,9 @@
           "material": "UraniumTetrafluoride",
           "amount": 1
         }
-      ]
+      ],
+      "fluidName": "molten.lftrfuelbase",
+      "plasmaName": null
     }
   },
   {
@@ -166949,9 +167981,11 @@
     "shapes": [
       "block",
       "bolt",
+      "cellMolten",
       "dust",
       "dustSmall",
       "dustTiny",
+      "fluidMolten",
       "foil",
       "gearGt",
       "ingot",
@@ -167041,7 +168075,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.lafiumcompound",
+        "temperature": 6623,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -167119,7 +168157,9 @@
           "material": "Carbon",
           "amount": 2
         }
-      ]
+      ],
+      "fluidName": "molten.lafiumcompound",
+      "plasmaName": null
     }
   },
   {
@@ -167250,7 +168290,9 @@
           "material": "Thallium",
           "amount": 1
         }
-      ]
+      ],
+      "fluidName": null,
+      "plasmaName": null
     }
   },
   {
@@ -167397,7 +168439,9 @@
           "material": "Oxygen",
           "amount": 1
         }
-      ]
+      ],
+      "fluidName": null,
+      "plasmaName": null
     }
   },
   {
@@ -167544,7 +168588,9 @@
           "material": "Oxygen",
           "amount": 1
         }
-      ]
+      ],
+      "fluidName": null,
+      "plasmaName": null
     }
   },
   {
@@ -167691,7 +168737,9 @@
           "material": "Oxygen",
           "amount": 1
         }
-      ]
+      ],
+      "fluidName": null,
+      "plasmaName": null
     }
   },
   {
@@ -167704,9 +168752,11 @@
     "shapes": [
       "block",
       "bolt",
+      "cellMolten",
       "dust",
       "dustSmall",
       "dustTiny",
+      "fluidMolten",
       "foil",
       "gearGt",
       "ingot",
@@ -167785,7 +168835,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.laurenium",
+        "temperature": 7098,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -167851,7 +168905,9 @@
           "material": "Rhenium",
           "amount": 5
         }
-      ]
+      ],
+      "fluidName": "molten.laurenium",
+      "plasmaName": null
     }
   },
   {
@@ -167982,7 +169038,9 @@
           "material": "Oxygen",
           "amount": 6
         }
-      ]
+      ],
+      "fluidName": null,
+      "plasmaName": null
     }
   },
   {
@@ -168145,7 +169203,9 @@
           "material": "Hydrogen",
           "amount": 24
         }
-      ]
+      ],
+      "fluidName": null,
+      "plasmaName": null
     }
   },
   {
@@ -168160,6 +169220,7 @@
       "dust",
       "dustSmall",
       "dustTiny",
+      "fluidMolten",
       "ingot",
       "nugget",
       "plate",
@@ -168204,7 +169265,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.lithium7",
+        "temperature": 727,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -168249,7 +169314,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": false,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.lithium7",
+      "plasmaName": null
     }
   },
   {
@@ -168260,9 +169327,11 @@
     "moltenArgb": null,
     "textureSet": "SHINY",
     "shapes": [
+      "cellMolten",
       "dust",
       "dustSmall",
       "dustTiny",
+      "fluidMolten",
       "stick",
       "stickLong"
     ],
@@ -168316,7 +169385,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.lithiumfluoride",
+        "temperature": 526,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -168370,7 +169443,9 @@
           "material": "Fluorine",
           "amount": 1
         }
-      ]
+      ],
+      "fluidName": "molten.lithiumfluoride",
+      "plasmaName": null
     }
   },
   {
@@ -168381,7 +169456,9 @@
     "moltenArgb": null,
     "textureSet": "NUCLEAR",
     "shapes": [
+      "cellMolten",
       "dust",
+      "fluidMolten",
       "stick",
       "stickLong"
     ],
@@ -168435,7 +169512,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.lithiumtetrafluoroberyllatelftb",
+        "temperature": 839,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -168489,7 +169570,9 @@
           "material": "BerylliumFluoride",
           "amount": 1
         }
-      ]
+      ],
+      "fluidName": "molten.lithiumtetrafluoroberyllatelftb",
+      "plasmaName": null
     }
   },
   {
@@ -168502,9 +169585,11 @@
     "shapes": [
       "block",
       "bolt",
+      "cellMolten",
       "dust",
       "dustSmall",
       "dustTiny",
+      "fluidMolten",
       "gearGt",
       "ingot",
       "ingotHot",
@@ -168582,7 +169667,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.maragingsteel250",
+        "temperature": 2686,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -168648,7 +169737,9 @@
           "material": "Cobalt",
           "amount": 8
         }
-      ]
+      ],
+      "fluidName": "molten.maragingsteel250",
+      "plasmaName": null
     }
   },
   {
@@ -168661,9 +169752,11 @@
     "shapes": [
       "block",
       "bolt",
+      "cellMolten",
       "dust",
       "dustSmall",
       "dustTiny",
+      "fluidMolten",
       "gearGt",
       "ingot",
       "ingotHot",
@@ -168740,7 +169833,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.maragingsteel300",
+        "temperature": 2686,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -168806,7 +169903,9 @@
           "material": "Cobalt",
           "amount": 8
         }
-      ]
+      ],
+      "fluidName": "molten.maragingsteel300",
+      "plasmaName": null
     }
   },
   {
@@ -168819,9 +169918,11 @@
     "shapes": [
       "block",
       "bolt",
+      "cellMolten",
       "dust",
       "dustSmall",
       "dustTiny",
+      "fluidMolten",
       "gearGt",
       "ingot",
       "ingotHot",
@@ -168898,7 +169999,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.maragingsteel350",
+        "temperature": 2686,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -168964,7 +170069,9 @@
           "material": "Cobalt",
           "amount": 8
         }
-      ]
+      ],
+      "fluidName": "molten.maragingsteel350",
+      "plasmaName": null
     }
   },
   {
@@ -169095,7 +170202,9 @@
           "material": "Selenium",
           "amount": 2
         }
-      ]
+      ],
+      "fluidName": null,
+      "plasmaName": null
     }
   },
   {
@@ -169105,7 +170214,10 @@
     "argb": 9661851,
     "moltenArgb": null,
     "textureSet": "SHINY",
-    "shapes": [],
+    "shapes": [
+      "cellMolten",
+      "fluidMolten"
+    ],
     "families": [
       "All",
       "Cells",
@@ -169152,7 +170264,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.mutatedlivingsolder",
+        "temperature": 73,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -169206,7 +170322,9 @@
           "material": "Bismuth",
           "amount": 1
         }
-      ]
+      ],
+      "fluidName": "molten.mutatedlivingsolder",
+      "plasmaName": null
     }
   },
   {
@@ -169218,9 +170336,13 @@
     "textureSet": "NUCLEAR",
     "shapes": [
       "block",
+      "cellMolten",
+      "cellPlasmaLight",
       "dust",
       "dustSmall",
       "dustTiny",
+      "fluidMolten",
+      "fluidPlasma",
       "ingot",
       "nugget",
       "stick",
@@ -169267,8 +170389,16 @@
       "solid": null,
       "fluid": null,
       "gas": null,
-      "plasma": null,
-      "molten": null
+      "plasma": {
+        "name": "plasma.neptunium",
+        "temperature": 10000,
+        "texture": null
+      },
+      "molten": {
+        "name": "molten.neptunium",
+        "temperature": 913,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -169313,7 +170443,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": true,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.neptunium",
+      "plasmaName": "plasma.neptunium"
     }
   },
   {
@@ -169324,9 +170456,11 @@
     "moltenArgb": null,
     "textureSet": "SHINY",
     "shapes": [
+      "cell",
       "dust",
       "dustSmall",
       "dustTiny",
+      "fluidGas",
       "stick",
       "stickLong"
     ],
@@ -169378,7 +170512,11 @@
     "fluids": {
       "solid": null,
       "fluid": null,
-      "gas": null,
+      "gas": {
+        "name": "neptuniumhexafluoride",
+        "temperature": 619,
+        "texture": null
+      },
       "plasma": null,
       "molten": null
     },
@@ -169434,7 +170572,9 @@
           "material": "Fluorine",
           "amount": 6
         }
-      ]
+      ],
+      "fluidName": "neptuniumhexafluoride",
+      "plasmaName": null
     }
   },
   {
@@ -169589,7 +170729,9 @@
           "material": "Oxygen",
           "amount": 8
         }
-      ]
+      ],
+      "fluidName": null,
+      "plasmaName": null
     }
   },
   {
@@ -169602,9 +170744,11 @@
     "shapes": [
       "block",
       "bolt",
+      "cellMolten",
       "dust",
       "dustSmall",
       "dustTiny",
+      "fluidMolten",
       "gearGt",
       "ingot",
       "ingotHot",
@@ -169669,7 +170813,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.niobiumcarbide",
+        "temperature": 2750,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -169723,7 +170871,9 @@
           "material": "Carbon",
           "amount": 50
         }
-      ]
+      ],
+      "fluidName": "molten.niobiumcarbide",
+      "plasmaName": null
     }
   },
   {
@@ -169736,9 +170886,11 @@
     "shapes": [
       "block",
       "bolt",
+      "cellMolten",
       "dust",
       "dustSmall",
       "dustTiny",
+      "fluidMolten",
       "foil",
       "gearGt",
       "ingot",
@@ -169805,7 +170957,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.nitinol60",
+        "temperature": 5924,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -169859,7 +171015,9 @@
           "material": "Titanium",
           "amount": 60
         }
-      ]
+      ],
+      "fluidName": "molten.nitinol60",
+      "plasmaName": null
     }
   },
   {
@@ -169872,9 +171030,11 @@
     "shapes": [
       "block",
       "bolt",
+      "cellMolten",
       "dust",
       "dustSmall",
       "dustTiny",
+      "fluidMolten",
       "gearGt",
       "ingot",
       "ingotHot",
@@ -169951,7 +171111,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.octiron",
+        "temperature": 9393,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -170017,7 +171181,9 @@
           "material": "Thaumium",
           "amount": 25
         }
-      ]
+      ],
+      "fluidName": "molten.octiron",
+      "plasmaName": null
     }
   },
   {
@@ -170172,7 +171338,9 @@
           "material": "Chlorine",
           "amount": 2
         }
-      ]
+      ],
+      "fluidName": null,
+      "plasmaName": null
     }
   },
   {
@@ -170182,7 +171350,10 @@
     "argb": 12776304,
     "moltenArgb": null,
     "textureSet": "SHINY",
-    "shapes": [],
+    "shapes": [
+      "cellMolten",
+      "fluidMolten"
+    ],
     "families": [
       "All",
       "Cells",
@@ -170233,7 +171404,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.phosphorousuraniumhexafluoridepuf6",
+        "temperature": 503,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -170291,7 +171466,9 @@
           "material": "Phosphorus",
           "amount": 1
         }
-      ]
+      ],
+      "fluidName": "molten.phosphorousuraniumhexafluoridepuf6",
+      "plasmaName": null
     }
   },
   {
@@ -170304,9 +171481,11 @@
     "shapes": [
       "block",
       "bolt",
+      "cellMolten",
       "dust",
       "dustSmall",
       "dustTiny",
+      "fluidMolten",
       "foil",
       "gearGt",
       "ingot",
@@ -170396,7 +171575,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.pikyonium64b",
+        "temperature": 7123,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -170474,7 +171657,9 @@
           "material": "TungstenSteel",
           "amount": 8
         }
-      ]
+      ],
+      "fluidName": "molten.pikyonium64b",
+      "plasmaName": null
     }
   },
   {
@@ -170486,9 +171671,13 @@
     "textureSet": "NUCLEAR",
     "shapes": [
       "block",
+      "cellMolten",
+      "cellPlasmaLight",
       "dust",
       "dustSmall",
       "dustTiny",
+      "fluidMolten",
+      "fluidPlasma",
       "ingot",
       "nugget",
       "stick",
@@ -170535,8 +171724,16 @@
       "solid": null,
       "fluid": null,
       "gas": null,
-      "plasma": null,
-      "molten": null
+      "plasma": {
+        "name": "plasma.plutonium238",
+        "temperature": 10000,
+        "texture": null
+      },
+      "molten": {
+        "name": "molten.plutonium238",
+        "temperature": 1185,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -170581,7 +171778,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": true,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.plutonium238",
+      "plasmaName": "plasma.plutonium238"
     }
   },
   {
@@ -170593,9 +171792,13 @@
     "textureSet": "NUCLEAR",
     "shapes": [
       "block",
+      "cellMolten",
+      "cellPlasmaLight",
       "dust",
       "dustSmall",
       "dustTiny",
+      "fluidMolten",
+      "fluidPlasma",
       "ingot",
       "nugget",
       "stick",
@@ -170642,8 +171845,16 @@
       "solid": null,
       "fluid": null,
       "gas": null,
-      "plasma": null,
-      "molten": null
+      "plasma": {
+        "name": "plasma.polonium",
+        "temperature": 10000,
+        "texture": null
+      },
+      "molten": {
+        "name": "molten.polonium",
+        "temperature": 527,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -170688,7 +171899,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": true,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.polonium",
+      "plasmaName": "plasma.polonium"
     }
   },
   {
@@ -170867,7 +172080,9 @@
           "material": "Oxygen",
           "amount": 6
         }
-      ]
+      ],
+      "fluidName": null,
+      "plasmaName": null
     }
   },
   {
@@ -170880,9 +172095,11 @@
     "shapes": [
       "block",
       "bolt",
+      "cellMolten",
       "dust",
       "dustSmall",
       "dustTiny",
+      "fluidMolten",
       "gearGt",
       "ingot",
       "nugget",
@@ -170950,7 +172167,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.potin",
+        "temperature": 1573,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -171008,7 +172229,9 @@
           "material": "Tin",
           "amount": 20
         }
-      ]
+      ],
+      "fluidName": "molten.potin",
+      "plasmaName": null
     }
   },
   {
@@ -171020,9 +172243,13 @@
     "textureSet": "NUCLEAR",
     "shapes": [
       "block",
+      "cellMolten",
+      "cellPlasmaLight",
       "dust",
       "dustSmall",
       "dustTiny",
+      "fluidMolten",
+      "fluidPlasma",
       "ingot",
       "nugget",
       "stick",
@@ -171069,8 +172296,16 @@
       "solid": null,
       "fluid": null,
       "gas": null,
-      "plasma": null,
-      "molten": null
+      "plasma": {
+        "name": "plasma.protactinium",
+        "temperature": 10000,
+        "texture": null
+      },
+      "molten": {
+        "name": "molten.protactinium",
+        "temperature": 1841,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -171115,7 +172350,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": true,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.protactinium",
+      "plasmaName": "plasma.protactinium"
     }
   },
   {
@@ -171128,9 +172365,11 @@
     "shapes": [
       "block",
       "bolt",
+      "cellMolten",
       "dust",
       "dustSmall",
       "dustTiny",
+      "fluidMolten",
       "foil",
       "gearGt",
       "ingot",
@@ -171222,7 +172461,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.quantum",
+        "temperature": 10773,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -171300,7 +172543,9 @@
           "material": "Germanium",
           "amount": 5
         }
-      ]
+      ],
+      "fluidName": "molten.quantum",
+      "plasmaName": null
     }
   },
   {
@@ -171481,7 +172726,9 @@
           "material": "Titanite",
           "amount": 4
         }
-      ]
+      ],
+      "fluidName": null,
+      "plasmaName": null
     }
   },
   {
@@ -171493,9 +172740,13 @@
     "textureSet": "NUCLEAR",
     "shapes": [
       "block",
+      "cellMolten",
+      "cellPlasmaLight",
       "dust",
       "dustSmall",
       "dustTiny",
+      "fluidMolten",
+      "fluidPlasma",
       "ingot",
       "nugget",
       "stick",
@@ -171542,8 +172793,16 @@
       "solid": null,
       "fluid": null,
       "gas": null,
-      "plasma": null,
-      "molten": null
+      "plasma": {
+        "name": "plasma.radium",
+        "temperature": 10000,
+        "texture": null
+      },
+      "molten": {
+        "name": "molten.radium",
+        "temperature": 973,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -171588,7 +172847,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": true,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.radium",
+      "plasmaName": "plasma.radium"
     }
   },
   {
@@ -171767,7 +173028,9 @@
           "material": "Yttrium",
           "amount": 1
         }
-      ]
+      ],
+      "fluidName": null,
+      "plasmaName": null
     }
   },
   {
@@ -171946,7 +173209,9 @@
           "material": "Runite",
           "amount": 1
         }
-      ]
+      ],
+      "fluidName": null,
+      "plasmaName": null
     }
   },
   {
@@ -172125,7 +173390,9 @@
           "material": "AgarditeLa",
           "amount": 1
         }
-      ]
+      ],
+      "fluidName": null,
+      "plasmaName": null
     }
   },
   {
@@ -172138,9 +173405,13 @@
     "shapes": [
       "block",
       "bolt",
+      "cellMolten",
+      "cellPlasmaLight",
       "dust",
       "dustSmall",
       "dustTiny",
+      "fluidMolten",
+      "fluidPlasma",
       "gearGt",
       "ingot",
       "nugget",
@@ -172195,8 +173466,16 @@
       "solid": null,
       "fluid": null,
       "gas": null,
-      "plasma": null,
-      "molten": null
+      "plasma": {
+        "name": "plasma.rhenium",
+        "temperature": 10000,
+        "texture": null
+      },
+      "molten": {
+        "name": "molten.rhenium",
+        "temperature": 3453,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -172241,7 +173520,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": true,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.rhenium",
+      "plasmaName": "plasma.rhenium"
     }
   },
   {
@@ -172253,9 +173534,13 @@
     "textureSet": "CUSTOM/rhugnor",
     "shapes": [
       "block",
+      "cellMolten",
+      "cellPlasmaLight",
       "dust",
       "dustSmall",
       "dustTiny",
+      "fluidMolten",
+      "fluidPlasma",
       "foil",
       "gearGt",
       "ingot",
@@ -172307,8 +173592,16 @@
       "solid": null,
       "fluid": null,
       "gas": null,
-      "plasma": null,
-      "molten": null
+      "plasma": {
+        "name": "plasma.rhugnor",
+        "temperature": 10000,
+        "texture": null
+      },
+      "molten": {
+        "name": "molten.rhugnor",
+        "temperature": 9023,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -172353,7 +173646,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": true,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.rhugnor",
+      "plasmaName": "plasma.rhugnor"
     }
   },
   {
@@ -172365,6 +173660,8 @@
     "textureSet": "FINE",
     "shapes": [
       "block",
+      "cellMolten",
+      "cellPlasmaLight",
       "crushed",
       "crushedCentrifuged",
       "crushedPurified",
@@ -172373,6 +173670,8 @@
       "dustPure",
       "dustSmall",
       "dustTiny",
+      "fluidMolten",
+      "fluidPlasma",
       "ingot",
       "nugget",
       "plate",
@@ -172420,8 +173719,16 @@
       "solid": null,
       "fluid": null,
       "gas": null,
-      "plasma": null,
-      "molten": null
+      "plasma": {
+        "name": "plasma.runite",
+        "temperature": 10000,
+        "texture": null
+      },
+      "molten": {
+        "name": "molten.runite",
+        "temperature": 7023,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -172466,7 +173773,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": true,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.runite",
+      "plasmaName": "plasma.runite"
     }
   },
   {
@@ -172621,7 +173930,9 @@
           "material": "Tantalum",
           "amount": 3
         }
-      ]
+      ],
+      "fluidName": null,
+      "plasmaName": null
     }
   },
   {
@@ -172776,7 +174087,9 @@
           "material": "Tantalum",
           "amount": 2
         }
-      ]
+      ],
+      "fluidName": null,
+      "plasmaName": null
     }
   },
   {
@@ -172786,7 +174099,10 @@
     "argb": 4153559,
     "moltenArgb": null,
     "textureSet": "SHINY",
-    "shapes": [],
+    "shapes": [
+      "cellMolten",
+      "fluidMolten"
+    ],
     "families": [
       "All",
       "Cells",
@@ -172837,7 +174153,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.seleniousacid",
+        "temperature": 340,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -172895,7 +174215,9 @@
           "material": "Oxygen",
           "amount": 4
         }
-      ]
+      ],
+      "fluidName": "molten.seleniousacid",
+      "plasmaName": null
     }
   },
   {
@@ -172908,9 +174230,13 @@
     "shapes": [
       "block",
       "bolt",
+      "cellMolten",
+      "cellPlasmaLight",
       "dust",
       "dustSmall",
       "dustTiny",
+      "fluidMolten",
+      "fluidPlasma",
       "gearGt",
       "ingot",
       "nugget",
@@ -172965,8 +174291,16 @@
       "solid": null,
       "fluid": null,
       "gas": null,
-      "plasma": null,
-      "molten": null
+      "plasma": {
+        "name": "plasma.selenium",
+        "temperature": 10000,
+        "texture": null
+      },
+      "molten": {
+        "name": "molten.selenium",
+        "temperature": 490,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -173011,7 +174345,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": true,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.selenium",
+      "plasmaName": "plasma.selenium"
     }
   },
   {
@@ -173022,9 +174358,11 @@
     "moltenArgb": null,
     "textureSet": "SHINY",
     "shapes": [
+      "cellMolten",
       "dust",
       "dustSmall",
-      "dustTiny"
+      "dustTiny",
+      "fluidMolten"
     ],
     "families": [
       "All",
@@ -173076,7 +174414,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.seleniumdioxide",
+        "temperature": 408,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -173130,7 +174472,9 @@
           "material": "Oxygen",
           "amount": 2
         }
-      ]
+      ],
+      "fluidName": "molten.seleniumdioxide",
+      "plasmaName": null
     }
   },
   {
@@ -173141,9 +174485,11 @@
     "moltenArgb": null,
     "textureSet": "SHINY",
     "shapes": [
+      "cell",
       "dust",
       "dustSmall",
       "dustTiny",
+      "fluidGas",
       "stick",
       "stickLong"
     ],
@@ -173195,7 +174541,11 @@
     "fluids": {
       "solid": null,
       "fluid": null,
-      "gas": null,
+      "gas": {
+        "name": "seleniumhexafluoride",
+        "temperature": 408,
+        "texture": null
+      },
       "plasma": null,
       "molten": null
     },
@@ -173251,7 +174601,9 @@
           "material": "Fluorine",
           "amount": 6
         }
-      ]
+      ],
+      "fluidName": "seleniumhexafluoride",
+      "plasmaName": null
     }
   },
   {
@@ -173264,9 +174616,11 @@
     "shapes": [
       "block",
       "bolt",
+      "cellMolten",
       "dust",
       "dustSmall",
       "dustTiny",
+      "fluidMolten",
       "gearGt",
       "ingot",
       "nugget",
@@ -173330,7 +174684,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.siliconcarbide",
+        "temperature": 1687,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -173384,7 +174742,9 @@
           "material": "Carbon",
           "amount": 50
         }
-      ]
+      ],
+      "fluidName": "molten.siliconcarbide",
+      "plasmaName": null
     }
   },
   {
@@ -173493,7 +174853,9 @@
           "material": "Chlorine",
           "amount": 1
         }
-      ]
+      ],
+      "fluidName": null,
+      "plasmaName": null
     }
   },
   {
@@ -173506,7 +174868,8 @@
     "shapes": [
       "dust",
       "dustSmall",
-      "dustTiny"
+      "dustTiny",
+      "fluidMolten"
     ],
     "families": [
       "All",
@@ -173560,7 +174923,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.sodiumcyanide",
+        "temperature": 836,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -173618,7 +174985,9 @@
           "material": "Nitrogen",
           "amount": 1
         }
-      ]
+      ],
+      "fluidName": "molten.sodiumcyanide",
+      "plasmaName": null
     }
   },
   {
@@ -173629,9 +174998,11 @@
     "moltenArgb": null,
     "textureSet": "SHINY",
     "shapes": [
+      "cellMolten",
       "dust",
       "dustSmall",
-      "dustTiny"
+      "dustTiny",
+      "fluidMolten"
     ],
     "families": [
       "All",
@@ -173683,7 +175054,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.sodiumfluoride",
+        "temperature": 484,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -173737,7 +175112,9 @@
           "material": "Fluorine",
           "amount": 1
         }
-      ]
+      ],
+      "fluidName": "molten.sodiumfluoride",
+      "plasmaName": null
     }
   },
   {
@@ -173747,7 +175124,10 @@
     "argb": 2517441,
     "moltenArgb": null,
     "textureSet": "SHINY",
-    "shapes": [],
+    "shapes": [
+      "cellMolten",
+      "fluidMolten"
+    ],
     "families": [
       "All",
       "Cells",
@@ -173794,7 +175174,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.solarsaltcold",
+        "temperature": 429,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -173848,7 +175232,9 @@
           "material": "SodiumNitrate",
           "amount": 6
         }
-      ]
+      ],
+      "fluidName": "molten.solarsaltcold",
+      "plasmaName": null
     }
   },
   {
@@ -173858,7 +175244,10 @@
     "argb": 13113625,
     "moltenArgb": null,
     "textureSet": "SHINY",
-    "shapes": [],
+    "shapes": [
+      "cellMolten",
+      "fluidMolten"
+    ],
     "families": [
       "All",
       "Cells",
@@ -173905,7 +175294,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.solarsalthot",
+        "temperature": 1473,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -173959,7 +175352,9 @@
           "material": "SodiumNitrate",
           "amount": 6
         }
-      ]
+      ],
+      "fluidName": "molten.solarsalthot",
+      "plasmaName": null
     }
   },
   {
@@ -173969,7 +175364,10 @@
     "argb": 5253120,
     "moltenArgb": null,
     "textureSet": "METALLIC",
-    "shapes": [],
+    "shapes": [
+      "cellMolten",
+      "fluidMolten"
+    ],
     "families": [
       "All",
       "Cells",
@@ -174020,7 +175418,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.solidacidcatalystmixture",
+        "temperature": 263,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -174078,7 +175480,9 @@
           "material": "Oxygen",
           "amount": 4
         }
-      ]
+      ],
+      "fluidName": "molten.solidacidcatalystmixture",
+      "plasmaName": null
     }
   },
   {
@@ -174091,9 +175495,11 @@
     "shapes": [
       "block",
       "bolt",
+      "cellMolten",
       "dust",
       "dustSmall",
       "dustTiny",
+      "fluidMolten",
       "gearGt",
       "ingot",
       "ingotHot",
@@ -174159,7 +175565,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.staballoy",
+        "temperature": 3723,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -174213,7 +175623,9 @@
           "material": "Titanium",
           "amount": 1
         }
-      ]
+      ],
+      "fluidName": "molten.staballoy",
+      "plasmaName": null
     }
   },
   {
@@ -174223,7 +175635,10 @@
     "argb": 12704459,
     "moltenArgb": null,
     "textureSet": "SHINY",
-    "shapes": [],
+    "shapes": [
+      "cellMolten",
+      "fluidMolten"
+    ],
     "families": [
       "All",
       "Cells",
@@ -174270,7 +175685,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.stablemoltensaltbase",
+        "temperature": 802,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -174324,7 +175743,9 @@
           "material": "BerylliumFluoride",
           "amount": 1
         }
-      ]
+      ],
+      "fluidName": "molten.stablemoltensaltbase",
+      "plasmaName": null
     }
   },
   {
@@ -174337,9 +175758,11 @@
     "shapes": [
       "block",
       "bolt",
+      "cellMolten",
       "dust",
       "dustSmall",
       "dustTiny",
+      "fluidMolten",
       "gearGt",
       "ingot",
       "ingotHot",
@@ -174412,7 +175835,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.stellite",
+        "temperature": 4583,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -174474,7 +175901,9 @@
           "material": "Titanium",
           "amount": 10
         }
-      ]
+      ],
+      "fluidName": "molten.stellite",
+      "plasmaName": null
     }
   },
   {
@@ -174487,7 +175916,8 @@
     "shapes": [
       "dust",
       "dustSmall",
-      "dustTiny"
+      "dustTiny",
+      "fluidMolten"
     ],
     "families": [
       "All",
@@ -174541,7 +175971,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.strontiumhydroxide",
+        "temperature": 645,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -174599,7 +176033,9 @@
           "material": "Hydrogen",
           "amount": 2
         }
-      ]
+      ],
+      "fluidName": "molten.strontiumhydroxide",
+      "plasmaName": null
     }
   },
   {
@@ -174612,7 +176048,8 @@
     "shapes": [
       "dust",
       "dustSmall",
-      "dustTiny"
+      "dustTiny",
+      "fluidMolten"
     ],
     "families": [
       "All",
@@ -174662,7 +176099,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.strontiumoxide",
+        "temperature": 825,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -174716,7 +176157,9 @@
           "material": "Oxygen",
           "amount": 1
         }
-      ]
+      ],
+      "fluidName": "molten.strontiumoxide",
+      "plasmaName": null
     }
   },
   {
@@ -174729,9 +176172,11 @@
     "shapes": [
       "block",
       "bolt",
+      "cellMolten",
       "dust",
       "dustSmall",
       "dustTiny",
+      "fluidMolten",
       "gearGt",
       "ingot",
       "ingotHot",
@@ -174804,7 +176249,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.talonite",
+        "temperature": 3727,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -174866,7 +176315,9 @@
           "material": "Molybdenum",
           "amount": 10
         }
-      ]
+      ],
+      "fluidName": "molten.talonite",
+      "plasmaName": null
     }
   },
   {
@@ -174879,9 +176330,11 @@
     "shapes": [
       "block",
       "bolt",
+      "cellMolten",
       "dust",
       "dustSmall",
       "dustTiny",
+      "fluidMolten",
       "gearGt",
       "ingot",
       "ingotHot",
@@ -174946,7 +176399,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.tantalloy60",
+        "temperature": 3298,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -175000,7 +176457,9 @@
           "material": "Tantalum",
           "amount": 46
         }
-      ]
+      ],
+      "fluidName": "molten.tantalloy60",
+      "plasmaName": null
     }
   },
   {
@@ -175013,9 +176472,11 @@
     "shapes": [
       "block",
       "bolt",
+      "cellMolten",
       "dust",
       "dustSmall",
       "dustTiny",
+      "fluidMolten",
       "gearGt",
       "ingot",
       "ingotHot",
@@ -175084,7 +176545,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.tantalloy61",
+        "temperature": 3303,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -175142,7 +176607,9 @@
           "material": "Yttrium",
           "amount": 8
         }
-      ]
+      ],
+      "fluidName": "molten.tantalloy61",
+      "plasmaName": null
     }
   },
   {
@@ -175155,9 +176622,11 @@
     "shapes": [
       "block",
       "bolt",
+      "cellMolten",
       "dust",
       "dustSmall",
       "dustTiny",
+      "fluidMolten",
       "gearGt",
       "ingot",
       "ingotHot",
@@ -175222,7 +176691,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.tantalumcarbide",
+        "temperature": 3253,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -175276,7 +176749,9 @@
           "material": "Carbon",
           "amount": 50
         }
-      ]
+      ],
+      "fluidName": "molten.tantalumcarbide",
+      "plasmaName": null
     }
   },
   {
@@ -175288,9 +176763,13 @@
     "textureSet": "NUCLEAR",
     "shapes": [
       "block",
+      "cellMolten",
+      "cellPlasmaLight",
       "dust",
       "dustSmall",
       "dustTiny",
+      "fluidMolten",
+      "fluidPlasma",
       "ingot",
       "nugget",
       "plate",
@@ -175338,8 +176817,16 @@
       "solid": null,
       "fluid": null,
       "gas": null,
-      "plasma": null,
-      "molten": null
+      "plasma": {
+        "name": "plasma.technetium",
+        "temperature": 10000,
+        "texture": null
+      },
+      "molten": {
+        "name": "molten.technetium",
+        "temperature": 2473,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -175384,7 +176871,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": true,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.technetium",
+      "plasmaName": "plasma.technetium"
     }
   },
   {
@@ -175395,9 +176884,11 @@
     "moltenArgb": null,
     "textureSet": "SHINY",
     "shapes": [
+      "cell",
       "dust",
       "dustSmall",
       "dustTiny",
+      "fluidGas",
       "stick",
       "stickLong"
     ],
@@ -175449,7 +176940,11 @@
     "fluids": {
       "solid": null,
       "fluid": null,
-      "gas": null,
+      "gas": {
+        "name": "technetiumhexafluoride",
+        "temperature": 1399,
+        "texture": null
+      },
       "plasma": null,
       "molten": null
     },
@@ -175505,7 +177000,9 @@
           "material": "Fluorine",
           "amount": 6
         }
-      ]
+      ],
+      "fluidName": "technetiumhexafluoride",
+      "plasmaName": null
     }
   },
   {
@@ -175518,9 +177015,13 @@
     "shapes": [
       "block",
       "bolt",
+      "cellMolten",
+      "cellPlasmaLight",
       "dust",
       "dustSmall",
       "dustTiny",
+      "fluidMolten",
+      "fluidPlasma",
       "gearGt",
       "ingot",
       "nugget",
@@ -175575,8 +177076,16 @@
       "solid": null,
       "fluid": null,
       "gas": null,
-      "plasma": null,
-      "molten": null
+      "plasma": {
+        "name": "plasma.thallium",
+        "temperature": 10000,
+        "texture": null
+      },
+      "molten": {
+        "name": "molten.thallium",
+        "temperature": 577,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -175621,7 +177130,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": true,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.thallium",
+      "plasmaName": "plasma.thallium"
     }
   },
   {
@@ -175631,7 +177142,10 @@
     "argb": 9745052,
     "moltenArgb": null,
     "textureSet": "SHINY",
-    "shapes": [],
+    "shapes": [
+      "cellMolten",
+      "fluidMolten"
+    ],
     "families": [
       "All",
       "Cells",
@@ -175682,7 +177196,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.thoriumberylliumdepletedmoltensalttbsalt",
+        "temperature": 987,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -175740,7 +177258,9 @@
           "material": "ThoriumTetrafluoride",
           "amount": 1
         }
-      ]
+      ],
+      "fluidName": "molten.thoriumberylliumdepletedmoltensalttbsalt",
+      "plasmaName": null
     }
   },
   {
@@ -175750,7 +177270,10 @@
     "argb": 10859183,
     "moltenArgb": null,
     "textureSet": "SHINY",
-    "shapes": [],
+    "shapes": [
+      "cellMolten",
+      "fluidMolten"
+    ],
     "families": [
       "All",
       "Cells",
@@ -175797,7 +177320,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.thoriumdepletedmoltensalttsalt",
+        "temperature": 941,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -175851,7 +177378,9 @@
           "material": "ThoriumTetrafluoride",
           "amount": 1
         }
-      ]
+      ],
+      "fluidName": "molten.thoriumdepletedmoltensalttsalt",
+      "plasmaName": null
     }
   },
   {
@@ -175862,9 +177391,11 @@
     "moltenArgb": null,
     "textureSet": "NUCLEAR",
     "shapes": [
+      "cellMolten",
       "dust",
       "dustSmall",
       "dustTiny",
+      "fluidMolten",
       "stick",
       "stickLong"
     ],
@@ -175922,7 +177453,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.thoriumhexafluoride",
+        "temperature": 1700,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -175980,7 +177515,9 @@
           "material": "Fluorine",
           "amount": 12
         }
-      ]
+      ],
+      "fluidName": "molten.thoriumhexafluoride",
+      "plasmaName": null
     }
   },
   {
@@ -176127,7 +177664,9 @@
           "material": "Oxygen",
           "amount": 10
         }
-      ]
+      ],
+      "fluidName": null,
+      "plasmaName": null
     }
   },
   {
@@ -176140,9 +177679,11 @@
     "shapes": [
       "block",
       "bolt",
+      "cellMolten",
       "dust",
       "dustSmall",
       "dustTiny",
+      "fluidMolten",
       "foil",
       "gearGt",
       "ingot",
@@ -176216,7 +177757,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.titansteel",
+        "temperature": 8523,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -176278,7 +177823,9 @@
           "material": "InfusedEntropy",
           "amount": 1
         }
-      ]
+      ],
+      "fluidName": "molten.titansteel",
+      "plasmaName": null
     }
   },
   {
@@ -176288,7 +177835,10 @@
     "argb": 7889950,
     "moltenArgb": null,
     "textureSet": "METALLIC",
-    "shapes": [],
+    "shapes": [
+      "cellMolten",
+      "fluidMolten"
+    ],
     "families": [
       "All",
       "Cells",
@@ -176343,7 +177893,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.trichloroaceticacid",
+        "temperature": 330,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -176405,7 +177959,9 @@
           "material": "Chlorine",
           "amount": 3
         }
-      ]
+      ],
+      "fluidName": "molten.trichloroaceticacid",
+      "plasmaName": null
     }
   },
   {
@@ -176417,9 +177973,11 @@
     "textureSet": "SHINY",
     "shapes": [
       "block",
+      "cellMolten",
       "dust",
       "dustSmall",
       "dustTiny",
+      "fluidMolten",
       "ingot",
       "nugget",
       "plate",
@@ -176475,7 +178033,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.triniumnaquadahalloy",
+        "temperature": 4473,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -176529,7 +178091,9 @@
           "material": "Naquadah",
           "amount": 9
         }
-      ]
+      ],
+      "fluidName": "molten.triniumnaquadahalloy",
+      "plasmaName": null
     }
   },
   {
@@ -176542,9 +178106,11 @@
     "shapes": [
       "block",
       "bolt",
+      "cellMolten",
       "dust",
       "dustSmall",
       "dustTiny",
+      "fluidMolten",
       "gearGt",
       "ingot",
       "ingotHot",
@@ -176609,7 +178175,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.triniumnaquadahcarbonite",
+        "temperature": 6773,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -176663,7 +178233,9 @@
           "material": "Carbon",
           "amount": 1
         }
-      ]
+      ],
+      "fluidName": "molten.triniumnaquadahcarbonite",
+      "plasmaName": null
     }
   },
   {
@@ -176676,9 +178248,11 @@
     "shapes": [
       "block",
       "bolt",
+      "cellMolten",
       "dust",
       "dustSmall",
       "dustTiny",
+      "fluidMolten",
       "gearGt",
       "ingot",
       "ingotHot",
@@ -176743,7 +178317,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.triniumtitaniumalloy",
+        "temperature": 4023,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -176797,7 +178375,9 @@
           "material": "Titanium",
           "amount": 7
         }
-      ]
+      ],
+      "fluidName": "molten.triniumtitaniumalloy",
+      "plasmaName": null
     }
   },
   {
@@ -176810,9 +178390,11 @@
     "shapes": [
       "block",
       "bolt",
+      "cellMolten",
       "dust",
       "dustSmall",
       "dustTiny",
+      "fluidMolten",
       "gearGt",
       "ingot",
       "nugget",
@@ -176876,7 +178458,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.tumbaga",
+        "temperature": 1573,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -176930,7 +178516,9 @@
           "material": "Copper",
           "amount": 30
         }
-      ]
+      ],
+      "fluidName": "molten.tumbaga",
+      "plasmaName": null
     }
   },
   {
@@ -176943,9 +178531,11 @@
     "shapes": [
       "block",
       "bolt",
+      "cellMolten",
       "dust",
       "dustSmall",
       "dustTiny",
+      "fluidMolten",
       "gearGt",
       "ingot",
       "ingotHot",
@@ -177010,7 +178600,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.tungstentitaniumcarbide",
+        "temperature": 4695,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -177064,7 +178658,9 @@
           "material": "Titanium",
           "amount": 30
         }
-      ]
+      ],
+      "fluidName": "molten.tungstentitaniumcarbide",
+      "plasmaName": null
     }
   },
   {
@@ -177076,9 +178672,13 @@
     "textureSet": "NUCLEAR",
     "shapes": [
       "block",
+      "cellMolten",
+      "cellPlasmaLight",
       "dust",
       "dustSmall",
       "dustTiny",
+      "fluidMolten",
+      "fluidPlasma",
       "ingot",
       "nugget",
       "plate",
@@ -177126,8 +178726,16 @@
       "solid": null,
       "fluid": null,
       "gas": null,
-      "plasma": null,
-      "molten": null
+      "plasma": {
+        "name": "plasma.uranium232",
+        "temperature": 10000,
+        "texture": null
+      },
+      "molten": {
+        "name": "molten.uranium232",
+        "temperature": 1405,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -177172,7 +178780,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": true,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.uranium232",
+      "plasmaName": "plasma.uranium232"
     }
   },
   {
@@ -177184,9 +178794,13 @@
     "textureSet": "NUCLEAR",
     "shapes": [
       "block",
+      "cellMolten",
+      "cellPlasmaLight",
       "dust",
       "dustSmall",
       "dustTiny",
+      "fluidMolten",
+      "fluidPlasma",
       "ingot",
       "nugget",
       "plate",
@@ -177234,8 +178848,16 @@
       "solid": null,
       "fluid": null,
       "gas": null,
-      "plasma": null,
-      "molten": null
+      "plasma": {
+        "name": "plasma.uranium233",
+        "temperature": 10000,
+        "texture": null
+      },
+      "molten": {
+        "name": "molten.uranium233",
+        "temperature": 1405,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -177280,7 +178902,9 @@
       "state": "SOLID",
       "generatesFluid": true,
       "generatesCells": true,
-      "composition": []
+      "composition": [],
+      "fluidName": "molten.uranium233",
+      "plasmaName": "plasma.uranium233"
     }
   },
   {
@@ -177290,7 +178914,10 @@
     "argb": 11062700,
     "moltenArgb": null,
     "textureSet": "SHINY",
-    "shapes": [],
+    "shapes": [
+      "cellMolten",
+      "fluidMolten"
+    ],
     "families": [
       "All",
       "Cells",
@@ -177345,7 +178972,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.uraniumdepletedmoltensaltusalt",
+        "temperature": 1077,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -177407,7 +179038,9 @@
           "material": "Protactinium",
           "amount": 1
         }
-      ]
+      ],
+      "fluidName": "molten.uraniumdepletedmoltensaltusalt",
+      "plasmaName": null
     }
   },
   {
@@ -177418,9 +179051,11 @@
     "moltenArgb": null,
     "textureSet": "SHINY",
     "shapes": [
+      "cellMolten",
       "dust",
       "dustSmall",
       "dustTiny",
+      "fluidMolten",
       "stick",
       "stickLong"
     ],
@@ -177474,7 +179109,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.uraniumhexafluoride",
+        "temperature": 595,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -177528,7 +179167,9 @@
           "material": "Fluorine",
           "amount": 2
         }
-      ]
+      ],
+      "fluidName": "molten.uraniumhexafluoride",
+      "plasmaName": null
     }
   },
   {
@@ -177539,9 +179180,11 @@
     "moltenArgb": null,
     "textureSet": "SHINY",
     "shapes": [
+      "cellMolten",
       "dust",
       "dustSmall",
       "dustTiny",
+      "fluidMolten",
       "stick",
       "stickLong"
     ],
@@ -177595,7 +179238,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.uraniumtetrafluoride",
+        "temperature": 865,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -177649,7 +179296,9 @@
           "material": "Fluorine",
           "amount": 4
         }
-      ]
+      ],
+      "fluidName": "molten.uraniumtetrafluoride",
+      "plasmaName": null
     }
   },
   {
@@ -177662,9 +179311,11 @@
     "shapes": [
       "block",
       "bolt",
+      "cellMolten",
       "dust",
       "dustSmall",
       "dustTiny",
+      "fluidMolten",
       "gearGt",
       "ingot",
       "ingotHot",
@@ -177750,7 +179401,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.watertightsteel",
+        "temperature": 2946,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -177824,7 +179479,9 @@
           "material": "Aluminium",
           "amount": 5
         }
-      ]
+      ],
+      "fluidName": "molten.watertightsteel",
+      "plasmaName": null
     }
   },
   {
@@ -177837,7 +179494,8 @@
     "shapes": [
       "dust",
       "dustSmall",
-      "dustTiny"
+      "dustTiny",
+      "fluidMolten"
     ],
     "families": [
       "All",
@@ -177895,7 +179553,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.wood'sglass",
+        "temperature": 1615,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -177957,7 +179619,9 @@
           "material": "Nickel",
           "amount": 10
         }
-      ]
+      ],
+      "fluidName": "molten.wood'sglass",
+      "plasmaName": null
     }
   },
   {
@@ -178112,7 +179776,9 @@
           "material": "Oxygen",
           "amount": 8
         }
-      ]
+      ],
+      "fluidName": null,
+      "plasmaName": null
     }
   },
   {
@@ -178259,7 +179925,9 @@
           "material": "Nitrogen",
           "amount": 2
         }
-      ]
+      ],
+      "fluidName": null,
+      "plasmaName": null
     }
   },
   {
@@ -178398,7 +180066,9 @@
           "material": "Oxygen",
           "amount": 7
         }
-      ]
+      ],
+      "fluidName": null,
+      "plasmaName": null
     }
   },
   {
@@ -178537,7 +180207,9 @@
           "material": "Yttrium",
           "amount": 1
         }
-      ]
+      ],
+      "fluidName": null,
+      "plasmaName": null
     }
   },
   {
@@ -178550,9 +180222,11 @@
     "shapes": [
       "block",
       "bolt",
+      "cellMolten",
       "dust",
       "dustSmall",
       "dustTiny",
+      "fluidMolten",
       "gearGt",
       "ingot",
       "ingotHot",
@@ -178633,7 +180307,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.zeron100",
+        "temperature": 6373,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -178703,7 +180381,9 @@
           "material": "Steel",
           "amount": 40
         }
-      ]
+      ],
+      "fluidName": "molten.zeron100",
+      "plasmaName": null
     }
   },
   {
@@ -178874,7 +180554,9 @@
           "material": "Oxygen",
           "amount": 18
         }
-      ]
+      ],
+      "fluidName": null,
+      "plasmaName": null
     }
   },
   {
@@ -179005,7 +180687,9 @@
           "material": "Oxygen",
           "amount": 4
         }
-      ]
+      ],
+      "fluidName": null,
+      "plasmaName": null
     }
   },
   {
@@ -179018,9 +180702,11 @@
     "shapes": [
       "block",
       "bolt",
+      "cellMolten",
       "dust",
       "dustSmall",
       "dustTiny",
+      "fluidMolten",
       "gearGt",
       "ingot",
       "nugget",
@@ -179084,7 +180770,11 @@
       "fluid": null,
       "gas": null,
       "plasma": null,
-      "molten": null
+      "molten": {
+        "name": "molten.zirconiumcarbide",
+        "temperature": 1828,
+        "texture": null
+      }
     },
     "crackedHydroFluids": [],
     "crackedSteamFluids": [],
@@ -179138,7 +180828,9 @@
           "material": "Carbon",
           "amount": 50
         }
-      ]
+      ],
+      "fluidName": "molten.zirconiumcarbide",
+      "plasmaName": null
     }
   },
   {
@@ -179259,7 +180951,9 @@
           "material": "Fluorine",
           "amount": 4
         }
-      ]
+      ],
+      "fluidName": null,
+      "plasmaName": null
     }
   },
   {
@@ -179406,7 +181100,9 @@
           "material": "Oxygen",
           "amount": 14
         }
-      ]
+      ],
+      "fluidName": null,
+      "plasmaName": null
     }
   },
   {
@@ -179593,7 +181289,9 @@
           "material": "Fluorine",
           "amount": 7
         }
-      ]
+      ],
+      "fluidName": null,
+      "plasmaName": null
     }
   },
   {
@@ -179756,7 +181454,9 @@
           "material": "Oxygen",
           "amount": 7
         }
-      ]
+      ],
+      "fluidName": null,
+      "plasmaName": null
     }
   }
 ]
