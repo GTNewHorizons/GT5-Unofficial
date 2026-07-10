@@ -25,9 +25,12 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import forestry.api.core.Tabs;
 import forestry.api.recipes.RecipeManagers;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.Materials2FluidShapes;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipeBuilder;
 
@@ -110,7 +113,7 @@ public class ItemDrop extends Item {
         RecipeManagers.squeezerManager.addRecipe(
             40,
             new ItemStack[] { tDrop },
-            Materials.OilHeavy.getFluid(100L),
+            MaterialLibAPI.getFluidStack(Materials2Materials.OilHeavy, Materials2FluidShapes.shapeFluidLiquid, 100),
             GTModHandler.getModItem(Forestry.ID, "propolis", 1L, 0),
             30);
         tDrop = getStackForType(DropType.COOLANT);
@@ -130,7 +133,7 @@ public class ItemDrop extends Item {
         tDrop = getStackForType(DropType.SNOW_QUEEN);
         addProcessMV(
             tDrop,
-            Materials.FierySteel.getFluid(200L),
+            MaterialLibAPI.getFluidStack(Materials2Materials.FierySteel, Materials2FluidShapes.shapeFluidLiquid, 200),
             GTModHandler.getModItem(NewHorizonsCoreMod.ID, "SnowQueenBloodDrop", 1L, 0),
             1500,
             48);
@@ -144,7 +147,7 @@ public class ItemDrop extends Item {
         tDrop = getStackForType(DropType.HYDRA);
         addProcessMV(
             tDrop,
-            Materials.FierySteel.getFluid(50L),
+            MaterialLibAPI.getFluidStack(Materials2Materials.FierySteel, Materials2FluidShapes.shapeFluidLiquid, 50),
             GTModHandler.getModItem(MagicBees.ID, "propolis", 1L, 2),
             3000,
             8);
@@ -152,7 +155,7 @@ public class ItemDrop extends Item {
         RecipeManagers.squeezerManager.addRecipe(
             400,
             new ItemStack[] { tDrop },
-            Materials.LiquidOxygen.getGas(100),
+            MaterialLibAPI.getFluidStack(Materials2Materials.LiquidOxygen, Materials2FluidShapes.shapeFluidGas, 100),
             GTModHandler.getModItem(ExtraBees.ID, "propolis", 1L, 2),
             30);
         tDrop = getStackForType(DropType.ENDERGOO);
