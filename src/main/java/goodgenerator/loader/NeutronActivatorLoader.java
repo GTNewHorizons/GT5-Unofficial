@@ -12,12 +12,13 @@ import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeConstants.NKE_RANGE;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import goodgenerator.items.GGMaterial;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.util.GTUtility;
 
 public class NeutronActivatorLoader {
@@ -31,7 +32,10 @@ public class NeutronActivatorLoader {
             .metadata(NKE_RANGE, computeRangeNKE(700, 500))
             .addTo(neutronActivatorRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.copyAmount(0, GTOreDictUnificator.get(OrePrefixes.plate, Materials.Tungsten, 1)))
+            .itemInputs(
+                GTUtility.copyAmount(
+                    0,
+                    MaterialLibAPI.getStack(Materials2Materials.Tungsten, Materials2Shapes.shapePlate, 1)))
             .fluidInputs(uraniumBasedLiquidFuel.getFluidOrGas(100))
             .fluidOutputs(uraniumBasedLiquidFuelExcited.getFluidOrGas(100))
             .duration(4 * SECONDS)
@@ -39,7 +43,10 @@ public class NeutronActivatorLoader {
             .metadata(NKE_RANGE, computeRangeNKE(550, 450))
             .addTo(neutronActivatorRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(GTUtility.copyAmount(0, GTOreDictUnificator.get(OrePrefixes.plate, Materials.Tritanium, 1)))
+            .itemInputs(
+                GTUtility.copyAmount(
+                    0,
+                    MaterialLibAPI.getStack(Materials2Materials.Tritanium, Materials2Shapes.shapePlate, 1)))
             .fluidInputs(plutoniumBasedLiquidFuel.getFluidOrGas(100))
             .fluidOutputs(plutoniumBasedLiquidFuelExcited.getFluidOrGas(100))
             .duration(4 * SECONDS)

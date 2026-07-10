@@ -11,6 +11,8 @@ import java.util.Arrays;
 
 import net.minecraft.item.ItemStack;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import bartworks.common.loaders.ItemRegistry;
 import goodgenerator.util.DescTextLocalization;
 import goodgenerator.util.ItemRefer;
@@ -19,6 +21,8 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TCAspects;
+import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import ic2.core.Ic2Items;
@@ -76,7 +80,7 @@ public class Research {
                         new ItemStack[] { nodeLinkDevice, nitor, alchemicalFurnace, essentiaLocus, alchemicalBoiler,
                             new ItemStack(ConfigBlocks.blockCrystal, 1, 1),
                             new ItemStack(ConfigBlocks.blockMetalDevice, 1, 3), ItemList.Electric_Piston_IV.get(1),
-                            GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.FierySteel, 1L),
+                            MaterialLibAPI.getStack(Materials2Materials.FierySteel, Materials2Shapes.shapeGearGt, 1),
                             GTOreDictUnificator.get(OrePrefixes.circuit, Materials.IV, 1L),
                             GTOreDictUnificator.get(OrePrefixes.circuit, Materials.IV, 1L),
                             GTOreDictUnificator.get(OrePrefixes.circuit, Materials.IV, 1L),
@@ -94,7 +98,8 @@ public class Research {
                     GregTechAPI.sThaumcraftCompat.addInfusionRecipe(
                         "ESSENTIA_SMELTERY",
                         ItemList.Hatch_Output_HV.get(1),
-                        new ItemStack[] { new ItemStack(ConfigBlocks.blockJar, 1), ItemRefer.Magic_Casing.get(1),
+                        new ItemStack[] {
+                            new ItemStack(ConfigBlocks.blockJar, 1), ItemRefer.Magic_Casing.get(1),
                             new ItemStack(ConfigBlocks.blockTube, 1), ItemList.Electric_Pump_MV.get(1L) },
                         ItemRefer.Essentia_Output_Hatch.get(1),
                         6,
@@ -121,7 +126,7 @@ public class Research {
                         'B',
                         new ItemStack(ConfigBlocks.blockStoneDevice, 1, 14),
                         'C',
-                        GTOreDictUnificator.get(OrePrefixes.rotor, Materials.Void, 1),
+                        MaterialLibAPI.getStack(Materials2Materials.Void, Materials2Shapes.shapeRotor, 1),
                         'D',
                         new ItemStack(GregTechAPI.sBlockCasings3, 1, 11),
                         'E',
@@ -132,8 +137,10 @@ public class Research {
                         "ESSENTIA_SMELTERY",
                         GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Thaumium, 1),
                         new ItemStack[] { GTOreDictUnificator.get(OrePrefixes.pipeTiny, Materials.Titanium, 1),
-                            GTOreDictUnificator.get(OrePrefixes.plate, Materials.ElectricalSteel, 1),
-                            GTOreDictUnificator.get(OrePrefixes.plate, Materials.ElectricalSteel, 1),
+                            MaterialLibAPI
+                                .getStack(Materials2Materials.ElectricalSteel, Materials2Shapes.shapePlate, 1),
+                            MaterialLibAPI
+                                .getStack(Materials2Materials.ElectricalSteel, Materials2Shapes.shapePlate, 1),
                             ItemList.Electric_Pump_EV.get(1L), new ItemStack(ConfigBlocks.blockTube, 1, 4),
                             new ItemStack(ConfigBlocks.blockCosmeticOpaque, 1, 2), },
                         ItemRefer.Essentia_Cell_T1.get(1),
@@ -154,7 +161,7 @@ public class Research {
                         'S',
                         new ItemStack(ConfigItems.itemResource, 1, 14),
                         'C',
-                        GTOreDictUnificator.get(OrePrefixes.itemCasing, Materials.Thaumium, 1),
+                        MaterialLibAPI.getStack(Materials2Materials.Thaumium, Materials2Shapes.shapeItemCasing, 1),
                         'G',
                         ItemList.ReinforcedGlass.get(1L),
                         'A',
@@ -178,26 +185,25 @@ public class Research {
                 new TCAspects.TC_AspectStack(TCAspects.PRAECANTATIO, 10L),
                 new TCAspects.TC_AspectStack(TCAspects.PERMUTATIO, 10L)),
             null,
-            new Object[] { "research.ESSENTIA_CELL.page.0",
-                GregTechAPI.sThaumcraftCompat.addInfusionRecipe(
-                    "ESSENTIA_CELL",
-                    ItemRefer.Essentia_Cell_T1.get(1),
-                    new ItemStack[] { GTOreDictUnificator.get(OrePrefixes.plate, Materials.Iridium, 1),
-                        ItemList.Electric_Pump_IV.get(1L), ItemList.QuantumStar.get(1L),
-                        new ItemStack(ConfigBlocks.blockMetalDevice, 1, 3), ItemList.Reactor_Coolant_Sp_1.get(1L),
-                        GTOreDictUnificator.get(OrePrefixes.bolt, Materials.Plutonium241, 1), },
-                    ItemRefer.Essentia_Cell_T2.get(1),
-                    6,
-                    Arrays.asList(
-                        new TCAspects.TC_AspectStack(TCAspects.AQUA, 64),
-                        new TCAspects.TC_AspectStack(TCAspects.VACUOS, 64),
-                        new TCAspects.TC_AspectStack(TCAspects.PERMUTATIO, 32))),
+            new Object[] { "research.ESSENTIA_CELL.page.0", GregTechAPI.sThaumcraftCompat.addInfusionRecipe(
+                "ESSENTIA_CELL",
+                ItemRefer.Essentia_Cell_T1.get(1),
+                new ItemStack[] { MaterialLibAPI.getStack(Materials2Materials.Iridium, Materials2Shapes.shapePlate, 1),
+                    ItemList.Electric_Pump_IV.get(1L), ItemList.QuantumStar.get(1L),
+                    new ItemStack(ConfigBlocks.blockMetalDevice, 1, 3), ItemList.Reactor_Coolant_Sp_1.get(1L),
+                    MaterialLibAPI.getStack(Materials2Materials.Plutonium241, Materials2Shapes.shapeBolt, 1), },
+                ItemRefer.Essentia_Cell_T2.get(1),
+                6,
+                Arrays.asList(
+                    new TCAspects.TC_AspectStack(TCAspects.AQUA, 64),
+                    new TCAspects.TC_AspectStack(TCAspects.VACUOS, 64),
+                    new TCAspects.TC_AspectStack(TCAspects.PERMUTATIO, 32))),
                 GregTechAPI.sThaumcraftCompat.addInfusionRecipe(
                     "ESSENTIA_CELL",
                     ItemRefer.Essentia_Cell_T2.get(1),
                     new ItemStack[] { ItemList.Field_Generator_IV.get(1L), ItemList.Electric_Pump_LuV.get(1L),
                         new ItemStack(ConfigItems.itemResource, 1, 14),
-                        GTOreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.Ichorium, 1),
+                        MaterialLibAPI.getStack(Materials2Materials.Ichorium, Materials2Shapes.shapeGearGtSmall, 1),
                         new ItemStack(ConfigBlocks.blockJar, 1, 0), ItemList.FluidRegulator_LuV.get(1L) },
                     ItemRefer.Essentia_Cell_T3.get(1),
                     8,
@@ -208,9 +214,10 @@ public class Research {
                 GregTechAPI.sThaumcraftCompat.addInfusionRecipe(
                     "ESSENTIA_CELL",
                     ItemRefer.Essentia_Cell_T3.get(1),
-                    new ItemStack[] { GTOreDictUnificator.get(OrePrefixes.ring, Materials.Europium, 1),
+                    new ItemStack[] {
+                        MaterialLibAPI.getStack(Materials2Materials.Europium, Materials2Shapes.shapeRing, 1),
                         ItemList.Emitter_LuV.get(1L), new ItemStack(ItemRegistry.bw_realglas, 1, 4),
-                        GTOreDictUnificator.get(OrePrefixes.plate, Materials.StellarAlloy, 1),
+                        MaterialLibAPI.getStack(Materials2Materials.StellarAlloy, Materials2Shapes.shapePlate, 1),
                         GTOreDictUnificator.get(OrePrefixes.cellPlasma, Materials.Helium, 1),
                         new ItemStack(ConfigItems.itemShard, 1, 6), },
                     ItemRefer.Essentia_Cell_T4.get(1),

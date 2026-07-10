@@ -14,12 +14,15 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.enums.materials2.Materials2FluidShapes;
+import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.material.MaterialsElements;
 import gtnhlanth.common.beamline.Particle;
@@ -42,20 +45,20 @@ public class BeamlineRecipeLoader {
          */
 
         coolantMap.put(
-            Materials.LiquidNitrogen.getGas(1L)
+            MaterialLibAPI.getFluidStack(Materials2Materials.LiquidNitrogen, Materials2FluidShapes.shapeFluidGas, 1)
                 .getFluid()
                 .getName(),
-            Materials.Nitrogen.getGas(1L)
+            MaterialLibAPI.getFluidStack(Materials2Materials.Nitrogen, Materials2FluidShapes.shapeFluidGas, 1)
                 .getFluid());
         coolantMap.put(
-            Materials.LiquidOxygen.getGas(1L)
+            MaterialLibAPI.getFluidStack(Materials2Materials.LiquidOxygen, Materials2FluidShapes.shapeFluidGas, 1)
                 .getFluid()
                 .getName(),
-            Materials.Oxygen.getGas(1L)
+            MaterialLibAPI.getFluidStack(Materials2Materials.Oxygen, Materials2FluidShapes.shapeFluidGas, 1)
                 .getFluid());
         coolantMap.put("ic2coolant", FluidRegistry.getFluid("ic2hotcoolant"));
         coolantMap.put(
-            Materials.SuperCoolant.getFluid(1L)
+            MaterialLibAPI.getFluidStack(Materials2Materials.SuperCoolant, Materials2FluidShapes.shapeFluidLiquid, 1)
                 .getFluid()
                 .getName(),
             WerkstoffMaterialPool.HotSuperCoolant.getFluidOrGas(1_000)
@@ -65,7 +68,7 @@ public class BeamlineRecipeLoader {
          * ELECTRON
          */
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.stick, Materials.Tungsten, 1))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Tungsten, Materials2Shapes.shapeStick, 1))
             .metadata(
                 SOURCE_CHAMBER_METADATA,
                 SourceChamberMetadata.builder()
@@ -127,7 +130,7 @@ public class BeamlineRecipeLoader {
          * ALPHA
          */
         GTValues.RA.stdBuilder()
-            .itemInputs(Materials.Uranium.getDust(1))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Uranium, Materials2Shapes.shapeDust, 1))
             .itemOutputs(WerkstoffMaterialPool.Thorium234.get(OrePrefixes.dust, 1))
             .metadata(
                 SOURCE_CHAMBER_METADATA,
@@ -145,7 +148,8 @@ public class BeamlineRecipeLoader {
          * PROTON
          */
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.Hydrogen.getGas(1000))
+            .fluidInputs(
+                MaterialLibAPI.getFluidStack(Materials2Materials.Hydrogen, Materials2FluidShapes.shapeFluidGas, 1000))
             .metadata(
                 SOURCE_CHAMBER_METADATA,
                 SourceChamberMetadata.builder()
@@ -162,8 +166,8 @@ public class BeamlineRecipeLoader {
          * OMEGA
          */
         GTValues.RA.stdBuilder()
-            .itemInputs(Materials.Unstable.getDust(1))
-            .itemOutputs(Materials.Ash.getDust(1))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Unstable, Materials2Shapes.shapeDust, 1))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Ash, Materials2Shapes.shapeDust, 1))
             .outputChances(500)
             .metadata(
                 SOURCE_CHAMBER_METADATA,
