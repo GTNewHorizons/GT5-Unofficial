@@ -492,7 +492,7 @@ public class BECRecipes implements Runnable {
             200 * SECONDS,
             TierEU.RECIPE_UMV);
 
-        // T4 QFT Manipulator, 1.5x cheaper recipe
+        // T4 QFT Manipulator
         addBec(
             GregtechItemList.SpaceTimeContinuumRipper.get(1),
             new ItemStack[] { GregtechItemList.ForceFieldGlass.get(8),
