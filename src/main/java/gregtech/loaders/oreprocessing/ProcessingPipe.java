@@ -7,12 +7,16 @@ import static gregtech.api.util.GTUtility.calculateRecipeEU;
 
 import net.minecraft.item.ItemStack;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.ToolDictNames;
+import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -88,10 +92,10 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
             case "pipeRestrictiveHuge", "pipeRestrictiveLarge", "pipeRestrictiveMedium", "pipeRestrictiveSmall", "pipeRestrictiveTiny" -> {
                 GTValues.RA.stdBuilder()
                     .itemInputs(
-                        GTOreDictUnificator.get(
-                            OrePrefixes.ring,
-                            Materials.Steel,
-                            aPrefix.mSecondaryMaterial.mAmount / OrePrefixes.ring.getMaterialAmount()),
+                        MaterialLibAPI.getStack(
+                            Materials2Materials.Steel,
+                            Materials2Shapes.shapeRing,
+                            (int) (aPrefix.mSecondaryMaterial.mAmount / OrePrefixes.ring.getMaterialAmount())),
                         GTOreDictUnificator.get(aOreDictName.replaceFirst("Restrictive", ""), null, 1L, false, true))
                     .itemOutputs(GTUtility.copyAmount(1, aStack))
                     .duration(

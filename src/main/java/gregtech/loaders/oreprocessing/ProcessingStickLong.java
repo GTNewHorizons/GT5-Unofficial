@@ -8,11 +8,15 @@ import static gregtech.api.util.GTUtility.calculateRecipeEU;
 
 import net.minecraft.item.ItemStack;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.Materials2FluidShapes;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -73,13 +77,15 @@ public class ProcessingStickLong implements gregtech.api.interfaces.IOreRecipeRe
                     .itemInputs(GTUtility.copyAmount(1, aStack))
                     .itemOutputs(GTOreDictUnificator.get(OrePrefixes.stick, aMaterial, 2L))
                     .fluidInputs(
-                        Materials.Lubricant.getFluid(
-                            Math.max(
+                        MaterialLibAPI.getFluidStack(
+                            Materials2Materials.Lubricant,
+                            Materials2FluidShapes.shapeFluidLiquid,
+                            (int) (Math.max(
                                 1,
                                 Math.min(
                                     250,
-                                    ((int) Math.max(aMaterial.getMass(), 1L)) * calculateRecipeEU(aMaterial, 4)
-                                        / 1280))))
+                                    ((int) Math.max(aMaterial.getMass(), 1)) * calculateRecipeEU(aMaterial, 4)
+                                        / 1280)))))
                     .duration(((int) Math.max(aMaterial.getMass(), 1L)) * TICKS)
                     .eut(calculateRecipeEU(aMaterial, 4))
                     .addTo(cutterRecipes);

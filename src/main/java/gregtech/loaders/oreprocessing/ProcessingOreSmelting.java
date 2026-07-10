@@ -10,12 +10,16 @@ import static gregtech.api.util.GTRecipeConstants.COIL_HEAT;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -120,43 +124,66 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
                 .itemInputs(material.getDust(2), new ItemStack(Blocks.sand, 2))
                 .itemOutputs(
                     material.mDirectSmelting.getIngots(outputAmount),
-                    Materials.Ferrosilite.getDustSmall(2 * outputAmount))
+                    MaterialLibAPI.getStack(
+                        Materials2Materials.Ferrosilite,
+                        Materials2Shapes.shapeDustSmall,
+                        (int) (2 * outputAmount)))
                 .duration(2 * MINUTES)
                 .metadata(ADDITIVE_AMOUNT, 2)
                 .addTo(primitiveBlastRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(material.getDust(2), Materials.Glass.getDust(2))
+                .itemInputs(
+                    material.getDust(2),
+                    MaterialLibAPI.getStack(Materials2Materials.Glass, Materials2Shapes.shapeDust, (int) (2)))
                 .itemOutputs(
                     material.mDirectSmelting.getIngots(outputAmount),
-                    Materials.Ferrosilite.getDustSmall(7 * outputAmount))
+                    MaterialLibAPI.getStack(
+                        Materials2Materials.Ferrosilite,
+                        Materials2Shapes.shapeDustSmall,
+                        (int) (7 * outputAmount)))
                 .duration(2 * MINUTES)
                 .metadata(ADDITIVE_AMOUNT, 2)
                 .addTo(primitiveBlastRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(material.getDust(2), Materials.SiliconDioxide.getDust(2))
+                .itemInputs(
+                    material.getDust(2),
+                    MaterialLibAPI.getStack(Materials2Materials.SiliconDioxide, Materials2Shapes.shapeDust, (int) (2)))
                 .itemOutputs(
                     material.mDirectSmelting.getIngots(outputAmount),
-                    Materials.Ferrosilite.getDustSmall(outputAmount))
+                    MaterialLibAPI.getStack(
+                        Materials2Materials.Ferrosilite,
+                        Materials2Shapes.shapeDustSmall,
+                        (int) (outputAmount)))
                 .duration(2 * MINUTES)
                 .metadata(ADDITIVE_AMOUNT, 2)
                 .addTo(primitiveBlastRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(material.getDust(2), Materials.NetherQuartz.getDust(2))
+                .itemInputs(
+                    material.getDust(2),
+                    MaterialLibAPI.getStack(Materials2Materials.NetherQuartz, Materials2Shapes.shapeDust, (int) (2)))
                 .itemOutputs(
                     material.mDirectSmelting.getIngots(outputAmount),
-                    Materials.Ferrosilite.getDustSmall(outputAmount))
+                    MaterialLibAPI.getStack(
+                        Materials2Materials.Ferrosilite,
+                        Materials2Shapes.shapeDustSmall,
+                        (int) (outputAmount)))
                 .duration(2 * MINUTES)
                 .metadata(ADDITIVE_AMOUNT, 2)
                 .addTo(primitiveBlastRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(material.getDust(2), Materials.CertusQuartz.getDust(2))
+                .itemInputs(
+                    material.getDust(2),
+                    MaterialLibAPI.getStack(Materials2Materials.CertusQuartz, Materials2Shapes.shapeDust, (int) (2)))
                 .itemOutputs(
                     material.mDirectSmelting.getIngots(outputAmount),
-                    Materials.Ferrosilite.getDustSmall(outputAmount))
+                    MaterialLibAPI.getStack(
+                        Materials2Materials.Ferrosilite,
+                        Materials2Shapes.shapeDustSmall,
+                        (int) (outputAmount)))
                 .duration(2 * MINUTES)
                 .metadata(ADDITIVE_AMOUNT, 2)
                 .addTo(primitiveBlastRecipes);
@@ -165,7 +192,8 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
                 .itemInputs(material.getDust(2))
                 .itemOutputs(
                     material.mDirectSmelting.getIngots(outputAmount),
-                    Materials.Antimony.getNuggets(3 * outputAmount))
+                    MaterialLibAPI
+                        .getStack(Materials2Materials.Antimony, Materials2Shapes.shapeNugget, (int) (3 * outputAmount)))
                 .duration(2 * MINUTES)
                 .metadata(ADDITIVE_AMOUNT, 2)
                 .addTo(primitiveBlastRecipes);
@@ -174,7 +202,8 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
                 .itemInputs(material.getDust(2))
                 .itemOutputs(
                     material.mDirectSmelting.getIngots(outputAmount),
-                    Materials.Silver.getNuggets(3 * outputAmount))
+                    MaterialLibAPI
+                        .getStack(Materials2Materials.Silver, Materials2Shapes.shapeNugget, (int) (3 * outputAmount)))
                 .duration(2 * MINUTES)
                 .metadata(ADDITIVE_AMOUNT, 2)
                 .addTo(primitiveBlastRecipes);

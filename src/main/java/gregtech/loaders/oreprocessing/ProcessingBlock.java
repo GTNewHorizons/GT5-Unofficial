@@ -11,11 +11,15 @@ import static gregtech.api.util.GTUtility.calculateRecipeEU;
 
 import net.minecraft.item.ItemStack;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.Materials2FluidShapes;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -74,10 +78,12 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
                     .circuit(3)
                     .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 9L))
                     .fluidInputs(
-                        Materials.Lubricant.getFluid(
-                            Math.max(
+                        MaterialLibAPI.getFluidStack(
+                            Materials2Materials.Lubricant,
+                            Materials2FluidShapes.shapeFluidLiquid,
+                            (int) (Math.max(
                                 1,
-                                Math.min(250, ((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS * 30 / 1280))))
+                                Math.min(250, ((int) Math.max(aMaterial.getMass() * 10, 1)) * TICKS * 30 / 1280)))))
                     .duration(((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS)
                     .eut(calculateRecipeEU(aMaterial, 16))
                     .addTo(cutterRecipes);
@@ -127,10 +133,12 @@ public class ProcessingBlock implements gregtech.api.interfaces.IOreRecipeRegist
                     .itemInputs(GTUtility.copyAmount(1, aStack))
                     .itemOutputs(GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 9L))
                     .fluidInputs(
-                        Materials.Lubricant.getFluid(
-                            Math.max(
+                        MaterialLibAPI.getFluidStack(
+                            Materials2Materials.Lubricant,
+                            Materials2FluidShapes.shapeFluidLiquid,
+                            (int) (Math.max(
                                 1,
-                                Math.min(250, ((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS * 30 / 1280))))
+                                Math.min(250, ((int) Math.max(aMaterial.getMass() * 10, 1)) * TICKS * 30 / 1280)))))
                     .duration(((int) Math.max(aMaterial.getMass() * 10L, 1L)) * TICKS)
                     .eut(calculateRecipeEU(aMaterial, 16))
                     .addTo(cutterRecipes);

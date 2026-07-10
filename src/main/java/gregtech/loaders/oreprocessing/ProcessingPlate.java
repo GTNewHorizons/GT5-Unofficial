@@ -30,6 +30,8 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -39,6 +41,9 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.ToolDictNames;
+import gregtech.api.enums.materials2.Materials2FluidShapes;
+import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
@@ -200,7 +205,9 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 .itemInputs(GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 2L))
                 .circuit(2)
                 .itemOutputs(GTUtility.copyAmount(1, aStack))
-                .fluidInputs(Materials.Glue.getFluid(10L))
+                .fluidInputs(
+                    MaterialLibAPI
+                        .getFluidStack(Materials2Materials.Glue, Materials2FluidShapes.shapeFluidLiquid, (int) (10)))
                 .duration(3 * SECONDS + 4 * TICKS)
                 .eut(TierEU.RECIPE_ULV)
                 .addTo(assemblerRecipes);
@@ -249,7 +256,9 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 .itemInputs(GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 3L))
                 .circuit(3)
                 .itemOutputs(GTUtility.copyAmount(1, aStack))
-                .fluidInputs(Materials.Glue.getFluid(20L))
+                .fluidInputs(
+                    MaterialLibAPI
+                        .getFluidStack(Materials2Materials.Glue, Materials2FluidShapes.shapeFluidLiquid, (int) (20)))
                 .duration(4 * SECONDS + 16 * TICKS)
                 .eut(TierEU.RECIPE_ULV)
                 .addTo(assemblerRecipes);
@@ -300,7 +309,9 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 .itemInputs(GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 4L))
                 .circuit(4)
                 .itemOutputs(GTUtility.copyAmount(1, aStack))
-                .fluidInputs(Materials.Glue.getFluid(30L))
+                .fluidInputs(
+                    MaterialLibAPI
+                        .getFluidStack(Materials2Materials.Glue, Materials2FluidShapes.shapeFluidLiquid, (int) (30)))
                 .duration(6 * SECONDS + 8 * TICKS)
                 .eut(TierEU.RECIPE_ULV)
                 .addTo(assemblerRecipes);
@@ -338,7 +349,9 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 .itemInputs(GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 5L))
                 .circuit(5)
                 .itemOutputs(GTUtility.copyAmount(1, aStack))
-                .fluidInputs(Materials.Glue.getFluid(40L))
+                .fluidInputs(
+                    MaterialLibAPI
+                        .getFluidStack(Materials2Materials.Glue, Materials2FluidShapes.shapeFluidLiquid, (int) (40)))
                 .duration(8 * SECONDS)
                 .eut(TierEU.RECIPE_ULV)
                 .addTo(assemblerRecipes);
@@ -470,13 +483,15 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                 .itemInputs(GTOreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L))
                 .itemOutputs(GTOreDictUnificator.get(OrePrefixes.itemCasing, aMaterial, 2L))
                 .fluidInputs(
-                    Materials.Lubricant.getFluid(
-                        Math.max(
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.Lubricant,
+                        Materials2FluidShapes.shapeFluidLiquid,
+                        (int) (Math.max(
                             1,
                             Math.min(
                                 250,
-                                ((int) Math.max(aMaterial.getMass(), 1L)) * (calculateRecipeEU(aMaterial, 16))
-                                    / 1280))))
+                                ((int) Math.max(aMaterial.getMass(), 1)) * (calculateRecipeEU(aMaterial, 16))
+                                    / 1280)))))
                 .duration(((int) Math.max(aMaterial.getMass(), 1L)) * TICKS)
                 .eut(calculateRecipeEU(aMaterial, 16))
                 .addTo(cutterRecipes);
@@ -516,7 +531,9 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                     .eut(4)
                     .addTo(alloySmelterRecipes);
                 GTValues.RA.stdBuilder()
-                    .itemInputs(GTUtility.copyAmount(1, aStack), Materials.Glass.getDust(3))
+                    .itemInputs(
+                        GTUtility.copyAmount(1, aStack),
+                        MaterialLibAPI.getStack(Materials2Materials.Glass, Materials2Shapes.shapeDust, (int) (3)))
                     .itemOutputs(ItemList.ReinforcedGlass.get(4L))
                     .duration(20 * SECONDS)
                     .eut(4)
@@ -530,7 +547,9 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
                     .eut(4)
                     .addTo(alloySmelterRecipes);
                 RA.stdBuilder()
-                    .itemInputs(GTUtility.copyAmount(1, aStack), Materials.Glass.getDust(3))
+                    .itemInputs(
+                        GTUtility.copyAmount(1, aStack),
+                        MaterialLibAPI.getStack(Materials2Materials.Glass, Materials2Shapes.shapeDust, (int) (3)))
                     .itemOutputs(ItemList.ReinforcedGlass.get(4L))
                     .duration(20 * SECONDS)
                     .eut(4)
