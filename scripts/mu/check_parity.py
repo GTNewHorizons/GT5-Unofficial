@@ -760,13 +760,17 @@ def gtpp_expected_fluid_and_cell_shape_names(entry, gt_entry, used_fluid_names):
 def gtpp_expected_shapes(entry, gt_entry, used_fluid_names):
     """The MaterialLib shape-name set a gtpp material's dumped `generatedParts` translate to -- see
     gen_materials.py's `gtpp_shape_lines`/`gtpp_fluid_and_cell_shape_lines`. Raises on an unmapped prefix (a
-    future gtpp dump refresh with a new part kind must not silently drop items from this check either)."""
+    future gtpp dump refresh with a new part kind must not silently drop items from this check either). `block`
+    additionally honors `BLOCK_CUTOVER_EXCLUDED`, mirroring `gtpp_shape_lines`."""
     names = set()
     for part in entry["generatedParts"]:
         prefix = part["prefix"]
         if prefix in GTPP_SIMPLE_PREFIXES:
             names.add(prefix)
-        elif prefix in ("block", "milled"):
+        elif prefix == "block":
+            if entry["unlocalizedName"] not in BLOCK_CUTOVER_EXCLUDED:
+                names.add(prefix)
+        elif prefix == "milled":
             names.add(prefix)
         elif prefix in ("cell", "cellPlasma"):
             continue

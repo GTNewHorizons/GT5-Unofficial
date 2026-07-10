@@ -539,7 +539,11 @@ def gtpp_shape_lines(entry, owner_prefix=""):
     prefixes it deliberately left for a later commit (`GTPP_DEFERRED_PREFIXES`/`GTPP_LEGACY_ONLY_PREFIXES`/
     `GTPP_UNSUPPORTED_PREFIXES`, see their docstrings). Raises if a dumped prefix is not accounted for by any
     of those sets -- a reference-closure-style fail-loud check mirroring `validate_werkstoff_prefixes`, so a
-    future gtpp dump refresh with a new part kind cannot silently drop items."""
+    future gtpp dump refresh with a new part kind cannot silently drop items. The `block` case additionally
+    honors `BLOCK_CUTOVER_EXCLUDED`: a gtpp material sharing a name with one of those (e.g. Copper, whose
+    gtpp-side `BlockBaseModular` construction resolves onto the shared legacy `gt.blockmetal2` slot) must not
+    gain `shapeBlock` membership through the gtpp fold when the gregtech side of the same declaration was
+    deliberately kept off it."""
     refs = []
     deferred = []
     for part in entry["generatedParts"]:
@@ -547,7 +551,8 @@ def gtpp_shape_lines(entry, owner_prefix=""):
         if prefix in GTPP_SIMPLE_PREFIXES:
             refs.append(f"Materials2Shapes.{shape_field_name(prefix)}")
         elif prefix == "block":
-            refs.append("Materials2BlockShapes.shapeBlock")
+            if entry["unlocalizedName"] not in BLOCK_CUTOVER_EXCLUDED:
+                refs.append("Materials2BlockShapes.shapeBlock")
         elif prefix == "milled":
             refs.append("Materials2GtppShapes.shapeMilled")
         elif prefix in GTPP_DEFERRED_PREFIXES:

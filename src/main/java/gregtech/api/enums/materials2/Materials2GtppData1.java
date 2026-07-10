@@ -214,7 +214,6 @@ public class Materials2GtppData1 {
             .generateShape(Materials2Shapes.shapeDustTiny)
             .setProperty(GTMaterialProperties.GTPP, new GTppData(2, 120L, 2041, 1973, 512, true, false, 0, false, "Co", 27L, 32L, "SOLID", true, false, List.of(), "molten.cobalt", null));
         MaterialLibAPI.editMaterial("gregtech", "Copper")
-            .generateShape(Materials2BlockShapes.shapeBlock)
             .generateShape(Materials2Shapes.shapeCrushed)
             .generateShape(Materials2Shapes.shapeCrushedPurified)
             .generateShape(Materials2Shapes.shapeDust)
