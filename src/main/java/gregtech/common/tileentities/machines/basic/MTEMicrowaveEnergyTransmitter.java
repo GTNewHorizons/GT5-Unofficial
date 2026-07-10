@@ -21,9 +21,11 @@ import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.Materials;
+import gregtech.api.enums.materials2.Materials2FluidShapes;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IEnergyConnected;
@@ -181,8 +183,11 @@ public class MTEMicrowaveEnergyTransmitter extends MTEBasicTank {
     }
 
     public boolean hasDimensionalTeleportCapability() {
-        return this.mDebug || (sInterDimensionalTeleportAllowed && (this.hasBlock
-            || mFluid != null && mFluid.isFluidEqual(Materials.Nitrogen.getPlasma(1)) && mFluid.amount >= 1000));
+        return this.mDebug || (sInterDimensionalTeleportAllowed && (this.hasBlock || mFluid != null
+            && mFluid.isFluidEqual(
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.Nitrogen, Materials2FluidShapes.shapeFluidPlasma, (int) (1)))
+            && mFluid.amount >= 1000));
     }
 
     public boolean isDimensionalTeleportAvailable() {
@@ -193,7 +198,8 @@ public class MTEMicrowaveEnergyTransmitter extends MTEBasicTank {
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (mFluid == null) {
-            mFluid = Materials.Nitrogen.getPlasma(0);
+            mFluid = MaterialLibAPI
+                .getFluidStack(Materials2Materials.Nitrogen, Materials2FluidShapes.shapeFluidPlasma, (int) (0));
         }
         super.onPostTick(aBaseMetaTileEntity, aTick);
         if (getBaseMetaTileEntity().isServerSide()) {
@@ -207,7 +213,11 @@ public class MTEMicrowaveEnergyTransmitter extends MTEBasicTank {
                     }
                     if (hasDimensionalTeleportCapability()
                         && this.mTargetD != getBaseMetaTileEntity().getWorld().provider.dimensionId
-                        && mFluid.isFluidEqual(Materials.Nitrogen.getPlasma(1))) {
+                        && mFluid.isFluidEqual(
+                            MaterialLibAPI.getFluidStack(
+                                Materials2Materials.Nitrogen,
+                                Materials2FluidShapes.shapeFluidPlasma,
+                                (int) (1)))) {
                         mFluid.amount--;
                         if (mFluid.amount < 1) {
                             mFluid = null;

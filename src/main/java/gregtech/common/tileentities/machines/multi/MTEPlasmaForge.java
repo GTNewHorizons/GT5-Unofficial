@@ -46,6 +46,7 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -55,6 +56,8 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials2.Materials2FluidShapes;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -96,31 +99,44 @@ public class MTEPlasmaForge extends MTEExtendedPowerMultiBlockBase<MTEPlasmaForg
     private static final int DISCOUNT_BITMAP = 0b10;
 
     // Valid fuels which the discount will get applied to.
-    private static final FluidStack[] valid_fuels = { Materials.ExcitedDTCC.getFluid(1L),
-        Materials.ExcitedDTPC.getFluid(1L), Materials.ExcitedDTRC.getFluid(1L), Materials.ExcitedDTEC.getFluid(1L),
-        Materials.ExcitedDTSC.getFluid(1L) };
+    private static final FluidStack[] valid_fuels = {
+        MaterialLibAPI
+            .getFluidStack(Materials2Materials.ExcitedDTCC, Materials2FluidShapes.shapeFluidLiquid, (int) (1)),
+        MaterialLibAPI
+            .getFluidStack(Materials2Materials.ExcitedDTPC, Materials2FluidShapes.shapeFluidLiquid, (int) (1)),
+        MaterialLibAPI
+            .getFluidStack(Materials2Materials.ExcitedDTRC, Materials2FluidShapes.shapeFluidLiquid, (int) (1)),
+        MaterialLibAPI
+            .getFluidStack(Materials2Materials.ExcitedDTEC, Materials2FluidShapes.shapeFluidLiquid, (int) (1)),
+        MaterialLibAPI
+            .getFluidStack(Materials2Materials.ExcitedDTSC, Materials2FluidShapes.shapeFluidLiquid, (int) (1)) };
 
     private static final HashMap<Fluid, Pair<Long, Float>> FUEL_ENERGY_VALUES = new HashMap<>() {
 
         {
             put(
-                Materials.ExcitedDTCC.getFluid(1L)
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.ExcitedDTCC, Materials2FluidShapes.shapeFluidLiquid, (int) (1))
                     .getFluid(),
                 Pair.of(14_514_983L, 1 / 8f));
             put(
-                Materials.ExcitedDTPC.getFluid(1L)
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.ExcitedDTPC, Materials2FluidShapes.shapeFluidLiquid, (int) (1))
                     .getFluid(),
                 Pair.of(66_768_460L, 1 / 4f));
             put(
-                Materials.ExcitedDTRC.getFluid(1L)
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.ExcitedDTRC, Materials2FluidShapes.shapeFluidLiquid, (int) (1))
                     .getFluid(),
                 Pair.of(269_326_451L, 1 / 2f));
             put(
-                Materials.ExcitedDTEC.getFluid(1L)
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.ExcitedDTEC, Materials2FluidShapes.shapeFluidLiquid, (int) (1))
                     .getFluid(),
                 Pair.of(1_073_007_393L, 1f));
             put(
-                Materials.ExcitedDTSC.getFluid(1L)
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.ExcitedDTSC, Materials2FluidShapes.shapeFluidLiquid, (int) (1))
                     .getFluid(),
                 Pair.of(4_276_767_521L, 2f));
         }

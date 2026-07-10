@@ -483,10 +483,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
-import codechicken.enderstorage.api.EnderStorageDyeTool;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import cpw.mods.fml.common.Optional;
 import gregtech.api.GregTechAPI;
 import gregtech.api.covers.CoverPlacer;
@@ -501,6 +501,8 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TCAspects;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.interfaces.IItemBehaviour;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.items.MetaBaseItem;
@@ -514,7 +516,6 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
-import gregtech.common.config.Client;
 import gregtech.common.config.Other;
 import gregtech.common.covers.CoverAdvancedWirelessController;
 import gregtech.common.covers.CoverArm;
@@ -564,15 +565,10 @@ import gregtech.common.tileentities.machines.multi.MTEIndustrialCuttingMachine.S
 import gregtech.common.tileentities.machines.multi.MTEIndustrialElectromagneticSeparator.MagnetTiers;
 import mods.railcraft.common.items.firestone.IItemFirestoneBurning;
 
-@Optional.InterfaceList(
-    value = {
-        @Optional.Interface(
-            iface = "mods.railcraft.common.items.firestone.IItemFirestoneBurning",
-            modid = Mods.ModIDs.RAILCRAFT),
-        @Optional.Interface(
-            iface = "codechicken.enderstorage.api.EnderStorageDyeTool",
-            modid = Mods.ModIDs.ENDER_STORAGE), })
-public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFirestoneBurning, EnderStorageDyeTool {
+@Optional.Interface(
+    iface = "mods.railcraft.common.items.firestone.IItemFirestoneBurning",
+    modid = Mods.ModIDs.RAILCRAFT)
+public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFirestoneBurning {
 
     public static MetaGeneratedItem01 INSTANCE;
     private static final String aTextEmptyRow = "   ";
@@ -690,7 +686,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                     1,
                     0.1F,
                     EnumAction.eat,
-                    GTOreDictUnificator.get(OrePrefixes.foil, Materials.Gold, 1L),
+                    MaterialLibAPI.getStack(Materials2Materials.Gold, Materials2Shapes.shapeFoil, (int) (1)),
                     true,
                     false,
                     false,
@@ -751,15 +747,13 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         GTModHandler.addCraftingRecipe(
             ItemList.Component_Minecart_Wheels_Iron.get(1L),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE
-                | GTModHandler.RecipeBits.REVERSIBLE
-                | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+                | GTModHandler.RecipeBits.REVERSIBLE,
             new Object[] { " h ", "RSR", " w ", 'R', OrePrefixes.ring.get(Materials.AnyIron), 'S',
                 OrePrefixes.stick.get(Materials.AnyIron) });
         GTModHandler.addCraftingRecipe(
             ItemList.Component_Minecart_Wheels_Steel.get(1L),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE
-                | GTModHandler.RecipeBits.REVERSIBLE
-                | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+                | GTModHandler.RecipeBits.REVERSIBLE,
             new Object[] { " h ", "RSR", " w ", 'R', OrePrefixes.ring.get(Materials.Steel), 'S',
                 OrePrefixes.stick.get(Materials.Steel) });
 
@@ -768,11 +762,15 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                 Compressed_Fireclay.ID,
                 "gt.item.compressed_fireclay.name",
                 "gt.item.compressed_fireclay.tooltip"));
-        GTOreDictUnificator.addItemDataFromInputs(ItemList.CompressedFireclay.get(1), Materials.Fireclay.getDust(1));
+        GTOreDictUnificator.addItemDataFromInputs(
+            ItemList.CompressedFireclay.get(1),
+            MaterialLibAPI.getStack(Materials2Materials.Fireclay, Materials2Shapes.shapeDust, (int) (1)));
 
         ItemList.Firebrick
             .set(addItemWithLocalizationKeys(Firebrick.ID, "gt.item.firebrick.name", "gt.item.firebrick.tooltip"));
-        GTOreDictUnificator.addItemDataFromInputs(ItemList.Firebrick.get(1), Materials.Fireclay.getDust(1));
+        GTOreDictUnificator.addItemDataFromInputs(
+            ItemList.Firebrick.get(1),
+            MaterialLibAPI.getStack(Materials2Materials.Fireclay, Materials2Shapes.shapeDust, (int) (1)));
 
         ItemList.Shape_Empty.set(
             addItemWithLocalizationKeys(
@@ -1293,7 +1291,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             addItem(
                 Spray_Color_Infinite.ID,
                 BehaviourSprayColorInfinite::getNameWithColor,
-                $ -> StatCollector.translateToLocal("gt.item.spray_can.infinite.tooltip"),
+                $ -> GTUtility.translate("gt.item.spray_can.infinite.tooltip"),
                 new TCAspects.TC_AspectStack(TCAspects.NEBRISUM, 16),
                 new TCAspects.TC_AspectStack(TCAspects.SENSUS, 8),
                 new TCAspects.TC_AspectStack(TCAspects.COGNITIO, 8),
@@ -3269,14 +3267,14 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.T1Sawblade.set(
             addItem(
                 T1Sawblade.ID,
-                $ -> StatCollector.translateToLocal("gt.item.t1sawblade.name"),
+                $ -> GTUtility.translate("gt.item.t1sawblade.name"),
                 $ -> SawbladeTiers.buildSawbladeTooltip(SawbladeTiers.TungstenTitaniumCarbide),
                 new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 2L),
                 new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 2L)));
         ItemList.T2Sawblade.set(
             addItem(
                 T2Sawblade.ID,
-                $ -> StatCollector.translateToLocal("gt.item.t2sawblade.name"),
+                $ -> GTUtility.translate("gt.item.t2sawblade.name"),
                 $ -> SawbladeTiers.buildSawbladeTooltip(SawbladeTiers.MysteriousCrystal),
                 new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 3L),
                 new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 3L)));
@@ -3284,7 +3282,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             .set(
                 addItem(
                     T3Sawblade.ID,
-                    $ -> StatCollector.translateToLocal("gt.item.t3sawblade.name"),
+                    $ -> GTUtility.translate("gt.item.t3sawblade.name"),
                     $ -> SawbladeTiers.buildSawbladeTooltip(SawbladeTiers.Neutronium),
                     new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 4L),
                     new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 4L)))
@@ -3293,7 +3291,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             .set(
                 addItem(
                     T4Sawblade.ID,
-                    $ -> StatCollector.translateToLocal("gt.item.t4sawblade.name"),
+                    $ -> GTUtility.translate("gt.item.t4sawblade.name"),
                     $ -> SawbladeTiers.buildSawbladeTooltip(SawbladeTiers.TranscendentMetal),
                     new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 5L),
                     new TCAspects.TC_AspectStack(TCAspects.PERDITIO, 5L)))
@@ -3410,10 +3408,8 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
                     "gt.item.wireless_energy_cover.name",
                     new Object[] { GTValues.VN[i] },
                     "gt.item.wireless_energy_cover.tooltip",
-                    new Object[] {
-                        StatCollector
-                            .translateToLocalFormatted("gt.tileentity.amperage", EnumChatFormatting.YELLOW + "2"),
-                        StatCollector.translateToLocalFormatted(
+                    new Object[] { GTUtility.translate("gt.tileentity.amperage", EnumChatFormatting.YELLOW + "2"),
+                        GTUtility.translate(
                             "gt.tileentity.eup_in",
                             EnumChatFormatting.GREEN + formatNumber(GTValues.V[i])
                                 + " ("
@@ -3684,31 +3680,31 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         ItemList.Electromagnet_Iron.set(
             addItem(
                 Electromagnet_Iron.ID,
-                $ -> StatCollector.translateToLocal("gt.item.electromagnet.iron.name"),
+                $ -> GTUtility.translate("gt.item.electromagnet.iron.name"),
                 $ -> MagnetTiers.buildMagnetTooltip(MagnetTiers.Iron),
                 new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 8)));
         ItemList.Electromagnet_Steel.set(
             addItem(
                 Electromagnet_Steel.ID,
-                $ -> StatCollector.translateToLocal("gt.item.electromagnet.steel.name"),
+                $ -> GTUtility.translate("gt.item.electromagnet.steel.name"),
                 $ -> MagnetTiers.buildMagnetTooltip(MagnetTiers.Steel),
                 new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 16)));
         ItemList.Electromagnet_Neodymium.set(
             addItem(
                 Electromagnet_Neodymium.ID,
-                $ -> StatCollector.translateToLocal("gt.item.electromagnet.neodymium.name"),
+                $ -> GTUtility.translate("gt.item.electromagnet.neodymium.name"),
                 $ -> MagnetTiers.buildMagnetTooltip(MagnetTiers.Neodymium),
                 new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 24)));
         ItemList.Electromagnet_Samarium.set(
             addItem(
                 Electromagnet_Samarium.ID,
-                $ -> StatCollector.translateToLocal("gt.item.electromagnet.samarium.name"),
+                $ -> GTUtility.translate("gt.item.electromagnet.samarium.name"),
                 $ -> MagnetTiers.buildMagnetTooltip(MagnetTiers.Samarium),
                 new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 32)));
         ItemList.Electromagnet_Tengam.set(
             addItem(
                 Electromagnet_Tengam.ID,
-                $ -> StatCollector.translateToLocal("gt.item.electromagnet.tengam.name"),
+                $ -> GTUtility.translate("gt.item.electromagnet.tengam.name"),
                 $ -> MagnetTiers.buildMagnetTooltip(MagnetTiers.Tengam),
                 new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 40)));
 
@@ -4080,19 +4076,12 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             if ((aMaterial != null) && (aMaterial != Materials.Empty) && (aMaterial != Materials._NULL)) {
                 OrePrefixes aPrefix = this.mGeneratedPrefixList[(aDamage / 1000)];
                 if ((aPrefix == OrePrefixes.dustImpure) || (aPrefix == OrePrefixes.dustPure)) {
-                    aList.add(StatCollector.translateToLocal("GT5U.tooltip.purify.1"));
+                    aList.add(GTUtility.translate("GT5U.tooltip.purify.1"));
                 }
                 if (aPrefix == OrePrefixes.dust && aMaterial == Materials.Wheat) {
-                    aList.add(StatCollector.translateToLocal("GT5U.tooltip.flour.cauldron"));
-                }
-                if (aPrefix == OrePrefixes.ingotHot && Client.tooltip.showHotIngotText) {
-                    aList.add(StatCollector.translateToLocal("gtpp.tooltip.ingot.very_hot"));
+                    aList.add(GTUtility.translate("GT5U.tooltip.flour.cauldron"));
                 }
             }
-        }
-        if (Client.tooltip.showRadioactiveText && GTUtility.getRadioactivityLevel(aStack) > 0) {
-            aList.add(StatCollector.translateToLocal("GTPP.core.GT_Tooltip_Radioactive"));
-            aList.add(StatCollector.translateToLocal("GTPP.core.GT_Tooltip_HazmatWarning"));
         }
     }
 
@@ -4628,7 +4617,7 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
 
     private void craftingShapedRecipes() {
         ItemStack tStack = new ItemStack(this, 1, 17000 + Materials.Wood.mMetaItemSubID);
-        tStack.setStackDisplayName(StatCollector.translateToLocal("gt.item.sengir_planks.name"));
+        tStack.setStackDisplayName(GTUtility.translate("gt.item.sengir_planks.name"));
         GTUtility.ItemNBT.addEnchantment(tStack, Enchantment.smite, 10);
         GTModHandler.addCraftingRecipe(
             tStack,
@@ -4639,50 +4628,42 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
         GTModHandler.addCraftingRecipe(
             ItemList.Shape_Slicer_Flat.get(1L),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE
-                | GTModHandler.RecipeBits.REVERSIBLE
-                | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+                | GTModHandler.RecipeBits.REVERSIBLE,
             new Object[] { "hXS", aTextShape, "fXd", 'P', ItemList.Shape_Extruder_Block, 'X',
                 OrePrefixes.plate.get(Materials.StainlessSteel), 'S',
                 OrePrefixes.screw.get(Materials.StainlessSteel) });
         GTModHandler.addCraftingRecipe(
             ItemList.Shape_Slicer_Stripes.get(1L),
             GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE
-                | GTModHandler.RecipeBits.REVERSIBLE
-                | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+                | GTModHandler.RecipeBits.REVERSIBLE,
             new Object[] { "hXS", "XPX", "fXd", 'P', ItemList.Shape_Extruder_Block, 'X',
                 OrePrefixes.plate.get(Materials.StainlessSteel), 'S',
                 OrePrefixes.screw.get(Materials.StainlessSteel) });
 
         GTModHandler.addCraftingRecipe(
             ItemList.Fuel_Can_Plastic_Empty.get(7L),
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE
-                | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE,
             new Object[] { " PP", "P P", "PPP", 'P', OrePrefixes.plate.get(Materials.Polyethylene) });
 
         GTModHandler.addCraftingRecipe(
             ItemList.Schematic_1by1.get(1L),
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE
-                | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE,
             new Object[] { "d  ", aTextShape, aTextEmptyRow, 'P', ItemList.Schematic });
         GTModHandler.addCraftingRecipe(
             ItemList.Schematic_2by2.get(1L),
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE
-                | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE,
             new Object[] { " d ", aTextShape, aTextEmptyRow, 'P', ItemList.Schematic });
         GTModHandler.addCraftingRecipe(
             ItemList.Schematic_3by3.get(1L),
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE
-                | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE,
             new Object[] { "  d", aTextShape, aTextEmptyRow, 'P', ItemList.Schematic });
         GTModHandler.addCraftingRecipe(
             ItemList.Schematic_Dust.get(1L),
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE
-                | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE,
             new Object[] { aTextEmptyRow, aTextShape, "  d", 'P', ItemList.Schematic });
         GTModHandler.addCraftingRecipe(
             ItemList.Schematic_Dust_Small.get(1L),
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE
-                | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE,
             new Object[] { aTextEmptyRow, aTextShape, " d ", 'P', ItemList.Schematic });
 
         GTModHandler.addCraftingRecipe(
@@ -4970,7 +4951,6 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
 
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.Coin_Chocolate.get(1L),
-            GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { OrePrefixes.dust.get(Materials.Cocoa), OrePrefixes.dust.get(Materials.Milk),
                 OrePrefixes.dust.get(Materials.Sugar), OrePrefixes.foil.get(Materials.Gold) });
 
@@ -5098,33 +5078,27 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
 
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.Schematic.get(1L),
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE
-                | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE,
             new Object[] { ItemList.Schematic_Crafting });
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.Schematic.get(1L),
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE
-                | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE,
             new Object[] { ItemList.Schematic_1by1 });
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.Schematic.get(1L),
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE
-                | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE,
             new Object[] { ItemList.Schematic_2by2 });
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.Schematic.get(1L),
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE
-                | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE,
             new Object[] { ItemList.Schematic_3by3 });
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.Schematic.get(1L),
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE
-                | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE,
             new Object[] { ItemList.Schematic_Dust });
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.Schematic.get(1L),
-            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE
-                | GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS,
+            GTModHandler.RecipeBits.BUFFERED | GTModHandler.RecipeBits.NOT_REMOVABLE,
             new Object[] { ItemList.Schematic_Dust_Small });
 
         GTModHandler.addShapelessCraftingRecipe(
@@ -5139,11 +5113,9 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
 
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.ItemFilter_Export.get(1L),
-            GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { ItemList.ItemFilter_Import.get(1L) });
         GTModHandler.addShapelessCraftingRecipe(
             ItemList.ItemFilter_Import.get(1L),
-            GTModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { ItemList.ItemFilter_Export.get(1L) });
 
     }
@@ -5314,36 +5286,5 @@ public class MetaGeneratedItem01 extends MetaGeneratedItemX32 implements IItemFi
             || data.mPrefix == OrePrefixes.crushedPurified
             || data.mPrefix == OrePrefixes.crushedCentrifuged
             || data.mPrefix == OrePrefixes.gem;
-    }
-
-    @Override
-    public int getDye(final ItemStack itemStack) {
-        if (Mods.EnderStorage.isModLoaded()) {
-            final List<Integer> results = mapEachBehavior(itemStack, behavior -> {
-                if (behavior instanceof final EnderStorageDyeTool dyeTool) {
-                    return dyeTool.getDye(itemStack);
-                }
-
-                return null;
-            });
-
-            if (!results.isEmpty()) {
-                return results.getFirst();
-            }
-        }
-
-        return -1;
-    }
-
-    @Override
-    public void expendToolUse(final ItemStack itemStack) {
-        if (Mods.EnderStorage.isModLoaded()) {
-            forEachBehavior(itemStack, behavior -> {
-                if (behavior instanceof final EnderStorageDyeTool dyeTool) {
-                    dyeTool.expendToolUse(itemStack);
-                }
-                return false;
-            });
-        }
     }
 }

@@ -31,6 +31,7 @@ import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
 import com.google.common.primitives.Ints;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -38,6 +39,8 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.MachineType;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
+import gregtech.api.enums.materials2.Materials2FluidShapes;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -193,7 +196,9 @@ public class MTEMassfabricator extends MTEBasicMachine {
 
     @Override
     public boolean isFluidInputAllowed(FluidStack aFluid) {
-        return aFluid.isFluidEqual(Materials.UUAmplifier.getFluid(1L));
+        return aFluid.isFluidEqual(
+            MaterialLibAPI
+                .getFluidStack(Materials2Materials.UUAmplifier, Materials2FluidShapes.shapeFluidLiquid, (int) (1)));
     }
 
     @Override
@@ -202,7 +207,10 @@ public class MTEMassfabricator extends MTEBasicMachine {
     }
 
     private boolean containsUUA(FluidStack aFluid) {
-        return aFluid != null && aFluid.amount >= sUUAperUUM && aFluid.isFluidEqual(Materials.UUAmplifier.getFluid(1L));
+        return aFluid != null && aFluid.amount >= sUUAperUUM
+            && aFluid.isFluidEqual(
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.UUAmplifier, Materials2FluidShapes.shapeFluidLiquid, (int) (1)));
     }
 
     @ParametersAreNonnullByDefault
