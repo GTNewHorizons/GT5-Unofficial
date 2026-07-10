@@ -13,6 +13,8 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.material.MU;
 import gregtech.api.metatileentity.implementations.MTECable;
 import gregtech.api.metatileentity.implementations.MTEFluidPipe;
 import gregtech.api.metatileentity.implementations.MTEFrame;
@@ -67,7 +69,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
     private static void registerWiresAndCables() {
         // ULV
         WireCableBuilder.builder()
-            .material(Materials.RedAlloy)
+            .material(Materials2Materials.RedAlloy)
             .startId(2000)
             .lossCable(0)
             .lossWire(1)
@@ -77,7 +79,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
 
         // LV
         WireCableBuilder.builder()
-            .material(Materials.Cobalt)
+            .material(Materials2Materials.Cobalt)
             .startId(1200)
             .lossCable(1)
             .lossWire(2)
@@ -85,7 +87,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
             .voltage(TierEU.LV)
             .build();
         WireCableBuilder.builder()
-            .material(Materials.Lead)
+            .material(Materials2Materials.Lead)
             .startId(1220)
             .lossCable(2)
             .lossWire(4)
@@ -93,7 +95,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
             .voltage(TierEU.LV)
             .build();
         WireCableBuilder.builder()
-            .material(Materials.Tin)
+            .material(Materials2Materials.Tin)
             .startId(1240)
             .lossCable(1)
             .lossWire(2)
@@ -101,7 +103,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
             .voltage(TierEU.LV)
             .build();
         WireCableBuilder.builder()
-            .material(Materials.Zinc)
+            .material(Materials2Materials.Zinc)
             .startId(1260)
             .lossCable(1)
             .lossWire(2)
@@ -109,7 +111,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
             .voltage(TierEU.LV)
             .build();
         WireCableBuilder.builder()
-            .material(Materials.SolderingAlloy)
+            .material(Materials2Materials.SolderingAlloy)
             .startId(1280)
             .lossCable(1)
             .lossWire(2)
@@ -119,7 +121,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
 
         // MV
         WireCableBuilder.builder()
-            .material(Materials.Iron)
+            .material(Materials2Materials.Iron)
             .startId(1300)
             .lossCable(3)
             .lossWire(6)
@@ -127,7 +129,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
             .voltage(TierEU.MV)
             .build();
         WireCableBuilder.builder()
-            .material(Materials.Nickel)
+            .material(Materials2Materials.Nickel)
             .startId(1320)
             .lossCable(3)
             .lossWire(6)
@@ -135,7 +137,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
             .voltage(TierEU.MV)
             .build();
         WireCableBuilder.builder()
-            .material(Materials.Cupronickel)
+            .material(Materials2Materials.Cupronickel)
             .startId(1340)
             .lossCable(3)
             .lossWire(6)
@@ -143,7 +145,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
             .voltage(TierEU.MV)
             .build();
         WireCableBuilder.builder()
-            .material(Materials.Copper)
+            .material(Materials2Materials.Copper)
             .startId(1360)
             .lossCable(2)
             .lossWire(4)
@@ -151,7 +153,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
             .voltage(TierEU.MV)
             .build();
         WireCableBuilder.builder()
-            .material(Materials.AnnealedCopper)
+            .material(Materials2Materials.AnnealedCopper)
             .startId(1380)
             .lossCable(1)
             .lossWire(2)
@@ -161,7 +163,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
 
         // HV
         WireCableBuilder.builder()
-            .material(Materials.Kanthal)
+            .material(Materials2Materials.Kanthal)
             .startId(1400)
             .lossCable(3)
             .lossWire(6)
@@ -169,7 +171,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
             .voltage(TierEU.HV)
             .build();
         WireCableBuilder.builder()
-            .material(Materials.Gold)
+            .material(Materials2Materials.Gold)
             .startId(1420)
             .lossCable(2)
             .lossWire(4)
@@ -177,7 +179,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
             .voltage(TierEU.HV)
             .build();
         WireCableBuilder.builder()
-            .material(Materials.Electrum)
+            .material(Materials2Materials.Electrum)
             .startId(1440)
             .lossCable(1)
             .lossWire(2)
@@ -185,7 +187,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
             .voltage(TierEU.HV)
             .build();
         WireCableBuilder.builder()
-            .material(Materials.Silver)
+            .material(Materials2Materials.Silver)
             .startId(1460)
             .lossCable(1)
             .lossWire(2)
@@ -193,7 +195,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
             .voltage(TierEU.HV)
             .build();
         WireCableBuilder.builder()
-            .material(Materials.BlueAlloy)
+            .material(Materials2Materials.BlueAlloy)
             .startId(1480)
             .lossCable(1)
             .lossWire(2)
@@ -203,7 +205,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
 
         // EV
         WireCableBuilder.builder()
-            .material(Materials.Nichrome)
+            .material(Materials2Materials.Nichrome)
             .startId(1500)
             .lossCable(4)
             .lossWire(8)
@@ -211,7 +213,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
             .voltage(TierEU.EV)
             .build();
         WireCableBuilder.builder()
-            .material(Materials.Steel)
+            .material(Materials2Materials.Steel)
             .startId(1520)
             .lossCable(3)
             .lossWire(6)
@@ -219,7 +221,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
             .voltage(TierEU.EV)
             .build();
         WireCableBuilder.builder()
-            .material(Materials.BlackSteel)
+            .material(Materials2Materials.BlackSteel)
             .startId(1540)
             .lossCable(1)
             .lossWire(2)
@@ -227,7 +229,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
             .voltage(TierEU.EV)
             .build();
         WireCableBuilder.builder()
-            .material(Materials.Titanium)
+            .material(Materials2Materials.Titanium)
             .startId(1560)
             .lossCable(2)
             .lossWire(4)
@@ -235,7 +237,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
             .voltage(TierEU.EV)
             .build();
         WireCableBuilder.builder()
-            .material(Materials.Aluminium)
+            .material(Materials2Materials.Aluminium)
             .startId(1580)
             .lossCable(1)
             .lossWire(2)
@@ -253,7 +255,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
 
         // IV
         WireCableBuilder.builder()
-            .material(Materials.Graphene)
+            .material(Materials2Materials.Graphene)
             .startId(1600)
             .lossWire(2)
             .amperage(1)
@@ -262,7 +264,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
             .disableElectricDamage()
             .build();
         WireCableBuilder.builder()
-            .material(Materials.Platinum)
+            .material(Materials2Materials.Platinum)
             .startId(1640)
             .lossCable(1)
             .lossWire(2)
@@ -270,7 +272,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
             .voltage(TierEU.IV)
             .build();
         WireCableBuilder.builder()
-            .material(Materials.TungstenSteel)
+            .material(Materials2Materials.TungstenSteel)
             .startId(1660)
             .lossCable(4)
             .lossWire(8)
@@ -278,7 +280,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
             .voltage(TierEU.IV)
             .build();
         WireCableBuilder.builder()
-            .material(Materials.Tungsten)
+            .material(Materials2Materials.Tungsten)
             .startId(1680)
             .lossCable(2)
             .lossWire(4)
@@ -288,7 +290,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
 
         // LuV
         WireCableBuilder.builder()
-            .material(Materials.Osmium)
+            .material(Materials2Materials.Osmium)
             .startId(1620)
             .lossCable(2)
             .lossWire(4)
@@ -296,7 +298,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
             .voltage(TierEU.LuV)
             .build();
         WireCableBuilder.builder()
-            .material(Materials.HSSG)
+            .material(Materials2Materials.HSSG)
             .startId(1700)
             .lossCable(2)
             .lossWire(4)
@@ -304,7 +306,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
             .voltage(TierEU.LuV)
             .build();
         WireCableBuilder.builder()
-            .material(Materials.NiobiumTitanium)
+            .material(Materials2Materials.NiobiumTitanium)
             .startId(1720)
             .lossCable(2)
             .lossWire(4)
@@ -312,7 +314,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
             .voltage(TierEU.LuV)
             .build();
         WireCableBuilder.builder()
-            .material(Materials.VanadiumGallium)
+            .material(Materials2Materials.VanadiumGallium)
             .startId(1740)
             .lossCable(4)
             .lossWire(8)
@@ -320,7 +322,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
             .voltage(TierEU.LuV)
             .build();
         WireCableBuilder.builder()
-            .material(Materials.YttriumBariumCuprate)
+            .material(Materials2Materials.YttriumBariumCuprate)
             .startId(1760)
             .lossCable(3)
             .lossWire(6)
@@ -330,7 +332,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
 
         // ZPM
         WireCableBuilder.builder()
-            .material(Materials.Naquadah)
+            .material(Materials2Materials.Naquadah)
             .startId(1780)
             .lossCable(2)
             .lossWire(4)
@@ -340,7 +342,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
 
         // UV
         WireCableBuilder.builder()
-            .material(Materials.NaquadahAlloy)
+            .material(Materials2Materials.NaquadahAlloy)
             .startId(1800)
             .lossCable(4)
             .lossWire(8)
@@ -348,7 +350,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
             .voltage(TierEU.UV)
             .build();
         WireCableBuilder.builder()
-            .material(Materials.Duranium)
+            .material(Materials2Materials.Duranium)
             .startId(1820)
             .lossCable(2)
             .lossWire(4)
@@ -422,7 +424,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
             .disableCable()
             .build();
         WireCableBuilder.builder()
-            .material(Materials.SuperconductorUEVBase)
+            .material(Materials2Materials.SuperconductorUEVBase)
             .startId(2032)
             .lossWire(65536)
             .amperage(24)
@@ -430,7 +432,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
             .disableCable()
             .build();
         WireCableBuilder.builder()
-            .material(Materials.SuperconductorUIVBase)
+            .material(Materials2Materials.SuperconductorUIVBase)
             .startId(2052)
             .lossWire(262144)
             .amperage(32)
@@ -438,7 +440,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
             .disableCable()
             .build();
         WireCableBuilder.builder()
-            .material(Materials.SuperconductorUMVBase)
+            .material(Materials2Materials.SuperconductorUMVBase)
             .startId(2072)
             .lossWire(1048576)
             .amperage(32)
@@ -549,7 +551,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
 
         // Others
         WireCableBuilder.builder()
-            .material(Materials.Ichorium)
+            .material(Materials2Materials.Ichorium)
             .startId(2600)
             .lossWire(8)
             .amperage(12)
@@ -558,7 +560,7 @@ public final class LoaderMetaPipeEntities implements Runnable {
             .disableElectricDamage()
             .build();
         WireCableBuilder.builder()
-            .material(Materials.SpaceTime)
+            .material(Materials2Materials.SpaceTime)
             .startId(2606)
             .lossWire(0)
             .amperage(1_000_000)
@@ -607,44 +609,44 @@ public final class LoaderMetaPipeEntities implements Runnable {
                     .getStackForm(1L));
 
         FluidPipeBuilder.builder()
-            .material(Materials.Copper)
+            .material(Materials2Materials.Copper)
             .startId(5110)
             .baseCapacity(20)
             .heatCapacity(1000)
             .build();
         FluidPipeBuilder.builder()
-            .material(Materials.Bronze)
+            .material(Materials2Materials.Bronze)
             .startId(5120)
             .baseCapacity(120)
             .heatCapacity(2000)
             .build();
         FluidPipeBuilder.builder()
-            .material(Materials.Steel)
+            .material(Materials2Materials.Steel)
             .startId(5130)
             .baseCapacity(240)
             .heatCapacity(2500)
             .build();
         FluidPipeBuilder.builder()
-            .material(Materials.StainlessSteel)
+            .material(Materials2Materials.StainlessSteel)
             .startId(5140)
             .baseCapacity(360)
             .heatCapacity(3000)
             .build();
         FluidPipeBuilder.builder()
-            .material(Materials.Titanium)
+            .material(Materials2Materials.Titanium)
             .startId(5150)
             .baseCapacity(480)
             .heatCapacity(5000)
             .build();
         FluidPipeBuilder.builder()
-            .material(Materials.TungstenSteel)
+            .material(Materials2Materials.TungstenSteel)
             .startId(5160)
             .multiFluidStartId(5270)
             .baseCapacity(600)
             .heatCapacity(7500)
             .build();
         FluidPipeBuilder.builder()
-            .material(Materials.Polybenzimidazole)
+            .material(Materials2Materials.Polybenzimidazole)
             .displayName("PBI")
             .startId(5280)
             .multiFluidStartId(5290)
@@ -700,74 +702,74 @@ public final class LoaderMetaPipeEntities implements Runnable {
             .heatCapacity(350)
             .build();
         FluidPipeBuilder.builder()
-            .material(Materials.NiobiumTitanium)
+            .material(Materials2Materials.NiobiumTitanium)
             .startId(5180)
             .baseCapacity(900)
             .heatCapacity(2900)
             .build();
         FluidPipeBuilder.builder()
-            .material(Materials.Enderium)
+            .material(Materials2Materials.Enderium)
             .startId(5190)
             .baseCapacity(1800)
             .heatCapacity(15000)
             .build();
         FluidPipeBuilder.builder()
-            .material(Materials.Naquadah)
+            .material(Materials2Materials.Naquadah)
             .startId(5200)
             .baseCapacity(9000)
             .heatCapacity(19000)
             .build();
         FluidPipeBuilder.builder()
-            .material(Materials.Neutronium)
+            .material(Materials2Materials.Neutronium)
             .startId(5210)
             .baseCapacity(16800)
             .heatCapacity(1_000_000)
             .build();
         FluidPipeBuilder.builder()
-            .material(Materials.NetherStar)
+            .material(Materials2Materials.NetherStar)
             .startId(5220)
             .baseCapacity(19200)
             .heatCapacity(1_000_000)
             .build();
         FluidPipeBuilder.builder()
-            .material(Materials.MysteriousCrystal)
+            .material(Materials2Materials.MysteriousCrystal)
             .startId(5230)
             .baseCapacity(24000)
             .heatCapacity(1_000_000)
             .build();
         FluidPipeBuilder.builder()
-            .material(Materials.DraconiumAwakened)
+            .material(Materials2Materials.DraconiumAwakened)
             .startId(5240)
             .baseCapacity(45000)
             .heatCapacity(10_000_000)
             .build();
         FluidPipeBuilder.builder()
-            .material(Materials.Infinity)
+            .material(Materials2Materials.Infinity)
             .startId(5250)
             .baseCapacity(60000)
             .heatCapacity(10_000_000)
             .build();
         FluidPipeBuilder.builder()
-            .material(Materials.CastIron)
+            .material(Materials2Materials.CastIron)
             .startId(5260)
             .baseCapacity(180)
             .heatCapacity(2250)
             .build();
         FluidPipeBuilder.builder()
-            .material(Materials.Polytetrafluoroethylene)
+            .material(Materials2Materials.Polytetrafluoroethylene)
             .displayName("PTFE")
             .startId(5680)
             .baseCapacity(480)
             .heatCapacity(600)
             .build();
         FluidPipeBuilder.builder()
-            .material(Materials.SpaceTime)
+            .material(Materials2Materials.SpaceTime)
             .startId(5300)
             .baseCapacity(250000)
             .heatCapacity(Integer.MAX_VALUE)
             .build();
         FluidPipeBuilder.builder()
-            .material(Materials.TranscendentMetal)
+            .material(Materials2Materials.TranscendentMetal)
             .startId(5310)
             .baseCapacity(220000)
             .heatCapacity(Integer.MAX_VALUE)
@@ -782,72 +784,72 @@ public final class LoaderMetaPipeEntities implements Runnable {
 
     private static void registerItemPipes() {
         ItemPipeBuilder.builder()
-            .material(Materials.Tin)
+            .material(Materials2Materials.Tin)
             .startId(5589)
             .invSlotsForHugePipe(2)
             .build();
         ItemPipeBuilder.builder()
-            .material(Materials.Brass)
+            .material(Materials2Materials.Brass)
             .idList(5600, 5601, 5602, 5603, 5604, 5640, 5641, 5605, 5606, 5607)
             .invSlotsForHugePipe(4)
             .build();
         ItemPipeBuilder.builder()
-            .material(Materials.Electrum)
+            .material(Materials2Materials.Electrum)
             .idList(5610, 5611, 5612, 5613, 5614, 5642, 5643, 5615, 5616, 5617)
             .invSlotsForHugePipe(8)
             .build();
         ItemPipeBuilder.builder()
-            .material(Materials.Platinum)
+            .material(Materials2Materials.Platinum)
             .idList(5620, 5621, 5622, 5623, 5624, 5644, 5645, 5625, 5626, 5627)
             .invSlotsForHugePipe(16)
             .build();
         ItemPipeBuilder.builder()
-            .material(Materials.Osmium)
+            .material(Materials2Materials.Osmium)
             .idList(5630, 5631, 5632, 5633, 5634, 5646, 5647, 5635, 5636, 5637)
             .invSlotsForHugePipe(32)
             .build();
         ItemPipeBuilder.builder()
-            .material(Materials.ElectrumFlux)
+            .material(Materials2Materials.ElectrumFlux)
             .startId(5650)
             .invSlotsForHugePipe(64)
             .build();
         ItemPipeBuilder.builder()
-            .material(Materials.BlackPlutonium)
+            .material(Materials2Materials.BlackPlutonium)
             .startId(5660)
             .invSlotsForHugePipe(128)
             .build();
         ItemPipeBuilder.builder()
-            .material(Materials.Bedrockium)
+            .material(Materials2Materials.Bedrockium)
             .startId(5670)
             .invSlotsForHugePipe(256)
             .build();
         ItemPipeBuilder.builder()
-            .material(Materials.PolyvinylChloride)
+            .material(Materials2Materials.PolyvinylChloride)
             .displayName("PVC")
             .startId(5690)
             .invSlotsForHugePipe(16)
             .disableTinyAndSmall()
             .build();
         ItemPipeBuilder.builder()
-            .material(Materials.Nickel)
+            .material(Materials2Materials.Nickel)
             .startId(5700)
             .invSlotsForHugePipe(4)
             .disableTinyAndSmall()
             .build();
         ItemPipeBuilder.builder()
-            .material(Materials.Cobalt)
+            .material(Materials2Materials.Cobalt)
             .startId(5710)
             .invSlotsForHugePipe(8)
             .disableTinyAndSmall()
             .build();
         ItemPipeBuilder.builder()
-            .material(Materials.Aluminium)
+            .material(Materials2Materials.Aluminium)
             .startId(5720)
             .invSlotsForHugePipe(8)
             .disableTinyAndSmall()
             .build();
         ItemPipeBuilder.builder()
-            .material(Materials.Quantium)
+            .material(Materials2Materials.Quantium)
             .startId(5730)
             .invSlotsForHugePipe(512)
             .build();
@@ -875,6 +877,17 @@ public final class LoaderMetaPipeEntities implements Runnable {
          */
         private WireCableBuilder material(Materials material) {
             this.material = material;
+            return this;
+        }
+
+        /// [#material(Materials)] for callers holding a MaterialLib material. Wires/cables are MTEs whose
+        /// identity, naming, and rendering all run on the legacy [Materials] type, so this resolves back to
+        /// the legacy material and stores that -- only the caller-facing type changes.
+        private WireCableBuilder material(com.ruling_0.materiallib.api.Material material) {
+            Materials legacyMaterial = MU.materialOf(material);
+            if (legacyMaterial == null)
+                throw new IllegalStateException("No legacy Materials mapping for " + material.getName());
+            this.material = legacyMaterial;
             return this;
         }
 
@@ -1144,6 +1157,16 @@ public final class LoaderMetaPipeEntities implements Runnable {
             return this;
         }
 
+        /// [#material(Materials)] for callers holding a MaterialLib material -- see
+        /// [WireCableBuilder#material(com.ruling_0.materiallib.api.Material)].
+        private FluidPipeBuilder material(com.ruling_0.materiallib.api.Material material) {
+            Materials legacyMaterial = MU.materialOf(material);
+            if (legacyMaterial == null)
+                throw new IllegalStateException("No legacy Materials mapping for " + material.getName());
+            this.material = legacyMaterial;
+            return this;
+        }
+
         /**
          * Sets English display name. Material name by default.
          */
@@ -1303,6 +1326,16 @@ public final class LoaderMetaPipeEntities implements Runnable {
          */
         private ItemPipeBuilder material(Materials material) {
             this.material = material;
+            return this;
+        }
+
+        /// [#material(Materials)] for callers holding a MaterialLib material -- see
+        /// [WireCableBuilder#material(com.ruling_0.materiallib.api.Material)].
+        private ItemPipeBuilder material(com.ruling_0.materiallib.api.Material material) {
+            Materials legacyMaterial = MU.materialOf(material);
+            if (legacyMaterial == null)
+                throw new IllegalStateException("No legacy Materials mapping for " + material.getName());
+            this.material = legacyMaterial;
             return this;
         }
 
