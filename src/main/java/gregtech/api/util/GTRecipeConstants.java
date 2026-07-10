@@ -16,10 +16,14 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.ArrayUtils;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.NaniteTier;
+import gregtech.api.enums.materials2.Materials2FluidShapes;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IRecipeMap;
 import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.recipe.RecipeMaps;
@@ -457,12 +461,22 @@ public class GTRecipeConstants {
                         .addTo(RecipeMaps.laserEngraverRecipes),
                     builder.copy()
                         .fluidInputs(
-                            ArrayUtils.addAll(builder.fluidInputs, Materials.Grade1PurifiedWater.getFluid(100L)))
+                            ArrayUtils.addAll(
+                                builder.fluidInputs,
+                                MaterialLibAPI.getFluidStack(
+                                    Materials2Materials.Grade1PurifiedWater,
+                                    Materials2FluidShapes.shapeFluidLiquid,
+                                    (int) (100))))
                         .duration(halfBoostedRecipeTime)
                         .addTo(RecipeMaps.laserEngraverRecipes),
                     builder.copy()
                         .fluidInputs(
-                            ArrayUtils.addAll(builder.fluidInputs, Materials.Grade2PurifiedWater.getFluid(100L)))
+                            ArrayUtils.addAll(
+                                builder.fluidInputs,
+                                MaterialLibAPI.getFluidStack(
+                                    Materials2Materials.Grade2PurifiedWater,
+                                    Materials2FluidShapes.shapeFluidLiquid,
+                                    (int) (100))))
                         .duration(boostedRecipeTime)
                         .addTo(RecipeMaps.laserEngraverRecipes));
             }
@@ -471,12 +485,22 @@ public class GTRecipeConstants {
                 return GTUtility.concat(
                     builder.copy()
                         .fluidInputs(
-                            ArrayUtils.addAll(builder.fluidInputs, Materials.Grade3PurifiedWater.getFluid(100L)))
+                            ArrayUtils.addAll(
+                                builder.fluidInputs,
+                                MaterialLibAPI.getFluidStack(
+                                    Materials2Materials.Grade3PurifiedWater,
+                                    Materials2FluidShapes.shapeFluidLiquid,
+                                    (int) (100))))
                         .duration(recipeTime)
                         .addTo(RecipeMaps.laserEngraverRecipes),
                     builder.copy()
                         .fluidInputs(
-                            ArrayUtils.addAll(builder.fluidInputs, Materials.Grade4PurifiedWater.getFluid(100L)))
+                            ArrayUtils.addAll(
+                                builder.fluidInputs,
+                                MaterialLibAPI.getFluidStack(
+                                    Materials2Materials.Grade4PurifiedWater,
+                                    Materials2FluidShapes.shapeFluidLiquid,
+                                    (int) (100))))
                         .duration(boostedRecipeTime)
                         .addTo(RecipeMaps.laserEngraverRecipes));
             }
@@ -485,12 +509,22 @@ public class GTRecipeConstants {
                 return GTUtility.concat(
                     builder.copy()
                         .fluidInputs(
-                            ArrayUtils.addAll(builder.fluidInputs, Materials.Grade5PurifiedWater.getFluid(100L)))
+                            ArrayUtils.addAll(
+                                builder.fluidInputs,
+                                MaterialLibAPI.getFluidStack(
+                                    Materials2Materials.Grade5PurifiedWater,
+                                    Materials2FluidShapes.shapeFluidLiquid,
+                                    (int) (100))))
                         .duration(recipeTime)
                         .addTo(RecipeMaps.laserEngraverRecipes),
                     builder.copy()
                         .fluidInputs(
-                            ArrayUtils.addAll(builder.fluidInputs, Materials.Grade6PurifiedWater.getFluid(100L)))
+                            ArrayUtils.addAll(
+                                builder.fluidInputs,
+                                MaterialLibAPI.getFluidStack(
+                                    Materials2Materials.Grade6PurifiedWater,
+                                    Materials2FluidShapes.shapeFluidLiquid,
+                                    (int) (100))))
                         .duration(boostedRecipeTime)
                         .addTo(RecipeMaps.laserEngraverRecipes));
             }
@@ -500,17 +534,32 @@ public class GTRecipeConstants {
                 return GTUtility.concat(
                     builder.copy()
                         .fluidInputs(
-                            ArrayUtils.addAll(builder.fluidInputs, Materials.Grade1PurifiedWater.getFluid(32000L)))
+                            ArrayUtils.addAll(
+                                builder.fluidInputs,
+                                MaterialLibAPI.getFluidStack(
+                                    Materials2Materials.Grade1PurifiedWater,
+                                    Materials2FluidShapes.shapeFluidLiquid,
+                                    (int) (32000))))
                         .duration(recipeTime)
                         .addTo(RecipeMaps.laserEngraverRecipes),
                     builder.copy()
                         .fluidInputs(
-                            ArrayUtils.addAll(builder.fluidInputs, Materials.Grade2PurifiedWater.getFluid(32000L)))
+                            ArrayUtils.addAll(
+                                builder.fluidInputs,
+                                MaterialLibAPI.getFluidStack(
+                                    Materials2Materials.Grade2PurifiedWater,
+                                    Materials2FluidShapes.shapeFluidLiquid,
+                                    (int) (32000))))
                         .duration(halfBoostedRecipeTime)
                         .addTo(RecipeMaps.laserEngraverRecipes),
                     builder.copy()
                         .fluidInputs(
-                            ArrayUtils.addAll(builder.fluidInputs, Materials.Grade3PurifiedWater.getFluid(32000L)))
+                            ArrayUtils.addAll(
+                                builder.fluidInputs,
+                                MaterialLibAPI.getFluidStack(
+                                    Materials2Materials.Grade3PurifiedWater,
+                                    Materials2FluidShapes.shapeFluidLiquid,
+                                    (int) (32000))))
                         .duration(boostedRecipeTime)
                         .addTo(RecipeMaps.laserEngraverRecipes));
             }
@@ -519,12 +568,22 @@ public class GTRecipeConstants {
                 return GTUtility.concat(
                     builder.copy()
                         .fluidInputs(
-                            ArrayUtils.addAll(builder.fluidInputs, Materials.Grade4PurifiedWater.getFluid(32000L)))
+                            ArrayUtils.addAll(
+                                builder.fluidInputs,
+                                MaterialLibAPI.getFluidStack(
+                                    Materials2Materials.Grade4PurifiedWater,
+                                    Materials2FluidShapes.shapeFluidLiquid,
+                                    (int) (32000))))
                         .duration(recipeTime)
                         .addTo(RecipeMaps.laserEngraverRecipes),
                     builder.copy()
                         .fluidInputs(
-                            ArrayUtils.addAll(builder.fluidInputs, Materials.Grade5PurifiedWater.getFluid(32000L)))
+                            ArrayUtils.addAll(
+                                builder.fluidInputs,
+                                MaterialLibAPI.getFluidStack(
+                                    Materials2Materials.Grade5PurifiedWater,
+                                    Materials2FluidShapes.shapeFluidLiquid,
+                                    (int) (32000))))
                         .duration(boostedRecipeTime)
                         .addTo(RecipeMaps.laserEngraverRecipes));
             }
@@ -533,17 +592,32 @@ public class GTRecipeConstants {
                 return GTUtility.concat(
                     builder.copy()
                         .fluidInputs(
-                            ArrayUtils.addAll(builder.fluidInputs, Materials.Grade6PurifiedWater.getFluid(32000L)))
+                            ArrayUtils.addAll(
+                                builder.fluidInputs,
+                                MaterialLibAPI.getFluidStack(
+                                    Materials2Materials.Grade6PurifiedWater,
+                                    Materials2FluidShapes.shapeFluidLiquid,
+                                    (int) (32000))))
                         .duration(recipeTime)
                         .addTo(RecipeMaps.laserEngraverRecipes),
                     builder.copy()
                         .fluidInputs(
-                            ArrayUtils.addAll(builder.fluidInputs, Materials.Grade7PurifiedWater.getFluid(32000L)))
+                            ArrayUtils.addAll(
+                                builder.fluidInputs,
+                                MaterialLibAPI.getFluidStack(
+                                    Materials2Materials.Grade7PurifiedWater,
+                                    Materials2FluidShapes.shapeFluidLiquid,
+                                    (int) (32000))))
                         .duration(halfBoostedRecipeTime)
                         .addTo(RecipeMaps.laserEngraverRecipes),
                     builder.copy()
                         .fluidInputs(
-                            ArrayUtils.addAll(builder.fluidInputs, Materials.Grade8PurifiedWater.getFluid(32000L)))
+                            ArrayUtils.addAll(
+                                builder.fluidInputs,
+                                MaterialLibAPI.getFluidStack(
+                                    Materials2Materials.Grade8PurifiedWater,
+                                    Materials2FluidShapes.shapeFluidLiquid,
+                                    (int) (32000))))
                         .duration(boostedRecipeTime)
                         .addTo(RecipeMaps.laserEngraverRecipes));
             }

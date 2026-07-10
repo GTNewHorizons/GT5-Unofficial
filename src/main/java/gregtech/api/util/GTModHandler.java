@@ -52,6 +52,8 @@ import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 import org.jetbrains.annotations.Nullable;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import bartworks.system.material.WerkstoffLoader;
 import cpw.mods.fml.common.registry.GameRegistry;
 import ganymedes01.etfuturum.recipes.BlastFurnaceRecipes;
@@ -63,6 +65,8 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.ToolDictNames;
+import gregtech.api.enums.materials2.Materials2FluidShapes;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IDamagableItem;
 import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.interfaces.internal.IGTCraftingRecipe;
@@ -211,7 +215,8 @@ public class GTModHandler {
      */
     public static FluidStack getLiquidDNA(long aAmount) {
         if (Gendustry.isModLoaded()) return FluidRegistry.getFluidStack("liquiddna", (int) aAmount);
-        else return Materials.Biomass.getFluid(aAmount);
+        else return MaterialLibAPI
+            .getFluidStack(Materials2Materials.Biomass, Materials2FluidShapes.shapeFluidLiquid, (int) (aAmount));
     }
 
     /**
@@ -271,7 +276,8 @@ public class GTModHandler {
      */
     @Deprecated
     public static FluidStack getMilk(long aAmount) {
-        return Materials.Milk.getFluid(aAmount);
+        return MaterialLibAPI
+            .getFluidStack(Materials2Materials.Milk, Materials2FluidShapes.shapeFluidLiquid, (int) (aAmount));
     }
 
     /**
