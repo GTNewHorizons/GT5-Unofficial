@@ -18,12 +18,17 @@ import java.util.List;
 
 import net.minecraft.item.ItemStack;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.Materials2FluidShapes;
+import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.metadata.PCBFactoryTierKey;
 import gregtech.api.recipe.metadata.PCBFactoryUpgradeKey;
@@ -52,7 +57,10 @@ public class PCBFactoryRecipes {
                 ItemList.Robot_Arm_ZPM.get(8))
             .fluidInputs(
                 MaterialsAlloy.INDALLOY_140.getFluidStack(36 * INGOTS),
-                Materials.Naquadah.getMolten(18 * INGOTS))
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.Naquadah,
+                    Materials2FluidShapes.shapeFluidMolten,
+                    (int) (18 * INGOTS)))
             .itemOutputs(ItemList.PCBFactory.get(1))
             .eut(TierEU.RECIPE_UV)
             .duration(5 * MINUTES)
@@ -70,7 +78,7 @@ public class PCBFactoryRecipes {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Infinity, 1),
-                Materials.EnrichedHolmium.getPlates(6))
+                MaterialLibAPI.getStack(Materials2Materials.EnrichedHolmium, Materials2Shapes.shapePlate, (int) (6)))
             .itemOutputs(ItemList.ReinforcedPhotolithographicFrameworkCasing.get(1))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_UHV)
@@ -87,10 +95,14 @@ public class PCBFactoryRecipes {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 HYPOGEN.getFrameBox(1),
-                GTOreDictUnificator.get(OrePrefixes.rotor, Materials.Infinity, 2),
-                Materials.Thulium.getPlates(6))
+                MaterialLibAPI.getStack(Materials2Materials.Infinity, Materials2Shapes.shapeRotor, (int) (2)),
+                MaterialLibAPI.getStack(Materials2Materials.Thulium, Materials2Shapes.shapePlate, (int) (6)))
             .itemOutputs(ItemList.InfinityCooledCasing.get(1))
-            .fluidInputs(Materials.SpaceTime.getMolten(8 * INGOTS))
+            .fluidInputs(
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.SpaceTime,
+                    Materials2FluidShapes.shapeFluidMolten,
+                    (int) (8 * INGOTS)))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_UMV)
             .addTo(assemblerRecipes);
@@ -112,11 +124,20 @@ public class PCBFactoryRecipes {
                         .getPlates(1),
                     GTOreDictUnificator
                         .get(OrePrefixes.foil, Materials.AnnealedCopper, (long) (16 * (Math.sqrt(tier)))),
-                    GTOreDictUnificator.get(OrePrefixes.foil, Materials.Copper, (long) (16 * (Math.sqrt(tier)))))
+                    MaterialLibAPI.getStack(
+                        Materials2Materials.Copper,
+                        Materials2Shapes.shapeFoil,
+                        (int) ((long) (16 * (Math.sqrt(tier))))))
                 .circuit(1)
                 .fluidInputs(
-                    Materials.SulfuricAcid.getFluid((long) (500 * (Math.sqrt(tier)))),
-                    Materials.IronIIIChloride.getFluid((long) (250 * (Math.sqrt(tier)))))
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.SulfuricAcid,
+                        Materials2FluidShapes.shapeFluidLiquid,
+                        (int) ((long) (500 * (Math.sqrt(tier))))),
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.IronIIIChloride,
+                        Materials2FluidShapes.shapeFluidLiquid,
+                        (int) ((long) (250 * (Math.sqrt(tier))))))
                 .itemOutputs(aBoards.toArray(new ItemStack[0]))
                 .duration((int) Math.ceil(600 / Math.sqrt(Math.pow(1.5, tier - 1.5))))
                 .eut((int) GTValues.VP[tier] * 3 / 4)
@@ -137,11 +158,20 @@ public class PCBFactoryRecipes {
                         .getPlates(1),
                     GTOreDictUnificator
                         .get(OrePrefixes.foil, Materials.AnnealedCopper, (long) (16 * (Math.sqrt(tier)))),
-                    GTOreDictUnificator.get(OrePrefixes.foil, Materials.Copper, (long) (16 * (Math.sqrt(tier)))))
+                    MaterialLibAPI.getStack(
+                        Materials2Materials.Copper,
+                        Materials2Shapes.shapeFoil,
+                        (int) ((long) (16 * (Math.sqrt(tier))))))
                 .circuit(2)
                 .fluidInputs(
-                    Materials.SulfuricAcid.getFluid((long) (500 * (Math.sqrt(tier)))),
-                    Materials.IronIIIChloride.getFluid((long) (250 * (Math.sqrt(tier)))))
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.SulfuricAcid,
+                        Materials2FluidShapes.shapeFluidLiquid,
+                        (int) ((long) (500 * (Math.sqrt(tier))))),
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.IronIIIChloride,
+                        Materials2FluidShapes.shapeFluidLiquid,
+                        (int) ((long) (250 * (Math.sqrt(tier))))))
                 .itemOutputs(aBoards.toArray(new ItemStack[0]))
                 .duration((int) Math.ceil(500 / Math.sqrt(Math.pow(1.5, tier - 1.5))))
                 .eut((int) GTValues.VP[tier + 1] * 3 / 4)
@@ -163,11 +193,20 @@ public class PCBFactoryRecipes {
                         .getPlates(1),
                     GTOreDictUnificator
                         .get(OrePrefixes.foil, Materials.AnnealedCopper, (long) (16 * (Math.sqrt(tier)))),
-                    GTOreDictUnificator.get(OrePrefixes.foil, Materials.Copper, (long) (16 * (Math.sqrt(tier)))))
+                    MaterialLibAPI.getStack(
+                        Materials2Materials.Copper,
+                        Materials2Shapes.shapeFoil,
+                        (int) ((long) (16 * (Math.sqrt(tier))))))
                 .circuit(3)
                 .fluidInputs(
-                    Materials.SulfuricAcid.getFluid((long) (500 * (Math.sqrt(tier)))),
-                    Materials.IronIIIChloride.getFluid((long) (250 * (Math.sqrt(tier)))))
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.SulfuricAcid,
+                        Materials2FluidShapes.shapeFluidLiquid,
+                        (int) ((long) (500 * (Math.sqrt(tier))))),
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.IronIIIChloride,
+                        Materials2FluidShapes.shapeFluidLiquid,
+                        (int) ((long) (250 * (Math.sqrt(tier))))))
                 .itemOutputs(aBoards.toArray(new ItemStack[0]))
                 .duration((int) Math.ceil(400 / Math.sqrt(Math.pow(1.5, tier - 1.5))))
                 .eut((int) GTValues.VP[tier + 1] * 3 / 4)
@@ -189,12 +228,24 @@ public class PCBFactoryRecipes {
                 .itemInputs(
                     PCBFactoryManager.getPlasticMaterialFromTier(tier)
                         .getPlates(1),
-                    GTOreDictUnificator.get(OrePrefixes.foil, Materials.Gold, (long) (16 * (Math.sqrt(tier - 1)))),
-                    GTOreDictUnificator.get(OrePrefixes.foil, Materials.Electrum, (long) (16 * (Math.sqrt(tier - 1)))))
+                    MaterialLibAPI.getStack(
+                        Materials2Materials.Gold,
+                        Materials2Shapes.shapeFoil,
+                        (int) ((long) (16 * (Math.sqrt(tier - 1))))),
+                    MaterialLibAPI.getStack(
+                        Materials2Materials.Electrum,
+                        Materials2Shapes.shapeFoil,
+                        (int) ((long) (16 * (Math.sqrt(tier - 1))))))
                 .circuit(1)
                 .fluidInputs(
-                    Materials.SulfuricAcid.getFluid((long) (500 * (Math.sqrt(tier - 1)))),
-                    Materials.IronIIIChloride.getFluid((long) (500 * (Math.sqrt(tier - 1)))))
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.SulfuricAcid,
+                        Materials2FluidShapes.shapeFluidLiquid,
+                        (int) ((long) (500 * (Math.sqrt(tier - 1))))),
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.IronIIIChloride,
+                        Materials2FluidShapes.shapeFluidLiquid,
+                        (int) ((long) (500 * (Math.sqrt(tier - 1))))))
                 .itemOutputs(aBoards.toArray(new ItemStack[0]))
                 .duration((int) Math.ceil(600 / Math.sqrt(Math.pow(1.5, tier - 2.5))))
                 .eut((int) GTValues.VP[tier] * 3 / 4)
@@ -213,12 +264,24 @@ public class PCBFactoryRecipes {
                 .itemInputs(
                     PCBFactoryManager.getPlasticMaterialFromTier(tier)
                         .getPlates(1),
-                    GTOreDictUnificator.get(OrePrefixes.foil, Materials.Gold, (long) (16 * (Math.sqrt(tier - 1)))),
-                    GTOreDictUnificator.get(OrePrefixes.foil, Materials.Electrum, (long) (16 * (Math.sqrt(tier - 1)))))
+                    MaterialLibAPI.getStack(
+                        Materials2Materials.Gold,
+                        Materials2Shapes.shapeFoil,
+                        (int) ((long) (16 * (Math.sqrt(tier - 1))))),
+                    MaterialLibAPI.getStack(
+                        Materials2Materials.Electrum,
+                        Materials2Shapes.shapeFoil,
+                        (int) ((long) (16 * (Math.sqrt(tier - 1))))))
                 .circuit(2)
                 .fluidInputs(
-                    Materials.SulfuricAcid.getFluid((long) (500 * (Math.sqrt(tier - 1)))),
-                    Materials.IronIIIChloride.getFluid((long) (500 * (Math.sqrt(tier - 1)))))
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.SulfuricAcid,
+                        Materials2FluidShapes.shapeFluidLiquid,
+                        (int) ((long) (500 * (Math.sqrt(tier - 1))))),
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.IronIIIChloride,
+                        Materials2FluidShapes.shapeFluidLiquid,
+                        (int) ((long) (500 * (Math.sqrt(tier - 1))))))
                 .itemOutputs(aBoards.toArray(new ItemStack[0]))
                 .duration((int) Math.ceil(500 / Math.sqrt(Math.pow(1.5, tier - 2.5))))
                 .eut((int) GTValues.VP[tier + 1] * 3 / 4)
@@ -238,12 +301,24 @@ public class PCBFactoryRecipes {
                 .itemInputs(
                     PCBFactoryManager.getPlasticMaterialFromTier(tier)
                         .getPlates(1),
-                    GTOreDictUnificator.get(OrePrefixes.foil, Materials.Gold, (long) (16 * (Math.sqrt(tier - 1)))),
-                    GTOreDictUnificator.get(OrePrefixes.foil, Materials.Electrum, (long) (16 * (Math.sqrt(tier - 1)))))
+                    MaterialLibAPI.getStack(
+                        Materials2Materials.Gold,
+                        Materials2Shapes.shapeFoil,
+                        (int) ((long) (16 * (Math.sqrt(tier - 1))))),
+                    MaterialLibAPI.getStack(
+                        Materials2Materials.Electrum,
+                        Materials2Shapes.shapeFoil,
+                        (int) ((long) (16 * (Math.sqrt(tier - 1))))))
                 .circuit(3)
                 .fluidInputs(
-                    Materials.SulfuricAcid.getFluid((long) (500 * (Math.sqrt(tier - 1)))),
-                    Materials.IronIIIChloride.getFluid((long) (500 * (Math.sqrt(tier - 1)))))
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.SulfuricAcid,
+                        Materials2FluidShapes.shapeFluidLiquid,
+                        (int) ((long) (500 * (Math.sqrt(tier - 1))))),
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.IronIIIChloride,
+                        Materials2FluidShapes.shapeFluidLiquid,
+                        (int) ((long) (500 * (Math.sqrt(tier - 1))))))
                 .itemOutputs(aBoards.toArray(new ItemStack[0]))
                 .duration((int) Math.ceil(400 / Math.sqrt(Math.pow(1.5, tier - 2.5))))
                 .eut((int) GTValues.VP[tier + 1] * 3 / 4)
@@ -265,13 +340,22 @@ public class PCBFactoryRecipes {
                 .itemInputs(
                     PCBFactoryManager.getPlasticMaterialFromTier(tier)
                         .getPlates(1),
-                    GTOreDictUnificator.get(OrePrefixes.foil, Materials.Aluminium, (long) (16 * (Math.sqrt(tier - 2)))),
+                    MaterialLibAPI.getStack(
+                        Materials2Materials.Aluminium,
+                        Materials2Shapes.shapeFoil,
+                        (int) ((long) (16 * (Math.sqrt(tier - 2))))),
                     GTOreDictUnificator
                         .get(OrePrefixes.foil, Materials.EnergeticAlloy, (long) (16 * (Math.sqrt(tier - 2)))))
                 .circuit(1)
                 .fluidInputs(
-                    Materials.SulfuricAcid.getFluid((long) (500 * (Math.sqrt(tier - 2)))),
-                    Materials.IronIIIChloride.getFluid((long) (1000 * (Math.sqrt(tier - 2)))))
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.SulfuricAcid,
+                        Materials2FluidShapes.shapeFluidLiquid,
+                        (int) ((long) (500 * (Math.sqrt(tier - 2))))),
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.IronIIIChloride,
+                        Materials2FluidShapes.shapeFluidLiquid,
+                        (int) ((long) (1000 * (Math.sqrt(tier - 2))))))
                 .itemOutputs(aBoards.toArray(new ItemStack[0]))
                 .duration((int) Math.ceil(600 / Math.sqrt(Math.pow(1.5, tier - 3.5))))
                 .eut((int) GTValues.VP[tier] * 3 / 4)
@@ -290,13 +374,22 @@ public class PCBFactoryRecipes {
                 .itemInputs(
                     PCBFactoryManager.getPlasticMaterialFromTier(tier)
                         .getPlates(1),
-                    GTOreDictUnificator.get(OrePrefixes.foil, Materials.Aluminium, (long) (16 * (Math.sqrt(tier - 2)))),
+                    MaterialLibAPI.getStack(
+                        Materials2Materials.Aluminium,
+                        Materials2Shapes.shapeFoil,
+                        (int) ((long) (16 * (Math.sqrt(tier - 2))))),
                     GTOreDictUnificator
                         .get(OrePrefixes.foil, Materials.EnergeticAlloy, (long) (16 * (Math.sqrt(tier - 2)))))
                 .circuit(2)
                 .fluidInputs(
-                    Materials.SulfuricAcid.getFluid((long) (500 * (Math.sqrt(tier - 2)))),
-                    Materials.IronIIIChloride.getFluid((long) (1000 * (Math.sqrt(tier - 2)))))
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.SulfuricAcid,
+                        Materials2FluidShapes.shapeFluidLiquid,
+                        (int) ((long) (500 * (Math.sqrt(tier - 2))))),
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.IronIIIChloride,
+                        Materials2FluidShapes.shapeFluidLiquid,
+                        (int) ((long) (1000 * (Math.sqrt(tier - 2))))))
                 .itemOutputs(aBoards.toArray(new ItemStack[0]))
                 .duration((int) Math.ceil(500 / Math.sqrt(Math.pow(1.5, tier - 3.5))))
                 .eut((int) GTValues.VP[tier + 1] * 3 / 4)
@@ -316,13 +409,22 @@ public class PCBFactoryRecipes {
                 .itemInputs(
                     PCBFactoryManager.getPlasticMaterialFromTier(tier)
                         .getPlates(1),
-                    GTOreDictUnificator.get(OrePrefixes.foil, Materials.Aluminium, (long) (16 * (Math.sqrt(tier - 2)))),
+                    MaterialLibAPI.getStack(
+                        Materials2Materials.Aluminium,
+                        Materials2Shapes.shapeFoil,
+                        (int) ((long) (16 * (Math.sqrt(tier - 2))))),
                     GTOreDictUnificator
                         .get(OrePrefixes.foil, Materials.EnergeticAlloy, (long) (16 * (Math.sqrt(tier - 2)))))
                 .circuit(3)
                 .fluidInputs(
-                    Materials.SulfuricAcid.getFluid((long) (500 * (Math.sqrt(tier - 2)))),
-                    Materials.IronIIIChloride.getFluid((long) (1000 * (Math.sqrt(tier - 2)))))
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.SulfuricAcid,
+                        Materials2FluidShapes.shapeFluidLiquid,
+                        (int) ((long) (500 * (Math.sqrt(tier - 2))))),
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.IronIIIChloride,
+                        Materials2FluidShapes.shapeFluidLiquid,
+                        (int) ((long) (1000 * (Math.sqrt(tier - 2))))))
                 .itemOutputs(aBoards.toArray(new ItemStack[0]))
                 .duration((int) Math.ceil(400 / Math.sqrt(Math.pow(1.5, tier - 3.5))))
                 .eut((int) GTValues.VP[tier + 1] * 3 / 4)
@@ -344,12 +446,24 @@ public class PCBFactoryRecipes {
                 .itemInputs(
                     PCBFactoryManager.getPlasticMaterialFromTier(tier)
                         .getPlates(1),
-                    GTOreDictUnificator.get(OrePrefixes.foil, Materials.Palladium, (long) (16 * (Math.sqrt(tier - 3)))),
-                    GTOreDictUnificator.get(OrePrefixes.foil, Materials.Platinum, (long) (16 * (Math.sqrt(tier - 3)))))
+                    MaterialLibAPI.getStack(
+                        Materials2Materials.Palladium,
+                        Materials2Shapes.shapeFoil,
+                        (int) ((long) (16 * (Math.sqrt(tier - 3))))),
+                    MaterialLibAPI.getStack(
+                        Materials2Materials.Platinum,
+                        Materials2Shapes.shapeFoil,
+                        (int) ((long) (16 * (Math.sqrt(tier - 3))))))
                 .circuit(1)
                 .fluidInputs(
-                    Materials.SulfuricAcid.getFluid((long) (500 * (Math.sqrt(tier - 3)))),
-                    Materials.IronIIIChloride.getFluid((long) (2000 * (Math.sqrt(tier - 3)))))
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.SulfuricAcid,
+                        Materials2FluidShapes.shapeFluidLiquid,
+                        (int) ((long) (500 * (Math.sqrt(tier - 3))))),
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.IronIIIChloride,
+                        Materials2FluidShapes.shapeFluidLiquid,
+                        (int) ((long) (2000 * (Math.sqrt(tier - 3))))))
                 .itemOutputs(aBoards.toArray(new ItemStack[0]))
                 .duration((int) Math.ceil(600 / Math.sqrt(Math.pow(1.5, tier - 4.5))))
                 .eut((int) GTValues.VP[tier] * 3 / 4)
@@ -368,12 +482,24 @@ public class PCBFactoryRecipes {
                 .itemInputs(
                     PCBFactoryManager.getPlasticMaterialFromTier(tier)
                         .getPlates(1),
-                    GTOreDictUnificator.get(OrePrefixes.foil, Materials.Palladium, (long) (16 * (Math.sqrt(tier - 3)))),
-                    GTOreDictUnificator.get(OrePrefixes.foil, Materials.Platinum, (long) (16 * (Math.sqrt(tier - 3)))))
+                    MaterialLibAPI.getStack(
+                        Materials2Materials.Palladium,
+                        Materials2Shapes.shapeFoil,
+                        (int) ((long) (16 * (Math.sqrt(tier - 3))))),
+                    MaterialLibAPI.getStack(
+                        Materials2Materials.Platinum,
+                        Materials2Shapes.shapeFoil,
+                        (int) ((long) (16 * (Math.sqrt(tier - 3))))))
                 .circuit(2)
                 .fluidInputs(
-                    Materials.SulfuricAcid.getFluid((long) (500 * (Math.sqrt(tier - 3)))),
-                    Materials.IronIIIChloride.getFluid((long) (2000 * (Math.sqrt(tier - 3)))))
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.SulfuricAcid,
+                        Materials2FluidShapes.shapeFluidLiquid,
+                        (int) ((long) (500 * (Math.sqrt(tier - 3))))),
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.IronIIIChloride,
+                        Materials2FluidShapes.shapeFluidLiquid,
+                        (int) ((long) (2000 * (Math.sqrt(tier - 3))))))
                 .itemOutputs(aBoards.toArray(new ItemStack[0]))
                 .duration((int) Math.ceil(500 / Math.sqrt(Math.pow(1.5, tier - 4.5))))
                 .eut((int) GTValues.VP[tier + 1] * 3 / 4)
@@ -393,12 +519,24 @@ public class PCBFactoryRecipes {
                 .itemInputs(
                     PCBFactoryManager.getPlasticMaterialFromTier(tier)
                         .getPlates(1),
-                    GTOreDictUnificator.get(OrePrefixes.foil, Materials.Palladium, (long) (16 * (Math.sqrt(tier - 3)))),
-                    GTOreDictUnificator.get(OrePrefixes.foil, Materials.Platinum, (long) (16 * (Math.sqrt(tier - 3)))))
+                    MaterialLibAPI.getStack(
+                        Materials2Materials.Palladium,
+                        Materials2Shapes.shapeFoil,
+                        (int) ((long) (16 * (Math.sqrt(tier - 3))))),
+                    MaterialLibAPI.getStack(
+                        Materials2Materials.Platinum,
+                        Materials2Shapes.shapeFoil,
+                        (int) ((long) (16 * (Math.sqrt(tier - 3))))))
                 .circuit(3)
                 .fluidInputs(
-                    Materials.SulfuricAcid.getFluid((long) (500 * (Math.sqrt(tier - 3)))),
-                    Materials.IronIIIChloride.getFluid((long) (2000 * (Math.sqrt(tier - 3)))))
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.SulfuricAcid,
+                        Materials2FluidShapes.shapeFluidLiquid,
+                        (int) ((long) (500 * (Math.sqrt(tier - 3))))),
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.IronIIIChloride,
+                        Materials2FluidShapes.shapeFluidLiquid,
+                        (int) ((long) (2000 * (Math.sqrt(tier - 3))))))
                 .itemOutputs(aBoards.toArray(new ItemStack[0]))
                 .duration((int) Math.ceil(400 / Math.sqrt(Math.pow(1.5, tier - 4.5))))
                 .eut((int) GTValues.VP[tier + 1] * 3 / 4)
@@ -426,9 +564,18 @@ public class PCBFactoryRecipes {
                         .get(OrePrefixes.foil, Materials.NiobiumTitanium, (long) (16 * (Math.sqrt(tier - 4)))))
                 .circuit(1)
                 .fluidInputs(
-                    Materials.SulfuricAcid.getFluid((long) (500 * (Math.sqrt(tier - 4)))),
-                    Materials.IronIIIChloride.getFluid((long) (5000 * (Math.sqrt(tier - 4)))),
-                    Materials.GrowthMediumSterilized.getFluid((long) (2000 * (Math.sqrt(tier - 4)))))
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.SulfuricAcid,
+                        Materials2FluidShapes.shapeFluidLiquid,
+                        (int) ((long) (500 * (Math.sqrt(tier - 4))))),
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.IronIIIChloride,
+                        Materials2FluidShapes.shapeFluidLiquid,
+                        (int) ((long) (5000 * (Math.sqrt(tier - 4))))),
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.GrowthMediumSterilized,
+                        Materials2FluidShapes.shapeFluidLiquid,
+                        (int) ((long) (2000 * (Math.sqrt(tier - 4))))))
                 .itemOutputs(aBoards.toArray(new ItemStack[0]))
                 .duration((int) Math.ceil(600 / Math.sqrt(Math.pow(1.5, tier - 5.5))))
                 .eut((int) GTValues.VP[tier] * 3 / 4)
@@ -454,9 +601,18 @@ public class PCBFactoryRecipes {
                         .get(OrePrefixes.foil, Materials.NiobiumTitanium, (long) (16 * (Math.sqrt(tier - 4)))))
                 .circuit(2)
                 .fluidInputs(
-                    Materials.SulfuricAcid.getFluid((long) (500 * (Math.sqrt(tier - 4)))),
-                    Materials.IronIIIChloride.getFluid((long) (5000 * (Math.sqrt(tier - 4)))),
-                    Materials.GrowthMediumSterilized.getFluid((long) (2000 * (Math.sqrt(tier - 4)))))
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.SulfuricAcid,
+                        Materials2FluidShapes.shapeFluidLiquid,
+                        (int) ((long) (500 * (Math.sqrt(tier - 4))))),
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.IronIIIChloride,
+                        Materials2FluidShapes.shapeFluidLiquid,
+                        (int) ((long) (5000 * (Math.sqrt(tier - 4))))),
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.GrowthMediumSterilized,
+                        Materials2FluidShapes.shapeFluidLiquid,
+                        (int) ((long) (2000 * (Math.sqrt(tier - 4))))))
                 .itemOutputs(aBoards.toArray(new ItemStack[0]))
                 .duration((int) Math.ceil(500 / Math.sqrt(Math.pow(1.5, tier - 5.5))))
                 .eut((int) GTValues.VP[tier + 1] * 3 / 4)
@@ -483,9 +639,18 @@ public class PCBFactoryRecipes {
                         .get(OrePrefixes.foil, Materials.NiobiumTitanium, (long) (16 * (Math.sqrt(tier - 4)))))
                 .circuit(3)
                 .fluidInputs(
-                    Materials.SulfuricAcid.getFluid((long) (500 * (Math.sqrt(tier - 4)))),
-                    Materials.IronIIIChloride.getFluid((long) (5000 * (Math.sqrt(tier - 4)))),
-                    Materials.GrowthMediumSterilized.getFluid((long) (2000 * (Math.sqrt(tier - 4)))))
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.SulfuricAcid,
+                        Materials2FluidShapes.shapeFluidLiquid,
+                        (int) ((long) (500 * (Math.sqrt(tier - 4))))),
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.IronIIIChloride,
+                        Materials2FluidShapes.shapeFluidLiquid,
+                        (int) ((long) (5000 * (Math.sqrt(tier - 4))))),
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.GrowthMediumSterilized,
+                        Materials2FluidShapes.shapeFluidLiquid,
+                        (int) ((long) (2000 * (Math.sqrt(tier - 4))))))
                 .itemOutputs(aBoards.toArray(new ItemStack[0]))
                 .duration((int) Math.ceil(400 / Math.sqrt(Math.pow(1.5, tier - 5.5))))
                 .eut((int) GTValues.VP[tier + 1] * 3 / 4)
@@ -514,8 +679,14 @@ public class PCBFactoryRecipes {
                         .get(OrePrefixes.foil, Materials.Neutronium, (long) (16 * (Math.sqrt(tier - 5)))))
                 .circuit(1)
                 .fluidInputs(
-                    Materials.SulfuricAcid.getFluid((long) (500 * (Math.sqrt(tier - 5)))),
-                    Materials.IronIIIChloride.getFluid((long) (7500 * (Math.sqrt(tier - 5)))),
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.SulfuricAcid,
+                        Materials2FluidShapes.shapeFluidLiquid,
+                        (int) ((long) (500 * (Math.sqrt(tier - 5))))),
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.IronIIIChloride,
+                        Materials2FluidShapes.shapeFluidLiquid,
+                        (int) ((long) (7500 * (Math.sqrt(tier - 5))))),
                     Materials.BioMediumSterilized.getFluid((long) (4000 * (Math.sqrt(tier - 5)))))
                 .itemOutputs(aBoards.toArray(new ItemStack[0]))
                 .duration((int) Math.ceil(600 / Math.sqrt(Math.pow(1.5, tier - 5.5))))
@@ -542,8 +713,14 @@ public class PCBFactoryRecipes {
                         .get(OrePrefixes.foil, Materials.Neutronium, (long) (16 * (Math.sqrt(tier - 5)))))
                 .circuit(2)
                 .fluidInputs(
-                    Materials.SulfuricAcid.getFluid((long) (500 * (Math.sqrt(tier - 5)))),
-                    Materials.IronIIIChloride.getFluid((long) (7500 * (Math.sqrt(tier - 5)))),
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.SulfuricAcid,
+                        Materials2FluidShapes.shapeFluidLiquid,
+                        (int) ((long) (500 * (Math.sqrt(tier - 5))))),
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.IronIIIChloride,
+                        Materials2FluidShapes.shapeFluidLiquid,
+                        (int) ((long) (7500 * (Math.sqrt(tier - 5))))),
                     Materials.BioMediumSterilized.getFluid((long) (4000 * (Math.sqrt(tier - 5)))))
                 .itemOutputs(aBoards.toArray(new ItemStack[0]))
                 .duration((int) Math.ceil(500 / Math.sqrt(Math.pow(1.5, tier - 6.5))))
@@ -571,8 +748,14 @@ public class PCBFactoryRecipes {
                         .get(OrePrefixes.foil, Materials.Neutronium, (long) (16 * (Math.sqrt(tier - 5)))))
                 .circuit(3)
                 .fluidInputs(
-                    Materials.SulfuricAcid.getFluid((long) (500 * (Math.sqrt(tier - 5)))),
-                    Materials.IronIIIChloride.getFluid((long) (7500 * (Math.sqrt(tier - 5)))),
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.SulfuricAcid,
+                        Materials2FluidShapes.shapeFluidLiquid,
+                        (int) ((long) (500 * (Math.sqrt(tier - 5))))),
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.IronIIIChloride,
+                        Materials2FluidShapes.shapeFluidLiquid,
+                        (int) ((long) (7500 * (Math.sqrt(tier - 5))))),
                     Materials.BioMediumSterilized.getFluid((long) (4000 * (Math.sqrt(tier - 5)))))
                 .itemOutputs(aBoards.toArray(new ItemStack[0]))
                 .duration((int) Math.ceil(400 / Math.sqrt(Math.pow(1.5, tier - 6.5))))
@@ -605,9 +788,18 @@ public class PCBFactoryRecipes {
                     CHRONOMATIC_GLASS.getFoil((int) (16 * (Math.sqrt(tier - 6)))))
                 .circuit(1)
                 .fluidInputs(
-                    Materials.SulfuricAcid.getFluid((long) (500 * (Math.sqrt(tier - 6)))),
-                    Materials.IronIIIChloride.getFluid((long) (12_500 * (Math.sqrt(tier - 6)))),
-                    Materials.MysteriousCrystal.getMolten((long) (20 * INGOTS * (Math.sqrt(tier - 6)))))
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.SulfuricAcid,
+                        Materials2FluidShapes.shapeFluidLiquid,
+                        (int) ((long) (500 * (Math.sqrt(tier - 6))))),
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.IronIIIChloride,
+                        Materials2FluidShapes.shapeFluidLiquid,
+                        (int) ((long) (12_500 * (Math.sqrt(tier - 6))))),
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.MysteriousCrystal,
+                        Materials2FluidShapes.shapeFluidMolten,
+                        (int) ((long) (20 * INGOTS * (Math.sqrt(tier - 6))))))
                 .itemOutputs(aBoards.toArray(new ItemStack[0]))
                 .duration((int) Math.ceil(600 / Math.sqrt(Math.pow(1.5, tier - 5.5))))
                 .eut((int) GTValues.VP[tier] * 3 / 4)
@@ -635,9 +827,18 @@ public class PCBFactoryRecipes {
                     CHRONOMATIC_GLASS.getFoil((int) (16 * (Math.sqrt(tier - 6)))))
                 .circuit(2)
                 .fluidInputs(
-                    Materials.SulfuricAcid.getFluid((long) (500 * (Math.sqrt(tier - 6)))),
-                    Materials.IronIIIChloride.getFluid((long) (12_500 * (Math.sqrt(tier - 6)))),
-                    Materials.MysteriousCrystal.getMolten((long) (20 * INGOTS * (Math.sqrt(tier - 6)))))
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.SulfuricAcid,
+                        Materials2FluidShapes.shapeFluidLiquid,
+                        (int) ((long) (500 * (Math.sqrt(tier - 6))))),
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.IronIIIChloride,
+                        Materials2FluidShapes.shapeFluidLiquid,
+                        (int) ((long) (12_500 * (Math.sqrt(tier - 6))))),
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.MysteriousCrystal,
+                        Materials2FluidShapes.shapeFluidMolten,
+                        (int) ((long) (20 * INGOTS * (Math.sqrt(tier - 6))))))
                 .itemOutputs(aBoards.toArray(new ItemStack[0]))
                 .duration((int) Math.ceil(500 / Math.sqrt(Math.pow(1.5, tier - 6.5))))
                 .eut((int) GTValues.VP[tier + 1] * 3 / 4)
@@ -666,9 +867,18 @@ public class PCBFactoryRecipes {
                     CHRONOMATIC_GLASS.getFoil((int) (16 * (Math.sqrt(tier - 6)))))
                 .circuit(3)
                 .fluidInputs(
-                    Materials.SulfuricAcid.getFluid((long) (500 * (Math.sqrt(tier - 6)))),
-                    Materials.IronIIIChloride.getFluid((long) (12_500 * (Math.sqrt(tier - 6)))),
-                    Materials.MysteriousCrystal.getMolten((long) (20 * INGOTS * (Math.sqrt(tier - 6)))))
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.SulfuricAcid,
+                        Materials2FluidShapes.shapeFluidLiquid,
+                        (int) ((long) (500 * (Math.sqrt(tier - 6))))),
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.IronIIIChloride,
+                        Materials2FluidShapes.shapeFluidLiquid,
+                        (int) ((long) (12_500 * (Math.sqrt(tier - 6))))),
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.MysteriousCrystal,
+                        Materials2FluidShapes.shapeFluidMolten,
+                        (int) ((long) (20 * INGOTS * (Math.sqrt(tier - 6))))))
                 .itemOutputs(aBoards.toArray(new ItemStack[0]))
                 .duration((int) Math.ceil(400 / Math.sqrt(Math.pow(1.5, tier - 6.5))))
                 .eut((int) GTValues.VP[tier + 1] * 3 / 4)
