@@ -39,6 +39,8 @@ import net.minecraftforge.common.IShearable;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.world.BlockEvent;
 
+import org.jetbrains.annotations.Nullable;
+
 import com.gtnewhorizon.gtnhlib.item.ItemStackNBT;
 import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
 
@@ -56,6 +58,8 @@ import gregtech.api.enums.Mods;
 import gregtech.api.enums.TCAspects.TC_AspectStack;
 import gregtech.api.interfaces.IDamagableItem;
 import gregtech.api.interfaces.IToolStats;
+import gregtech.api.material.GTMaterialProperties;
+import gregtech.api.material.MU;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -125,6 +129,45 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
             if (aNBT != null) return Materials.getRealMaterial(aNBT.getString("SecondaryMaterial"));
         }
         return Materials._NULL;
+    }
+
+    /// Tool durability/speed/quality/enchant are read from [GTMaterialProperties] on the MaterialLib material a
+    /// legacy [Materials] ported from, not from the legacy fields directly, even though the legacy facade
+    /// populates those fields from the same properties (see `LegacyMaterials#build`) -- this keeps
+    /// `MetaGeneratedTool`'s stat computation off the legacy type ahead of its stage-13 removal.
+    private static int getToolDurability(Materials aMaterial) {
+        com.ruling_0.materiallib.api.Material mlMaterial = MU.material(aMaterial);
+        Integer durability = mlMaterial == null ? null : mlMaterial.getProperty(GTMaterialProperties.DURABILITY);
+        return durability == null ? 0 : durability;
+    }
+
+    private static float getToolSpeed(Materials aMaterial) {
+        com.ruling_0.materiallib.api.Material mlMaterial = MU.material(aMaterial);
+        Float toolSpeed = mlMaterial == null ? null : mlMaterial.getProperty(GTMaterialProperties.TOOL_SPEED);
+        return toolSpeed == null ? 1.0F : toolSpeed;
+    }
+
+    private static int getToolQuality(Materials aMaterial) {
+        com.ruling_0.materiallib.api.Material mlMaterial = MU.material(aMaterial);
+        Integer toolQuality = mlMaterial == null ? null : mlMaterial.getProperty(GTMaterialProperties.TOOL_QUALITY);
+        return toolQuality == null ? 0 : toolQuality;
+    }
+
+    private static @Nullable Enchantment getToolEnchantment(Materials aMaterial) {
+        com.ruling_0.materiallib.api.Material mlMaterial = MU.material(aMaterial);
+        String enchantmentName = mlMaterial == null ? null
+            : mlMaterial.getProperty(GTMaterialProperties.TOOL_ENCHANTMENT);
+        if (enchantmentName == null) return null;
+        for (Enchantment enchantment : Enchantment.enchantmentsList) {
+            if (enchantment != null && enchantmentName.equals(enchantment.getName())) return enchantment;
+        }
+        return null;
+    }
+
+    private static int getToolEnchantmentLevel(Materials aMaterial) {
+        com.ruling_0.materiallib.api.Material mlMaterial = MU.material(aMaterial);
+        Integer level = mlMaterial == null ? null : mlMaterial.getProperty(GTMaterialProperties.TOOL_ENCHANTMENT_LEVEL);
+        return level == null ? 0 : level;
     }
 
     /* ---------- INTERNAL OVERRIDES ---------- */
@@ -264,7 +307,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
                 tToolNBT.setString("PrimaryMaterial", aPrimaryMaterial.mName);
                 tToolNBT.setLong(
                     "MaxDamage",
-                    100L * (long) (aPrimaryMaterial.mDurability * tToolStats.getMaxDurabilityMultiplier()));
+                    100L * (long) (getToolDurability(aPrimaryMaterial) * tToolStats.getMaxDurabilityMultiplier()));
             }
             if (aSecondaryMaterial != null) tToolNBT.setString("SecondaryMaterial", aSecondaryMaterial.mName);
 
@@ -645,7 +688,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
                             "" + EnumChatFormatting.GOLD
                                 + Math.max(
                                     Float.MIN_NORMAL,
-                                    tStats.getSpeedMultiplier() * getPrimaryMaterial(aStack).mToolSpeed))
+                                    tStats.getSpeedMultiplier() * getToolSpeed(getPrimaryMaterial(aStack))))
                         + EnumChatFormatting.GRAY);
                 final NBTTagCompound nbt = aStack.getTagCompound();
                 if (nbt != null) {
@@ -694,7 +737,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
     public float getToolCombatDamage(ItemStack aStack) {
         IToolStats tStats = getToolStats(aStack);
         if (tStats == null) return 0;
-        return tStats.getBaseDamage() + getPrimaryMaterial(aStack).mToolQuality;
+        return tStats.getBaseDamage() + getToolQuality(getPrimaryMaterial(aStack));
     }
 
     @Override
@@ -746,7 +789,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
         IToolStats tStats = getToolStats(aStack);
         if (tStats == null || Math.max(0, getHarvestLevel(aStack, "")) < aBlock.getHarvestLevel(aMetaData)) return 0.0F;
         return tStats.isMinableBlock(aBlock, aMetaData)
-            ? Math.max(Float.MIN_NORMAL, tStats.getSpeedMultiplier() * getPrimaryMaterial(aStack).mToolSpeed)
+            ? Math.max(Float.MIN_NORMAL, tStats.getSpeedMultiplier() * getToolSpeed(getPrimaryMaterial(aStack)))
             : 0.0F;
     }
 
@@ -758,7 +801,7 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
     @Override
     public final int getHarvestLevel(ItemStack aStack, String aToolClass) {
         IToolStats tStats = getToolStats(aStack);
-        return tStats == null ? -1 : tStats.getBaseQuality() + getPrimaryMaterial(aStack).mToolQuality;
+        return tStats == null ? -1 : tStats.getBaseQuality() + getToolQuality(getPrimaryMaterial(aStack));
     }
 
     @Override
@@ -950,14 +993,13 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
         }
         Materials aMaterial = getPrimaryMaterial(aStack);
         HashMap<Integer, Integer> tMap = new HashMap<>(), tResult = new HashMap<>();
-        if (aMaterial.mToolEnchantment != null) {
-            tMap.put(aMaterial.mToolEnchantment.effectId, (int) aMaterial.mToolEnchantmentLevel);
-            if (aMaterial.mToolEnchantment == Enchantment.fortune)
-                tMap.put(Enchantment.looting.effectId, (int) aMaterial.mToolEnchantmentLevel);
-            if (aMaterial.mToolEnchantment == Enchantment.knockback)
-                tMap.put(Enchantment.power.effectId, (int) aMaterial.mToolEnchantmentLevel);
-            if (aMaterial.mToolEnchantment == Enchantment.fireAspect)
-                tMap.put(Enchantment.flame.effectId, (int) aMaterial.mToolEnchantmentLevel);
+        Enchantment tToolEnchantment = getToolEnchantment(aMaterial);
+        if (tToolEnchantment != null) {
+            int tToolEnchantmentLevel = getToolEnchantmentLevel(aMaterial);
+            tMap.put(tToolEnchantment.effectId, tToolEnchantmentLevel);
+            if (tToolEnchantment == Enchantment.fortune) tMap.put(Enchantment.looting.effectId, tToolEnchantmentLevel);
+            if (tToolEnchantment == Enchantment.knockback) tMap.put(Enchantment.power.effectId, tToolEnchantmentLevel);
+            if (tToolEnchantment == Enchantment.fireAspect) tMap.put(Enchantment.flame.effectId, tToolEnchantmentLevel);
         }
         Enchantment[] tEnchants = tStats.getEnchantments(aStack);
         int[] tLevels = tStats.getEnchantmentLevels(aStack);

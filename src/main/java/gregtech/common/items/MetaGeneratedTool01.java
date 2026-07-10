@@ -59,15 +59,18 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TCAspects;
 import gregtech.api.enums.ToolDictNames;
+import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.common.tools.ItemNetworkAnalyzer;
 import gregtech.common.tools.ToolBranchCutter;
 import gregtech.common.tools.ToolButcheryKnife;
@@ -643,15 +646,15 @@ public class MetaGeneratedTool01 extends MetaGeneratedTool {
 
     private void initCraftingShapelessRecipes() {
         GTModHandler.addShapelessCraftingRecipe(
-            GTOreDictUnificator.get(OrePrefixes.dust, Materials.Coal, 1L),
+            MaterialLibAPI.getStack(Materials2Materials.Coal, Materials2Shapes.shapeDust, 1),
             GTModHandler.RecipeBits.NOT_REMOVABLE,
             new Object[] { ToolDictNames.craftingToolMortar, new ItemStack(Items.coal, 1) });
         GTModHandler.addShapelessCraftingRecipe(
-            GTOreDictUnificator.get(OrePrefixes.dust, Materials.Clay, 1L),
+            MaterialLibAPI.getStack(Materials2Materials.Clay, Materials2Shapes.shapeDust, 1),
             GTModHandler.RecipeBits.NOT_REMOVABLE,
             new Object[] { ToolDictNames.craftingToolMortar, new ItemStack(Blocks.clay, 1) });
         GTModHandler.addShapelessCraftingRecipe(
-            GTOreDictUnificator.get(OrePrefixes.dust, Materials.Wheat, 1L),
+            MaterialLibAPI.getStack(Materials2Materials.Wheat, Materials2Shapes.shapeDust, 1),
             GTModHandler.RecipeBits.NOT_REMOVABLE,
             new Object[] { ToolDictNames.craftingToolMortar, new ItemStack(Items.wheat, 1) });
         GTModHandler.addShapelessCraftingRecipe(
