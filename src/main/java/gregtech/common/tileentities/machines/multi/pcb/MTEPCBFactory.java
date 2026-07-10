@@ -49,6 +49,7 @@ import com.gtnewhorizon.structurelib.alignment.enumerable.Rotation;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
@@ -57,6 +58,8 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.Textures.BlockIcons;
+import gregtech.api.enums.materials2.Materials2FluidShapes;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.INEIPreviewModifier;
 import gregtech.api.interfaces.ITexture;
@@ -501,7 +504,10 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                     if (compatMode.coolantHatch != null) {
                         FluidStack tFluid = compatMode.OCTier == 1
                             ? GTModHandler.getDistilledWater(COOLANT_CONSUMED_PER_SEC)
-                            : Materials.SuperCoolant.getFluid(COOLANT_CONSUMED_PER_SEC);
+                            : MaterialLibAPI.getFluidStack(
+                                Materials2Materials.SuperCoolant,
+                                Materials2FluidShapes.shapeFluidLiquid,
+                                COOLANT_CONSUMED_PER_SEC);
                         if (!drain(compatMode.coolantHatch, tFluid, true)) {
                             stopMachine(ShutDownReasonRegistry.outOfFluid(tFluid));
                         }
@@ -510,7 +516,10 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
                     }
                 } else {
                     FluidStack tFluid = mCoolingTower.isTier1 ? GTModHandler.getDistilledWater(COOLANT_CONSUMED_PER_SEC)
-                        : Materials.SuperCoolant.getFluid(COOLANT_CONSUMED_PER_SEC);
+                        : MaterialLibAPI.getFluidStack(
+                            Materials2Materials.SuperCoolant,
+                            Materials2FluidShapes.shapeFluidLiquid,
+                            COOLANT_CONSUMED_PER_SEC);
                     if (!mCoolingTower.drain(mCoolingTower.mCoolantInputHatch, tFluid, true)) {
                         stopMachine(ShutDownReasonRegistry.outOfFluid(tFluid));
                         return false;

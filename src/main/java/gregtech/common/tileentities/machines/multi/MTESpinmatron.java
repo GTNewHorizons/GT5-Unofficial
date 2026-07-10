@@ -42,6 +42,7 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import fox.spiteful.avaritia.blocks.LudicrousBlocks;
 import gregtech.api.GregTechAPI;
@@ -50,6 +51,8 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials2.Materials2FluidShapes;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
@@ -696,8 +699,10 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
 
     private boolean checkFluid(int amount) {
         // checks for fluid in hatch, does not drain it.
-        final FluidStack tFluid = tier2Fluid ? Materials.BiocatalyzedPropulsionFluid.getFluid(amount)
-            : new FluidStack(GTPPFluids.Kerosene, amount);
+        final FluidStack tFluid = tier2Fluid ? MaterialLibAPI.getFluidStack(
+            Materials2Materials.BiocatalyzedPropulsionFluid,
+            Materials2FluidShapes.shapeFluidLiquid,
+            amount) : new FluidStack(GTPPFluids.Kerosene, amount);
 
         return this.depleteInput(tFluid, true);
     }
@@ -750,8 +755,10 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
         // might need a cleanup here
         if (ticker % 21 == 0) {
 
-            FluidStack tFluid = tier2Fluid ? Materials.BiocatalyzedPropulsionFluid.getFluid(amountToDrain)
-                : new FluidStack(GTPPFluids.Kerosene, amountToDrain); // gets fluid to drain
+            FluidStack tFluid = tier2Fluid ? MaterialLibAPI.getFluidStack(
+                Materials2Materials.BiocatalyzedPropulsionFluid,
+                Materials2FluidShapes.shapeFluidLiquid,
+                amountToDrain) : new FluidStack(GTPPFluids.Kerosene, amountToDrain); // gets fluid to drain
             for (MTEHatchInput mInputHatch : mInputHatches) {
                 if (drain(mInputHatch, tFluid, true)) {
                     ticker = 1;
