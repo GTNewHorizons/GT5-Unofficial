@@ -19,6 +19,8 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import bartworks.common.loaders.ItemRegistry;
 import bartworks.system.material.WerkstoffLoader;
 import codechicken.nei.api.API;
@@ -32,6 +34,9 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.Materials2FluidShapes;
+import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.metatileentity.implementations.MTEBasicMachineWithRecipe;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
@@ -1609,7 +1614,7 @@ public class MTERecipeLoader implements Runnable {
                 ItemList.Field_Generator_EV.get(2),
                 ItemList.Robot_Arm_IV.get(4),
                 GregtechItemList.Energy_Core_EV.get(2),
-                Materials.Tungsten.getPlates(8),
+                MaterialLibAPI.getStack(Materials2Materials.Tungsten, Materials2Shapes.shapePlate, 8),
                 GTOreDictUnificator.get(OrePrefixes.circuit, Materials.IV, 8))
             .itemOutputs(ItemList.IndustrialArcFurnace.get(1))
             .duration(1 * MINUTES)
@@ -1625,8 +1630,8 @@ public class MTERecipeLoader implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.RoseGold, 1),
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.RoseGold, 4),
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.StainlessSteel, 2))
+                MaterialLibAPI.getStack(Materials2Materials.RoseGold, Materials2Shapes.shapePlate, 4),
+                MaterialLibAPI.getStack(Materials2Materials.StainlessSteel, Materials2Shapes.shapePlate, 2))
             .circuit(1)
             .itemOutputs(ItemList.AlgaeCasing.get(1))
             .duration(2 * SECONDS + 10 * TICKS)
@@ -1641,7 +1646,11 @@ public class MTERecipeLoader implements Runnable {
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Naquadah, 1))
             .circuit(1)
             .itemOutputs(ItemList.NaquadahReactorCasing.get(1))
-            .fluidInputs(Materials.NaquadahEnriched.getMolten(4 * INGOTS))
+            .fluidInputs(
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.NaquadahEnriched,
+                    Materials2FluidShapes.shapeFluidMolten,
+                    4 * INGOTS))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_LuV)
             .addTo(assemblerRecipes);
