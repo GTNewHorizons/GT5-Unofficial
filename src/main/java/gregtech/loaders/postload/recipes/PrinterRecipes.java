@@ -12,8 +12,11 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
+import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
 
 @SuppressWarnings({ "PointlessArithmeticExpression" })
@@ -40,7 +43,7 @@ public class PrinterRecipes implements Runnable {
             .addTo(printerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Paper, Materials2Shapes.shapePlate, (int) (3L)))
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.plate, Materials.Paper, 3L))
             .special(ItemList.Tool_DataStick.getWithName(0L, "With Scanned Book Data"))
             .itemOutputs(ItemList.Paper_Printed_Pages.get(1L))
             .fluidInputs(getFluidStack("squidink", 1 * INGOTS))

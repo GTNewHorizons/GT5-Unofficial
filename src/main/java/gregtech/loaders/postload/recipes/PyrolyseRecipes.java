@@ -16,13 +16,15 @@ import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import bartworks.common.loaders.FluidLoader;
 import gregtech.api.enums.GTValues;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.enums.materials2.Materials2BlockShapes;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.util.GTModHandler;
+import gregtech.api.util.GTOreDictUnificator;
 import mods.railcraft.common.blocks.aesthetics.cube.EnumCube;
 import mods.railcraft.common.items.RailcraftToolItems;
 
@@ -36,7 +38,7 @@ public class PyrolyseRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(logWood16)
             .circuit(1)
-            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Charcoal, Materials2Shapes.shapeGem, 20))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gem, Materials.Charcoal, 20))
             .fluidOutputs(
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.Creosote, Materials2FluidShapes.shapeFluidLiquid, (int) (4_000)))
@@ -46,7 +48,7 @@ public class PyrolyseRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(logWood16)
             .circuit(2)
-            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Charcoal, Materials2Shapes.shapeGem, 20))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gem, Materials.Charcoal, 20))
             .fluidInputs(
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.Nitrogen, Materials2FluidShapes.shapeFluidGas, (int) (1_000)))
@@ -59,7 +61,7 @@ public class PyrolyseRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(logWood16)
             .circuit(3)
-            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Charcoal, Materials2Shapes.shapeGem, 20))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gem, Materials.Charcoal, 20))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.CharcoalByproducts,
@@ -71,7 +73,7 @@ public class PyrolyseRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(logWood16)
             .circuit(4)
-            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Charcoal, Materials2Shapes.shapeGem, 20))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gem, Materials.Charcoal, 20))
             .fluidInputs(
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.Nitrogen, Materials2FluidShapes.shapeFluidGas, (int) (1_000)))
@@ -86,7 +88,7 @@ public class PyrolyseRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(logWood16)
             .circuit(5)
-            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Charcoal, Materials2Shapes.shapeGem, 20))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gem, Materials.Charcoal, 20))
             .fluidOutputs(
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.WoodGas, Materials2FluidShapes.shapeFluidGas, (int) (1_500)))
@@ -96,7 +98,7 @@ public class PyrolyseRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(logWood16)
             .circuit(6)
-            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Charcoal, Materials2Shapes.shapeGem, 20))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gem, Materials.Charcoal, 20))
             .fluidInputs(
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.Nitrogen, Materials2FluidShapes.shapeFluidGas, (int) (1_000)))
@@ -109,7 +111,7 @@ public class PyrolyseRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(logWood16)
             .circuit(7)
-            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Charcoal, Materials2Shapes.shapeGem, 20))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gem, Materials.Charcoal, 20))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.WoodVinegar,
@@ -121,7 +123,7 @@ public class PyrolyseRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(logWood16)
             .circuit(8)
-            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Charcoal, Materials2Shapes.shapeGem, 20))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gem, Materials.Charcoal, 20))
             .fluidInputs(
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.Nitrogen, Materials2FluidShapes.shapeFluidGas, (int) (1_000)))
@@ -136,7 +138,7 @@ public class PyrolyseRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(logWood16)
             .circuit(9)
-            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Charcoal, Materials2Shapes.shapeGem, 20))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gem, Materials.Charcoal, 20))
             .fluidOutputs(
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.WoodTar, Materials2FluidShapes.shapeFluidLiquid, (int) (1_500)))
@@ -146,7 +148,7 @@ public class PyrolyseRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(logWood16)
             .circuit(10)
-            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Charcoal, Materials2Shapes.shapeGem, 20))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gem, Materials.Charcoal, 20))
             .fluidInputs(
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.Nitrogen, Materials2FluidShapes.shapeFluidGas, (int) (1_000)))
@@ -169,7 +171,7 @@ public class PyrolyseRecipes implements Runnable {
 
         if (Railcraft.isModLoaded()) {
             GTValues.RA.stdBuilder()
-                .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Coal, Materials2Shapes.shapeGem, (int) (16)))
+                .itemInputs(GTOreDictUnificator.get(OrePrefixes.gem, Materials.Coal, 16))
                 .circuit(1)
                 .itemOutputs(RailcraftToolItems.getCoalCoke(16))
                 .fluidOutputs(
@@ -182,7 +184,7 @@ public class PyrolyseRecipes implements Runnable {
                 .addTo(pyrolyseRecipes, cokeOvenRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Coal, Materials2Shapes.shapeGem, (int) (16)))
+                .itemInputs(GTOreDictUnificator.get(OrePrefixes.gem, Materials.Coal, 16))
                 .circuit(2)
                 .itemOutputs(RailcraftToolItems.getCoalCoke(16))
                 .fluidInputs(
@@ -200,8 +202,7 @@ public class PyrolyseRecipes implements Runnable {
                 .addTo(pyrolyseRecipes, cokeOvenRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(
-                    MaterialLibAPI.getStack(Materials2Materials.Coal, Materials2BlockShapes.shapeBlock, (int) (8)))
+                .itemInputs(GTOreDictUnificator.get(OrePrefixes.block, Materials.Coal, 8))
                 .circuit(1)
                 .itemOutputs(EnumCube.COKE_BLOCK.getItem(8))
                 .fluidOutputs(
@@ -214,8 +215,7 @@ public class PyrolyseRecipes implements Runnable {
                 .addTo(pyrolyseRecipes, cokeOvenRecipes);
 
             GTValues.RA.stdBuilder()
-                .itemInputs(
-                    MaterialLibAPI.getStack(Materials2Materials.Coal, Materials2BlockShapes.shapeBlock, (int) (8)))
+                .itemInputs(GTOreDictUnificator.get(OrePrefixes.block, Materials.Coal, 8))
                 .circuit(2)
                 .itemOutputs(EnumCube.COKE_BLOCK.getItem(8))
                 .fluidInputs(
@@ -322,7 +322,7 @@ public class PyrolyseRecipes implements Runnable {
             .addTo(pyrolyseRecipes, cokeOvenRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Sugar, Materials2Shapes.shapeDust, 23))
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Sugar, 23))
             .circuit(1)
             .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Charcoal, Materials2Shapes.shapeDust, 12))
             .fluidOutputs(
@@ -333,7 +333,7 @@ public class PyrolyseRecipes implements Runnable {
             .addTo(pyrolyseRecipes, cokeOvenRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Sugar, Materials2Shapes.shapeDust, 23))
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Sugar, 23))
             .circuit(2)
             .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Charcoal, Materials2Shapes.shapeDust, 12))
             .fluidInputs(

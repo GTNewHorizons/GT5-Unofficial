@@ -147,7 +147,7 @@ public class FluidExtractorRecipes implements Runnable {
             .addTo(fluidExtractionRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Mercury, Materials2Shapes.shapeGem, (int) (1L)))
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.gem, Materials.Mercury, 1L))
             .fluidOutputs(
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.Mercury, Materials2FluidShapes.shapeFluidLiquid, (int) (1_000)))

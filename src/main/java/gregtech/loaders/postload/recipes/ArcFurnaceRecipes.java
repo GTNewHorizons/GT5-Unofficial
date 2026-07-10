@@ -196,7 +196,7 @@ public class ArcFurnaceRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(getModItem(Railcraft.ID, "machine.beta", 1L, 0))
-            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Iron, Materials2Shapes.shapeIngot, (int) (2L)))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Iron, 2L))
             .duration(7 * SECONDS + 10 * TICKS)
             .eut(90)
             .metadata(RECYCLE, true)
@@ -205,7 +205,7 @@ public class ArcFurnaceRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(getModItem(Railcraft.ID, "machine.beta", 1L, 1))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials2Materials.Iron, Materials2Shapes.shapeIngot, (int) (1L)),
+                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Iron, 1L),
                 MaterialLibAPI.getStack(Materials2Materials.Glass, Materials2Shapes.shapeDustTiny, (int) (3)))
             .duration(7 * SECONDS + 10 * TICKS)
             .eut(90)

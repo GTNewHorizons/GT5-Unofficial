@@ -120,7 +120,7 @@ public class ForgeHammerRecipes implements Runnable {
             .addTo(hammerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Brick, Materials2Shapes.shapeIngot, 1))
+            .itemInputs(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Brick, 1))
             .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Brick, Materials2Shapes.shapeDustSmall, 1))
             .duration(10 * TICKS)
             .eut(TierEU.RECIPE_LV / 2)

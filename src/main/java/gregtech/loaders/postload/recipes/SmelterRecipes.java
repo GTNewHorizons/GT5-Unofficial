@@ -10,7 +10,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.Materials2Materials;
-import gregtech.api.enums.materials2.Materials2OreShapes;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -47,7 +46,7 @@ public class SmelterRecipes implements Runnable {
         GTModHandler.addSmeltingRecipe(new ItemStack(Items.slime_ball, 1), ItemList.IC2_Resin.get(1L));
 
         GTModHandler.addSmeltingRecipe(
-            MaterialLibAPI.getStack(Materials2Materials.Graphite, Materials2OreShapes.shapeOre, (int) (1L)),
+            GTOreDictUnificator.get(OrePrefixes.ore, Materials.Graphite, 1L),
             MaterialLibAPI.getStack(Materials2Materials.Graphite, Materials2Shapes.shapeDust, (int) (1L)));
 
         GTModHandler.addSmeltingRecipe(
