@@ -16,7 +16,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.materials2.Materials2Materials;
-import gregtech.api.enums.materials2.Materials2OreShapes;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -79,15 +78,15 @@ public class RecipeRemover implements Runnable {
             GTModHandler.getMaceratorRecipeList(),
             MaterialLibAPI.getStack(Materials2Materials.Stone, Materials2Shapes.shapeDust, (int) (1L)));
         GTUtility.removeSimpleIC2MachineRecipe(
-            MaterialLibAPI.getStack(Materials2Materials.Lapis, Materials2Shapes.shapeGem, (int) (1L)),
+            GTOreDictUnificator.get(OrePrefixes.gem, Materials.Lapis, 1L),
             GTModHandler.getMaceratorRecipeList(),
             GTModHandler.getIC2Item("plantBall", 1L));
         GTUtility.removeSimpleIC2MachineRecipe(
-            MaterialLibAPI.getStack(Materials2Materials.Redstone, Materials2Shapes.shapeDust, (int) (1L)),
+            GTOreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L),
             GTModHandler.getMaceratorRecipeList(),
             GTModHandler.getIC2Item("plantBall", 1L));
         GTUtility.removeSimpleIC2MachineRecipe(
-            MaterialLibAPI.getStack(Materials2Materials.Glowstone, Materials2Shapes.shapeDust, (int) (1L)),
+            GTOreDictUnificator.get(OrePrefixes.dust, Materials.Glowstone, 1L),
             GTModHandler.getMaceratorRecipeList(),
             GTModHandler.getIC2Item("plantBall", 1L));
         GTUtility.removeSimpleIC2MachineRecipe(
@@ -143,8 +142,7 @@ public class RecipeRemover implements Runnable {
     }
 
     public void removeSmelting() {
-        GTModHandler.removeFurnaceSmelting(
-            MaterialLibAPI.getStack(Materials2Materials.Graphite, Materials2OreShapes.shapeOre, (int) (1L)));
+        GTModHandler.removeFurnaceSmelting(GTOreDictUnificator.get(OrePrefixes.ore, Materials.Graphite, 1L));
         GTModHandler
             .removeFurnaceSmelting(GTOreDictUnificator.get(OrePrefixes.oreBlackgranite, Materials.Graphite, 1L));
         GTModHandler.removeFurnaceSmelting(GTOreDictUnificator.get(OrePrefixes.oreEndstone, Materials.Graphite, 1L));
