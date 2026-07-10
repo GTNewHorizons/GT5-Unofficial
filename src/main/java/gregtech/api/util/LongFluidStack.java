@@ -9,26 +9,6 @@ public class LongFluidStack extends FluidStack {
 
     private long amountLong;
 
-    public LongFluidStack(FluidStack stack) {
-        this(stack.getFluid(), GTUtility.getFluidAmount(stack), stack.tag);
-    }
-
-    public LongFluidStack(FluidStack stack, long amount) {
-        this(stack.getFluid(), amount, stack.tag);
-    }
-
-    public LongFluidStack(Fluid fluid, int amount) {
-        this(fluid, amount, null);
-    }
-
-    public LongFluidStack(Fluid fluid, long amount) {
-        this(fluid, amount, null);
-    }
-
-    public LongFluidStack(Fluid fluid, int amount, NBTTagCompound nbt) {
-        this(fluid, (long) amount, nbt);
-    }
-
     public LongFluidStack(Fluid fluid, long amount, NBTTagCompound nbt) {
         super(fluid, GTUtility.longToInt(amount), nbt);
         amountLong = amount;
@@ -75,6 +55,6 @@ public class LongFluidStack extends FluidStack {
         FluidStack stack = FluidStack.loadFluidStackFromNBT(nbt);
         long amountLong = nbt.hasKey("amountLong") ? nbt.getLong("amountLong") : stack.amount;
 
-        return stack == null ? null : new LongFluidStack(stack, amountLong);
+        return stack == null ? null : new LongFluidStack(stack.getFluid(), amountLong, stack.tag);
     }
 }

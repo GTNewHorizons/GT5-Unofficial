@@ -63,7 +63,6 @@ import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.LongFluidStack;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.gui.modularui.multiblock.base.MTEMultiBlockBaseGui;
 import gregtech.common.misc.GTStructureChannels;
@@ -518,7 +517,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
                 long totalChemToDrain = (long) canProcess * GTUtility.getFluidAmount(requiredFluid);
                 while (totalChemToDrain > 0) {
                     long tryDrain = totalChemToDrain;
-                    if (!depleteInput(new LongFluidStack(requiredFluid.getFluid(), tryDrain))) {
+                    if (!depleteInput(GTUtility.createFluidStack(requiredFluid.getFluid(), tryDrain))) {
                         long maxHatch = 0;
                         for (FluidStack sf : getStoredFluids()) {
                             if (sf != null && sf.isFluidEqual(requiredFluid)
@@ -528,7 +527,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
                         }
                         if (maxHatch <= 0) break;
                         tryDrain = Math.min(totalChemToDrain, maxHatch);
-                        if (!depleteInput(new LongFluidStack(requiredFluid.getFluid(), tryDrain))) break;
+                        if (!depleteInput(GTUtility.createFluidStack(requiredFluid.getFluid(), tryDrain))) break;
                     }
                     totalChemToDrain -= tryDrain;
                 }

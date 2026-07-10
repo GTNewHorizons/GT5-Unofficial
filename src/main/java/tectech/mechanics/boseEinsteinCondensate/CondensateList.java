@@ -16,7 +16,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import appeng.api.storage.data.IAEFluidStack;
 import appeng.util.item.AEFluidStack;
-import gregtech.api.util.LongFluidStack;
+import gregtech.api.util.GTUtility;
 import it.unimi.dsi.fastutil.objects.Object2LongMap;
 import it.unimi.dsi.fastutil.objects.Object2LongMaps;
 import it.unimi.dsi.fastutil.objects.Object2LongOpenHashMap;
@@ -82,7 +82,7 @@ public class CondensateList extends Object2LongOpenHashMap<Fluid> {
     public List<FluidStack> toFluidStacks() {
         ArrayList<FluidStack> out = new ArrayList<>();
 
-        Object2LongMaps.fastForEach(this, e -> { out.add(new LongFluidStack(e.getKey(), e.getLongValue())); });
+        Object2LongMaps.fastForEach(this, e -> { out.add(GTUtility.createFluidStack(e.getKey(), e.getLongValue())); });
 
         return out;
     }

@@ -121,7 +121,6 @@ import gregtech.api.util.GTUtil;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.GTWaila;
 import gregtech.api.util.ItemEjectionHelper;
-import gregtech.api.util.LongFluidStack;
 import gregtech.api.util.OutputHatchWrapper;
 import gregtech.api.util.ParallelHelper;
 import gregtech.api.util.VoidProtectionHelper;
@@ -3830,14 +3829,7 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                     () -> mOutputFluids != null ? Arrays.stream(mOutputFluids)
                         .map(fluidStack -> {
                             if (fluidStack == null) return null;
-                            return new LongFluidStack(fluidStack.getFluid(), GTUtility.getFluidAmount(fluidStack)) {
-
-                                @Override
-                                public boolean isFluidEqual(FluidStack other) {
-                                    return super.isFluidEqual(other)
-                                        && getAmountLong() == GTUtility.getFluidAmount(other);
-                                }
-                            };
+                            return GTUtility.createFluidStackWithAmountComparison(fluidStack);
                         })
                         .collect(Collectors.toList()) : Collections.emptyList(),
                     val -> {

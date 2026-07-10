@@ -120,7 +120,6 @@ import gregtech.api.objects.GTDualInputPattern;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.LongFluidStack;
 import gregtech.api.util.extensions.ArrayExt;
 import gregtech.common.config.Gregtech;
 import gregtech.common.gui.modularui.hatch.MTEHatchCraftingInputMEGui;
@@ -387,7 +386,8 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
         }
 
         private void insertFluid(IAEFluidStack inserted) {
-            final FluidStack compareStack = new LongFluidStack(inserted.getFluidStack(), inserted.getStackSize());
+            final FluidStack compareStack = GTUtility
+                .createFluidStack(inserted.getFluidStack(), inserted.getStackSize());
 
             // BigInt fluid mayhaps:tm:
             for (FluidStack fluidStack : fluidInventory) {
@@ -402,7 +402,7 @@ public class MTEHatchCraftingInputME extends MTEHatchInputBus implements IPowerC
             }
 
             if (inserted.getStackSize() > 0) {
-                fluidInventory.add(new LongFluidStack(inserted.getFluid(), inserted.getStackSize()));
+                fluidInventory.add(GTUtility.createFluidStack(inserted.getFluid(), inserted.getStackSize()));
             }
         }
 

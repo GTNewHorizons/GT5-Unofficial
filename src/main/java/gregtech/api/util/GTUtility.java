@@ -2112,7 +2112,8 @@ public class GTUtility {
     public static FluidStack copyAmount(long aAmount, FluidStack aStack) {
         if (aStack == null) return null;
 
-        return new LongFluidStack(aStack, aAmount).copy();
+        return GTUtility.createFluidStack(aStack, aAmount)
+            .copy();
     }
 
     /**
@@ -4110,7 +4111,7 @@ public class GTUtility {
         @Nonnull
         public FluidStack getFluidStack(long amount) {
             NBTTagCompound nbt = nbt();
-            return new LongFluidStack(fluid(), amount, nbt != null ? (NBTTagCompound) nbt.copy() : null);
+            return GTUtility.createFluidStack(fluid(), amount, nbt != null ? (NBTTagCompound) nbt.copy() : null);
         }
 
         @Nonnull
@@ -4407,6 +4408,8 @@ public class GTUtility {
         return result;
     }
 
+    /* LongFluidStack Utility Functions */
+
     public static long getFluidAmount(FluidStack fluidStack) {
         if (fluidStack instanceof LongFluidStack stack) {
             return stack.getAmountLong();
@@ -4426,5 +4429,35 @@ public class GTUtility {
     public static void decFluidAmount(FluidStack fluidStack, long decAmount) {
         long amount = getFluidAmount(fluidStack);
         setFluidAmount(fluidStack, amount - decAmount);
+    }
+
+    public static FluidStack createFluidStack(FluidStack stack) {
+        return createFluidStack(stack.getFluid(), getFluidAmount(stack), stack.tag);
+    }
+
+    public static FluidStack createFluidStack(FluidStack stack, long amount) {
+        return createFluidStack(stack.getFluid(), amount, stack.tag);
+    }
+
+    public static FluidStack createFluidStack(Fluid fluid, long amount) {
+        return createFluidStack(fluid, amount, null);
+    }
+
+    public static FluidStack createFluidStack(Fluid fluid, long amount, NBTTagCompound nbt) {
+        return new LongFluidStack(fluid, amount, nbt);
+    }
+
+    public static FluidStack createFluidStackWithAmountComparison(FluidStack stack) {
+        return createFluidStackWithAmountComparison(stack.getFluid(), getFluidAmount(stack), stack.tag);
+    }
+
+    public static FluidStack createFluidStackWithAmountComparison(Fluid fluid, long amount, NBTTagCompound nbt) {
+        return new LongFluidStack(fluid, amount, nbt) {
+
+            @Override
+            public boolean isFluidEqual(FluidStack other) {
+                return super.isFluidEqual(other) && getAmountLong() == GTUtility.getFluidAmount(other);
+            }
+        };
     }
 }

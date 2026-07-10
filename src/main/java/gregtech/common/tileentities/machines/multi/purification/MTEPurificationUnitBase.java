@@ -295,7 +295,7 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
         FluidStack outputWater = recipe.mFluidOutputs[0];
         long outputWaterAmount = GTUtility.getFluidAmount(outputWater);
         long amount = Math.round(outputWaterAmount * WATER_BOOST_NEEDED_FLUID * this.effectiveParallel);
-        return new LongFluidStack(outputWater.getFluid(), amount);
+        return GTUtility.createFluidStack(outputWater.getFluid(), amount);
     }
 
     /**
@@ -318,7 +318,7 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
         for (int i = 0; i < this.currentRecipe.mFluidInputs.length; ++i) {
             FluidStack input = this.currentRecipe.mFluidInputs[i];
             long inputAmount = GTUtility.getFluidAmount(input);
-            FluidStack copyWithParallel = new LongFluidStack(input.getFluid(), inputAmount);
+            FluidStack copyWithParallel = GTUtility.createFluidStack(input.getFluid(), inputAmount);
             if (i == 0) {
                 long waterAmount = (long) effectiveParallel * GTUtility.getFluidAmount(input);
                 GTUtility.setFluidAmount(copyWithParallel, (long) waterAmount);
@@ -460,7 +460,7 @@ public abstract class MTEPurificationUnitBase<T extends MTEExtendedPowerMultiBlo
                 if (waterTier == 1) {
                     FluidStack waterStack = GTModHandler.getDistilledWater(amount);
                     if (!(waterStack instanceof LongFluidStack)) {
-                        waterStack = new LongFluidStack(waterStack);
+                        waterStack = GTUtility.createFluidStack(waterStack);
                         GTUtility.setFluidAmount(waterStack, amount);
                     }
 
