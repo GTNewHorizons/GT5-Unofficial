@@ -6,10 +6,13 @@ import static gregtech.api.util.GTRecipeBuilder.QUARTER_INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.*;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.util.GTModHandler;
 import gtPlusPlus.core.material.MaterialMisc;
@@ -48,10 +51,18 @@ public class RecipesSeleniumProcessing {
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialsElements.getInstance().CARBON.getDust(16))
             .circuit(14)
-            .fluidInputs(MaterialMisc.SELENIOUS_ACID.getFluidStack(750), Materials.SulfuricAcid.getFluid(8_000))
+            .fluidInputs(
+                MaterialMisc.SELENIOUS_ACID.getFluidStack(750),
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.SulfuricAcid,
+                    Materials2FluidShapes.shapeFluidLiquid,
+                    (int) (8_000)))
             .fluidOutputs(
                 MaterialsElements.getInstance().SELENIUM.getFluidStack(2 * INGOTS + 1 * QUARTER_INGOTS),
-                Materials.DilutedSulfuricAcid.getFluid(12_000))
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.DilutedSulfuricAcid,
+                    Materials2FluidShapes.shapeFluidLiquid,
+                    (int) (12_000)))
             .eut(TierEU.RECIPE_IV)
             .duration(5 * MINUTES)
             .addTo(alloyBlastSmelterRecipes);

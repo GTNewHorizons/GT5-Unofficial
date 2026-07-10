@@ -7,10 +7,15 @@ import static gtPlusPlus.api.recipe.GTPPRecipeMaps.chemicalDehydratorRecipes;
 import java.util.ArrayList;
 import java.util.Set;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.Materials2FluidShapes;
+import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials2Shapes;
 import gtPlusPlus.core.block.base.BasicBlock.BlockTypes;
 import gtPlusPlus.core.block.base.BlockBaseModular;
 import gtPlusPlus.core.block.base.BlockBaseOre;
@@ -288,13 +293,17 @@ public class MaterialGenerator {
                 GTValues.RA.stdBuilder()
                     .itemInputs(matInfo.getDust(37))
                     .itemOutputs(
-                        Materials.Gypsum.getDust(15),
-                        Materials.Silver.getDust(1),
-                        Materials.Gold.getDust(2),
-                        Materials.Tin.getDust(1),
-                        Materials.Copper.getDust(2))
+                        MaterialLibAPI.getStack(Materials2Materials.Gypsum, Materials2Shapes.shapeDust, (int) (15)),
+                        MaterialLibAPI.getStack(Materials2Materials.Silver, Materials2Shapes.shapeDust, (int) (1)),
+                        MaterialLibAPI.getStack(Materials2Materials.Gold, Materials2Shapes.shapeDust, (int) (2)),
+                        MaterialLibAPI.getStack(Materials2Materials.Tin, Materials2Shapes.shapeDust, (int) (1)),
+                        MaterialLibAPI.getStack(Materials2Materials.Copper, Materials2Shapes.shapeDust, (int) (2)))
                     .outputChances(10000, 1000, 1000, 3000, 2000)
-                    .fluidInputs(Materials.SulfuricAcid.getFluid(8000))
+                    .fluidInputs(
+                        MaterialLibAPI.getFluidStack(
+                            Materials2Materials.SulfuricAcid,
+                            Materials2FluidShapes.shapeFluidLiquid,
+                            (int) (8000)))
                     .fluidOutputs(Materials.HydrofluoricAcid.getFluid(16000))
                     .eut(TierEU.RECIPE_HV / 2)
                     .duration(10 * MINUTES)

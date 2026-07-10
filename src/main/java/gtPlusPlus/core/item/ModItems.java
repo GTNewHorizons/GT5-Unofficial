@@ -17,10 +17,14 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.material.MU;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeBuilder;
@@ -768,7 +772,7 @@ public final class ModItems {
                 25000,
                 new String[] { StringUtils.superscript("238Np"),
                     "Result: Plutonium 239 (" + StringUtils.superscript("239Pu") + ")" },
-                Materials.Plutonium.getDust(1),
+                MaterialLibAPI.getStack(Materials2Materials.Plutonium, Materials2Shapes.shapeDust, (int) (1)),
                 5,
                 GTRecipeConstants.DecayType.BetaMinus));
 
