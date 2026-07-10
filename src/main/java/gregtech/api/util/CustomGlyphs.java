@@ -37,4 +37,18 @@ public class CustomGlyphs {
     public static final String BRIMSTONE = "\uE01E";
     public static final String CIRCLE_CROSS = registerCustomGlyph("\uE01F", '⨂'); // has many alternatives
     public static final String SUBSCRIPT_QUESTION_MARK = "\uE020";
+
+    // Tooltip icons
+    public static final String HEAT = "\uE100";
+    public static final String PARALLEL = "\uE101";
+    public static final String PLUG = "\uE102";
+    public static final String POISON = "\uE103";
+    public static final String POTION = "\uE104";
+    public static final String SPEED = "\uE105";
+    public static final String POC = "\uE106";
+    public static final String TURBINE = "\uE107";
+    public static final String TIME = "\uE108";
+    public static final String SNOW = "\uE109";
+    public static final String ARROW_DOWN = "\uE10a";
+    public static final String ARROW_UP = "\uE10b";
 }

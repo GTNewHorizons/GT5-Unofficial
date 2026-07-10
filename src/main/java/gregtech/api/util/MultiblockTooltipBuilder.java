@@ -4,19 +4,16 @@ import static gregtech.api.util.tooltip.TooltipHelper.percentageFormat;
 import static net.minecraft.util.StatCollector.translateToLocal;
 import static net.minecraft.util.StatCollector.translateToLocalFormatted;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Consumer;
+import java.util.function.UnaryOperator;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import javax.annotation.Nullable;
 
+import com.google.common.collect.Iterables;
+import gregtech.api.util.tooltip.*;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
@@ -29,9 +26,6 @@ import gregtech.GTMod;
 import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.GTValues;
 import gregtech.api.structure.IStructureChannels;
-import gregtech.api.util.tooltip.MarkdownTooltipLoader;
-import gregtech.api.util.tooltip.TooltipHelper;
-import gregtech.api.util.tooltip.TooltipTier;
 
 /**
  * This makes it easier to build multiblock tooltips, with a standardized format. <br>
@@ -114,6 +108,7 @@ public class MultiblockTooltipBuilder {
     private List<String> authors;
     private List<String> structureAuthors;
     private SetMultimap<Integer, String> hBlocks;
+    private Map<String, TooltipMacroProcessor> iMacros;
 
     private String[] iArray;
     private String[] sArray;
@@ -127,6 +122,7 @@ public class MultiblockTooltipBuilder {
         structureAuthors = new LinkedList<>();
         hBlocks = Multimaps.newSetMultimap(new HashMap<>(), HashSet::new);
         hBlocks.put(StructureLibAPI.HINT_BLOCK_META_AIR, TT_air);
+        iMacros = new HashMap<>();
     }
 
     /**
@@ -149,6 +145,93 @@ public class MultiblockTooltipBuilder {
      */
     public MultiblockTooltipBuilder addInfo(String info) {
         iLines.add(info);
+        return this;
+    }
+
+    /**
+     * Add a line of information, translating '&' color/format codes (e.g. &a, &l, &r)
+     * into Minecraft's '§' formatting codes, and resolving macros of the form
+     * {macro_name:param} using registered {@link TooltipMacroProcessor}s.
+     * <p>
+     * Use '&&' to escape and insert a literal '&' character.
+     *
+     * @param info The line to be formatted and added
+     * @return Instance this method was called on.
+     * @apiNote Macros called without a parameter is treated as an invocation with an empty string.
+     */
+    public MultiblockTooltipBuilder addFormatted(String info) {
+        StringBuilder result = new StringBuilder();
+        int len = info.length();
+
+        for (int i = 0; i < len; i++) {
+            char c = info.charAt(i);
+
+            if (c == '&' && i + 1 < len) {
+                char next = info.charAt(i + 1);
+
+                if (next == '&') {
+                    result.append('&');
+                    i++;
+                    continue;
+                }
+
+                // mc color codes
+                if ("0123456789abcdefklmnor".indexOf(Character.toLowerCase(next)) >= 0) {
+                    // mc color symbol
+                    result.append('\u00A7').append(next);
+                    i++;
+                    continue;
+                }
+
+                result.append(c);
+                continue;
+            }
+
+            if (c == '{') {
+                int close = info.indexOf('}', i + 1);
+                if (close > i) {
+                    String macroContent = info.substring(i + 1, close);
+                    int colonIdx = macroContent.indexOf(':');
+
+                    String name = colonIdx >= 0 ? macroContent.substring(0, colonIdx) : macroContent;
+                    String param = colonIdx >= 0 ? macroContent.substring(colonIdx + 1) : "";
+
+                    TooltipMacroProcessor processor = iMacros.get(name);
+
+                    if (processor != null) {
+                        result.append(processor.process(param));
+                        i = close;
+                        continue;
+                    }
+                }
+                result.append(c);
+                continue;
+            }
+
+            result.append(c);
+        }
+
+        iLines.add(result.toString());
+        return this;
+    }
+
+    public MultiblockTooltipBuilder addMacro(String name, UnaryOperator<String> transformer) {
+        this.iMacros.put(name, TooltipMacroProcessor.of(name, transformer));
+        return this;
+    }
+
+    public MultiblockTooltipBuilder addMacro(TooltipMacroProcessor macro) {
+        this.iMacros.put(macro.getName(), macro);
+        return this;
+    }
+
+    public MultiblockTooltipBuilder addMacros(TooltipMacroProcessor... macros) {
+        for (TooltipMacroProcessor mp : macros) this.addMacro(mp);
+        return this;
+    }
+
+    public MultiblockTooltipBuilder addMacros(Iterable<TooltipMacroProcessor> macros) {
+        for (TooltipMacroProcessor mp : macros) this.addMacro(mp);
         return this;
     }
 
@@ -894,7 +977,7 @@ public class MultiblockTooltipBuilder {
     /**
      * Add a line of information about the structure:<br>
      * (indent)count Maintenance Hatch: info
-     * 
+     *
      * @param count Number of hatches (ie. 1)
      * @param info  Location description
      * @param dots  Hint block(s)
@@ -940,7 +1023,7 @@ public class MultiblockTooltipBuilder {
     /**
      * Add a line of information about the structure:<br>
      * (indent)count Steam Input Bus: info
-     * 
+     *
      * @param count Number of buses (ie. 1+)
      * @param info  Location description
      * @param dots  Hint block(s)
@@ -963,7 +1046,7 @@ public class MultiblockTooltipBuilder {
     /**
      * Add a line of information about the structure:<br>
      * (indent)count Input Bus: info
-     * 
+     *
      * @param count Number of buses (ie. 1+)
      * @param info  Location description
      * @param dots  Hint block(s)
@@ -986,7 +1069,7 @@ public class MultiblockTooltipBuilder {
     /**
      * Add a line of information about the structure:<br>
      * (indent)count Input Hatch: info
-     * 
+     *
      * @param count Number of hatches (ie. 1+)
      * @param info  Location description
      * @param dots  Hint block(s)
@@ -1009,7 +1092,7 @@ public class MultiblockTooltipBuilder {
     /**
      * Add a line of information about the structure:<br>
      * (indent)count Input Bus/Hatch: info
-     * 
+     *
      * @param count Number of buses/hatches (ie. 1+)
      * @param info  Location description
      * @param dots  Hint block(s)
@@ -1055,7 +1138,7 @@ public class MultiblockTooltipBuilder {
     /**
      * Add a line of information about the structure:<br>
      * (indent)count Steam Output Bus: info
-     * 
+     *
      * @param count Number of buses (ie. 1+)
      * @param info  Location description
      * @param dots  Hint block(s)
@@ -1747,4 +1830,5 @@ public class MultiblockTooltipBuilder {
     public String[] getStructureHint() {
         return hArray;
     }
+
 }
