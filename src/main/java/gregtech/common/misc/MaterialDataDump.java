@@ -579,9 +579,14 @@ public final class MaterialDataDump {
 
     // region gtpp-materials.json
 
+    /// `Material.mMaterialMap` is a `HashSet`, so iteration order is not stable across launches; sort by
+    /// unlocalized name to make the dump byte-identical between runs (see the `gtpp-materials.json` ordering
+    /// note in the material-unification tooling).
     private static List<Map<String, Object>> dumpGtppMaterials() {
+        List<Material> materials = new ArrayList<>(Material.mMaterialMap);
+        materials.sort(java.util.Comparator.comparing(Material::getUnlocalizedName));
         List<Map<String, Object>> out = new ArrayList<>();
-        for (Material material : Material.mMaterialMap) out.add(dumpGtppMaterial(material));
+        for (Material material : materials) out.add(dumpGtppMaterial(material));
         return out;
     }
 
@@ -610,7 +615,33 @@ public final class MaterialDataDump {
         json.put("werkstoffID", material.werkstoffID);
         json.put("composition", dumpGtppComposition(material.getComposites()));
         json.put("fluids", dumpGtppFluids(material));
+        json.put("generatedParts", dumpGtppGeneratedParts(material));
         return json;
+    }
+
+    /// The authoritative per-material generated-part list, read from the live item registry
+    /// (`Material.mComponentMap`, populated by every `BaseItemComponent`/`BaseOreComponent` constructor)
+    /// rather than re-derived from `MaterialGenerator`'s procedural state/flag logic. Covers plates, ingots,
+    /// dusts, and the rest of the part set, and -- for ore materials -- the crushed/raw ore chain, since both
+    /// item families register into the same map. Sorted by ore-prefix name for determinism.
+    private static List<Map<String, Object>> dumpGtppGeneratedParts(Material material) {
+        List<Map<String, Object>> out = new ArrayList<>();
+        Map<String, ItemStack> parts = Material.mComponentMap.get(material.getUnlocalizedName());
+        if (parts == null) return out;
+        List<String> prefixes = new ArrayList<>(parts.keySet());
+        Collections.sort(prefixes);
+        for (String prefix : prefixes) {
+            ItemStack stack = parts.get(prefix);
+            if (stack == null || stack.getItem() == null) continue;
+            UniqueIdentifier id = GameRegistry.findUniqueIdentifierFor(stack.getItem());
+            if (id == null) continue;
+            Map<String, Object> json = new LinkedHashMap<>();
+            json.put("prefix", prefix);
+            json.put("registryName", id.modId + ":" + id.name);
+            json.put("meta", stack.getItemDamage());
+            out.add(json);
+        }
+        return out;
     }
 
     private static List<Map<String, Object>> dumpGtppComposition(List<gtPlusPlus.core.material.MaterialStack> stacks) {
