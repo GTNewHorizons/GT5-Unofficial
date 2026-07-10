@@ -11,10 +11,13 @@ import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import appeng.api.AEApi;
 import appeng.api.storage.data.IAEFluidStack;
 import goodgenerator.items.GGMaterial;
-import gregtech.api.enums.Materials;
+import gregtech.api.enums.materials2.Materials2FluidShapes;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.util.GTUtility;
 
 public class StackUtils {
@@ -89,11 +92,14 @@ public class StackUtils {
     public static FluidStack getTieredFluid(int aTier, int aAmount) {
         switch (aTier) {
             case 0: // ULV
-                return Materials.RedAlloy.getMolten(aAmount);
+                return MaterialLibAPI
+                    .getFluidStack(Materials2Materials.RedAlloy, Materials2FluidShapes.shapeFluidMolten, aAmount);
             case 1: // LV
-                return Materials.TinAlloy.getMolten(aAmount);
+                return MaterialLibAPI
+                    .getFluidStack(Materials2Materials.TinAlloy, Materials2FluidShapes.shapeFluidMolten, aAmount);
             case 2: // MV
-                return Materials.RoseGold.getMolten(aAmount);
+                return MaterialLibAPI
+                    .getFluidStack(Materials2Materials.RoseGold, Materials2FluidShapes.shapeFluidMolten, aAmount);
             case 3: // HV
                 return GGMaterial.zircaloy4.getMolten(aAmount);
             case 4: // EV
@@ -113,7 +119,8 @@ public class StackUtils {
             case 11: // UIV
                 return GGMaterial.metastableOganesson.getMolten(aAmount);
             case 12: // UMV
-                return Materials.SpaceTime.getMolten(aAmount);
+                return MaterialLibAPI
+                    .getFluidStack(Materials2Materials.SpaceTime, Materials2FluidShapes.shapeFluidMolten, aAmount);
             default:
                 return GGMaterial.shirabon.getMolten(aAmount);
         }

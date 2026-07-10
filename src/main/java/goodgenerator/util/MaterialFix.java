@@ -10,14 +10,16 @@ import static gregtech.api.util.GTRecipeBuilder.QUARTER_INGOTS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import bartworks.system.material.Werkstoff;
 import bartworks.util.BWUtil;
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 
 public class MaterialFix {
 
@@ -57,7 +59,7 @@ public class MaterialFix {
         if (material.hasItemType(OrePrefixes.cableGt01)) {
             GTValues.RA.stdBuilder()
                 .itemInputs(material.get(OrePrefixes.cableGt01))
-                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dustSmall, Materials.Ash, 2))
+                .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Ash, Materials2Shapes.shapeDustSmall, 2))
                 .fluidOutputs(material.getMolten(1 * HALF_INGOTS))
                 .duration(16 * TICKS)
                 .eut(TierEU.RECIPE_ULV)
