@@ -86,6 +86,7 @@ import org.lwjgl.input.Keyboard;
 
 import com.google.common.collect.ImmutableSet;
 import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
+import com.gtnewhorizon.gtnhlib.teams.TeamDataRegistry;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.IFuelHandler;
@@ -132,8 +133,8 @@ import gregtech.api.interfaces.IToolStats;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaGeneratedItem;
 import gregtech.api.items.MetaGeneratedTool;
+import gregtech.api.items.armor.ArmorActionManager;
 import gregtech.api.items.armor.ArmorEventHandlers;
-import gregtech.api.items.armor.ArmorKeybinds;
 import gregtech.api.net.GTPacketMusicSystemData;
 import gregtech.api.objects.GTChunkManager;
 import gregtech.api.objects.GTUODimensionList;
@@ -1027,6 +1028,8 @@ public class GTProxy implements IFuelHandler {
         // Register chunk manager with Forge
         GTChunkManager.init();
         // spotless:on
+
+        ArmorActionManager.init();
     }
 
     public void onInitialization(FMLInitializationEvent event) {
@@ -1103,8 +1106,6 @@ public class GTProxy implements IFuelHandler {
     public void onPostInitialization(FMLPostInitializationEvent event) {
         GTLog.out.println("GTMod: Beginning PostLoad-Phase.");
         GregTechAPI.sPostloadStarted = true;
-
-        new ArmorKeybinds();
 
         // This needs to happen late enough that all of the fluids we need have been registered.
         // onInitialization() seems to be too early, as the New Horizons Core Mod registers some fluids in post-load.
@@ -1219,6 +1220,7 @@ public class GTProxy implements IFuelHandler {
         MinecraftForge.EVENT_BUS.register(spawnEventHandler);
         FMLCommonHandler.instance().bus().register(powerfailTracker);
         MinecraftForge.EVENT_BUS.register(powerfailTracker);
+        TeamDataRegistry.register(GTPowerfailTracker.DATA_NAME, GTPowerfailTracker.PowerfailData::new);
         FMLCommonHandler.instance().bus().register(tetherManager);
         MinecraftForge.EVENT_BUS.register(tetherManager);
         // spotless:off
