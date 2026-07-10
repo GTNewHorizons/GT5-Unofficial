@@ -5,12 +5,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraftforge.common.ChestGenHooks;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import gregtech.GTMod;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.util.GTLog;
-import gregtech.api.util.GTOreDictUnificator;
 
 public class BookAndLootLoader implements Runnable {
 
@@ -59,76 +60,108 @@ public class BookAndLootLoader implements Runnable {
         ChestGenHooks.addItem(
             "dungeonChest",
             new WeightedRandomChestContent(
-                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Silver, 1L),
+                MaterialLibAPI.getStack(Materials2Materials.Silver, Materials2Shapes.shapeIngot, (int) (1L)),
                 1,
                 6,
                 120));
         ChestGenHooks.addItem(
             "dungeonChest",
-            new WeightedRandomChestContent(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Lead, 1L), 1, 6, 30));
-        ChestGenHooks.addItem(
-            "dungeonChest",
-            new WeightedRandomChestContent(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Steel, 1L), 1, 6, 60));
-        ChestGenHooks.addItem(
-            "dungeonChest",
-            new WeightedRandomChestContent(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Bronze, 1L), 1, 6, 60));
+            new WeightedRandomChestContent(
+                MaterialLibAPI.getStack(Materials2Materials.Lead, Materials2Shapes.shapeIngot, (int) (1L)),
+                1,
+                6,
+                30));
         ChestGenHooks.addItem(
             "dungeonChest",
             new WeightedRandomChestContent(
-                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Manganese, 1L),
+                MaterialLibAPI.getStack(Materials2Materials.Steel, Materials2Shapes.shapeIngot, (int) (1L)),
                 1,
                 6,
                 60));
         ChestGenHooks.addItem(
             "dungeonChest",
             new WeightedRandomChestContent(
-                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.DamascusSteel, 1L),
+                MaterialLibAPI.getStack(Materials2Materials.Bronze, Materials2Shapes.shapeIngot, (int) (1L)),
+                1,
+                6,
+                60));
+        ChestGenHooks.addItem(
+            "dungeonChest",
+            new WeightedRandomChestContent(
+                MaterialLibAPI.getStack(Materials2Materials.Manganese, Materials2Shapes.shapeIngot, (int) (1L)),
+                1,
+                6,
+                60));
+        ChestGenHooks.addItem(
+            "dungeonChest",
+            new WeightedRandomChestContent(
+                MaterialLibAPI.getStack(Materials2Materials.DamascusSteel, Materials2Shapes.shapeIngot, (int) (1L)),
                 1,
                 6,
                 10));
         ChestGenHooks.addItem(
             "dungeonChest",
-            new WeightedRandomChestContent(GTOreDictUnificator.get(OrePrefixes.gem, Materials.Emerald, 1L), 1, 6, 20));
-        ChestGenHooks.addItem(
-            "dungeonChest",
-            new WeightedRandomChestContent(GTOreDictUnificator.get(OrePrefixes.gem, Materials.Ruby, 1L), 1, 6, 20));
-        ChestGenHooks.addItem(
-            "dungeonChest",
-            new WeightedRandomChestContent(GTOreDictUnificator.get(OrePrefixes.gem, Materials.Sapphire, 1L), 1, 6, 20));
-        ChestGenHooks.addItem(
-            "dungeonChest",
             new WeightedRandomChestContent(
-                GTOreDictUnificator.get(OrePrefixes.gem, Materials.GreenSapphire, 1L),
+                MaterialLibAPI.getStack(Materials2Materials.Emerald, Materials2Shapes.shapeGem, (int) (1L)),
                 1,
                 6,
                 20));
         ChestGenHooks.addItem(
             "dungeonChest",
-            new WeightedRandomChestContent(GTOreDictUnificator.get(OrePrefixes.gem, Materials.Olivine, 1L), 1, 6, 20));
+            new WeightedRandomChestContent(
+                MaterialLibAPI.getStack(Materials2Materials.Ruby, Materials2Shapes.shapeGem, (int) (1L)),
+                1,
+                6,
+                20));
         ChestGenHooks.addItem(
             "dungeonChest",
             new WeightedRandomChestContent(
-                GTOreDictUnificator.get(OrePrefixes.gem, Materials.GarnetRed, 1L),
+                MaterialLibAPI.getStack(Materials2Materials.Sapphire, Materials2Shapes.shapeGem, (int) (1L)),
+                1,
+                6,
+                20));
+        ChestGenHooks.addItem(
+            "dungeonChest",
+            new WeightedRandomChestContent(
+                MaterialLibAPI.getStack(Materials2Materials.GreenSapphire, Materials2Shapes.shapeGem, (int) (1L)),
+                1,
+                6,
+                20));
+        ChestGenHooks.addItem(
+            "dungeonChest",
+            new WeightedRandomChestContent(
+                MaterialLibAPI.getStack(Materials2Materials.Olivine, Materials2Shapes.shapeGem, (int) (1L)),
+                1,
+                6,
+                20));
+        ChestGenHooks.addItem(
+            "dungeonChest",
+            new WeightedRandomChestContent(
+                MaterialLibAPI.getStack(Materials2Materials.GarnetRed, Materials2Shapes.shapeGem, (int) (1L)),
                 1,
                 6,
                 40));
         ChestGenHooks.addItem(
             "dungeonChest",
             new WeightedRandomChestContent(
-                GTOreDictUnificator.get(OrePrefixes.gem, Materials.GarnetYellow, 1L),
+                MaterialLibAPI.getStack(Materials2Materials.GarnetYellow, Materials2Shapes.shapeGem, (int) (1L)),
                 1,
                 6,
                 40));
         ChestGenHooks.addItem(
             "dungeonChest",
             new WeightedRandomChestContent(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Neodymium, 1L),
+                MaterialLibAPI.getStack(Materials2Materials.Neodymium, Materials2Shapes.shapeDust, (int) (1L)),
                 1,
                 6,
                 40));
         ChestGenHooks.addItem(
             "dungeonChest",
-            new WeightedRandomChestContent(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Chrome, 1L), 1, 3, 40));
+            new WeightedRandomChestContent(
+                MaterialLibAPI.getStack(Materials2Materials.Chrome, Materials2Shapes.shapeDust, (int) (1L)),
+                1,
+                3,
+                40));
 
         ChestGenHooks.addItem(
             "pyramidDesertyChest",
@@ -136,40 +169,56 @@ public class BookAndLootLoader implements Runnable {
         ChestGenHooks.addItem(
             "pyramidDesertyChest",
             new WeightedRandomChestContent(
-                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Silver, 1L),
+                MaterialLibAPI.getStack(Materials2Materials.Silver, Materials2Shapes.shapeIngot, (int) (1L)),
                 4,
                 16,
                 12));
         ChestGenHooks.addItem(
             "pyramidDesertyChest",
             new WeightedRandomChestContent(
-                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Platinum, 1L),
+                MaterialLibAPI.getStack(Materials2Materials.Platinum, Materials2Shapes.shapeIngot, (int) (1L)),
                 2,
                 8,
                 4));
         ChestGenHooks.addItem(
             "pyramidDesertyChest",
-            new WeightedRandomChestContent(GTOreDictUnificator.get(OrePrefixes.gem, Materials.Ruby, 1L), 2, 8, 2));
-        ChestGenHooks.addItem(
-            "pyramidDesertyChest",
-            new WeightedRandomChestContent(GTOreDictUnificator.get(OrePrefixes.gem, Materials.Sapphire, 1L), 2, 8, 2));
-        ChestGenHooks.addItem(
-            "pyramidDesertyChest",
             new WeightedRandomChestContent(
-                GTOreDictUnificator.get(OrePrefixes.gem, Materials.GreenSapphire, 1L),
+                MaterialLibAPI.getStack(Materials2Materials.Ruby, Materials2Shapes.shapeGem, (int) (1L)),
                 2,
                 8,
                 2));
         ChestGenHooks.addItem(
             "pyramidDesertyChest",
-            new WeightedRandomChestContent(GTOreDictUnificator.get(OrePrefixes.gem, Materials.Olivine, 1L), 2, 8, 2));
-        ChestGenHooks.addItem(
-            "pyramidDesertyChest",
-            new WeightedRandomChestContent(GTOreDictUnificator.get(OrePrefixes.gem, Materials.GarnetRed, 1L), 2, 8, 4));
+            new WeightedRandomChestContent(
+                MaterialLibAPI.getStack(Materials2Materials.Sapphire, Materials2Shapes.shapeGem, (int) (1L)),
+                2,
+                8,
+                2));
         ChestGenHooks.addItem(
             "pyramidDesertyChest",
             new WeightedRandomChestContent(
-                GTOreDictUnificator.get(OrePrefixes.gem, Materials.GarnetYellow, 1L),
+                MaterialLibAPI.getStack(Materials2Materials.GreenSapphire, Materials2Shapes.shapeGem, (int) (1L)),
+                2,
+                8,
+                2));
+        ChestGenHooks.addItem(
+            "pyramidDesertyChest",
+            new WeightedRandomChestContent(
+                MaterialLibAPI.getStack(Materials2Materials.Olivine, Materials2Shapes.shapeGem, (int) (1L)),
+                2,
+                8,
+                2));
+        ChestGenHooks.addItem(
+            "pyramidDesertyChest",
+            new WeightedRandomChestContent(
+                MaterialLibAPI.getStack(Materials2Materials.GarnetRed, Materials2Shapes.shapeGem, (int) (1L)),
+                2,
+                8,
+                4));
+        ChestGenHooks.addItem(
+            "pyramidDesertyChest",
+            new WeightedRandomChestContent(
+                MaterialLibAPI.getStack(Materials2Materials.GarnetYellow, Materials2Shapes.shapeGem, (int) (1L)),
                 2,
                 8,
                 4));
@@ -183,33 +232,49 @@ public class BookAndLootLoader implements Runnable {
         ChestGenHooks.addItem(
             "pyramidJungleChest",
             new WeightedRandomChestContent(
-                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Bronze, 1L),
+                MaterialLibAPI.getStack(Materials2Materials.Bronze, Materials2Shapes.shapeIngot, (int) (1L)),
                 4,
                 16,
                 12));
         ChestGenHooks.addItem(
             "pyramidJungleChest",
-            new WeightedRandomChestContent(GTOreDictUnificator.get(OrePrefixes.gem, Materials.Ruby, 1L), 2, 8, 2));
-        ChestGenHooks.addItem(
-            "pyramidJungleChest",
-            new WeightedRandomChestContent(GTOreDictUnificator.get(OrePrefixes.gem, Materials.Sapphire, 1L), 2, 8, 2));
-        ChestGenHooks.addItem(
-            "pyramidJungleChest",
             new WeightedRandomChestContent(
-                GTOreDictUnificator.get(OrePrefixes.gem, Materials.GreenSapphire, 1L),
+                MaterialLibAPI.getStack(Materials2Materials.Ruby, Materials2Shapes.shapeGem, (int) (1L)),
                 2,
                 8,
                 2));
         ChestGenHooks.addItem(
             "pyramidJungleChest",
-            new WeightedRandomChestContent(GTOreDictUnificator.get(OrePrefixes.gem, Materials.Olivine, 1L), 2, 8, 2));
-        ChestGenHooks.addItem(
-            "pyramidJungleChest",
-            new WeightedRandomChestContent(GTOreDictUnificator.get(OrePrefixes.gem, Materials.GarnetRed, 1L), 2, 8, 4));
+            new WeightedRandomChestContent(
+                MaterialLibAPI.getStack(Materials2Materials.Sapphire, Materials2Shapes.shapeGem, (int) (1L)),
+                2,
+                8,
+                2));
         ChestGenHooks.addItem(
             "pyramidJungleChest",
             new WeightedRandomChestContent(
-                GTOreDictUnificator.get(OrePrefixes.gem, Materials.GarnetYellow, 1L),
+                MaterialLibAPI.getStack(Materials2Materials.GreenSapphire, Materials2Shapes.shapeGem, (int) (1L)),
+                2,
+                8,
+                2));
+        ChestGenHooks.addItem(
+            "pyramidJungleChest",
+            new WeightedRandomChestContent(
+                MaterialLibAPI.getStack(Materials2Materials.Olivine, Materials2Shapes.shapeGem, (int) (1L)),
+                2,
+                8,
+                2));
+        ChestGenHooks.addItem(
+            "pyramidJungleChest",
+            new WeightedRandomChestContent(
+                MaterialLibAPI.getStack(Materials2Materials.GarnetRed, Materials2Shapes.shapeGem, (int) (1L)),
+                2,
+                8,
+                4));
+        ChestGenHooks.addItem(
+            "pyramidJungleChest",
+            new WeightedRandomChestContent(
+                MaterialLibAPI.getStack(Materials2Materials.GarnetYellow, Materials2Shapes.shapeGem, (int) (1L)),
                 2,
                 8,
                 4));
@@ -220,82 +285,130 @@ public class BookAndLootLoader implements Runnable {
 
         ChestGenHooks.addItem(
             "mineshaftCorridor",
-            new WeightedRandomChestContent(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Silver, 1L), 1, 4, 12));
-        ChestGenHooks.addItem(
-            "mineshaftCorridor",
-            new WeightedRandomChestContent(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Lead, 1L), 1, 4, 3));
-        ChestGenHooks.addItem(
-            "mineshaftCorridor",
-            new WeightedRandomChestContent(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Steel, 1L), 1, 4, 6));
-        ChestGenHooks.addItem(
-            "mineshaftCorridor",
-            new WeightedRandomChestContent(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Bronze, 1L), 1, 4, 6));
-        ChestGenHooks.addItem(
-            "mineshaftCorridor",
-            new WeightedRandomChestContent(GTOreDictUnificator.get(OrePrefixes.gem, Materials.Sapphire, 1L), 1, 4, 2));
+            new WeightedRandomChestContent(
+                MaterialLibAPI.getStack(Materials2Materials.Silver, Materials2Shapes.shapeIngot, (int) (1L)),
+                1,
+                4,
+                12));
         ChestGenHooks.addItem(
             "mineshaftCorridor",
             new WeightedRandomChestContent(
-                GTOreDictUnificator.get(OrePrefixes.gem, Materials.GreenSapphire, 1L),
+                MaterialLibAPI.getStack(Materials2Materials.Lead, Materials2Shapes.shapeIngot, (int) (1L)),
+                1,
+                4,
+                3));
+        ChestGenHooks.addItem(
+            "mineshaftCorridor",
+            new WeightedRandomChestContent(
+                MaterialLibAPI.getStack(Materials2Materials.Steel, Materials2Shapes.shapeIngot, (int) (1L)),
+                1,
+                4,
+                6));
+        ChestGenHooks.addItem(
+            "mineshaftCorridor",
+            new WeightedRandomChestContent(
+                MaterialLibAPI.getStack(Materials2Materials.Bronze, Materials2Shapes.shapeIngot, (int) (1L)),
+                1,
+                4,
+                6));
+        ChestGenHooks.addItem(
+            "mineshaftCorridor",
+            new WeightedRandomChestContent(
+                MaterialLibAPI.getStack(Materials2Materials.Sapphire, Materials2Shapes.shapeGem, (int) (1L)),
                 1,
                 4,
                 2));
         ChestGenHooks.addItem(
             "mineshaftCorridor",
-            new WeightedRandomChestContent(GTOreDictUnificator.get(OrePrefixes.gem, Materials.Olivine, 1L), 1, 4, 2));
-        ChestGenHooks.addItem(
-            "mineshaftCorridor",
-            new WeightedRandomChestContent(GTOreDictUnificator.get(OrePrefixes.gem, Materials.GarnetRed, 1L), 1, 4, 4));
+            new WeightedRandomChestContent(
+                MaterialLibAPI.getStack(Materials2Materials.GreenSapphire, Materials2Shapes.shapeGem, (int) (1L)),
+                1,
+                4,
+                2));
         ChestGenHooks.addItem(
             "mineshaftCorridor",
             new WeightedRandomChestContent(
-                GTOreDictUnificator.get(OrePrefixes.gem, Materials.GarnetYellow, 1L),
+                MaterialLibAPI.getStack(Materials2Materials.Olivine, Materials2Shapes.shapeGem, (int) (1L)),
+                1,
+                4,
+                2));
+        ChestGenHooks.addItem(
+            "mineshaftCorridor",
+            new WeightedRandomChestContent(
+                MaterialLibAPI.getStack(Materials2Materials.GarnetRed, Materials2Shapes.shapeGem, (int) (1L)),
                 1,
                 4,
                 4));
         ChestGenHooks.addItem(
             "mineshaftCorridor",
-            new WeightedRandomChestContent(GTOreDictUnificator.get(OrePrefixes.gem, Materials.Ruby, 1L), 1, 4, 2));
+            new WeightedRandomChestContent(
+                MaterialLibAPI.getStack(Materials2Materials.GarnetYellow, Materials2Shapes.shapeGem, (int) (1L)),
+                1,
+                4,
+                4));
         ChestGenHooks.addItem(
             "mineshaftCorridor",
-            new WeightedRandomChestContent(GTOreDictUnificator.get(OrePrefixes.gem, Materials.Emerald, 1L), 1, 4, 2));
+            new WeightedRandomChestContent(
+                MaterialLibAPI.getStack(Materials2Materials.Ruby, Materials2Shapes.shapeGem, (int) (1L)),
+                1,
+                4,
+                2));
+        ChestGenHooks.addItem(
+            "mineshaftCorridor",
+            new WeightedRandomChestContent(
+                MaterialLibAPI.getStack(Materials2Materials.Emerald, Materials2Shapes.shapeGem, (int) (1L)),
+                1,
+                4,
+                2));
 
         ChestGenHooks
             .addItem("villageBlacksmith", new WeightedRandomChestContent(ItemList.McGuffium_239.get(1L), 1, 1, 1));
         ChestGenHooks.addItem(
             "villageBlacksmith",
-            new WeightedRandomChestContent(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Chrome, 1L), 1, 4, 6));
+            new WeightedRandomChestContent(
+                MaterialLibAPI.getStack(Materials2Materials.Chrome, Materials2Shapes.shapeDust, (int) (1L)),
+                1,
+                4,
+                6));
         ChestGenHooks.addItem(
             "villageBlacksmith",
             new WeightedRandomChestContent(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Neodymium, 1L),
+                MaterialLibAPI.getStack(Materials2Materials.Neodymium, Materials2Shapes.shapeDust, (int) (1L)),
                 2,
                 8,
                 6));
         ChestGenHooks.addItem(
             "villageBlacksmith",
             new WeightedRandomChestContent(
-                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Manganese, 1L),
+                MaterialLibAPI.getStack(Materials2Materials.Manganese, Materials2Shapes.shapeIngot, (int) (1L)),
                 2,
                 8,
                 12));
         ChestGenHooks.addItem(
             "villageBlacksmith",
-            new WeightedRandomChestContent(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Steel, 1L), 4, 12, 12));
-        ChestGenHooks.addItem(
-            "villageBlacksmith",
             new WeightedRandomChestContent(
-                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Bronze, 1L),
+                MaterialLibAPI.getStack(Materials2Materials.Steel, Materials2Shapes.shapeIngot, (int) (1L)),
                 4,
                 12,
                 12));
         ChestGenHooks.addItem(
             "villageBlacksmith",
-            new WeightedRandomChestContent(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Brass, 1L), 4, 12, 12));
+            new WeightedRandomChestContent(
+                MaterialLibAPI.getStack(Materials2Materials.Bronze, Materials2Shapes.shapeIngot, (int) (1L)),
+                4,
+                12,
+                12));
         ChestGenHooks.addItem(
             "villageBlacksmith",
             new WeightedRandomChestContent(
-                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.DamascusSteel, 1L),
+                MaterialLibAPI.getStack(Materials2Materials.Brass, Materials2Shapes.shapeIngot, (int) (1L)),
+                4,
+                12,
+                12));
+        ChestGenHooks.addItem(
+            "villageBlacksmith",
+            new WeightedRandomChestContent(
+                MaterialLibAPI.getStack(Materials2Materials.DamascusSteel, Materials2Shapes.shapeIngot, (int) (1L)),
                 4,
                 12,
                 1));

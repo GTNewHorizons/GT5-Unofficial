@@ -10,12 +10,13 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials2Shapes;
 
 public class SifterRecipes implements Runnable {
 
@@ -36,14 +37,15 @@ public class SifterRecipes implements Runnable {
             .addTo(sifterRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.crushedPurified, Materials.Coal, 1L))
+            .itemInputs(
+                MaterialLibAPI.getStack(Materials2Materials.Coal, Materials2Shapes.shapeCrushedPurified, (int) (1L)))
             .itemOutputs(
                 new ItemStack(Items.coal, 1, 0),
                 new ItemStack(Items.coal, 1, 0),
                 new ItemStack(Items.coal, 1, 0),
                 new ItemStack(Items.coal, 1, 0),
                 new ItemStack(Items.coal, 1, 0),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Coal, 1L))
+                MaterialLibAPI.getStack(Materials2Materials.Coal, Materials2Shapes.shapeDust, (int) (1L)))
             .outputChances(10000, 9000, 8000, 7000, 6000, 5000)
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_LV / 2)
