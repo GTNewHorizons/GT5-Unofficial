@@ -4,8 +4,8 @@ import static gregtech.api.enums.GTValues.V;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
@@ -15,49 +15,47 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.apache.commons.lang3.ArrayUtils;
 
-import com.cleanroommc.modularui.api.drawable.IDrawable;
-import com.cleanroommc.modularui.factory.PosGuiData;
-import com.cleanroommc.modularui.screen.ModularPanel;
-import com.cleanroommc.modularui.screen.UISettings;
-import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.gtnewhorizons.modularui.api.screen.ModularWindow;
+import com.gtnewhorizons.modularui.api.screen.UIBuildContext;
+import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
+import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
+import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEBasicMachine;
-import gregtech.api.modularui2.GTGuiTextures;
-import gregtech.api.recipe.BasicUIProperties;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.tooltip.TooltipHelper;
-import gregtech.common.gui.modularui.hatch.MTEAtmosphericReconditionerGui;
 import gregtech.common.items.IDMetaTool01;
 import gregtech.common.items.MetaGeneratedTool01;
 import gregtech.common.pollution.Pollution;
-import gtPlusPlus.GTplusplus;
 import gtPlusPlus.core.item.general.ItemAirFilter;
 import gtPlusPlus.core.item.general.ItemBasicScrubberTurbine;
 import gtPlusPlus.core.util.math.MathUtils;
+import gtPlusPlus.xmod.gregtech.api.gui.GTPPUITextures;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class MTEAtmosphericReconditioner extends MTEBasicMachine {
 
-    protected int mPollutionReduction = 0;
+    public int mPollutionReduction = 0;
     protected int mBaseEff = 2500;
     protected int mOptimalAirFlow = 0;
     protected boolean mHasPollution = false;
-    public static final int SLOT_ROTOR = OTHER_SLOT_COUNT;
-    public static final int SLOT_FILTER = SLOT_ROTOR + 1;
+    protected int SLOT_ROTOR = 5;
+    protected int SLOT_FILTER = 6;
 
     protected boolean mSaveRotor = false;
-    protected int progress;
 
     public MTEAtmosphericReconditioner(int aID, String aName, String aNameRegional, int aTier) {
         super(
@@ -67,8 +65,8 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
             aTier,
             2,
             "Making sure you don't live in Gwalior - Uses 2A",
-            2,
-            1,
+            3,
+            0,
             TextureFactory.of(
                 TextureFactory.of(Textures.BlockIcons.OVERLAY_SIDE_MASSFAB_ACTIVE),
                 TextureFactory.builder()
@@ -110,23 +108,7 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
     }
 
     public MTEAtmosphericReconditioner(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, 2, aDescription, aTextures, 2, 1);
-    }
-
-    public int getPollutionReduction() {
-        return mPollutionReduction;
-    }
-
-    public boolean isSaveRotor() {
-        return mSaveRotor;
-    }
-
-    public void setSaveRotor(boolean saveRotor) {
-        this.mSaveRotor = saveRotor;
-    }
-
-    public int getProgress() {
-        return progress;
+        super(aName, aTier, 2, aDescription, aTextures, 2, 0);
     }
 
     @Override
@@ -216,9 +198,18 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
                 this.sendSound((byte) -122);
             }
 
-            progress = Math.toIntExact(aTick % 20);
             // Only try once/sec.
-            if (!isIdle && progress == 0) {
+            if (!isIdle && aTick % 20L == 0L) {
+                for (int i = 0; i < this.mInventory.length; i++) {
+                    if (hasRotor(this.mInventory[i])) {
+                        break;
+                    }
+                }
+                for (int i = 0; i < this.mInventory.length; i++) {
+                    if (hasAirFilter(this.mInventory[i])) {
+                        break;
+                    }
+                }
 
                 // Check if machine can work.
                 if ((aBaseMetaTileEntity.isAllowedToWork())) {
@@ -272,7 +263,7 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
 
                                         mPollutionReduction = reduction;
 
-                                        // Set a temp to remove variable to alleviate duplicate code.
+                                        // Set a temp to remove variable to aleviate duplicate code.
                                         int toRemove = Math.min(reduction, mCurrentPollution) / 2;
                                         // We are good to clean
                                         if (toRemove > 0) {
@@ -363,10 +354,12 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
 
     public boolean hasRotor(ItemStack rotorStack) {
         if (rotorStack != null) {
-            if (rotorStack.getItem() instanceof ItemBasicScrubberTurbine) return true;
-
-            return rotorStack.getItem() instanceof MetaGeneratedTool && rotorStack.getItemDamage() >= 170
-                && rotorStack.getItemDamage() <= 179;
+            if (rotorStack.getItem() instanceof ItemBasicScrubberTurbine) {
+                return true;
+            } else if (rotorStack.getItem() instanceof MetaGeneratedTool && rotorStack.getItemDamage() >= 170
+                && rotorStack.getItemDamage() <= 179) {
+                    return true;
+                }
         }
         return false;
     }
@@ -378,22 +371,21 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
             ItemStack rotorStack = this.mInventory[SLOT_ROTOR];
             if (rotorStack == null) {
                 return false;
-            } else if (rotorStack.getItem() instanceof ItemBasicScrubberTurbine turbine) {
-                long currentUse = ItemBasicScrubberTurbine.getRotorDamage(rotorStack);
-                int maxDurability = turbine.getMaxDurability(rotorStack);
-
-                if (currentUse >= maxDurability - 10) {
-                    // Delete broken rotor if in HE mode
-                    if (!mSaveRotor) mInventory[SLOT_ROTOR] = null;
-                    else if (mInventory[getOutputSlot()] == null) {
-                        // Move damaged rotor to output if not occupied if in LE mode
-                        mInventory[getOutputSlot()] = mInventory[SLOT_ROTOR];
-                        this.mInventory[SLOT_ROTOR] = null;
-                    }
+            } else if (rotorStack.getItem() instanceof ItemBasicScrubberTurbine) {
+                long currentUse = ItemBasicScrubberTurbine.getFilterDamage(rotorStack);
+                // Remove broken Filter
+                if (rotorStack.getItemDamage() == 0 && currentUse >= 2000 - 10) {
+                    this.mInventory[this.SLOT_FILTER] = null;
+                    return false;
+                } else if (rotorStack.getItemDamage() == 1 && currentUse >= 4000 - 10) {
+                    this.mInventory[this.SLOT_FILTER] = null;
+                    return false;
+                } else if (rotorStack.getItemDamage() == 2 && currentUse >= 6000 - 10) {
+                    this.mInventory[this.SLOT_FILTER] = null;
                     return false;
                 } else {
                     // Do Damage
-                    ItemBasicScrubberTurbine.setRotorDamage(rotorStack, currentUse + 10);
+                    ItemBasicScrubberTurbine.setFilterDamage(rotorStack, currentUse + 10);
                     return true;
                 }
             } else if (rotorStack.getItem() instanceof MetaGeneratedTool01) {
@@ -417,20 +409,28 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
                     .floor(Math.abs(MathUtils.randFloat(1f, 2f) - MathUtils.randFloat(1f, 2f)) * (1f + 2f - 1f) + 1f);
                 damageValue -= fDam;
 
+                /*
+                 * Materials M1 = GT_MetaGenerated_Tool.getPrimaryMaterial(this.mInventory[this.SLOT_ROTOR]); Materials
+                 * M2 = GT_MetaGenerated_Tool.getSecondaryMaterial(this.mInventory[this.SLOT_ROTOR]);
+                 */
+
                 // Damage Rotor
-                long rotorDamage = creativeRotor ? 0 : MetaGeneratedTool.getToolDamage(this.mInventory[SLOT_ROTOR]);
+                // int rotorDurability = this.mInventory[this.SLOT_ROTOR].getItemDamage();
+                long rotorDamage = creativeRotor ? 0
+                    : MetaGeneratedTool.getToolDamage(this.mInventory[this.SLOT_ROTOR]);
                 long rotorDurabilityMax = creativeRotor ? Integer.MAX_VALUE
-                    : MetaGeneratedTool.getToolMaxDamage(this.mInventory[SLOT_ROTOR]);
-                long rotorDurability = rotorDurabilityMax - rotorDamage;
+                    : MetaGeneratedTool.getToolMaxDamage(this.mInventory[this.SLOT_ROTOR]);
+                long rotorDurability = (rotorDurabilityMax - rotorDamage);
                 if (rotorDurability >= damageValue) {
 
                     if (!mSaveRotor) {
 
                         if (!creativeRotor) {
-                            GTModHandler.damageOrDechargeItem(this.mInventory[SLOT_ROTOR], (int) damageValue, 0, null);
+                            GTModHandler
+                                .damageOrDechargeItem(this.mInventory[this.SLOT_ROTOR], (int) damageValue, 0, null);
                         }
 
-                        long tempDur = MetaGeneratedTool.getToolDamage(this.mInventory[SLOT_ROTOR]);
+                        long tempDur = MetaGeneratedTool.getToolDamage(this.mInventory[this.SLOT_ROTOR]);
                         if (tempDur < rotorDurabilityMax) {
                             return true;
                         } else {
@@ -439,8 +439,8 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
                     } else {
                         if (rotorDurability > 1000) {
                             if (!creativeRotor) GTModHandler
-                                .damageOrDechargeItem(this.mInventory[SLOT_ROTOR], (int) damageValue / 2, 0, null);
-                            long tempDur = MetaGeneratedTool.getToolDamage(this.mInventory[SLOT_ROTOR]);
+                                .damageOrDechargeItem(this.mInventory[this.SLOT_ROTOR], (int) damageValue / 2, 0, null);
+                            long tempDur = MetaGeneratedTool.getToolDamage(this.mInventory[this.SLOT_ROTOR]);
                             if (tempDur < rotorDurabilityMax) {
                                 return true;
                             } else {
@@ -451,7 +451,7 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
                 }
 
                 if (rotorDurability <= 0 && !mSaveRotor && !creativeRotor) {
-                    this.mInventory[SLOT_ROTOR] = null;
+                    this.mInventory[this.SLOT_ROTOR] = null;
                     return false;
                 } else if (rotorDurability <= 0 && mSaveRotor) {
                     return false;
@@ -461,7 +461,7 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
                 return false;
             }
         } catch (Exception t) {
-            GTplusplus.logger.error(t);
+            t.printStackTrace();
         }
         return false;
     }
@@ -578,11 +578,14 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
     }
 
     public boolean hasAirFilter(ItemStack filter) {
-        return filter != null && filter.getItem() instanceof ItemAirFilter;
+        if (filter == null) {
+            return false;
+        }
+        return filter.getItem() instanceof ItemAirFilter;
     }
 
     public boolean damageAirFilter() {
-        ItemStack filter = this.mInventory[SLOT_FILTER];
+        ItemStack filter = this.mInventory[this.SLOT_FILTER];
         if (filter == null) {
             return false;
         }
@@ -609,10 +612,10 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
 
             // Remove broken Filter
             if (filter.getItemDamage() == 0 && currentUse >= 50 - 1) {
-                this.mInventory[SLOT_FILTER] = null;
+                this.mInventory[this.SLOT_FILTER] = null;
                 return false;
             } else if (filter.getItemDamage() == 1 && currentUse >= 2500 - 1) {
-                this.mInventory[SLOT_FILTER] = null;
+                this.mInventory[this.SLOT_FILTER] = null;
                 return false;
             } else {
                 // Do Damage
@@ -631,7 +634,7 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
             }
         }
         if (aIndex == SLOT_ROTOR) {
-            if (isCorrectConveyor(mInventory[getSpecialSlotIndex()])) {
+            if (this.mInventory[7] != null) {
                 if (aStack.getItem() instanceof ItemBasicScrubberTurbine) {
                     return true;
                 }
@@ -706,11 +709,26 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
         if (sGregTurbines == null) {
             sGregTurbines = new ItemStack[3];
             sGregTurbines[0] = MetaGeneratedTool.sInstances.get("gt.metatool.01")
-                .getToolWithStats(IDMetaTool01.TURBINE_SMALL.ID, 1, Materials.Iron, Materials.Iron, null);
+                .getToolWithStats(
+                    IDMetaTool01.TURBINE_SMALL.ID,
+                    1,
+                    Materials2Materials.Iron,
+                    Materials2Materials.Iron,
+                    null);
             sGregTurbines[1] = MetaGeneratedTool.sInstances.get("gt.metatool.01")
-                .getToolWithStats(IDMetaTool01.TURBINE_SMALL.ID, 1, Materials.Bronze, Materials.Bronze, null);
+                .getToolWithStats(
+                    IDMetaTool01.TURBINE_SMALL.ID,
+                    1,
+                    Materials2Materials.Bronze,
+                    Materials2Materials.Bronze,
+                    null);
             sGregTurbines[2] = MetaGeneratedTool.sInstances.get("gt.metatool.01")
-                .getToolWithStats(IDMetaTool01.TURBINE_SMALL.ID, 1, Materials.Steel, Materials.Steel, null);
+                .getToolWithStats(
+                    IDMetaTool01.TURBINE_SMALL.ID,
+                    1,
+                    Materials2Materials.Steel,
+                    Materials2Materials.Steel,
+                    null);
         } else {
             return sGregTurbines[aTier];
         }
@@ -737,46 +755,41 @@ public class MTEAtmosphericReconditioner extends MTEBasicMachine {
     }
 
     @Override
-    public ModularPanel buildUI(PosGuiData data, PanelSyncManager syncManager, UISettings uiSettings) {
-        return new MTEAtmosphericReconditionerGui(this, this.getUIProperties()).build(data, syncManager, uiSettings);
+    public void addUIWidgets(ModularWindow.Builder builder, UIBuildContext buildContext) {
+        builder.widget(new SlotWidget(inventoryHandler, SLOT_ROTOR).setFilter(stack -> {
+            if (stack.getItem() instanceof ItemBasicScrubberTurbine) {
+                return true;
+            }
+            return stack.getItem() instanceof MetaGeneratedTool && stack.getItemDamage() >= 170
+                && stack.getItemDamage() <= 179;
+        })
+            .setBackground(getGUITextureSet().getItemSlot(), GTPPUITextures.OVERLAY_SLOT_TURBINE)
+            .setPos(52, 24))
+            .widget(
+                new SlotWidget(inventoryHandler, SLOT_FILTER)
+                    .setFilter(stack -> stack.getItem() instanceof ItemAirFilter)
+                    .setBackground(getGUITextureSet().getItemSlot(), GTUITextures.OVERLAY_SLOT_RECYCLE)
+                    .setPos(106, 24))
+            .widget(
+                new SlotWidget(inventoryHandler, 7).setFilter(stack -> checkConveyor(stack, mTier))
+                    .setPos(124, 62));
+        builder.widget(
+            new DrawableWidget().setDrawable(GTUITextures.PICTURE_INFORMATION)
+                .dynamicTooltip(
+                    () -> Collections.singletonList(
+                        StatCollector.translateToLocalFormatted(
+                            "gtpp.gui.atmospheric_reconditioner.tooltip.reduction",
+                            mPollutionReduction)))
+                .attachSyncer(
+                    new FakeSyncWidget.IntegerSyncer(() -> mPollutionReduction, val -> mPollutionReduction = val),
+                    builder,
+                    (widget, val) -> widget.notifyTooltipChange())
+                .setPos(163, 5)
+                .setSize(7, 18));
     }
 
-    @Override
-    protected BasicUIProperties getUIProperties() {
-        return super.getUIProperties().toBuilder()
-            .progressBarTextureMUI2(GTGuiTextures.PROGRESSBAR_SIFT)
-            .slotOverlaysMUI2(
-                (index, _, isOutput, isSpecial) -> isSpecial || isOutput ? IDrawable.NONE
-                    : index == 0 ? GTGuiTextures.OVERLAY_SLOT_TURBINE : GTGuiTextures.OVERLAY_SLOT_RECYCLE)
-            .useSpecialSlot(true)
-            .build();
-    }
-
-    @Override
-    protected boolean useMui2() {
-        return true;
-    }
-
-    @Override
-    public boolean onSolderingToolRightClick(ForgeDirection side, ForgeDirection wrenchingSide,
-        EntityPlayer entityPlayer, float aX, float aY, float aZ, ItemStack aTool) {
-        mSaveRotor = !mSaveRotor;
-        GTUtility.sendChatTrans(
-            entityPlayer,
-            "gtpp.chat.atmospheric_reconditioner.efficiency",
-            StatCollector.translateToLocal(
-                mSaveRotor ? "gtpp.chat.atmospheric_reconditioner.efficiency.low"
-                    : "gtpp.chat.atmospheric_reconditioner.efficiency.high"));
-        return true;
-    }
-
-    @Override
-    public int getSlotLimit(int slot) {
-        return 1;
-    }
-
-    private boolean isCorrectConveyor(ItemStack stack) {
-        return (switch (mTier) {
+    private static boolean checkConveyor(ItemStack stack, int tier) {
+        return (switch (tier) {
             case 1 -> ItemList.Conveyor_Module_LV;
             case 2 -> ItemList.Conveyor_Module_MV;
             case 3 -> ItemList.Conveyor_Module_HV;
