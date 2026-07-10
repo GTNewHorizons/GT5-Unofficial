@@ -7,6 +7,8 @@ import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import bartworks.common.loaders.ItemRegistry;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
@@ -14,6 +16,8 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.util.GTOreDictUnificator;
@@ -112,8 +116,8 @@ public class AlloySmelterRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(
                 GTOreDictUnificator.get(OrePrefixes.dust, Materials.RubberRaw, 3L),
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Sulfur, 1L))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Rubber, 1L))
+                MaterialLibAPI.getStack(Materials2Materials.Sulfur, Materials2Shapes.shapeDust, (int) (1L)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Rubber, Materials2Shapes.shapeIngot, (int) (1L)))
             .duration(10 * SECONDS)
             .eut(TierEU.RECIPE_ULV)
             .addTo(alloySmelterRecipes);
@@ -121,7 +125,7 @@ public class AlloySmelterRecipes implements Runnable {
         // Bartworks Glass Tube
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.dust, Materials.Glass, 2L),
+                MaterialLibAPI.getStack(Materials2Materials.Glass, Materials2Shapes.shapeDust, (int) (2L)),
                 ItemList.Shape_Mold_Rod_Long.get(0L))
             .itemOutputs(new ItemStack(ItemRegistry.PUMPPARTS, 1, 0))
             .duration(15 * SECONDS)
@@ -132,7 +136,7 @@ public class AlloySmelterRecipes implements Runnable {
         for (Dyes dye : Dyes.VALUES) {
             GTValues.RA.stdBuilder()
                 .itemInputs(
-                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.Glass, 8L),
+                    MaterialLibAPI.getStack(Materials2Materials.Glass, Materials2Shapes.shapeDust, (int) (8L)),
                     new OreDictItemStack(dye.name(), 1))
                 .itemOutputs(new net.minecraft.item.ItemStack(Blocks.stained_glass, 8, 15 - dye.mIndex))
                 .duration(10 * SECONDS)

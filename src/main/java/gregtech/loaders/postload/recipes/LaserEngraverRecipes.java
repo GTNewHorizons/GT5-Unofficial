@@ -14,14 +14,18 @@ import static gregtech.api.util.GTRecipeConstants.WaferEngravingRecipes;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.Materials2BlockShapes;
+import gregtech.api.enums.materials2.Materials2FluidShapes;
+import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeBuilder;
 
 public class LaserEngraverRecipes implements Runnable {
@@ -31,7 +35,11 @@ public class LaserEngraverRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .fluidInputs(Materials.DTCC.getFluid(1_000))
-            .fluidOutputs(Materials.ExcitedDTCC.getFluid(1_000))
+            .fluidOutputs(
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.ExcitedDTCC,
+                    Materials2FluidShapes.shapeFluidLiquid,
+                    (int) (1_000)))
             .requiresCleanRoom()
             .duration(41 * MINUTES + 40 * SECONDS)
             .eut((int) TierEU.RECIPE_ZPM)
@@ -39,7 +47,11 @@ public class LaserEngraverRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .fluidInputs(Materials.DTPC.getFluid(1_000))
-            .fluidOutputs(Materials.ExcitedDTPC.getFluid(1_000))
+            .fluidOutputs(
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.ExcitedDTPC,
+                    Materials2FluidShapes.shapeFluidLiquid,
+                    (int) (1_000)))
             .requiresCleanRoom()
             .duration(41 * MINUTES + 40 * SECONDS)
             .eut((int) TierEU.RECIPE_UV)
@@ -47,7 +59,11 @@ public class LaserEngraverRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .fluidInputs(Materials.DTRC.getFluid(1_000))
-            .fluidOutputs(Materials.ExcitedDTRC.getFluid(1_000))
+            .fluidOutputs(
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.ExcitedDTRC,
+                    Materials2FluidShapes.shapeFluidLiquid,
+                    (int) (1_000)))
             .requiresCleanRoom()
             .duration(41 * MINUTES + 40 * SECONDS)
             .eut((int) TierEU.RECIPE_UHV)
@@ -55,7 +71,11 @@ public class LaserEngraverRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .fluidInputs(Materials.DTEC.getFluid(1_000))
-            .fluidOutputs(Materials.ExcitedDTEC.getFluid(1_000))
+            .fluidOutputs(
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.ExcitedDTEC,
+                    Materials2FluidShapes.shapeFluidLiquid,
+                    (int) (1_000)))
             .requiresCleanRoom()
             .duration(41 * MINUTES + 40 * SECONDS)
             .eut((int) TierEU.RECIPE_UEV)
@@ -63,7 +83,11 @@ public class LaserEngraverRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .fluidInputs(Materials.DTSC.getFluid(1_000))
-            .fluidOutputs(Materials.ExcitedDTSC.getFluid(1_000))
+            .fluidOutputs(
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.ExcitedDTSC,
+                    Materials2FluidShapes.shapeFluidLiquid,
+                    (int) (1_000)))
             .requiresCleanRoom()
             .duration(41 * MINUTES + 40 * SECONDS)
             .eut((int) TierEU.RECIPE_UIV)
@@ -75,7 +99,11 @@ public class LaserEngraverRecipes implements Runnable {
                 new net.minecraft.item.ItemStack(Blocks.redstone_torch, 3, GTRecipeBuilder.WILDCARD),
                 new OreDictItemStack("craftingQuartz", 1))
             .itemOutputs(new net.minecraft.item.ItemStack(Items.comparator, 1, 0))
-            .fluidInputs(Materials.Concrete.getMolten(1 * INGOTS))
+            .fluidInputs(
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.Concrete,
+                    Materials2FluidShapes.shapeFluidMolten,
+                    (int) (1 * INGOTS)))
             .duration(2 * SECONDS)
             .eut(20)
             .addTo(assemblerRecipes);
@@ -83,7 +111,7 @@ public class LaserEngraverRecipes implements Runnable {
         // From ProcessingCrafting - craftingLensBlue
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.block, Materials.Iron, 1L),
+                MaterialLibAPI.getStack(Materials2Materials.Iron, Materials2BlockShapes.shapeBlock, (int) (1L)),
                 new OreDictItemStack("craftingLensBlue", 0))
             .itemOutputs(GTModHandler.getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 13))
             .duration(1 * MINUTES + 40 * SECONDS)
@@ -92,7 +120,7 @@ public class LaserEngraverRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.block, Materials.CastIron, 1L),
+                MaterialLibAPI.getStack(Materials2Materials.CastIron, Materials2BlockShapes.shapeBlock, (int) (1L)),
                 new OreDictItemStack("craftingLensBlue", 0))
             .itemOutputs(GTModHandler.getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 13))
             .duration(1 * MINUTES + 40 * SECONDS)
@@ -142,7 +170,7 @@ public class LaserEngraverRecipes implements Runnable {
         // From ProcessingCrafting - craftingLensYellow
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.block, Materials.Iron, 1L),
+                MaterialLibAPI.getStack(Materials2Materials.Iron, Materials2BlockShapes.shapeBlock, (int) (1L)),
                 new OreDictItemStack("craftingLensYellow", 0))
             .itemOutputs(GTModHandler.getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 14))
             .duration(1 * MINUTES + 40 * SECONDS)
@@ -151,7 +179,7 @@ public class LaserEngraverRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.block, Materials.CastIron, 1L),
+                MaterialLibAPI.getStack(Materials2Materials.CastIron, Materials2BlockShapes.shapeBlock, (int) (1L)),
                 new OreDictItemStack("craftingLensYellow", 0))
             .itemOutputs(GTModHandler.getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 14))
             .duration(1 * MINUTES + 40 * SECONDS)
@@ -229,7 +257,7 @@ public class LaserEngraverRecipes implements Runnable {
         // From ProcessingCrafting - craftingLensCyan
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.block, Materials.Iron, 1L),
+                MaterialLibAPI.getStack(Materials2Materials.Iron, Materials2BlockShapes.shapeBlock, (int) (1L)),
                 new OreDictItemStack("craftingLensCyan", 0))
             .itemOutputs(GTModHandler.getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 15))
             .duration(1 * MINUTES + 40 * SECONDS)
@@ -238,7 +266,7 @@ public class LaserEngraverRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.block, Materials.CastIron, 1L),
+                MaterialLibAPI.getStack(Materials2Materials.CastIron, Materials2BlockShapes.shapeBlock, (int) (1L)),
                 new OreDictItemStack("craftingLensCyan", 0))
             .itemOutputs(GTModHandler.getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 15))
             .duration(1 * MINUTES + 40 * SECONDS)
@@ -287,7 +315,7 @@ public class LaserEngraverRecipes implements Runnable {
         // From ProcessingCrafting - craftingLensRed
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.plate, Materials.Redstone, 1L),
+                MaterialLibAPI.getStack(Materials2Materials.Redstone, Materials2Shapes.shapePlate, (int) (1L)),
                 new OreDictItemStack("craftingLensRed", 0))
             .itemOutputs(GTModHandler.getModItem(BuildCraftSilicon.ID, "redstoneChipset", 1L, 0))
             .duration(2 * SECONDS + 10 * TICKS)
@@ -296,7 +324,7 @@ public class LaserEngraverRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.foil, Materials.RedAlloy, 1L),
+                MaterialLibAPI.getStack(Materials2Materials.RedAlloy, Materials2Shapes.shapeFoil, (int) (1L)),
                 new OreDictItemStack("craftingLensRed", 0))
             .itemOutputs(GTModHandler.getModItem(NewHorizonsCoreMod.ID, "EtchedLowVoltageWiring", 1L, 0))
             .duration(10 * SECONDS)
@@ -400,7 +428,7 @@ public class LaserEngraverRecipes implements Runnable {
         // From ProcessingCrafting - craftingLensWhite
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.block, Materials.Iron, 1L),
+                MaterialLibAPI.getStack(Materials2Materials.Iron, Materials2BlockShapes.shapeBlock, (int) (1L)),
                 new OreDictItemStack("craftingLensWhite", 0))
             .itemOutputs(GTModHandler.getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 19))
             .duration(1 * MINUTES + 40 * SECONDS)
@@ -409,7 +437,7 @@ public class LaserEngraverRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(
-                GTOreDictUnificator.get(OrePrefixes.block, Materials.CastIron, 1L),
+                MaterialLibAPI.getStack(Materials2Materials.CastIron, Materials2BlockShapes.shapeBlock, (int) (1L)),
                 new OreDictItemStack("craftingLensWhite", 0))
             .itemOutputs(GTModHandler.getModItem(AppliedEnergistics2.ID, "item.ItemMultiMaterial", 1L, 19))
             .duration(1 * MINUTES + 40 * SECONDS)

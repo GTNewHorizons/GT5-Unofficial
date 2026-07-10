@@ -10,12 +10,17 @@ import java.util.Collections;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import gregtech.api.GregTechAPI;
 import gregtech.api.enchants.EnchantmentHazmat;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TCAspects;
+import gregtech.api.enums.materials2.Materials2CellShapes;
+import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.util.GTLanguageManager;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -50,7 +55,7 @@ public class ThaumcraftRecipes implements Runnable {
             "Turning wood into charcoal",
             new String[] { "ALUMENTUM" },
             "ALCHEMY",
-            GTOreDictUnificator.get(OrePrefixes.gem, Materials.Charcoal, 1L),
+            MaterialLibAPI.getStack(Materials2Materials.Charcoal, Materials2Shapes.shapeGem, (int) (1L)),
             2,
             0,
             13,
@@ -64,7 +69,7 @@ public class ThaumcraftRecipes implements Runnable {
                 GregTechAPI.sThaumcraftCompat.addCrucibleRecipe(
                     tKey,
                     OrePrefixes.log.get(Materials.Wood),
-                    GTOreDictUnificator.get(OrePrefixes.gem, Materials.Charcoal, 1L),
+                    MaterialLibAPI.getStack(Materials2Materials.Charcoal, Materials2Shapes.shapeGem, (int) (1L)),
                     Arrays.asList(
                         new TCAspects.TC_AspectStack(TCAspects.VACUOS, 2L),
                         new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L))) });
@@ -106,8 +111,8 @@ public class ThaumcraftRecipes implements Runnable {
                     Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.AQUA, 4L))),
                 GregTechAPI.sThaumcraftCompat.addCrucibleRecipe(
                     tKey,
-                    GTOreDictUnificator.get(OrePrefixes.cell, Materials.Empty, 1L),
-                    GTOreDictUnificator.get(OrePrefixes.cell, Materials.Water, 1L),
+                    MaterialLibAPI.getStack(Materials2Materials.Empty, Materials2CellShapes.shapeCell, (int) (1L)),
+                    MaterialLibAPI.getStack(Materials2Materials.Water, Materials2CellShapes.shapeCell, (int) (1L)),
                     Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.AQUA, 4L))) });
 
         tKey = "GT_TRANSZINC";
@@ -120,7 +125,7 @@ public class ThaumcraftRecipes implements Runnable {
             "Transformation of metals into zinc",
             new String[] { "TRANSTIN" },
             "ALCHEMY",
-            GTOreDictUnificator.get(OrePrefixes.nugget, Materials.Zinc, 1L),
+            MaterialLibAPI.getStack(Materials2Materials.Zinc, Materials2Shapes.shapeNugget, (int) (1L)),
             2,
             1,
             9,
@@ -134,7 +139,7 @@ public class ThaumcraftRecipes implements Runnable {
                 GregTechAPI.sThaumcraftCompat.addCrucibleRecipe(
                     tKey,
                     OrePrefixes.nugget.get(Materials.Zinc),
-                    GTOreDictUnificator.get(OrePrefixes.nugget, Materials.Zinc, 3L),
+                    MaterialLibAPI.getStack(Materials2Materials.Zinc, Materials2Shapes.shapeNugget, (int) (3L)),
                     Arrays.asList(
                         new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2L),
                         new TCAspects.TC_AspectStack(TCAspects.SANO, 1L))) });
@@ -149,7 +154,7 @@ public class ThaumcraftRecipes implements Runnable {
             "Transformation of metals into antimony",
             new String[] { "GT_TRANSZINC", "TRANSLEAD" },
             "ALCHEMY",
-            GTOreDictUnificator.get(OrePrefixes.nugget, Materials.Antimony, 1L),
+            MaterialLibAPI.getStack(Materials2Materials.Antimony, Materials2Shapes.shapeNugget, (int) (1L)),
             2,
             1,
             9,
@@ -163,7 +168,7 @@ public class ThaumcraftRecipes implements Runnable {
                 GregTechAPI.sThaumcraftCompat.addCrucibleRecipe(
                     tKey,
                     OrePrefixes.nugget.get(Materials.Antimony),
-                    GTOreDictUnificator.get(OrePrefixes.nugget, Materials.Antimony, 3L),
+                    MaterialLibAPI.getStack(Materials2Materials.Antimony, Materials2Shapes.shapeNugget, (int) (3L)),
                     Arrays.asList(
                         new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2L),
                         new TCAspects.TC_AspectStack(TCAspects.AQUA, 1L))) });
@@ -178,7 +183,7 @@ public class ThaumcraftRecipes implements Runnable {
             "Transformation of metals into nickel",
             new String[] { "TRANSLEAD" },
             "ALCHEMY",
-            GTOreDictUnificator.get(OrePrefixes.nugget, Materials.Nickel, 1L),
+            MaterialLibAPI.getStack(Materials2Materials.Nickel, Materials2Shapes.shapeNugget, (int) (1L)),
             2,
             1,
             9,
@@ -192,7 +197,7 @@ public class ThaumcraftRecipes implements Runnable {
                 GregTechAPI.sThaumcraftCompat.addCrucibleRecipe(
                     tKey,
                     OrePrefixes.nugget.get(Materials.Nickel),
-                    GTOreDictUnificator.get(OrePrefixes.nugget, Materials.Nickel, 3L),
+                    MaterialLibAPI.getStack(Materials2Materials.Nickel, Materials2Shapes.shapeNugget, (int) (3L)),
                     Arrays.asList(
                         new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2L),
                         new TCAspects.TC_AspectStack(TCAspects.IGNIS, 1L))) });
@@ -207,7 +212,7 @@ public class ThaumcraftRecipes implements Runnable {
             "Transformation of metals into cobalt",
             new String[] { "GT_TRANSNICKEL" },
             "ALCHEMY",
-            GTOreDictUnificator.get(OrePrefixes.nugget, Materials.Cobalt, 1L),
+            MaterialLibAPI.getStack(Materials2Materials.Cobalt, Materials2Shapes.shapeNugget, (int) (1L)),
             2,
             1,
             9,
@@ -221,7 +226,7 @@ public class ThaumcraftRecipes implements Runnable {
                 GregTechAPI.sThaumcraftCompat.addCrucibleRecipe(
                     tKey,
                     OrePrefixes.nugget.get(Materials.Cobalt),
-                    GTOreDictUnificator.get(OrePrefixes.nugget, Materials.Cobalt, 3L),
+                    MaterialLibAPI.getStack(Materials2Materials.Cobalt, Materials2Shapes.shapeNugget, (int) (3L)),
                     Arrays.asList(
                         new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2L),
                         new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 1L))) });
@@ -236,7 +241,7 @@ public class ThaumcraftRecipes implements Runnable {
             "Transformation of metals into bismuth",
             new String[] { "GT_TRANSCOBALT" },
             "ALCHEMY",
-            GTOreDictUnificator.get(OrePrefixes.nugget, Materials.Bismuth, 1L),
+            MaterialLibAPI.getStack(Materials2Materials.Bismuth, Materials2Shapes.shapeNugget, (int) (1L)),
             2,
             1,
             11,
@@ -250,7 +255,7 @@ public class ThaumcraftRecipes implements Runnable {
                 GregTechAPI.sThaumcraftCompat.addCrucibleRecipe(
                     tKey,
                     OrePrefixes.nugget.get(Materials.Bismuth),
-                    GTOreDictUnificator.get(OrePrefixes.nugget, Materials.Bismuth, 3L),
+                    MaterialLibAPI.getStack(Materials2Materials.Bismuth, Materials2Shapes.shapeNugget, (int) (3L)),
                     Arrays.asList(
                         new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2L),
                         new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 1L))) });
@@ -265,7 +270,7 @@ public class ThaumcraftRecipes implements Runnable {
             "Transforming iron to steel",
             new String[] { "TRANSIRON", "GT_WOOD_TO_CHARCOAL" },
             "ALCHEMY",
-            GTOreDictUnificator.get(OrePrefixes.nugget, Materials.Steel, 1L),
+            MaterialLibAPI.getStack(Materials2Materials.Steel, Materials2Shapes.shapeNugget, (int) (1L)),
             3,
             0,
             13,
@@ -279,7 +284,7 @@ public class ThaumcraftRecipes implements Runnable {
                 GregTechAPI.sThaumcraftCompat.addCrucibleRecipe(
                     tKey,
                     OrePrefixes.nugget.get(Materials.Iron),
-                    GTOreDictUnificator.get(OrePrefixes.nugget, Materials.Steel, 1L),
+                    MaterialLibAPI.getStack(Materials2Materials.Steel, Materials2Shapes.shapeNugget, (int) (1L)),
                     Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.ORDO, 1L))) });
 
         tKey = "GT_TRANSBRONZE";
@@ -292,7 +297,7 @@ public class ThaumcraftRecipes implements Runnable {
             "Transformation of metals into bronze",
             new String[] { "TRANSTIN", "TRANSCOPPER" },
             "ALCHEMY",
-            GTOreDictUnificator.get(OrePrefixes.nugget, Materials.Bronze, 1L),
+            MaterialLibAPI.getStack(Materials2Materials.Bronze, Materials2Shapes.shapeNugget, (int) (1L)),
             2,
             0,
             13,
@@ -306,7 +311,7 @@ public class ThaumcraftRecipes implements Runnable {
                 GregTechAPI.sThaumcraftCompat.addCrucibleRecipe(
                     tKey,
                     OrePrefixes.nugget.get(Materials.Bronze),
-                    GTOreDictUnificator.get(OrePrefixes.nugget, Materials.Bronze, 3L),
+                    MaterialLibAPI.getStack(Materials2Materials.Bronze, Materials2Shapes.shapeNugget, (int) (3L)),
                     Arrays.asList(
                         new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2L),
                         new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 1L))) });
@@ -321,7 +326,7 @@ public class ThaumcraftRecipes implements Runnable {
             "Transformation of metals into electrum",
             new String[] { "GT_TRANSBRONZE", "TRANSGOLD", "TRANSSILVER" },
             "ALCHEMY",
-            GTOreDictUnificator.get(OrePrefixes.nugget, Materials.Electrum, 1L),
+            MaterialLibAPI.getStack(Materials2Materials.Electrum, Materials2Shapes.shapeNugget, (int) (1L)),
             2,
             1,
             11,
@@ -335,7 +340,7 @@ public class ThaumcraftRecipes implements Runnable {
                 GregTechAPI.sThaumcraftCompat.addCrucibleRecipe(
                     tKey,
                     OrePrefixes.nugget.get(Materials.Electrum),
-                    GTOreDictUnificator.get(OrePrefixes.nugget, Materials.Electrum, 3L),
+                    MaterialLibAPI.getStack(Materials2Materials.Electrum, Materials2Shapes.shapeNugget, (int) (3L)),
                     Arrays.asList(
                         new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2L),
                         new TCAspects.TC_AspectStack(TCAspects.LUCRUM, 1L))) });
@@ -350,7 +355,7 @@ public class ThaumcraftRecipes implements Runnable {
             "Transformation of metals into brass",
             new String[] { "GT_TRANSBRONZE", "GT_TRANSZINC" },
             "ALCHEMY",
-            GTOreDictUnificator.get(OrePrefixes.nugget, Materials.Brass, 1L),
+            MaterialLibAPI.getStack(Materials2Materials.Brass, Materials2Shapes.shapeNugget, (int) (1L)),
             2,
             1,
             11,
@@ -364,7 +369,7 @@ public class ThaumcraftRecipes implements Runnable {
                 GregTechAPI.sThaumcraftCompat.addCrucibleRecipe(
                     tKey,
                     OrePrefixes.nugget.get(Materials.Brass),
-                    GTOreDictUnificator.get(OrePrefixes.nugget, Materials.Brass, 3L),
+                    MaterialLibAPI.getStack(Materials2Materials.Brass, Materials2Shapes.shapeNugget, (int) (3L)),
                     Arrays.asList(
                         new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2L),
                         new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 1L))) });
@@ -379,7 +384,7 @@ public class ThaumcraftRecipes implements Runnable {
             "Transformation of metals into invar",
             new String[] { "GT_TRANSBRONZE", "GT_TRANSNICKEL" },
             "ALCHEMY",
-            GTOreDictUnificator.get(OrePrefixes.nugget, Materials.Invar, 1L),
+            MaterialLibAPI.getStack(Materials2Materials.Invar, Materials2Shapes.shapeNugget, (int) (1L)),
             2,
             1,
             11,
@@ -393,7 +398,7 @@ public class ThaumcraftRecipes implements Runnable {
                 GregTechAPI.sThaumcraftCompat.addCrucibleRecipe(
                     tKey,
                     OrePrefixes.nugget.get(Materials.Invar),
-                    GTOreDictUnificator.get(OrePrefixes.nugget, Materials.Invar, 3L),
+                    MaterialLibAPI.getStack(Materials2Materials.Invar, Materials2Shapes.shapeNugget, (int) (3L)),
                     Arrays.asList(
                         new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2L),
                         new TCAspects.TC_AspectStack(TCAspects.GELUM, 1L))) });
@@ -408,7 +413,7 @@ public class ThaumcraftRecipes implements Runnable {
             "Transformation of metals into cupronickel",
             new String[] { "GT_TRANSBRONZE", "GT_TRANSNICKEL" },
             "ALCHEMY",
-            GTOreDictUnificator.get(OrePrefixes.nugget, Materials.Cupronickel, 1L),
+            MaterialLibAPI.getStack(Materials2Materials.Cupronickel, Materials2Shapes.shapeNugget, (int) (1L)),
             2,
             1,
             11,
@@ -423,7 +428,7 @@ public class ThaumcraftRecipes implements Runnable {
                 GregTechAPI.sThaumcraftCompat.addCrucibleRecipe(
                     tKey,
                     OrePrefixes.nugget.get(Materials.Cupronickel),
-                    GTOreDictUnificator.get(OrePrefixes.nugget, Materials.Cupronickel, 3L),
+                    MaterialLibAPI.getStack(Materials2Materials.Cupronickel, Materials2Shapes.shapeNugget, (int) (3L)),
                     Arrays.asList(
                         new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2L),
                         new TCAspects.TC_AspectStack(TCAspects.PERMUTATIO, 1L),
@@ -439,7 +444,7 @@ public class ThaumcraftRecipes implements Runnable {
             "Transformation of metals into battery alloy",
             new String[] { "GT_TRANSBRONZE", "GT_TRANSANTIMONY" },
             "ALCHEMY",
-            GTOreDictUnificator.get(OrePrefixes.nugget, Materials.BatteryAlloy, 1L),
+            MaterialLibAPI.getStack(Materials2Materials.BatteryAlloy, Materials2Shapes.shapeNugget, (int) (1L)),
             2,
             1,
             11,
@@ -454,7 +459,7 @@ public class ThaumcraftRecipes implements Runnable {
                 GregTechAPI.sThaumcraftCompat.addCrucibleRecipe(
                     tKey,
                     OrePrefixes.nugget.get(Materials.BatteryAlloy),
-                    GTOreDictUnificator.get(OrePrefixes.nugget, Materials.BatteryAlloy, 3L),
+                    MaterialLibAPI.getStack(Materials2Materials.BatteryAlloy, Materials2Shapes.shapeNugget, (int) (3L)),
                     Arrays.asList(
                         new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2L),
                         new TCAspects.TC_AspectStack(TCAspects.AQUA, 1L),
@@ -470,7 +475,7 @@ public class ThaumcraftRecipes implements Runnable {
             "Transformation of metals into soldering alloy",
             new String[] { "GT_TRANSBRONZE", "GT_TRANSANTIMONY" },
             "ALCHEMY",
-            GTOreDictUnificator.get(OrePrefixes.nugget, Materials.SolderingAlloy, 1L),
+            MaterialLibAPI.getStack(Materials2Materials.SolderingAlloy, Materials2Shapes.shapeNugget, (int) (1L)),
             2,
             1,
             11,
@@ -481,15 +486,14 @@ public class ThaumcraftRecipes implements Runnable {
                 new TCAspects.TC_AspectStack(TCAspects.PERMUTATIO, 3L),
                 new TCAspects.TC_AspectStack(TCAspects.IGNIS, 3L)),
             null,
-            new Object[] { MachineRecipeLoader.aTextTCGTPage + tKey,
-                GregTechAPI.sThaumcraftCompat.addCrucibleRecipe(
-                    tKey,
-                    OrePrefixes.nugget.get(Materials.SolderingAlloy),
-                    GTOreDictUnificator.get(OrePrefixes.nugget, Materials.SolderingAlloy, 3L),
-                    Arrays.asList(
-                        new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2L),
-                        new TCAspects.TC_AspectStack(TCAspects.AQUA, 1L),
-                        new TCAspects.TC_AspectStack(TCAspects.VITREUS, 1L))) });
+            new Object[] { MachineRecipeLoader.aTextTCGTPage + tKey, GregTechAPI.sThaumcraftCompat.addCrucibleRecipe(
+                tKey,
+                OrePrefixes.nugget.get(Materials.SolderingAlloy),
+                MaterialLibAPI.getStack(Materials2Materials.SolderingAlloy, Materials2Shapes.shapeNugget, (int) (3L)),
+                Arrays.asList(
+                    new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2L),
+                    new TCAspects.TC_AspectStack(TCAspects.AQUA, 1L),
+                    new TCAspects.TC_AspectStack(TCAspects.VITREUS, 1L))) });
 
         tKey = "GT_ADVANCEDMETALLURGY";
         GTLanguageManager.addStringLocalization(
@@ -502,7 +506,7 @@ public class ThaumcraftRecipes implements Runnable {
             new String[] { "GT_TRANSBISMUTH", "GT_IRON_TO_STEEL", "GT_TRANSSOLDERINGALLOY", "GT_TRANSBATTERYALLOY",
                 "GT_TRANSBRASS", "GT_TRANSELECTRUM", "GT_TRANSCUPRONICKEL", "GT_TRANSINVAR" },
             "ALCHEMY",
-            GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Iron, 1L),
+            MaterialLibAPI.getStack(Materials2Materials.Iron, Materials2Shapes.shapeIngot, (int) (1L)),
             3,
             0,
             16,
@@ -527,7 +531,7 @@ public class ThaumcraftRecipes implements Runnable {
             "Transformation of metals into aluminium",
             new String[] { "GT_ADVANCEDMETALLURGY" },
             "ALCHEMY",
-            GTOreDictUnificator.get(OrePrefixes.nugget, Materials.Aluminium, 1L),
+            MaterialLibAPI.getStack(Materials2Materials.Aluminium, Materials2Shapes.shapeNugget, (int) (1L)),
             4,
             0,
             19,
@@ -543,7 +547,7 @@ public class ThaumcraftRecipes implements Runnable {
                 GregTechAPI.sThaumcraftCompat.addCrucibleRecipe(
                     tKey,
                     OrePrefixes.nugget.get(Materials.Aluminium),
-                    GTOreDictUnificator.get(OrePrefixes.nugget, Materials.Aluminium, 3L),
+                    MaterialLibAPI.getStack(Materials2Materials.Aluminium, Materials2Shapes.shapeNugget, (int) (3L)),
                     Arrays.asList(
                         new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2L),
                         new TCAspects.TC_AspectStack(TCAspects.VOLATUS, 1L),
@@ -594,7 +598,7 @@ public class ThaumcraftRecipes implements Runnable {
             "Transformation of mineral sands",
             new String[] { "GT_ADVANCEDMETALLURGY" },
             "ALCHEMY",
-            GTOreDictUnificator.get(OrePrefixes.dust, Materials.GraniticMineralSand, 1L),
+            MaterialLibAPI.getStack(Materials2Materials.GraniticMineralSand, Materials2Shapes.shapeDust, (int) (1L)),
             4,
             0,
             19,
@@ -609,8 +613,10 @@ public class ThaumcraftRecipes implements Runnable {
             new Object[] { MachineRecipeLoader.aTextTCGTPage + tKey,
                 GregTechAPI.sThaumcraftCompat.addCrucibleRecipe(
                     tKey,
-                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.BasalticMineralSand, 1L),
-                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.GraniticMineralSand, 1L),
+                    MaterialLibAPI
+                        .getStack(Materials2Materials.BasalticMineralSand, Materials2Shapes.shapeDust, (int) (1L)),
+                    MaterialLibAPI
+                        .getStack(Materials2Materials.GraniticMineralSand, Materials2Shapes.shapeDust, (int) (1L)),
                     Arrays.asList(
                         new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2L),
                         new TCAspects.TC_AspectStack(TCAspects.PERMUTATIO, 1L),
@@ -618,8 +624,10 @@ public class ThaumcraftRecipes implements Runnable {
                         new TCAspects.TC_AspectStack(TCAspects.MAGNETO, 1L))),
                 GregTechAPI.sThaumcraftCompat.addCrucibleRecipe(
                     tKey,
-                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.GraniticMineralSand, 1L),
-                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.BasalticMineralSand, 1L),
+                    MaterialLibAPI
+                        .getStack(Materials2Materials.GraniticMineralSand, Materials2Shapes.shapeDust, (int) (1L)),
+                    MaterialLibAPI
+                        .getStack(Materials2Materials.BasalticMineralSand, Materials2Shapes.shapeDust, (int) (1L)),
                     Arrays.asList(
                         new TCAspects.TC_AspectStack(TCAspects.METALLUM, 2L),
                         new TCAspects.TC_AspectStack(TCAspects.PERMUTATIO, 1L),
@@ -636,7 +644,7 @@ public class ThaumcraftRecipes implements Runnable {
             "Fixing your precious crystals",
             new String[] { "ALCHEMICALMANUFACTURE" },
             "ALCHEMY",
-            GTOreDictUnificator.get(OrePrefixes.gem, Materials.InfusedOrder, 1L),
+            MaterialLibAPI.getStack(Materials2Materials.InfusedOrder, Materials2Shapes.shapeGem, (int) (1L)),
             3,
             0,
             -11,
@@ -650,37 +658,37 @@ public class ThaumcraftRecipes implements Runnable {
                 GregTechAPI.sThaumcraftCompat.addCrucibleRecipe(
                     tKey,
                     OrePrefixes.dust.get(Materials.Amber),
-                    GTOreDictUnificator.get(OrePrefixes.gem, Materials.Amber, 1L),
+                    MaterialLibAPI.getStack(Materials2Materials.Amber, Materials2Shapes.shapeGem, (int) (1L)),
                     Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.VITREUS, 4L))),
                 GregTechAPI.sThaumcraftCompat.addCrucibleRecipe(
                     tKey,
                     OrePrefixes.dust.get(Materials.InfusedOrder),
-                    GTOreDictUnificator.get(OrePrefixes.gem, Materials.InfusedOrder, 1L),
+                    MaterialLibAPI.getStack(Materials2Materials.InfusedOrder, Materials2Shapes.shapeGem, (int) (1L)),
                     Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.VITREUS, 4L))),
                 GregTechAPI.sThaumcraftCompat.addCrucibleRecipe(
                     tKey,
                     OrePrefixes.dust.get(Materials.InfusedEntropy),
-                    GTOreDictUnificator.get(OrePrefixes.gem, Materials.InfusedEntropy, 1L),
+                    MaterialLibAPI.getStack(Materials2Materials.InfusedEntropy, Materials2Shapes.shapeGem, (int) (1L)),
                     Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.VITREUS, 4L))),
                 GregTechAPI.sThaumcraftCompat.addCrucibleRecipe(
                     tKey,
                     OrePrefixes.dust.get(Materials.InfusedAir),
-                    GTOreDictUnificator.get(OrePrefixes.gem, Materials.InfusedAir, 1L),
+                    MaterialLibAPI.getStack(Materials2Materials.InfusedAir, Materials2Shapes.shapeGem, (int) (1L)),
                     Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.VITREUS, 4L))),
                 GregTechAPI.sThaumcraftCompat.addCrucibleRecipe(
                     tKey,
                     OrePrefixes.dust.get(Materials.InfusedEarth),
-                    GTOreDictUnificator.get(OrePrefixes.gem, Materials.InfusedEarth, 1L),
+                    MaterialLibAPI.getStack(Materials2Materials.InfusedEarth, Materials2Shapes.shapeGem, (int) (1L)),
                     Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.VITREUS, 4L))),
                 GregTechAPI.sThaumcraftCompat.addCrucibleRecipe(
                     tKey,
                     OrePrefixes.dust.get(Materials.InfusedFire),
-                    GTOreDictUnificator.get(OrePrefixes.gem, Materials.InfusedFire, 1L),
+                    MaterialLibAPI.getStack(Materials2Materials.InfusedFire, Materials2Shapes.shapeGem, (int) (1L)),
                     Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.VITREUS, 4L))),
                 GregTechAPI.sThaumcraftCompat.addCrucibleRecipe(
                     tKey,
                     OrePrefixes.dust.get(Materials.InfusedWater),
-                    GTOreDictUnificator.get(OrePrefixes.gem, Materials.InfusedWater, 1L),
+                    MaterialLibAPI.getStack(Materials2Materials.InfusedWater, Materials2Shapes.shapeGem, (int) (1L)),
                     Collections.singletonList(new TCAspects.TC_AspectStack(TCAspects.VITREUS, 4L))) });
 
         tKey = "GT_MAGICENERGY";
@@ -704,20 +712,22 @@ public class ThaumcraftRecipes implements Runnable {
                 new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 20L),
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 10L)),
             null,
-            new Object[] { MachineRecipeLoader.aTextTCGTPage + tKey, GregTechAPI.sThaumcraftCompat.addInfusionRecipe(
-                tKey,
-                ItemList.Hull_LV.get(1L),
-                new ItemStack[] { new ItemStack(Blocks.beacon),
-                    GTOreDictUnificator.get(OrePrefixes.circuit, Materials.MV, 1L),
-                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.Aluminium, 1L), ItemList.Sensor_MV.get(1L),
-                    GTOreDictUnificator.get(OrePrefixes.circuit, Materials.MV, 1L),
-                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.Thaumium, 1L), ItemList.Sensor_MV.get(1L) },
-                ItemList.MagicEnergyConverter_LV.get(1L),
-                5,
-                Arrays.asList(
-                    new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 32L),
-                    new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 16L),
-                    new TCAspects.TC_AspectStack(TCAspects.MACHINA, 32L))) });
+            new Object[] { MachineRecipeLoader.aTextTCGTPage + tKey,
+                GregTechAPI.sThaumcraftCompat.addInfusionRecipe(
+                    tKey,
+                    ItemList.Hull_LV.get(1L),
+                    new ItemStack[] { new ItemStack(Blocks.beacon),
+                        GTOreDictUnificator.get(OrePrefixes.circuit, Materials.MV, 1L),
+                        MaterialLibAPI.getStack(Materials2Materials.Aluminium, Materials2Shapes.shapePlate, (int) (1L)),
+                        ItemList.Sensor_MV.get(1L), GTOreDictUnificator.get(OrePrefixes.circuit, Materials.MV, 1L),
+                        MaterialLibAPI.getStack(Materials2Materials.Thaumium, Materials2Shapes.shapePlate, (int) (1L)),
+                        ItemList.Sensor_MV.get(1L) },
+                    ItemList.MagicEnergyConverter_LV.get(1L),
+                    5,
+                    Arrays.asList(
+                        new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 32L),
+                        new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 16L),
+                        new TCAspects.TC_AspectStack(TCAspects.MACHINA, 32L))) });
 
         tKey = "GT_MAGICENERGY2";
         GTLanguageManager.addStringLocalization(
@@ -740,22 +750,23 @@ public class ThaumcraftRecipes implements Runnable {
                 new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 20L),
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 10L)),
             null,
-            new Object[] { MachineRecipeLoader.aTextTCGTPage + tKey,
-                GregTechAPI.sThaumcraftCompat.addInfusionRecipe(
-                    tKey,
-                    ItemList.Hull_MV.get(1L),
-                    new ItemStack[] { new ItemStack(Blocks.beacon),
-                        GTOreDictUnificator.get(OrePrefixes.circuit, Materials.HV, 1L),
-                        GTOreDictUnificator.get(OrePrefixes.plateDouble, Materials.Thaumium, 1L),
-                        ItemList.Sensor_HV.get(1L), GTOreDictUnificator.get(OrePrefixes.circuit, Materials.HV, 1L),
-                        GTOreDictUnificator.get(OrePrefixes.plateDouble, Materials.StainlessSteel, 1L),
-                        ItemList.Sensor_HV.get(1L) },
-                    ItemList.MagicEnergyConverter_MV.get(1L),
-                    6,
-                    Arrays.asList(
-                        new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 64L),
-                        new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 32L),
-                        new TCAspects.TC_AspectStack(TCAspects.MACHINA, 64L))) });
+            new Object[] { MachineRecipeLoader.aTextTCGTPage + tKey, GregTechAPI.sThaumcraftCompat.addInfusionRecipe(
+                tKey,
+                ItemList.Hull_MV.get(1L),
+                new ItemStack[] { new ItemStack(Blocks.beacon),
+                    GTOreDictUnificator.get(OrePrefixes.circuit, Materials.HV, 1L),
+                    MaterialLibAPI
+                        .getStack(Materials2Materials.Thaumium, Materials2Shapes.shapePlateDouble, (int) (1L)),
+                    ItemList.Sensor_HV.get(1L), GTOreDictUnificator.get(OrePrefixes.circuit, Materials.HV, 1L),
+                    MaterialLibAPI
+                        .getStack(Materials2Materials.StainlessSteel, Materials2Shapes.shapePlateDouble, (int) (1L)),
+                    ItemList.Sensor_HV.get(1L) },
+                ItemList.MagicEnergyConverter_MV.get(1L),
+                6,
+                Arrays.asList(
+                    new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 64L),
+                    new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 32L),
+                    new TCAspects.TC_AspectStack(TCAspects.MACHINA, 64L))) });
 
         tKey = "GT_MAGICENERGY3";
         GTLanguageManager.addStringLocalization(
@@ -783,9 +794,9 @@ public class ThaumcraftRecipes implements Runnable {
                 ItemList.Hull_HV.get(1L),
                 new ItemStack[] { new ItemStack(Blocks.beacon),
                     GTOreDictUnificator.get(OrePrefixes.circuit, Materials.EV, 1L),
-                    GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Thaumium, 1L),
+                    MaterialLibAPI.getStack(Materials2Materials.Thaumium, Materials2Shapes.shapePlateDense, (int) (1L)),
                     ItemList.Field_Generator_MV.get(1L), GTOreDictUnificator.get(OrePrefixes.circuit, Materials.EV, 1L),
-                    GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Titanium, 1L),
+                    MaterialLibAPI.getStack(Materials2Materials.Titanium, Materials2Shapes.shapePlateDense, (int) (1L)),
                     ItemList.Field_Generator_MV.get(1L) },
                 ItemList.MagicEnergyConverter_HV.get(1L),
                 8,
@@ -815,21 +826,23 @@ public class ThaumcraftRecipes implements Runnable {
                 new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 20L),
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 10L)),
             null,
-            new Object[] { MachineRecipeLoader.aTextTCGTPage + tKey, GregTechAPI.sThaumcraftCompat.addInfusionRecipe(
-                tKey,
-                ItemList.Hull_LV.get(1L),
-                new ItemStack[] { ItemList.MagicEnergyConverter_LV.get(1L),
-                    GTOreDictUnificator.get(OrePrefixes.circuit, Materials.MV, 1L),
-                    GTOreDictUnificator.get(OrePrefixes.plate, Materials.Thaumium, 1L), ItemList.Sensor_MV.get(1L) },
-                ItemList.MagicEnergyAbsorber_LV.get(1L),
-                6,
-                Arrays.asList(
-                    new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 32L),
-                    new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 16L),
-                    new TCAspects.TC_AspectStack(TCAspects.MACHINA, 32L),
-                    new TCAspects.TC_AspectStack(TCAspects.VACUOS, 16L),
-                    new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 32L),
-                    new TCAspects.TC_AspectStack(TCAspects.STRONTIO, 4L))) });
+            new Object[] { MachineRecipeLoader.aTextTCGTPage + tKey,
+                GregTechAPI.sThaumcraftCompat.addInfusionRecipe(
+                    tKey,
+                    ItemList.Hull_LV.get(1L),
+                    new ItemStack[] { ItemList.MagicEnergyConverter_LV.get(1L),
+                        GTOreDictUnificator.get(OrePrefixes.circuit, Materials.MV, 1L),
+                        MaterialLibAPI.getStack(Materials2Materials.Thaumium, Materials2Shapes.shapePlate, (int) (1L)),
+                        ItemList.Sensor_MV.get(1L) },
+                    ItemList.MagicEnergyAbsorber_LV.get(1L),
+                    6,
+                    Arrays.asList(
+                        new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 32L),
+                        new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 16L),
+                        new TCAspects.TC_AspectStack(TCAspects.MACHINA, 32L),
+                        new TCAspects.TC_AspectStack(TCAspects.VACUOS, 16L),
+                        new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 32L),
+                        new TCAspects.TC_AspectStack(TCAspects.STRONTIO, 4L))) });
 
         tKey = "GT_MAGICABSORB2";
         GTLanguageManager
@@ -851,33 +864,32 @@ public class ThaumcraftRecipes implements Runnable {
                 new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 20L),
                 new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 10L)),
             null,
-            new Object[] { MachineRecipeLoader.aTextTCGTPage + tKey,
-                GregTechAPI.sThaumcraftCompat.addInfusionRecipe(
-                    tKey,
-                    ItemList.Hull_MV.get(1L),
-                    new ItemStack[] { ItemList.MagicEnergyConverter_MV.get(1L),
-                        GTOreDictUnificator.get(OrePrefixes.circuit, Materials.HV, 1L),
-                        GTOreDictUnificator.get(OrePrefixes.plate, Materials.Thaumium, 1L), ItemList.Sensor_HV.get(1L),
-                        GTOreDictUnificator.get(OrePrefixes.circuit, Materials.HV, 1L),
-                        GTOreDictUnificator.get(OrePrefixes.plate, Materials.Thaumium, 1L) },
-                    ItemList.MagicEnergyAbsorber_MV.get(1L),
-                    6,
-                    Arrays.asList(
-                        new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 64L),
-                        new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 32L),
-                        new TCAspects.TC_AspectStack(TCAspects.MACHINA, 64L),
-                        new TCAspects.TC_AspectStack(TCAspects.VACUOS, 32L),
-                        new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 64L),
-                        new TCAspects.TC_AspectStack(TCAspects.STRONTIO, 8L))),
+            new Object[] { MachineRecipeLoader.aTextTCGTPage + tKey, GregTechAPI.sThaumcraftCompat.addInfusionRecipe(
+                tKey,
+                ItemList.Hull_MV.get(1L),
+                new ItemStack[] { ItemList.MagicEnergyConverter_MV.get(1L),
+                    GTOreDictUnificator.get(OrePrefixes.circuit, Materials.HV, 1L),
+                    MaterialLibAPI.getStack(Materials2Materials.Thaumium, Materials2Shapes.shapePlate, (int) (1L)),
+                    ItemList.Sensor_HV.get(1L), GTOreDictUnificator.get(OrePrefixes.circuit, Materials.HV, 1L),
+                    MaterialLibAPI.getStack(Materials2Materials.Thaumium, Materials2Shapes.shapePlate, (int) (1L)) },
+                ItemList.MagicEnergyAbsorber_MV.get(1L),
+                6,
+                Arrays.asList(
+                    new TCAspects.TC_AspectStack(TCAspects.POTENTIA, 64L),
+                    new TCAspects.TC_AspectStack(TCAspects.ELECTRUM, 32L),
+                    new TCAspects.TC_AspectStack(TCAspects.MACHINA, 64L),
+                    new TCAspects.TC_AspectStack(TCAspects.VACUOS, 32L),
+                    new TCAspects.TC_AspectStack(TCAspects.INSTRUMENTUM, 64L),
+                    new TCAspects.TC_AspectStack(TCAspects.STRONTIO, 8L))),
                 GregTechAPI.sThaumcraftCompat.addInfusionRecipe(
                     tKey,
                     ItemList.Hull_HV.get(1L),
                     new ItemStack[] { ItemList.MagicEnergyConverter_MV.get(1L),
                         GTOreDictUnificator.get(OrePrefixes.circuit, Materials.EV, 1L),
-                        GTOreDictUnificator.get(OrePrefixes.plate, Materials.Void, 1),
+                        MaterialLibAPI.getStack(Materials2Materials.Void, Materials2Shapes.shapePlate, (int) (1)),
                         ItemList.Field_Generator_MV.get(1L),
                         GTOreDictUnificator.get(OrePrefixes.circuit, Materials.EV, 1L),
-                        GTOreDictUnificator.get(OrePrefixes.plate, Materials.Void, 1), },
+                        MaterialLibAPI.getStack(Materials2Materials.Void, Materials2Shapes.shapePlate, (int) (1)), },
                     ItemList.MagicEnergyAbsorber_HV.get(1L),
                     8,
                     Arrays.asList(
@@ -892,12 +904,14 @@ public class ThaumcraftRecipes implements Runnable {
                     ItemList.Hull_EV.get(1L),
                     new ItemStack[] { ItemList.MagicEnergyConverter_HV.get(1L),
                         GTOreDictUnificator.get(OrePrefixes.circuit, Materials.IV, 1L),
-                        GTOreDictUnificator.get(OrePrefixes.plate, Materials.Void, 1),
-                        GTOreDictUnificator.get(OrePrefixes.plate, Materials.TungstenSteel, 1),
+                        MaterialLibAPI.getStack(Materials2Materials.Void, Materials2Shapes.shapePlate, (int) (1)),
+                        MaterialLibAPI
+                            .getStack(Materials2Materials.TungstenSteel, Materials2Shapes.shapePlate, (int) (1)),
                         ItemList.Field_Generator_HV.get(1L),
                         GTOreDictUnificator.get(OrePrefixes.circuit, Materials.IV, 1L),
-                        GTOreDictUnificator.get(OrePrefixes.plate, Materials.Void, 1),
-                        GTOreDictUnificator.get(OrePrefixes.plate, Materials.TungstenSteel, 1), },
+                        MaterialLibAPI.getStack(Materials2Materials.Void, Materials2Shapes.shapePlate, (int) (1)),
+                        MaterialLibAPI
+                            .getStack(Materials2Materials.TungstenSteel, Materials2Shapes.shapePlate, (int) (1)), },
                     ItemList.MagicEnergyAbsorber_EV.get(1L),
                     10,
                     Arrays.asList(
@@ -942,13 +956,14 @@ public class ThaumcraftRecipes implements Runnable {
                         new TCAspects.TC_AspectStack(TCAspects.TUTAMEN, 32L),
                         new TCAspects.TC_AspectStack(TCAspects.VENENUM, 16L)),
                     new ItemStack[] { getModItem(Thaumcraft.ID, "ItemResource", 1L, 14),
-                        GTOreDictUnificator.get(OrePrefixes.plate, Materials.Titanium, 1),
-                        GTOreDictUnificator.get(OrePrefixes.plate, Materials.Rubber, 1),
-                        GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Lead, 1),
+                        MaterialLibAPI.getStack(Materials2Materials.Titanium, Materials2Shapes.shapePlate, (int) (1)),
+                        MaterialLibAPI.getStack(Materials2Materials.Rubber, Materials2Shapes.shapePlate, (int) (1)),
+                        MaterialLibAPI.getStack(Materials2Materials.Lead, Materials2Shapes.shapePlateDense, (int) (1)),
                         getModItem(Thaumcraft.ID, "ItemResource", 1L, 14),
-                        GTOreDictUnificator.get(OrePrefixes.plate, Materials.Titanium, 1),
-                        GTOreDictUnificator.get(OrePrefixes.plate, Materials.Rubber, 1),
-                        GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Lead, 1) }) });
+                        MaterialLibAPI.getStack(Materials2Materials.Titanium, Materials2Shapes.shapePlate, (int) (1)),
+                        MaterialLibAPI.getStack(Materials2Materials.Rubber, Materials2Shapes.shapePlate, (int) (1)),
+                        MaterialLibAPI
+                            .getStack(Materials2Materials.Lead, Materials2Shapes.shapePlateDense, (int) (1)) }) });
 
     }
 }
