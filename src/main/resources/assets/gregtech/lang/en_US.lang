@@ -6634,7 +6634,7 @@ entity.gregtech.GT_Entity_Arrow.name= a GregTech arrow
 
 # Fluids
 fluid.aniline=Aniline
-fluid.bioethanol=Bio Ethanol
+fluid.bioethanol=Ethanol
 fluid.biomass=Biomass
 fluid.boricacid=Boric Acid
 fluid.butanol=Butanol
