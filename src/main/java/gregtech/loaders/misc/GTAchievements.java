@@ -26,6 +26,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.objects.ItemData;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.util.GTLog;
@@ -67,32 +68,48 @@ public class GTAchievements {
             "tools",
             0,
             4,
-            MetaGeneratedTool01.INSTANCE
-                .getToolWithStats(IDMetaTool01.HARDHAMMER.ID, 1, Materials.Iron, Materials.Wood, null),
+            MetaGeneratedTool01.INSTANCE.getToolWithStats(
+                IDMetaTool01.HARDHAMMER.ID,
+                1,
+                Materials2Materials.Iron,
+                Materials2Materials.Wood,
+                null),
             "gettingstartedwithgt",
             false);
         registerAchievement(
             "driltime",
             2,
             4,
-            MetaGeneratedTool01.INSTANCE
-                .getToolWithStats(IDMetaTool01.DRILL_LV.ID, 1, Materials.BlueSteel, Materials.StainlessSteel, null),
+            MetaGeneratedTool01.INSTANCE.getToolWithStats(
+                IDMetaTool01.DRILL_LV.ID,
+                1,
+                Materials2Materials.BlueSteel,
+                Materials2Materials.StainlessSteel,
+                null),
             "tools",
             false);
         registerAchievement(
             "brrrr",
             2,
             6,
-            MetaGeneratedTool01.INSTANCE
-                .getToolWithStats(IDMetaTool01.CHAINSAW_LV.ID, 1, Materials.BlueSteel, Materials.StainlessSteel, null),
+            MetaGeneratedTool01.INSTANCE.getToolWithStats(
+                IDMetaTool01.CHAINSAW_LV.ID,
+                1,
+                Materials2Materials.BlueSteel,
+                Materials2Materials.StainlessSteel,
+                null),
             "driltime",
             false);
         registerAchievement(
             "highpowerdrill",
             3,
             5,
-            MetaGeneratedTool01.INSTANCE
-                .getToolWithStats(IDMetaTool01.DRILL_HV.ID, 1, Materials.TungstenSteel, Materials.TungstenSteel, null),
+            MetaGeneratedTool01.INSTANCE.getToolWithStats(
+                IDMetaTool01.DRILL_HV.ID,
+                1,
+                Materials2Materials.TungstenSteel,
+                Materials2Materials.TungstenSteel,
+                null),
             "driltime",
             false);
         registerAchievement(
@@ -102,8 +119,8 @@ public class GTAchievements {
             MetaGeneratedTool01.INSTANCE.getToolWithStats(
                 IDMetaTool01.JACKHAMMER_HV.ID,
                 1,
-                Materials.TungstenSteel,
-                Materials.TungstenSteel,
+                Materials2Materials.TungstenSteel,
+                Materials2Materials.TungstenSteel,
                 null),
             "highpowerdrill",
             false);

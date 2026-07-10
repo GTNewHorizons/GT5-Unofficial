@@ -59,6 +59,7 @@ import com.gtnewhorizons.modularui.common.widget.DrawableWidget;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
+import com.ruling_0.materiallib.api.Material;
 
 import bartworks.API.modularUI.BWUITextures;
 import bartworks.MainMod;
@@ -650,7 +651,7 @@ public class MTEWindmill extends MTEEnhancedMultiBlockBase<MTEWindmill>
                     () -> this.mMachine && !this.getBaseMetaTileEntity()
                         .isActive()
                             ? MetaGeneratedTool01.INSTANCE
-                                .getToolWithStats(IDMetaTool01.SOFTMALLET.ID, 1, null, null, null)
+                                .getToolWithStats(IDMetaTool01.SOFTMALLET.ID, 1, (Material) null, null, null)
                             : null).asWidget()
                                 .setPos(66, 66))
             .widget(

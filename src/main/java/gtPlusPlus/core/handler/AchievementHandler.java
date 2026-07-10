@@ -18,7 +18,7 @@ import cpw.mods.fml.common.gameevent.PlayerEvent.ItemCraftedEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.ItemSmeltedEvent;
 import gregtech.GTMod;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.util.GTLog;
 import gtPlusPlus.core.lib.GTPPCore;
 import gtPlusPlus.core.material.MaterialsAlloy;
@@ -46,8 +46,8 @@ public class AchievementHandler {
                 .getToolWithStats(
                     MetaGeneratedGregtechTools.ANGLE_GRINDER,
                     1,
-                    Materials.Osmium,
-                    Materials.Osmium,
+                    Materials2Materials.Osmium,
+                    Materials2Materials.Osmium,
                     null),
             "",
             true);

@@ -287,6 +287,20 @@ public abstract class MetaGeneratedTool extends MetaBaseItem
         return null;
     }
 
+    /// [#getToolWithStats] for MaterialLib-typed materials; delegates to the legacy implementation so the
+    /// stored tool NBT (material name strings) is unchanged while call sites migrate off the legacy enum.
+    /// Fully qualified parameter type because this file imports `net.minecraft.block.material.Material`.
+    public final ItemStack getToolWithStats(int aToolID, int aAmount,
+        com.ruling_0.materiallib.api.Material aPrimaryMaterial,
+        com.ruling_0.materiallib.api.Material aSecondaryMaterial, long[] aElectricArray) {
+        return getToolWithStats(
+            aToolID,
+            aAmount,
+            MU.materialOf(aPrimaryMaterial),
+            MU.materialOf(aSecondaryMaterial),
+            aElectricArray);
+    }
+
     /**
      * This Function gets an ItemStack Version of this Tool
      *
