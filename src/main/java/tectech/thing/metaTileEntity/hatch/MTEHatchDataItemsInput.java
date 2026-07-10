@@ -200,6 +200,11 @@ public class MTEHatchDataItemsInput extends MTEHatchDataAccess implements IConne
     }
 
     @Override
+    public boolean canClear() {
+        return true;
+    }
+
+    @Override
     protected String getWailaDataI18nKey() {
         return "tt.keyphrase.AL_Recipe_Receiving";
     }

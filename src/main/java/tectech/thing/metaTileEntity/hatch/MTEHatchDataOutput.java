@@ -1,7 +1,6 @@
 package tectech.thing.metaTileEntity.hatch;
 
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
-import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.util.List;
 
@@ -11,6 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -29,14 +29,13 @@ import gregtech.api.util.GTUtility;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import tectech.mechanics.dataTransport.QuantumDataPacket;
-import tectech.util.CommonValues;
 
 /**
  * Created by danie_000 on 27.10.2016.
  */
 public class MTEHatchDataOutput extends MTEHatchDataConnector<QuantumDataPacket> {
 
-    private long history;
+    private long computation;
 
     public long requestedComputation;
     public boolean allowComputationConfiguring;
@@ -47,9 +46,9 @@ public class MTEHatchDataOutput extends MTEHatchDataConnector<QuantumDataPacket>
             aName,
             aNameRegional,
             aTier,
-            new String[] { CommonValues.TEC_MARK_EM, translateToLocal("gt.blockmachines.hatch.dataout.desc.0"),
-                translateToLocal("gt.blockmachines.hatch.dataout.desc.1"),
-                EnumChatFormatting.AQUA + translateToLocal("gt.blockmachines.hatch.dataout.desc.2") });
+            new String[] { StatCollector.translateToLocal("gt.blockmachines.hatch.dataout.desc.0"),
+                StatCollector.translateToLocal("gt.blockmachines.hatch.dataout.desc.1"),
+                EnumChatFormatting.AQUA + StatCollector.translateToLocal("gt.blockmachines.hatch.dataout.desc.2") });
     }
 
     public MTEHatchDataOutput(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -100,24 +99,33 @@ public class MTEHatchDataOutput extends MTEHatchDataConnector<QuantumDataPacket>
     }
 
     @Override
-    public void moveAround(IGregTechTileEntity aBaseMetaTileEntity) {
-        super.moveAround(aBaseMetaTileEntity);
+    public CheckState moveAround(IGregTechTileEntity aBaseMetaTileEntity, CheckState justConnectionCheck) {
+        var result = super.moveAround(aBaseMetaTileEntity, justConnectionCheck);
 
-        history = q == null ? 0 : q.getContent();
-
-        q = null;
+        switch (result) {
+            case CONNECTION, DISCONNECTED, UNKNOWN -> {}
+            case NEW_DATA -> {
+                computation = q == null ? 0 : q.getContent();
+                q = null;
+            }
+            case CONNECTED -> {} // ((MTEHatchDataInput) connected).setContents(q);
+            default -> {
+                // TODO: log this new state
+            }
+        }
+        return result;
     }
 
     @Override
     protected void resetHistory() {
-        history = 0;
+        computation = 0;
     }
 
     @Override
     public void getWailaNBTData(EntityPlayerMP player, TileEntity tile, NBTTagCompound tag, World world, int x, int y,
         int z) {
         super.getWailaNBTData(player, tile, tag, world, x, y, z);
-        tag.setLong("computation", history);
+        tag.setLong("computation", computation);
     }
 
     @Override

@@ -8,6 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -16,15 +17,13 @@ import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.util.GTRecipe.RecipeAssemblyLine;
-import gregtech.api.util.GTUtility;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import tectech.mechanics.dataTransport.ALRecipeDataPacket;
-import tectech.util.CommonValues;
 
 public class MTEHatchDataItemsOutput extends MTEHatchDataConnector<ALRecipeDataPacket> {
 
-    private ALRecipeDataPacket previousPacket;
+    public ALRecipeDataPacket previousPacket;
 
     public MTEHatchDataItemsOutput(int aID, String aName, String aNameRegional, int aTier) {
         super(
@@ -32,9 +31,9 @@ public class MTEHatchDataItemsOutput extends MTEHatchDataConnector<ALRecipeDataP
             aName,
             aNameRegional,
             aTier,
-            new String[] { CommonValues.TEC_MARK_EM, GTUtility.translate("gt.blockmachines.hatch.dataoutass.desc.0"),
-                GTUtility.translate("gt.blockmachines.hatch.dataoutass.desc.1"),
-                EnumChatFormatting.AQUA + GTUtility.translate("gt.blockmachines.hatch.dataoutass.desc.2") });
+            new String[] { StatCollector.translateToLocal("gt.blockmachines.hatch.dataoutass.desc.0"),
+                StatCollector.translateToLocal("gt.blockmachines.hatch.dataoutass.desc.1"),
+                EnumChatFormatting.AQUA + StatCollector.translateToLocal("gt.blockmachines.hatch.dataoutass.desc.2") });
     }
 
     public MTEHatchDataItemsOutput(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures) {
@@ -72,11 +71,22 @@ public class MTEHatchDataItemsOutput extends MTEHatchDataConnector<ALRecipeDataP
     }
 
     @Override
-    public void moveAround(IGregTechTileEntity aBaseMetaTileEntity) {
-        super.moveAround(aBaseMetaTileEntity);
+    public CheckState moveAround(IGregTechTileEntity aBaseMetaTileEntity, CheckState checkState) {
+        var result = super.moveAround(aBaseMetaTileEntity, checkState);
 
-        previousPacket = q;
-        q = null;
+        switch (result) {
+            // these states should not modify this hatch or the connected one
+            case CONNECTION, DISCONNECTED, UNKNOWN -> {}
+            case NEW_DATA -> {
+                previousPacket = q;
+                q = null;
+            }
+            case CONNECTED -> {} // ((MTEHatchDataItemsInput) connected).setContents(q);
+            default -> {
+                // TODO: log this new state
+            }
+        }
+        return result;
     }
 
     @Override
