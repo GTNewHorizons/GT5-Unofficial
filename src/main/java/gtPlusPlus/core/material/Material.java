@@ -944,7 +944,7 @@ public class Material implements IOreMaterial {
         } else if (MaterialReconstruction.isPrefixEligibleForCutover(aPrefix)) {
             // A material backed by a live gregtech `Materials` constant (not gtpp-reconstructed) can still
             // carry a MaterialLib shape for `aPrefix` from the stage-11 codegen name-merge (e.g. milled ore for
-            // Sphalerite, edited onto the existing gregtech material by Materials2GtppData*). Resolving through
+            // Sphalerite, edited onto the existing gregtech material's own declaration). Resolving through
             // MaterialLib before the `mComponentMap` cache below matters here: that cache is first-write-wins,
             // populated as a side effect of whichever legacy part item happens to construct first, so leaving
             // this branch out lets a legacy item that races MaterialLib's own registration win the cache and
