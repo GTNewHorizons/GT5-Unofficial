@@ -114,6 +114,9 @@ import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.ruling_0.materiallib.api.BlockMaterialInfo;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import bartworks.MainMod;
 import bartworks.system.material.BWMetaGeneratedItems;
 import bartworks.system.material.Werkstoff;
@@ -125,9 +128,11 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.Materials2BlockShapes;
 import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.items.GTGenericBlock;
 import gregtech.api.items.GTGenericItem;
+import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.recipe.RecipeMap;
@@ -1133,6 +1138,7 @@ public class PlatinumSludgeOverHaul {
 
         final String itemModId = GameRegistry.findUniqueIdentifierFor(item).modId;
         if (MainMod.MOD_ID.equals(itemModId) || BartWorksCrossmod.MOD_ID.equals(itemModId)) return true;
+        if (isWerkstoffStorageBlock(stack)) return true;
 
         final String stackUnlocalizedName = stack.getUnlocalizedName();
         if (NewHorizonsCoreMod.ID.equals(itemModId) && !stackUnlocalizedName.contains("dust")
@@ -1201,5 +1207,21 @@ public class PlatinumSludgeOverHaul {
             return false;
         }
         return MATERIALS_BLACKLIST.contains(association.mMaterial.mMaterial);
+    }
+
+    /// Whether `stack` is a MaterialLib storage block (`Materials2BlockShapes#shapeBlock`) of a
+    /// werkstoff-backed material -- the cutover equivalent of a legacy `bw.werkstoffblocks.01` stack, which the
+    /// bartworks-modid check above blacklisted wholesale. Blacklisting it keeps this overhaul sparing the
+    /// lossless block-to-dust storage cycle (macerating a compressed Ruthenium/Rhodium block returns its own
+    /// dust), exactly as it did pre-cutover. Deliberately narrow: a werkstoff's other MaterialLib stacks (ore,
+    /// crushed, dust, ...) stay subject to the overhaul the same way GT-modid inputs always were.
+    private static boolean isWerkstoffStorageBlock(ItemStack stack) {
+        Block block = Block.getBlockFromItem(stack.getItem());
+        if (block == null) return false;
+        BlockMaterialInfo info = MaterialLibAPI.lookupBlock(block, stack.getItemDamage());
+        return info != null && info.shape() == Materials2BlockShapes.shapeBlock
+            && info.material() != null
+            && info.material()
+                .getProperty(GTMaterialProperties.WERKSTOFF) != null;
     }
 }
