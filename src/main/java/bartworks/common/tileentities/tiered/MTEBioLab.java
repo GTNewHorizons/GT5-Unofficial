@@ -29,6 +29,7 @@ import com.cleanroommc.modularui.factory.PosGuiData;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.screen.UISettings;
 import com.cleanroommc.modularui.value.sync.PanelSyncManager;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import bartworks.API.enums.BioCultureEnum;
 import bartworks.API.enums.BioDataEnum;
@@ -39,8 +40,9 @@ import bartworks.util.BioCulture;
 import bartworks.util.BioData;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials2.Materials2CellShapes;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -228,7 +230,9 @@ public class MTEBioLab extends MTEBasicMachine {
     }
 
     private boolean isEthanolCell(ItemStack stack) {
-        return GTUtility.areStacksEqual(stack, Materials.Ethanol.getCells(1));
+        return GTUtility.areStacksEqual(
+            stack,
+            MaterialLibAPI.getStack(Materials2Materials.Ethanol, Materials2CellShapes.shapeCell, 1));
     }
 
     private boolean isFluorescentDNACell(ItemStack stack) {

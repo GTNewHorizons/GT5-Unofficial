@@ -5,35 +5,47 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
+
+import com.ruling_0.materiallib.api.Material;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.Materials2FluidShapes;
+import gregtech.api.enums.materials2.Materials2Materials;
 
 public class Autoclave implements Runnable {
 
     @Override
     public void run() {
-        Materials[] sterilizers = { Materials.Ammonia, Materials.Chlorine, Materials.Ethanol, Materials.Methanol };
-        for (Materials used : sterilizers) {
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(ItemList.Circuit_Parts_PetriDish.get(1L))
-                .itemOutputs(ItemList.EmptyPetriDish.get(1))
-                .fluidInputs(used.getGas(10L) != null ? used.getGas(8L) : used.getFluid(16L))
-                .duration(5 * SECONDS)
-                .eut(TierEU.RECIPE_LV)
-                .addTo(autoclaveRecipes);
-
-            GTValues.RA.stdBuilder()
-                .itemInputs(new ItemStack(Items.glass_bottle))
-                .itemOutputs(ItemList.EmptyDNAFlask.get(1))
-                .fluidInputs(used.getGas(10L) != null ? used.getGas(8L) : used.getFluid(16L))
-                .duration(5 * SECONDS)
-                .eut(TierEU.RECIPE_LV)
-                .addTo(autoclaveRecipes);
-
+        Material[] gasSterilizers = { Materials2Materials.Ammonia, Materials2Materials.Chlorine };
+        for (Material used : gasSterilizers) {
+            addSterilizerRecipes(MaterialLibAPI.getFluidStack(used, Materials2FluidShapes.shapeFluidGas, 8));
         }
+
+        Material[] liquidSterilizers = { Materials2Materials.Ethanol, Materials2Materials.Methanol };
+        for (Material used : liquidSterilizers) {
+            addSterilizerRecipes(MaterialLibAPI.getFluidStack(used, Materials2FluidShapes.shapeFluidLiquid, 16));
+        }
+    }
+
+    private static void addSterilizerRecipes(FluidStack fluid) {
+        GTValues.RA.stdBuilder()
+            .itemInputs(ItemList.Circuit_Parts_PetriDish.get(1L))
+            .itemOutputs(ItemList.EmptyPetriDish.get(1))
+            .fluidInputs(fluid)
+            .duration(5 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(autoclaveRecipes);
+
+        GTValues.RA.stdBuilder()
+            .itemInputs(new ItemStack(Items.glass_bottle))
+            .itemOutputs(ItemList.EmptyDNAFlask.get(1))
+            .fluidInputs(fluid)
+            .duration(5 * SECONDS)
+            .eut(TierEU.RECIPE_LV)
+            .addTo(autoclaveRecipes);
     }
 }
