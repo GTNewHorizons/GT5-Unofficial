@@ -21,6 +21,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.material.MU;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTRecipeConstants;
@@ -361,8 +362,12 @@ public final class ModItems {
     private static void runMaterialGenerator() {
         Material.registerAllPending();
         // Just an unusual plate needed for some black magic.
-        new BaseItemPlate(MaterialsOther.CLAY);
-        new BaseItemPlateDouble(MaterialsOther.CLAY);
+        // Clay's plate/plateDouble are cut over to MaterialLib (stage 06/07); constructing these
+        // unconditionally would register a second, competing "plateClay"/"plateDoubleClay" oredict entry that
+        // races the MaterialLib one across launches (see MaterialReconstruction census nondeterminism, stage 11
+        // commit 4).
+        if (!MU.isCutOver(OrePrefixes.plate, Materials.Clay)) new BaseItemPlate(MaterialsOther.CLAY);
+        if (!MU.isCutOver(OrePrefixes.plateDouble, Materials.Clay)) new BaseItemPlateDouble(MaterialsOther.CLAY);
 
         // Springs
         MaterialUtils.generateComponentAndAssignToAMaterial(SPRING, MaterialsElements.STANDALONE.CELESTIAL_TUNGSTEN);
@@ -430,7 +435,9 @@ public final class ModItems {
         MaterialUtils.generateComponentAndAssignToAMaterial(SMALLGEAR, MaterialsElements.STANDALONE.HYPOGEN);
 
         // Special Sillyness
-        new BaseItemPlate(MaterialsElements.getInstance().SODIUM);
+        // Sodium's plate is cut over to MaterialLib (stage 06/07); see the Clay comment above the same fix.
+        if (!MU.isCutOver(OrePrefixes.plate, Materials.Sodium))
+            new BaseItemPlate(MaterialsElements.getInstance().SODIUM);
 
         // Tumbaga Mix (For Simple Crafting)
         Item[] tumbagaMix = ItemUtils

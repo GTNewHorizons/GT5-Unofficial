@@ -124,6 +124,17 @@ public final class MaterialReconstruction {
         return RECONSTRUCTED_NAMES.contains(name) && CUT_OVER_PART_PREFIXES.contains(prefix);
     }
 
+    /// Whether `prefix` is one of the part families [#CUT_OVER_PART_PREFIXES] has cleared for cutover at all,
+    /// independent of any specific material -- the allow-list [Material#getComponentByPrefix] consults for
+    /// materials backed by a live gregtech `Materials` constant instead of gtpp reconstruction (a name outside
+    /// [#RECONSTRUCTED_NAMES] that nonetheless picked up a MaterialLib shape for `prefix` from the stage-11
+    /// codegen name-merge, e.g. milled ore for Sphalerite). Excludes block-kind and cell/cellPlasma prefixes for
+    /// the same reason [#CUT_OVER_PART_PREFIXES] does: those need their own dedicated cutover work (identity-
+    /// reference sweep, fluid-in-container membership) regardless of which material asks.
+    public static boolean isPrefixEligibleForCutover(OrePrefixes prefix) {
+        return CUT_OVER_PART_PREFIXES.contains(prefix);
+    }
+
     /// The MaterialLib material backing a reconstructed name, or null if `name` is not reconstructed. Callers
     /// that already know `isReconstructed(name)` is true (e.g. after the [#isReconstructed] gate) can treat a
     /// null result as "MaterialLib data disappeared after material construction", which should not happen.
