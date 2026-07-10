@@ -28,6 +28,7 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import bartworks.common.loaders.ItemRegistry;
 import goodgenerator.blocks.structures.AntimatterStructures;
@@ -35,6 +36,7 @@ import goodgenerator.loader.Loaders;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -123,7 +125,9 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase<Antimatt
 
         while (i < inputFluids.size()) {
             FluidStack inputFluid = inputFluids.get(i);
-            if (inputFluid.isFluidEqual(Materials.Antimatter.getFluid(1))) {
+            if (inputFluid.isFluidEqual(
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.Antimatter, Materials2FluidShapes.shapeFluidLiquid, 1))) {
                 containedAntimatter += inputFluid.amount;
             } else {
                 catalystFluid = inputFluid.copy();
@@ -151,7 +155,8 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase<Antimatt
     public void createEU(long antimatter, FluidStack catalyst) {
         Float modifier = null;
 
-        if (catalyst.isFluidEqual(Materials.Copper.getMolten(1L))) {
+        if (catalyst.isFluidEqual(
+            MaterialLibAPI.getFluidStack(Materials2Materials.Copper, Materials2FluidShapes.shapeFluidMolten, 1))) {
             modifier = 1.0F;
         } else if (catalyst.isFluidEqual(Materials.SuperconductorUIVBase.getMolten(1L))) {
             modifier = 1.02F;
