@@ -198,10 +198,10 @@ public class MTEPCBFactory extends MTEExtendedPowerMultiBlockBase<MTEPCBFactory>
         .addElement('B', ofBlock(GregTechAPI.sBlockCasings3, 10))
         .addElement('C', ofBlock(GregTechAPI.sBlockCasings8, 11))
         .addElement('D', ofBlock(GregTechAPI.sBlockReinforced, 2))
-        .addElement('E', ofFrame(Materials.DamascusSteel))
-        .addElement('F', ofFrame(Materials.VibrantAlloy))
+        .addElement('E', ofFrame(Materials2Materials.DamascusSteel))
+        .addElement('F', ofFrame(Materials2Materials.VibrantAlloy))
         .addElement('G', ofBlock(GregTechAPI.sBlockCasings8, 12))
-        .addElement('H', ofFrame(Materials.Duranium))
+        .addElement('H', ofFrame(Materials2Materials.Duranium))
         .addElement(
             'I',
             buildHatchAdder(MTEPCBFactory.class)

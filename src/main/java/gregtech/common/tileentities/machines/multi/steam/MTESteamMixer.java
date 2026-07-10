@@ -45,10 +45,12 @@ import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
+import gregtech.api.material.MU;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.check.CheckRecipeResult;
@@ -153,7 +155,8 @@ public class MTESteamMixer extends MTESteamMultiBlockBase<MTESteamMixer> impleme
     @Nullable
     public static Integer getTierFrame(Block block, int meta) {
         if (block == GregTechAPI.sBlockFrames) {
-            if (meta == Materials.Bronze.mMetaItemSubID) return 1;
+            if (meta == MU.oldSubId(Materials2Materials.Bronze)) return 1;
+            // Steel is block-cutover-excluded; its frame metadata stays on the legacy field.
             if (meta == Materials.Steel.mMetaItemSubID) return 2;
         }
         return null;
@@ -231,7 +234,7 @@ public class MTESteamMixer extends MTESteamMultiBlockBase<MTESteamMixer> impleme
                     ofBlocksTiered(
                         MTESteamMixer::getTierFrame,
                         ImmutableList.of(
-                            Pair.of(GregTechAPI.sBlockFrames, Materials.Bronze.mMetaItemSubID),
+                            Pair.of(GregTechAPI.sBlockFrames, MU.oldSubId(Materials2Materials.Bronze)),
                             Pair.of(GregTechAPI.sBlockFrames, Materials.Steel.mMetaItemSubID)),
                         -1,
                         (t, m) -> t.tierFrame = m,

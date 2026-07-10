@@ -21,9 +21,9 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.casing.Casings;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
@@ -55,7 +55,7 @@ public class MTEIndustrialBendingMachine extends MTEExtendedPowerMultiBlockBase<
                 { "CC   C", "DD   D", "DBAAAD" } })
         .addElement('A', Casings.FormingCore.asElement())
         .addElement('B', Casings.TitaniumGearBoxCasing.asElement())
-        .addElement('C', ofFrame(Materials.Titanium))
+        .addElement('C', ofFrame(Materials2Materials.Titanium))
         .addElement(
             'D',
             buildHatchAdder(MTEIndustrialBendingMachine.class)

@@ -72,6 +72,7 @@ import gregtech.api.interfaces.IHeatingCoil;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.ITurnable;
+import gregtech.api.material.MU;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEMultiBlockBase;
 import gregtech.api.metatileentity.implementations.MTETieredMachineBlock;
@@ -335,6 +336,17 @@ public class GTStructureUtility {
 
     public static <T> IStructureElement<T> ofFrame(Material material) {
         return ofFrame(() -> material.getFrameBox(1));
+    }
+
+    /// [#ofFrame(Materials)] for callers holding a MaterialLib material instead of a legacy [Materials]
+    /// constant. Frames are legacy-canonical blocks (`frameGt` never cut over) for every material, so this
+    /// resolves back to the legacy material and delegates rather than reimplementing placement/check against
+    /// a MaterialLib item -- only the caller-facing type changes, not frame block identity.
+    public static <T> IStructureElement<T> ofFrame(com.ruling_0.materiallib.api.Material material) {
+        Materials legacyMaterial = MU.materialOf(material);
+        if (legacyMaterial == null)
+            throw new IllegalArgumentException("No legacy Materials mapping for " + material.getName());
+        return ofFrame(legacyMaterial);
     }
 
     public static <T> HatchElementBuilder<T> buildHatchAdder() {

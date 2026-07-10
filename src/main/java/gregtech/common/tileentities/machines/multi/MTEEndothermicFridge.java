@@ -55,6 +55,7 @@ import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
@@ -124,7 +125,7 @@ public class MTEEndothermicFridge extends MTEExtendedPowerMultiBlockBase<MTEEndo
         .addElement('D', Casings.FrostProofMachineCasing.asElement())
         .addElement('E', Casings.TungstensteelPipeCasing.asElement())
         .addElement('F', Casings.RobustTungstenSteelMachineCasing.asElement())
-        .addElement('G', ofFrame(Materials.CallistoIce))
+        .addElement('G', ofFrame(Materials2Materials.CallistoIce))
         .addElement('H', Casings.TungstenSteelReinforcedBlock.asElement())
         .addElement('I', ofSheetMetal(Materials.Ledox))
         .addElement(

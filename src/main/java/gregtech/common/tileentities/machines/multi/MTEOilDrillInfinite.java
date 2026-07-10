@@ -25,6 +25,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.structure.error.StructureError;
@@ -82,7 +83,7 @@ public class MTEOilDrillInfinite extends MTEOilDrillBase {
                 .addElement('C', Casings.AdvancedIridiumPlatedMachineCasing.asElement())
                 .addElement('D', Casings.PBIPipeCasing.asElement())
                 .addElement('F', Casings.AdvancedComputerCasing.asElement())
-                .addElement('G', ofFrame(Materials.Neutronium))
+                .addElement('G', ofFrame(Materials2Materials.Neutronium))
                 .addElement('H', ofSheetMetal(Materials.Infinity))
                 .build();
         }

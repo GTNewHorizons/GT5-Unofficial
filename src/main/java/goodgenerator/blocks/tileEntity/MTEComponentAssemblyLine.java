@@ -29,9 +29,9 @@ import goodgenerator.api.recipe.GoodGeneratorRecipeMaps;
 import goodgenerator.loader.Loaders;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.VoltageIndex;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
@@ -160,7 +160,7 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
                 .atLeast(InputBus)
                 .hint(1)
                 .casingIndex(183)
-                .buildAndChain(GTStructureUtility.ofFrame(Materials.TungstenSteel)))
+                .buildAndChain(GTStructureUtility.ofFrame(Materials2Materials.TungstenSteel)))
         .addElement(
             'K',
             GTStructureUtility.buildHatchAdder(MTEComponentAssemblyLine.class)
@@ -189,7 +189,7 @@ public class MTEComponentAssemblyLine extends MTEExtendedPowerMultiBlockBase<MTE
                 .hint(2)
                 .casingIndex(183)
                 .buildAndChain(GregTechAPI.sBlockCasings8, 7))
-        .addElement('n', GTStructureUtility.ofFrame(Materials.TungstenSteel))
+        .addElement('n', GTStructureUtility.ofFrame(Materials2Materials.TungstenSteel))
         .build();
 
     public MTEComponentAssemblyLine(int aID, String aName, String aNameRegional) {

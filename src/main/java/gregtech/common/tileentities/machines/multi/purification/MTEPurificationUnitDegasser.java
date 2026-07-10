@@ -42,6 +42,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -105,7 +106,7 @@ public class MTEPurificationUnitDegasser extends MTEPurificationUnitBase<MTEPuri
                 onElementPass(t -> t.casingCount++, ofBlock(GregTechAPI.sBlockCasings9, 11))))
         // Omni-purpose infinity fused glass
         .addElement('B', ofBlock(GregTechAPI.sBlockGlass1, 2))
-        .addElement('C', ofFrame(Materials.Bedrockium))
+        .addElement('C', ofFrame(Materials2Materials.Bedrockium))
         .build();
 
     private static final int STRUCTURE_X_OFFSET = 8;

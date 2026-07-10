@@ -50,6 +50,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
@@ -195,7 +196,7 @@ public class MTETeslaTower extends TTMultiblockBase
                 .hint(1)
                 .casingIndex(BlockGTCasingsTT.textureOffset + 16 + 6)
                 .buildAndChain(TTCasingsContainer.sBlockCasingsBA0, 6))
-        .addElement('F', ofFrame(Materials.Titanium))
+        .addElement('F', ofFrame(Materials2Materials.Titanium))
         .build();
     // endregion
 

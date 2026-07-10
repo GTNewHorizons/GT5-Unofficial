@@ -20,6 +20,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -82,7 +83,7 @@ public class MTECoolantTower extends TTMultiblockBase implements ISurvivalConstr
                             { "   CCCCC   ", "  C     C  ", " C       C ", "C         C", "C         C", "C         C",
                                 "C         C", "C         C", " C       C ", "  C     C  ", "   CCCCC   " }, }))
                 .addElement('B', ofBlockAnyMeta(GregTechAPI.sBlockConcretes, 8))
-                .addElement('C', ofFrame(Materials.TungstenCarbide))
+                .addElement('C', ofFrame(Materials2Materials.TungstenCarbide))
                 .addElement(
                     'H',
                     buildHatchAdder(MTECoolantTower.class)

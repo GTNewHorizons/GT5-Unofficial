@@ -35,6 +35,7 @@ import gregtech.GTMod;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
@@ -106,7 +107,7 @@ public class MTEExtremeCombustionEngine extends MTEExtendedPowerMultiBlockBase<M
         .addElement('E', Casings.ChemicallyInertMachineCasing.asElement())
         .addElement('F', Casings.PTFEPipeCasing.asElement())
         .addElement('G', Casings.ExtremeEngineIntakeCasing.asElement())
-        .addElement('H', ofFrame(Materials.Polytetrafluoroethylene))
+        .addElement('H', ofFrame(Materials2Materials.Polytetrafluoroethylene))
         .addElement('I', Dynamo.newAny(Casings.RobustTungstenSteelMachineCasing.textureId, 3))
         .build();
 

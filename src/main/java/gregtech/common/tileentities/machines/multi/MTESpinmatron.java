@@ -239,15 +239,15 @@ public class MTESpinmatron extends MTEExtendedPowerMultiBlockBase<MTESpinmatron>
             lazy(
                 t -> Mods.Avaritia.isModLoaded() ? ofBlock(LudicrousBlocks.resource_block, 0)
                     : ofBlock(GregTechAPI.sBlockMetal5, 2))) // t2 block, Cosmic Neutronium. fallback included for dev
-        .addElement('d', ofFrame(Materials.Neutronium)) // t2 frame, Neutronium
+        .addElement('d', ofFrame(Materials2Materials.Neutronium)) // t2 frame, Neutronium
         .addElement(
             'e',
             lazy(
                 t -> Mods.Avaritia.isModLoaded() ? ofBlock(LudicrousBlocks.resource_block, 1)
                     : ofBlock(GregTechAPI.sBlockMetal5, 3))) // t3 block, Infinity. fallback included for dev
-        .addElement('f', ofFrame(Materials.Infinity)) // t3 frame, Infinity
+        .addElement('f', ofFrame(Materials2Materials.Infinity)) // t3 frame, Infinity
         .addElement('g', ofBlock(GregTechAPI.sBlockMetal9, 6)) // t4 block, WDM.
-        .addElement('h', lazy(t -> ofFrame(Materials.SpaceTime))) // t4 frame
+        .addElement('h', lazy(t -> ofFrame(Materials2Materials.SpaceTime))) // t4 frame
         .build();
 
     public MTESpinmatron(final int aID, final String aName, final String aNameRegional) {

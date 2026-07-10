@@ -47,6 +47,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
@@ -124,7 +125,7 @@ public class MTEIntegratedOreFactory extends MTEExtendedPowerMultiBlockBase<MTEI
         .addElement('E', Casings.ElectrumFluxCoilBlock.asElement()) // the latest available at uhv
         .addElement('F', Casings.AdvancedIridiumPlatedMachineCasing.asElement())
 
-        .addElement('G', ofFrame(Materials.StainlessSteel))
+        .addElement('G', ofFrame(Materials2Materials.StainlessSteel))
         .addElement('J', ofSheetMetal(Materials.Iridium))
         .addElement('I', Casings.CentrifugeCasing.asElement())
         .addElement('H', Casings.LargeSieveGrate.asElement())

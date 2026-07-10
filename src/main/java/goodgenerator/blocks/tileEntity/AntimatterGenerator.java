@@ -35,6 +35,7 @@ import goodgenerator.loader.Loaders;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
@@ -74,7 +75,7 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase<Antimatt
         protected IStructureDefinition<AntimatterGenerator> computeValue(@NotNull Class<?> type) {
             return StructureDefinition.<AntimatterGenerator>builder()
                 .addShape(MAIN_NAME, AntimatterStructures.ANTIMATTER_GENERATOR)
-                .addElement('F', lazy(x -> ofFrame(Materials.Naquadria))) // Naquadria Frame Box
+                .addElement('F', lazy(x -> ofFrame(Materials2Materials.Naquadria))) // Naquadria Frame Box
                 .addElement('D', lazy(x -> ofBlock(x.getCasingBlock(1), x.getCasingMeta(1)))) // Black Casing
                 .addElement('G', lazy(x -> ofBlock(x.getCoilBlock(1), x.getCoilMeta(1)))) // Annihilation Coil
                 .addElement('B', lazy(x -> ofBlock(x.getCoilBlock(2), x.getCoilMeta(2)))) // Containment Coil

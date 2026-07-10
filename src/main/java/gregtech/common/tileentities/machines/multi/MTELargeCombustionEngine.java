@@ -35,6 +35,7 @@ import gregtech.GTMod;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
@@ -84,7 +85,7 @@ public class MTELargeCombustionEngine extends MTEExtendedPowerMultiBlockBase<MTE
                         onElementPass(x -> ++x.casingAmount, Casings.StableTitaniumMachineCasing.asElement())))
             .addElement('C', Casings.EngineIntakeCasing.asElement())
             .addElement('D', Casings.ChemicallyInertMachineCasing.asElement())
-            .addElement('E', ofFrame(Materials.Polytetrafluoroethylene))
+            .addElement('E', ofFrame(Materials2Materials.Polytetrafluoroethylene))
             .addElement(
                 'F',
                 buildHatchAdder(MTELargeCombustionEngine.class).atLeast(InputHatch)

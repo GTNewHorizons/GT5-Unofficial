@@ -45,10 +45,10 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import cpw.mods.fml.common.Optional;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTAuthors;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.INEIPreviewModifier;
 import gregtech.api.interfaces.ITexture;
@@ -256,7 +256,7 @@ public class TileEntitySpaceElevator extends TTMultiblockBase implements ISurviv
                     .casingIndex(CASING_INDEX_BASE)
                     .hint(3)
                     .buildAndChain(GregTechAPI.sBlockCasingsSE, 0))
-            .addElement('H', GTStructureUtility.ofFrame(Materials.Neutronium)) // Neutronium frame boxes
+            .addElement('H', GTStructureUtility.ofFrame(Materials2Materials.Neutronium)) // Neutronium frame boxes
             .addElement('F', StructureUtility.ofBlock(GregTechAPI.sBlockCasingsSE, 2)) // Internal Structure
             .addElement(
                 'C',

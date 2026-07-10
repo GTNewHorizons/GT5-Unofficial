@@ -21,8 +21,8 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.INEIPreviewModifier;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -57,7 +57,7 @@ public class MTEPCBBioChamber extends MTEPCBUpgradeBase<MTEPCBBioChamber>
         .<MTEPCBBioChamber>builder()
         .addShape(STRUCTURE_PIECE_BIO_CHAMBER, structure)
         // Damascus steel frame box
-        .addElement('F', ofFrame(Materials.DamascusSteel))
+        .addElement('F', ofFrame(Materials2Materials.DamascusSteel))
         // any glass
         .addElement('G', chainAllGlasses())
         // Clean stainless steel casing

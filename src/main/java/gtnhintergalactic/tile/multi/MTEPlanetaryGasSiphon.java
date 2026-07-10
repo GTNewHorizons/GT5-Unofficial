@@ -45,8 +45,8 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.HeatingCoilLevel;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IChunkLoader;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -157,7 +157,7 @@ public class MTEPlanetaryGasSiphon extends MTEExtendedPowerMultiBlockBase<MTEPla
                     "     CAC     ", "      C      ", "      C      ", "             ", "             ",
                     "             ", "             ", "             ", "             ", "             ",
                     "             ", "             " } })
-        .addElement('B', ofFrame(Materials.TungstenSteel))
+        .addElement('B', ofFrame(Materials2Materials.TungstenSteel))
         .addElement('D', ofBlock(WerkstoffLoader.BWBlockCasingsAdvanced, 88))
         .addElement(
             'C',

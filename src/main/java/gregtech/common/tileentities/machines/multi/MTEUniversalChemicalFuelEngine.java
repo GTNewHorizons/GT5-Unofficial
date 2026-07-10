@@ -32,9 +32,9 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.casing.Casings;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TickTime;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
@@ -149,7 +149,7 @@ public class MTEUniversalChemicalFuelEngine extends TTMultiblockBase
                 .addElement('C', Casings.TitaniumFireboxCasing.asElement())
                 .addElement('D', Casings.EngineIntakeCasing.asElement())
                 .addElement('E', Casings.ChemicallyInertMachineCasing.asElement())
-                .addElement('F', ofFrame(Materials.Polytetrafluoroethylene))
+                .addElement('F', ofFrame(Materials2Materials.Polytetrafluoroethylene))
                 .addElement('G', Dynamo.newAny(Casings.StableTitaniumMachineCasing.textureId, 2))
                 .build();
         }

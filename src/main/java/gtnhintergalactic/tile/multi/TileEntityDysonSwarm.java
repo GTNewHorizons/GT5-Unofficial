@@ -39,6 +39,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
@@ -162,8 +163,8 @@ public class TileEntityDysonSwarm extends TTMultiblockBase implements ISurvivalC
                 .casingIndex(IGTextures.CASING_INDEX_RECEIVER)
                 .hint(1)
                 .buildAndChain(ofBlock(GregTechAPI.sBlockCasingsDyson, 0))) // Receiver Base Casing
-        .addElement('f', ofFrame(Materials.HSSS))
-        .addElement('g', ofFrame(Materials.Titanium))
+        .addElement('f', ofFrame(Materials2Materials.HSSS))
+        .addElement('g', ofFrame(Materials2Materials.Titanium))
         .addElement('h', ofBlock(GregTechAPI.sBlockCasings6, 10)) // Hermetic Casing X
         .addElement(
             'i',

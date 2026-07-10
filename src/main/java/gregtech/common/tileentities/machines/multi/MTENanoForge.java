@@ -47,6 +47,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.Textures.BlockIcons;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.INEIPreviewModifier;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -324,7 +325,7 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
                     .addShape(STRUCTURE_PIECE_TIER4_RENDER, STRUCTURE_PIECE_TIER4_STRUCT)
                     .addShape(STRUCTURE_PIECE_TIER4_AIR_RENDER, STRUCTURE_PIECE_TIER4_STRUCT_AIR)
                     //spotless:on
-        .addElement('F', ofFrame(Materials.StellarAlloy))
+        .addElement('F', ofFrame(Materials2Materials.StellarAlloy))
         .addElement('C', ofBlock(GregTechAPI.sBlockCasings8, 10))
         .addElement('A', ofBlock(GregTechAPI.sBlockCasings2, 5))
         .addElement(
@@ -337,8 +338,8 @@ public class MTENanoForge extends MTEExtendedPowerMultiBlockBase<MTENanoForge>
         .addElement('J', ofBlock(GregTechAPI.sBlockCasings13, 5))
         .addElement('K', ofBlock(GregTechAPI.sBlockCasings13, 7))
         .addElement('M', ofFrame(Materials.MagMatter))
-        .addElement('N', ofFrame(Materials.BlackDwarfMatter))
-        .addElement('O', ofFrame(Materials.WhiteDwarfMatter))
+        .addElement('N', ofFrame(Materials2Materials.BlackDwarfMatter))
+        .addElement('O', ofFrame(Materials2Materials.WhiteDwarfMatter))
         .addElement('P', ofBlock(GregTechAPI.sBlockCasings13, 8))
         .addElement('Q', ofBlock(GregTechAPI.sBlockCasings13, 9))
         .addElement(

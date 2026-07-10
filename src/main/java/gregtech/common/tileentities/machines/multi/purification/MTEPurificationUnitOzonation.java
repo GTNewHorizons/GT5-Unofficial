@@ -36,6 +36,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
@@ -97,7 +98,7 @@ public class MTEPurificationUnitOzonation extends MTEPurificationUnitBase<MTEPur
         .addElement('C', ofBlock(GregTechAPI.sBlockCasings8, 1))
         // Any tinted industrial glass
         .addElement('D', ofBlockAnyMeta(GregTechAPI.sBlockTintedGlass))
-        .addElement('E', ofFrame(Materials.TungstenSteel))
+        .addElement('E', ofFrame(Materials2Materials.TungstenSteel))
         // Ozone input hatch
         .addElement(
             'O',

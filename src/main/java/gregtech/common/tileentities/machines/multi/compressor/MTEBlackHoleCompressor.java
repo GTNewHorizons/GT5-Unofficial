@@ -59,6 +59,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
@@ -142,7 +143,7 @@ public class MTEBlackHoleCompressor extends MTEExtendedPowerMultiBlockBase<MTEBl
                 .buildAndChain(
                     onElementPass(MTEBlackHoleCompressor::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings10, 12))))
         .addElement('C', ofBlock(GregTechAPI.sBlockCasings10, 11))
-        .addElement('D', ofFrame(Materials.NaquadahAlloy))
+        .addElement('D', ofFrame(Materials2Materials.NaquadahAlloy))
         .addElement(
             'E',
             buildHatchAdder(MTEBlackHoleCompressor.class).atLeast(InputHatch)
