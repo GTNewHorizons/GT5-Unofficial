@@ -62,7 +62,6 @@ import appeng.me.helpers.AENetworkProxy;
 import appeng.me.helpers.IGridProxyable;
 import appeng.util.Platform;
 import appeng.util.item.AEFluidStack;
-import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
@@ -109,7 +108,6 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
     private int autoPullRefreshTime = 100;
     protected boolean processingRecipe = false;
     private boolean justHadNewFluids = false;
-    private boolean expediteRecipeCheck = false;
     private final List<IHatchWatcher> watchers = new ArrayList<>();
     /**
      * The cached activity for this hatch. Only valid while processing a recipe. This avoids several
@@ -150,7 +148,9 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
         if (aBaseMetaTileEntity.isServerSide()) {
             if (aTimer % autoPullRefreshTime == 0 && autoPullFluidList) {
                 refreshFluidList();
-                if (justHadNewFluids && expediteRecipeCheck) {
+                if (justHadNewFluids) {
+                    // Auto-pull only exists on advanced stocking inputs and is already rate-limited by
+                    // autoPullRefreshTime, so a refresh that found new fluids warrants an immediate check.
                     for (var multi : watchers) {
                         multi.scheduleRecipeCheckImmediate();
                     }
@@ -184,9 +184,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
     public void onEnableWorking() {
         super.onEnableWorking();
 
-        if (expediteRecipeCheck) {
-            justHadNewFluids = true;
-        }
+        justHadNewFluids = true;
     }
 
     @Override
@@ -264,7 +262,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
                     justHadNewFluids = true; // different type
                 }
             }
-            if (expediteRecipeCheck && !((oldStack == null && newStack == null) || sametype)) {
+            if (!((oldStack == null && newStack == null) || sametype)) {
                 configChanged = true;
             }
             index++;
@@ -357,17 +355,6 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
     @Override
     public void removeWatcher(IHatchWatcher watcher) {
         watchers.remove(watcher);
-    }
-
-    public void setRecipeCheck(boolean value) {
-        expediteRecipeCheck = value;
-        configureWatchers();
-        IGregTechTileEntity igte = getBaseMetaTileEntity();
-
-        // Changing this field requires a structure check/update, so let's do that automatically
-        if (igte.isServerSide()) {
-            GregTechAPI.causeMachineUpdate(igte.getWorld(), igte.getXCoord(), igte.getYCoord(), igte.getZCoord());
-        }
     }
 
     @Override
@@ -616,10 +603,6 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
         }
     }
 
-    public boolean doFastRecipeCheck() {
-        return expediteRecipeCheck;
-    }
-
     protected void updateAllInformationSlots() {
         if (isAllowedToWork()) {
             try {
@@ -636,6 +619,9 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
 
     public void setSlotConfig(int index, FluidStack config) {
         slots[index] = config == null ? null : new Slot(config.copy());
+        // Keep the AE stack watcher in sync, or a hatch configured after joining the grid never gets onStackChange for
+        // the new fluid and a machine idling on it never wakes when the network restocks.
+        configureWatchers();
     }
 
     /**
@@ -666,6 +652,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
 
     protected void clearSlotConfigs() {
         Arrays.fill(slots, null);
+        configureWatchers();
     }
 
     protected void clearExtractedStacks() {
@@ -771,7 +758,6 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
         aNBT.setBoolean("autoPull", autoPullFluidList);
         aNBT.setInteger("minAmount", minAutoPullAmount);
         aNBT.setBoolean("additionalConnection", additionalConnection);
-        aNBT.setBoolean("expediteRecipeCheck", expediteRecipeCheck);
         aNBT.setInteger("refreshTime", autoPullRefreshTime);
         getProxy().writeToNBT(aNBT);
 
@@ -797,7 +783,6 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
         minAutoPullAmount = aNBT.getInteger("minAmount");
         autoPullFluidList = aNBT.getBoolean("autoPull");
         additionalConnection = aNBT.getBoolean("additionalConnection");
-        expediteRecipeCheck = aNBT.getBoolean("expediteRecipeCheck");
         if (aNBT.hasKey("refreshTime")) {
             autoPullRefreshTime = aNBT.getInteger("refreshTime");
         }
@@ -864,7 +849,6 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
             setAutoPullFluidList(nbt.getBoolean("autoPull"));
             minAutoPullAmount = nbt.getInteger("minAmount");
             autoPullRefreshTime = nbt.getInteger("refreshTime");
-            expediteRecipeCheck = nbt.getBoolean("expediteRecipeCheck");
         }
         additionalConnection = nbt.getBoolean("additionalConnection");
 
@@ -877,6 +861,8 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
                 if (fs == null) continue;
                 slots[i] = new Slot(fs);
             }
+            // The writes above bypass setSlotConfig, so re-sync the AE stack watcher with the pasted config.
+            configureWatchers();
         }
 
         updateValidGridProxySides();
@@ -896,7 +882,6 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
         tag.setInteger("minAmount", minAutoPullAmount);
         tag.setBoolean("additionalConnection", additionalConnection);
         tag.setInteger("refreshTime", autoPullRefreshTime);
-        tag.setBoolean("expediteRecipeCheck", expediteRecipeCheck);
         tag.setByte("color", this.getColor());
 
         if (!autoPullFluidList) {
@@ -1074,7 +1059,7 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
     private void configureWatchers() {
         if (this.watcher != null) {
             this.watcher.clear();
-            if (expediteRecipeCheck) for (Slot slot : slots) {
+            for (Slot slot : slots) {
                 if (slot != null && slot.config != null) {
                     watcher.add(AEFluidStack.create(slot.config));
                 }
@@ -1091,6 +1076,13 @@ public class MTEHatchInputME extends MTEHatchInput implements IPowerChannelState
     @Override
     public void onStackChange(IItemList o, IAEStack fullStack, IAEStack diffStack, BaseActionSource src,
         StorageChannel chan) {
-        if (expediteRecipeCheck && diffStack.getStackSize() > 0) justHadNewFluids = true;
+        if (diffStack.getStackSize() > 0) {
+            justHadNewFluids = true;
+            // Push directly: a configured (non-auto-pull) hatch may have its GT ticking disabled, so the onPostTick
+            // consume above would never run. The AE watcher callback still fires regardless.
+            for (var multi : watchers) {
+                multi.scheduleRecipeCheck(RecipeCheckReason.THROTTLED);
+            }
+        }
     }
 }

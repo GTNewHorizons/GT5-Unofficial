@@ -523,7 +523,7 @@ public class BECRecipes implements Runnable {
                 ItemList.MetaMaterial_ElectrograviticValve1.get(2L * tp1), ItemList.MetaMaterial_Waveguide1.get(tp1),
                 ItemList.Energy_Cluster.get(tp1),
                 GTOreDictUnificator.get(OrePrefixes.ring, Materials.Hexanite, 4L * tp1),
-                GTOreDictUnificator.get(OrePrefixes.gearGt, Materials.Hexanite, tp1),
+                GTOreDictUnificator.get(OrePrefixes.gearGtSmall, Materials.Hexanite, 4 * tp1),
                 GTOreDictUnificator.get(OrePrefixes.gearGt, TIER_MATS[t], tp1) };
             NaniteTier[] nanites = nanitesShifted(BOLT_TIER[t] - 1, 2, 2, 2, 2, 2, 1, 1, 1, 3, 4, 3, 3, 4, 1, 1, 1);
             FluidStack[] condensates = { cosmicSolder(t), CondensateType.Time.getEntangled(10 * tp1 * INGOTS),

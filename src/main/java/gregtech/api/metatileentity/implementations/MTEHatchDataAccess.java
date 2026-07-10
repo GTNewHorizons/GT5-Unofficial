@@ -3,6 +3,7 @@ package gregtech.api.metatileentity.implementations;
 import static gregtech.api.enums.Textures.BlockIcons.OVERLAY_DATA_ACCESS;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -26,10 +27,11 @@ import gregtech.api.render.TextureFactory;
 import gregtech.api.util.AssemblyLineUtils;
 import gregtech.api.util.GTRecipe.RecipeAssemblyLine;
 import gregtech.common.gui.modularui.hatch.MTEHatchDataAccessGui;
+import gregtech.common.tileentities.machines.ISmartInputHatch;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 
-public class MTEHatchDataAccess extends MTEHatch {
+public class MTEHatchDataAccess extends MTEHatch implements ISmartInputHatch {
 
     private int timeout = 4;
 
@@ -118,6 +120,8 @@ public class MTEHatchDataAccess extends MTEHatch {
         super.onContentsChanged(slot);
 
         cachedRecipes = null;
+        // Adding/removing a data stick changes which assembly-line recipes are available, so push a recipe check.
+        notifyWatchers();
     }
 
     public List<RecipeAssemblyLine> getAssemblyLineRecipes() {
@@ -130,6 +134,18 @@ public class MTEHatchDataAccess extends MTEHatch {
         }
 
         return cachedRecipes;
+    }
+
+    /**
+     * @return whether the available recipe set changed between two snapshots, compared by content rather than count so
+     *         a same-size data-stick swap is still detected. Data input hatches call this to decide when to notify.
+     */
+    protected static boolean recipesChanged(List<RecipeAssemblyLine> a, List<RecipeAssemblyLine> b) {
+        int aSize = a == null ? 0 : a.size();
+        int bSize = b == null ? 0 : b.size();
+        if (aSize != bSize) return true;
+        if (aSize == 0) return false;
+        return !new HashSet<>(a).equals(new HashSet<>(b));
     }
 
     @Override
