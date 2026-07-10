@@ -44,14 +44,16 @@ import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructa
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import bartworks.common.items.SimpleSubItemClass;
 import bartworks.util.MathUtils;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.Materials2FluidShapes;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
@@ -238,7 +240,9 @@ public class MTEThoriumHighTempReactor extends MTEEnhancedMultiBlockBase<MTEThor
         if (aBaseMetaTileEntity.isServerSide() && !this.emptyingMode) {
             if (this.HeliumSupply < MTEThoriumHighTempReactor.HELIUM_NEEDED) {
                 for (FluidStack fluidStack : this.getStoredFluids()) {
-                    if (fluidStack.isFluidEqual(Materials.Helium.getGas(1))) {
+                    if (fluidStack.isFluidEqual(
+                        MaterialLibAPI
+                            .getFluidStack(Materials2Materials.Helium, Materials2FluidShapes.shapeFluidGas, 1))) {
                         int toget = Math
                             .min(MTEThoriumHighTempReactor.HELIUM_NEEDED - this.HeliumSupply, fluidStack.amount);
                         fluidStack.amount -= toget;
@@ -309,7 +313,9 @@ public class MTEThoriumHighTempReactor extends MTEEnhancedMultiBlockBase<MTEThor
     public boolean onRunningTick(ItemStack aStack) {
 
         if (this.emptyingMode) {
-            this.addOutputPartial(Materials.Helium.getGas(this.HeliumSupply));
+            this.addOutputPartial(
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.Helium, Materials2FluidShapes.shapeFluidGas, this.HeliumSupply));
             this.addOutputPartial(
                 new ItemStack(THTRMaterials.aTHTR_Materials, this.fuelSupply, THTRMaterials.MATERIAL_FUEL_INDEX));
             this.HeliumSupply = 0;

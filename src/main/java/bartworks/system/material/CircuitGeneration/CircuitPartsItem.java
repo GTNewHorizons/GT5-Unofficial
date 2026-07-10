@@ -31,6 +31,8 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import bartworks.API.enums.CircuitImprint;
 import bartworks.MainMod;
 import bartworks.common.loaders.ItemRegistry;
@@ -41,9 +43,10 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.Materials2FluidShapes;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.objects.OreDictItemStack;
 import gregtech.api.util.GTOreDictUnificator;
 
@@ -80,7 +83,11 @@ public class CircuitPartsItem extends Item {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.RawImprintBoard.get(1), new OreDictItemStack("craftingLensYellow", 0))
             .itemOutputs(ItemList.ImprintBoard.get(1))
-            .fluidInputs(Materials.SolderingAlloy.getMolten(4 * INGOTS))
+            .fluidInputs(
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.SolderingAlloy,
+                    Materials2FluidShapes.shapeFluidMolten,
+                    (int) (4 * INGOTS)))
             .duration(15 * SECONDS)
             .eut(TierEU.RECIPE_EV)
             .requiresCleanRoom()
