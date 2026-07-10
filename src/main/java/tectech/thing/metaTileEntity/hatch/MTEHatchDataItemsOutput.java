@@ -72,11 +72,22 @@ public class MTEHatchDataItemsOutput extends MTEHatchDataConnector<ALRecipeDataP
     }
 
     @Override
-    public void moveAround(IGregTechTileEntity aBaseMetaTileEntity) {
-        super.moveAround(aBaseMetaTileEntity);
+    public CheckState moveAround(IGregTechTileEntity aBaseMetaTileEntity, CheckState checkState) {
+        var result = super.moveAround(aBaseMetaTileEntity, checkState);
 
-        previousPacket = q;
-        q = null;
+        switch (result) {
+            // these states should not modify this hatch or the connected one
+            case CONNECTION, DISCONNECTED, UNKNOWN -> {}
+            case NEW_DATA -> {
+                previousPacket = q;
+                q = null;
+            }
+            case CONNECTED -> {} // ((MTEHatchDataItemsInput) connected).setContents(q);
+            default -> {
+                // TODO: log this new state
+            }
+        }
+        return result;
     }
 
     @Override

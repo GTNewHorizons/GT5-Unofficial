@@ -100,11 +100,21 @@ public class MTEHatchDataOutput extends MTEHatchDataConnector<QuantumDataPacket>
     }
 
     @Override
-    public void moveAround(IGregTechTileEntity aBaseMetaTileEntity) {
-        super.moveAround(aBaseMetaTileEntity);
+    public CheckState moveAround(IGregTechTileEntity aBaseMetaTileEntity, CheckState justConnectionCheck) {
+        var result = super.moveAround(aBaseMetaTileEntity, justConnectionCheck);
 
-        computation = q == null ? 0 : q.getContent();
-        q = null;
+        switch (result) {
+            case CONNECTION, DISCONNECTED, UNKNOWN -> {}
+            case NEW_DATA -> {
+                computation = q == null ? 0 : q.getContent();
+                q = null;
+            }
+            case CONNECTED -> {} // ((MTEHatchDataInput) connected).setContents(q);
+            default -> {
+                // TODO: log this new state
+            }
+        }
+        return result;
     }
 
     @Override

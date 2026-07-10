@@ -48,6 +48,7 @@ import gregtech.common.WirelessComputationPacket;
 import tectech.mechanics.dataTransport.ALRecipeDataPacket;
 import tectech.thing.casing.BlockGTCasingsTT;
 import tectech.thing.casing.TTCasingsContainer;
+import tectech.thing.metaTileEntity.hatch.MTEHatchDataConnector;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDataItemsInput;
 import tectech.thing.metaTileEntity.hatch.MTEHatchDataItemsOutput;
 import tectech.thing.metaTileEntity.hatch.MTEHatchWirelessDataItemsOutput;
@@ -229,7 +230,7 @@ public class MTEDataBank extends TTMultiblockBase implements ISurvivalConstructa
             if (hatch.previousPacket == dataPacket) continue;
             hatch.q = dataPacket;
             // somehow the hatches posttick doesn't wanna happen, so let's trigger the update manually
-            hatch.moveAround(hatch.getBaseMetaTileEntity());
+            hatch.moveAround(hatch.getBaseMetaTileEntity(), MTEHatchDataConnector.CheckState.NEW_DATA);
         }
 
         if (wirelessModeEnabled) {

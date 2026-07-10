@@ -71,6 +71,11 @@ public class MTEHatchDataInput extends MTEHatchDataConnector<QuantumDataPacket> 
     }
 
     @Override
+    public boolean canClear() {
+        return true;
+    }
+
+    @Override
     public boolean canConnectData(ForgeDirection side) {
         return isInputFacing(side);
     }
@@ -101,12 +106,13 @@ public class MTEHatchDataInput extends MTEHatchDataConnector<QuantumDataPacket> 
     }
 
     @Override
-    public void moveAround(IGregTechTileEntity aBaseMetaTileEntity) {
+    public CheckState moveAround(IGregTechTileEntity aBaseMetaTileEntity, CheckState checkState) {
         if (delDelay) {
             delDelay = false;
         } else {
             setContents(null);
         }
+        return CheckState.UNKNOWN;
     }
 
     @Override
