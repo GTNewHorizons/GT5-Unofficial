@@ -6,6 +6,8 @@ import java.util.HashMap;
 import net.minecraft.block.Block;
 
 import gregtech.GTMod;
+import gregtech.common.ores.GTPPOreAdapter;
+import gregtech.common.ores.OreInfo;
 import gtPlusPlus.core.block.base.BlockBaseOre;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialMisc;
@@ -63,7 +65,7 @@ public class GTppHelper {
             generate_OreIDs();
             initialized = true;
         }
-        return (short) (GTppHelper.encodeoresGTpp.get(((BlockBaseOre) block).getMaterialEx()) + 7000);
+        return (short) (GTppHelper.encodeoresGTpp.get(materialOf(block)) + 7000);
     }
 
     public static Material getMatFromMeta(int meta) {
@@ -75,7 +77,17 @@ public class GTppHelper {
     }
 
     public static boolean isGTppBlock(Block block) {
-        return block instanceof BlockBaseOre;
+        return block instanceof BlockBaseOre || GTPPOreAdapter.INSTANCE.supports(block, 0);
+    }
+
+    /// The gtpp material a world-placed ore block resolves to, whether it is still the legacy [BlockBaseOre]
+    /// instance or (once cut over -- see [GTPPOreAdapter]) the MaterialLib equivalent.
+    private static Material materialOf(Block block) {
+        if (block instanceof BlockBaseOre ore) return ore.getMaterialEx();
+
+        try (OreInfo<?> info = GTPPOreAdapter.INSTANCE.getOreInfo(block, 0)) {
+            return info != null && info.material instanceof Material material ? material : null;
+        }
     }
 
     public static String getGTppVeinName(Block block) {

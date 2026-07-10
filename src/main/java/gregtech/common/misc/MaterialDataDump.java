@@ -103,6 +103,7 @@ public final class MaterialDataDump {
         write(new File(directory, "legacy-variants.json"), dumpLegacyVariants());
         write(new File(directory, "fluid-textures.json"), dumpFluidTextures());
         write(new File(directory, "legacy-blocks.json"), dumpLegacyBlocks());
+        write(new File(directory, "gtpp-ores.json"), dumpGtppOres());
         write(new File(directory, "werkstoff-fields.json"), dumpWerkstoffFields());
         write(new File(directory, "recipe-census.json"), dumpRecipeCensus(), COMPACT_GSON);
     }
@@ -678,6 +679,40 @@ public final class MaterialDataDump {
             material.getPlasma() != null ? material.getPlasma()
                 .getName() : null);
         return json;
+    }
+
+    // endregion
+
+    // region gtpp-ores.json
+
+    /// The legacy `BlockBaseOre` registry name (`domain:name`) of every gtpp material with `hasOre() == true`
+    /// -- not itself a `generatedParts` prefix (see `dumpGtppGeneratedParts`), since `BlockBaseOre` never
+    /// calls `registerComponentForMaterial`/populates `Material.mComponentMap` the way every other legacy part
+    /// item does. Sourced by scanning the live block registry for `BlockBaseOre` instances directly (not via
+    /// `Material#getOre`/`getOreBlock`'s oredict lookup, which -- unlike `mComponentMap` -- resolves whichever
+    /// stack currently WINS the canonical `ore<Name>` association, no longer the legacy block once cut over).
+    /// A supplementary, non-pinned dump (unlike `gtpp-materials.json`) mirroring `dumpLegacyBlocks`'s role for
+    /// GT's own storage blocks -- refresh freely alongside `GTPPOreAdapter`'s Postea migration table. Sorted
+    /// by unlocalized name for determinism.
+    private static List<Map<String, Object>> dumpGtppOres() {
+        List<Map<String, Object>> out = new ArrayList<>();
+        for (net.minecraft.block.Block block : cpw.mods.fml.common.registry.GameData.getBlockRegistry()
+            .typeSafeIterable()) {
+            if (!(block instanceof gtPlusPlus.core.block.base.BlockBaseOre oreBlock)) continue;
+
+            UniqueIdentifier id = GameRegistry.findUniqueIdentifierFor(net.minecraft.item.Item.getItemFromBlock(block));
+            if (id == null) continue;
+
+            Map<String, Object> json = new LinkedHashMap<>();
+            json.put(
+                "unlocalizedName",
+                oreBlock.getMaterialEx()
+                    .getUnlocalizedName());
+            json.put("registryName", id.modId + ":" + id.name);
+            out.add(json);
+        }
+        out.sort(java.util.Comparator.comparing(m -> (String) m.get("unlocalizedName")));
+        return out;
     }
 
     // endregion

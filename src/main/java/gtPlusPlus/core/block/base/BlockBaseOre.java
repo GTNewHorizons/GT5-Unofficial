@@ -15,10 +15,12 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.StoneType;
 import gregtech.api.interfaces.IBlockWithTextures;
 import gregtech.api.interfaces.ITexture;
+import gregtech.api.material.MU;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -28,6 +30,7 @@ import gregtech.common.ores.OreInfo;
 import gregtech.common.render.GTRendererBlock;
 import gtPlusPlus.core.item.base.itemblock.ItemBlockOre;
 import gtPlusPlus.core.material.Material;
+import gtPlusPlus.core.material.MaterialReconstruction;
 
 public class BlockBaseOre extends BasicBlock implements IBlockWithTextures {
 
@@ -49,16 +52,36 @@ public class BlockBaseOre extends BasicBlock implements IBlockWithTextures {
         this.setBlockName("Ore" + StringUtils.sanitizeString(material.getUnlocalizedName()));
         this.setBlockTextureName("stone");
         try {
-            GameRegistry.registerBlock(
-                this,
-                ItemBlockOre.class,
-                "ore" + StringUtils.sanitizeString(this.blockMaterial.getDefaultLocalName()));
-            GTOreDictUnificator.registerOre(
-                "ore" + StringUtils.sanitizeString(this.blockMaterial.getDefaultLocalName()),
-                new ItemStack(this));
+            String oreName = "ore" + StringUtils.sanitizeString(this.blockMaterial.getDefaultLocalName());
+            GameRegistry.registerBlock(this, ItemBlockOre.class, oreName);
+            registerOreAssociation(oreName);
         } catch (Exception t) {
             t.printStackTrace();
         }
+    }
+
+    /// Registers the canonical `ore<Name>` oredict association for this material's ore block, mirroring
+    /// [gtPlusPlus.core.block.base.BlockBaseModular#registerStandardOre]'s storage-block cutover: a
+    /// reconstructed material associates the MaterialLib
+    /// [gregtech.api.enums.materials2.Materials2OreShapes#shapeOre] stack instead of this legacy instance,
+    /// which is hidden from NEI but stays constructed and registered -- a pre-migration save's placed/
+    /// inventory ore block still resolves through it (see `gregtech.loaders.postload.PosteaTransformers`).
+    private void registerOreAssociation(String oreName) {
+        ItemStack canonical = new ItemStack(this);
+
+        if (MaterialReconstruction.isReconstructed(blockMaterial.getUnlocalizedName())) {
+            com.ruling_0.materiallib.api.Material ml = MaterialReconstruction
+                .materialLibOf(blockMaterial.getUnlocalizedName());
+            ItemStack mlStack = MU.stack(OrePrefixes.ore, ml, 1);
+            if (mlStack != null) {
+                canonical = mlStack;
+                if (Mods.NotEnoughItems.isModLoaded()) {
+                    codechicken.nei.api.API.hideItem(new ItemStack(this));
+                }
+            }
+        }
+
+        GTOreDictUnificator.registerOre(oreName, canonical);
     }
 
     public Material getMaterialEx() {

@@ -70,6 +70,43 @@ public class PosteaTransformers implements Runnable {
         registerWerkstoffItemCutoverTransformers();
         registerGtppItemCutoverTransformers();
         registerGtppCarryoverCellTransformers();
+        registerGtppOreCutoverTransformers();
+    }
+
+    /// Migrates saved legacy `BlockBaseOre` placed/inventory stacks into the equivalent MaterialLib
+    /// [gregtech.api.enums.materials2.Materials2OreShapes#shapeOre] stack, resolved through
+    /// [GtppOreCutoverTable]'s (unlocalized name, registry name) rows the same way
+    /// [gregtech.common.ores.GTPPOreAdapter#getBlock] resolves it live. Unlike every gtpp part/block row
+    /// (one distinct registered instance per material, no meta multiplexing), so a single item + block
+    /// transformer pair per row is enough, mirroring [#registerGtppItemCutoverTransformers]' `block`-row
+    /// handling. A material that never gained `shapeOre` membership resolves null and is left on its legacy
+    /// slot, same as every other cutover table here.
+    private static void registerGtppOreCutoverTransformers() {
+        for (GtppOreCutoverTable.Entry entry : GtppOreCutoverTable.ENTRIES) {
+            ItemStackReplacementManager.addTransformationHandler(entry.registryName(), (originalId, tag) -> {
+                ItemStack cutover = resolveGtppOreCutoverStack(entry);
+                if (cutover == null) return false;
+                IDExtenderCompat.setItemStackID(tag, Item.getIdFromItem(cutover.getItem()));
+                tag.setShort("Damage", (short) cutover.getItemDamage());
+                return true;
+            });
+
+            BlockReplacementManager.addTransformationHandler(entry.registryName(), info -> {
+                ItemStack cutover = resolveGtppOreCutoverStack(entry);
+                if (cutover == null) return false;
+                info.blockID = Block.getIdFromBlock(Block.getBlockFromItem(cutover.getItem()));
+                info.metadata = cutover.getItemDamage();
+                return true;
+            });
+        }
+        GTLog.out.println(
+            "PosteaTransformers: registered gtpp ore transformers for " + GtppOreCutoverTable.ENTRIES.length
+                + " legacy blocks");
+    }
+
+    private static ItemStack resolveGtppOreCutoverStack(GtppOreCutoverTable.Entry entry) {
+        com.ruling_0.materiallib.api.Material ml = MaterialReconstruction.materialLibOf(entry.unlocalizedName());
+        return MU.stack(OrePrefixes.ore, ml, 1);
     }
 
     /// Migrates saved gtPlusPlus per-material part stacks (`miscutils:item*`/`miscutils:block*`, one distinct

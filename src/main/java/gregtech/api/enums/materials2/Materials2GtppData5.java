@@ -20,7 +20,8 @@ import gregtech.api.material.MaterialRefStack;
 /// plate(Dense/Double/Superdense)->shapePlate*, rawOre->shapeRawOre, ring->shapeRing, rotor->shapeRotor,
 // screw->shapeScrew, spring(Small)->shapeSpring*, stick(Long)->shapeStick*, wireFine->shapeWireFine,
 /// block->Materials2BlockShapes.shapeBlock, milled->Materials2GtppShapes.shapeMilled (new shape, no stage-02 equivalent
-// -- see that class). `frameGt` stays legacy (gregtech policy, GTPP_LEGACY_ONLY_PREFIXES); `cell`/`cellPlasma` map to
+// -- see that class), hasOre->Materials2OreShapes.shapeOre (not a generatedParts prefix -- see gtpp_ore_shape_lines).
+// `frameGt` stays legacy (gregtech policy, GTPP_LEGACY_ONLY_PREFIXES); `cell`/`cellPlasma` map to
 // `Materials2CellShapes.shapeCell`/`shapeCellMolten`/`shapeCellPlasmaLight` depending on the material's fluid slot (see
 // `gtpp_fluid_and_cell_shape_lines`); `pipeHuge`/`pipeMedium`/`wireGt01..16` are already gregtech-owned items on the
 // three materials that carry them (GTPP_UNSUPPORTED_PREFIXES).
@@ -47,6 +48,7 @@ public class Materials2GtppData5 {
             .generateShape(Materials2Shapes.shapeDustSmall)
             .generateShape(Materials2Shapes.shapeDustTiny)
             .generateShape(Materials2Shapes.shapeRawOre)
+            .generateShape(Materials2OreShapes.shapeOre)
             .setProperty(GTMaterialProperties.LOCAL_NAME, "Miessiite")
             .setProperty(GTMaterialProperties.ARGB, 12632256)
             .setProperty(GTMaterialProperties.MELTING_POINT, 1104)
@@ -228,6 +230,7 @@ public class Materials2GtppData5 {
             .generateShape(Materials2Shapes.shapeDustSmall)
             .generateShape(Materials2Shapes.shapeDustTiny)
             .generateShape(Materials2Shapes.shapeRawOre)
+            .generateShape(Materials2OreShapes.shapeOre)
             .setProperty(GTMaterialProperties.LOCAL_NAME, "Nichromite")
             .setProperty(GTMaterialProperties.ARGB, 9414884)
             .setProperty(GTMaterialProperties.MELTING_POINT, 1685)
@@ -465,6 +468,7 @@ public class Materials2GtppData5 {
             .generateShape(Materials2Shapes.shapeDustSmall)
             .generateShape(Materials2Shapes.shapeDustTiny)
             .generateShape(Materials2Shapes.shapeRawOre)
+            .generateShape(Materials2OreShapes.shapeOre)
             .setProperty(GTMaterialProperties.LOCAL_NAME, "Perroudite")
             .setProperty(GTMaterialProperties.ARGB, 13412749)
             .setProperty(GTMaterialProperties.MELTING_POINT, 628)
@@ -711,6 +715,7 @@ public class Materials2GtppData5 {
             .generateShape(Materials2Shapes.shapeDustSmall)
             .generateShape(Materials2Shapes.shapeDustTiny)
             .generateShape(Materials2Shapes.shapeRawOre)
+            .generateShape(Materials2OreShapes.shapeOre)
             .setProperty(GTMaterialProperties.LOCAL_NAME, "Polycrase")
             .setProperty(GTMaterialProperties.ARGB, 8630958)
             .setProperty(GTMaterialProperties.MELTING_POINT, 1999)
@@ -946,6 +951,7 @@ public class Materials2GtppData5 {
             .generateShape(Materials2Shapes.shapeRawOre)
             .generateShape(Materials2Shapes.shapeStick)
             .generateShape(Materials2Shapes.shapeStickLong)
+            .generateShape(Materials2OreShapes.shapeOre)
             .setProperty(GTMaterialProperties.LOCAL_NAME, "Radioactive Mineral Mix")
             .setProperty(GTMaterialProperties.ARGB, 9216150)
             .setProperty(GTMaterialProperties.MELTING_POINT, 1621)
@@ -1054,6 +1060,7 @@ public class Materials2GtppData5 {
             .generateShape(Materials2Shapes.shapeDustSmall)
             .generateShape(Materials2Shapes.shapeDustTiny)
             .generateShape(Materials2Shapes.shapeRawOre)
+            .generateShape(Materials2OreShapes.shapeOre)
             .setProperty(GTMaterialProperties.LOCAL_NAME, "Rare Earth (I)")
             .setProperty(GTMaterialProperties.ARGB, 8817296)
             .setProperty(GTMaterialProperties.MELTING_POINT, 1473)
@@ -1105,6 +1112,7 @@ public class Materials2GtppData5 {
             .generateShape(Materials2Shapes.shapeDustSmall)
             .generateShape(Materials2Shapes.shapeDustTiny)
             .generateShape(Materials2Shapes.shapeRawOre)
+            .generateShape(Materials2OreShapes.shapeOre)
             .setProperty(GTMaterialProperties.LOCAL_NAME, "Rare Earth (II)")
             .setProperty(GTMaterialProperties.ARGB, 9610429)
             .setProperty(GTMaterialProperties.MELTING_POINT, 3773)
@@ -1156,6 +1164,7 @@ public class Materials2GtppData5 {
             .generateShape(Materials2Shapes.shapeDustSmall)
             .generateShape(Materials2Shapes.shapeDustTiny)
             .generateShape(Materials2Shapes.shapeRawOre)
+            .generateShape(Materials2OreShapes.shapeOre)
             .setProperty(GTMaterialProperties.LOCAL_NAME, "Rare Earth (III)")
             .setProperty(GTMaterialProperties.ARGB, 9742216)
             .setProperty(GTMaterialProperties.MELTING_POINT, 5473)
@@ -1347,6 +1356,7 @@ public class Materials2GtppData5 {
             .generateShape(Materials2FluidShapes.shapeFluidMolten)
             .generateShape(Materials2CellShapes.shapeCellMolten)
             .generateShape(Materials2CellShapes.shapeCellPlasmaLight)
+            .generateShape(Materials2OreShapes.shapeOre)
             .setProperty(GTMaterialProperties.LOCAL_NAME, "Runite")
             .setProperty(GTMaterialProperties.ARGB, 3983550)
             .setProperty(GTMaterialProperties.MELTING_POINT, 7023)
@@ -1394,6 +1404,7 @@ public class Materials2GtppData5 {
             .generateShape(Materials2Shapes.shapeDustSmall)
             .generateShape(Materials2Shapes.shapeDustTiny)
             .generateShape(Materials2Shapes.shapeRawOre)
+            .generateShape(Materials2OreShapes.shapeOre)
             .setProperty(GTMaterialProperties.LOCAL_NAME, "Samarskite (Y)")
             .setProperty(GTMaterialProperties.ARGB, 8566429)
             .setProperty(GTMaterialProperties.MELTING_POINT, 2468)
@@ -1445,6 +1456,7 @@ public class Materials2GtppData5 {
             .generateShape(Materials2Shapes.shapeDustSmall)
             .generateShape(Materials2Shapes.shapeDustTiny)
             .generateShape(Materials2Shapes.shapeRawOre)
+            .generateShape(Materials2OreShapes.shapeOre)
             .setProperty(GTMaterialProperties.LOCAL_NAME, "Samarskite (Yb)")
             .setProperty(GTMaterialProperties.ARGB, 6663558)
             .setProperty(GTMaterialProperties.MELTING_POINT, 2351)
@@ -2668,6 +2680,7 @@ public class Materials2GtppData5 {
             .generateShape(Materials2Shapes.shapeDustSmall)
             .generateShape(Materials2Shapes.shapeDustTiny)
             .generateShape(Materials2Shapes.shapeRawOre)
+            .generateShape(Materials2OreShapes.shapeOre)
             .setProperty(GTMaterialProperties.LOCAL_NAME, "Titanite")
             .setProperty(GTMaterialProperties.ARGB, 7042969)
             .setProperty(GTMaterialProperties.MELTING_POINT, 1772)

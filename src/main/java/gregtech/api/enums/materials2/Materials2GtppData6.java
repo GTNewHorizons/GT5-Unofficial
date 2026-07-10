@@ -20,7 +20,8 @@ import gregtech.api.material.MaterialRefStack;
 /// plate(Dense/Double/Superdense)->shapePlate*, rawOre->shapeRawOre, ring->shapeRing, rotor->shapeRotor,
 // screw->shapeScrew, spring(Small)->shapeSpring*, stick(Long)->shapeStick*, wireFine->shapeWireFine,
 /// block->Materials2BlockShapes.shapeBlock, milled->Materials2GtppShapes.shapeMilled (new shape, no stage-02 equivalent
-// -- see that class). `frameGt` stays legacy (gregtech policy, GTPP_LEGACY_ONLY_PREFIXES); `cell`/`cellPlasma` map to
+// -- see that class), hasOre->Materials2OreShapes.shapeOre (not a generatedParts prefix -- see gtpp_ore_shape_lines).
+// `frameGt` stays legacy (gregtech policy, GTPP_LEGACY_ONLY_PREFIXES); `cell`/`cellPlasma` map to
 // `Materials2CellShapes.shapeCell`/`shapeCellMolten`/`shapeCellPlasmaLight` depending on the material's fluid slot (see
 // `gtpp_fluid_and_cell_shape_lines`); `pipeHuge`/`pipeMedium`/`wireGt01..16` are already gregtech-owned items on the
 // three materials that carry them (GTPP_UNSUPPORTED_PREFIXES).
@@ -469,6 +470,7 @@ public class Materials2GtppData6 {
             .generateShape(Materials2Shapes.shapeDustSmall)
             .generateShape(Materials2Shapes.shapeDustTiny)
             .generateShape(Materials2Shapes.shapeRawOre)
+            .generateShape(Materials2OreShapes.shapeOre)
             .setProperty(GTMaterialProperties.LOCAL_NAME, "Xenotime")
             .setProperty(GTMaterialProperties.ARGB, 10272139)
             .setProperty(GTMaterialProperties.MELTING_POINT, 1301)
@@ -520,6 +522,7 @@ public class Materials2GtppData6 {
             .generateShape(Materials2Shapes.shapeDustSmall)
             .generateShape(Materials2Shapes.shapeDustTiny)
             .generateShape(Materials2Shapes.shapeRawOre)
+            .generateShape(Materials2OreShapes.shapeOre)
             .setProperty(GTMaterialProperties.LOCAL_NAME, "Yttriaite")
             .setProperty(GTMaterialProperties.ARGB, 8435920)
             .setProperty(GTMaterialProperties.MELTING_POINT, 1119)
@@ -571,6 +574,7 @@ public class Materials2GtppData6 {
             .generateShape(Materials2Shapes.shapeDustSmall)
             .generateShape(Materials2Shapes.shapeDustTiny)
             .generateShape(Materials2Shapes.shapeRawOre)
+            .generateShape(Materials2OreShapes.shapeOre)
             .setProperty(GTMaterialProperties.LOCAL_NAME, "Yttrialite")
             .setProperty(GTMaterialProperties.ARGB, 4615805)
             .setProperty(GTMaterialProperties.MELTING_POINT, 1833)
@@ -622,6 +626,7 @@ public class Materials2GtppData6 {
             .generateShape(Materials2Shapes.shapeDustSmall)
             .generateShape(Materials2Shapes.shapeDustTiny)
             .generateShape(Materials2Shapes.shapeRawOre)
+            .generateShape(Materials2OreShapes.shapeOre)
             .setProperty(GTMaterialProperties.LOCAL_NAME, "Yttrocerite")
             .setProperty(GTMaterialProperties.ARGB, 14020824)
             .setProperty(GTMaterialProperties.MELTING_POINT, 1281)
@@ -735,6 +740,7 @@ public class Materials2GtppData6 {
             .generateShape(Materials2Shapes.shapeDustSmall)
             .generateShape(Materials2Shapes.shapeDustTiny)
             .generateShape(Materials2Shapes.shapeRawOre)
+            .generateShape(Materials2OreShapes.shapeOre)
             .setProperty(GTMaterialProperties.LOCAL_NAME, "Zimbabweite")
             .setProperty(GTMaterialProperties.ARGB, 10792667)
             .setProperty(GTMaterialProperties.MELTING_POINT, 1670)
@@ -786,6 +792,7 @@ public class Materials2GtppData6 {
             .generateShape(Materials2Shapes.shapeDustSmall)
             .generateShape(Materials2Shapes.shapeDustTiny)
             .generateShape(Materials2Shapes.shapeRawOre)
+            .generateShape(Materials2OreShapes.shapeOre)
             .setProperty(GTMaterialProperties.LOCAL_NAME, "Zircon")
             .setProperty(GTMaterialProperties.ARGB, 6916257)
             .setProperty(GTMaterialProperties.MELTING_POINT, 1667)
@@ -951,6 +958,7 @@ public class Materials2GtppData6 {
             .generateShape(Materials2Shapes.shapeDustSmall)
             .generateShape(Materials2Shapes.shapeDustTiny)
             .generateShape(Materials2Shapes.shapeRawOre)
+            .generateShape(Materials2OreShapes.shapeOre)
             .setProperty(GTMaterialProperties.LOCAL_NAME, "Zirconolite")
             .setProperty(GTMaterialProperties.ARGB, 11190734)
             .setProperty(GTMaterialProperties.MELTING_POINT, 1479)
@@ -1002,6 +1010,7 @@ public class Materials2GtppData6 {
             .generateShape(Materials2Shapes.shapeDustSmall)
             .generateShape(Materials2Shapes.shapeDustTiny)
             .generateShape(Materials2Shapes.shapeRawOre)
+            .generateShape(Materials2OreShapes.shapeOre)
             .setProperty(GTMaterialProperties.LOCAL_NAME, "Zircophyllite")
             .setProperty(GTMaterialProperties.ARGB, 10396360)
             .setProperty(GTMaterialProperties.MELTING_POINT, 1569)
@@ -1053,6 +1062,7 @@ public class Materials2GtppData6 {
             .generateShape(Materials2Shapes.shapeDustSmall)
             .generateShape(Materials2Shapes.shapeDustTiny)
             .generateShape(Materials2Shapes.shapeRawOre)
+            .generateShape(Materials2OreShapes.shapeOre)
             .setProperty(GTMaterialProperties.LOCAL_NAME, "Zirkelite")
             .setProperty(GTMaterialProperties.ARGB, 9808048)
             .setProperty(GTMaterialProperties.MELTING_POINT, 1829)

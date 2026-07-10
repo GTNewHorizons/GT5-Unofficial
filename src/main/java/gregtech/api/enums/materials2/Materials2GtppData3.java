@@ -20,7 +20,8 @@ import gregtech.api.material.MaterialRefStack;
 /// plate(Dense/Double/Superdense)->shapePlate*, rawOre->shapeRawOre, ring->shapeRing, rotor->shapeRotor,
 // screw->shapeScrew, spring(Small)->shapeSpring*, stick(Long)->shapeStick*, wireFine->shapeWireFine,
 /// block->Materials2BlockShapes.shapeBlock, milled->Materials2GtppShapes.shapeMilled (new shape, no stage-02 equivalent
-// -- see that class). `frameGt` stays legacy (gregtech policy, GTPP_LEGACY_ONLY_PREFIXES); `cell`/`cellPlasma` map to
+// -- see that class), hasOre->Materials2OreShapes.shapeOre (not a generatedParts prefix -- see gtpp_ore_shape_lines).
+// `frameGt` stays legacy (gregtech policy, GTPP_LEGACY_ONLY_PREFIXES); `cell`/`cellPlasma` map to
 // `Materials2CellShapes.shapeCell`/`shapeCellMolten`/`shapeCellPlasmaLight` depending on the material's fluid slot (see
 // `gtpp_fluid_and_cell_shape_lines`); `pipeHuge`/`pipeMedium`/`wireGt01..16` are already gregtech-owned items on the
 // three materials that carry them (GTPP_UNSUPPORTED_PREFIXES).
@@ -319,6 +320,7 @@ public class Materials2GtppData3 {
             .generateShape(Materials2Shapes.shapeDustSmall)
             .generateShape(Materials2Shapes.shapeDustTiny)
             .generateShape(Materials2Shapes.shapeRawOre)
+            .generateShape(Materials2OreShapes.shapeOre)
             .setProperty(GTMaterialProperties.LOCAL_NAME, "Agardite (Cd)")
             .setProperty(GTMaterialProperties.ARGB, 8879529)
             .setProperty(GTMaterialProperties.MELTING_POINT, 977)
@@ -370,6 +372,7 @@ public class Materials2GtppData3 {
             .generateShape(Materials2Shapes.shapeDustSmall)
             .generateShape(Materials2Shapes.shapeDustTiny)
             .generateShape(Materials2Shapes.shapeRawOre)
+            .generateShape(Materials2OreShapes.shapeOre)
             .setProperty(GTMaterialProperties.LOCAL_NAME, "Agardite (La)")
             .setProperty(GTMaterialProperties.ARGB, 9866166)
             .setProperty(GTMaterialProperties.MELTING_POINT, 1076)
@@ -421,6 +424,7 @@ public class Materials2GtppData3 {
             .generateShape(Materials2Shapes.shapeDustSmall)
             .generateShape(Materials2Shapes.shapeDustTiny)
             .generateShape(Materials2Shapes.shapeRawOre)
+            .generateShape(Materials2OreShapes.shapeOre)
             .setProperty(GTMaterialProperties.LOCAL_NAME, "Agardite (Nd)")
             .setProperty(GTMaterialProperties.ARGB, 9471407)
             .setProperty(GTMaterialProperties.MELTING_POINT, 1094)
@@ -472,6 +476,7 @@ public class Materials2GtppData3 {
             .generateShape(Materials2Shapes.shapeDustSmall)
             .generateShape(Materials2Shapes.shapeDustTiny)
             .generateShape(Materials2Shapes.shapeRawOre)
+            .generateShape(Materials2OreShapes.shapeOre)
             .setProperty(GTMaterialProperties.LOCAL_NAME, "Agardite (Y)")
             .setProperty(GTMaterialProperties.ARGB, 10788547)
             .setProperty(GTMaterialProperties.MELTING_POINT, 1177)
@@ -523,6 +528,7 @@ public class Materials2GtppData3 {
             .generateShape(Materials2Shapes.shapeDustSmall)
             .generateShape(Materials2Shapes.shapeDustTiny)
             .generateShape(Materials2Shapes.shapeRawOre)
+            .generateShape(Materials2OreShapes.shapeOre)
             .setProperty(GTMaterialProperties.LOCAL_NAME, "Alburnite")
             .setProperty(GTMaterialProperties.ARGB, 14211182)
             .setProperty(GTMaterialProperties.MELTING_POINT, 1050)
@@ -652,6 +658,7 @@ public class Materials2GtppData3 {
             .generateShape(Materials2Shapes.shapeRawOre)
             .setProperty(GTMaterialProperties.LEGACY_FLUIDS, new FluidNames(null, null, null, null, new FluidRef("molten.ancientgranite", 773, null)))
             .generateShape(Materials2FluidShapes.shapeFluidMolten)
+            .generateShape(Materials2OreShapes.shapeOre)
             .setProperty(GTMaterialProperties.LOCAL_NAME, "Ancient Granite")
             .setProperty(GTMaterialProperties.ARGB, 7039851)
             .setProperty(GTMaterialProperties.MELTING_POINT, 773)
@@ -945,6 +952,7 @@ public class Materials2GtppData3 {
             .generateShape(Materials2Shapes.shapeDustSmall)
             .generateShape(Materials2Shapes.shapeDustTiny)
             .generateShape(Materials2Shapes.shapeRawOre)
+            .generateShape(Materials2OreShapes.shapeOre)
             .setProperty(GTMaterialProperties.LOCAL_NAME, "Barite (Ra)")
             .setProperty(GTMaterialProperties.ARGB, 10204315)
             .setProperty(GTMaterialProperties.MELTING_POINT, 808)
@@ -1473,6 +1481,7 @@ public class Materials2GtppData3 {
             .generateShape(Materials2Shapes.shapeDustSmall)
             .generateShape(Materials2Shapes.shapeDustTiny)
             .generateShape(Materials2Shapes.shapeRawOre)
+            .generateShape(Materials2OreShapes.shapeOre)
             .setProperty(GTMaterialProperties.LOCAL_NAME, "Cerite")
             .setProperty(GTMaterialProperties.ARGB, 8425654)
             .setProperty(GTMaterialProperties.MELTING_POINT, 1329)
@@ -1679,6 +1688,7 @@ public class Materials2GtppData3 {
             .generateShape(Materials2Shapes.shapeDustSmall)
             .generateShape(Materials2Shapes.shapeDustTiny)
             .generateShape(Materials2Shapes.shapeRawOre)
+            .generateShape(Materials2OreShapes.shapeOre)
             .setProperty(GTMaterialProperties.LOCAL_NAME, "Comancheite")
             .setProperty(GTMaterialProperties.ARGB, 7765440)
             .setProperty(GTMaterialProperties.MELTING_POINT, 361)
@@ -1836,6 +1846,7 @@ public class Materials2GtppData3 {
             .generateShape(Materials2Shapes.shapeDustSmall)
             .generateShape(Materials2Shapes.shapeDustTiny)
             .generateShape(Materials2Shapes.shapeRawOre)
+            .generateShape(Materials2OreShapes.shapeOre)
             .setProperty(GTMaterialProperties.LOCAL_NAME, "Crocoite")
             .setProperty(GTMaterialProperties.ARGB, 9346246)
             .setProperty(GTMaterialProperties.MELTING_POINT, 1056)
@@ -1887,6 +1898,7 @@ public class Materials2GtppData3 {
             .generateShape(Materials2Shapes.shapeDustSmall)
             .generateShape(Materials2Shapes.shapeDustTiny)
             .generateShape(Materials2Shapes.shapeRawOre)
+            .generateShape(Materials2OreShapes.shapeOre)
             .setProperty(GTMaterialProperties.LOCAL_NAME, "Cryolite (F)")
             .setProperty(GTMaterialProperties.ARGB, 8361943)
             .setProperty(GTMaterialProperties.MELTING_POINT, 725)
@@ -2065,6 +2077,7 @@ public class Materials2GtppData3 {
             .generateShape(Materials2Shapes.shapeDustSmall)
             .generateShape(Materials2Shapes.shapeDustTiny)
             .generateShape(Materials2Shapes.shapeRawOre)
+            .generateShape(Materials2OreShapes.shapeOre)
             .setProperty(GTMaterialProperties.LOCAL_NAME, "Demicheleite (Br)")
             .setProperty(GTMaterialProperties.ARGB, 10911805)
             .setProperty(GTMaterialProperties.MELTING_POINT, 581)

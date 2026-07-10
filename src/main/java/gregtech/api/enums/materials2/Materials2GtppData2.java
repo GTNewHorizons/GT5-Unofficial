@@ -19,7 +19,8 @@ import gregtech.api.material.MaterialRefStack;
 /// plate(Dense/Double/Superdense)->shapePlate*, rawOre->shapeRawOre, ring->shapeRing, rotor->shapeRotor,
 // screw->shapeScrew, spring(Small)->shapeSpring*, stick(Long)->shapeStick*, wireFine->shapeWireFine,
 /// block->Materials2BlockShapes.shapeBlock, milled->Materials2GtppShapes.shapeMilled (new shape, no stage-02 equivalent
-// -- see that class). `frameGt` stays legacy (gregtech policy, GTPP_LEGACY_ONLY_PREFIXES); `cell`/`cellPlasma` map to
+// -- see that class), hasOre->Materials2OreShapes.shapeOre (not a generatedParts prefix -- see gtpp_ore_shape_lines).
+// `frameGt` stays legacy (gregtech policy, GTPP_LEGACY_ONLY_PREFIXES); `cell`/`cellPlasma` map to
 // `Materials2CellShapes.shapeCell`/`shapeCellMolten`/`shapeCellPlasmaLight` depending on the material's fluid slot (see
 // `gtpp_fluid_and_cell_shape_lines`); `pipeHuge`/`pipeMedium`/`wireGt01..16` are already gregtech-owned items on the
 // three materials that carry them (GTPP_UNSUPPORTED_PREFIXES).
