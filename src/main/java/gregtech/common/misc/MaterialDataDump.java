@@ -55,6 +55,7 @@ import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.GTMaterialGenerationFlag;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.GTWerkstoffFlag;
+import gregtech.api.material.GTppData;
 import gregtech.api.material.MU;
 import gregtech.api.material.MaterialRef;
 import gregtech.api.material.MaterialRefStack;
@@ -764,6 +765,23 @@ public final class MaterialDataDump {
         json.put("addedPrefixes", material.getProperty(GTMaterialProperties.ADDED_PREFIXES));
         json.put("removedPrefixes", material.getProperty(GTMaterialProperties.REMOVED_PREFIXES));
         json.put("werkstoff", dumpMlWerkstoff(material.getProperty(GTMaterialProperties.WERKSTOFF)));
+        json.put("gtpp", dumpMlGtpp(material.getProperty(GTMaterialProperties.GTPP)));
+        return json;
+    }
+
+    private static Map<String, Object> dumpMlGtpp(GTppData data) {
+        if (data == null) return null;
+        Map<String, Object> json = new LinkedHashMap<>();
+        json.put("tier", data.tier());
+        json.put("voltageMultiplier", data.voltageMultiplier());
+        json.put("meltingPointK", data.meltingPointK());
+        json.put("boilingPointK", data.boilingPointK());
+        json.put("durability", data.durability());
+        json.put("usesBlastFurnace", data.usesBlastFurnace());
+        json.put("isRadioactive", data.isRadioactive());
+        json.put("radiationLevel", data.radiationLevel());
+        json.put("hasOre", data.hasOre());
+        json.put("chemicalFormula", data.chemicalFormula());
         return json;
     }
 
