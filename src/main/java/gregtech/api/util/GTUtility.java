@@ -4431,6 +4431,11 @@ public class GTUtility {
         setFluidAmount(fluidStack, amount - decAmount);
     }
 
+    public static void incFluidAmount(FluidStack fluidStack, long incAmount) {
+        long amount = getFluidAmount(fluidStack);
+        setFluidAmount(fluidStack, addSafe(amount, incAmount));
+    }
+
     public static FluidStack createFluidStack(FluidStack stack) {
         return createFluidStack(stack.getFluid(), getFluidAmount(stack), stack.tag);
     }
