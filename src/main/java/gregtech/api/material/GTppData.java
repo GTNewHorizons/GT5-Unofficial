@@ -1,5 +1,7 @@
 package gregtech.api.material;
 
+import java.util.List;
+
 import com.github.bsideup.jabel.Desugar;
 
 /// The gtPlusPlus-side data of a material ported from `gtpp-materials.json` by `scripts/mu/gen_materials.py`.
@@ -25,6 +27,23 @@ import com.github.bsideup.jabel.Desugar;
 /// - `hasOre`: whether the legacy `Material` generated an ore chain; informational only -- actual shape
 /// membership already carries the real signal.
 /// - `chemicalFormula`: the legacy `Material.vChemicalFormula` display string.
+/// - `protons`/`neutrons`: the legacy `Material.vProtons`/`vNeutrons`; several `RecipeGen*` consumers key
+/// recipe stats (duration, EU cost) off these, so they are pinned like every other scalar rather than
+/// recomputed.
+/// - `state`: the legacy `gtPlusPlus.core.material.state.MaterialState` enum constant name.
+/// - `generatesFluid`/`generatesCells`: the legacy `Material` constructor's `generateFluid`/`vGenerateCells`
+/// flags, which the dump never captured directly -- derived instead from their observable effect (`true` when
+/// the dump recorded a fluid, a plasma, or a `cell`/`cellPlasma` generated part), which is exact because
+/// `Material#performFluidAndCellRegistration` never runs, and `vGenerateCells` never gates an item into
+/// existence, unless the corresponding constructor flag was already `true`.
+/// - `composition`: the legacy `Material.vMaterialInput` list, distinct from
+/// [GTMaterialProperties#COMPOSITION] for the same reason [WerkstoffData#contents] is distinct from it -- a
+/// same-name merge leaves the shared property whatever the gregtech/werkstoff side's own codegen set (often
+/// empty, since gtPlusPlus is frequently the only side that ever dumped a composition for that material), so
+/// reconstruction needs the gtPlusPlus-side breakdown pinned independently to stay composite-driven behavior
+/// (e.g. plasma generation, gated on an empty composite list) faithful.
 @Desugar
 public record GTppData(int tier, long voltageMultiplier, int meltingPointK, int boilingPointK, int durability,
-    boolean usesBlastFurnace, boolean isRadioactive, int radiationLevel, boolean hasOre, String chemicalFormula) {}
+    boolean usesBlastFurnace, boolean isRadioactive, int radiationLevel, boolean hasOre, String chemicalFormula,
+    long protons, long neutrons, String state, boolean generatesFluid, boolean generatesCells,
+    List<MaterialRefStack> composition) {}

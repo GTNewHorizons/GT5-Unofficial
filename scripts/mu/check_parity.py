@@ -631,6 +631,21 @@ def gtpp_has_fluid(entry):
     return bool(fluids.get("fluid")) or bool(fluids.get("plasma"))
 
 
+# Mirrors gen_materials.py's GTPP_EXTERNAL_FLUID_NAMES (see its comment for the ZirconiumTetrafluoride
+# rationale).
+GTPP_EXTERNAL_FLUID_NAMES = {"ZirconiumTetrafluoride"}
+
+
+def gtpp_generates_fluid(entry):
+    if entry["unlocalizedName"] in GTPP_EXTERNAL_FLUID_NAMES:
+        return False
+    return gtpp_has_fluid(entry) or gtpp_generates_cells(entry)
+
+
+def gtpp_generates_cells(entry):
+    return any(p["prefix"] in ("cell", "cellPlasma") for p in entry["generatedParts"])
+
+
 def gtpp_is_marker(entry):
     return not entry["generatedParts"] and not entry["composition"] and not gtpp_has_fluid(entry)
 
@@ -733,6 +748,16 @@ def check_gtpp_data(errors, name, entry, ml):
     check("radiationLevel", entry["radiationLevel"])
     check("hasOre", bool(entry["hasOre"]))
     check("chemicalFormula", entry["chemicalFormula"])
+    check("protons", entry["protons"])
+    check("neutrons", entry["neutrons"])
+    check("state", entry["state"])
+    check("generatesFluid", gtpp_generates_fluid(entry))
+    check("generatesCells", gtpp_generates_cells(entry))
+    expected_composition = [(ml_name(c["name"]), c["amount"]) for c in entry["composition"] if c.get("name")]
+    actual_composition = [(c["material"], c["amount"]) for c in data.get("composition", [])]
+    if expected_composition != actual_composition:
+        errors.append(
+            f"{name}: gtpp.composition expected {expected_composition!r}, got {actual_composition!r}")
 
 
 def check_gtpp_new_material(errors, entry, ml_by_key):
