@@ -72,34 +72,52 @@ public class PosteaTransformers implements Runnable {
         registerGtppCarryoverCellTransformers();
     }
 
-    /// Migrates saved gtPlusPlus per-material part item stacks (`miscutils:item*`, one distinct registered
-    /// item per (material, prefix), always damage 0) into the equivalent MaterialLib stack, resolved through
-    /// [GtppItemCutoverTable]'s pinned (prefix, material, registry name) rows -- the gtPlusPlus counterpart of
-    /// [#registerWerkstoffItemCutoverTransformers], differing only in that each row is its own registered item
-    /// rather than a damage variant of a shared meta-item, so no damage read/branch is needed. `cell`/
-    /// `cellPlasma` rows resolve through [MaterialReconstruction#cellStack] instead of plain [MU#stack], since
-    /// a row's material may have claimed `shapeCellMolten` rather than `shapeCell` -- see that method's
-    /// javadoc. Block-kind parts (`block`, `frameGt`) are out of the table and migrate separately.
+    /// Migrates saved gtPlusPlus per-material part stacks (`miscutils:item*`/`miscutils:block*`, one distinct
+    /// registered item/block per (material, prefix), always damage 0) into the equivalent MaterialLib stack,
+    /// resolved through [GtppItemCutoverTable]'s pinned (prefix, material, registry name) rows -- the
+    /// gtPlusPlus counterpart of [#registerWerkstoffItemCutoverTransformers], differing only in that each row
+    /// is its own registered item/block rather than a damage variant of a shared meta-item, so no damage
+    /// read/branch is needed. `cell`/`cellPlasma` rows resolve through [MaterialReconstruction#cellStack]
+    /// instead of plain [MU#stack], since a row's material may have claimed `shapeCellMolten` rather than
+    /// `shapeCell` -- see that method's javadoc. `frameGt` is out of the table and migrates separately
+    /// (deferred). `block` rows additionally get a [BlockReplacementManager] handler for placed instances,
+    /// since a storage block (unlike every other gtpp part) is placeable, and are skipped entirely (both the
+    /// item and block handler return false/null, leaving the legacy slot canonical) for the small
+    /// [MaterialReconstruction#isBlockCutOver] exclusion list -- the table itself has no way to know about that
+    /// per-material exception since it is generated purely from the dump.
     private static void registerGtppItemCutoverTransformers() {
         for (Entry entry : GtppItemCutoverTable.ENTRIES) {
             ItemStackReplacementManager.addTransformationHandler(entry.registryName(), (originalId, tag) -> {
-                ItemStack cutover;
-                if (entry.prefix() == OrePrefixes.cell || entry.prefix() == OrePrefixes.cellPlasma) {
-                    cutover = MaterialReconstruction.cellStack(entry.materialName(), entry.prefix(), 1);
-                } else {
-                    com.ruling_0.materiallib.api.Material material = MaterialLibAPI
-                        .getMaterial("gregtech", entry.materialName());
-                    cutover = MU.stack(entry.prefix(), material, 1);
-                }
+                ItemStack cutover = resolveGtppCutoverStack(entry);
                 if (cutover == null) return false;
                 IDExtenderCompat.setItemStackID(tag, Item.getIdFromItem(cutover.getItem()));
                 tag.setShort("Damage", (short) cutover.getItemDamage());
                 return true;
             });
+            if (entry.prefix() == OrePrefixes.block) {
+                BlockReplacementManager.addTransformationHandler(entry.registryName(), info -> {
+                    ItemStack cutover = resolveGtppCutoverStack(entry);
+                    if (cutover == null) return false;
+                    info.blockID = Block.getIdFromBlock(Block.getBlockFromItem(cutover.getItem()));
+                    info.metadata = cutover.getItemDamage();
+                    return true;
+                });
+            }
         }
         GTLog.out.println(
             "PosteaTransformers: registered gtpp item transformers for " + GtppItemCutoverTable.ENTRIES.length
                 + " legacy items");
+    }
+
+    private static ItemStack resolveGtppCutoverStack(Entry entry) {
+        if (entry.prefix() == OrePrefixes.block && !MaterialReconstruction.isBlockCutOver(entry.materialName())) {
+            return null;
+        }
+        if (entry.prefix() == OrePrefixes.cell || entry.prefix() == OrePrefixes.cellPlasma) {
+            return MaterialReconstruction.cellStack(entry.materialName(), entry.prefix(), 1);
+        }
+        com.ruling_0.materiallib.api.Material material = MaterialLibAPI.getMaterial("gregtech", entry.materialName());
+        return MU.stack(entry.prefix(), material, 1);
     }
 
     /// The five materials whose legacy `cell` item was `miscutils:itemCell<Name>` (the same naming convention

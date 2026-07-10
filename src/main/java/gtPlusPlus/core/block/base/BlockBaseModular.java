@@ -19,12 +19,15 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Dyes;
+import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
+import gregtech.api.material.MU;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.StringUtils;
 import gtPlusPlus.core.item.base.itemblock.ItemBlockGtBlock;
 import gtPlusPlus.core.material.Material;
+import gtPlusPlus.core.material.MaterialReconstruction;
 
 public class BlockBaseModular extends BasicBlock {
 
@@ -79,12 +82,39 @@ public class BlockBaseModular extends BasicBlock {
             ItemBlockGtBlock.class,
             StringUtils.sanitizeString(blockType.getTexture() + unlocalizedName));
         switch (this.blockType) {
-            case STANDARD -> GTOreDictUnificator
-                .registerOre("block" + unifyMaterialName(materialName), new ItemStack(this));
+            case STANDARD -> registerStandardOre(unlocalizedName);
             case FRAME, ORE -> GTOreDictUnificator
                 .registerOre("frameGt" + unifyMaterialName(materialName), new ItemStack(this));
         }
         if (blockType == BlockTypes.FRAME) GregTechAPI.registerMachineBlock(this, -1);
+    }
+
+    /// Registers the canonical `block<Name>` oredict association for this material's storage block, mirroring
+    /// [gregtech.common.blocks.BlockMetal]'s stage-07 storage-block cutover: a reconstructed material whose
+    /// `block` part cut over (see [MaterialReconstruction#isBlockCutOver]) associates the MaterialLib
+    /// [gregtech.api.enums.materials2.Materials2BlockShapes#shapeBlock] stack instead of this legacy instance,
+    /// which is hidden from NEI but stays constructed and registered -- a pre-migration save's placed/inventory
+    /// block still resolves through it (see `gregtech.loaders.postload.PosteaTransformers`), and identity-based
+    /// callers that need the legacy instance specifically (`gtPlusPlus.core.handler.events.
+    /// AnimatedBlockTextureHandler`, `gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.processing.
+    /// advanced.MTEAdvHeatExchanger`) keep working unchanged since [#getMaterialBlock] reads this cache
+    /// regardless of which stack is canonical.
+    private void registerStandardOre(String unlocalizedName) {
+        String oreName = "block" + unifyMaterialName(materialName);
+        ItemStack canonical = new ItemStack(this);
+
+        if (MaterialReconstruction.isBlockCutOver(unlocalizedName)) {
+            com.ruling_0.materiallib.api.Material ml = MaterialReconstruction.materialLibOf(unlocalizedName);
+            ItemStack mlStack = MU.stack(OrePrefixes.block, ml, 1);
+            if (mlStack != null) {
+                canonical = mlStack;
+                if (Mods.NotEnoughItems.isModLoaded()) {
+                    codechicken.nei.api.API.hideItem(new ItemStack(this));
+                }
+            }
+        }
+
+        GTOreDictUnificator.registerOre(oreName, canonical);
     }
 
     @Override
