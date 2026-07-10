@@ -59,12 +59,18 @@ public class MU {
     /// cutover mapping. When a prefix maps to more than one candidate shape (`cellPlasma`), the first one
     /// `material` actually generates is used.
     public static @Nullable ItemStack stack(OrePrefixes prefix, Materials material, long amount) {
-        if (prefix == null) return null;
+        return stack(prefix, material(material), amount);
+    }
+
+    /// [#stack] for callers that already hold the MaterialLib [Material] directly instead of a legacy
+    /// [Materials] enum constant -- e.g. gtPlusPlus material reconstruction, whose ~200 non-merged materials
+    /// have no [Materials] counterpart to look up by.
+    public static @Nullable ItemStack stack(OrePrefixes prefix, @Nullable Material material, long amount) {
+        if (prefix == null || material == null) return null;
         List<Shape> shapes = prefixShapes().get(prefix.name());
-        Material mat = material(material);
-        if (shapes == null || mat == null) return null;
+        if (shapes == null) return null;
         for (Shape shape : shapes) {
-            if (mat.hasShape(shape)) return MaterialLibAPI.getStack(mat, shape, (int) amount);
+            if (material.hasShape(shape)) return MaterialLibAPI.getStack(material, shape, (int) amount);
         }
         return null;
     }
@@ -78,6 +84,11 @@ public class MU {
     /// legacy item instead). Legacy construction code should skip a (prefix, material) pair exactly when this
     /// is true, not merely when [#shape] is non-null.
     public static boolean isCutOver(OrePrefixes prefix, Materials material) {
+        return stack(prefix, material, 1) != null;
+    }
+
+    /// [#isCutOver] for a MaterialLib [Material] held directly -- see [#stack]'s raw-[Material] overload.
+    public static boolean isCutOver(OrePrefixes prefix, @Nullable Material material) {
         return stack(prefix, material, 1) != null;
     }
 
