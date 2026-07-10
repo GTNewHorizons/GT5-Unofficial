@@ -12,6 +12,7 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.util.GTModHandler;
 import gtPlusPlus.core.material.MaterialMisc;
 import gtPlusPlus.core.material.MaterialsElements;
@@ -62,9 +63,9 @@ public class RecipesSeleniumProcessing {
 
         // Copper
         GTValues.RA.stdBuilder()
-            .itemInputs(ItemUtils.getOrePrefixStack(OrePrefixes.crushedPurified, Materials.Copper, 1))
+            .itemInputs(ItemUtils.getOrePrefixStack(OrePrefixes.crushedPurified, Materials2Materials.Copper, 1))
             .itemOutputs(
-                ItemUtils.getOrePrefixStack(OrePrefixes.crushedCentrifuged, Materials.Copper, 1),
+                ItemUtils.getOrePrefixStack(OrePrefixes.crushedCentrifuged, Materials2Materials.Copper, 1),
                 MaterialMisc.SELENIUM_DIOXIDE.getDust(1))
             .outputChances(100_00, 3_00)
             .fluidInputs(GTModHandler.getHotWater(1_000))
@@ -75,9 +76,9 @@ public class RecipesSeleniumProcessing {
 
         // Tetra
         GTValues.RA.stdBuilder()
-            .itemInputs(ItemUtils.getOrePrefixStack(OrePrefixes.crushedPurified, Materials.Tetrahedrite, 1))
+            .itemInputs(ItemUtils.getOrePrefixStack(OrePrefixes.crushedPurified, Materials2Materials.Tetrahedrite, 1))
             .itemOutputs(
-                ItemUtils.getOrePrefixStack(OrePrefixes.crushedCentrifuged, Materials.Tetrahedrite, 1),
+                ItemUtils.getOrePrefixStack(OrePrefixes.crushedCentrifuged, Materials2Materials.Tetrahedrite, 1),
                 MaterialMisc.SELENIUM_DIOXIDE.getDust(1))
             .outputChances(100_00, 2_50)
             .fluidInputs(GTModHandler.getHotWater(1_000))
@@ -88,9 +89,9 @@ public class RecipesSeleniumProcessing {
 
         // Chalco
         GTValues.RA.stdBuilder()
-            .itemInputs(ItemUtils.getOrePrefixStack(OrePrefixes.crushedPurified, Materials.Chalcopyrite, 1))
+            .itemInputs(ItemUtils.getOrePrefixStack(OrePrefixes.crushedPurified, Materials2Materials.Chalcopyrite, 1))
             .itemOutputs(
-                ItemUtils.getOrePrefixStack(OrePrefixes.crushedCentrifuged, Materials.Chalcopyrite, 1),
+                ItemUtils.getOrePrefixStack(OrePrefixes.crushedCentrifuged, Materials2Materials.Chalcopyrite, 1),
                 MaterialMisc.SELENIUM_DIOXIDE.getDust(1))
             .outputChances(100_00, 2_50)
             .fluidInputs(GTModHandler.getHotWater(1_000))
@@ -101,9 +102,9 @@ public class RecipesSeleniumProcessing {
 
         // Malachite
         GTValues.RA.stdBuilder()
-            .itemInputs(ItemUtils.getOrePrefixStack(OrePrefixes.crushedPurified, Materials.Malachite, 1))
+            .itemInputs(ItemUtils.getOrePrefixStack(OrePrefixes.crushedPurified, Materials2Materials.Malachite, 1))
             .itemOutputs(
-                ItemUtils.getOrePrefixStack(OrePrefixes.crushedCentrifuged, Materials.Malachite, 1),
+                ItemUtils.getOrePrefixStack(OrePrefixes.crushedCentrifuged, Materials2Materials.Malachite, 1),
                 MaterialMisc.SELENIUM_DIOXIDE.getDust(1))
             .outputChances(100_00, 2_50)
             .fluidInputs(GTModHandler.getHotWater(1_000))

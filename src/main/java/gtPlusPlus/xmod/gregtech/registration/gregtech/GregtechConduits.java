@@ -19,7 +19,9 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IOreMaterial;
+import gregtech.api.material.MU;
 import gregtech.api.metatileentity.implementations.MTEFluidPipe;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -91,7 +93,7 @@ public class GregtechConduits {
         if (Thaumcraft.isModLoaded()) {
             generateNonGTFluidPipes(PipeStats.Void, BasePipeID + 15, 1600, 25000);
         }
-        generateGTFluidPipes(Materials.Europium, BasePipeID + 20, 12000, 7500, true);
+        generateGTFluidPipes(Materials2Materials.Europium, BasePipeID + 20, 12000, 7500, true);
         generateNonGTFluidPipes(PipeStats.Potin, BasePipeID + 25, 500, 2000);
         generateNonGTFluidPipes(PipeStats.MaragingSteel300, BasePipeID + 30, 14000, 2500);
         generateNonGTFluidPipes(PipeStats.MaragingSteel350, BasePipeID + 35, 16000, 2500);
@@ -100,12 +102,12 @@ public class GregtechConduits {
         generateNonGTFluidPipes(PipeStats.HastelloyX, BasePipeID + 50, 20000, 4200);
         generateNonGTFluidPipes(PipeStats.TriniumNaquadahCarbonite, 30500, 20, 250000);
 
-        generateGTFluidPipes(Materials.Tungsten, BasePipeID + 55, 4320, 7200, true);
+        generateGTFluidPipes(Materials2Materials.Tungsten, BasePipeID + 55, 4320, 7200, true);
         if (EnderIO.isModLoaded()) {
-            generateGTFluidPipes(Materials.DarkSteel, BasePipeID + 60, 2320, 2750, true);
+            generateGTFluidPipes(Materials2Materials.DarkSteel, BasePipeID + 60, 2320, 2750, true);
         }
-        generateGTFluidPipes(Materials.Clay, BasePipeID + 65, 100, 500, false);
-        generateGTFluidPipes(Materials.Lead, BasePipeID + 70, 350, 1200, true);
+        generateGTFluidPipes(Materials2Materials.Clay, BasePipeID + 65, 100, 500, false);
+        generateGTFluidPipes(Materials2Materials.Lead, BasePipeID + 70, 350, 1200, true);
     }
 
     private static void wireFactory(final String Material, final int Voltage, final int ID, final long insulatedLoss,
@@ -116,6 +118,23 @@ public class GregtechConduits {
             V = 0;
         }
         makeWires(T, ID, insulatedLoss, uninsulatedLoss, Amps, GTValues.V[V], true, false, rgb);
+    }
+
+    /// The MaterialLib-typed overload for callers migrating off [Materials]; delegates through [MU#materialOf]
+    /// so wire/cable identity is unchanged.
+    private static void makeWires(final com.ruling_0.materiallib.api.Material aMaterial, final int aStartID,
+        final long aLossInsulated, final long aLoss, final long aAmperage, final long aVoltage,
+        final boolean aInsulatable, final boolean aAutoInsulated, final short[] aRGB) {
+        makeWires(
+            MU.materialOf(aMaterial),
+            aStartID,
+            aLossInsulated,
+            aLoss,
+            aAmperage,
+            aVoltage,
+            aInsulatable,
+            aAutoInsulated,
+            aRGB);
     }
 
     private static void makeWires(final Materials aMaterial, final int aStartID, final long aLossInsulated,
@@ -490,6 +509,13 @@ public class GregtechConduits {
                     false,
                     aMaterial).getStackForm(1L));
         }
+    }
+
+    /// The MaterialLib-typed overload for callers migrating off [Materials]; delegates through [MU#materialOf]
+    /// so pipe identity is unchanged (the fluid pipe prefixes stay on the legacy oredict, see [MU]).
+    private static void generateGTFluidPipes(final com.ruling_0.materiallib.api.Material material, final int startID,
+        final int transferRatePerSec, final int heatResistance, final boolean isGasProof) {
+        generateGTFluidPipes(MU.materialOf(material), startID, transferRatePerSec, heatResistance, isGasProof);
     }
 
     private static void generateGTFluidPipes(final Materials material, final int startID, final int transferRatePerSec,
