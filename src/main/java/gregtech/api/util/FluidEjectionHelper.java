@@ -133,9 +133,12 @@ public class FluidEjectionHelper {
 
                 int amount = (int) Math.min(output.remainingAmount, Integer.MAX_VALUE);
                 FluidStack tmp = output.id.getFluidStack(amount);
+                boolean stored = transaction.storePartial(output.id, tmp);
+                // Drained = Amount - Remaining
+                output.remainingAmount -= amount - tmp.amount;
 
                 // Fill at most one slot with the remaining fluids
-                if (transaction.storePartial(output.id, tmp)) {
+                if (stored) {
                     break;
                 } else {
                     // If we couldn't insert anything into the hatch, go to the next one
