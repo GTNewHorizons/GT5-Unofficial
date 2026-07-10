@@ -47,6 +47,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -2628,20 +2629,27 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                     currentTip.add(translateToLocal("GT5U.waila.multiblock.status.locked_recipe"));
                 }
                 for (int i = 0; i < min(3, outputItemLength); i++) {
+                    // Localize on the client: the NBT holds the raw stack, not the display name
+                    ItemStack outputStack = ItemStack.loadItemStackFromNBT(tag.getCompoundTag("outputItemStack" + i));
+                    String itemName = outputStack != null ? outputStack.getDisplayName() : "";
                     currentTip.add(
                         "  " + tag.getString("outputItemIcon" + i)
                             + EnumChatFormatting.AQUA
-                            + tag.getString("outputItemName" + i)
+                            + itemName
                             + EnumChatFormatting.RESET
                             + " x "
                             + EnumChatFormatting.GOLD
                             + formatNumber(tag.getInteger("outputItemCount" + i)));
                 }
                 for (int i = 0; i < min(3 - outputItemLength, outputFluidLength); i++) {
+                    // Localize on the client: the NBT holds the internal fluid name, not the display name
+                    String internalName = tag.getString("outputFluidName" + i);
+                    Fluid fluid = FluidRegistry.getFluid(internalName);
+                    String fluidName = fluid != null ? new FluidStack(fluid, 1).getLocalizedName() : internalName;
                     currentTip.add(
                         "  " + tag.getString("outputFluidIcon" + i)
                             + EnumChatFormatting.AQUA
-                            + tag.getString("outputFluidName" + i)
+                            + fluidName
                             + EnumChatFormatting.RESET
                             + " x "
                             + EnumChatFormatting.GOLD
@@ -2712,7 +2720,11 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
             for (ItemStack stack : mOutputItems) {
                 if (stack == null) continue;
                 tag.setString("outputItemIcon" + index, TTRenderStack.create(stack, true));
-                tag.setString("outputItemName" + index, stack.getDisplayName());
+                // Send the raw stack and localize on the client. getWailaNBTData runs server-side,
+                // where the client language file is not loaded, so localizing here yields English on dedicated servers.
+                NBTTagCompound outputItemStack = new NBTTagCompound();
+                stack.writeToNBT(outputItemStack);
+                tag.setTag("outputItemStack" + index, outputItemStack);
                 tag.setInteger("outputItemCount" + index, stack.stackSize);
                 index++;
             }
@@ -2725,7 +2737,12 @@ public abstract class MTEMultiBlockBase extends MetaTileEntity
                 tag.setString(
                     "outputFluidIcon" + index,
                     TTRenderStack.create(GTUtility.getFluidDisplayStack(stack, false), true));
-                tag.setString("outputFluidName" + index, stack.getLocalizedName());
+                // Store the internal fluid name and localize on the client. getWailaNBTData runs server-side,
+                // where the client language file is not loaded, so localizing here yields English on dedicated servers.
+                tag.setString(
+                    "outputFluidName" + index,
+                    stack.getFluid()
+                        .getName());
                 tag.setLong("outputFluidCount" + index, GTUtility.getFluidAmount(stack));
                 index++;
             }
