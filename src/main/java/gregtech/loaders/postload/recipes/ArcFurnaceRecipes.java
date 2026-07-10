@@ -492,7 +492,7 @@ public class ArcFurnaceRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.Casing_Coil_Infinity.get(1))
             .itemOutputs(
-                MaterialLibAPI.getStack(Materials2Materials.Infinity, Materials2Shapes.shapeIngot, (int) (9L)),
+                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Infinity, 9L),
                 MaterialLibAPI.getStack(Materials2Materials.DraconiumAwakened, Materials2Shapes.shapeIngot, (int) (4L)),
                 ItemList.Naquarite_Universal_Insulator_Foil.get(24))
             .duration(20 * SECONDS)
@@ -504,7 +504,7 @@ public class ArcFurnaceRecipes implements Runnable {
             .itemInputs(ItemList.Casing_Coil_Hypogen.get(1))
             .itemOutputs(
                 MaterialsElements.STANDALONE.HYPOGEN.getIngot(9),
-                MaterialLibAPI.getStack(Materials2Materials.Infinity, Materials2Shapes.shapeIngot, (int) (4L)),
+                GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Infinity, 4L),
                 ItemList.Naquarite_Universal_Insulator_Foil.get(32))
             .duration(20 * SECONDS)
             .eut(TierEU.RECIPE_UEV)
