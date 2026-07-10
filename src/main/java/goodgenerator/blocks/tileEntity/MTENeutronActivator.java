@@ -30,6 +30,7 @@ import com.gtnewhorizons.modularui.common.widget.DynamicPositionedColumn;
 import com.gtnewhorizons.modularui.common.widget.FakeSyncWidget;
 import com.gtnewhorizons.modularui.common.widget.SlotWidget;
 import com.gtnewhorizons.modularui.common.widget.TextWidget;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import goodgenerator.api.recipe.GoodGeneratorRecipeMaps;
 import goodgenerator.blocks.tileEntity.GTMetaTileEntity.MTENeutronAccelerator;
@@ -37,9 +38,9 @@ import goodgenerator.blocks.tileEntity.GTMetaTileEntity.MTENeutronSensor;
 import goodgenerator.loader.Loaders;
 import goodgenerator.util.ItemRefer;
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
@@ -399,7 +400,9 @@ public class MTENeutronActivator extends TTMultiblockBase implements ISurvivalCo
     private void tryUseModerator() {
         startRecipeProcessing();
         for (ItemStack input : getStoredInputs()) {
-            if (input.isItemEqual(Materials.Graphite.getDust(1)) || input.isItemEqual(Materials.Beryllium.getDust(1))) {
+            if (input.isItemEqual(MaterialLibAPI.getStack(Materials2Materials.Graphite, Materials2Shapes.shapeDust, 1))
+                || input.isItemEqual(
+                    MaterialLibAPI.getStack(Materials2Materials.Beryllium, Materials2Shapes.shapeDust, 1))) {
                 int consume = Math.min(this.eV / 10000000, input.stackSize);
                 depleteInput(GTUtility.copyAmount(consume, input));
                 this.eV -= 10000000 * consume;

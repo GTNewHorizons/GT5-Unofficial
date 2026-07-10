@@ -6,7 +6,10 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
-import gregtech.api.enums.Materials;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
+import gregtech.api.enums.materials2.Materials2FluidShapes;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -18,7 +21,8 @@ import gregtech.api.util.GTUtility;
 @IMetaTileEntity.SkipGenerateDescription
 public class AntimatterOutputHatch extends MTEHatchOutput {
 
-    private static final FluidStack ANTIMATTER = Materials.Antimatter.getFluid(1);
+    private static final FluidStack ANTIMATTER = MaterialLibAPI
+        .getFluidStack(Materials2Materials.Antimatter, Materials2FluidShapes.shapeFluidLiquid, 1);
 
     public AntimatterOutputHatch(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional, 11);
