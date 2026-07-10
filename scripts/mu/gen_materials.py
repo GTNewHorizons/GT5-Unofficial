@@ -1033,13 +1033,27 @@ def compute_dumped_items(material, included_names, legacy_variants_by_material, 
     return dumped_items
 
 
+# Shapes that define what KIND of material something is, regardless of encoding cost: a material generating
+# an ingot is a metal, one generating gem-tier shapes is a gem (the family-selection rule "semantics win
+# conflicts" -- see select_families). Plates and sticks deliberately do NOT define anything: both the metal
+# and gem families generate them, and non-metals like Wood and Paper carry them too.
+METAL_DEFINING_SHAPES = {"ingot"}
+GEM_DEFINING_SHAPES = {"gem", "gemChipped", "gemExquisite", "gemFlawed", "gemFlawless"}
+
+
 def select_families(target, family_shape_members):
     """Chooses the `SHAPE_FAMILIES` subset that best explains a material's true final item-shape set `target`
-    (see `compute_dumped_items`): the subset minimizing total encoding noise (the `removeShape` count for
-    shapes the joined families imply but the material does not generate, plus the explicit `generateShape`
-    count for shapes it generates that no joined family covers), tie-broken toward explaining more of `target`
-    through family membership (fewer bare `generateShape` calls) and then toward fewer families (drops a
-    family that adds no coverage beyond what is already chosen, e.g. `familyDusts` alongside `familyMetals`).
+    (see `compute_dumped_items`), semantics first, encoding noise second:
+
+    - A material generating a `METAL_DEFINING_SHAPES`/`GEM_DEFINING_SHAPES` shape MUST join
+      `familyMetals`/`familyGems`, even when a smaller family plus explicit adds would need fewer edit lines
+      -- what a material IS wins over encoding thrift.
+    - `familyDusts` is exclusively for materials that are not metals/gems (`DUST_EXCLUSIVE_CONFLICTS`); its
+      members generate dusts plus at most a minor amount of explicitly-added extra shapes.
+    - Within those constraints, the subset minimizes total encoding noise (the `removeShape` count for shapes
+      the joined families imply but the material does not generate, plus the explicit `generateShape` count
+      for shapes no joined family covers), tie-broken toward explaining more of `target` through membership
+      and then toward fewer families.
 
     This replaces the original stage-03 codegen's per-`OrePrefix`-bit union (`FAMILY_BITS`, formerly
     `joined_families`): that scheme joined every family whose bit is set on ANY of a material's real shapes,
@@ -1052,12 +1066,19 @@ def select_families(target, family_shape_members):
     function exists to fix. Returns `(chosen_families, missing, excess)`.
     """
     target = set(target)
+    forced = set()
+    if target & METAL_DEFINING_SHAPES:
+        forced.add("familyMetals")
+    if target & GEM_DEFINING_SHAPES:
+        forced.add("familyGems")
     candidates = [f for f in SHAPE_FAMILIES if family_shape_members[f]]
     n = len(candidates)
     best_key = None
     best_chosen = ()
     for mask in range(1 << n):
         chosen = tuple(candidates[i] for i in range(n) if mask & (1 << i))
+        if not forced <= set(chosen):
+            continue
         if "familyDusts" in chosen and any(f in chosen for f in DUST_EXCLUSIVE_CONFLICTS):
             continue
         union = set()
@@ -1091,20 +1112,31 @@ PLASMA_SHAPE_FIELDS = {"shapeFluidPlasma", "shapeCellPlasma", "shapeCellPlasmaLi
 
 def cell_plasma_families(shape_lines):
     """`familyCells`/`familyPlasmas` membership, decided directly from which of a material's own already-built
-    `generateShape` lines (fluid/container/werkstoff-special) name a cell or plasma shape. Both families carry
-    an empty shape roster (`Materials2Families.java`), so unlike `SHAPE_FAMILIES` this is a pure genuine-
-    capability tag with no `removeShape`/`generateShape` cost either way; deriving it from the material's real
-    generated shapes (rather than the old per-OrePrefix-bit union) is the same audit `select_families` applies
-    to the shape-bearing families. `familyEmpties` (the legacy `EMPTY` generation bit) is dropped entirely: its
-    shape roster is and always was empty and no material in this port generates a shape of that kind, so no
-    material can genuinely belong to it."""
-    tokens = {_shape_field_token(line) for line in shape_lines}
+    `generateShape` lines (fluid/container/werkstoff-special, plus a merge target's gtpp fold) name a cell or
+    plasma shape. Both families carry an empty shape roster (`Materials2Families.java`), so unlike
+    `SHAPE_FAMILIES` this is a pure genuine-capability tag with no `removeShape`/`generateShape` cost either
+    way; deriving it from the material's real generated shapes (rather than the old per-OrePrefix-bit union)
+    is the same audit `select_families` applies to the shape-bearing families. `familyEmpties` (the legacy
+    `EMPTY` generation bit) is dropped entirely: its shape roster is and always was empty and no material in
+    this port generates a shape of that kind, so no material can genuinely belong to it."""
+    tokens = {_shape_field_token(line) for line in shape_lines if ".generateShape(" in line}
     families = []
     if tokens & CELLS_SHAPE_FIELDS:
         families.append("familyCells")
     if tokens & PLASMA_SHAPE_FIELDS:
         families.append("familyPlasmas")
     return families
+
+
+def gtpp_merged_item_prefixes(entry, included_names):
+    """The `Materials2Shapes`-pipeline part prefixes a gtpp same-name fold adds to a merge target -- included
+    in the target's family-selection shape set so the family reflects the material's true final form (e.g.
+    Iodine's gregtech/werkstoff side is dust+cell only, but its gtpp fold adds ingot/plate/stick/...; the
+    material is a metal by its final shapes, and leaving the fold's parts out would park it in `familyDusts`
+    with a dozen explicit adds, exactly the semantics the familyDusts-is-dust-only rule forbids)."""
+    if entry is None:
+        return set()
+    return {p["prefix"] for p in entry["generatedParts"] if p["prefix"] in included_names}
 
 
 def material_ref_literal(raw_name, ml_names):
@@ -1492,25 +1524,46 @@ def werkstoff_special_shape_lines(material, werkstoff_prefixes):
     return lines
 
 
-def build_material_block(
-        material, ml_names, field_names, included_names, family_shape_members,
-        legacy_variants_by_material, used_fluid_names, fluid_textures, legacy_block_materials,
-        werkstoff_info, display_to_var, legacy_constants):
-    field = field_names[material["name"]]
-    name_literal = java_string_literal(ml_names[material["name"]])
-    icon_set_literal = java_string_literal(material["iconSet"])
-    werkstoff_prefixes = werkstoff_info["prefixes"] if werkstoff_info else []
-
-    dumped_items = compute_dumped_items(material, included_names, legacy_variants_by_material, werkstoff_prefixes)
-    families, missing, excess = select_families(dumped_items, family_shape_members)
-
+def build_gt_shape_lines(material, legacy_variants_by_material, used_fluid_names, fluid_textures,
+                          legacy_block_materials, werkstoff_prefixes):
+    """A material's fluid/container/block/ore/werkstoff-special `generateShape` lines, deduplicated. Split out
+    of the block assembly because `fluid_shape_lines`'s first-claim-wins name dedup (`used_fluid_names`) is
+    order-sensitive across the whole resolve: every gt/werkstoff material must claim before any gtpp fold does
+    (the original multi-file emission order), while block assembly needs the gtpp fold's lines in hand -- so
+    claiming runs as its own ordered pass first."""
     shape_lines = []
     shape_lines.extend(fluid_shape_lines(material, used_fluid_names))
     shape_lines.extend(container_shape_lines(material, legacy_variants_by_material))
     shape_lines.extend(block_shape_lines(material, legacy_block_materials))
     shape_lines.extend(ore_shape_lines(material))
     shape_lines.extend(werkstoff_special_shape_lines(material, werkstoff_prefixes))
-    families = families + cell_plasma_families(shape_lines)
+    seen = set()
+    deduped = []
+    for line in shape_lines:
+        if line not in seen:
+            seen.add(line)
+            deduped.append(line)
+    return deduped
+
+
+def build_material_block(
+        material, ml_names, field_names, included_names, family_shape_members,
+        legacy_variants_by_material, fluid_textures, werkstoff_info, display_to_var, legacy_constants,
+        shape_lines, gtpp_entry, gtpp_lines):
+    field = field_names[material["name"]]
+    name_literal = java_string_literal(ml_names[material["name"]])
+    icon_set_literal = java_string_literal(material["iconSet"])
+    werkstoff_prefixes = werkstoff_info["prefixes"] if werkstoff_info else []
+
+    # Family selection sees the material's full final item-shape set, gtpp fold included; the fold's own
+    # explicit generateShape lines then cover whatever parts it contributes, so `missing` only needs the
+    # gt/werkstoff-side leftovers (and `excess` can never collide with a fold-added shape).
+    gtpp_parts = gtpp_merged_item_prefixes(gtpp_entry, included_names)
+    dumped_items = compute_dumped_items(material, included_names, legacy_variants_by_material, werkstoff_prefixes)
+    dumped_items |= gtpp_parts
+    families, missing, excess = select_families(dumped_items, family_shape_members)
+    families = families + cell_plasma_families(shape_lines + (gtpp_lines or []))
+    missing = [p for p in missing if p not in gtpp_parts]
 
     lines = []
     lines.append(
@@ -1523,11 +1576,7 @@ def build_material_block(
 
     for prefix_name in missing:
         lines.append(f"            .generateShape(Materials2Shapes.{shape_field_name(prefix_name)})")
-    seen_shape_lines = set()
-    for line in shape_lines:
-        if line not in seen_shape_lines:
-            seen_shape_lines.add(line)
-            lines.append(line)
+    lines.extend(shape_lines)
 
     for property_line in build_property_lines(material, ml_names, fluid_textures):
         lines.append("            " + property_line)
@@ -1929,14 +1978,15 @@ def main():
     # gt/werkstoff main declarations claim shared fluid names first (used_fluid_names), exactly as before the
     # single-file merge -- the gtpp fold below must keep claiming in the same relative order (all merges, then
     # all new materials) so a material's fluid/cell shape assignment does not change (see gtpp_shape_lines'
-    # "first claim wins" contract).
+    # "first claim wins" contract). Block assembly happens after the gtpp folds are built, since a merge
+    # target's family selection needs its fold's parts (see build_material_block).
     used_fluid_names = set()
-    gt_blocks_by_name = {}
+    gt_shape_lines_by_name = {}
     for material in ported:
-        gt_blocks_by_name[material["name"]] = build_material_block(
-            material, ml_names, field_names, included_names, family_shape_members, legacy_variants_by_material,
-            used_fluid_names, fluid_textures, legacy_block_materials, werkstoff_by_name.get(material["name"]),
-            display_to_var, legacy_constants)
+        werkstoff_info = werkstoff_by_name.get(material["name"])
+        gt_shape_lines_by_name[material["name"]] = build_gt_shape_lines(
+            material, legacy_variants_by_material, used_fluid_names, fluid_textures, legacy_block_materials,
+            werkstoff_info["prefixes"] if werkstoff_info else [])
 
     ported_names = set(ml_names.keys())
     materials_by_name = {m["name"]: m for m in ported}
@@ -1969,6 +2019,7 @@ def main():
         gtpp_ml_names[raw] = mn
         gtpp_field_names[raw] = fn
 
+    gtpp_merge_entry_by_name = {e["unlocalizedName"]: e for e in gtpp_merges}
     gtpp_merge_lines_by_name = {}
     for entry in gtpp_merges:
         gtpp_merge_lines_by_name[entry["unlocalizedName"]] = build_gtpp_merge_block(
@@ -1988,8 +2039,13 @@ def main():
     field_lines += [f"    public static Material {gtpp_field_names[e['unlocalizedName']]};" for e in gtpp_new]
     material_blocks = []
     for material in ported:
-        block = list(gt_blocks_by_name[material["name"]])
-        merge_lines = gtpp_merge_lines_by_name.get(material["name"])
+        name = material["name"]
+        block = build_material_block(
+            material, ml_names, field_names, included_names, family_shape_members, legacy_variants_by_material,
+            fluid_textures, werkstoff_by_name.get(name), display_to_var, legacy_constants,
+            gt_shape_lines_by_name[name], gtpp_merge_entry_by_name.get(name),
+            gtpp_merge_lines_by_name.get(name))
+        merge_lines = gtpp_merge_lines_by_name.get(name)
         if merge_lines:
             block.extend(merge_lines)
         material_blocks.append(block)
