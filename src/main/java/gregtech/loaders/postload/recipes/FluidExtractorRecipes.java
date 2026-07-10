@@ -139,9 +139,7 @@ public class FluidExtractorRecipes implements Runnable {
                 MaterialLibAPI.getStack(Materials2Materials.HydratedCoal, Materials2Shapes.shapeDust, (int) (1L)))
             .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Coal, Materials2Shapes.shapeDust, (int) (1L)))
             .outputChances(10000)
-            .fluidOutputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Water, Materials2FluidShapes.shapeFluidLiquid, (int) (100L)))
+            .fluidOutputs(Materials.Water.getFluid(100L))
             .duration(1 * SECONDS + 12 * TICKS)
             .eut(4)
             .addTo(fluidExtractionRecipes);
@@ -643,27 +641,21 @@ public class FluidExtractorRecipes implements Runnable {
 
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Items.snowball, 1, 0))
-            .fluidOutputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Water, Materials2FluidShapes.shapeFluidLiquid, (int) (250)))
+            .fluidOutputs(Materials.Water.getFluid(250))
             .duration(1 * SECONDS + 12 * TICKS)
             .eut(4)
             .addTo(fluidExtractionRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Blocks.snow, 1, 0))
-            .fluidOutputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Water, Materials2FluidShapes.shapeFluidLiquid, (int) (1_000)))
+            .fluidOutputs(Materials.Water.getFluid(1_000))
             .duration(6 * SECONDS + 8 * TICKS)
             .eut(4)
             .addTo(fluidExtractionRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Ice, Materials2Shapes.shapeDust, (int) (1L)))
-            .fluidOutputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Ice, Materials2FluidShapes.shapeFluidSolid, (int) (1000L)))
+            .fluidOutputs(Materials.Ice.getSolid(1000L))
             .duration(6 * SECONDS + 8 * TICKS)
             .eut(4)
             .addTo(fluidExtractionRecipes);
@@ -673,9 +665,7 @@ public class FluidExtractorRecipes implements Runnable {
             .itemOutputs(
                 MaterialLibAPI.getStack(Materials2Materials.Phosphorus, Materials2Shapes.shapeDust, (int) (1L)))
             .outputChances(1000)
-            .fluidOutputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Lava, Materials2FluidShapes.shapeFluidLiquid, (int) (800L)))
+            .fluidOutputs(Materials.Lava.getFluid(800L))
             .duration(12 * SECONDS + 16 * TICKS)
             .eut(TierEU.RECIPE_MV)
             .addTo(fluidExtractionRecipes);

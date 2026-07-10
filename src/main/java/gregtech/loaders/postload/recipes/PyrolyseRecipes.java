@@ -237,11 +237,7 @@ public class PyrolyseRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(getModItem(Forestry.ID, "fertilizerBio", 4))
                 .circuit(1)
-                .fluidInputs(
-                    MaterialLibAPI.getFluidStack(
-                        Materials2Materials.Water,
-                        Materials2FluidShapes.shapeFluidLiquid,
-                        (int) (4_000)))
+                .fluidInputs(Materials.Water.getFluid(4_000))
                 .fluidOutputs(
                     MaterialLibAPI.getFluidStack(
                         Materials2Materials.Biomass,
@@ -254,11 +250,7 @@ public class PyrolyseRecipes implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(getModItem(Forestry.ID, "mulch", 32))
                 .circuit(1)
-                .fluidInputs(
-                    MaterialLibAPI.getFluidStack(
-                        Materials2Materials.Water,
-                        Materials2FluidShapes.shapeFluidLiquid,
-                        (int) (4_000)))
+                .fluidInputs(Materials.Water.getFluid(4_000))
                 .fluidOutputs(
                     MaterialLibAPI.getFluidStack(
                         Materials2Materials.Biomass,
@@ -272,9 +264,7 @@ public class PyrolyseRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(GTModHandler.getIC2Item("biochaff", 4))
             .circuit(1)
-            .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Water, Materials2FluidShapes.shapeFluidLiquid, (int) (4_000)))
+            .fluidInputs(Materials.Water.getFluid(4_000))
             .fluidOutputs(new FluidStack(FluidRegistry.getFluid("ic2biomass"), 5_000))
             .duration(45 * SECONDS)
             .eut(10)
@@ -283,9 +273,7 @@ public class PyrolyseRecipes implements Runnable {
         GTValues.RA.stdBuilder()
             .itemInputs(GTModHandler.getIC2Item("biochaff", 1))
             .circuit(2)
-            .fluidInputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Water, Materials2FluidShapes.shapeFluidLiquid, (int) (1_500)))
+            .fluidInputs(Materials.Water.getFluid(1_500))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(
                     Materials2Materials.FermentedBiomass,
@@ -325,9 +313,7 @@ public class PyrolyseRecipes implements Runnable {
             .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Sugar, 23))
             .circuit(1)
             .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Charcoal, Materials2Shapes.shapeDust, 12))
-            .fluidOutputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Water, Materials2FluidShapes.shapeFluidLiquid, (int) (1_500)))
+            .fluidOutputs(Materials.Water.getFluid(1_500))
             .duration(16 * SECONDS)
             .eut(TierEU.RECIPE_MV / 2)
             .addTo(pyrolyseRecipes, cokeOvenRecipes);
@@ -339,9 +325,7 @@ public class PyrolyseRecipes implements Runnable {
             .fluidInputs(
                 MaterialLibAPI
                     .getFluidStack(Materials2Materials.Nitrogen, Materials2FluidShapes.shapeFluidGas, (int) (500)))
-            .fluidOutputs(
-                MaterialLibAPI
-                    .getFluidStack(Materials2Materials.Water, Materials2FluidShapes.shapeFluidLiquid, (int) (1_500)))
+            .fluidOutputs(Materials.Water.getFluid(1_500))
             .duration(8 * SECONDS)
             .eut(96)
             .addTo(pyrolyseRecipes, cokeOvenRecipes);

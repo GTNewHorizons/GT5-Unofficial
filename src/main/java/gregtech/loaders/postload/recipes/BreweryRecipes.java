@@ -510,9 +510,7 @@ public class BreweryRecipes implements Runnable {
         {
             GTValues.RA.stdBuilder()
                 .itemInputs(getModItem(Forestry.ID, "fertilizerBio", 4L, 0))
-                .fluidInputs(
-                    MaterialLibAPI
-                        .getFluidStack(Materials2Materials.Water, Materials2FluidShapes.shapeFluidLiquid, (int) (750)))
+                .fluidInputs(Materials.Water.getFluid(750))
                 .fluidOutputs(
                     MaterialLibAPI.getFluidStack(
                         Materials2Materials.Biomass,
@@ -551,11 +549,7 @@ public class BreweryRecipes implements Runnable {
         {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTModHandler.getIC2Item("biochaff", 1))
-                .fluidInputs(
-                    MaterialLibAPI.getFluidStack(
-                        Materials2Materials.Water,
-                        Materials2FluidShapes.shapeFluidLiquid,
-                        (int) (1_000)))
+                .fluidInputs(Materials.Water.getFluid(1_000))
                 .fluidOutputs(getFluidStack("ic2biomass", 1_000))
                 .duration(8 * SECONDS + 10 * TICKS)
                 .eut(4)
