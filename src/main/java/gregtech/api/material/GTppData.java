@@ -42,8 +42,15 @@ import com.github.bsideup.jabel.Desugar;
 /// empty, since gtPlusPlus is frequently the only side that ever dumped a composition for that material), so
 /// reconstruction needs the gtPlusPlus-side breakdown pinned independently to stay composite-driven behavior
 /// (e.g. plasma generation, gated on an empty composite list) faithful.
+/// - `fluidName`/`plasmaName`: the exact legacy Forge fluid names `Material#performFluidAndCellRegistration`
+/// registered (null unless `generatesFluid`), used by reconstruction to resolve the material's `mFluid`/
+/// `mPlasma` from `FluidRegistry` by name rather than replaying that construction. Kept here rather than
+/// relying on [GTMaterialProperties#LEGACY_FLUIDS] alone because a same-name merge does not always populate
+/// that shared property from the gregtech/werkstoff side (some gtpp materials -- e.g. `Hafnium` -- are the
+/// only side that ever generated a fluid for that name); resolution by name works either way, since both
+/// sides agree on the same Forge fluid name for a genuine merge.
 @Desugar
 public record GTppData(int tier, long voltageMultiplier, int meltingPointK, int boilingPointK, int durability,
     boolean usesBlastFurnace, boolean isRadioactive, int radiationLevel, boolean hasOre, String chemicalFormula,
     long protons, long neutrons, String state, boolean generatesFluid, boolean generatesCells,
-    List<MaterialRefStack> composition) {}
+    List<MaterialRefStack> composition, String fluidName, String plasmaName) {}

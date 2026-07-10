@@ -6,6 +6,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import net.minecraft.item.ItemStack;
+
+import org.jetbrains.annotations.Nullable;
+
 import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.Materials;
@@ -13,6 +17,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.material.GTMaterialProperties;
 import gregtech.api.material.GTppData;
+import gregtech.api.material.MU;
 import gregtech.api.material.MaterialRefStack;
 import gregtech.loaders.materials.LegacyMaterials;
 import gtPlusPlus.core.material.state.MaterialState;
@@ -81,9 +86,9 @@ public final class MaterialReconstruction {
 
     /// Part prefixes cut over from the legacy per-material `Base*` item to the MaterialLib shape so far -- see
     /// [#isPartCutOver]. Grows commit by commit as each part family's MaterialLib shape membership and Postea
-    /// migration land (block-kind prefixes need a placed-block migration and an identity-reference sweep first;
-    /// `cell`/`cellPlasma` need fluid-in-container shape membership, deferred with fluid cutover); a prefix
-    /// absent here still resolves through the legacy path even for a reconstructed material.
+    /// migration land (block-kind prefixes still need a placed-block migration and an identity-reference sweep);
+    /// a prefix absent here still resolves through the legacy path even for a reconstructed material.
+    /// `cell`/`cellPlasma` resolve through [#cellStack] rather than plain `MU.stack` -- see its javadoc.
     // spotless:off
     private static final Set<OrePrefixes> CUT_OVER_PART_PREFIXES = Set.of(
         OrePrefixes.dust, OrePrefixes.dustSmall, OrePrefixes.dustTiny, OrePrefixes.ingot, OrePrefixes.ingotHot,
@@ -92,7 +97,7 @@ public final class MaterialReconstruction {
         OrePrefixes.screw, OrePrefixes.ring, OrePrefixes.rotor, OrePrefixes.foil, OrePrefixes.wireFine,
         OrePrefixes.spring, OrePrefixes.springSmall, OrePrefixes.stick, OrePrefixes.stickLong,
         OrePrefixes.crushed, OrePrefixes.crushedCentrifuged, OrePrefixes.crushedPurified, OrePrefixes.dustImpure,
-        OrePrefixes.dustPure, OrePrefixes.milled, OrePrefixes.rawOre);
+        OrePrefixes.dustPure, OrePrefixes.milled, OrePrefixes.rawOre, OrePrefixes.cell, OrePrefixes.cellPlasma);
     // spotless:on
 
     private static final Map<String, Material> built = new HashMap<>();
@@ -141,6 +146,28 @@ public final class MaterialReconstruction {
     public static com.ruling_0.materiallib.api.Material materialLibOf(String name) {
         if (!RECONSTRUCTED_NAMES.contains(name)) return null;
         return MaterialLibAPI.getMaterial("gregtech", name);
+    }
+
+    /// The MaterialLib stack for a reconstructed material's `cell`/`cellPlasma` slot, or null if it has none.
+    /// Unlike every other cut-over prefix, `cell`/`cellPlasma` cannot resolve through plain `MU.stack`: a gtpp
+    /// material's single fluid may have claimed `Materials2FluidShapes.shapeFluidMolten` instead of the
+    /// liquid/gas slots `Materials2CellShapes.shapeCell` requires (every `SOLID`- and `LIQUID`/`PURE_LIQUID`-
+    /// state material, whose legacy fluid was always registered `molten.<name>` -- see
+    /// `scripts/mu/gen_materials.py`'s `gtpp_fluid_and_cell_shape_lines`), in which case its `cell` item is
+    /// `shapeCellMolten` instead. `cellPlasma` always resolves to the single `shapeCellPlasmaLight` candidate
+    /// gtpp claims (never gregtech's 144 mB `shapeCellPlasma`), so it needs no fallback of its own, but is
+    /// routed through this method too for a single call site.
+    public static @Nullable ItemStack cellStack(String name, OrePrefixes prefix, long amount) {
+        com.ruling_0.materiallib.api.Material ml = materialLibOf(name);
+        if (ml == null) return null;
+        if (prefix == OrePrefixes.cell) {
+            ItemStack stack = MU.stack(OrePrefixes.cell, ml, amount);
+            return stack != null ? stack : MU.stack(OrePrefixes.cellMolten, ml, amount);
+        }
+        if (prefix == OrePrefixes.cellPlasma) {
+            return MU.stack(OrePrefixes.cellPlasma, ml, amount);
+        }
+        return null;
     }
 
     /// Resolves a name to a `Material`, whether or not reconstruction owns it -- the composition-reference
