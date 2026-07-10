@@ -288,7 +288,7 @@ public class MTELargeNeutralizationEngine extends MTEEnhancedMultiBlockBase<MTEL
                                 -1,
                                 (m, t) -> m.structureTier = t,
                                 m -> m.structureTier))))
-                .addElement('F', ofFrame(Materials.Polytetrafluoroethylene))
+                .addElement('F', ofFrame(Materials2Materials.Polytetrafluoroethylene))
                 .addElement('P', ofBlock(GregTechAPI.sBlockCasings8, 1))
                 .build();
         }

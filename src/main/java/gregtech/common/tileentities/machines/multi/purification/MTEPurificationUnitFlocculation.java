@@ -42,6 +42,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -138,7 +139,7 @@ public class MTEPurificationUnitFlocculation extends MTEPurificationUnitBase<MTE
         .addElement('C', ofBlock(GregTechAPI.sBlockCasings9, 5))
         // Sterile Water Plant Casing
         .addElement('D', ofBlock(GregTechAPI.sBlockCasings9, 4))
-        .addElement('E', ofFrame(Materials.Adamantium))
+        .addElement('E', ofFrame(Materials2Materials.Adamantium))
         .addElement('W', ofChain(ofAnyWater(false), isAir()))
         // Tinted industrial glass
         .addElement('G', ofBlockAnyMeta(GregTechAPI.sBlockTintedGlass))

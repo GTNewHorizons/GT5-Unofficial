@@ -49,6 +49,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
@@ -148,7 +149,7 @@ public class MTELatex extends MTEExtendedPowerMultiBlockBase<MTELatex>
                 .casingIndex(CASING_INDEX)
                 .hint(1)
                 .buildAndChain(onElementPass(MTELatex::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings8, 0))))
-        .addElement('D', ofFrame(Materials.PolyvinylChloride))
+        .addElement('D', ofFrame(Materials2Materials.PolyvinylChloride))
         .build();
 
     private int itemPipeTier = -1;

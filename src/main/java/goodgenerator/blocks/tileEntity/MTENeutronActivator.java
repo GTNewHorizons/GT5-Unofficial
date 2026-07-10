@@ -39,6 +39,7 @@ import goodgenerator.util.ItemRefer;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
@@ -244,7 +245,7 @@ public class MTENeutronActivator extends TTMultiblockBase implements ISurvivalCo
                             .build(),
                         onElementPass(MTENeutronActivator::onCasingFound, ofBlock(GregTechAPI.sBlockCasings4, 1))))
                 .addElement('D', ofBlock(GregTechAPI.sBlockCasings2, 6))
-                .addElement('F', ofFrame(Materials.Steel))
+                .addElement('F', ofFrame(Materials2Materials.Steel))
                 .addElement('G', chainAllGlasses())
                 .addElement('P', ofBlock(Loaders.speedingPipe, 0))
                 .addElement(

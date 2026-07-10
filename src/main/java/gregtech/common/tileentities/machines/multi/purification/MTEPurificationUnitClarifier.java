@@ -35,10 +35,10 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -103,8 +103,8 @@ public class MTEPurificationUnitClarifier extends MTEPurificationUnitBase<MTEPur
         .addElement('A', ofBlock(GregTechAPI.sBlockCasings9, 5))
         // PTFE pipe casing
         .addElement('B', ofBlock(GregTechAPI.sBlockCasings8, 1))
-        .addElement('C', ofFrame(Materials.Iridium))
-        .addElement('D', ofFrame(Materials.DamascusSteel))
+        .addElement('C', ofFrame(Materials2Materials.Iridium))
+        .addElement('D', ofFrame(Materials2Materials.DamascusSteel))
         .addElement('W', ofChain(ofAnyWater(false), isAir()))
         // Filter machine casing
         .addElement('F', ofBlock(GregTechAPI.sBlockCasings3, 11))

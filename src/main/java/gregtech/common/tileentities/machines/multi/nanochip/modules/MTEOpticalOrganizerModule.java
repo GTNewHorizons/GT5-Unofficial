@@ -24,6 +24,7 @@ import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -60,7 +61,7 @@ public class MTEOpticalOrganizerModule extends MTENanochipAssemblyModuleBase<MTE
         .<MTEOpticalOrganizerModule>builder()
         .addShape(STRUCTURE_PIECE_MAIN, OPTICAL_STRING)
         // Awakened Draconium Frame Box
-        .addElement('A', ofFrame(Materials.DraconiumAwakened))
+        .addElement('A', ofFrame(Materials2Materials.DraconiumAwakened))
         // Nanochip Mesh Interface Casing
         .addElement('B', Casings.NanochipMeshInterfaceCasing.asElement())
         // Nanochip Reinforcement Casing

@@ -32,6 +32,7 @@ import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -97,7 +98,7 @@ public class MTEAssemblyMatrixModule extends MTENanochipAssemblyModuleBase<MTEAs
         // Nanochip Reinforcement Casing
         .addElement('D', Casings.NanochipReinforcementCasing.asElement())
         // Naquadah Alloy Frame Box
-        .addElement('E', ofFrame(Materials.NaquadahAlloy))
+        .addElement('E', ofFrame(Materials2Materials.NaquadahAlloy))
         // Nanochip Glass
         .addElement('F', Casings.NanochipComplexGlass.asElement())
         .addElement('G', ofSheetMetal(Materials.NaquadahAlloy))

@@ -38,9 +38,9 @@ import bartworks.API.recipe.BartWorksRecipeMaps;
 import fox.spiteful.avaritia.blocks.LudicrousBlocks;
 import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
@@ -182,7 +182,7 @@ public class MTEElectricImplosionCompressor extends MTEExtendedPowerMultiBlockBa
                 .addElement('A', chainAllGlasses(-1, (te, t) -> te.glassTier = t, te -> te.glassTier))
                 .addElement('B', Casings.RobustTungstenSteelMachineCasing.asElement())
                 .addElement('C', Casings.PTFEPipeCasing.asElement())
-                .addElement('D', ofFrame(Materials.Naquadah))
+                .addElement('D', ofFrame(Materials2Materials.Naquadah))
                 .addElement(
                     'E',
                     GTStructureChannels.EIC_PISTON.use(

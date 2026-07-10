@@ -39,6 +39,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
@@ -110,7 +111,7 @@ public class MTEPurificationUnitBaryonicPerfection
         .addElement('C', ofBlock(GregTechAPI.sBlockCasings9, 15))
         // Non-Photonic Matter Exclusion Glass
         .addElement('D', ofBlock(GregTechAPI.sBlockGlass1, 3))
-        .addElement('E', ofFrame(Materials.Bedrockium))
+        .addElement('E', ofFrame(Materials2Materials.Bedrockium))
         .build();
 
     private static class CatalystCombination {

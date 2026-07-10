@@ -26,7 +26,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.HatchElement;
-import gregtech.api.enums.Materials;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -70,7 +70,7 @@ public class MTEEtchingArrayModule extends MTENanochipAssemblyModuleBase<MTEEtch
         // Shielded Accelerator Casing
         .addElement('C', ofBlock(LanthItemList.SHIELDED_ACCELERATOR_CASING, 0))
         // Enriched Holmium Frame box
-        .addElement('E', ofFrame(Materials.EnrichedHolmium))
+        .addElement('E', ofFrame(Materials2Materials.EnrichedHolmium))
         // Non-Photonic Matter Exclusion Glass
         .addElement('F', ofBlock(GregTechAPI.sBlockGlass1, 3))
         // Nanochip Glass

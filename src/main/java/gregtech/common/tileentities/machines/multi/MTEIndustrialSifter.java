@@ -26,9 +26,9 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.casing.Casings;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
@@ -98,7 +98,7 @@ public class MTEIndustrialSifter extends MTEExtendedPowerMultiBlockBase<MTEIndus
                         { "B   B", "BCCCB", " CCC ", "  C  ", "B   B", "BBBBB" },
                         { "B   B", "BCCCB", " CCC ", "     ", "B   B", "BBBBB" },
                         { "BBBBB", "ABBBA", "A   A", "A   A", "ABBBA", "BBBBB" } })
-                .addElement('A', ofFrame(Materials.Steel))
+                .addElement('A', ofFrame(Materials2Materials.Steel))
                 .addElement(
                     'B',
                     buildHatchAdder(MTEIndustrialSifter.class)

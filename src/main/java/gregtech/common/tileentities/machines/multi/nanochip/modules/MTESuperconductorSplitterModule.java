@@ -22,6 +22,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.HatchElement;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -69,7 +70,7 @@ public class MTESuperconductorSplitterModule extends MTENanochipAssemblyModuleBa
         // Nanochip Reinforcement Casing
         .addElement('D', Casings.NanochipReinforcementCasing.asElement())
         // Naquadria Frame box
-        .addElement('E', ofFrame(Materials.Naquadria))
+        .addElement('E', ofFrame(Materials2Materials.Naquadria))
         // Nanochip Glass
         .addElement('F', Casings.NanochipComplexGlass.asElement())
         .build();

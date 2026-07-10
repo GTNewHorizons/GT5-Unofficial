@@ -44,6 +44,7 @@ import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IOutputHatch;
 import gregtech.api.interfaces.ITexture;
@@ -147,7 +148,7 @@ public class MTEMegaDistillationTower extends MTEExtendedPowerMultiBlockBase<MTE
             .addElement('C', Casings.BronzePipeCasing.asElement())
             .addElement('D', Casings.SteelPipeCasing.asElement())
             .addElement('E', Casings.CleanStainlessSteelMachineCasing.asElement())
-            .addElement('F', ofFrame(Materials.StainlessSteel))
+            .addElement('F', ofFrame(Materials2Materials.StainlessSteel))
             .addElement('G', ofSheetMetal(Materials.Naquadah))
             .addElement('H', Casings.StrongBronzeMachineCasing.asElement())
             // first slice hatches

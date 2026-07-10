@@ -48,6 +48,7 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
@@ -98,7 +99,7 @@ public class MTEIntegratedOreFactoryLegacy extends MTEExtendedPowerMultiBlockBas
         .addElement('g', chainAllGlasses())
         .addElement('x', ofBlock(GregTechAPI.sBlockCasings2, 3))
         .addElement('p', ofBlock(GregTechAPI.sBlockCasings2, 15))
-        .addElement('t', ofFrame(Materials.TungstenSteel))
+        .addElement('t', ofFrame(Materials2Materials.TungstenSteel))
         .addElement(
             'E',
             buildHatchAdder(MTEIntegratedOreFactoryLegacy.class).atLeast(Energy, Maintenance)

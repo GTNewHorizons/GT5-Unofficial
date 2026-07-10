@@ -34,7 +34,7 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.casing.Casings;
-import gregtech.api.enums.Materials;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.structure.error.StructureError;
@@ -67,7 +67,7 @@ public class MTEVoidMiners {
                         { "  E E  ", " BBBBB ", "EB   BE", " B C B ", "EB   BE", " BBBBB ", "  E E  " } }))
             // spotless:on
             .addElement('A', Casings.MiningOsmiridiumCasing.asElement())
-            .addElement('B', ofFrame(Materials.Osmiridium))
+            .addElement('B', ofFrame(Materials2Materials.Osmiridium))
             .addElement('C', Casings.ReboltedOsmiridiumCasing.asElement())
             .addElement('D', Casings.BoltedOsmiridiumCasing.asElement())
             .addElement(
@@ -179,7 +179,7 @@ public class MTEVoidMiners {
             // spotless:on
             .addElement('A', Casings.BlackPlutoniumItemPipeCasing.asElement())
             .addElement('B', Casings.MiningBlackPlutoniumCasing.asElement())
-            .addElement('C', ofFrame(Materials.NaquadahAlloy))
+            .addElement('C', ofFrame(Materials2Materials.NaquadahAlloy))
             .addElement('D', Casings.BoltedNaquadahAlloyCasing.asElement())
             .addElement('E', Casings.ReboltedNaquadahAlloyCasing.asElement())
             .addElement(
@@ -287,7 +287,7 @@ public class MTEVoidMiners {
             // spotless:on
             .addElement('A', Casings.BlackPlutoniumItemPipeCasing.asElement())
             .addElement('B', Casings.MiningNeutroniumCasing.asElement())
-            .addElement('C', ofFrame(Materials.Adamantium))
+            .addElement('C', ofFrame(Materials2Materials.Adamantium))
             .addElement('D', Casings.ReboltedIridiumCasing.asElement())
             .addElement('E', Casings.BoltedIridiumCasing.asElement())
             .addElement(

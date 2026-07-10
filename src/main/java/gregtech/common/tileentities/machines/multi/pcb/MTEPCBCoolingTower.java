@@ -24,8 +24,8 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.HatchElement;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.INEIPreviewModifier;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -78,7 +78,7 @@ public class MTEPCBCoolingTower extends MTEPCBUpgradeBase<MTEPCBCoolingTower>
         .addElement('G', ofBlock(GregTechAPI.sBlockCasings8, 12))
         .addElement('N', ofBlock(GregTechAPI.sBlockCasings2, 15))
         .addElement('K', ofBlock(GregTechAPI.sBlockCasings8, 10))
-        .addElement('E', ofFrame(Materials.DamascusSteel))
+        .addElement('E', ofFrame(Materials2Materials.DamascusSteel))
         .addElement('O', ofBlock(GregTechAPI.sBlockCasings8, 4))
         .addElement(
             'S',
@@ -88,7 +88,7 @@ public class MTEPCBCoolingTower extends MTEPCBUpgradeBase<MTEPCBCoolingTower>
                     2,
                     GregTechAPI.sBlockCasings8,
                     12))
-        .addElement('R', ofFrame(Materials.Americium))
+        .addElement('R', ofFrame(Materials2Materials.Americium))
         .addElement('Q', ofBlock(GregTechAPI.sBlockCasings8, 14))
         .addElement('T', ofBlock(GregTechAPI.sBlockCasings1, 15))
 

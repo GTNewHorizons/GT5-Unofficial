@@ -57,7 +57,7 @@ public class MTEBiologicalCoordinationModule extends MTENanochipAssemblyModuleBa
         // Nanochip Reinforcement Casing
         .addElement('B', Casings.NanochipReinforcementCasing.asElement())
         // Tritanium Frame Box
-        .addElement('C', ofFrame(Materials.Tritanium))
+        .addElement('C', ofFrame(Materials2Materials.Tritanium))
         // Circuit Complex Glass
         .addElement('D', Casings.NanochipComplexGlass.asElement())
         .build();

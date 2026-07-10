@@ -40,9 +40,11 @@ import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.material.MU;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.structure.error.StructureError;
@@ -137,7 +139,7 @@ public class MTESteamWaterPump extends MTESteamMultiBlockBase<MTESteamWaterPump>
                             { " A ", " A ", "AAA", " A " },
                             { " A ", "   ", "A A", " A " },
                             { "C~C", "CCC", "CCC", "CCC" } }))
-                .addElement('A', ofBlocksTiered(MTESteamWaterPump::getFrameTier, ImmutableList.of(Pair.of(GregTechAPI.sBlockFrames, Materials.Bronze.mMetaItemSubID),
+                .addElement('A', ofBlocksTiered(MTESteamWaterPump::getFrameTier, ImmutableList.of(Pair.of(GregTechAPI.sBlockFrames, MU.oldSubId(Materials2Materials.Bronze)),
                     Pair.of(GregTechAPI.sBlockFrames, Materials.Steel.mMetaItemSubID)), -1, (pump, tier) -> pump.mSetTier = tier , pump -> pump.mSetTier))
                 .addElement(
                     'C',
@@ -163,7 +165,8 @@ public class MTESteamWaterPump extends MTESteamMultiBlockBase<MTESteamWaterPump>
     @Nullable
     public static Integer getFrameTier(Block block, int meta) {
         if (block == GregTechAPI.sBlockFrames) {
-            if (meta == Materials.Bronze.mMetaItemSubID) return 1;
+            if (meta == MU.oldSubId(Materials2Materials.Bronze)) return 1;
+            // Steel is block-cutover-excluded; its frame metadata stays on the legacy field.
             if (meta == Materials.Steel.mMetaItemSubID) return 2;
         }
         return null;

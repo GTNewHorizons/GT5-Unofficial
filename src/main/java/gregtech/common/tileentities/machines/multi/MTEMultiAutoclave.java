@@ -50,9 +50,9 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.HeatingCoilLevel;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
@@ -160,7 +160,7 @@ public class MTEMultiAutoclave extends MTEExtendedPowerMultiBlockBase<MTEMultiAu
                 .buildAndChain(
                     onElementPass(MTEMultiAutoclave::onCasingAdded, ofBlock(GregTechAPI.sBlockCasings10, 3))))
         .addElement('B', chainAllGlasses()) // Steel Casings
-        .addElement('C', ofFrame(Materials.Polytetrafluoroethylene)) // PTFE Frame
+        .addElement('C', ofFrame(Materials2Materials.Polytetrafluoroethylene)) // PTFE Frame
         .addElement(
             'D',
             GTStructureChannels.PIPE_CASING.use(

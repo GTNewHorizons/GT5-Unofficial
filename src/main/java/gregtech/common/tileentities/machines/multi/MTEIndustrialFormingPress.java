@@ -22,8 +22,8 @@ import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
 import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import gregtech.api.casing.Casings;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
@@ -63,7 +63,7 @@ public class MTEIndustrialFormingPress extends MTEExtendedPowerMultiBlockBase<MT
                 .casingIndex(Casings.MaterialPressCasing.textureId)
                 .hint(1)
                 .buildAndChain(onElementPass(x -> ++x.casingAmount, Casings.MaterialPressCasing.asElement())))
-        .addElement('E', ofFrame(Materials.Titanium))
+        .addElement('E', ofFrame(Materials2Materials.Titanium))
         .addElement('C', Casings.TitaniumGearBoxCasing.asElement())
         .build();
 
