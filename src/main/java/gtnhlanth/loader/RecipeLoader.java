@@ -2649,7 +2649,7 @@ public class RecipeLoader {
             .fluidInputs(FilledLanthanumExtractingNanoResin.getFluidOrGas(1_000))
             .itemOutputs(
                 LanthanumExtractingNanoResin.get(OrePrefixes.cell, 1),
-                MaterialLibAPI.getStack(Materials2Materials.Lanthanum, Materials2CellShapes.shapeCellMolten, 1))
+                GTOreDictUnificator.get(OrePrefixes.cellMolten, Materials.Lanthanum, 1))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(Materials2Materials.Chlorine, Materials2FluidShapes.shapeFluidGas, 3_000))
             .eut(TierEU.RECIPE_ZPM)
@@ -2662,7 +2662,7 @@ public class RecipeLoader {
             .fluidInputs(FilledPraseodymiumExtractingNanoResin.getFluidOrGas(1_000))
             .itemOutputs(
                 PraseodymiumExtractingNanoResin.get(OrePrefixes.cell, 1),
-                MaterialLibAPI.getStack(Materials2Materials.Praseodymium, Materials2CellShapes.shapeCellMolten, 1))
+                GTOreDictUnificator.get(OrePrefixes.cellMolten, Materials.Praseodymium, 1))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(Materials2Materials.Chlorine, Materials2FluidShapes.shapeFluidGas, 3_000))
             .eut(TierEU.RECIPE_ZPM)
@@ -2675,7 +2675,7 @@ public class RecipeLoader {
             .fluidInputs(FilledCeriumExtractingNanoResin.getFluidOrGas(1_000))
             .itemOutputs(
                 CeriumExtractingNanoResin.get(OrePrefixes.cell, 1),
-                MaterialLibAPI.getStack(Materials2Materials.Cerium, Materials2CellShapes.shapeCellMolten, 1))
+                GTOreDictUnificator.get(OrePrefixes.cellMolten, Materials.Cerium, 1))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(Materials2Materials.Chlorine, Materials2FluidShapes.shapeFluidGas, 3_000))
             .eut(TierEU.RECIPE_ZPM)
@@ -2688,7 +2688,7 @@ public class RecipeLoader {
             .fluidInputs(FilledNeodymiumExtractingNanoResin.getFluidOrGas(1_000))
             .itemOutputs(
                 NeodymiumExtractingNanoResin.get(OrePrefixes.cell, 1),
-                MaterialLibAPI.getStack(Materials2Materials.Neodymium, Materials2CellShapes.shapeCellMolten, 1))
+                GTOreDictUnificator.get(OrePrefixes.cellMolten, Materials.Neodymium, 1))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(Materials2Materials.Chlorine, Materials2FluidShapes.shapeFluidGas, 3_000))
             .eut(TierEU.RECIPE_ZPM)
@@ -2701,7 +2701,7 @@ public class RecipeLoader {
             .fluidInputs(FilledSamariumExtractingNanoResin.getFluidOrGas(1_000))
             .itemOutputs(
                 SamariumExtractingNanoResin.get(OrePrefixes.cell, 1),
-                MaterialLibAPI.getStack(Materials2Materials.Samarium, Materials2CellShapes.shapeCellMolten, 1))
+                GTOreDictUnificator.get(OrePrefixes.cellMolten, Materials.Samarium, 1))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(Materials2Materials.Chlorine, Materials2FluidShapes.shapeFluidGas, 3_000))
             .eut(TierEU.RECIPE_ZPM)
@@ -2714,7 +2714,7 @@ public class RecipeLoader {
             .fluidInputs(FilledEuropiumExtractingNanoResin.getFluidOrGas(1_000))
             .itemOutputs(
                 EuropiumExtractingNanoResin.get(OrePrefixes.cell, 1),
-                MaterialLibAPI.getStack(Materials2Materials.Europium, Materials2CellShapes.shapeCellMolten, 1))
+                GTOreDictUnificator.get(OrePrefixes.cellMolten, Materials.Europium, 1))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(Materials2Materials.Chlorine, Materials2FluidShapes.shapeFluidGas, 3_000))
             .eut(TierEU.RECIPE_ZPM)
@@ -2727,7 +2727,7 @@ public class RecipeLoader {
             .fluidInputs(FilledGadoliniumExtractingNanoResin.getFluidOrGas(1_000))
             .itemOutputs(
                 GadoliniumExtractingNanoResin.get(OrePrefixes.cell, 1),
-                MaterialLibAPI.getStack(Materials2Materials.Gadolinium, Materials2CellShapes.shapeCellMolten, 1))
+                GTOreDictUnificator.get(OrePrefixes.cellMolten, Materials.Gadolinium, 1))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(Materials2Materials.Chlorine, Materials2FluidShapes.shapeFluidGas, 3_000))
             .eut(TierEU.RECIPE_ZPM)
@@ -2740,7 +2740,7 @@ public class RecipeLoader {
             .fluidInputs(FilledTerbiumExtractingNanoResin.getFluidOrGas(1_000))
             .itemOutputs(
                 TerbiumExtractingNanoResin.get(OrePrefixes.cell, 1),
-                MaterialLibAPI.getStack(Materials2Materials.Terbium, Materials2CellShapes.shapeCellMolten, 1))
+                GTOreDictUnificator.get(OrePrefixes.cellMolten, Materials.Terbium, 1))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(Materials2Materials.Chlorine, Materials2FluidShapes.shapeFluidGas, 3_000))
             .eut(TierEU.RECIPE_ZPM)
@@ -2753,7 +2753,7 @@ public class RecipeLoader {
             .fluidInputs(FilledDysprosiumExtractingNanoResin.getFluidOrGas(1_000))
             .itemOutputs(
                 DysprosiumExtractingNanoResin.get(OrePrefixes.cell, 1),
-                MaterialLibAPI.getStack(Materials2Materials.Dysprosium, Materials2CellShapes.shapeCellMolten, 1))
+                GTOreDictUnificator.get(OrePrefixes.cellMolten, Materials.Dysprosium, 1))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(Materials2Materials.Chlorine, Materials2FluidShapes.shapeFluidGas, 3_000))
             .eut(TierEU.RECIPE_ZPM)
@@ -2766,7 +2766,7 @@ public class RecipeLoader {
             .fluidInputs(FilledHolmiumExtractingNanoResin.getFluidOrGas(1_000))
             .itemOutputs(
                 HolmiumExtractingNanoResin.get(OrePrefixes.cell, 1),
-                MaterialLibAPI.getStack(Materials2Materials.Holmium, Materials2CellShapes.shapeCellMolten, 1))
+                GTOreDictUnificator.get(OrePrefixes.cellMolten, Materials.Holmium, 1))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(Materials2Materials.Chlorine, Materials2FluidShapes.shapeFluidGas, 3_000))
             .eut(TierEU.RECIPE_ZPM)
@@ -2779,7 +2779,7 @@ public class RecipeLoader {
             .fluidInputs(FilledErbiumExtractingNanoResin.getFluidOrGas(1_000))
             .itemOutputs(
                 ErbiumExtractingNanoResin.get(OrePrefixes.cell, 1),
-                MaterialLibAPI.getStack(Materials2Materials.Erbium, Materials2CellShapes.shapeCellMolten, 1))
+                GTOreDictUnificator.get(OrePrefixes.cellMolten, Materials.Erbium, 1))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(Materials2Materials.Chlorine, Materials2FluidShapes.shapeFluidGas, 3_000))
             .eut(TierEU.RECIPE_ZPM)
@@ -2792,7 +2792,7 @@ public class RecipeLoader {
             .fluidInputs(FilledThuliumExtractingNanoResin.getFluidOrGas(1_000))
             .itemOutputs(
                 ThuliumExtractingNanoResin.get(OrePrefixes.cell, 1),
-                MaterialLibAPI.getStack(Materials2Materials.Thulium, Materials2CellShapes.shapeCellMolten, 1))
+                GTOreDictUnificator.get(OrePrefixes.cellMolten, Materials.Thulium, 1))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(Materials2Materials.Chlorine, Materials2FluidShapes.shapeFluidGas, 3_000))
             .eut(TierEU.RECIPE_ZPM)
@@ -2805,7 +2805,7 @@ public class RecipeLoader {
             .fluidInputs(FilledYtterbiumExtractingNanoResin.getFluidOrGas(1_000))
             .itemOutputs(
                 YtterbiumExtractingNanoResin.get(OrePrefixes.cell, 1),
-                MaterialLibAPI.getStack(Materials2Materials.Ytterbium, Materials2CellShapes.shapeCellMolten, 1))
+                GTOreDictUnificator.get(OrePrefixes.cellMolten, Materials.Ytterbium, 1))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(Materials2Materials.Chlorine, Materials2FluidShapes.shapeFluidGas, 3_000))
             .eut(TierEU.RECIPE_ZPM)
@@ -2818,7 +2818,7 @@ public class RecipeLoader {
             .fluidInputs(FilledLutetiumExtractingNanoResin.getFluidOrGas(1_000))
             .itemOutputs(
                 LutetiumExtractingNanoResin.get(OrePrefixes.cell, 1),
-                MaterialLibAPI.getStack(Materials2Materials.Lutetium, Materials2CellShapes.shapeCellMolten, 1))
+                GTOreDictUnificator.get(OrePrefixes.cellMolten, Materials.Lutetium, 1))
             .fluidOutputs(
                 MaterialLibAPI.getFluidStack(Materials2Materials.Chlorine, Materials2FluidShapes.shapeFluidGas, 3_000))
             .eut(TierEU.RECIPE_ZPM)
