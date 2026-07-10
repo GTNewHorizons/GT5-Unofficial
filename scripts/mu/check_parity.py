@@ -759,9 +759,10 @@ def gtpp_expected_fluid_and_cell_shape_names(entry, gt_entry, used_fluid_names):
 
 def gtpp_expected_shapes(entry, gt_entry, used_fluid_names):
     """The MaterialLib shape-name set a gtpp material's dumped `generatedParts` translate to -- see
-    gen_materials.py's `gtpp_shape_lines`/`gtpp_fluid_and_cell_shape_lines`. Raises on an unmapped prefix (a
-    future gtpp dump refresh with a new part kind must not silently drop items from this check either). `block`
-    additionally honors `BLOCK_CUTOVER_EXCLUDED`, mirroring `gtpp_shape_lines`."""
+    gen_materials.py's `gtpp_shape_lines`/`gtpp_fluid_and_cell_shape_lines`/`gtpp_ore_shape_lines`. Raises on
+    an unmapped prefix (a future gtpp dump refresh with a new part kind must not silently drop items from this
+    check either). `block` additionally honors `BLOCK_CUTOVER_EXCLUDED`, mirroring `gtpp_shape_lines`; `hasOre`
+    grants `ore`, mirroring `gtpp_ore_shape_lines`."""
     names = set()
     for part in entry["generatedParts"]:
         prefix = part["prefix"]
@@ -780,6 +781,8 @@ def gtpp_expected_shapes(entry, gt_entry, used_fluid_names):
             raise SystemExit(
                 f"check_parity.py: gtpp material {entry['unlocalizedName']!r} generates unmapped part "
                 f"prefix {prefix!r}")
+    if entry.get("hasOre"):
+        names.add("ore")
     if gtpp_generates_fluid(entry):
         names |= gtpp_expected_fluid_and_cell_shape_names(entry, gt_entry, used_fluid_names)
     return names
