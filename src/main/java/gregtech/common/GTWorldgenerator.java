@@ -216,6 +216,7 @@ public class GTWorldgenerator implements IWorldGenerator {
                 instance = new OregenPatternSavedData(NAME);
                 world.mapStorage.setData(OregenPatternSavedData.NAME, instance);
             }
+            clientOregenPattern = oregenPattern;
             instance.markDirty();
             loadedWorld = new WeakReference<>(world);
         }
