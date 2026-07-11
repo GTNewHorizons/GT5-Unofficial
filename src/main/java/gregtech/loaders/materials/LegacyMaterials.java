@@ -61,8 +61,8 @@ import gregtech.api.material.MaterialRefStack;
 /// materials either way.
 ///
 /// Known gaps, none of which are represented in MaterialLib's stage-03 data and are small enough in scope to
-/// document rather than port: `mChemicalFormula` overrides and flavor text (tooltip-only, not read anywhere
-/// else); a handful of materials whose dumped `oreByProducts` self-reference duplicates (`addOreByproduct`
+/// document rather than port: flavor text (tooltip-only, not read anywhere else); a handful of materials whose
+/// dumped `oreByProducts` self-reference duplicates (`addOreByproduct`
 /// called on the same material more than once) collapse to one entry here, since
 /// `Materials#setOreByproducts`'s own `.distinct()` step means the duplicate count was never observable
 /// (`Materials.mOreByProducts` iteration order/content is identical either way). `Copper`'s gas-conditional
@@ -293,6 +293,12 @@ public class LegacyMaterials {
 
         Materials material = builder.constructMaterial();
 
+        String formula = ml.getProperty(GTMaterialProperties.FORMULA);
+        if (formula != null) {
+            material.setChemicalFormula(
+                formula,
+                Boolean.TRUE.equals(ml.getProperty(GTMaterialProperties.FORMULA_LOCALIZED)));
+        }
         Integer gasTemp = ml.getProperty(GTMaterialProperties.GAS_TEMP);
         if (gasTemp != null) material.setGasTemperature(gasTemp);
         Integer processingTier = ml.getProperty(GTMaterialProperties.PROCESSING_MATERIAL_TIER_EU);
