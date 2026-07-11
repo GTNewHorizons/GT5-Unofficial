@@ -3,7 +3,10 @@ package gregtech.api.items.armor.behaviors;
 import java.util.Set;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.IChatComponent;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -54,8 +57,13 @@ public class SpeedBoostBehavior implements IArmorBehavior {
 
         state.speedBoostMulti = MathUtils.clamp(state.speedBoostMulti, 1, speedMaxMulti);
 
-        String text = GTUtility.translate("GT5U.armor.message.speed_set", state.speedBoostMulti);
-        GTNHLib.proxy.printMessageAboveHotbar(text, 60, true, true);
+        EntityPlayer player = context.getPlayer();
+
+        if (player instanceof EntityPlayerMP) {
+            IChatComponent chatComponent = new ChatComponentText(
+                GTUtility.translate("GT5U.armor.message.speed_set", state.speedBoostMulti));
+            GTNHLib.proxy.sendMessageAboveHotbar((EntityPlayerMP) player, chatComponent, 60, true, true);
+        }
     }
 
     @Override

@@ -7,8 +7,11 @@ import java.util.List;
 import java.util.Set;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.IChatComponent;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -49,13 +52,14 @@ public interface IArmorBehavior {
      * Called when this behavior is activated from any source.
      */
     default void onBehaviorActivated(@NotNull ArmorContext context) {
+        EntityPlayer player = context.getPlayer();
+
         if (hasDisplayName()) {
-            GTNHLib.proxy.printMessageAboveHotbar(
-                GTUtility
-                    .processFormatStacks(GRAY + GTUtility.translate("GT5U.armor.message.enabled", getDisplayName())),
-                60,
-                true,
-                true);
+            if (player instanceof EntityPlayerMP) {
+                IChatComponent chatComponent = new ChatComponentText(
+                    GRAY + GTUtility.translate("GT5U.armor.message.enabled", getDisplayName()));
+                GTNHLib.proxy.sendMessageAboveHotbar((EntityPlayerMP) player, chatComponent, 60, true, true);
+            }
         }
     }
 
@@ -63,13 +67,14 @@ public interface IArmorBehavior {
      * Called when this behavior is deactivated from any source.
      */
     default void onBehaviorDeactivated(@NotNull ArmorContext context) {
+        EntityPlayer player = context.getPlayer();
+
         if (hasDisplayName()) {
-            GTNHLib.proxy.printMessageAboveHotbar(
-                GTUtility
-                    .processFormatStacks(GRAY + GTUtility.translate("GT5U.armor.message.disabled", getDisplayName())),
-                60,
-                true,
-                true);
+            if (player instanceof EntityPlayerMP) {
+                IChatComponent chatComponent = new ChatComponentText(
+                    GRAY + GTUtility.translate("GT5U.armor.message.disabled", getDisplayName()));
+                GTNHLib.proxy.sendMessageAboveHotbar((EntityPlayerMP) player, chatComponent, 60, true, true);
+            }
         }
     }
 
