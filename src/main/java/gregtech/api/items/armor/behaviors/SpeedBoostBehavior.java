@@ -8,12 +8,11 @@ import net.minecraft.nbt.NBTTagCompound;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.google.common.collect.ImmutableSet;
 import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
 
 import bartworks.util.MathUtils;
+import gregtech.api.items.armor.ArmorActionManager;
 import gregtech.api.items.armor.ArmorContext;
-import gregtech.api.items.armor.ArmorKeybinds;
 import gregtech.api.items.armor.ArmorState;
 import gregtech.api.util.GTUtility;
 
@@ -43,11 +42,13 @@ public class SpeedBoostBehavior implements IArmorBehavior {
 
         ArmorState state = context.getArmorState();
 
-        if (keyPressed == ArmorKeybinds.SPEED_INCREASE_KEYBIND) {
+        if (keyPressed == ArmorActionManager.getAction("speed_increase")
+            .getKeybind()) {
             state.speedBoost += SPEED_INCREMENT;
-        } else if (keyPressed == ArmorKeybinds.SPEED_DECREASE_KEYBIND) {
-            state.speedBoost -= SPEED_INCREMENT;
-        }
+        } else if (keyPressed == ArmorActionManager.getAction("speed_decrease")
+            .getKeybind()) {
+                state.speedBoost -= SPEED_INCREMENT;
+            }
 
         state.speedBoost = MathUtils.clamp(state.speedBoost, 0, 1);
 
@@ -74,7 +75,7 @@ public class SpeedBoostBehavior implements IArmorBehavior {
 
     @Override
     public Set<SyncedKeybind> getListenedKeys(@NotNull ArmorContext context) {
-        return ImmutableSet.of(ArmorKeybinds.SPEED_INCREASE_KEYBIND, ArmorKeybinds.SPEED_DECREASE_KEYBIND);
+        return ArmorActionManager.getKeybindsForBehavior(getName());
     }
 
     @Override
