@@ -15,6 +15,7 @@ import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -101,15 +102,18 @@ public class MTESolarTower extends GTPPMultiBlockBase<MTESolarTower> implements 
             .addInfo("Bonus: 1 ring  = +1, 2 rings = +2, 3 rings = +4, 4 rings = +8, 5 rings = +16")
             .addInfo("Total number of reflectors based on how many rings are built:")
             .addInfo("1 ring = 36, 2 rings = 88, 3 rings = 156, 4 rings = 240, 5 rings = 340")
-            .beginVariableStructureBlock(15, 31, 28, 28, 15, 31, false)
+            .beginVariableStructureBlock(28, 28, 15, 31, 15, 31, false)
             .addController("Top center")
-            .addCasingInfoMin("Structural Solar Casing", 229, false)
-            .addCasingInfoMin("Thermally Insulated Casing", 60, false)
-            .addCasingInfoMin("Salt Containment Casing", 66, false)
-            .addCasingInfoMin("Thermal Containment Casing", 60, false)
-            .addInputHatch("Hint block number 2 (Min 1)", 2)
-            .addOutputHatch("Hint block number 2 (Min 1)", 2)
-            .addMaintenanceHatch("Hint block number 2", 2)
+            .addCasing("36/88/156/240/340", "Solar Reflector", false)
+            .addCasing("229-250", "Structural Solar Casing", false)
+            .addCasing("66", "Salt Containment Casing", false)
+            .addCasing("60", "Thermal Containment Casing", false)
+            .addCasing("60", "Thermally Insulated Casing", false)
+            .addMaintenanceHatch("1", "Any bottom side casing", 2)
+            .addInputHatch("1+", "Any bottom side casing", 2)
+            .addOutputHatch("1+", "Any bottom side casing", 2)
+            .addStructureInfo("")
+            .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.rings"))
             .toolTipFinisher();
         return tt;
     }

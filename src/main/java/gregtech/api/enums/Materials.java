@@ -1102,6 +1102,7 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     public static Materials Churitsu;
     public static Materials InactiveCosmicSolder;
     public static Materials BoundlessCosmicSolder;
+    public static Materials ComputationBase;
     // endregion
 
     // region GTNH Materials
@@ -1242,6 +1243,7 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     private boolean mCanBeCracked = false;
     private Fluid[] hydroCrackedFluids = new Fluid[3];
     private Fluid[] steamCrackedFluids = new Fluid[3];
+    private boolean hasGlowingOre = false;
 
     protected Materials(
         // spotless:off
@@ -1288,7 +1290,8 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
         Supplier<Materials> pendingArcSmeltingInto,
         Map<Supplier<Materials>, Supplier<Materials>> pendingArcSmeltingIntoWithGas,
         Supplier<Materials> pendingDirectSmelting,
-        LinkedHashSet<SubTag> subTags
+        LinkedHashSet<SubTag> subTags,
+        boolean hasGlowingOre
         // spotless:on
     ) {
 
@@ -1401,7 +1404,6 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
         mOreMultiplier = oreMultiplier;
         mUnifiable = unifiable;
 
-        // No clue what is going on here...
         int numberOfComponents = 0;
         int tMeltingPoint = 0;
         for (MaterialStack tMaterial : mMaterialList) {
@@ -1416,7 +1418,7 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
             }
         }
 
-        if (mMeltingPoint < 0) mMeltingPoint = 0;
+        if (mMeltingPoint < 0 && numberOfComponents > 1) mMeltingPoint = tMeltingPoint / numberOfComponents;
 
         numberOfComponents *= densityMultiplier;
         numberOfComponents /= densityDivider;
@@ -1427,6 +1429,7 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
         } else {
             mAspects.addAll(aspects);
         }
+        this.hasGlowingOre = hasGlowingOre;
     }
 
     private static void setOreByproducts() {
@@ -2202,7 +2205,7 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
     }
 
     public int getLiquidTemperature() {
-        return mMeltingPoint == 0 ? 295 : mMeltingPoint;
+        return mMeltingPoint == -1 ? 295 : mMeltingPoint;
     }
 
     public Materials setLiquidTemperature(int liquidTemperature) {
@@ -2323,5 +2326,9 @@ public class Materials implements IColorModulationContainer, IOreMaterial {
 
     public ItemStack getNanite(int amount) {
         return GTOreDictUnificator.get(OrePrefixes.nanite, this, amount);
+    }
+
+    public boolean hasGlowingOre() {
+        return hasGlowingOre;
     }
 }

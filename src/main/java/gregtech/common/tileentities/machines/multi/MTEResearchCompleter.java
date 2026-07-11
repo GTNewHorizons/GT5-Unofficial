@@ -14,6 +14,7 @@ import java.util.List;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
@@ -309,8 +310,8 @@ public class MTEResearchCompleter extends MTEEnhancedMultiBlockBase<MTEResearchC
 
         checkCasingMin(errors, mCasing, mLength * 3);
         checkHasEnergyHatch(errors);
-        checkHasInputBus(errors);
         checkHasMaintenanceHatch(errors);
+        checkHasInputBus(errors);
         checkHasOutputBus(errors);
     }
 
@@ -357,14 +358,16 @@ public class MTEResearchCompleter extends MTEEnhancedMultiBlockBase<MTEResearchC
         tt.addMachineType("Research Completer")
             .addInfo("Completes Thaumcraft research notes using EU and Thaumcraft nodes")
             .addInfo("Place nodes in the center row")
-            .beginVariableStructureBlock(3, 3, 3, 3, 3, MAX_LENGTH, true)
-            .addController("Front center")
-            .addOtherStructurePart("Magical Machine Casing", "Top and bottom layers outside. 3 x L minimum")
-            .addOtherStructurePart("Warded Glass", "Middle layer outside")
-            .addEnergyHatch("Any Casing")
-            .addMaintenanceHatch("Any Casing")
-            .addInputBus("Any Casing")
-            .addOutputBus("Any Casing")
+            .beginVariableStructureBlock(3, MAX_LENGTH, 3, 3, 3, 3, true)
+            .addController("Front center, 2nd layer")
+            .addCasing("9-52", "Magical Machine Casing", false)
+            .addCasing("7-27", "Warded Glass", false)
+            .addEnergyHatch("1+", "Any casing", 1)
+            .addMaintenanceHatch("1", "Any casing", 1)
+            .addInputBus("1+", "Any casing", 1)
+            .addOutputBus("1+", "Any casing", 1)
+            .addStructureInfo("")
+            .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.length"))
             .toolTipFinisher();
         return tt;
     }

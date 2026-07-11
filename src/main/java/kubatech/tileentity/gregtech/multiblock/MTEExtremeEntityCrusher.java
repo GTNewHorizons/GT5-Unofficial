@@ -109,6 +109,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatchEnergy;
 import gregtech.api.metatileentity.implementations.MTEHatchInputBus;
@@ -381,18 +382,19 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
                 "You can enable batch mode with wire cutters. Providing " + EnumChatFormatting.BLUE
                     + " 16x Time, Output, Weapon Damage")
             .addGlassEnergyLimitInfo()
-            .beginStructureBlock(5, 7, 5, true)
+            .beginStructureBlock(5, 5, 7, true)
             .addController("Front bottom center")
-            .addCasingInfoMin("Solid Steel Machine Casing", 35, false)
-            .addCasingInfoExactly("Any Tiered Glass", 60, false)
-            .addCasingInfoExactly("Steel Frame Box", 20, false)
-            .addCasingInfoExactly("Diamond Spike", 9, false)
-            .addInputBus("Any bottom Casing (optional, for weapon with Looting)", 1)
-            .addOutputBus("Any bottom Casing", 1)
-            .addOutputHatch("Any bottom Casing", 1)
-            .addEnergyHatch("Any bottom Casing", 1)
-            .addMaintenanceHatch("Any bottom Casing", 1)
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .addCasing("60", "Any Tiered Glass", true)
+            .addCasing("35-46", "Solid Steel Machine Casing", false)
+            .addCasing("20", "Steel Frame Box", false)
+            .addCasing("9", "Diamond Spike", false)
+            .addEnergyHatch("1+", "Any bottom casing", 1)
+            .addMaintenanceHatch("1", "Any bottom casing", 1)
+            .addInputBus("0+", "Any bottom casing", 1)
+            .addOutputAny("1+", "Any bottom casing", 1)
+            .addAir("Interior of the structure")
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher(GTAuthors.AuthorKuba);
         return tt;
     }
@@ -985,50 +987,46 @@ public class MTEExtremeEntityCrusher extends KubaTechGTMultiBlockBase<MTEExtreme
         ArrayList<String> info = new ArrayList<>(Arrays.asList(super.getInfoData()));
         String mobName = getCurrentMob();
         info.add(
-            mobName != null ? StatCollector.translateToLocalFormatted("kubatech.infodata.eec.current_mob", mobName)
-                : StatCollector.translateToLocal("kubatech.infodata.eec.current_mob.none"));
+            mobName != null ? IGregTechDeviceInformation.encode("kubatech.infodata.eec.current_mob", mobName)
+                : "kubatech.infodata.eec.current_mob.none");
         info.add(
-            mAnimationEnabled ? StatCollector.translateToLocal("kubatech.infodata.eec.animations.enabled")
-                : StatCollector.translateToLocal("kubatech.infodata.eec.animations.disabled"));
+            mAnimationEnabled ? "kubatech.infodata.eec.animations.enabled"
+                : "kubatech.infodata.eec.animations.disabled");
         info.add(
-            mIsProducingInfernalDrops
-                ? StatCollector.translateToLocal("kubatech.infodata.eec.produce_infernal_drops.allowed")
-                : StatCollector.translateToLocal("kubatech.infodata.eec.produce_infernal_drops.not_allowed"));
+            mIsProducingInfernalDrops ? "kubatech.infodata.eec.produce_infernal_drops.allowed"
+                : "kubatech.infodata.eec.produce_infernal_drops.not_allowed");
         info.add(
-            voidAllDamagedAndEnchantedItems ? StatCollector.translateToLocal("kubatech.infodata.eec.void_damaged.yes")
-                : StatCollector.translateToLocal("kubatech.infodata.eec.void_damaged.no"));
+            voidAllDamagedAndEnchantedItems ? "kubatech.infodata.eec.void_damaged.yes"
+                : "kubatech.infodata.eec.void_damaged.no");
         info.add(
-            isInRitualMode ? StatCollector.translateToLocal("kubatech.infodata.eec.in_ritual_mode.yes")
-                : StatCollector.translateToLocal("kubatech.infodata.eec.in_ritual_mode.no"));
+            isInRitualMode ? "kubatech.infodata.eec.in_ritual_mode.yes" : "kubatech.infodata.eec.in_ritual_mode.no");
         if (isInRitualMode) info.add(
-            mIsRitualValid ? StatCollector.translateToLocal("kubatech.infodata.eec.connected_to_ritual.yes")
-                : StatCollector.translateToLocal("kubatech.infodata.eec.connected_to_ritual.no"));
+            mIsRitualValid ? "kubatech.infodata.eec.connected_to_ritual.yes"
+                : "kubatech.infodata.eec.connected_to_ritual.no");
         else {
             info.add(
-                mCycleWeapons ? StatCollector.translateToLocal("kubatech.infodata.eec.cycle_weapons.yes")
-                    : StatCollector.translateToLocal("kubatech.infodata.eec.cycle_weapons.no"));
+                mCycleWeapons ? "kubatech.infodata.eec.cycle_weapons.yes" : "kubatech.infodata.eec.cycle_weapons.no");
 
             info.add(
-                mPreserveWeapon ? StatCollector.translateToLocal("kubatech.infodata.eec.weapon_preservation.yes")
-                    : StatCollector.translateToLocal("kubatech.infodata.eec.weapon_preservation.no"));
+                mPreserveWeapon ? "kubatech.infodata.eec.weapon_preservation.yes"
+                    : "kubatech.infodata.eec.weapon_preservation.no");
 
             info.add(
-                weaponCache.isValid ? StatCollector.translateToLocal("kubatech.infodata.eec.inserted_weapon.yes")
-                    : StatCollector.translateToLocal("kubatech.infodata.eec.inserted_weapon.no"));
+                weaponCache.isValid ? "kubatech.infodata.eec.inserted_weapon.yes"
+                    : "kubatech.infodata.eec.inserted_weapon.no");
 
             double tAttackDamage = DIAMOND_SPIKES_DAMAGE;
 
             if (weaponCache.isValid) {
                 tAttackDamage += weaponCache.attackDamage;
                 info.add(
-                    StatCollector
-                        .translateToLocalFormatted("kubatech.infodata.eec.weapon.damage", weaponCache.attackDamage));
+                    IGregTechDeviceInformation.encode("kubatech.infodata.eec.weapon.damage", weaponCache.attackDamage));
                 info.add(
-                    StatCollector
-                        .translateToLocalFormatted("kubatech.infodata.eec.weapon.looting_level", weaponCache.looting));
+                    IGregTechDeviceInformation
+                        .encode("kubatech.infodata.eec.weapon.looting_level", weaponCache.looting));
             }
 
-            info.add(StatCollector.translateToLocalFormatted("kubatech.infodata.eec.total_damage", tAttackDamage));
+            info.add(IGregTechDeviceInformation.encode("kubatech.infodata.eec.total_damage", tAttackDamage));
         }
         return info.toArray(new String[0]);
     }

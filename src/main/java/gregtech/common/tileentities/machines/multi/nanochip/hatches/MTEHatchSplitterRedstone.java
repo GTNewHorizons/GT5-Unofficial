@@ -78,6 +78,18 @@ public class MTEHatchSplitterRedstone extends MTEHatch {
     }
 
     @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        channel = aNBT.getInteger("mChannel");
+        super.loadNBTData(aNBT);
+    }
+
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        aNBT.setInteger("mChannel", channel);
+        super.saveNBTData(aNBT);
+    }
+
+    @Override
     public String[] getDescription() {
         return new String[] { translateToLocal("GT5U.tooltip.nac.hatch.splitter.body.1"),
             translateToLocal("GT5U.tooltip.nac.hatch.splitter.body.2"),

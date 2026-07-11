@@ -39,6 +39,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.RecipeMapWorkable;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
@@ -55,7 +56,7 @@ public class MTERadioHatch extends MTEHatch implements RecipeMapWorkable {
     public int sievert;
     private long timer = 1;
     private long decayTime = 1;
-    private short[] colorForGUI = { 0x02, 0x02, 0x02 };
+    private short[] colorForGUI = getEmptyColor();
     private byte mass;
     private String material;
     private byte coverage;
@@ -79,17 +80,16 @@ public class MTERadioHatch extends MTEHatch implements RecipeMapWorkable {
         super(aName, aTier, 1, aDescription, aTextures);
     }
 
+    private static short[] getEmptyColor() {
+        return new short[] { 0x37, 0x37, 0x37 };
+    }
+
     public int getSievert() {
         return this.sievert - MathUtils.ceilInt(this.sievert / 100f * this.coverage);
     }
 
     public void setSievert(int b) {
         this.sievert = b;
-    }
-
-    public short[] getColorForGUI() {
-        if (this.colorForGUI != null) return this.colorForGUI;
-        return this.colorForGUI = new short[] { 0xFA, 0xFA, 0xFF };
     }
 
     public byte getMass() {
@@ -150,86 +150,92 @@ public class MTERadioHatch extends MTEHatch implements RecipeMapWorkable {
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
         BaseMetaTileEntity myMetaTileEntity = (BaseMetaTileEntity) this.getBaseMetaTileEntity();
-        if (myMetaTileEntity.isServerSide()) {
+        if (myMetaTileEntity.isClientSide()) {
+            return;
+        }
 
-            if (this.mass > 0) {
-                ++this.timer;
-            }
-
-            if (this.mass > 0 && (this.decayTime == 0 || this.decayTime > 0 && this.timer % this.decayTime == 0)) {
+        if (this.mass > 0) {
+            ++this.timer;
+            if (this.decayTime == 0 || this.decayTime > 0 && this.timer % this.decayTime == 0) {
                 this.mass--;
                 if (this.mass == 0) {
                     this.material = StatCollector.translateToLocal("tooltip.bw.empty.name");
                     this.sievert = 0;
+                    if (this.mInventory[0] == null) {
+                        colorForGUI = getEmptyColor();
+                    }
                 }
                 this.timer = 1;
             }
+        }
 
-            if (myMetaTileEntity.mTickTimer > myMetaTileEntity.mLastSoundTick + ticksBetweenSounds
-                && this.sievert > 0) {
-                this.sendLoopStart((byte) 1);
-                myMetaTileEntity.mLastSoundTick = myMetaTileEntity.mTickTimer;
+        if (myMetaTileEntity.mTickTimer > myMetaTileEntity.mLastSoundTick + ticksBetweenSounds && this.sievert > 0) {
+            this.sendLoopStart((byte) 1);
+            myMetaTileEntity.mLastSoundTick = myMetaTileEntity.mTickTimer;
+        }
+
+        if (this.mass == 0) {
+            ItemStack lStack = this.mInventory[0];
+
+            if (lStack == null || this.lastFail && GTUtility.areStacksEqual(this.lastUsedItem, lStack, true)) {
+                return;
             }
 
-            if (this.mass == 0) {
-                ItemStack lStack = this.mInventory[0];
-
-                if (lStack == null) {
-                    this.colorForGUI = new short[] { 0x37, 0x37, 0x37 };
-                    return;
-                }
-
-                ItemData itemData = GTOreDictUnificator.getAssociation(lStack);
-                if (itemData != null) {
-                    Materials mat = itemData.mMaterial.mMaterial;
-                    this.colorForGUI = new short[] { mat.getRGBA()[0], mat.getRGBA()[1], mat.getRGBA()[2] };
-                } else {
-                    this.colorForGUI = new short[] { 0x37, 0x37, 0x37 };
-                }
-                if (this.lastFail && GTUtility.areStacksEqual(this.lastUsedItem, lStack, true)) {
-                    return;
-                }
-                if (!this.lastFail && this.lastUsedItem != null && this.radioHatchMaterial != null) {
-                    if (GTUtility.areStacksEqual(this.lastUsedItem, lStack, true)) {
-                        for (RadioHatchMaterial recipes : getRadioHatchMaterialList()) {
-                            this.radioHatchMaterial = getRadioHatchMaterialFromInput(recipes, this.lastUsedItem);
-                            if (radioHatchMaterial != null) {
-                                break;
-                            }
-                        }
-                        if (radioHatchMaterial != null && getBaseMetaTileEntity().isAllowedToWork()) {
-                            this.sievert = this.radioHatchMaterial.recipeSievert;
-                            this.mass = this.radioHatchMaterial.recipeMass;
-                            this.decayTime = calcDecayTicks(radioHatchMaterial.recipeSievert);
-                            this.material = this.lastUsedItem.getDisplayName();
-                            lStack.stackSize--;
-                            this.updateSlots();
-                        }
-                    } else {
-                        this.radioHatchMaterial = null;
-                    }
-                }
-
-                if (this.radioHatchMaterial == null || this.lastFail || this.radioHatchMaterial.recipeSievert == 0) {
+            if (!this.lastFail && this.lastUsedItem != null && this.radioHatchMaterial != null) {
+                if (GTUtility.areStacksEqual(this.lastUsedItem, lStack, true)) {
                     for (RadioHatchMaterial recipes : getRadioHatchMaterialList()) {
-                        this.radioHatchMaterial = getRadioHatchMaterialFromInput(recipes, this.mInventory[0]);
+                        this.radioHatchMaterial = getRadioHatchMaterialFromInput(recipes, this.lastUsedItem);
                         if (radioHatchMaterial != null) {
                             break;
                         }
                     }
-                    if (this.radioHatchMaterial == null) {
-                        this.lastFail = true;
-                        this.lastUsedItem = this.mInventory[0] == null ? null : this.mInventory[0].copy();
-                    } else {
-                        this.lastFail = false;
-                        this.lastUsedItem = this.mInventory[0].copy();
-                        this.sievert = radioHatchMaterial.recipeSievert;
-                        this.mass = radioHatchMaterial.recipeMass;
+                    if (radioHatchMaterial != null && getBaseMetaTileEntity().isAllowedToWork()) {
+                        this.sievert = this.radioHatchMaterial.recipeSievert;
+                        this.mass = this.radioHatchMaterial.recipeMass;
                         this.decayTime = calcDecayTicks(radioHatchMaterial.recipeSievert);
-                        this.material = lStack.getDisplayName();
+                        this.material = this.lastUsedItem.getDisplayName();
+                        ItemData itemData = GTOreDictUnificator.getAssociation(lStack);
+                        if (itemData != null) {
+                            Materials mat = itemData.mMaterial.mMaterial;
+                            this.colorForGUI = new short[] { mat.getRGBA()[0], mat.getRGBA()[1], mat.getRGBA()[2] };
+                        } else {
+                            this.colorForGUI = getEmptyColor();
+                        }
                         lStack.stackSize--;
                         this.updateSlots();
                     }
+                } else {
+                    this.radioHatchMaterial = null;
+                }
+            }
+
+            if (this.radioHatchMaterial == null || this.lastFail || this.radioHatchMaterial.recipeSievert == 0) {
+                for (RadioHatchMaterial recipes : getRadioHatchMaterialList()) {
+                    this.radioHatchMaterial = getRadioHatchMaterialFromInput(recipes, this.mInventory[0]);
+                    if (radioHatchMaterial != null) {
+                        break;
+                    }
+                }
+                if (this.radioHatchMaterial == null) {
+                    this.lastFail = true;
+                    this.lastUsedItem = this.mInventory[0] == null ? null : this.mInventory[0].copy();
+                    colorForGUI = getEmptyColor();
+                } else {
+                    this.lastFail = false;
+                    this.lastUsedItem = this.mInventory[0].copy();
+                    this.sievert = radioHatchMaterial.recipeSievert;
+                    this.mass = radioHatchMaterial.recipeMass;
+                    this.decayTime = calcDecayTicks(radioHatchMaterial.recipeSievert);
+                    this.material = lStack.getDisplayName();
+                    ItemData itemData = GTOreDictUnificator.getAssociation(lStack);
+                    if (itemData != null) {
+                        Materials mat = itemData.mMaterial.mMaterial;
+                        this.colorForGUI = new short[] { mat.getRGBA()[0], mat.getRGBA()[1], mat.getRGBA()[2] };
+                    } else {
+                        this.colorForGUI = getEmptyColor();
+                    }
+                    lStack.stackSize--;
+                    this.updateSlots();
                 }
             }
         }
@@ -242,28 +248,19 @@ public class MTERadioHatch extends MTEHatch implements RecipeMapWorkable {
 
     @Override
     public String[] getInfoData() {
-        if (this.sievert != 0) return new String[] {
-            StatCollector.translateToLocal("tooltip.tile.radhatch.2.name") + " "
-                + StatCollector.translateToLocal(this.material),
-            StatCollector.translateToLocal("tooltip.tile.radhatch.3.name") + " " + this.sievert,
-            StatCollector.translateToLocal("tooltip.tile.radhatch.4.name") + " " + this.mass,
-            StatCollector.translateToLocal("tooltip.tile.radhatch.5.name") + " "
-                + (this.decayTime - this.timer % (this.decayTime * 60))
-                + StatCollector.translateToLocal("tooltip.tile.radhatch.6.name")
-                + "/"
-                + (this.decayTime - this.timer % this.decayTime) / 20
-                + StatCollector.translateToLocal("tooltip.tile.radhatch.7.name")
-                + "/"
-                + (this.decayTime - this.timer % this.decayTime) / 20 / 60
-                + StatCollector.translateToLocal("tooltip.tile.radhatch.8.name")
-                + "/"
-                + (this.decayTime - this.timer % this.decayTime) / 20 / 60 / 60
-                + StatCollector.translateToLocal("tooltip.tile.radhatch.9.name") };
-        return new String[] {
-            StatCollector.translateToLocal("tooltip.tile.radhatch.2.name") + " "
-                + StatCollector.translateToLocal("tooltip.bw.empty.name"),
-            StatCollector.translateToLocal("tooltip.tile.radhatch.3.name") + " " + "0",
-            StatCollector.translateToLocal("tooltip.tile.radhatch.4.name") + " " + "0" };
+        if (this.sievert != 0)
+            return new String[] { IGregTechDeviceInformation.encode("tooltip.tile.radhatch.2.fmt", this.material),
+                IGregTechDeviceInformation.encode("tooltip.tile.radhatch.3.fmt", this.sievert),
+                IGregTechDeviceInformation.encode("tooltip.tile.radhatch.4.fmt", this.mass),
+                IGregTechDeviceInformation.encode(
+                    "tooltip.tile.radhatch.5.fmt",
+                    this.decayTime - this.timer % (this.decayTime * 60),
+                    (this.decayTime - this.timer % this.decayTime) / 20,
+                    (this.decayTime - this.timer % this.decayTime) / 20 / 60,
+                    (this.decayTime - this.timer % this.decayTime) / 20 / 60 / 60) };
+        return new String[] { "tooltip.tile.radhatch.2.empty",
+            IGregTechDeviceInformation.encode("tooltip.tile.radhatch.3.fmt", "0"),
+            IGregTechDeviceInformation.encode("tooltip.tile.radhatch.4.fmt", "0") };
     }
 
     @Override
@@ -294,7 +291,7 @@ public class MTERadioHatch extends MTEHatch implements RecipeMapWorkable {
         aNBT.setByte("mMass", this.mass);
         aNBT.setInteger("mSievert", this.sievert);
         aNBT.setByte("mCoverage", this.coverage);
-        aNBT.setInteger("mTextColor", BWColorUtil.getColorFromRGBArray(this.getColorForGUI()));
+        aNBT.setInteger("mTextColor", BWColorUtil.getColorFromRGBArray(colorForGUI));
         if (this.material != null && !this.material.isEmpty()) aNBT.setString("mMaterial", this.material);
         aNBT.setLong("timer", this.timer);
         aNBT.setLong("decay", this.decayTime);

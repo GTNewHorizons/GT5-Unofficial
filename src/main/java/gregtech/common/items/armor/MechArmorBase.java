@@ -6,7 +6,6 @@ import static gregtech.api.util.GTUtility.getOrCreateNbtCompound;
 
 import java.util.List;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -14,7 +13,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
@@ -31,16 +29,16 @@ import org.lwjgl.input.Keyboard;
 import com.gtnewhorizon.gtnhlib.keybind.IKeyPressedListener;
 import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
 
-import baubles.api.BaublesApi;
 import cpw.mods.fml.common.Optional.Interface;
 import cpw.mods.fml.common.Optional.InterfaceList;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import forestry.api.apiculture.IArmorApiarist;
+import forestry.api.apiculture.IArmorApiaristMulti;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Mods.ModIDs;
 import gregtech.api.hazards.Hazard;
 import gregtech.api.hazards.IHazardProtector;
+import gregtech.api.items.armor.ArmorActionManager;
 import gregtech.api.items.armor.ArmorContext;
 import gregtech.api.items.armor.ArmorContext.ArmorContextImpl;
 import gregtech.api.items.armor.ArmorState;
@@ -49,6 +47,7 @@ import gregtech.api.items.armor.MechArmorAugmentRegistries.Cores;
 import gregtech.api.items.armor.MechArmorAugmentRegistries.Frames;
 import gregtech.api.items.armor.behaviors.BehaviorName;
 import gregtech.api.items.armor.behaviors.IArmorBehavior;
+import gregtech.api.items.armor.ui.ArmorRadialMenu;
 import gregtech.api.util.GTUtility;
 import gregtech.common.misc.NoTooltipElectricItemManager;
 import ic2.api.item.ICustomDamageItem;
@@ -60,7 +59,7 @@ import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.nodes.IRevealer;
 
 @InterfaceList(
-    value = { @Interface(iface = "forestry.api.apiculture.IArmorApiarist", modid = ModIDs.FORESTRY),
+    value = { @Interface(iface = "forestry.api.apiculture.IArmorApiaristMulti", modid = ModIDs.FORESTRY),
         @Interface(iface = "thaumcraft.api.IVisDiscountGear", modid = ModIDs.THAUMCRAFT),
         @Interface(iface = "thaumcraft.api.IGoggles", modid = ModIDs.THAUMCRAFT),
         @Interface(iface = "thaumcraft.api.nodes.IRevealer", modid = ModIDs.THAUMCRAFT),
@@ -68,7 +67,7 @@ import thaumcraft.api.nodes.IRevealer;
         @Interface(iface = "vazkii.botania.api.mana.IManaDiscountArmor", modid = ModIDs.BOTANIA) })
 
 public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISpecialArmor, ISpecialElectricItem,
-    IGoggles, IRevealer, IVisDiscountGear, IArmorApiarist, IHazardProtector, ICustomDamageItem,
+    IGoggles, IRevealer, IVisDiscountGear, IArmorApiaristMulti, IHazardProtector, ICustomDamageItem,
     net.dries007.holoInventory.api.IHoloGlasses, vazkii.botania.api.mana.IManaDiscountArmor {
 
     protected IIcon coreIcon;
@@ -143,13 +142,18 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISp
     public void onArmorUnequip(@NotNull World world, @NotNull EntityPlayer player, @NotNull ItemStack stack) {
         ArmorContext context = load(world, player, stack);
 
-        for (IArmorBehavior behavior : context.getArmorState().behaviors.values()) {
-            if (player instanceof EntityPlayerMP playerMP) {
+        if (player instanceof EntityPlayerMP playerMP) {
+            for (IArmorBehavior behavior : context.getArmorState().behaviors.values()) {
                 for (SyncedKeybind keyBind : behavior.getListenedKeys(context)) {
                     keyBind.removePlayerListener(playerMP, this);
                 }
             }
 
+            ArmorActionManager.getKeybind("open_radial_menu")
+                .removePlayerListener(playerMP, this);
+        }
+
+        for (IArmorBehavior behavior : context.getArmorState().behaviors.values()) {
             behavior.onArmorUnequip(context);
         }
     }
@@ -158,6 +162,9 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISp
         ArmorContext context = load(world, player, stack);
 
         if (player instanceof EntityPlayerMP playerMP) {
+            ArmorActionManager.getKeybind("open_radial_menu")
+                .registerPlayerListener(playerMP, this);
+
             for (IArmorBehavior behavior : context.getArmorState().behaviors.values()) {
                 for (SyncedKeybind keyBind : behavior.getListenedKeys(context)) {
                     keyBind.registerPlayerListener(playerMP, this);
@@ -203,6 +210,13 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISp
         if (stack.getItem() != this) return;
 
         ArmorContext context = load(player.getEntityWorld(), player, stack);
+
+        if (keyPressed == ArmorActionManager.getKeybind("open_radial_menu")) {
+            if (isDown && ArmorActionManager.isPrimaryArmorPiece(player, this)) {
+                ArmorRadialMenu.INSTANCE.open(player);
+            }
+            return;
+        }
 
         boolean didSomething = false;
 
@@ -345,25 +359,21 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISp
     @Override
     public ArmorProperties getProperties(EntityLivingBase player, ItemStack armor, DamageSource source, double damage,
         int slot) {
-        if (source.isUnblockable()) return new ArmorProperties(0, getDamageReduction(armor) / 100D, 15);
-
         ArmorContext context = load(player, armor);
-
         if (context.isBehaviorActive(BehaviorName.ForceField) && context.drainEnergy(100000 * damage)) {
             context.save();
             return new ArmorProperties(0, 100, Integer.MAX_VALUE);
         }
 
-        if (source.isDamageAbsolute() || source.isMagicDamage() || context.getArmorState().charge < damage * 100) {
-            return new ArmorProperties(0, getDamageReduction(armor) / 100D, 15);
-        }
+        if (source.isUnblockable()) return new ArmorProperties(0, 0, 0);
 
-        return new ArmorProperties(0, getDamageReduction(armor) / 24.5D, 1000);
+        int max = context.getArmorState().charge < damage * 100 ? 0 : Integer.MAX_VALUE;
+        return new ArmorProperties(0, getDamageReduction(armor), max);
     }
 
     @Override
     public int getArmorDisplay(EntityPlayer player, ItemStack armor, int slot) {
-        return (int) getDamageReduction(armor);
+        return (int) (20 * getDamageReduction(armor));
     }
 
     @Override
@@ -377,20 +387,7 @@ public class MechArmorBase extends ItemArmor implements IKeyPressedListener, ISp
     @SideOnly(Side.CLIENT)
     public boolean shouldRender(ItemStack stack) {
         ArmorContext context = load(null, stack);
-
-        if (context.isBehaviorActive(BehaviorName.HoloInventory)) return true;
-
-        // No augment - fall through to baubles so original holo glasses still work
-        EntityPlayer player = Minecraft.getMinecraft().thePlayer;
-        if (player == null) return false;
-        IInventory baubles = BaublesApi.getBaubles(player);
-        for (int i = 0; i < baubles.getSizeInventory(); i++) {
-            ItemStack bauble = baubles.getStackInSlot(i);
-            if (bauble != null && bauble.getItem() instanceof net.dries007.holoInventory.api.IHoloGlasses holoGlasses) {
-                return holoGlasses.shouldRender(bauble);
-            }
-        }
-        return false;
+        return context.isBehaviorActive(BehaviorName.HoloInventory);
     }
 
     // Thaumcraft compat

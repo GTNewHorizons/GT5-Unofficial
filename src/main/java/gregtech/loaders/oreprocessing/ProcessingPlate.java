@@ -33,10 +33,10 @@ import net.minecraft.item.ItemStack;
 import gregtech.api.covers.CoverRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
+import gregtech.api.enums.MaterialIconRegistry;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
-import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.ToolDictNames;
 import gregtech.api.recipe.RecipeCategories;
@@ -508,13 +508,13 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
 
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(1, aStack), new ItemStack(Blocks.glass, 3, WILDCARD))
-                    .itemOutputs(GTModHandler.getIC2Item("reinforcedGlass", 4L))
+                    .itemOutputs(ItemList.ReinforcedGlass.get(4L))
                     .duration(20 * SECONDS)
                     .eut(4)
                     .addTo(alloySmelterRecipes);
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(1, aStack), Materials.Glass.getDust(3))
-                    .itemOutputs(GTModHandler.getIC2Item("reinforcedGlass", 4L))
+                    .itemOutputs(ItemList.ReinforcedGlass.get(4L))
                     .duration(20 * SECONDS)
                     .eut(4)
                     .addTo(alloySmelterRecipes);
@@ -522,13 +522,13 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
             case "plateAlloyAdvanced" -> {
                 RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(1, aStack), new ItemStack(Blocks.glass, 3, WILDCARD))
-                    .itemOutputs(GTModHandler.getIC2Item("reinforcedGlass", 4L))
+                    .itemOutputs(ItemList.ReinforcedGlass.get(4L))
                     .duration(20 * SECONDS)
                     .eut(4)
                     .addTo(alloySmelterRecipes);
                 RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(1, aStack), Materials.Glass.getDust(3))
-                    .itemOutputs(GTModHandler.getIC2Item("reinforcedGlass", 4L))
+                    .itemOutputs(ItemList.ReinforcedGlass.get(4L))
                     .duration(20 * SECONDS)
                     .eut(4)
                     .addTo(alloySmelterRecipes);
@@ -558,7 +558,7 @@ public class ProcessingPlate implements gregtech.api.interfaces.IOreRecipeRegist
             tStack == NI ?
             // Use Materials mRGBa dyed blocs/materialicons/MATERIALSET/block1 icons
                 TextureFactory.builder()
-                    .addIcon(aMaterial.mIconSet.mTextures[TextureSet.INDEX_block1])
+                    .addIcon(aMaterial.mIconSet.mTextures[MaterialIconRegistry.IconType.BLOCK1.ordinal()])
                     .setRGBA(aMaterial.mRGBa)
                     .stdOrient()
                     .build()

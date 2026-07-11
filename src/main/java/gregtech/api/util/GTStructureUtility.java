@@ -205,6 +205,11 @@ public class GTStructureUtility {
         return new ProxyStructureElement<>(ofBlock(sBlockSheetmetalGT, material.mMetaItemSubID)) {
 
             @Override
+            public @Nullable List<String> getDescription(T context) {
+                return Collections.singletonList(OrePrefixes.sheetmetal.getLocalizedNameForItem(material));
+            }
+
+            @Override
             public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
                 StructureLibAPI.hintParticleTinted(
                     world,
@@ -222,6 +227,11 @@ public class GTStructureUtility {
     public static <T> IStructureElement<T> ofSheetMetal(Werkstoff werkstoff) {
         if (werkstoff == null) throw new IllegalArgumentException("werkstoff for sheet metal can not be null!");
         return new ProxyStructureElement<>(ofBlock(sBlockSheetmetalBW, werkstoff.getmID())) {
+
+            @Override
+            public @Nullable List<String> getDescription(T context) {
+                return Collections.singletonList(OrePrefixes.sheetmetal.getLocalizedNameForItem(werkstoff));
+            }
 
             @Override
             public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
@@ -894,18 +904,77 @@ public class GTStructureUtility {
         return chainAllGlasses(-1, (te, t) -> {}, te -> -1);
     }
 
+    private static ItemStack capGlassStack(ItemStack stack) {
+        ItemStack wrapper = new ItemStack(stack.getItem(), stack.stackSize, stack.getItemDamage());
+        wrapper.stackSize = Math.min(stack.stackSize, GlassTier.getMaxTierIndex());
+        wrapper.setTagCompound(stack.getTagCompound());
+        return wrapper;
+    }
+
     /** support all Bart, Botania, Ic2, Thaumcraft glasses for multiblock structure **/
     public static <T> IStructureElement<T> chainAllGlasses(int notSet, BiConsumer<T, Integer> setter,
         Function<T, Integer> getter) {
-        return GTStructureChannels.BOROGLASS.use(
-            lazy(
-                t -> ofBlocksTiered(
-                    GlassTier::getGlassBlockTier,
-                    GlassTier.getGlassList(),
-                    notSet,
-                    setter,
-                    getter,
-                    Collections.singletonList("GT5U.structure.tiered_glass"))));
+        return triggerItemTransform(
+            GTStructureUtility::capGlassStack,
+            GTStructureChannels.BOROGLASS.use(
+                lazy(
+                    t -> ofBlocksTiered(
+                        GlassTier::getGlassBlockTier,
+                        GlassTier.getGlassList(),
+                        notSet,
+                        setter,
+                        getter,
+                        Collections.singletonList("GT5U.structure.tiered_glass")))));
+    }
+
+    /**
+     * Apply transformation on the trigger item stack before passing to the underlying structure element.
+     */
+    public static <T> IStructureElement<T> triggerItemTransform(Function<ItemStack, ItemStack> transform,
+        IStructureElement<T> backing) {
+        return new IStructureElement<>() {
+
+            public boolean check(T t, World world, int x, int y, int z) {
+                return backing.check(t, world, x, y, z);
+            }
+
+            public boolean couldBeValid(T t, World world, int x, int y, int z, ItemStack trigger) {
+                return backing.couldBeValid(t, world, x, y, z, transform.apply(trigger));
+            }
+
+            public boolean spawnHint(T t, World world, int x, int y, int z, ItemStack trigger) {
+                return backing.spawnHint(t, world, x, y, z, transform.apply(trigger));
+            }
+
+            public boolean placeBlock(T t, World world, int x, int y, int z, ItemStack trigger) {
+                return backing.placeBlock(t, world, x, y, z, transform.apply(trigger));
+            }
+
+            @Nullable
+            @Override
+            public BlocksToPlace getBlocksToPlace(T t, World world, int x, int y, int z, ItemStack trigger,
+                AutoPlaceEnvironment env) {
+                return backing.getBlocksToPlace(t, world, x, y, z, transform.apply(trigger), env);
+            }
+
+            @Deprecated
+            public PlaceResult survivalPlaceBlock(T t, World world, int x, int y, int z, ItemStack trigger,
+                IItemSource s, EntityPlayerMP actor, Consumer<IChatComponent> chatter) {
+                return backing.survivalPlaceBlock(t, world, x, y, z, transform.apply(trigger), s, actor, chatter);
+            }
+
+            @Override
+            public PlaceResult survivalPlaceBlock(T t, World world, int x, int y, int z, ItemStack trigger,
+                AutoPlaceEnvironment env) {
+                return backing.survivalPlaceBlock(t, world, x, y, z, transform.apply(trigger), env);
+            }
+
+            @Nullable
+            @Override
+            public List<String> getDescription(T context) {
+                return backing.getDescription(context);
+            }
+        };
     }
 
     private static Integer getItemPipeCasingTier(Block block, int meta) {
