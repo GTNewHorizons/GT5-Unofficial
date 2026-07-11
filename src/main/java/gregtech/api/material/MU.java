@@ -2,6 +2,7 @@ package gregtech.api.material;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -108,6 +109,29 @@ public class MU {
         if (material == null) return -1;
         Integer id = material.getProperty(GTMaterialProperties.OLD_SUB_ID);
         return id == null ? -1 : id;
+    }
+
+    /// The legacy `Materials#mRGBa`-format `[r, g, b, a]` short array for a material, or null if it has no
+    /// [GTMaterialProperties#ARGB] (unported markers). Unpacks the property with the identical shift/mask math
+    /// `Materials`'s own constructor uses on the same value -- `LegacyMaterials.build` feeds this exact
+    /// property through that constructor via `MaterialBuilder#setARGB`, so this is byte-identical to the
+    /// legacy field for every ported material, not merely observationally equal. Unlike
+    /// [com.ruling_0.materiallib.api.StandardProperties#TINT], preserves alpha `0x00` (see
+    /// [GTMaterialProperties#ARGB]'s javadoc) -- do not substitute this for TINT in ML-side rendering code.
+    public static @Nullable short[] rgba(@Nullable Material material) {
+        if (material == null) return null;
+        Integer argb = material.getProperty(GTMaterialProperties.ARGB);
+        if (argb == null) return null;
+        return new short[] { (short) ((argb >>> 16) & 0xFF), (short) ((argb >>> 8) & 0xFF), (short) (argb & 0xFF),
+            (short) ((argb >>> 24) & 0xFF) };
+    }
+
+    /// Whether a material carries a legacy [gregtech.api.enums.SubTag], ported 1:1 to [GTMaterialFlag] of the
+    /// same name -- see [GTMaterialProperties#FLAGS]. Mirrors legacy `Materials#contains(SubTag)`/`mSubTags`.
+    public static boolean hasFlag(@Nullable Material material, GTMaterialFlag flag) {
+        if (material == null) return false;
+        EnumSet<GTMaterialFlag> flags = material.getProperty(GTMaterialProperties.FLAGS);
+        return flags != null && flags.contains(flag);
     }
 
     private static String legacyName(Material material) {

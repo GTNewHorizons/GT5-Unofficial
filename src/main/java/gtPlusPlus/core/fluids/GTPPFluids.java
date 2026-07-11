@@ -17,8 +17,8 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
-import gtPlusPlus.GTplusplus;
+import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.material.MU;
 import gtPlusPlus.core.util.minecraft.FluidUtils;
 import gtPlusPlus.core.util.minecraft.ItemUtils;
 import ic2.core.init.InternalName;
@@ -137,7 +137,7 @@ public class GTPPFluids {
 
         Butanol = FluidUtils.generateFluidNoPrefix("butanol", "Butanol", 200, new short[] { 159, 58, 56, 100 }, true);
 
-        short[] aZincFrothRGB = Materials.Sphalerite.mRGBa;
+        short[] aZincFrothRGB = MU.rgba(Materials2Materials.Sphalerite);
         SphaleriteFlotationFroth = FluidUtils.generateFluidNoPrefix(
             "froth.zincflotation",
             "Sphalerite Froth",
@@ -145,7 +145,7 @@ public class GTPPFluids {
             new short[] { aZincFrothRGB[0], aZincFrothRGB[1], aZincFrothRGB[2], 100 },
             true);
 
-        short[] aCopperFrothRGB = Materials.Chalcopyrite.mRGBa;
+        short[] aCopperFrothRGB = MU.rgba(Materials2Materials.Chalcopyrite);
         ChalcopyriteFlotationFroth = FluidUtils.generateFluidNoPrefix(
             "froth.copperflotation",
             "Chalcopyrite Froth",
@@ -153,7 +153,7 @@ public class GTPPFluids {
             new short[] { aCopperFrothRGB[0], aCopperFrothRGB[1], aCopperFrothRGB[2], 100 },
             true);
 
-        short[] aNickelFrothRGB = Materials.Nickel.mRGBa;
+        short[] aNickelFrothRGB = MU.rgba(Materials2Materials.Nickel);
         NickelFlotationFroth = FluidUtils.generateFluidNoPrefix(
             "froth.nickelflotation",
             "Nickel Froth",
@@ -161,7 +161,7 @@ public class GTPPFluids {
             new short[] { aNickelFrothRGB[0], aNickelFrothRGB[1], aNickelFrothRGB[2], 100 },
             true);
 
-        short[] aPlatinumFrothRGB = Materials.Platinum.mRGBa;
+        short[] aPlatinumFrothRGB = MU.rgba(Materials2Materials.Platinum);
         PlatinumFlotationFroth = FluidUtils.generateFluidNoPrefix(
             "froth.platinumflotation",
             "Platinum Froth",
@@ -169,7 +169,7 @@ public class GTPPFluids {
             new short[] { aPlatinumFrothRGB[0], aPlatinumFrothRGB[1], aPlatinumFrothRGB[2], 100 },
             true);
 
-        short[] aPentlanditeFrothRGB = Materials.Pentlandite.mRGBa;
+        short[] aPentlanditeFrothRGB = MU.rgba(Materials2Materials.Pentlandite);
         PentlanditeFlotationFroth = FluidUtils.generateFluidNoPrefix(
             "froth.pentlanditeflotation",
             "Pentlandite Froth",
@@ -177,7 +177,7 @@ public class GTPPFluids {
             new short[] { aPentlanditeFrothRGB[0], aPentlanditeFrothRGB[1], aPentlanditeFrothRGB[2], 100 },
             true);
 
-        short[] aRedstoneFrothRGB = Materials.Redstone.mRGBa;
+        short[] aRedstoneFrothRGB = MU.rgba(Materials2Materials.Redstone);
         RedstoneFlotationFroth = FluidUtils.generateFluidNoPrefix(
             "froth.redstoneflotation",
             "Redstone Froth",
@@ -185,7 +185,7 @@ public class GTPPFluids {
             new short[] { aRedstoneFrothRGB[0], aRedstoneFrothRGB[1], aRedstoneFrothRGB[2], 100 },
             true);
 
-        short[] aSpessartineFrothRGB = Materials.Spessartine.mRGBa;
+        short[] aSpessartineFrothRGB = MU.rgba(Materials2Materials.Spessartine);
         SpessartineFlotationFroth = FluidUtils.generateFluidNoPrefix(
             "froth.spessartineflotation",
             "Spessartine Froth",
@@ -193,7 +193,7 @@ public class GTPPFluids {
             new short[] { aSpessartineFrothRGB[0], aSpessartineFrothRGB[1], aSpessartineFrothRGB[2], 100 },
             true);
 
-        short[] aGrossularFrothRGB = Materials.Grossular.mRGBa;
+        short[] aGrossularFrothRGB = MU.rgba(Materials2Materials.Grossular);
         GrossularFlotationFroth = FluidUtils.generateFluidNoPrefix(
             "froth.grossularflotation",
             "Grossular Froth",
@@ -201,7 +201,7 @@ public class GTPPFluids {
             new short[] { aGrossularFrothRGB[0], aGrossularFrothRGB[1], aGrossularFrothRGB[2], 100 },
             true);
 
-        short[] aAlmandineFrothRGB = Materials.Almandine.mRGBa;
+        short[] aAlmandineFrothRGB = MU.rgba(Materials2Materials.Almandine);
         AlmandineFlotationFroth = FluidUtils.generateFluidNoPrefix(
             "froth.almandineflotation",
             "Almandine Froth",
@@ -209,7 +209,7 @@ public class GTPPFluids {
             new short[] { aAlmandineFrothRGB[0], aAlmandineFrothRGB[1], aAlmandineFrothRGB[2], 100 },
             true);
 
-        short[] aPyropeFrothRGB = Materials.Pyrope.mRGBa;
+        short[] aPyropeFrothRGB = MU.rgba(Materials2Materials.Pyrope);
         PyropeFlotationFroth = FluidUtils.generateFluidNoPrefix(
             "froth.pyropeflotation",
             "Pyrope Froth",
@@ -217,7 +217,7 @@ public class GTPPFluids {
             new short[] { aPyropeFrothRGB[0], aPyropeFrothRGB[1], aPyropeFrothRGB[2], 100 },
             true);
 
-        short[] aMonaziteFrothRGB = Materials.Monazite.mRGBa;
+        short[] aMonaziteFrothRGB = MU.rgba(Materials2Materials.Monazite);
         MonaziteFlotationFroth = FluidUtils.generateFluidNoPrefix(
             "froth.Monaziteflotation",
             "Monazite Froth",
@@ -225,7 +225,7 @@ public class GTPPFluids {
             new short[] { aMonaziteFrothRGB[0], aMonaziteFrothRGB[1], aMonaziteFrothRGB[2], 100 },
             true);
 
-        short[] aNetherrackFrothRGB = Materials.Netherrack.mRGBa;
+        short[] aNetherrackFrothRGB = MU.rgba(Materials2Materials.Netherrack);
         NetherrackFlotationFroth = FluidUtils.generateFluidNoPrefix(
             "froth.Netherrackflotation",
             "Netherrack Froth",
@@ -585,7 +585,7 @@ public class GTPPFluids {
             OreDictionary.registerOre("cell" + s, temp.copy());
             return temp;
         } catch (final Exception e) {
-            GTplusplus.logger.error(e);
+            e.printStackTrace();
         }
         return null;
     }
