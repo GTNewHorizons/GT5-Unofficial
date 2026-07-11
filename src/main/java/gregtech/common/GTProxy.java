@@ -139,6 +139,7 @@ import gregtech.api.items.MetaGeneratedItem;
 import gregtech.api.items.MetaGeneratedTool;
 import gregtech.api.items.armor.ArmorEventHandlers;
 import gregtech.api.items.armor.ArmorKeybinds;
+import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.MU;
 import gregtech.api.net.GTPacketMusicSystemData;
 import gregtech.api.objects.GTChunkManager;
@@ -1148,7 +1149,7 @@ public class GTProxy implements IFuelHandler {
         GTLog.out.println("GTMod: Adding Tool Usage Crafting Recipes for OreDict Items.");
         for (Materials aMaterial : Materials.values()) {
             if ((aMaterial.mUnifiable) && (aMaterial.mMaterialInto == aMaterial)) {
-                if (!aMaterial.contains(SubTag.NO_ORE_PROCESSING)) {
+                if (!MU.hasFlag(aMaterial, GTMaterialFlag.NO_ORE_PROCESSING)) {
                     GTModHandler.addCraftingRecipe(
                         GTOreDictUnificator.get(OrePrefixes.dust, aMaterial.mMacerateInto, 1L),
                         GTModHandler.RecipeBits.BITS_STD,
@@ -1792,7 +1793,7 @@ public class GTProxy implements IFuelHandler {
                                         }
                                     }
                                     case "lens" -> {
-                                        if ((aMaterial.contains(SubTag.TRANSPARENT))
+                                        if ((MU.hasFlag(aMaterial, GTMaterialFlag.TRANSPARENT))
                                             && (aMaterial.mColor != Dyes._NULL)) {
                                             GTOreDictUnificator.registerOre(
                                                 "craftingLens" + aMaterial.mColor.toString()

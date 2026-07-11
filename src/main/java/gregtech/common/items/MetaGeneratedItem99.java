@@ -20,10 +20,10 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.SubTag;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedItem;
 import gregtech.api.items.MetaGeneratedItemX32;
+import gregtech.api.material.GTMaterialFlag;
 import gregtech.api.material.MU;
 import gregtech.api.util.GTOreDictUnificator;
 
@@ -64,8 +64,9 @@ public class MetaGeneratedItem99 extends MetaGeneratedItem {
                 continue;
             }
 
-            if ((tMaterial.contains(SubTag.SMELTING_TO_FLUID)) && (!tMaterial.contains(SubTag.NO_SMELTING))
-                && !tMaterial.contains(SubTag.SMELTING_TO_GEM)) {
+            if ((MU.hasFlag(tMaterial, GTMaterialFlag.SMELTING_TO_FLUID))
+                && (!MU.hasFlag(tMaterial, GTMaterialFlag.NO_SMELTING))
+                && !MU.hasFlag(tMaterial, GTMaterialFlag.SMELTING_TO_GEM)) {
                 // extra check for if the material is not in the molten cell blacklist.
                 if (!cellMolten.mNotGeneratedItems.contains(tMaterial)) {
                     registerMolten(tMaterial, tMaterial.mMetaItemSubID);
