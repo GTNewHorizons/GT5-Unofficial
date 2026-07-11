@@ -2,6 +2,7 @@ package gtPlusPlus.core.item;
 
 import static gregtech.api.enums.Mods.GTPlusPlus;
 import static gregtech.api.enums.Mods.GregTech;
+import static gregtech.api.enums.Mods.NotEnoughItems;
 import static gregtech.client.GTTooltipHandler.registerTieredTooltip;
 import static gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes.FINEWIRE;
 import static gtPlusPlus.core.item.base.BaseItemComponent.ComponentTypes.FOIL;
@@ -323,6 +324,24 @@ public final class ModItems {
         GregtechItemList.MilledNetherite.set(
             BaseItemMilledOre.generate(Materials.Netherrack, TierEU.RECIPE_IV, new ItemStack(Blocks.netherrack, 256)));
 
+        // These items stay registered for save/item-ID stability (BaseOreComponent's oredict skip already
+        // defers the milled<Material> oredict name to MaterialLib once cut over), so only their NEI visibility
+        // needs to follow the cutover.
+        if (NotEnoughItems.isModLoaded()) {
+            hideMilledIfCutOver(Materials.Sphalerite, GregtechItemList.MilledSphalerite);
+            hideMilledIfCutOver(Materials.Chalcopyrite, GregtechItemList.MilledChalcopyrite);
+            hideMilledIfCutOver(Materials.Nickel, GregtechItemList.MilledNickel);
+            hideMilledIfCutOver(Materials.Platinum, GregtechItemList.MilledPlatinum);
+            hideMilledIfCutOver(Materials.Pentlandite, GregtechItemList.MilledPentlandite);
+            hideMilledIfCutOver(Materials.Redstone, GregtechItemList.MilledRedstone);
+            hideMilledIfCutOver(Materials.Spessartine, GregtechItemList.MilledSpessartine);
+            hideMilledIfCutOver(Materials.Grossular, GregtechItemList.MilledGrossular);
+            hideMilledIfCutOver(Materials.Almandine, GregtechItemList.MilledAlmandine);
+            hideMilledIfCutOver(Materials.Pyrope, GregtechItemList.MilledPyrope);
+            hideMilledIfCutOver(Materials.Monazite, GregtechItemList.MilledMonazite);
+            hideMilledIfCutOver(Materials.Netherrack, GregtechItemList.MilledNetherite);
+        }
+
         // Baubles
         GregtechItemList.PersonalCloakingDevice.set(new ItemCloakingDevice(0));
         GregtechItemList.PersonalHealingDevice.set(new ItemHealingDevice());
@@ -355,6 +374,12 @@ public final class ModItems {
         genericToken.register(0, "BitCoin", 16, "Can be used on the dark web");
 
         GregtechItemList.BitCoin.set(new ItemStack(genericToken, 1, 0));
+    }
+
+    private static void hideMilledIfCutOver(Materials material, GregtechItemList legacyItem) {
+        if (MU.isCutOver(OrePrefixes.milled, material)) {
+            codechicken.nei.api.API.hideItem(legacyItem.get(1));
+        }
     }
 
     private static Item registerChargePack(int tier) {
