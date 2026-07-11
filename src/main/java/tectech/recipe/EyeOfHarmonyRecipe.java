@@ -12,6 +12,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import net.minecraft.item.ItemStack;
@@ -25,13 +26,13 @@ import bartworks.system.material.Werkstoff;
 import gnu.trove.map.TMap;
 import gnu.trove.map.hash.TCustomHashMap;
 import gnu.trove.strategy.HashingStrategy;
-import goodgenerator.util.NaquadahRecipeOutputs;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.SubTag;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.interfaces.IOreMaterial;
+import gregtech.api.material.GTMaterialFlag;
+import gregtech.api.material.MU;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialStack;
@@ -39,7 +40,6 @@ import gtPlusPlus.core.util.minecraft.MaterialUtils;
 import gtneioreplugin.plugin.block.BlockDimensionDisplay;
 import gtneioreplugin.util.GT5OreLayerHelper;
 import gtneioreplugin.util.GT5OreSmallHelper;
-import tectech.TecTech;
 import tectech.util.FluidStackLong;
 import tectech.util.ItemStackLong;
 
@@ -411,27 +411,27 @@ public class EyeOfHarmonyRecipe {
         if (material == null) return;
         outputMap.add(material.mDirectSmelting, (material.mOreMultiplier * 2) * mainMultiplier * probability);
 
-        if (material.contains(SubTag.ELECTROMAGNETIC_SEPERATION_GOLD))
+        if (MU.hasFlag(material, GTMaterialFlag.ELECTROMAGNETIC_SEPERATION_GOLD))
             outputMap.add(Materials.Gold, mainMultiplier * (ELECTROMAGNETIC_MULTIPLIER * 2) * probability);
-        if (material.contains(SubTag.ELECTROMAGNETIC_SEPERATION_IRON))
+        if (MU.hasFlag(material, GTMaterialFlag.ELECTROMAGNETIC_SEPERATION_IRON))
             outputMap.add(Materials.Iron, mainMultiplier * (ELECTROMAGNETIC_MULTIPLIER * 2) * probability);
-        if (material.contains(SubTag.ELECTROMAGNETIC_SEPERATION_NEODYMIUM))
+        if (MU.hasFlag(material, GTMaterialFlag.ELECTROMAGNETIC_SEPERATION_NEODYMIUM))
             outputMap.add(Materials.Neodymium, mainMultiplier * (ELECTROMAGNETIC_MULTIPLIER * 2) * probability);
 
-        if (material.mOreByProducts.isEmpty()) {
-            if (material.contains(SubTag.WASHING_MERCURY_99_PERCENT))
+        if (material.mOreByProducts.size() == 0) {
+            if (MU.hasFlag(material, GTMaterialFlag.WASHING_MERCURY_99_PERCENT))
                 outputMap.add(material.mDirectSmelting, mainMultiplier * (QUATERNARY99_MULTIPLIER * 2) * probability);
-            else if (material.contains(SubTag.WASHING_MERCURY))
+            else if (MU.hasFlag(material, GTMaterialFlag.WASHING_MERCURY))
                 outputMap.add(material.mDirectSmelting, mainMultiplier * (QUATERNARY_MULTIPLIER * 2) * probability);
-            else if (material.contains(SubTag.WASHING_SODIUMPERSULFATE))
+            else if (MU.hasFlag(material, GTMaterialFlag.WASHING_SODIUMPERSULFATE))
                 outputMap.add(material.mDirectSmelting, mainMultiplier * (QUATERNARY_MULTIPLIER * 2) * probability);
         }
 
-        if (material.contains(SubTag.WASHING_MERCURY_99_PERCENT))
+        if (MU.hasFlag(material, GTMaterialFlag.WASHING_MERCURY_99_PERCENT))
             outputMap.add(material.mDirectSmelting, mainMultiplier * (QUATERNARY99_MULTIPLIER * 2) * probability);
-        else if (material.contains(SubTag.WASHING_MERCURY))
+        else if (MU.hasFlag(material, GTMaterialFlag.WASHING_MERCURY))
             outputMap.add(material.mDirectSmelting, mainMultiplier * (QUATERNARY_MULTIPLIER * 2) * probability);
-        else if (material.contains(SubTag.WASHING_SODIUMPERSULFATE))
+        else if (MU.hasFlag(material, GTMaterialFlag.WASHING_SODIUMPERSULFATE))
             outputMap.add(material.mDirectSmelting, mainMultiplier * (QUATERNARY_MULTIPLIER * 2) * probability);
 
         int index = 0;
@@ -443,11 +443,11 @@ public class EyeOfHarmonyRecipe {
             if (byProductMaterial.mMaterialInto == material.mMaterialInto) continue;
 
             // Will never duplicate since mOreByProducts does not support duplicate.
-            if (byProductMaterial.contains(SubTag.WASHING_MERCURY_99_PERCENT)) outputMap
+            if (MU.hasFlag(byProductMaterial, GTMaterialFlag.WASHING_MERCURY_99_PERCENT)) outputMap
                 .add(byProductMaterial.mDirectSmelting, mainMultiplier * (QUATERNARY99_MULTIPLIER * 2) * probability);
-            else if (byProductMaterial.contains(SubTag.WASHING_MERCURY)) outputMap
+            else if (MU.hasFlag(byProductMaterial, GTMaterialFlag.WASHING_MERCURY)) outputMap
                 .add(byProductMaterial.mDirectSmelting, mainMultiplier * (QUATERNARY_MULTIPLIER * 2) * probability);
-            else if (byProductMaterial.contains(SubTag.WASHING_SODIUMPERSULFATE)) outputMap
+            else if (MU.hasFlag(byProductMaterial, GTMaterialFlag.WASHING_SODIUMPERSULFATE)) outputMap
                 .add(byProductMaterial.mDirectSmelting, mainMultiplier * (QUATERNARY_MULTIPLIER * 2) * probability);
             else if (index >= 3) outputMap
                 .add(byProductMaterial.mDirectSmelting, mainMultiplier * (QUATERNARY_MULTIPLIER * 2) * probability);
@@ -521,11 +521,11 @@ public class EyeOfHarmonyRecipe {
         }
 
         // Default out if it's made of fluids or some stuff.
-        if (bonusA == null && material.tier >= 2) {
+        if (bonusA == null && material.vTier >= 2) {
             bonusA = material;
         }
         // Default out if it's made of fluids or some stuff.
-        if ((allFailed || bonusB == null) && material.tier >= 2) {
+        if ((allFailed || bonusB == null) && material.vTier >= 2) {
             bonusB = material;
         }
 
@@ -600,8 +600,7 @@ public class EyeOfHarmonyRecipe {
         for (Pair<IOreMaterial, Long> pair : planetList) {
             final IOreMaterial mat = pair.getLeft();
             final ItemStack dust;
-            if (mat instanceof Materials material)
-                dust = NaquadahRecipeOutputs.convert(getUnificatedOreDictStack(material.getDust(1)));
+            if (mat instanceof Materials) dust = getUnificatedOreDictStack(((Materials) mat).getDust(1));
             else if (mat instanceof Material) dust = ((Material) mat).getDust(1);
             else dust = null;
             if (dust != null) {
@@ -621,7 +620,7 @@ public class EyeOfHarmonyRecipe {
                     .getUnlocalizedName();
                 total += plasmaEnergyMap.getOrDefault(plasmaName, 0L) * plasma.amount;
             } catch (Exception e) {
-                TecTech.LOGGER.error(e);
+                e.printStackTrace();
             }
         }
 
@@ -651,7 +650,7 @@ public class EyeOfHarmonyRecipe {
             Materials.Bismuth,
             Materials.Oxygen,
             Materials.Tin)
-        .toList();
+        .collect(Collectors.toList());
 
     private static final HashMap<String, Long> plasmaEnergyMap = new HashMap<>() {
 

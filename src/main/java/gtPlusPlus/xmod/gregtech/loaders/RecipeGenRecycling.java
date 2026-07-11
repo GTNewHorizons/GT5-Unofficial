@@ -22,7 +22,8 @@ import org.apache.commons.lang3.tuple.Pair;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.SubTag;
+import gregtech.api.material.GTMaterialFlag;
+import gregtech.api.material.MU;
 import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -60,8 +61,8 @@ public class RecipeGenRecycling implements Runnable {
         if (material == null) return;
 
         final Materials gtMaterial = material.getGTMaterial();
-        if (gtMaterial != null
-            && (gtMaterial.contains(SubTag.NO_RECYCLING) || gtMaterial.contains(SubTag.NO_RECYCLING_RECIPES))) {
+        if (gtMaterial != null && (MU.hasFlag(gtMaterial, GTMaterialFlag.NO_RECYCLING)
+            || MU.hasFlag(gtMaterial, GTMaterialFlag.NO_RECYCLING_RECIPES))) {
             return;
         }
 
