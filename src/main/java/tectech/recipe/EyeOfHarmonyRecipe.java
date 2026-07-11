@@ -409,7 +409,7 @@ public class EyeOfHarmonyRecipe {
     public static void processHelper(HashMapHelper outputMap, Materials material, double mainMultiplier,
         double probability) {
         if (material == null) return;
-        outputMap.add(material.mDirectSmelting, (material.mOreMultiplier * 2) * mainMultiplier * probability);
+        outputMap.add(MU.directSmelting(material), (material.mOreMultiplier * 2) * mainMultiplier * probability);
 
         if (MU.hasFlag(material, GTMaterialFlag.ELECTROMAGNETIC_SEPERATION_GOLD))
             outputMap.add(Materials.Gold, mainMultiplier * (ELECTROMAGNETIC_MULTIPLIER * 2) * probability);
@@ -419,38 +419,39 @@ public class EyeOfHarmonyRecipe {
             outputMap.add(Materials.Neodymium, mainMultiplier * (ELECTROMAGNETIC_MULTIPLIER * 2) * probability);
 
         if (material.mOreByProducts.size() == 0) {
-            if (MU.hasFlag(material, GTMaterialFlag.WASHING_MERCURY_99_PERCENT))
-                outputMap.add(material.mDirectSmelting, mainMultiplier * (QUATERNARY99_MULTIPLIER * 2) * probability);
+            if (MU.hasFlag(material, GTMaterialFlag.WASHING_MERCURY_99_PERCENT)) outputMap
+                .add(MU.directSmelting(material), mainMultiplier * (QUATERNARY99_MULTIPLIER * 2) * probability);
             else if (MU.hasFlag(material, GTMaterialFlag.WASHING_MERCURY))
-                outputMap.add(material.mDirectSmelting, mainMultiplier * (QUATERNARY_MULTIPLIER * 2) * probability);
+                outputMap.add(MU.directSmelting(material), mainMultiplier * (QUATERNARY_MULTIPLIER * 2) * probability);
             else if (MU.hasFlag(material, GTMaterialFlag.WASHING_SODIUMPERSULFATE))
-                outputMap.add(material.mDirectSmelting, mainMultiplier * (QUATERNARY_MULTIPLIER * 2) * probability);
+                outputMap.add(MU.directSmelting(material), mainMultiplier * (QUATERNARY_MULTIPLIER * 2) * probability);
         }
 
         if (MU.hasFlag(material, GTMaterialFlag.WASHING_MERCURY_99_PERCENT))
-            outputMap.add(material.mDirectSmelting, mainMultiplier * (QUATERNARY99_MULTIPLIER * 2) * probability);
+            outputMap.add(MU.directSmelting(material), mainMultiplier * (QUATERNARY99_MULTIPLIER * 2) * probability);
         else if (MU.hasFlag(material, GTMaterialFlag.WASHING_MERCURY))
-            outputMap.add(material.mDirectSmelting, mainMultiplier * (QUATERNARY_MULTIPLIER * 2) * probability);
+            outputMap.add(MU.directSmelting(material), mainMultiplier * (QUATERNARY_MULTIPLIER * 2) * probability);
         else if (MU.hasFlag(material, GTMaterialFlag.WASHING_SODIUMPERSULFATE))
-            outputMap.add(material.mDirectSmelting, mainMultiplier * (QUATERNARY_MULTIPLIER * 2) * probability);
+            outputMap.add(MU.directSmelting(material), mainMultiplier * (QUATERNARY_MULTIPLIER * 2) * probability);
 
         int index = 0;
         for (Materials byProductMaterial : material.mOreByProducts) {
             if (index < 3) outputMap
-                .add(byProductMaterial.mDirectSmelting, mainMultiplier * (ORE_MULTIPLIER[index] * 2) * probability);
+                .add(MU.directSmelting(byProductMaterial), mainMultiplier * (ORE_MULTIPLIER[index] * 2) * probability);
             // For Materials that index is > 3, normally they will not be used (unless using Chem bath).
 
             if (byProductMaterial.mMaterialInto == material.mMaterialInto) continue;
 
             // Will never duplicate since mOreByProducts does not support duplicate.
-            if (MU.hasFlag(byProductMaterial, GTMaterialFlag.WASHING_MERCURY_99_PERCENT)) outputMap
-                .add(byProductMaterial.mDirectSmelting, mainMultiplier * (QUATERNARY99_MULTIPLIER * 2) * probability);
+            if (MU.hasFlag(byProductMaterial, GTMaterialFlag.WASHING_MERCURY_99_PERCENT)) outputMap.add(
+                MU.directSmelting(byProductMaterial),
+                mainMultiplier * (QUATERNARY99_MULTIPLIER * 2) * probability);
             else if (MU.hasFlag(byProductMaterial, GTMaterialFlag.WASHING_MERCURY)) outputMap
-                .add(byProductMaterial.mDirectSmelting, mainMultiplier * (QUATERNARY_MULTIPLIER * 2) * probability);
+                .add(MU.directSmelting(byProductMaterial), mainMultiplier * (QUATERNARY_MULTIPLIER * 2) * probability);
             else if (MU.hasFlag(byProductMaterial, GTMaterialFlag.WASHING_SODIUMPERSULFATE)) outputMap
-                .add(byProductMaterial.mDirectSmelting, mainMultiplier * (QUATERNARY_MULTIPLIER * 2) * probability);
+                .add(MU.directSmelting(byProductMaterial), mainMultiplier * (QUATERNARY_MULTIPLIER * 2) * probability);
             else if (index >= 3) outputMap
-                .add(byProductMaterial.mDirectSmelting, mainMultiplier * (QUATERNARY_MULTIPLIER * 2) * probability);
+                .add(MU.directSmelting(byProductMaterial), mainMultiplier * (QUATERNARY_MULTIPLIER * 2) * probability);
             // EOH is better than other ore processing so it can get products that normally cannot get.
 
             index++;
@@ -458,8 +459,8 @@ public class EyeOfHarmonyRecipe {
 
         for (int i = index; i < 3; i++) {
             Materials byProductMaterial = GTUtility
-                .selectItemInList(i, material.mMacerateInto, material.mOreByProducts);
-            outputMap.add(byProductMaterial.mDirectSmelting, mainMultiplier * (ORE_MULTIPLIER[i] * 2) * probability);
+                .selectItemInList(i, MU.macerateInto(material), material.mOreByProducts);
+            outputMap.add(MU.directSmelting(byProductMaterial), mainMultiplier * (ORE_MULTIPLIER[i] * 2) * probability);
             // Since it's duplicate, do not check if it can Mercury/chem bath.
         }
     }
