@@ -4,7 +4,9 @@ import gregtech.api.util.CustomGlyphs;
 import net.minecraft.util.EnumChatFormatting;
 
 import java.lang.annotation.*;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 import java.util.function.Function;
 
 /**
@@ -104,6 +106,18 @@ public final class TooltipMacroRepository {
     );
 
     /**
+     * A collection of color macros for readability purposes only.
+     *
+     * @see EnumChatFormatting
+     */
+    @Transform(contract = "%s, color -> color%s")
+    public static final List<TooltipMacroProcessor> COLORS = Arrays.stream(EnumChatFormatting.values())
+        .map(e -> TooltipMacroProcessor.of(
+            e.name().toLowerCase(Locale.ROOT), str -> e + str
+        ))
+        .toList();
+
+    /**
      * A collection of modifier-related macros.
      *
      * @see TooltipMacroRepository#POSITIVE
@@ -167,6 +181,12 @@ public final class TooltipMacroRepository {
     /**
      * Annotation providing a general overview on how a text may
      * be transformed.
+     * <br />
+     * Value contract loosely follows the format:
+     * {@code <param> -> <transformation>},
+     * <br />
+     * The field {@code param} can be any value, though conventionally uses {@code %s}
+     * as the input string.
      */
     @Documented
     @Retention(RetentionPolicy.SOURCE)
