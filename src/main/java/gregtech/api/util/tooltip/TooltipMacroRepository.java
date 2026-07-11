@@ -24,7 +24,7 @@ public final class TooltipMacroRepository {
      * A macro that returns the input text itself.
      */
     @Transform(contract = "%s -> %s")
-    public static TooltipMacroProcessor LITERAL = TooltipMacroProcessor.of(
+    public static final TooltipMacroProcessor LITERAL = TooltipMacroProcessor.of(
         "literal", Function.identity()
     );
 
@@ -32,7 +32,7 @@ public final class TooltipMacroRepository {
      * A macro that formats "Heat"
      */
     @Transform(contract = "%s -> §c\uE100%sK")
-    public static TooltipMacroProcessor HEAT = TooltipMacroProcessor.of(
+    public static final TooltipMacroProcessor HEAT = TooltipMacroProcessor.of(
         "heat", s -> EnumChatFormatting.RED + CustomGlyphs.HEAT + s + "K"
     );
 
@@ -40,7 +40,7 @@ public final class TooltipMacroRepository {
      * A macro that formats "Parallel", supports singular and plural terms
      */
     @Transform(contract = "%s -> §6\uE101%s Parallel", supportPlural = true)
-    public static TooltipMacroProcessor PARALLEL = TooltipMacroProcessor.of(
+    public static final TooltipMacroProcessor PARALLEL = TooltipMacroProcessor.of(
         "parallel", s -> EnumChatFormatting.GOLD + CustomGlyphs.PARALLEL + s + " Parallel" + ("1".equals(s) ? "" : "s")
     );
 
@@ -48,7 +48,7 @@ public final class TooltipMacroRepository {
      * A macro that formats "Pollution"
      */
     @Transform(contract = "%s -> §5\uE103§r%s Pollution/s")
-    public static TooltipMacroProcessor POLLUTION = TooltipMacroProcessor.of(
+    public static final TooltipMacroProcessor POLLUTION = TooltipMacroProcessor.of(
         "pollution", s -> EnumChatFormatting.DARK_PURPLE + CustomGlyphs.POISON
         + EnumChatFormatting.RESET + s + " Pollution/s"
     );
@@ -58,7 +58,7 @@ public final class TooltipMacroRepository {
      * @apiNote This does not format input <b>material</b>
      */
     @Transform(contract = "%s -> §9\uE104%s")
-    public static TooltipMacroProcessor FLUID = TooltipMacroProcessor.of(
+    public static final TooltipMacroProcessor FLUID = TooltipMacroProcessor.of(
         "fluid", s -> EnumChatFormatting.BLUE + CustomGlyphs.POTION + s
     );
 
@@ -67,7 +67,7 @@ public final class TooltipMacroRepository {
      * @apiNote This processor does not take an argument.
      */
     @Transform(contract = "_ -> §b\uE105Speed")
-    public static TooltipMacroProcessor SPEED = TooltipMacroProcessor.of(
+    public static final TooltipMacroProcessor SPEED = TooltipMacroProcessor.of(
         "speed", _ -> EnumChatFormatting.AQUA + CustomGlyphs.SPEED + "Speed"
     );
 
@@ -75,7 +75,7 @@ public final class TooltipMacroRepository {
      * A macro that formats special attributes
      */
     @Transform(contract = "%s -> §d%s")
-    public static TooltipMacroProcessor SPECIAL = TooltipMacroProcessor.of(
+    public static final TooltipMacroProcessor SPECIAL = TooltipMacroProcessor.of(
         "special", s -> EnumChatFormatting.LIGHT_PURPLE + s
     );
 
@@ -83,7 +83,7 @@ public final class TooltipMacroRepository {
      * A macro that formats timespan.
      */
     @Transform(contract = "%s -> §e\uE108%s")
-    public static TooltipMacroProcessor INTERVAL = TooltipMacroProcessor.of(
+    public static final TooltipMacroProcessor INTERVAL = TooltipMacroProcessor.of(
         "interval", s -> EnumChatFormatting.YELLOW + CustomGlyphs.TIME + s
     );
 
@@ -91,7 +91,7 @@ public final class TooltipMacroRepository {
      * A macro that formats positive attributes.
      */
     @Transform(contract = "%s -> §a%s")
-    public static TooltipMacroProcessor POSITIVE = TooltipMacroProcessor.of(
+    public static final TooltipMacroProcessor POSITIVE = TooltipMacroProcessor.of(
         "positive", s -> EnumChatFormatting.GREEN + s
     );
 
@@ -99,7 +99,7 @@ public final class TooltipMacroRepository {
      * A macro that formats negative attributes.
      */
     @Transform(contract = "%s -> §c%s")
-    public static TooltipMacroProcessor NEGATIVE = TooltipMacroProcessor.of(
+    public static final TooltipMacroProcessor NEGATIVE = TooltipMacroProcessor.of(
         "negative", s -> EnumChatFormatting.RED + s
     );
 
