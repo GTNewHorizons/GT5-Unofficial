@@ -137,6 +137,7 @@ import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.items.GTGenericBlock;
 import gregtech.api.items.GTGenericItem;
 import gregtech.api.material.GTMaterialProperties;
+import gregtech.api.material.MU;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.recipe.RecipeMap;
@@ -416,7 +417,7 @@ public class PlatinumSludgeOverHaul {
             .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Platinum, Materials2Shapes.shapeNugget, (int) (2)))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_MV)
-            .metadata(COIL_HEAT, Materials.Platinum.mMeltingPoint)
+            .metadata(COIL_HEAT, MU.meltingPoint(Materials.Platinum))
             .addTo(blastFurnaceRecipes);
 
         GTValues.RA.stdBuilder()
