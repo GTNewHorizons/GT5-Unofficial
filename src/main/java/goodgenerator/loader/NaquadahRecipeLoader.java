@@ -468,7 +468,11 @@ public class NaquadahReworkRecipeLoader {
         CrackRecipeAdder.addUniversalDistillationRecipe(
             GGMaterial.lowQualityNaquadriaSolution.getFluidOrGas(7_000),
             new FluidStack[] { GGMaterial.P507.getFluidOrGas(1_000),
-                GGMaterial.naquadriaRichSolution.getFluidOrGas(5_400), Materials.DilutedSulfuricAcid.getFluid(12_000) },
+                GGMaterial.naquadriaRichSolution.getFluidOrGas(5_400),
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.DilutedSulfuricAcid,
+                    Materials2FluidShapes.shapeFluidLiquid,
+                    (int) (12_000)) },
             GGMaterial.enrichedNaquadahEarth.get(OrePrefixes.dust, 2),
             25 * SECONDS,
             TierEU.RECIPE_IV);
@@ -771,7 +775,9 @@ public class NaquadahReworkRecipeLoader {
                 boolean modified = false;
                 for (int i = 0; i < tRecipe.mOutputs.length; i++) {
                     if (!GTUtility.isStackValid(tRecipe.mOutputs[i])) continue;
-                    if (tRecipe.mOutputs[i].isItemEqual(Materials.Naquadah.getDustTiny(1))) {
+                    if (tRecipe.mOutputs[i].isItemEqual(
+                        MaterialLibAPI
+                            .getStack(Materials2Materials.Naquadah, Materials2Shapes.shapeDustTiny, (int) (1)))) {
                         tRecipe.mOutputs[i] = GTUtility.copyAmount(
                             tRecipe.mOutputs[i].stackSize * 2L,
                             GGMaterial.naquadahEarth.get(OrePrefixes.dustTiny, 1));
@@ -797,45 +803,84 @@ public class NaquadahReworkRecipeLoader {
                 boolean modified = false;
                 for (int i = 0; i < tRecipe.mOutputs.length; i++) {
                     if (!GTUtility.isStackValid(tRecipe.mOutputs[i])) continue;
-                    if (tRecipe.mOutputs[i].isItemEqual(Materials.Naquadah.getDustTiny(1))) {
+                    if (tRecipe.mOutputs[i].isItemEqual(
+                        MaterialLibAPI
+                            .getStack(Materials2Materials.Naquadah, Materials2Shapes.shapeDustTiny, (int) (1)))) {
                         tRecipe.mOutputs[i] = GTUtility.copyAmount(
                             tRecipe.mOutputs[i].stackSize * 2,
                             GGMaterial.naquadahEarth.get(OrePrefixes.dustTiny, 1));
-                    } else if (tRecipe.mOutputs[i].isItemEqual(Materials.NaquadahEnriched.getDustTiny(1))) {
-                        tRecipe.mOutputs[i] = GTUtility.copyAmount(
-                            tRecipe.mOutputs[i].stackSize * 2,
-                            GGMaterial.enrichedNaquadahEarth.get(OrePrefixes.dustTiny, 1));
-                    } else if (tRecipe.mOutputs[i].isItemEqual(Materials.Naquadria.getDustTiny(1))) {
-                        tRecipe.mOutputs[i] = GTUtility.copyAmount(
-                            tRecipe.mOutputs[i].stackSize * 2,
-                            GGMaterial.naquadriaEarth.get(OrePrefixes.dustTiny, 1));
-                    } else if (tRecipe.mOutputs[i].isItemEqual(Materials.Naquadah.getDust(1))) {
-                        tRecipe.mOutputs[i] = GTUtility.copyAmount(
-                            tRecipe.mOutputs[i].stackSize * 2,
-                            GGMaterial.naquadahEarth.get(OrePrefixes.dust, 1));
-                    } else if (tRecipe.mOutputs[i].isItemEqual(Materials.NaquadahEnriched.getDust(1))) {
-                        tRecipe.mOutputs[i] = GTUtility.copyAmount(
-                            tRecipe.mOutputs[i].stackSize * 2,
-                            GGMaterial.enrichedNaquadahEarth.get(OrePrefixes.dust, 1));
-                    } else if (tRecipe.mOutputs[i].isItemEqual(Materials.Naquadria.getDust(1))) {
-                        tRecipe.mOutputs[i] = GTUtility.copyAmount(
-                            tRecipe.mOutputs[i].stackSize * 2,
-                            GGMaterial.naquadriaEarth.get(OrePrefixes.dust, 1));
-                    } else if (tRecipe.mOutputs[i].isItemEqual(Materials.Naquadah.getDustSmall(1))) {
-                        tRecipe.mOutputs[i] = GTUtility.copyAmount(
-                            tRecipe.mOutputs[i].stackSize * 2,
-                            GGMaterial.naquadahEarth.get(OrePrefixes.dustSmall, 1));
-                    } else if (tRecipe.mOutputs[i].isItemEqual(Materials.NaquadahEnriched.getDustSmall(1))) {
-                        tRecipe.mOutputs[i] = GTUtility.copyAmount(
-                            tRecipe.mOutputs[i].stackSize * 2,
-                            GGMaterial.enrichedNaquadahEarth.get(OrePrefixes.dustSmall, 1));
-                    } else if (tRecipe.mOutputs[i].isItemEqual(Materials.Naquadria.getDustSmall(1))) {
-                        tRecipe.mOutputs[i] = GTUtility.copyAmount(
-                            tRecipe.mOutputs[i].stackSize * 2,
-                            GGMaterial.naquadriaEarth.get(OrePrefixes.dustSmall, 1));
-                    } else {
-                        continue;
-                    }
+                    } else if (tRecipe.mOutputs[i].isItemEqual(
+                        MaterialLibAPI.getStack(
+                            Materials2Materials.NaquadahEnriched,
+                            Materials2Shapes.shapeDustTiny,
+                            (int) (1)))) {
+                                tRecipe.mOutputs[i] = GTUtility.copyAmount(
+                                    tRecipe.mOutputs[i].stackSize * 2,
+                                    GGMaterial.enrichedNaquadahEarth.get(OrePrefixes.dustTiny, 1));
+                            } else
+                        if (tRecipe.mOutputs[i].isItemEqual(
+                            MaterialLibAPI
+                                .getStack(Materials2Materials.Naquadria, Materials2Shapes.shapeDustTiny, (int) (1)))) {
+                                    tRecipe.mOutputs[i] = GTUtility.copyAmount(
+                                        tRecipe.mOutputs[i].stackSize * 2,
+                                        GGMaterial.naquadriaEarth.get(OrePrefixes.dustTiny, 1));
+                                } else
+                            if (tRecipe.mOutputs[i].isItemEqual(
+                                MaterialLibAPI
+                                    .getStack(Materials2Materials.Naquadah, Materials2Shapes.shapeDust, (int) (1)))) {
+                                        tRecipe.mOutputs[i] = GTUtility.copyAmount(
+                                            tRecipe.mOutputs[i].stackSize * 2,
+                                            GGMaterial.naquadahEarth.get(OrePrefixes.dust, 1));
+                                    } else
+                                if (tRecipe.mOutputs[i].isItemEqual(
+                                    MaterialLibAPI.getStack(
+                                        Materials2Materials.NaquadahEnriched,
+                                        Materials2Shapes.shapeDust,
+                                        (int) (1)))) {
+                                            tRecipe.mOutputs[i] = GTUtility.copyAmount(
+                                                tRecipe.mOutputs[i].stackSize * 2,
+                                                GGMaterial.enrichedNaquadahEarth.get(OrePrefixes.dust, 1));
+                                        } else
+                                    if (tRecipe.mOutputs[i].isItemEqual(
+                                        MaterialLibAPI.getStack(
+                                            Materials2Materials.Naquadria,
+                                            Materials2Shapes.shapeDust,
+                                            (int) (1)))) {
+                                                tRecipe.mOutputs[i] = GTUtility.copyAmount(
+                                                    tRecipe.mOutputs[i].stackSize * 2,
+                                                    GGMaterial.naquadriaEarth.get(OrePrefixes.dust, 1));
+                                            } else
+                                        if (tRecipe.mOutputs[i].isItemEqual(
+                                            MaterialLibAPI.getStack(
+                                                Materials2Materials.Naquadah,
+                                                Materials2Shapes.shapeDustSmall,
+                                                (int) (1)))) {
+                                                    tRecipe.mOutputs[i] = GTUtility.copyAmount(
+                                                        tRecipe.mOutputs[i].stackSize * 2,
+                                                        GGMaterial.naquadahEarth.get(OrePrefixes.dustSmall, 1));
+                                                } else
+                                            if (tRecipe.mOutputs[i].isItemEqual(
+                                                MaterialLibAPI.getStack(
+                                                    Materials2Materials.NaquadahEnriched,
+                                                    Materials2Shapes.shapeDustSmall,
+                                                    (int) (1)))) {
+                                                        tRecipe.mOutputs[i] = GTUtility.copyAmount(
+                                                            tRecipe.mOutputs[i].stackSize * 2,
+                                                            GGMaterial.enrichedNaquadahEarth
+                                                                .get(OrePrefixes.dustSmall, 1));
+                                                    } else
+                                                if (tRecipe.mOutputs[i].isItemEqual(
+                                                    MaterialLibAPI.getStack(
+                                                        Materials2Materials.Naquadria,
+                                                        Materials2Shapes.shapeDustSmall,
+                                                        (int) (1)))) {
+                                                            tRecipe.mOutputs[i] = GTUtility.copyAmount(
+                                                                tRecipe.mOutputs[i].stackSize * 2,
+                                                                GGMaterial.naquadriaEarth
+                                                                    .get(OrePrefixes.dustSmall, 1));
+                                                        } else {
+                                                            continue;
+                                                        }
 
                     modified = true;
                 }
@@ -894,9 +939,19 @@ public class NaquadahReworkRecipeLoader {
             boolean isAny = false;
             for (int i = 0; i < recipe.mFluidOutputs.length; i++) {
                 if (recipe.mFluidOutputs[i] == null) continue;
-                if (recipe.mFluidOutputs[i].isFluidEqual(Materials.Naquadah.getMolten(1))
-                    || recipe.mFluidOutputs[i].isFluidEqual(Materials.NaquadahEnriched.getMolten(1))
-                    || recipe.mFluidOutputs[i].isFluidEqual(Materials.Naquadria.getMolten(1))) {
+                if (recipe.mFluidOutputs[i].isFluidEqual(
+                    MaterialLibAPI
+                        .getFluidStack(Materials2Materials.Naquadah, Materials2FluidShapes.shapeFluidMolten, (int) (1)))
+                    || recipe.mFluidOutputs[i].isFluidEqual(
+                        MaterialLibAPI.getFluidStack(
+                            Materials2Materials.NaquadahEnriched,
+                            Materials2FluidShapes.shapeFluidMolten,
+                            (int) (1)))
+                    || recipe.mFluidOutputs[i].isFluidEqual(
+                        MaterialLibAPI.getFluidStack(
+                            Materials2Materials.Naquadria,
+                            Materials2FluidShapes.shapeFluidMolten,
+                            (int) (1)))) {
                     isAny = true;
                     break;
                 }
@@ -906,18 +961,31 @@ public class NaquadahReworkRecipeLoader {
             boolean modified = false;
             for (int i = 0; i < recipe.mFluidOutputs.length; i++) {
                 if (recipe.mFluidOutputs[i] == null) continue;
-                if (recipe.mFluidOutputs[i].isFluidEqual(Materials.Naquadah.getMolten(1))) {
+                if (recipe.mFluidOutputs[i].isFluidEqual(
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.Naquadah,
+                        Materials2FluidShapes.shapeFluidMolten,
+                        (int) (1)))) {
                     tRecipe.mFluidOutputs[i] = GGMaterial.naquadahGoo.getFluidOrGas(recipe.mFluidOutputs[i].amount * 2);
                     modified = true;
-                } else if (recipe.mFluidOutputs[i].isFluidEqual(Materials.NaquadahEnriched.getMolten(1))) {
-                    tRecipe.mFluidOutputs[i] = GGMaterial.enrichedNaquadahGoo
-                        .getFluidOrGas(recipe.mFluidOutputs[i].amount * 2);
-                    modified = true;
-                } else if (recipe.mFluidOutputs[i].isFluidEqual(Materials.Naquadria.getMolten(1))) {
-                    tRecipe.mFluidOutputs[i] = GGMaterial.naquadriaGoo
-                        .getFluidOrGas(recipe.mFluidOutputs[i].amount * 2);
-                    modified = true;
-                }
+                } else if (recipe.mFluidOutputs[i].isFluidEqual(
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.NaquadahEnriched,
+                        Materials2FluidShapes.shapeFluidMolten,
+                        (int) (1)))) {
+                            tRecipe.mFluidOutputs[i] = GGMaterial.enrichedNaquadahGoo
+                                .getFluidOrGas(recipe.mFluidOutputs[i].amount * 2);
+                            modified = true;
+                        } else
+                    if (recipe.mFluidOutputs[i].isFluidEqual(
+                        MaterialLibAPI.getFluidStack(
+                            Materials2Materials.Naquadria,
+                            Materials2FluidShapes.shapeFluidMolten,
+                            (int) (1)))) {
+                                tRecipe.mFluidOutputs[i] = GGMaterial.naquadriaGoo
+                                    .getFluidOrGas(recipe.mFluidOutputs[i].amount * 2);
+                                modified = true;
+                            }
             }
             if (modified) {
                 GTLog.err.println("recipe edited: " + displayRecipe(tRecipe));
@@ -944,9 +1012,19 @@ public class NaquadahReworkRecipeLoader {
             boolean isAny = false;
             for (int i = 0; i < recipe.mFluidOutputs.length; i++) {
                 if (recipe.mFluidOutputs[i] == null) continue;
-                if (recipe.mFluidOutputs[i].isFluidEqual(Materials.Naquadah.getMolten(1))
-                    || recipe.mFluidOutputs[i].isFluidEqual(Materials.NaquadahEnriched.getMolten(1))
-                    || recipe.mFluidOutputs[i].isFluidEqual(Materials.Naquadria.getMolten(1))) {
+                if (recipe.mFluidOutputs[i].isFluidEqual(
+                    MaterialLibAPI
+                        .getFluidStack(Materials2Materials.Naquadah, Materials2FluidShapes.shapeFluidMolten, (int) (1)))
+                    || recipe.mFluidOutputs[i].isFluidEqual(
+                        MaterialLibAPI.getFluidStack(
+                            Materials2Materials.NaquadahEnriched,
+                            Materials2FluidShapes.shapeFluidMolten,
+                            (int) (1)))
+                    || recipe.mFluidOutputs[i].isFluidEqual(
+                        MaterialLibAPI.getFluidStack(
+                            Materials2Materials.Naquadria,
+                            Materials2FluidShapes.shapeFluidMolten,
+                            (int) (1)))) {
                     isAny = true;
                     break;
                 }
@@ -956,18 +1034,31 @@ public class NaquadahReworkRecipeLoader {
             boolean modified = false;
             for (int i = 0; i < recipe.mFluidOutputs.length; i++) {
                 if (recipe.mFluidOutputs[i] == null) continue;
-                if (recipe.mFluidOutputs[i].isFluidEqual(Materials.Naquadah.getMolten(1))) {
+                if (recipe.mFluidOutputs[i].isFluidEqual(
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.Naquadah,
+                        Materials2FluidShapes.shapeFluidMolten,
+                        (int) (1)))) {
                     tRecipe.mFluidOutputs[i] = GGMaterial.naquadahGoo.getFluidOrGas(recipe.mFluidOutputs[i].amount * 2);
                     modified = true;
-                } else if (recipe.mFluidOutputs[i].isFluidEqual(Materials.NaquadahEnriched.getMolten(1))) {
-                    tRecipe.mFluidOutputs[i] = GGMaterial.enrichedNaquadahGoo
-                        .getFluidOrGas(recipe.mFluidOutputs[i].amount * 2);
-                    modified = true;
-                } else if (recipe.mFluidOutputs[i].isFluidEqual(Materials.Naquadria.getMolten(1))) {
-                    tRecipe.mFluidOutputs[i] = GGMaterial.naquadriaGoo
-                        .getFluidOrGas(recipe.mFluidOutputs[i].amount * 2);
-                    modified = true;
-                }
+                } else if (recipe.mFluidOutputs[i].isFluidEqual(
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.NaquadahEnriched,
+                        Materials2FluidShapes.shapeFluidMolten,
+                        (int) (1)))) {
+                            tRecipe.mFluidOutputs[i] = GGMaterial.enrichedNaquadahGoo
+                                .getFluidOrGas(recipe.mFluidOutputs[i].amount * 2);
+                            modified = true;
+                        } else
+                    if (recipe.mFluidOutputs[i].isFluidEqual(
+                        MaterialLibAPI.getFluidStack(
+                            Materials2Materials.Naquadria,
+                            Materials2FluidShapes.shapeFluidMolten,
+                            (int) (1)))) {
+                                tRecipe.mFluidOutputs[i] = GGMaterial.naquadriaGoo
+                                    .getFluidOrGas(recipe.mFluidOutputs[i].amount * 2);
+                                modified = true;
+                            }
             }
             if (modified) {
                 GTLog.err.println("recipe edited: " + displayRecipe(tRecipe));
@@ -1001,22 +1092,28 @@ public class NaquadahReworkRecipeLoader {
                 boolean modified = false;
                 for (int i = 0; i < tRecipe.mOutputs.length; i++) {
                     if (!GTUtility.isStackValid(tRecipe.mOutputs[i])) continue;
-                    if (tRecipe.mOutputs[i].isItemEqual(Materials.Naquadah.getDust(1))) {
+                    if (tRecipe.mOutputs[i].isItemEqual(
+                        MaterialLibAPI.getStack(Materials2Materials.Naquadah, Materials2Shapes.shapeDust, (int) (1)))) {
                         tRecipe.mOutputs[i] = GTUtility.copyAmount(
                             tRecipe.mOutputs[i].stackSize,
                             GGMaterial.naquadahEarth.get(OrePrefixes.dust, 1));
                         modified = true;
-                    } else if (tRecipe.mOutputs[i].isItemEqual(Materials.NaquadahEnriched.getDust(1))) {
-                        tRecipe.mOutputs[i] = GTUtility.copyAmount(
-                            tRecipe.mOutputs[i].stackSize,
-                            GGMaterial.enrichedNaquadahEarth.get(OrePrefixes.dust, 1));
-                        modified = true;
-                    } else if (tRecipe.mOutputs[i].isItemEqual(Materials.Naquadria.getDust(1))) {
-                        tRecipe.mOutputs[i] = GTUtility.copyAmount(
-                            tRecipe.mOutputs[i].stackSize,
-                            GGMaterial.naquadriaEarth.get(OrePrefixes.dust, 1));
-                        modified = true;
-                    }
+                    } else if (tRecipe.mOutputs[i].isItemEqual(
+                        MaterialLibAPI
+                            .getStack(Materials2Materials.NaquadahEnriched, Materials2Shapes.shapeDust, (int) (1)))) {
+                                tRecipe.mOutputs[i] = GTUtility.copyAmount(
+                                    tRecipe.mOutputs[i].stackSize,
+                                    GGMaterial.enrichedNaquadahEarth.get(OrePrefixes.dust, 1));
+                                modified = true;
+                            } else
+                        if (tRecipe.mOutputs[i].isItemEqual(
+                            MaterialLibAPI
+                                .getStack(Materials2Materials.Naquadria, Materials2Shapes.shapeDust, (int) (1)))) {
+                                    tRecipe.mOutputs[i] = GTUtility.copyAmount(
+                                        tRecipe.mOutputs[i].stackSize,
+                                        GGMaterial.naquadriaEarth.get(OrePrefixes.dust, 1));
+                                    modified = true;
+                                }
                 }
                 if (modified) {
                     GTLog.err.println("recipe edited: " + displayRecipe(tRecipe));
@@ -1062,20 +1159,24 @@ public class NaquadahReworkRecipeLoader {
         boolean modified = false;
         for (int i = 0; i < tRecipe.mOutputs.length; i++) {
             if (!GTUtility.isStackValid(tRecipe.mOutputs[i])) continue;
-            if (tRecipe.mOutputs[i].isItemEqual(Materials.Naquadah.getDust(1))) {
+            if (tRecipe.mOutputs[i].isItemEqual(
+                MaterialLibAPI.getStack(Materials2Materials.Naquadah, Materials2Shapes.shapeDust, (int) (1)))) {
                 tRecipe.mOutputs[i] = GTUtility
                     .copyAmount(tRecipe.mOutputs[i].stackSize * 2, GGMaterial.naquadahEarth.get(OrePrefixes.dust, 1));
                 modified = true;
-            } else if (tRecipe.mOutputs[i].isItemEqual(Materials.NaquadahEnriched.getDust(1))) {
-                tRecipe.mOutputs[i] = GTUtility.copyAmount(
-                    tRecipe.mOutputs[i].stackSize * 2,
-                    GGMaterial.enrichedNaquadahEarth.get(OrePrefixes.dust, 1));
-                modified = true;
-            } else if (tRecipe.mOutputs[i].isItemEqual(Materials.Naquadria.getDust(1))) {
-                tRecipe.mOutputs[i] = GTUtility
-                    .copyAmount(tRecipe.mOutputs[i].stackSize * 2, GGMaterial.naquadriaEarth.get(OrePrefixes.dust, 1));
-                modified = true;
-            }
+            } else if (tRecipe.mOutputs[i].isItemEqual(
+                MaterialLibAPI.getStack(Materials2Materials.NaquadahEnriched, Materials2Shapes.shapeDust, (int) (1)))) {
+                    tRecipe.mOutputs[i] = GTUtility.copyAmount(
+                        tRecipe.mOutputs[i].stackSize * 2,
+                        GGMaterial.enrichedNaquadahEarth.get(OrePrefixes.dust, 1));
+                    modified = true;
+                } else if (tRecipe.mOutputs[i].isItemEqual(
+                    MaterialLibAPI.getStack(Materials2Materials.Naquadria, Materials2Shapes.shapeDust, (int) (1)))) {
+                        tRecipe.mOutputs[i] = GTUtility.copyAmount(
+                            tRecipe.mOutputs[i].stackSize * 2,
+                            GGMaterial.naquadriaEarth.get(OrePrefixes.dust, 1));
+                        modified = true;
+                    }
         }
         if (modified) {
             GTLog.err.println("recipe edited: " + displayRecipe(tRecipe));
@@ -1093,21 +1194,30 @@ public class NaquadahReworkRecipeLoader {
 
         Object input = mutableRecipe.gt5u$getRecipeInputs();
 
-        if (GTUtility.areStacksEqual(result, Materials.Naquadah.getDust(1), true)) {
+        if (GTUtility.areStacksEqual(
+            result,
+            MaterialLibAPI.getStack(Materials2Materials.Naquadah, Materials2Shapes.shapeDust, (int) (1)),
+            true)) {
             if (PlatinumSludgeOverHaul.checkRecipe(input, Materials.Naquadah)) {
                 return;
             }
             mutableRecipe.gt5u$setRecipeOutputItem(GGMaterial.naquadahEarth.get(OrePrefixes.dust, 2));
-        } else if (GTUtility.areStacksEqual(result, Materials.NaquadahEnriched.getDust(1), true)) {
-            if (PlatinumSludgeOverHaul.checkRecipe(input, Materials.NaquadahEnriched)) {
-                return;
-            }
-            mutableRecipe.gt5u$setRecipeOutputItem(GGMaterial.enrichedNaquadahEarth.get(OrePrefixes.dust, 2));
-        } else if (GTUtility.areStacksEqual(result, Materials.Naquadria.getDust(1), true)) {
-            if (PlatinumSludgeOverHaul.checkRecipe(input, Materials.Naquadria)) {
-                return;
-            }
-            mutableRecipe.gt5u$setRecipeOutputItem(GGMaterial.naquadriaEarth.get(OrePrefixes.dust, 2));
-        }
+        } else if (GTUtility.areStacksEqual(
+            result,
+            MaterialLibAPI.getStack(Materials2Materials.NaquadahEnriched, Materials2Shapes.shapeDust, (int) (1)),
+            true)) {
+                if (PlatinumSludgeOverHaul.checkRecipe(input, Materials.NaquadahEnriched)) {
+                    return;
+                }
+                mutableRecipe.gt5u$setRecipeOutputItem(GGMaterial.enrichedNaquadahEarth.get(OrePrefixes.dust, 2));
+            } else if (GTUtility.areStacksEqual(
+                result,
+                MaterialLibAPI.getStack(Materials2Materials.Naquadria, Materials2Shapes.shapeDust, (int) (1)),
+                true)) {
+                    if (PlatinumSludgeOverHaul.checkRecipe(input, Materials.Naquadria)) {
+                        return;
+                    }
+                    mutableRecipe.gt5u$setRecipeOutputItem(GGMaterial.naquadriaEarth.get(OrePrefixes.dust, 2));
+                }
     }
 }

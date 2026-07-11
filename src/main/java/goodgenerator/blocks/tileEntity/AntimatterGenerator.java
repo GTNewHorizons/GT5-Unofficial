@@ -35,7 +35,6 @@ import goodgenerator.blocks.structures.AntimatterStructures;
 import goodgenerator.loader.Loaders;
 import gregtech.api.GregTechAPI;
 import gregtech.api.enums.HatchElement;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
@@ -158,11 +157,20 @@ public class AntimatterGenerator extends MTEExtendedPowerMultiBlockBase<Antimatt
         if (catalyst.isFluidEqual(
             MaterialLibAPI.getFluidStack(Materials2Materials.Copper, Materials2FluidShapes.shapeFluidMolten, 1))) {
             modifier = 1.0F;
-        } else if (catalyst.isFluidEqual(Materials.SuperconductorUIVBase.getMolten(1L))) {
-            modifier = 1.02F;
-        } else if (catalyst.isFluidEqual(Materials.SuperconductorUMVBase.getMolten(1L))) {
-            modifier = 1.03F;
-        }
+        } else if (catalyst.isFluidEqual(
+            MaterialLibAPI.getFluidStack(
+                Materials2Materials.SuperconductorUIVBase,
+                Materials2FluidShapes.shapeFluidMolten,
+                (int) (1)))) {
+                    modifier = 1.02F;
+                } else
+            if (catalyst.isFluidEqual(
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.SuperconductorUMVBase,
+                    Materials2FluidShapes.shapeFluidMolten,
+                    (int) (1)))) {
+                        modifier = 1.03F;
+                    }
         long catalystCount = catalyst.amount;
         long generatedEU = 0;
 
