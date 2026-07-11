@@ -9,9 +9,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 
 import com.gtnewhorizon.gtnhlib.util.font.GlyphReplacements;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+import com.ruling_0.materiallib.api.ShapeBlock;
+import com.ruling_0.materiallib.api.ShapeItem;
 
 import codechicken.nei.ItemStackMap;
 import codechicken.nei.api.ItemFilter;
+import gregtech.api.material.MaterialFormulas;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.core.material.Material;
@@ -115,6 +119,13 @@ public class ChemicalFormulaFilter implements ItemFilter {
     }
 
     private static String getChemicalFormula(ItemStack itemstack) {
+
+        if (itemstack.getItem() instanceof ShapeItem || itemstack.getItem() instanceof ShapeBlock.ShapeBlockItem) {
+            com.ruling_0.materiallib.api.Material material = MaterialLibAPI
+                .getMaterialByIndex(itemstack.getItemDamage());
+            String formula = MaterialFormulas.forSearch(material);
+            if (formula != null) return formula;
+        }
 
         ItemData data = GTOreDictUnificator.getAssociation(itemstack);
         if (data != null) {
