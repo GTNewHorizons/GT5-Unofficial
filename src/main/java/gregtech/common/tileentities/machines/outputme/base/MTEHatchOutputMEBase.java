@@ -419,7 +419,7 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>> {
     long lastOutputTick = 0;
     long lastInputTick = 0;
     long tickCounter = 0;
-    private long lastAvailableSpace = 0;
+    private long lastPhysicalSpace = 0;
 
     public final long getTickCounter() {
         return tickCounter;
@@ -473,11 +473,11 @@ public abstract class MTEHatchOutputMEBase<T extends IAEStack<T>> {
             // When free space grows (cache flushed to the network, a fuller cell drained, or capacity increased) a
             // recipe blocked on output-full can run again. Comparing the actual amount works in check mode too, where
             // hasAvailableSpace() stays true even as the remaining space jumps from e.g. 1 to 1000.
-            long availableSpace = getAvailableSpace();
-            if (availableSpace > lastAvailableSpace) {
+            long physicalSpace = getPhysicalSpace();
+            if (physicalSpace > lastPhysicalSpace) {
                 env.notifyOutputSpaceChanged();
             }
-            lastAvailableSpace = availableSpace;
+            lastPhysicalSpace = physicalSpace;
         }
     }
 
