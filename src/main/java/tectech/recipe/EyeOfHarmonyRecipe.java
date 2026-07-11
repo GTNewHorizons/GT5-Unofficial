@@ -27,11 +27,12 @@ import gnu.trove.map.TMap;
 import gnu.trove.map.hash.TCustomHashMap;
 import gnu.trove.strategy.HashingStrategy;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.SubTag;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.interfaces.IOreMaterial;
+import gregtech.api.material.GTMaterialFlag;
+import gregtech.api.material.MU;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialStack;
@@ -410,27 +411,27 @@ public class EyeOfHarmonyRecipe {
         if (material == null) return;
         outputMap.add(material.mDirectSmelting, (material.mOreMultiplier * 2) * mainMultiplier * probability);
 
-        if (material.contains(SubTag.ELECTROMAGNETIC_SEPERATION_GOLD))
+        if (MU.hasFlag(material, GTMaterialFlag.ELECTROMAGNETIC_SEPERATION_GOLD))
             outputMap.add(Materials.Gold, mainMultiplier * (ELECTROMAGNETIC_MULTIPLIER * 2) * probability);
-        if (material.contains(SubTag.ELECTROMAGNETIC_SEPERATION_IRON))
+        if (MU.hasFlag(material, GTMaterialFlag.ELECTROMAGNETIC_SEPERATION_IRON))
             outputMap.add(Materials.Iron, mainMultiplier * (ELECTROMAGNETIC_MULTIPLIER * 2) * probability);
-        if (material.contains(SubTag.ELECTROMAGNETIC_SEPERATION_NEODYMIUM))
+        if (MU.hasFlag(material, GTMaterialFlag.ELECTROMAGNETIC_SEPERATION_NEODYMIUM))
             outputMap.add(Materials.Neodymium, mainMultiplier * (ELECTROMAGNETIC_MULTIPLIER * 2) * probability);
 
         if (material.mOreByProducts.size() == 0) {
-            if (material.contains(SubTag.WASHING_MERCURY_99_PERCENT))
+            if (MU.hasFlag(material, GTMaterialFlag.WASHING_MERCURY_99_PERCENT))
                 outputMap.add(material.mDirectSmelting, mainMultiplier * (QUATERNARY99_MULTIPLIER * 2) * probability);
-            else if (material.contains(SubTag.WASHING_MERCURY))
+            else if (MU.hasFlag(material, GTMaterialFlag.WASHING_MERCURY))
                 outputMap.add(material.mDirectSmelting, mainMultiplier * (QUATERNARY_MULTIPLIER * 2) * probability);
-            else if (material.contains(SubTag.WASHING_SODIUMPERSULFATE))
+            else if (MU.hasFlag(material, GTMaterialFlag.WASHING_SODIUMPERSULFATE))
                 outputMap.add(material.mDirectSmelting, mainMultiplier * (QUATERNARY_MULTIPLIER * 2) * probability);
         }
 
-        if (material.contains(SubTag.WASHING_MERCURY_99_PERCENT))
+        if (MU.hasFlag(material, GTMaterialFlag.WASHING_MERCURY_99_PERCENT))
             outputMap.add(material.mDirectSmelting, mainMultiplier * (QUATERNARY99_MULTIPLIER * 2) * probability);
-        else if (material.contains(SubTag.WASHING_MERCURY))
+        else if (MU.hasFlag(material, GTMaterialFlag.WASHING_MERCURY))
             outputMap.add(material.mDirectSmelting, mainMultiplier * (QUATERNARY_MULTIPLIER * 2) * probability);
-        else if (material.contains(SubTag.WASHING_SODIUMPERSULFATE))
+        else if (MU.hasFlag(material, GTMaterialFlag.WASHING_SODIUMPERSULFATE))
             outputMap.add(material.mDirectSmelting, mainMultiplier * (QUATERNARY_MULTIPLIER * 2) * probability);
 
         int index = 0;
@@ -442,11 +443,11 @@ public class EyeOfHarmonyRecipe {
             if (byProductMaterial.mMaterialInto == material.mMaterialInto) continue;
 
             // Will never duplicate since mOreByProducts does not support duplicate.
-            if (byProductMaterial.contains(SubTag.WASHING_MERCURY_99_PERCENT)) outputMap
+            if (MU.hasFlag(byProductMaterial, GTMaterialFlag.WASHING_MERCURY_99_PERCENT)) outputMap
                 .add(byProductMaterial.mDirectSmelting, mainMultiplier * (QUATERNARY99_MULTIPLIER * 2) * probability);
-            else if (byProductMaterial.contains(SubTag.WASHING_MERCURY)) outputMap
+            else if (MU.hasFlag(byProductMaterial, GTMaterialFlag.WASHING_MERCURY)) outputMap
                 .add(byProductMaterial.mDirectSmelting, mainMultiplier * (QUATERNARY_MULTIPLIER * 2) * probability);
-            else if (byProductMaterial.contains(SubTag.WASHING_SODIUMPERSULFATE)) outputMap
+            else if (MU.hasFlag(byProductMaterial, GTMaterialFlag.WASHING_SODIUMPERSULFATE)) outputMap
                 .add(byProductMaterial.mDirectSmelting, mainMultiplier * (QUATERNARY_MULTIPLIER * 2) * probability);
             else if (index >= 3) outputMap
                 .add(byProductMaterial.mDirectSmelting, mainMultiplier * (QUATERNARY_MULTIPLIER * 2) * probability);
