@@ -295,7 +295,7 @@ public class RecipeGenOre extends RecipeGenBase {
 
         // Electrolyzer
 
-        if (!disableOptional) {
+        if (!disableOptional && material != MaterialsFluorides.FLUORITE) {
             // Process Dust
             if (!componentMap.isEmpty() && componentMap.size() <= 6) {
 

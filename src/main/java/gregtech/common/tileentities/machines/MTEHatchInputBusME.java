@@ -532,6 +532,8 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
             for (int i = 0; i < stockingItems.tagCount(); i++) {
                 slots[i] = new Slot(GTUtility.loadItem(stockingItems.getCompoundTagAt(i)));
             }
+            // The writes above bypass setSlotConfig, so re-sync the AE stack watcher with the pasted config.
+            configureWatchers();
         }
 
         updateValidGridProxySides();
@@ -775,6 +777,9 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
 
     public void setSlotConfig(int index, ItemStack config) {
         slots[index] = config == null ? null : new Slot(config.copy());
+        // Keep the AE stack watcher in sync, or a bus configured after joining the grid never gets onStackChange for
+        // the new item and a machine idling on it never wakes when the network restocks.
+        configureWatchers();
     }
 
     /**
@@ -804,6 +809,7 @@ public class MTEHatchInputBusME extends MTEHatchInputBus implements IRecipeProce
 
     protected void clearSlotConfigs() {
         Arrays.fill(slots, null);
+        configureWatchers();
     }
 
     protected void clearExtractedStacks() {
