@@ -13,12 +13,15 @@ import java.util.ArrayList;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.material.MU;
@@ -1087,7 +1090,11 @@ public class GregtechConduits {
                 .itemInputs(aWire01)
                 .circuit(24)
                 .itemOutputs(aCable01)
-                .fluidInputs(Materials.Rubber.getMolten(1 * INGOTS))
+                .fluidInputs(
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.Rubber,
+                        Materials2FluidShapes.shapeFluidMolten,
+                        (int) (1 * INGOTS)))
                 .duration(5 * SECONDS)
                 .eut(TierEU.RECIPE_ULV)
                 .addTo(assemblerRecipes);
@@ -1100,7 +1107,11 @@ public class GregtechConduits {
                 .itemInputs(aWire02)
                 .circuit(24)
                 .itemOutputs(aCable02)
-                .fluidInputs(Materials.Rubber.getMolten(1 * INGOTS))
+                .fluidInputs(
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.Rubber,
+                        Materials2FluidShapes.shapeFluidMolten,
+                        (int) (1 * INGOTS)))
                 .duration(5 * SECONDS)
                 .eut(TierEU.RECIPE_ULV)
                 .addTo(assemblerRecipes);
@@ -1113,7 +1124,11 @@ public class GregtechConduits {
                 .itemInputs(aWire04)
                 .circuit(24)
                 .itemOutputs(aCable04)
-                .fluidInputs(Materials.Rubber.getMolten(2 * INGOTS))
+                .fluidInputs(
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.Rubber,
+                        Materials2FluidShapes.shapeFluidMolten,
+                        (int) (2 * INGOTS)))
                 .duration(5 * SECONDS)
                 .eut(TierEU.RECIPE_ULV)
                 .addTo(assemblerRecipes);
@@ -1126,7 +1141,11 @@ public class GregtechConduits {
                 .itemInputs(aWire08)
                 .circuit(24)
                 .itemOutputs(aCable08)
-                .fluidInputs(Materials.Rubber.getMolten(3 * INGOTS))
+                .fluidInputs(
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.Rubber,
+                        Materials2FluidShapes.shapeFluidMolten,
+                        (int) (3 * INGOTS)))
                 .duration(5 * SECONDS)
                 .eut(TierEU.RECIPE_ULV)
                 .addTo(assemblerRecipes);
@@ -1139,7 +1158,11 @@ public class GregtechConduits {
                 .itemInputs(aWire12)
                 .circuit(24)
                 .itemOutputs(aCable12)
-                .fluidInputs(Materials.Rubber.getMolten(4 * INGOTS))
+                .fluidInputs(
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.Rubber,
+                        Materials2FluidShapes.shapeFluidMolten,
+                        (int) (4 * INGOTS)))
                 .duration(5 * SECONDS)
                 .eut(TierEU.RECIPE_ULV)
                 .addTo(assemblerRecipes);
@@ -1152,7 +1175,11 @@ public class GregtechConduits {
                 .itemInputs(aWire16)
                 .circuit(24)
                 .itemOutputs(aCable16)
-                .fluidInputs(Materials.Rubber.getMolten(5 * INGOTS))
+                .fluidInputs(
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.Rubber,
+                        Materials2FluidShapes.shapeFluidMolten,
+                        (int) (5 * INGOTS)))
                 .duration(5 * SECONDS)
                 .eut(TierEU.RECIPE_ULV)
                 .addTo(assemblerRecipes);

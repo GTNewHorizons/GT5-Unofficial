@@ -12,9 +12,12 @@ import java.util.ArrayList;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import gregtech.api.enums.GTValues;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.Materials2FluidShapes;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.core.material.nuclear.MaterialsFluorides;
 import gtPlusPlus.core.material.nuclear.MaterialsNuclides;
@@ -29,10 +32,11 @@ public class RecipeLoaderLFTR {
         if (mSpargeGases == null) {
             mSpargeGases = new ArrayList<>();
             mSpargeGases.add(
-                Materials.Helium.getGas(1)
+                MaterialLibAPI.getFluidStack(Materials2Materials.Helium, Materials2FluidShapes.shapeFluidGas, (int) (1))
                     .getFluid());
             mSpargeGases.add(
-                Materials.Fluorine.getGas(1)
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.Fluorine, Materials2FluidShapes.shapeFluidGas, (int) (1))
                     .getFluid());
         }
         if (mNobleGases == null) {
@@ -108,10 +112,14 @@ public class RecipeLoaderLFTR {
         // Sparging Recipes
         // For no randomization, set metadata to 0 with key SPARGE_MAX_BYPRODUCT.
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.Helium.getGas(1_000), MaterialsNuclides.LiFBeF2UF4FP.getFluidStack(50))
+            .fluidInputs(
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.Helium, Materials2FluidShapes.shapeFluidGas, (int) (1_000)),
+                MaterialsNuclides.LiFBeF2UF4FP.getFluidStack(50))
             .fluidOutputs(
                 MaterialsNuclides.Sparged_LiFBeF2UF4FP.getFluidStack(50),
-                Materials.Helium.getGas(0),
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.Helium, Materials2FluidShapes.shapeFluidGas, (int) (0)),
                 new FluidStack(mNobleGases.get(1), 0),
                 new FluidStack(mNobleGases.get(2), 0),
                 new FluidStack(mNobleGases.get(3), 0),
@@ -123,10 +131,14 @@ public class RecipeLoaderLFTR {
             .addTo(spargeTowerRecipes);
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.Fluorine.getGas(100), MaterialsNuclides.LiFThF4.getFluidStack(50))
+            .fluidInputs(
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.Fluorine, Materials2FluidShapes.shapeFluidGas, (int) (100)),
+                MaterialsNuclides.LiFThF4.getFluidStack(50))
             .fluidOutputs(
                 MaterialsNuclides.Sparged_LiFThF4.getFluidStack(50),
-                Materials.Fluorine.getGas(0),
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.Fluorine, Materials2FluidShapes.shapeFluidGas, (int) (0)),
                 new FluidStack(mFluorideGases.get(1), 0),
                 new FluidStack(mFluorideGases.get(2), 0),
                 new FluidStack(mFluorideGases.get(3), 0),
@@ -138,10 +150,14 @@ public class RecipeLoaderLFTR {
             .addTo(spargeTowerRecipes);
 
         GTValues.RA.stdBuilder()
-            .fluidInputs(Materials.Fluorine.getGas(100), MaterialsNuclides.LiFBeF2ThF4.getFluidStack(50))
+            .fluidInputs(
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.Fluorine, Materials2FluidShapes.shapeFluidGas, (int) (100)),
+                MaterialsNuclides.LiFBeF2ThF4.getFluidStack(50))
             .fluidOutputs(
                 MaterialsNuclides.Sparged_LiFBeF2ThF4.getFluidStack(50),
-                Materials.Fluorine.getGas(0),
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.Fluorine, Materials2FluidShapes.shapeFluidGas, (int) (0)),
                 new FluidStack(mFluorideGases.get(1), 0),
                 new FluidStack(mFluorideGases.get(2), 0),
                 new FluidStack(mFluorideGases.get(3), 0),

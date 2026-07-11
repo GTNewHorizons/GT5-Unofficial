@@ -18,12 +18,17 @@ import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 
 import net.minecraftforge.fluids.FluidStack;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import bartworks.common.loaders.ItemRegistry;
 import bartworks.system.material.WerkstoffLoader;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.Materials2FluidShapes;
+import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.core.material.MaterialsAlloy;
 import tectech.recipe.TTRecipeAdder;
@@ -39,9 +44,9 @@ public class TecTechResearchLoader {
             24,
             new Object[] { ItemRegistry.voidminer[0].copy(),
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.BlackPlutonium, 9L),
-                Materials.BlackPlutonium.getPlates(3), ItemList.Electric_Motor_ZPM.get(9L), ItemList.Sensor_ZPM.get(9L),
-                ItemList.Field_Generator_ZPM.get(9L),
-                GTOreDictUnificator.get(OrePrefixes.screw, Materials.BlackPlutonium, 36L) },
+                MaterialLibAPI.getStack(Materials2Materials.BlackPlutonium, Materials2Shapes.shapePlate, (int) (3)),
+                ItemList.Electric_Motor_ZPM.get(9L), ItemList.Sensor_ZPM.get(9L), ItemList.Field_Generator_ZPM.get(9L),
+                MaterialLibAPI.getStack(Materials2Materials.BlackPlutonium, Materials2Shapes.shapeScrew, (int) (36)) },
             new FluidStack[] { MaterialsAlloy.INDALLOY_140.getFluidStack(10 * INGOTS),
                 WerkstoffLoader.Krypton.getFluidOrGas(20_000) },
             ItemRegistry.voidminer[1].copy(),
@@ -57,9 +62,9 @@ public class TecTechResearchLoader {
             64,
             new Object[] { ItemRegistry.voidminer[1].copy(),
                 GTOreDictUnificator.get(OrePrefixes.frameGt, Materials.Neutronium, 9L),
-                Materials.Neutronium.getPlates(3), ItemList.Electric_Motor_UV.get(9L), ItemList.Sensor_UV.get(9L),
-                ItemList.Field_Generator_UV.get(9L),
-                GTOreDictUnificator.get(OrePrefixes.screw, Materials.Neutronium, 36L) },
+                MaterialLibAPI.getStack(Materials2Materials.Neutronium, Materials2Shapes.shapePlate, (int) (3)),
+                ItemList.Electric_Motor_UV.get(9L), ItemList.Sensor_UV.get(9L), ItemList.Field_Generator_UV.get(9L),
+                MaterialLibAPI.getStack(Materials2Materials.Neutronium, Materials2Shapes.shapeScrew, (int) (36)) },
             new FluidStack[] { MaterialsAlloy.INDALLOY_140.getFluidStack(10 * INGOTS),
                 WerkstoffLoader.Oganesson.getFluidOrGas(20_000) },
             ItemRegistry.voidminer[2].copy(),
@@ -74,13 +79,18 @@ public class TecTechResearchLoader {
             (int) TierEU.RECIPE_UV,
             8,
             new Object[] { ItemList.Machine_Multi_ImplosionCompressor.get(1L),
-                GTOreDictUnificator.get(OrePrefixes.plateSuperdense, Materials.Neutronium, 1),
-                GTOreDictUnificator.get(OrePrefixes.stickLong, Materials.Osmium, 64),
-                GTOreDictUnificator.get(OrePrefixes.ring, Materials.Osmium, 64),
+                MaterialLibAPI
+                    .getStack(Materials2Materials.Neutronium, Materials2Shapes.shapePlateSuperdense, (int) (1)),
+                MaterialLibAPI.getStack(Materials2Materials.Osmium, Materials2Shapes.shapeStickLong, (int) (64)),
+                MaterialLibAPI.getStack(Materials2Materials.Osmium, Materials2Shapes.shapeRing, (int) (64)),
                 GTOreDictUnificator.get(OrePrefixes.wireGt01, Materials.SuperconductorUHV, 64),
                 ItemList.Electric_Piston_UV.get(64), },
-            new FluidStack[] { MaterialsAlloy.INDALLOY_140.getFluidStack(10 * INGOTS),
-                Materials.Osmium.getMolten(10 * INGOTS), Materials.Neutronium.getMolten(10 * INGOTS) },
+            new FluidStack[] { MaterialsAlloy.INDALLOY_140.getFluidStack(10 * INGOTS), MaterialLibAPI
+                .getFluidStack(Materials2Materials.Osmium, Materials2FluidShapes.shapeFluidMolten, (int) (10 * INGOTS)),
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.Neutronium,
+                    Materials2FluidShapes.shapeFluidMolten,
+                    (int) (10 * INGOTS)) },
             ItemList.ElectricImplosionCompressor.get(1L),
             2 * MINUTES,
             (int) TierEU.RECIPE_UV);
