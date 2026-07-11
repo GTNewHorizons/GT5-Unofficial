@@ -323,12 +323,15 @@ public class GTModHandler {
     public static ItemStack getIC2Item(String aItem, long aAmount, ItemStack aReplacement) {
         if (GTUtility.isStringInvalid(aItem) || !GregTechAPI.sPreloadStarted) return null;
         // if (D1) GTLog.out.println("Requested the Item '" + aItem + "' from the IC2-API");
-        if (!sIC2ItemMap.containsKey(aItem)) {
-            ItemStack tStack = IC2Items.getItem(aItem);
-            sIC2ItemMap.put(aItem, tStack);
-            if (tStack == null && D1) GTLog.err.println(aItem + " is not found in the IC2 Items!");
+        ItemStack tStack = sIC2ItemMap.get(aItem);
+        if (tStack == null) {
+            // Never cache a miss: a lookup that races IC2's registration would otherwise pin null for the
+            // rest of the boot, and one-shot resolutions like ItemList.Cell_Empty would keep the loss.
+            tStack = IC2Items.getItem(aItem);
+            if (tStack != null) sIC2ItemMap.put(aItem, tStack);
+            else if (D1) GTLog.err.println(aItem + " is not found in the IC2 Items!");
         }
-        return GTUtility.copyAmount(aAmount, sIC2ItemMap.get(aItem), aReplacement);
+        return GTUtility.copyAmount(aAmount, tStack, aReplacement);
     }
 
     /**
