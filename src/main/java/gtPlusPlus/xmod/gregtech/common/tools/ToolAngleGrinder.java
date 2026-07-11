@@ -16,11 +16,12 @@ import net.minecraft.util.IChatComponent;
 
 import gregtech.GTMod;
 import gregtech.api.enums.MaterialIconRegistry;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures.ItemIcons;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedTool;
+import gregtech.api.material.MU;
 import gregtech.common.items.behaviors.BehaviourNone;
 import gregtech.common.tools.GTTool;
 
@@ -100,7 +101,8 @@ public class ToolAngleGrinder extends GTTool {
 
     @Override
     public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? MetaGeneratedTool.getPrimaryMaterial(aStack).mRGBa : Materials.TungstenSteel.mRGBa;
+        return aIsToolHead ? MetaGeneratedTool.getPrimaryMaterial(aStack).mRGBa
+            : MU.rgba(Materials2Materials.TungstenSteel);
     }
 
     @Override

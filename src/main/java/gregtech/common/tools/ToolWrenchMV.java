@@ -2,11 +2,12 @@ package gregtech.common.tools;
 
 import net.minecraft.item.ItemStack;
 
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.MetaGeneratedTool;
+import gregtech.api.material.MU;
 
 public class ToolWrenchMV extends ToolWrenchLV {
 
@@ -52,7 +53,8 @@ public class ToolWrenchMV extends ToolWrenchLV {
 
     @Override
     public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? MetaGeneratedTool.getPrimaryMaterial(aStack).mRGBa : Materials.Aluminium.mRGBa;
+        return aIsToolHead ? MetaGeneratedTool.getPrimaryMaterial(aStack).mRGBa
+            : MU.rgba(Materials2Materials.Aluminium);
     }
 
     @Override
