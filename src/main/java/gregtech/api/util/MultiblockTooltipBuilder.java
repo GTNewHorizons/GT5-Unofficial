@@ -114,6 +114,8 @@ public class MultiblockTooltipBuilder {
     private String[] sArray;
     private String[] hArray;
 
+    private String postMacroContent;
+
     public MultiblockTooltipBuilder() {
         iLines = new LinkedList<>();
         sLines = new LinkedList<>();
@@ -145,6 +147,20 @@ public class MultiblockTooltipBuilder {
      */
     public MultiblockTooltipBuilder addInfo(String info) {
         iLines.add(info);
+        return this;
+    }
+
+    /**
+     * Sets the content to append after each macro invocation
+     * @param content the content, or {@code null} to disable this behavior.
+     * @return Instance this method was called on.
+     * @apiNote This method is deliberately designed to accept a String
+     * instance rather than {@link EnumChatFormatting} to account for
+     * the possibility of needing to chain multiple formatting styles
+     * (for example, gray + italic)
+     */
+    public MultiblockTooltipBuilder setPostMacroContent(String content) {
+        this.postMacroContent = content;
         return this;
     }
 
@@ -200,6 +216,11 @@ public class MultiblockTooltipBuilder {
 
                     if (processor != null) {
                         result.append(processor.process(param));
+
+                        if (postMacroContent != null) {
+                            result.append(postMacroContent);
+                        }
+
                         i = close;
                         continue;
                     }
