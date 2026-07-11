@@ -62,9 +62,10 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.IRecipeMap;
+import gregtech.api.material.GTMaterialFlag;
+import gregtech.api.material.MU;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.recipe.RecipeCategories;
@@ -218,17 +219,18 @@ public class GTRecipeRegistrator {
         MaterialStack aByproduct, boolean isRecycling) {
         if (aStack == null || aMaterial == null
             || aMaterial.mSmeltInto.mStandardMoltenFluid == null
-            || !aMaterial.contains(SubTag.SMELTING_TO_FLUID)
+            || !MU.hasFlag(aMaterial, GTMaterialFlag.SMELTING_TO_FLUID)
             || (aMaterialAmount * INGOTS) / (M * aStack.stackSize) <= 0) return;
 
         ItemStack recipeOutput = aByproduct == null ? null
-            : aByproduct.mMaterial.contains(SubTag.NO_SMELTING) || !aByproduct.mMaterial.contains(SubTag.METAL)
-                ? aByproduct.mMaterial.contains(SubTag.FLAMMABLE)
-                    ? GTOreDictUnificator.getDust(Materials.Ash, aByproduct.mAmount / 2)
-                    : aByproduct.mMaterial.contains(SubTag.UNBURNABLE)
-                        ? GTOreDictUnificator.getDustOrIngot(aByproduct.mMaterial.mSmeltInto, aByproduct.mAmount)
-                        : null
-                : GTOreDictUnificator.getIngotOrDust(aByproduct.mMaterial.mSmeltInto, aByproduct.mAmount);
+            : MU.hasFlag(aByproduct.mMaterial, GTMaterialFlag.NO_SMELTING)
+                || !MU.hasFlag(aByproduct.mMaterial, GTMaterialFlag.METAL)
+                    ? MU.hasFlag(aByproduct.mMaterial, GTMaterialFlag.FLAMMABLE)
+                        ? GTOreDictUnificator.getDust(Materials.Ash, aByproduct.mAmount / 2)
+                        : MU.hasFlag(aByproduct.mMaterial, GTMaterialFlag.UNBURNABLE)
+                            ? GTOreDictUnificator.getDustOrIngot(aByproduct.mMaterial.mSmeltInto, aByproduct.mAmount)
+                            : null
+                    : GTOreDictUnificator.getIngotOrDust(aByproduct.mMaterial.mSmeltInto, aByproduct.mAmount);
 
         GTRecipeBuilder builder = RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(1, aStack));
@@ -258,8 +260,8 @@ public class GTRecipeRegistrator {
         boolean aAllowAlloySmelter) {
         if (aStack == null || aMaterial == null
             || aMaterialAmount <= 0
-            || aMaterial.contains(SubTag.NO_SMELTING)
-            || (aMaterialAmount > M && aMaterial.contains(SubTag.METAL))
+            || MU.hasFlag(aMaterial, GTMaterialFlag.NO_SMELTING)
+            || (aMaterialAmount > M && MU.hasFlag(aMaterial, GTMaterialFlag.METAL))
             || (aMaterial.getProcessingMaterialTierEU() > TierEU.IV)) return;
         if (aMaterial == Materials.Naquadah || aMaterial == Materials.NaquadahEnriched) return;
 
@@ -315,7 +317,7 @@ public class GTRecipeRegistrator {
 
         if (!aData.hasValidMaterialData()) return;
 
-        if (aData.mMaterial.mMaterial.contains(SubTag.NO_RECYCLING_RECIPES)) return;
+        if (MU.hasFlag(aData.mMaterial.mMaterial, GTMaterialFlag.NO_RECYCLING_RECIPES)) return;
 
         boolean isRecycle = true;
 
@@ -331,25 +333,25 @@ public class GTRecipeRegistrator {
                 }
             }
 
-            if (tMaterial.mMaterial.contains(SubTag.UNBURNABLE)) {
+            if (MU.hasFlag(tMaterial.mMaterial, GTMaterialFlag.UNBURNABLE)) {
                 tMaterial.mMaterial = tMaterial.mMaterial.mSmeltInto.mArcSmeltInto;
                 continue;
             }
-            if (tMaterial.mMaterial.contains(SubTag.EXPLOSIVE)) {
+            if (MU.hasFlag(tMaterial.mMaterial, GTMaterialFlag.EXPLOSIVE)) {
                 tMaterial.mMaterial = Materials.Ash;
                 tMaterial.mAmount /= 16;
                 continue;
             }
-            if (tMaterial.mMaterial.contains(SubTag.FLAMMABLE)) {
+            if (MU.hasFlag(tMaterial.mMaterial, GTMaterialFlag.FLAMMABLE)) {
                 tMaterial.mMaterial = Materials.Ash;
                 tMaterial.mAmount /= 8;
                 continue;
             }
-            if (tMaterial.mMaterial.contains(SubTag.NO_SMELTING)) {
+            if (MU.hasFlag(tMaterial.mMaterial, GTMaterialFlag.NO_SMELTING)) {
                 tMaterial.mAmount = 0;
                 continue;
             }
-            if (tMaterial.mMaterial.contains(SubTag.METAL)) {
+            if (MU.hasFlag(tMaterial.mMaterial, GTMaterialFlag.METAL)) {
 
                 tMaterial.mMaterial = tMaterial.mMaterial.mSmeltInto.mArcSmeltInto;
                 continue;
@@ -503,7 +505,8 @@ public class GTRecipeRegistrator {
         }
 
         for (MaterialStack tMaterial : aData.getAllMaterialStacks()) {
-            if (tMaterial.mMaterial.contains(SubTag.CRYSTAL) && !tMaterial.mMaterial.contains(SubTag.METAL)
+            if (MU.hasFlag(tMaterial.mMaterial, GTMaterialFlag.CRYSTAL)
+                && !MU.hasFlag(tMaterial.mMaterial, GTMaterialFlag.METAL)
                 && tMaterial.mMaterial != Materials.Glass
                 && GTOreDictUnificator.getDust(aData.mMaterial) != null) {
                 GTValues.RA.stdBuilder()

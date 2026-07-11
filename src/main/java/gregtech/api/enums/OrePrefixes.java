@@ -26,6 +26,8 @@ import gregtech.api.interfaces.ICondition;
 import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
 import gregtech.api.interfaces.ISubTagContainer;
+import gregtech.api.material.GTMaterialFlag;
+import gregtech.api.material.MU;
 import gregtech.api.objects.GTArrayList;
 import gregtech.api.objects.GTItemStack;
 import gregtech.api.objects.ItemData;
@@ -3061,7 +3063,7 @@ public class OrePrefixes {
     public void processOre(Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
 
         if (aMaterial == null) return;
-        if (aMaterial.contains(SubTag.NO_RECIPES)) return;
+        if (MU.hasFlag(aMaterial, GTMaterialFlag.NO_RECIPES)) return;
         if (aMaterial == Materials._NULL && !isSelfReferencing && isMaterialBased) return;
         if (!GTUtility.isStackValid(aStack)) return;
 
