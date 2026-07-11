@@ -13,7 +13,11 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.util.GTUtility;
 import gtPlusPlus.core.material.MaterialsElements;
@@ -83,7 +87,8 @@ public enum ArcFurnaceElectrode {
     // nanite eletrodes
     NeutroniumNaniteElectrode(11, Materials.Neutronium, 5d, 256, 2d, 4d, 1750, 2d, 0d, event -> {
         if (event instanceof ArcFurnaceProcessingEvent.EventRunCompleted completed) {
-            if (completed.arcFurnace.depleteInputAndUpdate(Materials.Neutronium.getDust(1))
+            if (completed.arcFurnace.depleteInputAndUpdate(
+                MaterialLibAPI.getStack(Materials2Materials.Neutronium, Materials2Shapes.shapeDust, (int) (1)))
                 && completed.arcFurnace.getRandomNumber(100) < 70) {
                 completed.arcFurnace.setDurabilityConsumptionThisRun(0);
             }
@@ -91,14 +96,17 @@ public enum ArcFurnaceElectrode {
     }),
     TranscendentNaniteElectrode(12, Materials.TranscendentMetal, 7.5d, 512, 4d, 4d, 3500, 1.5d, 0d, event -> {
         if (event instanceof ArcFurnaceProcessingEvent.EventRunCompleted completed) {
-            if (completed.arcFurnace.depleteInputAndUpdate(Materials.TranscendentMetal.getDust(1))) {
+            if (completed.arcFurnace.depleteInputAndUpdate(
+                MaterialLibAPI
+                    .getStack(Materials2Materials.TranscendentMetal, Materials2Shapes.shapeDust, (int) (1)))) {
                 completed.arcFurnace.setDurabilityConsumptionThisRun(-1);
             }
         }
     }),
     UniversiumNaniteElectrode(13, Materials.Universium, 10d, 1024, 8d, 4d, 5000, 1d, 0d, event -> {
         if (event instanceof ArcFurnaceProcessingEvent.EventRunCompleted completed) {
-            if (completed.arcFurnace.depleteInputAndUpdate(Materials.Universium.getDust(1))) {
+            if (completed.arcFurnace.depleteInputAndUpdate(
+                MaterialLibAPI.getStack(Materials2Materials.Universium, Materials2Shapes.shapeDust, (int) (1)))) {
                 completed.arcFurnace.setDurabilityConsumptionThisRun(-1000);
             }
         }
