@@ -1,6 +1,5 @@
 package gregtech.loaders.load;
 
-import static gregtech.GTLoggers.GT_FML_LOGGER;
 import static gregtech.api.recipe.RecipeMaps.cannerRecipes;
 import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
@@ -16,6 +15,8 @@ import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.IFluidContainerItem;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import buildcraft.api.tools.IToolWrench;
 import buildcraft.factory.BlockTank;
 import cpw.mods.fml.common.ModAPIManager;
@@ -25,7 +26,10 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.items.GTGenericItem;
+import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeBuilder;
@@ -38,22 +42,24 @@ public class GTItemIterator implements Runnable {
 
     @Override
     public void run() {
-        GT_FML_LOGGER.debug("GTMod: Scanning for certain kinds of compatible Machineblocks.");
-        ItemStack tStack2 = GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Bronze, 1L);
+        GTLog.out.println("GTMod: Scanning for certain kinds of compatible Machineblocks.");
+        ItemStack tStack2 = MaterialLibAPI.getStack(Materials2Materials.Bronze, Materials2Shapes.shapeIngot, (int) (1));
         ItemStack tStack = GTModHandler
             .getRecipeOutput(tStack2, tStack2, tStack2, tStack2, null, tStack2, tStack2, tStack2, tStack2);
 
         if (null != tStack) {
             GTValues.RA.stdBuilder()
                 .itemInputs(tStack)
-                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Bronze, 8L))
+                .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Bronze, Materials2Shapes.shapeDust, (int) (8)))
                 .duration(20 * SECONDS)
                 .eut(2)
                 .addTo(maceratorRecipes);
 
-            GTModHandler.addSmeltingRecipe(tStack, GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Bronze, 8L));
+            GTModHandler.addSmeltingRecipe(
+                tStack,
+                MaterialLibAPI.getStack(Materials2Materials.Bronze, Materials2Shapes.shapeIngot, (int) (8)));
         }
-        tStack2 = GTOreDictUnificator.get(OrePrefixes.plate, Materials.Bronze, 1L);
+        tStack2 = MaterialLibAPI.getStack(Materials2Materials.Bronze, Materials2Shapes.shapePlate, (int) (1));
         tStack = GTModHandler
             .getRecipeOutput(tStack2, tStack2, tStack2, tStack2, null, tStack2, tStack2, tStack2, tStack2);
 
@@ -62,11 +68,13 @@ public class GTItemIterator implements Runnable {
 
             GTValues.RA.stdBuilder()
                 .itemInputs(tStack)
-                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Bronze, 8L))
+                .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Bronze, Materials2Shapes.shapeDust, (int) (8)))
                 .duration(20 * SECONDS)
                 .eut(2)
                 .addTo(maceratorRecipes);
-            GTModHandler.addSmeltingRecipe(tStack, GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Bronze, 8L));
+            GTModHandler.addSmeltingRecipe(
+                tStack,
+                MaterialLibAPI.getStack(Materials2Materials.Bronze, Materials2Shapes.shapeIngot, (int) (8)));
         }
 
         ItemStack tStack3 = new ItemStack(Blocks.glass, 1, 0);
@@ -86,15 +94,15 @@ public class GTItemIterator implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(tStack)
                 .itemOutputs(
-                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.Iron, 4L),
-                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.Gold, 1L))
+                    MaterialLibAPI.getStack(Materials2Materials.Iron, Materials2Shapes.shapeDust, (int) (4)),
+                    MaterialLibAPI.getStack(Materials2Materials.Gold, Materials2Shapes.shapeDust, (int) (1)))
                 .outputChances(10000, 1000)
                 .duration(20 * SECONDS)
                 .eut(2)
                 .addTo(maceratorRecipes);
         }
 
-        tStack2 = GTOreDictUnificator.get(OrePrefixes.ingot, Materials.Steel, 1L);
+        tStack2 = MaterialLibAPI.getStack(Materials2Materials.Steel, Materials2Shapes.shapeIngot, (int) (1));
         tStack3 = new ItemStack(Blocks.glass, 1, 0);
         tStack = GTModHandler.getRecipeOutput(
             tStack2,
@@ -110,14 +118,14 @@ public class GTItemIterator implements Runnable {
             GTValues.RA.stdBuilder()
                 .itemInputs(tStack)
                 .itemOutputs(
-                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.Steel, 4L),
-                    GTOreDictUnificator.get(OrePrefixes.dust, Materials.Gold, 1L))
+                    MaterialLibAPI.getStack(Materials2Materials.Steel, Materials2Shapes.shapeDust, (int) (4)),
+                    MaterialLibAPI.getStack(Materials2Materials.Gold, Materials2Shapes.shapeDust, (int) (1)))
                 .outputChances(10000, 1000)
                 .duration(20 * SECONDS)
                 .eut(2)
                 .addTo(maceratorRecipes);
         }
-        GT_FML_LOGGER.debug("GTMod: Registering various Tools to be usable on GregTech Machines");
+        GTLog.out.println("GTMod: Registering various Tools to be usable on GregTech Machines");
         GregTechAPI.registerScrewdriver(
             GTModHandler
                 .getRecipeOutput(null, new ItemStack(Items.iron_ingot, 1), null, new ItemStack(Items.stick, 1)));
@@ -125,7 +133,7 @@ public class GTItemIterator implements Runnable {
             GTModHandler
                 .getRecipeOutput(new ItemStack(Items.iron_ingot, 1), null, null, null, new ItemStack(Items.stick, 1)));
 
-        GT_FML_LOGGER.debug(
+        GTLog.out.println(
             "GTMod: Adding Food Recipes to the Automatic Canning Machine. (also during the following Item Iteration)");
         GTValues.RA.stdBuilder()
             .itemInputs(new ItemStack(Items.cake, 1, WILDCARD), ItemList.IC2_Food_Can_Empty.get(12L))
@@ -134,7 +142,7 @@ public class GTItemIterator implements Runnable {
             .eut(1)
             .addTo(cannerRecipes);
 
-        GT_FML_LOGGER.debug("GTMod: Scanning ItemList.");
+        GTLog.out.println("GTMod: Scanning ItemList.");
 
         final boolean rcItems = ModAPIManager.INSTANCE.hasAPI("RailcraftAPI|items");
         final boolean bcTools = ModAPIManager.INSTANCE.hasAPI("BuildCraftAPI|tools");
@@ -157,14 +165,14 @@ public class GTItemIterator implements Runnable {
                 if (rcItems && tItem instanceof IToolCrowbar) {
                     if ((tItem.isDamageable()) || (GTModHandler.isElectricItem(new ItemStack(tItem, 1, 0)))) {
                         if (GregTechAPI.registerCrowbar(new ItemStack(tItem, 1, WILDCARD))) {
-                            GT_FML_LOGGER.debug("GTMod: Registered valid RC Crowbar: {}", tName);
+                            GTLog.out.println("GTMod: Registered valid RC Crowbar: " + tName);
                         }
                     }
                 }
                 if (bcTools && tItem instanceof IToolWrench) {
                     if ((tItem.isDamageable()) || (GTModHandler.isElectricItem(new ItemStack(tItem, 1, 0)))) {
                         if (GregTechAPI.registerWrench(new ItemStack(tItem, 1, WILDCARD))) {
-                            GT_FML_LOGGER.debug("GTMod: Registered valid BC Wrench: {}", tName);
+                            GTLog.out.println("GTMod: Registered valid BC Wrench: " + tName);
                         }
                     }
                 }

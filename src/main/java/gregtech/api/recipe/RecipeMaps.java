@@ -47,6 +47,7 @@ import net.minecraftforge.fluids.FluidStack;
 import com.cleanroommc.modularui.widgets.ProgressWidget;
 import com.gtnewhorizons.modularui.api.drawable.UITexture;
 import com.gtnewhorizons.modularui.common.widget.ProgressBar;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import bartworks.API.enums.BioCultureEnum;
 import bartworks.API.recipe.BartWorksRecipeMaps;
@@ -58,6 +59,9 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.Materials2FluidShapes;
+import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.gui.modularui.GTUITextures;
 import gregtech.api.modularui2.GTGuiTextures;
 import gregtech.api.objects.ItemData;
@@ -963,7 +967,11 @@ public final class RecipeMaps {
                 }
                 coll.derive()
                     .setInputs(aInput1, aInput2, RailcraftToolItems.getCoalCoke(aCokeAmount))
-                    .setOutputs(aOutput1, aOutput2, Materials.Ash.getDust(aDustAmount))
+                    .setOutputs(
+                        aOutput1,
+                        aOutput2,
+                        MaterialLibAPI
+                            .getStack(Materials2Materials.Ash, Materials2Shapes.shapeDust, (int) (aDustAmount)))
                     .setDuration(aDuration * 2 / 3)
                     .setOutputChances(cokeChances);
             }
@@ -982,12 +990,18 @@ public final class RecipeMaps {
             ItemStack sugarCoke = GregtechItemList.SugarCoke.get(aCactusSugarCokeAmount);
             coll.derive()
                 .setInputs(aInput1, aInput2, cactusCoke)
-                .setOutputs(aOutput1, aOutput2, Materials.Ash.getDust(aDustAmount))
+                .setOutputs(
+                    aOutput1,
+                    aOutput2,
+                    MaterialLibAPI.getStack(Materials2Materials.Ash, Materials2Shapes.shapeDust, (int) (aDustAmount)))
                 .setDuration(aDuration * 2 / 3)
                 .setOutputChances(cactusSugarCokeChances);
             coll.derive()
                 .setInputs(aInput1, aInput2, sugarCoke)
-                .setOutputs(aOutput1, aOutput2, Materials.Ash.getDust(aDustAmount))
+                .setOutputs(
+                    aOutput1,
+                    aOutput2,
+                    MaterialLibAPI.getStack(Materials2Materials.Ash, Materials2Shapes.shapeDust, (int) (aDustAmount)))
                 .setDuration(aDuration * 2 / 3)
                 .setOutputChances(cactusSugarCokeChances);
             if ((aInput1 == null || aInput1.stackSize <= 6) && (aInput2 == null || aInput2.stackSize <= 6)
@@ -1007,24 +1021,40 @@ public final class RecipeMaps {
                 if (Railcraft.isModLoaded()) {
                     coll.derive()
                         .setInputs(aInput1, aInput2, EnumCube.COKE_BLOCK.getItem(aCoalAmount / 2))
-                        .setOutputs(aOutput1, aOutput2, Materials.Ash.getDust(aCoalAmount / 2))
+                        .setOutputs(
+                            aOutput1,
+                            aOutput2,
+                            MaterialLibAPI
+                                .getStack(Materials2Materials.Ash, Materials2Shapes.shapeDust, (int) (aCoalAmount / 2)))
                         .setDuration(aDuration * 20 / 3);
                 }
                 ItemStack cactusCokeBlock = GregtechItemList.BlockCactusCoke.get(aCoalAmount * 2L);
                 ItemStack sugarCokeBlock = GregtechItemList.BlockSugarCoke.get(aCoalAmount * 2L);
                 coll.derive()
                     .setInputs(aInput1, aInput2, cactusCokeBlock)
-                    .setOutputs(aOutput1, aOutput2, Materials.Ash.getDust(aCoalAmount * 2))
+                    .setOutputs(
+                        aOutput1,
+                        aOutput2,
+                        MaterialLibAPI
+                            .getStack(Materials2Materials.Ash, Materials2Shapes.shapeDust, (int) (aCoalAmount * 2)))
                     .setDuration(aDuration * 20 / 3);
                 coll.derive()
                     .setInputs(aInput1, aInput2, sugarCokeBlock)
-                    .setOutputs(aOutput1, aOutput2, Materials.Ash.getDust(aCoalAmount * 2))
+                    .setOutputs(
+                        aOutput1,
+                        aOutput2,
+                        MaterialLibAPI
+                            .getStack(Materials2Materials.Ash, Materials2Shapes.shapeDust, (int) (aCoalAmount * 2)))
                     .setDuration(aDuration * 20 / 3);
                 if (Thaumcraft.isModLoaded()) {
                     ItemStack alumentum = GTModHandler.getModItem(Thaumcraft.ID, "ItemResource", aCoalAmount * 2L, 0);
                     coll.derive()
                         .setInputs(aInput1, aInput2, alumentum)
-                        .setOutputs(aOutput1, aOutput2, Materials.Ash.getDust(aCoalAmount * 2))
+                        .setOutputs(
+                            aOutput1,
+                            aOutput2,
+                            MaterialLibAPI
+                                .getStack(Materials2Materials.Ash, Materials2Shapes.shapeDust, (int) (aCoalAmount * 2)))
                         .setDuration(aDuration * 20 / 3);
                 }
             }
@@ -1419,7 +1449,11 @@ public final class RecipeMaps {
                 .build()
                 .ifPresent(ret::add);
             b.copy()
-                .fluidInputs(Materials.Lubricant.getFluid(clamp(aDuration * aEUt / 1280, 1, 250)))
+                .fluidInputs(
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.Lubricant,
+                        Materials2FluidShapes.shapeFluidLiquid,
+                        (int) (clamp(aDuration * aEUt / 1280, 1, 250))))
                 .duration(aDuration)
                 .build()
                 .ifPresent(ret::add);

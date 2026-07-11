@@ -35,7 +35,7 @@ public class BreweryRecipes implements Runnable {
         ItemStack[] brewingItems = new ItemStack[] {
             MaterialLibAPI.getStack(Materials2Materials.Talc, Materials2Shapes.shapeDust, (int) (1L)),
             MaterialLibAPI.getStack(Materials2Materials.Soapstone, Materials2Shapes.shapeDust, (int) (1L)),
-            GTOreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L) };
+            MaterialLibAPI.getStack(Materials2Materials.Redstone, Materials2Shapes.shapeDust, (int) (1)) };
 
         for (ItemStack item : brewingItems) {
             // creosote to lubricant recipes
@@ -231,7 +231,8 @@ public class BreweryRecipes implements Runnable {
                     .addTo(brewingRecipes);
 
                 GTValues.RA.stdBuilder()
-                    .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Glowstone, 1L))
+                    .itemInputs(
+                        MaterialLibAPI.getStack(Materials2Materials.Glowstone, Materials2Shapes.shapeDust, (int) (1)))
                     .fluidInputs(new FluidStack(tFluid, 750))
                     .fluidOutputs(getFluidStack("potion.thick", 750))
                     .duration(6 * SECONDS + 8 * TICKS)
@@ -239,7 +240,8 @@ public class BreweryRecipes implements Runnable {
                     .addTo(brewingRecipes);
 
                 GTValues.RA.stdBuilder()
-                    .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L))
+                    .itemInputs(
+                        MaterialLibAPI.getStack(Materials2Materials.Redstone, Materials2Shapes.shapeDust, (int) (1)))
                     .fluidInputs(new FluidStack(tFluid, 750))
                     .fluidOutputs(getFluidStack("potion.mundane", 750))
                     .duration(6 * SECONDS + 8 * TICKS)
@@ -617,7 +619,8 @@ public class BreweryRecipes implements Runnable {
         // long
         if (!aName.equals("health")) {
             GTValues.RA.stdBuilder()
-                .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L))
+                .itemInputs(
+                    MaterialLibAPI.getStack(Materials2Materials.Redstone, Materials2Shapes.shapeDust, (int) (1)))
                 .fluidInputs(getFluidStack("potion." + aName, 750))
                 .fluidOutputs(getFluidStack("potion." + aName + ".long", 750))
                 .duration(6 * SECONDS + 8 * TICKS)
