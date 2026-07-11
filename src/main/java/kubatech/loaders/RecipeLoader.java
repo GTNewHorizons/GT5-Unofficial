@@ -89,11 +89,15 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.Materials2FluidShapes;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.recipe.Scanning;
 import gtPlusPlus.core.material.MaterialsAlloy;
@@ -177,7 +181,10 @@ public class RecipeLoader {
                     new Object[] { OrePrefixes.circuit.get(Materials.UV), 16L })
                 .fluidInputs(
                     MaterialsAlloy.INDALLOY_140.getFluidStack(3 * STACKS + 8 * INGOTS),
-                    Materials.Honey.getFluid(20_000))
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.Honey,
+                        Materials2FluidShapes.shapeFluidLiquid,
+                        (int) (20_000)))
                 .itemOutputs(ExtremeIndustrialApiary.get(1))
                 .eut(TierEU.RECIPE_UHV)
                 .duration(5 * MINUTES)
@@ -340,7 +347,9 @@ public class RecipeLoader {
             GTValues.RA.stdBuilder()
                 .itemInputs(BlackTea.get(1))
                 .itemOutputs(MilkTea.get(1))
-                .fluidInputs(Materials.Milk.getFluid(100))
+                .fluidInputs(
+                    MaterialLibAPI
+                        .getFluidStack(Materials2Materials.Milk, Materials2FluidShapes.shapeFluidLiquid, (int) (100)))
                 .eut(TierEU.RECIPE_LV)
                 .duration(5 * SECONDS)
                 .addTo(mixerRecipes);
