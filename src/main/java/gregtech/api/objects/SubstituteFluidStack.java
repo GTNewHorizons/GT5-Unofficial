@@ -9,7 +9,8 @@ import java.util.List;
 import net.minecraftforge.fluids.FluidStack;
 
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.SubTag;
+import gregtech.api.material.GTMaterialFlag;
+import gregtech.api.material.MU;
 
 public class SubstituteFluidStack {
 
@@ -60,8 +61,8 @@ public class SubstituteFluidStack {
         List<FluidStack> fluids = new ArrayList<>();
 
         for (Materials material : solderingMats) {
-            int multiplier = material.contains(SubTag.SOLDERING_MATERIAL_GOOD) ? 1
-                : material.contains(SubTag.SOLDERING_MATERIAL_BAD) ? 4 : 2;
+            int multiplier = MU.hasFlag(material, GTMaterialFlag.SOLDERING_MATERIAL_GOOD) ? 1
+                : MU.hasFlag(material, GTMaterialFlag.SOLDERING_MATERIAL_BAD) ? 4 : 2;
 
             fluids.add(material.getMolten(baseAmount * multiplier));
         }
