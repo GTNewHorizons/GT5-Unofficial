@@ -6705,7 +6705,7 @@ entity.gregtech.GT_Entity_Arrow.name= a GregTech arrow
 
 # Fluids
 fluid.aniline=Aniline
-fluid.bioethanol=Bio Ethanol
+fluid.bioethanol=Ethanol
 fluid.biomass=Biomass
 fluid.boricacid=Boric Acid
 fluid.butanol=Butanol
@@ -7378,6 +7378,8 @@ GT5U.scanner.debug.not_accessible=Is §cnot§r accessible for you
 GT5U.scanner.debug.sound_requests=Recorded §6%s§r sound requests in §6%s§r ticks.
 GT5U.scanner.debug.machine_active=Machine is §aactive§r
 GT5U.scanner.debug.machine_inactive=Machine is §cinactive§r
+GT5U.scanner.debug.machine_allowed_to_work=Machine is §aallowed§r to work
+GT5U.scanner.debug.machine_not_allowed_to_work=Machine is §cnot allowed§r to work
 GT5U.scanner.debug.needs_power=§cATTENTION: This Device needs more power.§r
 GT5U.scanner.debug.ic2_enet=Joined IC2 ENet
 GT5U.tooltip.drone_remote_disconnected=Shift-right-click an active Drone Centre to connect
