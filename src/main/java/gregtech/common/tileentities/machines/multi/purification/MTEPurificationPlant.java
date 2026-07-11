@@ -18,7 +18,6 @@ import static gregtech.api.util.GTStructureUtility.ofAnyWater;
 import static gregtech.api.util.GTStructureUtility.ofFrame;
 import static gregtech.common.tileentities.machines.multi.purification.MTEPurificationUnitBase.WATER_BOOST_BONUS_CHANCE;
 import static gregtech.common.tileentities.machines.multi.purification.MTEPurificationUnitBase.WATER_BOOST_NEEDED_FLUID;
-import static net.minecraft.util.StatCollector.translateToLocal;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +28,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.jetbrains.annotations.NotNull;
@@ -47,6 +47,7 @@ import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.structure.error.StructureError;
@@ -157,7 +158,7 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
                     + " blocks along each axis")
             .addInfo("Left click this controller with a data stick, then right click a purification unit to link")
             .addInfo("Supplies power to linked purification units")
-            .addTecTechHatchInfo()
+            .addSupportAny()
             .addSeparator()
             .addInfo(
                 "Works in fixed time processing cycles of " + EnumChatFormatting.RED
@@ -207,42 +208,17 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
                 EnumChatFormatting.AQUA + ""
                     + EnumChatFormatting.ITALIC
                     + "purification processes, and this multiblock is the heart of the operation")
-            .beginStructureBlock(7, 9, 8, false)
-            .addController("Front center")
-            .addCasingInfoExactlyColored(
-                "Superplasticizer-Treated High Strength Concrete",
-                EnumChatFormatting.GRAY,
-                56,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoRangeColored(
-                "Sterile Water Plant Casing",
-                EnumChatFormatting.GRAY,
-                71,
-                72,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored(
-                "Reinforced Sterile Water Plant Casing",
-                EnumChatFormatting.GRAY,
-                77,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored(
-                "Tungsten Frame Box",
-                EnumChatFormatting.GRAY,
-                30,
-                EnumChatFormatting.GOLD,
-                false)
-            .addCasingInfoExactlyColored(
-                "Tinted Industrial Glass",
-                EnumChatFormatting.GRAY,
-                6,
-                EnumChatFormatting.GOLD,
-                false)
-            .addEnergyHatch(EnumChatFormatting.GOLD + "1", 1)
-            .addMaintenanceHatch(EnumChatFormatting.GOLD + "1", 1)
-            .addStructureInfo("Requires water to be placed in the tank.")
+            .beginStructureBlock(8, 7, 9, true)
+            .addController("Front center, 3rd layer")
+            .addCasing("77", "Reinforced Sterile Water Plant Casing", false)
+            .addCasing("71-72", "Sterile Water Plant Casing", false)
+            .addCasing("56", "Superplasticizer-Treated High Strength Concrete", false)
+            .addCasing("30", "Tungsten Frame Box", false)
+            .addCasing("6", "Tinted Industrial Glass (any color)", false)
+            .addEnergyHatch("1-2", "Adjacent to controller", 1)
+            .addMaintenanceHatch("1", "Adjacent to controller", 1)
+            .addStructureInfo("")
+            .addStructureFooter(StatCollector.translateToLocal("GT5U.MBTT.Structure.WaterFree"))
             .toolTipFinisher();
         return tt;
     }
@@ -291,8 +267,8 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
             return;
         }
 
-        checkOneMaintenanceHatch(errors);
-        checkExoticAndNormalEnergyHatches(errors);
+        checkHasAnyEnergy(errors);
+        checkHasMaintenanceHatch(errors);
         if (!errors.isEmpty()) return;
         needsWaterFill = true;
     }
@@ -480,9 +456,12 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
     @Override
     public String[] getInfoData() {
         var ret = new ArrayList<String>();
-        ret.add(GTUtility.translate("GT5U.multiblock.recipesDone", formatNumber(recipesDone)));
+        ret.add(
+            IGregTechDeviceInformation.encode(
+                "GT5U.infodata.multiblock.recipes_done",
+                EnumChatFormatting.GREEN + formatNumber(recipesDone) + EnumChatFormatting.RESET));
         // Show linked purification units and their status
-        ret.add(translateToLocal("GT5U.infodata.purification_plant.linked_units"));
+        ret.add("GT5U.infodata.purification_plant.linked_units");
         for (LinkedPurificationUnit unit : this.linkedUnits) {
             String text = EnumChatFormatting.AQUA + unit.metaTileEntity()
                 .getLocalName() + ": ";
@@ -491,19 +470,23 @@ public class MTEPurificationPlant extends MTEExtendedPowerMultiBlockBase<MTEPuri
             switch (status) {
                 case ACTIVE -> {
                     text = text + EnumChatFormatting.GREEN
-                        + translateToLocal("GT5U.infodata.purification_plant.linked_units.status.active");
+                        + IGregTechDeviceInformation
+                            .decode("GT5U.infodata.purification_plant.linked_units.status.active");
                 }
                 case IDLE -> {
                     text = text + EnumChatFormatting.GREEN
-                        + translateToLocal("GT5U.infodata.purification_plant.linked_units.status.idle");
+                        + IGregTechDeviceInformation
+                            .decode("GT5U.infodata.purification_plant.linked_units.status.idle");
                 }
                 case DISABLED -> {
                     text = text + EnumChatFormatting.YELLOW
-                        + translateToLocal("GT5U.infodata.purification_plant.linked_units.status.disabled");
+                        + IGregTechDeviceInformation
+                            .decode("GT5U.infodata.purification_plant.linked_units.status.disabled");
                 }
                 case INCOMPLETE_STRUCTURE -> {
                     text = text + EnumChatFormatting.RED
-                        + translateToLocal("GT5U.infodata.purification_plant.linked_units.status.incomplete");
+                        + IGregTechDeviceInformation
+                            .decode("GT5U.infodata.purification_plant.linked_units.status.incomplete");
                 }
             }
             ret.add(text);

@@ -23,14 +23,15 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 
 import goodgenerator.loader.Loaders;
 import gregtech.api.casing.Casings;
+import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
 import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.common.misc.GTStructureChannels;
@@ -38,7 +39,7 @@ import gregtech.common.pollution.PollutionConfig;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 public class MTEIndustrialMolecularTransformer extends MTEExtendedPowerMultiBlockBase<MTEIndustrialMolecularTransformer>
-    implements ISurvivalConstructable {
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     private static IStructureDefinition<MTEIndustrialMolecularTransformer> STRUCTURE_DEFINITION = null;
     private static final String STRUCTURE_PIECE_MAIN = "main";
@@ -68,18 +69,19 @@ public class MTEIndustrialMolecularTransformer extends MTEExtendedPowerMultiBloc
         tt.addMachineType("Molecular Transformer")
             .addInfo("Changes the structure of items to produce new ones")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(7, 9, 7, false)
+            .beginStructureBlock(7, 7, 9, false)
             .addController("Front center, 2nd layer")
-            .addCasingInfoMin("Molecular Containment Casing", 95, false)
-            .addCasingInfoExactly("Speeding Pipe Casing", 35, false)
-            .addCasingInfoExactly("Advanced Iridium Plated Machine Casing", 14, false)
-            .addCasingInfoExactly("Any Glass", 30, false)
-            .addInputBus("Any Molecular Containment Casing", 1)
-            .addOutputBus("Any Molecular Containment Casing", 1)
-            .addEnergyHatch("Any Molecular Containment Casing", 1)
-            .addMaintenanceHatch("Any Molecular Containment Casing", 1)
-            .addMufflerHatch("Any Molecular Containment Casing", 1)
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .addCasing("95-104", "Molecular Containment Casing", false)
+            .addCasing("35", "Speeding Pipe Casing", false)
+            .addCasing("30", "Any Tiered Glass", false)
+            .addCasing("14", "Advanced Iridium Plated Machine Casing", false)
+            .addEnergyHatch("1+", "Any containment casing", 1)
+            .addMaintenanceHatch("1", "Any containment casing", 1)
+            .addMufflerHatch("1", "Any containment casing", 1)
+            .addInputBus("1+", "Any containment casing", 1)
+            .addOutputBus("1+", "Any containment casing", 1)
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.BOROGLASS)
             .addStructureAuthors(EnumChatFormatting.GOLD + "Fox")
             .toolTipFinisher();
         return tt;
@@ -157,28 +159,20 @@ public class MTEIndustrialMolecularTransformer extends MTEExtendedPowerMultiBloc
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
-        if (side == aFacing) {
-            if (aActive) return new ITexture[] { Casings.MolecularContainmentCasing.getCasingTexture(),
-                TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.oMCAIndustrialMolecularTransformerActive)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.oMCAIndustrialMolecularTransformerActiveGlow)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { Casings.MolecularContainmentCasing.getCasingTexture(), TextureFactory.builder()
-                .addIcon(TexturesGtBlock.oMCAIndustrialMolecularTransformer)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.oMCAIndustrialMolecularTransformerGlow)
-                    .extFacing()
-                    .glow()
-                    .build() };
-        }
-        return new ITexture[] { Casings.MolecularContainmentCasing.getCasingTexture() };
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            TexturesGtBlock.oMCAIndustrialMolecularTransformer,
+            TexturesGtBlock.oMCAIndustrialMolecularTransformerGlow,
+            TexturesGtBlock.oMCAIndustrialMolecularTransformerActive,
+            TexturesGtBlock.oMCAIndustrialMolecularTransformerActiveGlow);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Casings.MolecularContainmentCasing.getCasingTexture();
     }
 
     @Override

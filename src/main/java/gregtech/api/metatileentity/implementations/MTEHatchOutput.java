@@ -14,7 +14,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
@@ -39,6 +38,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.fluid.IFluidStore;
 import gregtech.api.interfaces.metatileentity.IFluidLockableMui2;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.render.TextureFactory;
@@ -46,9 +46,11 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.hatch.MTEHatchOutputGui;
+import gregtech.common.tileentities.machines.ISmartInputHatch;
 
 @IMetaTileEntity.SkipGenerateDescription
-public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLockableMui2, IOutputHatch {
+public class MTEHatchOutput extends MTEHatch
+    implements IFluidStore, IFluidLockableMui2, IOutputHatch, ISmartInputHatch {
 
     protected Fluid lockedFluid = null;
     private WeakReference<EntityPlayer> playerThatLockedfluid = null;
@@ -129,6 +131,12 @@ public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLocka
                     Math.max(1, mFluid.amount),
                     null);
             }
+        }
+        // A drained output hatch frees up space, which can unblock a recipe that failed with FLUID_OUTPUT_FULL. This
+        // must run AFTER the auto-eject above: that eject marks the tank dirty within this same tick, and the dirty
+        // flag is cleared at the end of the tick, so a self-eject that frees space would otherwise never push a check.
+        if (aBaseMetaTileEntity.isServerSide()) {
+            detectInventoryChange();
         }
     }
 
@@ -366,15 +374,11 @@ public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLocka
 
     @Override
     public String[] getInfoData() {
-        return new String[] {
-            EnumChatFormatting.BLUE + StatCollector.translateToLocal("GT5U.infodata.hatch.output")
-                + EnumChatFormatting.RESET,
-            StatCollector.translateToLocalFormatted(
+        return new String[] { "GT5U.infodata.hatch.output",
+            IGregTechDeviceInformation.encode(
                 "GT5U.infodata.hatch.output.fluid",
-                EnumChatFormatting.GOLD
-                    + (mFluid == null ? StatCollector.translateToLocal("GT5U.infodata.hatch.output.fluid.none")
-                        : mFluid.getLocalizedName())
-                    + EnumChatFormatting.RESET),
+                mFluid == null ? IGregTechDeviceInformation.translatable("GT5U.infodata.hatch.output.fluid.none")
+                    : IGregTechDeviceInformation.translatable(mFluid.getUnlocalizedName())),
             EnumChatFormatting.GREEN + formatNumber(mFluid == null ? 0 : mFluid.amount)
                 + " L"
                 + EnumChatFormatting.RESET
@@ -383,13 +387,12 @@ public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLocka
                 + formatNumber(getCapacity())
                 + " L"
                 + EnumChatFormatting.RESET,
-            (!isFluidLocked() || lockedFluid == null)
-                ? StatCollector.translateToLocal("GT5U.infodata.hatch.output.fluid.locked_to.none")
-                : (StatCollector.translateToLocalFormatted(
+            (!isFluidLocked() || lockedFluid == null) ? "GT5U.infodata.hatch.output.fluid.locked_to.none"
+                : IGregTechDeviceInformation.encode(
                     "GT5U.infodata.hatch.output.fluid.locked_to",
-                    StatCollector.translateToLocal(
+                    IGregTechDeviceInformation.translatable(
                         FluidRegistry.getFluidStack(lockedFluid.getName(), 1)
-                            .getUnlocalizedName()))) };
+                            .getUnlocalizedName())) };
     }
 
     @Override

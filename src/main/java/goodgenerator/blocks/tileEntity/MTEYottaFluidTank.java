@@ -3,6 +3,8 @@ package goodgenerator.blocks.tileEntity;
 import static com.gtnewhorizon.gtnhlib.util.numberformatting.NumberFormatUtil.formatNumber;
 import static com.gtnewhorizon.structurelib.structure.StructureUtility.*;
 import static goodgenerator.util.CharExchanger.formatNumber;
+import static gregtech.api.enums.HatchElement.InputHatch;
+import static gregtech.api.enums.HatchElement.OutputHatch;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 import static gregtech.api.util.GTStructureUtility.*;
 import static java.lang.String.valueOf;
@@ -44,13 +46,13 @@ import com.gtnewhorizons.modularui.common.widget.TextWidget;
 import goodgenerator.blocks.tileEntity.GTMetaTileEntity.MTEYOTTAHatch;
 import goodgenerator.client.GUI.GGUITextures;
 import goodgenerator.loader.Loaders;
-import goodgenerator.util.DescTextLocalization;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchOutput;
@@ -313,7 +315,7 @@ public class MTEYottaFluidTank extends TTMultiblockBase implements ISurvivalCons
                 .addShape(
                     YOTTANK_BOTTOM,
                     transpose(
-                        new String[][] { { "MM~MM", "MCCCM", "MCCCM", "MCCCM", "MMMMM" },
+                        new String[][] { { "CC~CC", "CCCCC", "CCCCC", "CCCCC", "CCCCC" },
                             { "     ", " OOO ", " OOO ", " OOO ", "     " } }))
                 .addShape(YOTTANK_MID, transpose(new String[][] { { "GGGGG", "GRRRG", "GRRRG", "GRRRG", "GGGGG" } }))
                 .addShape(
@@ -327,22 +329,16 @@ public class MTEYottaFluidTank extends TTMultiblockBase implements ISurvivalCons
                 .addElement('F', ofFrame(Materials.Steel))
                 .addElement(
                     'I',
-                    buildHatchAdder(MTEYottaFluidTank.class).atLeast(gregtech.api.enums.HatchElement.InputHatch)
+                    buildHatchAdder(MTEYottaFluidTank.class).atLeast(InputHatch)
                         .casingIndex(1537)
                         .hint(1)
-                        .buildAndChain(Loaders.yottaFluidTankCasing, 0))
-                .addElement(
-                    'M',
-                    buildHatchAdder(MTEYottaFluidTank.class).atLeast(gregtech.api.enums.HatchElement.Maintenance)
-                        .casingIndex(1537)
-                        .hint(2)
                         .buildAndChain(Loaders.yottaFluidTankCasing, 0))
                 .addElement(
                     'O',
-                    buildHatchAdder(MTEYottaFluidTank.class).atLeast(gregtech.api.enums.HatchElement.OutputHatch)
+                    buildHatchAdder(MTEYottaFluidTank.class).atLeast(OutputHatch)
                         .adder(MTEYottaFluidTank::addOutput)
                         .casingIndex(1537)
-                        .hint(1)
+                        .hint(2)
                         .buildAndChain(Loaders.yottaFluidTankCasing, 0))
                 .build();
         }
@@ -387,31 +383,12 @@ public class MTEYottaFluidTank extends TTMultiblockBase implements ISurvivalCons
     @Override
     public String[] getInfoData() {
         final ArrayList<String> info = new ArrayList<>();
+        info.add(IGregTechDeviceInformation.encode("gg.infodata.yottank.fluid", getFluidName()));
+        info.add(IGregTechDeviceInformation.encode("gg.infodata.yottank.cap", formatNumber(getCap())));
         info.add(
-            translateToLocal("scanner.info.YOTTank.1") + " "
-                + translateToLocal(
-                    EnumChatFormatting.YELLOW + formatNumber(getFluidName() + EnumChatFormatting.RESET)));
-        info.add(
-            translateToLocal("scanner.info.YOTTank.0") + " "
-                + translateToLocal(
-                    EnumChatFormatting.GREEN + formatNumber(getCap()) + EnumChatFormatting.RESET + " L"));
-        info.add(
-            translateToLocal("scanner.info.YOTTank.2") + " "
-                + translateToLocal(
-                    EnumChatFormatting.GREEN + formatNumber(getStored())
-                        + EnumChatFormatting.RESET
-                        + " L"
-                        + " ("
-                        + EnumChatFormatting.GREEN
-                        + getPercent()
-                        + "%"
-                        + EnumChatFormatting.RESET
-                        + ")"));
+            IGregTechDeviceInformation.encode("gg.infodata.yottank.stored", formatNumber(getStored()), getPercent()));
         info.add(getTimeTo());
-        info.add(
-            StatCollector.translateToLocal("scanner.info.YOTTank.3") + " "
-                + EnumChatFormatting.YELLOW
-                + formatNumber(getLockedFluidName()));
+        info.add(IGregTechDeviceInformation.encode("gg.infodata.yottank.locked", getLockedFluidName()));
         final String[] a = new String[info.size()];
         return info.toArray(a);
     }
@@ -466,15 +443,25 @@ public class MTEYottaFluidTank extends TTMultiblockBase implements ISurvivalCons
             .addInfo("The max fluid cell tier is limited by the glass tier")
             .addInfo("HV glass for T1, EV glass for T2, IV glass for T3. . .")
             .addInfo("The max height of the cell blocks is 15")
-            .beginVariableStructureBlock(5, 5, 1, 15, 5, 5, false)
+            .beginVariableStructureBlock(5, 5, 5, 5, 5, 19, false)
             .addController("Front center, 2nd layer")
-            .addCasingInfoExactly("Steel Frame Box", 16, false)
-            .addCasingInfoRange("Any Tiered Glass", 16, 240, true)
-            .addCasingInfoRange("Fluid Cell Block", 9, 135, true)
-            .addCasingInfoRange("YOTTank Casing", 25, 43, false)
-            .addInputHatch("Hint block number 1", 1)
-            .addOutputHatch("Hint block number 1 (optional)", 1)
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .addMiscHatch("0-1", "YOTHatch", "Any bottom center casing (replaces other hatches)", 2)
+            .addInputHatch("1+", "Any top center casing", 1)
+            .addOutputHatch("1+", "Any bottom center casing", 2)
+            .addStructureInfo("")
+            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Base"))
+            .addCasing("25-57", "YOTTank Casing", false)
+            .addCasing("16", "Steel Frame Box", false)
+            .addCasing("16", "Any Tiered Glass", true)
+            .addCasing("9", "Fluid Cell Block", true)
+            .addStructureInfo("")
+            .addStructureInfo(StatCollector.translateToLocal("GT5U.MBTT.Structure.Layer"))
+            .addCasing("16", "Any Tiered Glass", true)
+            .addCasing("9", "Fluid Cell Block", true)
+            .addStructureInfo("")
+            .addStructureFooter("No air gaps allowed, but the fluid cell blocks can be different tiers")
+            .addMasterChannel(StatCollector.translateToLocal("channels.gregtech.master.height"))
+            .addSubChannel(GTStructureChannels.BOROGLASS)
             .toolTipFinisher();
         return tt;
     }
@@ -642,11 +629,6 @@ public class MTEYottaFluidTank extends TTMultiblockBase implements ISurvivalCons
             return true;
         }
         return false;
-    }
-
-    @Override
-    public String[] getStructureDescription(ItemStack stackSize) {
-        return DescTextLocalization.addText("YOTTank.hint", 8);
     }
 
     @Override

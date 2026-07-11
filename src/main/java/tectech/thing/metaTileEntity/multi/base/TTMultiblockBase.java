@@ -566,9 +566,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
             aNBT.setInteger("mOutputItemsLength", mOutputItems.length);
             for (int i = 0; i < mOutputItems.length; i++) {
                 if (mOutputItems[i] != null) {
-                    NBTTagCompound tNBT = new NBTTagCompound();
-                    mOutputItems[i].writeToNBT(tNBT);
-                    aNBT.setTag("mOutputItem" + i, tNBT);
+                    GTUtility.saveItem(aNBT, "mOutputItem" + i, mOutputItems[i]);
                 }
             }
         }
@@ -615,7 +613,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
         if (this instanceof IParametrized parametrized) {
             NBTTagCompound parameterTag = new NBTTagCompound();
 
-            for (Parameter<?> parameter : parametrized.getParameters()) parameter.saveNBT(parameterTag);
+            for (Parameter<?, ?> parameter : parametrized.getParameters()) parameter.saveNBT(parameterTag);
 
             aNBT.setTag("parameters", parameterTag);
         }
@@ -706,7 +704,7 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
 
             NBTTagCompound parameterTag = aNBT.getCompoundTag("parameters");
 
-            for (Parameter<?> parameter : parametrized.getParameters()) parameter.loadNBT(parameterTag);
+            for (Parameter<?, ?> parameter : parametrized.getParameters()) parameter.loadNBT(parameterTag);
         }
     }
 
@@ -1476,6 +1474,11 @@ public abstract class TTMultiblockBase extends MTEExtendedPowerMultiBlockBase<TT
     @Override
     public List<MTEHatch> getExoticEnergyHatches() {
         return new ArrayList<>(eEnergyMulti);
+    }
+
+    @Override
+    public List<MTEHatch> getExoticDynamoHatches() {
+        return new ArrayList<>(eDynamoMulti);
     }
 
     // empty body to prevent any explosion

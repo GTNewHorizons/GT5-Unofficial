@@ -150,17 +150,15 @@ public class MTEIndustrialElectrolyzer extends MTEExtendedPowerMultiBlockBase<MT
             .addPollutionAmount(getPollutionPerSecond(null))
             .beginStructureBlock(5, 5, 5, false)
             .addController("Front center")
-            .addCasingInfoMin("Electrolyzer Casing", 6, false)
-            .addCasingInfoExactly("Potin Frame Box", 12, false)
-            .addCasingInfoExactly("Tin Item Pipe Casing", 4, false)
-            .addCasingInfoExactly("Brass Item Pipe Casing", 4, false)
-            .addInputBus("Any Electrolyzer Casing", 1)
-            .addOutputBus("Any Electrolyzer Casing", 1)
-            .addInputHatch("Any Electrolyzer Casing", 1)
-            .addOutputHatch("Any Electrolyzer Casing", 1)
-            .addEnergyHatch("Any Electrolyzer Casing", 1)
-            .addMaintenanceHatch("Any Electrolyzer Casing", 1)
-            .addMufflerHatch("Any Electrolyzer Casing", 1)
+            .addCasing("6-43", "Electrolyzer Casing", false)
+            .addCasing("12", "Potin Frame Box", false)
+            .addCasing("4", "Tin Item Pipe Casing", false)
+            .addCasing("4", "Brass Item Pipe Casing", false)
+            .addEnergyHatch("1+", "Any electrolyzer casing", 1)
+            .addMaintenanceHatch("1", "Any electrolyzer casing", 1)
+            .addMufflerHatch("1", "Any electrolyzer casing", 1)
+            .addInputAny("1+", "Any electrolyzer casing", 1)
+            .addOutputAny("1+", "Any electrolyzer casing", 1)
             .addStructureAuthors(EnumChatFormatting.BLUE + "Vortex")
             .toolTipFinisher();
         return tt;
@@ -212,8 +210,8 @@ public class MTEIndustrialElectrolyzer extends MTEExtendedPowerMultiBlockBase<MT
         checkHasEnergyHatch(errors);
         checkHasMaintenanceHatch(errors);
         checkHasMufflerHatch(errors);
-        checkHasAnyOutput(errors);
         checkHasAnyInput(errors);
+        checkHasAnyOutput(errors);
     }
 
     @Override

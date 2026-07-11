@@ -55,6 +55,8 @@ public class MTEHatchEnergyMulti extends MTEHatch implements IHideTooltipEnergyI
 
     public void setAmperes(int amperes) {
         Amperes = amperes;
+        // Raising the amperage raises available power, which can unblock a recipe that failed for insufficient power.
+        notifyWatchers();
     }
 
     public int getHatchType() {

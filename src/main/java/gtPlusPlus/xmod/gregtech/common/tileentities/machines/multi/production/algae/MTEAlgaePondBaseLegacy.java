@@ -113,7 +113,7 @@ public class MTEAlgaePondBaseLegacy extends GTPPMultiBlockBase<MTEAlgaePondBaseL
             .addInputBus("Any Casing", 1)
             .addOutputBus("Any Casing", 1)
             .addInputHatch("Any Casing", 1)
-            .addSubChannelUsage(GTStructureChannels.TIER_CASING)
+            .addSubChannel(GTStructureChannels.TIER_CASING)
             .toolTipFinisher();
         return tt;
     }

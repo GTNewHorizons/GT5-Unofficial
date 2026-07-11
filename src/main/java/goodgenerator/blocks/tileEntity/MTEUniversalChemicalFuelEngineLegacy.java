@@ -14,7 +14,6 @@ import javax.annotation.Nonnull;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -32,6 +31,7 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.enums.TickTime;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.metatileentity.implementations.MTEHatchDynamo;
@@ -178,7 +178,7 @@ public class MTEUniversalChemicalFuelEngineLegacy extends TTMultiblockBase imple
                     + EnumChatFormatting.YELLOW
                     + "without outputting energy")
             .addInfo("The efficiency is up to 150%")
-            .addTecTechHatchInfo()
+            .addSupportAny()
             .beginStructureBlock(5, 4, 9, false)
             .addController("Front center, 2nd layer")
             .addCasingInfoExactly("Stable Titanium Machine Casing", 93, false)
@@ -261,20 +261,13 @@ public class MTEUniversalChemicalFuelEngineLegacy extends TTMultiblockBase imple
     @Override
     public String[] getInfoData() {
         String[] info = super.getInfoData();
-        info[4] = StatCollector.translateToLocalFormatted(
+        info[4] = IGregTechDeviceInformation.encode(
             "gg.scanner.info.generator.generates",
             EnumChatFormatting.RED + formatNumber(this.getPowerFlow() * tEff / 10000) + EnumChatFormatting.RESET);
-        info[6] = StatCollector.translateToLocal("gg.scanner.info.generator.problems") + " "
-            + EnumChatFormatting.RED
-            + formatNumber(this.getIdealStatus() - this.getRepairStatus())
-            + EnumChatFormatting.RESET
-            + " "
-            + StatCollector.translateToLocal("gg.scanner.info.generator.efficiency")
-            + " "
-            + EnumChatFormatting.YELLOW
-            + formatNumber(tEff / 100D)
-            + EnumChatFormatting.RESET
-            + " %";
+        info[6] = IGregTechDeviceInformation.encode(
+            "gg.infodata.generator.problems_efficiency",
+            formatNumber(this.getIdealStatus() - this.getRepairStatus()),
+            formatNumber(tEff / 100D));
         return info;
     }
 

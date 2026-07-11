@@ -23,6 +23,7 @@ import gregtech.api.enums.TierEU;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.common.tileentities.machines.basic.MTEBasicMachineWithRecipeBuilder;
 import gtPlusPlus.core.lib.GTPPCore;
+import gtPlusPlus.core.material.Material;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public class GregtechSimpleWasher {
@@ -135,6 +136,14 @@ public class GregtechSimpleWasher {
             addSimpleWashRecipe(dustPure, dustClean);
         }
 
+        for (Material v : Material.mMaterialMap) {
+            dustClean = v.getDust(1);
+            dustDirty = v.getDustImpure(1);
+            dustPure = v.getDustPurified(1);
+            addSimpleWashRecipe(dustDirty, dustClean);
+            addSimpleWashRecipe(dustPure, dustClean);
+        }
+
         return simpleWasherRecipes.getAllRecipes()
             .size() > mRecipeCount;
     }
@@ -157,6 +166,12 @@ public class GregtechSimpleWasher {
         for (Werkstoff v : Werkstoff.werkstoffHashSet) {
             crushedClean = v.hasItemType(OrePrefixes.crushedPurified) ? v.get(OrePrefixes.crushedPurified) : null;
             crushedDirty = v.hasItemType(OrePrefixes.crushed) ? v.get(OrePrefixes.crushed) : null;
+            addSimpleWashRecipe(crushedDirty, crushedClean);
+        }
+
+        for (Material v : Material.mMaterialMap) {
+            crushedClean = v.getCrushedPurified(1);
+            crushedDirty = v.getCrushed(1);
             addSimpleWashRecipe(crushedDirty, crushedClean);
         }
 

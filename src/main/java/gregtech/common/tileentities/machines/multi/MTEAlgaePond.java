@@ -109,17 +109,19 @@ public class MTEAlgaePond extends MTEExtendedPowerMultiBlockBase<MTEAlgaePond>
             .addGlassEnergyLimitInfo()
             .addInfo("Accepts exactly 1 Energy Hatch")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(3, 6, 10, false)
+            .beginStructureBlock(10, 3, 6, false)
             .addController("Front center, 3rd layer")
-            .addCasingInfoMin("Algae Casing", 20, false)
-            .addCasingInfoExactly("Stainless Steel Frame Box", 6, false)
-            .addCasingInfoExactly("Any Tiered Glass", 64, true)
-            .addInputBus("Any Casing", 1)
-            .addOutputBus("Any Casing", 1)
-            .addInputHatch("Any Casing", 1)
-            .addEnergyHatch("Any Casing", 1)
-            .addMaintenanceHatch("Any Casing", 1)
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .addCasing("64", "Any Tiered Glass", true)
+            .addCasing("20-25", "Algae Casing", false)
+            .addCasing("6", "Stainless Steel Frame Box", false)
+            .addCasing("5", "Filter Machine Casing", false)
+            .addEnergyHatch("1", "Any casing", 1)
+            .addMaintenanceHatch("1", "Any casing", 1)
+            .addInputBus("0+", "Any casing", 1)
+            .addInputHatch("0+", "Any casing", 1)
+            .addOutputBus("1+", "Any casing", 1)
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.BOROGLASS)
             .addStructureAuthors(EnumChatFormatting.GOLD + "IX")
             .toolTipFinisher();
         return tt;
@@ -184,9 +186,9 @@ public class MTEAlgaePond extends MTEExtendedPowerMultiBlockBase<MTEAlgaePond>
             return;
         }
         checkCasingMin(errors, casingAmount, 20);
-        checkHasOutputBus(errors);
         checkHatchExact(errors, HatchElement.Energy, 1);
         checkHasMaintenanceHatch(errors);
+        checkHasOutputBus(errors);
 
         if (!mEnergyHatches.isEmpty()) {
             int inputTier = (int) getInputVoltageTier();

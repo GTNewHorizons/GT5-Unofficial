@@ -44,7 +44,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GTMod;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
 import gregtech.api.enums.Textures.BlockIcons;
@@ -60,7 +59,6 @@ import gregtech.api.recipe.maps.LargeBoilerFuelBackend;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
@@ -99,6 +97,8 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
     private final int superToNormalSteam = 3;
     private int fluidBurnTime = 0;
     private int solidBurnTime = 0;
+    private int maxFluidBurnTime = 0;
+    private int maxSolidBurnTime = 0;
     private int burnDecrease = 2;
 
     protected MTELargeBoilerBase(int aID, String aName, String aNameRegional, Casings casing, Casings pipeCasing,
@@ -212,7 +212,6 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
     @Override
     protected MultiblockTooltipBuilder createTooltip() {
         final MultiblockTooltipBuilder tt = new MultiblockTooltipBuilder();
-
         tt.addMachineType("Boiler");
         if (isSuperheated()) {
             tt.addInfo(
@@ -237,21 +236,21 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
                     "GT5U.machines.large_boiler.info.tooltip.6",
                     formatNumber(500.0 / getEfficiencyIncrease())))
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(5, 6, 3, false)
+            .beginStructureBlock(3, 5, 6, false)
             .addController("Front center, 2nd layer")
-            .addCasingInfoMin(getCasingMaterial() + " " + getCasingBlockType(), 20, false)
-            .addOtherStructurePart(getCasingMaterial() + " Firebox Casing", "Bottom layer, 5 minimum")
-            .addOtherStructurePart(getCasingMaterial() + " Pipe Casing", "Inner 3 blocks")
-            .addMaintenanceHatch("Any Casing or Firebox Casing", 1)
-            .addMufflerHatch("Any Casing or Firebox Casing", 1)
-            .addInputBus("Solid fuel, any Casing or Firebox Casing", 1)
-            .addInputHatch("Liquid fuel, any Casing or Firebox Casing", 1)
-            .addStructureInfo("You can use either, or both")
-            .addInputHatch("Water, any Casing or Firebox Casing", 1)
-            .addOutputHatch("Steam, any Casing or Firebox Casing", 1)
+            .addCasing("20-28", getCasingMaterial() + " " + getCasingBlockType(), false)
+            .addCasing("5-15", getCasingMaterial() + " Firebox Casing", false)
+            .addCasing("4", getCasingMaterial() + " Pipe Casing", false)
+            .addMaintenanceHatch("1", "Any machine or firebox casing", 1)
+            .addMufflerHatch("1", "Any machine or firebox casing", 1)
+            .addInputBus("0+", "Any machine or firebox casing", 1)
+            .addInputHatch("0+", "Any machine or firebox casing", 1)
+            .addOutputHatch("0+", "Any machine or firebox casing", 1)
+            .addStructureInfo("")
+            .addStructureFooter("Use solid fuel, liquid fuel, or both")
+            .addStructureFooter("Use regular or distilled water")
             .addStructureAuthors(EnumChatFormatting.GOLD + "PCGMatt")
             .toolTipFinisher();
-
         return tt;
     }
 
@@ -311,22 +310,14 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
         }
 
         if (fluidBurnTime == 0) {
-            for (GTRecipe tRecipe : RecipeMaps.dieselFuels.getAllRecipes()) {
-                FluidStack tFluid = GTUtility.getFluidForFilledItem(tRecipe.getRepresentativeInput(0), true);
-                if (tFluid != null && tRecipe.mSpecialValue > 1 && isFuelValid(tFluid)) {
-                    tFluid.amount = 1000;
-                    if (depleteInput(tFluid)) {
-                        setupBoilerRecipe(tRecipe.mSpecialValue, getEfficiencyIncrease(), true);
-                        return CheckRecipeResultRegistry.SUCCESSFUL;
-                    }
-                }
-            }
-            for (GTRecipe tRecipe : RecipeMaps.denseLiquidFuels.getAllRecipes()) {
-                FluidStack tFluid = GTUtility.getFluidForFilledItem(tRecipe.getRepresentativeInput(0), true);
-                if (tFluid != null && isFuelValid(tFluid)) {
-                    tFluid.amount = 1000;
-                    if (depleteInput(tFluid)) {
-                        setupBoilerRecipe(tRecipe.mSpecialValue * 2, getEfficiencyIncrease(), true);
+            for (FluidStack fluidInput : this.getStoredFluids()) {
+                GTRecipe foundRecipe = RecipeMaps.largeBoilerFakeFuels.findRecipeQuery()
+                    .fluids(fluidInput)
+                    .find();
+                if (foundRecipe != null && isFuelValid(fluidInput)) {
+                    FluidStack toDeplete = new FluidStack(fluidInput.getFluid(), 1000);
+                    if (depleteInput(toDeplete)) {
+                        setupBoilerRecipe(foundRecipe.mDuration, getEfficiencyIncrease(), true);
                         return CheckRecipeResultRegistry.SUCCESSFUL;
                     }
                 }
@@ -337,20 +328,18 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
             ArrayList<ItemStack> tInputList = getStoredInputs();
             if (!tInputList.isEmpty()) {
                 for (ItemStack tInput : tInputList) {
-                    if (tInput != GTOreDictUnificator.get(OrePrefixes.bucket, Materials.Lava, 1)) {
-                        long fuelValue = GTModHandler.getFuelValue(tInput);
-                        if (GTUtility.getFluidForFilledItem(tInput, true) == null && (fuelValue / 80) > 0
-                            && (fuelValue * 2L / this.getEUt()) > 1
-                            && isFuelValid(tInput)) {
-                            int burnTime = GTUtility.safeInt(fuelValue / 80, 1);
-                            this.excessFuel += (int) (fuelValue % 80);
-                            burnTime += this.excessFuel / 80;
-                            this.excessFuel %= 80;
-                            setupBoilerRecipe(burnTime, getEfficiencyIncrease(), false);
-                            tInput.stackSize -= 1;
-                            updateSlots();
-                            return CheckRecipeResultRegistry.SUCCESSFUL;
-                        }
+                    long fuelValue = GTModHandler.getFuelValue(tInput);
+                    if (GTUtility.getFluidForFilledItem(tInput, true) == null && (fuelValue / 80) > 0
+                        && (fuelValue * 2L / this.getEUt()) > 1
+                        && isFuelValid(tInput)) {
+                        int burnTime = GTUtility.safeInt(fuelValue / 80, 1);
+                        this.excessFuel += (int) (fuelValue % 80);
+                        burnTime += this.excessFuel / 80;
+                        this.excessFuel %= 80;
+                        setupBoilerRecipe(burnTime, getEfficiencyIncrease(), false);
+                        tInput.stackSize -= 1;
+                        updateSlots();
+                        return CheckRecipeResultRegistry.SUCCESSFUL;
                     }
                 }
             }
@@ -376,13 +365,14 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
     }
 
     private void setupBoilerRecipe(int rawBurnTime, int changePerTick, boolean isFluid) {
-        rawBurnTime = runtimeBoost((int) LargeBoilerFuelBackend.getBurntimeRatio(rawBurnTime, 20));
+        rawBurnTime = runtimeBoost(rawBurnTime);
         int safeBurnTime = Math.max(1, rawBurnTime);
         this.mMaxProgresstime = 1;
+        int adjustedTime = adjustBurnTimeForConfig(safeBurnTime) * 2;
         if (isFluid) {
-            this.fluidBurnTime = adjustBurnTimeForConfig(safeBurnTime) * 2;
+            this.fluidBurnTime = this.maxFluidBurnTime = adjustedTime;
         } else {
-            this.solidBurnTime = adjustBurnTimeForConfig(safeBurnTime) * 2;
+            this.solidBurnTime = this.maxSolidBurnTime = adjustedTime;
         }
         this.efficiencyChangePerTick = getEfficiencyChangePerTick(safeBurnTime, changePerTick);
         this.mEfficiencyIncrease = 1;
@@ -486,6 +476,8 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
         aNBT.setInteger("burnDecrease", burnDecrease);
         aNBT.setInteger("solidBurnTime", solidBurnTime);
         aNBT.setInteger("fluidBurnTime", fluidBurnTime);
+        aNBT.setInteger("maxSolidBurnTime", maxSolidBurnTime);
+        aNBT.setInteger("maxFluidBurnTime", maxFluidBurnTime);
     }
 
     @Override
@@ -501,6 +493,8 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
         burnDecrease = aNBT.hasKey("burnDecrease") ? aNBT.getInteger("burnDecrease") : 2;
         solidBurnTime = aNBT.getInteger("solidBurnTime");
         fluidBurnTime = aNBT.getInteger("fluidBurnTime");
+        maxSolidBurnTime = aNBT.getInteger("maxSolidBurnTime");
+        maxFluidBurnTime = aNBT.getInteger("maxFluidBurnTime");
     }
 
     @Override
@@ -535,8 +529,8 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
         if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z, errors)) return;
         checkCasingMin(errors, casingAmount, 20);
         checkCasingMin(errors, fireboxAmount, 5);
-        checkHasMufflerHatch(errors);
         checkHasMaintenanceHatch(errors);
+        checkHasMufflerHatch(errors);
     }
 
     private int adjustEUtForConfig(int rawEUt) {
@@ -637,6 +631,14 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
 
     public int getSolidBurnTime() {
         return solidBurnTime;
+    }
+
+    public int getMaxFluidBurnTime() {
+        return maxFluidBurnTime;
+    }
+
+    public int getMaxSolidBurnTime() {
+        return maxSolidBurnTime;
     }
 
     public int getBurnDecrease() {

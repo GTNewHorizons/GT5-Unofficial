@@ -1008,6 +1008,7 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
         mWorks = true;
         scheduleTexturePacket();
         setShutdownStatus(false);
+        setShutDownReason(ShutDownReasonRegistry.NONE);
         if (hasValidMetaTileEntity()) {
             mMetaTileEntity.onEnableWorking();
         }
@@ -1517,7 +1518,9 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
 
                             if (shouldEnable) {
                                 if (!mWorks) {
-                                    GTMod.proxy.powerfailTracker.removePowerfailEvents(this);
+                                    if (isServerSide()) {
+                                        GTMod.proxy.powerfailTracker.removePowerfailEvents(this);
+                                    }
                                     enableWorking();
                                 }
                             } else if (mWorks) {
@@ -1545,15 +1548,12 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
                             // logic handled internally
                             sendSoundToPlayers(SoundResource.IC2_TOOLS_BATTERY_USE, 1.0F, -1);
                         } else if (GTModHandler.useSolderingIron(tCurrentItem, aPlayer)) {
-                            mStrongRedstone ^= wrenchingSide.flag;
                             GTUtility.sendChatTrans(
                                 aPlayer,
-                                (mStrongRedstone & wrenchingSide.flag) != 0
-                                    ? "GT5U.chat.machine.redstone_output_set.strong"
+                                toggleStrongRedstone(wrenchingSide) ? "GT5U.chat.machine.redstone_output_set.strong"
                                     : "GT5U.chat.machine.redstone_output_set.weak",
                                 new ChatComponentTranslation(GTUtility.getUnlocalizedSideName(wrenchingSide)));
                             sendSoundToPlayers(SoundResource.IC2_TOOLS_BATTERY_USE, 3.0F, -1);
-                            issueBlockUpdate();
                         }
                         if (tCurrentItem.stackSize == 0) ForgeEventFactory.onPlayerDestroyItem(aPlayer, tCurrentItem);
                         doEnetUpdate();
@@ -2311,8 +2311,14 @@ public class BaseMetaTileEntity extends CommonBaseMetaTileEntity implements IAct
 
     @Override
     public AxisAlignedBB getRenderBoundingBox() {
-        return mMetaTileEntity instanceof IMTERenderer mteRenderer
+        return getMetaTileEntity() instanceof IMTERenderer mteRenderer
             ? mteRenderer.getRenderBoundingBox(xCoord, yCoord, zCoord)
             : super.getRenderBoundingBox();
+    }
+
+    @Override
+    public double getMaxRenderDistanceSquared() {
+        return getMetaTileEntity() instanceof IMTERenderer mteRenderer ? mteRenderer.getMaxRenderDistanceSquared()
+            : super.getMaxRenderDistanceSquared();
     }
 }

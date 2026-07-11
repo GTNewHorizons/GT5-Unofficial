@@ -11,8 +11,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
-import com.gtnewhorizons.modularui.common.widget.FluidSlotWidget;
-
 import gregtech.GTMod;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -20,9 +18,10 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.MTEHatch;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.util.GTUtility;
+import gregtech.common.tileentities.machines.ISmartInputHatch;
 import gtPlusPlus.core.lib.GTPPCore;
 
-public class MTEHatchCustomFluidBase extends MTEHatch {
+public class MTEHatchCustomFluidBase extends MTEHatch implements ISmartInputHatch {
 
     public final Fluid mLockedFluid;
     public final int mFluidCapacity;
@@ -119,6 +118,15 @@ public class MTEHatchCustomFluidBase extends MTEHatch {
     }
 
     @Override
+    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
+        super.onPostTick(aBaseMetaTileEntity, aTimer);
+        if (aBaseMetaTileEntity.isServerSide()) {
+            // Pushing on change lets a machine that stalled on running out of steam restart the instant steam returns.
+            detectInventoryChange();
+        }
+    }
+
+    @Override
     public int getCapacity() {
         return this.mFluidCapacity;
     }
@@ -178,10 +186,5 @@ public class MTEHatchCustomFluidBase extends MTEHatch {
             this.mTier,
             this.mDescriptionArray,
             this.mTextures);
-    }
-
-    @Override
-    protected FluidSlotWidget createFluidSlot() {
-        return super.createFluidSlot().setFilter(f -> f == mLockedFluid);
     }
 }

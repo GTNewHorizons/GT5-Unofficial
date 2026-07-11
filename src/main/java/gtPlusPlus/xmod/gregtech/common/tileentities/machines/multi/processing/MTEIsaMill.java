@@ -91,17 +91,17 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
             .addPerfectOCInfo()
             .addPollutionAmount(getPollutionPerSecond(null))
             .addInfo(EnumChatFormatting.GREEN + "It'sa mill!")
-            .beginStructureBlock(3, 3, 7, false)
-            .addController("Front center")
-            .addCasingInfoMin("IsaMill Exterior Casing", 40, false)
-            .addOtherStructurePart("IsaMill Gearbox", "5x, Inner Blocks")
-            .addOtherStructurePart("IsaMill Piping", "8x, ring around controller")
-            .addOtherStructurePart("Ball Housing", "Any Casing")
-            .addInputBus("Any Casing", 1)
-            .addOutputBus("Any Casing", 1)
-            .addEnergyHatch("Any Casing", 1)
-            .addMaintenanceHatch("Any Casing", 1)
-            .addMufflerHatch("Any Casing", 1)
+            .beginStructureBlock(7, 3, 3, false)
+            .addController("Front center, 2nd layer")
+            .addCasing("40-43", "IsaMill Exterior Casing", false)
+            .addCasing("8", "IsaMill Piping", false)
+            .addCasing("5", "IsaMill Gearbox", false)
+            .addMiscHatch("1", "Ball Housing", "Any casing", 1)
+            .addEnergyHatch("1+", "Any casing", 1)
+            .addMaintenanceHatch("1", "Any casing", 1)
+            .addMufflerHatch("1", "Any casing", 1)
+            .addInputBus("1+", "Any casing", 1)
+            .addOutputBus("1+", "Any casing", 1)
             .toolTipFinisher();
         return tt;
     }
@@ -153,16 +153,6 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
         mCasing = 0;
         mMillingBallBuses.clear();
         if (!checkPiece(mName, 1, 1, 0, errors)) return;
-        checkCasingMin(errors, mCasing, 48 - 8);
-        checkHatch(errors);
-        checkHasEnergyHatch(errors);
-        checkHasInputBus(errors);
-        checkHasOutputBus(errors);
-    }
-
-    @Override
-    public void checkHatch(List<StructureError> errors) {
-        super.checkHatch(errors);
         if (mMillingBallBuses.size() != 1) {
             errors.add(
                 StructureErrors.hatchCount(
@@ -171,6 +161,12 @@ public class MTEIsaMill extends GTPPMultiBlockBase<MTEIsaMill> implements ISurvi
                     mMillingBallBuses.size(),
                     1));
         }
+        checkCasingMin(errors, mCasing, 40);
+        checkHasEnergyHatch(errors);
+        checkHasMaintenanceHatch(errors);
+        checkHasMufflerHatch(errors);
+        checkHasInputBus(errors);
+        checkHasOutputBus(errors);
     }
 
     @Override

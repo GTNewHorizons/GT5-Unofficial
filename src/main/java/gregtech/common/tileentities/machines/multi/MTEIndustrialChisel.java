@@ -33,8 +33,10 @@ import com.gtnewhorizon.structurelib.structure.StructureDefinition;
 import gregtech.api.casing.Casings;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
+import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.interfaces.tileentity.ICasingTextureProvider;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.logic.ProcessingLogic;
 import gregtech.api.metatileentity.implementations.MTEExtendedPowerMultiBlockBase;
@@ -43,7 +45,6 @@ import gregtech.api.recipe.RecipeMap;
 import gregtech.api.recipe.RecipeMaps;
 import gregtech.api.recipe.check.CheckRecipeResult;
 import gregtech.api.recipe.check.CheckRecipeResultRegistry;
-import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.error.StructureError;
 import gregtech.api.util.GTRecipe;
 import gregtech.api.util.GTUtility;
@@ -59,7 +60,7 @@ import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import team.chisel.carving.Carving;
 
 public class MTEIndustrialChisel extends MTEExtendedPowerMultiBlockBase<MTEIndustrialChisel>
-    implements ISurvivalConstructable {
+    implements ISurvivalConstructable, ICasingTextureProvider {
 
     private static final int OFFSET_X = 1;
     private static final int OFFSET_Y = 2;
@@ -94,21 +95,22 @@ public class MTEIndustrialChisel extends MTEExtendedPowerMultiBlockBase<MTEIndus
             .addInfo("Regular Bus: Use a programmed circuit to select a variant (see NEI)")
             .addInfo("Also supports ArchitectureCraft shapes as target blocks")
             .addPollutionAmount(getPollutionPerSecond(null))
-            .beginStructureBlock(7, 5, 5, false)
+            .beginStructureBlock(5, 7, 5, false)
             .addController("Front left, 3rd layer")
-            .addCasingInfoMin("Sturdy Printer Casing", 40, false)
-            .addCasingInfoExactly("Steel Frame Box", 37, false)
-            .addCasingInfoExactly("Any Tiered Glass", 18, false)
-            .addCasingInfoExactly("Steel Pipe Casing", 12, false)
-            .addCasingInfoExactly("Steel Gear Box", 6, false)
-            .addCasingInfoExactly("Iron Fence", 1, false)
-            .addCasingInfoExactly("Cupronickel Coil Block", 1, false)
-            .addInputBus("Any Sturdy Printer Casing", 1)
-            .addOutputBus("Any Sturdy Printer Casing", 1)
-            .addEnergyHatch("Any Sturdy Printer Casing", 1)
-            .addMaintenanceHatch("Any Sturdy Printer Casing", 1)
-            .addMufflerHatch("Any Sturdy Printer Casing", 1)
-            .addSubChannelUsage(GTStructureChannels.BOROGLASS)
+            .addCasing("40-48", "Sturdy Printer Casing", false)
+            .addCasing("37", "Steel Frame Box", false)
+            .addCasing("18", "Any Tiered Glass", false)
+            .addCasing("12", "Steel Pipe Casing", false)
+            .addCasing("6", "Steel Gear Box Casing", false)
+            .addCasing("1", "Iron Fence", false)
+            .addCasing("1", "Cupronickel Coil Block", false)
+            .addEnergyHatch("1+", "Any printer casing", 1)
+            .addMaintenanceHatch("1", "Any printer casing", 1)
+            .addMufflerHatch("1", "Any printer casing", 1)
+            .addMiscHatch("1+", "Input/Chisel Bus", "Any printer casing", 1)
+            .addOutputBus("1+", "Any printer casing", 1)
+            .addStructureInfo("")
+            .addSubChannel(GTStructureChannels.BOROGLASS)
             .addStructureAuthors(EnumChatFormatting.GOLD + "IX")
             .toolTipFinisher();
         return tt;
@@ -169,37 +171,29 @@ public class MTEIndustrialChisel extends MTEExtendedPowerMultiBlockBase<MTEIndus
         if (!checkPiece(STRUCTURE_PIECE_MAIN, OFFSET_X, OFFSET_Y, OFFSET_Z, errors)) return;
         checkCasingMin(errors, casingAmount, 40);
         checkHasEnergyHatch(errors);
-        checkHasInputBus(errors);
-        checkHasOutputBus(errors);
         checkHasMaintenanceHatch(errors);
         checkHasMufflerHatch(errors);
+        checkHasInputBus(errors);
+        checkHasOutputBus(errors);
     }
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, ForgeDirection side, ForgeDirection aFacing,
         int colorIndex, boolean aActive, boolean redstoneLevel) {
-        if (side == aFacing) {
-            if (aActive) return new ITexture[] { Casings.SturdyPrinterCasing.getCasingTexture(),
-                TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.oMCAIndustrialChiselActive)
-                    .extFacing()
-                    .build(),
-                TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.oMCAIndustrialChiselActiveGlow)
-                    .extFacing()
-                    .glow()
-                    .build() };
-            return new ITexture[] { Casings.SturdyPrinterCasing.getCasingTexture(), TextureFactory.builder()
-                .addIcon(TexturesGtBlock.oMCAIndustrialChisel)
-                .extFacing()
-                .build(),
-                TextureFactory.builder()
-                    .addIcon(TexturesGtBlock.oMCAIndustrialChiselGlow)
-                    .extFacing()
-                    .glow()
-                    .build() };
-        }
-        return new ITexture[] { Casings.SturdyPrinterCasing.getCasingTexture() };
+        return Textures.BlockIcons.createTextureWithCasing(
+            this,
+            side,
+            aFacing,
+            aActive,
+            TexturesGtBlock.oMCAIndustrialChisel,
+            TexturesGtBlock.oMCAIndustrialChiselGlow,
+            TexturesGtBlock.oMCAIndustrialChiselActive,
+            TexturesGtBlock.oMCAIndustrialChiselActiveGlow);
+    }
+
+    @Override
+    public ITexture getCasingTexture() {
+        return Casings.SturdyPrinterCasing.getCasingTexture();
     }
 
     @Override
