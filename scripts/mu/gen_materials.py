@@ -1494,12 +1494,47 @@ def ore_shape_lines(material):
     return lines
 
 
+## Legacy `hasItemType()` (`Werkstoff.java`) grants the `blockCasing`/`blockCasingAdvanced` prefixes to any
+## werkstoff whose `toGenerate` bitmask includes metalworking (`SIMPLE_METALWORKING`/`CRAFTING_METALWORKING`/
+## `DOUBLE_DENSE_PLATES`) -- a much broader set than the werkstoffe that legacy bartworks actually shipped a
+## bolted/rebolted casing recipe/use for. The dumped `generatedPrefixes` therefore over-reports casing
+## membership; this is the curated legacy set (cross-checked against `dumps/werkstoff.json`'s casing-flagged
+## werkstoffe), keyed the same way `group_werkstoffs` keys `werkstoff_by_name` (a non-proxy werkstoff's
+## `varName`, or a proxy's `bridgeMaterial`).
+BARTWORKS_CASING_MATERIALS = {
+    "Rhodium-PlatedPalladium",
+    "Ruridit",
+    "HighDurabilityCompoundSteel",
+    "AdemicSteel",
+    "Carbon",
+    "Silver",
+    "Iridium",
+    "Naquadah",
+    "NaquadahAlloy",
+    "Osmiridium",
+    "BlackSteel",
+    "Wood",
+    "AtomicSeparationCatalyst",
+    "ExtremelyUnstableNaquadah",
+    "AdamantiumAlloy",
+    "MAR-M200Steel",
+    "MAR-Ce-M200Steel",
+    "Tairitsu",
+    "PreciousMetalsAlloy",
+    "EnrichedNaquadahAlloy",
+    "MetastableOganesson",
+    "Shirabon",
+    "Mu-metal",
+}
+
+
 def werkstoff_special_shape_lines(material, werkstoff_prefixes):
     """`generateShape(...)` lines for the werkstoff prefixes outside `Materials2Shapes`' per-item pipeline:
     cells (fluid-in-container, the fluid itself is already MaterialLib-owned via the bridge mirror's
     `LEGACY_FLUIDS` capture), storage blocks, ores (bartworks small ores exist for every ore werkstoff --
     `BWOreAdapter` registers big+small blocks per stone type -- so `ore` implies `oreSmall` here), and the
-    bartworks casings. `WERKSTOFF_LEGACY_ONLY_PREFIXES` deliberately produce nothing."""
+    bartworks casings (see `BARTWORKS_CASING_MATERIALS`). `WERKSTOFF_LEGACY_ONLY_PREFIXES` deliberately produce
+    nothing."""
     name = material["name"]
     fluids = material["fluids"]
     lines = []
@@ -1517,9 +1552,9 @@ def werkstoff_special_shape_lines(material, werkstoff_prefixes):
     if "ore" in werkstoff_prefixes:
         lines.append("            .generateShape(Materials2OreShapes.shapeOre)")
         lines.append("            .generateShape(Materials2OreShapes.shapeOreSmall)")
-    if "blockCasing" in werkstoff_prefixes:
+    if "blockCasing" in werkstoff_prefixes and name in BARTWORKS_CASING_MATERIALS:
         lines.append("            .generateShape(Materials2BlockShapes.shapeBlockCasing)")
-    if "blockCasingAdvanced" in werkstoff_prefixes:
+    if "blockCasingAdvanced" in werkstoff_prefixes and name in BARTWORKS_CASING_MATERIALS:
         lines.append("            .generateShape(Materials2BlockShapes.shapeBlockCasingAdvanced)")
     return lines
 
