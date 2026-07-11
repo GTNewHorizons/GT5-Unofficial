@@ -159,8 +159,8 @@ public class MultiblockTooltipBuilder {
      * the possibility of needing to chain multiple formatting styles
      * (for example, gray + italic)
      */
-    public MultiblockTooltipBuilder setPostMacroContent(String content) {
-        this.postMacroContent = content;
+    public MultiblockTooltipBuilder setPostMacroContent(Object content) {
+        this.postMacroContent = (content == null ? null : String.valueOf(content));
         return this;
     }
 
