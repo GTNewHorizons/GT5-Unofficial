@@ -104,6 +104,31 @@ public final class TooltipMacroRepository {
         "negative", s -> EnumChatFormatting.RED + s
     );
 
+    private static final EnumChatFormatting[] RAINBOW_SEQ = {
+        EnumChatFormatting.RED,
+        EnumChatFormatting.GOLD,
+        EnumChatFormatting.YELLOW,
+        EnumChatFormatting.GREEN,
+        EnumChatFormatting.DARK_AQUA,
+        EnumChatFormatting.BLUE,
+        EnumChatFormatting.DARK_PURPLE
+    };
+    /**
+     * A fun macro that formats the text into rainbow colors
+     */
+    @Transform(contract = "%s -> LSD")
+    public static final TooltipMacroProcessor RAINBOW = TooltipMacroProcessor.of(
+        "rainbow", s -> {
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < s.length(); i++) {
+                sb.append(
+                    RAINBOW_SEQ[i % RAINBOW_SEQ.length]
+                ).append(s.charAt(i));
+            }
+            return sb.toString();
+        }
+    );
+
     /**
      * A collection of color macros for readability purposes only.
      *
@@ -146,7 +171,7 @@ public final class TooltipMacroRepository {
     static {
         // initializer: singleton instances
         Set<TooltipMacroProcessor> singletonInstances = Set.of(
-            LITERAL, HEAT, PARALLEL, POLLUTION, FLUID, SPEED, SPECIAL, INTERVAL, POSITIVE, NEGATIVE
+            LITERAL, HEAT, PARALLEL, POLLUTION, FLUID, SPEED, SPECIAL, INTERVAL, POSITIVE, NEGATIVE, RAINBOW
         );
         // initializer: collections
         List<Set<TooltipMacroProcessor>> collectionInstances = List.of(
