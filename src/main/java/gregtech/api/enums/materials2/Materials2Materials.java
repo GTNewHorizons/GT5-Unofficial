@@ -20,7 +20,8 @@ import gregtech.api.material.MaterialRefStack;
 import gregtech.api.material.WerkstoffData;
 import gregtech.api.material.WerkstoffRefStack;
 
-// One-time output of scripts/mu/gen_materials.py (RETIRED, see its module docstring); hand-maintained from here -- edit this file directly.
+// One-time output of scripts/mu/gen_materials.py (RETIRED, see its module docstring); hand-maintained from here -- edit
+// this file directly.
 /// The materials maintenance surface: one [Material] field per ported material (name matches the legacy `Materials`
 /// field where the dump's name is already a valid Java identifier, else a sanitized variant; a gtpp-only material's
 /// field is `Gtpp`-prefixed -- see `scripts/mu/gen_materials.py`), then every material's complete final declaration

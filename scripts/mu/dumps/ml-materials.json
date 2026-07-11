@@ -2907,8 +2907,6 @@
     "textureSet": "METALLIC",
     "shapes": [
       "block",
-      "blockCasing",
-      "blockCasingAdvanced",
       "cellMolten",
       "cellPlasma",
       "dust",
@@ -6926,8 +6924,6 @@
     "textureSet": "DULL",
     "shapes": [
       "block",
-      "blockCasing",
-      "blockCasingAdvanced",
       "bolt",
       "cellMolten",
       "cellPlasma",
@@ -52497,8 +52493,6 @@
     "textureSet": "DULL",
     "shapes": [
       "block",
-      "blockCasing",
-      "blockCasingAdvanced",
       "cellMolten",
       "dust",
       "dustSmall",
@@ -72242,8 +72236,6 @@
     "textureSet": "FINE",
     "shapes": [
       "block",
-      "blockCasing",
-      "blockCasingAdvanced",
       "crushed",
       "crushedCentrifuged",
       "crushedPurified",
@@ -82678,8 +82670,6 @@
     "textureSet": "DULL",
     "shapes": [
       "block",
-      "blockCasing",
-      "blockCasingAdvanced",
       "crushed",
       "crushedCentrifuged",
       "crushedPurified",
@@ -85379,8 +85369,6 @@
     "textureSet": "FINE",
     "shapes": [
       "block",
-      "blockCasing",
-      "blockCasingAdvanced",
       "crushed",
       "crushedCentrifuged",
       "crushedPurified",
@@ -94488,8 +94476,6 @@
     "textureSet": "FLINT",
     "shapes": [
       "block",
-      "blockCasing",
-      "blockCasingAdvanced",
       "crushed",
       "crushedCentrifuged",
       "crushedPurified",
@@ -94836,8 +94822,6 @@
     "textureSet": "METALLIC",
     "shapes": [
       "block",
-      "blockCasing",
-      "blockCasingAdvanced",
       "cellMolten",
       "cellPlasmaLight",
       "dust",
@@ -95035,8 +95019,6 @@
     "textureSet": "DIAMOND",
     "shapes": [
       "block",
-      "blockCasing",
-      "blockCasingAdvanced",
       "dust",
       "dustSmall",
       "dustTiny",
@@ -95208,8 +95190,6 @@
     "textureSet": "RUBY",
     "shapes": [
       "block",
-      "blockCasing",
-      "blockCasingAdvanced",
       "crushed",
       "crushedCentrifuged",
       "crushedPurified",
@@ -95579,8 +95559,6 @@
     "textureSet": "RUBY",
     "shapes": [
       "block",
-      "blockCasing",
-      "blockCasingAdvanced",
       "crushed",
       "crushedCentrifuged",
       "crushedPurified",
@@ -95803,8 +95781,6 @@
     "textureSet": "RUBY",
     "shapes": [
       "block",
-      "blockCasing",
-      "blockCasingAdvanced",
       "crushed",
       "crushedCentrifuged",
       "crushedPurified",
@@ -96027,8 +96003,6 @@
     "textureSet": "RUBY",
     "shapes": [
       "block",
-      "blockCasing",
-      "blockCasingAdvanced",
       "crushed",
       "crushedCentrifuged",
       "crushedPurified",
@@ -97689,8 +97663,6 @@
     "textureSet": "GEM_VERTICAL",
     "shapes": [
       "block",
-      "blockCasing",
-      "blockCasingAdvanced",
       "crushed",
       "crushedCentrifuged",
       "crushedPurified",
@@ -97886,8 +97858,6 @@
     "textureSet": "QUARTZ",
     "shapes": [
       "block",
-      "blockCasing",
-      "blockCasingAdvanced",
       "crushed",
       "crushedCentrifuged",
       "crushedPurified",
@@ -98084,8 +98054,6 @@
     "textureSet": "QUARTZ",
     "shapes": [
       "block",
-      "blockCasing",
-      "blockCasingAdvanced",
       "crushed",
       "crushedCentrifuged",
       "crushedPurified",
@@ -98281,8 +98249,6 @@
     "textureSet": "QUARTZ",
     "shapes": [
       "block",
-      "blockCasing",
-      "blockCasingAdvanced",
       "crushed",
       "crushedCentrifuged",
       "crushedPurified",
@@ -99179,8 +99145,6 @@
     "textureSet": "METALLIC",
     "shapes": [
       "block",
-      "blockCasing",
-      "blockCasingAdvanced",
       "cellMolten",
       "cellPlasmaLight",
       "dust",
@@ -99826,8 +99790,6 @@
     "textureSet": "QUARTZ",
     "shapes": [
       "block",
-      "blockCasing",
-      "blockCasingAdvanced",
       "crushed",
       "crushedCentrifuged",
       "crushedPurified",
@@ -100029,8 +99991,6 @@
     "textureSet": "MAGNETIC",
     "shapes": [
       "block",
-      "blockCasing",
-      "blockCasingAdvanced",
       "dust",
       "dustSmall",
       "dustTiny",
@@ -100537,8 +100497,6 @@
     "textureSet": "METALLIC",
     "shapes": [
       "block",
-      "blockCasing",
-      "blockCasingAdvanced",
       "cellMolten",
       "cellPlasmaLight",
       "dust",
@@ -101075,8 +101033,6 @@
     "textureSet": "DIAMOND",
     "shapes": [
       "block",
-      "blockCasing",
-      "blockCasingAdvanced",
       "cellMolten",
       "crushed",
       "crushedCentrifuged",
@@ -104083,8 +104039,6 @@
     "textureSet": "METALLIC",
     "shapes": [
       "block",
-      "blockCasing",
-      "blockCasingAdvanced",
       "bolt",
       "cellMolten",
       "cellPlasmaLight",
@@ -106160,8 +106114,6 @@
     "textureSet": "METALLIC",
     "shapes": [
       "block",
-      "blockCasing",
-      "blockCasingAdvanced",
       "bolt",
       "cellMolten",
       "cellPlasmaLight",
@@ -107909,8 +107861,6 @@
     "textureSet": "DIAMOND",
     "shapes": [
       "block",
-      "blockCasing",
-      "blockCasingAdvanced",
       "bolt",
       "crushed",
       "crushedCentrifuged",
@@ -108336,8 +108286,6 @@
     "textureSet": "GEM_VERTICAL",
     "shapes": [
       "block",
-      "blockCasing",
-      "blockCasingAdvanced",
       "crushed",
       "crushedCentrifuged",
       "crushedPurified",
@@ -110372,8 +110320,6 @@
     "textureSet": "SHINY",
     "shapes": [
       "block",
-      "blockCasing",
-      "blockCasingAdvanced",
       "dust",
       "dustSmall",
       "dustTiny",
@@ -110942,8 +110888,6 @@
     "textureSet": "METALLIC",
     "shapes": [
       "block",
-      "blockCasing",
-      "blockCasingAdvanced",
       "cellMolten",
       "dust",
       "dustSmall",
@@ -114132,8 +114076,6 @@
     "textureSet": "DIAMOND",
     "shapes": [
       "block",
-      "blockCasing",
-      "blockCasingAdvanced",
       "cellMolten",
       "crushed",
       "crushedCentrifuged",
@@ -118546,8 +118488,6 @@
     "textureSet": "SHINY",
     "shapes": [
       "block",
-      "blockCasing",
-      "blockCasingAdvanced",
       "cellMolten",
       "dust",
       "dustSmall",
@@ -122645,8 +122585,6 @@
     "textureSet": "METALLIC",
     "shapes": [
       "block",
-      "blockCasing",
-      "blockCasingAdvanced",
       "bolt",
       "cellMolten",
       "dust",
@@ -122866,8 +122804,6 @@
     "textureSet": "METALLIC",
     "shapes": [
       "block",
-      "blockCasing",
-      "blockCasingAdvanced",
       "bolt",
       "cellMolten",
       "dust",
@@ -123092,8 +123028,6 @@
     "textureSet": "METALLIC",
     "shapes": [
       "block",
-      "blockCasing",
-      "blockCasingAdvanced",
       "bolt",
       "cellMolten",
       "dust",
@@ -125373,8 +125307,6 @@
     "textureSet": "DULL",
     "shapes": [
       "block",
-      "blockCasing",
-      "blockCasingAdvanced",
       "cellMolten",
       "dust",
       "dustSmall",
@@ -125555,8 +125487,6 @@
     "textureSet": "SHINY",
     "shapes": [
       "block",
-      "blockCasing",
-      "blockCasingAdvanced",
       "bolt",
       "cellMolten",
       "dust",
@@ -125900,8 +125830,6 @@
     "textureSet": "SHINY",
     "shapes": [
       "block",
-      "blockCasing",
-      "blockCasingAdvanced",
       "bolt",
       "cellMolten",
       "dust",
@@ -126111,8 +126039,6 @@
     "textureSet": "SHINY",
     "shapes": [
       "block",
-      "blockCasing",
-      "blockCasingAdvanced",
       "bolt",
       "cellMolten",
       "dust",
@@ -126339,8 +126265,6 @@
     "textureSet": "METALLIC",
     "shapes": [
       "block",
-      "blockCasing",
-      "blockCasingAdvanced",
       "bolt",
       "cellMolten",
       "dust",
@@ -126562,8 +126486,6 @@
     "textureSet": "SHINY",
     "shapes": [
       "block",
-      "blockCasing",
-      "blockCasingAdvanced",
       "bolt",
       "cellMolten",
       "dust",
@@ -126789,8 +126711,6 @@
     "textureSet": "SHINY",
     "shapes": [
       "block",
-      "blockCasing",
-      "blockCasingAdvanced",
       "bolt",
       "cellMolten",
       "dust",
@@ -128811,8 +128731,6 @@
     "textureSet": "METALLIC",
     "shapes": [
       "block",
-      "blockCasing",
-      "blockCasingAdvanced",
       "cellMolten",
       "cellPlasmaLight",
       "dust",
@@ -149699,8 +149617,6 @@
     "textureSet": "GEM_VERTICAL",
     "shapes": [
       "block",
-      "blockCasing",
-      "blockCasingAdvanced",
       "foil",
       "gem",
       "gemChipped",
@@ -149865,8 +149781,6 @@
     "textureSet": "DULL",
     "shapes": [
       "block",
-      "blockCasing",
-      "blockCasingAdvanced",
       "dust",
       "dustSmall",
       "dustTiny",
@@ -150393,8 +150307,6 @@
     "textureSet": "DULL",
     "shapes": [
       "block",
-      "blockCasing",
-      "blockCasingAdvanced",
       "dust",
       "dustSmall",
       "dustTiny",
@@ -151149,8 +151061,6 @@
     "textureSet": "GEM_HORIZONTAL",
     "shapes": [
       "block",
-      "blockCasing",
-      "blockCasingAdvanced",
       "dust",
       "dustSmall",
       "dustTiny",
@@ -154617,7 +154527,7 @@
       "plasma": {
         "name": "plasma.astraltitanium",
         "temperature": 10000,
-        "texture": null
+        "texture": "miscutils:fluids/fluid.plasma.astraltitanium"
       },
       "molten": {
         "name": "molten.astraltitanium",
@@ -156409,7 +156319,7 @@
       "plasma": {
         "name": "plasma.celestialtungsten",
         "temperature": 10000,
-        "texture": null
+        "texture": "miscutils:fluids/fluid.plasma.celestialtungsten"
       },
       "molten": {
         "name": "molten.celestialtungsten",
@@ -156979,7 +156889,7 @@
       "plasma": {
         "name": "plasma.chromaticglass",
         "temperature": 10000,
-        "texture": null
+        "texture": "miscutils:fluids/fluid.plasma.chromaticglass"
       },
       "molten": {
         "name": "molten.chromaticglass",
@@ -158633,7 +158543,7 @@
       "plasma": {
         "name": "plasma.dragonblood",
         "temperature": 10000,
-        "texture": null
+        "texture": "miscutils:fluids/fluid.plasma.hypogen"
       },
       "molten": {
         "name": "molten.dragonblood",
@@ -163149,7 +163059,7 @@
       "plasma": {
         "name": "plasma.hypogen",
         "temperature": 10000,
-        "texture": null
+        "texture": "miscutils:fluids/fluid.plasma.hypogen"
       },
       "molten": {
         "name": "molten.hypogen",
@@ -170769,7 +170679,7 @@
       "plasma": {
         "name": "plasma.rhugnor",
         "temperature": 10000,
-        "texture": null
+        "texture": "miscutils:fluids/fluid.plasma.rhugnor"
       },
       "molten": {
         "name": "molten.rhugnor",
