@@ -4,9 +4,13 @@ import static gregtech.api.util.GTRecipeBuilder.WILDCARD;
 
 import net.minecraft.item.ItemStack;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import kekztech.common.Blocks;
@@ -20,10 +24,11 @@ public class Crafting implements Runnable {
         // TFFT Controller
         GTModHandler.addCraftingRecipe(
             TileEntities.tfft.getStackForm(1),
-            new Object[] { "ESE", "FTF", "CVC", 'E', GTOreDictUnificator.get(OrePrefixes.screw, Materials.EnderEye, 1),
-                'S', ItemList.Cover_Screen.get(1), 'F', ItemList.Field_Generator_LV.get(1), 'T',
+            new Object[] { "ESE", "FTF", "CVC", 'E',
+                MaterialLibAPI.getStack(Materials2Materials.EnderEye, Materials2Shapes.shapeScrew, (int) (1)), 'S',
+                ItemList.Cover_Screen.get(1), 'F', ItemList.Field_Generator_LV.get(1), 'T',
                 new ItemStack(Blocks.tfftStorageField, 1), 'C', "circuitData", 'V',
-                GTOreDictUnificator.get(OrePrefixes.rotor, Materials.VibrantAlloy, 1), });
+                MaterialLibAPI.getStack(Materials2Materials.VibrantAlloy, Materials2Shapes.shapeRotor, (int) (1)), });
 
         // SOFC Controller mk1
         final Object[] mk1_recipe = { "CCC", "PHP", "FBL", 'C', OrePrefixes.circuit.get(Materials.HV), 'P',
