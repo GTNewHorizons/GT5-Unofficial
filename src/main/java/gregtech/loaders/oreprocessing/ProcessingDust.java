@@ -70,11 +70,11 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                         .eut(4)
                         .addTo(packagerRecipes);
                 }
-                if (aMaterial.mFuelPower > 0) {
+                if (MU.fuelPower(aMaterial) > 0) {
                     GTValues.RA.stdBuilder()
                         .itemInputs(GTUtility.copyAmount(1, aStack))
-                        .metadata(FUEL_VALUE, aMaterial.mFuelPower)
-                        .metadata(FUEL_TYPE, aMaterial.mFuelType)
+                        .metadata(FUEL_VALUE, MU.fuelPower(aMaterial))
+                        .metadata(FUEL_TYPE, MU.fuelType(aMaterial))
                         .addTo(GTRecipeConstants.Fuel);
                 }
                 if ((GTUtility.getFluidForFilledItem(GTOreDictUnificator.get(OrePrefixes.cell, aMaterial, 1L), true)
@@ -108,7 +108,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                             GTRecipeBuilder recipeBuilder = GTValues.RA.stdBuilder();
                             recipeBuilder.itemInputs(GTUtility.copyAmount(1, aStack))
                                 .circuit(1);
-                            if (aMaterial.mBlastFurnaceTemp > 1750) {
+                            if (MU.blastFurnaceTemp(aMaterial) > 1750) {
                                 recipeBuilder.itemOutputs(
                                     GTOreDictUnificator
                                         .get(OrePrefixes.ingotHot, aMaterial.mSmeltInto, tDustStack, 1L));
@@ -117,9 +117,9 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                             }
                             recipeBuilder
                                 .duration(
-                                    (Math.max(aMaterial.getMass() / 40L, 1L) * aMaterial.mBlastFurnaceTemp) * TICKS)
+                                    (Math.max(aMaterial.getMass() / 40L, 1L) * MU.blastFurnaceTemp(aMaterial)) * TICKS)
                                 .eut(TierEU.RECIPE_MV)
-                                .metadata(COIL_HEAT, (int) aMaterial.mBlastFurnaceTemp)
+                                .metadata(COIL_HEAT, MU.blastFurnaceTemp(aMaterial))
                                 .addTo(blastFurnaceRecipes);
                         }
                     } else {

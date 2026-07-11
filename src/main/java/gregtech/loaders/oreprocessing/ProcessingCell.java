@@ -19,6 +19,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
+import gregtech.api.material.MU;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -52,15 +53,15 @@ public class ProcessingCell implements IOreRecipeRegistrator {
                             .addTo(extractorRecipes);
                     }
                 } else {
-                    if (aMaterial.mFuelPower > 0) {
+                    if (MU.fuelPower(aMaterial) > 0) {
                         GTRecipeBuilder recipeBuilder = RA.stdBuilder();
                         recipeBuilder.itemInputs(GTUtility.copyAmount(1, aStack));
                         if (GTUtility.getFluidForFilledItem(aStack, true) == null
                             && GTUtility.getContainerItem(aStack, true) != null) {
                             recipeBuilder.itemOutputs(GTUtility.getContainerItem(aStack, true));
                         }
-                        recipeBuilder.metadata(FUEL_VALUE, aMaterial.mFuelPower)
-                            .metadata(FUEL_TYPE, aMaterial.mFuelType)
+                        recipeBuilder.metadata(FUEL_VALUE, MU.fuelPower(aMaterial))
+                            .metadata(FUEL_TYPE, MU.fuelType(aMaterial))
                             .addTo(GTRecipeConstants.Fuel);
                     }
                     if (!((!aMaterial.mMaterialList.isEmpty()) && ((aMaterial.mExtraData & 0x3) != 0))) {

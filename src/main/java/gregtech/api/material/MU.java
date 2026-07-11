@@ -127,6 +127,81 @@ public class MU {
             (short) ((argb >>> 24) & 0xFF) };
     }
 
+    /// The legacy `Materials#mMeltingPoint` Kelvin melting point for a material, or `0` if unset -- mirrors
+    /// `MaterialBuilder`'s own default. Ported byte-identically to [GTMaterialProperties#MELTING_POINT]:
+    /// `LegacyMaterials.build` feeds this exact property through `MaterialBuilder#setMeltingPoint` when
+    /// present, and otherwise leaves the builder's `0` default that `mMeltingPoint` itself falls back to.
+    public static int meltingPoint(@Nullable Material material) {
+        if (material == null) return 0;
+        Integer meltingPoint = material.getProperty(GTMaterialProperties.MELTING_POINT);
+        return meltingPoint == null ? 0 : meltingPoint;
+    }
+
+    /// [#meltingPoint(Material)] for callers still holding the legacy [Materials] enum constant. Falls back to
+    /// a direct legacy `Materials#mMeltingPoint` read when [#material] has no MaterialLib counterpart -- see
+    /// [#hasFlag(Materials, GTMaterialFlag)]'s javadoc for why marker materials need this fallback.
+    public static int meltingPoint(@Nullable Materials material) {
+        if (material == null) return 0;
+        Material ml = material(material);
+        return ml != null ? meltingPoint(ml) : material.mMeltingPoint;
+    }
+
+    /// The legacy `Materials#mBlastFurnaceTemp` Kelvin blast furnace temperature for a material, or `0` if
+    /// unset. Ported byte-identically to [GTMaterialProperties#BLAST_TEMP]: `MaterialDataDump` captured the
+    /// property already truncated to `mBlastFurnaceTemp`'s `short` range, so `LegacyMaterials.build`'s
+    /// `MaterialBuilder#setBlastFurnaceTemp` re-truncation is a no-op and this `int` widening loses nothing.
+    public static int blastFurnaceTemp(@Nullable Material material) {
+        if (material == null) return 0;
+        Integer blastTemp = material.getProperty(GTMaterialProperties.BLAST_TEMP);
+        return blastTemp == null ? 0 : blastTemp;
+    }
+
+    /// [#blastFurnaceTemp(Material)] for callers still holding the legacy [Materials] enum constant. Falls
+    /// back to a direct legacy `Materials#mBlastFurnaceTemp` read when [#material] has no MaterialLib
+    /// counterpart -- see [#hasFlag(Materials, GTMaterialFlag)]'s javadoc for why marker materials need this
+    /// fallback.
+    public static int blastFurnaceTemp(@Nullable Materials material) {
+        if (material == null) return 0;
+        Material ml = material(material);
+        return ml != null ? blastFurnaceTemp(ml) : material.mBlastFurnaceTemp;
+    }
+
+    /// The legacy `Materials#mFuelPower` fuel value for a material, or `0` if unset -- mirrors
+    /// `MaterialBuilder`'s own default (`LegacyMaterials.build` only calls `MaterialBuilder#setFuel` when
+    /// [GTMaterialProperties#FUEL_TYPE] or [GTMaterialProperties#FUEL_POWER] is present).
+    public static int fuelPower(@Nullable Material material) {
+        if (material == null) return 0;
+        Integer fuelPower = material.getProperty(GTMaterialProperties.FUEL_POWER);
+        return fuelPower == null ? 0 : fuelPower;
+    }
+
+    /// [#fuelPower(Material)] for callers still holding the legacy [Materials] enum constant. Falls back to a
+    /// direct legacy `Materials#mFuelPower` read when [#material] has no MaterialLib counterpart -- see
+    /// [#hasFlag(Materials, GTMaterialFlag)]'s javadoc for why marker materials need this fallback.
+    public static int fuelPower(@Nullable Materials material) {
+        if (material == null) return 0;
+        Material ml = material(material);
+        return ml != null ? fuelPower(ml) : material.mFuelPower;
+    }
+
+    /// The legacy `Materials#mFuelType` `MaterialBuilder.FuelType` ordinal for a material, or `0`
+    /// (`MaterialBuilder.FuelType#Diesel`) if unset -- mirrors `MaterialBuilder`'s own default, see
+    /// [#fuelPower(Material)].
+    public static int fuelType(@Nullable Material material) {
+        if (material == null) return 0;
+        Integer fuelType = material.getProperty(GTMaterialProperties.FUEL_TYPE);
+        return fuelType == null ? 0 : fuelType;
+    }
+
+    /// [#fuelType(Material)] for callers still holding the legacy [Materials] enum constant. Falls back to a
+    /// direct legacy `Materials#mFuelType` read when [#material] has no MaterialLib counterpart -- see
+    /// [#hasFlag(Materials, GTMaterialFlag)]'s javadoc for why marker materials need this fallback.
+    public static int fuelType(@Nullable Materials material) {
+        if (material == null) return 0;
+        Material ml = material(material);
+        return ml != null ? fuelType(ml) : material.mFuelType;
+    }
+
     /// Whether a material carries a legacy [gregtech.api.enums.SubTag], ported 1:1 to [GTMaterialFlag] of the
     /// same name -- see [GTMaterialProperties#FLAGS]. Mirrors legacy `Materials#contains(SubTag)`/`mSubTags`.
     public static boolean hasFlag(@Nullable Material material, GTMaterialFlag flag) {
