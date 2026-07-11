@@ -3688,12 +3688,12 @@ GT5U.armor.behavior.MilkInfusion=Milk Infusion
 GT5U.armor.behavior.HoloInventory=Holographic Inventory
 GT5U.armor.behavior.Terrasteel=Will of the Ancients
 
-GT5U.armor.message.enabled=%s Enabled
-GT5U.armor.message.disabled=%s Disabled
+GT5U.armor.message.enabled=%s §aEnabled§r
+GT5U.armor.message.disabled=%s §cDisabled§r
 GT5U.armor.message.installed=%s Installed
 GT5U.armor.message.systems_online=Armor Systems Online... Active keybindings:
-GT5U.armor.message.speed_set=New speed: %sx
-GT5U.armor.message.jump_boost_set=New jump boost: %sx
+GT5U.armor.message.speed_set=§6New speed:§r §f%sx§r
+GT5U.armor.message.jump_boost_set=§6New jump boost:§r §f%sx§r
 
 GT5U.armor.tooltip.hold_shift=Hold Shift for more info
 GT5U.armor.tooltip.armorframe=Armor Frame: %s

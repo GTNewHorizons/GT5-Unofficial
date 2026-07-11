@@ -7,6 +7,7 @@ import net.minecraft.nbt.NBTTagCompound;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.gtnewhorizon.gtnhlib.GTNHLib;
 import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
 
 import bartworks.util.MathUtils;
@@ -53,9 +54,8 @@ public class SpeedBoostBehavior implements IArmorBehavior {
 
         state.speedBoostMulti = MathUtils.clamp(state.speedBoostMulti, 1, speedMaxMulti);
 
-        GTUtility.sendChatToPlayer(
-            context.getPlayer(),
-            GTUtility.translate("GT5U.armor.message.speed_set", state.speedBoostMulti));
+        String text = GTUtility.translate("GT5U.armor.message.speed_set", state.speedBoostMulti);
+        GTNHLib.proxy.printMessageAboveHotbar(text, 60, true, true);
     }
 
     @Override
@@ -103,6 +103,7 @@ public class SpeedBoostBehavior implements IArmorBehavior {
 
         if (!context.isRemote()) return;
 
+        // dampening when in air
         float dampening = 0.39F - (Math.min(speed, 1.2F) * 0.22F);
         float currentSpeed = (player.onGround || player.capabilities.isFlying || player.isOnLadder()) ? speed
             : speed * dampening;

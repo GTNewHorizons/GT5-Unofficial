@@ -6,6 +6,7 @@ import net.minecraft.nbt.NBTTagCompound;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.gtnewhorizon.gtnhlib.GTNHLib;
 import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
 
 import bartworks.util.MathUtils;
@@ -42,9 +43,8 @@ public class JumpBoostBehavior implements IArmorBehavior {
 
         state.jumpBoostMulti = MathUtils.clamp(state.jumpBoostMulti, 1, jumpMaxMulti);
 
-        GTUtility.sendChatToPlayer(
-            context.getPlayer(),
-            GTUtility.translate("GT5U.armor.message.jump_boost_set", state.jumpBoostMulti));
+        String text = GTUtility.translate("GT5U.armor.message.jump_boost_set", state.jumpBoostMulti);
+        GTNHLib.proxy.printMessageAboveHotbar(text, 60, true, true);
     }
 
     @Override

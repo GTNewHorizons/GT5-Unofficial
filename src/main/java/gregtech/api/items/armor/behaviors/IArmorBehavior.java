@@ -12,6 +12,7 @@ import net.minecraft.nbt.NBTTagCompound;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.gtnewhorizon.gtnhlib.GTNHLib;
 import com.gtnewhorizon.gtnhlib.keybind.SyncedKeybind;
 
 import gregtech.GTMod;
@@ -49,10 +50,12 @@ public interface IArmorBehavior {
      */
     default void onBehaviorActivated(@NotNull ArmorContext context) {
         if (hasDisplayName()) {
-            GTUtility.sendChatToPlayer(
-                context.getPlayer(),
+            GTNHLib.proxy.printMessageAboveHotbar(
                 GTUtility
-                    .processFormatStacks(GRAY + GTUtility.translate("GT5U.armor.message.enabled", getDisplayName())));
+                    .processFormatStacks(GRAY + GTUtility.translate("GT5U.armor.message.enabled", getDisplayName())),
+                60,
+                true,
+                true);
         }
     }
 
@@ -61,10 +64,12 @@ public interface IArmorBehavior {
      */
     default void onBehaviorDeactivated(@NotNull ArmorContext context) {
         if (hasDisplayName()) {
-            GTUtility.sendChatToPlayer(
-                context.getPlayer(),
+            GTNHLib.proxy.printMessageAboveHotbar(
                 GTUtility
-                    .processFormatStacks(GRAY + GTUtility.translate("GT5U.armor.message.disabled", getDisplayName())));
+                    .processFormatStacks(GRAY + GTUtility.translate("GT5U.armor.message.disabled", getDisplayName())),
+                60,
+                true,
+                true);
         }
     }
 
