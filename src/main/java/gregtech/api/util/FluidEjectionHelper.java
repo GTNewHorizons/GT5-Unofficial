@@ -133,6 +133,7 @@ public class FluidEjectionHelper {
 
                 FluidStack tmp = output.id.getFluidStack(output.remainingAmount);
                 boolean stored = transaction.storePartial(output.id, tmp);
+                // Drained = Amount - Remaining
                 output.remainingAmount -= output.remainingAmount - GTUtility.getFluidAmount(tmp);
 
                 // Fill at most one slot with the remaining fluids
