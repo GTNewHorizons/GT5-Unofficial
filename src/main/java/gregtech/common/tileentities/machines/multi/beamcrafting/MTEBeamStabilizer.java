@@ -168,8 +168,8 @@ public class MTEBeamStabilizer extends MTEBeamMultiBase<MTEBeamStabilizer> imple
         //spotless:on
         .addElement('B', Casings.ShieldedAcceleratorCasing.asElement())
         .addElement('A', chainAllGlasses())
-        .addElement('C', buildBeamlineInputHatch(MTEBeamStabilizer.class, ShieldedAccCasingTextureID, 2))
-        .addElement('D', buildBeamlineOutputHatch(MTEBeamStabilizer.class, ShieldedAccCasingTextureID, 3))
+        .addElement('C', buildBeamlineInputHatch(MTEBeamStabilizer.class, ShieldedAccCasingTextureID, 1))
+        .addElement('D', buildBeamlineOutputHatch(MTEBeamStabilizer.class, ShieldedAccCasingTextureID, 2))
         .addElement('E', Casings.GrateMachineCasing.asElement())
         .build();
 
