@@ -39,7 +39,7 @@ public class ProcessingCrushedOre implements gregtech.api.interfaces.IOreRecipeR
             case "crushedCentrifuged" -> {
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(1, aStack))
-                    .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, aMaterial.mMacerateInto, 1L))
+                    .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, MU.macerateInto(aMaterial), 1L))
                     .duration(10 * TICKS)
                     .eut(TierEU.RECIPE_LV / 2)
                     .addTo(hammerRecipes);
@@ -47,10 +47,10 @@ public class ProcessingCrushedOre implements gregtech.api.interfaces.IOreRecipeR
                 GTValues.RA.stdBuilder()
                     .itemInputs(GTUtility.copyAmount(1, aStack))
                     .itemOutputs(
-                        GTOreDictUnificator.get(OrePrefixes.dust, aMaterial.mMacerateInto, 1L),
+                        GTOreDictUnificator.get(OrePrefixes.dust, MU.macerateInto(aMaterial), 1L),
                         GTOreDictUnificator.get(
                             OrePrefixes.dust,
-                            GTUtility.selectItemInList(2, aMaterial.mMacerateInto, aMaterial.mOreByProducts),
+                            GTUtility.selectItemInList(2, MU.macerateInto(aMaterial), aMaterial.mOreByProducts),
                             1L))
                     .outputChances(10000, 1000)
                     .duration(20 * SECONDS)
@@ -63,12 +63,12 @@ public class ProcessingCrushedOre implements gregtech.api.interfaces.IOreRecipeR
                     .itemOutputs(
                         GTOreDictUnificator.get(
                             OrePrefixes.crushedCentrifuged,
-                            aMaterial.mMacerateInto,
-                            GTOreDictUnificator.get(OrePrefixes.dust, aMaterial.mMacerateInto, 1L),
+                            MU.macerateInto(aMaterial),
+                            GTOreDictUnificator.get(OrePrefixes.dust, MU.macerateInto(aMaterial), 1L),
                             1L),
                         GTOreDictUnificator.get(
                             OrePrefixes.dust,
-                            GTUtility.selectItemInList(1, aMaterial.mMacerateInto, aMaterial.mOreByProducts),
+                            GTUtility.selectItemInList(1, MU.macerateInto(aMaterial), aMaterial.mOreByProducts),
                             1L))
                     .outputChances(10000, 1111)
                     .duration(25 * SECONDS)

@@ -38,21 +38,21 @@ public class ProcessingNugget implements gregtech.api.interfaces.IOreRecipeRegis
         if (aMaterial == Materials.Calcium || aMaterial == Materials.Magnesia) return;
 
         if (MU.hasFlag(aMaterial, GTMaterialFlag.SMELTING_TO_GEM)
-            && GTOreDictUnificator.get(OrePrefixes.gem, aMaterial.mSmeltInto, 1L) != null) {
+            && GTOreDictUnificator.get(OrePrefixes.gem, MU.smeltInto(aMaterial), 1L) != null) {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTUtility.copyAmount(9, aStack), ItemList.Shape_Mold_Ball.get(0L))
-                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gem, aMaterial.mSmeltInto, 1L))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.gem, MU.smeltInto(aMaterial), 1L))
                 .duration(10 * SECONDS)
                 .eut(calculateRecipeEU(aMaterial, 2))
                 .addTo(alloySmelterRecipes);
         }
 
         if ((!MU.hasFlag(aMaterial, GTMaterialFlag.SMELTING_TO_GEM))
-            && GTOreDictUnificator.get(OrePrefixes.ingot, aMaterial.mSmeltInto, 1L) != null
+            && GTOreDictUnificator.get(OrePrefixes.ingot, MU.smeltInto(aMaterial), 1L) != null
             && aMaterial != Materials.Aluminium) {
             GTValues.RA.stdBuilder()
                 .itemInputs(GTUtility.copyAmount(9, aStack), ItemList.Shape_Mold_Ingot.get(0L))
-                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingot, aMaterial.mSmeltInto, 1L))
+                .itemOutputs(GTOreDictUnificator.get(OrePrefixes.ingot, MU.smeltInto(aMaterial), 1L))
                 .duration(10 * SECONDS)
                 .eut(calculateRecipeEU(aMaterial, 2))
                 .recipeCategory(RecipeCategories.alloySmelterMolding)

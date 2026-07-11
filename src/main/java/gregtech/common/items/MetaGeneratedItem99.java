@@ -71,9 +71,9 @@ public class MetaGeneratedItem99 extends MetaGeneratedItem {
                 if (!cellMolten.mNotGeneratedItems.contains(tMaterial)) {
                     registerMolten(tMaterial, tMaterial.mMetaItemSubID);
                 }
-                if (tMaterial.mSmeltInto != tMaterial && tMaterial.mSmeltInto.mMetaItemSubID >= 0
-                    && tMaterial.mSmeltInto.mMetaItemSubID < 1_000) {
-                    registerMolten(tMaterial.mSmeltInto, tMaterial.mSmeltInto.mMetaItemSubID);
+                Materials smeltInto = MU.smeltInto(tMaterial);
+                if (smeltInto != tMaterial && smeltInto.mMetaItemSubID >= 0 && smeltInto.mMetaItemSubID < 1_000) {
+                    registerMolten(smeltInto, smeltInto.mMetaItemSubID);
                 }
             }
 

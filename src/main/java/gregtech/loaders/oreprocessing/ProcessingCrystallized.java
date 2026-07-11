@@ -30,24 +30,24 @@ public class ProcessingCrystallized implements gregtech.api.interfaces.IOreRecip
             return;
         }
 
-        if (aMaterial.mMacerateInto == null) {
+        if (MU.macerateInto(aMaterial) == null) {
             return;
         }
 
-        if (GTOreDictUnificator.get(OrePrefixes.dust, aMaterial.mMacerateInto, 1) == null) {
+        if (GTOreDictUnificator.get(OrePrefixes.dust, MU.macerateInto(aMaterial), 1) == null) {
             return;
         }
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(1, aStack))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, aMaterial.mMacerateInto, 1L))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, MU.macerateInto(aMaterial), 1L))
             .duration(10 * TICKS)
             .eut(TierEU.RECIPE_LV / 2)
             .addTo(hammerRecipes);
 
         GTValues.RA.stdBuilder()
             .itemInputs(GTUtility.copyAmount(1, aStack))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, aMaterial.mMacerateInto, 1L))
+            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, MU.macerateInto(aMaterial), 1L))
             .duration(20 * SECONDS)
             .eut(2)
             .addTo(maceratorRecipes);

@@ -101,7 +101,7 @@ public class ProcessingOre implements IOreRecipeRegistrator {
         aOreStack = GTUtility.copyAmount(1, aOreStack);
         aOreStack.stackSize = 1;
 
-        ItemStack tIngot = GTOreDictUnificator.get(OrePrefixes.ingot, aMaterial.mDirectSmelting, 1L);
+        ItemStack tIngot = GTOreDictUnificator.get(OrePrefixes.ingot, MU.directSmelting(aMaterial), 1L);
         ItemStack tGem = GTOreDictUnificator.get(OrePrefixes.gem, tMaterial, 1L);
         ItemStack tSmeltInto = tIngot
             == null
@@ -109,10 +109,10 @@ public class ProcessingOre implements IOreRecipeRegistrator {
                 : MU.hasFlag(aMaterial, GTMaterialFlag.SMELTING_TO_GEM)
                     ? GTOreDictUnificator.get(
                         OrePrefixes.gem,
-                        tMaterial.mDirectSmelting,
+                        MU.directSmelting(tMaterial),
                         GTOreDictUnificator.get(
                             OrePrefixes.crystal,
-                            tMaterial.mDirectSmelting,
+                            MU.directSmelting(tMaterial),
                             GTOreDictUnificator.get(
                                 OrePrefixes.gem,
                                 tMaterial,
@@ -154,7 +154,7 @@ public class ProcessingOre implements IOreRecipeRegistrator {
         boolean tHasSmelting = false;
 
         if (tSmeltInto != null) {
-            if ((aMaterial.mBlastFurnaceRequired) || (aMaterial.mDirectSmelting.mBlastFurnaceRequired)) {
+            if ((aMaterial.mBlastFurnaceRequired) || (MU.directSmelting(aMaterial).mBlastFurnaceRequired)) {
                 GTModHandler.removeFurnaceSmelting(aOreStack);
             } else {
                 tHasSmelting = GTModHandler.addSmeltingRecipe(
@@ -232,7 +232,7 @@ public class ProcessingOre implements IOreRecipeRegistrator {
                 aOreStack,
                 GTOreDictUnificator.get(
                     OrePrefixes.gem,
-                    tMaterial.mDirectSmelting,
+                    MU.directSmelting(tMaterial),
                     Math.max(1, aMultiplier * aMaterial.mSmeltingMultiplier / 2)));
         }
 

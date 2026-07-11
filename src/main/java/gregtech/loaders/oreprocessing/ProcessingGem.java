@@ -86,7 +86,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                 if (!aNoSmelting) {
                     GTModHandler.addSmeltingRecipe(
                         GTUtility.copyAmount(1, aStack),
-                        GTOreDictUnificator.get(OrePrefixes.ingot, aMaterial.mSmeltInto, 1L));
+                        GTOreDictUnificator.get(OrePrefixes.ingot, MU.smeltInto(aMaterial), 1L));
                 }
 
                 if (aNoSmashing) {
