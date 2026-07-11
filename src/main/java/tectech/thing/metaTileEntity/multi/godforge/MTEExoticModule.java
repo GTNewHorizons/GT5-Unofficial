@@ -33,10 +33,13 @@ import org.jetbrains.annotations.Nullable;
 
 import com.cleanroommc.modularui.utils.fluid.FluidTanksHandler;
 import com.cleanroommc.modularui.utils.fluid.IFluidTanksHandler;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.Materials2FluidShapes;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechDeviceInformation;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -219,7 +222,10 @@ public class MTEExoticModule extends MTEBaseModule {
             null,
             ArrayUtils
                 .addAll(convertItemToPlasma(randomizedItemInput, 9), convertFluidToPlasma(randomizedFluidInput, 1)),
-            new FluidStack[] { Materials.QuarkGluonPlasma.getFluid(1000 * actualParallel) },
+            new FluidStack[] { MaterialLibAPI.getFluidStack(
+                Materials2Materials.QuarkGluonPlasma,
+                Materials2FluidShapes.shapeFluidLiquid,
+                (int) (1000 * actualParallel)) },
             10 * SECONDS,
             (int) TierEU.RECIPE_MAX,
             0);
@@ -434,7 +440,10 @@ public class MTEExoticModule extends MTEBaseModule {
             if (magmatterMode) {
                 outputFluid = Materials.MagMatter.getMolten(actualParallel * 4 * INGOTS);
             } else {
-                outputFluid = Materials.QuarkGluonPlasma.getFluid(1000L * actualParallel);
+                outputFluid = MaterialLibAPI.getFluidStack(
+                    Materials2Materials.QuarkGluonPlasma,
+                    Materials2FluidShapes.shapeFluidLiquid,
+                    (int) (1000 * actualParallel));
             }
 
             setPlasmaRecipe(
