@@ -531,6 +531,8 @@ public abstract class MTELargeBoilerBase extends MTEExtendedPowerMultiBlockBase<
         checkCasingMin(errors, fireboxAmount, 5);
         checkHasMaintenanceHatch(errors);
         checkHasMufflerHatch(errors);
+        checkHasInputHatch(errors);
+        checkHasOutputHatch(errors);
     }
 
     private int adjustEUtForConfig(int rawEUt) {
