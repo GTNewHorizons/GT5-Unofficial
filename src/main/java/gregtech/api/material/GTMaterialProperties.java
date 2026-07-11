@@ -48,6 +48,17 @@ public class GTMaterialProperties {
     public static final Property<Integer> GAS_TEMP = Property.of("gregtech", "gasTemp");
     public static final Property<Integer> FUEL_POWER = Property.of("gregtech", "fuelPower");
     public static final Property<Integer> FUEL_TYPE = Property.of("gregtech", "fuelType");
+    /// The legacy `Materials#mChemicalFormula` override string, present only for a material whose legacy
+    /// declaration called `MaterialBuilder#setChemicalFormula` explicitly (the deleted `MaterialsInit`'s ~170
+    /// non-derivable formulas -- isotope notation, joke/flavor formulas, etc.). A material without this
+    /// property still has a real chemical-formula tooltip: `Materials`'s own constructor derives one from
+    /// [#ELEMENT] or [#COMPOSITION] when no override is given, and [LegacyMaterials] reproduces that
+    /// derivation unconditionally. Materials whose formula instead comes from a bartworks or gtPlusPlus fold
+    /// carry it in [#WERKSTOFF]/[#GTPP] instead, never here.
+    public static final Property<String> FORMULA = Property.of("gregtech", "formula");
+    /// Whether [#FORMULA] is a `GTLanguageManager` localization key rather than literal text -- mirrors
+    /// [GTWerkstoffFlag#LOCALIZED_FORMULA], the same distinction for a [#WERKSTOFF] formula.
+    public static final Property<Boolean> FORMULA_LOCALIZED = Property.of("gregtech", "formulaLocalized");
     public static final Property<EnumSet<GTMaterialGenerationFlag>> GENERATION_FLAGS = Property
         .of("gregtech", "generationFlags");
     public static final Property<MaterialRef> HANDLE_MATERIAL = Property.of("gregtech", "handleMaterial");

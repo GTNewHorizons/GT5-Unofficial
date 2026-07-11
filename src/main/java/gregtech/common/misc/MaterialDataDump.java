@@ -173,6 +173,7 @@ public final class MaterialDataDump {
         json.put("iconSet", material.mIconSet != null ? material.mIconSet.mSetName : null);
         json.put("color", material.mColor != null && material.mColor != Dyes._NULL ? material.mColor.name() : null);
         json.put("element", material.mElement != null ? material.mElement.name() : null);
+        json.put("chemicalFormula", material.getChemicalFormula());
         json.put("meltingPoint", material.mMeltingPoint);
         json.put("blastTemp", (int) material.mBlastFurnaceTemp);
         json.put("blastRequired", material.mBlastFurnaceRequired);
