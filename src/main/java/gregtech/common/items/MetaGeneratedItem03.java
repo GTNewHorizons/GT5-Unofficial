@@ -313,6 +313,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 
+import codechicken.nei.api.API;
 import cpw.mods.fml.common.Optional;
 import gregtech.api.covers.CoverPlacer;
 import gregtech.api.covers.CoverRegistry;
@@ -2018,6 +2019,12 @@ public class MetaGeneratedItem03 extends MetaGeneratedItemX32 implements IItemFi
                 new TCAspects.TC_AspectStack(TCAspects.FABRICO, 4L),
                 new TCAspects.TC_AspectStack(TCAspects.MACHINA, 4L),
                 new TCAspects.TC_AspectStack(TCAspects.VITREUS, 4L)));
+
+        // IC2 Aliases
+        API.setAliases(ItemList.Carbon_Fiber_Bundle.get(1), "gt.item.carbon_fiber_bundle.alias");
+        API.setAliases(ItemList.Carbon_Fiber_Mesh.get(1), "gt.item.carbon_fiber_mesh.alias");
+        API.setAliases(ItemList.Carbon_Fiber_Sheet.get(1), "gt.item.carbon_fiber_sheet.alias");
+        API.setAliases(ItemList.Reinforced_Iridium_Alloy_Plate.get(1), "gt.item.reinforced_iridium_alloy_plate.alias");
 
         registerMetaMaterials();
 
