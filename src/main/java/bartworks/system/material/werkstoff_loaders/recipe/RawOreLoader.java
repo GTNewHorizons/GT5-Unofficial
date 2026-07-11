@@ -24,13 +24,16 @@ import static gregtech.api.recipe.RecipeMaps.maceratorRecipes;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import bartworks.system.material.Werkstoff;
 import bartworks.system.material.WerkstoffLoader;
 import bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
 import bartworks.util.BWUtil;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.util.GTModHandler;
 
 public class RawOreLoader implements IWerkstoffRunnable {
@@ -57,7 +60,7 @@ public class RawOreLoader implements IWerkstoffRunnable {
                 .itemOutputs(
                     werkstoff.get(crushed, 2),
                     werkstoff.contains(SubTag.CRYSTAL) ? werkstoff.get(gem) : werkstoff.getOreByProduct(0, dust),
-                    Materials.Stone.getDust(1))
+                    MaterialLibAPI.getStack(Materials2Materials.Stone, Materials2Shapes.shapeDust, (int) (1)))
                 .outputChances(100_00, werkstoff.getNoOfByProducts() > 0 ? 5_00 : 10_00, 50_00)
                 .eut(BWUtil.calculateRecipeEU(werkstoff, 2))
                 .duration(20 * SECONDS)

@@ -37,6 +37,8 @@ import static gregtech.api.util.GTRecipeBuilder.MINUTES;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import bartworks.system.material.Werkstoff;
 import bartworks.system.material.werkstoff_loaders.IWerkstoffRunnable;
 import bartworks.util.BWUtil;
@@ -44,6 +46,8 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.Materials2FluidShapes;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 
@@ -242,7 +246,11 @@ public class CrushedLoader implements IWerkstoffRunnable {
                     werkstoff.getOreByProduct(1, dust),
                     GTOreDictUnificator.get(dust, Materials.Stone, 1L))
                 .outputChances(10000, 7000, 4000)
-                .fluidInputs(Materials.Mercury.getFluid(1_000))
+                .fluidInputs(
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.Mercury,
+                        Materials2FluidShapes.shapeFluidLiquid,
+                        (int) (1_000)))
                 .duration(40 * SECONDS)
                 .eut(BWUtil.calculateRecipeEU(werkstoff, (int) TierEU.RECIPE_ULV))
                 .addTo(chemicalBathRecipes);
@@ -257,7 +265,11 @@ public class CrushedLoader implements IWerkstoffRunnable {
                     werkstoff.getOreByProduct(1, dust),
                     GTOreDictUnificator.get(dust, Materials.Stone, 1L))
                 .outputChances(10000, 7000, 4000)
-                .fluidInputs(Materials.SodiumPersulfate.getFluid(100L))
+                .fluidInputs(
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.SodiumPersulfate,
+                        Materials2FluidShapes.shapeFluidLiquid,
+                        (int) (100)))
                 .duration(40 * SECONDS)
                 .eut(BWUtil.calculateRecipeEU(werkstoff, (int) TierEU.RECIPE_ULV))
                 .addTo(chemicalBathRecipes);

@@ -6,9 +6,13 @@ import static gregtech.api.enums.MetaTileEntityIDs.Boiler_Advanced_MV;
 import static gregtech.api.enums.Mods.IronTanks;
 import static gregtech.api.util.GTModHandler.getModItem;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -40,7 +44,7 @@ public class GregtechAdvancedBoilers {
             GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE
                 | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "DSD", "BTB", "DSD", 'D',
-                GTOreDictUnificator.get(OrePrefixes.plateDouble, Materials.Lead, 1L), 'S',
+                MaterialLibAPI.getStack(Materials2Materials.Lead, Materials2Shapes.shapePlateDouble, (int) (1)), 'S',
                 GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Steel, 1L), 'B',
                 GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Bronze, 1L), 'T',
                 getModItem(IronTanks.ID, "silverTank", 1, 0) });
@@ -49,8 +53,9 @@ public class GregtechAdvancedBoilers {
             GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE
                 | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "DSD", "BTB", "DSD", 'D',
-                GTOreDictUnificator.get(OrePrefixes.plateDouble, Materials.StainlessSteel, 1L), 'S',
-                GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.StainlessSteel, 1L), 'B',
+                MaterialLibAPI
+                    .getStack(Materials2Materials.StainlessSteel, Materials2Shapes.shapePlateDouble, (int) (1)),
+                'S', GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.StainlessSteel, 1L), 'B',
                 GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Steel, 1L), 'T',
                 getModItem(IronTanks.ID, "stainlesssteelTank", 1, 0) });
         GTModHandler.addCraftingRecipe(
@@ -58,8 +63,8 @@ public class GregtechAdvancedBoilers {
             GTModHandler.RecipeBits.NOT_REMOVABLE | GTModHandler.RecipeBits.REVERSIBLE
                 | GTModHandler.RecipeBits.BUFFERED,
             new Object[] { "DSD", "BTB", "DSD", 'D',
-                GTOreDictUnificator.get(OrePrefixes.plateDouble, Materials.Titanium, 1L), 'S',
-                GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Titanium, 1L), 'B',
+                MaterialLibAPI.getStack(Materials2Materials.Titanium, Materials2Shapes.shapePlateDouble, (int) (1)),
+                'S', GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Titanium, 1L), 'B',
                 GTOreDictUnificator.get(OrePrefixes.pipeMedium, Materials.StainlessSteel, 1L), 'T',
                 getModItem(IronTanks.ID, "titaniumTank", 1, 0) });
 

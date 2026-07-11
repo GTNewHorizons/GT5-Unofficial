@@ -7,11 +7,15 @@ import static gtPlusPlus.api.recipe.GTPPRecipeMaps.multiblockRockBreakerRecipes;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.Mods;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 
@@ -33,7 +37,7 @@ public class RecipeLoaderIndustrialRockBreaker {
             .addTo(multiblockRockBreakerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Redstone, Materials2Shapes.shapeDust, (int) (1)))
             .circuit(3)
             .itemOutputs(new ItemStack(Blocks.obsidian, 1))
             .duration(6 * SECONDS + 8 * TICKS)
@@ -41,7 +45,7 @@ public class RecipeLoaderIndustrialRockBreaker {
             .addTo(multiblockRockBreakerRecipes);
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Glowstone, 1L))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Glowstone, Materials2Shapes.shapeDust, (int) (1)))
             .circuit(6)
             .itemOutputs(new ItemStack(Blocks.netherrack, 1))
             .duration(16 * TICKS)

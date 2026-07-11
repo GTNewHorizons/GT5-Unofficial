@@ -22,10 +22,14 @@ import net.minecraft.item.ItemStack;
 
 import org.apache.commons.lang3.tuple.Pair;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.Materials2FluidShapes;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.util.GTModHandler;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialGenerator;
@@ -218,7 +222,11 @@ public class RecipeGenOre extends RecipeGenBase {
                 .itemInputs(material.getCrushed(1))
                 .itemOutputs(material.getCrushedPurified(4), material.getDustImpure(2), material.getDustPurified(1))
                 .outputChances(100_00, 50_00, 10_00)
-                .fluidInputs(Materials.Hydrogen.getGas(1_000))
+                .fluidInputs(
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.Hydrogen,
+                        Materials2FluidShapes.shapeFluidGas,
+                        (int) (1_000)))
                 .duration(15 * SECONDS)
                 .eut(TierEU.RECIPE_HV / 2)
                 .addTo(chemicalBathRecipes);

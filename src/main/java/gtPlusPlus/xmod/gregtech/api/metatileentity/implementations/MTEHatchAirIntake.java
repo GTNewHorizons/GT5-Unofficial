@@ -4,7 +4,11 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.materials2.Materials2FluidShapes;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -48,7 +52,7 @@ public class MTEHatchAirIntake extends MTEHatchFluidGenerator {
         if (id == -1) {
             return Materials.NetherAir.mFluid;
         } else {
-            return Materials.Air.getGas(1)
+            return MaterialLibAPI.getFluidStack(Materials2Materials.Air, Materials2FluidShapes.shapeFluidGas, (int) (1))
                 .getFluid();
         }
     }

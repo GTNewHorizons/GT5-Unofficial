@@ -8,12 +8,16 @@ import static gregtech.api.util.GTRecipeConstants.AssemblyLine;
 import static gregtech.api.util.GTRecipeConstants.RESEARCH_ITEM;
 import static gregtech.api.util.GTRecipeConstants.SCANNING;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
-import gregtech.api.util.GTOreDictUnificator;
+import gregtech.api.enums.materials2.Materials2FluidShapes;
+import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.util.recipe.Scanning;
 import gtPlusPlus.core.material.MaterialsAlloy;
 
@@ -31,7 +35,12 @@ class ComponentRecipeLoader implements Runnable {
                 new Object[] { OrePrefixes.circuit.get(Materials.IV), 4 },
                 new Object[] { OrePrefixes.circuit.get(Materials.EV), 8 },
                 ItemList.Automation_ChestBuffer_LuV.get(1L))
-            .fluidInputs(MaterialsAlloy.INDALLOY_140.getFluidStack(9 * INGOTS), Materials.Lubricant.getFluid(2_000))
+            .fluidInputs(
+                MaterialsAlloy.INDALLOY_140.getFluidStack(9 * INGOTS),
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.Lubricant,
+                    Materials2FluidShapes.shapeFluidLiquid,
+                    (int) (2_000)))
             .itemOutputs(GGItemList.AdvAssLine.get(1L))
             .eut(TierEU.RECIPE_LuV)
             .duration(3 * MINUTES)
@@ -42,10 +51,14 @@ class ComponentRecipeLoader implements Runnable {
                 ItemList.Hatch_Input_Bus_IV.get(1L),
                 ItemList.Emitter_IV.get(1L),
                 ItemList.Sensor_IV.get(1L),
-                GTOreDictUnificator.get(OrePrefixes.plateDense, Materials.Enderium, 1L))
+                MaterialLibAPI.getStack(Materials2Materials.Enderium, Materials2Shapes.shapePlateDense, (int) (1)))
             .circuit(12)
             .itemOutputs(GGItemList.LinkedInputBus.get(1L))
-            .fluidInputs(Materials.Polybenzimidazole.getMolten(1 * INGOTS))
+            .fluidInputs(
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.Polybenzimidazole,
+                    Materials2FluidShapes.shapeFluidMolten,
+                    (int) (1 * INGOTS)))
             .duration(30 * SECONDS)
             .eut(TierEU.RECIPE_IV)
             .addTo(assemblerRecipes);

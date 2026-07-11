@@ -14,10 +14,13 @@ import static gtPlusPlus.api.recipe.GTPPRecipeMaps.reactorProcessingUnitRecipes;
 
 import net.minecraftforge.fluids.FluidStack;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.Materials2FluidShapes;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gtPlusPlus.core.fluids.GTPPFluids;
 import gtPlusPlus.core.material.MaterialsElements;
 import gtPlusPlus.core.material.nuclear.MaterialsFluorides;
@@ -36,7 +39,8 @@ public class RecipeLoaderNuclearFuelProcessing {
                 MaterialsFluorides.LITHIUM_FLUORIDE.getFluidStack(550),
                 MaterialsFluorides.BERYLLIUM_FLUORIDE.getFluidStack(150),
                 MaterialsFluorides.ZIRCONIUM_TETRAFLUORIDE.getFluidStack(60),
-                Materials.Uranium235.getMolten(240))
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.Uranium235, Materials2FluidShapes.shapeFluidMolten, (int) (240)))
             .fluidOutputs(MaterialsNuclides.LiFBeF2ZrF4U235.getFluidStack(1000))
             .duration(30 * MINUTES)
             .eut(TierEU.RECIPE_EV)
@@ -216,7 +220,9 @@ public class RecipeLoaderNuclearFuelProcessing {
         // UF6 + LiFBeF2 + H2 -> LiFBeF2UF4 + HF
         GTValues.RA.stdBuilder()
             .itemInputs(MaterialsFluorides.URANIUM_HEXAFLUORIDE.getCell(1), MaterialsNuclides.LiFBeF2.getCell(1))
-            .fluidInputs(Materials.Hydrogen.getGas(2_000))
+            .fluidInputs(
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.Hydrogen, Materials2FluidShapes.shapeFluidGas, (int) (2_000)))
             .itemOutputs(ItemUtils.getItemStackOfAmountFromOreDict("cellHydrofluoricAcid", 2))
             .fluidOutputs(MaterialsNuclides.LiFBeF2UF4.getFluidStack(3000))
             .duration(2 * MINUTES + 30 * SECONDS)

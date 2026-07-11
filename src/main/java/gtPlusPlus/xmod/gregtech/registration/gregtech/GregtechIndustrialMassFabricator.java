@@ -6,10 +6,14 @@ import static gregtech.api.util.GTRecipeBuilder.NUGGETS;
 import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.multiblockMassFabricatorRecipes;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.Materials2FluidShapes;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.production.MTEMassFabricator;
 
@@ -37,7 +41,9 @@ public class GregtechIndustrialMassFabricator {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.IC2_Scrap.get(9L))
             .circuit(9)
-            .fluidOutputs(Materials.UUAmplifier.getFluid(1))
+            .fluidOutputs(
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.UUAmplifier, Materials2FluidShapes.shapeFluidLiquid, (int) (1)))
             .duration(9 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(multiblockMassFabricatorRecipes);
@@ -46,7 +52,9 @@ public class GregtechIndustrialMassFabricator {
         GTValues.RA.stdBuilder()
             .itemInputs(ItemList.IC2_Scrapbox.get(1L))
             .circuit(19)
-            .fluidOutputs(Materials.UUAmplifier.getFluid(1))
+            .fluidOutputs(
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.UUAmplifier, Materials2FluidShapes.shapeFluidLiquid, (int) (1)))
             .duration(9 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(multiblockMassFabricatorRecipes);
@@ -56,7 +64,9 @@ public class GregtechIndustrialMassFabricator {
             .itemInputs(ItemList.IC2_Scrap.get(9L))
             .circuit(10)
             .fluidInputs(Materials.UUMatter.getFluid(1L))
-            .fluidOutputs(Materials.UUAmplifier.getFluid(10L))
+            .fluidOutputs(
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.UUAmplifier, Materials2FluidShapes.shapeFluidLiquid, (int) (10)))
             .duration(9 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(multiblockMassFabricatorRecipes);
@@ -66,7 +76,9 @@ public class GregtechIndustrialMassFabricator {
             .itemInputs(ItemList.IC2_Scrapbox.get(1L))
             .circuit(20)
             .fluidInputs(Materials.UUMatter.getFluid(1L))
-            .fluidOutputs(Materials.UUAmplifier.getFluid(10L))
+            .fluidOutputs(
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.UUAmplifier, Materials2FluidShapes.shapeFluidLiquid, (int) (10)))
             .duration(9 * SECONDS)
             .eut(TierEU.RECIPE_LV)
             .addTo(multiblockMassFabricatorRecipes);
@@ -82,7 +94,11 @@ public class GregtechIndustrialMassFabricator {
         // Basic UUM
         GTValues.RA.stdBuilder()
             .circuit(2)
-            .fluidInputs(Materials.UUAmplifier.getFluid(1 * NUGGETS))
+            .fluidInputs(
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.UUAmplifier,
+                    Materials2FluidShapes.shapeFluidLiquid,
+                    (int) (1 * NUGGETS)))
             .fluidOutputs(Materials.UUMatter.getFluid(1 * NUGGETS))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_IV / 2)
@@ -99,7 +115,11 @@ public class GregtechIndustrialMassFabricator {
         // Advanced UUM
         GTValues.RA.stdBuilder()
             .circuit(4)
-            .fluidInputs(Materials.UUAmplifier.getFluid(256))
+            .fluidInputs(
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.UUAmplifier,
+                    Materials2FluidShapes.shapeFluidLiquid,
+                    (int) (256)))
             .fluidOutputs(Materials.UUMatter.getFluid(256))
             .duration(40 * SECONDS)
             .eut(TierEU.RECIPE_ZPM / 2)

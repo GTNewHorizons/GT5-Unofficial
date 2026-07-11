@@ -9,34 +9,39 @@ import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeBuilder.TICKS;
 import static gtPlusPlus.api.recipe.GTPPRecipeMaps.molecularTransformerRecipes;
 
+import com.ruling_0.materiallib.api.MaterialLibAPI;
+
 import advsolar.utils.MTRecipeManager;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TierEU;
+import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.util.GTModHandler;
-import gregtech.api.util.GTOreDictUnificator;
 
 public class RecipeLoaderMolecularTransformer {
 
     public static void run() {
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.NetherQuartz, 1L))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.CertusQuartz, 1L))
+            .itemInputs(
+                MaterialLibAPI.getStack(Materials2Materials.NetherQuartz, Materials2Shapes.shapeDust, (int) (1)))
+            .itemOutputs(
+                MaterialLibAPI.getStack(Materials2Materials.CertusQuartz, Materials2Shapes.shapeDust, (int) (1)))
             .duration(1 * SECONDS + 13 * TICKS)
             .eut(TierEU.RECIPE_IV)
             .addTo(molecularTransformerRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.CertusQuartz, 1L))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.NetherQuartz, 1L))
+            .itemInputs(
+                MaterialLibAPI.getStack(Materials2Materials.CertusQuartz, Materials2Shapes.shapeDust, (int) (1)))
+            .itemOutputs(
+                MaterialLibAPI.getStack(Materials2Materials.NetherQuartz, Materials2Shapes.shapeDust, (int) (1)))
             .duration(1 * SECONDS + 13 * TICKS)
             .eut(TierEU.RECIPE_IV)
             .addTo(molecularTransformerRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Redstone, 1L))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Ruby, 1L))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Redstone, Materials2Shapes.shapeDust, (int) (1)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Ruby, Materials2Shapes.shapeDust, (int) (1)))
             .duration(16 * SECONDS + 6 * TICKS)
             .eut(TierEU.RECIPE_IV)
             .addTo(molecularTransformerRecipes);
@@ -59,44 +64,46 @@ public class RecipeLoaderMolecularTransformer {
         }
 
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Copper, 1L))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Nickel, 1L))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Copper, Materials2Shapes.shapeDust, (int) (1)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Nickel, Materials2Shapes.shapeDust, (int) (1)))
             .duration(16 * SECONDS + 6 * TICKS)
             .eut(TierEU.RECIPE_IV)
             .addTo(molecularTransformerRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Tin, 1L))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Silver, 1L))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Tin, Materials2Shapes.shapeDust, (int) (1)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Silver, Materials2Shapes.shapeDust, (int) (1)))
             .duration(16 * SECONDS + 6 * TICKS)
             .eut(TierEU.RECIPE_IV)
             .addTo(molecularTransformerRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.GarnetRed, 1L))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.GarnetYellow, 1L))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.GarnetRed, Materials2Shapes.shapeDust, (int) (1)))
+            .itemOutputs(
+                MaterialLibAPI.getStack(Materials2Materials.GarnetYellow, Materials2Shapes.shapeDust, (int) (1)))
             .duration(16 * SECONDS + 6 * TICKS)
             .eut(TierEU.RECIPE_IV)
             .addTo(molecularTransformerRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.GarnetYellow, 1L))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.GarnetRed, 1L))
+            .itemInputs(
+                MaterialLibAPI.getStack(Materials2Materials.GarnetYellow, Materials2Shapes.shapeDust, (int) (1)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.GarnetRed, Materials2Shapes.shapeDust, (int) (1)))
             .duration(16 * SECONDS + 6 * TICKS)
             .eut(TierEU.RECIPE_IV)
             .addTo(molecularTransformerRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Silver, 1L))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Gold, 1L))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Silver, Materials2Shapes.shapeDust, (int) (1)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Gold, Materials2Shapes.shapeDust, (int) (1)))
             .duration(32 * SECONDS + 12 * TICKS)
             .eut(TierEU.RECIPE_IV)
             .addTo(molecularTransformerRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 1L))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Graphene, 1L))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Carbon, Materials2Shapes.shapeDust, (int) (1)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Graphene, Materials2Shapes.shapeDust, (int) (1)))
             .duration(32 * SECONDS + 12 * TICKS)
             .eut(TierEU.RECIPE_IV)
             .addTo(molecularTransformerRecipes);
         GTValues.RA.stdBuilder()
-            .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Gold, 1L))
-            .itemOutputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Platinum, 1L))
+            .itemInputs(MaterialLibAPI.getStack(Materials2Materials.Gold, Materials2Shapes.shapeDust, (int) (1)))
+            .itemOutputs(MaterialLibAPI.getStack(Materials2Materials.Platinum, Materials2Shapes.shapeDust, (int) (1)))
             .duration(4 * MINUTES + 20 * SECONDS + 9 * TICKS)
             .eut(TierEU.RECIPE_IV)
             .addTo(molecularTransformerRecipes);
@@ -106,7 +113,8 @@ public class RecipeLoaderMolecularTransformer {
             if (GalaxySpace.isModLoaded()) {
 
                 GTValues.RA.stdBuilder()
-                    .itemInputs(GTOreDictUnificator.get(OrePrefixes.dust, Materials.Glowstone, 1L))
+                    .itemInputs(
+                        MaterialLibAPI.getStack(Materials2Materials.Glowstone, Materials2Shapes.shapeDust, (int) (1)))
                     .itemOutputs(GTModHandler.getModItem(AdvancedSolarPanel.ID, "asp_crafting_items", 1L, 9))
                     .duration(30 * SECONDS)
                     .eut(TierEU.RECIPE_EV)
