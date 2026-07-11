@@ -9,8 +9,9 @@ import net.minecraft.item.ItemStack;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TierEU;
+import gregtech.api.material.GTMaterialFlag;
+import gregtech.api.material.MU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -47,7 +48,7 @@ public class ProcessingOrePoor implements gregtech.api.interfaces.IOreRecipeRegi
                 break;
         }
         if (aMaterial != null) {
-            if (aMaterial.contains(SubTag.NO_ORE_PROCESSING)) {
+            if (MU.hasFlag(aMaterial, GTMaterialFlag.NO_ORE_PROCESSING)) {
                 return;
             }
 
@@ -72,7 +73,7 @@ public class ProcessingOrePoor implements gregtech.api.interfaces.IOreRecipeRegi
                 .eut(2)
                 .addTo(maceratorRecipes);
 
-            if (aMaterial.contains(SubTag.NO_SMELTING)) GTModHandler.addSmeltingRecipe(
+            if (MU.hasFlag(aMaterial, GTMaterialFlag.NO_SMELTING)) GTModHandler.addSmeltingRecipe(
                 GTUtility.copyAmount(1, aStack),
                 GTOreDictUnificator.get(OrePrefixes.nugget, aMaterial.mDirectSmelting, aMultiplier));
         }

@@ -17,10 +17,11 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
+import gregtech.api.material.GTMaterialFlag;
+import gregtech.api.material.MU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.common.items.IDMetaTool01;
@@ -47,12 +48,13 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
         ItemStack aStack) {
         boolean aSpecialRecipeReq1 = aMaterial.mUnifiable && (aMaterial.mMaterialInto == aMaterial)
-            && !aMaterial.contains(SubTag.NO_SMASHING);
+            && !MU.hasFlag(aMaterial, GTMaterialFlag.NO_SMASHING);
         boolean aSpecialRecipeReq2 = aMaterial.mUnifiable && (aMaterial.mMaterialInto == aMaterial)
-            && !aMaterial.contains(SubTag.NO_WORKING);
-        boolean aNoWorking = aMaterial.contains(SubTag.NO_WORKING);
-        boolean aProducesSoftMallet = aMaterial.contains(SubTag.BOUNCY) || aMaterial.contains(SubTag.WOOD)
-            || aMaterial.contains(SubTag.SOFT);
+            && !MU.hasFlag(aMaterial, GTMaterialFlag.NO_WORKING);
+        boolean aNoWorking = MU.hasFlag(aMaterial, GTMaterialFlag.NO_WORKING);
+        boolean aProducesSoftMallet = MU.hasFlag(aMaterial, GTMaterialFlag.BOUNCY)
+            || MU.hasFlag(aMaterial, GTMaterialFlag.WOOD)
+            || MU.hasFlag(aMaterial, GTMaterialFlag.SOFT);
         switch (aPrefix.getName()) {
             case "toolHeadBuzzSaw" -> {
                 GTModHandler.addCraftingRecipe(
@@ -539,7 +541,8 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                             .getToolWithStats(IDMetaTool01.FILE.ID, 1, aMaterial, aMaterial.mHandleMaterial, null),
                         new Object[] { aOreDictName, OrePrefixes.stick.get(aMaterial.mHandleMaterial) });
 
-                    if ((!aMaterial.contains(SubTag.NO_SMASHING)) && (!aMaterial.contains(SubTag.BOUNCY))) {
+                    if ((!MU.hasFlag(aMaterial, GTMaterialFlag.NO_SMASHING))
+                        && (!MU.hasFlag(aMaterial, GTMaterialFlag.BOUNCY))) {
                         if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV) {
                             GTModHandler.addCraftingRecipe(
                                 MetaGeneratedTool01.INSTANCE.getToolWithStats(

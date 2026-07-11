@@ -20,8 +20,9 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TierEU;
+import gregtech.api.material.GTMaterialFlag;
+import gregtech.api.material.MU;
 import gregtech.api.recipe.RecipeCategories;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -45,14 +46,14 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
         if (aMaterial == Materials.Calcium || aMaterial == Materials.Magnesia) return;
 
         if (((aMaterial == Materials.Glass) || (GTOreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L) != null))
-            && (!aMaterial.contains(SubTag.NO_SMELTING))) {
+            && (!MU.hasFlag(aMaterial, GTMaterialFlag.NO_SMELTING))) {
             long aMaterialMass = aMaterial.getMass();
             int tAmount = (int) (aPrefix.getMaterialAmount() / 3628800L);
             if ((tAmount > 0) && (tAmount <= 64) && (aPrefix.getMaterialAmount() % 3628800L == 0L)) {
                 int tVoltageMultiplier = aMaterial.mBlastFurnaceTemp >= 2800 ? 60 : 15;
                 int tTrueVoltage = aMaterial.getProcessingMaterialTierEU();
 
-                if (aMaterial.contains(SubTag.NO_SMASHING)) {
+                if (MU.hasFlag(aMaterial, GTMaterialFlag.NO_SMASHING)) {
                     tVoltageMultiplier /= 4;
                 } else if (aPrefix.getName()
                     .startsWith(OrePrefixes.dust.getName())) {
@@ -156,7 +157,7 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                 }
 
                 if (!(aMaterial == Materials.AnnealedCopper || aMaterial == Materials.CastIron)
-                    && !(aMaterial.contains(SubTag.NO_SMELTING))
+                    && !(MU.hasFlag(aMaterial, GTMaterialFlag.NO_SMELTING))
                     && aPrefix == OrePrefixes.ingot) {
                     if (aMaterial.mStandardMoltenFluid != null) {
                         if (GTOreDictUnificator.get(OrePrefixes.ring, aMaterial, 1L) != null) {
@@ -323,7 +324,7 @@ public class ProcessingShaping implements gregtech.api.interfaces.IOreRecipeRegi
                             .addTo(extruderRecipes);
                     }
                     if ((aMaterial.mUnifiable) && (aMaterial.mMaterialInto == aMaterial)
-                        && !aMaterial.contains(SubTag.NO_SMASHING)) {
+                        && !MU.hasFlag(aMaterial, GTMaterialFlag.NO_SMASHING)) {
                         // If material tier < IV then add manual recipe.
                         if (aMaterial.getProcessingMaterialTierEU() < TierEU.IV
                             && GTOreDictUnificator.get(OrePrefixes.ring, aMaterial, 1L) != null) {

@@ -29,11 +29,12 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
+import gregtech.api.material.GTMaterialFlag;
+import gregtech.api.material.MU;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
@@ -100,7 +101,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                 }
                 ItemStack tDustStack;
                 if ((null != (tDustStack = GTOreDictUnificator.get(OrePrefixes.ingot, aMaterial.mSmeltInto, 1L)))
-                    && (!aMaterial.contains(SubTag.NO_SMELTING))) {
+                    && (!MU.hasFlag(aMaterial, GTMaterialFlag.NO_SMELTING))) {
                     if (aMaterial.mBlastFurnaceRequired) {
                         GTModHandler.removeFurnaceSmelting(aStack);
                         if (aMaterial.mAutoGenerateBlastFurnaceRecipes) {
@@ -124,7 +125,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                     } else {
                         GTModHandler.addSmeltingRecipe(aStack, tDustStack);
                     }
-                } else if (!aMaterial.contains(SubTag.NO_WORKING)) {
+                } else if (!MU.hasFlag(aMaterial, GTMaterialFlag.NO_WORKING)) {
                     if ((!OrePrefixes.block.isIgnored(aMaterial))
                         && (null == GTOreDictUnificator.get(OrePrefixes.gem, aMaterial, 1L))
                         && GTOreDictUnificator.get(OrePrefixes.block, aMaterial, 1L) != null
@@ -265,7 +266,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                         }
                     }
                 }
-                if (aMaterial.contains(SubTag.CRYSTALLISABLE)
+                if (MU.hasFlag(aMaterial, GTMaterialFlag.CRYSTALLISABLE)
                     && GTOreDictUnificator.get(OrePrefixes.gem, aMaterial, 1L) != null) {
                     GTValues.RA.stdBuilder()
                         .itemInputs(GTUtility.copyAmount(1, aStack))
@@ -403,7 +404,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                 }
             }
             case "dustPure", "dustImpure", "dustRefined" -> {
-                if (aMaterial.contains(SubTag.NO_ORE_PROCESSING)) {
+                if (MU.hasFlag(aMaterial, GTMaterialFlag.NO_ORE_PROCESSING)) {
                     return;
                 }
 
@@ -412,7 +413,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                     aMaterial,
                     aMaterial.mOreByProducts);
                 if (aPrefix == OrePrefixes.dustPure) {
-                    if (aMaterial.contains(SubTag.ELECTROMAGNETIC_SEPERATION_GOLD)) {
+                    if (MU.hasFlag(aMaterial, GTMaterialFlag.ELECTROMAGNETIC_SEPERATION_GOLD)) {
                         GTValues.RA.stdBuilder()
                             .itemInputs(GTUtility.copyAmount(1, aStack))
                             .itemOutputs(
@@ -425,7 +426,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                             .eut(24)
                             .addTo(electroMagneticSeparatorRecipes);
                     }
-                    if (aMaterial.contains(SubTag.ELECTROMAGNETIC_SEPERATION_IRON)) {
+                    if (MU.hasFlag(aMaterial, GTMaterialFlag.ELECTROMAGNETIC_SEPERATION_IRON)) {
                         GTValues.RA.stdBuilder()
                             .itemInputs(GTUtility.copyAmount(1, aStack))
                             .itemOutputs(
@@ -439,7 +440,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                             .eut(24)
                             .addTo(electroMagneticSeparatorRecipes);
                     }
-                    if (aMaterial.contains(SubTag.ELECTROMAGNETIC_SEPERATION_NEODYMIUM)) {
+                    if (MU.hasFlag(aMaterial, GTMaterialFlag.ELECTROMAGNETIC_SEPERATION_NEODYMIUM)) {
                         GTValues.RA.stdBuilder()
                             .itemInputs(GTUtility.copyAmount(1, aStack))
                             .itemOutputs(
@@ -456,7 +457,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                             .addTo(electroMagneticSeparatorRecipes);
                     }
                 }
-                if (aMaterial.contains(SubTag.CRYSTALLISABLE)
+                if (MU.hasFlag(aMaterial, GTMaterialFlag.CRYSTALLISABLE)
                     && GTOreDictUnificator.get(OrePrefixes.gem, aMaterial, 1L) != null) {
                     GTValues.RA.stdBuilder()
                         .itemInputs(GTUtility.copyAmount(1, aStack))
@@ -607,7 +608,7 @@ public class ProcessingDust implements gregtech.api.interfaces.IOreRecipeRegistr
                             null);
                     }
                 }
-                if (!aMaterial.contains(SubTag.NO_SMELTING)) {
+                if (!MU.hasFlag(aMaterial, GTMaterialFlag.NO_SMELTING)) {
                     if (aMaterial.mBlastFurnaceRequired) {
                         GTModHandler.removeFurnaceSmelting(aStack);
                     }

@@ -20,8 +20,9 @@ import net.minecraftforge.oredict.OreDictionary;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TierEU;
+import gregtech.api.material.GTMaterialFlag;
+import gregtech.api.material.MU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipeConstants;
@@ -45,10 +46,10 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
         ItemStack aStack) {
         long aMaterialMass = aMaterial.getMass();
-        boolean aNoSmashing = aMaterial.contains(SubTag.NO_SMASHING);
-        boolean aNoWorking = aMaterial.contains(SubTag.NO_WORKING);
-        boolean aNoSmelting = aMaterial.contains(SubTag.NO_SMELTING);
-        boolean aSpecialRecipeReq = aMaterial.contains(SubTag.MORTAR_GRINDABLE);
+        boolean aNoSmashing = MU.hasFlag(aMaterial, GTMaterialFlag.NO_SMASHING);
+        boolean aNoWorking = MU.hasFlag(aMaterial, GTMaterialFlag.NO_WORKING);
+        boolean aNoSmelting = MU.hasFlag(aMaterial, GTMaterialFlag.NO_SMELTING);
+        boolean aSpecialRecipeReq = MU.hasFlag(aMaterial, GTMaterialFlag.MORTAR_GRINDABLE);
         boolean aFuelPower = aMaterial.mFuelPower > 0;
 
         // Blacklist materials which are handled by Werkstoff loader and nether quartz due to its 4:1 ratio
@@ -220,7 +221,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                                 GTModHandler.RecipeBits.BITS_STD,
                                 new Object[] { "h", "X", 'X', OrePrefixes.gemFlawless.get(aMaterial) });
 
-                            if (aMaterial.contains(SubTag.SMELTING_TO_GEM)) {
+                            if (MU.hasFlag(aMaterial, GTMaterialFlag.SMELTING_TO_GEM)) {
                                 GTModHandler.addCraftingRecipe(
                                     GTUtility.copyAmount(1, aStack),
                                     GTModHandler.RecipeBits.BITS_STD,

@@ -21,12 +21,13 @@ import gregtech.GTMod;
 import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TierEU;
 import gregtech.api.enums.materials2.Materials2FluidShapes;
 import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
+import gregtech.api.material.GTMaterialFlag;
+import gregtech.api.material.MU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -55,7 +56,7 @@ public class ProcessingOre implements IOreRecipeRegistrator {
     @Override
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName,
         ItemStack aStack) {
-        if (aMaterial.contains(SubTag.NO_ORE_PROCESSING)) {
+        if (MU.hasFlag(aMaterial, GTMaterialFlag.NO_ORE_PROCESSING)) {
             return;
         }
 
@@ -108,7 +109,7 @@ public class ProcessingOre implements IOreRecipeRegistrator {
         ItemStack tSmeltInto = tIngot
             == null
                 ? null
-                : aMaterial.contains(SubTag.SMELTING_TO_GEM)
+                : MU.hasFlag(aMaterial, GTMaterialFlag.SMELTING_TO_GEM)
                     ? GTOreDictUnificator.get(
                         OrePrefixes.gem,
                         tMaterial.mDirectSmelting,
@@ -167,7 +168,7 @@ public class ProcessingOre implements IOreRecipeRegistrator {
                         GTUtility.copyAmount(aMultiplier * aMaterial.mSmeltingMultiplier, tSmeltInto)));
             }
 
-            if (aMaterial.contains(SubTag.BLASTFURNACE_CALCITE_TRIPLE)) {
+            if (MU.hasFlag(aMaterial, GTMaterialFlag.BLASTFURNACE_CALCITE_TRIPLE)) {
                 if (aMaterial.mAutoGenerateBlastFurnaceRecipes) {
                     GTValues.RA.stdBuilder()
                         .itemInputs(
@@ -198,7 +199,7 @@ public class ProcessingOre implements IOreRecipeRegistrator {
                         .metadata(COIL_HEAT, 1500)
                         .addTo(blastFurnaceRecipes);
                 }
-            } else if (aMaterial.contains(SubTag.BLASTFURNACE_CALCITE_DOUBLE)) {
+            } else if (MU.hasFlag(aMaterial, GTMaterialFlag.BLASTFURNACE_CALCITE_DOUBLE)) {
                 if (aMaterial.mAutoGenerateBlastFurnaceRecipes) {
                     GTValues.RA.stdBuilder()
                         .itemInputs(
@@ -256,7 +257,7 @@ public class ProcessingOre implements IOreRecipeRegistrator {
             ItemStack byproduct = GTOreDictUnificator
                 .get(OrePrefixes.gem, tPrimaryByMaterial, GTUtility.copyAmount(1, tPrimaryByProduct), 1L);
 
-            if (tMaterial.contains(SubTag.PULVERIZING_CINNABAR)) {
+            if (MU.hasFlag(tMaterial, GTMaterialFlag.PULVERIZING_CINNABAR)) {
                 byproduct = GTOreDictUnificator.get(OrePrefixes.crystal, Materials.Cinnabar, byproduct, 1L);
             }
 

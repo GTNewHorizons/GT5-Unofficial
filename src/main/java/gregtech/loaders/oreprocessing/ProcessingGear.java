@@ -13,8 +13,9 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TierEU;
+import gregtech.api.material.GTMaterialFlag;
+import gregtech.api.material.MU;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -47,7 +48,7 @@ public class ProcessingGear implements gregtech.api.interfaces.IOreRecipeRegistr
                     }
                 }
                 if (aMaterial.mUnifiable && (aMaterial.mMaterialInto == aMaterial)
-                    && !aMaterial.contains(SubTag.NO_WORKING)) {
+                    && !MU.hasFlag(aMaterial, GTMaterialFlag.NO_WORKING)) {
                     switch (aMaterial.mName) {
                         case "Wood" -> GTModHandler.addCraftingRecipe(
                             GTOreDictUnificator.get(OrePrefixes.gearGt, aMaterial, 1L),
@@ -84,7 +85,7 @@ public class ProcessingGear implements gregtech.api.interfaces.IOreRecipeRegistr
                     }
                 }
                 if (aMaterial.mUnifiable && (aMaterial.mMaterialInto == aMaterial)
-                    && !aMaterial.contains(SubTag.NO_WORKING)) {
+                    && !MU.hasFlag(aMaterial, GTMaterialFlag.NO_WORKING)) {
                     switch (aMaterial.mName) {
                         case "Wood" -> GTModHandler.addCraftingRecipe(
                             GTOreDictUnificator.get(OrePrefixes.gearGtSmall, aMaterial, 1L),

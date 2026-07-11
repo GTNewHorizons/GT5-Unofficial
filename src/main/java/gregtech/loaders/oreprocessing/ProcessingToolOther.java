@@ -7,7 +7,8 @@ import gregtech.api.enums.Dyes;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.SubTag;
+import gregtech.api.material.GTMaterialFlag;
+import gregtech.api.material.MU;
 import gregtech.api.util.GTModHandler;
 import gregtech.common.items.IDMetaTool01;
 import gregtech.common.items.MetaGeneratedTool01;
@@ -40,8 +41,8 @@ public class ProcessingToolOther implements gregtech.api.interfaces.IOreRecipeRe
             }
         }
 
-        if ((!aMaterial.contains(SubTag.WOOD)) && (!aMaterial.contains(SubTag.BOUNCY))
-            && (!aMaterial.contains(SubTag.NO_SMASHING))) {
+        if ((!MU.hasFlag(aMaterial, GTMaterialFlag.WOOD)) && (!MU.hasFlag(aMaterial, GTMaterialFlag.BOUNCY))
+            && (!MU.hasFlag(aMaterial, GTMaterialFlag.NO_SMASHING))) {
             // Crafting recipes
             {
                 GTModHandler.addCraftingRecipe(
