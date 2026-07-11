@@ -278,7 +278,7 @@ public class BECRecipes implements Runnable {
                 MaterialsAlloy.TITANSTEEL.getGear(4), GregtechItemList.DehydratorCoilWireZPM.get(64),
                 MaterialsAlloy.ABYSSAL.getPlate(8),
                 MaterialsAlloy.TRINIUM_REINFORCED_STEEL.getPlate(16), MaterialsAlloy.OCTIRON.getPlate(16) },
-            nanites(3, 3, 4, 1, 1, 1, 1, 2),
+            nanites(3, 3, 4, 1, 1, 1, 2),
             new FluidStack[] { CondensateType.Neutronium.getEntangled(4 * INGOTS) },
             300 * SECONDS,
             TierEU.RECIPE_UIV);
