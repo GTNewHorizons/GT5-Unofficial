@@ -49,8 +49,8 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
 
         // Blast furnace is required for processing this ore.
         if (material.mBlastFurnaceRequired || material.mDirectSmelting.mBlastFurnaceRequired) {
-            if (material.mBlastFurnaceTemp >= 1000) return;
-            if (material.mDirectSmelting.mBlastFurnaceTemp >= 1000) return;
+            if (MU.blastFurnaceTemp(material) >= 1000) return;
+            if (MU.blastFurnaceTemp(material.mDirectSmelting) >= 1000) return;
             if (!material.mAutoGenerateBlastFurnaceRecipes) return;
 
             final ItemStack output = material.getIngots(1);
@@ -61,9 +61,9 @@ public class ProcessingOreSmelting implements gregtech.api.interfaces.IOreRecipe
                 .itemInputs(GTUtility.copyAmount(1, stack))
                 .circuit(1)
                 .itemOutputs(output)
-                .duration(Math.max(material.getMass() / 4L, 1L) * material.mBlastFurnaceTemp * TICKS)
+                .duration(Math.max(material.getMass() / 4L, 1L) * MU.blastFurnaceTemp(material) * TICKS)
                 .eut(TierEU.RECIPE_MV)
-                .metadata(COIL_HEAT, (int) material.mBlastFurnaceTemp)
+                .metadata(COIL_HEAT, MU.blastFurnaceTemp(material))
                 .addTo(blastFurnaceRecipes);
 
             return;

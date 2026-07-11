@@ -50,7 +50,7 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
         boolean aNoWorking = MU.hasFlag(aMaterial, GTMaterialFlag.NO_WORKING);
         boolean aNoSmelting = MU.hasFlag(aMaterial, GTMaterialFlag.NO_SMELTING);
         boolean aSpecialRecipeReq = MU.hasFlag(aMaterial, GTMaterialFlag.MORTAR_GRINDABLE);
-        boolean aFuelPower = aMaterial.mFuelPower > 0;
+        boolean aFuelPower = MU.fuelPower(aMaterial) > 0;
 
         // Blacklist materials which are handled by Werkstoff loader and nether quartz due to its 4:1 ratio
         if (aMaterial == Materials.Salt || aMaterial == Materials.RockSalt
@@ -63,8 +63,8 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                 if (aFuelPower) {
                     GTValues.RA.stdBuilder()
                         .itemInputs(GTUtility.copyAmount(1, aStack))
-                        .metadata(FUEL_VALUE, aMaterial.mFuelPower * 2)
-                        .metadata(FUEL_TYPE, aMaterial.mFuelType)
+                        .metadata(FUEL_VALUE, MU.fuelPower(aMaterial) * 2)
+                        .metadata(FUEL_TYPE, MU.fuelType(aMaterial))
                         .addTo(GTRecipeConstants.Fuel);
                 }
 
@@ -261,8 +261,8 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                 if (aFuelPower) {
                     GTValues.RA.stdBuilder()
                         .itemInputs(GTUtility.copyAmount(1, aStack))
-                        .metadata(FUEL_VALUE, aMaterial.mFuelPower / 2)
-                        .metadata(FUEL_TYPE, aMaterial.mFuelType)
+                        .metadata(FUEL_VALUE, MU.fuelPower(aMaterial) / 2)
+                        .metadata(FUEL_TYPE, MU.fuelType(aMaterial))
                         .addTo(GTRecipeConstants.Fuel);
                 }
 
@@ -328,8 +328,8 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                 if (aFuelPower) {
                     GTValues.RA.stdBuilder()
                         .itemInputs(GTUtility.copyAmount(1, aStack))
-                        .metadata(FUEL_VALUE, aMaterial.mFuelPower * 8)
-                        .metadata(FUEL_TYPE, aMaterial.mFuelType)
+                        .metadata(FUEL_VALUE, MU.fuelPower(aMaterial) * 8)
+                        .metadata(FUEL_TYPE, MU.fuelType(aMaterial))
                         .addTo(GTRecipeConstants.Fuel);
                 }
 
@@ -362,8 +362,8 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                 if (aFuelPower) {
                     GTValues.RA.stdBuilder()
                         .itemInputs(GTUtility.copyAmount(1, aStack))
-                        .metadata(FUEL_VALUE, aMaterial.mFuelPower)
-                        .metadata(FUEL_TYPE, aMaterial.mFuelType)
+                        .metadata(FUEL_VALUE, MU.fuelPower(aMaterial))
+                        .metadata(FUEL_TYPE, MU.fuelType(aMaterial))
                         .addTo(GTRecipeConstants.Fuel);
                 }
 
@@ -438,8 +438,8 @@ public class ProcessingGem implements gregtech.api.interfaces.IOreRecipeRegistra
                 if (aFuelPower) {
                     GTValues.RA.stdBuilder()
                         .itemInputs(GTUtility.copyAmount(1, aStack))
-                        .metadata(FUEL_VALUE, aMaterial.mFuelPower * 4)
-                        .metadata(FUEL_TYPE, aMaterial.mFuelType)
+                        .metadata(FUEL_VALUE, MU.fuelPower(aMaterial) * 4)
+                        .metadata(FUEL_TYPE, MU.fuelType(aMaterial))
                         .addTo(GTRecipeConstants.Fuel);
                 }
 

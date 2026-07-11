@@ -53,11 +53,11 @@ public class ProcessingIngot implements gregtech.api.interfaces.IOreRecipeRegist
         switch (aPrefix.getName()) {
             case "ingot" -> {
                 // Fuel recipe
-                if (aMaterial.mFuelPower > 0) {
+                if (MU.fuelPower(aMaterial) > 0) {
                     GTValues.RA.stdBuilder()
                         .itemInputs(GTUtility.copyAmount(1, aStack))
-                        .metadata(FUEL_VALUE, aMaterial.mFuelPower)
-                        .metadata(FUEL_TYPE, aMaterial.mFuelType)
+                        .metadata(FUEL_VALUE, MU.fuelPower(aMaterial))
+                        .metadata(FUEL_TYPE, MU.fuelType(aMaterial))
                         .addTo(GTRecipeConstants.Fuel);
                 }
                 if (aMaterial.mStandardMoltenFluid != null
