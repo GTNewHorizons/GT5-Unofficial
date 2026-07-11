@@ -4663,6 +4663,7 @@ public class Materials2Materials {
             .setProperty(GTMaterialProperties.GTPP, new GTppData(1, 30L, 1722, 6069, 51200, false, false, 0, false, "Am", 95L, 150L, "SOLID", true, false, List.of(), "molten.americium", null));
         Materials2Materials.spatialFluid = MaterialLibAPI.newMaterial("gregtech", "spatialFluid", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF6401FF)
+            .setFluidTint(0xFFFFFFFF)
             .addToFamily(Materials2Families.familyAll)
             .generateShape(Materials2FluidShapes.shapeFluidMolten)
             .setProperty(GTMaterialProperties.LOCAL_NAME, "Spatially Enlarged Fluid")
@@ -4677,6 +4678,7 @@ public class Materials2Materials {
             .build();
         Materials2Materials.ExcitedDTCC = MaterialLibAPI.newMaterial("gregtech", "ExcitedDTCC", TextureSet.of("gregtech", "FLUID"))
             .setTint(17437716)
+            .setFluidTint(0xFFFFFFFF)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyCells)
             .generateShape(Materials2FluidShapes.shapeFluidLiquid)
@@ -4768,6 +4770,7 @@ public class Materials2Materials {
             .removeShape(Materials2Shapes.shapePlateTriple);
         Materials2Materials.ExcitedDTPC = MaterialLibAPI.newMaterial("gregtech", "ExcitedDTPC", TextureSet.of("gregtech", "FLUID"))
             .setTint(19086121)
+            .setFluidTint(0xFFFFFFFF)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyCells)
             .generateShape(Materials2FluidShapes.shapeFluidLiquid)
@@ -4893,6 +4896,7 @@ public class Materials2Materials {
             .build();
         Materials2Materials.ExcitedDTRC = MaterialLibAPI.newMaterial("gregtech", "ExcitedDTRC", TextureSet.of("gregtech", "FLUID"))
             .setTint(19272760)
+            .setFluidTint(0xFFFFFFFF)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyCells)
             .generateShape(Materials2FluidShapes.shapeFluidLiquid)
@@ -4991,6 +4995,7 @@ public class Materials2Materials {
             .removeShape(Materials2Shapes.shapeWireFine);
         Materials2Materials.ExcitedDTEC = MaterialLibAPI.newMaterial("gregtech", "ExcitedDTEC", TextureSet.of("gregtech", "FLUID"))
             .setTint(32567337)
+            .setFluidTint(0xFFFFFFFF)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyCells)
             .generateShape(Materials2FluidShapes.shapeFluidLiquid)
@@ -5009,6 +5014,7 @@ public class Materials2Materials {
             .build();
         Materials2Materials.ExcitedDTSC = MaterialLibAPI.newMaterial("gregtech", "ExcitedDTSC", TextureSet.of("gregtech", "FLUID"))
             .setTint(25053963)
+            .setFluidTint(0xFFFFFFFF)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyCells)
             .generateShape(Materials2FluidShapes.shapeFluidLiquid)
@@ -12649,6 +12655,7 @@ public class Materials2Materials {
             .removeShape(Materials2Shapes.shapeTurbineBlade);
         Materials2Materials.RawStarMatter = MaterialLibAPI.newMaterial("gregtech", "RawStarMatter", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF6401FF)
+            .setFluidTint(0xFFFFFFFF)
             .addToFamily(Materials2Families.familyAll)
             .addToFamily(Materials2Families.familyCells)
             .generateShape(Materials2FluidShapes.shapeFluidLiquid)
@@ -12724,6 +12731,7 @@ public class Materials2Materials {
             .removeShape(Materials2Shapes.shapePlateTriple);
         Materials2Materials.temporalFluid = MaterialLibAPI.newMaterial("gregtech", "temporalFluid", TextureSet.of("gregtech", "FLUID"))
             .setTint(0xFF6401FF)
+            .setFluidTint(0xFFFFFFFF)
             .addToFamily(Materials2Families.familyAll)
             .generateShape(Materials2FluidShapes.shapeFluidMolten)
             .setProperty(GTMaterialProperties.LOCAL_NAME, "Tachyon Rich Temporal Fluid")
