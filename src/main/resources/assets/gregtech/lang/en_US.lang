@@ -8560,6 +8560,18 @@ gt.blocktintedglass.0.name=Tinted Industrial Glass (White)
 gt.blocktintedglass.1.name=Tinted Industrial Glass (Light Gray)
 gt.blocktintedglass.2.name=Tinted Industrial Glass (Gray)
 gt.blocktintedglass.3.name=Tinted Industrial Glass (Black)
+gt.blocktintedglass.4.name=Tinted Industrial Glass (Brown)
+gt.blocktintedglass.5.name=Tinted Industrial Glass (Red)
+gt.blocktintedglass.6.name=Tinted Industrial Glass (Orange)
+gt.blocktintedglass.7.name=Tinted Industrial Glass (Yellow)
+gt.blocktintedglass.8.name=Tinted Industrial Glass (Lime)
+gt.blocktintedglass.9.name=Tinted Industrial Glass (Green)
+gt.blocktintedglass.10.name=Tinted Industrial Glass (Cyan)
+gt.blocktintedglass.11.name=Tinted Industrial Glass (Light Blue)
+gt.blocktintedglass.12.name=Tinted Industrial Glass (Blue)
+gt.blocktintedglass.13.name=Tinted Industrial Glass (Purple)
+gt.blocktintedglass.14.name=Tinted Industrial Glass (Magenta)
+gt.blocktintedglass.15.name=Tinted Industrial Glass (Pink)
 
 # Block Granites
 gt.blockgranites.0.name=Black Granite
