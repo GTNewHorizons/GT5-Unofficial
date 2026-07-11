@@ -190,26 +190,16 @@ public class FluidEjectionHelper {
         public boolean storePartial(IOutputHatchTransaction transaction) {
             boolean isSharedOutput = transaction instanceof IOutputHatchTransaction.IDynamicCapacityOutputAware sharedOutput
                 && sharedOutput.isDynamicCapacity();
-            long untried = 0;
+            long targetAmount = remainingAmount;
             if (isSharedOutput) {
-                long limit = Math.min(remainingAmount, perParallel);
-                untried = remainingAmount - limit;
-                remainingAmount = limit;
+                targetAmount = Math.min(remainingAmount, perParallel);
             }
-            boolean insertAnything = false;
-            while (remainingAmount > 0) {
-                int amount = (int) Math.min(remainingAmount, Integer.MAX_VALUE);
-                tmpStack.amount = amount;
-                transaction.storePartial(id, tmpStack);
-                long actuallyInsert = amount - tmpStack.amount;
-                remainingAmount -= actuallyInsert;
-                if (actuallyInsert > 0) insertAnything = true;
-                if (tmpStack.amount > 0) break;
-            }
-            if (isSharedOutput) {
-                remainingAmount += untried;
-            }
-            return insertAnything;
+            int amount = (int) Math.min(targetAmount, Integer.MAX_VALUE);
+            tmpStack.amount = amount;
+            transaction.storePartial(id, tmpStack);
+            long actuallyInsert = amount - tmpStack.amount;
+            remainingAmount -= actuallyInsert;
+            return actuallyInsert > 0;
         }
     }
 }

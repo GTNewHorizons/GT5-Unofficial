@@ -15,6 +15,7 @@ import static gregtech.api.enums.HatchElement.InputHatch;
 import java.util.Arrays;
 
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.mutable.MutableLong;
@@ -38,13 +39,11 @@ import gregtech.api.recipe.check.CheckRecipeResultRegistry;
 import gregtech.api.render.TextureFactory;
 import gregtech.api.structure.StructureWrapperTooltipBuilder;
 import gregtech.api.util.GTRecipe;
-import gregtech.api.util.GTUtility;
 import gregtech.api.util.MultiblockTooltipBuilder;
 import gregtech.client.volumetric.ISoundPosition;
 import gregtech.client.volumetric.LinearSound;
 import tectech.mechanics.boseEinsteinCondensate.CondensateList;
 import tectech.recipe.TecTechRecipeMaps;
-import tectech.thing.CustomItemList;
 import tectech.thing.metaTileEntity.multi.base.MTEBECMultiblockBase;
 import tectech.thing.metaTileEntity.multi.structures.BECStructureDefinitions;
 
@@ -90,30 +89,26 @@ public class MTEBECGenerator extends MTEBECMultiblockBase<MTEBECGenerator> {
         StructureWrapperTooltipBuilder<MTEBECGenerator> tt = new StructureWrapperTooltipBuilder<>(structure);
 
         tt.addMachineType("BEC Generator, Condensate Entangler, Input Hatch")
-            .addMarkdown(new ResourceLocation("gregtech", "bec-generator"));
+            .addMarkdown(new ResourceLocation("gregtech", "bec-generator"))
+            .addSupportAny();
 
-        tt.beginStructureBlock();
-        tt.addController("Front center");
-        tt.addHatchNameOverride(BECHatches.Hatch, CustomItemList.Hatch_BEC_Connector.get(1));
-        tt.addHatchLocationOverride(
-            Arrays.asList(InputBus, InputHatch, Energy, ExoticEnergy),
-            GTUtility.translate(
-                "GT5U.gui.text.bec-generator-input-hatch-pos",
-                ElectromagneticallyIsolatedCasing.getLocalizedName()));
-        tt.addHatchLocationOverride(BECHatches.Hatch, GTUtility.translate("GT5U.gui.text.bec-generator-bec-hatch-pos"));
-        tt.addAllCasingInfo(
-            Arrays.asList(
-                SuperconductivePlasmaEnergyConduit,
-                ElectromagneticallyIsolatedCasing,
-                FineStructureConstantManipulator,
-                ConflictInducementCasing,
-                PeaceEnforcementCasing,
-                CondensateTransformativeCoil,
-                ElectromagneticWaveguide),
-            null);
-
-        tt.toolTipFinisher(GTAuthors.AuthorPineapple);
-
+        tt.beginStructureBlock(34, 19, 19, true)
+            .addController(StatCollector.translateToLocal("GT5U.tooltip.bec-generator.controller-pos"))
+            .addCasing("236", ConflictInducementCasing.getLocalizedName(), false)
+            .addCasing("232", FineStructureConstantManipulator.getLocalizedName(), false)
+            .addCasing("216", SuperconductivePlasmaEnergyConduit.getLocalizedName(), false)
+            .addCasing("184", PeaceEnforcementCasing.getLocalizedName(), false)
+            .addCasing("136-158", ElectromagneticallyIsolatedCasing.getLocalizedName(), false)
+            .addCasing("148", ElectromagneticWaveguide.getLocalizedName(), false)
+            .addCasing("101", CondensateTransformativeCoil.getLocalizedName(), false)
+            .addEnergyHatch("1+", StatCollector.translateToLocal("GT5U.tooltip.bec-generator.hatch-pos"), 1)
+            .addInputHatch("1+", StatCollector.translateToLocal("GT5U.tooltip.bec-generator.hatch-pos"), 1)
+            .addMiscHatch(
+                "1",
+                "Bose-Einstein Condensate Hatch",
+                StatCollector.translateToLocal("GT5U.tooltip.bec-generator.bec-hatch-pos"),
+                2)
+            .toolTipFinisher(GTAuthors.AuthorPineapple);
         return tt;
     }
 

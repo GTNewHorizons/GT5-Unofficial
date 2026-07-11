@@ -1,5 +1,6 @@
 package gregtech.common.gui.modularui.singleblock.base;
 
+import static gregtech.api.metatileentity.BaseTileEntity.BUTTON_FORBIDDEN_TOOLTIP;
 import static gregtech.api.metatileentity.BaseTileEntity.TOOLTIP_DELAY;
 
 import java.util.ArrayList;
@@ -11,10 +12,11 @@ import java.util.stream.Collectors;
 
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.cleanroommc.modularui.api.IPanelHandler;
 import com.cleanroommc.modularui.api.drawable.IDrawable;
 import com.cleanroommc.modularui.api.widget.IWidget;
-import com.cleanroommc.modularui.drawable.DynamicDrawable;
 import com.cleanroommc.modularui.drawable.UITexture;
 import com.cleanroommc.modularui.screen.ModularPanel;
 import com.cleanroommc.modularui.utils.Alignment;
@@ -27,6 +29,7 @@ import com.cleanroommc.modularui.widget.ParentWidget;
 import com.cleanroommc.modularui.widget.Widget;
 import com.cleanroommc.modularui.widgets.ButtonWidget;
 import com.cleanroommc.modularui.widgets.ProgressWidget;
+import com.cleanroommc.modularui.widgets.ToggleButton;
 import com.cleanroommc.modularui.widgets.layout.Flow;
 import com.cleanroommc.modularui.widgets.layout.Grid;
 import com.cleanroommc.modularui.widgets.slot.FluidSlot;
@@ -129,48 +132,60 @@ public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> extends MTETiered
         return cornerFlow
             .child(
                 createAutoOutputButton(
+                    properties.maxFluidOutputs > 0,
                     syncManager,
                     "fluidAutoOutput",
                     GTGuiTextures.OVERLAY_BUTTON_AUTOOUTPUT_FLUID,
-                    BaseTileEntity.FLUID_TRANSFER_TOOLTIP))
+                    BaseTileEntity.FLUID_TRANSFER_TOOLTIP,
+                    "GT5U.gui.button.forbidden.reason.fluid"))
             .child(
                 createAutoOutputButton(
+                    properties.maxItemOutputs > 0,
                     syncManager,
                     "itemAutoOutput",
                     GTGuiTextures.OVERLAY_BUTTON_AUTOOUTPUT_ITEM,
-                    BaseTileEntity.ITEM_TRANSFER_TOOLTIP))
+                    BaseTileEntity.ITEM_TRANSFER_TOOLTIP,
+                    "GT5U.gui.button.forbidden.reason.item"))
 
             .childIf(properties.maxFluidInputs > 0, () -> createFluidInputSlot().marginLeft(SLOT_SIZE / 2));
     }
 
-    private ButtonWidget<?> createAutoOutputButton(PanelSyncManager syncManager, String syncKey, IDrawable overlay,
-        String tooltipKey) {
-        BooleanSyncValue syncHandler = syncManager.findSyncHandler(syncKey, BooleanSyncValue.class);
+    private Widget<?> createAutoOutputButton(boolean isEnabled, PanelSyncManager syncManager, String syncKey,
+        UITexture overlay, String tooltipKey, String disabledTooltipKey) {
+        // needed to make the IPanelBuilder lambda and ToggleButton override work
+        ToggleButton[] button = new ToggleButton[1];
 
-        ButtonWidget<?> button = new ButtonWidget<>();
         IPanelHandler autoOutputPanel = syncManager
-            .syncedPanel("sideSelection_" + syncKey, true, (panelSyncManager, b) -> openSideSelector(button, syncKey));
-        return button.overlay(overlay)
-            .background(
-                new DynamicDrawable(
-                    () -> syncHandler.getValue() ? GTGuiTextures.BUTTON_STANDARD_PRESSED
-                        : GTGuiTextures.BUTTON_STANDARD))
-            .tooltipShowUpTimer(TOOLTIP_DELAY)
-            .tooltip(
-                t -> t.addLine(GTUtility.translate(tooltipKey))
-                    .addLine(GTUtility.translate("GT5U.machines.side_selection.tooltip")))
-            .onMousePressed(mouseButton -> {
+            .syncedPanel("sideSelection_" + syncKey, true, (_, _) -> openSideSelector(button, syncKey));
+
+        button[0] = new ToggleButton() {
+
+            @Override
+            public @NotNull Result onMousePressed(int mouseButton) {
+                if (!isEnabled) return Result.IGNORE;
                 if (Interactable.hasShiftDown()) {
                     autoOutputPanel.openPanel();
-                } else {
-                    boolean newVal = !syncHandler.getValue();
-                    syncHandler.setValue(newVal);
+                    return Result.SUCCESS;
                 }
-                return true;
-            });
+                return super.onMousePressed(mouseButton);
+            }
+        }.value(syncManager.findSyncHandler(syncKey, BooleanSyncValue.class))
+            .tooltipShowUpTimer(TOOLTIP_DELAY)
+            .overlay(overlay);
+
+        if (isEnabled) button[0].addTooltipLine(GTUtility.translate(tooltipKey));
+        if (!isEnabled) button[0].tooltip(
+            t -> t.addLine(GTUtility.translate(BUTTON_FORBIDDEN_TOOLTIP))
+                .addLine(
+                    GTUtility.getColoredSecondaryTooltip(
+                        GTUtility
+                            .translate("GT5U.gui.button.forbidden.reason", GTUtility.translate(disabledTooltipKey)))))
+            .widgetTheme(GTWidgetThemes.TOGGLE_BUTTON_DISABLED);
+
+        return button[0];
     }
 
-    private ModularPanel openSideSelector(ButtonWidget<?> button, String syncKey) {
+    private ModularPanel openSideSelector(ToggleButton[] parent, String syncKey) {
 
         ModularPanel panel = new ModularPanel("sideSelector_" + syncKey) {
 
@@ -178,7 +193,7 @@ public class MTEBasicMachineBaseGui<T extends MTEBasicMachine> extends MTETiered
             public boolean isDraggable() {
                 return false;
             }
-        }.relative(button)
+        }.relative(parent[0])
             .background(IDrawable.EMPTY)
             .coverChildren();
         List<IWidget> buttons = new ArrayList<>();

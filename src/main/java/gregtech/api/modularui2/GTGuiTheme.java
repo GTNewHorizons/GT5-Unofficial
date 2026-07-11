@@ -545,7 +545,7 @@ public class GTGuiTheme {
 
         /**
          * A shorthand for applying a Dye to every (non-text) part of the UI theme
-         * 
+         *
          * @param dye - dye to apply
          * @return this
          */

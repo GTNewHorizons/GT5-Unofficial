@@ -6,8 +6,10 @@ import static gregtech.api.enums.Mods.Chisel;
 import static gregtech.api.enums.Mods.GTNHIntergalactic;
 import static gregtech.api.enums.Mods.NEICustomDiagrams;
 import static gregtech.api.enums.Mods.Railcraft;
+import static gregtech.api.enums.Mods.Thaumcraft;
 import static gregtech.api.enums.TickTime.TICK;
 import static gregtech.api.util.GTModHandler.getModItem;
+import static gregtech.api.util.GTRecipeBuilder.SECONDS;
 import static gregtech.api.util.GTRecipeConstants.ADDITIVE_AMOUNT;
 import static gregtech.api.util.GTRecipeConstants.COMPRESSION_TIER;
 import static gregtech.api.util.GTRecipeConstants.FUEL_VALUE;
@@ -98,6 +100,7 @@ import gregtech.api.recipe.metadata.SimpleRecipeMetadataKey;
 import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTRecipe;
+import gregtech.api.util.GTRecipeBuilder;
 import gregtech.api.util.GTRecipeConstants;
 import gregtech.api.util.GTRecipeMapUtil.GTRecipeTemplate;
 import gregtech.api.util.GTUtility;
@@ -198,6 +201,12 @@ public final class RecipeMaps {
     public static final RecipeMap<RecipeMapBackend> neutroniumCompressorRecipes = RecipeMapBuilder
         .of("gt.recipe.neutroniumcompressor")
         .maxIO(1, 1, 1, 0)
+        .recipeTransformer(recipe -> {
+            if (recipe.mDuration > (4500 * SECONDS) && recipe.getMetadataOrDefault(COMPRESSION_TIER, 0) == 2) {
+                throw new IllegalArgumentException(
+                    "Attempted to add Black Hole recipe with time greater than 4500s - this is not allowed due to the exponential nature of spacetime scaling and the BHC's hidden consumption cap.");
+            }
+        })
         .slotOverlays(
             (index, isFluid, isOutput, isSpecial) -> !isFluid && !isOutput ? GTUITextures.OVERLAY_SLOT_COMPRESSOR
                 : null)
@@ -983,6 +992,13 @@ public final class RecipeMaps {
                     .setInputs(aInput1, aInput2, sugarCokeBlock)
                     .setOutputs(aOutput1, aOutput2, Materials.Ash.getDust(aCoalAmount * 2))
                     .setDuration(aDuration * 20 / 3);
+                if (Thaumcraft.isModLoaded()) {
+                    ItemStack alumentum = GTModHandler.getModItem(Thaumcraft.ID, "ItemResource", aCoalAmount * 2L, 0);
+                    coll.derive()
+                        .setInputs(aInput1, aInput2, alumentum)
+                        .setOutputs(aOutput1, aOutput2, Materials.Ash.getDust(aCoalAmount * 2))
+                        .setDuration(aDuration * 20 / 3);
+                }
             }
             return coll.getAll();
         })
@@ -1049,11 +1065,7 @@ public final class RecipeMaps {
                 .setInputs(input, GTModHandler.getIC2Item("industrialTnt", tITNT, null));
             return coll.getAll();
         })
-        .builderTransformer(
-            b -> b.copy()
-                .duration(1 * TICK)
-                .eut(TierEU.RECIPE_UEV)
-                .addTo(BartWorksRecipeMaps.electricImplosionCompressorRecipes))
+        .builderTransformer(RecipeMaps::addElectricImplosionRecipe)
         .build();
     public static final RecipeMap<RecipeMapBackend> vacuumFreezerRecipes = RecipeMapBuilder
         .of("gt.recipe.vacuumfreezer")
@@ -1359,6 +1371,7 @@ public final class RecipeMaps {
         })
         .progressBar(GTUITextures.PROGRESSBAR_CUT)
         .progressBarMUI2(GTGuiTextures.PROGRESSBAR_CUT)
+        .neiTransferRectId("gt.recipe.fakecuttingsaw")
         .recipeEmitter(b -> {
             b.validateInputCount(1, 2)
                 .validateOutputCount(1, 4)
@@ -1472,11 +1485,13 @@ public final class RecipeMaps {
         .of("gt.recipe.dieselgeneratorfuel", FuelBackend::new)
         .maxIO(1, 1, 0, 0)
         .builderTransformer(b -> {
-            b.copy()
-                .build()
-                .ifPresent(
-                    r -> RecipeMaps.largeBoilerFakeFuels.getBackend()
-                        .addDieselRecipe(r));
+            if (!RecipeMaps.largeBoilerFakeFuels.containsInput(b.getItemInputBasic(0))) {
+                b.copy()
+                    .build()
+                    .ifPresent(
+                        r -> RecipeMaps.largeBoilerFakeFuels.getBackend()
+                            .addDieselGasRecipe(r));
+            }
             if (b.getMetadataOrDefault(FUEL_VALUE, 0) >= 1500) {
                 b.copy()
                     .addTo(RecipeMaps.extremeDieselFuels);
@@ -1492,6 +1507,15 @@ public final class RecipeMaps {
     public static final RecipeMap<FuelBackend> gasTurbineFuels = RecipeMapBuilder
         .of("gt.recipe.gasturbinefuel", FuelBackend::new)
         .maxIO(1, 1, 0, 0)
+        .builderTransformer(b -> {
+            if (!RecipeMaps.largeBoilerFakeFuels.containsInput(b.getItemInputBasic(0))) {
+                b.copy()
+                    .build()
+                    .ifPresent(
+                        r -> RecipeMaps.largeBoilerFakeFuels.getBackend()
+                            .addDieselGasRecipe(r));
+            }
+        })
         .neiSpecialInfoFormatter(FuelSpecialValueFormatter.INSTANCE)
         .build();
     public static final RecipeMap<FuelBackend> hotFuels = RecipeMapBuilder
@@ -1502,12 +1526,15 @@ public final class RecipeMaps {
     public static final RecipeMap<FuelBackend> denseLiquidFuels = RecipeMapBuilder
         .of("gt.recipe.semifluidboilerfuels", FuelBackend::new)
         .maxIO(1, 1, 0, 0)
-        .builderTransformer(
-            b -> b.copy()
-                .build()
-                .ifPresent(
-                    r -> RecipeMaps.largeBoilerFakeFuels.getBackend()
-                        .addDenseLiquidRecipe(r)))
+        .builderTransformer(b -> {
+            if (!RecipeMaps.largeBoilerFakeFuels.containsInput(b.getItemInputBasic(0))) {
+                b.copy()
+                    .build()
+                    .ifPresent(
+                        r -> RecipeMaps.largeBoilerFakeFuels.getBackend()
+                            .addDenseLiquidRecipe(r));
+            }
+        })
         .disableRegisterNEI()
         .build();
     public static final RecipeMap<FuelBackend> plasmaFuels = RecipeMapBuilder
@@ -1547,8 +1574,8 @@ public final class RecipeMaps {
         .build();
     public static final RecipeMap<LargeBoilerFuelBackend> largeBoilerFakeFuels = RecipeMapBuilder
         .of("gt.recipe.largeboilerfakefuels", LargeBoilerFuelBackend::new)
-        .maxIO(1, 1, 0, 0)
-        .minInputs(1, 0)
+        .maxIO(1, 0, 1, 0)
+        .minInputs(0, 0)
         .frontend(LargeBoilerFuelFrontend::new)
         .build();
     public static final RecipeMap<RecipeMapBackend> nanoForgeRecipes = RecipeMapBuilder.of("gt.recipe.nanoforge")
@@ -1913,4 +1940,34 @@ public final class RecipeMaps {
         .maxIO(1, 1, 1, 0)
         .minInputs(1, 0)
         .build();
+
+    private static void addElectricImplosionRecipe(GTRecipeBuilder sourceBuilder) {
+        GTRecipeBuilder builder = sourceBuilder.copy()
+            .duration(1 * TICK)
+            .eut(TierEU.RECIPE_UEV);
+
+        if (isGemUpgradeRecipe(sourceBuilder)) {
+            builder.circuit(1);
+        }
+
+        builder.addTo(BartWorksRecipeMaps.electricImplosionCompressorRecipes);
+    }
+
+    private static boolean isGemUpgradeRecipe(GTRecipeBuilder builder) {
+        ItemData inputData = GTOreDictUnificator.getAssociation(builder.getItemInputBasic(0));
+        ItemData outputData = GTOreDictUnificator.getAssociation(builder.getItemOutput(0));
+
+        if (inputData == null || outputData == null) return false;
+        if (inputData.mMaterial.mMaterial != outputData.mMaterial.mMaterial) return false;
+
+        return isGemUpgradeStep(inputData.mPrefix, outputData.mPrefix);
+    }
+
+    private static boolean isGemUpgradeStep(OrePrefixes inputPrefix, OrePrefixes outputPrefix) {
+        return inputPrefix == OrePrefixes.dust && outputPrefix == OrePrefixes.gem
+            || inputPrefix == OrePrefixes.gemChipped && outputPrefix == OrePrefixes.gemFlawed
+            || inputPrefix == OrePrefixes.gemFlawed && outputPrefix == OrePrefixes.gem
+            || inputPrefix == OrePrefixes.gem && outputPrefix == OrePrefixes.gemFlawless
+            || inputPrefix == OrePrefixes.gemFlawless && outputPrefix == OrePrefixes.gemExquisite;
+    }
 }

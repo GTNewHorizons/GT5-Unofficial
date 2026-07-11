@@ -46,9 +46,11 @@ import gregtech.api.util.GTModHandler;
 import gregtech.api.util.GTSplit;
 import gregtech.api.util.GTUtility;
 import gregtech.common.gui.modularui.hatch.MTEHatchOutputGui;
+import gregtech.common.tileentities.machines.ISmartInputHatch;
 
 @IMetaTileEntity.SkipGenerateDescription
-public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLockableMui2, IOutputHatch {
+public class MTEHatchOutput extends MTEHatch
+    implements IFluidStore, IFluidLockableMui2, IOutputHatch, ISmartInputHatch {
 
     protected Fluid lockedFluid = null;
     private WeakReference<EntityPlayer> playerThatLockedfluid = null;
@@ -129,6 +131,12 @@ public class MTEHatchOutput extends MTEHatch implements IFluidStore, IFluidLocka
                     Math.max(1, mFluid.amount),
                     null);
             }
+        }
+        // A drained output hatch frees up space, which can unblock a recipe that failed with FLUID_OUTPUT_FULL. This
+        // must run AFTER the auto-eject above: that eject marks the tank dirty within this same tick, and the dirty
+        // flag is cleared at the end of the tick, so a self-eject that frees space would otherwise never push a check.
+        if (aBaseMetaTileEntity.isServerSide()) {
+            detectInventoryChange();
         }
     }
 
