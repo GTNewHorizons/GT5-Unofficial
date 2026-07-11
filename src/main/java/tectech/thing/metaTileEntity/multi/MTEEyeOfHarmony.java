@@ -52,6 +52,7 @@ import com.google.common.collect.ImmutableList;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IItemSource;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -60,6 +61,8 @@ import gregtech.api.enums.GTAuthors;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials2.Materials2FluidShapes;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -1404,7 +1407,8 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements ISurvivalConstr
         if (failedParallelAmount > 0) {
             // 2^Tier spacetime released upon recipe failure.
             outputFluidToAENetwork(
-                Materials.SpaceTime.getMolten(1),
+                MaterialLibAPI
+                    .getFluidStack(Materials2Materials.SpaceTime, Materials2FluidShapes.shapeFluidMolten, (int) (1)),
                 (long) ((successChance * MOLTEN_SPACETIME_PER_FAILURE_TIER
                     * GTUtility.powInt(SPACETIME_FAILURE_BASE, currentRecipeRocketTier + 1)) * failedParallelAmount));
             if (parallelAmount == 1) {
@@ -1594,7 +1598,10 @@ public class MTEEyeOfHarmony extends TTMultiblockBase implements ISurvivalConstr
                         YELLOW + formatNumber(starMatterOutput.amount * 20.0 / currentMaxProgresstime) + RESET));
 
                 FluidStackLong stellarPlasmaOutput = new FluidStackLong(
-                    Materials.RawStarMatter.getFluid(0),
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.RawStarMatter,
+                        Materials2FluidShapes.shapeFluidLiquid,
+                        (int) (0)),
                     (long) (stellarPlasma.amount * yield * successChance * parallelAmount));
                 str.add(
                     IGregTechDeviceInformation.encode(

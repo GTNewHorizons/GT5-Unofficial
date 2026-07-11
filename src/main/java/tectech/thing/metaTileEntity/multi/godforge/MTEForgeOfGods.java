@@ -51,6 +51,7 @@ import org.jetbrains.annotations.NotNull;
 import com.gtnewhorizon.structurelib.alignment.constructable.ISurvivalConstructable;
 import com.gtnewhorizon.structurelib.structure.IStructureDefinition;
 import com.gtnewhorizon.structurelib.structure.ISurvivalBuildEnvironment;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -59,6 +60,9 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SoundResource;
 import gregtech.api.enums.Textures;
+import gregtech.api.enums.materials2.Materials2FluidShapes;
+import gregtech.api.enums.materials2.Materials2Materials;
+import gregtech.api.enums.materials2.Materials2Shapes;
 import gregtech.api.interfaces.IHatchElement;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
@@ -263,7 +267,11 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
 
         {
             add(Materials.DTR.getFluid(1));
-            add(Materials.RawStarMatter.getFluid(1));
+            add(
+                MaterialLibAPI.getFluidStack(
+                    Materials2Materials.RawStarMatter,
+                    Materials2FluidShapes.shapeFluidLiquid,
+                    (int) (1)));
             add(Materials.MHDCSM.getMolten(1));
         }
     };
@@ -388,7 +396,8 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
 
                         ItemStack itemToAbsorb = STELLAR_FUEL;
                         if (data.isUpgradeActive(END) && data.getInternalBattery() != 0) {
-                            itemToAbsorb = GTOreDictUnificator.get(OrePrefixes.gem, Materials.GravitonShard, 1);
+                            itemToAbsorb = MaterialLibAPI
+                                .getStack(Materials2Materials.GravitonShard, Materials2Shapes.shapeGem, (int) (1));
                         }
 
                         int invLength = inputBus.getSizeInventory();
@@ -975,7 +984,8 @@ public class MTEForgeOfGods extends TTMultiblockBase implements ISurvivalConstru
 
     private void ejectGravitonShards() {
         if (mOutputBusses.size() == 1) {
-            ItemStack shard = GTOreDictUnificator.get(OrePrefixes.gem, Materials.GravitonShard, 1);
+            ItemStack shard = MaterialLibAPI
+                .getStack(Materials2Materials.GravitonShard, Materials2Shapes.shapeGem, (int) (1));
 
             shard.stackSize = data.getGravitonShardsAvailable();
 

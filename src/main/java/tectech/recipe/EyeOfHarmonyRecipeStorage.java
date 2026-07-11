@@ -15,6 +15,7 @@ import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.lang3.tuple.Pair;
 
 import com.google.common.math.LongMath;
+import com.ruling_0.materiallib.api.MaterialLibAPI;
 
 import bartworks.system.material.Werkstoff;
 import galacticgreg.api.ModDimensionDef;
@@ -23,6 +24,8 @@ import gregtech.api.enums.GTValues;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.StoneType;
+import gregtech.api.enums.materials2.Materials2FluidShapes;
+import gregtech.api.enums.materials2.Materials2Materials;
 import gregtech.api.interfaces.IOreMaterial;
 import gregtech.api.util.GTOreDictUnificator;
 import gregtech.api.util.GTUtility;
@@ -129,9 +132,14 @@ public class EyeOfHarmonyRecipeStorage {
                 .itemInputs(planetItem)
                 .itemOutputs(outputItems.toArray(new ItemStack[0]))
                 .fluidInputs(
-                    Materials.Hydrogen.getGas(0),
-                    Materials.Helium.getGas(0),
-                    Materials.RawStarMatter.getFluid(0))
+                    MaterialLibAPI
+                        .getFluidStack(Materials2Materials.Hydrogen, Materials2FluidShapes.shapeFluidGas, (int) (0)),
+                    MaterialLibAPI
+                        .getFluidStack(Materials2Materials.Helium, Materials2FluidShapes.shapeFluidGas, (int) (0)),
+                    MaterialLibAPI.getFluidStack(
+                        Materials2Materials.RawStarMatter,
+                        Materials2FluidShapes.shapeFluidLiquid,
+                        (int) (0)))
                 .fluidOutputs(outputFluids.toArray(new FluidStack[0]))
                 .duration(recipe.getRecipeTimeInTicks())
                 .eut(0)
